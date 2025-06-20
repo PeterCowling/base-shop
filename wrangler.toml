@@ -1,0 +1,7 @@
+name = "base-shop"
+pages_build_output_dir = ".vercel/output/static"
+compatibility_date    = "2025-06-20"
+
+[[kv_namespaces]]
+  binding = "CART_KV"
+  id      = "TODO-replace-with-namespace-id"

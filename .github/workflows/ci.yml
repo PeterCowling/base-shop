@@ -1,0 +1,14 @@
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - run: pnpm install
+      - run: pnpm lint && pnpm test
+      - run: pnpm build
+      - run: npx @cloudflare/next-on-pages deploy \
+               --project-name=base-shop \
+               --branch=${{ github.ref_name }}

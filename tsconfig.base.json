@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2021",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@ui/*": ["packages/ui/*"],
+      "@lib/*": ["packages/lib/*"],
+      "@types/*": ["packages/types/*"],
+      "@contexts/*": ["packages/lib/contexts/*"]
+    },
+    "types": ["@types/node", "@total-typescript/ts-reset"],
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "skipLibCheck": true
+  }
+}

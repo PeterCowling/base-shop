@@ -1,0 +1,14 @@
+// src/app/[lang]/shop/page.tsx
+import type { SKU } from "@/lib/products";
+import { PRODUCTS } from "@/lib/products";
+import type { Metadata } from "next";
+import ShopClient from "./ShopClient";
+
+export const metadata: Metadata = {
+  title: "Shop · Base-Shop",
+};
+
+export default function ShopIndexPage() {
+  // ⬇️ Purely server-side: just pass static data to the client component
+  return <ShopClient skus={PRODUCTS as SKU[]} />;
+}

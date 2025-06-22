@@ -118,6 +118,10 @@ importers:
 
   apps/shop-bcd: {}
 
+  packages/platform-core: {}
+
+  packages/platform-machine: {}
+
 packages:
 
   '@adobe/css-tools@4.4.3':

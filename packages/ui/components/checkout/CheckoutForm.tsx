@@ -23,7 +23,7 @@ export default function CheckoutForm({ locale }: Props) {
   useEffect(() => {
     (async () => {
       const res = await fetch("/api/checkout-session", { method: "POST" });
-      const { id } = await res.json();
+      const { id } = (await res.json()) as { id: string };
       setClientSecret(id);
     })();
   }, []);

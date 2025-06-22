@@ -56,7 +56,9 @@ const LS_KEY = CART_COOKIE;
 function readInitial(): CartState {
   if (typeof window === "undefined") return {};
   try {
-    return JSON.parse(decodeURIComponent(localStorage.getItem(LS_KEY) || "{}"));
+    return JSON.parse(
+      decodeURIComponent(localStorage.getItem(LS_KEY) || "{}")
+    ) as CartState;
   } catch {
     return {};
   }

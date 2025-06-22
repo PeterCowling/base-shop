@@ -8,6 +8,7 @@ import PdpClient from "./PdpClient";
 /*  Static generation                                                         */
 /* -------------------------------------------------------------------------- */
 
+/** Pre‑build every locale/slug pair. */
 export async function generateStaticParams() {
   const langs = ["en", "de", "it"] as const;
   const slugs = ["green-sneaker", "sand-sneaker", "black-sneaker"] as const;
@@ -15,26 +16,29 @@ export async function generateStaticParams() {
   return langs.flatMap((lang) => slugs.map((slug) => ({ lang, slug })));
 }
 
+/** ISR revalidation window (seconds). */
 export const revalidate = 60;
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
 /* -------------------------------------------------------------------------- */
 
-type RouteParams = { lang: string; slug: string };
+type Params = { lang: string; slug: string };
 
 /* -------------------------------------------------------------------------- */
 /*  Metadata                                                                  */
 /* -------------------------------------------------------------------------- */
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: RouteParams;
-}): Metadata {
-  const product = getProductBySlug(params.slug);
+  params: Promise<Params>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
+
   return {
-    title: product ? `${product.title} · Base-Shop` : "Product not found",
+    title: product ? `${product.title} · Base‑Shop` : "Product not found",
   };
 }
 
@@ -42,8 +46,13 @@ export function generateMetadata({
 /*  Page component                                                            */
 /* -------------------------------------------------------------------------- */
 
-export default function ProductDetailPage({ params }: { params: RouteParams }) {
-  const product = getProductBySlug(params.slug);
+export default async function ProductDetailPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
   if (!product) return notFound();
 
   return <PdpClient product={product} />;

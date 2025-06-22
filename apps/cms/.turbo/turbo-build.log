@@ -6,13 +6,38 @@
 
  [37m[1m [22m[39m Creating an optimized production build ...
  [32m[1m✓[22m[39m Compiled successfully in 0ms
-[?25l [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39mFailed to compile.
+[?25l [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G[?25h [37m[1m [22m[39m Linting and checking validity of types     [32m[1m✓[22m[39m Linting and checking validity of types 
+[?25l [37m[1m [22m[39m Collecting page data  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m..[39m[2K[1G[?25h [33m[1m⚠[22m[39m Using edge runtime on a page currently disables static generation for that page
+[?25l [36m.[39m [2K[1G[?25h    [32m[1m✓[22m[39m Collecting page data 
+[?25l [37m[1m [22m[39m Generating static pages (0/16)  [36m[    ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/16)  [36m[=   ][39m[2K[1G[?25h [32m[1m✓[22m[39m Generating static pages (16/16)
+[?25l [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[?25l [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m...[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m...[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m.[39m[2K[1G [37m[1m [22m[39m Finalizing page optimization  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting build traces  [36m..[39m[2K[1G[?25h [37m[1m [22m[39m Collecting build traces     [32m[1m✓[22m[39m Collecting build traces 
+[2K[1G[?25h [37m[1m [22m[39m Finalizing page optimization     [32m[1m✓[22m[39m Finalizing page optimization 
 
-src/app/[lang]/product/[slug]/page.tsx
-Type error: Type '{ params: RouteParams; }' does not satisfy the constraint 'PageProps'.
-  Types of property 'params' are incompatible.
-    Type 'RouteParams' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+[4mRoute (app)[24m                                 [4mSize[24m  [4mFirst Load JS[24m  [4m[24m  [4m[24m
+┌ ○ /                                      172 B         [37m[1m108 kB[22m[39m
+├ ○ /_not-found                            977 B         [37m[1m103 kB[22m[39m
+├ ƒ /[lang]                              1.93 kB         [37m[1m113 kB[22m[39m
+├ ƒ /[lang]/checkout                      6.8 kB         [37m[1m109 kB[22m[39m
+├ ● /[lang]/product/[slug]               2.05 kB         [37m[1m110 kB[22m[39m
+├   ├ /en/product/green-sneaker
+├   ├ /en/product/sand-sneaker
+├   ├ /en/product/black-sneaker
+├   └ [+6 more paths]
+├ ƒ /[lang]/shop                         2.29 kB         [37m[1m113 kB[22m[39m
+├ ƒ /api/cart                              143 B         [37m[1m102 kB[22m[39m
+├ ƒ /api/checkout-session                  143 B         [37m[1m102 kB[22m[39m
+├ ○ /cancelled                             143 B         [37m[1m102 kB[22m[39m
+└ ○ /success                               143 B         [37m[1m102 kB[22m[39m
++ First Load JS shared by all             [37m[1m102 kB[22m[39m
+  ├ chunks/5da0a8b7-fe6696c90e8bc4a0.js  53.2 kB
+  ├ chunks/924-44b15417098c28de.js       46.8 kB
+  └ other shared chunks (total)          1.92 kB
 
-[2K[1G[?25hNext.js build worker exited with code: 1 and signal: null
-[?25l [36m.[39m [?25h[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m
-[43m[30m WARN [39m[49m  Local package.json exists, but node_modules missing, did you mean to install?
+
+ƒ Middleware                             [37m[1m33.5 kB[22m[39m
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses [36mgenerateStaticParams[39m)
+ƒ  (Dynamic)  server-rendered on demand
+
+[?25h

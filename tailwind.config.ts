@@ -2,12 +2,14 @@ import type { Config } from "tailwindcss";
 
 export default <Partial<Config>>{
   content: [
-    "./src/app/**/*.{ts,tsx,mdx}",
-    "./src/components/**/*.{ts,tsx,mdx}",
+    "./apps/**/*.{ts,tsx,mdx}", // all Next.js apps
+    "./packages/ui/components/**/*.{ts,tsx,mdx}", // shared UI kit
   ],
   theme: {
     extend: {
-      fontFamily: { sans: ["var(--font-inter)", "sans-serif"] },
+      fontFamily: {
+        sans: ["var(--font-inter)", "sans-serif"],
+      },
     },
   },
   plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms")],

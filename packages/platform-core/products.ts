@@ -1,9 +1,14 @@
-// src/lib/products.ts
+/* packages/platform-core/products.ts */
+
+/* -------------------------------------------------------------------------- */
+/*  Storefront types & helpers                                                */
+/* -------------------------------------------------------------------------- */
+
 export type SKU = {
   id: string;
   slug: string;
   title: string;
-  price: number;
+  price: number; // whole euros for demo
   image: string;
   sizes: string[];
   description: string;
@@ -46,4 +51,27 @@ export const PRODUCTS: SKU[] = [
 /** Helper to fetch one product (could be remote PIM later) */
 export function getProductBySlug(slug: string): SKU | undefined {
   return PRODUCTS.find((p) => p.slug === slug);
+}
+
+/* -------------------------------------------------------------------------- */
+/*  CMS-side types                                                            */
+/* -------------------------------------------------------------------------- */
+
+export interface ProductCore {
+  id: string; // ULID
+  sku: string;
+  title: Record<string, string>; // locale -> title
+  price: number; // minor units (e.g. cents)
+  currency: string; // ISO-4217 code
+  images: string[];
+  created_at: string; // ISO timestamp
+  updated_at: string;
+}
+
+export type PublicationStatus = "draft" | "live" | "retired";
+
+export interface ProductPublication extends ProductCore {
+  shop: string; // e.g. 'abc'
+  status: PublicationStatus;
+  row_version: number;
 }

@@ -1,0 +1,16 @@
+{
+  // inherit all base settings & path aliases
+  "extends": "../../tsconfig.base.json",
+
+  "compilerOptions": {
+    "composite": true, // ↔ makes this a “buildable” project
+    "declaration": true,
+    "outDir": "./dist"
+  },
+
+  /* Only the UI source lives here… */
+  "include": ["./components/**/*"],
+
+  /* …but we _reference_ the sibling packages we import from. */
+  "references": [{ "path": "../platform-core" }, { "path": "../i18n" }]
+}

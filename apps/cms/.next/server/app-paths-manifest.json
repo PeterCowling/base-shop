@@ -1,0 +1,13 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/success/page": "app/success/page.js",
+  "/cancelled/page": "app/cancelled/page.js",
+  "/[lang]/page": "app/[lang]/page.js",
+  "/[lang]/checkout/page": "app/[lang]/checkout/page.js",
+  "/[lang]/product/[slug]/page": "app/[lang]/product/[slug]/page.js",
+  "/[lang]/shop/page": "app/[lang]/shop/page.js",
+  "/api/cart/route": "app/api/cart/route.js",
+  "/api/checkout-session/route": "app/api/checkout-session/route.js"
+}

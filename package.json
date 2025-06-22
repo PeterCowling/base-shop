@@ -15,9 +15,9 @@
     "test": "turbo run test",
     "e2e": "playwright test",
     "i18n:extract": "next-intl extract",
-    "i18n:check": "ts-node scripts/i18n-check.ts",
     "preview": "wrangler pages dev",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "i18n:check": "ts-node scripts/check-i18n-schemas.ts"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.12",

@@ -1,8 +1,8 @@
 // src/app/layout.tsx
-import "@/app/globals.css";
 import { CartProvider } from "@/contexts/CartContext";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
 
 const geistSans = Geist({
   subsets: ["latin"],

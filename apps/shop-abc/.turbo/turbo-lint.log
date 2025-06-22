@@ -2,3 +2,8 @@
 > @apps/shop-abc@ lint /Users/petercowling/reception/base-shop/apps/shop-abc
 > next lint
 
+
+[36m./src/[lang]/layout.tsx[39m
+[33m12[39m:[33m1[39m  [33m[1mWarning[22m[39m: Prevent client components from being async functions. See: https://nextjs.org/docs/messages/no-async-client-component  [90m[1m@next/next/no-async-client-component[22m[39m
+
+[36minfo[39m  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

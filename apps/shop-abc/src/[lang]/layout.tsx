@@ -1,15 +1,14 @@
-// src/app/[lang]/layout.tsx
-import "@/app/globals.css";
+// apps/shop-abc/src/app/[lang]/layout.tsx
+
+"use client";
+
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
-import { TranslationsProvider } from "@/i18n/Translations";
-import { Locale, resolveLocale } from "@/i18n/locales";
+import { TranslationsProvider } from "@i18n/Translations";
+import { Locale, resolveLocale } from "@i18n/locales";
 import type { ReactNode } from "react";
+import "../globals.css";
 
-/**
- * Layout for every route under /[lang]/…
- * Next 15 delivers `params` as a Promise, so we must `await` it.
- */
 export default async function LocaleLayout({
   children,
   params,
@@ -19,7 +18,7 @@ export default async function LocaleLayout({
 }) {
   const { lang: raw } = await params;
   const lang: Locale = resolveLocale(raw);
-  const messages = (await import(`@/i18n/${lang}.json`)).default;
+  const messages = (await import(`@i18n/${lang}.json`)).default;
 
   return (
     <TranslationsProvider messages={messages}>

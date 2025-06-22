@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/platform-core" },
+    { "path": "packages/platform-machine" },
+    { "path": "packages/themes/abc" },
+    { "path": "packages/themes/bcd" }
+  ]
+}

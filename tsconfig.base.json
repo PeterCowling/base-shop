@@ -6,12 +6,34 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
+      /* shared layers */
+      "@platform-core/*": ["packages/platform-core/*"],
+      "@platform-machine/*": ["packages/platform-machine/*"],
+      "@themes/*": ["packages/themes/*"],
+
+      /* UI kit */
       "@ui/*": ["packages/ui/*"],
-      "@lib/*": ["packages/lib/*"],
-      "@contexts/*": ["packages/lib/contexts/*"],
+
+      /* compatibility – specific PDP / shop components now live in platform-core */
+      "@/components/pdp/*": ["packages/platform-core/components/pdp/*"],
+      "@/components/shop/*": ["packages/platform-core/components/shop/*"],
+
+      /* generic components alias (kept last so specific rules win first) */
       "@/components/*": ["packages/ui/components/*"],
-      "@/lib/*": ["packages/lib/*"],
-      "@/contexts/*": ["packages/lib/contexts/*"],
+
+      /* legacy lib / context aliases, redirected */
+      "@lib/*": ["packages/platform-core/*", "packages/lib/*"],
+      "@/lib/*": ["packages/platform-core/*", "packages/lib/*"],
+      "@contexts/*": [
+        "packages/platform-core/contexts/*",
+        "packages/lib/contexts/*"
+      ],
+      "@/contexts/*": [
+        "packages/platform-core/contexts/*",
+        "packages/lib/contexts/*"
+      ],
+
+      /* i18n */
       "@i18n/*": ["packages/i18n/*"],
       "@/i18n/*": ["packages/i18n/*"]
     },

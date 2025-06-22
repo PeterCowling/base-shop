@@ -5,5 +5,14 @@
    [1m[38;2;173;127;168m▲ Next.js 15.3.4[39m[22m
 
  [37m[1m [22m[39m Creating an optimized production build ...
-[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 130.[39m
+ [32m[1m✓[22m[39m Compiled successfully in 0ms
+[?25l [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39mFailed to compile.
+
+src/app/[lang]/product/[slug]/page.tsx
+Type error: Type '{ params: RouteParams; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type 'RouteParams' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+
+[2K[1G[?25hNext.js build worker exited with code: 1 and signal: null
+[?25l [36m.[39m [?25h[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m
 [43m[30m WARN [39m[49m  Local package.json exists, but node_modules missing, did you mean to install?

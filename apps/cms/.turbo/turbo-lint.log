@@ -2,3 +2,4 @@
 > @apps/cms@ lint /Users/petercowling/reception/base-shop/apps/cms
 > next lint
 
+[32m✔ No ESLint warnings or errors[39m

@@ -1,9 +1,9 @@
-// src/app/[lang]/shop/ShopClient.tsx
+// apps/cms/src/[lang]/shop/ShopClient.tsx
 "use client";
 
 import FilterBar, { Filters } from "@/components/shop/FilterBar";
 import { ProductGrid } from "@/components/shop/ProductGrid";
-import type { SKU } from "@/lib/products";
+import type { SKU } from "@platform-core/products";
 import { useMemo, useState } from "react";
 
 export default function ShopClient({ skus }: { skus: SKU[] }) {
@@ -11,7 +11,7 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
 
   const visible = useMemo(() => {
     if (!filters.size) return skus;
-    return skus.filter((p) => p.sizes.includes(filters.size as any));
+    return skus.filter((p) => p.sizes.includes(filters.size!));
   }, [filters, skus]);
 
   return (

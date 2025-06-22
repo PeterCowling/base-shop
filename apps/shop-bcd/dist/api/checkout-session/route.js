@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { stripe } from "@/lib/stripeServer";
 import { NextResponse } from "next/server";

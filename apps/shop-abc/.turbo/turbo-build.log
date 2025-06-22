@@ -5,7 +5,13 @@
    [1m[38;2;173;127;168m▲ Next.js 15.3.4[39m[22m
 
  [37m[1m [22m[39m Creating an optimized production build ...
- ⨯ cancelled/page.tsx doesn't have a root layout. To fix this error, make sure every page has a root layout.
-Next.js build worker exited with code: 1 and signal: null
-[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m
+ [32m[1m✓[22m[39m Compiled successfully in 0ms
+[?25l [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m...[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m.[39m[2K[1G [37m[1m [22m[39m Linting and checking validity of types  [36m..[39m[2K[1G[?25h
+./src/[lang]/layout.tsx
+12:1  Warning: Prevent client components from being async functions. See: https://nextjs.org/docs/messages/no-async-client-component  @next/next/no-async-client-component
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+[?25l [36m.[39m [2K[1G [36m..[39m [2K[1G [36m...[39m [2K[1G [36m.[39m [2K[1G [36m..[39m [2K[1G[?25h    [32m[1m✓[22m[39m Linting and checking validity of types 
+[?25l [37m[1m [22m[39m Collecting page data  [36m.[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m..[39m[2K[1G [37m[1m [22m[39m Collecting page data  [36m...[39m[2K[1G[?25h [37m[1m [22m[39m Collecting page data     [32m[1m✓[22m[39m Collecting page data 
+[?25l [37m[1m [22m[39m Generating static pages (0/6)  [36m[    ][39m[2K[1G [37m[1m [22m[39m Generating static pages (0/6)  [36m[=   ][39m[?25h[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 130.[39m
 [43m[30m WARN [39m[49m  Local package.json exists, but node_modules missing, did you mean to install?

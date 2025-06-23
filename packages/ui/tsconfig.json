@@ -1,16 +1,42 @@
+// packages/ui/tsconfig.json
 {
-  // inherit all base settings & path aliases
+  /* ------------------------------------------------------------------ *
+   * 1 / 4  –  inherit all strict-mode settings etc.                     *
+   * ------------------------------------------------------------------ */
   "extends": "../../tsconfig.base.json",
 
+  /* ------------------------------------------------------------------ *
+   * 2 / 4  –  compiler options that are specific to the UI package      *
+   * ------------------------------------------------------------------ */
   "compilerOptions": {
-    "composite": true, // ↔ makes this a “buildable” project
-    "declaration": true,
-    "outDir": "./dist"
+    /* this package is meant to be built on its own */
+    "composite": true,
+    "outDir": "dist",
+
+    /* React / JSX */
+    "jsx": "preserve",
+
+    /* tell TS that source files may live in several folders             *
+     * – the **union** of these paths is treated as one virtual root     */
+    "rootDirs": [
+      "components",
+      "../platform-core", // cartCookie, CartContext, products…
+      "../i18n" // useTranslations, locales, json dictionaries
+    ]
+
+    /*  ⬆️  👉  we purposely DO NOT set “rootDir”.                       *
+     *  When it is omitted, TypeScript just uses the common path of all *
+     *  detected source files – no more “not under rootDir” errors.      */
   },
 
-  /* Only the UI source lives here… */
-  "include": ["./components/**/*"],
+  /* ------------------------------------------------------------------ *
+   * 3 / 4  –  tell tsc how we depend on other *projects* in the mono-repo
+   * ------------------------------------------------------------------ */
+  "references": [{ "path": "../platform-core" }, { "path": "../i18n" }],
 
-  /* …but we _reference_ the sibling packages we import from. */
-  "references": [{ "path": "../platform-core" }, { "path": "../i18n" }]
+  /* ------------------------------------------------------------------ *
+   * 4 / 4  –  include exactly our own sources (not the whole repo)      *
+   * ------------------------------------------------------------------ */
+  "include": ["components/**/*"],
+  "exclude": ["dist"]
 }

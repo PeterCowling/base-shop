@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true, // required for project references
+    "outDir": "dist", // emit d.ts → dist
+    "rootDir": "." // all sources in this folder
+  },
+  "include": ["*.ts", "*.tsx"], // Translations.tsx, locales.ts …
+  "exclude": ["dist"]
+}

@@ -4,29 +4,26 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { updateProduct } from "@cms/actions/updateProduct";
+import { updateProduct } from "@cms/actions/products";
 import { ProductPublication } from "@platform-core/products";
-import React, {
-  ChangeEvent,
-  FormEvent,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useCallback, useMemo, useState } from "react";
 
 interface ProductEditorFormProps {
   /** Snapshot loaded from the server on first render */
   initialProduct: ProductPublication;
+  /** Active shop (route param) */
+  shop: string;
 }
 
-const ProductEditorForm: React.FC<ProductEditorFormProps> = ({
+export default function ProductEditorForm({
   initialProduct,
-}) => {
+  shop,
+}: ProductEditorFormProps) {
   const [product, setProduct] = useState<ProductPublication>(initialProduct);
   const [saving, setSaving] = useState(false);
 
   /* -----------------------------------------------------------------------
-   *  Change handlers
+   *  Field change handler
    * --------------------------------------------------------------------- */
   const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,7 +38,9 @@ const ProductEditorForm: React.FC<ProductEditorFormProps> = ({
     });
   }, []);
 
-  /* Memo-ise FormData so updateProduct receives the latest field values */
+  /* -----------------------------------------------------------------------
+   *  Build FormData (memoised)
+   * --------------------------------------------------------------------- */
   const formDataMemo = useMemo(() => {
     const fd = new FormData();
     fd.append("id", product.id);
@@ -50,15 +49,18 @@ const ProductEditorForm: React.FC<ProductEditorFormProps> = ({
     return fd;
   }, [product]);
 
+  /* -----------------------------------------------------------------------
+   *  Submit
+   * --------------------------------------------------------------------- */
   const handleSubmit = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
       setSaving(true);
-      const updated = await updateProduct(formDataMemo);
+      const updated = await updateProduct(shop, formDataMemo);
       setProduct(updated);
       setSaving(false);
     },
-    [formDataMemo]
+    [shop, formDataMemo]
   );
 
   /* -----------------------------------------------------------------------
@@ -103,6 +105,4 @@ const ProductEditorForm: React.FC<ProductEditorFormProps> = ({
       </CardContent>
     </Card>
   );
-};
-
-export default React.memo(ProductEditorForm);
+}

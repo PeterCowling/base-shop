@@ -1,7 +1,4 @@
 {
-  "/[lang]/auth/[...nextauth]/route": "app/[lang]/auth/[...nextauth]/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/(cms)/products/page": "app/(cms)/products/page.js",
+  "/(cms)/shop/[shop]/products/page": "app/(cms)/shop/[shop]/products/page.js",
   "/[lang]/page": "app/[lang]/page.js"
 }

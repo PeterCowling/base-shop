@@ -3,22 +3,21 @@ import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const ADMIN_PATH_REGEX = /^\/products(\/|$)/;
+/** Matches write-routes like /{shop}/products/{id}/edit */
+const ADMIN_PATH_REGEX = /^\/shop\/[^/]+\/products\/[^/]+\/edit/;
 
 export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  const pathname = req.nextUrl.pathname;
 
-  /* --------------------------------------------------------------- */
-  /*  Decode JWT session cookie                                      */
-  /* --------------------------------------------------------------- */
+  /* Decode JWT (include secret only if present) */
   const token = await getToken(
     process.env.NEXTAUTH_SECRET
-      ? { req, secret: process.env.NEXTAUTH_SECRET } // <- secret is string
-      : { req } // <- omit field entirely
+      ? { req, secret: process.env.NEXTAUTH_SECRET }
+      : { req }
   );
   const role = token?.role;
 
-  /* 1. Skip static assets, Next internals, and /login */
+  /* Skip static assets, auth endpoints, and login page */
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api/auth") ||
@@ -28,7 +27,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  /* 2. Redirect unauthenticated users to login */
+  /* Redirect unauthenticated users to /login */
   if (!role) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
@@ -36,7 +35,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  /* 3. Block viewer from write routes */
+  /* Block viewers from write routes */
   if (role === "viewer" && ADMIN_PATH_REGEX.test(pathname)) {
     return NextResponse.rewrite(new URL("/403", req.url));
   }

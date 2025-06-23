@@ -1,17 +1,23 @@
+// apps/cms/src/actions/products.ts
 "use server";
 
 import type { ProductPublication } from "@platform-core/products";
-import { readRepo, writeRepo } from "@platform-core/repositories/json";
+import {
+  getProductById,
+  readRepo,
+  updateProductInRepo,
+  writeRepo,
+} from "@platform-core/repositories/json";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
 
-/**
- * Low-level helper — creates a draft product record and persists it.
- * Returns the newly created object so other server code can use it.
- */
-export async function createDraftRecord(): Promise<ProductPublication> {
+/* -------------------------------------------------------------------------- */
+/*  Create draft                                                              */
+/* -------------------------------------------------------------------------- */
+export async function createDraftRecord(
+  shop: string
+): Promise<ProductPublication> {
   const now = new Date().toISOString();
-
   const draft: ProductPublication = {
     id: ulid(),
     sku: `DRAFT-${Date.now()}`,
@@ -20,26 +26,47 @@ export async function createDraftRecord(): Promise<ProductPublication> {
     currency: "EUR",
     images: [],
     status: "draft",
-    shop: "abc",
+    shop,
     row_version: 1,
     created_at: now,
     updated_at: now,
   };
 
-  const repo = await readRepo("abc");
-  await writeRepo("abc", [...repo, draft]);
-
+  const repo = await readRepo(shop);
+  await writeRepo(shop, [draft, ...repo]);
   return draft;
 }
 
 /**
- * **Server action** wired to the “New product” button.
- * Returns `void`, fulfilling the `<form action=…>` contract.
- * After creating the draft it redirects the user to the
- * product-edit page for immediate editing.
+ * Called by the “New product” form action.
+ * After persisting the draft, redirect to its edit page.
  */
-export async function createDraft(): Promise<void> {
+export async function createDraft(shop: string): Promise<void> {
   "use server";
-  const draft = await createDraftRecord();
-  redirect(`/products/${draft.id}/edit`);
+  const draft = await createDraftRecord(shop);
+  redirect(`/shop/${shop}/products/${draft.id}/edit`); /* ← /shop/… */
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Update product                                                            */
+/* -------------------------------------------------------------------------- */
+export async function updateProduct(
+  shop: string,
+  formData: FormData
+): Promise<ProductPublication> {
+  "use server";
+
+  const id = String(formData.get("id"));
+  const current = await getProductById(shop, id);
+  if (!current) throw new Error(`Product ${id} not found in ${shop}`);
+
+  const updated: ProductPublication = {
+    ...current,
+    title: { ...current.title, en: String(formData.get("title_en")) },
+    price: Number(formData.get("price")),
+    row_version: current.row_version + 1,
+    updated_at: new Date().toISOString(),
+  };
+
+  return updateProductInRepo(shop, updated);
 }

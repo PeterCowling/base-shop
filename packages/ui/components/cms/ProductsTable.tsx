@@ -3,14 +3,15 @@
 
 import { ProductPublication } from "@platform-core/products";
 import Link from "next/link";
-import DataTable from "./DataTable"; // existing component
+import DataTable from "./DataTable";
 
 interface Props {
+  shop: string;
   rows: ProductPublication[];
   isAdmin: boolean;
 }
 
-export default function ProductsTable({ rows, isAdmin }: Props) {
+export default function ProductsTable({ shop, rows, isAdmin }: Props) {
   return (
     <DataTable
       rows={rows}
@@ -19,7 +20,10 @@ export default function ProductsTable({ rows, isAdmin }: Props) {
           header: "Title",
           render: (p) =>
             isAdmin ? (
-              <Link href={`/products/${p.id}/edit`} className="underline">
+              <Link
+                href={`/shop/${shop}/products/${p.id}/edit`} /* ← /shop/… */
+                className="underline"
+              >
                 {p.title.en}
               </Link>
             ) : (

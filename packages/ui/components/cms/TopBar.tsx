@@ -1,24 +1,28 @@
+// packages/ui/components/cms/TopBar.tsx
 "use client";
 
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { memo } from "react";
+import { Button } from "../ui/button";
+import Breadcrumbs from "./Breadcrumbs";
 
-export default function TopBar() {
+function TopBarInner() {
   const router = useRouter();
+
   return (
-    <header className="h-12 flex items-center justify-end gap-3 border-b border-gray-200 dark:border-gray-800 px-4">
-      <button
-        onClick={() => router.refresh()}
-        className="rounded-md border px-3 py-1 text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
-      >
-        Refresh
-      </button>
-      <button
-        onClick={() => signOut()}
-        className="rounded-md border px-3 py-1 text-sm hover:bg-gray-50 dark:hover:bg-gray-800"
-      >
-        Sign out
-      </button>
+    <header className="flex items-center justify-between gap-3 border-b border-gray-200 bg-background/60 px-4 py-2 backdrop-blur dark:border-gray-800">
+      <Breadcrumbs />
+      <div className="flex items-center gap-2">
+        <Button variant="outline" onClick={() => router.refresh()}>
+          Refresh
+        </Button>
+        <Button variant="ghost" onClick={() => signOut()}>
+          Sign&nbsp;out
+        </Button>
+      </div>
     </header>
   );
 }
+
+export default memo(TopBarInner);

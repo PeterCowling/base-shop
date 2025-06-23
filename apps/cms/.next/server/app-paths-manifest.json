@@ -1,7 +1,7 @@
 {
+  "/[lang]/auth/[...nextauth]/route": "app/[lang]/auth/[...nextauth]/route.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
   "/(cms)/products/page": "app/(cms)/products/page.js",
-  "/(cms)/products/[id]/edit/page": "app/(cms)/products/[id]/edit/page.js",
   "/[lang]/page": "app/[lang]/page.js"
 }

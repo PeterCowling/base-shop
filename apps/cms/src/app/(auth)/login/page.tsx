@@ -1,35 +1,63 @@
+// apps/cms/src/app/(auth)/login/page.tsx
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
+  const search = useSearchParams();
+  const callbackUrl = search.get("callbackUrl") ?? "/products";
 
-  async function handleLogin(formData: FormData) {
+  const [error, setError] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(false);
+
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
     const res = await signIn("credentials", {
-      redirect: false,
-      email: formData.get("email"),
-      password: formData.get("password"),
+      redirect: false, // stay on /login
+      email,
+      password,
+      callbackUrl,
     });
-    if (!res?.error) router.push("/products");
+
+    if (res?.ok) {
+      router.push(res.url ?? callbackUrl); // <— navigate
+    } else {
+      setError(true); // invalid creds
+    }
   }
 
   return (
-    <form action={handleLogin} className="mx-auto mt-40 w-72 space-y-4">
+    <form onSubmit={handleSubmit} className="mx-auto mt-40 w-72 space-y-4">
       <h2 className="text-lg font-semibold">Sign in</h2>
+
       <input
         name="email"
+        type="email"
         placeholder="Email"
+        required
         className="w-full rounded-md border px-3 py-2"
       />
       <input
-        type="password"
         name="password"
+        type="password"
         placeholder="Password"
+        required
         className="w-full rounded-md border px-3 py-2"
       />
-      <button className="w-full rounded-md bg-primary px-4 py-2 text-white">
+
+      {error && (
+        <p className="text-sm text-red-600">Invalid email or password</p>
+      )}
+
+      <button className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/90">
         Continue
       </button>
     </form>

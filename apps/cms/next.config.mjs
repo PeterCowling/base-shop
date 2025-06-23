@@ -1,15 +1,18 @@
+// apps/cms/next.config.mjs
 /** @type {import('next').NextConfig} */
-export default {
-  // ————————————————————————————————————————————
-  //  ⚡ Edge-ready “app/” router, required in Next 15+
-  // ————————————————————————————————————————————
-  appDir: true,
+const nextConfig = {
+  reactStrictMode: true,
 
-  // Export to static `.vercel/output` so Cloudflare Pages
-  // can deploy via @cloudflare/next-on-pages.
-  output: "export",
+  // ————————————————————————————————————————————
+  //  Enable static export only in CI / prod
+  //    • CI sets  OUTPUT_EXPORT=1   → next export
+  //    • Local dev leaves it unset  → full Next.js server
+  // ————————————————————————————————————————————
+  ...(process.env.OUTPUT_EXPORT === "1" ? { output: "export" } : {}),
 
   env: {
     NEXT_PUBLIC_PHASE: process.env.NEXT_PUBLIC_PHASE || "demo",
   },
 };
+
+export default nextConfig;

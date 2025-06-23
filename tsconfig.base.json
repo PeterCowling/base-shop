@@ -1,9 +1,17 @@
+// tsconfig.base.json
 {
   "compilerOptions": {
+    /* ------------------------------------------------------------ */
+    /*  Output / language                                           */
+    /* ------------------------------------------------------------ */
     "target": "es2021",
     "module": "esnext",
     "moduleResolution": "bundler",
     "jsx": "preserve",
+
+    /* ------------------------------------------------------------ */
+    /*  Paths & aliases                                             */
+    /* ------------------------------------------------------------ */
     "baseUrl": ".",
     "paths": {
       /* shared layers */
@@ -14,14 +22,16 @@
       /* UI kit */
       "@ui/*": ["packages/ui/*"],
 
-      /* compatibility – specific PDP / shop components now live in platform-core */
+      /* CMS app  ← ★ NEW alias so packages can import CMS code */
+      "@cms/*": ["apps/cms/src/*"],
+
+      /* compatibility – PDP / shop components now live in platform-core */
       "@/components/pdp/*": ["packages/platform-core/components/pdp/*"],
       "@/components/shop/*": ["packages/platform-core/components/shop/*"],
-
-      /* generic components alias (kept last so specific rules win first) */
+      /* generic UI components (kept last so specific rules win)   */
       "@/components/*": ["packages/ui/components/*"],
 
-      /* legacy lib / context aliases, redirected */
+      /* legacy lib / context redirects */
       "@lib/*": ["packages/platform-core/*", "packages/lib/*"],
       "@/lib/*": ["packages/platform-core/*", "packages/lib/*"],
       "@contexts/*": [
@@ -35,8 +45,15 @@
 
       /* i18n */
       "@i18n/*": ["packages/i18n/*"],
-      "@/i18n/*": ["packages/i18n/*"]
+      "@/i18n/*": ["packages/i18n/*"],
+
+      /* shared domain types */
+      "@types/*": ["src/types/*"]
     },
+
+    /* ------------------------------------------------------------ */
+    /*  Strictness & libs                                           */
+    /* ------------------------------------------------------------ */
     "types": ["@types/node", "@total-typescript/ts-reset"],
     "strict": true,
     "exactOptionalPropertyTypes": true,

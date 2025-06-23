@@ -1,7 +1,9 @@
-import "@/app/globals.css";
+// apps/cms/src/(cms)/layout.tsx
+
 import Sidebar from "@ui/components/cms/Sidebar";
 import TopBar from "@ui/components/cms/TopBar";
 import type { ReactNode } from "react";
+import "../../app/globals.css";
 
 /** Server component – wraps every CMS page. */
 export default function CmsLayout({ children }: { children: ReactNode }) {

@@ -1,12 +1,32 @@
-import { promises as fs } from "node:fs";
+// packages/platform-core/repositories/json.ts
+import fssync, { promises as fs } from "node:fs";
 import path from "node:path";
 import { ProductPublication } from "../products";
 
 /* -------------------------------------------------------------------------- */
+/*  Locate monorepo root (= folder that contains /data/shops)                 */
+/* -------------------------------------------------------------------------- */
+function resolveDataRoot(): string {
+  let dir = process.cwd();
+
+  while (true) {
+    const candidate = path.join(dir, "data", "shops");
+    if (fssync.existsSync(candidate)) return candidate;
+
+    const parent = path.dirname(dir);
+    if (parent === dir) break; // reached filesystem root
+    dir = parent;
+  }
+
+  // Fallback: original behaviour (likely incorrect inside apps/*)
+  return path.resolve(process.cwd(), "data", "shops");
+}
+
+const DATA_ROOT = resolveDataRoot();
+
+/* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
 /* -------------------------------------------------------------------------- */
-
-const DATA_ROOT = path.resolve(process.cwd(), "data", "shops");
 
 /** Path like data/shops/abc/products.json */
 function filePath(shop: string) {
@@ -46,4 +66,35 @@ export async function writeRepo(
   const tmp = filePath(shop) + "." + Date.now() + ".tmp";
   await fs.writeFile(tmp, JSON.stringify(catalogue, null, 2), "utf8");
   await fs.rename(tmp, filePath(shop)); // atomic on most POSIX fs
+}
+
+/* -------------------------------------------------------------------------- */
+/*  CRUD helpers for CMS                                                      */
+/* -------------------------------------------------------------------------- */
+
+export async function getProductById(
+  shop: string,
+  id: string
+): Promise<ProductPublication | null> {
+  const catalogue = await readRepo(shop);
+  return catalogue.find((p) => p.id === id) ?? null;
+}
+
+export async function updateProductInRepo(
+  shop: string,
+  patch: Partial<ProductPublication> & { id: string }
+): Promise<ProductPublication> {
+  const catalogue = await readRepo(shop);
+  const idx = catalogue.findIndex((p) => p.id === patch.id);
+  if (idx === -1) throw new Error(`Product ${patch.id} not found in ${shop}`);
+
+  const updated: ProductPublication = {
+    ...catalogue[idx],
+    ...patch,
+    row_version: catalogue[idx].row_version + 1,
+  };
+
+  catalogue[idx] = updated;
+  await writeRepo(shop, catalogue);
+  return updated;
 }

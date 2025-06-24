@@ -1,8 +1,0 @@
-
-> @apps/cms@ test /Users/petercowling/reception/base-shop/apps/cms
-> jest --passWithNoTests
-
-[1m[2mDetermining test suites to run...[22m[22m[999D[K[1mNo tests found, exiting with code 0[22m
-[?2026h[999D[K
-[?2026l[?2026h[K[1A
-[?2026l[?2026h[K[1A[?2026l[999D[K[?2026h[?2026l

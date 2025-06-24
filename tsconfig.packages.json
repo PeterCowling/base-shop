@@ -6,6 +6,7 @@
     { "path": "packages/themes/abc" },
     { "path": "packages/themes/bcd" },
     { "path": "packages/svelte-tool" },
+    { "path": "packages/types" },
     { "path": "src" }
   ]
 }

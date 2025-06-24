@@ -2,7 +2,14 @@
 "use client";
 
 import Link from "next/link";
-import { memo, ReactNode, useCallback, useMemo, useState } from "react";
+import {
+  memo,
+  ReactElement,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 
 import { deleteProduct, duplicateProduct } from "@cms/actions/products";
 import { ProductPublication } from "@platform-core/products";
@@ -30,7 +37,7 @@ interface Column<T> {
 /*  Component                                                                 */
 /* -------------------------------------------------------------------------- */
 
-function ProductsTableBase({ shop, rows, isAdmin }: Props): JSX.Element {
+function ProductsTableBase({ shop, rows, isAdmin }: Props): ReactElement {
   /* ---------------------------------------------------------------------- */
   /*  Local filter state                                                    */
   /* ---------------------------------------------------------------------- */

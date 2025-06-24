@@ -3,6 +3,18 @@
 > next lint
 
 
+ [37m[1m [22m[39m We detected TypeScript in your project and reconfigured your [36mtsconfig.json[39m file for you. Strict-mode is set to [36mfalse[39m by default.
+ [37m[1m [22m[39m The following suggested values were added to your [36mtsconfig.json[39m. These values [36mcan be changed[39m to fit your project's needs:
+
+ [37m[1m [22m[39m 	- [36mtarget[39m was set to [1mES2017[22m (For top-level `await`. Note: Next.js only polyfills for the esmodules target.)
+ [37m[1m [22m[39m 	- [36mstrict[39m was set to [1mfalse[22m
+
+ [37m[1m [22m[39m The following [37mmandatory changes[39m were made to your [36mtsconfig.json[39m:
+
+ [37m[1m [22m[39m 	- [36mmodule[39m was set to [1mesnext[22m (for dynamic import() support)
+ [37m[1m [22m[39m 	- [36mmoduleResolution[39m was set to [1mnode[22m (to match webpack resolution)
+
+
 [36m./src/[lang]/layout.tsx[39m
 [33m12[39m:[33m1[39m  [33m[1mWarning[22m[39m: Prevent client components from being async functions. See: https://nextjs.org/docs/messages/no-async-client-component  [90m[1m@next/next/no-async-client-component[22m[39m
 

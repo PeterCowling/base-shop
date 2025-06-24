@@ -1,7 +1,5 @@
 // apps/shop-bcd/src/app/[lang]/layout.tsx
 
-"use client";
-
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { TranslationsProvider } from "@i18n/Translations";

@@ -1,7 +1,7 @@
 // packages/ui/components/cms/PublishLocationSelector.tsx
 "use client";
 
-import type { PublishLocation } from "@types/PublishLocation";
+import type { PublishLocation } from "@types";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { memo, useCallback } from "react";
 

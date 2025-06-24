@@ -4,6 +4,8 @@
 import type { Locale, ProductPublication } from "@platform-core/products";
 
 import {
+  deleteProductFromRepo,
+  duplicateProductInRepo,
   getProductById,
   readRepo,
   updateProductInRepo,
@@ -87,4 +89,25 @@ export async function updateProduct(
   };
 
   return updateProductInRepo(shop, updated);
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Duplicate product                                                          */
+/* -------------------------------------------------------------------------- */
+export async function duplicateProduct(
+  shop: string,
+  id: string
+): Promise<void> {
+  "use server";
+  const copy = await duplicateProductInRepo(shop, id);
+  redirect(`/shop/${shop}/products/${copy.id}/edit`);
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Delete product                                                             */
+/* -------------------------------------------------------------------------- */
+export async function deleteProduct(shop: string, id: string): Promise<void> {
+  "use server";
+  await deleteProductFromRepo(shop, id);
+  redirect(`/shop/${shop}/products`);
 }

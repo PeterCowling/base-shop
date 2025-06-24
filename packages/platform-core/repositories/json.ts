@@ -1,6 +1,8 @@
 // packages/platform-core/repositories/json.ts
-import fssync, { promises as fs } from "node:fs";
-import path from "node:path";
+import * as fsSync from "node:fs";
+import { promises as fs } from "node:fs";
+import * as path from "node:path";
+import { ulid } from "ulid";
 import { ProductPublication } from "../products";
 
 /* -------------------------------------------------------------------------- */
@@ -11,7 +13,7 @@ function resolveDataRoot(): string {
 
   while (true) {
     const candidate = path.join(dir, "data", "shops");
-    if (fssync.existsSync(candidate)) return candidate;
+    if (fsSync.existsSync(candidate)) return candidate;
 
     const parent = path.dirname(dir);
     if (parent === dir) break; // reached filesystem root
@@ -29,12 +31,12 @@ const DATA_ROOT = resolveDataRoot();
 /* -------------------------------------------------------------------------- */
 
 /** Path like data/shops/abc/products.json */
-function filePath(shop: string) {
+function filePath(shop: string): string {
   return path.join(DATA_ROOT, shop, "products.json");
 }
 
 /** Ensure `data/shops/<shop>` exists (mkdir -p). */
-async function ensureDir(shop: string) {
+async function ensureDir(shop: string): Promise<void> {
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 
@@ -63,7 +65,7 @@ export async function writeRepo(
   catalogue: ProductPublication[]
 ): Promise<void> {
   await ensureDir(shop);
-  const tmp = filePath(shop) + "." + Date.now() + ".tmp";
+  const tmp = `${filePath(shop)}.${Date.now()}.tmp`;
   await fs.writeFile(tmp, JSON.stringify(catalogue, null, 2), "utf8");
   await fs.rename(tmp, filePath(shop)); // atomic on most POSIX fs
 }
@@ -97,4 +99,37 @@ export async function updateProductInRepo(
   catalogue[idx] = updated;
   await writeRepo(shop, catalogue);
   return updated;
+}
+
+export async function deleteProductFromRepo(
+  shop: string,
+  id: string
+): Promise<void> {
+  const catalogue = await readRepo(shop);
+  const next = catalogue.filter((p) => p.id !== id);
+  if (next.length === catalogue.length) {
+    throw new Error(`Product ${id} not found in ${shop}`);
+  }
+  await writeRepo(shop, next);
+}
+
+export async function duplicateProductInRepo(
+  shop: string,
+  id: string
+): Promise<ProductPublication> {
+  const catalogue = await readRepo(shop);
+  const original = catalogue.find((p) => p.id === id);
+  if (!original) throw new Error(`Product ${id} not found in ${shop}`);
+  const now = new Date().toISOString();
+  const copy: ProductPublication = {
+    ...original,
+    id: ulid(),
+    sku: `${original.sku}-copy`,
+    status: "draft",
+    row_version: 1,
+    created_at: now,
+    updated_at: now,
+  };
+  await writeRepo(shop, [copy, ...catalogue]);
+  return copy;
 }

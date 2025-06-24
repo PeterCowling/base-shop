@@ -21,7 +21,7 @@ export default async function ProductsPage({ params }: { params: Params }) {
 
   const isAdmin = session?.user.role === "admin";
 
-  async function onCreate(_: FormData) {
+  async function onCreate() {
     "use server";
     await createDraft(shop);
   }

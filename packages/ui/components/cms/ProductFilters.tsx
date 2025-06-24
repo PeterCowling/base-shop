@@ -21,7 +21,7 @@ export default function ProductFilters({
     <div className="flex flex-wrap gap-3">
       <input
         type="search"
-        placeholder="Search by title or SKU…"
+        placeholder="Search titles or SKU…"
         className="w-64 rounded-md border px-3 py-2 text-sm"
         value={search}
         onChange={(e) => onSearchChange(e.target.value)}

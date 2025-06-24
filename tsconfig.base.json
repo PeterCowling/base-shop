@@ -32,10 +32,7 @@
       "@/i18n/*": ["packages/i18n/*"],
 
       /* —— SINGLE authoritative types alias —— */
-      "@types/*": [
-        "packages/types/src/*", // <— new shared package (authoritative)
-        "src/types/*" // optional fallback until old imports are migrated
-      ]
+      "@types": ["packages/types/src/index.ts", "src/types/index.ts"]
     }
   }
 }

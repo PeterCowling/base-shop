@@ -1,13 +1,13 @@
 // apps/cms/src/auth/options.ts
+
 import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import type { Role } from "../types/next-auth";
 import { USERS } from "./roles";
 
 export const authOptions: NextAuthOptions = {
-  /* ------------------------------------------------------------ */
-  /*  Conditionally add `secret` so it’s never undefined          */
-  /* ------------------------------------------------------------ */
+  /* ----------------------------------------------------------------
+   *  Ensure `secret` is never undefined in production
+   * -------------------------------------------------------------- */
   ...(process.env.NEXTAUTH_SECRET
     ? { secret: process.env.NEXTAUTH_SECRET }
     : {}),
@@ -27,10 +27,11 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (user && user.password === credentials.password) {
-          const { password, ...safeUser } = user; // strip password
-          return safeUser;
+          /* Strip password before handing the user object to NextAuth */
+          const { password: _discarded, ...safeUser } = user;
+          return safeUser; // typed as `User` via module augmentation
         }
-        return null; // invalid creds ⇒ 401
+        return null; // ⇒ 401
       },
     }),
   ],
@@ -39,11 +40,13 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.role = (user as any).role;
+      /* `user` exists only on sign-in; type augmentation guarantees `role` */
+      if (user) token.role = user.role;
       return token;
     },
     async session({ session, token }) {
-      session.user.role = token.role as Role;
+      /* Forward the role from JWT to the client session */
+      session.user.role = token.role;
       return session;
     },
   },

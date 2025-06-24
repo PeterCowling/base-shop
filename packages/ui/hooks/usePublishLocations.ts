@@ -1,4 +1,7 @@
-import type { PublishLocation } from "@types/PublishLocation";
+// packages/ui/hooks/usePublishLocations.ts
+
+import type { PublishLocation } from "@types";
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export interface UsePublishLocationsResult {

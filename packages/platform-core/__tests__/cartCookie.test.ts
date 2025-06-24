@@ -4,7 +4,7 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
-} from "../cartCookie.ts";
+} from "../cartCookie";
 // @ts-ignore
 import type { CartState } from "../contexts/CartContext.tsx";
 import { PRODUCTS } from "../products";

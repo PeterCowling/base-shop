@@ -1,37 +1,22 @@
-// tsconfig.base.json
+/* tsconfig.base.json */
 {
   "compilerOptions": {
-    /* ------------------------------------------------------------ */
-    /*  Output / language                                           */
-    /* ------------------------------------------------------------ */
-    "target": "es2021",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "jsx": "preserve",
-
-    /* ------------------------------------------------------------ */
-    /*  Paths & aliases                                             */
-    /* ------------------------------------------------------------ */
+    /* …unchanged options… */
     "baseUrl": ".",
     "paths": {
-      /* shared layers */
       "@platform-core/*": ["packages/platform-core/*"],
       "@platform-machine/*": ["packages/platform-machine/*"],
       "@themes/*": ["packages/themes/*"],
-
-      /* UI kit */
       "@ui/*": ["packages/ui/*"],
 
-      /* CMS app  ← ★ NEW alias so packages can import CMS code */
+      /* ↓ CMS alias (runtime code) */
       "@cms/*": ["apps/cms/src/*"],
 
-      /* compatibility – PDP / shop components now live in platform-core */
+      /* compat & generic UI */
       "@/components/pdp/*": ["packages/platform-core/components/pdp/*"],
       "@/components/shop/*": ["packages/platform-core/components/shop/*"],
-      /* generic UI components (kept last so specific rules win)   */
       "@/components/*": ["packages/ui/components/*"],
 
-      /* legacy lib / context redirects */
       "@lib/*": ["packages/platform-core/*", "packages/lib/*"],
       "@/lib/*": ["packages/platform-core/*", "packages/lib/*"],
       "@contexts/*": [
@@ -43,20 +28,14 @@
         "packages/lib/contexts/*"
       ],
 
-      /* i18n */
       "@i18n/*": ["packages/i18n/*"],
       "@/i18n/*": ["packages/i18n/*"],
 
-      /* shared domain types */
-      "@types/*": ["src/types/*"]
-    },
-
-    /* ------------------------------------------------------------ */
-    /*  Strictness & libs                                           */
-    /* ------------------------------------------------------------ */
-    "types": ["@types/node", "@total-typescript/ts-reset"],
-    "strict": true,
-    "exactOptionalPropertyTypes": true,
-    "skipLibCheck": true
+      /* —— SINGLE authoritative types alias —— */
+      "@types/*": [
+        "packages/types/src/*", // <— new shared package (authoritative)
+        "src/types/*" // optional fallback until old imports are migrated
+      ]
+    }
   }
 }

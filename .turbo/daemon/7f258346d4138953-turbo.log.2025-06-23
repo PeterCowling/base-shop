@@ -1782,3 +1782,37 @@
 2025-06-23T13:02:54.608329Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@apps/cms"), path: AnchoredSystemPathBuf("apps/cms") }}))
 2025-06-23T13:02:55.107947Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/cms/.next/_events.json")}
 2025-06-23T13:02:55.107957Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@apps/cms"), path: AnchoredSystemPathBuf("apps/cms") }}))
+2025-06-23T13:11:16.125685Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/cms/ProductFilters.tsx")}
+2025-06-23T13:11:16.125740Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:11:22.025596Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/cms/ProductFilters.tsx")}
+2025-06-23T13:11:22.025626Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:12:46.926372Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/cms/ProductFilters.tsx")}
+2025-06-23T13:12:46.926549Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:12:56.727061Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/cms/ProductsTable.tsx")}
+2025-06-23T13:12:56.727097Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:13:50.426492Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/cms/ProductsTable.tsx")}
+2025-06-23T13:13:50.426659Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:13:54.927411Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/cms/ProductsTable.tsx")}
+2025-06-23T13:13:54.927438Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:19:03.129592Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("src/types/Product.ts")}
+2025-06-23T13:19:03.129748Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:19:24.629008Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/cms/src/actions/products.ts")}
+2025-06-23T13:19:24.629040Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@apps/cms"), path: AnchoredSystemPathBuf("apps/cms") }}))
+2025-06-23T13:19:47.728007Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/cms/ProductEditorForm.tsx")}
+2025-06-23T13:19:47.728088Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:20:07.129730Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/cms/ProductFilters.tsx")}
+2025-06-23T13:20:07.130041Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:21:03.234454Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/ui/textarea.tsx")}
+2025-06-23T13:21:03.234561Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:21:07.829614Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/ui/textarea.tsx")}
+2025-06-23T13:21:07.829637Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:21:28.329639Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/cms/ProductEditorForm.tsx")}
+2025-06-23T13:21:28.329703Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:23:01.229248Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/ui/components/cms/ProductEditorForm.tsx")}
+2025-06-23T13:23:01.229339Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2025-06-23T13:24:09.155096Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/cms/src/app/(cms)/shop/[shop]/products/[id]/edit/ProductEditor.tsx")}
+2025-06-23T13:24:09.155161Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@apps/cms"), path: AnchoredSystemPathBuf("apps/cms") }}))
+2025-06-23T13:24:14.930160Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/cms/src/app/(cms)/shop/[shop]/products/[id]/edit/ProductEditor.tsx")}
+2025-06-23T13:24:14.930191Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@apps/cms"), path: AnchoredSystemPathBuf("apps/cms") }}))
+2025-06-23T13:25:17.730238Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/cms/src/app/(cms)/shop/[shop]/products/[id]/edit/page.tsx")}
+2025-06-23T13:25:17.730319Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@apps/cms"), path: AnchoredSystemPathBuf("apps/cms") }}))

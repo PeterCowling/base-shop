@@ -1,27 +1,36 @@
 // apps/cms/src/actions/products.ts
 "use server";
 
-import type { ProductPublication } from "@platform-core/products";
 import {
   getProductById,
   readRepo,
   updateProductInRepo,
   writeRepo,
 } from "@platform-core/repositories/json";
+import type { Locale, ProductPublication } from "@types/Product";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
 
 /* -------------------------------------------------------------------------- */
-/*  Create draft                                                              */
+/*  Helpers                                                                    */
+/* -------------------------------------------------------------------------- */
+
+const locales: Locale[] = ["en", "de", "it"];
+
+/* -------------------------------------------------------------------------- */
+/*  Create draft                                                               */
 /* -------------------------------------------------------------------------- */
 export async function createDraftRecord(
   shop: string
 ): Promise<ProductPublication> {
   const now = new Date().toISOString();
+  const blank = { en: "", de: "", it: "" };
+
   const draft: ProductPublication = {
     id: ulid(),
     sku: `DRAFT-${Date.now()}`,
-    title: { en: "Untitled" },
+    title: { ...blank, en: "Untitled" },
+    description: blank,
     price: 0,
     currency: "EUR",
     images: [],
@@ -37,18 +46,15 @@ export async function createDraftRecord(
   return draft;
 }
 
-/**
- * Called by the “New product” form action.
- * After persisting the draft, redirect to its edit page.
- */
+/* Server-action: called by “New product” button */
 export async function createDraft(shop: string): Promise<void> {
   "use server";
   const draft = await createDraftRecord(shop);
-  redirect(`/shop/${shop}/products/${draft.id}/edit`); /* ← /shop/… */
+  redirect(`/shop/${shop}/products/${draft.id}/edit`);
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Update product                                                            */
+/*  Update product                                                             */
 /* -------------------------------------------------------------------------- */
 export async function updateProduct(
   shop: string,
@@ -60,9 +66,20 @@ export async function updateProduct(
   const current = await getProductById(shop, id);
   if (!current) throw new Error(`Product ${id} not found in ${shop}`);
 
+  const nextTitle = { ...current.title };
+  const nextDesc = { ...current.description };
+
+  locales.forEach((l) => {
+    const t = formData.get(`title_${l}`);
+    const d = formData.get(`desc_${l}`);
+    if (typeof t === "string") nextTitle[l] = t;
+    if (typeof d === "string") nextDesc[l] = d;
+  });
+
   const updated: ProductPublication = {
     ...current,
-    title: { ...current.title, en: String(formData.get("title_en")) },
+    title: nextTitle,
+    description: nextDesc,
     price: Number(formData.get("price")),
     row_version: current.row_version + 1,
     updated_at: new Date().toISOString(),

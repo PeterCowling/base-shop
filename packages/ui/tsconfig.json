@@ -1,42 +1,32 @@
 // packages/ui/tsconfig.json
 {
-  /* ------------------------------------------------------------------ *
-   * 1 / 4  –  inherit all strict-mode settings etc.                     *
-   * ------------------------------------------------------------------ */
+  /* 1 ─ inherit strict defaults */
   "extends": "../../tsconfig.base.json",
 
-  /* ------------------------------------------------------------------ *
-   * 2 / 4  –  compiler options that are specific to the UI package      *
-   * ------------------------------------------------------------------ */
+  /* 2 ─ UI-package compiler options */
   "compilerOptions": {
-    /* this package is meant to be built on its own */
     "composite": true,
     "outDir": "dist",
-
-    /* React / JSX */
     "jsx": "preserve",
 
-    /* tell TS that source files may live in several folders             *
-     * – the **union** of these paths is treated as one virtual root     */
+    /* 👇 add the shared-types folder so every file is “under” rootDirs */
     "rootDirs": [
       "components",
-      "../platform-core", // cartCookie, CartContext, products…
-      "../i18n" // useTranslations, locales, json dictionaries
+      "../platform-core",
+      "../i18n",
+      "../types" /* NEW — resolves @types/Product without errors */
     ]
-
-    /*  ⬆️  👉  we purposely DO NOT set “rootDir”.                       *
-     *  When it is omitted, TypeScript just uses the common path of all *
-     *  detected source files – no more “not under rootDir” errors.      */
+    /* rootDir intentionally omitted */
   },
 
-  /* ------------------------------------------------------------------ *
-   * 3 / 4  –  tell tsc how we depend on other *projects* in the mono-repo
-   * ------------------------------------------------------------------ */
-  "references": [{ "path": "../platform-core" }, { "path": "../i18n" }],
+  /* 3 ─ project references */
+  "references": [
+    { "path": "../platform-core" },
+    { "path": "../i18n" },
+    { "path": "../types" } /* NEW — depends on shared types package */
+  ],
 
-  /* ------------------------------------------------------------------ *
-   * 4 / 4  –  include exactly our own sources (not the whole repo)      *
-   * ------------------------------------------------------------------ */
+  /* 4 ─ file globs */
   "include": ["components/**/*"],
   "exclude": ["dist"]
 }

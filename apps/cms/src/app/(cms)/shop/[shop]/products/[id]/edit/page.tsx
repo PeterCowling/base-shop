@@ -1,11 +1,13 @@
-import type { ProductPublication } from "@platform-core/products";
+// apps/cms/src/app/(cms)/shop/[shop]/products/[id]/edit/page.tsx
 import { getProductById } from "@platform-core/repositories/json";
+import type { ProductPublication } from "@types/Product";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 
-const ProductEditorForm = dynamic(
-  () => import("@ui/components/cms/ProductEditorForm")
-);
+/* ------------------------------------------------------------------ */
+/*  Lazy-load wrapper (client component)                              */
+/* ------------------------------------------------------------------ */
+const ProductEditor = dynamic(() => import("./ProductEditor"));
 
 interface Params {
   shop: string;
@@ -14,6 +16,7 @@ interface Params {
 
 export default async function ProductEditPage({ params }: { params: Params }) {
   const { shop, id } = params;
+
   const product: ProductPublication | null = await getProductById(shop, id);
   if (!product) return notFound();
 
@@ -22,7 +25,7 @@ export default async function ProductEditPage({ params }: { params: Params }) {
       <h1 className="mb-6 text-2xl font-semibold">
         Edit product &ndash; {shop}/{id}
       </h1>
-      <ProductEditorForm initialProduct={product} shop={shop} />
+      <ProductEditor shop={shop} initialProduct={product} />
     </>
   );
 }

@@ -1,3 +1,4 @@
+# /.gitignore
 # ---------------------------
 # Dependency directories
 # ---------------------------
@@ -19,17 +20,19 @@
 # Next.js & Vercel output
 # ---------------------------
 /.next/
-**/.next/
 /out/
 /.vercel
+**/.next/
 
 # ---------------------------
 # Production / build artefacts
 # ---------------------------
 /build
-/dist            
-/.turbo/          
+/dist
+**/dist/
+/.turbo/
 **/.turbo/
+
 # ---------------------------
 # Misc
 # ---------------------------

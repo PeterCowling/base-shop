@@ -1,0 +1,9 @@
+{
+  "name": "@themes/base",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "tokens.css"
+  ],
+  "sideEffects": false
+}

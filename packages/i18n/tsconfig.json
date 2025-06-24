@@ -3,7 +3,8 @@
   "compilerOptions": {
     "composite": true, // required for project references
     "outDir": "dist", // emit d.ts → dist
-    "rootDir": "." // all sources in this folder
+    "rootDir": ".", // all sources in this folder
+    "jsx": "react-jsx" // enable TSX support
   },
   "include": ["*.ts", "*.tsx"], // Translations.tsx, locales.ts …
   "exclude": ["dist"]

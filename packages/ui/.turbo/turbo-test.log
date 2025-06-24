@@ -1,0 +1,8 @@
+
+> @ui@0.0.0 test /Users/petercowling/reception/base-shop/packages/ui
+> jest
+
+[1m[2mDetermining test suites to run...[22m[22m[999D[K
+[?2026h[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1msanity.test.tsx[22m
+[?2026l

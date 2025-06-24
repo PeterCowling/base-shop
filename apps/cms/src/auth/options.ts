@@ -28,7 +28,8 @@ export const authOptions: NextAuthOptions = {
 
         if (user && user.password === credentials.password) {
           /* Strip password before handing the user object to NextAuth */
-          const { password: _discarded, ...safeUser } = user;
+          const { password: _password, ...safeUser } = user;
+          void _password;
           return safeUser; // typed as `User` via module augmentation
         }
         return null; // ⇒ 401

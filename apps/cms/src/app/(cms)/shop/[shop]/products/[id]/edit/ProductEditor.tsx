@@ -2,15 +2,26 @@
 "use client";
 
 import { updateProduct } from "@cms/actions/products";
-import type { ProductPublication } from "@platform-core/products";
+import type { Locale, ProductPublication } from "@platform-core/products";
 import ProductEditorForm from "@ui/components/cms/ProductEditorForm";
 
 interface Props {
   shop: string;
   initialProduct: ProductPublication;
+  languages: Locale[];
 }
 
-export default function ProductEditor({ shop, initialProduct }: Props) {
+export default function ProductEditor({
+  shop,
+  initialProduct,
+  languages,
+}: Props) {
   const onSave = (fd: FormData) => updateProduct(shop, fd);
-  return <ProductEditorForm product={initialProduct} onSave={onSave} />;
+  return (
+    <ProductEditorForm
+      product={initialProduct}
+      onSave={onSave}
+      locales={languages}
+    />
+  );
 }

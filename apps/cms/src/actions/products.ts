@@ -8,6 +8,7 @@ import {
   duplicateProductInRepo,
   getProductById,
   readRepo,
+  readSettings,
   updateProductInRepo,
   writeRepo,
 } from "@platform-core/repositories/json";
@@ -18,8 +19,10 @@ import { ulid } from "ulid";
 /*  Helpers                                                                    */
 /* -------------------------------------------------------------------------- */
 
-const locales: Locale[] = ["en", "de", "it"];
-
+async function getLocales(shop: string): Promise<Locale[]> {
+  const settings = await readSettings(shop);
+  return settings.languages;
+}
 /* -------------------------------------------------------------------------- */
 /*  Create draft                                                               */
 /* -------------------------------------------------------------------------- */
@@ -27,13 +30,20 @@ export async function createDraftRecord(
   shop: string
 ): Promise<ProductPublication> {
   const now = new Date().toISOString();
-  const blank = { en: "", de: "", it: "" };
+  const locales = await getLocales(shop);
+  const blank: Record<string, string> = {};
+  locales.forEach((l) => {
+    blank[l] = "";
+  });
+  const first = locales[0] ?? "en";
+  const title = { ...blank, [first]: "Untitled" } as Record<Locale, string>;
+  const description = { ...blank } as Record<Locale, string>;
 
   const draft: ProductPublication = {
     id: ulid(),
     sku: `DRAFT-${Date.now()}`,
-    title: { ...blank, en: "Untitled" },
-    description: blank,
+    title,
+    description,
     price: 0,
     currency: "EUR",
     images: [],
@@ -71,6 +81,8 @@ export async function updateProduct(
 
   const nextTitle = { ...current.title };
   const nextDesc = { ...current.description };
+
+  const locales = await getLocales(shop);
 
   locales.forEach((l) => {
     const t = formData.get(`title_${l}`);

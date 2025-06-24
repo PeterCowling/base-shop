@@ -16,9 +16,9 @@ interface BaseProps {
   product: ProductPublication;
   /** Called with FormData → resolves to updated product */
   onSave(fd: FormData): Promise<ProductPublication>;
+  locales: Locale[];
 }
 
-const locales: Locale[] = ["en", "de", "it"];
 const label: Record<Locale, string> = {
   en: "English",
   de: "Deutsch",
@@ -28,6 +28,7 @@ const label: Record<Locale, string> = {
 export default function ProductEditorForm({
   product: init,
   onSave,
+  locales,
 }: BaseProps) {
   const [product, setProduct] = useState(init);
   const [saving, setSaving] = useState(false);
@@ -43,7 +44,9 @@ export default function ProductEditorForm({
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
       setProduct((prev) => {
-        const m = name.match(/^(title|desc)_(en|de|it)$/);
+        const m = name.match(
+          new RegExp(`^(title|desc)_(${locales.join("|")})$`)
+        );
         if (m) {
           const [, key, lang] = m;
           const next = { ...prev };
@@ -54,7 +57,7 @@ export default function ProductEditorForm({
         return prev;
       });
     },
-    []
+    [locales]
   );
 
   /* ---------------- form-data ---------------- */
@@ -69,7 +72,7 @@ export default function ProductEditorForm({
     if (imageFile) fd.append("image", imageFile);
     fd.append("publish", publishTargets.join(","));
     return fd;
-  }, [product, imageFile, publishTargets]);
+  }, [product, imageFile, publishTargets, locales]);
 
   /* ---------------- submit ---------------- */
   const handleSubmit = useCallback(

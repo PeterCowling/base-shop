@@ -1,13 +1,21 @@
 // apps/cms/src/app/(cms)/shop/[shop]/media/page.tsx
 
-export default function MediaPage({ params }: { params: { shop: string } }) {
+import { listMedia } from "@cms/actions/media";
+import MediaManager from "@ui/components/cms/MediaManager";
+
+interface Params {
+  shop: string;
+}
+
+export const revalidate = 0;
+
+export default async function MediaPage({ params }: { params: Params }) {
   const { shop } = params;
+  const files = await listMedia(shop);
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">Media – {shop}</h2>
-      <p className="text-muted-foreground text-sm">
-        Drag-and-drop media manager coming soon.
-      </p>
+      <MediaManager shop={shop} initialFiles={files} />
     </div>
   );
 }

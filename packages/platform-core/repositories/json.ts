@@ -1,4 +1,5 @@
 // packages/platform-core/repositories/json.ts
+import type { Locale, ShopSettings } from "@types";
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
@@ -25,6 +26,7 @@ function resolveDataRoot(): string {
 }
 
 const DATA_ROOT = resolveDataRoot();
+const DEFAULT_LANGUAGES: Locale[] = ["en", "de", "it"];
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
@@ -35,9 +37,35 @@ function filePath(shop: string): string {
   return path.join(DATA_ROOT, shop, "products.json");
 }
 
+/** Path like data/shops/abc/settings.json */
+function settingsPath(shop: string): string {
+  return path.join(DATA_ROOT, shop, "settings.json");
+}
+
 /** Ensure `data/shops/<shop>` exists (mkdir -p). */
 async function ensureDir(shop: string): Promise<void> {
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
+}
+
+export async function readSettings(shop: string): Promise<ShopSettings> {
+  try {
+    const buf = await fs.readFile(settingsPath(shop), "utf8");
+    const parsed = JSON.parse(buf) as ShopSettings;
+    if (Array.isArray(parsed.languages)) return parsed;
+  } catch {
+    // ignore
+  }
+  return { languages: DEFAULT_LANGUAGES };
+}
+
+export async function writeSettings(
+  shop: string,
+  settings: ShopSettings
+): Promise<void> {
+  await ensureDir(shop);
+  const tmp = `${settingsPath(shop)}.${Date.now()}.tmp`;
+  await fs.writeFile(tmp, JSON.stringify(settings, null, 2), "utf8");
+  await fs.rename(tmp, settingsPath(shop));
 }
 
 /* -------------------------------------------------------------------------- */

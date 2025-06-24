@@ -1,6 +1,6 @@
 // apps/cms/src/app/(cms)/shop/[shop]/products/[id]/edit/page.tsx
-import type { ProductPublication } from "@platform-core/products";
-import { getProductById } from "@platform-core/repositories/json";
+
+import { getProductById, readSettings } from "@platform-core/repositories/json";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 
@@ -17,7 +17,10 @@ interface Params {
 export default async function ProductEditPage({ params }: { params: Params }) {
   const { shop, id } = params;
 
-  const product: ProductPublication | null = await getProductById(shop, id);
+  const [product, settings] = await Promise.all([
+    getProductById(shop, id),
+    readSettings(shop),
+  ]);
   if (!product) return notFound();
 
   return (
@@ -25,7 +28,11 @@ export default async function ProductEditPage({ params }: { params: Params }) {
       <h1 className="mb-6 text-2xl font-semibold">
         Edit product &ndash; {shop}/{id}
       </h1>
-      <ProductEditor shop={shop} initialProduct={product} />
+      <ProductEditor
+        shop={shop}
+        initialProduct={product}
+        languages={settings.languages}
+      />
     </>
   );
 }

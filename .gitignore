@@ -27,8 +27,8 @@
 # Production / build artefacts
 # ---------------------------
 /build
-/dist            # ← NEW: ignore package build folders
-/.turbo/          # ← NEW: Turborepo local cache
+/dist            
+/.turbo/          
 **/.turbo/
 # ---------------------------
 # Misc

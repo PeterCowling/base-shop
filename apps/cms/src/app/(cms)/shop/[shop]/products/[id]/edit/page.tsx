@@ -1,6 +1,6 @@
 // apps/cms/src/app/(cms)/shop/[shop]/products/[id]/edit/page.tsx
+import type { ProductPublication } from "@platform-core/products";
 import { getProductById } from "@platform-core/repositories/json";
-import type { ProductPublication } from "@types/Product";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 

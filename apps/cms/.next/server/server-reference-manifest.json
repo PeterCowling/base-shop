@@ -1,50 +1,5 @@
 {
-  "node": {
-    "60ca58e256aff7a649cfcf77e7659d682ee44d86e8": {
-      "workers": {
-        "app/(cms)/shop/[shop]/products/page": {
-          "moduleId": "(rsc)/../../node_modules/.pnpm/next@15.3.4_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpetercowling%2Freception%2Fbase-shop%2Fapps%2Fcms%2Fsrc%2Fapp%2F(cms)%2Fshop%2F%5Bshop%5D%2Fproducts%2Fpage.tsx%22%2C%5B%7B%22id%22%3A%2260ca58e256aff7a649cfcf77e7659d682ee44d86e8%22%2C%22exportedName%22%3A%22%24%24RSC_SERVER_ACTION_0%22%7D%5D%5D%2C%5B%22%2FUsers%2Fpetercowling%2Freception%2Fbase-shop%2Fapps%2Fcms%2Fsrc%2Factions%2Fproducts.ts%22%2C%5B%7B%22id%22%3A%22401e3b1c76c6824d4cde4384dbbf4852d746bbed32%22%2C%22exportedName%22%3A%22createDraft%22%7D%2C%7B%22id%22%3A%2240775ea723f47528880f853d1f21b19a4af756f97d%22%2C%22exportedName%22%3A%22createDraftRecord%22%7D%2C%7B%22id%22%3A%22603631e271d7d5e01f97d89a7edc5044e27f828180%22%2C%22exportedName%22%3A%22updateProduct%22%7D%5D%5D%5D&__client_imported__=!",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(cms)/shop/[shop]/products/page": "rsc"
-      }
-    },
-    "401e3b1c76c6824d4cde4384dbbf4852d746bbed32": {
-      "workers": {
-        "app/(cms)/shop/[shop]/products/page": {
-          "moduleId": "(rsc)/../../node_modules/.pnpm/next@15.3.4_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpetercowling%2Freception%2Fbase-shop%2Fapps%2Fcms%2Fsrc%2Fapp%2F(cms)%2Fshop%2F%5Bshop%5D%2Fproducts%2Fpage.tsx%22%2C%5B%7B%22id%22%3A%2260ca58e256aff7a649cfcf77e7659d682ee44d86e8%22%2C%22exportedName%22%3A%22%24%24RSC_SERVER_ACTION_0%22%7D%5D%5D%2C%5B%22%2FUsers%2Fpetercowling%2Freception%2Fbase-shop%2Fapps%2Fcms%2Fsrc%2Factions%2Fproducts.ts%22%2C%5B%7B%22id%22%3A%22401e3b1c76c6824d4cde4384dbbf4852d746bbed32%22%2C%22exportedName%22%3A%22createDraft%22%7D%2C%7B%22id%22%3A%2240775ea723f47528880f853d1f21b19a4af756f97d%22%2C%22exportedName%22%3A%22createDraftRecord%22%7D%2C%7B%22id%22%3A%22603631e271d7d5e01f97d89a7edc5044e27f828180%22%2C%22exportedName%22%3A%22updateProduct%22%7D%5D%5D%5D&__client_imported__=!",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(cms)/shop/[shop]/products/page": "rsc"
-      }
-    },
-    "40775ea723f47528880f853d1f21b19a4af756f97d": {
-      "workers": {
-        "app/(cms)/shop/[shop]/products/page": {
-          "moduleId": "(rsc)/../../node_modules/.pnpm/next@15.3.4_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpetercowling%2Freception%2Fbase-shop%2Fapps%2Fcms%2Fsrc%2Fapp%2F(cms)%2Fshop%2F%5Bshop%5D%2Fproducts%2Fpage.tsx%22%2C%5B%7B%22id%22%3A%2260ca58e256aff7a649cfcf77e7659d682ee44d86e8%22%2C%22exportedName%22%3A%22%24%24RSC_SERVER_ACTION_0%22%7D%5D%5D%2C%5B%22%2FUsers%2Fpetercowling%2Freception%2Fbase-shop%2Fapps%2Fcms%2Fsrc%2Factions%2Fproducts.ts%22%2C%5B%7B%22id%22%3A%22401e3b1c76c6824d4cde4384dbbf4852d746bbed32%22%2C%22exportedName%22%3A%22createDraft%22%7D%2C%7B%22id%22%3A%2240775ea723f47528880f853d1f21b19a4af756f97d%22%2C%22exportedName%22%3A%22createDraftRecord%22%7D%2C%7B%22id%22%3A%22603631e271d7d5e01f97d89a7edc5044e27f828180%22%2C%22exportedName%22%3A%22updateProduct%22%7D%5D%5D%5D&__client_imported__=!",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(cms)/shop/[shop]/products/page": "rsc"
-      }
-    },
-    "603631e271d7d5e01f97d89a7edc5044e27f828180": {
-      "workers": {
-        "app/(cms)/shop/[shop]/products/page": {
-          "moduleId": "(rsc)/../../node_modules/.pnpm/next@15.3.4_@babel+core@7.27.4_@playwright+test@1.53.1_react-dom@19.1.0_react@19.1.0__react@19.1.0/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpetercowling%2Freception%2Fbase-shop%2Fapps%2Fcms%2Fsrc%2Fapp%2F(cms)%2Fshop%2F%5Bshop%5D%2Fproducts%2Fpage.tsx%22%2C%5B%7B%22id%22%3A%2260ca58e256aff7a649cfcf77e7659d682ee44d86e8%22%2C%22exportedName%22%3A%22%24%24RSC_SERVER_ACTION_0%22%7D%5D%5D%2C%5B%22%2FUsers%2Fpetercowling%2Freception%2Fbase-shop%2Fapps%2Fcms%2Fsrc%2Factions%2Fproducts.ts%22%2C%5B%7B%22id%22%3A%22401e3b1c76c6824d4cde4384dbbf4852d746bbed32%22%2C%22exportedName%22%3A%22createDraft%22%7D%2C%7B%22id%22%3A%2240775ea723f47528880f853d1f21b19a4af756f97d%22%2C%22exportedName%22%3A%22createDraftRecord%22%7D%2C%7B%22id%22%3A%22603631e271d7d5e01f97d89a7edc5044e27f828180%22%2C%22exportedName%22%3A%22updateProduct%22%7D%5D%5D%5D&__client_imported__=!",
-          "async": false
-        }
-      },
-      "layer": {
-        "app/(cms)/shop/[shop]/products/page": "rsc"
-      }
-    }
-  },
+  "node": {},
   "edge": {},
   "encryptionKey": "eLDaZ9079Hhu6ineRTE4EeGNmhHI6djndNvYUKNa80M="
 }

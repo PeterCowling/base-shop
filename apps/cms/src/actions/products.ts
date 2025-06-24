@@ -1,13 +1,14 @@
 // apps/cms/src/actions/products.ts
 "use server";
 
+import type { Locale, ProductPublication } from "@platform-core/products";
+
 import {
   getProductById,
   readRepo,
   updateProductInRepo,
   writeRepo,
 } from "@platform-core/repositories/json";
-import type { Locale, ProductPublication } from "@types/Product";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
 

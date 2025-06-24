@@ -12,6 +12,7 @@
     /* 👇 add the shared-types folder so every file is “under” rootDirs */
     "rootDirs": [
       "components",
+      "hooks",
       "../platform-core",
       "../i18n",
       "../types" /* NEW — resolves @types/Product without errors */
@@ -27,6 +28,6 @@
   ],
 
   /* 4 ─ file globs */
-  "include": ["components/**/*"],
+  "include": ["components/**/*", "hooks/**/*"],
   "exclude": ["dist"]
 }

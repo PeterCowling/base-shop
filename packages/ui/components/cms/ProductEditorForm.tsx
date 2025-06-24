@@ -5,8 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { Locale, ProductPublication } from "@types/Product";
+import type { Locale, ProductPublication } from "@platform-core/products";
+import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { ChangeEvent, FormEvent, useCallback, useMemo, useState } from "react";
+import ImageUploaderWithOrientationCheck from "./ImageUploaderWithOrientationCheck";
+import PublishLocationSelector from "./PublishLocationSelector";
 
 interface BaseProps {
   /** Current product snapshot (all locales) */
@@ -28,6 +31,12 @@ export default function ProductEditorForm({
 }: BaseProps) {
   const [product, setProduct] = useState(init);
   const [saving, setSaving] = useState(false);
+  const [publishTargets, setPublishTargets] = useState<string[]>([]);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const { locations } = usePublishLocations();
+  const requiredOrientation =
+    locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
+    "landscape";
 
   /* ---------------- field change ---------------- */
   const handleChange = useCallback(
@@ -57,8 +66,10 @@ export default function ProductEditorForm({
       fd.append(`desc_${l}`, product.description[l]);
     });
     fd.append("price", String(product.price));
+    if (imageFile) fd.append("image", imageFile);
+    fd.append("publish", publishTargets.join(","));
     return fd;
-  }, [product]);
+  }, [product, imageFile, publishTargets]);
 
   /* ---------------- submit ---------------- */
   const handleSubmit = useCallback(
@@ -89,6 +100,18 @@ export default function ProductEditorForm({
               required
             />
           </label>
+
+          <PublishLocationSelector
+            selectedIds={publishTargets}
+            onChange={setPublishTargets}
+            showReload
+          />
+
+          <ImageUploaderWithOrientationCheck
+            file={imageFile}
+            onChange={setImageFile}
+            requiredOrientation={requiredOrientation}
+          />
 
           <div className="grid gap-6 md:grid-cols-3">
             {locales.map((l) => (

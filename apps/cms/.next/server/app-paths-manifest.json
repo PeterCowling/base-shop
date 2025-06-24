@@ -1,4 +1,1 @@
-{
-  "/(cms)/shop/[shop]/products/page": "app/(cms)/shop/[shop]/products/page.js",
-  "/[lang]/page": "app/[lang]/page.js"
-}
+{}

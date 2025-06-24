@@ -2,7 +2,7 @@
 "use client";
 
 import { updateProduct } from "@cms/actions/products";
-import type { ProductPublication } from "@types/Product";
+import type { ProductPublication } from "@platform-core/products";
 import ProductEditorForm from "@ui/components/cms/ProductEditorForm";
 
 interface Props {

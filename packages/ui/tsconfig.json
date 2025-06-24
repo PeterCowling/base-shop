@@ -1,33 +1,26 @@
-// packages/ui/tsconfig.json
 {
-  /* 1 ─ inherit strict defaults */
   "extends": "../../tsconfig.base.json",
 
-  /* 2 ─ UI-package compiler options */
   "compilerOptions": {
     "composite": true,
     "outDir": "dist",
     "jsx": "preserve",
 
-    /* 👇 add the shared-types folder so every file is “under” rootDirs */
     "rootDirs": [
       "components",
       "hooks",
       "../platform-core",
       "../i18n",
-      "../types" /* NEW — resolves @types/Product without errors */
+      "../types",
+      "../../apps/cms/src"
     ]
-    /* rootDir intentionally omitted */
   },
 
-  /* 3 ─ project references */
   "references": [
     { "path": "../platform-core" },
     { "path": "../i18n" },
-    { "path": "../types" } /* NEW — depends on shared types package */
+    { "path": "../types" }
   ],
-
-  /* 4 ─ file globs */
-  "include": ["components/**/*", "hooks/**/*"],
+  "include": ["components/**/*", "hooks/**/*", "../../apps/cms/src/**/*"],
   "exclude": ["dist"]
 }

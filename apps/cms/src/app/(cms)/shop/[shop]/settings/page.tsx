@@ -8,9 +8,9 @@ export const revalidate = 0;
 export default async function SettingsPage({
   params,
 }: {
-  params: { shop: string };
+  params: Promise<{ shop: string }>;
 }) {
-  const { shop } = params;
+  const { shop } = await params;
   const settings = await readSettings(shop);
 
   return (

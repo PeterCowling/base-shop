@@ -12,8 +12,12 @@ interface Params {
   shop: string;
 }
 
-export default async function ProductsPage({ params }: { params: Params }) {
-  const shop = params.shop;
+export default async function ProductsPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { shop } = await params;
   const [session, rows] = await Promise.all([
     getServerSession(authOptions),
     readRepo(shop),

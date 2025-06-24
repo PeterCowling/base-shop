@@ -5,6 +5,7 @@
     { "path": "packages/platform-machine" },
     { "path": "packages/themes/abc" },
     { "path": "packages/themes/bcd" },
-    { "path": "../src" }
+    { "path": "packages/svelte-tool" },
+    { "path": "src" }
   ]
 }

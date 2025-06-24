@@ -14,9 +14,12 @@ interface Params {
   id: string;
 }
 
-export default async function ProductEditPage({ params }: { params: Params }) {
-  const { shop, id } = params;
-
+export default async function ProductEditPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { shop, id } = await params;
   const [product, settings] = await Promise.all([
     getProductById(shop, id),
     readSettings(shop),

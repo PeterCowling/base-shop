@@ -1,13 +1,18 @@
 // packages/ui/components/cms/ProductsTable.tsx
 "use client";
 
+import Link from "next/link";
+import { memo, ReactNode, useCallback, useMemo, useState } from "react";
+
 import { deleteProduct, duplicateProduct } from "@cms/actions/products";
 import { ProductPublication } from "@platform-core/products";
-import Link from "next/link";
-import { useMemo, useState } from "react";
 
 import DataTable from "./DataTable";
 import ProductFilters from "./ProductFilters";
+
+/* -------------------------------------------------------------------------- */
+/*  Types                                                                     */
+/* -------------------------------------------------------------------------- */
 
 interface Props {
   shop: string;
@@ -15,103 +20,151 @@ interface Props {
   isAdmin: boolean;
 }
 
-export default function ProductsTable({ shop, rows, isAdmin }: Props) {
-  /* ------------------------------------------------------------------ */
-  /*  Local filter state                                                */
-  /* ------------------------------------------------------------------ */
-  const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("all"); // active | draft | archived
+interface Column<T> {
+  header: string;
+  width?: string;
+  render: (row: T) => ReactNode;
+}
 
-  /* ------------------------------------------------------------------ */
-  /*  Filter rows                                                       */
-  /* ------------------------------------------------------------------ */
+/* -------------------------------------------------------------------------- */
+/*  Component                                                                 */
+/* -------------------------------------------------------------------------- */
 
-  const availableLocales = useMemo(() => {
+function ProductsTableBase({ shop, rows, isAdmin }: Props): JSX.Element {
+  /* ---------------------------------------------------------------------- */
+  /*  Local filter state                                                    */
+  /* ---------------------------------------------------------------------- */
+  const [search, setSearch] = useState<string>("");
+  const [status, setStatus] = useState<string>("all"); // active | draft | archived
+
+  /* ---------------------------------------------------------------------- */
+  /*  Memoised helpers                                                      */
+  /* ---------------------------------------------------------------------- */
+
+  /** Deduplicate every locale present in the dataset */
+  const availableLocales = useMemo<string[]>(() => {
     const set = new Set<string>();
-    rows.forEach((p) => {
-      Object.keys(p.title).forEach((k) => set.add(k));
-    });
+    rows.forEach((p) => Object.keys(p.title).forEach((k) => set.add(k)));
     return Array.from(set);
   }, [rows]);
 
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase();
+  /** Normalise the query so `.toLowerCase()` is always safe */
+  const normalisedQuery = useMemo<string>(
+    () => search?.trim().toLowerCase() ?? "",
+    [search]
+  );
+
+  /** Row-level filter (search + status) */
+  const filteredRows = useMemo<ProductPublication[]>(() => {
     return rows.filter((p) => {
-      const titleMatches = availableLocales.some((loc) => {
-        const t = (p.title as Record<string, string>)[loc];
-        return t ? t.toLowerCase().includes(q) : false;
+      /* -------- title & SKU matches (safe string defaults) -------------- */
+      const matchesTitle = availableLocales.some((loc) => {
+        const t = (p.title as Record<string, string>)[loc] ?? "";
+        return t.toLowerCase().includes(normalisedQuery);
       });
-      const skuMatches = p.sku.toLowerCase().includes(q);
-      const matchesQ = !q || titleMatches || skuMatches;
+
+      const sku = p.sku ?? "";
+      const matchesSku = sku.toLowerCase().includes(normalisedQuery);
+
+      const matchesQuery =
+        normalisedQuery.length === 0 || matchesTitle || matchesSku;
+
+      /* ------------------------------ status ---------------------------- */
       const matchesStatus = status === "all" || p.status === status;
-      return matchesQ && matchesStatus;
+
+      return matchesQuery && matchesStatus;
     });
-  }, [rows, search, status, availableLocales]);
+  }, [rows, normalisedQuery, status, availableLocales]);
 
-  /* ------------------------------------------------------------------ */
-  /*  Columns                                                           */
-  /* ------------------------------------------------------------------ */
-  const columns = [
-    {
-      header: "Title",
-      render: (p: ProductPublication) =>
-        isAdmin ? (
-          <Link
-            href={`/shop/${shop}/products/${p.id}/edit`}
-            className="underline"
-          >
-            {p.title.en}
-          </Link>
-        ) : (
-          <span>{p.title.en}</span>
+  /* ---------------------------------------------------------------------- */
+  /*  Stable action handlers                                                */
+  /* ---------------------------------------------------------------------- */
+
+  const handleDuplicate = useCallback(
+    (id: string) => duplicateProduct(shop, id),
+    [shop]
+  );
+
+  const handleDelete = useCallback(
+    (id: string) => {
+      /* eslint-disable no-alert -- simple confirm dialog is fine here */
+      if (confirm("Delete this product?")) deleteProduct(shop, id);
+    },
+    [shop]
+  );
+
+  /* ---------------------------------------------------------------------- */
+  /*  Columns                                                               */
+  /* ---------------------------------------------------------------------- */
+
+  const columns = useMemo<Column<ProductPublication>[]>(() => {
+    return [
+      {
+        header: "Title",
+        render: (p) =>
+          isAdmin ? (
+            <Link
+              href={`/shop/${shop}/products/${p.id}/edit`}
+              className="underline"
+            >
+              {p.title.en}
+            </Link>
+          ) : (
+            <span>{p.title.en}</span>
+          ),
+      },
+      {
+        header: "SKU",
+        width: "10rem",
+        render: (p) => p.sku ?? "—",
+      },
+      {
+        header: "Price",
+        render: (p) => `${(p.price / 100).toFixed(2)} ${p.currency}`,
+      },
+      {
+        header: "Status",
+        render: (p) => p.status,
+      },
+      {
+        header: "Actions",
+        width: "12rem",
+        render: (p) => (
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href={`/shop/${shop}/products/${p.id}/edit`}
+              className="rounded bg-primary px-2 py-1 text-xs text-white hover:bg-primary/90"
+            >
+              Edit
+            </Link>
+            <Link
+              href={`/en/product/${p.id}`}
+              className="rounded border px-2 py-1 text-xs hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              View
+            </Link>
+            <button
+              onClick={() => handleDuplicate(p.id)}
+              className="rounded border px-2 py-1 text-xs hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              Duplicate
+            </button>
+            <button
+              onClick={() => handleDelete(p.id)}
+              className="rounded border px-2 py-1 text-xs hover:bg-red-50 dark:hover:bg-red-900"
+            >
+              Delete
+            </button>
+          </div>
         ),
-    },
-    { header: "SKU", width: "10rem", render: (p: ProductPublication) => p.sku },
-    {
-      header: "Price",
-      render: (p: ProductPublication) =>
-        `${(p.price / 100).toFixed(2)} ${p.currency}`,
-    },
-    { header: "Status", render: (p: ProductPublication) => p.status },
-    {
-      header: "Actions",
-      width: "12rem",
-      render: (p: ProductPublication) => (
-        <div className="flex flex-wrap gap-2">
-          <Link
-            href={`/shop/${shop}/products/${p.id}/edit`}
-            className="rounded bg-primary px-2 py-1 text-xs text-white hover:bg-primary/90"
-          >
-            Edit
-          </Link>
-          <Link
-            href={`/en/product/${p.id}`}
-            className="rounded border px-2 py-1 text-xs hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            View
-          </Link>
-          <button
-            onClick={() => duplicateProduct(shop, p.id)}
-            className="rounded border px-2 py-1 text-xs hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            Duplicate
-          </button>
-          <button
-            onClick={() => {
-              if (confirm("Delete this product?")) deleteProduct(shop, p.id);
-            }}
-            className="rounded border px-2 py-1 text-xs hover:bg-red-50 dark:hover:bg-red-900"
-          >
-            Delete
-          </button>
-        </div>
-      ),
-    },
-  ];
+      },
+    ];
+  }, [isAdmin, shop, handleDuplicate, handleDelete]);
 
-  /* ------------------------------------------------------------------ */
-  /*  Render                                                            */
-  /* ------------------------------------------------------------------ */
+  /* ---------------------------------------------------------------------- */
+  /*  Render                                                                */
+  /* ---------------------------------------------------------------------- */
+
   return (
     <div className="space-y-4">
       <ProductFilters
@@ -120,7 +173,13 @@ export default function ProductsTable({ shop, rows, isAdmin }: Props) {
         onSearchChange={setSearch}
         onStatusChange={setStatus}
       />
-      <DataTable rows={filtered} columns={columns} />
+      <DataTable rows={filteredRows} columns={columns} />
     </div>
   );
 }
+
+/* -------------------------------------------------------------------------- */
+/*  Export                                                                    */
+/* -------------------------------------------------------------------------- */
+
+export default memo(ProductsTableBase);

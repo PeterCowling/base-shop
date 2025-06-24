@@ -19,6 +19,7 @@
 # Next.js & Vercel output
 # ---------------------------
 /.next/
+**/.next/
 /out/
 /.vercel
 
@@ -27,8 +28,8 @@
 # ---------------------------
 /build
 /dist            # ← NEW: ignore package build folders
-.turbo/          # ← NEW: Turborepo local cache
-
+/.turbo/          # ← NEW: Turborepo local cache
+**/.turbo/
 # ---------------------------
 # Misc
 # ---------------------------

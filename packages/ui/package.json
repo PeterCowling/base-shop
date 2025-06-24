@@ -4,6 +4,6 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
-    "test": "jest --config ../../jest.config.js"
+    "test": "jest --config ../../jest.config.ts"
   }
 }

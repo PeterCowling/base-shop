@@ -9,8 +9,12 @@ interface Params {
 
 export const revalidate = 0;
 
-export default async function MediaPage({ params }: { params: Params }) {
-  const { shop } = params;
+export default async function MediaPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { shop } = await params;
   const files = await listMedia(shop);
   return (
     <div>

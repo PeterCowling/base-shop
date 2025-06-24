@@ -9,7 +9,7 @@ The full technical roadmap is documented in [./IMPLEMENTATION_PLAN.md](./IMPLEME
 
 ## Getting Started
 
-```bash
+````bash
 # with pnpm
 pnpm dev
 
@@ -46,4 +46,17 @@ GitHub repo – https://github.com/vercel/next.js
 Deploy
 The project is CI-deployed to Cloudflare Pages via
 @cloudflare/next-on-pages.
-```
+
+
+## Svelte integration
+
+This repo includes a minimal example plugin located at `packages/svelte-tool`.
+The plugin is registered via `svelte.config.ts` and uses the
+`vite-plugin-svelte` Node plugin installed as a dev dependency.
+
+To experiment with Svelte:
+
+```bash
+pnpm install
+pnpm build
+````

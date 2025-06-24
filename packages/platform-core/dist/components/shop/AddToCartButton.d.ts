@@ -4,5 +4,5 @@ type Props = {
     /** Disable button until prerequisites are met (e.g. size chosen) */
     disabled?: boolean;
 };
-export default function AddToCartButton({ sku, disabled }: Props): import("react").JSX.Element;
+export default function AddToCartButton({ sku, disabled }: Props): import("react/jsx-runtime").JSX.Element;
 export {};

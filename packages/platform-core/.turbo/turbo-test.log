@@ -1,15 +1,130 @@
 
 > @platform-core@0.0.0 test /Users/petercowling/reception/base-shop/packages/platform-core
-> jest --config ../../jest.config.js
+> jest --config ../../jest.config.ts
 
-[999D[K[999D[K[31mError: Can't find a root directory while resolving a config file path.[39m
-[31mProvided path to resolve: ../../jest.config.js[39m
-[31mcwd: /Users/petercowling/reception/base-shop/packages/platform-core[39m
-[31m    at resolveConfigPath (/Users/petercowling/reception/base-shop/node_modules/.pnpm/jest-config@30.0.2_@types+node@20.19.1_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/jest-config/build/index.js:2421:11)[39m
-[31m    at readInitialOptions (/Users/petercowling/reception/base-shop/node_modules/.pnpm/jest-config@30.0.2_@types+node@20.19.1_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/jest-config/build/index.js:1138:55)[39m
-[31m    at readConfig (/Users/petercowling/reception/base-shop/node_modules/.pnpm/jest-config@30.0.2_@types+node@20.19.1_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/jest-config/build/index.js:918:13)[39m
-[31m    at readConfigs (/Users/petercowling/reception/base-shop/node_modules/.pnpm/jest-config@30.0.2_@types+node@20.19.1_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/jest-config/build/index.js:1168:32)[39m
-[31m    at runCLI (/Users/petercowling/reception/base-shop/node_modules/.pnpm/@jest+core@30.0.2_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/@jest/core/build/index.js:1393:43)[39m
-[31m    at Object.run (/Users/petercowling/reception/base-shop/node_modules/.pnpm/jest-cli@30.0.2_@types+node@20.19.1_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/jest-cli/build/index.js:656:34)[39m
-[41m[30m ELIFECYCLE [39m[49m [31mTest failed. See above for more details.[39m
-[43m[30m WARN [39m[49m  Local package.json exists, but node_modules missing, did you mean to install?
+[1m[2mDetermining test suites to run...[22m[22m[?2026h[999D[K
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1Ats-jest[ts-jest-transformer] (WARN) Define `ts-jest` config under `globals` is deprecated. Please do
+transform: {
+    <transform_regex>: ['ts-jest', { /* ts-jest config goes here in Jest */ }],
+},
+See more at https://kulshekhar.github.io/ts-jest/docs/getting-started/presets#advanced
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1Ats-jest[ts-jest-transformer] (WARN) Define `ts-jest` config under `globals` is deprecated. Please do
+transform: {
+    <transform_regex>: ['ts-jest', { /* ts-jest config goes here in Jest */ }],
+},
+See more at https://kulshekhar.github.io/ts-jest/docs/getting-started/presets#advanced
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1Ats-jest[config] (WARN) [94mmessage[0m[90m TS151001: [0mIf you have issues related to imports, you should consider setting `esModuleInterop` to `true` in your TypeScript configuration file (usually `tsconfig.json`). See https://blogs.msdn.microsoft.com/typescript/2018/01/31/announcing-typescript-2-7/#easier-ecmascript-module-interoperability for more information.
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1Ats-jest[config] (WARN) [94mmessage[0m[90m TS151001: [0mIf you have issues related to imports, you should consider setting `esModuleInterop` to `true` in your TypeScript configuration file (usually `tsconfig.json`). See https://blogs.msdn.microsoft.com/typescript/2018/01/31/announcing-typescript-2-7/#easier-ecmascript-module-interoperability for more information.
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        0 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        1 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        2 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        3 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        4 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        5 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[32m PASS [39m[22m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        5 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m__tests__/[22m[1mproducts.test.ts[22m
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m0 of 2 total
+[1mTests:       [22m0 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        5 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m[1m[32m1 passed[39m[22m, 1 of 2 total
+[1mTests:       [22m[1m[32m1 passed[39m[22m, 1 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        5 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A[0m[7m[1m[32m PASS [39m[22m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[0m[7m[33m[1m RUNS [22m[39m[27m[0m [2m../ui/__tests__/[22m[1msanity.test.tsx[22m
+
+[1mTest Suites: [22m[1m[32m1 passed[39m[22m, 1 of 2 total
+[1mTests:       [22m[1m[32m1 passed[39m[22m, 1 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        5 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[K[1A
+
+[1mTest Suites: [22m[1m[32m2 passed[39m[22m, 2 total
+[1mTests:       [22m[1m[32m2 passed[39m[22m, 2 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        5 s[?2026l[?2026h[K[1A[K[1A[K[1A[K[1A[K[1A[?2026l[999D[K
+[1mTest Suites: [22m[1m[32m2 passed[39m[22m, 2 total
+[1mTests:       [22m[1m[32m2 passed[39m[22m, 2 total
+[1mSnapshots:   [22m0 total
+[1mTime:[22m        5.67 s
+[2mRan all test suites[22m[2m.[22m

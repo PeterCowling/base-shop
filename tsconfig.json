@@ -1,0 +1,10 @@
+{
+  "files": [],
+  "extends": "./tsconfig.base.json",
+  "references": [
+    { "path": "./tsconfig.packages.json" },
+    { "path": "./apps/cms" },
+    { "path": "./apps/shop-abc" },
+    { "path": "./apps/shop-bcd" }
+  ]
+}

@@ -1,8 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,          /* required for -b */
-    "outDir": "dist"
+    "composite": true /* required for -b */,
+    "outDir": "dist",
+    "jsx": "react-jsx" // 👈 add this line (or "preserve")
   },
   "include": ["**/*.ts", "**/*.tsx"]
 }

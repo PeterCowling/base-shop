@@ -1,6 +1,16 @@
-/* packages/platform-core/products.ts */
+"use strict";
+// packages/platform-core/products.ts
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PRODUCTS = exports.LOCALES = void 0;
+exports.getProductBySlug = getProductBySlug;
+exports.assertLocale = assertLocale;
+/**
+ * Convenience list of all supported locales.
+ * Use this instead of hard-coding the literals across the code-base.
+ */
+exports.LOCALES = ["en", "de", "it"];
 /** Mock catalogue (3 items) */
-export const PRODUCTS = [
+exports.PRODUCTS = [
     {
         id: "green-sneaker",
         slug: "green-sneaker",
@@ -30,6 +40,16 @@ export const PRODUCTS = [
     },
 ];
 /** Helper to fetch one product (could be remote PIM later) */
-export function getProductBySlug(slug) {
-    return PRODUCTS.find((p) => p.slug === slug);
+function getProductBySlug(slug) {
+    return exports.PRODUCTS.find(function (p) { return p.slug === slug; });
+}
+/* -------------------------------------------------------------------------- */
+/*  Utility                                                                   */
+/* -------------------------------------------------------------------------- */
+/**
+ * Exhaustiveness helper for switch statements on {@link Locale}.
+ * (Compile-time only; returns the value unchanged.)
+ */
+function assertLocale(l) {
+    return l;
 }

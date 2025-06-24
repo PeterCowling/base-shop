@@ -5,6 +5,7 @@
     "composite": true,
     "outDir": "dist",
     "jsx": "preserve",
+    "rootDir": "../..",
 
     "rootDirs": [
       "components",

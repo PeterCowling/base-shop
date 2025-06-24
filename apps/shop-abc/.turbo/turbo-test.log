@@ -1,0 +1,4 @@
+
+> @apps/shop-abc@ test /Users/petercowling/reception/base-shop/apps/shop-abc
+> jest --passWithNoTests
+

@@ -1,0 +1,4 @@
+
+> @apps/shop-bcd@ test /Users/petercowling/reception/base-shop/apps/shop-bcd
+> jest --passWithNoTests
+

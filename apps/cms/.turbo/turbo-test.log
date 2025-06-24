@@ -1,0 +1,4 @@
+
+> @apps/cms@ test /Users/petercowling/reception/base-shop/apps/cms
+> jest --passWithNoTests
+

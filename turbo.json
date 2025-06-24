@@ -9,8 +9,6 @@
       "outputs": [".vercel/**", "dist/**"]
     },
     "lint": {},
-    "test": {
-      "dependsOn": ["build"]
-    }
+    "test": {}
   }
 }

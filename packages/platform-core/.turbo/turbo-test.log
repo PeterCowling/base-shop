@@ -1,14 +1,15 @@
 
 > @platform-core@0.0.0 test /Users/petercowling/reception/base-shop/packages/platform-core
-> jest
+> jest --config ../../jest.config.js
 
-[1m[2mDetermining test suites to run...[22m[22m[999D[K[1mNo tests found, exiting with code 1[22m
-Run with `--passWithNoTests` to exit with code 0
-In [1m/Users/petercowling/reception/base-shop/packages/platform-core[22m
-  40 files checked.
-  testMatch: [33m**/__tests__/**/*.?([mc])[jt]s?(x), **/?(*.)+(spec|test).?([mc])[jt]s?(x)[39m - 0 matches
-  testPathIgnorePatterns: [33m/node_modules/[39m - 40 matches
-  testRegex:  - 0 matches
-Pattern:  - 0 matches
+[999D[K[999D[K[31mError: Can't find a root directory while resolving a config file path.[39m
+[31mProvided path to resolve: ../../jest.config.js[39m
+[31mcwd: /Users/petercowling/reception/base-shop/packages/platform-core[39m
+[31m    at resolveConfigPath (/Users/petercowling/reception/base-shop/node_modules/.pnpm/jest-config@30.0.2_@types+node@20.19.1_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/jest-config/build/index.js:2421:11)[39m
+[31m    at readInitialOptions (/Users/petercowling/reception/base-shop/node_modules/.pnpm/jest-config@30.0.2_@types+node@20.19.1_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/jest-config/build/index.js:1138:55)[39m
+[31m    at readConfig (/Users/petercowling/reception/base-shop/node_modules/.pnpm/jest-config@30.0.2_@types+node@20.19.1_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/jest-config/build/index.js:918:13)[39m
+[31m    at readConfigs (/Users/petercowling/reception/base-shop/node_modules/.pnpm/jest-config@30.0.2_@types+node@20.19.1_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/jest-config/build/index.js:1168:32)[39m
+[31m    at runCLI (/Users/petercowling/reception/base-shop/node_modules/.pnpm/@jest+core@30.0.2_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/@jest/core/build/index.js:1393:43)[39m
+[31m    at Object.run (/Users/petercowling/reception/base-shop/node_modules/.pnpm/jest-cli@30.0.2_@types+node@20.19.1_ts-node@10.9.2_@types+node@20.19.1_typescript@5.8.3_/node_modules/jest-cli/build/index.js:656:34)[39m
 [41m[30m ELIFECYCLE [39m[49m [31mTest failed. See above for more details.[39m
 [43m[30m WARN [39m[49m  Local package.json exists, but node_modules missing, did you mean to install?

@@ -1,22 +1,32 @@
 // jest.config.ts
-import type { Config } from "jest";
-import { pathsToModuleNameMapper } from "ts-jest";
-import { compilerOptions } from "./tsconfig.base.json" assert { type: "json" };
 
-const config: Config = {
-  // ─────────────────────────── presets & env
-  preset: "ts-jest/presets/js-with-ts",
+const { pathsToModuleNameMapper } = require("ts-jest");
+const ts = require("typescript");
+const path = require("path");
+const { config } = ts.readConfigFile(
+  path.join(__dirname, "tsconfig.base.json"),
+  ts.sys.readFile
+);
+const { compilerOptions } = config;
+
+/** @type {import('jest').Config} */
+module.exports = {
+  preset: "ts-jest/presets/js-with-ts-esm",
   testEnvironment: "jsdom",
-
-  // ─────────────────────────── setup
+  extensionsToTreatAsEsm: [".ts", ".tsx"],
+  globals: {
+    "ts-jest": {
+      useESM: true,
+      tsconfig: path.join(__dirname, "tsconfig.test.json"),
+    },
+  },
+  transform: {
+    "^.+\\.[tj]sx?$": ["ts-jest", { useESM: true }],
+  },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
-
-  // ─────────────────────────── path alias ↔ Jest mapper
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: "<rootDir>/",
   }),
-
-  // ─────────────────────────── globs
   testMatch: ["**/__tests__/**/*.(test|spec).[jt]s?(x)"],
   testPathIgnorePatterns: [
     "<rootDir>/node_modules",
@@ -24,5 +34,3 @@ const config: Config = {
     "<rootDir>/dist",
   ],
 };
-
-export default config;

@@ -49,6 +49,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-testing-library": "^7.5.3",
     "jest": "^30.0.2",
+    "jest-environment-jsdom": "^30.0.2",
     "playwright": "^1.53.1",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.13",

@@ -1,8 +1,6 @@
-// packages/tailwind-config/src/index.ts
-
 import type { Config } from "tailwindcss";
 
-const preset: Config = {
+const preset: Partial<Config> = {
   theme: {
     extend: {
       colors: {

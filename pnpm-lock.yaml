@@ -172,6 +172,8 @@ importers:
         specifier: ^15.3.4
         version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
+  packages/design-tokens: {}
+
   packages/i18n:
     devDependencies:
       next:
@@ -208,6 +210,8 @@ importers:
       next:
         specifier: ^15.3.4
         version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+
+  packages/tailwind-config: {}
 
   packages/types:
     devDependencies:

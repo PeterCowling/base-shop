@@ -8,6 +8,9 @@
     "lint": "next lint",
     "test": "jest --passWithNoTests --config ../../jest.config.ts"
   },
+  "dependencies": {
+    "@themes/base": "workspace:*"
+  },
   "devDependencies": {
     "next": "^15.3.4"
   }

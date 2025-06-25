@@ -1,9 +1,12 @@
+# /pnpm-workspace.yaml   ← full file, copy-paste
+
 packages:
-  - apps/*
-  - packages/*
+  # Every package or app — one pattern is enough
+  - "apps/**"
+  - "packages/**"
 
 onlyBuiltDependencies:
-  - '@tailwindcss/oxide'
+  - "@tailwindcss/oxide"
   - esbuild
   - sharp
   - unrs-resolver

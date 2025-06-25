@@ -36,6 +36,10 @@ const config = {
     "./apps/**/*.{ts,tsx,mdx}",
     "./packages/{ui,platform-core,platform-machine,i18n,themes}/**/*.{ts,tsx,mdx}",
     ".storybook/**/*.{ts,tsx,mdx}",
+    // Exclude dependencies and build outputs to avoid slow glob matching
+    "!**/node_modules",
+    "!**/dist",
+    "!**/.next",
   ],
 };
 

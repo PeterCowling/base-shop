@@ -1,4 +1,4 @@
-// src/app/[lang]/product/[slug]/PdpClient.tsx
+// apps/shop-abc/src/app/[lang][lang]/product/[slug]/PdpClient.tsx
 "use client";
 
 import ImageGallery from "@/components/pdp/ImageGallery";

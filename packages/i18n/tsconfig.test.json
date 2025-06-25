@@ -1,3 +1,5 @@
+// packages/i18n/tsconfig.test.json
+
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {

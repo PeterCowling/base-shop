@@ -1,4 +1,4 @@
-// src/app/[lang]/shop/page.tsx
+// apps/shop-abc/src/app/[lang]/[lang]/shop/page.tsx
 import type { SKU } from "@/lib/products";
 import { PRODUCTS } from "@/lib/products";
 import type { Metadata } from "next";

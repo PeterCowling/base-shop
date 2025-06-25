@@ -1,4 +1,4 @@
-// src/i18n/locales.ts
+// packages/i18n/src/locales.ts
 export const locales = ["en", "de", "it"] as const;
 export type Locale = (typeof locales)[number];
 

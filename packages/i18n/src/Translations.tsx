@@ -1,4 +1,5 @@
-// src/i18n/Translations.tsx
+// packages/i18n/src/Translations.tsx
+
 "use client";
 
 import { createContext, ReactNode, useContext } from "react";

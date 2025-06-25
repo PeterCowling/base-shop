@@ -1,10 +1,10 @@
-/* tsconfig.base.json */
+// tsconfig.base.json
 {
   "compilerOptions": {
-    /* …unchanged options… */
     "baseUrl": ".",
     "esModuleInterop": true,
     "skipLibCheck": true,
+
     "paths": {
       "@platform-core/*": ["packages/platform-core/*"],
       "@platform-machine/*": ["packages/platform-machine/*"],
@@ -21,6 +21,7 @@
 
       "@lib/*": ["packages/platform-core/*", "packages/lib/*"],
       "@/lib/*": ["packages/platform-core/*", "packages/lib/*"],
+
       "@contexts/*": [
         "packages/platform-core/contexts/*",
         "packages/lib/contexts/*"
@@ -30,11 +31,19 @@
         "packages/lib/contexts/*"
       ],
 
-      "@i18n/*": ["packages/i18n/*"],
-      "@/i18n/*": ["packages/i18n/*"],
+      /* ──────────────────────────────────────────────────────────
+         @i18n — first try TS/TSX source under src/, then raw JSON
+      ────────────────────────────────────────────────────────── */
+      "@i18n/*": [
+        "packages/i18n/src/*", // code (Translations.tsx, locales.ts …)
+        "packages/i18n/*" // locale JSON files (en.json, de.json …)
+      ],
+      "@/i18n/*": ["packages/i18n/src/*", "packages/i18n/*"],
 
       "@svelte-tool/*": ["packages/svelte-tool/*"],
+
       "@types": ["packages/types/dist/index.d.ts", "src/types/index.ts"],
+
       "@acme/tailwind-config": ["packages/tailwind-config/src/index.ts"]
     }
   }

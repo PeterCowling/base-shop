@@ -1,3 +1,5 @@
+// apps/shop-abc/src/app/api/checkout-session/route.ts
+
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { stripe } from "@/lib/stripeServer";
 import { NextRequest, NextResponse } from "next/server";

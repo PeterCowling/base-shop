@@ -1,3 +1,5 @@
+// packages/i18n/tsconfig.json
+
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
@@ -6,6 +8,13 @@
     "rootDir": ".", // all sources in this folder
     "jsx": "react-jsx" // enable TSX support
   },
-  "include": ["*.ts", "*.tsx"], // Translations.tsx, locales.ts …
+  "include": [
+    "*.ts",
+    "*.tsx",
+    "src/Translations.d.ts",
+    "src/Translations.tsx",
+    "src/locales.d.ts",
+    "src/locales.ts"
+  ],
   "exclude": ["dist"]
 }

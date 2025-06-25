@@ -13,7 +13,7 @@
     "build": "turbo run build",
     "start": "turbo run start --parallel",
     "lint": "turbo run lint",
-    "lint:all": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\"",
+    "lint:all": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --ignore-pattern '**/dist/**'",
     "typecheck": "tsc -b --pretty",
     "test": "turbo run test",
     "e2e": "playwright test",

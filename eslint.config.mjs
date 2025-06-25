@@ -12,6 +12,10 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    // Ignore build output folders so shell-expanded globs don't lint them
+    ignores: ["**/dist/**", "**/.next/**"],
+  },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
 

@@ -1,6 +1,6 @@
-// packages/platform-core/__tests__/middleware.test.ts
+// apps/cms/__tests__/middleware.test.ts
 import { jest } from "@jest/globals";
-import type { getToken as GetTokenFn } from "next-auth/jwt";
+import type { getToken as GetTokenFn, JWT } from "next-auth/jwt";
 import { middleware } from "../src/middleware";
 
 // ---------------------------------------------------------------------------
@@ -17,17 +17,21 @@ jest.mock("next-auth/jwt", () => {
   };
 });
 
-// get a strongly-typed handle to the mocked function
-const getToken = (await import("next-auth/jwt"))
-  .getToken as unknown as jest.MockedFunction<typeof GetTokenFn>;
+// strongly-typed handle to the mocked function
+const { getToken } = require("next-auth/jwt") as {
+  getToken: jest.MockedFunction<typeof GetTokenFn>;
+};
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-function createRequest(path: string) {
+type MiddlewareRequest = Parameters<typeof middleware>[0];
+
+function createRequest(path: string): MiddlewareRequest {
   const url = new URL(`http://localhost${path}`) as URL & { clone(): URL };
   url.clone = () => new URL(url.toString());
-  return { nextUrl: url, url: url.toString() } as any;
+  // minimal object that satisfies Next middleware
+  return { nextUrl: url, url: url.toString() } as unknown as MiddlewareRequest;
 }
 
 // ---------------------------------------------------------------------------
@@ -47,7 +51,8 @@ describe("middleware", () => {
   });
 
   it("viewers accessing admin routes are rewritten to /403", async () => {
-    getToken.mockResolvedValueOnce({ role: "viewer" } as any);
+    const viewerToken = { role: "viewer" } as JWT;
+    getToken.mockResolvedValueOnce(viewerToken);
 
     const req = createRequest("/shop/foo/products/1/edit");
     const res = await middleware(req);

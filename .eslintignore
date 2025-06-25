@@ -1,2 +1,10 @@
-packages/**/dist
+# .eslintignore
+# ─────────────────────────────────────────
+# Ignore all compiled output everywhere
+**/dist/**       
+
+# Keep your existing rule
 packages/types/src/*.js
+
+**/.next/**
+

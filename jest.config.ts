@@ -1,36 +1,60 @@
-// jest.config.ts
+// jest.config.ts   (repo root – replace the existing file completely)
 
-const { pathsToModuleNameMapper } = require("ts-jest");
-const ts = require("typescript");
-const path = require("path");
-const { config } = ts.readConfigFile(
-  path.join(__dirname, "tsconfig.base.json"),
-  ts.sys.readFile
-);
-const { compilerOptions } = config;
+/**
+ * Jest configuration for the entire monorepo.
+ *  – compiles every .ts / .tsx file with ts‑jest
+ *  – supports path aliases used in tsconfig.json
+ *  – runs tests in a JSDOM environment so React tests work out‑of‑the‑box
+ */
 
-/** @type {import('jest').Config} */
-module.exports = {
-  preset: "ts-jest/presets/js-with-ts-esm",
+import type { Config } from "jest";
+
+const config: Config = {
+  preset: "ts-jest", // <<—   ENABLE ts‑jest
   testEnvironment: "jsdom",
-  extensionsToTreatAsEsm: [".ts", ".tsx"],
-  globals: {
-    "ts-jest": {
-      useESM: true,
-      tsconfig: path.join(__dirname, "tsconfig.test.json"),
-    },
-  },
+  setupFiles: ["<rootDir>/test/setupFetchPolyfill.ts"],
+
+  /** Transform every TypeScript file with ts‑jest */
   transform: {
-    "^.+\\.[tj]sx?$": ["ts-jest", { useESM: true }],
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        tsconfig: "<rootDir>/tsconfig.json",
+        // compile to CommonJS so that the tests that call `require()` still work
+        useESM: false,
+      },
+    ],
   },
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
-    prefix: "<rootDir>/",
-  }),
-  testMatch: ["**/__tests__/**/*.(test|spec).[jt]s?(x)"],
-  testPathIgnorePatterns: [
-    "<rootDir>/node_modules",
-    "<rootDir>/.next",
-    "<rootDir>/dist",
-  ],
+
+  /**
+   * Map the path aliases that appear in source files
+   * so Jest can resolve them without extra hacks.
+   * Adjust the paths below if the folder layout changes.
+   */
+  moduleNameMapper: {
+    "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/src/$1",
+    "^@apps/(.*)$": "<rootDir>/apps/$1/src",
+    "^@lib/(.*)$": "<rootDir>/packages/lib/src/$1",
+    "^@ui/(.*)$": "<rootDir>/packages/ui/src/$1",
+    // CSS / asset stubs
+    "\\.(css|less|sass|scss)$": "identity-obj-proxy",
+  },
+
+  /**
+   * Allow Jest to transform everything *except* node_modules,
+   * but still transpile any modern JS shipped by ulid, etc.
+   */
+  transformIgnorePatterns: ["node_modules/(?!(ulid)/)"],
+
+  /** Recognise TypeScript & JSX extensions automatically */
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
+
+  /**
+   * Most packages invoke Jest with
+   *   jest --config ../../jest.config.ts
+   * so <rootDir> already points to the repository root.
+   */
+  rootDir: ".",
 };
+
+export default config;

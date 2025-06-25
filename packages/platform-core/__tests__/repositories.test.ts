@@ -1,11 +1,11 @@
 // packages/platform-core/__tests__/repositories.test.ts
-import type { ProductPublication } from "@/lib/products";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import type { ProductPublication } from "../products";
 
 /** The shape of the JSON-repository module we import dynamically */
-type JsonRepo = typeof import("@/lib/repositories/json");
+type JsonRepo = typeof import("../repositories/json");
 
 /**
  * Creates an isolated temp repo, runs `cb`, then restores CWD.
@@ -22,7 +22,7 @@ async function withRepo(
   process.chdir(dir);
   jest.resetModules();
 
-  const repo: JsonRepo = await import("@/lib/repositories/json");
+  const repo: JsonRepo = await import("../repositories/json");
   try {
     await cb(repo, "test", dir);
   } finally {

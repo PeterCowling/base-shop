@@ -1,9 +1,9 @@
 // packages/platform-core/repositories/json.ts
-import type { Locale, ShopSettings } from "@types";
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
+import type { Locale, ShopSettings } from "../../types";
 import { ProductPublication } from "../products";
 
 /* -------------------------------------------------------------------------- */

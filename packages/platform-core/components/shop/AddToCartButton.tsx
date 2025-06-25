@@ -2,8 +2,8 @@
 "use client";
 
 import { useCart } from "@/contexts/CartContext";
-import type { SKU } from "@/lib/products";
 import { useState } from "react";
+import type { SKU } from "../../products";
 
 type Props = {
   sku: SKU;

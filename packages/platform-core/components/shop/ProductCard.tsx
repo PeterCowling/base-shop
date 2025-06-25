@@ -1,8 +1,8 @@
 // src/components/shop/ProductCard.tsx
-import type { SKU } from "@/lib/products";
 import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
+import type { SKU } from "../../products";
 import AddToCartButton from "./AddToCartButton";
 
 function ProductCardInner({ sku }: { sku: SKU }) {

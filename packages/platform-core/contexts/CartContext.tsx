@@ -2,18 +2,18 @@
 "use client";
 
 import {
-  asSetCookieHeader,
-  CART_COOKIE,
-  encodeCartCookie,
-} from "@/lib/cartCookie";
-import type { SKU } from "@/lib/products";
-import {
   createContext,
   ReactNode,
   useContext,
   useEffect,
   useReducer,
 } from "react";
+import {
+  asSetCookieHeader,
+  CART_COOKIE,
+  encodeCartCookie,
+} from "../cartCookie";
+import type { SKU } from "../products";
 
 /* ---------- types ---------- */
 

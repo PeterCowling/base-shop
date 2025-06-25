@@ -30,7 +30,7 @@ describe("media actions", () => {
   it("listMedia returns empty array when dir missing", async () => {
     await withTmpDir(async () => {
       const { listMedia } = await import(
-        /* @vite-ignore */ "../src/actions/media.ts"
+        /* @vite-ignore */ "../src/actions/media"
       );
       const files = await listMedia("shop1");
       expect(files).toEqual([]);
@@ -40,7 +40,7 @@ describe("media actions", () => {
   it("uploadMedia stores file and returns path", async () => {
     await withTmpDir(async (dir) => {
       const { uploadMedia } = await import(
-        /* @vite-ignore */ "../src/actions/media.ts"
+        /* @vite-ignore */ "../src/actions/media"
       );
 
       const file = new File(["data"], "test.txt", { type: "text/plain" });

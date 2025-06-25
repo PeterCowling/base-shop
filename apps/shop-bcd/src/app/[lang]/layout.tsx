@@ -2,7 +2,7 @@
 
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
-import { TranslationsProvider } from "@i18n/Translations";
+import TranslationsProvider from "@i18n/Translations";
 import { Locale, resolveLocale } from "@i18n/locales";
 import type { ReactNode } from "react";
 import "../globals.css";
@@ -18,6 +18,7 @@ export default async function LocaleLayout({
   /* `lang` will be `undefined` for `/`, or e.g. `"en"` for `/en`          */
   const [raw] = params.lang ?? [];
   const lang: Locale = resolveLocale(raw);
+
   /* Dynamic import of the locale JSON. Webpack bundles only en/de/it.     */
   const messages = (
     await import(

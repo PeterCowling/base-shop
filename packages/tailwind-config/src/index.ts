@@ -1,4 +1,13 @@
+// /packages/tailwind-config/src/index.ts
 import type { Config } from "tailwindcss";
+
+/* ------------------------------------------------------------
+ *  Runtime diagnostics — confirm the preset really loads
+ * ------------------------------------------------------------ */
+// eslint-disable-next-line no-console
+console.log(
+  `[@acme/tailwind-config] ✅  preset imported (cwd: ${process.cwd()})`
+);
 
 const preset: Partial<Config> = {
   theme: {

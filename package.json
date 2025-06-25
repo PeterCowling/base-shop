@@ -37,6 +37,7 @@
     "ulid": "^3.0.1"
   },
   "devDependencies": {
+    "@acme/tailwind-config": "workspace:*",
     "@eslint/eslintrc": "^3",
     "@playwright/test": "^1.53.1",
     "@storybook/addon-a11y": "^9.0.13",

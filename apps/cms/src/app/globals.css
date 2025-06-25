@@ -1,5 +1,6 @@
 /* apps/cms/src/app/globals.css
    CMS-wide globals powered by design-system tokens                    */
+@config "../../../../tailwind.config.mjs";
 
 @import "@themes/base/tokens.css";
 @import "tailwindcss";

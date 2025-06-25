@@ -34,7 +34,8 @@
       "@/i18n/*": ["packages/i18n/*"],
 
       "@svelte-tool/*": ["packages/svelte-tool/*"],
-      "@types": ["packages/types/dist/index.d.ts", "src/types/index.ts"]
+      "@types": ["packages/types/dist/index.d.ts", "src/types/index.ts"],
+      "@acme/tailwind-config": ["packages/tailwind-config/src/index.ts"]
     }
   }
 }

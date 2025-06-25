@@ -1,7 +1,9 @@
 // apps/cms/next.config.mjs
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const shopsDir = path.resolve(__dirname, "../..", "data", "shops");
 let firstShop = "abc";
 try {

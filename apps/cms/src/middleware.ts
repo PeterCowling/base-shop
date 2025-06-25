@@ -40,7 +40,7 @@ export async function middleware(req: NextRequest) {
   if (role === "viewer" && match) {
     const url = new URL("/403", req.url);
     url.searchParams.set("shop", match[1]);
-    return NextResponse.rewrite(url);
+    return NextResponse.rewrite(url, { status: 403 });
   }
 
   return NextResponse.next();

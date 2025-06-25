@@ -3,9 +3,9 @@ import { jest } from "@jest/globals";
 import type { getToken as GetTokenFn, JWT } from "next-auth/jwt";
 import { middleware } from "../src/middleware";
 
-// ---------------------------------------------------------------------------
-// Mock next-auth/jwt
-// ---------------------------------------------------------------------------
+/* -------------------------------------------------------------------------- */
+/* Mock next-auth/jwt                                                         */
+/* -------------------------------------------------------------------------- */
 jest.mock("next-auth/jwt", () => {
   const actual = jest.requireActual(
     "next-auth/jwt"
@@ -17,26 +17,24 @@ jest.mock("next-auth/jwt", () => {
   };
 });
 
-// strongly-typed handle to the mocked function
-const { getToken } = require("next-auth/jwt") as {
-  getToken: jest.MockedFunction<typeof GetTokenFn>;
-};
+/** Strongly-typed handle to the *mocked* getToken */
+import { getToken as mockedGetToken } from "next-auth/jwt";
+const getToken = mockedGetToken as jest.MockedFunction<typeof GetTokenFn>;
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+/* -------------------------------------------------------------------------- */
+/* Helpers                                                                    */
+/* -------------------------------------------------------------------------- */
 type MiddlewareRequest = Parameters<typeof middleware>[0];
 
 function createRequest(path: string): MiddlewareRequest {
   const url = new URL(`http://localhost${path}`) as URL & { clone(): URL };
   url.clone = () => new URL(url.toString());
-  // minimal object that satisfies Next middleware
   return { nextUrl: url, url: url.toString() } as unknown as MiddlewareRequest;
 }
 
-// ---------------------------------------------------------------------------
-// Tests
-// ---------------------------------------------------------------------------
+/* -------------------------------------------------------------------------- */
+/* Tests                                                                      */
+/* -------------------------------------------------------------------------- */
 afterEach(() => jest.resetAllMocks());
 
 describe("middleware", () => {

@@ -1,8 +1,9 @@
+// packages/platform-core/__tests__/addToCartButton.test.tsx
 import { fireEvent, render, screen } from "@testing-library/react";
 import AddToCartButton from "../components/shop/AddToCartButton";
-// @ts-ignore
-import { CartProvider, useCart } from "../contexts/CartContext.tsx";
+import { CartProvider, useCart } from "../contexts/CartContext";
 import { PRODUCTS } from "../products";
+
 jest.mock("@/lib/cartCookie", () => jest.requireActual("../cartCookie.ts"));
 jest.mock("@/contexts/CartContext", () =>
   jest.requireActual("../contexts/CartContext.tsx")
@@ -21,9 +22,12 @@ describe("AddToCartButton", () => {
         <Qty />
       </CartProvider>
     );
+
     const btn = screen.getByRole("button");
     expect(screen.getByTestId("qty").textContent).toBe("0");
+
     fireEvent.click(btn);
+
     expect(screen.getByTestId("qty").textContent).toBe("1");
   });
 });

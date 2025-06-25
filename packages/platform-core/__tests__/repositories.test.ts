@@ -1,18 +1,28 @@
-import { ProductPublication } from "@/lib/products";
+// packages/platform-core/__tests__/repositories.test.ts
+import type { ProductPublication } from "@/lib/products";
 import { promises as fs } from "node:fs";
-import * as os from "node:os";
-import * as path from "node:path";
+import os from "node:os";
+import path from "node:path";
 
+/** The shape of the JSON-repository module we import dynamically */
+type JsonRepo = typeof import("@/lib/repositories/json");
+
+/**
+ * Creates an isolated temp repo, runs `cb`, then restores CWD.
+ * Everything stays strongly-typed – no `any`.
+ */
 async function withRepo(
-  cb: (repo: any, shop: string, dir: string) => Promise<void>
-) {
+  cb: (repo: JsonRepo, shop: string, dir: string) => Promise<void>
+): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "repo-"));
   const shopDir = path.join(dir, "data", "shops", "test");
   await fs.mkdir(shopDir, { recursive: true });
+
   const cwd = process.cwd();
   process.chdir(dir);
   jest.resetModules();
-  const repo = await import("@/lib/repositories/json");
+
+  const repo: JsonRepo = await import("@/lib/repositories/json");
   try {
     await cb(repo, "test", dir);
   } finally {
@@ -20,15 +30,21 @@ async function withRepo(
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/* Tests                                                                      */
+/* -------------------------------------------------------------------------- */
+
 describe("json repository", () => {
   it("readRepo returns empty array when file missing or invalid", async () => {
     await withRepo(async (repo, shop, dir) => {
       expect(await repo.readRepo(shop)).toEqual([]);
+
       await fs.writeFile(
         path.join(dir, "data", "shops", shop, "products.json"),
         "bad",
         "utf8"
       );
+
       expect(await repo.readRepo(shop)).toEqual([]);
     });
   });
@@ -49,6 +65,7 @@ describe("json repository", () => {
         status: "active",
         row_version: 1,
       };
+
       await repo.writeRepo(shop, [product]);
 
       const updated = await repo.updateProductInRepo(shop, {
@@ -63,6 +80,7 @@ describe("json repository", () => {
 
       const copy = await repo.duplicateProductInRepo(shop, "1");
       expect(copy.id).not.toBe("1");
+
       const list = await repo.readRepo(shop);
       expect(list).toHaveLength(2);
       await expect(repo.duplicateProductInRepo(shop, "x")).rejects.toThrow();

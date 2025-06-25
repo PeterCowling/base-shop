@@ -1,59 +1,76 @@
-// packages/platform-core/__tests__/authOptions.test.ts
-import type { Session } from "next-auth";
+// apps/cms/__tests__/authOptions.test.ts
+import type { Session, User } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import type { CredentialsConfig } from "next-auth/providers/credentials";
 import { authOptions } from "../src/auth/options";
 
+/** Narrow a provider to the Credentials variant */
 function isCredentialsProvider(p: unknown): p is CredentialsConfig {
   return (
-    typeof p === "object" && p !== null && (p as any).type === "credentials"
+    typeof p === "object" &&
+    p !== null &&
+    "type" in p &&
+    (p as { type?: unknown }).type === "credentials"
   );
 }
 
 describe("authOptions", () => {
-  // --- provider with an `authorize` method ---------------------------------
   const provider = authOptions.providers.find(isCredentialsProvider)!;
 
   it("authorize returns user when credentials match", async () => {
     const user = await provider.authorize!.call(
-      null,
+      undefined,
       { email: "admin@example.com", password: "admin" },
-      null // req – not needed in unit test
+      undefined
     );
 
-    expect(user).toMatchObject({ email: "admin@example.com", role: "admin" });
+    expect(user).toMatchObject({
+      id: expect.any(String),
+      email: "admin@example.com",
+      role: "admin",
+    });
   });
 
   it("authorize returns null otherwise", async () => {
     const user = await provider.authorize!.call(
-      null,
+      undefined,
       { email: "admin@example.com", password: "wrong" },
-      null
+      undefined
     );
 
     expect(user).toBeNull();
   });
 
   it("jwt callback forwards role", async () => {
-    const token = (await authOptions.callbacks!.jwt!.call(null, {
-      token: {} as JWT,
-      user: { email: "x", role: "viewer" } as any,
-    })) as JWT & { role?: string };
+    const viewerUser: User & { role: string } = {
+      id: "viewer-id",
+      email: "viewer@example.com",
+      role: "viewer",
+    };
 
-    expect(token).toHaveProperty("role", "viewer");
+    const token = await authOptions.callbacks!.jwt!.call(null, {
+      token: {} as JWT,
+      user: viewerUser,
+    });
+
+    expect((token as JWT & { role?: string }).role).toBe("viewer");
   });
 
   it("session callback exposes role", async () => {
-    const inputSession = {
-      user: {},
-      expires: new Date(Date.now() + 86_400_000).toISOString(), // +1 day
-    } as Session;
+    const inputSession: Session = {
+      user: {} as User,
+      expires: new Date(Date.now() + 86_400_000).toISOString(),
+    };
 
-    const session = (await authOptions.callbacks!.session!.call(null, {
+    const adminToken = { role: "admin" } as JWT & { role: string };
+
+    const session = await authOptions.callbacks!.session!.call(null, {
       session: inputSession,
-      token: { role: "admin" } as any,
-    })) as Session & { user: { role?: string } };
+      token: adminToken,
+    });
 
-    expect(session.user).toHaveProperty("role", "admin");
+    expect((session as Session & { user: { role?: string } }).user.role).toBe(
+      "admin"
+    );
   });
 });

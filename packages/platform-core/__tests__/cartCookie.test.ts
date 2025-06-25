@@ -1,12 +1,11 @@
-// @ts-ignore
+// packages/platform-core/__tests__/cartCookie.test.ts
 import {
   asSetCookieHeader,
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
 } from "../cartCookie";
-// @ts-ignore
-import type { CartState } from "../contexts/CartContext.tsx";
+import type { CartState } from "../contexts/CartContext";
 import { PRODUCTS } from "../products";
 
 describe("cart cookie helpers", () => {
@@ -16,6 +15,7 @@ describe("cart cookie helpers", () => {
 
   it("encodes and decodes the cart", () => {
     const encoded = encodeCartCookie(state);
+
     expect(encoded).toBe(encodeURIComponent(JSON.stringify(state)));
     expect(decodeCartCookie(encoded)).toEqual(state);
   });
@@ -27,6 +27,7 @@ describe("cart cookie helpers", () => {
 
   it("formats Set-Cookie header", () => {
     const encoded = "value";
+
     expect(asSetCookieHeader(encoded)).toBe(
       `${CART_COOKIE}=${encoded}; Path=/; Max-Age=${60 * 60 * 24 * 30}; SameSite=Lax`
     );

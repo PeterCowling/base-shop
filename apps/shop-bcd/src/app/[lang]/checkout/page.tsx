@@ -1,4 +1,4 @@
-// src/app/[lang]/checkout/page.tsx
+// apps/shop-bcd/src/app/[lang]/checkout/page.tsx
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/checkout/OrderSummary";
 import { Locale, resolveLocale } from "@/i18n/locales";

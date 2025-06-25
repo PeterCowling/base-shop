@@ -1,4 +1,4 @@
-// apps/shop-bcd/src/[lang]/shop/ShopClient.tsx
+// apps/shop-bcd/src/app/[lang]/shop/ShopClient.tsx
 "use client";
 
 import FilterBar, { Filters } from "@/components/shop/FilterBar";

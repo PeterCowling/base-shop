@@ -1,4 +1,5 @@
-// src/app/[lang]/product/[slug]/page.tsx
+// apps/shop-bcd/src/app/[lang]/product/[slug]/page.tsx
+
 import { getProductBySlug } from "@/lib/products";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";

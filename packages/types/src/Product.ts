@@ -19,4 +19,7 @@ export interface ProductPublication {
   row_version: number;
   created_at: string;
   updated_at: string;
+  rentalTerms?: string;
+  deposit?: number;
+  availability?: boolean;
 }

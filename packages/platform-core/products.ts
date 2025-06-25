@@ -87,6 +87,9 @@ export interface ProductCore {
   images: string[];
   created_at: string; // ISO timestamp
   updated_at: string;
+  rentalTerms?: string;
+  deposit?: number;
+  availability?: boolean;
 }
 
 export type PublicationStatus = "draft" | "active" | "archived";

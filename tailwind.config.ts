@@ -1,16 +1,17 @@
+// /tailwind.config.ts  (keeps the repo working even when you CD into /packages/ui)
+import preset from "@acme/tailwind-config";
 import type { Config } from "tailwindcss";
 
-export default <Partial<Config>>{
+const config: Config = {
+  presets: [preset],
+
+  /* ①  NEVER scan node_modules or dist — only source directories.
+     ②  Point at every place in your repo where Tailwind classes live. */
   content: [
-    "./apps/**/*.{ts,tsx,mdx}", // all Next.js apps
-    "./packages/ui/components/**/*.{ts,tsx,mdx}", // shared UI kit
+    "./apps/**/*.{ts,tsx,mdx}",
+    "./packages/{ui,platform-core,platform-machine,i18n,themes}/**/*.{ts,tsx,mdx}",
+    ".storybook/**/*.{ts,tsx,mdx}",
   ],
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ["var(--font-inter)", "sans-serif"],
-      },
-    },
-  },
-  plugins: [require("@tailwindcss/typography"), require("@tailwindcss/forms")],
 };
+
+export default config;

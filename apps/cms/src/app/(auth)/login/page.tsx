@@ -8,7 +8,7 @@ import { useState } from "react";
 export default function LoginPage() {
   const router = useRouter();
   const search = useSearchParams();
-  const callbackUrl = search.get("callbackUrl") ?? "/products";
+  const callbackUrl = search.get("callbackUrl") ?? "/shop/abc/products";
 
   const [error, setError] = useState(false);
 

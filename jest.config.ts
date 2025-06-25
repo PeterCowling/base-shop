@@ -13,6 +13,7 @@ const config: Config = {
   preset: "ts-jest", // <<—   ENABLE ts‑jest
   testEnvironment: "jsdom",
   setupFiles: ["<rootDir>/test/setupFetchPolyfill.ts"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 
   /** Transform every TypeScript file with ts‑jest */
   transform: {
@@ -32,10 +33,11 @@ const config: Config = {
    * Adjust the paths below if the folder layout changes.
    */
   moduleNameMapper: {
-    "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/src/$1",
+    "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/$1",
     "^@apps/(.*)$": "<rootDir>/apps/$1/src",
-    "^@lib/(.*)$": "<rootDir>/packages/lib/src/$1",
-    "^@ui/(.*)$": "<rootDir>/packages/ui/src/$1",
+    "^@lib/(.*)$": "<rootDir>/packages/lib/$1",
+    "^@/lib/(.*)$": "<rootDir>/packages/platform-core/$1",
+    "^@ui/(.*)$": "<rootDir>/packages/ui/$1",
     // CSS / asset stubs
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
   },

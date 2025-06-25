@@ -1,24 +1,58 @@
-/* tsconfig.base.json */
+// tsconfig.base.json
 {
   "compilerOptions": {
-    /* …unchanged options… */
-    "baseUrl": ".",
-    "esModuleInterop": true,
+    /* ------------------------------------------------------------ */
+    /*  Language & emit                                             */
+    /* ------------------------------------------------------------ */
+    "target": "ES2022",
+    "module": "NodeNext",
+    "lib": ["ES2022", "DOM"],
+
+    /* ------------------------------------------------------------ */
+    /*  Type-checking                                               */
+    /* ------------------------------------------------------------ */
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
+
+    /* ------------------------------------------------------------ */
+    /*  Module resolution & interop                                 */
+    /* ------------------------------------------------------------ */
+    "moduleResolution": "NodeNext",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+
+    /* ------------------------------------------------------------ */
+    /*  Base URL & path aliases                                     */
+    /* ------------------------------------------------------------ */
+    "baseUrl": ".",
     "paths": {
+      /* Platform-core (shallow) */
       "@platform-core/*": ["packages/platform-core/*"],
+
+      /* ⭐ NEW: deep repositories import — fixes ts(2307) */
+      "@platform-core/repositories/*": [
+        "packages/platform-core/repositories/*"
+      ],
+
+      /* Other monorepo packages */
       "@platform-machine/*": ["packages/platform-machine/*"],
       "@themes/*": ["packages/themes/*"],
       "@ui/*": ["packages/ui/*"],
 
-      /* ↓ CMS alias (runtime code) */
+      /* CMS runtime alias */
       "@cms/*": ["apps/cms/src/*"],
 
-      /* compat & generic UI */
+      /* Component shortcuts */
       "@/components/pdp/*": ["packages/platform-core/components/pdp/*"],
       "@/components/shop/*": ["packages/platform-core/components/shop/*"],
       "@/components/*": ["packages/ui/components/*"],
 
+      /* Library & shared logic */
       "@lib/*": ["packages/platform-core/*", "packages/lib/*"],
       "@/lib/*": ["packages/platform-core/*", "packages/lib/*"],
       "@contexts/*": [
@@ -30,10 +64,14 @@
         "packages/lib/contexts/*"
       ],
 
+      /* Internationalisation */
       "@i18n/*": ["packages/i18n/*"],
       "@/i18n/*": ["packages/i18n/*"],
 
+      /* Svelte tooling */
       "@svelte-tool/*": ["packages/svelte-tool/*"],
+
+      /* Global types (built output + source) */
       "@types": ["packages/types/dist/index.d.ts", "src/types/index.ts"]
     }
   }

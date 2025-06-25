@@ -1,9 +1,23 @@
+// packages/platform-core/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
-    "composite": true /* required for -b */,
+    /* ------------------------------------------------------------------ */
+    /*  Package-local extras — nothing here overrides the root settings   */
+    /* ------------------------------------------------------------------ */
+    "composite": true, // ↳ still part of the project build
     "outDir": "dist",
-    "jsx": "react-jsx" // 👈 add this line (or "preserve")
+    "jsx": "react-jsx",
+
+    /*  ⭐ ADD: tell TS where to find @/… modules *inside this package*   */
+    "baseUrl": ".", // <- points at packages/platform-core
+    "paths": {
+      "@/components/shop/*": ["components/shop/*"],
+      "@/contexts/*": ["contexts/*"],
+      "@/lib/*": ["lib/*"]
+    }
   },
+
   "include": ["**/*.ts", "**/*.tsx"]
 }

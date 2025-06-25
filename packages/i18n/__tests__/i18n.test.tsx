@@ -1,3 +1,5 @@
+// packages/i18n/__tests__/i18n.test.tsx
+
 import { render, screen } from "@testing-library/react";
 
 import { resolveLocale } from "../locales";
@@ -10,7 +12,7 @@ describe("resolveLocale", () => {
   });
 
   it("falls back to 'en'", () => {
-    expect(resolveLocale("fr" as any)).toBe("en");
+    expect(resolveLocale("fr")).toBe("en");
     expect(resolveLocale(undefined)).toBe("en");
   });
 });

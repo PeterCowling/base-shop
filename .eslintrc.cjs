@@ -4,5 +4,6 @@ module.exports = {
   ignorePatterns: [
     "**/dist/**", // compiled packages
     "**/.next/**", // Next.js build output
+    "**/index.js",
   ],
 };

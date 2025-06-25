@@ -1,4 +1,4 @@
-// src/components/shop/AddToCartButton.tsx
+// packages/platform-core/components/shop/AddToCartButton.tsx
 "use client";
 
 import { useCart } from "@/contexts/CartContext";

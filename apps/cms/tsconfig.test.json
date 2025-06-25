@@ -1,0 +1,10 @@
+// apps/cms/tsconfig.test.json         ← create or edit
+
+{
+  "extends": "./tsconfig.json", // already there
+  "compilerOptions": {
+    // 🟢  ONLY add *extra* keys here – do not copy the whole "paths" map
+    "types": ["jest", "node"]
+  },
+  "include": ["src/**/*", "__tests__/**/*"]
+}

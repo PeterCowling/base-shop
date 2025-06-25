@@ -8,3 +8,5 @@ packages/types/src/*.js
 
 **/.next/**
 
+# Ignore any generated JavaScript entrypoints
+**/index.js

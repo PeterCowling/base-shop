@@ -1,12 +1,13 @@
 // packages/platform-core/__tests__/addToCartButton.test.tsx
-import { fireEvent, render, screen } from "@testing-library/react";
-import AddToCartButton from "../components/shop/AddToCartButton";
-import { CartProvider, useCart } from "../contexts/CartContext";
-import { PRODUCTS } from "../products";
 
-jest.mock("@/lib/cartCookie", () => jest.requireActual("../cartCookie.ts"));
+import AddToCartButton from "@/components/shop/AddToCartButton";
+import { CartProvider, useCart } from "@/contexts/CartContext";
+import { PRODUCTS } from "@platform-core/products";
+import { fireEvent, render, screen } from "@testing-library/react";
+
+jest.mock("@/lib/cartCookie", () => jest.requireActual("@/lib/cartCookie"));
 jest.mock("@/contexts/CartContext", () =>
-  jest.requireActual("../contexts/CartContext.tsx")
+  jest.requireActual("@/contexts/CartContext")
 );
 
 function Qty() {

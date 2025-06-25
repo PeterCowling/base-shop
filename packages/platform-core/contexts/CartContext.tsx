@@ -1,3 +1,4 @@
+/* packages/platform-core/contexts/CartContext.tsx */
 "use client";
 
 import {
@@ -35,15 +36,24 @@ function reducer(state: CartState, action: Action): CartState {
         [action.sku.id]: { sku: action.sku, qty: (line?.qty ?? 0) + 1 },
       };
     }
+
     case "remove": {
-      const { [action.id]: _, ...rest } = state;
-      return rest;
+      /** remove without creating an unused binding */
+      const next = { ...state };
+      delete next[action.id];
+      return next;
     }
-    case "setQty":
+
+    case "setQty": {
       return {
         ...state,
-        [action.id]: { ...state[action.id], qty: Math.max(1, action.qty) },
+        [action.id]: {
+          ...state[action.id],
+          qty: Math.max(1, action.qty),
+        },
       };
+    }
+
     default:
       return state;
   }
@@ -68,10 +78,10 @@ function persist(state: CartState) {
   if (typeof window !== "undefined") {
     const encoded = encodeCartCookie(state);
 
-    /* localStorage for client rehydration */
+    // localStorage for client re-hydration
     localStorage.setItem(LS_KEY, encoded);
 
-    /* cookie for server-side pages (e.g. /checkout) */
+    // cookie for SSR routes (e.g. /checkout)
     document.cookie = asSetCookieHeader(encoded);
   }
 }

@@ -2,7 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "module": "esnext"
+    "module": "esnext",
+    "types": ["@testing-library/jest-dom", "jest", "node", "react"]
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.test.ts", "**/*.test.tsx"]
 }

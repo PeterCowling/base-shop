@@ -3,7 +3,7 @@ import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
-import type { Locale, ShopSettings } from "../../types";
+import type { Locale, Shop, ShopSettings } from "../../types";
 import { ProductPublication } from "../products";
 
 /* -------------------------------------------------------------------------- */
@@ -42,6 +42,11 @@ function settingsPath(shop: string): string {
   return path.join(DATA_ROOT, shop, "settings.json");
 }
 
+/** Path like data/shops/abc/shop.json */
+function shopPath(shop: string): string {
+  return path.join(DATA_ROOT, shop, "shop.json");
+}
+
 /** Ensure `data/shops/<shop>` exists (mkdir -p). */
 async function ensureDir(shop: string): Promise<void> {
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
@@ -66,6 +71,24 @@ export async function writeSettings(
   const tmp = `${settingsPath(shop)}.${Date.now()}.tmp`;
   await fs.writeFile(tmp, JSON.stringify(settings, null, 2), "utf8");
   await fs.rename(tmp, settingsPath(shop));
+}
+
+export async function readShop(shop: string): Promise<Shop> {
+  try {
+    const buf = await fs.readFile(shopPath(shop), "utf8");
+    const parsed = JSON.parse(buf) as Shop;
+    if (parsed.id) return parsed;
+  } catch {
+    // ignore
+  }
+  return { id: shop, name: shop, catalogFilters: [], themeId: "base" };
+}
+
+export async function writeShop(shop: string, info: Shop): Promise<void> {
+  await ensureDir(shop);
+  const tmp = `${shopPath(shop)}.${Date.now()}.tmp`;
+  await fs.writeFile(tmp, JSON.stringify(info, null, 2), "utf8");
+  await fs.rename(tmp, shopPath(shop));
 }
 
 /* -------------------------------------------------------------------------- */
@@ -160,4 +183,21 @@ export async function duplicateProductInRepo(
   };
   await writeRepo(shop, [copy, ...catalogue]);
   return copy;
+}
+
+export async function getShopById(shop: string): Promise<Shop> {
+  return readShop(shop);
+}
+
+export async function updateShopInRepo(
+  shop: string,
+  patch: Partial<Shop> & { id: string }
+): Promise<Shop> {
+  const current = await readShop(shop);
+  if (current.id !== patch.id) {
+    throw new Error(`Shop ${patch.id} not found in ${shop}`);
+  }
+  const updated: Shop = { ...current, ...patch };
+  await writeShop(shop, updated);
+  return updated;
 }

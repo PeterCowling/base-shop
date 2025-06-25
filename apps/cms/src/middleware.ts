@@ -3,8 +3,8 @@ import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-/** Matches write-routes like /{shop}/products/{id}/edit */
-const ADMIN_PATH_REGEX = /^\/shop\/[^/]+\/products\/[^/]+\/edit/;
+/** Matches write-routes like /{shop}/products/{id}/edit and captures the shop slug */
+const ADMIN_PATH_REGEX = /^\/shop\/([^/]+)\/products\/[^/]+\/edit/;
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
@@ -36,8 +36,11 @@ export async function middleware(req: NextRequest) {
   }
 
   /* Block viewers from write routes */
-  if (role === "viewer" && ADMIN_PATH_REGEX.test(pathname)) {
-    return NextResponse.rewrite(new URL("/403", req.url));
+  const match = ADMIN_PATH_REGEX.exec(pathname);
+  if (role === "viewer" && match) {
+    const url = new URL("/403", req.url);
+    url.searchParams.set("shop", match[1]);
+    return NextResponse.rewrite(url);
   }
 
   return NextResponse.next();

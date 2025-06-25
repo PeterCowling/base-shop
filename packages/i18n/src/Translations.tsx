@@ -1,8 +1,7 @@
 // packages/i18n/src/Translations.tsx
-
 "use client";
 
-import { createContext, ReactNode, useContext, useMemo } from "react";
+import React, { createContext, ReactNode, useContext, useMemo } from "react";
 
 /**
  * Key–value map of translation messages.
@@ -18,8 +17,8 @@ const TContext = createContext<Messages>({});
  * Props for {@link TranslationsProvider}.
  */
 interface TranslationsProviderProps {
-  children: ReactNode;
-  messages: Messages;
+  readonly children: ReactNode;
+  readonly messages: Messages;
 }
 
 /**
@@ -31,13 +30,18 @@ interface TranslationsProviderProps {
 function TranslationsProvider({
   children,
   messages,
-}: TranslationsProviderProps) {
+}: TranslationsProviderProps): React.JSX.Element {
   const value = useMemo(() => messages, [messages]);
 
   return <TContext.Provider value={value}>{children}</TContext.Provider>;
 }
 
-export default TranslationsProvider;
+/* ------------------------------------------------------------------ */
+/*  Exports                                                           */
+/* ------------------------------------------------------------------ */
+
+export { TranslationsProvider }; // named
+export default TranslationsProvider; // default
 
 /**
  * Hook that returns a translation function.
@@ -47,5 +51,5 @@ export default TranslationsProvider;
  */
 export function useTranslations() {
   const messages = useContext(TContext);
-  return (key: string) => messages[key] ?? key;
+  return (key: string): string => messages[key] ?? key;
 }

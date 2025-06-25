@@ -1,4 +1,17 @@
 // apps/cms/next.config.mjs
+import fs from "node:fs";
+import path from "node:path";
+
+const shopsDir = path.resolve(__dirname, "../..", "data", "shops");
+let firstShop = "abc";
+try {
+  const entries = fs.readdirSync(shopsDir, { withFileTypes: true });
+  const shopDir = entries.find((e) => e.isDirectory());
+  if (shopDir) firstShop = shopDir.name;
+} catch {
+  // ignore
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -12,6 +25,7 @@ const nextConfig = {
 
   env: {
     NEXT_PUBLIC_PHASE: process.env.NEXT_PUBLIC_PHASE || "demo",
+    NEXT_PUBLIC_DEFAULT_SHOP: process.env.NEXT_PUBLIC_DEFAULT_SHOP || firstShop,
   },
 };
 

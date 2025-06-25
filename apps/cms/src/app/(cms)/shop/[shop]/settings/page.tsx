@@ -1,7 +1,10 @@
 // apps/cms/src/app/(cms)/shop/[shop]/settings/page.tsx
 
-import { readSettings } from "@platform-core/repositories/json";
+import { readSettings, readShop } from "@platform-core/repositories/json";
 import type { Locale } from "@types";
+import dynamic from "next/dynamic";
+
+const ShopEditor = dynamic(() => import("./ShopEditor"));
 
 export const revalidate = 0;
 
@@ -11,7 +14,10 @@ export default async function SettingsPage({
   params: Promise<{ shop: string }>;
 }) {
   const { shop } = await params;
-  const settings = await readSettings(shop);
+  const [settings, info] = await Promise.all([
+    readSettings(shop),
+    readShop(shop),
+  ]);
 
   return (
     <div>

@@ -7,7 +7,12 @@ import "next-auth/jwt";
 /* ------------------------------------------------------------------
  *  Shared role definition
  * ---------------------------------------------------------------- */
-export type Role = "admin" | "viewer";
+export type Role =
+  | "admin"
+  | "viewer"
+  | "ShopAdmin"
+  | "CatalogManager"
+  | "ThemeEditor";
 
 /* ------------------------------------------------------------------
  *  next-auth module augmentation

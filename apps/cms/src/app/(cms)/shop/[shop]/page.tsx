@@ -1,4 +1,5 @@
-// apps/cms/src/app/(cms)/shop/[shop]/page.tsx
+//apps/cms/src/app/(cms)/shop/[shop]/page.tsx
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

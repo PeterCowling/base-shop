@@ -23,7 +23,11 @@ export default async function ProductsPage({
     readRepo(shop),
   ]);
 
-  const isAdmin = session?.user.role === "admin";
+  const isAdmin = session
+    ? ["admin", "ShopAdmin", "CatalogManager", "ThemeEditor"].includes(
+        session.user.role
+      )
+    : false;
 
   async function onCreate() {
     "use server";

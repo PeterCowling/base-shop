@@ -10,11 +10,11 @@ export default function LoginPage() {
   const search = useSearchParams();
   const callbackUrl = search.get("callbackUrl") ?? "/shop/abc/products";
 
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setError(false);
+    setError(null);
 
     const formData = new FormData(e.currentTarget);
     const email = formData.get("email") as string;
@@ -30,7 +30,8 @@ export default function LoginPage() {
     if (res?.ok) {
       router.push(res.url ?? callbackUrl); // <— navigate
     } else {
-      setError(true); // invalid creds
+      setError(res?.error ?? "Invalid email or password");
+      if (res?.error) console.error("Login error:", res.error);
     }
   }
 
@@ -53,9 +54,7 @@ export default function LoginPage() {
         className="w-full rounded-md border px-3 py-2"
       />
 
-      {error && (
-        <p className="text-sm text-red-600">Invalid email or password</p>
-      )}
+      {error && <p className="text-sm text-red-600">{error}</p>}
 
       <button className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/90">
         Continue

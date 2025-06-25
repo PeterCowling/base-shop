@@ -32,7 +32,7 @@ export const authOptions: NextAuthOptions = {
           void _password;
           return safeUser; // typed as `User` via module augmentation
         }
-        return null; // ⇒ 401
+        throw new Error("Invalid email or password");
       },
     }),
   ],

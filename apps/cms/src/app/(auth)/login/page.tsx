@@ -1,4 +1,7 @@
 // apps/cms/src/app/(auth)/login/page.tsx
+"use client";
+
+import { useEffect } from "react";
 import LoginForm from "./LoginForm";
 
 /**
@@ -8,5 +11,17 @@ import LoginForm from "./LoginForm";
 const fallbackUrl: string = "/";
 
 export default function LoginPage() {
+  // In some dev environments a stale service worker from other apps may
+  // intercept requests and break the login flow. Unregister all service
+  // workers on first load to avoid these issues.
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .getRegistrations()
+        .then((regs) => regs.forEach((r) => r.unregister()))
+        .catch(() => undefined);
+    }
+  }, []);
+
   return <LoginForm fallbackUrl={fallbackUrl} />;
 }

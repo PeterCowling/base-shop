@@ -9,6 +9,14 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
   const search = useSearchParams();
   const callbackUrl = search.get("callbackUrl") ?? fallbackUrl;
 
+  function absolutify(url: string): string {
+    try {
+      return new URL(url, window.location.origin).toString();
+    } catch {
+      return url;
+    }
+  }
+
   const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -23,7 +31,7 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
       redirect: false,
       email,
       password,
-      callbackUrl,
+      callbackUrl: absolutify(callbackUrl),
     });
 
     if (res?.ok) {
@@ -55,7 +63,7 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <button className="w-full rounded-md bg-primary px-4 py-2 text-white hover:bg-primary/90">
+      <button className="bg-primary hover:bg-primary/90 w-full rounded-md px-4 py-2 text-white">
         Continue
       </button>
     </form>

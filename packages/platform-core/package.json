@@ -1,10 +1,18 @@
 {
   "name": "@platform-core",
+  "version": "0.0.0",
   "private": true,
   "type": "module",
-  "version": "0.0.0",
   "exports": {
     ".": "./index.ts"
+  },
+  "peerDependencies": {
+    "next": "^15.0.0",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "next": "^15.3.4"
   },
   "scripts": {
     "test": "jest --config ../../jest.config.ts"

@@ -6,13 +6,22 @@
     /* ------------------------------------------------------------------ */
     /*  Package-local extras — nothing here overrides the root settings   */
     /* ------------------------------------------------------------------ */
-    "composite": true, // ↳ still part of the project build
+    "composite": true,
     "outDir": "dist",
     "jsx": "react-jsx",
 
-    /*  ⭐ ADD: tell TS where to find @/… modules *inside this package*   */
-    "baseUrl": ".", // <- points at packages/platform-core
+    /*  ⭐ ADD: tell TS where to find @platform-core/… **inside** this pkg */
+    "baseUrl": ".", // ← still points at packages/platform-core
     "paths": {
+      /* ──────────────────────────────────────────────────────────────── */
+      /*  NEW — local resolution for the package’s own barrel imports    */
+      /* ──────────────────────────────────────────────────────────────── */
+      "@platform-core": ["."], // import "@platform-core"
+      "@platform-core/*": ["*"], // import "@platform-core/foo"
+
+      /* ──────────────────────────────────────────────────────────────── */
+      /*  Existing package-scoped @/… aliases                            */
+      /* ──────────────────────────────────────────────────────────────── */
       "@/components/shop/*": ["components/shop/*"],
       "@/contexts/*": ["contexts/*"],
       "@/lib/*": ["lib/*"]

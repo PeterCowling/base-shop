@@ -1,26 +1,18 @@
 // apps/cms/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
     /* ----------------- existing options (unchanged) ----------------- */
     "outDir": "dist",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    /* ----------------- 👇  enable TSX / JSX support ----------------- */
+    "plugins": [{ "name": "next" }],
     "jsx": "preserve",
     "target": "ES2017",
     "skipLibCheck": true,
@@ -28,11 +20,17 @@
     "module": "esnext",
     "moduleResolution": "node"
   },
+
+  /* ------------------------------------------------------------------ */
+  /*  👇  ADD THE TEST GLOB(S) HERE                                     */
+  /* ------------------------------------------------------------------ */
   "include": [
     "src",
+    "__tests__", // top-level test folder
+    "**/__tests__/**/*.ts", // nested test folders, if any
+    "**/__tests__/**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+
+  "exclude": ["node_modules"]
 }

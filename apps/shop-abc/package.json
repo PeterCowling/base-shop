@@ -7,5 +7,8 @@
     "start": "next start -p 3001",
     "lint": "next lint",
     "test": "jest --passWithNoTests"
+  },
+  "devDependencies": {
+    "next": "^15.3.4"
   }
 }

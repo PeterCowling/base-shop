@@ -154,25 +154,72 @@ importers:
         specifier: ^4.20.4
         version: 4.21.1
 
-  apps/cms: {}
+  apps/cms:
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  apps/shop-abc: {}
+  apps/shop-abc:
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  apps/shop-bcd: {}
+  apps/shop-bcd:
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  packages/i18n: {}
+  packages/i18n:
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  packages/lib: {}
+  packages/lib:
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  packages/platform-core: {}
+  packages/platform-core:
+    dependencies:
+      react:
+        specifier: ^18
+        version: 19.1.0
+      react-dom:
+        specifier: ^18
+        version: 19.1.0(react@19.1.0)
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  packages/platform-machine: {}
+  packages/platform-machine:
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  packages/svelte-tool: {}
+  packages/svelte-tool:
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  packages/types: {}
+  packages/types:
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  packages/ui: {}
+  packages/ui:
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
 packages:
 

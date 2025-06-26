@@ -1,12 +1,11 @@
+// scripts/create-shop.ts
 import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { ulid } from "ulid";
 
-const id = process.argv[2];
-if (!id) {
-  console.error("Usage: pnpm create-shop <id>");
-  process.exit(1);
-}
+/* ────────────────────────────────────────────────────────── *
+ * Command-line parsing                                       *
+ * ────────────────────────────────────────────────────────── */
 
 interface Options {
   type: "sale" | "rental";
@@ -60,74 +59,127 @@ function parseArgs(argv: string[]): [string, Options] {
   return [id, opts];
 }
 
-const [id, options] = parseArgs(process.argv.slice(2));
+const [shopId, options] = parseArgs(process.argv.slice(2));
 
-// verify theme exists
+/* ────────────────────────────────────────────────────────── *
+ * File-system locations                                      *
+ * ────────────────────────────────────────────────────────── */
+
+const templateApp = join("packages", "template-app");
+const newApp = join("apps", shopId);
+
 if (!existsSync(join("packages", "themes", options.theme))) {
   console.error(`Theme '${options.theme}' not found in packages/themes`);
   process.exit(1);
 }
+
+/* ────────────────────────────────────────────────────────── *
+ * Copy template → new app                                    *
+ * ────────────────────────────────────────────────────────── */
 
 cpSync(templateApp, newApp, {
   recursive: true,
   filter: (src) => !/node_modules/.test(src),
 });
 
-// tweak package.json with shop name and theme
-const pkgPath = join(newApp, "package.json");
-const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
-pkg.name = `@apps/shop-${id}`;
-if (pkg.dependencies) {
-  Object.keys(pkg.dependencies).forEach((k) => {
-    if (k.startsWith("@themes/")) delete pkg.dependencies[k];
-  });
-  pkg.dependencies[`@themes/${options.theme}`] = "workspace:*";
+/* ────────────────────────────────────────────────────────── *
+ * package.json patching                                      *
+ * ────────────────────────────────────────────────────────── */
+
+interface PackageJSON {
+  name: string;
+  dependencies?: Record<string, string>;
+  [key: string]: unknown;
 }
+
+const pkgPath = join(newApp, "package.json");
+const pkg = JSON.parse(readFileSync(pkgPath, "utf8")) as PackageJSON;
+
+/* --- guarantee `dependencies` exists to silence TS 18048 --- */
+pkg.dependencies ??= {}; // now definitely Record<string, string>
+
+Object.keys(pkg.dependencies).forEach((k) => {
+  if (k.startsWith("@themes/")) delete pkg.dependencies![k];
+});
+pkg.dependencies[`@themes/${options.theme}`] = "workspace:*";
+pkg.name = `@apps/shop-${shopId}`;
+
 writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
 
-// update global CSS theme import
+/* ────────────────────────────────────────────────────────── *
+ * Swap the global CSS theme import                           *
+ * ────────────────────────────────────────────────────────── */
+
 const cssPath = join(newApp, "src", "app", "globals.css");
-let css = readFileSync(cssPath, "utf8");
-css = css.replace(
+const css = readFileSync(cssPath, "utf8").replace(
   /@themes\/[^/]+\/tokens.css/,
   `@themes/${options.theme}/tokens.css`
 );
 writeFileSync(cssPath, css);
 
+/* ────────────────────────────────────────────────────────── *
+ * Seed .env and data folder                                  *
+ * ────────────────────────────────────────────────────────── */
+
 let envContent = "# Provider credentials\n";
 const envVars = [...options.payment, ...options.shipping];
 if (envVars.length === 0) envVars.push("stripe");
-for (const p of envVars) {
-  envContent += `${p.toUpperCase()}_KEY=\n`;
-}
+for (const p of envVars) envContent += `${p.toUpperCase()}_KEY=\n`;
 envContent += "NEXTAUTH_SECRET=\n";
+// writeFileSync(join(newApp, ".env"), envContent); // uncomment if desired
 
-const newData = join("data", "shops", id);
+const newData = join("data", "shops", shopId);
 if (existsSync(newData)) {
-  console.error(`Data for shop ${id} already exists`);
+  console.error(`Data for shop ${shopId} already exists`);
   process.exit(1);
 }
-
 mkdirSync(newData, { recursive: true });
-const settings = { languages: ["en", "de", "it"] };
+
 writeFileSync(
   join(newData, "settings.json"),
-  JSON.stringify(settings, null, 2)
+  JSON.stringify({ languages: ["en", "de", "it"] }, null, 2)
 );
 
-const shopInfo = {
-  id,
-  name: id,
-  catalogFilters: [],
-  themeId: options.theme,
-  type: options.type,
-  paymentProviders: options.payment,
-  shippingProviders: options.shipping,
-};
-writeFileSync(join(newData, "shop.json"), JSON.stringify(shopInfo, null, 2));
+writeFileSync(
+  join(newData, "shop.json"),
+  JSON.stringify(
+    {
+      id: shopId,
+      name: shopId,
+      catalogFilters: [],
+      themeId: options.theme,
+      type: options.type,
+      paymentProviders: options.payment,
+      shippingProviders: options.shipping,
+    },
+    null,
+    2
+  )
+);
+
+/* ────────────────────────────────────────────────────────── *
+ * Seed a sample product                                      *
+ * ────────────────────────────────────────────────────────── */
+
+interface Product {
+  id: string;
+  sku: string;
+  title: Record<string, string>;
+  description: Record<string, string>;
+  price: number;
+  currency: string;
+  images: string[];
+  status: string;
+  shop: string;
+  row_version: number;
+  created_at: string;
+  updated_at: string;
+  deposit?: number;
+  rentalTerms?: string;
+}
 
 const now = new Date().toISOString();
-const sampleProduct: any = {
+const sampleProduct: Product = {
   id: ulid(),
   sku: "SAMPLE-1",
   title: { en: "Sample", de: "Sample", it: "Sample" },
@@ -140,18 +192,20 @@ const sampleProduct: any = {
   currency: "EUR",
   images: [],
   status: "draft",
-  shop: id,
+  shop: shopId,
   row_version: 1,
   created_at: now,
   updated_at: now,
 };
+
 if (options.type === "rental") {
   sampleProduct.deposit = 1000;
   sampleProduct.rentalTerms = "Return within 30 days";
 }
+
 writeFileSync(
   join(newData, "products.json"),
   JSON.stringify([sampleProduct], null, 2)
 );
 
-console.log(`Shop "${id}" created.`);
+console.log(`Shop "${shopId}" created.`);

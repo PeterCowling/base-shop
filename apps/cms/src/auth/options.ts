@@ -1,5 +1,6 @@
 // apps/cms/src/auth/options.ts
 
+import bcrypt from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { USER_ROLES, type Role } from "./roles";
@@ -27,7 +28,10 @@ export const authOptions: NextAuthOptions = {
           (u) => u.email === credentials.email
         );
 
-        if (user && user.password === credentials.password) {
+        if (
+          user &&
+          (await bcrypt.compare(credentials.password, user.password))
+        ) {
           /* Strip password before handing the user object to NextAuth */
           const { password: _password, ...safeUser } = user;
           void _password;

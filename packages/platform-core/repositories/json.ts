@@ -81,7 +81,14 @@ export async function readShop(shop: string): Promise<Shop> {
   } catch {
     // ignore
   }
-  return { id: shop, name: shop, catalogFilters: [], themeId: "base" };
+  return {
+    id: shop,
+    name: shop,
+    catalogFilters: [],
+    themeId: "base",
+    themeTokens: {},
+    filterMappings: {},
+  };
 }
 
 export async function writeShop(shop: string, info: Shop): Promise<void> {

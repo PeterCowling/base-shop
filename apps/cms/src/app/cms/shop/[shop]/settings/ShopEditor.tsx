@@ -3,6 +3,7 @@
 "use client";
 import { updateShop } from "@cms/actions/shops";
 import type { Shop } from "@types";
+import { Textarea } from "@ui/components/ui/textarea";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface Props {
@@ -26,6 +27,24 @@ export default function ShopEditor({ shop, initial }: Props) {
     }));
   };
 
+  const handleTokens = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    try {
+      const parsed = JSON.parse(e.target.value);
+      setInfo((prev) => ({ ...prev, themeTokens: parsed }));
+    } catch {
+      // ignore invalid JSON
+    }
+  };
+
+  const handleMappings = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    try {
+      const parsed = JSON.parse(e.target.value);
+      setInfo((prev) => ({ ...prev, filterMappings: parsed }));
+    } catch {
+      // ignore invalid JSON
+    }
+  };
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -34,6 +53,8 @@ export default function ShopEditor({ shop, initial }: Props) {
     fd.append("name", info.name);
     fd.append("themeId", info.themeId);
     fd.append("catalogFilters", info.catalogFilters.join(","));
+    fd.append("themeTokens", JSON.stringify(info.themeTokens));
+    fd.append("filterMappings", JSON.stringify(info.filterMappings));
     const updated = await updateShop(shop, fd);
     setInfo(updated);
     setSaving(false);
@@ -67,6 +88,24 @@ export default function ShopEditor({ shop, initial }: Props) {
           name="catalogFilters"
           value={info.catalogFilters.join(",")}
           onChange={handleFilters}
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Theme Tokens (JSON)</span>
+        <Textarea
+          name="themeTokens"
+          defaultValue={JSON.stringify(info.themeTokens, null, 2)}
+          onChange={handleTokens}
+          rows={4}
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Filter Mappings (JSON)</span>
+        <Textarea
+          name="filterMappings"
+          defaultValue={JSON.stringify(info.filterMappings, null, 2)}
+          onChange={handleMappings}
+          rows={4}
         />
       </label>
       <button

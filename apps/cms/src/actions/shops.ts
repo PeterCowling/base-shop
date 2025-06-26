@@ -21,9 +21,23 @@ export async function updateShop(
     name: String(formData.get("name") ?? current.name),
     themeId: String(formData.get("themeId") ?? current.themeId),
     catalogFilters: String(formData.get("catalogFilters") ?? "")
-      .split(",")
+      .split(/,\s*/)
       .map((s) => s.trim())
       .filter(Boolean),
+    themeTokens: (() => {
+      try {
+        return JSON.parse(String(formData.get("themeTokens") ?? "{}"));
+      } catch {
+        return current.themeTokens;
+      }
+    })(),
+    filterMappings: (() => {
+      try {
+        return JSON.parse(String(formData.get("filterMappings") ?? "{}"));
+      } catch {
+        return current.filterMappings;
+      }
+    })(),
   };
 
   return updateShopInRepo(shop, updated);

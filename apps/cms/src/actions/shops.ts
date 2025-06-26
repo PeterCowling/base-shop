@@ -35,8 +35,8 @@ export async function updateShop(
 
   const data: ShopForm = parsed.data;
 
-  const updated: Shop = {
-    ...current,
+  const patch: Partial<Shop> & { id: string } = {
+    id: current.id,
     name: data.name,
     themeId: data.themeId,
     catalogFilters: data.catalogFilters,
@@ -44,6 +44,6 @@ export async function updateShop(
     filterMappings: data.filterMappings,
   };
 
-  const saved = await updateShopInRepo<Shop>(shop, updated);
+  const saved = await updateShopInRepo(shop, patch);
   return { shop: saved };
 }

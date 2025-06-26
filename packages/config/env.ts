@@ -8,6 +8,7 @@ const envSchema = z.object({
   OUTPUT_EXPORT: z.string().optional(),
   NEXT_PUBLIC_PHASE: z.string().optional(),
   NEXT_PUBLIC_DEFAULT_SHOP: z.string().optional(),
+  NEXT_PUBLIC_SHOP_ID: z.string().optional(),
 });
 
 export const env = envSchema.parse(process.env);

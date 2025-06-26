@@ -1,3 +1,20 @@
+// packages/themes/base/tokens.ts
+/**
+ * Central colour-/spacing-/font-token catalogue.
+ * Every token has a `light` value and may provide a `dark` variant.
+ */
+
+export interface Token {
+  /** CSS colour / length / font list used in light mode */
+  readonly light: string;
+  /** Optional counterpart for dark mode */
+  readonly dark?: string;
+}
+
+/** `--token-name`: `{ light, dark? }` */
+export type TokenMap = Record<`--${string}`, Token>;
+
+/* eslint-disable prettier/prettier */
 export const tokens = {
   "--color-bg": { light: "0 0% 100%", dark: "0 0% 4%" },
   "--color-fg": { light: "0 0% 10%", dark: "0 0% 93%" },
@@ -14,6 +31,4 @@ export const tokens = {
   "--radius-sm": { light: "4px" },
   "--radius-md": { light: "8px" },
   "--radius-lg": { light: "12px" },
-} as const;
-
-export type TokenMap = typeof tokens;
+} as const satisfies TokenMap;

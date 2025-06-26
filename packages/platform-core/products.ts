@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------------------- */
 /*  Locale helpers                                                            */
 /* -------------------------------------------------------------------------- */
-import { type Locale } from "@types";
+import { type Locale, type SKU } from "@types";
 
 /* -------------------------------------------------------------------------- */
 /*  Storefront types & helpers                                                */
@@ -55,6 +55,7 @@ export function getProductBySlug(slug: string): SKU | undefined {
 /* -------------------------------------------------------------------------- */
 // Types imported from the shared domain model
 export type {
+  Locale,
   ProductCore,
   ProductPublication,
   PublicationStatus,

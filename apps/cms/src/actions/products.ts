@@ -1,10 +1,10 @@
 // apps/cms/src/actions/products.ts
 "use server";
 
-import { productSchema, type ProductForm } from "@cms/actions/schemas";
-import type { Locale, ProductPublication } from "@platform-core/products";
-
+import type { ProductForm } from "@cms/actions/schemas";
+import { productSchema } from "@cms/actions/schemas";
 import { authOptions } from "@cms/auth/options";
+import type { ProductPublication } from "@platform-core/products";
 import {
   deleteProductFromRepo,
   duplicateProductInRepo,
@@ -14,6 +14,7 @@ import {
   updateProductInRepo,
   writeRepo,
 } from "@platform-core/repositories/json";
+import type { Locale } from "@types";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";

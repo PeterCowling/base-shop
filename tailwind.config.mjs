@@ -1,4 +1,5 @@
 // /tailwind.config.mjs
+import tokens from "@acme/design-tokens";
 import preset from "@acme/tailwind-config";
 import { createRequire } from "node:module";
 
@@ -31,7 +32,7 @@ console.log(
 
 /** @type {import('tailwindcss').Config} */
 const config = {
-  presets: [preset],
+  presets: [tokens, preset],
   content: [
     "./apps/**/*.{ts,tsx,mdx}",
     "./packages/{ui,platform-core,platform-machine,i18n,themes}/**/*.{ts,tsx,mdx}",

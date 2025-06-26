@@ -1,11 +1,11 @@
 // packages/platform-core/__tests__/cartCookie.test.ts
+import type { CartState } from "@types";
 import {
   asSetCookieHeader,
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
 } from "../cartCookie";
-import type { CartState } from "../contexts/CartContext";
 import { PRODUCTS } from "../products";
 
 describe("cart cookie helpers", () => {

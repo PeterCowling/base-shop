@@ -4,4 +4,7 @@ compatibility_date    = "2025-06-20"
 
 [[kv_namespaces]]
   binding = "CART_KV"
-  id      = "TODO-replace-with-namespace-id"
+id      = "TODO-replace-with-namespace-id"
+
+[env]
+  NEXT_PUBLIC_SHOP_ID = "default"

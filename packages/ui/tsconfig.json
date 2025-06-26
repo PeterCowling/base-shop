@@ -10,6 +10,7 @@
     "rootDirs": [
       "components",
       "hooks",
+      "layout",
       "../platform-core",
       "../i18n",
       "../types",
@@ -22,6 +23,11 @@
     { "path": "../i18n" },
     { "path": "../types" }
   ],
-  "include": ["components/**/*", "hooks/**/*", "../../apps/cms/src/**/*"],
+  "include": [
+    "components/**/*",
+    "hooks/**/*",
+    "layout/**/*",
+    "../../apps/cms/src/**/*"
+  ],
   "exclude": ["dist"]
 }

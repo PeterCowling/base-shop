@@ -212,11 +212,11 @@ export async function updateShopInRepo<T extends { id: string } = Shop>(
   shop: string,
   patch: Partial<T> & { id: string }
 ): Promise<T> {
-  const current = (await readShop(shop)) as T;
+  const current = (await readShop(shop)) as unknown as T;
   if (current.id !== patch.id) {
     throw new Error(`Shop ${patch.id} not found in ${shop}`);
   }
   const updated: T = { ...current, ...patch };
-  await writeShop(shop, updated as Shop);
+  await writeShop(shop, updated as unknown as Shop);
   return updated;
 }

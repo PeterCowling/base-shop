@@ -2,9 +2,11 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { uploadMedia } from "@cms/actions/media";
+import { deleteMedia, uploadMedia } from "@cms/actions/media";
+import type { ImageOrientation } from "@types";
+import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
 import Image from "next/image";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface Props {
   shop: string;
@@ -14,11 +16,29 @@ interface Props {
 export default function MediaManager({ shop, initialFiles }: Props) {
   const [files, setFiles] = useState(initialFiles);
   const [error, setError] = useState<string>();
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+
   const [progress, setProgress] = useState<{
     done: number;
     total: number;
   } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleDelete = useCallback(
+    async (src: string) => {
+      /* eslint-disable no-alert -- simple confirmation is fine */
+      if (!confirm("Delete this image?")) return;
+      await deleteMedia(shop, src);
+      setFiles((prev) => prev.filter((f) => f !== src));
+    },
+    [shop]
+  );
+
+  const REQUIRED_ORIENTATION: ImageOrientation = "landscape";
+  const { actual, isValid } = useImageOrientationValidation(
+    pendingFile,
+    REQUIRED_ORIENTATION
+  );
 
   const handleUpload = useCallback(
     async (selected: File[]) => {
@@ -40,26 +60,27 @@ export default function MediaManager({ shop, initialFiles }: Props) {
     [shop]
   );
 
-  const onDrop = useCallback(
-    (e: React.DragEvent<HTMLDivElement>) => {
-      e.preventDefault();
-      const files = Array.from(e.dataTransfer.files ?? []);
-      if (files.length > 0) void handleUpload(files);
-    },
-    [handleUpload]
-  );
+  const onDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const f = e.dataTransfer.files?.[0] ?? null;
+    setPendingFile(f);
+  }, []);
 
-  const onFileChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const files = Array.from(e.target.files ?? []);
-      if (files.length > 0) void handleUpload(files);
-    },
-    [handleUpload]
-  );
+  const onFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0] ?? null;
+    setPendingFile(f);
+  }, []);
 
   const openFileDialog = useCallback(() => {
     inputRef.current?.click();
   }, []);
+
+  useEffect(() => {
+    if (pendingFile && isValid) {
+      void handleUpload(pendingFile);
+      setPendingFile(null);
+    }
+  }, [pendingFile, isValid, handleUpload]);
 
   return (
     <div className="space-y-6">
@@ -85,6 +106,17 @@ export default function MediaManager({ shop, initialFiles }: Props) {
           Uploaded {progress.done}/{progress.total}
         </p>
       )}
+      {pendingFile && isValid !== null && (
+        <p
+          className={
+            isValid ? "text-sm text-green-600" : "text-sm text-red-600"
+          }
+        >
+          {isValid
+            ? `Image orientation is ${actual}; requirement satisfied.`
+            : `Selected image is ${actual}; please upload a ${REQUIRED_ORIENTATION} image.`}
+        </p>
+      )}
       {files.length > 0 && (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {files.map((src) => (
@@ -92,6 +124,12 @@ export default function MediaManager({ shop, initialFiles }: Props) {
               key={src}
               className="relative h-32 w-full overflow-hidden rounded-md border"
             >
+              <button
+                onClick={() => handleDelete(src)}
+                className="absolute top-1 right-1 rounded bg-black/50 px-1.5 text-xs text-white"
+              >
+                Delete
+              </button>
               <Image src={src} alt="media" fill className="object-cover" />
             </div>
           ))}

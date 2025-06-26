@@ -1,6 +1,7 @@
 // apps/cms/src/actions/products.ts
 "use server";
 
+import { productSchema, type ProductForm } from "@cms/actions/schemas";
 import type { Locale, ProductPublication } from "@platform-core/products";
 
 import { authOptions } from "@cms/auth/options";

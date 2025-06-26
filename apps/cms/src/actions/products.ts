@@ -3,6 +3,7 @@
 
 import type { Locale, ProductPublication } from "@platform-core/products";
 
+import { authOptions } from "@cms/auth/options";
 import {
   deleteProductFromRepo,
   duplicateProductInRepo,
@@ -12,12 +13,20 @@ import {
   updateProductInRepo,
   writeRepo,
 } from "@platform-core/repositories/json";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                    */
 /* -------------------------------------------------------------------------- */
+
+async function ensureAuthorized(): Promise<void> {
+  const session = await getServerSession(authOptions);
+  if (!session || session.user.role === "viewer") {
+    throw new Error("Forbidden");
+  }
+}
 
 async function getLocales(shop: string): Promise<Locale[]> {
   const settings = await readSettings(shop);
@@ -29,6 +38,8 @@ async function getLocales(shop: string): Promise<Locale[]> {
 export async function createDraftRecord(
   shop: string
 ): Promise<ProductPublication> {
+  await ensureAuthorized();
+
   const now = new Date().toISOString();
   const locales = await getLocales(shop);
   const blank: Record<string, string> = {};
@@ -62,6 +73,8 @@ export async function createDraftRecord(
 /* Server-action: called by “New product” button */
 export async function createDraft(shop: string): Promise<void> {
   "use server";
+  await ensureAuthorized();
+
   const draft = await createDraftRecord(shop);
   redirect(`/cms/${shop}/products/${draft.id}/edit`);
 }
@@ -77,6 +90,7 @@ export async function updateProduct(
   errors?: Record<string, string[]>;
 }> {
   "use server";
+  await ensureAuthorized();
 
   const parsed = productSchema.safeParse(
     Object.fromEntries(formData.entries())
@@ -123,6 +137,8 @@ export async function duplicateProduct(
   id: string
 ): Promise<void> {
   "use server";
+  await ensureAuthorized();
+
   const copy = await duplicateProductInRepo(shop, id);
   redirect(`/cms/${shop}/products/${copy.id}/edit`);
 }
@@ -132,6 +148,8 @@ export async function duplicateProduct(
 /* -------------------------------------------------------------------------- */
 export async function deleteProduct(shop: string, id: string): Promise<void> {
   "use server";
+  await ensureAuthorized();
+
   await deleteProductFromRepo(shop, id);
   redirect(`/cms/${shop}/products`);
 }

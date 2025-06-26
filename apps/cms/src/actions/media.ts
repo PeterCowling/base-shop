@@ -1,8 +1,17 @@
 "use server";
+import { authOptions } from "@cms/auth/options";
 import { validateShopName } from "@platform-core/shops";
+import { getServerSession } from "next-auth";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
+
+async function ensureAuthorized(): Promise<void> {
+  const session = await getServerSession(authOptions);
+  if (!session || session.user.role === "viewer") {
+    throw new Error("Forbidden");
+  }
+}
 
 /** Directory under public/ where uploads are stored per shop */
 function uploadsDir(shop: string): string {
@@ -12,6 +21,8 @@ function uploadsDir(shop: string): string {
 
 /** Return list of uploaded file URLs for a shop */
 export async function listMedia(shop: string): Promise<string[]> {
+  await ensureAuthorized();
+
   try {
     const dir = uploadsDir(shop);
     const files = await fs.readdir(dir);
@@ -26,6 +37,8 @@ export async function uploadMedia(
   shop: string,
   formData: FormData
 ): Promise<string> {
+  await ensureAuthorized();
+
   const file = formData.get("file");
   if (!(file instanceof File)) {
     throw new Error("No file provided");

@@ -2,17 +2,28 @@
 
 "use server";
 
+import { authOptions } from "@cms/auth/options";
 import {
   getShopById,
   updateShopInRepo,
 } from "@platform-core/repositories/json";
 import type { Shop } from "@types";
+import { getServerSession } from "next-auth";
 import { shopSchema, type ShopForm } from "./schemas";
+
+async function ensureAuthorized(): Promise<void> {
+  const session = await getServerSession(authOptions);
+  if (!session || session.user.role === "viewer") {
+    throw new Error("Forbidden");
+  }
+}
 
 export async function updateShop(
   shop: string,
   formData: FormData
 ): Promise<{ shop?: Shop; errors?: Record<string, string[]> }> {
+  await ensureAuthorized();
+
   const id = String(formData.get("id"));
   const current = await getShopById(shop);
   if (current.id !== id) throw new Error(`Shop ${id} not found in ${shop}`);

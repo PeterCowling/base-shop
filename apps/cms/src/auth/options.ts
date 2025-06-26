@@ -6,13 +6,21 @@ import Credentials from "next-auth/providers/credentials";
 import { USER_ROLES, type Role } from "./roles";
 import { USERS } from "./users";
 
+/* -----------------------------------------------------------------
+ *  Ensure NEXTAUTH_SECRET is defined outside of development
+ * ---------------------------------------------------------------- */
+const secret = process.env.NEXTAUTH_SECRET;
+if (process.env.NODE_ENV !== "development" && !secret) {
+  throw new Error(
+    "NEXTAUTH_SECRET must be set when NODE_ENV is not 'development'"
+  );
+}
+
 export const authOptions: NextAuthOptions = {
   /* ----------------------------------------------------------------
    *  Ensure `secret` is never undefined in production
    * -------------------------------------------------------------- */
-  ...(process.env.NEXTAUTH_SECRET
-    ? { secret: process.env.NEXTAUTH_SECRET }
-    : {}),
+  ...(secret ? { secret } : {}),
 
   providers: [
     Credentials({

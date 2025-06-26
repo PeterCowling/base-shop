@@ -1,5 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/products/page.tsx
 
+import { Button } from "@/components/ui/button";
 import { createDraft } from "@cms/actions/products";
 import { authOptions } from "@cms/auth/options";
 import { readRepo } from "@platform-core/repositories/json";

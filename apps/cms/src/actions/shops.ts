@@ -7,38 +7,32 @@ import {
   updateShopInRepo,
 } from "@platform-core/repositories/json";
 import type { Shop } from "@types";
+import { shopSchema, type ShopForm } from "./schemas";
 
 export async function updateShop(
   shop: string,
   formData: FormData
-): Promise<Shop> {
+): Promise<{ shop?: Shop; errors?: Record<string, string[]> }> {
   const id = String(formData.get("id"));
   const current = await getShopById(shop);
   if (current.id !== id) throw new Error(`Shop ${id} not found in ${shop}`);
 
+  const parsed = shopSchema.safeParse(Object.fromEntries(formData.entries()));
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const data: ShopForm = parsed.data;
+
   const updated: Shop = {
     ...current,
-    name: String(formData.get("name") ?? current.name),
-    themeId: String(formData.get("themeId") ?? current.themeId),
-    catalogFilters: String(formData.get("catalogFilters") ?? "")
-      .split(/,\s*/)
-      .map((s) => s.trim())
-      .filter(Boolean),
-    themeTokens: (() => {
-      try {
-        return JSON.parse(String(formData.get("themeTokens") ?? "{}"));
-      } catch {
-        return current.themeTokens;
-      }
-    })(),
-    filterMappings: (() => {
-      try {
-        return JSON.parse(String(formData.get("filterMappings") ?? "{}"));
-      } catch {
-        return current.filterMappings;
-      }
-    })(),
+    name: data.name,
+    themeId: data.themeId,
+    catalogFilters: data.catalogFilters,
+    themeTokens: data.themeTokens,
+    filterMappings: data.filterMappings,
   };
 
-  return updateShopInRepo(shop, updated);
+  const saved = await updateShopInRepo(shop, updated);
+  return { shop: saved };
 }

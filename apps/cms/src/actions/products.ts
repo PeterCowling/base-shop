@@ -72,10 +72,21 @@ export async function createDraft(shop: string): Promise<void> {
 export async function updateProduct(
   shop: string,
   formData: FormData
-): Promise<ProductPublication> {
+): Promise<{
+  product?: ProductPublication;
+  errors?: Record<string, string[]>;
+}> {
   "use server";
 
-  const id = String(formData.get("id"));
+  const parsed = productSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const data: ProductForm = parsed.data;
+  const { id, price } = data;
   const current = await getProductById(shop, id);
   if (!current) throw new Error(`Product ${id} not found in ${shop}`);
 
@@ -85,22 +96,23 @@ export async function updateProduct(
   const locales = await getLocales(shop);
 
   locales.forEach((l) => {
-    const t = formData.get(`title_${l}`);
-    const d = formData.get(`desc_${l}`);
+    const t = data[`title_${l}` as keyof ProductForm];
+    const d = data[`desc_${l}` as keyof ProductForm];
     if (typeof t === "string") nextTitle[l] = t;
-    if (typeof d === "string") nextDesc[l] = d;
+    if (typeof d === "string") nextDesc[l] = d as string;
   });
 
   const updated: ProductPublication = {
     ...current,
     title: nextTitle,
     description: nextDesc,
-    price: Number(formData.get("price")),
+    price,
     row_version: current.row_version + 1,
     updated_at: new Date().toISOString(),
   };
 
-  return updateProductInRepo(shop, updated);
+  const saved = await updateProductInRepo(shop, updated);
+  return { product: saved };
 }
 
 /* -------------------------------------------------------------------------- */

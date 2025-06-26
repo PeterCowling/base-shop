@@ -18,8 +18,11 @@ import PublishLocationSelector from "./PublishLocationSelector";
 interface BaseProps {
   /** Current product snapshot (all locales) */
   product: ProductPublication;
-  /** Called with FormData → resolves to updated product */
-  onSave(fd: FormData): Promise<ProductPublication>;
+  /** Called with FormData → resolves to updated product or errors */
+  onSave(fd: FormData): Promise<{
+    product?: ProductPublication;
+    errors?: Record<string, string[]>;
+  }>;
   /** Locales enabled for the current shop */
   locales: Locale[];
 }
@@ -41,6 +44,7 @@ export default function ProductEditorForm({
 }: BaseProps) {
   const [product, setProduct] = useState(init);
   const [saving, setSaving] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [publishTargets, setPublishTargets] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -106,8 +110,13 @@ export default function ProductEditorForm({
     async (e: FormEvent) => {
       e.preventDefault();
       setSaving(true);
-      const updated = await onSave(formData);
-      setProduct(updated);
+      const result = await onSave(formData);
+      if (result.errors) {
+        setErrors(result.errors);
+      } else if (result.product) {
+        setProduct(result.product);
+        setErrors({});
+      }
       setSaving(false);
     },
     [onSave, formData]
@@ -118,6 +127,13 @@ export default function ProductEditorForm({
     <Card className="mx-auto max-w-3xl">
       <CardContent>
         <form onSubmit={handleSubmit} className="@container grid gap-6">
+          {Object.keys(errors).length > 0 && (
+            <div className="text-sm text-red-600">
+              {Object.entries(errors).map(([k, v]) => (
+                <p key={k}>{v.join("; ")}</p>
+              ))}
+            </div>
+          )}
           <Input type="hidden" name="id" value={product.id} />
 
           {/* Price ------------------------------------------------------ */}

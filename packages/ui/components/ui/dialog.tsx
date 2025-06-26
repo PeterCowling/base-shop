@@ -1,6 +1,6 @@
 // packages/ui/components/ui/dialog.tsx
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { XIcon } from "@radix-ui/react-icons";
+import { Cross2Icon } from "@radix-ui/react-icons";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
@@ -40,7 +40,7 @@ export const DialogContent = React.forwardRef<
     >
       {children}
       <DialogPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
-        <XIcon className="h-4 w-4" />
+        <Cross2Icon className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>

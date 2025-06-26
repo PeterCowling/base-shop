@@ -1,10 +1,12 @@
 "use server";
+import { validateShopName } from "@platform-core/shops";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
 
 /** Directory under public/ where uploads are stored per shop */
 function uploadsDir(shop: string): string {
+  shop = validateShopName(shop);
   return path.join(process.cwd(), "public", "uploads", shop);
 }
 
@@ -29,11 +31,20 @@ export async function uploadMedia(
     throw new Error("No file provided");
   }
 
+  if (!file.type.startsWith("image/")) {
+    throw new Error("Invalid file type");
+  }
+
+  const maxSize = 5 * 1024 * 1024; // 5 MB
+  if (file.size > maxSize) {
+    throw new Error("File too large");
+  }
+
   const dir = uploadsDir(shop);
   await fs.mkdir(dir, { recursive: true });
   const ext = path.extname(file.name);
   const filename = `${ulid()}${ext}`;
-  const arrayBuffer = await file.arrayBuffer();
+  const arrayBuffer = await new Response(file).arrayBuffer();
   await fs.writeFile(path.join(dir, filename), Buffer.from(arrayBuffer));
   return path.posix.join("/uploads", shop, filename);
 }

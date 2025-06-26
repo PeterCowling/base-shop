@@ -5,6 +5,7 @@ import * as path from "node:path";
 import { ulid } from "ulid";
 import type { Locale, Shop, ShopSettings } from "../../types";
 import { ProductPublication } from "../products";
+import { validateShopName } from "../shops";
 
 /* -------------------------------------------------------------------------- */
 /*  Locate monorepo root (= folder that contains /data/shops)                 */
@@ -34,21 +35,28 @@ const DEFAULT_LANGUAGES: Locale[] = ["en", "de", "it"];
 
 /** Path like data/shops/abc/products.json */
 function filePath(shop: string): string {
+  shop = validateShopName(shop);
+
   return path.join(DATA_ROOT, shop, "products.json");
 }
 
 /** Path like data/shops/abc/settings.json */
 function settingsPath(shop: string): string {
+  shop = validateShopName(shop);
+
   return path.join(DATA_ROOT, shop, "settings.json");
 }
 
 /** Path like data/shops/abc/shop.json */
 function shopPath(shop: string): string {
+  shop = validateShopName(shop);
   return path.join(DATA_ROOT, shop, "shop.json");
 }
 
 /** Ensure `data/shops/<shop>` exists (mkdir -p). */
 async function ensureDir(shop: string): Promise<void> {
+  shop = validateShopName(shop);
+
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 

@@ -3,6 +3,7 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
 import type { RentalOrder } from "../../types";
+import { validateShopName } from "../shops";
 
 function resolveDataRoot(): string {
   let dir = process.cwd();
@@ -19,10 +20,14 @@ function resolveDataRoot(): string {
 const DATA_ROOT = resolveDataRoot();
 
 function ordersPath(shop: string): string {
+  shop = validateShopName(shop);
+
   return path.join(DATA_ROOT, shop, "rental_orders.json");
 }
 
 async function ensureDir(shop: string): Promise<void> {
+  shop = validateShopName(shop);
+
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 

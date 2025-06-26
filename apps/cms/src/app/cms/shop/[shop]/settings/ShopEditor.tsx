@@ -16,6 +16,7 @@ interface Props {
 export default function ShopEditor({ shop, initial }: Props) {
   const [info, setInfo] = useState<Shop>(initial);
   const [saving, setSaving] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -57,8 +58,13 @@ export default function ShopEditor({ shop, initial }: Props) {
     fd.append("catalogFilters", info.catalogFilters.join(","));
     fd.append("themeTokens", JSON.stringify(info.themeTokens));
     fd.append("filterMappings", JSON.stringify(info.filterMappings));
-    const updated = await updateShop(shop, fd);
-    setInfo(updated);
+    const result = await updateShop(shop, fd);
+    if (result.errors) {
+      setErrors(result.errors);
+    } else if (result.shop) {
+      setInfo(result.shop);
+      setErrors({});
+    }
     setSaving(false);
   };
 
@@ -67,7 +73,14 @@ export default function ShopEditor({ shop, initial }: Props) {
       onSubmit={onSubmit}
       className="@container grid max-w-md gap-4 @sm:grid-cols-2"
     >
-      {" "}
+      {Object.keys(errors).length > 0 && (
+        <div className="text-sm text-red-600">
+          {Object.entries(errors).map(([k, v]) => (
+            <p key={k}>{v.join("; ")}</p>
+          ))}
+        </div>
+      )}
+      <Input type="hidden" name="id" value={info.id} />
       <Input type="hidden" name="id" value={info.id} />
       <label className="flex flex-col gap-1">
         <span>Name</span>

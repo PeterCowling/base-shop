@@ -1,7 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -68,6 +70,11 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
       <Button className="w-full" type="submit">
         Continue
       </Button>
+      <p className="text-center text-sm">
+        <Link href="/signup" className="underline">
+          Create new account
+        </Link>
+      </p>
     </form>
   );
 }

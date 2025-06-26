@@ -13,14 +13,20 @@ interface Props {
 
 export default function MediaManager({ shop, initialFiles }: Props) {
   const [files, setFiles] = useState(initialFiles);
+  const [error, setError] = useState<string>();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = useCallback(
     async (file: File) => {
       const fd = new FormData();
       fd.append("file", file);
-      const url = await uploadMedia(shop, fd);
-      setFiles((prev) => [url, ...prev]);
+      try {
+        const url = await uploadMedia(shop, fd);
+        setFiles((prev) => [url, ...prev]);
+        setError(undefined);
+      } catch (err) {
+        if (err instanceof Error) setError(err.message);
+      }
     },
     [shop]
   );
@@ -63,6 +69,7 @@ export default function MediaManager({ shop, initialFiles }: Props) {
         />
         Drop image here or click to upload
       </div>
+      {error && <p className="text-sm text-red-600">{error}</p>}
       {files.length > 0 && (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {files.map((src) => (

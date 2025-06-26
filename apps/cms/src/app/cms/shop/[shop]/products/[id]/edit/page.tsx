@@ -1,4 +1,4 @@
-// apps/cms/src/app/(cms)/shop/[shop]/products/[id]/edit/page.tsx
+// apps/cms/src/app/cms/shop/[shop]/products/[id]/edit/page.tsx
 
 import { getProductById, readSettings } from "@platform-core/repositories/json";
 import dynamic from "next/dynamic";

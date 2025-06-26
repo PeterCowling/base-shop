@@ -63,7 +63,7 @@ export async function createDraftRecord(
 export async function createDraft(shop: string): Promise<void> {
   "use server";
   const draft = await createDraftRecord(shop);
-  redirect(`/shop/${shop}/products/${draft.id}/edit`);
+  redirect(`/cms/${shop}/products/${draft.id}/edit`);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -112,7 +112,7 @@ export async function duplicateProduct(
 ): Promise<void> {
   "use server";
   const copy = await duplicateProductInRepo(shop, id);
-  redirect(`/shop/${shop}/products/${copy.id}/edit`);
+  redirect(`/cms/${shop}/products/${copy.id}/edit`);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -121,5 +121,5 @@ export async function duplicateProduct(
 export async function deleteProduct(shop: string, id: string): Promise<void> {
   "use server";
   await deleteProductFromRepo(shop, id);
-  redirect(`/shop/${shop}/products`);
+  redirect(`/cms/${shop}/products`);
 }

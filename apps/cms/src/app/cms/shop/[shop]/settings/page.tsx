@@ -1,4 +1,4 @@
-// apps/cms/src/app/(cms)/shop/[shop]/settings/page.tsx
+// apps/cms/src/app/cms/shop/[shop]/settings/page.tsx
 
 import { readSettings, readShop } from "@platform-core/repositories/json";
 import type { Locale } from "@types";
@@ -21,7 +21,7 @@ export default async function SettingsPage({
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Settings – {shop}</h2>
+      <h2 className="mb-4 text-xl font-semibold">Settings – {shop}</h2>
       <h3 className="mt-4 font-medium">Languages</h3>
       <ul className="mt-2 list-disc pl-5 text-sm">
         {settings.languages.map((l: Locale) => (

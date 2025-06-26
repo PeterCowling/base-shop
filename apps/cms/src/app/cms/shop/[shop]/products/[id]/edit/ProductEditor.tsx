@@ -1,4 +1,4 @@
-// apps/cms/src/app/(cms)/shop/[shop]/products/[id]/edit/ProductEditor.tsx
+// apps/cms/src/app/cms/shop/[shop]/products/[id]/edit/ProductEditor.tsx
 "use client";
 
 import { updateProduct } from "@cms/actions/products";

@@ -111,7 +111,7 @@ function ProductsTableBase({ shop, rows, isAdmin }: Props): ReactElement {
         render: (p) =>
           isAdmin ? (
             <Link
-              href={`/shop/${shop}/products/${p.id}/edit`}
+              href={`/cms/${shop}/products/${p.id}/edit`}
               className="underline"
             >
               {p.title.en}
@@ -139,8 +139,8 @@ function ProductsTableBase({ shop, rows, isAdmin }: Props): ReactElement {
         render: (p) => (
           <div className="flex flex-wrap gap-2">
             <Link
-              href={`/shop/${shop}/products/${p.id}/edit`}
-              className="rounded bg-primary px-2 py-1 text-xs text-white hover:bg-primary/90"
+              href={`/cms/${shop}/products/${p.id}/edit`}
+              className="bg-primary hover:bg-primary/90 rounded px-2 py-1 text-xs text-white"
             >
               Edit
             </Link>

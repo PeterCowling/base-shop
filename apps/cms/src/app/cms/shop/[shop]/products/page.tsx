@@ -1,4 +1,4 @@
-// apps/cms/src/app/(cms)/shop/[shop]/products/page.tsx
+// apps/cms/src/app/cms/shop/[shop]/products/page.tsx
 
 import { createDraft } from "@cms/actions/products";
 import { authOptions } from "@cms/auth/options";
@@ -41,7 +41,7 @@ export default async function ProductsPage({
 
         {isAdmin && (
           <form action={onCreate}>
-            <button className="rounded-md bg-primary px-4 py-2 text-sm text-white hover:bg-primary/90">
+            <button className="bg-primary hover:bg-primary/90 rounded-md px-4 py-2 text-sm text-white">
               New product
             </button>
           </form>

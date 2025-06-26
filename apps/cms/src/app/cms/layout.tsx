@@ -1,4 +1,4 @@
-// apps/cms/src/app/(cms)/layout.tsx
+// apps/cms/src/app/cms/layout.tsx
 import "../globals.css";
 
 import Sidebar from "@ui/components/cms/Sidebar";

@@ -5,19 +5,22 @@ import {
   decodeCartCookie,
   encodeCartCookie,
 } from "@/lib/cartCookie";
+import type { SKU } from "@platform-core/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
 export const runtime = "edge";
 
-// This simple handler echoes back the posted body and status 200.
-// Stripe / KV integration will extend this in Sprint 5.
-const skuSchema = z.object({
+/** Runtime validator aligned with @platform-core/products skuSchema */
+const skuSchema: z.ZodType<SKU> = z.object({
   id: z.string(),
   slug: z.string(),
   title: z.string(),
+  /** Unit price in minor currency units (e.g., cents) */
   price: z.number(),
+  /** Refundable deposit, required by business rules */
+  deposit: z.number(),
   image: z.string(),
   sizes: z.array(z.string()),
   description: z.string(),
@@ -36,6 +39,7 @@ const patchSchema = z.object({
 export async function POST(req: NextRequest) {
   const json = await req.json();
   const parsed = postSchema.safeParse(json);
+
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
@@ -55,6 +59,7 @@ export async function POST(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   const json = await req.json();
   const parsed = patchSchema.safeParse(json);
+
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }

@@ -1,4 +1,4 @@
-// apps/cms/src/app/(cms)/shop/[shop]/media/page.tsx
+// apps/cms/src/app/cms/shop/[shop]/media/page.tsx
 
 import { listMedia } from "@cms/actions/media";
 import MediaManager from "@ui/components/cms/MediaManager";
@@ -18,7 +18,7 @@ export default async function MediaPage({
   const files = await listMedia(shop);
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Media – {shop}</h2>
+      <h2 className="mb-4 text-xl font-semibold">Media – {shop}</h2>
       <MediaManager shop={shop} initialFiles={files} />
     </div>
   );

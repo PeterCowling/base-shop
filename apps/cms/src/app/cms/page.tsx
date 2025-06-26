@@ -1,4 +1,4 @@
-// apps/cms/src/app/(cms)/page.tsx
+// apps/cms/src/app/cms/page.tsx
 import Link from "next/link";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -22,7 +22,7 @@ export default async function CmsIndexPage() {
         {shops.map((shop) => (
           <li key={shop}>
             <Link
-              href={`/shop/${shop}/products`}
+              href={`/cms/${shop}/products`}
               className="text-primary underline"
             >
               {shop}

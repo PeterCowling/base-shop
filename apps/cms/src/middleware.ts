@@ -3,8 +3,8 @@ import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-/** Matches write-routes like /{shop}/products/{id}/edit and captures the shop slug */
-const ADMIN_PATH_REGEX = /^\/shop\/([^/]+)\/products\/[^/]+\/edit/;
+/** Matches write-routes like /cms/{shop}/products/{id}/edit and captures the shop slug */
+const ADMIN_PATH_REGEX = /^\/cms\/([^/]+)\/products\/[^/]+\/edit/;
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;

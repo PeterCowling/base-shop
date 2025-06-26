@@ -1,1 +1,15 @@
-[{"id":"123","title":{"en":"Demo"},"price":1999,"images":[],"row_version":0}]
+[
+  {
+    "id": "123",
+    "title": { "en": "Demo" },
+    "price": 1999,
+    "images": [],
+    "row_version": 0,
+    "dailyRate": 100,
+    "weeklyRate": 500,
+    "monthlyRate": 1500,
+    "availability": [
+      { "from": "2025-01-01T00:00:00.000Z", "to": "2025-12-31T23:59:59.000Z" }
+    ]
+  }
+]

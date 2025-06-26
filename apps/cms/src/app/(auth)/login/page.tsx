@@ -8,7 +8,7 @@ import LoginForm from "./LoginForm";
  * Default destination when no `callbackUrl` query param is present.
  * Adjust this value if your app has a different post-login landing route.
  */
-const fallbackUrl: string = "/";
+const fallbackUrl: string = "/cms";
 
 export default function LoginPage() {
   // In some dev environments a stale service worker from other apps may

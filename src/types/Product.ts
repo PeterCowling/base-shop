@@ -25,4 +25,14 @@ export interface ProductPublication {
   row_version: number; // optimistic locking
   created_at: string; // ISO timestamp
   updated_at: string; // ISO timestamp
+  rentalTerms?: string;
+  deposit?: number;
+  /** daily rental rate in minor currency units */
+  dailyRate?: number;
+  /** weekly rental rate in minor currency units */
+  weeklyRate?: number;
+  /** monthly rental rate in minor currency units */
+  monthlyRate?: number;
+  /** availability windows as ISO timestamps */
+  availability?: { from: string; to: string }[];
 }

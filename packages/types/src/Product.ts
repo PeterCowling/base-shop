@@ -21,5 +21,12 @@ export interface ProductPublication {
   updated_at: string;
   rentalTerms?: string;
   deposit?: number;
-  availability?: boolean;
+  /** daily rental rate in minor currency units */
+  dailyRate?: number;
+  /** weekly rental rate in minor currency units */
+  weeklyRate?: number;
+  /** monthly rental rate in minor currency units */
+  monthlyRate?: number;
+  /** availability windows as ISO timestamps */
+  availability?: { from: string; to: string }[];
 }

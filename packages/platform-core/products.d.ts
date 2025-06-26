@@ -21,6 +21,16 @@ export interface ProductCore {
   images: string[];
   created_at: string;
   updated_at: string;
+  rentalTerms?: string;
+  deposit?: number;
+  /** daily rental rate in minor currency units */
+  dailyRate?: number;
+  /** weekly rental rate in minor currency units */
+  weeklyRate?: number;
+  /** monthly rental rate in minor currency units */
+  monthlyRate?: number;
+  /** availability windows as ISO timestamps */
+  availability?: { from: string; to: string }[];
 }
 export type PublicationStatus = "draft" | "live" | "retired";
 export interface ProductPublication extends ProductCore {

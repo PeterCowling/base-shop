@@ -1,6 +1,7 @@
 // packages/ui/components/cms/ImageUploaderWithOrientationCheck.tsx
 "use client";
 
+import { Input } from "@/components/ui/input";
 import type { ImageOrientation } from "@types";
 import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
 import { memo, useCallback } from "react";
@@ -39,7 +40,7 @@ function ImageUploaderWithOrientationCheckInner({
 
   return (
     <div className="flex flex-col gap-2">
-      <input
+      <Input
         type="file"
         accept="image/*"
         onChange={handleFileChange}

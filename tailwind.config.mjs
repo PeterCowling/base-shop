@@ -41,6 +41,10 @@ const config = {
     "!**/dist",
     "!**/.next",
   ],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/container-queries"),
+  ],
 };
 
 export default config;

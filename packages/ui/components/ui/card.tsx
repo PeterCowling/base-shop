@@ -1,6 +1,6 @@
 // packages/ui/components/ui/card.tsx
 import * as React from "react";
-import { cn } from "../utils/cn";
+import { cn } from "../../utils/cn";
 
 export type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
@@ -9,7 +9,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     <div
       ref={ref}
       className={cn(
-        "rounded-xl border bg-card text-card-foreground shadow",
+        "bg-card text-card-foreground rounded-xl border shadow",
         className
       )}
       {...props}

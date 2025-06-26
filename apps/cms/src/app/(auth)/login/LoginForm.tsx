@@ -1,5 +1,6 @@
 "use client";
 
+import { Input } from "@/components/ui/input";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -47,26 +48,26 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
     <form onSubmit={handleSubmit} className="mx-auto mt-40 w-72 space-y-4">
       <h2 className="text-lg font-semibold">Sign in</h2>
 
-      <input
+      <Input
         name="email"
         type="email"
         placeholder="Email"
         required
-        className="w-full rounded-md border px-3 py-2"
+        className="w-full"
       />
-      <input
+      <Input
         name="password"
         type="password"
         placeholder="Password"
         required
-        className="w-full rounded-md border px-3 py-2"
+        className="w-full"
       />
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <button className="bg-primary hover:bg-primary/90 w-full rounded-md px-4 py-2 text-white">
+      <Button className="w-full" type="submit">
         Continue
-      </button>
+      </Button>
     </form>
   );
 }

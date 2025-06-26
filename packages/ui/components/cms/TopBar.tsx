@@ -11,13 +11,16 @@ function TopBarInner() {
   const router = useRouter();
 
   return (
-    <header className="flex items-center justify-between gap-3 border-b border-gray-200 bg-background/60 px-4 py-2 backdrop-blur dark:border-gray-800">
+    <header className="bg-background/60 flex items-center justify-between gap-3 border-b border-gray-200 px-4 py-2 backdrop-blur dark:border-gray-800">
       <Breadcrumbs />
       <div className="flex items-center gap-2">
         <Button variant="outline" onClick={() => router.refresh()}>
           Refresh
         </Button>
-        <Button variant="ghost" onClick={() => signOut()}>
+        <Button
+          variant="ghost"
+          onClick={() => signOut({ callbackUrl: "/cms/login" })}
+        >
           Sign&nbsp;out
         </Button>
       </div>

@@ -1,6 +1,8 @@
 // packages/ui/components/cms/PublishLocationSelector.tsx
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import type { PublishLocation } from "@types";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { memo, useCallback } from "react";
@@ -45,9 +47,9 @@ function PublishLocationSelectorInner({
           ({ id, name, description, requiredOrientation }: PublishLocation) => (
             <label
               key={id}
-              className="flex items-start gap-2 cursor-pointer select-none"
+              className="flex cursor-pointer items-start gap-2 select-none"
             >
-              <input
+              <Input
                 type="checkbox"
                 checked={selectedIds.includes(id)}
                 onChange={() => toggle(id)}
@@ -55,13 +57,13 @@ function PublishLocationSelectorInner({
               />
               <span>
                 <span className="font-medium">{name}</span>
-                <span className="ml-1 text-xs text-muted-foreground">
+                <span className="text-muted-foreground ml-1 text-xs">
                   ({requiredOrientation})
                 </span>
                 {description && (
                   <>
                     <br />
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-muted-foreground text-sm">
                       {description}
                     </span>
                   </>
@@ -73,13 +75,14 @@ function PublishLocationSelectorInner({
       </div>
 
       {showReload && (
-        <button
+        <Button
           type="button"
           onClick={reload}
-          className="mt-4 inline-flex items-center rounded-2xl border p-2 text-sm shadow"
+          variant="outline"
+          className="mt-4 inline-flex items-center rounded-2xl p-2 text-sm shadow"
         >
           Refresh list
-        </button>
+        </Button>
       )}
     </>
   );

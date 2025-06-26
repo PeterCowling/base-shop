@@ -41,9 +41,9 @@ export default async function ProductsPage({
 
         {isAdmin && (
           <form action={onCreate}>
-            <button className="bg-primary hover:bg-primary/90 rounded-md px-4 py-2 text-sm text-white">
+            <Button className="bg-primary text-white" type="submit">
               New product
-            </button>
+            </Button>
           </form>
         )}
       </div>

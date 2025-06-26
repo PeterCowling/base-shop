@@ -14,6 +14,7 @@ import {
 import { deleteProduct, duplicateProduct } from "@cms/actions/products";
 import { ProductPublication } from "@platform-core/products";
 
+import { Button } from "@/components/ui/button";
 import DataTable from "./DataTable";
 import ProductFilters from "./ProductFilters";
 
@@ -150,18 +151,20 @@ function ProductsTableBase({ shop, rows, isAdmin }: Props): ReactElement {
             >
               View
             </Link>
-            <button
+            <Button
               onClick={() => handleDuplicate(p.id)}
-              className="rounded border px-2 py-1 text-xs hover:bg-gray-100 dark:hover:bg-gray-800"
+              variant="outline"
+              className="px-2 py-1 text-xs"
             >
               Duplicate
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => handleDelete(p.id)}
-              className="rounded border px-2 py-1 text-xs hover:bg-red-50 dark:hover:bg-red-900"
+              variant="outline"
+              className="px-2 py-1 text-xs hover:bg-red-50 dark:hover:bg-red-900"
             >
               Delete
-            </button>
+            </Button>
           </div>
         ),
       },
@@ -180,7 +183,11 @@ function ProductsTableBase({ shop, rows, isAdmin }: Props): ReactElement {
         onSearchChange={setSearch}
         onStatusChange={setStatus}
       />
-      <DataTable rows={filteredRows} columns={columns} />
+      <DataTable
+        rows={filteredRows}
+        columns={columns}
+        selectable={isAdmin}
+      />{" "}
     </div>
   );
 }

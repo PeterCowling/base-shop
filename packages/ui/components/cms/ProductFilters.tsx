@@ -1,5 +1,6 @@
 // packages/ui/components/cms/ProductFilters.tsx  (unchanged except export)
 "use client";
+import { Input } from "@/components/ui/input";
 import { ChangeEvent } from "react";
 
 export const statuses = ["all", "active", "draft", "archived"] as const;
@@ -19,10 +20,10 @@ export default function ProductFilters({
 }: Props) {
   return (
     <div className="flex flex-wrap gap-3">
-      <input
+      <Input
         type="search"
         placeholder="Search titles or SKU…"
-        className="w-64 rounded-md border px-3 py-2 text-sm"
+        className="w-64"
         value={search}
         onChange={(e) => onSearchChange(e.target.value)}
       />

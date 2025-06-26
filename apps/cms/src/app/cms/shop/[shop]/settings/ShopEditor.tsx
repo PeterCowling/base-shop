@@ -1,6 +1,8 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/ShopEditor.tsx
 
 "use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { updateShop } from "@cms/actions/shops";
 import type { Shop } from "@types";
 import { Textarea } from "@ui/components/ui/textarea";
@@ -61,11 +63,15 @@ export default function ShopEditor({ shop, initial }: Props) {
   };
 
   return (
-    <form onSubmit={onSubmit} className="grid max-w-md gap-4">
-      <input type="hidden" name="id" value={info.id} />
+    <form
+      onSubmit={onSubmit}
+      className="@container grid max-w-md gap-4 @sm:grid-cols-2"
+    >
+      {" "}
+      <Input type="hidden" name="id" value={info.id} />
       <label className="flex flex-col gap-1">
         <span>Name</span>
-        <input
+        <Input
           className="border p-2"
           name="name"
           value={info.name}
@@ -74,7 +80,7 @@ export default function ShopEditor({ shop, initial }: Props) {
       </label>
       <label className="flex flex-col gap-1">
         <span>Theme</span>
-        <input
+        <Input
           className="border p-2"
           name="themeId"
           value={info.themeId}
@@ -83,7 +89,7 @@ export default function ShopEditor({ shop, initial }: Props) {
       </label>
       <label className="flex flex-col gap-1">
         <span>Catalog Filters (comma separated)</span>
-        <input
+        <Input
           className="border p-2"
           name="catalogFilters"
           value={info.catalogFilters.join(",")}
@@ -108,12 +114,9 @@ export default function ShopEditor({ shop, initial }: Props) {
           rows={4}
         />
       </label>
-      <button
-        className="bg-primary rounded px-4 py-2 text-sm text-white"
-        disabled={saving}
-      >
+      <Button className="bg-primary text-white" disabled={saving} type="submit">
         {saving ? "Saving…" : "Save"}
-      </button>
+      </Button>
     </form>
   );
 }

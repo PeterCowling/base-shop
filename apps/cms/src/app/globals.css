@@ -34,11 +34,3 @@ a:hover {
 button {
   font-family: inherit;
 }
-
-/* utility classes (non-Tailwind) */
-.bg-primary {
-  background-color: hsl(var(--color-primary));
-}
-.text-primary-fg {
-  color: hsl(var(--color-primary-fg));
-}

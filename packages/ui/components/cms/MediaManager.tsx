@@ -1,6 +1,7 @@
 // packages/ui/components/cms/MediaManager.tsx
 "use client";
 
+import { Input } from "@/components/ui/input";
 import { uploadMedia } from "@cms/actions/media";
 import Image from "next/image";
 import { useCallback, useRef, useState } from "react";
@@ -53,7 +54,7 @@ export default function MediaManager({ shop, initialFiles }: Props) {
         onClick={openFileDialog}
         className="flex h-32 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-300 text-sm text-gray-500"
       >
-        <input
+        <Input
           ref={inputRef}
           type="file"
           accept="image/*"

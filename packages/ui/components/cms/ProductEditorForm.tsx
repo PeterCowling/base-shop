@@ -117,8 +117,8 @@ export default function ProductEditorForm({
   return (
     <Card className="mx-auto max-w-3xl">
       <CardContent>
-        <form onSubmit={handleSubmit} className="grid gap-6">
-          <input type="hidden" name="id" value={product.id} />
+        <form onSubmit={handleSubmit} className="@container grid gap-6">
+          <Input type="hidden" name="id" value={product.id} />
 
           {/* Price ------------------------------------------------------ */}
           <label className="flex max-w-xs flex-col gap-1">
@@ -147,7 +147,7 @@ export default function ProductEditorForm({
           />
 
           {/* Multilingual fields -------------------------------------- */}
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 @md:grid-cols-3">
             {locales.map((l) => (
               <div key={l} className="flex flex-col gap-4">
                 <h3 className="text-sm font-medium">{label[l]}</h3>

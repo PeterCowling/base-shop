@@ -1,6 +1,7 @@
 // eslint.config.mjs
 
 import { FlatCompat } from "@eslint/eslintrc";
+import boundaries from "eslint-plugin-boundaries";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -17,6 +18,33 @@ const eslintConfig = [
     ignores: ["**/dist/**", "**/.next/**", "**/index.js"],
   },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    plugins: {
+      boundaries,
+    },
+    settings: {
+      "boundaries/elements": [
+        { type: "atoms", pattern: "packages/ui/components/atoms/*" },
+        { type: "molecules", pattern: "packages/ui/components/molecules/*" },
+        { type: "organisms", pattern: "packages/ui/components/organisms/*" },
+        { type: "templates", pattern: "packages/ui/components/templates/*" },
+      ],
+    },
+    rules: {
+      "boundaries/element-types": [
+        "error",
+        {
+          default: "disallow",
+          rules: [
+            { from: "atoms", allow: [] },
+            { from: "molecules", allow: ["atoms"] },
+            { from: "organisms", allow: ["atoms", "molecules"] },
+            { from: "templates", allow: ["atoms", "molecules", "organisms"] },
+          ],
+        },
+      ],
+    },
+  },
 ];
 
 export default eslintConfig;

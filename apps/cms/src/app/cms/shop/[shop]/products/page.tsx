@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { createDraft } from "@cms/actions/products";
 import { authOptions } from "@cms/auth/options";
+import type { ProductPublication } from "@platform-core/products";
 import { readRepo } from "@platform-core/repositories/json";
 import ProductsTable from "@ui/components/cms/ProductsTable";
 import { getServerSession } from "next-auth";

@@ -1,5 +1,3 @@
-// src/types/constants.ts
-
 export const LOCALES = ["en", "de", "it"] as const;
 export type Locale = (typeof LOCALES)[number];
 

@@ -2,25 +2,11 @@
 /* -------------------------------------------------------------------------- */
 /*  Locale helpers                                                            */
 /* -------------------------------------------------------------------------- */
-
-import { LOCALES, type Locale } from "@types";
-/** Convenience list of all supported locales. */
-export { LOCALES };
-
-/**
- * A translated string (or any other scalar type T) keyed by locale.
- * ```
- * const title: Translated = { en: "Sneaker", de: "Turnschuh", it: "Scarpa" };
- * ```
- */
-export type Translated<T extends string = string> = Record<Locale, T>;
+import { type Locale } from "@types";
 
 /* -------------------------------------------------------------------------- */
 /*  Storefront types & helpers                                                */
 /* -------------------------------------------------------------------------- */
-
-import type { SKU } from "@types";
-export type { SKU }; // re-export for downstream consumers
 
 /** Mock catalogue (3 items) */
 export const PRODUCTS: readonly SKU[] = [
@@ -67,36 +53,12 @@ export function getProductBySlug(slug: string): SKU | undefined {
 /* -------------------------------------------------------------------------- */
 /*  CMS-side types                                                            */
 /* -------------------------------------------------------------------------- */
-
-export interface ProductCore {
-  id: string; // ULID
-  sku: string;
-  title: Translated;
-  description: Translated;
-  price: number; // minor units (e.g. cents)
-  currency: string; // ISO-4217 code
-  images: string[];
-  created_at: string; // ISO timestamp
-  updated_at: string;
-  rentalTerms?: string;
-  deposit?: number;
-  /** daily rental rate in minor currency units */
-  dailyRate?: number;
-  /** weekly rental rate in minor currency units */
-  weeklyRate?: number;
-  /** monthly rental rate in minor currency units */
-  monthlyRate?: number;
-  /** availability windows as ISO timestamps */
-  availability?: { from: string; to: string }[];
-}
-
-export type PublicationStatus = "draft" | "active" | "archived";
-
-export interface ProductPublication extends ProductCore {
-  shop: string; // e.g. "abc"
-  status: PublicationStatus;
-  row_version: number;
-}
+// Types imported from the shared domain model
+export type {
+  ProductCore,
+  ProductPublication,
+  PublicationStatus,
+} from "@types";
 
 /* -------------------------------------------------------------------------- */
 /*  Utility                                                                   */

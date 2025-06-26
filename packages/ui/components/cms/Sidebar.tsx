@@ -11,8 +11,14 @@ const links = [
 export default function Sidebar() {
   const pathname = usePathname() ?? "";
   const segments = pathname.split("/");
-  const base =
-    segments[1] === "cms" && segments[2] ? `/cms/${segments[2]}` : "";
+  let base = "";
+  if (segments[1] === "cms") {
+    if (segments[2] === "shop" && segments[3]) {
+      base = `/cms/shop/${segments[3]}`;
+    } else if (segments[2]) {
+      base = `/cms/${segments[2]}`;
+    }
+  }
   return (
     <aside className="w-56 shrink-0 border-r border-gray-200 dark:border-gray-800">
       <h1 className="px-4 py-6 text-lg font-semibold tracking-tight">CMS</h1>

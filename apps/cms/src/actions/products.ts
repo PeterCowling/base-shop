@@ -66,8 +66,8 @@ export async function createDraftRecord(
     updated_at: now,
   };
 
-  const repo = await readRepo(shop);
-  await writeRepo(shop, [draft, ...repo]);
+  const repo = await readRepo<ProductPublication>(shop);
+  await writeRepo<ProductPublication>(shop, [draft, ...repo]);
   return draft;
 }
 
@@ -126,7 +126,7 @@ export async function updateProduct(
     updated_at: new Date().toISOString(),
   };
 
-  const saved = await updateProductInRepo(shop, updated);
+  const saved = await updateProductInRepo<ProductPublication>(shop, updated);
   return { product: saved };
 }
 
@@ -140,7 +140,7 @@ export async function duplicateProduct(
   "use server";
   await ensureAuthorized();
 
-  const copy = await duplicateProductInRepo(shop, id);
+  const copy = await duplicateProductInRepo<ProductPublication>(shop, id);
   redirect(`/cms/${shop}/products/${copy.id}/edit`);
 }
 
@@ -151,6 +151,6 @@ export async function deleteProduct(shop: string, id: string): Promise<void> {
   "use server";
   await ensureAuthorized();
 
-  await deleteProductFromRepo(shop, id);
+  await deleteProductFromRepo<ProductPublication>(shop, id);
   redirect(`/cms/${shop}/products`);
 }

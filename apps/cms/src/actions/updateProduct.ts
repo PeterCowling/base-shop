@@ -23,7 +23,7 @@ export async function updateProduct(
   /*  Load current snapshot                                             */
   /* ------------------------------------------------------------------ */
   const id = String(formData.get("id"));
-  const current = await getProductById(SHOP, id);
+  const current = await getProductById<ProductPublication>(SHOP, id);
   if (!current) throw new Error(`Product ${id} not found in shop ${SHOP}`);
 
   /* ------------------------------------------------------------------ */
@@ -39,5 +39,5 @@ export async function updateProduct(
   /* ------------------------------------------------------------------ */
   /*  Persist atomically & return freshly stored record                 */
   /* ------------------------------------------------------------------ */
-  return updateProductInRepo(SHOP, updated);
+  return updateProductInRepo<ProductPublication>(SHOP, updated);
 }

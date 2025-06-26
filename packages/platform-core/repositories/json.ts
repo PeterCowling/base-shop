@@ -114,22 +114,24 @@ export async function writeShop(shop: string, info: Shop): Promise<void> {
 /**
  * Read catalogue for a shop (returns empty array if file missing/invalid)
  */
-export async function readRepo(shop: string): Promise<ProductPublication[]> {
+export async function readRepo<T = ProductPublication>(
+  shop: string
+): Promise<T[]> {
   try {
     const buf = await fs.readFile(filePath(shop), "utf8");
-    return JSON.parse(buf) as ProductPublication[];
+    return JSON.parse(buf) as T[];
   } catch {
     // file missing or invalid ⇒ start with empty repo
-    return [];
+    return [] as T[];
   }
 }
 
 /**
  * Write full catalogue atomically
  */
-export async function writeRepo(
+export async function writeRepo<T = ProductPublication>(
   shop: string,
-  catalogue: ProductPublication[]
+  catalogue: T[]
 ): Promise<void> {
   await ensureDir(shop);
   const tmp = `${filePath(shop)}.${Date.now()}.tmp`;
@@ -141,54 +143,55 @@ export async function writeRepo(
 /*  CRUD helpers for CMS                                                      */
 /* -------------------------------------------------------------------------- */
 
-export async function getProductById(
-  shop: string,
-  id: string
-): Promise<ProductPublication | null> {
-  const catalogue = await readRepo(shop);
+export async function getProductById<
+  T extends { id: string } = ProductPublication,
+>(shop: string, id: string): Promise<T | null> {
+  const catalogue = await readRepo<T>(shop);
   return catalogue.find((p) => p.id === id) ?? null;
 }
 
-export async function updateProductInRepo(
+export async function updateProductInRepo<
+  T extends { id: string; row_version: number } = ProductPublication,
+>(
   shop: string,
-  patch: Partial<ProductPublication> & { id: string }
-): Promise<ProductPublication> {
-  const catalogue = await readRepo(shop);
+
+  patch: Partial<T> & { id: string }
+): Promise<T> {
+  const catalogue = await readRepo<T>(shop);
   const idx = catalogue.findIndex((p) => p.id === patch.id);
+
   if (idx === -1) throw new Error(`Product ${patch.id} not found in ${shop}`);
 
-  const updated: ProductPublication = {
+  const updated: T = {
     ...catalogue[idx],
     ...patch,
     row_version: catalogue[idx].row_version + 1,
   };
 
   catalogue[idx] = updated;
-  await writeRepo(shop, catalogue);
+  await writeRepo<T>(shop, catalogue);
   return updated;
 }
 
-export async function deleteProductFromRepo(
-  shop: string,
-  id: string
-): Promise<void> {
-  const catalogue = await readRepo(shop);
+export async function deleteProductFromRepo<
+  T extends { id: string } = ProductPublication,
+>(shop: string, id: string): Promise<void> {
+  const catalogue = await readRepo<T>(shop);
   const next = catalogue.filter((p) => p.id !== id);
   if (next.length === catalogue.length) {
     throw new Error(`Product ${id} not found in ${shop}`);
   }
-  await writeRepo(shop, next);
+  await writeRepo<T>(shop, next);
 }
 
-export async function duplicateProductInRepo(
-  shop: string,
-  id: string
-): Promise<ProductPublication> {
-  const catalogue = await readRepo(shop);
+export async function duplicateProductInRepo<
+  T extends ProductPublication = ProductPublication,
+>(shop: string, id: string): Promise<T> {
+  const catalogue = await readRepo<T>(shop);
   const original = catalogue.find((p) => p.id === id);
   if (!original) throw new Error(`Product ${id} not found in ${shop}`);
   const now = new Date().toISOString();
-  const copy: ProductPublication = {
+  const copy: T = {
     ...original,
     id: ulid(),
     sku: `${original.sku}-copy`,
@@ -197,23 +200,23 @@ export async function duplicateProductInRepo(
     created_at: now,
     updated_at: now,
   };
-  await writeRepo(shop, [copy, ...catalogue]);
+  await writeRepo<T>(shop, [copy, ...catalogue]);
   return copy;
 }
 
-export async function getShopById(shop: string): Promise<Shop> {
-  return readShop(shop);
+export async function getShopById<T = Shop>(shop: string): Promise<T> {
+  return readShop(shop) as Promise<T>;
 }
 
-export async function updateShopInRepo(
+export async function updateShopInRepo<T extends { id: string } = Shop>(
   shop: string,
-  patch: Partial<Shop> & { id: string }
-): Promise<Shop> {
-  const current = await readShop(shop);
+  patch: Partial<T> & { id: string }
+): Promise<T> {
+  const current = (await readShop(shop)) as T;
   if (current.id !== patch.id) {
     throw new Error(`Shop ${patch.id} not found in ${shop}`);
   }
-  const updated: Shop = { ...current, ...patch };
-  await writeShop(shop, updated);
+  const updated: T = { ...current, ...patch };
+  await writeShop(shop, updated as Shop);
   return updated;
 }

@@ -21,7 +21,7 @@ export default async function ProductsPage({
   const { shop } = await params;
   const [session, rows] = await Promise.all([
     getServerSession(authOptions),
-    readRepo(shop),
+    readRepo<ProductPublication>(shop),
   ]);
 
   const isAdmin = session

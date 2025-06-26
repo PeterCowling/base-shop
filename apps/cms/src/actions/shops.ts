@@ -25,7 +25,7 @@ export async function updateShop(
   await ensureAuthorized();
 
   const id = String(formData.get("id"));
-  const current = await getShopById(shop);
+  const current = await getShopById<Shop>(shop);
   if (current.id !== id) throw new Error(`Shop ${id} not found in ${shop}`);
 
   const parsed = shopSchema.safeParse(Object.fromEntries(formData.entries()));
@@ -44,6 +44,6 @@ export async function updateShop(
     filterMappings: data.filterMappings,
   };
 
-  const saved = await updateShopInRepo(shop, updated);
+  const saved = await updateShopInRepo<Shop>(shop, updated);
   return { shop: saved };
 }

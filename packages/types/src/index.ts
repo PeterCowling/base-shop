@@ -1,5 +1,4 @@
 export * from "./Cart";
-export * from "./constants";
 export * from "./ImageOrientation";
 export * from "./MediaItem";
 export * from "./Product";

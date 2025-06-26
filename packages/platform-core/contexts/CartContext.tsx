@@ -1,6 +1,7 @@
 /* packages/platform-core/contexts/CartContext.tsx */
 "use client";
 
+import type { SKU } from "@types";
 import {
   createContext,
   ReactNode,
@@ -13,7 +14,6 @@ import {
   CART_COOKIE,
   encodeCartCookie,
 } from "../cartCookie";
-import type { SKU } from "../products";
 
 /* ---------- types ---------- */
 

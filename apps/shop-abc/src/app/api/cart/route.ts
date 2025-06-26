@@ -5,26 +5,12 @@ import {
   decodeCartCookie,
   encodeCartCookie,
 } from "@/lib/cartCookie";
-import type { SKU } from "@platform-core/products";
+import { skuSchema } from "@types";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
 export const runtime = "edge";
-
-/** Runtime validator aligned with @platform-core/products skuSchema */
-const skuSchema: z.ZodType<SKU> = z.object({
-  id: z.string(),
-  slug: z.string(),
-  title: z.string(),
-  /** Unit price in minor currency units (e.g., cents) */
-  price: z.number(),
-  /** Refundable deposit, required by business rules */
-  deposit: z.number(),
-  image: z.string(),
-  sizes: z.array(z.string()),
-  description: z.string(),
-});
 
 const postSchema = z.object({
   sku: skuSchema,

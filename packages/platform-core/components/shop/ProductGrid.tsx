@@ -1,6 +1,6 @@
 // src/components/shop/ProductGrid.tsx
+import type { SKU } from "@types";
 import { memo, useMemo } from "react";
-import type { SKU } from "../../products";
 import { ProductCard } from "./ProductCard";
 
 type Props = { skus: SKU[] };

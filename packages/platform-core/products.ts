@@ -24,17 +24,7 @@ export type Translated<T extends string = string> = Record<Locale, T>;
 /*  Storefront types & helpers                                                */
 /* -------------------------------------------------------------------------- */
 
-export interface SKU {
-  id: string;
-  slug: string;
-  title: string;
-  price: number; // whole euros for demo
-  image: string;
-  /** refundable deposit for rentals (whole euros) */
-  deposit: number;
-  sizes: string[];
-  description: string;
-}
+export type { SKU } from "@types";
 
 /** Mock catalogue (3 items) */
 export const PRODUCTS: readonly SKU[] = [

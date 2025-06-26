@@ -2,8 +2,8 @@
 "use client";
 
 import { useCart } from "@/contexts/CartContext";
+import type { SKU } from "@types";
 import { useState } from "react";
-import type { SKU } from "../../products";
 
 type Props = {
   sku: SKU;
@@ -28,7 +28,7 @@ export default function AddToCartButton({ sku, disabled = false }: Props) {
     <button
       onClick={handleClick}
       disabled={adding || disabled}
-      className="mt-auto bg-gray-900 text-white rounded py-2 px-4 text-sm hover:bg-gray-800 disabled:opacity-50"
+      className="mt-auto rounded bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-800 disabled:opacity-50"
     >
       {adding ? "✓" : "Add to cart"}
     </button>

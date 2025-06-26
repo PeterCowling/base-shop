@@ -4,14 +4,14 @@
 import ImageGallery from "@/components/pdp/ImageGallery";
 import SizeSelector from "@/components/pdp/SizeSelector";
 import AddToCartButton from "@/components/shop/AddToCartButton";
-import type { SKU } from "@/lib/products";
+import type { SKU } from "@types";
 import { useState } from "react";
 
 export default function PdpClient({ product }: { product: SKU }) {
   const [size, setSize] = useState<string | null>(null);
 
   return (
-    <div className="max-w-6xl mx-auto p-6 lg:grid lg:grid-cols-2 lg:gap-10">
+    <div className="mx-auto max-w-6xl p-6 lg:grid lg:grid-cols-2 lg:gap-10">
       <ImageGallery src={product.image} alt={product.title} />
 
       <section className="flex flex-col gap-6">

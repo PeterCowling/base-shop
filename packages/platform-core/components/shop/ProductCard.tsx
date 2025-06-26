@@ -1,23 +1,23 @@
 // src/components/shop/ProductCard.tsx
+import type { SKU } from "@types";
 import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
-import type { SKU } from "../../products";
 import AddToCartButton from "./AddToCartButton";
 
 function ProductCardInner({ sku }: { sku: SKU }) {
   return (
-    <article className="border rounded-lg p-4 flex flex-col gap-3 hover:shadow-md transition-shadow">
+    <article className="flex flex-col gap-3 rounded-lg border p-4 transition-shadow hover:shadow-md">
       <Link
         href={`../product/${sku.slug}`}
-        className="block relative aspect-square"
+        className="relative block aspect-square"
       >
         <Image
           src={sku.image}
           alt={sku.title}
           fill
           sizes="(min-width: 640px) 25vw, 50vw"
-          className="object-cover rounded-md"
+          className="rounded-md object-cover"
         />
       </Link>
 

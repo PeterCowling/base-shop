@@ -1,6 +1,6 @@
 // apps/shop-bcd/src/app/[lang]/shop/page.tsx
-import type { SKU } from "@/lib/products";
 import { PRODUCTS } from "@/lib/products";
+import type { SKU } from "@types";
 import type { Metadata } from "next";
 import ShopClient from "./ShopClient";
 

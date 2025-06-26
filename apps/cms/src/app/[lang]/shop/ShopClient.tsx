@@ -3,7 +3,7 @@
 
 import FilterBar, { Filters } from "@/components/shop/FilterBar";
 import { ProductGrid } from "@/components/shop/ProductGrid";
-import type { SKU } from "@platform-core/products";
+import type { SKU } from "@types";
 import { useMemo, useState } from "react";
 
 export default function ShopClient({ skus }: { skus: SKU[] }) {
@@ -15,8 +15,8 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
   }, [filters, skus]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-4">Shop</h1>
+    <div className="mx-auto max-w-6xl px-4 py-10">
+      <h1 className="mb-4 text-3xl font-bold">Shop</h1>
       <FilterBar onChange={setFilters} />
       <ProductGrid skus={visible} />
     </div>

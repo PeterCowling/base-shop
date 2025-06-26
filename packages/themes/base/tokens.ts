@@ -21,7 +21,7 @@ export const tokens = {
   "--color-primary": { light: "220 90% 56%", dark: "220 90% 66%" },
   "--color-primary-fg": { light: "0 0% 100%" },
   "--color-accent": { light: "260 83% 67%" },
-  "--color-muted": { light: "0 0% 88%", dark: "0 0% 20%" },
+  "--color-muted": { light: "0 0% 88%", dark: "0 0% 60%" },
   "--font-sans": { light: '"Geist Sans", system-ui, sans-serif' },
   "--font-mono": { light: '"Geist Mono", ui-monospace, monospace' },
   "--space-1": { light: "4px" },

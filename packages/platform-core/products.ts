@@ -1,5 +1,4 @@
 // packages/platform-core/products.ts
-
 /* -------------------------------------------------------------------------- */
 /*  Locale helpers                                                            */
 /* -------------------------------------------------------------------------- */
@@ -24,7 +23,8 @@ export type Translated<T extends string = string> = Record<Locale, T>;
 /*  Storefront types & helpers                                                */
 /* -------------------------------------------------------------------------- */
 
-export type { SKU } from "@types";
+import type { SKU } from "@types";
+export type { SKU }; // re-export for downstream consumers
 
 /** Mock catalogue (3 items) */
 export const PRODUCTS: readonly SKU[] = [

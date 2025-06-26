@@ -2,7 +2,7 @@
 
 import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { USER_ROLES } from "./roles";
+import { USER_ROLES, type Role } from "./roles";
 import { USERS } from "./users";
 
 export const authOptions: NextAuthOptions = {
@@ -31,10 +31,9 @@ export const authOptions: NextAuthOptions = {
           /* Strip password before handing the user object to NextAuth */
           const { password: _password, ...safeUser } = user;
           void _password;
-          const role = USER_ROLES[user.id];
-          return { ...safeUser, role } as typeof safeUser & {
-            role: (typeof USER_ROLES)[string];
-          };
+          const r = USER_ROLES[user.id];
+          const role = Array.isArray(r) ? r[0] : r;
+          return { ...safeUser, role } as typeof safeUser & { role: Role };
         }
         throw new Error("Invalid email or password");
       },

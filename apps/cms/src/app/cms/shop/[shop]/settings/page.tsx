@@ -2,9 +2,11 @@
 
 import { readSettings, readShop } from "@platform-core/repositories/json";
 import type { Locale } from "@types";
+// Import ShopEditor lazily once implemented
 import dynamic from "next/dynamic";
 
 const ShopEditor = dynamic(() => import("./ShopEditor"));
+void ShopEditor;
 
 export const revalidate = 0;
 
@@ -18,6 +20,7 @@ export default async function SettingsPage({
     readSettings(shop),
     readShop(shop),
   ]);
+  void info;
 
   return (
     <div>

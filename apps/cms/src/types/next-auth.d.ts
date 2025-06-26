@@ -1,7 +1,8 @@
 // apps/cms/src/types/next-auth.d.ts
 
 import "next-auth";
-import { DefaultSession } from "next-auth";
+import { DefaultSession, DefaultUser } from "next-auth";
+import "next-auth/adapters";
 import "next-auth/jwt";
 
 /* ------------------------------------------------------------------
@@ -23,6 +24,16 @@ declare module "next-auth" {
     user: {
       role: Role;
     } & DefaultSession["user"];
+  }
+
+  interface User extends DefaultUser {
+    role: Role;
+  }
+}
+
+declare module "next-auth/adapters" {
+  interface AdapterUser extends DefaultUser {
+    role: Role;
   }
 }
 

@@ -1,3 +1,5 @@
+// apps/cms/src/app/cms/shop/[shop]/settings/ShopEditor.tsx
+
 "use client";
 import { updateShop } from "@cms/actions/shops";
 import type { Shop } from "@types";
@@ -38,7 +40,7 @@ export default function ShopEditor({ shop, initial }: Props) {
   };
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-4 max-w-md">
+    <form onSubmit={onSubmit} className="grid max-w-md gap-4">
       <input type="hidden" name="id" value={info.id} />
       <label className="flex flex-col gap-1">
         <span>Name</span>
@@ -68,7 +70,7 @@ export default function ShopEditor({ shop, initial }: Props) {
         />
       </label>
       <button
-        className="rounded bg-primary px-4 py-2 text-sm text-white"
+        className="bg-primary rounded px-4 py-2 text-sm text-white"
         disabled={saving}
       >
         {saving ? "Saving…" : "Save"}

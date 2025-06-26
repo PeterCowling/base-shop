@@ -10,14 +10,27 @@
     "outDir": "dist",
     "jsx": "react-jsx",
 
-    /*  ⭐ ADD: tell TS where to find @platform-core/… **inside** this pkg */
-    "baseUrl": ".", // ← still points at packages/platform-core
+    /*  Local barrel-import aliases for this package                      */
+    "baseUrl": ".",
+
+    /*  👇  NEW: tell TypeScript that *two* folders are “roots”.          *
+     *       This lets us import the shared `@types` files that live      *
+     *       under the repo-level `src/` directory without tripping the   *
+     *       TS6059 / TS6307 “file not under rootDir” errors.             */
+    "rootDirs": ["./", "../../src"],
+
     "paths": {
       /* ──────────────────────────────────────────────────────────────── */
-      /*  NEW — local resolution for the package’s own barrel imports    */
+      /*  Local self-aliases                                             */
       /* ──────────────────────────────────────────────────────────────── */
-      "@platform-core": ["."], // import "@platform-core"
-      "@platform-core/*": ["*"], // import "@platform-core/foo"
+      "@platform-core": ["."],
+      "@platform-core/*": ["*"],
+
+      /* ──────────────────────────────────────────────────────────────── */
+      /*  Shared monorepo-level type barrel                              */
+      /* ──────────────────────────────────────────────────────────────── */
+      "@types": ["../../src/types/index.ts"],
+      "@types/*": ["../../src/types/*"],
 
       /* ──────────────────────────────────────────────────────────────── */
       /*  Existing package-scoped @/… aliases                            */
@@ -28,5 +41,11 @@
     }
   },
 
-  "include": ["**/*.ts", "**/*.tsx"]
+  /*  👇  ALSO new: explicitly include the shared `src/types` tree so
+   *       the files are part of this *composite* project.               */
+  "include": ["**/*.ts", "**/*.tsx", "../../src/types/**/*.ts"],
+
+  /*  👇  Finally: declare the `src` composite project as a dependency
+   *       so incremental builds stay fast and sane.                     */
+  "references": [{ "path": "../../src" }]
 }

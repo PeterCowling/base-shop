@@ -1,6 +1,7 @@
 // src/components/checkout/CheckoutForm.tsx
 "use client";
 
+import { useTranslations } from "@/i18n/Translations";
 import {
   Elements,
   PaymentElement,
@@ -18,15 +19,24 @@ type Props = { locale: "en" | "de" | "it" }; // narrow to our three
 
 export default function CheckoutForm({ locale }: Props) {
   const [clientSecret, setClientSecret] = useState<string>();
+  const [returnDate, setReturnDate] = useState(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 7);
+    return d.toISOString().slice(0, 10);
+  });
 
   /* --- create session on mount --- */
   useEffect(() => {
     (async () => {
-      const res = await fetch("/api/checkout-session", { method: "POST" });
+      const res = await fetch("/api/checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ returnDate }),
+      });
       const { id } = (await res.json()) as { id: string };
       setClientSecret(id);
     })();
-  }, []);
+  }, [returnDate]);
 
   if (!clientSecret) return <p>Loading payment form…</p>;
 
@@ -37,16 +47,24 @@ export default function CheckoutForm({ locale }: Props) {
       options={{ clientSecret, locale: locale as StripeElementLocale }}
       key={clientSecret} // re-mount if locale changes
     >
-      <PaymentForm />
+      <PaymentForm returnDate={returnDate} setReturnDate={setReturnDate} />
     </Elements>
   );
 }
 
 /* ---------- inner form ---------- */
 
-function PaymentForm() {
+function PaymentForm({
+  returnDate,
+  setReturnDate,
+}: {
+  returnDate: string;
+  setReturnDate: (v: string) => void;
+}) {
   const stripe = useStripe();
   const elements = useElements();
+  const t = useTranslations();
+
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string>();
 
@@ -68,14 +86,23 @@ function PaymentForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <label className="block text-sm">
+        {t("checkout.return")}
+        <input
+          type="date"
+          value={returnDate}
+          onChange={(e) => setReturnDate(e.target.value)}
+          className="block w-full border px-2 py-1"
+        />
+      </label>
       <PaymentElement />
-      {error && <p className="text-red-600 text-sm">{error}</p>}
+      {error && <p className="text-sm text-red-600">{error}</p>}
       <button
         type="submit"
         disabled={!stripe || processing}
-        className="w-full bg-gray-900 text-white py-2 rounded disabled:opacity-50"
+        className="w-full rounded bg-gray-900 py-2 text-white disabled:opacity-50"
       >
-        {processing ? "Processing…" : "Pay now"}
+        {processing ? t("checkout.processing") : t("checkout.pay")}
       </button>
     </form>
   );

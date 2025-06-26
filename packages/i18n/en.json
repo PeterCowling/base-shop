@@ -21,5 +21,7 @@
   "pdp.added": "Added!",
   "checkout.pay": "Pay",
   "checkout.processing": "Processing…",
-  "checkout.empty": "Your cart is empty."
+  "checkout.empty": "Your cart is empty.",
+  "checkout.return": "Return date",
+  "checkout.deposit": "Deposit"
 }

@@ -27,15 +27,16 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
+    const absoluteUrl = absolutify(callbackUrl);
     const res = await signIn("credentials", {
       redirect: false,
       email,
       password,
-      callbackUrl: absolutify(callbackUrl),
+      callbackUrl: absoluteUrl,
     });
 
     if (res?.ok) {
-      router.push(res.url ?? callbackUrl);
+      router.push(callbackUrl);
     } else {
       setError(res?.error ?? "Invalid email or password");
       if (res?.error) console.error("Login error:", res.error);

@@ -41,6 +41,9 @@ importers:
       ulid:
         specifier: ^3.0.1
         version: 3.0.1
+      zod:
+        specifier: ^3.25.67
+        version: 3.25.67
     devDependencies:
       '@acme/tailwind-config':
         specifier: workspace:*
@@ -5663,6 +5666,9 @@ packages:
 
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
+
+  zod@3.25.67:
+    resolution: {integrity: sha512-idA2YXwpCdqUSKRCACDE6ItZD9TZzy3OZMtpfLoh6oPR47lipysRrJfjzMqFxQ3uJuUPyUeWe1r9vLH33xO/Qw==}
 
 snapshots:
 
@@ -11484,3 +11490,5 @@ snapshots:
   zimmerframe@1.1.2: {}
 
   zod@3.22.3: {}
+
+  zod@3.25.67: {}

@@ -25,5 +25,7 @@
 
   "checkout.pay": "Paga",
   "checkout.processing": "Elaborazione…",
-  "checkout.empty": "Il carrello è vuoto."
+  "checkout.empty": "Il carrello è vuoto.",
+  "checkout.return": "Data di restituzione",
+  "checkout.deposit": "Deposito"
 }

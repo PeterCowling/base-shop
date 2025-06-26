@@ -25,5 +25,7 @@
 
   "checkout.pay": "Bezahlen",
   "checkout.processing": "Verarbeite …",
-  "checkout.empty": "Dein Warenkorb ist leer."
+  "checkout.empty": "Dein Warenkorb ist leer.",
+  "checkout.return": "Rückgabedatum",
+  "checkout.deposit": "Kaution"
 }

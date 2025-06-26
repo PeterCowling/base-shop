@@ -6,10 +6,14 @@ export default function OrderSummary({ cart }: { cart: CartState }) {
     (s, l) => s + l.sku.price * l.qty,
     0
   );
+  const deposit = Object.values(cart).reduce(
+    (s, l) => s + (l.sku.deposit ?? 0) * l.qty,
+    0
+  );
   return (
     <table className="w-full text-sm">
       <thead>
-        <tr className="text-left border-b">
+        <tr className="border-b text-left">
           <th className="py-2">Item</th>
           <th>Qty</th>
           <th className="text-right">Price</th>
@@ -27,8 +31,15 @@ export default function OrderSummary({ cart }: { cart: CartState }) {
       <tfoot>
         <tr>
           <td />
+          <td className="py-2">Deposit</td>
+          <td className="text-right">€{deposit}</td>
+        </tr>
+        <tr>
+          <td />
           <td className="py-2 font-semibold">Total</td>
-          <td className="text-right font-semibold">€{subtotal}</td>
+          <td className="text-right font-semibold">
+            €{subtotal + deposit}
+          </td>{" "}
         </tr>
       </tfoot>
     </table>

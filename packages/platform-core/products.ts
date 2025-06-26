@@ -30,6 +30,8 @@ export interface SKU {
   title: string;
   price: number; // whole euros for demo
   image: string;
+  /** refundable deposit for rentals (whole euros) */
+  deposit: number;
   sizes: string[];
   description: string;
 }
@@ -41,6 +43,7 @@ export const PRODUCTS: readonly SKU[] = [
     slug: "green-sneaker",
     title: "Eco Runner — Green",
     price: 119,
+    deposit: 50,
     image: "/shop/green.jpg",
     sizes: ["36", "37", "38", "39", "40", "41", "42", "43"],
     description:
@@ -51,6 +54,7 @@ export const PRODUCTS: readonly SKU[] = [
     slug: "sand-sneaker",
     title: "Eco Runner — Sand",
     price: 119,
+    deposit: 50,
     image: "/shop/sand.jpg",
     sizes: ["36", "37", "38", "39", "40", "41", "42", "43", "44"],
     description:
@@ -61,6 +65,7 @@ export const PRODUCTS: readonly SKU[] = [
     slug: "black-sneaker",
     title: "Eco Runner — Black",
     price: 119,
+    deposit: 50,
     image: "/shop/black.jpg",
     sizes: ["38", "39", "40", "41", "42", "43", "44"],
     description:

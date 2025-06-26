@@ -1,7 +1,7 @@
 // apps/cms/src/types/next-auth.d.ts
 
 import "next-auth";
-import { DefaultSession, DefaultUser } from "next-auth";
+import { DefaultSession } from "next-auth";
 import "next-auth/jwt";
 
 /* ------------------------------------------------------------------
@@ -18,11 +18,6 @@ export type Role =
  *  next-auth module augmentation
  * ---------------------------------------------------------------- */
 declare module "next-auth" {
-  /** The object returned from `authorize()` and stored in the DB/JWT */
-  interface User extends DefaultUser {
-    role: Role;
-  }
-
   /** Shape of `session` sent to the client */
   interface Session extends DefaultSession {
     user: {

@@ -1,10 +1,14 @@
-export interface RentalOrder {
-  id: string;
-  sessionId: string;
-  shop: string;
-  deposit: number;
-  expectedReturnDate?: string;
-  startedAt: string;
-  returnedAt?: string;
-  refundedAt?: string;
-}
+import { z } from "zod";
+
+export const rentalOrderSchema = z.object({
+  id: z.string(),
+  sessionId: z.string(),
+  shop: z.string(),
+  deposit: z.number(),
+  expectedReturnDate: z.string().optional(),
+  startedAt: z.string(),
+  returnedAt: z.string().optional(),
+  refundedAt: z.string().optional(),
+});
+
+export type RentalOrder = z.infer<typeof rentalOrderSchema>;

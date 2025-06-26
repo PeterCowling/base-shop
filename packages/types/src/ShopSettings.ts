@@ -1,5 +1,8 @@
-import type { Locale } from "./Product";
+import { z } from "zod";
+import { localeSchema } from "./Product";
 
-export interface ShopSettings {
-  languages: Locale[];
-}
+export const shopSettingsSchema = z.object({
+  languages: z.array(localeSchema),
+});
+
+export type ShopSettings = z.infer<typeof shopSettingsSchema>;

@@ -1,32 +1,45 @@
-export type Locale = "en" | "de" | "it";
+import { z } from "zod";
 
-export interface Translated {
-  en: string;
-  de: string;
-  it: string;
-}
+export const localeSchema = z.enum(["en", "de", "it"]);
+export type Locale = z.infer<typeof localeSchema>;
 
-export interface ProductPublication {
-  id: string;
-  sku: string;
-  title: Translated;
-  description: Translated;
-  price: number;
-  currency: string;
-  images: string[];
-  status: "draft" | "active" | "archived";
-  shop: string;
-  row_version: number;
-  created_at: string;
-  updated_at: string;
-  rentalTerms?: string;
-  deposit?: number;
+export const translatedSchema = z.object({
+  en: z.string(),
+  de: z.string(),
+  it: z.string(),
+});
+
+export type Translated = z.infer<typeof translatedSchema>;
+
+export const productPublicationSchema = z.object({
+  id: z.string(),
+  sku: z.string(),
+  title: translatedSchema,
+  description: translatedSchema,
+  price: z.number(),
+  currency: z.string(),
+  images: z.array(z.string()),
+  status: z.union([
+    z.literal("draft"),
+    z.literal("active"),
+    z.literal("archived"),
+  ]),
+  shop: z.string(),
+  row_version: z.number(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  rentalTerms: z.string().optional(),
+  deposit: z.number().optional(),
   /** daily rental rate in minor currency units */
-  dailyRate?: number;
+  dailyRate: z.number().optional(),
   /** weekly rental rate in minor currency units */
-  weeklyRate?: number;
+  weeklyRate: z.number().optional(),
   /** monthly rental rate in minor currency units */
-  monthlyRate?: number;
+  monthlyRate: z.number().optional(),
   /** availability windows as ISO timestamps */
-  availability?: { from: string; to: string }[];
-}
+  availability: z
+    .array(z.object({ from: z.string(), to: z.string() }))
+    .optional(),
+});
+
+export type ProductPublication = z.infer<typeof productPublicationSchema>;

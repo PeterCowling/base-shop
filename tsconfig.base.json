@@ -42,7 +42,7 @@
 
       "@svelte-tool/*": ["packages/svelte-tool/*"],
 
-      "@types": ["src/types/index.ts"],
+      "@types/*": ["src/types/*"],
 
       "@acme/tailwind-config": ["packages/tailwind-config/src/index.ts"]
     }

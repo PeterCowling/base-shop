@@ -1,10 +1,14 @@
-export interface Shop {
-  id: string;
-  name: string;
-  catalogFilters: string[];
-  themeId: string;
+import { z } from "zod";
+
+export const shopSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  catalogFilters: z.array(z.string()),
+  themeId: z.string(),
   /** Mapping of design tokens to theme values */
-  themeTokens: Record<string, string>;
+  themeTokens: z.record(z.string()),
   /** Mapping of logical filter keys to catalog attributes */
-  filterMappings: Record<string, string>;
-}
+  filterMappings: z.record(z.string()),
+});
+
+export type Shop = z.infer<typeof shopSchema>;

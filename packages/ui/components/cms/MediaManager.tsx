@@ -3,20 +3,21 @@
 
 import { Input } from "@/components/ui/input";
 import { deleteMedia, uploadMedia } from "@cms/actions/media";
-import type { ImageOrientation } from "@types";
+import type { ImageOrientation, MediaItem } from "@types";
 import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 interface Props {
   shop: string;
-  initialFiles: string[];
+  initialFiles: MediaItem[];
 }
 
 export default function MediaManager({ shop, initialFiles }: Props) {
-  const [files, setFiles] = useState(initialFiles);
+  const [files, setFiles] = useState<MediaItem[]>(initialFiles);
   const [error, setError] = useState<string>();
   const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [altText, setAltText] = useState("");
 
   const [progress, setProgress] = useState<{
     done: number;
@@ -29,7 +30,7 @@ export default function MediaManager({ shop, initialFiles }: Props) {
       /* eslint-disable no-alert -- simple confirmation is fine */
       if (!confirm("Delete this image?")) return;
       await deleteMedia(shop, src);
-      setFiles((prev) => prev.filter((f) => f !== src));
+      setFiles((prev) => prev.filter((f) => f.url !== src));
     },
     [shop]
   );
@@ -40,47 +41,40 @@ export default function MediaManager({ shop, initialFiles }: Props) {
     REQUIRED_ORIENTATION
   );
 
-  const handleUpload = useCallback(
-    async (selected: File[]) => {
-      setProgress({ done: 0, total: selected.length });
-      for (const file of selected) {
-        const fd = new FormData();
-        fd.append("file", file);
-        try {
-          const url = await uploadMedia(shop, fd);
-          setFiles((prev) => [url, ...prev]);
-          setError(undefined);
-        } catch (err) {
-          if (err instanceof Error) setError(err.message);
-        }
-        setProgress((p) => (p ? { ...p, done: p.done + 1 } : p));
-      }
-      setProgress(null);
-    },
-    [shop]
-  );
+  const handleUpload = useCallback(async () => {
+    if (!pendingFile) return;
+    setProgress({ done: 0, total: 1 });
+    const fd = new FormData();
+    fd.append("file", pendingFile);
+    if (altText) fd.append("altText", altText);
+    try {
+      const item = await uploadMedia(shop, fd);
+      setFiles((prev) => [item, ...prev]);
+      setError(undefined);
+    } catch (err) {
+      if (err instanceof Error) setError(err.message);
+    }
+    setProgress(null);
+    setPendingFile(null);
+    setAltText("");
+  }, [shop, pendingFile, altText]);
 
   const onDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const f = e.dataTransfer.files?.[0] ?? null;
     setPendingFile(f);
+    setAltText("");
   }, []);
 
   const onFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0] ?? null;
     setPendingFile(f);
+    setAltText("");
   }, []);
 
   const openFileDialog = useCallback(() => {
     inputRef.current?.click();
   }, []);
-
-  useEffect(() => {
-    if (pendingFile && isValid) {
-      void handleUpload(pendingFile);
-      setPendingFile(null);
-    }
-  }, [pendingFile, isValid, handleUpload]);
 
   return (
     <div className="space-y-6">
@@ -107,30 +101,59 @@ export default function MediaManager({ shop, initialFiles }: Props) {
         </p>
       )}
       {pendingFile && isValid !== null && (
-        <p
-          className={
-            isValid ? "text-sm text-green-600" : "text-sm text-red-600"
-          }
-        >
-          {isValid
-            ? `Image orientation is ${actual}; requirement satisfied.`
-            : `Selected image is ${actual}; please upload a ${REQUIRED_ORIENTATION} image.`}
-        </p>
+        <div className="space-y-2">
+          <p
+            className={
+              isValid ? "text-sm text-green-600" : "text-sm text-red-600"
+            }
+          >
+            {isValid
+              ? `Image orientation is ${actual}; requirement satisfied.`
+              : `Selected image is ${actual}; please upload a ${REQUIRED_ORIENTATION} image.`}
+          </p>
+          {isValid && (
+            <div className="flex gap-2">
+              <Input
+                type="text"
+                value={altText}
+                onChange={(e) => setAltText(e.target.value)}
+                placeholder="Alt text"
+                className="flex-1"
+              />
+              <button
+                onClick={handleUpload}
+                className="rounded bg-blue-600 px-2 text-sm text-white"
+              >
+                Upload
+              </button>
+            </div>
+          )}
+        </div>
       )}
       {files.length > 0 && (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {files.map((src) => (
+          {files.map((item) => (
             <div
-              key={src}
+              key={item.url}
               className="relative h-32 w-full overflow-hidden rounded-md border"
             >
               <button
-                onClick={() => handleDelete(src)}
+                onClick={() => handleDelete(item.url)}
                 className="absolute top-1 right-1 rounded bg-black/50 px-1.5 text-xs text-white"
               >
                 Delete
               </button>
-              <Image src={src} alt="media" fill className="object-cover" />
+              <Image
+                src={item.url}
+                alt={item.altText || "media"}
+                fill
+                className="object-cover"
+              />
+              {item.altText && (
+                <p className="absolute bottom-1 left-1 bg-black/50 px-1 text-xs text-white">
+                  {item.altText}
+                </p>
+              )}{" "}
             </div>
           ))}
         </div>

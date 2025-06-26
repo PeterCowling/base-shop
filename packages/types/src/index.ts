@@ -1,4 +1,5 @@
 export * from "./ImageOrientation";
+export * from "./MediaItem";
 export * from "./Product";
 export * from "./PublishLocation";
 export * from "./RentalOrder";

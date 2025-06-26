@@ -1,21 +1,24 @@
-import type { ImageOrientation } from "./ImageOrientation";
-
+import { z } from "zod";
+import { imageOrientationSchema } from "./ImageOrientation";
 /**
  * Definition of a publish-to location within the shop-front.
  */
-export interface PublishLocation {
+export const publishLocationSchema = z.object({
   /** Unique, stable identifier (e.g. slug or UUID). */
-  id: string;
+  id: z.string(),
 
   /** Human-readable name shown to content editors. */
-  name: string;
+  name: z.string(),
 
   /** Optional richer description for tooltips or secondary text. */
-  description?: string;
+  description: z.string().optional(),
 
   /** Hierarchical path (e.g. "homepage/hero", "product/:id/upsell"). */
-  path: string;
+  path: z.string(),
 
   /** Required orientation for images displayed at this location. */
-  requiredOrientation: ImageOrientation;
-}
+
+  requiredOrientation: imageOrientationSchema,
+});
+
+export type PublishLocation = z.infer<typeof publishLocationSchema>;

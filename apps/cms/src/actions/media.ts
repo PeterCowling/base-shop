@@ -1,7 +1,7 @@
 "use server";
 import { authOptions } from "@cms/auth/options";
 import { validateShopName } from "@platform-core/shops";
-import type { ImageOrientation } from "@types";
+import type { ImageOrientation, MediaItem } from "@types";
 import { getServerSession } from "next-auth";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
@@ -21,14 +21,43 @@ function uploadsDir(shop: string): string {
   return path.join(process.cwd(), "public", "uploads", shop);
 }
 
+function metadataPath(shop: string): string {
+  return path.join(uploadsDir(shop), "metadata.json");
+}
+
+async function readMetadata(
+  shop: string
+): Promise<Record<string, { title?: string; altText?: string }>> {
+  try {
+    const data = await fs.readFile(metadataPath(shop), "utf8");
+    return JSON.parse(data);
+  } catch {
+    return {};
+  }
+}
+
+async function writeMetadata(
+  shop: string,
+  data: Record<string, { title?: string; altText?: string }>
+): Promise<void> {
+  await fs.writeFile(metadataPath(shop), JSON.stringify(data, null, 2));
+}
+
 /** Return list of uploaded file URLs for a shop */
-export async function listMedia(shop: string): Promise<string[]> {
+export async function listMedia(shop: string): Promise<MediaItem[]> {
   await ensureAuthorized();
 
   try {
     const dir = uploadsDir(shop);
     const files = await fs.readdir(dir);
-    return files.map((f) => path.posix.join("/uploads", shop, f));
+    const meta = await readMetadata(shop);
+    return files
+      .filter((f) => f !== "metadata.json")
+      .map((f) => ({
+        url: path.posix.join("/uploads", shop, f),
+        title: meta[f]?.title,
+        altText: meta[f]?.altText,
+      }));
   } catch {
     return [];
   }
@@ -39,13 +68,16 @@ export async function uploadMedia(
   shop: string,
   formData: FormData,
   requiredOrientation: ImageOrientation = "landscape"
-): Promise<string> {
+): Promise<MediaItem> {
   await ensureAuthorized();
 
   const file = formData.get("file");
   if (!(file instanceof File)) {
     throw new Error("No file provided");
   }
+
+  const title = formData.get("title")?.toString();
+  const altText = formData.get("altText")?.toString();
 
   if (!file.type.startsWith("image/")) {
     throw new Error("Invalid file type");
@@ -76,7 +108,15 @@ export async function uploadMedia(
   const filename = `${ulid()}${ext}`;
   await fs.writeFile(path.join(dir, filename), buffer);
 
-  return path.posix.join("/uploads", shop, filename);
+  const meta = await readMetadata(shop);
+  meta[filename] = { title, altText };
+  await writeMetadata(shop, meta);
+
+  return {
+    url: path.posix.join("/uploads", shop, filename),
+    title,
+    altText,
+  };
 }
 
 /** Delete an uploaded file */
@@ -100,4 +140,10 @@ export async function deleteMedia(
   }
 
   await fs.unlink(fullPath);
+
+  const meta = await readMetadata(shop);
+  if (meta[filename]) {
+    delete meta[filename];
+    await writeMetadata(shop, meta);
+  }
 }

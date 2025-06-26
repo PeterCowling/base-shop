@@ -1,4 +1,4 @@
-import type { CartState } from "@/contexts/CartContext";
+import type { CartState } from "@types";
 export declare const CART_COOKIE = "CART_STATE";
 /** Stringify cart → safe cookie/localStorage value */
 export declare function encodeCartCookie(state: CartState): string;

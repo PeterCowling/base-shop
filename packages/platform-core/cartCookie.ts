@@ -1,4 +1,4 @@
-import type { CartState } from "@/contexts/CartContext";
+import type { CartState } from "@types";
 
 /* -------- constants -------- */
 

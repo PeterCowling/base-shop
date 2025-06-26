@@ -1,4 +1,5 @@
 // scripts/create-shop.ts
+import { LOCALES } from "@types";
 import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { ulid } from "ulid";
@@ -137,7 +138,7 @@ mkdirSync(newData, { recursive: true });
 
 writeFileSync(
   join(newData, "settings.json"),
-  JSON.stringify({ languages: ["en", "de", "it"] }, null, 2)
+  JSON.stringify({ languages: [...LOCALES] }, null, 2)
 );
 
 writeFileSync(

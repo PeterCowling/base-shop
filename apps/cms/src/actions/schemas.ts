@@ -1,4 +1,4 @@
-import { LOCALES } from "@platform-core/products";
+import { LOCALES } from "@types";
 import { z } from "zod";
 
 // Dynamically build locale fields for title and description

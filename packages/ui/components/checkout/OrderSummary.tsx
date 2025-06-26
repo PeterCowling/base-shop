@@ -1,5 +1,5 @@
 // src/components/checkout/OrderSummary.tsx
-import { CartState } from "@/contexts/CartContext";
+import type { CartState } from "@types";
 
 export default function OrderSummary({ cart }: { cart: CartState }) {
   const subtotal = Object.values(cart).reduce(

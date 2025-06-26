@@ -1,5 +1,6 @@
 // apps/cms/src/types/next-auth.d.ts
 
+import type { Role } from "@types";
 import "next-auth";
 import { DefaultSession, DefaultUser } from "next-auth";
 import "next-auth/adapters";
@@ -8,12 +9,7 @@ import "next-auth/jwt";
 /* ------------------------------------------------------------------
  *  Shared role definition
  * ---------------------------------------------------------------- */
-export type Role =
-  | "admin"
-  | "viewer"
-  | "ShopAdmin"
-  | "CatalogManager"
-  | "ThemeEditor";
+export type { Role };
 
 /* ------------------------------------------------------------------
  *  next-auth module augmentation

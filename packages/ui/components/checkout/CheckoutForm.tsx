@@ -2,6 +2,7 @@
 "use client";
 
 import { useTranslations } from "@/i18n/Translations";
+import { env } from "@config/env";
 import {
   Elements,
   PaymentElement,
@@ -11,9 +12,7 @@ import {
 import { loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
+const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 type Props = { locale: "en" | "de" | "it" }; // narrow to our three
 

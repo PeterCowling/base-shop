@@ -44,7 +44,9 @@
 
       "@types/*": ["src/types/*"],
 
-      "@acme/tailwind-config": ["packages/tailwind-config/src/index.ts"]
+      "@acme/tailwind-config": ["packages/tailwind-config/src/index.ts"],
+      "@config": ["packages/config/env.ts"],
+      "@config/*": ["packages/config/*"]
     }
   }
 }

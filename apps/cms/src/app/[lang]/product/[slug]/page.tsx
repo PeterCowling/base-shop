@@ -1,5 +1,6 @@
 // apps/cms/src/app/[lang]/product/[slug]/page.tsx
 import { getProductBySlug } from "@platform-core/products";
+import { LOCALES } from "@types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PdpClient from "./PdpClient";
@@ -10,7 +11,7 @@ import PdpClient from "./PdpClient";
 
 /** Pre‑build every locale/slug pair. */
 export async function generateStaticParams() {
-  const langs = ["en", "de", "it"] as const;
+  const langs = LOCALES;
   const slugs = ["green-sneaker", "sand-sneaker", "black-sneaker"] as const;
 
   return langs.flatMap((lang) => slugs.map((slug) => ({ lang, slug })));

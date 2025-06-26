@@ -1,10 +1,7 @@
 // apps/cms/src/auth/roles.ts
-export type Role =
-  | "admin"
-  | "viewer"
-  | "ShopAdmin"
-  | "CatalogManager"
-  | "ThemeEditor";
+import { ROLES, type Role } from "@types";
+export { ROLES };
+export type { Role };
 
 /** Map of user.id to role(s). */
 export const USER_ROLES: Record<string, Role | Role[]> = {

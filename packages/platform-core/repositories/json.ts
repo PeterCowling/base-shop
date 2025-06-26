@@ -3,7 +3,8 @@ import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
-import type { Locale, Shop, ShopSettings } from "../../types";
+import type { Shop, ShopSettings } from "../../types";
+import { LOCALES, type Locale } from "../../types";
 import { ProductPublication } from "../products";
 import { validateShopName } from "../shops";
 
@@ -27,7 +28,7 @@ function resolveDataRoot(): string {
 }
 
 const DATA_ROOT = resolveDataRoot();
-const DEFAULT_LANGUAGES: Locale[] = ["en", "de", "it"];
+const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */

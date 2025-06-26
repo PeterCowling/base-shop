@@ -1,4 +1,6 @@
 // src/app/[lang]/generateStaticParams.ts
+import { LOCALES } from "@types";
+
 export default function generateStaticParams() {
-  return ["en", "de", "it"].map((lang) => ({ lang }));
+  return LOCALES.map((lang) => ({ lang }));
 }

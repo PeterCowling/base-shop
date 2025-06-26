@@ -1,7 +1,7 @@
 /* packages/platform-core/contexts/CartContext.tsx */
 "use client";
 
-import type { SKU } from "@types";
+import type { CartState, SKU } from "@types";
 import {
   createContext,
   ReactNode,
@@ -16,9 +16,6 @@ import {
 } from "../cartCookie";
 
 /* ---------- types ---------- */
-
-type CartLine = { sku: SKU; qty: number };
-export type CartState = Record<SKU["id"], CartLine>;
 
 type Action =
   | { type: "add"; sku: SKU }

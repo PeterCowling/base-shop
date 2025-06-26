@@ -3,13 +3,9 @@
 /*  Locale helpers                                                            */
 /* -------------------------------------------------------------------------- */
 
-export type Locale = "en" | "de" | "it";
-
-/**
- * Convenience list of all supported locales.
- * Use this instead of hard-coding the literals across the code-base.
- */
-export const LOCALES: readonly Locale[] = ["en", "de", "it"] as const;
+import { LOCALES, type Locale } from "@types";
+/** Convenience list of all supported locales. */
+export { LOCALES };
 
 /**
  * A translated string (or any other scalar type T) keyed by locale.

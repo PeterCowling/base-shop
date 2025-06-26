@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "Cart.d.ts",
+  "sourceRoot": "",
+  "sources": [
+    "Cart.ts"
+  ],
+  "names": [],
+  "mappings": ""
+}

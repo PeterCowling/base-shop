@@ -3,8 +3,6 @@
 /*  Canonical domain models shared across apps and packages                   */
 /* ========================================================================== */
 
-export type Locale = "en" | "de" | "it";
-
 export interface Translated {
   en: string;
   de: string;

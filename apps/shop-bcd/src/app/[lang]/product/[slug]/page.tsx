@@ -1,12 +1,13 @@
 // apps/shop-bcd/src/app/[lang]/product/[slug]/page.tsx
 
 import { getProductBySlug } from "@/lib/products";
+import { LOCALES } from "@types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PdpClient from "./PdpClient";
 
 export async function generateStaticParams() {
-  return ["en", "de", "it"].flatMap((lang) =>
+  return LOCALES.flatMap((lang) =>
     ["green-sneaker", "sand-sneaker", "black-sneaker"].map((slug) => ({
       lang,
       slug,

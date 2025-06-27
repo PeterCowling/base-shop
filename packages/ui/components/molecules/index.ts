@@ -1,9 +1,12 @@
+export { default as Breadcrumbs } from "./Breadcrumbs";
 export { default as CurrencySwitcher } from "./CurrencySwitcher";
 export { FormField } from "./FormField";
+export { default as LanguageSwitcher } from "./LanguageSwitcher";
 export { PaginationControl } from "./PaginationControl";
 export { PaymentMethodSelector } from "./PaymentMethodSelector";
 export { PriceCluster } from "./PriceCluster";
 export { PromoCodeInput } from "./PromoCodeInput";
+export { QuantityInput } from "./QuantityInput";
 export { RatingSummary } from "./RatingSummary";
 export { SearchBar } from "./SearchBar";
 export { SustainabilityBadgeCluster } from "./SustainabilityBadgeCluster";

@@ -8,7 +8,6 @@ export { Logo } from "./Logo";
 export { PaginationDot } from "./PaginationDot";
 export { Price } from "./Price";
 export { ProductBadge } from "./ProductBadge";
-export { QuantityInput } from "./QuantityInput";
 export { Radio } from "./Radio";
 export { RatingStars } from "./RatingStars";
 export { Skeleton } from "./Skeleton";

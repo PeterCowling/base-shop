@@ -1,7 +1,7 @@
 // apps/shop-abc/src/app/[lang]/checkout/page.tsx
 
 import CheckoutForm from "@/components/checkout/CheckoutForm";
-import OrderSummary from "@/components/checkout/OrderSummary";
+import OrderSummary from "@/components/organisms/OrderSummary";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { cookies } from "next/headers";
@@ -34,7 +34,7 @@ export default async function CheckoutPage({
 
   /* ---------- render ---------- */
   return (
-    <div className="max-w-4xl mx-auto p-6 flex flex-col gap-10">
+    <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
       <OrderSummary cart={cart} />
       <CheckoutForm locale={lang} />
     </div>

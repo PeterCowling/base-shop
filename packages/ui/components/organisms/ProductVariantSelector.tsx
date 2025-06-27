@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { ColorSwatch } from "../atoms/ColorSwatch";
-import { QuantityInput } from "../atoms/QuantityInput";
+import { QuantityInput } from "../molecules/QuantityInput";
 
 export interface VariantSelectorProps
   extends React.HTMLAttributes<HTMLDivElement> {

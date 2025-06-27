@@ -1,4 +1,4 @@
-// src/components/layout/LanguageSwitcher.tsx     ← NEW
+// packages/ui/components/organisms/LanguageSwitcher.tsx
 "use client";
 
 import { Locale, locales } from "@/i18n/locales";
@@ -13,7 +13,7 @@ export default function LanguageSwitcher({ current }: { current: Locale }) {
           key={l}
           className={
             l === current
-              ? "underline font-semibold"
+              ? "font-semibold underline"
               : "text-gray-500 hover:underline"
           }
         >

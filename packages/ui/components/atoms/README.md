@@ -9,7 +9,6 @@ Available components:
 - `ProductBadge`
   `RatingStars`
 - `StockStatus`
-- `QuantityInput`
 - `ColorSwatch`
 - `Price`
 - `Avatar`

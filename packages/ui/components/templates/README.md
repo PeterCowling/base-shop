@@ -23,3 +23,4 @@ Shared page-level layouts used across apps. Currently includes:
 - `Error404Template` – simple page not found layout.
 - `Error500Template` – generic server error page.
 - `MarketingEmailTemplate` – responsive layout for promotional emails.
+- `OrderTrackingTemplate` – progress tracker for shipping status.

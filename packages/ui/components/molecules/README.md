@@ -13,3 +13,5 @@ Available components:
 - `PaymentMethodSelector`
 - `SustainabilityBadgeCluster`
 - `CurrencySwitcher`
+- `QuantityInput`
+- `Breadcrumbs` – navigation trail from a list of links.

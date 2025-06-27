@@ -1,4 +1,5 @@
-// src/components/checkout/OrderSummary.tsx
+// packages/ui/components/organisms/OrderSummary.tsx
+
 import type { CartState } from "@types";
 
 export default function OrderSummary({ cart }: { cart: CartState }) {

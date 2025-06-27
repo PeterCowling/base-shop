@@ -3,7 +3,7 @@ import Image from "next/image";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Price } from "../atoms/Price";
-import { QuantityInput } from "../atoms/QuantityInput";
+import { QuantityInput } from "../molecules/QuantityInput";
 
 export interface CartTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {

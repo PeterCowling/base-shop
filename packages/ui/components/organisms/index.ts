@@ -1,3 +1,5 @@
+// packages/ui/components/organisms/index.ts
+
 export { AccountPanel } from "./AccountPanel";
 export { CategoryCard } from "./CategoryCard";
 export { CheckoutStepper } from "./CheckoutStepper";
@@ -9,6 +11,7 @@ export { Footer } from "./Footer";
 export { Header } from "./Header";
 export { LiveChatWidget } from "./LiveChatWidget";
 export { MiniCart } from "./MiniCart";
+export { default as OrderSummary } from "./OrderSummary";
 export { OrderTrackingTimeline } from "./OrderTrackingTimeline";
 export { ProductCard } from "./ProductCard";
 export { ProductCarousel } from "./ProductCarousel";

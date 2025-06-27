@@ -10,7 +10,6 @@
     "rootDirs": [
       "components",
       "hooks",
-      "layout",
       "../platform-core",
       "../i18n",
       "../types",
@@ -24,11 +23,6 @@
     { "path": "../types" },
     { "path": "../config" }
   ],
-  "include": [
-    "components/**/*",
-    "hooks/**/*",
-    "layout/**/*",
-    "../../apps/cms/src/**/*"
-  ],
+  "include": ["components/**/*", "hooks/**/*", "../../apps/cms/src/**/*"],
   "exclude": ["dist"]
 }

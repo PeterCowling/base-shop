@@ -1,11 +1,11 @@
-// packages/ui/layout/AppShell.stories.rsx
+// packages/ui/components/templates/AppShell.stories.tsx
 
 import type { Meta, StoryObj } from "@storybook/react";
+import { Content } from "../organisms/Content";
+import { Footer } from "../organisms/Footer";
+import { Header } from "../organisms/Header";
+import { SideNav } from "../organisms/SideNav";
 import { AppShell } from "./AppShell";
-import { Content } from "./Content";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
-import { SideNav } from "./SideNav";
 
 const meta: Meta<typeof AppShell> = {
   title: "Layout/AppShell",

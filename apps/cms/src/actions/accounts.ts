@@ -26,7 +26,7 @@ export async function requestAccount(formData: FormData): Promise<void> {
   PENDING_USERS[id] = { id, name, email, password: hashed };
 }
 
-export function listPendingUsers(): PendingUser[] {
+export async function listPendingUsers(): Promise<PendingUser[]> {
   return Object.values(PENDING_USERS);
 }
 

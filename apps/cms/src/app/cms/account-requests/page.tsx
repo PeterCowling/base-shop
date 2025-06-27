@@ -13,7 +13,7 @@ export default async function AccountRequestsPage() {
     redirect("/cms");
   }
 
-  const pending = listPendingUsers();
+  const pending = await listPendingUsers();
 
   async function approve(formData: FormData) {
     "use server";

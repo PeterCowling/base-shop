@@ -26,6 +26,7 @@ export default function Sidebar() {
       label: "Settings",
       icon: "⚙️",
     },
+    { href: "/live", label: "Live", icon: "🌐" },
     { href: "/", label: "Change shop", icon: "🛒", absolute: true },
   ];
 

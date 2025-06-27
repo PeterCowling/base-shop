@@ -1,4 +1,4 @@
-// src/app/layout.tsx
+// apps/cms/src/app/layout.tsx
 import { CartProvider } from "@/contexts/CartContext";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";

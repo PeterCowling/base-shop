@@ -1,12 +1,18 @@
 // .storybook/main.ts
 
-import type { StorybookConfig } from "@storybook/nextjs-vite";
+import type { StorybookConfig } from "@storybook/nextjs";
 import path from "node:path";
 import tailwindcss from "tailwindcss";
 import { mergeConfig } from "vite";
 
 const config: StorybookConfig = {
-  framework: "@storybook/nextjs-vite",
+  framework: {
+    name: "@storybook/nextjs",
+    options: { builder: { viteConfigPath: "./vite.storybook.ts" } },
+  },
+
+  env: { CORE_DISABLE_TELEMETRY: "1" },
+  staticDirs: ["../public"],
 
   // Find every .stories.ts/.tsx file inside any package’s /ui directory
   stories: ["../packages/ui/**/*.stories.@(ts|tsx)"],
@@ -15,6 +21,7 @@ const config: StorybookConfig = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-a11y",
+    "@storybook/addon-interactions",
     "@storybook/addon-themes",
     "@storybook/addon-viewport",
   ],
@@ -43,6 +50,7 @@ const config: StorybookConfig = {
           ),
         },
       },
+      optimizeDeps: { entries: [] },
     });
   },
 };

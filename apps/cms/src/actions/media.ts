@@ -1,3 +1,5 @@
+// apps/cms/src/actions/media.ts
+
 "use server";
 import { authOptions } from "@cms/auth/options";
 import { validateShopName } from "@platform-core/shops";

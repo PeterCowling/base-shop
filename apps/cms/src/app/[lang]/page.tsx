@@ -1,4 +1,4 @@
-// src/app/[lang]/page.tsx
+// apps/cms/src/app/[lang]/page.tsx
 "use client";
 
 import HeroBanner from "@/components/home/HeroBanner";

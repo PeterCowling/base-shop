@@ -1,3 +1,5 @@
+// apps/cms/src/app/cms/settings/page.tsx
+
 import { redirect } from "next/navigation";
 
 export default function SettingsRedirectPage() {

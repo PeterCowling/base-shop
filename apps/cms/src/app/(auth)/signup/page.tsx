@@ -1,3 +1,4 @@
+// apps/cms/src/app/(auth)/signup/page.tsx
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { requestAccount } from "@cms/actions/accounts";

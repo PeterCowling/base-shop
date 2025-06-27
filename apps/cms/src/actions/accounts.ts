@@ -4,9 +4,9 @@
 
 import { USER_ROLES, type Role } from "@cms/auth/roles";
 import { USERS, type CmsUser } from "@cms/auth/users";
-import { sendEmail } from "@cms/lib/email";
 import bcrypt from "bcryptjs";
 import { ulid } from "ulid";
+import { sendEmail } from "../../../../src/lib/email";
 
 export interface PendingUser {
   id: string;

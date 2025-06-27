@@ -1,3 +1,5 @@
+// apps/cms/src/app/cancelled/page.tsx
+
 export default function Cancelled() {
   return (
     <div className="mx-auto max-w-lg py-20 text-center">

@@ -1,3 +1,5 @@
+// apps/cms/src/app/success/page.tsx
+
 export default function Success() {
   return (
     <div className="mx-auto max-w-lg py-20 text-center">

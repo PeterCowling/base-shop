@@ -27,7 +27,6 @@ export default function Sidebar() {
       icon: "⚙️",
     },
     { href: "/live", label: "Live", icon: "🌐" },
-    { href: "/", label: "Change shop", icon: "🛒", absolute: true },
   ];
 
   const dashboardBase = shop ? `/cms/shop/${shop}` : "/cms";

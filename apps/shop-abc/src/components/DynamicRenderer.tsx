@@ -1,17 +1,20 @@
+// apps/shop-bcd/src/components/DynamicRenderer.tsx
+
 "use client";
 
 import HeroBanner from "@/components/home/HeroBanner";
 import ReviewsCarousel from "@/components/home/ReviewsCarousel";
 import { ValueProps } from "@/components/home/ValueProps";
 import { ProductGrid } from "@/components/shop/ProductGrid";
-import type { PageComponent } from "@types";
+import { PRODUCTS } from "@/lib/products";
+import type { PageComponent, SKU } from "@types";
 
-const registry = {
+const registry: Record<PageComponent["type"], React.ComponentType<any>> = {
   HeroBanner,
   ValueProps,
   ReviewsCarousel,
   ProductGrid,
-} as const satisfies Record<PageComponent["type"], React.ComponentType<any>>;
+};
 
 export default function DynamicRenderer({
   components,
@@ -26,7 +29,13 @@ export default function DynamicRenderer({
           console.warn(`Unknown component type: ${c.type}`);
           return null;
         }
-        return <Comp key={c.id} />;
+
+        switch (c.type) {
+          case "ProductGrid":
+            return <Comp key={c.id} skus={PRODUCTS as SKU[]} />;
+          default:
+            return <Comp key={c.id} />;
+        }
       })}
     </>
   );

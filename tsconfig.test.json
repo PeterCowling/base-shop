@@ -3,6 +3,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "importsNotUsedAsValues": "remove",
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": false,
+    "types": ["@cloudflare/workers-types", "node", "jest"]
   }
 }

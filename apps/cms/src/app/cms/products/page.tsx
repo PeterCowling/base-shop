@@ -11,7 +11,7 @@ export default async function ProductsIndexPage() {
         {shops.map((shop) => (
           <li key={shop}>
             <Link
-              href={`/cms/shop/${shop}/products`}
+              href={`/cms/products/shop/${shop}`}
               className="text-primary underline"
             >
               {shop}

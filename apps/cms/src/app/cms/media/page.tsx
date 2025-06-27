@@ -11,7 +11,7 @@ export default async function MediaIndexPage() {
         {shops.map((shop) => (
           <li key={shop}>
             <Link
-              href={`/cms/shop/${shop}/media`}
+              href={`/cms/media/shop/${shop}`}
               className="text-primary underline"
             >
               {shop}

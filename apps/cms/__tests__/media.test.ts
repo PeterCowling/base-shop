@@ -105,3 +105,82 @@ describe("media actions", () => {
     });
   });
 });
+
+
+  it("uploadMedia rejects invalid file type", async () => {
+    await withTmpDir(async () => {
+      const prevEnv = process.env.NODE_ENV;
+      (process.env as Record<string, string>)["NODE_ENV"] = "development";
+      jest.doMock("next-auth", () => ({
+        getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+      }));
+      jest.doMock("sharp", () => ({
+        __esModule: true,
+        default: () => ({ metadata: jest.fn() }),
+      }));
+
+      const { uploadMedia } = await import(
+        /* @vite-ignore */ "../src/actions/media"
+      );
+
+      const file = new File(["bad"], "test.txt", { type: "text/plain" });
+      const fd = new FormData();
+      fd.append("file", file);
+
+      await expect(uploadMedia("shop1", fd)).rejects.toThrow("Invalid file type");
+      (process.env as Record<string, string>)["NODE_ENV"] = prevEnv;
+    });
+  });
+
+  it("uploadMedia enforces orientation", async () => {
+    await withTmpDir(async () => {
+      const prevEnv = process.env.NODE_ENV;
+      (process.env as Record<string, string>)["NODE_ENV"] = "development";
+      jest.doMock("next-auth", () => ({
+        getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+      }));
+      jest.doMock("sharp", () => ({
+        __esModule: true,
+        default: () => ({
+          metadata: jest.fn().mockResolvedValue({ width: 1, height: 2 }),
+        }),
+      }));
+
+      const { uploadMedia } = await import(
+        /* @vite-ignore */ "../src/actions/media"
+      );
+
+      const data = Buffer.from(
+        "iVBORw0KGgoAAAANSUhEUgAAAAIAAAABCAIAAAB7QOjdAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAAD0lEQVR4nGP4z8Dwn4EBAAj+Af9IxWaQAAAAAElFTkSuQmCC",
+        "base64"
+      );
+      const file = new File([data], "test.png", { type: "image/png" });
+      const fd = new FormData();
+      fd.append("file", file);
+
+      await expect(uploadMedia("shop1", fd, "landscape")).rejects.toThrow(
+        "Image orientation must be landscape"
+      );
+      (process.env as Record<string, string>)["NODE_ENV"] = prevEnv;
+    });
+  });
+
+  it("deleteMedia prevents path traversal", async () => {
+    await withTmpDir(async () => {
+      const prevEnv = process.env.NODE_ENV;
+      (process.env as Record<string, string>)["NODE_ENV"] = "development";
+      jest.doMock("next-auth", () => ({
+        getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+      }));
+
+      const { deleteMedia } = await import(
+        /* @vite-ignore */ "../src/actions/media"
+      );
+
+      await expect(
+        deleteMedia("shop1", "/uploads/shop1/../evil.png")
+      ).rejects.toThrow("Invalid file path");
+      (process.env as Record<string, string>)["NODE_ENV"] = prevEnv;
+    });
+  });
+});

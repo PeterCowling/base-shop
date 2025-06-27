@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/page.json",
+  "title": "Page",
+  "type": "object",
+  "required": [
+    "id",
+    "slug",
+    "status",
+    "components",
+    "seo",
+    "createdAt",
+    "updatedAt",
+    "createdBy"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "published"]
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["id", "type"],
+            "properties": {
+              "id": { "type": "string" },
+              "type": { "const": "HeroBanner" }
+            },
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "required": ["id", "type"],
+            "properties": {
+              "id": { "type": "string" },
+              "type": { "const": "ValueProps" }
+            },
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "required": ["id", "type"],
+            "properties": {
+              "id": { "type": "string" },
+              "type": { "const": "ReviewsCarousel" }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "seo": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "createdBy": { "type": "string" }
+  },
+  "additionalProperties": false
+}

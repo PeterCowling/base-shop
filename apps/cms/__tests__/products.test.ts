@@ -43,6 +43,23 @@ describe("product actions", () => {
     });
   });
 
+  it("createDraftRecord populates locales from settings", async () => {
+    await withRepo(async () => {
+      const { writeSettings } = await import(
+        "@platform-core/repositories/json"
+      );
+      await writeSettings("test", { languages: ["es", "fr"] });
+      const { createDraftRecord } = (await import(
+        "../src/actions/products"
+      )) as typeof import("../src/actions/products");
+      const draft = await createDraftRecord("test");
+      expect(Object.keys(draft.title)).toEqual(["es", "fr"]);
+      expect(draft.title.es).toBe("Untitled");
+      expect(draft.description.es).toBe("");
+      expect(draft.description.fr).toBe("");
+    });
+  });
+
   it("updateProduct merges form data and bumps version", async () => {
     await withRepo(async () => {
       const actions = (await import(

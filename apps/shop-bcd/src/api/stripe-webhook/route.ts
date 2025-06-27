@@ -5,15 +5,17 @@ import {
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
+type WebhookData =
+  | Stripe.Checkout.Session
+  | Stripe.Charge
+  | Record<string, unknown>;
+
 export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
   const payload = (await req.json()) as Stripe.Event;
   const eventType = payload.type;
-  const data = payload.data?.object as
-    | Stripe.Checkout.Session
-    | Stripe.Charge
-    | Record<string, unknown>;
+  const data = payload.data?.object as WebhookData;
 
   switch (eventType) {
     case "checkout.session.completed": {

@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { LOCALES, type Locale } from "./constants";
 
+export type { Locale } from "./constants";
+
 export const localeSchema = z.enum(LOCALES);
 
 /** Runtime validator + compile-time source of truth */

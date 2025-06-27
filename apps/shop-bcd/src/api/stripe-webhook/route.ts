@@ -29,10 +29,18 @@ export async function POST(req: NextRequest) {
     }
     case "charge.refunded": {
       const charge = data as Stripe.Charge;
-      const sessionId =
-        typeof charge.payment_intent !== "string"
-          ? charge.payment_intent?.charges?.data?.[0]?.invoice
-          : undefined;
+      const sessionId = (() => {
+        if (
+          typeof charge.payment_intent !== "string" &&
+          charge.payment_intent
+        ) {
+          const pi = charge.payment_intent as Stripe.PaymentIntent & {
+            charges?: { data?: Array<{ invoice?: string | null }> };
+          };
+          return pi.charges?.data?.[0]?.invoice || undefined;
+        }
+        return undefined;
+      })();
       const sid = sessionId || charge.id;
       await markRefunded("bcd", sid);
       break;

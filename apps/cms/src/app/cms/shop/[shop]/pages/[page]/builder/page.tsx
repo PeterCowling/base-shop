@@ -5,7 +5,7 @@ import { getPages } from "@platform-core/repositories/pages";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 
-const PageBuilder = dynamic(() => import("./PageBuilder"));
+const PageBuilder = dynamic(() => import("@/components/cms/PageBuilder"));
 void PageBuilder;
 
 export const revalidate = 0;

@@ -8,6 +8,7 @@
     { "path": "packages/themes/bcd" },
     { "path": "packages/config" },
     { "path": "packages/svelte-tool" },
+    { "path": "packages/ui" },
     { "path": "src" }
   ]
 }

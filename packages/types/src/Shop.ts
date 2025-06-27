@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+export const shopSeoFieldsSchema = z.object({
+  canonicalBase: z.string(),
+});
+
+export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;
+
 export const shopSchema = z.object({
   id: z.string(),
   name: z.string(),

@@ -20,7 +20,7 @@ const config: Config = {
     "^.+\\.tsx?$": [
       "ts-jest",
       {
-        tsconfig: "<rootDir>/tsconfig.json",
+        tsconfig: "<rootDir>/tsconfig.test.json",
         // compile to CommonJS so that the tests that call `require()` still work
         useESM: false,
       },
@@ -38,6 +38,7 @@ const config: Config = {
     "^@cms/(.*)$": "<rootDir>/apps/cms/src/$1",
     "^@lib/(.*)$": "<rootDir>/packages/lib/$1",
     "^@/lib/(.*)$": "<rootDir>/packages/platform-core/$1",
+    "^@/contexts/(.*)$": "<rootDir>/packages/platform-core/contexts/$1",
     "^@ui/(.*)$": "<rootDir>/packages/ui/$1",
     "^@types$": "<rootDir>/src/types",
     "^@types/(.*)$": "<rootDir>/src/types/$1",

@@ -54,6 +54,15 @@
               "type": { "const": "ReviewsCarousel" }
             },
             "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "required": ["id", "type"],
+            "properties": {
+              "id": { "type": "string" },
+              "type": { "const": "ProductGrid" }
+            },
+            "additionalProperties": false
           }
         ]
       }

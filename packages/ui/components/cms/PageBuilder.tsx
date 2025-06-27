@@ -22,9 +22,7 @@ import type { Page, PageComponent } from "@types";
 import { memo, useReducer } from "react";
 import { ulid } from "ulid";
 import { Button } from "../atoms-shim";
-import HeroBanner from "../home/HeroBanner";
-import ReviewsCarousel from "../home/ReviewsCarousel";
-import { ValueProps } from "../home/ValueProps";
+import { blockRegistry } from "./blocks";
 
 interface Props {
   page: Page;
@@ -51,11 +49,12 @@ function reducer(state: PageComponent[], action: Action): PageComponent[] {
   }
 }
 
-const palette: { type: PageComponent["type"]; label: string }[] = [
-  { type: "HeroBanner", label: "Hero Banner" },
-  { type: "ValueProps", label: "Value Props" },
-  { type: "ReviewsCarousel", label: "Reviews Carousel" },
-];
+const palette: { type: PageComponent["type"]; label: string }[] = (
+  Object.keys(blockRegistry) as PageComponent["type"][]
+).map((t) => ({
+  type: t,
+  label: t.replace(/([A-Z])/g, " $1").trim(),
+}));
 
 const PaletteItem = memo(function PaletteItem({
   type,
@@ -91,16 +90,9 @@ const Palette = memo(function Palette() {
 });
 
 function Block({ component }: { component: PageComponent }) {
-  switch (component.type) {
-    case "HeroBanner":
-      return <HeroBanner />;
-    case "ValueProps":
-      return <ValueProps />;
-    case "ReviewsCarousel":
-      return <ReviewsCarousel />;
-    default:
-      return null;
-  }
+  const Comp = blockRegistry[component.type];
+  if (!Comp) return null;
+  return <Comp />;
 }
 
 const MemoBlock = memo(Block);

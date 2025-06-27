@@ -16,10 +16,14 @@ export interface ValuePropsComponent extends PageComponentBase {
 export interface ReviewsCarouselComponent extends PageComponentBase {
   type: "ReviewsCarousel";
 }
+export interface ProductGridComponent extends PageComponentBase {
+  type: "ProductGrid";
+}
 export type PageComponent =
   | HeroBannerComponent
   | ValuePropsComponent
-  | ReviewsCarouselComponent;
+  | ReviewsCarouselComponent
+  | ProductGridComponent;
 export interface Page {
   id: string;
   slug: string;

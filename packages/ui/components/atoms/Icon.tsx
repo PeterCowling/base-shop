@@ -8,7 +8,8 @@ const icons = {
 } as const;
 
 export type IconName = keyof typeof icons;
-export interface IconProps extends React.SVGAttributes<SVGSVGElement> {
+export interface IconProps
+  extends Omit<React.SVGAttributes<SVGSVGElement>, "children"> {
   name: IconName;
 }
 

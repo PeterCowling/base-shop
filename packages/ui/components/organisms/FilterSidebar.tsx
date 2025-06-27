@@ -1,0 +1,76 @@
+"use client";
+
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import * as React from "react";
+import { cn } from "../../utils/cn";
+import { Button } from "../ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+
+export type Filters = { size?: string };
+
+export interface FilterSidebarProps {
+  onChange: (filters: Filters) => void;
+}
+
+export function FilterSidebar({ onChange }: FilterSidebarProps) {
+  const [open, setOpen] = React.useState(false);
+  const [size, setSize] = React.useState("");
+  const deferredSize = React.useDeferredValue(size);
+
+  React.useEffect(() => {
+    onChange({ size: deferredSize || undefined });
+  }, [deferredSize, onChange]);
+
+  return (
+    <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
+      <DialogPrimitive.Trigger asChild>
+        <Button variant="outline">Filters</Button>
+      </DialogPrimitive.Trigger>
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-black/50" />
+        <DialogPrimitive.Content
+          className={cn(
+            "bg-background fixed inset-y-0 left-0 z-50 w-64 border-r p-4 shadow-lg focus:outline-none",
+            "transition-transform data-[state=closed]:translate-x-[-100%] data-[state=open]:translate-x-0"
+          )}
+        >
+          <DialogPrimitive.Title className="mb-4 text-lg font-semibold">
+            Filters
+          </DialogPrimitive.Title>
+          <form
+            aria-label="Filters"
+            className="space-y-4"
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <div className="space-y-2">
+              <label className="text-sm font-medium" htmlFor="size-select">
+                Size
+              </label>
+              <Select value={size} onValueChange={setSize}>
+                <SelectTrigger id="size-select" className="w-full">
+                  <SelectValue placeholder="All" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">All</SelectItem>
+                  {["36", "37", "38", "39", "40", "41", "42", "43", "44"].map(
+                    (s) => (
+                      <SelectItem key={s} value={s}>
+                        {s}
+                      </SelectItem>
+                    )
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+          </form>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
+  );
+}

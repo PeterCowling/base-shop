@@ -16,3 +16,15 @@ Current components:
 - `ProductFeatures`
 - `ProductVariantSelector`
 - `ReviewsList`
+- `StoreLocatorMap`
+- `LiveChatWidget`
+- `OrderTrackingTimeline`
+- `AccountPanel`
+- `DeliveryScheduler`
+- `CheckoutStepper`
+- `FilterSidebar`
+- `WishlistDrawer`
+- `QAModule`
+- `MiniCart`
+- `StickyAddToCartBar`
+- `RecommendationCarousel`

@@ -12,3 +12,14 @@ Available components:
 - `QuantityInput`
 - `ColorSwatch`
 - `Price`
+- `Avatar`
+- `Logo`
+- `Radio`
+- `Switch`
+- `Tag`
+- `Skeleton`
+- `Loader`
+- `Tooltip`
+- `Toast`
+- `PaginationDot`
+- `Icon`

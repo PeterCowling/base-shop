@@ -1,3 +1,4 @@
+import { useCurrency } from "@/contexts/CurrencyContext";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
@@ -7,13 +8,15 @@ export interface PriceProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 /**
- * Display formatted price. Pass `currency` ISO code or defaults to EUR.
+ * Display formatted price. Uses selected currency from context when none is provided.
  */
 export const Price = React.forwardRef<HTMLSpanElement, PriceProps>(
-  ({ amount, currency = "EUR", className, ...props }, ref) => {
+  ({ amount, currency, className, ...props }, ref) => {
+    const [ctxCurrency] = useCurrency();
+    const cur = currency ?? ctxCurrency ?? "EUR";
     const formatted = new Intl.NumberFormat(undefined, {
       style: "currency",
-      currency,
+      currency: cur,
     }).format(amount);
 
     return (

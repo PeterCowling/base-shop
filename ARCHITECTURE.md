@@ -22,6 +22,15 @@ packages/ui/components/
 
 Pages live inside each application’s `src/app/` directory.
 
+## UI primitives
+
+The `packages/ui/components/ui` folder contains generic wrappers around
+HTML elements and Radix primitives. These files are intentionally small
+and stateless. They provide the lowest‑level building blocks that other
+layers build upon. Avoid placing full atoms or molecules in this folder;
+instead create a generic primitive here and extend it inside the
+appropriate `atoms` or `molecules` directory.
+
 ## Allowed import flow
 
 Imports must always follow the direction of the arrows in the diagram below:

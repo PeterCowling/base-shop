@@ -7,7 +7,11 @@ import {
   getShopById,
   updateShopInRepo,
 } from "@platform-core/repositories/json";
-import type { Shop } from "@types";
+import {
+  getShopSettings,
+  saveShopSettings,
+} from "@platform-core/repositories/shops";
+import type { Locale, Shop } from "@types";
 import { getServerSession } from "next-auth";
 import { shopSchema, type ShopForm } from "./schemas";
 
@@ -46,4 +50,56 @@ export async function updateShop(
 
   const saved = await updateShopInRepo(shop, patch);
   return { shop: saved };
+}
+
+export async function getSettings(shop: string) {
+  return getShopSettings(shop);
+}
+
+const seoSchema = z.object({
+  locale: z.string(),
+  title: z.string().min(1, "Required"),
+  description: z.string().optional().default(""),
+  image: z
+    .string()
+    .optional()
+    .refine((v) => !v || /^https?:\/\/\S+$/.test(v), {
+      message: "Invalid image URL",
+    }),
+});
+
+export async function updateSeo(
+  shop: string,
+  formData: FormData
+): Promise<{
+  settings?: unknown;
+  errors?: Record<string, string[]>;
+  warnings?: string[];
+}> {
+  await ensureAuthorized();
+
+  const parsed = seoSchema.safeParse(Object.fromEntries(formData.entries()));
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const { locale, title, description, image } = parsed.data as {
+    locale: Locale;
+    title: string;
+    description: string;
+    image?: string;
+  };
+
+  const warnings: string[] = [];
+  if (title.length > 70) warnings.push("Title exceeds 70 characters");
+  if (description.length > 160)
+    warnings.push("Description exceeds 160 characters");
+
+  const current = await getShopSettings(shop);
+  const seo = (current as any).seo ?? {};
+  seo[locale] = { title, description, image };
+  const updated = { ...current, seo };
+  await saveShopSettings(shop, updated as any);
+
+  return { settings: updated, warnings };
 }

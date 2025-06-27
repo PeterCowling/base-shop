@@ -4,6 +4,7 @@ const envSchema = z.object({
   STRIPE_SECRET_KEY: z.string(),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
   NEXTAUTH_SECRET: z.string().optional(),
+  PREVIEW_TOKEN_SECRET: z.string().optional(),
   NODE_ENV: z.string().optional(),
   OUTPUT_EXPORT: z.string().optional(),
   NEXT_PUBLIC_PHASE: z.string().optional(),

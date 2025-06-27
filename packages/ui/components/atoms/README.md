@@ -6,3 +6,7 @@ Available components:
 
 - `StatCard`
 - `LineChart`
+- `ProductBadge`
+- `ProductCard`
+- `ProductCarousel`
+- `ProductGrid`

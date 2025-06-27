@@ -22,3 +22,5 @@ Available components:
 - `Toast`
 - `PaginationDot`
 - `Icon`
+- `Popover`
+- `Chip`

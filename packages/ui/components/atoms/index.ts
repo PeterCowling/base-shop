@@ -1,11 +1,13 @@
 export * from "../atoms-shim";
 export { Avatar } from "./Avatar";
+export { Chip } from "./Chip";
 export { ColorSwatch } from "./ColorSwatch";
 export { Icon } from "./Icon";
 export { LineChart } from "./LineChart";
 export { Loader } from "./Loader";
 export { Logo } from "./Logo";
 export { PaginationDot } from "./PaginationDot";
+export { Popover } from "./Popover";
 export { Price } from "./Price";
 export { ProductBadge } from "./ProductBadge";
 export { Radio } from "./Radio";

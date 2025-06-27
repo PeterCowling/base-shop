@@ -24,11 +24,11 @@ function ValuePropsInner() {
   ];
 
   return (
-    <section className="grid gap-8 sm:grid-cols-3 py-16 max-w-6xl mx-auto px-4">
+    <section className="mx-auto grid max-w-6xl gap-8 px-4 py-16 sm:grid-cols-3">
       {items.map(({ icon, title, desc }) => (
         <article key={title} className="text-center">
-          <div className="text-4xl mb-4">{icon}</div>
-          <h3 className="text-xl font-semibold mb-2">{title}</h3>
+          <div className="mb-4 text-4xl">{icon}</div>
+          <h3 className="mb-2 text-xl font-semibold">{title}</h3>
           <p className="text-gray-600">{desc}</p>
         </article>
       ))}
@@ -37,3 +37,4 @@ function ValuePropsInner() {
 }
 
 export const ValueProps = memo(ValuePropsInner);
+export default ValueProps;

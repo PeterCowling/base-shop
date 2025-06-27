@@ -48,11 +48,14 @@ describe("product actions", () => {
       const { writeSettings } = await import(
         "@platform-core/repositories/json"
       );
-      await writeSettings("test", { languages: ["es", "fr"] });
+      // Cast to ShopSettings so we can use locales outside the default set
+      await writeSettings("test", {
+        languages: ["es", "fr"],
+      } as unknown as import("@types").ShopSettings);
       const { createDraftRecord } = (await import(
         "../src/actions/products"
       )) as typeof import("../src/actions/products");
-      const draft = await createDraftRecord("test");
+      const draft = (await createDraftRecord("test")) as any;
       expect(Object.keys(draft.title)).toEqual(["es", "fr"]);
       expect(draft.title.es).toBe("Untitled");
       expect(draft.description.es).toBe("");
@@ -74,7 +77,8 @@ describe("product actions", () => {
       fd.append("desc_en", "World");
       fd.append("price", "10");
 
-      const updated = await actions.updateProduct("test", fd);
+      const result = await actions.updateProduct("test", fd);
+      const updated = result.product!;
       expect(updated.title.en).toBe("Hello");
       expect(updated.description.en).toBe("World");
       expect(updated.row_version).toBe(prod.row_version + 1);

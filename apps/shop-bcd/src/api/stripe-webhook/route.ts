@@ -1,3 +1,5 @@
+// apps/shop-bcd/src/app/api/stripe-webhook/route.ts
+
 import {
   addOrder,
   markRefunded,
@@ -19,14 +21,19 @@ export async function POST(req: NextRequest) {
 
   switch (eventType) {
     case "checkout.session.completed": {
-      const deposit = Number(data.metadata?.depositTotal ?? 0);
-      const returnDate = data.metadata?.returnDate || undefined;
-      await addOrder("bcd", data.id, deposit, returnDate);
+      const session = data as Stripe.Checkout.Session;
+      const deposit = Number(session.metadata?.depositTotal ?? 0);
+      const returnDate = session.metadata?.returnDate || undefined;
+      await addOrder("bcd", session.id, deposit, returnDate);
       break;
     }
     case "charge.refunded": {
-      const sessionId = data.payment_intent?.charges?.data?.[0]?.invoice;
-      const sid = sessionId || data.id;
+      const charge = data as Stripe.Charge;
+      const sessionId =
+        typeof charge.payment_intent !== "string"
+          ? charge.payment_intent?.charges?.data?.[0]?.invoice
+          : undefined;
+      const sid = sessionId || charge.id;
       await markRefunded("bcd", sid);
       break;
     }

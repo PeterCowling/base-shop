@@ -5,6 +5,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
 
+    "types": [
+      "@cloudflare/workers-types", // Cloudflare Worker globals (fetch, KVNamespace, etc.)
+      "node" // keep Node globals available elsewhere
+    ],
+
     "paths": {
       "@platform-core/*": ["packages/platform-core/*"],
       "@platform-machine/*": ["packages/platform-machine/*"],

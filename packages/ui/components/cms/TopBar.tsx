@@ -19,7 +19,7 @@ function TopBarInner() {
         </Button>
         <Button
           variant="ghost"
-          onClick={() => signOut({ callbackUrl: "/cms/login" })}
+          onClick={() => signOut({ callbackUrl: "/login" })}
         >
           Sign&nbsp;out
         </Button>

@@ -10,3 +10,7 @@ Current components:
 - `Content`
 - `StatsGrid`
 - `DataTable`
+  `ProductCard`
+- `ProductCarousel`
+- `ProductGrid`
+- `ProductFeatures`

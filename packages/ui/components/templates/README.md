@@ -7,3 +7,4 @@ Shared page-level layouts used across apps. Currently includes:
 - `AnalyticsDashboardTemplate` – stats, line chart and table for dashboards.
 - `ProductGalleryTemplate` – grid or carousel listing of products.
 - `ProductDetailTemplate` – hero-style view for a single product.
+- `FeaturedProductTemplate` – showcase layout for highlighting a product.

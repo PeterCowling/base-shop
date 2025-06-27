@@ -4,6 +4,7 @@ export { Footer } from "./Footer";
 export { Header } from "./Header";
 export { ProductCard } from "./ProductCard";
 export { ProductCarousel } from "./ProductCarousel";
+export { ProductFeatures } from "./ProductFeatures";
 export { ProductGrid } from "./ProductGrid";
 export { SideNav } from "./SideNav";
 export { StatsGrid } from "./StatsGrid";

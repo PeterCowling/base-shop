@@ -2,5 +2,7 @@ export { Content } from "./Content";
 export { DataTable } from "./DataTable";
 export { Footer } from "./Footer";
 export { Header } from "./Header";
+export { ProductCard } from "./ProductCard";
+export { ProductCarousel } from "./ProductCarousel";
 export { SideNav } from "./SideNav";
 export { StatsGrid } from "./StatsGrid";

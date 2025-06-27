@@ -7,7 +7,7 @@ const links = [
   { href: "/products", label: "Products", icon: "📦" },
   { href: "/media", label: "Media", icon: "🖼️" },
   { href: "/settings", label: "Settings", icon: "⚙️" },
-  { href: "/", label: "Change shop", icon: "🛒", absolute: true },
+  { href: "/products", label: "Change shop", icon: "🛒", absolute: true },
 ];
 export default function Sidebar() {
   const pathname = usePathname() ?? "";
@@ -21,7 +21,7 @@ export default function Sidebar() {
       <h1 className="px-4 py-6 text-lg font-semibold tracking-tight">CMS</h1>
       <nav className="flex flex-col gap-1 px-2">
         {links.map(({ href, label, icon, absolute }) => {
-          const fullHref = absolute ? "/cms" : `${base}${href}`;
+          const fullHref = absolute ? `/cms${href}` : `${base}${href}`;
           const active =
             href === "" ? pathname === base : pathname.startsWith(fullHref);
           return (

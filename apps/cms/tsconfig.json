@@ -18,7 +18,8 @@
     "skipLibCheck": true,
     "strict": false,
     "module": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "types": ["@cloudflare/workers-types", "node", "jest"]
   },
 
   /* ------------------------------------------------------------------ */

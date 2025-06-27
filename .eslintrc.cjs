@@ -6,4 +6,17 @@ module.exports = {
     "**/.next/**", // Next.js build output
     "**/index.js",
   ],
+  overrides: [
+    {
+      files: [
+        "packages/page-builder/**/*.{ts,tsx}",
+        "packages/seo/**/*.{ts,tsx}",
+        "**/page-builder/**/*.{ts,tsx}",
+        "**/seo/**/*.{ts,tsx}",
+      ],
+      rules: {
+        "@typescript-eslint/no-explicit-any": "error",
+      },
+    },
+  ],
 };

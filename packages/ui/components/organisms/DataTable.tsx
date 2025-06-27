@@ -8,23 +8,22 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../atoms-shim/Table";
+} from "../ui/table";
 
 export interface Column<T> {
   header: string;
-  render: (row: T) => ReactNode; // ← use the canonical ReactNode type
+  render: (row: T) => ReactNode;
   width?: string;
 }
 
 export interface DataTableProps<T> {
   rows: T[];
   columns: Column<T>[];
-  /** Enable checkbox row selection */
   selectable?: boolean;
   onSelectionChange?: (rows: T[]) => void;
 }
 
-export default function DataTable<T>({
+export function DataTable<T>({
   rows,
   columns,
   selectable = false,
@@ -56,7 +55,6 @@ export default function DataTable<T>({
             ))}
           </TableRow>
         </TableHeader>
-
         <TableBody>
           {rows.map((row, i) => (
             <TableRow

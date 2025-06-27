@@ -8,3 +8,5 @@ Current components:
 - `SideNav`
 - `Footer`
 - `Content`
+- `StatsGrid`
+- `DataTable`

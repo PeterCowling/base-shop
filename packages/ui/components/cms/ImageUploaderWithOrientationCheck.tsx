@@ -1,7 +1,7 @@
 // packages/ui/components/cms/ImageUploaderWithOrientationCheck.tsx
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/atoms-shim";
 import type { ImageOrientation } from "@types";
 import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
 import { memo, useCallback } from "react";

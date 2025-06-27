@@ -1,8 +1,7 @@
 // packages/ui/components/cms/PublishLocationSelector.tsx
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button, Input } from "@/components/atoms-shim";
 import type { PublishLocation } from "@types";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { memo, useCallback } from "react";

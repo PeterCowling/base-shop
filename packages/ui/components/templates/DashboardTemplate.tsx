@@ -1,3 +1,5 @@
+// packages/ui/components/templates/DashboardTemplate.tsx
+
 import { StatItem, StatsGrid } from "../organisms/StatsGrid";
 
 export interface DashboardTemplateProps {

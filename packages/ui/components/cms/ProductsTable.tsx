@@ -14,7 +14,7 @@ import {
 import { deleteProduct, duplicateProduct } from "@cms/actions/products";
 import { ProductPublication } from "@platform-core/products";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/atoms-shim";
 import DataTable from "./DataTable";
 import ProductFilters from "./ProductFilters";
 

@@ -1,10 +1,13 @@
 /* packages/ui/components/cms/ProductEditorForm.tsx */
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import {
+  Button,
+  Card,
+  CardContent,
+  Input,
+  Textarea,
+} from "@/components/atoms-shim";
 import type { Locale, ProductPublication } from "@platform-core/products";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { ChangeEvent, FormEvent, useCallback, useMemo, useState } from "react";

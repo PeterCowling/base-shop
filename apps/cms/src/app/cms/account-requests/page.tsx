@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/account-requests/page.tsx
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/atoms-shim";
 import { approveAccount, listPendingUsers } from "@cms/actions/accounts";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";

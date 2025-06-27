@@ -4,7 +4,7 @@
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { memo } from "react";
-import { Button } from "../ui/button";
+import { Button } from "../atoms-shim";
 import Breadcrumbs from "./Breadcrumbs";
 
 function TopBarInner() {

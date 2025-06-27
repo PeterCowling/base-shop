@@ -7,7 +7,6 @@ const links = [
   { href: "/products", label: "Products", icon: "📦" },
   { href: "/media", label: "Media", icon: "🖼️" },
   { href: "/settings", label: "Settings", icon: "⚙️" },
-  { href: "/account-requests", label: "Account Requests", icon: "👥" },
   { href: "/", label: "Change shop", icon: "🛒", absolute: true },
 ];
 export default function Sidebar() {

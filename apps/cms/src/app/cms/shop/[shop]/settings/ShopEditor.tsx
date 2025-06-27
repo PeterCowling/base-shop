@@ -1,11 +1,9 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/ShopEditor.tsx
 
 "use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button, Input, Textarea } from "@/components/atoms-shim";
 import { updateShop } from "@cms/actions/shops";
 import type { Shop } from "@types";
-import { Textarea } from "@ui/components/ui/textarea";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface Props {

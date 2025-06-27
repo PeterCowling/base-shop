@@ -1,3 +1,5 @@
+// apps/cms/src/app/cms/shop/page.tsx
+
 import Link from "next/link";
 import { listShops } from "../listShops";
 

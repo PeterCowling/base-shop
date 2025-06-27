@@ -1,13 +1,12 @@
-// packages/ui/components/templates/SearchResultsTemplate.tsx
-
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { PaginationControl } from "../molecules/PaginationControl";
 import { SearchBar } from "../molecules/SearchBar";
-import { Product, ProductGrid } from "../organisms/ProductGrid";
+import type { Product } from "../organisms/ProductCard";
+import { ProductGrid } from "../organisms/ProductGrid";
 
 export interface SearchResultsTemplateProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "results"> {
   query: string;
   suggestions: string[];
   results: Product[];

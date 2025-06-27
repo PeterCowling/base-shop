@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { SideNav } from "./SideNav";
+import { SideNav } from "../components/organisms/SideNav";
 
 const meta: Meta<typeof SideNav> = {
   title: "Layout/SideNav",

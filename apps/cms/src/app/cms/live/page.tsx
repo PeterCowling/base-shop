@@ -1,3 +1,5 @@
+// apps/cms/src/app/cms/live/page.tsx
+
 import { Button } from "@/components/atoms-shim";
 import fsSync from "node:fs";
 import fs from "node:fs/promises";

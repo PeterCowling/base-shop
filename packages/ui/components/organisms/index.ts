@@ -1,4 +1,5 @@
 export { AccountPanel } from "./AccountPanel";
+export { CategoryCard } from "./CategoryCard";
 export { CheckoutStepper } from "./CheckoutStepper";
 export { Content } from "./Content";
 export { DataTable } from "./DataTable";

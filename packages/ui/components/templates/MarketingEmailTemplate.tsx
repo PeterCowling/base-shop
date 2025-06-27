@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "../../utils/cn";
 
 export interface MarketingEmailTemplateProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
   logoSrc?: string;
   headline: string;
   content: React.ReactNode;

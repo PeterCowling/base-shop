@@ -1,10 +1,12 @@
+// apps/shop-abc/src/app/api/return/route.ts
+
 import { stripe } from "@/lib/stripeServer";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
-  const { sessionId } = await req.json();
+  const { sessionId } = (await req.json()) as { sessionId?: string };
   if (!sessionId) {
     return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
   }

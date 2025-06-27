@@ -1,15 +1,21 @@
+// apps/shop-abc/src/app/api/stripe-webhook/route.ts
+
 import {
   addOrder,
   markRefunded,
 } from "@platform-core/repositories/rentalOrders";
 import { NextRequest, NextResponse } from "next/server";
+import type Stripe from "stripe";
 
 export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
-  const payload = await req.json();
+  const payload = (await req.json()) as Stripe.Event;
   const eventType = payload.type;
-  const data = payload.data?.object;
+  const data = payload.data?.object as
+    | Stripe.Checkout.Session
+    | Stripe.Charge
+    | Record<string, unknown>;
 
   switch (eventType) {
     case "checkout.session.completed": {

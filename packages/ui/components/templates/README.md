@@ -11,7 +11,6 @@ Shared page-level layouts used across apps. Currently includes:
 - `ProductComparisonTemplate` – side-by-side view of multiple products.
 - `HomepageTemplate` – layout with hero and recommendation slots.
 - `CartTemplate` – editable list of cart items with totals.
-- `CategoryCard`
 - `CategoryCollectionTemplate` – grid of category cards.
 - `SearchResultsTemplate` – search bar with paginated product results.
 - `CheckoutTemplate` – multi-step layout for collecting checkout information.

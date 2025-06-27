@@ -2,7 +2,6 @@ export { AccountDashboardTemplate } from "./AccountDashboardTemplate";
 export { AnalyticsDashboardTemplate } from "./AnalyticsDashboardTemplate";
 export { AppShell } from "./AppShell";
 export { CartTemplate } from "./CartTemplate";
-export { CategoryCard } from "./CategoryCard";
 export { CategoryCollectionTemplate } from "./CategoryCollectionTemplate";
 export { CheckoutTemplate } from "./CheckoutTemplate";
 export { DashboardTemplate } from "./DashboardTemplate";

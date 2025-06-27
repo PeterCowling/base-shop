@@ -28,3 +28,4 @@ Current components:
 - `MiniCart`
 - `StickyAddToCartBar`
 - `RecommendationCarousel`
+- `CategoryCard`

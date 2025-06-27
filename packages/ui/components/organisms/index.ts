@@ -6,5 +6,7 @@ export { ProductCard } from "./ProductCard";
 export { ProductCarousel } from "./ProductCarousel";
 export { ProductFeatures } from "./ProductFeatures";
 export { ProductGrid } from "./ProductGrid";
+export { ProductVariantSelector } from "./ProductVariantSelector";
+export { ReviewsList } from "./ReviewsList";
 export { SideNav } from "./SideNav";
 export { StatsGrid } from "./StatsGrid";

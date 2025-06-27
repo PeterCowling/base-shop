@@ -7,6 +7,8 @@ Available components:
 - `StatCard`
 - `LineChart`
 - `ProductBadge`
-- `ProductCard`
-- `ProductCarousel`
-- `ProductGrid`
+  `RatingStars`
+- `StockStatus`
+- `QuantityInput`
+- `ColorSwatch`
+- `Price`

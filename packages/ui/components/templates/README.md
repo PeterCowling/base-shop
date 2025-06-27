@@ -8,3 +8,4 @@ Shared page-level layouts used across apps. Currently includes:
 - `ProductGalleryTemplate` – grid or carousel listing of products.
 - `ProductDetailTemplate` – hero-style view for a single product.
 - `FeaturedProductTemplate` – showcase layout for highlighting a product.
+- `ProductComparisonTemplate` – side-by-side view of multiple products.

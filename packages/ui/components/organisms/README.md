@@ -14,3 +14,5 @@ Current components:
 - `ProductCarousel`
 - `ProductGrid`
 - `ProductFeatures`
+- `ProductVariantSelector`
+- `ReviewsList`

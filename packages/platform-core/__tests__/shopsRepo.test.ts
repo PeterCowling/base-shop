@@ -1,5 +1,6 @@
 // packages/platform-core/__tests__/shopsRepo.test.ts
 
+import type { ShopSettings } from "@types";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -39,7 +40,13 @@ describe("shops repository", () => {
 
   it("saves settings and records diff history", async () => {
     await withRepo(async (repo, shop, dir) => {
-      const first = { languages: ["en", "de"] as const };
+      const now = new Date().toISOString();
+      const first: ShopSettings = {
+        languages: ["en", "de"],
+        seo: { en: { canonicalBase: "" }, de: { canonicalBase: "" } },
+        updatedAt: now,
+        updatedBy: "tester",
+      };
       await repo.saveShopSettings(shop, first);
       const afterFirst = await repo.getShopSettings(shop);
       expect(afterFirst).toEqual(first);
@@ -47,7 +54,12 @@ describe("shops repository", () => {
       expect(history).toHaveLength(1);
       expect(history[0].diff).toEqual(first);
 
-      const second = { languages: ["en"] as const };
+      const second: ShopSettings = {
+        languages: ["en"],
+        seo: { en: { canonicalBase: "" } },
+        updatedAt: new Date().toISOString(),
+        updatedBy: "tester",
+      };
       await repo.saveShopSettings(shop, second);
       const afterSecond = await repo.getShopSettings(shop);
       expect(afterSecond).toEqual(second);

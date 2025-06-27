@@ -6,10 +6,7 @@
     "skipLibCheck": true,
     "moduleResolution": "node",
 
-    "types": [
-      "@cloudflare/workers-types", // Cloudflare Worker globals (fetch, KVNamespace, etc.)
-      "node" // keep Node globals available elsewhere
-    ],
+    "types": ["@cloudflare/workers-types", "node"],
 
     "paths": {
       "@platform-core/*": ["packages/platform-core/*"],
@@ -57,5 +54,6 @@
       "@config": ["packages/config/env.ts"],
       "@config/*": ["packages/config/*"]
     }
-  }
+  },
+  "files": ["./src/types/global.d.ts"]
 }

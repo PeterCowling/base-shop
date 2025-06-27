@@ -1,9 +1,8 @@
 // packages/i18n/__tests__/i18n.test.tsx
 
 import { render, screen } from "@testing-library/react";
-
-import { resolveLocale } from "../locales";
-import { TranslationsProvider, useTranslations } from "../Translations";
+import { resolveLocale } from "../src/locales";
+import { TranslationsProvider, useTranslations } from "../src/Translations";
 
 describe("resolveLocale", () => {
   it("returns the locale if supported", () => {

@@ -9,23 +9,25 @@ import ts from "typescript";
  * TypeScript can safely use `__dirname` when the file is transpiled to CommonJS,
  * so we avoid `import.meta.url` (which requires `"module": "es2020"` or higher).
  */
-const { config } = ts.readConfigFile(
-  path.join(__dirname, "tsconfig.json"),
-  ts.sys.readFile
+const configPath = path.join(__dirname, "tsconfig.json");
+const { config } = ts.readConfigFile(configPath, ts.sys.readFile);
+const { options: compilerOptions } = ts.parseJsonConfigFileContent(
+  config,
+  ts.sys,
+  path.dirname(configPath)
 );
-
-const { compilerOptions } = config;
 
 const jestConfig: Config = {
   preset: "ts-jest/presets/js-with-ts-esm",
   testEnvironment: "jsdom",
+  setupFilesAfterEnv: [path.join(__dirname, "..", "..", "jest.setup.ts")],
   globals: {
     "ts-jest": {
       tsconfig: path.join(__dirname, "tsconfig.test.json"),
     },
   },
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths ?? {}, {
-    prefix: "<rootDir>/",
+    prefix: path.join(__dirname, "..", "..") + "/",
   }),
 };
 

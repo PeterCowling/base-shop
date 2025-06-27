@@ -40,6 +40,7 @@ const config: Config = {
     "^@/lib/(.*)$": "<rootDir>/packages/platform-core/$1",
     "^@/contexts/(.*)$": "<rootDir>/packages/platform-core/contexts/$1",
     "^@ui/(.*)$": "<rootDir>/packages/ui/$1",
+    "^@i18n/(.*)$": "<rootDir>/packages/i18n/src/$1",
     "^@types$": "<rootDir>/src/types",
     "^@types/(.*)$": "<rootDir>/src/types/$1",
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",

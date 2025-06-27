@@ -4,6 +4,7 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "moduleResolution": "node",
 
     "types": [
       "@cloudflare/workers-types", // Cloudflare Worker globals (fetch, KVNamespace, etc.)

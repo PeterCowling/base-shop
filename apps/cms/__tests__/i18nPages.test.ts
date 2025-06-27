@@ -1,4 +1,4 @@
-// packages/platform-core/__tests__/i18Pages.test.tsx
+// apps/cms/__tests__/i18nPages.test.ts
 // -------------------------------------------------------
 // This test file is now a proper ESM / JSX module.
 // -------------------------------------------------------

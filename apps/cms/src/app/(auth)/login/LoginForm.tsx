@@ -30,6 +30,8 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
+    console.log("[LoginForm] submit", { email, callbackUrl });
+
     const absoluteUrl = absolutify(callbackUrl);
     const res = await signIn("credentials", {
       redirect: false,
@@ -38,7 +40,11 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
       callbackUrl: absoluteUrl,
     });
 
+    console.log("[LoginForm] signIn result", res);
+
     if (res?.ok) {
+      console.log("[LoginForm] redirect to", callbackUrl);
+
       router.push(callbackUrl);
     } else {
       setError(res?.error ?? "Invalid email or password");

@@ -31,6 +31,8 @@
       /* ──────────────────────────────────────────────────────────────── */
       "@types": ["../../src/types/index.ts"],
       "@types/*": ["../../src/types/*"],
+      "@types/shared": ["../../packages/types/src/index.ts"],
+      "@types/shared/*": ["../../packages/types/src/*"],
 
       /* ──────────────────────────────────────────────────────────────── */
       /*  Existing package-scoped @/… aliases                            */

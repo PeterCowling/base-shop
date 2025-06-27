@@ -21,7 +21,8 @@
   "references": [
     { "path": "../platform-core" },
     { "path": "../i18n" },
-    { "path": "../types" }
+    { "path": "../types" },
+    { "path": "../config" }
   ],
   "include": [
     "components/**/*",

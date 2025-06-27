@@ -1,5 +1,5 @@
 // scripts/create-shop.ts
-import { LOCALES } from "@types";
+import { LOCALES } from "@types/shared";
 import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { ulid } from "ulid";

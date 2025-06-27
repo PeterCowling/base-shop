@@ -17,15 +17,16 @@ const ADMIN_PATH_REGEX =
 
 /** Allowed CMS paths per role */
 const ROLE_PATHS: Record<Role, RegExp[]> = {
-  admin: [/^\/cms\//],
-  ShopAdmin: [/^\/cms\//],
+  admin: [/^\/cms(?:\/|$)/],
+  ShopAdmin: [/^\/cms(?:\/|$)/],
   CatalogManager: [/^\/cms\/[^/]+\/products/, /^\/cms\/[^/]+\/media/],
   ThemeEditor: [/^\/cms\/[^/]+\/settings/, /^\/cms\/[^/]+\/media/],
-  viewer: [/^\/cms\//],
+  viewer: [/^\/cms(?:\/|$)/],
 };
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
+  console.log("[middleware] request", pathname);
 
   /* Decode JWT (include secret only if present) */
   const token = await getToken(
@@ -34,6 +35,7 @@ export async function middleware(req: NextRequest) {
       : { req }
   );
   const role = token?.role;
+  console.log("[middleware] role", role);
 
   /* Skip static assets, auth endpoints, and login page */
   if (
@@ -43,6 +45,8 @@ export async function middleware(req: NextRequest) {
     pathname === "/signup" ||
     pathname === "/favicon.ico"
   ) {
+    console.log("[middleware] skip", pathname);
+
     return NextResponse.next();
   }
 
@@ -51,6 +55,8 @@ export async function middleware(req: NextRequest) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("callbackUrl", pathname);
+    console.log("[middleware] redirect to login", url.toString());
+
     return NextResponse.redirect(url);
   }
 
@@ -58,10 +64,14 @@ export async function middleware(req: NextRequest) {
   if (pathname.startsWith("/cms")) {
     const allowed = ROLE_PATHS[role as Role] ?? [];
     const isAllowed = allowed.some((re) => re.test(pathname));
+    console.log("[middleware] CMS access", { role, pathname, isAllowed });
+
     if (!isAllowed) {
       const matchShop = /\/cms\/([^/]+)/.exec(pathname);
       const url = new URL("/403", req.url);
       if (matchShop) url.searchParams.set("shop", matchShop[1]);
+      console.log("[middleware] forbidden", url.toString());
+
       return NextResponse.rewrite(url, { status: 403 });
     }
   }
@@ -71,8 +81,11 @@ export async function middleware(req: NextRequest) {
   if (role === "viewer" && match) {
     const url = new URL("/403", req.url);
     url.searchParams.set("shop", match[1]);
+    console.log("[middleware] viewer blocked", url.toString());
+
     return NextResponse.rewrite(url, { status: 403 });
   }
+  console.log("[middleware] allow", pathname);
 
   return NextResponse.next();
 }

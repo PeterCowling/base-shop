@@ -44,6 +44,8 @@
 
       "@types": ["src/types"],
       "@types/*": ["src/types/*"],
+      "@types/shared": ["packages/types/src/index.ts"],
+      "@types/shared/*": ["packages/types/src/*"],
 
       "@acme/tailwind-config": ["packages/tailwind-config/src/index.ts"],
       "@config": ["packages/config/env.ts"],

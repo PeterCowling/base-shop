@@ -35,10 +35,12 @@ const config: Config = {
   moduleNameMapper: {
     "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/$1",
     "^@apps/(.*)$": "<rootDir>/apps/$1/src",
+    "^@cms/(.*)$": "<rootDir>/apps/cms/src/$1",
     "^@lib/(.*)$": "<rootDir>/packages/lib/$1",
     "^@/lib/(.*)$": "<rootDir>/packages/platform-core/$1",
     "^@ui/(.*)$": "<rootDir>/packages/ui/$1",
-    // CSS / asset stubs
+    "^@types$": "<rootDir>/src/types",
+    "^@types/(.*)$": "<rootDir>/src/types/$1",
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
   },
 

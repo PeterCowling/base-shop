@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/layout.tsx
 import "../globals.css";
 
-import { LayoutProvider } from "@/contexts/LayoutContext";
+import { LayoutProvider } from "@platform-core/contexts/LayoutContext";
 import Sidebar from "@ui/components/cms/Sidebar";
 import TopBar from "@ui/components/cms/TopBar";
 

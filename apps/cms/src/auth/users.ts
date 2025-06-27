@@ -15,7 +15,7 @@ export const USERS: Record<string, CmsUser> = {
     name: "Admin",
     email: "admin@example.com",
     //password: "admin",
-    password: "$2b$10$uQuRf9v2oro8NksMABteyOZPBuG8TwPRpYBGHBZ/NJxemjQ1gfRgS",
+    password: "admin", // NOTE: stored in plain text
   },
   viewer: {
     id: "2",

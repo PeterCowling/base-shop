@@ -9,3 +9,18 @@ Shared page-level layouts used across apps. Currently includes:
 - `ProductDetailTemplate` – hero-style view for a single product.
 - `FeaturedProductTemplate` – showcase layout for highlighting a product.
 - `ProductComparisonTemplate` – side-by-side view of multiple products.
+- `HomepageTemplate` – layout with hero and recommendation slots.
+- `CartTemplate` – editable list of cart items with totals.
+- `CategoryCard`
+- `CategoryCollectionTemplate` – grid of category cards.
+- `SearchResultsTemplate` – search bar with paginated product results.
+- `CheckoutTemplate` – multi-step layout for collecting checkout information.
+- `OrderConfirmationTemplate` – summary of purchased items and totals.
+- `WishlistTemplate` – list of saved items with add-to-cart and remove actions.
+- `AccountDashboardTemplate` – overview of user details, stats and order list.
+- `StoreLocatorTemplate` – map view with a list of store locations.
+- `LiveShoppingEventTemplate` – live video with chat and product highlights.
+- `LoyaltyHubTemplate` – dashboard for customer loyalty stats and history.
+- `Error404Template` – simple page not found layout.
+- `Error500Template` – generic server error page.
+- `MarketingEmailTemplate` – responsive layout for promotional emails.

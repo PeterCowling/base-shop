@@ -7,7 +7,7 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import type { Page } from "@types";
-import PagesTable from "@ui/components/cms/PagesTable";
+import { PagesTable } from "@ui/components/cms";
 import { useState } from "react";
 
 interface Props {

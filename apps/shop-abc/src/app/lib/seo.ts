@@ -1,6 +1,6 @@
 import type { Locale } from "@i18n/locales";
 import { getShopSettings } from "@platform-core/repositories/shops";
-import type { ShopSettings } from "@types/shared";
+import type { ShopSettings } from "@types";
 import type { NextSeoProps } from "next-seo";
 
 interface ExtendedSeoProps extends Partial<NextSeoProps> {

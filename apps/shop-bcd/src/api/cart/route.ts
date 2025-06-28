@@ -6,6 +6,7 @@ import {
   decodeCartCookie,
   encodeCartCookie,
 } from "@/lib/cartCookie";
+import { skuSchema } from "@types";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -14,15 +15,6 @@ export const runtime = "edge";
 
 // This simple handler echoes back the posted body and status 200.
 // Stripe / KV integration will extend this in Sprint 5.
-const skuSchema = z.object({
-  id: z.string(),
-  slug: z.string(),
-  title: z.string(),
-  price: z.number(),
-  image: z.string(),
-  sizes: z.array(z.string()),
-  description: z.string(),
-});
 
 const postSchema = z.object({
   sku: skuSchema,

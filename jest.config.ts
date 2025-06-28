@@ -56,6 +56,9 @@ const config: Config = {
    */
   transformIgnorePatterns: ["node_modules/(?!(ulid)/)"],
 
+  /** Only run tests written in TypeScript */
+  testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
+
   /** Recognise TypeScript & JSX extensions automatically */
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
 

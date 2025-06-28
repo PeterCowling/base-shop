@@ -33,7 +33,11 @@ export async function updateShop(
   const current = await getShopById<Shop>(shop);
   if (current.id !== id) throw new Error(`Shop ${id} not found in ${shop}`);
 
-  const parsed = shopSchema.safeParse(Object.fromEntries(formData.entries()));
+  const parsed = shopSchema.safeParse(
+    Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>
+    )
+  );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }
@@ -79,7 +83,11 @@ export async function updateSeo(
 }> {
   await ensureAuthorized();
 
-  const parsed = seoSchema.safeParse(Object.fromEntries(formData.entries()));
+  const parsed = seoSchema.safeParse(
+    Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>
+    )
+  );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }
@@ -99,7 +107,12 @@ export async function updateSeo(
   const current = await getShopSettings(shop);
   const seo = { ...(current.seo ?? {}) } as Record<Locale, ShopSeoFields>;
   seo[locale] = { title, description, image };
-  const updated: ShopSettings = { ...current, seo };
+  const updated: ShopSettings = {
+    languages: current.languages,
+    seo,
+    updatedAt: current.updatedAt,
+    updatedBy: current.updatedBy,
+  };
   await saveShopSettings(shop, updated);
 
   return { settings: updated, warnings };

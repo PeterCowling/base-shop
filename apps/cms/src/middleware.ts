@@ -1,5 +1,5 @@
 // apps/cms/src/middleware.ts
-import { canRead } from "@auth";
+import { canRead, canWrite } from "@auth";
 import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";

@@ -1,16 +1,19 @@
 import { z } from "zod";
 export declare const shopSeoFieldsSchema: z.ZodObject<{
-    title: z.ZodString;
+    canonicalBase: z.ZodOptional<z.ZodString>;
+    title: z.ZodOptional<z.ZodString>;
     description: z.ZodOptional<z.ZodString>;
     image: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
+    canonicalBase?: string;
     title?: string;
-    image?: string;
     description?: string;
+    image?: string;
 }, {
+    canonicalBase?: string;
     title?: string;
-    image?: string;
     description?: string;
+    image?: string;
 }>;
 export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;
 export declare const shopSchema: z.ZodObject<{
@@ -38,3 +41,4 @@ export declare const shopSchema: z.ZodObject<{
     filterMappings?: Record<string, string>;
 }>;
 export type Shop = z.infer<typeof shopSchema>;
+//# sourceMappingURL=Shop.d.ts.map

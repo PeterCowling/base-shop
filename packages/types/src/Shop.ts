@@ -1,7 +1,8 @@
 import { z } from "zod";
 
 export const shopSeoFieldsSchema = z.object({
-  title: z.string(),
+  canonicalBase: z.string().optional(),
+  title: z.string().optional(),
   description: z.string().optional(),
   image: z.string().optional(),
 });

@@ -4,13 +4,17 @@ import { updateSeo } from "@cms/actions/shops";
 import type { Locale } from "@types";
 import { ChangeEvent, FormEvent, useState } from "react";
 
+interface SeoData {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalBase?: string;
+}
+
 interface Props {
   shop: string;
   languages: readonly Locale[];
-  initialSeo: Record<
-    string,
-    { title: string; description?: string; image?: string }
-  >;
+  initialSeo: Partial<Record<string, SeoData>>;
 }
 
 export default function SeoEditor({ shop, languages, initialSeo }: Props) {

@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.shopSchema = exports.shopSeoFieldsSchema = void 0;
 var zod_1 = require("zod");
 exports.shopSeoFieldsSchema = zod_1.z.object({
-    title: zod_1.z.string(),
+    canonicalBase: zod_1.z.string().optional(),
+    title: zod_1.z.string().optional(),
     description: zod_1.z.string().optional(),
     image: zod_1.z.string().optional(),
 });

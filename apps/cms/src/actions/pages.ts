@@ -63,7 +63,9 @@ export async function createPage(
 ): Promise<{ page?: Page; errors?: Record<string, string[]> }> {
   const session = await ensureAuthorized();
 
-  const parsed = createSchema.safeParse(Object.fromEntries(formData.entries()));
+  const parsed = createSchema.safeParse(
+    Object.fromEntries(formData as Iterable<[string, FormDataEntryValue]>)
+  );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }
@@ -96,7 +98,9 @@ export async function updatePage(
 ): Promise<{ page?: Page; errors?: Record<string, string[]> }> {
   await ensureAuthorized();
 
-  const parsed = updateSchema.safeParse(Object.fromEntries(formData.entries()));
+  const parsed = updateSchema.safeParse(
+    Object.fromEntries(formData as Iterable<[string, FormDataEntryValue]>)
+  );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }

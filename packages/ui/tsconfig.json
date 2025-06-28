@@ -28,7 +28,9 @@
     "components/**/*",
     "hooks/**/*",
     "utils/**/*",
+    "../i18n/*.json",
     "../../src/types/**/*.ts",
+    "../../src/lib/**/*.ts",
     "../../apps/cms/src/**/*"
   ],
   "exclude": ["dist"]

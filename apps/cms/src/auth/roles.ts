@@ -1,6 +1,5 @@
 // apps/cms/src/auth/roles.ts
-import { ROLES, type Role } from "@types";
-export { ROLES };
+import type { Role } from "@auth";
 export type { Role };
 
 /** Map of user.id to role(s). */

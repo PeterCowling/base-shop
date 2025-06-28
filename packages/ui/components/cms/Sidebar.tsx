@@ -34,8 +34,8 @@ export default function Sidebar() {
     <aside className="w-56 shrink-0 border-r border-gray-200 dark:border-gray-800">
       <h1 className="px-4 py-6 text-lg font-semibold tracking-tight">CMS</h1>
       <nav className="flex flex-col gap-1 px-2">
-        {links.map(({ href, label, icon, absolute }) => {
-          const fullHref = absolute ? "/cms" : `/cms${href}`;
+        {links.map(({ href, label, icon }) => {
+          const fullHref = `/cms${href}`;
           const active =
             href === ""
               ? pathname === dashboardBase

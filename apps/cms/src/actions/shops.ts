@@ -11,8 +11,9 @@ import {
   getShopSettings,
   saveShopSettings,
 } from "@platform-core/repositories/shops";
-import type { Locale, Shop } from "@types";
+import type { Locale, Shop, ShopSeoFields, ShopSettings } from "@types";
 import { getServerSession } from "next-auth";
+import { z } from "zod";
 import { shopSchema, type ShopForm } from "./schemas";
 
 async function ensureAuthorized(): Promise<void> {
@@ -96,10 +97,10 @@ export async function updateSeo(
     warnings.push("Description exceeds 160 characters");
 
   const current = await getShopSettings(shop);
-  const seo = (current as any).seo ?? {};
+  const seo = { ...(current.seo ?? {}) } as Record<Locale, ShopSeoFields>;
   seo[locale] = { title, description, image };
-  const updated = { ...current, seo };
-  await saveShopSettings(shop, updated as any);
+  const updated: ShopSettings = { ...current, seo };
+  await saveShopSettings(shop, updated);
 
   return { settings: updated, warnings };
 }

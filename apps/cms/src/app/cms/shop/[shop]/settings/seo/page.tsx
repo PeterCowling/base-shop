@@ -20,8 +20,8 @@ export default async function SeoSettingsPage({
 }) {
   const { shop } = await params;
   const settings = await getSettings(shop);
-  const languages = (settings as any).languages as Locale[];
-  const seo = (settings as any).seo ?? {};
+  const languages = settings.languages as Locale[];
+  const seo = settings.seo ?? {};
 
   return (
     <div>

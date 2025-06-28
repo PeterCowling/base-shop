@@ -23,6 +23,12 @@
     { "path": "../types" },
     { "path": "../config" }
   ],
-  "include": ["components/**/*", "hooks/**/*", "../../apps/cms/src/**/*"],
+  "include": [
+    "components/**/*",
+    "hooks/**/*",
+    "utils/**/*",
+    "../../src/types/**/*.ts",
+    "../../apps/cms/src/**/*"
+  ],
   "exclude": ["dist"]
 }

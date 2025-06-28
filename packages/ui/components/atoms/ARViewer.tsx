@@ -1,21 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      "model-viewer": React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement>,
-        HTMLElement
-      > & {
-        src?: string;
-        ar?: boolean;
-        "camera-controls"?: boolean;
-      };
-    }
-  }
-}
-
 export interface ARViewerProps extends React.HTMLAttributes<HTMLElement> {
   src: string;
 }
@@ -38,7 +23,7 @@ export function ARViewer({ src, className, ...props }: ARViewerProps) {
       src={src}
       ar
       camera-controls
-      class={cn("h-full w-full", className)}
+      className={cn("h-full w-full", className)}
       style={{ width: "100%", height: "100%" }}
       {...props}
     />

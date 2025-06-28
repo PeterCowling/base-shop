@@ -6,7 +6,10 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
-  const { sessionId } = (await req.json()) as { sessionId?: string };
+  const { sessionId, damageFee } = (await req.json()) as {
+    sessionId?: string;
+    damageFee?: number;
+  };
   if (!sessionId) {
     return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
   }
@@ -24,10 +27,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, message: "No deposit found" });
   }
 
-  await stripe.refunds.create({
-    payment_intent: pi,
-    amount: deposit * 100,
-  });
+  const refund = Math.max(deposit - (damageFee ?? 0), 0);
+  if (refund > 0) {
+    await stripe.refunds.create({ payment_intent: pi, amount: refund * 100 });
+  }
 
   return NextResponse.json({ ok: true });
 }

@@ -14,6 +14,14 @@ export async function POST(req: NextRequest) {
     returnDate?: string;
   };
 
+  const rentalDays = (() => {
+    if (!returnDate) return 1;
+    const end = new Date(returnDate).getTime();
+    const start = Date.now();
+    const diff = Math.ceil((end - start) / 86_400_000);
+    return diff > 0 ? diff : 1;
+  })();
+
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
   }
@@ -23,7 +31,7 @@ export async function POST(req: NextRequest) {
     {
       price_data: {
         currency: "eur",
-        unit_amount: l.sku.price * 100,
+        unit_amount: l.sku.price * rentalDays * 100,
         product_data: {
           name: l.size ? `${l.sku.title} (${l.size})` : l.sku.title,
         },
@@ -44,7 +52,7 @@ export async function POST(req: NextRequest) {
     },
   ]);
   const subtotal = Object.values(cart).reduce(
-    (s, l) => s + l.sku.price * l.qty,
+    (s, l) => s + l.sku.price * rentalDays * l.qty,
     0
   );
   const depositTotal = Object.values(cart).reduce(
@@ -66,12 +74,14 @@ export async function POST(req: NextRequest) {
         subtotal: subtotal.toString(),
         depositTotal: depositTotal.toString(),
         returnDate: returnDate ?? "",
+        rentalDays: rentalDays.toString(),
       },
     },
     metadata: {
       subtotal: subtotal.toString(),
       depositTotal: depositTotal.toString(),
       returnDate: returnDate ?? "",
+      rentalDays: rentalDays.toString(),
       sizes: sizesMeta,
     },
     expand: ["payment_intent"],

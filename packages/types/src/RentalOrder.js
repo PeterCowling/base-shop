@@ -11,4 +11,6 @@ exports.rentalOrderSchema = zod_1.z.object({
     startedAt: zod_1.z.string(),
     returnedAt: zod_1.z.string().optional(),
     refundedAt: zod_1.z.string().optional(),
+    /** Optional damage fee deducted from the deposit */
+    damageFee: zod_1.z.number().optional(),
 });

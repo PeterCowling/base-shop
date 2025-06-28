@@ -17,7 +17,7 @@ export default meta;
 export const Default: StoryObj<typeof AppShell> = {
   render: () => (
     <AppShell
-      header={<Header>Header</Header>}
+      header={<Header locale="en">Header</Header>}
       sideNav={<SideNav>Nav</SideNav>}
       footer={<Footer>Footer</Footer>}
     >

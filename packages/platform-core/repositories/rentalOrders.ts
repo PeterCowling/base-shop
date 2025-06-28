@@ -72,12 +72,16 @@ export async function addOrder(
 
 export async function markReturned(
   shop: string,
-  sessionId: string
+  sessionId: string,
+  damageFee?: number
 ): Promise<RentalOrder | null> {
   const orders = await readOrders(shop);
   const idx = orders.findIndex((o) => o.sessionId === sessionId);
   if (idx === -1) return null;
   orders[idx].returnedAt = new Date().toISOString();
+  if (typeof damageFee === "number") {
+    orders[idx].damageFee = damageFee;
+  }
   await writeOrders(shop, orders);
   return orders[idx];
 }

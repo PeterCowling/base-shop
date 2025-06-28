@@ -20,11 +20,14 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const { sessionId } = (await req.json()) as { sessionId?: string };
+  const { sessionId, damageFee } = (await req.json()) as {
+    sessionId?: string;
+    damageFee?: number;
+  };
   if (!sessionId) {
     return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
   }
-  const order = await markReturned("bcd", sessionId);
+  const order = await markReturned("bcd", sessionId, damageFee);
   if (!order) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
@@ -36,10 +39,10 @@ export async function PATCH(req: NextRequest) {
       ? session.payment_intent
       : session.payment_intent?.id;
   if (pi && order.deposit) {
-    await stripe.refunds.create({
-      payment_intent: pi,
-      amount: order.deposit * 100,
-    });
+    const refund = Math.max(order.deposit - (damageFee ?? 0), 0);
+    if (refund > 0) {
+      await stripe.refunds.create({ payment_intent: pi, amount: refund * 100 });
+    }
   }
   return NextResponse.json({ ok: true });
 }

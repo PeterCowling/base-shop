@@ -9,6 +9,8 @@ export const rentalOrderSchema = z.object({
   startedAt: z.string(),
   returnedAt: z.string().optional(),
   refundedAt: z.string().optional(),
+  /** Optional damage fee deducted from the deposit */
+  damageFee: z.number().optional(),
 });
 
 export type RentalOrder = z.infer<typeof rentalOrderSchema>;

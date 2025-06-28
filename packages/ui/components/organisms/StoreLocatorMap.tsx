@@ -13,13 +13,32 @@ export interface StoreLocatorMapProps
   zoom?: number;
 }
 
+interface LeafletMap {
+  setView(coords: [number, number], zoom: number): LeafletMap;
+  remove(): void;
+}
+
+interface LeafletLayer {
+  addTo(map: LeafletMap): LeafletLayer;
+}
+
+interface LeafletMarker extends LeafletLayer {
+  bindPopup(content: string): LeafletMarker;
+}
+
+interface Leaflet {
+  map(el: HTMLElement): LeafletMap;
+  tileLayer(url: string, options: { attribution: string }): LeafletLayer;
+  marker(coords: [number, number]): LeafletMarker;
+}
+
 declare global {
   interface Window {
-    L?: any;
+    L?: Leaflet;
   }
 }
 
-function loadLeaflet(): Promise<any> {
+function loadLeaflet(): Promise<Leaflet | null> {
   if (typeof window === "undefined") return Promise.resolve(null);
   if (window.L) return Promise.resolve(window.L);
 
@@ -31,7 +50,7 @@ function loadLeaflet(): Promise<any> {
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
     script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
-    script.onload = () => resolve((window as any).L);
+    script.onload = () => resolve((window as { L: Leaflet }).L);
     script.onerror = reject;
     document.body.appendChild(script);
   });
@@ -47,7 +66,7 @@ export function StoreLocatorMap({
 
   React.useEffect(() => {
     if (!mapRef.current || locations.length === 0) return;
-    let map: any;
+    let map: LeafletMap | null = null;
 
     loadLeaflet().then((L) => {
       if (!mapRef.current) return;

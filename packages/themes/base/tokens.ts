@@ -14,7 +14,6 @@ export interface Token {
 /** `--token-name`: `{ light, dark? }` */
 export type TokenMap = Record<`--${string}`, Token>;
 
-/* eslint-disable prettier/prettier */
 export const tokens = {
   "--color-bg": { light: "0 0% 100%", dark: "0 0% 4%" },
   "--color-fg": { light: "0 0% 10%", dark: "0 0% 93%" },

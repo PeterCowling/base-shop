@@ -7,7 +7,6 @@ import { ProductGrid } from "../organisms/ProductGrid";
 
 export interface SearchResultsTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "results"> {
-  query: string;
   suggestions: string[];
   results: Product[];
   page: number;
@@ -17,7 +16,6 @@ export interface SearchResultsTemplateProps
 }
 
 export function SearchResultsTemplate({
-  query,
   suggestions,
   results,
   page,

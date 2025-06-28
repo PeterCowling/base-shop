@@ -16,6 +16,7 @@ export { OrderTrackingTimeline } from "./OrderTrackingTimeline";
 export { ProductCard } from "./ProductCard";
 export { ProductCarousel } from "./ProductCarousel";
 export { ProductFeatures } from "./ProductFeatures";
+export { ProductGallery } from "./ProductGallery";
 export { ProductGrid } from "./ProductGrid";
 export { ProductVariantSelector } from "./ProductVariantSelector";
 export { QAModule } from "./QAModule";

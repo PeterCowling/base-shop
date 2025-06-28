@@ -1,54 +1,24 @@
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
-export interface PopoverProps extends React.HTMLAttributes<HTMLDivElement> {
-  trigger: React.ReactNode;
-  open?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  contentClassName?: string;
-  children: React.ReactNode;
-}
+export const Popover = PopoverPrimitive.Root;
+export const PopoverTrigger = PopoverPrimitive.Trigger;
+export const PopoverAnchor = PopoverPrimitive.Anchor;
 
-export const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
-  (
-    {
-      trigger,
-      children,
-      open: openProp,
-      onOpenChange,
-      className,
-      contentClassName,
-      ...props
-    },
-    ref
-  ) => {
-    const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false);
-    const open = openProp ?? uncontrolledOpen;
-
-    const toggle = () => {
-      const newOpen = !open;
-      if (openProp === undefined) setUncontrolledOpen(newOpen);
-      onOpenChange?.(newOpen);
-    };
-
-    return (
-      <div
-        ref={ref}
-        className={cn("relative inline-block", className)}
-        {...props}
-      >
-        <span onClick={toggle}>{trigger}</span>
-        {open && (
-          <div
-            className={cn(
-              "bg-popover text-popover-foreground absolute z-10 mt-2 rounded-md border p-2 shadow-md",
-              contentClassName
-            )}
-          >
-            {children}
-          </div>
-        )}
-      </div>
-    );
-  }
-);
+export const PopoverContent = React.forwardRef<
+  React.ElementRef<typeof PopoverPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
+>(({ className, sideOffset = 4, align = "center", ...props }, ref) => (
+  <PopoverPrimitive.Content
+    ref={ref}
+    sideOffset={sideOffset}
+    align={align}
+    className={cn(
+      "bg-popover text-popover-foreground z-50 rounded-md border p-4 shadow-md outline-none",
+      className
+    )}
+    {...props}
+  />
+));
+PopoverContent.displayName = PopoverPrimitive.Content.displayName;

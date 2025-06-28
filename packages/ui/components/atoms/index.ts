@@ -1,4 +1,5 @@
 export * from "../atoms-shim";
+export { ARViewer } from "./ARViewer";
 export { Avatar } from "./Avatar";
 export { Chip } from "./Chip";
 export { ColorSwatch } from "./ColorSwatch";
@@ -7,7 +8,12 @@ export { LineChart } from "./LineChart";
 export { Loader } from "./Loader";
 export { Logo } from "./Logo";
 export { PaginationDot } from "./PaginationDot";
-export { Popover } from "./Popover";
+export {
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+  PopoverTrigger,
+} from "./Popover";
 export { Price } from "./Price";
 export { ProductBadge } from "./ProductBadge";
 export { Radio } from "./Radio";
@@ -19,3 +25,5 @@ export { Switch } from "./Switch";
 export { Tag } from "./Tag";
 export { Toast } from "./Toast";
 export { Tooltip } from "./Tooltip";
+export { VideoPlayer } from "./VideoPlayer";
+export { ZoomImage } from "./ZoomImage";

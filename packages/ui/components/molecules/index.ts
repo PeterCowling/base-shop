@@ -1,7 +1,9 @@
 export { default as Breadcrumbs } from "./Breadcrumbs";
 export { default as CurrencySwitcher } from "./CurrencySwitcher";
 export { FormField } from "./FormField";
+export { Image360Viewer } from "./Image360Viewer";
 export { default as LanguageSwitcher } from "./LanguageSwitcher";
+export { MediaSelector } from "./MediaSelector";
 export { PaginationControl } from "./PaginationControl";
 export { PaymentMethodSelector } from "./PaymentMethodSelector";
 export { PriceCluster } from "./PriceCluster";

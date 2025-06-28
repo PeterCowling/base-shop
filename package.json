@@ -33,7 +33,8 @@
     "plop": "pnpm gen",
     "release-deposits": "ts-node scripts/release-deposits.ts",
     "provision-cms": "pnpm run create-shop && pnpm run build:tokens",
-    "cms:migrate": "ts-node scripts/migrate-cms.ts"
+    "cms:migrate": "ts-node scripts/migrate-cms.ts",
+    "deposit-service": "ts-node packages/platform-machine/releaseDepositsService.ts"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.12",

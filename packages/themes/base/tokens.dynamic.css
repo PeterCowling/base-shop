@@ -37,3 +37,9 @@
     --color-muted: var(--token-color-muted-dark, 0 0% 60%);
   }
 }
+html.theme-dark {
+  --color-bg: var(--token-color-bg-dark, 0 0% 4%);
+  --color-fg: var(--token-color-fg-dark, 0 0% 93%);
+  --color-primary: var(--token-color-primary-dark, 220 90% 66%);
+  --color-muted: var(--token-color-muted-dark, 0 0% 60%);
+}

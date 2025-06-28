@@ -7,7 +7,7 @@ export interface ZoomImageProps extends ImageProps {
 }
 
 export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
-  ({ zoomScale = 1.25, ...props }, ref) => {
+  ({ alt, className, zoomScale = 1.25, ...props }, ref) => {
     const [zoom, setZoom] = React.useState(false);
     return (
       <figure
@@ -19,11 +19,12 @@ export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
         )}
       >
         <Image
+          alt={alt ?? ""}
           {...props}
           className={cn(
             "object-cover transition-transform duration-300",
             zoom ? "scale-125" : "scale-100",
-            props.className
+            className
           )}
           style={{ transform: zoom ? `scale(${zoomScale})` : undefined }}
         />

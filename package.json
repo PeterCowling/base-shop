@@ -20,6 +20,7 @@
     "lint:all": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\"",
     "typecheck": "tsc -b --pretty",
     "test": "turbo run test",
+    "test:coverage": "turbo run test -- --coverage",
     "e2e": "playwright test",
     "i18n:extract": "next-intl extract",
     "i18n:check": "ts-node scripts/check-i18n-schemas.ts",

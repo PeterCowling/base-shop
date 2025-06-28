@@ -25,6 +25,17 @@ pnpm preview	Edge preview with Wrangler
 pnpm lint	ESLint + Prettier
 pnpm test	Jest unit tests
 pnpm e2e	Playwright e2e suite
+pnpm test:coverage	Jest tests with coverage summary
+
+Example summary:
+
+```
+------------------|---------|----------|---------|---------|-------------------
+File              | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+------------------|---------|----------|---------|---------|-------------------
+All files         |   100   |      100 |   100   |   100   |
+------------------|---------|----------|---------|---------|-------------------
+```
 
 Project Structure
 src/

@@ -19,7 +19,7 @@ interface LeafletMap {
 }
 
 interface LeafletLayer {
-  addTo(map: LeafletMap): LeafletLayer;
+  addTo(map: LeafletMap): this;
 }
 
 interface LeafletMarker extends LeafletLayer {

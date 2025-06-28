@@ -62,6 +62,10 @@ const config: Config = {
   /** Recognise TypeScript & JSX extensions automatically */
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
 
+  collectCoverage: true,
+  coverageDirectory: "<rootDir>/coverage",
+  coverageReporters: ["text", "lcov"],
+
   /**
    * Most packages invoke Jest with
    *   jest --config ../../jest.config.ts

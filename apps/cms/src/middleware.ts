@@ -1,8 +1,8 @@
 // apps/cms/src/middleware.ts
+import { canRead } from "@auth";
 import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import type { Role } from "./auth/roles";
 
 /**
  * Matches CMS write routes and captures the shop slug.
@@ -14,15 +14,6 @@ import type { Role } from "./auth/roles";
  */
 const ADMIN_PATH_REGEX =
   /^\/(?:cms|shop)\/([^/]+)\/(?:products\/[^/]+\/edit|settings|media(?:\/|$))/;
-
-/** Allowed CMS paths per role */
-const ROLE_PATHS: Record<Role, RegExp[]> = {
-  admin: [/^\/cms(?:\/|$)/],
-  ShopAdmin: [/^\/cms(?:\/|$)/],
-  CatalogManager: [/^\/cms\/[^/]+\/products/, /^\/cms\/[^/]+\/media/],
-  ThemeEditor: [/^\/cms\/[^/]+\/settings/, /^\/cms\/[^/]+\/media/],
-  viewer: [/^\/cms(?:\/|$)/],
-};
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
@@ -60,25 +51,19 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  /* Enforce role-based access for CMS routes */
-  if (pathname.startsWith("/cms")) {
-    const allowed = ROLE_PATHS[role as Role] ?? [];
-    const isAllowed = allowed.some((re) => re.test(pathname));
-    console.log("[middleware] CMS access", { role, pathname, isAllowed });
+  /* Enforce read access for CMS routes */
+  if (pathname.startsWith("/cms") && !canRead(role)) {
+    const matchShop = /\/cms\/([^/]+)/.exec(pathname);
+    const url = new URL("/403", req.url);
+    if (matchShop) url.searchParams.set("shop", matchShop[1]);
+    console.log("[middleware] forbidden", url.toString());
 
-    if (!isAllowed) {
-      const matchShop = /\/cms\/([^/]+)/.exec(pathname);
-      const url = new URL("/403", req.url);
-      if (matchShop) url.searchParams.set("shop", matchShop[1]);
-      console.log("[middleware] forbidden", url.toString());
-
-      return NextResponse.rewrite(url, { status: 403 });
-    }
+    return NextResponse.rewrite(url, { status: 403 });
   }
 
   /* Block viewers from write routes */
   const match = ADMIN_PATH_REGEX.exec(pathname);
-  if (role === "viewer" && match) {
+  if (!canWrite(role) && match) {
     const url = new URL("/403", req.url);
     url.searchParams.set("shop", match[1]);
     console.log("[middleware] viewer blocked", url.toString());

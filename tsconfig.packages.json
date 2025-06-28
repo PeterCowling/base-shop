@@ -9,6 +9,7 @@
     { "path": "packages/config" },
     { "path": "packages/svelte-tool" },
     { "path": "packages/ui" },
+    { "path": "packages/auth" },
     { "path": "src" }
   ]
 }

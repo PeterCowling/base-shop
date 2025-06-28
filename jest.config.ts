@@ -37,6 +37,7 @@ const config: Config = {
     "^@apps/(.*)$": "<rootDir>/apps/$1/src",
     "^@cms/(.*)$": "<rootDir>/apps/cms/src/$1",
     "^@lib/(.*)$": "<rootDir>/packages/lib/$1",
+    "^@auth/(.*)$": "<rootDir>/packages/auth/src/$1",
     "^@/lib/(.*)$": "<rootDir>/packages/platform-core/$1",
     "^@/contexts/(.*)$": "<rootDir>/packages/platform-core/contexts/$1",
     "^@ui/(.*)$": "<rootDir>/packages/ui/$1",

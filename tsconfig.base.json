@@ -46,6 +46,9 @@
 
       "@svelte-tool/*": ["packages/svelte-tool/*"],
 
+      "@auth": ["packages/auth/src/index.ts"],
+      "@auth/*": ["packages/auth/src/*"],
+
       "@types": ["src/types"],
       "@types/*": ["src/types/*"],
       "@types/shared": ["packages/types/src/index.ts"],

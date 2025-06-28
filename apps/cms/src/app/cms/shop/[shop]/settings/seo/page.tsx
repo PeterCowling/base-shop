@@ -1,7 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/seo/page.tsx
 
 import { getSettings } from "@cms/actions/shops";
-import type { Locale } from "@types";
 import dynamic from "next/dynamic";
 
 const SeoEditor = dynamic(() => import("./SeoEditor"));
@@ -20,7 +19,7 @@ export default async function SeoSettingsPage({
 }) {
   const { shop } = await params;
   const settings = await getSettings(shop);
-  const languages = settings.languages as Locale[];
+  const languages = settings.languages;
   const seo = settings.seo ?? {};
 
   return (

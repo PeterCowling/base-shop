@@ -15,7 +15,7 @@ interface SeoRecord {
 
 interface Props {
   shop: string;
-  languages: Locale[];
+  languages: readonly Locale[];
   initialSeo: Record<string, Partial<SeoRecord>>;
   baseLocale?: Locale;
 }

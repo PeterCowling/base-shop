@@ -27,7 +27,7 @@ interface BaseProps {
     errors?: Record<string, string[]>;
   }>;
   /** Locales enabled for the current shop */
-  locales: Locale[];
+  locales: readonly Locale[];
 }
 
 const label: Record<Locale, string> = {

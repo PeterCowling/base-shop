@@ -9,7 +9,7 @@ import ProductEditorForm from "@ui/components/cms/ProductEditorForm";
 interface Props {
   shop: string;
   initialProduct: ProductPublication;
-  languages: Locale[];
+  languages: readonly Locale[];
 }
 
 export default function ProductEditor({

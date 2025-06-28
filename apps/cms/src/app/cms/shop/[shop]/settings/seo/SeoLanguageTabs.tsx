@@ -5,7 +5,7 @@ import { cn } from "@ui/utils/cn";
 
 interface Props {
   /** Enabled locales */
-  languages: Locale[];
+  languages: readonly Locale[];
   /** Current selected locale */
   value: Locale;
   /** Callback when a locale is selected */

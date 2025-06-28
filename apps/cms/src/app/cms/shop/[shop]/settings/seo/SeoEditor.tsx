@@ -6,7 +6,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 interface Props {
   shop: string;
-  languages: Locale[];
+  languages: readonly Locale[];
   initialSeo: Record<
     string,
     { title: string; description?: string; image?: string }

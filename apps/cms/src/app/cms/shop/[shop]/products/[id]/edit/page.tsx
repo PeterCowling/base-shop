@@ -34,7 +34,7 @@ export default async function ProductEditPage({
       <ProductEditor
         shop={shop}
         initialProduct={product}
-        languages={settings.languages}
+        languages={[...settings.languages]}
       />
     </>
   );

@@ -10,7 +10,7 @@ import {
 } from "../ui/select";
 
 export interface DeliverySchedulerProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   /** Callback fired whenever the user changes any field */
   onChange?: (info: {
     mode: "delivery" | "pickup";

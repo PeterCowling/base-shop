@@ -1,5 +1,6 @@
 // scripts/create-shop.ts
 import { LOCALES } from "@types/shared";
+import { randomBytes } from "crypto";
 import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { ulid } from "ulid";
@@ -122,12 +123,17 @@ writeFileSync(cssPath, css);
  * Seed .env and data folder                                  *
  * ────────────────────────────────────────────────────────── */
 
+function genSecret(bytes = 16): string {
+  return randomBytes(bytes).toString("hex");
+}
+
 let envContent = "# Provider credentials\n";
 const envVars = [...options.payment, ...options.shipping];
 if (envVars.length === 0) envVars.push("stripe");
-for (const p of envVars) envContent += `${p.toUpperCase()}_KEY=\n`;
-envContent += "NEXTAUTH_SECRET=\n";
-// writeFileSync(join(newApp, ".env"), envContent); // uncomment if desired
+for (const p of envVars)
+  envContent += `${p.toUpperCase()}_KEY=${genSecret()}\n`;
+envContent += `NEXTAUTH_SECRET=${genSecret()}\n`;
+writeFileSync(join(newApp, ".env"), envContent);
 
 const newData = join("data", "shops", shopId);
 if (existsSync(newData)) {
@@ -152,6 +158,8 @@ writeFileSync(
       type: options.type,
       paymentProviders: options.payment,
       shippingProviders: options.shipping,
+      priceOverrides: {},
+      localeOverrides: {},
     },
     null,
     2

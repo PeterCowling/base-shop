@@ -51,6 +51,8 @@ export async function updateShop(
     catalogFilters: data.catalogFilters,
     themeTokens: data.themeTokens,
     filterMappings: data.filterMappings,
+    priceOverrides: data.priceOverrides,
+    localeOverrides: data.localeOverrides,
   };
 
   const saved = await updateShopInRepo(shop, patch);

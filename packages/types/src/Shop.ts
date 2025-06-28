@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { localeSchema } from "./Product";
 
 export const shopSeoFieldsSchema = z.object({
   canonicalBase: z.string().optional(),
@@ -18,6 +19,10 @@ export const shopSchema = z.object({
   themeTokens: z.record(z.string()),
   /** Mapping of logical filter keys to catalog attributes */
   filterMappings: z.record(z.string()),
+  /** Optional price overrides per locale (minor units) */
+  priceOverrides: z.record(localeSchema, z.number()).default({}),
+  /** Optional redirect overrides for locale detection */
+  localeOverrides: z.record(z.string(), localeSchema).default({}),
 });
 
 export type Shop = z.infer<typeof shopSchema>;

@@ -102,6 +102,8 @@ export async function readShop(shop: string): Promise<Shop> {
     themeId: "base",
     themeTokens: {},
     filterMappings: {},
+    priceOverrides: {},
+    localeOverrides: {},
   };
 }
 

@@ -46,6 +46,24 @@ export default function ShopEditor({ shop, initial }: Props) {
     }
   };
 
+  const handlePriceOverrides = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    try {
+      const parsed = JSON.parse(e.target.value);
+      setInfo((prev) => ({ ...prev, priceOverrides: parsed }));
+    } catch {
+      // ignore invalid JSON
+    }
+  };
+
+  const handleLocaleOverrides = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    try {
+      const parsed = JSON.parse(e.target.value);
+      setInfo((prev) => ({ ...prev, localeOverrides: parsed }));
+    } catch {
+      // ignore invalid JSON
+    }
+  };
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSaving(true);
@@ -56,6 +74,8 @@ export default function ShopEditor({ shop, initial }: Props) {
     fd.append("catalogFilters", info.catalogFilters.join(","));
     fd.append("themeTokens", JSON.stringify(info.themeTokens));
     fd.append("filterMappings", JSON.stringify(info.filterMappings));
+    fd.append("priceOverrides", JSON.stringify(info.priceOverrides ?? {}));
+    fd.append("localeOverrides", JSON.stringify(info.localeOverrides ?? {}));
     const result = await updateShop(shop, fd);
     if (result.errors) {
       setErrors(result.errors);
@@ -122,6 +142,24 @@ export default function ShopEditor({ shop, initial }: Props) {
           name="filterMappings"
           defaultValue={JSON.stringify(info.filterMappings, null, 2)}
           onChange={handleMappings}
+          rows={4}
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Price Overrides (JSON)</span>
+        <Textarea
+          name="priceOverrides"
+          defaultValue={JSON.stringify(info.priceOverrides ?? {}, null, 2)}
+          onChange={handlePriceOverrides}
+          rows={4}
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Locale Overrides (JSON)</span>
+        <Textarea
+          name="localeOverrides"
+          defaultValue={JSON.stringify(info.localeOverrides ?? {}, null, 2)}
+          onChange={handleLocaleOverrides}
           rows={4}
         />
       </label>

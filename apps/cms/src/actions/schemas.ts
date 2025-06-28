@@ -46,6 +46,8 @@ export const shopSchema = z.object({
     ),
   themeTokens: jsonRecord,
   filterMappings: jsonRecord,
+  priceOverrides: jsonRecord,
+  localeOverrides: jsonRecord,
 });
 
 export type ProductForm = z.infer<typeof productSchema>;

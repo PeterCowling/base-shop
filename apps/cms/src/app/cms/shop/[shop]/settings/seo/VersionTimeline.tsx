@@ -56,7 +56,8 @@ export default function VersionTimeline({
                     <span className="text-muted-foreground font-mono text-xs">
                       {new Date(entry.timestamp).toLocaleString()}
                     </span>
-                    <Button variant="outline" size="sm" disabled>
+                    <Button variant="outline" className="h-8 px-2" disabled>
+                      {" "}
                       Revert
                     </Button>
                   </div>

@@ -5,6 +5,10 @@ process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 
 import CheckoutForm from "../packages/ui/components/checkout/CheckoutForm";
 
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: jest.fn() }),
+}));
+
 jest.mock("@stripe/stripe-js", () => ({
   loadStripe: () => Promise.resolve({}),
 }));
@@ -24,7 +28,9 @@ jest.mock("@stripe/react-stripe-js", () => {
 test("renders Elements once client secret is fetched", async () => {
   server.use(
     rest.post("/api/checkout-session", (_req, res, ctx) => {
-      return res(ctx.json({ id: "cs_test_123" }));
+      return res(
+        ctx.json({ clientSecret: "cs_test_123", sessionId: "sess_123" })
+      );
     })
   );
 

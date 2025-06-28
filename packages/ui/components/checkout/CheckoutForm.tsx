@@ -56,14 +56,20 @@ export default function CheckoutForm({ locale }: Props) {
       options={{ clientSecret, locale: locale as StripeElementLocale }}
       key={clientSecret} // re-mount if locale changes
     >
-      <PaymentForm form={form} />
+      <PaymentForm form={form} locale={locale} />
     </Elements>
   );
 }
 
 /* ---------- inner form ---------- */
 
-function PaymentForm({ form }: { form: UseFormReturn<FormValues> }) {
+function PaymentForm({
+  form,
+  locale,
+}: {
+  form: UseFormReturn<FormValues>;
+  locale: "en" | "de" | "it";
+}) {
   const { register, handleSubmit } = form;
   const stripe = useStripe();
   const elements = useElements();
@@ -80,15 +86,17 @@ function PaymentForm({ form }: { form: UseFormReturn<FormValues> }) {
     const { error } = await stripe.confirmPayment({
       elements,
       redirect: "if_required",
-      confirmParams: { return_url: `${window.location.origin}/success` },
+      confirmParams: {
+        return_url: `${window.location.origin}/${locale}/success`,
+      },
     });
 
     if (error) {
       setError(error.message ?? "Payment failed");
       setProcessing(false);
-      router.push("/cancelled");
+      router.push(`/${locale}/cancelled`);
     } else {
-      router.push("/success");
+      router.push(`/${locale}/success`);
     }
   });
 

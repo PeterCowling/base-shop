@@ -229,9 +229,9 @@ importers:
 
   apps/cms:
     dependencies:
-      '@i18n':
+      '@acme/i18n':
         specifier: workspace:*
-        version: link:../../packages/i18n
+        version: link:../../packages/ui/dist/packages/i18n
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
@@ -242,9 +242,9 @@ importers:
 
   apps/shop-abc:
     dependencies:
-      '@i18n':
+      '@acme/i18n':
         specifier: workspace:*
-        version: link:../../packages/i18n
+        version: link:../../packages/ui/dist/packages/i18n
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
@@ -255,12 +255,18 @@ importers:
 
   apps/shop-bcd:
     dependencies:
-      '@i18n':
+      '@acme/i18n':
         specifier: workspace:*
-        version: link:../../packages/i18n
+        version: link:../../packages/ui/dist/packages/i18n
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+
+  packages/auth:
     devDependencies:
       next:
         specifier: ^15.3.4
@@ -354,6 +360,12 @@ importers:
       typescript:
         specifier: ^5.1.0
         version: 5.8.3
+
+  packages/ui/dist/packages/i18n:
+    devDependencies:
+      next:
+        specifier: ^15.3.4
+        version: 15.3.4(@babel/core@7.27.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
 packages:
 

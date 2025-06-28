@@ -1,0 +1,5 @@
+@config "../../../../tailwind.config.mjs";
+
+@import "@themes/base/tokens.css";
+
+@import "tailwindcss";

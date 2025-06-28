@@ -11,20 +11,29 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
+import { useForm, UseFormReturn } from "react-hook-form";
 
 const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 type Props = { locale: "en" | "de" | "it" }; // narrow to our three
 
+type FormValues = { returnDate: string };
+
 export default function CheckoutForm({ locale }: Props) {
   const [clientSecret, setClientSecret] = useState<string>();
-  const [returnDate, setReturnDate] = useState(() => {
+
+  const defaultDate = (() => {
     const d = new Date();
     d.setDate(d.getDate() + 7);
     return d.toISOString().slice(0, 10);
-  });
+  })();
 
-  /* --- create session on mount --- */
+  const form = useForm<FormValues>({
+    defaultValues: { returnDate: defaultDate },
+  });
+  const returnDate = form.watch("returnDate");
+
+  /* --- create session on mount or when returnDate changes --- */
   useEffect(() => {
     (async () => {
       const res = await fetch("/api/checkout-session", {
@@ -46,20 +55,15 @@ export default function CheckoutForm({ locale }: Props) {
       options={{ clientSecret, locale: locale as StripeElementLocale }}
       key={clientSecret} // re-mount if locale changes
     >
-      <PaymentForm returnDate={returnDate} setReturnDate={setReturnDate} />
+      <PaymentForm form={form} />
     </Elements>
   );
 }
 
 /* ---------- inner form ---------- */
 
-function PaymentForm({
-  returnDate,
-  setReturnDate,
-}: {
-  returnDate: string;
-  setReturnDate: (v: string) => void;
-}) {
+function PaymentForm({ form }: { form: UseFormReturn<FormValues> }) {
+  const { register, handleSubmit } = form;
   const stripe = useStripe();
   const elements = useElements();
   const t = useTranslations();
@@ -67,8 +71,7 @@ function PaymentForm({
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string>();
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const onSubmit = handleSubmit(async () => {
     if (!stripe || !elements) return;
     setProcessing(true);
 
@@ -81,16 +84,15 @@ function PaymentForm({
       setError(error.message ?? "Payment failed");
       setProcessing(false);
     }
-  }
+  });
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={onSubmit} className="space-y-6">
       <label className="block text-sm">
         {t("checkout.return")}
         <input
           type="date"
-          value={returnDate}
-          onChange={(e) => setReturnDate(e.target.value)}
+          {...register("returnDate")}
           className="block w-full border px-2 py-1"
         />
       </label>

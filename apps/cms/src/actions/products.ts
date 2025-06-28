@@ -30,7 +30,7 @@ async function ensureAuthorized(): Promise<void> {
   }
 }
 
-async function getLocales(shop: string): Promise<Locale[]> {
+async function getLocales(shop: string): Promise<readonly Locale[]> {
   const settings = await readSettings(shop);
   return settings.languages;
 }

@@ -12,7 +12,7 @@ export interface MediaItem {
 }
 
 export interface MediaSelectorProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
   items: MediaItem[];
   active: number;
   onChange?: (idx: number) => void;

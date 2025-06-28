@@ -29,3 +29,4 @@ export default async function SeoSettingsPage({
       <SeoEditor shop={shop} languages={languages} initialSeo={seo} />
     </div>
   );
+}

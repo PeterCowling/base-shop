@@ -1,5 +1,5 @@
 {
-  "name": "@platform-core",
+  "name": "@acme/platform-core",
   "version": "0.0.0",
   "private": true,
   "type": "module",

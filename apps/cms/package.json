@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@themes/base": "workspace:*",
-    "@i18n": "workspace:*"
+    "@acme/i18n": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.4"

@@ -1,5 +1,5 @@
 {
-  "name": "@platform-machine",
+  "name": "@acme/platform-machine",
   "private": true,
   "type": "module",
   "version": "0.0.0",

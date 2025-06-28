@@ -5,8 +5,13 @@ import { Textarea as BaseTextarea } from "../ui/textarea";
 export type TextareaProps = BaseTextareaProps;
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, ...props }, ref) => (
-    <BaseTextarea ref={ref} className={className} {...props} />
+  ({ className, wrapperClassName, ...props }, ref) => (
+    <BaseTextarea
+      ref={ref}
+      className={className}
+      wrapperClassName={wrapperClassName}
+      {...props}
+    />
   )
 );
 Textarea.displayName = "Textarea";

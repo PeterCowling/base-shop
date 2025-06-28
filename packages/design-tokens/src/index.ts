@@ -28,6 +28,11 @@ const preset: Config = {
         md: "var(--radius-md)",
         lg: "var(--radius-lg)",
       },
+      boxShadow: {
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+      },
     },
   },
 };

@@ -2,7 +2,9 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "../dist-scripts",
-    "composite": true
+    "composite": true,
+    "rootDir": "./",
+    "rootDirs": ["./", "../packages/types/src"]
   },
   "include": ["*.ts"]
 }

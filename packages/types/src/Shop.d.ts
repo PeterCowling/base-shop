@@ -1,4 +1,12 @@
 import { z } from "zod";
+export declare const shopSeoFieldsSchema: z.ZodObject<{
+    canonicalBase: z.ZodString;
+}, "strip", z.ZodTypeAny, {
+    canonicalBase?: string;
+}, {
+    canonicalBase?: string;
+}>;
+export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;
 export declare const shopSchema: z.ZodObject<{
     id: z.ZodString;
     name: z.ZodString;
@@ -24,4 +32,3 @@ export declare const shopSchema: z.ZodObject<{
     filterMappings?: Record<string, string>;
 }>;
 export type Shop = z.infer<typeof shopSchema>;
-//# sourceMappingURL=Shop.d.ts.map

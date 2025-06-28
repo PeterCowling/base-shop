@@ -3,4 +3,3 @@ export interface MediaItem {
     title?: string;
     altText?: string;
 }
-//# sourceMappingURL=MediaItem.d.ts.map

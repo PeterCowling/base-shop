@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { type Locale } from "./constants";
+export type { Locale } from "./constants";
 export declare const localeSchema: z.ZodEnum<["en", "de", "it"]>;
 /** Runtime validator + compile-time source of truth */
 export declare const skuSchema: z.ZodObject<{
@@ -64,4 +65,3 @@ export interface ProductPublication extends ProductCore {
     status: PublicationStatus;
     row_version: number;
 }
-//# sourceMappingURL=Product.d.ts.map

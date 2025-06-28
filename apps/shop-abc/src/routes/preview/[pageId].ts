@@ -1,8 +1,8 @@
 // apps/shop-abc/src/routes/preview/[pageId].ts
 
+import type { EventContext } from "@cloudflare/workers-types";
 import { getPages } from "@platform-core/repositories/pages";
 import { createHmac, timingSafeEqual } from "node:crypto";
-import type { PagesFunction } from "@cloudflare/workers-types";
 
 const secret = process.env.PREVIEW_TOKEN_SECRET;
 
@@ -16,7 +16,10 @@ function verify(id: string, token: string | null): boolean {
   }
 }
 
-export const onRequest: PagesFunction = async ({ params, request }) => {
+export const onRequest = async ({
+  params,
+  request,
+}: EventContext<unknown, any, Record<string, unknown>>) => {
   const pageId = String(params.pageId);
   const token = new URL(request.url).searchParams.get("token");
   if (!verify(pageId, token)) {
@@ -27,3 +30,4 @@ export const onRequest: PagesFunction = async ({ params, request }) => {
   const page = pages.find((p) => p.id === pageId);
   if (!page) return new Response("Not Found", { status: 404 });
   return Response.json(page);
+};

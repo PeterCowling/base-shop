@@ -28,4 +28,3 @@ export declare const rentalOrderSchema: z.ZodObject<{
     refundedAt?: string;
 }>;
 export type RentalOrder = z.infer<typeof rentalOrderSchema>;
-//# sourceMappingURL=RentalOrder.d.ts.map

@@ -1,6 +1,6 @@
 // apps/shop-bcd/src/routes/preview/[pageId].t
 
-import type { PagesFunction } from "@cloudflare/workers-types";
+import type { EventContext } from "@cloudflare/workers-types";
 import { getPages } from "@platform-core/repositories/pages";
 import { createHmac, timingSafeEqual } from "node:crypto";
 
@@ -16,7 +16,10 @@ function verify(id: string, token: string | null): boolean {
   }
 }
 
-export const onRequest: PagesFunction = async ({ params, request }) => {
+export const onRequest = async ({
+  params,
+  request,
+}: EventContext<unknown, any, Record<string, unknown>>) => {
   const pageId = String(params.pageId);
   const token = new URL(request.url).searchParams.get("token");
   if (!verify(pageId, token)) {

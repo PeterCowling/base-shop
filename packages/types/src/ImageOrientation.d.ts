@@ -4,4 +4,3 @@ import { z } from "zod";
  */
 export declare const imageOrientationSchema: z.ZodEnum<["portrait", "landscape"]>;
 export type ImageOrientation = z.infer<typeof imageOrientationSchema>;
-//# sourceMappingURL=ImageOrientation.d.ts.map

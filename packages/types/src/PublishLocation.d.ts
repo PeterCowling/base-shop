@@ -27,4 +27,3 @@ export declare const publishLocationSchema: z.ZodObject<{
     requiredOrientation?: "portrait" | "landscape";
 }>;
 export type PublishLocation = z.infer<typeof publishLocationSchema>;
-//# sourceMappingURL=PublishLocation.d.ts.map

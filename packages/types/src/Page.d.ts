@@ -1,36 +1,32 @@
 export type PageStatus = "draft" | "published";
 export interface SeoMeta {
-  title: string;
-  description?: string;
+    title: string;
+    description?: string;
 }
 export interface PageComponentBase {
-  id: string;
-  type: string;
+    id: string;
+    type: string;
 }
 export interface HeroBannerComponent extends PageComponentBase {
-  type: "HeroBanner";
+    type: "HeroBanner";
 }
 export interface ValuePropsComponent extends PageComponentBase {
-  type: "ValueProps";
+    type: "ValueProps";
 }
 export interface ReviewsCarouselComponent extends PageComponentBase {
-  type: "ReviewsCarousel";
+    type: "ReviewsCarousel";
 }
 export interface ProductGridComponent extends PageComponentBase {
-  type: "ProductGrid";
+    type: "ProductGrid";
 }
-export type PageComponent =
-  | HeroBannerComponent
-  | ValuePropsComponent
-  | ReviewsCarouselComponent
-  | ProductGridComponent;
+export type PageComponent = HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent;
 export interface Page {
-  id: string;
-  slug: string;
-  status: PageStatus;
-  components: PageComponent[];
-  seo: SeoMeta;
-  createdAt: string;
-  updatedAt: string;
-  createdBy: string;
+    id: string;
+    slug: string;
+    status: PageStatus;
+    components: PageComponent[];
+    seo: SeoMeta;
+    createdAt: string;
+    updatedAt: string;
+    createdBy: string;
 }

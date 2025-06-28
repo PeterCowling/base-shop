@@ -18,6 +18,7 @@ __exportStar(require("./Cart"), exports);
 __exportStar(require("./constants"), exports);
 __exportStar(require("./ImageOrientation"), exports);
 __exportStar(require("./MediaItem"), exports);
+__exportStar(require("./Page"), exports);
 __exportStar(require("./Product"), exports);
 __exportStar(require("./PublishLocation"), exports);
 __exportStar(require("./RentalOrder"), exports);

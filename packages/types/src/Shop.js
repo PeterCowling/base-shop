@@ -1,7 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.shopSchema = void 0;
+exports.shopSchema = exports.shopSeoFieldsSchema = void 0;
 var zod_1 = require("zod");
+exports.shopSeoFieldsSchema = zod_1.z.object({
+    canonicalBase: zod_1.z.string(),
+});
 exports.shopSchema = zod_1.z.object({
     id: zod_1.z.string(),
     name: zod_1.z.string(),

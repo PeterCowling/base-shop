@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
@@ -31,7 +33,13 @@ export function MarketingEmailTemplate({
     >
       {logoSrc && (
         <div className="bg-muted p-6 text-center">
-          <img src={logoSrc} alt="logo" className="mx-auto h-10" />
+          <Image
+            src={logoSrc}
+            alt="logo"
+            width={40}
+            height={40}
+            className="mx-auto h-10 w-auto"
+          />
         </div>
       )}
       <div className="space-y-4 p-6">

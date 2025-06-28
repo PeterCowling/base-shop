@@ -1,4 +1,6 @@
+import Image from "next/image";
 import * as React from "react";
+
 import { cn } from "../../utils/cn";
 
 export type MediaType = "image" | "video" | "360" | "model";
@@ -38,10 +40,11 @@ export function MediaSelector({
           )}
         >
           {item.type === "image" || item.type === "360" ? (
-            <img
+            <Image
               src={item.thumbnail || item.src}
               alt="thumbnail"
-              className="h-full w-full object-cover"
+              fill
+              className="object-cover"
             />
           ) : item.type === "video" ? (
             <span className="flex h-full w-full items-center justify-center text-xs">

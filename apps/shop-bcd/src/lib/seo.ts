@@ -19,16 +19,24 @@ export async function getSeo(
   const shopSeo: Record<string, Partial<NextSeoProps>> = (settings as any)
     .seo ?? {};
   const base = shopSeo[locale] ?? {};
+  const canonicalBase = (base as any).canonicalBase ?? "";
 
   return {
     title: pageSeo.title ?? base.title ?? fallback.title,
     description:
       pageSeo.description ?? base.description ?? fallback.description,
-    canonical: pageSeo.canonical ?? base.canonical ?? fallback.canonical,
+    canonical:
+      pageSeo.canonical ??
+      base.canonical ??
+      (canonicalBase ? `${canonicalBase}/${locale}` : fallback.canonical),
     openGraph: {
       ...(fallback.openGraph ?? {}),
       ...(base.openGraph ?? {}),
       ...(pageSeo.openGraph ?? {}),
+      url:
+        pageSeo.openGraph?.url ??
+        base.openGraph?.url ??
+        (canonicalBase ? `${canonicalBase}/${locale}` : undefined),
     },
     twitter: {
       ...(fallback.twitter ?? {}),

@@ -60,7 +60,12 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
   } catch {
     // ignore
   }
-  return { languages: DEFAULT_LANGUAGES };
+  return {
+    languages: DEFAULT_LANGUAGES,
+    seo: {},
+    updatedAt: "",
+    updatedBy: "",
+  };
 }
 
 export async function saveShopSettings(

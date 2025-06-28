@@ -4,7 +4,9 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import TranslationsProvider from "@i18n/Translations";
 import { Locale, resolveLocale } from "@i18n/locales";
+import { DefaultSeo } from "next-seo";
 import type { ReactNode } from "react";
+import { getSeo } from "../../lib/seo";
 import "../globals.css";
 
 export default async function LocaleLayout({
@@ -27,9 +29,11 @@ export default async function LocaleLayout({
       `@i18n/${lang}.json`
     )
   ).default;
+  const seo = await getSeo(lang);
 
   return (
     <TranslationsProvider messages={messages}>
+      <DefaultSeo {...seo} />
       <Header lang={lang} />
       <main className="min-h-[calc(100vh-8rem)]">{children}</main>
       <Footer />

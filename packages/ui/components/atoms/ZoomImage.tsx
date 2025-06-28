@@ -7,7 +7,7 @@ export interface ZoomImageProps extends ImageProps {
 }
 
 export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
-  ({ zoomScale = 1.25, className, ...props }, ref) => {
+  ({ zoomScale = 1.25, ...props }, ref) => {
     const [zoom, setZoom] = React.useState(false);
     return (
       <figure
@@ -15,7 +15,6 @@ export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
         onClick={() => setZoom(!zoom)}
         className={cn(
           "relative w-full cursor-zoom-in overflow-hidden",
-          className,
           zoom && "cursor-zoom-out"
         )}
       >

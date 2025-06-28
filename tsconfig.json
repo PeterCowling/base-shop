@@ -6,6 +6,7 @@
     { "path": "./tsconfig.packages.json" },
     { "path": "./apps/cms" },
     { "path": "./apps/shop-abc" },
-    { "path": "./apps/shop-bcd" }
+    { "path": "./apps/shop-bcd" },
+    { "path": "./scripts" }
   ]
 }

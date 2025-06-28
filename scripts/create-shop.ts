@@ -1,9 +1,10 @@
 // scripts/create-shop.ts
-import { LOCALES } from "@types/shared";
+// Import directly to avoid relying on tsconfig path aliases when using ts-node.
 import { randomBytes } from "crypto";
 import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { ulid } from "ulid";
+import { LOCALES } from "../packages/types/src/constants";
 
 /* ────────────────────────────────────────────────────────── *
  * Command-line parsing                                       *
@@ -127,11 +128,20 @@ function genSecret(bytes = 16): string {
   return randomBytes(bytes).toString("hex");
 }
 
-let envContent = "# Provider credentials\n";
+let envContent = `NEXT_PUBLIC_SHOP_ID=${shopId}\n`;
+envContent += `PREVIEW_TOKEN_SECRET=${genSecret()}\n`;
 const envVars = [...options.payment, ...options.shipping];
+
 if (envVars.length === 0) envVars.push("stripe");
-for (const p of envVars)
-  envContent += `${p.toUpperCase()}_KEY=${genSecret()}\n`;
+for (const p of envVars) {
+  if (p === "stripe") {
+    envContent += `STRIPE_SECRET_KEY=${genSecret()}\n`;
+    envContent += `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${genSecret()}\n`;
+  } else {
+    envContent += `${p.toUpperCase()}_KEY=${genSecret()}\n`;
+  }
+}
+
 envContent += `NEXTAUTH_SECRET=${genSecret()}\n`;
 writeFileSync(join(newApp, ".env"), envContent);
 

@@ -16,6 +16,8 @@ export const PRODUCTS: readonly SKU[] = [
     title: "Eco Runner — Green",
     price: 119,
     deposit: 50,
+    forSale: true,
+    forRental: false,
     image: "/shop/green.jpg",
     sizes: ["36", "37", "38", "39", "40", "41", "42", "43"],
     description:
@@ -27,6 +29,8 @@ export const PRODUCTS: readonly SKU[] = [
     title: "Eco Runner — Sand",
     price: 119,
     deposit: 50,
+    forSale: true,
+    forRental: false,
     image: "/shop/sand.jpg",
     sizes: ["36", "37", "38", "39", "40", "41", "42", "43", "44"],
     description:
@@ -38,6 +42,8 @@ export const PRODUCTS: readonly SKU[] = [
     title: "Eco Runner — Black",
     price: 119,
     deposit: 50,
+    forSale: true,
+    forRental: false,
     image: "/shop/black.jpg",
     sizes: ["38", "39", "40", "41", "42", "43", "44"],
     description:

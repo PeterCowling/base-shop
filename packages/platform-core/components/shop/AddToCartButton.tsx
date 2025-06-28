@@ -7,18 +7,24 @@ import { useState } from "react";
 
 type Props = {
   sku: SKU;
+  /** Optional selected size */
+  size?: string;
   /** Disable button until prerequisites are met (e.g. size chosen) */
   disabled?: boolean;
 };
 
-export default function AddToCartButton({ sku, disabled = false }: Props) {
+export default function AddToCartButton({
+  sku,
+  size,
+  disabled = false,
+}: Props) {
   const [, dispatch] = useCart();
   const [adding, setAdding] = useState(false);
 
   async function handleClick() {
     if (disabled) return;
     setAdding(true);
-    dispatch({ type: "add", sku });
+    dispatch({ type: "add", sku, size });
     /* fake latency for UX feedback */
     await new Promise((r) => setTimeout(r, 300));
     setAdding(false);

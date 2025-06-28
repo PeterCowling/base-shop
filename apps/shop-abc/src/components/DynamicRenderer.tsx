@@ -9,12 +9,10 @@ import { ProductGrid } from "@/components/shop/ProductGrid";
 import { PRODUCTS } from "@/lib/products";
 import type { PageComponent, SKU } from "@types";
 
-const registry: Record<PageComponent["type"], React.ComponentType<any>> = {
-  HeroBanner,
-  ValueProps,
-  ReviewsCarousel,
-  ProductGrid,
-};
+const registry: Record<
+  PageComponent["type"],
+  React.ComponentType<Record<string, unknown>>
+> = { HeroBanner, ValueProps, ReviewsCarousel, ProductGrid };
 
 export default function DynamicRenderer({
   components,

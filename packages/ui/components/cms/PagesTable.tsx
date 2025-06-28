@@ -5,11 +5,10 @@ import type { Page } from "@types";
 import DataTable from "./DataTable";
 
 interface Props {
-  shop: string;
   pages: Page[];
 }
 
-export default function PagesTable({ shop, pages }: Props) {
+export default function PagesTable({ pages }: Props) {
   const columns = [
     {
       header: "Slug",

@@ -1,8 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
-export interface VideoPlayerProps
-  extends React.VideoHTMLAttributes<HTMLVideoElement> {}
+export type VideoPlayerProps = React.VideoHTMLAttributes<HTMLVideoElement>;
 
 export const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
   ({ className, ...props }, ref) => (

@@ -64,7 +64,9 @@ export async function createPage(
   const session = await ensureAuthorized();
 
   const parsed = createSchema.safeParse(
-    Object.fromEntries(formData as Iterable<[string, FormDataEntryValue]>)
+    Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>
+    )
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
@@ -99,7 +101,9 @@ export async function updatePage(
   await ensureAuthorized();
 
   const parsed = updateSchema.safeParse(
-    Object.fromEntries(formData as Iterable<[string, FormDataEntryValue]>)
+    Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>
+    )
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };

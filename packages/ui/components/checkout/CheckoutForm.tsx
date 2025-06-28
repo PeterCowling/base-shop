@@ -10,6 +10,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementLocale } from "@stripe/stripe-js";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 
@@ -41,8 +42,8 @@ export default function CheckoutForm({ locale }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ returnDate }),
       });
-      const { id } = (await res.json()) as { id: string };
-      setClientSecret(id);
+      const { clientSecret } = (await res.json()) as { clientSecret: string };
+      setClientSecret(clientSecret);
     })();
   }, [returnDate]);
 
@@ -67,6 +68,7 @@ function PaymentForm({ form }: { form: UseFormReturn<FormValues> }) {
   const stripe = useStripe();
   const elements = useElements();
   const t = useTranslations();
+  const router = useRouter();
 
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string>();
@@ -78,11 +80,15 @@ function PaymentForm({ form }: { form: UseFormReturn<FormValues> }) {
     const { error } = await stripe.confirmPayment({
       elements,
       redirect: "if_required",
+      confirmParams: { return_url: `${window.location.origin}/success` },
     });
 
     if (error) {
       setError(error.message ?? "Payment failed");
       setProcessing(false);
+      router.push("/cancelled");
+    } else {
+      router.push("/success");
     }
   });
 

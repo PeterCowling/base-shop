@@ -1,6 +1,11 @@
 import type { Locale } from "@i18n/locales";
 import { getShopSettings } from "@platform-core/repositories/shops";
+import type { ShopSettings } from "@types/shared";
 import type { NextSeoProps } from "next-seo";
+
+interface ExtendedSeoProps extends Partial<NextSeoProps> {
+  canonicalBase?: string;
+}
 
 const fallback: NextSeoProps = {
   title: "",
@@ -15,11 +20,10 @@ export async function getSeo(
   pageSeo: Partial<NextSeoProps> = {}
 ): Promise<NextSeoProps> {
   const shop = process.env.NEXT_PUBLIC_SHOP_ID || "default";
-  const settings = await getShopSettings(shop);
-  const shopSeo: Record<string, Partial<NextSeoProps>> = (settings as any)
-    .seo ?? {};
-  const base = shopSeo[locale] ?? {};
-  const canonicalBase = (base as any).canonicalBase ?? "";
+  const settings: ShopSettings = await getShopSettings(shop);
+  const shopSeo = (settings.seo ?? {}) as Record<string, ExtendedSeoProps>;
+  const base: ExtendedSeoProps = shopSeo[locale] ?? {};
+  const canonicalBase = base.canonicalBase ?? "";
 
   return {
     title: pageSeo.title ?? base.title ?? fallback.title,

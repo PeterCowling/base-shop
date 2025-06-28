@@ -17,8 +17,7 @@ interface ChatMessage {
   text: string;
 }
 
-export interface LiveChatWidgetProps
-  extends React.HTMLAttributes<HTMLButtonElement> {}
+export type LiveChatWidgetProps = React.HTMLAttributes<HTMLButtonElement>;
 
 /**
  * Simple live chat widget with a toggle button and minimal conversation UI.

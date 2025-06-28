@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
-export interface SideNavProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type SideNavProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
   ({ className, ...props }, ref) => (

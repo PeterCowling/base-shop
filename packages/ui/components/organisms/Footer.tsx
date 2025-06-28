@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
-export interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type FooterProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
   ({ className, ...props }, ref) => (

@@ -18,7 +18,7 @@ import {
 /* ---------- types ---------- */
 
 type Action =
-  | { type: "add"; sku: SKU }
+  | { type: "add"; sku: SKU; size?: string }
   | { type: "remove"; id: SKU["id"] }
   | { type: "setQty"; id: SKU["id"]; qty: number };
 
@@ -30,7 +30,11 @@ function reducer(state: CartState, action: Action): CartState {
       const line = state[action.sku.id];
       return {
         ...state,
-        [action.sku.id]: { sku: action.sku, qty: (line?.qty ?? 0) + 1 },
+        [action.sku.id]: {
+          sku: action.sku,
+          qty: (line?.qty ?? 0) + 1,
+          size: action.size ?? line?.size,
+        },
       };
     }
 

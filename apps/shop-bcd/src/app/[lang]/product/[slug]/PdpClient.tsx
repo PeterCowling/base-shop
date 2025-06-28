@@ -26,7 +26,11 @@ export default function PdpClient({ product }: { product: SKU }) {
         <div className="text-2xl font-semibold">€{product.price}</div>
 
         {/* size could be added to cart line later */}
-        <AddToCartButton sku={product} disabled={!size} />
+        <AddToCartButton
+          sku={product}
+          size={size ?? undefined}
+          disabled={!size}
+        />
       </section>
     </div>
   );

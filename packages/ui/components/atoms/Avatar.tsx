@@ -1,12 +1,16 @@
+import Image, { type ImageProps } from "next/image";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
-export interface AvatarProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+export interface AvatarProps extends ImageProps {
   fallback?: React.ReactNode;
 }
 
 export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
-  ({ className, src, alt, fallback, ...props }, ref) => {
+  (
+    { className, src, alt, fallback, width = 32, height = 32, ...props },
+    ref
+  ) => {
     if (!src) {
       return (
         <div
@@ -21,10 +25,12 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
       );
     }
     return (
-      <img
+      <Image
         ref={ref}
         src={src}
-        alt={alt}
+        alt={alt ?? ""}
+        width={width}
+        height={height}
         className={cn("h-8 w-8 rounded-full object-cover", className)}
         {...props}
       />

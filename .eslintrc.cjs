@@ -18,5 +18,13 @@ module.exports = {
         "@typescript-eslint/no-explicit-any": "error",
       },
     },
+    {
+      files: ["**/*.js"],
+      rules: {
+        // Don't apply TypeScript-specific lint rules to plain JavaScript files
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-var-requires": "off",
+      },
+    },
   ],
 };

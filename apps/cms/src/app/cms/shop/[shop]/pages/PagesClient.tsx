@@ -36,5 +36,5 @@ function Inner({ shop, initial }: { shop: string; initial: Page[] }) {
     initialData: initial,
   });
 
-  return <PagesTable shop={shop} pages={data} />;
+  return <PagesTable pages={data} />;
 }

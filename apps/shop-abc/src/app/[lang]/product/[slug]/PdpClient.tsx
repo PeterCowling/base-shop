@@ -17,16 +17,17 @@ export default function PdpClient({ product }: { product: SKU }) {
       <section className="flex flex-col gap-6">
         <h1 className="text-3xl font-bold">{product.title}</h1>
         <p className="text-gray-700">{product.description}</p>
-
         <div>
           <div className="mb-2 font-medium">Select size:</div>
           <SizeSelector sizes={product.sizes} onSelect={setSize} />
         </div>
-
         <div className="text-2xl font-semibold">€{product.price}</div>
-
         {/* size could be added to cart line later */}
-        <AddToCartButton sku={product} disabled={!size} />
+        <AddToCartButton
+          sku={product}
+          size={size ?? undefined}
+          disabled={!size}
+        />{" "}
       </section>
     </div>
   );

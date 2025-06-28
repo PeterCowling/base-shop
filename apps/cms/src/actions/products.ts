@@ -95,7 +95,9 @@ export async function updateProduct(
   await ensureAuthorized();
 
   const parsed = productSchema.safeParse(
-    Object.fromEntries(formData as Iterable<[string, FormDataEntryValue]>)
+    Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>
+    )
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };

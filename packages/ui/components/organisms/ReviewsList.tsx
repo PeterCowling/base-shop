@@ -50,11 +50,19 @@ export function ReviewsList({
   const search = onQueryChange ? query : localQuery;
 
   const handleRatingChange = (v: number) => {
-    onMinRatingChange ? onMinRatingChange(v) : setLocalRating(v);
+    if (onMinRatingChange) {
+      onMinRatingChange(v);
+    } else {
+      setLocalRating(v);
+    }
   };
 
   const handleQueryChange = (v: string) => {
-    onQueryChange ? onQueryChange(v) : setLocalQuery(v);
+    if (onQueryChange) {
+      onQueryChange(v);
+    } else {
+      setLocalQuery(v);
+    }
   };
 
   const normalized = search.trim().toLowerCase();

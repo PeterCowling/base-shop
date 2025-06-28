@@ -19,7 +19,7 @@ function verify(id: string, token: string | null): boolean {
 export const onRequest = async ({
   params,
   request,
-}: EventContext<unknown, any, Record<string, unknown>>) => {
+}: EventContext<unknown, string, Record<string, unknown>>) => {
   const pageId = String(params.pageId);
   const token = new URL(request.url).searchParams.get("token");
   if (!verify(pageId, token)) {

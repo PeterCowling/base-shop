@@ -24,7 +24,9 @@ export async function POST(req: NextRequest) {
       price_data: {
         currency: "eur",
         unit_amount: l.sku.price * 100,
-        product_data: { name: l.sku.title },
+        product_data: {
+          name: l.size ? `${l.sku.title} (${l.size})` : l.sku.title,
+        },
       },
       quantity: l.qty,
     },
@@ -32,14 +34,25 @@ export async function POST(req: NextRequest) {
       price_data: {
         currency: "eur",
         unit_amount: l.sku.deposit * 100,
-        product_data: { name: `${l.sku.title} deposit` },
+        product_data: {
+          name: l.size
+            ? `${l.sku.title} (${l.size}) deposit`
+            : `${l.sku.title} deposit`,
+        },
       },
       quantity: l.qty,
     },
   ]);
+  const subtotal = Object.values(cart).reduce(
+    (s, l) => s + l.sku.price * l.qty,
+    0
+  );
   const depositTotal = Object.values(cart).reduce(
     (s, l) => s + l.sku.deposit * l.qty,
     0
+  );
+  const sizesMeta = JSON.stringify(
+    Object.fromEntries(Object.values(cart).map((l) => [l.sku.id, l.size ?? ""]))
   );
 
   // 3. Create Checkout Session
@@ -48,11 +61,26 @@ export async function POST(req: NextRequest) {
     line_items,
     success_url: `${req.nextUrl.origin}/success`,
     cancel_url: `${req.nextUrl.origin}/cancelled`,
+    payment_intent_data: {
+      metadata: {
+        subtotal: subtotal.toString(),
+        depositTotal: depositTotal.toString(),
+        returnDate: returnDate ?? "",
+      },
+    },
     metadata: {
+      subtotal: subtotal.toString(),
       depositTotal: depositTotal.toString(),
       returnDate: returnDate ?? "",
+      sizes: sizesMeta,
     },
+    expand: ["payment_intent"],
   });
 
-  return NextResponse.json({ id: session.id });
+  const clientSecret =
+    typeof session.payment_intent === "string"
+      ? undefined
+      : session.payment_intent?.client_secret;
+
+  return NextResponse.json({ clientSecret, sessionId: session.id });
 }

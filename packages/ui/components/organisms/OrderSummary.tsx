@@ -23,7 +23,12 @@ export default function OrderSummary({ cart }: { cart: CartState }) {
       <tbody>
         {Object.values(cart).map((l) => (
           <tr key={l.sku.id} className="border-b last:border-0">
-            <td className="py-2">{l.sku.title}</td>
+            <td className="py-2">
+              {l.sku.title}
+              {l.size && (
+                <span className="ml-1 text-xs text-gray-500">({l.size})</span>
+              )}
+            </td>
             <td>{l.qty}</td>
             <td className="text-right">€{l.sku.price * l.qty}</td>
           </tr>

@@ -47,7 +47,7 @@ const config: Config = {
     "^@i18n/(.*)$": "<rootDir>/packages/i18n/src/$1",
     "^@/i18n/(.*)$": "<rootDir>/packages/i18n/src/$1",
     "^@config/(.*)$": "<rootDir>/packages/config/$1",
-    "^@types$": "<rootDir>/src/types",
+    "^@types$": "<rootDir>/packages/types/src/index.ts",
     "^@types/shared$": "<rootDir>/packages/types/src/index.ts",
     "^@types/shared/(.*)$": "<rootDir>/packages/types/src/$1",
     "^@types/(.*)$": "<rootDir>/src/types/$1",

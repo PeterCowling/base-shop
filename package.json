@@ -21,7 +21,7 @@
     "typecheck": "tsc -b --pretty",
     "test": "turbo run test",
     "test:coverage": "turbo run test -- --coverage",
-    "e2e": "playwright test",
+    "e2e": "cypress run",
     "i18n:extract": "next-intl extract",
     "i18n:check": "ts-node scripts/check-i18n-schemas.ts",
     "storybook": "storybook dev -p 6006",

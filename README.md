@@ -31,7 +31,7 @@ pnpm build	Production build (next build)
 pnpm preview	Edge preview with Wrangler
 pnpm lint	ESLint + Prettier
 pnpm test	Jest unit tests
-pnpm e2e	Playwright e2e suite
+pnpm e2e	Cypress e2e suite
 pnpm test:coverage	Jest tests with coverage summary
 pnpm run lh:checkout    Lighthouse audit for /en/checkout
 
@@ -53,7 +53,7 @@ src/
 ├─ components/          // UI building blocks
 ├─ contexts/            // React context providers
 ├─ lib/                 // Server-side helpers (Stripe, products, etc.)
-└─ tests/               // Jest + Playwright
+└─ tests/               // Jest + Cypress
 public/                 // Static assets
 Learn More
 Next.js Docs – https://nextjs.org/docs

@@ -1,5 +1,4 @@
 // apps/cms/__tests__/middleware.test.ts
-import { jest } from "@jest/globals";
 import type { getToken as GetTokenFn, JWT } from "next-auth/jwt";
 import { middleware } from "../src/middleware";
 

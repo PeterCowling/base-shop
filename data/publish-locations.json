@@ -1,0 +1,20 @@
+[
+  {
+    "id": "home-hero",
+    "name": "Homepage Hero",
+    "path": "homepage/hero",
+    "requiredOrientation": "landscape"
+  },
+  {
+    "id": "home-featured",
+    "name": "Homepage Featured Grid",
+    "path": "homepage/featured",
+    "requiredOrientation": "portrait"
+  },
+  {
+    "id": "prod-upsell",
+    "name": "Product Page Upsell",
+    "path": "product/:id/upsell",
+    "requiredOrientation": "landscape"
+  }
+]

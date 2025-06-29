@@ -33,6 +33,7 @@ pnpm lint	ESLint + Prettier
 pnpm test	Jest unit tests
 pnpm e2e	Playwright e2e suite
 pnpm test:coverage	Jest tests with coverage summary
+pnpm run lh:checkout    Lighthouse audit for /en/checkout
 
 Example summary:
 
@@ -89,3 +90,5 @@ The CLI and demo application expect several variables to be defined:
 - `CMS_ACCESS_TOKEN` – access token for pushing schemas
 
 Missing variables will cause the CLI to exit with an error before running.
+
+See [docs/lighthouse.md](docs/lighthouse.md) for running Lighthouse audits.

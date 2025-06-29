@@ -39,34 +39,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var env_1 = require("@acme/config/env");
 var cross_fetch_1 = __importDefault(require("cross-fetch"));
 var promises_1 = require("node:fs/promises");
 var node_path_1 = require("node:path");
+var zod_1 = require("zod");
+var cliEnvSchema = env_1.envSchema.extend({
+    CMS_SPACE_URL: zod_1.z.string(),
+    CMS_ACCESS_TOKEN: zod_1.z.string(),
+});
+var env;
+try {
+    env = cliEnvSchema.parse(process.env);
+}
+catch (err) {
+    console.error("Invalid environment variables:\n", err);
+    process.exit(1);
+}
 function pushSchema(name, file) {
     return __awaiter(this, void 0, void 0, function () {
         var url, body, res, text;
-        var _a;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    url = "".concat(process.env.CMS_SPACE_URL, "/schemas/").concat(name);
+                    url = "".concat(env.CMS_SPACE_URL, "/schemas/").concat(name);
                     return [4 /*yield*/, (0, promises_1.readFile)(file, "utf8")];
                 case 1:
-                    body = _b.sent();
+                    body = _a.sent();
                     return [4 /*yield*/, (0, cross_fetch_1.default)(url, {
                             method: "PUT",
                             headers: {
-                                Authorization: "Bearer ".concat((_a = process.env.CMS_ACCESS_TOKEN) !== null && _a !== void 0 ? _a : ""),
+                                Authorization: "Bearer ".concat(env.CMS_ACCESS_TOKEN),
                                 "Content-Type": "application/json",
                             },
                             body: body,
                         })];
                 case 2:
-                    res = _b.sent();
+                    res = _a.sent();
                     if (!!res.ok) return [3 /*break*/, 4];
                     return [4 /*yield*/, res.text()];
                 case 3:
-                    text = _b.sent();
+                    text = _a.sent();
                     throw new Error("Failed to push ".concat(name, ": ").concat(res.status, " ").concat(text));
                 case 4:
                     console.log("\u2192 pushed ".concat(name));

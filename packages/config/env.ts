@@ -10,6 +10,8 @@ export const envSchema = z.object({
   NEXT_PUBLIC_PHASE: z.string().optional(),
   NEXT_PUBLIC_DEFAULT_SHOP: z.string().optional(),
   NEXT_PUBLIC_SHOP_ID: z.string().optional(),
+  GMAIL_USER: z.string().optional(),
+  GMAIL_PASS: z.string().optional(),
 });
 
 export const env = envSchema.parse(process.env);

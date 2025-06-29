@@ -9,8 +9,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/atoms-shadcn";
+import { revertSeo } from "@cms/actions/shops";
 import type { SettingsDiffEntry } from "@platform-core/repositories/shops";
 import { diffHistory } from "@platform-core/repositories/shops";
+
 import { useEffect, useState } from "react";
 
 interface VersionTimelineProps {
@@ -56,8 +58,11 @@ export default function VersionTimeline({
                     <span className="text-muted-foreground font-mono text-xs">
                       {new Date(entry.timestamp).toLocaleString()}
                     </span>
-                    <Button variant="outline" className="h-8 px-2" disabled>
-                      {" "}
+                    <Button
+                      variant="outline"
+                      className="h-8 px-2"
+                      onClick={() => revertSeo(shop, entry.timestamp)}
+                    >
                       Revert
                     </Button>
                   </div>

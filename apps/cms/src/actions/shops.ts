@@ -8,6 +8,7 @@ import {
   updateShopInRepo,
 } from "@platform-core/repositories/json";
 import {
+  diffHistory,
   getShopSettings,
   saveShopSettings,
 } from "@platform-core/repositories/shops";
@@ -118,4 +119,23 @@ export async function updateSeo(
   await saveShopSettings(shop, updated);
 
   return { settings: updated, warnings };
+}
+
+export async function revertSeo(shop: string, timestamp: string) {
+  await ensureAuthorized();
+  const history = await diffHistory(shop);
+  const sorted = history.sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+  const idx = sorted.findIndex((e) => e.timestamp === timestamp);
+  if (idx === -1) throw new Error("Version not found");
+  let state: ShopSettings = {
+    languages: [],
+    seo: {},
+    updatedAt: "",
+    updatedBy: "",
+  };
+  for (let i = 0; i < idx; i++) {
+    state = { ...state, ...sorted[i].diff } as ShopSettings;
+  }
+  await saveShopSettings(shop, state);
+  return state;
 }

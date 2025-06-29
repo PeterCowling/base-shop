@@ -13,28 +13,14 @@ export function usePublishLocations(): UsePublishLocationsResult {
   const [locations, setLocations] = useState<PublishLocation[]>([]);
 
   const fetchLocations = useCallback(async () => {
-    // TODO: replace with real API request
-    const data: PublishLocation[] = [
-      {
-        id: "home-hero",
-        name: "Homepage Hero",
-        path: "homepage/hero",
-        requiredOrientation: "landscape",
-      },
-      {
-        id: "home-featured",
-        name: "Homepage Featured Grid",
-        path: "homepage/featured",
-        requiredOrientation: "portrait",
-      },
-      {
-        id: "prod-upsell",
-        name: "Product Page Upsell",
-        path: "product/:id/upsell",
-        requiredOrientation: "landscape",
-      },
-    ];
-    setLocations(data);
+    try {
+      const res = await fetch("/api/publish-locations");
+      if (!res.ok) throw new Error("Failed to fetch locations");
+      const data = (await res.json()) as PublishLocation[];
+      setLocations(data);
+    } catch {
+      setLocations([]);
+    }
   }, []);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 // packages/ui/components/cms/ProductFilters.tsx  (unchanged except export)
 "use client";
-import { Input } from "@/components/atoms-shim";
+import { Input } from "@/components/atoms-shadcn";
 import { ChangeEvent } from "react";
 
 export const statuses = ["all", "active", "draft", "archived"] as const;

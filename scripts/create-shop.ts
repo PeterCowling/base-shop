@@ -2,7 +2,15 @@
 // Import directly to avoid relying on tsconfig path aliases when using ts-node.
 import { spawnSync } from "child_process";
 import { randomBytes } from "crypto";
-import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} from "fs";
+import readline from "node:readline";
 import { join } from "path";
 import { ulid } from "ulid";
 import { LOCALES } from "../packages/types/src/constants";
@@ -19,7 +27,7 @@ interface Options {
   shipping: string[];
 }
 
-function parseArgs(argv: string[]): [string, Options] {
+function parseArgs(argv: string[]): [string, Options, boolean] {
   const id = argv[0];
   if (!id) {
     console.error(
@@ -36,6 +44,8 @@ function parseArgs(argv: string[]): [string, Options] {
     shipping: [],
   };
 
+  let themeProvided = false;
+
   argv.slice(1).forEach((arg) => {
     if (!arg.startsWith("--")) return;
     const [key, val = ""] = arg.slice(2).split("=");
@@ -49,6 +59,8 @@ function parseArgs(argv: string[]): [string, Options] {
         break;
       case "theme":
         opts.theme = val || opts.theme;
+        themeProvided = true;
+
         break;
       case "template":
         opts.template = val || opts.template;
@@ -65,10 +77,32 @@ function parseArgs(argv: string[]): [string, Options] {
     }
   });
 
-  return [id, opts];
+  return [id, opts, themeProvided];
 }
 
-const [shopId, options] = parseArgs(process.argv.slice(2));
+const [shopId, options, themeProvided] = parseArgs(process.argv.slice(2));
+
+async function ensureTheme() {
+  if (!themeProvided && process.stdin.isTTY) {
+    const themesDir = join("packages", "themes");
+    const themes = readdirSync(themesDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name);
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    await new Promise<void>((resolve) => {
+      rl.question(`Select theme [${themes.join(", ")}]: `, (ans) => {
+        if (themes.includes(ans)) options.theme = ans;
+        rl.close();
+        resolve();
+      });
+    });
+  }
+}
+
+await ensureTheme();
 
 /* ────────────────────────────────────────────────────────── *
  * File-system locations                                      *

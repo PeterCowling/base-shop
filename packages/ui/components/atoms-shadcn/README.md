@@ -7,3 +7,14 @@ Import from this directory to make it clear the component originates from shadcn
 ```ts
 import { Button, Input } from "@/components/atoms-shadcn";
 ```
+
+Available components:
+
+- `Button`
+- `Input`
+- `Card`
+- `Checkbox`
+- `Dialog`
+- `Select`
+- `Table`
+- `Textarea`

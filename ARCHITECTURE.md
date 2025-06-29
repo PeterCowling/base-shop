@@ -34,17 +34,21 @@ appropriate `atoms` or `molecules` directory.
 ### shadcn/ui integration
 
 A curated set of primitives from [shadcn/ui](https://ui.shadcn.com/) is
-available under `packages/ui/components/atoms-shadcn`. These components
+available under `packages/ui/components/atoms-shadcn`. These wrappers
 behave like our own atoms but retain the default shadcn look and feel.
 Importing from `atoms-shadcn` makes it explicit that the element comes
-from the external library:
+from the external library. All shadcn primitives are surfaced via this
+entrypoint so they can be used from molecules, organisms, templates and
+pages just like our in‑house atoms:
 
 ```ts
 import { Button } from "@/components/atoms-shadcn";
 ```
 
 All other atoms in `packages/ui/components/atoms` are developed in
-house.
+house. The `atoms-shadcn` index currently exposes wrappers for
+`Button`, `Input`, `Card`, `Checkbox`, `Dialog`, `Select`, `Table` and
+`Textarea`.
 
 ## Allowed import flow
 

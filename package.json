@@ -34,7 +34,8 @@
     "release-deposits": "ts-node scripts/release-deposits.ts",
     "provision-cms": "pnpm run create-shop && pnpm run build:tokens",
     "cms:migrate": "ts-node scripts/migrate-cms.ts",
-    "deposit-service": "ts-node packages/platform-machine/releaseDepositsService.ts"
+    "deposit-service": "ts-node packages/platform-machine/releaseDepositsService.ts",
+    "lh:checkout": "lighthouse http://localhost:3000/en/checkout --chrome-flags=\"--headless\" --only-categories=performance,accessibility,best-practices,seo --preset=desktop"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.12",
@@ -61,7 +62,8 @@
     "sharp": "^0.34.2",
     "stripe": "^18.2.1",
     "ulid": "^3.0.1",
-    "zod": "^3.25.67"
+    "zod": "^3.25.67",
+    "nodemailer": "^6.10.1"
   },
   "devDependencies": {
     "@acme/tailwind-config": "workspace:*",
@@ -109,7 +111,8 @@
     "turbo": "^1.13.0",
     "typescript": "^5.1.0",
     "vite": "^7.0.0",
-    "wrangler": "^4.20.4"
+    "wrangler": "^4.20.4",
+    "lighthouse": "^11.5.0"
   },
   "pnpm": {
     "overrides": {

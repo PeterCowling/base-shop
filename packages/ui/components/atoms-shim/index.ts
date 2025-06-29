@@ -1,4 +1,4 @@
-export * from "./Button";
+export * from "../atoms-shadcn/Button";
 export * from "./Card";
 export * from "./Checkbox";
 export * from "./Dialog";

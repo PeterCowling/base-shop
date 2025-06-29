@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
   Input,
-} from "../atoms-shim";
+} from "../atoms-shadcn";
 
 interface ChatMessage {
   sender: "user" | "bot";

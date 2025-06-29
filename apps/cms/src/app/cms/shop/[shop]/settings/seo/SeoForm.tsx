@@ -1,7 +1,7 @@
 "use client";
 
 import { Tooltip } from "@/components/atoms";
-import { Button, Input, Textarea } from "@/components/atoms-shim";
+import { Button, Input, Textarea } from "@/components/atoms-shadcn";
 import { updateSeo } from "@cms/actions/shops";
 import type { Locale } from "@types";
 import { FormEvent, useCallback, useState } from "react";

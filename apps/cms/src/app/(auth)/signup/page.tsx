@@ -1,5 +1,5 @@
 // apps/cms/src/app/(auth)/signup/page.tsx
-import { Button, Input } from "@/components/atoms-shim";
+import { Button, Input } from "@/components/atoms-shadcn";
 import { requestAccount } from "@cms/actions/accounts";
 import { redirect } from "next/navigation";
 

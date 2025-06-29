@@ -4,7 +4,7 @@
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { memo } from "react";
-import { Button } from "../atoms-shim";
+import { Button } from "../atoms-shadcn";
 import Breadcrumbs from "./Breadcrumbs";
 import ShopSelector from "./ShopSelector";
 

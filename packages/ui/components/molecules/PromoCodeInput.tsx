@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Button, Input } from "../atoms-shim";
+import { Button, Input } from "../atoms-shadcn";
 
 export interface PromoCodeInputProps
   extends React.HTMLAttributes<HTMLFormElement> {

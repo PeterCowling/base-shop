@@ -1,7 +1,7 @@
 // packages/ui/components/cms/MediaManager.tsx
 "use client";
 
-import { Input } from "@/components/atoms-shim";
+import { Input } from "@/components/atoms-shadcn";
 import { deleteMedia, uploadMedia } from "@cms/actions/media";
 import type { ImageOrientation, MediaItem } from "@types";
 import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";

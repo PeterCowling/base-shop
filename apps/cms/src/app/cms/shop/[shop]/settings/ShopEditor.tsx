@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/ShopEditor.tsx
 
 "use client";
-import { Button, Input, Textarea } from "@/components/atoms-shim";
+import { Button, Input, Textarea } from "@/components/atoms-shadcn";
 import { updateShop } from "@cms/actions/shops";
 import type { Shop } from "@types";
 import { ChangeEvent, FormEvent, useState } from "react";

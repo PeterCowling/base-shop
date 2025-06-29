@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Button } from "../atoms-shim";
+import { Button } from "../atoms-shadcn";
 
 export interface Error500TemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {

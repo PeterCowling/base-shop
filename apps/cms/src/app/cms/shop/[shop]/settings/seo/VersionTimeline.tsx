@@ -8,7 +8,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "@/components/atoms-shim";
+} from "@/components/atoms-shadcn";
 import type { SettingsDiffEntry } from "@platform-core/repositories/shops";
 import { diffHistory } from "@platform-core/repositories/shops";
 import { useEffect, useState } from "react";

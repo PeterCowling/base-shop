@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../atoms-shim/Table";
+} from "../atoms-shadcn/Table";
 
 export interface Column<T> {
   header: string;

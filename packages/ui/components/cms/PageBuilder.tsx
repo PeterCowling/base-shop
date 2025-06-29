@@ -21,7 +21,7 @@ import { CSS } from "@dnd-kit/utilities";
 import type { Page, PageComponent } from "@types";
 import { memo, useReducer } from "react";
 import { ulid } from "ulid";
-import { Button } from "../atoms-shim";
+import { Button } from "../atoms-shadcn";
 import { blockRegistry } from "./blocks";
 
 interface Props {

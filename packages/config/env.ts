@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const envSchema = z.object({
+export const envSchema = z.object({
   STRIPE_SECRET_KEY: z.string(),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
   NEXTAUTH_SECRET: z.string().optional(),

@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../atoms-shim";
+} from "../atoms-shadcn";
 
 export default function ShopSelector() {
   const [shops, setShops] = useState<string[]>([]);

@@ -1,0 +1,16 @@
+{
+  "name": "@acme/configurator",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "configurator": "./dist/index.js"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0",
+    "wrangler": "^4.20.4"
+  }
+}

@@ -1,5 +1,6 @@
 // scripts/create-shop.ts
 // Import directly to avoid relying on tsconfig path aliases when using ts-node.
+import { spawnSync } from "child_process";
 import { randomBytes } from "crypto";
 import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
@@ -13,6 +14,7 @@ import { LOCALES } from "../packages/types/src/constants";
 interface Options {
   type: "sale" | "rental";
   theme: string;
+  template: string;
   payment: string[];
   shipping: string[];
 }
@@ -21,7 +23,7 @@ function parseArgs(argv: string[]): [string, Options] {
   const id = argv[0];
   if (!id) {
     console.error(
-      "Usage: pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--payment=p1,p2] [--shipping=s1,s2]"
+      "Usage: pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--payment=p1,p2] [--shipping=s1,s2] [--template=name]"
     );
     process.exit(1);
   }
@@ -29,6 +31,7 @@ function parseArgs(argv: string[]): [string, Options] {
   const opts: Options = {
     type: "sale",
     theme: "base",
+    template: "template-app",
     payment: [],
     shipping: [],
   };
@@ -46,6 +49,9 @@ function parseArgs(argv: string[]): [string, Options] {
         break;
       case "theme":
         opts.theme = val || opts.theme;
+        break;
+      case "template":
+        opts.template = val || opts.template;
         break;
       case "payment":
         opts.payment = val.split(",").filter(Boolean);
@@ -68,11 +74,15 @@ const [shopId, options] = parseArgs(process.argv.slice(2));
  * File-system locations                                      *
  * ────────────────────────────────────────────────────────── */
 
-const templateApp = join("packages", "template-app");
+const templateApp = join("packages", options.template);
 const newApp = join("apps", shopId);
 
 if (!existsSync(join("packages", "themes", options.theme))) {
   console.error(`Theme '${options.theme}' not found in packages/themes`);
+  process.exit(1);
+}
+if (!existsSync(templateApp)) {
+  console.error(`Template '${options.template}' not found in packages`);
   process.exit(1);
 }
 
@@ -228,3 +238,15 @@ writeFileSync(
 );
 
 console.log(`Shop "${shopId}" created.`);
+
+// Attempt to run Cloudflare's C3 tool if available
+try {
+  const result = spawnSync("npx", ["--yes", "create-cloudflare", newApp], {
+    stdio: "inherit",
+  });
+  if (result.status !== 0) {
+    console.warn("C3 process failed or not available. Skipping.");
+  }
+} catch (err) {
+  console.warn("C3 not available, skipping.");
+}

@@ -2,7 +2,7 @@
 
 "use client";
 
-import { Button, Input } from "@/components/atoms-shim";
+import { Button, Input } from "@/components/atoms-shadcn";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";

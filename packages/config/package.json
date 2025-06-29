@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./env.ts"
+    ".": "./env.ts",
+    "./env": "./env.ts"
   }
 }

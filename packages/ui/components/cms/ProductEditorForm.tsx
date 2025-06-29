@@ -7,7 +7,7 @@ import {
   CardContent,
   Input,
   Textarea,
-} from "@/components/atoms-shim";
+} from "@/components/atoms-shadcn";
 import type { Locale, ProductPublication } from "@platform-core/products";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { ChangeEvent, FormEvent, useCallback, useMemo, useState } from "react";

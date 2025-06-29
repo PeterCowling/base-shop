@@ -31,6 +31,21 @@ layers build upon. Avoid placing full atoms or molecules in this folder;
 instead create a generic primitive here and extend it inside the
 appropriate `atoms` or `molecules` directory.
 
+### shadcn/ui integration
+
+A curated set of primitives from [shadcn/ui](https://ui.shadcn.com/) is
+available under `packages/ui/components/atoms-shadcn`. These components
+behave like our own atoms but retain the default shadcn look and feel.
+Importing from `atoms-shadcn` makes it explicit that the element comes
+from the external library:
+
+```ts
+import { Button } from "@/components/atoms-shadcn";
+```
+
+All other atoms in `packages/ui/components/atoms` are developed in
+house.
+
 ## Allowed import flow
 
 Imports must always follow the direction of the arrows in the diagram below:

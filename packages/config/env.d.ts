@@ -1,5 +1,6 @@
 import { z } from "zod";
-declare const envSchema: z.ZodObject<{
+export declare const envSchema: z.ZodObject<
+  {
     STRIPE_SECRET_KEY: z.ZodString;
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.ZodString;
     NEXTAUTH_SECRET: z.ZodOptional<z.ZodString>;
@@ -9,7 +10,10 @@ declare const envSchema: z.ZodObject<{
     NEXT_PUBLIC_PHASE: z.ZodOptional<z.ZodString>;
     NEXT_PUBLIC_DEFAULT_SHOP: z.ZodOptional<z.ZodString>;
     NEXT_PUBLIC_SHOP_ID: z.ZodOptional<z.ZodString>;
-}, "strip", z.ZodTypeAny, {
+  },
+  "strip",
+  z.ZodTypeAny,
+  {
     STRIPE_SECRET_KEY?: string;
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?: string;
     NEXTAUTH_SECRET?: string;
@@ -19,7 +23,8 @@ declare const envSchema: z.ZodObject<{
     NEXT_PUBLIC_PHASE?: string;
     NEXT_PUBLIC_DEFAULT_SHOP?: string;
     NEXT_PUBLIC_SHOP_ID?: string;
-}, {
+  },
+  {
     STRIPE_SECRET_KEY?: string;
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?: string;
     NEXTAUTH_SECRET?: string;
@@ -29,17 +34,18 @@ declare const envSchema: z.ZodObject<{
     NEXT_PUBLIC_PHASE?: string;
     NEXT_PUBLIC_DEFAULT_SHOP?: string;
     NEXT_PUBLIC_SHOP_ID?: string;
-}>;
+  }
+>;
 export declare const env: {
-    STRIPE_SECRET_KEY?: string;
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?: string;
-    NEXTAUTH_SECRET?: string;
-    PREVIEW_TOKEN_SECRET?: string;
-    NODE_ENV?: string;
-    OUTPUT_EXPORT?: string;
-    NEXT_PUBLIC_PHASE?: string;
-    NEXT_PUBLIC_DEFAULT_SHOP?: string;
-    NEXT_PUBLIC_SHOP_ID?: string;
+  STRIPE_SECRET_KEY?: string;
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?: string;
+  NEXTAUTH_SECRET?: string;
+  PREVIEW_TOKEN_SECRET?: string;
+  NODE_ENV?: string;
+  OUTPUT_EXPORT?: string;
+  NEXT_PUBLIC_PHASE?: string;
+  NEXT_PUBLIC_DEFAULT_SHOP?: string;
+  NEXT_PUBLIC_SHOP_ID?: string;
 };
 export type Env = z.infer<typeof envSchema>;
 export {};

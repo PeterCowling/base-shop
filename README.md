@@ -78,3 +78,14 @@ To experiment with Svelte:
 pnpm install
 pnpm build
 ````
+
+# Environment Variables
+
+The CLI and demo application expect several variables to be defined:
+
+- `STRIPE_SECRET_KEY` – secret key used by the Stripe server SDK
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` – public key for the Stripe client SDK
+- `CMS_SPACE_URL` – base URL of the CMS API
+- `CMS_ACCESS_TOKEN` – access token for pushing schemas
+
+Missing variables will cause the CLI to exit with an error before running.

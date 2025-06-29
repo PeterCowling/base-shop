@@ -1,5 +1,5 @@
 "use client";
-import { Button, Input, Textarea } from "@/components/atoms-shim";
+import { Button, Input, Textarea } from "@/components/atoms-shadcn";
 import { updateSeo } from "@cms/actions/shops";
 import type { Locale } from "@types";
 import { ChangeEvent, FormEvent, useState } from "react";

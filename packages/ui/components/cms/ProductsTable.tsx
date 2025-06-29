@@ -1,6 +1,9 @@
 // packages/ui/components/cms/ProductsTable.tsx
 "use client";
 
+import { Button } from "@/components/atoms-shadcn";
+import { deleteProduct, duplicateProduct } from "@cms/actions/products";
+import { ProductPublication } from "@platform-core/products";
 import Link from "next/link";
 import {
   memo,
@@ -10,11 +13,6 @@ import {
   useMemo,
   useState,
 } from "react";
-
-import { deleteProduct, duplicateProduct } from "@cms/actions/products";
-import { ProductPublication } from "@platform-core/products";
-
-import { Button } from "@/components/atoms-shim";
 import DataTable from "./DataTable";
 import ProductFilters from "./ProductFilters";
 

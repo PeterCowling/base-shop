@@ -1,4 +1,4 @@
-import { envSchema } from "@acme/config/env";
+import { envSchema } from "@config/env";
 import fetch from "cross-fetch";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";

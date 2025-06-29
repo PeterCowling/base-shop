@@ -3,18 +3,22 @@
   "compilerOptions": {
     "outDir": "../dist-scripts",
     "composite": true,
+    "module": "esnext",
+    "target": "ES2017",
     "rootDir": "./",
     "rootDirs": [
       "./",
       "../packages/types/src",
       "../packages/platform-core",
       "../packages/lib",
+      "../packages/config",
       "../src"
     ]
   },
   "references": [
     { "path": "../packages/platform-core" },
     { "path": "../packages/lib" },
+    { "path": "../packages/config" },
     { "path": "../src" }
   ],
   "include": ["*.ts", "../src/types/**/*.ts"],

@@ -4,8 +4,15 @@ import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { runInNewContext } from "node:vm";
 import ts from "typescript";
-import { tokens, type TokenMap } from "../packages/themes/base/tokens";
-
+export interface Token {
+  readonly light: string;
+  readonly dark?: string;
+}
+export type TokenMap = Record<`--${string}`, Token>;
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { tokens } = require("../packages/themes/base/tokens.js") as {
+  tokens: TokenMap;
+};
 /**
  * Create a plain-value stylesheet (no CSS variables).
  */

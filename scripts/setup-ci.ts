@@ -1,4 +1,4 @@
-import { envSchema } from "@acme/config/env";
+import { envSchema } from "@config/env";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 

@@ -1,36 +1,47 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var env_1 = require("@acme/config/env");
-var node_fs_1 = require("node:fs");
-var node_path_1 = require("node:path");
-var shopId = process.argv[2];
+import { envSchema } from "@config/env";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+const shopId = process.argv[2];
 if (!shopId) {
     console.error("Usage: pnpm ts-node scripts/setup-ci.ts <shopId>");
     process.exit(1);
 }
-var envPath = (0, node_path_1.join)("apps", "shop-".concat(shopId), ".env");
-if (!(0, node_fs_1.existsSync)(envPath)) {
-    console.error("Missing ".concat(envPath));
+const envPath = join("apps", `shop-${shopId}`, ".env");
+if (!existsSync(envPath)) {
+    console.error(`Missing ${envPath}`);
     process.exit(1);
 }
-var envRaw = (0, node_fs_1.readFileSync)(envPath, "utf8");
-var env = {};
-for (var _i = 0, _a = envRaw.split(/\n+/); _i < _a.length; _i++) {
-    var line = _a[_i];
-    var trimmed = line.trim();
+const envRaw = readFileSync(envPath, "utf8");
+const env = {};
+for (const line of envRaw.split(/\n+/)) {
+    const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith("#"))
         continue;
-    var _b = trimmed.split("="), key = _b[0], rest = _b.slice(1);
+    const [key, ...rest] = trimmed.split("=");
     env[key] = rest.join("=");
 }
 try {
-    env_1.envSchema.parse(env);
+    envSchema.parse(env);
 }
 catch (err) {
     console.error("Invalid environment variables:\n", err);
     process.exit(1);
 }
-var wfPath = (0, node_path_1.join)(".github", "workflows", "shop-".concat(shopId, ".yml"));
-var workflow = "on: [push]\n\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: pnpm/action-setup@v3\n      - run: pnpm install\n      - run: pnpm lint && pnpm test\n      - run: pnpm --filter @apps/shop-".concat(shopId, " build\n      - run: npx @cloudflare/next-on-pages deploy                --project-name=shop-").concat(shopId, "                --branch=${{ github.ref_name }}\n");
-(0, node_fs_1.writeFileSync)(wfPath, workflow);
-console.log("Created workflow ".concat(wfPath));
+const wfPath = join(".github", "workflows", `shop-${shopId}.yml`);
+const workflow = `on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - run: pnpm install
+      - run: pnpm lint && pnpm test
+      - run: pnpm --filter @apps/shop-${shopId} build
+      - run: npx @cloudflare/next-on-pages deploy \
+               --project-name=shop-${shopId} \
+               --branch=\${{ github.ref_name }}
+`;
+writeFileSync(wfPath, workflow);
+console.log(`Created workflow ${wfPath}`);

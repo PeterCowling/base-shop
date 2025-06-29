@@ -29,3 +29,5 @@ Current components:
 - `StickyAddToCartBar`
 - `RecommendationCarousel`
 - `CategoryCard`
+- `ProductGallery`
+- `OrderSummary`

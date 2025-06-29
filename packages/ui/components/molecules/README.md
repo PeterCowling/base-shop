@@ -15,3 +15,6 @@ Available components:
 - `CurrencySwitcher`
 - `QuantityInput`
 - `Breadcrumbs` – navigation trail from a list of links.
+- `Image360Viewer`
+- `LanguageSwitcher`
+- `MediaSelector`

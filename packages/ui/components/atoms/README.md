@@ -41,3 +41,6 @@ Available components:
 - `Icon`
 - `Popover`
 - `Chip`
+- `ARViewer`
+- `VideoPlayer`
+- `ZoomImage`

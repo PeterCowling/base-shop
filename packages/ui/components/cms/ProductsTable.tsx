@@ -110,7 +110,7 @@ function ProductsTableBase({ shop, rows, isAdmin }: Props): ReactElement {
         render: (p) =>
           isAdmin ? (
             <Link
-              href={`/cms/${shop}/products/${p.id}/edit`}
+              href={`/cms/shop/${shop}/products/${p.id}/edit`}
               className="underline"
             >
               {p.title.en}

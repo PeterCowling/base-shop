@@ -78,7 +78,7 @@ export async function createDraft(shop: string): Promise<void> {
   await ensureAuthorized();
 
   const draft = await createDraftRecord(shop);
-  redirect(`/cms/${shop}/products/${draft.id}/edit`);
+  redirect(`/cms/shop/${shop}/products/${draft.id}/edit`);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -144,7 +144,7 @@ export async function duplicateProduct(
   await ensureAuthorized();
 
   const copy = await duplicateProductInRepo<ProductPublication>(shop, id);
-  redirect(`/cms/${shop}/products/${copy.id}/edit`);
+  redirect(`/cms/shop/${shop}/products/${copy.id}/edit`);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -155,5 +155,5 @@ export async function deleteProduct(shop: string, id: string): Promise<void> {
   await ensureAuthorized();
 
   await deleteProductFromRepo<ProductPublication>(shop, id);
-  redirect(`/cms/${shop}/products`);
+  redirect(`/cms/shop/${shop}/products`);
 }

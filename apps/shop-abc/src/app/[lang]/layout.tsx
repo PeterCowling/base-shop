@@ -1,7 +1,7 @@
 // apps/shop-abc/src/app/[[...lang]]/layout.tsx
 
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
+import { Footer, Header, SideNav } from "@/components/organisms";
+import { AppShell } from "@/components/templates/AppShell";
 import TranslationsProvider from "@i18n/Translations";
 import { Locale, resolveLocale } from "@i18n/locales";
 import { DefaultSeo } from "next-seo";
@@ -37,9 +37,13 @@ export default async function LocaleLayout({
   return (
     <TranslationsProvider messages={messages}>
       <DefaultSeo {...seo} />
-      <Header lang={lang} />
-      <main className="min-h-[calc(100vh-8rem)]">{children}</main>
-      <Footer />
+      <AppShell
+        header={<Header locale={lang} />}
+        sideNav={<SideNav />}
+        footer={<Footer />}
+      >
+        {children}
+      </AppShell>
     </TranslationsProvider>
   );
 }

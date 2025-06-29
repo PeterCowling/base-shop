@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.shopSchema = exports.shopSeoFieldsSchema = void 0;
 var zod_1 = require("zod");
+var Product_1 = require("./Product");
 exports.shopSeoFieldsSchema = zod_1.z.object({
     canonicalBase: zod_1.z.string().optional(),
     title: zod_1.z.string().optional(),
@@ -17,4 +18,8 @@ exports.shopSchema = zod_1.z.object({
     themeTokens: zod_1.z.record(zod_1.z.string()),
     /** Mapping of logical filter keys to catalog attributes */
     filterMappings: zod_1.z.record(zod_1.z.string()),
+    /** Optional price overrides per locale (minor units) */
+    priceOverrides: zod_1.z.record(Product_1.localeSchema, zod_1.z.number()).default({}),
+    /** Optional redirect overrides for locale detection */
+    localeOverrides: zod_1.z.record(zod_1.z.string(), Product_1.localeSchema).default({}),
 });

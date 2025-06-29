@@ -7,35 +7,35 @@ export declare const shopSettingsSchema: z.ZodObject<{
         description: z.ZodOptional<z.ZodString>;
         image: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
-        canonicalBase?: string;
         title?: string;
-        description?: string;
         image?: string;
+        description?: string;
+        canonicalBase?: string;
     }, {
-        canonicalBase?: string;
         title?: string;
-        description?: string;
         image?: string;
+        description?: string;
+        canonicalBase?: string;
     }>>;
     updatedAt: z.ZodString;
     updatedBy: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     languages?: readonly ("en" | "de" | "it")[];
     seo?: Partial<Record<"en" | "de" | "it", {
-        canonicalBase?: string;
         title?: string;
-        description?: string;
         image?: string;
+        description?: string;
+        canonicalBase?: string;
     }>>;
     updatedAt?: string;
     updatedBy?: string;
 }, {
     languages?: readonly ("en" | "de" | "it")[];
     seo?: Partial<Record<"en" | "de" | "it", {
-        canonicalBase?: string;
         title?: string;
-        description?: string;
         image?: string;
+        description?: string;
+        canonicalBase?: string;
     }>>;
     updatedAt?: string;
     updatedBy?: string;

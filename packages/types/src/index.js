@@ -17,6 +17,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./Cart"), exports);
 __exportStar(require("./constants"), exports);
 __exportStar(require("./ImageOrientation"), exports);
+__exportStar(require("./InventoryItem"), exports);
 __exportStar(require("./MediaItem"), exports);
 __exportStar(require("./Page"), exports);
 __exportStar(require("./Product"), exports);

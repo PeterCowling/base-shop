@@ -59,6 +59,9 @@ test("successful payment redirects to success", async () => {
   fireEvent.click(screen.getByRole("button", { name: /pay/i }));
 
   await waitFor(() => expect(confirmPaymentMock).toHaveBeenCalled());
+  expect(confirmPaymentMock.mock.calls[0][0].confirmParams.return_url).toBe(
+    "http://localhost/en/success"
+  );
   expect(pushMock).toHaveBeenCalledWith("/en/success");
 });
 
@@ -77,4 +80,35 @@ test("failed payment redirects to cancelled", async () => {
   await waitFor(() => expect(confirmPaymentMock).toHaveBeenCalled());
   expect(pushMock).toHaveBeenCalledWith("/en/cancelled");
   expect(await screen.findByText("fail")).toBeInTheDocument();
+});
+
+test("requests new session when return date changes", async () => {
+  const calls: any[] = [];
+  server.use(
+    rest.post("/api/checkout-session", async (req, res, ctx) => {
+      calls.push(await req.json());
+      return res(
+        ctx.json({
+          clientSecret: `cs_${calls.length}`,
+          sessionId: `sess_${calls.length}`,
+        })
+      );
+    })
+  );
+
+  const expectedDefault = (() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 7);
+    return d.toISOString().slice(0, 10);
+  })();
+
+  render(<CheckoutForm locale="en" />);
+  await screen.findByTestId("payment-element");
+  expect(calls[0].returnDate).toBe(expectedDefault);
+
+  const input = screen.getByLabelText(/checkout\.return/i);
+  fireEvent.change(input, { target: { value: "2025-12-25" } });
+
+  await waitFor(() => expect(calls).toHaveLength(2));
+  expect(calls[1].returnDate).toBe("2025-12-25");
 });

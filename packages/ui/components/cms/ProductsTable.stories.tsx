@@ -6,8 +6,12 @@ const rows: ProductPublication[] = [
   {
     id: "1",
     sku: "sku1",
-    title: { en: "Sneaker" },
-    description: { en: "Green sneaker" },
+    title: { en: "Sneaker", de: "Sneaker", it: "Sneaker" },
+    description: {
+      en: "Green sneaker",
+      de: "Green sneaker",
+      it: "Green sneaker",
+    },
     price: 10000,
     currency: "USD",
     images: [],

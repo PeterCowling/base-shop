@@ -8,7 +8,10 @@
     "baseUrl": "../..",
     "paths": {
       "@platform-machine": ["."],
-      "@platform-machine/*": ["*"]
+      "@platform-machine/*": ["*"],
+
+      /*  Allow access to shared libs such as stripeServer */
+      "@lib/*": ["packages/platform-core/*", "packages/lib/*"]
     }
   },
   "references": [

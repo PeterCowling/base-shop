@@ -4,7 +4,7 @@
 import Link from "next/link";
 
 import type { Page } from "@types";
-import DataTable from "./DataTable";
+import DataTable, { type Column } from "./DataTable";
 
 interface Props {
   shop: string;
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function PagesTable({ shop, pages, canWrite = false }: Props) {
-  const columns = [
+  const columns: Column<Page>[] = [
     {
       header: "Slug",
       render: (p: Page) => p.slug,

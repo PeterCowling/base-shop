@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Button } from "../atoms-shadcn";
@@ -7,7 +7,7 @@ import { Price } from "../atoms/Price";
 export interface Product {
   id: string;
   title: string;
-  image: string;
+  image: string | StaticImageData;
   price: number;
 }
 

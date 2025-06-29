@@ -17,7 +17,7 @@
      *       This lets us import the shared `@types` files that live      *
      *       under the repo-level `src/` directory without tripping the   *
      *       TS6059 / TS6307 “file not under rootDir” errors.             */
-    "rootDirs": ["./", "../../src"],
+    "rootDirs": ["./", "../../src", "../lib"],
 
     "paths": {
       /* ──────────────────────────────────────────────────────────────── */
@@ -39,7 +39,11 @@
       /* ──────────────────────────────────────────────────────────────── */
       "@/components/shop/*": ["components/shop/*"],
       "@/contexts/*": ["contexts/*"],
-      "@/lib/*": ["lib/*"]
+      "@/lib/*": ["lib/*"],
+
+      /*  Bring back the repo-level @lib alias so this package can */
+      /*  access shared utilities such as stripeServer                */
+      "@lib/*": ["../lib/*"]
     }
   },
 
@@ -50,5 +54,5 @@
 
   /*  👇  Finally: declare the `src` composite project as a dependency
    *       so incremental builds stay fast and sane.                     */
-  "references": [{ "path": "../../src" }]
+  "references": [{ "path": "../../src" }, { "path": "../lib" }]
 }

@@ -140,7 +140,7 @@ export default function Wizard({ themes, templates }: Props) {
             <p className="text-muted">Background uses theme tokens</p>
           </div>
           <div className="flex justify-between">
-            <Button variant="secondary" onClick={() => setStep(0)}>
+            <Button variant="outline" onClick={() => setStep(0)}>
               Back
             </Button>
             <Button onClick={() => setStep(2)}>Next</Button>
@@ -186,7 +186,7 @@ export default function Wizard({ themes, templates }: Props) {
             </label>
           </div>
           <div className="flex justify-between">
-            <Button variant="secondary" onClick={() => setStep(1)}>
+            <Button variant="outline" onClick={() => setStep(1)}>
               Back
             </Button>
             <Button onClick={() => setStep(3)}>Next</Button>
@@ -216,7 +216,7 @@ export default function Wizard({ themes, templates }: Props) {
           </ul>
           {result && <p className="text-sm">{result}</p>}
           <div className="flex justify-between">
-            <Button variant="secondary" onClick={() => setStep(2)}>
+            <Button variant="outline" onClick={() => setStep(1)}>
               Back
             </Button>
             <Button disabled={creating} onClick={submit}>

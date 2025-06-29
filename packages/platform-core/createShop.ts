@@ -1,5 +1,5 @@
 // packages/platform-core/createShop.ts
-import { LOCALES } from "@types/shared";
+import { LOCALES } from "@types";
 import { spawnSync } from "child_process";
 import { randomBytes } from "crypto";
 import {

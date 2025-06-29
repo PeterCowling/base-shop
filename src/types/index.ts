@@ -5,5 +5,3 @@
 // part of the current compilation unit, avoiding rootDir errors in packages
 // that consume these types.
 export * from "../../packages/types/dist";
-export * from "../../packages/types/dist/index";
-export * from "../../packages/types/src";

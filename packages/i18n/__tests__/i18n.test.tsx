@@ -47,6 +47,11 @@ describe("Translations integration", () => {
     return <div>{t("greet")}</div>;
   }
 
+  function ShowMessage({ k }: { k: string }) {
+    const t = useTranslations();
+    return <span>{t(k)}</span>;
+  }
+
   it("renders localized string", () => {
     render(
       <TranslationsProvider messages={{ greet: "Hello" }}>
@@ -70,5 +75,23 @@ describe("Translations integration", () => {
     );
 
     expect(screen.getByText("Hallo")).toBeInTheDocument();
+  });
+
+  it("nests providers without merging messages", () => {
+    render(
+      <TranslationsProvider
+        messages={{ greet: "Parent", parentOnly: "Parent" }}
+      >
+        <TranslationsProvider messages={{ greet: "Child" }}>
+          <>
+            <Greeting />
+            <ShowMessage k="parentOnly" />
+          </>
+        </TranslationsProvider>
+      </TranslationsProvider>
+    );
+
+    expect(screen.getByText("Child")).toBeInTheDocument();
+    expect(screen.getByText("parentOnly")).toBeInTheDocument();
   });
 });

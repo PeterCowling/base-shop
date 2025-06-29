@@ -1,4 +1,4 @@
-import { envSchema } from "@acme/config/env";
+import { envSchema } from "@config/env";
 import { spawnSync } from "node:child_process";
 
 try {

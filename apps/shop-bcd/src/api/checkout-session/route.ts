@@ -3,6 +3,7 @@
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { stripe } from "@/lib/stripeServer";
 import { priceForDays } from "@platform-core/pricing";
+import type { CartLine, CartState } from "@types";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -14,19 +15,8 @@ import type Stripe from "stripe";
  * Centralise type definitions under `src/types/` in your real code-base.
  * They are declared inline here for completeness.
  */
-interface CartSku {
-  id: string;
-  title: string;
-  deposit: number;
-}
-
-interface CartItem {
-  sku: CartSku;
-  qty: number;
-  size?: string;
-}
-
-type Cart = Record<string, CartItem>;
+type CartItem = CartLine;
+type Cart = CartState;
 
 /* ------------------------------------------------------------------ *
  *  Constants

@@ -11,6 +11,7 @@
 
     "paths": {
       "@platform-core/*": ["packages/platform-core/*"],
+      "@platform-core": ["packages/platform-core"],
       "@platform-machine/*": ["packages/platform-machine/*"],
       "@themes/*": ["packages/themes/*"],
       "@ui/*": ["packages/ui/*"],

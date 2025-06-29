@@ -6,5 +6,6 @@
     "rootDir": "src"
   },
   "include": ["src/**/*"],
-  "exclude": ["dist"]
+  "exclude": ["dist"],
+  "references": [{ "path": "../config" }]
 }

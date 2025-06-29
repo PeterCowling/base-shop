@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 export default function AccessDenied() {
   const searchParams = useSearchParams();
   const shop = searchParams.get("shop");
-  const href = shop ? `/cms/${shop}/products` : "/products";
+  const href = shop ? `/cms/shop/${shop}/products` : "/products";
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4">

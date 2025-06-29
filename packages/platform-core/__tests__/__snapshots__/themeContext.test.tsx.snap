@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ThemeContext matches snapshot on initial render 1`] = `
+<DocumentFragment>
+  <div>
+    Hello
+  </div>
+</DocumentFragment>
+`;

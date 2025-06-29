@@ -52,6 +52,11 @@ const config: Config = {
     "^@types/shared$": "<rootDir>/packages/types/src/index.ts",
     "^@types/shared/(.*)$": "<rootDir>/packages/types/src/$1",
     "^@types/(.*)$": "<rootDir>/src/types/$1",
+    "^react$": "<rootDir>/node_modules/react",
+    "^react-dom$": "<rootDir>/node_modules/react-dom",
+    "^react/jsx-runtime$": "<rootDir>/node_modules/react/jsx-runtime.js",
+    "^react/jsx-dev-runtime$":
+      "<rootDir>/node_modules/react/jsx-dev-runtime.js",
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
   },
 

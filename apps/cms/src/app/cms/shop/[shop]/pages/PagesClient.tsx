@@ -13,19 +13,28 @@ import { useState } from "react";
 interface Props {
   shop: string;
   initial: Page[];
+  canWrite: boolean;
 }
 
-export default function PagesClient({ shop, initial }: Props) {
+export default function PagesClient({ shop, initial, canWrite }: Props) {
   const [client] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={client}>
-      <Inner shop={shop} initial={initial} />
+      <Inner shop={shop} initial={initial} canWrite={canWrite} />
     </QueryClientProvider>
   );
 }
 
-function Inner({ shop, initial }: { shop: string; initial: Page[] }) {
+function Inner({
+  shop,
+  initial,
+  canWrite,
+}: {
+  shop: string;
+  initial: Page[];
+  canWrite: boolean;
+}) {
   const { data } = useSuspenseQuery<Page[]>({
     queryKey: ["pages", shop],
     queryFn: async () => {
@@ -36,5 +45,5 @@ function Inner({ shop, initial }: { shop: string; initial: Page[] }) {
     initialData: initial,
   });
 
-  return <PagesTable pages={data} />;
+  return <PagesTable shop={shop} pages={data} canWrite={canWrite} />;
 }

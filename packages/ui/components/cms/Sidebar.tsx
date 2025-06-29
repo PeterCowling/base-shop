@@ -41,6 +41,12 @@ export default function Sidebar({ role }: { role?: string }) {
             title: "Manage user roles",
           },
           {
+            href: "/account-requests",
+            label: "Account Requests",
+            icon: "📥",
+            title: "Approve new users",
+          },
+          {
             href: "/wizard",
             label: "Create Shop",
             icon: "🛍️",

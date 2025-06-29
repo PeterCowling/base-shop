@@ -1,6 +1,9 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/page.tsx
 
+import { canWrite } from "@auth";
+import { authOptions } from "@cms/auth/options";
 import { getPages } from "@platform-core/repositories/pages";
+import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 import PagesClient from "./PagesClient";
 
@@ -16,12 +19,16 @@ export default async function PagesPage({
   params: Promise<Params>;
 }) {
   const { shop } = await params;
-  const initial = await getPages(shop);
+  const [session, initial] = await Promise.all([
+    getServerSession(authOptions),
+    getPages(shop),
+  ]);
+  const writable = canWrite(session?.user.role);
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Pages – {shop}</h2>
       <Suspense fallback={<p>Loading pages…</p>}>
-        <PagesClient shop={shop} initial={initial} />
+        <PagesClient shop={shop} initial={initial} canWrite={writable} />
       </Suspense>
     </div>
   );

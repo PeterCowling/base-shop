@@ -23,6 +23,7 @@ const config: Config = {
         tsconfig: "<rootDir>/tsconfig.test.json",
         // compile to CommonJS so that the tests that call `require()` still work
         useESM: false,
+        diagnostics: false,
       },
     ],
   },
@@ -46,6 +47,8 @@ const config: Config = {
     "^@/i18n/(.*)$": "<rootDir>/packages/i18n/src/$1",
     "^@config/(.*)$": "<rootDir>/packages/config/$1",
     "^@types$": "<rootDir>/src/types",
+    "^@types/shared$": "<rootDir>/packages/types/src/index.ts",
+    "^@types/shared/(.*)$": "<rootDir>/packages/types/src/$1",
     "^@types/(.*)$": "<rootDir>/src/types/$1",
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
   },

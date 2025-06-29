@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/shop.json",
+  "title": "Shop",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "catalogFilters",
+    "themeId",
+    "themeTokens",
+    "filterMappings",
+    "priceOverrides",
+    "localeOverrides"
+  ],
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "catalogFilters": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "themeId": { "type": "string" },
+    "themeTokens": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "filterMappings": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "priceOverrides": {
+      "type": "object",
+      "additionalProperties": { "type": "number" }
+    },
+    "localeOverrides": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

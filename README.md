@@ -2,8 +2,15 @@
 
 # Base-Shop
 
-A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **React 19**.  
-The full technical roadmap is documented in [./IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md).
+Key points:
+
+- Stripe handles deposits via escrow sessions.
+- Inventory lives in JSON files under data/shops/\*/inventory.json.
+- Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
+- Return logistics options stored in data/return-logistics.json.
+- RBAC: ShopAdmin currently manages all shops.
+  A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **React 19**.  
+  The full technical roadmap is documented in [./IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md).
 
 ---
 

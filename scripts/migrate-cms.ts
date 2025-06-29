@@ -21,15 +21,15 @@ async function pushSchema(name: string, file: string): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  const root = join(
+  const base = join(
     __dirname,
     "..",
     "packages",
     "platform-core",
-    "repositories",
-    "pages"
+    "repositories"
   );
-  await pushSchema("page", join(root, "schema.json"));
+  await pushSchema("page", join(base, "pages", "schema.json"));
+  await pushSchema("shop", join(base, "shops", "schema.json"));
 }
 
 main().catch((err) => {

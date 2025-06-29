@@ -31,7 +31,8 @@
     "../i18n/*.json",
     "../../src/types/**/*.ts",
     "../../src/lib/**/*.ts",
-    "../../apps/cms/src/**/*"
+    "../../apps/cms/src/**/*",
+    "../themes/**/*.ts"
   ],
   "exclude": ["dist"]
 }

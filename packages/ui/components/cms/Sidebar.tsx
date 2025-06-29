@@ -12,22 +12,22 @@ export default function Sidebar({ role }: { role?: string }) {
   const links = [
     { href: shop ? `/shop/${shop}` : "", label: "Dashboard", icon: "📊" },
     {
-      href: shop ? `/products/shop/${shop}` : "/products",
+      href: shop ? `/shop/${shop}/products` : "/products",
       label: "Products",
       icon: "📦",
     },
     {
-      href: shop ? `/pages/shop/${shop}` : "/pages",
+      href: shop ? `/shop/${shop}/pages` : "/pages",
       label: "Pages",
       icon: "📄",
     },
     {
-      href: shop ? `/media/shop/${shop}` : "/media",
+      href: shop ? `/shop/${shop}/media` : "/media",
       label: "Media",
       icon: "🖼️",
     },
     {
-      href: shop ? `/settings/shop/${shop}` : "/settings",
+      href: shop ? `/shop/${shop}/settings` : "/settings",
       label: "Settings",
       icon: "⚙️",
     },
@@ -57,15 +57,11 @@ export default function Sidebar({ role }: { role?: string }) {
       <nav className="flex flex-col gap-1 px-2">
         {links.map(({ href, label, icon, title }) => {
           const fullHref = `/cms${href}`;
-          const altHref =
-            shop && href.includes(`/shop/${shop}`)
-              ? `/cms/shop/${shop}${href.replace(`/shop/${shop}`, "")}`
-              : null;
+
           const active =
             href === ""
               ? pathname === dashboardBase
-              : pathname.startsWith(fullHref) ||
-                (altHref ? pathname.startsWith(altHref) : false);
+              : pathname.startsWith(fullHref);
           return (
             <Link
               key={href}

@@ -40,7 +40,9 @@ describe("CMS error pages", () => {
   });
 
   it("renders the 403 Access denied page", () => {
-    mockSearch.mockReturnValue(new URLSearchParams());
+    mockSearch.mockReturnValue(
+      new URLSearchParams() as unknown as ReadonlyURLSearchParams
+    );
     render(<AccessDenied />);
     expect(screen.getByText(/403 – Access denied/)).toBeInTheDocument();
     expect(screen.getByText(/Back to catalogue/)).toBeInTheDocument();

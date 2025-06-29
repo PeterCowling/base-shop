@@ -4,7 +4,12 @@
     "jsx": "react-jsx",
     "importsNotUsedAsValues": "remove",
     "verbatimModuleSyntax": false,
-    "types": ["@cloudflare/workers-types", "node", "jest"]
+    "types": [
+      "@cloudflare/workers-types",
+      "node",
+      "jest",
+      "@testing-library/jest-dom"
+    ]
   },
   "include": ["jest.setup.ts", "test/**/*.ts", "test/**/*.tsx"],
   "exclude": ["test/e2e/**"]

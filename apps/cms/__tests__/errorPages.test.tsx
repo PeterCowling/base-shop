@@ -14,9 +14,11 @@ jest.mock("next/navigation", () => ({
 }));
 
 import { getToken as mockedGetToken } from "next-auth/jwt";
+import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 
-const getToken = mockedGetToken as jest.MockedFunction<GetTokenFn>;
+// 🔑  Use `typeof mockedGetToken`, no extra import-type alias needed
+const getToken = mockedGetToken as jest.MockedFunction<typeof mockedGetToken>;
 const mockSearch = useSearchParams as jest.MockedFunction<
   typeof useSearchParams
 >;

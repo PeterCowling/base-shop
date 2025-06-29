@@ -5,7 +5,7 @@
     "outDir": "dist",
     "rootDir": "../..",
     "rootDirs": ["./", "../platform-core", "../lib", "../../src"],
-    "baseUrl": ".",
+    "baseUrl": "../..",
     "paths": {
       "@platform-machine": ["."],
       "@platform-machine/*": ["*"]
@@ -17,5 +17,5 @@
     { "path": "../../src" }
   ],
   "include": ["**/*.ts", "**/*.tsx", "../../src/types/**/*.ts"],
-  "exclude": ["dist"]
+  "exclude": ["dist", "__tests__"]
 }

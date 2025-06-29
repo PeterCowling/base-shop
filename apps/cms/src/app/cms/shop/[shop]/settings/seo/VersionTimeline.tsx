@@ -34,6 +34,12 @@ export default function VersionTimeline({
   const [open, setOpen] = useState(false);
   const [history, setHistory] = useState<SettingsDiffEntry[]>([]);
 
+  async function handleRevert(timestamp: string) {
+    await revertSeo(shop, timestamp);
+    const next = await diffHistory(shop);
+    setHistory(next);
+  }
+
   useEffect(() => {
     if (open) {
       diffHistory(shop)
@@ -61,7 +67,7 @@ export default function VersionTimeline({
                     <Button
                       variant="outline"
                       className="h-8 px-2"
-                      onClick={() => revertSeo(shop, entry.timestamp)}
+                      onClick={() => handleRevert(entry.timestamp)}
                     >
                       Revert
                     </Button>

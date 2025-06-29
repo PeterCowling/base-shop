@@ -31,6 +31,15 @@ export default function Sidebar({ role }: { role?: string }) {
       label: "Settings",
       icon: "⚙️",
     },
+    ...(shop
+      ? [
+          {
+            href: `/shop/${shop}/settings/seo`,
+            label: "SEO",
+            icon: "🔍",
+          },
+        ]
+      : []),
     { href: "/live", label: "Live", icon: "🌐" },
     ...(role === "admin"
       ? [

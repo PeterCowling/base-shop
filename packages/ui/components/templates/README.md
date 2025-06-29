@@ -2,8 +2,10 @@
 
 Shared page-level layouts used across apps. Currently includes:
 
-- `AppShell` – flex layout with slots for header, side navigation and footer.
-- `DashboardTemplate` – basic stats overview.
+- `AppShell` – flex layout with slots for header, side navigation and footer. It
+  automatically wraps children with `LayoutProvider` so breadcrumbs and mobile
+  navigation state are available via `useLayout()`.
+  - `DashboardTemplate` – basic stats overview.
 - `AnalyticsDashboardTemplate` – stats, line chart and table for dashboards.
 - `ProductGalleryTemplate` – grid or carousel listing of products.
 - `ProductDetailTemplate` – hero-style view for a single product.

@@ -3,8 +3,10 @@
   "private": true,
   "type": "module",
   "version": "0.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./index.ts"
+    ".": "./dist/index.js"
   },
   "devDependencies": {
     "next": "^15.3.4"

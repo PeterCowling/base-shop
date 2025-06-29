@@ -4,7 +4,19 @@
     "outDir": "../dist-scripts",
     "composite": true,
     "rootDir": "./",
-    "rootDirs": ["./", "../packages/types/src"]
+    "rootDirs": [
+      "./",
+      "../packages/types/src",
+      "../packages/platform-core",
+      "../packages/lib",
+      "../src"
+    ]
   },
-  "include": ["*.ts"]
+  "references": [
+    { "path": "../packages/platform-core" },
+    { "path": "../packages/lib" },
+    { "path": "../src" }
+  ],
+  "include": ["*.ts", "../src/types/**/*.ts"],
+  "exclude": ["../dist-scripts"]
 }

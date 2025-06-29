@@ -26,6 +26,12 @@ function generateStaticCss(map: TokenMap): string {
       css += `    ${name}: ${defs.dark};\n`;
     }
     css += "  }\n}\n";
+
+    css += "html.theme-dark {\n";
+    for (const [name, defs] of darkEntries) {
+      css += `  ${name}: ${defs.dark};\n`;
+    }
+    css += "}\n";
   }
   return css;
 }
@@ -53,6 +59,13 @@ function generateDynamicCss(map: TokenMap): string {
       css += `    ${name}: var(${varName}, ${defs.dark});\n`;
     }
     css += "  }\n}\n";
+
+    css += "html.theme-dark {\n";
+    for (const [name, defs] of darkEntries) {
+      const varName = `--token-${name.slice(2)}-dark`;
+      css += `  ${name}: var(${varName}, ${defs.dark});\n`;
+    }
+    css += "}\n";
   }
   return css;
 }

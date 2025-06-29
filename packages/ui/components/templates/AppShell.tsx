@@ -1,4 +1,8 @@
+"use client";
+
+import { LayoutProvider, useLayout } from "@platform-core";
 import * as React from "react";
+
 import { cn } from "../../utils/cn";
 
 export interface AppShellProps {
@@ -9,13 +13,15 @@ export interface AppShellProps {
   className?: string;
 }
 
-export function AppShell({
+function ShellLayout({
   header,
   sideNav,
   footer,
   children,
   className,
 }: AppShellProps) {
+  const { isMobileNavOpen } = useLayout();
+
   return (
     <div className={cn("flex min-h-screen flex-col", className)}>
       {header}
@@ -25,5 +31,13 @@ export function AppShell({
       </div>
       {footer}
     </div>
+  );
+}
+
+export function AppShell(props: AppShellProps) {
+  return (
+    <LayoutProvider>
+      <ShellLayout {...props} />
+    </LayoutProvider>
   );
 }

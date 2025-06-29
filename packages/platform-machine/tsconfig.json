@@ -2,7 +2,20 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "../..",
+    "rootDirs": ["./", "../platform-core", "../lib", "../../src"],
+    "baseUrl": ".",
+    "paths": {
+      "@platform-machine": ["."],
+      "@platform-machine/*": ["*"]
+    }
   },
-  "include": ["**/*.ts", "**/*.tsx"]
+  "references": [
+    { "path": "../platform-core" },
+    { "path": "../lib" },
+    { "path": "../../src" }
+  ],
+  "include": ["**/*.ts", "**/*.tsx", "../../src/types/**/*.ts"],
+  "exclude": ["dist"]
 }

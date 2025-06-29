@@ -39,6 +39,7 @@ const config: Config = {
     "^@cms/(.*)$": "<rootDir>/apps/cms/src/$1",
     "^@lib/(.*)$": "<rootDir>/packages/lib/$1",
     "^@auth/(.*)$": "<rootDir>/packages/auth/src/$1",
+    "^@/lib/stripeServer$": "<rootDir>/packages/lib/stripeServer.ts",
     "^@/lib/(.*)$": "<rootDir>/packages/platform-core/$1",
     "^@/contexts/(.*)$": "<rootDir>/packages/platform-core/contexts/$1",
     "^@/components/(.*)$": "<rootDir>/packages/ui/components/$1",

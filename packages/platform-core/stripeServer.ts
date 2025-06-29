@@ -1,1 +1,1 @@
-export { stripe } from "../lib/stripeServer";
+export { stripe } from "@lib/stripeServer";

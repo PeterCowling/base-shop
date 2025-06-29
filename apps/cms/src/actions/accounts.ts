@@ -38,13 +38,13 @@ export async function approveAccount(formData: FormData): Promise<void> {
   if (!user) throw new Error("pending user not found");
 
   const db = await readRbac();
-  db.users[key] = {
-    id: key,
+  db.users[user.id] = {
+    id: user.id,
     name: user.name,
     email: user.email,
     password: user.password,
   } satisfies CmsUser;
-  db.roles[key] = roles.length <= 1 ? (roles[0] as Role) : roles;
+  db.roles[user.id] = roles.length <= 1 ? (roles[0] as Role) : roles;
   await writeRbac(db);
   delete PENDING_USERS[id];
   await sendEmail(

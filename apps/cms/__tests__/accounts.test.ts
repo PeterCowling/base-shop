@@ -54,11 +54,12 @@ describe("account actions", () => {
 
   it("approveAccount transfers user and sends email", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("../../src/lib/email", () => ({ __esModule: true, sendEmail }));
-
+    jest.doMock("../../../src/lib/email", () => ({
+      __esModule: true,
+      sendEmail,
+    }));
     const actions = await import("../src/actions/accounts");
-    const { USERS } = await import("../src/auth/users");
-    const { USER_ROLES } = await import("../src/auth/roles");
+    const { readRbac } = await import("../src/lib/rbacStore");
 
     await actions.requestAccount(
       fd({
@@ -75,16 +76,19 @@ describe("account actions", () => {
 
     await actions.approveAccount(approve);
 
-    expect(USERS[user.id].email).toBe("c@example.com");
-    expect(USER_ROLES[user.id]).toBe("admin");
+    const db = await readRbac();
+    expect(db.users[user.id].email).toBe("c@example.com");
+    expect(db.roles[user.id]).toBe("admin");
     expect(await actions.listPendingUsers()).toHaveLength(0);
     expect(sendEmail).toHaveBeenCalled();
   });
 
   it("approveAccount throws for unknown ID", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("../../src/lib/email", () => ({ __esModule: true, sendEmail }));
-
+    jest.doMock("../../../src/lib/email", () => ({
+      __esModule: true,
+      sendEmail,
+    }));
     const actions = await import("../src/actions/accounts");
     const fdUnknown = fd({ id: "missing" });
     fdUnknown.append("roles", "viewer");

@@ -1,10 +1,10 @@
-import { stripe } from "@/lib/stripeServer";
+import { readdir } from "node:fs/promises";
+import { join } from "node:path";
+import { stripe } from "../lib/stripeServer";
 import {
   markRefunded,
   readOrders,
-} from "@platform-core/repositories/rentalOrders";
-import { readdir } from "node:fs/promises";
-import { join } from "node:path";
+} from "../platform-core/repositories/rentalOrders";
 
 export async function releaseDepositsOnce(): Promise<void> {
   const shopsDir = join(process.cwd(), "data", "shops");

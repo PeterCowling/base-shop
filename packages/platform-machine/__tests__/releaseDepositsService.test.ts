@@ -63,6 +63,47 @@ describe("releaseDepositsOnce", () => {
     expect(markRefunded).toHaveBeenCalledWith("shop1", "sess1");
     expect(markRefunded).toHaveBeenCalledWith("shop1", "sess2");
   });
+
+  it("handles multiple shops", async () => {
+    service = await import("../releaseDepositsService");
+    readdir.mockResolvedValue(["shop1", "shop2"]);
+    readOrders
+      .mockResolvedValueOnce([
+        {
+          sessionId: "s1",
+          returnedAt: "now",
+          deposit: 10,
+        },
+        {
+          sessionId: "s2",
+          deposit: 5,
+        },
+      ])
+      .mockResolvedValueOnce([
+        {
+          sessionId: "s3",
+          returnedAt: "now",
+          deposit: 5,
+        },
+      ]);
+    retrieve.mockResolvedValue({ payment_intent: "pi_1" });
+
+    await service.releaseDepositsOnce();
+
+    expect(retrieve).toHaveBeenCalledTimes(2);
+    expect(createRefund).toHaveBeenCalledTimes(2);
+    expect(createRefund).toHaveBeenNthCalledWith(1, {
+      payment_intent: "pi_1",
+      amount: 1000,
+    });
+    expect(createRefund).toHaveBeenNthCalledWith(2, {
+      payment_intent: "pi_1",
+      amount: 500,
+    });
+    expect(markRefunded).toHaveBeenCalledTimes(2);
+    expect(markRefunded).toHaveBeenNthCalledWith(1, "shop1", "s1");
+    expect(markRefunded).toHaveBeenNthCalledWith(2, "shop2", "s3");
+  });
 });
 
 describe("startDepositReleaseService", () => {

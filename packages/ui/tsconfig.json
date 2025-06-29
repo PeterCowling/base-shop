@@ -12,7 +12,9 @@
       "hooks",
       "../platform-core",
       "../i18n",
-      "../types"
+      "../types",
+      "../cms/src",
+      "../../apps/cms/src"
     ]
   },
 
@@ -28,7 +30,13 @@
     "hooks/**/*",
     "utils/**/*",
     "../i18n/*.json",
-    "../themes/**/*.ts"
+    "../themes/**/*.ts",
+    "../../apps/cms/src/actions/**/*.ts",
+    "../cms/src/actions/**/*",
+    "../cms/src/auth/**/*",
+    "../cms/src/types/**/*",
+    "../../src/**/*.ts",
+    "../../apps/cms/src/**/*"
   ],
   "exclude": ["dist"]
 }

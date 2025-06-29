@@ -5,6 +5,7 @@ import { readSettings, readShop } from "@platform-core/repositories/json";
 import type { Locale } from "@types";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 const ShopEditor = dynamic(() => import("./ShopEditor"));
 void ShopEditor;
@@ -31,6 +32,14 @@ export default async function SettingsPage({
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Settings – {shop}</h2>
+      <p className="mb-4 text-sm">
+        <Link
+          href={`/cms/shop/${shop}/settings/seo`}
+          className="text-primary underline"
+        >
+          SEO settings
+        </Link>
+      </p>
       <h3 className="mt-4 font-medium">Languages</h3>
       <ul className="mt-2 list-disc pl-5 text-sm">
         {settings.languages.map((l: Locale) => (

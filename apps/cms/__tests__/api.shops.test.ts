@@ -16,7 +16,9 @@ describe("shops API", () => {
     (process.env as Record<string, string>).NODE_ENV = "development";
     jest.doMock("../src/app/cms/listShops", () => ({
       __esModule: true,
-      listShops: jest.fn().mockResolvedValue(["shop-a", "shop-b"]),
+      listShops: jest
+        .fn<Promise<string[]>, []>()
+        .mockResolvedValue(["shop-a", "shop-b"]),
     }));
 
     const { GET } = await import("../src/app/api/shops/route");

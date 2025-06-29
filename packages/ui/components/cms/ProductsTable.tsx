@@ -138,7 +138,7 @@ function ProductsTableBase({ shop, rows, isAdmin }: Props): ReactElement {
         render: (p) => (
           <div className="flex flex-wrap gap-2">
             <Link
-              href={`/cms/${shop}/products/${p.id}/edit`}
+              href={`/cms/shop/${shop}/products/${p.id}/edit`}
               className="bg-primary hover:bg-primary/90 rounded px-2 py-1 text-xs text-white"
             >
               Edit

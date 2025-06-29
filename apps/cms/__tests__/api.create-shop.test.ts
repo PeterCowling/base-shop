@@ -51,8 +51,6 @@ describe("create-shop API", () => {
     (process.env as Record<string, string>).NODE_ENV = prevEnv as string;
   });
 });
-apps / cms / __tests__ / api.publish - locations.test.ts;
-New + 42 - 0;
 
 // polyfill Response.json for JSDOM
 if (typeof (Response as any).json !== "function") {

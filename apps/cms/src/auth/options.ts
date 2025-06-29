@@ -3,8 +3,8 @@
 import bcrypt from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { USER_ROLES, type Role } from "./roles";
-import { USERS } from "./users";
+import { readRbac } from "../lib/rbacStore";
+import type { Role } from "./roles";
 
 /* -----------------------------------------------------------------
  *  Ensure NEXTAUTH_SECRET is defined outside of development
@@ -34,7 +34,8 @@ export const authOptions: NextAuthOptions = {
 
         if (!credentials) return null;
 
-        const user = Object.values(USERS).find(
+        const { users, roles } = await readRbac();
+        const user = Object.values(users).find(
           (u) => u.email === credentials.email
         );
 
@@ -49,7 +50,7 @@ export const authOptions: NextAuthOptions = {
           /* Strip password before handing the user object to NextAuth */
           const { password: _password, ...safeUser } = user;
           void _password;
-          const r = USER_ROLES[user.id];
+          const r = roles[user.id];
           const role = Array.isArray(r) ? r[0] : r;
           console.log("[auth] login success", { id: user.id, role });
 

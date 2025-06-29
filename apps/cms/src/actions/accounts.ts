@@ -2,11 +2,12 @@
 
 "use server";
 
-import { USER_ROLES, type Role } from "@cms/auth/roles";
-import { USERS, type CmsUser } from "@cms/auth/users";
+import type { Role } from "@cms/auth/roles";
+import type { CmsUser } from "@cms/auth/users";
 import bcrypt from "bcryptjs";
 import { ulid } from "ulid";
 import { sendEmail } from "../../../../src/lib/email";
+import { readRbac, writeRbac } from "../lib/rbacStore";
 
 export interface PendingUser {
   id: string;
@@ -36,14 +37,15 @@ export async function approveAccount(formData: FormData): Promise<void> {
   const user = PENDING_USERS[id];
   if (!user) throw new Error("pending user not found");
 
-  const key = id;
-  USERS[key] = {
+  const db = await readRbac();
+  db.users[key] = {
     id: key,
     name: user.name,
     email: user.email,
     password: user.password,
   } satisfies CmsUser;
-  USER_ROLES[key] = roles.length <= 1 ? (roles[0] as Role) : roles;
+  db.roles[key] = roles.length <= 1 ? (roles[0] as Role) : roles;
+  await writeRbac(db);
   delete PENDING_USERS[id];
   await sendEmail(
     user.email,

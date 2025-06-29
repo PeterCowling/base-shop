@@ -3,7 +3,7 @@ import { Button } from "@/components/atoms-shadcn";
 import { approveAccount, listPendingUsers } from "@cms/actions/accounts";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
-import { USERS } from "@cms/auth/users";
+import { readRbac } from "@cms/lib/rbacStore";
 import type { StatItem } from "@ui/components/organisms/StatsGrid";
 import { DashboardTemplate } from "@ui/components/templates";
 import type { Metadata } from "next";
@@ -68,8 +68,10 @@ async function collectStats(): Promise<Stats> {
     })
   );
 
+  const { users: usersMap } = await readRbac();
+
   return {
-    users: Object.keys(USERS).length,
+    users: Object.keys(usersMap).length,
     shops: shops.length,
     products: productCount,
   };

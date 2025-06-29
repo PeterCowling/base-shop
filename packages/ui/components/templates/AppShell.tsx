@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutProvider, useLayout } from "@platform-core";
+import { LayoutProvider, ThemeProvider, useLayout } from "@platform-core";
 import * as React from "react";
 
 import { cn } from "../../utils/cn";
@@ -36,8 +36,10 @@ function ShellLayout({
 
 export function AppShell(props: AppShellProps) {
   return (
-    <LayoutProvider>
-      <ShellLayout {...props} />
-    </LayoutProvider>
+    <ThemeProvider>
+      <LayoutProvider>
+        <ShellLayout {...props} />
+      </LayoutProvider>
+    </ThemeProvider>
   );
 }

@@ -4,6 +4,7 @@ import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { stripe } from "@/lib/stripeServer";
 import { priceForDays } from "@platform-core/pricing";
 
+import type { CartLine, CartState } from "@types";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -11,19 +12,8 @@ import type Stripe from "stripe";
  *  Types
  * ------------------------------------------------------------------ */
 
-interface CartSku {
-  id: string;
-  title: string;
-  deposit: number;
-}
-
-interface CartItem {
-  sku: CartSku;
-  qty: number;
-  size?: string;
-}
-
-type Cart = Record<string, CartItem>;
+type CartItem = CartLine;
+type Cart = CartState;
 
 /* ------------------------------------------------------------------ *
  *  Helpers
@@ -111,7 +101,7 @@ export const runtime = "edge";
 export async function POST(req: NextRequest): Promise<NextResponse> {
   /* 1️⃣ Decode cart cookie -------------------------------------------------- */
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(rawCookie) as Cart;
+  const cart = decodeCartCookie(rawCookie);
 
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });

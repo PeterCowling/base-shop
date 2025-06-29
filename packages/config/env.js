@@ -12,5 +12,7 @@ exports.envSchema = zod_1.z.object({
     NEXT_PUBLIC_PHASE: zod_1.z.string().optional(),
     NEXT_PUBLIC_DEFAULT_SHOP: zod_1.z.string().optional(),
     NEXT_PUBLIC_SHOP_ID: zod_1.z.string().optional(),
+    GMAIL_USER: zod_1.z.string().optional(),
+    GMAIL_PASS: zod_1.z.string().optional(),
 });
 exports.env = exports.envSchema.parse(process.env);

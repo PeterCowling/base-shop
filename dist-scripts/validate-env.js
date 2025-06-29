@@ -1,9 +1,11 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var env_1 = require("@acme/config/env");
 try {
-  env_1.envSchema.parse(process.env);
-  console.log("Environment variables look valid.");
-} catch (err) {
-  console.error("Invalid environment variables:\n", err);
-  process.exit(1);
+    env_1.envSchema.parse(process.env);
+    console.log("Environment variables look valid.");
+}
+catch (err) {
+    console.error("Invalid environment variables:\n", err);
+    process.exit(1);
 }

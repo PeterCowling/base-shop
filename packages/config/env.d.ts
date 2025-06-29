@@ -9,6 +9,8 @@ export declare const envSchema: z.ZodObject<{
     NEXT_PUBLIC_PHASE: z.ZodOptional<z.ZodString>;
     NEXT_PUBLIC_DEFAULT_SHOP: z.ZodOptional<z.ZodString>;
     NEXT_PUBLIC_SHOP_ID: z.ZodOptional<z.ZodString>;
+    GMAIL_USER: z.ZodOptional<z.ZodString>;
+    GMAIL_PASS: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     STRIPE_SECRET_KEY?: string;
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?: string;
@@ -19,6 +21,8 @@ export declare const envSchema: z.ZodObject<{
     NEXT_PUBLIC_PHASE?: string;
     NEXT_PUBLIC_DEFAULT_SHOP?: string;
     NEXT_PUBLIC_SHOP_ID?: string;
+    GMAIL_USER?: string;
+    GMAIL_PASS?: string;
 }, {
     STRIPE_SECRET_KEY?: string;
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY?: string;
@@ -29,6 +33,8 @@ export declare const envSchema: z.ZodObject<{
     NEXT_PUBLIC_PHASE?: string;
     NEXT_PUBLIC_DEFAULT_SHOP?: string;
     NEXT_PUBLIC_SHOP_ID?: string;
+    GMAIL_USER?: string;
+    GMAIL_PASS?: string;
 }>;
 export declare const env: {
     STRIPE_SECRET_KEY?: string;
@@ -40,5 +46,7 @@ export declare const env: {
     NEXT_PUBLIC_PHASE?: string;
     NEXT_PUBLIC_DEFAULT_SHOP?: string;
     NEXT_PUBLIC_SHOP_ID?: string;
+    GMAIL_USER?: string;
+    GMAIL_PASS?: string;
 };
 export type Env = z.infer<typeof envSchema>;

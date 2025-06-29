@@ -20,3 +20,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // part of the current compilation unit, avoiding rootDir errors in packages
 // that consume these types.
 __exportStar(require("../../packages/types/dist"), exports);
+__exportStar(require("../../packages/types/dist/index"), exports);
+__exportStar(require("../../packages/types/src"), exports);

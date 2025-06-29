@@ -112,3 +112,22 @@ test("requests new session when return date changes", async () => {
   await waitFor(() => expect(calls).toHaveLength(2));
   expect(calls[1].returnDate).toBe("2025-12-25");
 });
+
+test("default return date is 7 days ahead", async () => {
+  server.use(
+    rest.post("/api/checkout-session", (_req, res, ctx) =>
+      res(ctx.json({ clientSecret: "cs", sessionId: "sess" }))
+    )
+  );
+
+  const expected = (() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 7);
+    return d.toISOString().slice(0, 10);
+  })();
+
+  render(<CheckoutForm locale="en" />);
+  await screen.findByTestId("payment-element");
+  const input = screen.getByLabelText(/checkout\.return/i) as HTMLInputElement;
+  expect(input.value).toBe(expected);
+});

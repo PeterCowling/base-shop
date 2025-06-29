@@ -12,8 +12,7 @@
       "hooks",
       "../platform-core",
       "../i18n",
-      "../types",
-      "../../apps/cms/src"
+      "../types"
     ]
   },
 
@@ -29,9 +28,6 @@
     "hooks/**/*",
     "utils/**/*",
     "../i18n/*.json",
-    "../../src/types/**/*.ts",
-    "../../src/lib/**/*.ts",
-    "../../apps/cms/src/**/*",
     "../themes/**/*.ts"
   ],
   "exclude": ["dist"]

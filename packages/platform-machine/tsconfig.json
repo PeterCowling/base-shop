@@ -19,6 +19,6 @@
     { "path": "../lib" },
     { "path": "../../src" }
   ],
-  "include": ["**/*.ts", "**/*.tsx", "../../src/types/**/*.ts"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["dist", "__tests__"]
 }

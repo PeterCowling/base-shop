@@ -47,9 +47,8 @@
     }
   },
 
-  /*  👇  ALSO new: explicitly include the shared `src/types` tree so
-   *       the files are part of this *composite* project.               */
-  "include": ["**/*.ts", "**/*.tsx", "../../src/types/**/*.ts"],
+  //*  Include package sources */
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["__tests__", "dist"],
 
   /*  👇  Finally: declare the `src` composite project as a dependency

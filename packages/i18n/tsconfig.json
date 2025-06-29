@@ -14,8 +14,7 @@
     "src/Translations.d.ts",
     "src/Translations.tsx",
     "src/locales.d.ts",
-    "src/locales.ts",
-    "../../src/types/**/*.ts"
+    "src/locales.ts"
   ],
   "exclude": ["dist"],
   "references": [{ "path": "../../src" }]

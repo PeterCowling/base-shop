@@ -10,6 +10,6 @@
     "moduleResolution": "node"
   },
   "references": [{ "path": "../config" }, { "path": "../../src" }],
-  "include": ["stripeServer.ts", "../../src/types/**/*.ts"],
+  "include": ["stripeServer.ts"],
   "exclude": ["dist", "__tests__"]
 }

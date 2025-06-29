@@ -1,4 +1,12 @@
+import { envSchema } from "@acme/config/env";
 import { spawnSync } from "node:child_process";
+
+try {
+  envSchema.parse(process.env);
+} catch (err) {
+  console.error("Invalid environment variables:\n", err);
+  process.exit(1);
+}
 
 const [, , cmd] = process.argv;
 

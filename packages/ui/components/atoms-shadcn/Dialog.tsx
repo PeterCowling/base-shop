@@ -8,4 +8,4 @@ export {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
-} from "../atoms-shim/Dialog";
+} from "../ui/dialog";

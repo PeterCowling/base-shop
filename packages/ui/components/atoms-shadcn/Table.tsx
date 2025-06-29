@@ -5,4 +5,4 @@ export {
   TableHead,
   TableHeader,
   TableRow,
-} from "../atoms-shim/Table";
+} from "../ui/table";

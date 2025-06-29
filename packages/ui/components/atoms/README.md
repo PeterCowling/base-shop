@@ -6,6 +6,15 @@ Shadcn-based primitives live in a sibling directory named `atoms-shadcn`. These 
 
 ```ts
 import { Button } from "@/components/atoms-shadcn";
+
+```
+
+If you need an in-house atom alongside a shadcn wrapper, alias the
+wrapper so its origin is obvious:
+
+```ts
+import { Button } from "@/components/atoms";
+import { Button as ShButton } from "@/components/atoms-shadcn";
 ```
 
 In-house atoms continue to live in this folder.

@@ -1,1 +1,1 @@
-export { Card, CardContent } from "../atoms-shim/Card";
+export { Card, CardContent } from "../ui/card";

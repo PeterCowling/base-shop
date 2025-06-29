@@ -8,6 +8,14 @@ Import from this directory to make it clear the component originates from shadcn
 import { Button, Input } from "@/components/atoms-shadcn";
 ```
 
+When using both the shadcn wrapper and an in-house atom of the same
+name, alias the shadcn import so the distinction remains clear:
+
+```ts
+import { Button } from "@/components/atoms";
+import { Button as ShButton } from "@/components/atoms-shadcn";
+```
+
 Available components:
 
 - `Button`
@@ -18,3 +26,6 @@ Available components:
 - `Select`
 - `Table`
 - `Textarea`
+
+Run `pnpm shadcn:diff` after upgrading `@shadcn/ui` to check for
+upstream changes.

@@ -7,4 +7,4 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "../atoms-shim/Select";
+} from "../ui/select";

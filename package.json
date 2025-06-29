@@ -35,7 +35,9 @@
     "provision-cms": "pnpm run create-shop && pnpm run build:tokens",
     "cms:migrate": "ts-node scripts/migrate-cms.ts",
     "deposit-service": "ts-node packages/platform-machine/releaseDepositsService.ts",
-    "lh:checkout": "lighthouse http://localhost:3000/en/checkout --chrome-flags=\"--headless\" --only-categories=performance,accessibility,best-practices,seo --preset=desktop"
+    "lh:checkout": "lighthouse http://localhost:3000/en/checkout --chrome-flags=\"--headless\" --only-categories=performance,accessibility,best-practices,seo --preset=desktop",
+    "validate-env": "ts-node scripts/validate-env.ts",
+    "shadcn:diff": "ts-node scripts/diff-shadcn.ts"
   },
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.12",

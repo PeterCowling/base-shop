@@ -1,1 +1,1 @@
-export { Textarea, type TextareaProps } from "../atoms-shim/Textarea";
+export { Textarea, type TextareaProps } from "../ui/textarea";

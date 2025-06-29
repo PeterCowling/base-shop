@@ -50,6 +50,29 @@ house. The `atoms-shadcn` index currently exposes wrappers for
 `Button`, `Input`, `Card`, `Checkbox`, `Dialog`, `Select`, `Table` and
 `Textarea`.
 
+### Naming conventions
+
+The component names exported from `atoms-shadcn` mirror their shadcn/ui
+counterparts. When using a shadcn wrapper alongside an in‑house atom of
+the same name, alias the import to keep the origin obvious:
+
+```ts
+import { Button } from "@/components/atoms";
+import { Button as ShButton } from "@/components/atoms-shadcn";
+```
+
+This avoids confusion for new contributors while keeping the API
+surface close to upstream shadcn/ui.
+
+### Keeping shadcn wrappers in sync
+
+A helper script checks our wrappers against the upstream package.
+Run it after updating `@shadcn/ui`:
+
+```bash
+pnpm shadcn:diff
+```
+
 ## Allowed import flow
 
 Imports must always follow the direction of the arrows in the diagram below:

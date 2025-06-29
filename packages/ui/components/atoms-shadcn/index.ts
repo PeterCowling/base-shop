@@ -1,5 +1,5 @@
-export { Card, CardContent } from "../atoms-shim/Card";
-export { Checkbox, type CheckboxProps } from "../atoms-shim/Checkbox";
+export { Card, CardContent } from "../ui/card";
+export { Checkbox, type CheckboxProps } from "../ui/checkbox";
 export {
   Dialog,
   DialogContent,
@@ -10,8 +10,8 @@ export {
   DialogPortal,
   DialogTitle,
   DialogTrigger,
-} from "../atoms-shim/Dialog";
-export { Input, type InputProps } from "../atoms-shim/Input";
+} from "../ui/dialog";
+export { Input, type InputProps } from "../ui/input";
 export {
   Select,
   SelectContent,
@@ -21,7 +21,7 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "../atoms-shim/Select";
+} from "../ui/select";
 export {
   Table,
   TableBody,
@@ -29,6 +29,6 @@ export {
   TableHead,
   TableHeader,
   TableRow,
-} from "../atoms-shim/Table";
-export { Textarea, type TextareaProps } from "../atoms-shim/Textarea";
+} from "../ui/table";
+export { Textarea, type TextareaProps } from "../ui/textarea";
 export { Button, type ButtonProps } from "./Button";

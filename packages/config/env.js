@@ -1,18 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.env = exports.envSchema = void 0;
-var zod_1 = require("zod");
-exports.envSchema = zod_1.z.object({
-    STRIPE_SECRET_KEY: zod_1.z.string(),
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: zod_1.z.string(),
-    NEXTAUTH_SECRET: zod_1.z.string().optional(),
-    PREVIEW_TOKEN_SECRET: zod_1.z.string().optional(),
-    NODE_ENV: zod_1.z.string().optional(),
-    OUTPUT_EXPORT: zod_1.z.string().optional(),
-    NEXT_PUBLIC_PHASE: zod_1.z.string().optional(),
-    NEXT_PUBLIC_DEFAULT_SHOP: zod_1.z.string().optional(),
-    NEXT_PUBLIC_SHOP_ID: zod_1.z.string().optional(),
-    GMAIL_USER: zod_1.z.string().optional(),
-    GMAIL_PASS: zod_1.z.string().optional(),
+import { z } from "zod";
+
+export const envSchema = z.object({
+  STRIPE_SECRET_KEY: z.string(),
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
+  NEXTAUTH_SECRET: z.string().optional(),
+  PREVIEW_TOKEN_SECRET: z.string().optional(),
+  NODE_ENV: z.string().optional(),
+  OUTPUT_EXPORT: z.string().optional(),
+  NEXT_PUBLIC_PHASE: z.string().optional(),
+  NEXT_PUBLIC_DEFAULT_SHOP: z.string().optional(),
+  NEXT_PUBLIC_SHOP_ID: z.string().optional(),
+  GMAIL_USER: z.string().optional(),
+  GMAIL_PASS: z.string().optional(),
 });
-exports.env = exports.envSchema.parse(process.env);
+
+export const env = envSchema.parse(process.env);

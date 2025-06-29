@@ -5,5 +5,8 @@
   "type": "module",
   "exports": {
     ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "jest --config ../../jest.config.ts"
   }
 }

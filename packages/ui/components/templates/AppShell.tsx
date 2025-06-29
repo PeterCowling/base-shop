@@ -26,7 +26,7 @@ function ShellLayout({
     <div className={cn("flex min-h-screen flex-col", className)}>
       {header}
       <div className="flex flex-1">
-        {sideNav}
+        {isMobileNavOpen && sideNav}
         <main className="flex-1">{children}</main>
       </div>
       {footer}

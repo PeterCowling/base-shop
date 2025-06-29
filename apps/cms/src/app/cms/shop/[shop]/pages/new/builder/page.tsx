@@ -1,6 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/new/builder/page.tsx
 
 import { createPage } from "@cms/actions/pages";
+import type { Page } from "@types";
 import dynamic from "next/dynamic";
 
 const PageBuilder = dynamic(() => import("@/components/cms/PageBuilder"));
@@ -19,7 +20,7 @@ export default async function NewPageBuilderRoute({
 }) {
   const { shop } = await params;
 
-  const blank = {
+  const blank: Page = {
     id: "",
     slug: "",
     status: "draft",
@@ -28,7 +29,7 @@ export default async function NewPageBuilderRoute({
     createdAt: "",
     updatedAt: "",
     createdBy: "",
-  } as const;
+  };
 
   async function save(formData: FormData) {
     "use server";

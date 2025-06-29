@@ -2,5 +2,6 @@
 
 export * from "./contexts/CurrencyContext";
 export * from "./contexts/LayoutContext";
+export * from "./pricing";
 export * from "./products";
 export * from "./shops";

@@ -24,10 +24,13 @@ export async function releaseDepositsOnce(): Promise<void> {
             ? session.payment_intent
             : session.payment_intent?.id;
         if (!pi) continue;
-        await stripe.refunds.create({
-          payment_intent: pi,
-          amount: order.deposit * 100,
-        });
+        const refund = Math.max(order.deposit - (order.damageFee ?? 0), 0);
+        if (refund > 0) {
+          await stripe.refunds.create({
+            payment_intent: pi,
+            amount: refund * 100,
+          });
+        }
         await markRefunded(shop, order.sessionId);
         console.log(`refunded deposit for ${order.sessionId} (${shop})`);
       }

@@ -2,6 +2,8 @@
 
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { stripe } from "@/lib/stripeServer";
+import { priceForDays } from "@platform-core/pricing";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
@@ -27,21 +29,22 @@ export async function POST(req: NextRequest) {
   }
 
   // 2. Build Stripe line items
-  const line_items = Object.values(cart).flatMap((l) => [
-    {
-      price_data: {
-        currency: "eur",
-        unit_amount: l.sku.price * rentalDays * 100,
-        product_data: {
-          name: l.size ? `${l.sku.title} (${l.size})` : l.sku.title,
+  const line_items = await Promise.all(
+    Object.values(cart).flatMap(async (l) => [
+      {
+        price_data: {
+          currency: "eur",
+          unit_amount: (await priceForDays(l.sku, rentalDays)) * 100,
+          product_data: {
+            name: l.size ? `${l.sku.title} (${l.size})` : l.sku.title,
+          },
         },
+        quantity: l.qty,
       },
-      quantity: l.qty,
-    },
-    {
-      price_data: {
-        currency: "eur",
-        unit_amount: l.sku.deposit * 100,
+        {
+        price_data: {
+          currency: "eur",
+          unit_amount: l.sku.deposit * 100,
         product_data: {
           name: l.size
             ? `${l.sku.title} (${l.size}) deposit`

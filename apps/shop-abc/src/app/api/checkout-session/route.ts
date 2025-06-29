@@ -1,79 +1,144 @@
 // apps/shop-abc/src/app/api/checkout-session/route.ts
+
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { stripe } from "@/lib/stripeServer";
+import { priceForDays } from "@platform-core/pricing";
+
 import { NextRequest, NextResponse } from "next/server";
+import type Stripe from "stripe";
+
+/* ------------------------------------------------------------------ *
+ *  Types
+ * ------------------------------------------------------------------ */
+
+interface CartSku {
+  id: string;
+  title: string;
+  deposit: number;
+}
+
+interface CartItem {
+  sku: CartSku;
+  qty: number;
+  size?: string;
+}
+
+type Cart = Record<string, CartItem>;
+
+/* ------------------------------------------------------------------ *
+ *  Helpers
+ * ------------------------------------------------------------------ */
+
+/**
+ * Calculate the number of rental days between “now” and `returnDate`
+ * (inclusive). Returns `1` when `returnDate` is missing or in the past.
+ */
+const calculateRentalDays = (returnDate?: string): number => {
+  if (!returnDate) return 1;
+
+  const end = new Date(returnDate).getTime();
+  const start = Date.now();
+  const diffDays = Math.ceil((end - start) / 86_400_000); // 86 400 000 ms = 1 day
+
+  return diffDays > 0 ? diffDays : 1;
+};
+
+/**
+ * Produce the two Stripe line-items (rental + deposit) for a single cart item.
+ */
+const buildLineItemsForItem = async (
+  item: CartItem,
+  rentalDays: number
+): Promise<
+  [
+    Stripe.Checkout.SessionCreateParams.LineItem,
+    Stripe.Checkout.SessionCreateParams.LineItem,
+  ]
+> => {
+  const unitPrice = await priceForDays(item.sku, rentalDays);
+  const baseName = item.size
+    ? `${item.sku.title} (${item.size})`
+    : item.sku.title;
+
+  return [
+    {
+      price_data: {
+        currency: "eur",
+        unit_amount: unitPrice * 100,
+        product_data: { name: baseName },
+      },
+      quantity: item.qty,
+    },
+    {
+      price_data: {
+        currency: "eur",
+        unit_amount: item.sku.deposit * 100,
+        product_data: { name: `${baseName} deposit` },
+      },
+      quantity: item.qty,
+    },
+  ];
+};
+
+/**
+ * Aggregate rental and deposit totals for later bookkeeping.
+ */
+const computeTotals = async (
+  cart: Cart,
+  rentalDays: number
+): Promise<{ subtotal: number; depositTotal: number }> => {
+  const subtotals = await Promise.all(
+    Object.values(cart).map(
+      async (item) => (await priceForDays(item.sku, rentalDays)) * item.qty
+    )
+  );
+
+  const subtotal = subtotals.reduce((sum, v) => sum + v, 0);
+  const depositTotal = Object.values(cart).reduce(
+    (sum, item) => sum + item.sku.deposit * item.qty,
+    0
+  );
+
+  return { subtotal, depositTotal };
+};
+
+/* ------------------------------------------------------------------ *
+ *  Route handler
+ * ------------------------------------------------------------------ */
 
 export const runtime = "edge";
 
-export async function POST(req: NextRequest) {
-  /* ------------------------------------------------------------------ */
-  /*  1. Read and parse cart cookie + optional return date from body    */
-  /* ------------------------------------------------------------------ */
-  const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookie);
-  const { returnDate } = (await req.json().catch(() => ({}))) as {
-    returnDate?: string;
-  };
-
-  const rentalDays = (() => {
-    if (!returnDate) return 1;
-    const end = new Date(returnDate).getTime();
-    const start = Date.now();
-    const diff = Math.ceil((end - start) / 86_400_000);
-    return diff > 0 ? diff : 1;
-  })();
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  /* 1️⃣ Decode cart cookie -------------------------------------------------- */
+  const rawCookie = req.cookies.get(CART_COOKIE)?.value;
+  const cart = decodeCartCookie(rawCookie) as Cart;
 
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
   }
 
-  /* ------------------------------------------------------------------ */
-  /*  2. Build Stripe line items                                        */
-  /*      We split each cart line into two Stripe items: one for the    */
-  /*      product price and one for its refundable deposit.             */
-  /* ------------------------------------------------------------------ */
-  const line_items = Object.values(cart).flatMap((l) => [
-    {
-      price_data: {
-        currency: "eur",
-        unit_amount: l.sku.price * rentalDays * 100, // euros → cents
-        product_data: {
-          name: l.size ? `${l.sku.title} (${l.size})` : l.sku.title,
-        },
-      },
-      quantity: l.qty,
-    },
-    {
-      price_data: {
-        currency: "eur",
-        unit_amount: l.sku.deposit * 100, // euros → cents
-        product_data: {
-          name: l.size
-            ? `${l.sku.title} (${l.size}) deposit`
-            : `${l.sku.title} deposit`,
-        },
-      },
-      quantity: l.qty,
-    },
-  ]);
+  /* 2️⃣ Parse optional body ------------------------------------------------- */
+  const { returnDate } = (await req.json().catch(() => ({}))) as {
+    returnDate?: string;
+  };
+  const rentalDays = calculateRentalDays(returnDate);
 
-  /*  Calculate totals for metadata */
-  const subtotal = Object.values(cart).reduce(
-    (total, l) => total + l.sku.price * rentalDays * l.qty,
-    0
+  /* 3️⃣ Build Stripe line-items & totals ------------------------------------ */
+  const lineItemsNested = await Promise.all(
+    Object.values(cart).map((item) => buildLineItemsForItem(item, rentalDays))
   );
-  /*  Calculate the total deposit for metadata (handy for later refunds) */
-  const depositTotal = Object.values(cart).reduce(
-    (total, l) => total + l.sku.deposit * l.qty,
-    0
-  );
+  const line_items = lineItemsNested.flat();
+
+  const { subtotal, depositTotal } = await computeTotals(cart, rentalDays);
+
+  /* 4️⃣ Serialize sizes for metadata --------------------------------------- */
   const sizesMeta = JSON.stringify(
-    Object.fromEntries(Object.values(cart).map((l) => [l.sku.id, l.size ?? ""]))
+    Object.fromEntries(
+      Object.values(cart).map((item) => [item.sku.id, item.size ?? ""])
+    )
   );
 
-  /* ------------------------------------------------------------------ */
-  /*  3. Create the Stripe Checkout Session                             */
-  /* ------------------------------------------------------------------ */
+  /* 5️⃣ Create Checkout Session -------------------------------------------- */
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     line_items,
@@ -97,6 +162,7 @@ export async function POST(req: NextRequest) {
     expand: ["payment_intent"],
   });
 
+  /* 6️⃣ Return client credentials ------------------------------------------ */
   const clientSecret =
     typeof session.payment_intent === "string"
       ? undefined

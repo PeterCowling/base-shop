@@ -2,6 +2,7 @@
 "use client";
 
 import type { ProductPublication } from "@platform-core/products";
+import { getShopFromPath } from "@platform-core/utils/getShopFromPath";
 import { usePathname } from "next/navigation";
 import { memo, useEffect, useState } from "react";
 import Breadcrumbs, { BreadcrumbItem } from "../molecules/Breadcrumbs";
@@ -26,20 +27,20 @@ function BreadcrumbsInner() {
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean);
   const [extra, setExtra] = useState<Record<string, string>>({});
+  const shop = getShopFromPath(pathname);
 
   useEffect(() => {
     async function fetchLabels() {
       const segments = pathname.split("/").filter(Boolean);
-      const shopIndex = segments.indexOf("shop");
-      const shop = shopIndex >= 0 ? segments[shopIndex + 1] : null;
-      if (!shop) return;
+      const shopSlug = shop;
+      if (!shopSlug) return;
       const next: Record<string, string> = {};
 
       const prodIdx = segments.indexOf("products");
       if (prodIdx >= 0 && segments[prodIdx + 1]) {
         const id = segments[prodIdx + 1];
         try {
-          const res = await fetch(`/api/products/${shop}/${id}`);
+          const res = await fetch(`/api/products/${shopSlug}/${id}`);
           if (res.ok) {
             const data: ProductPublication = await res.json();
             const title = data?.title ? Object.values(data.title)[0] : null;
@@ -54,7 +55,7 @@ function BreadcrumbsInner() {
       if (pageIdx >= 0 && segments[pageIdx + 1]) {
         const slug = segments[pageIdx + 1];
         try {
-          const res = await fetch(`/api/pages/${shop}`);
+          const res = await fetch(`/api/pages/${shopSlug}`);
           if (res.ok) {
             const pages = await res.json();
             const page = Array.isArray(pages)

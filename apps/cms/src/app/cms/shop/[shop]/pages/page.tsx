@@ -2,8 +2,10 @@
 
 import { canWrite } from "@auth";
 import { authOptions } from "@cms/auth/options";
+import { checkShopExists } from "@lib/checkShopExists.server";
 import { getPages } from "@platform-core/repositories/pages";
 import { getServerSession } from "next-auth";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import PagesClient from "./PagesClient";
 
@@ -19,6 +21,7 @@ export default async function PagesPage({
   params: Promise<Params>;
 }) {
   const { shop } = await params;
+  if (!(await checkShopExists(shop))) return notFound();
   const [session, initial] = await Promise.all([
     getServerSession(authOptions),
     getPages(shop),

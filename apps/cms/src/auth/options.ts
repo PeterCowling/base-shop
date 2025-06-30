@@ -5,12 +5,13 @@ import type { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { readRbac } from "../lib/rbacStore";
 import type { Role } from "./roles";
+import { authSecret } from "./secret";
 
 /* -----------------------------------------------------------------
  *  Ensure NEXTAUTH_SECRET is defined outside of development
  * ---------------------------------------------------------------- */
-const secret = process.env.NEXTAUTH_SECRET;
-if (process.env.NODE_ENV !== "development" && !secret) {
+const secret = authSecret;
+if (process.env.NODE_ENV !== "development" && !process.env.NEXTAUTH_SECRET) {
   throw new Error(
     "NEXTAUTH_SECRET must be set when NODE_ENV is not 'development'"
   );

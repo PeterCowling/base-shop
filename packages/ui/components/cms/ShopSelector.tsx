@@ -1,5 +1,6 @@
 "use client";
 
+import { getShopFromPath } from "@platform-core/utils/getShopFromPath";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -39,9 +40,9 @@ export default function ShopSelector() {
     fetchShops();
   }, []);
 
-  const segments = pathname.split("/");
+  const segments = pathname.split("/").filter(Boolean);
   const shopIndex = segments.indexOf("shop");
-  const selected = shopIndex >= 0 ? segments[shopIndex + 1] : undefined;
+  const selected = getShopFromPath(pathname);
 
   function changeShop(value: string) {
     const next = [...segments];
@@ -55,7 +56,7 @@ export default function ShopSelector() {
         next.push("cms", "shop", value);
       }
     }
-    const path = next.join("/") || "/";
+    const path = "/" + next.join("/");
     router.push(path);
   }
 

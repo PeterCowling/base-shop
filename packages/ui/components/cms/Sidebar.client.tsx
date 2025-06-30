@@ -1,13 +1,12 @@
 // packages/ui/components/cms/Sidebar.tsx
 "use client";
+import { getShopFromPath } from "@platform-core/utils/getShopFromPath";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Sidebar({ role }: { role?: string }) {
   const pathname = usePathname() ?? "";
-  const segments = pathname.split("/");
-  const shopIndex = segments.indexOf("shop");
-  const shop = shopIndex >= 0 ? segments[shopIndex + 1] : null;
+  const shop = getShopFromPath(pathname);
 
   const links = [
     { href: shop ? `/shop/${shop}` : "", label: "Dashboard", icon: "📊" },

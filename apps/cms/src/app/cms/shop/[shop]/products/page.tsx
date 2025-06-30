@@ -3,10 +3,12 @@
 import { Button } from "@/components/atoms-shadcn";
 import { createDraft } from "@cms/actions/products.server";
 import { authOptions } from "@cms/auth/options";
+import { checkShopExists } from "@lib/checkShopExists.server";
 import type { ProductPublication } from "@platform-core/products";
 import { readRepo } from "@platform-core/repositories/json";
 import ProductsTable from "@ui/components/cms/ProductsTable";
 import { getServerSession } from "next-auth";
+import { notFound } from "next/navigation";
 
 export const revalidate = 0;
 
@@ -20,6 +22,7 @@ export default async function ProductsPage({
   params: Promise<Params>;
 }) {
   const { shop } = await params;
+  if (!(await checkShopExists(shop))) return notFound();
   const [session, rows] = await Promise.all([
     getServerSession(authOptions),
     readRepo<ProductPublication>(shop),

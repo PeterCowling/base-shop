@@ -1,11 +1,13 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/page.tsx
 
 import { authOptions } from "@cms/auth/options";
+import { checkShopExists } from "@lib/checkShopExists.server";
 import { readSettings, readShop } from "@platform-core/repositories/json";
 import type { Locale } from "@types";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 const ShopEditor = dynamic(() => import("./ShopEditor"));
 void ShopEditor;
@@ -18,6 +20,7 @@ export default async function SettingsPage({
   params: Promise<{ shop: string }>;
 }) {
   const { shop } = await params;
+  if (!(await checkShopExists(shop))) return notFound();
   const [session, settings, info] = await Promise.all([
     getServerSession(authOptions),
     readSettings(shop),

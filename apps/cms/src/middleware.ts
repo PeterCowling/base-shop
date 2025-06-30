@@ -3,6 +3,7 @@ import { canRead, canWrite } from "@auth";
 import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { authSecret } from "./auth/secret";
 
 /**
  * Matches CMS write routes of the form `/cms/shop/<shop>/...` and captures the
@@ -20,11 +21,8 @@ export async function middleware(req: NextRequest) {
   console.log("[middleware] request", pathname);
 
   /* Decode JWT (include secret only if present) */
-  const token = await getToken(
-    process.env.NEXTAUTH_SECRET
-      ? { req, secret: process.env.NEXTAUTH_SECRET }
-      : { req }
-  );
+  const token = await getToken({ req, secret: authSecret });
+
   const role = token?.role;
   console.log("[middleware] role", role);
 

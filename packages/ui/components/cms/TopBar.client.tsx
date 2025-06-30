@@ -2,6 +2,7 @@
 "use client";
 
 import { useLayout } from "@platform-core/contexts/LayoutContext";
+import { getShopFromPath } from "@platform-core/utils/getShopFromPath";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -16,8 +17,7 @@ function TopBarInner() {
   const { toggleNav } = useLayout();
 
   const segments = pathname.split("/").filter(Boolean);
-  const shopIndex = segments.indexOf("shop");
-  const shop = shopIndex >= 0 ? segments[shopIndex + 1] : undefined;
+  const shop = getShopFromPath(pathname);
   const last = segments[segments.length - 1];
 
   const showNewProduct = shop && last === "products";

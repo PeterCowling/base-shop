@@ -1,7 +1,9 @@
 // apps/cms/src/app/cms/shop/[shop]/media/page.tsx
 
 import { listMedia } from "@cms/actions/media.server";
+import { checkShopExists } from "@lib/checkShopExists.server";
 import MediaManager from "@ui/components/cms/MediaManager";
+import { notFound } from "next/navigation";
 
 interface Params {
   shop: string;
@@ -15,6 +17,7 @@ export default async function MediaPage({
   params: Promise<Params>;
 }) {
   const { shop } = await params;
+  if (!(await checkShopExists(shop))) return notFound();
   const files = await listMedia(shop);
   return (
     <div>

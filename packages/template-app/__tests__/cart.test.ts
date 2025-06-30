@@ -3,8 +3,8 @@ import {
   asSetCookieHeader,
   decodeCartCookie,
   encodeCartCookie,
-} from "@/lib/cartCookie";
-import { PRODUCTS } from "@platform-core/products";
+} from "../../platform-core/cartCookie";
+import { PRODUCTS } from "../../platform-core/products";
 import { PATCH, POST } from "../src/api/cart/route";
 
 // Minimal NextResponse mock using the native Response class

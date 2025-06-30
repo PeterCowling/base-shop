@@ -30,7 +30,7 @@ describe("/api/return", () => {
     );
     jest.doMock("@platform-core/repositories/rentalOrders", () => ({
       __esModule: true,
-      markReturned: jest.fn().mockResolvedValue({}),
+      markReturned: jest.fn<Promise<any>, any[]>().mockResolvedValue({}),
       markRefunded: jest.fn(),
       addOrder: jest.fn(),
     }));
@@ -69,7 +69,7 @@ describe("/api/return", () => {
     );
     jest.doMock("@platform-core/repositories/rentalOrders", () => ({
       __esModule: true,
-      markReturned: jest.fn().mockResolvedValue({}),
+      markReturned: jest.fn<Promise<any>, any[]>().mockResolvedValue({}),
       markRefunded: jest.fn(),
       addOrder: jest.fn(),
     }));

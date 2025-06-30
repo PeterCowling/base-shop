@@ -38,7 +38,7 @@ describe("rental order lifecycle", () => {
   test("order is returned and refunded", async () => {
     await withShop(async (repo) => {
       const retrieve = jest
-        .fn()
+        .fn<Promise<any>, any[]>()
         .mockResolvedValueOnce({
           metadata: { depositTotal: "50", returnDate: "2030-01-02" },
         })

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { localeSchema } from "./Product";
+import { localeSchema, type Locale } from "./Product";
 
 export const shopSeoFieldsSchema = z.object({
   canonicalBase: z.string().optional(),
@@ -9,6 +9,21 @@ export const shopSeoFieldsSchema = z.object({
 });
 
 export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;
+
+export interface Shop {
+  id: string;
+  name: string;
+  catalogFilters: string[];
+  themeId: string;
+  /** Mapping of design tokens to theme values */
+  themeTokens: Record<string, string>;
+  /** Mapping of logical filter keys to catalog attributes */
+  filterMappings: Record<string, string>;
+  /** Optional price overrides per locale (minor units) */
+  priceOverrides: Partial<Record<Locale, number>>;
+  /** Optional redirect overrides for locale detection */
+  localeOverrides: Record<string, Locale>;
+}
 
 export const shopSchema = z.object({
   id: z.string(),
@@ -24,5 +39,3 @@ export const shopSchema = z.object({
   /** Optional redirect overrides for locale detection */
   localeOverrides: z.record(z.string(), localeSchema).default({}),
 });
-
-export type Shop = z.infer<typeof shopSchema>;

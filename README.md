@@ -84,20 +84,8 @@ pnpm build
 
 ## Storybook
 
-Component stories live in `packages/ui`. Launch the interactive Storybook with:
-
-```bash
-pnpm storybook
-```
-
-Run automated accessibility checks against all stories with:
-
-```bash
-pnpm test-storybook
-```
-
-Storybook's toolbar includes a design-token theme switcher defined in
-`.storybook/preview.tsx`.
+See [doc/storybook.md](doc/storybook.md) for details on running Storybook,
+executing accessibility tests and publishing Chromatic previews.
 
 # Environment Variables
 

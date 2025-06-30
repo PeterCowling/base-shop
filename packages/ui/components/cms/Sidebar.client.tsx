@@ -16,11 +16,29 @@ export default function Sidebar({ role }: { role?: string }) {
       label: "Products",
       icon: "📦",
     },
+    ...(shop
+      ? [
+          {
+            href: `/shop/${shop}/products/new`,
+            label: "New Product",
+            icon: "➕",
+          },
+        ]
+      : []),
     {
       href: shop ? `/shop/${shop}/pages` : "/pages",
       label: "Pages",
       icon: "📄",
     },
+    ...(shop
+      ? [
+          {
+            href: `/shop/${shop}/pages/new/builder`,
+            label: "New Page",
+            icon: "📝",
+          },
+        ]
+      : []),
     {
       href: shop ? `/shop/${shop}/media` : "/media",
       label: "Media",

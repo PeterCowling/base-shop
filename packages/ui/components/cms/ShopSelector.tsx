@@ -12,6 +12,9 @@ import {
 
 export default function ShopSelector() {
   const [shops, setShops] = useState<string[]>([]);
+  const [status, setStatus] = useState<"loading" | "ready" | "error">(
+    "loading"
+  );
   const pathname = usePathname() ?? "";
   const router = useRouter();
 
@@ -21,9 +24,15 @@ export default function ShopSelector() {
         const res = await fetch("/api/shops");
         if (res.ok) {
           const data = await res.json();
-          if (Array.isArray(data)) setShops(data);
+          if (Array.isArray(data)) {
+            setShops(data);
+            setStatus("ready");
+            return;
+          }
         }
+        setStatus("error");
       } catch {
+        setStatus("error");
         setShops([]);
       }
     }
@@ -49,6 +58,11 @@ export default function ShopSelector() {
     const path = next.join("/") || "/";
     router.push(path);
   }
+
+  if (status === "loading")
+    return <span className="text-sm">Loading shops…</span>;
+  if (status === "error")
+    return <span className="text-sm text-red-600">Failed to load shops</span>;
 
   if (shops.length === 0) return null;
 

@@ -34,6 +34,7 @@ const config: Config = {
    * Adjust the paths below if the folder layout changes.
    */
   moduleNameMapper: {
+    "^@platform-core$": "<rootDir>/packages/platform-core/index.ts",
     "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/$1",
     "^@apps/(.*)$": "<rootDir>/apps/$1/src",
     "^@cms/(.*)$": "<rootDir>/apps/cms/src/$1",

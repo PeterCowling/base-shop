@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { memo } from "react";
 import { Button } from "../atoms-shadcn";
-import Breadcrumbs from "./Breadcrumbs";
+import Breadcrumbs from "./Breadcrumbs.client";
 import ShopSelector from "./ShopSelector";
 
 function TopBarInner() {

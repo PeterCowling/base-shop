@@ -13,7 +13,7 @@ jest.mock("@platform-core/repositories/shops", () => ({
   diffHistory: (...args: any[]) => diffHistoryMock(...args),
   saveShopSettings: (...args: any[]) => saveShopSettingsMock(...args),
 }));
-jest.mock("@platform-core/repositories/json", () => ({}));
+jest.mock("@platform-core/repositories/json.server", () => ({}));
 
 beforeEach(() => {
   jest.clearAllMocks();

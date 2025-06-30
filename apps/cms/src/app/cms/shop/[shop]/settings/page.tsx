@@ -2,7 +2,10 @@
 
 import { authOptions } from "@cms/auth/options";
 import { checkShopExists } from "@lib/checkShopExists.server";
-import { readSettings, readShop } from "@platform-core/repositories/json";
+import {
+  readSettings,
+  readShop,
+} from "@platform-core/repositories/json.server";
 import type { Locale } from "@types";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";

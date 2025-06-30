@@ -1,6 +1,6 @@
 // apps/cms/src/app/api/products/[shop]/[id]/route.ts
 
-import { getProductById } from "@platform-core/repositories/json";
+import { getProductById } from "@platform-core/repositories/json.server";
 import { NextResponse } from "next/server";
 
 export async function GET(

@@ -15,7 +15,7 @@ jest.mock("@platform-core/repositories/shops", () => ({
   getShopSettings: (...args: any[]) => getShopSettingsMock(...args),
   saveShopSettings: (...args: any[]) => saveShopSettingsMock(...args),
 }));
-jest.mock("@platform-core/repositories/json", () => ({}));
+jest.mock("@platform-core/repositories/json.server", () => ({}));
 
 import { updateSeo } from "../../apps/cms/src/actions/shops.server";
 import { getSeo } from "../../apps/shop-abc/src/app/lib/seo";

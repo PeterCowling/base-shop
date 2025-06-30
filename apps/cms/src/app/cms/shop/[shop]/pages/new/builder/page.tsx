@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/new/builder/page.tsx
 
-import { createPage } from "@cms/actions/pages";
+import { createPage } from "@cms/actions/pages.server";
 import type { Page } from "@types";
 import dynamic from "next/dynamic";
 

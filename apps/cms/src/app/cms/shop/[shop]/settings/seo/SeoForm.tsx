@@ -2,7 +2,7 @@
 
 import { Tooltip } from "@/components/atoms";
 import { Button, Input, Textarea } from "@/components/atoms-shadcn";
-import { updateSeo } from "@cms/actions/shops";
+import { updateSeo } from "@cms/actions/shops.server";
 import type { Locale } from "@types";
 import { FormEvent, useCallback, useState } from "react";
 import SeoLanguageTabs from "./SeoLanguageTabs";

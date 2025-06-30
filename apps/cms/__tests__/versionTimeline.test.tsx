@@ -4,11 +4,11 @@ import VersionTimeline from "../src/app/cms/shop/[shop]/settings/seo/VersionTime
 const diffHistoryMock = jest.fn();
 const revertSeoMock = jest.fn();
 
-jest.mock("@platform-core/repositories/shops", () => ({
+jest.mock("@platform-core/repositories/shops.server", () => ({
   diffHistory: (...args: any[]) => diffHistoryMock(...args),
 }));
 
-jest.mock("@cms/actions/shops", () => ({
+jest.mock("@cms/actions/shops.server", () => ({
   revertSeo: (...args: any[]) => revertSeoMock(...args),
 }));
 

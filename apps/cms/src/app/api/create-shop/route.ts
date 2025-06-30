@@ -1,4 +1,4 @@
-import { createNewShop } from "@cms/actions/createShop";
+import { createNewShop } from "@cms/actions/createShop.server";
 import { authOptions } from "@cms/auth/options";
 import type { CreateShopOptions } from "@platform-core/createShop";
 import { getServerSession } from "next-auth";

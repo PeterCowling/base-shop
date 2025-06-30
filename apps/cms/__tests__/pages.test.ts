@@ -19,11 +19,9 @@ async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
 
 function mockAuth() {
   jest.doMock("next-auth", () => ({
-    getServerSession: jest
-      .fn()
-      .mockResolvedValue({
-        user: { role: "admin", email: "admin@example.com" },
-      }),
+    getServerSession: jest.fn().mockResolvedValue({
+      user: { role: "admin", email: "admin@example.com" },
+    }),
   }));
 }
 
@@ -33,7 +31,7 @@ describe("page actions", () => {
   it("createPage stores new page", async () => {
     await withRepo(async () => {
       mockAuth();
-      const { createPage } = await import("../src/actions/pages");
+      const { createPage } = await import("../src/actions/pages.server");
 
       const fd = new FormData();
       fd.append("slug", "home");
@@ -44,7 +42,9 @@ describe("page actions", () => {
       const result = await createPage("test", fd);
       expect(result.page?.slug).toBe("home");
 
-      const { getPages } = await import("@platform-core/repositories/pages");
+      const { getPages } = await import(
+        "../../../packages/platform-core/repositories/pages/index.server"
+      );
       const pages = await getPages("test");
       expect(pages).toHaveLength(1);
       expect(pages[0].components[0]).toEqual({ id: "c1", type: "HeroBanner" });
@@ -55,7 +55,9 @@ describe("page actions", () => {
   it("updatePage modifies page data", async () => {
     await withRepo(async () => {
       mockAuth();
-      const repo = await import("@platform-core/repositories/pages");
+      const repo = await import(
+        "../../../packages/platform-core/repositories/pages/index.server"
+      );
       const now = new Date().toISOString();
       const page = {
         id: "p1",
@@ -69,7 +71,7 @@ describe("page actions", () => {
       } as any;
       await repo.savePage("test", page);
 
-      const { updatePage } = await import("../src/actions/pages");
+      const { updatePage } = await import("../src/actions/pages.server");
       const fd = new FormData();
       fd.append("id", page.id);
       fd.append("updatedAt", page.updatedAt);
@@ -91,7 +93,9 @@ describe("page actions", () => {
   it("deletePage removes page from repo", async () => {
     await withRepo(async () => {
       mockAuth();
-      const repo = await import("@platform-core/repositories/pages");
+      const repo = await import(
+        "../../../packages/platform-core/repositories/pages/index.server"
+      );
       const now = new Date().toISOString();
       const page = {
         id: "p1",
@@ -105,7 +109,7 @@ describe("page actions", () => {
       } as any;
       await repo.savePage("test", page);
 
-      const { deletePage } = await import("../src/actions/pages");
+      const { deletePage } = await import("../src/actions/pages.server");
       await deletePage("test", page.id);
 
       const pages = await repo.getPages("test");
@@ -116,7 +120,7 @@ describe("page actions", () => {
   it("createPage returns validation error for bad components", async () => {
     await withRepo(async () => {
       mockAuth();
-      const { createPage } = await import("../src/actions/pages");
+      const { createPage } = await import("../src/actions/pages.server");
       const fd = new FormData();
       fd.append("slug", "x");
       fd.append("title", "T");

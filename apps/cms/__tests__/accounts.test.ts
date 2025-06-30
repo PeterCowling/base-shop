@@ -12,7 +12,7 @@ afterEach(() => jest.resetModules());
 
 describe("account actions", () => {
   it("requestAccount hashes passwords and stores pending user", async () => {
-    const actions = await import("../src/actions/accounts");
+    const actions = await import("../src/actions/accounts.server");
 
     const form = fd({
       name: "Alice",
@@ -29,7 +29,7 @@ describe("account actions", () => {
   });
 
   it("listPendingUsers returns pending users", async () => {
-    const actions = await import("../src/actions/accounts");
+    const actions = await import("../src/actions/accounts.server");
 
     await actions.requestAccount(
       fd({
@@ -58,7 +58,7 @@ describe("account actions", () => {
       __esModule: true,
       sendEmail,
     }));
-    const actions = await import("../src/actions/accounts");
+    const actions = await import("../src/actions/accounts.server");
     const { readRbac } = await import("../src/lib/rbacStore");
 
     await actions.requestAccount(
@@ -89,7 +89,7 @@ describe("account actions", () => {
       __esModule: true,
       sendEmail,
     }));
-    const actions = await import("../src/actions/accounts");
+    const actions = await import("../src/actions/accounts.server");
     const fdUnknown = fd({ id: "missing" });
     fdUnknown.append("roles", "viewer");
     await expect(actions.approveAccount(fdUnknown)).rejects.toThrow(

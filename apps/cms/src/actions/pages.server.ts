@@ -7,7 +7,7 @@ import {
   deletePage as deletePageFromRepo,
   savePage as savePageInRepo,
   updatePage as updatePageInRepo,
-} from "@platform-core/repositories/pages";
+} from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
 import type { Page, PageComponent } from "@types";
 import { getServerSession } from "next-auth";

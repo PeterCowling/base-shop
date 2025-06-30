@@ -2,7 +2,7 @@
 
 "use client";
 import { Button, Input, Textarea } from "@/components/atoms-shadcn";
-import { updateShop } from "@cms/actions/shops";
+import { updateShop } from "@cms/actions/shops.server";
 import type { Shop } from "@types";
 import { ChangeEvent, FormEvent, useState } from "react";
 

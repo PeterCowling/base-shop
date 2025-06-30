@@ -2,7 +2,7 @@
 "use client";
 
 import { Input } from "@/components/atoms-shadcn";
-import { deleteMedia, uploadMedia } from "@cms/actions/media";
+import { deleteMedia, uploadMedia } from "@cms/actions/media.server";
 import type { ImageOrientation, MediaItem } from "@types";
 import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
 import Image from "next/image";

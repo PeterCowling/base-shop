@@ -5,7 +5,7 @@ import { ProductPublication } from "@platform-core/products";
 import {
   getProductById,
   updateProductInRepo,
-} from "@platform-core/repositories/json";
+} from "@platform-core/repositories/json.server";
 
 /**
  * Server Action: patch an existing product (optimistic locking).

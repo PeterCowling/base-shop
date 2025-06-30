@@ -1,6 +1,10 @@
 // apps/cms/src/app/cms/rbac/page.tsx
 import { Button, Input } from "@/components/atoms-shadcn";
-import { inviteUser, listUsers, updateUserRoles } from "@cms/actions/rbac";
+import {
+  inviteUser,
+  listUsers,
+  updateUserRoles,
+} from "@cms/actions/rbac.server";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
 import { getServerSession } from "next-auth";

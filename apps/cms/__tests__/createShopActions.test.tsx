@@ -39,7 +39,9 @@ describe("createNewShop authorization", () => {
     jest.doMock("next-auth", () => ({
       getServerSession: jest.fn(() => Promise.resolve(null)),
     }));
-    const { createNewShop } = await import("../src/actions/createShop");
+    const { createNewShop } = await import(
+      "../src/actions/createShop.server.js"
+    );
     await expect(createNewShop("shop1", {} as any)).rejects.toThrow(
       "Forbidden"
     );
@@ -60,7 +62,9 @@ describe("createNewShop authorization", () => {
         Promise.resolve({ user: { role: "admin" } })
       ),
     }));
-    const { createNewShop } = await import("../src/actions/createShop");
+    const { createNewShop } = await import(
+      "../src/actions/createShop.server.js"
+    );
     await createNewShop("shop2", { theme: "base" });
     expect(createShop).toHaveBeenCalledWith("shop2", { theme: "base" });
     (process.env as Record<string, string>).NODE_ENV = prevEnv;
@@ -70,7 +74,7 @@ describe("createNewShop authorization", () => {
 describe("rbac actions persistence", () => {
   it("inviteUser stores roles", async () => {
     await withTempRepo(async (dir) => {
-      const { inviteUser } = await import("../src/actions/rbac");
+      const { inviteUser } = await import("../src/actions/rbac.server.js");
       const { readRbac } = await import("../src/lib/rbacStore");
 
       await inviteUser(
@@ -98,7 +102,7 @@ describe("rbac actions persistence", () => {
 
   it("updateUserRoles persists changes", async () => {
     await withTempRepo(async (dir) => {
-      const { updateUserRoles } = await import("../src/actions/rbac");
+      const { updateUserRoles } = await import("../src/actions/rbac.server.js");
       const { readRbac } = await import("../src/lib/rbacStore");
 
       const form = fd({ id: "2", roles: ["admin", "viewer"] });

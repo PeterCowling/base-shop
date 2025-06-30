@@ -2,8 +2,8 @@
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import type { ShopSettings } from "../../types";
-import { LOCALES, type Locale } from "../../types";
+import type { ShopSettings } from "../../types/dist";
+import { LOCALES, type Locale } from "../../types/dist";
 import { validateShopName } from "../shops";
 
 function resolveDataRoot(): string {

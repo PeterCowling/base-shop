@@ -23,7 +23,7 @@ describe("create-shop API", () => {
     jest.doMock("next-auth", () => ({
       getServerSession: jest.fn(() => Promise.resolve(session)),
     }));
-    jest.doMock("@cms/actions/createShop", () => ({
+    jest.doMock("@cms/actions/createShop.server", () => ({
       __esModule: true,
       createNewShop,
     }));

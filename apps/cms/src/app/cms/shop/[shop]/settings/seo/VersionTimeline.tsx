@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/atoms-shadcn";
-import { revertSeo } from "@cms/actions/shops";
+import { revertSeo } from "@cms/actions/shops.server";
 import type { SettingsDiffEntry } from "@platform-core/repositories/shops";
 import { diffHistory } from "@platform-core/repositories/shops";
 

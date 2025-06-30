@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/seo/page.tsx
 
-import { getSettings } from "@cms/actions/shops";
+import { getSettings } from "@cms/actions/shops.server";
 import dynamic from "next/dynamic";
 
 const SeoEditor = dynamic(() => import("./SeoEditor"));

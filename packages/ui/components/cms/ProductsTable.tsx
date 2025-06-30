@@ -2,7 +2,7 @@
 "use client";
 
 import { Button } from "@/components/atoms-shadcn";
-import { deleteProduct, duplicateProduct } from "@cms/actions/products";
+import { deleteProduct, duplicateProduct } from "@cms/actions/products.server";
 import { ProductPublication } from "@platform-core/products";
 import Link from "next/link";
 import {

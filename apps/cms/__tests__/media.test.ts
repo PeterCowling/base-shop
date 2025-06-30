@@ -47,7 +47,7 @@ describe("media actions", () => {
       }));
 
       const { listMedia } = await import(
-        /* @vite-ignore */ "../src/actions/media"
+        /* @vite-ignore */ "../src/actions/media.server.js"
       );
       const files = await listMedia("shop1");
       expect(files).toEqual([]);
@@ -72,7 +72,7 @@ describe("media actions", () => {
       }));
 
       const { uploadMedia } = await import(
-        /* @vite-ignore */ "../src/actions/media"
+        /* @vite-ignore */ "../src/actions/media.server.js"
       );
 
       const data = Buffer.from(
@@ -121,7 +121,7 @@ it("uploadMedia rejects invalid file type", async () => {
     }));
 
     const { uploadMedia } = await import(
-      /* @vite-ignore */ "../src/actions/media"
+      /* @vite-ignore */ "../src/actions/media.server.js"
     );
 
     const file = new File(["bad"], "test.txt", { type: "text/plain" });
@@ -150,7 +150,7 @@ it("uploadMedia enforces orientation", async () => {
     }));
 
     const { uploadMedia } = await import(
-      /* @vite-ignore */ "../src/actions/media"
+      /* @vite-ignore */ "../src/actions/media.server.js"
     );
 
     const data = Buffer.from(
@@ -179,7 +179,7 @@ it("deleteMedia prevents path traversal", async () => {
     }));
 
     const { deleteMedia } = await import(
-      /* @vite-ignore */ "../src/actions/media"
+      /* @vite-ignore */ "../src/actions/media.server.js"
     );
 
     await expect(

@@ -28,7 +28,7 @@ describe("shop actions", () => {
           .mockResolvedValue({ user: { role: "admin" } }),
       }));
 
-      const { updateShop } = await import("../src/actions/shops");
+      const { updateShop } = await import("../src/actions/shops.server");
 
       const fd = new FormData();
       fd.append("id", "test");

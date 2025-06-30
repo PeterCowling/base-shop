@@ -2,7 +2,7 @@ import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
-import type { RentalOrder } from "../../types";
+import type { RentalOrder } from "../../types/dist";
 import { validateShopName } from "../shops";
 
 function resolveDataRoot(): string {

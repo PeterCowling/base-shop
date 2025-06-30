@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/products/page.tsx
 
 import { Button } from "@/components/atoms-shadcn";
-import { createDraft } from "@cms/actions/products";
+import { createDraft } from "@cms/actions/products.server";
 import { authOptions } from "@cms/auth/options";
 import type { ProductPublication } from "@platform-core/products";
 import { readRepo } from "@platform-core/repositories/json";

@@ -5,7 +5,7 @@ import path from "node:path";
 import type { ProductPublication } from "../products";
 
 /** The shape of the JSON-repository module we import dynamically */
-type JsonRepo = typeof import("../repositories/json");
+type JsonRepo = typeof import("../repositories/json.server");
 
 /**
  * Creates an isolated temp repo, runs `cb`, then restores CWD.
@@ -22,7 +22,7 @@ async function withRepo(
   process.chdir(dir);
   jest.resetModules();
 
-  const repo: JsonRepo = await import("../repositories/json");
+  const repo: JsonRepo = await import("../repositories/json.server");
   try {
     await cb(repo, "test", dir);
   } finally {

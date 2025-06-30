@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/media/page.tsx
 
-import { listMedia } from "@cms/actions/media";
+import { listMedia } from "@cms/actions/media.server";
 import MediaManager from "@ui/components/cms/MediaManager";
 
 interface Params {

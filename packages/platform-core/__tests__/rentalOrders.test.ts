@@ -4,7 +4,7 @@ import path from "node:path";
 
 async function withRepo(
   cb: (
-    repo: typeof import("../repositories/rentalOrders"),
+    repo: typeof import("../repositories/rentalOrders.server"),
     shop: string,
     dir: string
   ) => Promise<void>
@@ -17,7 +17,7 @@ async function withRepo(
   process.chdir(dir);
   jest.resetModules();
 
-  const repo = await import("../repositories/rentalOrders");
+  const repo = await import("../repositories/rentalOrders.server");
   try {
     await cb(repo, "test", dir);
   } finally {

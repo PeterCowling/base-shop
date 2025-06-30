@@ -1,6 +1,6 @@
 // apps/cms/src/app/(auth)/signup/page.tsx
 import { Button, Input } from "@/components/atoms-shadcn";
-import { requestAccount } from "@cms/actions/accounts";
+import { requestAccount } from "@cms/actions/accounts.server";
 import { redirect } from "next/navigation";
 
 export default function SignupPage() {

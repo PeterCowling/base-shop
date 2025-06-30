@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 
 /** The shape of the pages repository module we import dynamically */
-type PagesRepo = typeof import("../repositories/pages");
+type PagesRepo = typeof import("../repositories/pages/index.server");
 
 async function withRepo(
   cb: (repo: PagesRepo, shop: string, dir: string) => Promise<void>
@@ -18,7 +18,7 @@ async function withRepo(
   process.chdir(dir);
   jest.resetModules();
 
-  const repo: PagesRepo = await import("../repositories/pages");
+  const repo: PagesRepo = await import("../repositories/pages/index.server");
   try {
     await cb(repo, "test", dir);
   } finally {

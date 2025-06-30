@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/page.tsx
 import { Button } from "@/components/atoms-shadcn";
-import { approveAccount, listPendingUsers } from "@cms/actions/accounts";
+import { approveAccount, listPendingUsers } from "@cms/actions/accounts.server";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
 import { readRbac } from "@cms/lib/rbacStore";

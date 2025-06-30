@@ -6,12 +6,12 @@ import { authOptions } from "@cms/auth/options";
 import {
   getShopById,
   updateShopInRepo,
-} from "@platform-core/repositories/json";
+} from "@platform-core/repositories/json.server";
 import {
   diffHistory,
   getShopSettings,
   saveShopSettings,
-} from "@platform-core/repositories/shops";
+} from "@platform-core/repositories/shops.server";
 import type { Locale, Shop, ShopSeoFields, ShopSettings } from "@types";
 import { getServerSession } from "next-auth";
 import { z } from "zod";

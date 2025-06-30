@@ -4,8 +4,8 @@ import "server-only";
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import type { ShopSettings } from "../../types/dist";
-import { LOCALES, type Locale } from "../../types/dist";
+import type { ShopSettings } from "../../types/src";
+import { LOCALES, type Locale } from "../../types/src";
 import { validateShopName } from "../shops";
 
 function resolveDataRoot(): string {

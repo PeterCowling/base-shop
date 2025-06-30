@@ -5,8 +5,8 @@ import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
-import type { Shop, ShopSettings } from "../../types/dist";
-import { LOCALES, type Locale } from "../../types/dist";
+import type { Shop, ShopSettings } from "../../types/src";
+import { LOCALES, type Locale } from "../../types/src";
 import { ProductPublication } from "../products";
 import { validateShopName } from "../shops";
 

@@ -13,10 +13,12 @@ afterEach(() => jest.resetModules());
 
 describe("/api/return", () => {
   test("refunds deposit minus damage fee", async () => {
-    const retrieve = jest.fn().mockResolvedValue({
-      metadata: { depositTotal: "50" },
-      payment_intent: { id: "pi_123" },
-    } as any);
+    const retrieve = jest
+      .fn<Promise<Stripe.Checkout.Session>, [string, { expand: string[] }]>()
+      .mockResolvedValue({
+        metadata: { depositTotal: "50" },
+        payment_intent: { id: "pi_123" },
+      } as unknown as Stripe.Checkout.Session);
     const refundCreate = jest.fn<
       Promise<unknown>,
       [Stripe.RefundCreateParams]
@@ -56,10 +58,12 @@ describe("/api/return", () => {
   });
 
   test("returns message when no deposit found", async () => {
-    const retrieve = jest.fn().mockResolvedValue({
-      metadata: {},
-      payment_intent: null,
-    } as any);
+    const retrieve = jest
+      .fn<Promise<Stripe.Checkout.Session>, [string, { expand: string[] }]>()
+      .mockResolvedValue({
+        metadata: {},
+        payment_intent: null,
+      } as unknown as Stripe.Checkout.Session);
     const refundCreate = jest.fn<
       Promise<unknown>,
       [Stripe.RefundCreateParams]

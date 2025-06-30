@@ -1,7 +1,6 @@
 {
-  "extends": "apps/shop-abc/tsconfig.test.json",
+  "extends": "../tsconfig.test.json",
   "compilerOptions": {
-    "rootDir": "../..",
-    "noEmit": true
+    "rootDir": "../../.."
   }
 }

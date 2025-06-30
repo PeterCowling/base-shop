@@ -4,7 +4,7 @@ import { LOCALES } from "@types";
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import PdpClient from "./PdpClient";
+import PdpClient from "./PdpClient.client";
 
 export async function generateStaticParams() {
   return LOCALES.flatMap((lang) =>

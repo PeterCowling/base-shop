@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { CurrencyProvider } from "../../../platform-core/contexts/CurrencyContext";
-import CurrencySwitcher from "./CurrencySwitcher";
+import CurrencySwitcher from "./CurrencySwitcher.client";
 
 const meta: Meta<typeof CurrencySwitcher> = {
   component: CurrencySwitcher,

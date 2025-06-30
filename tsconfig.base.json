@@ -24,6 +24,8 @@
       "@/components/shop/*": ["packages/platform-core/components/shop/*"],
       "@/components/*": ["packages/ui/components/*"],
 
+      "@lib/stripeServer": ["packages/lib/stripeServer.server.ts"],
+      "@/lib/stripeServer": ["packages/lib/stripeServer.server.ts"],
       "@lib/*": ["packages/platform-core/*", "packages/lib/*"],
       "@/lib/*": ["packages/platform-core/*", "packages/lib/*"],
 

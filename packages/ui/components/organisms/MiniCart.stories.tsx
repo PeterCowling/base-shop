@@ -3,7 +3,7 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import type { CartState, SKU } from "@types";
 import * as React from "react";
 import { Button } from "../atoms-shadcn";
-import { MiniCart } from "./MiniCart";
+import { MiniCart } from "./MiniCart.client";
 
 const sku1: SKU = {
   id: "1",

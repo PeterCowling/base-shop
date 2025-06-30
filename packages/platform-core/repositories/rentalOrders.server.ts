@@ -1,3 +1,7 @@
+// packages/platform-core/repositories/rentalOrders.server.ts
+
+import "server-only";
+
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";

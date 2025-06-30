@@ -10,7 +10,7 @@ export { FilterSidebar } from "./FilterSidebar";
 export { Footer } from "./Footer";
 export { Header } from "./Header";
 export { LiveChatWidget } from "./LiveChatWidget";
-export { MiniCart } from "./MiniCart";
+export { MiniCart } from "./MiniCart.client";
 export { default as OrderSummary } from "./OrderSummary";
 export { OrderTrackingTimeline } from "./OrderTrackingTimeline";
 export { ProductCard } from "./ProductCard";

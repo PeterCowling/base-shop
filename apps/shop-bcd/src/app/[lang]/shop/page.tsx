@@ -2,7 +2,7 @@
 import { PRODUCTS } from "@/lib/products";
 import type { SKU } from "@types";
 import type { Metadata } from "next";
-import ShopClient from "./ShopClient";
+import ShopClient from "./ShopClient.client";
 
 export const metadata: Metadata = {
   title: "Shop · Base-Shop",

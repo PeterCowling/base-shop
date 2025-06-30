@@ -3,7 +3,7 @@ import type { SKU } from "@types";
 import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
-import AddToCartButton from "./AddToCartButton";
+import AddToCartButton from "./AddToCartButton.client";
 
 function ProductCardInner({ sku }: { sku: SKU }) {
   return (

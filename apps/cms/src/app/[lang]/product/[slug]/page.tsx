@@ -3,7 +3,7 @@ import { getProductBySlug } from "@platform-core/products";
 import { LOCALES } from "@types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import PdpClient from "./PdpClient";
+import PdpClient from "./PdpClient.client";
 
 /* -------------------------------------------------------------------------- */
 /*  Static generation                                                         */

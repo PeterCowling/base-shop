@@ -1,13 +1,16 @@
 // apps/cms/src/app/cms/shop/[shop]/products/[id]/edit/page.tsx
 
-import { getProductById, readSettings } from "@platform-core/repositories/json";
+import {
+  getProductById,
+  readSettings,
+} from "@platform-core/repositories/json.server";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 
 /* ------------------------------------------------------------------ */
 /*  Lazy-load wrapper (client component)                              */
 /* ------------------------------------------------------------------ */
-const ProductEditor = dynamic(() => import("./ProductEditor"));
+const ProductEditor = dynamic(() => import("./ProductEditor.client"));
 
 interface Params {
   shop: string;

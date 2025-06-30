@@ -40,7 +40,7 @@ const config: Config = {
     "^@lib/(.*)$": "<rootDir>/packages/lib/$1",
     "^@auth$": "<rootDir>/packages/auth/src/index.ts",
     "^@auth/(.*)$": "<rootDir>/packages/auth/src/$1",
-    "^@/lib/stripeServer$": "<rootDir>/packages/lib/stripeServer.ts",
+    "^@/lib/stripeServer$": "<rootDir>/packages/lib/stripeServer.server.ts",
     "^@/lib/(.*)$": "<rootDir>/packages/platform-core/$1",
     "^@/contexts/(.*)$": "<rootDir>/packages/platform-core/contexts/$1",
     "^@/components/(.*)$": "<rootDir>/packages/ui/components/$1",
@@ -71,7 +71,17 @@ const config: Config = {
   testMatch: ["**/?(*.)+(spec|test).ts?(x)"],
 
   /** Recognise TypeScript & JSX extensions automatically */
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
+  moduleFileExtensions: [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "server.ts",
+    "server.tsx",
+    "client.ts",
+    "client.tsx",
+  ],
 
   collectCoverage: true,
   coverageDirectory: "<rootDir>/coverage",

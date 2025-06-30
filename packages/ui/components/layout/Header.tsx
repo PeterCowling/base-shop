@@ -1,7 +1,7 @@
 // server component
 import { decodeCartCookie } from "@/lib/cartCookie";
 import { cookies } from "next/headers";
-import HeaderClient from "./HeaderClient";
+import HeaderClient from "./HeaderClient.client";
 
 /**
  * Reads cart cookie on the server and injects the starting quantity so the

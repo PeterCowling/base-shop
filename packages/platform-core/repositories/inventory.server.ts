@@ -1,3 +1,7 @@
+// packages/platform-core/repositories/inventory.server.ts
+
+import "server-only";
+
 import type { InventoryItem } from "@types";
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";

@@ -1,7 +1,7 @@
 // packages/platform-core/__tests__/addToCartButton.test.tsx
 
-import AddToCartButton from "@/components/shop/AddToCartButton";
 import { CartProvider, useCart } from "@/contexts/CartContext";
+import AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
 import { PRODUCTS } from "@platform-core/products";
 import { fireEvent, render, screen } from "@testing-library/react";
 

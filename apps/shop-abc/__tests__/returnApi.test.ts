@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+import type Stripe from "stripe";
 
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
@@ -16,7 +17,10 @@ describe("/api/return", () => {
       metadata: { depositTotal: "50" },
       payment_intent: { id: "pi_123" },
     } as any);
-    const refundCreate = jest.fn();
+    const refundCreate = jest.fn<
+      Promise<unknown>,
+      [Stripe.RefundCreateParams]
+    >();
 
     jest.doMock(
       "@/lib/stripeServer",
@@ -56,7 +60,10 @@ describe("/api/return", () => {
       metadata: {},
       payment_intent: null,
     } as any);
-    const refundCreate = jest.fn();
+    const refundCreate = jest.fn<
+      Promise<unknown>,
+      [Stripe.RefundCreateParams]
+    >();
 
     jest.doMock(
       "@/lib/stripeServer",

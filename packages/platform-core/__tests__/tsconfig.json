@@ -3,5 +3,10 @@
   "compilerOptions": {
     "rootDir": "../../..",
     "noEmit": true
-  }
+  },
+  "include": [
+    "../**/*.ts",
+    "../**/*.tsx",
+    "../../../apps/cms/src/app/api/create-shop/route.ts"
+  ]
 }

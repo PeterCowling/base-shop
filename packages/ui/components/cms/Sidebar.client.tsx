@@ -90,11 +90,11 @@ export default function Sidebar({ role }: { role?: string }) {
       <nav className="flex flex-col gap-1 px-2">
         {links.map(({ href, label, icon, title }) => {
           const fullHref = `/cms${href}`;
+          const isDashboardLink = label === "Dashboard";
 
-          const active =
-            href === ""
-              ? pathname === dashboardBase
-              : pathname.startsWith(fullHref);
+          const active = isDashboardLink
+            ? pathname === dashboardBase
+            : pathname.startsWith(fullHref);
           return (
             <Link
               key={href}

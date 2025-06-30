@@ -5,15 +5,15 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 /**
- * Matches CMS write routes and captures the shop slug.
+ * Matches CMS write routes of the form `/cms/shop/<shop>/...` and captures the
+ * shop slug.
  * Examples:
- *   /cms/{shop}/products/{id}/edit
- *   /cms/{shop}/settings
- *   /cms/{shop}/media (and subpaths)
- *   /shop/{shop}/products/{id}/edit
+ *   /cms/shop/{shop}/products/{id}/edit
+ *   /cms/shop/{shop}/settings
+ *   /cms/shop/{shop}/media (and subpaths)
  */
 const ADMIN_PATH_REGEX =
-  /^\/(?:cms|shop)\/([^/]+)\/(?:products\/[^/]+\/edit|settings|media(?:\/|$))/;
+  /^\/cms\/shop\/([^/]+)\/(?:products\/[^/]+\/edit|settings|media(?:\/|$))/;
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;

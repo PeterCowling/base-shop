@@ -40,7 +40,7 @@ describe("middleware", () => {
   it("unauthenticated requests are redirected to /login", async () => {
     getToken.mockResolvedValueOnce(null);
 
-    const req = createRequest("/shop/foo/products");
+    const req = createRequest("/cms/shop/foo/products");
     const res = await middleware(req);
 
     expect(res.status).toBe(307);
@@ -51,7 +51,7 @@ describe("middleware", () => {
     const viewerToken = { role: "viewer" } as JWT;
     getToken.mockResolvedValueOnce(viewerToken);
 
-    const req = createRequest("/shop/foo/products/1/edit");
+    const req = createRequest("/cms/shop/foo/products/1/edit");
     const res = await middleware(req);
 
     expect(res.headers.get("x-middleware-rewrite")).toContain("/403");

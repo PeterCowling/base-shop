@@ -17,7 +17,7 @@ jest.mock("@platform-core/repositories/shops", () => ({
 }));
 jest.mock("@platform-core/repositories/json", () => ({}));
 
-import { updateSeo } from "@cms/actions/shops";
+import { updateSeo } from "../../apps/cms/src/actions/shops.server";
 import { getSeo } from "../../apps/shop-abc/src/app/lib/seo";
 
 beforeEach(() => {

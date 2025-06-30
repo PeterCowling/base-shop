@@ -1,6 +1,6 @@
-import { revertSeo } from "@cms/actions/shops";
-import "../../apps/cms/src/types/next-auth.d.ts";
 (process.env as Record<string, string>).NODE_ENV = "development";
+import { revertSeo } from "../../apps/cms/src/actions/shops.server";
+import "../../apps/cms/src/types/next-auth.d.ts";
 
 jest.mock("next-auth", () => ({
   getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),

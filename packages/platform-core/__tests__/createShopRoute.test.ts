@@ -19,7 +19,7 @@ describe("POST /api/create-shop", () => {
     }));
 
     const { POST } = await import(
-      "../../apps/cms/src/app/api/create-shop/route"
+      "../../../apps/cms/src/app/api/create-shop/route"
     );
     const req = new Request("http://localhost/api/create-shop", {
       method: "POST",
@@ -41,7 +41,9 @@ describe("POST /api/create-shop", () => {
         .mockResolvedValue({ user: { role: "admin" } }),
     }));
 
-    const { POST } = await import("../src/app/api/create-shop/route");
+    const { POST } = await import(
+      "../../../apps/cms/src/app/api/create-shop/route"
+    );
     const req = new Request("http://localhost/api/create-shop", {
       method: "POST",
       body: JSON.stringify({ id: "shop1", options: { theme: "base" } }),
@@ -64,7 +66,9 @@ describe("POST /api/create-shop", () => {
         .mockResolvedValue({ user: { role: "admin" } }),
     }));
 
-    const { POST } = await import("../src/app/api/create-shop/route");
+    const { POST } = await import(
+      "../../../apps/cms/src/app/api/create-shop/route"
+    );
     const req = new Request("http://localhost/api/create-shop", {
       method: "POST",
       body: JSON.stringify({ id: "shop2" }),

@@ -1,6 +1,7 @@
 // packages/ui/components/cms/Breadcrumbs.tsx
 "use client";
 
+import type { ProductPublication } from "@platform-core/products";
 import { usePathname } from "next/navigation";
 import { memo, useEffect, useState } from "react";
 import Breadcrumbs, { BreadcrumbItem } from "../molecules/Breadcrumbs";
@@ -40,7 +41,7 @@ function BreadcrumbsInner() {
         try {
           const res = await fetch(`/api/products/${shop}/${id}`);
           if (res.ok) {
-            const data = await res.json();
+            const data: ProductPublication = await res.json();
             const title = data?.title ? Object.values(data.title)[0] : null;
             if (title) next[id] = title as string;
           }

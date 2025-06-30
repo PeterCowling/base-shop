@@ -1,6 +1,6 @@
 import type { Decorator, Meta, StoryObj } from "@storybook/react";
-import { tokens as baseTokens } from "@themes/base/tokens";
-import { tokens as brandxTokens } from "@themes/brandx/tailwind-tokens";
+import { tokens as baseTokens } from "../../packages/themes/base/tokens";
+import { tokens as brandxTokens } from "../../packages/themes/brandx/tailwind-tokens";
 
 const themeTokens: Record<string, Record<string, any>> = {
   base: baseTokens as unknown as Record<string, any>,

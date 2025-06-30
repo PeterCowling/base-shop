@@ -1,7 +1,7 @@
 "use client";
 import { useLayout } from "@platform-core/contexts/LayoutContext";
-import Sidebar from "@ui/components/cms/Sidebar";
-import TopBar from "@ui/components/cms/TopBar";
+import Sidebar from "@ui/components/cms/Sidebar.client";
+import TopBar from "@ui/components/cms/TopBar.client";
 import type { ReactNode } from "react";
 
 export default function LayoutClient({

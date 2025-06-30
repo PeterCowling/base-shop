@@ -37,7 +37,7 @@ describe("/api/return", () => {
     );
     jest.doMock("@platform-core/repositories/rentalOrders", () => ({
       __esModule: true,
-      markReturned: jest.fn().mockResolvedValue({}),
+      markReturned: jest.fn().mockResolvedValue({} as any),
       markRefunded: jest.fn(),
       addOrder: jest.fn(),
     }));

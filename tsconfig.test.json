@@ -13,5 +13,5 @@
     ]
   },
   "include": ["jest.setup.ts", "test/**/*.ts", "test/**/*.tsx"],
-  "exclude": ["test/e2e/**"]
+  "exclude": ["test/e2e/**", "test/tsconfig.ts"]
 }

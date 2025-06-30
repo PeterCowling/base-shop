@@ -4,7 +4,7 @@ import { Radio } from "./Radio";
 
 type GroupProps = { selectedIndex: number };
 
-const meta: Meta<GroupProps> = {
+const meta: Meta<typeof Radio & GroupProps> = {
   title: "Atoms/Radio",
   component: Radio,
   argTypes: {
@@ -14,7 +14,7 @@ const meta: Meta<GroupProps> = {
 };
 export default meta;
 
-export const Group: StoryObj<GroupProps> = {
+export const Group: StoryObj<typeof Radio & GroupProps> = {
   render: (args) => {
     const [selected, setSelected] = useState(args.selectedIndex);
     return (

@@ -4,7 +4,8 @@
   "extends": "./tsconfig.json", // already there
   "compilerOptions": {
     // 🟢  ONLY add *extra* keys here – do not copy the whole "paths" map
-    "types": ["@testing-library/jest-dom", "jest", "node"]
+    "types": ["@testing-library/jest-dom", "jest", "node"],
+    "noEmit": true
   },
   "include": ["src/**/*", "__tests__/**/*"]
 }

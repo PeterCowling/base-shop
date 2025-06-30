@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "allowImportingTsExtensions": false,
     "composite": true,
     "outDir": "dist",
     "rootDir": "."

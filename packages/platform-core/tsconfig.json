@@ -3,20 +3,11 @@
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* ------------------------------------------------------------------ */
-    /*  Package-local extras — nothing here overrides the root settings   */
-    /* ------------------------------------------------------------------ */
+    "allowImportingTsExtensions": false,
     "composite": true,
     "outDir": "dist",
     "jsx": "react-jsx",
-
-    /*  Local barrel-import aliases for this package                      */
     "baseUrl": ".",
-
-    /*  👇  NEW: tell TypeScript that *two* folders are “roots”.          *
-     *       This lets us import the shared `@types` files that live      *
-     *       under the repo-level `src/` directory without tripping the   *
-     *       TS6059 / TS6307 “file not under rootDir” errors.             */
     "rootDirs": ["./", "../../src", "../lib"],
 
     "paths": {

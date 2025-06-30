@@ -4,6 +4,7 @@
     "jsx": "react-jsx",
     "importsNotUsedAsValues": "remove",
     "verbatimModuleSyntax": false,
+    "noEmit": true,
     "types": [
       "@cloudflare/workers-types",
       "node",

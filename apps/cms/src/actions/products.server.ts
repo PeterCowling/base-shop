@@ -1,8 +1,8 @@
 // apps/cms/src/actions/products.ts
 "use server";
 
-import type { ProductForm } from "@cms/actions/schemas.server";
-import { productSchema } from "@cms/actions/schemas.server";
+import type { ProductForm } from "@cms/actions/schemas";
+import { productSchema } from "@cms/actions/schemas";
 import { authOptions } from "@cms/auth/options";
 import type { ProductPublication } from "@platform-core/products";
 import {

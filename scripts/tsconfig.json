@@ -1,6 +1,7 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "allowImportingTsExtensions": false,
     "outDir": "../dist-scripts",
     "composite": true,
     "module": "esnext",

@@ -34,6 +34,8 @@ pnpm test	Jest unit tests
 pnpm e2e	Cypress e2e suite
 pnpm test:coverage	Jest tests with coverage summary
 pnpm run lh:checkout    Lighthouse audit for /en/checkout
+pnpm chromatic  Publish Storybook to Chromatic
+  # Requires `CHROMATIC_PROJECT_TOKEN` to be set
 
 Example summary:
 
@@ -80,6 +82,23 @@ pnpm install
 pnpm build
 ````
 
+## Storybook
+
+Component stories live in `packages/ui`. Launch the interactive Storybook with:
+
+```bash
+pnpm storybook
+```
+
+Run automated accessibility checks against all stories with:
+
+```bash
+pnpm test-storybook
+```
+
+Storybook's toolbar includes a design-token theme switcher defined in
+`.storybook/preview.tsx`.
+
 # Environment Variables
 
 The CLI and demo application expect several variables to be defined:
@@ -88,6 +107,7 @@ The CLI and demo application expect several variables to be defined:
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` – public key for the Stripe client SDK
 - `CMS_SPACE_URL` – base URL of the CMS API
 - `CMS_ACCESS_TOKEN` – access token for pushing schemas
+- `CHROMATIC_PROJECT_TOKEN` – token for publishing Storybook previews
 
 Missing variables will cause the CLI to exit with an error before running.
 

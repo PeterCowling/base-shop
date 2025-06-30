@@ -1,10 +1,10 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Radio } from "./Radio";
+import { Radio, type RadioProps } from "./Radio";
 
-type GroupProps = { selectedIndex: number };
+type GroupProps = RadioProps & { selectedIndex: number };
 
-const meta: Meta<typeof Radio & GroupProps> = {
+const meta: Meta<GroupProps> = {
   title: "Atoms/Radio",
   component: Radio,
   argTypes: {
@@ -14,7 +14,7 @@ const meta: Meta<typeof Radio & GroupProps> = {
 };
 export default meta;
 
-export const Group: StoryObj<typeof Radio & GroupProps> = {
+export const Group: StoryObj<GroupProps> = {
   render: (args) => {
     const [selected, setSelected] = useState(args.selectedIndex);
     return (

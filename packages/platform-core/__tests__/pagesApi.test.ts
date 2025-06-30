@@ -53,7 +53,9 @@ describe("pages API route", () => {
         "utf8"
       );
 
-      const { GET } = await import("../src/app/api/pages/[shop]/route");
+      const { GET } = await import(
+        "../../../apps/cms/src/app/api/pages/[shop]/route"
+      );
       const res = await GET(new Request("http://localhost"), {
         params: { shop: "test" },
       });
@@ -63,7 +65,9 @@ describe("pages API route", () => {
 
   it("returns empty array when file missing", async () => {
     await withRepo(async () => {
-      const { GET } = await import("../src/app/api/pages/[shop]/route");
+      const { GET } = await import(
+        "../../../apps/cms/src/app/api/pages/[shop]/route"
+      );
       const res = await GET(new Request("http://localhost"), {
         params: { shop: "test" },
       });

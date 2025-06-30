@@ -7,6 +7,7 @@
   "include": [
     "../**/*.ts",
     "../**/*.tsx",
+    "../../../test/mswServer.ts",
     "../../../apps/cms/src/app/api/create-shop/route.ts"
   ]
 }

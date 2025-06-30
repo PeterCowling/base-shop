@@ -35,7 +35,7 @@ describe("GET /api/shops", () => {
       await fs.mkdir(path.join(shopsDir, "shop1"), { recursive: true });
       await fs.mkdir(path.join(shopsDir, "shop2"));
 
-      const { GET } = await import("../src/app/api/shops/route");
+      const { GET } = await import("../../../apps/cms/src/app/api/shops/route");
       const res = await GET();
       expect(await res.json()).toEqual(
         expect.arrayContaining(["shop1", "shop2"])
@@ -47,7 +47,7 @@ describe("GET /api/shops", () => {
     await withTmpRepo(async (dir) => {
       await fs.mkdir(path.join(dir, "data", "shops"), { recursive: true });
 
-      const { GET } = await import("../src/app/api/shops/route");
+      const { GET } = await import("../../../apps/cms/src/app/api/shops/route");
       const res = await GET();
       expect(await res.json()).toEqual([]);
     });
@@ -55,7 +55,7 @@ describe("GET /api/shops", () => {
 
   it("returns empty array when directory missing", async () => {
     await withTmpRepo(async () => {
-      const { GET } = await import("../src/app/api/shops/route");
+      const { GET } = await import("../../../apps/cms/src/app/api/shops/route");
       const res = await GET();
       expect(await res.json()).toEqual([]);
     });

@@ -26,6 +26,7 @@
     "i18n:check": "ts-node scripts/check-i18n-schemas.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "test-storybook": "test-storybook --url http://localhost:6007",
     "preview": "wrangler pages dev",
     "format": "prettier --write .",
     "create-shop": "ts-node scripts/create-shop.ts",

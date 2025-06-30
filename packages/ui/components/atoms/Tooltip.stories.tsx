@@ -2,7 +2,9 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import { Icon } from "./Icon";
 import { Tooltip } from "./Tooltip";
 
-const meta: Meta<typeof Tooltip> = {
+type TooltipStoryProps = { position: "top" | "bottom" };
+
+const meta: Meta<typeof Tooltip & TooltipStoryProps> = {
   title: "Atoms/Tooltip",
   component: Tooltip,
   argTypes: { position: { control: "radio", options: ["top", "bottom"] } },
@@ -10,7 +12,7 @@ const meta: Meta<typeof Tooltip> = {
 };
 export default meta;
 
-export const Default: StoryObj<typeof Tooltip> = {
+export const Default: StoryObj<typeof Tooltip & TooltipStoryProps> = {
   render: (args) => (
     <div className="mt-10 flex justify-center">
       <Tooltip

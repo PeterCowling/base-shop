@@ -10,9 +10,11 @@ export default meta;
 
 export const Uncontrolled: StoryObj<typeof Switch> = {};
 
+const ControlledRender = () => {
+  const [checked, setChecked] = useState(false);
+  return <Switch checked={checked} onChange={() => setChecked(!checked)} />;
+};
+
 export const Controlled: StoryObj<typeof Switch> = {
-  render: () => {
-    const [checked, setChecked] = useState(false);
-    return <Switch checked={checked} onChange={() => setChecked(!checked)} />;
-  },
+  render: () => <ControlledRender />,
 };

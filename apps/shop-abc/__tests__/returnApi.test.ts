@@ -15,7 +15,7 @@ describe("/api/return", () => {
     const retrieve = jest.fn().mockResolvedValue({
       metadata: { depositTotal: "50" },
       payment_intent: { id: "pi_123" },
-    });
+    } as any);
     const refundCreate = jest.fn();
 
     jest.doMock(
@@ -29,18 +29,6 @@ describe("/api/return", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
-      __esModule: true,
-      markReturned: jest.fn().mockResolvedValue({}),
-      markRefunded: jest.fn(),
-      addOrder: jest.fn(),
-    }));
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
-      __esModule: true,
-      markReturned: jest.fn().mockResolvedValue({}),
-      markRefunded: jest.fn(),
-      addOrder: jest.fn(),
-    }));
     jest.doMock("@platform-core/repositories/rentalOrders", () => ({
       __esModule: true,
       markReturned: jest.fn().mockResolvedValue({}),
@@ -67,7 +55,7 @@ describe("/api/return", () => {
     const retrieve = jest.fn().mockResolvedValue({
       metadata: {},
       payment_intent: null,
-    });
+    } as any);
     const refundCreate = jest.fn();
 
     jest.doMock(

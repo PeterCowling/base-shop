@@ -1,9 +1,9 @@
 import { type Meta, type StoryObj } from "@storybook/react";
-import { Icon } from "./Icon";
+import { Icon, type IconProps } from "./Icon";
 
-type IconStoryProps = { size: number };
+type IconStoryProps = IconProps & { size: number };
 
-const meta: Meta<typeof Icon & IconStoryProps> = {
+const meta: Meta<IconStoryProps> = {
   title: "Atoms/Icon",
   component: Icon,
   argTypes: {
@@ -14,8 +14,9 @@ const meta: Meta<typeof Icon & IconStoryProps> = {
 };
 export default meta;
 
-export const Primary: StoryObj<typeof Icon & IconStoryProps> = {
-  render: (args) => (
-    <Icon name={args.name as any} width={args.size} height={args.size} />
-  ),
+export const Primary: StoryObj<IconStoryProps> = {
+  render: (args) => {
+    const { size, ...rest } = args;
+    return <Icon {...rest} width={size} height={size} />;
+  },
 };

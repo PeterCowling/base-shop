@@ -59,6 +59,7 @@ const config: Config = {
     "^react/jsx-dev-runtime$":
       "<rootDir>/node_modules/react/jsx-dev-runtime.js",
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
+    "^server-only$": "<rootDir>/test/server-only-stub.ts",
   },
 
   /**

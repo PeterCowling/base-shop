@@ -13,7 +13,7 @@ describe("/api/return", () => {
     const retrieve = jest.fn().mockResolvedValue({
       metadata: { depositTotal: "50" },
       payment_intent: "pi_1",
-    });
+    } as any);
     const refundCreate = jest.fn();
     const computeDamageFee = jest.fn(async () => 20);
 
@@ -51,7 +51,7 @@ describe("/api/return", () => {
   });
 
   test("returns ok false when deposit missing", async () => {
-    const retrieve = jest.fn().mockResolvedValue({ metadata: {} });
+    const retrieve = jest.fn().mockResolvedValue({ metadata: {} } as any);
     const refundCreate = jest.fn();
 
     jest.doMock(

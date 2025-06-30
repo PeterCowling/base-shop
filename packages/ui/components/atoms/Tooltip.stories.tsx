@@ -1,8 +1,8 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Icon } from "./Icon";
-import { Tooltip } from "./Tooltip";
+import { Tooltip, type TooltipProps } from "./Tooltip";
 
-type TooltipStoryProps = { position: "top" | "bottom" };
+type TooltipStoryProps = TooltipProps & { position: "top" | "bottom" };
 
 const meta: Meta<TooltipStoryProps> = {
   title: "Atoms/Tooltip",

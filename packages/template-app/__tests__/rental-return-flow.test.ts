@@ -26,7 +26,7 @@ async function withShop(
   const cwd = process.cwd();
   process.chdir(dir);
   jest.resetModules();
-  const repo = await import("@platform-core/repositories/rentalOrders");
+  const repo: typeof import("@platform-core/repositories/rentalOrders") = require("@platform-core/repositories/rentalOrders");
   try {
     await cb(repo);
   } finally {

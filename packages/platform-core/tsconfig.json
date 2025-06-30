@@ -34,7 +34,10 @@
 
       /*  Bring back the repo-level @lib alias so this package can */
       /*  access shared utilities such as stripeServer                */
-      "@lib/*": ["../lib/*"]
+      "@lib/*": ["../lib/*"],
+
+      /* Alias to access CMS sources */
+      "@cms/*": ["../../apps/cms/src/*"]
     }
   },
 

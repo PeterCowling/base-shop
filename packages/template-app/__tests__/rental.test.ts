@@ -10,9 +10,14 @@ afterEach(() => jest.resetModules());
 
 describe("/api/rental", () => {
   test("POST creates order with deposit and return date", async () => {
-    const retrieve = jest.fn().mockResolvedValue({
-      metadata: { depositTotal: "50", returnDate: "2030-01-02" },
-    });
+    const retrieve = jest
+      .fn<
+        Promise<{ metadata: { depositTotal: string; returnDate: string } }>,
+        [string]
+      >()
+      .mockResolvedValue({
+        metadata: { depositTotal: "50", returnDate: "2030-01-02" },
+      });
     const addOrder = jest.fn();
 
     jest.doMock(
@@ -44,8 +49,14 @@ describe("/api/rental", () => {
   });
 
   test("PATCH marks order returned and refunds when needed", async () => {
-    const markReturned = jest.fn().mockResolvedValue({ deposit: 100 });
-    const retrieve = jest.fn().mockResolvedValue({ payment_intent: "pi_1" });
+    const markReturned = jest
+      .fn<Promise<{ deposit: number } | null>, [string, string?]>()
+      .mockResolvedValue({
+        deposit: 100,
+      });
+    const retrieve = jest
+      .fn<Promise<{ payment_intent: string }>, [string, any]>()
+      .mockResolvedValue({ payment_intent: "pi_1" });
     const refundCreate = jest.fn();
     const computeDamageFee = jest.fn(async () => 30);
 
@@ -88,7 +99,9 @@ describe("/api/rental", () => {
   });
 
   test("PATCH returns 404 when order missing", async () => {
-    const markReturned = jest.fn().mockResolvedValue(null);
+    const markReturned = jest
+      .fn<Promise<null>, [string]>()
+      .mockResolvedValue(null);
     jest.doMock("@platform-core/repositories/rentalOrders", () => ({
       __esModule: true,
       addOrder: jest.fn(),
@@ -119,8 +132,14 @@ describe("/api/rental", () => {
   });
 
   test("no refund issued when refund amount is zero", async () => {
-    const markReturned = jest.fn().mockResolvedValue({ deposit: 20 });
-    const retrieve = jest.fn().mockResolvedValue({ payment_intent: "pi" });
+    const markReturned = jest
+      .fn<Promise<{ deposit: number } | null>, [string]>()
+      .mockResolvedValue({
+        deposit: 20,
+      });
+    const retrieve = jest
+      .fn<Promise<{ payment_intent: string }>, [string, any]>()
+      .mockResolvedValue({ payment_intent: "pi" });
     const refundCreate = jest.fn();
     const computeDamageFee = jest.fn(async () => 25);
 

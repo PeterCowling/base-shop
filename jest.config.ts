@@ -37,6 +37,7 @@ const config: Config = {
     "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/$1",
     "^@apps/(.*)$": "<rootDir>/apps/$1/src",
     "^@cms/(.*)$": "<rootDir>/apps/cms/src/$1",
+    "^@lib/stripeServer$": "<rootDir>/packages/lib/stripeServer.server.ts",
     "^@lib/(.*)$": "<rootDir>/packages/lib/$1",
     "^@auth$": "<rootDir>/packages/auth/src/index.ts",
     "^@auth/(.*)$": "<rootDir>/packages/auth/src/$1",

@@ -8,6 +8,8 @@
     "../**/*.ts",
     "../**/*.tsx",
     "../../../test/mswServer.ts",
-    "../../../apps/cms/src/app/api/create-shop/route.ts"
+    "../../../apps/cms/src/app/api/create-shop/route.ts",
+    "../../../apps/cms/src/app/api/shops/route.ts",
+    "../../../apps/cms/src/app/api/pages/[shop]/route.ts"
   ]
 }

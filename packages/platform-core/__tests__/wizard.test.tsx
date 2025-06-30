@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { rest, server } from "../../../test/mswServer";
-import Wizard from "../src/app/cms/wizard/Wizard";
+// Use the @cms alias to reference the Wizard component located in the CMS app
+// instead of a relative path that does not resolve correctly from this package.
+import Wizard from "@cms/app/cms/wizard/Wizard";
 
 it("submits selected options to create shop", async () => {
   let body: any = null;

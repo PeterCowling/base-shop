@@ -1,6 +1,6 @@
 // packages/template-app/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "@/lib/cartCookie";
-import { PRODUCTS } from "@platform-core/products";
+import { encodeCartCookie } from "../../platform-core/cartCookie";
+import { PRODUCTS } from "../../platform-core/products";
 import { POST } from "../src/api/checkout-session/route";
 
 jest.mock("next/server", () => ({
@@ -10,15 +10,15 @@ jest.mock("next/server", () => ({
   },
 }));
 
-jest.mock("@/lib/stripeServer", () => ({
+jest.mock("../../lib/stripeServer.server", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
 
-jest.mock("@platform-core/pricing", () => ({
+jest.mock("../../platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
 }));
 
-import { stripe } from "@/lib/stripeServer";
+import { stripe } from "../../lib/stripeServer.server";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
 function createRequest(

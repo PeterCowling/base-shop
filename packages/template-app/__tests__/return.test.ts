@@ -10,7 +10,7 @@ afterEach(() => jest.resetModules());
 
 describe("/api/return", () => {
   test("refunds remaining deposit after computing damage", async () => {
-    const retrieve = jest.fn().mockResolvedValue({
+    const retrieve = jest.fn<Promise<any>, any[]>().mockResolvedValue({
       metadata: { depositTotal: "50" },
       payment_intent: "pi_1",
     } as any);
@@ -51,7 +51,9 @@ describe("/api/return", () => {
   });
 
   test("returns ok false when deposit missing", async () => {
-    const retrieve = jest.fn().mockResolvedValue({ metadata: {} } as any);
+    const retrieve = jest
+      .fn<Promise<any>, any[]>()
+      .mockResolvedValue({ metadata: {} } as any);
     const refundCreate = jest.fn();
 
     jest.doMock(

@@ -22,7 +22,6 @@
   "references": [
     { "path": "../platform-core" },
     { "path": "../i18n" },
-    { "path": "../types" },
     { "path": "../config" },
     { "path": "../auth" }
   ],

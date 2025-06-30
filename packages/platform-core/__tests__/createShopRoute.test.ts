@@ -18,7 +18,9 @@ describe("POST /api/create-shop", () => {
       createNewShop,
     }));
 
-    const { POST } = await import("../src/app/api/create-shop/route");
+    const { POST } = await import(
+      "../../apps/cms/src/app/api/create-shop/route"
+    );
     const req = new Request("http://localhost/api/create-shop", {
       method: "POST",
     });

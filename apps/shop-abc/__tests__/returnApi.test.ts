@@ -1,4 +1,4 @@
-import { jest } from "@jest/globals";
+// Jest globals are available automatically – no import needed
 import type Stripe from "stripe";
 
 process.env.STRIPE_SECRET_KEY = "sk_test";

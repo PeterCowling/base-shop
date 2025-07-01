@@ -11,6 +11,6 @@
     "moduleResolution": "node"
   },
   "references": [{ "path": "../config" }, { "path": "../../src" }],
-  "include": ["stripeServer.server.ts"],
+  "include": ["stripeServer.server.ts", "checkShopExists.server.ts"],
   "exclude": ["dist", "__tests__"]
 }

@@ -22,6 +22,8 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
     if (!src) {
       return <span className={cn("font-bold", className)}>{textFallback}</span>;
     }
+    const widthClass = `w-[${width}px]`;
+    const heightClass = `h-[${height}px]`;
     return (
       <Image
         ref={ref}
@@ -29,7 +31,7 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
         alt={alt ?? ""}
         width={width}
         height={height}
-        className={cn("h-8 w-auto", className)}
+        className={cn(widthClass, heightClass, className)}
         {...props}
       />
     );

@@ -24,7 +24,6 @@ export function ARViewer({ src, className, ...props }: ARViewerProps) {
       ar
       camera-controls
       className={cn("h-full w-full", className)}
-      style={{ width: "100%", height: "100%" }}
       {...props}
     />
   );

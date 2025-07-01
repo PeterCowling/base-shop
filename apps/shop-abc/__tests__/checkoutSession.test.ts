@@ -46,7 +46,7 @@ test("builds Stripe session with correct items and metadata", async () => {
   const req = createRequest({ returnDate: "2025-01-02" }, cookie);
 
   const res = await POST(req);
-  const body = await res.json();
+  const body = (await res.json()) as any;
 
   expect(stripeCreate).toHaveBeenCalled();
   const args = stripeCreate.mock.calls[0][0];

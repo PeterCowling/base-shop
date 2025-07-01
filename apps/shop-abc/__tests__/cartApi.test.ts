@@ -40,7 +40,7 @@ test("POST adds items and sets cookie", async () => {
   const sku = PRODUCTS[0];
   const req = createRequest({ sku, qty: 2 });
   const res = await POST(req);
-  const body = await res.json();
+  const body = (await res.json()) as any;
 
   expect(body.cart[sku.id].qty).toBe(2);
   const expected = asSetCookieHeader(
@@ -59,7 +59,7 @@ test("PATCH updates quantity", async () => {
   const cart = { [sku.id]: { sku, qty: 1 } };
   const req = createRequest({ id: sku.id, qty: 5 }, encodeCartCookie(cart));
   const res = await PATCH(req);
-  const body = await res.json();
+  const body = (await res.json()) as any;
   expect(body.cart[sku.id].qty).toBe(5);
   const encoded = res.headers.get("Set-Cookie")!.split(";")[0].split("=")[1];
   expect(decodeCartCookie(encoded)).toEqual(body.cart);

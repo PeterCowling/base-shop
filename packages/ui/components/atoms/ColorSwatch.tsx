@@ -18,16 +18,18 @@ export const ColorSwatch = React.forwardRef<
   HTMLButtonElement,
   ColorSwatchProps
 >(({ color, selected = false, size = 24, className, style, ...props }, ref) => {
-  const sizeClass = `w-[${size}px] h-[${size}px]`;
-
   return (
     <button
       ref={ref}
       type="button"
-      style={{ backgroundColor: color, ...style }}
+      style={{
+        backgroundColor: color,
+        width: size,
+        height: size,
+        ...style,
+      }}
       className={cn(
         "rounded-full border",
-        sizeClass,
         selected ? "ring-2 ring-offset-2" : "",
         className
       )}

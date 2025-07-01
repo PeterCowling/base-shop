@@ -23,7 +23,8 @@
     { "path": "../platform-core" },
     { "path": "../i18n" },
     { "path": "../config" },
-    { "path": "../auth" }
+    { "path": "../auth" },
+    { "path": "../lib" }
   ],
   "include": [
     "components/**/*",

@@ -4,6 +4,7 @@
     { "path": "packages/types" },
     { "path": "packages/platform-core" },
     { "path": "packages/platform-machine" },
+    { "path": "packages/lib" },
     { "path": "packages/themes/abc" },
     { "path": "packages/themes/bcd" },
     { "path": "packages/config" },

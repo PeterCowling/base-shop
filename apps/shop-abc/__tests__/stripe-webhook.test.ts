@@ -1,4 +1,4 @@
-import { jest } from "@jest/globals";
+// Jest globals are available automatically – no import needed
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
 if (typeof (Response as any).json !== "function") {

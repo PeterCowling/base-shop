@@ -1,6 +1,7 @@
 "use client";
 
 import { getShopFromPath } from "@platform-core/utils/getShopFromPath";
+import { replaceShopInPath } from "@platform-core/utils/replaceShopInPath";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -40,13 +41,12 @@ export default function ShopSelector() {
     fetchShops();
   }, []);
 
-  const segments = pathname.split("/").filter(Boolean);
-  const shopIndex = segments.indexOf("shop");
   const selected = getShopFromPath(pathname);
 
   function changeShop(value: string) {
     const search = typeof window === "undefined" ? "" : window.location.search;
-    router.push(`/cms/shop/${value}${search}`);
+    const newPath = replaceShopInPath(pathname, value);
+    router.push(`${newPath}${search}`);
   }
 
   if (status === "loading")

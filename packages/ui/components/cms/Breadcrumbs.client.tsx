@@ -3,6 +3,7 @@
 
 import type { ProductPublication } from "@platform-core/products";
 import { getShopFromPath } from "@platform-core/utils/getShopFromPath";
+import type { Page } from "@types";
 import { usePathname } from "next/navigation";
 import { memo, useEffect, useState } from "react";
 import Breadcrumbs, { BreadcrumbItem } from "../molecules/Breadcrumbs";
@@ -57,10 +58,8 @@ function BreadcrumbsInner() {
         try {
           const res = await fetch(`/api/pages/${shopSlug}`);
           if (res.ok) {
-            const pages = await res.json();
-            const page = Array.isArray(pages)
-              ? pages.find((p: any) => p.slug === slug)
-              : null;
+            const pages: Page[] = await res.json();
+            const page = pages.find((p: Page) => p.slug === slug) ?? null;
             if (page?.seo?.title) next[slug] = page.seo.title as string;
           }
         } catch {
@@ -71,7 +70,7 @@ function BreadcrumbsInner() {
       setExtra(next);
     }
     fetchLabels();
-  }, [pathname]);
+  }, [pathname, shop]);
 
   let href = "";
   const items: BreadcrumbItem[] = [];

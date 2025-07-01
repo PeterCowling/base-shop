@@ -10,6 +10,10 @@ export interface RecommendationCarouselProps
   endpoint: string;
   /** Number of items visible per slide. */
   itemsPerSlide?: number;
+  /** Tailwind class controlling gap between slides */
+  gapClassName?: string;
+  /** Function to calculate individual slide width */
+  getSlideWidth?: (itemsPerSlide: number) => string;
 }
 
 /**
@@ -19,6 +23,8 @@ export interface RecommendationCarouselProps
 export function RecommendationCarousel({
   endpoint,
   itemsPerSlide = 3,
+  gapClassName = "gap-4",
+  getSlideWidth = (n) => `${100 / n}%`,
   className,
   ...props
 }: RecommendationCarouselProps) {
@@ -38,19 +44,20 @@ export function RecommendationCarousel({
     void load();
   }, [endpoint]);
 
-  const width = `${100 / itemsPerSlide}%`;
+  const width = getSlideWidth(itemsPerSlide);
+
+  const slideStyle = React.useMemo<React.CSSProperties>(
+    () => ({ flex: `0 0 ${width}` }),
+    [width]
+  );
 
   if (!products.length) return null;
 
   return (
     <div className={cn("overflow-hidden", className)} {...props}>
-      <div className="flex snap-x gap-4 overflow-x-auto pb-4">
+      <div className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)}>
         {products.map((p) => (
-          <div
-            key={p.id}
-            style={{ flex: `0 0 ${width}` }}
-            className="snap-start"
-          >
+          <div key={p.id} style={slideStyle} className="snap-start">
             <ProductCard product={p} className="h-full" />
           </div>
         ))}

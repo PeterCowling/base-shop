@@ -56,6 +56,9 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   const [creating, setCreating] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [themeVars, setThemeVars] = useState<TokenMap>(baseTokens);
+  const [domain, setDomain] = useState("");
+  const [deploying, setDeploying] = useState(false);
+  const [deployResult, setDeployResult] = useState<string | null>(null);
 
   useEffect(() => {
     loadThemeTokens(theme).then(setThemeVars);
@@ -70,6 +73,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   async function submit() {
     setCreating(true);
     setResult(null);
+    let json: any = null;
     try {
       const res = await fetch("/cms/api/create-shop", {
         method: "POST",
@@ -82,16 +86,39 @@ export default function Wizard({ themes, templates, disabled }: Props) {
           shipping,
         }),
       });
-      const json = await res.json();
+      json = await res.json();
       if (res.ok) {
         setResult("Shop created successfully");
+        setStep(5);
       } else {
         setResult("Failed to create shop");
       }
     } catch {
-      setResult(json.error ?? "Failed to create shop");
+      setResult(json?.error ?? "Failed to create shop");
     }
     setCreating(false);
+  }
+
+  async function deploy() {
+    setDeploying(true);
+    setDeployResult(null);
+    let json: any = null;
+    try {
+      const res = await fetch("/cms/api/deploy-shop", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: shopId, domain }),
+      });
+      json = await res.json();
+      if (res.ok) {
+        setDeployResult("Deployment started");
+      } else {
+        setDeployResult("Deployment failed");
+      }
+    } catch {
+      setDeployResult(json?.error ?? "Deployment failed");
+    }
+    setDeploying(false);
   }
 
   const themeStyle = Object.fromEntries(
@@ -101,7 +128,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   return (
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
-        <Progress step={step} total={5} />
+        <Progress step={step} total={6} />
         {step === 0 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Shop Details</h2>
@@ -279,6 +306,29 @@ export default function Wizard({ themes, templates, disabled }: Props) {
               </Button>
               <Button disabled={creating} onClick={submit}>
                 {creating ? "Creating…" : "Create Shop"}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {step === 5 && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Hosting</h2>
+            <label className="flex flex-col gap-1">
+              <span>Custom Domain</span>
+              <Input
+                value={domain}
+                onChange={(e) => setDomain(e.target.value)}
+                placeholder="myshop.example.com"
+              />
+            </label>
+            {deployResult && <p className="text-sm">{deployResult}</p>}
+            <div className="flex justify-between gap-2">
+              <Button variant="outline" onClick={() => setStep(4)}>
+                Back
+              </Button>
+              <Button disabled={deploying} onClick={deploy}>
+                {deploying ? "Deploying…" : "Deploy"}
               </Button>
             </div>
           </div>

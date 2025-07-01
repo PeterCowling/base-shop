@@ -193,6 +193,12 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     JSON.stringify([sampleProduct], null, 2)
   );
 
+  deployShop(id);
+}
+
+export function deployShop(id: string): void {
+  const newApp = join("apps", id);
+
   try {
     const result = spawnSync("npx", ["--yes", "create-cloudflare", newApp], {
       stdio: "inherit",

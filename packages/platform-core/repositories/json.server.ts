@@ -5,6 +5,8 @@ import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { runInNewContext } from "node:vm";
+import ts from "typescript";
 import { ulid } from "ulid";
 import type { Shop, ShopSettings } from "../../types/src";
 import { LOCALES, type Locale } from "../../types/src";
@@ -68,7 +70,7 @@ async function ensureDir(shop: string): Promise<void> {
 
 async function loadThemeTokens(theme: string): Promise<Record<string, string>> {
   const baseMod = await import(
-    path.join(__dirname, "../../themes/base/tokens.ts")
+    path.join(__dirname, "../../themes/base/tokens.js")
   );
   const baseMap: Record<string, { light: string }> = baseMod.tokens;
   const baseTokens: Record<string, string> = {};
@@ -79,10 +81,27 @@ async function loadThemeTokens(theme: string): Promise<Record<string, string>> {
   if (theme === "base") return baseTokens;
 
   try {
-    const themeMod = await import(
-      path.join(__dirname, `../../themes/${theme}/tailwind-tokens.ts`)
+    const modPath = path.join(
+      __dirname,
+      `../../themes/${theme}/tailwind-tokens.ts`
     );
-    return { ...baseTokens, ...(themeMod.tokens as Record<string, string>) };
+    const source = await fs.readFile(modPath, "utf8");
+    const transpiled = ts.transpileModule(source, {
+      compilerOptions: { module: ts.ModuleKind.CommonJS },
+    }).outputText;
+    const sandbox: {
+      module: { exports: any };
+      exports: any;
+      require: NodeRequire;
+    } = {
+      module: { exports: {} },
+      exports: {},
+      require,
+    };
+    sandbox.exports = sandbox.module.exports;
+    runInNewContext(transpiled, sandbox);
+    const themeTokens = sandbox.module.exports.tokens as Record<string, string>;
+    return { ...baseTokens, ...themeTokens };
   } catch {
     return baseTokens;
   }

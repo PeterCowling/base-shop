@@ -8,6 +8,7 @@
     "resolveJsonModule": true,
     "moduleSuffixes": [".server", ".client", ""],
     "allowImportingTsExtensions": true,
+    "module": "es2020",
 
     "types": ["@cloudflare/workers-types", "node"],
 

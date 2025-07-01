@@ -9,15 +9,22 @@ export interface Category {
   description?: string;
 }
 
-export interface CategoryCardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CategoryCardProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   category: Category;
+  /** Override default padding classes. */
+  padding?: string;
 }
 
 export const CategoryCard = React.forwardRef<HTMLDivElement, CategoryCardProps>(
-  ({ category, className, ...props }, ref) => (
+  ({ category, padding = "p-4", className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex flex-col gap-3 rounded-lg border p-4", className)}
+      className={cn(
+        "flex flex-col gap-3 rounded-lg border",
+        padding,
+        className
+      )}
       {...props}
     >
       <div className="relative aspect-square">
@@ -31,7 +38,7 @@ export const CategoryCard = React.forwardRef<HTMLDivElement, CategoryCardProps>(
       </div>
       <h3 className="font-medium">{category.title}</h3>
       {category.description && (
-        <p className="text-sm text-muted-foreground">{category.description}</p>
+        <p className="text-muted-foreground text-sm">{category.description}</p>
       )}
     </div>
   )

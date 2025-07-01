@@ -1,5 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { drawerWidthProps } from "../../utils/drawerWidth";
+
 import {
   Button,
   Dialog,
@@ -16,7 +18,7 @@ export interface WishlistDrawerProps {
   items: Product[];
   /**
    * Optional width for the drawer.
-   * Can be a Tailwind width class or any valid CSS length.
+   * Can be a Tailwind width class or numeric pixel value.
    */
   width?: string | number;
 }
@@ -30,9 +32,8 @@ export function WishlistDrawer({
   items,
   width = "20rem",
 }: WishlistDrawerProps) {
-  const widthClass =
-    typeof width === "string" && width.startsWith("w-") ? width : undefined;
-  const style = widthClass ? undefined : { width };
+  const { widthClass, style } = drawerWidthProps(width);
+
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>

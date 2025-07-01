@@ -17,12 +17,32 @@ interface ChatMessage {
   text: string;
 }
 
-export type LiveChatWidgetProps = React.HTMLAttributes<HTMLButtonElement>;
+export interface LiveChatWidgetProps
+  extends React.HTMLAttributes<HTMLButtonElement> {
+  /**
+   * Width of the chat dialog. Provide a Tailwind width class
+   * (e.g. "w-80") or a numeric pixel value.
+   * @default "w-80"
+   */
+  width?: string | number;
+  /**
+   * Distance from the bottom of the viewport for both the
+   * toggle button and the chat dialog. Accepts a Tailwind
+   * class like "bottom-4" or a numeric pixel value.
+   * @default "bottom-4"
+   */
+  bottomOffset?: string | number;
+}
 
 /**
  * Simple live chat widget with a toggle button and minimal conversation UI.
  */
-export function LiveChatWidget({ className, ...props }: LiveChatWidgetProps) {
+export function LiveChatWidget({
+  className,
+  width = "w-80",
+  bottomOffset = "bottom-4",
+  ...props
+}: LiveChatWidgetProps) {
   const [open, setOpen] = React.useState(false);
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const [input, setInput] = React.useState("");
@@ -38,20 +58,39 @@ export function LiveChatWidget({ className, ...props }: LiveChatWidgetProps) {
     setInput("");
   };
 
+  const widthClass = typeof width === "number" ? `w-[${width}px]` : width;
+  const widthStyle = typeof width === "number" ? { width } : undefined;
+
+  const bottomClass =
+    typeof bottomOffset === "string" && bottomOffset.startsWith("bottom-")
+      ? bottomOffset
+      : undefined;
+  const bottomStyle = bottomClass ? undefined : { bottom: bottomOffset };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           className={cn(
-            "fixed right-4 bottom-4 z-50 rounded-full shadow-lg",
+            "fixed right-4 z-50 rounded-full shadow-lg",
+            bottomClass,
             className
           )}
+          style={bottomStyle}
           {...props}
         >
           Chat
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex w-80 flex-col gap-4">
+      <DialogContent
+        style={{ ...widthStyle, ...bottomStyle }}
+        className={cn(
+          "bg-background fixed right-4 flex flex-col gap-4 border p-6 shadow-lg",
+          widthClass,
+          bottomClass
+        )}
+      >
+        {" "}
         <DialogHeader>
           <DialogTitle>How can we help?</DialogTitle>
         </DialogHeader>

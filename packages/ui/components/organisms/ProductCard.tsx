@@ -17,6 +17,8 @@ export interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   showImage?: boolean;
   showPrice?: boolean;
   ctaLabel?: string;
+  /** Override default padding classes. */
+  padding?: string;
 }
 
 export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
@@ -27,6 +29,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       showImage = true,
       showPrice = true,
       ctaLabel = "Add to cart",
+      padding = "p-4",
       className,
       ...props
     },
@@ -35,7 +38,11 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex flex-col gap-3 rounded-lg border p-4", className)}
+        className={cn(
+          "flex flex-col gap-3 rounded-lg border",
+          padding,
+          className
+        )}
         {...props}
       >
         {showImage && (

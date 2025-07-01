@@ -3,13 +3,18 @@
 import { useCart } from "@/contexts/CartContext";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { cn } from "../../utils/cn";
 
 export default function HeaderClient({
   lang,
   initialQty,
+  height = "h-16",
+  padding = "px-6",
 }: {
   lang: string;
   initialQty: number;
+  height?: string;
+  padding?: string;
 }) {
   const [cart] = useCart();
   const [qty, setQty] = useState(initialQty);
@@ -20,8 +25,10 @@ export default function HeaderClient({
   }, [cart]);
 
   return (
-    <header className="h-16 flex items-center justify-between px-6">
-      <Link href={`/${lang}`} className="font-bold text-xl">
+    <header
+      className={cn("flex items-center justify-between", height, padding)}
+    >
+      <Link href={`/${lang}`} className="text-xl font-bold">
         Base-Shop
       </Link>
 
@@ -30,7 +37,7 @@ export default function HeaderClient({
         <Link href={`/${lang}/checkout`} className="relative hover:underline">
           Cart
           {qty > 0 && (
-            <span className="absolute -right-3 -top-2 bg-red-600 text-white text-xs rounded-full px-1.5">
+            <span className="absolute -top-2 -right-3 rounded-full bg-red-600 px-1.5 text-xs text-white">
               {qty}
             </span>
           )}

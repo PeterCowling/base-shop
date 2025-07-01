@@ -3,6 +3,7 @@
 import { useCart } from "@/contexts/CartContext";
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { drawerWidthProps } from "../../utils/drawerWidth";
 import { Button } from "../atoms-shadcn";
 import { Price } from "../atoms/Price";
 import {
@@ -18,22 +19,27 @@ import {
  */
 export interface MiniCartProps {
   trigger: React.ReactNode;
-  /** Optional width class for the drawer */
-  width?: string;
+  /**
+   * Optional width for the drawer. Accepts a Tailwind width class
+   * (e.g. "w-80") or a numeric pixel value.
+   */
+  width?: string | number;
 }
 
 export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
   const [cart, dispatch] = useCart();
   const lines = Object.values(cart);
   const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
+  const { widthClass, style } = drawerWidthProps(width);
 
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
+        style={style}
         className={cn(
           "bg-background fixed top-0 right-0 h-full max-w-full rounded-none border-l p-6 shadow-lg",
-          width
+          widthClass
         )}
       >
         <DialogTitle className="mb-4">Your Cart</DialogTitle>

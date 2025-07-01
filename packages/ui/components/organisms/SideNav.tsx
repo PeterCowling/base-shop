@@ -1,13 +1,16 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
-export type SideNavProps = React.HTMLAttributes<HTMLDivElement>;
+export interface SideNavProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Tailwind width class or CSS length */
+  width?: string;
+}
 
 export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
-  ({ className, ...props }, ref) => (
+  ({ className, width = "w-48", ...props }, ref) => (
     <aside
       ref={ref}
-      className={cn("w-48 border-r p-4", className)}
+      className={cn(width, "border-r p-4", className)}
       {...props}
     />
   )

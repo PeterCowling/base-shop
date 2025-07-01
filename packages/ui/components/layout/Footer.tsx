@@ -1,10 +1,24 @@
 // src/components/layout/Footer.tsx
 import Link from "next/link";
 import { memo } from "react";
+import { cn } from "../../utils/cn";
 
-const Footer = memo(function Footer() {
+const Footer = memo(function Footer({
+  height = "h-16",
+  padding = "",
+}: {
+  height?: string;
+  padding?: string;
+}) {
   return (
-    <footer className="h-16 flex items-center justify-center text-sm text-gray-500 bg-gray-100">
+    <footer
+      className={cn(
+        "flex items-center justify-center bg-gray-100 text-sm text-gray-500",
+        height,
+        padding
+      )}
+    >
+      {" "}
       <p className="space-x-4">
         <Link href="/legal/privacy" className="hover:underline">
           Privacy

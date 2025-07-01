@@ -4,6 +4,7 @@ import { OrderTrackingTimeline } from "./OrderTrackingTimeline";
 const meta: Meta<typeof OrderTrackingTimeline> = {
   component: OrderTrackingTimeline,
   args: {
+    itemSpacing: "space-y-6",
     steps: [
       { label: "Order placed", date: "2023-01-01", complete: true },
       { label: "Shipped", date: "2023-01-02", complete: true },

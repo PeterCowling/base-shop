@@ -49,6 +49,7 @@ export {
 } from "./Popover";
 export { Price } from "./Price";
 export { ProductBadge } from "./ProductBadge";
+export { Progress } from "./Progress";
 export { Radio } from "./Radio";
 export { RatingStars } from "./RatingStars";
 export { Skeleton } from "./Skeleton";

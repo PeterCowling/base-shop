@@ -54,7 +54,10 @@ export default function ShopSelector() {
   if (status === "error")
     return <span className="text-sm text-red-600">Failed to load shops</span>;
 
-  if (shops.length === 0) return null;
+  if (shops.length === 0)
+    return (
+      <span className="text-muted-foreground text-sm">No shops found.</span>
+    );
 
   return (
     <Select value={selected} onValueChange={changeShop}>

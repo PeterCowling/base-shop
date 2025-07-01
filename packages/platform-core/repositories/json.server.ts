@@ -70,7 +70,7 @@ async function ensureDir(shop: string): Promise<void> {
 
 async function loadThemeTokens(theme: string): Promise<Record<string, string>> {
   const baseMod = await import(
-    path.join(__dirname, "../../themes/base/tokens.js")
+    path.join(process.cwd(), "packages/themes/base/tokens.js")
   );
   const baseMap: Record<string, { light: string }> = baseMod.tokens;
   const baseTokens: Record<string, string> = {};

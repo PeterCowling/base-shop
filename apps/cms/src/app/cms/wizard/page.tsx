@@ -2,6 +2,7 @@ import { authOptions } from "@cms/auth/options";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
 import Wizard from "./Wizard";
@@ -10,8 +11,20 @@ export const metadata: Metadata = {
   title: "Create Shop · Base-Shop",
 };
 
+function resolvePackagesRoot(): string {
+  let dir = process.cwd();
+  while (true) {
+    const candidate = path.join(dir, "packages");
+    if (fsSync.existsSync(candidate)) return candidate;
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
+  }
+  return path.resolve(process.cwd(), "packages");
+}
+
 async function listThemes(): Promise<string[]> {
-  const dir = path.join(process.cwd(), "packages", "themes");
+  const dir = path.join(resolvePackagesRoot(), "themes");
   try {
     const entries = await fs.readdir(dir, { withFileTypes: true });
     return entries.filter((e) => e.isDirectory()).map((e) => e.name);
@@ -21,7 +34,7 @@ async function listThemes(): Promise<string[]> {
 }
 
 async function listTemplates(): Promise<string[]> {
-  const dir = path.join(process.cwd(), "packages");
+  const dir = resolvePackagesRoot();
   try {
     const entries = await fs.readdir(dir, { withFileTypes: true });
     return entries

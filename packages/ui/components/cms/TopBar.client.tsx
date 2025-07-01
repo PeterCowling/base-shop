@@ -27,7 +27,7 @@ function TopBarInner() {
     <header className="bg-background/60 flex items-center justify-between gap-3 border-b border-gray-200 px-4 py-2 backdrop-blur dark:border-gray-800">
       <div className="flex items-center gap-2">
         <Button variant="ghost" className="sm:hidden" onClick={toggleNav}>
-          ☰
+          <span className="sr-only">Toggle navigation</span>☰
         </Button>
         <Link
           href="/cms"

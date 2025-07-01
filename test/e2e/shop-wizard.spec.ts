@@ -6,13 +6,13 @@ describe("Shop wizard", () => {
   it("creates a shop via the wizard", () => {
     cy.intercept("POST", "/cms/api/create-shop").as("createShop");
 
-    cy.visit("/cms/wizard");
-
-    // sign in as admin first
-    cy.visit("/login");
+    // ensure we land back on the wizard page after signing in
+    cy.visit("/login?callbackUrl=/cms/wizard");
     cy.get('input[name="email"]').type("admin@example.com");
     cy.get('input[name="password"]').type("admin");
     cy.contains("button", "Continue").click();
+
+    cy.location("pathname").should("eq", "/cms/wizard");
 
     // Step 0 - id and template
     cy.get('input[placeholder="my-shop"]').type(shopId);

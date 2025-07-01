@@ -14,8 +14,8 @@ describe("SEO settings", () => {
 
     cy.visit(seoUrl);
 
-    // switch to a different locale
-    cy.contains("label", "Locale").find("select").select("de");
+    // switch to a different locale using language tabs
+    cy.contains("button", "DE").click();
 
     // fill meta fields
     cy.contains("label", "Title").find("input").clear().type(title);

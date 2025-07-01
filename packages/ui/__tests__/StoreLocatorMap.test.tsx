@@ -70,4 +70,20 @@ describe("StoreLocatorMap", () => {
     expect(L.marker).toHaveBeenCalledWith([1, 2]);
     expect(marker.bindPopup).toHaveBeenCalledWith("A");
   });
+
+  it("uses default height class", () => {
+    const { container } = render(
+      <StoreLocatorMap locations={[{ lat: 1, lng: 2 }]} />
+    );
+    const div = container.querySelector("div") as HTMLElement;
+    expect(div.className).toContain("h-96");
+  });
+
+  it("applies custom height class", () => {
+    const { container } = render(
+      <StoreLocatorMap height="h-40" locations={[{ lat: 1, lng: 2 }]} />
+    );
+    const div = container.querySelector("div") as HTMLElement;
+    expect(div.className).toContain("h-40");
+  });
 });

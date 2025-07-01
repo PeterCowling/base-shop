@@ -11,6 +11,8 @@ export interface StoreLocatorMapProps
   extends React.HTMLAttributes<HTMLDivElement> {
   locations: Location[];
   zoom?: number;
+  /** Tailwind height class */
+  height?: string;
 }
 
 interface LeafletMap {
@@ -59,6 +61,7 @@ function loadLeaflet(): Promise<Leaflet | null> {
 export function StoreLocatorMap({
   locations,
   zoom = 13,
+  height = "h-96",
   className,
   ...props
 }: StoreLocatorMapProps) {
@@ -93,6 +96,6 @@ export function StoreLocatorMap({
   }, [locations, zoom]);
 
   return (
-    <div ref={mapRef} className={cn("h-96 w-full", className)} {...props} />
+    <div ref={mapRef} className={cn(height, "w-full", className)} {...props} />
   );
 }

@@ -5,6 +5,10 @@ export interface ColorSwatchProps
   extends React.HTMLAttributes<HTMLButtonElement> {
   color: string;
   selected?: boolean;
+  /**
+   * Width/height of the swatch in pixels. Defaults to 24.
+   */
+  size?: number;
 }
 
 /**
@@ -13,14 +17,14 @@ export interface ColorSwatchProps
 export const ColorSwatch = React.forwardRef<
   HTMLButtonElement,
   ColorSwatchProps
->(({ color, selected = false, className, ...props }, ref) => {
+>(({ color, selected = false, size = 24, className, style, ...props }, ref) => {
   return (
     <button
       ref={ref}
       type="button"
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: color, width: size, height: size, ...style }}
       className={cn(
-        "h-6 w-6 rounded-full border",
+        "rounded-full border",
         selected ? "ring-2 ring-offset-2" : "",
         className
       )}

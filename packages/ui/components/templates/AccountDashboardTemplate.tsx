@@ -29,7 +29,7 @@ export function AccountDashboardTemplate<T>({
   return (
     <div className={cn("space-y-6", className)} {...props}>
       <div className="flex items-center gap-4">
-        <Avatar src={user.avatar} alt={user.name} className="h-10 w-10" />
+        <Avatar src={user.avatar} alt={user.name} size={40} />
         <div>
           <h2 className="text-xl font-semibold">{user.name}</h2>
           <p className="text-muted-foreground text-sm">{user.email}</p>

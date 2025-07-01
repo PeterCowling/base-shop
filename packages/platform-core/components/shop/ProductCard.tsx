@@ -7,7 +7,8 @@ import AddToCartButton from "./AddToCartButton.client";
 
 function ProductCardInner({ sku }: { sku: SKU }) {
   return (
-    <article className="flex flex-col gap-3 rounded-lg border p-4 transition-shadow hover:shadow-md">
+    <article className="flex flex-col gap-[var(--space-3)] rounded-lg border p-[var(--space-4)] transition-shadow hover:shadow-md">
+      {" "}
       <Link
         href={`../product/${sku.slug}`}
         className="relative block aspect-square"
@@ -20,10 +21,8 @@ function ProductCardInner({ sku }: { sku: SKU }) {
           className="rounded-md object-cover"
         />
       </Link>
-
       <h3 className="font-medium">{sku.title}</h3>
       <div className="font-semibold text-gray-900">€{sku.price}</div>
-
       <AddToCartButton sku={sku} />
     </article>
   );

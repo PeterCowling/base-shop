@@ -24,7 +24,8 @@ function ValuePropsInner() {
   ];
 
   return (
-    <section className="mx-auto grid max-w-6xl gap-8 px-4 py-16 sm:grid-cols-3">
+    <section className="mx-auto grid max-w-6xl gap-[var(--space-2)] px-[var(--space-4)] py-[var(--space-4)] sm:grid-cols-3">
+      {" "}
       {items.map(({ icon, title, desc }) => (
         <article key={title} className="text-center">
           <div className="mb-4 text-4xl">{icon}</div>

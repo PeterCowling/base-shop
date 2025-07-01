@@ -19,7 +19,7 @@ export const RatingSummary = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={cn("flex items-center gap-2", className)}
+      className={cn("flex items-center gap-[var(--space-2)]", className)}
       {...props}
     >
       <RatingStars rating={rating} />

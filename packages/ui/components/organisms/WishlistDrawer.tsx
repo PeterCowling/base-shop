@@ -1,4 +1,5 @@
 import * as React from "react";
+import { cn } from "../../utils/cn";
 import {
   Button,
   Dialog,
@@ -13,17 +14,28 @@ export interface WishlistDrawerProps {
   trigger: React.ReactNode;
   /** Products marked as favourites */
   items: Product[];
+  /** Optional width class for the drawer */
+  width?: string;
 }
 
 /**
  * Slide-over panel listing products added to the user's wishlist.
  * Accepts an external trigger element to open the drawer.
  */
-export function WishlistDrawer({ trigger, items }: WishlistDrawerProps) {
+export function WishlistDrawer({
+  trigger,
+  items,
+  width = "w-80",
+}: WishlistDrawerProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="bg-background fixed top-0 right-0 z-50 h-full w-80 max-w-full translate-x-full overflow-y-auto border-l p-6 shadow-lg transition-transform data-[state=open]:translate-x-0">
+      <DialogContent
+        className={cn(
+          "bg-background fixed top-0 right-0 z-50 h-full max-w-full translate-x-full overflow-y-auto border-l p-6 shadow-lg transition-transform data-[state=open]:translate-x-0",
+          width
+        )}
+      >
         <DialogTitle className="mb-4">Wishlist</DialogTitle>
         {items.length === 0 ? (
           <p className="text-muted-foreground text-sm">

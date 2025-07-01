@@ -6,6 +6,10 @@ const meta: Meta<typeof FilterSidebar> = {
   args: {},
   argTypes: {
     onChange: { action: "onChange" },
+    width: {
+      control: { type: "text" },
+      description: "Sidebar width",
+    },
   },
 };
 export default meta;

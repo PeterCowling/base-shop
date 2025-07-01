@@ -16,7 +16,13 @@ import {
  * Fly-out mini cart that shows current cart contents.
  * Trigger element is provided via `trigger` prop.
  */
-export function MiniCart({ trigger }: { trigger: React.ReactNode }) {
+export interface MiniCartProps {
+  trigger: React.ReactNode;
+  /** Optional width class for the drawer */
+  width?: string;
+}
+
+export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
   const [cart, dispatch] = useCart();
   const lines = Object.values(cart);
   const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
@@ -26,7 +32,8 @@ export function MiniCart({ trigger }: { trigger: React.ReactNode }) {
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
         className={cn(
-          "bg-background fixed top-0 right-0 h-full w-80 max-w-full rounded-none border-l p-6 shadow-lg"
+          "bg-background fixed top-0 right-0 h-full max-w-full rounded-none border-l p-6 shadow-lg",
+          width
         )}
       >
         <DialogTitle className="mb-4">Your Cart</DialogTitle>

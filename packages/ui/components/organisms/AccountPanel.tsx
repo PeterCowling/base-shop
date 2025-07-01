@@ -19,7 +19,10 @@ export const AccountPanel = React.forwardRef<HTMLDivElement, AccountPanelProps>(
   ({ user, onLogout, className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex items-center gap-4 rounded-md border p-4", className)}
+      className={cn(
+        "flex items-center gap-[var(--space-4)] rounded-md border p-[var(--space-4)]",
+        className
+      )}
       {...props}
     >
       {user.avatar ? (

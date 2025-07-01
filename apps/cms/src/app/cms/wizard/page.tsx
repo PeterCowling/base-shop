@@ -1,10 +1,10 @@
 import { authOptions } from "@cms/auth/options";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
-import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
 import fs from "node:fs/promises";
 import path from "node:path";
+import Wizard from "./Wizard";
 
 export const metadata: Metadata = {
   title: "Create Shop · Base-Shop",
@@ -42,8 +42,6 @@ export default async function WizardPage() {
   if (!session || session.user.role !== "admin") {
     redirect("/cms");
   }
-
-  const Wizard = dynamic(() => import("./Wizard"), { ssr: false });
 
   return <Wizard themes={themes} templates={templates} />;
 }

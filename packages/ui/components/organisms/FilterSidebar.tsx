@@ -16,9 +16,14 @@ export type Filters = { size?: string };
 
 export interface FilterSidebarProps {
   onChange: (filters: Filters) => void;
+  /** Width of the sidebar container (default: 16rem). */
+  width?: string;
 }
 
-export function FilterSidebar({ onChange }: FilterSidebarProps) {
+export function FilterSidebar({
+  onChange,
+  width = "16rem",
+}: FilterSidebarProps) {
   const [open, setOpen] = React.useState(false);
   const [size, setSize] = React.useState("");
   const deferredSize = React.useDeferredValue(size);
@@ -35,9 +40,9 @@ export function FilterSidebar({ onChange }: FilterSidebarProps) {
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-black/50" />
         <DialogPrimitive.Content
+          style={{ width }}
           className={cn(
-            "bg-background fixed inset-y-0 left-0 z-50 w-64 border-r p-4 shadow-lg focus:outline-none",
-            "transition-transform data-[state=closed]:translate-x-[-100%] data-[state=open]:translate-x-0"
+            "bg-background fixed inset-y-0 left-0 z-50 border-r p-4 shadow-lg focus:outline-none"
           )}
         >
           <DialogPrimitive.Title className="mb-4 text-lg font-semibold">

@@ -34,6 +34,7 @@ function resolveDataRoot(): string {
 }
 
 const DATA_ROOT = resolveDataRoot();
+const REPO_ROOT = path.dirname(path.dirname(DATA_ROOT));
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -70,7 +71,7 @@ async function ensureDir(shop: string): Promise<void> {
 
 async function loadThemeTokens(theme: string): Promise<Record<string, string>> {
   const baseMod = await import(
-    path.join(process.cwd(), "packages/themes/base/tokens.js")
+    path.join(REPO_ROOT, "packages/themes/base/tokens.js")
   );
   const baseMap: Record<string, { light: string }> = baseMod.tokens;
   const baseTokens: Record<string, string> = {};

@@ -8,6 +8,12 @@ describe("Shop wizard", () => {
 
     cy.visit("/cms/wizard");
 
+    // sign in as admin first
+    cy.visit("/login");
+    cy.get('input[name="email"]').type("admin@example.com");
+    cy.get('input[name="password"]').type("admin");
+    cy.contains("button", "Continue").click();
+
     // Step 0 - id and template
     cy.get('input[placeholder="my-shop"]').type(shopId);
     cy.contains("button", "Next").click();
@@ -38,5 +44,9 @@ describe("Shop wizard", () => {
     cy.readFile(`data/shops/${shopId}/shop.json`)
       .its("id")
       .should("eq", shopId);
+
+    // sign out to reset auth state
+    cy.contains("Sign out").click();
+    cy.location("pathname").should("eq", "/login");
   });
 });

@@ -2,39 +2,42 @@
 
 // This test will switch language, edit SEO meta, preview the
 // changes, save, check diff history and verify that the head tags
-// rendered by next-seo reflect the changes.describe("SEO settings", () => {
-const seoUrl = "/cms/shop/demo/settings/seo";
-const historyFile = "data/shops/demo/settings.history.jsonl";
+// rendered by next-seo reflect the changes.
 
-it("switch language, edit meta and verify", () => {
-  const title = "Cypress Title";
-  const description = "Cypress description";
+describe("SEO settings", () => {
+  const seoUrl = "/cms/shop/demo/settings/seo";
+  const historyFile = "data/shops/demo/settings.history.jsonl";
 
-  cy.visit(seoUrl);
+  it("switch language, edit meta and verify", () => {
+    const title = "Cypress Title";
+    const description = "Cypress description";
 
-  // switch to a different locale
-  cy.contains("label", "Locale").find("select").select("de");
+    cy.visit(seoUrl);
 
-  // fill meta fields
-  cy.contains("label", "Title").find("input").clear().type(title);
-  cy.contains("label", "Description")
-    .find("textarea")
-    .clear()
-    .type(description);
+    // switch to a different locale
+    cy.contains("label", "Locale").find("select").select("de");
 
-  // Preview panel should reflect the typed values when present
-  cy.contains("Google result").parent().should("contain", title);
+    // fill meta fields
+    cy.contains("label", "Title").find("input").clear().type(title);
+    cy.contains("label", "Description")
+      .find("textarea")
+      .clear()
+      .type(description);
 
-  // save changes
-  cy.contains("button", "Save").click();
+    // Preview panel should reflect the typed values when present
+    cy.contains("Google result").parent().should("contain", title);
 
-  // verify diff history file contains update
-  cy.readFile(historyFile).should("include", title);
+    // save changes
+    cy.contains("button", "Save").click();
 
-  // verify storefront <head> tags are updated
-  cy.visit("/de");
-  cy.title().should("contain", title);
-  cy.get('head meta[name="description"]')
-    .invoke("attr", "content")
-    .should("contain", description);
+    // verify diff history file contains update
+    cy.readFile(historyFile).should("include", title);
+
+    // verify storefront <head> tags are updated
+    cy.visit("/de");
+    cy.title().should("contain", title);
+    cy.get('head meta[name="description"]')
+      .invoke("attr", "content")
+      .should("contain", description);
+  });
 });

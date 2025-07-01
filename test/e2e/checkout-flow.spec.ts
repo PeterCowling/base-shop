@@ -6,7 +6,10 @@
 
 describe("Checkout success and cancel flows", () => {
   beforeEach(() => {
-    cy.intercept("POST", "/api/checkout-session", {
+    // Intercept requests to the checkout session API. The URL may be absolute
+    // or relative depending on how the app is served, so we use a wildcard
+    // pattern to match both cases.
+    cy.intercept("POST", "**/api/checkout-session", {
       statusCode: 200,
       body: { clientSecret: "cs_test", sessionId: "sess_test" },
     }).as("createSession");

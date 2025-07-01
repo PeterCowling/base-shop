@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/atoms-shadcn";
 import { tokens as baseTokensSrc } from "@themes/base/tokens";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -29,10 +30,19 @@ const baseTokens: TokenMap = Object.fromEntries(
 async function loadThemeTokens(theme: string): Promise<TokenMap> {
   if (theme === "base") return baseTokens;
   try {
-    const mod = await import(`@themes/${theme}/tailwind-tokens`);
-    return mod.tokens as TokenMap;
+    const mod = await import(`@themes/${theme}/tokens`);
+    return Object.fromEntries(
+      Object.entries(mod.tokens as Record<string, { light: string }>).map(
+        ([k, v]) => [k, v.light]
+      )
+    ) as TokenMap;
   } catch {
-    return baseTokens;
+    try {
+      const mod = await import(`@themes/${theme}/tailwind-tokens`);
+      return mod.tokens as TokenMap;
+    } catch {
+      return baseTokens;
+    }
   }
 }
 
@@ -91,7 +101,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   return (
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
-        <Progress step={step} />
+        <Progress step={step} total={5} />
         {step === 0 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Shop Details</h2>
@@ -156,6 +166,35 @@ export default function Wizard({ themes, templates, disabled }: Props) {
 
         {step === 2 && (
           <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Customize Tokens</h2>
+            <div className="max-h-64 space-y-2 overflow-y-auto rounded border p-2">
+              {Object.entries(themeVars).map(([k, v]) => (
+                <label key={k} className="flex items-center gap-2 text-sm">
+                  <span className="w-40 flex-shrink-0">{k}</span>
+                  <Input
+                    value={v}
+                    onChange={(e) =>
+                      setThemeVars((tv) => ({ ...tv, [k]: e.target.value }))
+                    }
+                  />
+                </label>
+              ))}
+            </div>
+            <div className="rounded border p-4">
+              <p className="text-primary">Preview text</p>
+              <p className="text-muted">Background uses theme tokens</p>
+            </div>
+            <div className="flex justify-between">
+              <Button variant="outline" onClick={() => setStep(1)}>
+                Back
+              </Button>
+              <Button onClick={() => setStep(3)}>Next</Button>
+            </div>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="space-y-4">
             <h2 className="text-xl font-semibold">Options</h2>
             <div>
               <p className="font-medium">Payment Providers</p>
@@ -192,15 +231,15 @@ export default function Wizard({ themes, templates, disabled }: Props) {
               </label>
             </div>
             <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(1)}>
+              <Button variant="outline" onClick={() => setStep(2)}>
                 Back
               </Button>
-              <Button onClick={() => setStep(3)}>Next</Button>
+              <Button onClick={() => setStep(4)}>Next</Button>
             </div>
           </div>
         )}
 
-        {step === 3 && (
+        {step === 4 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Summary</h2>
             <ul className="list-disc pl-5 text-sm">
@@ -221,9 +260,22 @@ export default function Wizard({ themes, templates, disabled }: Props) {
               </li>
             </ul>
             {result && <p className="text-sm">{result}</p>}
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(1)}>
+            <div className="flex justify-between gap-2">
+              <Button variant="outline" onClick={() => setStep(3)}>
                 Back
+              </Button>
+              <Button variant="outline" asChild>
+                <Link
+                  href={`/cms/wizard/preview?${new URLSearchParams({
+                    template,
+                    theme,
+                    payment: payment.join(","),
+                    shipping: shipping.join(","),
+                  }).toString()}`}
+                  target="_blank"
+                >
+                  Preview
+                </Link>
               </Button>
               <Button disabled={creating} onClick={submit}>
                 {creating ? "Creating…" : "Create Shop"}

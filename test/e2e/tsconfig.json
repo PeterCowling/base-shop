@@ -2,7 +2,13 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "../..",
-    "types": ["@cloudflare/workers-types", "node", "cypress"]
+    "types": ["@cloudflare/workers-types", "node", "cypress"],
+
+    /* keep .ts extension in imports */
+    "allowImportingTsExtensions": true,
+
+    /* tell the compiler “type-check only” so TS5096 is satisfied */
+    "noEmit": true
   },
-  "include": ["*.ts"]
+  "include": ["./**/*.ts", "./**/*.tsx"]
 }

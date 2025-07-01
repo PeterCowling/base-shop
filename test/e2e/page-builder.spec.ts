@@ -4,6 +4,7 @@ describe("Page Builder happy path", () => {
   const builderUrl = "/cms/shop/demo/pages/home/builder";
 
   it("drags a block, saves draft and publishes", () => {
+    cy.visit(builderUrl);
     cy.get("aside .cursor-grab")
       .first()
       .as("firstBlock")

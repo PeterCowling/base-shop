@@ -14,21 +14,23 @@ const meta: Meta<GroupProps> = {
 };
 export default meta;
 
+const GroupRender = (args: GroupProps) => {
+  const [selected, setSelected] = useState(args.selectedIndex);
+  return (
+    <div className="flex flex-col gap-2">
+      {["One", "Two", "Three"].map((label, i) => (
+        <Radio
+          key={label}
+          name="group"
+          label={label}
+          checked={selected === i}
+          onChange={() => setSelected(i)}
+        />
+      ))}
+    </div>
+  );
+};
+
 export const Group: StoryObj<GroupProps> = {
-  render: (args) => {
-    const [selected, setSelected] = useState(args.selectedIndex);
-    return (
-      <div className="flex flex-col gap-2">
-        {["One", "Two", "Three"].map((label, i) => (
-          <Radio
-            key={label}
-            name="group"
-            label={label}
-            checked={selected === i}
-            onChange={() => setSelected(i)}
-          />
-        ))}
-      </div>
-    );
-  },
+  render: (args) => <GroupRender {...args} />,
 };

@@ -1,4 +1,3 @@
-import { spawnSync } from "child_process";
 import fs from "fs";
 import { createShop } from "../createShop";
 
@@ -6,7 +5,6 @@ jest.mock("fs");
 jest.mock("child_process", () => ({ spawnSync: jest.fn() }));
 
 const fsMock = fs as jest.Mocked<typeof fs>;
-const spawnMock = spawnSync as jest.Mock;
 
 describe("createShop", () => {
   beforeEach(() => {
@@ -14,7 +12,9 @@ describe("createShop", () => {
     fsMock.existsSync.mockImplementation((p: fs.PathLike) => {
       return !String(p).includes("data/shops");
     });
-    fsMock.readdirSync.mockReturnValue([] as any);
+    fsMock.readdirSync.mockReturnValue(
+      [] as unknown as ReturnType<typeof fs.readdirSync>
+    );
     fsMock.readFileSync.mockImplementation((p: fs.PathLike) => {
       const file = String(p);
       if (file.endsWith("package.json")) {
@@ -37,7 +37,9 @@ describe("createShop", () => {
       expect.stringContaining("apps/shop1"),
       expect.objectContaining({ recursive: true, filter: expect.any(Function) })
     );
-    const filter = (fsMock.cpSync.mock.calls[0][2] as any).filter;
+    const filter = (
+      fsMock.cpSync.mock.calls[0][2] as { filter: (src: string) => boolean }
+    ).filter;
     expect(filter("foo/node_modules/bar")).toBe(false);
     expect(filter("foo/src/index.ts")).toBe(true);
   });

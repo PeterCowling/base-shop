@@ -5,12 +5,16 @@
     "composite": true,
     "outDir": "dist",
     "rootDir": "../..",
-    "rootDirs": ["./", "../config", "../../src"],
+    "rootDirs": ["./", "../config", "../platform-core", "../../src"],
     "baseUrl": "../..",
     "types": ["node"],
     "moduleResolution": "node"
   },
   "references": [{ "path": "../config" }, { "path": "../../src" }],
-  "include": ["stripeServer.server.ts", "checkShopExists.server.ts"],
+  "include": [
+    "stripeServer.server.ts",
+    "checkShopExists.server.ts",
+    "../platform-core/shops.ts"
+  ],
   "exclude": ["dist", "__tests__"]
 }

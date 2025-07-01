@@ -9,16 +9,18 @@ const meta: Meta<typeof Popover> = {
 };
 export default meta;
 
+const DefaultRender = () => {
+  const [open, setOpen] = useState(false);
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button className="border px-2 py-1">Toggle</button>
+      </PopoverTrigger>
+      <PopoverContent>Content</PopoverContent>
+    </Popover>
+  );
+};
+
 export const Default: StoryObj<typeof Popover> = {
-  render: () => {
-    const [open, setOpen] = useState(false);
-    return (
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <button className="border px-2 py-1">Toggle</button>
-        </PopoverTrigger>
-        <PopoverContent>Content</PopoverContent>
-      </Popover>
-    );
-  },
+  render: () => <DefaultRender />,
 };

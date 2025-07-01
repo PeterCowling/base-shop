@@ -9,6 +9,8 @@ interface SeoData {
   description?: string;
   image?: string;
   canonicalBase?: string;
+  ogUrl?: string;
+  twitterCard?: string;
 }
 
 interface Props {
@@ -24,6 +26,13 @@ export default function SeoEditor({ shop, languages, initialSeo }: Props) {
     initialSeo[locale]?.description ?? ""
   );
   const [image, setImage] = useState(initialSeo[locale]?.image ?? "");
+  const [canonicalBase, setCanonicalBase] = useState(
+    initialSeo[locale]?.canonicalBase ?? ""
+  );
+  const [ogUrl, setOgUrl] = useState(initialSeo[locale]?.ogUrl ?? "");
+  const [twitterCard, setTwitterCard] = useState(
+    initialSeo[locale]?.twitterCard ?? ""
+  );
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [warnings, setWarnings] = useState<string[]>([]);
@@ -34,6 +43,9 @@ export default function SeoEditor({ shop, languages, initialSeo }: Props) {
     setTitle(initialSeo[l]?.title ?? "");
     setDescription(initialSeo[l]?.description ?? "");
     setImage(initialSeo[l]?.image ?? "");
+    setCanonicalBase(initialSeo[l]?.canonicalBase ?? "");
+    setOgUrl(initialSeo[l]?.ogUrl ?? "");
+    setTwitterCard(initialSeo[l]?.twitterCard ?? "");
     setErrors({});
     setWarnings([]);
   };
@@ -46,6 +58,9 @@ export default function SeoEditor({ shop, languages, initialSeo }: Props) {
     fd.append("title", title);
     fd.append("description", description);
     fd.append("image", image);
+    fd.append("canonicalBase", canonicalBase);
+    fd.append("ogUrl", ogUrl);
+    fd.append("twitterCard", twitterCard);
     const result = await updateSeo(shop, fd);
     if (result.errors) {
       setErrors(result.errors);
@@ -94,6 +109,30 @@ export default function SeoEditor({ shop, languages, initialSeo }: Props) {
           className="border p-2"
           value={image}
           onChange={(e) => setImage(e.target.value)}
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Canonical Base</span>
+        <Input
+          className="border p-2"
+          value={canonicalBase}
+          onChange={(e) => setCanonicalBase(e.target.value)}
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Open Graph URL</span>
+        <Input
+          className="border p-2"
+          value={ogUrl}
+          onChange={(e) => setOgUrl(e.target.value)}
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Twitter Card</span>
+        <Input
+          className="border p-2"
+          value={twitterCard}
+          onChange={(e) => setTwitterCard(e.target.value)}
         />
       </label>
       {Object.keys(errors).length > 0 && (

@@ -6,6 +6,23 @@ export const shopSeoFieldsSchema = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
   image: z.string().optional(),
+  openGraph: z
+    .object({
+      title: z.string().optional(),
+      description: z.string().optional(),
+      url: z.string().optional(),
+      image: z.string().optional(),
+    })
+    .optional(),
+  twitter: z
+    .object({
+      card: z.string().optional(),
+      title: z.string().optional(),
+      description: z.string().optional(),
+      image: z.string().optional(),
+    })
+    .optional(),
+  structuredData: z.string().optional(),
 });
 
 export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;

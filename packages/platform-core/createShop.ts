@@ -11,7 +11,10 @@ import {
   writeFileSync,
 } from "fs";
 import { join } from "path";
+import ts from "typescript";
 import { ulid } from "ulid";
+import { runInNewContext } from "vm";
+import { defaultFilterMappings } from "./defaultFilterMappings";
 
 export interface CreateShopOptions {
   type?: "sale" | "rental";
@@ -43,6 +46,38 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     payment: opts.payment ?? [],
     shipping: opts.shipping ?? [],
   };
+
+  function loadBaseTokens(): Record<string, string> {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const mod = require(join("packages", "themes", "base", "tokens.js")) as {
+      tokens: Record<string, { light: string }>;
+    };
+    const map: Record<string, string> = {};
+    for (const [k, v] of Object.entries(mod.tokens)) map[k] = v.light;
+    return map;
+  }
+
+  function loadThemeTokens(theme: string): Record<string, string> {
+    if (theme === "base") return {};
+    const modPath = join("packages", "themes", theme, "tailwind-tokens.ts");
+    if (!existsSync(modPath)) return {};
+    const source = readFileSync(modPath, "utf8");
+    const transpiled = ts.transpileModule(source, {
+      compilerOptions: { module: ts.ModuleKind.CommonJS },
+    }).outputText;
+    const sandbox: {
+      module: { exports: any };
+      exports: any;
+      require: NodeRequire;
+    } = {
+      module: { exports: {} },
+      exports: {},
+      require,
+    };
+    sandbox.exports = sandbox.module.exports;
+    runInNewContext(transpiled, sandbox);
+    return sandbox.module.exports.tokens as Record<string, string>;
+  }
 
   const templateApp = join("packages", options.template);
   const newApp = join("apps", id);
@@ -102,6 +137,11 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     JSON.stringify({ languages: [...LOCALES] }, null, 2)
   );
 
+  const themeTokens = {
+    ...loadBaseTokens(),
+    ...loadThemeTokens(options.theme),
+  };
+
   writeFileSync(
     join(newData, "shop.json"),
     JSON.stringify(
@@ -110,6 +150,8 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
         name: id,
         catalogFilters: [],
         themeId: options.theme,
+        themeTokens: {},
+        filterMappings: { ...defaultFilterMappings },
         type: options.type,
         paymentProviders: options.payment,
         shippingProviders: options.shipping,

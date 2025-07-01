@@ -67,7 +67,7 @@ describe("canonical merge", () => {
   beforeEach(() => {
     getShopSettingsMock.mockResolvedValue({
       languages: ["en"],
-      seo: { en: { canonical: "https://base.com" } },
+      seo: { en: { canonicalBase: "https://base.com" } },
     });
   });
 
@@ -78,6 +78,6 @@ describe("canonical merge", () => {
 
   it("falls back to shop canonical", async () => {
     const seo = await getSeo("en");
-    expect(seo.canonical).toBe("https://base.com");
+    expect(seo.canonical).toBe("https://base.com/en");
   });
 });

@@ -4,9 +4,11 @@ import "server-only";
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 import { ulid } from "ulid";
 import type { Shop, ShopSettings } from "../../types/src";
 import { LOCALES, type Locale } from "../../types/src";
+import { defaultFilterMappings } from "../defaultFilterMappings";
 import { ProductPublication } from "../products";
 import { validateShopName } from "../shops";
 
@@ -31,6 +33,7 @@ function resolveDataRoot(): string {
 
 const DATA_ROOT = resolveDataRoot();
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
@@ -63,6 +66,28 @@ async function ensureDir(shop: string): Promise<void> {
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 
+async function loadThemeTokens(theme: string): Promise<Record<string, string>> {
+  const baseMod = await import(
+    path.join(__dirname, "../../themes/base/tokens.ts")
+  );
+  const baseMap: Record<string, { light: string }> = baseMod.tokens;
+  const baseTokens: Record<string, string> = {};
+  for (const [name, val] of Object.entries(baseMap)) {
+    baseTokens[name] = val.light;
+  }
+
+  if (theme === "base") return baseTokens;
+
+  try {
+    const themeMod = await import(
+      path.join(__dirname, `../../themes/${theme}/tailwind-tokens.ts`)
+    );
+    return { ...baseTokens, ...(themeMod.tokens as Record<string, string>) };
+  } catch {
+    return baseTokens;
+  }
+}
+
 export async function readSettings(shop: string): Promise<ShopSettings> {
   try {
     const buf = await fs.readFile(settingsPath(shop), "utf8");
@@ -93,17 +118,24 @@ export async function readShop(shop: string): Promise<Shop> {
   try {
     const buf = await fs.readFile(shopPath(shop), "utf8");
     const parsed = JSON.parse(buf) as Shop;
-    if (parsed.id) return parsed;
+    if (parsed.id) {
+      if (!parsed.themeTokens || Object.keys(parsed.themeTokens).length === 0) {
+        parsed.themeTokens = await loadThemeTokens(parsed.themeId);
+      }
+      return parsed;
+    }
   } catch {
     // ignore
   }
+  const themeId = "base";
+
   return {
     id: shop,
     name: shop,
     catalogFilters: [],
-    themeId: "base",
-    themeTokens: {},
-    filterMappings: {},
+    themeId,
+    themeTokens: await loadThemeTokens(themeId),
+    filterMappings: { ...defaultFilterMappings },
     priceOverrides: {},
     localeOverrides: {},
   };

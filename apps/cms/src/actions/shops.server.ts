@@ -74,6 +74,9 @@ const seoSchema = z.object({
     .refine((v) => !v || /^https?:\/\/\S+$/.test(v), {
       message: "Invalid image URL",
     }),
+  canonicalBase: z.string().url().optional(),
+  ogUrl: z.string().url().optional(),
+  twitterCard: z.string().optional(),
 });
 
 export async function updateSeo(
@@ -95,11 +98,22 @@ export async function updateSeo(
     return { errors: parsed.error.flatten().fieldErrors };
   }
 
-  const { locale, title, description, image } = parsed.data as {
+  const {
+    locale,
+    title,
+    description,
+    image,
+    canonicalBase,
+    ogUrl,
+    twitterCard,
+  } = parsed.data as {
     locale: Locale;
     title: string;
     description: string;
     image?: string;
+    canonicalBase?: string;
+    ogUrl?: string;
+    twitterCard?: string;
   };
 
   const warnings: string[] = [];
@@ -109,7 +123,14 @@ export async function updateSeo(
 
   const current = await getShopSettings(shop);
   const seo = { ...(current.seo ?? {}) } as Record<Locale, ShopSeoFields>;
-  seo[locale] = { title, description, image };
+  seo[locale] = {
+    title,
+    description,
+    image,
+    canonicalBase,
+    openGraph: ogUrl ? { url: ogUrl } : undefined,
+    twitter: twitterCard ? { card: twitterCard } : undefined,
+  };
   const updated: ShopSettings = {
     languages: current.languages,
     seo,

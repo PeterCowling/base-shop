@@ -55,15 +55,29 @@ export default async function SettingsPage({
       <h3 className="mt-4 font-medium">Theme</h3>
       <p className="mt-2 text-sm">{info.themeId}</p>
       <h3 className="mt-4 font-medium">Theme Tokens</h3>
-      <pre className="mt-2 rounded bg-gray-50 p-2 text-sm">
-        {JSON.stringify(info.themeTokens, null, 2)}
-      </pre>
+      <div className="mt-2 flex items-center gap-2">
+        <pre className="rounded bg-gray-50 p-2 text-sm">
+          {JSON.stringify(info.themeTokens, null, 2)}
+        </pre>
+        {Object.keys(info.themeTokens ?? {}).length === 0 && (
+          <span className="text-muted-foreground text-xs">
+            (using theme defaults)
+          </span>
+        )}
+      </div>
       <h3 className="mt-4 font-medium">Catalog Filters</h3>
       <p className="mt-2 text-sm">{info.catalogFilters.join(", ")}</p>
       <h3 className="mt-4 font-medium">Filter Mappings</h3>
-      <pre className="mt-2 rounded bg-gray-50 p-2 text-sm">
-        {JSON.stringify(info.filterMappings, null, 2)}
-      </pre>
+      <div className="mt-2 flex items-center gap-2">
+        <pre className="rounded bg-gray-50 p-2 text-sm">
+          {JSON.stringify(info.filterMappings, null, 2)}
+        </pre>
+        {Object.keys(info.filterMappings ?? {}).length === 0 && (
+          <span className="text-muted-foreground text-xs">
+            (using theme defaults)
+          </span>
+        )}
+      </div>
       {isAdmin && (
         <div className="mt-6">
           <ShopEditor shop={shop} initial={info} />

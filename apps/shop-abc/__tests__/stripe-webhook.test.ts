@@ -12,7 +12,7 @@ describe("/api/stripe-webhook", () => {
   test("checkout.session.completed creates an order", async () => {
     const addOrder = jest.fn();
     jest.doMock(
-      "@platform-core/repositories/rentalOrders",
+      "@platform-core/repositories/rentalOrders.server",
       () => ({
         __esModule: true,
         addOrder,
@@ -39,7 +39,7 @@ describe("/api/stripe-webhook", () => {
   test("charge.refunded marks order refunded", async () => {
     const markRefunded = jest.fn();
     jest.doMock(
-      "@platform-core/repositories/rentalOrders",
+      "@platform-core/repositories/rentalOrders.server",
       () => ({
         __esModule: true,
         addOrder: jest.fn(),

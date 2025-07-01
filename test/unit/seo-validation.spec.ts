@@ -11,7 +11,7 @@ import "../../apps/cms/src/types/next-auth.d.ts";
 const getShopSettingsMock = jest.fn();
 const saveShopSettingsMock = jest.fn();
 
-jest.mock("@platform-core/repositories/shops", () => ({
+jest.mock("@platform-core/repositories/shops.server", () => ({
   getShopSettings: (...args: any[]) => getShopSettingsMock(...args),
   saveShopSettings: (...args: any[]) => saveShopSettingsMock(...args),
 }));

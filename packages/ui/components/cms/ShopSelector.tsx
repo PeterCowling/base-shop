@@ -45,19 +45,8 @@ export default function ShopSelector() {
   const selected = getShopFromPath(pathname);
 
   function changeShop(value: string) {
-    const next = [...segments];
-    if (shopIndex >= 0) {
-      next[shopIndex + 1] = value;
-    } else {
-      const cmsIndex = segments.indexOf("cms");
-      if (cmsIndex >= 0) {
-        next.splice(cmsIndex + 1, 0, "shop", value);
-      } else {
-        next.push("cms", "shop", value);
-      }
-    }
-    const path = "/" + next.join("/");
-    router.push(path);
+    const search = typeof window === "undefined" ? "" : window.location.search;
+    router.push(`/cms/shop/${value}${search}`);
   }
 
   if (status === "loading")

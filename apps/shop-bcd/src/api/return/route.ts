@@ -3,7 +3,7 @@ import { computeDamageFee } from "@platform-core/pricing";
 import {
   markRefunded,
   markReturned,
-} from "@platform-core/repositories/rentalOrders";
+} from "@platform-core/repositories/rentalOrders.server";
 
 import { NextRequest, NextResponse } from "next/server";
 

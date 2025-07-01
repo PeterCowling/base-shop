@@ -28,7 +28,7 @@ test("valid token returns page JSON", async () => {
     createdBy: "tester",
   };
   const getPages = jest.fn(async () => [page]);
-  jest.doMock("@platform-core/repositories/pages", () => ({
+  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
@@ -45,7 +45,7 @@ test("valid token returns page JSON", async () => {
 
 test("invalid token yields 401", async () => {
   const getPages = jest.fn(async () => []);
-  jest.doMock("@platform-core/repositories/pages", () => ({
+  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));

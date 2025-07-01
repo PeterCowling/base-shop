@@ -31,7 +31,7 @@ describe("/api/rental", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder,
       markReturned: jest.fn(),
@@ -71,7 +71,7 @@ describe("/api/rental", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder: jest.fn(),
       markReturned,
@@ -102,7 +102,7 @@ describe("/api/rental", () => {
     const markReturned = jest
       .fn<Promise<null>, [string]>()
       .mockResolvedValue(null);
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder: jest.fn(),
       markReturned,
@@ -154,7 +154,7 @@ describe("/api/rental", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder: jest.fn(),
       markReturned,

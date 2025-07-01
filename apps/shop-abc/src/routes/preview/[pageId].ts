@@ -1,7 +1,7 @@
 // apps/shop-abc/src/routes/preview/[pageId].ts
 
 import type { EventContext } from "@cloudflare/workers-types";
-import { getPages } from "@platform-core/repositories/pages";
+import { getPages } from "@platform-core/repositories/pages/index.server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 const secret = process.env.PREVIEW_TOKEN_SECRET;

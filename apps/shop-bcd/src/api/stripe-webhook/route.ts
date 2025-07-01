@@ -3,7 +3,7 @@
 import {
   addOrder,
   markRefunded,
-} from "@platform-core/repositories/rentalOrders";
+} from "@platform-core/repositories/rentalOrders.server";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 

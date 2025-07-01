@@ -10,6 +10,8 @@ export default function Sidebar({ role }: { role?: string }) {
 
   const links = [
     { href: shop ? `/shop/${shop}` : "", label: "Dashboard", icon: "📊" },
+    ...(shop ? [] : [{ href: "/shop", label: "Shops", icon: "🏬" }]),
+
     {
       href: shop ? `/shop/${shop}/products` : "/products",
       label: "Products",
@@ -90,10 +92,13 @@ export default function Sidebar({ role }: { role?: string }) {
         {links.map(({ href, label, icon, title }) => {
           const fullHref = `/cms${href}`;
           const isDashboardLink = label === "Dashboard";
+          const isShopIndexLink = label === "Shops";
 
           const active = isDashboardLink
             ? pathname === dashboardBase
-            : pathname.startsWith(fullHref);
+            : isShopIndexLink
+              ? pathname === fullHref
+              : pathname.startsWith(fullHref);
           return (
             <Link
               key={href}

@@ -64,7 +64,7 @@ describe("releaseDepositsOnce", () => {
 
     const readOrders = jest.fn().mockResolvedValue(orders);
     const markRefunded = jest.fn().mockResolvedValue(null);
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       readOrders,
       markRefunded,

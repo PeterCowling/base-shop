@@ -9,7 +9,7 @@ jest.mock("next-auth", () => ({
 const diffHistoryMock = jest.fn();
 const saveShopSettingsMock = jest.fn();
 
-jest.mock("@platform-core/repositories/shops", () => ({
+jest.mock("@platform-core/repositories/shops.server", () => ({
   diffHistory: (...args: any[]) => diffHistoryMock(...args),
   saveShopSettings: (...args: any[]) => saveShopSettingsMock(...args),
 }));

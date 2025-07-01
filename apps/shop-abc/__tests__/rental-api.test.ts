@@ -27,7 +27,7 @@ describe("/api/rental", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder,
       markReturned: jest.fn(),
@@ -60,7 +60,7 @@ describe("/api/rental", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder: jest.fn(),
       markReturned,
@@ -85,7 +85,7 @@ describe("/api/rental", () => {
   test("PATCH returns 404 when order missing", async () => {
     const markReturned = jest.fn().mockResolvedValue(null);
 
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder: jest.fn(),
       markReturned,
@@ -127,7 +127,7 @@ describe("/api/rental", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder: jest.fn(),
       markReturned,

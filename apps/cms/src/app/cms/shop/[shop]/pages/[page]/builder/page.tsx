@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/[page]/builder/page.tsx
 
 import { updatePage } from "@cms/actions/pages.server";
-import { getPages } from "@platform-core/repositories/pages";
+import { getPages } from "@platform-core/repositories/pages/index.server";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 

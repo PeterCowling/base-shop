@@ -87,6 +87,11 @@ pnpm build
 See [doc/storybook.md](doc/storybook.md) for details on running Storybook,
 executing accessibility tests and publishing Chromatic previews.
 
+## CMS Guide
+
+See [doc/cms.md](doc/cms.md) for an overview of the CMS navigation,
+switching shops and admin-only routes.
+
 # Environment Variables
 
 The CLI and demo application expect several variables to be defined:

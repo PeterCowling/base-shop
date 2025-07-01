@@ -13,7 +13,7 @@ describe("POST /api/create-shop", () => {
       getServerSession: jest.fn().mockResolvedValue(null),
     }));
     const createNewShop = jest.fn();
-    jest.doMock("@cms/actions/createShop", () => ({
+    jest.doMock("@cms/actions/createShop.server", () => ({
       __esModule: true,
       createNewShop,
     }));
@@ -31,7 +31,7 @@ describe("POST /api/create-shop", () => {
 
   it("calls createNewShop and returns success", async () => {
     const createNewShop = jest.fn();
-    jest.doMock("@cms/actions/createShop", () => ({
+    jest.doMock("@cms/actions/createShop.server", () => ({
       __esModule: true,
       createNewShop,
     }));
@@ -56,7 +56,7 @@ describe("POST /api/create-shop", () => {
 
   it("returns 400 when action throws", async () => {
     const createNewShop = jest.fn().mockRejectedValue(new Error("boom"));
-    jest.doMock("@cms/actions/createShop", () => ({
+    jest.doMock("@cms/actions/createShop.server", () => ({
       __esModule: true,
       createNewShop,
     }));

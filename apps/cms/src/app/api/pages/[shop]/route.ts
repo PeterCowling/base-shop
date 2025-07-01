@@ -1,4 +1,4 @@
-import { getPages } from "@platform-core/repositories/pages";
+import { getPages } from "@platform-core/repositories/pages/index.server";
 import { NextResponse } from "next/server";
 
 export async function GET(

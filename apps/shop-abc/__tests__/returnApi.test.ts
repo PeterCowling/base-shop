@@ -35,7 +35,7 @@ describe("/api/return", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/repositories/rentalOrders", () => ({
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       markReturned: jest
         .fn<Promise<unknown>, [string, string, number?]>()

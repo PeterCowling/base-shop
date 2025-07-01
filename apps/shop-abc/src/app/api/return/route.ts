@@ -4,7 +4,7 @@ import { stripe } from "@/lib/stripeServer";
 import {
   markRefunded,
   markReturned,
-} from "@platform-core/repositories/rentalOrders";
+} from "@platform-core/repositories/rentalOrders.server";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";

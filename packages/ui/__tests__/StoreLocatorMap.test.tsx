@@ -81,7 +81,7 @@ describe("StoreLocatorMap", () => {
 
   it("applies custom height class", () => {
     const { container } = render(
-      <StoreLocatorMap height="h-40" locations={[{ lat: 1, lng: 2 }]} />
+      <StoreLocatorMap heightClass="h-40" locations={[{ lat: 1, lng: 2 }]} />
     );
     const div = container.querySelector("div") as HTMLElement;
     expect(div.className).toContain("h-40");

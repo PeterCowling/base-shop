@@ -98,10 +98,11 @@ export default function Sidebar({ role }: { role?: string }) {
             <Link
               key={href}
               href={fullHref}
-              className={`flex items-center gap-2 rounded-md px-3 py-2 text-sm ${active ? "bg-primary/10 font-medium" : "hover:bg-gray-100 dark:hover:bg-gray-800"} `}
+              aria-current={active ? "page" : undefined}
+              className={`focus-visible:ring-primary flex items-center gap-2 rounded-md px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none ${active ? "bg-primary/10 font-medium" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
               title={title}
             >
-              <span>{icon}</span>
+              <span aria-hidden="true">{icon}</span>
               {label}
             </Link>
           );

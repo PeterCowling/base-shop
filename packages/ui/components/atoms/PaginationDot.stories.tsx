@@ -5,6 +5,7 @@ const meta: Meta<typeof PaginationDot> = {
   component: PaginationDot,
   args: {
     active: false,
+    size: "2",
   },
 };
 export default meta;

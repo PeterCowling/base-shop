@@ -8,6 +8,7 @@ import type { StatItem } from "@ui/components/organisms/StatsGrid";
 import { DashboardTemplate } from "@ui/components/templates";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -109,6 +110,21 @@ export default async function CmsDashboardPage() {
   return (
     <div className="space-y-6">
       <DashboardTemplate stats={stats} />
+      {shops === 0 && (
+        <div className="rounded border border-dashed p-4">
+          <p className="mb-2">
+            No shops found. Get started by creating your first shop.
+          </p>
+          {session?.user.role === "admin" && (
+            <Link
+              href="/cms/wizard"
+              className="bg-primary hover:bg-primary/90 focus-visible:ring-primary rounded-md px-3 py-2 text-sm text-white focus-visible:ring-2 focus-visible:outline-none"
+            >
+              Create Shop
+            </Link>
+          )}
+        </div>
+      )}
       {session?.user.role === "admin" && (
         <div>
           <h2 className="mb-4 text-xl font-semibold">Account Requests</h2>

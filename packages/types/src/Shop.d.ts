@@ -1,21 +1,36 @@
 import { z } from "zod";
+import { type Locale } from "./Product";
 export declare const shopSeoFieldsSchema: z.ZodObject<{
     canonicalBase: z.ZodOptional<z.ZodString>;
     title: z.ZodOptional<z.ZodString>;
     description: z.ZodOptional<z.ZodString>;
     image: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    title?: string;
-    image?: string;
-    description?: string;
     canonicalBase?: string;
+    title?: string;
+    description?: string;
+    image?: string;
 }, {
-    title?: string;
-    image?: string;
-    description?: string;
     canonicalBase?: string;
+    title?: string;
+    description?: string;
+    image?: string;
 }>;
 export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;
+export interface Shop {
+    id: string;
+    name: string;
+    catalogFilters: string[];
+    themeId: string;
+    /** Mapping of design tokens to theme values */
+    themeTokens: Record<string, string>;
+    /** Mapping of logical filter keys to catalog attributes */
+    filterMappings: Record<string, string>;
+    /** Optional price overrides per locale (minor units) */
+    priceOverrides: Partial<Record<Locale, number>>;
+    /** Optional redirect overrides for locale detection */
+    localeOverrides: Record<string, Locale>;
+}
 export declare const shopSchema: z.ZodObject<{
     id: z.ZodString;
     name: z.ZodString;
@@ -48,5 +63,4 @@ export declare const shopSchema: z.ZodObject<{
     priceOverrides?: Partial<Record<"en" | "de" | "it", number>>;
     localeOverrides?: Record<string, "en" | "de" | "it">;
 }>;
-export type Shop = z.infer<typeof shopSchema>;
 //# sourceMappingURL=Shop.d.ts.map

@@ -18,10 +18,9 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
         <div
           ref={ref as unknown as React.RefObject<HTMLDivElement>}
           className={cn(
-            "bg-muted flex items-center justify-center rounded-full text-sm",
+            `h-[${dimension}px] w-[${dimension}px] bg-muted flex items-center justify-center rounded-full text-sm`,
             className
           )}
-          style={{ width: dimension, height: dimension }}
         >
           {fallback ?? (typeof alt === "string" ? alt.charAt(0) : null)}
         </div>
@@ -34,8 +33,10 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
         alt={alt ?? ""}
         width={dimension}
         height={dimension}
-        className={cn("rounded-full object-cover", className)}
-        style={{ width: dimension, height: dimension }}
+        className={cn(
+          `h-[${dimension}px] w-[${dimension}px] rounded-full object-cover`,
+          className
+        )}
         {...props}
       />
     );

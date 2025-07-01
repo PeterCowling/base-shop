@@ -29,6 +29,12 @@ function TopBarInner() {
         <Button variant="ghost" className="sm:hidden" onClick={toggleNav}>
           ☰
         </Button>
+        <Link
+          href="/cms"
+          className="focus-visible:ring-primary rounded-md px-3 py-2 text-sm hover:bg-gray-100 focus-visible:ring-2 focus-visible:outline-none dark:hover:bg-gray-800"
+        >
+          Home
+        </Link>
         <Breadcrumbs />
         <ShopSelector />
       </div>

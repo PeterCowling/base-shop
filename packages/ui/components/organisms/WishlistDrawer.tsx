@@ -14,8 +14,11 @@ export interface WishlistDrawerProps {
   trigger: React.ReactNode;
   /** Products marked as favourites */
   items: Product[];
-  /** Optional width class for the drawer */
-  width?: string;
+  /**
+   * Optional width for the drawer.
+   * Can be a Tailwind width class or any valid CSS length.
+   */
+  width?: string | number;
 }
 
 /**
@@ -25,15 +28,19 @@ export interface WishlistDrawerProps {
 export function WishlistDrawer({
   trigger,
   items,
-  width = "w-80",
+  width = "20rem",
 }: WishlistDrawerProps) {
+  const widthClass =
+    typeof width === "string" && width.startsWith("w-") ? width : undefined;
+  const style = widthClass ? undefined : { width };
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent
+        style={style}
         className={cn(
           "bg-background fixed top-0 right-0 z-50 h-full max-w-full translate-x-full overflow-y-auto border-l p-6 shadow-lg transition-transform data-[state=open]:translate-x-0",
-          width
+          widthClass
         )}
       >
         <DialogTitle className="mb-4">Wishlist</DialogTitle>

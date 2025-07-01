@@ -15,8 +15,9 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// Re-export compiled shared types from the "types" package.
-// This prevents TypeScript from treating the source files of that package as
-// part of the current compilation unit, avoiding rootDir errors in packages
-// that consume these types.
-__exportStar(require("../../packages/types/dist"), exports);
+// Re-export shared types from the "types" package's source directory.
+// The previous path pointed to the compiled output (`dist`), but the package
+// does not ship prebuilt files in this repository. By referencing the source
+// files directly we make the types available to consumers without requiring an
+// additional build step.
+__exportStar(require("../../packages/types/src"), exports);

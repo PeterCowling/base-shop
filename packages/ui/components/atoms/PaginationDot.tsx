@@ -4,20 +4,21 @@ import { cn } from "../../utils/cn";
 export interface PaginationDotProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   active?: boolean;
+  /** Tailwind size token used for width/height classes */
+  size?: string;
 }
 
-export const PaginationDot = React.forwardRef<
-  HTMLButtonElement,
-  PaginationDotProps
->(({ active = false, className, ...props }, ref) => (
+export const PaginationDot = React.forwardRef < HTMLButtonElement,
+  PaginationDotProps;
+({ active = false, size = "2", className, ...props }, ref) => (
   <button
     ref={ref}
     className={cn(
-      "h-2 w-2 rounded-full",
+      `h-${size} w-${size} rounded-full`,
       active ? "bg-primary" : "bg-muted",
       className
     )}
     {...props}
   />
-));
+);
 PaginationDot.displayName = "PaginationDot";

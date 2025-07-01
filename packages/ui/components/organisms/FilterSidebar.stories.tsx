@@ -8,7 +8,7 @@ const meta: Meta<typeof FilterSidebar> = {
     onChange: { action: "onChange" },
     width: {
       control: { type: "text" },
-      description: "Sidebar width",
+      description: "Tailwind width class or pixel value",
     },
   },
 };

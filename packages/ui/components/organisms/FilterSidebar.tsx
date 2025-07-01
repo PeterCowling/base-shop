@@ -16,13 +16,17 @@ export type Filters = { size?: string };
 
 export interface FilterSidebarProps {
   onChange: (filters: Filters) => void;
-  /** Width of the sidebar container (default: 16rem). */
-  width?: string;
+  /**
+   * Width of the sidebar. Provide a Tailwind width class
+   * (e.g. "w-64") or a numeric pixel value.
+   * @default "w-64"
+   */
+  width?: string | number;
 }
 
 export function FilterSidebar({
   onChange,
-  width = "16rem",
+  width = "w-64",
 }: FilterSidebarProps) {
   const [open, setOpen] = React.useState(false);
   const [size, setSize] = React.useState("");
@@ -32,6 +36,8 @@ export function FilterSidebar({
     onChange({ size: deferredSize || undefined });
   }, [deferredSize, onChange]);
 
+  const widthClass = typeof width === "number" ? `w-[${width}px]` : width;
+
   return (
     <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
       <DialogPrimitive.Trigger asChild>
@@ -40,8 +46,8 @@ export function FilterSidebar({
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-black/50" />
         <DialogPrimitive.Content
-          style={{ width }}
           className={cn(
+            widthClass,
             "bg-background fixed inset-y-0 left-0 z-50 border-r p-4 shadow-lg focus:outline-none"
           )}
         >

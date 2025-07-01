@@ -12,6 +12,8 @@ export interface StoreLocatorMapProps
   locations: Location[];
   zoom?: number;
   /** Tailwind height class */
+  heightClass?: string;
+  /** @deprecated Use `heightClass` instead */
   height?: string;
 }
 
@@ -61,7 +63,8 @@ function loadLeaflet(): Promise<Leaflet | null> {
 export function StoreLocatorMap({
   locations,
   zoom = 13,
-  height = "h-96",
+  heightClass = "h-96",
+  height,
   className,
   ...props
 }: StoreLocatorMapProps) {
@@ -96,6 +99,10 @@ export function StoreLocatorMap({
   }, [locations, zoom]);
 
   return (
-    <div ref={mapRef} className={cn(height, "w-full", className)} {...props} />
+    <div
+      ref={mapRef}
+      className={cn(height ?? heightClass, "w-full", className)}
+      {...props}
+    />
   );
 }

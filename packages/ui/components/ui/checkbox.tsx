@@ -1,4 +1,6 @@
 // packages/ui/components/ui/checkbox.tsx
+"use client";
+
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { CheckIcon } from "@radix-ui/react-icons";
 import * as React from "react";

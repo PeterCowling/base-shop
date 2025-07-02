@@ -35,7 +35,8 @@ interface Props {
 type Action =
   | { type: "add"; component: PageComponent }
   | { type: "move"; from: number; to: number }
-  | { type: "remove"; id: string };
+  | { type: "remove"; id: string }
+  | { type: "update"; id: string; patch: Partial<PageComponent> };
 
 function reducer(state: PageComponent[], action: Action): PageComponent[] {
   switch (action.type) {
@@ -46,6 +47,10 @@ function reducer(state: PageComponent[], action: Action): PageComponent[] {
       return arrayMove(state, action.from, action.to);
     case "remove":
       return state.filter((b) => b.id !== action.id);
+    case "update":
+      return state.map((b) =>
+        b.id === action.id ? { ...b, ...action.patch } : b
+      );
     default:
       return state;
   }
@@ -100,14 +105,125 @@ function Block({ component }: { component: PageComponent }) {
 
 const MemoBlock = memo(Block);
 
+function ComponentEditor({
+  component,
+  onChange,
+}: {
+  component: PageComponent;
+  onChange: (patch: Partial<PageComponent>) => void;
+}) {
+  if (!component) return null;
+
+  const handleInput = (field: string, value: string | number | undefined) => {
+    onChange({ [field]: value } as Partial<PageComponent>);
+  };
+
+  const arrayEditor = (
+    prop: string,
+    items: any[] | undefined,
+    fields: string[]
+  ) => {
+    const list = items ?? [];
+    return (
+      <div className="space-y-2">
+        {list.map((item, idx) => (
+          <div key={idx} className="space-y-1 rounded border p-2">
+            {fields.map((f) => (
+              <Input
+                key={f}
+                value={item[f] ?? ""}
+                onChange={(e) => {
+                  const next = [...list];
+                  next[idx] = { ...next[idx], [f]: e.target.value };
+                  onChange({ [prop]: next } as Partial<PageComponent>);
+                }}
+                placeholder={f}
+              />
+            ))}
+            <Button
+              variant="destructive"
+              onClick={() => {
+                const next = list.filter((_, i) => i !== idx);
+                onChange({ [prop]: next } as Partial<PageComponent>);
+              }}
+            >
+              Remove
+            </Button>
+          </div>
+        ))}
+        <Button
+          onClick={() => {
+            const next = [
+              ...list,
+              Object.fromEntries(fields.map((f) => [f, ""])),
+            ];
+            onChange({ [prop]: next } as Partial<PageComponent>);
+          }}
+        >
+          Add
+        </Button>
+      </div>
+    );
+  };
+
+  switch (component.type) {
+    case "ContactForm":
+      return (
+        <div className="space-y-2">
+          <Input
+            label="Action"
+            value={(component as any).action ?? ""}
+            onChange={(e) => handleInput("action", e.target.value)}
+          />
+          <Input
+            label="Method"
+            value={(component as any).method ?? ""}
+            onChange={(e) => handleInput("method", e.target.value)}
+          />
+        </div>
+      );
+    case "Gallery":
+      return arrayEditor("images", (component as any).images, ["src", "alt"]);
+    case "Testimonials":
+      return arrayEditor("testimonials", (component as any).testimonials, [
+        "quote",
+        "name",
+      ]);
+    case "HeroBanner":
+      return arrayEditor("slides", (component as any).slides, [
+        "src",
+        "alt",
+        "headlineKey",
+        "ctaKey",
+      ]);
+    case "ValueProps":
+      return arrayEditor("items", (component as any).items, [
+        "icon",
+        "title",
+        "desc",
+      ]);
+    case "ReviewsCarousel":
+      return arrayEditor("reviews", (component as any).reviews, [
+        "nameKey",
+        "quoteKey",
+      ]);
+    default:
+      return <p className="text-sm text-gray-500">No editable props</p>;
+  }
+}
+
 const CanvasItem = memo(function CanvasItem({
   component,
   index,
   onRemove,
+  selected,
+  onSelect,
 }: {
   component: PageComponent;
   index: number;
   onRemove: () => void;
+  selected: boolean;
+  onSelect: () => void;
 }) {
   const { attributes, listeners, setNodeRef, transform } = useSortable({
     id: component.id,
@@ -119,8 +235,11 @@ const CanvasItem = memo(function CanvasItem({
       ref={setNodeRef}
       {...attributes}
       {...listeners}
+      onClick={onSelect}
       style={{ transform: CSS.Transform.toString(transform) }}
-      className="relative rounded border"
+      className={
+        "relative rounded border" + (selected ? " ring-2 ring-blue-500" : "")
+      }
     >
       <MemoBlock component={component} />
       <button
@@ -142,6 +261,7 @@ export default memo(function PageBuilder({
   style,
 }: Props) {
   const [components, dispatch] = useReducer(reducer, page.components);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
     onChange?.(components);
@@ -206,6 +326,8 @@ export default memo(function PageBuilder({
                   key={c.id}
                   component={c}
                   index={i}
+                  selected={c.id === selectedId}
+                  onSelect={() => setSelectedId(c.id)}
                   onRemove={() => dispatch({ type: "remove", id: c.id })}
                 />
               ))}
@@ -220,6 +342,16 @@ export default memo(function PageBuilder({
           </Button>
         </div>
       </div>
+      {selectedId && (
+        <aside className="w-72 shrink-0">
+          <ComponentEditor
+            component={components.find((c) => c.id === selectedId)!}
+            onChange={(patch) =>
+              dispatch({ type: "update", id: selectedId, patch })
+            }
+          />
+        </aside>
+      )}
     </div>
   );
 });

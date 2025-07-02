@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { localeSchema, type Locale } from "./Product";
+import { localeSchema, type Locale, type Translated } from "./Product";
 
 export const shopSeoFieldsSchema = z.object({
   canonicalBase: z.string().optional(),
@@ -40,8 +40,8 @@ export interface Shop {
   priceOverrides: Partial<Record<Locale, number>>;
   /** Optional redirect overrides for locale detection */
   localeOverrides: Record<string, Locale>;
-  homeTitle?: string;
-  homeDescription?: string;
+  homeTitle?: Translated;
+  homeDescription?: Translated;
   homeImage?: string;
 }
 
@@ -58,7 +58,7 @@ export const shopSchema = z.object({
   priceOverrides: z.record(localeSchema, z.number()).default({}),
   /** Optional redirect overrides for locale detection */
   localeOverrides: z.record(z.string(), localeSchema).default({}),
-  homeTitle: z.string().optional(),
-  homeDescription: z.string().optional(),
+  homeTitle: z.record(localeSchema, z.string()).optional(),
+  homeDescription: z.record(localeSchema, z.string()).optional(),
   homeImage: z.string().optional(),
 });

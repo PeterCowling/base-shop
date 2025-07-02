@@ -21,6 +21,11 @@
     "moduleResolution": "node",
     "types": ["node"]
   },
-  "include": ["src", ".next/types/**/*.ts"],
+  "include": [
+    "src",
+    ".next/types/**/*.ts",
+    "../cms/src/app/api/upload-csv",
+    "../cms/src/app/api/providers"
+  ],
   "exclude": ["node_modules", "../../apps-script"]
 }

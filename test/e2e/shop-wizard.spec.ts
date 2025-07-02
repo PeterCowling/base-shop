@@ -52,8 +52,8 @@ describe("Shop wizard", () => {
         expect(body.options.shipping).to.deep.equal(["dhl"]);
         expect(body.options.template).to.be.a("string");
         expect(body.options.theme).to.be.a("string");
-        expect(body.options.pageTitle).to.equal("My Title");
-        expect(body.options.pageDescription).to.equal("My description");
+        expect(body.options.pageTitle.en).to.equal("My Title");
+        expect(body.options.pageDescription.en).to.equal("My description");
         expect(body.options.socialImage).to.equal(
           "https://example.com/img.png"
         );
@@ -63,11 +63,11 @@ describe("Shop wizard", () => {
 
     cy.readFile(`data/shops/${shopId}/shop.json`).then((json) => {
       expect(json.id).to.equal(shopId);
-      expect(json.homeTitle).to.equal("My Title");
+      expect(json.homeTitle.en).to.equal("My Title");
     });
 
     cy.readFile(`data/shops/${shopId}/pages.json`) // ensure page metadata saved
-      .its("0.seo.title")
+      .its("0.seo.title.en")
       .should("eq", "My Title");
 
     // sign out to reset auth state

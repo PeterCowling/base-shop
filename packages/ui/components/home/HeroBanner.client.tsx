@@ -7,14 +7,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-type Slide = {
+export type Slide = {
   src: string;
   alt: string;
   headlineKey: string;
   ctaKey: string;
 };
 
-const SLIDES: Slide[] = [
+const DEFAULT_SLIDES: Slide[] = [
   {
     src: "/hero/slide-1.jpg",
     alt: "Man wearing eco sneaker on concrete",
@@ -35,7 +35,11 @@ const SLIDES: Slide[] = [
   },
 ];
 
-export default function HeroBanner() {
+export default function HeroBanner({
+  slides = DEFAULT_SLIDES,
+}: {
+  slides?: Slide[];
+}) {
   const t = useTranslations();
   const pathname = usePathname(); // e.g. "/en" or "/en/shop"
   const langPrefix = pathname.split("/")[1] || "en";
@@ -43,10 +47,14 @@ export default function HeroBanner() {
   const [index, setIndex] = useState(0);
 
   // memoised handlers
-  const next = useCallback(() => setIndex((i) => (i + 1) % SLIDES.length), []);
+  const slideData = slides.length ? slides : DEFAULT_SLIDES;
+  const next = useCallback(
+    () => setIndex((i) => (i + 1) % slideData.length),
+    [slideData.length]
+  );
   const prev = useCallback(
-    () => setIndex((i) => (i - 1 + SLIDES.length) % SLIDES.length),
-    []
+    () => setIndex((i) => (i - 1 + slideData.length) % slideData.length),
+    [slideData.length]
   );
 
   // auto-advance
@@ -55,7 +63,7 @@ export default function HeroBanner() {
     return () => clearInterval(id);
   }, [next]);
 
-  const slide = useMemo(() => SLIDES[index], [index]);
+  const slide = useMemo(() => slideData[index], [index, slideData]);
 
   return (
     <section className="relative h-[60vh] w-full overflow-hidden">

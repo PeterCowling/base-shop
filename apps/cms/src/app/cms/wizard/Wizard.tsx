@@ -22,7 +22,7 @@ import TranslationsProvider from "@/i18n/Translations";
 import enMessages from "@i18n/en.json";
 import type { DeployShopResult } from "@platform-core/createShop";
 import { tokens as baseTokensSrc } from "@themes/base/tokens";
-import type { Page, PageComponent } from "@types";
+import { LOCALES, type Locale, type Page, type PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
 
 function WizardPreview({
@@ -95,6 +95,23 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   const pollRef = useRef<NodeJS.Timeout | null>(null);
   const [pageTitle, setPageTitle] = useState("Home");
   const [pageDescription, setPageDescription] = useState("");
+  const languages = LOCALES as readonly Locale[];
+  const [pageTitle, setPageTitle] = useState<Record<Locale, string>>(() => {
+    const obj: Record<Locale, string> = {} as Record<Locale, string>;
+    languages.forEach((l) => {
+      obj[l] = l === languages[0] ? "Home" : "";
+    });
+    return obj;
+  });
+  const [pageDescription, setPageDescription] = useState<
+    Record<Locale, string>
+  >(() => {
+    const obj: Record<Locale, string> = {} as Record<Locale, string>;
+    languages.forEach((l) => {
+      obj[l] = "";
+    });
+    return obj;
+  });
   const [socialImage, setSocialImage] = useState("");
   const [components, setComponents] = useState<PageComponent[]>([]);
   const [analyticsProvider, setAnalyticsProvider] = useState("");
@@ -703,22 +720,30 @@ export default function Wizard({ themes, templates, disabled }: Props) {
                 <b>Analytics:</b> {analyticsProvider || "none"}
               </li>
             </ul>
-            <label className="flex flex-col gap-1">
-              <span>Home page title</span>
-              <Input
-                value={pageTitle}
-                onChange={(e) => setPageTitle(e.target.value)}
-                placeholder="Home"
-              />
-            </label>
-            <label className="flex flex-col gap-1">
-              <span>Description</span>
-              <Input
-                value={pageDescription}
-                onChange={(e) => setPageDescription(e.target.value)}
-                placeholder="Page description"
-              />
-            </label>
+            {languages.map((l) => (
+              <div key={l} className="space-y-2">
+                <label className="flex flex-col gap-1">
+                  <span>Home page title ({l})</span>
+                  <Input
+                    value={pageTitle[l]}
+                    onChange={(e) =>
+                      setPageTitle((t) => ({ ...t, [l]: e.target.value }))
+                    }
+                    placeholder="Home"
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span>Description ({l})</span>
+                  <Input
+                    value={pageDescription[l]}
+                    onChange={(e) =>
+                      setPageDescription((d) => ({ ...d, [l]: e.target.value }))
+                    }
+                    placeholder="Page description"
+                  />
+                </label>
+              </div>
+            ))}
             <label className="flex flex-col gap-1">
               <span>Social image URL</span>
               <Input

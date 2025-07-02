@@ -15,7 +15,7 @@
     "allowImportingTsExtensions": true,
     "module": "es2020",
 
-    "types": ["node"],
+    "types": [],
 
     "paths": {
       "@platform-core/*": ["packages/platform-core/*"],

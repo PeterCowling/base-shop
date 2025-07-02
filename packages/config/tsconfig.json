@@ -5,7 +5,8 @@
     "noEmit": false,
     "composite": true,
     "outDir": "dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "types": ["node"]
   },
   "include": ["env.ts"],
   "exclude": ["dist"]

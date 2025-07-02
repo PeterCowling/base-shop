@@ -9,7 +9,8 @@ import {
   updatePage as updatePageInRepo,
 } from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
-import type { Page, PageComponent } from "@types";
+import type { Locale, Page, PageComponent } from "@types";
+import { LOCALES } from "@types";
 import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
 import { z } from "zod";
@@ -40,20 +41,26 @@ const componentsField = z
     }
   });
 
-const baseSchema = z.object({
-  slug: z.string().min(1, "Required"),
-  status: z.enum(["draft", "published"]).default("draft"),
-  title: z.string().min(1, "Required"),
-  description: z.string().optional().default(""),
-  image: z
-    .string()
-    .optional()
-    .default("")
-    .refine((v) => !v || /^https?:\/\/\S+$/.test(v), {
-      message: "Invalid image URL",
-    }),
-  components: componentsField,
-});
+const localeFields: z.ZodRawShape = {};
+for (const l of LOCALES) {
+  localeFields[`title_${l}`] = z.string().min(1, "Required");
+  localeFields[`desc_${l}`] = z.string().optional().default("");
+}
+
+const baseSchema = z
+  .object({
+    slug: z.string().min(1, "Required"),
+    status: z.enum(["draft", "published"]).default("draft"),
+    image: z
+      .string()
+      .optional()
+      .default("")
+      .refine((v) => !v || /^https?:\/\/\S+$/.test(v), {
+        message: "Invalid image URL",
+      }),
+    components: componentsField,
+  })
+  .extend(localeFields);
 
 const createSchema = baseSchema;
 const updateSchema = baseSchema.extend({
@@ -80,17 +87,20 @@ export async function createPage(
   }
 
   const data: PageCreateForm = parsed.data;
+  const title: Record<Locale, string> = {} as Record<Locale, string>;
+  const description: Record<Locale, string> = {} as Record<Locale, string>;
+  LOCALES.forEach((l) => {
+    title[l] = data[`title_${l}` as keyof PageCreateForm] as string;
+    description[l] = data[`desc_${l}` as keyof PageCreateForm] as string;
+  });
   const now = new Date().toISOString();
   const page: Page = {
     id: ulid(),
     slug: data.slug,
     status: data.status,
     components: data.components,
-    seo: {
-      title: data.title,
-      description: data.description,
-      image: data.image,
-    },
+    seo: { title, description, image: data.image },
+
     createdAt: now,
     updatedAt: now,
     createdBy: session.user.email ?? "unknown",
@@ -121,17 +131,19 @@ export async function updatePage(
   }
 
   const data: PageUpdateForm = parsed.data;
+  const title: Record<Locale, string> = {} as Record<Locale, string>;
+  const description: Record<Locale, string> = {} as Record<Locale, string>;
+  LOCALES.forEach((l) => {
+    title[l] = data[`title_${l}` as keyof PageUpdateForm] as string;
+    description[l] = data[`desc_${l}` as keyof PageUpdateForm] as string;
+  });
   const patch: Partial<Page> & { id: string; updatedAt: string } = {
     id: data.id,
     updatedAt: data.updatedAt,
     slug: data.slug,
     status: data.status,
     components: data.components,
-    seo: {
-      title: data.title,
-      description: data.description,
-      image: data.image,
-    },
+    seo: { title, description, image: data.image },
   };
 
   try {

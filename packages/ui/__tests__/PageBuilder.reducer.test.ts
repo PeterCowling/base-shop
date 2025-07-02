@@ -35,4 +35,11 @@ describe("PageBuilder reducer", () => {
     const state = [a, b];
     expect(reducer(state, { type: "remove", id: "a" })).toEqual([b]);
   });
+
+  it("updates component", () => {
+    const state = [a];
+    expect(
+      reducer(state, { type: "update", id: "a", patch: { foo: "bar" } })[0].foo
+    ).toBe("bar");
+  });
 });

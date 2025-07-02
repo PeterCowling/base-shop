@@ -1,7 +1,7 @@
 // packages/platform-core/createShop.ts
 import { tokens as baseTokens } from "@themes/base/tokens";
 import type { PageComponent } from "@types";
-import { LOCALES } from "@types";
+import { LOCALES, type Locale } from "@types";
 import { spawnSync } from "child_process";
 import { randomBytes } from "crypto";
 import {
@@ -24,8 +24,8 @@ export interface CreateShopOptions {
   template?: string;
   payment?: string[];
   shipping?: string[];
-  pageTitle?: string;
-  pageDescription?: string;
+  pageTitle?: Record<Locale, string>;
+  pageDescription?: Record<Locale, string>;
   socialImage?: string;
   analytics?: {
     provider: string;
@@ -33,8 +33,8 @@ export interface CreateShopOptions {
   };
   pages?: {
     slug: string;
-    title: string;
-    description?: string;
+    title: Record<Locale, string>;
+    description?: Record<Locale, string>;
     image?: string;
     components: PageComponent[];
   }[];
@@ -61,8 +61,18 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     template: opts.template ?? "template-app",
     payment: opts.payment ?? [],
     shipping: opts.shipping ?? [],
-    pageTitle: opts.pageTitle ?? "Home",
-    pageDescription: opts.pageDescription ?? "",
+    pageTitle:
+      opts.pageTitle ??
+      (Object.fromEntries(LOCALES.map((l) => [l, "Home"])) as Record<
+        Locale,
+        string
+      >),
+    pageDescription:
+      opts.pageDescription ??
+      (Object.fromEntries(LOCALES.map((l) => [l, ""])) as Record<
+        Locale,
+        string
+      >),
     socialImage: opts.socialImage ?? "",
     analytics: opts.analytics,
     pages: opts.pages ?? [],

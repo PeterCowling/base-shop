@@ -1,7 +1,8 @@
 export type PageStatus = "draft" | "published";
+import type { Translated } from "./Product";
 export interface SeoMeta {
-    title: string;
-    description?: string;
+    title: Translated;
+    description?: Translated;
     image?: string;
 }
 export interface PageComponentBase {

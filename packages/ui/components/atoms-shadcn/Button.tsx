@@ -1,10 +1,10 @@
 // packages/ui/components/atoms-shim/Buttons.tsx
 
-import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import type { ButtonProps as BaseButtonProps } from "../ui/button";
 import { Button as BaseButton } from "../ui/button";
+import { Slot } from "../ui/slot";
 
 export interface ButtonProps extends Omit<BaseButtonProps, "variant"> {
   variant?: BaseButtonProps["variant"] | "destructive";

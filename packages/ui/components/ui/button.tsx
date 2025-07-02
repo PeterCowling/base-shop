@@ -1,7 +1,7 @@
 // packages/ui/components/ui/button.tsx
-import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { Slot } from "./slot";
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */

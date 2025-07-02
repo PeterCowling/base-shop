@@ -11,8 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms-shadcn";
+import PageBuilder from "@/components/cms/PageBuilder";
 import { tokens as baseTokensSrc } from "@themes/base/tokens";
-import type { PageComponent } from "@types";
+import type { Page, PageComponent } from "@types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -137,7 +138,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   return (
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
-        <Progress step={step} total={6} />
+        <Progress step={step} total={7} />
         {step === 0 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Shop Details</h2>
@@ -277,6 +278,35 @@ export default function Wizard({ themes, templates, disabled }: Props) {
 
         {step === 4 && (
           <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Home Page</h2>
+            <PageBuilder
+              page={
+                {
+                  id: "",
+                  slug: "",
+                  status: "draft",
+                  components,
+                  seo: { title: "", description: "" },
+                  createdAt: "",
+                  updatedAt: "",
+                  createdBy: "",
+                } as Page
+              }
+              onSave={async () => {}}
+              onPublish={async () => {}}
+              onChange={setComponents}
+            />
+            <div className="flex justify-between">
+              <Button variant="outline" onClick={() => setStep(3)}>
+                Back
+              </Button>
+              <Button onClick={() => setStep(5)}>Next</Button>
+            </div>
+          </div>
+        )}
+
+        {step === 5 && (
+          <div className="space-y-4">
             <h2 className="text-xl font-semibold">Summary</h2>
             <ul className="list-disc pl-5 text-sm">
               <li>
@@ -321,7 +351,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
             </label>
             {result && <p className="text-sm">{result}</p>}
             <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(3)}>
+              <Button variant="outline" onClick={() => setStep(5)}>
                 Back
               </Button>
               <Button variant="outline" asChild>
@@ -344,7 +374,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
           </div>
         )}
 
-        {step === 5 && (
+        {step === 6 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Hosting</h2>
             <label className="flex flex-col gap-1">
@@ -357,7 +387,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
             </label>
             {deployResult && <p className="text-sm">{deployResult}</p>}
             <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(4)}>
+              <Button variant="outline" onClick={() => setStep(5)}>
                 Back
               </Button>
               <Button disabled={deploying} onClick={deploy}>

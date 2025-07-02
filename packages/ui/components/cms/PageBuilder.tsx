@@ -19,7 +19,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { Page, PageComponent } from "@types";
-import { memo, useReducer } from "react";
+import { memo, useEffect, useReducer } from "react";
 import { ulid } from "ulid";
 import { Button } from "../atoms-shadcn";
 import { blockRegistry } from "./blocks";
@@ -28,6 +28,7 @@ interface Props {
   page: Page;
   onSave: (fd: FormData) => Promise<unknown>;
   onPublish: (fd: FormData) => Promise<unknown>;
+  onChange?: (components: PageComponent[]) => void;
 }
 
 type Action =
@@ -131,8 +132,17 @@ const CanvasItem = memo(function CanvasItem({
   );
 });
 
-export default memo(function PageBuilder({ page, onSave, onPublish }: Props) {
+export default memo(function PageBuilder({
+  page,
+  onSave,
+  onPublish,
+  onChange,
+}: Props) {
   const [components, dispatch] = useReducer(reducer, page.components);
+
+  useEffect(() => {
+    onChange?.(components);
+  }, [components, onChange]);
 
   const sensors = useSensors(
     useSensor(PointerSensor),

@@ -1,3 +1,5 @@
+export {};
+
 let service: typeof import("../releaseDepositsService");
 
 const readdir = jest.fn();

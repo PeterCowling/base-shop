@@ -31,6 +31,7 @@ export interface CreateShopOptions {
     provider: string;
     id?: string;
   };
+  navItems?: { label: string; url: string }[];
   pages?: {
     slug: string;
     title: Record<Locale, string>;
@@ -75,6 +76,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
       >),
     socialImage: opts.socialImage ?? "",
     analytics: opts.analytics,
+    navItems: opts.navItems ?? [],
     pages: opts.pages ?? [],
   };
 
@@ -191,6 +193,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
         homeTitle: options.pageTitle,
         homeDescription: options.pageDescription,
         homeImage: options.socialImage,
+        navigation: options.navItems,
       },
       null,
       2

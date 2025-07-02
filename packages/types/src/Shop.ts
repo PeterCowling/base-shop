@@ -43,6 +43,7 @@ export interface Shop {
   homeTitle?: Translated;
   homeDescription?: Translated;
   homeImage?: string;
+  navigation?: { label: string; url: string }[];
 }
 
 export const shopSchema = z.object({
@@ -61,4 +62,7 @@ export const shopSchema = z.object({
   homeTitle: z.record(localeSchema, z.string()).optional(),
   homeDescription: z.record(localeSchema, z.string()).optional(),
   homeImage: z.string().optional(),
+  navigation: z
+    .array(z.object({ label: z.string(), url: z.string() }))
+    .optional(),
 });

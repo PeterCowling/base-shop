@@ -1,5 +1,6 @@
 // server component
 import { decodeCartCookie } from "@/lib/cartCookie";
+import { readShop } from "@platform-core/repositories/json.server";
 import { cookies } from "next/headers";
 import HeaderClient from "./HeaderClient.client";
 
@@ -19,11 +20,15 @@ export default async function Header({
   const cookieStore = await cookies();
   const cart = decodeCartCookie(cookieStore.get("CART_STATE")?.value);
   const initialQty = Object.values(cart).reduce((s, line) => s + line.qty, 0);
+  const shopId = process.env.NEXT_PUBLIC_SHOP_ID || "default";
+  const shop = await readShop(shopId);
+  const nav = shop.navigation ?? [];
 
   return (
     <HeaderClient
       lang={lang}
       initialQty={initialQty}
+      nav={nav}
       height={height}
       padding={padding}
     />

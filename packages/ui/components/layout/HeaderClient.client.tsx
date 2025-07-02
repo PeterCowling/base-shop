@@ -8,11 +8,13 @@ import { cn } from "../../utils/cn";
 export default function HeaderClient({
   lang,
   initialQty,
+  nav = [],
   height = "h-16",
   padding = "px-6",
 }: {
   lang: string;
   initialQty: number;
+  nav?: { label: string; url: string }[];
   height?: string;
   padding?: string;
 }) {
@@ -33,7 +35,14 @@ export default function HeaderClient({
       </Link>
 
       <nav className="flex items-center gap-6">
-        <Link href={`/${lang}/shop`}>Shop</Link>
+        {nav.map((item) => (
+          <Link
+            key={item.url}
+            href={item.url.startsWith("/") ? `/${lang}${item.url}` : item.url}
+          >
+            {item.label}
+          </Link>
+        ))}
         <Link href={`/${lang}/checkout`} className="relative hover:underline">
           Cart
           {qty > 0 && (

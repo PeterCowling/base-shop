@@ -1,4 +1,3 @@
-// src/components/cms/Wizard.tsx
 "use client";
 
 import { Progress } from "@/components/atoms";
@@ -26,10 +25,6 @@ import { tokens as baseTokensSrc } from "@themes/base/tokens";
 import { LOCALES, type Locale, type Page, type PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
 
-/* -------------------------------------------------------------------------- */
-/*                              Preview component                             */
-/* -------------------------------------------------------------------------- */
-
 function WizardPreview({
   style,
 }: {
@@ -52,10 +47,6 @@ function WizardPreview({
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                   Types                                    */
-/* -------------------------------------------------------------------------- */
-
 interface Props {
   themes: string[];
   templates: string[];
@@ -64,17 +55,12 @@ interface Props {
 
 type TokenMap = Record<`--${string}`, string>;
 
-/* -------------------------------------------------------------------------- */
-/*                                   Utils                                    */
-/* -------------------------------------------------------------------------- */
-
 const baseTokens: TokenMap = Object.fromEntries(
   Object.entries(baseTokensSrc).map(([k, v]) => [k, v.light])
 ) as TokenMap;
 
 async function loadThemeTokens(theme: string): Promise<TokenMap> {
   if (theme === "base") return baseTokens;
-
   try {
     const mod = await import(`@themes/${theme}/tokens`);
     return Object.fromEntries(
@@ -92,82 +78,8 @@ async function loadThemeTokens(theme: string): Promise<TokenMap> {
   }
 }
 
-function hslToHex(hsl: string): string {
-  const [h, s, l] = hsl
-    .split(" ")
-    .map((p, i) => (i === 0 ? parseFloat(p) : parseFloat(p) / 100));
-  const a = s * Math.min(l, 1 - l);
-  const f = (n: number) => {
-    const k = (n + h / 30) % 12;
-    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-    return Math.round(255 * color)
-      .toString(16)
-      .padStart(2, "0");
-  };
-  return `#${f(0)}${f(8)}${f(4)}`;
-}
-
-function hexToHsl(hex: string): string {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  let h = 0;
-  let s = 0;
-  const l = (max + min) / 2;
-
-  if (max !== min) {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0);
-        break;
-      case g:
-        h = (b - r) / d + 2;
-        break;
-      default:
-        h = (r - g) / d + 4;
-    }
-    h *= 60;
-  }
-
-  return `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
-}
-
-const sansFonts = [
-  '"Geist Sans", system-ui, sans-serif',
-  "Arial, sans-serif",
-  "ui-sans-serif, system-ui",
-];
-
-const monoFonts = [
-  '"Geist Mono", ui-monospace, monospace',
-  '"Courier New", monospace',
-];
-
-function toggle(list: string[], value: string): string[] {
-  return list.includes(value)
-    ? list.filter((v) => v !== value)
-    : [...list, value];
-}
-
-/* -------------------------------------------------------------------------- */
-/*                                   Wizard                                   */
-/* -------------------------------------------------------------------------- */
-
-export default function Wizard({
-  themes,
-  templates,
-  disabled,
-}: Props): React.JSX.Element {
-  /* ------------------------------ Step control ----------------------------- */
-
+export default function Wizard({ themes, templates, disabled }: Props) {
   const [step, setStep] = useState(0);
-
-  /* ---------------------------- Basic shop data --------------------------- */
-
   const [shopId, setShopId] = useState("");
   const [template, setTemplate] = useState(templates[0] ?? "");
   const [theme, setTheme] = useState(themes[0] ?? "");
@@ -175,91 +87,61 @@ export default function Wizard({
   const [shipping, setShipping] = useState<string[]>([]);
   const [creating, setCreating] = useState(false);
   const [result, setResult] = useState<string | null>(null);
-
-  /* ----------------------------- Theme tokens ----------------------------- */
-
   const [themeVars, setThemeVars] = useState<TokenMap>(baseTokens);
-
-  /* ------------------------------ Deployment ------------------------------ */
-
   const [domain, setDomain] = useState("");
   const [deploying, setDeploying] = useState(false);
   const [deployResult, setDeployResult] = useState<string | null>(null);
   const [deployInfo, setDeployInfo] = useState<DeployShopResult | null>(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
-
-  /* --------------------------- Home‑page metadata -------------------------- */
-
+  const [pageTitle, setPageTitle] = useState("Home");
+  const [pageDescription, setPageDescription] = useState("");
   const languages = LOCALES as readonly Locale[];
-
   const [pageTitle, setPageTitle] = useState<Record<Locale, string>>(() => {
-    const obj = {} as Record<Locale, string>;
-    languages.forEach((l, i) => {
-      obj[l] = i === 0 ? "Home" : "";
+    const obj: Record<Locale, string> = {} as Record<Locale, string>;
+    languages.forEach((l) => {
+      obj[l] = l === languages[0] ? "Home" : "";
     });
     return obj;
   });
-
   const [pageDescription, setPageDescription] = useState<
     Record<Locale, string>
   >(() => {
-    const obj = {} as Record<Locale, string>;
+    const obj: Record<Locale, string> = {} as Record<Locale, string>;
     languages.forEach((l) => {
       obj[l] = "";
     });
     return obj;
   });
-
   const [socialImage, setSocialImage] = useState("");
-
-  /* ------------------------------ Page builder ----------------------------- */
-
   const [components, setComponents] = useState<PageComponent[]>([]);
-
-  /* ------------------------------- Analytics ------------------------------- */
-
   const [analyticsProvider, setAnalyticsProvider] = useState("");
   const [analyticsId, setAnalyticsId] = useState("");
-
-  /* ------------------------------- Navigation ------------------------------ */
-
   const [navItems, setNavItems] = useState<{ label: string; url: string }[]>([
     { label: "Shop", url: "/shop" },
   ]);
   const [newNavLabel, setNewNavLabel] = useState("");
   const [newNavUrl, setNewNavUrl] = useState("");
-
-  /* -------------------------- Additional pages ----------------------------- */
-
   const [pages, setPages] = useState<
-    Array<{
+    {
       slug: string;
       title: string;
       description: string;
       image: string;
       components: PageComponent[];
-    }>
+    }[]
   >([]);
-
   const [newSlug, setNewSlug] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [newDesc, setNewDesc] = useState("");
   const [newImage, setNewImage] = useState("");
   const [newComponents, setNewComponents] = useState<PageComponent[]>([]);
   const [adding, setAdding] = useState(false);
-
-  /* ------------------------- Import / seed data ---------------------------- */
-
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [categoriesText, setCategoriesText] = useState("");
   const [seeding, setSeeding] = useState(false);
   const [seedResult, setSeedResult] = useState<string | null>(null);
   const [importing, setImporting] = useState(false);
   const [importResult, setImportResult] = useState<string | null>(null);
-
-  /* ------------------------------------------------------------------------ */
-  /*                                  Effects                                 */
-  /* ------------------------------------------------------------------------ */
 
   useEffect(() => {
     loadThemeTokens(theme).then(setThemeVars);
@@ -271,14 +153,68 @@ export default function Wizard({
     };
   }, []);
 
-  /* ------------------------------------------------------------------------ */
-  /*                                 Handlers                                 */
-  /* ------------------------------------------------------------------------ */
+  function hslToHex(hsl: string): string {
+    const [h, s, l] = hsl
+      .split(" ")
+      .map((p, i) => (i === 0 ? parseFloat(p) : parseFloat(p) / 100));
+    const a = s * Math.min(l, 1 - l);
+    const f = (n: number) => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color)
+        .toString(16)
+        .padStart(2, "0");
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+  }
+
+  function hexToHsl(hex: string): string {
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+    const max = Math.max(r, g, b),
+      min = Math.min(r, g, b);
+    let h = 0,
+      s = 0,
+      l = (max + min) / 2;
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        default:
+          h = (r - g) / d + 4;
+      }
+      h *= 60;
+    }
+    return `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
+  }
+
+  const sansFonts = [
+    '"Geist Sans", system-ui, sans-serif',
+    "Arial, sans-serif",
+    "ui-sans-serif, system-ui",
+  ];
+  const monoFonts = [
+    '"Geist Mono", ui-monospace, monospace',
+    '"Courier New", monospace',
+  ];
+
+  function toggle(list: string[], value: string): string[] {
+    return list.includes(value)
+      ? list.filter((v) => v !== value)
+      : [...list, value];
+  }
 
   async function submit() {
     setCreating(true);
     setResult(null);
-
+    let json: any = null;
     try {
       const res = await fetch("/cms/api/create-shop", {
         method: "POST",
@@ -300,51 +236,46 @@ export default function Wizard({
           pages,
         }),
       });
-
+      json = await res.json();
       if (res.ok) {
         setResult("Shop created successfully");
-        setStep(8);
+        setStep(7);
       } else {
-        const { error } = (await res.json()) as { error?: string };
-        setResult(error ?? "Failed to create shop");
+        setResult("Failed to create shop");
       }
     } catch {
-      setResult("Failed to create shop");
-    } finally {
-      setCreating(false);
+      setResult(json?.error ?? "Failed to create shop");
     }
+    setCreating(false);
   }
 
   async function deploy() {
     setDeploying(true);
     setDeployResult(null);
-
+    let json: any = null;
     try {
       const res = await fetch("/cms/api/deploy-shop", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: shopId, domain }),
       });
-      const json = (await res.json()) as DeployShopResult & { status?: string };
-
+      json = await res.json();
       if (res.ok) {
         setDeployResult("Deployment started");
-        setDeployInfo(json);
+        setDeployInfo(json as DeployShopResult);
         startPolling();
       } else {
-        setDeployResult(json?.error ?? "Deployment failed");
+        setDeployResult("Deployment failed");
       }
     } catch {
-      setDeployResult("Deployment failed");
-    } finally {
-      setDeploying(false);
+      setDeployResult(json?.error ?? "Deployment failed");
     }
+    setDeploying(false);
   }
 
   async function seed() {
     setSeeding(true);
     setSeedResult(null);
-
     try {
       if (csvFile) {
         const fd = new FormData();
@@ -354,7 +285,6 @@ export default function Wizard({
           body: fd,
         });
       }
-
       if (categoriesText.trim()) {
         const cats = categoriesText
           .split(/[\n,]+/)
@@ -366,20 +296,36 @@ export default function Wizard({
           body: JSON.stringify(cats),
         });
       }
-
       setSeedResult("Data saved");
       setStep(10);
     } catch {
       setSeedResult("Failed to save data");
-    } finally {
-      setSeeding(false);
     }
+    setSeeding(false);
+  }
+
+  function startPolling() {
+    if (pollRef.current) clearInterval(pollRef.current);
+    pollRef.current = setInterval(async () => {
+      try {
+        const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
+        const status = (await res.json()) as DeployShopResult & {
+          status?: string;
+        };
+        setDeployInfo(status);
+        if (status.status && status.status !== "pending") {
+          if (pollRef.current) clearInterval(pollRef.current);
+          pollRef.current = null;
+        }
+      } catch {
+        // ignore errors during polling
+      }
+    }, 3000);
   }
 
   async function saveData() {
     setImporting(true);
     setImportResult(null);
-
     try {
       if (csvFile) {
         const form = new FormData();
@@ -389,7 +335,6 @@ export default function Wizard({
           body: form,
         });
       }
-
       if (categoriesText.trim()) {
         const cats = JSON.parse(categoriesText);
         await fetch(`/cms/api/categories/${shopId}`, {
@@ -398,62 +343,25 @@ export default function Wizard({
           body: JSON.stringify(cats),
         });
       }
-
       setImportResult("Saved");
       setStep(9);
     } catch {
       setImportResult("Failed to save data");
-    } finally {
-      setImporting(false);
     }
+    setImporting(false);
   }
-
-  function startPolling() {
-    if (pollRef.current) clearInterval(pollRef.current);
-
-    pollRef.current = setInterval(async () => {
-      try {
-        const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
-        const status = (await res.json()) as DeployShopResult & {
-          status?: string;
-        };
-
-        setDeployInfo(status);
-
-        if (status.status && status.status !== "pending") {
-          if (pollRef.current) clearInterval(pollRef.current);
-          pollRef.current = null;
-        }
-      } catch {
-        // ignore polling errors
-      }
-    }, 3000);
-  }
-
-  /* ------------------------------------------------------------------------ */
-  /*                                  Styles                                  */
-  /* ------------------------------------------------------------------------ */
 
   const themeStyle = Object.fromEntries(
     Object.entries(themeVars).map(([k, v]) => [k, v])
   ) as React.CSSProperties;
 
-  /* ------------------------------------------------------------------------ */
-  /*                                   JSX                                    */
-  /* ------------------------------------------------------------------------ */
-
   return (
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
-        <Progress step={step} total={11} />
-
-        {/* ------------------------------------------------------------------ */}
-        {/*                          Step 0 · Shop ID                           */}
-        {/* ------------------------------------------------------------------ */}
+        <Progress step={step} total={10} />
         {step === 0 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Shop Details</h2>
-
             <label className="flex flex-col gap-1">
               <span>Shop ID</span>
               <Input
@@ -462,7 +370,6 @@ export default function Wizard({
                 placeholder="my-shop"
               />
             </label>
-
             <label className="flex flex-col gap-1">
               <span>Template</span>
               <Select value={template} onValueChange={setTemplate}>
@@ -478,7 +385,6 @@ export default function Wizard({
                 </SelectContent>
               </Select>
             </label>
-
             <div className="flex justify-end gap-2">
               <Button disabled={!shopId} onClick={() => setStep(1)}>
                 Next
@@ -487,13 +393,9 @@ export default function Wizard({
           </div>
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                       Step 1 · Choose theme                         */}
-        {/* ------------------------------------------------------------------ */}
         {step === 1 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Select Theme</h2>
-
             <Select value={theme} onValueChange={setTheme}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select theme" />
@@ -506,9 +408,7 @@ export default function Wizard({
                 ))}
               </SelectContent>
             </Select>
-
             <WizardPreview style={themeStyle} />
-
             <div className="flex justify-between">
               <Button variant="outline" onClick={() => setStep(0)}>
                 Back
@@ -518,16 +418,11 @@ export default function Wizard({
           </div>
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                     Step 2 · Customize tokens                       */}
-        {/* ------------------------------------------------------------------ */}
         {step === 2 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Customize Tokens</h2>
-
             <div className="max-h-64 space-y-2 overflow-y-auto rounded border p-2">
               {Object.entries(themeVars).map(([k, v]) => {
-                /* Colours -------------------------------------------------- */
                 if (k.startsWith("--color")) {
                   return (
                     <label key={k} className="flex items-center gap-2 text-sm">
@@ -545,8 +440,6 @@ export default function Wizard({
                     </label>
                   );
                 }
-
-                /* Fonts ----------------------------------------------------- */
                 if (k.startsWith("--font")) {
                   const options = k.includes("mono") ? monoFonts : sansFonts;
                   return (
@@ -568,8 +461,6 @@ export default function Wizard({
                     </label>
                   );
                 }
-
-                /* Numbers --------------------------------------------------- */
                 if (/px$/.test(v)) {
                   const num = parseInt(v, 10);
                   return (
@@ -591,8 +482,6 @@ export default function Wizard({
                     </label>
                   );
                 }
-
-                /* Fallback -------------------------------------------------- */
                 return (
                   <label key={k} className="flex items-center gap-2 text-sm">
                     <span className="w-40 flex-shrink-0">{k}</span>
@@ -606,9 +495,7 @@ export default function Wizard({
                 );
               })}
             </div>
-
             <WizardPreview style={themeStyle} />
-
             <div className="flex justify-between">
               <Button variant="outline" onClick={() => setStep(1)}>
                 Back
@@ -618,14 +505,9 @@ export default function Wizard({
           </div>
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                        Step 3 · Options                             */}
-        {/* ------------------------------------------------------------------ */}
         {step === 3 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Options</h2>
-
-            {/* Payment providers ------------------------------------------ */}
             <div>
               <p className="font-medium">Payment Providers</p>
               <label className="flex items-center gap-2 text-sm">
@@ -643,8 +525,6 @@ export default function Wizard({
                 PayPal
               </label>
             </div>
-
-            {/* Shipping providers ----------------------------------------- */}
             <div>
               <p className="font-medium">Shipping Providers</p>
               <label className="flex items-center gap-2 text-sm">
@@ -662,8 +542,6 @@ export default function Wizard({
                 UPS
               </label>
             </div>
-
-            {/* Analytics --------------------------------------------------- */}
             <div>
               <p className="font-medium">Analytics</p>
               <Select
@@ -678,7 +556,6 @@ export default function Wizard({
                   <SelectItem value="ga">Google Analytics</SelectItem>
                 </SelectContent>
               </Select>
-
               {analyticsProvider === "ga" && (
                 <Input
                   className="mt-2"
@@ -688,8 +565,6 @@ export default function Wizard({
                 />
               )}
             </div>
-
-            {/* Navigation -------------------------------------------------- */}
             <div className="flex justify-between">
               <Button variant="outline" onClick={() => setStep(2)}>
                 Back
@@ -697,80 +572,61 @@ export default function Wizard({
               <Button onClick={() => setStep(4)}>Next</Button>
             </div>
           </div>
-        )}
+          </div>
+      )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                       Step 4 · Navigation                           */}
-        {/* ------------------------------------------------------------------ */}
-        {step === 4 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Navigation</h2>
-
-            {navItems.length > 0 && (
-              <ul className="list-disc pl-5 text-sm">
-                {navItems.map((n) => (
-                  <li key={n.url}>
-                    {n.label} – {n.url}
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <label className="flex flex-col gap-1">
-              <span>Label</span>
-              <Input
-                value={newNavLabel}
-                onChange={(e) => setNewNavLabel(e.target.value)}
-              />
-            </label>
-
-            <label className="flex flex-col gap-1">
-              <span>URL</span>
-              <Input
-                value={newNavUrl}
-                onChange={(e) => setNewNavUrl(e.target.value)}
-                placeholder="/about"
-              />
-            </label>
-
-            <div className="flex justify-between gap-2">
-              <Button
-                variant="outline"
-                onClick={() => {
+      {step === 4 && (
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Navigation</h2>
+          {navItems.length > 0 && (
+            <ul className="list-disc pl-5 text-sm">
+              {navItems.map((n) => (
+                <li key={n.url}>
+                  {n.label} – {n.url}
+                </li>
+              ))}
+            </ul>
+          )}
+          <label className="flex flex-col gap-1">
+            <span>Label</span>
+            <Input value={newNavLabel} onChange={(e) => setNewNavLabel(e.target.value)} />
+          </label>
+          <label className="flex flex-col gap-1">
+            <span>URL</span>
+            <Input value={newNavUrl} onChange={(e) => setNewNavUrl(e.target.value)} placeholder="/about" />
+          </label>
+          <div className="flex justify-between gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setNewNavLabel("");
+                setNewNavUrl("");
+                setStep(3);
+              }}
+            >
+              Back
+            </Button>
+            <Button
+              onClick={() => {
+                if (newNavLabel && newNavUrl) {
+                  setNavItems((n) => [...n, { label: newNavLabel, url: newNavUrl }]);
                   setNewNavLabel("");
                   setNewNavUrl("");
-                  setStep(3);
-                }}
-              >
-                Back
-              </Button>
+                }
+                setStep(5);
+              }}
+            >
+              Next
+            </Button>
+                    </div>
+        </div>
 
-              <Button
-                onClick={() => {
-                  if (newNavLabel && newNavUrl) {
-                    setNavItems((n) => [
-                      ...n,
-                      { label: newNavLabel, url: newNavUrl },
-                    ]);
-                    setNewNavLabel("");
-                    setNewNavUrl("");
-                  }
-                  setStep(5);
-                }}
-              >
-                Next
-              </Button>
-            </div>
-          </div>
+
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                       Step 5 · Home page                            */}
-        {/* ------------------------------------------------------------------ */}
-        {step === 5 && (
+      {step === 5 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Home Page</h2>
-
             <PageBuilder
               page={
                 {
@@ -789,23 +645,18 @@ export default function Wizard({
               onChange={setComponents}
               style={themeStyle}
             />
-
             <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(4)}>
+              <Button variant="outline" onClick={() => setStep(6)}>
                 Back
               </Button>
-              <Button onClick={() => setStep(6)}>Next</Button>
+              <Button onClick={() => setStep(7)}>Next</Button>
             </div>
           </div>
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                    Step 6 · Additional pages                        */}
-        {/* ------------------------------------------------------------------ */}
         {step === 6 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Additional Pages</h2>
-
             {pages.length > 0 && (
               <ul className="list-disc pl-5 text-sm">
                 {pages.map((p) => (
@@ -813,8 +664,6 @@ export default function Wizard({
                 ))}
               </ul>
             )}
-
-            {/* Page‑builder for new page ---------------------------------- */}
             {adding && (
               <div className="space-y-2">
                 <label className="flex flex-col gap-1">
@@ -845,7 +694,6 @@ export default function Wizard({
                     onChange={(e) => setNewImage(e.target.value)}
                   />
                 </label>
-
                 <PageBuilder
                   page={
                     {
@@ -864,7 +712,6 @@ export default function Wizard({
                   onChange={setNewComponents}
                   style={themeStyle}
                 />
-
                 <div className="flex justify-between">
                   <Button variant="outline" onClick={() => setAdding(false)}>
                     Cancel
@@ -894,13 +741,11 @@ export default function Wizard({
                 </div>
               </div>
             )}
-
             {!adding && (
               <Button onClick={() => setAdding(true)}>Add Page</Button>
             )}
-
             <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(5)}>
+              <Button variant="outline" onClick={() => setStep(6)}>
                 Back
               </Button>
               <Button onClick={() => setStep(7)}>Next</Button>
@@ -908,13 +753,9 @@ export default function Wizard({
           </div>
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                    Step 7 · Summary & create                        */}
-        {/* ------------------------------------------------------------------ */}
         {step === 7 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Summary</h2>
-
             <ul className="list-disc pl-5 text-sm">
               <li>
                 <b>Shop ID:</b> {shopId}
@@ -935,7 +776,6 @@ export default function Wizard({
                 <b>Analytics:</b> {analyticsProvider || "none"}
               </li>
             </ul>
-
             {languages.map((l) => (
               <div key={l} className="space-y-2">
                 <label className="flex flex-col gap-1">
@@ -948,7 +788,6 @@ export default function Wizard({
                     placeholder="Home"
                   />
                 </label>
-
                 <label className="flex flex-col gap-1">
                   <span>Description ({l})</span>
                   <Input
@@ -961,7 +800,6 @@ export default function Wizard({
                 </label>
               </div>
             ))}
-
             <label className="flex flex-col gap-1">
               <span>Social image URL</span>
               <Input
@@ -970,11 +808,8 @@ export default function Wizard({
                 placeholder="https://example.com/og.png"
               />
             </label>
-
             {result && <p className="text-sm">{result}</p>}
-
             <WizardPreview style={themeStyle} />
-
             <div className="flex justify-between gap-2">
               <Button variant="outline" onClick={() => setStep(6)}>
                 Back
@@ -986,13 +821,9 @@ export default function Wizard({
           </div>
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                      Step 8 · Import data                            */}
-        {/* ------------------------------------------------------------------ */}
-        {step === 8 && (
+{step === 8 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Import Data</h2>
-
             <label className="flex flex-col gap-1">
               <span>Products CSV</span>
               <Input
@@ -1001,16 +832,13 @@ export default function Wizard({
                 onChange={(e) => setCsvFile(e.target.files?.[0] ?? null)}
               />
             </label>
-
             <Textarea
               label="Categories JSON"
               value={categoriesText}
               onChange={(e) => setCategoriesText(e.target.value)}
               placeholder='["Shoes","Accessories"]'
             />
-
             {importResult && <p className="text-sm">{importResult}</p>}
-
             <div className="flex justify-between gap-2">
               <Button variant="outline" onClick={() => setStep(7)}>
                 Back
@@ -1022,13 +850,9 @@ export default function Wizard({
           </div>
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                      Step 9 · Seed data                              */}
-        {/* ------------------------------------------------------------------ */}
-        {step === 9 && (
+{step === 9 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Seed Data</h2>
-
             <label className="flex flex-col gap-1">
               <span>Product CSV</span>
               <Input
@@ -1036,7 +860,6 @@ export default function Wizard({
                 onChange={(e) => setCsvFile(e.target.files?.[0] ?? null)}
               />
             </label>
-
             <label className="flex flex-col gap-1">
               <span>Categories (comma or newline separated)</span>
               <Input
@@ -1045,11 +868,9 @@ export default function Wizard({
                 placeholder="Shoes, Shirts, Accessories"
               />
             </label>
-
             {seedResult && <p className="text-sm">{seedResult}</p>}
-
             <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(8)}>
+              <Button variant="outline" onClick={() => setStep(7)}>
                 Back
               </Button>
               <Button disabled={seeding} onClick={seed}>
@@ -1059,13 +880,9 @@ export default function Wizard({
           </div>
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                      Step 10 · Hosting                               */}
-        {/* ------------------------------------------------------------------ */}
-        {step === 10 && (
+{step === 10 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Hosting</h2>
-
             <label className="flex flex-col gap-1">
               <span>Custom Domain</span>
               <Input
@@ -1074,9 +891,7 @@ export default function Wizard({
                 placeholder="myshop.example.com"
               />
             </label>
-
             {deployResult && <p className="text-sm">{deployResult}</p>}
-
             {deployInfo?.previewUrl && (
               <p className="text-sm">
                 Preview:{" "}
@@ -1090,21 +905,17 @@ export default function Wizard({
                 </a>
               </p>
             )}
-
             {deployInfo?.instructions && (
               <p className="text-sm">{deployInfo.instructions}</p>
             )}
-
             {deployInfo?.status === "success" && (
               <p className="text-sm text-green-600">Deployment complete</p>
             )}
-
             {deployInfo?.status === "error" && deployInfo.error && (
               <p className="text-sm text-red-600">{deployInfo.error}</p>
             )}
-
             <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(9)}>
+              <Button variant="outline" onClick={() => setStep(7)}>
                 Back
               </Button>
               <Button disabled={deploying} onClick={deploy}>

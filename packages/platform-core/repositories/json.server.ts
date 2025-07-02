@@ -142,6 +142,7 @@ export async function readShop(shop: string): Promise<Shop> {
       if (!parsed.themeTokens || Object.keys(parsed.themeTokens).length === 0) {
         parsed.themeTokens = await loadThemeTokens(parsed.themeId);
       }
+      if (!parsed.navigation) parsed.navigation = [];
       return parsed;
     }
   } catch {
@@ -158,6 +159,7 @@ export async function readShop(shop: string): Promise<Shop> {
     filterMappings: { ...defaultFilterMappings },
     priceOverrides: {},
     localeOverrides: {},
+    navigation: [],
   };
 }
 

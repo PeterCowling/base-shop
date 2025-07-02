@@ -12,15 +12,15 @@ export declare const shopSettingsSchema: z.ZodObject<{
             url: z.ZodOptional<z.ZodString>;
             image: z.ZodOptional<z.ZodString>;
         }, "strip", z.ZodTypeAny, {
-            title?: string;
-            description?: string;
-            image?: string;
             url?: string;
+            title?: string;
+            image?: string;
+            description?: string;
         }, {
-            title?: string;
-            description?: string;
-            image?: string;
             url?: string;
+            title?: string;
+            image?: string;
+            description?: string;
         }>>;
         twitter: z.ZodOptional<z.ZodObject<{
             card: z.ZodOptional<z.ZodString>;
@@ -29,49 +29,49 @@ export declare const shopSettingsSchema: z.ZodObject<{
             image: z.ZodOptional<z.ZodString>;
         }, "strip", z.ZodTypeAny, {
             title?: string;
-            description?: string;
             image?: string;
+            description?: string;
             card?: string;
         }, {
             title?: string;
-            description?: string;
             image?: string;
+            description?: string;
             card?: string;
         }>>;
         structuredData: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
-        canonicalBase?: string;
         title?: string;
-        description?: string;
         image?: string;
+        description?: string;
+        canonicalBase?: string;
         openGraph?: {
-            title?: string;
-            description?: string;
-            image?: string;
             url?: string;
+            title?: string;
+            image?: string;
+            description?: string;
         };
         twitter?: {
             title?: string;
-            description?: string;
             image?: string;
+            description?: string;
             card?: string;
         };
         structuredData?: string;
     }, {
-        canonicalBase?: string;
         title?: string;
-        description?: string;
         image?: string;
+        description?: string;
+        canonicalBase?: string;
         openGraph?: {
-            title?: string;
-            description?: string;
-            image?: string;
             url?: string;
+            title?: string;
+            image?: string;
+            description?: string;
         };
         twitter?: {
             title?: string;
-            description?: string;
             image?: string;
+            description?: string;
             card?: string;
         };
         structuredData?: string;
@@ -92,20 +92,20 @@ export declare const shopSettingsSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     languages?: readonly ("en" | "de" | "it")[];
     seo?: Partial<Record<"en" | "de" | "it", {
-        canonicalBase?: string;
         title?: string;
-        description?: string;
         image?: string;
+        description?: string;
+        canonicalBase?: string;
         openGraph?: {
-            title?: string;
-            description?: string;
-            image?: string;
             url?: string;
+            title?: string;
+            image?: string;
+            description?: string;
         };
         twitter?: {
             title?: string;
-            description?: string;
             image?: string;
+            description?: string;
             card?: string;
         };
         structuredData?: string;
@@ -120,20 +120,20 @@ export declare const shopSettingsSchema: z.ZodObject<{
 }, {
     languages?: readonly ("en" | "de" | "it")[];
     seo?: Partial<Record<"en" | "de" | "it", {
-        canonicalBase?: string;
         title?: string;
-        description?: string;
         image?: string;
+        description?: string;
+        canonicalBase?: string;
         openGraph?: {
-            title?: string;
-            description?: string;
-            image?: string;
             url?: string;
+            title?: string;
+            image?: string;
+            description?: string;
         };
         twitter?: {
             title?: string;
-            description?: string;
             image?: string;
+            description?: string;
             card?: string;
         };
         structuredData?: string;

@@ -12,9 +12,9 @@ export declare const rentalOrderSchema: z.ZodObject<{
     damageFee: z.ZodOptional<z.ZodNumber>;
 }, "strip", z.ZodTypeAny, {
     id?: string;
+    deposit?: number;
     sessionId?: string;
     shop?: string;
-    deposit?: number;
     expectedReturnDate?: string;
     startedAt?: string;
     returnedAt?: string;
@@ -22,9 +22,9 @@ export declare const rentalOrderSchema: z.ZodObject<{
     damageFee?: number;
 }, {
     id?: string;
+    deposit?: number;
     sessionId?: string;
     shop?: string;
-    deposit?: number;
     expectedReturnDate?: string;
     startedAt?: string;
     returnedAt?: string;

@@ -37,8 +37,11 @@ export declare const skuSchema: z.ZodObject<{
     description: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     id?: string;
-    slug?: string;
     title?: string;
+    image?: string;
+    description?: string;
+    sizes?: string[];
+    slug?: string;
     price?: number;
     deposit?: number;
     forSale?: boolean;
@@ -50,13 +53,13 @@ export declare const skuSchema: z.ZodObject<{
         from?: string;
         to?: string;
     }[];
-    image?: string;
-    sizes?: string[];
-    description?: string;
 }, {
     id?: string;
-    slug?: string;
     title?: string;
+    image?: string;
+    description?: string;
+    sizes?: string[];
+    slug?: string;
     price?: number;
     deposit?: number;
     forSale?: boolean;
@@ -68,9 +71,6 @@ export declare const skuSchema: z.ZodObject<{
         from?: string;
         to?: string;
     }[];
-    image?: string;
-    sizes?: string[];
-    description?: string;
 }>;
 export type SKU = z.infer<typeof skuSchema>;
 export type Translated<T extends string = string> = Record<Locale, T>;

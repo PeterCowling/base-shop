@@ -27,23 +27,38 @@ describe("Shop wizard", () => {
     cy.contains("button", "Next").click();
 
     // Step 3 - submit
-    cy.contains("button", "Create Shop").click();
+    // Step 3 - summary and page info
+    cy.get('input[placeholder="Home"]').clear().type("My Title");
+    cy.get('input[placeholder="Page description"]').type("My description");
+    cy.get('input[placeholder="https://example.com/og.png"]').type(
+      "https://example.com/img.png"
+    );
 
     cy.wait("@createShop")
       .its("request.body")
       .then((body: any) => {
         expect(body.id).to.equal(shopId);
-        expect(body.payment).to.deep.equal(["stripe"]);
-        expect(body.shipping).to.deep.equal(["dhl"]);
-        expect(body.template).to.be.a("string");
-        expect(body.theme).to.be.a("string");
+        expect(body.options.payment).to.deep.equal(["stripe"]);
+        expect(body.options.shipping).to.deep.equal(["dhl"]);
+        expect(body.options.template).to.be.a("string");
+        expect(body.options.theme).to.be.a("string");
+        expect(body.options.pageTitle).to.equal("My Title");
+        expect(body.options.pageDescription).to.equal("My description");
+        expect(body.options.socialImage).to.equal(
+          "https://example.com/img.png"
+        );
       });
 
     cy.contains("Shop created successfully");
 
-    cy.readFile(`data/shops/${shopId}/shop.json`)
-      .its("id")
-      .should("eq", shopId);
+    cy.readFile(`data/shops/${shopId}/shop.json`).then((json) => {
+      expect(json.id).to.equal(shopId);
+      expect(json.homeTitle).to.equal("My Title");
+    });
+
+    cy.readFile(`data/shops/${shopId}/pages.json`) // ensure page metadata saved
+      .its("0.seo.title")
+      .should("eq", "My Title");
 
     // sign out to reset auth state
     cy.contains("Sign out").click();

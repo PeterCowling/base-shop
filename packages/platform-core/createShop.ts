@@ -22,6 +22,9 @@ export interface CreateShopOptions {
   template?: string;
   payment?: string[];
   shipping?: string[];
+  pageTitle?: string;
+  pageDescription?: string;
+  socialImage?: string;
 }
 
 interface PackageJSON {
@@ -45,6 +48,9 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     template: opts.template ?? "template-app",
     payment: opts.payment ?? [],
     shipping: opts.shipping ?? [],
+    pageTitle: opts.pageTitle ?? "Home",
+    pageDescription: opts.pageDescription ?? "",
+    socialImage: opts.socialImage ?? "",
   };
 
   function loadBaseTokens(): Record<string, string> {
@@ -157,6 +163,9 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
         shippingProviders: options.shipping,
         priceOverrides: {},
         localeOverrides: {},
+        homeTitle: options.pageTitle,
+        homeDescription: options.pageDescription,
+        homeImage: options.socialImage,
       },
       null,
       2
@@ -195,6 +204,23 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
 
   deployShop(id);
 }
+
+const homePage = {
+  id: ulid(),
+  slug: "home",
+  status: "draft" as const,
+  components: [],
+  seo: {
+    title: options.pageTitle,
+    description: options.pageDescription,
+    image: options.socialImage,
+  },
+  createdAt: now,
+  updatedAt: now,
+  createdBy: "system",
+};
+
+writeFileSync(join(newData, "pages.json"), JSON.stringify([homePage], null, 2));
 
 export function deployShop(id: string): void {
   const newApp = join("apps", id);

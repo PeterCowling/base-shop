@@ -40,6 +40,9 @@ export interface Shop {
   priceOverrides: Partial<Record<Locale, number>>;
   /** Optional redirect overrides for locale detection */
   localeOverrides: Record<string, Locale>;
+  homeTitle?: string;
+  homeDescription?: string;
+  homeImage?: string;
 }
 
 export const shopSchema = z.object({
@@ -55,4 +58,7 @@ export const shopSchema = z.object({
   priceOverrides: z.record(localeSchema, z.number()).default({}),
   /** Optional redirect overrides for locale detection */
   localeOverrides: z.record(z.string(), localeSchema).default({}),
+  homeTitle: z.string().optional(),
+  homeDescription: z.string().optional(),
+  homeImage: z.string().optional(),
 });

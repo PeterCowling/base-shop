@@ -59,6 +59,9 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   const [domain, setDomain] = useState("");
   const [deploying, setDeploying] = useState(false);
   const [deployResult, setDeployResult] = useState<string | null>(null);
+  const [pageTitle, setPageTitle] = useState("Home");
+  const [pageDescription, setPageDescription] = useState("");
+  const [socialImage, setSocialImage] = useState("");
 
   useEffect(() => {
     loadThemeTokens(theme).then(setThemeVars);
@@ -84,6 +87,9 @@ export default function Wizard({ themes, templates, disabled }: Props) {
           theme,
           payment,
           shipping,
+          pageTitle,
+          pageDescription,
+          socialImage,
         }),
       });
       json = await res.json();
@@ -286,6 +292,30 @@ export default function Wizard({ themes, templates, disabled }: Props) {
                 <b>Shipping:</b> {shipping.join(", ") || "none"}
               </li>
             </ul>
+            <label className="flex flex-col gap-1">
+              <span>Home page title</span>
+              <Input
+                value={pageTitle}
+                onChange={(e) => setPageTitle(e.target.value)}
+                placeholder="Home"
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <span>Description</span>
+              <Input
+                value={pageDescription}
+                onChange={(e) => setPageDescription(e.target.value)}
+                placeholder="Page description"
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <span>Social image URL</span>
+              <Input
+                value={socialImage}
+                onChange={(e) => setSocialImage(e.target.value)}
+                placeholder="https://example.com/og.png"
+              />
+            </label>
             {result && <p className="text-sm">{result}</p>}
             <div className="flex justify-between gap-2">
               <Button variant="outline" onClick={() => setStep(3)}>

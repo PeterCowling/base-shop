@@ -45,6 +45,13 @@ const baseSchema = z.object({
   status: z.enum(["draft", "published"]).default("draft"),
   title: z.string().min(1, "Required"),
   description: z.string().optional().default(""),
+  image: z
+    .string()
+    .optional()
+    .default("")
+    .refine((v) => !v || /^https?:\/\/\S+$/.test(v), {
+      message: "Invalid image URL",
+    }),
   components: componentsField,
 });
 
@@ -79,7 +86,11 @@ export async function createPage(
     slug: data.slug,
     status: data.status,
     components: data.components,
-    seo: { title: data.title, description: data.description },
+    seo: {
+      title: data.title,
+      description: data.description,
+      image: data.image,
+    },
     createdAt: now,
     updatedAt: now,
     createdBy: session.user.email ?? "unknown",
@@ -116,7 +127,11 @@ export async function updatePage(
     slug: data.slug,
     status: data.status,
     components: data.components,
-    seo: { title: data.title, description: data.description },
+    seo: {
+      title: data.title,
+      description: data.description,
+      image: data.image,
+    },
   };
 
   try {

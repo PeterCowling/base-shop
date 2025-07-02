@@ -2,8 +2,11 @@
 "use server";
 
 import { authOptions } from "@cms/auth/options";
-import { deployShop } from "@platform-core/createShop";
+import { deployShop, type DeployShopResult } from "@platform-core/createShop";
 import { getServerSession } from "next-auth";
+import fsSync from "node:fs";
+import fs from "node:fs/promises";
+import path from "node:path";
 
 async function ensureAuthorized(): Promise<void> {
   const session = await getServerSession(authOptions);
@@ -12,7 +15,40 @@ async function ensureAuthorized(): Promise<void> {
   }
 }
 
-export async function deployShopHosting(id: string): Promise<void> {
+function resolveRepoRoot(): string {
+  let dir = process.cwd();
+  while (true) {
+    if (fsSync.existsSync(path.join(dir, "pnpm-workspace.yaml"))) return dir;
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
+  }
+  return process.cwd();
+}
+
+export async function deployShopHosting(
+  id: string,
+  domain?: string
+): Promise<DeployShopResult> {
   await ensureAuthorized();
-  await deployShop(id);
+  return deployShop(id, domain);
+}
+
+export async function getDeployStatus(
+  id: string
+): Promise<DeployShopResult | null> {
+  await ensureAuthorized();
+  try {
+    const file = path.join(
+      resolveRepoRoot(),
+      "data",
+      "shops",
+      id,
+      "deploy.json"
+    );
+    const content = await fs.readFile(file, "utf8");
+    return JSON.parse(content) as DeployShopResult;
+  } catch {
+    return null;
+  }
 }

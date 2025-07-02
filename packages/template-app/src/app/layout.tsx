@@ -2,6 +2,7 @@
 import { CartProvider } from "@/contexts/CartContext";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import AnalyticsScripts from "./AnalyticsScripts";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -27,6 +28,7 @@ export default function RootLayout({
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased">
         {/* Global providers go here */}
+        <AnalyticsScripts />
         <CartProvider>{children}</CartProvider>
       </body>
     </html>

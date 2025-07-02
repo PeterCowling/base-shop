@@ -29,6 +29,7 @@ interface Props {
   onSave: (fd: FormData) => Promise<unknown>;
   onPublish: (fd: FormData) => Promise<unknown>;
   onChange?: (components: PageComponent[]) => void;
+  style?: React.CSSProperties;
 }
 
 type Action =
@@ -138,6 +139,7 @@ export default memo(function PageBuilder({
   onSave,
   onPublish,
   onChange,
+  style,
 }: Props) {
   const [components, dispatch] = useReducer(reducer, page.components);
 
@@ -183,7 +185,7 @@ export default memo(function PageBuilder({
   formData.append("components", JSON.stringify(components));
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4" style={style}>
       <aside className="w-48 shrink-0">
         <Palette />
       </aside>

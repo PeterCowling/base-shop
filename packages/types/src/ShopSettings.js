@@ -7,6 +7,12 @@ var Shop_1 = require("./Shop");
 exports.shopSettingsSchema = zod_1.z.object({
     languages: zod_1.z.array(Product_1.localeSchema).readonly(),
     seo: zod_1.z.record(Product_1.localeSchema, Shop_1.shopSeoFieldsSchema),
+    analytics: zod_1.z
+        .object({
+        provider: zod_1.z.string(),
+        id: zod_1.z.string().optional(),
+    })
+        .optional(),
     freezeTranslations: zod_1.z.boolean().optional(),
     updatedAt: zod_1.z.string(),
     updatedBy: zod_1.z.string(),

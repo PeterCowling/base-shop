@@ -61,6 +61,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     if (Array.isArray(parsed.languages))
       return {
         freezeTranslations: false,
+        ...(parsed.analytics ? { analytics: parsed.analytics } : {}),
         ...parsed,
       };
   } catch {
@@ -69,6 +70,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
   return {
     languages: DEFAULT_LANGUAGES,
     seo: {},
+    analytics: undefined,
     freezeTranslations: false,
     updatedAt: "",
     updatedBy: "",

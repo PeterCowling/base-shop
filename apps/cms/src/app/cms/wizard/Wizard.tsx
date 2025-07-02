@@ -12,10 +12,38 @@ import {
   SelectValue,
 } from "@/components/atoms-shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
+import HeroBanner from "@/components/home/HeroBanner";
+import ReviewsCarousel from "@/components/home/ReviewsCarousel";
+import { ValueProps } from "@/components/home/ValueProps";
+import { Footer, Header, SideNav } from "@/components/organisms";
+import { AppShell } from "@/components/templates/AppShell";
+import TranslationsProvider from "@/i18n/Translations";
+import enMessages from "@i18n/en.json";
 import { tokens as baseTokensSrc } from "@themes/base/tokens";
 import type { Page, PageComponent } from "@types";
-import Link from "next/link";
 import { useEffect, useState } from "react";
+
+function WizardPreview({
+  style,
+}: {
+  style: React.CSSProperties;
+}): React.JSX.Element {
+  return (
+    <div style={style} className="rounded border">
+      <TranslationsProvider messages={enMessages}>
+        <AppShell
+          header={<Header locale="en" />}
+          sideNav={<SideNav />}
+          footer={<Footer />}
+        >
+          <HeroBanner />
+          <ValueProps />
+          <ReviewsCarousel />
+        </AppShell>
+      </TranslationsProvider>
+    </div>
+  );
+}
 
 interface Props {
   themes: string[];
@@ -65,6 +93,8 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   const [pageDescription, setPageDescription] = useState("");
   const [socialImage, setSocialImage] = useState("");
   const [components, setComponents] = useState<PageComponent[]>([]);
+  const [analyticsProvider, setAnalyticsProvider] = useState("");
+  const [analyticsId, setAnalyticsId] = useState("");
   const [pages, setPages] = useState<
     {
       slug: string;
@@ -84,6 +114,58 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   useEffect(() => {
     loadThemeTokens(theme).then(setThemeVars);
   }, [theme]);
+
+  function hslToHex(hsl: string): string {
+    const [h, s, l] = hsl
+      .split(" ")
+      .map((p, i) => (i === 0 ? parseFloat(p) : parseFloat(p) / 100));
+    const a = s * Math.min(l, 1 - l);
+    const f = (n: number) => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color)
+        .toString(16)
+        .padStart(2, "0");
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+  }
+
+  function hexToHsl(hex: string): string {
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+    const max = Math.max(r, g, b),
+      min = Math.min(r, g, b);
+    let h = 0,
+      s = 0,
+      l = (max + min) / 2;
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        default:
+          h = (r - g) / d + 4;
+      }
+      h *= 60;
+    }
+    return `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
+  }
+
+  const sansFonts = [
+    '"Geist Sans", system-ui, sans-serif',
+    "Arial, sans-serif",
+    "ui-sans-serif, system-ui",
+  ];
+  const monoFonts = [
+    '"Geist Mono", ui-monospace, monospace',
+    '"Courier New", monospace',
+  ];
 
   function toggle(list: string[], value: string): string[] {
     return list.includes(value)
@@ -105,6 +187,9 @@ export default function Wizard({ themes, templates, disabled }: Props) {
           theme,
           payment,
           shipping,
+          analytics: analyticsProvider
+            ? { provider: analyticsProvider, id: analyticsId }
+            : undefined,
           pageTitle,
           pageDescription,
           socialImage,
@@ -204,10 +289,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
                 ))}
               </SelectContent>
             </Select>
-            <div className="rounded border p-4">
-              <p className="text-primary">Preview text</p>
-              <p className="text-muted">Background uses theme tokens</p>
-            </div>
+            <WizardPreview style={themeStyle} />
             <div className="flex justify-between">
               <Button variant="outline" onClick={() => setStep(0)}>
                 Back
@@ -221,22 +303,80 @@ export default function Wizard({ themes, templates, disabled }: Props) {
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Customize Tokens</h2>
             <div className="max-h-64 space-y-2 overflow-y-auto rounded border p-2">
-              {Object.entries(themeVars).map(([k, v]) => (
-                <label key={k} className="flex items-center gap-2 text-sm">
-                  <span className="w-40 flex-shrink-0">{k}</span>
-                  <Input
-                    value={v}
-                    onChange={(e) =>
-                      setThemeVars((tv) => ({ ...tv, [k]: e.target.value }))
-                    }
-                  />
-                </label>
-              ))}
+              {Object.entries(themeVars).map(([k, v]) => {
+                if (k.startsWith("--color")) {
+                  return (
+                    <label key={k} className="flex items-center gap-2 text-sm">
+                      <span className="w-40 flex-shrink-0">{k}</span>
+                      <input
+                        type="color"
+                        value={hslToHex(v)}
+                        onChange={(e) =>
+                          setThemeVars((tv) => ({
+                            ...tv,
+                            [k]: hexToHsl(e.target.value),
+                          }))
+                        }
+                      />
+                    </label>
+                  );
+                }
+                if (k.startsWith("--font")) {
+                  const options = k.includes("mono") ? monoFonts : sansFonts;
+                  return (
+                    <label key={k} className="flex items-center gap-2 text-sm">
+                      <span className="w-40 flex-shrink-0">{k}</span>
+                      <select
+                        className="flex-1 rounded border p-1"
+                        value={v}
+                        onChange={(e) =>
+                          setThemeVars((tv) => ({ ...tv, [k]: e.target.value }))
+                        }
+                      >
+                        {options.map((o) => (
+                          <option key={o} value={o} style={{ fontFamily: o }}>
+                            {o}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  );
+                }
+                if (/px$/.test(v)) {
+                  const num = parseInt(v, 10);
+                  return (
+                    <label key={k} className="flex items-center gap-2 text-sm">
+                      <span className="w-40 flex-shrink-0">{k}</span>
+                      <input
+                        type="range"
+                        min={0}
+                        max={64}
+                        value={num}
+                        onChange={(e) =>
+                          setThemeVars((tv) => ({
+                            ...tv,
+                            [k]: `${e.target.value}px`,
+                          }))
+                        }
+                      />
+                      <span className="w-10 text-right">{num}px</span>
+                    </label>
+                  );
+                }
+                return (
+                  <label key={k} className="flex items-center gap-2 text-sm">
+                    <span className="w-40 flex-shrink-0">{k}</span>
+                    <Input
+                      value={v}
+                      onChange={(e) =>
+                        setThemeVars((tv) => ({ ...tv, [k]: e.target.value }))
+                      }
+                    />
+                  </label>
+                );
+              })}
             </div>
-            <div className="rounded border p-4">
-              <p className="text-primary">Preview text</p>
-              <p className="text-muted">Background uses theme tokens</p>
-            </div>
+            <WizardPreview style={themeStyle} />
             <div className="flex justify-between">
               <Button variant="outline" onClick={() => setStep(1)}>
                 Back
@@ -283,6 +423,29 @@ export default function Wizard({ themes, templates, disabled }: Props) {
                 UPS
               </label>
             </div>
+            <div>
+              <p className="font-medium">Analytics</p>
+              <Select
+                value={analyticsProvider}
+                onValueChange={setAnalyticsProvider}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select provider" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">None</SelectItem>
+                  <SelectItem value="ga">Google Analytics</SelectItem>
+                </SelectContent>
+              </Select>
+              {analyticsProvider === "ga" && (
+                <Input
+                  className="mt-2"
+                  value={analyticsId}
+                  onChange={(e) => setAnalyticsId(e.target.value)}
+                  placeholder="Measurement ID"
+                />
+              )}
+            </div>
             <div className="flex justify-between">
               <Button variant="outline" onClick={() => setStep(2)}>
                 Back
@@ -311,6 +474,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
               onSave={async () => {}}
               onPublish={async () => {}}
               onChange={setComponents}
+              style={themeStyle}
             />
             <div className="flex justify-between">
               <Button variant="outline" onClick={() => setStep(3)}>
@@ -377,6 +541,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
                   onSave={async () => {}}
                   onPublish={async () => {}}
                   onChange={setNewComponents}
+                  style={themeStyle}
                 />
                 <div className="flex justify-between">
                   <Button variant="outline" onClick={() => setAdding(false)}>
@@ -438,6 +603,9 @@ export default function Wizard({ themes, templates, disabled }: Props) {
               <li>
                 <b>Shipping:</b> {shipping.join(", ") || "none"}
               </li>
+              <li>
+                <b>Analytics:</b> {analyticsProvider || "none"}
+              </li>
             </ul>
             <label className="flex flex-col gap-1">
               <span>Home page title</span>
@@ -464,22 +632,10 @@ export default function Wizard({ themes, templates, disabled }: Props) {
               />
             </label>
             {result && <p className="text-sm">{result}</p>}
+            <WizardPreview style={themeStyle} />
             <div className="flex justify-between gap-2">
               <Button variant="outline" onClick={() => setStep(5)}>
                 Back
-              </Button>
-              <Button variant="outline" asChild>
-                <Link
-                  href={`/cms/wizard/preview?${new URLSearchParams({
-                    template,
-                    theme,
-                    payment: payment.join(","),
-                    shipping: shipping.join(","),
-                  }).toString()}`}
-                  target="_blank"
-                >
-                  Preview
-                </Link>
               </Button>
               <Button disabled={creating} onClick={submit}>
                 {creating ? "Creating…" : "Create Shop"}

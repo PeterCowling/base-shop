@@ -26,6 +26,10 @@ export interface CreateShopOptions {
   pageTitle?: string;
   pageDescription?: string;
   socialImage?: string;
+  analytics?: {
+    provider: string;
+    id?: string;
+  };
   pages?: {
     slug: string;
     title: string;
@@ -59,6 +63,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     pageTitle: opts.pageTitle ?? "Home",
     pageDescription: opts.pageDescription ?? "",
     socialImage: opts.socialImage ?? "",
+    analytics: opts.analytics,
     pages: opts.pages ?? [],
   };
 
@@ -149,7 +154,11 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
 
   writeFileSync(
     join(newData, "settings.json"),
-    JSON.stringify({ languages: [...LOCALES] }, null, 2)
+    JSON.stringify(
+      { languages: [...LOCALES], analytics: options.analytics },
+      null,
+      2
+    )
   );
 
   const themeTokens = {

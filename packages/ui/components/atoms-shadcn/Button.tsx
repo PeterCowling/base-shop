@@ -1,5 +1,6 @@
 // packages/ui/components/atoms-shim/Buttons.tsx
 
+import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import type { ButtonProps as BaseButtonProps } from "../ui/button";
@@ -10,20 +11,22 @@ export interface ButtonProps extends Omit<BaseButtonProps, "variant"> {
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = "default", className, ...props }, ref) => {
+  ({ variant = "default", className, asChild = false, ...props }, ref) => {
+    const Comp = asChild ? Slot : "button";
     if (variant === "destructive") {
       const base =
         "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 px-4 py-2";
       const styles =
         "bg-destructive text-destructive-foreground hover:bg-destructive/90";
       return (
-        <button ref={ref} className={cn(base, styles, className)} {...props} />
+        <Comp ref={ref} className={cn(base, styles, className)} {...props} />
       );
     }
     return (
       <BaseButton
         ref={ref}
         variant={variant as BaseButtonProps["variant"]}
+        asChild={asChild}
         className={className}
         {...props}
       />

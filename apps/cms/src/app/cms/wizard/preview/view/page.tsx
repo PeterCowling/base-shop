@@ -33,8 +33,9 @@ export default async function PreviewView({
 }: {
   searchParams: Record<string, string | string[]>;
 }) {
-  if (!draftMode().isEnabled) {
-    draftMode().enable();
+  const dm = await draftMode();
+  if (!dm.isEnabled) {
+    dm.enable();
   }
   const theme =
     typeof searchParams.theme === "string" ? searchParams.theme : "base";

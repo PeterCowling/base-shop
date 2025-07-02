@@ -1,4 +1,5 @@
 // packages/ui/components/ui/button.tsx
+import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
@@ -10,13 +11,14 @@ type ButtonVariant = "default" | "outline" | "ghost";
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
+  asChild?: boolean;
 }
 
 /* -------------------------------------------------------------------------- */
 /*  Component                                                                 */
 /* -------------------------------------------------------------------------- */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", ...props }, ref) => {
+  ({ className, variant = "default", asChild = false, ...props }, ref) => {
     const base =
       "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
 
@@ -28,8 +30,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ghost: "hover:bg-accent hover:text-accent-foreground",
     };
 
+    const Comp = asChild ? Slot : "button";
+
     return (
-      <button
+      <Comp
         ref={ref}
         className={cn(base, variants[variant], className)}
         {...props}

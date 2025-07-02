@@ -89,6 +89,9 @@ export interface Shop {
     priceOverrides: Partial<Record<Locale, number>>;
     /** Optional redirect overrides for locale detection */
     localeOverrides: Record<string, Locale>;
+    homeTitle?: string;
+    homeDescription?: string;
+    homeImage?: string;
 }
 export declare const shopSchema: z.ZodObject<{
     id: z.ZodString;
@@ -103,6 +106,9 @@ export declare const shopSchema: z.ZodObject<{
     priceOverrides: z.ZodDefault<z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodNumber>>;
     /** Optional redirect overrides for locale detection */
     localeOverrides: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodEnum<["en", "de", "it"]>>>;
+    homeTitle: z.ZodOptional<z.ZodString>;
+    homeDescription: z.ZodOptional<z.ZodString>;
+    homeImage: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     id?: string;
     name?: string;
@@ -112,6 +118,9 @@ export declare const shopSchema: z.ZodObject<{
     filterMappings?: Record<string, string>;
     priceOverrides?: Partial<Record<"en" | "de" | "it", number>>;
     localeOverrides?: Record<string, "en" | "de" | "it">;
+    homeTitle?: string;
+    homeDescription?: string;
+    homeImage?: string;
 }, {
     id?: string;
     name?: string;
@@ -121,5 +130,8 @@ export declare const shopSchema: z.ZodObject<{
     filterMappings?: Record<string, string>;
     priceOverrides?: Partial<Record<"en" | "de" | "it", number>>;
     localeOverrides?: Record<string, "en" | "de" | "it">;
+    homeTitle?: string;
+    homeDescription?: string;
+    homeImage?: string;
 }>;
 //# sourceMappingURL=Shop.d.ts.map

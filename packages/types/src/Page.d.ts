@@ -2,6 +2,7 @@ export type PageStatus = "draft" | "published";
 export interface SeoMeta {
     title: string;
     description?: string;
+    image?: string;
 }
 export interface PageComponentBase {
     id: string;
@@ -30,3 +31,4 @@ export interface Page {
     updatedAt: string;
     createdBy: string;
 }
+//# sourceMappingURL=Page.d.ts.map

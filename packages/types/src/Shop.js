@@ -39,4 +39,7 @@ exports.shopSchema = zod_1.z.object({
     priceOverrides: zod_1.z.record(Product_1.localeSchema, zod_1.z.number()).default({}),
     /** Optional redirect overrides for locale detection */
     localeOverrides: zod_1.z.record(zod_1.z.string(), Product_1.localeSchema).default({}),
+    homeTitle: zod_1.z.string().optional(),
+    homeDescription: zod_1.z.string().optional(),
+    homeImage: zod_1.z.string().optional(),
 });

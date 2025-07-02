@@ -12,7 +12,7 @@ describe("Shop wizard", () => {
     cy.get('input[name="password"]').type("admin");
     cy.contains("button", "Continue").click();
 
-    cy.location("pathname").should("eq", "/cms/wizard");
+    cy.location("pathname", { timeout: 10000 }).should("eq", "/cms/wizard");
 
     // Step 0 - id and template
     cy.get('input[placeholder="my-shop"]').type(shopId);

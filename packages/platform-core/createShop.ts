@@ -202,25 +202,28 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     JSON.stringify([sampleProduct], null, 2)
   );
 
+  const homePage = {
+    id: ulid(),
+    slug: "home",
+    status: "draft" as const,
+    components: [],
+    seo: {
+      title: options.pageTitle,
+      description: options.pageDescription,
+      image: options.socialImage,
+    },
+    createdAt: now,
+    updatedAt: now,
+    createdBy: "system",
+  } as const;
+
+  writeFileSync(
+    join(newData, "pages.json"),
+    JSON.stringify([homePage], null, 2)
+  );
+
   deployShop(id);
 }
-
-const homePage = {
-  id: ulid(),
-  slug: "home",
-  status: "draft" as const,
-  components: [],
-  seo: {
-    title: options.pageTitle,
-    description: options.pageDescription,
-    image: options.socialImage,
-  },
-  createdAt: now,
-  updatedAt: now,
-  createdBy: "system",
-};
-
-writeFileSync(join(newData, "pages.json"), JSON.stringify([homePage], null, 2));
 
 export function deployShop(id: string): void {
   const newApp = join("apps", id);

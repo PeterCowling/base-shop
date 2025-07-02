@@ -132,10 +132,8 @@ export async function updateSeo(
     twitter: twitterCard ? { card: twitterCard } : undefined,
   };
   const updated: ShopSettings = {
-    languages: current.languages,
+    ...current,
     seo,
-    updatedAt: current.updatedAt,
-    updatedBy: current.updatedBy,
   };
   await saveShopSettings(shop, updated);
 
@@ -151,6 +149,7 @@ export async function revertSeo(shop: string, timestamp: string) {
   let state: ShopSettings = {
     languages: [],
     seo: {},
+    freezeTranslations: false,
     updatedAt: "",
     updatedBy: "",
   };
@@ -159,4 +158,12 @@ export async function revertSeo(shop: string, timestamp: string) {
   }
   await saveShopSettings(shop, state);
   return state;
+}
+
+export async function setFreezeTranslations(shop: string, freeze: boolean) {
+  await ensureAuthorized();
+  const current = await getShopSettings(shop);
+  const updated: ShopSettings = { ...current, freezeTranslations: freeze };
+  await saveShopSettings(shop, updated);
+  return updated;
 }

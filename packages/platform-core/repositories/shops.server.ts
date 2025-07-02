@@ -58,13 +58,18 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
   try {
     const buf = await fs.readFile(settingsPath(shop), "utf8");
     const parsed = JSON.parse(buf) as ShopSettings;
-    if (Array.isArray(parsed.languages)) return parsed;
+    if (Array.isArray(parsed.languages))
+      return {
+        freezeTranslations: false,
+        ...parsed,
+      };
   } catch {
     // ignore
   }
   return {
     languages: DEFAULT_LANGUAGES,
     seo: {},
+    freezeTranslations: false,
     updatedAt: "",
     updatedBy: "",
   };

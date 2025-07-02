@@ -21,11 +21,17 @@ export default async function SeoSettingsPage({
   const settings = await getSettings(shop);
   const languages = settings.languages;
   const seo = settings.seo ?? {};
+  const freeze = settings.freezeTranslations ?? false;
 
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">SEO – {shop}</h2>
-      <SeoEditor shop={shop} languages={languages} initialSeo={seo} />
+      <SeoEditor
+        shop={shop}
+        languages={languages}
+        initialSeo={seo}
+        initialFreeze={freeze}
+      />
     </div>
   );
 }

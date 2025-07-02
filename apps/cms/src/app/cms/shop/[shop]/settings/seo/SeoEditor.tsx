@@ -1,6 +1,6 @@
 "use client";
 import { Button, Input, Textarea } from "@/components/atoms-shadcn";
-import { updateSeo } from "@cms/actions/shops.server";
+import { setFreezeTranslations, updateSeo } from "@cms/actions/shops.server";
 import type { Locale } from "@types";
 import { ChangeEvent, FormEvent, useState } from "react";
 
@@ -17,9 +17,15 @@ interface Props {
   shop: string;
   languages: readonly Locale[];
   initialSeo: Partial<Record<string, SeoData>>;
+  initialFreeze?: boolean;
 }
 
-export default function SeoEditor({ shop, languages, initialSeo }: Props) {
+export default function SeoEditor({
+  shop,
+  languages,
+  initialSeo,
+  initialFreeze = false,
+}: Props) {
   const [locale, setLocale] = useState<Locale>(languages[0]);
   const [title, setTitle] = useState(initialSeo[locale]?.title ?? "");
   const [description, setDescription] = useState(
@@ -36,18 +42,27 @@ export default function SeoEditor({ shop, languages, initialSeo }: Props) {
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [warnings, setWarnings] = useState<string[]>([]);
+  const [freeze, setFreeze] = useState(initialFreeze);
 
   const handleLocaleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const l = e.target.value as Locale;
     setLocale(l);
-    setTitle(initialSeo[l]?.title ?? "");
-    setDescription(initialSeo[l]?.description ?? "");
-    setImage(initialSeo[l]?.image ?? "");
-    setCanonicalBase(initialSeo[l]?.canonicalBase ?? "");
-    setOgUrl(initialSeo[l]?.ogUrl ?? "");
-    setTwitterCard(initialSeo[l]?.twitterCard ?? "");
+    if (!freeze) {
+      setTitle(initialSeo[l]?.title ?? "");
+      setDescription(initialSeo[l]?.description ?? "");
+      setImage(initialSeo[l]?.image ?? "");
+      setCanonicalBase(initialSeo[l]?.canonicalBase ?? "");
+      setOgUrl(initialSeo[l]?.ogUrl ?? "");
+      setTwitterCard(initialSeo[l]?.twitterCard ?? "");
+    }
     setErrors({});
     setWarnings([]);
+  };
+
+  const handleFreezeChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setFreeze(checked);
+    await setFreezeTranslations(shop, checked);
   };
 
   const onSubmit = async (e: FormEvent) => {
@@ -86,6 +101,10 @@ export default function SeoEditor({ shop, languages, initialSeo }: Props) {
             </option>
           ))}
         </select>
+      </label>
+      <label className="flex items-center gap-2">
+        <input type="checkbox" checked={freeze} onChange={handleFreezeChange} />
+        <span>Freeze translations</span>
       </label>
       <label className="flex flex-col gap-1">
         <span>Title</span>

@@ -5,7 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@types/google-apps-script@*': npm:@esbuild-plugins/empty@1.0.0
   '@shadcn/ui': 0.0.4
 
 importers:
@@ -30,6 +29,9 @@ importers:
       '@radix-ui/react-popover':
         specifier: ^1.1.14
         version: 1.1.14(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@radix-ui/react-slot':
+        specifier: ^1.2.3
+        version: 1.2.3(@types/react@19.1.8)(react@19.1.0)
       '@sentry/node':
         specifier: ^9.33.0
         version: 9.33.0
@@ -239,6 +241,12 @@ importers:
         specifier: ^4.20.4
         version: 4.21.1(@cloudflare/workers-types@4.20250627.0)
 
+  apps-script:
+    devDependencies:
+      '@types/google-apps-script':
+        specifier: ^1.0.59
+        version: 1.0.99
+
   apps/cms:
     dependencies:
       '@acme/i18n':
@@ -379,6 +387,9 @@ importers:
       '@radix-ui/react-select':
         specifier: ^2.2.5
         version: 2.2.5(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@radix-ui/react-slot':
+        specifier: ^1.2.3
+        version: 1.2.3(@types/react@19.1.8)(react@19.1.0)
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -3181,6 +3192,9 @@ packages:
 
   '@types/fined@1.1.5':
     resolution: {integrity: sha512-2N93vadEGDFhASTIRbizbl4bNqpMOId5zZfj6hHqYZfEzEfO9onnU4Im8xvzo8uudySDveDHBOOSlTWf38ErfQ==}
+
+  '@types/google-apps-script@1.0.99':
+    resolution: {integrity: sha512-JrOXCWxYmY1ePWZXQxegrVMdXS0vuN69AMUfDIvfz5aLZ+El5JcYllwzeXeFC1YoM3lMWtPNGjgeTxlz8jih6w==}
 
   '@types/graceful-fs@4.1.9':
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
@@ -12342,6 +12356,8 @@ snapshots:
   '@types/estree@1.0.8': {}
 
   '@types/fined@1.1.5': {}
+
+  '@types/google-apps-script@1.0.99': {}
 
   '@types/graceful-fs@4.1.9':
     dependencies:

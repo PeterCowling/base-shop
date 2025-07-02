@@ -1,3 +1,4 @@
 {
-  "languages": ["en", "de", "it"]
+  "languages": ["en", "de", "it"],
+  "freezeTranslations": false
 }

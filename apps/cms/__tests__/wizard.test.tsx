@@ -8,10 +8,12 @@ describe("Wizard", () => {
   beforeEach(() => {
     (global.fetch as any) = jest.fn(() => Promise.resolve({ ok: true }));
     Element.prototype.scrollIntoView = jest.fn();
+    localStorage.clear();
   });
 
   afterEach(() => {
     (global.fetch as jest.Mock).mockReset();
+    localStorage.clear();
   });
 
   it("submits after navigating steps", async () => {
@@ -48,6 +50,41 @@ describe("Wizard", () => {
       const root = container.firstChild as HTMLElement;
       expect(root.style.getPropertyValue("--color-primary")).toBe(
         "160 80% 40%"
+      );
+    });
+  });
+
+  it("restores progress after reload", async () => {
+    const { unmount, container } = render(
+      <Wizard themes={themes} templates={templates} />
+    );
+
+    fireEvent.change(screen.getByPlaceholderText("my-shop"), {
+      target: { value: "shop" },
+    });
+    fireEvent.click(screen.getByText("Next"));
+    // select dark theme
+    fireEvent.click(screen.getByRole("combobox"));
+    fireEvent.click(await screen.findByText("dark"));
+
+    await waitFor(() => {
+      const root = container.firstChild as HTMLElement;
+      expect(root.style.getPropertyValue("--color-primary")).toBe(
+        "220 90% 66%"
+      );
+    });
+
+    unmount();
+
+    const { container: c2 } = render(
+      <Wizard themes={themes} templates={templates} />
+    );
+
+    await screen.findByText("Select Theme");
+    await waitFor(() => {
+      const root = c2.firstChild as HTMLElement;
+      expect(root.style.getPropertyValue("--color-primary")).toBe(
+        "220 90% 66%"
       );
     });
   });

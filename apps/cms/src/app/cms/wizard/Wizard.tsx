@@ -153,6 +153,14 @@ function toggle(list: string[], value: string): string[] {
     : [...list, value];
 }
 
+const STORAGE_KEY = "cms-wizard-progress";
+
+export function resetWizardProgress(): void {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                   Wizard                                   */
 /* -------------------------------------------------------------------------- */
@@ -262,8 +270,81 @@ export default function Wizard({
   /* ------------------------------------------------------------------------ */
 
   useEffect(() => {
+    const json = localStorage.getItem(STORAGE_KEY);
+    if (!json) return;
+    try {
+      const data = JSON.parse(json);
+      if (typeof data.step === "number") setStep(data.step);
+      if (typeof data.shopId === "string") setShopId(data.shopId);
+      if (typeof data.template === "string") setTemplate(data.template);
+      if (typeof data.theme === "string") setTheme(data.theme);
+      if (Array.isArray(data.payment)) setPayment(data.payment);
+      if (Array.isArray(data.shipping)) setShipping(data.shipping);
+      if (data.pageTitle) setPageTitle(data.pageTitle);
+      if (data.pageDescription) setPageDescription(data.pageDescription);
+      if (typeof data.socialImage === "string")
+        setSocialImage(data.socialImage);
+      if (Array.isArray(data.components)) setComponents(data.components);
+      if (typeof data.analyticsProvider === "string")
+        setAnalyticsProvider(data.analyticsProvider);
+      if (typeof data.analyticsId === "string")
+        setAnalyticsId(data.analyticsId);
+      if (Array.isArray(data.navItems)) setNavItems(data.navItems);
+      if (Array.isArray(data.pages)) setPages(data.pages);
+      if (typeof data.domain === "string") setDomain(data.domain);
+      if (typeof data.categoriesText === "string")
+        setCategoriesText(data.categoriesText);
+    } catch {
+      // ignore malformed data
+    }
+  }, []);
+
+  useEffect(() => {
     loadThemeTokens(theme).then(setThemeVars);
   }, [theme]);
+
+  useEffect(() => {
+    const data = {
+      step,
+      shopId,
+      template,
+      theme,
+      payment,
+      shipping,
+      pageTitle,
+      pageDescription,
+      socialImage,
+      components,
+      analyticsProvider,
+      analyticsId,
+      navItems,
+      pages,
+      domain,
+      categoriesText,
+    };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch {
+      /* ignore write errors */
+    }
+  }, [
+    step,
+    shopId,
+    template,
+    theme,
+    payment,
+    shipping,
+    pageTitle,
+    pageDescription,
+    socialImage,
+    components,
+    analyticsProvider,
+    analyticsId,
+    navItems,
+    pages,
+    domain,
+    categoriesText,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -304,6 +385,7 @@ export default function Wizard({
       if (res.ok) {
         setResult("Shop created successfully");
         setStep(8);
+        resetWizardProgress();
       } else {
         const { error } = (await res.json()) as { error?: string };
         setResult(error ?? "Failed to create shop");

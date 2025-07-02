@@ -19,6 +19,7 @@ import { Footer, Header, SideNav } from "@/components/organisms";
 import { AppShell } from "@/components/templates/AppShell";
 import TranslationsProvider from "@/i18n/Translations";
 import enMessages from "@i18n/en.json";
+import type { DeployShopResult } from "@platform-core/createShop";
 import { tokens as baseTokensSrc } from "@themes/base/tokens";
 import type { Page, PageComponent } from "@types";
 import { useEffect, useState } from "react";
@@ -89,6 +90,8 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   const [domain, setDomain] = useState("");
   const [deploying, setDeploying] = useState(false);
   const [deployResult, setDeployResult] = useState<string | null>(null);
+  const [deployInfo, setDeployInfo] = useState<DeployShopResult | null>(null);
+  const pollRef = useRef<NodeJS.Timeout | null>(null);
   const [pageTitle, setPageTitle] = useState("Home");
   const [pageDescription, setPageDescription] = useState("");
   const [socialImage, setSocialImage] = useState("");
@@ -114,6 +117,12 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   useEffect(() => {
     loadThemeTokens(theme).then(setThemeVars);
   }, [theme]);
+
+  useEffect(() => {
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, []);
 
   function hslToHex(hsl: string): string {
     const [h, s, l] = hsl
@@ -223,6 +232,8 @@ export default function Wizard({ themes, templates, disabled }: Props) {
       json = await res.json();
       if (res.ok) {
         setDeployResult("Deployment started");
+        setDeployInfo(json as DeployShopResult);
+        startPolling();
       } else {
         setDeployResult("Deployment failed");
       }
@@ -230,6 +241,25 @@ export default function Wizard({ themes, templates, disabled }: Props) {
       setDeployResult(json?.error ?? "Deployment failed");
     }
     setDeploying(false);
+  }
+
+  function startPolling() {
+    if (pollRef.current) clearInterval(pollRef.current);
+    pollRef.current = setInterval(async () => {
+      try {
+        const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
+        const status = (await res.json()) as DeployShopResult & {
+          status?: string;
+        };
+        setDeployInfo(status);
+        if (status.status && status.status !== "pending") {
+          if (pollRef.current) clearInterval(pollRef.current);
+          pollRef.current = null;
+        }
+      } catch {
+        // ignore errors during polling
+      }
+    }, 3000);
   }
 
   const themeStyle = Object.fromEntries(
@@ -656,6 +686,28 @@ export default function Wizard({ themes, templates, disabled }: Props) {
               />
             </label>
             {deployResult && <p className="text-sm">{deployResult}</p>}
+            {deployInfo?.previewUrl && (
+              <p className="text-sm">
+                Preview:{" "}
+                <a
+                  href={deployInfo.previewUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-blue-600 underline"
+                >
+                  {deployInfo.previewUrl}
+                </a>
+              </p>
+            )}
+            {deployInfo?.instructions && (
+              <p className="text-sm">{deployInfo.instructions}</p>
+            )}
+            {deployInfo?.status === "success" && (
+              <p className="text-sm text-green-600">Deployment complete</p>
+            )}
+            {deployInfo?.status === "error" && deployInfo.error && (
+              <p className="text-sm text-red-600">{deployInfo.error}</p>
+            )}
             <div className="flex justify-between gap-2">
               <Button variant="outline" onClick={() => setStep(6)}>
                 Back

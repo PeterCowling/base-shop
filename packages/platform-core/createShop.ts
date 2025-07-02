@@ -254,19 +254,50 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
   deployShop(id);
 }
 
-export function deployShop(id: string): void {
+export interface DeployShopResult {
+  status: "success" | "error";
+  previewUrl: string;
+  instructions?: string;
+  error?: string;
+}
+
+export function deployShop(id: string, domain?: string): DeployShopResult {
   const newApp = join("apps", id);
+  const previewUrl = `https://${id}.pages.dev`;
+  let status: DeployShopResult["status"] = "success";
+  let error: string | undefined;
 
   try {
     const result = spawnSync("npx", ["--yes", "create-cloudflare", newApp], {
       stdio: "inherit",
     });
     if (result.status !== 0) {
-      console.warn("C3 process failed or not available. Skipping.");
+      status = "error";
+      error = "C3 process failed or not available. Skipping.";
     }
-  } catch {
-    console.warn("C3 not available, skipping.");
+  } catch (err) {
+    status = "error";
+    error = (err as Error).message;
   }
+
+  const instructions = domain
+    ? `Add a CNAME record for ${domain} pointing to ${id}.pages.dev`
+    : undefined;
+
+  const resultObj: DeployShopResult = {
+    status,
+    previewUrl,
+    instructions,
+    error,
+  };
+
+  try {
+    const file = join("data", "shops", id, "deploy.json");
+    writeFileSync(file, JSON.stringify(resultObj, null, 2));
+  } catch {
+    // ignore write errors
+  }
+  return resultObj;
 }
 
 export function listThemes(): string[] {

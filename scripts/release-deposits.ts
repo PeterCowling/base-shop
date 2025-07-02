@@ -9,8 +9,10 @@ import { join } from "node:path";
 async function processShop(shop: string): Promise<void> {
   const orders = await readOrders(shop);
   for (const order of orders) {
-    if (order.returnedAt && !order.refundedAt && order.deposit > 0) {
-      const session = await stripe.checkout.sessions.retrieve(order.sessionId, {
+    const deposit = order.deposit ?? 0;
+    const sessionId = order.sessionId;
+    if (order.returnedAt && !order.refundedAt && deposit > 0 && sessionId) {
+      const session = await stripe.checkout.sessions.retrieve(sessionId, {
         expand: ["payment_intent"],
       });
       const pi =
@@ -20,10 +22,10 @@ async function processShop(shop: string): Promise<void> {
       if (!pi) continue;
       await stripe.refunds.create({
         payment_intent: pi,
-        amount: order.deposit * 100,
+        amount: deposit * 100,
       });
-      await markRefunded(shop, order.sessionId);
-      console.log(`refunded deposit for ${order.sessionId} (${shop})`);
+      await markRefunded(shop, sessionId);
+      console.log(`refunded deposit for ${sessionId} (${shop})`);
     }
   }
 }

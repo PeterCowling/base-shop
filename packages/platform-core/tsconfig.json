@@ -4,6 +4,7 @@
 
   "compilerOptions": {
     "allowImportingTsExtensions": false,
+    "noEmit": false,
     "composite": true,
     "outDir": "dist",
     "jsx": "react-jsx",

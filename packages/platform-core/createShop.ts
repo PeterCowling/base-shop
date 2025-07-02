@@ -1,4 +1,5 @@
 // packages/platform-core/createShop.ts
+import type { PageComponent } from "@types";
 import { LOCALES } from "@types";
 import { spawnSync } from "child_process";
 import { randomBytes } from "crypto";
@@ -25,6 +26,13 @@ export interface CreateShopOptions {
   pageTitle?: string;
   pageDescription?: string;
   socialImage?: string;
+  pages?: {
+    slug: string;
+    title: string;
+    description?: string;
+    image?: string;
+    components: PageComponent[];
+  }[];
 }
 
 interface PackageJSON {
@@ -51,6 +59,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     pageTitle: opts.pageTitle ?? "Home",
     pageDescription: opts.pageDescription ?? "",
     socialImage: opts.socialImage ?? "",
+    pages: opts.pages ?? [],
   };
 
   function loadBaseTokens(): Record<string, string> {
@@ -217,9 +226,20 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     createdBy: "system",
   } as const;
 
+  const extraPages = options.pages.map((p) => ({
+    id: ulid(),
+    slug: p.slug,
+    status: "draft" as const,
+    components: p.components,
+    seo: { title: p.title, description: p.description, image: p.image },
+    createdAt: now,
+    updatedAt: now,
+    createdBy: "system",
+  }));
+
   writeFileSync(
     join(newData, "pages.json"),
-    JSON.stringify([homePage], null, 2)
+    JSON.stringify([homePage, ...extraPages], null, 2)
   );
 
   deployShop(id);

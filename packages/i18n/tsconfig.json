@@ -4,6 +4,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "allowImportingTsExtensions": false,
+    "noEmit": false,
     "composite": true, // required for project references
     "outDir": "dist", // emit d.ts → dist
     "jsx": "react-jsx", // enable TSX support

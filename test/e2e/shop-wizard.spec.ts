@@ -21,18 +21,28 @@ describe("Shop wizard", () => {
     // Step 1 - theme selection
     cy.contains("button", "Next").click();
 
-    // Step 2 - options
+    // Step 2 - customize tokens
+    cy.contains("button", "Next").click();
+
+    // Step 3 - options
     cy.contains("label", "Stripe").click();
     cy.contains("label", "DHL").click();
     cy.contains("button", "Next").click();
 
-    // Step 3 - submit
-    // Step 3 - summary and page info
+    // Step 4 - home page
+    cy.contains("button", "Next").click();
+
+    // Step 5 - additional pages
+    cy.contains("button", "Next").click();
+
+    // Step 6 - summary and page info
     cy.get('input[placeholder="Home"]').clear().type("My Title");
     cy.get('input[placeholder="Page description"]').type("My description");
     cy.get('input[placeholder="https://example.com/og.png"]').type(
       "https://example.com/img.png"
     );
+
+    cy.contains("button", "Create Shop").click();
 
     cy.wait("@createShop")
       .its("request.body")

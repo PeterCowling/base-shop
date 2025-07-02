@@ -93,7 +93,8 @@ const Palette = memo(function Palette() {
 function Block({ component }: { component: PageComponent }) {
   const Comp = blockRegistry[component.type];
   if (!Comp) return null;
-  return <Comp />;
+  const { id, type, ...props } = component as any;
+  return <Comp {...props} />;
 }
 
 const MemoBlock = memo(Block);

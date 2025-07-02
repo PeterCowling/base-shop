@@ -65,6 +65,21 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   const [pageDescription, setPageDescription] = useState("");
   const [socialImage, setSocialImage] = useState("");
   const [components, setComponents] = useState<PageComponent[]>([]);
+  const [pages, setPages] = useState<
+    {
+      slug: string;
+      title: string;
+      description: string;
+      image: string;
+      components: PageComponent[];
+    }[]
+  >([]);
+  const [newSlug, setNewSlug] = useState("");
+  const [newTitle, setNewTitle] = useState("");
+  const [newDesc, setNewDesc] = useState("");
+  const [newImage, setNewImage] = useState("");
+  const [newComponents, setNewComponents] = useState<PageComponent[]>([]);
+  const [adding, setAdding] = useState(false);
 
   useEffect(() => {
     loadThemeTokens(theme).then(setThemeVars);
@@ -94,12 +109,13 @@ export default function Wizard({ themes, templates, disabled }: Props) {
           pageDescription,
           socialImage,
           components,
+          pages,
         }),
       });
       json = await res.json();
       if (res.ok) {
         setResult("Shop created successfully");
-        setStep(6);
+        setStep(7);
       } else {
         setResult("Failed to create shop");
       }
@@ -138,7 +154,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   return (
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
-        <Progress step={step} total={7} />
+        <Progress step={step} total={8} />
         {step === 0 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Shop Details</h2>
@@ -307,6 +323,104 @@ export default function Wizard({ themes, templates, disabled }: Props) {
 
         {step === 5 && (
           <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Additional Pages</h2>
+            {pages.length > 0 && (
+              <ul className="list-disc pl-5 text-sm">
+                {pages.map((p) => (
+                  <li key={p.slug}>{p.slug}</li>
+                ))}
+              </ul>
+            )}
+            {adding && (
+              <div className="space-y-2">
+                <label className="flex flex-col gap-1">
+                  <span>Slug</span>
+                  <Input
+                    value={newSlug}
+                    onChange={(e) => setNewSlug(e.target.value)}
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span>Title</span>
+                  <Input
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span>Description</span>
+                  <Input
+                    value={newDesc}
+                    onChange={(e) => setNewDesc(e.target.value)}
+                  />
+                </label>
+                <label className="flex flex-col gap-1">
+                  <span>Image URL</span>
+                  <Input
+                    value={newImage}
+                    onChange={(e) => setNewImage(e.target.value)}
+                  />
+                </label>
+                <PageBuilder
+                  page={
+                    {
+                      id: "",
+                      slug: "",
+                      status: "draft",
+                      components: newComponents,
+                      seo: { title: "", description: "" },
+                      createdAt: "",
+                      updatedAt: "",
+                      createdBy: "",
+                    } as Page
+                  }
+                  onSave={async () => {}}
+                  onPublish={async () => {}}
+                  onChange={setNewComponents}
+                />
+                <div className="flex justify-between">
+                  <Button variant="outline" onClick={() => setAdding(false)}>
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setPages((p) => [
+                        ...p,
+                        {
+                          slug: newSlug,
+                          title: newTitle,
+                          description: newDesc,
+                          image: newImage,
+                          components: newComponents,
+                        },
+                      ]);
+                      setNewSlug("");
+                      setNewTitle("");
+                      setNewDesc("");
+                      setNewImage("");
+                      setNewComponents([]);
+                      setAdding(false);
+                    }}
+                  >
+                    Add Page
+                  </Button>
+                </div>
+              </div>
+            )}
+            {!adding && (
+              <Button onClick={() => setAdding(true)}>Add Page</Button>
+            )}
+            <div className="flex justify-between">
+              <Button variant="outline" onClick={() => setStep(4)}>
+                Back
+              </Button>
+              <Button onClick={() => setStep(6)}>Next</Button>
+            </div>
+          </div>
+        )}
+
+        {step === 6 && (
+          <div className="space-y-4">
             <h2 className="text-xl font-semibold">Summary</h2>
             <ul className="list-disc pl-5 text-sm">
               <li>
@@ -374,7 +488,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
           </div>
         )}
 
-        {step === 6 && (
+        {step === 7 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Hosting</h2>
             <label className="flex flex-col gap-1">
@@ -387,7 +501,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
             </label>
             {deployResult && <p className="text-sm">{deployResult}</p>}
             <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(5)}>
+              <Button variant="outline" onClick={() => setStep(6)}>
                 Back
               </Button>
               <Button disabled={deploying} onClick={deploy}>

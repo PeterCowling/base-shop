@@ -9,6 +9,7 @@ export interface SeoMeta {
 export interface PageComponentBase {
   id: string;
   type: string;
+  [key: string]: unknown;
 }
 
 export interface HeroBannerComponent extends PageComponentBase {
@@ -27,11 +28,28 @@ export interface ProductGridComponent extends PageComponentBase {
   type: "ProductGrid";
 }
 
+export interface GalleryComponent extends PageComponentBase {
+  type: "Gallery";
+  images?: { src: string; alt?: string }[];
+}
+
+export interface ContactFormComponent extends PageComponentBase {
+  type: "ContactForm";
+}
+
+export interface TestimonialsComponent extends PageComponentBase {
+  type: "Testimonials";
+  testimonials?: { quote: string; name?: string }[];
+}
+
 export type PageComponent =
   | HeroBannerComponent
   | ValuePropsComponent
   | ReviewsCarouselComponent
-  | ProductGridComponent;
+  | ProductGridComponent
+  | GalleryComponent
+  | ContactFormComponent
+  | TestimonialsComponent;
 
 export interface Page {
   id: string;

@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "../..",
-    "types": ["@cloudflare/workers-types", "node", "cypress"],
+    "types": ["node", "cypress"],
 
     /* keep .ts extension in imports */
     "allowImportingTsExtensions": true,

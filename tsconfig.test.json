@@ -5,12 +5,7 @@
     "importsNotUsedAsValues": "remove",
     "verbatimModuleSyntax": false,
     "noEmit": true,
-    "types": [
-      "@cloudflare/workers-types",
-      "node",
-      "jest",
-      "@testing-library/jest-dom"
-    ]
+    "types": ["node", "jest", "@testing-library/jest-dom"]
   },
   "include": ["jest.setup.ts", "test/**/*.ts", "test/**/*.tsx"],
   "exclude": ["test/e2e/**", "test/tsconfig.ts"]

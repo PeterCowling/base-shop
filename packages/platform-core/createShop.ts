@@ -1,4 +1,5 @@
 // packages/platform-core/createShop.ts
+import { tokens as baseTokens } from "@themes/base/tokens";
 import type { PageComponent } from "@types";
 import { LOCALES } from "@types";
 import { spawnSync } from "child_process";
@@ -68,12 +69,8 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
   };
 
   function loadBaseTokens(): Record<string, string> {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const mod = require(join("packages", "themes", "base", "tokens.js")) as {
-      tokens: Record<string, { light: string }>;
-    };
     const map: Record<string, string> = {};
-    for (const [k, v] of Object.entries(mod.tokens)) map[k] = v.light;
+    for (const [k, v] of Object.entries(baseTokens)) map[k] = v.light;
     return map;
   }
 
@@ -86,8 +83,8 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
       compilerOptions: { module: ts.ModuleKind.CommonJS },
     }).outputText;
     const sandbox: {
-      module: { exports: any };
-      exports: any;
+      module: { exports: Record<string, unknown> };
+      exports: Record<string, unknown>;
       require: NodeRequire;
     } = {
       module: { exports: {} },
@@ -174,7 +171,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
         name: id,
         catalogFilters: [],
         themeId: options.theme,
-        themeTokens: {},
+        themeTokens,
         filterMappings: { ...defaultFilterMappings },
         type: options.type,
         paymentProviders: options.payment,
@@ -211,8 +208,9 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
   } as Record<string, unknown>;
 
   if (options.type === "rental") {
-    (sampleProduct as any).deposit = 1000;
-    (sampleProduct as any).rentalTerms = "Return within 30 days";
+    (sampleProduct as Record<string, unknown>)["deposit"] = 1000;
+    (sampleProduct as Record<string, unknown>)["rentalTerms"] =
+      "Return within 30 days";
   }
 
   writeFileSync(

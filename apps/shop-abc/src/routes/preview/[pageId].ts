@@ -1,3 +1,4 @@
+/// <reference types="@cloudflare/workers-types" />
 // apps/shop-abc/src/routes/preview/[pageId].ts
 
 import type { EventContext } from "@cloudflare/workers-types";

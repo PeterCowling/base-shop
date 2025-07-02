@@ -113,6 +113,10 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   const [newImage, setNewImage] = useState("");
   const [newComponents, setNewComponents] = useState<PageComponent[]>([]);
   const [adding, setAdding] = useState(false);
+  const [csvFile, setCsvFile] = useState<File | null>(null);
+  const [categoriesText, setCategoriesText] = useState("");
+  const [seeding, setSeeding] = useState(false);
+  const [seedResult, setSeedResult] = useState<string | null>(null);
 
   useEffect(() => {
     loadThemeTokens(theme).then(setThemeVars);
@@ -243,6 +247,37 @@ export default function Wizard({ themes, templates, disabled }: Props) {
     setDeploying(false);
   }
 
+  async function seed() {
+    setSeeding(true);
+    setSeedResult(null);
+    try {
+      if (csvFile) {
+        const fd = new FormData();
+        fd.append("file", csvFile);
+        await fetch(`/cms/api/upload-csv/${shopId}`, {
+          method: "POST",
+          body: fd,
+        });
+      }
+      if (categoriesText.trim()) {
+        const cats = categoriesText
+          .split(/[\n,]+/)
+          .map((c) => c.trim())
+          .filter(Boolean);
+        await fetch(`/cms/api/categories/${shopId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(cats),
+        });
+      }
+      setSeedResult("Data saved");
+      setStep(8);
+    } catch {
+      setSeedResult("Failed to save data");
+    }
+    setSeeding(false);
+  }
+
   function startPolling() {
     if (pollRef.current) clearInterval(pollRef.current);
     pollRef.current = setInterval(async () => {
@@ -269,7 +304,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   return (
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
-        <Progress step={step} total={8} />
+        <Progress step={step} total={9} />
         {step === 0 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Shop Details</h2>
@@ -676,6 +711,36 @@ export default function Wizard({ themes, templates, disabled }: Props) {
 
         {step === 7 && (
           <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Seed Data</h2>
+            <label className="flex flex-col gap-1">
+              <span>Product CSV</span>
+              <Input
+                type="file"
+                onChange={(e) => setCsvFile(e.target.files?.[0] ?? null)}
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <span>Categories (comma or newline separated)</span>
+              <Input
+                value={categoriesText}
+                onChange={(e) => setCategoriesText(e.target.value)}
+                placeholder="Shoes, Shirts, Accessories"
+              />
+            </label>
+            {seedResult && <p className="text-sm">{seedResult}</p>}
+            <div className="flex justify-between gap-2">
+              <Button variant="outline" onClick={() => setStep(7)}>
+                Back
+              </Button>
+              <Button disabled={seeding} onClick={seed}>
+                {seeding ? "Saving…" : "Save & Continue"}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {step === 8 && (
+          <div className="space-y-4">
             <h2 className="text-xl font-semibold">Hosting</h2>
             <label className="flex flex-col gap-1">
               <span>Custom Domain</span>
@@ -709,7 +774,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
               <p className="text-sm text-red-600">{deployInfo.error}</p>
             )}
             <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(6)}>
+              <Button variant="outline" onClick={() => setStep(7)}>
                 Back
               </Button>
               <Button disabled={deploying} onClick={deploy}>

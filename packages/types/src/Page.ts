@@ -20,6 +20,18 @@ export interface PageComponentBase {
    * Height of the rendered component. Can be a pixel value or percentage.
    */
   height?: string;
+  /**
+   * CSS position property used when rendering the component.
+   */
+  position?: "relative" | "absolute";
+  /**
+   * Offset from the top when position is absolute.
+   */
+  top?: string;
+  /**
+   * Offset from the left when position is absolute.
+   */
+  left?: string;
   [key: string]: unknown;
 }
 

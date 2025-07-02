@@ -28,7 +28,15 @@ import {
   useState,
 } from "react";
 import { ulid } from "ulid";
-import { Button, Input } from "../atoms-shadcn";
+import {
+  Button,
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../atoms-shadcn";
 import {
   atomRegistry,
   blockRegistry,
@@ -49,7 +57,14 @@ type Action =
   | { type: "move"; from: number; to: number }
   | { type: "remove"; id: string }
   | { type: "update"; id: string; patch: Partial<PageComponent> }
-  | { type: "resize"; id: string; width?: string; height?: string };
+  | {
+      type: "resize";
+      id: string;
+      width?: string;
+      height?: string;
+      left?: string;
+      top?: string;
+    };
 
 function reducer(state: PageComponent[], action: Action): PageComponent[] {
   switch (action.type) {
@@ -67,7 +82,13 @@ function reducer(state: PageComponent[], action: Action): PageComponent[] {
     case "resize":
       return state.map((b) =>
         b.id === action.id
-          ? { ...b, width: action.width, height: action.height }
+          ? {
+              ...b,
+              width: action.width,
+              height: action.height,
+              left: action.left,
+              top: action.top,
+            }
           : b
       );
     default:
@@ -277,6 +298,32 @@ function ComponentEditor({
         value={component.height ?? ""}
         onChange={(e) => handleInput("height", e.target.value)}
       />
+      <Select
+        value={component.position ?? ""}
+        onValueChange={(v) => handleInput("position", v || undefined)}
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Position" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="relative">relative</SelectItem>
+          <SelectItem value="absolute">absolute</SelectItem>
+        </SelectContent>
+      </Select>
+      {component.position === "absolute" && (
+        <>
+          <Input
+            label="Top"
+            value={component.top ?? ""}
+            onChange={(e) => handleInput("top", e.target.value)}
+          />
+          <Input
+            label="Left"
+            value={component.left ?? ""}
+            onChange={(e) => handleInput("left", e.target.value)}
+          />
+        </>
+      )}
       {specific}
     </div>
   );
@@ -303,8 +350,17 @@ const CanvasItem = memo(function CanvasItem({
   });
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const startRef = useRef<{ x: number; y: number; w: number; h: number }>();
+  const startRef = useRef<{
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    l: number;
+    t: number;
+  }>();
   const [resizing, setResizing] = useState(false);
+  const moveRef = useRef<{ x: number; y: number; l: number; t: number }>();
+  const [moving, setMoving] = useState(false);
 
   useEffect(() => {
     if (!resizing) return;
@@ -312,12 +368,17 @@ const CanvasItem = memo(function CanvasItem({
       if (!startRef.current) return;
       const dx = e.clientX - startRef.current.x;
       const dy = e.clientY - startRef.current.y;
-      dispatch({
+      const payload: Action = {
         type: "resize",
         id: component.id,
         width: `${startRef.current.w + dx}px`,
         height: `${startRef.current.h + dy}px`,
-      });
+      };
+      if (component.position === "absolute") {
+        payload.left = `${startRef.current.l + dx}px`;
+        payload.top = `${startRef.current.t + dy}px`;
+      }
+      dispatch(payload);
     };
     const stop = () => setResizing(false);
     window.addEventListener("pointermove", handleMove);
@@ -328,6 +389,28 @@ const CanvasItem = memo(function CanvasItem({
     };
   }, [resizing, component.id, dispatch]);
 
+  useEffect(() => {
+    if (!moving) return;
+    const handleMove = (e: PointerEvent) => {
+      if (!moveRef.current) return;
+      const dx = e.clientX - moveRef.current.x;
+      const dy = e.clientY - moveRef.current.y;
+      dispatch({
+        type: "resize",
+        id: component.id,
+        left: `${moveRef.current.l + dx}px`,
+        top: `${moveRef.current.t + dy}px`,
+      });
+    };
+    const stop = () => setMoving(false);
+    window.addEventListener("pointermove", handleMove);
+    window.addEventListener("pointerup", stop);
+    return () => {
+      window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointerup", stop);
+    };
+  }, [moving, component.id, dispatch]);
+
   const startResize = (e: React.PointerEvent) => {
     e.stopPropagation();
     const el = containerRef.current;
@@ -337,8 +420,23 @@ const CanvasItem = memo(function CanvasItem({
       y: e.clientY,
       w: el.offsetWidth,
       h: el.offsetHeight,
+      l: el.offsetLeft,
+      t: el.offsetTop,
     };
     setResizing(true);
+  };
+
+  const startMove = (e: React.PointerEvent) => {
+    if (component.position !== "absolute") return;
+    const el = containerRef.current;
+    if (!el) return;
+    moveRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      l: el.offsetLeft,
+      t: el.offsetTop,
+    };
+    setMoving(true);
   };
 
   return (
@@ -349,11 +447,14 @@ const CanvasItem = memo(function CanvasItem({
       }}
       {...attributes}
       {...listeners}
-      onClick={onSelect}
+      onPointerDownCapture={startMove}
       style={{
         transform: CSS.Transform.toString(transform),
         ...(component.width ? { width: component.width } : {}),
         ...(component.height ? { height: component.height } : {}),
+        ...(component.position ? { position: component.position } : {}),
+        ...(component.top ? { top: component.top } : {}),
+        ...(component.left ? { left: component.left } : {}),
       }}
       className={
         "relative rounded border" + (selected ? " ring-2 ring-blue-500" : "")

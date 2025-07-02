@@ -13,7 +13,7 @@ if (typeof (Response as any).json !== "function") {
 
 async function withShop(
   cb: (
-    repo: typeof import("@platform-core/repositories/rentalOrders.server")
+    repo: typeof import("../../platform-core/repositories/rentalOrders.server")
   ) => Promise<void>
 ) {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shop-"));
@@ -26,7 +26,7 @@ async function withShop(
   const cwd = process.cwd();
   process.chdir(dir);
   jest.resetModules();
-  const repo: typeof import("@platform-core/repositories/rentalOrders.server") = require("@platform-core/repositories/rentalOrders.server");
+  const repo: typeof import("../../platform-core/repositories//rentalOrders.server") = require("@platform-core/repositories/rentalOrders.server");
   try {
     await cb(repo);
   } finally {

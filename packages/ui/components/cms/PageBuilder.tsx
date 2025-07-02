@@ -19,10 +19,22 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { Page, PageComponent } from "@types";
-import { memo, useEffect, useReducer } from "react";
+import {
+  ChangeEvent,
+  memo,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { ulid } from "ulid";
-import { Button } from "../atoms-shadcn";
-import { blockRegistry } from "./blocks";
+import { Button, Input } from "../atoms-shadcn";
+import {
+  atomRegistry,
+  blockRegistry,
+  moleculeRegistry,
+  organismRegistry,
+} from "./blocks";
 
 interface Props {
   page: Page;
@@ -36,7 +48,8 @@ type Action =
   | { type: "add"; component: PageComponent }
   | { type: "move"; from: number; to: number }
   | { type: "remove"; id: string }
-  | { type: "update"; id: string; patch: Partial<PageComponent> };
+  | { type: "update"; id: string; patch: Partial<PageComponent> }
+  | { type: "resize"; id: string; width?: string; height?: string };
 
 function reducer(state: PageComponent[], action: Action): PageComponent[] {
   switch (action.type) {
@@ -51,17 +64,35 @@ function reducer(state: PageComponent[], action: Action): PageComponent[] {
       return state.map((b) =>
         b.id === action.id ? { ...b, ...action.patch } : b
       );
+    case "resize":
+      return state.map((b) =>
+        b.id === action.id
+          ? { ...b, width: action.width, height: action.height }
+          : b
+      );
     default:
       return state;
   }
 }
 
-const palette: { type: PageComponent["type"]; label: string }[] = (
-  Object.keys(blockRegistry) as PageComponent["type"][]
-).map((t) => ({
-  type: t,
-  label: t.replace(/([A-Z])/g, " $1").trim(),
-}));
+const palette = {
+  atoms: (Object.keys(atomRegistry) as PageComponent["type"][]).map((t) => ({
+    type: t,
+    label: t.replace(/([A-Z])/g, " $1").trim(),
+  })),
+  molecules: (Object.keys(moleculeRegistry) as PageComponent["type"][]).map(
+    (t) => ({
+      type: t,
+      label: t.replace(/([A-Z])/g, " $1").trim(),
+    })
+  ),
+  organisms: (Object.keys(organismRegistry) as PageComponent["type"][]).map(
+    (t) => ({
+      type: t,
+      label: t.replace(/([A-Z])/g, " $1").trim(),
+    })
+  ),
+} as const;
 
 const PaletteItem = memo(function PaletteItem({
   type,
@@ -88,9 +119,16 @@ const PaletteItem = memo(function PaletteItem({
 
 const Palette = memo(function Palette() {
   return (
-    <div className="flex flex-col gap-2">
-      {palette.map((p) => (
-        <PaletteItem key={p.type} type={p.type} />
+    <div className="flex flex-col gap-4">
+      {Object.entries(palette).map(([category, items]) => (
+        <div key={category} className="space-y-2">
+          <h4 className="font-semibold capitalize">{category}</h4>
+          <div className="flex flex-col gap-2">
+            {items.map((p) => (
+              <PaletteItem key={p.type} type={p.type} />
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   );
@@ -132,7 +170,7 @@ function ComponentEditor({
               <Input
                 key={f}
                 value={item[f] ?? ""}
-                onChange={(e) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const next = [...list];
                   next[idx] = { ...next[idx], [f]: e.target.value };
                   onChange({ [prop]: next } as Partial<PageComponent>);
@@ -166,29 +204,42 @@ function ComponentEditor({
     );
   };
 
+  let specific: React.ReactNode = null;
+
   switch (component.type) {
     case "ContactForm":
-      return (
+      specific = (
         <div className="space-y-2">
           <Input
             label="Action"
             value={(component as any).action ?? ""}
-            onChange={(e) => handleInput("action", e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleInput("action", e.target.value)
+            }
           />
           <Input
             label="Method"
             value={(component as any).method ?? ""}
-            onChange={(e) => handleInput("method", e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleInput("method", e.target.value)
+            }
           />
         </div>
       );
+      break;
     case "Gallery":
-      return arrayEditor("images", (component as any).images, ["src", "alt"]);
+      specific = arrayEditor("images", (component as any).images, [
+        "src",
+        "alt",
+      ]);
+      break;
     case "Testimonials":
-      return arrayEditor("testimonials", (component as any).testimonials, [
+      specific = arrayEditor("testimonials", (component as any).testimonials, [
         "quote",
         "name",
       ]);
+
+      break;
     case "HeroBanner":
       return arrayEditor("slides", (component as any).slides, [
         "src",
@@ -196,20 +247,39 @@ function ComponentEditor({
         "headlineKey",
         "ctaKey",
       ]);
+      break;
     case "ValueProps":
-      return arrayEditor("items", (component as any).items, [
+      specific = arrayEditor("items", (component as any).items, [
         "icon",
         "title",
         "desc",
       ]);
+      break;
     case "ReviewsCarousel":
-      return arrayEditor("reviews", (component as any).reviews, [
+      specific = arrayEditor("reviews", (component as any).reviews, [
         "nameKey",
         "quoteKey",
       ]);
+      break;
     default:
-      return <p className="text-sm text-gray-500">No editable props</p>;
+      specific = <p className="text-sm text-gray-500">No editable props</p>;
   }
+
+  return (
+    <div className="space-y-2">
+      <Input
+        label="Width"
+        value={component.width ?? ""}
+        onChange={(e) => handleInput("width", e.target.value)}
+      />
+      <Input
+        label="Height"
+        value={component.height ?? ""}
+        onChange={(e) => handleInput("height", e.target.value)}
+      />
+      {specific}
+    </div>
+  );
 }
 
 const CanvasItem = memo(function CanvasItem({
@@ -218,30 +288,98 @@ const CanvasItem = memo(function CanvasItem({
   onRemove,
   selected,
   onSelect,
+  dispatch,
 }: {
   component: PageComponent;
   index: number;
   onRemove: () => void;
   selected: boolean;
   onSelect: () => void;
+  dispatch: React.Dispatch<Action>;
 }) {
   const { attributes, listeners, setNodeRef, transform } = useSortable({
     id: component.id,
     data: { from: "canvas", index },
   });
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const startRef = useRef<{ x: number; y: number; w: number; h: number }>();
+  const [resizing, setResizing] = useState(false);
+
+  useEffect(() => {
+    if (!resizing) return;
+    const handleMove = (e: PointerEvent) => {
+      if (!startRef.current) return;
+      const dx = e.clientX - startRef.current.x;
+      const dy = e.clientY - startRef.current.y;
+      dispatch({
+        type: "resize",
+        id: component.id,
+        width: `${startRef.current.w + dx}px`,
+        height: `${startRef.current.h + dy}px`,
+      });
+    };
+    const stop = () => setResizing(false);
+    window.addEventListener("pointermove", handleMove);
+    window.addEventListener("pointerup", stop);
+    return () => {
+      window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointerup", stop);
+    };
+  }, [resizing, component.id, dispatch]);
+
+  const startResize = (e: React.PointerEvent) => {
+    e.stopPropagation();
+    const el = containerRef.current;
+    if (!el) return;
+    startRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      w: el.offsetWidth,
+      h: el.offsetHeight,
+    };
+    setResizing(true);
+  };
+
   return (
     <div
-      ref={setNodeRef}
+      ref={(node) => {
+        setNodeRef(node);
+        containerRef.current = node;
+      }}
       {...attributes}
       {...listeners}
       onClick={onSelect}
-      style={{ transform: CSS.Transform.toString(transform) }}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        ...(component.width ? { width: component.width } : {}),
+        ...(component.height ? { height: component.height } : {}),
+      }}
       className={
         "relative rounded border" + (selected ? " ring-2 ring-blue-500" : "")
       }
     >
       <MemoBlock component={component} />
+      {selected && (
+        <>
+          <div
+            onPointerDown={startResize}
+            className="absolute -top-1 -left-1 h-2 w-2 cursor-nwse-resize bg-blue-500"
+          />
+          <div
+            onPointerDown={startResize}
+            className="absolute -top-1 -right-1 h-2 w-2 cursor-nesw-resize bg-blue-500"
+          />
+          <div
+            onPointerDown={startResize}
+            className="absolute -bottom-1 -left-1 h-2 w-2 cursor-nesw-resize bg-blue-500"
+          />
+          <div
+            onPointerDown={startResize}
+            className="absolute -right-1 -bottom-1 h-2 w-2 cursor-nwse-resize bg-blue-500"
+          />
+        </>
+      )}
       <button
         type="button"
         onClick={onRemove}
@@ -300,8 +438,8 @@ export default memo(function PageBuilder({
   formData.append("updatedAt", page.updatedAt);
   formData.append("slug", page.slug);
   formData.append("status", page.status);
-  formData.append("title", page.seo.title);
-  formData.append("description", page.seo.description ?? "");
+  formData.append("title", JSON.stringify(page.seo.title));
+  formData.append("description", JSON.stringify(page.seo.description ?? {}));
   formData.append("components", JSON.stringify(components));
 
   return (
@@ -329,6 +467,7 @@ export default memo(function PageBuilder({
                   selected={c.id === selectedId}
                   onSelect={() => setSelectedId(c.id)}
                   onRemove={() => dispatch({ type: "remove", id: c.id })}
+                  dispatch={dispatch}
                 />
               ))}
             </div>

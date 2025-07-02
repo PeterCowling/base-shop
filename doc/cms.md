@@ -31,3 +31,22 @@ Certain pages are restricted to users with the `admin` role:
 - `/cms/wizard` – step‑by‑step workflow for creating a new shop.
 
 Attempting to access these pages without the proper role will redirect back to the CMS dashboard.
+
+## Wizard Resume & Page Drafts
+
+The shop creation wizard now resumes where you left off. If you log in via
+`/login?callbackUrl=/cms/wizard` or return to `/cms/wizard` later, the flow jumps
+to your last completed step so you can continue configuring the shop without
+starting over.
+
+When building pages, the **Save** button stores the current state as a draft.
+Draft pages keep `status: "draft"` in `pages.json` until you click **Publish**.
+Edit drafts at `/cms/shop/{shop}/pages/{slug}/builder` or start a new page at
+`/cms/shop/{shop}/pages/new/builder`. A list of pages (including drafts) is
+available via `GET /cms/api/pages/{shop}`.
+
+## Page Builder Controls
+
+Selected blocks now display drag handles for repositioning. You can also resize
+blocks directly on the canvas before saving or publishing. A side panel shows
+editable properties for the currently selected block.

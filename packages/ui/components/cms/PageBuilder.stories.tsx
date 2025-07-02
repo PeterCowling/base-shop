@@ -27,4 +27,4 @@ const meta: Meta<typeof PageBuilder> = {
 };
 export default meta;
 
-export const Default: StoryObj<typeof PageBuilder> = {};
+export const GroupedPalette: StoryObj<typeof PageBuilder> = {};

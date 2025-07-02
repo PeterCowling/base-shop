@@ -11,6 +11,15 @@ export interface SeoMeta {
 export interface PageComponentBase {
   id: string;
   type: string;
+  /**
+   * Width of the rendered component. Can be a pixel value (e.g. "300px")
+   * or a percentage (e.g. "50%").
+   */
+  width?: string;
+  /**
+   * Height of the rendered component. Can be a pixel value or percentage.
+   */
+  height?: string;
   [key: string]: unknown;
 }
 

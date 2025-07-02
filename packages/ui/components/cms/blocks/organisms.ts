@@ -9,31 +9,17 @@ import TestimonialSlider from "./TestimonialSlider";
 import Testimonials from "./Testimonials";
 import ValueProps from "./ValueProps";
 
-export {
-  BlogListing,
+export const organismRegistry = {
+  HeroBanner,
+  ValueProps,
+  ReviewsCarousel,
+  ProductGrid,
+  Gallery,
   ContactForm,
   ContactFormWithMap,
-  Gallery,
-  HeroBanner,
-  ProductGrid,
-  ReviewsCarousel,
+  BlogListing,
   Testimonials,
   TestimonialSlider,
-  ValueProps,
-};
-
-export * from "./atoms";
-export * from "./molecules";
-export * from "./organisms";
-
-import { atomRegistry } from "./atoms";
-import { moleculeRegistry } from "./molecules";
-import { organismRegistry } from "./organisms";
-
-export const blockRegistry = {
-  ...atomRegistry,
-  ...moleculeRegistry,
-  ...organismRegistry,
 } as const;
 
-export type BlockType = keyof typeof blockRegistry;
+export type OrganismBlockType = keyof typeof organismRegistry;

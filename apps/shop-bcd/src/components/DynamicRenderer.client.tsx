@@ -30,9 +30,17 @@ export default function DynamicRenderer({
 
         switch (c.type) {
           case "ProductGrid":
-            return <Comp key={c.id} skus={PRODUCTS as SKU[]} />;
+            return (
+              <div key={c.id} style={{ width: c.width, height: c.height }}>
+                <Comp skus={PRODUCTS as SKU[]} />
+              </div>
+            );
           default:
-            return <Comp key={c.id} />;
+            return (
+              <div key={c.id} style={{ width: c.width, height: c.height }}>
+                <Comp />
+              </div>
+            );
         }
       })}
     </>

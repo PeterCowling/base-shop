@@ -2,6 +2,7 @@
 
 packages:
   # Every package or app — one pattern is enough
+  - "apps-script"
   - "apps/**"
   - "packages/**"
 

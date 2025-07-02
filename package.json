@@ -9,7 +9,8 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "packages/*/*"
+    "packages/*/*",
+    "apps-script"
   ],
   "scripts": {
     "dev": "turbo run dev --parallel",
@@ -123,7 +124,6 @@
   },
   "pnpm": {
     "overrides": {
-      "@types/google-apps-script@*": "npm:@esbuild-plugins/empty@1.0.0",
       "@shadcn/ui": "0.0.4"
     }
   }

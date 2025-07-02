@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/atoms-shadcn";
 import { tokens as baseTokensSrc } from "@themes/base/tokens";
+import type { PageComponent } from "@types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -62,6 +63,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   const [pageTitle, setPageTitle] = useState("Home");
   const [pageDescription, setPageDescription] = useState("");
   const [socialImage, setSocialImage] = useState("");
+  const [components, setComponents] = useState<PageComponent[]>([]);
 
   useEffect(() => {
     loadThemeTokens(theme).then(setThemeVars);
@@ -90,12 +92,13 @@ export default function Wizard({ themes, templates, disabled }: Props) {
           pageTitle,
           pageDescription,
           socialImage,
+          components,
         }),
       });
       json = await res.json();
       if (res.ok) {
         setResult("Shop created successfully");
-        setStep(5);
+        setStep(6);
       } else {
         setResult("Failed to create shop");
       }

@@ -8,5 +8,6 @@
     { "path": "./apps/shop-abc" },
     { "path": "./apps/shop-bcd" },
     { "path": "./scripts" }
-  ]
+  ],
+  "exclude": ["apps-script"]
 }

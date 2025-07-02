@@ -102,6 +102,13 @@ The CLI and demo application expect several variables to be defined:
 - `CMS_ACCESS_TOKEN` – access token for pushing schemas
 - `CHROMATIC_PROJECT_TOKEN` – token for publishing Storybook previews
 
+## Google Apps Script
+
+Apps Script code lives under `apps-script/` and compiles with its own `tsconfig.json`.
+Next.js projects exclude this folder to avoid type conflicts with DOM typings.
+
+## Notes
+
 Missing variables will cause the CLI to exit with an error before running.
 
 See [docs/lighthouse.md](docs/lighthouse.md) for running Lighthouse audits.

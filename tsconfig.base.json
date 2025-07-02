@@ -15,7 +15,7 @@
     "allowImportingTsExtensions": true,
     "module": "es2020",
 
-    "types": ["@cloudflare/workers-types", "node"],
+    "types": ["node"],
 
     "paths": {
       "@platform-core/*": ["packages/platform-core/*"],

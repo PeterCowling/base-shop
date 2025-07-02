@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types", "node"],
+    "module": "esnext",
+    "moduleResolution": "node"
+  },
+  "include": ["**/*.ts"]
+}

@@ -19,7 +19,7 @@
     "strict": false,
     "module": "esnext",
     "moduleResolution": "node",
-    "types": ["@cloudflare/workers-types", "node", "jest"]
+    "types": ["node", "jest"]
   },
 
   /* ------------------------------------------------------------------ */

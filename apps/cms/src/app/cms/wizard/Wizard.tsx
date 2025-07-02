@@ -10,6 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Textarea,
 } from "@/components/atoms-shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import HeroBanner from "@/components/home/HeroBanner";
@@ -22,7 +23,7 @@ import enMessages from "@i18n/en.json";
 import type { DeployShopResult } from "@platform-core/createShop";
 import { tokens as baseTokensSrc } from "@themes/base/tokens";
 import type { Page, PageComponent } from "@types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function WizardPreview({
   style,
@@ -117,6 +118,8 @@ export default function Wizard({ themes, templates, disabled }: Props) {
   const [categoriesText, setCategoriesText] = useState("");
   const [seeding, setSeeding] = useState(false);
   const [seedResult, setSeedResult] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
+  const [importResult, setImportResult] = useState<string | null>(null);
 
   useEffect(() => {
     loadThemeTokens(theme).then(setThemeVars);
@@ -295,6 +298,34 @@ export default function Wizard({ themes, templates, disabled }: Props) {
         // ignore errors during polling
       }
     }, 3000);
+  }
+
+  async function saveData() {
+    setImporting(true);
+    setImportResult(null);
+    try {
+      if (csvFile) {
+        const form = new FormData();
+        form.append("file", csvFile);
+        await fetch(`/cms/api/import-products/${shopId}`, {
+          method: "POST",
+          body: form,
+        });
+      }
+      if (categoriesText.trim()) {
+        const cats = JSON.parse(categoriesText);
+        await fetch(`/cms/api/categories/${shopId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(cats),
+        });
+      }
+      setImportResult("Saved");
+      setStep(8);
+    } catch {
+      setImportResult("Failed to save data");
+    }
+    setImporting(false);
   }
 
   const themeStyle = Object.fromEntries(
@@ -711,6 +742,35 @@ export default function Wizard({ themes, templates, disabled }: Props) {
 
         {step === 7 && (
           <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Import Data</h2>
+            <label className="flex flex-col gap-1">
+              <span>Products CSV</span>
+              <Input
+                type="file"
+                accept=".csv"
+                onChange={(e) => setCsvFile(e.target.files?.[0] ?? null)}
+              />
+            </label>
+            <Textarea
+              label="Categories JSON"
+              value={categoriesText}
+              onChange={(e) => setCategoriesText(e.target.value)}
+              placeholder='["Shoes","Accessories"]'
+            />
+            {importResult && <p className="text-sm">{importResult}</p>}
+            <div className="flex justify-between gap-2">
+              <Button variant="outline" onClick={() => setStep(6)}>
+                Back
+              </Button>
+              <Button disabled={importing} onClick={saveData}>
+                {importing ? "Saving…" : "Save & Continue"}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {step === 8 && (
+          <div className="space-y-4">
             <h2 className="text-xl font-semibold">Seed Data</h2>
             <label className="flex flex-col gap-1">
               <span>Product CSV</span>
@@ -774,7 +834,7 @@ export default function Wizard({ themes, templates, disabled }: Props) {
               <p className="text-sm text-red-600">{deployInfo.error}</p>
             )}
             <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(7)}>
+              <Button variant="outline" onClick={() => setStep(6)}>
                 Back
               </Button>
               <Button disabled={deploying} onClick={deploy}>

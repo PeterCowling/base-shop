@@ -1,11 +1,9 @@
 // packages/platform-core/createShop.ts
-import { tokens as baseTokens } from "@themes/base/tokens";
 import type { PageComponent } from "@types";
 import { LOCALES, type Locale } from "@types";
 import { spawnSync } from "child_process";
 import { randomBytes } from "crypto";
 import {
-  cpSync,
   existsSync,
   mkdirSync,
   readdirSync,
@@ -13,9 +11,12 @@ import {
   writeFileSync,
 } from "fs";
 import { join } from "path";
-import ts from "typescript";
 import { ulid } from "ulid";
-import { runInNewContext } from "vm";
+import {
+  copyTemplate,
+  loadBaseTokens,
+  loadThemeTokens,
+} from "./createShop/utils";
 import { defaultFilterMappings } from "./defaultFilterMappings";
 
 export interface CreateShopOptions {
@@ -82,39 +83,6 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     pages: opts.pages ?? [],
   };
 
-  function loadBaseTokens(): Record<string, string> {
-    const map: Record<string, string> = {};
-    for (const [k, v] of Object.entries(baseTokens) as [
-      string,
-      { light: string },
-    ][]) {
-      map[k] = v.light;
-    }
-    return map;
-  }
-
-  function loadThemeTokens(theme: string): Record<string, string> {
-    if (theme === "base") return {};
-    const modPath = join("packages", "themes", theme, "tailwind-tokens.ts");
-    if (!existsSync(modPath)) return {};
-    const source = readFileSync(modPath, "utf8");
-    const transpiled = ts.transpileModule(source, {
-      compilerOptions: { module: ts.ModuleKind.CommonJS },
-    }).outputText;
-    const sandbox: {
-      module: { exports: Record<string, unknown> };
-      exports: Record<string, unknown>;
-      require: (id: string) => unknown;
-    } = {
-      module: { exports: {} },
-      exports: {},
-      require,
-    };
-    sandbox.exports = sandbox.module.exports;
-    runInNewContext(transpiled, sandbox);
-    return sandbox.module.exports.tokens as Record<string, string>;
-  }
-
   const templateApp = join("packages", options.template);
   const newApp = join("apps", id);
 
@@ -125,11 +93,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     throw new Error(`Template '${options.template}' not found in packages`);
   }
 
-  cpSync(templateApp, newApp, {
-    recursive: true,
-    filter: (src) => !/node_modules/.test(src),
-  });
-
+  copyTemplate(templateApp, newApp);
   const pkgPath = join(newApp, "package.json");
   const pkg = JSON.parse(readFileSync(pkgPath, "utf8")) as PackageJSON;
   pkg.dependencies ??= {};

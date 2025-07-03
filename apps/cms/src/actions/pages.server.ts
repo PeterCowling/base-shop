@@ -56,12 +56,6 @@ for (const l of LOCALES) {
   localeFields[`desc_${l}`] = z.string().optional().default("");
 }
 
-type LocaleFields = {
-  [L in Locale as `title_${L}`]: string;
-} & {
-  [L in Locale as `desc_${L}`]?: string;
-};
-
 const baseSchema = z
 
   .object({
@@ -80,14 +74,14 @@ const baseSchema = z
 
 type BasePageForm = z.infer<typeof baseSchema>;
 
-export type PageCreateForm = BasePageForm;
-export type PageUpdateForm = BasePageForm & { id: string; updatedAt: string };
+export const createSchema = baseSchema;
+export type PageCreateForm = z.infer<typeof createSchema>;
 
-const createSchema: z.ZodType<PageCreateForm> = baseSchema;
-const updateSchema: z.ZodType<PageUpdateForm> = baseSchema.extend({
+export const updateSchema = baseSchema.extend({
   id: z.string(),
   updatedAt: z.string(),
 });
+export type PageUpdateForm = z.infer<typeof updateSchema>;
 
 export async function createPage(
   shop: string,

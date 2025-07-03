@@ -1,5 +1,6 @@
 "use client";
 
+import type { Locale } from "@/i18n/locales";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Link from "@tiptap/extension-link";
@@ -11,14 +12,23 @@ import { Button } from "../../atoms-shadcn";
 import { blockRegistry } from "../blocks";
 import type { Action } from "../PageBuilder";
 
-function Block({ component }: { component: PageComponent }) {
+function Block({
+  component,
+  locale,
+}: {
+  component: PageComponent;
+  locale: Locale;
+}) {
   if (component.type === "Text") {
     return <div>{(component as any).text ?? ""}</div>;
+    const text = (component as any).text;
+    const value = typeof text === "string" ? text : (text?.[locale] ?? "");
+    return <div dangerouslySetInnerHTML={{ __html: value }} />;
   }
   const Comp = blockRegistry[component.type];
   if (!Comp) return null;
   const { id, type, ...props } = component as any;
-  return <Comp {...props} />;
+  return <Comp {...props} locale={locale} />;
 }
 
 const MemoBlock = memo(Block);
@@ -69,6 +79,7 @@ const CanvasItem = memo(function CanvasItem({
   selected,
   onSelect,
   dispatch,
+  locale,
 }: {
   component: PageComponent;
   index: number;
@@ -76,6 +87,7 @@ const CanvasItem = memo(function CanvasItem({
   selected: boolean;
   onSelect: () => void;
   dispatch: React.Dispatch<Action>;
+  locale: Locale;
 }) {
   const { attributes, listeners, setNodeRef, transform } = useSortable({
     id: component.id,
@@ -100,8 +112,20 @@ const CanvasItem = memo(function CanvasItem({
 
   const editor = useEditor({
     extensions: [StarterKit, Link],
-    content: (component as any).text ?? "",
+    content:
+      typeof (component as any).text === "string"
+        ? (component as any).text
+        : ((component as any).text?.[locale] ?? ""),
   });
+
+  useEffect(() => {
+    if (!editor || editing) return;
+    const content =
+      typeof (component as any).text === "string"
+        ? (component as any).text
+        : ((component as any).text?.[locale] ?? "");
+    editor.commands.setContent(content);
+  }, [locale, component, editor, editing]);
 
   useEffect(() => {
     if (editing) {
@@ -192,10 +216,17 @@ const CanvasItem = memo(function CanvasItem({
     dispatch({
       type: "update",
       id: component.id,
-      patch: { text: editor.getHTML() } as Partial<PageComponent>,
+      patch: {
+        text: {
+          ...(typeof (component as any).text === "object"
+            ? (component as any).text
+            : {}),
+          [locale]: editor.getHTML(),
+        },
+      } as Partial<PageComponent>,
     });
     setEditing(false);
-  }, [editor, dispatch, component.id]);
+  }, [editor, dispatch, component.id, locale, component]);
 
   return (
     <div
@@ -213,6 +244,8 @@ const CanvasItem = memo(function CanvasItem({
         transform: CSS.Transform.toString(transform),
         ...(component.width ? { width: component.width } : {}),
         ...(component.height ? { height: component.height } : {}),
+        ...(component.margin ? { margin: component.margin } : {}),
+        ...(component.padding ? { padding: component.padding } : {}),
         ...(component.position ? { position: component.position } : {}),
         ...(component.top ? { top: component.top } : {}),
         ...(component.left ? { left: component.left } : {}),
@@ -243,11 +276,16 @@ const CanvasItem = memo(function CanvasItem({
               setEditing(true);
               onSelect();
             }}
-            dangerouslySetInnerHTML={{ __html: (component as any).text ?? "" }}
+            dangerouslySetInnerHTML={{
+              __html:
+                typeof (component as any).text === "string"
+                  ? (component as any).text
+                  : ((component as any).text?.[locale] ?? ""),
+            }}
           />
         )
       ) : (
-        <MemoBlock component={component} />
+        <MemoBlock component={component} locale={locale} />
       )}{" "}
       {selected && (
         <>

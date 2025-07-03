@@ -1,6 +1,7 @@
 // packages/ui/components/cms/PageBuilder.tsx
 "use client";
 
+import { locales, type Locale } from "@/i18n/locales";
 import {
   closestCenter,
   DndContext,
@@ -142,6 +143,7 @@ export default memo(function PageBuilder({
   const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
     "desktop"
   );
+  const [locale, setLocale] = useState<Locale>("en");
 
   const widthMap: Record<"desktop" | "tablet" | "mobile", string> = {
     desktop: "100%",
@@ -240,6 +242,18 @@ export default memo(function PageBuilder({
             Mobile
           </Button>
         </div>
+        <div className="flex justify-end gap-2">
+          {locales.map((l) => (
+            <Button
+              key={l}
+              size="sm"
+              variant={locale === l ? "default" : "outline"}
+              onClick={() => setLocale(l)}
+            >
+              {l.toUpperCase()}
+            </Button>
+          ))}
+        </div>
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -260,6 +274,7 @@ export default memo(function PageBuilder({
                   key={c.id}
                   component={c}
                   index={i}
+                  locale={locale}
                   selected={c.id === selectedId}
                   onSelect={() => setSelectedId(c.id)}
                   onRemove={() => dispatch({ type: "remove", id: c.id })}

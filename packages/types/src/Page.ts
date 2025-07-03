@@ -32,6 +32,16 @@ export interface PageComponentBase {
    * Offset from the left when position is absolute.
    */
   left?: string;
+  /**
+   * Margin applied to the outer container when rendered.
+   * Accepts any valid CSS margin value or Tailwind class.
+   */
+  margin?: string;
+  /**
+   * Padding applied to the outer container when rendered.
+   * Accepts any valid CSS padding value or Tailwind class.
+   */
+  padding?: string;
   [key: string]: unknown;
 }
 
@@ -70,6 +80,17 @@ export interface ContactFormWithMapComponent extends PageComponentBase {
   mapSrc?: string;
 }
 
+export interface ImageComponent extends PageComponentBase {
+  type: "Image";
+  src?: string;
+  alt?: string;
+}
+
+export interface TextComponent extends PageComponentBase {
+  type: "Text";
+  text?: string;
+}
+
 export interface BlogListingComponent extends PageComponentBase {
   type: "BlogListing";
   posts?: { title: string; excerpt?: string; url?: string }[];
@@ -85,6 +106,11 @@ export interface TestimonialsComponent extends PageComponentBase {
   testimonials?: { quote: string; name?: string }[];
 }
 
+export interface TextComponent extends PageComponentBase {
+  type: "Text";
+  text?: string;
+}
+
 export type PageComponent =
   | HeroBannerComponent
   | ValuePropsComponent
@@ -95,7 +121,9 @@ export type PageComponent =
   | ContactFormWithMapComponent
   | BlogListingComponent
   | TestimonialsComponent
-  | TestimonialSliderComponent;
+  | TestimonialSliderComponent
+  | ImageComponent
+  | TextComponent;
 
 export interface Page {
   id: string;

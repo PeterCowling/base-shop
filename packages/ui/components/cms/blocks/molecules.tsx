@@ -1,52 +1,70 @@
 "use client";
 
+import type { Locale } from "@/i18n/locales";
 import type { CategoryCollectionTemplateProps } from "../../templates/CategoryCollectionTemplate";
 import { CategoryCollectionTemplate } from "../../templates/CategoryCollectionTemplate";
 
 export function NewsletterForm({
   action = "#",
   method = "post",
-  placeholder = "Email address",
-  submitLabel = "Subscribe",
+  placeholder = {},
+  submitLabel = {},
+  locale = "en",
 }: {
   action?: string;
   method?: string;
-  placeholder?: string;
-  submitLabel?: string;
+  placeholder?: string | Record<Locale, string>;
+  submitLabel?: string | Record<Locale, string>;
+  locale?: Locale;
 }) {
+  const ph =
+    typeof placeholder === "string"
+      ? placeholder
+      : (placeholder?.[locale] ?? "");
+  const label =
+    typeof submitLabel === "string"
+      ? submitLabel
+      : (submitLabel?.[locale] ?? "");
   return (
     <form action={action} method={method} className="flex gap-2">
       <input
         type="email"
         name="email"
-        placeholder={placeholder}
+        placeholder={ph}
         className="flex-1 rounded border p-2"
       />
       <button
         type="submit"
         className="rounded bg-blue-600 px-4 py-2 text-white"
       >
-        {submitLabel}
+        {label}
       </button>
     </form>
   );
 }
 
 export function PromoBanner({
-  text = "",
+  text = {},
   href,
-  buttonLabel = "Shop now",
+  buttonLabel = {},
+  locale = "en",
 }: {
-  text?: string;
+  text?: string | Record<Locale, string>;
   href?: string;
-  buttonLabel?: string;
+  buttonLabel?: string | Record<Locale, string>;
+  locale?: Locale;
 }) {
+  const txt = typeof text === "string" ? text : (text?.[locale] ?? "");
+  const label =
+    typeof buttonLabel === "string"
+      ? buttonLabel
+      : (buttonLabel?.[locale] ?? "");
   return (
     <div className="flex items-center justify-between bg-gray-900 p-4 text-white">
-      <span>{text}</span>
+      <span>{txt}</span>{" "}
       {href && (
         <a href={href} className="rounded bg-white px-3 py-1 text-gray-900">
-          {buttonLabel}
+          {label}
         </a>
       )}
     </div>

@@ -84,6 +84,10 @@ export interface TestimonialsComponent extends PageComponentBase {
     name?: string;
   }[];
 }
+export interface TextComponent extends PageComponentBase {
+  type: "Text";
+  text?: string;
+}
 export type PageComponent =
   | HeroBannerComponent
   | ValuePropsComponent
@@ -94,7 +98,8 @@ export type PageComponent =
   | ContactFormWithMapComponent
   | BlogListingComponent
   | TestimonialsComponent
-  | TestimonialSliderComponent;
+  | TestimonialSliderComponent
+  | TextComponent;
 export interface Page {
   id: string;
   slug: string;

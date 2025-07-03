@@ -48,5 +48,6 @@ available via `GET /cms/api/pages/{shop}`.
 ## Page Builder Controls
 
 Selected blocks now display drag handles for repositioning. You can also resize
-blocks directly on the canvas before saving or publishing. A side panel shows
-editable properties for the currently selected block.
+blocks directly on the canvas and adjust their margin or padding before saving
+or publishing. A side panel shows editable properties for the currently
+selected block.

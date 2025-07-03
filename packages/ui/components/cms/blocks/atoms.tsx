@@ -1,14 +1,18 @@
+import type { Locale } from "@/i18n/locales";
 import type { ElementType } from "react";
 
 export function Text({
-  text = "",
+  text = {},
   tag = "p",
+  locale = "en",
 }: {
-  text?: string;
+  text?: string | Record<Locale, string>;
   tag?: keyof JSX.IntrinsicElements;
+  locale?: Locale;
 }) {
   const Comp = tag as ElementType;
-  return <Comp>{text}</Comp>;
+  const value = typeof text === "string" ? text : (text?.[locale] ?? "");
+  return <Comp>{value}</Comp>;
 }
 
 export function Image({

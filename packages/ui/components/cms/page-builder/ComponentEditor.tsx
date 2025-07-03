@@ -252,6 +252,16 @@ export default function ComponentEditor({ component, onChange }: Props) {
         value={component.height ?? ""}
         onChange={(e) => handleInput("height", e.target.value)}
       />
+      <Input
+        label="Margin"
+        value={component.margin ?? ""}
+        onChange={(e) => handleInput("margin", e.target.value)}
+      />
+      <Input
+        label="Padding"
+        value={component.padding ?? ""}
+        onChange={(e) => handleInput("padding", e.target.value)}
+      />
       <Select
         value={component.position ?? ""}
         onValueChange={(v) => handleInput("position", v || undefined)}

@@ -7,6 +7,7 @@ import { LOCALES, type Locale, type PageComponent } from "@types";
 import type { DeployShopResult } from "@platform-core/createShop";
 import { useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
+import StepLayout from "./steps/StepLayout";
 
 import {
   baseTokens,
@@ -88,6 +89,11 @@ export default function Wizard({
   );
   const [productPageId, setProductPageId] = useState<string | null>(null);
 
+    const [headerComponents, setHeaderComponents] = useState<PageComponent[]>([]);
+  const [headerPageId, setHeaderPageId] = useState<string | null>(null);
+  const [footerComponents, setFooterComponents] = useState<PageComponent[]>([]);
+  const [footerPageId, setFooterPageId] = useState<string | null>(null);
+
   const [analyticsProvider, setAnalyticsProvider] = useState("");
   const [analyticsId, setAnalyticsId] = useState("");
 
@@ -168,6 +174,14 @@ export default function Wizard({
       if (typeof data.socialImage === "string")
         setSocialImage(data.socialImage);
       if (Array.isArray(data.components)) setComponents(data.components);
+      if (Array.isArray(data.headerComponents))
+        setHeaderComponents(data.headerComponents);
+      if (typeof data.headerPageId === "string")
+        setHeaderPageId(data.headerPageId);
+      if (Array.isArray(data.footerComponents))
+        setFooterComponents(data.footerComponents);
+      if (typeof data.footerPageId === "string")
+        setFooterPageId(data.footerPageId);
       if (typeof data.homePageId === "string") setHomePageId(data.homePageId);
       if (typeof data.homeLayout === "string") setHomeLayout(data.homeLayout);
       if (Array.isArray(data.productComponents))
@@ -226,6 +240,10 @@ export default function Wizard({
       pageDescription,
       socialImage,
       components,
+      headerComponents,
+      headerPageId,
+      footerComponents,
+      footerPageId,
       homePageId,
       productComponents,
       productPageId,
@@ -254,6 +272,10 @@ export default function Wizard({
     pageDescription,
     socialImage,
     components,
+    headerComponents,
+    headerPageId,
+    footerComponents,
+    footerPageId,
     homePageId,
     productComponents,
     productPageId,
@@ -300,6 +322,10 @@ export default function Wizard({
           socialImage,
           navigation: navItems,
           components,
+          headerComponents,
+          headerPageId,
+          footerComponents,
+          footerPageId,
           homePageId,
           productComponents,
           productPageId,
@@ -443,7 +469,7 @@ export default function Wizard({
   return (
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
-        <Progress step={step} total={11} />
+        <Progress step={step} total={13} />
 
         {step === 0 && (
            <StepShopDetails
@@ -497,7 +523,25 @@ export default function Wizard({
           />
         )}
 
-        <StepHomePage
+        {step === 5 && (
+          <StepLayout
+            headerComponents={headerComponents}
+            setHeaderComponents={setHeaderComponents}
+            headerPageId={headerPageId}
+            setHeaderPageId={setHeaderPageId}
+            footerComponents={footerComponents}
+            setFooterComponents={setFooterComponents}
+            footerPageId={footerPageId}
+            setFooterPageId={setFooterPageId}
+            shopId={shopId}
+            themeStyle={themeStyle}
+            onBack={() => setStep(4)}
+            onNext={() => setStep(6)}
+          />
+        )}
+
+        {step === 6 && (
+          <StepHomePage
             pageTemplates={pageTemplates}
             homeLayout={homeLayout}
             setHomeLayout={setHomeLayout}
@@ -507,12 +551,12 @@ export default function Wizard({
             setHomePageId={setHomePageId}
             shopId={shopId}
             themeStyle={themeStyle}
-            onBack={() => setStep(4)}
-            onNext={() => setStep(6)}
+            onBack={() => setStep(5)}
+            onNext={() => setStep(7)}
           />
         )}
 
-        {step === 6 && (
+        {step === 7 && (
           <StepProductPage
             pageTemplates={pageTemplates}
             productLayout={productLayout}
@@ -523,12 +567,12 @@ export default function Wizard({
             setProductPageId={setProductPageId}
             shopId={shopId}
             themeStyle={themeStyle}
-            onBack={() => setStep(5)}
-            onNext={() => setStep(7)}
+            onBack={() => setStep(6)}
+            onNext={() => setStep(8)}
           />
         )}
 
-        {step === 7 && (
+        {step === 8 && (
           <StepAdditionalPages
             pageTemplates={pageTemplates}
             pages={pages}
@@ -551,12 +595,12 @@ export default function Wizard({
             setNewPageLayout={setNewPageLayout}
             shopId={shopId}
             themeStyle={themeStyle}
-            onBack={() => setStep(6)}
-            onNext={() => setStep(8)}
+            onBack={() => setStep(7)}
+            onNext={() => setStep(9)}
           />
         )}
 
-        {step === 8 && (
+        {step === 9 && (
           <StepSummary
             shopId={shopId}
             template={template}
@@ -574,12 +618,12 @@ export default function Wizard({
             themeStyle={themeStyle}
             creating={creating}
             submit={submit}
-            onBack={() => setStep(7)}
-            onNext={() => setStep(9)}
+            onBack={() => setStep(8)}
+            onNext={() => setStep(10)}
           />
         )}
 
-        {step === 9 && (
+        {step === 10 && (
           <StepImportData
             csvFile={csvFile}
             setCsvFile={setCsvFile}
@@ -588,12 +632,12 @@ export default function Wizard({
             importResult={importResult}
             importing={importing}
             saveData={saveData}
-            onBack={() => setStep(8)}
-            onNext={() => setStep(10)}
+            onBack={() => setStep(9)}
+            onNext={() => setStep(11)}
           />
         )}
 
-        {step === 10 && (
+        {step === 11 && (
           <StepSeedData
             csvFile={csvFile}
             setCsvFile={setCsvFile}
@@ -602,11 +646,11 @@ export default function Wizard({
             seedResult={seedResult}
             seeding={seeding}
             seed={seed}
-            onBack={() => setStep(9)}
-            onNext={() => setStep(11)}
+            onBack={() => setStep(10)}
+            onNext={() => setStep(12)}
           />
         )}
-        {step === 11 && (
+        {step === 12 && (
           <StepHosting
             domain={domain}
             setDomain={setDomain}
@@ -614,7 +658,7 @@ export default function Wizard({
             deployInfo={deployInfo}
             deploying={deploying}
             deploy={deploy}
-            onBack={() => setStep(10)}
+            onBack={() => setStep(11)}
           />
         )}
       </fieldset>

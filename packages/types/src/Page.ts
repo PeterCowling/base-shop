@@ -5,7 +5,7 @@ import type { Translated } from "./Product";
 export interface SeoMeta {
   title: Translated;
   description?: Translated;
-  image?: string;
+  image?: Translated;
 }
 
 export interface PageComponentBase {

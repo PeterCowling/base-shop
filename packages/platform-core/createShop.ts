@@ -36,7 +36,7 @@ export interface CreateShopOptions {
     slug: string;
     title: Record<Locale, string>;
     description?: Record<Locale, string>;
-    image?: string;
+    image?: Record<Locale, string>;
     components: PageComponent[];
   }[];
 }
@@ -246,7 +246,9 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     seo: {
       title: options.pageTitle,
       description: options.pageDescription,
-      image: options.socialImage,
+      image: Object.fromEntries(
+        LOCALES.map((l) => [l, options.socialImage])
+      ) as Record<Locale, string>,
     },
     createdAt: now,
     updatedAt: now,

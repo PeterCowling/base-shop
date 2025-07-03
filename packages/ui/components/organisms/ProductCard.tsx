@@ -1,5 +1,6 @@
 import Image, { type StaticImageData } from "next/image";
 import * as React from "react";
+import { boxProps } from "../../utils/boxProps";
 import { cn } from "../../utils/cn";
 import { Button } from "../atoms-shadcn";
 import { Price } from "../atoms/Price";
@@ -19,6 +20,12 @@ export interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   ctaLabel?: string;
   /** Override default padding classes. */
   padding?: string;
+  /** Optional width */
+  width?: string | number;
+  /** Optional height */
+  height?: string | number;
+  /** Optional margin classes */
+  margin?: string;
 }
 
 export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
@@ -30,17 +37,22 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       showPrice = true,
       ctaLabel = "Add to cart",
       padding = "p-4",
+      width,
+      height,
+      margin,
       className,
       ...props
     },
     ref
   ) => {
+    const { classes, style } = boxProps({ width, height, padding, margin });
     return (
       <div
         ref={ref}
+        style={style}
         className={cn(
           "flex flex-col gap-3 rounded-lg border",
-          padding,
+          classes,
           className
         )}
         {...props}

@@ -2,6 +2,9 @@
 
 Composable building blocks made from atoms.
 
+Molecules now support optional sizing and spacing props.
+`width`, `height`, `padding` and `margin` let you tweak layout per instance.
+
 Available components:
 
 - `PriceCluster`

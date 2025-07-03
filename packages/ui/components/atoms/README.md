@@ -19,6 +19,10 @@ import { Button as ShButton } from "@/components/atoms-shadcn";
 
 In-house atoms continue to live in this folder.
 
+All atoms should accept optional layout props. Use `width`, `height`, `padding` and
+`margin` to adjust their sizing or spacing. Values may be Tailwind classes
+(e.g. `w-8`) or numeric pixel values where supported.
+
 Available components:
 
 - `StatCard`

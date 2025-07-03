@@ -1,5 +1,6 @@
 import Image, { type ImageProps } from "next/image";
 import * as React from "react";
+import { boxProps } from "../../utils/boxProps";
 import { cn } from "../../utils/cn";
 
 export interface AvatarProps extends Omit<ImageProps, "width" | "height"> {
@@ -7,18 +8,47 @@ export interface AvatarProps extends Omit<ImageProps, "width" | "height"> {
   fallback?: React.ReactNode;
   /** Both width and height of the avatar in pixels */
   size?: number;
+  /** Optional explicit width */
+  width?: string | number;
+  /** Optional explicit height */
+  height?: string | number;
+  /** Optional padding classes */
+  padding?: string;
+  /** Optional margin classes */
+  margin?: string;
 }
 
 export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
-  ({ className, src, alt, fallback, size = 32, ...props }, ref) => {
+  (
+    {
+      className,
+      src,
+      alt,
+      fallback,
+      size = 32,
+      width,
+      height,
+      padding,
+      margin,
+      ...props
+    },
+    ref
+  ) => {
     const dimension = size;
-
+    const { classes, style } = boxProps({
+      width: width ?? dimension,
+      height: height ?? dimension,
+      padding,
+      margin,
+    });
     if (!src) {
       return (
         <div
           ref={ref as unknown as React.RefObject<HTMLDivElement>}
+          style={style}
           className={cn(
-            `h-[${dimension}px] w-[${dimension}px] bg-muted flex items-center justify-center rounded-full text-sm`,
+            "bg-muted flex items-center justify-center rounded-full text-sm",
+            classes,
             className
           )}
         >
@@ -31,12 +61,18 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
         ref={ref}
         src={src}
         alt={alt ?? ""}
-        width={dimension}
-        height={dimension}
-        className={cn(
-          `h-[${dimension}px] w-[${dimension}px] rounded-full object-cover`,
-          className
-        )}
+        width={
+          typeof (width ?? dimension) === "number"
+            ? (width ?? dimension)
+            : dimension
+        }
+        height={
+          typeof (height ?? dimension) === "number"
+            ? (height ?? dimension)
+            : dimension
+        }
+        style={style}
+        className={cn("rounded-full object-cover", classes, className)}
         {...props}
       />
     );

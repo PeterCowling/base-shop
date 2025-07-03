@@ -2,6 +2,9 @@
 
 Composite layout sections composed of atoms and molecules.
 
+Organisms must expose `width`, `height`, `padding` and `margin`
+props to control their rendered dimensions.
+
 Current components:
 
 - `Header`

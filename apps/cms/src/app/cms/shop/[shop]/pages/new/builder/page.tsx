@@ -25,7 +25,11 @@ export default async function NewPageBuilderRoute({
     slug: "",
     status: "draft",
     components: [],
-    seo: { title: "", description: "" },
+    seo: {
+      title: { en: "", de: "", it: "" },
+      description: { en: "", de: "", it: "" },
+      image: { en: "", de: "", it: "" },
+    },
     createdAt: "",
     updatedAt: "",
     createdBy: "",

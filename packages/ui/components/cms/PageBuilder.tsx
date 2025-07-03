@@ -19,12 +19,16 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { getShopFromPath } from "@platform-core/utils/getShopFromPath";
+import Link from "@tiptap/extension-link";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import type { MediaItem, Page, PageComponent } from "@types";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ChangeEvent,
   memo,
+  useCallback,
   useEffect,
   useReducer,
   useRef,
@@ -219,6 +223,45 @@ function Block({ component }: { component: PageComponent }) {
 }
 
 const MemoBlock = memo(Block);
+
+function MenuBar({ editor }: { editor: ReturnType<typeof useEditor> }) {
+  if (!editor) return null;
+  return (
+    <div className="mb-1 flex gap-1 border-b pb-1">
+      <Button
+        type="button"
+        variant={editor.isActive("bold") ? "default" : "outline"}
+        onClick={() => editor.chain().focus().toggleBold().run()}
+      >
+        B
+      </Button>
+      <Button
+        type="button"
+        variant={editor.isActive("italic") ? "default" : "outline"}
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+      >
+        I
+      </Button>
+      <Button
+        type="button"
+        variant={editor.isActive("link") ? "default" : "outline"}
+        onClick={() => {
+          const url = window.prompt("URL");
+          if (url) {
+            editor
+              .chain()
+              .focus()
+              .extendMarkRange("link")
+              .setLink({ href: url })
+              .run();
+          }
+        }}
+      >
+        Link
+      </Button>
+    </div>
+  );
+}
 
 function ComponentEditor({
   component,
@@ -506,7 +549,6 @@ const CanvasItem = memo(function CanvasItem({
   });
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
   const startRef = useRef<{
     x: number;
     y: number;
@@ -522,11 +564,16 @@ const CanvasItem = memo(function CanvasItem({
   const [moving, setMoving] = useState(false);
   const [editing, setEditing] = useState(false);
 
+  const editor = useEditor({
+    extensions: [StarterKit, Link],
+    content: (component as any).text ?? "",
+  });
+
   useEffect(() => {
     if (editing) {
-      textRef.current?.focus();
+      editor?.commands.focus("end");
     }
-  }, [editing]);
+  }, [editing, editor]);
 
   useEffect(() => {
     if (!resizing) return;
@@ -606,6 +653,16 @@ const CanvasItem = memo(function CanvasItem({
     setMoving(true);
   };
 
+  const finishEdit = useCallback(() => {
+    if (!editor) return;
+    dispatch({
+      type: "update",
+      id: component.id,
+      patch: { text: editor.getHTML() } as Partial<PageComponent>,
+    });
+    setEditing(false);
+  }, [editor, dispatch, component.id]);
+
   return (
     <div
       ref={(node) => {
@@ -632,21 +689,18 @@ const CanvasItem = memo(function CanvasItem({
     >
       {component.type === "Text" ? (
         editing ? (
-          <div
-            ref={textRef}
-            contentEditable
-            suppressContentEditableWarning
-            onBlur={finishEdit}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                finishEdit();
-              }
-            }}
-            onClick={(e) => e.stopPropagation()}
-            className="min-h-[1rem] outline-none"
-          >
-            {(component as any).text ?? ""}
+          <div onBlur={finishEdit} onClick={(e) => e.stopPropagation()}>
+            <MenuBar editor={editor} />
+            <EditorContent
+              editor={editor}
+              className="min-h-[1rem] outline-none"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  finishEdit();
+                }
+              }}
+            />
           </div>
         ) : (
           <div
@@ -655,9 +709,8 @@ const CanvasItem = memo(function CanvasItem({
               setEditing(true);
               onSelect();
             }}
-          >
-            {(component as any).text ?? ""}
-          </div>
+            dangerouslySetInnerHTML={{ __html: (component as any).text ?? "" }}
+          />
         )
       ) : (
         <MemoBlock component={component} />

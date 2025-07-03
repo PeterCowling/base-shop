@@ -3,7 +3,7 @@ import "server-only";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 
-import type { Shop } from "../../types/src";
+import { shopSchema, type Shop } from "../../types/src";
 import { validateShopName } from "../shops";
 
 import { DATA_ROOT } from "./utils";
@@ -23,7 +23,7 @@ export async function getShopById<T extends { id: string } = Shop>(
 ): Promise<T> {
   try {
     const buf = await fs.readFile(shopPath(shop), "utf8");
-    return JSON.parse(buf) as T;
+    return shopSchema.parse(JSON.parse(buf)) as T;
   } catch {
     throw new Error(`Shop ${shop} not found`);
   }

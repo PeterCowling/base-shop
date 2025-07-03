@@ -12,6 +12,7 @@ import {
 import {
   asSetCookieHeader,
   CART_COOKIE,
+  cartStateSchema,
   encodeCartCookie,
 } from "../cartCookie";
 
@@ -66,11 +67,14 @@ const LS_KEY = CART_COOKIE;
 
 function readInitial(): CartState {
   if (typeof window === "undefined") return {};
+  const raw = localStorage.getItem(LS_KEY);
+  if (!raw) return {};
   try {
-    return JSON.parse(
-      decodeURIComponent(localStorage.getItem(LS_KEY) || "{}")
-    ) as CartState;
-  } catch {
+    const decoded = decodeURIComponent(raw);
+    const parsed = JSON.parse(decoded);
+    return cartStateSchema.parse(parsed);
+  } catch (err) {
+    console.warn("Invalid cart state in localStorage", err);
     return {};
   }
 }

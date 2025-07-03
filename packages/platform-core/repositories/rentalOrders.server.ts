@@ -5,7 +5,7 @@ import "server-only";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
-import type { RentalOrder } from "../../types/src";
+import { rentalOrderSchema, type RentalOrder } from "../../types/src";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "./utils";
 
@@ -24,7 +24,8 @@ async function ensureDir(shop: string): Promise<void> {
 export async function readOrders(shop: string): Promise<RentalOrder[]> {
   try {
     const buf = await fs.readFile(ordersPath(shop), "utf8");
-    return JSON.parse(buf) as RentalOrder[];
+    const parsed = rentalOrderSchema.array().safeParse(JSON.parse(buf));
+    return parsed.success ? parsed.data : [];
   } catch {
     return [];
   }

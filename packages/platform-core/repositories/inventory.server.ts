@@ -2,7 +2,7 @@
 
 import "server-only";
 
-import type { InventoryItem } from "@types";
+import { inventoryItemSchema, type InventoryItem } from "@types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { validateShopName } from "../shops";
@@ -22,8 +22,9 @@ async function ensureDir(shop: string): Promise<void> {
 export async function readInventory(shop: string): Promise<InventoryItem[]> {
   try {
     const buf = await fs.readFile(inventoryPath(shop), "utf8");
-    return JSON.parse(buf) as InventoryItem[];
-  } catch {
+    const parsed = inventoryItemSchema.array().safeParse(JSON.parse(buf));
+    return parsed.success ? parsed.data : [];
+  } catch (err) {
     return [];
   }
 }

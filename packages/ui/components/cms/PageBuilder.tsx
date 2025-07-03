@@ -20,6 +20,7 @@ import {
 import type { Page, PageComponent } from "@types";
 import { memo, useEffect, useReducer, useState } from "react";
 import { ulid } from "ulid";
+import { z } from "zod";
 import { Button } from "../atoms-shadcn";
 import CanvasItem from "./page-builder/CanvasItem";
 import ComponentEditor from "./page-builder/ComponentEditor";
@@ -38,6 +39,12 @@ export interface HistoryState {
   present: PageComponent[];
   future: PageComponent[][];
 }
+
+export const historyStateSchema: z.ZodSchema<HistoryState> = z.object({
+  past: z.array(z.array(z.any())),
+  present: z.array(z.any()),
+  future: z.array(z.array(z.any())),
+});
 
 type ChangeAction =
   | { type: "add"; component: PageComponent }
@@ -134,7 +141,13 @@ export default memo(function PageBuilder({
   const [state, dispatch] = useReducer(reducer, undefined, () => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem(key);
-      if (stored) return JSON.parse(stored) as HistoryState;
+      if (stored) {
+        try {
+          return historyStateSchema.parse(JSON.parse(stored));
+        } catch (err) {
+          console.warn("Invalid history state", err);
+        }
+      }
     }
     return { past: [], present: page.components, future: [] } as HistoryState;
   });

@@ -1,6 +1,7 @@
-export type PageStatus = "draft" | "published";
+import { z } from "zod";
+import { localeSchema, type Translated } from "./Product";
 
-import type { Translated } from "./Product";
+export type PageStatus = "draft" | "published";
 
 export interface SeoMeta {
   title: Translated;
@@ -125,13 +126,21 @@ export type PageComponent =
   | ImageComponent
   | TextComponent;
 
-export interface Page {
-  id: string;
-  slug: string;
-  status: PageStatus;
-  components: PageComponent[];
-  seo: SeoMeta;
-  createdAt: string;
-  updatedAt: string;
-  createdBy: string;
-}
+export const pageSchema = z.object({
+  id: z.string(),
+  slug: z.string(),
+  status: z.enum(["draft", "published"]),
+  components: z
+    .array(z.object({ id: z.string(), type: z.string() }).passthrough())
+    .default([]),
+  seo: z.object({
+    title: z.record(localeSchema, z.string()),
+    description: z.record(localeSchema, z.string()).optional(),
+    image: z.record(localeSchema, z.string()).optional(),
+  }),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  createdBy: z.string(),
+});
+
+export type Page = z.infer<typeof pageSchema>;

@@ -3,7 +3,8 @@ import "server-only";
 
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import type { Shop } from "../../types/src";
+import { z } from "zod";
+import { shopSchema, shopSettingsSchema, type Shop } from "../../types/src";
 import { defaultFilterMappings } from "../defaultFilterMappings";
 import { validateShopName } from "../shops";
 import { DATA_ROOT, loadThemeTokens } from "./utils";
@@ -21,13 +22,16 @@ async function ensureDir(shop: string): Promise<void> {
 export async function readShop(shop: string): Promise<Shop> {
   try {
     const buf = await fs.readFile(shopPath(shop), "utf8");
-    const parsed = JSON.parse(buf) as Shop;
-    if (parsed.id) {
-      if (!parsed.themeTokens || Object.keys(parsed.themeTokens).length === 0) {
-        parsed.themeTokens = await loadThemeTokens(parsed.themeId);
+    const parsed = shopSchema.safeParse(JSON.parse(buf));
+    if (parsed.success && parsed.data.id) {
+      if (
+        !parsed.data.themeTokens ||
+        Object.keys(parsed.data.themeTokens).length === 0
+      ) {
+        parsed.data.themeTokens = await loadThemeTokens(parsed.data.themeId);
       }
-      if (!parsed.navigation) parsed.navigation = [];
-      return parsed;
+      if (!parsed.data.navigation) parsed.data.navigation = [];
+      return parsed.data;
     }
   } catch {
     // ignore
@@ -76,11 +80,17 @@ export interface SettingsDiffEntry {
 export async function diffHistory(shop: string): Promise<SettingsDiffEntry[]> {
   try {
     const buf = await fs.readFile(historyPath(shop), "utf8");
+    const entrySchema = z.object({
+      timestamp: z.string(),
+      diff: shopSettingsSchema.partial(),
+    });
     return buf
       .trim()
       .split(/\n+/)
       .filter(Boolean)
-      .map((line) => JSON.parse(line) as SettingsDiffEntry);
+      .map((line) => entrySchema.safeParse(JSON.parse(line)))
+      .filter((r) => r.success)
+      .map((r) => (r as z.SafeParseSuccess<SettingsDiffEntry>).data);
   } catch {
     return [];
   }

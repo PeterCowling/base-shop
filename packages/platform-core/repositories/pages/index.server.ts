@@ -2,7 +2,7 @@
 
 import "server-only";
 
-import type { Page } from "@types";
+import { pageSchema, type Page } from "@types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { validateShopName } from "../../shops";
@@ -34,8 +34,8 @@ async function writePages(shop: string, pages: Page[]): Promise<void> {
 export async function getPages(shop: string): Promise<Page[]> {
   try {
     const buf = await fs.readFile(pagesPath(shop), "utf8");
-    const parsed = JSON.parse(buf) as Page[];
-    if (Array.isArray(parsed)) return parsed;
+    const parsed = pageSchema.array().safeParse(JSON.parse(buf));
+    if (parsed.success) return parsed.data;
   } catch {
     // ignore missing or invalid file
   }

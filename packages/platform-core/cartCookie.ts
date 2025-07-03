@@ -1,9 +1,19 @@
 import type { CartState } from "@types";
+import { skuSchema } from "@types";
+import { z } from "zod";
 
 /* -------- constants -------- */
 
 export const CART_COOKIE = "CART_STATE";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+
+export const cartLineSchema = z.object({
+  sku: skuSchema,
+  qty: z.number(),
+  size: z.string().optional(),
+});
+
+export const cartStateSchema = z.record(z.string(), cartLineSchema);
 
 /* -------- helpers -------- */
 
@@ -14,9 +24,12 @@ export function encodeCartCookie(state: CartState): string {
 
 /** Parse cookie string → typed cart (never throws) */
 export function decodeCartCookie(raw?: string | null): CartState {
+  if (!raw) return {};
   try {
-    return raw ? (JSON.parse(decodeURIComponent(raw)) as CartState) : {};
-  } catch {
+    const parsed = JSON.parse(decodeURIComponent(raw));
+    return cartStateSchema.parse(parsed);
+  } catch (err) {
+    console.warn("Invalid cart cookie", err);
     return {};
   }
 }

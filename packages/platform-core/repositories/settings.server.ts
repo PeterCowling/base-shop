@@ -3,8 +3,12 @@ import "server-only";
 
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import type { ShopSettings } from "../../types/src";
-import { LOCALES, type Locale } from "../../types/src";
+import {
+  LOCALES,
+  shopSettingsSchema,
+  type Locale,
+  type ShopSettings,
+} from "../../types/src";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "./utils";
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
@@ -43,13 +47,14 @@ function diffSettings(
 export async function getShopSettings(shop: string): Promise<ShopSettings> {
   try {
     const buf = await fs.readFile(settingsPath(shop), "utf8");
-    const parsed = JSON.parse(buf) as ShopSettings;
-    if (Array.isArray(parsed.languages))
+    const parsed = shopSettingsSchema.safeParse(JSON.parse(buf));
+    if (parsed.success) {
       return {
         freezeTranslations: false,
-        ...(parsed.analytics ? { analytics: parsed.analytics } : {}),
-        ...parsed,
+        ...(parsed.data.analytics ? { analytics: parsed.data.analytics } : {}),
+        ...parsed.data,
       };
+    }
   } catch {
     // ignore
   }
@@ -92,11 +97,17 @@ export interface SettingsDiffEntry {
 export async function diffHistory(shop: string): Promise<SettingsDiffEntry[]> {
   try {
     const buf = await fs.readFile(historyPath(shop), "utf8");
+    const entrySchema = z.object({
+      timestamp: z.string(),
+      diff: shopSettingsSchema.partial(),
+    });
     return buf
       .trim()
       .split(/\n+/)
       .filter(Boolean)
-      .map((line) => JSON.parse(line) as SettingsDiffEntry);
+      .map((line) => entrySchema.safeParse(JSON.parse(line)))
+      .filter((r) => r.success)
+      .map((r) => (r as z.SafeParseSuccess<SettingsDiffEntry>).data);
   } catch {
     return [];
   }

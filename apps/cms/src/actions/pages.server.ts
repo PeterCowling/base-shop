@@ -207,8 +207,8 @@ export async function updatePage(
   });
 
   const patch: Partial<Page> & { id: string; updatedAt: string } = {
-    id: data.id,
-    updatedAt: data.updatedAt,
+    id: data.id as string,
+    updatedAt: data.updatedAt as string,
     slug: data.slug,
     status: data.status,
     components: data.components,

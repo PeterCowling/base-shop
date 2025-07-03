@@ -1,54 +1,146 @@
 "use client";
 
+import { Tooltip } from "@/components/atoms";
+import { Input, Textarea } from "@/components/atoms-shadcn";
 import type { Locale } from "@types";
 import { cn } from "@ui/utils/cn";
+import type { SeoRecord } from "./useSeoForm";
 
 interface Props {
-  /** Enabled locales */
   languages: readonly Locale[];
-  /** Current selected locale */
-  value: Locale;
-  /** Callback when a locale is selected */
-  onChange(locale: Locale): void;
-  /** SEO records keyed by locale */
-  seo?: Record<
-    string,
-    { title?: string; description?: string; image?: string }
-  >;
-  /** Locale that acts as the base / fallback */
+  locale: Locale;
+  onLocaleChange(locale: Locale): void;
+  seo: Record<string, SeoRecord>;
+  onFieldChange(field: keyof SeoRecord, value: string): void;
+  titleLimit: number;
+  descLimit: number;
   baseLocale?: Locale;
 }
 
 export default function SeoLanguageTabs({
   languages,
-  value,
-  onChange,
-  seo = {},
+  locale,
+  onLocaleChange,
+  seo,
+  onFieldChange,
+  titleLimit,
+  descLimit,
   baseLocale,
 }: Props) {
   const base = baseLocale ?? languages[0];
+  const current = seo[locale];
   return (
-    <div className="flex flex-wrap gap-2">
-      {languages.map((l) => {
-        const isSelected = l === value;
-        const inherited = l !== base && !seo[l];
-        return (
-          <button
-            key={l}
-            type="button"
-            onClick={() => onChange(l)}
-            className={cn(
-              "rounded-full border px-2 py-0.5 text-xs font-medium",
-              isSelected
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-fg hover:bg-muted/80",
-              inherited && "opacity-50"
-            )}
-          >
-            {l.toUpperCase()}
-          </button>
-        );
-      })}
+    <div className="space-y-4">
+      <div className="flex flex-wrap gap-2">
+        {languages.map((l) => {
+          const isSelected = l === locale;
+          const inherited = l !== base && !seo[l];
+          return (
+            <button
+              key={l}
+              type="button"
+              onClick={() => onLocaleChange(l)}
+              className={cn(
+                "rounded-full border px-2 py-0.5 text-xs font-medium",
+                isSelected
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-muted text-fg hover:bg-muted/80",
+                inherited && "opacity-50"
+              )}
+            >
+              {l.toUpperCase()}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-3">
+        {/* Meta ------------------------------------------------------- */}
+        <section className="flex flex-col gap-3">
+          <h3 className="font-medium">Meta</h3>
+          <label className="flex flex-col gap-1">
+            <span className="flex items-center gap-1">
+              Title
+              <Tooltip text="Recommended ≤ 70 characters">?</Tooltip>
+              <span className="text-muted-foreground ml-auto text-xs">
+                {current.title.length}/{titleLimit}
+              </span>
+            </span>
+            <Input
+              value={current.title}
+              onChange={(e) => onFieldChange("title", e.target.value)}
+            />
+          </label>
+          <label className="flex flex-col gap-1">
+            <span className="flex items-center gap-1">
+              Description
+              <Tooltip text="Recommended ≤ 160 characters">?</Tooltip>
+              <span className="text-muted-foreground ml-auto text-xs">
+                {current.description.length}/{descLimit}
+              </span>
+            </span>
+            <Textarea
+              rows={3}
+              value={current.description}
+              onChange={(e) => onFieldChange("description", e.target.value)}
+            />
+          </label>
+        </section>
+
+        {/* Open Graph ------------------------------------------------- */}
+        <section className="flex flex-col gap-3">
+          <h3 className="font-medium">Open Graph</h3>
+          <label className="flex flex-col gap-1">
+            <span>Title</span>
+            <Input
+              value={current.title}
+              onChange={(e) => onFieldChange("title", e.target.value)}
+            />
+          </label>
+          <label className="flex flex-col gap-1">
+            <span>Description</span>
+            <Textarea
+              rows={3}
+              value={current.description}
+              onChange={(e) => onFieldChange("description", e.target.value)}
+            />
+          </label>
+          <label className="flex flex-col gap-1">
+            <span>Image URL</span>
+            <Input
+              value={current.image}
+              onChange={(e) => onFieldChange("image", e.target.value)}
+            />
+          </label>
+        </section>
+
+        {/* Twitter ---------------------------------------------------- */}
+        <section className="flex flex-col gap-3">
+          <h3 className="font-medium">Twitter</h3>
+          <label className="flex flex-col gap-1">
+            <span>Title</span>
+            <Input
+              value={current.title}
+              onChange={(e) => onFieldChange("title", e.target.value)}
+            />
+          </label>
+          <label className="flex flex-col gap-1">
+            <span>Description</span>
+            <Textarea
+              rows={3}
+              value={current.description}
+              onChange={(e) => onFieldChange("description", e.target.value)}
+            />
+          </label>
+          <label className="flex flex-col gap-1">
+            <span>Image URL</span>
+            <Input
+              value={current.image}
+              onChange={(e) => onFieldChange("image", e.target.value)}
+            />
+          </label>
+        </section>
+      </div>
     </div>
   );
 }

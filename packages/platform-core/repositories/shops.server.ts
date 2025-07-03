@@ -1,36 +1,16 @@
 // packages/platform-core/repositories/shops.server.ts
 import "server-only";
 
-import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import type { ShopSettings } from "../../types/src";
-import { LOCALES, type Locale } from "../../types/src";
+import type { Shop } from "../../types/src";
+import { defaultFilterMappings } from "../defaultFilterMappings";
 import { validateShopName } from "../shops";
+import { DATA_ROOT, loadThemeTokens } from "./utils";
 
-function resolveDataRoot(): string {
-  let dir = process.cwd();
-  while (true) {
-    const candidate = path.join(dir, "data", "shops");
-    if (fsSync.existsSync(candidate)) return candidate;
-    const parent = path.dirname(dir);
-    if (parent === dir) break;
-    dir = parent;
-  }
-  return path.resolve(process.cwd(), "data", "shops");
-}
-
-const DATA_ROOT = resolveDataRoot();
-const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
-
-function settingsPath(shop: string): string {
+function shopPath(shop: string): string {
   shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "settings.json");
-}
-
-function historyPath(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "settings.history.jsonl");
+  return path.join(DATA_ROOT, shop, "shop.json");
 }
 
 async function ensureDir(shop: string): Promise<void> {
@@ -38,42 +18,32 @@ async function ensureDir(shop: string): Promise<void> {
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 
-function diffSettings(
-  oldS: ShopSettings,
-  newS: ShopSettings
-): Partial<ShopSettings> {
-  const patch: Partial<ShopSettings> = {};
-  for (const key of Object.keys(newS) as (keyof ShopSettings)[]) {
-    const a = JSON.stringify(oldS[key]);
-    const b = JSON.stringify(newS[key]);
-    if (a !== b) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (patch as any)[key] = newS[key];
-    }
-  }
-  return patch;
-}
-
-export async function getShopSettings(shop: string): Promise<ShopSettings> {
+export async function readShop(shop: string): Promise<Shop> {
   try {
-    const buf = await fs.readFile(settingsPath(shop), "utf8");
-    const parsed = JSON.parse(buf) as ShopSettings;
-    if (Array.isArray(parsed.languages))
-      return {
-        freezeTranslations: false,
-        ...(parsed.analytics ? { analytics: parsed.analytics } : {}),
-        ...parsed,
-      };
+    const buf = await fs.readFile(shopPath(shop), "utf8");
+    const parsed = JSON.parse(buf) as Shop;
+    if (parsed.id) {
+      if (!parsed.themeTokens || Object.keys(parsed.themeTokens).length === 0) {
+        parsed.themeTokens = await loadThemeTokens(parsed.themeId);
+      }
+      if (!parsed.navigation) parsed.navigation = [];
+      return parsed;
+    }
   } catch {
     // ignore
   }
+  const themeId = "base";
+
   return {
-    languages: DEFAULT_LANGUAGES,
-    seo: {},
-    analytics: undefined,
-    freezeTranslations: false,
-    updatedAt: "",
-    updatedBy: "",
+    id: shop,
+    name: shop,
+    catalogFilters: [],
+    themeId,
+    themeTokens: await loadThemeTokens(themeId),
+    filterMappings: { ...defaultFilterMappings },
+    priceOverrides: {},
+    localeOverrides: {},
+    navigation: [],
   };
 }
 

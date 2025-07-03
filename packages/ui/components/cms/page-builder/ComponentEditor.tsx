@@ -2,6 +2,7 @@
 
 import { getShopFromPath } from "@platform-core/utils/getShopFromPath";
 import type { MediaItem, PageComponent } from "@types";
+import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -31,20 +32,21 @@ export default function ComponentEditor({ component, onChange }: Props) {
   const shop = getShopFromPath(pathname);
   const [media, setMedia] = useState<MediaItem[]>([]);
 
-  useEffect(() => {
-    async function load() {
-      if (!shop) return;
-      try {
-        const res = await fetch(`/cms/api/media?shop=${shop}`);
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data)) setMedia(data);
-        }
-      } catch {
-        /* ignore */
+  async function loadMedia() {
+    if (!shop) return;
+    try {
+      const res = await fetch(`/cms/api/media?shop=${shop}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data)) setMedia(data);
       }
+    } catch {
+      /* ignore */
     }
-    load();
+  }
+
+  useEffect(() => {
+    void loadMedia();
   }, [shop]);
 
   function ImagePicker({
@@ -54,11 +56,62 @@ export default function ComponentEditor({ component, onChange }: Props) {
     onSelect: (url: string) => void;
     children: React.ReactNode;
   }) {
+    const [open, setOpen] = useState(false);
+    const {
+      pendingFile,
+      altText,
+      setAltText,
+      isValid,
+      actual,
+      inputRef,
+      onFileChange,
+      handleUpload,
+      error,
+    } = useMediaUpload({
+      shop: shop ?? "",
+      requiredOrientation: "landscape",
+      onUploaded: (item) => {
+        setMedia((m) => [item, ...m]);
+      },
+    });
+
+    useEffect(() => {
+      if (open) void loadMedia();
+    }, [open]);
     return (
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent className="max-w-xl">
+        <DialogContent className="max-w-xl space-y-4">
           <DialogTitle>Select image</DialogTitle>
+          <div className="flex items-center gap-2">
+            <Input
+              ref={inputRef}
+              type="file"
+              accept="image/*"
+              onChange={onFileChange}
+              className="flex-1"
+            />
+            {pendingFile && isValid && (
+              <Button type="button" onClick={handleUpload}>
+                Upload
+              </Button>
+            )}
+          </div>
+          {pendingFile && isValid && (
+            <Input
+              value={altText}
+              onChange={(e) => setAltText(e.target.value)}
+              placeholder="Alt text"
+            />
+          )}
+          {pendingFile && isValid !== null && (
+            <p className="text-sm">
+              {isValid
+                ? `Image orientation is ${actual}`
+                : `Selected image is ${actual}; please upload a landscape image.`}
+            </p>
+          )}
+          {error && <p className="text-sm text-red-600">{error}</p>}
           <div className="grid max-h-64 grid-cols-3 gap-2 overflow-auto">
             {media.map((m) => (
               <button
@@ -66,6 +119,7 @@ export default function ComponentEditor({ component, onChange }: Props) {
                 type="button"
                 onClick={() => {
                   onSelect(m.url);
+                  setOpen(false);
                 }}
                 className="relative aspect-square"
               >

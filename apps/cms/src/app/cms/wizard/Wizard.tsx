@@ -8,6 +8,7 @@ import type { DeployShopResult } from "@platform-core/createShop";
 import { useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
 import StepLayout from "./steps/StepLayout";
+import MediaUploadDialog from "./MediaUploadDialog";
 
 import {
   baseTokens,
@@ -517,7 +518,10 @@ export default function Wizard({
   return (
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
-        <Progress step={step} total={14} />
+        <div className="flex items-center justify-between">
+          <Progress step={step} total={14} />
+          {shopId && <MediaUploadDialog shop={shopId} />}
+        </div>
 
         {step === 0 && (
            <StepShopDetails

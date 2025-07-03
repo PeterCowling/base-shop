@@ -1,4 +1,4 @@
-import { deleteMedia, uploadMedia } from "@cms/actions/media.server";
+import { deleteMedia } from "@cms/actions/media.server";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
 import MediaManager from "../components/cms/MediaManager";
@@ -10,12 +10,14 @@ const mockHook = useImageOrientationValidation as jest.MockedFunction<
   typeof useImageOrientationValidation
 >;
 const mockDelete = deleteMedia as jest.MockedFunction<typeof deleteMedia>;
-const mockUpload = uploadMedia as jest.MockedFunction<typeof uploadMedia>;
 
 beforeEach(() => {
   mockHook.mockReturnValue({ actual: null, isValid: null });
   mockDelete.mockResolvedValue(undefined as any);
-  mockUpload.mockResolvedValue({ url: "/new.png", altText: "a" } as any);
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({ url: "/new.png", altText: "a" }),
+  } as any);
 });
 
 describe("MediaManager", () => {
@@ -40,8 +42,8 @@ describe("MediaManager", () => {
       target: { value: "alt" },
     });
     fireEvent.click(screen.getByText("Upload"));
-    await waitFor(() => expect(mockUpload).toHaveBeenCalled());
-    const fd = mockUpload.mock.calls[0][1] as FormData;
+    await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+    const fd = (global.fetch as jest.Mock).mock.calls[0][1].body as FormData;
     expect(fd.get("altText")).toBe("alt");
   });
 });

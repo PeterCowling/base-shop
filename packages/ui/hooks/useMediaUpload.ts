@@ -1,4 +1,3 @@
-import { uploadMedia } from "@cms/actions/media.server";
 import type { ImageOrientation, MediaItem } from "@types";
 import { useCallback, useRef, useState } from "react";
 import { useImageOrientationValidation } from "./useImageOrientationValidation";
@@ -52,8 +51,16 @@ export function useMediaUpload({
     fd.append("file", pendingFile);
     if (altText) fd.append("altText", altText);
     try {
-      const item = await uploadMedia(shop, fd);
-      onUploaded?.(item);
+      const res = await fetch(
+        `/cms/api/media?shop=${shop}&orientation=${requiredOrientation}`,
+        {
+          method: "POST",
+          body: fd,
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || res.statusText);
+      onUploaded?.(data as MediaItem);
       setError(undefined);
     } catch (err) {
       if (err instanceof Error) setError(err.message);
@@ -61,7 +68,7 @@ export function useMediaUpload({
     setProgress(null);
     setPendingFile(null);
     setAltText("");
-  }, [pendingFile, altText, shop, onUploaded]);
+  }, [pendingFile, altText, shop, onUploaded, requiredOrientation]);
 
   const onDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

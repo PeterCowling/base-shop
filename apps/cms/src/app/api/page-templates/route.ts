@@ -5,13 +5,25 @@ import path from "node:path";
 function resolveTemplatesRoot(): string {
   let dir = process.cwd();
   while (true) {
-    const candidate = path.join(dir, "packages", "ui", "templates");
+    const candidate = path.join(
+      dir,
+      "packages",
+      "ui",
+      "components",
+      "templates"
+    );
     if (fsSync.existsSync(candidate)) return candidate;
     const parent = path.dirname(dir);
     if (parent === dir) break;
     dir = parent;
   }
-  return path.resolve(process.cwd(), "packages", "ui", "templates");
+  return path.resolve(
+    process.cwd(),
+    "packages",
+    "ui",
+    "components",
+    "templates"
+  );
 }
 
 export async function GET() {

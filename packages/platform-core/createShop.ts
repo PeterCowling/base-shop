@@ -1,6 +1,6 @@
 // packages/platform-core/createShop.ts
 import type { PageComponent } from "@types";
-import { LOCALES, type Locale } from "@types";
+import { LOCALES, localeSchema, type Locale } from "@types";
 import { spawnSync } from "child_process";
 import { randomBytes } from "crypto";
 import {
@@ -12,12 +12,48 @@ import {
 } from "fs";
 import { join } from "path";
 import { ulid } from "ulid";
+import { z } from "zod";
 import {
   copyTemplate,
   loadBaseTokens,
   loadThemeTokens,
 } from "./createShop/utils";
 import { defaultFilterMappings } from "./defaultFilterMappings";
+
+export const createShopOptionsSchema = z.object({
+  name: z.string().optional(),
+  logo: z.string().optional(),
+  contactInfo: z.string().optional(),
+  type: z.enum(["sale", "rental"]).optional(),
+  theme: z.string().optional(),
+  template: z.string().optional(),
+  payment: z.array(z.string()).optional(),
+  shipping: z.array(z.string()).optional(),
+  pageTitle: z.record(localeSchema, z.string()).optional(),
+  pageDescription: z.record(localeSchema, z.string()).optional(),
+  socialImage: z.string().optional(),
+  analytics: z
+    .object({
+      provider: z.string(),
+      id: z.string().optional(),
+    })
+    .optional(),
+  navItems: z
+    .array(z.object({ label: z.string(), url: z.string() }))
+    .optional(),
+  pages: z
+    .array(
+      z.object({
+        slug: z.string(),
+        title: z.record(localeSchema, z.string()),
+        description: z.record(localeSchema, z.string()).optional(),
+        image: z.record(localeSchema, z.string()).optional(),
+        components: z.array(z.any()),
+      })
+    )
+    .optional(),
+  checkoutPage: z.array(z.any()).optional(),
+});
 
 export interface CreateShopOptions {
   name?: string;
@@ -61,37 +97,38 @@ function genSecret(bytes = 16): string {
  * Paths are resolved relative to the repository root.
  */
 export function createShop(id: string, opts: CreateShopOptions = {}): void {
+  const parsed = createShopOptionsSchema.parse(opts);
   const options: Required<
     Omit<CreateShopOptions, "analytics" | "checkoutPage">
   > & {
     analytics?: CreateShopOptions["analytics"];
     checkoutPage: PageComponent[];
   } = {
-    name: opts.name ?? id,
-    logo: opts.logo ?? "",
-    contactInfo: opts.contactInfo ?? "",
-    type: opts.type ?? "sale",
-    theme: opts.theme ?? "base",
-    template: opts.template ?? "template-app",
-    payment: opts.payment ?? [],
-    shipping: opts.shipping ?? [],
+    name: parsed.name ?? id,
+    logo: parsed.logo ?? "",
+    contactInfo: parsed.contactInfo ?? "",
+    type: parsed.type ?? "sale",
+    theme: parsed.theme ?? "base",
+    template: parsed.template ?? "template-app",
+    payment: parsed.payment ?? [],
+    shipping: parsed.shipping ?? [],
     pageTitle:
-      opts.pageTitle ??
+      parsed.pageTitle ??
       (Object.fromEntries(LOCALES.map((l) => [l, "Home"])) as Record<
         Locale,
         string
       >),
     pageDescription:
-      opts.pageDescription ??
+      parsed.pageDescription ??
       (Object.fromEntries(LOCALES.map((l) => [l, ""])) as Record<
         Locale,
         string
       >),
-    socialImage: opts.socialImage ?? "",
-    analytics: opts.analytics,
-    navItems: opts.navItems ?? [],
-    pages: opts.pages ?? [],
-    checkoutPage: opts.checkoutPage ?? [],
+    socialImage: parsed.socialImage ?? "",
+    analytics: parsed.analytics,
+    navItems: parsed.navItems ?? [],
+    pages: parsed.pages ?? [],
+    checkoutPage: parsed.checkoutPage ?? [],
   };
 
   const templateApp = join("packages", options.template);

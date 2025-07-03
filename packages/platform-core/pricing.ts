@@ -1,13 +1,8 @@
-import type { SKU } from "@types";
+import type { PricingMatrix, SKU } from "@types";
+import { pricingSchema } from "@types";
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-
-export interface PricingMatrix {
-  baseDailyRate: number;
-  durationDiscounts: { minDays: number; rate: number }[];
-  damageFees: Record<string, number | "deposit">;
-}
 
 function resolveDataRoot(): string {
   let dir = process.cwd();
@@ -27,7 +22,7 @@ export async function getPricing(): Promise<PricingMatrix> {
   if (cached) return cached;
   const file = path.join(resolveDataRoot(), "..", "rental", "pricing.json");
   const buf = await fs.readFile(file, "utf8");
-  cached = JSON.parse(buf) as PricingMatrix;
+  cached = pricingSchema.parse(JSON.parse(buf));
   return cached;
 }
 

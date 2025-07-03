@@ -1,3 +1,5 @@
+import type { ElementType } from "react";
+
 export function Text({
   text = "",
   tag = "p",
@@ -5,7 +7,7 @@ export function Text({
   text?: string;
   tag?: keyof JSX.IntrinsicElements;
 }) {
-  const Comp = tag as keyof JSX.IntrinsicElements;
+  const Comp = tag as ElementType;
   return <Comp>{text}</Comp>;
 }
 

@@ -18,7 +18,10 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { Page, PageComponent } from "@types";
+import { getShopFromPath } from "@platform-core/utils/getShopFromPath";
+import type { MediaItem, Page, PageComponent } from "@types";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   ChangeEvent,
   memo,
@@ -30,6 +33,10 @@ import {
 import { ulid } from "ulid";
 import {
   Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
   Input,
   Select,
   SelectContent,
@@ -52,7 +59,13 @@ interface Props {
   style?: React.CSSProperties;
 }
 
-type Action =
+export interface HistoryState {
+  past: PageComponent[][];
+  present: PageComponent[];
+  future: PageComponent[][];
+}
+
+type ChangeAction =
   | { type: "add"; component: PageComponent }
   | { type: "move"; from: number; to: number }
   | { type: "remove"; id: string }
@@ -64,9 +77,15 @@ type Action =
       height?: string;
       left?: string;
       top?: string;
-    };
+    }
+  | { type: "set"; components: PageComponent[] };
 
-function reducer(state: PageComponent[], action: Action): PageComponent[] {
+type Action = ChangeAction | { type: "undo" } | { type: "redo" };
+
+function componentsReducer(
+  state: PageComponent[],
+  action: ChangeAction
+): PageComponent[] {
   switch (action.type) {
     case "add":
       return [...state, action.component];
@@ -91,8 +110,42 @@ function reducer(state: PageComponent[], action: Action): PageComponent[] {
             }
           : b
       );
+    case "set":
+      return action.components;
     default:
       return state;
+  }
+}
+
+function reducer(state: HistoryState, action: Action): HistoryState {
+  switch (action.type) {
+    case "undo": {
+      const previous = state.past[state.past.length - 1];
+      if (!previous) return state;
+      return {
+        past: state.past.slice(0, -1),
+        present: previous,
+        future: [state.present, ...state.future],
+      };
+    }
+    case "redo": {
+      const next = state.future[0];
+      if (!next) return state;
+      return {
+        past: [...state.past, state.present],
+        present: next,
+        future: state.future.slice(1),
+      };
+    }
+    default: {
+      const next = componentsReducer(state.present, action);
+      if (next === state.present) return state;
+      return {
+        past: [...state.past, state.present],
+        present: next,
+        future: [],
+      };
+    }
   }
 }
 
@@ -176,6 +229,67 @@ function ComponentEditor({
 }) {
   if (!component) return null;
 
+  const pathname = usePathname() ?? "";
+  const shop = getShopFromPath(pathname);
+  const [media, setMedia] = useState<MediaItem[]>([]);
+
+  useEffect(() => {
+    async function load() {
+      if (!shop) return;
+      try {
+        const res = await fetch(`/cms/api/media?shop=${shop}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data)) setMedia(data);
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+    load();
+  }, [shop]);
+
+  function ImagePicker({
+    onSelect,
+    children,
+  }: {
+    onSelect: (url: string) => void;
+    children: React.ReactNode;
+  }) {
+    return (
+      <Dialog>
+        <DialogTrigger asChild>{children}</DialogTrigger>
+        <DialogContent className="max-w-xl">
+          <DialogTitle>Select image</DialogTitle>
+          <div className="grid max-h-64 grid-cols-3 gap-2 overflow-auto">
+            {media.map((m) => (
+              <button
+                key={m.url}
+                type="button"
+                onClick={() => {
+                  onSelect(m.url);
+                }}
+                className="relative aspect-square"
+              >
+                <Image
+                  src={m.url}
+                  alt={m.altText || "media"}
+                  fill
+                  className="object-cover"
+                />
+              </button>
+            ))}
+            {media.length === 0 && (
+              <p className="text-muted-foreground col-span-3 text-sm">
+                No media found.
+              </p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   const handleInput = (field: string, value: string | number | undefined) => {
     onChange({ [field]: value } as Partial<PageComponent>);
   };
@@ -191,16 +305,31 @@ function ComponentEditor({
         {list.map((item, idx) => (
           <div key={idx} className="space-y-1 rounded border p-2">
             {fields.map((f) => (
-              <Input
-                key={f}
-                value={item[f] ?? ""}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  const next = [...list];
-                  next[idx] = { ...next[idx], [f]: e.target.value };
-                  onChange({ [prop]: next } as Partial<PageComponent>);
-                }}
-                placeholder={f}
-              />
+              <div key={f} className="flex items-start gap-2">
+                <Input
+                  value={item[f] ?? ""}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    const next = [...list];
+                    next[idx] = { ...next[idx], [f]: e.target.value };
+                    onChange({ [prop]: next } as Partial<PageComponent>);
+                  }}
+                  placeholder={f}
+                  className="flex-1"
+                />
+                {f === "src" && (
+                  <ImagePicker
+                    onSelect={(url) => {
+                      const next = [...list];
+                      next[idx] = { ...next[idx], [f]: url };
+                      onChange({ [prop]: next } as Partial<PageComponent>);
+                    }}
+                  >
+                    <Button type="button" variant="outline">
+                      Pick
+                    </Button>
+                  </ImagePicker>
+                )}
+              </div>
             ))}
             <Button
               variant="destructive"
@@ -256,6 +385,30 @@ function ComponentEditor({
         "src",
         "alt",
       ]);
+      break;
+    case "Image":
+      specific = (
+        <div className="space-y-2">
+          <div className="flex items-start gap-2">
+            <Input
+              value={(component as any).src ?? ""}
+              onChange={(e) => handleInput("src", e.target.value)}
+              placeholder="src"
+              className="flex-1"
+            />
+            <ImagePicker onSelect={(url) => handleInput("src", url)}>
+              <Button type="button" variant="outline">
+                Pick
+              </Button>
+            </ImagePicker>
+          </div>
+          <Input
+            value={(component as any).alt ?? ""}
+            onChange={(e) => handleInput("alt", e.target.value)}
+            placeholder="alt"
+          />
+        </div>
+      );
       break;
     case "Testimonials":
       specific = arrayEditor("testimonials", (component as any).testimonials, [
@@ -547,13 +700,50 @@ export default memo(function PageBuilder({
   onChange,
   style,
 }: Props) {
-  const [components, dispatch] = useReducer(reducer, page.components);
+  const key = `page-builder-history-${page.id}`;
+  const [state, dispatch] = useReducer(reducer, undefined, () => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem(key);
+      if (stored) return JSON.parse(stored) as HistoryState;
+    }
+    return { past: [], present: page.components, future: [] } as HistoryState;
+  });
+  const components = state.present;
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
+    "desktop"
+  );
+
+  const widthMap: Record<"desktop" | "tablet" | "mobile", string> = {
+    desktop: "100%",
+    tablet: "768px",
+    mobile: "375px",
+  };
+
+  const containerStyle = { width: widthMap[viewport] };
 
   useEffect(() => {
     onChange?.(components);
-  }, [components, onChange]);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(key, JSON.stringify(state));
+    }
+  }, [components, onChange, state, key]);
 
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (!(e.ctrlKey || e.metaKey)) return;
+      const k = e.key.toLowerCase();
+      if (k === "z") {
+        e.preventDefault();
+        dispatch({ type: "undo" });
+      } else if (k === "y") {
+        e.preventDefault();
+        dispatch({ type: "redo" });
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -598,6 +788,29 @@ export default memo(function PageBuilder({
       </aside>
 
       <div className="flex flex-1 flex-col gap-4">
+        <div className="flex justify-end gap-2">
+          <Button
+            size="sm"
+            variant={viewport === "desktop" ? "default" : "outline"}
+            onClick={() => setViewport("desktop")}
+          >
+            Desktop
+          </Button>
+          <Button
+            size="sm"
+            variant={viewport === "tablet" ? "default" : "outline"}
+            onClick={() => setViewport("tablet")}
+          >
+            Tablet
+          </Button>
+          <Button
+            size="sm"
+            variant={viewport === "mobile" ? "default" : "outline"}
+            onClick={() => setViewport("mobile")}
+          >
+            Mobile
+          </Button>
+        </div>
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -607,7 +820,12 @@ export default memo(function PageBuilder({
             items={components.map((c) => c.id)}
             strategy={rectSortingStrategy}
           >
-            <div id="canvas" className="flex flex-col gap-4">
+            <div
+              id="canvas"
+              style={containerStyle}
+              className="mx-auto flex flex-col gap-4 rounded border"
+            >
+              {" "}
               {components.map((c, i) => (
                 <CanvasItem
                   key={c.id}
@@ -624,6 +842,18 @@ export default memo(function PageBuilder({
         </DndContext>
 
         <div className="flex gap-2">
+          <Button
+            onClick={() => dispatch({ type: "undo" })}
+            disabled={!state.past.length}
+          >
+            Undo
+          </Button>
+          <Button
+            onClick={() => dispatch({ type: "redo" })}
+            disabled={!state.future.length}
+          >
+            Redo
+          </Button>
           <Button onClick={() => onSave(formData)}>Save</Button>
           <Button variant="outline" onClick={() => onPublish(formData)}>
             Publish

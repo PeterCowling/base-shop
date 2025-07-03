@@ -1,3 +1,5 @@
+import "server-only";
+
 import type { PricingMatrix, SKU } from "@types";
 import { pricingSchema } from "@types";
 import * as fsSync from "node:fs";

@@ -43,6 +43,7 @@ export interface CreateShopOptions {
     image?: Record<Locale, string>;
     components: PageComponent[];
   }[];
+  checkoutPage?: PageComponent[];
 }
 
 interface PackageJSON {
@@ -60,8 +61,11 @@ function genSecret(bytes = 16): string {
  * Paths are resolved relative to the repository root.
  */
 export function createShop(id: string, opts: CreateShopOptions = {}): void {
-  const options: Required<Omit<CreateShopOptions, "analytics">> & {
+  const options: Required<
+    Omit<CreateShopOptions, "analytics" | "checkoutPage">
+  > & {
     analytics?: CreateShopOptions["analytics"];
+    checkoutPage: PageComponent[];
   } = {
     name: opts.name ?? id,
     logo: opts.logo ?? "",
@@ -87,6 +91,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     analytics: opts.analytics,
     navItems: opts.navItems ?? [],
     pages: opts.pages ?? [],
+    checkoutPage: opts.checkoutPage ?? [],
   };
 
   const templateApp = join("packages", options.template);
@@ -227,6 +232,22 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     createdBy: "system",
   } as const;
 
+  const emptySeo = Object.fromEntries(LOCALES.map((l) => [l, ""])) as Record<
+    Locale,
+    string
+  >;
+
+  const checkoutPage = {
+    id: ulid(),
+    slug: "checkout",
+    status: "draft" as const,
+    components: options.checkoutPage,
+    seo: { title: emptySeo, description: emptySeo, image: emptySeo },
+    createdAt: now,
+    updatedAt: now,
+    createdBy: "system",
+  } as const;
+
   const extraPages = options.pages.map((p) => ({
     id: ulid(),
     slug: p.slug,
@@ -240,7 +261,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
 
   writeFileSync(
     join(newData, "pages.json"),
-    JSON.stringify([homePage, ...extraPages], null, 2)
+    JSON.stringify([homePage, checkoutPage, ...extraPages], null, 2)
   );
 
   deployShop(id);

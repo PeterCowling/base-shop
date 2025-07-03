@@ -206,6 +206,7 @@ export default function Wizard({
   /* ------------------------------ Page builder ----------------------------- */
 
   const [components, setComponents] = useState<PageComponent[]>([]);
+  const [homePageId, setHomePageId] = useState<string | null>(null);
 
   /* ------------------------------- Analytics ------------------------------- */
 
@@ -224,6 +225,7 @@ export default function Wizard({
 
   const [pages, setPages] = useState<
     Array<{
+      id?: string;
       slug: string;
       title: string;
       description: string;
@@ -237,6 +239,7 @@ export default function Wizard({
   const [newDesc, setNewDesc] = useState("");
   const [newImage, setNewImage] = useState("");
   const [newComponents, setNewComponents] = useState<PageComponent[]>([]);
+  const [newDraftId, setNewDraftId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
 
   /* ------------------------- Import / seed data ---------------------------- */
@@ -268,6 +271,7 @@ export default function Wizard({
       if (typeof data.socialImage === "string")
         setSocialImage(data.socialImage);
       if (Array.isArray(data.components)) setComponents(data.components);
+      if (typeof data.homePageId === "string") setHomePageId(data.homePageId);
       if (typeof data.analyticsProvider === "string")
         setAnalyticsProvider(data.analyticsProvider);
       if (typeof data.analyticsId === "string")
@@ -307,6 +311,7 @@ export default function Wizard({
       pageDescription,
       socialImage,
       components,
+      homePageId,
       analyticsProvider,
       analyticsId,
       navItems,
@@ -331,6 +336,7 @@ export default function Wizard({
     pageDescription,
     socialImage,
     components,
+    homePageId,
     analyticsProvider,
     analyticsId,
     navItems,
@@ -371,6 +377,7 @@ export default function Wizard({
           socialImage,
           navigation: navItems,
           components,
+          homePageId,
           pages,
         }),
       });
@@ -769,7 +776,7 @@ export default function Wizard({
             <PageBuilder
               page={
                 {
-                  id: "",
+                  id: homePageId ?? "",
                   slug: "",
                   status: "draft",
                   components,
@@ -779,7 +786,14 @@ export default function Wizard({
                   createdBy: "",
                 } as Page
               }
-              onSave={async () => {}}
+              onSave={async (fd) => {
+                const res = await fetch(`/cms/api/page-draft/${shopId}`, {
+                  method: "POST",
+                  body: fd,
+                });
+                const json = await res.json();
+                setHomePageId(json.id);
+              }}
               onPublish={async () => {}}
               onChange={setComponents}
               style={themeStyle}
@@ -844,7 +858,7 @@ export default function Wizard({
                 <PageBuilder
                   page={
                     {
-                      id: "",
+                      id: newDraftId ?? "",
                       slug: "",
                       status: "draft",
                       components: newComponents,
@@ -854,14 +868,27 @@ export default function Wizard({
                       createdBy: "",
                     } as Page
                   }
-                  onSave={async () => {}}
+                  onSave={async (fd) => {
+                    const res = await fetch(`/cms/api/page-draft/${shopId}`, {
+                      method: "POST",
+                      body: fd,
+                    });
+                    const json = await res.json();
+                    setNewDraftId(json.id);
+                  }}
                   onPublish={async () => {}}
                   onChange={setNewComponents}
                   style={themeStyle}
                 />
 
                 <div className="flex justify-between">
-                  <Button variant="outline" onClick={() => setAdding(false)}>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setAdding(false);
+                      setNewDraftId(null);
+                    }}
+                  >
                     Cancel
                   </Button>
                   <Button
@@ -869,6 +896,7 @@ export default function Wizard({
                       setPages((p) => [
                         ...p,
                         {
+                          id: newDraftId ?? undefined,
                           slug: newSlug,
                           title: newTitle,
                           description: newDesc,
@@ -881,6 +909,7 @@ export default function Wizard({
                       setNewDesc("");
                       setNewImage("");
                       setNewComponents([]);
+                      setNewDraftId(null);
                       setAdding(false);
                     }}
                   >

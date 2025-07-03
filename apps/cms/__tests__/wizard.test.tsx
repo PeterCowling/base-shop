@@ -88,4 +88,53 @@ describe("Wizard", () => {
       );
     });
   });
+
+  it("calls save endpoint for home page", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ id: "p1" }),
+    });
+    render(<Wizard themes={themes} templates={templates} />);
+
+    fireEvent.change(screen.getByPlaceholderText("my-shop"), {
+      target: { value: "shop" },
+    });
+    for (let i = 0; i < 5; i++) {
+      fireEvent.click(screen.getByText("Next"));
+    }
+
+    fireEvent.click(screen.getByText("Save"));
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalled();
+    });
+    expect((global.fetch as jest.Mock).mock.calls[0][0]).toContain(
+      "/cms/api/page-draft/shop"
+    );
+  });
+
+  it("calls save endpoint for additional pages", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve({ id: "p2" }),
+    });
+    render(<Wizard themes={themes} templates={templates} />);
+
+    fireEvent.change(screen.getByPlaceholderText("my-shop"), {
+      target: { value: "shop" },
+    });
+    for (let i = 0; i < 6; i++) {
+      fireEvent.click(screen.getByText("Next"));
+    }
+
+    fireEvent.click(screen.getByText("Add Page"));
+    fireEvent.click(screen.getByText("Save"));
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalled();
+    });
+    expect((global.fetch as jest.Mock).mock.calls[0][0]).toContain(
+      "/cms/api/page-draft/shop"
+    );
+  });
 });

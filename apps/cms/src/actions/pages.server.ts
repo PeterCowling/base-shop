@@ -5,6 +5,7 @@
 import { authOptions } from "@cms/auth/options";
 import {
   deletePage as deletePageFromRepo,
+  getPages,
   savePage as savePageInRepo,
   updatePage as updatePageInRepo,
 } from "@platform-core/repositories/pages/index.server";
@@ -105,6 +106,49 @@ export async function createPage(
     updatedAt: now,
     createdBy: session.user.email ?? "unknown",
   };
+
+  try {
+    const saved = await savePageInRepo(shop, page);
+    return { page: saved };
+  } catch (err) {
+    Sentry.captureException(err);
+    throw err;
+  }
+}
+
+export async function savePageDraft(
+  shop: string,
+  formData: FormData
+): Promise<{ page: Page }> {
+  const session = await ensureAuthorized();
+
+  const id = (formData.get("id") as string) || ulid();
+  const compStr = formData.get("components");
+  let components: PageComponent[] = [];
+  if (typeof compStr === "string") {
+    try {
+      const parsed = JSON.parse(compStr);
+      if (Array.isArray(parsed)) components = parsed as PageComponent[];
+    } catch {
+      components = [];
+    }
+  }
+
+  const pages = await getPages(shop);
+  const existing = pages.find((p) => p.id === id);
+  const now = new Date().toISOString();
+  const page: Page = existing
+    ? { ...existing, components, updatedAt: now }
+    : {
+        id,
+        slug: "",
+        status: "draft",
+        components,
+        seo: { title: {}, description: {}, image: "" },
+        createdAt: now,
+        updatedAt: now,
+        createdBy: session.user.email ?? "unknown",
+      };
 
   try {
     const saved = await savePageInRepo(shop, page);

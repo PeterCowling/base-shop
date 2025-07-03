@@ -12,9 +12,9 @@ import { toggle } from "../utils";
 
 interface Props {
   payment: string[];
-  setPayment: (v: string[]) => void;
+  setPayment: React.Dispatch<React.SetStateAction<string[]>>;
   shipping: string[];
-  setShipping: (v: string[]) => void;
+  setShipping: React.Dispatch<React.SetStateAction<string[]>>;
   analyticsProvider: string;
   setAnalyticsProvider: (v: string) => void;
   analyticsId: string;

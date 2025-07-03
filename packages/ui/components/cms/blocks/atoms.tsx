@@ -2,7 +2,7 @@ import type { Locale } from "@/i18n/locales";
 import type { ElementType } from "react";
 
 export function Text({
-  text = {},
+  text,
   tag = "p",
   locale = "en",
 }: {
@@ -10,7 +10,7 @@ export function Text({
   tag?: keyof JSX.IntrinsicElements;
   locale?: Locale;
 }) {
-  const Comp = tag as ElementType;
+  const Comp: ElementType = tag;
   const value = typeof text === "string" ? text : (text?.[locale] ?? "");
   return <Comp>{value}</Comp>;
 }

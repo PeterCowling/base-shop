@@ -1,7 +1,7 @@
 import type { Locale, ProductPublication } from "@platform-core/products";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
-import { useProductEditorFormState } from "../useProductEditorFormState";
+import { useProductEditorFormState } from "./useProductEditorFormState";
 
 jest.mock("../useImageUpload", () => ({
   useImageUpload: () => ({

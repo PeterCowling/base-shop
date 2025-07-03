@@ -64,8 +64,8 @@ export interface CreateShopOptions {
   template?: string;
   payment?: string[];
   shipping?: string[];
-  pageTitle?: Record<Locale, string>;
-  pageDescription?: Record<Locale, string>;
+  pageTitle?: Partial<Record<Locale, string>>;
+  pageDescription?: Partial<Record<Locale, string>>;
   socialImage?: string;
   analytics?: {
     provider: string;
@@ -74,9 +74,9 @@ export interface CreateShopOptions {
   navItems?: { label: string; url: string }[];
   pages?: {
     slug: string;
-    title: Record<Locale, string>;
-    description?: Record<Locale, string>;
-    image?: Record<Locale, string>;
+    title: Partial<Record<Locale, string>>;
+    description?: Partial<Record<Locale, string>>;
+    image?: Partial<Record<Locale, string>>;
     components: PageComponent[];
   }[];
   checkoutPage?: PageComponent[];
@@ -90,6 +90,19 @@ interface PackageJSON {
 
 function genSecret(bytes = 16): string {
   return randomBytes(bytes).toString("hex");
+}
+
+function fillLocales(
+  values: Partial<Record<Locale, string>> | undefined,
+  fallback: string
+): Record<Locale, string> {
+  return LOCALES.reduce(
+    (acc, l) => {
+      acc[l] = values?.[l] ?? fallback;
+      return acc;
+    },
+    {} as Record<Locale, string>
+  );
 }
 
 /**
@@ -112,22 +125,18 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     template: parsed.template ?? "template-app",
     payment: parsed.payment ?? [],
     shipping: parsed.shipping ?? [],
-    pageTitle:
-      parsed.pageTitle ??
-      (Object.fromEntries(LOCALES.map((l) => [l, "Home"])) as Record<
-        Locale,
-        string
-      >),
-    pageDescription:
-      parsed.pageDescription ??
-      (Object.fromEntries(LOCALES.map((l) => [l, ""])) as Record<
-        Locale,
-        string
-      >),
+    pageTitle: fillLocales(parsed.pageTitle, "Home"),
+    pageDescription: fillLocales(parsed.pageDescription, ""),
     socialImage: parsed.socialImage ?? "",
     analytics: parsed.analytics,
     navItems: parsed.navItems ?? [],
-    pages: parsed.pages ?? [],
+    pages:
+      parsed.pages?.map((p) => ({
+        ...p,
+        title: fillLocales(p.title, ""),
+        description: p.description ? fillLocales(p.description, "") : undefined,
+        image: p.image ? fillLocales(p.image, "") : undefined,
+      })) ?? [],
     checkoutPage: parsed.checkoutPage ?? [],
   };
 

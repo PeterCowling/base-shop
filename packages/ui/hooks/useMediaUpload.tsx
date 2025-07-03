@@ -1,4 +1,5 @@
 import type { ImageOrientation, MediaItem } from "@types";
+import type { ChangeEvent, DragEvent, RefObject } from "react";
 import { useCallback, useRef, useState } from "react";
 import { useImageOrientationValidation } from "./useImageOrientationValidation";
 
@@ -21,10 +22,10 @@ export interface UseMediaUploadResult {
   isValid: boolean | null;
   progress: UploadProgress | null;
   error: string | undefined;
-  inputRef: React.RefObject<HTMLInputElement>;
+  inputRef: RefObject<HTMLInputElement>;
   openFileDialog: () => void;
-  onDrop: (e: React.DragEvent<HTMLDivElement>) => void;
-  onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onDrop: (e: DragEvent<HTMLDivElement>) => void;
+  onFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleUpload: () => Promise<void>;
 }
 
@@ -70,14 +71,14 @@ export function useMediaUpload({
     setAltText("");
   }, [pendingFile, altText, shop, onUploaded, requiredOrientation]);
 
-  const onDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const onDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const f = e.dataTransfer.files?.[0] ?? null;
     setPendingFile(f);
     setAltText("");
   }, []);
 
-  const onFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const onFileChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0] ?? null;
     setPendingFile(f);
     setAltText("");

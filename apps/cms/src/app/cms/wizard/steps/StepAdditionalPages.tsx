@@ -210,27 +210,14 @@ export default function StepAdditionalPages({
                   },
                 ]);
                 setNewSlug("");
-                setNewTitle(() => {
-                  const obj = {} as Record<Locale, string>;
-                  languages.forEach((l) => {
-                    obj[l] = "";
-                  });
-                  return obj;
-                });
-                setNewDesc(() => {
-                  const obj = {} as Record<Locale, string>;
-                  languages.forEach((l) => {
-                    obj[l] = "";
-                  });
-                  return obj;
-                });
-                setNewImage(() => {
-                  const obj = {} as Record<Locale, string>;
-                  languages.forEach((l) => {
-                    obj[l] = "";
-                  });
-                  return obj;
-                });
+                const createEmptyLocaleRecord = () =>
+                  languages.reduce(
+                    (acc, l) => ({ ...acc, [l]: "" }),
+                    {} as Record<Locale, string>
+                  );
+                setNewTitle(createEmptyLocaleRecord());
+                setNewDesc(createEmptyLocaleRecord());
+                setNewImage(createEmptyLocaleRecord());
                 setNewComponents([]);
                 setNewDraftId(null);
                 setAdding(false);

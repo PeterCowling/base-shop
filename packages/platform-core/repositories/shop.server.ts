@@ -23,7 +23,7 @@ export async function getShopById<T extends { id: string } = Shop>(
 ): Promise<T> {
   try {
     const buf = await fs.readFile(shopPath(shop), "utf8");
-    return shopSchema.parse(JSON.parse(buf)) as T;
+    return shopSchema.parse(JSON.parse(buf)) as unknown as T;
   } catch {
     throw new Error(`Shop ${shop} not found`);
   }

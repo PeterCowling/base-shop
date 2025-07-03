@@ -1,17 +1,19 @@
-// packages/platform-core/createShop/utils/loadThemeTokens.ts
-import { existsSync, readFileSync } from "fs";
+// packages/platform-core/createShop/utils/loadBaseTokens.ts
+import { readFileSync } from "fs";
 import { join } from "path";
 import ts from "typescript";
 import { runInNewContext } from "vm";
 
 /**
- * Load Tailwind token mappings for the given theme.
- * Returns an empty object when the theme does not provide tokens.
+ * Load the base Tailwind token mappings.
+ *
+ * The base theme defines tokens with optional dark variants. For the
+ * create-shop script we only need the light values, so this reads the
+ * TypeScript module and returns a plain mapping of token names to their
+ * default (light) value.
  */
-export function loadThemeTokens(theme: string): Record<string, string> {
-  if (theme === "base") return {};
-  const modPath = join("packages", "themes", theme, "tailwind-tokens.ts");
-  if (!existsSync(modPath)) return {};
+export function loadBaseTokens(): Record<string, string> {
+  const modPath = join("packages", "themes", "base", "tokens.ts");
   const source = readFileSync(modPath, "utf8");
   const transpiled = ts.transpileModule(source, {
     compilerOptions: { module: ts.ModuleKind.CommonJS },
@@ -19,7 +21,7 @@ export function loadThemeTokens(theme: string): Record<string, string> {
   const sandbox: {
     module: { exports: Record<string, unknown> };
     exports: Record<string, unknown>;
-    require: (id: string) => unknown;
+    require: NodeRequire;
   } = {
     module: { exports: {} },
     exports: {},
@@ -27,5 +29,11 @@ export function loadThemeTokens(theme: string): Record<string, string> {
   };
   sandbox.exports = sandbox.module.exports;
   runInNewContext(transpiled, sandbox);
-  return sandbox.module.exports.tokens as Record<string, string>;
+  const tokenMap = sandbox.module.exports.tokens as Record<
+    string,
+    { light: string }
+  >;
+  return Object.fromEntries(
+    Object.entries(tokenMap).map(([k, v]) => [k, v.light])
+  );
 }

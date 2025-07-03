@@ -1,0 +1,9 @@
+{
+  "name": "Homepage",
+  "components": [
+    { "type": "HeroBanner" },
+    { "type": "PromoBanner" },
+    { "type": "ProductCarousel" },
+    { "type": "CategoryList" }
+  ]
+}

@@ -3,6 +3,7 @@ import ContactForm from "./ContactForm";
 import ContactFormWithMap from "./ContactFormWithMap";
 import Gallery from "./Gallery";
 import HeroBanner from "./HeroBanner";
+import ProductCarousel from "./ProductCarousel";
 import ProductGrid from "./ProductGrid.client";
 import ReviewsCarousel from "./ReviewsCarousel";
 import TestimonialSlider from "./TestimonialSlider";
@@ -15,6 +16,7 @@ export const organismRegistry = {
   ValueProps,
   ReviewsCarousel,
   ProductGrid,
+  ProductCarousel,
   Gallery,
   ContactForm,
   ContactFormWithMap,

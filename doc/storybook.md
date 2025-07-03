@@ -21,6 +21,10 @@ Execute them against all stories with:
 pnpm test-storybook
 ```
 
+Custom Playwright tests live under `.storybook/test-runner`. For example,
+`theme-toggle.test.ts` ensures the toolbar's theme and mode switches update the
+CSS variables in rendered stories.
+
 ## Theme Switcher
 
 The toolbar lets you toggle between design token themes (`base` or `brandx`) and

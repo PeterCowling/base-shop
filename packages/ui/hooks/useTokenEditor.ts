@@ -13,6 +13,15 @@ const defaultMonoFonts = [
   '"Courier New", monospace',
 ];
 
+const googleFontList = [
+  "Inter",
+  "Roboto",
+  "Open Sans",
+  "Lato",
+  "Merriweather",
+  "Poppins",
+];
+
 export interface UseTokenEditorResult {
   colors: Array<[string, string]>;
   fonts: Array<[string, string]>;
@@ -20,6 +29,7 @@ export interface UseTokenEditorResult {
   sansFonts: string[];
   monoFonts: string[];
   newFont: string;
+  googleFonts: string[];
   setNewFont: (v: string) => void;
   setToken: (key: string, value: string) => void;
   handleUpload: (
@@ -27,6 +37,7 @@ export interface UseTokenEditorResult {
     e: ChangeEvent<HTMLInputElement>
   ) => void;
   addCustomFont: () => void;
+  setGoogleFont: (type: "sans" | "mono", name: string) => void;
 }
 
 export function useTokenEditor(
@@ -42,6 +53,7 @@ export function useTokenEditor(
 
   const [sansFonts, setSansFonts] = useState<string[]>([...defaultSansFonts]);
   const [monoFonts, setMonoFonts] = useState<string[]>([...defaultMonoFonts]);
+  const [googleFonts] = useState<string[]>(googleFontList);
   const [newFont, setNewFont] = useState("");
 
   useEffect(() => {
@@ -92,6 +104,32 @@ export function useTokenEditor(
     setNewFont("");
   }, [newFont]);
 
+  const loadGoogleFont = useCallback((name: string) => {
+    const id = `google-font-${name}`;
+    if (!document.getElementById(id)) {
+      const link = document.createElement("link");
+      link.id = id;
+      link.rel = "stylesheet";
+      link.href = `https://fonts.googleapis.com/css2?family=${name.replace(/ /g, "+")}&display=swap`;
+      document.head.appendChild(link);
+    }
+  }, []);
+
+  const setGoogleFont = useCallback(
+    (type: "sans" | "mono", name: string) => {
+      loadGoogleFont(name);
+      const stack = `"${name}", ${type === "mono" ? "monospace" : "sans-serif"}`;
+      if (type === "mono") {
+        setMonoFonts((f) => (f.includes(stack) ? f : [...f, stack]));
+        setToken("--font-mono", stack);
+      } else {
+        setSansFonts((f) => (f.includes(stack) ? f : [...f, stack]));
+        setToken("--font-sans", stack);
+      }
+    },
+    [loadGoogleFont, setToken]
+  );
+
   const { colors, fonts, others } = useMemo(() => {
     const c: Array<[string, string]> = [];
     const f: Array<[string, string]> = [];
@@ -114,10 +152,12 @@ export function useTokenEditor(
     others,
     sansFonts,
     monoFonts,
+    googleFonts,
     newFont,
     setNewFont,
     setToken,
     handleUpload,
     addCustomFont,
+    setGoogleFont,
   };
 }

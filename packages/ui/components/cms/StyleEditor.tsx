@@ -17,11 +17,13 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
     others,
     sansFonts,
     monoFonts,
+    googleFonts,
     newFont,
     setNewFont,
     setToken,
     handleUpload,
     addCustomFont,
+    setGoogleFont,
   } = useTokenEditor(tokens, onChange);
 
   const renderInput = (k: string, v: string) => {
@@ -47,6 +49,22 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
               onChange={(val) => setToken(k, val)}
               onUpload={(e) => handleUpload(type, e)}
             />
+            <select
+              className="rounded border p-1"
+              onChange={(e) => {
+                if (e.target.value) {
+                  setGoogleFont(type, e.target.value);
+                  e.target.value = "";
+                }
+              }}
+            >
+              <option value="">Google Fonts</option>
+              {googleFonts.map((f) => (
+                <option key={f} value={f} style={{ fontFamily: f }}>
+                  {f}
+                </option>
+              ))}
+            </select>
           </span>
         </label>
       );

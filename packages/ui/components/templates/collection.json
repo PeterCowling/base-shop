@@ -1,0 +1,4 @@
+{
+  "name": "Collection Showcase",
+  "components": [{ "type": "CategoryList" }, { "type": "ProductCarousel" }]
+}

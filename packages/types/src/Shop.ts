@@ -30,6 +30,8 @@ export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;
 export interface Shop {
   id: string;
   name: string;
+  logo?: string;
+  contactInfo?: string;
   catalogFilters: string[];
   themeId: string;
   /** Mapping of design tokens to theme values */
@@ -55,6 +57,8 @@ export interface Shop {
 export const shopSchema = z.object({
   id: z.string(),
   name: z.string(),
+  logo: z.string().optional(),
+  contactInfo: z.string().optional(),
   catalogFilters: z.array(z.string()),
   themeId: z.string(),
   /** Mapping of design tokens to theme values */

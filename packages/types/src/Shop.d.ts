@@ -101,6 +101,8 @@ export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;
 export interface Shop {
   id: string;
   name: string;
+  logo?: string;
+  contactInfo?: string;
   catalogFilters: string[];
   themeId: string;
   /** Mapping of design tokens to theme values */
@@ -129,6 +131,8 @@ export declare const shopSchema: z.ZodObject<
   {
     id: z.ZodString;
     name: z.ZodString;
+    logo: z.ZodOptional<z.ZodString>;
+    contactInfo: z.ZodOptional<z.ZodString>;
     catalogFilters: z.ZodArray<z.ZodString, "many">;
     themeId: z.ZodString;
     /** Mapping of design tokens to theme values */
@@ -180,6 +184,8 @@ export declare const shopSchema: z.ZodObject<
   {
     name?: string;
     id?: string;
+    logo?: string;
+    contactInfo?: string;
     catalogFilters?: string[];
     themeId?: string;
     themeTokens?: Record<string, string>;
@@ -200,6 +206,8 @@ export declare const shopSchema: z.ZodObject<
   {
     name?: string;
     id?: string;
+    logo?: string;
+    contactInfo?: string;
     catalogFilters?: string[];
     themeId?: string;
     themeTokens?: Record<string, string>;

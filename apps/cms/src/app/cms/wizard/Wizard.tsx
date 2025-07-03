@@ -37,6 +37,9 @@ export default function Wizard({
 }: Props): React.JSX.Element {
   const [step, setStep] = useState(0);
   const [shopId, setShopId] = useState("");
+  const [storeName, setStoreName] = useState("");
+  const [logo, setLogo] = useState("");
+  const [contactInfo, setContactInfo] = useState("");
   const [template, setTemplate] = useState(templates[0] ?? "");
   const [theme, setTheme] = useState(themes[0] ?? "");
   const [payment, setPayment] = useState<string[]>([]);
@@ -165,6 +168,10 @@ export default function Wizard({
       const data = JSON.parse(json);
       if (typeof data.step === "number") setStep(data.step);
       if (typeof data.shopId === "string") setShopId(data.shopId);
+      if (typeof data.storeName === "string") setStoreName(data.storeName);
+      if (typeof data.logo === "string") setLogo(data.logo);
+      if (typeof data.contactInfo === "string")
+        setContactInfo(data.contactInfo);
       if (typeof data.template === "string") setTemplate(data.template);
       if (typeof data.theme === "string") setTheme(data.theme);
       if (Array.isArray(data.payment)) setPayment(data.payment);
@@ -239,6 +246,9 @@ export default function Wizard({
       pageTitle,
       pageDescription,
       socialImage,
+      storeName,
+      logo,
+      contactInfo,
       components,
       headerComponents,
       headerPageId,
@@ -263,6 +273,9 @@ export default function Wizard({
   }, [
     step,
     shopId,
+    storeName,
+    logo,
+    contactInfo,
     template,
     theme,
     themeVars,
@@ -310,6 +323,9 @@ export default function Wizard({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: shopId,
+          name: storeName,
+          logo,
+          contactInfo,
           template,
           theme,
           payment,
@@ -475,6 +491,12 @@ export default function Wizard({
            <StepShopDetails
             shopId={shopId}
             setShopId={setShopId}
+            storeName={storeName}
+            setStoreName={setStoreName}
+            logo={logo}
+            setLogo={setLogo}
+            contactInfo={contactInfo}
+            setContactInfo={setContactInfo}
             template={template}
             setTemplate={setTemplate}
             templates={templates}
@@ -603,6 +625,9 @@ export default function Wizard({
         {step === 9 && (
           <StepSummary
             shopId={shopId}
+            name={storeName}
+            logo={logo}
+            contactInfo={contactInfo}
             template={template}
             theme={theme}
             payment={payment}

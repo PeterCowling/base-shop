@@ -20,6 +20,9 @@ import {
 import { defaultFilterMappings } from "./defaultFilterMappings";
 
 export interface CreateShopOptions {
+  name?: string;
+  logo?: string;
+  contactInfo?: string;
   type?: "sale" | "rental";
   theme?: string;
   template?: string;
@@ -60,6 +63,9 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
   const options: Required<Omit<CreateShopOptions, "analytics">> & {
     analytics?: CreateShopOptions["analytics"];
   } = {
+    name: opts.name ?? id,
+    logo: opts.logo ?? "",
+    contactInfo: opts.contactInfo ?? "",
     type: opts.type ?? "sale",
     theme: opts.theme ?? "base",
     template: opts.template ?? "template-app",
@@ -151,7 +157,9 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     JSON.stringify(
       {
         id,
-        name: id,
+        name: options.name,
+        logo: options.logo,
+        contactInfo: options.contactInfo,
         catalogFilters: [],
         themeId: options.theme,
         themeTokens,

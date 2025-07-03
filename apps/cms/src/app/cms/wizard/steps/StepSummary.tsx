@@ -4,6 +4,9 @@ import WizardPreview from "../WizardPreview";
 
 interface Props {
   shopId: string;
+  name: string;
+  logo: string;
+  contactInfo: string;
   template: string;
   theme: string;
   payment: string[];
@@ -25,6 +28,9 @@ interface Props {
 
 export default function StepSummary({
   shopId,
+  name,
+  logo,
+  contactInfo,
   template,
   theme,
   payment,
@@ -50,6 +56,15 @@ export default function StepSummary({
       <ul className="list-disc pl-5 text-sm">
         <li>
           <b>Shop ID:</b> {shopId}
+        </li>
+        <li>
+          <b>Store Name:</b> {name}
+        </li>
+        <li>
+          <b>Logo:</b> {logo || "none"}
+        </li>
+        <li>
+          <b>Contact:</b> {contactInfo || "none"}
         </li>
         <li>
           <b>Template:</b> {template}

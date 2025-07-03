@@ -29,6 +29,8 @@ exports.shopSeoFieldsSchema = zod_1.z.object({
 exports.shopSchema = zod_1.z.object({
   id: zod_1.z.string(),
   name: zod_1.z.string(),
+  logo: zod_1.z.string().optional(),
+  contactInfo: zod_1.z.string().optional(),
   catalogFilters: zod_1.z.array(zod_1.z.string()),
   themeId: zod_1.z.string(),
   /** Mapping of design tokens to theme values */

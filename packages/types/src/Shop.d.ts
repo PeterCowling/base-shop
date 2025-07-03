@@ -111,6 +111,12 @@ export interface Shop {
   priceOverrides: Partial<Record<Locale, number>>;
   /** Optional redirect overrides for locale detection */
   localeOverrides: Record<string, Locale>;
+  /** Sale or rental shop type */
+  type?: string;
+  /** Enabled payment provider identifiers */
+  paymentProviders?: string[];
+  /** Enabled shipping provider identifiers */
+  shippingProviders?: string[];
   homeTitle?: Translated;
   homeDescription?: Translated;
   homeImage?: string;
@@ -137,6 +143,9 @@ export declare const shopSchema: z.ZodObject<
     localeOverrides: z.ZodDefault<
       z.ZodRecord<z.ZodString, z.ZodEnum<["en", "de", "it"]>>
     >;
+    type: z.ZodOptional<z.ZodString>;
+    paymentProviders: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    shippingProviders: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     homeTitle: z.ZodOptional<
       z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodString>
     >;
@@ -177,6 +186,9 @@ export declare const shopSchema: z.ZodObject<
     filterMappings?: Record<string, string>;
     priceOverrides?: Partial<Record<"en" | "de" | "it", number>>;
     localeOverrides?: Record<string, "en" | "de" | "it">;
+    type?: string;
+    paymentProviders?: string[];
+    shippingProviders?: string[];
     homeTitle?: Partial<Record<"en" | "de" | "it", string>>;
     homeDescription?: Partial<Record<"en" | "de" | "it", string>>;
     homeImage?: string;
@@ -194,6 +206,9 @@ export declare const shopSchema: z.ZodObject<
     filterMappings?: Record<string, string>;
     priceOverrides?: Partial<Record<"en" | "de" | "it", number>>;
     localeOverrides?: Record<string, "en" | "de" | "it">;
+    type?: string;
+    paymentProviders?: string[];
+    shippingProviders?: string[];
     homeTitle?: Partial<Record<"en" | "de" | "it", string>>;
     homeDescription?: Partial<Record<"en" | "de" | "it", string>>;
     homeImage?: string;

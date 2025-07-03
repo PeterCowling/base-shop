@@ -1,5 +1,6 @@
 import { authOptions } from "@cms/auth/options";
 import { updateShopInRepo } from "@platform-core/repositories/json.server";
+import type { Shop } from "@types";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
@@ -13,10 +14,10 @@ export async function POST(
   }
   try {
     const body = await req.json();
-    const patch: Record<string, unknown> = { id: params.shop };
+    const patch: Partial<Shop> & { id: string } = { id: params.shop };
     if (Array.isArray(body.payment)) patch.paymentProviders = body.payment;
     if (Array.isArray(body.shipping)) patch.shippingProviders = body.shipping;
-    await updateShopInRepo<Record<string, unknown>>(params.shop, patch);
+    await updateShopInRepo(params.shop, patch);
     return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json(

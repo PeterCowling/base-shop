@@ -43,6 +43,9 @@ exports.shopSchema = zod_1.z.object({
   localeOverrides: zod_1.z
     .record(zod_1.z.string(), Product_1.localeSchema)
     .default({}),
+  type: zod_1.z.string().optional(),
+  paymentProviders: zod_1.z.array(zod_1.z.string()).optional(),
+  shippingProviders: zod_1.z.array(zod_1.z.string()).optional(),
   homeTitle: zod_1.z
     .record(Product_1.localeSchema, zod_1.z.string())
     .optional(),

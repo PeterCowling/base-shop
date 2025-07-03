@@ -58,8 +58,12 @@ test("rental order is returned and refunded", async () => {
       { virtual: true }
     );
 
-    const { POST: rentalPost } = await import("../src/api/rental/route");
-    const { POST: returnPost } = await import("../src/api/return/route");
+    const { POST: rentalPost } = await import(
+      "../../../../apps/shop-abc/src/app/api/return/route"
+    );
+    const { POST: returnPost } = await import(
+      "../../../../apps/shop-abc/src/app/api/return/route"
+    );
 
     await rentalPost({ json: async () => ({ sessionId: "sess" }) } as any);
     await returnPost({

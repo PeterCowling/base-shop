@@ -30,6 +30,9 @@ import { atomRegistry } from "./atoms";
 import { moleculeRegistry } from "./molecules";
 import { organismRegistry } from "./organisms";
 
+// Re-export individual registries so consumers can access them directly.
+export { atomRegistry, moleculeRegistry, organismRegistry };
+
 export const blockRegistry = {
   ...atomRegistry,
   ...moleculeRegistry,

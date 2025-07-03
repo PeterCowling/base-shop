@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import ts from "typescript";
 import { runInNewContext } from "vm";
+import { atomRegistry } from "../components/cms/blocks/atoms";
 
 function loadReducer() {
   const src = readFileSync(
@@ -41,5 +42,12 @@ describe("PageBuilder reducer", () => {
     expect(
       reducer(state, { type: "update", id: "a", patch: { foo: "bar" } })[0].foo
     ).toBe("bar");
+  });
+});
+
+describe("atomRegistry", () => {
+  it("contains Text and Image atoms", () => {
+    expect(atomRegistry).toHaveProperty("Text");
+    expect(atomRegistry).toHaveProperty("Image");
   });
 });

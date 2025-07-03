@@ -33,6 +33,9 @@
       "@/contexts/*": ["contexts/*"],
       "@/lib/*": ["lib/*"],
 
+      /* Theme packages */
+      "@themes/*": ["../themes/*"],
+
       /*  Bring back the repo-level @lib alias so this package can */
       /*  access shared utilities such as stripeServer                */
       "@lib/*": ["../lib/*"],

@@ -357,9 +357,11 @@ const CanvasItem = memo(function CanvasItem({
     h: number;
     l: number;
     t: number;
-  }>();
+  } | null>(null);
   const [resizing, setResizing] = useState(false);
-  const moveRef = useRef<{ x: number; y: number; l: number; t: number }>();
+  const moveRef = useRef<{ x: number; y: number; l: number; t: number } | null>(
+    null
+  );
   const [moving, setMoving] = useState(false);
 
   useEffect(() => {

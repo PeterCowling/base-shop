@@ -35,19 +35,55 @@ function WizardPreview({
 }: {
   style: React.CSSProperties;
 }): React.JSX.Element {
+  const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
+    "desktop"
+  );
+
+  const widthMap: Record<"desktop" | "tablet" | "mobile", string> = {
+    desktop: "100%",
+    tablet: "768px",
+    mobile: "375px",
+  };
+
+  const containerStyle = { ...style, width: widthMap[viewport] };
   return (
-    <div style={style} className="rounded border">
-      <TranslationsProvider messages={enMessages}>
-        <AppShell
-          header={<Header locale="en" />}
-          sideNav={<SideNav />}
-          footer={<Footer />}
+    <div className="space-y-2">
+      <div className="flex justify-end gap-2">
+        <Button
+          size="sm"
+          variant={viewport === "desktop" ? "default" : "outline"}
+          onClick={() => setViewport("desktop")}
         >
-          <HeroBanner />
-          <ValueProps />
-          <ReviewsCarousel />
-        </AppShell>
-      </TranslationsProvider>
+          Desktop
+        </Button>
+        <Button
+          size="sm"
+          variant={viewport === "tablet" ? "default" : "outline"}
+          onClick={() => setViewport("tablet")}
+        >
+          Tablet
+        </Button>
+        <Button
+          size="sm"
+          variant={viewport === "mobile" ? "default" : "outline"}
+          onClick={() => setViewport("mobile")}
+        >
+          Mobile
+        </Button>
+      </div>
+      <div style={containerStyle} className="mx-auto rounded border">
+        <TranslationsProvider messages={enMessages}>
+          <AppShell
+            header={<Header locale="en" />}
+            sideNav={<SideNav />}
+            footer={<Footer />}
+          >
+            <HeroBanner />
+            <ValueProps />
+            <ReviewsCarousel />
+          </AppShell>
+        </TranslationsProvider>
+      </div>
     </div>
   );
 }

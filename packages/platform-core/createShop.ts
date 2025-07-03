@@ -56,7 +56,9 @@ function genSecret(bytes = 16): string {
  * Paths are resolved relative to the repository root.
  */
 export function createShop(id: string, opts: CreateShopOptions = {}): void {
-  const options: Required<CreateShopOptions> = {
+  const options: Required<Omit<CreateShopOptions, "analytics">> & {
+    analytics?: CreateShopOptions["analytics"];
+  } = {
     type: opts.type ?? "sale",
     theme: opts.theme ?? "base",
     template: opts.template ?? "template-app",
@@ -82,7 +84,12 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
 
   function loadBaseTokens(): Record<string, string> {
     const map: Record<string, string> = {};
-    for (const [k, v] of Object.entries(baseTokens)) map[k] = v.light;
+    for (const [k, v] of Object.entries(baseTokens) as [
+      string,
+      { light: string },
+    ][]) {
+      map[k] = v.light;
+    }
     return map;
   }
 
@@ -97,7 +104,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     const sandbox: {
       module: { exports: Record<string, unknown> };
       exports: Record<string, unknown>;
-      require: NodeRequire;
+      require: (id: string) => unknown;
     } = {
       module: { exports: {} },
       exports: {},

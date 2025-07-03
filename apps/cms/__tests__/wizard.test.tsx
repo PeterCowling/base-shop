@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import Wizard from "../src/app/cms/wizard/Wizard";
+import Wizard from "../src/app/cms/wizard/Wizard.oldtsx";
 
 describe("Wizard", () => {
   const themes = ["base", "dark"];

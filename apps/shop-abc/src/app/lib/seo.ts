@@ -1,5 +1,5 @@
 import type { Locale } from "@i18n/locales";
-import { getShopSettings } from "@platform-core/repositories/shops.server";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 import type { ShopSettings } from "@types";
 import type { NextSeoProps } from "next-seo";
 

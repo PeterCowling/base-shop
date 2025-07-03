@@ -81,23 +81,31 @@ function NavList({
               placeholder="/path"
             />
             <Button
-              size="icon"
+              className="h-8 w-8 p-0"
               variant="outline"
               onClick={() => move(i, i - 1)}
             >
               ↑
             </Button>
             <Button
-              size="icon"
+              className="h-8 w-8 p-0"
               variant="outline"
               onClick={() => move(i, i + 1)}
             >
               ↓
             </Button>
-            <Button size="icon" variant="outline" onClick={() => addChild(i)}>
+            <Button
+              className="h-8 w-8 p-0"
+              variant="outline"
+              onClick={() => addChild(i)}
+            >
               +
             </Button>
-            <Button size="icon" variant="outline" onClick={() => remove(i)}>
+            <Button
+              className="h-8 w-8 p-0"
+              variant="outline"
+              onClick={() => remove(i)}
+            >
               ✕
             </Button>
           </div>

@@ -11,7 +11,7 @@ import {
   diffHistory,
   getShopSettings,
   saveShopSettings,
-} from "@platform-core/repositories/shops.server";
+} from "@platform-core/repositories/settings.server";
 import type { Locale, Shop, ShopSeoFields, ShopSettings } from "@types";
 import { getServerSession } from "next-auth";
 import { z } from "zod";

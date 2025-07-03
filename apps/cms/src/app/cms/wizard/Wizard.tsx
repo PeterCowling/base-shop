@@ -1,95 +1,20 @@
-// src/components/cms/Wizard.tsx
+// apps/cms/src/app/cms/wizard/Wizard.tsx
 "use client";
 
 import { Progress } from "@/components/atoms";
-import {
-  Button,
-  Checkbox,
-  Input,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Textarea,
-} from "@/components/atoms-shadcn";
-import { NavigationEditor, StyleEditor } from "@/components/cms";
-import PageBuilder from "@/components/cms/PageBuilder";
-import HeroBanner from "@/components/home/HeroBanner";
-import ReviewsCarousel from "@/components/home/ReviewsCarousel";
-import { ValueProps } from "@/components/home/ValueProps";
-import { Footer, Header, SideNav } from "@/components/organisms";
-import { AppShell } from "@/components/templates/AppShell";
-import TranslationsProvider from "@/i18n/Translations";
-import enMessages from "@i18n/en.json";
+import { LOCALES, type Locale, type PageComponent } from "@types";
+
 import type { DeployShopResult } from "@platform-core/createShop";
-import { tokens as baseTokensSrc } from "@themes/base/tokens";
-import { LOCALES, type Locale, type Page, type PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
 
-/* -------------------------------------------------------------------------- */
-/*                              Preview component                             */
-/* -------------------------------------------------------------------------- */
-
-function WizardPreview({
-  style,
-}: {
-  style: React.CSSProperties;
-}): React.JSX.Element {
-  const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
-    "desktop"
-  );
-
-  const widthMap: Record<"desktop" | "tablet" | "mobile", string> = {
-    desktop: "100%",
-    tablet: "768px",
-    mobile: "375px",
-  };
-
-  const containerStyle = { ...style, width: widthMap[viewport] };
-  return (
-    <div className="space-y-2">
-      <div className="flex justify-end gap-2">
-        <Button
-          variant={viewport === "desktop" ? "default" : "outline"}
-          onClick={() => setViewport("desktop")}
-        >
-          Desktop
-        </Button>
-        <Button
-          variant={viewport === "tablet" ? "default" : "outline"}
-          onClick={() => setViewport("tablet")}
-        >
-          Tablet
-        </Button>
-        <Button
-          variant={viewport === "mobile" ? "default" : "outline"}
-          onClick={() => setViewport("mobile")}
-        >
-          Mobile
-        </Button>
-      </div>
-      <div style={containerStyle} className="mx-auto rounded border">
-        <TranslationsProvider messages={enMessages}>
-          <AppShell
-            header={<Header locale="en" />}
-            sideNav={<SideNav />}
-            footer={<Footer />}
-          >
-            <HeroBanner />
-            <ValueProps />
-            <ReviewsCarousel />
-          </AppShell>
-        </TranslationsProvider>
-      </div>
-    </div>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/*                                   Types                                    */
-/* -------------------------------------------------------------------------- */
+import {
+  baseTokens,
+  loadThemeTokens,
+  resetWizardProgress,
+  STORAGE_KEY,
+  TokenMap,
+} from "./utils";
 
 interface Props {
   themes: string[];
@@ -97,65 +22,19 @@ interface Props {
   disabled?: boolean;
 }
 
-type TokenMap = Record<`--${string}`, string>;
-
-/* -------------------------------------------------------------------------- */
-/*                                   Utils                                    */
-/* -------------------------------------------------------------------------- */
-
-const baseTokens: TokenMap = Object.fromEntries(
-  Object.entries(baseTokensSrc).map(([k, v]) => [k, v.light])
-) as TokenMap;
-
-async function loadThemeTokens(theme: string): Promise<TokenMap> {
-  if (theme === "base") return baseTokens;
-
-  try {
-    const mod = await import(`@themes/${theme}/tokens`);
-    return Object.fromEntries(
-      Object.entries(mod.tokens as Record<string, { light: string }>).map(
-        ([k, v]) => [k, v.light]
-      )
-    ) as TokenMap;
-  } catch {
-    try {
-      const mod = await import(`@themes/${theme}/tailwind-tokens`);
-      return mod.tokens as TokenMap;
-    } catch {
-      return baseTokens;
-    }
-  }
+interface NavItem {
+  id: string;
+  label: string;
+  url: string;
+  children?: NavItem[];
 }
-
-function toggle(list: string[], value: string): string[] {
-  return list.includes(value)
-    ? list.filter((v) => v !== value)
-    : [...list, value];
-}
-
-const STORAGE_KEY = "cms-wizard-progress";
-
-export function resetWizardProgress(): void {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem(STORAGE_KEY);
-  }
-}
-
-/* -------------------------------------------------------------------------- */
-/*                                   Wizard                                   */
-/* -------------------------------------------------------------------------- */
 
 export default function Wizard({
   themes,
   templates,
   disabled,
 }: Props): React.JSX.Element {
-  /* ------------------------------ Step control ----------------------------- */
-
   const [step, setStep] = useState(0);
-
-  /* ---------------------------- Basic shop data --------------------------- */
-
   const [shopId, setShopId] = useState("");
   const [template, setTemplate] = useState(templates[0] ?? "");
   const [theme, setTheme] = useState(themes[0] ?? "");
@@ -163,14 +42,8 @@ export default function Wizard({
   const [shipping, setShipping] = useState<string[]>([]);
   const [creating, setCreating] = useState(false);
   const [result, setResult] = useState<string | null>(null);
-
-  /* ----------------------------- Theme tokens ----------------------------- */
-
   const [themeVars, setThemeVars] = useState<TokenMap>(baseTokens);
   const savedThemeVars = useRef<TokenMap | null>(null);
-
-  /* ------------------------------ Deployment ------------------------------ */
-
   const [domain, setDomain] = useState("");
   const [deploying, setDeploying] = useState(false);
   const [deployResult, setDeployResult] = useState<string | null>(null);
@@ -178,8 +51,6 @@ export default function Wizard({
     DeployShopResult | { status: "pending" } | null
   >(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
-
-  /* --------------------------- Home‑page metadata -------------------------- */
 
   const languages = LOCALES as readonly Locale[];
 
@@ -203,16 +74,12 @@ export default function Wizard({
 
   const [socialImage, setSocialImage] = useState("");
 
-  /* ---------------------------- Layout templates -------------------------- */
-
   const [pageTemplates, setPageTemplates] = useState<
     Array<{ name: string; components: PageComponent[] }>
   >([]);
-  const [homeLayout, setHomeLayout] = useState<string>("");
-  const [newPageLayout, setNewPageLayout] = useState<string>("");
-  const [productLayout, setProductLayout] = useState<string>("");
-
-  /* ------------------------------ Page builder ----------------------------- */
+  const [homeLayout, setHomeLayout] = useState("");
+  const [newPageLayout, setNewPageLayout] = useState("");
+  const [productLayout, setProductLayout] = useState("");
 
   const [components, setComponents] = useState<PageComponent[]>([]);
   const [homePageId, setHomePageId] = useState<string | null>(null);
@@ -221,25 +88,12 @@ export default function Wizard({
   );
   const [productPageId, setProductPageId] = useState<string | null>(null);
 
-  /* ------------------------------- Analytics ------------------------------- */
-
   const [analyticsProvider, setAnalyticsProvider] = useState("");
   const [analyticsId, setAnalyticsId] = useState("");
-
-  /* ------------------------------- Navigation ------------------------------ */
-
-  interface NavItem {
-    id: string;
-    label: string;
-    url: string;
-    children?: NavItem[];
-  }
 
   const [navItems, setNavItems] = useState<NavItem[]>([
     { id: ulid(), label: "Shop", url: "/shop" },
   ]);
-
-  /* -------------------------- Additional pages ----------------------------- */
 
   const [pages, setPages] = useState<
     Array<{
@@ -295,9 +149,7 @@ export default function Wizard({
     fetch("/cms/api/page-templates")
       .then((res) => res.json())
       .then((data) => Array.isArray(data) && setPageTemplates(data))
-      .catch(() => {
-        /* ignore errors */
-      });
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -347,9 +199,7 @@ export default function Wizard({
       if (typeof data.categoriesText === "string")
         setCategoriesText(data.categoriesText);
       if (data.themeVars) savedThemeVars.current = data.themeVars;
-    } catch {
-      // ignore malformed data
-    }
+    } catch {}
   }, []);
 
   useEffect(() => {
@@ -391,9 +241,7 @@ export default function Wizard({
     };
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    } catch {
-      /* ignore write errors */
-    }
+    } catch {}
   }, [
     step,
     shopId,
@@ -492,7 +340,7 @@ export default function Wizard({
         setDeployInfo(json);
         startPolling();
       } else {
-        setDeployResult(json?.error ?? "Deployment failed");
+        setDeployResult((json as any)?.error ?? "Deployment failed");
       }
     } catch {
       setDeployResult("Deployment failed");
@@ -528,7 +376,7 @@ export default function Wizard({
       }
 
       setSeedResult("Data saved");
-      setStep(11);
+      setStep(10);
     } catch {
       setSeedResult("Failed to save data");
     } finally {
@@ -560,7 +408,7 @@ export default function Wizard({
       }
 
       setImportResult("Saved");
-      setStep(10);
+      setStep(9);
     } catch {
       setImportResult("Failed to save data");
     } finally {
@@ -584,776 +432,190 @@ export default function Wizard({
           if (pollRef.current) clearInterval(pollRef.current);
           pollRef.current = null;
         }
-      } catch {
-        // ignore polling errors
-      }
+      } catch {}
     }, 3000);
   }
-
-  /* ------------------------------------------------------------------------ */
-  /*                                  Styles                                  */
-  /* ------------------------------------------------------------------------ */
 
   const themeStyle = Object.fromEntries(
     Object.entries(themeVars).map(([k, v]) => [k, v])
   ) as React.CSSProperties;
 
-  /* ------------------------------------------------------------------------ */
-  /*                                   JSX                                    */
-  /* ------------------------------------------------------------------------ */
-
   return (
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
-        <Progress step={step} total={12} />
+        <Progress step={step} total={11} />
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                          Step 0 · Shop ID                           */}
-        {/* ------------------------------------------------------------------ */}
         {step === 0 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Shop Details</h2>
-
-            <label className="flex flex-col gap-1">
-              <span>Shop ID</span>
-              <Input
-                value={shopId}
-                onChange={(e) => setShopId(e.target.value)}
-                placeholder="my-shop"
-              />
-            </label>
-
-            <label className="flex flex-col gap-1">
-              <span>Template</span>
-              <Select value={template} onValueChange={setTemplate}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select template" />
-                </SelectTrigger>
-                <SelectContent>
-                  {templates.map((t) => (
-                    <SelectItem key={t} value={t}>
-                      {t}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </label>
-
-            <div className="flex justify-end gap-2">
-              <Button disabled={!shopId} onClick={() => setStep(1)}>
-                Next
-              </Button>
-            </div>
-          </div>
+           <StepShopDetails
+            shopId={shopId}
+            setShopId={setShopId}
+            template={template}
+            setTemplate={setTemplate}
+            templates={templates}
+            onNext={() => setStep(1)}
+          />
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                       Step 1 · Choose theme                         */}
-        {/* ------------------------------------------------------------------ */}
-        {step === 1 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Select Theme</h2>
-
-            <Select value={theme} onValueChange={setTheme}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select theme" />
-              </SelectTrigger>
-              <SelectContent>
-                {themes.map((t) => (
-                  <SelectItem key={t} value={t}>
-                    {t}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <StyleEditor tokens={themeVars} onChange={setThemeVars} />
-
-            <WizardPreview style={themeStyle} />
-
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(0)}>
-                Back
-              </Button>
-              <Button onClick={() => setStep(2)}>Next</Button>
-            </div>
-          </div>
+         <StepTheme
+            themes={themes}
+            theme={theme}
+            setTheme={setTheme}
+            themeVars={themeVars}
+            setThemeVars={setThemeVars}
+            themeStyle={themeStyle}
+            onBack={() => setStep(0)}
+            onNext={() => setStep(2)}
+          />
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                     Step 2 · Customize tokens                       */}
-        {/* ------------------------------------------------------------------ */}
-        {step === 2 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Customize Tokens</h2>
-
-            <WizardPreview style={themeStyle} />
-
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(1)}>
-                Back
-              </Button>
-              <Button onClick={() => setStep(3)}>Next</Button>
-            </div>
-          </div>
+        <StepTokens
+            themeStyle={themeStyle}
+            onBack={() => setStep(1)}
+            onNext={() => setStep(3)}
+          />
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                        Step 3 · Options                             */}
-        {/* ------------------------------------------------------------------ */}
-        {step === 3 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Options</h2>
-
-            {/* Payment providers ------------------------------------------ */}
-            <div>
-              <p className="font-medium">Payment Providers</p>
-              <label className="flex items-center gap-2 text-sm">
-                <Checkbox
-                  checked={payment.includes("stripe")}
-                  onCheckedChange={() => setPayment((l) => toggle(l, "stripe"))}
-                />
-                Stripe
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <Checkbox
-                  checked={payment.includes("paypal")}
-                  onCheckedChange={() => setPayment((l) => toggle(l, "paypal"))}
-                />
-                PayPal
-              </label>
-            </div>
-
-            {/* Shipping providers ----------------------------------------- */}
-            <div>
-              <p className="font-medium">Shipping Providers</p>
-              <label className="flex items-center gap-2 text-sm">
-                <Checkbox
-                  checked={shipping.includes("dhl")}
-                  onCheckedChange={() => setShipping((l) => toggle(l, "dhl"))}
-                />
-                DHL
-              </label>
-              <label className="flex items-center gap-2 text-sm">
-                <Checkbox
-                  checked={shipping.includes("ups")}
-                  onCheckedChange={() => setShipping((l) => toggle(l, "ups"))}
-                />
-                UPS
-              </label>
-            </div>
-
-            {/* Analytics --------------------------------------------------- */}
-            <div>
-              <p className="font-medium">Analytics</p>
-              <Select
-                value={analyticsProvider}
-                onValueChange={setAnalyticsProvider}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select provider" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">None</SelectItem>
-                  <SelectItem value="ga">Google Analytics</SelectItem>
-                </SelectContent>
-              </Select>
-
-              {analyticsProvider === "ga" && (
-                <Input
-                  className="mt-2"
-                  value={analyticsId}
-                  onChange={(e) => setAnalyticsId(e.target.value)}
-                  placeholder="Measurement ID"
-                />
-              )}
-            </div>
-
-            {/* Navigation -------------------------------------------------- */}
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(2)}>
-                Back
-              </Button>
-              <Button onClick={() => setStep(4)}>Next</Button>
-            </div>
-          </div>
+        <StepOptions
+            payment={payment}
+            setPayment={setPayment}
+            shipping={shipping}
+            setShipping={setShipping}
+            analyticsProvider={analyticsProvider}
+            setAnalyticsProvider={setAnalyticsProvider}
+            analyticsId={analyticsId}
+            setAnalyticsId={setAnalyticsId}
+            onBack={() => setStep(2)}
+            onNext={() => setStep(4)}
+          />
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                       Step 4 · Navigation                           */}
-        {/* ------------------------------------------------------------------ */}
-        {step === 4 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Navigation</h2>
-
-            <NavigationEditor items={navItems} onChange={setNavItems} />
-
-            <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(3)}>
-                Back
-              </Button>
-
-              <Button onClick={() => setStep(5)}>Next</Button>
-            </div>
-          </div>
+        <StepNavigation
+            navItems={navItems}
+            setNavItems={setNavItems}
+            onBack={() => setStep(3)}
+            onNext={() => setStep(5)}
+          />
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                       Step 5 · Home page                            */}
-        {/* ------------------------------------------------------------------ */}
-        {step === 5 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Home Page</h2>
-
-            <Select
-              value={homeLayout}
-              onValueChange={(val) => {
-                setHomeLayout(val);
-                const tpl = pageTemplates.find((t) => t.name === val);
-                if (tpl) {
-                  setComponents(
-                    tpl.components.map((c) => ({ ...c, id: ulid() }))
-                  );
-                } else {
-                  setComponents([]);
-                }
-              }}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select template" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">Blank</SelectItem>
-                {pageTemplates.map((t) => (
-                  <SelectItem key={t.name} value={t.name}>
-                    {t.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <PageBuilder
-              page={
-                {
-                  id: homePageId ?? "",
-                  slug: "",
-                  status: "draft",
-                  components,
-                  seo: {
-                    title: LOCALES.reduce(
-                      (acc, l) => ({ ...acc, [l]: "" }),
-                      {} as Record<Locale, string>
-                    ),
-                    description: LOCALES.reduce(
-                      (acc, l) => ({ ...acc, [l]: "" }),
-                      {} as Record<Locale, string>
-                    ),
-                    image: "",
-                  },
-                  createdAt: "",
-                  updatedAt: "",
-                  createdBy: "",
-                } as Page
-              }
-              onSave={async (fd) => {
-                const res = await fetch(`/cms/api/page-draft/${shopId}`, {
-                  method: "POST",
-                  body: fd,
-                });
-                const json = await res.json();
-                setHomePageId(json.id);
-              }}
-              onPublish={async () => {}}
-              onChange={setComponents}
-              style={themeStyle}
-            />
-
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(4)}>
-                Back
-              </Button>
-              <Button onClick={() => setStep(6)}>Next</Button>
-            </div>
-          </div>
+        <StepHomePage
+            pageTemplates={pageTemplates}
+            homeLayout={homeLayout}
+            setHomeLayout={setHomeLayout}
+            components={components}
+            setComponents={setComponents}
+            homePageId={homePageId}
+            setHomePageId={setHomePageId}
+            shopId={shopId}
+            themeStyle={themeStyle}
+            onBack={() => setStep(4)}
+            onNext={() => setStep(6)}
+          />
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                    Step 6 · Product page.                          */}
-        {/* ------------------------------------------------------------------ */}
         {step === 6 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Product Detail Page</h2>
-
-            <Select
-              value={productLayout}
-              onValueChange={(val) => {
-                setProductLayout(val);
-                const tpl = pageTemplates.find((t) => t.name === val);
-                if (tpl) {
-                  setProductComponents(
-                    tpl.components.map((c) => ({ ...c, id: ulid() }))
-                  );
-                } else {
-                  setProductComponents([]);
-                }
-              }}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select template" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">Blank</SelectItem>
-                {pageTemplates.map((t) => (
-                  <SelectItem key={t.name} value={t.name}>
-                    {t.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <ProductPageBuilder
-              page={
-                {
-                  id: productPageId ?? "",
-                  slug: "",
-                  status: "draft",
-                  components: productComponents,
-                  seo: {
-                    title: LOCALES.reduce(
-                      (acc, l) => ({ ...acc, [l]: "" }),
-                      {} as Record<Locale, string>
-                    ),
-                    description: LOCALES.reduce(
-                      (acc, l) => ({ ...acc, [l]: "" }),
-                      {} as Record<Locale, string>
-                    ),
-                    image: "",
-                  },
-                  createdAt: "",
-                  updatedAt: "",
-                  createdBy: "",
-                } as Page
-              }
-              onSave={async (fd) => {
-                const res = await fetch(`/cms/api/page-draft/${shopId}`, {
-                  method: "POST",
-                  body: fd,
-                });
-                const json = await res.json();
-                setProductPageId(json.id);
-              }}
-              onPublish={async () => {}}
-              onChange={setProductComponents}
-              style={themeStyle}
-            />
-
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(5)}>
-                Back
-              </Button>
-              <Button onClick={() => setStep(7)}>Next</Button>
-            </div>
-          </div>
+          <StepProductPage
+            pageTemplates={pageTemplates}
+            productLayout={productLayout}
+            setProductLayout={setProductLayout}
+            productComponents={productComponents}
+            setProductComponents={setProductComponents}
+            productPageId={productPageId}
+            setProductPageId={setProductPageId}
+            shopId={shopId}
+            themeStyle={themeStyle}
+            onBack={() => setStep(5)}
+            onNext={() => setStep(7)}
+          />
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                    Step 7 · Additional pages                        */}
-        {/* ------------------------------------------------------------------ */}
         {step === 7 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Additional Pages</h2>
-
-            {pages.length > 0 && (
-              <ul className="list-disc pl-5 text-sm">
-                {pages.map((p) => (
-                  <li key={p.slug}>{p.slug}</li>
-                ))}
-              </ul>
-            )}
-
-            {/* Page‑builder for new page ---------------------------------- */}
-            {adding && (
-              <div className="space-y-2">
-                <Select
-                  value={newPageLayout}
-                  onValueChange={(val) => {
-                    setNewPageLayout(val);
-                    const tpl = pageTemplates.find((t) => t.name === val);
-                    if (tpl) {
-                      setNewComponents(
-                        tpl.components.map((c) => ({ ...c, id: ulid() }))
-                      );
-                    } else {
-                      setNewComponents([]);
-                    }
-                  }}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select template" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">Blank</SelectItem>
-                    {pageTemplates.map((t) => (
-                      <SelectItem key={t.name} value={t.name}>
-                        {t.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <label className="flex flex-col gap-1">
-                  <span>Slug</span>
-                  <Input
-                    value={newSlug}
-                    onChange={(e) => setNewSlug(e.target.value)}
-                  />
-                </label>
-                {languages.map((l) => (
-                  <div key={l} className="space-y-2">
-                    <label className="flex flex-col gap-1">
-                      <span>Title ({l})</span>
-                      <Input
-                        value={newTitle[l]}
-                        onChange={(e) =>
-                          setNewTitle((t) => ({ ...t, [l]: e.target.value }))
-                        }
-                      />
-                    </label>
-                    <label className="flex flex-col gap-1">
-                      <span>Description ({l})</span>
-                      <Input
-                        value={newDesc[l]}
-                        onChange={(e) =>
-                          setNewDesc((d) => ({ ...d, [l]: e.target.value }))
-                        }
-                      />
-                    </label>
-                    <label className="flex flex-col gap-1">
-                      <span>Image URL ({l})</span>
-                      <Input
-                        value={newImage[l]}
-                        onChange={(e) =>
-                          setNewImage((img) => ({
-                            ...img,
-                            [l]: e.target.value,
-                          }))
-                        }
-                      />
-                    </label>
-                  </div>
-                ))}
-
-                <PageBuilder
-                  page={
-                    {
-                      id: newDraftId ?? "",
-                      slug: "",
-                      status: "draft",
-                      components: newComponents,
-                      seo: {
-                        title: LOCALES.reduce(
-                          (acc, l) => ({ ...acc, [l]: "" }),
-                          {} as Record<Locale, string>
-                        ),
-                        description: LOCALES.reduce(
-                          (acc, l) => ({ ...acc, [l]: "" }),
-                          {} as Record<Locale, string>
-                        ),
-                        image: LOCALES.reduce(
-                          (acc, l) => ({ ...acc, [l]: "" }),
-                          {} as Record<Locale, string>
-                        ),
-                      },
-                      createdAt: "",
-                      updatedAt: "",
-                      createdBy: "",
-                    } as Page
-                  }
-                  onSave={async (fd) => {
-                    const res = await fetch(`/cms/api/page-draft/${shopId}`, {
-                      method: "POST",
-                      body: fd,
-                    });
-                    const json = await res.json();
-                    setNewDraftId(json.id);
-                  }}
-                  onPublish={async () => {}}
-                  onChange={setNewComponents}
-                  style={themeStyle}
-                />
-
-                <div className="flex justify-between">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setAdding(false);
-                      setNewDraftId(null);
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setPages((p) => [
-                        ...p,
-                        {
-                          id: newDraftId ?? undefined,
-                          slug: newSlug,
-                          title: newTitle,
-                          description: newDesc,
-                          image: newImage,
-                          components: newComponents,
-                        },
-                      ]);
-                      setNewSlug("");
-                      setNewTitle(() => {
-                        const obj = {} as Record<Locale, string>;
-                        languages.forEach((l) => {
-                          obj[l] = "";
-                        });
-                        return obj;
-                      });
-                      setNewDesc(() => {
-                        const obj = {} as Record<Locale, string>;
-                        languages.forEach((l) => {
-                          obj[l] = "";
-                        });
-                        return obj;
-                      });
-                      setNewImage(() => {
-                        const obj = {} as Record<Locale, string>;
-                        languages.forEach((l) => {
-                          obj[l] = "";
-                        });
-                        return obj;
-                      });
-                      setNewComponents([]);
-                      setNewDraftId(null);
-                      setAdding(false);
-                    }}
-                  >
-                    Add Page
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {!adding && (
-              <Button onClick={() => setAdding(true)}>Add Page</Button>
-            )}
-
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(6)}>
-                Back
-              </Button>
-              <Button onClick={() => setStep(8)}>Next</Button>
-            </div>
-          </div>
+          <StepAdditionalPages
+            pageTemplates={pageTemplates}
+            pages={pages}
+            setPages={setPages}
+            newSlug={newSlug}
+            setNewSlug={setNewSlug}
+            newTitle={newTitle}
+            setNewTitle={setNewTitle}
+            newDesc={newDesc}
+            setNewDesc={setNewDesc}
+            newImage={newImage}
+            setNewImage={setNewImage}
+            newComponents={newComponents}
+            setNewComponents={setNewComponents}
+            newDraftId={newDraftId}
+            setNewDraftId={setNewDraftId}
+            adding={adding}
+            setAdding={setAdding}
+            newPageLayout={newPageLayout}
+            setNewPageLayout={setNewPageLayout}
+            shopId={shopId}
+            themeStyle={themeStyle}
+            onBack={() => setStep(6)}
+            onNext={() => setStep(8)}
+          />
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                    Step 8 · Summary & create                        */}
-        {/* ------------------------------------------------------------------ */}
-        {step === 7 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Summary</h2>
-
-            <ul className="list-disc pl-5 text-sm">
-              <li>
-                <b>Shop ID:</b> {shopId}
-              </li>
-              <li>
-                <b>Template:</b> {template}
-              </li>
-              <li>
-                <b>Theme:</b> {theme}
-              </li>
-              <li>
-                <b>Payment:</b> {payment.join(", ") || "none"}
-              </li>
-              <li>
-                <b>Shipping:</b> {shipping.join(", ") || "none"}
-              </li>
-              <li>
-                <b>Analytics:</b> {analyticsProvider || "none"}
-              </li>
-            </ul>
-
-            {languages.map((l) => (
-              <div key={l} className="space-y-2">
-                <label className="flex flex-col gap-1">
-                  <span>Home page title ({l})</span>
-                  <Input
-                    value={pageTitle[l]}
-                    onChange={(e) =>
-                      setPageTitle((t) => ({ ...t, [l]: e.target.value }))
-                    }
-                    placeholder="Home"
-                  />
-                </label>
-
-                <label className="flex flex-col gap-1">
-                  <span>Description ({l})</span>
-                  <Input
-                    value={pageDescription[l]}
-                    onChange={(e) =>
-                      setPageDescription((d) => ({ ...d, [l]: e.target.value }))
-                    }
-                    placeholder="Page description"
-                  />
-                </label>
-              </div>
-            ))}
-
-            <label className="flex flex-col gap-1">
-              <span>Social image URL</span>
-              <Input
-                value={socialImage}
-                onChange={(e) => setSocialImage(e.target.value)}
-                placeholder="https://example.com/og.png"
-              />
-            </label>
-
-            {result && <p className="text-sm">{result}</p>}
-
-            <WizardPreview style={themeStyle} />
-
-            <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(7)}>
-                Back
-              </Button>
-              <Button disabled={creating} onClick={submit}>
-                {creating ? "Creating…" : "Create Shop"}
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* ------------------------------------------------------------------ */}
-        {/*                      Step 9 · Import data                            */}
-        {/* ------------------------------------------------------------------ */}
         {step === 8 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Import Data</h2>
-
-            <label className="flex flex-col gap-1">
-              <span>Products CSV</span>
-              <Input
-                type="file"
-                accept=".csv"
-                onChange={(e) => setCsvFile(e.target.files?.[0] ?? null)}
-              />
-            </label>
-
-            <Textarea
-              label="Categories JSON"
-              value={categoriesText}
-              onChange={(e) => setCategoriesText(e.target.value)}
-              placeholder='["Shoes","Accessories"]'
-            />
-
-            {importResult && <p className="text-sm">{importResult}</p>}
-
-            <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(7)}>
-                Back
-              </Button>
-              <Button disabled={importing} onClick={saveData}>
-                {importing ? "Saving…" : "Save & Continue"}
-              </Button>
-            </div>
-          </div>
+          <StepSummary
+            shopId={shopId}
+            template={template}
+            theme={theme}
+            payment={payment}
+            shipping={shipping}
+            analyticsProvider={analyticsProvider}
+            pageTitle={pageTitle}
+            setPageTitle={setPageTitle}
+            pageDescription={pageDescription}
+            setPageDescription={setPageDescription}
+            socialImage={socialImage}
+            setSocialImage={setSocialImage}
+            result={result}
+            themeStyle={themeStyle}
+            creating={creating}
+            submit={submit}
+            onBack={() => setStep(7)}
+            onNext={() => setStep(9)}
+          />
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                      Step 10 · Seed data                              */}
-        {/* ------------------------------------------------------------------ */}
         {step === 9 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Seed Data</h2>
-
-            <label className="flex flex-col gap-1">
-              <span>Product CSV</span>
-              <Input
-                type="file"
-                onChange={(e) => setCsvFile(e.target.files?.[0] ?? null)}
-              />
-            </label>
-
-            <label className="flex flex-col gap-1">
-              <span>Categories (comma or newline separated)</span>
-              <Input
-                value={categoriesText}
-                onChange={(e) => setCategoriesText(e.target.value)}
-                placeholder="Shoes, Shirts, Accessories"
-              />
-            </label>
-
-            {seedResult && <p className="text-sm">{seedResult}</p>}
-
-            <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(8)}>
-                Back
-              </Button>
-              <Button disabled={seeding} onClick={seed}>
-                {seeding ? "Saving…" : "Save & Continue"}
-              </Button>
-            </div>
-          </div>
+          <StepImportData
+            csvFile={csvFile}
+            setCsvFile={setCsvFile}
+            categoriesText={categoriesText}
+            setCategoriesText={setCategoriesText}
+            importResult={importResult}
+            importing={importing}
+            saveData={saveData}
+            onBack={() => setStep(8)}
+            onNext={() => setStep(10)}
+          />
         )}
 
-        {/* ------------------------------------------------------------------ */}
-        {/*                      Step 11 · Hosting                               */}
-        {/* ------------------------------------------------------------------ */}
         {step === 10 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Hosting</h2>
-
-            <label className="flex flex-col gap-1">
-              <span>Custom Domain</span>
-              <Input
-                value={domain}
-                onChange={(e) => setDomain(e.target.value)}
-                placeholder="myshop.example.com"
-              />
-            </label>
-
-            {deployResult && <p className="text-sm">{deployResult}</p>}
-
-            {deployInfo?.previewUrl && (
-              <p className="text-sm">
-                Preview:{" "}
-                <a
-                  href={deployInfo.previewUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-blue-600 underline"
-                >
-                  {deployInfo.previewUrl}
-                </a>
-              </p>
-            )}
-
-            {deployInfo?.instructions && (
-              <p className="text-sm">{deployInfo.instructions}</p>
-            )}
-
-            {deployInfo?.status === "success" && (
-              <p className="text-sm text-green-600">Deployment complete</p>
-            )}
-
-            {deployInfo?.status === "error" && deployInfo.error && (
-              <p className="text-sm text-red-600">{deployInfo.error}</p>
-            )}
-
-            <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(9)}>
-                Back
-              </Button>
-              <Button disabled={deploying} onClick={deploy}>
-                {deploying ? "Deploying…" : "Deploy"}
-              </Button>
-            </div>
-          </div>
+          <StepSeedData
+            csvFile={csvFile}
+            setCsvFile={setCsvFile}
+            categoriesText={categoriesText}
+            setCategoriesText={setCategoriesText}
+            seedResult={seedResult}
+            seeding={seeding}
+            seed={seed}
+            onBack={() => setStep(9)}
+            onNext={() => setStep(11)}
+          />
+        )}
+        {step === 11 && (
+          <StepHosting
+            domain={domain}
+            setDomain={setDomain}
+            deployResult={deployResult}
+            deployInfo={deployInfo}
+            deploying={deploying}
+            deploy={deploy}
+            onBack={() => setStep(10)}
+          />
         )}
       </fieldset>
     </div>

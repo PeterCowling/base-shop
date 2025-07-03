@@ -7,7 +7,13 @@ const samplePage: Page = {
   slug: "sample",
   status: "draft",
   components: [],
-  seo: { title: "Sample" },
+  seo: {
+    title: {
+      en: "Sample",
+      de: "Sample",
+      it: "Sample",
+    },
+  },
   createdAt: "",
   updatedAt: "",
   createdBy: "",

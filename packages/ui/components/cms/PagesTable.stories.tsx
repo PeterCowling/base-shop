@@ -8,7 +8,13 @@ const pages: Page[] = [
     slug: "home",
     status: "draft",
     components: [],
-    seo: { title: "Home" },
+    seo: {
+      title: {
+        en: "Home",
+        de: "Home",
+        it: "Home",
+      },
+    },
     createdAt: "2023-01-01",
     updatedAt: "2023-01-01",
     createdBy: "admin",

@@ -10,7 +10,7 @@ import {
   updatePage as updatePageInRepo,
 } from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
-import type { Locale, Page, PageComponent, PageStatus } from "@types";
+import type { Locale, Page, PageComponent } from "@types";
 import { LOCALES } from "@types";
 import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
@@ -62,14 +62,8 @@ type LocaleFields = {
   [L in Locale as `desc_${L}`]?: string;
 };
 
-type BasePageForm = {
-  slug: string;
-  status: PageStatus;
-  image?: string;
-  components: PageComponent[];
-} & LocaleFields;
+const baseSchema = z
 
-const baseSchema: z.ZodType<BasePageForm> = z
   .object({
     slug: z.string().min(1, "Required"),
     status: z.enum(["draft", "published"]).default("draft"),
@@ -83,6 +77,8 @@ const baseSchema: z.ZodType<BasePageForm> = z
     components: componentsField,
   })
   .extend(localeFields as Record<string, z.ZodTypeAny>);
+
+type BasePageForm = z.infer<typeof baseSchema>;
 
 export type PageCreateForm = BasePageForm;
 export type PageUpdateForm = BasePageForm & { id: string; updatedAt: string };
@@ -115,13 +111,18 @@ export async function createPage(
     title[l] = data[`title_${l}` as keyof PageCreateForm] as string;
     description[l] = data[`desc_${l}` as keyof PageCreateForm] as string;
   });
+  const image: Record<Locale, string> = {} as Record<Locale, string>;
+  LOCALES.forEach((l) => {
+    image[l] = data.image ?? "";
+  });
+
   const now = new Date().toISOString();
   const page: Page = {
     id: ulid(),
     slug: data.slug,
     status: data.status,
     components: data.components,
-    seo: { title, description, image: data.image },
+    seo: { title, description, image },
 
     createdAt: now,
     updatedAt: now,
@@ -168,7 +169,7 @@ export async function savePageDraft(
         seo: {
           title: emptyTranslated(),
           description: emptyTranslated(),
-          image: "",
+          image: emptyTranslated(),
         },
         createdAt: now,
         updatedAt: now,
@@ -206,13 +207,18 @@ export async function updatePage(
     title[l] = data[`title_${l}` as keyof PageUpdateForm] as string;
     description[l] = data[`desc_${l}` as keyof PageUpdateForm] as string;
   });
+  const image: Record<Locale, string> = {} as Record<Locale, string>;
+  LOCALES.forEach((l) => {
+    image[l] = data.image ?? "";
+  });
+
   const patch: Partial<Page> & { id: string; updatedAt: string } = {
     id: data.id,
     updatedAt: data.updatedAt,
     slug: data.slug,
     status: data.status,
     components: data.components,
-    seo: { title, description, image: data.image },
+    seo: { title, description, image },
   };
 
   try {

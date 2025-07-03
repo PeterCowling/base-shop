@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-import Wizard from "./Wizard";
+import Wizard from "./Wizard.oldtsx";
 
 export const metadata: Metadata = {
   title: "Create Shop · Base-Shop",

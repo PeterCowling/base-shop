@@ -52,21 +52,18 @@ function WizardPreview({
     <div className="space-y-2">
       <div className="flex justify-end gap-2">
         <Button
-          size="sm"
           variant={viewport === "desktop" ? "default" : "outline"}
           onClick={() => setViewport("desktop")}
         >
           Desktop
         </Button>
         <Button
-          size="sm"
           variant={viewport === "tablet" ? "default" : "outline"}
           onClick={() => setViewport("tablet")}
         >
           Tablet
         </Button>
         <Button
-          size="sm"
           variant={viewport === "mobile" ? "default" : "outline"}
           onClick={() => setViewport("mobile")}
         >
@@ -177,7 +174,9 @@ export default function Wizard({
   const [domain, setDomain] = useState("");
   const [deploying, setDeploying] = useState(false);
   const [deployResult, setDeployResult] = useState<string | null>(null);
-  const [deployInfo, setDeployInfo] = useState<DeployShopResult | null>(null);
+  const [deployInfo, setDeployInfo] = useState<
+    DeployShopResult | { status: "pending" } | null
+  >(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
 
   /* --------------------------- Home‑page metadata -------------------------- */
@@ -432,8 +431,9 @@ export default function Wizard({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: shopId, domain }),
       });
-      const json = (await res.json()) as DeployShopResult & { status?: string };
-
+      const json = (await res.json()) as
+        | DeployShopResult
+        | { status: "pending" };
       if (res.ok) {
         setDeployResult("Deployment started");
         setDeployInfo(json);
@@ -521,13 +521,13 @@ export default function Wizard({
     pollRef.current = setInterval(async () => {
       try {
         const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
-        const status = (await res.json()) as DeployShopResult & {
-          status?: string;
-        };
+        const status = (await res.json()) as
+          | DeployShopResult
+          | { status: "pending" };
 
         setDeployInfo(status);
 
-        if (status.status && status.status !== "pending") {
+        if (status.status !== "pending") {
           if (pollRef.current) clearInterval(pollRef.current);
           pollRef.current = null;
         }
@@ -832,7 +832,17 @@ export default function Wizard({
                   slug: "",
                   status: "draft",
                   components,
-                  seo: { title: "", description: "" },
+                  seo: {
+                    title: LOCALES.reduce(
+                      (acc, l) => ({ ...acc, [l]: "" }),
+                      {} as Record<Locale, string>
+                    ),
+                    description: LOCALES.reduce(
+                      (acc, l) => ({ ...acc, [l]: "" }),
+                      {} as Record<Locale, string>
+                    ),
+                    image: "",
+                  },
                   createdAt: "",
                   updatedAt: "",
                   createdBy: "",
@@ -940,7 +950,17 @@ export default function Wizard({
                       slug: "",
                       status: "draft",
                       components: newComponents,
-                      seo: { title: "", description: "" },
+                      seo: {
+                        title: LOCALES.reduce(
+                          (acc, l) => ({ ...acc, [l]: "" }),
+                          {} as Record<Locale, string>
+                        ),
+                        description: LOCALES.reduce(
+                          (acc, l) => ({ ...acc, [l]: "" }),
+                          {} as Record<Locale, string>
+                        ),
+                        image: "",
+                      },
                       createdAt: "",
                       updatedAt: "",
                       createdBy: "",

@@ -13,7 +13,7 @@ import {
   SelectValue,
   Textarea,
 } from "@/components/atoms-shadcn";
-import { StyleEditor } from "@/components/cms";
+import { NavigationEditor, StyleEditor } from "@/components/cms";
 import PageBuilder from "@/components/cms/PageBuilder";
 import HeroBanner from "@/components/home/HeroBanner";
 import ReviewsCarousel from "@/components/home/ReviewsCarousel";
@@ -210,11 +210,16 @@ export default function Wizard({
   >([]);
   const [homeLayout, setHomeLayout] = useState<string>("");
   const [newPageLayout, setNewPageLayout] = useState<string>("");
+  const [productLayout, setProductLayout] = useState<string>("");
 
   /* ------------------------------ Page builder ----------------------------- */
 
   const [components, setComponents] = useState<PageComponent[]>([]);
   const [homePageId, setHomePageId] = useState<string | null>(null);
+  const [productComponents, setProductComponents] = useState<PageComponent[]>(
+    []
+  );
+  const [productPageId, setProductPageId] = useState<string | null>(null);
 
   /* ------------------------------- Analytics ------------------------------- */
 
@@ -223,11 +228,16 @@ export default function Wizard({
 
   /* ------------------------------- Navigation ------------------------------ */
 
-  const [navItems, setNavItems] = useState<{ label: string; url: string }[]>([
-    { label: "Shop", url: "/shop" },
+  interface NavItem {
+    id: string;
+    label: string;
+    url: string;
+    children?: NavItem[];
+  }
+
+  const [navItems, setNavItems] = useState<NavItem[]>([
+    { id: ulid(), label: "Shop", url: "/shop" },
   ]);
-  const [newNavLabel, setNewNavLabel] = useState("");
-  const [newNavUrl, setNewNavUrl] = useState("");
 
   /* -------------------------- Additional pages ----------------------------- */
 
@@ -235,17 +245,35 @@ export default function Wizard({
     Array<{
       id?: string;
       slug: string;
-      title: string;
-      description: string;
-      image: string;
+      title: Record<Locale, string>;
+      description: Record<Locale, string>;
+      image: Record<Locale, string>;
       components: PageComponent[];
     }>
   >([]);
 
   const [newSlug, setNewSlug] = useState("");
-  const [newTitle, setNewTitle] = useState("");
-  const [newDesc, setNewDesc] = useState("");
-  const [newImage, setNewImage] = useState("");
+  const [newTitle, setNewTitle] = useState<Record<Locale, string>>(() => {
+    const obj = {} as Record<Locale, string>;
+    languages.forEach((l) => {
+      obj[l] = "";
+    });
+    return obj;
+  });
+  const [newDesc, setNewDesc] = useState<Record<Locale, string>>(() => {
+    const obj = {} as Record<Locale, string>;
+    languages.forEach((l) => {
+      obj[l] = "";
+    });
+    return obj;
+  });
+  const [newImage, setNewImage] = useState<Record<Locale, string>>(() => {
+    const obj = {} as Record<Locale, string>;
+    languages.forEach((l) => {
+      obj[l] = "";
+    });
+    return obj;
+  });
   const [newComponents, setNewComponents] = useState<PageComponent[]>([]);
   const [newDraftId, setNewDraftId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
@@ -290,11 +318,28 @@ export default function Wizard({
       if (Array.isArray(data.components)) setComponents(data.components);
       if (typeof data.homePageId === "string") setHomePageId(data.homePageId);
       if (typeof data.homeLayout === "string") setHomeLayout(data.homeLayout);
+      if (Array.isArray(data.productComponents))
+        setProductComponents(data.productComponents);
+      if (typeof data.productPageId === "string")
+        setProductPageId(data.productPageId);
+      if (typeof data.productLayout === "string")
+        setProductLayout(data.productLayout);
       if (typeof data.analyticsProvider === "string")
         setAnalyticsProvider(data.analyticsProvider);
       if (typeof data.analyticsId === "string")
         setAnalyticsId(data.analyticsId);
-      if (Array.isArray(data.navItems)) setNavItems(data.navItems);
+      if (Array.isArray(data.navItems)) {
+        const convert = (items: any[]): NavItem[] =>
+          items.map((i) => ({
+            id: i.id ?? ulid(),
+            label: i.label,
+            url: i.url,
+            children: Array.isArray(i.children)
+              ? convert(i.children)
+              : undefined,
+          }));
+        setNavItems(convert(data.navItems));
+      }
       if (Array.isArray(data.pages)) setPages(data.pages);
       if (typeof data.newPageLayout === "string")
         setNewPageLayout(data.newPageLayout);
@@ -332,7 +377,10 @@ export default function Wizard({
       socialImage,
       components,
       homePageId,
+      productComponents,
+      productPageId,
       homeLayout,
+      productLayout,
       analyticsProvider,
       analyticsId,
       navItems,
@@ -359,6 +407,8 @@ export default function Wizard({
     socialImage,
     components,
     homePageId,
+    productComponents,
+    productPageId,
     analyticsProvider,
     analyticsId,
     navItems,
@@ -366,6 +416,7 @@ export default function Wizard({
     domain,
     categoriesText,
     homeLayout,
+    productLayout,
     newPageLayout,
   ]);
 
@@ -402,13 +453,15 @@ export default function Wizard({
           navigation: navItems,
           components,
           homePageId,
+          productComponents,
+          productPageId,
           pages,
         }),
       });
 
       if (res.ok) {
         setResult("Shop created successfully");
-        setStep(8);
+        setStep(9);
         resetWizardProgress();
       } else {
         const { error } = (await res.json()) as { error?: string };
@@ -475,7 +528,7 @@ export default function Wizard({
       }
 
       setSeedResult("Data saved");
-      setStep(10);
+      setStep(11);
     } catch {
       setSeedResult("Failed to save data");
     } finally {
@@ -507,7 +560,7 @@ export default function Wizard({
       }
 
       setImportResult("Saved");
-      setStep(9);
+      setStep(10);
     } catch {
       setImportResult("Failed to save data");
     } finally {
@@ -552,7 +605,7 @@ export default function Wizard({
   return (
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
-        <Progress step={step} total={11} />
+        <Progress step={step} total={12} />
 
         {/* ------------------------------------------------------------------ */}
         {/*                          Step 0 · Shop ID                           */}
@@ -733,60 +786,14 @@ export default function Wizard({
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Navigation</h2>
 
-            {navItems.length > 0 && (
-              <ul className="list-disc pl-5 text-sm">
-                {navItems.map((n) => (
-                  <li key={n.url}>
-                    {n.label} – {n.url}
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <label className="flex flex-col gap-1">
-              <span>Label</span>
-              <Input
-                value={newNavLabel}
-                onChange={(e) => setNewNavLabel(e.target.value)}
-              />
-            </label>
-
-            <label className="flex flex-col gap-1">
-              <span>URL</span>
-              <Input
-                value={newNavUrl}
-                onChange={(e) => setNewNavUrl(e.target.value)}
-                placeholder="/about"
-              />
-            </label>
+            <NavigationEditor items={navItems} onChange={setNavItems} />
 
             <div className="flex justify-between gap-2">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setNewNavLabel("");
-                  setNewNavUrl("");
-                  setStep(3);
-                }}
-              >
+              <Button variant="outline" onClick={() => setStep(3)}>
                 Back
               </Button>
 
-              <Button
-                onClick={() => {
-                  if (newNavLabel && newNavUrl) {
-                    setNavItems((n) => [
-                      ...n,
-                      { label: newNavLabel, url: newNavUrl },
-                    ]);
-                    setNewNavLabel("");
-                    setNewNavUrl("");
-                  }
-                  setStep(5);
-                }}
-              >
-                Next
-              </Button>
+              <Button onClick={() => setStep(5)}>Next</Button>
             </div>
           </div>
         )}
@@ -871,9 +878,88 @@ export default function Wizard({
         )}
 
         {/* ------------------------------------------------------------------ */}
-        {/*                    Step 6 · Additional pages                        */}
+        {/*                    Step 6 · Product page.                          */}
         {/* ------------------------------------------------------------------ */}
         {step === 6 && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Product Detail Page</h2>
+
+            <Select
+              value={productLayout}
+              onValueChange={(val) => {
+                setProductLayout(val);
+                const tpl = pageTemplates.find((t) => t.name === val);
+                if (tpl) {
+                  setProductComponents(
+                    tpl.components.map((c) => ({ ...c, id: ulid() }))
+                  );
+                } else {
+                  setProductComponents([]);
+                }
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select template" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Blank</SelectItem>
+                {pageTemplates.map((t) => (
+                  <SelectItem key={t.name} value={t.name}>
+                    {t.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <ProductPageBuilder
+              page={
+                {
+                  id: productPageId ?? "",
+                  slug: "",
+                  status: "draft",
+                  components: productComponents,
+                  seo: {
+                    title: LOCALES.reduce(
+                      (acc, l) => ({ ...acc, [l]: "" }),
+                      {} as Record<Locale, string>
+                    ),
+                    description: LOCALES.reduce(
+                      (acc, l) => ({ ...acc, [l]: "" }),
+                      {} as Record<Locale, string>
+                    ),
+                    image: "",
+                  },
+                  createdAt: "",
+                  updatedAt: "",
+                  createdBy: "",
+                } as Page
+              }
+              onSave={async (fd) => {
+                const res = await fetch(`/cms/api/page-draft/${shopId}`, {
+                  method: "POST",
+                  body: fd,
+                });
+                const json = await res.json();
+                setProductPageId(json.id);
+              }}
+              onPublish={async () => {}}
+              onChange={setProductComponents}
+              style={themeStyle}
+            />
+
+            <div className="flex justify-between">
+              <Button variant="outline" onClick={() => setStep(5)}>
+                Back
+              </Button>
+              <Button onClick={() => setStep(7)}>Next</Button>
+            </div>
+          </div>
+        )}
+
+        {/* ------------------------------------------------------------------ */}
+        {/*                    Step 7 · Additional pages                        */}
+        {/* ------------------------------------------------------------------ */}
+        {step === 7 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Additional Pages</h2>
 
@@ -921,27 +1007,40 @@ export default function Wizard({
                     onChange={(e) => setNewSlug(e.target.value)}
                   />
                 </label>
-                <label className="flex flex-col gap-1">
-                  <span>Title</span>
-                  <Input
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Description</span>
-                  <Input
-                    value={newDesc}
-                    onChange={(e) => setNewDesc(e.target.value)}
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span>Image URL</span>
-                  <Input
-                    value={newImage}
-                    onChange={(e) => setNewImage(e.target.value)}
-                  />
-                </label>
+                {languages.map((l) => (
+                  <div key={l} className="space-y-2">
+                    <label className="flex flex-col gap-1">
+                      <span>Title ({l})</span>
+                      <Input
+                        value={newTitle[l]}
+                        onChange={(e) =>
+                          setNewTitle((t) => ({ ...t, [l]: e.target.value }))
+                        }
+                      />
+                    </label>
+                    <label className="flex flex-col gap-1">
+                      <span>Description ({l})</span>
+                      <Input
+                        value={newDesc[l]}
+                        onChange={(e) =>
+                          setNewDesc((d) => ({ ...d, [l]: e.target.value }))
+                        }
+                      />
+                    </label>
+                    <label className="flex flex-col gap-1">
+                      <span>Image URL ({l})</span>
+                      <Input
+                        value={newImage[l]}
+                        onChange={(e) =>
+                          setNewImage((img) => ({
+                            ...img,
+                            [l]: e.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                  </div>
+                ))}
 
                 <PageBuilder
                   page={
@@ -959,7 +1058,10 @@ export default function Wizard({
                           (acc, l) => ({ ...acc, [l]: "" }),
                           {} as Record<Locale, string>
                         ),
-                        image: "",
+                        image: LOCALES.reduce(
+                          (acc, l) => ({ ...acc, [l]: "" }),
+                          {} as Record<Locale, string>
+                        ),
                       },
                       createdAt: "",
                       updatedAt: "",
@@ -1003,9 +1105,27 @@ export default function Wizard({
                         },
                       ]);
                       setNewSlug("");
-                      setNewTitle("");
-                      setNewDesc("");
-                      setNewImage("");
+                      setNewTitle(() => {
+                        const obj = {} as Record<Locale, string>;
+                        languages.forEach((l) => {
+                          obj[l] = "";
+                        });
+                        return obj;
+                      });
+                      setNewDesc(() => {
+                        const obj = {} as Record<Locale, string>;
+                        languages.forEach((l) => {
+                          obj[l] = "";
+                        });
+                        return obj;
+                      });
+                      setNewImage(() => {
+                        const obj = {} as Record<Locale, string>;
+                        languages.forEach((l) => {
+                          obj[l] = "";
+                        });
+                        return obj;
+                      });
                       setNewComponents([]);
                       setNewDraftId(null);
                       setAdding(false);
@@ -1022,16 +1142,16 @@ export default function Wizard({
             )}
 
             <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(5)}>
+              <Button variant="outline" onClick={() => setStep(6)}>
                 Back
               </Button>
-              <Button onClick={() => setStep(7)}>Next</Button>
+              <Button onClick={() => setStep(8)}>Next</Button>
             </div>
           </div>
         )}
 
         {/* ------------------------------------------------------------------ */}
-        {/*                    Step 7 · Summary & create                        */}
+        {/*                    Step 8 · Summary & create                        */}
         {/* ------------------------------------------------------------------ */}
         {step === 7 && (
           <div className="space-y-4">
@@ -1098,7 +1218,7 @@ export default function Wizard({
             <WizardPreview style={themeStyle} />
 
             <div className="flex justify-between gap-2">
-              <Button variant="outline" onClick={() => setStep(6)}>
+              <Button variant="outline" onClick={() => setStep(7)}>
                 Back
               </Button>
               <Button disabled={creating} onClick={submit}>
@@ -1109,7 +1229,7 @@ export default function Wizard({
         )}
 
         {/* ------------------------------------------------------------------ */}
-        {/*                      Step 8 · Import data                            */}
+        {/*                      Step 9 · Import data                            */}
         {/* ------------------------------------------------------------------ */}
         {step === 8 && (
           <div className="space-y-4">
@@ -1145,7 +1265,7 @@ export default function Wizard({
         )}
 
         {/* ------------------------------------------------------------------ */}
-        {/*                      Step 9 · Seed data                              */}
+        {/*                      Step 10 · Seed data                              */}
         {/* ------------------------------------------------------------------ */}
         {step === 9 && (
           <div className="space-y-4">
@@ -1182,7 +1302,7 @@ export default function Wizard({
         )}
 
         {/* ------------------------------------------------------------------ */}
-        {/*                      Step 10 · Hosting                               */}
+        {/*                      Step 11 · Hosting                               */}
         {/* ------------------------------------------------------------------ */}
         {step === 10 && (
           <div className="space-y-4">

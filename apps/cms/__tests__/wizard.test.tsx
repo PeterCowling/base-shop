@@ -123,7 +123,7 @@ describe("Wizard", () => {
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 7; i++) {
       fireEvent.click(screen.getByText("Next"));
     }
 

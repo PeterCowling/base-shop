@@ -2,16 +2,17 @@
 "use client";
 
 import { Input } from "@/components/atoms-shadcn";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export type TokenMap = Record<`--${string}`, string>;
 
-const sansFonts = [
+const defaultSansFonts = [
   '"Geist Sans", system-ui, sans-serif',
   "Arial, sans-serif",
   "ui-sans-serif, system-ui",
 ];
 
-const monoFonts = [
+const defaultMonoFonts = [
   '"Geist Mono", ui-monospace, monospace',
   '"Courier New", monospace',
 ];
@@ -70,6 +71,58 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
     onChange({ ...tokens, [key]: value });
   };
 
+  const [sansFonts, setSansFonts] = useState<string[]>([...defaultSansFonts]);
+  const [monoFonts, setMonoFonts] = useState<string[]>([...defaultMonoFonts]);
+  const [newFont, setNewFont] = useState("");
+
+  useEffect(() => {
+    Object.entries(tokens).forEach(([k, v]) => {
+      if (k.startsWith("--font-src-")) {
+        const name = k.slice("--font-src-".length);
+        if (!document.getElementById(`font-${name}`)) {
+          const style = document.createElement("style");
+          style.id = `font-${name}`;
+          style.textContent = `@font-face { font-family: '${name}'; src: url(${v}); }`;
+          document.head.appendChild(style);
+        }
+        const stack = `"${name}"`;
+        setSansFonts((f) => (f.includes(stack) ? f : [...f, stack]));
+        setMonoFonts((f) => (f.includes(stack) ? f : [...f, stack]));
+      }
+    });
+  }, [tokens]);
+
+  const handleUpload = (
+    type: "sans" | "mono",
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const name = file.name.replace(/\.[^.]+$/, "");
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      setToken(`--font-src-${name}`, dataUrl);
+      const stack = `"${name}"`;
+      if (type === "mono") {
+        setMonoFonts((f) => (f.includes(stack) ? f : [...f, stack]));
+        setToken("--font-mono", stack);
+      } else {
+        setSansFonts((f) => (f.includes(stack) ? f : [...f, stack]));
+        setToken("--font-sans", stack);
+      }
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  };
+
+  const addCustomFont = () => {
+    if (!newFont.trim()) return;
+    setSansFonts((f) => (f.includes(newFont) ? f : [...f, newFont]));
+    setMonoFonts((f) => (f.includes(newFont) ? f : [...f, newFont]));
+    setNewFont("");
+  };
+
   const colors: Array<[string, string]> = [];
   const fonts: Array<[string, string]> = [];
   const others: Array<[string, string]> = [];
@@ -100,20 +153,30 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
 
     if (k.startsWith("--font")) {
       const options = k.includes("mono") ? monoFonts : sansFonts;
+      const type: "mono" | "sans" = k.includes("mono") ? "mono" : "sans";
       return (
-        <label key={k} className="flex items-center gap-2 text-sm">
-          <span className="w-40 flex-shrink-0">{k}</span>
-          <select
-            className="flex-1 rounded border p-1"
-            value={v}
-            onChange={(e) => setToken(k, e.target.value)}
-          >
-            {options.map((o) => (
-              <option key={o} value={o} style={{ fontFamily: o }}>
-                {o}
-              </option>
-            ))}
-          </select>
+        <label key={k} className="flex flex-col gap-1 text-sm">
+          <span className="flex items-center gap-2">
+            <span className="w-40 flex-shrink-0">{k}</span>
+            <select
+              className="flex-1 rounded border p-1"
+              value={v}
+              onChange={(e) => setToken(k, e.target.value)}
+            >
+              {options.map((o) => (
+                <option key={o} value={o} style={{ fontFamily: o }}>
+                  {o}
+                </option>
+              ))}
+            </select>
+          </span>
+          <span className="flex items-center gap-2">
+            <input
+              type="file"
+              accept=".woff,.woff2,.ttf,.otf"
+              onChange={(e) => handleUpload(type, e)}
+            />
+          </span>
         </label>
       );
     }
@@ -155,6 +218,20 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
         <div className="space-y-2">
           <p className="font-medium">Fonts</p>
           {fonts.map(([k, v]) => renderInput(k, v))}
+          <div className="flex items-center gap-2 pt-2">
+            <Input
+              placeholder="Add font stack"
+              value={newFont}
+              onChange={(e) => setNewFont(e.target.value)}
+            />
+            <button
+              type="button"
+              className="rounded border px-2 py-1"
+              onClick={addCustomFont}
+            >
+              Add
+            </button>
+          </div>
         </div>
       )}
       {others.length > 0 && (

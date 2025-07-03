@@ -7,9 +7,11 @@ import { LOCALES, type Locale, type PageComponent } from "@types";
 import type { DeployShopResult } from "@platform-core/createShop";
 import { useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
-import StepLayout from "./steps/StepLayout";
 import MediaUploadDialog from "./MediaUploadDialog";
+import StepLayout from "./steps/StepLayout";
 
+import StepCheckoutPage from "./steps/StepCheckoutPage";
+import StepShopPage from "./steps/StepShopPage";
 import {
   baseTokens,
   loadThemeTokens,
@@ -17,8 +19,19 @@ import {
   STORAGE_KEY,
   TokenMap,
 } from "./utils";
-import StepCheckoutPage from "./steps/StepCheckoutPage";
-import StepShopPage from "./steps/StepShopPage";
+
+import StepAdditionalPages from "./steps/StepAdditionalPages";
+import StepHomePage from "./steps/StepHomePage";
+import StepHosting from "./steps/StepHosting";
+import StepImportData from "./steps/StepImportData";
+import StepNavigation from "./steps/StepNavigation";
+import StepOptions from "./steps/StepOptions";
+import StepProductPage from "./steps/StepProductPage";
+import StepSeedData from "./steps/StepSeedData";
+import StepShopDetails from "./steps/StepShopDetails";
+import StepSummary from "./steps/StepSummary";
+import StepTheme from "./steps/StepTheme";
+import StepTokens from "./steps/StepTokens";
 
 interface Props {
   themes: string[];
@@ -99,10 +112,12 @@ export default function Wizard({
   const [productPageId, setProductPageId] = useState<string | null>(null);
 
   const [checkoutLayout, setCheckoutLayout] = useState("");
-  const [checkoutComponents, setCheckoutComponents] = useState<PageComponent[]>([]);
+  const [checkoutComponents, setCheckoutComponents] = useState<PageComponent[]>(
+    []
+  );
   const [checkoutPageId, setCheckoutPageId] = useState<string | null>(null);
 
-    const [headerComponents, setHeaderComponents] = useState<PageComponent[]>([]);
+  const [headerComponents, setHeaderComponents] = useState<PageComponent[]>([]);
   const [headerPageId, setHeaderPageId] = useState<string | null>(null);
   const [footerComponents, setFooterComponents] = useState<PageComponent[]>([]);
   const [footerPageId, setFooterPageId] = useState<string | null>(null);
@@ -203,17 +218,15 @@ export default function Wizard({
       if (typeof data.homeLayout === "string") setHomeLayout(data.homeLayout);
       if (Array.isArray(data.shopComponents))
         setShopComponents(data.shopComponents);
-      if (typeof data.shopPageId === "string")
-        setShopPageId(data.shopPageId);
-      if (typeof data.shopLayout === "string")
-        setShopLayout(data.shopLayout);
+      if (typeof data.shopPageId === "string") setShopPageId(data.shopPageId);
+      if (typeof data.shopLayout === "string") setShopLayout(data.shopLayout);
       if (Array.isArray(data.productComponents))
         setProductComponents(data.productComponents);
       if (typeof data.productPageId === "string")
         setProductPageId(data.productPageId);
       if (typeof data.productLayout === "string")
         setProductLayout(data.productLayout);
-    if (typeof data.checkoutLayout === "string")
+      if (typeof data.checkoutLayout === "string")
         setCheckoutLayout(data.checkoutLayout);
       if (Array.isArray(data.checkoutComponents))
         setCheckoutComponents(data.checkoutComponents);
@@ -524,7 +537,7 @@ export default function Wizard({
         </div>
 
         {step === 0 && (
-           <StepShopDetails
+          <StepShopDetails
             shopId={shopId}
             setShopId={setShopId}
             storeName={storeName}
@@ -540,46 +553,42 @@ export default function Wizard({
           />
         )}
 
-         <StepTheme
-            themes={themes}
-            theme={theme}
-            setTheme={setTheme}
-            themeVars={themeVars}
-            setThemeVars={setThemeVars}
-            themeStyle={themeStyle}
-            onBack={() => setStep(0)}
-            onNext={() => setStep(2)}
-          />
-        )}
+        <StepTheme
+          themes={themes}
+          theme={theme}
+          setTheme={setTheme}
+          themeVars={themeVars}
+          setThemeVars={setThemeVars}
+          themeStyle={themeStyle}
+          onBack={() => setStep(0)}
+          onNext={() => setStep(2)}
+        />
 
         <StepTokens
-            themeStyle={themeStyle}
-            onBack={() => setStep(1)}
-            onNext={() => setStep(3)}
-          />
-        )}
+          themeStyle={themeStyle}
+          onBack={() => setStep(1)}
+          onNext={() => setStep(3)}
+        />
 
         <StepOptions
-            payment={payment}
-            setPayment={setPayment}
-            shipping={shipping}
-            setShipping={setShipping}
-            analyticsProvider={analyticsProvider}
-            setAnalyticsProvider={setAnalyticsProvider}
-            analyticsId={analyticsId}
-            setAnalyticsId={setAnalyticsId}
-            onBack={() => setStep(2)}
-            onNext={() => setStep(4)}
-          />
-        )}
+          payment={payment}
+          setPayment={setPayment}
+          shipping={shipping}
+          setShipping={setShipping}
+          analyticsProvider={analyticsProvider}
+          setAnalyticsProvider={setAnalyticsProvider}
+          analyticsId={analyticsId}
+          setAnalyticsId={setAnalyticsId}
+          onBack={() => setStep(2)}
+          onNext={() => setStep(4)}
+        />
 
         <StepNavigation
-            navItems={navItems}
-            setNavItems={setNavItems}
-            onBack={() => setStep(3)}
-            onNext={() => setStep(5)}
-          />
-        )}
+          navItems={navItems}
+          setNavItems={setNavItems}
+          onBack={() => setStep(3)}
+          onNext={() => setStep(5)}
+        />
 
         {step === 5 && (
           <StepLayout
@@ -615,7 +624,7 @@ export default function Wizard({
         )}
 
         {step === 7 && (
-            <StepCheckoutPage
+          <StepCheckoutPage
             pageTemplates={pageTemplates}
             checkoutLayout={checkoutLayout}
             setCheckoutLayout={setCheckoutLayout}
@@ -631,7 +640,7 @@ export default function Wizard({
         )}
 
         {step === 8 && (
-             <StepShopPage
+          <StepShopPage
             pageTemplates={pageTemplates}
             shopLayout={shopLayout}
             setShopLayout={setShopLayout}

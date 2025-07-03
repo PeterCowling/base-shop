@@ -13,6 +13,7 @@ import {
   SelectValue,
   Textarea,
 } from "@/components/atoms-shadcn";
+import { StyleEditor } from "@/components/cms";
 import PageBuilder from "@/components/cms/PageBuilder";
 import HeroBanner from "@/components/home/HeroBanner";
 import ReviewsCarousel from "@/components/home/ReviewsCarousel";
@@ -128,61 +129,6 @@ async function loadThemeTokens(theme: string): Promise<TokenMap> {
   }
 }
 
-function hslToHex(hsl: string): string {
-  const [h, s, l] = hsl
-    .split(" ")
-    .map((p, i) => (i === 0 ? parseFloat(p) : parseFloat(p) / 100));
-  const a = s * Math.min(l, 1 - l);
-  const f = (n: number) => {
-    const k = (n + h / 30) % 12;
-    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-    return Math.round(255 * color)
-      .toString(16)
-      .padStart(2, "0");
-  };
-  return `#${f(0)}${f(8)}${f(4)}`;
-}
-
-function hexToHsl(hex: string): string {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  let h = 0;
-  let s = 0;
-  const l = (max + min) / 2;
-
-  if (max !== min) {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0);
-        break;
-      case g:
-        h = (b - r) / d + 2;
-        break;
-      default:
-        h = (r - g) / d + 4;
-    }
-    h *= 60;
-  }
-
-  return `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
-}
-
-const sansFonts = [
-  '"Geist Sans", system-ui, sans-serif',
-  "Arial, sans-serif",
-  "ui-sans-serif, system-ui",
-];
-
-const monoFonts = [
-  '"Geist Mono", ui-monospace, monospace',
-  '"Courier New", monospace',
-];
-
 function toggle(list: string[], value: string): string[] {
   return list.includes(value)
     ? list.filter((v) => v !== value)
@@ -223,6 +169,7 @@ export default function Wizard({
   /* ----------------------------- Theme tokens ----------------------------- */
 
   const [themeVars, setThemeVars] = useState<TokenMap>(baseTokens);
+  const savedThemeVars = useRef<TokenMap | null>(null);
 
   /* ------------------------------ Deployment ------------------------------ */
 
@@ -330,13 +277,21 @@ export default function Wizard({
       if (typeof data.domain === "string") setDomain(data.domain);
       if (typeof data.categoriesText === "string")
         setCategoriesText(data.categoriesText);
+      if (data.themeVars) savedThemeVars.current = data.themeVars;
     } catch {
       // ignore malformed data
     }
   }, []);
 
   useEffect(() => {
-    loadThemeTokens(theme).then(setThemeVars);
+    loadThemeTokens(theme).then((tv) => {
+      if (savedThemeVars.current) {
+        setThemeVars(savedThemeVars.current);
+        savedThemeVars.current = null;
+      } else {
+        setThemeVars(tv);
+      }
+    });
   }, [theme]);
 
   useEffect(() => {
@@ -345,6 +300,7 @@ export default function Wizard({
       shopId,
       template,
       theme,
+      themeVars,
       payment,
       shipping,
       pageTitle,
@@ -368,6 +324,7 @@ export default function Wizard({
     shopId,
     template,
     theme,
+    themeVars,
     payment,
     shipping,
     pageTitle,
@@ -625,6 +582,8 @@ export default function Wizard({
               </SelectContent>
             </Select>
 
+            <StyleEditor tokens={themeVars} onChange={setThemeVars} />
+
             <WizardPreview style={themeStyle} />
 
             <div className="flex justify-between">
@@ -642,88 +601,6 @@ export default function Wizard({
         {step === 2 && (
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Customize Tokens</h2>
-
-            <div className="max-h-64 space-y-2 overflow-y-auto rounded border p-2">
-              {Object.entries(themeVars).map(([k, v]) => {
-                /* Colours -------------------------------------------------- */
-                if (k.startsWith("--color")) {
-                  return (
-                    <label key={k} className="flex items-center gap-2 text-sm">
-                      <span className="w-40 flex-shrink-0">{k}</span>
-                      <input
-                        type="color"
-                        value={hslToHex(v)}
-                        onChange={(e) =>
-                          setThemeVars((tv) => ({
-                            ...tv,
-                            [k]: hexToHsl(e.target.value),
-                          }))
-                        }
-                      />
-                    </label>
-                  );
-                }
-
-                /* Fonts ----------------------------------------------------- */
-                if (k.startsWith("--font")) {
-                  const options = k.includes("mono") ? monoFonts : sansFonts;
-                  return (
-                    <label key={k} className="flex items-center gap-2 text-sm">
-                      <span className="w-40 flex-shrink-0">{k}</span>
-                      <select
-                        className="flex-1 rounded border p-1"
-                        value={v}
-                        onChange={(e) =>
-                          setThemeVars((tv) => ({ ...tv, [k]: e.target.value }))
-                        }
-                      >
-                        {options.map((o) => (
-                          <option key={o} value={o} style={{ fontFamily: o }}>
-                            {o}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                  );
-                }
-
-                /* Numbers --------------------------------------------------- */
-                if (/px$/.test(v)) {
-                  const num = parseInt(v, 10);
-                  return (
-                    <label key={k} className="flex items-center gap-2 text-sm">
-                      <span className="w-40 flex-shrink-0">{k}</span>
-                      <input
-                        type="range"
-                        min={0}
-                        max={64}
-                        value={num}
-                        onChange={(e) =>
-                          setThemeVars((tv) => ({
-                            ...tv,
-                            [k]: `${e.target.value}px`,
-                          }))
-                        }
-                      />
-                      <span className="w-10 text-right">{num}px</span>
-                    </label>
-                  );
-                }
-
-                /* Fallback -------------------------------------------------- */
-                return (
-                  <label key={k} className="flex items-center gap-2 text-sm">
-                    <span className="w-40 flex-shrink-0">{k}</span>
-                    <Input
-                      value={v}
-                      onChange={(e) =>
-                        setThemeVars((tv) => ({ ...tv, [k]: e.target.value }))
-                      }
-                    />
-                  </label>
-                );
-              })}
-            </div>
 
             <WizardPreview style={themeStyle} />
 

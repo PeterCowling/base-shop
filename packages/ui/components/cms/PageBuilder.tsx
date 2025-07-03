@@ -156,6 +156,9 @@ const Palette = memo(function Palette() {
 });
 
 function Block({ component }: { component: PageComponent }) {
+  if (component.type === "Text") {
+    return <div>{(component as any).text ?? ""}</div>;
+  }
   const Comp = blockRegistry[component.type];
   if (!Comp) return null;
   const { id, type, ...props } = component as any;
@@ -350,6 +353,7 @@ const CanvasItem = memo(function CanvasItem({
   });
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
   const startRef = useRef<{
     x: number;
     y: number;
@@ -363,6 +367,13 @@ const CanvasItem = memo(function CanvasItem({
     null
   );
   const [moving, setMoving] = useState(false);
+  const [editing, setEditing] = useState(false);
+
+  useEffect(() => {
+    if (editing) {
+      textRef.current?.focus();
+    }
+  }, [editing]);
 
   useEffect(() => {
     if (!resizing) return;
@@ -414,6 +425,7 @@ const CanvasItem = memo(function CanvasItem({
   }, [moving, component.id, dispatch]);
 
   const startResize = (e: React.PointerEvent) => {
+    if (editing) return;
     e.stopPropagation();
     const el = containerRef.current;
     if (!el) return;
@@ -429,7 +441,7 @@ const CanvasItem = memo(function CanvasItem({
   };
 
   const startMove = (e: React.PointerEvent) => {
-    if (component.position !== "absolute") return;
+    if (component.position !== "absolute" || editing) return;
     const el = containerRef.current;
     if (!el) return;
     moveRef.current = {
@@ -449,7 +461,10 @@ const CanvasItem = memo(function CanvasItem({
       }}
       {...attributes}
       {...listeners}
-      onPointerDownCapture={startMove}
+      onPointerDownCapture={(e) => {
+        onSelect();
+        startMove(e);
+      }}
       style={{
         transform: CSS.Transform.toString(transform),
         ...(component.width ? { width: component.width } : {}),
@@ -462,7 +477,38 @@ const CanvasItem = memo(function CanvasItem({
         "relative rounded border" + (selected ? " ring-2 ring-blue-500" : "")
       }
     >
-      <MemoBlock component={component} />
+      {component.type === "Text" ? (
+        editing ? (
+          <div
+            ref={textRef}
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={finishEdit}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                finishEdit();
+              }
+            }}
+            onClick={(e) => e.stopPropagation()}
+            className="min-h-[1rem] outline-none"
+          >
+            {(component as any).text ?? ""}
+          </div>
+        ) : (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setEditing(true);
+              onSelect();
+            }}
+          >
+            {(component as any).text ?? ""}
+          </div>
+        )
+      ) : (
+        <MemoBlock component={component} />
+      )}{" "}
       {selected && (
         <>
           <div

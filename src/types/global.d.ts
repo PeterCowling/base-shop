@@ -7,6 +7,7 @@ declare global {
 
   namespace JSX {
     interface IntrinsicElements {
+      [elemName: string]: any;
       "model-viewer": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
@@ -22,6 +23,7 @@ declare global {
 declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
+      [elemName: string]: any;
       "model-viewer": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement

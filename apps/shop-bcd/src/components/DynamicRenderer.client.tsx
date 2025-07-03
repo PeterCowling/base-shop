@@ -2,6 +2,12 @@
 
 "use client";
 
+import BlogListing from "@/components/cms/blocks/BlogListing";
+import ContactForm from "@/components/cms/blocks/ContactForm";
+import ContactFormWithMap from "@/components/cms/blocks/ContactFormWithMap";
+import Gallery from "@/components/cms/blocks/Gallery";
+import Testimonials from "@/components/cms/blocks/Testimonials";
+import TestimonialSlider from "@/components/cms/blocks/TestimonialSlider";
 import HeroBanner from "@/components/home/HeroBanner";
 import ReviewsCarousel from "@/components/home/ReviewsCarousel";
 import { ValueProps } from "@/components/home/ValueProps";
@@ -12,7 +18,18 @@ import type { PageComponent, SKU } from "@types";
 const registry: Record<
   PageComponent["type"],
   React.ComponentType<Record<string, unknown>>
-> = { HeroBanner, ValueProps, ReviewsCarousel, ProductGrid };
+> = {
+  HeroBanner,
+  ValueProps,
+  ReviewsCarousel,
+  ProductGrid,
+  Gallery,
+  ContactForm,
+  ContactFormWithMap,
+  BlogListing,
+  Testimonials,
+  TestimonialSlider,
+};
 
 export default function DynamicRenderer({
   components,

@@ -1,0 +1,7 @@
+{
+  "name": "Landing",
+  "components": [
+    { "type": "HeroBanner" },
+    { "type": "ValueProps" },
+    { "type": "ReviewsCarousel" }
+  ]

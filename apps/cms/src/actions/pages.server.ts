@@ -10,7 +10,7 @@ import {
   updatePage as updatePageInRepo,
 } from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
-import type { Locale, Page, PageComponent } from "@types";
+import type { Locale, Page, PageComponent, PageStatus } from "@types";
 import { LOCALES } from "@types";
 import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
@@ -22,6 +22,14 @@ async function ensureAuthorized() {
     throw new Error("Forbidden");
   }
   return session;
+}
+
+function emptyTranslated(): Record<Locale, string> {
+  const obj = {} as Record<Locale, string>;
+  LOCALES.forEach((l) => {
+    obj[l] = "";
+  });
+  return obj;
 }
 
 const componentsField = z
@@ -48,7 +56,20 @@ for (const l of LOCALES) {
   localeFields[`desc_${l}`] = z.string().optional().default("");
 }
 
-const baseSchema = z
+type LocaleFields = {
+  [L in Locale as `title_${L}`]: string;
+} & {
+  [L in Locale as `desc_${L}`]?: string;
+};
+
+type BasePageForm = {
+  slug: string;
+  status: PageStatus;
+  image?: string;
+  components: PageComponent[];
+} & LocaleFields;
+
+const baseSchema: z.ZodType<BasePageForm> = z
   .object({
     slug: z.string().min(1, "Required"),
     status: z.enum(["draft", "published"]).default("draft"),
@@ -61,16 +82,16 @@ const baseSchema = z
       }),
     components: componentsField,
   })
-  .extend(localeFields);
+  .extend(localeFields as Record<string, z.ZodTypeAny>);
 
-const createSchema = baseSchema;
-const updateSchema = baseSchema.extend({
+export type PageCreateForm = BasePageForm;
+export type PageUpdateForm = BasePageForm & { id: string; updatedAt: string };
+
+const createSchema: z.ZodType<PageCreateForm> = baseSchema;
+const updateSchema: z.ZodType<PageUpdateForm> = baseSchema.extend({
   id: z.string(),
   updatedAt: z.string(),
 });
-
-export type PageCreateForm = z.infer<typeof createSchema>;
-export type PageUpdateForm = z.infer<typeof updateSchema>;
 
 export async function createPage(
   shop: string,
@@ -144,7 +165,11 @@ export async function savePageDraft(
         slug: "",
         status: "draft",
         components,
-        seo: { title: {}, description: {}, image: "" },
+        seo: {
+          title: emptyTranslated(),
+          description: emptyTranslated(),
+          image: "",
+        },
         createdAt: now,
         updatedAt: now,
         createdBy: session.user.email ?? "unknown",

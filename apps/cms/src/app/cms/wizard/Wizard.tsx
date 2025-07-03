@@ -26,6 +26,7 @@ import type { DeployShopResult } from "@platform-core/createShop";
 import { tokens as baseTokensSrc } from "@themes/base/tokens";
 import { LOCALES, type Locale, type Page, type PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
+import { ulid } from "ulid";
 
 /* -------------------------------------------------------------------------- */
 /*                              Preview component                             */
@@ -203,6 +204,14 @@ export default function Wizard({
 
   const [socialImage, setSocialImage] = useState("");
 
+  /* ---------------------------- Layout templates -------------------------- */
+
+  const [pageTemplates, setPageTemplates] = useState<
+    Array<{ name: string; components: PageComponent[] }>
+  >([]);
+  const [homeLayout, setHomeLayout] = useState<string>("");
+  const [newPageLayout, setNewPageLayout] = useState<string>("");
+
   /* ------------------------------ Page builder ----------------------------- */
 
   const [components, setComponents] = useState<PageComponent[]>([]);
@@ -256,6 +265,15 @@ export default function Wizard({
   /* ------------------------------------------------------------------------ */
 
   useEffect(() => {
+    fetch("/cms/api/page-templates")
+      .then((res) => res.json())
+      .then((data) => Array.isArray(data) && setPageTemplates(data))
+      .catch(() => {
+        /* ignore errors */
+      });
+  }, []);
+
+  useEffect(() => {
     const json = localStorage.getItem(STORAGE_KEY);
     if (!json) return;
     try {
@@ -272,12 +290,15 @@ export default function Wizard({
         setSocialImage(data.socialImage);
       if (Array.isArray(data.components)) setComponents(data.components);
       if (typeof data.homePageId === "string") setHomePageId(data.homePageId);
+      if (typeof data.homeLayout === "string") setHomeLayout(data.homeLayout);
       if (typeof data.analyticsProvider === "string")
         setAnalyticsProvider(data.analyticsProvider);
       if (typeof data.analyticsId === "string")
         setAnalyticsId(data.analyticsId);
       if (Array.isArray(data.navItems)) setNavItems(data.navItems);
       if (Array.isArray(data.pages)) setPages(data.pages);
+      if (typeof data.newPageLayout === "string")
+        setNewPageLayout(data.newPageLayout);
       if (typeof data.domain === "string") setDomain(data.domain);
       if (typeof data.categoriesText === "string")
         setCategoriesText(data.categoriesText);
@@ -312,10 +333,12 @@ export default function Wizard({
       socialImage,
       components,
       homePageId,
+      homeLayout,
       analyticsProvider,
       analyticsId,
       navItems,
       pages,
+      newPageLayout,
       domain,
       categoriesText,
     };
@@ -343,6 +366,8 @@ export default function Wizard({
     pages,
     domain,
     categoriesText,
+    homeLayout,
+    newPageLayout,
   ]);
 
   useEffect(() => {
@@ -773,6 +798,33 @@ export default function Wizard({
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Home Page</h2>
 
+            <Select
+              value={homeLayout}
+              onValueChange={(val) => {
+                setHomeLayout(val);
+                const tpl = pageTemplates.find((t) => t.name === val);
+                if (tpl) {
+                  setComponents(
+                    tpl.components.map((c) => ({ ...c, id: ulid() }))
+                  );
+                } else {
+                  setComponents([]);
+                }
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select template" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Blank</SelectItem>
+                {pageTemplates.map((t) => (
+                  <SelectItem key={t.name} value={t.name}>
+                    {t.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
             <PageBuilder
               page={
                 {
@@ -826,6 +878,32 @@ export default function Wizard({
             {/* Page‑builder for new page ---------------------------------- */}
             {adding && (
               <div className="space-y-2">
+                <Select
+                  value={newPageLayout}
+                  onValueChange={(val) => {
+                    setNewPageLayout(val);
+                    const tpl = pageTemplates.find((t) => t.name === val);
+                    if (tpl) {
+                      setNewComponents(
+                        tpl.components.map((c) => ({ ...c, id: ulid() }))
+                      );
+                    } else {
+                      setNewComponents([]);
+                    }
+                  }}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select template" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Blank</SelectItem>
+                    {pageTemplates.map((t) => (
+                      <SelectItem key={t.name} value={t.name}>
+                        {t.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <label className="flex flex-col gap-1">
                   <span>Slug</span>
                   <Input

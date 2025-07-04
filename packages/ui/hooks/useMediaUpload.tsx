@@ -22,7 +22,7 @@ export interface UseMediaUploadResult {
   isValid: boolean | null;
   progress: UploadProgress | null;
   error: string | undefined;
-  inputRef: RefObject<HTMLInputElement>;
+  inputRef: RefObject<HTMLInputElement | null>;
   openFileDialog: () => void;
   onDrop: (e: DragEvent<HTMLDivElement>) => void;
   onFileChange: (e: ChangeEvent<HTMLInputElement>) => void;

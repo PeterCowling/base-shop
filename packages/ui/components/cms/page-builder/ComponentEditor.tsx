@@ -5,6 +5,7 @@ import type { MediaItem, PageComponent } from "@types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import * as React from "react";
 import { ChangeEvent, useEffect, useState } from "react";
 import {
   Button,

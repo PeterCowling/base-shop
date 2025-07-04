@@ -55,7 +55,8 @@ export default async function WizardPage() {
   if (!session || session.user.role !== "admin") {
     redirect("/cms");
   }
-  const disabled = themes.length === 0 || templates.length === 0;
+  const disabled =
+    (themes?.length ?? 0) === 0 || (templates?.length ?? 0) === 0;
 
   return (
     <>

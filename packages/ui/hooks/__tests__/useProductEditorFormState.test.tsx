@@ -1,7 +1,7 @@
 import type { Locale, ProductPublication } from "@platform-core/products";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
-import { useProductEditorFormState } from "./useProductEditorFormState";
+import { useProductEditorFormState } from "../useProductEditorFormState";
 
 jest.mock("../useImageUpload", () => ({
   useImageUpload: () => ({
@@ -18,8 +18,8 @@ jest.mock("../usePublishLocations", () => ({
 const product: ProductPublication = {
   id: "p1",
   sku: "sku1",
-  title: { en: "Old EN", de: "Old DE" },
-  description: { en: "Desc EN", de: "Desc DE" },
+  title: { en: "Old EN", de: "Old DE", it: "Old IT" },
+  description: { en: "Desc EN", de: "Desc DE", it: "Desc IT" },
   price: 100,
   currency: "EUR",
   images: [],

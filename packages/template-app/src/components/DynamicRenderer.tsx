@@ -1,4 +1,4 @@
-// packages/aeelmptt - app / src / components / DynamicRenderer.tsx;
+// packages/template-app/src/components/DynamicRenderer.tsx
 
 ("use client");
 
@@ -8,6 +8,15 @@ import { ValueProps } from "@/components/home/ValueProps";
 import { ProductGrid } from "@/components/shop/ProductGrid";
 import { PRODUCTS } from "@/lib/products";
 import type { PageComponent, SKU } from "@types";
+
+export { default as BlogListing } from "./BlogListing";
+export { default as ContactForm } from "./ContactForm";
+export { default as ContactFormWithMap } from "./ContactFormWithMap";
+export { default as Gallery } from "./Gallery";
+export { default as Image } from "./Image";
+export { default as Testimonials } from "./Testimonials";
+export { default as TestimonialSlider } from "./TestimonialSlider";
+export { default as Text } from "./Text";
 
 const registry: Record<
   PageComponent["type"],

@@ -1,10 +1,10 @@
 // packages/lib/checkShopExists.server.ts
 import "server-only";
 
-import { validateShopName } from "@platform-core/shops";
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
+import { validateShopName } from "./validateShopName";
 
 function resolveDataRoot(): string {
   let dir = process.cwd();

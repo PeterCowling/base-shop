@@ -39,6 +39,7 @@
       "@/components/pdp/*": ["packages/platform-core/components/pdp/*"],
       "@/components/shop/*": ["packages/platform-core/components/shop/*"],
       "@/components/*": ["packages/ui/components/*"],
+      "@/hooks/*": ["packages/ui/hooks/*"],
 
       "@lib/stripeServer": ["packages/lib/stripeServer.server.ts"],
       "@/lib/stripeServer": ["packages/lib/stripeServer.server.ts"],

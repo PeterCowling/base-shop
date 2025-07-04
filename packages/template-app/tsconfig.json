@@ -3,7 +3,7 @@
   "extends": "../../tsconfig.base.json",
 
   /* ------------------------------------------------------------------
-   *  Compiler options
+   *  Compiler options ─ production / app source only
    * ------------------------------------------------------------------ */
   "compilerOptions": {
     /* build behaviour ------------------------------------------------- */
@@ -25,10 +25,15 @@
 
     /* tooling ---------------------------------------------------------- */
     "plugins": [{ "name": "next" }],
-    "types": ["node", "react", "react-dom"],
+    "types": ["node", "react", "react-dom"] /* ← no Jest here */,
     "strict": false,
     "skipLibCheck": true
   },
+
+  /* ------------------------------------------------------------------
+   *  Project references
+   * ------------------------------------------------------------------ */
+  "references": [{ "path": "../types" }],
 
   /* ------------------------------------------------------------------
    *  File globs
@@ -40,14 +45,17 @@
     /* Next-generated types */
     ".next/types/**/*.ts",
 
-    /* tests */
-    "__tests__/**/*",
-    "**/__tests__/**/*.ts",
-    "**/__tests__/**/*.tsx",
-
     /* shared workspaces */
     "../../packages/**/src/**/*"
   ],
 
-  "exclude": ["node_modules", "src/routes/preview/[pageId].ts"]
+  "exclude": [
+    "node_modules",
+    /* preview route excluded previously */
+    "src/routes/preview/[pageId].ts",
+
+    /* test code handled by tsconfig.test.json */
+    "__tests__",
+    "**/__tests__"
+  ]
 }

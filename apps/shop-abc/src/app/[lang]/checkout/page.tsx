@@ -35,7 +35,7 @@ export default async function CheckoutPage({
   /* ---------- render ---------- */
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
-      <OrderSummary cart={cart} />
+      <OrderSummary />
       <CheckoutForm locale={lang} />
     </div>
   );

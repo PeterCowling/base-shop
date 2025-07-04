@@ -13,6 +13,15 @@ import {
 import { join } from "path";
 import { ulid } from "ulid";
 import { z } from "zod";
+
+function slugify(str: string): string {
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 import {
   copyTemplate,
   loadBaseTokens,
@@ -96,9 +105,9 @@ function fillLocales(
   values: Partial<Record<Locale, string>> | undefined,
   fallback: string
 ): Record<Locale, string> {
-  return LOCALES.reduce(
-    (acc, l) => {
-      acc[l] = values?.[l] ?? fallback;
+  return LOCALES.reduce<Record<Locale, string>>(
+    (acc: Record<Locale, string>, locale: Locale) => {
+      acc[locale] = values?.[locale] ?? fallback;
       return acc;
     },
     {} as Record<Locale, string>
@@ -128,13 +137,18 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     pageTitle: fillLocales(parsed.pageTitle, "Home"),
     pageDescription: fillLocales(parsed.pageDescription, ""),
     socialImage: parsed.socialImage ?? "",
-    analytics: parsed.analytics,
-    navItems: parsed.navItems,
+    analytics: parsed.analytics ?? { provider: "none" },
+    navItems:
+      parsed.navItems?.map((n: { label: string; url: string }) => ({
+        label: n.label ?? "—",
+        url: n.url ?? "#",
+      })) ?? [],
     pages: parsed.pages.map((p) => ({
-      ...p,
-      title: fillLocales(p.title, ""),
-      description: p.description ? fillLocales(p.description, "") : undefined,
-      image: p.image ? fillLocales(p.image, "") : undefined,
+      slug: p.slug ?? slugify(p.title.en ?? Object.values(p.title)[0]),
+      title: p.title,
+      description: p.description,
+      image: p.image,
+      components: p.components ?? [],
     })),
     checkoutPage: parsed.checkoutPage,
   };
@@ -171,12 +185,12 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
   envContent += `PREVIEW_TOKEN_SECRET=${genSecret()}\n`;
   const envVars = [...options.payment, ...options.shipping];
   if (envVars.length === 0) envVars.push("stripe");
-  for (const p of envVars) {
-    if (p === "stripe") {
+  for (const provider of envVars) {
+    if (provider === "stripe") {
       envContent += `STRIPE_SECRET_KEY=${genSecret()}\n`;
       envContent += `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${genSecret()}\n`;
     } else {
-      envContent += `${p.toUpperCase()}_KEY=${genSecret()}\n`;
+      envContent += `${provider.toUpperCase()}_KEY=${genSecret()}\n`;
     }
   }
   envContent += `NEXTAUTH_SECRET=${genSecret()}\n`;
@@ -269,7 +283,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
       title: options.pageTitle,
       description: options.pageDescription,
       image: Object.fromEntries(
-        LOCALES.map((l) => [l, options.socialImage])
+        LOCALES.map((locale: Locale) => [locale, options.socialImage])
       ) as Record<Locale, string>,
     },
     createdAt: now,
@@ -277,10 +291,9 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     createdBy: "system",
   } as const;
 
-  const emptySeo = Object.fromEntries(LOCALES.map((l) => [l, ""])) as Record<
-    Locale,
-    string
-  >;
+  const emptySeo = Object.fromEntries(
+    LOCALES.map((locale: Locale) => [locale, ""])
+  ) as Record<Locale, string>;
 
   const checkoutPage = {
     id: ulid(),

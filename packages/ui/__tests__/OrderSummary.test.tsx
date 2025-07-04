@@ -1,3 +1,5 @@
+import { CartProvider } from "@/contexts/CartContext";
+import { CART_COOKIE, encodeCartCookie } from "@/lib/cartCookie";
 import { render, screen } from "@testing-library/react";
 import type { CartState } from "@types";
 import OrderSummary from "../components/organisms/OrderSummary";
@@ -36,8 +38,20 @@ const mockCart: CartState = {
 };
 
 describe("OrderSummary", () => {
+  beforeEach(() => {
+    localStorage.setItem(CART_COOKIE, encodeCartCookie(mockCart));
+  });
+
+  afterEach(() => {
+    localStorage.clear();
+  });
+
   it("renders quantities, totals and formatted prices", () => {
-    render(<OrderSummary cart={mockCart} />);
+    render(
+      <CartProvider>
+        <OrderSummary />
+      </CartProvider>
+    );
 
     // item rows
     expect(screen.getByText("Product A")).toBeInTheDocument();

@@ -1,0 +1,26 @@
+// packages/template-app/tsconfig.test.json
+{
+  "extends": "./tsconfig.json",
+
+  /* ------------------------------------------------------------------
+   *  Test-specific compiler options
+   * ------------------------------------------------------------------ */
+  "compilerOptions": {
+    "types": ["node", "jest", "react", "react-dom"], // adds Jest globals
+    "noEmit": true // keep build artefact-free
+  },
+
+  /* ------------------------------------------------------------------
+   *  Test file globs
+   * ------------------------------------------------------------------ */
+  "include": [
+    "__tests__/**/*",
+    "**/__tests__/**/*.ts",
+    "**/__tests__/**/*.tsx"
+  ],
+
+  /* ------------------------------------------------------------------
+   *  Project references
+   * ------------------------------------------------------------------ */
+  "references": [{ "path": "../types" }]
+}

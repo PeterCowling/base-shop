@@ -7,14 +7,14 @@ import {
   getShopById,
   updateShopInRepo,
 } from "@platform-core/repositories/json.server";
+import type { Locale, Shop, ShopSeoFields, ShopSettings } from "@types";
+import { getServerSession } from "next-auth";
+import { z } from "zod";
 import {
   diffHistory,
   getShopSettings,
   saveShopSettings,
-} from "@platform-core/repositories/settings.server";
-import type { Locale, Shop, ShopSeoFields, ShopSettings } from "@types";
-import { getServerSession } from "next-auth";
-import { z } from "zod";
+} from "../../../../packages/platform-core/repositories/settings.server";
 import { shopSchema, type ShopForm } from "./schemas";
 
 async function ensureAuthorized(): Promise<void> {

@@ -1,7 +1,7 @@
 import type { Locale } from "@i18n/locales";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
 import type { ShopSettings } from "@types";
 import type { NextSeoProps } from "next-seo";
+import { getShopSettings } from "../../../../../packages/platform-core/repositories/settings.server";
 
 interface ExtendedSeoProps extends Partial<NextSeoProps> {
   canonicalBase?: string;

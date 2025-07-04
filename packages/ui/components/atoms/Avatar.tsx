@@ -1,29 +1,36 @@
+// src/components/Avatar.tsx
 import Image, { type ImageProps } from "next/image";
 import * as React from "react";
 import { boxProps } from "../../utils/boxProps";
 import { cn } from "../../utils/cn";
 
+// ────────────────────────────────────────────────────────────────────────────────
+// Types
+// ────────────────────────────────────────────────────────────────────────────────
 export interface AvatarProps extends Omit<ImageProps, "width" | "height"> {
   /** Content to display when no image src is provided */
   fallback?: React.ReactNode;
   /** Both width and height of the avatar in pixels */
   size?: number;
-  /** Optional explicit width */
-  width?: string | number;
-  /** Optional explicit height */
-  height?: string | number;
+  /** Optional explicit width (must be numeric for Next Image) */
+  width?: number | `${number}`;
+  /** Optional explicit height (must be numeric for Next Image) */
+  height?: number | `${number}`;
   /** Optional padding classes */
   padding?: string;
   /** Optional margin classes */
   margin?: string;
 }
 
+// ────────────────────────────────────────────────────────────────────────────────
+// Component
+// ────────────────────────────────────────────────────────────────────────────────
 export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
   (
     {
       className,
       src,
-      alt,
+      alt = "",
       fallback,
       size = 32,
       width,
@@ -35,12 +42,30 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
     ref
   ) => {
     const dimension = size;
+
+    // Ensure we hand Next <Image> genuine numbers
+    const numericWidth =
+      typeof width === "number"
+        ? width
+        : width !== undefined
+          ? parseInt(width as string, 10)
+          : dimension;
+
+    const numericHeight =
+      typeof height === "number"
+        ? height
+        : height !== undefined
+          ? parseInt(height as string, 10)
+          : dimension;
+
     const { classes, style } = boxProps({
-      width: width ?? dimension,
-      height: height ?? dimension,
+      width: width ?? dimension, // visual size (can be any CSS unit)
+      height: height ?? dimension, // visual size (can be any CSS unit)
       padding,
       margin,
     });
+
+    // ─── No src: render fallback ────────────────────────────────────────────
     if (!src) {
       return (
         <div
@@ -56,21 +81,15 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
         </div>
       );
     }
+
+    // ─── With src: render Next <Image> ──────────────────────────────────────
     return (
       <Image
         ref={ref}
         src={src}
-        alt={alt ?? ""}
-        width={
-          typeof (width ?? dimension) === "number"
-            ? (width ?? dimension)
-            : dimension
-        }
-        height={
-          typeof (height ?? dimension) === "number"
-            ? (height ?? dimension)
-            : dimension
-        }
+        alt={alt}
+        width={numericWidth}
+        height={numericHeight}
         style={style}
         className={cn("rounded-full object-cover", classes, className)}
         {...props}
@@ -78,4 +97,5 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
     );
   }
 );
+
 Avatar.displayName = "Avatar";

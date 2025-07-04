@@ -18,6 +18,7 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import type { Page, PageComponent } from "@types";
+import type { CSSProperties } from "react";
 import { memo, useEffect, useReducer, useState } from "react";
 import { ulid } from "ulid";
 import { z } from "zod";
@@ -31,7 +32,7 @@ interface Props {
   onSave: (fd: FormData) => Promise<unknown>;
   onPublish: (fd: FormData) => Promise<unknown>;
   onChange?: (components: PageComponent[]) => void;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }
 
 export interface HistoryState {
@@ -234,21 +235,18 @@ export default memo(function PageBuilder({
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex justify-end gap-2">
           <Button
-            size="sm"
             variant={viewport === "desktop" ? "default" : "outline"}
             onClick={() => setViewport("desktop")}
           >
             Desktop
           </Button>
           <Button
-            size="sm"
             variant={viewport === "tablet" ? "default" : "outline"}
             onClick={() => setViewport("tablet")}
           >
             Tablet
           </Button>
           <Button
-            size="sm"
             variant={viewport === "mobile" ? "default" : "outline"}
             onClick={() => setViewport("mobile")}
           >
@@ -259,7 +257,6 @@ export default memo(function PageBuilder({
           {locales.map((l) => (
             <Button
               key={l}
-              size="sm"
               variant={locale === l ? "default" : "outline"}
               onClick={() => setLocale(l)}
             >

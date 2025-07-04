@@ -1,30 +1,35 @@
+// src/molecules/index.tsx
 "use client";
 
 import type { Locale } from "@/i18n/locales";
+import { memo } from "react";
 import type { CategoryCollectionTemplateProps } from "../../templates/CategoryCollectionTemplate";
 import { CategoryCollectionTemplate } from "../../templates/CategoryCollectionTemplate";
 
-export function NewsletterForm({
-  action = "#",
-  method = "post",
-  placeholder = {},
-  submitLabel = {},
-  locale = "en",
-}: {
+/* ──────────────────────────────────────────────────────────────────────────
+ * NewsletterForm
+ * --------------------------------------------------------------------------*/
+export interface NewsletterFormProps {
   action?: string;
   method?: string;
   placeholder?: string | Record<Locale, string>;
   submitLabel?: string | Record<Locale, string>;
   locale?: Locale;
-}) {
+}
+
+export const NewsletterForm = memo(function NewsletterForm({
+  action = "#",
+  method = "post",
+  placeholder = "",
+  submitLabel = "",
+  locale = "en",
+}: NewsletterFormProps) {
   const ph =
-    typeof placeholder === "string"
-      ? placeholder
-      : (placeholder?.[locale] ?? "");
+    typeof placeholder === "string" ? placeholder : (placeholder[locale] ?? "");
+
   const label =
-    typeof submitLabel === "string"
-      ? submitLabel
-      : (submitLabel?.[locale] ?? "");
+    typeof submitLabel === "string" ? submitLabel : (submitLabel[locale] ?? "");
+
   return (
     <form action={action} method={method} className="flex gap-2">
       <input
@@ -41,27 +46,32 @@ export function NewsletterForm({
       </button>
     </form>
   );
-}
+});
 
-export function PromoBanner({
-  text = {},
-  href,
-  buttonLabel = {},
-  locale = "en",
-}: {
+/* ──────────────────────────────────────────────────────────────────────────
+ * PromoBanner
+ * --------------------------------------------------------------------------*/
+export interface PromoBannerProps {
   text?: string | Record<Locale, string>;
   href?: string;
   buttonLabel?: string | Record<Locale, string>;
   locale?: Locale;
-}) {
-  const txt = typeof text === "string" ? text : (text?.[locale] ?? "");
+}
+
+export const PromoBanner = memo(function PromoBanner({
+  text = "",
+  href,
+  buttonLabel = "",
+  locale = "en",
+}: PromoBannerProps) {
+  const txt = typeof text === "string" ? text : (text[locale] ?? "");
+
   const label =
-    typeof buttonLabel === "string"
-      ? buttonLabel
-      : (buttonLabel?.[locale] ?? "");
+    typeof buttonLabel === "string" ? buttonLabel : (buttonLabel[locale] ?? "");
+
   return (
     <div className="flex items-center justify-between bg-gray-900 p-4 text-white">
-      <span>{txt}</span>{" "}
+      <span>{txt}</span>
       {href && (
         <a href={href} className="rounded bg-white px-3 py-1 text-gray-900">
           {label}
@@ -69,9 +79,12 @@ export function PromoBanner({
       )}
     </div>
   );
-}
+});
 
-export function CategoryList({
+/* ──────────────────────────────────────────────────────────────────────────
+ * CategoryList
+ * --------------------------------------------------------------------------*/
+export const CategoryList = memo(function CategoryList({
   categories = [],
   columns = 3,
 }: CategoryCollectionTemplateProps) {
@@ -79,11 +92,15 @@ export function CategoryList({
   return (
     <CategoryCollectionTemplate categories={categories} columns={columns} />
   );
-}
+});
 
+/* ──────────────────────────────────────────────────────────────────────────
+ * Molecule registry
+ * --------------------------------------------------------------------------*/
 export const moleculeRegistry = {
   NewsletterForm,
   PromoBanner,
   CategoryList,
 } as const;
+
 export type MoleculeBlockType = keyof typeof moleculeRegistry;

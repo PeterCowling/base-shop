@@ -16,7 +16,7 @@
     "allowImportingTsExtensions": true,
     "module": "es2020",
 
-    "types": ["node", "react/next", "react-dom"],
+    "types": ["node", "react", "react-dom"],
 
     "paths": {
       "@platform-core/*": ["packages/platform-core/*"],

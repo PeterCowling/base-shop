@@ -9,7 +9,7 @@
     "outDir": "dist", // emit d.ts → dist
     "jsx": "react-jsx", // enable TSX support
     "rootDirs": ["./", "../../src"],
-    "types": ["react/next", "react-dom"]
+    "types": ["react", "react-dom"]
   },
   "include": [
     "*.ts",

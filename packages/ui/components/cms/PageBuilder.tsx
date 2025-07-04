@@ -1,6 +1,3 @@
-// packages/ui/components/cms/PageBuilder.tsx
-"use client";
-
 import { locales, type Locale } from "@/i18n/locales";
 import {
   closestCenter,
@@ -19,7 +16,14 @@ import {
 } from "@dnd-kit/sortable";
 import type { Page, PageComponent } from "@types";
 import type { CSSProperties } from "react";
-import { memo, useEffect, useReducer, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
 import { ulid } from "ulid";
 import { z } from "zod";
 import { Button } from "../atoms-shadcn";
@@ -27,6 +31,9 @@ import CanvasItem from "./page-builder/CanvasItem";
 import ComponentEditor from "./page-builder/ComponentEditor";
 import Palette from "./page-builder/Palette";
 
+/* ----------------------------------------------------------
+ * Types
+ * ---------------------------------------------------------- */
 interface Props {
   page: Page;
   onSave: (fd: FormData) => Promise<unknown>;
@@ -41,12 +48,40 @@ export interface HistoryState {
   future: PageComponent[][];
 }
 
-export const historyStateSchema: z.ZodSchema<HistoryState> = z.object({
-  past: z.array(z.array(z.any())).default([]),
-  present: z.array(z.any()).default([]),
-  future: z.array(z.array(z.any())).default([]),
+/* ----------------------------------------------------------
+ * Runtime Schemas (Zod)
+ * ---------------------------------------------------------- */
+const pageComponentSchema: z.ZodType<PageComponent> = z
+  .object({
+    id: z.string(),
+    type: z.string(),
+    width: z.string().optional(),
+    height: z.string().optional(),
+    left: z.string().optional(),
+    top: z.string().optional(),
+  })
+  .passthrough();
+
+/**
+ * Same input ⇄ output shape (`HistoryState`) thanks to
+ * setting the default on the *whole object*.
+ */
+const historyStateBase = z.object({
+  past: z.array(z.array(pageComponentSchema)),
+  present: z.array(pageComponentSchema),
+  future: z.array(z.array(pageComponentSchema)),
 });
 
+export const historyStateSchema: z.ZodType<HistoryState> =
+  historyStateBase.default({
+    past: [],
+    present: [],
+    future: [],
+  });
+
+/* ----------------------------------------------------------
+ * Reducers
+ * ---------------------------------------------------------- */
 type ChangeAction =
   | { type: "add"; component: PageComponent }
   | { type: "move"; from: number; to: number }
@@ -71,15 +106,20 @@ function componentsReducer(
   switch (action.type) {
     case "add":
       return [...state, action.component];
+
     case "move":
-      if (action.from === action.to) return state;
-      return arrayMove(state, action.from, action.to);
+      return action.from === action.to
+        ? state
+        : arrayMove(state, action.from, action.to);
+
     case "remove":
       return state.filter((b) => b.id !== action.id);
+
     case "update":
       return state.map((b) =>
         b.id === action.id ? { ...b, ...action.patch } : b
       );
+
     case "resize":
       return state.map((b) =>
         b.id === action.id
@@ -92,8 +132,10 @@ function componentsReducer(
             }
           : b
       );
+
     case "set":
       return action.components;
+
     default:
       return state;
   }
@@ -102,7 +144,7 @@ function componentsReducer(
 function reducer(state: HistoryState, action: Action): HistoryState {
   switch (action.type) {
     case "undo": {
-      const previous = state.past[state.past.length - 1];
+      const previous = state.past.at(-1);
       if (!previous) return state;
       return {
         past: state.past.slice(0, -1),
@@ -110,6 +152,7 @@ function reducer(state: HistoryState, action: Action): HistoryState {
         future: [state.present, ...state.future],
       };
     }
+
     case "redo": {
       const next = state.future[0];
       if (!next) return state;
@@ -119,8 +162,9 @@ function reducer(state: HistoryState, action: Action): HistoryState {
         future: state.future.slice(1),
       };
     }
+
     default: {
-      const next = componentsReducer(state.present, action);
+      const next = componentsReducer(state.present, action as ChangeAction);
       if (next === state.present) return state;
       return {
         past: [...state.past, state.present],
@@ -131,27 +175,35 @@ function reducer(state: HistoryState, action: Action): HistoryState {
   }
 }
 
-export default memo(function PageBuilder({
+/* ----------------------------------------------------------
+ * Component
+ * ---------------------------------------------------------- */
+const PageBuilder = memo(function PageBuilder({
   page,
   onSave,
   onPublish,
   onChange,
   style,
 }: Props) {
+  /* ---------------- state ---------------- */
   const key = `page-builder-history-${page.id}`;
-  const [state, dispatch] = useReducer(reducer, undefined, () => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem(key);
-      if (stored) {
-        try {
-          return historyStateSchema.parse(JSON.parse(stored));
-        } catch (err) {
-          console.warn("Invalid history state", err);
-        }
-      }
+
+  const [state, dispatch] = useReducer(reducer, undefined, (): HistoryState => {
+    if (typeof window === "undefined") {
+      return { past: [], present: page.components, future: [] };
     }
-    return { past: [], present: page.components, future: [] } as HistoryState;
+
+    const stored = localStorage.getItem(key);
+    if (!stored) return { past: [], present: page.components, future: [] };
+
+    try {
+      return historyStateSchema.parse(JSON.parse(stored));
+    } catch (err) {
+      console.warn("Invalid history state – falling back to fresh state.", err);
+      return { past: [], present: page.components, future: [] };
+    }
   });
+
   const components = state.present;
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
@@ -159,14 +211,23 @@ export default memo(function PageBuilder({
   );
   const [locale, setLocale] = useState<Locale>("en");
 
-  const widthMap: Record<"desktop" | "tablet" | "mobile", string> = {
-    desktop: "100%",
-    tablet: "768px",
-    mobile: "375px",
-  };
+  /* ---------------- derived ---------------- */
+  const widthMap = useMemo(
+    () =>
+      ({
+        desktop: "100%",
+        tablet: "768px",
+        mobile: "375px",
+      }) satisfies Record<"desktop" | "tablet" | "mobile", string>,
+    []
+  );
 
-  const containerStyle = { width: widthMap[viewport] };
+  const containerStyle = useMemo(
+    () => ({ width: widthMap[viewport] }),
+    [viewport, widthMap]
+  );
 
+  /* ---------------- effects ---------------- */
   useEffect(() => {
     onChange?.(components);
     if (typeof window !== "undefined") {
@@ -189,70 +250,77 @@ export default memo(function PageBuilder({
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, []);
+
+  /* ---------------- DnD sensors ---------------- */
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
-  const handleDragEnd = (ev: DragEndEvent) => {
-    const { active, over } = ev;
-    if (!over) return;
+  /* ---------------- handlers ---------------- */
+  const handleDragEnd = useCallback(
+    (ev: DragEndEvent): void => {
+      const { active, over } = ev;
+      if (!over) return;
 
-    const a = active.data.current as {
-      from: string;
-      type?: string;
-      index?: number;
-    };
-    const o = over.data.current as { from: string; index?: number };
+      const a = active.data.current as {
+        from: string;
+        type?: string;
+        index?: number;
+      };
+      const o = over.data.current as { from: string; index?: number };
 
-    if (a?.from === "palette" && over.id === "canvas") {
-      dispatch({
-        type: "add",
-        component: { id: ulid(), type: a.type! } as PageComponent,
-      });
-    } else if (a?.from === "canvas" && o?.from === "canvas") {
-      dispatch({ type: "move", from: a.index!, to: o.index! });
-    }
-  };
+      if (a?.from === "palette" && over.id === "canvas") {
+        dispatch({
+          type: "add",
+          component: { id: ulid(), type: a.type! } as PageComponent,
+        });
+      } else if (a?.from === "canvas" && o?.from === "canvas") {
+        dispatch({ type: "move", from: a.index!, to: o.index! });
+      }
+    },
+    [dispatch]
+  );
 
-  const formData = new FormData();
-  formData.append("id", page.id);
-  formData.append("updatedAt", page.updatedAt);
-  formData.append("slug", page.slug);
-  formData.append("status", page.status);
-  formData.append("title", JSON.stringify(page.seo.title));
-  formData.append("description", JSON.stringify(page.seo.description ?? {}));
-  formData.append("components", JSON.stringify(components));
+  /* ---------------- form data ---------------- */
+  const formData = useMemo(() => {
+    const fd = new FormData();
+    fd.append("id", page.id);
+    fd.append("updatedAt", page.updatedAt);
+    fd.append("slug", page.slug);
+    fd.append("status", page.status);
+    fd.append("title", JSON.stringify(page.seo.title));
+    fd.append("description", JSON.stringify(page.seo.description ?? {}));
+    fd.append("components", JSON.stringify(components));
+    return fd;
+  }, [page, components]);
 
+  /* ---------------- render ---------------- */
   return (
     <div className="flex gap-4" style={style}>
+      {/* Palette --------------------------------------------------- */}
       <aside className="w-48 shrink-0">
         <Palette />
       </aside>
 
+      {/* Main column ---------------------------------------------- */}
       <div className="flex flex-1 flex-col gap-4">
+        {/* Viewport buttons */}
         <div className="flex justify-end gap-2">
-          <Button
-            variant={viewport === "desktop" ? "default" : "outline"}
-            onClick={() => setViewport("desktop")}
-          >
-            Desktop
-          </Button>
-          <Button
-            variant={viewport === "tablet" ? "default" : "outline"}
-            onClick={() => setViewport("tablet")}
-          >
-            Tablet
-          </Button>
-          <Button
-            variant={viewport === "mobile" ? "default" : "outline"}
-            onClick={() => setViewport("mobile")}
-          >
-            Mobile
-          </Button>
+          {(["desktop", "tablet", "mobile"] as const).map((v) => (
+            <Button
+              key={v}
+              variant={viewport === v ? "default" : "outline"}
+              onClick={() => setViewport(v)}
+            >
+              {v.charAt(0).toUpperCase() + v.slice(1)}
+            </Button>
+          ))}
         </div>
+
+        {/* Locale buttons */}
         <div className="flex justify-end gap-2">
           {locales.map((l) => (
             <Button
@@ -264,6 +332,8 @@ export default memo(function PageBuilder({
             </Button>
           ))}
         </div>
+
+        {/* Canvas -------------------------------------------------- */}
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -278,7 +348,6 @@ export default memo(function PageBuilder({
               style={containerStyle}
               className="mx-auto flex flex-col gap-4 rounded border"
             >
-              {" "}
               {components.map((c, i) => (
                 <CanvasItem
                   key={c.id}
@@ -295,6 +364,7 @@ export default memo(function PageBuilder({
           </SortableContext>
         </DndContext>
 
+        {/* Action buttons ----------------------------------------- */}
         <div className="flex gap-2">
           <Button
             onClick={() => dispatch({ type: "undo" })}
@@ -314,6 +384,8 @@ export default memo(function PageBuilder({
           </Button>
         </div>
       </div>
+
+      {/* Component editor ----------------------------------------- */}
       {selectedId && (
         <aside className="w-72 shrink-0">
           <ComponentEditor
@@ -327,3 +399,5 @@ export default memo(function PageBuilder({
     </div>
   );
 });
+
+export default PageBuilder;

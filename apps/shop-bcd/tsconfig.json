@@ -19,7 +19,7 @@
     "strict": false,
     "module": "esnext",
     "moduleResolution": "node",
-    "types": ["node", "react/next", "react-dom"]
+    "types": ["node", "react", "react-dom"]
   },
   "include": [
     "src",

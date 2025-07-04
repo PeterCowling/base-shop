@@ -1,4 +1,4 @@
-// packages/platform-core/tsconfig.json   ★ final
+// packages/platform-core/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
@@ -27,10 +27,6 @@
     "paths": {
       "@platform-core": ["."],
       "@platform-core/*": ["*"],
-
-      /* ▸▸ delete the two lines that pointed @types at ../../src    */
-      "@types": ["../../src/types/index.ts"],
-      "@types/*": ["../../src/types/*"],
 
       "@types/shared": ["../../packages/types/src/index.ts"],
       "@types/shared/*": ["../../packages/types/src/*"],

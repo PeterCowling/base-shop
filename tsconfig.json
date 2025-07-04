@@ -12,9 +12,6 @@
     { "path": "./apps/shop-bcd" },
     { "path": "./scripts" }
   ],
-
-  /* NEW: keep tests & demo shops out of the **production** type-check.
-           The dedicated tsconfig.test.json already handles test files.  */
   "exclude": [
     "**/__tests__/**",
     "**/*.test.ts",

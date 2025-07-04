@@ -1,4 +1,4 @@
-// packages/lib/tsconfig.json  ★ final
+// packages/lib/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
@@ -17,10 +17,7 @@
   },
 
   /* build dependency graph ------------------------------------------ */
-  "references": [
-    { "path": "../platform-core" }, // ← ★ add this
-    { "path": "../config" }
-  ],
+  "references": [{ "path": "../config" }],
 
   /* source globs ---------------------------------------------------- */
   "include": ["*.ts", "*.d.ts", "src/**/*"],

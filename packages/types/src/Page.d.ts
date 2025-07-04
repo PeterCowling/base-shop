@@ -140,13 +140,13 @@ export declare const pageSchema: z.ZodObject<{
         description: z.ZodOptional<z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodString>>;
         image: z.ZodOptional<z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodString>>;
     }, "strip", z.ZodTypeAny, {
-        title: Partial<Record<"it" | "en" | "de", string>>;
-        image?: Partial<Record<"it" | "en" | "de", string>> | undefined;
-        description?: Partial<Record<"it" | "en" | "de", string>> | undefined;
+        title: Partial<Record<"en" | "de" | "it", string>>;
+        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
+        description?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     }, {
-        title: Partial<Record<"it" | "en" | "de", string>>;
-        image?: Partial<Record<"it" | "en" | "de", string>> | undefined;
-        description?: Partial<Record<"it" | "en" | "de", string>> | undefined;
+        title: Partial<Record<"en" | "de" | "it", string>>;
+        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
+        description?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     }>;
     createdAt: z.ZodString;
     updatedAt: z.ZodString;
@@ -160,9 +160,9 @@ export declare const pageSchema: z.ZodObject<{
         type: z.ZodString;
     }, z.ZodTypeAny, "passthrough">[];
     seo: {
-        title: Partial<Record<"it" | "en" | "de", string>>;
-        image?: Partial<Record<"it" | "en" | "de", string>> | undefined;
-        description?: Partial<Record<"it" | "en" | "de", string>> | undefined;
+        title: Partial<Record<"en" | "de" | "it", string>>;
+        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
+        description?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     };
     createdAt: string;
     updatedAt: string;
@@ -172,9 +172,9 @@ export declare const pageSchema: z.ZodObject<{
     id: string;
     slug: string;
     seo: {
-        title: Partial<Record<"it" | "en" | "de", string>>;
-        image?: Partial<Record<"it" | "en" | "de", string>> | undefined;
-        description?: Partial<Record<"it" | "en" | "de", string>> | undefined;
+        title: Partial<Record<"en" | "de" | "it", string>>;
+        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
+        description?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     };
     createdAt: string;
     updatedAt: string;

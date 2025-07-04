@@ -63,8 +63,6 @@
       "@auth/*": ["packages/auth/src/*"],
 
       /* --- THREE type barrels ------------------------------------------ */
-      "@types": ["packages/types/src/index.ts"],
-      "@types/*": ["packages/types/src/*"],
 
       "@types/root": ["src/types/index.ts"],
       "@types/root/*": ["src/types/*"],

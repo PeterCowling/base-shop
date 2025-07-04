@@ -1,36 +1,37 @@
-// packages/platform-core/tsconfig.json
+// packages/platform-core/tsconfig.json   ★ final
 {
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* emit JS + declaration files ------------------------------------ */
+    /* library emits JS + d.ts -------------------------------------- */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
     "outDir": "dist",
 
-    /* React JSX ------------------------------------------------------- */
+    /* React components -------------------------------------------- */
     "jsx": "react-jsx",
 
-    /* keep package-local imports relative to this folder ------------- */
-    "baseUrl": ".",
+    /* ignore node_modules type churn (fixes Next-15 errors) -------- */
+    "skipLibCheck": true,
 
-    /* forbid `import './foo.ts'` in source */
+    /* keep imports relative to this folder ------------------------ */
+    "baseUrl": ".",
     "allowImportingTsExtensions": false,
 
-    /* React global types only */
-    "types": ["react", "react-dom"],
+    /* we **do** want Next’s global types, but nothing else -------- */
+    "types": ["react", "react-dom", "next"],
 
-    /* --------------------------------------------------------------- */
-    /*  Path aliases (unchanged)                                       */
-    /* --------------------------------------------------------------- */
+    /* ---------- stop overriding the @types alias  ---------------- */
     "paths": {
       "@platform-core": ["."],
       "@platform-core/*": ["*"],
 
+      /* ▸▸ delete the two lines that pointed @types at ../../src    */
       "@types": ["../../src/types/index.ts"],
       "@types/*": ["../../src/types/*"],
+
       "@types/shared": ["../../packages/types/src/index.ts"],
       "@types/shared/*": ["../../packages/types/src/*"],
 
@@ -44,14 +45,13 @@
     }
   },
 
-  /* ----------------------------------------------------------------- */
-  /*  Source files                                                     */
-  /* ----------------------------------------------------------------- */
+  /* -------------------------------------------------------------- */
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["dist", "__tests__"],
 
-  /* ----------------------------------------------------------------- */
-  /*  Project references                                               */
-  /* ----------------------------------------------------------------- */
-  "references": [{ "path": "../lib" }]
+  /* • build-order: lib  →  platform-core  →  (emit)                */
+  "references": [
+    { "path": "../lib" },
+    { "path": "../types" } /* ← add shared types barrel */
+  ]
 }

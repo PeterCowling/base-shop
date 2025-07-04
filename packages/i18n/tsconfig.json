@@ -3,27 +3,29 @@
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* this package emits JS + d.ts files ------------------------------ */
+    /* library emits JS + d.ts --------------------------------------- */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
     "outDir": "dist",
 
-    /* TSX support for <Translations /> etc. */
+    /* React translations components --------------------------------- */
     "jsx": "react-jsx",
 
-    /* node + react globals only (browser libs inherited from base) */
+    /* globals -------------------------------------------------------- */
     "types": ["react", "react-dom"],
 
-    /* forbid .ts extension imports in source */
+    /* keep import paths extension-less ------------------------------ */
     "allowImportingTsExtensions": false
   },
 
-  /* source files ------------------------------------------------------ */
-  "include": ["*.ts", "*.tsx", "src/**/*"],
-  "exclude": ["dist"],
+  /* -----------------------------------------------------------------
+     project references – this is the crucial line
+     ----------------------------------------------------------------- */
+  "references": [{ "path": "../types" } /* ✅ build the types package first */],
 
-  /* project-references — none needed; i18n is leaf-level for now */
-  "references": []
+  /* source globs ----------------------------------------------------- */
+  "include": ["*.ts", "*.tsx", "src/**/*"],
+  "exclude": ["dist"]
 }

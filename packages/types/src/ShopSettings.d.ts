@@ -90,7 +90,7 @@ export declare const shopSettingsSchema: z.ZodObject<{
     updatedAt: z.ZodString;
     updatedBy: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    seo: Partial<Record<"it" | "en" | "de", {
+    seo: Partial<Record<"en" | "de" | "it", {
         title?: string | undefined;
         image?: string | undefined;
         description?: string | undefined;
@@ -110,7 +110,7 @@ export declare const shopSettingsSchema: z.ZodObject<{
         structuredData?: string | undefined;
     }>>;
     updatedAt: string;
-    languages: readonly ("it" | "en" | "de")[];
+    languages: readonly ("en" | "de" | "it")[];
     updatedBy: string;
     analytics?: {
         provider: string;
@@ -118,7 +118,7 @@ export declare const shopSettingsSchema: z.ZodObject<{
     } | undefined;
     freezeTranslations?: boolean | undefined;
 }, {
-    seo: Partial<Record<"it" | "en" | "de", {
+    seo: Partial<Record<"en" | "de" | "it", {
         title?: string | undefined;
         image?: string | undefined;
         description?: string | undefined;
@@ -138,7 +138,7 @@ export declare const shopSettingsSchema: z.ZodObject<{
         structuredData?: string | undefined;
     }>>;
     updatedAt: string;
-    languages: readonly ("it" | "en" | "de")[];
+    languages: readonly ("en" | "de" | "it")[];
     updatedBy: string;
     analytics?: {
         provider: string;

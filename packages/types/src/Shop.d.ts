@@ -143,8 +143,8 @@ export declare const shopSchema: z.ZodObject<{
     themeId: string;
     themeTokens: Record<string, string>;
     filterMappings: Record<string, string>;
-    priceOverrides: Partial<Record<"it" | "en" | "de", number>>;
-    localeOverrides: Record<string, "it" | "en" | "de">;
+    priceOverrides: Partial<Record<"en" | "de" | "it", number>>;
+    localeOverrides: Record<string, "en" | "de" | "it">;
     type?: string | undefined;
     navigation?: {
         label: string;
@@ -154,8 +154,8 @@ export declare const shopSchema: z.ZodObject<{
     contactInfo?: string | undefined;
     paymentProviders?: string[] | undefined;
     shippingProviders?: string[] | undefined;
-    homeTitle?: Partial<Record<"it" | "en" | "de", string>> | undefined;
-    homeDescription?: Partial<Record<"it" | "en" | "de", string>> | undefined;
+    homeTitle?: Partial<Record<"en" | "de" | "it", string>> | undefined;
+    homeDescription?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     homeImage?: string | undefined;
 }, {
     name: string;
@@ -171,12 +171,12 @@ export declare const shopSchema: z.ZodObject<{
     }[] | undefined;
     logo?: string | undefined;
     contactInfo?: string | undefined;
-    priceOverrides?: Partial<Record<"it" | "en" | "de", number>> | undefined;
-    localeOverrides?: Record<string, "it" | "en" | "de"> | undefined;
+    priceOverrides?: Partial<Record<"en" | "de" | "it", number>> | undefined;
+    localeOverrides?: Record<string, "en" | "de" | "it"> | undefined;
     paymentProviders?: string[] | undefined;
     shippingProviders?: string[] | undefined;
-    homeTitle?: Partial<Record<"it" | "en" | "de", string>> | undefined;
-    homeDescription?: Partial<Record<"it" | "en" | "de", string>> | undefined;
+    homeTitle?: Partial<Record<"en" | "de" | "it", string>> | undefined;
+    homeDescription?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     homeImage?: string | undefined;
 }>;
 //# sourceMappingURL=Shop.d.ts.map

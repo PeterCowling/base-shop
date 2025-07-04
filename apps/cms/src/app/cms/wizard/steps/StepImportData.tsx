@@ -1,26 +1,24 @@
+"use client";
+
 import { Button, Input, Textarea } from "@/components/atoms-shadcn";
 
 interface Props {
-  csvFile: File | null;
   setCsvFile: (f: File | null) => void;
   categoriesText: string;
   setCategoriesText: (v: string) => void;
   importResult: string | null;
   importing: boolean;
   onBack: () => void;
-  onNext: () => void;
   saveData: () => void;
 }
 
 export default function StepImportData({
-  csvFile,
   setCsvFile,
   categoriesText,
   setCategoriesText,
   importResult,
   importing,
   onBack,
-  onNext,
   saveData,
 }: Props): React.JSX.Element {
   return (

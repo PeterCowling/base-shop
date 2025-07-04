@@ -7,17 +7,7 @@
     "composite": true,
     "outDir": "dist",
     "jsx": "react-jsx",
-    "rootDir": "../..",
-
-    "rootDirs": [
-      "components",
-      "hooks",
-      "../platform-core",
-      "../i18n",
-      "../types",
-      "../cms/src",
-      "../../apps/cms/src"
-    ]
+    "rootDir": "."
   },
 
   "references": [
@@ -27,18 +17,6 @@
     { "path": "../auth" },
     { "path": "../lib" }
   ],
-  "include": [
-    "components/**/*",
-    "hooks/**/*",
-    "utils/**/*",
-    "../i18n/*.json",
-    "../themes/**/*.ts",
-    "../../apps/cms/src/actions/**/*.ts",
-    "../cms/src/actions/**/*",
-    "../cms/src/auth/**/*",
-    "../cms/src/types/**/*",
-    "../../src/**/*.ts",
-    "../../apps/cms/src/**/*"
-  ],
+  "include": ["components/**/*", "hooks/**/*", "layout/**/*", "utils/**/*"],
   "exclude": ["dist"]
 }

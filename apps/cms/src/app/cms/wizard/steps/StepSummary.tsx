@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Input } from "@/components/atoms-shadcn";
 import { Locale, LOCALES } from "@types";
 import WizardPreview from "../WizardPreview";
@@ -21,7 +23,6 @@ interface Props {
   result: string | null;
   themeStyle: React.CSSProperties;
   onBack: () => void;
-  onNext: () => void;
   creating: boolean;
   submit: () => void;
 }
@@ -45,7 +46,6 @@ export default function StepSummary({
   result,
   themeStyle,
   onBack,
-  onNext,
   creating,
   submit,
 }: Props): React.JSX.Element {

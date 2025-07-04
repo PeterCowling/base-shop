@@ -39,10 +39,7 @@ export default async function PreviewView({
   }
   const theme =
     typeof searchParams.theme === "string" ? searchParams.theme : "base";
-  const template =
-    typeof searchParams.template === "string"
-      ? searchParams.template
-      : "template-app";
+
   const lang = resolveLocale(
     typeof searchParams.lang === "string" ? searchParams.lang : "en"
   );

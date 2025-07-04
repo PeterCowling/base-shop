@@ -27,5 +27,9 @@
     "../cms/src/app/api/upload-csv",
     "../cms/src/app/api/providers"
   ],
-  "exclude": ["node_modules", "../../apps-script"]
+  "exclude": [
+    "node_modules",
+    "../../apps-script",
+    "src/routes/preview/(pageId].ts"
+  ]
 }

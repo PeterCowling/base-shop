@@ -1,26 +1,24 @@
+"use client";
+
 import { Button, Input } from "@/components/atoms-shadcn";
 
 interface Props {
-  csvFile: File | null;
   setCsvFile: (f: File | null) => void;
   categoriesText: string;
   setCategoriesText: (v: string) => void;
   seedResult: string | null;
   seeding: boolean;
   onBack: () => void;
-  onNext: () => void;
   seed: () => void;
 }
 
 export default function StepSeedData({
-  csvFile,
   setCsvFile,
   categoriesText,
   setCategoriesText,
   seedResult,
   seeding,
   onBack,
-  onNext,
   seed,
 }: Props): React.JSX.Element {
   return (

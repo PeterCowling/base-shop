@@ -1,10 +1,13 @@
+"use client";
+
 import { Button, Input } from "@/components/atoms-shadcn";
+import type { DeployShopResult } from "@platform-core/createShop";
 
 interface Props {
   domain: string;
   setDomain: (v: string) => void;
   deployResult: string | null;
-  deployInfo: any | null;
+  deployInfo: DeployShopResult | { status: "pending" } | null;
   deploying: boolean;
   onBack: () => void;
   deploy: () => void;

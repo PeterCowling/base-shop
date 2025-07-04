@@ -5,9 +5,7 @@
     "noEmit": false,
     "composite": true,
     "outDir": "dist",
-    "rootDir": "../..",
-    "rootDirs": ["./", "../platform-core", "../lib", "../../src"],
-    "baseUrl": "../..",
+    "rootDir": ".",
     "paths": {
       "@platform-machine": ["."],
       "@platform-machine/*": ["*"],

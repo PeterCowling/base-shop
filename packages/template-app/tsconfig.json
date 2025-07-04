@@ -19,8 +19,8 @@
     "strict": false,
     "module": "esnext",
     "moduleResolution": "node",
-    "types": ["@cloudflare/workers-types", "node"]
+    "types": ["node"]
   },
   "include": ["src", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/routes/preview/[pageId].ts"]
 }

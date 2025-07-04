@@ -1,9 +1,18 @@
+"use client";
+
 import { Button } from "@/components/atoms-shadcn";
 import NavigationEditor from "@/components/cms/NavigationEditor";
 
+interface NavItem {
+  id: string;
+  label: string;
+  url: string;
+  children?: NavItem[];
+}
+
 interface Props {
-  navItems: any[];
-  setNavItems: (v: any[]) => void;
+  navItems: NavItem[];
+  setNavItems: (v: NavItem[]) => void;
   onBack: () => void;
   onNext: () => void;
 }

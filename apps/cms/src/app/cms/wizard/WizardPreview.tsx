@@ -44,14 +44,28 @@ export default function WizardPreview({
 
   function Block({ component }: { component: PageComponent }) {
     if (component.type === "Text") {
-      const text = (component as any).text;
-      const value = typeof text === "string" ? text : (text?.en ?? "");
+      const text = (component as Record<string, unknown>).text;
+      const value =
+        typeof text === "string"
+          ? text
+          : ((text as Record<string, string>).en ?? "");
       return <div dangerouslySetInnerHTML={{ __html: value }} />;
     }
-    const Comp = (blockRegistry as any)[component.type];
+    const Comp = (
+      blockRegistry as Record<
+        string,
+        React.ComponentType<Record<string, unknown>>
+      >
+    )[component.type];
     if (!Comp) return null;
-    const { id, type, ...props } = component as any;
-    return <Comp {...props} locale="en" />;
+    const {
+      id: _id,
+      type: _type,
+      ...props
+    } = component as Record<string, unknown>;
+    void _id;
+    void _type;
+    return <Comp {...(props as Record<string, unknown>)} locale="en" />;
   }
 
   return (

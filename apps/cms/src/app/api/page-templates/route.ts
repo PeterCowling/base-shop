@@ -30,7 +30,7 @@ export async function GET() {
   try {
     const dir = resolveTemplatesRoot();
     const entries = await fs.readdir(dir, { withFileTypes: true });
-    const templates = [] as Array<{ name: string; components: any[] }>;
+    const templates = [] as Array<{ name: string; components: unknown[] }>;
     for (const e of entries) {
       if (e.isFile() && e.name.endsWith(".json")) {
         const file = path.join(dir, e.name);

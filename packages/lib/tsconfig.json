@@ -5,17 +5,11 @@
     "noEmit": false,
     "composite": true,
     "outDir": "dist",
-    "rootDir": "../..",
-    "rootDirs": ["./", "../config", "../platform-core", "../../src"],
-    "baseUrl": "../..",
+    "rootDir": ".",
     "types": ["node"],
     "moduleResolution": "node"
   },
   "references": [{ "path": "../config" }, { "path": "../../src" }],
-  "include": [
-    "stripeServer.server.ts",
-    "checkShopExists.server.ts",
-    "../platform-core/shops.ts"
-  ],
+  "include": ["*.ts", "*.d.ts"],
   "exclude": ["dist", "__tests__"]
 }

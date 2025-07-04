@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/atoms-shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { Locale, LOCALES, Page, PageComponent } from "@types";

@@ -72,8 +72,6 @@ const baseSchema = z
   })
   .extend(localeFields as Record<string, z.ZodTypeAny>);
 
-type BasePageForm = z.infer<typeof baseSchema>;
-
 export const createSchema = baseSchema;
 export type PageCreateForm = z.infer<typeof createSchema>;
 

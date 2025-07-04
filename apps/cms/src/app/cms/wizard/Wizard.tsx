@@ -237,15 +237,18 @@ export default function Wizard({
       if (typeof data.analyticsId === "string")
         setAnalyticsId(data.analyticsId);
       if (Array.isArray(data.navItems)) {
-        const convert = (items: any[]): NavItem[] =>
-          items.map((i) => ({
-            id: i.id ?? ulid(),
-            label: i.label,
-            url: i.url,
-            children: Array.isArray(i.children)
-              ? convert(i.children)
-              : undefined,
-          }));
+        const convert = (items: unknown[]): NavItem[] =>
+          items.map((i) => {
+            const item = i as Record<string, unknown>;
+            return {
+              id: typeof item.id === "string" ? item.id : ulid(),
+              label: String(item.label),
+              url: String(item.url),
+              children: Array.isArray(item.children)
+                ? convert(item.children)
+                : undefined,
+            };
+          });
         setNavItems(convert(data.navItems));
       }
       if (Array.isArray(data.pages)) setPages(data.pages);
@@ -420,15 +423,14 @@ export default function Wizard({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: shopId, domain }),
       });
-      const json = (await res.json()) as
-        | DeployShopResult
-        | { status: "pending" };
+      const json: DeployShopResult | { status: "pending"; error?: string } =
+        await res.json();
       if (res.ok) {
         setDeployResult("Deployment started");
         setDeployInfo(json);
         startPolling();
       } else {
-        setDeployResult((json as any)?.error ?? "Deployment failed");
+        setDeployResult(json.error ?? "Deployment failed");
       }
     } catch {
       setDeployResult("Deployment failed");
@@ -727,7 +729,6 @@ export default function Wizard({
 
         {step === 12 && (
           <StepImportData
-            csvFile={csvFile}
             setCsvFile={setCsvFile}
             categoriesText={categoriesText}
             setCategoriesText={setCategoriesText}
@@ -735,13 +736,11 @@ export default function Wizard({
             importing={importing}
             saveData={saveData}
             onBack={() => setStep(11)}
-            onNext={() => setStep(13)}
           />
         )}
 
         {step === 13 && (
           <StepSeedData
-            csvFile={csvFile}
             setCsvFile={setCsvFile}
             categoriesText={categoriesText}
             setCategoriesText={setCategoriesText}
@@ -749,7 +748,6 @@ export default function Wizard({
             seeding={seeding}
             seed={seed}
             onBack={() => setStep(12)}
-            onNext={() => setStep(14)}
           />
         )}
         {step === 14 && (

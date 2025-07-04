@@ -19,7 +19,7 @@
     "strict": false,
     "module": "esnext",
     "moduleResolution": "node",
-    "types": ["node", "jest"],
+    "types": ["node"],
     "skipLibCheck": true
   },
   "include": [
@@ -30,5 +30,9 @@
     ".next/types/**/*.ts",
     ".next/types/app/[lang]/page.tsx"
   ],
-  "exclude": ["node_modules", "../../apps-script"]
+  "exclude": [
+    "node_modules",
+    "../../apps-script",
+    "src/routes/preview/[pageId].ts"
+  ]
 }

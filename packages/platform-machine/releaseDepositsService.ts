@@ -1,6 +1,6 @@
+import { stripe } from "@lib/stripeServer";
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
-import { stripe } from "../lib/stripeServer";
 import { markRefunded, readOrders } from "./repositories/rentalOrders.server";
 
 export async function releaseDepositsOnce(): Promise<void> {

@@ -1,0 +1,15 @@
+// test/tsconfig.json
+{
+  "extends": "../tsconfig.test.json",
+
+  "compilerOptions": {
+    /* tests never emit JS */
+    "noEmit": true
+  },
+
+  /* test sources in this folder (optional—inheritance already covers it) */
+  "include": ["**/*.ts", "**/*.tsx"],
+
+  /* avoid the config file itself being re-parsed */
+  "exclude": ["tsconfig.json"]
+}

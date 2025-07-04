@@ -1,34 +1,41 @@
-// tsconfig.base.json
+// tsconfig.base.json  ★ revised
 {
   "compilerOptions": {
+    /* ────────── fundamental paths ────────── */
     "baseUrl": ".",
-    "rootDir": ".",
-    "esModuleInterop": true,
-    "skipLibCheck": false,
+
+    /* ────────── language / emit ──────────── */
     "target": "ES2022",
-    "moduleResolution": "node",
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    "module": "es2020",
     "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "resolveJsonModule": true,
     "moduleSuffixes": [".server", ".client", ""],
     "allowImportingTsExtensions": true,
-    "module": "es2020",
+    "noEmit": true,
 
+    /* ────────── type-safety flags ────────── */
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": false,
+
+    /* ────────── global types ─────────────── */
     "types": ["node", "react", "react-dom"],
 
+    /* ────────── workspace aliases ────────── */
     "paths": {
-      "@platform-core/*": ["packages/platform-core/*"],
+      /* --- core packages ------------------------------------------------ */
       "@platform-core": ["packages/platform-core"],
+      "@platform-core/*": ["packages/platform-core/*"],
       "@platform-machine/*": ["packages/platform-machine/*"],
       "@themes/*": ["packages/themes/*"],
       "@ui/*": ["packages/ui/*"],
 
-      /* ↓ CMS alias (runtime code) */
+      /* --- apps --------------------------------------------------------- */
       "@cms/*": ["apps/cms/src/*"],
 
-      /* compat & generic UI */
+      /* --- feature shorthands ------------------------------------------ */
       "@/components/pdp/*": ["packages/platform-core/components/pdp/*"],
       "@/components/shop/*": ["packages/platform-core/components/shop/*"],
       "@/components/*": ["packages/ui/components/*"],
@@ -47,13 +54,7 @@
         "packages/lib/contexts/*"
       ],
 
-      /* ──────────────────────────────────────────────────────────
-         @i18n — first try TS/TSX source under src/, then raw JSON
-      ────────────────────────────────────────────────────────── */
-      "@i18n/*": [
-        "packages/i18n/src/*", // code (Translations.tsx, locales.ts …)
-        "packages/i18n/*" // locale JSON files (en.json, de.json …)
-      ],
+      "@i18n/*": ["packages/i18n/src/*", "packages/i18n/*"],
       "@/i18n/*": ["packages/i18n/src/*", "packages/i18n/*"],
 
       "@svelte-tool/*": ["packages/svelte-tool/*"],
@@ -61,15 +62,29 @@
       "@auth": ["packages/auth/src/index.ts"],
       "@auth/*": ["packages/auth/src/*"],
 
-      "@types": ["src/types"],
-      "@types/*": ["src/types/*"],
+      /* --- THREE type barrels ------------------------------------------ */
+      "@types": ["packages/types/src/index.ts"],
+      "@types/*": ["packages/types/src/*"],
+
+      "@types/root": ["src/types/index.ts"],
+      "@types/root/*": ["src/types/*"],
+
+      "@types/cms": ["apps/cms/src/types/index.ts"],
+      "@types/cms/*": ["apps/cms/src/types/*"],
+
       "@types/shared": ["packages/types/src/index.ts"],
       "@types/shared/*": ["packages/types/src/*"],
 
+      /* --- misc -------------------------------------------------------- */
       "@acme/tailwind-config": ["packages/tailwind-config/src/index.ts"],
       "@config": ["packages/config/env.ts"],
       "@config/*": ["packages/config/*"]
     }
   },
-  "files": ["./src/types/global.d.ts"]
+
+  /* ambient globals */
+  "files": ["./src/types/global.d.ts"],
+
+  /* default source globs (each workspace overrides as needed) */
+  "include": ["src/**/*", "packages/**/src/**/*", "apps/**/src/**/*"]
 }

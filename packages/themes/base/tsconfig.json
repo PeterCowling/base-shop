@@ -1,10 +1,22 @@
+// packages/themes/base/tsconfig.json
 {
   "extends": "../../../tsconfig.base.json",
+
   "compilerOptions": {
-    "allowImportingTsExtensions": false,
-    "noEmit": false,
+    /* this theme emits JS + declaration files ------------------------ */
     "composite": true,
-    "outDir": "dist"
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
+    "outDir": "dist",
+
+    /* forbid imports that end with .ts ------------------------------- */
+    "allowImportingTsExtensions": false,
+
+    /* Node globals (fs, path, etc.) ---------------------------------- */
+    "types": ["node"]
   },
-  "include": ["**/*.ts"]
+
+  "include": ["**/*.ts"],
+  "exclude": ["dist"]
 }

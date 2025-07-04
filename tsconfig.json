@@ -1,6 +1,9 @@
+// tsconfig.json
 {
   "files": [],
   "extends": "./tsconfig.base.json",
+
+  /* ────────── project references ────────── */
   "references": [
     { "path": "./packages/types" },
     { "path": "./tsconfig.packages.json" },
@@ -9,5 +12,15 @@
     { "path": "./apps/shop-bcd" },
     { "path": "./scripts" }
   ],
-  "exclude": ["apps-script"]
+
+  /* NEW: keep tests & demo shops out of the **production** type-check.
+           The dedicated tsconfig.test.json already handles test files.  */
+  "exclude": [
+    "**/__tests__/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "apps/shop-abc",
+    "apps/shop-bcd",
+    "apps-script"
+  ]
 }

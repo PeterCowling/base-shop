@@ -1,0 +1,7 @@
+import * as React from "react";
+import { Category } from "../organisms/CategoryCard";
+export interface CategoryCollectionTemplateProps extends React.HTMLAttributes<HTMLDivElement> {
+    categories: Category[];
+    columns?: number;
+}
+export declare function CategoryCollectionTemplate({ categories, columns, className, ...props }: CategoryCollectionTemplateProps): React.JSX.Element;

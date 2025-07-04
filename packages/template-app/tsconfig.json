@@ -1,26 +1,53 @@
+// packages/template-app/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
+
+  /* ------------------------------------------------------------------
+   *  Compiler options
+   * ------------------------------------------------------------------ */
   "compilerOptions": {
+    /* build behaviour ------------------------------------------------- */
     "outDir": "dist",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
     "noEmit": true,
     "incremental": true,
+
+    /* language / libs ------------------------------------------------- */
+    "target": "ES2017",
+    "module": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "preserve",
+
+    /* module resolution ------------------------------------------------ */
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "jsx": "preserve",
-    "target": "ES2017",
+
+    /* tooling ---------------------------------------------------------- */
+    "plugins": [{ "name": "next" }],
+    "types": ["node", "react", "react-dom"],
     "strict": false,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "types": ["node"]
+    "skipLibCheck": true
   },
-  "include": ["src", ".next/types/**/*.ts"],
+
+  /* ------------------------------------------------------------------
+   *  File globs
+   * ------------------------------------------------------------------ */
+  "include": [
+    /* app source */
+    "src/**/*",
+
+    /* Next-generated types */
+    ".next/types/**/*.ts",
+
+    /* tests */
+    "__tests__/**/*",
+    "**/__tests__/**/*.ts",
+    "**/__tests__/**/*.tsx",
+
+    /* shared workspaces */
+    "../../packages/**/src/**/*"
+  ],
+
   "exclude": ["node_modules", "src/routes/preview/[pageId].ts"]
 }

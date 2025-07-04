@@ -1,14 +1,26 @@
+// packages/types/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
+    /* emit the declaration bundle this package provides -------------- */
     "composite": true,
     "declaration": true,
-    "rootDir": "src",
+    "declarationMap": true,
+    "noEmit": false,
     "outDir": "dist",
+
+    /* type-safety flags ---------------------------------------------- */
     "strict": true,
+
+    /* resolve `.client` / `.server` variants when consumers import ---- */
     "moduleSuffixes": [".server", ".client", ""],
-    "allowImportingTsExtensions": true,
-    "noEmit": true
+
+    /* keep import paths clean (no `.ts` in source) ------------------- */
+    "allowImportingTsExtensions": false
   },
-  "include": ["src/**/*"]
+
+  /* only the type definitions in this folder ------------------------ */
+  "include": ["src/**/*"],
+  "exclude": ["dist"]
 }

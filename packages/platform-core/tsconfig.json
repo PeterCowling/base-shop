@@ -1,55 +1,57 @@
+// packages/platform-core/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    "allowImportingTsExtensions": false,
-    "noEmit": false,
+    /* emit JS + declaration files ------------------------------------ */
     "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
     "outDir": "dist",
+
+    /* React JSX ------------------------------------------------------- */
     "jsx": "react-jsx",
+
+    /* keep package-local imports relative to this folder ------------- */
     "baseUrl": ".",
-    "rootDirs": ["./", "../../src", "../lib"],
+
+    /* forbid `import './foo.ts'` in source */
+    "allowImportingTsExtensions": false,
+
+    /* React global types only */
     "types": ["react", "react-dom"],
 
+    /* --------------------------------------------------------------- */
+    /*  Path aliases (unchanged)                                       */
+    /* --------------------------------------------------------------- */
     "paths": {
-      /* ──────────────────────────────────────────────────────────────── */
-      /*  Local self-aliases                                             */
-      /* ──────────────────────────────────────────────────────────────── */
       "@platform-core": ["."],
       "@platform-core/*": ["*"],
 
-      /* ──────────────────────────────────────────────────────────────── */
-      /*  Shared monorepo-level type barrel                              */
-      /* ──────────────────────────────────────────────────────────────── */
       "@types": ["../../src/types/index.ts"],
       "@types/*": ["../../src/types/*"],
       "@types/shared": ["../../packages/types/src/index.ts"],
       "@types/shared/*": ["../../packages/types/src/*"],
 
-      /* ──────────────────────────────────────────────────────────────── */
-      /*  Existing package-scoped @/… aliases                            */
-      /* ──────────────────────────────────────────────────────────────── */
       "@/components/shop/*": ["components/shop/*"],
       "@/contexts/*": ["contexts/*"],
       "@/lib/*": ["lib/*"],
 
-      /* Theme packages */
       "@themes/*": ["../themes/*"],
-
-      /*  Bring back the repo-level @lib alias so this package can */
-      /*  access shared utilities such as stripeServer                */
       "@lib/*": ["../lib/*"],
-
-      /* Alias to access CMS sources */
       "@cms/*": ["../../apps/cms/src/*"]
     }
   },
 
-  //*  Include package sources */
+  /* ----------------------------------------------------------------- */
+  /*  Source files                                                     */
+  /* ----------------------------------------------------------------- */
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["__tests__", "dist"],
+  "exclude": ["dist", "__tests__"],
 
-  /*  👇  Finally: declare the `src` composite project as a dependency
-   *       so incremental builds stay fast and sane.                     */
-  "references": [{ "path": "../../src" }, { "path": "../lib" }]
+  /* ----------------------------------------------------------------- */
+  /*  Project references                                               */
+  /* ----------------------------------------------------------------- */
+  "references": [{ "path": "../lib" }]
 }

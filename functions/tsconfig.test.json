@@ -1,0 +1,13 @@
+// functions/tsconfig.test.json
+{
+  "extends": "./tsconfig.json",
+
+  "compilerOptions": {
+    "noEmit": true, // tests don’t produce output
+    "emitDeclarationOnly": false, // irrelevant when noEmit=true
+    "types": ["jest", "@cloudflare/workers-types", "node"]
+  },
+
+  /* all test files */
+  "include": ["__tests__/**/*.ts", "__tests__/**/*.tsx"]
+}

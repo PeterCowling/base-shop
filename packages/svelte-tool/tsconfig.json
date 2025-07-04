@@ -1,12 +1,20 @@
+// packages/svelte-tool/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
-    "allowImportingTsExtensions": false,
-    "noEmit": false,
+    /* library emits JS + .d.ts files ---------------------------------- */
     "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
     "outDir": "dist",
-    "rootDir": "."
+
+    /* forbid imports like `./file.ts` in source ----------------------- */
+    "allowImportingTsExtensions": false
   },
+
+  /* source entry(s) --------------------------------------------------- */
   "include": ["index.ts"],
   "exclude": ["dist"]
 }

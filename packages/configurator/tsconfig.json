@@ -1,15 +1,27 @@
+// packages/configurator/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
-    "allowImportingTsExtensions": false,
-    "noEmit": false,
+    /* this package ships compiled JS and d.ts files ------------------- */
     "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
     "outDir": "dist",
-    "rootDir": "src",
+
+    /* let TypeScript infer the rootDir (package root) */
+    "allowImportingTsExtensions": false,
+
+    /* node runtime + ES2022 built-in libs */
     "types": ["node"],
     "lib": ["es2022"]
   },
+
+  /* sources ----------------------------------------------------------- */
   "include": ["src/**/*"],
   "exclude": ["dist"],
+
+  /* project reference to the config package -------------------------- */
   "references": [{ "path": "../config" }]
 }

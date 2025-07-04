@@ -1,12 +1,21 @@
+// tsconfig.test.json
 {
   "extends": "./tsconfig.base.json",
+
   "compilerOptions": {
+    /* run-time environment for unit tests --------------------------- */
     "jsx": "react-jsx",
+    "types": ["node", "jest", "@testing-library/jest-dom"],
+
+    /* test-only flags ------------------------------------------------ */
+    "noEmit": true, // type-check only
     "importsNotUsedAsValues": "remove",
-    "verbatimModuleSyntax": false,
-    "noEmit": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"]
+    "verbatimModuleSyntax": false
   },
+
+  /* which files are treated as “unit tests” ------------------------- */
   "include": ["jest.setup.ts", "test/**/*.ts", "test/**/*.tsx"],
-  "exclude": ["test/e2e/**", "test/tsconfig.ts"]
+
+  /* keep E2E tests and their own config out of this pass ------------ */
+  "exclude": ["test/e2e/**", "test/tsconfig.json"]
 }

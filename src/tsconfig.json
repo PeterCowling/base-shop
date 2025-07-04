@@ -1,9 +1,20 @@
 // src/tsconfig.json
 {
+  "extends": "../tsconfig.base.json",
+
   "compilerOptions": {
+    /* this package emits .d.ts files for the whole repo -------------- */
     "composite": true,
     "declaration": true,
-    "declarationMap": true
+    "declarationMap": true,
+    "noEmit": false,
+    "outDir": "dist",
+
+    /* forbid `import './file.ts'` in source -------------------------- */
+    "allowImportingTsExtensions": false
   },
-  "include": ["types/**/*"]
+
+  /* the only sources: global/ambient type declarations -------------- */
+  "include": ["types/**/*"],
+  "exclude": ["dist"]
 }

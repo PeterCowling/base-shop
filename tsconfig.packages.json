@@ -1,5 +1,15 @@
+// tsconfig.packages.json
 {
+  "extends": "./tsconfig.base.json",
+
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": false, // referenced projects must not disable emit
+    "allowImportingTsExtensions": false // ✅ override to satisfy the rule
+  },
+
   "files": [],
+
   "references": [
     { "path": "packages/types" },
     { "path": "packages/platform-core" },

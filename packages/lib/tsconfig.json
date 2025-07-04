@@ -1,15 +1,29 @@
+// packages/lib/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
-    "allowImportingTsExtensions": false,
-    "noEmit": false,
+    /* this library emits JS + declaration files ----------------------- */
     "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
     "outDir": "dist",
-    "rootDir": ".",
+
+    /* Node globals only (browser libs inherited from base) */
     "types": ["node"],
+
+    /* forbid `import './x.ts'` in source */
+    "allowImportingTsExtensions": false,
+
+    /* keep Node module resolution (redundant but explicit) */
     "moduleResolution": "node"
   },
-  "references": [{ "path": "../config" }, { "path": "../../src" }],
-  "include": ["*.ts", "*.d.ts"],
+
+  /* project-references ------------------------------------------------- */
+  "references": [{ "path": "../config" } /* depends on the config package */],
+
+  /* source files ------------------------------------------------------ */
+  "include": ["*.ts", "*.d.ts", "src/**/*"],
   "exclude": ["dist", "__tests__"]
 }

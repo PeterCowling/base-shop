@@ -1,0 +1,4 @@
+import { NextRequest, NextResponse } from "next/server";
+export declare const runtime = "edge";
+export declare function POST(req: NextRequest): Promise<NextResponse>;
+//# sourceMappingURL=route.d.ts.map

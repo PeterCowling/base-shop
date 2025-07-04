@@ -70,8 +70,9 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       /* `user` exists only on sign-in; type augmentation guarantees `role` */
       if (user) {
-        console.log("[auth] jwt assign role", user.role);
-        token.role = user.role;
+        const u = user as typeof user & { role: Role };
+        console.log("[auth] jwt assign role", u.role);
+        token.role = u.role;
       }
       return token;
     },
@@ -79,7 +80,7 @@ export const authOptions: NextAuthOptions = {
       /* Forward the role from JWT to the client session */
       console.log("[auth] session role", token.role);
 
-      session.user.role = token.role;
+      (session.user as typeof session.user & { role?: Role }).role = token.role;
       return session;
     },
   },

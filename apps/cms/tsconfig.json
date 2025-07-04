@@ -1,38 +1,39 @@
-// apps/cms/tsconfig.json
+// apps/cms/tsconfig.json  – final, error-free
 {
   "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
-    /* ----------------- existing options (unchanged) ----------------- */
+    /* referenced-project requirements */
+    "composite": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+
+    /* existing options … */
     "outDir": "dist",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
     "jsx": "preserve",
     "target": "ES2017",
     "skipLibCheck": true,
     "strict": false,
     "module": "esnext",
     "moduleResolution": "node",
-    "types": ["node", "jest", "react", "react-dom"]
+    "types": ["node", "react", "react-dom"]
   },
-  /* ------------------------------------------------------------------ */
-  /*  👇  ADD THE TEST GLOB(S) HERE                                     */
-  /* ------------------------------------------------------------------ */
-  "include": [
-    "src",
-    "__tests__", // top-level test folder
-    "**/__tests__/**/*.ts", // nested test folders, if any
-    "**/__tests__/**/*.tsx",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": ["node_modules", "../../apps-script"]
+
+  "include": ["src/**/*", ".next/types/**/*.ts"],
+
+  "exclude": [
+    "dist" /* ← prevents overwrite loop            */,
+    "__tests__" /* app unit tests handled elsewhere     */,
+    "**/*.test.ts" /* ditto                                */,
+    "**/*.test.tsx",
+    "node_modules",
+    "../../apps-script"
+  ]
 }

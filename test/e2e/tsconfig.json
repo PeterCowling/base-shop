@@ -1,14 +1,20 @@
+// test/e2e/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
-    "rootDir": "../..",
-    "types": ["node", "cypress"],
+    /* -----------------------------------------------------------------
+       test-only settings
+       ----------------------------------------------------------------- */
+    "noEmit": true, // ✔ type-check only
+    "allowImportingTsExtensions": true, // keep `.ts` in test imports
 
-    /* keep .ts extension in imports */
-    "allowImportingTsExtensions": true,
-
-    /* tell the compiler “type-check only” so TS5096 is satisfied */
-    "noEmit": true
+    /* make Cypress & Node globals available ------------------------- */
+    "types": ["node", "cypress"]
   },
-  "include": ["./**/*.ts", "./**/*.tsx"]
+
+  /* -----------------------------------------------------------------
+     test files
+     ----------------------------------------------------------------- */
+  "include": ["**/*.ts", "**/*.tsx"]
 }

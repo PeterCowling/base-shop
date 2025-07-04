@@ -1,9 +1,34 @@
+// functions/tsconfig.json  ★ revised
 {
   "extends": "../tsconfig.base.json",
+
   "compilerOptions": {
+    /* referenced-project requirements */
+    "composite": true,
+    "emitDeclarationOnly": true /* .d.ts only */,
+    "noEmit": false,
+
+    /* Cloudflare Workers runtime */
     "types": ["@cloudflare/workers-types", "node"],
+    "lib": ["es2022", "webworker"] /* avoid DOM duplication */,
+    "skipLibCheck": true /* suppress 3rd-party clang */,
+
+    /* module / output */
     "module": "esnext",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "declarationMap": true
   },
-  "include": ["**/*.ts"]
+
+  /* build these libraries first */
+  "references": [
+    { "path": "../packages/types" },
+    { "path": "../packages/platform-core" },
+    { "path": "../packages/lib" },
+    { "path": "../packages/config" }
+  ],
+
+  /* production Workers source only */
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "__tests__/**"]
 }

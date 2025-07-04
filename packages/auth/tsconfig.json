@@ -1,12 +1,22 @@
 {
   "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
-    "allowImportingTsExtensions": false,
-    "noEmit": false,
+    /* this package emits JS + d.ts files ------------------------------ */
     "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
     "outDir": "dist",
-    "rootDir": "src"
+
+    /* let TypeScript infer the effective rootDir instead of forcing it */
+    "allowImportingTsExtensions": false
   },
+
+  /* only the auth source tree is compiled in this project ------------- */
   "include": ["src/**/*"],
-  "exclude": ["dist"]
+  "exclude": ["dist"],
+
+  /* project-references: declare our dependency on the shared types pkg */
+  "references": [{ "path": "../types" }]
 }

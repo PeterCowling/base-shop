@@ -1,24 +1,29 @@
 // packages/i18n/tsconfig.json
-
 {
   "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
-    "allowImportingTsExtensions": false,
+    /* this package emits JS + d.ts files ------------------------------ */
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "noEmit": false,
-    "composite": true, // required for project references
-    "outDir": "dist", // emit d.ts → dist
-    "jsx": "react-jsx", // enable TSX support
-    "rootDirs": ["./", "../../src"],
-    "types": ["react", "react-dom"]
+    "outDir": "dist",
+
+    /* TSX support for <Translations /> etc. */
+    "jsx": "react-jsx",
+
+    /* node + react globals only (browser libs inherited from base) */
+    "types": ["react", "react-dom"],
+
+    /* forbid .ts extension imports in source */
+    "allowImportingTsExtensions": false
   },
-  "include": [
-    "*.ts",
-    "*.tsx",
-    "src/Translations.d.ts",
-    "src/Translations.tsx",
-    "src/locales.d.ts",
-    "src/locales.ts"
-  ],
+
+  /* source files ------------------------------------------------------ */
+  "include": ["*.ts", "*.tsx", "src/**/*"],
   "exclude": ["dist"],
-  "references": [{ "path": "../../src" }]
+
+  /* project-references — none needed; i18n is leaf-level for now */
+  "references": []
 }

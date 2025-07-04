@@ -1,9 +1,14 @@
+// packages/platform-core/tsconfig.test.json
 {
   "extends": "./tsconfig.json",
+
   "compilerOptions": {
+    /* test environment types */
     "types": ["@testing-library/jest-dom", "jest", "node"],
+    /* no JS output for tests */
     "noEmit": true
   },
+
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": []
 }

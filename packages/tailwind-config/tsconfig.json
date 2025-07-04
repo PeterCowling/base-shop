@@ -1,12 +1,23 @@
+// packages/tailwind-config/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
+
   "compilerOptions": {
-    "allowImportingTsExtensions": false,
+    /* library emits JS + declaration files ---------------------------- */
     "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
     "outDir": "dist",
-    "rootDir": "src",
-    "jsx": "react-jsx"
+
+    /* React JSX allowed for any preview helpers ---------------------- */
+    "jsx": "react-jsx",
+
+    /* forbid `import './foo.ts'` in source --------------------------- */
+    "allowImportingTsExtensions": false
   },
+
+  /* source files ----------------------------------------------------- */
   "include": ["src/**/*"],
   "exclude": ["dist"]
 }

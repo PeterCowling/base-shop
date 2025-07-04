@@ -1,0 +1,4 @@
+/// <reference types="react" />
+declare function TopBarInner(): import("react").JSX.Element;
+declare const _default: import("react").MemoExoticComponent<typeof TopBarInner>;
+export default _default;

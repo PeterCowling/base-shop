@@ -1,6 +1,4 @@
-// packages/i18n/src/locales.d.ts
-
-import type { Locale } from "@types";
-export declare const locales: readonly Locale[];
+import { type Locale } from "@types";
+export declare const locales: readonly ["en", "de", "it"];
 export type { Locale };
 export declare function resolveLocale(value: string | undefined): Locale;

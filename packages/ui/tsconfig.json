@@ -1,16 +1,28 @@
+// packages/ui/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    "allowImportingTsExtensions": false,
-    "noEmit": false,
+    /* library emits JS + declaration files --------------------------- */
     "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
     "outDir": "dist",
+
+    /* React JSX support ---------------------------------------------- */
     "jsx": "react-jsx",
-    "rootDir": ".",
+
+    /* forbid `import './x.ts'` in source ----------------------------- */
+    "allowImportingTsExtensions": false,
+
+    /* React globals available at compile-time ------------------------ */
     "types": ["react", "react-dom"]
   },
 
+  /* ------------------------------------------------------------------
+   * Project references – downstream deps built first
+   * ------------------------------------------------------------------ */
   "references": [
     { "path": "../platform-core" },
     { "path": "../i18n" },
@@ -18,6 +30,10 @@
     { "path": "../auth" },
     { "path": "../lib" }
   ],
+
+  /* ------------------------------------------------------------------
+   * Source globs
+   * ------------------------------------------------------------------ */
   "include": ["components/**/*", "hooks/**/*", "layout/**/*", "utils/**/*"],
   "exclude": ["dist"]
 }

@@ -8,7 +8,8 @@
     "composite": true, // required for project references
     "outDir": "dist", // emit d.ts → dist
     "jsx": "react-jsx", // enable TSX support
-    "rootDirs": ["./", "../../src"]
+    "rootDirs": ["./", "../../src"],
+    "types": ["react/next", "react-dom"]
   },
   "include": [
     "*.ts",

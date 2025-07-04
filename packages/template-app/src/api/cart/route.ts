@@ -17,7 +17,7 @@ export const runtime = "edge";
 // Stripe / KV integration will extend this in Sprint 5.
 
 const postSchema = z.object({
-  sku: skuSchema,
+  sku: z.union([skuSchema, skuSchema.pick({ id: true })]),
   qty: z.number().int().positive().optional(),
 });
 
@@ -33,12 +33,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
 
-  const { sku, qty = 1 } = parsed.data;
+  const { sku: skuInput, qty = 1 } = parsed.data;
+  const fullSku = "title" in skuInput ? skuInput : getProductById(skuInput.id);
+  if (!fullSku) {
+    return NextResponse.json({ error: "Item not found" }, { status: 404 });
+  }
   const cookie = req.cookies.get(CART_COOKIE)?.value;
   const cart = decodeCartCookie(cookie);
-  const line = cart[sku.id];
+  const line = cart[fullSku.id];
 
-  cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+  cart[fullSku.id] = { sku: fullSku, qty: (line?.qty ?? 0) + qty };
 
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));

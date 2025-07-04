@@ -56,6 +56,11 @@ export function getProductBySlug(slug: string): SKU | undefined {
   return PRODUCTS.find((p) => p.slug === slug);
 }
 
+/** Lookup a product by SKU id */
+export function getProductById(id: string): SKU | undefined {
+  return PRODUCTS.find((p) => p.id === id);
+}
+
 /* -------------------------------------------------------------------------- */
 /*  CMS-side types                                                            */
 /* -------------------------------------------------------------------------- */

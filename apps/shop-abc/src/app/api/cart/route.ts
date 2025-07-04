@@ -5,6 +5,7 @@ import {
   decodeCartCookie,
   encodeCartCookie,
 } from "@/lib/cartCookie";
+import { getProductById } from "@/lib/products";
 import { skuSchema } from "@types";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -13,7 +14,7 @@ import { z } from "zod";
 export const runtime = "edge";
 
 const postSchema = z.object({
-  sku: skuSchema,
+  sku: z.union([skuSchema, skuSchema.pick({ id: true })]),
   qty: z.number().int().positive().optional(),
 });
 
@@ -31,11 +32,15 @@ export async function POST(req: NextRequest) {
   }
 
   const { sku, qty = 1 } = parsed.data;
+  const skuObj = "title" in sku ? sku : getProductById(sku.id);
+  if (!skuObj) {
+    return NextResponse.json({ error: "Item not found" }, { status: 404 });
+  }
   const cookie = req.cookies.get(CART_COOKIE)?.value;
   const cart = decodeCartCookie(cookie);
-  const line = cart[sku.id];
+  const line = cart[skuObj.id];
 
-  cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+  cart[skuObj.id] = { sku: skuObj, qty: (line?.qty ?? 0) + qty };
 
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));

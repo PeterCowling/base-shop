@@ -14,12 +14,12 @@
         "name": "next"
       }
     ],
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "target": "ES2017",
     "strict": false,
     "module": "esnext",
     "moduleResolution": "node",
-    "types": ["node"],
+    "types": ["node", "react/next", "react-dom"],
     "skipLibCheck": true
   },
   "include": [

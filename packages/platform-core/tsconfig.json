@@ -1,4 +1,3 @@
-// packages/platform-core/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
@@ -10,6 +9,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "rootDirs": ["./", "../../src", "../lib"],
+    "types": ["react/next", "react-dom"],
 
     "paths": {
       /* ──────────────────────────────────────────────────────────────── */

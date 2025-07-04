@@ -35,11 +35,12 @@ afterEach(() => {
 
 test("POST adds items and sets cookie", async () => {
   const sku = PRODUCTS[0];
-  const req = createRequest({ sku, qty: 2 });
+  const req = createRequest({ sku: { id: sku.id }, qty: 2 });
   const res = await POST(req);
   const body = await res.json();
 
   expect(body.cart[sku.id].qty).toBe(2);
+  expect(body.cart[sku.id].sku).toEqual(sku);
   const expected = asSetCookieHeader(
     encodeCartCookie({ [sku.id]: { sku, qty: 2 } })
   );
@@ -66,5 +67,10 @@ test("PATCH returns 404 for missing item", async () => {
   const res = await PATCH(
     createRequest({ id: "missing", qty: 1 }, encodeCartCookie({}))
   );
+  expect(res.status).toBe(404);
+});
+
+test("POST returns 404 for unknown SKU", async () => {
+  const res = await POST(createRequest({ sku: { id: "nope" } }));
   expect(res.status).toBe(404);
 });

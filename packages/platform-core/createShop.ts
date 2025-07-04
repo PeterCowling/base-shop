@@ -40,7 +40,7 @@ export const createShopOptionsSchema = z.object({
     .optional(),
   navItems: z
     .array(z.object({ label: z.string(), url: z.string() }))
-    .optional(),
+    .default([]),
   pages: z
     .array(
       z.object({
@@ -51,8 +51,8 @@ export const createShopOptionsSchema = z.object({
         components: z.array(z.any()),
       })
     )
-    .optional(),
-  checkoutPage: z.array(z.any()).optional(),
+    .default([]),
+  checkoutPage: z.array(z.any()).default([]),
 });
 
 export interface CreateShopOptions {
@@ -129,15 +129,14 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     pageDescription: fillLocales(parsed.pageDescription, ""),
     socialImage: parsed.socialImage ?? "",
     analytics: parsed.analytics,
-    navItems: parsed.navItems ?? [],
-    pages:
-      parsed.pages?.map((p) => ({
-        ...p,
-        title: fillLocales(p.title, ""),
-        description: p.description ? fillLocales(p.description, "") : undefined,
-        image: p.image ? fillLocales(p.image, "") : undefined,
-      })) ?? [],
-    checkoutPage: parsed.checkoutPage ?? [],
+    navItems: parsed.navItems,
+    pages: parsed.pages.map((p) => ({
+      ...p,
+      title: fillLocales(p.title, ""),
+      description: p.description ? fillLocales(p.description, "") : undefined,
+      image: p.image ? fillLocales(p.image, "") : undefined,
+    })),
+    checkoutPage: parsed.checkoutPage,
   };
 
   const templateApp = join("packages", options.template);
@@ -313,11 +312,16 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
   deployShop(id);
 }
 
-export interface DeployShopResult {
-  status: "success" | "error";
-  previewUrl: string;
+export interface DeployStatusBase {
+  status: "pending" | "success" | "error";
+  previewUrl?: string;
   instructions?: string;
   error?: string;
+}
+
+export interface DeployShopResult extends DeployStatusBase {
+  status: "success" | "error";
+  previewUrl: string;
 }
 
 export function deployShop(id: string, domain?: string): DeployShopResult {

@@ -5,6 +5,6 @@ export {
   diffHistory,
   getShopSettings,
   saveShopSettings,
-  SettingsDiffEntry,
 } from "./settings.server";
+export type { SettingsDiffEntry } from "./settings.server";
 export * from "./shop.server";

@@ -7,7 +7,8 @@
     "composite": true,
     "outDir": "dist",
     "jsx": "react-jsx",
-    "rootDir": "."
+    "rootDir": ".",
+    "types": ["react/next", "react-dom"]
   },
 
   "references": [

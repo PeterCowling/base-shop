@@ -42,9 +42,9 @@ export interface HistoryState {
 }
 
 export const historyStateSchema: z.ZodSchema<HistoryState> = z.object({
-  past: z.array(z.array(z.any())),
-  present: z.array(z.any()),
-  future: z.array(z.array(z.any())),
+  past: z.array(z.array(z.any())).default([]),
+  present: z.array(z.any()).default([]),
+  future: z.array(z.array(z.any())).default([]),
 });
 
 type ChangeAction =

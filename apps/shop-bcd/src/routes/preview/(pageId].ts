@@ -1,6 +1,6 @@
 /// <reference types="@cloudflare/workers-types" />
 
-// apps/shop-bcd/src/routes/preview/[pageId].t
+// apps/shop-bcd/src/routes/preview/[pageId].ts
 
 import type { EventContext } from "@cloudflare/workers-types";
 import { getPages } from "@platform-core/repositories/pages/index.server";

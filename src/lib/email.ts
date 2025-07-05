@@ -1,6 +1,6 @@
 // src/lib/email.ts
 
-import { env } from "@config/env";
+import { env } from "@config/src/env";
 import nodemailer from "nodemailer";
 
 const hasCreds = env.GMAIL_USER && env.GMAIL_PASS;

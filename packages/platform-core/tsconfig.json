@@ -6,11 +6,14 @@
    *  Compiler options
    * ------------------------------------------------------------------ */
   "compilerOptions": {
-    /* build output ---------------------------------------------------- */
     "composite": true,
-    "declaration": true,
+    "emitDeclarationOnly": false,
+    "noEmit": false, // ← must allow emit
+
+    /* ───── output location ───── */
+    "declarationDir": "dist",
     "declarationMap": true,
-    "noEmit": false,
+    "rootDir": "src",
     "outDir": "dist",
 
     /* React components ------------------------------------------------ */
@@ -20,46 +23,22 @@
     "skipLibCheck": true,
 
     /* local imports stay package-relative ----------------------------- */
-    "baseUrl": ".",
     "allowImportingTsExtensions": false,
 
     /* Next, React globals only --------------------------------------- */
-    "types": ["react", "react-dom", "next"],
-
-    /* ----------------------------------------------------------------
-     *  Paths — everything listed here *overrides* the base config,
-     *  so we must re-add the shared @types alias.
-     * ---------------------------------------------------------------- */
-    "paths": {
-      /* this package itself */
-      "@platform-core": ["."],
-      "@platform-core/*": ["*"],
-
-      /* shared type barrel (required) */
-      "@types": ["../types/src/index.ts"],
-      "@types/*": ["../types/src/*"],
-
-      /* keep legacy alias for consistency */
-      "@types/shared": ["../types/src/index.ts"],
-      "@types/shared/*": ["../types/src/*"],
-
-      /* local shorthand imports */
-      "@/components/shop/*": ["components/shop/*"],
-      "@/contexts/*": ["contexts/*"],
-      "@/lib/*": ["lib/*"],
-
-      /* other workspace shortcuts */
-      "@themes/*": ["../themes/*"],
-      "@lib/*": ["../lib/*"],
-      "@cms/*": ["../../apps/cms/src/*"]
-    }
+    "types": ["react", "react-dom", "next"]
   },
 
   /* ------------------------------------------------------------------
    *  File globs
    * ------------------------------------------------------------------ */
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["dist", "__tests__"],
+  "include": ["src/**/*"],
+  "exclude": [
+    "dist", // freshly emitted output
+    "__tests__", // unit/integration tests
+    ".turbo", // turbo cache
+    "node_modules" // package deps (if any local)
+  ],
 
   /* ------------------------------------------------------------------
    *  Build order

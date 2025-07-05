@@ -1,5 +1,5 @@
 // src/app/layout.tsx
-import { CartProvider } from "@/contexts/CartContext";
+import { CartProvider } from "@platform-core/src/contexts/CartContext";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import AnalyticsScripts from "./AnalyticsScripts";

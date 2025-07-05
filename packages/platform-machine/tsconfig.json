@@ -11,6 +11,7 @@
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
+    "rootDir": "src",
     "outDir": "dist",
 
     /* Node targets only --------------------------------------------- */
@@ -42,6 +43,11 @@
   /* ------------------------------------------------------------------
    *  Source globs
    * ------------------------------------------------------------------ */
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["dist", "__tests__"]
+  "include": ["src/**/*"],
+  "exclude": [
+    "dist", // freshly emitted output
+    "__tests__", // unit/integration tests
+    ".turbo", // turbo cache
+    "node_modules" // package deps (if any local)
+  ]
 }

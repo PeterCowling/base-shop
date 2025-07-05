@@ -5,13 +5,13 @@
   "compilerOptions": {
     /* ───── declaration-only build ───── */
     "composite": true,
-    "declaration": true,
-    "emitDeclarationOnly": true, // ← JS never emitted
+    "emitDeclarationOnly": false,
     "noEmit": false, // must allow emit
 
     /* ───── output location ───── */
-    "outDir": "../dist-scripts",
-    "declarationDir": "../dist-scripts",
+    "rootDir": "src",
+    "outDir": "dist",
+    "declarationDir": "dist",
     "declarationMap": true,
 
     /* ───── language / module target ───── */
@@ -33,6 +33,11 @@
   ],
 
   /* ───── source globs ───── */
-  "include": ["**/*.ts"],
-  "exclude": ["../dist-scripts"] // prevents output → input loop
+  "include": ["src/**/*"],
+  "exclude": [
+    "dist", // freshly emitted output
+    "__tests__", // unit/integration tests
+    ".turbo", // turbo cache
+    "node_modules" // package deps (if any local)
+  ]
 }

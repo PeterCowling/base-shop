@@ -1,0 +1,1 @@
+{"version":3,"file":"MiniCart.client.d.ts","sourceRoot":"","sources":["MiniCart.client.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAY/B;;;GAGG;AACH,MAAM,WAAW,aAAa;IAC5B,OAAO,EAAE,KAAK,CAAC,SAAS,CAAC;IACzB;;;OAGG;IACH,KAAK,CAAC,EAAE,MAAM,GAAG,MAAM,CAAC;CACzB;AAED,wBAAgB,QAAQ,CAAC,EAAE,OAAO,EAAE,KAAc,EAAE,EAAE,aAAa,2CAoDlE"}

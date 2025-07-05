@@ -7,6 +7,7 @@
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
+    "rootDir": "src",
     "outDir": "dist",
 
     /* let TypeScript infer the effective rootDir instead of forcing it */
@@ -15,7 +16,12 @@
 
   /* only the auth source tree is compiled in this project ------------- */
   "include": ["src/**/*"],
-  "exclude": ["dist"],
+  "exclude": [
+    "dist", // freshly emitted output
+    "__tests__", // unit/integration tests
+    ".turbo", // turbo cache
+    "node_modules" // package deps (if any local)
+  ],
 
   /* project-references: declare our dependency on the shared types pkg */
   "references": [{ "path": "../types" }]

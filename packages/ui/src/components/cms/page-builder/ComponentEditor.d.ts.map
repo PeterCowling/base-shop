@@ -1,0 +1,1 @@
+{"version":3,"file":"ComponentEditor.d.ts","sourceRoot":"","sources":["ComponentEditor.tsx"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAa,aAAa,EAAE,MAAM,QAAQ,CAAC;AAoBvD,UAAU,KAAK;IACb,SAAS,EAAE,aAAa,CAAC;IACzB,QAAQ,EAAE,CAAC,KAAK,EAAE,OAAO,CAAC,aAAa,CAAC,KAAK,IAAI,CAAC;CACnD;AAED,MAAM,CAAC,OAAO,UAAU,eAAe,CAAC,EAAE,SAAS,EAAE,QAAQ,EAAE,EAAE,KAAK,kDAoVrE"}

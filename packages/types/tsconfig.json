@@ -3,16 +3,15 @@
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* ───── emit the declaration bundle this package provides ───── */
     "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": true, // ← optional but common for pure-types pkgs
-    "noEmit": false, // ←■■ override the base setting ■■
+    "emitDeclarationOnly": false,
+    "noEmit": false, // ← must allow emit
 
-    /* 👉 everything lands in /dist, never in /src */
+    /* ───── output location ───── */
+    "rootDir": "src",
     "outDir": "dist",
     "declarationDir": "dist",
+    "declarationMap": true,
 
     /* ───── safety / ergonomics flags ───── */
     "strict": true,
@@ -20,9 +19,11 @@
     "allowImportingTsExtensions": false
   },
 
-  /* only the type definitions in this folder */
   "include": ["src/**/*"],
-
-  /* keep emitted files out of the next compile cycle */
-  "exclude": ["dist"]
+  "exclude": [
+    "dist", // freshly emitted output
+    "__tests__", // unit/integration tests
+    ".turbo", // turbo cache
+    "node_modules" // package deps (if any local)
+  ]
 }

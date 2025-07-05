@@ -4,7 +4,6 @@
 import type { ProductForm } from "@cms/actions/schemas";
 import { productSchema } from "@cms/actions/schemas";
 import { authOptions } from "@cms/auth/options";
-import type { ProductPublication } from "@platform-core/products";
 import {
   deleteProductFromRepo,
   duplicateProductInRepo,
@@ -14,6 +13,7 @@ import {
   updateProductInRepo,
   writeRepo,
 } from "@platform-core/repositories/json.server";
+import type { ProductPublication } from "@platform-core/src/products";
 import type { Locale } from "@types";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";

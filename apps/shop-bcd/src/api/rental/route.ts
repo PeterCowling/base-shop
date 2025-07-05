@@ -1,4 +1,4 @@
-import { stripe } from "@/lib/stripeServer";
+import { stripe } from "@lib/stripeServer";
 import { computeDamageFee } from "@platform-core/pricing";
 import {
   addOrder,

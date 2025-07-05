@@ -3,7 +3,7 @@
 import { Tooltip } from "@/components/atoms";
 import { Input, Textarea } from "@/components/atoms-shadcn";
 import type { Locale } from "@types";
-import { cn } from "@ui/utils/cn";
+import { cn } from "@ui/src/utils/cn";
 import type { SeoRecord } from "./useSeoForm";
 
 interface Props {

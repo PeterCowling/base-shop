@@ -4,7 +4,9 @@
 
   "compilerOptions": {
     /* tests never emit JS */
-    "noEmit": true
+    "noEmit": true,
+    "rootDir": "src",
+    "outDir": "dist"
   },
 
   /* test sources in this folder (optional—inheritance already covers it) */

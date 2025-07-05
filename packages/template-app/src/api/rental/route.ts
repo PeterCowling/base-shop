@@ -1,9 +1,9 @@
 import { stripe } from "@/lib/stripeServer";
-import { computeDamageFee } from "@platform-core/pricing";
 import {
   addOrder,
   markReturned,
 } from "@platform-core/repositories/rentalOrders.server";
+import { computeDamageFee } from "@platform-core/src/pricing";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";

@@ -1,5 +1,5 @@
 import { authOptions } from "@cms/auth/options";
-import { updateShopInRepo } from "@platform-core/repositories/json.server";
+import { updateShopInRepo } from "@platform-core/repositories/shop.server";
 import type { Shop } from "@types";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";

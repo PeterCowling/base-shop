@@ -3,21 +3,26 @@
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* library emits JS + declaration files ---------------------------- */
+    /* emits CJS + .d.ts --------------------------------------------- */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
+    "rootDir": "src",
     "outDir": "dist",
 
-    /* React JSX allowed for any preview helpers ---------------------- */
+    /* Node runtime (Tailwind loads it with require) ------------------ */
+    "module": "commonjs",
+    "moduleResolution": "node", // ← override the “bundler” default
+    "types": ["node"],
+
+    /* JSX allowed for any helper-scripts ----------------------------- */
     "jsx": "react-jsx",
 
-    /* forbid `import './foo.ts'` in source --------------------------- */
+    /* forbid `import './foo.ts'` ------------------------------------- */
     "allowImportingTsExtensions": false
   },
 
-  /* source files ----------------------------------------------------- */
   "include": ["src/**/*"],
-  "exclude": ["dist"]
+  "exclude": ["dist", "__tests__", ".turbo", "node_modules"]
 }

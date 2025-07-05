@@ -3,38 +3,40 @@
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* ───── declaration-only build ───── */
+    /* ---------- build settings ------------------------------------ */
     "composite": true,
-    "declaration": true,
-    "emitDeclarationOnly": true, // ← no JS emitted
-    "noEmit": false, // ← must allow emit
+    "noEmit": false, // we *do* emit
+    "emitDeclarationOnly": false,
 
-    /* ───── output location ───── */
-    "outDir": "dist",
+    /* ---------- output locations ---------------------------------- */
+    "rootDir": "src", // <- compiled sources live here
+    "outDir": "dist", // <- JS + d.ts land here
     "declarationDir": "dist",
     "declarationMap": true,
 
-    /* ───── React / JSX support ───── */
+    /* ---------- React / JSX --------------------------------------- */
     "jsx": "react-jsx",
 
-    /* ───── forbid extensionful imports when emitting ───── */
+    /* ---------- misc ---------------------------------------------- */
     "allowImportingTsExtensions": false,
-
-    /* ───── compile-time globals ───── */
     "types": ["react", "react-dom", "jest"]
   },
 
-  /* ───── project references ───── */
+  /* ---------- project references (build order) -------------------- */
   "references": [
     { "path": "../platform-core" },
     { "path": "../i18n" },
     { "path": "../config" },
     { "path": "../auth" },
-    { "path": "../lib" },
-    { "path": "../../apps/cms" }
+    { "path": "../lib" }
   ],
 
-  /* ───── source globs ───── */
-  "include": ["components/**/*", "hooks/**/*", "layout/**/*", "utils/**/*"],
-  "exclude": ["dist"] // keeps fresh emits out of next graph
+  /* ---------- file globs ------------------------------------------ */
+  "include": ["src/**/*"], // ONLY stuff inside src/
+  "exclude": [
+    "dist", // freshly emitted output
+    "__tests__", // unit/integration tests
+    ".turbo", // turbo cache
+    "node_modules" // package deps (if any local)
+  ]
 }

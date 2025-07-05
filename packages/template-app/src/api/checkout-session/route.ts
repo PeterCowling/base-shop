@@ -1,8 +1,8 @@
 // packages/template-app/src/api/checkout-session/route.ts
-import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { stripe } from "@/lib/stripeServer";
-import { priceForDays } from "@platform-core/pricing";
-import { getProductById } from "@platform-core/products";
+import { CART_COOKIE, decodeCartCookie } from "@platform-core/src/cartCookie";
+import { priceForDays } from "@platform-core/src/pricing";
+import { getProductById } from "@platform-core/src/products";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 

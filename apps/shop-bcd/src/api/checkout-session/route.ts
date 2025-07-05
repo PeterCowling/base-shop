@@ -1,7 +1,7 @@
 // apps/shop-bcd/src/app/api/checkout-session/route.ts
 
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
-import { stripe } from "@/lib/stripeServer";
+import { stripe } from "@lib/stripeServer.server";
 import { priceForDays } from "@platform-core/pricing";
 import type { CartLine, CartState } from "@types";
 import { NextRequest, NextResponse } from "next/server";

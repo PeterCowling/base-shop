@@ -1,6 +1,5 @@
 // tsconfig.json
 {
-  "files": [],
   "extends": "./tsconfig.base.json",
 
   /* ────────── project references ────────── */
@@ -11,13 +10,5 @@
     { "path": "./apps/shop-abc" },
     { "path": "./apps/shop-bcd" },
     { "path": "./scripts" }
-  ],
-  "exclude": [
-    "**/__tests__/**",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "apps/shop-abc",
-    "apps/shop-bcd",
-    "apps-script"
   ]
 }

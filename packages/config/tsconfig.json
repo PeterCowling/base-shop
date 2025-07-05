@@ -8,6 +8,7 @@
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
+    "rootDir": "src",
     "outDir": "dist",
 
     /* let TS infer rootDir (same as package folder) */
@@ -15,9 +16,13 @@
     "types": ["node"]
   },
 
-  /* only the env.ts entry is compiled --------------------------------- */
-  "include": ["env.ts"],
-  "exclude": ["dist"]
+  "include": ["src/**/*"], // ONLY stuff inside src/
+  "exclude": [
+    "dist", // freshly emitted output
+    "__tests__", // unit/integration tests
+    ".turbo", // turbo cache
+    "node_modules" // package deps (if any local)
+  ]
 
   /* no project-references needed; the file is self-contained */
 }

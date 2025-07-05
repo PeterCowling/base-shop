@@ -1,4 +1,4 @@
-import { envSchema } from "@config/env";
+import { envSchema } from "@config/src/env";
 import { spawnSync } from "node:child_process";
 
 try {

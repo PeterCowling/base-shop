@@ -1,9 +1,9 @@
 // packages/template-app/src/app/[lang]/product/[slug]/PdpClient.tsx
 "use client";
 
-import ImageGallery from "@/components/pdp/ImageGallery";
-import SizeSelector from "@/components/pdp/SizeSelector";
-import AddToCartButton from "@/components/shop/AddToCartButton";
+import ImageGallery from "@platform-core/src/components/pdp/ImageGallery";
+import SizeSelector from "@platform-core/src/components/pdp/SizeSelector";
+import AddToCartButton from "@platform-core/src/components/shop/AddToCartButton.client";
 import type { SKU } from "@types";
 import { useState } from "react";
 

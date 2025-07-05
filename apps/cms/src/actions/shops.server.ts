@@ -6,15 +6,15 @@ import { authOptions } from "@cms/auth/options";
 import {
   getShopById,
   updateShopInRepo,
-} from "@platform-core/repositories/json.server";
-import type { Locale, Shop, ShopSeoFields, ShopSettings } from "@types";
-import { getServerSession } from "next-auth";
-import { z } from "zod";
+} from "@platform-core/repositories/shop.server";
 import {
   diffHistory,
   getShopSettings,
   saveShopSettings,
-} from "../../../../packages/platform-core/repositories/settings.server";
+} from "@platform-core/src/repositories/settings.server";
+import type { Locale, Shop, ShopSeoFields, ShopSettings } from "@types";
+import { getServerSession } from "next-auth";
+import { z } from "zod";
 import { shopSchema, type ShopForm } from "./schemas";
 
 async function ensureAuthorized(): Promise<void> {

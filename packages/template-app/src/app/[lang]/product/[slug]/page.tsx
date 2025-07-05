@@ -1,6 +1,6 @@
 // packages/template-app/src/app/[lang]/product/[slug]/page.tsx
 
-import { getProductBySlug } from "@/lib/products";
+import { getProductBySlug } from "@platform-core/src/products";
 import { LOCALES } from "@types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";

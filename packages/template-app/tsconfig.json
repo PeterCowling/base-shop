@@ -7,9 +7,10 @@
    * ------------------------------------------------------------------ */
   "compilerOptions": {
     /* build behaviour ------------------------------------------------- */
-    "outDir": "dist",
     "noEmit": true,
     "incremental": true,
+    "rootDir": "src",
+    "outDir": "dist",
 
     /* language / libs ------------------------------------------------- */
     "target": "ES2017",
@@ -25,7 +26,7 @@
 
     /* tooling ---------------------------------------------------------- */
     "plugins": [{ "name": "next" }],
-    "types": ["node", "react", "react-dom"] /* ← no Jest here */,
+    "types": ["node", "react", "react-dom"],
     "strict": false,
     "skipLibCheck": true
   },
@@ -40,22 +41,13 @@
    * ------------------------------------------------------------------ */
   "include": [
     /* app source */
-    "src/**/*",
-
-    /* Next-generated types */
-    ".next/types/**/*.ts",
-
-    /* shared workspaces */
-    "../../packages/**/src/**/*"
+    "src/**/*"
   ],
 
   "exclude": [
-    "node_modules",
-    /* preview route excluded previously */
-    "src/routes/preview/[pageId].ts",
-
-    /* test code handled by tsconfig.test.json */
-    "__tests__",
-    "**/__tests__"
+    "dist", // freshly emitted output
+    "__tests__", // unit/integration tests
+    ".turbo", // turbo cache
+    "node_modules" // package deps (if any local)
   ]
 }

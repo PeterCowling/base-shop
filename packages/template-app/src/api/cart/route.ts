@@ -4,8 +4,8 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
-} from "@/lib/cartCookie";
-import { getProductById } from "@platform-core/products";
+} from "@platform-core/src/cartCookie";
+import { getProductById } from "@platform-core/src/products";
 import { skuSchema } from "@types";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";

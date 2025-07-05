@@ -1,21 +1,45 @@
-import { tokens as baseTokensSrc } from "@themes/base/tokens";
+// apps/cms/src/app/cms/wizard/utils.ts
+/* eslint-disable import/consistent-type-specifier-style */
 
-export type TokenMap = Record<`--${string}`, string>;
+import {
+  tokens as baseTokensSrc,
+  type TokenMap as ThemeTokenMap,
+} from "@themes/base/tokens";
 
+/**
+ * Record of “CSS custom-property → string value”.
+ * (e.g. `"--color-bg" → "0 0% 100%"`)
+ */
+export type TokenMap = Record<keyof ThemeTokenMap, string>;
+
+/* ----------------------------------------------------------
+ *  Strong-typed Object.entries helper
+ * ---------------------------------------------------------- */
+function typedEntries<T extends object>(obj: T): [keyof T, T[keyof T]][] {
+  return Object.entries(obj) as [keyof T, T[keyof T]][];
+}
+
+/* ----------------------------------------------------------
+ *  Base theme – flatten { light, dark? } → string
+ * ---------------------------------------------------------- */
 export const baseTokens: TokenMap = Object.fromEntries(
-  Object.entries(baseTokensSrc).map(([k, v]) => [k, v.light])
+  typedEntries(baseTokensSrc).map(([k, v]) => [k, v.light])
 ) as TokenMap;
 
+/* ----------------------------------------------------------
+ *  Load tokens for an arbitrary theme at runtime
+ * ---------------------------------------------------------- */
 export async function loadThemeTokens(theme: string): Promise<TokenMap> {
   if (theme === "base") return baseTokens;
+
+  /* try regular theme tokens first ---------------------------------- */
   try {
     const mod = await import(`@themes/${theme}/tokens`);
     return Object.fromEntries(
-      Object.entries(mod.tokens as Record<string, { light: string }>).map(
-        ([k, v]) => [k, v.light]
-      )
+      typedEntries(mod.tokens as ThemeTokenMap).map(([k, v]) => [k, v.light])
     ) as TokenMap;
   } catch {
+    /* fallback: tailwind-generated token file ------------------------ */
     try {
       const mod = await import(`@themes/${theme}/tailwind-tokens`);
       return mod.tokens as TokenMap;
@@ -25,6 +49,9 @@ export async function loadThemeTokens(theme: string): Promise<TokenMap> {
   }
 }
 
+/* ----------------------------------------------------------
+ *  Wizard helper utilities
+ * ---------------------------------------------------------- */
 export const STORAGE_KEY = "cms-wizard-progress";
 
 export function resetWizardProgress(): void {

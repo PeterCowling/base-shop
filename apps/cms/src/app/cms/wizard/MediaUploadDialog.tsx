@@ -28,9 +28,7 @@ export default function MediaUploadDialog({ shop }: { shop: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
-          Upload Media
-        </Button>
+        <Button variant="outline">Upload Media</Button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl">
         <DialogTitle>Media Library</DialogTitle>

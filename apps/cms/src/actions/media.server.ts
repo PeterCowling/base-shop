@@ -2,7 +2,7 @@
 
 "use server";
 import { authOptions } from "@cms/auth/options";
-import { validateShopName } from "@platform-core/shops";
+import { validateShopName } from "@platform-core/src/shops";
 import type { ImageOrientation, MediaItem } from "@types";
 import { getServerSession } from "next-auth";
 import { promises as fs } from "node:fs";

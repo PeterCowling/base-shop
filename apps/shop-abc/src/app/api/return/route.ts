@@ -1,6 +1,6 @@
 // apps/shop-abc/src/app/api/return/route.ts
 
-import { stripe } from "@/lib/stripeServer";
+import { stripe } from "@lib/stripeServer";
 import {
   markRefunded,
   markReturned,

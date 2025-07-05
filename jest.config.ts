@@ -1,4 +1,4 @@
-// jest.config.ts   (repo root – replace the existing file completely)
+// jest.config.ts
 
 /**
  * Jest configuration for the entire monorepo.

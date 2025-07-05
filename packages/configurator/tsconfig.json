@@ -8,6 +8,7 @@
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
+    "rootDir": "src",
     "outDir": "dist",
 
     /* let TypeScript infer the rootDir (package root) */
@@ -20,7 +21,12 @@
 
   /* sources ----------------------------------------------------------- */
   "include": ["src/**/*"],
-  "exclude": ["dist"],
+  "exclude": [
+    "dist", // freshly emitted output
+    "__tests__", // unit/integration tests
+    ".turbo", // turbo cache
+    "node_modules" // package deps (if any local)
+  ],
 
   /* project reference to the config package -------------------------- */
   "references": [{ "path": "../config" }]

@@ -1,48 +1,45 @@
-// apps/cms/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* ───── referenced-project requirements ───── */
+    /* ---------- build-mode flags ---------- */
     "composite": true,
-    "declaration": true, // required when using emitDeclarationOnly
-    "emitDeclarationOnly": true, // produce .d.ts only
-    "noEmit": false, // must allow emit
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
 
-    /* ───── emit location ───── */
-    "outDir": "dist", // JS maps (none) + .d.ts
-    "declarationDir": "dist", // .d.ts + .d.ts.map land here
+    /* ---------- where emitted d.ts go ----- */
+    "outDir": "dist",
+    "declarationDir": "dist",
 
-    /* ───── override base flag ───── */
+    /* ---------- overrides / Next defaults -- */
     "allowImportingTsExtensions": false,
-
-    /* ───── existing app settings (unchanged) ───── */
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "incremental": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "plugins": [{ "name": "next" }],
     "jsx": "react-jsx",
     "target": "ES2017",
-    "strict": false,
     "module": "esnext",
     "moduleResolution": "node",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "types": ["node", "react", "react-dom"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strict": false,
+    "plugins": [{ "name": "next" }]
   },
 
+  /* ---------- what this app itself owns --- */
   "include": ["src/**/*", ".next/types/**/*.ts"],
-
   "exclude": [
-    "dist", // keeps fresh emits out of next graph
+    "dist",
     "node_modules",
     "../../apps-script",
     "src/routes/preview/[pageId].ts"
   ],
 
+  /* ---------- build-order graph ----------- */
   "references": [
-    { "path": "../../packages/types" } // shared declarations package
+    { "path": "../../packages/types" },
+    { "path": "../../packages/platform-core" },
+    { "path": "../../packages/i18n" },
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/lib" }
   ]
 }

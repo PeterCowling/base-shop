@@ -10,9 +10,9 @@ import {
   DialogTrigger,
 } from "@/components/atoms-shadcn";
 import { revertSeo } from "@cms/actions/shops.server";
+import type { SettingsDiffEntry } from "@platform-core/repositories/settings.server";
+import { diffHistory } from "@platform-core/repositories/settings.server";
 import { useEffect, useState } from "react";
-import type { SettingsDiffEntry } from "../../../../../../../../../packages/platform-core/repositories/settings.server";
-import { diffHistory } from "../../../../../../../../../packages/platform-core/repositories/settings.server";
 
 interface VersionTimelineProps {
   /** Shop identifier */

@@ -1,8 +1,10 @@
 // packages/template-app/src/app/[lang]/shop/ShopClient.tsx
 "use client";
 
-import FilterBar, { Filters } from "@/components/shop/FilterBar";
-import { ProductGrid } from "@/components/shop/ProductGrid";
+import FilterBar, {
+  Filters,
+} from "@platform-core/src/components/shop/FilterBar";
+import { ProductGrid } from "@platform-core/src/components/shop/ProductGrid";
 import type { SKU } from "@types";
 import { useMemo, useState } from "react";
 

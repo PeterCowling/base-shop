@@ -43,6 +43,10 @@
   ],
 
   "references": [
-    { "path": "../../packages/types" } // shared declarations package
+    { "path": "../../packages/types" },
+    { "path": "../../packages/platform-core" },
+    { "path": "../../packages/i18n" },
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/lib" }
   ]
 }

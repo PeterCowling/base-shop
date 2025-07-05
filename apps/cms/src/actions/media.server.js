@@ -9,7 +9,8 @@ import sharp from "sharp";
 import { ulid } from "ulid";
 async function ensureAuthorized() {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role === "viewer") {
+    const role = session?.user?.role;
+    if (!session || role === "viewer") {
         throw new Error("Forbidden");
     }
 }

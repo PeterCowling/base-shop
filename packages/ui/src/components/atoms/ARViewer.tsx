@@ -1,3 +1,5 @@
+/// <reference path="../../types/model-viewer.d.ts" />
+
 import * as React from "react";
 import { cn } from "../../utils/cn";
 

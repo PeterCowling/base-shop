@@ -5,13 +5,14 @@ import React, {
   memo,
   type ComponentPropsWithoutRef,
   type JSXElementConstructor,
+  type JSX as ReactJSX,
 } from "react";
 
 /* ──────────────────────────────────────────────────────────────────────────
  * Shared helpers
  * --------------------------------------------------------------------------*/
 /** Narrow `keyof JSX.IntrinsicElements` to *string‐only* keys (strips `number`). */
-type IntrinsicTag = keyof JSX.IntrinsicElements & string;
+type IntrinsicTag = keyof ReactJSX.IntrinsicElements & string;
 
 /** Everything React can legally mount: intrinsic tag *or* React component. */
 export type ValidComponent = IntrinsicTag | JSXElementConstructor<any>;
@@ -28,10 +29,10 @@ interface TextOwnProps {
   locale?: Locale;
 }
 
-export type TextProps<C extends ValidComponent = "p"> = TextOwnProps &
+export type TextProps<C extends React.ElementType = "p"> = TextOwnProps &
   Omit<ComponentPropsWithoutRef<C>, keyof TextOwnProps | "children" | "ref">;
 
-export function Text<C extends ValidComponent = "p">({
+export function Text<C extends React.ElementType = "p">({
   text,
   tag = "p",
   locale = "en",

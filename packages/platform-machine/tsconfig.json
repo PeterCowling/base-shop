@@ -30,7 +30,7 @@
       "@platform-machine/*": ["*"],
 
       /* shared lib utilities (compiled output lives in ../lib/dist) */
-      "@lib/stripeServer": ["../lib/stripeServer.server.ts"], // ← added
+      "@lib/stripeServer": ["../lib/src/stripeServer.server.ts"],
       "@lib/*": ["../lib/*"]
     }
   },

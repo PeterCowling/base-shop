@@ -2,6 +2,7 @@
 
 "use server";
 import { authOptions } from "@cms/auth/options";
+import type { Role } from "@cms/auth/roles";
 import { validateShopName } from "@platform-core/src/shops";
 import type { ImageOrientation, MediaItem } from "@types";
 import { getServerSession } from "next-auth";
@@ -12,7 +13,8 @@ import { ulid } from "ulid";
 
 async function ensureAuthorized(): Promise<void> {
   const session = await getServerSession(authOptions);
-  if (!session || session.user.role === "viewer") {
+  const role = (session?.user as { role?: Role } | undefined)?.role;
+  if (!session || role === "viewer") {
     throw new Error("Forbidden");
   }
 }

@@ -1,17 +1,9 @@
-// src/types/global.d.ts
-export {};
 import type * as React from "react";
-
-declare global {
-  interface Window {
-    // put your globals back here
-  }
-}
 
 declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
-      "model-viewer"?: React.DetailedHTMLProps<
+      "model-viewer": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
       > & {
@@ -23,3 +15,5 @@ declare module "react" {
     }
   }
 }
+
+export {};

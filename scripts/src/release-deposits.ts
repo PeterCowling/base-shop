@@ -2,7 +2,7 @@
 
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
-import { stripe } from "../../packages/lib";
+import { stripe } from "../../packages/lib/src/stripeServer.server";
 import {
   markRefunded,
   readOrders,

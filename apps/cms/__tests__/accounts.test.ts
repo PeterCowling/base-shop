@@ -54,7 +54,7 @@ describe("account actions", () => {
 
   it("approveAccount transfers user and sends email", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("../../../src/lib/email", () => ({
+    jest.doMock("../src/lib/email", () => ({
       __esModule: true,
       sendEmail,
     }));
@@ -85,7 +85,7 @@ describe("account actions", () => {
 
   it("approveAccount throws for unknown ID", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("../../../src/lib/email", () => ({
+    jest.doMock("../src/lib/email", () => ({
       __esModule: true,
       sendEmail,
     }));

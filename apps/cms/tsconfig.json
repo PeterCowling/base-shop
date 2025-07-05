@@ -1,48 +1,33 @@
-// apps/cms/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
-
-  /* ------------------------------------------------------------------
-   *  Compiler options
-   * ------------------------------------------------------------------ */
   "compilerOptions": {
-    /* declaration-only build (no JS emitted) */
     "composite": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "noEmit": false,
     "outDir": "dist",
-
-    /* language / runtime targets */
+    "rootDir": "../../",
     "lib": ["dom", "dom.iterable", "esnext"],
     "target": "ES2017",
     "module": "esnext",
     "moduleResolution": "node",
     "jsx": "preserve",
-
-    /* developer ergonomics */
     "incremental": true,
     "allowJs": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": false,
-    "plugins": [{ "name": "next" }],
-
-    /* global type discovery
-       1) declarations emitted by the shared **types** package
-       2) monorepo-level @types folder */
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "typeRoots": ["../../packages/types/dist", "../../node_modules/@types"],
-
-    /* base ambient libs only */
-    "types": ["node", "react", "react-dom"]
+    "types": ["node", "react", "react-dom"],
+    "isolatedModules": true
   },
-
-  /* ------------------------------------------------------------------
-   *  File globs
-   * ------------------------------------------------------------------ */
   "include": ["src/**/*", "../../src/lib/**/*", ".next/types/**/*.ts"],
-
   "exclude": [
     "dist",
     "__tests__",
@@ -51,15 +36,23 @@
     "node_modules",
     "../../apps-script"
   ],
-
-  /* ------------------------------------------------------------------
-   *  Build-order references
-   * ------------------------------------------------------------------ */
   "references": [
-    { "path": "../../packages/auth" },
-    { "path": "../../packages/types" },
-    { "path": "../../packages/config" },
-    { "path": "../../packages/ui" },
-    { "path": "../../packages/themes/base" }
+    {
+      "path": "../../packages/auth"
+    },
+    {
+      "path": "../../packages/types"
+    },
+    {
+      "path": "../../packages/config"
+    },
+    { "path": "../../packages/i18n" },
+
+    {
+      "path": "../../packages/ui"
+    },
+    {
+      "path": "../../packages/themes/base"
+    }
   ]
 }

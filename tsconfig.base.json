@@ -43,8 +43,8 @@
       /* ─── design-system UI ──────────────────────────────────────── */
       "@ui": ["packages/ui/src/index.ts"],
       "@ui/*": ["packages/ui/src/*"],
-      "@ui/src": ["packages/ui/src/index.ts"], // ← added
-      "@ui/src/*": ["packages/ui/src/*"], // ← added
+      "@ui/src": ["packages/ui/src/index.ts"],
+      "@ui/src/*": ["packages/ui/src/*"],
 
       /* ─── CMS front-end (Next app) ─────────────────────────────── */
       "@cms/*": ["apps/cms/src/*"],
@@ -59,12 +59,12 @@
       "@/hooks/*": ["packages/ui/src/hooks/*"],
 
       /* ─── lib helpers (stripe, products, cookies, …) ────────────── */
-      "@lib/stripeServer": ["packages/lib/stripeServer.server.ts"],
-      "@lib/stripeServer.server": ["packages/lib/stripeServer.server.ts"],
+      "@lib/stripeServer": ["packages/lib/src/stripeServer.server.ts"],
+      "@lib/stripeServer.server": ["packages/lib/src/stripeServer.server.ts"],
       "@lib/*": ["packages/platform-core/src/*", "packages/lib/src/*"],
 
-      "@/lib/stripeServer": ["packages/lib/stripeServer.server.ts"],
-      "@/lib/stripeServer.server": ["packages/lib/stripeServer.server.ts"],
+      "@/lib/stripeServer": ["packages/lib/src/stripeServer.server.ts"],
+      "@/lib/stripeServer.server": ["packages/lib/src/stripeServer.server.ts"],
       "@/lib/products": ["packages/platform-core/src/products.ts"],
       "@/lib/cartCookie": ["packages/platform-core/src/cartCookie.ts"],
       "@/lib/*": ["packages/platform-core/src/*", "packages/lib/src/*"],

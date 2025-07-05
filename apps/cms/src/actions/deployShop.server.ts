@@ -1,6 +1,7 @@
 // apps/cms/src/actions/deployShop.server.ts
 "use server";
 
+import "@cms/auth/next-auth.d.ts";
 import { authOptions } from "@cms/auth/options";
 import { deployShop, type DeployShopResult } from "@platform-core/createShop";
 import { getServerSession } from "next-auth";
@@ -10,7 +11,7 @@ import path from "node:path";
 
 async function ensureAuthorized(): Promise<void> {
   const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+  if (!session || !["admin", "ShopAdmin"].includes(session.user?.role ?? "")) {
     throw new Error("Forbidden");
   }
 }

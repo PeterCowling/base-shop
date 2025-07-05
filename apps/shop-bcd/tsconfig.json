@@ -1,45 +1,68 @@
 {
   "extends": "../../tsconfig.base.json",
-
   "compilerOptions": {
     /* ---------- build-mode flags ---------- */
     "composite": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "noEmit": false,
-
     /* ---------- where emitted d.ts go ----- */
     "outDir": "dist",
     "declarationDir": "dist",
-
     /* ---------- overrides / Next defaults -- */
     "allowImportingTsExtensions": false,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "target": "ES2017",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["node", "react", "react-dom"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "types": [
+      "node",
+      "react",
+      "react-dom"
+    ],
     "skipLibCheck": true,
     "strict": false,
-    "plugins": [{ "name": "next" }]
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "allowJs": true,
+    "incremental": true,
+    "isolatedModules": true
   },
-
   /* ---------- what this app itself owns --- */
-  "include": ["src/**/*", ".next/types/**/*.ts"],
+  "include": [
+    "src/**/*",
+    ".next/types/**/*.ts"
+  ],
   "exclude": [
     "dist",
     "node_modules",
     "../../apps-script",
     "src/routes/preview/[pageId].ts"
   ],
-
   /* ---------- build-order graph ----------- */
   "references": [
-    { "path": "../../packages/types" },
-    { "path": "../../packages/platform-core" },
-    { "path": "../../packages/i18n" },
-    { "path": "../../packages/ui" },
-    { "path": "../../packages/lib" }
+    {
+      "path": "../../packages/types"
+    },
+    {
+      "path": "../../packages/platform-core"
+    },
+    {
+      "path": "../../packages/i18n"
+    },
+    {
+      "path": "../../packages/ui"
+    },
+    {
+      "path": "../../packages/lib"
+    }
   ]
 }

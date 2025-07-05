@@ -1,7 +1,6 @@
 // packages/template-app/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
-
   /* ------------------------------------------------------------------
    *  Compiler options ─ production / app source only
    * ------------------------------------------------------------------ */
@@ -11,39 +10,51 @@
     "incremental": true,
     "rootDir": "src",
     "outDir": "dist",
-
     /* language / libs ------------------------------------------------- */
     "target": "ES2017",
     "module": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "jsx": "preserve",
-
     /* module resolution ------------------------------------------------ */
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-
     /* tooling ---------------------------------------------------------- */
-    "plugins": [{ "name": "next" }],
-    "types": ["node", "react", "react-dom"],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "types": [
+      "node",
+      "react",
+      "react-dom"
+    ],
     "strict": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true
   },
-
   /* ------------------------------------------------------------------
    *  Project references
    * ------------------------------------------------------------------ */
-  "references": [{ "path": "../types" }],
-
+  "references": [
+    {
+      "path": "../types"
+    }
+  ],
   /* ------------------------------------------------------------------
    *  File globs
    * ------------------------------------------------------------------ */
   "include": [
     /* app source */
-    "src/**/*"
+    "src/**/*",
+    ".next/types/**/*.ts"
   ],
-
   "exclude": [
     "dist", // freshly emitted output
     "__tests__", // unit/integration tests

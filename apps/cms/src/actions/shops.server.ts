@@ -2,6 +2,7 @@
 
 "use server";
 
+import "@cms/auth/next-auth.d.ts";
 import { authOptions } from "@cms/auth/options";
 import {
   getShopById,
@@ -19,7 +20,7 @@ import { shopSchema, type ShopForm } from "./schemas";
 
 async function ensureAuthorized(): Promise<void> {
   const session = await getServerSession(authOptions);
-  if (!session || session.user.role === "viewer") {
+  if (!session || session.user?.role === "viewer") {
     throw new Error("Forbidden");
   }
 }

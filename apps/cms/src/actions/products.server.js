@@ -1,6 +1,7 @@
 // apps/cms/src/actions/products.ts
 "use server";
 import { productSchema } from "@cms/actions/schemas";
+import "@cms/auth/next-auth.d.ts";
 import { authOptions } from "@cms/auth/options";
 import { deleteProductFromRepo, duplicateProductInRepo, getProductById, readRepo, readSettings, updateProductInRepo, writeRepo, } from "@platform-core/repositories/json.server";
 import { getServerSession } from "next-auth";

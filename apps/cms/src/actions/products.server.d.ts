@@ -1,3 +1,4 @@
+import "@cms/auth/next-auth.d.ts";
 import type { ProductPublication } from "@platform-core/src/products";
 export declare function createDraftRecord(shop: string): Promise<ProductPublication>;
 export declare function createDraft(shop: string): Promise<void>;

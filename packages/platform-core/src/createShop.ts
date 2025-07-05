@@ -22,12 +22,12 @@ function slugify(str: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-import { defaultFilterMappings } from "./defaultFilterMappings";
 import {
   copyTemplate,
   loadBaseTokens,
   loadThemeTokens,
-} from "./src/createShop/utils.server";
+} from "./createShop/utils";
+import { defaultFilterMappings } from "./defaultFilterMappings";
 
 export const createShopOptionsSchema = z.object({
   name: z.string().optional(),

@@ -11,7 +11,7 @@ import { ulid } from "ulid";
 /* -------------------------------------------------------------------------- */
 async function ensureAuthorized() {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.role === "viewer") {
+    if (!session || session.user?.role === "viewer") {
         throw new Error("Forbidden");
     }
 }
@@ -66,7 +66,8 @@ export async function updateProduct(shop, formData) {
     await ensureAuthorized();
     const parsed = productSchema.safeParse(Object.fromEntries(formData));
     if (!parsed.success) {
-        return { errors: parsed.error.flatten().fieldErrors };
+        const { fieldErrors } = parsed.error.flatten();
+        return { errors: fieldErrors };
     }
     const data = parsed.data;
     const { id, price } = data;

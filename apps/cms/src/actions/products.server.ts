@@ -25,7 +25,7 @@ import { ulid } from "ulid";
 
 async function ensureAuthorized(): Promise<void> {
   const session = await getServerSession(authOptions);
-  if (!session || session.user.role === "viewer") {
+  if (!session || session.user?.role === "viewer") {
     throw new Error("Forbidden");
   }
 }
@@ -100,7 +100,8 @@ export async function updateProduct(
     )
   );
   if (!parsed.success) {
-    return { errors: parsed.error.flatten().fieldErrors };
+    const { fieldErrors } = parsed.error.flatten();
+    return { errors: fieldErrors as Record<string, string[]> };
   }
 
   const data: ProductForm = parsed.data;

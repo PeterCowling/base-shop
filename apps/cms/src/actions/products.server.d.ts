@@ -5,6 +5,4 @@ export declare function updateProduct(shop: string, formData: FormData): Promise
     product?: ProductPublication;
     errors?: Record<string, string[]>;
 }>;
-export declare function duplicateProduct(shop: string, id: string): Promise<void>;
-export declare function deleteProduct(shop: string, id: string): Promise<void>;
 //# sourceMappingURL=products.server.d.ts.map

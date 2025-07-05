@@ -28,11 +28,10 @@
     { "path": "../i18n" },
     { "path": "../config" },
     { "path": "../auth" },
-    { "path": "../lib" },
-    { "path": "../../apps/cms" }
+    { "path": "../lib" }
   ],
 
-  /* ---------- file globs ------------------------------------------ */
+  /* ---------- file globs ------------------------------------------ { "path": "../../apps/cms" } */
   "include": ["src/**/*"], // ONLY stuff inside src/
   "exclude": [
     "dist", // freshly emitted output

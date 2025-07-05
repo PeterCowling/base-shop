@@ -29,9 +29,14 @@
       "@platform-machine": ["."],
       "@platform-machine/*": ["*"],
 
+      /* platform core utilities */
+      "@platform-core": ["packages/platform-core/src/index.ts"],
+      "@platform-core/*": ["packages/platform-core/src/*"],
+
       /* shared lib utilities (compiled output lives in ../lib/dist) */
-      "@lib/stripeServer": ["../lib/src/stripeServer.server.ts"],
-      "@lib/*": ["../lib/*"]
+      "@lib/stripeServer": ["packages/lib/src/stripeServer.server.ts"],
+      "@lib/stripeServer.server": ["packages/lib/src/stripeServer.server.ts"],
+      "@lib/*": ["packages/lib/*"]
     }
   },
 

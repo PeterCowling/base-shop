@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals";
+import type { Page } from "@types";
 import { createHmac } from "node:crypto";
-import type { Page } from "../../types/src/Page";
 
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.NEXT_PUBLIC_SHOP_ID = "shop";

@@ -1,7 +1,7 @@
 // packages/lib/stripeServer.server.ts
 import "server-only";
 
-import { env } from "@platform-core/packages/config/src/env";
+import { env } from "@config/src/env";
 import Stripe from "stripe";
 
 /**

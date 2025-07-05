@@ -27,7 +27,12 @@
     "types": ["node", "react", "react-dom"],
     "isolatedModules": true
   },
-  "include": ["src/**/*", "../../src/lib/**/*", ".next/types/**/*.ts"],
+  "include": [
+    "src/**/*",
+    "../../src/lib/**/*",
+    "../../packages/i18n/src/**/*.json",
+    ".next/types/**/*.ts"
+  ],
   "exclude": [
     "dist",
     "__tests__",

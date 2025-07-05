@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
+import type { RentalOrder } from "@types";
 import type { NextRequest } from "next/server";
 import type Stripe from "stripe";
-import type { RentalOrder } from "../../types/src/RentalOrder";
 
 type SessionSubset = Pick<
   Stripe.Checkout.Session,
@@ -21,12 +21,10 @@ afterEach(() => jest.resetModules());
 
 describe("/api/return", () => {
   test("refunds remaining deposit after computing damage", async () => {
-    const retrieve = jest
-      .fn<Promise<SessionSubset>, []>()
-      .mockResolvedValue({
-        metadata: { depositTotal: "50" },
-        payment_intent: "pi_1",
-      } as SessionSubset);
+    const retrieve = jest.fn<Promise<SessionSubset>, []>().mockResolvedValue({
+      metadata: { depositTotal: "50" },
+      payment_intent: "pi_1",
+    } as SessionSubset);
     const refundCreate = jest.fn();
     const computeDamageFee = jest.fn(async () => 20);
 

@@ -2,10 +2,10 @@
 
 import "server-only";
 
+import { rentalOrderSchema, type RentalOrder } from "@types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
-import { rentalOrderSchema, type RentalOrder } from "../../types/src";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "./utils";
 

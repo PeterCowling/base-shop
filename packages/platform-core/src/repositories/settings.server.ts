@@ -1,15 +1,15 @@
 // packages/platform-core/repositories/settings.server.ts
 import "server-only";
 
-import { promises as fs } from "node:fs";
-import * as path from "node:path";
-import { z } from "zod";
 import {
   LOCALES,
   shopSettingsSchema,
   type Locale,
   type ShopSettings,
-} from "../../types/src";
+} from "@types";
+import { promises as fs } from "node:fs";
+import * as path from "node:path";
+import { z } from "zod";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "./utils";
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];

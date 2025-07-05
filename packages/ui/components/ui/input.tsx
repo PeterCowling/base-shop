@@ -4,18 +4,24 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 
+/* ──────────────────────────────────────────────────────────────────────────────
+ * Props
+ * ──────────────────────────────────────────────────────────────────────────── */
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   /** Optional label displayed above or floating */
   label?: React.ReactNode;
   /** Error message shown below the control */
   error?: React.ReactNode;
-  /** Enable floating label style */
+  /** Enable floating-label style */
   floatingLabel?: boolean;
-  /** Class applied to the wrapper element */
+  /** Extra class on the outer wrapper */
   wrapperClassName?: string;
 }
 
+/* ──────────────────────────────────────────────────────────────────────────────
+ * Component
+ * ──────────────────────────────────────────────────────────────────────────── */
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
@@ -35,27 +41,47 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const inputId = id ?? generatedId;
     const [focused, setFocused] = React.useState(false);
 
+    /* ------------------------------------------------------------------ *
+     *  Dynamic classes
+     * ------------------------------------------------------------------ */
     const baseClasses = cn(
-      "border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full rounded-md border px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+      // base
+      "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm",
+      "placeholder:text-muted-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium",
+      "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      "disabled:cursor-not-allowed disabled:opacity-50",
+      // floating-label tweak
       floatingLabel && "peer pt-5",
-      error && "border-red-500",
+      // error border
+      error ? "border-red-500" : undefined,
+      // user-supplied
       className
     );
 
+    /* ------------------------------------------------------------------ *
+     *  Handlers
+     * ------------------------------------------------------------------ */
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       setFocused(true);
       onFocus?.(e);
     };
+
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
       setFocused(false);
       onBlur?.(e);
     };
 
+    /* ------------------------------------------------------------------ *
+     *  Determine if the control currently holds a value
+     * ------------------------------------------------------------------ */
     const hasValue =
       props.value !== undefined
         ? String(props.value).length > 0
-        : false || Boolean(props.defaultValue);
+        : Boolean(props.defaultValue);
 
+    /* ------------------------------------------------------------------ *
+     *  Render
+     * ------------------------------------------------------------------ */
     return (
       <div className={cn("relative", wrapperClassName)}>
         {floatingLabel ? (
@@ -107,4 +133,5 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     );
   }
 );
+
 Input.displayName = "Input";

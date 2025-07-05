@@ -1,6 +1,12 @@
-import type { CartState } from "@types";
 import { z } from "zod";
+import type { CartState } from "@types";
 export declare const CART_COOKIE = "CART_STATE";
+/**
+ * Schema for one cart line.  We keep the schema definition simple and
+ * let Zod infer its own TS type; later we cast the parsed output to
+ * `CartLine` / `CartState` so the rest of the codebase stays strongly
+ * typed without running into “required vs optional” variance issues.
+ */
 export declare const cartLineSchema: z.ZodObject<{
     sku: z.ZodObject<{
         id: z.ZodString;
@@ -27,16 +33,16 @@ export declare const cartLineSchema: z.ZodObject<{
         sizes: z.ZodArray<z.ZodString, "many">;
         description: z.ZodString;
     }, "strip", z.ZodTypeAny, {
-        title: string;
-        image: string;
-        sizes: string[];
         id: string;
-        description: string;
         slug: string;
+        title: string;
         price: number;
         deposit: number;
         forSale: boolean;
         forRental: boolean;
+        image: string;
+        sizes: string[];
+        description: string;
         dailyRate?: number | undefined;
         weeklyRate?: number | undefined;
         monthlyRate?: number | undefined;
@@ -45,14 +51,14 @@ export declare const cartLineSchema: z.ZodObject<{
             to: string;
         }[] | undefined;
     }, {
-        title: string;
-        image: string;
-        sizes: string[];
         id: string;
-        description: string;
         slug: string;
+        title: string;
         price: number;
         deposit: number;
+        image: string;
+        sizes: string[];
+        description: string;
         forSale?: boolean | undefined;
         forRental?: boolean | undefined;
         dailyRate?: number | undefined;
@@ -66,17 +72,17 @@ export declare const cartLineSchema: z.ZodObject<{
     qty: z.ZodNumber;
     size: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    sku: {
-        title: string;
-        image: string;
-        sizes: string[];
+    sku?: {
         id: string;
-        description: string;
         slug: string;
+        title: string;
         price: number;
         deposit: number;
         forSale: boolean;
         forRental: boolean;
+        image: string;
+        sizes: string[];
+        description: string;
         dailyRate?: number | undefined;
         weeklyRate?: number | undefined;
         monthlyRate?: number | undefined;
@@ -85,18 +91,18 @@ export declare const cartLineSchema: z.ZodObject<{
             to: string;
         }[] | undefined;
     };
-    qty: number;
-    size?: string | undefined;
+    qty?: number;
+    size?: string;
 }, {
-    sku: {
-        title: string;
-        image: string;
-        sizes: string[];
+    sku?: {
         id: string;
-        description: string;
         slug: string;
+        title: string;
         price: number;
         deposit: number;
+        image: string;
+        sizes: string[];
+        description: string;
         forSale?: boolean | undefined;
         forRental?: boolean | undefined;
         dailyRate?: number | undefined;
@@ -107,9 +113,12 @@ export declare const cartLineSchema: z.ZodObject<{
             to: string;
         }[] | undefined;
     };
-    qty: number;
-    size?: string | undefined;
+    qty?: number;
+    size?: string;
 }>;
+/**
+ * Schema for the full cart, keyed by SKU ID (string).
+ */
 export declare const cartStateSchema: z.ZodRecord<z.ZodString, z.ZodObject<{
     sku: z.ZodObject<{
         id: z.ZodString;
@@ -136,16 +145,16 @@ export declare const cartStateSchema: z.ZodRecord<z.ZodString, z.ZodObject<{
         sizes: z.ZodArray<z.ZodString, "many">;
         description: z.ZodString;
     }, "strip", z.ZodTypeAny, {
-        title: string;
-        image: string;
-        sizes: string[];
         id: string;
-        description: string;
         slug: string;
+        title: string;
         price: number;
         deposit: number;
         forSale: boolean;
         forRental: boolean;
+        image: string;
+        sizes: string[];
+        description: string;
         dailyRate?: number | undefined;
         weeklyRate?: number | undefined;
         monthlyRate?: number | undefined;
@@ -154,14 +163,14 @@ export declare const cartStateSchema: z.ZodRecord<z.ZodString, z.ZodObject<{
             to: string;
         }[] | undefined;
     }, {
-        title: string;
-        image: string;
-        sizes: string[];
         id: string;
-        description: string;
         slug: string;
+        title: string;
         price: number;
         deposit: number;
+        image: string;
+        sizes: string[];
+        description: string;
         forSale?: boolean | undefined;
         forRental?: boolean | undefined;
         dailyRate?: number | undefined;
@@ -175,17 +184,17 @@ export declare const cartStateSchema: z.ZodRecord<z.ZodString, z.ZodObject<{
     qty: z.ZodNumber;
     size: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    sku: {
-        title: string;
-        image: string;
-        sizes: string[];
+    sku?: {
         id: string;
-        description: string;
         slug: string;
+        title: string;
         price: number;
         deposit: number;
         forSale: boolean;
         forRental: boolean;
+        image: string;
+        sizes: string[];
+        description: string;
         dailyRate?: number | undefined;
         weeklyRate?: number | undefined;
         monthlyRate?: number | undefined;
@@ -194,18 +203,18 @@ export declare const cartStateSchema: z.ZodRecord<z.ZodString, z.ZodObject<{
             to: string;
         }[] | undefined;
     };
-    qty: number;
-    size?: string | undefined;
+    qty?: number;
+    size?: string;
 }, {
-    sku: {
-        title: string;
-        image: string;
-        sizes: string[];
+    sku?: {
         id: string;
-        description: string;
         slug: string;
+        title: string;
         price: number;
         deposit: number;
+        image: string;
+        sizes: string[];
+        description: string;
         forSale?: boolean | undefined;
         forRental?: boolean | undefined;
         dailyRate?: number | undefined;
@@ -216,13 +225,17 @@ export declare const cartStateSchema: z.ZodRecord<z.ZodString, z.ZodObject<{
             to: string;
         }[] | undefined;
     };
-    qty: number;
-    size?: string | undefined;
+    qty?: number;
+    size?: string;
 }>>;
-/** Stringify cart → safe cookie/localStorage value */
+/** Serialize cart state into a cookie-safe string. */
 export declare function encodeCartCookie(state: CartState): string;
-/** Parse cookie string → typed cart (never throws) */
+/**
+ * Parse a cookie string back into cart state.
+ *
+ * – Always returns a value of type `CartState`
+ * – Catches and logs malformed cookies instead of throwing
+ */
 export declare function decodeCartCookie(raw?: string | null): CartState;
-/** Builds a Set-Cookie header (used client-side via document.cookie too) */
+/** Build the Set-Cookie header value for HTTP responses. */
 export declare function asSetCookieHeader(value: string): string;
-//# sourceMappingURL=cartCookie.d.ts.map

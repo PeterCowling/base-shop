@@ -14,16 +14,16 @@ export declare const publishLocationSchema: z.ZodObject<{
     /** Required orientation for images displayed at this location. */
     requiredOrientation: z.ZodEnum<["portrait", "landscape"]>;
 }, "strip", z.ZodTypeAny, {
+    id: string;
     path: string;
     name: string;
-    id: string;
-    requiredOrientation: "landscape" | "portrait";
+    requiredOrientation: "portrait" | "landscape";
     description?: string | undefined;
 }, {
+    id: string;
     path: string;
     name: string;
-    id: string;
-    requiredOrientation: "landscape" | "portrait";
+    requiredOrientation: "portrait" | "landscape";
     description?: string | undefined;
 }>;
 export type PublishLocation = z.infer<typeof publishLocationSchema>;

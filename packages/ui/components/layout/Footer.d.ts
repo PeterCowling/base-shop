@@ -1,6 +1,0 @@
-/// <reference types="react" />
-declare const Footer: import("react").NamedExoticComponent<{
-    height?: string;
-    padding?: string;
-}>;
-export default Footer;

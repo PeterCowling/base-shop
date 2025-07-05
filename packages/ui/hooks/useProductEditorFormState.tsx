@@ -1,9 +1,20 @@
+// packages/ui/hooks/useProductEditorFormState.tsx
 import type { Locale, ProductPublication } from "@platform-core/products";
 import { useImageUpload } from "@ui/hooks/useImageUpload";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { parseMultilingualInput } from "@ui/utils/multilingual";
-import { useCallback, useMemo, useState } from "react";
+import {
+  useCallback,
+  useMemo,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+  type ReactElement,
+} from "react";
 
+/* ------------------------------------------------------------------ */
+/* Hook return type                                                   */
+/* ------------------------------------------------------------------ */
 export interface UseProductEditorFormReturn {
   product: ProductPublication;
   errors: Record<string, string[]>;
@@ -11,12 +22,15 @@ export interface UseProductEditorFormReturn {
   publishTargets: string[];
   setPublishTargets: (ids: string[]) => void;
   handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  handleSubmit: (e: React.FormEvent) => void;
-  uploader: JSX.Element;
+  handleSubmit: (e: FormEvent) => void;
+  uploader: ReactElement;
 }
 
+/* ------------------------------------------------------------------ */
+/* Main hook                                                          */
+/* ------------------------------------------------------------------ */
 export function useProductEditorFormState(
   init: ProductPublication,
   locales: readonly Locale[],
@@ -25,11 +39,13 @@ export function useProductEditorFormState(
     errors?: Record<string, string[]>;
   }>
 ): UseProductEditorFormReturn {
+  /* ---------- state ------------------------------------------------ */
   const [product, setProduct] = useState(init);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [publishTargets, setPublishTargets] = useState<string[]>([]);
 
+  /* ---------- helpers ---------------------------------------------- */
   const { locations } = usePublishLocations();
   const requiredOrientation =
     locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
@@ -37,23 +53,36 @@ export function useProductEditorFormState(
 
   const { file: imageFile, uploader } = useImageUpload(requiredOrientation);
 
+  /* ---------- input change handler --------------------------------- */
   const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { name, value } = e.target;
       const parsed = parseMultilingualInput(name, locales);
 
       setProduct((prev) => {
+        /* multilanguage <input name="title_en"> etc. */
         if (parsed) {
           const { field, locale } = parsed;
+          const realField = field === "desc" ? "description" : field; // 🎯 map alias
+
+          // previous translations, guaranteed object or default to {}
+          const translations =
+            (prev as ProductPublication)[
+              realField as "title" | "description"
+            ] ?? ({} as Record<Locale, string>);
+
+          const updatedTranslations: Record<Locale, string> = {
+            ...translations,
+            [locale]: value,
+          };
+
           return {
             ...prev,
-            [field]: {
-              ...prev[field],
-              [locale]: value,
-            },
-          };
+            [realField]: updatedTranslations,
+          } as ProductPublication;
         }
 
+        /* single-field updates */
         if (name === "price") {
           return { ...prev, price: Number(value) };
         }
@@ -64,6 +93,7 @@ export function useProductEditorFormState(
     [locales]
   );
 
+  /* ---------- assemble FormData ------------------------------------ */
   const formData = useMemo(() => {
     const fd = new FormData();
     fd.append("id", product.id);
@@ -74,18 +104,19 @@ export function useProductEditorFormState(
     });
 
     fd.append("price", String(product.price));
-
     if (imageFile) fd.append("image", imageFile);
 
     fd.append("publish", publishTargets.join(","));
     return fd;
   }, [product, imageFile, publishTargets, locales]);
 
+  /* ---------- submit handler --------------------------------------- */
   const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
+    async (e: FormEvent) => {
       e.preventDefault();
       setSaving(true);
       const result = await onSave(formData);
+
       if (result.errors) {
         setErrors(result.errors);
       } else if (result.product) {
@@ -97,6 +128,7 @@ export function useProductEditorFormState(
     [onSave, formData]
   );
 
+  /* ---------- public API ------------------------------------------- */
   return {
     product,
     errors,

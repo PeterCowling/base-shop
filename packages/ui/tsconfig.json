@@ -3,37 +3,38 @@
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* library emits JS + declaration files --------------------------- */
+    /* ───── declaration-only build ───── */
     "composite": true,
     "declaration": true,
-    "declarationMap": true,
-    "noEmit": false,
-    "outDir": "dist",
+    "emitDeclarationOnly": true, // ← no JS emitted
+    "noEmit": false, // ← must allow emit
 
-    /* React JSX support ---------------------------------------------- */
+    /* ───── output location ───── */
+    "outDir": "dist",
+    "declarationDir": "dist",
+    "declarationMap": true,
+
+    /* ───── React / JSX support ───── */
     "jsx": "react-jsx",
 
-    /* forbid `import './x.ts'` in source ----------------------------- */
+    /* ───── forbid extensionful imports when emitting ───── */
     "allowImportingTsExtensions": false,
 
-    /* React globals available at compile-time ------------------------ */
-    "types": ["react", "react-dom"]
+    /* ───── compile-time globals ───── */
+    "types": ["react", "react-dom", "jest"]
   },
 
-  /* ------------------------------------------------------------------
-   * Project references – downstream deps built first
-   * ------------------------------------------------------------------ */
+  /* ───── project references ───── */
   "references": [
     { "path": "../platform-core" },
     { "path": "../i18n" },
     { "path": "../config" },
     { "path": "../auth" },
-    { "path": "../lib" }
+    { "path": "../lib" },
+    { "path": "../../apps/cms" }
   ],
 
-  /* ------------------------------------------------------------------
-   * Source globs
-   * ------------------------------------------------------------------ */
+  /* ───── source globs ───── */
   "include": ["components/**/*", "hooks/**/*", "layout/**/*", "utils/**/*"],
-  "exclude": ["dist"]
+  "exclude": ["dist"] // keeps fresh emits out of next graph
 }

@@ -1,4 +1,4 @@
-// tsconfig.base.json  ★ revised
+// tsconfig.base.json
 {
   "compilerOptions": {
     /* ────────── fundamental paths ────────── */
@@ -6,9 +6,9 @@
 
     /* ────────── language / emit ──────────── */
     "target": "ES2022",
-    "module": "es2020",
+    "module": "esnext",
     "jsx": "react-jsx",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "moduleSuffixes": [".server", ".client", ""],
@@ -18,24 +18,24 @@
     /* ────────── type-safety flags ────────── */
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
+
+    /* ────────── standard libs ────────────── */
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
 
     /* ────────── global types ─────────────── */
     "types": ["node", "react", "react-dom"],
 
     /* ────────── workspace aliases ────────── */
     "paths": {
-      /* --- core packages ------------------------------------------------ */
       "@platform-core": ["packages/platform-core"],
       "@platform-core/*": ["packages/platform-core/*"],
       "@platform-machine/*": ["packages/platform-machine/*"],
       "@themes/*": ["packages/themes/*"],
       "@ui/*": ["packages/ui/*"],
 
-      /* --- apps --------------------------------------------------------- */
       "@cms/*": ["apps/cms/src/*"],
 
-      /* --- feature shorthands ------------------------------------------ */
       "@/components/pdp/*": ["packages/platform-core/components/pdp/*"],
       "@/components/shop/*": ["packages/platform-core/components/shop/*"],
       "@/components/*": ["packages/ui/components/*"],
@@ -63,7 +63,6 @@
       "@auth": ["packages/auth/src/index.ts"],
       "@auth/*": ["packages/auth/src/*"],
 
-      /* --- THREE type barrels ------------------------------------------ */
       "@types": ["packages/types/src/index.ts"],
       "@types/*": ["packages/types/src/*"],
 
@@ -76,7 +75,6 @@
       "@types/shared": ["packages/types/src/index.ts"],
       "@types/shared/*": ["packages/types/src/*"],
 
-      /* --- misc -------------------------------------------------------- */
       "@acme/tailwind-config": ["packages/tailwind-config/src/index.ts"],
       "@config": ["packages/config/env.ts"],
       "@config/*": ["packages/config/*"]
@@ -86,6 +84,20 @@
   /* ambient globals */
   "files": ["./src/types/global.d.ts"],
 
-  /* default source globs (each workspace overrides as needed) */
-  "include": ["src/**/*", "packages/**/src/**/*", "apps/**/src/**/*"]
+  /* ────────── source globs (real code only) ────────── */
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "packages/**/src/**/*.ts",
+    "packages/**/src/**/*.tsx",
+    "apps/**/src/**/*.ts",
+    "apps/**/src/**/*.tsx"
+  ],
+
+  /* ────────── never feed emitted declarations back in ────────── */
+  "exclude": [
+    "src/dist",
+    "packages/**/src/**/*.d.ts",
+    "**/packages/**/src/**/*.d.ts"
+  ]
 }

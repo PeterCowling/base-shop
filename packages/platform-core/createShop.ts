@@ -137,9 +137,17 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     pageTitle: fillLocales(parsed.pageTitle, "Home"),
     pageDescription: fillLocales(parsed.pageDescription, ""),
     socialImage: parsed.socialImage ?? "",
-    analytics: parsed.analytics ?? { provider: "none" },
+
+    /* ---------- FIXED analytics block ---------- */
+    analytics: parsed.analytics
+      ? {
+          provider: parsed.analytics.provider ?? "none",
+          id: parsed.analytics.id,
+        }
+      : { provider: "none" },
+
     navItems:
-      parsed.navItems?.map((n: { label: string; url: string }) => ({
+      parsed.navItems?.map((n) => ({
         label: n.label ?? "—",
         url: n.url ?? "#",
       })) ?? [],

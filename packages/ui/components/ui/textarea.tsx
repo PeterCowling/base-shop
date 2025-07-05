@@ -35,13 +35,21 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const textareaId = id ?? generatedId;
     const [focused, setFocused] = React.useState(false);
 
+    /* ------------------------------------------------------------------
+     * Tailwind / shadcn class string
+     * ------------------------------------------------------------------ */
+    const hasError = Boolean(error); // avoids 0 | 0n union in type-inference
+
     const baseClasses = cn(
       "min-h-[6rem] w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-900",
       floatingLabel && "peer pt-5",
-      error && "border-red-500",
+      hasError && "border-red-500",
       className
     );
 
+    /* ------------------------------------------------------------------
+     * Focus helpers
+     * ------------------------------------------------------------------ */
     const handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
       setFocused(true);
       onFocus?.(e);
@@ -54,8 +62,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const hasValue =
       props.value !== undefined
         ? String(props.value).length > 0
-        : false || Boolean(props.defaultValue);
+        : Boolean(props.defaultValue);
 
+    /* ------------------------------------------------------------------
+     * Render
+     * ------------------------------------------------------------------ */
     return (
       <div className={cn("relative", wrapperClassName)}>
         {floatingLabel ? (
@@ -64,7 +75,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               id={textareaId}
               ref={ref}
               className={baseClasses}
-              aria-invalid={error ? true : undefined}
+              aria-invalid={hasError || undefined}
               onFocus={handleFocus}
               onBlur={handleBlur}
               {...props}
@@ -95,7 +106,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               id={textareaId}
               ref={ref}
               className={baseClasses}
-              aria-invalid={error ? true : undefined}
+              aria-invalid={hasError || undefined}
               onFocus={handleFocus}
               onBlur={handleBlur}
               {...props}

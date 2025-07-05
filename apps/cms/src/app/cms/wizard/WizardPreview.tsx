@@ -1,3 +1,7 @@
+// apps/cms/src/app/cms/wizard/WizardPreview.tsx
+
+"use client";
+
 import { Button } from "@/components/atoms";
 import { blockRegistry } from "@/components/cms/blocks";
 import { Footer, Header, SideNav } from "@/components/organisms";
@@ -5,19 +9,27 @@ import { AppShell } from "@/components/templates/AppShell";
 import TranslationsProvider from "@/i18n/Translations";
 import enMessages from "@i18n/en.json";
 import type { PageComponent } from "@types";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { STORAGE_KEY } from "./utils";
 
-export default function WizardPreview({
-  style,
-}: {
+interface Props {
   style: React.CSSProperties;
-}): React.JSX.Element {
+}
+
+/**
+ * Renders a live preview of the page the wizard is currently building.
+ * The preview reads wizard state from localStorage (keyed by `STORAGE_KEY`)
+ * so it always shows the latest edits without needing a full refresh.
+ */
+export default function WizardPreview({ style }: Props): React.JSX.Element {
   const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
     "desktop"
   );
   const [components, setComponents] = useState<PageComponent[]>([]);
 
+  /* ------------------------------------------------------------------ */
+  /*             Sync wizard state from localStorage                    */
+  /* ------------------------------------------------------------------ */
   useEffect(() => {
     const load = () => {
       try {
@@ -27,12 +39,19 @@ export default function WizardPreview({
         if (Array.isArray(data.components)) {
           setComponents(data.components as PageComponent[]);
         }
-      } catch {}
+      } catch {
+        /* ignore JSON errors */
+      }
     };
+
     load();
     window.addEventListener("storage", load);
     return () => window.removeEventListener("storage", load);
   }, []);
+
+  /* ------------------------------------------------------------------ */
+  /*                         Helpers                                    */
+  /* ------------------------------------------------------------------ */
 
   const widthMap: Record<"desktop" | "tablet" | "mobile", string> = {
     desktop: "100%",
@@ -42,7 +61,9 @@ export default function WizardPreview({
 
   const containerStyle = { ...style, width: widthMap[viewport] };
 
+  /** Renders a single block component */
   function Block({ component }: { component: PageComponent }) {
+    /* Plain rich-text blocks are handled separately */
     if (component.type === "Text") {
       const text = (component as Record<string, unknown>).text;
       const value =
@@ -51,25 +72,37 @@ export default function WizardPreview({
           : ((text as Record<string, string>).en ?? "");
       return <div dangerouslySetInnerHTML={{ __html: value }} />;
     }
+
+    /* Look up the React component in the block registry.
+       We cast through `unknown` first to silence TS2352, because
+       individual block components have stricter prop requirements
+       than the generic Record<string, unknown> we use here. */
     const Comp = (
-      blockRegistry as Record<
+      blockRegistry as unknown as Record<
         string,
         React.ComponentType<Record<string, unknown>>
       >
     )[component.type];
+
     if (!Comp) return null;
+
+    /* Remove metadata fields before spreading props */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {
       id: _id,
       type: _type,
       ...props
     } = component as Record<string, unknown>;
-    void _id;
-    void _type;
-    return <Comp {...(props as Record<string, unknown>)} locale="en" />;
+
+    return <Comp {...props} locale="en" />;
   }
 
+  /* ------------------------------------------------------------------ */
+  /*                             Render                                 */
+  /* ------------------------------------------------------------------ */
   return (
     <div className="space-y-2">
+      {/* viewport switcher */}
       <div className="flex justify-end gap-2">
         <Button
           variant={viewport === "desktop" ? "default" : "outline"}
@@ -90,6 +123,8 @@ export default function WizardPreview({
           Mobile
         </Button>
       </div>
+
+      {/* live preview */}
       <div style={containerStyle} className="mx-auto rounded border">
         <TranslationsProvider messages={enMessages}>
           <AppShell

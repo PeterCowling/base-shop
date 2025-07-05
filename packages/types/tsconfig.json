@@ -1,26 +1,28 @@
-// packages/types/tsconfig.json
+// packages/types/tsconfig.json   ★ final version
 {
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* emit the declaration bundle this package provides -------------- */
+    /* ───── emit the declaration bundle this package provides ───── */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "noEmit": false,
+    "emitDeclarationOnly": true, // ← optional but common for pure-types pkgs
+    "noEmit": false, // ←■■ override the base setting ■■
+
+    /* 👉 everything lands in /dist, never in /src */
     "outDir": "dist",
+    "declarationDir": "dist",
 
-    /* type-safety flags ---------------------------------------------- */
+    /* ───── safety / ergonomics flags ───── */
     "strict": true,
-
-    /* resolve `.client` / `.server` variants when consumers import ---- */
     "moduleSuffixes": [".server", ".client", ""],
-
-    /* keep import paths clean (no `.ts` in source) ------------------- */
     "allowImportingTsExtensions": false
   },
 
-  /* only the type definitions in this folder ------------------------ */
+  /* only the type definitions in this folder */
   "include": ["src/**/*"],
+
+  /* keep emitted files out of the next compile cycle */
   "exclude": ["dist"]
 }

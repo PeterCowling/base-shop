@@ -1,15 +1,15 @@
-// apps/cms/tsconfig.json  – final, error-free
+// apps/cms/tsconfig.json   ★ updated
 {
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* referenced-project requirements */
     "composite": true,
+    "declaration": true,
     "emitDeclarationOnly": true,
     "noEmit": false,
+    "outDir": "dist",
 
     /* existing options … */
-    "outDir": "dist",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "incremental": true,
@@ -29,11 +29,19 @@
   "include": ["src/**/*", ".next/types/**/*.ts"],
 
   "exclude": [
-    "dist" /* ← prevents overwrite loop            */,
-    "__tests__" /* app unit tests handled elsewhere     */,
-    "**/*.test.ts" /* ditto                                */,
+    "dist",
+    "__tests__",
+    "**/*.test.ts",
     "**/*.test.tsx",
     "node_modules",
     "../../apps-script"
+  ],
+
+  "references": [
+    { "path": "../../packages/types" },
+    { "path": "../../packages/config" },
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/components" },
+    { "path": "../../packages/themes/base" }
   ]
 }

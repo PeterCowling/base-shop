@@ -1,39 +1,8 @@
-import * as React from "react";
+// src/types/global.d.ts
+export {};
 
 declare global {
-  interface Headers {
-    getAll(name: string): string[];
-  }
-
-  namespace JSX {
-    interface IntrinsicElements {
-      [elemName: string]: any;
-      "model-viewer": React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement>,
-        HTMLElement
-      > & {
-        src?: string;
-        ar?: boolean;
-        "camera-controls"?: boolean;
-      };
-    }
+  interface Window {
+    // put your globals back here
   }
 }
-
-declare module "react" {
-  namespace JSX {
-    interface IntrinsicElements {
-      [elemName: string]: any;
-      "model-viewer": React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement>,
-        HTMLElement
-      > & {
-        src?: string;
-        ar?: boolean;
-        "camera-controls"?: boolean;
-      };
-    }
-  }
-}
-
-export {};

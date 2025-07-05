@@ -5,4 +5,3 @@ export declare function writeOrders(shop: string, orders: RentalOrder[]): Promis
 export declare function addOrder(shop: string, sessionId: string, deposit: number, expectedReturnDate?: string): Promise<RentalOrder>;
 export declare function markReturned(shop: string, sessionId: string, damageFee?: number): Promise<RentalOrder | null>;
 export declare function markRefunded(shop: string, sessionId: string): Promise<RentalOrder | null>;
-//# sourceMappingURL=rentalOrders.server.d.ts.map

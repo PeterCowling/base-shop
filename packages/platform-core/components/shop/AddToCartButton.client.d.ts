@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import type { SKU } from "@types";
 type Props = {
     sku: SKU;
@@ -7,5 +6,5 @@ type Props = {
     /** Disable button until prerequisites are met (e.g. size chosen) */
     disabled?: boolean;
 };
-export default function AddToCartButton({ sku, size, disabled, }: Props): import("react").JSX.Element;
+export default function AddToCartButton({ sku, size, disabled, }: Props): import("react/jsx-runtime").JSX.Element;
 export {};

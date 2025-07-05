@@ -1,3 +1,5 @@
+"use client";
+
 import { locales, type Locale } from "@/i18n/locales";
 import {
   closestCenter,
@@ -31,9 +33,34 @@ import CanvasItem from "./page-builder/CanvasItem";
 import ComponentEditor from "./page-builder/ComponentEditor";
 import Palette from "./page-builder/Palette";
 
-/* ----------------------------------------------------------
- * Types
- * ---------------------------------------------------------- */
+/* ════════════════ component catalogue ════════════════ */
+const COMPONENT_TYPES = [
+  "HeroBanner",
+  "ValueProps",
+  "ReviewsCarousel",
+  "ProductGrid",
+  "Gallery",
+  "ContactForm",
+  "ContactFormWithMap",
+  "BlogListing",
+  "Testimonials",
+  "TestimonialSlider",
+  "Image",
+  "Text",
+] as const;
+
+type ComponentType = (typeof COMPONENT_TYPES)[number];
+
+/**
+ *  Trick for Zod / TS: give `z.enum()` a statically-sized tuple.
+ *  `as const` → readonly array  ⟶ spread into a tuple literal.
+ */
+const COMPONENT_TYPE_TUPLE = [...COMPONENT_TYPES] as [
+  ComponentType,
+  ...ComponentType[],
+];
+
+/* ════════════════ external contracts ════════════════ */
 interface Props {
   page: Page;
   onSave: (fd: FormData) => Promise<unknown>;
@@ -48,13 +75,11 @@ export interface HistoryState {
   future: PageComponent[][];
 }
 
-/* ----------------------------------------------------------
- * Runtime Schemas (Zod)
- * ---------------------------------------------------------- */
+/* ════════════════ runtime validation (Zod) ════════════════ */
 const pageComponentSchema: z.ZodType<PageComponent> = z
   .object({
     id: z.string(),
-    type: z.string(),
+    type: z.enum(COMPONENT_TYPE_TUPLE),
     width: z.string().optional(),
     height: z.string().optional(),
     left: z.string().optional(),
@@ -63,25 +88,22 @@ const pageComponentSchema: z.ZodType<PageComponent> = z
   .passthrough();
 
 /**
- * Same input ⇄ output shape (`HistoryState`) thanks to
- * setting the default on the *whole object*.
+ *  Build → default → cast; the cast is safe because the default value
+ *  fully satisfies the `HistoryState` contract.
  */
-const historyStateBase = z.object({
-  past: z.array(z.array(pageComponentSchema)),
-  present: z.array(pageComponentSchema),
-  future: z.array(z.array(pageComponentSchema)),
-});
-
-export const historyStateSchema: z.ZodType<HistoryState> =
-  historyStateBase.default({
+export const historyStateSchema = z
+  .object({
+    past: z.array(z.array(pageComponentSchema)),
+    present: z.array(pageComponentSchema),
+    future: z.array(z.array(pageComponentSchema)),
+  })
+  .default({
     past: [],
     present: [],
     future: [],
-  });
+  }) as unknown as z.ZodType<HistoryState>;
 
-/* ----------------------------------------------------------
- * Reducers
- * ---------------------------------------------------------- */
+/* ════════════════ reducers ════════════════ */
 type ChangeAction =
   | { type: "add"; component: PageComponent }
   | { type: "move"; from: number; to: number }
@@ -106,20 +128,16 @@ function componentsReducer(
   switch (action.type) {
     case "add":
       return [...state, action.component];
-
     case "move":
       return action.from === action.to
         ? state
         : arrayMove(state, action.from, action.to);
-
     case "remove":
       return state.filter((b) => b.id !== action.id);
-
     case "update":
       return state.map((b) =>
         b.id === action.id ? { ...b, ...action.patch } : b
       );
-
     case "resize":
       return state.map((b) =>
         b.id === action.id
@@ -132,10 +150,8 @@ function componentsReducer(
             }
           : b
       );
-
     case "set":
       return action.components;
-
     default:
       return state;
   }
@@ -152,7 +168,6 @@ function reducer(state: HistoryState, action: Action): HistoryState {
         future: [state.present, ...state.future],
       };
     }
-
     case "redo": {
       const next = state.future[0];
       if (!next) return state;
@@ -162,7 +177,6 @@ function reducer(state: HistoryState, action: Action): HistoryState {
         future: state.future.slice(1),
       };
     }
-
     default: {
       const next = componentsReducer(state.present, action as ChangeAction);
       if (next === state.present) return state;
@@ -175,9 +189,7 @@ function reducer(state: HistoryState, action: Action): HistoryState {
   }
 }
 
-/* ----------------------------------------------------------
- * Component
- * ---------------------------------------------------------- */
+/* ════════════════ component ════════════════ */
 const PageBuilder = memo(function PageBuilder({
   page,
   onSave,
@@ -185,22 +197,26 @@ const PageBuilder = memo(function PageBuilder({
   onChange,
   style,
 }: Props) {
-  /* ---------------- state ---------------- */
-  const key = `page-builder-history-${page.id}`;
-
+  /* ── state initialise / persistence ───────────────────────────── */
+  const storageKey = `page-builder-history-${page.id}`;
   const [state, dispatch] = useReducer(reducer, undefined, (): HistoryState => {
     if (typeof window === "undefined") {
-      return { past: [], present: page.components, future: [] };
+      return {
+        past: [],
+        present: page.components as PageComponent[],
+        future: [],
+      };
     }
-
-    const stored = localStorage.getItem(key);
-    if (!stored) return { past: [], present: page.components, future: [] };
-
     try {
+      const stored = localStorage.getItem(storageKey);
+      if (!stored) throw new Error("no stored state");
       return historyStateSchema.parse(JSON.parse(stored));
-    } catch (err) {
-      console.warn("Invalid history state – falling back to fresh state.", err);
-      return { past: [], present: page.components, future: [] };
+    } catch {
+      return {
+        past: [],
+        present: page.components as PageComponent[],
+        future: [],
+      };
     }
   });
 
@@ -211,14 +227,14 @@ const PageBuilder = memo(function PageBuilder({
   );
   const [locale, setLocale] = useState<Locale>("en");
 
-  /* ---------------- derived ---------------- */
+  /* ── derived memo values ──────────────────────────────────────── */
   const widthMap = useMemo(
     () =>
       ({
         desktop: "100%",
         tablet: "768px",
         mobile: "375px",
-      }) satisfies Record<"desktop" | "tablet" | "mobile", string>,
+      }) as const,
     []
   );
 
@@ -227,13 +243,13 @@ const PageBuilder = memo(function PageBuilder({
     [viewport, widthMap]
   );
 
-  /* ---------------- effects ---------------- */
+  /* ── side-effects ─────────────────────────────────────────────── */
   useEffect(() => {
     onChange?.(components);
     if (typeof window !== "undefined") {
-      localStorage.setItem(key, JSON.stringify(state));
+      localStorage.setItem(storageKey, JSON.stringify(state));
     }
-  }, [components, onChange, state, key]);
+  }, [components, onChange, state, storageKey]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -251,15 +267,12 @@ const PageBuilder = memo(function PageBuilder({
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  /* ---------------- DnD sensors ---------------- */
+  /* ── dnd sensors / handler ────────────────────────────────────── */
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  /* ---------------- handlers ---------------- */
   const handleDragEnd = useCallback(
     (ev: DragEndEvent): void => {
       const { active, over } = ev;
@@ -275,7 +288,10 @@ const PageBuilder = memo(function PageBuilder({
       if (a?.from === "palette" && over.id === "canvas") {
         dispatch({
           type: "add",
-          component: { id: ulid(), type: a.type! } as PageComponent,
+          component: {
+            id: ulid(),
+            type: a.type! as ComponentType,
+          } as PageComponent,
         });
       } else if (a?.from === "canvas" && o?.from === "canvas") {
         dispatch({ type: "move", from: a.index!, to: o.index! });
@@ -284,7 +300,7 @@ const PageBuilder = memo(function PageBuilder({
     [dispatch]
   );
 
-  /* ---------------- form data ---------------- */
+  /* ── form-data builder ────────────────────────────────────────── */
   const formData = useMemo(() => {
     const fd = new FormData();
     fd.append("id", page.id);
@@ -297,17 +313,17 @@ const PageBuilder = memo(function PageBuilder({
     return fd;
   }, [page, components]);
 
-  /* ---------------- render ---------------- */
+  /* ── render ───────────────────────────────────────────────────── */
   return (
     <div className="flex gap-4" style={style}>
-      {/* Palette --------------------------------------------------- */}
+      {/* Palette */}
       <aside className="w-48 shrink-0">
         <Palette />
       </aside>
 
-      {/* Main column ---------------------------------------------- */}
+      {/* Main column */}
       <div className="flex flex-1 flex-col gap-4">
-        {/* Viewport buttons */}
+        {/* viewport buttons */}
         <div className="flex justify-end gap-2">
           {(["desktop", "tablet", "mobile"] as const).map((v) => (
             <Button
@@ -320,7 +336,7 @@ const PageBuilder = memo(function PageBuilder({
           ))}
         </div>
 
-        {/* Locale buttons */}
+        {/* locale buttons */}
         <div className="flex justify-end gap-2">
           {locales.map((l) => (
             <Button
@@ -333,7 +349,7 @@ const PageBuilder = memo(function PageBuilder({
           ))}
         </div>
 
-        {/* Canvas -------------------------------------------------- */}
+        {/* Canvas */}
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -364,7 +380,7 @@ const PageBuilder = memo(function PageBuilder({
           </SortableContext>
         </DndContext>
 
-        {/* Action buttons ----------------------------------------- */}
+        {/* action buttons */}
         <div className="flex gap-2">
           <Button
             onClick={() => dispatch({ type: "undo" })}
@@ -385,7 +401,7 @@ const PageBuilder = memo(function PageBuilder({
         </div>
       </div>
 
-      {/* Component editor ----------------------------------------- */}
+      {/* Component editor */}
       {selectedId && (
         <aside className="w-72 shrink-0">
           <ComponentEditor

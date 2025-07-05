@@ -1,18 +1,22 @@
+// apps/cms/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* --------------------------------------------------------------
-       referenced-project requirements
-       -------------------------------------------------------------- */
+    /* ───── referenced-project requirements ───── */
     "composite": true,
-    "emitDeclarationOnly": true, // produce .d.ts, no JS
-    "noEmit": false, // must NOT disable emit
+    "declaration": true, // required when using emitDeclarationOnly
+    "emitDeclarationOnly": true, // produce .d.ts only
+    "noEmit": false, // must allow emit
 
-    /* --------------------------------------------------------------
-       existing app settings (unchanged)
-       -------------------------------------------------------------- */
-    "outDir": "dist",
+    /* ───── emit location ───── */
+    "outDir": "dist", // JS maps (none) + .d.ts
+    "declarationDir": "dist", // .d.ts + .d.ts.map land here
+
+    /* ───── override base flag ───── */
+    "allowImportingTsExtensions": false,
+
+    /* ───── existing app settings (unchanged) ───── */
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "incremental": true,
@@ -29,17 +33,16 @@
     "skipLibCheck": true
   },
 
-  "include": [
-    /* app source */
-    "src/**/*",
-
-    /* Next-generated types */
-    ".next/types/**/*.ts"
-  ],
+  "include": ["src/**/*", ".next/types/**/*.ts"],
 
   "exclude": [
+    "dist", // keeps fresh emits out of next graph
     "node_modules",
     "../../apps-script",
     "src/routes/preview/[pageId].ts"
+  ],
+
+  "references": [
+    { "path": "../../packages/types" } // shared declarations package
   ]
 }

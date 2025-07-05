@@ -36,16 +36,16 @@ export declare const skuSchema: z.ZodObject<{
     sizes: z.ZodArray<z.ZodString, "many">;
     description: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    title: string;
-    image: string;
-    sizes: string[];
     id: string;
-    description: string;
     slug: string;
+    title: string;
     price: number;
     deposit: number;
     forSale: boolean;
     forRental: boolean;
+    image: string;
+    sizes: string[];
+    description: string;
     dailyRate?: number | undefined;
     weeklyRate?: number | undefined;
     monthlyRate?: number | undefined;
@@ -54,14 +54,14 @@ export declare const skuSchema: z.ZodObject<{
         to: string;
     }[] | undefined;
 }, {
-    title: string;
-    image: string;
-    sizes: string[];
     id: string;
-    description: string;
     slug: string;
+    title: string;
     price: number;
     deposit: number;
+    image: string;
+    sizes: string[];
+    description: string;
     forSale?: boolean | undefined;
     forRental?: boolean | undefined;
     dailyRate?: number | undefined;

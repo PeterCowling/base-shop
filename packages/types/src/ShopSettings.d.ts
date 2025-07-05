@@ -14,13 +14,13 @@ export declare const shopSettingsSchema: z.ZodObject<{
         }, "strip", z.ZodTypeAny, {
             title?: string | undefined;
             image?: string | undefined;
-            url?: string | undefined;
             description?: string | undefined;
+            url?: string | undefined;
         }, {
             title?: string | undefined;
             image?: string | undefined;
-            url?: string | undefined;
             description?: string | undefined;
+            url?: string | undefined;
         }>>;
         twitter: z.ZodOptional<z.ZodObject<{
             card: z.ZodOptional<z.ZodString>;
@@ -47,8 +47,8 @@ export declare const shopSettingsSchema: z.ZodObject<{
         openGraph?: {
             title?: string | undefined;
             image?: string | undefined;
-            url?: string | undefined;
             description?: string | undefined;
+            url?: string | undefined;
         } | undefined;
         twitter?: {
             title?: string | undefined;
@@ -65,8 +65,8 @@ export declare const shopSettingsSchema: z.ZodObject<{
         openGraph?: {
             title?: string | undefined;
             image?: string | undefined;
-            url?: string | undefined;
             description?: string | undefined;
+            url?: string | undefined;
         } | undefined;
         twitter?: {
             title?: string | undefined;
@@ -98,8 +98,8 @@ export declare const shopSettingsSchema: z.ZodObject<{
         openGraph?: {
             title?: string | undefined;
             image?: string | undefined;
-            url?: string | undefined;
             description?: string | undefined;
+            url?: string | undefined;
         } | undefined;
         twitter?: {
             title?: string | undefined;
@@ -126,8 +126,8 @@ export declare const shopSettingsSchema: z.ZodObject<{
         openGraph?: {
             title?: string | undefined;
             image?: string | undefined;
-            url?: string | undefined;
             description?: string | undefined;
+            url?: string | undefined;
         } | undefined;
         twitter?: {
             title?: string | undefined;

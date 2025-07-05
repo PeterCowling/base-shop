@@ -14,6 +14,6 @@ type Action = {
 };
 export declare function CartProvider({ children }: {
     children: ReactNode;
-}): import("react").JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;
 export declare function useCart(): [CartState, import("react").Dispatch<Action>];
 export {};

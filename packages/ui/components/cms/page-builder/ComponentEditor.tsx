@@ -2,7 +2,7 @@
 
 import { getShopFromPath } from "@platform-core/utils/getShopFromPath";
 import type { MediaItem, PageComponent } from "@types";
-import { useMediaUpload } from "@ui/hooks/useMediaUpload";
+import useMediaUpload from "@ui/hooks/useMediaUpload";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import * as React from "react";
@@ -33,6 +33,7 @@ export default function ComponentEditor({ component, onChange }: Props) {
   const shop = getShopFromPath(pathname);
   const [media, setMedia] = useState<MediaItem[]>([]);
 
+  /* ─────────── media list helpers ─────────── */
   async function loadMedia() {
     if (!shop) return;
     try {
@@ -42,7 +43,7 @@ export default function ComponentEditor({ component, onChange }: Props) {
         if (Array.isArray(data)) setMedia(data);
       }
     } catch {
-      /* ignore */
+      /* silent */
     }
   }
 
@@ -50,6 +51,7 @@ export default function ComponentEditor({ component, onChange }: Props) {
     void loadMedia();
   }, [shop]);
 
+  /* ─────────── reusable image-picker ─────────── */
   function ImagePicker({
     onSelect,
     children,
@@ -58,6 +60,7 @@ export default function ComponentEditor({ component, onChange }: Props) {
     children: React.ReactNode;
   }) {
     const [open, setOpen] = useState(false);
+
     const {
       pendingFile,
       altText,
@@ -71,7 +74,7 @@ export default function ComponentEditor({ component, onChange }: Props) {
     } = useMediaUpload({
       shop: shop ?? "",
       requiredOrientation: "landscape",
-      onUploaded: (item) => {
+      onUploaded: (item: MediaItem) => {
         setMedia((m) => [item, ...m]);
       },
     });
@@ -79,11 +82,14 @@ export default function ComponentEditor({ component, onChange }: Props) {
     useEffect(() => {
       if (open) void loadMedia();
     }, [open]);
+
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent className="max-w-xl space-y-4">
           <DialogTitle>Select image</DialogTitle>
+
+          {/* file picker + upload */}
           <div className="flex items-center gap-2">
             <Input
               ref={inputRef}
@@ -98,6 +104,8 @@ export default function ComponentEditor({ component, onChange }: Props) {
               </Button>
             )}
           </div>
+
+          {/* alt-text input */}
           {pendingFile && isValid && (
             <Input
               value={altText}
@@ -105,6 +113,8 @@ export default function ComponentEditor({ component, onChange }: Props) {
               placeholder="Alt text"
             />
           )}
+
+          {/* orientation check message */}
           {pendingFile && isValid !== null && (
             <p className="text-sm">
               {isValid
@@ -112,7 +122,11 @@ export default function ComponentEditor({ component, onChange }: Props) {
                 : `Selected image is ${actual}; please upload a landscape image.`}
             </p>
           )}
+
+          {/* upload error */}
           {error && <p className="text-sm text-red-600">{error}</p>}
+
+          {/* media grid */}
           <div className="grid max-h-64 grid-cols-3 gap-2 overflow-auto">
             {media.map((m) => (
               <button
@@ -143,16 +157,21 @@ export default function ComponentEditor({ component, onChange }: Props) {
     );
   }
 
+  /* ─────────── generic helpers ─────────── */
   const handleInput = (field: string, value: string | number | undefined) => {
     onChange({ [field]: value } as Partial<PageComponent>);
   };
 
+  /**
+   * Tiny utility for editing array-of-objects props
+   * (e.g. `slides`, `testimonials`, …).
+   */
   const arrayEditor = (
     prop: string,
-    items: any[] | undefined,
+    items: unknown[] | undefined,
     fields: string[]
   ) => {
-    const list = items ?? [];
+    const list = (items ?? []) as Record<string, unknown>[];
     return (
       <div className="space-y-2">
         {list.map((item, idx) => (
@@ -160,7 +179,7 @@ export default function ComponentEditor({ component, onChange }: Props) {
             {fields.map((f) => (
               <div key={f} className="flex items-start gap-2">
                 <Input
-                  value={item[f] ?? ""}
+                  value={(item[f] as string) ?? ""}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     const next = [...list];
                     next[idx] = { ...next[idx], [f]: e.target.value };
@@ -173,7 +192,7 @@ export default function ComponentEditor({ component, onChange }: Props) {
                   <ImagePicker
                     onSelect={(url) => {
                       const next = [...list];
-                      next[idx] = { ...next[idx], [f]: url };
+                      next[idx] = { ...next[idx], src: url };
                       onChange({ [prop]: next } as Partial<PageComponent>);
                     }}
                   >
@@ -197,11 +216,8 @@ export default function ComponentEditor({ component, onChange }: Props) {
         ))}
         <Button
           onClick={() => {
-            const next = [
-              ...list,
-              Object.fromEntries(fields.map((f) => [f, ""])),
-            ];
-            onChange({ [prop]: next } as Partial<PageComponent>);
+            const blank = Object.fromEntries(fields.map((f) => [f, ""]));
+            onChange({ [prop]: [...list, blank] } as Partial<PageComponent>);
           }}
         >
           Add
@@ -210,6 +226,7 @@ export default function ComponentEditor({ component, onChange }: Props) {
     );
   };
 
+  /* ─────────── per-component editors ─────────── */
   let specific: React.ReactNode = null;
 
   switch (component.type) {
@@ -219,26 +236,24 @@ export default function ComponentEditor({ component, onChange }: Props) {
           <Input
             label="Action"
             value={(component as any).action ?? ""}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              handleInput("action", e.target.value)
-            }
+            onChange={(e) => handleInput("action", e.target.value)}
           />
           <Input
             label="Method"
             value={(component as any).method ?? ""}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              handleInput("method", e.target.value)
-            }
+            onChange={(e) => handleInput("method", e.target.value)}
           />
         </div>
       );
       break;
+
     case "Gallery":
       specific = arrayEditor("images", (component as any).images, [
         "src",
         "alt",
       ]);
       break;
+
     case "Image":
       specific = (
         <div className="space-y-2">
@@ -263,21 +278,23 @@ export default function ComponentEditor({ component, onChange }: Props) {
         </div>
       );
       break;
+
     case "Testimonials":
       specific = arrayEditor("testimonials", (component as any).testimonials, [
         "quote",
         "name",
       ]);
-
       break;
+
     case "HeroBanner":
-      return arrayEditor("slides", (component as any).slides, [
+      specific = arrayEditor("slides", (component as any).slides, [
         "src",
         "alt",
         "headlineKey",
         "ctaKey",
       ]);
       break;
+
     case "ValueProps":
       specific = arrayEditor("items", (component as any).items, [
         "icon",
@@ -285,16 +302,19 @@ export default function ComponentEditor({ component, onChange }: Props) {
         "desc",
       ]);
       break;
+
     case "ReviewsCarousel":
       specific = arrayEditor("reviews", (component as any).reviews, [
         "nameKey",
         "quoteKey",
       ]);
       break;
+
     default:
       specific = <p className="text-sm text-gray-500">No editable props</p>;
   }
 
+  /* ─────────── generic property editors ─────────── */
   return (
     <div className="space-y-2">
       <Input

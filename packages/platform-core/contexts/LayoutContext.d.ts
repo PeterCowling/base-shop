@@ -6,5 +6,5 @@ export interface LayoutContextValue {
 }
 export declare function LayoutProvider({ children }: {
     children: ReactNode;
-}): import("react").JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;
 export declare function useLayout(): LayoutContextValue;

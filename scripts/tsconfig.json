@@ -3,32 +3,36 @@
   "extends": "../tsconfig.base.json",
 
   "compilerOptions": {
-    /* emit Node-friendly JS + declaration files ---------------------- */
+    /* ───── declaration-only build ───── */
     "composite": true,
     "declaration": true,
-    "declarationMap": true,
-    "noEmit": false,
-    "outDir": "../dist-scripts",
+    "emitDeclarationOnly": true, // ← JS never emitted
+    "noEmit": false, // must allow emit
 
-    /* language / module settings ------------------------------------- */
+    /* ───── output location ───── */
+    "outDir": "../dist-scripts",
+    "declarationDir": "../dist-scripts",
+    "declarationMap": true,
+
+    /* ───── language / module target ───── */
     "module": "esnext",
     "target": "ES2017",
 
-    /* Node globals available ----------------------------------------- */
+    /* ───── Node typings only ───── */
     "types": ["node"],
 
-    /* keep import paths extension-less ------------------------------- */
+    /* ───── keep imports extension-less ───── */
     "allowImportingTsExtensions": false
   },
 
-  /* project references – only other composite libs ------------------ */
+  /* ───── project references ───── */
   "references": [
     { "path": "../packages/platform-core" },
     { "path": "../packages/lib" },
     { "path": "../packages/config" }
   ],
 
-  /* source globs ----------------------------------------------------- */
+  /* ───── source globs ───── */
   "include": ["**/*.ts"],
-  "exclude": ["../dist-scripts"]
+  "exclude": ["../dist-scripts"] // prevents output → input loop
 }

@@ -1,47 +1,31 @@
-import { type Meta, type StoryObj } from "@storybook/react";
-import type { CartState, SKU } from "@types";
+// packages/ui/components/organisms/OrderSummary.stories.tsx
+
+import { Meta, StoryObj } from "@storybook/react";
+
 import OrderSummary from "./OrderSummary";
 
-const sku1: SKU = {
-  id: "1",
-  slug: "item-one",
-  title: "Item One",
-  price: 20,
-  deposit: 5,
-  forSale: true,
-  forRental: false,
-  image: "https://placehold.co/64",
-  sizes: [],
-  description: "",
-};
-const sku2: SKU = {
-  id: "2",
-  slug: "item-two",
-  title: "Item Two",
-  price: 15,
-  deposit: 0,
-  forSale: true,
-  forRental: false,
-  image: "https://placehold.co/64",
-  sizes: [],
-  description: "",
-};
-
-const cart: CartState = {
-  [sku1.id]: { sku: sku1, qty: 2 },
-  [sku2.id]: { sku: sku2, qty: 1 },
-};
-
+/* ------------------------------------------------------------------ *
+ *  Storybook meta
+ * ------------------------------------------------------------------ */
 const meta: Meta<typeof OrderSummary> = {
+  title: "Organisms/Order Summary",
   component: OrderSummary,
-  args: { cart },
 };
+
 export default meta;
 
+/* ------------------------------------------------------------------ *
+ *  Stories
+ * ------------------------------------------------------------------ */
 export const Default: StoryObj<typeof OrderSummary> = {
-  render: (args) => (
+  render: () => (
     <div className="space-y-2">
-      <OrderSummary {...args} />
+      {/* OrderSummary reads cart data via the CartContext hook.
+          In Storybook the context is mocked elsewhere (see preview.ts)
+          so the component requires no props here. */}
+      <OrderSummary />
+
+      {/* Additional cost rows illustrated below the summary */}
       <table className="w-full text-sm">
         <tbody>
           <tr>

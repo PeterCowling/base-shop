@@ -2,6 +2,7 @@
 
 import bcrypt from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import { readRbac } from "../lib/rbacStore";
 import type { Role } from "./roles";
@@ -68,19 +69,23 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({ token, user }) {
-      /* `user` exists only on sign-in; type augmentation guarantees `role` */
+      /* `user` exists only on sign-in; cast to access `role` */
       if (user) {
         const u = user as typeof user & { role: Role };
         console.log("[auth] jwt assign role", u.role);
-        token.role = u.role;
+        (token as JWT & { role: Role }).role = u.role;
       }
       return token;
     },
+
     async session({ session, token }) {
       /* Forward the role from JWT to the client session */
-      console.log("[auth] session role", token.role);
+      const role = (token as JWT & { role?: Role }).role;
+      console.log("[auth] session role", role);
 
-      (session.user as typeof session.user & { role?: Role }).role = token.role;
+      if (role) {
+        (session.user as typeof session.user & { role: Role }).role = role;
+      }
       return session;
     },
   },

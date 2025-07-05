@@ -2,52 +2,67 @@
 {
   "extends": "../../tsconfig.base.json",
 
+  /* ------------------------------------------------------------------
+   *  Compiler options
+   * ------------------------------------------------------------------ */
   "compilerOptions": {
-    /* library emits JS + d.ts -------------------------------------- */
+    /* build output ---------------------------------------------------- */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
     "outDir": "dist",
 
-    /* React components -------------------------------------------- */
+    /* React components ------------------------------------------------ */
     "jsx": "react-jsx",
 
-    /* ignore node_modules type churn (fixes Next-15 errors) -------- */
+    /* node_modules chatter ------------------------------------------- */
     "skipLibCheck": true,
 
-    /* keep imports relative to this folder ------------------------ */
+    /* local imports stay package-relative ----------------------------- */
     "baseUrl": ".",
     "allowImportingTsExtensions": false,
 
-    /* we **do** want Next’s global types, but nothing else -------- */
+    /* Next, React globals only --------------------------------------- */
     "types": ["react", "react-dom", "next"],
 
-    /* ---------- stop overriding the @types alias  ---------------- */
+    /* ----------------------------------------------------------------
+     *  Paths — everything listed here *overrides* the base config,
+     *  so we must re-add the shared @types alias.
+     * ---------------------------------------------------------------- */
     "paths": {
+      /* this package itself */
       "@platform-core": ["."],
       "@platform-core/*": ["*"],
 
-      "@types/shared": ["../../packages/types/src/index.ts"],
-      "@types/shared/*": ["../../packages/types/src/*"],
+      /* shared type barrel (required) */
+      "@types": ["../types/src/index.ts"],
+      "@types/*": ["../types/src/*"],
 
+      /* keep legacy alias for consistency */
+      "@types/shared": ["../types/src/index.ts"],
+      "@types/shared/*": ["../types/src/*"],
+
+      /* local shorthand imports */
       "@/components/shop/*": ["components/shop/*"],
       "@/contexts/*": ["contexts/*"],
       "@/lib/*": ["lib/*"],
 
+      /* other workspace shortcuts */
       "@themes/*": ["../themes/*"],
       "@lib/*": ["../lib/*"],
       "@cms/*": ["../../apps/cms/src/*"]
     }
   },
 
-  /* -------------------------------------------------------------- */
+  /* ------------------------------------------------------------------
+   *  File globs
+   * ------------------------------------------------------------------ */
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["dist", "__tests__"],
 
-  /* • build-order: lib  →  platform-core  →  (emit)                */
-  "references": [
-    { "path": "../lib" },
-    { "path": "../types" } /* ← add shared types barrel */
-  ]
+  /* ------------------------------------------------------------------
+   *  Build order
+   * ------------------------------------------------------------------ */
+  "references": [{ "path": "../lib" }, { "path": "../types" }]
 }

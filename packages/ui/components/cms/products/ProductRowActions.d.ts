@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { ProductPublication } from "@platform-core/products";
 interface Props {
     shop: string;

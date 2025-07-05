@@ -1,34 +1,47 @@
+// packages/platform-machine/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
+  /* ------------------------------------------------------------------
+   *  Compiler options
+   * ------------------------------------------------------------------ */
   "compilerOptions": {
-    /* this library emits JS + declaration files ---------------------- */
+    /* JS + .d.ts output --------------------------------------------- */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
     "outDir": "dist",
 
-    /* keep imports package-relative; forbid .ts extension in paths ---- */
-    "allowImportingTsExtensions": false,
-
-    /* Node targets only (no React here) ------------------------------ */
+    /* Node targets only --------------------------------------------- */
     "types": ["node"],
 
-    /* path aliases --------------------------------------------------- */
+    /* Keep imports package-relative --------------------------------- */
+    "allowImportingTsExtensions": false,
+
+    /* ----------------------------------------------------------------
+     *  Path aliases — this block *overrides* the one from
+     *  tsconfig.base.json, so we must re-declare everything we need.
+     * ---------------------------------------------------------------- */
     "paths": {
+      /* this package itself */
       "@platform-machine": ["."],
       "@platform-machine/*": ["*"],
 
-      /* shared utilities (compiled output lives in ../lib/dist) */
+      /* shared lib utilities (compiled output lives in ../lib/dist) */
+      "@lib/stripeServer": ["../lib/stripeServer.server.ts"], // ← added
       "@lib/*": ["../lib/*"]
     }
   },
 
-  /* project references ---------------------------------------------- */
+  /* ------------------------------------------------------------------
+   *  Project references
+   * ------------------------------------------------------------------ */
   "references": [{ "path": "../platform-core" }, { "path": "../lib" }],
 
-  /* source globs ----------------------------------------------------- */
+  /* ------------------------------------------------------------------
+   *  Source globs
+   * ------------------------------------------------------------------ */
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["dist", "__tests__"]
 }

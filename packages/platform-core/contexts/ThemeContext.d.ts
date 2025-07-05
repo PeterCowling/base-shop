@@ -6,6 +6,6 @@ interface ThemeContextValue {
 }
 export declare function ThemeProvider({ children }: {
     children: ReactNode;
-}): import("react").JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;
 export declare function useTheme(): ThemeContextValue;
 export {};

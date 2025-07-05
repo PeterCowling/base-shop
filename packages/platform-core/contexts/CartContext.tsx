@@ -1,5 +1,12 @@
-/* packages/platform-core/contexts/CartContext.tsx */
+// packages/platform-core/contexts/CartContext.tsx
 "use client";
+
+import {
+  asSetCookieHeader,
+  CART_COOKIE,
+  decodeCartCookie,
+  encodeCartCookie,
+} from "../cartCookie";
 
 import type { CartState, SKU } from "@types";
 import {
@@ -9,22 +16,18 @@ import {
   useEffect,
   useReducer,
 } from "react";
-import {
-  asSetCookieHeader,
-  CART_COOKIE,
-  cartStateSchema,
-  encodeCartCookie,
-} from "../cartCookie";
 
-/* ---------- types ---------- */
-
+/* ------------------------------------------------------------------
+ * Action types
+ * ------------------------------------------------------------------ */
 type Action =
   | { type: "add"; sku: SKU; size?: string }
   | { type: "remove"; id: SKU["id"] }
   | { type: "setQty"; id: SKU["id"]; qty: number };
 
-/* ---------- reducer ---------- */
-
+/* ------------------------------------------------------------------
+ * Reducer
+ * ------------------------------------------------------------------ */
 function reducer(state: CartState, action: Action): CartState {
   switch (action.type) {
     case "add": {
@@ -40,7 +43,6 @@ function reducer(state: CartState, action: Action): CartState {
     }
 
     case "remove": {
-      /** remove without creating an unused binding */
       const next = { ...state };
       delete next[action.id];
       return next;
@@ -61,38 +63,33 @@ function reducer(state: CartState, action: Action): CartState {
   }
 }
 
-/* ---------- persistence helpers ---------- */
-
+/* ------------------------------------------------------------------
+ * Persistence helpers
+ * ------------------------------------------------------------------ */
 const LS_KEY = CART_COOKIE;
 
+/** Initialiser passed to `useReducer` so state is hydrated exactly once. */
 function readInitial(): CartState {
   if (typeof window === "undefined") return {};
   const raw = localStorage.getItem(LS_KEY);
-  if (!raw) return {};
-  try {
-    const decoded = decodeURIComponent(raw);
-    const parsed = JSON.parse(decoded);
-    return cartStateSchema.parse(parsed);
-  } catch (err) {
-    console.warn("Invalid cart state in localStorage", err);
-    return {};
-  }
+  return decodeCartCookie(raw); // already returns CartState
 }
 
+/** Persist cart state to both localStorage (for CSR) and cookie (for SSR). */
 function persist(state: CartState) {
-  if (typeof window !== "undefined") {
-    const encoded = encodeCartCookie(state);
+  if (typeof window === "undefined") return;
+  const encoded = encodeCartCookie(state);
 
-    // localStorage for client re-hydration
-    localStorage.setItem(LS_KEY, encoded);
+  /* client re-hydration */
+  localStorage.setItem(LS_KEY, encoded);
 
-    // cookie for SSR routes (e.g. /checkout)
-    document.cookie = asSetCookieHeader(encoded);
-  }
+  /* SSR routes that rely on the cookie */
+  document.cookie = asSetCookieHeader(encoded);
 }
 
-/* ---------- context ---------- */
-
+/* ------------------------------------------------------------------
+ * React context
+ * ------------------------------------------------------------------ */
 const CartContext = createContext<
   [CartState, React.Dispatch<Action>] | undefined
 >(undefined);
@@ -100,6 +97,7 @@ const CartContext = createContext<
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, {}, readInitial);
 
+  /* persist any time the cart changes */
   useEffect(() => persist(state), [state]);
 
   return (

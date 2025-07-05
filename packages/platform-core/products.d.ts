@@ -11,4 +11,3 @@ export type { Locale, ProductCore, ProductPublication, PublicationStatus, } from
  * (Compile-time only; returns the value unchanged.)
  */
 export declare function assertLocale(l: Locale): Locale;
-//# sourceMappingURL=products.d.ts.map

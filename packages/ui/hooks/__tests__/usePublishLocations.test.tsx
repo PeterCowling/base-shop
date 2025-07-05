@@ -1,34 +1,39 @@
-const { describe, it, expect } = require("@jest/globals");
-const React = require("react");
-const { render, waitFor, screen } = require("@testing-library/react");
-const { usePublishLocations } = require("../usePublishLocations.ts");
+// packages/ui/hooks/__tests__/usePublishLocations.test.tsx
+import { render, screen, waitFor } from "@testing-library/react";
+import { usePublishLocations } from "../usePublishLocations";
 
 describe("usePublishLocations", () => {
   it("fetches locations from API", async () => {
-    const original = global.fetch;
+    /* --------------- mock fetch ----------------- */
+    const originalFetch = global.fetch;
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: true,
         json: () =>
           Promise.resolve([
-            { id: "a", name: "A", path: "a", requiredOrientation: "landscape" },
+            {
+              id: "a",
+              name: "A",
+              path: "a",
+              requiredOrientation: "landscape",
+            },
           ]),
       })
-    );
+    ) as unknown as typeof fetch;
+
+    /* --------------- test component ------------- */
     function Test() {
       const { locations } = usePublishLocations();
-      return React.createElement(
-        "span",
-        { "data-testid": "count" },
-        locations.length
-      );
+      return <span data-testid="count">{locations.length}</span>;
     }
 
-    render(React.createElement(Test));
+    render(<Test />);
 
-    await waitFor(() => {
-      expect(Number(screen.getByTestId("count").textContent)).toBe(1);
-    });
-    global.fetch = original;
+    await waitFor(() =>
+      expect(Number(screen.getByTestId("count").textContent)).toBe(1)
+    );
+
+    /* --------------- restore fetch -------------- */
+    global.fetch = originalFetch;
   });
 });

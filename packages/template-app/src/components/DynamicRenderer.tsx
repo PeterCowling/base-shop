@@ -1,49 +1,106 @@
 // packages/template-app/src/components/DynamicRenderer.tsx
-
 ("use client");
 
-import HeroBanner from "@/components/home/HeroBanner";
+import NextImage, { ImageProps } from "next/image";
+import React from "react";
+
+import HeroBanner from "@/components/cms/blocks/HeroBanner";
 import ReviewsCarousel from "@/components/home/ReviewsCarousel";
 import { ValueProps } from "@/components/home/ValueProps";
 import { ProductGrid } from "@/components/shop/ProductGrid";
+
+import BlogListing from "@/components/cms/blocks/BlogListing";
+import ContactForm from "@/components/cms/blocks/ContactForm";
+import ContactFormWithMap from "@/components/cms/blocks/ContactFormWithMap";
+import Gallery from "@/components/cms/blocks/Gallery";
+import Testimonials from "@/components/cms/blocks/Testimonials";
+import TestimonialSlider from "@/components/cms/blocks/TestimonialSlider";
+import { Textarea as TextBlock } from "@/components/ui/textarea";
+
 import { PRODUCTS } from "@/lib/products";
 import type { PageComponent, SKU } from "@types";
 
-export { default as BlogListing } from "./BlogListing";
-export { default as ContactForm } from "./ContactForm";
-export { default as ContactFormWithMap } from "./ContactFormWithMap";
-export { default as Gallery } from "./Gallery";
-export { default as Image } from "./Image";
-export { default as Testimonials } from "./Testimonials";
-export { default as TestimonialSlider } from "./TestimonialSlider";
-export { default as Text } from "./Text";
+/* ------------------------------------------------------------------
+ * next/image wrapper usable in CMS blocks
+ * ------------------------------------------------------------------ */
+const CmsImage = React.memo(
+  ({
+    src,
+    alt = "",
+    width,
+    height,
+    ...rest
+  }: Omit<ImageProps, "src" | "alt"> & {
+    src: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+  }) => (
+    <NextImage src={src} alt={alt} width={width} height={height} {...rest} />
+  )
+);
 
+/* ------------------------------------------------------------------
+ * Registry: block type → React component
+ * ------------------------------------------------------------------ */
 const registry: Record<
   PageComponent["type"],
   React.ComponentType<Record<string, unknown>>
-> = { HeroBanner, ValueProps, ReviewsCarousel, ProductGrid };
+> = {
+  HeroBanner,
+  ValueProps,
+  ReviewsCarousel,
+  ProductGrid,
+  Gallery,
+  ContactForm,
+  ContactFormWithMap,
+  BlogListing,
+  Testimonials,
+  TestimonialSlider,
+  Image: CmsImage,
+  Text: TextBlock,
+};
 
-export default function DynamicRenderer({
-  components,
-}: {
-  components: PageComponent[];
-}) {
+/* ------------------------------------------------------------------
+ * DynamicRenderer
+ * ------------------------------------------------------------------ */
+function DynamicRenderer({ components }: { components: PageComponent[] }) {
   return (
     <>
-      {components.map((c) => {
-        const Comp = registry[c.type];
+      {components.map((block) => {
+        const Comp = registry[block.type];
+
         if (!Comp) {
-          console.warn(`Unknown component type: ${c.type}`);
+          console.warn(`Unknown component type: ${block.type}`);
           return null;
         }
 
-        switch (c.type) {
-          case "ProductGrid":
-            return <Comp key={c.id} skus={PRODUCTS as SKU[]} />;
-          default:
-            return <Comp key={c.id} />;
+        /* Runtime props for specific blocks */
+        if (block.type === "ProductGrid") {
+          return <Comp key={block.id} skus={PRODUCTS as SKU[]} />;
         }
+
+        const props =
+          (block as { props?: Record<string, unknown> }).props ?? {};
+
+        return <Comp key={block.id} {...props} />;
       })}
     </>
   );
 }
+
+export default React.memo(DynamicRenderer);
+
+/* ------------------------------------------------------------------
+ * Named re-exports so other modules can import blocks directly
+ * ------------------------------------------------------------------ */
+export {
+  BlogListing,
+  ContactForm,
+  ContactFormWithMap,
+  Gallery,
+  CmsImage as Image,
+  Testimonials,
+  TestimonialSlider,
+  TextBlock as Text,
+};

@@ -59,16 +59,16 @@ export declare const createShopOptionsSchema: z.ZodObject<{
     name?: string;
     logo?: string;
     contactInfo?: string;
-    analytics?: {
-        id?: string;
-        provider?: string;
-    };
     theme?: string;
     payment?: string[];
     shipping?: string[];
     pageTitle?: Partial<Record<"en" | "de" | "it", string>>;
     pageDescription?: Partial<Record<"en" | "de" | "it", string>>;
     socialImage?: string;
+    analytics?: {
+        id?: string;
+        provider?: string;
+    };
     navItems?: {
         label?: string;
         url?: string;
@@ -87,16 +87,16 @@ export declare const createShopOptionsSchema: z.ZodObject<{
     name?: string;
     logo?: string;
     contactInfo?: string;
-    analytics?: {
-        id?: string;
-        provider?: string;
-    };
     theme?: string;
     payment?: string[];
     shipping?: string[];
     pageTitle?: Partial<Record<"en" | "de" | "it", string>>;
     pageDescription?: Partial<Record<"en" | "de" | "it", string>>;
     socialImage?: string;
+    analytics?: {
+        id?: string;
+        provider?: string;
+    };
     navItems?: {
         label?: string;
         url?: string;

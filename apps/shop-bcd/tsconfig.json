@@ -1,14 +1,22 @@
+// apps/cms/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* referenced-project requirements */
+    /* ───── referenced-project requirements ───── */
     "composite": true,
-    "emitDeclarationOnly": true,
-    "noEmit": false,
+    "declaration": true, // required when using emitDeclarationOnly
+    "emitDeclarationOnly": true, // produce .d.ts only
+    "noEmit": false, // must allow emit
 
-    /* existing settings */
-    "outDir": "dist",
+    /* ───── emit location ───── */
+    "outDir": "dist", // JS maps (none) + .d.ts
+    "declarationDir": "dist", // .d.ts + .d.ts.map land here
+
+    /* ───── override base flag ───── */
+    "allowImportingTsExtensions": false,
+
+    /* ───── existing app settings (unchanged) ───── */
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "incremental": true,
@@ -28,8 +36,13 @@
   "include": ["src/**/*", ".next/types/**/*.ts"],
 
   "exclude": [
+    "dist", // keeps fresh emits out of next graph
     "node_modules",
     "../../apps-script",
     "src/routes/preview/[pageId].ts"
+  ],
+
+  "references": [
+    { "path": "../../packages/types" } // shared declarations package
   ]
 }

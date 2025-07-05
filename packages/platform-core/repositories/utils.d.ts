@@ -7,4 +7,3 @@ export declare const DATA_ROOT: string;
  * provide a `tailwind-tokens` module.
  */
 export declare function loadThemeTokens(theme: string): Promise<Record<string, string>>;
-//# sourceMappingURL=utils.d.ts.map

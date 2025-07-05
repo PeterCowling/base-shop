@@ -7,4 +7,3 @@ export declare function updatePage(shop: string, patch: Partial<Page> & {
     id: string;
     updatedAt: string;
 }): Promise<Page>;
-//# sourceMappingURL=index.server.d.ts.map

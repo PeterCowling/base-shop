@@ -13,13 +13,13 @@ export declare const shopSeoFieldsSchema: z.ZodObject<{
     }, "strip", z.ZodTypeAny, {
         title?: string | undefined;
         image?: string | undefined;
-        url?: string | undefined;
         description?: string | undefined;
+        url?: string | undefined;
     }, {
         title?: string | undefined;
         image?: string | undefined;
-        url?: string | undefined;
         description?: string | undefined;
+        url?: string | undefined;
     }>>;
     twitter: z.ZodOptional<z.ZodObject<{
         card: z.ZodOptional<z.ZodString>;
@@ -46,8 +46,8 @@ export declare const shopSeoFieldsSchema: z.ZodObject<{
     openGraph?: {
         title?: string | undefined;
         image?: string | undefined;
-        url?: string | undefined;
         description?: string | undefined;
+        url?: string | undefined;
     } | undefined;
     twitter?: {
         title?: string | undefined;
@@ -64,8 +64,8 @@ export declare const shopSeoFieldsSchema: z.ZodObject<{
     openGraph?: {
         title?: string | undefined;
         image?: string | undefined;
-        url?: string | undefined;
         description?: string | undefined;
+        url?: string | undefined;
     } | undefined;
     twitter?: {
         title?: string | undefined;
@@ -130,15 +130,15 @@ export declare const shopSchema: z.ZodObject<{
         label: z.ZodString;
         url: z.ZodString;
     }, "strip", z.ZodTypeAny, {
-        label: string;
         url: string;
+        label: string;
     }, {
-        label: string;
         url: string;
+        label: string;
     }>, "many">>;
 }, "strip", z.ZodTypeAny, {
-    name: string;
     id: string;
+    name: string;
     catalogFilters: string[];
     themeId: string;
     themeTokens: Record<string, string>;
@@ -146,10 +146,6 @@ export declare const shopSchema: z.ZodObject<{
     priceOverrides: Partial<Record<"en" | "de" | "it", number>>;
     localeOverrides: Record<string, "en" | "de" | "it">;
     type?: string | undefined;
-    navigation?: {
-        label: string;
-        url: string;
-    }[] | undefined;
     logo?: string | undefined;
     contactInfo?: string | undefined;
     paymentProviders?: string[] | undefined;
@@ -157,18 +153,18 @@ export declare const shopSchema: z.ZodObject<{
     homeTitle?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     homeDescription?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     homeImage?: string | undefined;
+    navigation?: {
+        url: string;
+        label: string;
+    }[] | undefined;
 }, {
-    name: string;
     id: string;
+    name: string;
     catalogFilters: string[];
     themeId: string;
     themeTokens: Record<string, string>;
     filterMappings: Record<string, string>;
     type?: string | undefined;
-    navigation?: {
-        label: string;
-        url: string;
-    }[] | undefined;
     logo?: string | undefined;
     contactInfo?: string | undefined;
     priceOverrides?: Partial<Record<"en" | "de" | "it", number>> | undefined;
@@ -178,5 +174,9 @@ export declare const shopSchema: z.ZodObject<{
     homeTitle?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     homeDescription?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     homeImage?: string | undefined;
+    navigation?: {
+        url: string;
+        label: string;
+    }[] | undefined;
 }>;
 //# sourceMappingURL=Shop.d.ts.map

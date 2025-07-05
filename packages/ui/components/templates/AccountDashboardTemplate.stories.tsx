@@ -1,8 +1,18 @@
-import { type Meta, type StoryObj } from "@storybook/react";
+// packages/ui/components/templates/AccountDashboardTemplate.stories.tsx
+
+import { Meta, StoryObj } from "@storybook/react";
+import React from "react";
+
 import type { Column } from "../organisms/DataTable";
 import type { StatItem } from "../organisms/StatsGrid";
-import { AccountDashboardTemplate } from "./AccountDashboardTemplate";
+import {
+  AccountDashboardTemplate,
+  type AccountDashboardTemplateProps,
+} from "./AccountDashboardTemplate";
 
+/* ------------------------------------------------------------------ *
+ *  Row model & mock data
+ * ------------------------------------------------------------------ */
 interface OrderRow {
   id: number;
   total: string;
@@ -29,8 +39,22 @@ const orderColumns: Column<OrderRow>[] = [
   { header: "Total", render: (r) => r.total },
 ];
 
-const meta: Meta<typeof AccountDashboardTemplate> = {
-  component: AccountDashboardTemplate,
+/* ------------------------------------------------------------------ *
+ *  Generic-aware wrapper
+ * ------------------------------------------------------------------ *
+ *  Storybook cannot infer generics, so we expose a tiny wrapper
+ *  component with the <OrderRow> type baked in.
+ * ------------------------------------------------------------------ */
+const DashboardForOrders: React.FC<AccountDashboardTemplateProps<OrderRow>> = (
+  props
+) => <AccountDashboardTemplate<OrderRow> {...props} />;
+
+/* ------------------------------------------------------------------ *
+ *  Storybook meta
+ * ------------------------------------------------------------------ */
+const meta: Meta<typeof DashboardForOrders> = {
+  title: "Templates/Account Dashboard",
+  component: DashboardForOrders,
   args: {
     user,
     stats,
@@ -38,6 +62,10 @@ const meta: Meta<typeof AccountDashboardTemplate> = {
     orderColumns,
   },
 };
+
 export default meta;
 
-export const Default: StoryObj<typeof AccountDashboardTemplate> = {};
+/* ------------------------------------------------------------------ *
+ *  Stories
+ * ------------------------------------------------------------------ */
+export const Default: StoryObj<typeof DashboardForOrders> = {};

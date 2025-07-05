@@ -1,13 +1,21 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import React, { act, useState } from "react";
-import { useTokenEditor, type TokenMap } from "../useTokenEditor.ts";
+// packages/ui/hooks/__tests__/useTokenEditor.test.tsx
+import { beforeEach, describe, expect, it } from "@jest/globals";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
+import { useState } from "react";
+import { useTokenEditor, type TokenMap } from "../useTokenEditor";
 
 class MockFileReader {
   result: string | ArrayBuffer | null = null;
   onload: null | (() => void) = null;
-  readAsDataURL(_file: File) {
+  readAsDataURL(_: File) {
     this.result = "data:font/mock";
-    if (this.onload) this.onload();
+    this.onload?.();
   }
 }
 
@@ -21,21 +29,19 @@ describe("useTokenEditor", () => {
 
     function Test() {
       const { setToken } = useTokenEditor({ "--color-a": "red" }, onChange);
-      return React.createElement(
-        "button",
-        { onClick: () => setToken("--color-a", "blue") },
-        "update"
+      return (
+        <button onClick={() => setToken("--color-a", "blue")}>update</button>
       );
     }
 
-    render(React.createElement(Test));
+    render(<Test />);
     fireEvent.click(screen.getByText("update"));
     expect(onChange).toHaveBeenCalledWith({ "--color-a": "blue" });
   });
 
   it("font upload adds styles and updates font lists", async () => {
-    let upload: ReturnType<typeof useTokenEditor>["handleUpload"];
-    let latest: TokenMap = {} as TokenMap;
+    let upload!: ReturnType<typeof useTokenEditor>["handleUpload"]; // !
+    let latest: TokenMap = {};
 
     function Wrapper() {
       const [tokens, setTokens] = useState<TokenMap>({});
@@ -43,15 +49,11 @@ describe("useTokenEditor", () => {
       const handleChange = (t: TokenMap) =>
         setTokens((prev) => ({ ...prev, ...t }));
       const hook = useTokenEditor(tokens, handleChange);
-      upload = hook.handleUpload;
-      return React.createElement(
-        "span",
-        { "data-testid": "mono" },
-        hook.monoFonts.join(",")
-      );
+      upload = hook.handleUpload; // assigned synchronously
+      return <span data-testid="mono">{hook.monoFonts.join(",")}</span>;
     }
 
-    render(React.createElement(Wrapper));
+    render(<Wrapper />);
     const file = new File(["a"], "Custom.woff", { type: "font/woff" });
 
     await act(async () => {
@@ -67,10 +69,10 @@ describe("useTokenEditor", () => {
   });
 
   it("addCustomFont appends unique entries", () => {
-    let add: () => void;
-    let setNF: (v: string) => void;
-    let getSans: () => string[];
-    let getMono: () => string[];
+    let add!: () => void; // !
+    let setNF!: (v: string) => void; // !
+    let getSans!: () => string[]; // !
+    let getMono!: () => string[]; // !
 
     function Wrapper() {
       const hook = useTokenEditor({}, () => {});
@@ -81,24 +83,17 @@ describe("useTokenEditor", () => {
       return null;
     }
 
-    render(React.createElement(Wrapper));
+    render(<Wrapper />);
 
-    act(() => {
-      setNF("Fancy");
-    });
-    act(() => {
-      add();
-    });
+    act(() => setNF("Fancy"));
+    act(() => add());
 
     expect(getSans()).toContain("Fancy");
     expect(getMono()).toContain("Fancy");
 
-    act(() => {
-      setNF("Fancy");
-    });
-    act(() => {
-      add();
-    });
+    /* second attempt should not duplicate */
+    act(() => setNF("Fancy"));
+    act(() => add());
 
     expect(getSans().filter((f) => f === "Fancy")).toHaveLength(1);
     expect(getMono().filter((f) => f === "Fancy")).toHaveLength(1);

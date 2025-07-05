@@ -1,3 +1,6 @@
+// packages/ui/components/organisms/ProductGallery.tsx
+"use client";
+
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { ARViewer } from "../atoms/ARViewer";
@@ -6,11 +9,18 @@ import { ZoomImage } from "../atoms/ZoomImage";
 import { Image360Viewer } from "../molecules/Image360Viewer";
 import { MediaItem, MediaSelector } from "../molecules/MediaSelector";
 
+/* ------------------------------------------------------------------ *
+ *  Props
+ * ------------------------------------------------------------------ */
 export interface ProductGalleryProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  /** Ordered media items shown in the gallery */
   media: MediaItem[];
 }
 
+/* ------------------------------------------------------------------ *
+ *  Component
+ * ------------------------------------------------------------------ */
 export function ProductGallery({
   media,
   className,
@@ -19,13 +29,18 @@ export function ProductGallery({
   const [index, setIndex] = React.useState(0);
   const item = media[index];
 
+  /* ------------------------------------------------------------------ *
+   *  Determine which viewer to render
+   * ------------------------------------------------------------------ */
   let content: React.ReactNode = null;
-  if (!item) content = null;
-  else if (item.type === "image") {
+
+  if (!item) {
+    content = null;
+  } else if (item.type === "image") {
     content = (
       <ZoomImage
         src={item.src}
-        alt={item.alt}
+        alt={item.alt ?? ""}
         fill
         className="rounded-lg object-cover"
       />
@@ -35,8 +50,8 @@ export function ProductGallery({
   } else if (item.type === "360") {
     content = (
       <Image360Viewer
-        frames={item.frames || [item.src]}
-        alt={item.alt}
+        frames={item.frames ?? [item.src]}
+        alt={item.alt ?? ""}
         className="h-full w-full"
       />
     );
@@ -44,9 +59,13 @@ export function ProductGallery({
     content = <ARViewer src={item.src} className="h-full w-full" />;
   }
 
+  /* ------------------------------------------------------------------ *
+   *  Render
+   * ------------------------------------------------------------------ */
   return (
     <div className={cn("space-y-2", className)} {...props}>
       <div className="relative aspect-square w-full">{content}</div>
+
       {media.length > 1 && (
         <MediaSelector items={media} active={index} onChange={setIndex} />
       )}

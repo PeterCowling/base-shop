@@ -1,4 +1,6 @@
 // apps/cms/src/middleware.ts
+
+import type { Role } from "@auth";
 import { canRead, canWrite } from "@auth";
 import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
@@ -6,8 +8,16 @@ import { NextResponse } from "next/server";
 import { authSecret } from "./auth/secret";
 
 /**
+ * JWT payload shape for this CMS.
+ */
+interface CmsToken {
+  role?: Role;
+}
+
+/**
  * Matches CMS write routes of the form `/cms/shop/<shop>/...` and captures the
  * shop slug.
+ *
  * Examples:
  *   /cms/shop/{shop}/products/{id}/edit
  *   /cms/shop/{shop}/settings
@@ -20,13 +30,15 @@ export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   console.log("[middleware] request", pathname);
 
-  /* Decode JWT (include secret only if present) */
-  const token = await getToken({ req, secret: authSecret });
-
-  const role = token?.role;
+  /* Decode JWT */
+  const token = (await getToken({
+    req,
+    secret: authSecret,
+  })) as CmsToken | null;
+  const role: Role | null = token?.role ?? null;
   console.log("[middleware] role", role);
 
-  /* Skip static assets, auth endpoints, and login page */
+  /* Skip static assets, auth endpoints, and login/signup pages */
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api/auth") ||
@@ -35,7 +47,6 @@ export async function middleware(req: NextRequest) {
     pathname === "/favicon.ico"
   ) {
     console.log("[middleware] skip", pathname);
-
     return NextResponse.next();
   }
 
@@ -45,7 +56,6 @@ export async function middleware(req: NextRequest) {
     url.pathname = "/login";
     url.searchParams.set("callbackUrl", pathname);
     console.log("[middleware] redirect to login", url.toString());
-
     return NextResponse.redirect(url);
   }
 
@@ -55,7 +65,6 @@ export async function middleware(req: NextRequest) {
     const url = new URL("/403", req.url);
     if (matchShop) url.searchParams.set("shop", matchShop[1]);
     console.log("[middleware] forbidden", url.toString());
-
     return NextResponse.rewrite(url, { status: 403 });
   }
 
@@ -65,11 +74,10 @@ export async function middleware(req: NextRequest) {
     const url = new URL("/403", req.url);
     url.searchParams.set("shop", match[1]);
     console.log("[middleware] viewer blocked", url.toString());
-
     return NextResponse.rewrite(url, { status: 403 });
   }
-  console.log("[middleware] allow", pathname);
 
+  console.log("[middleware] allow", pathname);
   return NextResponse.next();
 }
 

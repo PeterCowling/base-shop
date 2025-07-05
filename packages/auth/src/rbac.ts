@@ -1,3 +1,5 @@
+// packages/auth/src/rbac.ts
+
 import type { Role } from "./types/roles";
 
 export const WRITE_ROLES: Role[] = [

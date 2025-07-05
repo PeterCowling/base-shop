@@ -1,23 +1,25 @@
 // packages/ui/components/organisms/OrderSummary.tsx
+"use client";
+
 import { useCart } from "@/hooks/useCart";
-import type { LineItem } from "@types";
+import type { CartLine } from "@types";
 import React, { useMemo } from "react";
 
 /**
  * Displays a breakdown of the current cart: line items, subtotal,
- * deposit, and total. Uses memoization to avoid recalculating totals
- * unless the cart actually changes.
+ * deposit, and total. Totals are memoised so they’re only recalculated
+ * when the cart changes.
  */
 function OrderSummary() {
   /* ------------------------------------------------------------------
    * Cart context
    * ------------------------------------------------------------------ */
-  const { cart } = useCart() as { cart: Record<string, LineItem> };
+  const [cart] = useCart() as [Record<string, CartLine>, unknown];
 
   /* ------------------------------------------------------------------
    * Derived values
    * ------------------------------------------------------------------ */
-  const lines = useMemo<LineItem[]>(() => Object.values(cart), [cart]);
+  const lines = useMemo<CartLine[]>(() => Object.values(cart), [cart]);
 
   const subtotal = useMemo(
     () => lines.reduce((sum, line) => sum + line.sku.price * line.qty, 0),

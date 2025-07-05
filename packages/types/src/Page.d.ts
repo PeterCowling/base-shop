@@ -152,9 +152,9 @@ export declare const pageSchema: z.ZodObject<{
     updatedAt: z.ZodString;
     createdBy: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    status: "draft" | "published";
     id: string;
     slug: string;
+    status: "draft" | "published";
     components: z.objectOutputType<{
         id: z.ZodString;
         type: z.ZodString;
@@ -168,9 +168,9 @@ export declare const pageSchema: z.ZodObject<{
     updatedAt: string;
     createdBy: string;
 }, {
-    status: "draft" | "published";
     id: string;
     slug: string;
+    status: "draft" | "published";
     seo: {
         title: Partial<Record<"en" | "de" | "it", string>>;
         image?: Partial<Record<"en" | "de" | "it", string>> | undefined;

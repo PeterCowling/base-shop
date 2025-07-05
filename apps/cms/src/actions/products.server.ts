@@ -25,7 +25,7 @@ import { ulid } from "ulid";
 
 async function ensureAuthorized(): Promise<void> {
   const session = await getServerSession(authOptions);
-  if (!session || session.user?.role === "viewer") {
+  if (!session || session.user.role === "viewer") {
     throw new Error("Forbidden");
   }
 }

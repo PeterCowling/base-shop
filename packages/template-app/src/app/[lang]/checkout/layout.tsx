@@ -7,7 +7,7 @@ import { Locale, resolveLocale } from "@i18n/locales";
 import { DefaultSeo } from "next-seo";
 import type { ReactNode } from "react";
 import { getSeo } from "../../../lib/seo";
-import "../globals.css";
+import "../../globals.css";
 
 export default async function LocaleLayout({
   children,

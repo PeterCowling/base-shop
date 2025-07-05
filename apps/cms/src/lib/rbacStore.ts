@@ -1,8 +1,8 @@
+import type { CmsUser } from "@types";
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import type { Role } from "../auth/roles";
-import type { CmsUser } from "../auth/users";
 
 export interface RbacDB {
   users: Record<string, CmsUser>;

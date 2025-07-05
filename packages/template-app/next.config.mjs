@@ -1,7 +1,7 @@
 // packages/template-app/next.config.mjs
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import base from "../cms/next.config.mjs";
+import base from "../../apps/cms/next.config.mjs";
 
 /* ------------------------------------------------------------------ */
 /*  ES-module-safe __dirname                                          */

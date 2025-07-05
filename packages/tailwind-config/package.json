@@ -2,7 +2,7 @@
   "name": "@acme/tailwind-config",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
+  "type": "commonjs",
   "exports": {
     ".": "./src/index.js"
   },

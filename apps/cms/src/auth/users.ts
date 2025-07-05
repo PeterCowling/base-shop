@@ -1,12 +1,7 @@
 // apps/cms/src/auth/users.ts
 
-export interface CmsUser {
-  id: string;
-  name: string;
-  email: string;
-  /** bcrypt hashed password */
-  password: string;
-}
+import type { CmsUser } from "@types";
+export type { CmsUser } from "@types";
 
 /** Phase-0 in-memory users (replace with DB in Phase-1). */
 export const USERS: Record<string, CmsUser> = {

@@ -60,7 +60,9 @@ function TopBarInner() {
         </Button>
         <Button
           variant="ghost"
-          onClick={() => signOut({ callbackUrl: "/login" })}
+          onClick={() =>
+            signOut({ redirect: false }).then(() => router.push("/login"))
+          }
         >
           Sign&nbsp;out
         </Button>

@@ -32,12 +32,15 @@ export const baseTokens: TokenMap = Object.fromEntries(
  * ---------------------------------------------------------- */
 export async function loadThemeTokens(theme: string): Promise<TokenMap> {
   /* 1️⃣  base ---------------------------------------------------------------- */
-  if (theme === "base") return baseTokens;
+  if (!theme || theme === "base") return baseTokens;
 
   /* 2️⃣  regular theme package export --------------------------------------- */
   try {
     // import from the *package root*, which publicly re‑exports `tokens`
-    const mod = await import(`@themes/${theme}`);
+    const mod = await import(
+      /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$)/ */
+      `@themes/${theme}`
+    );
     if ("tokens" in mod) {
       return Object.fromEntries(
         typedEntries(mod.tokens as ThemeTokenMap).map(([k, v]) => [k, v.light])
@@ -49,7 +52,10 @@ export async function loadThemeTokens(theme: string): Promise<TokenMap> {
 
   /* 3️⃣  Tailwind‑generated token file fallback ----------------------------- */
   try {
-    const mod = await import(`@themes/${theme}/tailwind-tokens`);
+    const mod = await import(
+      /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$)/ */
+      `@themes/${theme}/tailwind-tokens`
+    );
     return mod.tokens as TokenMap;
   } catch {
     /* if everything fails, stay functional by falling back to base */

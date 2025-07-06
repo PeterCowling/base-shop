@@ -15,6 +15,6 @@
     "next": "^15.3.4"
   },
   "scripts": {
-    "test": "jest --config ../../jest.config.ts"
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   }
 }

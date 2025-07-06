@@ -58,7 +58,7 @@ export default function Wizard({
   const [logo, setLogo] = useState("");
   const [contactInfo, setContactInfo] = useState("");
   const [template, setTemplate] = useState(templates[0] ?? "");
-  const [theme, setTheme] = useState(themes[0] ?? "");
+  const [theme, setTheme] = useState(themes[0] ?? "base");
   const [payment, setPayment] = useState<string[]>([]);
   const [shipping, setShipping] = useState<string[]>([]);
   const [creating, setCreating] = useState(false);

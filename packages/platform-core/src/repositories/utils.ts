@@ -27,7 +27,10 @@ export async function loadThemeTokens(
 ): Promise<Record<string, string>> {
   if (theme === "base") return {};
   try {
-    const mod = await import(`@themes/${theme}/tailwind-tokens`);
+    const mod = await import(
+      /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$)/ */
+      `@themes/${theme}/tailwind-tokens`
+    );
     return (mod as { tokens: Record<string, string> }).tokens;
   } catch {
     return {};

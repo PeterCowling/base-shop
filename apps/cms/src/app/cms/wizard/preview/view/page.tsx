@@ -24,7 +24,10 @@ const baseTokens: TokenMap = Object.fromEntries(
 async function loadThemeTokens(theme: string): Promise<TokenMap> {
   if (theme === "base") return baseTokens;
   try {
-    const mod = await import(`@themes/${theme}/tailwind-tokens`);
+    const mod = await import(
+      /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$)/ */
+      `@themes/${theme}/tailwind-tokens`
+    );
     return mod.tokens as TokenMap;
   } catch {
     return baseTokens;

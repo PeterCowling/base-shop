@@ -9,7 +9,7 @@ import { runInNewContext } from "vm";
  * Returns an empty object when the theme does not provide tokens.
  */
 export function loadThemeTokens(theme: string): Record<string, string> {
-  if (theme === "base") return {};
+  if (!theme || theme === "base") return {};
   const modPath = join("packages", "themes", theme, "tailwind-tokens.ts");
   if (!existsSync(modPath)) return {};
   const source = readFileSync(modPath, "utf8");

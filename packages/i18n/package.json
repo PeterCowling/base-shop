@@ -10,7 +10,7 @@
   },
   "main": "./src/index.ts",
   "scripts": {
-    "test": "jest --config ../../jest.config.ts"
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "devDependencies": {
     "next": "^15.3.4"

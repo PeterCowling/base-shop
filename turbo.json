@@ -9,6 +9,11 @@
       "outputs": [".vercel/**", "dist/**"]
     },
     "lint": {},
-    "test": {}
+    "test": {
+      "dependsOn": [],
+      "outputs": [],
+      "cache": false,
+      "failFast": true
+    }
   }
 }

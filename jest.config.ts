@@ -54,7 +54,7 @@ const config: Config = {
     "^@types$": "<rootDir>/packages/types/src/index.ts",
     "^@types/shared$": "<rootDir>/packages/types/src/index.ts",
     "^@types/shared/(.*)$": "<rootDir>/packages/types/src/$1",
-    "^@types/(.*)$": "<rootDir>/src/types/$1",
+    "^@types/(.*)$": "<rootDir>/packages/types/src/$1",
     "^react$": "<rootDir>/node_modules/react",
     "^react-dom$": "<rootDir>/node_modules/react-dom",
     "^react/jsx-runtime$": "<rootDir>/node_modules/react/jsx-runtime.js",

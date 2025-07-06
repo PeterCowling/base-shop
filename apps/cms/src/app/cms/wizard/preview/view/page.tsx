@@ -8,7 +8,7 @@ import TranslationsProvider from "@i18n/Translations";
 import {
   tokens as baseTokensSrc,
   type TokenMap as BaseTokenMap,
-} from "@themes/base/tokens";
+} from "@themes/base/src/tokens";
 import { draftMode } from "next/headers";
 import type { CSSProperties } from "react";
 

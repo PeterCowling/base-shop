@@ -34,7 +34,6 @@ export function useImageOrientationValidation(
     };
 
     img.src = url;
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- run whenever file changes
   }, [file]);
 
   const isValid = actual === null ? null : actual === required;

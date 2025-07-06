@@ -17,7 +17,7 @@ function ProductsTableBase({ shop, rows, isAdmin }) {
     /* ---------------------------------------------------------------------- */
     const handleDuplicate = useCallback((id) => duplicateProduct(shop, id), [shop]);
     const handleDelete = useCallback((id) => {
-        /* eslint-disable no-alert -- simple confirm dialog is fine here */
+         
         if (confirm("Delete this product?"))
             deleteProduct(shop, id);
     }, [shop]);

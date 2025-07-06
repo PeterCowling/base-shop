@@ -34,17 +34,21 @@ const config: Config = {
    * Adjust the paths below if the folder layout changes.
    */
   moduleNameMapper: {
-    "^@platform-core$": "<rootDir>/packages/platform-core/index.ts",
-    "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/$1",
+    "^@platform-core$": "<rootDir>/packages/platform-core/src/index.ts",
+    "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/src/$1",
     "^@apps/(.*)$": "<rootDir>/apps/$1/src",
     "^@cms/(.*)$": "<rootDir>/apps/cms/src/$1",
     "^@lib/stripeServer$": "<rootDir>/packages/lib/src/stripeServer.server.ts",
+    "^@lib/stripeServer.server$":
+      "<rootDir>/packages/lib/src/stripeServer.server.ts",
     "^@lib/(.*)$": "<rootDir>/packages/lib/$1",
     "^@auth$": "<rootDir>/packages/auth/src/index.ts",
     "^@auth/(.*)$": "<rootDir>/packages/auth/src/$1",
     "^@/lib/stripeServer$": "<rootDir>/packages/lib/src/stripeServer.server.ts",
-    "^@/lib/(.*)$": "<rootDir>/packages/platform-core/$1",
-    "^@/contexts/(.*)$": "<rootDir>/packages/platform-core/contexts/$1",
+    "^@/lib/stripeServer.server$":
+      "<rootDir>/packages/lib/src/stripeServer.server.ts",
+    "^@/lib/(.*)$": "<rootDir>/packages/platform-core/src/$1",
+    "^@/contexts/(.*)$": "<rootDir>/packages/platform-core/src/contexts/$1",
     "^@/components/(.*)$": "<rootDir>/packages/ui/components/$1",
     "^@ui/(.*)$": "<rootDir>/packages/ui/$1",
     "^@i18n/(.*)$": "<rootDir>/packages/i18n/src/$1",

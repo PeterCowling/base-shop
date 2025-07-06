@@ -8,7 +8,7 @@
     /* build behaviour ------------------------------------------------- */
     "noEmit": true,
     "incremental": true,
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
     /* language / libs ------------------------------------------------- */
     "target": "ES2017",

@@ -33,14 +33,7 @@
     "../../packages/i18n/src/**/*.json",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "dist",
-    "__tests__",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "node_modules",
-    "../../apps-script"
-  ],
+  "exclude": ["dist", "node_modules", "../../apps-script"],
   "references": [
     {
       "path": "../../packages/auth"

@@ -69,7 +69,7 @@ function Wrapper({
   useEffect(() => {
     setSearch(search);
     setStatus(status);
-  }, [search, status]);
+  }, [search, status, setSearch, setStatus]); // <- added missing deps
 
   return (
     <span data-testid="ids">{filteredRows.map((p) => p.id).join(",")}</span>

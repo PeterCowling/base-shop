@@ -9,7 +9,7 @@ import MediaFileList from "./MediaFileList";
 export default function MediaManager({ shop, initialFiles }) {
     const [files, setFiles] = useState(initialFiles);
     const handleDelete = useCallback(async (src) => {
-        /* eslint-disable no-alert -- simple confirmation is fine */
+         
         if (!confirm("Delete this image?"))
             return;
         await deleteMedia(shop, src);

@@ -1,4 +1,4 @@
-import { createFSM } from "../fsm";
+import { createFSM } from "./fsm";
 
 describe("createFSM", () => {
   it("updates state on valid transitions", () => {

@@ -17,5 +17,21 @@
   "include": ["jest.setup.ts", "test/**/*.ts", "test/**/*.tsx"],
 
   /* keep E2E tests and their own config out of this pass ------------ */
-  "exclude": ["test/e2e/**", "test/tsconfig.json"]
+  "exclude": ["test/e2e/**", "test/tsconfig.json"],
+  "references": [
+    { "path": "./packages/auth/tsconfig.test.json" },
+    { "path": "./packages/config/tsconfig.test.json" },
+    { "path": "./packages/configurator/tsconfig.test.json" },
+    { "path": "./packages/design-tokens/tsconfig.test.json" },
+    { "path": "./packages/lib/tsconfig.test.json" },
+    { "path": "./packages/platform-core/tsconfig.test.json" },
+    { "path": "./packages/platform-machine/tsconfig.test.json" },
+    { "path": "./packages/tailwind-config/tsconfig.test.json" },
+    { "path": "./packages/template-app/tsconfig.test.json" },
+    { "path": "./packages/types/tsconfig.test.json" },
+    { "path": "./packages/ui/tsconfig.test.json" },
+    { "path": "./packages/i18n/tsconfig.test.json" },
+    { "path": "./apps/cms/tsconfig.test.json" },
+    { "path": "./apps/shop-abc/tsconfig.test.json" }
+  ]
 }

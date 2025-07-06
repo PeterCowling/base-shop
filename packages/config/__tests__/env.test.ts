@@ -15,7 +15,7 @@ describe("envSchema", () => {
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
     } as NodeJS.ProcessEnv;
 
-    const { envSchema } = await import("../env");
+    const { envSchema } = await import("../src/env");
     const parsed = envSchema.parse({
       STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
@@ -34,7 +34,7 @@ describe("envSchema", () => {
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
     } as NodeJS.ProcessEnv;
 
-    const { envSchema } = await import("../env");
+    const { envSchema } = await import("../src/env");
 
     const invalid = {
       STRIPE_SECRET_KEY: "sk",

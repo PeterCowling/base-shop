@@ -9,13 +9,16 @@
 const { readFileSync } = require("fs");
 const path = require("path");
 const { pathsToModuleNameMapper } = require("ts-jest");
+const ts = require("typescript");
 
 // -----------------------------------------------------------------------
 // 1️⃣  Pull tsconfig paths so we don't hand-maintain 30+ aliases
 // -----------------------------------------------------------------------
-const tsconfig = JSON.parse(
-  readFileSync(path.resolve(__dirname, "tsconfig.json"), "utf8")
-);
+// Use the base tsconfig so path aliases are available during tests
+const tsconfig = ts.readConfigFile(
+  path.resolve(__dirname, "tsconfig.base.json"),
+  ts.sys.readFile
+).config;
 const tsPaths =
   tsconfig.compilerOptions && tsconfig.compilerOptions.paths
     ? pathsToModuleNameMapper(tsconfig.compilerOptions.paths, {
@@ -57,10 +60,22 @@ module.exports = {
   moduleNameMapper: {
     ...tsPaths,
 
+    // ――― new: handle imports that still include `/src/`
+    "^@platform-core/src/(.*)$": "<rootDir>/packages/platform-core/src/$1",
+    "^@ui/src/(.*)$": "<rootDir>/packages/ui/src/$1",
+
     // legacy relative imports still used inside tests
     "^\\.\\./repositories/(.*)$":
       "<rootDir>/packages/platform-core/src/repositories/$1",
     "^\\.\\./pricing$": "<rootDir>/packages/platform-core/src/pricing/index.ts",
+
+    // tests still import '../../../packages/platform-core/repositories/*'
+    "^../../../packages/platform-core/repositories/(.*)$":
+      "<rootDir>/packages/platform-core/src/repositories/$1",
+
+    // Point tests at new UI components folder
+    "^../packages/ui/components/(.*)$":
+      "<rootDir>/packages/ui/src/components/$1",
 
     // fixture JSON moved during the Turbo 2 migration
     "^functions/data/rental/(.*)$":

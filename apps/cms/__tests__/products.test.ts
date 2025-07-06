@@ -54,8 +54,8 @@ describe("product actions", () => {
 
   it("createDraftRecord populates locales from settings", async () => {
     await withRepo(async () => {
-      const { writeSettings } = await import(
-        "../../../packages/platform-core/repositories/json.server"
+      const { writeShopSettings: writeSettings } = await import(
+        "@platform-core/repositories/shopSettings"
       );
       // Custom locales for this shop
       await writeSettings("test", {

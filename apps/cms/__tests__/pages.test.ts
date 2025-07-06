@@ -43,7 +43,7 @@ describe("page actions", () => {
       expect(result.page?.slug).toBe("home");
 
       const { getPages } = await import(
-        "../../../packages/platform-core/repositories/pages/index.server"
+        "@platform-core/repositories/pages/index.server"
       );
       const pages = await getPages("test");
       expect(pages).toHaveLength(1);
@@ -56,7 +56,7 @@ describe("page actions", () => {
     await withRepo(async () => {
       mockAuth();
       const repo = await import(
-        "../../../packages/platform-core/repositories/pages/index.server"
+        "@platform-core/repositories/pages/index.server"
       );
       const now = new Date().toISOString();
       const page = {
@@ -94,7 +94,7 @@ describe("page actions", () => {
     await withRepo(async () => {
       mockAuth();
       const repo = await import(
-        "../../../packages/platform-core/repositories/pages/index.server"
+        "@platform-core/repositories/pages/index.server"
       );
       const now = new Date().toISOString();
       const page = {

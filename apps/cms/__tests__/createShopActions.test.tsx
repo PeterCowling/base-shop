@@ -4,7 +4,17 @@ import os from "node:os";
 import path from "node:path";
 import "../src/types/next-auth.d.ts";
 
-/** Create temp dir, run cb with cwd set, then restore */
+/* -------------------------------------------------------------------------- */
+/* Helpers                                                                    */
+/* -------------------------------------------------------------------------- */
+
+/** Shape of the JSON file we persist in data/cms/users.json */
+interface StoredUsersFile {
+  roles: Record<string, string | string[]>;
+  users: Record<string, { id: string; email: string }>;
+}
+
+/** Create a temporary repo, set CWD to it for the duration of `cb`, then restore */
 async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "rbac-"));
   const cwd = process.cwd();
@@ -17,6 +27,7 @@ async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   }
 }
 
+/** Convenience for building a FormData object from a record */
 function fd(data: Record<string, string | string[]>): FormData {
   const f = new FormData();
   for (const [k, v] of Object.entries(data)) {
@@ -31,27 +42,40 @@ function fd(data: Record<string, string | string[]>): FormData {
 
 afterEach(() => jest.resetAllMocks());
 
+/* -------------------------------------------------------------------------- */
+/* Tests                                                                      */
+/* -------------------------------------------------------------------------- */
+
 describe("createNewShop authorization", () => {
   it("throws when session is missing", async () => {
     jest.resetModules();
+
+    // Force development mode so NextAuth won’t complain about missing secret
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
+
     jest.doMock("next-auth", () => ({
       getServerSession: jest.fn(() => Promise.resolve(null)),
     }));
+
     const { createNewShop } = await import(
       "../src/actions/createShop.server.js"
     );
+
     await expect(createNewShop("shop1", {} as any)).rejects.toThrow(
       "Forbidden"
     );
+
+    // Restore original NODE_ENV
     (process.env as Record<string, string>).NODE_ENV = prevEnv;
   });
 
   it("calls createShop when authorized", async () => {
     jest.resetModules();
+
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
+
     const createShop = jest.fn();
     jest.doMock("@platform-core/createShop", () => ({
       __esModule: true,
@@ -62,11 +86,14 @@ describe("createNewShop authorization", () => {
         Promise.resolve({ user: { role: "admin" } })
       ),
     }));
+
     const { createNewShop } = await import(
       "../src/actions/createShop.server.js"
     );
     await createNewShop("shop2", { theme: "base" });
+
     expect(createShop).toHaveBeenCalledWith("shop2", { theme: "base" });
+
     (process.env as Record<string, string>).NODE_ENV = prevEnv;
   });
 });
@@ -92,10 +119,12 @@ describe("rbac actions persistence", () => {
       );
       expect(user).toBeDefined();
       expect(db.roles[user!.id]).toBe("viewer");
-      // ensure file written
+
+      // Ensure the file was written
       const stored = JSON.parse(
         await fs.readFile(path.join(dir, "data", "cms", "users.json"), "utf8")
-      );
+      ) as StoredUsersFile;
+
       expect(stored.roles[user!.id]).toBe("viewer");
     });
   });
@@ -110,9 +139,11 @@ describe("rbac actions persistence", () => {
 
       const db = await readRbac();
       expect(db.roles["2"]).toEqual(["admin", "viewer"]);
+
       const file = JSON.parse(
         await fs.readFile(path.join(dir, "data", "cms", "users.json"), "utf8")
-      );
+      ) as StoredUsersFile;
+
       expect(file.roles["2"]).toEqual(["admin", "viewer"]);
     });
   });

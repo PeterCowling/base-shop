@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "dev": {
       "cache": false,
       "dependsOn": ["^dev"]
@@ -12,8 +12,7 @@
     "test": {
       "dependsOn": [],
       "outputs": [],
-      "cache": false,
-      "failFast": true
+      "cache": false
     }
   }
 }

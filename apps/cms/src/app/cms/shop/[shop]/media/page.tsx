@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/media/page.tsx
 
-import { listMedia } from "@cms/actions/media.server";
+import { deleteMedia, listMedia } from "@cms/actions/media.server";
 import { checkShopExists } from "@lib/checkShopExists.server";
 import MediaManager from "@ui/components/cms/MediaManager";
 import { notFound } from "next/navigation";
@@ -17,12 +17,15 @@ export default async function MediaPage({
   params: Promise<Params>;
 }) {
   const { shop } = await params;
+
   if (!(await checkShopExists(shop))) return notFound();
+
   const files = await listMedia(shop);
+
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Media – {shop}</h2>
-      <MediaManager shop={shop} initialFiles={files} />
+      <MediaManager shop={shop} initialFiles={files} onDelete={deleteMedia} />
     </div>
   );
 }

@@ -1,7 +1,7 @@
-// packages/ui/components/cms/ProductsTable.tsx
+// packages/ui/src/components/cms/ProductsTable.client.tsx
+
 "use client";
 
-import { deleteProduct, duplicateProduct } from "@cms/actions/products.server";
 import { ProductPublication } from "@platform-core/src/products";
 import { useProductFilters } from "@ui/hooks/useProductFilters";
 import Link from "next/link";
@@ -17,6 +17,16 @@ interface Props {
   shop: string;
   rows: ProductPublication[];
   isAdmin: boolean;
+  /**
+   * Callback that duplicates a product on the server.
+   * Provided by the host application (e.g. `apps/cms`).
+   */
+  onDuplicate: (shop: string, productId: string) => void | Promise<void>;
+  /**
+   * Callback that deletes a product on the server.
+   * Provided by the host application (e.g. `apps/cms`).
+   */
+  onDelete: (shop: string, productId: string) => void | Promise<void>;
 }
 
 interface Column<T> {
@@ -29,31 +39,38 @@ interface Column<T> {
 /*  Component                                                                 */
 /* -------------------------------------------------------------------------- */
 
-function ProductsTableBase({ shop, rows, isAdmin }: Props): ReactElement {
+function ProductsTableBase({
+  shop,
+  rows,
+  isAdmin,
+  onDuplicate,
+  onDelete,
+}: Props): ReactElement {
+  /* ---------------------------------------------------------------------- */
+  /*  Filters                                                               */
+  /* ---------------------------------------------------------------------- */
   const { search, status, setSearch, setStatus, filteredRows } =
     useProductFilters(rows);
 
   /* ---------------------------------------------------------------------- */
   /*  Stable action handlers                                                */
   /* ---------------------------------------------------------------------- */
-
   const handleDuplicate = useCallback(
-    (id: string) => duplicateProduct(shop, id),
-    [shop]
+    (id: string) => onDuplicate(shop, id),
+    [onDuplicate, shop]
   );
 
   const handleDelete = useCallback(
     (id: string) => {
       /* eslint-disable no-alert -- simple confirm dialog is fine here */
-      if (confirm("Delete this product?")) deleteProduct(shop, id);
+      if (confirm("Delete this product?")) onDelete(shop, id);
     },
-    [shop]
+    [onDelete, shop]
   );
 
   /* ---------------------------------------------------------------------- */
   /*  Columns                                                               */
   /* ---------------------------------------------------------------------- */
-
   const columns = useMemo<Column<ProductPublication>[]>(() => {
     return [
       {
@@ -101,7 +118,6 @@ function ProductsTableBase({ shop, rows, isAdmin }: Props): ReactElement {
   /* ---------------------------------------------------------------------- */
   /*  Render                                                                */
   /* ---------------------------------------------------------------------- */
-
   return (
     <div className="space-y-4">
       <ProductFilters
@@ -110,11 +126,7 @@ function ProductsTableBase({ shop, rows, isAdmin }: Props): ReactElement {
         onSearchChange={setSearch}
         onStatusChange={setStatus}
       />
-      <DataTable
-        rows={filteredRows}
-        columns={columns}
-        selectable={isAdmin}
-      />{" "}
+      <DataTable rows={filteredRows} columns={columns} selectable={isAdmin} />
     </div>
   );
 }

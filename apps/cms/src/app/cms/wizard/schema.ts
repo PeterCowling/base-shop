@@ -1,5 +1,5 @@
 // apps/cms/src/app/cms/wizard/schema.ts
-import { LOCALES, type Locale } from "@types";
+import { LOCALES, localeSchema, type Locale } from "@types";
 import { ulid } from "ulid";
 import { z } from "zod";
 import { baseTokens } from "./utils";
@@ -51,6 +51,21 @@ export const navItemSchema = _navItemSchema as unknown as z.ZodType<
   z.ZodTypeDef,
   NavItem
 >;
+
+/* -------------------------------------------------------------------------- */
+/*  Page-info schema                                                          */
+/* -------------------------------------------------------------------------- */
+
+export const pageInfoSchema = z.object({
+  id: z.string().optional(),
+  slug: z.string(),
+  title: z.record(localeSchema, z.string()),
+  description: z.record(localeSchema, z.string()),
+  image: z.record(localeSchema, z.string()),
+  components: z.array(z.any()).default([]),
+});
+
+export type PageInfo = z.infer<typeof pageInfoSchema>;
 
 /* -------------------------------------------------------------------------- */
 /*  Wizard‑state schema                                                       */
@@ -111,7 +126,7 @@ export const wizardStateSchema = z.object({
     .array(navItemSchema)
     .default(() => [{ id: ulid(), label: "Shop", url: "/shop" }]),
 
-  pages: z.array(z.any()).default([]),
+  pages: z.array(pageInfoSchema).default([]),
   newPageLayout: z.string().optional().default(""),
 
   domain: z.string().optional().default(""),

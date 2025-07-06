@@ -1,31 +1,53 @@
-// packages/ui/components/cms/MediaManager.tsx
+// packages/ui/src/components/cms/MediaManager.tsx
 "use client";
 
 import { Input } from "@/components/atoms-shadcn";
-import { deleteMedia } from "@cms/actions/media.server";
 import type { ImageOrientation, MediaItem } from "@types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
-import { useCallback, useState } from "react";
+import { memo, ReactElement, useCallback, useState } from "react";
 import MediaFileList from "./MediaFileList";
+
+/* -------------------------------------------------------------------------- */
+/*  Types                                                                     */
+/* -------------------------------------------------------------------------- */
 
 interface Props {
   shop: string;
   initialFiles: MediaItem[];
+  /**
+   * Removes a media item on the server.
+   * Implemented in – and supplied by – the host application (e.g. `apps/cms`).
+   */
+  onDelete: (shop: string, src: string) => void | Promise<void>;
 }
 
-export default function MediaManager({ shop, initialFiles }: Props) {
+/* -------------------------------------------------------------------------- */
+/*  Component                                                                 */
+/* -------------------------------------------------------------------------- */
+
+function MediaManagerBase({
+  shop,
+  initialFiles,
+  onDelete,
+}: Props): ReactElement {
   const [files, setFiles] = useState<MediaItem[]>(initialFiles);
 
+  /* ---------------------------------------------------------------------- */
+  /*  Delete handler (stable)                                               */
+  /* ---------------------------------------------------------------------- */
   const handleDelete = useCallback(
     async (src: string) => {
       /* eslint-disable no-alert -- simple confirmation is fine */
       if (!confirm("Delete this image?")) return;
-      await deleteMedia(shop, src);
+      await onDelete(shop, src);
       setFiles((prev) => prev.filter((f) => f.url !== src));
     },
-    [shop]
+    [onDelete, shop]
   );
 
+  /* ---------------------------------------------------------------------- */
+  /*  Upload workflow (via custom hook)                                     */
+  /* ---------------------------------------------------------------------- */
   const REQUIRED_ORIENTATION: ImageOrientation = "landscape";
   const {
     pendingFile,
@@ -46,8 +68,12 @@ export default function MediaManager({ shop, initialFiles }: Props) {
     onUploaded: (item) => setFiles((prev) => [item, ...prev]),
   });
 
+  /* ---------------------------------------------------------------------- */
+  /*  Render                                                                */
+  /* ---------------------------------------------------------------------- */
   return (
     <div className="space-y-6">
+      {/* Upload drop-zone / picker */}
       <div
         onDrop={onDrop}
         onDragOver={(e) => e.preventDefault()}
@@ -64,6 +90,8 @@ export default function MediaManager({ shop, initialFiles }: Props) {
         />
         Drop image here or click to upload
       </div>
+
+      {/* Validation / progress feedback */}
       {error && <p className="text-sm text-red-600">{error}</p>}
       {progress && (
         <p className="text-sm text-gray-600">
@@ -100,9 +128,17 @@ export default function MediaManager({ shop, initialFiles }: Props) {
           )}
         </div>
       )}
+
+      {/* File list */}
       {files.length > 0 && (
         <MediaFileList files={files} onDelete={handleDelete} />
       )}
     </div>
   );
 }
+
+/* -------------------------------------------------------------------------- */
+/*  Export                                                                    */
+/* -------------------------------------------------------------------------- */
+
+export default memo(MediaManagerBase);

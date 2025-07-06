@@ -11,8 +11,8 @@
     "lint": {},
     "test": {
       "dependsOn": [],
-      "outputs": [],
-      "cache": false
+      "cache": false,
+      "outputs": ["coverage/**"]
     }
   }
 }

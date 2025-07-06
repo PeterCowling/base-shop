@@ -1,8 +1,6 @@
-// tsconfig.json
 {
   "extends": "./tsconfig.base.json",
 
-  /* ────────── project references ────────── */
   "references": [
     { "path": "./packages/types" },
     { "path": "./tsconfig.packages.json" },

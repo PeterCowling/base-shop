@@ -1,19 +1,15 @@
-// packages/themes/abc/tsconfig.json
 {
   "extends": "../../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* this theme ships compiled JS + declaration files --------------- */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
     "outDir": "dist",
 
-    /* forbid `import './file.ts'` in source --------------------------- */
     "allowImportingTsExtensions": false,
 
-    /* Node globals only (browser libs inherited from base) ----------- */
     "types": ["node"]
   },
 

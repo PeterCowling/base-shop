@@ -42,7 +42,7 @@
     "lh:checkout": "lighthouse http://localhost:3000/en/checkout --chrome-flags=\"--headless\" --only-categories=performance,accessibility,best-practices,seo --preset=desktop",
     "validate-env": "ts-node scripts/validate-env.ts",
     "shadcn:diff": "ts-node scripts/diff-shadcn.ts",
-    "tailwind:check": "jest test/unit/tailwind-build.spec.ts",
+    "tailwind:check": "jest test/unit/tailwind-build.spec.ts test/unit/postcss-config.spec.ts",
     "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
   },
   "dependencies": {
@@ -123,14 +123,14 @@
     "react-server-dom-webpack": "^19.1.0",
     "storybook": "^9.0.13",
     "superstruct": "^2.0.2",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.1.11",
     "ts-jest": "^29.1.5",
     "ts-node": "^10.9.1",
+    "tsx": "^4.7.0",
     "turbo": "^1.13.0",
     "typescript": "5.8.3",
     "vite": "^7.0.0",
-    "wrangler": "^4.20.4",
-    "tsx": "^4.7.0"
+    "wrangler": "^4.20.4"
   },
   "pnpm": {
     "overrides": {

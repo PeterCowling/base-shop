@@ -42,6 +42,10 @@ describe("createShop", () => {
     ).filter;
     expect(filter("foo/node_modules/bar")).toBe(false);
     expect(filter("foo/src/index.ts")).toBe(true);
+    expect(fsMock.cpSync).toHaveBeenCalledWith(
+      "postcss.config.cjs",
+      expect.stringContaining("apps/shop1/postcss.config.cjs")
+    );
   });
 
   it("writes .env with generated secrets", () => {

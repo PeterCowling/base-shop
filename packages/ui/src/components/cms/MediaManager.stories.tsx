@@ -9,6 +9,7 @@ const meta: Meta<typeof MediaManager> = {
   args: {
     shop: "demo",
     initialFiles: files,
+    onDelete: () => alert("delete"),
   },
   argTypes: {
     shop: { control: "text" },

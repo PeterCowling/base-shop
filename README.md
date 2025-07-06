@@ -24,6 +24,9 @@ pnpm dev
 npm run dev
 Open http://localhost:3000 to view the site. Pages hot-reload on save.
 
+Each Next.js app must provide its own `postcss.config.cjs` that forwards to the repo root configuration so Tailwind resolves correctly. After updating Tailwind or any CSS utilities, run `pnpm tailwind:check` to verify the build.
+
+
 Useful targets
 Script	What it does
 pnpm dev	Local dev server (next dev)

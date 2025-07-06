@@ -4,6 +4,7 @@ import { LOCALES, localeSchema, type Locale } from "@types";
 import { spawnSync } from "child_process";
 import { randomBytes } from "crypto";
 import {
+  cpSync,
   existsSync,
   mkdirSync,
   readdirSync,
@@ -172,6 +173,8 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
   }
 
   copyTemplate(templateApp, newApp);
+  // ensure PostCSS setup is available in the generated shop
+  cpSync("postcss.config.cjs", join(newApp, "postcss.config.cjs"));
   const pkgPath = join(newApp, "package.json");
   const pkg = JSON.parse(readFileSync(pkgPath, "utf8")) as PackageJSON;
   pkg.dependencies ??= {};

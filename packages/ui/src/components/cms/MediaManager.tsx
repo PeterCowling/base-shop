@@ -14,6 +14,7 @@ import MediaFileList from "./MediaFileList";
 interface Props {
   shop: string;
   initialFiles: MediaItem[];
+
   /**
    * Removes a media item on the server.
    * Implemented in – and supplied by – the host application (e.g. `apps/cms`).

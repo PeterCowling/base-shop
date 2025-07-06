@@ -12,6 +12,7 @@ import {
 import PageBuilder from "@/components/cms/PageBuilder";
 import { Locale, LOCALES, Page, PageComponent } from "@types";
 import { ulid } from "ulid";
+import { toPageInfo } from "../utils/page";
 
 interface PageInfo {
   id?: string;
@@ -202,14 +203,17 @@ export default function StepAdditionalPages({
               onClick={() => {
                 setPages([
                   ...pages,
-                  {
-                    id: newDraftId ?? undefined,
-                    slug: newSlug,
-                    title: newTitle,
-                    description: newDesc,
-                    image: newImage,
-                    components: newComponents,
-                  },
+                  toPageInfo(
+                    {
+                      id: newDraftId ?? undefined,
+                      slug: newSlug,
+                      title: newTitle,
+                      description: newDesc,
+                      image: newImage,
+                      components: newComponents,
+                    },
+                    languages
+                  ),
                 ]);
                 setNewSlug("");
                 const createEmptyLocaleRecord = () =>

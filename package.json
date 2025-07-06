@@ -42,6 +42,7 @@
     "lh:checkout": "lighthouse http://localhost:3000/en/checkout --chrome-flags=\"--headless\" --only-categories=performance,accessibility,best-practices,seo --preset=desktop",
     "validate-env": "ts-node scripts/validate-env.ts",
     "shadcn:diff": "ts-node scripts/diff-shadcn.ts",
+    "tailwind:check": "jest test/unit/tailwind-build.spec.ts",
     "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
   },
   "dependencies": {

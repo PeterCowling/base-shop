@@ -1,7 +1,8 @@
 // /tailwind.config.mjs
-import tokens from "@acme/design-tokens";
-import preset from "@acme/tailwind-config";
+// Use workspace source paths to avoid requiring built packages
 import { createRequire } from "node:module";
+import tokens from "./packages/design-tokens/index.ts";
+import preset from "./packages/tailwind-config/src/index.ts";
 
 /* ------------------------------------------------------------
  *  Runtime diagnostics — module resolution + preset sanity

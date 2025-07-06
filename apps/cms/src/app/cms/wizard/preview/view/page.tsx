@@ -5,7 +5,10 @@ import { Footer, Header, SideNav } from "@/components/organisms";
 import { AppShell } from "@/components/templates/AppShell";
 import { resolveLocale } from "@i18n/locales";
 import TranslationsProvider from "@i18n/Translations";
-import { tokens as baseTokensSrc } from "@themes/base/tokens";
+import {
+  tokens as baseTokensSrc,
+  type TokenMap as BaseTokenMap,
+} from "@themes/base/tokens";
 import { draftMode } from "next/headers";
 import type { CSSProperties } from "react";
 
@@ -15,7 +18,7 @@ export const dynamic = "force-dynamic";
 type TokenMap = Record<`--${string}`, string>;
 
 const baseTokens: TokenMap = Object.fromEntries(
-  Object.entries(baseTokensSrc).map(([k, v]) => [k, v.light])
+  Object.entries(baseTokensSrc as BaseTokenMap).map(([k, v]) => [k, v.light])
 ) as TokenMap;
 
 async function loadThemeTokens(theme: string): Promise<TokenMap> {

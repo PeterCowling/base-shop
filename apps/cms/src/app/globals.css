@@ -2,7 +2,8 @@
    CMS-wide globals powered by design-system tokens                    */
 @config "../../../../tailwind.config.mjs";
 
-@import "@themes/base/tokens.css";
+/* Use a relative path so PostCSS resolves tokens without package build */
+@import "../../../../packages/themes/base/src/tokens.css";
 @import "tailwindcss";
 
 /* -------- CSS reset (minimal) ------------------------------------ */

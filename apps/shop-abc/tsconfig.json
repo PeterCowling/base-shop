@@ -39,7 +39,8 @@
     "dist", // keeps fresh emits out of next graph
     "node_modules",
     "../../apps-script",
-    "src/routes/preview/[pageId].ts"
+    "src/routes/preview/[pageId].ts",
+    ".next"
   ],
 
   "references": [

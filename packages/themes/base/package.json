@@ -4,7 +4,7 @@
   "private": true,
   "files": [
     "dist",
-    "tokens.css"
+    "src/tokens.css"
   ],
   "main": "./dist/src/index.js",
   "module": "./dist/src/index.js",
@@ -15,7 +15,8 @@
       "import": "./dist/src/index.js",
       "require": "./dist/src/index.js"
     },
-    "./tokens.css": "./tokens.css"
+    "./tokens.css": "./tokens.css",
+    "./src/tokens.css": "./src/tokens.css"
   },
   "sideEffects": false
 }

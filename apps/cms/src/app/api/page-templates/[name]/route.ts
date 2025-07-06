@@ -1,3 +1,5 @@
+// apps/cms/src/app/api/page-templates/[name]/route.ts
+
 import { NextResponse } from "next/server";
 import fsSync, { promises as fs } from "node:fs";
 import path from "node:path";

@@ -45,8 +45,9 @@ export default function StepProductPage({
       <Select
         value={productLayout}
         onValueChange={(val) => {
-          setProductLayout(val);
-          const tpl = pageTemplates.find((t) => t.name === val);
+          const layout = val === "blank" ? "" : val;
+          setProductLayout(layout);
+          const tpl = pageTemplates.find((t) => t.name === layout);
           if (tpl) {
             setProductComponents(
               tpl.components.map((c) => ({ ...c, id: ulid() }))
@@ -60,7 +61,7 @@ export default function StepProductPage({
           <SelectValue placeholder="Select template" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">Blank</SelectItem>
+          <SelectItem value="blank">Blank</SelectItem>
           {pageTemplates.map((t) => (
             <SelectItem key={t.name} value={t.name}>
               {t.name}

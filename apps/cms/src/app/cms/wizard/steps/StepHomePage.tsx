@@ -45,8 +45,9 @@ export default function StepHomePage({
       <Select
         value={homeLayout}
         onValueChange={(val) => {
-          setHomeLayout(val);
-          const tpl = pageTemplates.find((t) => t.name === val);
+          const layout = val === "blank" ? "" : val;
+          setHomeLayout(layout);
+          const tpl = pageTemplates.find((t) => t.name === layout);
           if (tpl) {
             setComponents(tpl.components.map((c) => ({ ...c, id: ulid() })));
           } else {
@@ -58,7 +59,7 @@ export default function StepHomePage({
           <SelectValue placeholder="Select template" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">Blank</SelectItem>
+          <SelectItem value="blank">Blank</SelectItem>
           {pageTemplates.map((t) => (
             <SelectItem key={t.name} value={t.name}>
               {t.name}

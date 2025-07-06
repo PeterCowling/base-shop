@@ -45,8 +45,9 @@ export default function StepShopPage({
       <Select
         value={shopLayout}
         onValueChange={(val) => {
-          setShopLayout(val);
-          const tpl = pageTemplates.find((t) => t.name === val);
+          const layout = val === "blank" ? "" : val;
+          setShopLayout(layout);
+          const tpl = pageTemplates.find((t) => t.name === layout);
           if (tpl) {
             setShopComponents(
               tpl.components.map((c) => ({ ...c, id: ulid() }))
@@ -60,7 +61,7 @@ export default function StepShopPage({
           <SelectValue placeholder="Select template" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">Blank</SelectItem>
+          <SelectItem value="blank">Blank</SelectItem>
           {pageTemplates.map((t) => (
             <SelectItem key={t.name} value={t.name}>
               {t.name}

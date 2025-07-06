@@ -90,8 +90,9 @@ export default function StepAdditionalPages({
           <Select
             value={newPageLayout}
             onValueChange={(val) => {
-              setNewPageLayout(val);
-              const tpl = pageTemplates.find((t) => t.name === val);
+              const layout = val === "blank" ? "" : val;
+              setNewPageLayout(layout);
+              const tpl = pageTemplates.find((t) => t.name === layout);
               if (tpl) {
                 setNewComponents(
                   tpl.components.map((c) => ({ ...c, id: ulid() }))
@@ -105,7 +106,7 @@ export default function StepAdditionalPages({
               <SelectValue placeholder="Select template" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Blank</SelectItem>
+              <SelectItem value="blank">Blank</SelectItem>
               {pageTemplates.map((t) => (
                 <SelectItem key={t.name} value={t.name}>
                   {t.name}

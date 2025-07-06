@@ -42,7 +42,7 @@
     "lh:checkout": "lighthouse http://localhost:3000/en/checkout --chrome-flags=\"--headless\" --only-categories=performance,accessibility,best-practices,seo --preset=desktop",
     "validate-env": "ts-node scripts/validate-env.ts",
     "shadcn:diff": "ts-node scripts/diff-shadcn.ts",
-    "tailwind:check": "jest test/unit/tailwind-build.spec.ts test/unit/postcss-config.spec.ts",
+    "tailwind:check": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest test/unit/tailwind-build.spec.ts test/unit/postcss-config.spec.ts test/unit/tailwind-postcss.spec.ts",
     "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN"
   },
   "dependencies": {
@@ -103,6 +103,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "chromatic": "^13.0.1",
+    "cross-env": "^7.0.3",
     "cross-fetch": "^4.1.0",
     "cypress": "^14.5.0",
     "eslint": "^9.30.1",

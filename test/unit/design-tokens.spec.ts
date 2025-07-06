@@ -1,15 +1,15 @@
 import { readFileSync } from "fs";
 import { join } from "path";
 
-import { tokens } from "../../packages/themes/base/tokens";
+import { tokens } from "../../packages/themes/base/src/tokens";
 
 describe("design tokens CSS", () => {
   const staticCss = readFileSync(
-    join(__dirname, "../../packages/themes/base/tokens.static.css"),
+    join(__dirname, "../../packages/themes/base/src/tokens.static.css"),
     "utf8"
   );
   const dynamicCss = readFileSync(
-    join(__dirname, "../../packages/themes/base/tokens.dynamic.css"),
+    join(__dirname, "../../packages/themes/base/src/tokens.dynamic.css"),
     "utf8"
   );
 

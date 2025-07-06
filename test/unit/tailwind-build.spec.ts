@@ -15,15 +15,19 @@ import { join } from "node:path";
  * 4. Always remove build artifacts, even if assertions fail.
  */
 describe("tailwind build", () => {
-  it("builds globals.css with tailwind", () => {
-    let cliPath: string;
+  let cliPath: string | null = null;
 
-    try {
-      cliPath = require.resolve("tailwindcss/lib/cli.js");
-    } catch {
-      // Gracefully skip when the CLI isn’t installed (e.g., slim CI jobs).
-      console.warn("tailwindcss CLI not found, skipping test");
-      return;
+  try {
+    cliPath = require.resolve("tailwindcss/lib/cli.js");
+  } catch {
+    console.warn("tailwindcss CLI not found, skipping test");
+  }
+
+  const itFn = cliPath ? it : it.skip;
+
+  itFn("builds globals.css with tailwind", () => {
+    if (!cliPath) {
+      throw new Error("tailwindcss CLI missing");
     }
 
     const tmpDir: string = mkdtempSync(join(os.tmpdir(), "tw-"));

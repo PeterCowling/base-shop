@@ -76,12 +76,16 @@ export default function StepOptions({
       </div>
       <div>
         <p className="font-medium">Analytics</p>
-        <Select value={analyticsProvider} onValueChange={setAnalyticsProvider}>
+        <Select
+          value={analyticsProvider}
+          onValueChange={(v) => setAnalyticsProvider(v === "none" ? "" : v)}
+        >
+          {" "}
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select provider" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">None</SelectItem>
+            <SelectItem value="none">None</SelectItem>
             <SelectItem value="ga">Google Analytics</SelectItem>
           </SelectContent>
         </Select>

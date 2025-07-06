@@ -3,7 +3,19 @@
   "version": "0.0.0",
   "private": true,
   "files": [
+    "dist",
     "tokens.css"
   ],
+  "main": "./dist/src/index.js",
+  "module": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js"
+    },
+    "./tokens.css": "./tokens.css"
+  },
   "sideEffects": false
 }

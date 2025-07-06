@@ -189,46 +189,51 @@ export default function Wizard({
   useEffect(() => {
     const json = localStorage.getItem(STORAGE_KEY);
     if (json) {
-      const parsed = wizardStateSchema.safeParse(JSON.parse(json));
-      if (parsed.success) {
-        const data = parsed.data;
-        setStep(data.step);
-        setShopId(data.shopId);
-        setStoreName(data.storeName);
-        setLogo(data.logo);
-        setContactInfo(data.contactInfo);
-        setTemplate(data.template);
-        setTheme(data.theme);
-        setPayment(data.payment);
-        setShipping(data.shipping);
-        setPageTitle(data.pageTitle);
-        setPageDescription(data.pageDescription);
-        setSocialImage(data.socialImage);
-        setComponents(data.components);
-        setHeaderComponents(data.headerComponents);
-        setHeaderPageId(data.headerPageId);
-        setFooterComponents(data.footerComponents);
-        setFooterPageId(data.footerPageId);
-        setHomePageId(data.homePageId);
-        setHomeLayout(data.homeLayout);
-        setShopComponents(data.shopComponents);
-        setShopPageId(data.shopPageId);
-        setShopLayout(data.shopLayout);
-        setProductComponents(data.productComponents);
-        setProductPageId(data.productPageId);
-        setProductLayout(data.productLayout);
-        setCheckoutLayout(data.checkoutLayout);
-        setCheckoutComponents(data.checkoutComponents);
-        setCheckoutPageId(data.checkoutPageId);
-        setAnalyticsProvider(data.analyticsProvider);
-        setAnalyticsId(data.analyticsId);
-        setNavItems(data.navItems as NavItem[]);
-        setPages(data.pages);
-        setNewPageLayout(data.newPageLayout);
-        setDomain(data.domain);
+      try {
+        const raw = JSON.parse(json);
+        const parsed = wizardStateSchema.safeParse(raw);
+        if (parsed.success) {
+          const data = parsed.data;
+          setStep(data.step);
+          setShopId(data.shopId);
+          setStoreName(data.storeName);
+          setLogo(data.logo);
+          setContactInfo(data.contactInfo);
+          setTemplate(data.template);
+          setTheme(data.theme);
+          setPayment(data.payment);
+          setShipping(data.shipping);
+          setPageTitle(data.pageTitle);
+          setPageDescription(data.pageDescription);
+          setSocialImage(data.socialImage);
+          setComponents(data.components);
+          setHeaderComponents(data.headerComponents);
+          setHeaderPageId(data.headerPageId);
+          setFooterComponents(data.footerComponents);
+          setFooterPageId(data.footerPageId);
+          setHomePageId(data.homePageId);
+          setHomeLayout(data.homeLayout);
+          setShopComponents(data.shopComponents);
+          setShopPageId(data.shopPageId);
+          setShopLayout(data.shopLayout);
+          setProductComponents(data.productComponents);
+          setProductPageId(data.productPageId);
+          setProductLayout(data.productLayout);
+          setCheckoutLayout(data.checkoutLayout);
+          setCheckoutComponents(data.checkoutComponents);
+          setCheckoutPageId(data.checkoutPageId);
+          setAnalyticsProvider(data.analyticsProvider);
+          setAnalyticsId(data.analyticsId);
+          setNavItems(data.navItems as NavItem[]);
+          setPages(data.pages);
+          setNewPageLayout(data.newPageLayout);
+          setDomain(data.domain);
 
-        setCategoriesText(data.categoriesText);
-        savedThemeVars.current = data.themeVars;
+          setCategoriesText(data.categoriesText);
+          savedThemeVars.current = data.themeVars;
+        }
+      } catch (err) {
+        console.warn("Failed to parse wizard state", err);
       }
     }
   }, []);

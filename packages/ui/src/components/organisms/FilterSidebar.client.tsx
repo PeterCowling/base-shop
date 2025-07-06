@@ -63,12 +63,16 @@ export function FilterSidebar({
               <label className="text-sm font-medium" htmlFor="size-select">
                 Size
               </label>
-              <Select value={size} onValueChange={setSize}>
+              <Select
+                value={size}
+                onValueChange={(v) => setSize(v === "all" ? "" : v)}
+              >
+                {" "}
                 <SelectTrigger id="size-select" className="w-full">
                   <SelectValue placeholder="All" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All</SelectItem>
+                  <SelectItem value="all">All</SelectItem>
                   {["36", "37", "38", "39", "40", "41", "42", "43", "44"].map(
                     (s) => (
                       <SelectItem key={s} value={s}>

@@ -10,17 +10,9 @@ import { ulid } from "ulid";
 import MediaUploadDialog from "./MediaUploadDialog";
 import StepLayout from "./steps/StepLayout";
 
-import StepCheckoutPage from "./steps/StepCheckoutPage";
-import StepShopPage from "./steps/StepShopPage";
-import {
-  baseTokens,
-  loadThemeTokens,
-  resetWizardProgress,
-  STORAGE_KEY,
-  TokenMap,
-} from "./utils";
-
+import { wizardStateSchema } from "./schema";
 import StepAdditionalPages from "./steps/StepAdditionalPages";
+import StepCheckoutPage from "./steps/StepCheckoutPage";
 import StepHomePage from "./steps/StepHomePage";
 import StepHosting from "./steps/StepHosting";
 import StepImportData from "./steps/StepImportData";
@@ -29,9 +21,17 @@ import StepOptions from "./steps/StepOptions";
 import StepProductPage from "./steps/StepProductPage";
 import StepSeedData from "./steps/StepSeedData";
 import StepShopDetails from "./steps/StepShopDetails";
+import StepShopPage from "./steps/StepShopPage";
 import StepSummary from "./steps/StepSummary";
 import StepTheme from "./steps/StepTheme";
 import StepTokens from "./steps/StepTokens";
+import {
+  baseTokens,
+  loadThemeTokens,
+  resetWizardProgress,
+  STORAGE_KEY,
+  TokenMap,
+} from "./utils";
 
 interface Props {
   themes: string[];
@@ -188,77 +188,49 @@ export default function Wizard({
 
   useEffect(() => {
     const json = localStorage.getItem(STORAGE_KEY);
-    if (!json) return;
-    try {
-      const data = JSON.parse(json);
-      if (typeof data.step === "number") setStep(data.step);
-      if (typeof data.shopId === "string") setShopId(data.shopId);
-      if (typeof data.storeName === "string") setStoreName(data.storeName);
-      if (typeof data.logo === "string") setLogo(data.logo);
-      if (typeof data.contactInfo === "string")
+    if (json) {
+      const parsed = wizardStateSchema.safeParse(JSON.parse(json));
+      if (parsed.success) {
+        const data = parsed.data;
+        setStep(data.step);
+        setShopId(data.shopId);
+        setStoreName(data.storeName);
+        setLogo(data.logo);
         setContactInfo(data.contactInfo);
-      if (typeof data.template === "string") setTemplate(data.template);
-      if (typeof data.theme === "string") setTheme(data.theme);
-      if (Array.isArray(data.payment)) setPayment(data.payment);
-      if (Array.isArray(data.shipping)) setShipping(data.shipping);
-      if (data.pageTitle) setPageTitle(data.pageTitle);
-      if (data.pageDescription) setPageDescription(data.pageDescription);
-      if (typeof data.socialImage === "string")
+        setTemplate(data.template);
+        setTheme(data.theme);
+        setPayment(data.payment);
+        setShipping(data.shipping);
+        setPageTitle(data.pageTitle);
+        setPageDescription(data.pageDescription);
         setSocialImage(data.socialImage);
-      if (Array.isArray(data.components)) setComponents(data.components);
-      if (Array.isArray(data.headerComponents))
+        setComponents(data.components);
         setHeaderComponents(data.headerComponents);
-      if (typeof data.headerPageId === "string")
         setHeaderPageId(data.headerPageId);
-      if (Array.isArray(data.footerComponents))
         setFooterComponents(data.footerComponents);
-      if (typeof data.footerPageId === "string")
         setFooterPageId(data.footerPageId);
-      if (typeof data.homePageId === "string") setHomePageId(data.homePageId);
-      if (typeof data.homeLayout === "string") setHomeLayout(data.homeLayout);
-      if (Array.isArray(data.shopComponents))
+        setHomePageId(data.homePageId);
+        setHomeLayout(data.homeLayout);
         setShopComponents(data.shopComponents);
-      if (typeof data.shopPageId === "string") setShopPageId(data.shopPageId);
-      if (typeof data.shopLayout === "string") setShopLayout(data.shopLayout);
-      if (Array.isArray(data.productComponents))
+        setShopPageId(data.shopPageId);
+        setShopLayout(data.shopLayout);
         setProductComponents(data.productComponents);
-      if (typeof data.productPageId === "string")
         setProductPageId(data.productPageId);
-      if (typeof data.productLayout === "string")
         setProductLayout(data.productLayout);
-      if (typeof data.checkoutLayout === "string")
         setCheckoutLayout(data.checkoutLayout);
-      if (Array.isArray(data.checkoutComponents))
         setCheckoutComponents(data.checkoutComponents);
-      if (typeof data.checkoutPageId === "string")
         setCheckoutPageId(data.checkoutPageId);
-      if (typeof data.analyticsProvider === "string")
         setAnalyticsProvider(data.analyticsProvider);
-      if (typeof data.analyticsId === "string")
         setAnalyticsId(data.analyticsId);
-      if (Array.isArray(data.navItems)) {
-        const convert = (items: unknown[]): NavItem[] =>
-          items.map((i) => {
-            const item = i as Record<string, unknown>;
-            return {
-              id: typeof item.id === "string" ? item.id : ulid(),
-              label: String(item.label),
-              url: String(item.url),
-              children: Array.isArray(item.children)
-                ? convert(item.children)
-                : undefined,
-            };
-          });
-        setNavItems(convert(data.navItems));
-      }
-      if (Array.isArray(data.pages)) setPages(data.pages);
-      if (typeof data.newPageLayout === "string")
+        setNavItems(data.navItems as NavItem[]);
+        setPages(data.pages);
         setNewPageLayout(data.newPageLayout);
-      if (typeof data.domain === "string") setDomain(data.domain);
-      if (typeof data.categoriesText === "string")
+        setDomain(data.domain);
+
         setCategoriesText(data.categoriesText);
-      if (data.themeVars) savedThemeVars.current = data.themeVars;
-    } catch {}
+        savedThemeVars.current = data.themeVars;
+      }
+    }
   }, []);
 
   useEffect(() => {

@@ -13,28 +13,26 @@
     /* language / libs ------------------------------------------------- */
     "target": "ES2017",
     "module": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "preserve",
     /* module resolution ------------------------------------------------ */
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@i18n/*": ["../i18n/src/*"],
+      "@ui/*": ["../ui/src/*"]
+    },
     /* tooling ---------------------------------------------------------- */
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "types": [
-      "node",
-      "react",
-      "react-dom"
-    ],
+    "types": ["node", "react", "react-dom"],
     "strict": false,
     "skipLibCheck": true,
     "allowJs": true
@@ -43,9 +41,9 @@
    *  Project references
    * ------------------------------------------------------------------ */
   "references": [
-    {
-      "path": "../types"
-    }
+    { "path": "../types" },
+    { "path": "../ui" },
+    { "path": "../i18n" }
   ],
   /* ------------------------------------------------------------------
    *  File globs
@@ -55,10 +53,5 @@
     "src/**/*",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "dist", // freshly emitted output
-    "__tests__", // unit/integration tests
-    ".turbo", // turbo cache
-    "node_modules" // package deps (if any local)
-  ]
+  "exclude": ["dist", "__tests__", ".turbo", "node_modules"]
 }

@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Wizard from "../src/app/cms/wizard/Wizard";
+import { STORAGE_KEY, baseTokens } from "../src/app/cms/wizard/utils";
 
 describe("Wizard", () => {
   const themes = ["base", "dark"];
@@ -136,5 +137,31 @@ describe("Wizard", () => {
     expect((global.fetch as jest.Mock).mock.calls[0][0]).toContain(
       "/cms/api/page-draft/shop"
     );
+  });
+
+  it("ignores invalid JSON in localStorage", () => {
+    localStorage.setItem(STORAGE_KEY, "{bad");
+    const { container } = render(
+      <Wizard themes={themes} templates={templates} />
+    );
+    expect(screen.getByText("Shop Details")).toBeInTheDocument();
+    const root = container.firstChild as HTMLElement;
+    expect(root.style.getPropertyValue("--color-primary")).toBe(
+      baseTokens["--color-primary"]
+    );
+  });
+
+  it("uses defaults when fields are missing", async () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ step: 1 }));
+    const { container } = render(
+      <Wizard themes={themes} templates={templates} />
+    );
+    await screen.findByText("Select Theme");
+    const root = container.firstChild as HTMLElement;
+    await waitFor(() => {
+      expect(root.style.getPropertyValue("--color-primary")).toBe(
+        baseTokens["--color-primary"]
+      );
+    });
   });
 });

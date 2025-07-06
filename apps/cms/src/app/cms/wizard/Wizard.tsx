@@ -8,6 +8,7 @@ import type { DeployShopResult } from "@platform-core/createShop";
 import { useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
 import MediaUploadDialog from "./MediaUploadDialog";
+import type { PageInfo } from "./schema";
 import StepLayout from "./steps/StepLayout";
 
 import { wizardStateSchema } from "./schema";
@@ -129,16 +130,7 @@ export default function Wizard({
     { id: ulid(), label: "Shop", url: "/shop" },
   ]);
 
-  const [pages, setPages] = useState<
-    Array<{
-      id?: string;
-      slug: string;
-      title: Record<Locale, string>;
-      description: Record<Locale, string>;
-      image: Record<Locale, string>;
-      components: PageComponent[];
-    }>
-  >([]);
+  const [pages, setPages] = useState<PageInfo[]>([]);
 
   const [newSlug, setNewSlug] = useState("");
   const [newTitle, setNewTitle] = useState<Record<Locale, string>>(() => {

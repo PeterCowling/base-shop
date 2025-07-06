@@ -14,14 +14,7 @@ import { Locale, LOCALES, Page, PageComponent } from "@types";
 import { ulid } from "ulid";
 import { toPageInfo } from "../utils/page";
 
-interface PageInfo {
-  id?: string;
-  slug: string;
-  title: Record<Locale, string>;
-  description: Record<Locale, string>;
-  image: Record<Locale, string>;
-  components: PageComponent[];
-}
+import type { PageInfo } from "../schema";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;

@@ -3,7 +3,25 @@
   "private": true,
   "type": "module",
   "version": "0.0.0",
+  "files": [
+    "dist",
+    "src/tokens.css"
+  ],
+  "main": "./dist/src/tailwind-tokens.js",
+  "module": "./dist/src/tailwind-tokens.js",
+  "types": "./dist/src/tailwind-tokens.d.ts",
   "exports": {
-    ".": "./tailwind-tokens.ts"
-  }
+    ".": {
+      "types": "./dist/src/tailwind-tokens.d.ts",
+      "import": "./dist/src/tailwind-tokens.js",
+      "require": "./dist/src/tailwind-tokens.js"
+    },
+    "./tailwind-tokens": {
+      "types": "./dist/src/tailwind-tokens.d.ts",
+      "import": "./dist/src/tailwind-tokens.js",
+      "require": "./dist/src/tailwind-tokens.js"
+    },
+    "./tokens.css": "./src/tokens.css"
+  },
+  "sideEffects": false
 }

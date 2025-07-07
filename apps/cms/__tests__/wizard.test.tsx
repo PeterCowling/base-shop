@@ -1,22 +1,69 @@
+/* eslint-env jest */
+/* -------------------------------------------------------------------------- */
+/*  External-module stubs                                                     */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * The real ThemeContext provider in `@platform-core/src/contexts/ThemeContext`
+ * calls React hooks, which blows up when we render the Wizard in a plain test
+ * environment.  Replace it (and the re-exports in the barrel file) with
+ * no-op fragments + dummies *before* we import the component under test.
+ */
+jest.mock("@platform-core/src/contexts/ThemeContext", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    ThemeProvider: ({ children }: { children: React.ReactNode }) =>
+      React.createElement(React.Fragment, null, children),
+    useLayout: () => ({}),
+  };
+});
+
+jest.mock("@platform-core/src", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    LayoutProvider: ({ children }: { children: React.ReactNode }) =>
+      React.createElement(React.Fragment, null, children),
+    ThemeProvider: ({ children }: { children: React.ReactNode }) =>
+      React.createElement(React.Fragment, null, children),
+    useLayout: () => ({}),
+  };
+});
+
+/* -------------------------------------------------------------------------- */
+/*  Imports                                                                   */
+/* -------------------------------------------------------------------------- */
+
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Wizard from "../src/app/cms/wizard/Wizard";
 import { STORAGE_KEY, baseTokens } from "../src/app/cms/wizard/utils";
 
+/* -------------------------------------------------------------------------- */
+/*  Test data / helpers                                                       */
+/* -------------------------------------------------------------------------- */
+
+const themes = ["base", "dark"];
+const templates = ["template-app"];
+
+beforeEach(() => {
+  /* global fetch stub */
+  (global.fetch as any) = jest.fn(() => Promise.resolve({ ok: true }));
+  /* jsdom polyfills */
+  Element.prototype.scrollIntoView = jest.fn();
+  localStorage.clear();
+});
+
+afterEach(() => {
+  (global.fetch as jest.Mock).mockReset();
+  localStorage.clear();
+});
+
+/* -------------------------------------------------------------------------- */
+/*  Tests                                                                     */
+/* -------------------------------------------------------------------------- */
+
 describe("Wizard", () => {
-  const themes = ["base", "dark"];
-  const templates = ["template-app"];
-
-  beforeEach(() => {
-    (global.fetch as any) = jest.fn(() => Promise.resolve({ ok: true }));
-    Element.prototype.scrollIntoView = jest.fn();
-    localStorage.clear();
-  });
-
-  afterEach(() => {
-    (global.fetch as jest.Mock).mockReset();
-    localStorage.clear();
-  });
-
   it("submits after navigating steps", async () => {
     render(<Wizard themes={themes} templates={templates} />);
 
@@ -43,7 +90,6 @@ describe("Wizard", () => {
       target: { value: "shop" },
     });
     fireEvent.click(screen.getByText("Next"));
-    // open dropdown
     fireEvent.click(screen.getByRole("combobox"));
     fireEvent.click(await screen.findByText("abc"));
 
@@ -60,11 +106,11 @@ describe("Wizard", () => {
       <Wizard themes={themes} templates={templates} />
     );
 
+    /* make some progress, switch theme */
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
     fireEvent.click(screen.getByText("Next"));
-    // select dark theme
     fireEvent.click(screen.getByRole("combobox"));
     fireEvent.click(await screen.findByText("dark"));
 
@@ -75,7 +121,7 @@ describe("Wizard", () => {
       );
     });
 
-    unmount();
+    unmount(); // simulate reload
 
     const { container: c2 } = render(
       <Wizard themes={themes} templates={templates} />
@@ -95,14 +141,13 @@ describe("Wizard", () => {
       ok: true,
       json: () => Promise.resolve({ id: "p1" }),
     });
+
     render(<Wizard themes={themes} templates={templates} />);
 
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
-    for (let i = 0; i < 5; i++) {
-      fireEvent.click(screen.getByText("Next"));
-    }
+    for (let i = 0; i < 5; i++) fireEvent.click(screen.getByText("Next"));
 
     fireEvent.click(screen.getByText("Save"));
 
@@ -119,14 +164,13 @@ describe("Wizard", () => {
       ok: true,
       json: () => Promise.resolve({ id: "p2" }),
     });
+
     render(<Wizard themes={themes} templates={templates} />);
 
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
-    for (let i = 0; i < 7; i++) {
-      fireEvent.click(screen.getByText("Next"));
-    }
+    for (let i = 0; i < 7; i++) fireEvent.click(screen.getByText("Next"));
 
     fireEvent.click(screen.getByText("Add Page"));
     fireEvent.click(screen.getByText("Save"));
@@ -144,6 +188,7 @@ describe("Wizard", () => {
     const { container } = render(
       <Wizard themes={themes} templates={templates} />
     );
+
     expect(screen.getByText("Shop Details")).toBeInTheDocument();
     const root = container.firstChild as HTMLElement;
     expect(root.style.getPropertyValue("--color-primary")).toBe(
@@ -156,6 +201,7 @@ describe("Wizard", () => {
     const { container } = render(
       <Wizard themes={themes} templates={templates} />
     );
+
     await screen.findByText("Select Theme");
     const root = container.firstChild as HTMLElement;
     await waitFor(() => {

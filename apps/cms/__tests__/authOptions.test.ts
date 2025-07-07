@@ -9,10 +9,9 @@ import { authOptions } from "../src/auth/options";
 /* -------------------------------------------------------------------------- */
 /*  Mocks                                                                     */
 /* -------------------------------------------------------------------------- */
-
 /**
  * The Credentials provider fetches its users from
- * `../src/lib/rbacStore.readRbac()`.  We stub that call so the provider always
+ * `../src/lib/rbacStore.readRbac()`. We stub that call so the provider always
  * finds a single admin user whose password is the plain-text string `"admin"`.
  *
  *  • id === "1" → password is compared as plain text
@@ -34,11 +33,14 @@ jest.doMock("../src/lib/rbacStore", () => ({
 }));
 
 /* -------------------------------------------------------------------------- */
-/*  Helpers                                                                    */
+/*  Helpers                                                                   */
 /* -------------------------------------------------------------------------- */
 function isCredentialsProvider(p: unknown): p is CredentialsConfig {
   return (
-    typeof p === "object" && p !== null && (p as any).type === "credentials"
+    typeof p === "object" &&
+    p !== null &&
+    "type" in p &&
+    (p as { type?: unknown }).type === "credentials"
   );
 }
 

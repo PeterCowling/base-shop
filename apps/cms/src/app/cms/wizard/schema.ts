@@ -50,13 +50,14 @@ export interface NavItem {
   children?: NavItem[];
 }
 
-const _navItemSchema = z.lazy(() =>
-  z.object({
-    id: z.string(),
-    label: z.string(),
-    url: z.string(),
-    children: z.array(_navItemSchema).optional(),
-  })
+const _navItemSchema: z.ZodType<NavItem> = z.lazy(
+  () =>
+    z.object({
+      id: z.string(),
+      label: z.string(),
+      url: z.string(),
+      children: z.array(_navItemSchema).optional(),
+    }) as z.ZodType<NavItem>
 );
 
 export const navItemSchema = _navItemSchema as unknown as z.ZodType<

@@ -34,7 +34,20 @@ describe("shop actions", () => {
       const shopFile = path.join(dir, "data", "shops", "test", "shop.json");
       await fs.writeFile(
         shopFile,
-        JSON.stringify({ id: "test", name: "Seed", themeId: "base" }, null, 2)
+        JSON.stringify(
+          {
+            id: "test",
+            name: "Seed",
+            catalogFilters: [],
+            themeId: "base",
+            themeTokens: {},
+            filterMappings: {},
+            priceOverrides: {},
+            localeOverrides: {},
+          },
+          null,
+          2
+        )
       );
 
       /* ----------------------------------------------------------------

@@ -1,3 +1,6 @@
+// apps/cms/__tests__/createShopActions.test.tsx
+/* eslint-env jest */
+
 import { jest } from "@jest/globals";
 import fs from "node:fs/promises";
 import os from "node:os";
@@ -8,13 +11,11 @@ import "../src/types/next-auth.d.ts";
 /* Helpers                                                                    */
 /* -------------------------------------------------------------------------- */
 
-/** Shape of the JSON file we persist in data/cms/users.json */
 interface StoredUsersFile {
   roles: Record<string, string | string[]>;
   users: Record<string, { id: string; email: string }>;
 }
 
-/** Create a temporary repo, set CWD to it for the duration of `cb`, then restore */
 async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "rbac-"));
   const cwd = process.cwd();
@@ -27,7 +28,6 @@ async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   }
 }
 
-/** Convenience for building a FormData object from a record */
 function fd(data: Record<string, string | string[]>): FormData {
   const f = new FormData();
   for (const [k, v] of Object.entries(data)) {
@@ -50,7 +50,6 @@ describe("createNewShop authorization", () => {
   it("throws when session is missing", async () => {
     jest.resetModules();
 
-    // Force development mode so NextAuth won’t complain about missing secret
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
 
@@ -59,14 +58,13 @@ describe("createNewShop authorization", () => {
     }));
 
     const { createNewShop } = await import(
-      "../src/actions/createShop.server.js"
+      /* webpackIgnore: true */ "../src/actions/createShop.server.ts"
     );
 
     await expect(createNewShop("shop1", {} as any)).rejects.toThrow(
       "Forbidden"
     );
 
-    // Restore original NODE_ENV
     (process.env as Record<string, string>).NODE_ENV = prevEnv;
   });
 
@@ -88,9 +86,9 @@ describe("createNewShop authorization", () => {
     }));
 
     const { createNewShop } = await import(
-      "../src/actions/createShop.server.js"
+      /* webpackIgnore: true */ "../src/actions/createShop.server.ts"
     );
-    await createNewShop("shop2", { theme: "base" });
+    await createNewShop("shop2", { theme: "base" } as any);
 
     expect(createShop).toHaveBeenCalledWith("shop2", { theme: "base" });
 
@@ -101,7 +99,9 @@ describe("createNewShop authorization", () => {
 describe("rbac actions persistence", () => {
   it("inviteUser stores roles", async () => {
     await withTempRepo(async (dir) => {
-      const { inviteUser } = await import("../src/actions/rbac.server.js");
+      const { inviteUser } = await import(
+        /* webpackIgnore: true */ "../src/actions/rbac.server.ts"
+      );
       const { readRbac } = await import("../src/lib/rbacStore");
 
       await inviteUser(
@@ -120,7 +120,6 @@ describe("rbac actions persistence", () => {
       expect(user).toBeDefined();
       expect(db.roles[user!.id]).toBe("viewer");
 
-      // Ensure the file was written
       const stored = JSON.parse(
         await fs.readFile(path.join(dir, "data", "cms", "users.json"), "utf8")
       ) as StoredUsersFile;
@@ -131,7 +130,9 @@ describe("rbac actions persistence", () => {
 
   it("updateUserRoles persists changes", async () => {
     await withTempRepo(async (dir) => {
-      const { updateUserRoles } = await import("../src/actions/rbac.server.js");
+      const { updateUserRoles } = await import(
+        /* webpackIgnore: true */ "../src/actions/rbac.server.ts"
+      );
       const { readRbac } = await import("../src/lib/rbacStore");
 
       const form = fd({ id: "2", roles: ["admin", "viewer"] });

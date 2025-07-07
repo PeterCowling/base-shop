@@ -1,4 +1,4 @@
-// apps/cms/src/actions/media.ts
+// apps/cms/src/actions/media.server.ts
 
 "use server";
 import { authOptions } from "@cms/auth/options";

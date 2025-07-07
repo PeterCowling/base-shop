@@ -1,43 +1,45 @@
 // apps/cms/__tests__/middleware.test.ts
-import type { getToken as GetTokenFn, JWT } from "next-auth/jwt";
+/* eslint-env jest */
+
+import type { JWT } from "next-auth/jwt";
 import { middleware } from "../src/middleware";
 
 /* -------------------------------------------------------------------------- */
-/* Mock next-auth/jwt                                                         */
+/* Mock **everything** from `next-auth/jwt` so the real package —which pulls  */
+/* in ESM-only `jose`— is never loaded.                                       */
 /* -------------------------------------------------------------------------- */
-jest.mock("next-auth/jwt", () => {
-  const actual = jest.requireActual(
-    "next-auth/jwt"
-  ) as typeof import("next-auth/jwt");
-  return {
-    __esModule: true,
-    ...actual,
-    getToken: jest.fn(), // we’ll stub per-test
-  };
-});
+jest.mock("next-auth/jwt", () => ({
+  __esModule: true,
+  // the tests access only `getToken`
+  getToken: jest.fn(),
+}));
 
-/** Strongly-typed handle to the *mocked* getToken */
+/** Strongly-typed handle to the mocked getToken */
 import { getToken as mockedGetToken } from "next-auth/jwt";
-const getToken = mockedGetToken as jest.MockedFunction<typeof GetTokenFn>;
+const getToken = mockedGetToken as jest.MockedFunction<
+  typeof import("next-auth/jwt").getToken
+>;
 
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
 /* -------------------------------------------------------------------------- */
 type MiddlewareRequest = Parameters<typeof middleware>[0];
 
+/** Create a minimal NextRequest look-alike for the middleware */
 function createRequest(path: string): MiddlewareRequest {
   const url = new URL(`http://localhost${path}`) as URL & { clone(): URL };
+  // Next.js adds a `.clone()` method; we stub it for parity.
   url.clone = () => new URL(url.toString());
   return { nextUrl: url, url: url.toString() } as unknown as MiddlewareRequest;
 }
 
+afterEach(() => jest.resetAllMocks());
+
 /* -------------------------------------------------------------------------- */
 /* Tests                                                                      */
 /* -------------------------------------------------------------------------- */
-afterEach(() => jest.resetAllMocks());
-
 describe("middleware", () => {
-  it("unauthenticated requests are redirected to /login", async () => {
+  it("redirects unauthenticated users to /login", async () => {
     getToken.mockResolvedValueOnce(null);
 
     const req = createRequest("/cms/shop/foo/products");
@@ -47,7 +49,7 @@ describe("middleware", () => {
     expect(res.headers.get("location")).toContain("/login");
   });
 
-  it("viewers accessing admin routes are rewritten to /403", async () => {
+  it("rewrites viewers hitting admin routes to /403", async () => {
     const viewerToken = { role: "viewer" } as JWT;
     getToken.mockResolvedValueOnce(viewerToken);
 

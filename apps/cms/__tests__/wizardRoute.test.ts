@@ -1,34 +1,28 @@
-// apps/cms/__tests__/wizardRoute.test.ts
 /* eslint-env jest */
 
 import { TextDecoder, TextEncoder } from "node:util";
 import { MessageChannel } from "node:worker_threads";
 import { ReactNode } from "react";
 
-/* -------------------------------------------------------------------------- */
-/*  Polyfills & globals                                                       */
-/* -------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------ */
+/*  Polyfills                                                         */
+/* ------------------------------------------------------------------ */
 
 (globalThis as any).MessageChannel = MessageChannel;
 (globalThis as any).TextEncoder = TextEncoder;
 (globalThis as any).TextDecoder = TextDecoder;
 
-/* -------------------------------------------------------------------------- */
-/*  Environment                                                               */
-/* -------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------ */
+/*  Environment setup                                                 */
+/* ------------------------------------------------------------------ */
 
 process.env.NEXTAUTH_SECRET = "test-secret";
 
-/* -------------------------------------------------------------------------- */
-/*  External-module stubs                                                     */
-/* -------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------ */
+/*  External-module stubs                                             */
+/* ------------------------------------------------------------------ */
 
-/**
- * @platform-core/src exports React providers that call hooks.  For a
- * server-side render test we can replace them with no-op fragments.  Importing
- * React inside the factory (via `require`) keeps the mock valid in both CJS
- * and ESM Jest runs.
- */
+/** Replace hook-using providers with inert fragments for SSR tests */
 jest.mock("@platform-core/src", () => {
   const React = require("react");
   return {
@@ -41,26 +35,28 @@ jest.mock("@platform-core/src", () => {
   };
 });
 
-/* Stub auth/session so the wizard route behaves as if an admin is logged in */
+/** Pretend an admin session is always present */
 jest.mock("next-auth", () => ({
   getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
 }));
 
-/* Stub `redirect` to prevent actual navigation */
+/** Silence real navigations */
 jest.mock("next/navigation", () => ({ redirect: jest.fn() }));
 
-/* -------------------------------------------------------------------------- */
-/*  Test                                                                      */
-/* -------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------ */
+/*  Test                                                              */
+/* ------------------------------------------------------------------ */
 
 describe("wizard route", () => {
   it("renders wizard page for admin", async () => {
-    jest.resetModules(); // ensure fresh import with mocks applied
+    jest.resetModules(); // ensure mocks are applied fresh
 
     const { renderToStaticMarkup } = await import("react-dom/server");
     const { default: WizardPage } = await import("../src/app/cms/wizard/page");
 
     const html = renderToStaticMarkup(await WizardPage());
-    expect(html).toContain("Create Shop");
+
+    // First step heading should be present in the static markup
+    expect(html).toContain("Shop Details");
   });
 });

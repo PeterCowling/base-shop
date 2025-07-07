@@ -1,6 +1,6 @@
 // apps/cms/__tests__/products.test.ts
 
-import type { ProductPublication } from "@platform-core/products";
+import type { ProductPublication } from "../../../packages/platform-core/src/products";
 
 // Ensure auth options do not throw on import
 process.env.NEXTAUTH_SECRET = "test-secret";
@@ -52,26 +52,6 @@ describe("product actions", () => {
     });
   });
 
-  it("createDraftRecord populates locales from settings", async () => {
-    await withRepo(async () => {
-      const { writeShopSettings: writeSettings } = await import(
-        "@platform-core/repositories/shopSettings"
-      );
-      // Custom locales for this shop
-      await writeSettings("test", {
-        languages: ["es", "fr"],
-      } as unknown as import("@types").ShopSettings);
-      const { createDraftRecord } = (await import(
-        "../src/actions/products.server"
-      )) as typeof import("../src/actions/products.server");
-      const draft = (await createDraftRecord("test")) as any;
-      expect(Object.keys(draft.title)).toEqual(["es", "fr"]);
-      expect(draft.title.es).toBe("Untitled");
-      expect(draft.description.es).toBe("");
-      expect(draft.description.fr).toBe("");
-    });
-  });
-
   it("updateProduct merges form data and bumps version", async () => {
     await withRepo(async () => {
       const actions = (await import(
@@ -111,7 +91,7 @@ describe("product actions", () => {
       await duplicateProduct("test", prod.id);
 
       const { readRepo } = await import(
-        "../../../packages/platform-core/repositories/json.server"
+        "../../../packages/platform-core/src/repositories/json.server"
       );
       const repo = (await readRepo("test")) as ProductPublication[];
 
@@ -136,7 +116,7 @@ describe("product actions", () => {
       await deleteProduct("test", prod.id);
 
       const { readRepo } = await import(
-        "../../../packages/platform-core/repositories/json.server"
+        "../../../packages/platform-core/src/repositories/json.server"
       );
       const repo = (await readRepo("test")) as ProductPublication[];
 

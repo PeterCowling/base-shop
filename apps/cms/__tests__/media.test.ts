@@ -1,3 +1,5 @@
+// apps/cms/__tests__/media.test.ts
+
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -67,7 +69,7 @@ describe("media actions", () => {
         }));
 
         const { listMedia } = await import(
-          /* @vite-ignore */ "../src/actions/media.server.js"
+          /* @vite-ignore */ "../src/actions/media.server.ts"
         );
         const files = await listMedia("shop1");
         expect(files).toEqual([]);

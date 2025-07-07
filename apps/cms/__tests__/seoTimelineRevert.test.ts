@@ -67,7 +67,7 @@ describe("SEO revert via timeline", () => {
       // Dynamic imports must come *after* jest.doMock + cwd swap
       const actions = await import("../src/actions/shops.server");
       const repo = await import(
-        "../../../packages/platform-core/repositories/settings.server"
+        "../../../packages/platform-core/src/repositories/settings.server"
       );
 
       /* ---------- initial update -------------------------------------- */

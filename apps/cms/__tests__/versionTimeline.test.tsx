@@ -1,21 +1,38 @@
+// apps/cms/__tests__/versionTimeline.test.tsx
+/* eslint-env jest */
 import { fireEvent, render, screen } from "@testing-library/react";
+import { TextDecoder, TextEncoder } from "node:util";
+import { MessageChannel } from "node:worker_threads";
 import VersionTimeline from "../src/app/cms/shop/[shop]/settings/seo/VersionTimeline";
 
+/* -------------------------------------------------------------------------- */
+/*  JSDOM/browser polyfills                                                   */
+/* -------------------------------------------------------------------------- */
+(globalThis as any).MessageChannel = MessageChannel;
+(globalThis as any).TextEncoder = TextEncoder;
+(globalThis as any).TextDecoder = TextDecoder;
+
+/* -------------------------------------------------------------------------- */
+/*  Mocks for the repo + server actions                                       */
+/* -------------------------------------------------------------------------- */
 const diffHistoryMock = jest.fn();
 const revertSeoMock = jest.fn();
 
 jest.mock("@platform-core/repositories/settings.server", () => ({
-  diffHistory: (...args: any[]) => diffHistoryMock(...args),
+  diffHistory: (...args: unknown[]) => diffHistoryMock(...args),
 }));
 
 jest.mock("@cms/actions/shops.server", () => ({
-  revertSeo: (...args: any[]) => revertSeoMock(...args),
+  revertSeo: (...args: unknown[]) => revertSeoMock(...args),
 }));
 
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
+/* -------------------------------------------------------------------------- */
+/*  Tests                                                                     */
+/* -------------------------------------------------------------------------- */
 describe("VersionTimeline", () => {
   it("loads history when opened", async () => {
     diffHistoryMock.mockResolvedValueOnce([
@@ -25,7 +42,9 @@ describe("VersionTimeline", () => {
     render(<VersionTimeline shop="shop" trigger={<button>Open</button>} />);
     fireEvent.click(screen.getByText("Open"));
 
-    await screen.findByText("A");
+    // JSON diff is rendered inside a <pre>, so match the quoted value
+    await screen.findByText(/"A"/);
+
     expect(diffHistoryMock).toHaveBeenCalledWith("shop");
   });
 
@@ -36,16 +55,18 @@ describe("VersionTimeline", () => {
     diffHistoryMock.mockResolvedValueOnce([
       { timestamp: "t2", diff: { title: "B" } },
     ]);
-    revertSeoMock.mockResolvedValueOnce({});
+    revertSeoMock.mockResolvedValueOnce({}); // pretend server accepted revert
 
     render(<VersionTimeline shop="s1" trigger={<button>Open</button>} />);
     fireEvent.click(screen.getByText("Open"));
 
-    await screen.findByText("A");
-    fireEvent.click(screen.getByText("Revert"));
+    await screen.findByText(/"A"/); // initial diff visible
+    fireEvent.click(screen.getByText("Revert")); // click “Revert” button
 
-    await screen.findByText("B");
+    // After revert, component should re-fetch and show the new diff
+    await screen.findByText(/"B"/);
+
     expect(revertSeoMock).toHaveBeenCalledWith("s1", "t1");
-    expect(diffHistoryMock).toHaveBeenCalledTimes(2);
+    expect(diffHistoryMock).toHaveBeenCalledTimes(2); // initial load + refresh
   });
 });

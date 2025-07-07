@@ -1,11 +1,22 @@
-// apps/cms/tsconfig.test.json         ← create or edit
-
+// apps/cms/tsconfig.test.json
 {
-  "extends": "./tsconfig.json", // already there
+  "extends": "./tsconfig.json",
+
   "compilerOptions": {
-    // 🟢  ONLY add *extra* keys here – do not copy the whole "paths" map
+    /* ------------------------------------------------------------------ */
+    /*  Jest / Testing-library runtime types                              */
+    /* ------------------------------------------------------------------ */
     "types": ["@testing-library/jest-dom", "jest", "node"],
-    "noEmit": true
+
+    /* ------------------------------------------------------------------ */
+    /*  Test-only compiler flags                                          */
+    /* ------------------------------------------------------------------ */
+    "noEmit": true, // type-check only, don’t write .js
+    "allowJs": true // ✔ compile the *.server.js ESM files
   },
+
+  /* ------------------------------------------------------------------ */
+  /*  Unit-test sources that ts-jest should see                          */
+  /* ------------------------------------------------------------------ */
   "include": ["src/**/*", "__tests__/**/*"]
 }

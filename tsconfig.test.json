@@ -1,23 +1,34 @@
-// tsconfig.test.json
+// tsconfig.test.json   ← root repo “unit-test” TypeScript config
 {
   "extends": "./tsconfig.base.json",
 
+  /* ────────────────────────────────────────────────────────────────────
+   *  Compiler options tuned for running Jest + ts-jest in JSDOM
+   * ────────────────────────────────────────────────────────────────── */
   "compilerOptions": {
-    /* run-time environment for unit tests --------------------------- */
+    /* execution environment ----------------------------------------- */
     "jsx": "react-jsx",
     "types": ["node", "jest", "@testing-library/jest-dom"],
 
-    /* test-only flags ------------------------------------------------ */
+    /* allow plain-JS helpers used only during test-runs ------------- */
+    "allowJs": true,
+    "resolveJsonModule": true,
+
+    /* test-specific flags ------------------------------------------- */
     "noEmit": true, // type-check only
     "importsNotUsedAsValues": "remove",
     "verbatimModuleSyntax": false
   },
 
-  /* which files are treated as “unit tests” ------------------------- */
-  "include": ["jest.setup.ts", "test/**/*.ts", "test/**/*.tsx"],
+  /* ────────────────────────────────────────────────────────────────────
+   *  Which files constitute the *unit-test* compilation boundary
+   * ────────────────────────────────────────────────────────────────── */
+  "include": ["jest.setup.ts", "test/**/*.ts", "test/**/*.tsx", "test/**/*.js"],
 
-  /* keep E2E tests and their own config out of this pass ------------ */
+  /* Exclude e2e specs and any test-framework configs of their own ---- */
   "exclude": ["test/e2e/**", "test/tsconfig.json"],
+
+  /* Workspace packages that carry their own unit-test configs -------- */
   "references": [
     { "path": "./packages/auth/tsconfig.test.json" },
     { "path": "./packages/config/tsconfig.test.json" },

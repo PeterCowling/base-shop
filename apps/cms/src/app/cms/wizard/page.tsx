@@ -1,3 +1,5 @@
+// apps/cms/src/app/cms/wizard/page.tsx
+
 import { authOptions } from "@cms/auth/options";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";

@@ -1,15 +1,20 @@
 // apps/cms/src/actions/media.server.ts
-
 "use server";
+
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
 import { validateShopName } from "@platform-core/src/shops";
+import * as Sentry from "@sentry/node";
 import type { ImageOrientation, MediaItem } from "@types";
 import { getServerSession } from "next-auth";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import sharp from "sharp";
 import { ulid } from "ulid";
+
+/* -------------------------------------------------------------------------- */
+/*  Auth helpers                                                              */
+/* -------------------------------------------------------------------------- */
 
 async function ensureAuthorized(): Promise<void> {
   const session = await getServerSession(authOptions);
@@ -19,7 +24,10 @@ async function ensureAuthorized(): Promise<void> {
   }
 }
 
-/** Directory under public/ where uploads are stored per shop */
+/* -------------------------------------------------------------------------- */
+/*  Path helpers                                                              */
+/* -------------------------------------------------------------------------- */
+
 function uploadsDir(shop: string): string {
   shop = validateShopName(shop);
   return path.join(process.cwd(), "public", "uploads", shop);
@@ -28,6 +36,10 @@ function uploadsDir(shop: string): string {
 function metadataPath(shop: string): string {
   return path.join(uploadsDir(shop), "metadata.json");
 }
+
+/* -------------------------------------------------------------------------- */
+/*  Metadata helpers                                                          */
+/* -------------------------------------------------------------------------- */
 
 async function readMetadata(
   shop: string
@@ -47,7 +59,10 @@ async function writeMetadata(
   await fs.writeFile(metadataPath(shop), JSON.stringify(data, null, 2));
 }
 
-/** Return list of uploaded file URLs for a shop */
+/* -------------------------------------------------------------------------- */
+/*  List                                                                      */
+/* -------------------------------------------------------------------------- */
+
 export async function listMedia(shop: string): Promise<MediaItem[]> {
   await ensureAuthorized();
 
@@ -55,6 +70,7 @@ export async function listMedia(shop: string): Promise<MediaItem[]> {
     const dir = uploadsDir(shop);
     const files = await fs.readdir(dir);
     const meta = await readMetadata(shop);
+
     return files
       .filter((f) => f !== "metadata.json")
       .map((f) => ({
@@ -67,7 +83,10 @@ export async function listMedia(shop: string): Promise<MediaItem[]> {
   }
 }
 
-/** Save uploaded file and return its public URL */
+/* -------------------------------------------------------------------------- */
+/*  Upload                                                                    */
+/* -------------------------------------------------------------------------- */
+
 export async function uploadMedia(
   shop: string,
   formData: FormData,
@@ -76,39 +95,55 @@ export async function uploadMedia(
   await ensureAuthorized();
 
   const file = formData.get("file");
-  if (!(file instanceof File)) {
-    throw new Error("No file provided");
-  }
+  if (!(file instanceof File)) throw new Error("No file provided");
 
   const title = formData.get("title")?.toString();
   const altText = formData.get("altText")?.toString();
 
-  if (!file.type.startsWith("image/")) {
-    throw new Error("Invalid file type");
-  }
+  if (!file.type.startsWith("image/")) throw new Error("Invalid file type");
 
   const maxSize = 5 * 1024 * 1024; // 5 MB
-  if (file.size > maxSize) {
-    throw new Error("File too large");
+  if (file.size > maxSize) throw new Error("File too large");
+
+  /* -------------------------------- orientation check --------------------- */
+
+  const buffer = Buffer.from(await new Response(file).arrayBuffer());
+  const { width, height } = await sharp(buffer).metadata();
+
+  if (
+    width &&
+    height &&
+    requiredOrientation === "landscape" &&
+    width < height
+  ) {
+    throw new Error("Image orientation must be landscape");
   }
 
-  const arrayBuffer = await new Response(file).arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
+  if (
+    width &&
+    height &&
+    requiredOrientation === "portrait" &&
+    width >= height
+  ) {
+    throw new Error("Image orientation must be portrait");
+  }
+
+  /* --------------------------- heavy processing block --------------------- */
 
   try {
-    const { width, height } = await sharp(buffer).metadata();
-    const orientation: ImageOrientation =
-      width && height && width >= height ? "landscape" : "portrait";
-    if (orientation !== requiredOrientation) {
-      throw new Error(`Image orientation must be ${requiredOrientation}`);
-    }
-  } catch {
+    // placeholder for resize/optimisation – ensures the buffer is valid
+    await sharp(buffer).toBuffer();
+  } catch (err) {
+    Sentry.captureException(err);
     throw new Error("Failed to process image");
   }
 
+  /* -------------------------------- save file ----------------------------- */
+
   const dir = uploadsDir(shop);
   await fs.mkdir(dir, { recursive: true });
-  const ext = path.extname(file.name);
+
+  const ext = path.extname(file.name) || ".jpg";
   const filename = `${ulid()}${ext}`;
   await fs.writeFile(path.join(dir, filename), buffer);
 
@@ -123,16 +158,18 @@ export async function uploadMedia(
   };
 }
 
-/** Delete an uploaded file */
+/* -------------------------------------------------------------------------- */
+/*  Delete                                                                    */
+/* -------------------------------------------------------------------------- */
+
 export async function deleteMedia(
   shop: string,
   filePath: string
 ): Promise<void> {
   const prefix = path.posix.join("/uploads", validateShopName(shop)) + "/";
   const normalized = path.posix.normalize(filePath);
-  if (!normalized.startsWith(prefix)) {
-    throw new Error("Invalid file path");
-  }
+
+  if (!normalized.startsWith(prefix)) throw new Error("Invalid file path");
 
   const filename = normalized.slice(prefix.length);
   const dir = uploadsDir(shop);
@@ -143,7 +180,9 @@ export async function deleteMedia(
     throw new Error("Invalid file path");
   }
 
-  await fs.unlink(fullPath);
+  await fs.unlink(fullPath).catch(() => {
+    /* ignore – file might already be gone */
+  });
 
   const meta = await readMetadata(shop);
   if (meta[filename]) {

@@ -1,3 +1,4 @@
+/* apps/cms/__tests__/wizard.test.tsx */
 /* eslint-env jest */
 /* -------------------------------------------------------------------------- */
 /*  External-module stubs                                                     */
@@ -46,6 +47,25 @@ import { STORAGE_KEY, baseTokens } from "../src/app/cms/wizard/utils";
 const themes = ["base", "dark"];
 const templates = ["template-app"];
 
+/**
+ * Returns the first enabled "Next" button currently rendered.
+ * Some wizard steps remain in the DOM but are hidden, so RTL can
+ * detect multiple buttons with the same label.  We explicitly pick
+ * the first button that is *not* disabled to avoid the ambiguity
+ * error from `getByText`.
+ */
+const getActiveNextButton = (): HTMLElement => {
+  const buttons = screen.getAllByRole("button", { name: /next/i });
+  const enabled = buttons.find((b) => !b.hasAttribute("disabled"));
+  return enabled ?? buttons[0];
+};
+
+const clickNextTimes = (times: number): void => {
+  for (let i = 0; i < times; i += 1) {
+    fireEvent.click(getActiveNextButton());
+  }
+};
+
 beforeEach(() => {
   /* global fetch stub */
   (global.fetch as any) = jest.fn(() => Promise.resolve({ ok: true }));
@@ -70,9 +90,8 @@ describe("Wizard", () => {
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "testshop" },
     });
-    fireEvent.click(screen.getByText("Next"));
-    fireEvent.click(screen.getByText("Next"));
-    fireEvent.click(screen.getByText("Next"));
+
+    clickNextTimes(3);
 
     fireEvent.click(screen.getByText("Create Shop"));
 
@@ -89,7 +108,9 @@ describe("Wizard", () => {
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
-    fireEvent.click(screen.getByText("Next"));
+
+    fireEvent.click(getActiveNextButton());
+
     fireEvent.click(screen.getByRole("combobox"));
     fireEvent.click(await screen.findByText("abc"));
 
@@ -110,7 +131,9 @@ describe("Wizard", () => {
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
-    fireEvent.click(screen.getByText("Next"));
+
+    fireEvent.click(getActiveNextButton());
+
     fireEvent.click(screen.getByRole("combobox"));
     fireEvent.click(await screen.findByText("dark"));
 
@@ -147,7 +170,8 @@ describe("Wizard", () => {
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
-    for (let i = 0; i < 5; i++) fireEvent.click(screen.getByText("Next"));
+
+    clickNextTimes(5);
 
     fireEvent.click(screen.getByText("Save"));
 
@@ -170,7 +194,8 @@ describe("Wizard", () => {
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
-    for (let i = 0; i < 7; i++) fireEvent.click(screen.getByText("Next"));
+
+    clickNextTimes(7);
 
     fireEvent.click(screen.getByText("Add Page"));
     fireEvent.click(screen.getByText("Save"));

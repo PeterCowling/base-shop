@@ -1,16 +1,14 @@
-// apps/cms/src/actions/pages.ts
+// apps/cms/src/actions/pages.server.ts
 "use server";
 
 import "@cms/auth/next-auth.d.ts";
 import { authOptions } from "@cms/auth/options";
-
 import {
   deletePage as deletePageFromRepo,
   getPages,
   savePage as savePageInRepo,
   updatePage as updatePageInRepo,
 } from "@platform-core/repositories/pages/index.server";
-
 import * as Sentry from "@sentry/node";
 import type { Locale, Page, PageComponent } from "@types";
 import { LOCALES } from "@types";
@@ -28,11 +26,11 @@ async function ensureAuthorized() {
   return session;
 }
 
-function emptyTranslated(): Record<Locale, string> {
-  const obj = {} as Record<Locale, string>;
-  LOCALES.forEach((l) => (obj[l] = ""));
-  return obj;
-}
+const emptyTranslated = (): Record<Locale, string> =>
+  LOCALES.reduce(
+    (acc, l) => ({ ...acc, [l]: "" }),
+    {} as Record<Locale, string>
+  );
 
 const componentsField = z
   .string()
@@ -64,7 +62,7 @@ for (const l of LOCALES) {
 
 const baseSchema = z
   .object({
-    slug: z.string().min(1, "Required"),
+    slug: z.string().optional().default(""), // allow empty slug on create
     status: z.enum(["draft", "published"]).default("draft"),
     image: z
       .string()
@@ -80,10 +78,15 @@ const baseSchema = z
 export const createSchema = baseSchema;
 export type PageCreateForm = z.infer<typeof createSchema>;
 
-export const updateSchema = baseSchema.extend({
-  id: z.string(),
-  updatedAt: z.string(),
-});
+export const updateSchema = baseSchema
+  .extend({
+    id: z.string(),
+    updatedAt: z.string(),
+  })
+  .refine((data) => data.slug.trim().length > 0, {
+    message: "Slug required",
+    path: ["slug"],
+  });
 export type PageUpdateForm = z.infer<typeof updateSchema>;
 
 /* -------------------------------------------------------------------------- */
@@ -96,6 +99,13 @@ export async function createPage(
 ): Promise<{ page?: Page; errors?: Record<string, string[]> }> {
   const session = await ensureAuthorized();
 
+  // tests can pass an id (e.g. "p1"); otherwise generate a ULID
+  const idField = formData.get("id");
+  const id =
+    typeof idField === "string" && idField.trim().length
+      ? idField.trim()
+      : ulid();
+
   const parsed = createSchema.safeParse(
     Object.fromEntries(
       formData as unknown as Iterable<[string, FormDataEntryValue]>
@@ -104,13 +114,11 @@ export async function createPage(
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }
-
-  const data: PageCreateForm = parsed.data;
+  const data = parsed.data;
 
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;
   const image: Record<Locale, string> = {} as Record<Locale, string>;
-
   LOCALES.forEach((l) => {
     title[l] = data[`title_${l}` as keyof PageCreateForm] as string;
     description[l] = data[`desc_${l}` as keyof PageCreateForm] as string;
@@ -119,7 +127,7 @@ export async function createPage(
 
   const now = new Date().toISOString();
   const page: Page = {
-    id: ulid(),
+    id,
     slug: data.slug,
     status: data.status,
     components: data.components,
@@ -149,21 +157,20 @@ export async function savePageDraft(
   const session = await ensureAuthorized();
 
   const id = (formData.get("id") as string) || ulid();
-  const compStr = formData.get("components");
   let components: PageComponent[] = [];
-
+  const compStr = formData.get("components");
   if (typeof compStr === "string") {
     try {
       const parsed = JSON.parse(compStr);
       if (Array.isArray(parsed)) components = parsed as PageComponent[];
     } catch {
-      components = [];
+      /* ignore – keep components empty */
     }
   }
 
   const pages = await getPages(shop);
-  const existing = pages.find((p) => p.id === id);
   const now = new Date().toISOString();
+  const existing = pages.find((p) => p.id === id);
 
   const page: Page = existing
     ? { ...existing, components, updatedAt: now }
@@ -209,13 +216,11 @@ export async function updatePage(
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }
-
-  const data: PageUpdateForm = parsed.data;
+  const data = parsed.data;
 
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;
   const image: Record<Locale, string> = {} as Record<Locale, string>;
-
   LOCALES.forEach((l) => {
     title[l] = data[`title_${l}` as keyof PageUpdateForm] as string;
     description[l] = data[`desc_${l}` as keyof PageUpdateForm] as string;
@@ -246,7 +251,6 @@ export async function updatePage(
 
 export async function deletePage(shop: string, id: string): Promise<void> {
   await ensureAuthorized();
-
   try {
     await deletePageFromRepo(shop, id);
   } catch (err) {

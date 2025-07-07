@@ -1,25 +1,48 @@
+// src/components/cms/StepLayout.tsx
 "use client";
 
 import { Button } from "@/components/atoms-shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { Locale, LOCALES, Page, PageComponent } from "@types";
+import { ReactNode } from "react";
 
 interface Props {
+  currentStep: number;
+  stepIndex: number;
+
+  /** Header */
   headerComponents: PageComponent[];
   setHeaderComponents: (v: PageComponent[]) => void;
   headerPageId: string | null;
   setHeaderPageId: (v: string | null) => void;
+
+  /** Footer */
   footerComponents: PageComponent[];
   setFooterComponents: (v: PageComponent[]) => void;
   footerPageId: string | null;
   setFooterPageId: (v: string | null) => void;
+
+  /** Context */
   shopId: string;
   themeStyle: React.CSSProperties;
+
+  /** Navigation */
   onBack: () => void;
   onNext: () => void;
+
+  /** Optional inner content for the step */
+  children?: ReactNode;
 }
 
+const emptyTranslated = (): Record<Locale, string> =>
+  LOCALES.reduce(
+    (acc, l) => ({ ...acc, [l]: "" }),
+    {} as Record<Locale, string>
+  );
+
 export default function StepLayout({
+  currentStep,
+  stepIndex,
   headerComponents,
   setHeaderComponents,
   headerPageId,
@@ -32,16 +55,21 @@ export default function StepLayout({
   themeStyle,
   onBack,
   onNext,
-}: Props): React.JSX.Element {
-  const emptyTranslated = () =>
-    LOCALES.reduce(
-      (acc, l) => ({ ...acc, [l]: "" }),
-      {} as Record<Locale, string>
-    );
+  children,
+}: Props): React.JSX.Element | null {
+  /**
+   * Render **nothing at all** for inactive steps so the DOM
+   * contains only a single set of navigation buttons.
+   * This keeps Testing-Library queries (and screen-reader focus)
+   * unambiguous.
+   */
+  if (stepIndex !== currentStep) return null;
 
   return (
-    <div className="space-y-4">
+    <fieldset className="space-y-4">
       <h2 className="text-xl font-semibold">Layout</h2>
+
+      {/* Header builder -------------------------------------------------- */}
       <div className="space-y-2">
         <h3 className="font-medium">Header</h3>
         <PageBuilder
@@ -54,7 +82,7 @@ export default function StepLayout({
               seo: {
                 title: emptyTranslated(),
                 description: emptyTranslated(),
-                image: "",
+                image: emptyTranslated(),
               },
               createdAt: "",
               updatedAt: "",
@@ -74,6 +102,8 @@ export default function StepLayout({
           style={themeStyle}
         />
       </div>
+
+      {/* Footer builder -------------------------------------------------- */}
       <div className="space-y-2">
         <h3 className="font-medium">Footer</h3>
         <PageBuilder
@@ -86,7 +116,7 @@ export default function StepLayout({
               seo: {
                 title: emptyTranslated(),
                 description: emptyTranslated(),
-                image: "",
+                image: emptyTranslated(),
               },
               createdAt: "",
               updatedAt: "",
@@ -106,12 +136,17 @@ export default function StepLayout({
           style={themeStyle}
         />
       </div>
+
+      {/* Additional step-specific UI ------------------------------------ */}
+      {children}
+
+      {/* Navigation ------------------------------------------------------ */}
       <div className="flex justify-between">
         <Button variant="outline" onClick={onBack}>
           Back
         </Button>
         <Button onClick={onNext}>Next</Button>
       </div>
-    </div>
+    </fieldset>
   );
 }

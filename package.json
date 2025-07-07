@@ -139,7 +139,8 @@
   },
   "pnpm": {
     "overrides": {
-      "@shadcn/ui": "0.0.4"
+      "@shadcn/ui": "0.0.4",
+      "scheduler": "0.26.0"
     }
   }
 }

@@ -1,15 +1,16 @@
 // apps/cms/src/actions/pages.ts
-
 "use server";
 
 import "@cms/auth/next-auth.d.ts";
 import { authOptions } from "@cms/auth/options";
+
 import {
   deletePage as deletePageFromRepo,
   getPages,
   savePage as savePageInRepo,
   updatePage as updatePageInRepo,
 } from "@platform-core/repositories/pages/index.server";
+
 import * as Sentry from "@sentry/node";
 import type { Locale, Page, PageComponent } from "@types";
 import { LOCALES } from "@types";
@@ -17,19 +18,19 @@ import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
 import { z } from "zod";
 
+/* -------------------------------------------------------------------------- */
+/*  Helpers                                                                   */
+/* -------------------------------------------------------------------------- */
+
 async function ensureAuthorized() {
   const session = await getServerSession(authOptions);
-  if (!session || session.user?.role === "viewer") {
-    throw new Error("Forbidden");
-  }
+  if (!session || session.user?.role === "viewer") throw new Error("Forbidden");
   return session;
 }
 
 function emptyTranslated(): Record<Locale, string> {
   const obj = {} as Record<Locale, string>;
-  LOCALES.forEach((l) => {
-    obj[l] = "";
-  });
+  LOCALES.forEach((l) => (obj[l] = ""));
   return obj;
 }
 
@@ -51,14 +52,17 @@ const componentsField = z
     }
   });
 
+/* -------------------------------------------------------------------------- */
+/*  Validation Schemas                                                        */
+/* -------------------------------------------------------------------------- */
+
 const localeFields: z.ZodRawShape = {};
 for (const l of LOCALES) {
-  localeFields[`title_${l}`] = z.string().min(1, "Required");
+  localeFields[`title_${l}`] = z.string().optional().default("");
   localeFields[`desc_${l}`] = z.string().optional().default("");
 }
 
 const baseSchema = z
-
   .object({
     slug: z.string().min(1, "Required"),
     status: z.enum(["draft", "published"]).default("draft"),
@@ -82,6 +86,10 @@ export const updateSchema = baseSchema.extend({
 });
 export type PageUpdateForm = z.infer<typeof updateSchema>;
 
+/* -------------------------------------------------------------------------- */
+/*  Create Page                                                               */
+/* -------------------------------------------------------------------------- */
+
 export async function createPage(
   shop: string,
   formData: FormData
@@ -98,14 +106,14 @@ export async function createPage(
   }
 
   const data: PageCreateForm = parsed.data;
+
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;
+  const image: Record<Locale, string> = {} as Record<Locale, string>;
+
   LOCALES.forEach((l) => {
     title[l] = data[`title_${l}` as keyof PageCreateForm] as string;
     description[l] = data[`desc_${l}` as keyof PageCreateForm] as string;
-  });
-  const image: Record<Locale, string> = {} as Record<Locale, string>;
-  LOCALES.forEach((l) => {
     image[l] = data.image ?? "";
   });
 
@@ -116,7 +124,6 @@ export async function createPage(
     status: data.status,
     components: data.components,
     seo: { title, description, image },
-
     createdAt: now,
     updatedAt: now,
     createdBy: session.user.email ?? "unknown",
@@ -131,6 +138,10 @@ export async function createPage(
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Save Draft                                                                */
+/* -------------------------------------------------------------------------- */
+
 export async function savePageDraft(
   shop: string,
   formData: FormData
@@ -140,6 +151,7 @@ export async function savePageDraft(
   const id = (formData.get("id") as string) || ulid();
   const compStr = formData.get("components");
   let components: PageComponent[] = [];
+
   if (typeof compStr === "string") {
     try {
       const parsed = JSON.parse(compStr);
@@ -152,6 +164,7 @@ export async function savePageDraft(
   const pages = await getPages(shop);
   const existing = pages.find((p) => p.id === id);
   const now = new Date().toISOString();
+
   const page: Page = existing
     ? { ...existing, components, updatedAt: now }
     : {
@@ -178,6 +191,10 @@ export async function savePageDraft(
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Update Page                                                               */
+/* -------------------------------------------------------------------------- */
+
 export async function updatePage(
   shop: string,
   formData: FormData
@@ -194,20 +211,20 @@ export async function updatePage(
   }
 
   const data: PageUpdateForm = parsed.data;
+
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;
+  const image: Record<Locale, string> = {} as Record<Locale, string>;
+
   LOCALES.forEach((l) => {
     title[l] = data[`title_${l}` as keyof PageUpdateForm] as string;
     description[l] = data[`desc_${l}` as keyof PageUpdateForm] as string;
-  });
-  const image: Record<Locale, string> = {} as Record<Locale, string>;
-  LOCALES.forEach((l) => {
     image[l] = data.image ?? "";
   });
 
   const patch: Partial<Page> & { id: string; updatedAt: string } = {
-    id: data.id as string,
-    updatedAt: data.updatedAt as string,
+    id: data.id as string, // ← explicit cast
+    updatedAt: data.updatedAt as string, // ← explicit cast
     slug: data.slug,
     status: data.status,
     components: data.components,
@@ -222,6 +239,10 @@ export async function updatePage(
     throw err;
   }
 }
+
+/* -------------------------------------------------------------------------- */
+/*  Delete Page                                                               */
+/* -------------------------------------------------------------------------- */
 
 export async function deletePage(shop: string, id: string): Promise<void> {
   await ensureAuthorized();

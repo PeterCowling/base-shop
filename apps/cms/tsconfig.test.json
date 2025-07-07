@@ -11,8 +11,9 @@
     /* ------------------------------------------------------------------ */
     /*  Test-only compiler flags                                          */
     /* ------------------------------------------------------------------ */
-    "noEmit": true, // type-check only, don’t write .js
-    "allowJs": true // ✔ compile the *.server.js ESM files
+    "noEmit": true,
+    "allowJs": true,
+    "jsx": "react-jsx"
   },
 
   /* ------------------------------------------------------------------ */

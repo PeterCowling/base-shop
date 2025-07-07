@@ -60,11 +60,11 @@ describe("page actions", () => {
       );
       const now = new Date().toISOString();
       const page = {
-        id: "p1",
+        id: "1",
         slug: "home",
         status: "draft",
         components: [],
-        seo: { title: "Home", description: "" },
+        seo: { title: { en: "Home" }, description: { en: "" } },
         createdAt: now,
         updatedAt: now,
         createdBy: "tester",
@@ -98,11 +98,11 @@ describe("page actions", () => {
       );
       const now = new Date().toISOString();
       const page = {
-        id: "p1",
+        id: "1",
         slug: "remove",
         status: "draft",
         components: [],
-        seo: { title: "t" },
+        seo: { title: { en: "t" } },
         createdAt: now,
         updatedAt: now,
         createdBy: "tester",

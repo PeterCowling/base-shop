@@ -1,8 +1,45 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { rest, server } from "../../../test/mswServer";
+import { fireEvent, render, screen, within } from "@testing-library/react";
+
 // Use the @cms alias to reference the Wizard component located in the CMS app
 // instead of a relative path that does not resolve correctly from this package.
 import Wizard from "@cms/app/cms/wizard/Wizard";
+
+const stepHeadings = [
+  "Shop Details",
+  "Select Theme",
+  "Customize Tokens",
+  "Options",
+  "Navigation",
+  "Layout",
+  "Home Page",
+  "Checkout Page",
+  "Shop Page",
+  "Product Detail Page",
+  "Additional Pages",
+  "Summary",
+  "Import Data",
+  "Seed Data",
+  "Hosting",
+] as const;
+
+type StepCallback = (container: HTMLElement) => void;
+
+async function runWizard(
+  actions: Record<string, StepCallback> = {}
+): Promise<void> {
+  for (const heading of stepHeadings) {
+    const el = await screen.findByRole("heading", { name: heading });
+    const container =
+      (el.closest("div") as HTMLElement) ||
+      (el.closest("fieldset") as HTMLElement);
+    if (actions[heading]) actions[heading](container);
+    if (heading === "Hosting") break;
+    const next = within(container).getAllByRole("button", {
+      name: /next|save & continue/i,
+    })[0];
+    fireEvent.click(next);
+  }
+}
 
 it("submits selected options to create shop", async () => {
   let body: any = null;
@@ -15,22 +52,10 @@ it("submits selected options to create shop", async () => {
 
   render(<Wizard themes={["base", "dark"]} templates={["tmpl1", "tmpl2"]} />);
 
-  // step 0
-  fireEvent.change(screen.getByPlaceholderText("my-shop"), {
-    target: { value: "shop123" },
+  await runWizard({
+    Summary: (c) =>
+      fireEvent.click(within(c).getByRole("button", { name: "Create Shop" })),
   });
-  fireEvent.click(screen.getByRole("button", { name: "Next" }));
-
-  // step 1
-  fireEvent.click(screen.getByRole("button", { name: "Next" }));
-
-  // step 2
-  fireEvent.click(screen.getByLabelText("Stripe"));
-  fireEvent.click(screen.getByLabelText("DHL"));
-  fireEvent.click(screen.getByRole("button", { name: "Next" }));
-
-  // submit step
-  fireEvent.click(screen.getByRole("button", { name: "Create Shop" }));
 
   await screen.findByText("Shop created successfully");
 
@@ -55,11 +80,10 @@ it("shows error when create shop fails", async () => {
   fireEvent.change(screen.getByPlaceholderText("my-shop"), {
     target: { value: "shop123" },
   });
-  fireEvent.click(screen.getByRole("button", { name: "Next" }));
-  fireEvent.click(screen.getByRole("button", { name: "Next" }));
-  fireEvent.click(screen.getByRole("button", { name: "Next" }));
-
-  fireEvent.click(screen.getByRole("button", { name: "Create Shop" }));
+  await runWizard({
+    Summary: (c) =>
+      fireEvent.click(within(c).getByRole("button", { name: "Create Shop" })),
+  });
 
   await screen.findByText("boom");
   expect(screen.getByRole("button", { name: "Create Shop" })).toBeEnabled();

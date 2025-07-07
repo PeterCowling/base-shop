@@ -1,12 +1,19 @@
 // apps/cms/__tests__/authOptions.test.ts
 /* eslint-env jest */
 
-import { describe, expect, it, jest } from "@jest/globals";
-
 /* -------------------------------------------------------------------------- */
 /*  FIRST: stub the RBAC store                                                */
 /* -------------------------------------------------------------------------- */
-jest.doMock("../src/lib/rbacStore", () => ({
+/**
+ * Using `require.resolve` guarantees we mock the *exact* module instance
+ * that `src/auth/options.ts` imports, regardless of how each file’s relative
+ * path is written.
+ */
+/* eslint-disable @typescript-eslint/no-var-requires */
+const rbacStorePath = require.resolve("../lib/rbacStore");
+/* eslint-enable @typescript-eslint/no-var-requires */
+
+jest.doMock(rbacStorePath, () => ({
   readRbac: async () => ({
     users: {
       "1": {

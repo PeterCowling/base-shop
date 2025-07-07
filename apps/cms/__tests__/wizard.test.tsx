@@ -36,7 +36,13 @@ jest.mock("@platform-core/src", () => {
 /*  Imports                                                                   */
 /* -------------------------------------------------------------------------- */
 
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import Wizard from "../src/app/cms/wizard/Wizard";
 import { STORAGE_KEY, baseTokens } from "../src/app/cms/wizard/utils";
 
@@ -48,21 +54,46 @@ const themes = ["base", "dark"];
 const templates = ["template-app"];
 
 /**
- * Returns the first enabled "Next" button currently rendered.
- * Some wizard steps remain in the DOM but are hidden, so RTL can
- * detect multiple buttons with the same label.  We explicitly pick
- * the first button that is *not* disabled to avoid the ambiguity
- * error from `getByText`.
+ * Advance through the wizard by clicking the "Next" or "Save & Continue"
+ * button within each step container, identified via its heading.  Optional
+ * callbacks may run at specific steps before moving on.
  */
-const getActiveNextButton = (): HTMLElement => {
-  const buttons = screen.getAllByRole("button", { name: /next/i });
-  const enabled = buttons.find((b) => !b.hasAttribute("disabled"));
-  return enabled ?? buttons[0];
-};
+const stepHeadings = [
+  "Shop Details",
+  "Select Theme",
+  "Customize Tokens",
+  "Options",
+  "Navigation",
+  "Layout",
+  "Home Page",
+  "Checkout Page",
+  "Shop Page",
+  "Product Detail Page",
+  "Additional Pages",
+  "Summary",
+  "Import Data",
+  "Seed Data",
+  "Hosting",
+] as const;
 
-const clickNextTimes = (times: number): void => {
-  for (let i = 0; i < times; i += 1) {
-    fireEvent.click(getActiveNextButton());
+type StepCallback = (container: HTMLElement) => void;
+
+const runWizard = async (
+  actions: Record<string, StepCallback> = {}
+): Promise<void> => {
+  for (const heading of stepHeadings) {
+    const el = await screen.findByRole("heading", { name: heading });
+    const container =
+      (el.closest("div") as HTMLElement) ||
+      (el.closest("fieldset") as HTMLElement);
+    if (actions[heading]) {
+      actions[heading](container);
+    }
+    if (heading === "Hosting") break;
+    const next = within(container).getAllByRole("button", {
+      name: /next|save & continue/i,
+    })[0];
+    fireEvent.click(next);
   }
 };
 
@@ -91,9 +122,10 @@ describe("Wizard", () => {
       target: { value: "testshop" },
     });
 
-    clickNextTimes(3);
-
-    fireEvent.click(screen.getByText("Create Shop"));
+    await runWizard({
+      Summary: (c) =>
+        fireEvent.click(within(c).getByRole("button", { name: "Create Shop" })),
+    });
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalled();
@@ -105,14 +137,20 @@ describe("Wizard", () => {
       <Wizard themes={["base", "abc"]} templates={templates} />
     );
 
-    fireEvent.change(screen.getByPlaceholderText("my-shop"), {
+    const details = screen.getByRole("heading", { name: "Shop Details" })
+      .parentElement as HTMLElement;
+
+    fireEvent.change(within(details).getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
 
-    fireEvent.click(getActiveNextButton());
+    fireEvent.click(within(details).getByRole("button", { name: /next/i }));
 
-    fireEvent.click(screen.getByRole("combobox"));
-    fireEvent.click(await screen.findByText("abc"));
+    const themeStep = screen.getByRole("heading", { name: "Select Theme" })
+      .parentElement as HTMLElement;
+
+    fireEvent.click(within(themeStep).getAllByRole("combobox")[0]);
+    fireEvent.click(await within(themeStep).findByText("abc"));
 
     await waitFor(() => {
       const root = container.firstChild as HTMLElement;
@@ -132,10 +170,15 @@ describe("Wizard", () => {
       target: { value: "shop" },
     });
 
-    fireEvent.click(getActiveNextButton());
+    const details2 = screen.getByRole("heading", { name: "Shop Details" })
+      .parentElement as HTMLElement;
 
-    fireEvent.click(screen.getByRole("combobox"));
-    fireEvent.click(await screen.findByText("dark"));
+    fireEvent.click(within(details2).getByRole("button", { name: /next/i }));
+
+    const theme2 = screen.getByRole("heading", { name: "Select Theme" })
+      .parentElement as HTMLElement;
+    fireEvent.click(within(theme2).getAllByRole("combobox")[0]);
+    fireEvent.click(await within(theme2).findByText("dark"));
 
     await waitFor(() => {
       const root = container.firstChild as HTMLElement;
@@ -171,10 +214,9 @@ describe("Wizard", () => {
       target: { value: "shop" },
     });
 
-    clickNextTimes(5);
-
-    fireEvent.click(screen.getByText("Save"));
-
+    await runWizard({
+      "Home Page": (c) => fireEvent.click(within(c).getByText("Save")),
+    });
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalled();
     });
@@ -195,10 +237,13 @@ describe("Wizard", () => {
       target: { value: "shop" },
     });
 
-    clickNextTimes(7);
-
-    fireEvent.click(screen.getByText("Add Page"));
-    fireEvent.click(screen.getByText("Save"));
+    await runWizard({
+      "Additional Pages": (c) => {
+        const utils = within(c);
+        fireEvent.click(utils.getByText("Add Page"));
+        fireEvent.click(utils.getByText("Save"));
+      },
+    });
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalled();

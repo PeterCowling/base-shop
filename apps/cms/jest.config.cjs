@@ -15,7 +15,7 @@ module.exports = {
   roots: ["<rootDir>/apps/cms/src", "<rootDir>/apps/cms/__tests__"],
 
   /* ─────────── run polyfills **before** any test code ─────────── */
-  setupFilesAfterEnv: ["<rootDir>/apps/cms/jest.setup.ts"],
+  setupFilesAfterEnv: ["<rootDir>/apps/cms/jest.setup.tsx"],
 
   /* ─────────── ts‑jest configuration ─────────── */
   globals: {

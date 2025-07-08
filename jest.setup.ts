@@ -1,15 +1,23 @@
-// jest.setup.ts  –  executed **once** before the Jest environment is ready
-/* eslint-disable no-underscore-dangle */
+// jest.setup.ts
+/* eslint-env jest */
+/* -------------------------------------------------------------------------- */
+/*  Executed **once** before the Jest environment is ready                    */
+/* -------------------------------------------------------------------------- */
 
 /* -------------------------------------------------------------------------- */
 /* 1.  Environment variables expected by the app while running tests          */
 /* -------------------------------------------------------------------------- */
 
-// Pretend we are in dev-mode so “edge” runtimes, etc. relax restrictions
-process.env.NODE_ENV = "development";
+/**
+ * In @types/node ≥ 22 every key in `process.env` is marked `readonly`,
+ * so direct assignment (`process.env.NODE_ENV = …`) now fails with
+ * TS 2540.
+ * We work around that by first casting to a mutable record.
+ */
+const mutableEnv = process.env as unknown as Record<string, string>;
 
-// A dummy secret so Next-Auth initialisation never bails out
-process.env.NEXTAUTH_SECRET ??= "test-secret";
+mutableEnv.NODE_ENV ||= "development"; // relax “edge” runtime checks
+mutableEnv.NEXTAUTH_SECRET ||= "test-secret"; // dummy secret for Next-Auth
 
 /* -------------------------------------------------------------------------- */
 /* 2.  Polyfills missing from the JSDOM / Node test runtime                    */
@@ -18,19 +26,21 @@ process.env.NEXTAUTH_SECRET ??= "test-secret";
 import "@testing-library/jest-dom";
 import "cross-fetch/polyfill";
 import { TextDecoder, TextEncoder } from "node:util";
-import { MessageChannel } from "node:worker_threads";
 
-/** `util` gives us encoders/decoders that React-DOM’s server renderer expects */
+/** Node’s `util` encoders/decoders are required by React-DOM’s server renderer */
 (globalThis as any).TextEncoder ||= TextEncoder;
 (globalThis as any).TextDecoder ||= TextDecoder;
 
-/** React 19+ uses `MessageChannel` internally for suspense & streaming */
-(globalThis as any).MessageChannel ||= MessageChannel;
+/**
+ * React 19+ uses `MessageChannel` internally for suspense & streaming.
+ * Node’s impl can leave ports open, preventing Jest from exiting, so
+ * a lightweight stub is installed via `test/polyfills/messageChannel.js`.
+ */
 
 /**
- * Next 15 sometimes calls the *static* convenience helper `Response.json()`
- * which isn’t yet in the WHATWG spec implementation that ships with Node.
- * We shim it here so route-handler tests don’t blow up.
+ * Next 15 occasionally calls the *static* helper `Response.json()`, which
+ * has not yet landed in Node’s WHATWG `Response` implementation.  We shim
+ * it here so route-handler tests don’t blow up.
  */
 if (typeof (Response as any).json !== "function") {
   (Response as any).json = (
@@ -53,7 +63,7 @@ if (typeof (Response as any).json !== "function") {
 /* 3.  MSW (Mock Service Worker) – network stubbing for API calls             */
 /* -------------------------------------------------------------------------- */
 
-import { server } from "./test/mswServer";
+import { server } from "./test/msw/server";
 
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 afterEach(() => server.resetHandlers());

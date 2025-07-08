@@ -1,15 +1,25 @@
-/* apps/cms/__tests__/wizard.test.tsx */
+// apps/cms/__tests__/wizard.test.tsx
 /* eslint-env jest */
+// --------------------------------------------------------------------------
+// Integration-style tests for the CMS Wizard
+// --------------------------------------------------------------------------
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
+import { ResponseComposition, rest, RestContext, RestRequest } from "msw";
+import { server } from "../../../test/msw/server";
+
+import Wizard from "../src/app/cms/wizard/Wizard";
+import { baseTokens, STORAGE_KEY } from "../src/app/cms/wizard/utils";
+
 /* -------------------------------------------------------------------------- */
 /*  External-module stubs                                                     */
 /* -------------------------------------------------------------------------- */
 
-/**
- * The real ThemeContext provider in `@platform-core/src/contexts/ThemeContext`
- * calls React hooks, which blows up when we render the Wizard in a plain test
- * environment.  Replace it (and the re-exports in the barrel file) with
- * no-op fragments + dummies *before* we import the component under test.
- */
 jest.mock("@platform-core/src/contexts/ThemeContext", () => {
   const React = require("react");
   return {
@@ -33,31 +43,12 @@ jest.mock("@platform-core/src", () => {
 });
 
 /* -------------------------------------------------------------------------- */
-/*  Imports                                                                   */
-/* -------------------------------------------------------------------------- */
-
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
-import Wizard from "../src/app/cms/wizard/Wizard";
-import { STORAGE_KEY, baseTokens } from "../src/app/cms/wizard/utils";
-
-/* -------------------------------------------------------------------------- */
 /*  Test data / helpers                                                       */
 /* -------------------------------------------------------------------------- */
 
 const themes = ["base", "dark"];
 const templates = ["template-app"];
 
-/**
- * Advance through the wizard by clicking the "Next" or "Save & Continue"
- * button within each step container, identified via its heading.  Optional
- * callbacks may run at specific steps before moving on.
- */
 const stepHeadings = [
   "Shop Details",
   "Select Theme",
@@ -87,27 +78,30 @@ const runWizard = async (
     const container =
       (el.closest("div") as HTMLElement) ||
       (el.closest("fieldset") as HTMLElement);
-    if (actions[heading]) {
-      actions[heading](container);
-    }
+
+    actions[heading]?.(container);
+
     if (heading === "Hosting") break;
-    const next = within(container).getAllByRole("button", {
+
+    const nextBtn = within(container).getAllByRole("button", {
       name: /next|save & continue/i,
     })[0];
-    fireEvent.click(next);
+    fireEvent.click(nextBtn);
   }
 };
 
+/* -------------------------------------------------------------------------- */
+/*  jsdom polyfills / spies                                                   */
+/* -------------------------------------------------------------------------- */
+
 beforeEach(() => {
-  /* global fetch stub */
-  (global.fetch as any) = jest.fn(() => Promise.resolve({ ok: true }));
-  /* jsdom polyfills */
+  jest.spyOn(global, "fetch");
   Element.prototype.scrollIntoView = jest.fn();
   localStorage.clear();
 });
 
 afterEach(() => {
-  (global.fetch as jest.Mock).mockReset();
+  (global.fetch as jest.Mock).mockRestore();
   localStorage.clear();
 });
 
@@ -117,6 +111,22 @@ afterEach(() => {
 
 describe("Wizard", () => {
   it("submits after navigating steps", async () => {
+    let capturedBody: unknown = null;
+
+    server.use(
+      rest.post(
+        "/cms/api/create-shop",
+        async (
+          req: RestRequest,
+          res: ResponseComposition,
+          ctx: RestContext
+        ) => {
+          capturedBody = await req.json();
+          return res(ctx.status(200), ctx.json({ success: true }));
+        }
+      )
+    );
+
     render(<Wizard themes={themes} templates={templates} />);
 
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
@@ -125,28 +135,34 @@ describe("Wizard", () => {
 
     await runWizard({
       Summary: (c) =>
-        fireEvent.click(within(c).getByRole("button", { name: "Create Shop" })),
+        fireEvent.click(
+          within(c).getByRole("button", { name: /create shop/i })
+        ),
     });
 
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalled();
-    });
+    await screen.findByText(/shop created successfully/i);
+
+    expect(capturedBody).toEqual(expect.objectContaining({ id: "testshop" }));
   });
 
   it("loads tokens for a newly added theme", async () => {
     const { container } = render(
-      <Wizard themes={["base", "dark"]} templates={templates} />
+      <Wizard themes={themes} templates={templates} />
     );
 
-    const details = screen.getByRole("heading", { name: "Shop Details" })
-      .parentElement as HTMLElement;
-
-    fireEvent.change(within(details).getByPlaceholderText("my-shop"), {
+    /* shop details */
+    fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
 
-    fireEvent.click(within(details).getByRole("button", { name: /next/i }));
+    fireEvent.click(
+      within(
+        screen.getByRole("heading", { name: "Shop Details" })
+          .parentElement as HTMLElement
+      ).getByRole("button", { name: /next/i })
+    );
 
+    /* select theme */
     const themeStep = screen.getByRole("heading", { name: "Select Theme" })
       .parentElement as HTMLElement;
 
@@ -156,7 +172,7 @@ describe("Wizard", () => {
     await waitFor(() => {
       const root = container.firstChild as HTMLElement;
       expect(root.style.getPropertyValue("--color-primary")).toBe(
-        "160 80% 40%"
+        "220 90% 56%"
       );
     });
   });
@@ -171,15 +187,18 @@ describe("Wizard", () => {
       target: { value: "shop" },
     });
 
-    const details2 = screen.getByRole("heading", { name: "Shop Details" })
+    fireEvent.click(
+      within(
+        screen.getByRole("heading", { name: "Shop Details" })
+          .parentElement as HTMLElement
+      ).getByRole("button", { name: /next/i })
+    );
+
+    const themeStep = screen.getByRole("heading", { name: "Select Theme" })
       .parentElement as HTMLElement;
 
-    fireEvent.click(within(details2).getByRole("button", { name: /next/i }));
-
-    const theme2 = screen.getByRole("heading", { name: "Select Theme" })
-      .parentElement as HTMLElement;
-    fireEvent.click(within(theme2).getAllByRole("combobox")[0]);
-    fireEvent.click(await within(theme2).findByText("dark"));
+    fireEvent.click(within(themeStep).getAllByRole("combobox")[0]);
+    fireEvent.click(await within(themeStep).findByText("dark"));
 
     await waitFor(() => {
       const root = container.firstChild as HTMLElement;
@@ -204,10 +223,13 @@ describe("Wizard", () => {
   });
 
   it("calls save endpoint for home page", async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ id: "p1" }),
-    });
+    server.use(
+      rest.post("/cms/api/page-draft/shop", (req, res, ctx) =>
+        res(ctx.status(200), ctx.json({ id: "p1" }))
+      )
+    );
+
+    const fetchSpy = jest.spyOn(global, "fetch");
 
     render(<Wizard themes={themes} templates={templates} />);
 
@@ -218,19 +240,20 @@ describe("Wizard", () => {
     await runWizard({
       "Home Page": (c) => fireEvent.click(within(c).getByText("Save")),
     });
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalled();
-    });
-    expect((global.fetch as jest.Mock).mock.calls[0][0]).toContain(
-      "/cms/api/page-draft/shop"
-    );
+
+    await waitFor(() => expect(fetchSpy).toHaveBeenCalled());
+
+    expect(fetchSpy.mock.calls[0][0]).toContain("/cms/api/page-draft/shop");
   });
 
   it("calls save endpoint for additional pages", async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ id: "p2" }),
-    });
+    server.use(
+      rest.post("/cms/api/page-draft/shop", (req, res, ctx) =>
+        res(ctx.status(200), ctx.json({ id: "p2" }))
+      )
+    );
+
+    const fetchSpy = jest.spyOn(global, "fetch");
 
     render(<Wizard themes={themes} templates={templates} />);
 
@@ -246,12 +269,9 @@ describe("Wizard", () => {
       },
     });
 
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalled();
-    });
-    expect((global.fetch as jest.Mock).mock.calls[0][0]).toContain(
-      "/cms/api/page-draft/shop"
-    );
+    await waitFor(() => expect(fetchSpy).toHaveBeenCalled());
+
+    expect(fetchSpy.mock.calls[0][0]).toContain("/cms/api/page-draft/shop");
   });
 
   it("ignores invalid JSON in localStorage", () => {

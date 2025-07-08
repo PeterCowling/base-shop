@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`i18n helpers generateStaticParams yields locales 1`] = `
+[
+  {
+    "lang": "en",
+  },
+  {
+    "lang": "de",
+  },
+  {
+    "lang": "it",
+  },
+]
+`;

@@ -128,7 +128,8 @@ export async function createPage(
     } catch {
       /* ignore sentry failure */
     }
-    return { errors: parsed.error.flatten().fieldErrors };
+    const { fieldErrors } = parsed.error.flatten();
+    return { errors: fieldErrors as Record<string, string[]> };
   }
   const data = parsed.data;
 
@@ -242,7 +243,8 @@ export async function updatePage(
     } catch {
       /* ignore sentry failure */
     }
-    return { errors: parsed.error.flatten().fieldErrors };
+    const { fieldErrors } = parsed.error.flatten();
+    return { errors: fieldErrors as Record<string, string[]> };
   }
   const data = parsed.data;
 

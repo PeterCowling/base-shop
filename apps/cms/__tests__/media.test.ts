@@ -94,7 +94,7 @@ describe("media actions", () => {
         }));
 
         const { uploadMedia } = await import(
-          /* @vite-ignore */ "../src/actions/media.server.js"
+          /* @vite-ignore */ "../src/actions/media.server.ts"
         );
 
         const data = Buffer.from(
@@ -147,7 +147,7 @@ describe("media actions", () => {
         }));
 
         const { uploadMedia } = await import(
-          /* @vite-ignore */ "../src/actions/media.server.js"
+          /* @vite-ignore */ "../src/actions/media.server.ts"
         );
 
         const file = new File(["bad"], "test.txt", { type: "text/plain" });
@@ -177,7 +177,7 @@ describe("media actions", () => {
         }));
 
         const { uploadMedia } = await import(
-          /* @vite-ignore */ "../src/actions/media.server.js"
+          /* @vite-ignore */ "../src/actions/media.server.ts"
         );
 
         const data = Buffer.from(
@@ -205,7 +205,7 @@ describe("media actions", () => {
         }));
 
         const { deleteMedia } = await import(
-          /* @vite-ignore */ "../src/actions/media.server.js"
+          /* @vite-ignore */ "../src/actions/media.server.ts"
         );
 
         await expect(

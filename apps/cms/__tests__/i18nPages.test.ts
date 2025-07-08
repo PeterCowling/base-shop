@@ -7,14 +7,19 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
 // Static imports because Next 12-15 can handle literal “[lang]” folders.
+import { LOCALES } from "@acme/i18n";
 import generateStaticParams from "../src/app/[lang]/generateStaticParams";
 import LocaleLayout from "../src/app/[lang]/layout";
 
 describe("i18n helpers", () => {
   it("generateStaticParams yields locales", () => {
-    expect(generateStaticParams()).toEqual(
-      expect.arrayContaining([{ lang: "en" }, { lang: "de" }, { lang: "it" }])
-    );
+    const params = generateStaticParams();
+
+    for (const locale of LOCALES) {
+      expect(params).toContainEqual({ lang: locale });
+    }
+
+    expect(params).toMatchSnapshot();
   });
 
   it("layout wraps children with TranslationsProvider", async () => {

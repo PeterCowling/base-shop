@@ -42,6 +42,7 @@
     "deposit-service": "ts-node packages/platform-machine/releaseDepositsService.ts",
     "lh:checkout": "lighthouse http://localhost:3000/en/checkout --chrome-flags=\"--headless\" --only-categories=performance,accessibility,best-practices,seo --preset=desktop",
     "validate-env": "ts-node scripts/validate-env.ts",
+    "check:locales": "ts-node scripts/src/check-locales.ts",
     "shadcn:diff": "ts-node scripts/diff-shadcn.ts",
     "tailwind:check": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest test/unit/tailwind-build.spec.ts test/unit/postcss-config.spec.ts test/unit/tailwind-postcss.spec.ts",
     "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
@@ -77,7 +78,8 @@
     "sharp": "^0.34.2",
     "stripe": "^18.2.1",
     "ulid": "^3.0.1",
-    "zod": "^3.25.67"
+    "zod": "^3.25.67",
+    "identity-obj-proxy": "^3.0.0"
   },
   "devDependencies": {
     "@acme/tailwind-config": "workspace:*",

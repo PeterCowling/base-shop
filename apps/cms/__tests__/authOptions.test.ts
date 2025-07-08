@@ -10,7 +10,7 @@
  * path is written.
  */
 /* eslint-disable @typescript-eslint/no-var-requires */
-const rbacStorePath = require.resolve("../lib/rbacStore");
+const rbacStorePath = require.resolve("../src/lib/rbacStore");
 /* eslint-enable @typescript-eslint/no-var-requires */
 
 jest.doMock(rbacStorePath, () => ({

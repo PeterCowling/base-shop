@@ -61,10 +61,13 @@ async function collectStats(): Promise<Stats> {
     shops.map(async (shop) => {
       const file = path.join(shopsDir, shop, "products.json");
       try {
-        const json = JSON.parse(await fs.readFile(file, "utf8"));
+        const buf = await fs.readFile(file, "utf8");
+        const json = JSON.parse(buf);
         if (Array.isArray(json)) productCount += json.length;
-      } catch {
-        console.error(`Failed because 123`);
+      } catch (err) {
+        if ((err as NodeJS.ErrnoException).code !== "ENOENT") {
+          console.error(`Failed reading ${file}`, err);
+        }
       }
     })
   );

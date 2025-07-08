@@ -1,16 +1,7 @@
 // apps/cms/__tests__/versionTimeline.test.tsx
 /* eslint-env jest */
 import { fireEvent, render, screen } from "@testing-library/react";
-import { TextDecoder, TextEncoder } from "node:util";
-import { MessageChannel } from "node:worker_threads";
 import VersionTimeline from "../src/app/cms/shop/[shop]/settings/seo/VersionTimeline";
-
-/* -------------------------------------------------------------------------- */
-/*  JSDOM/browser polyfills                                                   */
-/* -------------------------------------------------------------------------- */
-(globalThis as any).MessageChannel = MessageChannel;
-(globalThis as any).TextEncoder = TextEncoder;
-(globalThis as any).TextDecoder = TextDecoder;
 
 /* -------------------------------------------------------------------------- */
 /*  Mocks for the repo + server actions                                       */

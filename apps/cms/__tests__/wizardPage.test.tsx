@@ -3,15 +3,6 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { TextDecoder, TextEncoder } from "node:util";
-import { MessageChannel } from "node:worker_threads";
-
-/* -------------------------------------------------------------------------- */
-/*  Global polyfills required by React-DOM/server in the JSDOM runtime        */
-/* -------------------------------------------------------------------------- */
-(globalThis as any).MessageChannel = MessageChannel;
-(globalThis as any).TextEncoder = TextEncoder;
-(globalThis as any).TextDecoder = TextDecoder;
 
 /* -------------------------------------------------------------------------- */
 /*  Minimal env & auth/navigation stubs                                       */

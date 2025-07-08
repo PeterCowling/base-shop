@@ -100,7 +100,7 @@ export default function StepTheme({
         </SelectContent>
       </Select>
       <div className="space-y-2">
-        <p className="font-medium">Color Palette</p>
+        <h3 className="font-medium">Color Palette</h3>
         <Select value={palette} onValueChange={applyPalette}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select palette" />

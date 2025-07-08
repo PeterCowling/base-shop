@@ -36,7 +36,7 @@ class StubPort {
   addEventListener = jest.fn();
   removeEventListener = jest.fn();
 }
-(globalThis as any).MessageChannel ||= class {
+(globalThis as any).MessageChannel = class {
   readonly port1 = new StubPort();
   readonly port2 = new StubPort();
 };

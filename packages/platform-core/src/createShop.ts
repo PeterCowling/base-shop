@@ -1,5 +1,5 @@
 // packages/platform-core/createShop.ts
-import { LOCALES } from "@acme/i18n";
+import { LOCALES } from "@i18n/locales";
 import type { Locale, PageComponent } from "@types";
 import { localeSchema } from "@types";
 import { spawnSync } from "child_process";

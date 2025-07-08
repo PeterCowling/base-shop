@@ -1,16 +1,6 @@
 /* eslint-env jest */
 
-import { TextDecoder, TextEncoder } from "node:util";
-import { MessageChannel } from "node:worker_threads";
 import { ReactNode } from "react";
-
-/* ------------------------------------------------------------------ */
-/*  Polyfills                                                         */
-/* ------------------------------------------------------------------ */
-
-(globalThis as any).MessageChannel = MessageChannel;
-(globalThis as any).TextEncoder = TextEncoder;
-(globalThis as any).TextDecoder = TextDecoder;
 
 /* ------------------------------------------------------------------ */
 /*  Environment setup                                                 */

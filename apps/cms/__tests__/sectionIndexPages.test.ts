@@ -1,13 +1,8 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { TextDecoder, TextEncoder } from "node:util";
-import { MessageChannel } from "node:worker_threads";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-(globalThis as any).MessageChannel = MessageChannel;
-(globalThis as any).TextEncoder = TextEncoder;
-(globalThis as any).TextDecoder = TextDecoder;
 
 jest.mock("next/link", () => ({
   __esModule: true,

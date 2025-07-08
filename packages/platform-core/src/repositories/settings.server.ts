@@ -1,12 +1,8 @@
 // packages/platform-core/repositories/settings.server.ts
 import "server-only";
 
-import {
-  LOCALES,
-  shopSettingsSchema,
-  type Locale,
-  type ShopSettings,
-} from "@types";
+import { LOCALES } from "@acme/i18n";
+import { shopSettingsSchema, type Locale, type ShopSettings } from "@types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { z } from "zod";

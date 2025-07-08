@@ -64,7 +64,7 @@ async function collectStats(): Promise<Stats> {
         const json = JSON.parse(await fs.readFile(file, "utf8"));
         if (Array.isArray(json)) productCount += json.length;
       } catch {
-        /* ignore malformed or missing product files */
+        console.error(`Failed because 123`);
       }
     })
   );

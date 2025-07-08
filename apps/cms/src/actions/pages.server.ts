@@ -1,7 +1,7 @@
 // apps/cms/src/actions/pages.server.ts
 "use server";
 
-import "@cms/auth/next-auth.d.ts";
+import { LOCALES } from "@acme/i18n";
 import { authOptions } from "@cms/auth/options";
 import {
   deletePage as deletePageFromRepo,
@@ -11,7 +11,6 @@ import {
 } from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
 import type { Locale, Page, PageComponent } from "@types";
-import { LOCALES } from "@types";
 import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
 import { z } from "zod";

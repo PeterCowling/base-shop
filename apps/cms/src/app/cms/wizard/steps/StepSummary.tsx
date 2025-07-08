@@ -3,8 +3,8 @@
 "use client";
 
 import { Button, Input } from "@/components/atoms-shadcn";
+import { LOCALES } from "@acme/i18n";
 import type { Locale } from "@types";
-import { LOCALES } from "@types";
 import React from "react";
 import WizardPreview from "../WizardPreview";
 

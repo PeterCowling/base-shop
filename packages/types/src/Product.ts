@@ -1,7 +1,7 @@
+import { LOCALES, type Locale } from "@acme/i18n";
 import { z } from "zod";
-import { LOCALES, type Locale } from "./constants";
 
-export type { Locale } from "./constants";
+export type { Locale } from "@acme/i18n";
 
 export const localeSchema = z.enum(LOCALES);
 

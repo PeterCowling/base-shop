@@ -2,8 +2,9 @@
 "use client";
 
 import { Progress, Toast } from "@/components/atoms";
+import { LOCALES } from "@acme/i18n";
 import type { DeployShopResult } from "@platform-core/createShop";
-import { LOCALES, type Locale, type PageComponent } from "@types";
+import type { Locale, PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
 import MediaUploadDialog from "./MediaUploadDialog";

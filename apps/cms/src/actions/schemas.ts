@@ -1,6 +1,6 @@
 // apps/cms/src/actions/schemas.ts
 
-import { LOCALES } from "@types";
+import { LOCALES } from "@acme/i18n";
 import { z } from "zod";
 
 // Dynamically build locale fields for title and description

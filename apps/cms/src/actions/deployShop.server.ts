@@ -1,7 +1,6 @@
 // apps/cms/src/actions/deployShop.server.ts
 "use server";
 
-import "@cms/auth/next-auth.d.ts";
 import { authOptions } from "@cms/auth/options";
 import { deployShop, type DeployShopResult } from "@platform-core/createShop";
 import { getServerSession } from "next-auth";

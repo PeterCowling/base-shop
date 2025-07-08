@@ -393,6 +393,10 @@ importers:
   packages/themes/dark: {}
 
   packages/types:
+    dependencies:
+      '@acme/i18n':
+        specifier: workspace:*
+        version: link:../i18n
     devDependencies:
       next:
         specifier: ^15.3.4

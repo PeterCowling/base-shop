@@ -4,6 +4,9 @@
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "dependencies": {
+    "@acme/i18n": "workspace:*"
+  },
   "devDependencies": {
     "next": "^15.3.4"
   }

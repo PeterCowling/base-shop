@@ -1,6 +1,6 @@
 // apps/cms/src/app/[lang]/product/[slug]/page.tsx
+import { LOCALES } from "@acme/i18n";
 import { getProductBySlug } from "@platform-core/products";
-import { LOCALES } from "@types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PdpClient from "./PdpClient.client";

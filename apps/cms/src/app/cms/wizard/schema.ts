@@ -1,6 +1,7 @@
 // apps/cms/src/app/cms/wizard/schema.ts
 /* eslint‑disable @typescript-eslint/consistent‑type‑assertions */
-import { LOCALES, type Locale, type PageComponent } from "@types";
+import { LOCALES } from "@acme/i18n";
+import type { Locale, PageComponent } from "@types";
 import { ulid } from "ulid";
 import { z } from "zod";
 import { baseTokens } from "./utils";

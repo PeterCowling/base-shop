@@ -2,7 +2,6 @@
 
 "use server";
 
-import "@cms/auth/next-auth.d.ts";
 import { authOptions } from "@cms/auth/options";
 import {
   getShopById,

@@ -28,8 +28,12 @@ const nextConfig = {
   // 👉  Tell Next 15 to bundle local workspace packages for the client.
   //     Add every package that contains `"use client"` components
   //     or other code that must run in the browser.
-  transpilePackages: ["ui", "@platform-core"],
-
+  transpilePackages: [
+    "@acme/ui",
+    "@acme/platform-core",
+    "@acme/i18n",
+    "@acme/template-app",
+  ],
   // (Optional) If you prefer the global switch instead, comment out the line
   // above and uncomment the one below.  Either approach fixes the issue.
   // bundlePagesRouterDependencies: true,

@@ -1,5 +1,4 @@
-export const LOCALES = ["en", "de", "it"] as const;
-export type Locale = (typeof LOCALES)[number];
+export type { Locale } from "@acme/i18n";
 
 export const ROLES = [
   "admin",

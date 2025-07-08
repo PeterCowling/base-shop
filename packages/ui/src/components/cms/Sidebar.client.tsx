@@ -99,10 +99,17 @@ export default function Sidebar({ role }: { role?: string }) {
             : isShopIndexLink
               ? pathname === fullHref
               : pathname.startsWith(fullHref);
+          const handleClick =
+            label === "Create Shop"
+              ? () => {
+                  console.log("step 1: create shop link clicked");
+                }
+              : undefined;
           return (
             <Link
               key={href}
               href={fullHref}
+              onClick={handleClick}
               aria-current={active ? "page" : undefined}
               className={`focus-visible:ring-primary flex items-center gap-2 rounded-md px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none ${active ? "bg-primary/10 font-medium" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
               title={title}

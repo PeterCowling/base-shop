@@ -1,6 +1,7 @@
 // apps/cms/src/app/cms/wizard/page.tsx
 
 import { authOptions } from "@cms/auth/options";
+import ErrorBoundary from "@cms/components/ErrorBoundary";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -31,9 +32,13 @@ interface ListResult {
 }
 
 async function listThemes(): Promise<ListResult> {
+  console.log("step 2: listThemes called");
+
   const dir = path.join(resolvePackagesRoot(), "themes");
   try {
     const entries = await fs.readdir(dir, { withFileTypes: true });
+    console.log("step 3: themes found", entries.length);
+
     return { items: entries.filter((e) => e.isDirectory()).map((e) => e.name) };
   } catch (err) {
     console.error("[wizard] failed to read themes directory", dir, err);
@@ -84,7 +89,11 @@ export default async function WizardPage() {
       {disabled && !(themeRes.error || templateRes.error) && (
         <p>No themes available</p>
       )}{" "}
-      <Wizard themes={themes} templates={templates} disabled={disabled} />
+      <ErrorBoundary
+        fallback={<p className="text-red-600">Failed to load wizard.</p>}
+      >
+        <Wizard themes={themes} templates={templates} disabled={disabled} />
+      </ErrorBoundary>
     </>
   );
 }

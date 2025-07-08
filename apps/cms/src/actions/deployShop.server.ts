@@ -37,7 +37,7 @@ export async function deployShopHosting(
 
 export async function getDeployStatus(
   id: string
-): Promise<DeployShopResult | null> {
+): Promise<DeployShopResult | { status: "pending"; error?: string }> {
   await ensureAuthorized();
   try {
     const file = path.join(
@@ -49,7 +49,8 @@ export async function getDeployStatus(
     );
     const content = await fs.readFile(file, "utf8");
     return JSON.parse(content) as DeployShopResult;
-  } catch {
-    return null;
+  } catch (err) {
+    console.error("Failed to read deploy status", err);
+    return { status: "pending", error: (err as Error).message };
   }
 }

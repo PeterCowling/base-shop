@@ -35,6 +35,5 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
   const status = await getDeployStatus(id);
-  if (!status) return NextResponse.json({ status: "pending" });
   return NextResponse.json(status);
 }

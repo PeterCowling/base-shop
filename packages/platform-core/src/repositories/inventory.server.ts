@@ -23,9 +23,13 @@ export async function readInventory(shop: string): Promise<InventoryItem[]> {
   try {
     const buf = await fs.readFile(inventoryPath(shop), "utf8");
     const parsed = inventoryItemSchema.array().safeParse(JSON.parse(buf));
-    return parsed.success ? parsed.data : [];
+    if (!parsed.success) {
+      throw new Error("Invalid inventory data");
+    }
+    return parsed.data;
   } catch (err) {
-    return [];
+    console.error(`Failed to read inventory for ${shop}`, err);
+    throw err;
   }
 }
 

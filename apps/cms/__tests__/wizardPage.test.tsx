@@ -53,6 +53,7 @@ async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   const cwd = process.cwd();
   process.chdir(dir);
   jest.resetModules(); // purge previous module state
+  await import("../../../test/resetNextMocks");
 
   try {
     await cb(dir);

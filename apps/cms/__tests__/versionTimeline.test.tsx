@@ -15,7 +15,7 @@ import VersionTimeline from "../src/app/cms/shop/[shop]/settings/seo/VersionTime
 /* -------------------------------------------------------------------------- */
 /*  Mocks for the repo + server actions                                       */
 /* -------------------------------------------------------------------------- */
-const diffHistoryMock = jest.fn();
+import { diffHistoryMock } from "./__mocks__/repo";
 const revertSeoMock = jest.fn();
 
 jest.mock("@platform-core/repositories/settings.server", () => ({

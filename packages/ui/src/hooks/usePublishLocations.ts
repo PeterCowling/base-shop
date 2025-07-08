@@ -1,7 +1,7 @@
 // packages/ui/hooks/usePublishLocations.ts
 
 import type { PublishLocation } from "@types";
-
+import { fetchJson } from "@ui/utils/fetchJson";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export interface UsePublishLocationsResult {
@@ -14,9 +14,7 @@ export function usePublishLocations(): UsePublishLocationsResult {
 
   const fetchLocations = useCallback(async () => {
     try {
-      const res = await fetch("/api/publish-locations");
-      if (!res.ok) throw new Error("Failed to fetch locations");
-      const data = (await res.json()) as PublishLocation[];
+      const data = await fetchJson<PublishLocation[]>("/api/publish-locations");
       setLocations(data);
     } catch {
       setLocations([]);

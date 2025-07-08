@@ -7,11 +7,11 @@ import Wizard from "@cms/app/cms/wizard/Wizard";
 const stepHeadings = [
   "Shop Details",
   "Select Theme",
+  "Color Palette",
   "Customize Tokens",
   "Options",
   "Navigation",
   "Layout",
-  "Home Page",
   "Checkout Page",
   "Shop Page",
   "Product Detail Page",

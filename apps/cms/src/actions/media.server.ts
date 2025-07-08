@@ -4,7 +4,6 @@
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
 import { validateShopName } from "@platform-core/src/shops";
-import * as Sentry from "@sentry/node";
 import type { ImageOrientation, MediaItem } from "@types";
 import { getServerSession } from "next-auth";
 import { promises as fs } from "node:fs";
@@ -134,7 +133,9 @@ export async function uploadMedia(
     // placeholder for resize/optimisation – ensures the buffer is valid
     await sharp(buffer).toBuffer();
   } catch (err) {
-    Sentry.captureException(err);
+    if (err instanceof Error && /orientation must be/i.test(err.message)) {
+      throw err;
+    }
     throw new Error("Failed to process image");
   }
 

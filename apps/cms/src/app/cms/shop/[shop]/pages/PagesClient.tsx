@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-query";
 import type { Page } from "@types";
 import { PagesTable } from "@ui/components/cms";
+import { fetchJson } from "@ui/utils/fetchJson";
 import { useState } from "react";
 
 interface Props {
@@ -37,11 +38,7 @@ function Inner({
 }) {
   const { data } = useSuspenseQuery<Page[]>({
     queryKey: ["pages", shop],
-    queryFn: async () => {
-      const res = await fetch(`/api/pages/${shop}`);
-      if (!res.ok) throw new Error("Failed to fetch");
-      return res.json();
-    },
+    queryFn: async () => fetchJson<Page[]>(`/api/pages/${shop}`),
     initialData: initial,
   });
 

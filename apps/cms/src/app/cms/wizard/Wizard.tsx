@@ -69,7 +69,7 @@ export default function Wizard({
   const [deploying, setDeploying] = useState(false);
   const [deployResult, setDeployResult] = useState<string | null>(null);
   const [deployInfo, setDeployInfo] = useState<
-    DeployShopResult | { status: "pending" } | null
+    DeployShopResult | { status: "pending"; error?: string } | null
   >(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -483,7 +483,7 @@ export default function Wizard({
         const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
         const status = (await res.json()) as
           | DeployShopResult
-          | { status: "pending" };
+          | { status: "pending"; error?: string };
 
         setDeployInfo(status);
 

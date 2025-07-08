@@ -10,6 +10,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementLocale } from "@stripe/stripe-js";
+import { fetchJson } from "@ui/utils/fetchJson";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -37,12 +38,14 @@ export default function CheckoutForm({ locale }: Props) {
   /* --- create session on mount or when returnDate changes --- */
   useEffect(() => {
     (async () => {
-      const res = await fetch("/api/checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ returnDate }),
-      });
-      const { clientSecret } = (await res.json()) as { clientSecret: string };
+      const { clientSecret } = await fetchJson<{ clientSecret: string }>(
+        "/api/checkout-session",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ returnDate }),
+        }
+      );
       setClientSecret(clientSecret);
     })();
   }, [returnDate]);

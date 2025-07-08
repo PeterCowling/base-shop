@@ -61,11 +61,11 @@ const templates = ["template-app"];
 const stepHeadings = [
   "Shop Details",
   "Select Theme",
+  "Color Palette",
   "Customize Tokens",
   "Options",
   "Navigation",
   "Layout",
-  "Home Page",
   "Checkout Page",
   "Shop Page",
   "Product Detail Page",
@@ -134,7 +134,7 @@ describe("Wizard", () => {
 
   it("loads tokens for a newly added theme", async () => {
     const { container } = render(
-      <Wizard themes={["base", "abc"]} templates={templates} />
+      <Wizard themes={["base", "dark"]} templates={templates} />
     );
 
     const details = screen.getByRole("heading", { name: "Shop Details" })
@@ -150,7 +150,7 @@ describe("Wizard", () => {
       .parentElement as HTMLElement;
 
     fireEvent.click(within(themeStep).getAllByRole("combobox")[0]);
-    fireEvent.click(await within(themeStep).findByText("abc"));
+    fireEvent.click(await within(themeStep).findByText("base"));
 
     await waitFor(() => {
       const root = container.firstChild as HTMLElement;

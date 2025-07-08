@@ -4,7 +4,7 @@ import path from "node:path";
 
 async function withRepo(
   cb: (
-    repo: typeof import("../repositories/inventory.server"),
+    repo: typeof import("../src/repositories/inventory.server"),
     shop: string,
     dir: string
   ) => Promise<void>
@@ -17,7 +17,7 @@ async function withRepo(
   process.chdir(dir);
   jest.resetModules();
 
-  const repo = await import("../repositories/inventory.server");
+  const repo = await import("../src/repositories/inventory.server");
   try {
     await cb(repo, "test", dir);
   } finally {
@@ -26,9 +26,9 @@ async function withRepo(
 }
 
 describe("inventory repository", () => {
-  it("readInventory returns empty array when file missing or invalid", async () => {
+  it("readInventory throws when file missing or invalid", async () => {
     await withRepo(async (repo, shop, dir) => {
-      expect(await repo.readInventory(shop)).toEqual([]);
+      await expect(repo.readInventory(shop)).rejects.toThrow();
 
       await fs.writeFile(
         path.join(dir, "data", "shops", shop, "inventory.json"),
@@ -36,7 +36,7 @@ describe("inventory repository", () => {
         "utf8"
       );
 
-      expect(await repo.readInventory(shop)).toEqual([]);
+      await expect(repo.readInventory(shop)).rejects.toThrow();
     });
   });
 

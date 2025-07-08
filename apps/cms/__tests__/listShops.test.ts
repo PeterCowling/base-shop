@@ -20,4 +20,14 @@ describe("listShops", () => {
     spy.mockRestore();
     await fs.rm(dir, { recursive: true, force: true });
   });
+
+  it("throws when data/shops is missing", async () => {
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shops-"));
+    const spy = jest.spyOn(process, "cwd").mockReturnValue(dir);
+
+    await expect(listShops()).rejects.toThrow();
+
+    spy.mockRestore();
+    await fs.rm(dir, { recursive: true, force: true });
+  });
 });

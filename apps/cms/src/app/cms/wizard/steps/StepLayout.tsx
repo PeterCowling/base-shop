@@ -4,6 +4,7 @@
 import { Button } from "@/components/atoms-shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { Locale, LOCALES, Page, PageComponent } from "@types";
+import { fetchJson } from "@ui/utils/fetchJson";
 import { ReactNode } from "react";
 
 interface Props {
@@ -90,11 +91,13 @@ export default function StepLayout({
             } as Page
           }
           onSave={async (fd) => {
-            const res = await fetch(`/cms/api/page-draft/${shopId}`, {
-              method: "POST",
-              body: fd,
-            });
-            const json = await res.json();
+            const json = await fetchJson<{ id: string }>(
+              `/cms/api/page-draft/${shopId}`,
+              {
+                method: "POST",
+                body: fd,
+              }
+            );
             setHeaderPageId(json.id);
           }}
           onPublish={async () => {}}
@@ -124,11 +127,13 @@ export default function StepLayout({
             } as Page
           }
           onSave={async (fd) => {
-            const res = await fetch(`/cms/api/page-draft/${shopId}`, {
-              method: "POST",
-              body: fd,
-            });
-            const json = await res.json();
+            const json = await fetchJson<{ id: string }>(
+              `/cms/api/page-draft/${shopId}`,
+              {
+                method: "POST",
+                body: fd,
+              }
+            );
             setFooterPageId(json.id);
           }}
           onPublish={async () => {}}

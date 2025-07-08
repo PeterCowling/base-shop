@@ -25,7 +25,8 @@ export async function listShops(): Promise<string[]> {
     const shopsDir = resolveDataRoot();
     const entries = await fs.readdir(shopsDir, { withFileTypes: true });
     return entries.filter((e) => e.isDirectory()).map((e) => e.name);
-  } catch {
-    return [];
+  } catch (err) {
+    console.error("Failed to list shops:", err);
+    throw err;
   }
 }

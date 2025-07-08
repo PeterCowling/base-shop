@@ -10,6 +10,7 @@ import {
 } from "@/components/atoms-shadcn";
 import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
 import { Locale, LOCALES, Page, PageComponent } from "@types";
+import { fetchJson } from "@ui/utils/fetchJson";
 import { ulid } from "ulid";
 
 interface Props {
@@ -93,11 +94,13 @@ export default function StepProductPage({
           } as Page
         }
         onSave={async (fd) => {
-          const res = await fetch(`/cms/api/page-draft/${shopId}`, {
-            method: "POST",
-            body: fd,
-          });
-          const json = await res.json();
+          const json = await fetchJson<{ id: string }>(
+            `/cms/api/page-draft/${shopId}`,
+            {
+              method: "POST",
+              body: fd,
+            }
+          );
           setProductPageId(json.id);
         }}
         onPublish={async () => {}}

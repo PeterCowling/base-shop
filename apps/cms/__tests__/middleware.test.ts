@@ -14,7 +14,7 @@ jest.mock("next-auth/jwt", () => ({
   getToken: jest.fn(),
 }));
 
-/** Strongly-typed handle to the mocked getToken */
+/** Strongly‑typed handle to the mocked getToken */
 import { getToken as mockedGetToken } from "next-auth/jwt";
 const getToken = mockedGetToken as jest.MockedFunction<
   typeof import("next-auth/jwt").getToken
@@ -25,7 +25,7 @@ const getToken = mockedGetToken as jest.MockedFunction<
 /* -------------------------------------------------------------------------- */
 type MiddlewareRequest = Parameters<typeof middleware>[0];
 
-/** Create a minimal NextRequest look-alike for the middleware */
+/** Create a minimal NextRequest look‑alike for the middleware */
 function createRequest(path: string): MiddlewareRequest {
   const url = new URL(`http://localhost${path}`) as URL & { clone(): URL };
   // Next.js adds a `.clone()` method; we stub it for parity.
@@ -57,5 +57,21 @@ describe("middleware", () => {
     const res = await middleware(req);
 
     expect(res.headers.get("x-middleware-rewrite")).toContain("/403");
+  });
+
+  it("passes through valid CMS locale", async () => {
+    const res = await middleware(createRequest("/cms/de"));
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+  });
+
+  it("redirects invalid CMS case to /en", async () => {
+    const res = await middleware(createRequest("/CMS/DE"));
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toContain("/en");
+  });
+
+  it("returns 403 for unknown CMS locale", async () => {
+    const res = await middleware(createRequest("/cms/zz"));
+    expect(res.status).toBe(403);
   });
 });

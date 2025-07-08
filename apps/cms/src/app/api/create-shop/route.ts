@@ -45,6 +45,8 @@ export async function POST(req: Request) {
     /* --------------------------------------------------------------
      *  Bad request or runtime failure → 400
      * ------------------------------------------------------------ */
+    console.error("Failed to create shop", err);
+
     return NextResponse.json(
       { error: (err as Error).message },
       { status: 400 }

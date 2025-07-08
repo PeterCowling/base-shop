@@ -41,6 +41,10 @@ export async function updateShop(
     )
   );
   if (!parsed.success) {
+    console.error(
+      `[updateShop] validation failed for shop ${shop}`,
+      parsed.error
+    );
     return { errors: parsed.error.flatten().fieldErrors };
   }
 
@@ -96,6 +100,10 @@ export async function updateSeo(
     )
   );
   if (!parsed.success) {
+    console.error(
+      `[updateSeo] validation failed for shop ${shop}`,
+      parsed.error
+    );
     return { errors: parsed.error.flatten().fieldErrors };
   }
 

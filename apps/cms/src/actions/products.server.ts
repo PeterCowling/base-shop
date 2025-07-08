@@ -15,6 +15,7 @@ import {
   writeRepo,
 } from "@platform-core/repositories/json.server";
 import type { ProductPublication } from "@platform-core/src/products";
+import * as Sentry from "@sentry/node";
 import type { Locale } from "@types";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -102,6 +103,8 @@ export async function updateProduct(
   );
   if (!parsed.success) {
     const { fieldErrors } = parsed.error.flatten();
+    const productId = String(formData.get("id") ?? "");
+    Sentry.captureException(parsed.error, { extra: { productId } });
     return { errors: fieldErrors as Record<string, string[]> };
   }
 

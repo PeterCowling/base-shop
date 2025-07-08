@@ -211,7 +211,8 @@ const PageBuilder = memo(function PageBuilder({
       const stored = localStorage.getItem(storageKey);
       if (!stored) throw new Error("no stored state");
       return historyStateSchema.parse(JSON.parse(stored));
-    } catch {
+    } catch (err) {
+      console.warn("Failed to parse stored page builder state", err);
       return {
         past: [],
         present: page.components as PageComponent[],

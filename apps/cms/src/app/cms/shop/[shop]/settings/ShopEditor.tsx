@@ -29,29 +29,36 @@ export default function ShopEditor({ shop, initial }: Props) {
   };
 
   const handleTokens = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = e.target;
+
     try {
-      const parsed = JSON.parse(e.target.value);
+      const parsed = JSON.parse(value);
+
       setInfo((prev) => ({ ...prev, themeTokens: parsed }));
     } catch {
-      // ignore invalid JSON
+      console.error("Invalid JSON for themeTokens:", value);
     }
   };
 
   const handleMappings = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = e.target;
+
     try {
-      const parsed = JSON.parse(e.target.value);
+      const parsed = JSON.parse(value);
       setInfo((prev) => ({ ...prev, filterMappings: parsed }));
     } catch {
-      // ignore invalid JSON
+      console.error("Invalid JSON for priceOverrides:", value);
     }
   };
 
   const handlePriceOverrides = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = e.target;
+
     try {
-      const parsed = JSON.parse(e.target.value);
+      const parsed = JSON.parse(value);
       setInfo((prev) => ({ ...prev, priceOverrides: parsed }));
     } catch {
-      // ignore invalid JSON
+      console.error("Invalid JSON for localeOverrides:", value);
     }
   };
 

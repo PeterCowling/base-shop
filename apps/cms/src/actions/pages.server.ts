@@ -42,6 +42,11 @@ const componentsField = z
       if (!Array.isArray(arr)) throw new Error();
       return arr as PageComponent[];
     } catch {
+      const snippet = val.length > 100 ? `${val.slice(0, 100)}...` : val;
+      console.error(
+        `Malformed components field: \"${snippet}\". ` +
+          `Ensure the components field is valid JSON.`
+      );
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Invalid components",
@@ -112,6 +117,18 @@ export async function createPage(
     )
   );
   if (!parsed.success) {
+    const context = { shop, id };
+    if (process.env.NODE_ENV === "development") {
+      console.warn("[createPage] validation failed", {
+        ...context,
+        error: parsed.error,
+      });
+    }
+    try {
+      Sentry.captureException(parsed.error, { extra: context });
+    } catch {
+      /* ignore sentry failure */
+    }
     return { errors: parsed.error.flatten().fieldErrors };
   }
   const data = parsed.data;
@@ -214,6 +231,18 @@ export async function updatePage(
     )
   );
   if (!parsed.success) {
+    const context = { shop, id: formData.get("id") || undefined };
+    if (process.env.NODE_ENV === "development") {
+      console.warn("[updatePage] validation failed", {
+        ...context,
+        error: parsed.error,
+      });
+    }
+    try {
+      Sentry.captureException(parsed.error, { extra: context });
+    } catch {
+      /* ignore sentry failure */
+    }
     return { errors: parsed.error.flatten().fieldErrors };
   }
   const data = parsed.data;

@@ -72,6 +72,7 @@ export default function Wizard({
     DeployShopResult | { status: "pending"; error?: string } | null
   >(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
+  const [invalidStateNotice, setInvalidStateNotice] = useState(false);
 
   const languages = LOCALES as readonly Locale[];
 
@@ -223,6 +224,10 @@ export default function Wizard({
 
           setCategoriesText(data.categoriesText);
           savedThemeVars.current = data.themeVars;
+        } else {
+          console.warn("Stored wizard state failed validation", parsed.error);
+          resetWizardProgress();
+          setInvalidStateNotice(true);
         }
       } catch (err) {
         console.warn("Failed to parse wizard state", err);
@@ -757,6 +762,11 @@ export default function Wizard({
           />
         )}
       </fieldset>
+      <Toast
+        open={invalidStateNotice}
+        onClose={() => setInvalidStateNotice(false)}
+        message="Saved wizard state was invalid and has been reset."
+      />
     </div>
   );
 }

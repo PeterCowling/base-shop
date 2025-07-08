@@ -36,7 +36,7 @@ async function listThemes(): Promise<ListResult> {
     const entries = await fs.readdir(dir, { withFileTypes: true });
     return { items: entries.filter((e) => e.isDirectory()).map((e) => e.name) };
   } catch (err) {
-    console.error("[wizard] failed to read themes directory", err);
+    console.error("[wizard] failed to read themes directory", dir, err);
     return { items: [], error: (err as Error).message };
   }
 }
@@ -51,7 +51,7 @@ async function listTemplates(): Promise<ListResult> {
         .map((e) => e.name),
     };
   } catch (err) {
-    console.error("[wizard] failed to read templates directory", err);
+    console.error("[wizard] failed to read templates directory", dir, err);
     return { items: [], error: (err as Error).message };
   }
 }

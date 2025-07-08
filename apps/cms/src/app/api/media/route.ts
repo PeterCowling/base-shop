@@ -33,6 +33,8 @@ export async function POST(req: Request) {
     const item = await uploadMedia(shop, data, orientation);
     return NextResponse.json(item);
   } catch (err) {
+    console.error("Upload failed", err);
+
     return NextResponse.json(
       { error: (err as Error).message },
       { status: 400 }
@@ -51,6 +53,8 @@ export async function DELETE(req: Request) {
     await deleteMedia(shop, file);
     return NextResponse.json({ success: true });
   } catch (err) {
+    console.error("Delete failed", err);
+
     return NextResponse.json(
       { error: (err as Error).message },
       { status: 400 }

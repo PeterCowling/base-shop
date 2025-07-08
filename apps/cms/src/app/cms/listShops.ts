@@ -21,12 +21,13 @@ function resolveDataRoot(): string {
 }
 
 export async function listShops(): Promise<string[]> {
+  const shopsDir = resolveDataRoot();
+
   try {
-    const shopsDir = resolveDataRoot();
     const entries = await fs.readdir(shopsDir, { withFileTypes: true });
     return entries.filter((e) => e.isDirectory()).map((e) => e.name);
   } catch (err) {
-    console.error("Failed to list shops:", err);
+    console.error(`Failed to list shops at ${shopsDir}:`, err);
     throw err;
   }
 }

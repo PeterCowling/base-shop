@@ -1,22 +1,20 @@
 // apps/cms/src/app/cms/wizard/Wizard.tsx
 "use client";
 
-import { Progress } from "@/components/atoms";
-import { LOCALES, type Locale, type PageComponent } from "@types";
-
+import { Progress, Toast } from "@/components/atoms";
 import type { DeployShopResult } from "@platform-core/createShop";
+import { LOCALES, type Locale, type PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
 import MediaUploadDialog from "./MediaUploadDialog";
 import type { PageInfo } from "./schema";
-import StepLayout from "./steps/StepLayout";
-
 import { wizardStateSchema } from "./schema";
 import StepAdditionalPages from "./steps/StepAdditionalPages";
 import StepCheckoutPage from "./steps/StepCheckoutPage";
 import StepHomePage from "./steps/StepHomePage";
 import StepHosting from "./steps/StepHosting";
 import StepImportData from "./steps/StepImportData";
+import StepLayout from "./steps/StepLayout";
 import StepNavigation from "./steps/StepNavigation";
 import StepOptions from "./steps/StepOptions";
 import StepProductPage from "./steps/StepProductPage";

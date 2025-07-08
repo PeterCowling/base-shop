@@ -24,6 +24,12 @@ export async function createNewShop(
   if (!session) throw new Error("Forbidden");
 
   await createShop(id, options);
+  try {
+    await createShop(id, options);
+  } catch (err) {
+    console.error("createShop failed", err);
+    throw err;
+  }
 
   const userId = (session.user as { id?: string }).id;
   if (!userId) return;

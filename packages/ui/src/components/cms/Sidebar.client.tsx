@@ -4,6 +4,10 @@ import { getShopFromPath } from "@platform-core/src/utils/getShopFromPath";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+if (process.env.NODE_ENV === "development") {
+  console.log("sidebar rendered on client");
+}
+
 export default function Sidebar({ role }: { role?: string }) {
   const pathname = usePathname() ?? "";
   const shop = getShopFromPath(pathname);

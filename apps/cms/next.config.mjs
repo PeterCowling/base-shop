@@ -4,6 +4,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// ----------------------------------------------------------------------------
+// 1. Determine the first shop slug (same logic you already had)
+// ----------------------------------------------------------------------------
 const shopsDir = path.resolve(__dirname, "../..", "data", "shops");
 let firstShop = "abc";
 try {
@@ -11,18 +15,26 @@ try {
   const shopDir = entries.find((e) => e.isDirectory());
   if (shopDir) firstShop = shopDir.name;
 } catch {
-  // ignore
+  /* ignore – directory may not exist on fresh clone */
 }
 
+// ----------------------------------------------------------------------------
+// 2. Next.js configuration
+// ----------------------------------------------------------------------------
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
 
-  // ————————————————————————————————————————————
-  //  Enable static export only in CI / prod
-  //    • CI sets  OUTPUT_EXPORT=1   → next export
-  //    • Local dev leaves it unset  → full Next.js server
-  // ————————————————————————————————————————————
+  // 👉  Tell Next 15 to bundle local workspace packages for the client.
+  //     Add every package that contains `"use client"` components
+  //     or other code that must run in the browser.
+  transpilePackages: ["ui", "@platform-core"],
+
+  // (Optional) If you prefer the global switch instead, comment out the line
+  // above and uncomment the one below.  Either approach fixes the issue.
+  // bundlePagesRouterDependencies: true,
+
+  // Keep your existing “static export in CI only” logic
   ...(process.env.OUTPUT_EXPORT === "1" ? { output: "export" } : {}),
 
   env: {

@@ -1,14 +1,10 @@
-// apps/cms/__tests__/authOptions.test.ts
+/* apps/cms/__tests__/authOptions.test.ts */
 /* eslint-env jest */
 
 /* -------------------------------------------------------------------------- */
-/*  FIRST: stub the RBAC store                                                */
+/* 1.  Stub the RBAC store **before** importing authOptions                   */
 /* -------------------------------------------------------------------------- */
-/**
- * Using `require.resolve` guarantees we mock the *exact* module instance
- * that `src/auth/options.ts` imports, regardless of how each file’s relative
- * path is written.
- */
+
 /* eslint-disable @typescript-eslint/no-var-requires */
 const rbacStorePath = require.resolve("../src/lib/rbacStore");
 /* eslint-enable @typescript-eslint/no-var-requires */
@@ -16,29 +12,28 @@ const rbacStorePath = require.resolve("../src/lib/rbacStore");
 jest.doMock(rbacStorePath, () => ({
   readRbac: async () => ({
     users: {
-      "1": {
-        id: "1",
-        email: "admin@example.com",
-        password: "admin",
-      },
+      "1": { id: "1", email: "admin@example.com", password: "admin" },
     },
-    roles: {
-      "1": "admin",
-    },
+    roles: { "1": "admin" },
   }),
 }));
 
 /* -------------------------------------------------------------------------- */
-/*  THEN import what depends on that store                                    */
+/* 2.  Imports                                                                */
 /* -------------------------------------------------------------------------- */
+
 import type { Account, Profile, Session, User } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import type { CredentialsConfig } from "next-auth/providers/credentials";
 import { authOptions } from "../src/auth/options";
 
 /* -------------------------------------------------------------------------- */
-/*  Helpers                                                                   */
+/* 3.  Helpers                                                                */
 /* -------------------------------------------------------------------------- */
+
+/**
+ * Narrow a provider to `CredentialsConfig`.
+ */
 function isCredentialsProvider(p: unknown): p is CredentialsConfig {
   return (
     typeof p === "object" &&
@@ -48,20 +43,32 @@ function isCredentialsProvider(p: unknown): p is CredentialsConfig {
   );
 }
 
-const provider = authOptions.providers.find(isCredentialsProvider)!;
+const provider = authOptions.providers.find(isCredentialsProvider);
+if (!provider) {
+  throw new Error("Credentials provider not found in authOptions");
+}
+
+/**
+ * `NextAuth` nests provider-specific callbacks under `options`.
+ * We bind its `this` value to the provider to mimic production.
+ */
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+const authorize = (
+  provider as unknown as { options: { authorize: Function } }
+).options.authorize.bind(provider);
 
 /* -------------------------------------------------------------------------- */
-/*  Tests                                                                     */
+/* 4.  Tests                                                                  */
 /* -------------------------------------------------------------------------- */
+
 describe("authOptions (Credentials provider)", () => {
   it("authorize returns user when credentials match", async () => {
-    const user = await provider.authorize!.call(
-      undefined,
+    const matchedUser = (await authorize(
       { email: "admin@example.com", password: "admin" },
-      {} as any // ⬅️ satisfy RequestInternal
-    );
+      {} as Record<string, never> // RequestInternal placeholder
+    )) as User & { role: string };
 
-    expect(user).toMatchObject({
+    expect(matchedUser).toMatchObject({
       id: expect.any(String),
       email: "admin@example.com",
       role: "admin",
@@ -70,10 +77,9 @@ describe("authOptions (Credentials provider)", () => {
 
   it("authorize throws when credentials are wrong", async () => {
     await expect(
-      provider.authorize!.call(
-        undefined,
+      authorize(
         { email: "admin@example.com", password: "wrong" },
-        {} as any
+        {} as Record<string, never>
       )
     ).rejects.toThrow("Invalid email or password");
   });
@@ -97,7 +103,7 @@ describe("authOptions (Credentials provider)", () => {
   });
 
   it("session callback exposes role to the client session", async () => {
-    const inputSession: Session = {
+    const baseSession: Session = {
       user: {} as User,
       expires: new Date(Date.now() + 86_400_000).toISOString(),
     };
@@ -106,10 +112,10 @@ describe("authOptions (Credentials provider)", () => {
     const dummyUser = { id: "u", email: "x@example.com" } as User;
 
     const session = await authOptions.callbacks!.session!.call(null, {
-      session: inputSession,
+      session: baseSession,
       token: adminToken,
       user: dummyUser,
-      newSession: {} as any,
+      newSession: {} as Record<string, never>,
       trigger: "update",
     });
 

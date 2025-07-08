@@ -65,6 +65,7 @@ describe("media actions", () => {
           __esModule: true,
           default: () => ({
             metadata: jest.fn().mockResolvedValue({ width: 2, height: 1 }),
+            toBuffer: jest.fn().mockResolvedValue(Buffer.alloc(0)),
           }),
         }));
 

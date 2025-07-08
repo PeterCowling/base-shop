@@ -75,7 +75,8 @@ describe("WizardPage", () => {
 
       const html = renderToStaticMarkup(await WizardPage());
 
-      expect(html).toContain("No themes available");
+      expect(html).toContain("Error loading themes");
+      expect(html).toContain("Error loading templates");
       expect(html).toContain("fieldset disabled");
     });
   });

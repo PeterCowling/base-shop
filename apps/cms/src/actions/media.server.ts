@@ -77,8 +77,9 @@ export async function listMedia(shop: string): Promise<MediaItem[]> {
         title: meta[f]?.title,
         altText: meta[f]?.altText,
       }));
-  } catch {
-    return [];
+  } catch (err) {
+    console.error("Failed to list media", err);
+    throw new Error("Failed to list media");
   }
 }
 

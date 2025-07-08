@@ -8,7 +8,10 @@ export async function GET() {
     const buf = await fs.readFile(file, "utf8");
     const data = JSON.parse(buf);
     return NextResponse.json(data);
-  } catch {
-    return NextResponse.json([]);
+  } catch (err) {
+    return NextResponse.json(
+      { error: (err as Error).message },
+      { status: 404 }
+    );
   }
 }

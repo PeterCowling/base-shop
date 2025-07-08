@@ -50,7 +50,8 @@ describe("publish locations API route", () => {
 
       res = await route.GET();
       json = await res.json();
-      expect(json).toEqual([]);
+      expect(json).toEqual({ error: expect.any(String) });
+      expect(res.status).toBe(404);
     });
   });
 });

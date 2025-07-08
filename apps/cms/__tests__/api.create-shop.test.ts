@@ -78,7 +78,7 @@ describe("publish-locations API", () => {
     (process.env as Record<string, string>).NODE_ENV = prev as string;
   });
 
-  it("returns empty array when read fails", async () => {
+  it("returns error when read fails", async () => {
     const prev = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
     jest.doMock("node:fs", () => ({
@@ -88,7 +88,8 @@ describe("publish-locations API", () => {
     const { GET } = await import("../src/app/api/publish-locations/route");
     const res = await GET();
     const json = await res.json();
-    expect(json).toEqual([]);
+    expect(json).toEqual({ error: expect.any(String) });
+    expect(res.status).toBe(404);
     (process.env as Record<string, string>).NODE_ENV = prev as string;
   });
 });

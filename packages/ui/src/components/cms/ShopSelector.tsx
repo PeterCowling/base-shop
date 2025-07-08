@@ -17,6 +17,8 @@ export default function ShopSelector() {
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
     "loading"
   );
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const pathname = usePathname() ?? "";
   const router = useRouter();
 
@@ -31,9 +33,17 @@ export default function ShopSelector() {
             setStatus("ready");
             return;
           }
+          setErrorMsg("Invalid response");
+        } else {
+          const json = await res.json().catch(() => ({}));
+          setErrorMsg(json.error ?? `Error ${res.status}`);
         }
         setStatus("error");
-      } catch {
+      } catch (err) {
+        console.error("Error loading shops", err);
+        setErrorMsg(
+          err instanceof Error ? err.message : "Failed to load shops"
+        );
         setStatus("error");
         setShops([]);
       }
@@ -52,8 +62,11 @@ export default function ShopSelector() {
   if (status === "loading")
     return <span className="text-sm">Loading shops…</span>;
   if (status === "error")
-    return <span className="text-sm text-red-600">Failed to load shops</span>;
-
+    return (
+      <span className="text-sm text-red-600">
+        {errorMsg ?? "Failed to load shops"}
+      </span>
+    );
   if (shops.length === 0)
     return (
       <span className="text-muted-foreground text-sm">No shops found.</span>

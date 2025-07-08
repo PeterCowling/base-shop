@@ -5,7 +5,7 @@ import path from "node:path";
 import { listShops } from "../src/app/cms/listShops";
 
 describe("listShops", () => {
-  it("returns directories under data/shops", async () => {
+  it("throws when directory missing", async () => {
     const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shops-"));
     const shopDir = path.join(dir, "data", "shops", "foo");
     await fs.mkdir(shopDir, { recursive: true });
@@ -15,7 +15,7 @@ describe("listShops", () => {
     await expect(listShops()).resolves.toEqual(["foo"]);
 
     await fs.rm(shopDir, { recursive: true, force: true });
-    await expect(listShops()).resolves.toEqual([]);
+    await expect(listShops()).rejects.toThrow("Failed to list shops");
 
     spy.mockRestore();
     await fs.rm(dir, { recursive: true, force: true });

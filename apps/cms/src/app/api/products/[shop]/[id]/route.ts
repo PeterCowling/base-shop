@@ -8,6 +8,7 @@ export async function GET(
   { params }: { params: { shop: string; id: string } }
 ) {
   const product = await getProductById(params.shop, params.id);
-  if (!product) return NextResponse.json(null, { status: 404 });
+  if (!product)
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json(product);
 }

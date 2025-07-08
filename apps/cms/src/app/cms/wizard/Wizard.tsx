@@ -375,8 +375,9 @@ export default function Wizard({
         const { error } = (await res.json()) as { error?: string };
         setResult(error ?? "Failed to create shop");
       }
-    } catch {
-      setResult("Failed to create shop");
+    } catch (err) {
+      console.error("Error creating shop", err);
+      setResult(err instanceof Error ? err.message : "Failed to create shop");
     } finally {
       setCreating(false);
     }
@@ -401,8 +402,9 @@ export default function Wizard({
       } else {
         setDeployResult(json.error ?? "Deployment failed");
       }
-    } catch {
-      setDeployResult("Deployment failed");
+    } catch (err) {
+      console.error("Error deploying shop", err);
+      setDeployResult(err instanceof Error ? err.message : "Deployment failed");
     } finally {
       setDeploying(false);
     }
@@ -416,10 +418,14 @@ export default function Wizard({
       if (csvFile) {
         const fd = new FormData();
         fd.append("file", csvFile);
-        await fetch(`/cms/api/upload-csv/${shopId}`, {
+        const res = await fetch(`/cms/api/upload-csv/${shopId}`, {
           method: "POST",
           body: fd,
         });
+        if (!res.ok) {
+          const json = await res.json().catch(() => ({}));
+          throw new Error(json.error ?? "Failed to save data");
+        }
       }
 
       if (categoriesText.trim()) {
@@ -427,17 +433,22 @@ export default function Wizard({
           .split(/[\n,]+/)
           .map((c) => c.trim())
           .filter(Boolean);
-        await fetch(`/cms/api/categories/${shopId}`, {
+        const res = await fetch(`/cms/api/categories/${shopId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(cats),
         });
+        if (!res.ok) {
+          const json = await res.json().catch(() => ({}));
+          throw new Error(json.error ?? "Failed to save data");
+        }
       }
 
       setSeedResult("Data saved");
       setStep(10);
-    } catch {
-      setSeedResult("Failed to save data");
+    } catch (err) {
+      console.error("Error saving seed data", err);
+      setSeedResult(err instanceof Error ? err.message : "Failed to save data");
     } finally {
       setSeeding(false);
     }
@@ -451,25 +462,36 @@ export default function Wizard({
       if (csvFile) {
         const form = new FormData();
         form.append("file", csvFile);
-        await fetch(`/cms/api/import-products/${shopId}`, {
+        const res = await fetch(`/cms/api/import-products/${shopId}`, {
           method: "POST",
           body: form,
         });
+        if (!res.ok) {
+          const json = await res.json().catch(() => ({}));
+          throw new Error(json.error ?? "Failed to save data");
+        }
       }
 
       if (categoriesText.trim()) {
         const cats = JSON.parse(categoriesText);
-        await fetch(`/cms/api/categories/${shopId}`, {
+        const res = await fetch(`/cms/api/categories/${shopId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(cats),
         });
+        if (!res.ok) {
+          const json = await res.json().catch(() => ({}));
+          throw new Error(json.error ?? "Failed to save data");
+        }
       }
 
       setImportResult("Saved");
       setStep(9);
-    } catch {
-      setImportResult("Failed to save data");
+    } catch (err) {
+      console.error("Error importing data", err);
+      setImportResult(
+        err instanceof Error ? err.message : "Failed to save data"
+      );
     } finally {
       setImporting(false);
     }
@@ -491,7 +513,9 @@ export default function Wizard({
           if (pollRef.current) clearInterval(pollRef.current);
           pollRef.current = null;
         }
-      } catch {}
+      } catch (err) {
+        console.error("Polling deploy status failed", err);
+      }
     }, 3000);
   }
 
@@ -563,6 +587,8 @@ export default function Wizard({
 
         {step === 5 && (
           <StepLayout
+            currentStep={step}
+            stepIndex={5}
             headerComponents={headerComponents}
             setHeaderComponents={setHeaderComponents}
             headerPageId={headerPageId}

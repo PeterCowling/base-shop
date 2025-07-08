@@ -53,7 +53,7 @@ function withDevEnv<T>(fn: () => Promise<T>): Promise<T> {
 describe("media actions", () => {
   afterEach(() => jest.resetAllMocks());
 
-  it("listMedia returns empty array when dir missing", async () => {
+  it("listMedia throws when dir missing", async () => {
     await withTmpDir(async () =>
       withDevEnv(async () => {
         jest.doMock("next-auth", () => ({
@@ -71,8 +71,9 @@ describe("media actions", () => {
         const { listMedia } = await import(
           /* @vite-ignore */ "../src/actions/media.server.ts"
         );
-        const files = await listMedia("shop1");
-        expect(files).toEqual([]);
+        await expect(listMedia("shop1")).rejects.toThrow(
+          "Failed to list media"
+        );
       })
     );
   });

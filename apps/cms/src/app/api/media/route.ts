@@ -7,8 +7,16 @@ export async function GET(req: Request) {
   if (!shop) {
     return NextResponse.json({ error: "Missing shop" }, { status: 400 });
   }
-  const files = await listMedia(shop);
-  return NextResponse.json(files);
+  try {
+    const files = await listMedia(shop);
+    return NextResponse.json(files);
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      { error: (err as Error).message },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(req: Request) {

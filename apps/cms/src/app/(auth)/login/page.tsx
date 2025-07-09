@@ -1,7 +1,7 @@
 // apps/cms/src/app/(auth)/login/page.tsx
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import LoginForm from "./LoginForm";
 
 /**
@@ -23,5 +23,9 @@ export default function LoginPage() {
     }
   }, []);
 
-  return <LoginForm fallbackUrl={fallbackUrl} />;
+  return (
+    <Suspense fallback={null}>
+      <LoginForm fallbackUrl={fallbackUrl} />
+    </Suspense>
+  );
 }

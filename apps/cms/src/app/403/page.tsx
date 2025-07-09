@@ -4,8 +4,17 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 export default function AccessDenied() {
+  return (
+    <Suspense fallback={null}>
+      <AccessDeniedContent />
+    </Suspense>
+  );
+}
+
+function AccessDeniedContent() {
   const searchParams = useSearchParams();
   const shop = searchParams.get("shop");
   const href = shop ? `/cms/shop/${shop}/products` : "/products";

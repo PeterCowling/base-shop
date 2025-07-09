@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start -p 3006",
     "lint": "next lint",
-    "test": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs"
+    "test": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs",
+    "dev:debug": "cross-env NODE_OPTIONS='--enable-source-maps --trace-uncaught --inspect' next dev -p 3006"
   },
   "dependencies": {
     "@themes/base": "workspace:*",

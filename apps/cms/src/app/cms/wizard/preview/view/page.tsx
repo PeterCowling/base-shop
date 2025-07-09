@@ -1,4 +1,4 @@
-import HeroBanner from "@/components/home/HeroBanner";
+import HeroBanner from "@/components/home/HeroBanner.client";
 import ReviewsCarousel from "@/components/home/ReviewsCarousel";
 import { ValueProps } from "@/components/home/ValueProps";
 import { Footer, Header, SideNav } from "@/components/organisms";
@@ -8,7 +8,7 @@ import TranslationsProvider from "@i18n/Translations";
 import {
   tokens as baseTokensSrc,
   type TokenMap as BaseTokenMap,
-} from "@themes/base/src/tokens";
+} from "@themes/base";
 import { draftMode } from "next/headers";
 import type { CSSProperties } from "react";
 
@@ -53,9 +53,12 @@ export default async function PreviewView({
   const tokens = await loadThemeTokens(theme);
   const style = Object.fromEntries(Object.entries(tokens)) as CSSProperties;
 
-  const messages = (
-    await import(/* webpackInclude: /(en|de|it)\.json$/ */ `@i18n/${lang}.json`)
-  ).default;
+  const messagesMap = {
+    en: () => import("@i18n/en.json"),
+    de: () => import("@i18n/de.json"),
+    it: () => import("@i18n/it.json"),
+  } as const;
+  const messages = (await messagesMap[lang]()).default;
 
   return (
     <div style={style} className="min-h-screen">

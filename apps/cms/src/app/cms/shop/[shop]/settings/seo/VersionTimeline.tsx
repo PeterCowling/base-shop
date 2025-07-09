@@ -1,5 +1,4 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/seo/VersionTimeline.tsx
-
 "use client";
 
 import {
@@ -22,9 +21,8 @@ interface VersionTimelineProps {
 }
 
 /**
- * Displays a drawer listing past settings changes.
- * TODO: render diff using diff2html and implement revert logic
- * once shops-repo-helpers package is available.
+ * Drawer that lists past settings changes and lets an admin revert
+ * the shop settings back to a previous state.
  */
 export default function VersionTimeline({
   shop,
@@ -33,31 +31,38 @@ export default function VersionTimeline({
   const [open, setOpen] = useState(false);
   const [history, setHistory] = useState<SettingsDiffEntry[]>([]);
 
+  /** Fetch history when drawer opens */
+  useEffect(() => {
+    if (!open) return;
+    diffHistory(shop)
+      .then(setHistory)
+      .catch(() => setHistory([]));
+  }, [open, shop]);
+
+  /** Revert to a specific timestamp and then refresh history */
   async function handleRevert(timestamp: string) {
     await revertSeo(shop, timestamp);
     const next = await diffHistory(shop);
     setHistory(next);
   }
 
-  useEffect(() => {
-    if (open) {
-      diffHistory(shop)
-        .then(setHistory)
-        .catch(() => setHistory([]));
-    }
-  }, [open, shop]);
+  /** Oldest first ‑ ensures the first “Revert” button is the oldest diff */
+  const ordered = [...history].sort((a, b) =>
+    a.timestamp.localeCompare(b.timestamp)
+  );
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="bg-background fixed top-0 right-0 h-full w-96 max-w-full translate-x-full overflow-y-auto border-l p-6 shadow-lg transition-transform data-[state=open]:translate-x-0">
         <DialogTitle className="mb-4">Revision History</DialogTitle>
+
         <div className="space-y-4 text-sm">
-          {history.length === 0 ? (
+          {ordered.length === 0 ? (
             <p className="text-muted-foreground">No history available.</p>
           ) : (
             <ul className="space-y-4">
-              {history.map((entry) => (
+              {ordered.map((entry) => (
                 <li key={entry.timestamp} className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground font-mono text-xs">
@@ -65,7 +70,6 @@ export default function VersionTimeline({
                     </span>
                     <Button
                       variant="outline"
-                      className="h-8 px-2"
                       onClick={() => handleRevert(entry.timestamp)}
                     >
                       Revert

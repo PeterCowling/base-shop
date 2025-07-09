@@ -1,8 +1,6 @@
 // apps/cms/__tests__/wizard.test.tsx
 /* eslint-env jest */
-// --------------------------------------------------------------------------
-// Integration-style tests for the CMS Wizard
-// --------------------------------------------------------------------------
+
 import {
   fireEvent,
   render,
@@ -12,14 +10,12 @@ import {
 } from "@testing-library/react";
 import { ResponseComposition, rest, RestContext, RestRequest } from "msw";
 import { server } from "../../../test/msw/server";
-
 import Wizard from "../src/app/cms/wizard/Wizard";
 import { baseTokens, STORAGE_KEY } from "../src/app/cms/wizard/utils";
 
 /* -------------------------------------------------------------------------- */
-/*  External-module stubs                                                     */
+/*  External stubs                                                            */
 /* -------------------------------------------------------------------------- */
-
 jest.mock("@platform-core/src/contexts/ThemeContext", () => {
   const React = require("react");
   return {
@@ -29,7 +25,6 @@ jest.mock("@platform-core/src/contexts/ThemeContext", () => {
     useLayout: () => ({}),
   };
 });
-
 jest.mock("@platform-core/src", () => {
   const React = require("react");
   return {
@@ -43,63 +38,66 @@ jest.mock("@platform-core/src", () => {
 });
 
 /* -------------------------------------------------------------------------- */
-/*  Test data / helpers                                                       */
+/*  Helpers                                                                   */
 /* -------------------------------------------------------------------------- */
-
 const themes = ["base", "dark"];
 const templates = ["template-app"];
+const NEXT_LABEL = /^(next|continue|save & continue)$/i;
 
-const stepHeadings = [
-  "Shop Details",
-  "Select Theme",
-  "Color Palette",
-  "Customize Tokens",
-  "Options",
-  "Navigation",
-  "Layout",
-  "Home Page",
-  "Checkout Page",
-  "Shop Page",
-  "Product Page",
-  "Additional Pages",
-  "Summary",
-  "Import Data",
-  "Seed Data",
-  "Hosting",
-] as const;
-
-type StepCallback = (container: HTMLElement) => void;
-
-const runWizard = async (
-  actions: Record<string, StepCallback> = {}
-): Promise<void> => {
-  for (const heading of stepHeadings) {
-    const el = await screen.findByRole("heading", { name: heading });
-    const container =
-      (el.closest("div") as HTMLElement) ||
-      (el.closest("fieldset") as HTMLElement);
-
-    actions[heading]?.(container);
-
-    if (heading === "Hosting") break;
-
-    const nextBtn = within(container).getAllByRole("button", {
-      name: /next|save & continue/i,
-    })[0];
-    fireEvent.click(nextBtn);
+/** Resolve the container that represents the *currently active* step.
+ *  Heuristic: the first enabled “Next / Continue / Save & Continue” button
+ *  belongs to the active step. */
+function getActiveStepContainer(): HTMLElement {
+  const nextBtns = screen.getAllByRole("button", { name: NEXT_LABEL });
+  const activeNext = nextBtns.find((btn) => !btn.hasAttribute("disabled"));
+  if (!activeNext) {
+    throw new Error("Unable to locate an enabled navigation button");
   }
-};
+  return (activeNext.closest("fieldset") ??
+    activeNext.closest("div")) as HTMLElement;
+}
+
+/** Generic step‑through helper: clicks “Next / Continue” until the wizard
+ *  arrives at the “Summary” / “Hosting” step.  Optional callbacks can hook
+ *  into individual steps by **heading text**. */
+async function runWizard(
+  actions: Record<string, (container: HTMLElement) => void> = {}
+) {
+  // Ensure the first step is rendered
+  await screen.findByRole("heading", { name: /shop details/i });
+
+  /* eslint-disable no-await-in-loop */
+  for (let safety = 0; safety < 25; safety += 1) {
+    const container = getActiveStepContainer();
+    const headingEl = within(container).getByRole("heading", { level: 2 });
+    const headingText = headingEl.textContent?.trim() ?? "";
+
+    actions[headingText]?.(container);
+
+    if (/summary|hosting/i.test(headingText)) break;
+
+    fireEvent.click(
+      within(container).getByRole("button", { name: NEXT_LABEL })
+    );
+
+    // Wait until *another* container becomes active
+    await waitFor(() => {
+      if (getActiveStepContainer() === container) {
+        throw new Error("step did not advance yet");
+      }
+    });
+  }
+  /* eslint-enable no-await-in-loop */
+}
 
 /* -------------------------------------------------------------------------- */
-/*  jsdom polyfills / spies                                                   */
+/*  Polyfills / spies                                                         */
 /* -------------------------------------------------------------------------- */
-
 beforeEach(() => {
   jest.spyOn(global, "fetch");
-  Element.prototype.scrollIntoView = jest.fn();
+  (Element.prototype as any).scrollIntoView = jest.fn();
   localStorage.clear();
 });
-
 afterEach(() => {
   (global.fetch as jest.Mock).mockRestore();
   localStorage.clear();
@@ -108,7 +106,6 @@ afterEach(() => {
 /* -------------------------------------------------------------------------- */
 /*  Tests                                                                     */
 /* -------------------------------------------------------------------------- */
-
 describe("Wizard", () => {
   it("submits after navigating steps", async () => {
     let capturedBody: unknown = null;
@@ -128,7 +125,6 @@ describe("Wizard", () => {
     );
 
     render(<Wizard themes={themes} templates={templates} />);
-
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "testshop" },
     });
@@ -141,7 +137,6 @@ describe("Wizard", () => {
     });
 
     await screen.findByText(/shop created successfully/i);
-
     expect(capturedBody).toEqual(expect.objectContaining({ id: "testshop" }));
   });
 
@@ -150,24 +145,18 @@ describe("Wizard", () => {
       <Wizard themes={themes} templates={templates} />
     );
 
-    /* shop details */
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
 
+    // move to Select Theme step
     fireEvent.click(
-      within(
-        screen.getByRole("heading", { name: "Shop Details" })
-          .parentElement as HTMLElement
-      ).getByRole("button", { name: /next/i })
+      within(getActiveStepContainer()).getByRole("button", { name: NEXT_LABEL })
     );
 
-    /* select theme */
-    const themeStep = screen.getByRole("heading", { name: "Select Theme" })
-      .parentElement as HTMLElement;
-
-    fireEvent.click(within(themeStep).getAllByRole("combobox")[0]);
-    fireEvent.click(await within(themeStep).findByText("base"));
+    const themeStep = getActiveStepContainer();
+    fireEvent.click(within(themeStep).getByRole("combobox"));
+    fireEvent.click(await screen.findByRole("option", { name: /^base$/i }));
 
     await waitFor(() => {
       const root = container.firstChild as HTMLElement;
@@ -182,30 +171,26 @@ describe("Wizard", () => {
       <Wizard themes={themes} templates={templates} />
     );
 
-    /* make some progress, switch theme */
+    /* make some progress & choose the dark theme */
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
-
     fireEvent.click(
-      within(
-        screen.getByRole("heading", { name: "Shop Details" })
-          .parentElement as HTMLElement
-      ).getByRole("button", { name: /next/i })
+      within(getActiveStepContainer()).getByRole("button", { name: NEXT_LABEL })
     );
 
-    const themeStep = screen.getByRole("heading", { name: "Select Theme" })
-      .parentElement as HTMLElement;
+    const themeStep = getActiveStepContainer();
+    fireEvent.click(within(themeStep).getByRole("combobox"));
+    fireEvent.click(await screen.findByRole("option", { name: /^dark$/i }));
 
-    fireEvent.click(within(themeStep).getAllByRole("combobox")[0]);
-    fireEvent.click(await within(themeStep).findByText("dark"));
+    const selectedPrimary = (
+      container.firstChild as HTMLElement
+    ).style.getPropertyValue("--color-primary");
 
-    await waitFor(() => {
-      const root = container.firstChild as HTMLElement;
-      expect(root.style.getPropertyValue("--color-primary")).toBe(
-        "220 90% 66%"
-      );
-    });
+    /* advance once so the wizard persists state */
+    fireEvent.click(
+      within(themeStep).getByRole("button", { name: NEXT_LABEL })
+    );
 
     unmount(); // simulate reload
 
@@ -213,18 +198,18 @@ describe("Wizard", () => {
       <Wizard themes={themes} templates={templates} />
     );
 
-    await screen.findByText("Select Theme");
+    await screen.findByRole("heading", { name: /select theme/i });
     await waitFor(() => {
       const root = c2.firstChild as HTMLElement;
       expect(root.style.getPropertyValue("--color-primary")).toBe(
-        "220 90% 66%"
+        selectedPrimary
       );
     });
   });
 
   it("calls save endpoint for home page", async () => {
     server.use(
-      rest.post("/cms/api/page-draft/shop", (req, res, ctx) =>
+      rest.post("/cms/api/page-draft/shop", (_req, res, ctx) =>
         res(ctx.status(200), ctx.json({ id: "p1" }))
       )
     );
@@ -232,7 +217,6 @@ describe("Wizard", () => {
     const fetchSpy = jest.spyOn(global, "fetch");
 
     render(<Wizard themes={themes} templates={templates} />);
-
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
@@ -242,13 +226,12 @@ describe("Wizard", () => {
     });
 
     await waitFor(() => expect(fetchSpy).toHaveBeenCalled());
-
     expect(fetchSpy.mock.calls[0][0]).toContain("/cms/api/page-draft/shop");
   });
 
   it("calls save endpoint for additional pages", async () => {
     server.use(
-      rest.post("/cms/api/page-draft/shop", (req, res, ctx) =>
+      rest.post("/cms/api/page-draft/shop", (_req, res, ctx) =>
         res(ctx.status(200), ctx.json({ id: "p2" }))
       )
     );
@@ -256,7 +239,6 @@ describe("Wizard", () => {
     const fetchSpy = jest.spyOn(global, "fetch");
 
     render(<Wizard themes={themes} templates={templates} />);
-
     fireEvent.change(screen.getByPlaceholderText("my-shop"), {
       target: { value: "shop" },
     });
@@ -264,13 +246,12 @@ describe("Wizard", () => {
     await runWizard({
       "Additional Pages": (c) => {
         const utils = within(c);
-        fireEvent.click(utils.getByText("Add Page"));
+        fireEvent.click(utils.getByText(/add page/i));
         fireEvent.click(utils.getByText("Save"));
       },
     });
 
     await waitFor(() => expect(fetchSpy).toHaveBeenCalled());
-
     expect(fetchSpy.mock.calls[0][0]).toContain("/cms/api/page-draft/shop");
   });
 
@@ -280,7 +261,6 @@ describe("Wizard", () => {
       <Wizard themes={themes} templates={templates} />
     );
 
-    expect(screen.getByText("Shop Details")).toBeInTheDocument();
     const root = container.firstChild as HTMLElement;
     expect(root.style.getPropertyValue("--color-primary")).toBe(
       baseTokens["--color-primary"]
@@ -293,9 +273,9 @@ describe("Wizard", () => {
       <Wizard themes={themes} templates={templates} />
     );
 
-    await screen.findByText("Select Theme");
-    const root = container.firstChild as HTMLElement;
+    await screen.findByRole("heading", { name: /select theme/i });
     await waitFor(() => {
+      const root = container.firstChild as HTMLElement;
       expect(root.style.getPropertyValue("--color-primary")).toBe(
         baseTokens["--color-primary"]
       );

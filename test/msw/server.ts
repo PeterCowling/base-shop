@@ -19,6 +19,9 @@ export const handlers = [
       ctx.json({ success: true, message: "default handler: OK" })
     )
   ),
+  rest.get("/cms/api/page-templates", (_req, res, ctx) =>
+    res(ctx.status(200), ctx.json([]))
+  ),
 ];
 
 export const server = setupServer(...handlers);

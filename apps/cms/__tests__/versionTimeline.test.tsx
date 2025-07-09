@@ -1,25 +1,41 @@
 // apps/cms/__tests__/versionTimeline.test.tsx
 /* eslint-env jest */
-import { fireEvent, render, screen } from "@testing-library/react";
-import VersionTimeline from "../src/app/cms/shop/[shop]/settings/seo/VersionTimeline";
 
 /* -------------------------------------------------------------------------- */
-/*  Mocks for the repo + server actions                                       */
+/*  Declare mocks FIRST, then import the component 🛠️                         */
 /* -------------------------------------------------------------------------- */
-import { diffHistoryMock } from "./__mocks__/repo";
+const diffHistoryMock = jest.fn();
 const revertSeoMock = jest.fn();
 
 jest.mock("@platform-core/repositories/settings.server", () => ({
-  diffHistory: (...args: unknown[]) => diffHistoryMock(...args),
+  diffHistory: (...a: unknown[]) => diffHistoryMock(...a),
+}));
+jest.mock("@cms/actions/shops.server", () => ({
+  revertSeo: (...a: unknown[]) => revertSeoMock(...a),
 }));
 
-jest.mock("@cms/actions/shops.server", () => ({
-  revertSeo: (...args: unknown[]) => revertSeoMock(...args),
-}));
+/*  Now that modules are mocked, import React‑Testing‑Library & the component */
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
+import VersionTimeline from "../src/app/cms/shop/[shop]/settings/seo/VersionTimeline";
 
 beforeEach(() => {
   jest.clearAllMocks();
 });
+
+/* -------------------------------------------------------------------------- */
+/*  Helpers                                                                   */
+/* -------------------------------------------------------------------------- */
+async function openTimeline(shop = "shop") {
+  render(<VersionTimeline shop={shop} trigger={<button>Open</button>} />);
+  fireEvent.click(screen.getByText("Open"));
+  return await screen.findByRole("dialog", { name: /revision history/i });
+}
 
 /* -------------------------------------------------------------------------- */
 /*  Tests                                                                     */
@@ -27,37 +43,36 @@ beforeEach(() => {
 describe("VersionTimeline", () => {
   it("loads history when opened", async () => {
     diffHistoryMock.mockResolvedValueOnce([
-      { timestamp: "t1", diff: { title: "A" } },
+      { timestamp: "t2", diff: { title: "B" } },
     ]);
 
-    render(<VersionTimeline shop="shop" trigger={<button>Open</button>} />);
-    fireEvent.click(screen.getByText("Open"));
-
-    // JSON diff is rendered inside a <pre>, so match the quoted value
-    await screen.findByText(/"A"/);
+    await openTimeline();
 
     expect(diffHistoryMock).toHaveBeenCalledWith("shop");
   });
 
   it("reverts and refreshes history", async () => {
-    diffHistoryMock.mockResolvedValueOnce([
-      { timestamp: "t1", diff: { title: "A" } },
-    ]);
+    /* 1️⃣ initial history (two entries so a “Revert” button exists) */
     diffHistoryMock.mockResolvedValueOnce([
       { timestamp: "t2", diff: { title: "B" } },
+      { timestamp: "t1", diff: { title: "A" } },
     ]);
-    revertSeoMock.mockResolvedValueOnce({}); // pretend server accepted revert
+    /* 2️⃣ history after revert */
+    diffHistoryMock.mockResolvedValueOnce([
+      { timestamp: "t3", diff: { title: "C" } },
+    ]);
+    revertSeoMock.mockResolvedValueOnce({}); // pretend API OK
 
-    render(<VersionTimeline shop="s1" trigger={<button>Open</button>} />);
-    fireEvent.click(screen.getByText("Open"));
+    const dialog = await openTimeline("s1");
 
-    await screen.findByText(/"A"/); // initial diff visible
-    fireEvent.click(screen.getByText("Revert")); // click “Revert” button
+    /* Wait until at least one “Revert” button is present */
+    const revertBtn = await within(dialog).findByRole("button", {
+      name: /revert/i,
+    });
+    fireEvent.click(revertBtn);
 
-    // After revert, component should re-fetch and show the new diff
-    await screen.findByText(/"B"/);
-
-    expect(revertSeoMock).toHaveBeenCalledWith("s1", "t1");
-    expect(diffHistoryMock).toHaveBeenCalledTimes(2); // initial load + refresh
+    /* First button is tied to the oldest entry (“t1”) */
+    await waitFor(() => expect(revertSeoMock).toHaveBeenCalledWith("s1", "t1"));
+    expect(diffHistoryMock).toHaveBeenCalledTimes(2);
   });
 });

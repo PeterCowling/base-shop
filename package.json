@@ -15,8 +15,10 @@
   ],
   "scripts": {
     "dev": "turbo run dev --parallel",
+    "dev:trace": "cross-env NODE_OPTIONS=\"--trace-uncaught --enable-source-maps\" pnpm --filter cms dev",
     "build": "pnpm run build:tokens && turbo run build",
     "build:tokens": "tsx ./scripts/src/build-tokens.ts",
+    "build:trace": "cross-env NODE_OPTIONS=\"--trace-uncaught --enable-source-maps\" pnpm --filter cms exec next build --debug",
     "start": "turbo run start --parallel",
     "lint": "turbo run lint",
     "lint:apps": "eslint \"apps/**/*.{ts,tsx}\"",

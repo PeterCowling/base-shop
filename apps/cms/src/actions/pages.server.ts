@@ -1,5 +1,4 @@
 // apps/cms/src/actions/pages.server.ts
-"use server";
 
 import { LOCALES } from "@acme/i18n";
 import { authOptions } from "@cms/auth/options";

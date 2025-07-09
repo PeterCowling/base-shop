@@ -7,9 +7,11 @@ import type { DeployShopResult } from "@platform-core/createShop";
 import type { Locale, PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
+
+/* -------------------------------------------------------------------------- */
+/*  Wizard step views                                                         */
+/* -------------------------------------------------------------------------- */
 import MediaUploadDialog from "./MediaUploadDialog";
-import type { PageInfo } from "./schema";
-import { wizardStateSchema } from "./schema";
 import StepAdditionalPages from "./steps/StepAdditionalPages";
 import StepCheckoutPage from "./steps/StepCheckoutPage";
 import StepHomePage from "./steps/StepHomePage";
@@ -25,6 +27,12 @@ import StepShopPage from "./steps/StepShopPage";
 import StepSummary from "./steps/StepSummary";
 import StepTheme from "./steps/StepTheme";
 import StepTokens from "./steps/StepTokens";
+
+/* -------------------------------------------------------------------------- */
+/*  Schema / utils                                                            */
+/* -------------------------------------------------------------------------- */
+import type { PageInfo } from "./schema";
+import { wizardStateSchema } from "./schema";
 import {
   baseTokens,
   loadThemeTokens,
@@ -32,6 +40,10 @@ import {
   STORAGE_KEY,
   TokenMap,
 } from "./utils";
+
+/* ========================================================================== */
+/*  Types                                                                     */
+/* ========================================================================== */
 
 interface Props {
   themes: string[];
@@ -46,24 +58,46 @@ interface NavItem {
   children?: NavItem[];
 }
 
+/* ========================================================================== */
+/*  Wizard Component                                                          */
+/* ========================================================================== */
+
 export default function Wizard({
   themes,
   templates,
   disabled,
 }: Props): React.JSX.Element {
+  /* ---------------------------------------------------------------------- */
+  /*  Progress & basic shop details                                         */
+  /* ---------------------------------------------------------------------- */
   const [step, setStep] = useState(0);
   const [shopId, setShopId] = useState("");
   const [storeName, setStoreName] = useState("");
   const [logo, setLogo] = useState("");
   const [contactInfo, setContactInfo] = useState("");
+
+  /* ---------------------------------------------------------------------- */
+  /*  Theme / template                                                      */
+  /* ---------------------------------------------------------------------- */
   const [template, setTemplate] = useState(templates[0] ?? "");
   const [theme, setTheme] = useState(themes[0] ?? "base");
-  const [payment, setPayment] = useState<string[]>([]);
-  const [shipping, setShipping] = useState<string[]>([]);
-  const [creating, setCreating] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
   const [themeVars, setThemeVars] = useState<TokenMap>(baseTokens);
   const savedThemeVars = useRef<TokenMap | null>(null);
+
+  /* ---------------------------------------------------------------------- */
+  /*  Payment / shipping / analytics                                        */
+  /* ---------------------------------------------------------------------- */
+  const [payment, setPayment] = useState<string[]>([]);
+  const [shipping, setShipping] = useState<string[]>([]);
+  const [analyticsProvider, setAnalyticsProvider] = useState("");
+  const [analyticsId, setAnalyticsId] = useState("");
+
+  /* ---------------------------------------------------------------------- */
+  /*  Submission & deploy status                                            */
+  /* ---------------------------------------------------------------------- */
+  const [creating, setCreating] = useState(false);
+  const [result, setResult] = useState<string | null>(null);
+
   const [domain, setDomain] = useState("");
   const [deploying, setDeploying] = useState(false);
   const [deployResult, setDeployResult] = useState<string | null>(null);
@@ -71,8 +105,10 @@ export default function Wizard({
     DeployShopResult | { status: "pending"; error?: string } | null
   >(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
-  const [invalidStateNotice, setInvalidStateNotice] = useState(false);
 
+  /* ---------------------------------------------------------------------- */
+  /*  SEO fields                                                            */
+  /* ---------------------------------------------------------------------- */
   const languages = LOCALES as readonly Locale[];
 
   const [pageTitle, setPageTitle] = useState<Record<Locale, string>>(() => {
@@ -85,34 +121,42 @@ export default function Wizard({
 
   const [pageDescription, setPageDescription] = useState<
     Record<Locale, string>
-  >(() => {
-    const obj = {} as Record<Locale, string>;
-    languages.forEach((l) => {
-      obj[l] = "";
-    });
-    return obj;
-  });
+  >(() =>
+    languages.reduce<Record<Locale, string>>(
+      (acc, l) => {
+        acc[l] = "";
+        return acc;
+      },
+      {} as Record<Locale, string>
+    )
+  );
 
   const [socialImage, setSocialImage] = useState("");
 
+  /* ---------------------------------------------------------------------- */
+  /*  Page‑builder / layout state                                           */
+  /* ---------------------------------------------------------------------- */
   const [pageTemplates, setPageTemplates] = useState<
     Array<{ name: string; components: PageComponent[] }>
   >([]);
+
   const [homeLayout, setHomeLayout] = useState("");
   const [newPageLayout, setNewPageLayout] = useState("");
   const [productLayout, setProductLayout] = useState("");
   const [shopLayout, setShopLayout] = useState("");
+  const [checkoutLayout, setCheckoutLayout] = useState("");
 
   const [components, setComponents] = useState<PageComponent[]>([]);
   const [homePageId, setHomePageId] = useState<string | null>(null);
+
   const [shopComponents, setShopComponents] = useState<PageComponent[]>([]);
   const [shopPageId, setShopPageId] = useState<string | null>(null);
+
   const [productComponents, setProductComponents] = useState<PageComponent[]>(
     []
   );
   const [productPageId, setProductPageId] = useState<string | null>(null);
 
-  const [checkoutLayout, setCheckoutLayout] = useState("");
   const [checkoutComponents, setCheckoutComponents] = useState<PageComponent[]>(
     []
   );
@@ -120,12 +164,13 @@ export default function Wizard({
 
   const [headerComponents, setHeaderComponents] = useState<PageComponent[]>([]);
   const [headerPageId, setHeaderPageId] = useState<string | null>(null);
+
   const [footerComponents, setFooterComponents] = useState<PageComponent[]>([]);
   const [footerPageId, setFooterPageId] = useState<string | null>(null);
 
-  const [analyticsProvider, setAnalyticsProvider] = useState("");
-  const [analyticsId, setAnalyticsId] = useState("");
-
+  /* ---------------------------------------------------------------------- */
+  /*  Navigation & dynamic pages                                            */
+  /* ---------------------------------------------------------------------- */
   const [navItems, setNavItems] = useState<NavItem[]>([
     { id: ulid(), label: "Shop", url: "/shop" },
   ]);
@@ -133,33 +178,40 @@ export default function Wizard({
   const [pages, setPages] = useState<PageInfo[]>([]);
 
   const [newSlug, setNewSlug] = useState("");
-  const [newTitle, setNewTitle] = useState<Record<Locale, string>>(() => {
-    const obj = {} as Record<Locale, string>;
-    languages.forEach((l) => {
-      obj[l] = "";
-    });
-    return obj;
-  });
-  const [newDesc, setNewDesc] = useState<Record<Locale, string>>(() => {
-    const obj = {} as Record<Locale, string>;
-    languages.forEach((l) => {
-      obj[l] = "";
-    });
-    return obj;
-  });
-  const [newImage, setNewImage] = useState<Record<Locale, string>>(() => {
-    const obj = {} as Record<Locale, string>;
-    languages.forEach((l) => {
-      obj[l] = "";
-    });
-    return obj;
-  });
+  const [newTitle, setNewTitle] = useState<Record<Locale, string>>(() =>
+    languages.reduce<Record<Locale, string>>(
+      (acc, l) => {
+        acc[l] = "";
+        return acc;
+      },
+      {} as Record<Locale, string>
+    )
+  );
+  const [newDesc, setNewDesc] = useState<Record<Locale, string>>(() =>
+    languages.reduce<Record<Locale, string>>(
+      (acc, l) => {
+        acc[l] = "";
+        return acc;
+      },
+      {} as Record<Locale, string>
+    )
+  );
+  const [newImage, setNewImage] = useState<Record<Locale, string>>(() =>
+    languages.reduce<Record<Locale, string>>(
+      (acc, l) => {
+        acc[l] = "";
+        return acc;
+      },
+      {} as Record<Locale, string>
+    )
+  );
   const [newComponents, setNewComponents] = useState<PageComponent[]>([]);
   const [newDraftId, setNewDraftId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
 
-  /* ------------------------- Import / seed data ---------------------------- */
-
+  /* ---------------------------------------------------------------------- */
+  /*  Import / seed data                                                    */
+  /* ---------------------------------------------------------------------- */
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [categoriesText, setCategoriesText] = useState("");
   const [seeding, setSeeding] = useState(false);
@@ -167,17 +219,30 @@ export default function Wizard({
   const [importing, setImporting] = useState(false);
   const [importResult, setImportResult] = useState<string | null>(null);
 
-  /* ------------------------------------------------------------------------ */
-  /*                                  Effects                                 */
-  /* ------------------------------------------------------------------------ */
+  /* ---------------------------------------------------------------------- */
+  /*  Miscellaneous                                                         */
+  /* ---------------------------------------------------------------------- */
+  const [invalidStateNotice, setInvalidStateNotice] = useState(false);
 
+  /* ====================================================================== */
+  /*  Effects                                                               */
+  /* ====================================================================== */
+
+  /**
+   * Lazy‑load page templates **after** the wizard reaches the first page
+   * layout step (step ≥ 6).  This avoids an early network call that breaks
+   * unit tests, while still ensuring templates are available when required.
+   */
   useEffect(() => {
-    fetch("/cms/api/page-templates")
-      .then((res) => res.json())
-      .then((data) => Array.isArray(data) && setPageTemplates(data))
-      .catch(() => {});
-  }, []);
+    if (step >= 6 && pageTemplates.length === 0) {
+      fetch("/cms/api/page-templates")
+        .then((res) => res.json())
+        .then((data) => Array.isArray(data) && setPageTemplates(data))
+        .catch(() => {});
+    }
+  }, [step, pageTemplates.length]);
 
+  /* --- restore wizard state from localStorage on mount --- */
   useEffect(() => {
     const json = localStorage.getItem(STORAGE_KEY);
     if (json) {
@@ -186,18 +251,29 @@ export default function Wizard({
         const parsed = wizardStateSchema.safeParse(raw);
         if (parsed.success) {
           const data = parsed.data;
+
+          /* progress & shop info */
           setStep(data.step);
           setShopId(data.shopId);
           setStoreName(data.storeName);
           setLogo(data.logo);
           setContactInfo(data.contactInfo);
+
+          /* theme / template */
           setTemplate(data.template);
           setTheme(data.theme);
+          savedThemeVars.current = data.themeVars;
+
+          /* commerce */
           setPayment(data.payment);
           setShipping(data.shipping);
+
+          /* SEO */
           setPageTitle(data.pageTitle);
           setPageDescription(data.pageDescription);
           setSocialImage(data.socialImage);
+
+          /* layout pools */
           setComponents(data.components);
           setHeaderComponents(data.headerComponents);
           setHeaderPageId(data.headerPageId);
@@ -214,15 +290,19 @@ export default function Wizard({
           setCheckoutLayout(data.checkoutLayout);
           setCheckoutComponents(data.checkoutComponents);
           setCheckoutPageId(data.checkoutPageId);
+
+          /* analytics */
           setAnalyticsProvider(data.analyticsProvider);
           setAnalyticsId(data.analyticsId);
+
+          /* navigation & dynamic pages */
           setNavItems(data.navItems as NavItem[]);
           setPages(data.pages);
           setNewPageLayout(data.newPageLayout);
-          setDomain(data.domain);
 
+          /* misc */
+          setDomain(data.domain);
           setCategoriesText(data.categoriesText);
-          savedThemeVars.current = data.themeVars;
         } else {
           console.warn("Stored wizard state failed validation", parsed.error);
           resetWizardProgress();
@@ -234,6 +314,7 @@ export default function Wizard({
     }
   }, []);
 
+  /* --- load theme tokens whenever the theme changes --- */
   useEffect(() => {
     loadThemeTokens(theme).then((tv) => {
       if (savedThemeVars.current) {
@@ -245,10 +326,14 @@ export default function Wizard({
     });
   }, [theme]);
 
+  /* --- persist wizard state to localStorage on every relevant change --- */
   useEffect(() => {
     const data = {
       step,
       shopId,
+      storeName,
+      logo,
+      contactInfo,
       template,
       theme,
       themeVars,
@@ -257,9 +342,6 @@ export default function Wizard({
       pageTitle,
       pageDescription,
       socialImage,
-      storeName,
-      logo,
-      contactInfo,
       components,
       headerComponents,
       headerPageId,
@@ -286,7 +368,9 @@ export default function Wizard({
     };
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    } catch {}
+    } catch {
+      /* ignore quota or serialisation errors */
+    }
   }, [
     step,
     shopId,
@@ -326,15 +410,16 @@ export default function Wizard({
     newPageLayout,
   ]);
 
+  /* --- clear polling timer when unmounting --- */
   useEffect(() => {
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
     };
   }, []);
 
-  /* ------------------------------------------------------------------------ */
-  /*                                 Handlers                                 */
-  /* ------------------------------------------------------------------------ */
+  /* ====================================================================== */
+  /*  Action handlers                                                       */
+  /* ====================================================================== */
 
   async function submit() {
     setCreating(true);
@@ -373,7 +458,8 @@ export default function Wizard({
 
       if (res.ok) {
         setResult("Shop created successfully");
-        setStep(9);
+        /* Remain on the summary step so the success message is visible;
+           navigation to the next step is left to the user. */
         resetWizardProgress();
       } else {
         const { error } = (await res.json()) as { error?: string };
@@ -523,19 +609,19 @@ export default function Wizard({
     }, 3000);
   }
 
+  /* ====================================================================== */
+  /*  Presentation helpers                                                  */
+  /* ====================================================================== */
+
   const themeStyle = Object.fromEntries(
     Object.entries(themeVars).map(([k, v]) => [k, v])
   ) as React.CSSProperties;
 
-  return (
-    <div className="mx-auto max-w-xl" style={themeStyle}>
-      <fieldset disabled={disabled} className="space-y-6">
-        <div className="flex items-center justify-between">
-          <Progress step={step} total={14} />
-          {shopId && <MediaUploadDialog shop={shopId} />}
-        </div>
-
-        {step === 0 && (
+  /** Returns the JSX for the current step—only that step is mounted. */
+  const renderStep = () => {
+    switch (step) {
+      case 0:
+        return (
           <StepShopDetails
             shopId={shopId}
             setShopId={setShopId}
@@ -550,46 +636,59 @@ export default function Wizard({
             templates={templates}
             onNext={() => setStep(1)}
           />
-        )}
+        );
 
-        <StepTheme
-          themes={themes}
-          theme={theme}
-          setTheme={setTheme}
-          themeVars={themeVars}
-          setThemeVars={setThemeVars}
-          themeStyle={themeStyle}
-          onBack={() => setStep(0)}
-          onNext={() => setStep(2)}
-        />
+      case 1:
+        return (
+          <StepTheme
+            themes={themes}
+            theme={theme}
+            setTheme={setTheme}
+            themeVars={themeVars}
+            setThemeVars={setThemeVars}
+            themeStyle={themeStyle}
+            onBack={() => setStep(0)}
+            onNext={() => setStep(2)}
+          />
+        );
 
-        <StepTokens
-          themeStyle={themeStyle}
-          onBack={() => setStep(1)}
-          onNext={() => setStep(3)}
-        />
+      case 2:
+        return (
+          <StepTokens
+            themeStyle={themeStyle}
+            onBack={() => setStep(1)}
+            onNext={() => setStep(3)}
+          />
+        );
 
-        <StepOptions
-          payment={payment}
-          setPayment={setPayment}
-          shipping={shipping}
-          setShipping={setShipping}
-          analyticsProvider={analyticsProvider}
-          setAnalyticsProvider={setAnalyticsProvider}
-          analyticsId={analyticsId}
-          setAnalyticsId={setAnalyticsId}
-          onBack={() => setStep(2)}
-          onNext={() => setStep(4)}
-        />
+      case 3:
+        return (
+          <StepOptions
+            payment={payment}
+            setPayment={setPayment}
+            shipping={shipping}
+            setShipping={setShipping}
+            analyticsProvider={analyticsProvider}
+            setAnalyticsProvider={setAnalyticsProvider}
+            analyticsId={analyticsId}
+            setAnalyticsId={setAnalyticsId}
+            onBack={() => setStep(2)}
+            onNext={() => setStep(4)}
+          />
+        );
 
-        <StepNavigation
-          navItems={navItems}
-          setNavItems={setNavItems}
-          onBack={() => setStep(3)}
-          onNext={() => setStep(5)}
-        />
+      case 4:
+        return (
+          <StepNavigation
+            navItems={navItems}
+            setNavItems={setNavItems}
+            onBack={() => setStep(3)}
+            onNext={() => setStep(5)}
+          />
+        );
 
-        {step === 5 && (
+      case 5:
+        return (
           <StepLayout
             currentStep={step}
             stepIndex={5}
@@ -606,9 +705,10 @@ export default function Wizard({
             onBack={() => setStep(4)}
             onNext={() => setStep(6)}
           />
-        )}
+        );
 
-        {step === 6 && (
+      case 6:
+        return (
           <StepHomePage
             pageTemplates={pageTemplates}
             homeLayout={homeLayout}
@@ -622,9 +722,10 @@ export default function Wizard({
             onBack={() => setStep(5)}
             onNext={() => setStep(7)}
           />
-        )}
+        );
 
-        {step === 7 && (
+      case 7:
+        return (
           <StepCheckoutPage
             pageTemplates={pageTemplates}
             checkoutLayout={checkoutLayout}
@@ -638,9 +739,10 @@ export default function Wizard({
             onBack={() => setStep(6)}
             onNext={() => setStep(8)}
           />
-        )}
+        );
 
-        {step === 8 && (
+      case 8:
+        return (
           <StepShopPage
             pageTemplates={pageTemplates}
             shopLayout={shopLayout}
@@ -654,9 +756,10 @@ export default function Wizard({
             onBack={() => setStep(7)}
             onNext={() => setStep(9)}
           />
-        )}
+        );
 
-        {step === 9 && (
+      case 9:
+        return (
           <StepProductPage
             pageTemplates={pageTemplates}
             productLayout={productLayout}
@@ -670,9 +773,10 @@ export default function Wizard({
             onBack={() => setStep(8)}
             onNext={() => setStep(10)}
           />
-        )}
+        );
 
-        {step === 10 && (
+      case 10:
+        return (
           <StepAdditionalPages
             pageTemplates={pageTemplates}
             pages={pages}
@@ -698,9 +802,10 @@ export default function Wizard({
             onBack={() => setStep(9)}
             onNext={() => setStep(11)}
           />
-        )}
+        );
 
-        {step === 11 && (
+      case 11:
+        return (
           <StepSummary
             shopId={shopId}
             name={storeName}
@@ -724,9 +829,10 @@ export default function Wizard({
             onBack={() => setStep(10)}
             onNext={() => setStep(12)}
           />
-        )}
+        );
 
-        {step === 12 && (
+      case 12:
+        return (
           <StepImportData
             setCsvFile={setCsvFile}
             categoriesText={categoriesText}
@@ -736,9 +842,10 @@ export default function Wizard({
             saveData={saveData}
             onBack={() => setStep(11)}
           />
-        )}
+        );
 
-        {step === 13 && (
+      case 13:
+        return (
           <StepSeedData
             setCsvFile={setCsvFile}
             categoriesText={categoriesText}
@@ -748,8 +855,10 @@ export default function Wizard({
             seed={seed}
             onBack={() => setStep(12)}
           />
-        )}
-        {step === 14 && (
+        );
+
+      case 14:
+        return (
           <StepHosting
             domain={domain}
             setDomain={setDomain}
@@ -759,8 +868,29 @@ export default function Wizard({
             deploy={deploy}
             onBack={() => setStep(13)}
           />
-        )}
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  /* ====================================================================== */
+  /*  JSX                                                                   */
+  /* ====================================================================== */
+
+  return (
+    <div className="mx-auto max-w-xl" style={themeStyle}>
+      <fieldset disabled={disabled} className="space-y-6">
+        <div className="mb-6 flex items-center justify-between">
+          <Progress step={step} total={14} />
+          {shopId && <MediaUploadDialog shop={shopId} />}
+        </div>
+
+        {/* Only the active step is rendered */}
+        {renderStep()}
       </fieldset>
+
       <Toast
         open={invalidStateNotice}
         onClose={() => setInvalidStateNotice(false)}

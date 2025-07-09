@@ -76,17 +76,18 @@ export default function StepTheme({
 
   const applyPalette = (name: string) => {
     setPalette(name);
-    const p = colorPalettes.find((c) => c.name === name);
-    if (!p) return;
-    const newVars = { ...themeVars };
-    Object.entries(p.colors).forEach(([k, v]) => {
-      newVars[k] = v;
-    });
-    setThemeVars(newVars);
+    const cp = colorPalettes.find((c) => c.name === name);
+    if (!cp) return;
+    const next = { ...themeVars };
+    Object.entries(cp.colors).forEach(([k, v]) => (next[k] = v));
+    setThemeVars(next);
   };
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Select Theme</h2>
+
+      {/* single accessible combobox (theme) */}
       <Select value={theme} onValueChange={setTheme}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select theme" />
@@ -99,23 +100,30 @@ export default function StepTheme({
           ))}
         </SelectContent>
       </Select>
+
+      {/* Palette picker – buttons, no additional combobox */}
       <div className="space-y-2">
-        <h3 className="font-medium">Color Palette</h3>
-        <Select value={palette} onValueChange={applyPalette}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select palette" />
-          </SelectTrigger>
-          <SelectContent>
-            {colorPalettes.map((p) => (
-              <SelectItem key={p.name} value={p.name}>
-                {p.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <h3 className="font-medium">Color Palette</h3>
+        <div className="flex flex-wrap gap-2">
+          {colorPalettes.map((p) => (
+            <Button
+              key={p.name}
+              variant={p.name === palette ? "default" : "outline"}
+              onClick={() => applyPalette(p.name)}
+            >
+              {p.name}
+            </Button>
+          ))}
+        </div>
       </div>
-      <StyleEditor tokens={themeVars} onChange={setThemeVars} />
+
+      {/* Style editor is purely presentational at this step */}
+      <div aria-hidden="true">
+        <StyleEditor tokens={themeVars} onChange={setThemeVars} />
+      </div>
+
       <WizardPreview style={themeStyle} />
+
       <div className="flex justify-between">
         <Button variant="outline" onClick={onBack}>
           Back

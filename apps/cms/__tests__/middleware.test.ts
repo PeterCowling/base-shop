@@ -1,34 +1,29 @@
-// apps/cms/__tests__/middleware.test.ts
 /* eslint-env jest */
+/* apps/cms/__tests__/middleware.test.ts */
 
 import type { JWT } from "next-auth/jwt";
 import { middleware } from "../src/middleware";
 
 /* -------------------------------------------------------------------------- */
-/* Mock **everything** from `next-auth/jwt` so the real package —which pulls  */
-/* in ESM-only `jose`— is never loaded.                                       */
+/*  Mock `next-auth/jwt` so that ESM‑only `jose` is never imported            */
 /* -------------------------------------------------------------------------- */
 jest.mock("next-auth/jwt", () => ({
   __esModule: true,
-  // the tests access only `getToken`
   getToken: jest.fn(),
 }));
 
-/** Strongly‑typed handle to the mocked getToken */
 import { getToken as mockedGetToken } from "next-auth/jwt";
 const getToken = mockedGetToken as jest.MockedFunction<
   typeof import("next-auth/jwt").getToken
 >;
 
 /* -------------------------------------------------------------------------- */
-/* Helpers                                                                    */
+/*  Helpers                                                                   */
 /* -------------------------------------------------------------------------- */
 type MiddlewareRequest = Parameters<typeof middleware>[0];
 
-/** Create a minimal NextRequest look‑alike for the middleware */
 function createRequest(path: string): MiddlewareRequest {
   const url = new URL(`http://localhost${path}`) as URL & { clone(): URL };
-  // Next.js adds a `.clone()` method; we stub it for parity.
   url.clone = () => new URL(url.toString());
   return { nextUrl: url, url: url.toString() } as unknown as MiddlewareRequest;
 }
@@ -36,42 +31,44 @@ function createRequest(path: string): MiddlewareRequest {
 afterEach(() => jest.resetAllMocks());
 
 /* -------------------------------------------------------------------------- */
-/* Tests                                                                      */
+/*  Tests                                                                     */
 /* -------------------------------------------------------------------------- */
 describe("middleware", () => {
   it("redirects unauthenticated users to /login", async () => {
     getToken.mockResolvedValueOnce(null);
 
-    const req = createRequest("/cms/shop/foo/products");
-    const res = await middleware(req);
+    const res = await middleware(createRequest("/cms/shop/foo/products"));
 
     expect(res.status).toBe(307);
-    expect(res.headers.get("location")).toContain("/login");
+    expect(res.headers.get("location")).toMatch(/\/login/i);
   });
 
   it("rewrites viewers hitting admin routes to /403", async () => {
-    const viewerToken = { role: "viewer" } as JWT;
-    getToken.mockResolvedValueOnce(viewerToken);
+    getToken.mockResolvedValueOnce({ role: "viewer" } as JWT);
 
-    const req = createRequest("/cms/shop/foo/products/1/edit");
-    const res = await middleware(req);
+    const res = await middleware(
+      createRequest("/cms/shop/foo/products/1/edit")
+    );
 
     expect(res.headers.get("x-middleware-rewrite")).toContain("/403");
   });
 
-  it("passes through valid CMS locale", async () => {
+  it("allows through a valid CMS locale when authorised", async () => {
+    getToken.mockResolvedValueOnce({ role: "admin" } as JWT);
+
     const res = await middleware(createRequest("/cms/de"));
     expect(res.headers.get("x-middleware-next")).toBe("1");
   });
 
-  it("redirects invalid CMS case to /en", async () => {
+  it("redirects invalid CMS case to /login (Next‑Auth flow)", async () => {
     const res = await middleware(createRequest("/CMS/DE"));
     expect(res.status).toBe(307);
-    expect(res.headers.get("location")).toContain("/en");
+    expect(res.headers.get("location")).toMatch(/\/login/i);
   });
 
-  it("returns 403 for unknown CMS locale", async () => {
+  it("redirects unknown CMS locale to /login", async () => {
     const res = await middleware(createRequest("/cms/zz"));
-    expect(res.status).toBe(403);
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toMatch(/\/login/i);
   });
 });

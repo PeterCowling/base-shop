@@ -1,6 +1,6 @@
 // apps/cms/src/app/api/page-templates/[name]/route.ts
 
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import fsSync, { promises as fs } from "node:fs";
 import path from "node:path";
 
@@ -29,12 +29,13 @@ function resolveTemplatesRoot(): string {
 }
 
 export async function GET(
-  request: Request,
-  { params }: { params: { name: string } }
+  request: NextRequest,
+  context: { params: Promise<{ name: string }> }
 ) {
   try {
     const dir = resolveTemplatesRoot();
-    const file = path.join(dir, `${params.name}.json`);
+    const { name } = await context.params;
+    const file = path.join(dir, `${name}.json`);
     const buf = await fs.readFile(file, "utf8");
     const data = JSON.parse(buf);
     return NextResponse.json(data);

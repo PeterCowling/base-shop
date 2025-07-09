@@ -1,6 +1,6 @@
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import fsSync, { promises as fs } from "node:fs";
 import path from "node:path";
 
@@ -17,8 +17,8 @@ function resolveDataRoot(): string {
 }
 
 export async function POST(
-  req: Request,
-  { params }: { params: { shop: string } }
+  req: NextRequest,
+  context: { params: Promise<{ shop: string }> }
 ) {
   const session = await getServerSession(authOptions);
   if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
@@ -31,7 +31,8 @@ export async function POST(
       return NextResponse.json({ error: "Missing file" }, { status: 400 });
     }
     const buf = Buffer.from(await file.arrayBuffer());
-    const dir = path.join(resolveDataRoot(), params.shop);
+    const { shop } = await context.params;
+    const dir = path.join(resolveDataRoot(), shop);
     await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(path.join(dir, "products.csv"), buf);
     return NextResponse.json({ success: true });

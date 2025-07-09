@@ -1,4 +1,6 @@
 // src/types/global.d.ts
+/// <reference path="./nodemailer.d.ts" />
+
 export {};
 import type * as React from "react";
 

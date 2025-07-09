@@ -1,12 +1,13 @@
 import { getPages } from "@platform-core/repositories/pages/index.server";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 export async function GET(
-  request: Request,
-  { params }: { params: { shop: string } }
+  request: NextRequest,
+  context: { params: Promise<{ shop: string }> }
 ) {
   try {
-    const pages = await getPages(params.shop);
+    const { shop } = await context.params;
+    const pages = await getPages(shop);
     return NextResponse.json(pages);
   } catch (err) {
     return NextResponse.json(

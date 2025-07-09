@@ -4,8 +4,9 @@ import { redirect } from "next/navigation";
 export default async function NewProductPage({
   params,
 }: {
-  params: { shop: string };
+  params: Promise<{ shop: string }>;
 }) {
-  const draft = await createDraftRecord(params.shop);
-  redirect(`/cms/shop/${params.shop}/products/${draft.id}/edit`);
+  const { shop } = await params;
+  const draft = await createDraftRecord(shop);
+  redirect(`/cms/shop/${shop}/products/${draft.id}/edit`);
 }

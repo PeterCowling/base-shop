@@ -37,18 +37,16 @@ async function loadThemeTokens(theme: string): Promise<TokenMap> {
 export default async function PreviewView({
   searchParams,
 }: {
-  searchParams: Record<string, string | string[]>;
+  searchParams: Promise<Record<string, string | string[]>>;
 }) {
+  const sp = await searchParams;
   const dm = await draftMode();
   if (!dm.isEnabled) {
     dm.enable();
   }
-  const theme =
-    typeof searchParams.theme === "string" ? searchParams.theme : "base";
+  const theme = typeof sp.theme === "string" ? sp.theme : "base";
 
-  const lang = resolveLocale(
-    typeof searchParams.lang === "string" ? searchParams.lang : "en"
-  );
+  const lang = resolveLocale(typeof sp.lang === "string" ? sp.lang : "en");
 
   const tokens = await loadThemeTokens(theme);
   const style = Object.fromEntries(Object.entries(tokens)) as CSSProperties;

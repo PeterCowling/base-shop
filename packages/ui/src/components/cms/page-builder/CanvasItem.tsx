@@ -11,6 +11,7 @@ import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "../../atoms-shadcn";
 import { blockRegistry } from "../blocks";
 import type { Action } from "../PageBuilder";
+import DOMPurify from "dompurify";
 
 function Block({
   component,
@@ -20,10 +21,11 @@ function Block({
   locale: Locale;
 }) {
   if (component.type === "Text") {
-    return <div>{(component as any).text ?? ""}</div>;
     const text = (component as any).text;
-    const value = typeof text === "string" ? text : (text?.[locale] ?? "");
-    return <div dangerouslySetInnerHTML={{ __html: value }} />;
+    const value =
+      typeof text === "string" ? text : (text?.[locale] ?? "");
+    const sanitized = DOMPurify.sanitize(value);
+    return <div dangerouslySetInnerHTML={{ __html: sanitized }} />;
   }
   const Comp = blockRegistry[component.type];
   if (!Comp) return null;
@@ -277,10 +279,11 @@ const CanvasItem = memo(function CanvasItem({
               onSelect();
             }}
             dangerouslySetInnerHTML={{
-              __html:
+              __html: DOMPurify.sanitize(
                 typeof (component as any).text === "string"
                   ? (component as any).text
-                  : ((component as any).text?.[locale] ?? ""),
+                  : (component as any).text?.[locale] ?? ""
+              ),
             }}
           />
         )

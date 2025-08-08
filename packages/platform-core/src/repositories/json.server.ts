@@ -16,6 +16,9 @@ export { readShop } from "./shops.server";
 export { getShopSettings as readSettings } from "./settings.server";
 
 export * from "./products.server";
+export * from "./inventory.server";
+export * from "./pricing.server";
+export * from "./returnLogistics.server";
 
 export {
   diffHistory,

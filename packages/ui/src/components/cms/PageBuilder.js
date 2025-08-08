@@ -6,7 +6,7 @@ import { arrayMove, rectSortingStrategy, SortableContext, sortableKeyboardCoordi
 import { memo, useCallback, useEffect, useMemo, useReducer, useState, } from "react";
 import { ulid } from "ulid";
 import { z } from "zod";
-import { pageComponentSchema as pageComponentSchemaBase } from "@types";
+import { pageComponentSchema } from "@types";
 import { Button } from "../atoms-shadcn";
 import CanvasItem from "./page-builder/CanvasItem";
 import ComponentEditor from "./page-builder/ComponentEditor";
@@ -24,21 +24,9 @@ const COMPONENT_TYPES = [
     "Testimonials",
     "TestimonialSlider",
     "Image",
-    "Text",
+"Text",
 ];
-/**
- *  Trick for Zod / TS: give `z.enum()` a statically-sized tuple.
- *  `as const` → readonly array  ⟶ spread into a tuple literal.
- */
-const COMPONENT_TYPE_TUPLE = [...COMPONENT_TYPES];
 /* ════════════════ runtime validation (Zod) ════════════════ */
-const pageComponentSchema = pageComponentSchemaBase.extend({
-    type: z.enum(COMPONENT_TYPE_TUPLE),
-    width: z.string().optional(),
-    height: z.string().optional(),
-    left: z.string().optional(),
-    top: z.string().optional(),
-});
 /**
  *  Build → default → cast; the cast is safe because the default value
  *  fully satisfies the `HistoryState` contract.

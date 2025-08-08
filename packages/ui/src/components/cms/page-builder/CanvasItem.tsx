@@ -20,9 +20,9 @@ function Block({
   locale: Locale;
 }) {
   if (component.type === "Text") {
-    return <div>{(component as any).text ?? ""}</div>;
     const text = (component as any).text;
-    const value = typeof text === "string" ? text : (text?.[locale] ?? "");
+    const value =
+      typeof text === "string" ? text : (text?.[locale] ?? "");
     return <div dangerouslySetInnerHTML={{ __html: value }} />;
   }
   const Comp = blockRegistry[component.type];

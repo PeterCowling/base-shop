@@ -25,6 +25,7 @@ import {
   useEffect,
   useMemo,
   useReducer,
+  useRef,
   useState,
 } from "react";
 import { ulid } from "ulid";
@@ -51,7 +52,6 @@ const COMPONENT_TYPES = [
 ] as const;
 
 type ComponentType = (typeof COMPONENT_TYPES)[number];
-
 
 /* ════════════════ external contracts ════════════════ */
 interface Props {
@@ -198,6 +198,8 @@ const PageBuilder = memo(function PageBuilder({
     "desktop"
   );
   const [locale, setLocale] = useState<Locale>("en");
+  const [publishCount, setPublishCount] = useState(0);
+  const prevId = useRef(page.id);
 
   /* ── derived memo values ──────────────────────────────────────── */
   const widthMap = useMemo(
@@ -222,6 +224,18 @@ const PageBuilder = memo(function PageBuilder({
       localStorage.setItem(storageKey, JSON.stringify(state));
     }
   }, [components, onChange, state, storageKey]);
+
+  useEffect(() => {
+    const idChanged = prevId.current !== page.id;
+    if (publishCount > 0 || idChanged) {
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(storageKey);
+      }
+    }
+    if (idChanged) {
+      prevId.current = page.id;
+    }
+  }, [page.id, publishCount, storageKey]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -285,6 +299,10 @@ const PageBuilder = memo(function PageBuilder({
     fd.append("history", JSON.stringify(state));
     return fd;
   }, [page, components, state]);
+
+  const handlePublish = useCallback(() => {
+    return onPublish(formData).then(() => setPublishCount((c) => c + 1));
+  }, [onPublish, formData]);
 
   /* ── render ───────────────────────────────────────────────────── */
   return (
@@ -368,7 +386,7 @@ const PageBuilder = memo(function PageBuilder({
             Redo
           </Button>
           <Button onClick={() => onSave(formData)}>Save</Button>
-          <Button variant="outline" onClick={() => onPublish(formData)}>
+          <Button variant="outline" onClick={handlePublish}>
             Publish
           </Button>
         </div>

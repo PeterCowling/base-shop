@@ -87,11 +87,6 @@ export interface ImageComponent extends PageComponentBase {
   alt?: string;
 }
 
-export interface TextComponent extends PageComponentBase {
-  type: "Text";
-  text?: string;
-}
-
 export interface BlogListingComponent extends PageComponentBase {
   type: "BlogListing";
   posts?: { title: string; excerpt?: string; url?: string }[];
@@ -126,9 +121,129 @@ export type PageComponent =
   | ImageComponent
   | TextComponent;
 
-export const pageComponentSchema: z.ZodType<PageComponent> = z
-  .object({ id: z.string(), type: z.string() })
+const baseComponentSchema = z
+  .object({
+    id: z.string(),
+    width: z.string().optional(),
+    height: z.string().optional(),
+    position: z.enum(["relative", "absolute"]).optional(),
+    top: z.string().optional(),
+    left: z.string().optional(),
+    margin: z.string().optional(),
+    padding: z.string().optional(),
+  })
   .passthrough();
+
+const heroBannerComponentSchema = baseComponentSchema.extend({
+  type: z.literal("HeroBanner"),
+  slides: z
+    .array(
+      z.object({
+        src: z.string(),
+        alt: z.string().optional(),
+        headlineKey: z.string(),
+        ctaKey: z.string(),
+      })
+    )
+    .optional(),
+});
+
+const valuePropsComponentSchema = baseComponentSchema.extend({
+  type: z.literal("ValueProps"),
+  items: z
+    .array(
+      z.object({ icon: z.string(), title: z.string(), desc: z.string() })
+    )
+    .optional(),
+});
+
+const reviewsCarouselComponentSchema = baseComponentSchema.extend({
+  type: z.literal("ReviewsCarousel"),
+  reviews: z
+    .array(
+      z.object({ nameKey: z.string(), quoteKey: z.string() })
+    )
+    .optional(),
+});
+
+const productGridComponentSchema = baseComponentSchema.extend({
+  type: z.literal("ProductGrid"),
+});
+
+const galleryComponentSchema = baseComponentSchema.extend({
+  type: z.literal("Gallery"),
+  images: z
+    .array(z.object({ src: z.string(), alt: z.string().optional() }))
+    .optional(),
+});
+
+const contactFormComponentSchema = baseComponentSchema.extend({
+  type: z.literal("ContactForm"),
+  action: z.string().optional(),
+  method: z.string().optional(),
+});
+
+const contactFormWithMapComponentSchema = baseComponentSchema.extend({
+  type: z.literal("ContactFormWithMap"),
+  mapSrc: z.string().optional(),
+});
+
+const blogListingComponentSchema = baseComponentSchema.extend({
+  type: z.literal("BlogListing"),
+  posts: z
+    .array(
+      z.object({
+        title: z.string(),
+        excerpt: z.string().optional(),
+        url: z.string().optional(),
+      })
+    )
+    .optional(),
+});
+
+const testimonialSliderComponentSchema = baseComponentSchema.extend({
+  type: z.literal("TestimonialSlider"),
+  testimonials: z
+    .array(
+      z.object({ quote: z.string(), name: z.string().optional() })
+    )
+    .optional(),
+});
+
+const testimonialsComponentSchema = baseComponentSchema.extend({
+  type: z.literal("Testimonials"),
+  testimonials: z
+    .array(
+      z.object({ quote: z.string(), name: z.string().optional() })
+    )
+    .optional(),
+});
+
+const imageComponentSchema = baseComponentSchema.extend({
+  type: z.literal("Image"),
+  src: z.string().optional(),
+  alt: z.string().optional(),
+});
+
+const textComponentSchema = baseComponentSchema.extend({
+  type: z.literal("Text"),
+  text: z.string().optional(),
+});
+
+export const pageComponentSchema = z.discriminatedUnion("type", [
+  heroBannerComponentSchema,
+  valuePropsComponentSchema,
+  reviewsCarouselComponentSchema,
+  productGridComponentSchema,
+  galleryComponentSchema,
+  contactFormComponentSchema,
+  contactFormWithMapComponentSchema,
+  blogListingComponentSchema,
+  testimonialsComponentSchema,
+  testimonialSliderComponentSchema,
+  imageComponentSchema,
+  textComponentSchema,
+]);
 
 export interface HistoryState {
   past: PageComponent[][];
@@ -148,9 +263,7 @@ export const pageSchema = z.object({
   id: z.string(),
   slug: z.string(),
   status: z.enum(["draft", "published"]),
-  components: z
-    .array(z.object({ id: z.string(), type: z.string() }).passthrough())
-    .default([]),
+  components: z.array(pageComponentSchema).default([]),
   seo: z.object({
     title: z.record(localeSchema, z.string()),
     description: z.record(localeSchema, z.string()).optional(),

@@ -17,7 +17,7 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import type { Page, PageComponent, HistoryState } from "@types";
-import { pageComponentSchema as pageComponentSchemaBase } from "@types";
+import { pageComponentSchema } from "@types";
 import type { CSSProperties } from "react";
 import {
   memo,
@@ -52,14 +52,6 @@ const COMPONENT_TYPES = [
 
 type ComponentType = (typeof COMPONENT_TYPES)[number];
 
-/**
- *  Trick for Zod / TS: give `z.enum()` a statically-sized tuple.
- *  `as const` → readonly array  ⟶ spread into a tuple literal.
- */
-const COMPONENT_TYPE_TUPLE = [...COMPONENT_TYPES] as [
-  ComponentType,
-  ...ComponentType[],
-];
 
 /* ════════════════ external contracts ════════════════ */
 interface Props {
@@ -71,14 +63,6 @@ interface Props {
 }
 
 /* ════════════════ runtime validation (Zod) ════════════════ */
-const pageComponentSchema = pageComponentSchemaBase.extend({
-  type: z.enum(COMPONENT_TYPE_TUPLE),
-  width: z.string().optional(),
-  height: z.string().optional(),
-  left: z.string().optional(),
-  top: z.string().optional(),
-});
-
 export const historyStateSchema: z.ZodType<HistoryState> = z
   .object({
     past: z.array(z.array(pageComponentSchema)),

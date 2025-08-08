@@ -10,7 +10,7 @@ import {
 } from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
 import type { Locale, Page, PageComponent } from "@types";
-import { historyStateSchema, pageComponentSchema } from "@types/Page";
+import { historyStateSchema, pageComponentSchema } from "@types";
 import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
 import { z } from "zod";

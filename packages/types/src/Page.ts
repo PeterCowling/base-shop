@@ -130,6 +130,20 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z
   .object({ id: z.string(), type: z.string() })
   .passthrough();
 
+export interface HistoryState {
+  past: PageComponent[][];
+  present: PageComponent[];
+  future: PageComponent[][];
+}
+
+export const historyStateSchema: z.ZodType<HistoryState> = z
+  .object({
+    past: z.array(z.array(pageComponentSchema)),
+    present: z.array(pageComponentSchema),
+    future: z.array(z.array(pageComponentSchema)),
+  })
+  .default({ past: [], present: [], future: [] });
+
 export const pageSchema = z.object({
   id: z.string(),
   slug: z.string(),
@@ -145,6 +159,7 @@ export const pageSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   createdBy: z.string(),
+  history: historyStateSchema.optional(),
 });
 
 export type Page = z.infer<typeof pageSchema>;

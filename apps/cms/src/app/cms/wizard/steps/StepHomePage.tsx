@@ -11,8 +11,10 @@ import {
 import PageBuilder from "@/components/cms/PageBuilder";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
+import { historyStateSchema } from "@types";
 import { fetchJson } from "@ui/utils/fetchJson";
 import { ulid } from "ulid";
+import { useEffect } from "react";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -41,6 +43,37 @@ export default function StepHomePage({
   onBack,
   onNext,
 }: Props): React.JSX.Element {
+  useEffect(() => {
+    (async () => {
+      if (!shopId) return;
+      try {
+        const pages = await fetchJson<Page[]>(`/cms/api/pages/${shopId}`);
+        const existing = homePageId
+          ? pages.find((p) => p.id === homePageId)
+          : pages.find((p) => p.slug === "");
+        if (existing) {
+          setHomePageId(existing.id);
+          setComponents(existing.components);
+          if (typeof window !== "undefined") {
+            localStorage.setItem(
+              `page-builder-history-${existing.id}`,
+              JSON.stringify(
+                historyStateSchema.parse(
+                  existing.history ?? {
+                    past: [],
+                    present: existing.components,
+                    future: [],
+                  }
+                )
+              )
+            );
+          }
+        }
+      } catch {
+        /* ignore */
+      }
+    })();
+  }, [shopId, homePageId, setComponents, setHomePageId]);
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Home Page</h2>

@@ -11,8 +11,10 @@ import {
 import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
+import { historyStateSchema } from "@types";
 import { fetchJson } from "@ui/utils/fetchJson";
 import { ulid } from "ulid";
+import { useEffect } from "react";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -41,6 +43,37 @@ export default function StepProductPage({
   onBack,
   onNext,
 }: Props): React.JSX.Element {
+  useEffect(() => {
+    (async () => {
+      if (!shopId) return;
+      try {
+        const pages = await fetchJson<Page[]>(`/cms/api/pages/${shopId}`);
+        const existing = productPageId
+          ? pages.find((p) => p.id === productPageId)
+          : pages.find((p) => p.slug === "product");
+        if (existing) {
+          setProductPageId(existing.id);
+          setProductComponents(existing.components);
+          if (typeof window !== "undefined") {
+            localStorage.setItem(
+              `page-builder-history-${existing.id}`,
+              JSON.stringify(
+                historyStateSchema.parse(
+                  existing.history ?? {
+                    past: [],
+                    present: existing.components,
+                    future: [],
+                  }
+                )
+              )
+            );
+          }
+        }
+      } catch {
+        /* ignore */
+      }
+    })();
+  }, [shopId, productPageId, setProductComponents, setProductPageId]);
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Product Detail Page</h2>

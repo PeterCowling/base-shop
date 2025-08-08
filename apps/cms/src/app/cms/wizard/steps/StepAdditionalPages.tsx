@@ -12,8 +12,10 @@ import {
 import PageBuilder from "@/components/cms/PageBuilder";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
+import { historyStateSchema } from "@types";
 import { fetchJson } from "@ui/utils/fetchJson";
 import { ulid } from "ulid";
+import { useEffect } from "react";
 import { toPageInfo } from "../utils/page-utils";
 
 import type { PageInfo } from "../schema";
@@ -70,6 +72,62 @@ export default function StepAdditionalPages({
   onNext,
 }: Props): React.JSX.Element {
   const languages = LOCALES as readonly Locale[];
+  useEffect(() => {
+    (async () => {
+      if (!shopId) return;
+      try {
+        const loaded = await fetchJson<Page[]>(`/cms/api/pages/${shopId}`);
+        setPages(loaded.map((p) => toPageInfo(p, languages)));
+        if (typeof window !== "undefined") {
+          loaded.forEach((p) => {
+            localStorage.setItem(
+              `page-builder-history-${p.id}`,
+              JSON.stringify(
+                historyStateSchema.parse(
+                  p.history ?? {
+                    past: [],
+                    present: p.components,
+                    future: [],
+                  }
+                )
+              )
+            );
+          });
+        }
+      } catch {
+        /* ignore */
+      }
+    })();
+  }, [shopId, setPages, languages]);
+
+  useEffect(() => {
+    if (!adding || !newDraftId || !shopId) return;
+    (async () => {
+      try {
+        const pages = await fetchJson<Page[]>(`/cms/api/pages/${shopId}`);
+        const p = pages.find((pg) => pg.id === newDraftId);
+        if (p) {
+          setNewComponents(p.components);
+          if (typeof window !== "undefined") {
+            localStorage.setItem(
+              `page-builder-history-${p.id}`,
+              JSON.stringify(
+                historyStateSchema.parse(
+                  p.history ?? {
+                    past: [],
+                    present: p.components,
+                    future: [],
+                  }
+                )
+              )
+            );
+          }
+        }
+      } catch {
+        /* ignore */
+      }
+    })();
+  }, [adding, newDraftId, shopId, setNewComponents]);
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Additional Pages</h2>

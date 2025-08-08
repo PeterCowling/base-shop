@@ -10,7 +10,7 @@ import {
 } from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
 import type { Locale, Page, PageComponent } from "@types";
-import { pageComponentSchema } from "@types/Page";
+import { historyStateSchema, pageComponentSchema } from "@types/Page";
 import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
 import { z } from "zod";
@@ -202,6 +202,16 @@ export async function savePageDraft(
     }
   }
 
+  let history = undefined;
+  const historyStr = formData.get("history");
+  if (typeof historyStr === "string") {
+    try {
+      history = historyStateSchema.parse(JSON.parse(historyStr));
+    } catch {
+      /* ignore invalid history */
+    }
+  }
+
   const compErrs = validateComponents(components);
   if (compErrs) {
     return { errors: compErrs };
@@ -212,12 +222,13 @@ export async function savePageDraft(
   const existing = pages.find((p) => p.id === id);
 
   const page: Page = existing
-    ? { ...existing, components, updatedAt: now }
+    ? { ...existing, components, ...(history ? { history } : {}), updatedAt: now }
     : {
         id,
         slug: "",
         status: "draft",
         components,
+        history: history ?? historyStateSchema.parse({}),
         seo: {
           title: emptyTranslated(),
           description: emptyTranslated(),

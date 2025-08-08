@@ -54,5 +54,11 @@ describe("Page Builder happy path", () => {
       });
 
     cy.contains("button", "Publish").click();
+    cy.readFile(`data/shops/${shopId}/pages.json`, { timeout: 10000 }).then(
+      (pages) => {
+        const page = pages.find((p: any) => p.slug === "home");
+        expect(page.status).to.equal("published");
+      }
+    );
   });
 });

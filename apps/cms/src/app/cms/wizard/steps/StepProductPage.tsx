@@ -137,7 +137,22 @@ export default function StepProductPage({
           );
           setProductPageId(json.id);
         }}
-        onPublish={async () => {}}
+        onPublish={async (fd) => {
+          try {
+            fd.set("status", "published");
+            const json = await fetchJson<{ id: string }>(
+              `/cms/api/page/${shopId}`,
+              {
+                method: "POST",
+                body: fd,
+              }
+            );
+            setProductPageId(json.id);
+            alert("Page published");
+          } catch {
+            alert("Failed to publish page");
+          }
+        }}
         onChange={setProductComponents}
         style={themeStyle}
       />

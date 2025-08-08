@@ -135,7 +135,22 @@ export default function StepHomePage({
           );
           setHomePageId(json.id);
         }}
-        onPublish={async () => {}}
+        onPublish={async (fd) => {
+          try {
+            fd.set("status", "published");
+            const json = await fetchJson<{ id: string }>(
+              `/cms/api/page/${shopId}`,
+              {
+                method: "POST",
+                body: fd,
+              }
+            );
+            setHomePageId(json.id);
+            alert("Page published");
+          } catch {
+            alert("Failed to publish page");
+          }
+        }}
         onChange={setComponents}
         style={themeStyle}
       />

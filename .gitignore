@@ -34,6 +34,11 @@
 /.turbo/
 **/.turbo/
 
+# Generated CMS block builds
+packages/ui/src/components/cms/blocks/*.js
+packages/ui/src/components/cms/blocks/*.d.ts
+packages/ui/src/components/cms/blocks/*.d.ts.map
+
 # ---------------------------
 # Misc
 # ---------------------------

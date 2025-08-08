@@ -95,11 +95,8 @@ export async function updateProduct(
   "use server";
   await ensureAuthorized();
 
-  const parsed = productSchema.safeParse(
-    Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>
-    )
-  );
+  const formEntries = Object.fromEntries(formData.entries());
+  const parsed = productSchema.safeParse(formEntries);
   if (!parsed.success) {
     const { fieldErrors } = parsed.error.flatten();
     const productId = String(formData.get("id") ?? "");

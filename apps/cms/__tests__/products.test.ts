@@ -76,6 +76,36 @@ describe("product actions", () => {
     });
   });
 
+  it("rejects invalid product payloads", async () => {
+    await withRepo(async () => {
+      const actions = (await import(
+        "../src/actions/products.server"
+      )) as typeof import("../src/actions/products.server");
+
+      const prod: ProductPublication = await actions.createDraftRecord("test");
+
+      const fd = new FormData();
+      fd.append("id", prod.id);
+      fd.append("title_en", "Hello");
+      fd.append("desc_en", "World");
+      fd.append("title_de", "Hallo");
+      fd.append("desc_de", "Welt");
+      fd.append("title_it", "Ciao");
+      fd.append("desc_it", "Mondo");
+      fd.append("price", "-5");
+
+      const result = await actions.updateProduct("test", fd);
+      expect(result.product).toBeUndefined();
+      expect(result.errors?.price).toEqual(["Invalid price"]);
+
+      const { readRepo } = await import(
+        "../../../packages/platform-core/src/repositories/json.server"
+      );
+      const repo = (await readRepo("test")) as ProductPublication[];
+      expect(repo[0].price).toBe(0);
+    });
+  });
+
   it("duplicateProduct copies a product", async () => {
     await withRepo(async () => {
       const actions = (await import(

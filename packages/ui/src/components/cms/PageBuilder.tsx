@@ -16,11 +16,9 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import type { Page, PageComponent } from "@types";
-import { historyStateSchema, type HistoryState } from "@types";
+import type { Page, PageComponent, HistoryState } from "@types";
+import { pageComponentSchema as pageComponentSchemaBase } from "@types";
 import type { CSSProperties } from "react";
-
-export { historyStateSchema };
 import {
   memo,
   useCallback,
@@ -73,16 +71,21 @@ interface Props {
 }
 
 /* ════════════════ runtime validation (Zod) ════════════════ */
-const pageComponentSchema: z.ZodType<PageComponent> = z
+const pageComponentSchema = pageComponentSchemaBase.extend({
+  type: z.enum(COMPONENT_TYPE_TUPLE),
+  width: z.string().optional(),
+  height: z.string().optional(),
+  left: z.string().optional(),
+  top: z.string().optional(),
+});
+
+export const historyStateSchema: z.ZodType<HistoryState> = z
   .object({
-    id: z.string(),
-    type: z.enum(COMPONENT_TYPE_TUPLE),
-    width: z.string().optional(),
-    height: z.string().optional(),
-    left: z.string().optional(),
-    top: z.string().optional(),
+    past: z.array(z.array(pageComponentSchema)),
+    present: z.array(pageComponentSchema),
+    future: z.array(z.array(pageComponentSchema)),
   })
-  .passthrough();
+  .default({ past: [], present: [], future: [] });
 
 /* ════════════════ reducers ════════════════ */
 type ChangeAction =
@@ -169,6 +172,9 @@ function reducer(state: HistoryState, action: Action): HistoryState {
     }
   }
 }
+
+// Placeholder constant for reducer tests to strip component code
+const palette = {};
 
 /* ════════════════ component ════════════════ */
 const PageBuilder = memo(function PageBuilder({

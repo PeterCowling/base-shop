@@ -5,7 +5,7 @@ import { runInNewContext } from "vm";
 
 function loadParseArgs() {
   const src = readFileSync(
-    join(__dirname, "../../scripts/create-shop.ts"),
+    join(__dirname, "../../scripts/src/create-shop.ts"),
     "utf8"
   );
   const cut = src.split("const [shopId")[0];
@@ -72,5 +72,39 @@ describe("parseArgs", () => {
     const { parseArgs, sandbox } = loadParseArgs();
     parseArgs(["s", "--type=foo"]);
     expect(sandbox.process.exit).toHaveBeenCalled();
+  });
+});
+
+function runCli(args: string[]) {
+  const src = readFileSync(
+    join(__dirname, "../../scripts/src/create-shop.ts"),
+    "utf8"
+  );
+  const cut = src.split("async function ensureTheme")[0];
+  const transpiled = ts.transpileModule(cut, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS },
+  }).outputText;
+  const originalRequire = require;
+  const sandbox: any = {
+    exports: {},
+    module: { exports: {} },
+    process: { argv: ["node", "script", ...args], exit: jest.fn() },
+    console: { error: jest.fn() },
+    require: (p: string) => {
+      if (p.includes("packages/platform-core/src/createShop")) {
+        return { createShop: jest.fn() };
+      }
+      return originalRequire(p);
+    },
+  };
+  runInNewContext(transpiled, sandbox);
+  return sandbox;
+}
+
+describe("CLI", () => {
+  it("exits when theme does not exist", () => {
+    const sandbox = runCli(["shop", "--theme=missing"]);
+    expect(sandbox.console.error).toHaveBeenCalled();
+    expect(sandbox.process.exit).toHaveBeenCalledWith(1);
   });
 });

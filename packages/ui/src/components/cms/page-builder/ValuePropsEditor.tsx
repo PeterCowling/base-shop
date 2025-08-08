@@ -1,0 +1,16 @@
+import type { PageComponent } from "@types";
+import { useArrayEditor } from "./useArrayEditor";
+
+interface Props {
+  component: PageComponent;
+  onChange: (patch: Partial<PageComponent>) => void;
+}
+
+export default function ValuePropsEditor({ component, onChange }: Props) {
+  const arrayEditor = useArrayEditor(onChange);
+  return arrayEditor("items", (component as any).items, [
+    "icon",
+    "title",
+    "desc",
+  ]);
+}

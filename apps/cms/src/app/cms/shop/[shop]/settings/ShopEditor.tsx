@@ -3,6 +3,7 @@
 "use client";
 import { Button, Input, Textarea } from "@/components/atoms-shadcn";
 import { updateShop } from "@cms/actions/shops.server";
+import { shopSchema } from "@cms/actions/schemas";
 import type { Shop } from "@types";
 import { ChangeEvent, FormEvent, useState } from "react";
 
@@ -30,59 +31,71 @@ export default function ShopEditor({ shop, initial }: Props) {
 
   const handleTokens = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
-
     try {
       const parsed = JSON.parse(value);
-
       setInfo((prev) => ({ ...prev, themeTokens: parsed }));
+      setErrors((prev) => {
+        const { themeTokens, ...rest } = prev;
+        return rest;
+      });
     } catch {
-      console.error("Invalid JSON for themeTokens:", value);
+      setErrors((prev) => ({ ...prev, themeTokens: ["Invalid JSON"] }));
     }
   };
 
   const handleMappings = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
-
     try {
       const parsed = JSON.parse(value);
       setInfo((prev) => ({ ...prev, filterMappings: parsed }));
+      setErrors((prev) => {
+        const { filterMappings, ...rest } = prev;
+        return rest;
+      });
     } catch {
-      console.error("Invalid JSON for priceOverrides:", value);
+      setErrors((prev) => ({ ...prev, filterMappings: ["Invalid JSON"] }));
     }
   };
 
   const handlePriceOverrides = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
-
     try {
       const parsed = JSON.parse(value);
       setInfo((prev) => ({ ...prev, priceOverrides: parsed }));
+      setErrors((prev) => {
+        const { priceOverrides, ...rest } = prev;
+        return rest;
+      });
     } catch {
-      console.error("Invalid JSON for localeOverrides:", value);
+      setErrors((prev) => ({ ...prev, priceOverrides: ["Invalid JSON"] }));
     }
   };
 
   const handleLocaleOverrides = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = e.target;
     try {
-      const parsed = JSON.parse(e.target.value);
+      const parsed = JSON.parse(value);
       setInfo((prev) => ({ ...prev, localeOverrides: parsed }));
+      setErrors((prev) => {
+        const { localeOverrides, ...rest } = prev;
+        return rest;
+      });
     } catch {
-      // ignore invalid JSON
+      setErrors((prev) => ({ ...prev, localeOverrides: ["Invalid JSON"] }));
     }
   };
 
-  const onSubmit = async (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
-    const fd = new FormData();
-    fd.append("id", info.id);
-    fd.append("name", info.name);
-    fd.append("themeId", info.themeId);
-    fd.append("catalogFilters", info.catalogFilters.join(","));
-    fd.append("themeTokens", JSON.stringify(info.themeTokens));
-    fd.append("filterMappings", JSON.stringify(info.filterMappings));
-    fd.append("priceOverrides", JSON.stringify(info.priceOverrides ?? {}));
-    fd.append("localeOverrides", JSON.stringify(info.localeOverrides ?? {}));
+    const fd = new FormData(e.currentTarget);
+    const data = Object.fromEntries(fd.entries()) as Record<string, string>;
+    const parsed = shopSchema.safeParse(data);
+    if (!parsed.success) {
+      setErrors(parsed.error.flatten().fieldErrors);
+      setSaving(false);
+      return;
+    }
     const result = await updateShop(shop, fd);
     if (result.errors) {
       setErrors(result.errors);
@@ -98,14 +111,6 @@ export default function ShopEditor({ shop, initial }: Props) {
       onSubmit={onSubmit}
       className="@container grid max-w-md gap-4 @sm:grid-cols-2"
     >
-      {Object.keys(errors).length > 0 && (
-        <div className="text-sm text-red-600">
-          {Object.entries(errors).map(([k, v]) => (
-            <p key={k}>{v.join("; ")}</p>
-          ))}
-        </div>
-      )}
-      <Input type="hidden" name="id" value={info.id} />
       <Input type="hidden" name="id" value={info.id} />
       <label className="flex flex-col gap-1">
         <span>Name</span>
@@ -115,6 +120,9 @@ export default function ShopEditor({ shop, initial }: Props) {
           value={info.name}
           onChange={handleChange}
         />
+        {errors.name && (
+          <span className="text-sm text-red-600">{errors.name.join("; ")}</span>
+        )}
       </label>
       <label className="flex flex-col gap-1">
         <span>Theme</span>
@@ -124,6 +132,11 @@ export default function ShopEditor({ shop, initial }: Props) {
           value={info.themeId}
           onChange={handleChange}
         />
+        {errors.themeId && (
+          <span className="text-sm text-red-600">
+            {errors.themeId.join("; ")}
+          </span>
+        )}
       </label>
       <label className="flex flex-col gap-1">
         <span>Catalog Filters (comma separated)</span>
@@ -133,6 +146,11 @@ export default function ShopEditor({ shop, initial }: Props) {
           value={info.catalogFilters.join(",")}
           onChange={handleFilters}
         />
+        {errors.catalogFilters && (
+          <span className="text-sm text-red-600">
+            {errors.catalogFilters.join("; ")}
+          </span>
+        )}
       </label>
       <label className="flex flex-col gap-1">
         <span>Theme Tokens (JSON)</span>
@@ -142,6 +160,11 @@ export default function ShopEditor({ shop, initial }: Props) {
           onChange={handleTokens}
           rows={4}
         />
+        {errors.themeTokens && (
+          <span className="text-sm text-red-600">
+            {errors.themeTokens.join("; ")}
+          </span>
+        )}
       </label>
       <label className="flex flex-col gap-1">
         <span>Filter Mappings (JSON)</span>
@@ -151,6 +174,11 @@ export default function ShopEditor({ shop, initial }: Props) {
           onChange={handleMappings}
           rows={4}
         />
+        {errors.filterMappings && (
+          <span className="text-sm text-red-600">
+            {errors.filterMappings.join("; ")}
+          </span>
+        )}
       </label>
       <label className="flex flex-col gap-1">
         <span>Price Overrides (JSON)</span>
@@ -160,6 +188,11 @@ export default function ShopEditor({ shop, initial }: Props) {
           onChange={handlePriceOverrides}
           rows={4}
         />
+        {errors.priceOverrides && (
+          <span className="text-sm text-red-600">
+            {errors.priceOverrides.join("; ")}
+          </span>
+        )}
       </label>
       <label className="flex flex-col gap-1">
         <span>Locale Overrides (JSON)</span>
@@ -169,6 +202,11 @@ export default function ShopEditor({ shop, initial }: Props) {
           onChange={handleLocaleOverrides}
           rows={4}
         />
+        {errors.localeOverrides && (
+          <span className="text-sm text-red-600">
+            {errors.localeOverrides.join("; ")}
+          </span>
+        )}
       </label>
       <Button className="bg-primary text-white" disabled={saving} type="submit">
         {saving ? "Saving…" : "Save"}

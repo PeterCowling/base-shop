@@ -1,7 +1,8 @@
 // apps/cms/src/app/cms/wizard/schema.ts
 /* eslint‑disable @typescript-eslint/consistent‑type‑assertions */
 import { LOCALES } from "@acme/i18n";
-import type { Locale, PageComponent } from "@types";
+import { pageComponentSchema } from "@types/Page";
+import type { Locale } from "@types";
 import { ulid } from "ulid";
 import { z } from "zod";
 import { baseTokens } from "./utils";
@@ -80,7 +81,7 @@ export const pageInfoSchema = z.object({
   description: localeRecordSchema,
   image: localeRecordSchema,
   /** Components are serialised PageComponent instances. */
-  components: z.array(z.custom<PageComponent>()).default([]),
+  components: z.array(pageComponentSchema).default([]),
 });
 
 export type PageInfo = z.infer<typeof pageInfoSchema>; // <- slug & components **required**
@@ -116,26 +117,26 @@ export const wizardStateSchema = z.object({
   socialImage: z.string().optional().default(""),
 
   /* ------------- Global component pools --------------- */
-  components: z.array(z.custom<PageComponent>()).default([]),
+  components: z.array(pageComponentSchema).default([]),
 
-  headerComponents: z.array(z.custom<PageComponent>()).default([]),
+  headerComponents: z.array(pageComponentSchema).default([]),
   headerPageId: z.string().nullable().optional().default(null),
 
-  footerComponents: z.array(z.custom<PageComponent>()).default([]),
+  footerComponents: z.array(pageComponentSchema).default([]),
   footerPageId: z.string().nullable().optional().default(null),
 
   homePageId: z.string().nullable().optional().default(null),
   homeLayout: z.string().optional().default(""),
 
-  shopComponents: z.array(z.custom<PageComponent>()).default([]),
+  shopComponents: z.array(pageComponentSchema).default([]),
   shopPageId: z.string().nullable().optional().default(null),
   shopLayout: z.string().optional().default(""),
 
-  productComponents: z.array(z.custom<PageComponent>()).default([]),
+  productComponents: z.array(pageComponentSchema).default([]),
   productPageId: z.string().nullable().optional().default(null),
   productLayout: z.string().optional().default(""),
 
-  checkoutComponents: z.array(z.custom<PageComponent>()).default([]),
+  checkoutComponents: z.array(pageComponentSchema).default([]),
   checkoutPageId: z.string().nullable().optional().default(null),
   checkoutLayout: z.string().optional().default(""),
 

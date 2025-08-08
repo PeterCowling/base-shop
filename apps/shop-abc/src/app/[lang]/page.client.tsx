@@ -1,7 +1,7 @@
 // apps/shop-abc/src/app/[[...lang]]/page.tsx
 "use client";
 
-import DynamicRenderer from "@/components/DynamicRenderer.client";
+import DynamicRenderer from "@ui/components/DynamicRenderer";
 import type { PageComponent } from "@types";
 
 export default function Home({

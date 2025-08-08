@@ -1,4 +1,4 @@
-// apps/shop-abc/src/components/DynamicRenderer.tsx
+// packages/ui/src/components/DynamicRenderer.tsx
 
 "use client";
 
@@ -59,3 +59,4 @@ export default function DynamicRenderer({
     </>
   );
 }
+

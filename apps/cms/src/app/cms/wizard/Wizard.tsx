@@ -3,7 +3,7 @@
 
 import { Progress, Toast } from "@/components/atoms";
 import { LOCALES } from "@acme/i18n";
-import type { DeployShopResult } from "@platform-core/createShop";
+import { createShopOptionsSchema, type DeployShopResult } from "@platform-core/createShop";
 import type { Locale, PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
@@ -105,6 +105,7 @@ export default function Wizard({
     DeployShopResult | { status: "pending"; error?: string } | null
   >(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
   /* ---------------------------------------------------------------------- */
   /*  SEO fields                                                            */
@@ -424,36 +425,50 @@ export default function Wizard({
   async function submit() {
     setCreating(true);
     setResult(null);
+    setFieldErrors({});
+
+    const options = {
+      name: storeName || undefined,
+      logo: logo || undefined,
+      contactInfo: contactInfo || undefined,
+      template,
+      theme,
+      payment,
+      shipping,
+      analytics: analyticsProvider
+        ? { provider: analyticsProvider, id: analyticsId || undefined }
+        : undefined,
+      pageTitle,
+      pageDescription,
+      socialImage: socialImage || undefined,
+      navItems: navItems.map((n) => ({ label: n.label, url: n.url })),
+      pages: pages.map((p) => ({
+        slug: p.slug,
+        title: p.title,
+        description: p.description,
+        image: p.image,
+        components: p.components,
+      })),
+      checkoutPage: checkoutComponents,
+    };
+
+    const parsed = createShopOptionsSchema.safeParse(options);
+    if (!parsed.success) {
+      const errs: Record<string, string[]> = {};
+      for (const issue of parsed.error.issues) {
+        const key = issue.path.join(".");
+        errs[key] = [...(errs[key] ?? []), issue.message];
+      }
+      setFieldErrors(errs);
+      setCreating(false);
+      return;
+    }
 
     try {
       const res = await fetch("/cms/api/create-shop", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: shopId,
-          name: storeName,
-          logo,
-          contactInfo,
-          headerComponents,
-          headerPageId,
-          footerComponents,
-          footerPageId,
-          options: {
-            template,
-            theme,
-            payment,
-            shipping,
-            analytics: analyticsProvider
-              ? { provider: analyticsProvider, id: analyticsId }
-              : undefined,
-            pageTitle,
-            pageDescription,
-            socialImage,
-            navItems,
-            pages,
-            checkoutPage: checkoutComponents,
-          },
-        }),
+        body: JSON.stringify({ id: shopId, options: parsed.data }),
       });
 
       if (res.ok) {
@@ -635,6 +650,7 @@ export default function Wizard({
             setTemplate={setTemplate}
             templates={templates}
             onNext={() => setStep(1)}
+            errors={fieldErrors}
           />
         );
 
@@ -828,6 +844,7 @@ export default function Wizard({
             submit={submit}
             onBack={() => setStep(10)}
             onNext={() => setStep(12)}
+            errors={fieldErrors}
           />
         );
 

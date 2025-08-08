@@ -89,10 +89,11 @@ const CanvasItem = memo(function CanvasItem({
   dispatch: React.Dispatch<Action>;
   locale: Locale;
 }) {
-  const { attributes, listeners, setNodeRef, transform } = useSortable({
-    id: component.id,
-    data: { from: "canvas", index },
-  });
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useSortable({
+      id: component.id,
+      data: { from: "canvas", index },
+    });
 
   const containerRef = useRef<HTMLDivElement>(null);
   const startRef = useRef<{
@@ -236,6 +237,9 @@ const CanvasItem = memo(function CanvasItem({
       }}
       {...attributes}
       {...listeners}
+      role="listitem"
+      aria-grabbed={isDragging}
+      aria-dropeffect="move"
       onPointerDownCapture={(e) => {
         onSelect();
         startMove(e);

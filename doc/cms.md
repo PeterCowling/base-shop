@@ -51,3 +51,10 @@ Selected blocks now display drag handles for repositioning. You can also resize
 blocks directly on the canvas and adjust their margin or padding before saving
 or publishing. A side panel shows editable properties for the currently
 selected block.
+
+## Keyboard Shortcuts & Screen Reader Support
+
+- Focus a block and press **Space** to start dragging.
+- Use the arrow keys to move the block and press **Space** again to drop it.
+- Press **Escape** to cancel a drag action.
+- Screen readers announce when blocks are added or moved via an `aria-live` region.

@@ -198,6 +198,7 @@ const PageBuilder = memo(function PageBuilder({
     "desktop"
   );
   const [locale, setLocale] = useState<Locale>("en");
+  const [liveMessage, setLiveMessage] = useState("");
 
   /* ── derived memo values ──────────────────────────────────────── */
   const widthMap = useMemo(
@@ -265,8 +266,10 @@ const PageBuilder = memo(function PageBuilder({
             type: a.type! as ComponentType,
           } as PageComponent,
         });
+        setLiveMessage(`${a.type} added`);
       } else if (a?.from === "canvas" && o?.from === "canvas") {
         dispatch({ type: "move", from: a.index!, to: o.index! });
+        setLiveMessage(`Item moved to position ${o.index! + 1}`);
       }
     },
     [dispatch]
@@ -289,6 +292,7 @@ const PageBuilder = memo(function PageBuilder({
   /* ── render ───────────────────────────────────────────────────── */
   return (
     <div className="flex gap-4" style={style}>
+      <div aria-live="polite" className="sr-only">{liveMessage}</div>
       {/* Palette */}
       <aside className="w-48 shrink-0">
         <Palette />
@@ -336,6 +340,8 @@ const PageBuilder = memo(function PageBuilder({
               id="canvas"
               style={containerStyle}
               className="mx-auto flex flex-col gap-4 rounded border"
+              role="list"
+              aria-dropeffect="move"
             >
               {components.map((c, i) => (
                 <CanvasItem

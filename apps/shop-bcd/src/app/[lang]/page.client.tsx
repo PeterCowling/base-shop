@@ -1,16 +1,13 @@
 // apps/shop-bcd/src/app/[lang]/page.tsx
 "use client";
 
-import HeroBanner from "@/components/home/HeroBanner";
-import ReviewsCarousel from "@/components/home/ReviewsCarousel";
-import { ValueProps } from "@/components/home/ValueProps";
+import DynamicRenderer from "@/components/DynamicRenderer.client";
+import type { PageComponent } from "@types";
 
-export default function Home() {
-  return (
-    <>
-      <HeroBanner />
-      <ValueProps />
-      <ReviewsCarousel />
-    </>
-  );
+export default function Home({
+  components,
+}: {
+  components: PageComponent[];
+}) {
+  return <DynamicRenderer components={components} />;
 }

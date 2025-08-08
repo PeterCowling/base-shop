@@ -16,7 +16,8 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import type { Page, PageComponent } from "@types";
+import type { Page, PageComponent, HistoryState } from "@types";
+import { historyStateSchema } from "@types";
 import type { CSSProperties } from "react";
 import {
   memo,
@@ -69,12 +70,6 @@ interface Props {
   style?: CSSProperties;
 }
 
-export interface HistoryState {
-  past: PageComponent[][];
-  present: PageComponent[];
-  future: PageComponent[][];
-}
-
 /* ════════════════ runtime validation (Zod) ════════════════ */
 const pageComponentSchema: z.ZodType<PageComponent> = z
   .object({
@@ -91,17 +86,6 @@ const pageComponentSchema: z.ZodType<PageComponent> = z
  *  Build → default → cast; the cast is safe because the default value
  *  fully satisfies the `HistoryState` contract.
  */
-export const historyStateSchema = z
-  .object({
-    past: z.array(z.array(pageComponentSchema)),
-    present: z.array(pageComponentSchema),
-    future: z.array(z.array(pageComponentSchema)),
-  })
-  .default({
-    past: [],
-    present: [],
-    future: [],
-  }) as unknown as z.ZodType<HistoryState>;
 
 /* ════════════════ reducers ════════════════ */
 type ChangeAction =
@@ -311,8 +295,9 @@ const PageBuilder = memo(function PageBuilder({
     fd.append("title", JSON.stringify(page.seo.title));
     fd.append("description", JSON.stringify(page.seo.description ?? {}));
     fd.append("components", JSON.stringify(components));
+    fd.append("history", JSON.stringify(state));
     return fd;
-  }, [page, components]);
+  }, [page, components, state]);
 
   /* ── render ───────────────────────────────────────────────────── */
   return (

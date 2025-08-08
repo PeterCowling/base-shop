@@ -126,6 +126,26 @@ export type PageComponent =
   | ImageComponent
   | TextComponent;
 
+export interface HistoryState {
+  past: PageComponent[][];
+  present: PageComponent[];
+  future: PageComponent[][];
+}
+
+export const historyStateSchema: z.ZodType<HistoryState> = z
+  .object({
+    past: z.array(
+      z.array(z.object({ id: z.string(), type: z.string() }).passthrough())
+    ),
+    present: z.array(
+      z.object({ id: z.string(), type: z.string() }).passthrough()
+    ),
+    future: z.array(
+      z.array(z.object({ id: z.string(), type: z.string() }).passthrough())
+    ),
+  })
+  .default({ past: [], present: [], future: [] }) as unknown as z.ZodType<HistoryState>;
+
 export const pageSchema = z.object({
   id: z.string(),
   slug: z.string(),
@@ -133,6 +153,7 @@ export const pageSchema = z.object({
   components: z
     .array(z.object({ id: z.string(), type: z.string() }).passthrough())
     .default([]),
+  history: historyStateSchema.optional(),
   seo: z.object({
     title: z.record(localeSchema, z.string()),
     description: z.record(localeSchema, z.string()).optional(),

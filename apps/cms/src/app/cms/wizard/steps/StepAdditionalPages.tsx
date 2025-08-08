@@ -12,9 +12,11 @@ import {
 import PageBuilder from "@/components/cms/PageBuilder";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
+import { historyStateSchema } from "@types";
 import { fetchJson } from "@ui/utils/fetchJson";
 import { ulid } from "ulid";
 import { toPageInfo } from "../utils/page-utils";
+import { useEffect, useState } from "react";
 
 import type { PageInfo } from "../schema";
 
@@ -70,6 +72,27 @@ export default function StepAdditionalPages({
   onNext,
 }: Props): React.JSX.Element {
   const languages = LOCALES as readonly Locale[];
+  const [loading, setLoading] = useState(newDraftId !== null);
+  useEffect(() => {
+    if (!newDraftId) return;
+    fetchJson<Page>(`/cms/api/page-draft/${shopId}?id=${newDraftId}`)
+      .then((page) => {
+        setNewComponents(page.components);
+        if (page.history) {
+          try {
+            const parsed = historyStateSchema.parse(page.history);
+            localStorage.setItem(
+              `page-builder-history-${page.id}`,
+              JSON.stringify(parsed)
+            );
+          } catch {
+            /* ignore */
+          }
+        }
+      })
+      .finally(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Additional Pages</h2>
@@ -147,46 +170,48 @@ export default function StepAdditionalPages({
               </label>
             </div>
           ))}
-          <PageBuilder
-            page={
-              {
-                id: newDraftId ?? "",
-                slug: "",
-                status: "draft",
-                components: newComponents,
-                seo: {
-                  title: LOCALES.reduce(
-                    (acc, l) => ({ ...acc, [l]: "" }),
-                    {} as Record<Locale, string>
-                  ),
-                  description: LOCALES.reduce(
-                    (acc, l) => ({ ...acc, [l]: "" }),
-                    {} as Record<Locale, string>
-                  ),
-                  image: LOCALES.reduce(
-                    (acc, l) => ({ ...acc, [l]: "" }),
-                    {} as Record<Locale, string>
-                  ),
-                },
-                createdAt: "",
-                updatedAt: "",
-                createdBy: "",
-              } as Page
-            }
-            onSave={async (fd) => {
-              const json = await fetchJson<{ id: string }>(
-                `/cms/api/page-draft/${shopId}`,
+          {!loading && (
+            <PageBuilder
+              page={
                 {
-                  method: "POST",
-                  body: fd,
-                }
-              );
-              setNewDraftId(json.id);
-            }}
-            onPublish={async () => {}}
-            onChange={setNewComponents}
-            style={themeStyle}
-          />
+                  id: newDraftId ?? "",
+                  slug: "",
+                  status: "draft",
+                  components: newComponents,
+                  seo: {
+                    title: LOCALES.reduce(
+                      (acc, l) => ({ ...acc, [l]: "" }),
+                      {} as Record<Locale, string>
+                    ),
+                    description: LOCALES.reduce(
+                      (acc, l) => ({ ...acc, [l]: "" }),
+                      {} as Record<Locale, string>
+                    ),
+                    image: LOCALES.reduce(
+                      (acc, l) => ({ ...acc, [l]: "" }),
+                      {} as Record<Locale, string>
+                    ),
+                  },
+                  createdAt: "",
+                  updatedAt: "",
+                  createdBy: "",
+                } as Page
+              }
+              onSave={async (fd) => {
+                const json = await fetchJson<{ id: string }>(
+                  `/cms/api/page-draft/${shopId}`,
+                  {
+                    method: "POST",
+                    body: fd,
+                  }
+                );
+                setNewDraftId(json.id);
+              }}
+              onPublish={async () => {}}
+              onChange={setNewComponents}
+              style={themeStyle}
+            />
+          )}
           <div className="flex justify-between">
             <Button
               variant="outline"

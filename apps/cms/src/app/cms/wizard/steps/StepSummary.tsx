@@ -30,6 +30,7 @@ interface Props {
   onNext: () => void;
   creating: boolean;
   submit: () => void;
+  errors?: Record<string, string[]>;
 }
 
 export default function StepSummary({
@@ -54,6 +55,7 @@ export default function StepSummary({
   onNext,
   creating,
   submit,
+  errors = {},
 }: Props): React.JSX.Element {
   const languages = LOCALES as readonly Locale[];
 
@@ -102,6 +104,11 @@ export default function StepSummary({
               }
               placeholder="Home"
             />
+            {errors[`pageTitle.${l}`] && (
+              <p className="text-sm text-red-600">
+                {errors[`pageTitle.${l}`][0]}
+              </p>
+            )}
           </label>
 
           <label className="flex flex-col gap-1">
@@ -116,6 +123,11 @@ export default function StepSummary({
               }
               placeholder="Page description"
             />
+            {errors[`pageDescription.${l}`] && (
+              <p className="text-sm text-red-600">
+                {errors[`pageDescription.${l}`][0]}
+              </p>
+            )}
           </label>
         </div>
       ))}
@@ -127,6 +139,9 @@ export default function StepSummary({
           onChange={(e) => setSocialImage(e.target.value)}
           placeholder="https://example.com/og.png"
         />
+        {errors.socialImage && (
+          <p className="text-sm text-red-600">{errors.socialImage[0]}</p>
+        )}
       </label>
 
       {result && <p className="text-sm">{result}</p>}

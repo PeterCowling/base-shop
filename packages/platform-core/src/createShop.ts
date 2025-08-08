@@ -33,7 +33,7 @@ import { defaultFilterMappings } from "./defaultFilterMappings";
 
 export const createShopOptionsSchema = z.object({
   name: z.string().optional(),
-  logo: z.string().optional(),
+  logo: z.string().url().optional(),
   contactInfo: z.string().optional(),
   type: z.enum(["sale", "rental"]).optional(),
   theme: z.string().optional(),
@@ -42,7 +42,7 @@ export const createShopOptionsSchema = z.object({
   shipping: z.array(z.string()).optional(),
   pageTitle: z.record(localeSchema, z.string()).optional(),
   pageDescription: z.record(localeSchema, z.string()).optional(),
-  socialImage: z.string().optional(),
+  socialImage: z.string().url().optional(),
   analytics: z
     .object({
       provider: z.string(),
@@ -50,7 +50,7 @@ export const createShopOptionsSchema = z.object({
     })
     .optional(),
   navItems: z
-    .array(z.object({ label: z.string(), url: z.string() }))
+    .array(z.object({ label: z.string().min(1), url: z.string().min(1) }))
     .default([]),
   pages: z
     .array(

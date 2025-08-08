@@ -23,6 +23,7 @@ interface Props {
   setTemplate: (v: string) => void;
   templates: string[];
   onNext: () => void;
+  errors?: Record<string, string[]>;
 }
 
 export default function StepShopDetails({
@@ -38,6 +39,7 @@ export default function StepShopDetails({
   setTemplate,
   templates,
   onNext,
+  errors = {},
 }: Props): React.JSX.Element {
   return (
     <div className="space-y-4">
@@ -57,6 +59,9 @@ export default function StepShopDetails({
           onChange={(e) => setStoreName(e.target.value)}
           placeholder="My Store"
         />
+        {errors.name && (
+          <p className="text-sm text-red-600">{errors.name[0]}</p>
+        )}
       </label>
       <label className="flex flex-col gap-1">
         <span>Logo URL</span>
@@ -65,6 +70,9 @@ export default function StepShopDetails({
           onChange={(e) => setLogo(e.target.value)}
           placeholder="https://example.com/logo.png"
         />
+        {errors.logo && (
+          <p className="text-sm text-red-600">{errors.logo[0]}</p>
+        )}
       </label>
       <label className="flex flex-col gap-1">
         <span>Contact Info</span>
@@ -73,6 +81,9 @@ export default function StepShopDetails({
           onChange={(e) => setContactInfo(e.target.value)}
           placeholder="Email or phone"
         />
+        {errors.contactInfo && (
+          <p className="text-sm text-red-600">{errors.contactInfo[0]}</p>
+        )}
       </label>
       <label className="flex flex-col gap-1">
         <span>Template</span>

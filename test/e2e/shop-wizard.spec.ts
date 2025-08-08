@@ -3,7 +3,7 @@
 describe("Shop wizard", () => {
   const shopId = `cyshop-${Date.now()}`;
 
-  it("creates a shop via the wizard", () => {
+  it("validates input and creates a shop via the wizard", () => {
     cy.intercept("POST", "/cms/api/create-shop").as("createShop");
 
     // ensure we land back on the wizard page after signing in
@@ -39,6 +39,14 @@ describe("Shop wizard", () => {
     cy.get('input[placeholder="Home"]').clear().type("My Title");
     cy.get('input[placeholder="Page description"]').type("My description");
     cy.get('input[placeholder="https://example.com/og.png"]').type(
+      "not-a-url"
+    );
+
+    cy.contains("button", "Create Shop").click();
+
+    cy.contains("Invalid url");
+
+    cy.get('input[placeholder="https://example.com/og.png"]').clear().type(
       "https://example.com/img.png"
     );
 

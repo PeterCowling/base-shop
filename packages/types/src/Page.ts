@@ -126,6 +126,10 @@ export type PageComponent =
   | ImageComponent
   | TextComponent;
 
+export const pageComponentSchema: z.ZodType<PageComponent> = z
+  .object({ id: z.string(), type: z.string() })
+  .passthrough();
+
 export const pageSchema = z.object({
   id: z.string(),
   slug: z.string(),

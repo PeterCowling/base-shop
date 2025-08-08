@@ -10,6 +10,7 @@ import {
 } from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
 import type { Locale, Page, PageComponent } from "@types";
+import { pageComponentSchema } from "@types/Page";
 import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
 import { z } from "zod";
@@ -52,6 +53,18 @@ const componentsField = z
       return [] as PageComponent[];
     }
   });
+
+function validateComponents(
+  components: PageComponent[]
+): Record<string, string[]> | null {
+  for (const comp of components) {
+    const parsed = pageComponentSchema.safeParse(comp);
+    if (!parsed.success) {
+      return { components: ["Invalid components"] };
+    }
+  }
+  return null;
+}
 
 /* -------------------------------------------------------------------------- */
 /*  Validation Schemas                                                        */
@@ -132,6 +145,11 @@ export async function createPage(
   }
   const data = parsed.data;
 
+  const compErrs = validateComponents(data.components);
+  if (compErrs) {
+    return { errors: compErrs };
+  }
+
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;
   const image: Record<Locale, string> = {} as Record<Locale, string>;
@@ -169,7 +187,7 @@ export async function createPage(
 export async function savePageDraft(
   shop: string,
   formData: FormData
-): Promise<{ page: Page }> {
+): Promise<{ page?: Page; errors?: Record<string, string[]> }> {
   const session = await ensureAuthorized();
 
   const id = (formData.get("id") as string) || ulid();
@@ -182,6 +200,11 @@ export async function savePageDraft(
     } catch {
       /* ignore – keep components empty */
     }
+  }
+
+  const compErrs = validateComponents(components);
+  if (compErrs) {
+    return { errors: compErrs };
   }
 
   const pages = await getPages(shop);
@@ -246,6 +269,11 @@ export async function updatePage(
     return { errors: fieldErrors as Record<string, string[]> };
   }
   const data = parsed.data;
+
+  const compErrs = validateComponents(data.components);
+  if (compErrs) {
+    return { errors: compErrs };
+  }
 
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;

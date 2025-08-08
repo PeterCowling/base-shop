@@ -8,8 +8,11 @@ export async function POST(
   try {
     const fd = await req.formData();
     const { shop } = await context.params;
-    const { page } = await savePageDraft(shop, fd);
-    return NextResponse.json({ id: page.id });
+    const result = await savePageDraft(shop, fd);
+    if (result.errors) {
+      return NextResponse.json({ errors: result.errors }, { status: 400 });
+    }
+    return NextResponse.json({ id: result.page!.id });
   } catch (err) {
     return NextResponse.json(
       { error: (err as Error).message },

@@ -1,6 +1,6 @@
 // scripts/create-shop.ts
 // Import directly to avoid relying on tsconfig path aliases when using ts-node.
-import { readdirSync } from "fs";
+import { readdirSync, existsSync } from "fs";
 import readline from "node:readline";
 import { join } from "path";
 import { createShop } from "../../packages/platform-core/src/createShop";
@@ -71,6 +71,14 @@ function parseArgs(argv: string[]): [string, Options, boolean] {
 }
 
 const [shopId, options, themeProvided] = parseArgs(process.argv.slice(2));
+
+if (themeProvided) {
+  const themeDir = join("packages", "themes", options.theme);
+  if (!existsSync(themeDir)) {
+    console.error(`Theme '${options.theme}' not found in packages/themes`);
+    process.exit(1);
+  }
+}
 
 async function ensureTheme() {
   if (!themeProvided && process.stdin.isTTY) {

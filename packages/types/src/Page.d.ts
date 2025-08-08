@@ -116,73 +116,64 @@ export interface TestimonialsComponent extends PageComponentBase {
         name?: string;
     }[];
 }
-export interface TextComponent extends PageComponentBase {
-    type: "Text";
-    text?: string;
-}
 export type PageComponent = HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent | GalleryComponent | ContactFormComponent | ContactFormWithMapComponent | BlogListingComponent | TestimonialsComponent | TestimonialSliderComponent | ImageComponent | TextComponent;
+export declare const pageComponentSchema: z.ZodType<PageComponent>;
+export interface HistoryState {
+    past: PageComponent[][];
+    present: PageComponent[];
+    future: PageComponent[][];
+}
+export declare const historyStateSchema: z.ZodType<HistoryState>;
 export declare const pageSchema: z.ZodObject<{
     id: z.ZodString;
     slug: z.ZodString;
     status: z.ZodEnum<["draft", "published"]>;
-    components: z.ZodDefault<z.ZodArray<z.ZodObject<{
-        id: z.ZodString;
-        type: z.ZodString;
-    }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
-        id: z.ZodString;
-        type: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-        id: z.ZodString;
-        type: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">>, "many">>;
+    components: z.ZodDefault<z.ZodArray<z.ZodType<PageComponent, z.ZodTypeDef, PageComponent>, "many">>;
     seo: z.ZodObject<{
         title: z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodString>;
         description: z.ZodOptional<z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodString>>;
         image: z.ZodOptional<z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodString>>;
     }, "strip", z.ZodTypeAny, {
         title: Partial<Record<"en" | "de" | "it", string>>;
-        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
         description?: Partial<Record<"en" | "de" | "it", string>> | undefined;
+        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     }, {
         title: Partial<Record<"en" | "de" | "it", string>>;
-        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
         description?: Partial<Record<"en" | "de" | "it", string>> | undefined;
+        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     }>;
     createdAt: z.ZodString;
     updatedAt: z.ZodString;
     createdBy: z.ZodString;
+    history: z.ZodOptional<z.ZodType<HistoryState, z.ZodTypeDef, HistoryState>>;
 }, "strip", z.ZodTypeAny, {
     id: string;
     slug: string;
     status: "draft" | "published";
-    components: z.objectOutputType<{
-        id: z.ZodString;
-        type: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">[];
+    components: PageComponent[];
     seo: {
         title: Partial<Record<"en" | "de" | "it", string>>;
-        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
         description?: Partial<Record<"en" | "de" | "it", string>> | undefined;
+        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     };
     createdAt: string;
     updatedAt: string;
     createdBy: string;
+    history?: HistoryState | undefined;
 }, {
     id: string;
     slug: string;
     status: "draft" | "published";
     seo: {
         title: Partial<Record<"en" | "de" | "it", string>>;
-        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
         description?: Partial<Record<"en" | "de" | "it", string>> | undefined;
+        image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     };
     createdAt: string;
     updatedAt: string;
     createdBy: string;
-    components?: z.objectInputType<{
-        id: z.ZodString;
-        type: z.ZodString;
-    }, z.ZodTypeAny, "passthrough">[] | undefined;
+    components?: PageComponent[] | undefined;
+    history?: HistoryState | undefined;
 }>;
 export type Page = z.infer<typeof pageSchema>;
 //# sourceMappingURL=Page.d.ts.map

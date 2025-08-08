@@ -107,11 +107,6 @@ export interface TestimonialsComponent extends PageComponentBase {
   testimonials?: { quote: string; name?: string }[];
 }
 
-export interface TextComponent extends PageComponentBase {
-  type: "Text";
-  text?: string;
-}
-
 export type PageComponent =
   | HeroBannerComponent
   | ValuePropsComponent
@@ -127,7 +122,23 @@ export type PageComponent =
   | TextComponent;
 
 export const pageComponentSchema: z.ZodType<PageComponent> = z
-  .object({ id: z.string(), type: z.string() })
+  .object({
+    id: z.string(),
+    type: z.union([
+      z.literal("HeroBanner"),
+      z.literal("ValueProps"),
+      z.literal("ReviewsCarousel"),
+      z.literal("ProductGrid"),
+      z.literal("Gallery"),
+      z.literal("ContactForm"),
+      z.literal("ContactFormWithMap"),
+      z.literal("BlogListing"),
+      z.literal("Testimonials"),
+      z.literal("TestimonialSlider"),
+      z.literal("Image"),
+      z.literal("Text"),
+    ]),
+  })
   .passthrough();
 
 export interface HistoryState {
@@ -142,15 +153,13 @@ export const historyStateSchema: z.ZodType<HistoryState> = z
     present: z.array(pageComponentSchema),
     future: z.array(z.array(pageComponentSchema)),
   })
-  .default({ past: [], present: [], future: [] });
+  .default({ past: [], present: [], future: [] }) as unknown as z.ZodType<HistoryState>;
 
 export const pageSchema = z.object({
   id: z.string(),
   slug: z.string(),
   status: z.enum(["draft", "published"]),
-  components: z
-    .array(z.object({ id: z.string(), type: z.string() }).passthrough())
-    .default([]),
+  components: z.array(pageComponentSchema).default([]),
   seo: z.object({
     title: z.record(localeSchema, z.string()),
     description: z.record(localeSchema, z.string()).optional(),

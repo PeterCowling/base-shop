@@ -8,7 +8,7 @@ import * as path from "node:path";
 import { ulid } from "ulid";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "./utils";
-import { nowIso } from "../../../shared/date";
+import { nowIso } from "@shared/date";
 
 function ordersPath(shop: string): string {
   shop = validateShopName(shop);

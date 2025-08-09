@@ -34,24 +34,12 @@ import { Button } from "../atoms-shadcn";
 import CanvasItem from "./page-builder/CanvasItem";
 import ComponentEditor from "./page-builder/ComponentEditor";
 import Palette from "./page-builder/Palette";
+import { atomRegistry, moleculeRegistry, organismRegistry } from "./blocks";
 
-/* ════════════════ component catalogue ════════════════ */
-const COMPONENT_TYPES = [
-  "HeroBanner",
-  "ValueProps",
-  "ReviewsCarousel",
-  "ProductGrid",
-  "Gallery",
-  "ContactForm",
-  "ContactFormWithMap",
-  "BlogListing",
-  "Testimonials",
-  "TestimonialSlider",
-  "Image",
-  "Text",
-] as const;
-
-type ComponentType = (typeof COMPONENT_TYPES)[number];
+type ComponentType =
+  | keyof typeof atomRegistry
+  | keyof typeof moleculeRegistry
+  | keyof typeof organismRegistry;
 
 /* ════════════════ external contracts ════════════════ */
 interface Props {
@@ -266,7 +254,7 @@ const PageBuilder = memo(function PageBuilder({
 
       const a = active.data.current as {
         from: string;
-        type?: string;
+        type?: ComponentType;
         index?: number;
       };
       const o = over.data.current as { from: string; index?: number };
@@ -276,7 +264,7 @@ const PageBuilder = memo(function PageBuilder({
           type: "add",
           component: {
             id: ulid(),
-            type: a.type! as ComponentType,
+            type: a.type!,
           } as PageComponent,
         });
       } else if (a?.from === "canvas" && o?.from === "canvas") {

@@ -53,7 +53,7 @@ export function SearchBar({
             <li
               key={m}
               onMouseDown={() => handleSelect(m)}
-              className="hover:bg-accent hover:text-accent-foreground cursor-pointer px-3 py-1"
+              className="text-fg hover:bg-accent hover:text-accent-foreground cursor-pointer px-3 py-1"
             >
               {m}
             </li>

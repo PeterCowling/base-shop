@@ -1,7 +1,7 @@
 // packages/template-app/next.config.mjs
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import base from "../../apps/cms/next.config.mjs";
+import { baseConfig, withShopCode } from "@acme/next-config";
 
 /* ------------------------------------------------------------------ */
 /*  ES-module-safe __dirname                                           */
@@ -9,17 +9,14 @@ import base from "../../apps/cms/next.config.mjs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/** @type {import('next').NextConfig} */
-export default {
-  ...base,
-
+export default withShopCode(process.env.SHOP_CODE, {
   /* 1️⃣ ‒ keep CI/production green even if ESLint finds issues */
   eslint: { ignoreDuringBuilds: true },
 
   webpack(config, { isServer }) {
-    // 2️⃣ – preserve any tweaks from the CMS config
-    if (typeof base.webpack === "function") {
-      config = base.webpack(config, { isServer });
+    // 2️⃣ – preserve any tweaks from the base config
+    if (typeof baseConfig.webpack === "function") {
+      config = baseConfig.webpack(config, { isServer });
     }
 
     /* 3️⃣ – extra aliases -------------------------------------------------- */
@@ -37,9 +34,4 @@ export default {
 
     return config;
   },
-
-  env: {
-    ...base.env,
-    SHOP_CODE: "template",
-  },
-};
+});

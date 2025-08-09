@@ -1,1 +1,0 @@
-{"version":3,"file":"DashboardTemplate.stories.d.ts","sourceRoot":"","sources":["DashboardTemplate.stories.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAE,KAAK,IAAI,EAAE,KAAK,QAAQ,EAAE,MAAM,kBAAkB,CAAC;AAC5D,OAAO,EAAE,iBAAiB,EAAE,MAAM,qBAAqB,CAAC;AAExD,QAAA,MAAM,IAAI,EAAE,IAAI,CAAC,OAAO,iBAAiB,CAWxC,CAAC;AACF,eAAe,IAAI,CAAC;AAEpB,eAAO,MAAM,OAAO,EAAE,QAAQ,CAAC,OAAO,iBAAiB,CAAM,CAAC"}

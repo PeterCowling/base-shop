@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "turbo run dev --parallel",
     "dev:trace": "cross-env NODE_OPTIONS=\"--trace-uncaught --enable-source-maps\" pnpm --filter cms dev",
-    "build": "pnpm run build:tokens && turbo run build",
+    "build": "pnpm run build:tokens && pnpm run check:tailwind-preset && turbo run build",
     "build:tokens": "tsx ./scripts/src/build-tokens.ts",
     "build:trace": "cross-env NODE_OPTIONS=\"--trace-uncaught --enable-source-maps\" pnpm --filter cms exec next build --debug",
     "start": "turbo run start --parallel",
@@ -46,6 +46,7 @@
     "lh:checkout": "lighthouse http://localhost:3000/en/checkout --chrome-flags=\"--headless\" --only-categories=performance,accessibility,best-practices,seo --preset=desktop",
     "validate-env": "ts-node scripts/src/validate-env.ts",
     "check:locales": "ts-node scripts/src/check-locales.ts",
+    "check:tailwind-preset": "tsx scripts/check-tailwind-preset.ts",
     "shadcn:diff": "ts-node scripts/diff-shadcn.ts",
     "tailwind:check": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest test/unit/tailwind-build.spec.ts test/unit/postcss-config.spec.ts test/unit/tailwind-postcss.spec.ts",
     "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",

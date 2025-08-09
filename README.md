@@ -65,6 +65,7 @@ pnpm e2e Cypress e2e suite
 pnpm test:coverage Jest tests with coverage summary
 pnpm run lh:checkout Lighthouse audit for /en/checkout
 pnpm chromatic Publish Storybook to Chromatic
+pnpm check:tailwind-preset Ensure Tailwind preset resolves
 pnpm tailwind:check Validate Tailwind build
 
 # Requires `CHROMATIC_PROJECT_TOKEN` to be set

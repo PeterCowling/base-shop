@@ -5,7 +5,8 @@ const meta: Meta<typeof RecommendationCarousel> = {
   component: RecommendationCarousel,
   args: {
     endpoint: "/api/products",
-    itemsPerSlide: 3,
+    minItems: 1,
+    maxItems: 4,
   },
 };
 export default meta;

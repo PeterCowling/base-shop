@@ -8,8 +8,10 @@ export interface RecommendationCarouselProps
   extends React.HTMLAttributes<HTMLDivElement> {
   /** API endpoint providing recommended products. */
   endpoint: string;
-  /** Number of items visible per slide. */
-  itemsPerSlide?: number;
+  /** Minimum number of items visible per slide. */
+  minItems?: number;
+  /** Maximum number of items visible per slide. */
+  maxItems?: number;
   /** Tailwind class controlling gap between slides */
   gapClassName?: string;
   /** Function to calculate individual slide width */
@@ -22,18 +24,37 @@ export interface RecommendationCarouselProps
  */
 export function RecommendationCarousel({
   endpoint,
-  itemsPerSlide = 3,
+  minItems = 1,
+  maxItems = 4,
   gapClassName = "gap-4",
   getSlideWidth = (n) => `${100 / n}%`,
   className,
   ...props
 }: RecommendationCarouselProps) {
   const [products, setProducts] = React.useState<Product[]>([]);
+  const [itemsPerSlide, setItemsPerSlide] = React.useState(minItems);
+
+  React.useEffect(() => {
+    const calculateItems = () => {
+      const width = window.innerWidth;
+      const approxItemWidth = 320;
+      const count = Math.floor(width / approxItemWidth);
+      setItemsPerSlide(
+        Math.min(maxItems, Math.max(minItems, count || minItems))
+      );
+    };
+    calculateItems();
+    window.addEventListener("resize", calculateItems);
+    return () => window.removeEventListener("resize", calculateItems);
+  }, [minItems, maxItems]);
 
   React.useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch(endpoint);
+        const url = new URL(endpoint, window.location.origin);
+        url.searchParams.set("minItems", String(minItems));
+        url.searchParams.set("maxItems", String(maxItems));
+        const res = await fetch(url);
         if (!res.ok) return;
         const data = (await res.json()) as Product[];
         setProducts(data);
@@ -42,7 +63,7 @@ export function RecommendationCarousel({
       }
     };
     void load();
-  }, [endpoint]);
+  }, [endpoint, minItems, maxItems]);
 
   const width = getSlideWidth(itemsPerSlide);
 

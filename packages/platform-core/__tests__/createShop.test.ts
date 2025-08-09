@@ -68,7 +68,10 @@ describe("createShop", () => {
 
   it("throws when template missing", () => {
     fsMock.existsSync.mockImplementation((p: fs.PathLike) => {
-      return !String(p).includes("missing-template");
+      const path = String(p);
+      if (path.includes("data/shops")) return false;
+      if (path.includes("apps/")) return false;
+      return !path.includes("missing-template");
     });
     expect(() => createShop("id", { template: "missing-template" })).toThrow(
       "Template 'missing-template'"
@@ -85,5 +88,18 @@ describe("createShop", () => {
     expect(() => createShop("existing", {})).toThrow(
       "Pick a different ID or remove the existing folder"
     );
+  });
+
+  it("validates and trims shop ID", () => {
+    createShop("  new_shop  ", {});
+    expect(fsMock.cpSync).toHaveBeenCalledWith(
+      expect.stringContaining("packages/template-app"),
+      expect.stringContaining("apps/new_shop"),
+      expect.objectContaining({ recursive: true, filter: expect.any(Function) })
+    );
+  });
+
+  it("throws on invalid shop ID", () => {
+    expect(() => createShop("bad/id", {})).toThrow("Invalid shop name");
   });
 });

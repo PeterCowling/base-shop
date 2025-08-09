@@ -3,6 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import shop from "../../../shop.json";
 import Home from "./page.client";
+import { Locale, resolveLocale } from "@/i18n/locales";
 
 async function loadComponents(): Promise<PageComponent[]> {
   try {
@@ -24,7 +25,12 @@ async function loadComponents(): Promise<PageComponent[]> {
   }
 }
 
-export default async function Page() {
+export default async function Page({
+  params,
+}: {
+  params: { lang?: string };
+}) {
   const components = await loadComponents();
-  return <Home components={components} />;
+  const locale: Locale = resolveLocale(params.lang);
+  return <Home components={components} locale={locale} />;
 }

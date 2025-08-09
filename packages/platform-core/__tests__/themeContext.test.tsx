@@ -1,5 +1,5 @@
 import { fireEvent, render } from "@testing-library/react";
-import { ThemeProvider, useTheme } from "../contexts/ThemeContext";
+import { ThemeProvider, useTheme } from "../src/contexts/ThemeContext";
 
 function Buttons() {
   const { setTheme } = useTheme();
@@ -14,6 +14,7 @@ function Buttons() {
 describe("ThemeContext", () => {
   afterEach(() => {
     document.documentElement.className = "";
+    localStorage.clear();
   });
 
   it("applies classes to <html> element", () => {

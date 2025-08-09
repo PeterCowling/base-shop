@@ -3,7 +3,6 @@ import fs from "fs";
 import {
   copyTemplate,
   loadBaseTokens,
-  loadThemeTokens,
   slugify,
   genSecret,
   fillLocales,
@@ -38,24 +37,6 @@ describe("createShop utils", () => {
     });
     const tokens = loadBaseTokens();
     expect(tokens["--color-bg"]).toBeDefined();
-  });
-
-  it("loads theme tokens", () => {
-    jest.spyOn(fs, "existsSync").mockReturnValue(true);
-    jest.spyOn(fs, "readFileSync").mockImplementation((p: fs.PathLike) => {
-      const file = String(p);
-      if (file.endsWith("tailwind-tokens.ts")) {
-        return "export const tokens = { '--color-bg': '#000' };";
-      }
-      return "";
-    });
-    const tokens = loadThemeTokens("dark");
-    expect(tokens["--color-bg"]).toBeDefined();
-  });
-
-  it("returns empty object for missing theme", () => {
-    const tokens = loadThemeTokens("nope");
-    expect(tokens).toEqual({});
   });
 
   it("slugifies strings", () => {

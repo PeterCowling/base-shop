@@ -5,7 +5,6 @@ import { randomBytes } from "crypto";
 
 export { copyTemplate } from "./utils/copyTemplate";
 export { loadBaseTokens } from "./utils/loadBaseTokens";
-export { loadThemeTokens } from "./utils/loadThemeTokens";
 
 /**
  * Convert a string into a URL-friendly slug.

@@ -11,11 +11,11 @@ import { validateShopName } from "./shops";
 import {
   copyTemplate,
   loadBaseTokens,
-  loadThemeTokens,
   slugify,
   genSecret,
   fillLocales,
 } from "./createShop/utils";
+import { loadThemeTokensNode } from "./themeTokens";
 import { nowIso } from "@shared/date";
 import { defaultFilterMappings } from "./defaultFilterMappings";
 
@@ -195,7 +195,10 @@ export function writeFiles(
     JSON.stringify({ languages: [...LOCALES], analytics: options.analytics }, null, 2)
   );
 
-  const themeTokens = { ...loadBaseTokens(), ...loadThemeTokens(options.theme) };
+  const themeTokens = {
+    ...loadBaseTokens(),
+    ...loadThemeTokensNode(options.theme),
+  };
   writeFileSync(
     join(newData, "shop.json"),
     JSON.stringify(

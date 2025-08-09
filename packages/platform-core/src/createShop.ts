@@ -15,6 +15,7 @@ import {
 import { join } from "path";
 import { ulid } from "ulid";
 import { z } from "zod";
+import { validateShopName } from "./shops";
 
 function slugify(str: string): string {
   return str
@@ -121,6 +122,20 @@ function fillLocales(
  * Paths are resolved relative to the repository root.
  */
 export function createShop(id: string, opts: CreateShopOptions = {}): void {
+  id = validateShopName(id);
+  const newApp = join("apps", id);
+  const newData = join("data", "shops", id);
+
+  if (existsSync(newApp)) {
+    throw new Error(
+      `App directory 'apps/${id}' already exists. Pick a different ID or remove the existing folder.`
+    );
+  }
+
+  if (existsSync(newData)) {
+    throw new Error(`Data for shop ${id} already exists`);
+  }
+
   const parsed = createShopOptionsSchema.parse(opts);
   const options: Required<
     Omit<CreateShopOptions, "analytics" | "checkoutPage">
@@ -164,18 +179,12 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
   };
 
   const templateApp = join("packages", options.template);
-  const newApp = join("apps", id);
 
   if (!existsSync(join("packages", "themes", options.theme))) {
     throw new Error(`Theme '${options.theme}' not found in packages/themes`);
   }
   if (!existsSync(templateApp)) {
     throw new Error(`Template '${options.template}' not found in packages`);
-  }
-  if (existsSync(newApp)) {
-    throw new Error(
-      `App directory 'apps/${id}' already exists. Pick a different ID or remove the existing folder.`
-    );
   }
 
   copyTemplate(templateApp, newApp);
@@ -213,10 +222,6 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
   envContent += `NEXTAUTH_SECRET=${genSecret()}\n`;
   writeFileSync(join(newApp, ".env"), envContent);
 
-  const newData = join("data", "shops", id);
-  if (existsSync(newData)) {
-    throw new Error(`Data for shop ${id} already exists`);
-  }
   mkdirSync(newData, { recursive: true });
 
   writeFileSync(

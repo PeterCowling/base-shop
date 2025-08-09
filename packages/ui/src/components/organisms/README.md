@@ -14,7 +14,7 @@ Current components:
 - `StatsGrid`
 - `DataTable`
   `ProductCard`
-- `ProductCarousel`
+ - `ProductCarousel` – display count determined by screen width within user-specified min/max bounds.
 - `ProductGrid`
 - `ProductFeatures`
 - `ProductVariantSelector`
@@ -30,7 +30,7 @@ Current components:
 - `QAModule`
 - `MiniCart`
 - `StickyAddToCartBar`
-- `RecommendationCarousel`
+ - `RecommendationCarousel` – recommended products carousel with responsive display count between min and max limits.
 - `CategoryCard`
 - `ProductGallery`
 - `OrderSummary`

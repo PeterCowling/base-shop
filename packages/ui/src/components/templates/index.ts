@@ -16,7 +16,7 @@ export { OrderConfirmationTemplate } from "./OrderConfirmationTemplate";
 export { OrderTrackingTemplate } from "./OrderTrackingTemplate";
 export { ProductComparisonTemplate } from "./ProductComparisonTemplate";
 export { ProductDetailTemplate } from "./ProductDetailTemplate";
-export { ProductGalleryTemplate } from "./ProductGalleryTemplate";
+export { ProductGalleryTemplate, type ProductGalleryTemplateProps } from "./ProductGalleryTemplate";
 export { ProductMediaGalleryTemplate } from "./ProductMediaGalleryTemplate";
 export { SearchResultsTemplate } from "./SearchResultsTemplate";
 export { StoreLocatorTemplate } from "./StoreLocatorTemplate";

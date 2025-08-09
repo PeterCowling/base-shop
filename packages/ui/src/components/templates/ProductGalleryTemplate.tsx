@@ -7,16 +7,20 @@ export interface ProductGalleryTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
   products: Product[];
   useCarousel?: boolean;
-  itemsPerSlide?: number;
+  minItemsPerSlide?: number;
+  maxItemsPerSlide?: number;
 }
 
 /**
- * Display a list of products in a grid or carousel layout.
- */
+ * Display a list of products in a grid or carousel layout. When
+ * `useCarousel` is true, the number of visible items adapts to
+ * screen size within the provided min/max bounds.
+*/
 export function ProductGalleryTemplate({
   products,
   useCarousel = false,
-  itemsPerSlide,
+  minItemsPerSlide,
+  maxItemsPerSlide,
   className,
   ...props
 }: ProductGalleryTemplateProps) {
@@ -24,7 +28,8 @@ export function ProductGalleryTemplate({
     return (
       <ProductCarousel
         products={products}
-        itemsPerSlide={itemsPerSlide}
+        minItemsPerSlide={minItemsPerSlide}
+        maxItemsPerSlide={maxItemsPerSlide}
         className={className}
         {...props}
       />

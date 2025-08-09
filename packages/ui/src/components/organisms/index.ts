@@ -14,13 +14,16 @@ export { MiniCart } from "./MiniCart.client";
 export { default as OrderSummary } from "./OrderSummary";
 export { OrderTrackingTimeline } from "./OrderTrackingTimeline";
 export { ProductCard } from "./ProductCard";
-export { ProductCarousel } from "./ProductCarousel";
+export { ProductCarousel, type ProductCarouselProps } from "./ProductCarousel";
 export { ProductFeatures } from "./ProductFeatures";
 export { ProductGallery } from "./ProductGallery";
 export { ProductGrid } from "./ProductGrid";
 export { ProductVariantSelector } from "./ProductVariantSelector";
 export { QAModule } from "./QAModule";
-export { RecommendationCarousel } from "./RecommendationCarousel";
+export {
+  RecommendationCarousel,
+  type RecommendationCarouselProps,
+} from "./RecommendationCarousel";
 export { ReviewsList } from "./ReviewsList";
 export { SideNav } from "./SideNav";
 export { StatsGrid } from "./StatsGrid";

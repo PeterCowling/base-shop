@@ -7,7 +7,7 @@ Shared page-level layouts used across apps. Currently includes:
   navigation state are available via `useLayout()`.
   - `DashboardTemplate` – basic stats overview.
 - `AnalyticsDashboardTemplate` – stats, line chart and table for dashboards.
-- `ProductGalleryTemplate` – grid or carousel listing of products.
+- `ProductGalleryTemplate` – grid or carousel listing of products with responsive item counts bounded by minimum and maximum values.
 - `ProductDetailTemplate` – hero-style view for a single product.
 - `FeaturedProductTemplate` – showcase layout for highlighting a product.
 - `ProductComparisonTemplate` – side-by-side view of multiple products.

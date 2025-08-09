@@ -2,14 +2,17 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import useResponsiveDisplayCount from "../../hooks/useResponsiveDisplayCount";
 import { Product, ProductCard } from "./ProductCard";
 
 export interface RecommendationCarouselProps
   extends React.HTMLAttributes<HTMLDivElement> {
   /** API endpoint providing recommended products. */
   endpoint: string;
-  /** Number of items visible per slide. */
-  itemsPerSlide?: number;
+  /** Minimum number of items visible per slide. */
+  minItemsPerSlide?: number;
+  /** Maximum number of items visible per slide. */
+  maxItemsPerSlide?: number;
   /** Tailwind class controlling gap between slides */
   gapClassName?: string;
   /** Function to calculate individual slide width */
@@ -18,11 +21,13 @@ export interface RecommendationCarouselProps
 
 /**
  * Horizontally scrollable carousel that fetches product
- * recommendations from an API.
- */
+ * recommendations from an API. Display count adapts to
+ * screen width within provided min/max bounds.
+*/
 export function RecommendationCarousel({
   endpoint,
-  itemsPerSlide = 3,
+  minItemsPerSlide = 1,
+  maxItemsPerSlide = 4,
   gapClassName = "gap-4",
   getSlideWidth = (n) => `${100 / n}%`,
   className,
@@ -44,6 +49,10 @@ export function RecommendationCarousel({
     void load();
   }, [endpoint]);
 
+  const itemsPerSlide = useResponsiveDisplayCount({
+    min: minItemsPerSlide,
+    max: maxItemsPerSlide,
+  });
   const width = getSlideWidth(itemsPerSlide);
 
   const slideStyle = React.useMemo<React.CSSProperties>(

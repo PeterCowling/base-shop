@@ -41,6 +41,13 @@ const meta: Meta<typeof AutoCarousel> = {
   args: {
     products,
     autoplay: false,
+    minItemsPerSlide: 1,
+    maxItemsPerSlide: 4,
+  },
+  argTypes: {
+    products: { control: "object" },
+    minItemsPerSlide: { control: { type: "number" } },
+    maxItemsPerSlide: { control: { type: "number" } },
   },
 };
 export default meta;
@@ -48,4 +55,7 @@ export default meta;
 export const Default: StoryObj<typeof AutoCarousel> = {};
 export const Autoplay: StoryObj<typeof AutoCarousel> = {
   args: { autoplay: true },
+};
+export const MinMax: StoryObj<typeof AutoCarousel> = {
+  args: { minItemsPerSlide: 2, maxItemsPerSlide: 5 },
 };

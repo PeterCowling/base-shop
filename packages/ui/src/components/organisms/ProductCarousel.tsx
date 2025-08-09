@@ -1,11 +1,15 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import useResponsiveDisplayCount from "../../hooks/useResponsiveDisplayCount";
 import { Product, ProductCard } from "./ProductCard";
 
 export interface ProductCarouselProps
   extends React.HTMLAttributes<HTMLDivElement> {
   products: Product[];
-  itemsPerSlide?: number;
+  /** Minimum number of items visible per slide */
+  minItemsPerSlide?: number;
+  /** Maximum number of items visible per slide */
+  maxItemsPerSlide?: number;
   /** flex gap class applied to the inner scroller */
   gapClassName?: string;
   /**
@@ -19,16 +23,22 @@ export interface ProductCarouselProps
 
 /**
  * Horizontally scrollable carousel for product cards.
- * Items per slide can be controlled via the `itemsPerSlide` prop.
- */
+ * Display count adapts to screen width within `minItemsPerSlide` and
+ * `maxItemsPerSlide` bounds.
+*/
 export function ProductCarousel({
   products,
-  itemsPerSlide = 3,
+  minItemsPerSlide = 1,
+  maxItemsPerSlide = 4,
   gapClassName = "gap-4",
   getSlideWidth = (n) => `${100 / n}%`,
   className,
   ...props
 }: ProductCarouselProps) {
+  const itemsPerSlide = useResponsiveDisplayCount({
+    min: minItemsPerSlide,
+    max: maxItemsPerSlide,
+  });
   const width = getSlideWidth(itemsPerSlide);
   const slideStyle = { flex: `0 0 ${width}` } as React.CSSProperties;
   return (

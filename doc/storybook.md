@@ -12,6 +12,10 @@ pnpm storybook
 
 Stories are located under `packages/ui` and `.storybook/stories`.
 
+Carousel components such as `ProductCarousel` and `RecommendationCarousel`
+include stories demonstrating how the number of visible items adjusts with
+screen size between configurable minimum and maximum values.
+
 ## Accessibility Tests
 
 Automated accessibility checks run via `@storybook/test-runner` and `axe-playwright`.

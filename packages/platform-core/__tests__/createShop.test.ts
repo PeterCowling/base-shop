@@ -1,5 +1,5 @@
 import fs from "fs";
-import { createShop } from "../createShop";
+import { createShop } from "../src/createShop";
 
 jest.mock("fs");
 jest.mock("child_process", () => ({ spawnSync: jest.fn() }));
@@ -10,7 +10,10 @@ describe("createShop", () => {
   beforeEach(() => {
     jest.resetAllMocks();
     fsMock.existsSync.mockImplementation((p: fs.PathLike) => {
-      return !String(p).includes("data/shops");
+      const path = String(p);
+      if (path.includes("data/shops")) return false;
+      if (path.includes("apps/")) return false;
+      return true;
     });
     fsMock.readdirSync.mockReturnValue(
       [] as unknown as ReturnType<typeof fs.readdirSync>
@@ -25,6 +28,9 @@ describe("createShop", () => {
       }
       if (file.endsWith("globals.css")) {
         return "@import '@themes/base/tokens.css';";
+      }
+      if (file.includes("packages/themes/base/tokens.ts")) {
+         return "export const tokens = { foo: { light: '#fff' } };";
       }
       return "";
     });
@@ -66,6 +72,18 @@ describe("createShop", () => {
     });
     expect(() => createShop("id", { template: "missing-template" })).toThrow(
       "Template 'missing-template'"
+    );
+  });
+
+  it("throws when app directory exists", () => {
+    fsMock.existsSync.mockImplementation((p: fs.PathLike) => {
+      const path = String(p);
+      if (path.includes("apps/existing")) return true;
+      if (path.includes("data/shops")) return false;
+      return true;
+    });
+    expect(() => createShop("existing", {})).toThrow(
+      "Pick a different ID or remove the existing folder"
     );
   });
 });

@@ -5,8 +5,8 @@ import { join } from "node:path";
 import { z } from "zod";
 
 const cliEnvSchema = envSchema.extend({
-  CMS_SPACE_URL: z.string(),
-  CMS_ACCESS_TOKEN: z.string(),
+  CMS_SPACE_URL: z.string().min(1),
+  CMS_ACCESS_TOKEN: z.string().min(1),
 });
 
 let env: z.infer<typeof cliEnvSchema>;

@@ -86,6 +86,31 @@ describe("DynamicRenderer", () => {
     spy.mockRestore();
   });
 
+  it("injects runtimeData into matching block types", () => {
+    const spy = jest
+      .spyOn(blockRegistry, "HeroBanner")
+      .mockImplementation(({ foo }: any) => <div>{foo}</div>);
+
+    const components: PageComponent[] = [
+      { id: "1", type: "HeroBanner" } as any,
+    ];
+
+    render(
+      <DynamicRenderer
+        components={components}
+        locale="en"
+        runtimeData={{ HeroBanner: { foo: "bar" } }}
+      />
+    );
+
+    expect(screen.getByText("bar")).toBeInTheDocument();
+    expect(spy).toHaveBeenCalledWith(
+      expect.objectContaining({ foo: "bar" })
+    );
+
+    spy.mockRestore();
+  });
+
   it("applies style props to wrapper div", () => {
     const components: PageComponent[] = [
       {

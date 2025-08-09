@@ -1,14 +1,33 @@
-// apps/shop-abc/src/app/[lang]/[lang]/shop/page.tsx
+// apps/shop-abc/src/app/[lang]/shop/page.tsx
 import { PRODUCTS } from "@/lib/products";
-import type { SKU } from "@types";
+import type { SKU, PageComponent } from "@types";
 import type { Metadata } from "next";
+import DynamicRenderer from "@ui/components/DynamicRenderer";
+import { getPages } from "@platform-core/repositories/pages/index.server";
+import shop from "../../../../shop.json";
 import ShopClient from "./ShopClient.client";
+
+async function loadComponents(): Promise<PageComponent[] | null> {
+  const pages = await getPages(shop.id);
+  const page = pages.find(
+    (p) => p.slug === "shop" && p.status === "published"
+  );
+  return page?.components ?? null;
+}
 
 export const metadata: Metadata = {
   title: "Shop · Base-Shop",
 };
 
-export default function ShopIndexPage() {
-  // ⬇️ Purely server-side: just pass static data to the client component
+export default async function ShopIndexPage({
+  params,
+}: {
+  params: { lang: string };
+}) {
+  const components = await loadComponents();
+  if (components && components.length) {
+    return <DynamicRenderer components={components} locale={params.lang} />;
+  }
   return <ShopClient skus={PRODUCTS as SKU[]} />;
 }
+

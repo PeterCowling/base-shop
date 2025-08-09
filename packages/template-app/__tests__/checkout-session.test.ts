@@ -1,6 +1,6 @@
 // packages/template-app/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "../../platform-core/cartCookie";
-import { PRODUCTS } from "../../platform-core/products";
+import { encodeCartCookie } from "../../platform-core/src/cartCookie";
+import { PRODUCTS } from "../../platform-core/src/products";
 import { POST } from "../src/api/checkout-session/route";
 
 jest.mock("next/server", () => ({
@@ -10,15 +10,15 @@ jest.mock("next/server", () => ({
   },
 }));
 
-jest.mock("../../lib/stripeServer.server", () => ({
+jest.mock("../../lib/src/stripeServer.server", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
 
-jest.mock("../../platform-core/pricing", () => ({
+jest.mock("../../platform-core/src/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
 }));
 
-import { stripe } from "../../lib/stripeServer.server";
+import { stripe } from "../../lib/src/stripeServer.server";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
 function createRequest(
@@ -57,4 +57,15 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: "40" }));
   expect(args.metadata.subtotal).toBe("20");
   expect(body.clientSecret).toBe("cs_test");
+});
+
+test("returns 400 when returnDate is invalid", async () => {
+  const sku = PRODUCTS[0];
+  const cart = { [sku.id]: { sku, qty: 1 } };
+  const cookie = encodeCartCookie(cart);
+  const req = createRequest({ returnDate: "invalid" }, cookie);
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+  const body = await res.json();
+  expect(body.error).toMatch(/invalid/i);
 });

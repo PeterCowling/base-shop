@@ -1,5 +1,6 @@
 // apps/shop-abc/src/app/api/checkout-session/route.ts
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
+import { parseIsoDate } from "@/lib/date";
 import { stripe } from "@/lib/stripeServer";
 import { priceForDays } from "@platform-core/pricing";
 import { NextResponse } from "next/server";
@@ -13,7 +14,10 @@ import { NextResponse } from "next/server";
 const calculateRentalDays = (returnDate) => {
     if (!returnDate)
         return 1;
-    const end = new Date(returnDate).getTime();
+    const parsed = parseIsoDate(returnDate);
+    if (!parsed)
+        throw new Error("Invalid returnDate");
+    const end = parsed.getTime();
     const start = Date.now();
     const diffDays = Math.ceil((end - start) / 86_400_000); // 86 400 000 ms = 1 day
     return diffDays > 0 ? diffDays : 1;
@@ -67,7 +71,13 @@ export async function POST(req) {
     }
     /* 2️⃣ Parse optional body ------------------------------------------------- */
     const { returnDate } = (await req.json().catch(() => ({})));
-    const rentalDays = calculateRentalDays(returnDate);
+    let rentalDays;
+    try {
+        rentalDays = calculateRentalDays(returnDate);
+    }
+    catch (_a) {
+        return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 });
+    }
     /* 3️⃣ Build Stripe line-items & totals ------------------------------------ */
     const lineItemsNested = await Promise.all(Object.values(cart).map((item) => buildLineItemsForItem(item, rentalDays)));
     const line_items = lineItemsNested.flat();

@@ -8,6 +8,7 @@ import * as path from "node:path";
 import { z } from "zod";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "./utils";
+import { nowIso } from "../../../shared/date";
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
 
 function settingsPath(shop: string): string {
@@ -77,7 +78,7 @@ export async function saveShopSettings(
 
   const patch = diffSettings(current, settings);
   if (Object.keys(patch).length > 0) {
-    const entry = { timestamp: new Date().toISOString(), diff: patch };
+    const entry = { timestamp: nowIso(), diff: patch };
     await fs.appendFile(
       historyPath(shop),
       JSON.stringify(entry) + "\n",

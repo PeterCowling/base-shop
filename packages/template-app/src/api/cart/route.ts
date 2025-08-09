@@ -18,12 +18,12 @@ export const runtime = "edge";
  * ------------------------------------------------------------------ */
 const postSchema = z.object({
   sku: z.union([skuSchema, skuSchema.pick({ id: true })]),
-  qty: z.number().int().positive().optional(),
+  qty: z.number().int().min(1).default(1),
 });
 
 const patchSchema = z.object({
   id: z.string(),
-  qty: z.number().int().positive(),
+  qty: z.number().int().min(1),
 });
 
 /* ------------------------------------------------------------------
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
 
-  const { sku: skuInput, qty = 1 } = parsed.data;
+  const { sku: skuInput, qty } = parsed.data;
   const sku = "title" in skuInput ? skuInput : getProductById(skuInput.id);
 
   if (!sku) {

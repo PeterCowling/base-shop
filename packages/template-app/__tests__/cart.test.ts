@@ -3,8 +3,8 @@ import {
   asSetCookieHeader,
   decodeCartCookie,
   encodeCartCookie,
-} from "../../platform-core/cartCookie";
-import { PRODUCTS } from "../../platform-core/products";
+} from "@platform-core/src/cartCookie";
+import { PRODUCTS } from "@platform-core/src/products";
 import { PATCH, POST } from "../src/api/cart/route";
 
 // Minimal NextResponse mock using the native Response class
@@ -73,4 +73,25 @@ test("PATCH returns 404 for missing item", async () => {
 test("POST returns 404 for unknown SKU", async () => {
   const res = await POST(createRequest({ sku: { id: "nope" } }));
   expect(res.status).toBe(404);
+});
+
+test("POST rejects negative or non-integer quantity", async () => {
+  const sku = PRODUCTS[0];
+  let res = await POST(createRequest({ sku: { id: sku.id }, qty: -1 }));
+  expect(res.status).toBe(400);
+  res = await POST(createRequest({ sku: { id: sku.id }, qty: 1.5 }));
+  expect(res.status).toBe(400);
+});
+
+test("PATCH rejects negative or non-integer quantity", async () => {
+  const sku = PRODUCTS[0];
+  const cart = { [sku.id]: { sku, qty: 1 } };
+  let res = await PATCH(
+    createRequest({ id: sku.id, qty: -2 }, encodeCartCookie(cart))
+  );
+  expect(res.status).toBe(400);
+  res = await PATCH(
+    createRequest({ id: sku.id, qty: 1.5 }, encodeCartCookie(cart))
+  );
+  expect(res.status).toBe(400);
 });

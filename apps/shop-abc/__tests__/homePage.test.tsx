@@ -21,9 +21,10 @@ test("Home receives components from pages repo", async () => {
     { slug: "home", components } as any,
   ]);
 
-  const element = await Page();
+  const element = await Page({ params: { lang: "en" } });
 
   expect(getPages).toHaveBeenCalledWith("abc");
   expect(element.type).toBe(Home);
   expect(element.props.components).toEqual(components);
+  expect(element.props.locale).toBe("en");
 });

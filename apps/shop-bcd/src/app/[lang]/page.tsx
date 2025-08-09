@@ -1,6 +1,7 @@
 import type { PageComponent } from "@types";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import type { Locale } from "@i18n/locales";
 import shop from "../../../shop.json";
 import Home from "./page.client";
 
@@ -24,7 +25,11 @@ async function loadComponents(): Promise<PageComponent[]> {
   }
 }
 
-export default async function Page() {
+export default async function Page({
+  params,
+}: {
+  params: { lang: Locale };
+}) {
   const components = await loadComponents();
-  return <Home components={components} />;
+  return <Home components={components} locale={params.lang} />;
 }

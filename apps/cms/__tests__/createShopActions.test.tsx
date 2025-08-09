@@ -90,6 +90,7 @@ describe("createNewShop authorization", () => {
     );
     await createNewShop("shop2", { theme: "base" } as any);
 
+    expect(createShop).toHaveBeenCalledTimes(1);
     expect(createShop).toHaveBeenCalledWith("shop2", { theme: "base" });
 
     (process.env as Record<string, string>).NODE_ENV = prevEnv;

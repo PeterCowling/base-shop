@@ -22,7 +22,6 @@ export async function createNewShop(
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Forbidden");
 
-  await createShop(id, options);
   try {
     await createShop(id, options);
   } catch (err) {

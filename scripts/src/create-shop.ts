@@ -4,6 +4,7 @@ import { readdirSync, existsSync } from "fs";
 import readline from "node:readline";
 import { join } from "path";
 import { createShop } from "../../packages/platform-core/src/createShop";
+import { validateShopName } from "../../packages/platform-core/src/shops";
 
 /* ────────────────────────────────────────────────────────── *
  * Command-line parsing                                       *
@@ -18,11 +19,18 @@ interface Options {
 }
 
 function parseArgs(argv: string[]): [string, Options, boolean] {
-  const id = argv[0];
+  let id = argv[0];
   if (!id) {
     console.error(
       "Usage: pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--payment=p1,p2] [--shipping=s1,s2] [--template=name]"
     );
+    process.exit(1);
+  }
+
+  try {
+    id = validateShopName(id);
+  } catch (err) {
+    console.error((err as Error).message);
     process.exit(1);
   }
 

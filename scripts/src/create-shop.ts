@@ -18,7 +18,7 @@ interface Options {
   shipping: string[];
 }
 
-function parseArgs(argv: string[]): [string, Options, boolean] {
+function parseArgs(argv: string[]): [string, Options, boolean, boolean] {
   let id = argv[0];
   if (!id) {
     console.error(
@@ -43,6 +43,7 @@ function parseArgs(argv: string[]): [string, Options, boolean] {
   };
 
   let themeProvided = false;
+  let templateProvided = false;
 
   argv.slice(1).forEach((arg) => {
     if (!arg.startsWith("--")) return;
@@ -62,6 +63,7 @@ function parseArgs(argv: string[]): [string, Options, boolean] {
         break;
       case "template":
         opts.template = val || opts.template;
+        templateProvided = true;
         break;
       case "payment":
         opts.payment = val.split(",").filter(Boolean);
@@ -75,10 +77,12 @@ function parseArgs(argv: string[]): [string, Options, boolean] {
     }
   });
 
-  return [id, opts, themeProvided];
+  return [id, opts, themeProvided, templateProvided];
 }
 
-const [shopId, options, themeProvided] = parseArgs(process.argv.slice(2));
+const [shopId, options, themeProvided, templateProvided] = parseArgs(
+  process.argv.slice(2)
+);
 
 if (themeProvided) {
   const themeDir = join("packages", "themes", options.theme);
@@ -88,6 +92,15 @@ if (themeProvided) {
   }
 }
 
+if (templateProvided) {
+  const templateDir = join("packages", options.template);
+  if (!existsSync(templateDir)) {
+    console.error(`Template '${options.template}' not found in packages`);
+    process.exit(1);
+  }
+}
+
+/** Prompt for theme when none is provided on the command line. */
 async function ensureTheme() {
   if (!themeProvided && process.stdin.isTTY) {
     const themesDir = join("packages", "themes");
@@ -108,5 +121,27 @@ async function ensureTheme() {
   }
 }
 
+/** Prompt for template when none is provided on the command line. */
+async function ensureTemplate() {
+  if (!templateProvided && process.stdin.isTTY) {
+    const packagesDir = join("packages");
+    const templates = readdirSync(packagesDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory() && d.name.startsWith("template-"))
+      .map((d) => d.name);
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    await new Promise<void>((resolve) => {
+      rl.question(`Select template [${templates.join(", ")}]: `, (ans) => {
+        if (templates.includes(ans)) options.template = ans;
+        rl.close();
+        resolve();
+      });
+    });
+  }
+}
+
+await ensureTemplate();
 await ensureTheme();
 await createShop(shopId, options);

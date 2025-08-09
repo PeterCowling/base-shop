@@ -1,9 +1,11 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { rest, server } from "./mswServer";
+import { rest } from "msw";
+import { server } from "./msw/server";
 process.env.STRIPE_SECRET_KEY = "sk_test_123";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 
 import CheckoutForm from "../packages/ui/components/checkout/CheckoutForm";
+import { isoDateInNDays } from "@/lib/date";
 
 const pushMock = jest.fn();
 
@@ -48,9 +50,9 @@ test("renders Elements once client secret is fetched", async () => {
 
 test("successful payment redirects to success", async () => {
   server.use(
-    rest.post("/api/checkout-session", (_req, res, ctx) =>
-      res(ctx.json({ clientSecret: "cs_test", sessionId: "sess" }))
-    )
+    rest.post("/api/checkout-session", (_req, res, ctx) => {
+      return res(ctx.json({ clientSecret: "cs_test", sessionId: "sess" }));
+    })
   );
   confirmPaymentMock.mockResolvedValue({});
 
@@ -67,9 +69,9 @@ test("successful payment redirects to success", async () => {
 
 test("failed payment redirects to cancelled", async () => {
   server.use(
-    rest.post("/api/checkout-session", (_req, res, ctx) =>
-      res(ctx.json({ clientSecret: "cs_test", sessionId: "sess" }))
-    )
+    rest.post("/api/checkout-session", (_req, res, ctx) => {
+      return res(ctx.json({ clientSecret: "cs_test", sessionId: "sess" }));
+    })
   );
   confirmPaymentMock.mockResolvedValue({ error: { message: "fail" } });
 
@@ -96,11 +98,7 @@ test("requests new session when return date changes", async () => {
     })
   );
 
-  const expectedDefault = (() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 7);
-    return d.toISOString().slice(0, 10);
-  })();
+  const expectedDefault = isoDateInNDays(7);
 
   render(<CheckoutForm locale="en" />);
   await screen.findByTestId("payment-element");
@@ -115,16 +113,12 @@ test("requests new session when return date changes", async () => {
 
 test("default return date is 7 days ahead", async () => {
   server.use(
-    rest.post("/api/checkout-session", (_req, res, ctx) =>
-      res(ctx.json({ clientSecret: "cs", sessionId: "sess" }))
-    )
+    rest.post("/api/checkout-session", (_req, res, ctx) => {
+      return res(ctx.json({ clientSecret: "cs", sessionId: "sess" }));
+    })
   );
 
-  const expected = (() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 7);
-    return d.toISOString().slice(0, 10);
-  })();
+  const expected = isoDateInNDays(7);
 
   render(<CheckoutForm locale="en" />);
   await screen.findByTestId("payment-element");

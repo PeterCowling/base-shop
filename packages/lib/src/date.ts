@@ -10,6 +10,13 @@ export function parseIsoDate(str: string): Date | null {
 export const DAY_MS = 86_400_000;
 
 /**
+ * Return an ISO `YYYY-MM-DD` string representing the date `days` from now.
+ */
+export function isoDateInNDays(days: number): string {
+  return new Date(Date.now() + days * DAY_MS).toISOString().slice(0, 10);
+}
+
+/**
  * Calculate the number of rental days between "now" and `returnDate` (inclusive).
  *
  * Throws an error when `returnDate` is invalid. Past or missing dates resolve to

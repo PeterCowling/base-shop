@@ -1,4 +1,4 @@
-import { parseIsoDate, calculateRentalDays } from '../src/date';
+import { parseIsoDate, calculateRentalDays, isoDateInNDays } from '../src/date';
 
 describe('parseIsoDate', () => {
   test('parses valid YYYY-MM-DD string', () => {
@@ -32,5 +32,19 @@ describe('calculateRentalDays', () => {
 
   test('throws on invalid date', () => {
     expect(() => calculateRentalDays('invalid')).toThrow();
+  });
+});
+
+describe('isoDateInNDays', () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2025-01-01T00:00:00Z'));
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  test('returns ISO date string N days ahead', () => {
+    expect(isoDateInNDays(7)).toBe('2025-01-08');
   });
 });

@@ -14,6 +14,7 @@ import { fetchJson } from "@ui/utils/fetchJson";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
+import { isoDateInNDays } from "@/lib/date";
 
 const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
@@ -24,11 +25,7 @@ type FormValues = { returnDate: string };
 export default function CheckoutForm({ locale }: Props) {
   const [clientSecret, setClientSecret] = useState<string>();
 
-  const defaultDate = (() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 7);
-    return d.toISOString().slice(0, 10);
-  })();
+  const defaultDate = isoDateInNDays(7);
 
   const form = useForm<FormValues>({
     defaultValues: { returnDate: defaultDate },

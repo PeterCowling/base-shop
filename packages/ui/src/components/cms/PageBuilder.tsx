@@ -56,6 +56,7 @@ type ComponentType = (typeof COMPONENT_TYPES)[number];
 /* ════════════════ external contracts ════════════════ */
 interface Props {
   page: Page;
+  history?: HistoryState;
   onSave: (fd: FormData) => Promise<unknown>;
   onPublish: (fd: FormData) => Promise<unknown>;
   onChange?: (components: PageComponent[]) => void;
@@ -163,6 +164,7 @@ const palette = {};
 /* ════════════════ component ════════════════ */
 const PageBuilder = memo(function PageBuilder({
   page,
+  history,
   onSave,
   onPublish,
   onChange,
@@ -171,12 +173,13 @@ const PageBuilder = memo(function PageBuilder({
   /* ── state initialise / persistence ───────────────────────────── */
   const storageKey = `page-builder-history-${page.id}`;
   const [state, dispatch] = useReducer(reducer, undefined, (): HistoryState => {
+    const fallback: HistoryState = history ?? page.history ?? {
+      past: [],
+      present: page.components as PageComponent[],
+      future: [],
+    };
     if (typeof window === "undefined") {
-      return {
-        past: [],
-        present: page.components as PageComponent[],
-        future: [],
-      };
+      return fallback;
     }
     try {
       const stored = localStorage.getItem(storageKey);
@@ -184,11 +187,7 @@ const PageBuilder = memo(function PageBuilder({
       return historyStateSchema.parse(JSON.parse(stored));
     } catch (err) {
       console.warn("Failed to parse stored page builder state", err);
-      return {
-        past: [],
-        present: page.components as PageComponent[],
-        future: [],
-      };
+      return fallback;
     }
   });
 

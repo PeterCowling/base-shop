@@ -9,7 +9,7 @@ import {
   updatePage as updatePageInRepo,
 } from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
-import type { Locale, Page, PageComponent } from "@types";
+import type { HistoryState, Locale, Page, PageComponent } from "@types";
 import { historyStateSchema, pageComponentSchema } from "@types";
 import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
@@ -159,12 +159,23 @@ export async function createPage(
     image[l] = data.image ?? "";
   });
 
+  let history: HistoryState | undefined = undefined;
+  const historyStr = formData.get("history");
+  if (typeof historyStr === "string") {
+    try {
+      history = historyStateSchema.parse(JSON.parse(historyStr));
+    } catch {
+      /* ignore invalid history */
+    }
+  }
+
   const now = new Date().toISOString();
   const page: Page = {
     id,
     slug: data.slug,
     status: data.status,
     components: data.components,
+    ...(history ? { history } : {}),
     seo: { title, description, image },
     createdAt: now,
     updatedAt: now,
@@ -202,7 +213,7 @@ export async function savePageDraft(
     }
   }
 
-  let history = undefined;
+  let history: HistoryState | undefined = undefined;
   const historyStr = formData.get("history");
   if (typeof historyStr === "string") {
     try {
@@ -295,6 +306,16 @@ export async function updatePage(
     image[l] = data.image ?? "";
   });
 
+  let history: HistoryState | undefined = undefined;
+  const historyStr = formData.get("history");
+  if (typeof historyStr === "string") {
+    try {
+      history = historyStateSchema.parse(JSON.parse(historyStr));
+    } catch {
+      /* ignore invalid history */
+    }
+  }
+
   const patch: Partial<Page> & { id: string; updatedAt: string } = {
     id: data.id as string, // ← explicit cast
     updatedAt: data.updatedAt as string, // ← explicit cast
@@ -302,6 +323,7 @@ export async function updatePage(
     status: data.status,
     components: data.components,
     seo: { title, description, image },
+    ...(history ? { history } : {}),
   };
 
   try {

@@ -15,7 +15,7 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import type { Page, PageComponent, HistoryState } from "@types";
+import type { Page, PageComponent, HistoryState, MediaItem } from "@types";
 import { pageComponentSchema } from "@types";
 import type { CSSProperties, DragEvent } from "react";
 import {
@@ -42,6 +42,7 @@ import {
   containerRegistry,
 } from "./blocks";
 import { getShopFromPath } from "@platform-core/src/utils/getShopFromPath";
+import useMediaUpload from "@ui/hooks/useMediaUpload";
 
 /* ════════════════ component catalogue ════════════════ */
 type ComponentType =
@@ -330,6 +331,46 @@ const PageBuilder = memo(function PageBuilder({
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
   const [dragOver, setDragOver] = useState(false);
 
+  const {
+    onDrop,
+    setAltText,
+    handleUpload,
+    progress,
+    error,
+    pendingFile,
+    isValid,
+  } = useMediaUpload({
+    shop: shop ?? "",
+    requiredOrientation: "landscape",
+    onUploaded: (item: MediaItem) => {
+      dispatch({
+        type: "add",
+        component: {
+          id: ulid(),
+          type: "Image",
+          src: item.url,
+          alt: item.altText,
+        } as PageComponent,
+      });
+    },
+  });
+
+  useEffect(() => {
+    if (pendingFile && isValid) {
+      void handleUpload();
+    }
+  }, [pendingFile, isValid, handleUpload]);
+
+  const handleFileDrop = useCallback(
+    (e: DragEvent<HTMLDivElement>) => {
+      onDrop(e);
+      setDragOver(false);
+      const alt = window.prompt("Alt text") ?? "";
+      setAltText(alt);
+    },
+    [onDrop, setAltText]
+  );
+
   /* ── derived memo values ──────────────────────────────────────── */
   const widthMap = useMemo(
     () =>
@@ -454,39 +495,6 @@ const PageBuilder = memo(function PageBuilder({
     [dispatch, components]
   );
 
-  const handleFileDrop = useCallback(
-    async (e: DragEvent<HTMLDivElement>) => {
-      e.preventDefault();
-      setDragOver(false);
-      const file = e.dataTransfer.files?.[0] ?? null;
-      if (!file || !file.type.startsWith("image/") || !shop) return;
-
-      const fd = new FormData();
-      fd.append("file", file);
-
-      try {
-        const res = await fetch(`/cms/api/media?shop=${shop}`, {
-          method: "POST",
-          body: fd,
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || res.statusText);
-        dispatch({
-          type: "add",
-          component: {
-            id: ulid(),
-            type: "Image",
-            src: data.url,
-            alt: data.altText,
-          } as PageComponent,
-        });
-      } catch {
-        /* ignore */
-      }
-    },
-    [dispatch, shop]
-  );
-
   /* ── form-data builder ────────────────────────────────────────── */
   const formData = useMemo(() => {
     const fd = new FormData();
@@ -540,6 +548,18 @@ const PageBuilder = memo(function PageBuilder({
             </Button>
           ))}
         </div>
+
+        {progress && (
+          <p className="text-sm">
+            Uploading image… {progress.done}/{progress.total}
+          </p>
+        )}
+        {error && <p className="text-sm text-red-600">{error}</p>}
+        {isValid === false && (
+          <p className="text-sm text-orange-600">
+            Wrong orientation (needs landscape)
+          </p>
+        )}
 
         {/* Canvas */}
         <DndContext

@@ -5,6 +5,8 @@ import readline from "node:readline";
 import { join } from "path";
 import { createShop } from "../../packages/platform-core/src/createShop";
 import { validateShopName } from "../../packages/platform-core/src/shops";
+import { defaultPaymentProviders } from "../../packages/platform-core/src/createShop/defaultPaymentProviders";
+import { defaultShippingProviders } from "../../packages/platform-core/src/createShop/defaultShippingProviders";
 
 /* ────────────────────────────────────────────────────────── *
  * Command-line parsing                                       *
@@ -100,6 +102,30 @@ if (templateProvided) {
   }
 }
 
+if (options.payment.length) {
+  const invalid = options.payment.filter(
+    (p) => !defaultPaymentProviders.includes(p)
+  );
+  if (invalid.length) {
+    console.error(
+      `Unsupported payment providers: ${invalid.join(", ")}. Supported: ${defaultPaymentProviders.join(", ")}`
+    );
+    process.exit(1);
+  }
+}
+
+if (options.shipping.length) {
+  const invalid = options.shipping.filter(
+    (p) => !defaultShippingProviders.includes(p)
+  );
+  if (invalid.length) {
+    console.error(
+      `Unsupported shipping providers: ${invalid.join(", ")}. Supported: ${defaultShippingProviders.join(", ")}`
+    );
+    process.exit(1);
+  }
+}
+
 /** Prompt for theme when none is provided on the command line. */
 async function ensureTheme() {
   if (!themeProvided && process.stdin.isTTY) {
@@ -142,6 +168,54 @@ async function ensureTemplate() {
   }
 }
 
+/** Prompt for payment providers when none are provided on the command line. */
+async function ensurePayment() {
+  if (options.payment.length === 0 && process.stdin.isTTY) {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    await new Promise<void>((resolve) => {
+      rl.question(
+        `Select payment providers (comma-separated) [${defaultPaymentProviders.join(", ")}]: `,
+        (ans) => {
+          options.payment = ans
+            .split(",")
+            .map((s) => s.trim())
+            .filter((p) => defaultPaymentProviders.includes(p));
+          rl.close();
+          resolve();
+        }
+      );
+    });
+  }
+}
+
+/** Prompt for shipping providers when none are provided on the command line. */
+async function ensureShipping() {
+  if (options.shipping.length === 0 && process.stdin.isTTY) {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    await new Promise<void>((resolve) => {
+      rl.question(
+        `Select shipping providers (comma-separated) [${defaultShippingProviders.join(", ")}]: `,
+        (ans) => {
+          options.shipping = ans
+            .split(",")
+            .map((s) => s.trim())
+            .filter((p) => defaultShippingProviders.includes(p));
+          rl.close();
+          resolve();
+        }
+      );
+    });
+  }
+}
+
 await ensureTemplate();
 await ensureTheme();
+await ensurePayment();
+await ensureShipping();
 await createShop(shopId, options);

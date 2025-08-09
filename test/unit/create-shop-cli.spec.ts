@@ -99,6 +99,12 @@ function runCli(args: string[]) {
     console: { error: jest.fn() },
     require: (p: string) => {
       if (p.includes("packages/platform-core/src/createShop")) {
+        if (p.endsWith("defaultPaymentProviders")) {
+          return { defaultPaymentProviders: ["stripe", "paypal"] };
+        }
+        if (p.endsWith("defaultShippingProviders")) {
+          return { defaultShippingProviders: ["dhl", "ups"] };
+        }
         return { createShop: jest.fn() };
       }
       return originalRequire(p);
@@ -111,6 +117,18 @@ function runCli(args: string[]) {
 describe("CLI", () => {
   it("exits when theme does not exist", () => {
     const sandbox = runCli(["shop", "--theme=missing"]);
+    expect(sandbox.console.error).toHaveBeenCalled();
+    expect(sandbox.process.exit).toHaveBeenCalledWith(1);
+  });
+
+  it("exits when payment provider is unsupported", () => {
+    const sandbox = runCli(["shop", "--payment=foo"]);
+    expect(sandbox.console.error).toHaveBeenCalled();
+    expect(sandbox.process.exit).toHaveBeenCalledWith(1);
+  });
+
+  it("exits when shipping provider is unsupported", () => {
+    const sandbox = runCli(["shop", "--shipping=bar"]);
     expect(sandbox.console.error).toHaveBeenCalled();
     expect(sandbox.process.exit).toHaveBeenCalledWith(1);
   });

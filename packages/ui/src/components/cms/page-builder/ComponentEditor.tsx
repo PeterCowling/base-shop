@@ -86,6 +86,21 @@ function ComponentEditor({ component, onChange }: Props) {
         value={component.padding ?? ""}
         onChange={(e) => handleInput("padding", e.target.value)}
       />
+      {"columns" in component && (
+        <Input
+          label="Columns"
+          type="number"
+          value={(component as any).columns ?? ""}
+          onChange={(e) =>
+            handleInput(
+              "columns",
+              e.target.value === "" ? undefined : Number(e.target.value)
+            )
+          }
+          min={(component as any).minCols}
+          max={(component as any).maxCols}
+        />
+      )}
       <Select
         value={component.position ?? ""}
         onValueChange={(v) => handleInput("position", v || undefined)}

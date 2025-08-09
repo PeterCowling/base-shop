@@ -8,9 +8,13 @@ interface Props {
 
 export default function ValuePropsEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor(onChange);
-  return arrayEditor("items", (component as any).items, [
-    "icon",
-    "title",
-    "desc",
-  ]);
+  return arrayEditor(
+    "items",
+    (component as any).items,
+    ["icon", "title", "desc"],
+    {
+      minItems: (component as any).minItems,
+      maxItems: (component as any).maxItems,
+    }
+  );
 }

@@ -8,8 +8,15 @@ export function useArrayEditor(
   onChange: (patch: Partial<PageComponent>) => void,
 ) {
   return useCallback(
-    (prop: string, items: unknown[] | undefined, fields: string[]) => {
+    (
+      prop: string,
+      items: unknown[] | undefined,
+      fields: string[],
+      limits?: { minItems?: number; maxItems?: number }
+    ) => {
       const list = (items ?? []) as Record<string, unknown>[];
+      const min = limits?.minItems ?? 0;
+      const max = limits?.maxItems ?? Infinity;
       return (
         <div className="space-y-2">
           {list.map((item, idx) => (
@@ -47,6 +54,7 @@ export function useArrayEditor(
                   const next = list.filter((_, i) => i !== idx);
                   onChange({ [prop]: next } as Partial<PageComponent>);
                 }}
+                disabled={list.length <= min}
               >
                 Remove
               </Button>
@@ -57,6 +65,7 @@ export function useArrayEditor(
               const blank = Object.fromEntries(fields.map((f) => [f, ""]));
               onChange({ [prop]: [...list, blank] } as Partial<PageComponent>);
             }}
+            disabled={list.length >= max}
           >
             Add
           </Button>

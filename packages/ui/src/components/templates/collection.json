@@ -1,4 +1,7 @@
 {
   "name": "Collection Showcase",
-  "components": [{ "type": "CategoryList" }, { "type": "ProductCarousel" }]
+  "components": [
+    { "type": "CategoryList", "minCols": 2, "maxCols": 4, "columns": 3 },
+    { "type": "ProductCarousel", "minItems": 1, "maxItems": 10 }
+  ]
 }

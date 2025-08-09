@@ -1,8 +1,8 @@
 {
   "name": "Landing",
   "components": [
-    { "type": "HeroBanner" },
-    { "type": "ValueProps" },
-    { "type": "ReviewsCarousel" }
+    { "type": "HeroBanner", "minItems": 1, "maxItems": 5 },
+    { "type": "ValueProps", "minItems": 1, "maxItems": 6 },
+    { "type": "ReviewsCarousel", "minItems": 1, "maxItems": 10 }
   ]
 }

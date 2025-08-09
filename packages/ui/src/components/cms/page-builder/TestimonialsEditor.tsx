@@ -8,8 +8,13 @@ interface Props {
 
 export default function TestimonialsEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor(onChange);
-  return arrayEditor("testimonials", (component as any).testimonials, [
-    "quote",
-    "name",
-  ]);
+  return arrayEditor(
+    "testimonials",
+    (component as any).testimonials,
+    ["quote", "name"],
+    {
+      minItems: (component as any).minItems,
+      maxItems: (component as any).maxItems,
+    }
+  );
 }

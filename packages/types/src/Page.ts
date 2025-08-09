@@ -43,6 +43,14 @@ export interface PageComponentBase {
    * Accepts any valid CSS padding value or Tailwind class.
    */
   padding?: string;
+  /** Minimum number of items allowed for components with lists */
+  minItems?: number;
+  /** Maximum number of items allowed for components with lists */
+  maxItems?: number;
+  /** Minimum columns allowed for grid components */
+  minCols?: number;
+  /** Maximum columns allowed for grid components */
+  maxCols?: number;
   [key: string]: unknown;
 }
 
@@ -137,6 +145,10 @@ const baseComponentSchema = z
     left: z.string().optional(),
     margin: z.string().optional(),
     padding: z.string().optional(),
+    minItems: z.number().optional(),
+    maxItems: z.number().optional(),
+    minCols: z.number().optional(),
+    maxCols: z.number().optional(),
   })
   .passthrough();
 

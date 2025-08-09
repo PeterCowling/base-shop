@@ -18,6 +18,6 @@ export default async function Page({
   const slug = params.slug.join("/");
   const components = await loadComponents(slug);
   if (!components) notFound();
-  return <DynamicRenderer components={components} />;
+  return <DynamicRenderer components={components} locale={params.lang} />;
 }
 

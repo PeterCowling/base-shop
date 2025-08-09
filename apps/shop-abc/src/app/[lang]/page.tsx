@@ -8,7 +8,11 @@ async function loadComponents(): Promise<PageComponent[]> {
   return pages.find((p) => p.slug === "home")?.components ?? [];
 }
 
-export default async function Page() {
+export default async function Page({
+  params,
+}: {
+  params: { lang: string };
+}) {
   const components = await loadComponents();
-  return <Home components={components} />;
+  return <Home components={components} locale={params.lang} />;
 }

@@ -5,7 +5,7 @@
 Key points:
 
 - Stripe handles deposits via escrow sessions.
-- Inventory lives in JSON files under data/shops/*/inventory.json.
+- Inventory lives in JSON files under data/shops/\*/inventory.json.
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
 - Return logistics options stored in data/return-logistics.json.
 - RBAC: ShopAdmin currently manages all shops.
@@ -19,13 +19,14 @@ Key points:
 1. **Create a shop**
 
    ```bash
-   pnpm create-shop <id>
+   pnpm create-shop <id> [--name="My Shop"] [--logo=https://example.com/logo.png] [--contact="support@example.com"]
    # optionally generate a GitHub Actions workflow
    pnpm setup-ci <id>
    ```
 
    This scaffolds `apps/shop-<id>` and writes an `.env` file inside the new app.
-   Edit that file to provide real secrets (see [Environment Variables](#environment-variables)).
+   `--name`, `--logo`, and `--contact` seed the shop's display name, logo URL, and contact information.
+   Edit the `.env` file to provide real secrets (see [Environment Variables](#environment-variables)).
 
 2. **Run the app**
 
@@ -36,7 +37,7 @@ Key points:
 
    Open http://localhost:3000 to view the site. Pages hot-reload on save.
 
-3. *(Optional)* Each Next.js app must provide its own `postcss.config.cjs` that forwards to the repo root configuration so Tailwind resolves correctly. After updating Tailwind or any CSS utilities, run `pnpm tailwind:check` to verify the build.
+3. _(Optional)_ Each Next.js app must provide its own `postcss.config.cjs` that forwards to the repo root configuration so Tailwind resolves correctly. After updating Tailwind or any CSS utilities, run `pnpm tailwind:check` to verify the build.
 
 ### Example
 
@@ -49,19 +50,19 @@ pnpm dev
 
 ### Useful targets
 
-Script  What it does
-pnpm dev        Local dev server (next dev)
-pnpm build      Production build (next build)
-pnpm preview    Edge preview with Wrangler
-pnpm lint       ESLint + Prettier
-pnpm test       Jest unit tests
-pnpm e2e        Cypress e2e suite
-pnpm test:coverage      Jest tests with coverage summary
-pnpm run lh:checkout    Lighthouse audit for /en/checkout
-pnpm chromatic  Publish Storybook to Chromatic
-pnpm tailwind:check     Validate Tailwind build
+Script What it does
+pnpm dev Local dev server (next dev)
+pnpm build Production build (next build)
+pnpm preview Edge preview with Wrangler
+pnpm lint ESLint + Prettier
+pnpm test Jest unit tests
+pnpm e2e Cypress e2e suite
+pnpm test:coverage Jest tests with coverage summary
+pnpm run lh:checkout Lighthouse audit for /en/checkout
+pnpm chromatic Publish Storybook to Chromatic
+pnpm tailwind:check Validate Tailwind build
 
-  # Requires `CHROMATIC_PROJECT_TOKEN` to be set
+# Requires `CHROMATIC_PROJECT_TOKEN` to be set
 
 Example summary:
 
@@ -75,14 +76,14 @@ All files         |   100   |      100 |   100   |   100   |
 
 Project Structure
 src/
-├─ app/                 // Next.js App Router
-│  ├─ [lang]/…          // i18n routes (en, de, it)
-│  └─ api/…             // Edge Route Handlers
-├─ components/          // UI building blocks
-├─ contexts/            // React context providers
-├─ lib/                 // Server-side helpers (Stripe, products, etc.)
-└─ tests/               // Jest + Cypress
-public/                 // Static assets
+├─ app/ // Next.js App Router
+│ ├─ [lang]/… // i18n routes (en, de, it)
+│ └─ api/… // Edge Route Handlers
+├─ components/ // UI building blocks
+├─ contexts/ // React context providers
+├─ lib/ // Server-side helpers (Stripe, products, etc.)
+└─ tests/ // Jest + Cypress
+public/ // Static assets
 Learn More
 Next.js Docs – https://nextjs.org/docs
 
@@ -93,7 +94,6 @@ GitHub repo – https://github.com/vercel/next.js
 Deploy
 The project is CI-deployed to Cloudflare Pages via
 @cloudflare/next-on-pages.
-
 
 ## Svelte integration
 
@@ -106,7 +106,7 @@ To experiment with Svelte:
 ```bash
 pnpm install
 pnpm build
-````
+```
 
 ## Storybook
 

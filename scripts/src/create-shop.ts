@@ -16,13 +16,16 @@ interface Options {
   template: string;
   payment: string[];
   shipping: string[];
+  name?: string;
+  logo?: string;
+  contactInfo?: string;
 }
 
 function parseArgs(argv: string[]): [string, Options, boolean, boolean] {
   let id = argv[0];
   if (!id) {
     console.error(
-      "Usage: pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--payment=p1,p2] [--shipping=s1,s2] [--template=name]"
+      "Usage: pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--payment=p1,p2] [--shipping=s1,s2] [--template=name] [--name=value] [--logo=url] [--contact=info]"
     );
     process.exit(1);
   }
@@ -70,6 +73,15 @@ function parseArgs(argv: string[]): [string, Options, boolean, boolean] {
         break;
       case "shipping":
         opts.shipping = val.split(",").filter(Boolean);
+        break;
+      case "name":
+        opts.name = val || opts.name;
+        break;
+      case "logo":
+        opts.logo = val || opts.logo;
+        break;
+      case "contact":
+        opts.contactInfo = val || opts.contactInfo;
         break;
       default:
         console.error(`Unknown option ${key}`);

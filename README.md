@@ -5,37 +5,58 @@
 Key points:
 
 - Stripe handles deposits via escrow sessions.
-- Inventory lives in JSON files under data/shops/\*/inventory.json.
+- Inventory lives in JSON files under data/shops/*/inventory.json.
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
 - Return logistics options stored in data/return-logistics.json.
 - RBAC: ShopAdmin currently manages all shops.
-  A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **React 19**.  
+  A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **React 19**.
   The full technical roadmap is documented in [./IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md).
 
 ---
 
 ## Getting Started
 
-````bash
-# with pnpm
+1. **Create a shop**
+
+   ```bash
+   pnpm create-shop <id>
+   # optionally generate a GitHub Actions workflow
+   pnpm setup-ci <id>
+   ```
+
+   This scaffolds `apps/shop-<id>` and writes an `.env` file inside the new app.
+   Edit that file to provide real secrets (see [Environment Variables](#environment-variables)).
+
+2. **Run the app**
+
+   ```bash
+   cd apps/shop-<id>
+   pnpm dev
+   ```
+
+   Open http://localhost:3000 to view the site. Pages hot-reload on save.
+
+3. *(Optional)* Each Next.js app must provide its own `postcss.config.cjs` that forwards to the repo root configuration so Tailwind resolves correctly. After updating Tailwind or any CSS utilities, run `pnpm tailwind:check` to verify the build.
+
+### Example
+
+```bash
+pnpm create-shop demo
+pnpm setup-ci demo  # optional
+cd apps/shop-demo
 pnpm dev
+```
 
-# or npm
-npm run dev
-Open http://localhost:3000 to view the site. Pages hot-reload on save.
+### Useful targets
 
-Each Next.js app must provide its own `postcss.config.cjs` that forwards to the repo root configuration so Tailwind resolves correctly. After updating Tailwind or any CSS utilities, run `pnpm tailwind:check` to verify the build.
-
-
-Useful targets
-Script	What it does
-pnpm dev	Local dev server (next dev)
-pnpm build	Production build (next build)
-pnpm preview	Edge preview with Wrangler
-pnpm lint	ESLint + Prettier
-pnpm test	Jest unit tests
-pnpm e2e	Cypress e2e suite
-pnpm test:coverage	Jest tests with coverage summary
+Script  What it does
+pnpm dev        Local dev server (next dev)
+pnpm build      Production build (next build)
+pnpm preview    Edge preview with Wrangler
+pnpm lint       ESLint + Prettier
+pnpm test       Jest unit tests
+pnpm e2e        Cypress e2e suite
+pnpm test:coverage      Jest tests with coverage summary
 pnpm run lh:checkout    Lighthouse audit for /en/checkout
 pnpm chromatic  Publish Storybook to Chromatic
 pnpm tailwind:check     Validate Tailwind build
@@ -99,7 +120,7 @@ switching shops and admin-only routes.
 
 # Environment Variables
 
-The CLI and demo application expect several variables to be defined:
+After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:
 
 - `STRIPE_SECRET_KEY` – secret key used by the Stripe server SDK
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` – public key for the Stripe client SDK
@@ -107,13 +128,16 @@ The CLI and demo application expect several variables to be defined:
 - `CMS_ACCESS_TOKEN` – access token for pushing schemas
 - `CHROMATIC_PROJECT_TOKEN` – token for publishing Storybook previews
 
+The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET`
+and `PREVIEW_TOKEN_SECRET`. Replace all placeholders with real values or supply
+them via your CI's secret store. Missing variables will cause the CLI to exit
+before running.
+
 ## Google Apps Script
 
 Apps Script code lives under `apps-script/` and compiles with its own `tsconfig.json`.
 Next.js projects exclude this folder to avoid type conflicts with DOM typings.
 
 ## Notes
-
-Missing variables will cause the CLI to exit with an error before running.
 
 See [docs/lighthouse.md](docs/lighthouse.md) for running Lighthouse audits.

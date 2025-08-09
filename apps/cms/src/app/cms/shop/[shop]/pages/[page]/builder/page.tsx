@@ -41,7 +41,12 @@ export default async function PageBuilderRoute({
       <h1 className="mb-6 text-2xl font-semibold">
         Edit page - {shop}/{current.slug}
       </h1>
-      <PageBuilder page={current} onSave={save} onPublish={publish} />
+      <PageBuilder
+        page={current}
+        history={current.history}
+        onSave={save}
+        onPublish={publish}
+      />
     </>
   );
 }

@@ -58,6 +58,7 @@ const CONTAINER_TYPES = ["Section"] as const;
 /* ════════════════ external contracts ════════════════ */
 interface Props {
   page: Page;
+  history?: HistoryState;
   onSave: (fd: FormData) => Promise<unknown>;
   onPublish: (fd: FormData) => Promise<unknown>;
   onChange?: (components: PageComponent[]) => void;
@@ -274,6 +275,7 @@ const palette = {};
 /* ════════════════ component ════════════════ */
 const PageBuilder = memo(function PageBuilder({
   page,
+  history: historyProp,
   onSave,
   onPublish,
   onChange,
@@ -293,8 +295,20 @@ const PageBuilder = memo(function PageBuilder({
 
   const [state, dispatch] = useReducer(reducer, undefined, (): HistoryState => {
     const initial = migrate(page.components as PageComponent[]);
+    const fromServer = historyProp ?? page.history;
+    const parsedServer = fromServer
+      ? (() => {
+          try {
+            const valid = historyStateSchema.parse(fromServer);
+            return { ...valid, present: migrate(valid.present) };
+          } catch {
+            return { past: [], present: initial, future: [] };
+          }
+        })()
+      : { past: [], present: initial, future: [] };
+
     if (typeof window === "undefined") {
-      return { past: [], present: initial, future: [] };
+      return parsedServer;
     }
     try {
       const stored = localStorage.getItem(storageKey);
@@ -303,7 +317,7 @@ const PageBuilder = memo(function PageBuilder({
       return { ...parsed, present: migrate(parsed.present) };
     } catch (err) {
       console.warn("Failed to parse stored page builder state", err);
-      return { past: [], present: initial, future: [] };
+      return parsedServer;
     }
   });
 

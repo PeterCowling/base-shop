@@ -9,7 +9,7 @@ import {
   updatePage as updatePageInRepo,
 } from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
-import type { Locale, Page, PageComponent } from "@types";
+import type { Locale, Page, PageComponent, HistoryState } from "@types";
 import { historyStateSchema, pageComponentSchema } from "@types";
 import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
@@ -150,6 +150,16 @@ export async function createPage(
     return { errors: compErrs };
   }
 
+  let history: HistoryState | undefined;
+  const historyStr = formData.get("history");
+  if (typeof historyStr === "string") {
+    try {
+      history = historyStateSchema.parse(JSON.parse(historyStr));
+    } catch {
+      /* ignore invalid history */
+    }
+  }
+
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;
   const image: Record<Locale, string> = {} as Record<Locale, string>;
@@ -286,6 +296,16 @@ export async function updatePage(
     return { errors: compErrs };
   }
 
+  let history: HistoryState | undefined;
+  const historyStr = formData.get("history");
+  if (typeof historyStr === "string") {
+    try {
+      history = historyStateSchema.parse(JSON.parse(historyStr));
+    } catch {
+      /* ignore invalid history */
+    }
+  }
+
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;
   const image: Record<Locale, string> = {} as Record<Locale, string>;
@@ -302,6 +322,7 @@ export async function updatePage(
     status: data.status,
     components: data.components,
     seo: { title, description, image },
+    ...(history ? { history } : {}),
   };
 
   try {

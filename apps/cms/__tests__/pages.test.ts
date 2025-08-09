@@ -90,6 +90,49 @@ describe("page actions", () => {
     });
   });
 
+  it("updatePage persists history", async () => {
+    await withRepo(async () => {
+      mockAuth();
+      const repo = await import(
+        "../../../packages/platform-core/src/repositories/pages/index.server"
+      );
+      const now = new Date().toISOString();
+      const page = {
+        id: "1",
+        slug: "home",
+        status: "draft",
+        components: [],
+        seo: { title: { en: "Home" }, description: { en: "" } },
+        createdAt: now,
+        updatedAt: now,
+        createdBy: "tester",
+      } as any;
+      await repo.savePage("test", page);
+
+      const { updatePage } = await import("../src/actions/pages.server");
+      const history = {
+        past: [],
+        present: [{ id: "c1", type: "HeroBanner" }],
+        future: [],
+      };
+      const fd = new FormData();
+      fd.append("id", page.id);
+      fd.append("updatedAt", page.updatedAt);
+      fd.append("slug", "home");
+      fd.append("status", "draft");
+      fd.append("title", "Home");
+      fd.append("description", "");
+      fd.append("components", JSON.stringify(history.present));
+      fd.append("history", JSON.stringify(history));
+
+      const result = await updatePage("test", fd);
+      expect(result.page?.history).toEqual(history);
+
+      const pages = await repo.getPages("test");
+      expect(pages[0].history).toEqual(history);
+    });
+  });
+
   it("deletePage removes page from repo", async () => {
     await withRepo(async () => {
       mockAuth();

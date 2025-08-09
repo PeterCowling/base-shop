@@ -3,6 +3,7 @@ import type { PageComponent } from "@types";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import shop from "../../../../shop.json";
+import { Locale, resolveLocale } from "@i18n/locales";
 
 async function loadComponents(slug: string): Promise<PageComponent[] | null> {
   const pages = await getPages(shop.id);
@@ -18,6 +19,7 @@ export default async function Page({
   const slug = params.slug.join("/");
   const components = await loadComponents(slug);
   if (!components) notFound();
-  return <DynamicRenderer components={components} />;
+  const lang: Locale = resolveLocale(params.lang);
+  return <DynamicRenderer components={components} locale={lang} />;
 }
 

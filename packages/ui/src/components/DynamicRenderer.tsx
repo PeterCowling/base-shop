@@ -3,13 +3,16 @@
 "use client";
 
 import { blockRegistry } from "@/components/cms/blocks";
+import type { Locale } from "@/i18n/locales";
 import type { PageComponent } from "@types";
 import type { ReactNode, CSSProperties } from "react";
 
 export default function DynamicRenderer({
   components,
+  locale,
 }: {
   components: PageComponent[];
+  locale: Locale;
 }) {
   const renderBlock = (block: PageComponent): ReactNode => {
     const Comp = blockRegistry[block.type as keyof typeof blockRegistry];
@@ -43,7 +46,7 @@ export default function DynamicRenderer({
 
     return (
       <div key={id} style={style}>
-        <Comp {...props}>
+        <Comp {...props} locale={locale}>
           {children?.map((child: PageComponent) => renderBlock(child))}
         </Comp>
       </div>

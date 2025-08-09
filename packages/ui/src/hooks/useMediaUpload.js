@@ -12,6 +12,7 @@ export function useImageUpload(options) {
     const [progress, setProgress] = useState(null);
     const [error, setError] = useState();
     const inputRef = useRef(null);
+    const [dragActive, setDragActive] = useState(false);
     /* ---------- orientation check ----------------------------------- */
     const { actual, isValid } = useImageOrientationValidation(pendingFile, requiredOrientation);
     /* ---------- upload handler -------------------------------------- */
@@ -45,6 +46,7 @@ export function useImageUpload(options) {
         const file = e.dataTransfer.files?.[0] ?? null;
         setPendingFile(file);
         setAltText("");
+        setDragActive(false);
     }, []);
     const onFileChange = useCallback((e) => {
         const file = e.target.files?.[0] ?? null;
@@ -55,7 +57,12 @@ export function useImageUpload(options) {
         inputRef.current?.click();
     }, []);
     /* ---------- ready-made uploader UI ------------------------------ */
-    const uploader = (_jsxs("div", { onDragOver: (e) => e.preventDefault(), onDrop: onDrop, className: "rounded border-2 border-dashed p-4 text-center", children: [_jsx("input", { ref: inputRef, type: "file", accept: "image/*", className: "hidden", onChange: onFileChange }), _jsx("p", { className: "mb-2", children: "Drag & drop or" }), _jsx("button", { type: "button", onClick: openFileDialog, className: "bg-primary rounded px-3 py-1 text-white", children: "Browse\u2026" }), pendingFile && (_jsx("p", { className: "mt-2 text-sm text-gray-500", children: pendingFile.name })), progress && (_jsxs("p", { className: "mt-2 text-sm", children: ["Uploading\u2026 ", progress.done, "/", progress.total] })), error && _jsx("p", { className: "mt-2 text-sm text-red-600", children: error }), isValid === false && (_jsxs("p", { className: "mt-2 text-sm text-orange-600", children: ["Wrong orientation (needs ", requiredOrientation, ")"] }))] }));
+    const uploader = (_jsxs("div", { tabIndex: 0, role: "button", "aria-label": "Drop image here or press Enter to browse", onDragOver: (e) => e.preventDefault(), onDragEnter: () => setDragActive(true), onDragLeave: () => setDragActive(false), onDrop: onDrop, onKeyDown: (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openFileDialog();
+            }
+        }, className: `rounded border-2 border-dashed p-4 text-center${dragActive ? " highlighted" : ""}`, children: [_jsx("input", { ref: inputRef, type: "file", accept: "image/*", className: "hidden", onChange: onFileChange }), _jsx("p", { className: "mb-2", children: "Drag & drop or" }), _jsx("button", { type: "button", onClick: openFileDialog, className: "bg-primary rounded px-3 py-1 text-white", children: "Browse\u2026" }), pendingFile && (_jsx("p", { className: "mt-2 text-sm text-gray-500", children: pendingFile.name })), progress && (_jsxs("p", { className: "mt-2 text-sm", children: ["Uploading\u2026 ", progress.done, "/", progress.total] })), error && _jsx("p", { className: "mt-2 text-sm text-red-600", children: error }), isValid === false && (_jsxs("p", { className: "mt-2 text-sm text-orange-600", children: ["Wrong orientation (needs ", requiredOrientation, ")"] }))] }));
     /* ---------- public result --------------------------------------- */
     return {
         pendingFile,

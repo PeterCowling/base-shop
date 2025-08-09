@@ -172,6 +172,11 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
   if (!existsSync(templateApp)) {
     throw new Error(`Template '${options.template}' not found in packages`);
   }
+  if (existsSync(newApp)) {
+    throw new Error(
+      `App directory 'apps/${id}' already exists. Pick a different ID or remove the existing folder.`
+    );
+  }
 
   copyTemplate(templateApp, newApp);
   // ensure PostCSS setup is available in the generated shop

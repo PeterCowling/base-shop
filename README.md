@@ -121,7 +121,9 @@ executing accessibility tests and publishing Chromatic previews.
 ## CMS Guide
 
 See [doc/cms.md](doc/cms.md) for an overview of the CMS navigation,
-switching shops and admin-only routes.
+switching shops and admin-only routes. Newcomers can follow the
+[Page Builder](doc/cms.md#page-builder) section to learn how to add,
+rearrange and publish blocks.
 
 # Environment Variables
 

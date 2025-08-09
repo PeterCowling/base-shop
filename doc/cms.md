@@ -45,9 +45,26 @@ Edit drafts at `/cms/shop/{shop}/pages/{slug}/builder` or start a new page at
 `/cms/shop/{shop}/pages/new/builder`. A list of pages (including drafts) is
 available via `GET /cms/api/pages/{shop}`.
 
-## Page Builder Controls
+## Page Builder
 
-Selected blocks now display drag handles for repositioning. You can also resize
-blocks directly on the canvas and adjust their margin or padding before saving
-or publishing. A side panel shows editable properties for the currently
-selected block.
+Open `/cms/shop/{shop}/pages/{slug}/builder` to edit an existing page or
+`/cms/shop/{shop}/pages/new/builder` to start from scratch.
+
+### Add blocks
+
+1. Click **Add Block** in the toolbar or hover near a section and press the **+**
+   button.
+2. Pick a component from the list and adjust its options in the side panel.
+3. Confirm to insert the block onto the page.
+
+### Rearrange blocks
+
+- Select a block to reveal drag handles, then drag it to a new position.
+- Blocks can be resized directly on the canvas. Adjust margin and padding from
+  the side panel before saving.
+
+### Publish changes
+
+1. Use **Save** to keep a draft version.
+2. Click **Publish** when you're ready for the page to go live at
+   `/shop/{shop}/{slug}`.

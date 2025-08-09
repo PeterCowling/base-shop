@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { PageComponent } from "@types";
+import type { Locale } from "@/i18n/locales";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import shop from "../../../../shop.json";
@@ -13,7 +14,7 @@ async function loadComponents(slug: string): Promise<PageComponent[] | null> {
 export default async function Page({
   params,
 }: {
-  params: { lang: string; slug: string[] };
+  params: { lang: Locale; slug: string[] };
 }) {
   const slug = params.slug.join("/");
   const components = await loadComponents(slug);

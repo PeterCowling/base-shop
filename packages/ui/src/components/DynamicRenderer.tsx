@@ -52,7 +52,7 @@ export default function DynamicRenderer({
 
     return (
       <div key={id} style={style}>
-        <Comp locale={locale} {...props} {...extraProps}>
+        <Comp {...props} {...extraProps} locale={locale}>
           {children?.map((child: PageComponent) => renderBlock(child))}
         </Comp>
       </div>

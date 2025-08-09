@@ -3,13 +3,14 @@
 
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import type { PageComponent } from "@types";
+import type { Locale } from "@/i18n/locales";
 
 export default function Home({
   components,
   locale,
 }: {
   components: PageComponent[];
-  locale: string;
+  locale: Locale;
 }) {
   return <DynamicRenderer components={components} locale={locale} />;
 }

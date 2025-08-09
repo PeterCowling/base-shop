@@ -38,6 +38,21 @@ describe("DynamicRenderer", () => {
     expect(screen.getByText("bonjour")).toBeInTheDocument();
   });
 
+  it("overrides block-provided locale", () => {
+    const components: PageComponent[] = [
+      {
+        id: "1",
+        type: "Text",
+        text: { en: "hello", fr: "bonjour" },
+        locale: "en",
+      } as any,
+    ];
+
+    render(<DynamicRenderer components={components} locale="fr" />);
+
+    expect(screen.getByText("bonjour")).toBeInTheDocument();
+  });
+
   it("renders a nested Section with child blocks", () => {
     const components: PageComponent[] = [
       {
@@ -118,8 +133,11 @@ describe("DynamicRenderer", () => {
 describe("DynamicRenderer block registry coverage", () => {
   const blockTypes = Object.keys(blockRegistry);
   const stubRegistry = Object.fromEntries(
-    blockTypes.map((key) => [key, ({ children }: any) => <div data-testid={key}>{children}</div>])
-  );
+    blockTypes.map((key) => [
+      key,
+      jest.fn(({ children }: any) => <div data-testid={key}>{children}</div>),
+    ])
+  ) as Record<string, jest.Mock>;
 
   let StubDynamicRenderer: typeof DynamicRenderer;
   beforeAll(() => {
@@ -140,5 +158,9 @@ describe("DynamicRenderer block registry coverage", () => {
       />
     );
     expect(screen.getByTestId(type)).toBeInTheDocument();
+    expect(stubRegistry[type]).toHaveBeenCalled();
+    expect(stubRegistry[type].mock.calls[0][0]).toEqual(
+      expect.objectContaining({ locale: "en" })
+    );
   });
 });

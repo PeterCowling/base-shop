@@ -2,6 +2,7 @@ import type { Locale } from "@/i18n/locales";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { LanguageSwitcher, SearchBar } from "../molecules";
+import ThemeToggle from "../ThemeToggle";
 
 export interface NavItem {
   title: string;
@@ -57,6 +58,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
             <SearchBar suggestions={searchSuggestions} />
           </div>
           <LanguageSwitcher current={locale} />
+          <ThemeToggle />
         </div>
       </div>
     </header>

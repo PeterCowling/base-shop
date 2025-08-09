@@ -17,10 +17,25 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
+const LS_KEY = "PREFERRED_THEME";
+
+function readInitial(): Theme {
+  if (typeof window === "undefined") return "base";
+  try {
+    const stored = localStorage.getItem(LS_KEY) as Theme | null;
+    if (stored === "base" || stored === "dark" || stored === "brandx") return stored;
+  } catch {}
+  return "base";
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("base");
+  const [theme, setTheme] = useState<Theme>(readInitial);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(LS_KEY, theme);
+    }
+
     const root = document.documentElement;
     root.classList.remove("theme-dark", "theme-brandx");
     if (theme === "dark") root.classList.add("theme-dark");

@@ -32,6 +32,7 @@ function MediaManagerBase({
   onDelete,
 }: Props): ReactElement {
   const [files, setFiles] = useState<MediaItem[]>(initialFiles);
+  const [dragActive, setDragActive] = useState(false);
 
   /* ---------------------------------------------------------------------- */
   /*  Delete handler (stable)                                               */
@@ -76,10 +77,26 @@ function MediaManagerBase({
     <div className="space-y-6">
       {/* Upload drop-zone / picker */}
       <div
-        onDrop={onDrop}
+        tabIndex={0}
+        role="button"
+        aria-label="Drop image here or press Enter to browse"
+        onDrop={(e) => {
+          onDrop(e);
+          setDragActive(false);
+        }}
         onDragOver={(e) => e.preventDefault()}
+        onDragEnter={() => setDragActive(true)}
+        onDragLeave={() => setDragActive(false)}
         onClick={openFileDialog}
-        className="flex h-32 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-300 text-sm text-gray-500"
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openFileDialog();
+          }
+        }}
+        className={`flex h-32 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-300 text-sm text-gray-500${
+          dragActive ? " highlighted" : ""
+        }`}
       >
         <Input
           ref={inputRef}

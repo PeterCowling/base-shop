@@ -70,6 +70,7 @@ export function useImageUpload(
   const [progress, setProgress] = useState<UploadProgress | null>(null);
   const [error, setError] = useState<string>();
   const inputRef = useRef<HTMLInputElement>(null);
+  const [dragActive, setDragActive] = useState(false);
 
   /* ---------- orientation check ----------------------------------- */
   const { actual, isValid } = useImageOrientationValidation(
@@ -112,6 +113,7 @@ export function useImageUpload(
     const file = e.dataTransfer.files?.[0] ?? null;
     setPendingFile(file);
     setAltText("");
+    setDragActive(false);
   }, []);
 
   const onFileChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -127,9 +129,22 @@ export function useImageUpload(
   /* ---------- ready-made uploader UI ------------------------------ */
   const uploader = (
     <div
+      tabIndex={0}
+      role="button"
+      aria-label="Drop image here or press Enter to browse"
       onDragOver={(e) => e.preventDefault()}
+      onDragEnter={() => setDragActive(true)}
+      onDragLeave={() => setDragActive(false)}
       onDrop={onDrop}
-      className="rounded border-2 border-dashed p-4 text-center"
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openFileDialog();
+        }
+      }}
+      className={`rounded border-2 border-dashed p-4 text-center${
+        dragActive ? " highlighted" : ""
+      }`}
     >
       {/* hidden file input */}
       <input

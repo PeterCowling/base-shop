@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import DynamicRenderer from "../src/components/DynamicRenderer";
+import { blockRegistry } from "../src/components/cms/blocks";
 import type { PageComponent } from "@types";
 
 describe("DynamicRenderer", () => {
@@ -23,7 +24,22 @@ describe("DynamicRenderer", () => {
     expect(screen.getByText("hello")).toBeInTheDocument();
   });
 
-  it("renders nested components recursively", () => {
+  it("renders locale-sensitive text", () => {
+    const components: PageComponent[] = [
+      {
+        id: "1",
+        type: "Text",
+        text: { en: "hello", fr: "bonjour" },
+        locale: "fr",
+      } as any,
+    ];
+
+    render(<DynamicRenderer components={components} />);
+
+    expect(screen.getByText("bonjour")).toBeInTheDocument();
+  });
+
+  it("renders a nested Section with child blocks", () => {
     const components: PageComponent[] = [
       {
         id: "1",
@@ -31,9 +47,15 @@ describe("DynamicRenderer", () => {
         children: [
           {
             id: "2",
-            type: "Text",
-            text: { en: "nested" },
-            locale: "en",
+            type: "Section",
+            children: [
+              {
+                id: "3",
+                type: "Text",
+                text: { en: "deep" },
+                locale: "en",
+              } as any,
+            ],
           } as any,
         ],
       } as any,
@@ -41,7 +63,29 @@ describe("DynamicRenderer", () => {
 
     render(<DynamicRenderer components={components} />);
 
-    expect(screen.getByText("nested")).toBeInTheDocument();
+    expect(screen.getByText("deep")).toBeInTheDocument();
+  });
+
+  it("passes runtime props to components like ProductGrid", () => {
+    const spy = jest
+      .spyOn(blockRegistry, "ProductGrid")
+      .mockImplementation(({ runtime }: any) => (
+        <div data-testid="grid">{runtime}</div>
+      ));
+
+    const components: PageComponent[] = [
+      { id: "1", type: "ProductGrid", runtime: "value" } as any,
+    ];
+
+    render(<DynamicRenderer components={components} />);
+
+    expect(screen.getByText("value")).toBeInTheDocument();
+    expect(spy).toHaveBeenCalled();
+    expect(spy.mock.calls[0][0]).toEqual(
+      expect.objectContaining({ runtime: "value" })
+    );
+
+    spy.mockRestore();
   });
 
   it("applies style props to wrapper div", () => {
@@ -69,5 +113,28 @@ describe("DynamicRenderer", () => {
       top: "3px",
       left: "4px",
     });
+  });
+});
+
+describe("DynamicRenderer block registry coverage", () => {
+  const blockTypes = Object.keys(blockRegistry);
+  const stubRegistry = Object.fromEntries(
+    blockTypes.map((key) => [key, ({ children }: any) => <div data-testid={key}>{children}</div>])
+  );
+
+  let StubDynamicRenderer: typeof DynamicRenderer;
+  beforeAll(() => {
+    jest.resetModules();
+    jest.doMock("../src/components/cms/blocks", () => ({ blockRegistry: stubRegistry }));
+    StubDynamicRenderer = require("../src/components/DynamicRenderer").default;
+  });
+
+  afterAll(() => {
+    jest.resetModules();
+  });
+
+  it.each(blockTypes)("renders %s block", (type) => {
+    render(<StubDynamicRenderer components={[{ id: "1", type } as any]} />);
+    expect(screen.getByTestId(type)).toBeInTheDocument();
   });
 });

@@ -18,7 +18,7 @@ import {
 } from "@dnd-kit/sortable";
 import type { Page, PageComponent, HistoryState } from "@types";
 import { pageComponentSchema } from "@types";
-import type { CSSProperties } from "react";
+import type { CSSProperties, DragEvent } from "react";
 import {
   memo,
   useCallback,
@@ -34,6 +34,9 @@ import { Button } from "../atoms-shadcn";
 import CanvasItem from "./page-builder/CanvasItem";
 import ComponentEditor from "./page-builder/ComponentEditor";
 import Palette from "./page-builder/Palette";
+import { cn } from "../../utils/cn";
+import { usePathname } from "next/navigation";
+import { getShopFromPath } from "@platform-core/src/utils/getShopFromPath";
 
 /* ════════════════ component catalogue ════════════════ */
 const COMPONENT_TYPES = [
@@ -200,6 +203,9 @@ const PageBuilder = memo(function PageBuilder({
   const [locale, setLocale] = useState<Locale>("en");
   const [publishCount, setPublishCount] = useState(0);
   const prevId = useRef(page.id);
+  const pathname = usePathname() ?? "";
+  const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
+  const [dragOver, setDragOver] = useState(false);
 
   /* ── derived memo values ──────────────────────────────────────── */
   const widthMap = useMemo(
@@ -286,6 +292,39 @@ const PageBuilder = memo(function PageBuilder({
     [dispatch]
   );
 
+  const handleFileDrop = useCallback(
+    async (e: DragEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      setDragOver(false);
+      const file = e.dataTransfer.files?.[0] ?? null;
+      if (!file || !file.type.startsWith("image/") || !shop) return;
+
+      const fd = new FormData();
+      fd.append("file", file);
+
+      try {
+        const res = await fetch(`/cms/api/media?shop=${shop}`, {
+          method: "POST",
+          body: fd,
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || res.statusText);
+        dispatch({
+          type: "add",
+          component: {
+            id: ulid(),
+            type: "Image",
+            src: data.url,
+            alt: data.altText,
+          } as PageComponent,
+        });
+      } catch {
+        /* ignore */
+      }
+    },
+    [dispatch, shop]
+  );
+
   /* ── form-data builder ────────────────────────────────────────── */
   const formData = useMemo(() => {
     const fd = new FormData();
@@ -353,7 +392,16 @@ const PageBuilder = memo(function PageBuilder({
             <div
               id="canvas"
               style={containerStyle}
-              className="mx-auto flex flex-col gap-4 rounded border"
+              onDrop={handleFileDrop}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragOver(true);
+              }}
+              onDragLeave={() => setDragOver(false)}
+              className={cn(
+                "mx-auto flex flex-col gap-4 rounded border",
+                dragOver && "ring-2 ring-primary"
+              )}
             >
               {components.map((c, i) => (
                 <CanvasItem

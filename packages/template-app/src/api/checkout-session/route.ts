@@ -1,5 +1,6 @@
 // packages/template-app/src/api/checkout-session/route.ts
 import { stripe } from "@/lib/stripeServer";
+import { parseIsoDate } from "@/lib/date";
 import { CART_COOKIE, decodeCartCookie } from "@platform-core/src/cartCookie";
 import { priceForDays } from "@platform-core/src/pricing";
 import { getProductById } from "@platform-core/src/products";
@@ -31,8 +32,9 @@ const DAY_MS = 86_400_000;
 /** Chargeable rental days */
 const calculateRentalDays = (returnDate?: string): number => {
   if (!returnDate) return 1;
-  const end = new Date(returnDate).getTime();
-  const diffDays = Math.ceil((end - Date.now()) / DAY_MS);
+  const parsed = parseIsoDate(returnDate);
+  if (!parsed) throw new Error("Invalid returnDate");
+  const diffDays = Math.ceil((parsed.getTime() - Date.now()) / DAY_MS);
   return diffDays > 0 ? diffDays : 1;
 };
 
@@ -106,7 +108,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { returnDate } = (await req.json().catch(() => ({}))) as {
     returnDate?: string;
   };
-  const rentalDays = calculateRentalDays(returnDate);
+  let rentalDays: number;
+  try {
+    rentalDays = calculateRentalDays(returnDate);
+  } catch {
+    return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 });
+  }
 
   /* 3  Stripe line-items ------------------------------------------- */
   const nested = await Promise.all(

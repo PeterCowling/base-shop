@@ -58,3 +58,14 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(args.metadata.subtotal).toBe("20");
   expect(body.clientSecret).toBe("cs_test");
 });
+
+test("responds with 400 on invalid returnDate", async () => {
+  const sku = PRODUCTS[0];
+  const cart = { [sku.id]: { sku, qty: 1 } };
+  const cookie = encodeCartCookie(cart);
+  const req = createRequest({ returnDate: "not-a-date" }, cookie);
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+  const body = (await res.json()) as any;
+  expect(body.error).toMatch(/invalid/i);
+});

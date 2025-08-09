@@ -26,7 +26,7 @@ jest.mock("@platform-core/src", () => {
 
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import Wizard from "../src/app/cms/wizard/Wizard";
-import { STORAGE_KEY } from "../src/app/cms/wizard/utils";
+import { STORAGE_KEY } from "../src/app/cms/wizard/storageUtils";
 
 const themes = ["base", "dark"];
 const templates = ["template-app"];

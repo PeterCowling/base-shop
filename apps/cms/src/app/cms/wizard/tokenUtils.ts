@@ -1,4 +1,4 @@
-// apps/cms/src/app/cms/wizard/utils.ts
+// apps/cms/src/app/cms/wizard/tokenUtils.ts
 /* eslint-disable import/consistent-type-specifier-style */
 
 import {
@@ -61,21 +61,4 @@ export async function loadThemeTokens(theme: string): Promise<TokenMap> {
     /* if everything fails, stay functional by falling back to base */
     return baseTokens;
   }
-}
-
-/* ----------------------------------------------------------
- *  Wizard helper utilities
- * ---------------------------------------------------------- */
-export const STORAGE_KEY = "cms-wizard-progress";
-
-export function resetWizardProgress(): void {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem(STORAGE_KEY);
-  }
-}
-
-export function toggle(list: string[], value: string): string[] {
-  return list.includes(value)
-    ? list.filter((v) => v !== value)
-    : [...list, value];
 }

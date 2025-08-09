@@ -2,6 +2,7 @@
 import { LOCALES } from "@i18n/locales";
 import type { Locale, PageComponent } from "@types";
 import { localeSchema } from "@types";
+import { pageComponentSchema } from "@types/Page";
 import { spawnSync } from "child_process";
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
@@ -47,11 +48,11 @@ export const createShopOptionsSchema = z.object({
         title: z.record(localeSchema, z.string()),
         description: z.record(localeSchema, z.string()).optional(),
         image: z.record(localeSchema, z.string()).optional(),
-        components: z.array(z.any()),
+        components: z.array(pageComponentSchema),
       })
     )
     .default([]),
-  checkoutPage: z.array(z.any()).default([]),
+  checkoutPage: z.array(pageComponentSchema).default([]),
 });
 
 export interface CreateShopOptions {

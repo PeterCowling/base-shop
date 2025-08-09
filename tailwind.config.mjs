@@ -6,6 +6,7 @@ import preset from "./packages/tailwind-config/src/index.ts";
 /** @type {import('tailwindcss').Config} */
 const config = {
   presets: [tokens, preset],
+  darkMode: ["class", ".theme-dark"],
   content: [
     "./apps/**/*.{ts,tsx,mdx}",
     "./packages/{ui,platform-core,platform-machine,i18n,themes}/**/*.{ts,tsx,mdx}",

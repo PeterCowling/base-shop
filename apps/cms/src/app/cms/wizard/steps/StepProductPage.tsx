@@ -14,7 +14,8 @@ import type { Locale, Page, PageComponent } from "@types";
 import { historyStateSchema } from "@types";
 import { fetchJson } from "@ui/utils/fetchJson";
 import { ulid } from "ulid";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Toast } from "@/components/atoms";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -43,6 +44,11 @@ export default function StepProductPage({
   onBack,
   onNext,
 }: Props): React.JSX.Element {
+  const [toast, setToast] = useState<{ open: boolean; message: string }>({
+    open: false,
+    message: "",
+  });
+
   useEffect(() => {
     (async () => {
       if (!shopId) return;
@@ -70,7 +76,7 @@ export default function StepProductPage({
           }
         }
       } catch {
-        /* ignore */
+        setToast({ open: true, message: "Failed to load pages" });
       }
     })();
   }, [shopId, productPageId, setProductComponents, setProductPageId]);
@@ -128,14 +134,19 @@ export default function StepProductPage({
           } as Page
         }
         onSave={async (fd) => {
-          const json = await fetchJson<{ id: string }>(
-            `/cms/api/page-draft/${shopId}`,
-            {
-              method: "POST",
-              body: fd,
-            }
-          );
-          setProductPageId(json.id);
+          try {
+            const json = await fetchJson<{ id: string }>(
+              `/cms/api/page-draft/${shopId}`,
+              {
+                method: "POST",
+                body: fd,
+              }
+            );
+            setProductPageId(json.id);
+            setToast({ open: true, message: "Draft saved" });
+          } catch {
+            setToast({ open: true, message: "Failed to save page" });
+          }
         }}
         onPublish={async (fd) => {
           try {
@@ -148,9 +159,9 @@ export default function StepProductPage({
               }
             );
             setProductPageId(json.id);
-            alert("Page published");
+            setToast({ open: true, message: "Page published" });
           } catch {
-            alert("Failed to publish page");
+            setToast({ open: true, message: "Failed to publish page" });
           }
         }}
         onChange={setProductComponents}
@@ -162,6 +173,11 @@ export default function StepProductPage({
         </Button>
         <Button onClick={onNext}>Next</Button>
       </div>
+      <Toast
+        open={toast.open}
+        onClose={() => setToast((t) => ({ ...t, open: false }))}
+        message={toast.message}
+      />
     </div>
   );
 }

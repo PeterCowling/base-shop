@@ -221,6 +221,9 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     }
   }
   envContent += `NEXTAUTH_SECRET=${genSecret()}\n`;
+  envContent += `CMS_SPACE_URL=\n`;
+  envContent += `CMS_ACCESS_TOKEN=\n`;
+  envContent += `CHROMATIC_PROJECT_TOKEN=\n`;
   writeFileSync(join(newApp, ".env"), envContent);
 
   mkdirSync(newData, { recursive: true });

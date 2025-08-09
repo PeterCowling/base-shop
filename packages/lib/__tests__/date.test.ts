@@ -1,4 +1,9 @@
-import { parseIsoDate, calculateRentalDays, isoDateInNDays } from '../src/date';
+import {
+  parseIsoDate,
+  calculateRentalDays,
+  isoDateInNDays,
+  formatTimestamp,
+} from '../src/date';
 
 describe('parseIsoDate', () => {
   test('parses valid YYYY-MM-DD string', () => {
@@ -46,5 +51,18 @@ describe('isoDateInNDays', () => {
 
   test('returns ISO date string N days ahead', () => {
     expect(isoDateInNDays(7)).toBe('2025-01-08');
+  });
+});
+
+describe('formatTimestamp', () => {
+  test('formats ISO timestamp', () => {
+    const ts = '2025-01-01T05:06:07Z';
+    const formatted = formatTimestamp(ts, 'en-US');
+    expect(formatted).toContain('2025');
+    expect(formatted).not.toBe(ts);
+  });
+
+  test('returns input for invalid timestamp', () => {
+    expect(formatTimestamp('nope')).toBe('nope');
   });
 });

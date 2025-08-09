@@ -8,7 +8,7 @@ import * as path from "node:path";
 import { z } from "zod";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "./utils";
-import { nowIso } from "../../../shared/date";
+import { nowIso } from "@shared/date";
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
 
 function settingsPath(shop: string): string {

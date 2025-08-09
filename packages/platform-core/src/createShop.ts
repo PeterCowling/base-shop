@@ -30,7 +30,7 @@ import {
   loadBaseTokens,
   loadThemeTokens,
 } from "./createShop/utils";
-import { nowIso } from "../../shared/date";
+import { nowIso } from "@shared/date";
 import { defaultFilterMappings } from "./defaultFilterMappings";
 
 export const createShopOptionsSchema = z.object({

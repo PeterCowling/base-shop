@@ -27,7 +27,7 @@ describe("shops repository", () => {
   it("returns defaults when settings file missing", async () => {
     await withRepo(async (shop) => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("../../shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
       const repo = await import("../repositories/settings.server");
       const settings = await repo.getShopSettings(shop);
       expect(settings.languages).toEqual(["en", "de", "it"]);
@@ -39,7 +39,7 @@ describe("shops repository", () => {
   it("saves settings and records diff history", async () => {
     await withRepo(async (shop, dir) => {
       let current = "2024-01-01T00:00:00.000Z";
-      jest.doMock("../../shared/date", () => ({ nowIso: () => current }));
+      jest.doMock("@shared/date", () => ({ nowIso: () => current }));
       const repo = await import("../repositories/settings.server");
       const first: ShopSettings = {
         languages: ["en", "de"],

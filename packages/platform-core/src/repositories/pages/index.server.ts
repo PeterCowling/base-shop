@@ -7,7 +7,7 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { validateShopName } from "../../../../lib/src/validateShopName";
 import { DATA_ROOT } from "../utils";
-import { nowIso } from "../../../../shared/date";
+import { nowIso } from "@shared/date";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */

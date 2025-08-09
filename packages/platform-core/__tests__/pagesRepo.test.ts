@@ -29,7 +29,7 @@ describe("pages repository", () => {
   it("getPages returns empty array when file missing or invalid", async () => {
     await withRepo(async (shop, dir) => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("../../shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
       const repo: PagesRepo = await import("../repositories/pages/index.server");
       expect(await repo.getPages(shop)).toEqual([]);
       await fs.writeFile(
@@ -44,7 +44,7 @@ describe("pages repository", () => {
   it("save, update and delete handle success and errors", async () => {
     await withRepo(async (shop) => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("../../shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
       const repo: PagesRepo = await import("../repositories/pages/index.server");
       const page: Page = {
         id: "1",

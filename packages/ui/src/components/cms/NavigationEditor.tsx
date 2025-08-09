@@ -2,7 +2,7 @@
 "use client";
 
 import { ulid } from "ulid";
-import { Button, Input } from "../atoms-shadcn";
+import { Button, Input } from "../atoms/shadcn";
 
 export interface NavItem {
   id: string;

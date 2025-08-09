@@ -2,7 +2,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
-import { Input } from "../atoms-shadcn";
+import { Input } from "../atoms/shadcn";
 export function SearchBar({ suggestions, onSelect, placeholder = "Search…", }) {
     const [query, setQuery] = useState("");
     const [matches, setMatches] = useState([]);

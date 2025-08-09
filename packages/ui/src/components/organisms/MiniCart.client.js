@@ -3,9 +3,9 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useCart } from "@/contexts/CartContext";
 import { cn } from "../../utils/cn";
 import { drawerWidthProps } from "../../utils/drawerWidth";
-import { Button } from "../atoms-shadcn";
+import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger, } from "../ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger, } from "../atoms/primitives/dialog";
 export function MiniCart({ trigger, width = "w-80" }) {
     const [cart, dispatch] = useCart();
     const lines = Object.values(cart);

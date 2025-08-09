@@ -4,14 +4,14 @@ import { useCart } from "@platform-core/src/contexts/CartContext";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { drawerWidthProps } from "../../utils/drawerWidth";
-import { Button } from "../atoms-shadcn";
+import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
+} from "../atoms/primitives/dialog";
 
 /**
  * Fly-out mini cart that shows current cart contents.

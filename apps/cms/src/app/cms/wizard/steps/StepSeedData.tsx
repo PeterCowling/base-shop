@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input } from "@/components/atoms-shadcn";
+import { Button, Input } from "@/components/atoms/shadcn";
 
 interface Props {
   setCsvFile: (f: File | null) => void;

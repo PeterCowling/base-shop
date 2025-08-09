@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Button } from "../atoms-shadcn";
+import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { ProductBadge } from "../atoms/ProductBadge";
 import type { MediaItem } from "../molecules/MediaSelector";

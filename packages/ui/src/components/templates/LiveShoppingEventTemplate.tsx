@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Button, Input } from "../atoms-shadcn";
+import { Button, Input } from "../atoms/shadcn";
 import type { Product } from "../organisms/ProductCard";
 import { ProductCard } from "../organisms/ProductCard";
 

@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Button } from "../atoms-shadcn";
+import { Button } from "../atoms/shadcn";
 export function CheckoutTemplate({ steps, initialStep = 0, onStepChange, onComplete, className, ...props }) {
     const [step, setStep] = React.useState(initialStep);
     React.useEffect(() => {

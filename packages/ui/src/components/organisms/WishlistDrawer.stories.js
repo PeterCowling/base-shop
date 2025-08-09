@@ -1,5 +1,5 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import { Button } from "../atoms-shadcn";
+import { Button } from "../atoms/shadcn";
 import { WishlistDrawer } from "./WishlistDrawer";
 const items = [
     {

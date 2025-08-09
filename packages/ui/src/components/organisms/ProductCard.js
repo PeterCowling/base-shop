@@ -3,7 +3,7 @@ import Image from "next/image";
 import * as React from "react";
 import { boxProps } from "../../utils/boxProps";
 import { cn } from "../../utils/cn";
-import { Button } from "../atoms-shadcn";
+import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 export const ProductCard = React.forwardRef(({ product, onAddToCart, showImage = true, showPrice = true, ctaLabel = "Add to cart", padding = "p-4", width, height, margin, className, ...props }, ref) => {
     const { classes, style } = boxProps({ width, height, padding, margin });

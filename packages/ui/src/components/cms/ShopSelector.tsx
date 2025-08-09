@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../atoms-shadcn";
+} from "../atoms/shadcn";
 
 export default function ShopSelector() {
   const [shops, setShops] = useState<string[]>([]);

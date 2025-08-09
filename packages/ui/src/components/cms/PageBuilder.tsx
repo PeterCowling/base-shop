@@ -29,7 +29,7 @@ import {
 } from "react";
 import { ulid } from "ulid";
 import { z } from "zod";
-import { Button } from "../atoms-shadcn";
+import { Button } from "../atoms/shadcn";
 import CanvasItem from "./page-builder/CanvasItem";
 import ComponentEditor from "./page-builder/ComponentEditor";
 import Palette from "./page-builder/Palette";

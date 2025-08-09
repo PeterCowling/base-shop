@@ -4,7 +4,7 @@ import { getShopFromPath } from "@platform-core/utils/getShopFromPath";
 import { replaceShopInPath } from "@platform-core/utils/replaceShopInPath";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../atoms-shadcn";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../atoms/shadcn";
 export default function ShopSelector() {
     const [shops, setShops] = useState([]);
     const [status, setStatus] = useState("loading");

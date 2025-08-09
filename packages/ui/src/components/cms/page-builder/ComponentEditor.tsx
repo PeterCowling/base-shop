@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../atoms-shadcn";
+} from "../../atoms/shadcn";
 import ContactFormEditor from "./ContactFormEditor";
 import GalleryEditor from "./GalleryEditor";
 import ImageBlockEditor from "./ImageBlockEditor";

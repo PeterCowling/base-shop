@@ -15,7 +15,7 @@ import ContactFormWithMap from "@/components/cms/blocks/ContactFormWithMap";
 import Gallery from "@/components/cms/blocks/Gallery";
 import Testimonials from "@/components/cms/blocks/Testimonials";
 import TestimonialSlider from "@/components/cms/blocks/TestimonialSlider";
-import { Textarea as TextBlock } from "@/components/ui/textarea";
+import { Textarea as TextBlock } from "@/components/atoms/primitives/textarea";
 
 import { PRODUCTS } from "@platform-core/src/products";
 import type { PageComponent, SKU } from "@types";

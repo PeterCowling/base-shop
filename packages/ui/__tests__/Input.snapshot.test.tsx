@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { Input } from "../components/atoms-shadcn";
+import { Input } from "../components/atoms/shadcn";
 
 describe("Input snapshots", () => {
   it("renders basic", () => {

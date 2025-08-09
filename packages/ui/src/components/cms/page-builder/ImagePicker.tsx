@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
   Input,
-} from "../../atoms-shadcn";
+} from "../../atoms/shadcn";
 import useMediaLibrary from "./useMediaLibrary";
 
 interface Props {

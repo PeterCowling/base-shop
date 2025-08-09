@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
+} from "../atoms/primitives/table";
 
 export interface Column<T> {
   header: string;

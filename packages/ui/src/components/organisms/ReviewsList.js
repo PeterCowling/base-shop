@@ -2,8 +2,8 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { RatingStars } from "../atoms/RatingStars";
-import { Input } from "../ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../ui/select";
+import { Input } from "../atoms/primitives/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../atoms/primitives/select";
 /**
  * Display a list of product reviews with author and rating.
  */

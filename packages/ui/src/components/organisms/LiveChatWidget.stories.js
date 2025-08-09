@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Input, } from "../atoms-shadcn";
+import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Input, } from "../atoms/shadcn";
 import { LiveChatWidget } from "./LiveChatWidget";
 function FakeLiveChatWidget(props) {
     const [open, setOpen] = React.useState(false);

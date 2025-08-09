@@ -3,8 +3,8 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Button } from "../ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../ui/select";
+import { Button } from "../atoms/primitives/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../atoms/primitives/select";
 export function FilterSidebar({ onChange, width = "w-64", }) {
     const [open, setOpen] = React.useState(false);
     const [size, setSize] = React.useState("");

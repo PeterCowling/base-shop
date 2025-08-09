@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { CartProvider, useCart } from "@/contexts/CartContext";
 import * as React from "react";
-import { Button } from "../atoms-shadcn";
+import { Button } from "../atoms/shadcn";
 import { MiniCart } from "./MiniCart.client";
 const sku1 = {
     id: "1",

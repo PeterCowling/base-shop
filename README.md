@@ -31,6 +31,7 @@ Key points:
 2. **Run the app**
 
    ```bash
+   pnpm validate-env <id>
    cd apps/shop-<id>
    pnpm dev
    ```
@@ -44,6 +45,7 @@ Key points:
 ```bash
 pnpm create-shop demo
 pnpm setup-ci demo  # optional
+pnpm validate-env demo
 cd apps/shop-demo
 pnpm dev
 ```

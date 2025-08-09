@@ -1,5 +1,5 @@
 import fs from "fs";
-import { createShop } from "../createShop";
+import { createShop } from "../src/createShop";
 
 jest.mock("fs");
 jest.mock("child_process", () => ({ spawnSync: jest.fn() }));
@@ -10,7 +10,11 @@ describe("createShop", () => {
   beforeEach(() => {
     jest.resetAllMocks();
     fsMock.existsSync.mockImplementation((p: fs.PathLike) => {
-      return !String(p).includes("data/shops");
+      const file = String(p);
+      if (file.includes("data/shops") || file.includes("apps/")) {
+        return false;
+      }
+      return true;
     });
     fsMock.readdirSync.mockReturnValue(
       [] as unknown as ReturnType<typeof fs.readdirSync>
@@ -25,6 +29,9 @@ describe("createShop", () => {
       }
       if (file.endsWith("globals.css")) {
         return "@import '@themes/base/tokens.css';";
+      }
+      if (file.includes("packages/themes/base/tokens.ts")) {
+        return "export const tokens = { foo: { light: '#fff' } };";
       }
       return "";
     });
@@ -62,10 +69,33 @@ describe("createShop", () => {
 
   it("throws when template missing", () => {
     fsMock.existsSync.mockImplementation((p: fs.PathLike) => {
-      return !String(p).includes("missing-template");
+      const file = String(p);
+      if (file.includes("data/shops") || file.includes("apps/")) {
+        return false;
+      }
+      return !file.includes("missing-template");
     });
     expect(() => createShop("id", { template: "missing-template" })).toThrow(
       "Template 'missing-template'"
     );
+  });
+
+  it("normalizes a valid shop id", () => {
+    createShop("  store_3 ", {});
+    const envCall = fsMock.writeFileSync.mock.calls.find((c) =>
+      String(c[0]).includes(".env")
+    );
+    expect(envCall).toBeTruthy();
+    const content = envCall![1] as string;
+    expect(content).toContain("NEXT_PUBLIC_SHOP_ID=store_3");
+    expect(fsMock.cpSync).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.stringContaining("apps/store_3"),
+      expect.any(Object)
+    );
+  });
+
+  it("throws for invalid shop id", () => {
+    expect(() => createShop("bad/name", {})).toThrow("Invalid shop name");
   });
 });

@@ -96,10 +96,17 @@ const CanvasItem = memo(function CanvasItem({
 }) {
   const selected = selectedId === component.id;
 
-  const { attributes, listeners, setNodeRef, transform } = useSortable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    isDragging,
+  } = useSortable({
     id: component.id,
     data: { from: "canvas", index, parentId },
   });
+  const { onKeyDown, onKeyUp, onPointerDown } = listeners ?? {};
 
   const containerRef = useRef<HTMLDivElement>(null);
   const startRef = useRef<{
@@ -251,7 +258,13 @@ const CanvasItem = memo(function CanvasItem({
         containerRef.current = node;
       }}
       {...attributes}
-      {...listeners}
+      role="button"
+      tabIndex={0}
+      aria-grabbed={isDragging}
+      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
+      onPointerDown={onPointerDown}
+      title="Press space or enter to grab, then use arrow keys to move; press space or enter again to drop"
       onPointerDownCapture={(e) => {
         onSelectId(component.id);
         startMove(e);

@@ -41,16 +41,29 @@ const PaletteItem = memo(function PaletteItem({
 }: {
   type: PageComponent["type"];
 }) {
-  const { attributes, listeners, setNodeRef, transform } = useSortable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    isDragging,
+  } = useSortable({
     id: type,
     data: { from: "palette", type },
   });
+  const { onKeyDown, onKeyUp, onPointerDown } = listeners ?? {};
 
   return (
     <div
       ref={setNodeRef}
       {...attributes}
-      {...listeners}
+      role="button"
+      tabIndex={0}
+      aria-grabbed={isDragging}
+      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
+      onPointerDown={onPointerDown}
+      title="Press space or enter to grab, then use arrow keys to move; press space or enter again to drop"
       style={{ transform: CSS.Transform.toString(transform) }}
       className="cursor-grab rounded border p-2 text-center text-sm"
     >

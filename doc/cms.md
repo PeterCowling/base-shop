@@ -62,6 +62,9 @@ Open `/cms/shop/{shop}/pages/{slug}/builder` to edit an existing page or
 - Select a block to reveal drag handles, then drag it to a new position.
 - Blocks can be resized directly on the canvas. Adjust margin and padding from
   the side panel before saving.
+- Keyboard users can move items too: focus a block or palette item and press
+  **Space** or **Enter** to grab it, then use the arrow keys to reposition.
+  Press **Space** or **Enter** again to drop the item.
 
 ### Publish changes
 

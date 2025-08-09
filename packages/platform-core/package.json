@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./index.ts"
+    ".": "./index.ts",
+    "./utils": "./src/utils/index.ts"
   },
   "peerDependencies": {
     "next": "^15.0.0",

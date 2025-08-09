@@ -12,10 +12,8 @@ import {
   copyTemplate,
   loadBaseTokens,
   loadThemeTokens,
-  slugify,
-  genSecret,
-  fillLocales,
 } from "./createShop/utils";
+import { slugify, genSecret, fillLocales } from "./utils";
 import { nowIso } from "@shared/date";
 import { defaultFilterMappings } from "./defaultFilterMappings";
 

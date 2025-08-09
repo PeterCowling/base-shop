@@ -1,11 +1,7 @@
-// packages/platform-core/src/createShop/utils.ts
+// packages/platform-core/utils/string.ts
 import { LOCALES } from "@i18n/locales";
 import type { Locale } from "@types";
 import { randomBytes } from "crypto";
-
-export { copyTemplate } from "./utils/copyTemplate";
-export { loadBaseTokens } from "./utils/loadBaseTokens";
-export { loadThemeTokens } from "./utils/loadThemeTokens";
 
 /**
  * Convert a string into a URL-friendly slug.

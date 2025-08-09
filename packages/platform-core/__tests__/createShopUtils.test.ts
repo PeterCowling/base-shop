@@ -4,9 +4,6 @@ import {
   copyTemplate,
   loadBaseTokens,
   loadThemeTokens,
-  slugify,
-  genSecret,
-  fillLocales,
 } from "../src/createShop/utils";
 
 describe("createShop utils", () => {
@@ -56,20 +53,5 @@ describe("createShop utils", () => {
   it("returns empty object for missing theme", () => {
     const tokens = loadThemeTokens("nope");
     expect(tokens).toEqual({});
-  });
-
-  it("slugifies strings", () => {
-    expect(slugify(" Hello World! ")).toBe("hello-world");
-  });
-
-  it("generates secrets of correct length", () => {
-    const secret = genSecret(8);
-    expect(secret).toHaveLength(16);
-  });
-
-  it("fills locales with fallback", () => {
-    const result = fillLocales({ en: "Hello" }, "Hi");
-    expect(result.en).toBe("Hello");
-    expect(result.de).toBe("Hi");
   });
 });

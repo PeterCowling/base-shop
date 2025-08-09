@@ -73,6 +73,13 @@ describe("parseArgs", () => {
     parseArgs(["s", "--type=foo"]);
     expect(sandbox.process.exit).toHaveBeenCalled();
   });
+
+  it("exits on invalid shop name", () => {
+    const { parseArgs, sandbox } = loadParseArgs();
+    parseArgs(["bad/name"]);
+    expect(sandbox.console.error).toHaveBeenCalled();
+    expect(sandbox.process.exit).toHaveBeenCalled();
+  });
 });
 
 function runCli(args: string[]) {
@@ -104,6 +111,12 @@ function runCli(args: string[]) {
 describe("CLI", () => {
   it("exits when theme does not exist", () => {
     const sandbox = runCli(["shop", "--theme=missing"]);
+    expect(sandbox.console.error).toHaveBeenCalled();
+    expect(sandbox.process.exit).toHaveBeenCalledWith(1);
+  });
+
+  it("exits when shop name is invalid", () => {
+    const sandbox = runCli(["bad/name"]);
     expect(sandbox.console.error).toHaveBeenCalled();
     expect(sandbox.process.exit).toHaveBeenCalledWith(1);
   });

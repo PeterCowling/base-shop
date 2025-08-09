@@ -51,6 +51,9 @@ export default function StepShopDetails({
           onChange={(e) => setShopId(e.target.value)}
           placeholder="my-shop"
         />
+        {errors.id && (
+          <p className="text-sm text-red-600">{errors.id[0]}</p>
+        )}
       </label>
       <label className="flex flex-col gap-1">
         <span>Store Name</span>

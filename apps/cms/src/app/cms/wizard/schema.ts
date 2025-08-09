@@ -5,7 +5,7 @@ import { pageComponentSchema } from "@types/Page";
 import type { Locale } from "@types";
 import { ulid } from "ulid";
 import { z } from "zod";
-import { baseTokens } from "./utils";
+import { baseTokens } from "./tokenUtils";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */

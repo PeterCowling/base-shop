@@ -10,7 +10,7 @@ import TranslationsProvider from "@/i18n/Translations";
 import enMessages from "@i18n/en.json";
 import type { PageComponent } from "@types";
 import React, { useEffect, useState } from "react";
-import { STORAGE_KEY } from "./utils";
+import { STORAGE_KEY } from "./storageUtils";
 
 interface Props {
   style: React.CSSProperties;

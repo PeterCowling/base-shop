@@ -6,6 +6,7 @@
   --color-primary: 220 90% 56%;
   --color-primary-fg: 0 0% 100%;
   --color-accent: 260 83% 67%;
+  --color-accent-fg: 0 0% 10%;
   --color-muted: 0 0% 88%;
   --font-sans: "Geist Sans", system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;
@@ -26,6 +27,8 @@
     --color-bg: 0 0% 4%;
     --color-fg: 0 0% 93%;
     --color-primary: 220 90% 66%;
+    --color-accent: 260 83% 70%;
+    --color-accent-fg: 0 0% 100%;
     --color-muted: 0 0% 60%;
   }
 }
@@ -33,5 +36,7 @@ html.theme-dark {
   --color-bg: 0 0% 4%;
   --color-fg: 0 0% 93%;
   --color-primary: 220 90% 66%;
+  --color-accent: 260 83% 70%;
+  --color-accent-fg: 0 0% 100%;
   --color-muted: 0 0% 60%;
 }

@@ -26,8 +26,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const variants: Record<NonNullable<ButtonProps["variant"]>, string> = {
       default: "bg-primary text-white hover:bg-primary/90",
       outline:
-        "border border-input hover:bg-accent hover:text-accent-foreground",
-      ghost: "hover:bg-accent hover:text-accent-foreground",
+        "border border-input hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground",
+      ghost:
+        "hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground",
     };
 
     const Comp = asChild ? Slot : "button";

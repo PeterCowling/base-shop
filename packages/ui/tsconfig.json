@@ -9,9 +9,9 @@
     "emitDeclarationOnly": false,
 
     /* ---------- output locations ---------------------------------- */
-    "rootDir": "src", // <- compiled sources live here
-    "outDir": "dist", // <- JS + d.ts land here
-    "declarationDir": "dist",
+    "rootDir": "./src", // <- compiled sources live here
+    "outDir": "./dist", // <- JS + d.ts land here
+    "declarationDir": "./dist",
     "declarationMap": true,
 
     /* ---------- React / JSX --------------------------------------- */

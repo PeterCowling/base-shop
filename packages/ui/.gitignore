@@ -1,4 +1,0 @@
-# Ignore generated JS and declaration files in source tree
-src/**/*.js
-src/**/*.d.ts
-src/**/*.d.ts.map

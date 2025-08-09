@@ -34,10 +34,10 @@
 /.turbo/
 **/.turbo/
 
-# Generated CMS block builds
-packages/ui/src/components/cms/blocks/*.js
-packages/ui/src/components/cms/blocks/*.d.ts
-packages/ui/src/components/cms/blocks/*.d.ts.map
+# Ignore generated files from UI package source directory
+packages/ui/src/**/*.js
+packages/ui/src/**/*.d.ts
+packages/ui/src/**/*.d.ts.map
 
 # ---------------------------
 # Misc

@@ -22,4 +22,52 @@ describe("DynamicRenderer", () => {
 
     expect(screen.getByText("hello")).toBeInTheDocument();
   });
+
+  it("renders nested components recursively", () => {
+    const components: PageComponent[] = [
+      {
+        id: "1",
+        type: "Section",
+        children: [
+          {
+            id: "2",
+            type: "Text",
+            text: { en: "nested" },
+            locale: "en",
+          } as any,
+        ],
+      } as any,
+    ];
+
+    render(<DynamicRenderer components={components} />);
+
+    expect(screen.getByText("nested")).toBeInTheDocument();
+  });
+
+  it("applies style props to wrapper div", () => {
+    const components: PageComponent[] = [
+      {
+        id: "1",
+        type: "Text",
+        text: { en: "styled" },
+        locale: "en",
+        margin: "1px",
+        padding: "2px",
+        position: "absolute",
+        top: "3px",
+        left: "4px",
+      } as any,
+    ];
+
+    const { container } = render(<DynamicRenderer components={components} />);
+    const wrapper = container.firstChild as HTMLElement;
+
+    expect(wrapper).toHaveStyle({
+      margin: "1px",
+      padding: "2px",
+      position: "absolute",
+      top: "3px",
+      left: "4px",
+    });
+  });
 });

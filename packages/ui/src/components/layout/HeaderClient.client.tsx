@@ -4,6 +4,7 @@ import { useCart } from "@platform-core/src/contexts/CartContext";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "../../utils/cn";
+import ThemeToggle from "../ThemeToggle";
 
 export default function HeaderClient({
   lang,
@@ -43,6 +44,7 @@ export default function HeaderClient({
             {item.label}
           </Link>
         ))}
+        <ThemeToggle />
         <Link href={`/${lang}/checkout`} className="relative hover:underline">
           Cart
           {qty > 0 && (

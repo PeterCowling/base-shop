@@ -1,11 +1,13 @@
 // apps/cms/src/actions/updateProduct.ts
 "use server";
 
+import { LOCALES } from "@acme/i18n";
 import { ProductPublication } from "@platform-core/products";
 import {
   getProductById,
   updateProductInRepo,
 } from "@platform-core/repositories/json.server";
+import type { Locale } from "@types";
 
 /**
  * Server Action: patch an existing product (optimistic locking).
@@ -29,9 +31,14 @@ export async function updateProduct(
   /* ------------------------------------------------------------------ */
   /*  Merge patch                                                       */
   /* ------------------------------------------------------------------ */
+  const title = { ...current.title };
+  LOCALES.forEach((l) => {
+    const v = formData.get(`title_${l}`);
+    if (typeof v === "string") title[l as Locale] = v;
+  });
   const updated: ProductPublication = {
     ...current,
-    title: { ...current.title, en: String(formData.get("title_en")) },
+    title,
     price: Number(formData.get("price")),
     row_version: (current.row_version ?? 0) + 1,
   };

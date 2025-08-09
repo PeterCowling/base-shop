@@ -97,7 +97,20 @@ export async function updateProduct(
   await ensureAuthorized();
 
   const formEntries = Object.fromEntries(formData.entries());
-  const parsed = productSchema.safeParse(formEntries);
+  const locales = await getLocales(shop);
+  const title: Record<Locale, string> = {} as Record<Locale, string>;
+  const description: Record<Locale, string> = {} as Record<Locale, string>;
+  locales.forEach((l) => {
+    title[l] = String(formEntries[`title_${l}`] ?? "");
+    description[l] = String(formEntries[`desc_${l}`] ?? "");
+  });
+
+  const parsed = productSchema.safeParse({
+    id: formEntries.id,
+    price: formEntries.price,
+    title,
+    description,
+  });
   if (!parsed.success) {
     const { fieldErrors } = parsed.error.flatten();
     const productId = String(formData.get("id") ?? "");
@@ -110,22 +123,10 @@ export async function updateProduct(
   const current = await getProductById(shop, id);
   if (!current) throw new Error(`Product ${id} not found in ${shop}`);
 
-  const nextTitle = { ...current.title };
-  const nextDesc = { ...current.description };
-
-  const locales = await getLocales(shop);
-
-  locales.forEach((l) => {
-    const t = data[`title_${l}` as keyof ProductForm];
-    const d = data[`desc_${l}` as keyof ProductForm];
-    if (typeof t === "string") nextTitle[l] = t;
-    if (typeof d === "string") nextDesc[l] = d as string;
-  });
-
   const updated: ProductPublication = {
     ...current,
-    title: nextTitle,
-    description: nextDesc,
+    title: { ...current.title, ...data.title },
+    description: { ...current.description, ...data.description },
     price,
     row_version: current.row_version + 1,
     updated_at: nowIso(),

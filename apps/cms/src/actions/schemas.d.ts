@@ -1,10 +1,20 @@
+import { localeSchema } from "@types";
 import { z } from "zod";
-export declare const productSchema: z.ZodObject<{} & {
-    [x: string]: z.ZodTypeAny;
+export declare const productSchema: z.ZodObject<{
+    id: z.ZodString;
+    price: z.ZodEffects<z.ZodNumber, number, string | number>;
+    title: z.ZodRecord<typeof localeSchema, z.ZodString>;
+    description: z.ZodRecord<typeof localeSchema, z.ZodString>;
 }, "strip", z.ZodTypeAny, {
-    [x: string]: any;
+    id: string;
+    price: number;
+    title: Record<z.infer<typeof localeSchema>, string>;
+    description: Record<z.infer<typeof localeSchema>, string>;
 }, {
-    [x: string]: any;
+    id: string;
+    price: string | number;
+    title: Record<z.infer<typeof localeSchema>, string>;
+    description: Record<z.infer<typeof localeSchema>, string>;
 }>;
 export declare const shopSchema: z.ZodObject<{
     id: z.ZodString;

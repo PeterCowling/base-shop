@@ -250,12 +250,7 @@ const CanvasItem = memo(function CanvasItem({
         setNodeRef(node);
         containerRef.current = node;
       }}
-      {...attributes}
-      {...listeners}
-      onPointerDownCapture={(e) => {
-        onSelectId(component.id);
-        startMove(e);
-      }}
+      onClick={() => onSelectId(component.id)}
       style={{
         transform: CSS.Transform.toString(transform),
         ...(component.width ? { width: component.width } : {}),
@@ -270,6 +265,16 @@ const CanvasItem = memo(function CanvasItem({
         "relative rounded border" + (selected ? " ring-2 ring-blue-500" : "")
       }
     >
+      <div
+        className="absolute left-0 top-0 z-10 h-3 w-3 cursor-move bg-gray-200"
+        {...attributes}
+        {...listeners}
+        onPointerDown={(e) => {
+          e.stopPropagation();
+          onSelectId(component.id);
+          startMove(e);
+        }}
+      />
       {component.type === "Text" ? (
         editing ? (
           <div onBlur={finishEdit} onClick={(e) => e.stopPropagation()}>

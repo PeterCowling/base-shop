@@ -12,6 +12,7 @@ import { revertSeo } from "@cms/actions/shops.server";
 import type { SettingsDiffEntry } from "@platform-core/repositories/settings.server";
 import { diffHistory } from "@platform-core/repositories/settings.server";
 import { useEffect, useState } from "react";
+import { formatTimestamp } from "@/lib/date";
 
 interface VersionTimelineProps {
   /** Shop identifier */
@@ -66,7 +67,7 @@ export default function VersionTimeline({
                 <li key={entry.timestamp} className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground font-mono text-xs">
-                      {new Date(entry.timestamp).toLocaleString()}
+                      {formatTimestamp(entry.timestamp)}
                     </span>
                     <Button
                       variant="outline"

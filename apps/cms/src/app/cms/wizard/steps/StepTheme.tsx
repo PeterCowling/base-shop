@@ -7,8 +7,8 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/atoms-shadcn";
-import StyleEditor from "@/components/cms/StyleEditor";
+  StyleEditor,
+} from "@ui";
 import { useState } from "react";
 import WizardPreview from "../WizardPreview";
 

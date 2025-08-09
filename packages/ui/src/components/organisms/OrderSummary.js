@@ -1,7 +1,7 @@
 // packages/ui/components/organisms/OrderSummary.tsx
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useCart } from "@/hooks/useCart";
+import { useCart } from "@ui";
 import React, { useMemo } from "react";
 /**
  * Displays a breakdown of the current cart: line items, subtotal,

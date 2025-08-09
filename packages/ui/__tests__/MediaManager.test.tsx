@@ -1,9 +1,11 @@
 import { deleteMedia } from "@cms/actions/media.server";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
-import MediaManager from "../components/cms/MediaManager";
+import { useImageOrientationValidation, MediaManager } from "@ui";
 
-jest.mock("@ui/hooks/useImageOrientationValidation");
+jest.mock("@ui", () => ({
+  ...jest.requireActual("@ui"),
+  useImageOrientationValidation: jest.fn(),
+}));
 jest.mock("@cms/actions/media.server");
 
 const mockHook = useImageOrientationValidation as jest.MockedFunction<

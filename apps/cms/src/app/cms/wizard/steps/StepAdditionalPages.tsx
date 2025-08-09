@@ -8,16 +8,16 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/atoms-shadcn";
-import PageBuilder from "@/components/cms/PageBuilder";
+} from "@ui";
+import { PageBuilder } from "@ui";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
 import { historyStateSchema } from "@types";
-import { fetchJson } from "@ui/utils/fetchJson";
+import { fetchJson } from "@ui";
 import { ulid } from "ulid";
 import { useEffect, useState } from "react";
 import { toPageInfo } from "../utils/page-utils";
-import { Toast } from "@/components/atoms";
+import { Toast } from "@ui";
 
 import type { PageInfo } from "../schema";
 

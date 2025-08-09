@@ -23,7 +23,7 @@ export { QAModule } from "./QAModule";
 export { RecommendationCarousel } from "./RecommendationCarousel";
 export { ReviewsList } from "./ReviewsList";
 export { SideNav } from "./SideNav";
-export { StatsGrid } from "./StatsGrid";
+export { StatsGrid, type StatItem } from "./StatsGrid";
 export { StickyAddToCartBar } from "./StickyAddToCartBar";
 export { StoreLocatorMap } from "./StoreLocatorMap";
 export { WishlistDrawer } from "./WishlistDrawer";

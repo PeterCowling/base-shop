@@ -5,7 +5,7 @@ Small building blocks used throughout the UI.
 Shadcn-based primitives live in a sibling directory named `atoms-shadcn`. These wrappers expose the original shadcn/ui look and feel while fitting into our Atomic Design layers. Import them directly when you need the stock shadcn styles:
 
 ```ts
-import { Button } from "@/components/atoms-shadcn";
+import { Button } from "@ui";
 
 ```
 
@@ -13,8 +13,8 @@ If you need an in-house atom alongside a shadcn wrapper, alias the
 wrapper so its origin is obvious:
 
 ```ts
-import { Button } from "@/components/atoms";
-import { Button as ShButton } from "@/components/atoms-shadcn";
+import { Button } from "@ui";
+import { Button as ShButton } from "@ui";
 ```
 
 In-house atoms continue to live in this folder.

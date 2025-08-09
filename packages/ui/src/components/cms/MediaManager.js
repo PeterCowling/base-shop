@@ -1,9 +1,9 @@
 // packages/ui/components/cms/MediaManager.tsx
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Input } from "@/components/atoms-shadcn";
+import { Input } from "@ui";
 import { deleteMedia } from "@cms/actions/media.server";
-import { useMediaUpload } from "@ui/hooks/useMediaUpload";
+import { useMediaUpload } from "@ui";
 import { useCallback, useState } from "react";
 import MediaFileList from "./MediaFileList";
 export default function MediaManager({ shop, initialFiles }) {

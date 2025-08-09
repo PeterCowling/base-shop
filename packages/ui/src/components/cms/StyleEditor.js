@@ -1,8 +1,7 @@
 // packages/ui/components/cms/StyleEditor.tsx
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Input } from "@/components/atoms-shadcn";
-import { useTokenEditor } from "@ui/hooks/useTokenEditor";
+import { Input, useTokenEditor } from "@ui";
 import { ColorInput, FontSelect, RangeInput } from "./index";
 export default function StyleEditor({ tokens, onChange }) {
     const { colors, fonts, others, sansFonts, monoFonts, googleFonts, newFont, setNewFont, setToken, handleUpload, addCustomFont, setGoogleFont, } = useTokenEditor(tokens, onChange);

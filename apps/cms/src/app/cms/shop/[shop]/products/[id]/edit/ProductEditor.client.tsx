@@ -4,7 +4,7 @@
 import { updateProduct } from "@cms/actions/products.server";
 import type { ProductPublication } from "@platform-core/products";
 import type { Locale } from "@types";
-import ProductEditorForm from "@ui/components/cms/ProductEditorForm";
+import { ProductEditorForm } from "@ui";
 
 interface Props {
   shop: string;

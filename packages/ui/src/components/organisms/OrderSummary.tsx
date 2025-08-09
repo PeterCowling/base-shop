@@ -1,7 +1,7 @@
 // packages/ui/components/organisms/OrderSummary.tsx
 "use client";
 
-import { useCart } from "@/hooks/useCart";
+import { useCart } from "@ui";
 import type { CartLine } from "@types";
 import React, { useMemo } from "react";
 

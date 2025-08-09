@@ -1,9 +1,9 @@
 "use client";
 
-import { Tooltip } from "@/components/atoms";
-import { Input, Textarea } from "@/components/atoms-shadcn";
+import { Tooltip } from "@ui";
+import { Input, Textarea } from "@ui";
 import type { Locale } from "@types";
-import { cn } from "@ui/src/utils/cn";
+import { cn } from "@ui";
 import type { SeoRecord } from "./useSeoForm";
 
 interface Props {

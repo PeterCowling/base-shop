@@ -4,18 +4,19 @@
 import NextImage, { ImageProps } from "next/image";
 import React from "react";
 
-import HeroBanner from "@/components/cms/blocks/HeroBanner";
-import ReviewsCarousel from "@/components/home/ReviewsCarousel";
-import { ValueProps } from "@/components/home/ValueProps";
+import {
+  HeroBanner,
+  ReviewsCarousel,
+  ValueProps,
+  BlogListing,
+  ContactForm,
+  ContactFormWithMap,
+  Gallery,
+  Testimonials,
+  TestimonialSlider,
+  Textarea as TextBlock,
+} from "@ui";
 import { ProductGrid } from "@platform-core/src/components/shop/ProductGrid";
-
-import BlogListing from "@/components/cms/blocks/BlogListing";
-import ContactForm from "@/components/cms/blocks/ContactForm";
-import ContactFormWithMap from "@/components/cms/blocks/ContactFormWithMap";
-import Gallery from "@/components/cms/blocks/Gallery";
-import Testimonials from "@/components/cms/blocks/Testimonials";
-import TestimonialSlider from "@/components/cms/blocks/TestimonialSlider";
-import { Textarea as TextBlock } from "@/components/ui/textarea";
 
 import { PRODUCTS } from "@platform-core/src/products";
 import type { PageComponent, SKU } from "@types";

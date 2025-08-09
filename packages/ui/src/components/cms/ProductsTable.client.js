@@ -2,7 +2,7 @@
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { deleteProduct, duplicateProduct } from "@cms/actions/products.server";
-import { useProductFilters } from "@ui/hooks/useProductFilters";
+import { useProductFilters } from "@ui";
 import Link from "next/link";
 import { memo, useCallback, useMemo } from "react";
 import DataTable from "./DataTable";

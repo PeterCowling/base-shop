@@ -93,9 +93,6 @@ module.exports = {
       "<rootDir>/test/__mocks__/currencyContextMock.tsx",
 
     // component stubs – structure isn’t under test
-    "^@ui/components/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
-    "^@ui/atoms/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
-    "^@ui/molecules/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
     "^@platform-core/components/(.*)$":
       "<rootDir>/test/__mocks__/componentStub.js",
 

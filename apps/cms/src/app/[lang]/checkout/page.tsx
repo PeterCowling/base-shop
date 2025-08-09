@@ -1,6 +1,5 @@
 // apps/cms/src/app/[lang]/checkout/page.tsx
-import CheckoutForm from "@/components/checkout/CheckoutForm";
-import OrderSummary from "@/components/organisms/OrderSummary";
+import { CheckoutForm, OrderSummary } from "@ui";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { cookies } from "next/headers";

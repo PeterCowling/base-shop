@@ -4,7 +4,7 @@ import { createPage } from "@cms/actions/pages.server";
 import type { Page } from "@types";
 import dynamic from "next/dynamic";
 
-const PageBuilder = dynamic(() => import("@/components/cms/PageBuilder"));
+const PageBuilder = dynamic(() => import("@ui").then((m) => m.PageBuilder));
 void PageBuilder;
 
 export const revalidate = 0;

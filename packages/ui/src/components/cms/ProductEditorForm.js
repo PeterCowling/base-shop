@@ -1,8 +1,7 @@
 /* packages/ui/components/cms/ProductEditorForm.tsx */
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Button, Card, CardContent, Input } from "@/components/atoms-shadcn";
-import { useProductEditorFormState } from "@ui/hooks/useProductEditorFormState";
+import { Button, Card, CardContent, Input, useProductEditorFormState } from "@ui";
 import MultilingualFields from "./MultilingualFields";
 import PublishLocationSelector from "./PublishLocationSelector";
 /* -------------------------------------------------------------------------- */

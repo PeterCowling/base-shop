@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import PageBuilder from "@/components/cms/PageBuilder";
+import { PageBuilder } from "@ui";
 
 describe("PageBuilder history persistence", () => {
   const basePage = {

@@ -1,5 +1,5 @@
 // apps/cms/src/app/cms/rbac/page.tsx
-import { Button, Input } from "@/components/atoms-shadcn";
+import { Button, Input } from "@ui";
 import {
   inviteUser,
   listUsers,

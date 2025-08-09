@@ -42,7 +42,7 @@ entrypoint so they can be used from molecules, organisms, templates and
 pages just like our in‑house atoms:
 
 ```ts
-import { Button } from "@/components/atoms-shadcn";
+import { Button } from "@ui";
 ```
 
 All other atoms in `packages/ui/components/atoms` are developed in
@@ -57,8 +57,8 @@ counterparts. When using a shadcn wrapper alongside an in‑house atom of
 the same name, alias the import to keep the origin obvious:
 
 ```ts
-import { Button } from "@/components/atoms";
-import { Button as ShButton } from "@/components/atoms-shadcn";
+import { Button } from "@ui";
+import { Button as ShButton } from "@ui";
 ```
 
 This avoids confusion for new contributors while keeping the API

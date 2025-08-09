@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import type { PageComponent } from "@types";
 import { getPages } from "@platform-core/repositories/pages/index.server";
-import DynamicRenderer from "@ui/components/DynamicRenderer";
+import { DynamicRenderer } from "@ui";
 import shop from "../../../../shop.json";
 
 async function loadComponents(slug: string): Promise<PageComponent[] | null> {

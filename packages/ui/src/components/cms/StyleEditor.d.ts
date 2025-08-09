@@ -1,4 +1,4 @@
-import { type TokenMap } from "@ui/hooks/useTokenEditor";
+import { type TokenMap } from "@ui";
 interface StyleEditorProps {
     tokens: TokenMap;
     onChange: (tokens: TokenMap) => void;

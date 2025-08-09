@@ -1,8 +1,7 @@
 // packages/ui/components/cms/PublishLocationSelector.tsx
 "use client";
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { Button, Input } from "@/components/atoms-shadcn";
-import { usePublishLocations } from "@ui/hooks/usePublishLocations";
+import { Button, Input, usePublishLocations } from "@ui";
 import { memo, useCallback } from "react";
 const equal = (p, n) => p.selectedIds === n.selectedIds &&
     p.onChange === n.onChange &&

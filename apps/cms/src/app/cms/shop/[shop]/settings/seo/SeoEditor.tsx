@@ -1,5 +1,5 @@
 "use client";
-import { Button, Input, Textarea } from "@/components/atoms-shadcn";
+import { Button, Input, Textarea } from "@ui";
 import { setFreezeTranslations, updateSeo } from "@cms/actions/shops.server";
 import type { Locale } from "@types";
 import { ChangeEvent, FormEvent, useState } from "react";

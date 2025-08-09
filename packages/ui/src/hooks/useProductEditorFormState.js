@@ -1,6 +1,4 @@
-import { useImageUpload } from "@ui/hooks/useImageUpload";
-import { usePublishLocations } from "@ui/hooks/usePublishLocations";
-import { parseMultilingualInput } from "@ui/utils/multilingual";
+import { useImageUpload, usePublishLocations, parseMultilingualInput } from "@ui";
 import { useCallback, useMemo, useState, } from "react";
 /* ------------------------------------------------------------------ */
 /* Main hook                                                          */

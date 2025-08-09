@@ -1,11 +1,13 @@
 import { act, render, renderHook } from "@testing-library/react";
-import ImageUploaderWithOrientationCheck from "@ui/components/cms/ImageUploaderWithOrientationCheck";
+import { ImageUploaderWithOrientationCheck } from "@ui";
 import { useImageUpload } from "../useImageUpload";
 
-jest.mock("@ui/components/cms/ImageUploaderWithOrientationCheck", () => {
+jest.mock("@ui", () => {
+  const original = jest.requireActual("@ui");
   return {
     __esModule: true,
-    default: jest.fn(({ file }: { file: File | null }) => (
+    ...original,
+    ImageUploaderWithOrientationCheck: jest.fn(({ file }: { file: File | null }) => (
       <div data-testid="uploader">{file ? file.name : "none"}</div>
     )),
   };

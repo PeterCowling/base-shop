@@ -1,5 +1,5 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import ImageUploaderWithOrientationCheck from "@ui/components/cms/ImageUploaderWithOrientationCheck";
+import { ImageUploaderWithOrientationCheck } from "@ui";
 import { useMemo, useState } from "react";
 /**
  * Provides image–upload state plus a ready-made uploader component.

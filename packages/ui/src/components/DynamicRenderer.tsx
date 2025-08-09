@@ -3,7 +3,8 @@
 "use client";
 
 import { blockRegistry } from "@/components/cms/blocks";
-import type { PageComponent } from "@types";
+import { PRODUCTS } from "@platform-core/src/products";
+import type { PageComponent, SKU } from "@types";
 import type { ReactNode, CSSProperties } from "react";
 
 export default function DynamicRenderer({
@@ -41,9 +42,14 @@ export default function DynamicRenderer({
       left,
     };
 
+    let extraProps: Record<string, unknown> = {};
+    if (block.type === "ProductGrid") {
+      extraProps = { skus: PRODUCTS as SKU[] };
+    }
+
     return (
       <div key={id} style={style}>
-        <Comp {...props}>
+        <Comp {...props} {...extraProps}>
           {children?.map((child: PageComponent) => renderBlock(child))}
         </Comp>
       </div>

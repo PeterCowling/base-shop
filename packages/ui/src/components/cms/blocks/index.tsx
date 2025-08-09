@@ -9,6 +9,8 @@ import ReviewsCarousel from "./ReviewsCarousel";
 import TestimonialSlider from "./TestimonialSlider";
 import Testimonials from "./Testimonials";
 import ValueProps from "./ValueProps";
+import Section from "./Section";
+import { NewsletterForm, PromoBanner, CategoryList } from "./molecules";
 
 export {
   BlogListing,
@@ -22,6 +24,10 @@ export {
   Testimonials,
   TestimonialSlider,
   ValueProps,
+  NewsletterForm,
+  PromoBanner,
+  CategoryList,
+  Section,
 };
 
 export * from "./atoms";

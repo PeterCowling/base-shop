@@ -2,13 +2,25 @@
 
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";
+import DynamicRenderer from "@ui/components/DynamicRenderer";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
+import { getPages } from "@platform-core/repositories/pages/index.server";
+import type { PageComponent } from "@types";
 import { cookies } from "next/headers";
+import shop from "../../../../shop.json";
 
 export const metadata = {
   title: "Checkout · Base-Shop",
 };
+
+async function loadComponents(): Promise<PageComponent[] | null> {
+  const pages = await getPages(shop.id);
+  const page = pages.find(
+    (p) => p.slug === "checkout" && p.status === "published"
+  );
+  return page?.components ?? null;
+}
 
 /**
  * Next 15 delivers `params` as a Promise, and `cookies()` is async in
@@ -32,6 +44,17 @@ export default async function CheckoutPage({
     return <p className="p-8 text-center">Your cart is empty.</p>;
   }
 
+  const components = await loadComponents();
+  if (components && components.length) {
+    return (
+      <DynamicRenderer
+        components={components}
+        locale={lang}
+        runtimeData={{ OrderSummary: { cart } }}
+      />
+    );
+  }
+
   /* ---------- render ---------- */
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
@@ -40,3 +63,4 @@ export default async function CheckoutPage({
     </div>
   );
 }
+

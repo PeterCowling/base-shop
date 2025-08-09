@@ -11,9 +11,11 @@ import type { CSSProperties, ReactNode } from "react";
 export default function DynamicRenderer({
   components,
   locale,
+  runtimeData,
 }: {
   components: PageComponent[];
   locale: Locale;
+  runtimeData?: Record<string, Record<string, unknown>>;
 }) {
   const renderBlock = (block: PageComponent): ReactNode => {
     const Comp = blockRegistry[block.type as keyof typeof blockRegistry];
@@ -48,6 +50,10 @@ export default function DynamicRenderer({
     let extraProps: Record<string, unknown> = {};
     if (block.type === "ProductGrid") {
       extraProps = { skus: PRODUCTS as SKU[] };
+    }
+
+    if (runtimeData && runtimeData[block.type]) {
+      extraProps = { ...extraProps, ...runtimeData[block.type] };
     }
 
     return (

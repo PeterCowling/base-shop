@@ -8,6 +8,7 @@ import * as path from "node:path";
 import { ulid } from "ulid";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "./utils";
+import { nowIso } from "../../../shared/date";
 
 function ordersPath(shop: string): string {
   shop = validateShopName(shop);
@@ -54,7 +55,7 @@ export async function addOrder(
     shop,
     deposit,
     expectedReturnDate,
-    startedAt: new Date().toISOString(),
+    startedAt: nowIso(),
   };
   orders.push(order);
   await writeOrders(shop, orders);
@@ -69,7 +70,7 @@ export async function markReturned(
   const orders = await readOrders(shop);
   const idx = orders.findIndex((o) => o.sessionId === sessionId);
   if (idx === -1) return null;
-  orders[idx].returnedAt = new Date().toISOString();
+  orders[idx].returnedAt = nowIso();
   if (typeof damageFee === "number") {
     orders[idx].damageFee = damageFee;
   }
@@ -84,7 +85,7 @@ export async function markRefunded(
   const orders = await readOrders(shop);
   const idx = orders.findIndex((o) => o.sessionId === sessionId);
   if (idx === -1) return null;
-  orders[idx].refundedAt = new Date().toISOString();
+  orders[idx].refundedAt = nowIso();
   await writeOrders(shop, orders);
   return orders[idx];
 }

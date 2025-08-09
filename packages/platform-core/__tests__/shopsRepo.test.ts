@@ -6,11 +6,7 @@ import os from "node:os";
 import path from "node:path";
 
 async function withRepo(
-  cb: (
-    repo: typeof import("../repositories/settings.server"),
-    shop: string,
-    dir: string
-  ) => Promise<void>
+  cb: (shop: string, dir: string) => Promise<void>
 ): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shops-"));
   const shopDir = path.join(dir, "data", "shops", "test");
@@ -20,9 +16,8 @@ async function withRepo(
   process.chdir(dir);
   jest.resetModules();
 
-  const repo = await import("../repositories/settings.server");
   try {
-    await cb(repo, "test", dir);
+    await cb("test", dir);
   } finally {
     process.chdir(cwd);
   }
@@ -30,7 +25,10 @@ async function withRepo(
 
 describe("shops repository", () => {
   it("returns defaults when settings file missing", async () => {
-    await withRepo(async (repo, shop) => {
+    await withRepo(async (shop) => {
+      const now = "2024-01-01T00:00:00.000Z";
+      jest.doMock("../../shared/date", () => ({ nowIso: () => now }));
+      const repo = await import("../repositories/settings.server");
       const settings = await repo.getShopSettings(shop);
       expect(settings.languages).toEqual(["en", "de", "it"]);
       const history = await repo.diffHistory(shop);
@@ -39,12 +37,14 @@ describe("shops repository", () => {
   });
 
   it("saves settings and records diff history", async () => {
-    await withRepo(async (repo, shop, dir) => {
-      const now = new Date().toISOString();
+    await withRepo(async (shop, dir) => {
+      let current = "2024-01-01T00:00:00.000Z";
+      jest.doMock("../../shared/date", () => ({ nowIso: () => current }));
+      const repo = await import("../repositories/settings.server");
       const first: ShopSettings = {
         languages: ["en", "de"],
         seo: { en: { canonicalBase: "" }, de: { canonicalBase: "" } },
-        updatedAt: now,
+        updatedAt: current,
         updatedBy: "tester",
       };
       await repo.saveShopSettings(shop, first);
@@ -54,10 +54,11 @@ describe("shops repository", () => {
       expect(history).toHaveLength(1);
       expect(history[0].diff).toEqual(first);
 
+      current = "2024-01-02T00:00:00.000Z";
       const second: ShopSettings = {
         languages: ["en"],
         seo: { en: { canonicalBase: "" } },
-        updatedAt: new Date().toISOString(),
+        updatedAt: current,
         updatedBy: "tester",
       };
       await repo.saveShopSettings(shop, second);

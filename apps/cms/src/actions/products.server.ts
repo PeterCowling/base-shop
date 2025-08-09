@@ -19,6 +19,7 @@ import type { Locale } from "@types";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
+import { nowIso } from "../../../../packages/shared/date";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                    */
@@ -43,7 +44,7 @@ export async function createDraftRecord(
 ): Promise<ProductPublication> {
   await ensureAuthorized();
 
-  const now = new Date().toISOString();
+  const now = nowIso();
   const locales = await getLocales(shop);
   const blank: Record<string, string> = {};
   locales.forEach((l) => {
@@ -127,7 +128,7 @@ export async function updateProduct(
     description: nextDesc,
     price,
     row_version: current.row_version + 1,
-    updated_at: new Date().toISOString(),
+    updated_at: nowIso(),
   };
 
   const saved = await updateProductInRepo<ProductPublication>(shop, updated);

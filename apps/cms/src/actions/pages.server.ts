@@ -14,6 +14,7 @@ import { historyStateSchema, pageComponentSchema } from "@types";
 import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
 import { z } from "zod";
+import { nowIso } from "../../../../packages/shared/date";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
@@ -169,7 +170,7 @@ export async function createPage(
     image[l] = data.image ?? "";
   });
 
-  const now = new Date().toISOString();
+  const now = nowIso();
   const page: Page = {
     id,
     slug: data.slug,
@@ -228,7 +229,7 @@ export async function savePageDraft(
   }
 
   const pages = await getPages(shop);
-  const now = new Date().toISOString();
+  const now = nowIso();
   const existing = pages.find((p) => p.id === id);
 
   const page: Page = existing

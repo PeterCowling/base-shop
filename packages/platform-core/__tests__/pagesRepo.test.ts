@@ -8,7 +8,7 @@ import path from "node:path";
 type PagesRepo = typeof import("../repositories/pages/index.server");
 
 async function withRepo(
-  cb: (repo: PagesRepo, shop: string, dir: string) => Promise<void>
+  cb: (shop: string, dir: string) => Promise<void>
 ): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "pages-"));
   const shopDir = path.join(dir, "data", "shops", "test");
@@ -18,9 +18,8 @@ async function withRepo(
   process.chdir(dir);
   jest.resetModules();
 
-  const repo: PagesRepo = await import("../repositories/pages/index.server");
   try {
-    await cb(repo, "test", dir);
+    await cb("test", dir);
   } finally {
     process.chdir(cwd);
   }
@@ -28,7 +27,10 @@ async function withRepo(
 
 describe("pages repository", () => {
   it("getPages returns empty array when file missing or invalid", async () => {
-    await withRepo(async (repo, shop, dir) => {
+    await withRepo(async (shop, dir) => {
+      const now = "2024-01-01T00:00:00.000Z";
+      jest.doMock("../../shared/date", () => ({ nowIso: () => now }));
+      const repo: PagesRepo = await import("../repositories/pages/index.server");
       expect(await repo.getPages(shop)).toEqual([]);
       await fs.writeFile(
         path.join(dir, "data", "shops", shop, "pages.json"),
@@ -40,15 +42,18 @@ describe("pages repository", () => {
   });
 
   it("save, update and delete handle success and errors", async () => {
-    await withRepo(async (repo, shop) => {
+    await withRepo(async (shop) => {
+      const now = "2024-01-01T00:00:00.000Z";
+      jest.doMock("../../shared/date", () => ({ nowIso: () => now }));
+      const repo: PagesRepo = await import("../repositories/pages/index.server");
       const page: Page = {
         id: "1",
         slug: "home",
         status: "draft",
         components: [],
         seo: { title: "Home" },
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: now,
+        updatedAt: now,
         createdBy: "tester",
       };
       await repo.savePage(shop, page);

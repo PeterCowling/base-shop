@@ -1,7 +1,7 @@
 // packages/ui/components/cms/MediaManager.tsx
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Input } from "@/components/atoms-shadcn";
+import { Input } from "@/components/atoms/shadcn";
 import { deleteMedia } from "@cms/actions/media.server";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import { useCallback, useState } from "react";

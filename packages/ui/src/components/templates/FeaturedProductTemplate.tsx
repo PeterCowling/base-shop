@@ -1,7 +1,7 @@
 import Image from "next/image";
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Button } from "../atoms-shadcn";
+import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { RatingStars } from "../atoms/RatingStars";
 import type { Product } from "../organisms/ProductCard";

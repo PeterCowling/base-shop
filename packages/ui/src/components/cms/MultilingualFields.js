@@ -1,7 +1,7 @@
 // packages/ui/components/cms/MultilingualFields.tsx
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Input, Textarea } from "@/components/atoms-shadcn";
+import { Input, Textarea } from "@/components/atoms/shadcn";
 import { memo } from "react";
 const label = {
     en: "English",

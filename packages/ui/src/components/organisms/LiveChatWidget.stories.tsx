@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
   Input,
-} from "../atoms-shadcn";
+} from "../atoms/shadcn";
 import { LiveChatWidget } from "./LiveChatWidget";
 
 interface ChatMessage {

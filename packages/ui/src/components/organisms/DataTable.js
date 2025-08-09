@@ -1,7 +1,7 @@
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState } from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "../ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "../atoms/primitives/table";
 export function DataTable({ rows, columns, selectable = false, onSelectionChange, }) {
     const [selected, setSelected] = useState(new Set());
     const toggle = (idx) => {

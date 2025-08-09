@@ -1,13 +1,13 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Input } from "../ui/input";
+import { Input } from "../atoms/primitives/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../atoms/primitives/select";
 
 export interface DeliverySchedulerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {

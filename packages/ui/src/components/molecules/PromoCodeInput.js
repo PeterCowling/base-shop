@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Button, Input } from "../atoms-shadcn";
+import { Button, Input } from "../atoms/shadcn";
 export const PromoCodeInput = React.forwardRef(({ onApply, loading = false, className, ...props }, ref) => {
     const [code, setCode] = React.useState("");
     function handleSubmit(e) {

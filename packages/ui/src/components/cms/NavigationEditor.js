@@ -2,7 +2,7 @@
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { ulid } from "ulid";
-import { Button, Input } from "../atoms-shadcn";
+import { Button, Input } from "../atoms/shadcn";
 export default function NavigationEditor({ items, onChange }) {
     return (_jsxs("div", { className: "space-y-2", children: [_jsx(NavList, { items: items, onChange: onChange }), _jsx(Button, { onClick: () => onChange([...items, { id: ulid(), label: "", url: "", children: [] }]), children: "Add Item" })] }));
 }

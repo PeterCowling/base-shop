@@ -7,7 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/atoms-shadcn";
+} from "@/components/atoms/shadcn";
 import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";

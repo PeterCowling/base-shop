@@ -9,7 +9,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/atoms-shadcn";
+} from "@/components/atoms/shadcn";
 import { toggle } from "../utils";
 
 interface Props {

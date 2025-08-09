@@ -8,7 +8,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "../atoms-shadcn";
+} from "../atoms/shadcn";
 import { Product } from "./ProductCard";
 
 export interface WishlistDrawerProps {

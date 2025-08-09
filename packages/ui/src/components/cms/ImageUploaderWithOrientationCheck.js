@@ -1,7 +1,7 @@
 // packages/ui/components/cms/ImageUploaderWithOrientationCheck.tsx
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Input } from "@/components/atoms-shadcn";
+import { Input } from "@/components/atoms/shadcn";
 import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
 import { memo, useCallback } from "react";
 const equal = (a, b) => a.file === b.file &&

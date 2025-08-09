@@ -2,7 +2,7 @@
 
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
-import { Input } from "../atoms-shadcn";
+import { Input } from "../atoms/shadcn";
 
 export interface SearchBarProps {
   /** Suggestions to filter based on the search query */

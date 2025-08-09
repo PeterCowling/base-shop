@@ -3,14 +3,14 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Button } from "../ui/button";
+import { Button } from "../atoms/primitives/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "../atoms/primitives/select";
 
 export type Filters = { size?: string };
 

@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { Button } from "../components/atoms-shadcn";
+import { Button } from "../components/atoms/shadcn";
 
 describe("Button snapshots", () => {
   it("renders default", () => {

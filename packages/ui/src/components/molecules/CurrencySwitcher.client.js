@@ -1,7 +1,7 @@
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useCurrency } from "@/contexts/CurrencyContext";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../ui";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../atoms/primitives";
 const OPTIONS = ["EUR", "USD", "GBP"];
 export default function CurrencySwitcher() {
     const [currency, setCurrency] = useCurrency();

@@ -1,8 +1,8 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Input } from "../ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../ui/select";
+import { Input } from "../atoms/primitives/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "../atoms/primitives/select";
 export function DeliveryScheduler({ className, onChange, ...props }) {
     const [mode, setMode] = React.useState("delivery");
     const [date, setDate] = React.useState("");

@@ -1,7 +1,7 @@
 /* packages/ui/components/cms/ProductEditorForm.tsx */
 "use client";
 
-import { Button, Card, CardContent, Input } from "@/components/atoms-shadcn";
+import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
 import type { Locale, ProductPublication } from "@platform-core/src/products";
 import { useProductEditorFormState } from "@ui/hooks/useProductEditorFormState";
 import MultilingualFields from "./MultilingualFields";

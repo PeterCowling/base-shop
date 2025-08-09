@@ -9,7 +9,7 @@ jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock }),
 }));
 
-jest.mock("../packages/ui/components/atoms-shadcn", () => {
+jest.mock("../packages/ui/components/atoms/shadcn", () => {
   const React = require("react");
   return {
     __esModule: true,

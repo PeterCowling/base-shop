@@ -1,5 +1,5 @@
 import type { PageComponent } from "@types";
-import { Input } from "../../atoms-shadcn";
+import { Input } from "../../atoms/shadcn";
 
 interface Props {
   component: PageComponent;

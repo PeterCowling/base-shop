@@ -1,5 +1,5 @@
 import type { PageComponent } from "@types";
-import { Button, Input } from "../../atoms-shadcn";
+import { Button, Input } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
 
 interface Props {

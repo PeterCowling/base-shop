@@ -9,7 +9,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import type { PageComponent } from "@types";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "../../atoms-shadcn";
+import { Button } from "../../atoms/shadcn";
 import { blockRegistry } from "../blocks";
 import type { Action } from "../PageBuilder";
 import DOMPurify from "dompurify";

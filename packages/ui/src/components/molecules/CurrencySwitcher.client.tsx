@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui";
+} from "../atoms/primitives";
 
 const OPTIONS: Currency[] = ["EUR", "USD", "GBP"];
 

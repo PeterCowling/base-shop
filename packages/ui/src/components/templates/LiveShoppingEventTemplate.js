@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Button, Input } from "../atoms-shadcn";
+import { Button, Input } from "../atoms/shadcn";
 import { ProductCard } from "../organisms/ProductCard";
 export function LiveShoppingEventTemplate({ streamUrl, products = [], chatMessages = [], onSendMessage, onAddToCart, ctaLabel = "Add to cart", className, ...props }) {
     const [message, setMessage] = React.useState("");

@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react";
-import { Button } from "../atoms-shadcn";
+import { Button } from "../atoms/shadcn";
 import { WishlistDrawer } from "./WishlistDrawer";
 
 const items = [

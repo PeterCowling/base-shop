@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { cn } from "../../utils/cn";
 import { drawerWidthProps } from "../../utils/drawerWidth";
-import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger, } from "../atoms-shadcn";
+import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger, } from "../atoms/shadcn";
 /**
  * Slide-over panel listing products added to the user's wishlist.
  * Accepts an external trigger element to open the drawer.

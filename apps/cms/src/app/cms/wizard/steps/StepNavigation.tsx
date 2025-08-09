@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/atoms-shadcn";
+import { Button } from "@/components/atoms/shadcn";
 import NavigationEditor from "@/components/cms/NavigationEditor";
 
 interface NavItem {

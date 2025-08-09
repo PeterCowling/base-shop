@@ -294,7 +294,7 @@ const PageBuilder = memo(function PageBuilder({
     []
   );
 
-  const [state, dispatch] = useReducer(reducer, undefined, (): HistoryState => {
+  const [state, rawDispatch] = useReducer(reducer, undefined, (): HistoryState => {
     const initial = migrate(page.components as PageComponent[]);
     const fromServer = historyProp ?? page.history;
     const parsedServer = fromServer
@@ -324,6 +324,23 @@ const PageBuilder = memo(function PageBuilder({
 
   const components = state.present;
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [liveMessage, setLiveMessage] = useState("");
+  const dispatch = useCallback(
+    (action: Action) => {
+      rawDispatch(action);
+      if (action.type === "add") {
+        setLiveMessage("Block added");
+      } else if (action.type === "move") {
+        setLiveMessage("Block moved");
+      }
+    },
+    [rawDispatch]
+  );
+  useEffect(() => {
+    if (!liveMessage) return;
+    const t = setTimeout(() => setLiveMessage(""), 500);
+    return () => clearTimeout(t);
+  }, [liveMessage]);
   const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
     "desktop"
   );
@@ -625,6 +642,10 @@ const PageBuilder = memo(function PageBuilder({
           </p>
         )}
 
+        <div aria-live="polite" role="status" className="sr-only">
+          {liveMessage}
+        </div>
+
         {/* Canvas */}
         <DndContext
           sensors={sensors}
@@ -640,6 +661,8 @@ const PageBuilder = memo(function PageBuilder({
               id="canvas"
               ref={canvasRef}
               style={containerStyle}
+              role="list"
+              aria-dropeffect="move"
               onDrop={handleFileDrop}
               onDragOver={(e) => {
                 e.preventDefault();

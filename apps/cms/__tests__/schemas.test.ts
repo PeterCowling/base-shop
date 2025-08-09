@@ -10,25 +10,23 @@ describe("zod schemas", () => {
     const data = {
       id: "p1",
       price: "10",
-      title_en: "Hello",
-      title_de: "Hallo",
-      title_it: "Ciao",
+      title: { en: "Hello", de: "Hallo", it: "Ciao" },
+      description: { en: "World", de: "Welt", it: "Mondo" },
     };
 
     const parsed = productSchema.parse(data);
 
     expect(parsed.price).toBe(10);
-    expect(parsed.title_en).toBe("Hello");
-    expect(parsed.desc_en).toBe(""); // default filled by transform
+    expect(parsed.title.en).toBe("Hello");
+    expect(parsed.description.en).toBe("World");
   });
 
   it("productSchema rejects invalid price", () => {
     const result = productSchema.safeParse({
       id: "p1",
       price: "-1",
-      title_en: "Hey",
-      title_de: "Hallo",
-      title_it: "Ciao",
+      title: { en: "Hey", de: "Hallo", it: "Ciao" },
+      description: { en: "World", de: "Welt", it: "Mondo" },
     });
 
     expect(result.success).toBe(false);

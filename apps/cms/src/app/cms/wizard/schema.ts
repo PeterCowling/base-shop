@@ -1,8 +1,7 @@
 // apps/cms/src/app/cms/wizard/schema.ts
-/* eslint‑disable @typescript-eslint/consistent‑type‑assertions */
 import { LOCALES } from "@acme/i18n";
 import { pageComponentSchema } from "@types/Page";
-import type { Locale } from "@types";
+import { localeSchema, type Locale } from "@types";
 import { ulid } from "ulid";
 import { z } from "zod";
 import { baseTokens } from "./utils";
@@ -24,22 +23,7 @@ function defaultLocaleRecord(
   );
 }
 
-/**
- * Strongly typed record where **every** locale key is required.
- * We cast once to satisfy the compiler; both input and output types are identical.
- */
-const localeRecordSchema = z
-  .object(
-    LOCALES.reduce(
-      (acc, l) => ({ ...acc, [l]: z.string() }),
-      {} as Record<Locale, z.ZodString>
-    )
-  )
-  .transform((x) => x as Record<Locale, string>) as unknown as z.ZodType<
-  Record<Locale, string>,
-  z.ZodTypeDef,
-  Record<Locale, string>
->;
+const localeRecordSchema = z.record(localeSchema, z.string());
 
 /* -------------------------------------------------------------------------- */
 /*  Nav‑item schema (recursive)                                               */

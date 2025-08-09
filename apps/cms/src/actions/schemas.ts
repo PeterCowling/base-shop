@@ -1,21 +1,14 @@
 // apps/cms/src/actions/schemas.ts
 
-import { LOCALES } from "@acme/i18n";
+import { localeSchema } from "@types";
 import { z } from "zod";
 
-// Dynamically build locale fields for title and description
-const localeFields: z.ZodRawShape = {};
-for (const l of LOCALES) {
-  localeFields[`title_${l}`] = z.string().min(1, "Required");
-  localeFields[`desc_${l}`] = z.string().optional().default("");
-}
-
-export const productSchema = z
-  .object({
-    id: z.string(),
-    price: z.coerce.number().min(0, "Invalid price"),
-  })
-  .extend(localeFields);
+export const productSchema = z.object({
+  id: z.string(),
+  price: z.coerce.number().min(0, "Invalid price"),
+  title: z.record(localeSchema, z.string().min(1)),
+  description: z.record(localeSchema, z.string().min(1)),
+});
 
 const jsonRecord = z
   .string()

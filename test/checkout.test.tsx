@@ -1,9 +1,11 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { rest, server } from "./mswServer";
+import { rest } from "msw";
+import { server } from "./msw/server";
 process.env.STRIPE_SECRET_KEY = "sk_test_123";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 
 import CheckoutForm from "../packages/ui/components/checkout/CheckoutForm";
+import { isoDateInNDays } from "@ui/utils/date";
 
 const pushMock = jest.fn();
 
@@ -96,11 +98,7 @@ test("requests new session when return date changes", async () => {
     })
   );
 
-  const expectedDefault = (() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 7);
-    return d.toISOString().slice(0, 10);
-  })();
+  const expectedDefault = isoDateInNDays(7);
 
   render(<CheckoutForm locale="en" />);
   await screen.findByTestId("payment-element");
@@ -120,11 +118,7 @@ test("default return date is 7 days ahead", async () => {
     )
   );
 
-  const expected = (() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 7);
-    return d.toISOString().slice(0, 10);
-  })();
+  const expected = isoDateInNDays(7);
 
   render(<CheckoutForm locale="en" />);
   await screen.findByTestId("payment-element");

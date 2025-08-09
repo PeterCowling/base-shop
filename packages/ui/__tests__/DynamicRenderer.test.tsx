@@ -15,11 +15,11 @@ describe("DynamicRenderer", () => {
 
   it("renders known component", () => {
     const components: PageComponent[] = [
-      { id: "1", type: "Text", text: { en: "hello" }, locale: "en" } as any,
+      { id: "1", type: "Text", text: { en: "hello", de: "hallo" } } as any,
     ];
 
-    render(<DynamicRenderer components={components} />);
+    render(<DynamicRenderer components={components} locale="de" />);
 
-    expect(screen.getByText("hello")).toBeInTheDocument();
+    expect(screen.getByText("hallo")).toBeInTheDocument();
   });
 });

@@ -4,6 +4,10 @@ import { LOCALES } from "@acme/i18n";
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getPages } from "@platform-core/repositories/pages/index.server";
+import DynamicRenderer from "@ui/components/DynamicRenderer";
+import { Locale, resolveLocale } from "@/i18n/locales";
+import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 
 export async function generateStaticParams() {
@@ -28,14 +32,29 @@ export function generateMetadata({
   };
 }
 
-export default function ProductDetailPage({
+export default async function ProductDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string; lang?: string }>;
 }) {
-  const product = getProductBySlug(params.slug);
+  const { slug, lang: rawLang } = await params;
+  const product = getProductBySlug(slug);
   if (!product) return notFound();
 
-  /* ⬇️  Only data, no event handlers */
-  return <PdpClient product={product} />;
+  const locale: Locale = resolveLocale(rawLang);
+  const pages = await getPages(shop.id);
+  const components =
+    pages.find((p) => p.slug === `product/${slug}`)?.components ?? [];
+
+  if (!components.length) {
+    return <PdpClient product={product} />;
+  }
+
+  return (
+    <DynamicRenderer
+      components={components}
+      locale={locale}
+      runtimeData={{ product }}
+    />
+  );
 }

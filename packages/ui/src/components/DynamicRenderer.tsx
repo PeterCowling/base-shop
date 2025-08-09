@@ -15,6 +15,7 @@ import { ValueProps } from "@/components/home/ValueProps";
 import { PRODUCTS } from "@/lib/products";
 import { ProductGrid } from "@platform-core/src/components/shop/ProductGrid";
 import type { PageComponent, SKU } from "@types";
+import type { Locale } from "@/i18n/locales";
 
 const registry: Record<PageComponent["type"], React.ComponentType<any>> = {
   HeroBanner,
@@ -33,8 +34,12 @@ const registry: Record<PageComponent["type"], React.ComponentType<any>> = {
 
 export default function DynamicRenderer({
   components,
+  locale = "en",
+  runtimeData = {},
 }: {
   components: PageComponent[];
+  locale?: Locale;
+  runtimeData?: Record<string, unknown>;
 }) {
   return (
     <>
@@ -45,14 +50,37 @@ export default function DynamicRenderer({
           return null;
         }
 
-        const { id, type, width, height, ...props } = c as any;
+        const {
+          id,
+          type,
+          width,
+          height,
+          position,
+          top,
+          left,
+          margin,
+          padding,
+          ...props
+        } = c as any;
+
+        const style: React.CSSProperties = {
+          width,
+          height,
+          position,
+          top,
+          left,
+          margin,
+          padding,
+        };
+
+        const extra: Record<string, unknown> = { locale, ...runtimeData };
+        if (type === "ProductGrid") {
+          extra.skus = (runtimeData as any).skus ?? (PRODUCTS as SKU[]);
+        }
+
         return (
-          <div key={id} style={{ width, height }}>
-            {type === "ProductGrid" ? (
-              <Comp {...props} skus={PRODUCTS as SKU[]} />
-            ) : (
-              <Comp {...props} />
-            )}
+          <div key={id} style={style}>
+            <Comp {...props} {...extra} />
           </div>
         );
       })}

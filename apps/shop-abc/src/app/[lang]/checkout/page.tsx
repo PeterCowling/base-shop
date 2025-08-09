@@ -5,6 +5,9 @@ import OrderSummary from "@/components/organisms/OrderSummary";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { cookies } from "next/headers";
+import { getPages } from "@platform-core/repositories/pages/index.server";
+import DynamicRenderer from "@ui/components/DynamicRenderer";
+import shop from "../../../../shop.json";
 
 export const metadata = {
   title: "Checkout · Base-Shop",
@@ -32,11 +35,23 @@ export default async function CheckoutPage({
     return <p className="p-8 text-center">Your cart is empty.</p>;
   }
 
-  /* ---------- render ---------- */
+  const pages = await getPages(shop.id);
+  const components = pages.find((p) => p.slug === "checkout")?.components ?? [];
+
+  if (!components.length) {
+    return (
+      <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
+        <OrderSummary />
+        <CheckoutForm locale={lang} />
+      </div>
+    );
+  }
+
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
-      <OrderSummary />
-      <CheckoutForm locale={lang} />
-    </div>
+    <DynamicRenderer
+      components={components}
+      locale={lang}
+      runtimeData={{ cart }}
+    />
   );
 }

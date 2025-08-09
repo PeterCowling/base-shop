@@ -5,6 +5,7 @@ import {
   closestCenter,
   DndContext,
   DragEndEvent,
+  DragMoveEvent,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -19,6 +20,7 @@ import type { Page, PageComponent, HistoryState, MediaItem } from "@types";
 import { pageComponentSchema } from "@types";
 import type { CSSProperties, DragEvent } from "react";
 import {
+  Fragment,
   memo,
   useCallback,
   useEffect,
@@ -330,6 +332,8 @@ const PageBuilder = memo(function PageBuilder({
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
   const [dragOver, setDragOver] = useState(false);
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const [insertIndex, setInsertIndex] = useState<number | null>(null);
 
   const {
     onDrop,
@@ -429,8 +433,38 @@ const PageBuilder = memo(function PageBuilder({
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
+  const handleDragMove = useCallback(
+    (ev: DragMoveEvent): void => {
+      if (!canvasRef.current) return;
+      const { active, over, delta } = ev;
+      const canvasRect = canvasRef.current.getBoundingClientRect();
+      const activeRect = active.rect.current;
+      const pointerY =
+        (activeRect.translated?.top ?? activeRect.initial.top + delta.y) +
+        activeRect.height / 2;
+      if (pointerY < canvasRect.top || pointerY > canvasRect.bottom) {
+        setInsertIndex(null);
+        return;
+      }
+      const overData = over?.data.current as { parentId?: string; index?: number } | undefined;
+      if (over && overData?.parentId !== undefined) {
+        setInsertIndex(null);
+        return;
+      }
+      if (!over) {
+        setInsertIndex(0);
+        return;
+      }
+      const isBelow = pointerY > over.rect.top + over.rect.height / 2;
+      const index = (overData?.index ?? components.length) + (isBelow ? 1 : 0);
+      setInsertIndex(index);
+    },
+    [components.length]
+  );
+
   const handleDragEnd = useCallback(
     (ev: DragEndEvent): void => {
+      setInsertIndex(null);
       const { active, over } = ev;
       if (!over) return;
 
@@ -566,6 +600,7 @@ const PageBuilder = memo(function PageBuilder({
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragEnd={handleDragEnd}
+          onDragMove={handleDragMove}
         >
           <SortableContext
             items={components.map((c) => c.id)}
@@ -573,6 +608,7 @@ const PageBuilder = memo(function PageBuilder({
           >
             <div
               id="canvas"
+              ref={canvasRef}
               style={containerStyle}
               onDrop={handleFileDrop}
               onDragOver={(e) => {
@@ -587,18 +623,31 @@ const PageBuilder = memo(function PageBuilder({
               )}
             >
               {components.map((c, i) => (
-                <CanvasItem
-                  key={c.id}
-                  component={c}
-                  index={i}
-                  parentId={undefined}
-                  selectedId={selectedId}
-                  onSelectId={setSelectedId}
-                  onRemove={() => dispatch({ type: "remove", id: c.id })}
-                  dispatch={dispatch}
-                  locale={locale}
-                />
+                <Fragment key={c.id}>
+                  {insertIndex === i && (
+                    <div
+                      data-placeholder
+                      className="h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10"
+                    />
+                  )}
+                  <CanvasItem
+                    component={c}
+                    index={i}
+                    parentId={undefined}
+                    selectedId={selectedId}
+                    onSelectId={setSelectedId}
+                    onRemove={() => dispatch({ type: "remove", id: c.id })}
+                    dispatch={dispatch}
+                    locale={locale}
+                  />
+                </Fragment>
               ))}
+              {insertIndex === components.length && (
+                <div
+                  data-placeholder
+                  className="h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10"
+                />
+              )}
             </div>
           </SortableContext>
         </DndContext>

@@ -129,7 +129,7 @@ const CanvasItem = memo(function CanvasItem({
   const childIds = hasChildren
     ? ((component as any).children as PageComponent[]).map((c) => c.id)
     : [];
-  const { setNodeRef: setDropRef } = useDroppable({
+  const { setNodeRef: setDropRef, isOver } = useDroppable({
     id: `container-${component.id}`,
     data: { parentId: component.id },
   });
@@ -342,6 +342,12 @@ const CanvasItem = memo(function CanvasItem({
             id={`container-${component.id}`}
             className="m-2 flex flex-col gap-4 border border-dashed border-gray-300 p-2"
           >
+            {isOver && (
+              <div
+                data-testid="drop-placeholder"
+                className="h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10"
+              />
+            )}
             {(component as any).children.map(
               (child: PageComponent, i: number) => (
                 <CanvasItem

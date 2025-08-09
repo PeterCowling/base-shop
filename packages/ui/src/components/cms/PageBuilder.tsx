@@ -560,6 +560,7 @@ const PageBuilder = memo(function PageBuilder({
                 setDragOver(true);
               }}
               onDragLeave={() => setDragOver(false)}
+              onDragEnd={() => setDragOver(false)}
               className={cn(
                 "mx-auto flex flex-col gap-4 rounded border",
                 dragOver && "ring-2 ring-primary"

@@ -1,9 +1,9 @@
 {
   "name": "Homepage",
   "components": [
-    { "type": "HeroBanner" },
+    { "type": "HeroBanner", "minItems": 1, "maxItems": 5 },
     { "type": "PromoBanner" },
-    { "type": "ProductCarousel" },
-    { "type": "CategoryList" }
+    { "type": "ProductCarousel", "minItems": 1, "maxItems": 10 },
+    { "type": "CategoryList", "minCols": 2, "maxCols": 4, "columns": 3 }
   ]
 }

@@ -8,10 +8,13 @@ interface Props {
 
 export default function HeroBannerEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor(onChange);
-  return arrayEditor("slides", (component as any).slides, [
-    "src",
-    "alt",
-    "headlineKey",
-    "ctaKey",
-  ]);
+  return arrayEditor(
+    "slides",
+    (component as any).slides,
+    ["src", "alt", "headlineKey", "ctaKey"],
+    {
+      minItems: (component as any).minItems,
+      maxItems: (component as any).maxItems,
+    }
+  );
 }

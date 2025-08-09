@@ -1,4 +1,4 @@
-import { parseIsoDate } from '../src/date';
+import { parseIsoDate, calculateRentalDays } from '../src/date';
 
 describe('parseIsoDate', () => {
   test('parses valid YYYY-MM-DD string', () => {
@@ -10,5 +10,27 @@ describe('parseIsoDate', () => {
   test('returns null for invalid input', () => {
     expect(parseIsoDate('not-a-date')).toBeNull();
     expect(parseIsoDate('2025-99-99')).toBeNull();
+  });
+});
+
+describe('calculateRentalDays', () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2025-01-01T00:00:00Z'));
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  test('computes positive day difference', () => {
+    expect(calculateRentalDays('2025-01-03')).toBe(2);
+  });
+
+  test('floors past dates to one day', () => {
+    expect(calculateRentalDays('2024-12-31')).toBe(1);
+  });
+
+  test('throws on invalid date', () => {
+    expect(() => calculateRentalDays('invalid')).toThrow();
   });
 });

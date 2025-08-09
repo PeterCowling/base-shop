@@ -1,27 +1,12 @@
 // apps/shop-abc/src/app/api/checkout-session/route.ts
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
-import { parseIsoDate } from "@/lib/date";
+import { calculateRentalDays } from "@/lib/date";
 import { stripe } from "@/lib/stripeServer";
 import { priceForDays } from "@platform-core/pricing";
 import { NextResponse } from "next/server";
 /* ------------------------------------------------------------------ *
  *  Helpers
  * ------------------------------------------------------------------ */
-/**
- * Calculate the number of rental days between “now” and `returnDate`
- * (inclusive). Returns `1` when `returnDate` is missing or in the past.
- */
-const calculateRentalDays = (returnDate) => {
-    if (!returnDate)
-        return 1;
-    const parsed = parseIsoDate(returnDate);
-    if (!parsed)
-        throw new Error("Invalid returnDate");
-    const end = parsed.getTime();
-    const start = Date.now();
-    const diffDays = Math.ceil((end - start) / 86_400_000); // 86 400 000 ms = 1 day
-    return diffDays > 0 ? diffDays : 1;
-};
 /**
  * Produce the two Stripe line-items (rental + deposit) for a single cart item.
  */

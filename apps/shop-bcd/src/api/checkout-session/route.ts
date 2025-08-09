@@ -1,7 +1,7 @@
 // apps/shop-bcd/src/app/api/checkout-session/route.ts
 
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
-import { parseIsoDate } from "@/lib/date";
+import { calculateRentalDays } from "@/lib/date";
 import { stripe } from "@lib/stripeServer.server";
 import { priceForDays } from "@platform-core/pricing";
 import type { CartLine, CartState } from "@types";
@@ -24,23 +24,10 @@ type Cart = CartState;
  * ------------------------------------------------------------------ */
 
 export const runtime = "edge";
-const DAY_MS = 86_400_000;
 
 /* ------------------------------------------------------------------ *
  *  Helper functions
  * ------------------------------------------------------------------ */
-
-/**
- * Convert a `returnDate` (ISO string) into a positive number of
- * chargeable days. Defaults to `1` when invalid or not provided.
- */
-const calculateRentalDays = (returnDate?: string): number => {
-  if (!returnDate) return 1;
-  const parsed = parseIsoDate(returnDate);
-  if (!parsed) throw new Error("Invalid returnDate");
-  const diff = Math.ceil((parsed.getTime() - Date.now()) / DAY_MS);
-  return diff > 0 ? diff : 1;
-};
 
 /**
  * Build the rental-fee line-item and the refundable deposit line-item

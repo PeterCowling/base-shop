@@ -1,6 +1,7 @@
 // packages/template-app/__tests__/checkout-session.test.ts
 import { encodeCartCookie } from "../../platform-core/src/cartCookie";
 import { PRODUCTS } from "../../platform-core/src/products";
+import { calculateRentalDays } from "../../lib/src/date";
 import { POST } from "../src/api/checkout-session/route";
 
 jest.mock("next/server", () => ({
@@ -43,7 +44,9 @@ test("builds Stripe session with correct items and metadata", async () => {
   const sku = PRODUCTS[0];
   const cart = { [sku.id]: { sku, qty: 2, size: "40" } };
   const cookie = encodeCartCookie(cart);
-  const req = createRequest({ returnDate: "2025-01-02" }, cookie);
+  const returnDate = "2025-01-02";
+  const expectedDays = calculateRentalDays(returnDate);
+  const req = createRequest({ returnDate }, cookie);
 
   const res = await POST(req);
   const body = await res.json();
@@ -54,6 +57,7 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(args.line_items).toHaveLength(2);
   expect(args.line_items[0].price_data.unit_amount).toBe(1000);
   expect(args.line_items[1].price_data.unit_amount).toBe(sku.deposit * 100);
+  expect(args.metadata.rentalDays).toBe(expectedDays.toString());
   expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: "40" }));
   expect(args.metadata.subtotal).toBe("20");
   expect(body.clientSecret).toBe("cs_test");

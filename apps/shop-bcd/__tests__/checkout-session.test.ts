@@ -1,8 +1,8 @@
-// apps/shop-abc/__tests__/checkoutSession.test.ts
+// apps/shop-bcd/__tests__/checkout-session.test.ts
 import { encodeCartCookie } from "@/lib/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@/lib/date";
-import { POST } from "../src/app/api/checkout-session/route";
+import { POST } from "../src/api/checkout-session/route";
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -11,7 +11,7 @@ jest.mock("next/server", () => ({
   },
 }));
 
-jest.mock("@/lib/stripeServer", () => ({
+jest.mock("@lib/stripeServer.server", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
 
@@ -19,7 +19,7 @@ jest.mock("@platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
 }));
 
-import { stripe } from "@/lib/stripeServer";
+import { stripe } from "@lib/stripeServer.server";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
 function createRequest(
@@ -49,7 +49,7 @@ test("builds Stripe session with correct items and metadata", async () => {
   const req = createRequest({ returnDate }, cookie);
 
   const res = await POST(req);
-  const body = (await res.json()) as any;
+  const body = await res.json();
 
   expect(stripeCreate).toHaveBeenCalled();
   const args = stripeCreate.mock.calls[0][0];
@@ -70,6 +70,7 @@ test("responds with 400 on invalid returnDate", async () => {
   const req = createRequest({ returnDate: "not-a-date" }, cookie);
   const res = await POST(req);
   expect(res.status).toBe(400);
-  const body = (await res.json()) as any;
+  const body = await res.json();
   expect(body.error).toMatch(/invalid/i);
 });
+

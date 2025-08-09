@@ -4,7 +4,7 @@ import {
   createContext,
   ReactNode,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useState,
 } from "react";
 
@@ -17,14 +17,26 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("base");
+function getInitialTheme(): Theme {
+  if (typeof window !== "undefined") {
+    const storedTheme = window.localStorage.getItem("theme") as Theme | null;
+    if (storedTheme) return storedTheme;
+    if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+  }
+  return "base";
+}
 
-  useEffect(() => {
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+
+  useLayoutEffect(() => {
     const root = document.documentElement;
     root.classList.remove("theme-dark", "theme-brandx");
     if (theme === "dark") root.classList.add("theme-dark");
     if (theme === "brandx") root.classList.add("theme-brandx");
+    window.localStorage.setItem("theme", theme);
   }, [theme]);
 
   return (

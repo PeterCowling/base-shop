@@ -2,16 +2,16 @@ import { z } from "zod";
 import { localeSchema, type Locale, type Translated } from "./Product";
 
 export const shopSeoFieldsSchema = z.object({
-  canonicalBase: z.string().optional(),
+  canonicalBase: z.string().url().optional(),
   title: z.string().optional(),
   description: z.string().optional(),
-  image: z.string().optional(),
+  image: z.string().url().optional(),
   openGraph: z
     .object({
       title: z.string().optional(),
       description: z.string().optional(),
-      url: z.string().optional(),
-      image: z.string().optional(),
+      url: z.string().url().optional(),
+      image: z.string().url().optional(),
     })
     .optional(),
   twitter: z
@@ -19,7 +19,7 @@ export const shopSeoFieldsSchema = z.object({
       card: z.string().optional(),
       title: z.string().optional(),
       description: z.string().optional(),
-      image: z.string().optional(),
+      image: z.string().url().optional(),
     })
     .optional(),
   structuredData: z.string().optional(),
@@ -66,7 +66,9 @@ export const shopSchema = z.object({
   /** Mapping of logical filter keys to catalog attributes */
   filterMappings: z.record(z.string()),
   /** Optional price overrides per locale (minor units) */
-  priceOverrides: z.record(localeSchema, z.number()).default({}),
+  priceOverrides: z
+    .record(localeSchema, z.number().int().nonnegative())
+    .default({}),
   /** Optional redirect overrides for locale detection */
   localeOverrides: z.record(z.string(), localeSchema).default({}),
   type: z.string().optional(),

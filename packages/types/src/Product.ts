@@ -7,23 +7,23 @@ export const localeSchema = z.enum(LOCALES);
 
 /** Runtime validator + compile-time source of truth */
 export const skuSchema = z.object({
-  id: z.string(),
+  id: z.string().ulid(),
   slug: z.string(),
   title: z.string(),
   /** Unit price in minor currency units (e.g. cents) */
-  price: z.number(),
+  price: z.number().int().nonnegative(),
   /** Refundable deposit, required by business rules */
-  deposit: z.number(),
+  deposit: z.number().int().nonnegative(),
   /** Item can be sold */
   forSale: z.boolean().default(true),
   /** Item can be rented */
   forRental: z.boolean().default(false),
   /** daily rental rate in minor currency units */
-  dailyRate: z.number().optional(),
+  dailyRate: z.number().int().nonnegative().optional(),
   /** weekly rental rate in minor currency units */
-  weeklyRate: z.number().optional(),
+  weeklyRate: z.number().int().nonnegative().optional(),
   /** monthly rental rate in minor currency units */
-  monthlyRate: z.number().optional(),
+  monthlyRate: z.number().int().nonnegative().optional(),
   /** availability windows as ISO timestamps */
   availability: z
     .array(z.object({ from: z.string(), to: z.string() }))

@@ -4,6 +4,7 @@
 import { Progress, Toast } from "@/components/atoms";
 import { LOCALES } from "@acme/i18n";
 import { createShopOptionsSchema, type DeployShopResult } from "@platform-core/createShop";
+import { validateShopName } from "@platform-core/src/shops";
 import type { Locale, PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
@@ -426,6 +427,15 @@ export default function Wizard({
     setCreating(true);
     setResult(null);
     setFieldErrors({});
+    try {
+      validateShopName(shopId);
+    } catch (err) {
+      setFieldErrors({
+        id: [err instanceof Error ? err.message : String(err)],
+      });
+      setCreating(false);
+      return;
+    }
 
     const options = {
       name: storeName || undefined,
@@ -493,6 +503,7 @@ export default function Wizard({
     setDeployResult(null);
 
     try {
+      validateShopName(shopId);
       const res = await fetch("/cms/api/deploy-shop", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -520,6 +531,7 @@ export default function Wizard({
     setSeedResult(null);
 
     try {
+      validateShopName(shopId);
       if (csvFile) {
         const fd = new FormData();
         fd.append("file", csvFile);
@@ -564,6 +576,7 @@ export default function Wizard({
     setImportResult(null);
 
     try {
+      validateShopName(shopId);
       if (csvFile) {
         const form = new FormData();
         form.append("file", csvFile);
@@ -632,6 +645,22 @@ export default function Wizard({
     Object.entries(themeVars).map(([k, v]) => [k, v])
   ) as React.CSSProperties;
 
+  function handleIdStepNext() {
+    try {
+      validateShopName(shopId);
+      setFieldErrors((prev) => {
+        const { id, ...rest } = prev;
+        return rest;
+      });
+      setStep(1);
+    } catch (err) {
+      setFieldErrors((prev) => ({
+        ...prev,
+        id: [err instanceof Error ? err.message : String(err)],
+      }));
+    }
+  }
+
   /** Returns the JSX for the current step—only that step is mounted. */
   const renderStep = () => {
     switch (step) {
@@ -649,7 +678,7 @@ export default function Wizard({
             template={template}
             setTemplate={setTemplate}
             templates={templates}
-            onNext={() => setStep(1)}
+            onNext={handleIdStepNext}
             errors={fieldErrors}
           />
         );

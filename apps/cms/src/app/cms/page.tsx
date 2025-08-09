@@ -9,9 +9,9 @@ import { DashboardTemplate } from "@ui/components/templates";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { resolveDataRoot } from "@platform-core/utils";
 
 export const metadata: Metadata = {
   title: "Dashboard · Base-Shop",
@@ -25,25 +25,6 @@ type Stats = {
   products: number;
 };
 
-/**
- * Walk upward from the current working directory to locate the monorepo-level
- * `data/shops` folder. Falls back to `<cwd>/data/shops` if the search reaches
- * the filesystem root without a hit.
- */
-function resolveDataRoot(): string {
-  let dir = process.cwd();
-
-  while (true) {
-    const candidate = path.join(dir, "data", "shops");
-    if (fsSync.existsSync(candidate)) return candidate;
-
-    const parent = path.dirname(dir);
-    if (parent === dir) break; // reached FS root
-    dir = parent;
-  }
-
-  return path.resolve(process.cwd(), "data", "shops");
-}
 
 async function collectStats(): Promise<Stats> {
   const shopsDir = resolveDataRoot();

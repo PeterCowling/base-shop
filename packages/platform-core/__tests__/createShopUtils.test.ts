@@ -4,9 +4,15 @@ import {
   copyTemplate,
   loadBaseTokens,
   loadThemeTokens,
-} from "../createShop/utils";
+  slugify,
+  genSecret,
+  fillLocales,
+} from "../src/createShop/utils";
 
 describe("createShop utils", () => {
+  beforeEach(() => {
+    jest.restoreAllMocks();
+  });
   it("copies template directory with filter", () => {
     jest.spyOn(fs, "cpSync").mockImplementation(() => {});
     copyTemplate("src", "dest");
@@ -23,11 +29,26 @@ describe("createShop utils", () => {
   });
 
   it("loads base tokens", () => {
+    jest.spyOn(fs, "readFileSync").mockImplementation((p: fs.PathLike) => {
+      const file = String(p);
+      if (file.endsWith("tokens.ts")) {
+        return "export const tokens = { '--color-bg': { light: '#fff' } };";
+      }
+      return "";
+    });
     const tokens = loadBaseTokens();
     expect(tokens["--color-bg"]).toBeDefined();
   });
 
   it("loads theme tokens", () => {
+    jest.spyOn(fs, "existsSync").mockReturnValue(true);
+    jest.spyOn(fs, "readFileSync").mockImplementation((p: fs.PathLike) => {
+      const file = String(p);
+      if (file.endsWith("tailwind-tokens.ts")) {
+        return "export const tokens = { '--color-bg': '#000' };";
+      }
+      return "";
+    });
     const tokens = loadThemeTokens("dark");
     expect(tokens["--color-bg"]).toBeDefined();
   });
@@ -35,5 +56,20 @@ describe("createShop utils", () => {
   it("returns empty object for missing theme", () => {
     const tokens = loadThemeTokens("nope");
     expect(tokens).toEqual({});
+  });
+
+  it("slugifies strings", () => {
+    expect(slugify(" Hello World! ")).toBe("hello-world");
+  });
+
+  it("generates secrets of correct length", () => {
+    const secret = genSecret(8);
+    expect(secret).toHaveLength(16);
+  });
+
+  it("fills locales with fallback", () => {
+    const result = fillLocales({ en: "Hello" }, "Hi");
+    expect(result.en).toBe("Hello");
+    expect(result.de).toBe("Hi");
   });
 });

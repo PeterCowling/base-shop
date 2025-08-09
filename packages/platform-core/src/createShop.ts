@@ -3,32 +3,18 @@ import { LOCALES } from "@i18n/locales";
 import type { Locale, PageComponent } from "@types";
 import { localeSchema } from "@types";
 import { spawnSync } from "child_process";
-import { randomBytes } from "crypto";
-import {
-  cpSync,
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  readFileSync,
-  writeFileSync,
-} from "fs";
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { ulid } from "ulid";
 import { z } from "zod";
 import { validateShopName } from "./shops";
-
-function slugify(str: string): string {
-  return str
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
-
 import {
   copyTemplate,
   loadBaseTokens,
   loadThemeTokens,
+  slugify,
+  genSecret,
+  fillLocales,
 } from "./createShop/utils";
 import { nowIso } from "../../shared/date";
 import { defaultFilterMappings } from "./defaultFilterMappings";
@@ -101,49 +87,20 @@ interface PackageJSON {
   [key: string]: unknown;
 }
 
-function genSecret(bytes = 16): string {
-  return randomBytes(bytes).toString("hex");
+export interface PreparedCreateShopOptions extends Required<
+  Omit<CreateShopOptions, "analytics" | "checkoutPage">
+> {
+  analytics?: CreateShopOptions["analytics"];
+  checkoutPage: PageComponent[];
 }
 
-function fillLocales(
-  values: Partial<Record<Locale, string>> | undefined,
-  fallback: string
-): Record<Locale, string> {
-  return LOCALES.reduce<Record<Locale, string>>(
-    (acc: Record<Locale, string>, locale: Locale) => {
-      acc[locale] = values?.[locale] ?? fallback;
-      return acc;
-    },
-    {} as Record<Locale, string>
-  );
-}
-
-/**
- * Create a new shop app and seed data.
- * Paths are resolved relative to the repository root.
- */
-export function createShop(id: string, opts: CreateShopOptions = {}): void {
-  id = validateShopName(id);
-  const newApp = join("apps", id);
-  const newData = join("data", "shops", id);
-
-  if (existsSync(newApp)) {
-    throw new Error(
-      `App directory 'apps/${id}' already exists. Pick a different ID or remove the existing folder.`
-    );
-  }
-
-  if (existsSync(newData)) {
-    throw new Error(`Data for shop ${id} already exists`);
-  }
-
+/** Parse and populate option defaults. */
+export function prepareOptions(
+  id: string,
+  opts: CreateShopOptions
+): PreparedCreateShopOptions {
   const parsed = createShopOptionsSchema.parse(opts);
-  const options: Required<
-    Omit<CreateShopOptions, "analytics" | "checkoutPage">
-  > & {
-    analytics?: CreateShopOptions["analytics"];
-    checkoutPage: PageComponent[];
-  } = {
+  return {
     name: parsed.name ?? id,
     logo: parsed.logo ?? "",
     contactInfo: parsed.contactInfo ?? "",
@@ -155,15 +112,9 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     pageTitle: fillLocales(parsed.pageTitle, "Home"),
     pageDescription: fillLocales(parsed.pageDescription, ""),
     socialImage: parsed.socialImage ?? "",
-
-    /* ---------- FIXED analytics block ---------- */
     analytics: parsed.analytics
-      ? {
-          provider: parsed.analytics.provider ?? "none",
-          id: parsed.analytics.id,
-        }
+      ? { provider: parsed.analytics.provider ?? "none", id: parsed.analytics.id }
       : { provider: "none" },
-
     navItems:
       parsed.navItems?.map((n) => ({
         label: n.label ?? "—",
@@ -178,16 +129,28 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     })),
     checkoutPage: parsed.checkoutPage,
   };
+}
 
-  const templateApp = join("packages", options.template);
-
-  if (!existsSync(join("packages", "themes", options.theme))) {
-    throw new Error(`Theme '${options.theme}' not found in packages/themes`);
+/** Ensure selected theme and template are available. */
+export function ensureTemplateExists(theme: string, template: string): string {
+  if (!existsSync(join("packages", "themes", theme))) {
+    throw new Error(`Theme '${theme}' not found in packages/themes`);
   }
+  const templateApp = join("packages", template);
   if (!existsSync(templateApp)) {
-    throw new Error(`Template '${options.template}' not found in packages`);
+    throw new Error(`Template '${template}' not found in packages`);
   }
+  return templateApp;
+}
 
+/** Write all files for the new shop and seed data. */
+export function writeFiles(
+  id: string,
+  options: PreparedCreateShopOptions,
+  templateApp: string,
+  newApp: string,
+  newData: string
+): void {
   copyTemplate(templateApp, newApp);
   // ensure PostCSS setup is available in the generated shop
   cpSync("postcss.config.cjs", join(newApp, "postcss.config.cjs"));
@@ -227,21 +190,12 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
   writeFileSync(join(newApp, ".env"), envContent);
 
   mkdirSync(newData, { recursive: true });
-
   writeFileSync(
     join(newData, "settings.json"),
-    JSON.stringify(
-      { languages: [...LOCALES], analytics: options.analytics },
-      null,
-      2
-    )
+    JSON.stringify({ languages: [...LOCALES], analytics: options.analytics }, null, 2)
   );
 
-  const themeTokens = {
-    ...loadBaseTokens(),
-    ...loadThemeTokens(options.theme),
-  };
-
+  const themeTokens = { ...loadBaseTokens(), ...loadThemeTokens(options.theme) };
   writeFileSync(
     join(newData, "shop.json"),
     JSON.stringify(
@@ -347,6 +301,31 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     join(newData, "pages.json"),
     JSON.stringify([homePage, checkoutPage, ...extraPages], null, 2)
   );
+}
+
+/**
+ * Create a new shop app and seed data.
+ * Paths are resolved relative to the repository root.
+ */
+export function createShop(id: string, opts: CreateShopOptions = {}): void {
+  id = validateShopName(id);
+  const newApp = join("apps", id);
+  const newData = join("data", "shops", id);
+
+  if (existsSync(newApp)) {
+    throw new Error(
+      `App directory 'apps/${id}' already exists. Pick a different ID or remove the existing folder.`
+    );
+  }
+
+  if (existsSync(newData)) {
+    throw new Error(`Data for shop ${id} already exists`);
+  }
+
+  const options = prepareOptions(id, opts);
+  const templateApp = ensureTemplateExists(options.theme, options.template);
+
+  writeFiles(id, options, templateApp, newApp, newData);
 
   deployShop(id);
 }

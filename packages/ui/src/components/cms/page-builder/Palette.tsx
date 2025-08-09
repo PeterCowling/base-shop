@@ -4,9 +4,20 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { PageComponent } from "@types";
 import { memo } from "react";
-import { atomRegistry, moleculeRegistry, organismRegistry } from "../blocks";
+import {
+  atomRegistry,
+  moleculeRegistry,
+  organismRegistry,
+  containerRegistry,
+} from "../blocks";
 
 const palette = {
+  containers: (Object.keys(containerRegistry) as PageComponent["type"][]).map(
+    (t) => ({
+      type: t,
+      label: t.replace(/([A-Z])/g, " $1").trim(),
+    })
+  ),
   atoms: (Object.keys(atomRegistry) as PageComponent["type"][]).map((t) => ({
     type: t,
     label: t.replace(/([A-Z])/g, " $1").trim(),

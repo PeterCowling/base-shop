@@ -1,7 +1,8 @@
 "use client";
 
 import type { Locale } from "@/i18n/locales";
-import { useSortable } from "@dnd-kit/sortable";
+import { useSortable, SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
+import { useDroppable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import Link from "@tiptap/extension-link";
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -77,23 +78,27 @@ function MenuBar({ editor }: { editor: ReturnType<typeof useEditor> }) {
 const CanvasItem = memo(function CanvasItem({
   component,
   index,
+  parentId,
+  selectedId,
+  onSelectId,
   onRemove,
-  selected,
-  onSelect,
   dispatch,
   locale,
 }: {
   component: PageComponent;
   index: number;
+  parentId: string | undefined;
+  selectedId: string | null;
+  onSelectId: (id: string) => void;
   onRemove: () => void;
-  selected: boolean;
-  onSelect: () => void;
   dispatch: React.Dispatch<Action>;
   locale: Locale;
 }) {
+  const selected = selectedId === component.id;
+
   const { attributes, listeners, setNodeRef, transform } = useSortable({
     id: component.id,
-    data: { from: "canvas", index },
+    data: { from: "canvas", index, parentId },
   });
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -118,6 +123,15 @@ const CanvasItem = memo(function CanvasItem({
       typeof (component as any).text === "string"
         ? (component as any).text
         : ((component as any).text?.[locale] ?? ""),
+  });
+
+  const hasChildren = Array.isArray((component as any).children);
+  const childIds = hasChildren
+    ? ((component as any).children as PageComponent[]).map((c) => c.id)
+    : [];
+  const { setNodeRef: setDropRef } = useDroppable({
+    id: `container-${component.id}`,
+    data: { parentId: component.id },
   });
 
   useEffect(() => {
@@ -239,7 +253,7 @@ const CanvasItem = memo(function CanvasItem({
       {...attributes}
       {...listeners}
       onPointerDownCapture={(e) => {
-        onSelect();
+        onSelectId(component.id);
         startMove(e);
       }}
       style={{
@@ -276,7 +290,7 @@ const CanvasItem = memo(function CanvasItem({
             onClick={(e) => {
               e.stopPropagation();
               setEditing(true);
-              onSelect();
+              onSelectId(component.id);
             }}
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(
@@ -317,6 +331,37 @@ const CanvasItem = memo(function CanvasItem({
       >
         ×
       </button>
+      {hasChildren && (
+        <SortableContext
+          id={`context-${component.id}`}
+          items={childIds}
+          strategy={rectSortingStrategy}
+        >
+          <div
+            ref={setDropRef}
+            id={`container-${component.id}`}
+            className="m-2 flex flex-col gap-4 border border-dashed border-gray-300 p-2"
+          >
+            {(component as any).children.map(
+              (child: PageComponent, i: number) => (
+                <CanvasItem
+                  key={child.id}
+                  component={child}
+                  index={i}
+                  parentId={component.id}
+                  selectedId={selectedId}
+                  onSelectId={onSelectId}
+                  onRemove={() =>
+                    dispatch({ type: "remove", id: child.id })
+                  }
+                  dispatch={dispatch}
+                  locale={locale}
+                />
+              )
+            )}
+          </div>
+        </SortableContext>
+      )}
     </div>
   );
 });

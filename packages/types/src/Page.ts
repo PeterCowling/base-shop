@@ -107,6 +107,11 @@ export interface TextComponent extends PageComponentBase {
   text?: string;
 }
 
+export interface SectionComponent extends PageComponentBase {
+  type: "Section";
+  children?: PageComponent[];
+}
+
 export type PageComponent =
   | HeroBannerComponent
   | ValuePropsComponent
@@ -119,7 +124,8 @@ export type PageComponent =
   | TestimonialsComponent
   | TestimonialSliderComponent
   | ImageComponent
-  | TextComponent;
+  | TextComponent
+  | SectionComponent;
 
 const baseComponentSchema = z
   .object({
@@ -230,20 +236,28 @@ const textComponentSchema = baseComponentSchema.extend({
   text: z.string().optional(),
 });
 
-export const pageComponentSchema = z.discriminatedUnion("type", [
-  heroBannerComponentSchema,
-  valuePropsComponentSchema,
-  reviewsCarouselComponentSchema,
-  productGridComponentSchema,
-  galleryComponentSchema,
-  contactFormComponentSchema,
-  contactFormWithMapComponentSchema,
-  blogListingComponentSchema,
-  testimonialsComponentSchema,
-  testimonialSliderComponentSchema,
-  imageComponentSchema,
-  textComponentSchema,
-]);
+const sectionComponentSchema: z.ZodType<SectionComponent> = baseComponentSchema.extend({
+  type: z.literal("Section"),
+  children: z.array(z.lazy(() => pageComponentSchema)).default([]),
+});
+
+export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
+  z.discriminatedUnion("type", [
+    heroBannerComponentSchema,
+    valuePropsComponentSchema,
+    reviewsCarouselComponentSchema,
+    productGridComponentSchema,
+    galleryComponentSchema,
+    contactFormComponentSchema,
+    contactFormWithMapComponentSchema,
+    blogListingComponentSchema,
+    testimonialsComponentSchema,
+    testimonialSliderComponentSchema,
+    imageComponentSchema,
+    textComponentSchema,
+    sectionComponentSchema,
+  ])
+);
 
 export interface HistoryState {
   past: PageComponent[][];

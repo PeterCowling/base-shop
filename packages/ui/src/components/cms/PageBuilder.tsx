@@ -11,7 +11,6 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   rectSortingStrategy,
   SortableContext,
   sortableKeyboardCoordinates,
@@ -49,9 +48,12 @@ const COMPONENT_TYPES = [
   "TestimonialSlider",
   "Image",
   "Text",
+  "Section",
 ] as const;
 
 type ComponentType = (typeof COMPONENT_TYPES)[number];
+
+const CONTAINER_TYPES = ["Section"] as const;
 
 /* ════════════════ external contracts ════════════════ */
 interface Props {
@@ -73,8 +75,17 @@ export const historyStateSchema: z.ZodType<HistoryState> = z
 
 /* ════════════════ reducers ════════════════ */
 type ChangeAction =
-  | { type: "add"; component: PageComponent }
-  | { type: "move"; from: number; to: number }
+  | {
+      type: "add";
+      component: PageComponent;
+      parentId?: string;
+      index?: number;
+    }
+  | {
+      type: "move";
+      from: { parentId?: string; index: number };
+      to: { parentId?: string; index: number };
+    }
   | { type: "remove"; id: string }
   | { type: "update"; id: string; patch: Partial<PageComponent> }
   | {
@@ -89,35 +100,135 @@ type ChangeAction =
 
 export type Action = ChangeAction | { type: "undo" } | { type: "redo" };
 
+function addAt(list: PageComponent[], index: number, item: PageComponent) {
+  return [...list.slice(0, index), item, ...list.slice(index)];
+}
+
+function addComponent(
+  list: PageComponent[],
+  parentId: string | undefined,
+  index: number | undefined,
+  component: PageComponent
+): PageComponent[] {
+  if (!parentId) {
+    return addAt(list, index ?? list.length, component);
+  }
+  return list.map((c) => {
+    if (c.id === parentId && "children" in c) {
+      const children = addAt(
+        (c.children ?? []) as PageComponent[],
+        index ?? (c.children?.length ?? 0),
+        component
+      );
+      return { ...c, children } as PageComponent;
+    }
+    if ("children" in c && Array.isArray(c.children)) {
+      return { ...c, children: addComponent(c.children, parentId, index, component) } as PageComponent;
+    }
+    return c;
+  });
+}
+
+function removeComponent(list: PageComponent[], id: string): PageComponent[] {
+  return list
+    .map((c) =>
+      "children" in c && Array.isArray(c.children)
+        ? { ...c, children: removeComponent(c.children, id) } as PageComponent
+        : c
+    )
+    .filter((c) => c.id !== id);
+}
+
+function updateComponent(
+  list: PageComponent[],
+  id: string,
+  patch: Partial<PageComponent>
+): PageComponent[] {
+  return list.map((c) => {
+    if (c.id === id) return { ...c, ...patch } as PageComponent;
+    if ("children" in c && Array.isArray(c.children)) {
+      return { ...c, children: updateComponent(c.children, id, patch) } as PageComponent;
+    }
+    return c;
+  });
+}
+
+function resizeComponent(
+  list: PageComponent[],
+  id: string,
+  patch: { width?: string; height?: string; left?: string; top?: string }
+): PageComponent[] {
+  return list.map((c) => {
+    if (c.id === id) return { ...c, ...patch } as PageComponent;
+    if ("children" in c && Array.isArray(c.children)) {
+      return { ...c, children: resizeComponent(c.children, id, patch) } as PageComponent;
+    }
+    return c;
+  });
+}
+
+function extractComponent(
+  list: PageComponent[],
+  parentId: string | undefined,
+  index: number
+): [PageComponent | null, PageComponent[]] {
+  if (!parentId) {
+    const item = list[index];
+    const rest = [...list.slice(0, index), ...list.slice(index + 1)];
+    return [item, rest];
+  }
+  let removed: PageComponent | null = null;
+  const newList = list.map((c) => {
+    if (removed) return c;
+    if (c.id === parentId && "children" in c) {
+      const childList = (c.children ?? []) as PageComponent[];
+      const item = childList[index];
+      removed = item ?? null;
+      const rest = [...childList.slice(0, index), ...childList.slice(index + 1)];
+      return { ...c, children: rest } as PageComponent;
+    }
+    if ("children" in c && Array.isArray(c.children)) {
+      const [item, rest] = extractComponent(c.children, parentId, index);
+      if (item) {
+        removed = item;
+        return { ...c, children: rest } as PageComponent;
+      }
+    }
+    return c;
+  });
+  return [removed, newList];
+}
+
+function moveComponent(
+  list: PageComponent[],
+  from: { parentId?: string; index: number },
+  to: { parentId?: string; index: number }
+): PageComponent[] {
+  const [item, without] = extractComponent(list, from.parentId, from.index);
+  if (!item) return list;
+  return addComponent(without, to.parentId, to.index, item);
+}
+
 function componentsReducer(
   state: PageComponent[],
   action: ChangeAction
 ): PageComponent[] {
   switch (action.type) {
     case "add":
-      return [...state, action.component];
+      return addComponent(state, action.parentId, action.index, action.component);
     case "move":
-      return action.from === action.to
-        ? state
-        : arrayMove(state, action.from, action.to);
+      return moveComponent(state, action.from, action.to);
     case "remove":
-      return state.filter((b) => b.id !== action.id);
+      return removeComponent(state, action.id);
     case "update":
-      return state.map((b) =>
-        b.id === action.id ? { ...b, ...action.patch } : b
-      );
+      return updateComponent(state, action.id, action.patch);
     case "resize":
-      return state.map((b) =>
-        b.id === action.id
-          ? {
-              ...b,
-              width: action.width,
-              height: action.height,
-              left: action.left,
-              top: action.top,
-            }
-          : b
-      );
+      return resizeComponent(state, action.id, {
+        width: action.width,
+        height: action.height,
+        left: action.left,
+        top: action.top,
+      });
     case "set":
       return action.components;
     default:
@@ -170,25 +281,29 @@ const PageBuilder = memo(function PageBuilder({
 }: Props) {
   /* ── state initialise / persistence ───────────────────────────── */
   const storageKey = `page-builder-history-${page.id}`;
+  const migrate = useCallback(
+    (comps: PageComponent[]): PageComponent[] =>
+      comps.map((c) =>
+        c.type === "Section"
+          ? { ...c, children: c.children ?? [] }
+          : c
+      ),
+    []
+  );
+
   const [state, dispatch] = useReducer(reducer, undefined, (): HistoryState => {
+    const initial = migrate(page.components as PageComponent[]);
     if (typeof window === "undefined") {
-      return {
-        past: [],
-        present: page.components as PageComponent[],
-        future: [],
-      };
+      return { past: [], present: initial, future: [] };
     }
     try {
       const stored = localStorage.getItem(storageKey);
       if (!stored) throw new Error("no stored state");
-      return historyStateSchema.parse(JSON.parse(stored));
+      const parsed = historyStateSchema.parse(JSON.parse(stored));
+      return { ...parsed, present: migrate(parsed.present) };
     } catch (err) {
       console.warn("Failed to parse stored page builder state", err);
-      return {
-        past: [],
-        present: page.components as PageComponent[],
-        future: [],
-      };
+      return { past: [], present: initial, future: [] };
     }
   });
 
@@ -268,22 +383,61 @@ const PageBuilder = memo(function PageBuilder({
         from: string;
         type?: string;
         index?: number;
+        parentId?: string;
       };
-      const o = over.data.current as { from: string; index?: number };
+      const o = (over.data.current || {}) as {
+        parentId?: string;
+        index?: number;
+      };
 
-      if (a?.from === "palette" && over.id === "canvas") {
+      const findById = (list: PageComponent[], id: string): PageComponent | null => {
+        for (const c of list) {
+          if (c.id === id) return c;
+          if ((c as any).children) {
+            const found = findById((c as any).children, id);
+            if (found) return found;
+          }
+        }
+        return null;
+      };
+
+      let parentId = o.parentId;
+      let index = o.index;
+      if (over.id === "canvas") {
+        parentId = undefined;
+        index = components.length;
+      } else if (parentId === undefined) {
+        parentId = over.id.toString().replace(/^container-/, "");
+        const parent = findById(components, parentId);
+        index = ((parent as any)?.children?.length ?? 0) as number;
+      }
+
+      if (a?.from === "palette") {
+        const isContainer = CONTAINER_TYPES.includes(a.type! as any);
+        const component = {
+          id: ulid(),
+          type: a.type! as ComponentType,
+          ...(isContainer ? { children: [] } : {}),
+        } as PageComponent;
         dispatch({
           type: "add",
-          component: {
-            id: ulid(),
-            type: a.type! as ComponentType,
-          } as PageComponent,
+          component,
+          parentId,
+          index: index ?? 0,
         });
-      } else if (a?.from === "canvas" && o?.from === "canvas") {
-        dispatch({ type: "move", from: a.index!, to: o.index! });
+      } else if (a?.from === "canvas") {
+        let toIndex = index ?? 0;
+        if (a.parentId === parentId && a.index! < (index ?? 0)) {
+          toIndex = (index ?? 0) - 1;
+        }
+        dispatch({
+          type: "move",
+          from: { parentId: a.parentId, index: a.index! },
+          to: { parentId, index: toIndex },
+        });
       }
     },
-    [dispatch]
+    [dispatch, components]
   );
 
   /* ── form-data builder ────────────────────────────────────────── */
@@ -360,11 +514,12 @@ const PageBuilder = memo(function PageBuilder({
                   key={c.id}
                   component={c}
                   index={i}
-                  locale={locale}
-                  selected={c.id === selectedId}
-                  onSelect={() => setSelectedId(c.id)}
+                  parentId={undefined}
+                  selectedId={selectedId}
+                  onSelectId={setSelectedId}
                   onRemove={() => dispatch({ type: "remove", id: c.id })}
                   dispatch={dispatch}
+                  locale={locale}
                 />
               ))}
             </div>

@@ -1,0 +1,45 @@
+# Project Setup
+
+## Prerequisites
+
+- **Node.js** v20 or newer
+- **pnpm** v10 (repo uses pnpm@10.12.1)
+
+## 1. Create a shop
+
+```bash
+pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--payment=p1,p2] [--shipping=s1,s2]
+```
+
+- `--type` – choose between a standard sales shop or a rental shop (default `sale`).
+- `--theme` – name of a theme under `packages/themes`. Omit to be prompted with a list.
+- `--template` – which starter app to clone from `packages/`. Omit to be prompted with a list.
+- `--payment` – comma‑separated payment providers to configure.
+- `--shipping` – comma‑separated shipping providers to configure.
+
+The command scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
+
+## 2. Configure environment variables
+
+Edit `apps/shop-<id>/.env` to replace placeholder secrets.
+
+```bash
+pnpm validate-env <id>
+```
+
+`validate-env` parses the `.env` file and exits with an error if any required variable is missing or malformed.
+
+## 3. (Optional) Setup CI and deploy
+
+```bash
+pnpm setup-ci <id>
+```
+
+This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs lint/tests, builds the app and deploys it to Cloudflare Pages via `@cloudflare/next-on-pages`.
+
+## Troubleshooting
+
+- **"Theme 'X' not found" or "Template 'Y' not found"** – ensure the names match directories in `packages/themes` or `packages/`.
+- **`validate-env` fails** – verify `apps/shop-<id>/.env` contains all variables listed in the error. Missing values will stop the script.
+- **Node or pnpm version errors** – check you are running Node.js ≥20 and pnpm 10.x. Version mismatches can cause dependency resolution issues.
+

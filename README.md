@@ -2,6 +2,9 @@
 
 # Base-Shop
 
+Requires **Node.js >=20** and **pnpm 10.12.1**.  
+See [doc/setup.md](doc/setup.md) for full setup and CI guidance.
+
 Key points:
 
 - Stripe handles deposits via escrow sessions.

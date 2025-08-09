@@ -6,7 +6,8 @@ import PageBuilder from "@/components/cms/PageBuilder";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
 import { fetchJson } from "@ui/utils/fetchJson";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
+import { Toast } from "@/components/atoms";
 
 interface Props {
   currentStep: number;
@@ -67,6 +68,11 @@ export default function StepLayout({
    */
   if (stepIndex !== currentStep) return null;
 
+  const [toast, setToast] = useState<{ open: boolean; message: string }>({
+    open: false,
+    message: "",
+  });
+
   return (
     <fieldset className="space-y-4">
       <h2 className="text-xl font-semibold">Layout</h2>
@@ -92,14 +98,19 @@ export default function StepLayout({
             } as Page
           }
           onSave={async (fd) => {
-            const json = await fetchJson<{ id: string }>(
-              `/cms/api/page-draft/${shopId}`,
-              {
-                method: "POST",
-                body: fd,
-              }
-            );
-            setHeaderPageId(json.id);
+            try {
+              const json = await fetchJson<{ id: string }>(
+                `/cms/api/page-draft/${shopId}`,
+                {
+                  method: "POST",
+                  body: fd,
+                }
+              );
+              setHeaderPageId(json.id);
+              setToast({ open: true, message: "Header saved" });
+            } catch {
+              setToast({ open: true, message: "Failed to save header" });
+            }
           }}
           onPublish={async () => {}}
           onChange={setHeaderComponents}
@@ -128,14 +139,19 @@ export default function StepLayout({
             } as Page
           }
           onSave={async (fd) => {
-            const json = await fetchJson<{ id: string }>(
-              `/cms/api/page-draft/${shopId}`,
-              {
-                method: "POST",
-                body: fd,
-              }
-            );
-            setFooterPageId(json.id);
+            try {
+              const json = await fetchJson<{ id: string }>(
+                `/cms/api/page-draft/${shopId}`,
+                {
+                  method: "POST",
+                  body: fd,
+                }
+              );
+              setFooterPageId(json.id);
+              setToast({ open: true, message: "Footer saved" });
+            } catch {
+              setToast({ open: true, message: "Failed to save footer" });
+            }
           }}
           onPublish={async () => {}}
           onChange={setFooterComponents}
@@ -153,6 +169,11 @@ export default function StepLayout({
         </Button>
         <Button onClick={onNext}>Next</Button>
       </div>
+      <Toast
+        open={toast.open}
+        onClose={() => setToast((t) => ({ ...t, open: false }))}
+        message={toast.message}
+      />
     </fieldset>
   );
 }

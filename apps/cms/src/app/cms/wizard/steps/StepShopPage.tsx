@@ -13,6 +13,8 @@ import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
 import { fetchJson } from "@ui/utils/fetchJson";
 import { ulid } from "ulid";
+import { useState } from "react";
+import { Toast } from "@/components/atoms";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -41,6 +43,11 @@ export default function StepShopPage({
   onBack,
   onNext,
 }: Props): React.JSX.Element {
+  const [toast, setToast] = useState<{ open: boolean; message: string }>({
+    open: false,
+    message: "",
+  });
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Shop Page</h2>
@@ -95,14 +102,19 @@ export default function StepShopPage({
           } as Page
         }
         onSave={async (fd) => {
-          const json = await fetchJson<{ id: string }>(
-            `/cms/api/page-draft/${shopId}`,
-            {
-              method: "POST",
-              body: fd,
-            }
-          );
-          setShopPageId(json.id);
+          try {
+            const json = await fetchJson<{ id: string }>(
+              `/cms/api/page-draft/${shopId}`,
+              {
+                method: "POST",
+                body: fd,
+              }
+            );
+            setShopPageId(json.id);
+            setToast({ open: true, message: "Draft saved" });
+          } catch {
+            setToast({ open: true, message: "Failed to save page" });
+          }
         }}
         onPublish={async (fd) => {
           try {
@@ -115,9 +127,9 @@ export default function StepShopPage({
               }
             );
             setShopPageId(json.id);
-            alert("Page published");
+            setToast({ open: true, message: "Page published" });
           } catch {
-            alert("Failed to publish page");
+            setToast({ open: true, message: "Failed to publish page" });
           }
         }}
         onChange={setShopComponents}
@@ -129,6 +141,11 @@ export default function StepShopPage({
         </Button>
         <Button onClick={onNext}>Next</Button>
       </div>
+      <Toast
+        open={toast.open}
+        onClose={() => setToast((t) => ({ ...t, open: false }))}
+        message={toast.message}
+      />
     </div>
   );
 }

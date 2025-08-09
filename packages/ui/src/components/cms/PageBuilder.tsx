@@ -32,6 +32,7 @@ import {
 import { ulid } from "ulid";
 import { z } from "zod";
 import { Button } from "../atoms/shadcn";
+import { Toast } from "../atoms";
 import CanvasItem from "./page-builder/CanvasItem";
 import ComponentEditor from "./page-builder/ComponentEditor";
 import Palette from "./page-builder/Palette";
@@ -334,6 +335,10 @@ const PageBuilder = memo(function PageBuilder({
   const [dragOver, setDragOver] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
   const [insertIndex, setInsertIndex] = useState<number | null>(null);
+  const [toast, setToast] = useState<{ open: boolean; message: string }>({
+    open: false,
+    message: "",
+  });
 
   const {
     onDrop,
@@ -365,12 +370,38 @@ const PageBuilder = memo(function PageBuilder({
     }
   }, [pendingFile, isValid, handleUpload]);
 
+  useEffect(() => {
+    if (error) {
+      setToast({ open: true, message: error });
+    }
+  }, [error]);
+
   const handleFileDrop = useCallback(
     (e: DragEvent<HTMLDivElement>) => {
-      onDrop(e);
-      setDragOver(false);
-      const alt = window.prompt("Alt text") ?? "";
-      setAltText(alt);
+      try {
+        e.preventDefault();
+        setDragOver(false);
+        const file = e.dataTransfer.files?.[0];
+        if (!file) return;
+        if (!file.type.startsWith("image/")) {
+          setToast({ open: true, message: "Unsupported format" });
+          return;
+        }
+        const maxSize = 5 * 1024 * 1024; // 5 MB
+        if (file.size > maxSize) {
+          setToast({ open: true, message: "File too large" });
+          return;
+        }
+        onDrop(e);
+        const alt = window.prompt("Alt text") ?? "";
+        setAltText(alt);
+      } catch (err) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Failed to process file";
+        setToast({ open: true, message });
+      }
     },
     [onDrop, setAltText]
   );
@@ -588,7 +619,6 @@ const PageBuilder = memo(function PageBuilder({
             Uploading image… {progress.done}/{progress.total}
           </p>
         )}
-        {error && <p className="text-sm text-red-600">{error}</p>}
         {isValid === false && (
           <p className="text-sm text-orange-600">
             Wrong orientation (needs landscape)
@@ -684,6 +714,11 @@ const PageBuilder = memo(function PageBuilder({
           />
         </aside>
       )}
+      <Toast
+        open={toast.open}
+        onClose={() => setToast((t) => ({ ...t, open: false }))}
+        message={toast.message}
+      />
     </div>
   );
 });

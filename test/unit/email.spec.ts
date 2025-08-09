@@ -32,6 +32,32 @@ describe("sendEmail", () => {
     });
   });
 
+  it("throws and logs when nodemailer fails", async () => {
+    process.env = {
+      ...OLD_ENV,
+      GMAIL_USER: "test@example.com",
+      GMAIL_PASS: "secret",
+      STRIPE_SECRET_KEY: "sk",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+    } as NodeJS.ProcessEnv;
+
+    const error = new Error("failure");
+    const sendMail = jest.fn().mockRejectedValue(error);
+    jest.doMock("nodemailer", () => ({
+      __esModule: true,
+      default: { createTransport: () => ({ sendMail }) },
+      createTransport: () => ({ sendMail }),
+    }));
+
+    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const { sendEmail } = await import("../../src/lib/email");
+    await expect(
+      sendEmail("a@b.com", "Hello", "World")
+    ).rejects.toThrow("failure");
+    expect(consoleSpy).toHaveBeenCalled();
+    consoleSpy.mockRestore();
+  });
+
   it("logs when credentials are missing", async () => {
     process.env = {
       ...OLD_ENV,

@@ -21,12 +21,17 @@ export async function sendEmail(
   body: string
 ): Promise<void> {
   if (transporter) {
-    await transporter.sendMail({
-      from: env.GMAIL_USER,
-      to,
-      subject,
-      text: body,
-    });
+    try {
+      await transporter.sendMail({
+        from: env.GMAIL_USER,
+        to,
+        subject,
+        text: body,
+      });
+    } catch (error) {
+      console.error("Error sending email", error);
+      throw error;
+    }
   } else {
     console.log("Email to", to, "|", subject, "|", body);
   }

@@ -13,6 +13,10 @@ export interface SearchResultsTemplateProps
   pageCount: number;
   onQueryChange?: (query: string) => void;
   onPageChange?: (page: number) => void;
+  /** Minimum number of items required to render results */
+  minItems?: number;
+  /** Maximum number of items to render */
+  maxItems?: number;
 }
 
 export function SearchResultsTemplate({
@@ -22,6 +26,8 @@ export function SearchResultsTemplate({
   pageCount,
   onQueryChange,
   onPageChange,
+  minItems,
+  maxItems,
   className,
   ...props
 }: SearchResultsTemplateProps) {
@@ -33,7 +39,7 @@ export function SearchResultsTemplate({
         placeholder="Search products…"
       />
       {results.length > 0 ? (
-        <ProductGrid products={results} />
+        <ProductGrid products={results} minItems={minItems} maxItems={maxItems} />
       ) : (
         <p>No results found.</p>
       )}

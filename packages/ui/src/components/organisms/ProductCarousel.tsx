@@ -6,6 +6,10 @@ export interface ProductCarouselProps
   extends React.HTMLAttributes<HTMLDivElement> {
   products: Product[];
   itemsPerSlide?: number;
+  /** Minimum number of items required to render */
+  minItems?: number;
+  /** Maximum number of items to render */
+  maxItems?: number;
   /** flex gap class applied to the inner scroller */
   gapClassName?: string;
   /**
@@ -24,17 +28,23 @@ export interface ProductCarouselProps
 export function ProductCarousel({
   products,
   itemsPerSlide = 3,
+  minItems,
+  maxItems,
   gapClassName = "gap-4",
   getSlideWidth = (n) => `${100 / n}%`,
   className,
   ...props
 }: ProductCarouselProps) {
+  const visible = maxItems ? products.slice(0, maxItems) : products;
+  if (minItems !== undefined && visible.length < minItems) {
+    return null;
+  }
   const width = getSlideWidth(itemsPerSlide);
   const slideStyle = { flex: `0 0 ${width}` } as React.CSSProperties;
   return (
     <div className={cn("overflow-hidden", className)} {...props}>
       <div className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)}>
-        {products.map((p) => (
+        {visible.map((p) => (
           <div key={p.id} style={slideStyle} className="snap-start">
             <ProductCard product={p} className="h-full" />
           </div>

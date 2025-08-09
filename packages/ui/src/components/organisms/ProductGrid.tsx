@@ -9,24 +9,34 @@ export interface ProductGridProps extends React.HTMLAttributes<HTMLDivElement> {
   showPrice?: boolean;
   ctaLabel?: string;
   onAddToCart?: (product: Product) => void;
+  /** Minimum number of items required to render */
+  minItems?: number;
+  /** Maximum number of items to render */
+  maxItems?: number;
 }
 
 export function ProductGrid({
   products,
-  columns = 3,
+  columns,
   showImage = true,
   showPrice = true,
   ctaLabel = "Add to cart",
   onAddToCart,
+  minItems,
+  maxItems,
   className,
   ...props
 }: ProductGridProps) {
-  const style = {
-    gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-  } as React.CSSProperties;
+  const visible = maxItems ? products.slice(0, maxItems) : products;
+  if (minItems !== undefined && visible.length < minItems) {
+    return null;
+  }
+  const style = columns
+    ? ({ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` } as React.CSSProperties)
+    : undefined;
   return (
     <div className={cn("grid gap-6", className)} style={style} {...props}>
-      {products.map((p) => (
+      {visible.map((p) => (
         <ProductCard
           key={p.id}
           product={p}

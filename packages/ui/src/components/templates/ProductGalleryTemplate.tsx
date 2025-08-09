@@ -1,13 +1,18 @@
 import * as React from "react";
-import { cn } from "../../utils/cn";
-import { Product, ProductCard } from "../organisms/ProductCard";
+import { Product } from "../organisms/ProductCard";
 import { ProductCarousel } from "../organisms/ProductCarousel";
+import { ProductGrid } from "../organisms/ProductGrid";
+import { cn } from "../../utils/cn";
 
 export interface ProductGalleryTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
   products: Product[];
   useCarousel?: boolean;
   itemsPerSlide?: number;
+  /** Minimum number of items required to render */
+  minItems?: number;
+  /** Maximum number of items to render */
+  maxItems?: number;
 }
 
 /**
@@ -17,6 +22,8 @@ export function ProductGalleryTemplate({
   products,
   useCarousel = false,
   itemsPerSlide,
+  minItems,
+  maxItems,
   className,
   ...props
 }: ProductGalleryTemplateProps) {
@@ -25,19 +32,20 @@ export function ProductGalleryTemplate({
       <ProductCarousel
         products={products}
         itemsPerSlide={itemsPerSlide}
+        minItems={minItems}
+        maxItems={maxItems}
         className={className}
         {...props}
       />
     );
   }
   return (
-    <div
-      className={cn("grid gap-6 sm:grid-cols-2 lg:grid-cols-3", className)}
+    <ProductGrid
+      products={products}
+      minItems={minItems}
+      maxItems={maxItems}
+      className={cn("sm:grid-cols-2 lg:grid-cols-3", className)}
       {...props}
-    >
-      {products.map((p) => (
-        <ProductCard key={p.id} product={p} />
-      ))}
-    </div>
+    />
   );
 }

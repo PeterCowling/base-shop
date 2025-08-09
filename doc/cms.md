@@ -63,6 +63,12 @@ Open `/cms/shop/{shop}/pages/{slug}/builder` to edit an existing page or
 - Blocks can be resized directly on the canvas. Adjust margin and padding from
   the side panel before saving.
 
+### Keyboard & screen reader support
+
+- Press <kbd>Space</kbd> to grab the selected block, use the arrow keys to move
+  it, then press <kbd>Space</kbd> again to drop it.
+- Screen readers announce when blocks are moved or added to the canvas.
+
 ### Publish changes
 
 1. Use **Save** to keep a draft version.

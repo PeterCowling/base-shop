@@ -96,7 +96,13 @@ const CanvasItem = memo(function CanvasItem({
 }) {
   const selected = selectedId === component.id;
 
-  const { attributes, listeners, setNodeRef, transform } = useSortable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    isDragging,
+  } = useSortable({
     id: component.id,
     data: { from: "canvas", index, parentId },
   });
@@ -251,6 +257,9 @@ const CanvasItem = memo(function CanvasItem({
         containerRef.current = node;
       }}
       onClick={() => onSelectId(component.id)}
+      role="listitem"
+      aria-grabbed={isDragging}
+      aria-dropeffect="move"
       style={{
         transform: CSS.Transform.toString(transform),
         ...(component.width ? { width: component.width } : {}),
@@ -345,6 +354,8 @@ const CanvasItem = memo(function CanvasItem({
           <div
             ref={setDropRef}
             id={`container-${component.id}`}
+            role="list"
+            aria-dropeffect="move"
             className="m-2 flex flex-col gap-4 border border-dashed border-gray-300 p-2"
           >
             {isOver && (

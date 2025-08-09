@@ -35,28 +35,22 @@ import ComponentEditor from "./page-builder/ComponentEditor";
 import Palette from "./page-builder/Palette";
 import { cn } from "../../utils/cn";
 import { usePathname } from "next/navigation";
+import {
+  atomRegistry,
+  moleculeRegistry,
+  organismRegistry,
+  containerRegistry,
+} from "./blocks";
 import { getShopFromPath } from "@platform-core/src/utils/getShopFromPath";
 
 /* ════════════════ component catalogue ════════════════ */
-const COMPONENT_TYPES = [
-  "HeroBanner",
-  "ValueProps",
-  "ReviewsCarousel",
-  "ProductGrid",
-  "Gallery",
-  "ContactForm",
-  "ContactFormWithMap",
-  "BlogListing",
-  "Testimonials",
-  "TestimonialSlider",
-  "Image",
-  "Text",
-  "Section",
-] as const;
+type ComponentType =
+  | keyof typeof atomRegistry
+  | keyof typeof moleculeRegistry
+  | keyof typeof organismRegistry
+  | keyof typeof containerRegistry;
 
-type ComponentType = (typeof COMPONENT_TYPES)[number];
-
-const CONTAINER_TYPES = ["Section"] as const;
+const CONTAINER_TYPES = Object.keys(containerRegistry) as ComponentType[];
 
 /* ════════════════ external contracts ════════════════ */
 interface Props {
@@ -433,7 +427,7 @@ const PageBuilder = memo(function PageBuilder({
       }
 
       if (a?.from === "palette") {
-        const isContainer = CONTAINER_TYPES.includes(a.type! as any);
+        const isContainer = CONTAINER_TYPES.includes(a.type! as ComponentType);
         const component = {
           id: ulid(),
           type: a.type! as ComponentType,

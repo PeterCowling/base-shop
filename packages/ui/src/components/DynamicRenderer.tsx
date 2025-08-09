@@ -9,8 +9,14 @@ import type { ReactNode, CSSProperties } from "react";
 
 export default function DynamicRenderer({
   components,
+  locale,
+  data = {},
 }: {
   components: PageComponent[];
+  /** Active locale used for locale-aware components */
+  locale?: string;
+  /** Runtime data injected into CMS components (e.g. products, cart, etc.) */
+  data?: Record<string, unknown>;
 }) {
   const renderBlock = (block: PageComponent): ReactNode => {
     const Comp = blockRegistry[block.type as keyof typeof blockRegistry];
@@ -42,9 +48,16 @@ export default function DynamicRenderer({
       left,
     };
 
-    let extraProps: Record<string, unknown> = {};
-    if (block.type === "ProductGrid") {
-      extraProps = { skus: PRODUCTS as SKU[] };
+    // Locale + runtime data are passed through to every block so CMS layouts
+    // can depend on environment-specific information.
+    const extraProps: Record<string, unknown> = {
+      locale,
+      ...data,
+    };
+
+    // Provide sensible defaults for certain blocks when runtime data is absent.
+    if (block.type === "ProductGrid" && !("skus" in extraProps)) {
+      extraProps.skus = PRODUCTS as SKU[];
     }
 
     return (

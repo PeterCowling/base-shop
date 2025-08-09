@@ -7,7 +7,7 @@ describe("DynamicRenderer", () => {
     const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     const components = [{ id: "1", type: "Unknown" } as PageComponent];
 
-    render(<DynamicRenderer components={components} />);
+    render(<DynamicRenderer components={components} locale="en" />);
 
     expect(warnSpy).toHaveBeenCalledWith("Unknown component type: Unknown");
     warnSpy.mockRestore();
@@ -18,7 +18,7 @@ describe("DynamicRenderer", () => {
       { id: "1", type: "Text", text: { en: "hello" }, locale: "en" } as any,
     ];
 
-    render(<DynamicRenderer components={components} />);
+    render(<DynamicRenderer components={components} locale="en" />);
 
     expect(screen.getByText("hello")).toBeInTheDocument();
   });
@@ -39,7 +39,7 @@ describe("DynamicRenderer", () => {
       } as any,
     ];
 
-    render(<DynamicRenderer components={components} />);
+    render(<DynamicRenderer components={components} locale="en" />);
 
     expect(screen.getByText("nested")).toBeInTheDocument();
   });
@@ -59,7 +59,9 @@ describe("DynamicRenderer", () => {
       } as any,
     ];
 
-    const { container } = render(<DynamicRenderer components={components} />);
+    const { container } = render(
+      <DynamicRenderer components={components} locale="en" />
+    );
     const wrapper = container.firstChild as HTMLElement;
 
     expect(wrapper).toHaveStyle({

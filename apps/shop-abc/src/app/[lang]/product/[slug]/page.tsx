@@ -1,9 +1,12 @@
-// apps/shop-abc/src/app/[lang]/[lang]/product/[slug]/page.tsx
+// apps/shop-abc/src/app/[lang]/product/[slug]/page.tsx
 import { getProductBySlug } from "@/lib/products";
 import { LOCALES } from "@acme/i18n";
-
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import type { PageComponent, SKU } from "@types";
+import { getPages } from "@platform-core/repositories/pages/index.server";
+import DynamicRenderer from "@ui/components/DynamicRenderer";
+import shop from "../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 
 export async function generateStaticParams() {
@@ -28,14 +31,33 @@ export function generateMetadata({
   };
 }
 
-export default function ProductDetailPage({
+async function loadComponents(slug: string): Promise<PageComponent[] | null> {
+  const pages = await getPages(shop.id);
+  const page = pages.find(
+    (p) => p.slug === `product/${slug}` && p.status === "published"
+  );
+  return page?.components ?? null;
+}
+
+export default async function ProductDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: { lang: string; slug: string };
 }) {
   const product = getProductBySlug(params.slug);
   if (!product) return notFound();
 
-  /* ⬇️  Only data, no event handlers */
-  return <PdpClient product={product} />;
+  const components = await loadComponents(params.slug);
+  if (components) {
+    return (
+      <DynamicRenderer
+        components={components}
+        locale={params.lang}
+        data={{ product }}
+      />
+    );
+  }
+
+  // Fallback to the static PDP layout
+  return <PdpClient product={product as SKU} />;
 }

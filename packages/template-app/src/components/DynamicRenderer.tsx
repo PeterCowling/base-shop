@@ -19,6 +19,7 @@ import { Textarea as TextBlock } from "@/components/ui/textarea";
 
 import { PRODUCTS } from "@platform-core/src/products";
 import type { PageComponent, SKU } from "@types";
+import type { Locale } from "@i18n/locales";
 
 /* ------------------------------------------------------------------
  * next/image wrapper usable in CMS blocks
@@ -64,7 +65,13 @@ const registry: Record<
 /* ------------------------------------------------------------------
  * DynamicRenderer
  * ------------------------------------------------------------------ */
-function DynamicRenderer({ components }: { components: PageComponent[] }) {
+function DynamicRenderer({
+  components,
+  locale = "en",
+}: {
+  components: PageComponent[];
+  locale?: Locale;
+}) {
   return (
     <>
       {components.map((block) => {
@@ -77,13 +84,15 @@ function DynamicRenderer({ components }: { components: PageComponent[] }) {
 
         /* Runtime props for specific blocks */
         if (block.type === "ProductGrid") {
-          return <Comp key={block.id} skus={PRODUCTS as SKU[]} />;
+          return (
+            <Comp key={block.id} skus={PRODUCTS as SKU[]} locale={locale} />
+          );
         }
 
         const props =
           (block as { props?: Record<string, unknown> }).props ?? {};
 
-        return <Comp key={block.id} {...props} />;
+        return <Comp key={block.id} {...props} locale={locale} />;
       })}
     </>
   );

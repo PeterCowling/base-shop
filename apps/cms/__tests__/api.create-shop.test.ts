@@ -33,6 +33,7 @@ describe("create-shop API", () => {
     const req = { json: () => Promise.resolve(body) } as Request;
     const res = await POST(req);
     expect(res.status).toBe(201);
+    expect(createNewShop).toHaveBeenCalledTimes(1);
     expect(createNewShop).toHaveBeenCalledWith("new", {});
     (process.env as Record<string, string>).NODE_ENV = prevEnv as string;
   });

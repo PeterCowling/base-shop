@@ -49,8 +49,9 @@ describe("POST /api/create-shop", () => {
       body: JSON.stringify({ id: "shop1", options: { theme: "base" } }),
     });
     const res = await POST(req);
+    expect(createNewShop).toHaveBeenCalledTimes(1);
     expect(createNewShop).toHaveBeenCalledWith("shop1", { theme: "base" });
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(201);
     await expect(res.json()).resolves.toEqual({ success: true });
   });
 

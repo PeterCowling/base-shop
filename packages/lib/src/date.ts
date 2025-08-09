@@ -29,3 +29,16 @@ export function calculateRentalDays(returnDate?: string): number {
   const diff = Math.ceil((parsed.getTime() - Date.now()) / DAY_MS);
   return diff > 0 ? diff : 1;
 }
+
+/**
+ * Format an ISO timestamp using `toLocaleString`.
+ *
+ * Falls back to the original string when the timestamp is invalid.
+ */
+export function formatTimestamp(
+  ts: string,
+  locale?: string
+): string {
+  const date = new Date(ts);
+  return Number.isNaN(date.getTime()) ? ts : date.toLocaleString(locale);
+}

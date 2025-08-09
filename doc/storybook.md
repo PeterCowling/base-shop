@@ -40,3 +40,17 @@ pnpm chromatic
 
 to upload your Storybook to [Chromatic](https://www.chromatic.com/) for visual
 review and regression testing.
+
+## Date & Time Formatting
+
+For consistent locale-aware timestamps across UI components, use the
+`formatTimestamp` helper from `@lib/date` instead of calling
+`toLocaleString` directly:
+
+```ts
+import { formatTimestamp } from "@lib/date";
+
+formatTimestamp("2025-01-01T12:34:56Z");
+```
+
+This central utility ensures future components render dates uniformly.

@@ -31,11 +31,13 @@ export * from "./organisms";
 import { atomRegistry } from "./atoms";
 import { moleculeRegistry } from "./molecules";
 import { organismRegistry } from "./organisms";
+import { containerRegistry } from "./containers";
 
 // Re-export individual registries so consumers can access them directly.
-export { atomRegistry, moleculeRegistry, organismRegistry };
+export { atomRegistry, moleculeRegistry, organismRegistry, containerRegistry };
 
 export const blockRegistry = {
+  ...containerRegistry,
   ...atomRegistry,
   ...moleculeRegistry,
   ...organismRegistry,

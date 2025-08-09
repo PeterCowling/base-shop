@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "@themes/base": "workspace:*",
-    "@acme/i18n": "workspace:*"
+    "@acme/i18n": "workspace:*",
+    "@acme/next-config": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.4"

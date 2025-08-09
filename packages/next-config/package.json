@@ -1,0 +1,8 @@
+{
+  "name": "@acme/next-config",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.mjs"
+  }
+}

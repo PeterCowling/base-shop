@@ -10,12 +10,14 @@ const meta: Meta<typeof ProductGalleryTemplate> = {
       { id: "3", title: "Product 3", image: "/placeholder.svg", price: 30 },
     ],
     useCarousel: false,
-    itemsPerSlide: 3,
+    minItems: 1,
+    maxItems: 5,
   },
   argTypes: {
     products: { control: "object" },
     useCarousel: { control: "boolean" },
-    itemsPerSlide: { control: { type: "number" } },
+    minItems: { control: { type: "number" } },
+    maxItems: { control: { type: "number" } },
   },
 };
 export default meta;

@@ -18,12 +18,12 @@ export const runtime = "edge";
 
 const postSchema = z.object({
   sku: skuSchema,
-  qty: z.number().int().positive().optional(),
+  qty: z.number().int().min(1).default(1),
 });
 
 const patchSchema = z.object({
   id: z.string(),
-  qty: z.number().int().positive(),
+  qty: z.number().int().min(1),
 });
 
 export async function POST(req: NextRequest) {
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 });
   }
 
-  const { sku, qty = 1 } = parsed.data;
+  const { sku, qty } = parsed.data;
   const cookie = req.cookies.get(CART_COOKIE)?.value;
   const cart = decodeCartCookie(cookie);
   const line = cart[sku.id];

@@ -180,7 +180,7 @@ const CanvasItem = memo(function CanvasItem({
       window.removeEventListener("pointermove", handleMove);
       window.removeEventListener("pointerup", stop);
     };
-  }, [resizing, component.id, dispatch]);
+  }, [resizing, component.id, component.position, dispatch]);
 
   useEffect(() => {
     if (!moving) return;
@@ -209,11 +209,19 @@ const CanvasItem = memo(function CanvasItem({
     e.stopPropagation();
     const el = containerRef.current;
     if (!el) return;
+    const startWidth =
+      component.width && component.width.endsWith("px")
+        ? parseFloat(component.width)
+        : el.offsetWidth;
+    const startHeight =
+      component.height && component.height.endsWith("px")
+        ? parseFloat(component.height)
+        : el.offsetHeight;
     startRef.current = {
       x: e.clientX,
       y: e.clientY,
-      w: el.offsetWidth,
-      h: el.offsetHeight,
+      w: startWidth,
+      h: startHeight,
       l: el.offsetLeft,
       t: el.offsetTop,
     };

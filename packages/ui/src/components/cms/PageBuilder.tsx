@@ -225,11 +225,17 @@ function componentsReducer(
     case "update":
       return updateComponent(state, action.id, action.patch);
     case "resize":
+      const normalize = (v?: string) => {
+        if (v === undefined) return undefined;
+        const trimmed = v.trim();
+        if (trimmed === "") return undefined;
+        return /^-?\d+(\.\d+)?$/.test(trimmed) ? `${trimmed}px` : trimmed;
+      };
       return resizeComponent(state, action.id, {
-        width: action.width,
-        height: action.height,
-        left: action.left,
-        top: action.top,
+        width: normalize(action.width),
+        height: normalize(action.height),
+        left: normalize(action.left),
+        top: normalize(action.top),
       });
     case "set":
       return action.components;
@@ -733,6 +739,9 @@ const PageBuilder = memo(function PageBuilder({
             component={components.find((c) => c.id === selectedId)!}
             onChange={(patch) =>
               dispatch({ type: "update", id: selectedId, patch })
+            }
+            onResize={(size) =>
+              dispatch({ type: "resize", id: selectedId, ...size })
             }
           />
         </aside>

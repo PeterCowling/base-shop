@@ -13,12 +13,14 @@ export interface PageComponentBase {
   id: string;
   type: string;
   /**
-   * Width of the rendered component. Can be a pixel value (e.g. "300px")
-   * or a percentage (e.g. "50%").
+   * Width of the rendered component. Supports any CSS length including
+   * pixel values (e.g. "300px"), percentages (e.g. "50%"), or viewport
+   * units (e.g. "30vw").
    */
   width?: string;
   /**
-   * Height of the rendered component. Can be a pixel value or percentage.
+   * Height of the rendered component. Supports any CSS length such as
+   * pixels, percentages or viewport units.
    */
   height?: string;
   /**
@@ -26,11 +28,13 @@ export interface PageComponentBase {
    */
   position?: "relative" | "absolute";
   /**
-   * Offset from the top when position is absolute.
+   * Offset from the top when position is absolute. Accepts any CSS length
+   * including pixels, percentages or viewport units.
    */
   top?: string;
   /**
-   * Offset from the left when position is absolute.
+   * Offset from the left when position is absolute. Accepts any CSS length
+   * including pixels, percentages or viewport units.
    */
   left?: string;
   /**

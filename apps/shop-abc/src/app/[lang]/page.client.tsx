@@ -6,8 +6,10 @@ import type { PageComponent } from "@types";
 
 export default function Home({
   components,
+  locale,
 }: {
   components: PageComponent[];
+  locale: string;
 }) {
-  return <DynamicRenderer components={components} />;
+  return <DynamicRenderer components={components} locale={locale} />;
 }

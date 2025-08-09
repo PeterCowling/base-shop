@@ -24,7 +24,11 @@ async function loadComponents(): Promise<PageComponent[]> {
   }
 }
 
-export default async function Page() {
+export default async function Page({
+  params,
+}: {
+  params: { lang: string };
+}) {
   const components = await loadComponents();
-  return <Home components={components} />;
+  return <Home components={components} locale={params.lang} />;
 }

@@ -8,7 +8,7 @@ describe("DynamicRenderer", () => {
     const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     const components = [{ id: "1", type: "Unknown" } as PageComponent];
 
-    render(<DynamicRenderer components={components} />);
+    render(<DynamicRenderer components={components} locale="en" />);
 
     expect(warnSpy).toHaveBeenCalledWith("Unknown component type: Unknown");
     warnSpy.mockRestore();
@@ -16,10 +16,10 @@ describe("DynamicRenderer", () => {
 
   it("renders known component", () => {
     const components: PageComponent[] = [
-      { id: "1", type: "Text", text: { en: "hello" }, locale: "en" } as any,
+      { id: "1", type: "Text", text: { en: "hello" } } as any,
     ];
 
-    render(<DynamicRenderer components={components} />);
+    render(<DynamicRenderer components={components} locale="en" />);
 
     expect(screen.getByText("hello")).toBeInTheDocument();
   });
@@ -30,11 +30,10 @@ describe("DynamicRenderer", () => {
         id: "1",
         type: "Text",
         text: { en: "hello", fr: "bonjour" },
-        locale: "fr",
       } as any,
     ];
 
-    render(<DynamicRenderer components={components} />);
+    render(<DynamicRenderer components={components} locale="fr" />);
 
     expect(screen.getByText("bonjour")).toBeInTheDocument();
   });
@@ -53,7 +52,6 @@ describe("DynamicRenderer", () => {
                 id: "3",
                 type: "Text",
                 text: { en: "deep" },
-                locale: "en",
               } as any,
             ],
           } as any,
@@ -61,7 +59,7 @@ describe("DynamicRenderer", () => {
       } as any,
     ];
 
-    render(<DynamicRenderer components={components} />);
+    render(<DynamicRenderer components={components} locale="en" />);
 
     expect(screen.getByText("deep")).toBeInTheDocument();
   });
@@ -77,7 +75,7 @@ describe("DynamicRenderer", () => {
       { id: "1", type: "ProductGrid", runtime: "value" } as any,
     ];
 
-    render(<DynamicRenderer components={components} />);
+    render(<DynamicRenderer components={components} locale="en" />);
 
     expect(screen.getByText("value")).toBeInTheDocument();
     expect(spy).toHaveBeenCalled();
@@ -94,7 +92,6 @@ describe("DynamicRenderer", () => {
         id: "1",
         type: "Text",
         text: { en: "styled" },
-        locale: "en",
         margin: "1px",
         padding: "2px",
         position: "absolute",
@@ -103,7 +100,9 @@ describe("DynamicRenderer", () => {
       } as any,
     ];
 
-    const { container } = render(<DynamicRenderer components={components} />);
+    const { container } = render(
+      <DynamicRenderer components={components} locale="en" />
+    );
     const wrapper = container.firstChild as HTMLElement;
 
     expect(wrapper).toHaveStyle({
@@ -134,7 +133,12 @@ describe("DynamicRenderer block registry coverage", () => {
   });
 
   it.each(blockTypes)("renders %s block", (type) => {
-    render(<StubDynamicRenderer components={[{ id: "1", type } as any]} />);
+    render(
+      <StubDynamicRenderer
+        components={[{ id: "1", type } as any]}
+        locale="en"
+      />
+    );
     expect(screen.getByTestId(type)).toBeInTheDocument();
   });
 });

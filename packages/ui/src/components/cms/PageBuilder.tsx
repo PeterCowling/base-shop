@@ -90,10 +90,10 @@ type ChangeAction =
   | {
       type: "resize";
       id: string;
-      width?: string;
-      height?: string;
-      left?: string;
-      top?: string;
+      width?: string | number;
+      height?: string | number;
+      left?: string | number;
+      top?: string | number;
     }
   | { type: "set"; components: PageComponent[] };
 
@@ -208,6 +208,13 @@ function moveComponent(
   return addComponent(without, to.parentId, to.index, item);
 }
 
+function normalizeDimension(value?: string | number): string | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value === "number") return `${value}px`;
+  const trimmed = value.trim();
+  return /^\d+$/.test(trimmed) ? `${trimmed}px` : value;
+}
+
 function componentsReducer(
   state: PageComponent[],
   action: ChangeAction
@@ -223,10 +230,10 @@ function componentsReducer(
       return updateComponent(state, action.id, action.patch);
     case "resize":
       return resizeComponent(state, action.id, {
-        width: action.width,
-        height: action.height,
-        left: action.left,
-        top: action.top,
+        width: normalizeDimension(action.width),
+        height: normalizeDimension(action.height),
+        left: normalizeDimension(action.left),
+        top: normalizeDimension(action.top),
       });
     case "set":
       return action.components;
@@ -625,18 +632,21 @@ const PageBuilder = memo(function PageBuilder({
       </div>
 
       {/* Component editor */}
-      {selectedId && (
-        <aside className="w-72 shrink-0">
-          <ComponentEditor
-            component={components.find((c) => c.id === selectedId)!}
-            onChange={(patch) =>
-              dispatch({ type: "update", id: selectedId, patch })
-            }
-          />
-        </aside>
-      )}
-    </div>
-  );
+          {selectedId && (
+            <aside className="w-72 shrink-0">
+              <ComponentEditor
+                component={components.find((c) => c.id === selectedId)!}
+                onChange={(patch) =>
+                  dispatch({ type: "update", id: selectedId, patch })
+                }
+                onResize={(dims) =>
+                  dispatch({ type: "resize", id: selectedId, ...dims })
+                }
+              />
+            </aside>
+          )}
+        </div>
+      );
 });
 
 export default PageBuilder;

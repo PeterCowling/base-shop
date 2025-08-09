@@ -22,9 +22,10 @@ import ReviewsCarouselEditor from "./ReviewsCarouselEditor";
 interface Props {
   component: PageComponent | null;
   onChange: (patch: Partial<PageComponent>) => void;
+  onResize: (patch: { width?: string | number; height?: string | number }) => void;
 }
 
-function ComponentEditor({ component, onChange }: Props) {
+function ComponentEditor({ component, onChange, onResize }: Props) {
   if (!component) return null;
 
   const handleInput = useCallback(
@@ -69,12 +70,14 @@ function ComponentEditor({ component, onChange }: Props) {
       <Input
         label="Width"
         value={component.width ?? ""}
-        onChange={(e) => handleInput("width", e.target.value)}
+        placeholder="e.g. 300px or 50%"
+        onChange={(e) => onResize({ width: e.target.value })}
       />
       <Input
         label="Height"
         value={component.height ?? ""}
-        onChange={(e) => handleInput("height", e.target.value)}
+        placeholder="e.g. 200px or 50vh"
+        onChange={(e) => onResize({ height: e.target.value })}
       />
       <Input
         label="Margin"

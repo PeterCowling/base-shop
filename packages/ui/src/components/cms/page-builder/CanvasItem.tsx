@@ -158,13 +158,15 @@ const CanvasItem = memo(function CanvasItem({
       const payload: Action = {
         type: "resize",
         id: component.id,
-        width: `${startRef.current.w + dx}px`,
-        height: `${startRef.current.h + dy}px`,
+        width: startRef.current.w + dx,
+        height: startRef.current.h + dy,
+        ...(component.position === "absolute"
+          ? {
+              left: startRef.current.l + dx,
+              top: startRef.current.t + dy,
+            }
+          : {}),
       };
-      if (component.position === "absolute") {
-        payload.left = `${startRef.current.l + dx}px`;
-        payload.top = `${startRef.current.t + dy}px`;
-      }
       dispatch(payload);
     };
     const stop = () => setResizing(false);
@@ -185,8 +187,8 @@ const CanvasItem = memo(function CanvasItem({
       dispatch({
         type: "resize",
         id: component.id,
-        left: `${moveRef.current.l + dx}px`,
-        top: `${moveRef.current.t + dy}px`,
+        left: moveRef.current.l + dx,
+        top: moveRef.current.t + dy,
       });
     };
     const stop = () => setMoving(false);

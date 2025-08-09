@@ -1,33 +1,35 @@
 import { canRead, canWrite } from "../src/rbac";
-import type { Role } from "../src/types";
 
 describe("canRead", () => {
-  const cases: [Role, boolean][] = [
+  const cases: [unknown, boolean][] = [
     ["admin", true],
     ["ShopAdmin", true],
     ["CatalogManager", true],
     ["ThemeEditor", true],
     ["viewer", true],
+    ["bad", false],
+    [null, false],
   ];
 
   for (const [role, expected] of cases) {
-    it(`${role} -> ${expected}`, () => {
+    it(`${String(role)} -> ${expected}`, () => {
       expect(canRead(role)).toBe(expected);
     });
   }
 });
 
 describe("canWrite", () => {
-  const cases: [Role, boolean][] = [
+  const cases: [unknown, boolean][] = [
     ["admin", true],
     ["ShopAdmin", true],
     ["CatalogManager", true],
     ["ThemeEditor", true],
     ["viewer", false],
+    ["bad", false],
   ];
 
   for (const [role, expected] of cases) {
-    it(`${role} -> ${expected}`, () => {
+    it(`${String(role)} -> ${expected}`, () => {
       expect(canWrite(role)).toBe(expected);
     });
   }

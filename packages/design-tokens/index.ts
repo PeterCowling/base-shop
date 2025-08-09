@@ -14,6 +14,7 @@ const designTokens = plugin.withOptions(
         },
         textColor: {
           "primary-fg": "hsl(var(--color-primary-fg))",
+          "accent-foreground": "hsl(var(--color-accent-fg))",
         },
         fontFamily: {
           sans: "var(--font-sans)",

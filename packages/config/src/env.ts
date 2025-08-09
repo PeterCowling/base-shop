@@ -10,6 +10,9 @@ export const envSchema = z.object({
   NEXT_PUBLIC_PHASE: z.string().optional(),
   NEXT_PUBLIC_DEFAULT_SHOP: z.string().optional(),
   NEXT_PUBLIC_SHOP_ID: z.string().optional(),
+  CMS_SPACE_URL: z.string().optional(),
+  CMS_ACCESS_TOKEN: z.string().optional(),
+  CHROMATIC_PROJECT_TOKEN: z.string().optional(),
   GMAIL_USER: z.string().optional(),
   GMAIL_PASS: z.string().optional(),
 });

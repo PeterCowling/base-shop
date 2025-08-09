@@ -8,8 +8,14 @@ import type { ReactNode, CSSProperties } from "react";
 
 export default function DynamicRenderer({
   components,
+  data = {},
 }: {
   components: PageComponent[];
+  /**
+   * Arbitrary runtime data passed to every block. Individual components can
+   * pick the keys they need (e.g. locale, cart, product, …).
+   */
+  data?: Record<string, unknown>;
 }) {
   const renderBlock = (block: PageComponent): ReactNode => {
     const Comp = blockRegistry[block.type as keyof typeof blockRegistry];
@@ -43,7 +49,7 @@ export default function DynamicRenderer({
 
     return (
       <div key={id} style={style}>
-        <Comp {...props}>
+        <Comp {...data} {...props}>
           {children?.map((child: PageComponent) => renderBlock(child))}
         </Comp>
       </div>

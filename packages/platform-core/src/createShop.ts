@@ -29,6 +29,7 @@ import {
   loadBaseTokens,
   loadThemeTokens,
 } from "./createShop/utils";
+import { nowIso } from "../../shared/date";
 import { defaultFilterMappings } from "./defaultFilterMappings";
 
 export const createShopOptionsSchema = z.object({
@@ -260,7 +261,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
     )
   );
 
-  const now = new Date().toISOString();
+  const now = nowIso();
   const sampleProduct = {
     id: ulid(),
     sku: "SAMPLE-1",

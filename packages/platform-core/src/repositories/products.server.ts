@@ -6,6 +6,7 @@ import { ulid } from "ulid";
 import { ProductPublication } from "../products";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "./utils";
+import { nowIso } from "../../../shared/date";
 
 function filePath(shop: string): string {
   shop = validateShopName(shop);
@@ -78,7 +79,7 @@ export async function duplicateProductInRepo<
   const catalogue = await readRepo<T>(shop);
   const original = catalogue.find((p) => p.id === id);
   if (!original) throw new Error(`Product ${id} not found in ${shop}`);
-  const now = new Date().toISOString();
+  const now = nowIso();
   const copy: T = {
     ...original,
     id: ulid(),

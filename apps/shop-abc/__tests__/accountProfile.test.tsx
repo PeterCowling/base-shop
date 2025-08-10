@@ -1,11 +1,13 @@
 // apps/shop-abc/__tests__/accountProfile.test.tsx
-jest.mock("@auth", () => ({
-  __esModule: true,
-  getCustomerSession: jest.fn(),
-}));
+import { jest } from "@jest/globals";
 
-import { getCustomerSession } from "@auth";
-import ProfilePage from "../src/app/account/profile/page";
+const getCustomerSession = jest.fn();
+const getCustomerProfile = jest.fn();
+
+jest.unstable_mockModule("@auth", () => ({ getCustomerSession }));
+jest.unstable_mockModule("@acme/platform-core", () => ({ getCustomerProfile }));
+
+const { default: ProfilePage } = await import("../src/app/account/profile/page");
 
 describe("/account/profile", () => {
   beforeEach(() => {
@@ -13,7 +15,7 @@ describe("/account/profile", () => {
   });
 
   it("redirects unauthenticated users", async () => {
-    (getCustomerSession as jest.Mock).mockResolvedValue(null);
+    getCustomerSession.mockResolvedValue(null);
     const element = await ProfilePage();
     expect(getCustomerSession).toHaveBeenCalled();
     expect(element.type).toBe("p");
@@ -21,10 +23,17 @@ describe("/account/profile", () => {
   });
 
   it("renders profile form for authenticated users", async () => {
-    (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "cust1" });
+    getCustomerSession.mockResolvedValue({ customerId: "cust1" });
+    getCustomerProfile.mockResolvedValue({
+      name: "Jane",
+      email: "jane@example.com",
+      customerId: "cust1",
+    });
     const element = await ProfilePage();
+    expect(getCustomerProfile).toHaveBeenCalledWith("cust1");
     expect(element.type).toBe("div");
     expect(element.props.children[0].props.children).toBe("Profile");
-    expect(element.props.children[1].type.name).toBe("ProfileForm");
+    expect(element.props.children[1].props.name).toBe("Jane");
+    expect(element.props.children[1].props.email).toBe("jane@example.com");
   });
 });

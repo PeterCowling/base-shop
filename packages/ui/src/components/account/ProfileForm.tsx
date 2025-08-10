@@ -8,8 +8,8 @@ export interface ProfileFormProps {
   email?: string;
 }
 
-export default function ProfileForm({ name = "", email = "" }: ProfileFormProps) {
-  const [form, setForm] = useState({ name, email });
+export default function ProfileForm({ name, email }: ProfileFormProps) {
+  const [form, setForm] = useState({ name: name ?? "", email: email ?? "" });
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [message, setMessage] = useState<string | null>(null);
 

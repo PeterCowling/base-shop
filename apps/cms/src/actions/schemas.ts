@@ -23,7 +23,8 @@ const jsonRecord = z
       ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Invalid JSON" });
       return {};
     }
-  });
+  })
+  .pipe(z.record(z.unknown()));
 
 export const shopSchema = z
   .object({

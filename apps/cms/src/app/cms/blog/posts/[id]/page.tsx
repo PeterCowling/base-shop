@@ -1,9 +1,12 @@
 // apps/cms/src/app/cms/blog/posts/[id]/page.tsx
 
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import PostForm from "../PostForm.client";
 import PublishButton from "../PublishButton.client";
 import { getPost, updatePost } from "@cms/actions/blog.server";
+import { getSanityConfig } from "@platform-core/src/shops";
+import { getShopById } from "@platform-core/src/repositories/shop.server";
 
 interface Params {
   params: { id: string };
@@ -16,6 +19,21 @@ export default async function EditPostPage({
 }: Params) {
   const shopId = searchParams?.shopId;
   if (!shopId) return notFound();
+  const shop = await getShopById(shopId);
+  const sanity = getSanityConfig(shop);
+  if (!sanity) {
+    return (
+      <p>
+        Sanity is not connected.{" "}
+        <Link
+          href={`/cms/blog/sanity/connect?shopId=${shopId}`}
+          className="text-primary underline"
+        >
+          Connect Sanity
+        </Link>
+      </p>
+    );
+  }
   const post = await getPost(shopId, params.id);
   if (!post) return notFound();
   return (

@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { Button } from "@ui";
 import { getPosts } from "@cms/actions/blog.server";
+import { getSanityConfig } from "@platform-core/src/shops";
+import { getShopById } from "@platform-core/src/repositories/shop.server";
 
 export default async function BlogPostsPage({
   searchParams,
@@ -11,6 +13,21 @@ export default async function BlogPostsPage({
 }) {
   const shopId = searchParams?.shopId;
   if (!shopId) return <p>No shop selected.</p>;
+  const shop = await getShopById(shopId);
+  const sanity = getSanityConfig(shop);
+  if (!sanity) {
+    return (
+      <p>
+        Sanity is not connected.{" "}
+        <Link
+          href={`/cms/blog/sanity/connect?shopId=${shopId}`}
+          className="text-primary underline"
+        >
+          Connect Sanity
+        </Link>
+      </p>
+    );
+  }
   const posts = await getPosts(shopId);
   return (
     <div className="space-y-4">

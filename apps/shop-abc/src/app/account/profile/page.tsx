@@ -1,5 +1,6 @@
 // apps/shop-abc/src/app/account/profile/page.tsx
 import { getCustomerSession } from "@auth";
+import ProfileForm from "./ProfileForm";
 
 export const metadata = { title: "Profile" };
 
@@ -9,7 +10,7 @@ export default async function ProfilePage() {
   return (
     <div className="p-6">
       <h1 className="mb-4 text-xl">Profile</h1>
-      <pre className="rounded bg-muted p-4">{JSON.stringify(session, null, 2)}</pre>
+      <ProfileForm />
     </div>
   );
 }

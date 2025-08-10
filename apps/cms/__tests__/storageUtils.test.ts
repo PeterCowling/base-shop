@@ -1,7 +1,10 @@
 // apps/cms/__tests__/storageUtils.test.ts
 /* eslint-env jest */
 
-import { STORAGE_KEY, resetWizardProgress } from "../src/app/cms/wizard/storageUtils";
+import {
+  STORAGE_KEY,
+  resetWizardProgress,
+} from "../src/app/cms/wizard/hooks/useWizardPersistence";
 
 describe("storageUtils", () => {
   beforeEach(() => {

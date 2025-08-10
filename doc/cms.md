@@ -54,14 +54,23 @@ Open `/cms/shop/{shop}/pages/{slug}/builder` to edit an existing page or
 
 1. Click **Add Block** in the toolbar or hover near a section and press the **+**
    button.
-2. Pick a component from the list and adjust its options in the side panel.
-3. Confirm to insert the block onto the page.
+2. Drag a component from the picker onto the canvas or click it to insert.
+3. Adjust its options in the side panel before confirming.
+
+_Short description: drag the desired block from the list onto the canvas to add it._
 
 ### Rearrange blocks
 
 - Select a block to reveal drag handles, then drag it to a new position.
-- Blocks can be resized directly on the canvas. Adjust margin and padding from
-  the side panel before saving.
+
+### Resize blocks
+
+- Enter width and height in the sidebar to set exact dimensions.
+- Drag the block's corner handles to resize directly on the canvas.
+- Hold **Shift** while resizing or move close to the canvas edges to snap to 100% width or height.
+- Adjust margin and padding from the side panel before saving.
+
+_Short description: corner handles highlight when the block snaps to full size._
 
 ### Keyboard & screen reader support
 
@@ -80,4 +89,4 @@ items up to `maxItems`, while narrow screens never drop below `minItems`.
 
 1. Use **Save** to keep a draft version.
 2. Click **Publish** when you're ready for the page to go live at
-  `/shop/{shop}/{slug}`.
+   `/shop/{shop}/{slug}`.

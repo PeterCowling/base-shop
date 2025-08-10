@@ -47,7 +47,17 @@ describe("inventory import/export routes", () => {
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
       });
       const route = await import("../src/app/api/data/[shop]/inventory/import/route");
-      const items = [
+      const flatItems = [
+        {
+          sku: "a",
+          productId: "a",
+          "variant.size": "M",
+          "variant.color": "red",
+          quantity: 1,
+          lowStockThreshold: 1,
+        },
+      ];
+      const expected = [
         {
           sku: "a",
           productId: "a",
@@ -59,7 +69,7 @@ describe("inventory import/export routes", () => {
       const file = {
         name: "inv.json",
         type: "application/json",
-        text: async () => JSON.stringify(items),
+        text: async () => JSON.stringify(flatItems),
       };
       const req = {
         formData: async () => ({ get: () => file }),
@@ -71,9 +81,12 @@ describe("inventory import/export routes", () => {
       }
       expect(res.status).toBe(200);
       const json = JSON.parse(text);
-      expect(json.items).toEqual(items);
-      const buf = await fs.readFile(path.join(dir, "data", "shops", "test", "inventory.json"), "utf8");
-      expect(JSON.parse(buf)).toEqual(items);
+      expect(json.items).toEqual(expected);
+      const buf = await fs.readFile(
+        path.join(dir, "data", "shops", "test", "inventory.json"),
+        "utf8"
+      );
+      expect(JSON.parse(buf)).toEqual(expected);
     });
   });
 
@@ -89,7 +102,7 @@ describe("inventory import/export routes", () => {
       });
       const route = await import("../src/app/api/data/[shop]/inventory/import/route");
       const csv =
-        "sku,productId,size,color,quantity,lowStockThreshold\n" +
+        "sku,productId,variant.size,variant.color,quantity,lowStockThreshold\n" +
         "a,a,M,red,1,1\n" +
         "b,b,L,blue,2,1";
       const file = {
@@ -163,7 +176,7 @@ describe("inventory import/export routes", () => {
       expect(res.headers.get("content-type")).toContain("text/csv");
       const text = await res.text();
       expect(text).toContain(
-        "sku,productId,size,color,quantity,lowStockThreshold"
+        "sku,productId,variant.size,variant.color,quantity,lowStockThreshold"
       );
       expect(text).toContain("a,a,M,red,1,1");
     });
@@ -205,7 +218,24 @@ describe("inventory import/export routes", () => {
       const res = await route.GET(req as any, { params: Promise.resolve({ shop: "test" }) });
       expect(res.headers.get("content-type")).toContain("application/json");
       const json = await res.json();
-      expect(json).toEqual(items);
+      expect(json).toEqual([
+        {
+          sku: "a",
+          productId: "a",
+          "variant.size": "M",
+          "variant.color": "red",
+          quantity: 1,
+          lowStockThreshold: 1,
+        },
+        {
+          sku: "b",
+          productId: "b",
+          "variant.size": "L",
+          "variant.color": "blue",
+          quantity: 2,
+          lowStockThreshold: 1,
+        },
+      ]);
     });
   });
 });

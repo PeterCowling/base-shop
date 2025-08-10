@@ -8,11 +8,15 @@ import type { FormState } from "./PostForm.client";
 
 interface Props {
   id: string;
+  shopId: string;
 }
 
-export default function PublishButton({ id }: Props) {
-  const action = publishPost.bind(null, id);
-  const [state, formAction] = useFormState<FormState>(action, { message: "", error: "" });
+export default function PublishButton({ id, shopId }: Props) {
+  const action = publishPost.bind(null, shopId, id);
+  const [state, formAction] = useFormState<FormState>(action, {
+    message: "",
+    error: "",
+  });
   return (
     <div className="space-y-2">
       <form action={formAction}>
@@ -20,7 +24,10 @@ export default function PublishButton({ id }: Props) {
           Publish
         </Button>
       </form>
-      <Toast open={Boolean(state.message || state.error)} message={state.message || state.error || ""} />
+      <Toast
+        open={Boolean(state.message || state.error)}
+        message={state.message || state.error || ""}
+      />
     </div>
   );
 }

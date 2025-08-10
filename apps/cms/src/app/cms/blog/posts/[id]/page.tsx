@@ -7,16 +7,26 @@ import { getPost, updatePost } from "@cms/actions/blog.server";
 
 interface Params {
   params: { id: string };
+  searchParams?: { shopId?: string };
 }
 
-export default async function EditPostPage({ params }: Params) {
-  const post = await getPost(params.id);
+export default async function EditPostPage({
+  params,
+  searchParams,
+}: Params) {
+  const shopId = searchParams?.shopId;
+  if (!shopId) return notFound();
+  const post = await getPost(shopId, params.id);
   if (!post) return notFound();
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Edit Post</h1>
-      <PostForm action={updatePost} submitLabel="Save" post={post} />
-      <PublishButton id={post._id} />
+      <PostForm
+        action={updatePost.bind(null, shopId)}
+        submitLabel="Save"
+        post={post}
+      />
+      <PublishButton id={post._id} shopId={shopId} />
     </div>
   );
 }

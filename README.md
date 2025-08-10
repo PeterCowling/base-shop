@@ -20,17 +20,19 @@ Key points:
 
 ## Getting Started
 
-1. **Create a shop**
+1. **Initialize a shop**
 
    ```bash
-   pnpm create-shop <id> [--name="My Shop"] [--logo=https://example.com/logo.png] [--contact="support@example.com"]
+   pnpm init-shop
    # optionally generate a GitHub Actions workflow
    pnpm setup-ci <id>
    ```
 
-   This scaffolds `apps/shop-<id>` and writes an `.env` file inside the new app.
-   `--name`, `--logo`, and `--contact` seed the shop's display name, logo URL, and contact information.
-   Edit the `.env` file to provide real secrets (see [Environment Variables](#environment-variables)).
+   `init-shop` launches an interactive wizard that asks for the shop ID, display name, logo URL,
+   contact email and which theme, template, payment and shipping providers to use. It then
+   scaffolds `apps/shop-<id>` and writes an `.env` file inside the new app. Edit the `.env` file to
+   provide real secrets (see [Environment Variables](#environment-variables)). For scripted
+   setups you can still call `pnpm create-shop <id>` with flags.
 
 2. **Run the app**
 
@@ -47,7 +49,17 @@ Key points:
 ### Example
 
 ```bash
-pnpm create-shop demo
+pnpm init-shop
+? Shop ID … demo
+? Display name … Demo Shop
+? Logo URL … https://example.com/logo.png
+? Contact email … demo@example.com
+? Theme › base
+? Template › template-app
+? Payment providers › stripe
+? Shipping providers › ups
+Scaffolded apps/shop-demo
+
 pnpm setup-ci demo  # optional
 pnpm validate-env demo
 cd apps/shop-demo

@@ -26,7 +26,6 @@ jest.mock("@platform-core/src", () => {
 
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import Wizard from "../src/app/cms/wizard/Wizard";
-import { STORAGE_KEY } from "../src/app/cms/wizard/hooks/useWizardPersistence";
 
 const themes = ["base", "dark"];
 const templates = ["template-app"];
@@ -47,15 +46,25 @@ async function nextFrom(container: HTMLElement): Promise<void> {
   );
 }
 
+let serverState: any = {};
+
 beforeEach(() => {
-  (global.fetch as any) = jest.fn(() => Promise.resolve({ ok: true }));
+  serverState = {};
+  (global.fetch as any) = jest.fn((url: string, init?: any) => {
+    if (url === "/cms/api/wizard-progress") {
+      if (init && init.method === "PUT") {
+        serverState = JSON.parse(init.body as string);
+        return Promise.resolve({ ok: true, json: async () => ({}) });
+      }
+      return Promise.resolve({ ok: true, json: async () => serverState });
+    }
+    return Promise.resolve({ ok: true, json: async () => ({}) });
+  });
   Element.prototype.scrollIntoView = jest.fn();
-  localStorage.clear();
 });
 
 afterEach(() => {
   (global.fetch as jest.Mock).mockReset();
-  localStorage.clear();
 });
 
 /* -------------------------------------------------------------------------- */
@@ -64,10 +73,7 @@ afterEach(() => {
 
 describe("Wizard locale flow", () => {
   it("preserves locale fields across navigation and reload", async () => {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ step: 11, shopId: "shop" })
-    );
+    serverState = { step: 11, shopId: "shop" };
     const { unmount } = render(
       <Wizard themes={themes} templates={templates} />
     );

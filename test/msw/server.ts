@@ -22,6 +22,12 @@ export const handlers = [
   rest.get("/cms/api/page-templates", (_req, res, ctx) =>
     res(ctx.status(200), ctx.json([]))
   ),
+  rest.get("/cms/api/wizard-progress", (_req, res, ctx) =>
+    res(ctx.status(200), ctx.json({}))
+  ),
+  rest.put("/cms/api/wizard-progress", (_req, res, ctx) =>
+    res(ctx.status(200), ctx.json({}))
+  ),
 ];
 
 export const server = setupServer(...handlers);

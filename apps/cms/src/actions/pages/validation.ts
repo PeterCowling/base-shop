@@ -11,7 +11,17 @@ export const emptyTranslated = (): Record<Locale, string> =>
 export const componentsField = z
   .string()
   .default("[]")
-  .transform((val) => JSON.parse(val))
+  .transform((val, ctx) => {
+    try {
+      return JSON.parse(val);
+    } catch {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Invalid JSON",
+      });
+      return [];
+    }
+  })
   .pipe(z.array(pageComponentSchema));
 
 export type PageComponents = z.infer<typeof componentsField>;

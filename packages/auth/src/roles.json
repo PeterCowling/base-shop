@@ -1,4 +1,4 @@
 {
   "write": ["admin", "ShopAdmin", "CatalogManager", "ThemeEditor"],
-  "read": ["viewer"]
+  "read": ["viewer", "customer"]
 }

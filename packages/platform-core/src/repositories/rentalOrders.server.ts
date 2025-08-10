@@ -46,7 +46,8 @@ export async function addOrder(
   shop: string,
   sessionId: string,
   deposit: number,
-  expectedReturnDate?: string
+  expectedReturnDate?: string,
+  customerId?: string
 ): Promise<RentalOrder> {
   const orders = await readOrders(shop);
   const order: RentalOrder = {
@@ -56,6 +57,7 @@ export async function addOrder(
     deposit,
     expectedReturnDate,
     startedAt: nowIso(),
+    ...(customerId ? { customerId } : {}),
   };
   orders.push(order);
   await writeOrders(shop, orders);

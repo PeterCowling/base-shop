@@ -11,6 +11,7 @@ export const rentalOrderSchema = z.object({
   refundedAt: z.string().optional(),
   /** Optional damage fee deducted from the deposit */
   damageFee: z.number().optional(),
+  customerId: z.string().optional(),
 });
 
 export type RentalOrder = z.infer<typeof rentalOrderSchema>;

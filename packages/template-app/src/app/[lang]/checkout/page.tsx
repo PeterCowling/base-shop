@@ -2,9 +2,13 @@
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";
 import { Locale, resolveLocale } from "@/i18n/locales";
-import { CART_COOKIE, decodeCartCookie } from "@platform-core/src/cartCookie";
+import {
+  CART_COOKIE,
+  decodeCartCookie,
+  type CartLine,
+  type CartState,
+} from "@platform-core/src/cartCookie";
 import { getProductById } from "@platform-core/src/products";
-import type { CartLine, CartState } from "@types";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/src/repositories/settings.server";
 

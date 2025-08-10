@@ -14,7 +14,8 @@ describe("create-shop API", () => {
   it("creates shop when authorized", async () => {
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
-    const createNewShop = jest.fn();
+    const deployment = { status: "success", previewUrl: "https://new.pages.dev" };
+    const createNewShop = jest.fn().mockResolvedValue(deployment);
     jest.doMock("@cms/actions/createShop.server", () => ({
       __esModule: true,
       createNewShop,
@@ -33,6 +34,7 @@ describe("create-shop API", () => {
       payment: [],
       shipping: [],
     });
+    await expect(res.json()).resolves.toEqual({ success: true, deployment });
     (process.env as Record<string, string>).NODE_ENV = prevEnv as string;
   });
 

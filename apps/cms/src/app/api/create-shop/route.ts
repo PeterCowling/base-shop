@@ -33,12 +33,12 @@ export async function POST(req: Request) {
 
     const { id, ...options } = parsed.data;
 
-    await createNewShop(id, options);
+    const deployment = await createNewShop(id, options);
 
     /* --------------------------------------------------------------
      *  Success → 201 Created
      * ------------------------------------------------------------ */
-    return NextResponse.json({ success: true }, { status: 201 });
+    return NextResponse.json({ success: true, deployment }, { status: 201 });
   } catch (err) {
     /* --------------------------------------------------------------
      *  Forbidden or bad request

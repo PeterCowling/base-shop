@@ -30,7 +30,8 @@ describe("POST /api/create-shop", () => {
   });
 
   it("calls createNewShop and returns success", async () => {
-    const createNewShop = jest.fn();
+    const deployment = { status: "success", previewUrl: "https://shop1.pages.dev" };
+    const createNewShop = jest.fn().mockResolvedValue(deployment);
     jest.doMock("@cms/actions/createShop.server", () => ({
       __esModule: true,
       createNewShop,
@@ -54,7 +55,7 @@ describe("POST /api/create-shop", () => {
       checkoutPage: [],
     });
     expect(res.status).toBe(201);
-    await expect(res.json()).resolves.toEqual({ success: true });
+    await expect(res.json()).resolves.toEqual({ success: true, deployment });
   });
 
   it("returns 400 when action throws", async () => {

@@ -5,6 +5,8 @@
   "themeId": "base",
   "themeTokens": {},
   "filterMappings": {},
+  "shippingProviders": ["dhl"],
+  "taxProviders": ["taxjar"],
   "priceOverrides": {},
   "localeOverrides": {}
 }

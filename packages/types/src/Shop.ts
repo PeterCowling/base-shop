@@ -48,6 +48,8 @@ export interface Shop {
   paymentProviders?: string[];
   /** Enabled shipping provider identifiers */
   shippingProviders?: string[];
+  /** Enabled tax provider identifiers */
+  taxProviders?: string[];
   homeTitle?: Translated;
   homeDescription?: Translated;
   homeImage?: string;
@@ -75,6 +77,7 @@ export const shopSchema = z.object({
   type: z.string().optional(),
   paymentProviders: z.array(z.string()).optional(),
   shippingProviders: z.array(z.string()).optional(),
+  taxProviders: z.array(z.string()).optional(),
   homeTitle: z.record(localeSchema, z.string()).optional(),
   homeDescription: z.record(localeSchema, z.string()).optional(),
   homeImage: z.string().optional(),

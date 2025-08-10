@@ -67,7 +67,7 @@ export function writeFiles(
 
   let envContent = `NEXT_PUBLIC_SHOP_ID=${id}\n`;
   envContent += `PREVIEW_TOKEN_SECRET=${genSecret()}\n`;
-  const envVars = [...options.payment, ...options.shipping];
+  const envVars = [...options.payment, ...options.shipping, options.tax];
   if (envVars.length === 0) envVars.push("stripe");
   for (const provider of envVars) {
     if (provider === "stripe") {
@@ -104,6 +104,7 @@ export function writeFiles(
         type: options.type,
         paymentProviders: options.payment,
         shippingProviders: options.shipping,
+        taxProviders: [options.tax],
         priceOverrides: {},
         localeOverrides: {},
         analyticsEnabled: options.analytics.enabled,

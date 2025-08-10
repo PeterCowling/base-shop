@@ -280,6 +280,9 @@ importers:
 
   apps/cms:
     dependencies:
+      '@acme/email':
+        specifier: workspace:*
+        version: link:../../packages/lib/email
       '@acme/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
@@ -365,6 +368,12 @@ importers:
       next:
         specifier: ^15.3.4
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+
+  packages/lib/email:
+    dependencies:
+      nodemailer:
+        specifier: ^6.10.1
+        version: 6.10.1
 
   packages/next-config: {}
 

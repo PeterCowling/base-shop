@@ -13,3 +13,4 @@ export * from "./RentalOrder";
 export * from "./ReturnLogistics";
 export * from "./Shop";
 export * from "./ShopSettings";
+export * from "./Coupon";

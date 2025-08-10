@@ -1,5 +1,6 @@
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { readOrders } from "@platform-core/repositories/rentalOrders.server";
+import { getShopDomain } from "@platform-core/src/shops";
 
 function groupByDay<T>(items: T[], getDate: (item: T) => string | undefined) {
   const map: Record<string, number> = {};
@@ -17,9 +18,10 @@ export default async function ShopDashboard({
   params: { shop: string };
 }) {
   const shop = params.shop;
-  const [events, orders] = await Promise.all([
+  const [events, orders, domainInfo] = await Promise.all([
     listEvents(shop),
     readOrders(shop),
+    getShopDomain(shop),
   ]);
 
   const views = groupByDay(
@@ -31,6 +33,14 @@ export default async function ShopDashboard({
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Dashboard: {shop}</h2>
+      <section className="mb-6">
+        <h3 className="font-semibold">Domain</h3>
+        {domainInfo?.domain ? (
+          <p>{domainInfo.domain}</p>
+        ) : (
+          <p>No domain configured</p>
+        )}
+      </section>
       <section className="mb-6">
         <h3 className="font-semibold">Sales</h3>
         <ul>

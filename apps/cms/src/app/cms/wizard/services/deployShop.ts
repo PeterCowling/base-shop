@@ -6,7 +6,9 @@ import type { DeployShopResult } from "@platform-core/createShop";
 
 export interface DeployResult {
   ok: boolean;
-  info?: DeployShopResult | { status: "pending"; error?: string };
+  info?:
+    | DeployShopResult
+    | { status: "pending"; error?: string; domain?: string };
   error?: string;
 }
 
@@ -23,6 +25,7 @@ export async function deployShop(
     };
   }
 
+  // Triggers backend deployment and Cloudflare domain setup.
   const res = await fetch("/cms/api/deploy-shop", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

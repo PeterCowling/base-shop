@@ -1,0 +1,14 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "types": ["jest"],
+    "rootDir": "../..",
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "paths": {
+      "@acme/platform-core": ["../platform-core/src/index.ts"],
+      "@acme/platform-core/*": ["../platform-core/src/*"]
+    }
+  },
+  "include": ["./**/*.ts"]
+}

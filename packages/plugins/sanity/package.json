@@ -1,0 +1,12 @@
+{
+  "name": "@acme/plugin-sanity",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../../jest.config.cjs"
+  }
+}

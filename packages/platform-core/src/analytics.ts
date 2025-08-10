@@ -43,6 +43,30 @@ class FileProvider implements AnalyticsProvider {
   }
 }
 
+class GoogleAnalyticsProvider implements AnalyticsProvider {
+  constructor(
+    private measurementId: string,
+    private apiSecret: string,
+  ) {}
+
+  async track(event: AnalyticsEvent): Promise<void> {
+    const url =
+      "https://www.google-analytics.com/mp/collect?measurement_id=" +
+      this.measurementId +
+      "&api_secret=" +
+      this.apiSecret;
+    const payload = {
+      client_id: "base-shop", // simple anonymous id
+      events: [{ name: event.type, params: event }],
+    };
+    await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
+
 const providerCache = new Map<string, AnalyticsProvider>();
 
 async function resolveProvider(shop: string): Promise<AnalyticsProvider> {
@@ -65,9 +89,46 @@ async function resolveProvider(shop: string): Promise<AnalyticsProvider> {
     providerCache.set(shop, p);
     return p;
   }
+  if (analytics.provider === "ga") {
+    const p = new GoogleAnalyticsProvider(
+      analytics.measurementId,
+      analytics.apiSecret,
+    );
+    providerCache.set(shop, p);
+    return p;
+  }
   const p = new FileProvider(shop);
   providerCache.set(shop, p);
   return p;
+}
+
+interface AggregateRecord {
+  count: number;
+  total?: number;
+}
+
+async function updateAggregates(
+  shop: string,
+  event: AnalyticsEvent,
+): Promise<void> {
+  const shopName = validateShopName(shop);
+  const fp = path.join(DATA_ROOT, shopName, "analytics-aggregates.json");
+  let data: Record<string, AggregateRecord> = {};
+  try {
+    const raw = await fs.readFile(fp, "utf8");
+    data = JSON.parse(raw) as Record<string, AggregateRecord>;
+  } catch {
+    // ignore
+  }
+  const current = data[event.type] || { count: 0 };
+  current.count += 1;
+  const amt = (event as { amount?: number }).amount;
+  if (typeof amt === "number") {
+    current.total = (current.total || 0) + amt;
+  }
+  data[event.type] = current;
+  await fs.mkdir(path.dirname(fp), { recursive: true });
+  await fs.writeFile(fp, JSON.stringify(data, null, 2), "utf8");
 }
 
 export async function trackEvent(
@@ -77,6 +138,7 @@ export async function trackEvent(
   const provider = await resolveProvider(shop);
   const withTs = { timestamp: nowIso(), ...event };
   await provider.track(withTs);
+  await updateAggregates(shop, withTs);
 }
 
 export async function trackPageView(

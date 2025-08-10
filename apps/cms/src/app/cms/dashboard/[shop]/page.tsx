@@ -1,5 +1,6 @@
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { readOrders } from "@platform-core/repositories/rentalOrders.server";
+import { ChartSection } from "./Chart";
 
 function groupByDay<T>(items: T[], getDate: (item: T) => string | undefined) {
   const map: Record<string, number> = {};
@@ -28,31 +29,36 @@ export default async function ShopDashboard({
   );
   const sales = groupByDay(orders, (o) => o.startedAt);
 
+  const days = Array.from(new Set([...Object.keys(views), ...Object.keys(sales)])).sort();
+  const trafficData = days.map((d) => views[d] || 0);
+  const salesData = days.map((d) => sales[d] || 0);
+  const conversionData = days.map((d) => {
+    const v = views[d] || 0;
+    const s = sales[d] || 0;
+    return v ? (s / v) * 100 : 0;
+  });
+
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Dashboard: {shop}</h2>
-      <section className="mb-6">
-        <h3 className="font-semibold">Sales</h3>
-        <ul>
-          {Object.entries(sales).map(([day, count]) => (
-            <li key={day}>
-              {day}: {count}
-            </li>
-          ))}
-          {Object.keys(sales).length === 0 && <li>No orders</li>}
-        </ul>
-      </section>
-      <section>
-        <h3 className="font-semibold">Traffic</h3>
-        <ul>
-          {Object.entries(views).map(([day, count]) => (
-            <li key={day}>
-              {day}: {count}
-            </li>
-          ))}
-          {Object.keys(views).length === 0 && <li>No page views</li>}
-        </ul>
-      </section>
+      <ChartSection
+        title="Traffic"
+        label="Page views"
+        labels={days}
+        data={trafficData}
+      />
+      <ChartSection
+        title="Sales"
+        label="Orders"
+        labels={days}
+        data={salesData}
+      />
+      <ChartSection
+        title="Conversion"
+        label="%"
+        labels={days}
+        data={conversionData}
+      />
     </div>
   );
 }

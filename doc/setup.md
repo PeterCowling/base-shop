@@ -67,6 +67,29 @@ pnpm setup-ci <id>
 
 This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs lint/tests, builds the app and deploys it to Cloudflare Pages via `@cloudflare/next-on-pages`.
 
+## 4. Analytics and API keys
+
+To enable event tracking and Google Analytics reporting, add the following to `apps/shop-<id>/.env` and your shop settings:
+
+```bash
+GA_MEASUREMENT_ID=your_ga4_measurement_id
+GA_API_SECRET=your_ga4_api_secret
+```
+
+In `settings.json` set:
+
+```json
+{
+  "analytics": {
+    "provider": "ga",
+    "measurementId": "$GA_MEASUREMENT_ID",
+    "apiSecret": "$GA_API_SECRET"
+  }
+}
+```
+
+Events sent through `trackEvent` will be forwarded to Google Analytics and aggregated under `data/<shop>/analytics-aggregates.json` for dashboard charts.
+
 ## Troubleshooting
 
 - **"Theme 'X' not found" or "Template 'Y' not found"** – ensure the names match directories in `packages/themes` or `packages/`.

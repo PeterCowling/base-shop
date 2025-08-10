@@ -154,6 +154,62 @@ switching shops and admin-only routes. Newcomers can follow the
 [Page Builder](doc/cms.md#page-builder) section to learn how to add,
 rearrange and publish blocks.
 
+## Inventory Management
+
+### Variant schema
+
+Inventory items live in `data/shops/<shop>/inventory.json` and follow this structure:
+
+```json
+{
+  "sku": "green-sneaker-41",
+  "productId": "green-sneaker",
+  "variantAttributes": { "size": "41", "color": "green" },
+  "quantity": 2,
+  "lowStockThreshold": 1
+}
+```
+
+`variantAttributes` is a free-form map of strings (e.g. `size`, `color`) that differentiates
+variants under the same product. Only the keys present are written to CSV export.
+
+### Stock alerts
+
+Set `STOCK_ALERT_RECIPIENT` in the shop's `.env`. When `writeInventory` persists items and
+an item's `quantity` is less than or equal to its `lowStockThreshold`, an email is sent to the
+configured recipient summarising the affected SKUs.
+
+```bash
+STOCK_ALERT_RECIPIENT=alerts@example.com
+```
+
+### Import / export
+
+Inventory can be round-tripped as JSON or CSV through the CMS API.
+
+Export inventory:
+
+```bash
+curl "http://localhost:3000/cms/api/data/demo/inventory/export?format=csv" -o inventory.csv
+curl "http://localhost:3000/cms/api/data/demo/inventory/export" -o inventory.json
+```
+
+Import inventory:
+
+```bash
+curl -X POST -F "file=@inventory.csv;type=text/csv" http://localhost:3000/cms/api/data/demo/inventory/import
+curl -X POST -F "file=@inventory.json;type=application/json" http://localhost:3000/cms/api/data/demo/inventory/import
+```
+
+CSV files use headers to define variant attributes:
+
+```csv
+sku,productId,size,color,quantity,lowStockThreshold
+green-sneaker-41,green-sneaker,41,green,2,1
+```
+
+JSON import/export is an array of inventory objects matching the schema shown above.
+
 # Environment Variables
 
 After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:

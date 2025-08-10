@@ -41,7 +41,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const hasError = Boolean(error); // avoids 0 | 0n union in type-inference
 
     const baseClasses = cn(
-      "min-h-[6rem] w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 dark:bg-gray-900",
+      "min-h-[6rem] w-full rounded-md border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 bg-bg",
       floatingLabel && "peer pt-5",
       hasError && "border-red-500",
       className

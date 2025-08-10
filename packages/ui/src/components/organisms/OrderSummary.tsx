@@ -50,7 +50,7 @@ function OrderSummary() {
             <td className="py-2">
               {line.sku.title}
               {line.size && (
-                <span className="ml-1 text-xs text-gray-500">
+                <span className="ml-1 text-xs text-muted">
                   ({line.size})
                 </span>
               )}

@@ -283,7 +283,7 @@ const CanvasItem = memo(function CanvasItem({
       }
     >
       <div
-        className="absolute left-0 top-0 z-10 h-3 w-3 cursor-move bg-gray-200"
+        className="absolute left-0 top-0 z-10 h-3 w-3 cursor-move bg-muted"
         {...attributes}
         {...listeners}
         onPointerDown={(e) => {
@@ -364,7 +364,7 @@ const CanvasItem = memo(function CanvasItem({
             id={`container-${component.id}`}
             role="list"
             aria-dropeffect="move"
-            className="m-2 flex flex-col gap-4 border border-dashed border-gray-300 p-2"
+            className="m-2 flex flex-col gap-4 border border-dashed border-muted p-2"
           >
             {isOver && (
               <div

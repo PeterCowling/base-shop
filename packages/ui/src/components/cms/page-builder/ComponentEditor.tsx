@@ -62,7 +62,7 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       );
       break;
     default:
-      specific = <p className="text-sm text-gray-500">No editable props</p>;
+      specific = <p className="text-sm text-muted">No editable props</p>;
   }
 
   return (

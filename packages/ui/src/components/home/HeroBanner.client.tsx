@@ -85,7 +85,7 @@ export default function HeroBanner({
         {/* locale-aware route link */}
         <Link
           href={`/${langPrefix}/shop`}
-          className="inline-block rounded-full bg-white px-[calc(var(--space-4)*2)] py-3 font-semibold text-gray-900 shadow-lg transition-colors hover:bg-gray-100"
+          className="inline-block rounded-full bg-fg px-[calc(var(--space-4)*2)] py-3 font-semibold text-bg shadow-lg transition-colors hover:bg-muted"
         >
           {t(slide.ctaKey)}
         </Link>

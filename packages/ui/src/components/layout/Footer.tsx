@@ -13,7 +13,7 @@ const Footer = memo(function Footer({
   return (
     <footer
       className={cn(
-        "flex items-center justify-center bg-gray-100 text-sm text-gray-500",
+        "flex items-center justify-center bg-muted text-sm text-muted",
         height,
         padding
       )}

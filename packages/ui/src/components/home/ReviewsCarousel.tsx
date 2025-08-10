@@ -33,12 +33,12 @@ export default function ReviewsCarousel({
   const { nameKey, quoteKey } = list[i];
 
   return (
-    <section className="bg-gray-50 py-16">
+    <section className="bg-muted py-16">
       <div className="mx-auto max-w-2xl px-4 text-center">
-        <blockquote className="mb-6 text-2xl font-medium text-gray-800 italic">
+        <blockquote className="mb-6 text-2xl font-medium text-fg italic">
           “{t(quoteKey)}”
         </blockquote>
-        <div className="font-semibold text-gray-600">— {t(nameKey)}</div>
+        <div className="font-semibold text-muted">— {t(nameKey)}</div>
       </div>
     </section>
   );

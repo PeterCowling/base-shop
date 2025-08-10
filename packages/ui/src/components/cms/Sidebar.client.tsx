@@ -90,7 +90,7 @@ export default function Sidebar({ role }: { role?: string }) {
 
   const dashboardBase = shop ? `/cms/shop/${shop}` : "/cms";
   return (
-    <aside className="w-56 shrink-0 border-r border-gray-200 dark:border-gray-800">
+    <aside className="w-56 shrink-0 border-r border-muted">
       <h1 className="px-4 py-6 text-lg font-semibold tracking-tight">CMS</h1>
       <nav className="flex flex-col gap-1 px-2">
         {links.map(({ href, label, icon, title }) => {
@@ -115,7 +115,7 @@ export default function Sidebar({ role }: { role?: string }) {
               href={fullHref}
               onClick={handleClick}
               aria-current={active ? "page" : undefined}
-              className={`focus-visible:ring-primary flex items-center gap-2 rounded-md px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none ${active ? "bg-primary/10 font-medium" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+              className={`focus-visible:ring-primary flex items-center gap-2 rounded-md px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none ${active ? "bg-primary/10 font-medium" : "hover:bg-muted"}`}
               title={title}
             >
               <span aria-hidden="true">{icon}</span>

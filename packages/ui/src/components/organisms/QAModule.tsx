@@ -21,7 +21,7 @@ export function QAModule({ items, className, ...props }: QAModuleProps) {
           <summary className="cursor-pointer font-medium group-open:mb-2">
             {qa.question}
           </summary>
-          <div className="text-sm text-gray-600">{qa.answer}</div>
+          <div className="text-sm text-muted">{qa.answer}</div>
         </details>
       ))}
     </div>

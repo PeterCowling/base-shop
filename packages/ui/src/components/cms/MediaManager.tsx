@@ -94,7 +94,7 @@ function MediaManagerBase({
             openFileDialog();
           }
         }}
-        className={`flex h-32 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-300 text-sm text-gray-500${
+        className={`flex h-32 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-muted text-sm text-muted${
           dragActive ? " highlighted" : ""
         }`}
       >
@@ -112,7 +112,7 @@ function MediaManagerBase({
       {/* Validation / progress feedback */}
       {error && <p className="text-sm text-red-600">{error}</p>}
       {progress && (
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-muted">
           Uploaded {progress.done}/{progress.total}
         </p>
       )}

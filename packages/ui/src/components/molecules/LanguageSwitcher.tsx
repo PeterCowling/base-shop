@@ -14,7 +14,7 @@ export default function LanguageSwitcher({ current }: { current: Locale }) {
           className={
             l === current
               ? "font-semibold underline"
-              : "text-gray-500 hover:underline"
+              : "text-muted hover:underline"
           }
         >
           {l.toUpperCase()}

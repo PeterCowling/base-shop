@@ -80,10 +80,10 @@ function parseArgs(argv: string[]): [string, Options, boolean, boolean] {
         opts.name = val || opts.name;
         break;
       case "logo":
-        opts.logo = val || opts.logo;
+        opts.logo = val;
         break;
       case "contact":
-        opts.contactInfo = val || opts.contactInfo;
+        opts.contactInfo = val;
         break;
       default:
         console.error(`Unknown option ${key}`);
@@ -180,6 +180,63 @@ async function ensureTemplate() {
   }
 }
 
+/** Prompt for shop name when none is provided on the command line. */
+async function ensureName() {
+  if (!options.name && process.stdin.isTTY) {
+    const defaultName = shopId
+      .split(/[-_]/)
+      .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+      .join(" ");
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    await new Promise<void>((resolve) => {
+      rl.question(`Shop name [${defaultName}]: `, (ans) => {
+        options.name = ans || defaultName;
+        rl.close();
+        resolve();
+      });
+    });
+  }
+}
+
+/** Prompt for logo URL when none is provided on the command line. */
+async function ensureLogo() {
+  if (options.logo === undefined && process.stdin.isTTY) {
+    const defaultLogo = `https://example.com/${shopId}.png`;
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    await new Promise<void>((resolve) => {
+      rl.question(`Logo URL [${defaultLogo}]: `, (ans) => {
+        options.logo = ans || "";
+        rl.close();
+        resolve();
+      });
+    });
+  }
+}
+
+/** Prompt for contact info when none is provided on the command line. */
+async function ensureContact() {
+  if (options.contactInfo === undefined && process.stdin.isTTY) {
+    const defaultContact = `support@${shopId}.com`;
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    await new Promise<void>((resolve) => {
+      rl.question(`Contact info [${defaultContact}]: `, (ans) => {
+        options.contactInfo = ans || "";
+        rl.close();
+        resolve();
+      });
+    });
+  }
+}
+
 /** Prompt for payment providers when none are provided on the command line. */
 async function ensurePayment() {
   if (options.payment.length === 0 && process.stdin.isTTY) {
@@ -228,6 +285,9 @@ async function ensureShipping() {
 
 await ensureTemplate();
 await ensureTheme();
+await ensureName();
+await ensureLogo();
+await ensureContact();
 await ensurePayment();
 await ensureShipping();
 await createShop(shopId, options);

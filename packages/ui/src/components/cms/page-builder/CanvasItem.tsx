@@ -1,7 +1,11 @@
 "use client";
 
 import type { Locale } from "@/i18n/locales";
-import { useSortable, SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
+import {
+  useSortable,
+  SortableContext,
+  rectSortingStrategy,
+} from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import Link from "@tiptap/extension-link";
@@ -14,6 +18,8 @@ import { blockRegistry } from "../blocks";
 import type { Action } from "../PageBuilder";
 import DOMPurify from "dompurify";
 
+const SNAP_THRESHOLD = 10;
+
 function Block({
   component,
   locale,
@@ -23,8 +29,7 @@ function Block({
 }) {
   if (component.type === "Text") {
     const text = (component as any).text;
-    const value =
-      typeof text === "string" ? text : (text?.[locale] ?? "");
+    const value = typeof text === "string" ? text : (text?.[locale] ?? "");
     const sanitized = DOMPurify.sanitize(value);
     return <div dangerouslySetInnerHTML={{ __html: sanitized }} />;
   }
@@ -155,12 +160,30 @@ const CanvasItem = memo(function CanvasItem({
       if (!startRef.current) return;
       const dx = e.clientX - startRef.current.x;
       const dy = e.clientY - startRef.current.y;
+      const widthPx = startRef.current.w + dx;
+      const heightPx = startRef.current.h + dy;
+      const el = containerRef.current;
+      const parent = el?.parentElement;
+      const parentWidth = parent?.clientWidth;
+      const parentHeight = parent?.clientHeight;
       const payload: Action = {
         type: "resize",
         id: component.id,
-        width: `${startRef.current.w + dx}px`,
-        height: `${startRef.current.h + dy}px`,
+        width: `${widthPx}px`,
+        height: `${heightPx}px`,
       };
+      if (
+        parentWidth &&
+        (e.shiftKey || Math.abs(parentWidth - widthPx) <= SNAP_THRESHOLD)
+      ) {
+        payload.width = "100%";
+      }
+      if (
+        parentHeight &&
+        (e.shiftKey || Math.abs(parentHeight - heightPx) <= SNAP_THRESHOLD)
+      ) {
+        payload.height = "100%";
+      }
       if (component.position === "absolute") {
         payload.left = `${startRef.current.l + dx}px`;
         payload.top = `${startRef.current.t + dy}px`;
@@ -266,7 +289,7 @@ const CanvasItem = memo(function CanvasItem({
       }
     >
       <div
-        className="absolute left-0 top-0 z-10 h-3 w-3 cursor-move bg-gray-200"
+        className="absolute top-0 left-0 z-10 h-3 w-3 cursor-move bg-gray-200"
         {...attributes}
         {...listeners}
         onPointerDown={(e) => {
@@ -301,7 +324,7 @@ const CanvasItem = memo(function CanvasItem({
               __html: DOMPurify.sanitize(
                 typeof (component as any).text === "string"
                   ? (component as any).text
-                  : (component as any).text?.[locale] ?? ""
+                  : ((component as any).text?.[locale] ?? "")
               ),
             }}
           />
@@ -350,7 +373,7 @@ const CanvasItem = memo(function CanvasItem({
             {isOver && (
               <div
                 data-testid="drop-placeholder"
-                className="h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10"
+                className="border-primary bg-primary/10 h-4 w-full rounded border-2 border-dashed"
               />
             )}
             {(component as any).children.map(
@@ -362,9 +385,7 @@ const CanvasItem = memo(function CanvasItem({
                   parentId={component.id}
                   selectedId={selectedId}
                   onSelectId={onSelectId}
-                  onRemove={() =>
-                    dispatch({ type: "remove", id: child.id })
-                  }
+                  onRemove={() => dispatch({ type: "remove", id: child.id })}
                   dispatch={dispatch}
                   locale={locale}
                 />

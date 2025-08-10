@@ -4,6 +4,7 @@
 import type { PageComponent } from "@types";
 import { memo, useCallback } from "react";
 import {
+  Button,
   Input,
   Select,
   SelectContent,
@@ -31,14 +32,16 @@ function ComponentEditor({ component, onChange }: Props) {
     (field: string, value: string | number | undefined) => {
       onChange({ [field]: value } as Partial<PageComponent>);
     },
-    [onChange],
+    [onChange]
   );
 
   let specific: React.ReactNode = null;
 
   switch (component.type) {
     case "ContactForm":
-      specific = <ContactFormEditor component={component} onChange={onChange} />;
+      specific = (
+        <ContactFormEditor component={component} onChange={onChange} />
+      );
       break;
     case "Gallery":
       specific = <GalleryEditor component={component} onChange={onChange} />;
@@ -47,7 +50,9 @@ function ComponentEditor({ component, onChange }: Props) {
       specific = <ImageBlockEditor component={component} onChange={onChange} />;
       break;
     case "Testimonials":
-      specific = <TestimonialsEditor component={component} onChange={onChange} />;
+      specific = (
+        <TestimonialsEditor component={component} onChange={onChange} />
+      );
       break;
     case "HeroBanner":
       specific = <HeroBannerEditor component={component} onChange={onChange} />;
@@ -66,16 +71,34 @@ function ComponentEditor({ component, onChange }: Props) {
 
   return (
     <div className="space-y-2">
-      <Input
-        label="Width"
-        value={component.width ?? ""}
-        onChange={(e) => handleInput("width", e.target.value)}
-      />
-      <Input
-        label="Height"
-        value={component.height ?? ""}
-        onChange={(e) => handleInput("height", e.target.value)}
-      />
+      <div className="flex items-end gap-2">
+        <Input
+          label="Width"
+          value={component.width ?? ""}
+          onChange={(e) => handleInput("width", e.target.value)}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => handleInput("width", "100%")}
+        >
+          100%
+        </Button>
+      </div>
+      <div className="flex items-end gap-2">
+        <Input
+          label="Height"
+          value={component.height ?? ""}
+          onChange={(e) => handleInput("height", e.target.value)}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => handleInput("height", "100%")}
+        >
+          100%
+        </Button>
+      </div>
       <Input
         label="Margin"
         value={component.margin ?? ""}
@@ -113,6 +136,11 @@ function ComponentEditor({ component, onChange }: Props) {
         </>
       )}
       {specific}
+      <p className="text-xs text-gray-500">
+        Drag near the edge of a component&apos;s container or hold Shift while
+        resizing to snap its width or height to fill the container. Use the 100%
+        buttons above for quick full-size.
+      </p>
     </div>
   );
 }

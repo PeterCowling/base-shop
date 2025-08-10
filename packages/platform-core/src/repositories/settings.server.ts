@@ -104,13 +104,21 @@ const entrySchema = z.object({
 export async function diffHistory(shop: string): Promise<SettingsDiffEntry[]> {
   try {
     const buf = await fs.readFile(historyPath(shop), "utf8");
-    return buf
-      .trim()
-      .split(/\n+/)
-      .filter(Boolean)
-      .map((line) => entrySchema.safeParse(JSON.parse(line)))
-      .filter((r) => r.success)
-      .map((r) => (r as z.SafeParseSuccess<SettingsDiffEntry>).data);
+      return buf
+        .trim()
+        .split(/\n+/)
+        .filter(Boolean)
+        .map((line) => {
+          try {
+            return JSON.parse(line);
+          } catch {
+            return undefined;
+          }
+        })
+        .filter((parsed): parsed is unknown => parsed !== undefined)
+        .map((parsed) => entrySchema.safeParse(parsed))
+        .filter((r) => r.success)
+        .map((r) => (r as z.SafeParseSuccess<SettingsDiffEntry>).data);
   } catch {
     return [];
   }

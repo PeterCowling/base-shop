@@ -1,5 +1,6 @@
 // apps/cms/src/app/cms/wizard/schema.ts
 import { LOCALES } from "@acme/i18n";
+import { envSchema } from "@acme/config";
 import { fillLocales } from "@i18n/fillLocales";
 import { pageComponentSchema } from "@types/Page";
 import { localeSchema, type Locale } from "@types";
@@ -133,6 +134,7 @@ export const wizardStateSchema = z.object({
   /* ---------------- Miscellaneous --------------------- */
   domain: z.string().optional().default(""),
   categoriesText: z.string().optional().default(""),
+  env: envSchema.partial().default({}),
 }).strict();
 
 export type WizardState = z.infer<typeof wizardStateSchema>;

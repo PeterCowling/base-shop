@@ -41,6 +41,7 @@ export async function submitShop(
     checkoutComponents,
     analyticsProvider,
     analyticsId,
+    env,
   } = state;
 
   const options = {
@@ -76,6 +77,21 @@ export async function submitShop(
       errs[key] = [...(errs[key] ?? []), issue.message];
     }
     return { ok: false, fieldErrors: errs };
+  }
+
+  if (env && Object.keys(env).length > 0) {
+    const envRes = await fetch(`/cms/api/env/${shopId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(env),
+    });
+    if (!envRes.ok) {
+      const envJson = await envRes.json().catch(() => ({} as any));
+      return {
+        ok: false,
+        error: envJson.error ?? "Failed to save environment variables",
+      };
+    }
   }
 
   const res = await fetch("/cms/api/create-shop", {

@@ -6,6 +6,7 @@ import { LOCALES } from "@acme/i18n";
 import type { DeployShopResult } from "@platform-core/createShop";
 import { validateShopName } from "@platform-core/src/shops";
 import type { Locale, PageComponent } from "@types";
+import type { Env } from "@acme/config";
 import { useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
 
@@ -28,6 +29,7 @@ import StepShopPage from "./steps/StepShopPage";
 import StepSummary from "./steps/StepSummary";
 import StepTheme from "./steps/StepTheme";
 import StepTokens from "./steps/StepTokens";
+import StepEnvVars from "./steps/StepEnvVars";
 
 /* -------------------------------------------------------------------------- */
 /*  Schema / utils                                                            */
@@ -97,6 +99,11 @@ export default function Wizard({
   const [shipping, setShipping] = useState<string[]>([]);
   const [analyticsProvider, setAnalyticsProvider] = useState("");
   const [analyticsId, setAnalyticsId] = useState("");
+
+  /* ---------------------------------------------------------------------- */
+  /*  Environment variables                                                 */
+  /* ---------------------------------------------------------------------- */
+  const [env, setEnv] = useState<Partial<Env>>({});
 
   /* ---------------------------------------------------------------------- */
   /*  Submission & deploy status                                            */
@@ -278,6 +285,7 @@ export default function Wizard({
           /* misc */
           setDomain(data.domain);
           setCategoriesText(data.categoriesText);
+          setEnv(data.env);
         } else {
           console.warn("Stored wizard state failed validation", parsed.error);
           resetWizardProgress();
@@ -415,6 +423,7 @@ export default function Wizard({
         checkoutComponents,
         analyticsProvider,
         analyticsId,
+        env,
       };
 
       const { ok, error, fieldErrors, deployment } = await submitShop(
@@ -782,6 +791,16 @@ export default function Wizard({
 
       case 11:
         return (
+          <StepEnvVars
+            env={env}
+            setEnv={setEnv}
+            onBack={() => setStep(10)}
+            onNext={() => setStep(12)}
+          />
+        );
+
+      case 12:
+        return (
           <StepSummary
             shopId={shopId}
             name={storeName}
@@ -802,13 +821,13 @@ export default function Wizard({
             themeStyle={themeStyle}
             creating={creating}
             submit={submit}
-            onBack={() => setStep(10)}
-            onNext={() => setStep(12)}
+            onBack={() => setStep(11)}
+            onNext={() => setStep(13)}
             errors={fieldErrors}
           />
         );
 
-      case 12:
+      case 13:
         return (
           <StepImportData
             setCsvFile={setCsvFile}
@@ -817,11 +836,11 @@ export default function Wizard({
             importResult={importResult}
             importing={importing}
             saveData={saveData}
-            onBack={() => setStep(11)}
+            onBack={() => setStep(12)}
           />
         );
 
-      case 13:
+      case 14:
         return (
           <StepSeedData
             setCsvFile={setCsvFile}
@@ -830,11 +849,11 @@ export default function Wizard({
             seedResult={seedResult}
             seeding={seeding}
             seed={seed}
-            onBack={() => setStep(12)}
+            onBack={() => setStep(13)}
           />
         );
 
-      case 14:
+      case 15:
         return (
           <StepHosting
             domain={domain}
@@ -843,7 +862,7 @@ export default function Wizard({
             deployInfo={deployInfo}
             deploying={deploying}
             deploy={deploy}
-            onBack={() => setStep(13)}
+            onBack={() => setStep(14)}
           />
         );
 
@@ -860,7 +879,7 @@ export default function Wizard({
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
         <div className="mb-6 flex items-center justify-between">
-          <Progress step={step} total={14} />
+          <Progress step={step} total={15} />
           {shopId && <MediaUploadDialog shop={shopId} />}
         </div>
 

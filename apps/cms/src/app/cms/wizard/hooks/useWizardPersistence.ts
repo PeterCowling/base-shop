@@ -46,7 +46,8 @@ export function useWizardPersistence(
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      const { env: _env, ...persistable } = state;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(persistable));
     } catch {
       /* ignore */
     }

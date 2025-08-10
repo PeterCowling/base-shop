@@ -2,12 +2,19 @@
 
 :root {
   --color-bg: var(--token-color-bg, 0 0% 100%);
+  --color-bg-dark: var(--token-color-bg-dark, 0 0% 4%);
   --color-fg: var(--token-color-fg, 0 0% 10%);
+  --color-fg-dark: var(--token-color-fg-dark, 0 0% 93%);
   --color-primary: var(--token-color-primary, 220 90% 56%);
+  --color-primary-dark: var(--token-color-primary-dark, 220 90% 66%);
   --color-primary-fg: var(--token-color-primary-fg, 0 0% 100%);
-  --color-accent: var(--token-color-accent, 260 83% 67%);
+  --color-primary-fg-dark: var(--token-color-primary-fg-dark, 0 0% 10%);
+  --color-accent: var(--token-color-accent, 260 83% 70%);
+  --color-accent-dark: var(--token-color-accent-dark, 260 83% 70%);
   --color-accent-fg: var(--token-color-accent-fg, 0 0% 10%);
+  --color-accent-fg-dark: var(--token-color-accent-fg-dark, 0 0% 10%);
   --color-muted: var(--token-color-muted, 0 0% 88%);
+  --color-muted-dark: var(--token-color-muted-dark, 0 0% 60%);
   --font-sans: var(--token-font-sans, "Geist Sans", system-ui, sans-serif);
   --font-mono: var(--token-font-mono, "Geist Mono", ui-monospace, monospace);
   --space-1: var(--token-space-1, 4px);
@@ -24,19 +31,22 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: var(--token-color-bg-dark, 0 0% 4%);
-    --color-fg: var(--token-color-fg-dark, 0 0% 93%);
-    --color-primary: var(--token-color-primary-dark, 220 90% 66%);
-    --color-accent: var(--token-color-accent-dark, 260 83% 70%);
-    --color-accent-fg: var(--token-color-accent-fg-dark, 0 0% 10%);
-    --color-muted: var(--token-color-muted-dark, 0 0% 60%);
+    --color-bg: var(--color-bg-dark);
+    --color-fg: var(--color-fg-dark);
+    --color-primary: var(--color-primary-dark);
+    --color-primary-fg: var(--color-primary-fg-dark);
+    --color-accent: var(--color-accent-dark);
+    --color-accent-fg: var(--color-accent-fg-dark);
+    --color-muted: var(--color-muted-dark);
   }
 }
+
 html.theme-dark {
-  --color-bg: var(--token-color-bg-dark, 0 0% 4%);
-  --color-fg: var(--token-color-fg-dark, 0 0% 93%);
-  --color-primary: var(--token-color-primary-dark, 220 90% 66%);
-  --color-accent: var(--token-color-accent-dark, 260 83% 70%);
-  --color-accent-fg: var(--token-color-accent-fg-dark, 0 0% 10%);
-  --color-muted: var(--token-color-muted-dark, 0 0% 60%);
+  --color-bg: var(--color-bg-dark);
+  --color-fg: var(--color-fg-dark);
+  --color-primary: var(--color-primary-dark);
+  --color-primary-fg: var(--color-primary-fg-dark);
+  --color-accent: var(--color-accent-dark);
+  --color-accent-fg: var(--color-accent-fg-dark);
+  --color-muted: var(--color-muted-dark);
 }

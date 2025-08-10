@@ -1,21 +1,19 @@
 "use client";
 
-import { useTheme } from "@platform-core/src/contexts/ThemeContext";
+import { useTheme, Theme } from "@platform-core/src/contexts/ThemeContext";
 
-const themes = ["base", "dark", "system"] as const;
-const labels: Record<(typeof themes)[number], string> = {
+const themes: Theme[] = ["base", "dark", "system"];
+const labels: Record<Theme, string> = {
   base: "Light",
   dark: "Dark",
   system: "System",
+  brandx: "BrandX", // unused but satisfy type
 };
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme() as unknown as {
-    theme: string;
-    setTheme: (t: string) => void;
-  };
+  const { theme, setTheme } = useTheme();
 
-  const currentIndex = themes.indexOf(theme as any);
+  const currentIndex = themes.indexOf(theme as Theme);
   const nextTheme = themes[(currentIndex + 1) % themes.length];
   const ariaPressed: boolean | "mixed" =
     theme === "dark" ? true : theme === "base" ? false : "mixed";

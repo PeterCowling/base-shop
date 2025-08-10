@@ -35,7 +35,9 @@ CSS variables in rendered stories.
 ## Theme Switcher
 
 The toolbar lets you toggle between design token themes (`base` or `brandx`) and
-light/dark mode. Theme logic lives in `.storybook/preview.tsx`.
+light, dark, or system mode. Dark tokens are defined once and applied to
+`:root` with `@media (prefers-color-scheme: dark)`, while the `.theme-dark`
+class forces dark mode when needed. Theme logic lives in `.storybook/preview.tsx`.
 
 ## Publishing Previews
 

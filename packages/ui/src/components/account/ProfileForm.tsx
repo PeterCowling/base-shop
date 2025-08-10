@@ -1,9 +1,9 @@
 "use client";
 
-// apps/shop-abc/src/app/account/profile/ProfileForm.tsx
+// packages/ui/src/components/account/ProfileForm.tsx
 import { useState } from "react";
 
-interface ProfileFormProps {
+export interface ProfileFormProps {
   name?: string;
   email?: string;
 }

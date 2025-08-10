@@ -52,10 +52,11 @@ describe("/account/orders", () => {
       shop.id,
       session.customerId
     );
-    expect(element.type).toBe("ul");
-    expect(element.props.children).toHaveLength(2);
+    const list = element.props.children[1];
+    expect(list.type).toBe("ul");
+    expect(list.props.children).toHaveLength(2);
     expect(
-      element.props.children.map((li: any) => {
+      list.props.children.map((li: any) => {
         const child = li.props.children[0].props.children;
         return Array.isArray(child) ? child.join("") : child;
       })

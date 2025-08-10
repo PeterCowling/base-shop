@@ -131,7 +131,7 @@ export default function SeoEditor({
         />
       </label>
       <label className="flex flex-col gap-1">
-        <span>Canonical Base</span>
+        <span>Canonical Base URL ({locale.toUpperCase()})</span>
         <Input
           className="border p-2"
           value={canonicalBase}

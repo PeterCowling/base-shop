@@ -39,6 +39,25 @@ describe("/account/orders", () => {
     expect(element.props.children).toBe("No orders yet.");
   });
 
+  it("shows message when orders fetch fails", async () => {
+    const session = { customerId: "cust1", role: "user" };
+    (getCustomerSession as jest.Mock).mockResolvedValue(session);
+    const error = new Error("boom");
+    (getOrdersForCustomer as jest.Mock).mockRejectedValue(error);
+    const consoleError = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const element = await OrdersPage();
+    expect(getOrdersForCustomer).toHaveBeenCalledWith(
+      shop.id,
+      session.customerId
+    );
+    expect(consoleError).toHaveBeenCalled();
+    expect(element.type).toBe("p");
+    expect(element.props.children).toBe("Unable to load orders.");
+    consoleError.mockRestore();
+  });
+
   it("lists customer orders", async () => {
     const session = { customerId: "cust1", role: "user" };
     const orders = [

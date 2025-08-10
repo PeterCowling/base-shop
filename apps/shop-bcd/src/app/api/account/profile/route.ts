@@ -1,5 +1,6 @@
 // apps/shop-bcd/src/app/api/account/profile/route.ts
 import { getCustomerSession } from "@auth";
+import { updateCustomerProfile } from "@platform-core/customers";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -22,10 +23,12 @@ export async function PUT(req: NextRequest) {
   const json = await req.json();
   const parsed = schema.safeParse(json);
   if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
+    return NextResponse.json(parsed.error.flatten().fieldErrors, {
+      status: 400,
+    });
   }
 
-  // TODO: persist profile changes
+  await updateCustomerProfile(session.customerId, parsed.data);
   return NextResponse.json({ ok: true, profile: parsed.data });
 }
 

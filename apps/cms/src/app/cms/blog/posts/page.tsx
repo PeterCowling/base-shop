@@ -1,0 +1,35 @@
+// apps/cms/src/app/cms/blog/posts/page.tsx
+
+import Link from "next/link";
+import { Button } from "@ui";
+import { getPosts } from "@cms/actions/blog.server";
+
+export default async function BlogPostsPage() {
+  const posts = await getPosts();
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">Blog Posts</h1>
+        <Button asChild>
+          <Link href="/cms/blog/posts/new">New Post</Link>
+        </Button>
+      </div>
+      <ul className="space-y-2">
+        {posts.map((post) => (
+          <li key={post._id}>
+            <Link
+              href={`/cms/blog/posts/${post._id}`}
+              className="text-primary underline"
+            >
+              {post.title || "(untitled)"}
+            </Link>
+            {post.published && (
+              <span className="ml-2 text-sm text-muted-foreground">published</span>
+            )}
+          </li>
+        ))}
+        {posts.length === 0 && <li>No posts found.</li>}
+      </ul>
+    </div>
+  );
+}

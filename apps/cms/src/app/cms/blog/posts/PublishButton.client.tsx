@@ -1,0 +1,26 @@
+// apps/cms/src/app/cms/blog/posts/PublishButton.client.tsx
+"use client";
+
+import { useFormState } from "react-dom";
+import { Button, Toast } from "@ui";
+import { publishPost } from "@cms/actions/blog.server";
+import type { FormState } from "./PostForm.client";
+
+interface Props {
+  id: string;
+}
+
+export default function PublishButton({ id }: Props) {
+  const action = publishPost.bind(null, id);
+  const [state, formAction] = useFormState<FormState>(action, { message: "", error: "" });
+  return (
+    <div className="space-y-2">
+      <form action={formAction}>
+        <Button type="submit" variant="outline">
+          Publish
+        </Button>
+      </form>
+      <Toast open={Boolean(state.message || state.error)} message={state.message || state.error || ""} />
+    </div>
+  );
+}

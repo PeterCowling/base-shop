@@ -1,8 +1,8 @@
 // apps/shop-bcd/src/app/[lang]/shop/ShopClient.tsx
 "use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import FilterBar from "@/components/shop/FilterBar";
-import { ProductGrid } from "@/components/shop/ProductGrid";
+import FilterBar from "@ui";
+import { ProductGrid } from "@ui";
 import { useMemo, useState } from "react";
 export default function ShopClient({ skus }) {
     const [filters, setFilters] = useState({});

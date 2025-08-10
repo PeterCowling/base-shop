@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
+import { Button } from "@ui";
 import { ProductPublication } from "@platform-core/src/products";
 import Link from "next/link";
 

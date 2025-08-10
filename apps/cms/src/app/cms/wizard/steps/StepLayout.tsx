@@ -1,13 +1,13 @@
 // src/components/cms/StepLayout.tsx
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
-import PageBuilder from "@/components/cms/PageBuilder";
+import { Button } from "@ui";
+import PageBuilder from "@ui";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
-import { fetchJson } from "@ui/utils/fetchJson";
+import { fetchJson } from "@ui";
 import { ReactNode, useState } from "react";
-import { Toast } from "@/components/atoms";
+import { Toast } from "@ui";
 
 interface Props {
   currentStep: number;

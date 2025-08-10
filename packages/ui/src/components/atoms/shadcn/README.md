@@ -5,15 +5,15 @@ Wrappers around [shadcn/ui](https://ui.shadcn.com/) primitives. They expose the 
 Import from this directory to make it clear the component originates from shadcn:
 
 ```ts
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Button, Input } from "@ui";
 ```
 
 When using both the shadcn wrapper and an in-house atom of the same
 name, alias the shadcn import so the distinction remains clear:
 
 ```ts
-import { Button } from "@/components/atoms";
-import { Button as ShButton } from "@/components/atoms/shadcn";
+import { Button } from "@ui";
+import { Button as ShButton } from "@ui";
 ```
 
 Available components:

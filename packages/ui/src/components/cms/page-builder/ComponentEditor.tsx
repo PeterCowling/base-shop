@@ -4,6 +4,7 @@
 import type { PageComponent } from "@types";
 import { memo, useCallback } from "react";
 import {
+  Button,
   Input,
   Select,
   SelectContent,
@@ -67,22 +68,44 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
 
   return (
     <div className="space-y-2">
-      <Input
-        label="Width"
-        placeholder="e.g. 100px or 50%"
-        value={component.width ?? ""}
-        onChange={(e) =>
-          onResize({ width: e.target.value ? e.target.value : undefined })
-        }
-      />
-      <Input
-        label="Height"
-        placeholder="e.g. 100px or 50%"
-        value={component.height ?? ""}
-        onChange={(e) =>
-          onResize({ height: e.target.value ? e.target.value : undefined })
-        }
-      />
+      <div className="flex items-end gap-2">
+        <Input
+          label="Width"
+          placeholder="e.g. 100px or 50%"
+          value={component.width ?? ""}
+          onChange={(e) =>
+            onResize({ width: e.target.value ? e.target.value : undefined })
+          }
+        />
+        <Button
+          type="button"
+          onClick={() => onResize({ width: "100%" })}
+          className="mb-1"
+        >
+          100%
+        </Button>
+      </div>
+      <div className="flex items-end gap-2">
+        <Input
+          label="Height"
+          placeholder="e.g. 100px or 50%"
+          value={component.height ?? ""}
+          onChange={(e) =>
+            onResize({ height: e.target.value ? e.target.value : undefined })
+          }
+        />
+        <Button
+          type="button"
+          onClick={() => onResize({ height: "100%" })}
+          className="mb-1"
+        >
+          100%
+        </Button>
+      </div>
+      <p className="text-xs text-muted">
+        Hold <kbd>Shift</kbd> while resizing to snap to full width or height, or
+        use the 100% buttons above.
+      </p>
       <Input
         label="Margin"
         value={component.margin ?? ""}

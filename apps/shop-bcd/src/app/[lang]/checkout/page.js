@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 // apps/shop-bcd/src/app/[lang]/checkout/page.tsx
-import CheckoutForm from "@/components/checkout/CheckoutForm";
-import OrderSummary from "@/components/organisms/OrderSummary";
+import CheckoutForm from "@ui";
+import OrderSummary from "@ui";
 import { resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { cookies } from "next/headers";

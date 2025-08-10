@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/account-requests/page.tsx
 
-import { Button } from "@/components/atoms/shadcn";
+import { Button } from "@ui";
 import { approveAccount, listPendingUsers } from "@cms/actions/accounts.server";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";

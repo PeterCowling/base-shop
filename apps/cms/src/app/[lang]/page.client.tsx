@@ -1,9 +1,9 @@
 // apps/cms/src/app/[lang]/page.tsx
 "use client";
 
-import ReviewsCarousel from "@/components/home/ReviewsCarousel";
-import { ValueProps } from "@/components/home/ValueProps";
-import HeroBanner from "@ui/components/home/HeroBanner.client";
+import ReviewsCarousel from "@ui";
+import { ValueProps } from "@ui";
+import HeroBanner from "@ui";
 
 export default function Home() {
   return (

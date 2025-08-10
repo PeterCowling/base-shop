@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/products/page.tsx
 
-import { Button } from "@/components/atoms/shadcn";
+import { Button } from "@ui";
 import {
   createDraft,
   deleteProduct,
@@ -10,7 +10,7 @@ import { authOptions } from "@cms/auth/options";
 import { checkShopExists } from "@lib/checkShopExists.server";
 import type { ProductPublication } from "@platform-core/products";
 import { readRepo } from "@platform-core/repositories/json.server";
-import ProductsTable from "@ui/components/cms/ProductsTable.client";
+import ProductsTable from "@ui";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 

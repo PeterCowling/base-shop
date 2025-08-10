@@ -45,7 +45,7 @@ import {
   containerRegistry,
 } from "./blocks";
 import { getShopFromPath } from "@platform-core/src/utils/getShopFromPath";
-import useMediaUpload from "@ui/hooks/useMediaUpload";
+import useMediaUpload from "@ui";
 
 /* ════════════════ component catalogue ════════════════ */
 type ComponentType =

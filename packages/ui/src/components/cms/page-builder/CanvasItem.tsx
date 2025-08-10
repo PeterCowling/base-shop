@@ -161,11 +161,24 @@ const CanvasItem = memo(function CanvasItem({
       if (!startRef.current) return;
       const dx = e.clientX - startRef.current.x;
       const dy = e.clientY - startRef.current.y;
+      const parent = containerRef.current?.parentElement;
+      const parentWidth = parent?.clientWidth;
+      const parentHeight = parent?.clientHeight;
+      const newWidth = startRef.current.w + dx;
+      const newHeight = startRef.current.h + dy;
+      const threshold = 10;
       const payload: Action = {
         type: "resize",
         id: component.id,
-        width: `${startRef.current.w + dx}px`,
-        height: `${startRef.current.h + dy}px`,
+        width:
+          parentWidth && (e.shiftKey || Math.abs(parentWidth - newWidth) <= threshold)
+            ? "100%"
+            : `${newWidth}px`,
+        height:
+          parentHeight &&
+          (e.shiftKey || Math.abs(parentHeight - newHeight) <= threshold)
+            ? "100%"
+            : `${newHeight}px`,
       };
       if (component.position === "absolute") {
         payload.left = `${startRef.current.l + dx}px`;
@@ -268,6 +281,7 @@ const CanvasItem = memo(function CanvasItem({
       role="listitem"
       aria-grabbed={isDragging}
       aria-dropeffect="move"
+      tabIndex={0}
       style={{
         transform: CSS.Transform.toString(transform),
         ...(component.width ? { width: component.width } : {}),
@@ -286,10 +300,16 @@ const CanvasItem = memo(function CanvasItem({
         className="absolute left-0 top-0 z-10 h-3 w-3 cursor-move bg-muted"
         {...attributes}
         {...listeners}
+        role="button"
+        tabIndex={0}
+        aria-label="Drag component. Press space or enter to pick up, then use arrow keys to move"
+        aria-grabbed={isDragging}
+        title="Press space/enter to pick up, arrow keys to move"
         onPointerDown={(e) => {
           e.stopPropagation();
           onSelectId(component.id);
           startMove(e);
+          listeners.onPointerDown?.(e);
         }}
       />
       {component.type === "Text" ? (

@@ -2,7 +2,7 @@
 "use client";
 
 import type { MediaItem } from "@types";
-import useMediaUpload from "@ui/hooks/useMediaUpload";
+import useMediaUpload from "@ui";
 import Image from "next/image";
 import { memo, useEffect, useState } from "react";
 import {

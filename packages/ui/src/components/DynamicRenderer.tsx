@@ -2,7 +2,7 @@
 
 "use client";
 
-import { blockRegistry } from "@/components/cms/blocks";
+import { blockRegistry } from "@ui";
 import type { Locale } from "@/i18n/locales";
 import { PRODUCTS } from "@platform-core/src/products";
 import type { PageComponent, SKU } from "@types";

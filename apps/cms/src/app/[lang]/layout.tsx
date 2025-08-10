@@ -1,8 +1,8 @@
 // apps/cms/src/app/[lang]/layout.tsx
 import "../globals.css";
 
-import Footer from "@ui/components/layout/Footer";
-import Header from "@ui/components/layout/Header";
+import Footer from "@ui";
+import Header from "@ui";
 
 import { TranslationsProvider } from "@i18n/Translations";
 import { Locale, resolveLocale } from "@i18n/locales";

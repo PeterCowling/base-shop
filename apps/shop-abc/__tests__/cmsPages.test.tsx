@@ -9,7 +9,7 @@ jest.mock("next/headers", () => ({
 }));
 
 import type { PageComponent } from "@types";
-import DynamicRenderer from "@ui/components/DynamicRenderer";
+import DynamicRenderer from "@ui";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { cookies } from "next/headers";
 import { encodeCartCookie } from "@/lib/cartCookie";

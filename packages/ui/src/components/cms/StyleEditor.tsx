@@ -1,8 +1,8 @@
 // packages/ui/components/cms/StyleEditor.tsx
 "use client";
 
-import { Input } from "@/components/atoms/shadcn";
-import { useTokenEditor, type TokenMap } from "@ui/hooks/useTokenEditor";
+import { Input } from "@ui";
+import { useTokenEditor, type TokenMap } from "@ui";
 import { ColorInput, FontSelect, RangeInput } from "./index";
 
 interface StyleEditorProps {

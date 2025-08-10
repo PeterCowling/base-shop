@@ -3,7 +3,7 @@
 "use client";
 
 import { ProductPublication } from "@platform-core/src/products";
-import { useProductFilters } from "@ui/hooks/useProductFilters";
+import { useProductFilters } from "@ui";
 import Link from "next/link";
 import { memo, ReactElement, ReactNode, useCallback, useMemo } from "react";
 import DataTable from "./DataTable";

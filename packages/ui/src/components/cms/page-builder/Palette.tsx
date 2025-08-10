@@ -41,16 +41,21 @@ const PaletteItem = memo(function PaletteItem({
 }: {
   type: PageComponent["type"];
 }) {
-  const { attributes, listeners, setNodeRef, transform } = useSortable({
-    id: type,
-    data: { from: "palette", type },
-  });
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useSortable({
+      id: type,
+      data: { from: "palette", type },
+    });
 
   return (
     <div
       ref={setNodeRef}
       {...attributes}
       {...listeners}
+      role="button"
+      tabIndex={0}
+      aria-grabbed={isDragging}
+      title="Press space/enter to pick up, arrow keys to move"
       style={{ transform: CSS.Transform.toString(transform) }}
       className="cursor-grab rounded border p-2 text-center text-sm"
     >
@@ -62,6 +67,10 @@ const PaletteItem = memo(function PaletteItem({
 const Palette = memo(function Palette() {
   return (
     <div className="flex flex-col gap-4">
+      <p className="text-xs text-muted">
+        Focus an item and press space to pick it up, then use arrow keys to
+        move it.
+      </p>
       {Object.entries(palette).map(([category, items]) => (
         <div key={category} className="space-y-2">
           <h4 className="font-semibold capitalize">{category}</h4>

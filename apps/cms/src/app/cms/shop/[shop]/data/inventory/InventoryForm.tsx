@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Textarea } from "@/components/atoms/shadcn";
+import { Button, Textarea } from "@ui";
 import { inventoryItemSchema, type InventoryItem } from "@types";
 import { FormEvent, useState } from "react";
 

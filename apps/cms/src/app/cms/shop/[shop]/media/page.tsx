@@ -2,7 +2,7 @@
 
 import { deleteMedia, listMedia } from "@cms/actions/media.server";
 import { checkShopExists } from "@lib/checkShopExists.server";
-import MediaManager from "@ui/components/cms/MediaManager";
+import MediaManager from "@ui";
 import { notFound } from "next/navigation";
 
 interface Params {

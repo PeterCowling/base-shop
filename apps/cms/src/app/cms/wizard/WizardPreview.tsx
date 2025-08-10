@@ -2,10 +2,10 @@
 
 "use client";
 
-import { Button } from "@/components/atoms";
-import { blockRegistry } from "@/components/cms/blocks";
-import { Footer, Header, SideNav } from "@/components/organisms";
-import { AppShell } from "@/components/templates/AppShell";
+import { Button } from "@ui";
+import { blockRegistry } from "@ui";
+import { Footer, Header, SideNav } from "@ui";
+import { AppShell } from "@ui";
 import TranslationsProvider from "@/i18n/Translations";
 import enMessages from "@i18n/en.json";
 import type { PageComponent } from "@types";

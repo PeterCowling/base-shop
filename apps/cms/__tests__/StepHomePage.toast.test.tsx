@@ -1,8 +1,8 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import StepHomePage from "../src/app/cms/wizard/steps/StepHomePage";
-import { fetchJson } from "@ui/utils/fetchJson";
+import { fetchJson } from "@ui";
 
-jest.mock("@/components/atoms/shadcn", () => {
+jest.mock("@ui", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -20,22 +20,15 @@ jest.mock("@/components/atoms/shadcn", () => {
         {placeholder}
       </option>
     ),
-  };
-});
-
-jest.mock("@/components/cms/PageBuilder", () => {
-  const React = require("react");
-  return function PageBuilder({ onSave, onPublish }: any) {
-    return (
+    PageBuilder: ({ onSave, onPublish }: any) => (
       <div>
         <button onClick={() => onSave(new FormData())}>save</button>
         <button onClick={() => onPublish(new FormData())}>publish</button>
       </div>
-    );
+    ),
+    fetchJson: jest.fn(),
   };
 });
-
-jest.mock("@ui/utils/fetchJson");
 
 const defaultProps = {
   pageTemplates: [],

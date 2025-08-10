@@ -205,8 +205,8 @@ export function useImageUpload(
  *  Compatibility exports
  * ------------------------------------------------------------------ */
 
-// 1. allow `import { useMediaUpload } from "@ui/hooks/useMediaUpload"`
+// 1. allow `import { useMediaUpload } from "@ui"`
 export { useImageUpload as useMediaUpload };
 
-// 2. allow `import useMediaUpload from "@ui/hooks/useMediaUpload"`
+// 2. allow `import useMediaUpload from "@ui"`
 export default useImageUpload;

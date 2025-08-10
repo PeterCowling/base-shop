@@ -1,8 +1,8 @@
 // apps/shop-abc/src/app/[lang]/checkout/page.tsx
 
-import CheckoutForm from "@/components/checkout/CheckoutForm";
-import OrderSummary from "@/components/organisms/OrderSummary";
-import DynamicRenderer from "@ui/components/DynamicRenderer";
+import CheckoutForm from "@ui";
+import OrderSummary from "@ui";
+import DynamicRenderer from "@ui";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { getPages } from "@platform-core/repositories/pages/index.server";

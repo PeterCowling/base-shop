@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/live/page.tsx
 
-import { Button } from "@/components/atoms/shadcn";
+import { Button } from "@ui";
 import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
+import { Button } from "@ui";
 import type { Locale } from "@types";
 import SeoLanguageTabs from "./SeoLanguageTabs";
 import type { SeoRecord } from "./useSeoForm";

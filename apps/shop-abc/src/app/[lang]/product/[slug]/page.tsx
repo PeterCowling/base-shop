@@ -3,7 +3,7 @@ import { getProductBySlug } from "@/lib/products";
 import type { PageComponent } from "@types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import DynamicRenderer from "@ui/components/DynamicRenderer";
+import DynamicRenderer from "@ui";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { LOCALES } from "@acme/i18n";
 import shop from "../../../../../shop.json";

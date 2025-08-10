@@ -1,5 +1,4 @@
 // packages/ui/src/index.ts
-
-export { default as DynamicRenderer } from "./components/DynamicRenderer";
-export { default as ThemeToggle } from "./components/ThemeToggle";
-
+export * from "./components";
+export * from "./hooks";
+export * from "./utils";

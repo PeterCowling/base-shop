@@ -2,7 +2,7 @@
 import { PRODUCTS } from "@/lib/products";
 import type { SKU, PageComponent } from "@types";
 import type { Metadata } from "next";
-import DynamicRenderer from "@ui/components/DynamicRenderer";
+import DynamicRenderer from "@ui";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import shop from "../../../../shop.json";
 import ShopClient from "./ShopClient.client";

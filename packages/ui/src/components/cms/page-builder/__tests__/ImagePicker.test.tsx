@@ -1,16 +1,19 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import ImagePicker from "../ImagePicker";
 
-jest.mock("@ui/hooks/useMediaUpload", () => () => ({
-  pendingFile: null,
-  altText: "",
-  setAltText: jest.fn(),
-  isValid: null,
-  actual: "",
-  inputRef: { current: null },
-  onFileChange: jest.fn(),
-  handleUpload: jest.fn(),
-  error: "",
+jest.mock("@ui", () => ({
+  ...(jest.requireActual("@ui") as any),
+  useMediaUpload: () => ({
+    pendingFile: null,
+    altText: "",
+    setAltText: jest.fn(),
+    isValid: null,
+    actual: "",
+    inputRef: { current: null },
+    onFileChange: jest.fn(),
+    handleUpload: jest.fn(),
+    error: "",
+  }),
 }));
 
 jest.mock("next/navigation", () => ({ usePathname: () => "/shop" }));

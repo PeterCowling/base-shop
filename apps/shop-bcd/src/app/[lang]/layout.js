@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 // apps/shop-bcd/src/app/[lang]/layout.tsx
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
+import Footer from "@ui";
+import Header from "@ui";
 import TranslationsProvider from "@i18n/Translations";
 import { resolveLocale } from "@i18n/locales";
 import { DefaultSeo } from "next-seo";

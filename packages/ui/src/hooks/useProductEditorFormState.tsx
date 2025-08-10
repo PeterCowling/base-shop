@@ -1,8 +1,8 @@
 // packages/ui/hooks/useProductEditorFormState.tsx
 import type { Locale, ProductPublication } from "@platform-core/src/products";
-import { useImageUpload } from "@ui/hooks/useImageUpload";
-import { usePublishLocations } from "@ui/hooks/usePublishLocations";
-import { parseMultilingualInput } from "@ui/src/utils/multilingual";
+import { useImageUpload } from "@ui";
+import { usePublishLocations } from "@ui";
+import { parseMultilingualInput } from "@ui";
 import {
   useCallback,
   useMemo,

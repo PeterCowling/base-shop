@@ -2,21 +2,10 @@
 "use server";
 
 import { deployShop, type DeployShopResult } from "@platform-core/createShop";
-import fsSync from "node:fs";
+import { resolveDataRoot } from "@platform-core/dataRoot";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { ensureAuthorized } from "./common/auth";
-
-function resolveRepoRoot(): string {
-  let dir = process.cwd();
-  while (true) {
-    if (fsSync.existsSync(path.join(dir, "pnpm-workspace.yaml"))) return dir;
-    const parent = path.dirname(dir);
-    if (parent === dir) break;
-    dir = parent;
-  }
-  return process.cwd();
-}
 
 export async function deployShopHosting(
   id: string,
@@ -31,13 +20,7 @@ export async function getDeployStatus(
 ): Promise<DeployShopResult | { status: "pending"; error?: string }> {
   await ensureAuthorized();
   try {
-    const file = path.join(
-      resolveRepoRoot(),
-      "data",
-      "shops",
-      id,
-      "deploy.json"
-    );
+    const file = path.join(resolveDataRoot(), id, "deploy.json");
     const content = await fs.readFile(file, "utf8");
     return JSON.parse(content) as DeployShopResult;
   } catch (err) {
@@ -55,13 +38,7 @@ export async function updateDeployStatus(
   }
 ): Promise<void> {
   await ensureAuthorized();
-  const file = path.join(
-    resolveRepoRoot(),
-    "data",
-    "shops",
-    id,
-    "deploy.json"
-  );
+  const file = path.join(resolveDataRoot(), id, "deploy.json");
   try {
     const existing = await fs.readFile(file, "utf8").catch(() => "{}");
     const parsed = JSON.parse(existing) as Record<string, unknown>;

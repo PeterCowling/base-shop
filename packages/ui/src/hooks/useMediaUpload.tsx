@@ -71,6 +71,7 @@ export function useImageUpload(
   const [error, setError] = useState<string>();
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragActive, setDragActive] = useState(false);
+  const feedbackId = "uploader-feedback";
 
   /* ---------- orientation check ----------------------------------- */
   const { actual, isValid } = useImageOrientationValidation(
@@ -132,6 +133,7 @@ export function useImageUpload(
       tabIndex={0}
       role="button"
       aria-label="Drop image here or press Enter to browse"
+      aria-describedby={feedbackId}
       onDragOver={(e) => e.preventDefault()}
       onDragEnter={() => setDragActive(true)}
       onDragLeave={() => setDragActive(false)}
@@ -164,22 +166,24 @@ export function useImageUpload(
         Browse…
       </button>
 
-      {pendingFile && (
-        <p className="mt-2 text-sm text-muted-foreground">{pendingFile.name}</p>
-      )}
+      <div id={feedbackId} role="status" aria-live="polite">
+        {pendingFile && (
+          <p className="mt-2 text-sm text-muted-foreground">{pendingFile.name}</p>
+        )}
 
-      {progress && (
-        <p className="mt-2 text-sm">
-          Uploading… {progress.done}/{progress.total}
-        </p>
-      )}
+        {progress && (
+          <p className="mt-2 text-sm">
+            Uploading… {progress.done}/{progress.total}
+          </p>
+        )}
 
-      {error && <p className="mt-2 text-sm text-danger">{error}</p>}
-      {isValid === false && (
-        <p className="mt-2 text-sm text-warning">
-          Wrong orientation (needs {requiredOrientation})
-        </p>
-      )}
+        {error && <p className="mt-2 text-sm text-danger">{error}</p>}
+        {isValid === false && (
+          <p className="mt-2 text-sm text-warning">
+            Wrong orientation (needs {requiredOrientation})
+          </p>
+        )}
+      </div>
     </div>
   );
 

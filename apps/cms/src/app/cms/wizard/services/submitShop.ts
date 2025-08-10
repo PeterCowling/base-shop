@@ -12,6 +12,18 @@ export interface SubmitResult {
   fieldErrors?: Record<string, string[]>;
 }
 
+function serializeNavItems(
+  items: WizardState["navItems"]
+): { label: string; url: string; children?: any[] }[] {
+  return items.map(({ label, url, children }) => ({
+    label,
+    url,
+    ...(children && children.length
+      ? { children: serializeNavItems(children) }
+      : {}),
+  }));
+}
+
 export async function submitShop(
   shopId: string,
   state: WizardState
@@ -60,7 +72,7 @@ export async function submitShop(
     pageTitle,
     pageDescription,
     socialImage: socialImage || undefined,
-    navItems: navItems.map((n) => ({ label: n.label, url: n.url })),
+    navItems: serializeNavItems(navItems),
     pages: pages.map((p) => ({
       slug: p.slug,
       title: p.title,

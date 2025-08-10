@@ -3,10 +3,37 @@
 import { readdirSync, existsSync } from "fs";
 import readline from "node:readline";
 import { join } from "path";
+import { spawnSync } from "node:child_process";
 import { createShop } from "../../packages/platform-core/src/createShop";
 import { validateShopName } from "../../packages/platform-core/src/shops";
 import { defaultPaymentProviders } from "../../packages/platform-core/src/createShop/defaultPaymentProviders";
 import { defaultShippingProviders } from "../../packages/platform-core/src/createShop/defaultShippingProviders";
+
+function ensureRuntime() {
+  const nodeMajor = parseInt(process.version.slice(1).split(".")[0], 10);
+  if (nodeMajor < 20) {
+    console.error(
+      `Node.js 20 or higher is required; you are using ${process.version}.`
+    );
+    process.exit(1);
+  }
+
+  const pnpm = spawnSync("pnpm", ["--version"], { encoding: "utf8" });
+  if (pnpm.status !== 0) {
+    console.error("Unable to determine pnpm version. Is pnpm installed?");
+    process.exit(1);
+  }
+  const pnpmVersion = pnpm.stdout.trim();
+  const pnpmMajor = parseInt(pnpmVersion.split(".")[0], 10);
+  if (pnpmMajor < 10) {
+    console.error(
+      `pnpm 10 or higher is required; you are using ${pnpmVersion}.`
+    );
+    process.exit(1);
+  }
+}
+
+ensureRuntime();
 
 /* ────────────────────────────────────────────────────────── *
  * Command-line parsing                                       *

@@ -7,6 +7,32 @@ import { spawnSync } from "node:child_process";
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 
+function ensureRuntime() {
+  const nodeMajor = parseInt(process.version.slice(1).split(".")[0], 10);
+  if (nodeMajor < 20) {
+    console.error(
+      `Node.js 20 or higher is required; you are using ${process.version}.`
+    );
+    process.exit(1);
+  }
+
+  const pnpm = spawnSync("pnpm", ["--version"], { encoding: "utf8" });
+  if (pnpm.status !== 0) {
+    console.error("Unable to determine pnpm version. Is pnpm installed?");
+    process.exit(1);
+  }
+  const pnpmVersion = pnpm.stdout.trim();
+  const pnpmMajor = parseInt(pnpmVersion.split(".")[0], 10);
+  if (pnpmMajor < 10) {
+    console.error(
+      `pnpm 10 or higher is required; you are using ${pnpmVersion}.`
+    );
+    process.exit(1);
+  }
+}
+
+ensureRuntime();
+
 async function prompt(question: string, def = ""): Promise<string> {
   const rl = readline.createInterface({ input, output });
   const answer = (await rl.question(question)).trim();

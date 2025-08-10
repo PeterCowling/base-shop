@@ -24,6 +24,12 @@ const meta: Meta<typeof SearchResultsTemplate> = {
     results,
     page: 1,
     pageCount: 5,
+    minItems: 1,
+    maxItems: 4,
+  },
+  argTypes: {
+    minItems: { control: { type: "number" } },
+    maxItems: { control: { type: "number" } },
   },
 };
 export default meta;

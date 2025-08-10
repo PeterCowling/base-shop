@@ -51,10 +51,6 @@ export interface PageComponentBase {
   minItems?: number;
   /** Maximum number of items allowed for components with lists */
   maxItems?: number;
-  /** Minimum columns allowed for grid components */
-  minCols?: number;
-  /** Maximum columns allowed for grid components */
-  maxCols?: number;
   [key: string]: unknown;
 }
 
@@ -160,8 +156,6 @@ const baseComponentSchema = z
     padding: z.string().optional(),
     minItems: z.number().int().min(0).optional(),
     maxItems: z.number().int().min(0).optional(),
-    minCols: z.number().int().min(0).optional(),
-    maxCols: z.number().int().min(0).optional(),
   })
   .passthrough();
 

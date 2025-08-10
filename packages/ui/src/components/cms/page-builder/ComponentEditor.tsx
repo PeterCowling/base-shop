@@ -152,8 +152,8 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
               e.target.value === "" ? undefined : Number(e.target.value)
             )
           }
-          min={(component as any).minItems ?? (component as any).minCols}
-          max={(component as any).maxItems ?? (component as any).maxCols}
+          min={(component as any).minItems}
+          max={(component as any).maxItems}
         />
       )}
       <Select

@@ -8,7 +8,7 @@ Shared page-level layouts used across apps. Currently includes:
   - `DashboardTemplate` – basic stats overview.
 - `AnalyticsDashboardTemplate` – stats, line chart and table for dashboards.
 - `ProductGalleryTemplate` – grid or carousel listing of products. Supports
-  `minCols` and `maxCols` to control the responsive number of items per row or
+  `minItems` and `maxItems` to control the responsive number of items per row or
   slide.
 - `ProductDetailTemplate` – hero-style view for a single product.
 - `FeaturedProductTemplate` – showcase layout for highlighting a product.
@@ -17,7 +17,7 @@ Shared page-level layouts used across apps. Currently includes:
 - `CartTemplate` – editable list of cart items with totals.
 - `CategoryCollectionTemplate` – grid of category cards.
 - `SearchResultsTemplate` – search bar with paginated product results. Accepts
-  `minCols` and `maxCols` to adjust the responsive product grid.
+  `minItems` and `maxItems` to adjust the responsive product grid.
 - `CheckoutTemplate` – multi-step layout for collecting checkout information.
 - `OrderConfirmationTemplate` – summary of purchased items and totals.
 - `WishlistTemplate` – list of saved items with add-to-cart and remove actions.

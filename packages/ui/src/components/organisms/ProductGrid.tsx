@@ -7,13 +7,13 @@ export interface ProductGridProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Explicit number of columns. If omitted, the grid will
    * determine a responsive column count within the
-   * `minCols`/`maxCols` range based on its width.
+   * `minItems`/`maxItems` range based on its width.
    */
   columns?: number;
-  /** Minimum number of columns to show */
-  minCols?: number;
-  /** Maximum number of columns to show */
-  maxCols?: number;
+  /** Minimum number of items to show */
+  minItems?: number;
+  /** Maximum number of items to show */
+  maxItems?: number;
   showImage?: boolean;
   showPrice?: boolean;
   ctaLabel?: string;
@@ -23,8 +23,8 @@ export interface ProductGridProps extends React.HTMLAttributes<HTMLDivElement> {
 export function ProductGrid({
   products,
   columns,
-  minCols = 1,
-  maxCols = 4,
+  minItems = 1,
+  maxItems = 4,
   showImage = true,
   showPrice = true,
   ctaLabel = "Add to cart",
@@ -33,7 +33,7 @@ export function ProductGrid({
   ...props
 }: ProductGridProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [cols, setCols] = React.useState(columns ?? minCols);
+  const [cols, setCols] = React.useState(columns ?? minItems);
 
   React.useEffect(() => {
     if (columns || typeof ResizeObserver === "undefined" || !containerRef.current)
@@ -43,14 +43,14 @@ export function ProductGrid({
     const update = () => {
       const width = el.clientWidth;
       const ideal = Math.floor(width / ITEM_WIDTH) || 1;
-      const clamped = Math.max(minCols, Math.min(maxCols, ideal));
+      const clamped = Math.max(minItems, Math.min(maxItems, ideal));
       setCols(clamped);
     };
     update();
     const observer = new ResizeObserver(update);
     observer.observe(el);
     return () => observer.disconnect();
-  }, [columns, minCols, maxCols]);
+  }, [columns, minItems, maxItems]);
 
   const style = {
     gridTemplateColumns: `repeat(${columns ?? cols}, minmax(0, 1fr))`,

@@ -1,6 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/new/builder/page.tsx
 
 import { createPage } from "@cms/actions/pages.server";
+import { fillLocales } from "@platform-core/utils";
 import type { Page } from "@types";
 import dynamic from "next/dynamic";
 
@@ -26,9 +27,9 @@ export default async function NewPageBuilderRoute({
     status: "draft",
     components: [],
     seo: {
-      title: { en: "", de: "", it: "" },
-      description: { en: "", de: "", it: "" },
-      image: { en: "", de: "", it: "" },
+      title: fillLocales(undefined, ""),
+      description: fillLocales(undefined, ""),
+      image: fillLocales(undefined, ""),
     },
     createdAt: "",
     updatedAt: "",

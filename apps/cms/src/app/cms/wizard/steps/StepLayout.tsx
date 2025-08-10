@@ -3,8 +3,8 @@
 
 import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
-import { LOCALES } from "@acme/i18n";
-import type { Locale, Page, PageComponent } from "@types";
+import { fillLocales } from "@platform-core/utils";
+import type { Page, PageComponent } from "@types";
 import { fetchJson } from "@shared-utils";
 import { ReactNode, useState } from "react";
 import { Toast } from "@/components/atoms";
@@ -37,11 +37,7 @@ interface Props {
   children?: ReactNode;
 }
 
-const emptyTranslated = (): Record<Locale, string> =>
-  LOCALES.reduce(
-    (acc, l) => ({ ...acc, [l]: "" }),
-    {} as Record<Locale, string>
-  );
+const emptyTranslated = () => fillLocales(undefined, "");
 
 export default function StepLayout({
   currentStep,

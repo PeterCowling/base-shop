@@ -51,6 +51,7 @@ describe("product actions", () => {
       expect(draft.status).toBe("draft");
       expect(draft.title.en).toBe("Untitled");
       expect(Object.keys(draft.title)).toEqual(["en", "de", "it"]);
+      expect(Object.keys(draft.description)).toEqual(["en", "de", "it"]);
     });
   });
 

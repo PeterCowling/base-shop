@@ -9,8 +9,8 @@ import {
   SelectValue,
 } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
-import { LOCALES } from "@acme/i18n";
-import type { Locale, Page, PageComponent } from "@types";
+import { fillLocales } from "@platform-core/utils";
+import type { Page, PageComponent } from "@types";
 import { fetchJson } from "@shared-utils";
 import { ulid } from "ulid";
 import { useState } from "react";
@@ -86,15 +86,9 @@ export default function StepShopPage({
             status: "draft",
             components: shopComponents,
             seo: {
-              title: LOCALES.reduce(
-                (acc, l) => ({ ...acc, [l]: "" }),
-                {} as Record<Locale, string>
-              ),
-              description: LOCALES.reduce(
-                (acc, l) => ({ ...acc, [l]: "" }),
-                {} as Record<Locale, string>
-              ),
-              image: "",
+              title: fillLocales(undefined, ""),
+              description: fillLocales(undefined, ""),
+              image: fillLocales(undefined, ""),
             },
             createdAt: "",
             updatedAt: "",

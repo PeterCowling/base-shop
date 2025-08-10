@@ -1,14 +1,12 @@
 // apps/cms/src/actions/pages/validation.ts
 
 import { LOCALES } from "@acme/i18n";
+import { fillLocales } from "@platform-core/utils";
 import { pageComponentSchema, type Locale } from "@types";
 import { z } from "zod";
 
 export const emptyTranslated = (): Record<Locale, string> =>
-  LOCALES.reduce(
-    (acc, l) => ({ ...acc, [l]: "" }),
-    {} as Record<Locale, string>
-  );
+  fillLocales(undefined, "");
 
 export const componentsField = z
   .string()

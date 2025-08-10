@@ -3,6 +3,7 @@
 import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { LOCALES } from "@acme/i18n";
+import { fillLocales } from "@platform-core/utils";
 import type { Locale, Page, PageComponent } from "@types";
 import { fetchJson } from "@shared-utils";
 import { useState } from "react";
@@ -61,7 +62,6 @@ export default function StepAdditionalPages({
 
   usePagesLoader({
     shopId,
-    languages,
     setPages,
     adding,
     draftId: newDraftId,
@@ -106,18 +106,9 @@ export default function StepAdditionalPages({
                 status: "draft",
                 components: newComponents,
                 seo: {
-                  title: LOCALES.reduce(
-                    (acc, l) => ({ ...acc, [l]: "" }),
-                    {} as Record<Locale, string>
-                  ),
-                  description: LOCALES.reduce(
-                    (acc, l) => ({ ...acc, [l]: "" }),
-                    {} as Record<Locale, string>
-                  ),
-                  image: LOCALES.reduce(
-                    (acc, l) => ({ ...acc, [l]: "" }),
-                    {} as Record<Locale, string>
-                  ),
+                  title: fillLocales(undefined, ""),
+                  description: fillLocales(undefined, ""),
+                  image: fillLocales(undefined, ""),
                 },
                 createdAt: "",
                 updatedAt: "",
@@ -157,17 +148,14 @@ export default function StepAdditionalPages({
               onClick={() => {
                 setPages([
                   ...pages,
-                  toPageInfo(
-                    {
-                      id: newDraftId ?? undefined,
-                      slug: newSlug,
-                      title: newTitle,
-                      description: newDesc,
-                      image: newImage,
-                      components: newComponents,
-                    },
-                    languages
-                  ),
+                  toPageInfo({
+                    id: newDraftId ?? undefined,
+                    slug: newSlug,
+                    title: newTitle,
+                    description: newDesc,
+                    image: newImage,
+                    components: newComponents,
+                  }),
                 ]);
                 resetFields();
                 setAdding(false);

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import type { Locale, Page, PageComponent } from "@types";
+import type { Page, PageComponent } from "@types";
 import { historyStateSchema } from "@types";
 import { fetchJson } from "@shared-utils";
 import { toPageInfo } from "../utils/page-utils";
@@ -7,7 +7,6 @@ import type { PageInfo } from "../schema";
 
 interface Params {
   shopId: string;
-  languages: readonly Locale[];
   setPages: (v: PageInfo[]) => void;
   adding: boolean;
   draftId: string | null;
@@ -17,7 +16,6 @@ interface Params {
 
 export default function usePagesLoader({
   shopId,
-  languages,
   setPages,
   adding,
   draftId,
@@ -29,7 +27,7 @@ export default function usePagesLoader({
     (async () => {
       try {
         const loaded = await fetchJson<Page[]>(`/cms/api/pages/${shopId}`);
-        setPages(loaded.map((p) => toPageInfo(p, languages)));
+        setPages(loaded.map((p) => toPageInfo(p)));
         if (typeof window !== "undefined") {
           loaded.forEach((p) => {
             localStorage.setItem(
@@ -50,7 +48,7 @@ export default function usePagesLoader({
         setToast({ open: true, message: "Failed to load pages" });
       }
     })();
-  }, [shopId, languages, setPages, setToast]);
+  }, [shopId, setPages, setToast]);
 
   useEffect(() => {
     if (!adding || !draftId || !shopId) return;

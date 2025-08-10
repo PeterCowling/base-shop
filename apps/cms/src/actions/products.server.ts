@@ -13,6 +13,7 @@ import {
   updateProductInRepo,
   writeRepo,
 } from "@platform-core/repositories/json.server";
+import { fillLocales } from "@platform-core/utils";
 import type { ProductPublication } from "@platform-core/src/products";
 import * as Sentry from "@sentry/node";
 import type { Locale } from "@types";
@@ -46,13 +47,9 @@ export async function createDraftRecord(
 
   const now = nowIso();
   const locales = await getLocales(shop);
-  const blank: Record<string, string> = {};
-  locales.forEach((l) => {
-    blank[l] = "";
-  });
   const first = locales[0] ?? "en";
-  const title = { ...blank, [first]: "Untitled" } as Record<Locale, string>;
-  const description = { ...blank } as Record<Locale, string>;
+  const title = fillLocales({ [first]: "Untitled" }, "");
+  const description = fillLocales(undefined, "");
 
   const draft: ProductPublication = {
     id: ulid(),

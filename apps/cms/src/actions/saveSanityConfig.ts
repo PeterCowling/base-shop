@@ -2,14 +2,17 @@
 "use server";
 
 import { verifyCredentials } from "@acme/plugin-sanity";
-import { resolveDataRoot } from "@platform-core/dataRoot";
+import { getShopById, updateShopInRepo } from "@platform-core/src/repositories/shop.server";
+import { setSanityConfig } from "@platform-core/src/shops";
 import { ensureAuthorized } from "./common/auth";
 import { setupSanityBlog } from "./setupSanityBlog";
-import { promises as fs } from "node:fs";
-import path from "node:path";
 
-export async function saveSanityConfig(formData: FormData): Promise<{
+export async function saveSanityConfig(
+  shopId: string,
+  formData: FormData
+): Promise<{
   error?: string;
+  message?: string;
 }> {
   await ensureAuthorized();
 
@@ -29,10 +32,9 @@ export async function saveSanityConfig(formData: FormData): Promise<{
     return { error: setup.error ?? "Failed to setup Sanity blog" };
   }
 
-  const root = path.resolve(resolveDataRoot(), "..", "cms");
-  await fs.mkdir(root, { recursive: true });
-  const file = path.join(root, "sanity.json");
-  await fs.writeFile(file, JSON.stringify(config, null, 2), "utf8");
+  const shop = await getShopById(shopId);
+  const updated = setSanityConfig(shop, config);
+  await updateShopInRepo(shopId, updated);
 
-  return {};
+  return { message: "Sanity connected" };
 }

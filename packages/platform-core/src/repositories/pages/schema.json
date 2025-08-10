@@ -85,6 +85,18 @@
               "maxItems": { "$ref": "#/definitions/nonNegativeInteger" }
             },
             "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "required": ["id", "type", "endpoint"],
+            "properties": {
+              "id": { "type": "string" },
+              "type": { "const": "RecommendationCarousel" },
+              "endpoint": { "type": "string" },
+              "minItems": { "$ref": "#/definitions/nonNegativeInteger" },
+              "maxItems": { "$ref": "#/definitions/nonNegativeInteger" }
+            },
+            "additionalProperties": false
           }
         ]
       }

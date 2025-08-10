@@ -1,7 +1,7 @@
 // packages/ui/hooks/usePublishLocations.ts
 
 import type { PublishLocation } from "@types";
-import { fetchJson } from "@ui/utils/fetchJson";
+import { fetchJson } from "@shared-utils";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export interface UsePublishLocationsResult {

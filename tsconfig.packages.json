@@ -19,6 +19,7 @@
     { "path": "packages/themes/abc" },
     { "path": "packages/themes/bcd" },
     { "path": "packages/config" },
+    { "path": "packages/shared-utils" },
     { "path": "packages/ui" },
     { "path": "packages/auth" },
     { "path": "packages/configurator" },

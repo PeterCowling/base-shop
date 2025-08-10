@@ -1,7 +1,6 @@
 // packages/platform-core/src/cartCookie.ts
 import { z } from "zod";
 
-import type { CartState } from "@types";
 import { skuSchema } from "@types";
 
 /* ------------------------------------------------------------------
@@ -30,6 +29,9 @@ export const cartLineSchema = z.object({
  * Schema for the full cart, keyed by SKU ID (string).
  */
 export const cartStateSchema = z.record(z.string(), cartLineSchema);
+
+export type CartLine = z.infer<typeof cartLineSchema>;
+export type CartState = z.infer<typeof cartStateSchema>;
 
 /* ------------------------------------------------------------------
  * Helper functions

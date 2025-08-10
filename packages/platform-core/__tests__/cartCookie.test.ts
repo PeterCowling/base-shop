@@ -1,16 +1,28 @@
 // packages/platform-core/__tests__/cartCookie.test.ts
-import type { CartState } from "@types";
 import {
   asSetCookieHeader,
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
-} from "../cartCookie";
-import { PRODUCTS } from "../products";
+  type CartState,
+} from "../src/cartCookie";
+
+const sku = {
+  id: "01ARZ3NDEKTSV4RRFFQ69G5FAV",
+  slug: "sample",
+  title: "Sample",
+  price: 100,
+  deposit: 10,
+  forSale: true,
+  forRental: false,
+  image: "/img.png",
+  sizes: [],
+  description: "",
+};
 
 describe("cart cookie helpers", () => {
   const state: CartState = {
-    [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 2 },
+    [sku.id]: { sku, qty: 2 },
   };
 
   it("encodes and decodes the cart", () => {

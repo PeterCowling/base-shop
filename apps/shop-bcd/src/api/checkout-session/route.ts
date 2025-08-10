@@ -1,13 +1,17 @@
 // apps/shop-bcd/src/app/api/checkout-session/route.ts
 
-import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
+import {
+  CART_COOKIE,
+  decodeCartCookie,
+  type CartLine,
+  type CartState,
+} from "@/lib/cartCookie";
 import { calculateRentalDays } from "@/lib/date";
 import { stripe } from "@lib/stripeServer.server";
 import { getCustomerSession } from "@auth";
 import { priceForDays, convertCurrency } from "@platform-core/pricing";
 import { findCoupon } from "@platform-core/coupons";
 import { getTaxRate } from "@platform-core/tax";
-import type { CartLine, CartState } from "@types";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 

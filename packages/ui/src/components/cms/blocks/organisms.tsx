@@ -10,7 +10,6 @@ import TestimonialSlider from "./TestimonialSlider";
 import Testimonials from "./Testimonials";
 import ValueProps from "./ValueProps";
 import RecommendationCarousel from "./RecommendationCarousel";
-import { CategoryList, NewsletterForm, PromoBanner } from "./molecules";
 
 export const organismRegistry = {
   HeroBanner,
@@ -23,9 +22,6 @@ export const organismRegistry = {
   ContactForm,
   ContactFormWithMap,
   BlogListing,
-  NewsletterForm,
-  PromoBanner,
-  CategoryList,
   Testimonials,
   TestimonialSlider,
 } as const;

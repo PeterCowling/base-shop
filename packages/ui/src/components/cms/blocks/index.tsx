@@ -11,7 +11,6 @@ import Testimonials from "./Testimonials";
 import ValueProps from "./ValueProps";
 import RecommendationCarousel from "./RecommendationCarousel";
 import Section from "./Section";
-import { NewsletterForm, PromoBanner, CategoryList } from "./molecules";
 
 export {
   BlogListing,
@@ -26,9 +25,6 @@ export {
   Testimonials,
   TestimonialSlider,
   ValueProps,
-  NewsletterForm,
-  PromoBanner,
-  CategoryList,
   Section,
 };
 

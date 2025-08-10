@@ -12,6 +12,11 @@ const colorPairs: [TokenKey, TokenKey][] = [
   ['--color-primary', '--color-primary-fg'],
   ['--color-accent', '--color-accent-fg'],
   ['--color-danger', '--color-danger-fg'],
+  // ensure accent and danger colors work against default foreground/background
+  ['--color-accent', '--color-fg'],
+  ['--color-bg', '--color-accent-fg'],
+  ['--color-danger', '--color-fg'],
+  ['--color-bg', '--color-danger-fg'],
 ];
 
 describe('dark theme color contrast', () => {

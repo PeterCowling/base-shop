@@ -64,6 +64,10 @@ export interface DeployStatusBase {
   previewUrl?: string;
   instructions?: string;
   error?: string;
+  /** Custom domain associated with the deployment */
+  domain?: string;
+  /** Current provisioning status for the custom domain */
+  domainStatus?: "pending" | "active" | "error";
 }
 
 export interface DeployShopResult extends DeployStatusBase {

@@ -762,10 +762,12 @@ export default function Wizard({
       case 14:
         return (
           <StepHosting
+            shopId={shopId}
             domain={domain}
             setDomain={setDomain}
             deployResult={deployResult}
             deployInfo={deployInfo}
+            setDeployInfo={setDeployInfo}
             deploying={deploying}
             deploy={deploy}
             onBack={() => setStep(13)}

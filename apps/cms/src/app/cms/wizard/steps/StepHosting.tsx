@@ -2,26 +2,57 @@
 
 import { Button, Input } from "@/components/atoms/shadcn";
 import type { DeployStatusBase } from "@platform-core/createShop";
+import { useEffect } from "react";
 
 interface Props {
+  shopId: string;
   domain: string;
   setDomain: (v: string) => void;
   deployResult: string | null;
   deployInfo: DeployStatusBase | null;
+  setDeployInfo: (info: DeployStatusBase) => void;
   deploying: boolean;
   onBack: () => void;
   deploy: () => void;
 }
 
 export default function StepHosting({
+  shopId,
   domain,
   setDomain,
   deployResult,
   deployInfo,
+  setDeployInfo,
   deploying,
   onBack,
   deploy,
 }: Props): React.JSX.Element {
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
+    const poll = async () => {
+      try {
+        const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
+        if (!res.ok) return;
+        const status = (await res.json()) as DeployStatusBase;
+        setDeployInfo(status);
+        if (status.domainStatus === "pending") {
+          timer = setTimeout(poll, 5000);
+        }
+      } catch {
+        // ignore network errors
+      }
+    };
+
+    if (!deployInfo || deployInfo.domainStatus === "pending") {
+      poll();
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [shopId, deployInfo?.domainStatus, setDeployInfo]);
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Hosting</h2>
@@ -49,6 +80,15 @@ export default function StepHosting({
       )}
       {deployInfo?.instructions && (
         <p className="text-sm">{deployInfo.instructions}</p>
+      )}
+      {deployInfo?.domainStatus === "pending" && (
+        <p className="text-sm">Verifying domain ownership…</p>
+      )}
+      {deployInfo?.domainStatus === "active" && (
+        <p className="text-sm text-green-600">Domain verified</p>
+      )}
+      {deployInfo?.domainStatus === "error" && (
+        <p className="text-sm text-red-600">Domain provisioning failed</p>
       )}
       {deployInfo?.status === "success" && (
         <p className="text-sm text-green-600">Deployment complete</p>

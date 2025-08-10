@@ -1,6 +1,7 @@
 import { envSchema } from "@config/src/env";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { readShopDomainSync } from "@platform-core/src/shops";
 
 const shopId = process.argv[2];
 if (!shopId) {
@@ -33,22 +34,26 @@ try {
   process.exit(1);
 }
 
+const domain = readShopDomainSync(shopId)?.domain;
+
 const wfPath = join(".github", "workflows", `shop-${shopId}.yml`);
 const workflow = `on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:${domain ? `\n      SHOP_DOMAIN: ${domain}` : ""}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
       - run: pnpm install
       - run: pnpm lint && pnpm test
       - run: pnpm --filter @apps/shop-${shopId} build
-      - run: npx @cloudflare/next-on-pages deploy \
-               --project-name=shop-${shopId} \
-               --branch=\${{ github.ref_name }}
+      - run: npx @cloudflare/next-on-pages deploy \\
+               --project-name=shop-${shopId} \\
+               --branch=\\${{ github.ref_name }}
 `;
 
 writeFileSync(wfPath, workflow);
 console.log(`Created workflow ${wfPath}`);
+

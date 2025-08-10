@@ -1,46 +1,56 @@
 // packages/platform-core/createShop.ts
 import { spawnSync } from "child_process";
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "fs";
+import { readdirSync } from "fs";
 import { join } from "path";
+import { prisma } from "./db";
 import { validateShopName } from "./shops";
 import {
   prepareOptions,
   type CreateShopOptions,
 } from "./createShop/schema";
-import {
-  ensureTemplateExists,
-  writeFiles,
-} from "./createShop/fsUtils";
 import { loadTokens } from "./createShop/themeUtils";
 
 /**
  * Create a new shop app and seed data.
  * Paths are resolved relative to the repository root.
  */
-export function createShop(
+export async function createShop(
   id: string,
   opts: CreateShopOptions = {},
   options?: { deploy?: boolean }
-): DeployStatusBase {
+): Promise<DeployStatusBase> {
   id = validateShopName(id);
-  const newApp = join("apps", id);
-  const newData = join("data", "shops", id);
 
-  if (existsSync(newApp)) {
-    throw new Error(
-      `App directory 'apps/${id}' already exists. Pick a different ID or remove the existing folder.`
-    );
+  const prepared = prepareOptions(id, opts);
+  const themeTokens = loadTokens(prepared.theme);
+
+  const shopData = {
+    id,
+    name: prepared.name,
+    catalogFilters: [],
+    themeId: prepared.theme,
+    themeTokens,
+    filterMappings: {},
+    priceOverrides: {},
+    localeOverrides: {},
+    navigation: prepared.navItems,
+    analyticsEnabled: prepared.analytics?.enabled ?? false,
+    shippingProviders: prepared.shipping,
+    taxProviders: [prepared.tax],
+    paymentProviders: prepared.payment,
+  };
+
+  await prisma.shop.create({ data: { id, data: shopData } });
+
+  if (prepared.pages.length) {
+    await prisma.page.createMany({
+      data: prepared.pages.map((p) => ({
+        shopId: id,
+        slug: p.slug,
+        data: p,
+      })),
+    });
   }
-
-  if (existsSync(newData)) {
-    throw new Error(`Data for shop ${id} already exists`);
-  }
-
-  const options = prepareOptions(id, opts);
-  const templateApp = ensureTemplateExists(options.theme, options.template);
-  const themeTokens = loadTokens(options.theme);
-
-  writeFiles(id, options, themeTokens, templateApp, newApp, newData);
 
   if (options?.deploy === false) {
     return { status: "pending" };
@@ -150,7 +160,7 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
   return loadTokens(theme);
 }
 
-export { prepareOptions } from "./createShop/schema";
+export { prepareOptions, createShopOptionsSchema } from "./createShop/schema";
 export { ensureTemplateExists, writeFiles, copyTemplate } from "./createShop/fsUtils";
 export { loadTokens, loadBaseTokens } from "./createShop/themeUtils";
 export { syncTheme };

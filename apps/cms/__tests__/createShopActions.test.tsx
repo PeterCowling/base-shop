@@ -75,7 +75,7 @@ describe("createNewShop authorization", () => {
     (process.env as Record<string, string>).NODE_ENV = "development";
 
     const deployResult = { status: "success", previewUrl: "https://shop2.pages.dev" };
-    const createShop = jest.fn().mockReturnValue(deployResult);
+    const createShop = jest.fn().mockResolvedValue(deployResult);
     jest.doMock("@platform-core/createShop", () => ({
       __esModule: true,
       createShop,

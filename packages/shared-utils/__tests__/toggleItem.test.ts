@@ -1,4 +1,4 @@
-import { toggleItem } from '../toggleItem';
+import { toggleItem } from '../src/toggleItem';
 
 describe('toggleItem', () => {
   it('adds and removes values from an array', () => {

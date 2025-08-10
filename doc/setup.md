@@ -67,6 +67,7 @@ pnpm validate-env <id>
 ```
 
 `validate-env` parses the `.env` file and exits with an error if any required variable is missing or malformed.
+Lines that have no value after the equals sign (e.g. `MY_VAR=`) are treated as placeholders and ignored during validation, so you can leave optional variables empty until you have real credentials.
 
 ## 3. (Optional) Setup CI and deploy
 

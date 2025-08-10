@@ -1,5 +1,8 @@
 import "server-only";
 import { createClient } from "@sanity/client";
+import { getSanityConfig } from "@platform-core/shops";
+import { getShopById } from "@platform-core/repositories/shop.server";
+import type { SanityBlogConfig } from "@types";
 
 export interface BlogPost {
   title: string;
@@ -8,19 +11,17 @@ export interface BlogPost {
   body?: unknown;
 }
 
-function getConfig(shopId: string) {
-  const prefix = `SANITY_${shopId.toUpperCase()}_`;
-  const projectId = process.env[`${prefix}PROJECT_ID`];
-  const dataset = process.env[`${prefix}DATASET`];
-  const token = process.env[`${prefix}READ_TOKEN`];
-  if (!projectId || !dataset) {
+async function getConfig(shopId: string): Promise<SanityBlogConfig> {
+  const shop = await getShopById(shopId);
+  const config = getSanityConfig(shop);
+  if (!config) {
     throw new Error(`Missing Sanity credentials for shop ${shopId}`);
   }
-  return { projectId, dataset, token };
+  return config;
 }
 
-function getClient(shopId: string) {
-  const { projectId, dataset, token } = getConfig(shopId);
+async function getClient(shopId: string) {
+  const { projectId, dataset, token } = await getConfig(shopId);
   return createClient({
     projectId,
     dataset,
@@ -32,7 +33,7 @@ function getClient(shopId: string) {
 
 export async function fetchPublishedPosts(shopId: string): Promise<BlogPost[]> {
   try {
-    const client = getClient(shopId);
+    const client = await getClient(shopId);
     const query = `*[_type == "post" && defined(slug.current) && !(_id in path('drafts.**'))]{title, "slug": slug.current, excerpt}`;
     const posts = await client.fetch<BlogPost[]>(query);
     return posts;
@@ -46,7 +47,7 @@ export async function fetchPostBySlug(
   slug: string,
 ): Promise<BlogPost | null> {
   try {
-    const client = getClient(shopId);
+    const client = await getClient(shopId);
     const query = `*[_type == "post" && slug.current == $slug][0]{title, "slug": slug.current, excerpt, body}`;
     const post = await client.fetch<BlogPost | null>(query, { slug });
     return post;

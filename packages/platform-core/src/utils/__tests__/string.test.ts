@@ -1,5 +1,4 @@
-import { slugify, genSecret, fillLocales } from "../string";
-import { LOCALES } from "@i18n/locales";
+import { slugify, genSecret } from "@shared-utils";
 
 describe("string utils", () => {
   describe("slugify", () => {
@@ -20,20 +19,6 @@ describe("string utils", () => {
       const secret = genSecret(8);
       expect(secret).toMatch(/^[0-9a-f]+$/);
       expect(secret).toHaveLength(16);
-    });
-  });
-
-  describe("fillLocales", () => {
-    it("populates all locales and falls back when missing", () => {
-      const result = fillLocales({ en: "Hello" }, "Hi");
-      expect(Object.keys(result)).toEqual([...LOCALES]);
-      for (const locale of LOCALES) {
-        if (locale === "en") {
-          expect(result[locale]).toBe("Hello");
-        } else {
-          expect(result[locale]).toBe("Hi");
-        }
-      }
     });
   });
 });

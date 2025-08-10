@@ -9,6 +9,8 @@ const expectedKeys = [
   '--color-primary-fg',
   '--color-accent',
   '--color-accent-fg',
+  '--color-danger',
+  '--color-danger-fg',
   '--color-muted',
   '--font-sans',
   '--font-mono',

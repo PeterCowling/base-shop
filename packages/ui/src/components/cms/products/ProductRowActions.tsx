@@ -41,7 +41,7 @@ export default function ProductRowActions({
       <Button
         onClick={() => onDelete(product.id)}
         variant="outline"
-        className="px-2 py-1 text-xs hover:bg-red-50 dark:hover:bg-red-900"
+        className="px-2 py-1 text-xs hover:bg-danger hover:text-danger-foreground"
       >
         Delete
       </Button>

@@ -17,11 +17,13 @@ const preset: Config = {
         fg: "hsl(var(--color-fg))",
         primary: "hsl(var(--color-primary))",
         accent: "hsl(var(--color-accent))",
+        danger: "hsl(var(--color-danger))",
         muted: "hsl(var(--color-muted))",
       },
       textColor: {
         "primary-fg": "hsl(var(--color-primary-fg))",
         "accent-foreground": "hsl(var(--color-accent-fg))",
+        "danger-foreground": "hsl(var(--color-danger-fg))",
       },
       fontFamily: {
         sans: "var(--font-sans)",

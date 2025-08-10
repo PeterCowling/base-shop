@@ -1,14 +1,15 @@
 // apps/cms/src/app/api/create-shop/route.ts
 import { createNewShop } from "@cms/actions/createShop.server";
 import { authOptions } from "@cms/auth/options";
-import type { CreateShopOptions } from "@platform-core/createShop";
+import { createShopOptionsSchema } from "@platform-core/createShop";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
 /**
  * POST /cms/api/create-shop
  *
- * Body: { id: string; options?: CreateShopOptions }
+ * Body: { id: string; ...CreateShopOptions }
  *
  * • Returns **201** and `{ success: true }` when an admin or ShopAdmin
  *   successfully creates a shop.
@@ -30,12 +31,20 @@ export async function POST(req: Request) {
    * ---------------------------------------------------------------- */
   try {
     const body = await req.json();
-    const { id, options } = body as {
-      id: string;
-      options?: CreateShopOptions;
-    };
+    const parsed = createShopOptionsSchema
+      .extend({ id: z.string() })
+      .safeParse(body);
 
-    await createNewShop(id, options ?? {});
+    if (!parsed.success) {
+      const message = parsed.error.issues
+        .map((i) => i.message)
+        .join(", ");
+      return NextResponse.json({ error: message }, { status: 400 });
+    }
+
+    const { id, ...options } = parsed.data;
+
+    await createNewShop(id, options);
 
     /* --------------------------------------------------------------
      *  Success → 201 Created

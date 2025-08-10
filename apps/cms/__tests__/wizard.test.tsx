@@ -120,8 +120,21 @@ describe("Wizard", () => {
           ctx: RestContext
         ) => {
           capturedBody = await req.json();
-          return res(ctx.status(200), ctx.json({ success: true }));
+          return res(
+            ctx.status(200),
+            ctx.json({ success: true, deployment: { status: "pending" } })
+          );
         }
+      ),
+      rest.post(
+        "/cms/api/deploy-shop",
+        (_req: RestRequest, res: ResponseComposition, ctx: RestContext) =>
+          res(ctx.status(200), ctx.json({ status: "pending" }))
+      ),
+      rest.get(
+        "/cms/api/deploy-shop",
+        (_req: RestRequest, res: ResponseComposition, ctx: RestContext) =>
+          res(ctx.status(200), ctx.json({ status: "success", previewUrl: "" }))
       )
     );
 

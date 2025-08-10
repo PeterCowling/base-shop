@@ -19,8 +19,9 @@ import { loadTokens } from "./createShop/themeUtils";
  */
 export function createShop(
   id: string,
-  opts: CreateShopOptions = {}
-): DeployShopResult {
+  opts: CreateShopOptions = {},
+  { deploy = true }: { deploy?: boolean } = {}
+): DeployShopResult | DeployStatusBase {
   id = validateShopName(id);
   const newApp = join("apps", id);
   const newData = join("data", "shops", id);
@@ -40,6 +41,17 @@ export function createShop(
   const themeTokens = loadTokens(options.theme);
 
   writeFiles(id, options, themeTokens, templateApp, newApp, newData);
+
+  if (!deploy) {
+    const result: DeployStatusBase = { status: "pending" };
+    try {
+      const file = join("data", "shops", id, "deploy.json");
+      writeFileSync(file, JSON.stringify(result, null, 2));
+    } catch {
+      // ignore write errors
+    }
+    return result;
+  }
 
   return deployShop(id);
 }
@@ -102,6 +114,6 @@ export function listThemes(): string[] {
     .map((d) => d.name);
 }
 
-export { prepareOptions } from "./createShop/schema";
+export { prepareOptions, createShopOptionsSchema } from "./createShop/schema";
 export { ensureTemplateExists, writeFiles, copyTemplate } from "./createShop/fsUtils";
 export { loadTokens, loadBaseTokens } from "./createShop/themeUtils";

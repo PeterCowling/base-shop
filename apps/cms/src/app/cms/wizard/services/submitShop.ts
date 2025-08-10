@@ -1,7 +1,11 @@
 // apps/cms/src/app/cms/wizard/services/submitShop.ts
 "use client";
 
-import { createShopOptionsSchema } from "@platform-core/createShop";
+import {
+  createShopOptionsSchema,
+  type DeployShopResult,
+  type DeployStatusBase,
+} from "@platform-core/createShop";
 import { validateShopName } from "@platform-core/src/shops";
 import type { WizardState } from "../schema";
 
@@ -9,6 +13,7 @@ export interface SubmitResult {
   ok: boolean;
   error?: string;
   fieldErrors?: Record<string, string[]>;
+  deployment?: DeployShopResult | DeployStatusBase;
 }
 
 export async function submitShop(
@@ -83,9 +88,14 @@ export async function submitShop(
     body: JSON.stringify({ id: shopId, options: parsed.data }),
   });
 
-  if (res.ok) return { ok: true };
+  const json = (await res.json().catch(() => ({}))) as
+    | { success: true; deployment?: DeployShopResult | DeployStatusBase }
+    | { error?: string };
 
-  const json = (await res.json().catch(() => ({}))) as { error?: string };
+  if (res.ok) {
+    return { ok: true, deployment: json.deployment };
+  }
+
   return { ok: false, error: json.error ?? "Failed to create shop" };
 }
 

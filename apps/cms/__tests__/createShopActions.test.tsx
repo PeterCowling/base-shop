@@ -92,7 +92,7 @@ describe("createNewShop authorization", () => {
     const res = await createNewShop("shop2", { theme: "base" } as any);
 
     expect(createShop).toHaveBeenCalledTimes(1);
-    expect(createShop).toHaveBeenCalledWith("shop2", { theme: "base" });
+    expect(createShop).toHaveBeenCalledWith("shop2", { theme: "base" }, { deploy: false });
     expect(res).toBe(deployResult);
 
     (process.env as Record<string, string>).NODE_ENV = prevEnv;

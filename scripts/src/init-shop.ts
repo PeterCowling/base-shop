@@ -67,7 +67,7 @@ async function main() {
   };
 
   const prefixedId = `shop-${shopId}`;
-  createShop(prefixedId, options);
+  createShop(prefixedId, options, { deploy: true });
 
   let validationError: unknown;
   try {

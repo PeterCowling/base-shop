@@ -37,7 +37,7 @@ describe("createShop", () => {
   });
 
   it("copies template directory", () => {
-    createShop("shop1", { template: "template-app" });
+    createShop("shop1", { template: "template-app" }, { deploy: false });
     expect(fsMock.cpSync).toHaveBeenCalledWith(
       expect.stringContaining("packages/template-app"),
       expect.stringContaining("apps/shop1"),
@@ -55,7 +55,7 @@ describe("createShop", () => {
   });
 
   it("writes .env with generated secrets", () => {
-    createShop("shop2", {});
+    createShop("shop2", {}, { deploy: false });
     const call = fsMock.writeFileSync.mock.calls.find((c) =>
       String(c[0]).includes(".env")
     );
@@ -73,7 +73,9 @@ describe("createShop", () => {
       if (path.includes("apps/")) return false;
       return !path.includes("missing-template");
     });
-    expect(() => createShop("id", { template: "missing-template" })).toThrow(
+    expect(() =>
+      createShop("id", { template: "missing-template" }, { deploy: false })
+    ).toThrow(
       "Template 'missing-template'"
     );
   });
@@ -85,13 +87,13 @@ describe("createShop", () => {
       if (path.includes("data/shops")) return false;
       return true;
     });
-    expect(() => createShop("existing", {})).toThrow(
+    expect(() => createShop("existing", {}, { deploy: false })).toThrow(
       "Pick a different ID or remove the existing folder"
     );
   });
 
   it("validates and trims shop ID", () => {
-    createShop("  new_shop  ", {});
+    createShop("  new_shop  ", {}, { deploy: false });
     expect(fsMock.cpSync).toHaveBeenCalledWith(
       expect.stringContaining("packages/template-app"),
       expect.stringContaining("apps/new_shop"),
@@ -100,6 +102,8 @@ describe("createShop", () => {
   });
 
   it("throws on invalid shop ID", () => {
-    expect(() => createShop("bad/id", {})).toThrow("Invalid shop name");
+    expect(() => createShop("bad/id", {}, { deploy: false })).toThrow(
+      "Invalid shop name"
+    );
   });
 });

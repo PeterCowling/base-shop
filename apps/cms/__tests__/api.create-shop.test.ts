@@ -33,6 +33,7 @@ describe("create-shop API", () => {
       pages: [],
       payment: [],
       shipping: [],
+      tax: "taxjar",
     });
     await expect(res.json()).resolves.toEqual({ success: true, deployment });
     (process.env as Record<string, string>).NODE_ENV = prevEnv as string;

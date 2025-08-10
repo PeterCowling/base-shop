@@ -9,7 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { setupSanityBlog } from "@cms/actions/setupSanityBlog";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
@@ -41,6 +42,7 @@ export default function StepOptions({
 }: Props): React.JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [blogConnected, setBlogConnected] = useState(false);
 
   useEffect(() => {
     const provider = searchParams.get("connected");
@@ -53,8 +55,22 @@ export default function StepOptions({
       setShipping((l) => [...l, provider]);
     }
 
+    if (provider === "sanity" && !blogConnected) {
+      setupSanityBlog(shopId).catch(console.error);
+      setBlogConnected(true);
+    }
+
     router.replace("/cms/wizard");
-  }, [searchParams, payment, shipping, router, setPayment, setShipping]);
+  }, [
+    searchParams,
+    payment,
+    shipping,
+    router,
+    setPayment,
+    setShipping,
+    blogConnected,
+    shopId,
+  ]);
 
   function connect(provider: string) {
     const url = `/cms/api/providers/${provider}?shop=${encodeURIComponent(shopId)}`;
@@ -124,6 +140,17 @@ export default function StepOptions({
             placeholder="Measurement ID"
           />
         )}
+      </div>
+      <div>
+        <p className="font-medium">Blog</p>
+        <div className="flex items-center gap-2 text-sm">
+          Sanity
+          {blogConnected ? (
+            <Button disabled>Connected</Button>
+          ) : (
+            <Button onClick={() => connect("sanity")}>Connect</Button>
+          )}
+        </div>
       </div>
       <div className="flex justify-between">
         <Button variant="outline" onClick={onBack}>

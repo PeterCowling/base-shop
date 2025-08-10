@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { applyFriendlyZodMessages } from "@lib/zodErrorMap";
 
 export const envSchema = z.object({
   STRIPE_SECRET_KEY: z.string().min(1),
@@ -17,5 +18,13 @@ export const envSchema = z.object({
   GMAIL_PASS: z.string().optional(),
 });
 
-export const env = envSchema.parse(process.env);
+applyFriendlyZodMessages();
+
+const parsed = envSchema.safeParse(process.env);
+if (!parsed.success) {
+  console.error("❌ Invalid environment variables:", parsed.error.format());
+  process.exit(1);
+}
+
+export const env = parsed.data;
 export type Env = z.infer<typeof envSchema>;

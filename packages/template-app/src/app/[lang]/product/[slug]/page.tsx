@@ -5,6 +5,7 @@ import { getProductBySlug } from "@platform-core/src/products";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PdpClient from "./PdpClient.client";
+import { getStructuredData } from "../../../../lib/seo";
 
 export async function generateStaticParams() {
   return LOCALES.flatMap((lang) =>
@@ -31,11 +32,27 @@ export function generateMetadata({
 export default function ProductDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: { lang: string; slug: string };
 }) {
   const product = getProductBySlug(params.slug);
   if (!product) return notFound();
+  const jsonLd = getStructuredData({
+    type: "Product",
+    name: product.title,
+    description: product.description,
+    url: `/${params.lang}/product/${params.slug}`,
+    image: product.image,
+    offers: { price: product.price, priceCurrency: "USD" },
+  });
 
   /* ⬇️  Only data, no event handlers */
-  return <PdpClient product={product} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <PdpClient product={product} />
+    </>
+  );
 }

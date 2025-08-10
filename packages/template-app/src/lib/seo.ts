@@ -1,5 +1,4 @@
 import type { Locale } from "@i18n/locales";
-import { getShopSettings } from "@platform-core/repositories/shops.server";
 import type { ShopSettings } from "@types";
 import type { NextSeoProps } from "next-seo";
 
@@ -20,6 +19,9 @@ export async function getSeo(
   pageSeo: Partial<NextSeoProps> = {}
 ): Promise<NextSeoProps> {
   const shop = process.env.NEXT_PUBLIC_SHOP_ID || "default";
+  const { getShopSettings } = await import(
+    "@platform-core/repositories/shops.server"
+  );
   const settings: ShopSettings = await getShopSettings(shop);
   const shopSeo = (settings.seo ?? {}) as Record<string, ExtendedSeoProps>;
   const base: ExtendedSeoProps = shopSeo[locale] ?? {};
@@ -49,3 +51,91 @@ export async function getSeo(
     },
   };
 }
+
+/* -------------------------------------------------------------------------- */
+/*  Structured data helpers                                                   */
+/* -------------------------------------------------------------------------- */
+
+type OfferInput = {
+  price: number | string;
+  priceCurrency: string;
+  availability?: string;
+  url?: string;
+};
+
+type AggregateRatingInput = {
+  ratingValue: number | string;
+  reviewCount: number | string;
+};
+
+type ProductInput = {
+  type: "Product";
+  name: string;
+  description?: string;
+  url?: string;
+  image?: string | string[];
+  brand?: string;
+  offers?: OfferInput;
+  aggregateRating?: AggregateRatingInput;
+};
+
+type WebPageInput = {
+  type: "WebPage";
+  name: string;
+  description?: string;
+  url?: string;
+};
+
+export type StructuredDataInput = ProductInput | WebPageInput;
+
+/**
+ * Build a JSON-LD object for the given input. Consumers can stringify the
+ * result and embed it in a `<script type="application/ld+json">` tag.
+ */
+export function getStructuredData(input: StructuredDataInput) {
+  if (input.type === "Product") {
+    const { name, description, url, image, brand, offers, aggregateRating } =
+      input;
+    return {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name,
+      ...(description ? { description } : {}),
+      ...(url ? { url } : {}),
+      ...(image ? { image: Array.isArray(image) ? image : [image] } : {}),
+      ...(brand ? { brand: { "@type": "Brand", name: brand } } : {}),
+      ...(offers
+        ? {
+            offers: {
+              "@type": "Offer",
+              price: offers.price,
+              priceCurrency: offers.priceCurrency,
+              ...(offers.availability
+                ? { availability: offers.availability }
+                : {}),
+              ...(offers.url ? { url: offers.url } : {}),
+            },
+          }
+        : {}),
+      ...(aggregateRating
+        ? {
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: aggregateRating.ratingValue,
+              reviewCount: aggregateRating.reviewCount,
+            },
+          }
+        : {}),
+    } as Record<string, unknown>;
+  }
+
+  const { name, description, url } = input;
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name,
+    ...(description ? { description } : {}),
+    ...(url ? { url } : {}),
+  } as Record<string, unknown>;
+}
+

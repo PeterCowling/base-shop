@@ -38,4 +38,10 @@ export async function writeInventory(
   const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
   await fs.writeFile(tmp, JSON.stringify(items, null, 2), "utf8");
   await fs.rename(tmp, inventoryPath(shop));
+  try {
+    const { checkAndAlert } = await import("../services/stockAlert.server");
+    await checkAndAlert(shop, items);
+  } catch (err) {
+    console.error("Failed to run stock alert", err);
+  }
 }

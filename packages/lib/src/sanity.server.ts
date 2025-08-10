@@ -8,7 +8,7 @@ export interface BlogPost {
   body?: unknown;
 }
 
-function getConfig(shopId: string) {
+export function getConfig(shopId: string) {
   const prefix = `SANITY_${shopId.toUpperCase()}_`;
   const projectId = process.env[`${prefix}PROJECT_ID`];
   const dataset = process.env[`${prefix}DATASET`];

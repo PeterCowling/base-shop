@@ -6,7 +6,9 @@ import { prisma } from "./db";
 import { validateShopName } from "./shops";
 import {
   prepareOptions,
+  createShopOptionsSchema as createShopOptionsSchemaInternal,
   type CreateShopOptions,
+  type PreparedCreateShopOptions,
 } from "./createShop/schema";
 import { loadTokens } from "./createShop/themeUtils";
 
@@ -161,7 +163,9 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
   return loadTokens(theme);
 }
 
-export { prepareOptions, createShopOptionsSchema } from "./createShop/schema";
+export const createShopOptionsSchema = createShopOptionsSchemaInternal.strict();
+export { prepareOptions };
+export type { CreateShopOptions, PreparedCreateShopOptions };
 export { ensureTemplateExists, writeFiles, copyTemplate } from "./createShop/fsUtils";
 export { loadTokens, loadBaseTokens } from "./createShop/themeUtils";
 export { syncTheme };

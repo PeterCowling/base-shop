@@ -3,9 +3,37 @@ import { validateShopName } from "../../packages/platform-core/src/shops";
 import { envSchema } from "@config/src/env";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { spawnSync } from "node:child_process";
+import { spawnSync, execSync } from "node:child_process";
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+
+function ensureRuntime() {
+  const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);
+  if (nodeMajor < 20) {
+    console.error(
+      `Node.js v20 or later is required. Current version: ${process.version}`
+    );
+    process.exit(1);
+  }
+
+  let pnpmVersion: string;
+  try {
+    pnpmVersion = execSync("pnpm --version", { encoding: "utf8" }).trim();
+  } catch {
+    console.error("Failed to determine pnpm version. pnpm v10 or later is required.");
+    process.exit(1);
+  }
+
+  const pnpmMajor = Number(pnpmVersion.split(".")[0]);
+  if (pnpmMajor < 10) {
+    console.error(
+      `pnpm v10 or later is required. Current version: ${pnpmVersion}`
+    );
+    process.exit(1);
+  }
+}
+
+ensureRuntime();
 
 async function prompt(question: string, def = ""): Promise<string> {
   const rl = readline.createInterface({ input, output });

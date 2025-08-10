@@ -35,8 +35,9 @@ Current components:
 - `ProductGallery`
 - `OrderSummary`
 
-## Responsive Carousels
+## Responsive Product Displays
 
-`ProductCarousel` and `RecommendationCarousel` automatically adjust their
-visible item count based on screen width. The `minItems` and `maxItems` props
-allow callers to bound how many products appear at once.
+`ProductGrid`, `ProductCarousel` and `RecommendationCarousel` automatically
+adjust how many products are shown based on available width. Use `minItems`
+and `maxItems` to constrain the number of visible items so layouts remain
+attractive across screen sizes.

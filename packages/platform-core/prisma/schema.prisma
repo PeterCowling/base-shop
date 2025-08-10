@@ -8,10 +8,11 @@ datasource db {
 }
 
 model Shop {
-  id   String @id
+  id     String @id
   /// @type {import("../../types/src/Shop").Shop}
-  data Json
-  pages Page[]
+  data   Json
+  pages  Page[]
+  orders RentalOrder[]
 }
 
 model Page {
@@ -20,4 +21,13 @@ model Page {
   shopId String
   slug   String
   data   Json
+}
+
+model RentalOrder {
+  id         String @id
+  sessionId  String @unique
+  shop       Shop   @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  shopId     String
+  customerId String?
+  data       Json
 }

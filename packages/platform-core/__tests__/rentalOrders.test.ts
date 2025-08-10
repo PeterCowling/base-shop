@@ -1,3 +1,34 @@
+import { jest } from "@jest/globals";
+
+const mockOrders: any[] = [];
+
+jest.mock("../src/db", () => ({
+  prisma: {
+    rentalOrder: {
+      findMany: jest.fn(async ({ where }: any) =>
+        mockOrders.filter(
+          (o) =>
+            o.shopId === where.shopId &&
+            (!where.customerId || o.customerId === where.customerId)
+        )
+      ),
+      create: jest.fn(async ({ data }: any) => {
+        mockOrders.push(data);
+        return data;
+      }),
+      findUnique: jest.fn(async ({ where }: any) =>
+        mockOrders.find((o) => o.sessionId === where.sessionId) || null
+      ),
+      update: jest.fn(async ({ where, data }: any) => {
+        const idx = mockOrders.findIndex((o) => o.id === where.id);
+        if (idx === -1) throw new Error("not found");
+        mockOrders[idx] = { ...mockOrders[idx], ...data };
+        return mockOrders[idx];
+      }),
+    },
+  },
+}));
+
 import * as repo from "../src/repositories/rentalOrders.server";
 
 describe("rental order repository", () => {

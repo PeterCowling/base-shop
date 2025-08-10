@@ -23,6 +23,11 @@
     "prisma": "^5.15.1"
   },
   "scripts": {
-    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
+    "db:push": "prisma db push",
+    "db:seed": "prisma db seed"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }

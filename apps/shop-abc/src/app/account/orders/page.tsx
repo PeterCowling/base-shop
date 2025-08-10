@@ -1,6 +1,6 @@
 // apps/shop-abc/src/app/account/orders/page.tsx
 import { getCustomerSession } from "@auth";
-import { getOrdersForCustomer } from "@platform-core/repositories/rentalOrdersDb.server";
+import { getOrdersForCustomer } from "@platform-core/orders";
 import shop from "../../../../shop.json";
 
 export const metadata = { title: "Orders" };

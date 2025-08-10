@@ -10,3 +10,4 @@ export * from "./utils";
 export * from "./shipping";
 export * from "./tax";
 export * from "./plugins";
+export * from "./orders";

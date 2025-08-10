@@ -20,13 +20,22 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function getSavedTheme(): Theme | null {
   if (typeof window === "undefined") return null;
-  return window.localStorage.getItem("theme") as Theme | null;
+  try {
+    return window.localStorage.getItem("theme") as Theme | null;
+  } catch {
+    return null;
+  }
 }
 
 function getSystemTheme(): Theme {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "base";
+  try {
+    return window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "base";
+  } catch {
+    return "base";
+  }
 }
 
 function getInitialTheme(): Theme {
@@ -47,17 +56,26 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     root.style.colorScheme = applied === "dark" ? "dark" : "light";
     if (applied === "dark") root.classList.add("theme-dark");
     if (applied === "brandx") root.classList.add("theme-brandx");
-    window.localStorage.setItem("theme", theme);
+    try {
+      window.localStorage.setItem("theme", theme);
+    } catch {
+      /* no-op */
+    }
   }, [theme, systemTheme]);
 
   useEffect(() => {
     if (theme !== "system") return;
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    let mq: MediaQueryList | null = null;
     const update = (e: MediaQueryList | MediaQueryListEvent) =>
       setSystemTheme(e.matches ? "dark" : "base");
-    update(mq);
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    try {
+      mq = window.matchMedia("(prefers-color-scheme: dark)");
+      update(mq);
+      mq.addEventListener("change", update);
+      return () => mq?.removeEventListener("change", update);
+    } catch {
+      setSystemTheme("base");
+    }
   }, [theme]);
 
   useEffect(() => {

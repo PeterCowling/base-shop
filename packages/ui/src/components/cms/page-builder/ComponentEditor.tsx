@@ -118,12 +118,20 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
             label="Min Items"
             type="number"
             value={(component as any).minItems ?? ""}
-            onChange={(e) =>
-              handleInput(
-                "minItems",
-                e.target.value === "" ? undefined : Number(e.target.value)
-              )
-            }
+            onChange={(e) => {
+              const val =
+                e.target.value === "" ? undefined : Number(e.target.value);
+              if (val === undefined) {
+                handleInput("minItems", undefined);
+                return;
+              }
+              const max = (component as any).maxItems;
+              const patch: Partial<PageComponent> = { minItems: val };
+              if (max !== undefined && val > max) {
+                patch.maxItems = val;
+              }
+              onChange(patch);
+            }}
             min={0}
             max={(component as any).maxItems ?? undefined}
           />
@@ -131,12 +139,20 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
             label="Max Items"
             type="number"
             value={(component as any).maxItems ?? ""}
-            onChange={(e) =>
-              handleInput(
-                "maxItems",
-                e.target.value === "" ? undefined : Number(e.target.value)
-              )
-            }
+            onChange={(e) => {
+              const val =
+                e.target.value === "" ? undefined : Number(e.target.value);
+              if (val === undefined) {
+                handleInput("maxItems", undefined);
+                return;
+              }
+              const min = (component as any).minItems;
+              const patch: Partial<PageComponent> = { maxItems: val };
+              if (min !== undefined && val < min) {
+                patch.minItems = val;
+              }
+              onChange(patch);
+            }}
             min={(component as any).minItems ?? 0}
           />
         </>

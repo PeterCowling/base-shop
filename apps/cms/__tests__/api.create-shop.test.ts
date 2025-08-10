@@ -29,12 +29,18 @@ describe("create-shop API", () => {
     }));
 
     const { POST } = await import("../src/app/api/create-shop/route");
-    const body = { id: "new", options: {} };
+    const body = { id: "new" };
     const req = { json: () => Promise.resolve(body) } as Request;
     const res = await POST(req);
     expect(res.status).toBe(201);
     expect(createNewShop).toHaveBeenCalledTimes(1);
-    expect(createNewShop).toHaveBeenCalledWith("new", {});
+    expect(createNewShop).toHaveBeenCalledWith("new", {
+      checkoutPage: [],
+      navItems: [],
+      pages: [],
+      payment: [],
+      shipping: [],
+    });
     (process.env as Record<string, string>).NODE_ENV = prevEnv as string;
   });
 

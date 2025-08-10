@@ -20,6 +20,9 @@ const ENV_KEYS = [
   "CHROMATIC_PROJECT_TOKEN",
   "GMAIL_USER",
   "GMAIL_PASS",
+  "SANITY_PROJECT_ID",
+  "SANITY_DATASET",
+  "SANITY_WRITE_TOKEN",
 ] as const;
 
 interface Props {

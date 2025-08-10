@@ -3,7 +3,12 @@
 exports[`base theme tokens tokens snapshot 1`] = `
 {
   "--color-accent": {
-    "light": "260 83% 67%",
+    "dark": "260 83% 70%",
+    "light": "260 83% 70%",
+  },
+  "--color-accent-fg": {
+    "dark": "0 0% 10%",
+    "light": "0 0% 10%",
   },
   "--color-bg": {
     "dark": "0 0% 4%",
@@ -22,6 +27,7 @@ exports[`base theme tokens tokens snapshot 1`] = `
     "light": "220 90% 56%",
   },
   "--color-primary-fg": {
+    "dark": "0 0% 10%",
     "light": "0 0% 100%",
   },
   "--font-mono": {

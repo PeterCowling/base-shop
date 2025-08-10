@@ -3,14 +3,16 @@ import {
   asSetCookieHeader,
   CART_COOKIE,
   decodeCartCookie,
-  encodeCartCookie,
+  persistCart,
+  cartFromCookie,
 } from "@platform-core/src/cartCookie";
+import { getCart } from "@platform-core/src/cartStore";
 import { getProductById } from "@platform-core/src/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
 
-export const runtime = "edge";
+export const runtime = "node";
 
 /* ------------------------------------------------------------------
  * POST – add an item to the cart
@@ -33,13 +35,15 @@ export async function POST(req: NextRequest) {
   }
 
   const cookieVal = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookieVal);
+  const id = decodeCartCookie(cookieVal);
+  const cart = id ? getCart(id) : {};
   const line = cart[sku.id];
 
   cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
 
+  const { cookie } = persistCart(cart, id);
   const res = NextResponse.json({ ok: true, cart });
-  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  res.headers.set("Set-Cookie", asSetCookieHeader(cookie));
   return res;
 }
 
@@ -56,19 +60,37 @@ export async function PATCH(req: NextRequest) {
     });
   }
 
-  const { id, qty } = parsed.data;
+  const { id: itemId, qty } = parsed.data;
 
   const cookieVal = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookieVal);
-  const line = cart[id];
+  const id = decodeCartCookie(cookieVal);
+  const cart = id ? getCart(id) : {};
+  const line = cart[itemId];
 
   if (!line) {
     return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
   }
 
-  cart[id] = { ...line, qty };
+  if (qty <= 0) {
+    delete cart[itemId];
+  } else {
+    cart[itemId] = { ...line, qty };
+  }
 
+  const { cookie } = persistCart(cart, id);
   const res = NextResponse.json({ ok: true, cart });
-  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  res.headers.set("Set-Cookie", asSetCookieHeader(cookie));
+  return res;
+}
+
+/* ------------------------------------------------------------------
+ * GET – retrieve current cart
+ * ------------------------------------------------------------------ */
+export async function GET(req: NextRequest) {
+  const cookieVal = req.cookies.get(CART_COOKIE)?.value;
+  const cart = cartFromCookie(cookieVal);
+  const { cookie } = persistCart(cart, decodeCartCookie(cookieVal) ?? undefined);
+  const res = NextResponse.json({ cart });
+  res.headers.set("Set-Cookie", asSetCookieHeader(cookie));
   return res;
 }

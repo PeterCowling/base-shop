@@ -28,19 +28,10 @@ export default function AddToCartButton({
     setError(null);
 
     try {
-      const res = await fetch("/api/cart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sku, qty: 1 }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        setError((data as { error?: string }).error ?? "Unable to add to cart");
-        return;
+      const result = await dispatch({ type: "add", sku, size });
+      if (!result.ok) {
+        setError(result.error ?? "Unable to add to cart");
       }
-
-      dispatch({ type: "add", sku, size });
       /* fake latency for UX feedback */
       await new Promise((r) => setTimeout(r, 300));
     } catch {

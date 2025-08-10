@@ -2,8 +2,9 @@
 import {
   asSetCookieHeader,
   CART_COOKIE,
+  cartFromCookie,
   decodeCartCookie,
-  encodeCartCookie,
+  persistCart,
   type CartState,
 } from "../src/cartCookie";
 
@@ -25,16 +26,16 @@ describe("cart cookie helpers", () => {
     [sku.id]: { sku, qty: 2 },
   };
 
-  it("encodes and decodes the cart", () => {
-    const encoded = encodeCartCookie(state);
+  it("encodes and decodes the cart id", () => {
+    const { id, cookie } = persistCart(state);
 
-    expect(encoded).toBe(encodeURIComponent(JSON.stringify(state)));
-    expect(decodeCartCookie(encoded)).toEqual(state);
+    expect(decodeCartCookie(cookie)).toBe(id);
+    expect(cartFromCookie(cookie)).toEqual(state);
   });
 
   it("decodeCartCookie handles invalid input", () => {
-    expect(decodeCartCookie("%E0%A4%A")).toEqual({});
-    expect(decodeCartCookie(null)).toEqual({});
+    expect(decodeCartCookie("%E0%A4%A")).toBeNull();
+    expect(decodeCartCookie(null)).toBeNull();
   });
 
   it("formats Set-Cookie header", () => {

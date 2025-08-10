@@ -1,7 +1,7 @@
 // packages/template-app/src/api/checkout-session/route.ts
 import { stripe } from "@/lib/stripeServer";
 import { calculateRentalDays } from "@/lib/date";
-import { CART_COOKIE, decodeCartCookie } from "@platform-core/src/cartCookie";
+import { CART_COOKIE, cartFromCookie } from "@platform-core/src/cartCookie";
 import { priceForDays, convertCurrency } from "@platform-core/src/pricing";
 import { getProductById } from "@platform-core/src/products";
 import { findCoupon } from "@platform-core/src/coupons";
@@ -107,12 +107,12 @@ async function computeTotals(
 /* ------------------------------------------------------------------
  *  Route handler
  * ------------------------------------------------------------------ */
-export const runtime = "edge";
+export const runtime = "node";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   /* 1  Decode cart -------------------------------------------------- */
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(rawCookie) as Cart;
+  const cart = cartFromCookie(rawCookie) as Cart;
 
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });

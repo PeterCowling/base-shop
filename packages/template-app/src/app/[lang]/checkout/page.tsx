@@ -2,7 +2,7 @@
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";
 import { Locale, resolveLocale } from "@/i18n/locales";
-import { CART_COOKIE, decodeCartCookie } from "@platform-core/src/cartCookie";
+import { CART_COOKIE, cartFromCookie } from "@platform-core/src/cartCookie";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/src/repositories/settings.server";
 
@@ -25,7 +25,7 @@ export default async function CheckoutPage({
 
   /* ---------- read cart from cookie ---------- */
   const cookieStore = await cookies(); // ← await here
-  const cart = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
+  const cart = cartFromCookie(cookieStore.get(CART_COOKIE)?.value);
 
   /* ---------- empty cart guard ---------- */
   if (!Object.keys(cart).length) {

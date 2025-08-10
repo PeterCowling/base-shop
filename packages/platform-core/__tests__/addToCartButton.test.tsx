@@ -5,13 +5,6 @@ import AddToCartButton from "@platform-core/src/components/shop/AddToCartButton.
 import { PRODUCTS } from "@platform-core/products";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-jest.mock("@/lib/cartCookie", () => jest.requireActual("@/lib/cartCookie"));
-jest.mock("@/contexts/CartContext", () =>
-  jest.requireActual("@/contexts/CartContext")
-);
-jest.mock("react", () => jest.requireActual("react"));
-jest.mock("react-dom", () => jest.requireActual("react-dom"));
-
 function Qty() {
   const [state] = useCart();
   return <span data-testid="qty">{state[PRODUCTS[0].id]?.qty ?? 0}</span>;
@@ -25,9 +18,17 @@ describe("AddToCartButton", () => {
   });
 
   it("adds items to the cart", async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({ ok: true, json: async () => ({ ok: true }) })
-    ) as any;
+    let cart: any = {};
+    global.fetch = jest.fn((url: any, init?: any) => {
+      if (!init || !init.method || init.method === "GET") {
+        return Promise.resolve({ json: async () => ({ cart }) });
+      }
+      if (init.method === "POST") {
+        cart[PRODUCTS[0].id] = { sku: PRODUCTS[0], qty: 1 };
+        return Promise.resolve({ ok: true, json: async () => ({ cart }) });
+      }
+      return Promise.resolve({ json: async () => ({ cart }) });
+    }) as any;
 
     render(
       <CartProvider>
@@ -47,12 +48,19 @@ describe("AddToCartButton", () => {
   });
 
   it("shows an error when the server rejects the request", async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        ok: false,
-        json: async () => ({ error: "Out of stock" }),
-      })
-    ) as any;
+    const cart: any = {};
+    global.fetch = jest.fn((url: any, init?: any) => {
+      if (!init || !init.method || init.method === "GET") {
+        return Promise.resolve({ json: async () => ({ cart }) });
+      }
+      if (init.method === "POST") {
+        return Promise.resolve({
+          ok: false,
+          json: async () => ({ error: "Out of stock" }),
+        });
+      }
+      return Promise.resolve({ json: async () => ({ cart }) });
+    }) as any;
 
     render(
       <CartProvider>

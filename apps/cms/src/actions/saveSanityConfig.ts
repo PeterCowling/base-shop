@@ -4,6 +4,7 @@
 import { verifyCredentials } from "@acme/plugin-sanity";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { ensureAuthorized } from "./common/auth";
+import { setupSanityBlog } from "./setupSanityBlog";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
@@ -21,6 +22,11 @@ export async function saveSanityConfig(formData: FormData): Promise<{
   const valid = await verifyCredentials(config);
   if (!valid) {
     return { error: "Invalid Sanity credentials" };
+  }
+
+  const setup = await setupSanityBlog(config);
+  if (!setup.success) {
+    return { error: setup.error ?? "Failed to setup Sanity blog" };
   }
 
   const root = path.resolve(resolveDataRoot(), "..", "cms");

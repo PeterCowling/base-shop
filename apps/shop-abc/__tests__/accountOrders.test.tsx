@@ -61,4 +61,22 @@ describe("/account/orders", () => {
       })
     ).toEqual(["Order: o1", "Order: o2"]);
   });
+
+  it("handles order retrieval errors", async () => {
+    const session = { customerId: "cust1", role: "user" };
+    (getCustomerSession as jest.Mock).mockResolvedValue(session);
+    (getOrdersForCustomer as jest.Mock).mockRejectedValue(
+      new Error("boom")
+    );
+    const consoleSpy = jest.spyOn(console, "error").mockImplementation();
+    const element = await OrdersPage();
+    expect(getOrdersForCustomer).toHaveBeenCalledWith(
+      shop.id,
+      session.customerId
+    );
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(element.type).toBe("p");
+    expect(element.props.children).toBe("Unable to load orders.");
+    consoleSpy.mockRestore();
+  });
 });

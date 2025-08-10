@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/wizard/schema.ts
 import { LOCALES } from "@acme/i18n";
-import { fillLocales } from "@platform-core/utils";
+import { fillLocales } from "@i18n/fillLocales";
 import { pageComponentSchema } from "@types/Page";
 import { localeSchema, type Locale } from "@types";
 import { ulid } from "ulid";

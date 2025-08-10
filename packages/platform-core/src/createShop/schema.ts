@@ -3,7 +3,7 @@ import { localeSchema } from "@types";
 import { pageComponentSchema } from "@types/Page";
 import { z } from "zod";
 import { slugify } from "@shared-utils";
-import { fillLocales } from "../utils/locales";
+import { fillLocales } from "@i18n/fillLocales";
 import { defaultPaymentProviders, type DefaultPaymentProvider } from "./defaultPaymentProviders";
 import { defaultShippingProviders, type DefaultShippingProvider } from "./defaultShippingProviders";
 import { defaultTaxProviders, type DefaultTaxProvider } from "./defaultTaxProviders";

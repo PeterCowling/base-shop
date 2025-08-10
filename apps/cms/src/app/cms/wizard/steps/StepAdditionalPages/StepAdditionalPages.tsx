@@ -3,7 +3,7 @@
 import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { LOCALES } from "@acme/i18n";
-import { fillLocales } from "@platform-core/utils";
+import { fillLocales } from "@i18n/fillLocales";
 import type { Locale, Page, PageComponent } from "@types";
 import { fetchJson } from "@shared-utils";
 import { useState } from "react";

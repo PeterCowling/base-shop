@@ -1,6 +1,5 @@
-// packages/platform-core/src/utils/locales.ts
-import { LOCALES } from "@i18n/locales";
-import type { Locale } from "@types";
+// packages/i18n/src/fillLocales.ts
+import { LOCALES, type Locale } from "./locales";
 
 /**
  * Ensure all locales have a value, filling in missing entries with a fallback.
@@ -17,4 +16,3 @@ export function fillLocales(
     {} as Record<Locale, string>
   );
 }
-

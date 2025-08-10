@@ -1,5 +1,4 @@
-import { fillLocales } from "../string";
-import { LOCALES } from "@i18n/locales";
+import { fillLocales, LOCALES } from "@acme/i18n";
 
 describe("fillLocales", () => {
   it("populates all locales and falls back when missing", () => {
@@ -14,4 +13,3 @@ describe("fillLocales", () => {
     }
   });
 });
-

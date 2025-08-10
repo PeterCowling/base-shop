@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/atoms/shadcn";
 import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
-import { fillLocales } from "@platform-core/utils";
+import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@types";
 import { historyStateSchema } from "@types";
 import { fetchJson } from "@shared-utils";

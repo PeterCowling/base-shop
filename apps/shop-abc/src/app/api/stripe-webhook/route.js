@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/stripe-webhook/route.ts
-import { addOrder, markRefunded, } from "@platform-core/repositories/rentalOrders.server";
+import { addOrder, markRefunded, } from "@platform-core/orders";
 import { NextResponse } from "next/server";
 export const runtime = "edge";
 export async function POST(req) {
@@ -11,7 +11,8 @@ export async function POST(req) {
             const session = data;
             const deposit = Number(session.metadata?.depositTotal ?? 0);
             const returnDate = session.metadata?.returnDate || undefined;
-            await addOrder("abc", session.id, deposit, returnDate);
+            const customerId = session.metadata?.customerId || undefined;
+            await addOrder("abc", session.id, deposit, returnDate, customerId);
             break;
         }
         case "charge.refunded": {

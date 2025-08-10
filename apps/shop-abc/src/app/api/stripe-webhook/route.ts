@@ -1,12 +1,6 @@
 // apps/shop-abc/src/app/api/stripe-webhook/route.ts
 
-import {
-  addOrder,
-  markRefunded,
-} from "@platform-core/repositories/rentalOrders.server";
-import {
-  addOrder as addDbOrder,
-} from "@platform-core/repositories/rentalOrdersDb.server";
+import { addOrder, markRefunded } from "@platform-core/orders";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -28,7 +22,6 @@ export async function POST(req: NextRequest) {
       const deposit = Number(session.metadata?.depositTotal ?? 0);
       const returnDate = session.metadata?.returnDate || undefined;
       const customerId = session.metadata?.customerId || undefined;
-      await addDbOrder("abc", session.id, deposit, returnDate, customerId);
       await addOrder("abc", session.id, deposit, returnDate, customerId);
       break;
     }

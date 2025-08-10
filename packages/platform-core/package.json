@@ -6,7 +6,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./shipping": "./src/shipping/index.ts",
-    "./tax": "./src/tax/index.ts"
+    "./tax": "./src/tax/index.ts",
+    "./orders": "./src/orders.ts"
   },
   "dependencies": {
     "@acme/shared-utils": "workspace:*"

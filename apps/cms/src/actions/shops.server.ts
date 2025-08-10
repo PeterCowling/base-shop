@@ -152,6 +152,54 @@ export async function updateSeo(
   return { settings: updated, warnings };
 }
 
+const generateSchema = z
+  .object({
+    id: z.string().min(1),
+    locale: localeSchema,
+    title: z.string().min(1),
+    description: z.string().min(1),
+  })
+  .strict();
+
+export async function generateSeo(
+  shop: string,
+  formData: FormData,
+): Promise<{
+  generated?: { title: string; description: string; image: string };
+  errors?: Record<string, string[]>;
+}> {
+  await ensureAuthorized();
+
+  const parsed = generateSchema.safeParse(
+    Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>,
+    ),
+  );
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+
+  const { id, locale, title, description } = parsed.data;
+  const { generateMeta } = await import(
+    /* @vite-ignore */ "../../../../scripts/generate-meta.ts"
+  );
+
+  const result = await generateMeta({ id, title, description });
+  const current = await getShopSettings(shop);
+  const seo = { ...(current.seo ?? {}) } as Record<Locale, ShopSeoFields>;
+  seo[locale] = {
+    ...(seo[locale] ?? {}),
+    title: result.title,
+    description: result.description,
+    image: result.image,
+    openGraph: { ...(seo[locale]?.openGraph ?? {}), image: result.image },
+  };
+  const updated: ShopSettings = { ...current, seo };
+  await saveShopSettings(shop, updated);
+
+  return { generated: result };
+}
+
 export async function revertSeo(shop: string, timestamp: string) {
   await ensureAuthorized();
   const history = await diffHistory(shop);

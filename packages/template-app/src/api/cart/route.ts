@@ -5,6 +5,7 @@ import {
   decodeCartCookie,
   encodeCartCookie,
 } from "@platform-core/src/cartCookie";
+import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
 import { getProductById } from "@platform-core/src/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -35,14 +36,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Item not found" }, { status: 404 });
   }
 
-  const cookieVal = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookieVal);
+  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
+  if (!cartId) {
+    cartId = createCart();
+  }
+  const cart = getCart(cartId);
   const line = cart[sku.id];
-
   cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
-
+  setCart(cartId, cart);
   const res = NextResponse.json({ ok: true, cart });
-  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;
 }
 
@@ -61,8 +64,11 @@ export async function PATCH(req: NextRequest) {
 
   const { id, qty } = parsed.data;
 
-  const cookieVal = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookieVal);
+  const cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
+  if (!cartId) {
+    return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+  }
+  const cart = getCart(cartId);
   const line = cart[id];
 
   if (!line) {
@@ -74,9 +80,9 @@ export async function PATCH(req: NextRequest) {
   } else {
     cart[id] = { ...line, qty };
   }
-
+  setCart(cartId, cart);
   const res = NextResponse.json({ ok: true, cart });
-  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;
 }
 
@@ -95,17 +101,21 @@ export async function DELETE(req: NextRequest) {
 
   const { id } = parsed.data;
 
-  const cookieVal = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookieVal);
+  const cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
+  if (!cartId) {
+    return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+  }
+  const cart = getCart(cartId);
 
   if (!cart[id]) {
     return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
   }
 
   delete cart[id];
+  setCart(cartId, cart);
 
   const res = NextResponse.json({ ok: true, cart });
-  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;
 }
 
@@ -113,8 +123,12 @@ export async function DELETE(req: NextRequest) {
  * GET – fetch the current cart
  * ------------------------------------------------------------------ */
 export async function GET(req: NextRequest) {
-  const cookieVal = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookieVal);
-
-  return NextResponse.json({ ok: true, cart });
+  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
+  if (!cartId) {
+    cartId = createCart();
+  }
+  const cart = getCart(cartId);
+  const res = NextResponse.json({ ok: true, cart });
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
+  return res;
 }

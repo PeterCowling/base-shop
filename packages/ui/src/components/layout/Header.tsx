@@ -1,6 +1,10 @@
 // server component
 import { readShop } from "@platform-core/repositories/json.server";
-import { decodeCartCookie } from "@platform-core/src/cartCookie";
+import {
+  CART_COOKIE,
+  decodeCartCookie,
+} from "@platform-core/src/cartCookie";
+import { getCart } from "@platform-core/src/cartStore";
 import { cookies } from "next/headers";
 import HeaderClient from "./HeaderClient.client";
 
@@ -18,7 +22,8 @@ export default async function Header({
   padding?: string;
 }) {
   const cookieStore = await cookies();
-  const cart = decodeCartCookie(cookieStore.get("CART_STATE")?.value);
+  const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
+  const cart = cartId ? getCart(cartId) : {};
   const initialQty = Object.values(cart).reduce((s, line) => s + line.qty, 0);
   const shopId = process.env.NEXT_PUBLIC_SHOP_ID || "default";
   const shop = await readShop(shopId);

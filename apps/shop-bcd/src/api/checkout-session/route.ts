@@ -6,6 +6,7 @@ import {
   type CartLine,
   type CartState,
 } from "@/lib/cartCookie";
+import { getCart } from "@/lib/cartStore";
 import { calculateRentalDays } from "@/lib/date";
 import { stripe } from "@lib/stripeServer.server";
 import { getCustomerSession } from "@auth";
@@ -118,7 +119,8 @@ const computeTotals = async (
 export async function POST(req: NextRequest): Promise<NextResponse> {
   /* 1️⃣  Load and validate cart ------------------------------------------ */
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(rawCookie) as Cart;
+  const cartId = decodeCartCookie(rawCookie);
+  const cart = cartId ? (getCart(cartId) as Cart) : ({} as Cart);
 
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });

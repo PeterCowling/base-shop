@@ -1,5 +1,6 @@
 // apps/shop-bcd/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "@/lib/cartCookie";
+import { createCartId, encodeCartCookie } from "@/lib/cartCookie";
+import { setCart } from "@/lib/cartStore";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@/lib/date";
 import { POST } from "../src/api/checkout-session/route";
@@ -28,9 +29,10 @@ const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
 function createRequest(
   body: any,
-  cookie: string,
+  cartId: string,
   url = "http://store.example/api/checkout-session"
 ): Parameters<typeof POST>[0] {
+  const cookie = encodeCartCookie(cartId);
   return {
     json: async () => body,
     cookies: { get: () => ({ name: "", value: cookie }) },
@@ -47,10 +49,11 @@ test("builds Stripe session with correct items and metadata", async () => {
 
   const sku = PRODUCTS[0];
   const cart = { [sku.id]: { sku, qty: 2, size: "40" } };
-  const cookie = encodeCartCookie(cart);
+  const cartId = createCartId();
+  setCart(cartId, cart);
   const returnDate = "2025-01-02";
   const expectedDays = calculateRentalDays(returnDate);
-  const req = createRequest({ returnDate, currency: "EUR", taxRegion: "EU" }, cookie);
+  const req = createRequest({ returnDate, currency: "EUR", taxRegion: "EU" }, cartId);
 
   const res = await POST(req);
   const body = await res.json();
@@ -71,8 +74,12 @@ test("builds Stripe session with correct items and metadata", async () => {
 test("responds with 400 on invalid returnDate", async () => {
   const sku = PRODUCTS[0];
   const cart = { [sku.id]: { sku, qty: 1 } };
-  const cookie = encodeCartCookie(cart);
-  const req = createRequest({ returnDate: "not-a-date", currency: "EUR", taxRegion: "EU" }, cookie);
+  const cartId = createCartId();
+  setCart(cartId, cart);
+  const req = createRequest(
+    { returnDate: "not-a-date", currency: "EUR", taxRegion: "EU" },
+    cartId
+  );
   const res = await POST(req);
   expect(res.status).toBe(400);
   const body = await res.json();

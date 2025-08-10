@@ -1,6 +1,5 @@
 import { CartProvider } from "@/contexts/CartContext";
-import { CART_COOKIE, encodeCartCookie } from "@/lib/cartCookie";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import type { CartState } from "@/lib/cartCookie";
 import OrderSummary from "../src/components/organisms/OrderSummary";
 
@@ -38,23 +37,21 @@ const mockCart: CartState = {
 };
 
 describe("OrderSummary", () => {
-  beforeEach(() => {
-    localStorage.setItem(CART_COOKIE, encodeCartCookie(mockCart));
-  });
+  it("renders quantities, totals and formatted prices", async () => {
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: mockCart }) }) as any;
 
-  afterEach(() => {
-    localStorage.clear();
-  });
-
-  it("renders quantities, totals and formatted prices", () => {
     render(
       <CartProvider>
         <OrderSummary />
       </CartProvider>
     );
 
-    // item rows
-    expect(screen.getByText("Product A")).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByText("Product A")).toBeInTheDocument()
+    );
+
     expect(screen.getByText("Product B")).toBeInTheDocument();
     expect(screen.getByText("2", { selector: "td" })).toBeInTheDocument();
     expect(screen.getByText("1", { selector: "td" })).toBeInTheDocument();
@@ -65,7 +62,6 @@ describe("OrderSummary", () => {
         currency: "EUR",
       }).format(n);
 
-    // per-item totals
     expect(screen.getAllByText(fmt(20)).length).toBe(2);
 
     const deposit = 2 * 2 + 3 * 1;

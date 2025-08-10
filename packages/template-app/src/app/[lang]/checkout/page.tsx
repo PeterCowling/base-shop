@@ -2,7 +2,11 @@
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";
 import { Locale, resolveLocale } from "@/i18n/locales";
-import { CART_COOKIE, decodeCartCookie } from "@platform-core/src/cartCookie";
+import {
+  CART_COOKIE,
+  decodeCartCookie,
+} from "@platform-core/src/cartCookie";
+import { getCart } from "@platform-core/src/cartStore";
 import { getProductById } from "@platform-core/src/products";
 import type { CartLine, CartState } from "@types";
 import { cookies } from "next/headers";
@@ -25,9 +29,10 @@ export default async function CheckoutPage({
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
 
-  /* ---------- read cart from cookie ---------- */
-  const cookieStore = await cookies(); // ← await here
-  const cart = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
+  /* ---------- read cart from server storage ---------- */
+  const cookieStore = await cookies();
+  const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
+  const cart = cartId ? getCart(cartId) : {};
 
   /* ---------- empty cart guard ---------- */
   if (!Object.keys(cart).length) {

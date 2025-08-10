@@ -5,6 +5,7 @@ import OrderSummary from "@/components/organisms/OrderSummary";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
+import { getCart } from "@/lib/cartStore";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import type { PageComponent } from "@types";
 import { cookies } from "next/headers";
@@ -36,9 +37,10 @@ export default async function CheckoutPage({
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
 
-  /* ---------- read cart from cookie ---------- */
-  const cookieStore = await cookies(); // ← await here
-  const cart = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
+  /* ---------- read cart from server storage ---------- */
+  const cookieStore = await cookies();
+  const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
+  const cart = cartId ? getCart(cartId) : {};
 
   /* ---------- empty cart guard ---------- */
   if (!Object.keys(cart).length) {
@@ -61,7 +63,7 @@ export default async function CheckoutPage({
 
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
-      <OrderSummary />
+      <OrderSummary cart={cart} />
       <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
     </div>
   );

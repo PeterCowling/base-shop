@@ -3,8 +3,6 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { CartProvider, useCart } from "../contexts/CartContext";
 import { PRODUCTS } from "../products";
 
-jest.mock("@/lib/cartCookie", () => jest.requireActual("../cartCookie.ts"));
-
 function TestComponent() {
   const [state, dispatch] = useCart();
   const line = state[PRODUCTS[0].id];
@@ -12,7 +10,6 @@ function TestComponent() {
   return (
     <div>
       <span data-testid="qty">{line?.qty ?? 0}</span>
-
       <button onClick={() => dispatch({ type: "add", sku: PRODUCTS[0] })}>
         add
       </button>
@@ -28,13 +25,27 @@ function TestComponent() {
   );
 }
 
-describe("CartContext reducer", () => {
-  beforeEach(() => {
-    localStorage.clear();
-    document.cookie = "";
-  });
+describe("CartContext", () => {
+  it("handles add, setQty and remove actions", async () => {
+    const responses = [
+      // initial GET
+      { cart: {} },
+      // add
+      { cart: { [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 1 } } },
+      // add again
+      { cart: { [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 2 } } },
+      // setQty -> 1
+      { cart: { [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 1 } } },
+      // remove
+      { cart: {} },
+    ];
 
-  it("handles add, setQty and remove actions", () => {
+    global.fetch = jest
+      .fn()
+      .mockImplementation(() =>
+        Promise.resolve({ ok: true, json: async () => responses.shift() })
+      ) as any;
+
     render(
       <CartProvider>
         <TestComponent />
@@ -46,33 +57,18 @@ describe("CartContext reducer", () => {
     const set = screen.getByText("set");
     const remove = screen.getByText("remove");
 
-    fireEvent.click(add);
-    expect(qty.textContent).toBe("1");
+    await waitFor(() => expect(qty.textContent).toBe("0"));
 
     fireEvent.click(add);
-    expect(qty.textContent).toBe("2");
+    await waitFor(() => expect(qty.textContent).toBe("1"));
+
+    fireEvent.click(add);
+    await waitFor(() => expect(qty.textContent).toBe("2"));
 
     fireEvent.click(set);
-    expect(qty.textContent).toBe("1");
+    await waitFor(() => expect(qty.textContent).toBe("1"));
 
     fireEvent.click(remove);
-    expect(qty.textContent).toBe("0");
-  });
-
-  it("persists to localStorage and cookies", async () => {
-    render(
-      <CartProvider>
-        <TestComponent />
-      </CartProvider>
-    );
-
-    fireEvent.click(screen.getByText("add"));
-
-    await waitFor(() => {
-      expect(localStorage.getItem("CART_STATE")).toBeTruthy();
-    });
-
-    const encoded = localStorage.getItem("CART_STATE")!;
-    expect(document.cookie).toContain(`CART_STATE=${encoded}`);
+    await waitFor(() => expect(qty.textContent).toBe("0"));
   });
 });

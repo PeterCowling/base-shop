@@ -6,6 +6,7 @@ import {
   type CartLine,
   type CartState,
 } from "@/lib/cartCookie";
+import { getCart } from "@/lib/cartStore";
 import { calculateRentalDays } from "@/lib/date";
 import { stripe } from "@lib/stripeServer";
 import { getCustomerSession } from "@auth";
@@ -110,7 +111,8 @@ export const runtime = "edge";
 export async function POST(req: NextRequest): Promise<NextResponse> {
   /* 1️⃣ Decode cart cookie -------------------------------------------------- */
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(rawCookie);
+  const cartId = decodeCartCookie(rawCookie);
+  const cart = cartId ? getCart(cartId) : {};
 
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });

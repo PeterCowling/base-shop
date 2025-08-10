@@ -5,13 +5,6 @@ import AddToCartButton from "@platform-core/src/components/shop/AddToCartButton.
 import { PRODUCTS } from "@platform-core/products";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-jest.mock("@/lib/cartCookie", () => jest.requireActual("@/lib/cartCookie"));
-jest.mock("@/contexts/CartContext", () =>
-  jest.requireActual("@/contexts/CartContext")
-);
-jest.mock("react", () => jest.requireActual("react"));
-jest.mock("react-dom", () => jest.requireActual("react-dom"));
-
 function Qty() {
   const [state] = useCart();
   return <span data-testid="qty">{state[PRODUCTS[0].id]?.qty ?? 0}</span>;
@@ -25,9 +18,15 @@ describe("AddToCartButton", () => {
   });
 
   it("adds items to the cart", async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({ ok: true, json: async () => ({ ok: true }) })
-    ) as any;
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          cart: { [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 1 } },
+        }),
+      }) as any;
 
     render(
       <CartProvider>
@@ -37,7 +36,9 @@ describe("AddToCartButton", () => {
     );
 
     const btn = screen.getByRole("button");
-    expect(screen.getByTestId("qty").textContent).toBe("0");
+    await waitFor(() =>
+      expect(screen.getByTestId("qty").textContent).toBe("0")
+    );
 
     fireEvent.click(btn);
 
@@ -47,12 +48,13 @@ describe("AddToCartButton", () => {
   });
 
   it("shows an error when the server rejects the request", async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) })
+      .mockResolvedValueOnce({
         ok: false,
         json: async () => ({ error: "Out of stock" }),
-      })
-    ) as any;
+      }) as any;
 
     render(
       <CartProvider>

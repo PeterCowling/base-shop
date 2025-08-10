@@ -4,21 +4,27 @@ import Link from "next/link";
 import { Button } from "@ui";
 import { getPosts } from "@cms/actions/blog.server";
 
-export default async function BlogPostsPage() {
-  const posts = await getPosts();
+export default async function BlogPostsPage({
+  searchParams,
+}: {
+  searchParams?: { shopId?: string };
+}) {
+  const shopId = searchParams?.shopId;
+  if (!shopId) return <p>No shop selected.</p>;
+  const posts = await getPosts(shopId);
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Blog Posts</h1>
         <Button asChild>
-          <Link href="/cms/blog/posts/new">New Post</Link>
+          <Link href={`/cms/blog/posts/new?shopId=${shopId}`}>New Post</Link>
         </Button>
       </div>
       <ul className="space-y-2">
         {posts.map((post) => (
           <li key={post._id}>
             <Link
-              href={`/cms/blog/posts/${post._id}`}
+              href={`/cms/blog/posts/${post._id}?shopId=${shopId}`}
               className="text-primary underline"
             >
               {post.title || "(untitled)"}

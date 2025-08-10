@@ -1,11 +1,10 @@
 // apps/cms/src/actions/blog.server.ts
 
+import { getSanityConfig } from "@platform-core/src/shops";
+import { getShopById } from "@platform-core/src/repositories/shop.server";
 import { ensureAuthorized } from "./common/auth";
 
-const projectId = process.env.SANITY_PROJECT_ID as string;
-const dataset = process.env.SANITY_DATASET as string;
 const apiVersion = process.env.SANITY_API_VERSION || "2021-10-21";
-const token = process.env.SANITY_WRITE_TOKEN;
 
 interface SanityPost {
   _id: string;
@@ -14,50 +13,78 @@ interface SanityPost {
   published?: boolean;
 }
 
-function queryUrl(query: string) {
-  return `https://${projectId}.api.sanity.io/v${apiVersion}/data/query/${dataset}?query=${encodeURIComponent(query)}`;
+interface Config {
+  projectId: string;
+  dataset: string;
+  token?: string;
+  apiVersion: string;
 }
 
-async function mutate(body: unknown) {
-  const url = `https://${projectId}.api.sanity.io/v${apiVersion}/data/mutate/${dataset}`;
+async function getConfig(shopId: string): Promise<Config> {
+  const shop = await getShopById(shopId);
+  const sanity = getSanityConfig(shop);
+  if (!sanity) {
+    throw new Error(`Missing Sanity config for shop ${shopId}`);
+  }
+  return { ...sanity, apiVersion };
+}
+
+function queryUrl(config: Config, query: string) {
+  return `https://${config.projectId}.api.sanity.io/v${config.apiVersion}/data/query/${config.dataset}?query=${encodeURIComponent(query)}`;
+}
+
+async function mutate(config: Config, body: unknown) {
+  const url = `https://${config.projectId}.api.sanity.io/v${config.apiVersion}/data/mutate/${config.dataset}`;
   return fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(config.token ? { Authorization: `Bearer ${config.token}` } : {}),
     },
     body: JSON.stringify(body),
   });
 }
 
-export async function getPosts(): Promise<SanityPost[]> {
+export async function getPosts(shopId: string): Promise<SanityPost[]> {
   await ensureAuthorized();
-  const res = await fetch(queryUrl('*[_type=="post"]{_id,title,body,published}'), {
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-  });
+  const config = await getConfig(shopId);
+  const res = await fetch(
+    queryUrl(config, '*[_type=="post"]{_id,title,body,published}'),
+    { headers: config.token ? { Authorization: `Bearer ${config.token}` } : undefined }
+  );
   const json = await res.json();
   return json.result ?? [];
 }
 
-export async function getPost(id: string): Promise<SanityPost | null> {
+export async function getPost(
+  shopId: string,
+  id: string
+): Promise<SanityPost | null> {
   await ensureAuthorized();
-  const res = await fetch(queryUrl(`*[_type=="post" && _id=="${id}"][0]{_id,title,body,published}`), {
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-  });
+  const config = await getConfig(shopId);
+  const res = await fetch(
+    queryUrl(
+      config,
+      `*[_type=="post" && _id=="${id}"][0]{_id,title,body,published}`
+    ),
+    { headers: config.token ? { Authorization: `Bearer ${config.token}` } : undefined }
+  );
   const json = await res.json();
   return json.result ?? null;
 }
 
 export async function createPost(
+  shopId: string,
   _prev: unknown,
   formData: FormData
 ): Promise<{ message?: string; error?: string; id?: string }> {
   "use server";
   await ensureAuthorized();
+  const config = await getConfig(shopId);
   const title = String(formData.get("title") ?? "");
   const content = String(formData.get("content") ?? "");
   try {
-    const res = await mutate({
+    const res = await mutate(config, {
       mutations: [{ create: { _type: "post", title, body: content, published: false } }],
       returnIds: true,
     });
@@ -71,16 +98,18 @@ export async function createPost(
 }
 
 export async function updatePost(
+  shopId: string,
   _prev: unknown,
   formData: FormData
 ): Promise<{ message?: string; error?: string }> {
   "use server";
   await ensureAuthorized();
+  const config = await getConfig(shopId);
   const id = String(formData.get("id") ?? "");
   const title = String(formData.get("title") ?? "");
   const content = String(formData.get("content") ?? "");
   try {
-    await mutate({
+    await mutate(config, {
       mutations: [{ patch: { id, set: { title, body: content } } }],
     });
     return { message: "Post updated" };
@@ -91,14 +120,16 @@ export async function updatePost(
 }
 
 export async function publishPost(
+  shopId: string,
   id: string,
   _prev?: unknown,
   _formData?: FormData
 ): Promise<{ message?: string; error?: string }> {
   "use server";
   await ensureAuthorized();
+  const config = await getConfig(shopId);
   try {
-    await mutate({
+    await mutate(config, {
       mutations: [{ patch: { id, set: { published: true } } }],
     });
     return { message: "Post published" };

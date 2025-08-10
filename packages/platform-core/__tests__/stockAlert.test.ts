@@ -24,7 +24,7 @@ describe("stock alerts", () => {
       {
         sku: "sku-1",
         productId: "p1",
-        variant: { size: "m" },
+        variantAttributes: { size: "m" },
         quantity: 1,
         lowStockThreshold: 2,
       },
@@ -49,7 +49,7 @@ describe("stock alerts", () => {
       {
         sku: "sku-1",
         productId: "p1",
-        variant: { size: "m" },
+        variantAttributes: { size: "m" },
         quantity: 3,
         lowStockThreshold: 2,
       },

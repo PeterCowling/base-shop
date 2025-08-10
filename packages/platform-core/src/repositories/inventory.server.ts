@@ -3,6 +3,7 @@
 import "server-only";
 
 import { inventoryItemSchema, type InventoryItem } from "@types";
+// InventoryItem uses flexible variantAttributes for SKU differentiation
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { validateShopName } from "../shops";

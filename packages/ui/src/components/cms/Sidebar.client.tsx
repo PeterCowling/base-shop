@@ -1,6 +1,6 @@
 // packages/ui/components/cms/Sidebar.tsx
 "use client";
-import { getShopFromPath } from "@platform-core/src/utils/getShopFromPath";
+import { getShopFromPath } from "@platform-core/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

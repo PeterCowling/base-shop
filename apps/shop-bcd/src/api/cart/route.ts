@@ -16,15 +16,19 @@ export const runtime = "edge";
 // This simple handler echoes back the posted body and status 200.
 // Stripe / KV integration will extend this in Sprint 5.
 
-const postSchema = z.object({
-  sku: skuSchema,
-  qty: z.number().int().min(1).default(1),
-});
+const postSchema = z
+  .object({
+    sku: skuSchema,
+    qty: z.number().int().min(1).default(1),
+  })
+  .strict();
 
-const patchSchema = z.object({
-  id: z.string(),
-  qty: z.number().int().min(1),
-});
+const patchSchema = z
+  .object({
+    id: z.string(),
+    qty: z.number().int().min(1),
+  })
+  .strict();
 
 export async function POST(req: NextRequest) {
   const json = await req.json();

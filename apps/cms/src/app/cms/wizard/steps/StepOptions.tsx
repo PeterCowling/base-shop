@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { toggle } from "../listUtils";
+import { toggleItem } from "@ui/utils/toggleItem";
 
 interface Props {
   payment: string[];
@@ -45,14 +45,14 @@ export default function StepOptions({
         <label className="flex items-center gap-2 text-sm">
           <Checkbox
             checked={payment.includes("stripe")}
-            onCheckedChange={() => setPayment((l) => toggle(l, "stripe"))}
+            onCheckedChange={() => setPayment((l) => toggleItem(l, "stripe"))}
           />
           Stripe
         </label>
         <label className="flex items-center gap-2 text-sm">
           <Checkbox
             checked={payment.includes("paypal")}
-            onCheckedChange={() => setPayment((l) => toggle(l, "paypal"))}
+            onCheckedChange={() => setPayment((l) => toggleItem(l, "paypal"))}
           />
           PayPal
         </label>
@@ -62,14 +62,14 @@ export default function StepOptions({
         <label className="flex items-center gap-2 text-sm">
           <Checkbox
             checked={shipping.includes("dhl")}
-            onCheckedChange={() => setShipping((l) => toggle(l, "dhl"))}
+            onCheckedChange={() => setShipping((l) => toggleItem(l, "dhl"))}
           />
           DHL
         </label>
         <label className="flex items-center gap-2 text-sm">
           <Checkbox
             checked={shipping.includes("ups")}
-            onCheckedChange={() => setShipping((l) => toggle(l, "ups"))}
+            onCheckedChange={() => setShipping((l) => toggleItem(l, "ups"))}
           />
           UPS
         </label>

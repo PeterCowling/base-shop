@@ -13,15 +13,19 @@ import { z } from "zod";
 
 export const runtime = "edge";
 
-const postSchema = z.object({
-  sku: z.union([skuSchema, skuSchema.pick({ id: true })]),
-  qty: z.number().int().min(1).default(1),
-});
+const postSchema = z
+  .object({
+    sku: z.union([skuSchema, skuSchema.pick({ id: true })]),
+    qty: z.number().int().min(1).default(1),
+  })
+  .strict();
 
-const patchSchema = z.object({
-  id: z.string(),
-  qty: z.number().int().min(1),
-});
+const patchSchema = z
+  .object({
+    id: z.string(),
+    qty: z.number().int().min(1),
+  })
+  .strict();
 
 export async function POST(req: NextRequest) {
   const json = await req.json();

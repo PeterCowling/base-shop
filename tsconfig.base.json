@@ -93,7 +93,6 @@
       "@config/src/*": ["packages/config/src/*"],
 
       /* ─── shared utilities ──────────────────────────────────────── */
-      "@shared/*": ["packages/shared/*"],
       "@shared-utils": ["packages/shared-utils/src/index.ts"],
       "@shared-utils/*": ["packages/shared-utils/src/*"],
 

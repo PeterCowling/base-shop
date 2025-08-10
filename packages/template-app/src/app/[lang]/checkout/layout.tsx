@@ -33,7 +33,7 @@ export default async function LocaleLayout({
 
   return (
     <TranslationsProvider messages={messages}>
-      <DefaultSeo {...seo} />
+      <DefaultSeo {...seo} additionalLinkTags={seo.additionalLinkTags} />
       <Header lang={lang} />
       <main className="min-h-[calc(100vh-8rem)]">{children}</main>
       <Footer />

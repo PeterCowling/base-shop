@@ -52,11 +52,11 @@ export default function SeoEditor({
   const handleLocaleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const l = e.target.value as Locale;
     setLocale(l);
+    setCanonicalBase(initialSeo[l]?.canonicalBase ?? "");
     if (!freeze) {
       setTitle(initialSeo[l]?.title ?? "");
       setDescription(initialSeo[l]?.description ?? "");
       setImage(initialSeo[l]?.image ?? "");
-      setCanonicalBase(initialSeo[l]?.canonicalBase ?? "");
       setOgUrl(initialSeo[l]?.ogUrl ?? "");
       setTwitterCard(initialSeo[l]?.twitterCard ?? "");
     }

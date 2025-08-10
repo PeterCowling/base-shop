@@ -20,7 +20,7 @@ import { loadTokens } from "./createShop/themeUtils";
 export function createShop(
   id: string,
   opts: CreateShopOptions = {},
-  options?: { deploy?: boolean }
+  deployOpts?: { deploy?: boolean }
 ): DeployStatusBase {
   id = validateShopName(id);
   const newApp = join("apps", id);
@@ -42,7 +42,7 @@ export function createShop(
 
   writeFiles(id, options, themeTokens, templateApp, newApp, newData);
 
-  if (options?.deploy === false) {
+  if (deployOpts?.deploy === false) {
     return { status: "pending" };
   }
 
@@ -56,9 +56,16 @@ export interface DeployStatusBase {
   error?: string;
 }
 
+export interface DomainProvision {
+  name: string;
+  status: "pending" | "active" | "error";
+  error?: string;
+}
+
 export interface DeployShopResult extends DeployStatusBase {
   status: "success" | "error";
   previewUrl: string;
+  domain?: DomainProvision;
 }
 
 export function deployShop(id: string, domain?: string): DeployShopResult {
@@ -89,6 +96,7 @@ export function deployShop(id: string, domain?: string): DeployShopResult {
     previewUrl,
     instructions,
     error,
+    domain: domain ? { name: domain, status: "pending" } : undefined,
   };
 
   try {

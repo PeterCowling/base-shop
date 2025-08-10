@@ -6,7 +6,7 @@ import { LOCALES } from "@acme/i18n";
 import type { DeployShopResult } from "@platform-core/createShop";
 import { validateShopName } from "@platform-core/src/shops";
 import type { Locale, PageComponent } from "@types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ulid } from "ulid";
 
 /* -------------------------------------------------------------------------- */
@@ -110,8 +110,6 @@ export default function Wizard({
   const [deployInfo, setDeployInfo] = useState<
     DeployShopResult | { status: "pending"; error?: string } | null
   >(null);
-  const pollRef = useRef<NodeJS.Timeout | null>(null);
-  const pollRetries = useRef(0);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
   /* ---------------------------------------------------------------------- */
@@ -383,13 +381,6 @@ export default function Wizard({
     checkoutLayout,
   ]);
 
-  /* --- clear polling timer when unmounting --- */
-  useEffect(() => {
-    return () => {
-      if (pollRef.current) clearTimeout(pollRef.current);
-    };
-  }, []);
-
   /* ====================================================================== */
   /*  Action handlers                                                       */
   /* ====================================================================== */
@@ -450,7 +441,6 @@ export default function Wizard({
       if (ok) {
         setDeployResult("Deployment started");
         if (info) setDeployInfo(info);
-        startPolling();
       } else {
         setDeployResult(error ?? "Deployment failed");
       }
@@ -528,60 +518,6 @@ export default function Wizard({
     } finally {
       setImporting(false);
     }
-  }
-
-  function startPolling() {
-    if (pollRef.current) clearTimeout(pollRef.current);
-    pollRetries.current = 0;
-
-    const poll = async () => {
-      try {
-        const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
-        if (!res.ok) {
-          console.error(
-            `Polling deploy status failed: ${res.status} ${res.statusText}`,
-          );
-          pollRetries.current += 1;
-          if (pollRetries.current >= 3) {
-            setDeployInfo({
-              status: "error",
-              error: `Polling failed with status ${res.status}`,
-            });
-            pollRef.current = null;
-            return;
-          }
-        } else {
-          const status = (await res.json()) as
-            | DeployShopResult
-            | { status: "pending"; error?: string };
-
-          setDeployInfo(status);
-
-          if (status.status !== "pending") {
-            pollRef.current = null;
-            return;
-          }
-
-          pollRetries.current = 0;
-        }
-      } catch (err) {
-        console.error("Polling deploy status failed", err);
-        pollRetries.current += 1;
-        if (pollRetries.current >= 3) {
-          setDeployInfo({
-            status: "error",
-            error: "Polling failed due to network error",
-          });
-          pollRef.current = null;
-          return;
-        }
-      }
-
-      const delay = Math.min(3000 * 2 ** pollRetries.current, 30000);
-      pollRef.current = setTimeout(poll, delay);
-    };
-
-    poll();
   }
 
   /* ====================================================================== */
@@ -837,6 +773,7 @@ export default function Wizard({
       case 14:
         return (
           <StepHosting
+            shopId={shopId}
             domain={domain}
             setDomain={setDomain}
             deployResult={deployResult}

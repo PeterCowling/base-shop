@@ -1,9 +1,15 @@
 "use client";
 
 import { Button, Input } from "@/components/atoms/shadcn";
-import type { DeployStatusBase } from "@platform-core/createShop";
+import {
+  type DeployStatusBase,
+  type DeployShopResult,
+} from "@platform-core/createShop";
+import { useEffect, useState } from "react";
+import { getDeployStatus } from "../services/deployShop";
 
 interface Props {
+  shopId: string;
   domain: string;
   setDomain: (v: string) => void;
   deployResult: string | null;
@@ -14,6 +20,7 @@ interface Props {
 }
 
 export default function StepHosting({
+  shopId,
   domain,
   setDomain,
   deployResult,
@@ -22,6 +29,31 @@ export default function StepHosting({
   onBack,
   deploy,
 }: Props): React.JSX.Element {
+  const [info, setInfo] = useState<DeployStatusBase | null>(deployInfo);
+
+  useEffect(() => {
+    setInfo(deployInfo);
+  }, [deployInfo]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    const poll = async () => {
+      const res = await getDeployStatus(shopId);
+      setInfo(res as DeployShopResult);
+      const d = res as DeployShopResult;
+      if (
+        d.status === "pending" ||
+        (d.domain && d.domain.status === "pending")
+      ) {
+        timer = setTimeout(poll, 3000);
+      }
+    };
+    poll();
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [shopId]);
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Hosting</h2>
@@ -34,27 +66,30 @@ export default function StepHosting({
         />
       </label>
       {deployResult && <p className="text-sm">{deployResult}</p>}
-      {deployInfo?.previewUrl && (
+      {info?.previewUrl && (
         <p className="text-sm">
           Preview:{" "}
           <a
-            href={deployInfo.previewUrl}
+            href={info.previewUrl}
             target="_blank"
             rel="noreferrer"
             className="text-blue-600 underline"
           >
-            {deployInfo.previewUrl}
+            {info.previewUrl}
           </a>
         </p>
       )}
-      {deployInfo?.instructions && (
-        <p className="text-sm">{deployInfo.instructions}</p>
+      {info?.instructions && <p className="text-sm">{info.instructions}</p>}
+      {info && "domain" in info && (info as DeployShopResult).domain && (
+        <p className="text-sm">
+          Domain {(info as DeployShopResult).domain?.name}: {(info as DeployShopResult).domain?.status}
+        </p>
       )}
-      {deployInfo?.status === "success" && (
+      {info?.status === "success" && (
         <p className="text-sm text-green-600">Deployment complete</p>
       )}
-      {deployInfo?.status === "error" && deployInfo.error && (
-        <p className="text-sm text-red-600">{deployInfo.error}</p>
+      {info?.status === "error" && info.error && (
+        <p className="text-sm text-red-600">{info.error}</p>
       )}
       <div className="flex justify-between gap-2">
         <Button variant="outline" onClick={onBack}>

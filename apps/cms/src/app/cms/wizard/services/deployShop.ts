@@ -38,3 +38,19 @@ export async function deployShop(
   return { ok: false, error: json.error ?? "Deployment failed" };
 }
 
+export async function getDeployStatus(
+  shopId: string
+): Promise<DeployShopResult | { status: "pending"; error?: string }> {
+  const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
+  if (!res.ok) {
+    return {
+      status: "pending",
+      error: `Status request failed: ${res.status}`,
+    };
+  }
+  return (await res.json()) as DeployShopResult | {
+    status: "pending";
+    error?: string;
+  };
+}
+

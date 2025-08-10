@@ -1,10 +1,14 @@
 import fs from "fs";
-import { deployShop } from "../createShop";
 
 jest.mock("fs");
 jest.mock("child_process", () => ({
   spawnSync: jest.fn(() => ({ status: 0 })),
 }));
+
+let deployShop: (id: string, domain?: string) => any;
+beforeAll(async () => {
+  ({ deployShop } = await import("../src/createShop"));
+});
 
 const fsMock = fs as jest.Mocked<typeof fs>;
 
@@ -21,6 +25,9 @@ describe("deployShop", () => {
     );
     expect(result.previewUrl).toContain("shopx");
     expect(result.instructions).toContain("CNAME");
-    expect(result.status).toBe("success");
+    expect(result.domain).toEqual({
+      name: "shop.example.com",
+      status: "pending",
+    });
   });
 });

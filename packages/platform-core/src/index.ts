@@ -11,3 +11,4 @@ export * from "./shipping";
 export * from "./tax";
 export * from "./plugins";
 export * from "./orders";
+export * from "./customerProfiles";

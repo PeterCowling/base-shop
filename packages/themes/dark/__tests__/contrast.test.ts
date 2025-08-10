@@ -10,6 +10,8 @@ function tokenToHsl(value: string): string {
 const colorPairs: [TokenKey, TokenKey][] = [
   ['--color-bg', '--color-fg'],
   ['--color-primary', '--color-primary-fg'],
+  ['--color-accent', '--color-accent-fg'],
+  ['--color-danger', '--color-danger-fg'],
 ];
 
 describe('dark theme color contrast', () => {

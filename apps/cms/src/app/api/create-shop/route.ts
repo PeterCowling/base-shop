@@ -10,7 +10,7 @@ import { NextResponse } from "next/server";
  *
  * Body: { id: string; options?: CreateShopOptions }
  *
- * • Returns **201** and `{ success: true }` when an admin or ShopAdmin
+ * • Returns **201** and deployment information when an admin or ShopAdmin
  *   successfully creates a shop.
  * • Returns **403** when the caller lacks permission.
  * • Returns **400** with an error message on validation / runtime errors.
@@ -35,12 +35,12 @@ export async function POST(req: Request) {
       options?: CreateShopOptions;
     };
 
-    await createNewShop(id, options ?? {});
+    const deploy = await createNewShop(id, options ?? {});
 
     /* --------------------------------------------------------------
      *  Success → 201 Created
      * ------------------------------------------------------------ */
-    return NextResponse.json({ success: true }, { status: 201 });
+    return NextResponse.json({ success: true, deploy }, { status: 201 });
   } catch (err) {
     /* --------------------------------------------------------------
      *  Bad request or runtime failure → 400

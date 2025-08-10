@@ -1,5 +1,6 @@
 // apps/cms/src/app/cms/wizard/schema.ts
 import { LOCALES } from "@acme/i18n";
+import { fillLocales } from "@platform-core/utils";
 import { pageComponentSchema } from "@types/Page";
 import { localeSchema, type Locale } from "@types";
 import { ulid } from "ulid";
@@ -14,13 +15,11 @@ import { baseTokens } from "./tokenUtils";
 function defaultLocaleRecord(
   first: string | null = null
 ): Record<Locale, string> {
-  return LOCALES.reduce<Record<Locale, string>>(
-    (acc, l, i) => {
-      acc[l] = i === 0 && first !== null ? first : "";
-      return acc;
-    },
-    {} as Record<Locale, string>
-  );
+  const record = fillLocales(undefined, "");
+  if (first !== null) {
+    record[LOCALES[0]] = first;
+  }
+  return record;
 }
 
 const localeRecordSchema = z.record(localeSchema, z.string());

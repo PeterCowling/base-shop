@@ -1,10 +1,7 @@
 // packages/platform-core/__tests__/createShopHelpers.test.ts
 import fs from "fs";
-import {
-  prepareOptions,
-  ensureTemplateExists,
-  writeFiles,
-} from "../src/createShop";
+import { prepareOptions } from "../src/createShop/schema";
+import { ensureTemplateExists, writeFiles } from "../src/createShop/fsUtils";
 
 jest.mock("fs");
 
@@ -82,6 +79,7 @@ describe("createShop helpers", () => {
       writeFiles(
         "shop",
         options,
+        {},
         "packages/template-app",
         "apps/shop",
         "data/shops/shop"

@@ -6,6 +6,9 @@
   "exports": {
     ".": "./index.ts"
   },
+  "scripts": {
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../../jest.config.cjs"
+  },
   "dependencies": {
     "@sanity/client": "^6.15.0"
   }

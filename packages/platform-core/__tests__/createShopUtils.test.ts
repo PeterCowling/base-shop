@@ -1,7 +1,9 @@
 // packages/platform-core/__tests__/createShopUtils.test.ts
 import fs from "fs";
 import { copyTemplate, loadBaseTokens } from "../src/createShop/utils";
-import { slugify, genSecret, fillLocales } from "../src/utils";
+import { slugify } from "../src/utils/slugify";
+import { genSecret } from "../src/utils/secret";
+import { fillLocales } from "../src/utils/locales";
 
 describe("createShop utils", () => {
   beforeEach(() => {

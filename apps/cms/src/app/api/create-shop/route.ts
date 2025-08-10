@@ -1,8 +1,6 @@
 // apps/cms/src/app/api/create-shop/route.ts
 import { createNewShop } from "@cms/actions/createShop.server";
-import { authOptions } from "@cms/auth/options";
 import { createShopOptionsSchema } from "@platform-core/createShop";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -17,15 +15,6 @@ import { z } from "zod";
  * • Returns **400** with an error message on validation / runtime errors.
  */
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-
-  /* ------------------------------------------------------------------
-   *  Only admins and existing ShopAdmins may create new shops
-   * ---------------------------------------------------------------- */
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-
   /* ------------------------------------------------------------------
    *  Parse request and delegate to the server action
    * ---------------------------------------------------------------- */
@@ -52,13 +41,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (err) {
     /* --------------------------------------------------------------
-     *  Bad request or runtime failure → 400
+     *  Forbidden or bad request
      * ------------------------------------------------------------ */
     console.error("Failed to create shop", err);
 
-    return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
-    );
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 400;
+    return NextResponse.json({ error: message }, { status });
   }
 }

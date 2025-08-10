@@ -15,6 +15,8 @@ pnpm init-shop
 
 - shop ID
 - display name
+- logo URL
+- contact email
 - shop type (`sale` or `rental`)
 - theme and template
 - payment and shipping providers (selected from a guided list of available providers)
@@ -42,6 +44,8 @@ pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--p
 pnpm init-shop
 ? Shop ID … demo
 ? Display name … Demo Shop
+? Logo URL … https://example.com/logo.png
+? Contact email … demo@example.com
 ? Shop type (sale or rental) … sale
 ? Theme › base
 ? Template › template-app

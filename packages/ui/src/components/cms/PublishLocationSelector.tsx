@@ -4,6 +4,7 @@
 import { Button, Input } from "@/components/atoms/shadcn";
 import type { PublishLocation } from "@types";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
+import { toggleItem } from "../../utils/toggleItem";
 import { memo, useCallback } from "react";
 
 export interface PublishLocationSelectorProps {
@@ -29,12 +30,7 @@ function PublishLocationSelectorInner({
 
   const toggle = useCallback(
     (id: string) => {
-      const idx = selectedIds.indexOf(id);
-      const next =
-        idx === -1
-          ? [...selectedIds, id]
-          : [...selectedIds.slice(0, idx), ...selectedIds.slice(idx + 1)];
-      onChange(next);
+      onChange(toggleItem(selectedIds, id));
     },
     [selectedIds, onChange]
   );

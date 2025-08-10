@@ -1,16 +1,16 @@
 // apps/cms/__tests__/listUtils.test.ts
 /* eslint-env jest */
 
-import { toggle } from "../src/app/cms/wizard/listUtils";
+import { toggleItem } from "@ui/utils/toggleItem";
 
-describe("listUtils", () => {
+describe("toggleItem", () => {
   it("toggles values within an array", () => {
     let items: string[] = [];
-    items = toggle(items, "a");
+    items = toggleItem(items, "a");
     expect(items).toEqual(["a"]);
-    items = toggle(items, "a");
+    items = toggleItem(items, "a");
     expect(items).toEqual([]);
-    items = toggle(items, "b");
+    items = toggleItem(items, "b");
     expect(items).toEqual(["b"]);
   });
 });

@@ -40,7 +40,12 @@ function fd(data: Record<string, string | string[]>): FormData {
   return f;
 }
 
-afterEach(() => jest.resetAllMocks());
+const realFetch = global.fetch;
+
+afterEach(() => {
+  jest.resetAllMocks();
+  global.fetch = realFetch;
+});
 
 /* -------------------------------------------------------------------------- */
 /* Tests                                                                      */
@@ -53,6 +58,10 @@ describe("createNewShop authorization", () => {
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
 
+    jest.doMock("@platform-core/createShop", () => ({
+      __esModule: true,
+      createShop: jest.fn(),
+    }));
     jest.doMock("next-auth", () => ({
       getServerSession: jest.fn(() => Promise.resolve(null)),
     }));
@@ -96,6 +105,85 @@ describe("createNewShop authorization", () => {
     expect(res).toBe(deployResult);
 
     (process.env as Record<string, string>).NODE_ENV = prevEnv;
+  });
+});
+
+describe("submitShop error handling", () => {
+  const baseState: any = {
+    storeName: "",
+    logo: "",
+    contactInfo: "",
+    type: "sale",
+    template: "",
+    theme: "",
+    payment: [],
+    shipping: [],
+    pageTitle: {},
+    pageDescription: {},
+    socialImage: "",
+    navItems: [],
+    pages: [],
+    checkoutComponents: [],
+    analyticsProvider: "",
+    analyticsId: "",
+    env: {},
+  };
+
+  beforeEach(() => {
+    jest.resetModules();
+  });
+
+  it("returns error when env request fails", async () => {
+    jest.doMock("@platform-core/createShop", () => ({
+      __esModule: true,
+      createShopOptionsSchema: { safeParse: () => ({ success: true, data: {} }) },
+    }));
+    jest.doMock("@platform-core/src/shops", () => ({
+      validateShopName: jest.fn(),
+    }));
+
+    const { submitShop } = await import(
+      /* webpackIgnore: true */ "../src/app/cms/wizard/services/submitShop"
+    );
+
+    const mockFetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+      .mockResolvedValueOnce({ ok: false, json: async () => ({}) })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({}) });
+    global.fetch = mockFetch as any;
+
+    const res = await submitShop("shop1", { ...baseState, env: { A: "1" } });
+
+    expect(mockFetch).toHaveBeenCalledTimes(3);
+    expect(res.ok).toBe(false);
+    expect(res.error).toMatch(/environment/i);
+  });
+
+  it("returns error when providers request fails", async () => {
+    jest.doMock("@platform-core/createShop", () => ({
+      __esModule: true,
+      createShopOptionsSchema: { safeParse: () => ({ success: true, data: {} }) },
+    }));
+    jest.doMock("@platform-core/src/shops", () => ({
+      validateShopName: jest.fn(),
+    }));
+
+    const { submitShop } = await import(
+      /* webpackIgnore: true */ "../src/app/cms/wizard/services/submitShop"
+    );
+
+    const mockFetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+      .mockResolvedValueOnce({ ok: false, json: async () => ({}) });
+    global.fetch = mockFetch as any;
+
+    const res = await submitShop("shop1", baseState);
+
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(res.ok).toBe(false);
+    expect(res.error).toMatch(/provider/i);
   });
 });
 

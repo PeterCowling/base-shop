@@ -1,7 +1,7 @@
 // src/app/layout.tsx
 import "./globals.css";
 import { CartProvider } from "@/contexts/CartContext";
-import { themeInitScript } from "@/contexts/themeInitScript";
+import { initTheme } from "@platform-core/src/utils/initTheme";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -32,7 +32,7 @@ export default function RootLayout({
     >
       <head>
         <meta name="color-scheme" content="light dark" />
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <script dangerouslySetInnerHTML={{ __html: initTheme }} />
       </head>
       <body className="antialiased">
         {/* Global providers go here */}

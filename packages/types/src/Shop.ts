@@ -27,6 +27,14 @@ export const shopSeoFieldsSchema = z.object({
 
 export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;
 
+export const sanityBlogConfigSchema = z.object({
+  projectId: z.string(),
+  dataset: z.string(),
+  token: z.string(),
+});
+
+export type SanityBlogConfig = z.infer<typeof sanityBlogConfigSchema>;
+
 export interface Shop {
   id: string;
   name: string;
@@ -54,6 +62,7 @@ export interface Shop {
   homeDescription?: Translated;
   homeImage?: string;
   navigation?: { label: string; url: string }[];
+  sanityBlog?: SanityBlogConfig;
   analyticsEnabled?: boolean;
 }
 
@@ -84,5 +93,6 @@ export const shopSchema = z.object({
   navigation: z
     .array(z.object({ label: z.string(), url: z.string() }))
     .optional(),
+  sanityBlog: sanityBlogConfigSchema.optional(),
   analyticsEnabled: z.boolean().optional(),
 });

@@ -6,24 +6,24 @@ import type { SKU } from "@types";
 export interface ProductGridProps {
   skus: SKU[];
   columns?: number;
-  minCols?: number;
-  maxCols?: number;
+  minItems?: number;
+  maxItems?: number;
   className?: string;
 }
 
 export default function ProductGrid({
   skus,
   columns,
-  minCols,
-  maxCols,
+  minItems,
+  maxItems,
   className,
 }: ProductGridProps) {
   return (
     <BaseGrid
       skus={skus}
       columns={columns}
-      minCols={minCols}
-      maxCols={maxCols}
+      minItems={minItems}
+      maxItems={maxItems}
       className={className}
     />
   );

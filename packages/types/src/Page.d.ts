@@ -40,6 +40,14 @@ export interface PageComponentBase {
      * Accepts any valid CSS padding value or Tailwind class.
      */
     padding?: string;
+    /** Minimum number of items allowed for list components */
+    minItems?: number;
+    /** Maximum number of items allowed for list components */
+    maxItems?: number;
+    /** Minimum columns allowed for grid components */
+    minCols?: number;
+    /** Maximum columns allowed for grid components */
+    maxCols?: number;
     [key: string]: unknown;
 }
 export interface HeroBannerComponent extends PageComponentBase {
@@ -59,6 +67,7 @@ export interface ValuePropsComponent extends PageComponentBase {
         desc: string;
     }[];
 }
+/** Carousel of customer reviews. `minItems`/`maxItems` limit visible reviews */
 export interface ReviewsCarouselComponent extends PageComponentBase {
     type: "ReviewsCarousel";
     reviews?: {
@@ -66,6 +75,7 @@ export interface ReviewsCarouselComponent extends PageComponentBase {
         quoteKey: string;
     }[];
 }
+/** Grid of products; `minItems`/`maxItems` clamp the responsive product count */
 export interface ProductGridComponent extends PageComponentBase {
     type: "ProductGrid";
 }
@@ -102,6 +112,7 @@ export interface BlogListingComponent extends PageComponentBase {
         url?: string;
     }[];
 }
+/** Slider of testimonials. `minItems`/`maxItems` limit visible testimonials */
 export interface TestimonialSliderComponent extends PageComponentBase {
     type: "TestimonialSlider";
     testimonials?: {

@@ -112,6 +112,34 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
         value={component.padding ?? ""}
         onChange={(e) => handleInput("padding", e.target.value)}
       />
+      {("minItems" in component || "maxItems" in component) && (
+        <>
+          <Input
+            label="Min Items"
+            type="number"
+            value={(component as any).minItems ?? ""}
+            onChange={(e) =>
+              handleInput(
+                "minItems",
+                e.target.value === "" ? undefined : Number(e.target.value)
+              )
+            }
+            min={0}
+          />
+          <Input
+            label="Max Items"
+            type="number"
+            value={(component as any).maxItems ?? ""}
+            onChange={(e) =>
+              handleInput(
+                "maxItems",
+                e.target.value === "" ? undefined : Number(e.target.value)
+              )
+            }
+            min={(component as any).minItems ?? 0}
+          />
+        </>
+      )}
       {"columns" in component && (
         <Input
           label="Columns"
@@ -123,8 +151,8 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
               e.target.value === "" ? undefined : Number(e.target.value)
             )
           }
-          min={(component as any).minCols}
-          max={(component as any).maxCols}
+          min={(component as any).minItems ?? (component as any).minCols}
+          max={(component as any).maxItems ?? (component as any).maxCols}
         />
       )}
       <Select

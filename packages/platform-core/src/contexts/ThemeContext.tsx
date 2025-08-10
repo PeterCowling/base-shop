@@ -4,6 +4,7 @@ import {
   createContext,
   ReactNode,
   useContext,
+  useEffect,
   useLayoutEffect,
   useState,
 } from "react";
@@ -38,6 +39,18 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     if (theme === "brandx") root.classList.add("theme-brandx");
     window.localStorage.setItem("theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    const handler = (e: StorageEvent) => {
+      if (e.key === "theme" && e.newValue) {
+        setTheme(e.newValue as Theme);
+      }
+    };
+    window.addEventListener("storage", handler);
+    return () => {
+      window.removeEventListener("storage", handler);
+    };
+  }, [setTheme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

@@ -8,7 +8,7 @@ import * as path from "node:path";
 import { prisma } from "../../db";
 import { validateShopName } from "../../../../lib/src/validateShopName";
 import { DATA_ROOT } from "../../dataRoot";
-import { nowIso } from "@shared/date";
+import { nowIso } from "@lib/date";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */

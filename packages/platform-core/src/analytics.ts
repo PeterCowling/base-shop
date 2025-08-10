@@ -1,7 +1,7 @@
 import "server-only";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import { nowIso } from "@shared/date";
+import { nowIso } from "@lib/date";
 import { DATA_ROOT } from "./dataRoot";
 import { validateShopName } from "./shops";
 import { getShopSettings, readShop } from "./repositories/shops.server";

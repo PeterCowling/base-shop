@@ -20,7 +20,7 @@ import type { Locale } from "@types";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
-import { nowIso } from "../../../../packages/shared/date";
+import { nowIso } from "@lib/date";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                    */

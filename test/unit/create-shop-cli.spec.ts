@@ -121,16 +121,16 @@ describe("CLI", () => {
     expect(sandbox.process.exit).toHaveBeenCalledWith(1);
   });
 
-  it("exits when payment provider is unsupported", () => {
+  it("passes payment providers through for validation", () => {
     const sandbox = runCli(["shop", "--payment=foo"]);
-    expect(sandbox.console.error).toHaveBeenCalled();
-    expect(sandbox.process.exit).toHaveBeenCalledWith(1);
+    expect(sandbox.process.exit).not.toHaveBeenCalled();
+    expect(sandbox.console.error).not.toHaveBeenCalled();
   });
 
-  it("exits when shipping provider is unsupported", () => {
+  it("passes shipping providers through for validation", () => {
     const sandbox = runCli(["shop", "--shipping=bar"]);
-    expect(sandbox.console.error).toHaveBeenCalled();
-    expect(sandbox.process.exit).toHaveBeenCalledWith(1);
+    expect(sandbox.process.exit).not.toHaveBeenCalled();
+    expect(sandbox.console.error).not.toHaveBeenCalled();
   });
 
   it("exits when shop name is invalid", () => {

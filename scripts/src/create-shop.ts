@@ -114,29 +114,6 @@ if (templateProvided) {
   }
 }
 
-if (options.payment.length) {
-  const invalid = options.payment.filter(
-    (p) => !defaultPaymentProviders.includes(p)
-  );
-  if (invalid.length) {
-    console.error(
-      `Unsupported payment providers: ${invalid.join(", ")}. Supported: ${defaultPaymentProviders.join(", ")}`
-    );
-    process.exit(1);
-  }
-}
-
-if (options.shipping.length) {
-  const invalid = options.shipping.filter(
-    (p) => !defaultShippingProviders.includes(p)
-  );
-  if (invalid.length) {
-    console.error(
-      `Unsupported shipping providers: ${invalid.join(", ")}. Supported: ${defaultShippingProviders.join(", ")}`
-    );
-    process.exit(1);
-  }
-}
 
 /** Prompt for theme when none is provided on the command line. */
 async function ensureTheme() {

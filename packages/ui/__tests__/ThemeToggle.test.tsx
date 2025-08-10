@@ -14,36 +14,46 @@ describe("ThemeToggle", () => {
     mockTheme = "base";
   });
 
-  it("cycles themes and updates ARIA attributes", () => {
+  it("selects themes and updates ARIA attributes", () => {
     const { rerender } = render(<ThemeToggle />);
 
-    let button = screen.getByRole("button", { name: /toggle theme/i });
-    let live = screen.getByText(/light theme selected/i);
-    expect(live).toHaveAttribute("aria-live", "polite");
-    expect(button).toHaveTextContent("Dark");
-    expect(button).toHaveAttribute("aria-pressed", "false");
+    const group = screen.getByRole("radiogroup", { name: /theme/i });
+    expect(group).toBeInTheDocument();
 
-    fireEvent.click(button);
+    let light = screen.getByLabelText("Light");
+    let dark = screen.getByLabelText("Dark");
+    let system = screen.getByLabelText("System");
+    let live = screen.getByText(/light theme selected/i);
+
+    expect(live).toHaveAttribute("aria-live", "polite");
+    expect(light).toBeChecked();
+    expect(light).toHaveAttribute("aria-checked", "true");
+
+    fireEvent.click(dark);
     expect(setTheme).toHaveBeenNthCalledWith(1, "dark");
 
     mockTheme = "dark";
     rerender(<ThemeToggle />);
-    button = screen.getByRole("button", { name: /toggle theme/i });
+    light = screen.getByLabelText("Light");
+    dark = screen.getByLabelText("Dark");
+    system = screen.getByLabelText("System");
     live = screen.getByText(/dark theme selected/i);
-    expect(button).toHaveTextContent("System");
-    expect(button).toHaveAttribute("aria-pressed", "true");
+    expect(dark).toBeChecked();
+    expect(dark).toHaveAttribute("aria-checked", "true");
 
-    fireEvent.click(button);
+    fireEvent.click(system);
     expect(setTheme).toHaveBeenNthCalledWith(2, "system");
 
     mockTheme = "system";
     rerender(<ThemeToggle />);
-    button = screen.getByRole("button", { name: /toggle theme/i });
+    light = screen.getByLabelText("Light");
+    dark = screen.getByLabelText("Dark");
+    system = screen.getByLabelText("System");
     live = screen.getByText(/system theme selected/i);
-    expect(button).toHaveTextContent("Light");
-    expect(button).toHaveAttribute("aria-pressed", "mixed");
+    expect(system).toBeChecked();
+    expect(system).toHaveAttribute("aria-checked", "true");
 
-    fireEvent.click(button);
+    fireEvent.click(light);
     expect(setTheme).toHaveBeenNthCalledWith(3, "base");
   });
 });

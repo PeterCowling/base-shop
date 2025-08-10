@@ -99,6 +99,9 @@ module.exports = {
     "^@platform-core/components/(.*)$":
       "<rootDir>/test/__mocks__/componentStub.js",
 
+    // CMS-specific component aliases
+    "^@/components/(.*)$": "<rootDir>/packages/ui/src/components/$1",
+
     // legacy relative imports still referenced inside tests
     "^\\.\\./repositories/(.*)$":
       "<rootDir>/packages/platform-core/src/repositories/$1",

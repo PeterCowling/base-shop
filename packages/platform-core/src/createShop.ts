@@ -389,9 +389,36 @@ export function deployShop(id: string, domain?: string): DeployShopResult {
   return resultObj;
 }
 
+function resolvePackagesRoot(): string {
+  let dir = process.cwd();
+  while (true) {
+    const candidate = join(dir, "packages");
+    try {
+      if (readdirSync(candidate)) return candidate;
+    } catch {
+      /* ignore */
+    }
+    const parent = join(dir, "..");
+    if (parent === dir) break;
+    dir = parent;
+  }
+  return join(process.cwd(), "packages");
+}
+
 export function listThemes(): string[] {
-  const themesDir = join("packages", "themes");
+  const themesDir = join(resolvePackagesRoot(), "themes");
   return readdirSync(themesDir, { withFileTypes: true })
     .filter((d) => d.isDirectory())
     .map((d) => d.name);
+}
+
+export function syncThemeTokens(
+  theme: string,
+  overrides: Record<string, string> = {}
+): Record<string, string> {
+  return {
+    ...loadBaseTokens(),
+    ...loadThemeTokensNode(theme),
+    ...overrides,
+  };
 }

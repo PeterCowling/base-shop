@@ -37,14 +37,33 @@ describe("inventory repository", () => {
       );
 
       await expect(repo.readInventory(shop)).rejects.toThrow();
+
+      await fs.writeFile(
+        path.join(dir, "data", "shops", shop, "inventory.json"),
+        JSON.stringify([{ sku: "sku-1", quantity: 1 }]),
+        "utf8"
+      );
+
+      await expect(repo.readInventory(shop)).rejects.toThrow();
     });
   });
 
-  it("writes inventory records", async () => {
+  it("writes inventory records with variants", async () => {
     await withRepo(async (repo, shop, dir) => {
       const items = [
-        { sku: "sku-1", quantity: 2 },
-        { sku: "sku-2", quantity: 0 },
+        {
+          sku: "sku-1",
+          productId: "prod-1",
+          variant: { size: "m", color: "red" },
+          quantity: 2,
+          lowStockThreshold: 1,
+        },
+        {
+          sku: "sku-2",
+          productId: "prod-2",
+          variant: { size: "l" },
+          quantity: 0,
+        },
       ];
       await repo.writeInventory(shop, items);
       const buf = await fs.readFile(
@@ -52,6 +71,22 @@ describe("inventory repository", () => {
         "utf8"
       );
       expect(JSON.parse(buf)).toEqual(items);
+      await expect(repo.readInventory(shop)).resolves.toEqual(items);
+    });
+  });
+
+  it("writeInventory throws on invalid items", async () => {
+    await withRepo(async (repo, shop) => {
+      const bad = [
+        {
+          sku: "sku-1",
+          productId: "prod-1",
+          // missing size
+          variant: { color: "red" },
+          quantity: 1,
+        },
+      ];
+      await expect(repo.writeInventory(shop, bad as any)).rejects.toThrow();
     });
   });
 });

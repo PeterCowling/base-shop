@@ -22,11 +22,7 @@ async function ensureDir(shop: string): Promise<void> {
 export async function readInventory(shop: string): Promise<InventoryItem[]> {
   try {
     const buf = await fs.readFile(inventoryPath(shop), "utf8");
-    const parsed = inventoryItemSchema.array().safeParse(JSON.parse(buf));
-    if (!parsed.success) {
-      throw new Error("Invalid inventory data");
-    }
-    return parsed.data;
+    return inventoryItemSchema.array().parse(JSON.parse(buf));
   } catch (err) {
     console.error(`Failed to read inventory for ${shop}`, err);
     throw err;
@@ -37,6 +33,7 @@ export async function writeInventory(
   shop: string,
   items: InventoryItem[]
 ): Promise<void> {
+  inventoryItemSchema.array().parse(items);
   await ensureDir(shop);
   const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
   await fs.writeFile(tmp, JSON.stringify(items, null, 2), "utf8");

@@ -5,6 +5,7 @@ import { calculateRentalDays } from "@/lib/date";
 import { stripe } from "@lib/stripeServer.server";
 import { getCustomerSession } from "@auth";
 import { priceForDays } from "@platform-core/pricing";
+import { findCoupon } from "@platform-core/coupons";
 import type { CartLine, CartState } from "@types";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
@@ -36,7 +37,8 @@ export const runtime = "edge";
  */
 const buildLineItemsFor = async (
   item: CartItem,
-  rentalDays: number
+  rentalDays: number,
+  discountRate: number
 ): Promise<
   [
     Stripe.Checkout.SessionCreateParams.LineItem,
@@ -46,12 +48,14 @@ const buildLineItemsFor = async (
   const baseName = item.size
     ? `${item.sku.title} (${item.size})`
     : item.sku.title;
+  const unit = await priceForDays(item.sku, rentalDays);
+  const discounted = Math.round(unit * (1 - discountRate));
 
   return [
     {
       price_data: {
         currency: "eur",
-        unit_amount: (await priceForDays(item.sku, rentalDays)) * 100,
+        unit_amount: discounted * 100,
         product_data: { name: baseName },
       },
       quantity: item.qty,
@@ -72,21 +76,26 @@ const buildLineItemsFor = async (
  */
 const computeTotals = async (
   cart: Cart,
-  rentalDays: number
-): Promise<{ subtotal: number; depositTotal: number }> => {
+  rentalDays: number,
+  discountRate: number
+): Promise<{ subtotal: number; depositTotal: number; discount: number }> => {
   const rentalTotals = await Promise.all(
-    Object.values(cart).map(
-      async (item) => (await priceForDays(item.sku, rentalDays)) * item.qty
-    )
+    Object.values(cart).map(async (item) => {
+      const unit = await priceForDays(item.sku, rentalDays);
+      const discounted = Math.round(unit * (1 - discountRate));
+      return { base: unit * item.qty, discounted: discounted * item.qty };
+    })
   );
 
-  const subtotal = rentalTotals.reduce((sum, v) => sum + v, 0);
+  const subtotal = rentalTotals.reduce((sum, v) => sum + v.discounted, 0);
+  const original = rentalTotals.reduce((sum, v) => sum + v.base, 0);
+  const discount = original - subtotal;
   const depositTotal = Object.values(cart).reduce(
     (sum, item) => sum + item.sku.deposit * item.qty,
     0
   );
 
-  return { subtotal, depositTotal };
+  return { subtotal, depositTotal, discount };
 };
 
 /* ------------------------------------------------------------------ *
@@ -103,9 +112,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   /* 2️⃣  Parse request body ---------------------------------------------- */
-  const { returnDate } = (await req.json().catch(() => ({}))) as {
+  const { returnDate, coupon } = (await req.json().catch(() => ({}))) as {
     returnDate?: string;
+    coupon?: string;
   };
+  const couponDef = findCoupon(coupon);
+  const discountRate = couponDef ? couponDef.discountPercent / 100 : 0;
   let rentalDays: number;
   try {
     rentalDays = calculateRentalDays(returnDate);
@@ -115,12 +127,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   /* 3️⃣  Build Stripe line-items ----------------------------------------- */
   const nestedItems = await Promise.all(
-    Object.values(cart).map((item) => buildLineItemsFor(item, rentalDays))
+    Object.values(cart).map((item) =>
+      buildLineItemsFor(item, rentalDays, discountRate)
+    )
   );
   const line_items = nestedItems.flat();
 
   /* 4️⃣  Compute metadata ------------------------------------------------- */
-  const { subtotal, depositTotal } = await computeTotals(cart, rentalDays);
+  const { subtotal, depositTotal, discount } = await computeTotals(
+    cart,
+    rentalDays,
+    discountRate
+  );
 
   const sizesMeta = JSON.stringify(
     Object.fromEntries(Object.values(cart).map((i) => [i.sku.id, i.size ?? ""]))
@@ -140,6 +158,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         returnDate: returnDate ?? "",
         rentalDays: rentalDays.toString(),
         customerId: customer?.customerId ?? "",
+        discount: discount.toString(),
+        coupon: couponDef?.code ?? "",
       },
     },
     metadata: {
@@ -149,6 +169,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       rentalDays: rentalDays.toString(),
       sizes: sizesMeta,
       customerId: customer?.customerId ?? "",
+      discount: discount.toString(),
+      coupon: couponDef?.code ?? "",
     },
     expand: ["payment_intent"],
   });

@@ -24,7 +24,17 @@ export async function GET(
           .on("error", reject)
           .on("data", (c) => chunks.push(c.toString()))
           .on("end", () => resolve(chunks.join("")));
-        items.forEach((i) => stream.write(i));
+        items.forEach((i) => {
+          stream.write({
+            sku: i.sku,
+            productId: i.productId,
+            ...i.variantAttributes,
+            quantity: i.quantity,
+            ...(i.lowStockThreshold !== undefined
+              ? { lowStockThreshold: i.lowStockThreshold }
+              : {}),
+          });
+        });
         stream.end();
       });
       return new Response(csv, {

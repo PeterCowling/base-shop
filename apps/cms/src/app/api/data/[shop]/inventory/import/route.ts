@@ -30,7 +30,26 @@ export async function POST(
         Readable.from(text)
           .pipe(parse({ headers: true, ignoreEmpty: true }))
           .on("error", reject)
-          .on("data", (row) => rows.push({ sku: row.sku, quantity: Number(row.quantity) }))
+          .on("data", (row) => {
+            const {
+              sku,
+              productId,
+              quantity,
+              lowStockThreshold,
+              ...variants
+            } = row as Record<string, string>;
+            rows.push({
+              sku,
+              productId: productId || sku,
+              variantAttributes: Object.fromEntries(
+                Object.entries(variants).filter(([, v]) => v !== undefined && v !== "")
+              ),
+              quantity: Number(quantity),
+              ...(lowStockThreshold
+                ? { lowStockThreshold: Number(lowStockThreshold) }
+                : {}),
+            });
+          })
           .on("end", () => resolve(rows));
       });
     }

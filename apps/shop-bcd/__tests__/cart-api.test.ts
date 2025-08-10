@@ -5,7 +5,9 @@ import {
   encodeCartCookie,
 } from "@/lib/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
-import { PATCH, POST } from "../src/api/cart/route";
+import { DELETE, GET, PATCH, POST } from "../src/api/cart/route";
+
+const TEST_SKU = { ...PRODUCTS[0], id: "01ARZ3NDEKTSV4RRFFQ69G5FAV" };
 
 declare function expectType<T>(value: T): void;
 
@@ -35,7 +37,7 @@ afterEach(() => {
 });
 
 test("POST adds items and sets cookie", async () => {
-  const sku = PRODUCTS[0];
+  const sku = { ...TEST_SKU };
   const req = createRequest({ sku, qty: 2 });
   const res = await POST(req);
   const body = (await res.json()) as any;
@@ -53,7 +55,7 @@ test("POST validates body", async () => {
 });
 
 test("PATCH updates quantity", async () => {
-  const sku = PRODUCTS[0];
+  const sku = { ...TEST_SKU };
   const cart = { [sku.id]: { sku, qty: 1 } };
   const req = createRequest({ id: sku.id, qty: 5 }, encodeCartCookie(cart));
   const res = await PATCH(req);
@@ -63,9 +65,38 @@ test("PATCH updates quantity", async () => {
   expect(decodeCartCookie(encoded)).toEqual(body.cart);
 });
 
+test("PATCH removes item when qty is 0", async () => {
+  const sku = { ...TEST_SKU };
+  const cart = { [sku.id]: { sku, qty: 1 } };
+  const req = createRequest({ id: sku.id, qty: 0 }, encodeCartCookie(cart));
+  const res = await PATCH(req);
+  const body = (await res.json()) as any;
+  expect(body.cart[sku.id]).toBeUndefined();
+});
+
 test("PATCH returns 404 for missing item", async () => {
   const res = await PATCH(
-    createRequest({ id: "missing", qty: 1 }, encodeCartCookie({}))
+    createRequest(
+      { id: "01ARZ3NDEKTSV4RRFFQ69G5FAA", qty: 1 },
+      encodeCartCookie({})
+    )
   );
   expect(res.status).toBe(404);
+});
+
+test("DELETE removes item", async () => {
+  const sku = { ...TEST_SKU };
+  const cart = { [sku.id]: { sku, qty: 2 } };
+  const req = createRequest({ id: sku.id }, encodeCartCookie(cart));
+  const res = await DELETE(req);
+  const body = (await res.json()) as any;
+  expect(body.cart[sku.id]).toBeUndefined();
+});
+
+test("GET returns cart", async () => {
+  const sku = { ...TEST_SKU };
+  const cart = { [sku.id]: { sku, qty: 3 } };
+  const res = await GET(createRequest({}, encodeCartCookie(cart)));
+  const body = (await res.json()) as any;
+  expect(body.cart).toEqual(cart);
 });

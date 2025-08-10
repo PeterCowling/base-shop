@@ -77,6 +77,7 @@ export default function Wizard({
   const [storeName, setStoreName] = useState("");
   const [logo, setLogo] = useState("");
   const [contactInfo, setContactInfo] = useState("");
+  const [type, setType] = useState<"sale" | "rental">("sale");
 
   /* ---------------------------------------------------------------------- */
   /*  Theme / template                                                      */
@@ -221,6 +222,7 @@ export default function Wizard({
     setStoreName(data.storeName);
     setLogo(data.logo);
     setContactInfo(data.contactInfo);
+    setType(data.type);
     setTemplate(data.template);
     setTheme(data.theme);
     savedThemeVars.current = data.themeVars;
@@ -260,6 +262,7 @@ export default function Wizard({
       storeName,
       logo,
       contactInfo,
+      type,
       template,
       theme,
       themeVars,
@@ -328,6 +331,7 @@ export default function Wizard({
         storeName,
         logo,
         contactInfo,
+        type,
         template,
         theme,
         payment,
@@ -547,6 +551,8 @@ export default function Wizard({
             setLogo={setLogo}
             contactInfo={contactInfo}
             setContactInfo={setContactInfo}
+            type={type}
+            setType={setType}
             template={template}
             setTemplate={setTemplate}
             templates={templates}
@@ -713,6 +719,7 @@ export default function Wizard({
             name={storeName}
             logo={logo}
             contactInfo={contactInfo}
+            type={type}
             template={template}
             theme={theme}
             payment={payment}

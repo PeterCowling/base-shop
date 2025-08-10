@@ -112,6 +112,9 @@ async function main() {
       const [key, ...rest] = trimmed.split("=");
       env[key] = rest.join("=");
     }
+    Object.keys(env).forEach((k) => {
+      if (env[k] === "") delete env[k];
+    });
     envSchema.parse(env);
   } catch (err) {
     validationError = err;

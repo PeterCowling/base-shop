@@ -1,5 +1,5 @@
-import type { Locale, PageComponent } from "@types";
-import { localeSchema } from "@types";
+import type { Locale, PageComponent, SanityBlogConfig } from "@types";
+import { localeSchema, sanityBlogConfigSchema } from "@types";
 import { pageComponentSchema } from "@types/Page";
 import { z } from "zod";
 import { slugify } from "@shared-utils";
@@ -28,6 +28,7 @@ export const createShopOptionsSchema = z.object({
       id: z.string().optional(),
     })
     .optional(),
+  sanityBlog: sanityBlogConfigSchema.optional(),
   navItems: z
     .array(z.object({ label: z.string().min(1), url: z.string().min(1) }))
     .default([]),
@@ -72,12 +73,14 @@ export interface CreateShopOptions {
     components: PageComponent[];
   }[];
   checkoutPage?: PageComponent[];
+  sanityBlog?: SanityBlogConfig;
 }
 
 export interface PreparedCreateShopOptions extends Required<
-  Omit<CreateShopOptions, "analytics" | "checkoutPage">
+  Omit<CreateShopOptions, "analytics" | "checkoutPage" | "sanityBlog">
 > {
   analytics?: CreateShopOptions["analytics"];
+  sanityBlog?: CreateShopOptions["sanityBlog"];
   checkoutPage: PageComponent[];
 }
 
@@ -120,5 +123,6 @@ export function prepareOptions(
       components: p.components ?? [],
     })),
     checkoutPage: parsed.checkoutPage,
+    sanityBlog: parsed.sanityBlog,
   };
 }

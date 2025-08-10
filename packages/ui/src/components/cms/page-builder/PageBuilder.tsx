@@ -33,6 +33,7 @@ const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
   ReviewsCarousel: { minItems: 1, maxItems: 10 },
   ProductGrid: { minItems: 1, maxItems: 3 },
   ProductCarousel: { minItems: 1, maxItems: 10 },
+  RecommendationCarousel: { minItems: 1, maxItems: 4 },
   Testimonials: { minItems: 1, maxItems: 10 },
   TestimonialSlider: { minItems: 1, maxItems: 10 },
 };

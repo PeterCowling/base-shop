@@ -69,21 +69,22 @@ function DynamicRenderer({ components }: { components: PageComponent[] }) {
     <>
       {components.map((block) => {
         const Comp = registry[block.type];
-
         if (!Comp) {
           console.warn(`Unknown component type: ${block.type}`);
           return null;
         }
 
-        /* Runtime props for specific blocks */
+        const { id, ...props } = block as Record<string, unknown> & {
+          id: string;
+        };
+
         if (block.type === "ProductGrid") {
-          return <Comp key={block.id} skus={PRODUCTS as SKU[]} />;
+          return (
+            <Comp key={id} {...props} skus={PRODUCTS as SKU[]} />
+          );
         }
 
-        const props =
-          (block as { props?: Record<string, unknown> }).props ?? {};
-
-        return <Comp key={block.id} {...props} />;
+        return <Comp key={id} {...props} />;
       })}
     </>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme, Theme } from "@platform-core/src/contexts/ThemeContext";
+import type { ChangeEvent } from "react";
 
 const themes: Theme[] = ["base", "dark", "system"];
 const labels: Record<Theme, string> = {
@@ -13,29 +14,29 @@ const labels: Record<Theme, string> = {
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
-  const currentIndex = themes.indexOf(theme as Theme);
-  const nextTheme = themes[(currentIndex + 1) % themes.length];
-  const ariaPressed: boolean | "mixed" =
-    theme === "dark" ? true : theme === "base" ? false : "mixed";
-
-  const toggleTheme = () => {
-    setTheme(nextTheme);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTheme(e.target.value as Theme);
   };
 
   return (
-    <>
-      <button
-        type="button"
-        onClick={toggleTheme}
-        className="hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-        aria-label="Toggle theme"
-        aria-pressed={ariaPressed}
-      >
-        {labels[nextTheme]}
-      </button>
+    <div role="radiogroup" aria-label="Theme">
+      {themes.map((t) => (
+        <div key={t} className="flex items-center gap-2">
+          <input
+            type="radio"
+            id={`theme-${t}`}
+            name="theme"
+            value={t}
+            checked={theme === t}
+            onChange={handleChange}
+            aria-checked={theme === t}
+          />
+          <label htmlFor={`theme-${t}`}>{labels[t]}</label>
+        </div>
+      ))}
       <span aria-live="polite" className="sr-only">
         {labels[theme as keyof typeof labels]} theme selected
       </span>
-    </>
+    </div>
   );
 }

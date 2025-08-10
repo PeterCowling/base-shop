@@ -16,6 +16,24 @@ describe("create-shop API", () => {
     (process.env as Record<string, string>).NODE_ENV = "development";
     const deployment = { status: "success", previewUrl: "https://new.pages.dev" };
     const createNewShop = jest.fn().mockResolvedValue(deployment);
+    jest.doMock("@platform-core/createShop", () => ({
+      __esModule: true,
+      createShopOptionsSchema: {
+        extend: () => ({
+          safeParse: (body: any) => ({
+            success: true,
+            data: {
+              id: body.id,
+              checkoutPage: [],
+              navItems: [],
+              pages: [],
+              payment: [],
+              shipping: [],
+            },
+          }),
+        }),
+      },
+    }));
     jest.doMock("@cms/actions/createShop.server", () => ({
       __esModule: true,
       createNewShop,
@@ -44,6 +62,14 @@ describe("create-shop API", () => {
     const createNewShop = jest
       .fn()
       .mockRejectedValue(new Error("Forbidden"));
+    jest.doMock("@platform-core/createShop", () => ({
+      __esModule: true,
+      createShopOptionsSchema: {
+        extend: () => ({
+          safeParse: (body: any) => ({ success: true, data: body }),
+        }),
+      },
+    }));
     jest.doMock("@cms/actions/createShop.server", () => ({
       __esModule: true,
       createNewShop,
@@ -51,6 +77,30 @@ describe("create-shop API", () => {
     const { POST } = await import("../src/app/api/create-shop/route");
     const res = await POST({ json: async () => ({ id: "new" }) } as Request);
     expect(res.status).toBe(403);
+    (process.env as Record<string, string>).NODE_ENV = prevEnv as string;
+  });
+
+  it("returns 400 when role assignment fails", async () => {
+    const prevEnv = process.env.NODE_ENV;
+    (process.env as Record<string, string>).NODE_ENV = "development";
+    const createNewShop = jest
+      .fn()
+      .mockRejectedValue(new Error("Failed to assign ShopAdmin role"));
+    jest.doMock("@platform-core/createShop", () => ({
+      __esModule: true,
+      createShopOptionsSchema: {
+        extend: () => ({
+          safeParse: (body: any) => ({ success: true, data: body }),
+        }),
+      },
+    }));
+    jest.doMock("@cms/actions/createShop.server", () => ({
+      __esModule: true,
+      createNewShop,
+    }));
+    const { POST } = await import("../src/app/api/create-shop/route");
+    const res = await POST({ json: async () => ({ id: "new" }) } as Request);
+    expect(res.status).toBe(400);
     (process.env as Record<string, string>).NODE_ENV = prevEnv as string;
   });
 });

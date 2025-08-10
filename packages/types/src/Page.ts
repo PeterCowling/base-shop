@@ -80,7 +80,7 @@ export interface ProductCarouselComponent extends PageComponentBase {
   type: "ProductCarousel";
 }
 
-/** Carousel of recommended products fetched from an API */
+/** Carousel of recommended products fetched from an API. `minItems`/`maxItems` limit visible products */
 export interface RecommendationCarouselComponent extends PageComponentBase {
   type: "RecommendationCarousel";
   endpoint: string;

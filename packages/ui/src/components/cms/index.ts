@@ -1,4 +1,4 @@
-export { ColorInput } from "./ColorInput";
+export { ColorInput, getContrast, suggestContrastColor } from "./ColorInput";
 export { FontSelect } from "./FontSelect";
 export { default as NavigationEditor } from "./NavigationEditor";
 export { default as PagesTable } from "./PagesTable";

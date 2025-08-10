@@ -81,6 +81,16 @@ Plugins extend the platform with extra payment providers, shipping integrations 
 
 To install a plugin, add it to the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS you can enable and configure the plugin under **CMS → Plugins**.
 
+## 5. Analytics and event tracking
+
+To send analytics events to Google Analytics and record aggregates:
+
+1. Set the environment variables `GA_MEASUREMENT_ID` and `GA_API_SECRET` in the CMS.
+2. In **CMS → Settings**, enable analytics and choose provider `ga` with the measurement ID.
+3. Events will be forwarded to Google Analytics and summarized daily under `DATA_ROOT/<shop>/analytics-aggregates.json`.
+
+Ensure these API keys are kept secret and that the app has write access to the data directory for storing aggregates.
+
 ## Troubleshooting
 
 - **"Theme 'X' not found" or "Template 'Y' not found"** – ensure the names match directories in `packages/themes` or `packages/`.

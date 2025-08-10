@@ -1,15 +1,5 @@
-import { listEvents } from "@platform-core/repositories/analytics.server";
-import { readOrders } from "@platform-core/repositories/rentalOrders.server";
-
-function groupByDay<T>(items: T[], getDate: (item: T) => string | undefined) {
-  const map: Record<string, number> = {};
-  for (const item of items) {
-    const d = getDate(item)?.slice(0, 10);
-    if (!d) continue;
-    map[d] = (map[d] || 0) + 1;
-  }
-  return map;
-}
+import { readAggregates } from "@platform-core/repositories/analytics.server";
+import { Charts } from "./Charts.client";
 
 export default async function ShopDashboard({
   params,
@@ -17,42 +7,36 @@ export default async function ShopDashboard({
   params: { shop: string };
 }) {
   const shop = params.shop;
-  const [events, orders] = await Promise.all([
-    listEvents(shop),
-    readOrders(shop),
-  ]);
+  const aggregates = await readAggregates(shop);
 
-  const views = groupByDay(
-    events.filter((e) => e.type === "page_view"),
-    (e) => e.timestamp as string
-  );
-  const sales = groupByDay(orders, (o) => o.startedAt);
+  const days = Array.from(
+    new Set([
+      ...Object.keys(aggregates.page_view),
+      ...Object.keys(aggregates.order),
+    ])
+  ).sort();
+
+  const traffic = {
+    labels: days,
+    data: days.map((d) => aggregates.page_view[d] || 0),
+  };
+  const sales = {
+    labels: days,
+    data: days.map((d) => (aggregates.order[d]?.amount ?? 0)),
+  };
+  const conversion = {
+    labels: days,
+    data: days.map((d) => {
+      const views = aggregates.page_view[d] || 0;
+      const orders = aggregates.order[d]?.count || 0;
+      return views > 0 ? (orders / views) * 100 : 0;
+    }),
+  };
 
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Dashboard: {shop}</h2>
-      <section className="mb-6">
-        <h3 className="font-semibold">Sales</h3>
-        <ul>
-          {Object.entries(sales).map(([day, count]) => (
-            <li key={day}>
-              {day}: {count}
-            </li>
-          ))}
-          {Object.keys(sales).length === 0 && <li>No orders</li>}
-        </ul>
-      </section>
-      <section>
-        <h3 className="font-semibold">Traffic</h3>
-        <ul>
-          {Object.entries(views).map(([day, count]) => (
-            <li key={day}>
-              {day}: {count}
-            </li>
-          ))}
-          {Object.keys(views).length === 0 && <li>No page views</li>}
-        </ul>
-      </section>
+      <Charts traffic={traffic} sales={sales} conversion={conversion} />
     </div>
   );
 }

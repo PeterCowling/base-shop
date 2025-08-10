@@ -4,16 +4,12 @@ import { ulid } from "ulid";
 import { nowIso } from "@lib/date";
 import type { RentalOrder } from "@types";
 import { trackOrder } from "./analytics";
-
-// TODO: Replace in-memory store with persistent DB (e.g., Prisma + SQLite)
-// The current implementation uses an in-memory Map to simulate persistence.
+import { prisma } from "./db";
 
 type Order = RentalOrder;
 
-const db = new Map<string, Order[]>();
-
 export async function listOrders(shop: string): Promise<Order[]> {
-  return db.get(shop) ?? [];
+  return prisma.rentalOrder.findMany({ where: { shop } });
 }
 
 export const readOrders = listOrders;
@@ -25,7 +21,6 @@ export async function addOrder(
   expectedReturnDate?: string,
   customerId?: string
 ): Promise<Order> {
-  const list = db.get(shop) ?? [];
   const order: Order = {
     id: ulid(),
     sessionId,
@@ -35,8 +30,7 @@ export async function addOrder(
     startedAt: nowIso(),
     ...(customerId ? { customerId } : {}),
   };
-  list.push(order);
-  db.set(shop, list);
+  await prisma.rentalOrder.create({ data: order });
   await trackOrder(shop, order.id, deposit);
   return order;
 }
@@ -46,31 +40,40 @@ export async function markReturned(
   sessionId: string,
   damageFee?: number
 ): Promise<Order | null> {
-  const list = db.get(shop) ?? [];
-  const order = list.find((o) => o.sessionId === sessionId);
-  if (!order) return null;
-  order.returnedAt = nowIso();
-  if (typeof damageFee === "number") {
-    order.damageFee = damageFee;
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: {
+        returnedAt: nowIso(),
+        ...(typeof damageFee === "number" ? { damageFee } : {}),
+      },
+    });
+    return order as Order;
+  } catch {
+    return null;
   }
-  return order;
 }
 
 export async function markRefunded(
   shop: string,
   sessionId: string
 ): Promise<Order | null> {
-  const list = db.get(shop) ?? [];
-  const order = list.find((o) => o.sessionId === sessionId);
-  if (!order) return null;
-  order.refundedAt = nowIso();
-  return order;
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: { refundedAt: nowIso() },
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
 }
 
 export async function getOrdersForCustomer(
   shop: string,
   customerId: string
 ): Promise<Order[]> {
-  const list = db.get(shop) ?? [];
-  return list.filter((o) => o.customerId === customerId);
+  return prisma.rentalOrder.findMany({
+    where: { shop, customerId },
+  });
 }

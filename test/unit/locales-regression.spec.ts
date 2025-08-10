@@ -3,7 +3,7 @@
 import { resolveLocale } from "@i18n/locales";
 import { assertLocale } from "@platform-core/src/products";
 import { LOCALES, type Locale } from "@types";
-import { parseMultilingualInput } from "@ui/utils/i18n";
+import { parseMultilingualInput } from "@i18n/parseMultilingualInput";
 import { getSeo } from "../../packages/template-app/src/lib/seo";
 
 jest.mock("@platform-core/repositories/shops.server", () => ({

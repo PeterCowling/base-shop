@@ -1,4 +1,5 @@
-import type { Locale } from "@i18n/locales";
+// packages/i18n/src/parseMultilingualInput.ts
+import type { Locale } from "./locales";
 
 export interface MultilingualField {
   field: "title" | "desc";

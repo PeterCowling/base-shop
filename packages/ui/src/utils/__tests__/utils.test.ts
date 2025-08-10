@@ -1,5 +1,4 @@
 import { boxProps, cn, drawerWidthProps } from "../style";
-import { parseMultilingualInput } from "../i18n";
 
 describe("cn", () => {
   it("filters out falsey values", () => {
@@ -37,23 +36,5 @@ describe("drawerWidthProps", () => {
     const result = drawerWidthProps(250);
     expect(result.widthClass).toBeUndefined();
     expect(result.style).toEqual({ width: 250 });
-  });
-});
-
-describe("parseMultilingualInput", () => {
-  const locales = ["en", "de", "it"] as const;
-  it("detects field and locale from name", () => {
-    expect(parseMultilingualInput("title_en", locales)).toEqual({
-      field: "title",
-      locale: "en",
-    });
-    expect(parseMultilingualInput("desc_de", locales)).toEqual({
-      field: "desc",
-      locale: "de",
-    });
-  });
-
-  it("returns null for invalid input", () => {
-    expect(parseMultilingualInput("foo_en", locales)).toBeNull();
   });
 });

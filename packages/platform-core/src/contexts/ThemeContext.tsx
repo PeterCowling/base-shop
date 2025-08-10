@@ -44,6 +44,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     root.classList.remove("theme-dark", "theme-brandx");
 
     const applied = theme === "system" ? systemTheme : theme;
+    root.style.colorScheme = applied === "dark" ? "dark" : "light";
     if (applied === "dark") root.classList.add("theme-dark");
     if (applied === "brandx") root.classList.add("theme-brandx");
     window.localStorage.setItem("theme", theme);

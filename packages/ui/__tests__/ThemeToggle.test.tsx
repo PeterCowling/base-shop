@@ -14,27 +14,20 @@ describe("ThemeToggle", () => {
     mockTheme = "base";
   });
 
-  it("switches label and theme between Dark and Light", () => {
-    const { rerender } = render(<ThemeToggle />);
+  it("offers Light, Dark, and System options", () => {
+    render(<ThemeToggle />);
 
-    let button = screen.getByRole("button", { name: /toggle theme/i });
-    expect(button).toHaveTextContent("Dark");
+    const select = screen.getByRole("combobox", { name: /theme/i });
+    expect(select).toHaveValue("base");
 
-    fireEvent.click(button);
+    fireEvent.change(select, { target: { value: "dark" } });
     expect(setTheme).toHaveBeenNthCalledWith(1, "dark");
 
-    mockTheme = "dark";
-    rerender(<ThemeToggle />);
-    button = screen.getByRole("button", { name: /toggle theme/i });
-    expect(button).toHaveTextContent("Light");
+    fireEvent.change(select, { target: { value: "system" } });
+    expect(setTheme).toHaveBeenNthCalledWith(2, "system");
 
-    fireEvent.click(button);
-    expect(setTheme).toHaveBeenNthCalledWith(2, "base");
-
-    mockTheme = "base";
-    rerender(<ThemeToggle />);
-    button = screen.getByRole("button", { name: /toggle theme/i });
-    expect(button).toHaveTextContent("Dark");
+    fireEvent.change(select, { target: { value: "base" } });
+    expect(setTheme).toHaveBeenNthCalledWith(3, "base");
   });
 });
 

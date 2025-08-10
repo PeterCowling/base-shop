@@ -1,23 +1,27 @@
 "use client";
 
-import { useTheme } from "@platform-core/src/contexts/ThemeContext";
+import { useTheme, type Theme } from "@platform-core/src/contexts/ThemeContext";
+import type { ChangeEvent } from "react";
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const isDark = theme === "dark";
 
-  const toggleTheme = () => {
-    setTheme(isDark ? "base" : "dark");
+  const handleChange = (
+    event: ChangeEvent<HTMLSelectElement>
+  ) => {
+    setTheme(event.target.value as Theme);
   };
 
   return (
-    <button
-      type="button"
-      onClick={toggleTheme}
+    <select
+      aria-label="Theme"
       className="hover:underline"
-      aria-label="Toggle theme"
+      value={theme}
+      onChange={handleChange}
     >
-      {isDark ? "Light" : "Dark"}
-    </button>
+      <option value="base">Light</option>
+      <option value="dark">Dark</option>
+      <option value="system">System</option>
+    </select>
   );
 }

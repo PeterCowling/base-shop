@@ -86,6 +86,12 @@ module.exports = {
       "<rootDir>/packages/platform-core/src/repositories/settings.server.ts",
     "^@config/src/(.*)$": "<rootDir>/packages/config/src/$1",
 
+    // ensure all packages use the same React instance
+    "^react$": "<rootDir>/node_modules/react/index.js",
+    "^react-dom$": "<rootDir>/node_modules/react-dom/index.js",
+    "^react/jsx-runtime$": "<rootDir>/node_modules/react/jsx-runtime.js",
+    "^react/jsx-dev-runtime$": "<rootDir>/node_modules/react/jsx-dev-runtime.js",
+
     // context mocks
     "^@platform-core/src/contexts/ThemeContext$":
       "<rootDir>/test/__mocks__/themeContextMock.tsx",

@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 
-export type Theme = "base" | "dark" | "brandx";
+export type Theme = "base" | "dark" | "brandx" | "system";
 
 interface ThemeContextValue {
   theme: Theme;
@@ -17,27 +17,52 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-function getInitialTheme(): Theme {
-  if (typeof window !== "undefined") {
-    const storedTheme = window.localStorage.getItem("theme") as Theme | null;
-    if (storedTheme) return storedTheme;
-    if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    }
+function getSystemTheme(): Exclude<Theme, "brandx" | "system"> {
+  if (typeof window !== "undefined" && window.matchMedia) {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "base";
   }
   return "base";
 }
 
+function getInitialTheme(): Theme {
+  if (typeof window !== "undefined") {
+    const storedTheme = window.localStorage.getItem("theme") as Theme | null;
+    if (storedTheme) return storedTheme;
+  }
+  return "system";
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [systemTheme, setSystemTheme] = useState<Exclude<Theme, "system">>(
+    getSystemTheme
+  );
+
+  useLayoutEffect(() => {
+    const mediaQuery =
+      typeof window !== "undefined" && window.matchMedia
+        ? window.matchMedia("(prefers-color-scheme: dark)")
+        : null;
+    const handleChange = (e: MediaQueryListEvent) => {
+      setSystemTheme(e.matches ? "dark" : "base");
+    };
+    if (theme === "system" && mediaQuery) {
+      setSystemTheme(mediaQuery.matches ? "dark" : "base");
+      mediaQuery.addEventListener("change", handleChange);
+      return () => mediaQuery.removeEventListener("change", handleChange);
+    }
+  }, [theme]);
 
   useLayoutEffect(() => {
     const root = document.documentElement;
     root.classList.remove("theme-dark", "theme-brandx");
-    if (theme === "dark") root.classList.add("theme-dark");
-    if (theme === "brandx") root.classList.add("theme-brandx");
+    const applied = theme === "system" ? systemTheme : theme;
+    if (applied === "dark") root.classList.add("theme-dark");
+    if (applied === "brandx") root.classList.add("theme-brandx");
     window.localStorage.setItem("theme", theme);
-  }, [theme]);
+  }, [theme, systemTheme]);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

@@ -16,6 +16,7 @@ export const envSchema = z.object({
   CHROMATIC_PROJECT_TOKEN: z.string().optional(),
   GMAIL_USER: z.string().optional(),
   GMAIL_PASS: z.string().optional(),
+  STOCK_ALERT_RECIPIENT: z.string().email().optional(),
 });
 
 applyFriendlyZodMessages();

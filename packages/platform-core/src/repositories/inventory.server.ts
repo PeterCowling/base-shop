@@ -8,6 +8,7 @@ import * as path from "node:path";
 import { validateShopName } from "../shops";
 
 import { DATA_ROOT } from "../dataRoot";
+import { checkAndAlert } from "../services/stockAlert.server";
 
 function inventoryPath(shop: string): string {
   shop = validateShopName(shop);
@@ -41,4 +42,5 @@ export async function writeInventory(
   const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
   await fs.writeFile(tmp, JSON.stringify(items, null, 2), "utf8");
   await fs.rename(tmp, inventoryPath(shop));
+  await checkAndAlert(shop, items);
 }

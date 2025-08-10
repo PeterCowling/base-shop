@@ -9,6 +9,7 @@ Key points:
 
 - Stripe handles deposits via escrow sessions.
 - Inventory lives in JSON files under data/shops/\*/inventory.json.
+- Setting `STOCK_ALERT_RECIPIENT` enables low-stock email alerts when an item's `quantity` falls below its `lowStockThreshold`.
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
 - Return logistics options stored in data/return-logistics.json.
 - RBAC: ShopAdmin currently manages all shops.
@@ -162,6 +163,7 @@ After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:
 - `CMS_SPACE_URL` – base URL of the CMS API
 - `CMS_ACCESS_TOKEN` – access token for pushing schemas
 - `CHROMATIC_PROJECT_TOKEN` – token for publishing Storybook previews
+- `STOCK_ALERT_RECIPIENT` – address that receives low-stock inventory alerts
 
 The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET`
 and `PREVIEW_TOKEN_SECRET`. Replace all placeholders with real values or supply

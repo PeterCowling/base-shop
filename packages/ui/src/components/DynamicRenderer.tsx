@@ -7,6 +7,7 @@ import type { Locale } from "@/i18n/locales";
 import { PRODUCTS } from "@platform-core/src/products";
 import type { PageComponent, SKU } from "@types";
 import type { CSSProperties, ReactNode } from "react";
+import type { Product } from "./organisms/ProductCard";
 
 export default function DynamicRenderer({
   components,
@@ -50,6 +51,20 @@ export default function DynamicRenderer({
     let extraProps: Record<string, unknown> = {};
     if (block.type === "ProductGrid") {
       extraProps = { skus: PRODUCTS as SKU[] };
+    }
+
+    if (block.type === "ProductCarousel") {
+      const products: Product[] = PRODUCTS.map(
+        ({ id, title, image, price }) => ({ id, title, image, price })
+      );
+      extraProps = { products };
+    }
+
+    if (block.type === "RecommendationCarousel") {
+      const products: Product[] = PRODUCTS.map(
+        ({ id, title, image, price }) => ({ id, title, image, price })
+      );
+      extraProps = { endpoint: "/api", products };
     }
 
     if (runtimeData && runtimeData[block.type]) {

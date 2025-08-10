@@ -1,79 +1,17 @@
 "use client";
 
 import type { Locale } from "@/i18n/locales";
-import { useSortable, SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
-import { useDroppable } from "@dnd-kit/core";
+import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import Link from "@tiptap/extension-link";
-import { EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { EditorContent } from "@tiptap/react";
 import type { PageComponent } from "@types";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "../../atoms/shadcn";
-import { blockRegistry } from "../blocks";
 import type { Action } from "../PageBuilder";
 import DOMPurify from "dompurify";
-
-function Block({
-  component,
-  locale,
-}: {
-  component: PageComponent;
-  locale: Locale;
-}) {
-  if (component.type === "Text") {
-    const text = (component as any).text;
-    const value =
-      typeof text === "string" ? text : (text?.[locale] ?? "");
-    const sanitized = DOMPurify.sanitize(value);
-    return <div dangerouslySetInnerHTML={{ __html: sanitized }} />;
-  }
-  const Comp = blockRegistry[component.type];
-  if (!Comp) return null;
-  const { id, type, ...props } = component as any;
-  return <Comp {...props} locale={locale} />;
-}
-
-const MemoBlock = memo(Block);
-
-function MenuBar({ editor }: { editor: ReturnType<typeof useEditor> }) {
-  if (!editor) return null;
-  return (
-    <div className="mb-1 flex gap-1 border-b pb-1">
-      <Button
-        type="button"
-        variant={editor.isActive("bold") ? "default" : "outline"}
-        onClick={() => editor.chain().focus().toggleBold().run()}
-      >
-        B
-      </Button>
-      <Button
-        type="button"
-        variant={editor.isActive("italic") ? "default" : "outline"}
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-      >
-        I
-      </Button>
-      <Button
-        type="button"
-        variant={editor.isActive("link") ? "default" : "outline"}
-        onClick={() => {
-          const url = window.prompt("URL");
-          if (url) {
-            editor
-              .chain()
-              .focus()
-              .extendMarkRange("link")
-              .setLink({ href: url })
-              .run();
-          }
-        }}
-      >
-        Link
-      </Button>
-    </div>
-  );
-}
+import Block from "./Block";
+import MenuBar from "./MenuBar";
+import useTextEditor from "./useTextEditor";
+import useSortableBlock from "./useSortableBlock";
 
 const CanvasItem = memo(function CanvasItem({
   component,
@@ -95,17 +33,15 @@ const CanvasItem = memo(function CanvasItem({
   locale: Locale;
 }) {
   const selected = selectedId === component.id;
-
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     isDragging,
-  } = useSortable({
-    id: component.id,
-    data: { from: "canvas", index, parentId },
-  });
+    setDropRef,
+    isOver,
+  } = useSortableBlock(component.id, index, parentId);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const startRef = useRef<{
@@ -123,37 +59,12 @@ const CanvasItem = memo(function CanvasItem({
   const [moving, setMoving] = useState(false);
   const [editing, setEditing] = useState(false);
 
-  const editor = useEditor({
-    extensions: [StarterKit, Link],
-    content:
-      typeof (component as any).text === "string"
-        ? (component as any).text
-        : ((component as any).text?.[locale] ?? ""),
-  });
+  const editor = useTextEditor(component, locale, editing);
 
   const hasChildren = Array.isArray((component as any).children);
   const childIds = hasChildren
     ? ((component as any).children as PageComponent[]).map((c) => c.id)
     : [];
-  const { setNodeRef: setDropRef, isOver } = useDroppable({
-    id: `container-${component.id}`,
-    data: { parentId: component.id },
-  });
-
-  useEffect(() => {
-    if (!editor || editing) return;
-    const content =
-      typeof (component as any).text === "string"
-        ? (component as any).text
-        : ((component as any).text?.[locale] ?? "");
-    editor.commands.setContent(content);
-  }, [locale, component, editor, editing]);
-
-  useEffect(() => {
-    if (editing) {
-      editor?.commands.focus("end");
-    }
-  }, [editing, editor]);
 
   useEffect(() => {
     if (!resizing) return;
@@ -341,7 +252,7 @@ const CanvasItem = memo(function CanvasItem({
           />
         )
       ) : (
-        <MemoBlock component={component} locale={locale} />
+        <Block component={component} locale={locale} />
       )}{" "}
       {selected && (
         <>

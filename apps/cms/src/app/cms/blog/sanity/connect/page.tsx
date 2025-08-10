@@ -1,14 +1,25 @@
 // apps/cms/src/app/cms/blog/sanity/connect/page.tsx
-import { Button } from "@/components/atoms/shadcn";
-import { saveSanityConfig } from "@cms/actions/saveSanityConfig";
+"use client";
 
-export const revalidate = 0;
+import { Button, Toast } from "@ui";
+import { saveSanityConfig } from "@cms/actions/saveSanityConfig";
+import { useFormState } from "react-dom";
+import { usePathname } from "next/navigation";
+import { getShopFromPath } from "@platform-core/utils";
 
 export default function SanityConnectPage() {
+  const pathname = usePathname();
+  const shopId = getShopFromPath(pathname) ?? "";
+  const action = saveSanityConfig.bind(null, shopId);
+  const [state, formAction] = useFormState(action, {
+    message: "",
+    error: "",
+  });
+
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-semibold">Connect Sanity</h2>
-      <form action={saveSanityConfig} className="space-y-4 max-w-md">
+      <form action={formAction} className="max-w-md space-y-4">
         <div className="space-y-1">
           <label className="block text-sm font-medium" htmlFor="projectId">
             Project ID
@@ -47,6 +58,10 @@ export default function SanityConnectPage() {
           Save
         </Button>
       </form>
+      <Toast
+        open={Boolean(state.message || state.error)}
+        message={state.message || state.error || ""}
+      />
     </div>
   );
 }

@@ -2,15 +2,23 @@
 "use server";
 
 import { verifyCredentials } from "@acme/plugin-sanity";
-import { resolveDataRoot } from "@platform-core/dataRoot";
 import { ensureAuthorized } from "./common/auth";
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import {
+  getShopById,
+  updateShopInRepo,
+} from "@platform-core/repositories/shop.server";
+import { setSanityConfig } from "@platform-core/shops";
 
-export async function saveSanityConfig(formData: FormData): Promise<{
-  error?: string;
-}> {
+export async function saveSanityConfig(
+  shopId: string,
+  _prev: unknown,
+  formData: FormData
+): Promise<{ error?: string; message?: string }> {
   await ensureAuthorized();
+
+  if (!shopId) {
+    return { error: "Missing shop ID" };
+  }
 
   const projectId = String(formData.get("projectId") ?? "");
   const dataset = String(formData.get("dataset") ?? "");
@@ -23,10 +31,14 @@ export async function saveSanityConfig(formData: FormData): Promise<{
     return { error: "Invalid Sanity credentials" };
   }
 
-  const root = path.resolve(resolveDataRoot(), "..", "cms");
-  await fs.mkdir(root, { recursive: true });
-  const file = path.join(root, "sanity.json");
-  await fs.writeFile(file, JSON.stringify(config, null, 2), "utf8");
+  try {
+    const shop = await getShopById(shopId);
+    const updated = setSanityConfig(shop, config);
+    await updateShopInRepo(shopId, updated);
+  } catch (err) {
+    console.error("Failed to save Sanity config", err);
+    return { error: "Failed to save Sanity config" };
+  }
 
-  return {};
+  return { message: "Sanity connection saved" };
 }

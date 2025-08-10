@@ -2,12 +2,12 @@
 
 exports[`dark theme tokens tokens snapshot 1`] = `
 {
-  "--color-accent": "260 83% 67%",
+  "--color-accent": "260 83% 70%",
   "--color-bg": "0 0% 4%",
   "--color-fg": "0 0% 93%",
   "--color-muted": "0 0% 60%",
   "--color-primary": "220 90% 66%",
-  "--color-primary-fg": "0 0% 100%",
+  "--color-primary-fg": "0 0% 10%",
   "--font-mono": ""Geist Mono", ui-monospace, monospace",
   "--font-sans": ""Geist Sans", system-ui, sans-serif",
   "--radius-lg": "12px",

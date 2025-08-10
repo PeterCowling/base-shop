@@ -41,6 +41,7 @@ export async function submitShop(
     checkoutComponents,
     analyticsProvider,
     analyticsId,
+    env,
   } = state;
 
   const options = {
@@ -91,6 +92,13 @@ export async function submitShop(
   };
 
   if (res.ok) {
+    if (env && Object.keys(env).length > 0) {
+      await fetch(`/cms/api/env/${shopId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(env),
+      }).catch(() => undefined);
+    }
     await fetch(`/cms/api/providers/shop/${shopId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

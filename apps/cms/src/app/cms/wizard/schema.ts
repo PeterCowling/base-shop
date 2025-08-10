@@ -130,6 +130,9 @@ export const wizardStateSchema = z.object({
   /* ------------------- Dynamic pages ------------------ */
   pages: z.array(pageInfoSchema).default([]),
 
+  /* ---------------- Environment vars ------------------ */
+  env: z.record(z.string()).optional().default({}),
+
   /* ---------------- Miscellaneous --------------------- */
   domain: z.string().optional().default(""),
   categoriesText: z.string().optional().default(""),

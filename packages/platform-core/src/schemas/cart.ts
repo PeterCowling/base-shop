@@ -11,7 +11,7 @@ export const postSchema = z
 export const patchSchema = z
   .object({
     id: z.string(),
-    qty: z.coerce.number().int().min(1),
+    qty: z.coerce.number().int().min(0),
   })
   .strict();
 

@@ -11,10 +11,10 @@ export interface SearchResultsTemplateProps
   results: Product[];
   page: number;
   pageCount: number;
-  /** Minimum items to show per row */
-  minItems?: number;
-  /** Maximum items to show per row */
-  maxItems?: number;
+  /** Minimum columns to show */
+  minCols?: number;
+  /** Maximum columns to show */
+  maxCols?: number;
   onQueryChange?: (query: string) => void;
   onPageChange?: (page: number) => void;
 }
@@ -24,8 +24,8 @@ export function SearchResultsTemplate({
   results,
   page,
   pageCount,
-  minItems,
-  maxItems,
+  minCols,
+  maxCols,
   onQueryChange,
   onPageChange,
   className,
@@ -39,11 +39,7 @@ export function SearchResultsTemplate({
         placeholder="Search products…"
       />
       {results.length > 0 ? (
-        <ProductGrid
-          products={results}
-          minItems={minItems}
-          maxItems={maxItems}
-        />
+        <ProductGrid products={results} minCols={minCols} maxCols={maxCols} />
       ) : (
         <p>No results found.</p>
       )}

@@ -21,3 +21,19 @@ model Page {
   slug   String
   data   Json
 }
+
+model RentalOrder {
+  id                 String @id
+  shop               String
+  sessionId          String
+  deposit            Int
+  expectedReturnDate String?
+  startedAt          String
+  returnedAt         String?
+  refundedAt         String?
+  damageFee          Int?
+  customerId         String?
+
+  @@unique([shop, sessionId])
+  @@index([customerId])
+}

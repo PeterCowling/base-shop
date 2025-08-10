@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
+import { toggleItem } from "@ui/utils/toggleItem";
 import {
   Table,
   TableBody,
@@ -29,17 +30,12 @@ export function DataTable<T>({
   selectable = false,
   onSelectionChange,
 }: DataTableProps<T>) {
-  const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [selected, setSelected] = useState<number[]>([]);
 
   const toggle = (idx: number) => {
-    const next = new Set(selected);
-    if (next.has(idx)) {
-      next.delete(idx);
-    } else {
-      next.add(idx);
-    }
+    const next = toggleItem(selected, idx);
     setSelected(next);
-    onSelectionChange?.(Array.from(next).map((i) => rows[i]));
+    onSelectionChange?.(next.map((i) => rows[i]));
   };
 
   return (
@@ -59,7 +55,7 @@ export function DataTable<T>({
           {rows.map((row, i) => (
             <TableRow
               key={i}
-              data-state={selected.has(i) ? "selected" : undefined}
+              data-state={selected.includes(i) ? "selected" : undefined}
               onClick={selectable ? () => toggle(i) : undefined}
               className={selectable ? "cursor-pointer" : undefined}
             >
@@ -68,7 +64,7 @@ export function DataTable<T>({
                   <input
                     type="checkbox"
                     className="accent-primary size-4"
-                    checked={selected.has(i)}
+                    checked={selected.includes(i)}
                     onChange={() => toggle(i)}
                     onClick={(e) => e.stopPropagation()}
                   />

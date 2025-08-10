@@ -23,6 +23,8 @@ pnpm init-shop
 
 After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
 
+Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.
+
 For automated scripts you can still call `pnpm create-shop <id>` with flags:
 
 ```bash

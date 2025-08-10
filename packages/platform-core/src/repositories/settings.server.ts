@@ -92,13 +92,14 @@ export interface SettingsDiffEntry {
   diff: Partial<ShopSettings>;
 }
 
+const entrySchema = z.object({
+  timestamp: z.string().datetime(),
+  diff: shopSettingsSchema.partial(),
+});
+
 export async function diffHistory(shop: string): Promise<SettingsDiffEntry[]> {
   try {
     const buf = await fs.readFile(historyPath(shop), "utf8");
-    const entrySchema = z.object({
-      timestamp: z.string(),
-      diff: shopSettingsSchema.partial(),
-    });
     return buf
       .trim()
       .split(/\n+/)

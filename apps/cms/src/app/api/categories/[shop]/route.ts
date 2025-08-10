@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { resolveDataRoot } from "@platform-core/utils";
+import { resolveDataRoot } from "@platform-core/dataRoot";
 
 export async function POST(
   req: NextRequest,

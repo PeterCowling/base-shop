@@ -7,7 +7,7 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { validateShopName } from "../shops";
 
-import { DATA_ROOT } from "./utils";
+import { DATA_ROOT } from "../dataRoot";
 
 function inventoryPath(shop: string): string {
   shop = validateShopName(shop);

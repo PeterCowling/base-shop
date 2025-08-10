@@ -11,7 +11,7 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { resolveDataRoot } from "@platform-core/utils";
+import { resolveDataRoot } from "@platform-core/dataRoot";
 
 export const metadata: Metadata = {
   title: "Dashboard · Base-Shop",

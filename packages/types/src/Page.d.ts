@@ -44,10 +44,6 @@ export interface PageComponentBase {
     minItems?: number;
     /** Maximum number of items allowed for list components */
     maxItems?: number;
-    /** Minimum columns allowed for grid components */
-    minCols?: number;
-    /** Maximum columns allowed for grid components */
-    maxCols?: number;
     [key: string]: unknown;
 }
 export interface HeroBannerComponent extends PageComponentBase {

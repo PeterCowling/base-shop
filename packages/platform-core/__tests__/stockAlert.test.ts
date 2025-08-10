@@ -31,11 +31,12 @@ describe("stock alerts", () => {
     ]);
 
     expect(sendEmail).toHaveBeenCalledTimes(1);
-    expect(sendEmail).toHaveBeenCalledWith(
-      "alert@example.com",
-      expect.stringContaining("shop"),
-      expect.stringContaining("sku-1"),
-    );
+    const [to, subject, body] = sendEmail.mock.calls[0];
+    expect(to).toBe("alert@example.com");
+    expect(subject).toContain("shop");
+    expect(body).toContain("sku-1");
+    expect(body).toContain("size: m");
+    expect(body).toContain("threshold 2");
   });
 
   it("does not send when above threshold", async () => {

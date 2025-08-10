@@ -77,6 +77,24 @@ describe("inventory repository", () => {
     });
   });
 
+  it("invokes checkAndAlert after writing", async () => {
+    await withRepo(async (repo, shop) => {
+      const items = [
+        {
+          sku: "sku-1",
+          productId: "p1",
+          variantAttributes: { size: "m" },
+          quantity: 1,
+          lowStockThreshold: 2,
+        },
+      ];
+      const checkAndAlert = jest.fn();
+      jest.doMock("../src/services/stockAlert.server", () => ({ checkAndAlert }));
+      await repo.writeInventory(shop, items);
+      expect(checkAndAlert).toHaveBeenCalledWith(shop, items);
+    });
+  });
+
   it("writeInventory throws on invalid items", async () => {
     await withRepo(async (repo, shop) => {
       const bad = [

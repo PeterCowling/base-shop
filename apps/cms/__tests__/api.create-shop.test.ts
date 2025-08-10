@@ -1,5 +1,4 @@
 import { jest } from "@jest/globals";
-import type { Session } from "next-auth";
 
 if (typeof (Response as any).json !== "function") {
   (Response as any).json = (data: any, init?: ResponseInit) =>
@@ -16,13 +15,6 @@ describe("create-shop API", () => {
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
     const createNewShop = jest.fn();
-    const session: Session = {
-      user: { role: "admin", email: "a" },
-      expires: "",
-    } as any;
-    jest.doMock("next-auth", () => ({
-      getServerSession: jest.fn(() => Promise.resolve(session)),
-    }));
     jest.doMock("@cms/actions/createShop.server", () => ({
       __esModule: true,
       createNewShop,
@@ -47,13 +39,15 @@ describe("create-shop API", () => {
   it("returns 403 when unauthorized", async () => {
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
-    jest.doMock("next-auth", () => ({
-      getServerSession: jest.fn(() =>
-        Promise.resolve({ user: { role: "viewer" } })
-      ),
+    const createNewShop = jest
+      .fn()
+      .mockRejectedValue(new Error("Forbidden"));
+    jest.doMock("@cms/actions/createShop.server", () => ({
+      __esModule: true,
+      createNewShop,
     }));
     const { POST } = await import("../src/app/api/create-shop/route");
-    const res = await POST({ json: async () => ({}) } as Request);
+    const res = await POST({ json: async () => ({ id: "new" }) } as Request);
     expect(res.status).toBe(403);
     (process.env as Record<string, string>).NODE_ENV = prevEnv as string;
   });

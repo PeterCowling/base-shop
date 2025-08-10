@@ -8,11 +8,10 @@ describe("POST /api/create-shop", () => {
     jest.resetModules();
   });
 
-  it("returns 403 when session is missing", async () => {
-    jest.doMock("next-auth", () => ({
-      getServerSession: jest.fn().mockResolvedValue(null),
-    }));
-    const createNewShop = jest.fn();
+  it("returns 403 when unauthorized", async () => {
+    const createNewShop = jest
+      .fn()
+      .mockRejectedValue(new Error("Forbidden"));
     jest.doMock("@cms/actions/createShop.server", () => ({
       __esModule: true,
       createNewShop,
@@ -23,10 +22,11 @@ describe("POST /api/create-shop", () => {
     );
     const req = new Request("http://localhost/api/create-shop", {
       method: "POST",
+      body: JSON.stringify({ id: "shop1" }),
     });
     const res = await POST(req);
     expect(res.status).toBe(403);
-    expect(createNewShop).not.toHaveBeenCalled();
+    expect(createNewShop).toHaveBeenCalledTimes(1);
   });
 
   it("calls createNewShop and returns success", async () => {
@@ -35,22 +35,24 @@ describe("POST /api/create-shop", () => {
       __esModule: true,
       createNewShop,
     }));
-    jest.doMock("next-auth", () => ({
-      getServerSession: jest
-        .fn()
-        .mockResolvedValue({ user: { role: "admin" } }),
-    }));
 
     const { POST } = await import(
       "../../../apps/cms/src/app/api/create-shop/route"
     );
     const req = new Request("http://localhost/api/create-shop", {
       method: "POST",
-      body: JSON.stringify({ id: "shop1", options: { theme: "base" } }),
+      body: JSON.stringify({ id: "shop1", theme: "base" }),
     });
     const res = await POST(req);
     expect(createNewShop).toHaveBeenCalledTimes(1);
-    expect(createNewShop).toHaveBeenCalledWith("shop1", { theme: "base" });
+    expect(createNewShop).toHaveBeenCalledWith("shop1", {
+      theme: "base",
+      payment: [],
+      shipping: [],
+      navItems: [],
+      pages: [],
+      checkoutPage: [],
+    });
     expect(res.status).toBe(201);
     await expect(res.json()).resolves.toEqual({ success: true });
   });
@@ -60,11 +62,6 @@ describe("POST /api/create-shop", () => {
     jest.doMock("@cms/actions/createShop.server", () => ({
       __esModule: true,
       createNewShop,
-    }));
-    jest.doMock("next-auth", () => ({
-      getServerSession: jest
-        .fn()
-        .mockResolvedValue({ user: { role: "admin" } }),
     }));
 
     const { POST } = await import(

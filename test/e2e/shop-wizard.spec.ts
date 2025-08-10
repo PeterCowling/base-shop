@@ -78,6 +78,23 @@ describe("Shop wizard", () => {
       .its("0.seo.title.en")
       .should("eq", "My Title");
 
+    // verify new shop appears in CMS list
+    cy.request("/cms/api/shops")
+      .its("body")
+      .then((shops) => {
+        expect(shops).to.include(shopId);
+      });
+
+    // creator should now be a ShopAdmin
+    cy.readFile("data/cms/users.json").then((rbac) => {
+      const roles = rbac.roles["1"];
+      if (Array.isArray(roles)) {
+        expect(roles).to.include("ShopAdmin");
+      } else {
+        expect(roles).to.equal("ShopAdmin");
+      }
+    });
+
     // sign out to reset auth state
     cy.contains("Sign out").click();
     cy.location("pathname").should("eq", "/login");

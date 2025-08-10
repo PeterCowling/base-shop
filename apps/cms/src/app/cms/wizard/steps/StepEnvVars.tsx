@@ -41,6 +41,12 @@ export default function StepEnvVars({
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Environment Variables</h2>
+      <p className="text-sm text-muted-foreground">
+        Provide credentials for any services your shop will use. Fields left
+        empty will be written as placeholders so you can update them later.
+        Some providers also require a plugin under <code>packages/plugins</code>
+        – see the setup docs for details.
+      </p>
       {ENV_KEYS.map((key) => (
         <label key={key} className="flex flex-col gap-1">
           <span>{key}</span>

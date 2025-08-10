@@ -64,6 +64,11 @@ export default function StepOptions({
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Options</h2>
+      <p className="text-sm text-muted-foreground">
+        Provider integrations require their plugins to be installed under
+        <code>packages/plugins</code>. After connecting you can configure each
+        plugin from <strong>CMS → Plugins</strong>.
+      </p>
       <div>
         <p className="font-medium">Payment Providers</p>
         <div className="flex items-center gap-2 text-sm">

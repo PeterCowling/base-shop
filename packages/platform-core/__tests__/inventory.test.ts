@@ -15,6 +15,8 @@ async function withRepo(
 
   const cwd = process.cwd();
   process.chdir(dir);
+  process.env.STRIPE_SECRET_KEY = "sk";
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
   jest.resetModules();
 
   const repo = await import("../src/repositories/inventory.server");

@@ -12,7 +12,7 @@ function getConfig(shopId: string) {
   const prefix = `SANITY_${shopId.toUpperCase()}_`;
   const projectId = process.env[`${prefix}PROJECT_ID`];
   const dataset = process.env[`${prefix}DATASET`];
-  const token = process.env[`${prefix}READ_TOKEN`];
+  const token = process.env[`${prefix}TOKEN`];
   if (!projectId || !dataset) {
     throw new Error(`Missing Sanity credentials for shop ${shopId}`);
   }

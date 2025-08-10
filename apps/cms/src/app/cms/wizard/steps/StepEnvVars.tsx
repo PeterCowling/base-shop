@@ -22,7 +22,7 @@ const ENV_KEYS = [
   "GMAIL_PASS",
   "SANITY_PROJECT_ID",
   "SANITY_DATASET",
-  "SANITY_WRITE_TOKEN",
+  "SANITY_TOKEN",
 ] as const;
 
 interface Props {

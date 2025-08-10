@@ -7,14 +7,17 @@ Shared page-level layouts used across apps. Currently includes:
   navigation state are available via `useLayout()`.
   - `DashboardTemplate` – basic stats overview.
 - `AnalyticsDashboardTemplate` – stats, line chart and table for dashboards.
-- `ProductGalleryTemplate` – grid or carousel listing of products.
+- `ProductGalleryTemplate` – grid or carousel listing of products. Supports
+  `minItems` and `maxItems` to control the responsive number of items per row
+  or slide.
 - `ProductDetailTemplate` – hero-style view for a single product.
 - `FeaturedProductTemplate` – showcase layout for highlighting a product.
 - `ProductComparisonTemplate` – side-by-side view of multiple products.
 - `HomepageTemplate` – layout with hero and recommendation slots.
 - `CartTemplate` – editable list of cart items with totals.
 - `CategoryCollectionTemplate` – grid of category cards.
-- `SearchResultsTemplate` – search bar with paginated product results.
+- `SearchResultsTemplate` – search bar with paginated product results. Accepts
+  `minItems` and `maxItems` to adjust the responsive product grid.
 - `CheckoutTemplate` – multi-step layout for collecting checkout information.
 - `OrderConfirmationTemplate` – summary of purchased items and totals.
 - `WishlistTemplate` – list of saved items with add-to-cart and remove actions.

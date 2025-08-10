@@ -94,19 +94,53 @@ export async function submitShop(
   };
 
   if (res.ok) {
+    const errors: string[] = [];
+
     if (env && Object.keys(env).length > 0) {
-      await fetch(`/cms/api/env/${shopId}`, {
+      try {
+        const envRes = await fetch(`/cms/api/env/${shopId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(env),
+        });
+        if (!envRes.ok) {
+          const envJson = (await envRes.json().catch(() => ({}))) as {
+            error?: string;
+          };
+          errors.push(
+            envJson.error ?? "Failed to save environment variables"
+          );
+        }
+      } catch {
+        errors.push("Failed to save environment variables");
+      }
+    }
+
+    try {
+      const providerRes = await fetch(`/cms/api/providers/shop/${shopId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(env),
-      }).catch(() => undefined);
+        body: JSON.stringify({ payment, shipping }),
+      });
+      if (!providerRes.ok) {
+        const providerJson = (await providerRes
+          .json()
+          .catch(() => ({}))) as {
+          error?: string;
+        };
+        errors.push(
+          providerJson.error ?? "Failed to save provider configuration"
+        );
+      }
+    } catch {
+      errors.push("Failed to save provider configuration");
     }
-    await fetch(`/cms/api/providers/shop/${shopId}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ payment, shipping }),
-    }).catch(() => undefined);
-    return { ok: true, deployment: json.deployment };
+
+    return {
+      ok: errors.length === 0,
+      deployment: json.deployment,
+      ...(errors.length ? { error: errors.join("; ") } : {}),
+    };
   }
 
   return { ok: false, error: json.error ?? "Failed to create shop" };

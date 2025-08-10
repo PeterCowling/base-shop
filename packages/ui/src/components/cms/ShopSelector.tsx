@@ -1,7 +1,6 @@
 "use client";
 
-import { getShopFromPath } from "@platform-core/src/utils/getShopFromPath";
-import { replaceShopInPath } from "@platform-core/src/utils/replaceShopInPath";
+import { getShopFromPath, replaceShopInPath } from "@platform-core";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {

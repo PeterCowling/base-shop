@@ -2,7 +2,7 @@
 "use client";
 
 import type { ProductPublication } from "@platform-core/src/products";
-import { getShopFromPath } from "@platform-core/src/utils/getShopFromPath";
+import { getShopFromPath } from "@platform-core";
 import type { Page } from "@types";
 import { usePathname } from "next/navigation";
 import { memo, useEffect, useState } from "react";

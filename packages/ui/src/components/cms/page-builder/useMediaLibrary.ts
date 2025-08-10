@@ -1,4 +1,4 @@
-import { getShopFromPath } from "@platform-core/src/utils/getShopFromPath";
+import { getShopFromPath } from "@platform-core";
 import type { MediaItem } from "@types";
 import { usePathname } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";

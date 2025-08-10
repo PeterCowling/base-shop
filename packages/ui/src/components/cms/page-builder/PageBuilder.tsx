@@ -10,7 +10,7 @@ import { Button } from "../../atoms/shadcn";
 import { Toast } from "../../atoms";
 import Palette from "./Palette";
 import { atomRegistry, moleculeRegistry, organismRegistry, containerRegistry } from "../blocks";
-import { getShopFromPath } from "@platform-core/src/utils/getShopFromPath";
+import { getShopFromPath } from "@platform-core";
 import useMediaUpload from "@ui/hooks/useMediaUpload";
 import { historyStateSchema, reducer, type Action } from "./state";
 import usePageBuilderDrag from "./usePageBuilderDrag";

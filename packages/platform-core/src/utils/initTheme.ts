@@ -1,17 +1,17 @@
-export const themeInitScript = `
+export const initTheme = `
 (function () {
   var theme = localStorage.getItem('theme') || 'system';
   var classList = document.documentElement.classList;
+  var isDark = theme === 'dark';
   if (theme === 'system') {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      classList.add('theme-dark');
-    } else {
-      classList.remove('theme-dark');
-    }
-  } else if (theme === 'dark') {
+    isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  if (isDark) {
     classList.add('theme-dark');
+    document.documentElement.style.colorScheme = 'dark';
   } else {
     classList.remove('theme-dark');
+    document.documentElement.style.colorScheme = 'light';
   }
   if (theme === 'brandx') {
     classList.add('theme-brandx');

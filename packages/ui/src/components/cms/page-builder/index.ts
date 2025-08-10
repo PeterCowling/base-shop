@@ -9,3 +9,5 @@ export { default as ValuePropsEditor } from "./ValuePropsEditor";
 export { default as ReviewsCarouselEditor } from "./ReviewsCarouselEditor";
 export { default as useMediaLibrary } from "./useMediaLibrary";
 export { useArrayEditor } from "./useArrayEditor";
+export { default as CanvasItem } from "./CanvasItem";
+export { default as Palette } from "./Palette";

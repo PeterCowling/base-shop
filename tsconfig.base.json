@@ -55,8 +55,6 @@
       /* ─── short '@/…' imports for components & hooks ────────────── */
       "@/components/pdp/*": ["packages/platform-core/src/components/pdp/*"],
       "@/components/shop/*": ["packages/platform-core/src/components/shop/*"],
-      "@/components/*": ["packages/ui/src/components/*"],
-      "@/hooks/*": ["packages/ui/src/hooks/*"],
 
       /* ─── lib helpers (stripe, products, cookies, …) ────────────── */
       "@lib/stripeServer": ["packages/lib/src/stripeServer.server.ts"],

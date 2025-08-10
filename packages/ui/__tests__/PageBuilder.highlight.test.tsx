@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import PageBuilder from "@/components/cms/PageBuilder";
-import CanvasItem from "@/components/cms/page-builder/CanvasItem";
+import PageBuilder from "@ui/components/cms/PageBuilder";
+import CanvasItem from "@ui/components/cms/page-builder/CanvasItem";
 import React from "react";
 
 type Page = any; // use 'any' to simplify

@@ -4,7 +4,7 @@ import { createPage } from "@cms/actions/pages.server";
 import type { Page } from "@types";
 import dynamic from "next/dynamic";
 
-const PageBuilder = dynamic(() => import("@/components/cms/PageBuilder"));
+const PageBuilder = dynamic(() => import("@ui/components/cms/PageBuilder"));
 void PageBuilder;
 
 export const revalidate = 0;
@@ -49,6 +49,11 @@ export default async function NewPageBuilderRoute({
   return (
     <>
       <h1 className="mb-6 text-2xl font-semibold">New page - {shop}</h1>
+      <p className="mb-4 text-sm text-muted-foreground">
+        Hold <kbd>Shift</kbd> while resizing to snap a component to full size,
+        use the editor buttons for quick 100% width or height, and press
+        <kbd>Space</kbd>/<kbd>Enter</kbd> then arrow keys to move components.
+      </p>
       <PageBuilder page={blank} onSave={save} onPublish={publish} />
     </>
   );

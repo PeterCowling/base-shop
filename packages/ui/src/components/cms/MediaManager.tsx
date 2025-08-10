@@ -1,7 +1,7 @@
 // packages/ui/src/components/cms/MediaManager.tsx
 "use client";
 
-import { Input } from "@/components/atoms/shadcn";
+import { Input } from "@ui/components/atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import { memo, ReactElement, useCallback, useState } from "react";

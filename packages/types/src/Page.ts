@@ -80,6 +80,12 @@ export interface ProductCarouselComponent extends PageComponentBase {
   type: "ProductCarousel";
 }
 
+/** Carousel of recommended products fetched from an API */
+export interface RecommendationCarouselComponent extends PageComponentBase {
+  type: "RecommendationCarousel";
+  endpoint: string;
+}
+
 export interface GalleryComponent extends PageComponentBase {
   type: "Gallery";
   images?: { src: string; alt?: string }[];
@@ -134,6 +140,7 @@ export type PageComponent =
   | ReviewsCarouselComponent
   | ProductGridComponent
   | ProductCarouselComponent
+  | RecommendationCarouselComponent
   | GalleryComponent
   | ContactFormComponent
   | ContactFormWithMapComponent
@@ -197,6 +204,11 @@ const productGridComponentSchema = baseComponentSchema.extend({
 
 const productCarouselComponentSchema = baseComponentSchema.extend({
   type: z.literal("ProductCarousel"),
+});
+
+const recommendationCarouselComponentSchema = baseComponentSchema.extend({
+  type: z.literal("RecommendationCarousel"),
+  endpoint: z.string(),
 });
 
 const galleryComponentSchema = baseComponentSchema.extend({
@@ -271,6 +283,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     reviewsCarouselComponentSchema,
     productGridComponentSchema,
     productCarouselComponentSchema,
+    recommendationCarouselComponentSchema,
     galleryComponentSchema,
     contactFormComponentSchema,
     contactFormWithMapComponentSchema,

@@ -79,6 +79,11 @@ export interface ProductGridComponent extends PageComponentBase {
 export interface ProductCarouselComponent extends PageComponentBase {
     type: "ProductCarousel";
 }
+/** Carousel of recommended products fetched from an API */
+export interface RecommendationCarouselComponent extends PageComponentBase {
+    type: "RecommendationCarousel";
+    endpoint: string;
+}
 export interface GalleryComponent extends PageComponentBase {
     type: "Gallery";
     images?: {
@@ -131,7 +136,7 @@ export interface SectionComponent extends PageComponentBase {
     type: "Section";
     children?: PageComponent[];
 }
-export type PageComponent = HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent | ProductCarouselComponent | GalleryComponent | ContactFormComponent | ContactFormWithMapComponent | BlogListingComponent | TestimonialsComponent | TestimonialSliderComponent | ImageComponent | TextComponent | SectionComponent;
+export type PageComponent = HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent | ProductCarouselComponent | RecommendationCarouselComponent | GalleryComponent | ContactFormComponent | ContactFormWithMapComponent | BlogListingComponent | TestimonialsComponent | TestimonialSliderComponent | ImageComponent | TextComponent | SectionComponent;
 export declare const pageSchema: z.ZodObject<{
     id: z.ZodString;
     slug: z.ZodString;

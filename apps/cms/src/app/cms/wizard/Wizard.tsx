@@ -169,7 +169,7 @@ export default function Wizard({
   /*  Navigation & dynamic pages                                            */
   /* ---------------------------------------------------------------------- */
   const [navItems, setNavItems] = useState<NavItem[]>([
-    { id: ulid(), label: "Shop", url: "/shop" },
+    { id: ulid(), label: "Shop", url: "https://example.com/shop" },
   ]);
 
   const [pages, setPages] = useState<PageInfo[]>([]);

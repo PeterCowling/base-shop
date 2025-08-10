@@ -52,6 +52,27 @@ describe("validate-env script", () => {
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
+  it("strips keys with empty values before validation", async () => {
+    existsSyncMock.mockReturnValue(true);
+    readFileSyncMock.mockReturnValue(
+      "STRIPE_SECRET_KEY=sk\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk\nCMS_ACCESS_TOKEN=\n"
+    );
+
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const exitSpy = jest
+      .spyOn(process, "exit")
+      .mockImplementation(((code?: number) => {
+        throw new Error(`exit:${code}`);
+      }) as never);
+
+    await import("../../dist-scripts/validate-env.js");
+
+    expect(logSpy).toHaveBeenCalledWith("Environment variables look valid.");
+    expect(exitSpy).not.toHaveBeenCalled();
+    expect(errorSpy).not.toHaveBeenCalled();
+  });
+
   it("exits 1 and reports invalid env", async () => {
     existsSyncMock.mockReturnValue(true);
     readFileSyncMock.mockReturnValue("STRIPE_SECRET_KEY=sk\n");

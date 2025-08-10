@@ -21,6 +21,10 @@ for (const line of envRaw.split(/\n+/)) {
     env[key] = rest.join("=");
 }
 try {
+    for (const [key, value] of Object.entries(env)) {
+        if (value === "")
+            delete env[key];
+    }
     envSchema.parse(env);
     console.log("Environment variables look valid.");
 }

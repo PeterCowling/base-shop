@@ -31,7 +31,8 @@ Key points:
    `init-shop` launches an interactive wizard that asks for the shop ID, display name, logo URL,
    contact email and which theme, template, payment and shipping providers to use. It then
    scaffolds `apps/shop-<id>` and writes an `.env` file inside the new app. Edit the `.env` file to
-   provide real secrets (see [Environment Variables](#environment-variables)). For scripted
+   provide real secrets (see [Environment Variables](#environment-variables)). Lines with empty
+   values are treated as placeholders and ignored by `pnpm validate-env`. For scripted
    setups you can still call `pnpm create-shop <id>` with flags.
 
 2. **Run the app**

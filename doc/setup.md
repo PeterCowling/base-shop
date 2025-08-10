@@ -52,6 +52,8 @@ Scaffolded apps/shop-demo
 ## 2. Configure environment variables
 
 Edit `apps/shop-<id>/.env` to replace placeholder secrets.
+Lines with empty values or commented out entries are treated as placeholders and ignored by
+`pnpm validate-env` and `pnpm setup-ci`.
 
 ```bash
 pnpm validate-env <id>

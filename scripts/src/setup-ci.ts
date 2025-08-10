@@ -24,6 +24,9 @@ for (const line of envRaw.split(/\n+/)) {
 }
 
 try {
+  for (const [key, value] of Object.entries(env)) {
+    if (value === "") delete env[key];
+  }
   envSchema.parse(env);
 } catch (err) {
   console.error("Invalid environment variables:\n", err);

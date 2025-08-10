@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./index.ts"
+    ".": "./src/index.ts",
+    "./shipping": "./src/shipping/index.ts",
+    "./tax": "./src/tax/index.ts"
   },
   "dependencies": {
     "@acme/shared-utils": "workspace:*"

@@ -6,6 +6,7 @@ import { slugify } from "@shared-utils";
 import { fillLocales } from "../utils/locales";
 import { defaultPaymentProviders, type DefaultPaymentProvider } from "./defaultPaymentProviders";
 import { defaultShippingProviders, type DefaultShippingProvider } from "./defaultShippingProviders";
+import { defaultTaxProviders, type DefaultTaxProvider } from "./defaultTaxProviders";
 
 export const createShopOptionsSchema = z.object({
   name: z.string().optional(),
@@ -16,6 +17,7 @@ export const createShopOptionsSchema = z.object({
   template: z.string().optional(),
   payment: z.array(z.enum(defaultPaymentProviders)).default([]),
   shipping: z.array(z.enum(defaultShippingProviders)).default([]),
+  tax: z.enum(defaultTaxProviders).default("taxjar"),
   pageTitle: z.record(localeSchema, z.string()).optional(),
   pageDescription: z.record(localeSchema, z.string()).optional(),
   socialImage: z.string().url().optional(),
@@ -51,6 +53,7 @@ export interface CreateShopOptions {
   template?: string;
   payment?: DefaultPaymentProvider[];
   shipping?: DefaultShippingProvider[];
+  tax?: DefaultTaxProvider;
   pageTitle?: Partial<Record<Locale, string>>;
   pageDescription?: Partial<Record<Locale, string>>;
   socialImage?: string;
@@ -91,6 +94,7 @@ export function prepareOptions(
     template: parsed.template ?? "template-app",
     payment: parsed.payment,
     shipping: parsed.shipping,
+    tax: parsed.tax,
     pageTitle: fillLocales(parsed.pageTitle, "Home"),
     pageDescription: fillLocales(parsed.pageDescription, ""),
     socialImage: parsed.socialImage ?? "",

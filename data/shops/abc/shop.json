@@ -5,6 +5,8 @@
   "themeId": "base",
   "themeTokens": {},
   "filterMappings": {},
+  "shippingProviders": ["ups"],
+  "taxProviders": ["taxjar"],
   "priceOverrides": {},
   "localeOverrides": {}
 }

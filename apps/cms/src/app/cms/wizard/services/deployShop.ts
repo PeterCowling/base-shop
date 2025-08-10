@@ -3,10 +3,12 @@
 
 import { validateShopName } from "@platform-core/src/shops";
 import type { DeployShopResult } from "@platform-core/createShop";
+import type { ShopDomainDetails } from "@platform-core/src/shops";
 
 export interface DeployResult {
   ok: boolean;
   info?: DeployShopResult | { status: "pending"; error?: string };
+  domain?: ShopDomainDetails;
   error?: string;
 }
 
@@ -30,11 +32,13 @@ export async function deployShop(
   });
 
   const json = (await res.json()) as
-    | DeployShopResult
+    | (DeployShopResult & { domain?: ShopDomainDetails })
     | { status: "pending"; error?: string };
 
-  if (res.ok) return { ok: true, info: json };
+  if (res.ok) {
+    return { ok: true, info: json, domain: (json as any).domain };
+  }
 
-  return { ok: false, error: json.error ?? "Deployment failed" };
+  return { ok: false, error: (json as any).error ?? "Deployment failed" };
 }
 

@@ -3,6 +3,7 @@
 
 import { authOptions } from "@cms/auth/options";
 import { deployShop, type DeployShopResult } from "@platform-core/createShop";
+import { setShopDomain, type ShopDomainDetails } from "@platform-core/src/shops";
 import { getServerSession } from "next-auth";
 import fsSync from "node:fs";
 import fs from "node:fs/promises";
@@ -28,10 +29,62 @@ function resolveRepoRoot(): string {
 
 export async function deployShopHosting(
   id: string,
-  domain?: string
-): Promise<DeployShopResult> {
+  domain?: string,
+): Promise<DeployShopResult & { domain?: ShopDomainDetails }> {
   await ensureAuthorized();
-  return deployShop(id, domain);
+  const res = deployShop(id, domain);
+
+  if (domain) {
+    const token = process.env.CLOUDFLARE_API_TOKEN;
+    const zone = process.env.CLOUDFLARE_ZONE_ID;
+    const account = process.env.CLOUDFLARE_ACCOUNT_ID;
+    if (token && zone && account) {
+      try {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        } as const;
+
+        const dns = await fetch(
+          `https://api.cloudflare.com/client/v4/zones/${zone}/dns_records`,
+          {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+              type: "CNAME",
+              name: domain,
+              content: `${id}.pages.dev`,
+              ttl: 1,
+              proxied: true,
+            }),
+          },
+        ).then((r) => r.json());
+
+        const cert = await fetch(
+          `https://api.cloudflare.com/client/v4/accounts/${account}/pages/projects/${id}/domains`,
+          {
+            method: "POST",
+            headers,
+            body: JSON.stringify({ name: domain }),
+          },
+        ).then((r) => r.json());
+
+        const info: ShopDomainDetails = {
+          domain,
+          dnsRecordId: dns?.result?.id,
+          status: cert?.result?.status,
+        };
+        await setShopDomain(id, info);
+        return { ...res, domain: info };
+      } catch (err) {
+        console.error("Cloudflare domain setup failed", err);
+      }
+    } else {
+      console.warn("Missing Cloudflare configuration; skipping domain setup");
+    }
+  }
+
+  return res;
 }
 
 export async function getDeployStatus(

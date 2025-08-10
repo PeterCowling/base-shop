@@ -2,7 +2,6 @@
 
 "use server";
 
-import { authOptions } from "@cms/auth/options";
 import {
   diffHistory,
   getShopSettings,
@@ -20,16 +19,9 @@ import {
   type ShopSeoFields,
   type ShopSettings,
 } from "@types";
-import { getServerSession } from "next-auth";
 import { z } from "zod";
 import { shopSchema, type ShopForm } from "./schemas";
-
-async function ensureAuthorized(): Promise<void> {
-  const session = await getServerSession(authOptions);
-  if (!session || session.user?.role === "viewer") {
-    throw new Error("Forbidden");
-  }
-}
+import { ensureAuthorized } from "./common/auth";
 
 export async function updateShop(
   shop: string,

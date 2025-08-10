@@ -138,7 +138,6 @@ export default function Wizard({
   >([]);
 
   const [homeLayout, setHomeLayout] = useState("");
-  const [newPageLayout, setNewPageLayout] = useState("");
   const [productLayout, setProductLayout] = useState("");
   const [shopLayout, setShopLayout] = useState("");
   const [checkoutLayout, setCheckoutLayout] = useState("");
@@ -174,37 +173,6 @@ export default function Wizard({
 
   const [pages, setPages] = useState<PageInfo[]>([]);
 
-  const [newSlug, setNewSlug] = useState("");
-  const [newTitle, setNewTitle] = useState<Record<Locale, string>>(() =>
-    languages.reduce<Record<Locale, string>>(
-      (acc, l) => {
-        acc[l] = "";
-        return acc;
-      },
-      {} as Record<Locale, string>
-    )
-  );
-  const [newDesc, setNewDesc] = useState<Record<Locale, string>>(() =>
-    languages.reduce<Record<Locale, string>>(
-      (acc, l) => {
-        acc[l] = "";
-        return acc;
-      },
-      {} as Record<Locale, string>
-    )
-  );
-  const [newImage, setNewImage] = useState<Record<Locale, string>>(() =>
-    languages.reduce<Record<Locale, string>>(
-      (acc, l) => {
-        acc[l] = "";
-        return acc;
-      },
-      {} as Record<Locale, string>
-    )
-  );
-  const [newComponents, setNewComponents] = useState<PageComponent[]>([]);
-  const [newDraftId, setNewDraftId] = useState<string | null>(null);
-  const [adding, setAdding] = useState(false);
 
   /* ---------------------------------------------------------------------- */
   /*  Import / seed data                                                    */
@@ -295,7 +263,6 @@ export default function Wizard({
           /* navigation & dynamic pages */
           setNavItems(data.navItems as NavItem[]);
           setPages(data.pages);
-          setNewPageLayout(data.newPageLayout);
 
           /* misc */
           setDomain(data.domain);
@@ -359,7 +326,6 @@ export default function Wizard({
       analyticsId,
       navItems,
       pages,
-      newPageLayout,
       domain,
       categoriesText,
     };
@@ -404,7 +370,6 @@ export default function Wizard({
     shopLayout,
     productLayout,
     checkoutLayout,
-    newPageLayout,
   ]);
 
   /* --- clear polling timer when unmounting --- */
@@ -821,22 +786,6 @@ export default function Wizard({
             pageTemplates={pageTemplates}
             pages={pages}
             setPages={setPages}
-            newSlug={newSlug}
-            setNewSlug={setNewSlug}
-            newTitle={newTitle}
-            setNewTitle={setNewTitle}
-            newDesc={newDesc}
-            setNewDesc={setNewDesc}
-            newImage={newImage}
-            setNewImage={setNewImage}
-            newComponents={newComponents}
-            setNewComponents={setNewComponents}
-            newDraftId={newDraftId}
-            setNewDraftId={setNewDraftId}
-            adding={adding}
-            setAdding={setAdding}
-            newPageLayout={newPageLayout}
-            setNewPageLayout={setNewPageLayout}
             shopId={shopId}
             themeStyle={themeStyle}
             onBack={() => setStep(9)}

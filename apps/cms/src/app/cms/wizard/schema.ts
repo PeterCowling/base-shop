@@ -132,7 +132,6 @@ export const wizardStateSchema = z.object({
   pages: z.array(pageInfoSchema).default([]),
 
   /* ---------------- Miscellaneous --------------------- */
-  newPageLayout: z.string().optional().default(""),
   domain: z.string().optional().default(""),
   categoriesText: z.string().optional().default(""),
 }).strict();

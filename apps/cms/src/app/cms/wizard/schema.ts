@@ -54,12 +54,14 @@ export interface NavItem {
 
 const _navItemSchema: z.ZodType<NavItem> = z.lazy(
   () =>
-    z.object({
-      id: z.string(),
-      label: z.string(),
-      url: z.string(),
-      children: z.array(_navItemSchema).optional(),
-    }) as z.ZodType<NavItem>
+    z
+      .object({
+        id: z.string(),
+        label: z.string(),
+        url: z.string(),
+        children: z.array(_navItemSchema).optional(),
+      })
+      .strict() as z.ZodType<NavItem>
 );
 
 export const navItemSchema = _navItemSchema as unknown as z.ZodType<
@@ -72,17 +74,19 @@ export const navItemSchema = _navItemSchema as unknown as z.ZodType<
 /*  Page‑info schema                                                          */
 /* -------------------------------------------------------------------------- */
 
-export const pageInfoSchema = z.object({
-  id: z.string().optional(),
-  /** `slug` is **required** so routing can never break. */
-  slug: z.string(),
-  /** All locale keys are required – no `Partial`. */
-  title: localeRecordSchema,
-  description: localeRecordSchema,
-  image: localeRecordSchema,
-  /** Components are serialised PageComponent instances. */
-  components: z.array(pageComponentSchema).default([]),
-});
+export const pageInfoSchema = z
+  .object({
+    id: z.string().optional(),
+    /** `slug` is **required** so routing can never break. */
+    slug: z.string(),
+    /** All locale keys are required – no `Partial`. */
+    title: localeRecordSchema,
+    description: localeRecordSchema,
+    image: localeRecordSchema,
+    /** Components are serialised PageComponent instances. */
+    components: z.array(pageComponentSchema).default([]),
+  })
+  .strict();
 
 export type PageInfo = z.infer<typeof pageInfoSchema>; // <- slug & components **required**
 
@@ -156,6 +160,6 @@ export const wizardStateSchema = z.object({
   newPageLayout: z.string().optional().default(""),
   domain: z.string().optional().default(""),
   categoriesText: z.string().optional().default(""),
-});
+}).strict();
 
 export type WizardState = z.infer<typeof wizardStateSchema>;

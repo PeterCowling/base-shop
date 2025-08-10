@@ -16,15 +16,19 @@ export const runtime = "edge";
 /* ------------------------------------------------------------------
  * Zod schemas for request bodies
  * ------------------------------------------------------------------ */
-const postSchema = z.object({
-  sku: z.union([skuSchema, skuSchema.pick({ id: true })]),
-  qty: z.number().int().positive().optional(),
-});
+const postSchema = z
+  .object({
+    sku: z.union([skuSchema, skuSchema.pick({ id: true })]),
+    qty: z.number().int().positive().optional(),
+  })
+  .strict();
 
-const patchSchema = z.object({
-  id: z.string(),
-  qty: z.number().int().positive(),
-});
+const patchSchema = z
+  .object({
+    id: z.string(),
+    qty: z.number().int().positive(),
+  })
+  .strict();
 
 /* ------------------------------------------------------------------
  * POST – add an item to the cart

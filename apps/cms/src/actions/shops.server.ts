@@ -68,20 +68,22 @@ export async function getSettings(shop: string) {
   return getShopSettings(shop);
 }
 
-const seoSchema = z.object({
-  locale: z.string(),
-  title: z.string().min(1, "Required"),
-  description: z.string().optional().default(""),
-  image: z
-    .string()
-    .optional()
-    .refine((v) => !v || /^https?:\/\/\S+$/.test(v), {
-      message: "Invalid image URL",
-    }),
-  canonicalBase: z.string().url().optional(),
-  ogUrl: z.string().url().optional(),
-  twitterCard: z.string().optional(),
-});
+const seoSchema = z
+  .object({
+    locale: z.string(),
+    title: z.string().min(1, "Required"),
+    description: z.string().optional().default(""),
+    image: z
+      .string()
+      .optional()
+      .refine((v) => !v || /^https?:\/\/\S+$/.test(v), {
+        message: "Invalid image URL",
+      }),
+    canonicalBase: z.string().url().optional(),
+    ogUrl: z.string().url().optional(),
+    twitterCard: z.string().optional(),
+  })
+  .strict();
 
 export async function updateSeo(
   shop: string,

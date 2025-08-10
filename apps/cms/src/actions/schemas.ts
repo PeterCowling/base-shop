@@ -15,7 +15,8 @@ export const productSchema = z
     id: z.string(),
     price: z.coerce.number().min(0, "Invalid price"),
   })
-  .extend(localeFields);
+  .extend(localeFields)
+  .strict();
 
 const jsonRecord = z
   .string()
@@ -30,25 +31,27 @@ const jsonRecord = z
     }
   });
 
-export const shopSchema = z.object({
-  id: z.string(),
-  name: z.string().min(1, "Required"),
-  themeId: z.string().min(1, "Required"),
-  catalogFilters: z
-    .string()
-    .optional()
-    .default("")
-    .transform((s) =>
-      s
-        .split(/,\s*/)
-        .map((v) => v.trim())
-        .filter(Boolean)
-    ),
-  themeTokens: jsonRecord,
-  filterMappings: jsonRecord,
-  priceOverrides: jsonRecord,
-  localeOverrides: jsonRecord,
-});
+export const shopSchema = z
+  .object({
+    id: z.string(),
+    name: z.string().min(1, "Required"),
+    themeId: z.string().min(1, "Required"),
+    catalogFilters: z
+      .string()
+      .optional()
+      .default("")
+      .transform((s) =>
+        s
+          .split(/,\s*/)
+          .map((v) => v.trim())
+          .filter(Boolean)
+      ),
+    themeTokens: jsonRecord,
+    filterMappings: jsonRecord,
+    priceOverrides: jsonRecord,
+    localeOverrides: jsonRecord,
+  })
+  .strict();
 
 export type ProductForm = z.infer<typeof productSchema>;
 export type ShopForm = z.infer<typeof shopSchema>;

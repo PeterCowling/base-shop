@@ -6,3 +6,5 @@ export { default as ProductPageBuilder } from "./ProductPageBuilder";
 export * from "./products";
 export { RangeInput } from "./RangeInput";
 export { default as StyleEditor } from "./StyleEditor";
+export { default as PageBuilder } from "./PageBuilder";
+export * from "./page-builder";

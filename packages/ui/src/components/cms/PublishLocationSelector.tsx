@@ -1,7 +1,7 @@
 // packages/ui/components/cms/PublishLocationSelector.tsx
 "use client";
 
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Button, Input } from "@ui/components/atoms/shadcn";
 import type { PublishLocation } from "@types";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { toggleItem } from "../../utils/toggleItem";

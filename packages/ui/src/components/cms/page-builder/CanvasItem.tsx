@@ -158,14 +158,26 @@ const CanvasItem = memo(function CanvasItem({
   useEffect(() => {
     if (!resizing) return;
     const handleMove = (e: PointerEvent) => {
-      if (!startRef.current) return;
+      if (!startRef.current || !containerRef.current) return;
       const dx = e.clientX - startRef.current.x;
       const dy = e.clientY - startRef.current.y;
+      const parent = containerRef.current.parentElement;
+      const parentW = parent?.offsetWidth ?? startRef.current.w + dx;
+      const parentH = parent?.offsetHeight ?? startRef.current.h + dy;
+      const newW = startRef.current.w + dx;
+      const newH = startRef.current.h + dy;
+      const threshold = 10;
       const payload: Action = {
         type: "resize",
         id: component.id,
-        width: `${startRef.current.w + dx}px`,
-        height: `${startRef.current.h + dy}px`,
+        width:
+          e.shiftKey || Math.abs(parentW - newW) <= threshold
+            ? "100%"
+            : `${newW}px`,
+        height:
+          e.shiftKey || Math.abs(parentH - newH) <= threshold
+            ? "100%"
+            : `${newH}px`,
       };
       if (component.position === "absolute") {
         payload.left = `${startRef.current.l + dx}px`;
@@ -268,6 +280,7 @@ const CanvasItem = memo(function CanvasItem({
       role="listitem"
       aria-grabbed={isDragging}
       aria-dropeffect="move"
+      tabIndex={0}
       style={{
         transform: CSS.Transform.toString(transform),
         ...(component.width ? { width: component.width } : {}),
@@ -286,6 +299,10 @@ const CanvasItem = memo(function CanvasItem({
         className="absolute left-0 top-0 z-10 h-3 w-3 cursor-move bg-muted"
         {...attributes}
         {...listeners}
+        role="button"
+        tabIndex={0}
+        aria-grabbed={isDragging}
+        title="Drag or press space/enter to move"
         onPointerDown={(e) => {
           e.stopPropagation();
           onSelectId(component.id);

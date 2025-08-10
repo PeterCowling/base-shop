@@ -3,7 +3,7 @@
 
 import { Progress, Toast } from "@/components/atoms";
 import { LOCALES } from "@acme/i18n";
-import { createShopOptionsSchema, type DeployShopResult } from "@platform-core/createShop";
+import type { DeployShopResult } from "@platform-core/createShop";
 import { validateShopName } from "@platform-core/src/shops";
 import type { Locale, PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
@@ -39,6 +39,13 @@ import {
   resetWizardProgress,
   STORAGE_KEY,
 } from "./hooks/useWizardPersistence";
+
+/* -------------------------------------------------------------------------- */
+/*  Services                                                                  */
+/* -------------------------------------------------------------------------- */
+import { submitShop } from "./services/submitShop";
+import { seedShop } from "./services/seedShop";
+import { deployShop } from "./services/deployShop";
 
 /* ========================================================================== */
 /*  Types                                                                     */
@@ -391,66 +398,31 @@ export default function Wizard({
     setResult(null);
     setFieldErrors({});
     try {
-      validateShopName(shopId);
-    } catch (err) {
-      setFieldErrors({
-        id: [err instanceof Error ? err.message : String(err)],
-      });
-      setCreating(false);
-      return;
-    }
-
-    const options = {
-      name: storeName || undefined,
-      logo: logo || undefined,
-      contactInfo: contactInfo || undefined,
-      template,
-      theme,
-      payment,
-      shipping,
-      analytics: analyticsProvider
-        ? { provider: analyticsProvider, id: analyticsId || undefined }
-        : undefined,
-      pageTitle,
-      pageDescription,
-      socialImage: socialImage || undefined,
-      navItems: navItems.map((n) => ({ label: n.label, url: n.url })),
-      pages: pages.map((p) => ({
-        slug: p.slug,
-        title: p.title,
-        description: p.description,
-        image: p.image,
-        components: p.components,
-      })),
-      checkoutPage: checkoutComponents,
-    };
-
-    const parsed = createShopOptionsSchema.safeParse(options);
-    if (!parsed.success) {
-      const errs: Record<string, string[]> = {};
-      for (const issue of parsed.error.issues) {
-        const key = issue.path.join(".");
-        errs[key] = [...(errs[key] ?? []), issue.message];
-      }
-      setFieldErrors(errs);
-      setCreating(false);
-      return;
-    }
-
-    try {
-      const res = await fetch("/cms/api/create-shop", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: shopId, options: parsed.data }),
+      const { ok, error, fieldErrors } = await submitShop(shopId, {
+        storeName,
+        logo,
+        contactInfo,
+        template,
+        theme,
+        payment,
+        shipping,
+        pageTitle,
+        pageDescription,
+        socialImage,
+        navItems,
+        pages,
+        checkoutComponents,
+        analyticsProvider,
+        analyticsId,
       });
 
-      if (res.ok) {
+      if (ok) {
         setResult("Shop created successfully");
         /* Remain on the summary step so the success message is visible;
            navigation to the next step is left to the user. */
         resetWizardProgress();
       } else {
-        const { error } = (await res.json()) as { error?: string };
+        if (fieldErrors) setFieldErrors(fieldErrors);
         setResult(error ?? "Failed to create shop");
       }
     } catch (err) {
@@ -464,22 +436,14 @@ export default function Wizard({
   async function deploy() {
     setDeploying(true);
     setDeployResult(null);
-
     try {
-      validateShopName(shopId);
-      const res = await fetch("/cms/api/deploy-shop", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: shopId, domain }),
-      });
-      const json: DeployShopResult | { status: "pending"; error?: string } =
-        await res.json();
-      if (res.ok) {
+      const { ok, info, error } = await deployShop(shopId, domain);
+      if (ok) {
         setDeployResult("Deployment started");
-        setDeployInfo(json);
+        if (info) setDeployInfo(info);
         startPolling();
       } else {
-        setDeployResult(json.error ?? "Deployment failed");
+        setDeployResult(error ?? "Deployment failed");
       }
     } catch (err) {
       console.error("Error deploying shop", err);
@@ -492,40 +456,19 @@ export default function Wizard({
   async function seed() {
     setSeeding(true);
     setSeedResult(null);
-
     try {
-      validateShopName(shopId);
-      if (csvFile) {
-        const fd = new FormData();
-        fd.append("file", csvFile);
-        const res = await fetch(`/cms/api/upload-csv/${shopId}`, {
-          method: "POST",
-          body: fd,
-        });
-        if (!res.ok) {
-          const json = await res.json().catch(() => ({}));
-          throw new Error(json.error ?? "Failed to save data");
-        }
-      }
+      const { ok, error } = await seedShop(
+        shopId,
+        csvFile ?? undefined,
+        categoriesText
+      );
 
-      if (categoriesText.trim()) {
-        const cats = categoriesText
-          .split(/[\n,]+/)
-          .map((c) => c.trim())
-          .filter(Boolean);
-        const res = await fetch(`/cms/api/categories/${shopId}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(cats),
-        });
-        if (!res.ok) {
-          const json = await res.json().catch(() => ({}));
-          throw new Error(json.error ?? "Failed to save data");
-        }
+      if (ok) {
+        setSeedResult("Data saved");
+        setStep(10);
+      } else {
+        setSeedResult(error ?? "Failed to save data");
       }
-
-      setSeedResult("Data saved");
-      setStep(10);
     } catch (err) {
       console.error("Error saving seed data", err);
       setSeedResult(err instanceof Error ? err.message : "Failed to save data");

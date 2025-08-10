@@ -4,6 +4,8 @@ import { calculateRentalDays } from "@/lib/date";
 import { CART_COOKIE, decodeCartCookie } from "@platform-core/src/cartCookie";
 import { priceForDays } from "@platform-core/src/pricing";
 import { getProductById } from "@platform-core/src/products";
+import { getCouponByCode } from "@platform-core/src/repositories/coupons.server";
+import { discountFromCoupon, type Coupon } from "@platform-core/src/coupons";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -95,8 +97,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   /* 2  Rental days -------------------------------------------------- */
-  const { returnDate } = (await req.json().catch(() => ({}))) as {
+  const { returnDate, couponCode } = (await req.json().catch(() => ({}))) as {
     returnDate?: string;
+    couponCode?: string;
   };
   let rentalDays: number;
   try {
@@ -113,6 +116,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   /* 4  Totals / metadata ------------------------------------------- */
   const { subtotal, depositTotal } = await computeTotals(cart, rentalDays);
+
+  const shop = process.env.NEXT_PUBLIC_SHOP_ID || "default";
+  let discount = 0;
+  let coupon: Coupon | null = null;
+  if (couponCode) {
+    coupon = await getCouponByCode(shop, couponCode);
+    if (coupon) {
+      discount = discountFromCoupon(coupon, subtotal);
+      if (discount > 0) {
+        line_items.push({
+          price_data: {
+            currency: "eur",
+            unit_amount: -Math.round(discount * 100),
+            product_data: { name: `Coupon ${coupon.code}` },
+          },
+          quantity: 1,
+        });
+      }
+    }
+  }
 
   const sizesMeta = JSON.stringify(
     Object.fromEntries(
@@ -132,6 +155,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         depositTotal: String(depositTotal),
         returnDate: returnDate ?? "",
         rentalDays: String(rentalDays),
+        ...(discount > 0
+          ? { discount: String(discount), coupon: coupon?.code }
+          : {}),
       },
     },
     metadata: {
@@ -140,6 +166,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       returnDate: returnDate ?? "",
       rentalDays: String(rentalDays),
       sizes: sizesMeta,
+      ...(discount > 0
+        ? { discount: String(discount), coupon: coupon?.code }
+        : {}),
     },
     expand: ["payment_intent"],
   });

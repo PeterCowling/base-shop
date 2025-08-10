@@ -13,7 +13,8 @@
     "@themes/base": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
-    "@acme/shared-utils": "workspace:*"
+    "@acme/shared-utils": "workspace:*",
+    "@acme/lib-email": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.4"

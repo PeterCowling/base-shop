@@ -4,6 +4,8 @@ import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { calculateRentalDays } from "@/lib/date";
 import { stripe } from "@lib/stripeServer";
 import { priceForDays } from "@platform-core/pricing";
+import { getCouponByCode } from "@platform-core/repositories/coupons.server";
+import { discountFromCoupon, type Coupon } from "@platform-core/coupons";
 
 import type { CartLine, CartState } from "@types";
 import { NextRequest, NextResponse } from "next/server";
@@ -95,8 +97,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   /* 2️⃣ Parse optional body ------------------------------------------------- */
-  const { returnDate } = (await req.json().catch(() => ({}))) as {
+  const { returnDate, couponCode } = (await req.json().catch(() => ({}))) as {
     returnDate?: string;
+    couponCode?: string;
   };
   let rentalDays: number;
   try {
@@ -112,6 +115,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const line_items = lineItemsNested.flat();
 
   const { subtotal, depositTotal } = await computeTotals(cart, rentalDays);
+
+  const shop = process.env.NEXT_PUBLIC_SHOP_ID || "default";
+  let discount = 0;
+  let coupon: Coupon | null = null;
+  if (couponCode) {
+    coupon = await getCouponByCode(shop, couponCode);
+    if (coupon) {
+      discount = discountFromCoupon(coupon, subtotal);
+      if (discount > 0) {
+        line_items.push({
+          price_data: {
+            currency: "eur",
+            unit_amount: -Math.round(discount * 100),
+            product_data: { name: `Coupon ${coupon.code}` },
+          },
+          quantity: 1,
+        });
+      }
+    }
+  }
 
   /* 4️⃣ Serialize sizes for metadata --------------------------------------- */
   const sizesMeta = JSON.stringify(
@@ -132,6 +155,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         depositTotal: depositTotal.toString(),
         returnDate: returnDate ?? "",
         rentalDays: rentalDays.toString(),
+        ...(discount > 0
+          ? { discount: discount.toString(), coupon: coupon?.code }
+          : {}),
       },
     },
     metadata: {
@@ -140,6 +166,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       returnDate: returnDate ?? "",
       rentalDays: rentalDays.toString(),
       sizes: sizesMeta,
+      ...(discount > 0
+        ? { discount: discount.toString(), coupon: coupon?.code }
+        : {}),
     },
     expand: ["payment_intent"],
   });

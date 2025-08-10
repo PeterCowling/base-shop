@@ -1,0 +1,18 @@
+{
+  "name": "@acme/lib-email",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../../jest.config.cjs"
+  },
+  "dependencies": {
+    "nodemailer": "^6.10.1"
+  },
+  "devDependencies": {
+    "next": "^15.3.4"
+  }
+}

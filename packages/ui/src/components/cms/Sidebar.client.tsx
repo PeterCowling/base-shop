@@ -49,6 +49,7 @@ export default function Sidebar({ role }: { role?: string }) {
       label: "Media",
       icon: "🖼️",
     },
+    { href: "/campaigns", label: "Campaigns", icon: "✉️" },
     {
       href: shop ? `/shop/${shop}/settings` : "/settings",
       label: "Settings",

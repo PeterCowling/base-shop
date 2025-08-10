@@ -22,7 +22,9 @@ function ensureRuntime() {
   try {
     pnpmVersion = execSync("pnpm --version", { encoding: "utf8" }).trim();
   } catch {
-    console.error("Failed to determine pnpm version. pnpm v10 or later is required.");
+    console.error(
+      "Failed to determine pnpm version. pnpm v10 or later is required."
+    );
     process.exit(1);
   }
 
@@ -77,6 +79,8 @@ async function main() {
     process.exit(1);
   }
   const name = await prompt("Display name (optional): ");
+  const logo = await prompt("Logo URL (optional): ");
+  const contact = await prompt("Contact email (optional): ");
   const typeAns = await prompt("Shop type (sale or rental) [sale]: ", "sale");
   const type = typeAns.toLowerCase() === "rental" ? "rental" : "sale";
   const theme = await prompt("Theme [base]: ", "base");
@@ -93,6 +97,8 @@ async function main() {
 
   const options = {
     ...(name && { name }),
+    ...(logo && { logo }),
+    ...(contact && { contactInfo: contact }),
     type,
     theme,
     template,
@@ -136,7 +142,7 @@ async function main() {
   }
 
   console.log(
-    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Run: pnpm --filter @apps/${prefixedId} dev`
+    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Review data/shops/${prefixedId}/shop.json\n  - Run: pnpm --filter @apps/${prefixedId} dev`
   );
 }
 

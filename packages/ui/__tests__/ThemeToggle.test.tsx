@@ -14,46 +14,38 @@ describe("ThemeToggle", () => {
     mockTheme = "base";
   });
 
-  it("selects themes and updates ARIA attributes", () => {
+  it("cycles through themes and announces changes", () => {
     const { rerender } = render(<ThemeToggle />);
 
-    const group = screen.getByRole("radiogroup", { name: /theme/i });
-    expect(group).toBeInTheDocument();
-
-    let light = screen.getByLabelText("Light");
-    let dark = screen.getByLabelText("Dark");
-    let system = screen.getByLabelText("System");
+    let button = screen.getByRole("button", {
+      name: /switch to dark theme/i,
+    });
     let live = screen.getByText(/light theme selected/i);
-
     expect(live).toHaveAttribute("aria-live", "polite");
-    expect(light).toBeChecked();
-    expect(light).toHaveAttribute("aria-checked", "true");
 
-    fireEvent.click(dark);
+    fireEvent.click(button);
     expect(setTheme).toHaveBeenNthCalledWith(1, "dark");
 
     mockTheme = "dark";
     rerender(<ThemeToggle />);
-    light = screen.getByLabelText("Light");
-    dark = screen.getByLabelText("Dark");
-    system = screen.getByLabelText("System");
-    live = screen.getByText(/dark theme selected/i);
-    expect(dark).toBeChecked();
-    expect(dark).toHaveAttribute("aria-checked", "true");
 
-    fireEvent.click(system);
+    button = screen.getByRole("button", {
+      name: /switch to system theme/i,
+    });
+    live = screen.getByText(/dark theme selected/i);
+
+    fireEvent.keyDown(button, { key: "Enter" });
     expect(setTheme).toHaveBeenNthCalledWith(2, "system");
 
     mockTheme = "system";
     rerender(<ThemeToggle />);
-    light = screen.getByLabelText("Light");
-    dark = screen.getByLabelText("Dark");
-    system = screen.getByLabelText("System");
-    live = screen.getByText(/system theme selected/i);
-    expect(system).toBeChecked();
-    expect(system).toHaveAttribute("aria-checked", "true");
 
-    fireEvent.click(light);
+    button = screen.getByRole("button", {
+      name: /switch to light theme/i,
+    });
+    live = screen.getByText(/system theme selected/i);
+
+    fireEvent.keyDown(button, { key: " " });
     expect(setTheme).toHaveBeenNthCalledWith(3, "base");
   });
 });

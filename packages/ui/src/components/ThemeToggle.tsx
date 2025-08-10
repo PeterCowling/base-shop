@@ -1,9 +1,11 @@
 "use client";
 
+import { DesktopIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme, Theme } from "@platform-core/src/contexts/ThemeContext";
-import type { ChangeEvent } from "react";
+import type { ComponentType, KeyboardEvent } from "react";
 
 const themes: Theme[] = ["base", "dark", "system"];
+
 const labels: Record<Theme, string> = {
   base: "Light",
   dark: "Dark",
@@ -11,32 +13,46 @@ const labels: Record<Theme, string> = {
   brandx: "BrandX", // unused but satisfy type
 };
 
+const icons: Record<Theme, ComponentType> = {
+  base: SunIcon,
+  dark: MoonIcon,
+  system: DesktopIcon,
+  brandx: SunIcon,
+};
+
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTheme(e.target.value as Theme);
+  const current = theme as Theme;
+  const next = themes[(themes.indexOf(current) + 1) % themes.length];
+  const Icon = icons[current];
+
+  const toggleTheme = () => {
+    setTheme(next);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleTheme();
+    }
   };
 
   return (
-    <div role="radiogroup" aria-label="Theme">
-      {themes.map((t) => (
-        <div key={t} className="flex items-center gap-2">
-          <input
-            type="radio"
-            id={`theme-${t}`}
-            name="theme"
-            value={t}
-            checked={theme === t}
-            onChange={handleChange}
-            aria-checked={theme === t}
-          />
-          <label htmlFor={`theme-${t}`}>{labels[t]}</label>
-        </div>
-      ))}
+    <div>
+      <button
+        type="button"
+        onClick={toggleTheme}
+        onKeyDown={handleKeyDown}
+        aria-label={`Switch to ${labels[next]} theme`}
+        className="p-2"
+      >
+        <Icon />
+      </button>
       <span aria-live="polite" className="sr-only">
-        {labels[theme as keyof typeof labels]} theme selected
+        {labels[current as keyof typeof labels]} theme selected
       </span>
     </div>
   );
 }
+

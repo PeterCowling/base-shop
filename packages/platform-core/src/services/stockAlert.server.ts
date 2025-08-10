@@ -18,12 +18,14 @@ export async function checkAndAlert(
   );
   if (lowItems.length === 0) return;
 
-  const lines = lowItems.map(
-    (i) => `${i.sku} – qty ${i.quantity} (threshold ${i.lowStockThreshold})`,
-  );
-  const body = `The following items in shop ${shop} are low on stock:\n${lines.join(
-    "\n",
-  )}`;
+  const lines = lowItems.map((i) => {
+    const attrs = Object.entries(i.variantAttributes)
+      .map(([k, v]) => `${k}: ${v}`)
+      .join(", ");
+    const variant = attrs ? ` (${attrs})` : "";
+    return `${i.sku}${variant} – qty ${i.quantity} (threshold ${i.lowStockThreshold})`;
+  });
+  const body = `The following items in shop ${shop} are low on stock:\n${lines.join("\n")}`;
   const subject = `Low stock alert for ${shop}`;
 
   try {

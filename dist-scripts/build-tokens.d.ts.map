@@ -1,1 +1,1 @@
-{"version":3,"file":"build-tokens.d.ts","sourceRoot":"","sources":["../scripts/build-tokens.ts"],"names":[],"mappings":"AAMA,MAAM,WAAW,KAAK;IACpB,QAAQ,CAAC,KAAK,EAAE,MAAM,CAAC;IACvB,QAAQ,CAAC,IAAI,CAAC,EAAE,MAAM,CAAC;CACxB;AACD,MAAM,MAAM,QAAQ,GAAG,MAAM,CAAC,KAAK,MAAM,EAAE,EAAE,KAAK,CAAC,CAAC"}
+{"version":3,"file":"build-tokens.d.ts","sourceRoot":"","sources":["../scripts/src/build-tokens.ts"],"names":[],"mappings":""}

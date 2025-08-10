@@ -3,7 +3,12 @@
 exports[`base theme tokens tokens snapshot 1`] = `
 {
   "--color-accent": {
+    "dark": "260 83% 70%",
     "light": "260 83% 67%",
+  },
+  "--color-accent-fg": {
+    "dark": "0 0% 10%",
+    "light": "0 0% 10%",
   },
   "--color-bg": {
     "dark": "0 0% 4%",

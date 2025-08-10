@@ -23,6 +23,7 @@ import StepNavigation from "./steps/StepNavigation";
 import StepOptions from "./steps/StepOptions";
 import StepProductPage from "./steps/StepProductPage";
 import StepSeedData from "./steps/StepSeedData";
+import StepEnvVars from "./steps/StepEnvVars";
 import StepShopDetails from "./steps/StepShopDetails";
 import StepShopPage from "./steps/StepShopPage";
 import StepSummary from "./steps/StepSummary";
@@ -93,6 +94,13 @@ export default function Wizard({
   const [shipping, setShipping] = useState<string[]>([]);
   const [analyticsProvider, setAnalyticsProvider] = useState("");
   const [analyticsId, setAnalyticsId] = useState("");
+
+  /* ---------------------------------------------------------------------- */
+  /*  Environment variables                                                 */
+  /* ---------------------------------------------------------------------- */
+  const [envVars, setEnvVars] = useState<Record<string, string>>({});
+  const setEnv = (key: string, value: string) =>
+    setEnvVars((prev) => ({ ...prev, [key]: value }));
 
   /* ---------------------------------------------------------------------- */
   /*  Submission & deploy status                                            */
@@ -249,6 +257,7 @@ export default function Wizard({
     setAnalyticsId(data.analyticsId);
     setNavItems(data.navItems as NavItem[]);
     setPages(data.pages);
+    setEnvVars(data.env);
     setDomain(data.domain);
     setCategoriesText(data.categoriesText);
   }, []);
@@ -340,6 +349,7 @@ export default function Wizard({
         checkoutComponents,
         analyticsProvider,
         analyticsId,
+        env: envVars,
       };
 
       const { ok, error, fieldErrors, deployment } = await submitShop(
@@ -708,6 +718,16 @@ export default function Wizard({
 
       case 11:
         return (
+          <StepEnvVars
+            env={envVars}
+            setEnv={setEnv}
+            onBack={() => setStep(10)}
+            onNext={() => setStep(12)}
+          />
+        );
+
+      case 12:
+        return (
           <StepSummary
             shopId={shopId}
             name={storeName}
@@ -728,13 +748,13 @@ export default function Wizard({
             themeStyle={themeStyle}
             creating={creating}
             submit={submit}
-            onBack={() => setStep(10)}
-            onNext={() => setStep(12)}
+            onBack={() => setStep(11)}
+            onNext={() => setStep(13)}
             errors={fieldErrors}
           />
         );
 
-      case 12:
+      case 13:
         return (
           <StepImportData
             setCsvFile={setCsvFile}
@@ -743,11 +763,11 @@ export default function Wizard({
             importResult={importResult}
             importing={importing}
             saveData={saveData}
-            onBack={() => setStep(11)}
+            onBack={() => setStep(12)}
           />
         );
 
-      case 13:
+      case 14:
         return (
           <StepSeedData
             setCsvFile={setCsvFile}
@@ -756,11 +776,11 @@ export default function Wizard({
             seedResult={seedResult}
             seeding={seeding}
             seed={seed}
-            onBack={() => setStep(12)}
+            onBack={() => setStep(13)}
           />
         );
 
-      case 14:
+      case 15:
         return (
           <StepHosting
             domain={domain}
@@ -769,7 +789,7 @@ export default function Wizard({
             deployInfo={deployInfo}
             deploying={deploying}
             deploy={deploy}
-            onBack={() => setStep(13)}
+            onBack={() => setStep(14)}
           />
         );
 
@@ -786,7 +806,7 @@ export default function Wizard({
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
         <div className="mb-6 flex items-center justify-between">
-          <Progress step={step} total={14} />
+          <Progress step={step} total={16} />
           {shopId && <MediaUploadDialog shop={shopId} />}
         </div>
 

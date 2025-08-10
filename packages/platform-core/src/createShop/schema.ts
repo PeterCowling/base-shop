@@ -8,6 +8,20 @@ import { defaultPaymentProviders } from "./defaultPaymentProviders";
 import { defaultShippingProviders } from "./defaultShippingProviders";
 import { defaultTaxProviders } from "./defaultTaxProviders";
 
+interface NavItem {
+  label: string;
+  url: string;
+  children?: NavItem[];
+}
+
+const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
+  z.object({
+    label: z.string().min(1),
+    url: z.string().min(1),
+    children: z.array(navItemSchema).optional(),
+  })
+);
+
 export const createShopOptionsSchema = z.object({
   name: z.string().optional(),
   logo: z.string().url().optional(),
@@ -29,9 +43,7 @@ export const createShopOptionsSchema = z.object({
     })
     .optional(),
   sanityBlog: sanityBlogConfigSchema.optional(),
-  navItems: z
-    .array(z.object({ label: z.string().min(1), url: z.string().min(1) }))
-    .default([]),
+  navItems: z.array(navItemSchema).default([]),
   pages: z
     .array(
       z.object({
@@ -55,6 +67,16 @@ export type PreparedCreateShopOptions = Required<
   sanityBlog?: CreateShopOptions["sanityBlog"];
   checkoutPage: PageComponent[];
 };
+
+function prepareNavItems(items: NavItem[]): NavItem[] {
+  return items.map((n) => ({
+    label: n.label ?? "—",
+    url: n.url ?? "#",
+    ...(n.children && n.children.length
+      ? { children: prepareNavItems(n.children) }
+      : {}),
+  }));
+}
 
 /** Parse and populate option defaults. */
 export function prepareOptions(
@@ -82,11 +104,7 @@ export function prepareOptions(
           id: parsed.analytics.id,
         }
       : { enabled: false, provider: "none" },
-    navItems:
-      parsed.navItems?.map((n) => ({
-        label: n.label ?? "—",
-        url: n.url ?? "#",
-      })) ?? [],
+    navItems: prepareNavItems(parsed.navItems ?? []),
     pages: parsed.pages.map((p) => ({
       slug: p.slug ?? slugify(p.title.en ?? Object.values(p.title)[0]),
       title: p.title,

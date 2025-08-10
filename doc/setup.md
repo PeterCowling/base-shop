@@ -18,7 +18,7 @@ pnpm init-shop
 - logo URL
 - contact email
 - theme and template
-- payment and shipping providers
+- payment and shipping providers (selected from a guided list of available providers)
 
 After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
 
@@ -44,8 +44,14 @@ pnpm init-shop
 ? Contact email … demo@example.com
 ? Theme › base
 ? Template › template-app
-? Payment providers › stripe
-? Shipping providers › ups
+Available payment providers:
+  1) stripe
+  2) paypal
+Select payment providers by number (comma-separated, empty for none): 1
+Available shipping providers:
+  1) dhl
+  2) ups
+Select shipping providers by number (comma-separated, empty for none): 2
 Scaffolded apps/shop-demo
 ```
 

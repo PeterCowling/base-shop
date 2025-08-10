@@ -22,7 +22,8 @@ const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
   })
 );
 
-export const createShopOptionsSchema = z.object({
+export const createShopOptionsSchema = z
+  .object({
   name: z.string().optional(),
   logo: z.string().url().optional(),
   contactInfo: z.string().optional(),
@@ -56,7 +57,8 @@ export const createShopOptionsSchema = z.object({
     )
     .default([]),
   checkoutPage: z.array(pageComponentSchema).default([]),
-});
+})
+  .strict();
 
 export type CreateShopOptions = z.infer<typeof createShopOptionsSchema>;
 

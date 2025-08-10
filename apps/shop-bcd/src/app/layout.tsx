@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 import "./globals.css";
 import { CartProvider } from "@/contexts/CartContext";
+import { themeInitScript } from "@/contexts/themeInitScript";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -31,20 +32,7 @@ export default function RootLayout({
     >
       <head>
         <meta name="color-scheme" content="light dark" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var theme = localStorage.getItem('theme');
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('theme-dark');
-                } else {
-                  document.documentElement.classList.remove('theme-dark');
-                }
-              })();
-            `,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="antialiased">
         {/* Global providers go here */}

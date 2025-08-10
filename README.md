@@ -31,9 +31,10 @@ Key points:
    `init-shop` launches an interactive wizard that asks for the shop ID, display name, logo URL,
    contact email and which theme and template to use. Payment and shipping providers are chosen
    from guided lists of available providers. It then
-   scaffolds `apps/shop-<id>` and writes an `.env` file inside the new app. Edit the `.env` file to
-   provide real secrets (see [Environment Variables](#environment-variables)). For scripted
-   setups you can still call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and
+   scaffolds `apps/shop-<id>` and writes `.env` and `shop.json` files inside the new app. Edit the
+   `.env` file to provide real secrets (see [Environment Variables](#environment-variables)) and
+   adjust `shop.json` as needed. For scripted setups you can still call
+   `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and
    `--contact` to skip those prompts.
 
    ```bash
@@ -72,6 +73,13 @@ Available shipping providers:
   2) ups
 Select shipping providers by number (comma-separated, empty for none): 2
 Scaffolded apps/shop-demo
+
+Environment variables look valid.
+
+Next steps:
+  - Review apps/shop-demo/.env
+  - Review apps/shop-demo/shop.json
+  - Run: pnpm --filter @apps/shop-demo dev
 
 pnpm setup-ci demo  # optional
 pnpm validate-env demo

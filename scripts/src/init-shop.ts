@@ -77,6 +77,8 @@ async function main() {
     process.exit(1);
   }
   const name = await prompt("Display name (optional): ");
+  const logo = await prompt("Logo URL (optional): ");
+  const contact = await prompt("Contact email (optional): ");
   const theme = await prompt("Theme [base]: ", "base");
   const template = await prompt("Template [template-app]: ", "template-app");
   const payment = await selectProviders(
@@ -91,6 +93,8 @@ async function main() {
 
   const options = {
     ...(name && { name }),
+    ...(logo && { logo }),
+    ...(contact && { contactInfo: contact }),
     theme,
     template,
     payment,
@@ -133,7 +137,7 @@ async function main() {
   }
 
   console.log(
-    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Run: pnpm --filter @apps/${prefixedId} dev`
+    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Review apps/${prefixedId}/shop.json\n  - Run: pnpm --filter @apps/${prefixedId} dev`
   );
 }
 

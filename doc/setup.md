@@ -21,6 +21,7 @@ pnpm init-shop
 - payment and shipping providers (selected from a guided list of available providers)
 
 After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
+It also writes a `shop.json` file populated with the collected details.
 
 For automated scripts you can still call `pnpm create-shop <id>` with flags:
 
@@ -56,6 +57,13 @@ Available shipping providers:
   2) ups
 Select shipping providers by number (comma-separated, empty for none): 2
 Scaffolded apps/shop-demo
+
+Environment variables look valid.
+
+Next steps:
+  - Review apps/shop-demo/.env
+  - Review apps/shop-demo/shop.json
+  - Run: pnpm --filter @apps/shop-demo dev
 ```
 
 ## 2. Configure environment variables

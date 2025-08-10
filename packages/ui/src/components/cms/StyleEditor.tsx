@@ -3,7 +3,13 @@
 
 import { Input } from "@ui/components/atoms/shadcn";
 import { useTokenEditor, type TokenMap } from "@ui/hooks/useTokenEditor";
-import { ColorInput, FontSelect, RangeInput } from "./index";
+import {
+  ColorInput,
+  FontSelect,
+  RangeInput,
+  getContrast,
+  suggestContrastColor,
+} from "./index";
 
 interface StyleEditorProps {
   tokens: TokenMap;
@@ -28,10 +34,33 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
 
   const renderInput = (k: string, v: string) => {
     if (k.startsWith("--color")) {
+      let warning: JSX.Element | null = null;
+      let pairKey = "";
+      if (k.startsWith("--color-bg")) {
+        pairKey = `--color-fg${k.slice("--color-bg".length)}`;
+      } else if (k.startsWith("--color-fg")) {
+        pairKey = `--color-bg${k.slice("--color-fg".length)}`;
+      }
+      const pairVal = pairKey ? tokens[pairKey as keyof TokenMap] : undefined;
+      if (pairVal) {
+        const contrast = getContrast(v, pairVal);
+        if (contrast < 4.5) {
+          const suggestion = suggestContrastColor(v, pairVal);
+          warning = (
+            <span className="text-xs text-red-600">
+              Low contrast ({contrast.toFixed(2)}:1)
+              {suggestion ? ` – try ${suggestion}` : ""}
+            </span>
+          );
+        }
+      }
       return (
-        <label key={k} className="flex items-center gap-2 text-sm">
-          <span className="w-40 flex-shrink-0">{k}</span>
-          <ColorInput value={v} onChange={(val) => setToken(k, val)} />
+        <label key={k} className="flex flex-col gap-1 text-sm">
+          <span className="flex items-center gap-2">
+            <span className="w-40 flex-shrink-0">{k}</span>
+            <ColorInput value={v} onChange={(val) => setToken(k, val)} />
+          </span>
+          {warning}
         </label>
       );
     }

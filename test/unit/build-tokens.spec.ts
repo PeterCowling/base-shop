@@ -57,4 +57,16 @@ describe("token css generators", () => {
     expect(css).toContain(":root");
     expect(css).toContain("--bg: red;");
   });
+
+  it("creates theme css with dark mode overrides", () => {
+    const css = generateThemeCss({
+      "--bg": "white",
+      "--bg-dark": "black",
+    });
+    expect(css).toContain("--bg: white;");
+    expect(css).toContain("--bg-dark: black;");
+    expect(css).toContain("@media (prefers-color-scheme: dark)");
+    expect(css).toContain("html.theme-dark");
+    expect(css).toContain("--bg: var(--bg-dark);");
+  });
 });

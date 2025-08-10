@@ -1,6 +1,6 @@
 // apps/cms/src/app/layout.tsx
 import { CartProvider } from "@/contexts/CartContext";
-import { initTheme } from "@platform-core/src/utils/initTheme";
+import { initTheme } from "@platform-core/utils";
 import { applyFriendlyZodMessages } from "@lib/zodErrorMap";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";

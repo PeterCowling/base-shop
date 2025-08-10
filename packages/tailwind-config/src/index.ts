@@ -18,12 +18,18 @@ const preset: Partial<Config> = {
         primary: "hsl(var(--color-primary))",
         accent: "hsl(var(--color-accent))",
         danger: "hsl(var(--color-danger))",
+        success: "hsl(var(--color-success))",
+        warning: "hsl(var(--color-warning))",
+        info: "hsl(var(--color-info))",
         muted: "hsl(var(--color-muted))",
       },
       textColor: {
         "primary-fg": "hsl(var(--color-primary-fg))",
         "accent-foreground": "hsl(var(--color-accent-fg))",
         "danger-foreground": "hsl(var(--color-danger-fg))",
+        "success-foreground": "hsl(var(--color-success-fg))",
+        "warning-foreground": "hsl(var(--color-warning-fg))",
+        "info-foreground": "hsl(var(--color-info-fg))",
       },
       fontFamily: {
         sans: "var(--font-sans)",

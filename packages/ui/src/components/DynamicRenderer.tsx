@@ -2,7 +2,7 @@
 
 "use client";
 
-import { blockRegistry } from "@/components/cms/blocks";
+import { blockRegistry } from "@ui/components/cms/blocks";
 import { PRODUCTS } from "@platform-core/src/products";
 import type { PageComponent, SKU } from "@types";
 import type { ReactNode, CSSProperties } from "react";

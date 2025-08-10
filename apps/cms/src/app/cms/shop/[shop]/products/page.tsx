@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/products/page.tsx
 
-import { Button } from "@/components/atoms/shadcn";
+import { Button } from "@ui/components/atoms/shadcn";
 import {
   createDraft,
   deleteProduct,

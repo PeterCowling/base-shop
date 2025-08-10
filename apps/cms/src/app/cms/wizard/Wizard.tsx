@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/wizard/Wizard.tsx
 "use client";
 
-import { Progress, Toast } from "@/components/atoms";
+import { Progress, Toast } from "@ui/components/atoms";
 import { LOCALES } from "@acme/i18n";
 import { createShopOptionsSchema, type DeployShopResult } from "@platform-core/createShop";
 import { validateShopName } from "@platform-core/src/shops";

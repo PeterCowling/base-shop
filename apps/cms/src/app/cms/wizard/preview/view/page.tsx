@@ -1,8 +1,8 @@
-import HeroBanner from "@/components/home/HeroBanner.client";
-import ReviewsCarousel from "@/components/home/ReviewsCarousel";
-import { ValueProps } from "@/components/home/ValueProps";
-import { Footer, Header, SideNav } from "@/components/organisms";
-import { AppShell } from "@/components/templates/AppShell";
+import HeroBanner from "@ui/components/home/HeroBanner.client";
+import ReviewsCarousel from "@ui/components/home/ReviewsCarousel";
+import { ValueProps } from "@ui/components/home/ValueProps";
+import { Footer, Header, SideNav } from "@ui/components/organisms";
+import { AppShell } from "@ui/components/templates/AppShell";
 import { resolveLocale } from "@i18n/locales";
 import TranslationsProvider from "@i18n/Translations";
 import {

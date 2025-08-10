@@ -8,7 +8,7 @@ import {
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "@/components/atoms/shadcn";
+} from "@ui/components/atoms/shadcn";
 import type { MediaItem } from "@types";
 import MediaManager from "@ui/components/cms/MediaManager";
 import { ReactElement, useCallback, useEffect, useState } from "react";

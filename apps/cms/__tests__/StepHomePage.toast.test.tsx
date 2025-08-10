@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import StepHomePage from "../src/app/cms/wizard/steps/StepHomePage";
 import { fetchJson } from "@ui/utils/fetchJson";
 
-jest.mock("@/components/atoms/shadcn", () => {
+jest.mock("@ui/components/atoms/shadcn", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -23,7 +23,7 @@ jest.mock("@/components/atoms/shadcn", () => {
   };
 });
 
-jest.mock("@/components/cms/PageBuilder", () => {
+jest.mock("@ui/components/cms/PageBuilder", () => {
   const React = require("react");
   return function PageBuilder({ onSave, onPublish }: any) {
     return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
+import { Button } from "@ui/components/atoms/shadcn";
 import WizardPreview from "../WizardPreview";
 
 interface Props {

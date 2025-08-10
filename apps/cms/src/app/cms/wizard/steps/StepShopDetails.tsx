@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/atoms/shadcn";
+} from "@ui/components/atoms/shadcn";
 
 interface Props {
   shopId: string;

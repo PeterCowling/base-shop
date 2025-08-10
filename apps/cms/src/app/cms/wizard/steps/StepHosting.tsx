@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Button, Input } from "@ui/components/atoms/shadcn";
 import type { DeployStatusBase } from "@platform-core/createShop";
 
 interface Props {

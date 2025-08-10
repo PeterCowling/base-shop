@@ -7,14 +7,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/atoms/shadcn";
-import PageBuilder from "@/components/cms/PageBuilder";
+} from "@ui/components/atoms/shadcn";
+import PageBuilder from "@ui/components/cms/PageBuilder";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
 import { fetchJson } from "@ui/utils/fetchJson";
 import { ulid } from "ulid";
 import { useState } from "react";
-import { Toast } from "@/components/atoms";
+import { Toast } from "@ui/components/atoms";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;

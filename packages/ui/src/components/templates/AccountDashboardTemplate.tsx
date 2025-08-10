@@ -1,7 +1,7 @@
 // packages/ui/components/templates/AccountDashboardTemplate.tsx
 
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 import { Avatar } from "../atoms/Avatar";
 import type { Column } from "../organisms/DataTable";
 import { DataTable } from "../organisms/DataTable";

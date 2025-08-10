@@ -12,7 +12,7 @@ import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
 import { historyStateSchema } from "@types";
-import { fetchJson } from "@ui/utils/fetchJson";
+import { fetchJson } from "@ui/utils/network";
 import { ulid } from "ulid";
 import { useEffect, useState } from "react";
 import { Toast } from "@/components/atoms";

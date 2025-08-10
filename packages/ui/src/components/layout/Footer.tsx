@@ -1,7 +1,7 @@
 // src/components/layout/Footer.tsx
 import Link from "next/link";
 import { memo } from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 
 const Footer = memo(function Footer({
   height = "h-16",

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 
 export interface Category {
   id: string;

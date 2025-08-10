@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 import { Tag, TagProps } from "./Tag";
 
 export interface ChipProps extends TagProps {

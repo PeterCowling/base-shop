@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 import { RatingStars } from "../atoms/RatingStars";
 import { Input } from "../atoms/primitives/input";
 import {

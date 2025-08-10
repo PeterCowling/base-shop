@@ -1,7 +1,7 @@
 import Image, { type StaticImageData } from "next/image";
 import * as React from "react";
-import { boxProps } from "../../utils/boxProps";
-import { cn } from "../../utils/cn";
+import { boxProps } from "../../utils/style";
+import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 

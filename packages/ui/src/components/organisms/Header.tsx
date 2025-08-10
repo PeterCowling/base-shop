@@ -1,6 +1,6 @@
 import type { Locale } from "@/i18n/locales";
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 import { LanguageSwitcher, SearchBar } from "../molecules";
 
 export interface NavItem {

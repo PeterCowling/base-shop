@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { toggleItem } from "@ui/utils/toggleItem";
+import { toggleItem } from "@ui/utils";
 
 interface Props {
   payment: string[];

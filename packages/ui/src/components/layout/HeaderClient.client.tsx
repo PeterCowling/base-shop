@@ -3,7 +3,7 @@
 import { useCart } from "@platform-core/src/contexts/CartContext";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 import ThemeToggle from "../ThemeToggle";
 
 export default function HeaderClient({

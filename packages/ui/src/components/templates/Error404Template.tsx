@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 
 export interface Error404TemplateProps

@@ -1,6 +1,6 @@
 import type { CartState } from "@types";
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 import { Price } from "../atoms/Price";
 
 export interface OrderConfirmationTemplateProps

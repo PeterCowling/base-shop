@@ -1,7 +1,7 @@
 // packages/ui/components/atoms/primitives/table.tsx
 
 import type { ComponentProps } from "react";
-import { cn } from "../../../utils/cn";
+import { cn } from "../../../utils/style";
 
 /**
  * Basic, unopinionated table primitives (shadcn-ui style).

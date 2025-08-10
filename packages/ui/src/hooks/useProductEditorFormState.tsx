@@ -2,7 +2,7 @@
 import type { Locale, ProductPublication } from "@platform-core/src/products";
 import { useImageUpload } from "@ui/hooks/useImageUpload";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
-import { parseMultilingualInput } from "@ui/src/utils/multilingual";
+import { parseMultilingualInput } from "@ui/utils/i18n";
 import {
   useCallback,
   useMemo,

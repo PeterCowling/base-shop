@@ -2,7 +2,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 
 /* ────────────────────────────────────────────────────────────────────────────
  * Types reflecting the minimal Leaflet API that we use

@@ -1,7 +1,7 @@
 // apps/cms/__tests__/listUtils.test.ts
 /* eslint-env jest */
 
-import { toggleItem } from "@ui/utils/toggleItem";
+import { toggleItem } from "@ui/utils";
 
 describe("toggleItem", () => {
   it("toggles values within an array", () => {

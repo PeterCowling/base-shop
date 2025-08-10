@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 
 export interface LoaderProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Width/height of the loader in pixels. Defaults to 20. */

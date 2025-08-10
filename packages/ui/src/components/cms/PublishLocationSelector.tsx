@@ -4,7 +4,7 @@
 import { Button, Input } from "@ui/components/atoms/shadcn";
 import type { PublishLocation } from "@types";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
-import { toggleItem } from "../../utils/toggleItem";
+import { toggleItem } from "../../utils";
 import { memo, useCallback } from "react";
 
 export interface PublishLocationSelectorProps {

@@ -1,4 +1,4 @@
-import type { Locale } from "@i18n/locales";
+import { LOCALES, type Locale } from "@i18n/locales";
 import type { ShopSettings } from "@types";
 import type { NextSeoProps } from "next-seo";
 
@@ -27,6 +27,32 @@ export async function getSeo(
   const base: ExtendedSeoProps = shopSeo[locale] ?? {};
   const canonicalBase = base.canonicalBase ?? "";
 
+  const canonicalOverride = pageSeo.canonical ?? base.canonical;
+  let canonicalPath = "";
+  if (canonicalOverride) {
+    try {
+      canonicalPath = new URL(canonicalOverride).pathname.replace(
+        new RegExp(`^/${locale}`),
+        "",
+      );
+    } catch {
+      canonicalPath = "";
+    }
+  }
+
+  const perLocaleCanonical: Partial<Record<Locale, string>> = {};
+  for (const l of LOCALES) {
+    const cBase = shopSeo[l]?.canonicalBase;
+    if (cBase) {
+      perLocaleCanonical[l] = `${cBase}/${l}${canonicalPath}`;
+    }
+  }
+  const alternates = Object.entries(perLocaleCanonical).map(([l, href]) => ({
+    rel: "alternate" as const,
+    hrefLang: l,
+    href,
+  }));
+
   const imagePath =
     pageSeo.openGraph?.images?.[0]?.url ||
     (pageSeo.openGraph as any)?.image ||
@@ -39,14 +65,16 @@ export async function getSeo(
       ? `${canonicalBase}${imagePath}`
       : imagePath;
 
+  const canonical =
+    canonicalOverride ??
+    perLocaleCanonical[locale] ??
+    (canonicalBase ? `${canonicalBase}/${locale}` : fallback.canonical);
+
   return {
     title: pageSeo.title ?? base.title ?? fallback.title,
     description:
       pageSeo.description ?? base.description ?? fallback.description,
-    canonical:
-      pageSeo.canonical ??
-      base.canonical ??
-      (canonicalBase ? `${canonicalBase}/${locale}` : fallback.canonical),
+    canonical,
     openGraph: {
       ...(fallback.openGraph ?? {}),
       ...(base.openGraph ?? {}),
@@ -54,6 +82,7 @@ export async function getSeo(
       url:
         pageSeo.openGraph?.url ??
         base.openGraph?.url ??
+        perLocaleCanonical[locale] ??
         (canonicalBase ? `${canonicalBase}/${locale}` : undefined),
       images: resolvedImage ? [{ url: resolvedImage }] : undefined,
     },
@@ -62,6 +91,7 @@ export async function getSeo(
       ...(base.twitter ?? {}),
       ...(pageSeo.twitter ?? {}),
     },
+    additionalLinkTags: alternates,
   };
 }
 

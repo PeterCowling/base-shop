@@ -6,6 +6,10 @@ jest.mock("next-auth", () => ({
     .mockResolvedValue({ user: { role: "admin" } } as any),
 }));
 
+jest.mock("@prisma/client", () => ({
+  PrismaClient: jest.fn().mockImplementation(() => ({})),
+}));
+
 import "../../apps/cms/src/types/next-auth.d.ts";
 
 const getShopSettingsMock = jest.fn();
@@ -18,7 +22,7 @@ jest.mock("@platform-core/repositories/shops.server", () => ({
 jest.mock("@platform-core/repositories/json.server", () => ({}));
 
 import { updateSeo } from "../../apps/cms/src/actions/shops.server";
-import { getSeo } from "../../apps/shop-abc/src/app/lib/seo";
+import { getSeo } from "../../packages/template-app/src/lib/seo";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -57,7 +61,7 @@ describe("updateSeo validation", () => {
     const fd = new FormData();
     fd.append("locale", "en");
     fd.append("title", "t");
-    fd.append("image", "ftp://bad");
+    fd.append("image", "not-a-url");
     const result = await updateSeo("shop", fd);
     expect(result.errors?.image).toBeDefined();
   });
@@ -79,5 +83,28 @@ describe("canonical merge", () => {
   it("falls back to shop canonical", async () => {
     const seo = await getSeo("en");
     expect(seo.canonical).toBe("https://base.com/en");
+  });
+});
+
+describe("hreflang generation", () => {
+  beforeEach(() => {
+    getShopSettingsMock.mockResolvedValue({
+      languages: ["en", "de"],
+      seo: {
+        en: { canonicalBase: "https://site.com" },
+        de: { canonicalBase: "https://site.de" },
+      },
+    });
+  });
+
+  it("returns per-locale canonical and alternate links", async () => {
+    const seo = await getSeo("en", {
+      canonical: "https://site.com/en/about",
+    });
+    expect(seo.canonical).toBe("https://site.com/en/about");
+    expect(seo.additionalLinkTags).toEqual([
+      { rel: "alternate", hrefLang: "en", href: "https://site.com/en/about" },
+      { rel: "alternate", hrefLang: "de", href: "https://site.de/de/about" },
+    ]);
   });
 });

@@ -1,0 +1,122 @@
+import {
+  DragEndEvent,
+  DragMoveEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { ulid } from "ulid";
+import { useCallback } from "react";
+import type { PageComponent } from "@types";
+import type { Action } from "./state";
+
+interface Params {
+  components: PageComponent[];
+  dispatch: (action: Action) => void;
+  defaults: Partial<Record<string, Partial<PageComponent>>>;
+  containerTypes: string[];
+  setInsertIndex: (i: number | null) => void;
+}
+
+export function usePageBuilderDrag({
+  components,
+  dispatch,
+  defaults,
+  containerTypes,
+  setInsertIndex,
+}: Params) {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  const handleDragMove = useCallback(
+    (ev: DragMoveEvent) => {
+      const { over, delta } = ev;
+      if (!over) return;
+      const overData = over.data.current as { index?: number };
+      const pointerY = (ev.activatorEvent as any)?.clientY + delta.y;
+      if (over.id === "canvas") {
+        setInsertIndex(components.length);
+        return;
+      }
+      const isBelow = pointerY > over.rect.top + over.rect.height / 2;
+      const index = (overData?.index ?? components.length) + (isBelow ? 1 : 0);
+      setInsertIndex(index);
+    },
+    [components.length, setInsertIndex]
+  );
+
+  const handleDragEnd = useCallback(
+    (ev: DragEndEvent) => {
+      setInsertIndex(null);
+      const { active, over } = ev;
+      if (!over) return;
+      const a = active.data.current as {
+        from: string;
+        type?: string;
+        index?: number;
+        parentId?: string;
+      };
+      const o = (over.data.current || {}) as {
+        parentId?: string;
+        index?: number;
+      };
+      const findById = (
+        list: PageComponent[],
+        id: string
+      ): PageComponent | null => {
+        for (const c of list) {
+          if (c.id === id) return c;
+          if ((c as any).children) {
+            const found = findById((c as any).children, id);
+            if (found) return found;
+          }
+        }
+        return null;
+      };
+      let parentId = o.parentId;
+      let index = o.index;
+      if (over.id === "canvas") {
+        parentId = undefined;
+        index = components.length;
+      } else if (parentId === undefined) {
+        parentId = over.id.toString().replace(/^container-/, "");
+        const parent = findById(components, parentId);
+        index = ((parent as any)?.children?.length ?? 0) as number;
+      }
+      if (a?.from === "palette") {
+        const isContainer = containerTypes.includes(a.type!);
+        const component = {
+          id: ulid(),
+          type: a.type! as any,
+          ...(defaults[a.type! as any] ?? {}),
+          ...(isContainer ? { children: [] } : {}),
+        } as PageComponent;
+        dispatch({
+          type: "add",
+          component,
+          parentId,
+          index: index ?? 0,
+        });
+      } else if (a?.from === "canvas") {
+        let toIndex = index ?? 0;
+        if (a.parentId === parentId && a.index! < (index ?? 0)) {
+          toIndex = (index ?? 0) - 1;
+        }
+        dispatch({
+          type: "move",
+          from: { parentId: a.parentId, index: a.index! },
+          to: { parentId, index: toIndex },
+        });
+      }
+    },
+    [dispatch, components, containerTypes, defaults, setInsertIndex]
+  );
+
+  return { sensors, handleDragMove, handleDragEnd };
+}
+
+export default usePageBuilderDrag;

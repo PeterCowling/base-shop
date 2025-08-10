@@ -12,7 +12,6 @@ import { ResponseComposition, rest, RestContext, RestRequest } from "msw";
 import { server } from "../../../test/msw/server";
 import Wizard from "../src/app/cms/wizard/Wizard";
 import { baseTokens } from "../src/app/cms/wizard/tokenUtils";
-import { STORAGE_KEY } from "../src/app/cms/wizard/hooks/useWizardPersistence";
 
 /* -------------------------------------------------------------------------- */
 /*  External stubs                                                            */
@@ -252,12 +251,21 @@ describe("Wizard", () => {
       },
     });
 
-    await waitFor(() => expect(fetchSpy).toHaveBeenCalled());
-    expect(fetchSpy.mock.calls[0][0]).toContain("/cms/api/page-draft/shop");
+    await waitFor(() =>
+      expect(
+        fetchSpy.mock.calls.some((c) =>
+          String(c[0]).includes("/cms/api/page-draft/shop")
+        )
+      ).toBe(true)
+    );
   });
 
-  it("ignores invalid JSON in localStorage", () => {
-    localStorage.setItem(STORAGE_KEY, "{bad");
+  it("ignores invalid state from server", () => {
+    server.use(
+      rest.get("/cms/api/wizard-progress", (_req, res, ctx) =>
+        res(ctx.status(200), ctx.body("{bad"))
+      )
+    );
     const { container } = render(
       <Wizard themes={themes} templates={templates} />
     );
@@ -269,7 +277,11 @@ describe("Wizard", () => {
   });
 
   it("uses defaults when fields are missing", async () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ step: 1 }));
+    server.use(
+      rest.get("/cms/api/wizard-progress", (_req, res, ctx) =>
+        res(ctx.status(200), ctx.json({ step: 1 }))
+      )
+    );
     const { container } = render(
       <Wizard themes={themes} templates={templates} />
     );

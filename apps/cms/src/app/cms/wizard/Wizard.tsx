@@ -6,7 +6,7 @@ import { LOCALES } from "@acme/i18n";
 import type { DeployShopResult } from "@platform-core/createShop";
 import { validateShopName } from "@platform-core/src/shops";
 import type { Locale, PageComponent } from "@types";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ulid } from "ulid";
 
 /* -------------------------------------------------------------------------- */
@@ -32,13 +32,9 @@ import StepTokens from "./steps/StepTokens";
 /* -------------------------------------------------------------------------- */
 /*  Schema / utils                                                            */
 /* -------------------------------------------------------------------------- */
-import type { PageInfo } from "./schema";
-import { wizardStateSchema } from "./schema";
+import type { PageInfo, WizardState } from "./schema";
 import { baseTokens, loadThemeTokens, type TokenMap } from "./tokenUtils";
-import {
-  resetWizardProgress,
-  STORAGE_KEY,
-} from "./hooks/useWizardPersistence";
+import { resetWizardProgress, useWizardPersistence } from "./hooks/useWizardPersistence";
 
 /* -------------------------------------------------------------------------- */
 /*  Services                                                                  */
@@ -218,92 +214,47 @@ export default function Wizard({
     }
   }, [step, pageTemplates.length]);
 
-  /* --- restore wizard state from localStorage on mount --- */
-  useEffect(() => {
-    const json = localStorage.getItem(STORAGE_KEY);
-    if (json) {
-      try {
-        const raw = JSON.parse(json);
-        const parsed = wizardStateSchema.safeParse(raw);
-        if (parsed.success) {
-          const data = parsed.data;
-
-          /* progress & shop info */
-          setStep(data.step);
-          setShopId(data.shopId);
-          setStoreName(data.storeName);
-          setLogo(data.logo);
-          setContactInfo(data.contactInfo);
-
-          /* theme / template */
-          setTemplate(data.template);
-          setTheme(data.theme);
-          savedThemeVars.current = data.themeVars;
-
-          /* commerce */
-          setPayment(data.payment);
-          setShipping(data.shipping);
-
-          /* SEO */
-          setPageTitle(data.pageTitle);
-          setPageDescription(data.pageDescription);
-          setSocialImage(data.socialImage);
-
-          /* layout pools */
-          setComponents(data.components);
-          setHeaderComponents(data.headerComponents);
-          setHeaderPageId(data.headerPageId);
-          setFooterComponents(data.footerComponents);
-          setFooterPageId(data.footerPageId);
-          setHomePageId(data.homePageId);
-          setHomeLayout(data.homeLayout);
-          setShopComponents(data.shopComponents);
-          setShopPageId(data.shopPageId);
-          setShopLayout(data.shopLayout);
-          setProductComponents(data.productComponents);
-          setProductPageId(data.productPageId);
-          setProductLayout(data.productLayout);
-          setCheckoutLayout(data.checkoutLayout);
-          setCheckoutComponents(data.checkoutComponents);
-          setCheckoutPageId(data.checkoutPageId);
-
-          /* analytics */
-          setAnalyticsProvider(data.analyticsProvider);
-          setAnalyticsId(data.analyticsId);
-
-          /* navigation & dynamic pages */
-          setNavItems(data.navItems as NavItem[]);
-          setPages(data.pages);
-
-          /* misc */
-          setDomain(data.domain);
-          setCategoriesText(data.categoriesText);
-        } else {
-          console.warn("Stored wizard state failed validation", parsed.error);
-          resetWizardProgress();
-          setInvalidStateNotice(true);
-        }
-      } catch (err) {
-        console.warn("Failed to parse wizard state", err);
-      }
-    }
+  /* --- hydrate & persist wizard state via server --- */
+  const hydrate = useCallback((data: WizardState) => {
+    setStep(data.step);
+    setShopId(data.shopId);
+    setStoreName(data.storeName);
+    setLogo(data.logo);
+    setContactInfo(data.contactInfo);
+    setTemplate(data.template);
+    setTheme(data.theme);
+    savedThemeVars.current = data.themeVars;
+    setPayment(data.payment);
+    setShipping(data.shipping);
+    setPageTitle(data.pageTitle);
+    setPageDescription(data.pageDescription);
+    setSocialImage(data.socialImage);
+    setComponents(data.components);
+    setHeaderComponents(data.headerComponents);
+    setHeaderPageId(data.headerPageId);
+    setFooterComponents(data.footerComponents);
+    setFooterPageId(data.footerPageId);
+    setHomePageId(data.homePageId);
+    setHomeLayout(data.homeLayout);
+    setShopComponents(data.shopComponents);
+    setShopPageId(data.shopPageId);
+    setShopLayout(data.shopLayout);
+    setProductComponents(data.productComponents);
+    setProductPageId(data.productPageId);
+    setProductLayout(data.productLayout);
+    setCheckoutLayout(data.checkoutLayout);
+    setCheckoutComponents(data.checkoutComponents);
+    setCheckoutPageId(data.checkoutPageId);
+    setAnalyticsProvider(data.analyticsProvider);
+    setAnalyticsId(data.analyticsId);
+    setNavItems(data.navItems as NavItem[]);
+    setPages(data.pages);
+    setDomain(data.domain);
+    setCategoriesText(data.categoriesText);
   }, []);
 
-  /* --- load theme tokens whenever the theme changes --- */
-  useEffect(() => {
-    loadThemeTokens(theme).then((tv) => {
-      if (savedThemeVars.current) {
-        setThemeVars(savedThemeVars.current);
-        savedThemeVars.current = null;
-      } else {
-        setThemeVars(tv);
-      }
-    });
-  }, [theme]);
-
-  /* --- persist wizard state to localStorage on every relevant change --- */
-  useEffect(() => {
-    const data = {
+  useWizardPersistence(
+    {
       step,
       shopId,
       storeName,
@@ -339,49 +290,23 @@ export default function Wizard({
       pages,
       domain,
       categoriesText,
-    };
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    } catch {
-      /* ignore quota or serialisation errors */
-    }
-  }, [
-    step,
-    shopId,
-    storeName,
-    logo,
-    contactInfo,
-    template,
-    theme,
-    themeVars,
-    payment,
-    shipping,
-    pageTitle,
-    pageDescription,
-    socialImage,
-    components,
-    headerComponents,
-    headerPageId,
-    footerComponents,
-    footerPageId,
-    homePageId,
-    shopComponents,
-    shopPageId,
-    productComponents,
-    productPageId,
-    checkoutComponents,
-    checkoutPageId,
-    analyticsProvider,
-    analyticsId,
-    navItems,
-    pages,
-    domain,
-    categoriesText,
-    homeLayout,
-    shopLayout,
-    productLayout,
-    checkoutLayout,
-  ]);
+    },
+    hydrate,
+    () => setInvalidStateNotice(true)
+  );
+
+  /* --- load theme tokens whenever the theme changes --- */
+  useEffect(() => {
+    loadThemeTokens(theme).then((tv) => {
+      if (savedThemeVars.current) {
+        setThemeVars(savedThemeVars.current);
+        savedThemeVars.current = null;
+      } else {
+        setThemeVars(tv);
+      }
+    });
+  }, [theme]);
+
 
   /* --- clear polling timer when unmounting --- */
   useEffect(() => {

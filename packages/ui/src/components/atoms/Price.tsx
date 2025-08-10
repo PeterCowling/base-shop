@@ -1,6 +1,6 @@
 import { useCurrency } from "@platform-core/src/contexts/CurrencyContext";
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 
 export interface PriceProps extends React.HTMLAttributes<HTMLSpanElement> {
   amount: number;

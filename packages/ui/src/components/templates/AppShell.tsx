@@ -3,7 +3,7 @@
 import { LayoutProvider, ThemeProvider, useLayout } from "@platform-core/src";
 import * as React from "react";
 
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 
 export interface AppShellProps {
   header?: React.ReactNode;

@@ -36,7 +36,7 @@ import { Toast } from "../atoms";
 import CanvasItem from "./page-builder/CanvasItem";
 import ComponentEditor from "./page-builder/ComponentEditor";
 import Palette from "./page-builder/Palette";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 import { usePathname } from "next/navigation";
 import {
   atomRegistry,

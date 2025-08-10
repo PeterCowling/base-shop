@@ -1,7 +1,7 @@
 /// <reference path="../../types/model-viewer.d.ts" />
 
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 
 export interface ARViewerProps extends React.HTMLAttributes<HTMLElement> {
   src: string;

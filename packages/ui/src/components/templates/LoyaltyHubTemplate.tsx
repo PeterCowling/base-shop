@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 import type { Column } from "../organisms/DataTable";
 import { DataTable } from "../organisms/DataTable";
 import type { StatItem } from "../organisms/StatsGrid";

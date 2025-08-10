@@ -1,7 +1,5 @@
-import { boxProps } from "../boxProps";
-import { cn } from "../cn";
-import { drawerWidthProps } from "../drawerWidth";
-import { parseMultilingualInput } from "../multilingual";
+import { boxProps, cn, drawerWidthProps } from "../style";
+import { parseMultilingualInput } from "../i18n";
 
 describe("cn", () => {
   it("filters out falsey values", () => {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 
 export interface BreadcrumbItem {
   label: React.ReactNode;

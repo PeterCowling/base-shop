@@ -1,4 +1,4 @@
-// packages/ui/utils/cn.ts
+// packages/ui/utils/style/cn.ts
 /**
  * Concatenate truthy class names – identical to the helper used in shadcn/ui.
  */

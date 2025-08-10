@@ -1,4 +1,4 @@
-import { fetchJson } from '../fetchJson';
+import { fetchJson } from '../network';
 
 describe('fetchJson', () => {
   beforeEach(() => {

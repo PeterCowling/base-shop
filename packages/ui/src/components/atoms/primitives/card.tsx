@@ -1,6 +1,6 @@
 // packages/ui/components/atoms/primitives/card.tsx
 import * as React from "react";
-import { cn } from "../../../utils/cn";
+import { cn } from "../../../utils/style";
 
 export type CardProps = React.HTMLAttributes<HTMLDivElement>;
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 
 export interface SideNavProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Tailwind width class or CSS length */

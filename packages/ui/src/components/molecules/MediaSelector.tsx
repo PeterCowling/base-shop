@@ -1,7 +1,7 @@
 import Image from "next/image";
 import * as React from "react";
 
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 
 export type MediaType = "image" | "video" | "360" | "model";
 

@@ -1,7 +1,7 @@
 // packages/ui/components/atoms/shadcn/Button.tsx
 
 import * as React from "react";
-import { cn } from "../../../utils/cn";
+import { cn } from "../../../utils/style";
 import type { ButtonProps as BaseButtonProps } from "../primitives/button";
 import { Button as BaseButton } from "../primitives/button";
 import { Slot } from "../primitives/slot";

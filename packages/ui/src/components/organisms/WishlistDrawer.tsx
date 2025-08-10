@@ -1,6 +1,6 @@
 import * as React from "react";
-import { cn } from "../../utils/cn";
-import { drawerWidthProps } from "../../utils/drawerWidth";
+import { cn } from "../../utils/style";
+import { drawerWidthProps } from "../../utils/style";
 
 import {
   Button,

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 import { ColorSwatch } from "../atoms/ColorSwatch";
 import { QuantityInput } from "../molecules/QuantityInput";
 

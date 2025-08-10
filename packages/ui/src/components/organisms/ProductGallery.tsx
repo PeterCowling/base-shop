@@ -2,7 +2,7 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "../../utils/style";
 import { ARViewer } from "../atoms/ARViewer";
 import { VideoPlayer } from "../atoms/VideoPlayer";
 import { ZoomImage } from "../atoms/ZoomImage";

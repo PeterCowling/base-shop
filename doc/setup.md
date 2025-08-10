@@ -79,7 +79,7 @@ The wizard scaffolds placeholders for common variables:
 - `NEXTAUTH_SECRET` – session encryption secret used by NextAuth
 - `PREVIEW_TOKEN_SECRET` – token used for preview URLs
 - `CMS_SPACE_URL` / `CMS_ACCESS_TOKEN` – headless CMS credentials
-- `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_WRITE_TOKEN` – Sanity blog configuration
+- `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_TOKEN` – Sanity blog configuration
 - `GMAIL_USER`, `GMAIL_PASS` – credentials for email sending
 - `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` – Cloudflare credentials for provisioning custom domains (server-side only)
 

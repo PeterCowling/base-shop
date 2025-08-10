@@ -27,12 +27,12 @@ export async function POST(
     if (
       body.SANITY_PROJECT_ID &&
       body.SANITY_DATASET &&
-      body.SANITY_WRITE_TOKEN
+      body.SANITY_TOKEN
     ) {
       await setupSanityBlog({
         projectId: body.SANITY_PROJECT_ID,
         dataset: body.SANITY_DATASET,
-        token: body.SANITY_WRITE_TOKEN,
+        token: body.SANITY_TOKEN,
       }).catch((err) => {
         console.error("[env] failed to setup Sanity blog", err);
       });

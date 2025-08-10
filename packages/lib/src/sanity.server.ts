@@ -21,11 +21,12 @@ async function getConfig(shopId: string): Promise<SanityBlogConfig> {
 }
 
 async function getClient(shopId: string) {
-  const { projectId, dataset, token } = await getConfig(shopId);
+  const { projectId, dataset, token: sanityToken } = await getConfig(shopId);
+  // sanityToken is sourced from the SANITY_TOKEN environment variable per shop
   return createClient({
     projectId,
     dataset,
-    token,
+    token: sanityToken,
     apiVersion: "2023-01-01",
     useCdn: true,
   });

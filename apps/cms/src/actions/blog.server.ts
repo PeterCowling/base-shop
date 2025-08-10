@@ -5,7 +5,7 @@ import { ensureAuthorized } from "./common/auth";
 const projectId = process.env.SANITY_PROJECT_ID as string;
 const dataset = process.env.SANITY_DATASET as string;
 const apiVersion = process.env.SANITY_API_VERSION || "2021-10-21";
-const token = process.env.SANITY_WRITE_TOKEN;
+const token = process.env.SANITY_TOKEN;
 
 interface SanityPost {
   _id: string;

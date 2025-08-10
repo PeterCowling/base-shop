@@ -111,6 +111,7 @@ export default function Wizard({
     DeployShopResult | { status: "pending"; error?: string } | null
   >(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
+  const pollRetries = useRef(0);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
   /* ---------------------------------------------------------------------- */
@@ -385,7 +386,7 @@ export default function Wizard({
   /* --- clear polling timer when unmounting --- */
   useEffect(() => {
     return () => {
-      if (pollRef.current) clearInterval(pollRef.current);
+      if (pollRef.current) clearTimeout(pollRef.current);
     };
   }, []);
 
@@ -524,25 +525,57 @@ export default function Wizard({
   }
 
   function startPolling() {
-    if (pollRef.current) clearInterval(pollRef.current);
+    if (pollRef.current) clearTimeout(pollRef.current);
+    pollRetries.current = 0;
 
-    pollRef.current = setInterval(async () => {
+    const poll = async () => {
       try {
         const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
-        const status = (await res.json()) as
-          | DeployShopResult
-          | { status: "pending"; error?: string };
+        if (!res.ok) {
+          console.error(
+            `Polling deploy status failed: ${res.status} ${res.statusText}`,
+          );
+          pollRetries.current += 1;
+          if (pollRetries.current >= 3) {
+            setDeployInfo({
+              status: "error",
+              error: `Polling failed with status ${res.status}`,
+            });
+            pollRef.current = null;
+            return;
+          }
+        } else {
+          const status = (await res.json()) as
+            | DeployShopResult
+            | { status: "pending"; error?: string };
 
-        setDeployInfo(status);
+          setDeployInfo(status);
 
-        if (status.status !== "pending") {
-          if (pollRef.current) clearInterval(pollRef.current);
-          pollRef.current = null;
+          if (status.status !== "pending") {
+            pollRef.current = null;
+            return;
+          }
+
+          pollRetries.current = 0;
         }
       } catch (err) {
         console.error("Polling deploy status failed", err);
+        pollRetries.current += 1;
+        if (pollRetries.current >= 3) {
+          setDeployInfo({
+            status: "error",
+            error: "Polling failed due to network error",
+          });
+          pollRef.current = null;
+          return;
+        }
       }
-    }, 3000);
+
+      const delay = Math.min(3000 * 2 ** pollRetries.current, 30000);
+      pollRef.current = setTimeout(poll, delay);
+    };
+
+    poll();
   }
 
   /* ====================================================================== */

@@ -5,6 +5,7 @@ packages:
   - "apps-script"
   - "apps/**"
   - "packages/**"
+  - "packages/plugins/sanity"
 
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"

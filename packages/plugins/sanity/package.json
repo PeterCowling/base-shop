@@ -1,0 +1,12 @@
+{
+  "name": "@acme/plugin-sanity",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@sanity/client": "^6.15.0"
+  }
+}

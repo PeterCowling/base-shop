@@ -140,6 +140,36 @@ export default function SeoLanguageTabs({
             />
           </label>
         </section>
+
+        {/* Structured Data -------------------------------------------- */}
+        <section className="flex flex-col gap-3">
+          <h3 className="font-medium">Structured Data</h3>
+          <label className="flex flex-col gap-1">
+            <span>Brand</span>
+            <Input
+              value={current.brand}
+              onChange={(e) => onFieldChange("brand", e.target.value)}
+            />
+          </label>
+          <label className="flex flex-col gap-1">
+            <span>Offers (JSON)</span>
+            <Textarea
+              rows={3}
+              value={current.offers}
+              onChange={(e) => onFieldChange("offers", e.target.value)}
+            />
+          </label>
+          <label className="flex flex-col gap-1">
+            <span>Aggregate Rating (JSON)</span>
+            <Textarea
+              rows={3}
+              value={current.aggregateRating}
+              onChange={(e) =>
+                onFieldChange("aggregateRating", e.target.value)
+              }
+            />
+          </label>
+        </section>
       </div>
     </div>
   );

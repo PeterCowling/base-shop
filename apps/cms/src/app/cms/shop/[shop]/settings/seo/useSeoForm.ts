@@ -8,6 +8,9 @@ export interface SeoRecord {
   title: string;
   description: string;
   image: string;
+  brand: string;
+  offers: string;
+  aggregateRating: string;
 }
 
 interface Options {
@@ -44,6 +47,9 @@ export function useSeoForm({
         title: initialSeo[l]?.title ?? "",
         description: initialSeo[l]?.description ?? "",
         image: initialSeo[l]?.image ?? "",
+        brand: initialSeo[l]?.brand ?? "",
+        offers: initialSeo[l]?.offers ?? "",
+        aggregateRating: initialSeo[l]?.aggregateRating ?? "",
       };
     });
     return records;
@@ -75,6 +81,9 @@ export function useSeoForm({
       fd.append("title", data.title);
       fd.append("description", data.description);
       fd.append("image", data.image);
+      fd.append("brand", data.brand);
+      fd.append("offers", data.offers);
+      fd.append("aggregateRating", data.aggregateRating);
       const result = await updateSeo(shop, fd);
       if (result.errors) {
         setErrors(result.errors);

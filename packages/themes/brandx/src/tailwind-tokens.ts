@@ -1,20 +1,32 @@
-// packages/themes/bcd/tailwind-tokens.ts
+// packages/themes/brandx/tailwind-tokens.ts
 //
-// Default design token overrides for the BCD theme.
+// Default design token overrides for the brandx theme.
 
 export const tokens = {
   "--color-bg": "0 0% 100%",
+  "--color-bg-dark": "0 0% 4%",
   "--color-fg": "0 0% 10%",
+  "--color-fg-dark": "0 0% 93%",
   "--color-primary": "340 80% 50%",
+  "--color-primary-dark": "340 80% 60%",
   "--color-primary-fg": "0 0% 100%",
+  "--color-primary-fg-dark": "0 0% 10%",
   "--color-accent": "40 95% 50%",
+  "--color-accent-dark": "40 95% 60%",
   "--color-success": "142 76% 97%",
+  "--color-success-dark": "142 72% 27%",
   "--color-success-fg": "142 72% 30%",
+  "--color-success-fg-dark": "142 70% 94%",
   "--color-warning": "40 90% 96%",
+  "--color-warning-dark": "35 90% 30%",
   "--color-warning-fg": "25 85% 31%",
+  "--color-warning-fg-dark": "40 90% 96%",
   "--color-info": "210 90% 96%",
+  "--color-info-dark": "210 90% 35%",
   "--color-info-fg": "210 90% 35%",
+  "--color-info-fg-dark": "210 90% 96%",
   "--color-muted": "0 0% 88%",
+  "--color-muted-dark": "0 0% 60%",
   "--font-sans": '"Geist Sans", system-ui, sans-serif',
   "--font-mono": '"Geist Mono", ui-monospace, monospace',
   "--space-1": "4px",

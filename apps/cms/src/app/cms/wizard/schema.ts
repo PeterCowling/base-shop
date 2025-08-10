@@ -75,6 +75,7 @@ export const wizardStateSchema = z.object({
   storeName: z.string().optional().default(""),
   logo: z.string().optional().default(""),
   contactInfo: z.string().optional().default(""),
+  type: z.enum(["sale", "rental"]).optional().default("sale"),
 
   /* ---------------- Template / theme ------------------ */
   template: z.string().optional().default(""),

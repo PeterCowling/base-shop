@@ -41,8 +41,21 @@ describe("inventory import/export routes", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
+      jest.doMock("@lib/email", () => ({ sendEmail: jest.fn() }));
+      Object.assign(process.env, {
+        STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      });
       const route = await import("../src/app/api/data/[shop]/inventory/import/route");
-      const items = [{ sku: "a", quantity: 1 }];
+      const items = [
+        {
+          sku: "a",
+          productId: "a",
+          variantAttributes: { size: "M", color: "red" },
+          quantity: 1,
+          lowStockThreshold: 1,
+        },
+      ];
       const file = {
         name: "inv.json",
         type: "application/json",
@@ -69,8 +82,16 @@ describe("inventory import/export routes", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
+      jest.doMock("@lib/email", () => ({ sendEmail: jest.fn() }));
+      Object.assign(process.env, {
+        STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      });
       const route = await import("../src/app/api/data/[shop]/inventory/import/route");
-      const csv = "sku,quantity\na,1\nb,2";
+      const csv =
+        "sku,productId,size,color,quantity,lowStockThreshold\n" +
+        "a,a,M,red,1,1\n" +
+        "b,b,L,blue,2,1";
       const file = {
         name: "inv.csv",
         type: "text/csv",
@@ -87,8 +108,20 @@ describe("inventory import/export routes", () => {
       expect(res.status).toBe(200);
       const json = JSON.parse(text);
       expect(json.items).toEqual([
-        { sku: "a", quantity: 1 },
-        { sku: "b", quantity: 2 },
+        {
+          sku: "a",
+          productId: "a",
+          variantAttributes: { size: "M", color: "red" },
+          quantity: 1,
+          lowStockThreshold: 1,
+        },
+        {
+          sku: "b",
+          productId: "b",
+          variantAttributes: { size: "L", color: "blue" },
+          quantity: 2,
+          lowStockThreshold: 1,
+        },
       ]);
     });
   });
@@ -96,8 +129,20 @@ describe("inventory import/export routes", () => {
   it("exports inventory as csv", async () => {
     await withTempRepo(async (dir) => {
       const items = [
-        { sku: "a", quantity: 1 },
-        { sku: "b", quantity: 2 },
+        {
+          sku: "a",
+          productId: "a",
+          variantAttributes: { size: "M", color: "red" },
+          quantity: 1,
+          lowStockThreshold: 1,
+        },
+        {
+          sku: "b",
+          productId: "b",
+          variantAttributes: { size: "L", color: "blue" },
+          quantity: 2,
+          lowStockThreshold: 1,
+        },
       ];
       await fs.writeFile(
         path.join(dir, "data", "shops", "test", "inventory.json"),
@@ -107,21 +152,40 @@ describe("inventory import/export routes", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
+      jest.doMock("@lib/email", () => ({ sendEmail: jest.fn() }));
+      Object.assign(process.env, {
+        STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      });
       const route = await import("../src/app/api/data/[shop]/inventory/export/route");
       const req = new Request("http://test?format=csv");
       const res = await route.GET(req as any, { params: Promise.resolve({ shop: "test" }) });
       expect(res.headers.get("content-type")).toContain("text/csv");
       const text = await res.text();
-      expect(text).toContain("sku,quantity");
-      expect(text).toContain("a,1");
+      expect(text).toContain(
+        "sku,productId,size,color,quantity,lowStockThreshold"
+      );
+      expect(text).toContain("a,a,M,red,1,1");
     });
   });
 
   it("exports inventory as json", async () => {
     await withTempRepo(async (dir) => {
       const items = [
-        { sku: "a", quantity: 1 },
-        { sku: "b", quantity: 2 },
+        {
+          sku: "a",
+          productId: "a",
+          variantAttributes: { size: "M", color: "red" },
+          quantity: 1,
+          lowStockThreshold: 1,
+        },
+        {
+          sku: "b",
+          productId: "b",
+          variantAttributes: { size: "L", color: "blue" },
+          quantity: 2,
+          lowStockThreshold: 1,
+        },
       ];
       await fs.writeFile(
         path.join(dir, "data", "shops", "test", "inventory.json"),
@@ -131,6 +195,11 @@ describe("inventory import/export routes", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
+      jest.doMock("@lib/email", () => ({ sendEmail: jest.fn() }));
+      Object.assign(process.env, {
+        STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      });
       const route = await import("../src/app/api/data/[shop]/inventory/export/route");
       const req = new Request("http://test?format=json");
       const res = await route.GET(req as any, { params: Promise.resolve({ shop: "test" }) });

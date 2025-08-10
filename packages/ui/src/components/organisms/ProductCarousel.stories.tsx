@@ -49,3 +49,11 @@ export const Default: StoryObj<typeof AutoCarousel> = {};
 export const Autoplay: StoryObj<typeof AutoCarousel> = {
   args: { autoplay: true },
 };
+
+export const Bounded: StoryObj<typeof AutoCarousel> = {
+  args: { minItems: 2, maxItems: 3 },
+};
+
+export const Mobile: StoryObj<typeof AutoCarousel> = {
+  parameters: { viewport: { defaultViewport: "mobile1" } },
+};

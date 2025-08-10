@@ -20,7 +20,9 @@ export interface RecommendationCarouselProps
 
 /**
  * Horizontally scrollable carousel that fetches product
- * recommendations from an API.
+ * recommendations from an API. The number of visible items
+ * adapts to the current viewport width and is clamped between
+ * the provided `minItems` and `maxItems` values.
  */
 export function RecommendationCarousel({
   endpoint,

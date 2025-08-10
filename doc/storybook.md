@@ -12,6 +12,13 @@ pnpm storybook
 
 Stories are located under `packages/ui` and `.storybook/stories`.
 
+### Responsive Carousels
+
+`ProductCarousel` and `RecommendationCarousel` determine how many items to show by
+measuring the available screen width. The visible count is clamped between
+`minItems` and `maxItems`, allowing stories to demonstrate both narrow and wide
+viewports.
+
 ## Accessibility Tests
 
 Automated accessibility checks run via `@storybook/test-runner` and `axe-playwright`.

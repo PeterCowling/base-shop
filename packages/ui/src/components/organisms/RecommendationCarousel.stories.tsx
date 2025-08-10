@@ -12,3 +12,11 @@ const meta: Meta<typeof RecommendationCarousel> = {
 export default meta;
 
 export const Default: StoryObj<typeof RecommendationCarousel> = {};
+
+export const Bounded: StoryObj<typeof RecommendationCarousel> = {
+  args: { minItems: 2, maxItems: 2 },
+};
+
+export const Mobile: StoryObj<typeof RecommendationCarousel> = {
+  parameters: { viewport: { defaultViewport: "mobile1" } },
+};

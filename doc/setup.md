@@ -81,6 +81,7 @@ The wizard scaffolds placeholders for common variables:
 - `CMS_SPACE_URL` / `CMS_ACCESS_TOKEN` – headless CMS credentials
 - `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_WRITE_TOKEN` – Sanity blog configuration
 - `GMAIL_USER`, `GMAIL_PASS` – credentials for email sending
+- `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` – Cloudflare credentials for provisioning custom domains (server-side only)
 
 Leave any value blank if the integration isn't needed. You can update the `.env`
 file later and rerun `pnpm validate-env <id>` to confirm everything is set up.

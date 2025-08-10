@@ -4,13 +4,18 @@ export type Testimonial = { quote: string; name?: string };
 
 export default function Testimonials({
   testimonials = [],
+  minItems,
+  maxItems,
 }: {
   testimonials?: Testimonial[];
+  minItems?: number;
+  maxItems?: number;
 }) {
-  if (!testimonials.length) return null;
+  const list = testimonials.slice(0, maxItems ?? testimonials.length);
+  if (!list.length || list.length < (minItems ?? 0)) return null;
   return (
     <section className="space-y-4">
-      {testimonials.map((t, i) => (
+      {list.map((t, i) => (
         <blockquote key={i} className="text-center">
           <p className="mb-2 italic">“{t.quote}”</p>
           {t.name && (

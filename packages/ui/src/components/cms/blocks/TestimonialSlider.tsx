@@ -5,21 +5,26 @@ export type SliderTestimonial = { quote: string; name?: string };
 
 export default function TestimonialSlider({
   testimonials = [],
+  minItems,
+  maxItems,
 }: {
   testimonials?: SliderTestimonial[];
+  minItems?: number;
+  maxItems?: number;
 }) {
+  const list = testimonials.slice(0, maxItems ?? testimonials.length);
   const [i, setI] = useState(0);
   useEffect(() => {
-    if (!testimonials.length) return;
+    if (!list.length) return;
     const id = setInterval(
-      () => setI((n) => (n + 1) % testimonials.length),
+      () => setI((n) => (n + 1) % list.length),
       5000
     );
     return () => clearInterval(id);
-  }, [testimonials.length]);
+  }, [list.length]);
 
-  if (!testimonials.length) return null;
-  const t = testimonials[i];
+  if (!list.length || list.length < (minItems ?? 0)) return null;
+  const t = list[i % list.length];
   return (
     <section className="space-y-2 text-center">
       <blockquote className="italic">“{t.quote}”</blockquote>

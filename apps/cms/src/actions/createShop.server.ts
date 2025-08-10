@@ -1,11 +1,8 @@
 // apps/cms/src/actions/createShop.ts
 "use server";
 
-import {
-  createShop,
-  type CreateShopOptions,
-  type DeployStatusBase,
-} from "@platform-core/createShop";
+import { createShop, type DeployStatusBase } from "@platform-core/createShop";
+import type { CreateShopOptions } from "@platform-core/createShop/schema";
 import { readRbac, writeRbac } from "../lib/rbacStore";
 import { ensureAuthorized } from "./common/auth";
 

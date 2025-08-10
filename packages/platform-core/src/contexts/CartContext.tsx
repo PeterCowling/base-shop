@@ -6,9 +6,10 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
+  type CartState,
 } from "../cartCookie";
 
-import type { CartState, SKU } from "@types";
+import type { SKU } from "@types";
 import {
   createContext,
   ReactNode,

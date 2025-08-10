@@ -2,7 +2,7 @@
 "use client";
 
 import { useCart } from "@ui/hooks/useCart";
-import type { CartLine } from "@types";
+import type { CartLine } from "@/lib/cartCookie";
 import React, { useMemo } from "react";
 
 /**

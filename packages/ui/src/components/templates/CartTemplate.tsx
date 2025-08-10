@@ -1,4 +1,4 @@
-import type { CartState } from "@types";
+import type { CartState } from "@/lib/cartCookie";
 import Image from "next/image";
 import * as React from "react";
 import { cn } from "../../utils/style";

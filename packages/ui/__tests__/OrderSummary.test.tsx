@@ -1,8 +1,8 @@
 import { CartProvider } from "@/contexts/CartContext";
 import { CART_COOKIE, encodeCartCookie } from "@/lib/cartCookie";
 import { render, screen } from "@testing-library/react";
-import type { CartState } from "@types";
-import OrderSummary from "../components/organisms/OrderSummary";
+import type { CartState } from "@/lib/cartCookie";
+import OrderSummary from "../src/components/organisms/OrderSummary";
 
 const mockCart: CartState = {
   a: {

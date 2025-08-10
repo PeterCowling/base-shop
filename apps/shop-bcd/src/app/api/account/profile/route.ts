@@ -17,6 +17,20 @@ const schema = z
   })
   .strict();
 
+export async function GET() {
+  const session = await getCustomerSession();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const profile = await getCustomerProfile(session.customerId);
+  if (!profile) {
+    return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({ ok: true, profile });
+}
+
 export async function PUT(req: NextRequest) {
   const session = await getCustomerSession();
   if (!session) {

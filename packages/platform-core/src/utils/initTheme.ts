@@ -1,10 +1,19 @@
 export const initTheme = `
 (function () {
-  var theme = localStorage.getItem('theme') || 'system';
+  var theme = 'system';
+  try {
+    theme = localStorage.getItem('theme') || 'system';
+  } catch (e) {}
   var classList = document.documentElement.classList;
   var isDark = theme === 'dark';
   if (theme === 'system') {
-    isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    try {
+      isDark =
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } catch (e) {
+      isDark = false;
+    }
   }
   if (isDark) {
     classList.add('theme-dark');

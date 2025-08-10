@@ -71,6 +71,18 @@ pnpm validate-env <id>
 `validate-env` parses the `.env` file and exits with an error if any required variable is missing or malformed.
 Lines that have no value after the equals sign (e.g. `MY_VAR=`) are treated as placeholders and ignored during validation, so you can leave optional variables empty until you have real credentials.
 
+The wizard scaffolds placeholders for common variables:
+
+- `STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` – Stripe API keys
+- `NEXTAUTH_SECRET` – session encryption secret used by NextAuth
+- `PREVIEW_TOKEN_SECRET` – token used for preview URLs
+- `CMS_SPACE_URL` / `CMS_ACCESS_TOKEN` – headless CMS credentials
+- `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_WRITE_TOKEN` – Sanity blog configuration
+- `GMAIL_USER`, `GMAIL_PASS` – credentials for email sending
+
+Leave any value blank if the integration isn't needed. You can update the `.env`
+file later and rerun `pnpm validate-env <id>` to confirm everything is set up.
+
 ## 3. (Optional) Setup CI and deploy
 
 ```bash
@@ -84,6 +96,10 @@ This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs
 Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. The platform automatically loads any plugin found under `packages/plugins/*`.
 
 To install a plugin, add it to the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS you can enable and configure the plugin under **CMS → Plugins**.
+
+Some plugins require additional environment variables (for example Stripe API
+keys). Add these to the shop's `.env` file and rerun `pnpm validate-env <id>`
+before using the plugin.
 
 ## 5. Analytics and event tracking
 

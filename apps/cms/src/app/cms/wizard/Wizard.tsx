@@ -362,7 +362,9 @@ export default function Wizard({
       );
 
       if (ok) {
-        setResult("Shop created successfully");
+        setResult(
+          "Shop created successfully. You now have ShopAdmin access and can manage the shop from the CMS dashboard."
+        );
         if (deployment && deployment.status !== "pending") {
           setDeployInfo(deployment as DeployShopResult);
         }

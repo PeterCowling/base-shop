@@ -1,5 +1,7 @@
 {
   "freezeTranslations": false,
+  "currency": "EUR",
+  "taxRegion": "EU",
   "languages": [
     "en",
     "de",
@@ -8,7 +10,8 @@
   "seo": {
     "en": {
       "title": "t",
-      "description": "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      "description": "",
+      "image": "ftp://bad"
     }
   },
   "updatedAt": "",

@@ -187,3 +187,31 @@ export async function setFreezeTranslations(shop: string, freeze: boolean) {
   await saveShopSettings(shop, updated);
   return updated;
 }
+
+const currencyTaxSchema = z
+  .object({
+    currency: z.string().length(3, "Required"),
+    taxRegion: z.string().min(1, "Required"),
+  })
+  .strict();
+
+export async function updateCurrencyAndTax(
+  shop: string,
+  formData: FormData
+): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
+  await ensureAuthorized();
+  const parsed = currencyTaxSchema.safeParse(
+    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+  );
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+  const current = await getShopSettings(shop);
+  const updated: ShopSettings = {
+    ...current,
+    currency: parsed.data.currency,
+    taxRegion: parsed.data.taxRegion,
+  };
+  await saveShopSettings(shop, updated);
+  return { settings: updated };
+}

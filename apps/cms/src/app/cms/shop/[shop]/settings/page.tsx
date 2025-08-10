@@ -14,6 +14,8 @@ import { notFound } from "next/navigation";
 
 const ShopEditor = dynamic(() => import("./ShopEditor"));
 void ShopEditor;
+const CurrencyTaxEditor = dynamic(() => import("./CurrencyTaxEditor"));
+void CurrencyTaxEditor;
 
 export const revalidate = 0;
 
@@ -78,9 +80,19 @@ export default async function SettingsPage({
           </span>
         )}
       </div>
+      <h3 className="mt-4 font-medium">Currency / Tax</h3>
+      <p className="mt-2 text-sm">
+        {settings.currency} – {settings.taxRegion}
+      </p>
       {isAdmin && (
         <div className="mt-6">
           <ShopEditor shop={shop} initial={info} />
+          <div className="mt-6">
+            <CurrencyTaxEditor
+              shop={shop}
+              initial={{ currency: settings.currency, taxRegion: settings.taxRegion }}
+            />
+          </div>
         </div>
       )}
       {!isAdmin && (

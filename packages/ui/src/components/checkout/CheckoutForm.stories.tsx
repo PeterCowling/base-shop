@@ -5,12 +5,14 @@ const meta: Meta<typeof CheckoutForm> = {
   component: CheckoutForm,
   args: {
     locale: "en",
+    taxRegion: "EU",
   },
   argTypes: {
     locale: {
       control: { type: "radio" },
       options: ["en", "de", "it"],
     },
+    taxRegion: { control: "text" },
   },
 };
 export default meta;

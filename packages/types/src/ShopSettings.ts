@@ -13,6 +13,10 @@ export const shopSettingsSchema = z.object({
     })
     .optional(),
   freezeTranslations: z.boolean().optional(),
+  /** ISO currency code used as the shop's base currency */
+  currency: z.string().length(3).optional(),
+  /** Region identifier for tax calculations */
+  taxRegion: z.string().optional(),
   updatedAt: z.string(),
   updatedBy: z.string(),
 });

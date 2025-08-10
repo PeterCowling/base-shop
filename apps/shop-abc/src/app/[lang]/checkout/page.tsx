@@ -8,6 +8,7 @@ import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import type { PageComponent } from "@types";
 import { cookies } from "next/headers";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";
 
 export const metadata = {
@@ -56,10 +57,12 @@ export default async function CheckoutPage({
   }
 
   /* ---------- render ---------- */
+  const settings = await getShopSettings(shop.id);
+
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
       <OrderSummary />
-      <CheckoutForm locale={lang} />
+      <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
     </div>
   );
 }

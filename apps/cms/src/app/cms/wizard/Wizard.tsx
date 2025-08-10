@@ -3,7 +3,10 @@
 
 import { Progress, Toast } from "@/components/atoms";
 import { LOCALES } from "@acme/i18n";
-import { createShopOptionsSchema, type DeployShopResult } from "@platform-core/createShop";
+import {
+  createShopOptionsSchema,
+  type DeployShopResult,
+} from "@platform-core/createShop";
 import { validateShopName } from "@platform-core/src/shops";
 import type { Locale, PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
@@ -35,10 +38,7 @@ import StepTokens from "./steps/StepTokens";
 import type { PageInfo } from "./schema";
 import { wizardStateSchema } from "./schema";
 import { baseTokens, loadThemeTokens, type TokenMap } from "./tokenUtils";
-import {
-  resetWizardProgress,
-  STORAGE_KEY,
-} from "./hooks/useWizardPersistence";
+import { resetWizardProgress, STORAGE_KEY } from "./hooks/useWizardPersistence";
 
 /* ========================================================================== */
 /*  Types                                                                     */
@@ -175,7 +175,6 @@ export default function Wizard({
   ]);
 
   const [pages, setPages] = useState<PageInfo[]>([]);
-
 
   /* ---------------------------------------------------------------------- */
   /*  Import / seed data                                                    */
@@ -579,25 +578,51 @@ export default function Wizard({
   }
 
   function startPolling() {
-    if (pollRef.current) clearInterval(pollRef.current);
+    if (pollRef.current) clearTimeout(pollRef.current);
 
-    pollRef.current = setInterval(async () => {
+    let retries = 0;
+    const maxRetries = 3;
+
+    const poll = async (): Promise<void> => {
       try {
         const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
-        const status = (await res.json()) as
-          | DeployShopResult
-          | { status: "pending"; error?: string };
-
-        setDeployInfo(status);
-
-        if (status.status !== "pending") {
-          if (pollRef.current) clearInterval(pollRef.current);
-          pollRef.current = null;
+        if (!res.ok) {
+          console.error(`Polling deploy status failed: ${res.status}`);
+          retries++;
+          if (retries > maxRetries) {
+            setDeployInfo({ status: "error", error: `HTTP ${res.status}` });
+            pollRef.current = null;
+            return;
+          }
+        } else {
+          const status = (await res.json()) as
+            | DeployShopResult
+            | { status: "pending"; error?: string };
+          setDeployInfo(status);
+          if (status.status !== "pending") {
+            pollRef.current = null;
+            return;
+          }
+          retries = 0; // reset after success
         }
       } catch (err) {
         console.error("Polling deploy status failed", err);
+        retries++;
+        if (retries > maxRetries) {
+          setDeployInfo({
+            status: "error",
+            error: err instanceof Error ? err.message : String(err),
+          });
+          pollRef.current = null;
+          return;
+        }
       }
-    }, 3000);
+
+      const delay = Math.min(3000 * 2 ** retries, 30000);
+      pollRef.current = setTimeout(poll, delay);
+    };
+
+    poll();
   }
 
   /* ====================================================================== */

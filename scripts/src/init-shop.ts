@@ -52,6 +52,8 @@ async function main() {
     process.exit(1);
   }
   const name = await prompt("Display name (optional): ");
+  const logo = await prompt("Logo URL (optional): ");
+  const contactEmail = await prompt("Contact email (optional): ");
   const theme = await prompt("Theme [base]: ", "base");
   const template = await prompt("Template [template-app]: ", "template-app");
   const paymentAns = await prompt("Payment providers (comma-separated): ");
@@ -60,6 +62,8 @@ async function main() {
 
   const options = {
     ...(name && { name }),
+    ...(logo && { logo }),
+    ...(contactEmail && { contactInfo: contactEmail }),
     theme,
     template,
     payment: paymentAns.split(",").map((s) => s.trim()).filter(Boolean),
@@ -99,7 +103,7 @@ async function main() {
   }
 
   console.log(
-    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Run: pnpm --filter @apps/${prefixedId} dev`
+    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Run: pnpm validate-env ${shopId}\n  - Run: pnpm --filter @apps/${prefixedId} dev`
   );
 }
 

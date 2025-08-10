@@ -20,7 +20,8 @@ pnpm init-shop
 - theme and template
 - payment and shipping providers
 
-After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
+After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app. Review the
+file, run `pnpm validate-env <id>` and replace placeholder secrets before starting the dev server.
 
 For automated scripts you can still call `pnpm create-shop <id>` with flags:
 

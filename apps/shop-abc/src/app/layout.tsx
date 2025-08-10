@@ -24,7 +24,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var theme = localStorage.getItem('theme');
+                if (theme === 'dark') {
+                  document.documentElement.classList.add('theme-dark');
+                } else {
+                  document.documentElement.classList.remove('theme-dark');
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="antialiased">
         {/* Global providers go here */}
         <CartProvider>{children}</CartProvider>

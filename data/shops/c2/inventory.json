@@ -1,1 +1,9 @@
-[{ "sku": "123", "quantity": 3 }]
+[
+  {
+    "sku": "123",
+    "productId": "123",
+    "variant": { "size": "s" },
+    "quantity": 3,
+    "lowStockThreshold": 1
+  }
+]

@@ -12,7 +12,13 @@ import {
   getShopById,
   updateShopInRepo,
 } from "@platform-core/src/repositories/shop.server";
-import type { Locale, Shop, ShopSeoFields, ShopSettings } from "@types";
+import {
+  localeSchema,
+  type Locale,
+  type Shop,
+  type ShopSeoFields,
+  type ShopSettings,
+} from "@types";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
 import { shopSchema, type ShopForm } from "./schemas";
@@ -70,18 +76,15 @@ export async function getSettings(shop: string) {
 
 const seoSchema = z
   .object({
-    locale: z.string(),
+    locale: localeSchema,
     title: z.string().min(1, "Required"),
     description: z.string().optional().default(""),
-    image: z
-      .string()
-      .optional()
-      .refine((v) => !v || /^https?:\/\/\S+$/.test(v), {
-        message: "Invalid image URL",
-      }),
+    image: z.string().url().optional(),
     canonicalBase: z.string().url().optional(),
     ogUrl: z.string().url().optional(),
-    twitterCard: z.string().optional(),
+    twitterCard: z
+      .enum(["summary", "summary_large_image", "app", "player"])
+      .optional(),
   })
   .strict();
 
@@ -123,7 +126,7 @@ export async function updateSeo(
     image?: string;
     canonicalBase?: string;
     ogUrl?: string;
-    twitterCard?: string;
+    twitterCard?: "summary" | "summary_large_image" | "app" | "player";
   };
 
   const warnings: string[] = [];

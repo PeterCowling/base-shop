@@ -6,33 +6,20 @@ import {
   encodeCartCookie,
 } from "@/lib/cartCookie";
 import { getProductById } from "@/lib/products";
-import { skuSchema } from "@types";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { z } from "zod";
+import { postSchema, patchSchema } from "@platform-core/schemas/cart";
 
 export const runtime = "edge";
-
-const postSchema = z
-  .object({
-    sku: z.union([skuSchema, skuSchema.pick({ id: true })]),
-    qty: z.coerce.number().int().min(1).default(1),
-  })
-  .strict();
-
-const patchSchema = z
-  .object({
-    id: z.string(),
-    qty: z.coerce.number().int().min(1),
-  })
-  .strict();
 
 export async function POST(req: NextRequest) {
   const json = await req.json();
   const parsed = postSchema.safeParse(json);
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+    return NextResponse.json(parsed.error.flatten().fieldErrors, {
+      status: 400,
+    });
   }
 
   const { sku, qty } = parsed.data;
@@ -56,7 +43,9 @@ export async function PATCH(req: NextRequest) {
   const parsed = patchSchema.safeParse(json);
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+    return NextResponse.json(parsed.error.flatten().fieldErrors, {
+      status: 400,
+    });
   }
 
   const { id, qty } = parsed.data;

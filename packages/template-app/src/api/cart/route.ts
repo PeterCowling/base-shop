@@ -6,29 +6,11 @@ import {
   encodeCartCookie,
 } from "@platform-core/src/cartCookie";
 import { getProductById } from "@platform-core/src/products";
-import { skuSchema } from "@types";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { z } from "zod";
+import { postSchema, patchSchema } from "@platform-core/schemas/cart";
 
 export const runtime = "edge";
-
-/* ------------------------------------------------------------------
- * Zod schemas for request bodies
- * ------------------------------------------------------------------ */
-const postSchema = z
-  .object({
-    sku: z.union([skuSchema, skuSchema.pick({ id: true })]),
-    qty: z.coerce.number().int().min(1).default(1),
-  })
-  .strict();
-
-const patchSchema = z
-  .object({
-    id: z.string(),
-    qty: z.coerce.number().int().min(1),
-  })
-  .strict();
 
 /* ------------------------------------------------------------------
  * POST – add an item to the cart
@@ -38,7 +20,9 @@ export async function POST(req: NextRequest) {
   const parsed = postSchema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+    return NextResponse.json(parsed.error.flatten().fieldErrors, {
+      status: 400,
+    });
   }
 
   const { sku: skuInput, qty } = parsed.data;
@@ -67,7 +51,9 @@ export async function PATCH(req: NextRequest) {
   const parsed = patchSchema.safeParse(body);
 
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+    return NextResponse.json(parsed.error.flatten().fieldErrors, {
+      status: 400,
+    });
   }
 
   const { id, qty } = parsed.data;

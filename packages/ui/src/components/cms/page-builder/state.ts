@@ -168,12 +168,21 @@ function componentsReducer(
         if (trimmed === "") return undefined;
         return /^-?\d+(\.\d+)?$/.test(trimmed) ? `${trimmed}px` : trimmed;
       };
-      return resizeComponent(state, action.id, {
-        width: normalize(action.width),
-        height: normalize(action.height),
-        left: normalize(action.left),
-        top: normalize(action.top),
-      });
+      const patch: {
+        width?: string;
+        height?: string;
+        left?: string;
+        top?: string;
+      } = {};
+      const width = normalize(action.width);
+      const height = normalize(action.height);
+      const left = normalize(action.left);
+      const top = normalize(action.top);
+      if (width !== undefined) patch.width = width;
+      if (height !== undefined) patch.height = height;
+      if (left !== undefined) patch.left = left;
+      if (top !== undefined) patch.top = top;
+      return resizeComponent(state, action.id, patch);
     case "set":
       return action.components;
     default:

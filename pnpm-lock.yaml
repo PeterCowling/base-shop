@@ -311,6 +311,9 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
@@ -327,6 +330,9 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base

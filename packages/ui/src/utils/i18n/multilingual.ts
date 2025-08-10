@@ -1,4 +1,4 @@
-import type { Locale } from "@platform-core/src/products";
+import type { Locale } from "@i18n/locales";
 
 export interface MultilingualField {
   field: "title" | "desc";

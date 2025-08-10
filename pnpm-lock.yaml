@@ -445,6 +445,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@acme/i18n':
+        specifier: workspace:*
+        version: link:../i18n
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../shared-utils

@@ -4,6 +4,7 @@ import "server-only";
 import { shopSchema, type Shop } from "@types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
+import { prisma } from "../db";
 import { defaultFilterMappings } from "../defaultFilterMappings";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "../dataRoot";
@@ -26,6 +27,19 @@ async function ensureDir(shop: string): Promise<void> {
 }
 
 export async function readShop(shop: string): Promise<Shop> {
+  try {
+    const rec = await prisma.shop.findUnique({ where: { id: shop } });
+    if (rec) {
+      const data = shopSchema.parse(rec.data);
+      if (!data.themeTokens || Object.keys(data.themeTokens).length === 0) {
+        data.themeTokens = await loadThemeTokens(data.themeId);
+      }
+      if (!data.navigation) data.navigation = [];
+      return data as Shop;
+    }
+  } catch {
+    // ignore DB errors and fall back to filesystem
+  }
   try {
     const buf = await fs.readFile(shopPath(shop), "utf8");
     const parsed = shopSchema.safeParse(JSON.parse(buf));

@@ -4,6 +4,7 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 
 import { shopSchema, type Shop } from "@types";
+import { prisma } from "../db";
 import { validateShopName } from "../shops";
 
 import { DATA_ROOT } from "../dataRoot";
@@ -22,6 +23,12 @@ export async function getShopById<T extends { id: string } = Shop>(
   shop: string
 ): Promise<T> {
   try {
+    const rec = await prisma.shop.findUnique({ where: { id: shop } });
+    if (rec) return shopSchema.parse(rec.data) as unknown as T;
+  } catch {
+    // ignore DB errors and fall back
+  }
+  try {
     const buf = await fs.readFile(shopPath(shop), "utf8");
     return shopSchema.parse(JSON.parse(buf)) as unknown as T;
   } catch {
@@ -38,6 +45,16 @@ export async function updateShopInRepo<T extends { id: string } = Shop>(
     throw new Error(`Shop ${patch.id} not found in ${shop}`);
   }
   const updated: T = { ...current, ...patch };
+  try {
+    await prisma.shop.upsert({
+      where: { id: shop },
+      create: { id: shop, data: updated },
+      update: { data: updated },
+    });
+    return updated;
+  } catch {
+    // fall back to filesystem persistence
+  }
   await ensureDir(shop);
   const tmp = `${shopPath(shop)}.${Date.now()}.tmp`;
   await fs.writeFile(tmp, JSON.stringify(updated, null, 2), "utf8");

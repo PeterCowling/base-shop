@@ -9,7 +9,8 @@
     "./tax": "./src/tax/index.ts"
   },
   "dependencies": {
-    "@acme/shared-utils": "workspace:*"
+    "@acme/shared-utils": "workspace:*",
+    "@prisma/client": "^5.15.1"
   },
   "peerDependencies": {
     "next": "^15.0.0",
@@ -17,7 +18,8 @@
     "react-dom": "^18"
   },
   "devDependencies": {
-    "next": "^15.3.4"
+    "next": "^15.3.4",
+    "prisma": "^5.15.1"
   },
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"

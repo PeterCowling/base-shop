@@ -26,7 +26,7 @@ export async function createNewShop(
 
   let result: DeployStatusBase;
   try {
-    result = createShop(id, options, { deploy: false });
+    result = await createShop(id, options, { deploy: false });
   } catch (err) {
     console.error("createShop failed", err);
     throw err;

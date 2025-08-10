@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Shop {
+  id   String @id
+  data Json
+  pages Page[]
+}
+
+model Page {
+  id     String @id @default(cuid())
+  shop   Shop   @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  shopId String
+  slug   String
+  data   Json
+}

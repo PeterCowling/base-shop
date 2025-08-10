@@ -1,81 +1,28 @@
 // apps/cms/src/actions/pages.server.ts
 
 import { LOCALES } from "@acme/i18n";
-import { authOptions } from "@cms/auth/options";
-import {
-  deletePage as deletePageFromRepo,
-  getPages,
-  savePage as savePageInRepo,
-  updatePage as updatePageInRepo,
-} from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
 import type { Locale, Page, HistoryState } from "@types";
-import { historyStateSchema, pageComponentSchema } from "@types";
-import { getServerSession } from "next-auth";
+import { historyStateSchema } from "@types";
 import { ulid } from "ulid";
-import { z } from "zod";
 import { nowIso } from "../../../../packages/shared/date";
 
-/* -------------------------------------------------------------------------- */
-/*  Helpers                                                                   */
-/* -------------------------------------------------------------------------- */
-
-async function ensureAuthorized() {
-  const session = await getServerSession(authOptions);
-  if (!session || session.user?.role === "viewer") throw new Error("Forbidden");
-  return session;
-}
-
-const emptyTranslated = (): Record<Locale, string> =>
-  LOCALES.reduce(
-    (acc, l) => ({ ...acc, [l]: "" }),
-    {} as Record<Locale, string>
-  );
-
-const componentsField = z
-  .string()
-  .default("[]")
-  .transform((val) => JSON.parse(val))
-  .pipe(z.array(pageComponentSchema));
-
-/* -------------------------------------------------------------------------- */
-/*  Validation Schemas                                                        */
-/* -------------------------------------------------------------------------- */
-
-const localeFields: z.ZodRawShape = {};
-for (const l of LOCALES) {
-  localeFields[`title_${l}`] = z.string().optional().default("");
-  localeFields[`desc_${l}`] = z.string().optional().default("");
-}
-
-const baseSchema = z
-  .object({
-    slug: z.string().optional().default(""), // allow empty slug on create
-    status: z.enum(["draft", "published"]).default("draft"),
-    image: z
-      .string()
-      .optional()
-      .default("")
-      .refine((v) => !v || /^https?:\/\/\S+$/.test(v), {
-        message: "Invalid image URL",
-      }),
-    components: componentsField,
-  })
-  .extend(localeFields as Record<string, z.ZodTypeAny>);
-
-export const createSchema = baseSchema;
-export type PageCreateForm = z.infer<typeof createSchema>;
-
-export const updateSchema = baseSchema
-  .extend({
-    id: z.string(),
-    updatedAt: z.string(),
-  })
-  .refine((data) => data.slug.trim().length > 0, {
-    message: "Slug required",
-    path: ["slug"],
-  });
-export type PageUpdateForm = z.infer<typeof updateSchema>;
+import { ensureAuthorized } from "./common/auth";
+import {
+  componentsField,
+  createSchema,
+  updateSchema,
+  emptyTranslated,
+  type PageCreateForm,
+  type PageUpdateForm,
+  type PageComponents,
+} from "./pages/validation";
+import {
+  getPages,
+  savePage as savePageInService,
+  updatePage as updatePageInService,
+  deletePage as deletePageFromService,
+} from "./pages/service";
 
 /* -------------------------------------------------------------------------- */
 /*  Create Page                                                               */
@@ -149,7 +96,7 @@ export async function createPage(
   };
 
   try {
-    const saved = await savePageInRepo(shop, page);
+    const saved = await savePageInService(shop, page);
     return { page: saved };
   } catch (err) {
     Sentry.captureException(err);
@@ -169,7 +116,7 @@ export async function savePageDraft(
 
   const id = (formData.get("id") as string) || ulid();
   const compStr = formData.get("components");
-  let components: z.infer<typeof componentsField>;
+  let components: PageComponents;
   try {
     components = componentsField.parse(
       typeof compStr === "string" ? compStr : undefined
@@ -216,7 +163,7 @@ export async function savePageDraft(
       };
 
   try {
-    const saved = await savePageInRepo(shop, page);
+    const saved = await savePageInService(shop, page);
     return { page: saved };
   } catch (err) {
     Sentry.captureException(err);
@@ -287,7 +234,7 @@ export async function updatePage(
   };
 
   try {
-    const saved = await updatePageInRepo(shop, patch);
+    const saved = await updatePageInService(shop, patch);
     return { page: saved };
   } catch (err) {
     Sentry.captureException(err);
@@ -302,7 +249,7 @@ export async function updatePage(
 export async function deletePage(shop: string, id: string): Promise<void> {
   await ensureAuthorized();
   try {
-    await deletePageFromRepo(shop, id);
+    await deletePageFromService(shop, id);
   } catch (err) {
     Sentry.captureException(err);
     throw err;

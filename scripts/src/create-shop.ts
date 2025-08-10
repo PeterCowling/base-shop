@@ -1,9 +1,12 @@
 // scripts/create-shop.ts
 // Import directly to avoid relying on tsconfig path aliases when using ts-node.
-import { readdirSync, existsSync } from "fs";
+import { readdirSync } from "fs";
 import readline from "node:readline";
 import { join } from "path";
-import { createShop } from "../../packages/platform-core/src/createShop";
+import {
+  createShop,
+  ensureTemplateExists,
+} from "../../packages/platform-core/src/createShop";
 import { validateShopName } from "../../packages/platform-core/src/shops";
 import { defaultPaymentProviders } from "../../packages/platform-core/src/createShop/defaultPaymentProviders";
 import { defaultShippingProviders } from "../../packages/platform-core/src/createShop/defaultShippingProviders";
@@ -97,19 +100,11 @@ function parseArgs(argv: string[]): [string, Options, boolean, boolean] {
 const [shopId, options, themeProvided, templateProvided] = parseArgs(
   process.argv.slice(2)
 );
-
-if (themeProvided) {
-  const themeDir = join("packages", "themes", options.theme);
-  if (!existsSync(themeDir)) {
-    console.error(`Theme '${options.theme}' not found in packages/themes`);
-    process.exit(1);
-  }
-}
-
-if (templateProvided) {
-  const templateDir = join("packages", options.template);
-  if (!existsSync(templateDir)) {
-    console.error(`Template '${options.template}' not found in packages`);
+if (themeProvided || templateProvided) {
+  try {
+    ensureTemplateExists(options.theme, options.template);
+  } catch (err) {
+    console.error((err as Error).message);
     process.exit(1);
   }
 }

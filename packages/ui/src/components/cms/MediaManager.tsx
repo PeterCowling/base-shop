@@ -33,6 +33,7 @@ function MediaManagerBase({
 }: Props): ReactElement {
   const [files, setFiles] = useState<MediaItem[]>(initialFiles);
   const [dragActive, setDragActive] = useState(false);
+  const feedbackId = "media-manager-feedback";
 
   /* ---------------------------------------------------------------------- */
   /*  Delete handler (stable)                                               */
@@ -80,6 +81,7 @@ function MediaManagerBase({
         tabIndex={0}
         role="button"
         aria-label="Drop image here or press Enter to browse"
+        aria-describedby={feedbackId}
         onDrop={(e) => {
           onDrop(e);
           setDragActive(false);
@@ -110,42 +112,44 @@ function MediaManagerBase({
       </div>
 
       {/* Validation / progress feedback */}
-      {error && <p className="text-sm text-danger">{error}</p>}
-      {progress && (
-        <p className="text-sm text-muted">
-          Uploaded {progress.done}/{progress.total}
-        </p>
-      )}
-      {pendingFile && isValid !== null && (
-        <div className="space-y-2">
-          <p
-            className={
-              isValid ? "text-sm text-success" : "text-sm text-danger"
-            }
-          >
-            {isValid
-              ? `Image orientation is ${actual}; requirement satisfied.`
-              : `Selected image is ${actual}; please upload a ${REQUIRED_ORIENTATION} image.`}
+      <div id={feedbackId} role="status" aria-live="polite" className="space-y-2">
+        {error && <p className="text-sm text-danger">{error}</p>}
+        {progress && (
+          <p className="text-sm text-muted">
+            Uploaded {progress.done}/{progress.total}
           </p>
-          {isValid && (
-            <div className="flex gap-2">
-              <Input
-                type="text"
-                value={altText}
-                onChange={(e) => setAltText(e.target.value)}
-                placeholder="Alt text"
-                className="flex-1"
-              />
-              <button
-                onClick={handleUpload}
-                className="rounded bg-primary px-2 text-sm text-primary-fg"
-              >
-                Upload
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+        )}
+        {pendingFile && isValid !== null && (
+          <div className="space-y-2">
+            <p
+              className={
+                isValid ? "text-sm text-success" : "text-sm text-danger"
+              }
+            >
+              {isValid
+                ? `Image orientation is ${actual}; requirement satisfied.`
+                : `Selected image is ${actual}; please upload a ${REQUIRED_ORIENTATION} image.`}
+            </p>
+            {isValid && (
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  value={altText}
+                  onChange={(e) => setAltText(e.target.value)}
+                  placeholder="Alt text"
+                  className="flex-1"
+                />
+                <button
+                  onClick={handleUpload}
+                  className="rounded bg-primary px-2 text-sm text-primary-fg"
+                >
+                  Upload
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {/* File list */}
       {files.length > 0 && (

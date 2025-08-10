@@ -1,4 +1,23 @@
-import { canRead, canWrite } from "../src/rbac";
+import { z } from "zod";
+import {
+  canRead,
+  canWrite,
+  extendRoles,
+  READ_ROLES,
+  WRITE_ROLES,
+} from "../src";
+import * as roles from "../src/types/roles";
+
+const originalRead = [...READ_ROLES];
+const originalWrite = [...WRITE_ROLES];
+
+afterEach(() => {
+  READ_ROLES.splice(0, READ_ROLES.length, ...originalRead);
+  WRITE_ROLES.splice(0, WRITE_ROLES.length, ...originalWrite);
+  (roles as any).RoleSchema = z.enum(
+    READ_ROLES as [roles.Role, ...roles.Role[]]
+  );
+});
 
 describe("canRead", () => {
   const cases: [unknown, boolean][] = [
@@ -31,6 +50,39 @@ describe("canWrite", () => {
   for (const [role, expected] of cases) {
     it(`${String(role)} -> ${expected}`, () => {
       expect(canWrite(role)).toBe(expected);
+    });
+  }
+});
+
+describe("extendRoles integration", () => {
+  it("new roles affect canRead and canWrite", () => {
+    extendRoles({ write: ["author"], read: ["reader"] });
+
+    expect(canWrite("author")).toBe(true);
+    expect(canRead("author")).toBe(true);
+    expect(canRead("reader")).toBe(true);
+    expect(canWrite("reader")).toBe(false);
+  });
+});
+
+describe("case sensitivity", () => {
+  const cases = ["Admin", "shopadmin", "VIEWER", "catalogmanager"]; // invalid casing
+  for (const role of cases) {
+    it(`${role} is rejected`, () => {
+      expect(canRead(role)).toBe(false);
+      expect(canWrite(role)).toBe(false);
+    });
+  }
+});
+
+describe("non-string roles", () => {
+  const values: unknown[] = [123, Symbol("sym")];
+  for (const value of values) {
+    it(`${String(value)} -> false`, () => {
+      expect(() => canRead(value)).not.toThrow();
+      expect(canRead(value)).toBe(false);
+      expect(() => canWrite(value)).not.toThrow();
+      expect(canWrite(value)).toBe(false);
     });
   }
 });

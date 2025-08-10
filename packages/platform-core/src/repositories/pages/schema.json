@@ -3,6 +3,9 @@
   "$id": "https://example.com/schemas/page.json",
   "title": "Page",
   "type": "object",
+  "definitions": {
+    "nonNegativeInteger": { "type": "integer", "minimum": 0 }
+  },
   "required": [
     "id",
     "slug",
@@ -33,7 +36,9 @@
             "required": ["id", "type"],
             "properties": {
               "id": { "type": "string" },
-              "type": { "const": "HeroBanner" }
+              "type": { "const": "HeroBanner" },
+              "minItems": { "$ref": "#/definitions/nonNegativeInteger" },
+              "maxItems": { "$ref": "#/definitions/nonNegativeInteger" }
             },
             "additionalProperties": false
           },
@@ -42,7 +47,9 @@
             "required": ["id", "type"],
             "properties": {
               "id": { "type": "string" },
-              "type": { "const": "ValueProps" }
+              "type": { "const": "ValueProps" },
+              "minItems": { "$ref": "#/definitions/nonNegativeInteger" },
+              "maxItems": { "$ref": "#/definitions/nonNegativeInteger" }
             },
             "additionalProperties": false
           },
@@ -51,7 +58,9 @@
             "required": ["id", "type"],
             "properties": {
               "id": { "type": "string" },
-              "type": { "const": "ReviewsCarousel" }
+              "type": { "const": "ReviewsCarousel" },
+              "minItems": { "$ref": "#/definitions/nonNegativeInteger" },
+              "maxItems": { "$ref": "#/definitions/nonNegativeInteger" }
             },
             "additionalProperties": false
           },
@@ -60,7 +69,9 @@
             "required": ["id", "type"],
             "properties": {
               "id": { "type": "string" },
-              "type": { "const": "ProductGrid" }
+              "type": { "const": "ProductGrid" },
+              "minItems": { "$ref": "#/definitions/nonNegativeInteger" },
+              "maxItems": { "$ref": "#/definitions/nonNegativeInteger" }
             },
             "additionalProperties": false
           }

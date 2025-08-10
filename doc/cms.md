@@ -69,8 +69,15 @@ Open `/cms/shop/{shop}/pages/{slug}/builder` to edit an existing page or
   it, then press <kbd>Space</kbd> again to drop it.
 - Screen readers announce when blocks are moved or added to the canvas.
 
+### Product grids and carousels
+
+Blocks that show multiple products (grids or carousels) expose **Min Items** and
+**Max Items** settings. The block observes its width and automatically adjusts
+how many products are visible within those bounds. Wide screens may show more
+items up to `maxItems`, while narrow screens never drop below `minItems`.
+
 ### Publish changes
 
 1. Use **Save** to keep a draft version.
 2. Click **Publish** when you're ready for the page to go live at
-   `/shop/{shop}/{slug}`.
+  `/shop/{shop}/{slug}`.

@@ -68,11 +68,13 @@ export interface ValuePropsComponent extends PageComponentBase {
   items?: { icon: string; title: string; desc: string }[];
 }
 
+/** Carousel of customer reviews. `minItems`/`maxItems` limit visible reviews */
 export interface ReviewsCarouselComponent extends PageComponentBase {
   type: "ReviewsCarousel";
   reviews?: { nameKey: string; quoteKey: string }[];
 }
 
+/** Grid of products; `minItems`/`maxItems` clamp the responsive product count */
 export interface ProductGridComponent extends PageComponentBase {
   type: "ProductGrid";
 }
@@ -104,6 +106,7 @@ export interface BlogListingComponent extends PageComponentBase {
   posts?: { title: string; excerpt?: string; url?: string }[];
 }
 
+/** Slider of testimonials. `minItems`/`maxItems` limit visible testimonials */
 export interface TestimonialSliderComponent extends PageComponentBase {
   type: "TestimonialSlider";
   testimonials?: { quote: string; name?: string }[];
@@ -149,10 +152,10 @@ const baseComponentSchema = z
     left: z.string().optional(),
     margin: z.string().optional(),
     padding: z.string().optional(),
-    minItems: z.number().optional(),
-    maxItems: z.number().optional(),
-    minCols: z.number().optional(),
-    maxCols: z.number().optional(),
+    minItems: z.number().int().min(0).optional(),
+    maxItems: z.number().int().min(0).optional(),
+    minCols: z.number().int().min(0).optional(),
+    maxCols: z.number().int().min(0).optional(),
   })
   .passthrough();
 

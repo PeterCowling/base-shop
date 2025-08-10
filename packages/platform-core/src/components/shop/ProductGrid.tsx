@@ -8,16 +8,18 @@ import { ProductCard } from "./ProductCard";
 type Props = {
   skus: SKU[];
   columns?: number;
-  minCols?: number;
-  maxCols?: number;
+  /** Minimum number of products to display */
+  minItems?: number;
+  /** Maximum number of products to display */
+  maxItems?: number;
   className?: string;
 };
 
 function ProductGridInner({
   skus,
   columns,
-  minCols = 1,
-  maxCols = 3,
+  minItems = 1,
+  maxItems = 3,
   className,
 }: Props) {
   // simple alphabetic sort for deterministic order (SSR/CSR match)
@@ -27,7 +29,7 @@ function ProductGridInner({
   );
 
   const containerRef = useRef<HTMLElement>(null);
-  const [cols, setCols] = useState(columns ?? minCols);
+  const [cols, setCols] = useState(columns ?? minItems);
 
   useEffect(() => {
     if (columns || typeof ResizeObserver === "undefined" || !containerRef.current)
@@ -37,14 +39,14 @@ function ProductGridInner({
     const update = () => {
       const width = el.clientWidth;
       const ideal = Math.floor(width / ITEM_WIDTH) || 1;
-      const clamped = Math.max(minCols, Math.min(maxCols, ideal));
+      const clamped = Math.max(minItems, Math.min(maxItems, ideal));
       setCols(clamped);
     };
     update();
     const observer = new ResizeObserver(update);
     observer.observe(el);
     return () => observer.disconnect();
-  }, [columns, minCols, maxCols]);
+  }, [columns, minItems, maxItems]);
 
   return (
     <section

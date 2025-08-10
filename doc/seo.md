@@ -31,3 +31,14 @@ pnpm --filter @apps/<shop-id> build
 ```
 
 During development, requesting `/sitemap.xml` will always serve the latest data.
+
+## Running SEO audits
+
+Run an automated Lighthouse audit focusing on SEO using the helper script:
+
+```bash
+pnpm run seo:audit http://localhost:3000
+```
+
+The optional first argument is the URL to audit (defaults to `http://localhost:3000`).
+An HTML report is written to `seo-report.html` in the current working directory.

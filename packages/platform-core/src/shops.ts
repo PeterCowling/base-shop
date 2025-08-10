@@ -19,3 +19,24 @@ export function setSanityConfig(
 }
 
 export type { SanityBlogConfig };
+
+export interface DomainInfo {
+  name: string;
+  status?: string;
+}
+
+export function getDomain(shop: Shop): DomainInfo | undefined {
+  return shop.domain;
+}
+
+export function setDomain(shop: Shop, domain: DomainInfo | undefined): Shop {
+  const next = { ...shop } as Shop & { domain?: DomainInfo };
+  if (domain) {
+    next.domain = domain;
+  } else {
+    delete next.domain;
+  }
+  return next;
+}
+
+export type { DomainInfo as ShopDomain };

@@ -1,4 +1,5 @@
 import { readAggregates } from "@platform-core/repositories/analytics.server";
+import { readShop } from "@platform-core/src/repositories/shops.server";
 import { Charts } from "./Charts.client";
 
 export default async function ShopDashboard({
@@ -7,7 +8,10 @@ export default async function ShopDashboard({
   params: { shop: string };
 }) {
   const shop = params.shop;
-  const aggregates = await readAggregates(shop);
+  const [aggregates, shopData] = await Promise.all([
+    readAggregates(shop),
+    readShop(shop),
+  ]);
 
   const days = Array.from(
     new Set([
@@ -36,6 +40,12 @@ export default async function ShopDashboard({
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Dashboard: {shop}</h2>
+      {shopData.domain && (
+        <p className="mb-4 text-sm">
+          Domain: {shopData.domain.name}
+          {shopData.domain.status ? ` (${shopData.domain.status})` : ""}
+        </p>
+      )}
       <Charts traffic={traffic} sales={sales} conversion={conversion} />
     </div>
   );

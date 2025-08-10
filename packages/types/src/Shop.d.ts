@@ -107,6 +107,10 @@ export interface Shop {
         url: string;
     }[];
     analyticsEnabled?: boolean;
+    domain?: {
+        name: string;
+        status?: string;
+    };
 }
 export declare const shopSchema: z.ZodObject<{
     id: z.ZodString;
@@ -141,6 +145,16 @@ export declare const shopSchema: z.ZodObject<{
         label: string;
     }>, "many">>;
     analyticsEnabled: z.ZodOptional<z.ZodBoolean>;
+    domain: z.ZodOptional<z.ZodObject<{
+        name: z.ZodString;
+        status: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
+        name: string;
+        status?: string | undefined;
+    }, {
+        name: string;
+        status?: string | undefined;
+    }>>;
 }, "strip", z.ZodTypeAny, {
     id: string;
     name: string;
@@ -164,6 +178,10 @@ export declare const shopSchema: z.ZodObject<{
         label: string;
     }[] | undefined;
     analyticsEnabled?: boolean | undefined;
+    domain?: {
+        name: string;
+        status?: string | undefined;
+    } | undefined;
 }, {
     id: string;
     name: string;
@@ -187,5 +205,9 @@ export declare const shopSchema: z.ZodObject<{
         label: string;
     }[] | undefined;
     analyticsEnabled?: boolean | undefined;
-}>; 
+    domain?: {
+        name: string;
+        status?: string | undefined;
+    } | undefined;
+}>;
 //# sourceMappingURL=Shop.d.ts.map

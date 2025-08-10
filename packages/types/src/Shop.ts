@@ -64,6 +64,7 @@ export interface Shop {
   navigation?: { label: string; url: string }[];
   sanityBlog?: SanityBlogConfig;
   analyticsEnabled?: boolean;
+  domain?: { name: string; status?: string };
 }
 
 export const shopSchema = z.object({
@@ -95,4 +96,7 @@ export const shopSchema = z.object({
     .optional(),
   sanityBlog: sanityBlogConfigSchema.optional(),
   analyticsEnabled: z.boolean().optional(),
+  domain: z
+    .object({ name: z.string(), status: z.string().optional() })
+    .optional(),
 });

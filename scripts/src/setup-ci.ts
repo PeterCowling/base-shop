@@ -33,20 +33,43 @@ try {
   process.exit(1);
 }
 
+try {
+  const shopRaw = readFileSync(
+    join("data", "shops", shopId, "shop.json"),
+    "utf8"
+  );
+  const shopJson = JSON.parse(shopRaw) as {
+    domain?: { name: string; status?: string };
+  };
+  if (shopJson.domain?.name) {
+    env.SHOP_DOMAIN = shopJson.domain.name;
+    if (shopJson.domain.status) {
+      env.SHOP_DOMAIN_STATUS = shopJson.domain.status;
+    }
+  }
+} catch {
+  // ignore missing shop.json
+}
+
 const wfPath = join(".github", "workflows", `shop-${shopId}.yml`);
+const envLines = Object.entries(env)
+  .map(([k, v]) => `      ${k}: ${v}`)
+  .join("\n");
 const workflow = `on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+${envLines}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
       - run: pnpm install
       - run: pnpm lint && pnpm test
       - run: pnpm --filter @apps/shop-${shopId} build
-      - run: npx @cloudflare/next-on-pages deploy \
-               --project-name=shop-${shopId} \
+      - run: npx @cloudflare/next-on-pages deploy \\
+               --project-name=shop-${shopId} \\
                --branch=\${{ github.ref_name }}
 `;
 

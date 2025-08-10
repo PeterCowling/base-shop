@@ -6,6 +6,7 @@ import type { DeployShopResult } from "@platform-core/createShop";
 
 export interface DeployInfo
   extends Partial<DeployShopResult> {
+  domain?: string;
   domainStatus?: string;
   error?: string;
 }
@@ -22,7 +23,10 @@ async function createCloudflareRecords(
 ): Promise<{ status?: string; cnameTarget?: string }> {
   const account = process.env.NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_ID;
   const token = process.env.NEXT_PUBLIC_CLOUDFLARE_API_TOKEN;
-  if (!account || !token) throw new Error("Cloudflare credentials not configured");
+  const zone = process.env.NEXT_PUBLIC_CLOUDFLARE_ZONE_ID;
+  if (!account || !token) {
+    throw new Error("Cloudflare credentials not configured");
+  }
 
   const res = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${account}/pages/projects/${shopId}/domains`,
@@ -40,9 +44,53 @@ async function createCloudflareRecords(
   if (!res.ok) {
     throw new Error(json.errors?.[0]?.message ?? "Failed to provision domain");
   }
+
+  const cnameTarget = json.result?.verification_data?.cname_target as
+    | string
+    | undefined;
+
+  if (zone && cnameTarget) {
+    try {
+      await fetch(
+        `https://api.cloudflare.com/client/v4/zones/${zone}/dns_records`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            type: "CNAME",
+            name: domain,
+            content: cnameTarget,
+            ttl: 1,
+            proxied: true,
+          }),
+        }
+      );
+    } catch {
+      /* ignore DNS record errors */
+    }
+  }
+
+  try {
+    await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${account}/pages/projects/${shopId}/domains/${domain}/certificates`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch {
+    /* ignore certificate errors */
+  }
+
   return {
     status: json.result?.status as string | undefined,
-    cnameTarget: json.result?.verification_data?.cname_target as string | undefined,
+    cnameTarget,
   };
 }
 
@@ -73,11 +121,12 @@ export async function deployShop(
 
   let info: DeployInfo = json as DeployInfo;
 
-  if (domain) {
+  if (domain && !info.domainStatus) {
     try {
       const cf = await createCloudflareRecords(shopId, domain);
       info = {
         ...(json as DeployInfo),
+        domain,
         domainStatus: cf.status ?? (json as DeployInfo).domainStatus,
         instructions:
           cf.cnameTarget

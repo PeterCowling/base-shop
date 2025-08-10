@@ -1,5 +1,11 @@
 // packages/platform-core/__tests__/shops.test.ts
-import { getSanityConfig, setSanityConfig, validateShopName } from "../shops";
+import {
+  getSanityConfig,
+  setSanityConfig,
+  validateShopName,
+  getDomain,
+  setDomain,
+} from "../src/shops";
 import type { Shop } from "@types";
 
 describe("validateShopName", () => {
@@ -41,5 +47,29 @@ describe("sanity blog accessors", () => {
       dataset: "d",
       token: "t",
     });
+  });
+});
+
+describe("domain accessors", () => {
+  const baseShop: Shop = {
+    id: "shop",
+    name: "shop",
+    catalogFilters: [],
+    themeId: "base",
+    themeTokens: {},
+    filterMappings: {},
+    priceOverrides: {},
+    localeOverrides: {},
+    navigation: [],
+    analyticsEnabled: false,
+  };
+
+  it("gets undefined when not set", () => {
+    expect(getDomain(baseShop)).toBeUndefined();
+  });
+
+  it("sets and retrieves domain", () => {
+    const updated = setDomain(baseShop, { name: "example.com", status: "active" });
+    expect(getDomain(updated)).toEqual({ name: "example.com", status: "active" });
   });
 });

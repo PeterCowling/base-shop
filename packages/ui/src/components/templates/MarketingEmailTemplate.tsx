@@ -49,7 +49,7 @@ export function MarketingEmailTemplate({
           <div className="text-center">
             <a
               href={ctaHref}
-              className="bg-primary text-primary-fg inline-block rounded-md px-4 py-2 font-medium"
+              className="bg-primary text-primary-foreground inline-block rounded-md px-4 py-2 font-medium"
             >
               {ctaLabel}
             </a>

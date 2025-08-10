@@ -14,7 +14,7 @@ const designTokens = plugin.withOptions(
           muted: "hsl(var(--color-muted))",
         },
         textColor: {
-          "primary-fg": "hsl(var(--color-primary-fg))",
+          "primary-foreground": "hsl(var(--color-primary-fg))",
           "accent-foreground": "hsl(var(--color-accent-fg))",
           "danger-foreground": "hsl(var(--color-danger-fg))",
         },

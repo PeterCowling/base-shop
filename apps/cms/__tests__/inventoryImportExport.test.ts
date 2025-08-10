@@ -41,8 +41,19 @@ describe("inventory import/export routes", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
+      jest.doMock("@platform-core/src/services/stockAlert.server", () => ({
+        checkAndAlert: jest.fn(),
+      }));
       const route = await import("../src/app/api/data/[shop]/inventory/import/route");
-      const items = [{ sku: "a", quantity: 1 }];
+      const items = [
+        {
+          sku: "a",
+          productId: "p1",
+          quantity: 1,
+          lowStockThreshold: 5,
+          variantAttributes: { color: "red", size: "M" },
+        },
+      ];
       const file = {
         name: "inv.json",
         type: "application/json",
@@ -69,8 +80,11 @@ describe("inventory import/export routes", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
+      jest.doMock("@platform-core/src/services/stockAlert.server", () => ({
+        checkAndAlert: jest.fn(),
+      }));
       const route = await import("../src/app/api/data/[shop]/inventory/import/route");
-      const csv = "sku,quantity\na,1\nb,2";
+      const csv = "sku,productId,quantity,lowStockThreshold,variant.color,variant.size\na,p1,1,5,red,M\nb,p2,2,,blue,L";
       const file = {
         name: "inv.csv",
         type: "text/csv",
@@ -87,8 +101,19 @@ describe("inventory import/export routes", () => {
       expect(res.status).toBe(200);
       const json = JSON.parse(text);
       expect(json.items).toEqual([
-        { sku: "a", quantity: 1 },
-        { sku: "b", quantity: 2 },
+        {
+          sku: "a",
+          productId: "p1",
+          quantity: 1,
+          lowStockThreshold: 5,
+          variantAttributes: { color: "red", size: "M" },
+        },
+        {
+          sku: "b",
+          productId: "p2",
+          quantity: 2,
+          variantAttributes: { color: "blue", size: "L" },
+        },
       ]);
     });
   });
@@ -96,8 +121,19 @@ describe("inventory import/export routes", () => {
   it("exports inventory as csv", async () => {
     await withTempRepo(async (dir) => {
       const items = [
-        { sku: "a", quantity: 1 },
-        { sku: "b", quantity: 2 },
+        {
+          sku: "a",
+          productId: "p1",
+          quantity: 1,
+          lowStockThreshold: 5,
+          variantAttributes: { color: "red", size: "M" },
+        },
+        {
+          sku: "b",
+          productId: "p2",
+          quantity: 2,
+          variantAttributes: { color: "blue", size: "L" },
+        },
       ];
       await fs.writeFile(
         path.join(dir, "data", "shops", "test", "inventory.json"),
@@ -112,16 +148,29 @@ describe("inventory import/export routes", () => {
       const res = await route.GET(req as any, { params: Promise.resolve({ shop: "test" }) });
       expect(res.headers.get("content-type")).toContain("text/csv");
       const text = await res.text();
-      expect(text).toContain("sku,quantity");
-      expect(text).toContain("a,1");
+      expect(text).toContain(
+        "sku,productId,quantity,lowStockThreshold,variant.color,variant.size"
+      );
+      expect(text).toContain("a,p1,1,5,red,M");
     });
   });
 
   it("exports inventory as json", async () => {
     await withTempRepo(async (dir) => {
       const items = [
-        { sku: "a", quantity: 1 },
-        { sku: "b", quantity: 2 },
+        {
+          sku: "a",
+          productId: "p1",
+          quantity: 1,
+          lowStockThreshold: 5,
+          variantAttributes: { color: "red", size: "M" },
+        },
+        {
+          sku: "b",
+          productId: "p2",
+          quantity: 2,
+          variantAttributes: { color: "blue", size: "L" },
+        },
       ];
       await fs.writeFile(
         path.join(dir, "data", "shops", "test", "inventory.json"),

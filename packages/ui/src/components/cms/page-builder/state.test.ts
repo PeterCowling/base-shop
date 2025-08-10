@@ -1,5 +1,15 @@
-import { reducer } from "./state";
+import { historyStateSchema, reducer } from "./state";
 import type { PageComponent, HistoryState } from "@types";
+
+describe("historyStateSchema", () => {
+  it("applies defaults when parsing empty object", () => {
+    expect(historyStateSchema.parse({})).toEqual({
+      past: [],
+      present: [],
+      future: [],
+    });
+  });
+});
 
 describe("state reducer", () => {
   const a = { id: "a", type: "Text" } as PageComponent;

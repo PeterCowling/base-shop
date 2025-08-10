@@ -52,6 +52,8 @@ async function main() {
     process.exit(1);
   }
   const name = await prompt("Display name (optional): ");
+  const typeAns = await prompt("Shop type [sale|rental]: ", "sale");
+  const type = typeAns === "rental" ? "rental" : "sale";
   const theme = await prompt("Theme [base]: ", "base");
   const template = await prompt("Template [template-app]: ", "template-app");
   const paymentAns = await prompt("Payment providers (comma-separated): ");
@@ -60,6 +62,7 @@ async function main() {
 
   const options = {
     ...(name && { name }),
+    type,
     theme,
     template,
     payment: paymentAns.split(",").map((s) => s.trim()).filter(Boolean),

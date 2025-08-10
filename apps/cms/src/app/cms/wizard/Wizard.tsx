@@ -398,7 +398,7 @@ export default function Wizard({
     setResult(null);
     setFieldErrors({});
     try {
-      const { ok, error, fieldErrors } = await submitShop(shopId, {
+      const payload = {
         storeName,
         logo,
         contactInfo,
@@ -414,7 +414,9 @@ export default function Wizard({
         checkoutComponents,
         analyticsProvider,
         analyticsId,
-      });
+      };
+
+      const { ok, error, fieldErrors } = await submitShop(shopId, payload);
 
       if (ok) {
         setResult("Shop created successfully");

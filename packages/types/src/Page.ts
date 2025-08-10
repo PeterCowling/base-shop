@@ -308,6 +308,7 @@ export const historyStateSchema: z.ZodType<HistoryState> = z
     present: z.array(pageComponentSchema),
     future: z.array(z.array(pageComponentSchema)),
   })
+  .strict()
   .default({ past: [], present: [], future: [] });
 
 export const pageSchema = z.object({

@@ -60,7 +60,9 @@
             "required": ["id", "type"],
             "properties": {
               "id": { "type": "string" },
-              "type": { "const": "ProductGrid" }
+              "type": { "const": "ProductGrid" },
+              "minCols": { "type": "number" },
+              "maxCols": { "type": "number" }
             },
             "additionalProperties": false
           }

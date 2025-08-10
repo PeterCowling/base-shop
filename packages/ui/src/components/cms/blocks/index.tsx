@@ -30,6 +30,8 @@ export {
   Section,
 };
 
+export type { ProductGridProps } from "./ProductGrid.client";
+
 export * from "./atoms";
 export * from "./molecules";
 export * from "./organisms";

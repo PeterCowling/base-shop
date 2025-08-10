@@ -63,6 +63,8 @@ export interface ReviewsCarouselComponent extends PageComponentBase {
 
 export interface ProductGridComponent extends PageComponentBase {
   type: "ProductGrid";
+  minCols?: number;
+  maxCols?: number;
 }
 
 export interface GalleryComponent extends PageComponentBase {
@@ -174,6 +176,8 @@ const reviewsCarouselComponentSchema = baseComponentSchema.extend({
 
 const productGridComponentSchema = baseComponentSchema.extend({
   type: z.literal("ProductGrid"),
+  minCols: z.number().optional(),
+  maxCols: z.number().optional(),
 });
 
 const galleryComponentSchema = baseComponentSchema.extend({

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { ProductGrid } from "../components/shop/ProductGrid";
-import { CartProvider } from "../contexts/CartContext";
-import { PRODUCTS } from "../products";
+import { ProductGrid } from "../src/components/shop/ProductGrid";
+import { CartProvider } from "../src/contexts/CartContext";
+import { PRODUCTS } from "../src/products";
 
 describe("ProductGrid", () => {
   it("renders all products", () => {

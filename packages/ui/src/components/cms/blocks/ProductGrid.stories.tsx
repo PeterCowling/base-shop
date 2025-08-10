@@ -3,7 +3,7 @@ import ProductGrid from "./ProductGrid";
 
 const meta: Meta<typeof ProductGrid> = {
   component: ProductGrid,
-  args: {},
+  args: { minCols: 1, maxCols: 3 },
 };
 export default meta;
 

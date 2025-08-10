@@ -68,6 +68,8 @@ export interface ReviewsCarouselComponent extends PageComponentBase {
 }
 export interface ProductGridComponent extends PageComponentBase {
     type: "ProductGrid";
+    minCols?: number;
+    maxCols?: number;
 }
 export interface GalleryComponent extends PageComponentBase {
     type: "Gallery";

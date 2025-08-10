@@ -8,6 +8,23 @@
 ## 1. Create a shop
 
 ```bash
+pnpm init-shop
+```
+
+`init-shop` launches an interactive wizard that collects:
+
+- shop ID
+- display name
+- logo URL
+- contact email
+- theme and template
+- payment and shipping providers
+
+After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
+
+For automated scripts you can still call `pnpm create-shop <id>` with flags:
+
+```bash
 pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--payment=p1,p2] [--shipping=s1,s2]
 ```
 
@@ -17,7 +34,20 @@ pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--p
 - `--payment` – comma‑separated payment providers to configure.
 - `--shipping` – comma‑separated shipping providers to configure.
 
-The command scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
+### Example wizard run
+
+```bash
+pnpm init-shop
+? Shop ID … demo
+? Display name … Demo Shop
+? Logo URL … https://example.com/logo.png
+? Contact email … demo@example.com
+? Theme › base
+? Template › template-app
+? Payment providers › stripe
+? Shipping providers › ups
+Scaffolded apps/shop-demo
+```
 
 ## 2. Configure environment variables
 
@@ -42,4 +72,3 @@ This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs
 - **"Theme 'X' not found" or "Template 'Y' not found"** – ensure the names match directories in `packages/themes` or `packages/`.
 - **`validate-env` fails** – verify `apps/shop-<id>/.env` contains all variables listed in the error. Missing values will stop the script.
 - **Node or pnpm version errors** – check you are running Node.js ≥20 and pnpm 10.x. Version mismatches can cause dependency resolution issues.
-

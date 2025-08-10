@@ -9,7 +9,7 @@ import {
   updatePage as updatePageInRepo,
 } from "@platform-core/repositories/pages/index.server";
 import * as Sentry from "@sentry/node";
-import type { Locale, Page, PageComponent, HistoryState } from "@types";
+import type { Locale, Page, HistoryState } from "@types";
 import { historyStateSchema, pageComponentSchema } from "@types";
 import { getServerSession } from "next-auth";
 import { ulid } from "ulid";
@@ -34,38 +34,9 @@ const emptyTranslated = (): Record<Locale, string> =>
 
 const componentsField = z
   .string()
-  .optional()
   .default("[]")
-  .transform((val, ctx) => {
-    try {
-      const arr = val ? JSON.parse(val) : [];
-      if (!Array.isArray(arr)) throw new Error();
-      return arr as PageComponent[];
-    } catch {
-      const snippet = val.length > 100 ? `${val.slice(0, 100)}...` : val;
-      console.error(
-        `Malformed components field: \"${snippet}\". ` +
-          `Ensure the components field is valid JSON.`
-      );
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Invalid components",
-      });
-      return [] as PageComponent[];
-    }
-  });
-
-function validateComponents(
-  components: PageComponent[]
-): Record<string, string[]> | null {
-  for (const comp of components) {
-    const parsed = pageComponentSchema.safeParse(comp);
-    if (!parsed.success) {
-      return { components: ["Invalid components"] };
-    }
-  }
-  return null;
-}
+  .transform((val) => JSON.parse(val))
+  .pipe(z.array(pageComponentSchema));
 
 /* -------------------------------------------------------------------------- */
 /*  Validation Schemas                                                        */
@@ -146,11 +117,6 @@ export async function createPage(
   }
   const data = parsed.data;
 
-  const compErrs = validateComponents(data.components);
-  if (compErrs) {
-    return { errors: compErrs };
-  }
-
   let history: HistoryState | undefined;
   const historyStr = formData.get("history");
   if (typeof historyStr === "string") {
@@ -202,15 +168,14 @@ export async function savePageDraft(
   const session = await ensureAuthorized();
 
   const id = (formData.get("id") as string) || ulid();
-  let components: PageComponent[] = [];
   const compStr = formData.get("components");
-  if (typeof compStr === "string") {
-    try {
-      const parsed = JSON.parse(compStr);
-      if (Array.isArray(parsed)) components = parsed as PageComponent[];
-    } catch {
-      /* ignore – keep components empty */
-    }
+  let components: z.infer<typeof componentsField>;
+  try {
+    components = componentsField.parse(
+      typeof compStr === "string" ? compStr : undefined
+    );
+  } catch {
+    return { errors: { components: ["Invalid components"] } };
   }
 
   let history = undefined;
@@ -223,17 +188,17 @@ export async function savePageDraft(
     }
   }
 
-  const compErrs = validateComponents(components);
-  if (compErrs) {
-    return { errors: compErrs };
-  }
-
   const pages = await getPages(shop);
   const now = nowIso();
   const existing = pages.find((p) => p.id === id);
 
   const page: Page = existing
-    ? { ...existing, components, ...(history ? { history } : {}), updatedAt: now }
+    ? {
+        ...existing,
+        components,
+        ...(history ? { history } : {}),
+        updatedAt: now,
+      }
     : {
         id,
         slug: "",
@@ -291,11 +256,6 @@ export async function updatePage(
     return { errors: fieldErrors as Record<string, string[]> };
   }
   const data = parsed.data;
-
-  const compErrs = validateComponents(data.components);
-  if (compErrs) {
-    return { errors: compErrs };
-  }
 
   let history: HistoryState | undefined;
   const historyStr = formData.get("history");

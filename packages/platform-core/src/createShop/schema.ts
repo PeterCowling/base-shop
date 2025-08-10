@@ -1,12 +1,11 @@
-import type { Locale, PageComponent } from "@types";
 import { localeSchema } from "@types";
 import { pageComponentSchema } from "@types/Page";
 import { z } from "zod";
 import { slugify } from "@shared-utils";
 import { fillLocales } from "@i18n/fillLocales";
-import { defaultPaymentProviders, type DefaultPaymentProvider } from "./defaultPaymentProviders";
-import { defaultShippingProviders, type DefaultShippingProvider } from "./defaultShippingProviders";
-import { defaultTaxProviders, type DefaultTaxProvider } from "./defaultTaxProviders";
+import { defaultPaymentProviders } from "./defaultPaymentProviders";
+import { defaultShippingProviders } from "./defaultShippingProviders";
+import { defaultTaxProviders } from "./defaultTaxProviders";
 
 export const createShopOptionsSchema = z.object({
   name: z.string().optional(),
@@ -43,43 +42,15 @@ export const createShopOptionsSchema = z.object({
     )
     .default([]),
   checkoutPage: z.array(pageComponentSchema).default([]),
-});
+}).strict();
+export type CreateShopOptions = z.infer<typeof createShopOptionsSchema>;
 
-export interface CreateShopOptions {
-  name?: string;
-  logo?: string;
-  contactInfo?: string;
-  type?: "sale" | "rental";
-  theme?: string;
-  template?: string;
-  payment?: DefaultPaymentProvider[];
-  shipping?: DefaultShippingProvider[];
-  tax?: DefaultTaxProvider;
-  pageTitle?: Partial<Record<Locale, string>>;
-  pageDescription?: Partial<Record<Locale, string>>;
-  socialImage?: string;
-  analytics?: {
-    enabled?: boolean;
-    provider: string;
-    id?: string;
-  };
-  navItems?: { label: string; url: string }[];
-  pages?: {
-    slug: string;
-    title: Partial<Record<Locale, string>>;
-    description?: Partial<Record<Locale, string>>;
-    image?: Partial<Record<Locale, string>>;
-    components: PageComponent[];
-  }[];
-  checkoutPage?: PageComponent[];
-}
-
-export interface PreparedCreateShopOptions extends Required<
+export type PreparedCreateShopOptions = Required<
   Omit<CreateShopOptions, "analytics" | "checkoutPage">
-> {
+> & {
   analytics?: CreateShopOptions["analytics"];
-  checkoutPage: PageComponent[];
-}
+  checkoutPage: Required<CreateShopOptions>["checkoutPage"];
+};
 
 /** Parse and populate option defaults. */
 export function prepareOptions(

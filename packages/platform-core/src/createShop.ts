@@ -4,10 +4,7 @@ import { readdirSync } from "fs";
 import { join } from "path";
 import { prisma } from "./db";
 import { validateShopName } from "./shops";
-import {
-  prepareOptions,
-  type CreateShopOptions,
-} from "./createShop/schema";
+import { prepareOptions, type CreateShopOptions } from "./createShop/schema";
 import { loadTokens } from "./createShop/themeUtils";
 
 /**
@@ -161,6 +158,7 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
 }
 
 export { prepareOptions, createShopOptionsSchema } from "./createShop/schema";
+export type { CreateShopOptions, PreparedCreateShopOptions } from "./createShop/schema";
 export { ensureTemplateExists, writeFiles, copyTemplate } from "./createShop/fsUtils";
 export { loadTokens, loadBaseTokens } from "./createShop/themeUtils";
 export { syncTheme };

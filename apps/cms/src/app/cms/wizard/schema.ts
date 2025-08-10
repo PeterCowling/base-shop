@@ -36,23 +36,14 @@ export interface NavItem {
   children?: NavItem[];
 }
 
-const _navItemSchema: z.ZodType<NavItem> = z.lazy(
-  () =>
-    z
-      .object({
-        id: z.string(),
-        label: z.string(),
-        url: z.string(),
-        children: z.array(_navItemSchema).optional(),
-      })
-      .strict() as z.ZodType<NavItem>
+export const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
+  z.object({
+    id: z.string(),
+    label: z.string(),
+    url: z.string().url(),
+    children: z.array(navItemSchema).optional(),
+  })
 );
-
-export const navItemSchema = _navItemSchema as unknown as z.ZodType<
-  NavItem,
-  z.ZodTypeDef,
-  NavItem
->;
 
 /* -------------------------------------------------------------------------- */
 /*  Page‑info schema                                                          */
@@ -135,7 +126,7 @@ export const wizardStateSchema = z.object({
   /* ------------------- Navigation --------------------- */
   navItems: z
     .array(navItemSchema)
-    .default(() => [{ id: ulid(), label: "Shop", url: "/shop" }]),
+    .default(() => [{ id: ulid(), label: "Shop", url: "https://example.com/shop" }]),
 
   /* ------------------- Dynamic pages ------------------ */
   pages: z.array(pageInfoSchema).default([]),

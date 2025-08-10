@@ -11,7 +11,7 @@ export interface BlogPost {
   body?: unknown;
 }
 
-async function getConfig(shopId: string): Promise<SanityBlogConfig> {
+export async function getConfig(shopId: string): Promise<SanityBlogConfig> {
   const shop = await getShopById(shopId);
   const config = getSanityConfig(shop);
   if (!config) {

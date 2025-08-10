@@ -29,7 +29,8 @@ Key points:
    ```
 
    `init-shop` launches an interactive wizard that asks for the shop ID, display name, logo URL,
-   contact email and which theme, template, payment and shipping providers to use. It then
+   contact email and which theme and template to use. Payment and shipping providers are chosen
+   from guided lists of available providers. It then
    scaffolds `apps/shop-<id>` and writes an `.env` file inside the new app. Edit the `.env` file to
    provide real secrets (see [Environment Variables](#environment-variables)). For scripted
    setups you can still call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and
@@ -62,8 +63,14 @@ pnpm init-shop
 ? Contact email … demo@example.com
 ? Theme › base
 ? Template › template-app
-? Payment providers › stripe
-? Shipping providers › ups
+Available payment providers:
+  1) stripe
+  2) paypal
+Select payment providers by number (comma-separated, empty for none): 1
+Available shipping providers:
+  1) dhl
+  2) ups
+Select shipping providers by number (comma-separated, empty for none): 2
 Scaffolded apps/shop-demo
 
 pnpm setup-ci demo  # optional

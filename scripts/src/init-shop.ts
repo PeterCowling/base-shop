@@ -6,6 +6,8 @@ import { join } from "node:path";
 import { spawnSync, execSync } from "node:child_process";
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+import { defaultPaymentProviders } from "../../packages/platform-core/src/createShop/defaultPaymentProviders";
+import { defaultShippingProviders } from "../../packages/platform-core/src/createShop/defaultShippingProviders";
 
 function ensureRuntime() {
   const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);
@@ -42,6 +44,29 @@ async function prompt(question: string, def = ""): Promise<string> {
   return answer || def;
 }
 
+async function selectProviders(
+  label: string,
+  providers: readonly string[]
+): Promise<string[]> {
+  console.log(`Available ${label}:`);
+  providers.forEach((p, i) => console.log(`  ${i + 1}) ${p}`));
+  const ans = await prompt(
+    `Select ${label} by number (comma-separated, empty for none): `
+  );
+  const selections = ans
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const result = new Set<string>();
+  for (const sel of selections) {
+    const idx = Number(sel) - 1;
+    if (!Number.isNaN(idx) && providers[idx]) {
+      result.add(providers[idx]);
+    }
+  }
+  return Array.from(result);
+}
+
 async function main() {
   const rawId = await prompt("Shop ID: ");
   let shopId: string;
@@ -54,16 +79,22 @@ async function main() {
   const name = await prompt("Display name (optional): ");
   const theme = await prompt("Theme [base]: ", "base");
   const template = await prompt("Template [template-app]: ", "template-app");
-  const paymentAns = await prompt("Payment providers (comma-separated): ");
-  const shippingAns = await prompt("Shipping providers (comma-separated): ");
+  const payment = await selectProviders(
+    "payment providers",
+    defaultPaymentProviders
+  );
+  const shipping = await selectProviders(
+    "shipping providers",
+    defaultShippingProviders
+  );
   const ciAns = await prompt("Setup CI workflow? (y/N): ");
 
   const options = {
     ...(name && { name }),
     theme,
     template,
-    payment: paymentAns.split(",").map((s) => s.trim()).filter(Boolean),
-    shipping: shippingAns.split(",").map((s) => s.trim()).filter(Boolean),
+    payment,
+    shipping,
   };
 
   const prefixedId = `shop-${shopId}`;

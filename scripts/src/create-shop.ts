@@ -291,4 +291,4 @@ await ensureLogo();
 await ensureContact();
 await ensurePayment();
 await ensureShipping();
-await createShop(shopId, options);
+await createShop(shopId, options, { deploy: true });

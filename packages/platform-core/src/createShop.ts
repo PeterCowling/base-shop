@@ -19,8 +19,9 @@ import { loadTokens } from "./createShop/themeUtils";
  */
 export function createShop(
   id: string,
-  opts: CreateShopOptions = {}
-): DeployShopResult {
+  opts: CreateShopOptions = {},
+  options?: { deploy?: boolean }
+): DeployStatusBase {
   id = validateShopName(id);
   const newApp = join("apps", id);
   const newData = join("data", "shops", id);
@@ -40,6 +41,10 @@ export function createShop(
   const themeTokens = loadTokens(options.theme);
 
   writeFiles(id, options, themeTokens, templateApp, newApp, newData);
+
+  if (options?.deploy === false) {
+    return { status: "pending" };
+  }
 
   return deployShop(id);
 }

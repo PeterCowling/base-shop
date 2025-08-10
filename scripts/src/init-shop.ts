@@ -77,6 +77,8 @@ async function main() {
     process.exit(1);
   }
   const name = await prompt("Display name (optional): ");
+  const typeAns = await prompt("Shop type (sale or rental) [sale]: ", "sale");
+  const type = typeAns.toLowerCase() === "rental" ? "rental" : "sale";
   const theme = await prompt("Theme [base]: ", "base");
   const template = await prompt("Template [template-app]: ", "template-app");
   const payment = await selectProviders(
@@ -91,6 +93,7 @@ async function main() {
 
   const options = {
     ...(name && { name }),
+    type,
     theme,
     template,
     payment,

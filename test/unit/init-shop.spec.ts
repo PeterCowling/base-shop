@@ -9,10 +9,11 @@ describe('init-shop wizard', () => {
     const answers = [
       'demo',
       'Demo Shop',
+      '',
       'base',
       'template-app',
-      'stripe,paypal',
-      'dhl',
+      '1,2',
+      '1',
       'n',
     ];
     const createShop = jest.fn();
@@ -54,6 +55,12 @@ describe('init-shop wizard', () => {
         if (p.includes('@config/src/env')) {
           return { envSchema: { parse: envParse } };
         }
+        if (p.includes('../../packages/platform-core/src/createShop/defaultPaymentProviders')) {
+          return { defaultPaymentProviders: ['stripe', 'paypal'] };
+        }
+        if (p.includes('../../packages/platform-core/src/createShop/defaultShippingProviders')) {
+          return { defaultShippingProviders: ['dhl', 'ups'] };
+        }
         if (p.includes('../../packages/platform-core/src/createShop')) {
           return { createShop };
         }
@@ -75,15 +82,17 @@ describe('init-shop wizard', () => {
     expect(questions).toEqual([
       'Shop ID: ',
       'Display name (optional): ',
+      'Shop type (sale or rental) [sale]: ',
       'Theme [base]: ',
       'Template [template-app]: ',
-      'Payment providers (comma-separated): ',
-      'Shipping providers (comma-separated): ',
+      'Select payment providers by number (comma-separated, empty for none): ',
+      'Select shipping providers by number (comma-separated, empty for none): ',
       'Setup CI workflow? (y/N): ',
     ]);
 
     expect(createShop).toHaveBeenCalledWith('shop-demo', {
       name: 'Demo Shop',
+      type: 'sale',
       theme: 'base',
       template: 'template-app',
       payment: ['stripe', 'paypal'],

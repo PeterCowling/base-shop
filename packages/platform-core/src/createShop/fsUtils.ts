@@ -42,6 +42,14 @@ export function writeFiles(
   newData: string
 ): void {
   copyTemplate(templateApp, newApp);
+  cpSync(
+    join(templateApp, "src", "app", "sitemap.ts"),
+    join(newApp, "src", "app", "sitemap.ts")
+  );
+  cpSync(
+    join(templateApp, "src", "app", "robots.ts"),
+    join(newApp, "src", "app", "robots.ts")
+  );
   // ensure PostCSS setup is available in the generated shop
   cpSync("postcss.config.cjs", join(newApp, "postcss.config.cjs"));
   const pkgPath = join(newApp, "package.json");

@@ -80,7 +80,7 @@ export async function submitShop(
   const res = await fetch("/cms/api/create-shop", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id: shopId, options: parsed.data }),
+    body: JSON.stringify({ id: shopId, ...parsed.data }),
   });
 
   if (res.ok) return { ok: true };

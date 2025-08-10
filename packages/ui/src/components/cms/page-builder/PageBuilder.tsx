@@ -100,6 +100,8 @@ const PageBuilder = memo(function PageBuilder({
         setLiveMessage("Block added");
       } else if (action.type === "move") {
         setLiveMessage("Block moved");
+      } else if (action.type === "resize") {
+        setLiveMessage("Block resized");
       }
     },
     [rawDispatch]

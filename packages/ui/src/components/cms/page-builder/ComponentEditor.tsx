@@ -23,7 +23,9 @@ import ReviewsCarouselEditor from "./ReviewsCarouselEditor";
 interface Props {
   component: PageComponent | null;
   onChange: (patch: Partial<PageComponent>) => void;
-  onResize: (patch: { width?: string; height?: string }) => void;
+  onResize: (
+    patch: { width?: string; height?: string; top?: string; left?: string }
+  ) => void;
 }
 
 function ComponentEditor({ component, onChange, onResize }: Props) {
@@ -73,9 +75,10 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
           label="Width"
           placeholder="e.g. 100px or 50%"
           value={component.width ?? ""}
-          onChange={(e) =>
-            onResize({ width: e.target.value ? e.target.value : undefined })
-          }
+          onChange={(e) => {
+            const v = e.target.value.trim();
+            onResize({ width: v || undefined });
+          }}
         />
         <Button
           type="button"
@@ -90,9 +93,10 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
           label="Height"
           placeholder="e.g. 100px or 50%"
           value={component.height ?? ""}
-          onChange={(e) =>
-            onResize({ height: e.target.value ? e.target.value : undefined })
-          }
+          onChange={(e) => {
+            const v = e.target.value.trim();
+            onResize({ height: v || undefined });
+          }}
         />
         <Button
           type="button"
@@ -189,12 +193,18 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
           <Input
             label="Top"
             value={component.top ?? ""}
-            onChange={(e) => handleInput("top", e.target.value)}
+            onChange={(e) => {
+              const v = e.target.value.trim();
+              onResize({ top: v || undefined });
+            }}
           />
           <Input
             label="Left"
             value={component.left ?? ""}
-            onChange={(e) => handleInput("left", e.target.value)}
+            onChange={(e) => {
+              const v = e.target.value.trim();
+              onResize({ left: v || undefined });
+            }}
           />
         </>
       )}

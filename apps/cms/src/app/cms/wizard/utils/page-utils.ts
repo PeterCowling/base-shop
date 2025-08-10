@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/wizard/utils/page.ts
 
-import { fillLocales } from "@platform-core/utils";
+import { fillLocales } from "@i18n/fillLocales";
 import type { PageComponent } from "@types";
 import type { PageInfo } from "../schema";
 

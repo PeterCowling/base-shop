@@ -13,7 +13,7 @@ import {
   updateProductInRepo,
   writeRepo,
 } from "@platform-core/repositories/json.server";
-import { fillLocales } from "@platform-core/utils";
+import { fillLocales } from "@i18n/fillLocales";
 import type { ProductPublication } from "@platform-core/src/products";
 import * as Sentry from "@sentry/node";
 import type { Locale } from "@types";

@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
-import { fillLocales } from "@platform-core/utils";
+import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@types";
 import { fetchJson } from "@shared-utils";
 import { ulid } from "ulid";

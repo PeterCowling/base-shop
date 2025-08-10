@@ -2,7 +2,7 @@
 import fs from "fs";
 import { copyTemplate } from "../src/createShop/fsUtils";
 import { loadBaseTokens } from "../src/createShop/themeUtils";
-import { fillLocales } from "../src/utils/locales";
+import { fillLocales } from "@i18n/fillLocales";
 
 describe("createShop utils", () => {
   beforeEach(() => {

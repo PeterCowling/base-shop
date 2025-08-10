@@ -49,10 +49,9 @@ const CanvasItem = memo(function CanvasItem({
     y: number;
     w: number;
     h: number;
-    l: number;
-    t: number;
   } | null>(null);
   const [resizing, setResizing] = useState(false);
+  const [snapping, setSnapping] = useState(false);
   const moveRef = useRef<{ x: number; y: number; l: number; t: number } | null>(
     null
   );
@@ -78,32 +77,27 @@ const CanvasItem = memo(function CanvasItem({
       const newW = startRef.current.w + dx;
       const newH = startRef.current.h + dy;
       const threshold = 10;
-      const payload: Action = {
+      const snapWidth = e.shiftKey || Math.abs(parentW - newW) <= threshold;
+      const snapHeight = e.shiftKey || Math.abs(parentH - newH) <= threshold;
+      dispatch({
         type: "resize",
         id: component.id,
-        width:
-          e.shiftKey || Math.abs(parentW - newW) <= threshold
-            ? "100%"
-            : `${newW}px`,
-        height:
-          e.shiftKey || Math.abs(parentH - newH) <= threshold
-            ? "100%"
-            : `${newH}px`,
-      };
-      if (component.position === "absolute") {
-        payload.left = `${startRef.current.l + dx}px`;
-        payload.top = `${startRef.current.t + dy}px`;
-      }
-      dispatch(payload);
+        width: snapWidth ? "100%" : `${newW}px`,
+        height: snapHeight ? "100%" : `${newH}px`,
+      });
+      setSnapping(snapWidth || snapHeight);
     };
-    const stop = () => setResizing(false);
+    const stop = () => {
+      setResizing(false);
+      setSnapping(false);
+    };
     window.addEventListener("pointermove", handleMove);
     window.addEventListener("pointerup", stop);
     return () => {
       window.removeEventListener("pointermove", handleMove);
       window.removeEventListener("pointerup", stop);
     };
-  }, [resizing, component.id, component.position, dispatch]);
+  }, [resizing, component.id, dispatch]);
 
   useEffect(() => {
     if (!moving) return;
@@ -145,8 +139,6 @@ const CanvasItem = memo(function CanvasItem({
       y: e.clientY,
       w: startWidth,
       h: startHeight,
-      l: el.offsetLeft,
-      t: el.offsetTop,
     };
     setResizing(true);
   };
@@ -203,7 +195,9 @@ const CanvasItem = memo(function CanvasItem({
         ...(component.left ? { left: component.left } : {}),
       }}
       className={
-        "relative rounded border" + (selected ? " ring-2 ring-blue-500" : "")
+        "relative rounded border" +
+        (selected ? " ring-2 ring-blue-500" : "") +
+        (snapping ? " border-primary" : "")
       }
     >
       <div

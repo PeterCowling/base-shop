@@ -46,6 +46,25 @@ describe("state reducer", () => {
     expect((state.present[0] as any).foo).toBe("bar");
   });
 
+  it("preserves offsets when resizing without explicit left/top", () => {
+    const comp = {
+      id: "abs",
+      type: "Text",
+      position: "absolute",
+      left: "5px",
+      top: "10px",
+    } as PageComponent;
+    const state = reducer(
+      { past: [], present: [comp], future: [] },
+      { type: "resize", id: "abs", width: "100%" }
+    );
+    expect(state.present[0]).toMatchObject({
+      left: "5px",
+      top: "10px",
+      width: "100%",
+    });
+  });
+
   it("undo and redo", () => {
     const added = reducer(init, { type: "add", component: a });
     const undone = reducer(added, { type: "undo" });

@@ -7,6 +7,7 @@ export const shopSettingsSchema = z.object({
   seo: z.record(localeSchema, shopSeoFieldsSchema),
   analytics: z
     .object({
+      enabled: z.boolean().optional(),
       provider: z.string(),
       id: z.string().optional(),
     })

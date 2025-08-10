@@ -6,6 +6,7 @@ import DynamicRenderer from "@ui/components/DynamicRenderer";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import shop from "../../../../shop.json";
 import ShopClient from "./ShopClient.client";
+import { trackPageView } from "@platform-core/analytics";
 
 async function loadComponents(): Promise<PageComponent[] | null> {
   const pages = await getPages(shop.id);
@@ -25,6 +26,7 @@ export default async function ShopIndexPage({
   params: { lang: string };
 }) {
   const components = await loadComponents();
+  await trackPageView(shop.id, "shop");
   if (components && components.length) {
     return <DynamicRenderer components={components} locale={params.lang} />;
   }

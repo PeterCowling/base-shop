@@ -6,5 +6,6 @@
   "themeTokens": {},
   "filterMappings": {},
   "priceOverrides": {},
-  "localeOverrides": {}
+  "localeOverrides": {},
+  "analyticsEnabled": true
 }

@@ -42,7 +42,7 @@ describe("product actions", () => {
   it("createDraftRecord creates placeholders", async () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@lib/date", () => ({ nowIso: () => now }));
       const { createDraftRecord } = (await import(
         "../src/actions/products.server"
       )) as typeof import("../src/actions/products.server");
@@ -58,7 +58,7 @@ describe("product actions", () => {
   it("updateProduct merges form data and bumps version", async () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@lib/date", () => ({ nowIso: () => now }));
       const actions = (await import(
         "../src/actions/products.server"
       )) as typeof import("../src/actions/products.server");
@@ -84,7 +84,7 @@ describe("product actions", () => {
   it("rejects invalid product payloads", async () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@lib/date", () => ({ nowIso: () => now }));
       const actions = (await import(
         "../src/actions/products.server"
       )) as typeof import("../src/actions/products.server");
@@ -116,7 +116,7 @@ describe("product actions", () => {
   it("duplicateProduct copies a product", async () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@lib/date", () => ({ nowIso: () => now }));
       const actions = (await import(
         "../src/actions/products.server"
       )) as typeof import("../src/actions/products.server");
@@ -143,7 +143,7 @@ describe("product actions", () => {
   it("deleteProduct removes product and redirects", async () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@lib/date", () => ({ nowIso: () => now }));
       const actions = (await import(
         "../src/actions/products.server"
       )) as typeof import("../src/actions/products.server");

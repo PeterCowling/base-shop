@@ -6,6 +6,8 @@ export function parseIsoDate(str: string): Date | null {
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
+export const nowIso = (): string => new Date().toISOString();
+
 /** Milliseconds in one day */
 export const DAY_MS = 86_400_000;
 

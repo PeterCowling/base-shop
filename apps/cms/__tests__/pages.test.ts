@@ -31,7 +31,7 @@ describe("page actions", () => {
   it("createPage stores new page", async () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@lib/date", () => ({ nowIso: () => now }));
       mockAuth();
       const { createPage } = await import("../src/actions/pages.server");
 
@@ -57,7 +57,7 @@ describe("page actions", () => {
   it("updatePage modifies page data", async () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@lib/date", () => ({ nowIso: () => now }));
       mockAuth();
       const repo = await import(
         "../../../packages/platform-core/src/repositories/pages/index.server"
@@ -96,7 +96,7 @@ describe("page actions", () => {
   it("updatePage persists history", async () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@lib/date", () => ({ nowIso: () => now }));
       mockAuth();
       const repo = await import(
         "../../../packages/platform-core/src/repositories/pages/index.server"
@@ -140,7 +140,7 @@ describe("page actions", () => {
   it("deletePage removes page from repo", async () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@lib/date", () => ({ nowIso: () => now }));
       mockAuth();
       const repo = await import(
         "../../../packages/platform-core/src/repositories/pages/index.server"
@@ -168,7 +168,7 @@ describe("page actions", () => {
   it("createPage returns validation error for bad components", async () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
-      jest.doMock("@shared/date", () => ({ nowIso: () => now }));
+      jest.doMock("@lib/date", () => ({ nowIso: () => now }));
       mockAuth();
       const { createPage } = await import("../src/actions/pages.server");
       const fd = new FormData();

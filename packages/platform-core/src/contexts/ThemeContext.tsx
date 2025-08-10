@@ -18,13 +18,19 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
+export function getSavedTheme(): Theme | null {
+  if (typeof window === "undefined") return null;
+  return window.localStorage.getItem("theme") as Theme | null;
+}
+
 function getInitialTheme(): Theme {
-  if (typeof window !== "undefined") {
-    const storedTheme = window.localStorage.getItem("theme") as Theme | null;
-    if (storedTheme) return storedTheme;
-    if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
-      return "dark";
-    }
+  const storedTheme = getSavedTheme();
+  if (storedTheme) return storedTheme;
+  if (
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-color-scheme: dark)").matches
+  ) {
+    return "dark";
   }
   return "base";
 }

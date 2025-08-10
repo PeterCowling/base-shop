@@ -3,6 +3,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { applyFriendlyZodMessages } from "@lib/zodErrorMap";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { initTheme } from "@platform-core/utils/initTheme";
 
 import "./globals.css";
 
@@ -36,32 +37,7 @@ export default function RootLayout({
     >
       <head>
         <meta name="color-scheme" content="light dark" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var theme = localStorage.getItem('theme');
-                var classList = document.documentElement.classList;
-                if (theme === 'system') {
-                  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    classList.add('theme-dark');
-                  } else {
-                    classList.remove('theme-dark');
-                  }
-                } else if (theme === 'dark') {
-                  classList.add('theme-dark');
-                } else {
-                  classList.remove('theme-dark');
-                }
-                if (theme === 'brandx') {
-                  classList.add('theme-brandx');
-                } else {
-                  classList.remove('theme-brandx');
-                }
-              })();
-            `,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: initTheme() }} />
       </head>
       <body className="antialiased">
         {/* Global providers go here */}

@@ -3,6 +3,7 @@ import "./globals.css";
 import { CartProvider } from "@/contexts/CartContext";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { initTheme } from "@platform-core/utils/initTheme";
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -31,20 +32,7 @@ export default function RootLayout({
     >
       <head>
         <meta name="color-scheme" content="light dark" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var theme = localStorage.getItem('theme');
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('theme-dark');
-                } else {
-                  document.documentElement.classList.remove('theme-dark');
-                }
-              })();
-            `,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: initTheme() }} />
       </head>
       <body className="antialiased">
         {/* Global providers go here */}

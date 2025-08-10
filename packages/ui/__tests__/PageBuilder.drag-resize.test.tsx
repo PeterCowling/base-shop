@@ -84,6 +84,12 @@ describe("PageBuilder interactions", () => {
     expect(screen.getByTestId("target")).toHaveStyle({ width: "200px" });
     fireEvent.click(screen.getByText("Full width"));
     expect(screen.getByTestId("target")).toHaveStyle({ width: "100%" });
+    fireEvent.change(screen.getByLabelText("Height"), {
+      target: { value: "300" },
+    });
+    expect(screen.getByTestId("target")).toHaveStyle({ height: "300px" });
+    fireEvent.click(screen.getByText("Full height"));
+    expect(screen.getByTestId("target")).toHaveStyle({ height: "100%" });
   });
 
   it("resizes via drag handle and snaps to full size with shift", () => {
@@ -112,10 +118,8 @@ describe("PageBuilder interactions", () => {
 
     // drag without shift to change size
     fireEvent.pointerDown(handle, { clientX: 100, clientY: 100 });
-    window.dispatchEvent(
-      new PointerEvent("pointermove", { clientX: 150, clientY: 150 })
-    );
-    window.dispatchEvent(new PointerEvent("pointerup"));
+    fireEvent.pointerMove(window, { clientX: 150, clientY: 150 });
+    fireEvent.pointerUp(window);
     expect(dispatch).toHaveBeenCalledWith(
       expect.objectContaining({ width: "150px", height: "150px" })
     );
@@ -123,14 +127,12 @@ describe("PageBuilder interactions", () => {
 
     // drag with shift to snap to 100%
     fireEvent.pointerDown(handle, { clientX: 100, clientY: 100 });
-    window.dispatchEvent(
-      new PointerEvent("pointermove", {
-        clientX: 150,
-        clientY: 150,
-        shiftKey: true,
-      })
-    );
-    window.dispatchEvent(new PointerEvent("pointerup"));
+    fireEvent.pointerMove(window, {
+      clientX: 150,
+      clientY: 150,
+      shiftKey: true,
+    });
+    fireEvent.pointerUp(window);
     expect(dispatch).toHaveBeenCalledWith(
       expect.objectContaining({ width: "100%", height: "100%" })
     );

@@ -3,6 +3,29 @@ import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor"
 import type { PageComponent } from "@types";
 
 describe("ComponentEditor", () => {
+  it("updates width and height", () => {
+    const component: PageComponent = {
+      id: "1",
+      type: "Image",
+    } as PageComponent;
+    const onResize = jest.fn();
+    const { getByLabelText, getByText } = render(
+      <ComponentEditor
+        component={component}
+        onChange={() => {}}
+        onResize={onResize}
+      />
+    );
+    fireEvent.change(getByLabelText("Width"), { target: { value: "200" } });
+    expect(onResize).toHaveBeenCalledWith({ width: "200" });
+    fireEvent.click(getByText("Full width"));
+    expect(onResize).toHaveBeenCalledWith({ width: "100%" });
+    fireEvent.change(getByLabelText("Height"), { target: { value: "300" } });
+    expect(onResize).toHaveBeenCalledWith({ height: "300" });
+    fireEvent.click(getByText("Full height"));
+    expect(onResize).toHaveBeenCalledWith({ height: "100%" });
+  });
+
   it("updates minItems and maxItems", () => {
     const component: PageComponent = {
       id: "1",

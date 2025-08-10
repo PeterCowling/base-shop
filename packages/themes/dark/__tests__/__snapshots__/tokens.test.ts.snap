@@ -2,8 +2,8 @@
 
 exports[`dark theme tokens tokens snapshot 1`] = `
 {
-  "--color-accent": "260 83% 70%",
-  "--color-accent-fg": "0 0% 10%",
+  "--color-accent": "260 83% 15%",
+  "--color-accent-fg": "0 0% 90%",
   "--color-bg": "0 0% 4%",
   "--color-danger": "0 63% 31%",
   "--color-danger-fg": "0 93% 94%",

@@ -3,24 +3,23 @@
 
 import { authOptions } from "@cms/auth/options";
 import { createShop, type CreateShopOptions } from "@platform-core/createShop";
+import type { Session } from "next-auth";
 import { getServerSession } from "next-auth";
 import { readRbac, writeRbac } from "../lib/rbacStore";
 
-async function ensureAuthorized(): Promise<void> {
+async function getAuthorizedSession(): Promise<Session> {
   const session = await getServerSession(authOptions);
   if (!session || !["admin", "ShopAdmin"].includes(session.user?.role ?? "")) {
     throw new Error("Forbidden");
   }
+  return session;
 }
 
 export async function createNewShop(
   id: string,
   options: CreateShopOptions
 ): Promise<void> {
-  await ensureAuthorized();
-
-  const session = await getServerSession(authOptions);
-  if (!session) throw new Error("Forbidden");
+  const session = await getAuthorizedSession();
 
   try {
     await createShop(id, options);

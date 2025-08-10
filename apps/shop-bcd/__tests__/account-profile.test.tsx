@@ -5,7 +5,8 @@ jest.mock("@auth", () => ({
 }));
 
 import { getCustomerSession } from "@auth";
-import ProfilePage from "../src/app/account/profile/page";
+import ProfilePage from "@ui/src/components/account/Profile";
+import ProfileForm from "@ui/src/components/account/ProfileForm";
 
 describe("/account/profile", () => {
   beforeEach(() => {
@@ -14,7 +15,7 @@ describe("/account/profile", () => {
 
   it("redirects unauthenticated users", async () => {
     (getCustomerSession as jest.Mock).mockResolvedValue(null);
-    const element = await ProfilePage();
+    const element = await ProfilePage({});
     expect(getCustomerSession).toHaveBeenCalled();
     expect(element.type).toBe("p");
     expect(element.props.children).toBe("Please log in to view your profile.");
@@ -22,9 +23,13 @@ describe("/account/profile", () => {
 
   it("renders profile form for authenticated users", async () => {
     (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "cust1" });
-    const element = await ProfilePage();
+    const element = await ProfilePage({});
+    expect(getCustomerSession).toHaveBeenCalled();
     expect(element.type).toBe("div");
     expect(element.props.children[0].props.children).toBe("Profile");
-    expect(element.props.children[1].type.name).toBe("ProfileForm");
+    const form = element.props.children[1];
+    expect(form.type).toBe(ProfileForm);
+    // TODO: once profile retrieval is implemented, assert default values
+    // expect(form.props).toMatchObject({ name: "Jane Doe", email: "jane@example.com" });
   });
 });

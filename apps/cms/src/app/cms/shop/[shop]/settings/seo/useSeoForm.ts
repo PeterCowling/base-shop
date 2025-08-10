@@ -8,6 +8,7 @@ export interface SeoRecord {
   title: string;
   description: string;
   image: string;
+  canonicalBase: string;
   brand: string;
   offers: string;
   aggregateRating: string;
@@ -47,6 +48,7 @@ export function useSeoForm({
         title: initialSeo[l]?.title ?? "",
         description: initialSeo[l]?.description ?? "",
         image: initialSeo[l]?.image ?? "",
+        canonicalBase: initialSeo[l]?.canonicalBase ?? "",
         brand: initialSeo[l]?.brand ?? "",
         offers: initialSeo[l]?.offers ?? "",
         aggregateRating: initialSeo[l]?.aggregateRating ?? "",
@@ -81,6 +83,7 @@ export function useSeoForm({
       fd.append("title", data.title);
       fd.append("description", data.description);
       fd.append("image", data.image);
+      fd.append("canonicalBase", data.canonicalBase);
       fd.append("brand", data.brand);
       fd.append("offers", data.offers);
       fd.append("aggregateRating", data.aggregateRating);

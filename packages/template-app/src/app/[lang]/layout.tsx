@@ -6,8 +6,8 @@ import Footer from "@ui/components/layout/Footer";
 import Header from "@ui/components/layout/Header";
 import { DefaultSeo } from "next-seo";
 import type { ReactNode } from "react";
-import { getSeo } from "../../../lib/seo";
-import "../../globals.css";
+import { getSeo } from "../../lib/seo";
+import "../globals.css";
 
 export default async function LocaleLayout({
   children,
@@ -17,12 +17,10 @@ export default async function LocaleLayout({
   /** `[lang]` is now an *optional catch-all*, so the param is `string[] | undefined` */
   params: Promise<{ lang?: string[] }>;
 }) {
-  /* `lang` will be `undefined` for `/`, or e.g. `"en"` for `/en`          */
   const { lang: langParam } = await params;
   const [raw] = langParam ?? [];
   const lang: Locale = resolveLocale(raw);
 
-  /* Dynamic import of the locale JSON. Webpack bundles only en/de/it.     */
   const messages = (
     await import(
       /* webpackInclude: /(en|de|it)\.json$/ */

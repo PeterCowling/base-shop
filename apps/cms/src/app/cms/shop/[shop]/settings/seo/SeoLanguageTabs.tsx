@@ -85,6 +85,13 @@ export default function SeoLanguageTabs({
               onChange={(e) => onFieldChange("description", e.target.value)}
             />
           </label>
+          <label className="flex flex-col gap-1">
+            <span>Canonical Base</span>
+            <Input
+              value={current.canonicalBase}
+              onChange={(e) => onFieldChange("canonicalBase", e.target.value)}
+            />
+          </label>
         </section>
 
         {/* Open Graph ------------------------------------------------- */}

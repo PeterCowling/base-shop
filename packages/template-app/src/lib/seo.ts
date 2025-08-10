@@ -1,9 +1,13 @@
-import type { Locale } from "@i18n/locales";
+import { LOCALES, type Locale } from "@i18n/locales";
 import type { ShopSettings } from "@types";
 import type { NextSeoProps } from "next-seo";
 
 interface ExtendedSeoProps extends Partial<NextSeoProps> {
   canonicalBase?: string;
+}
+
+export interface SeoResult extends NextSeoProps {
+  alternates: { hrefLang: string; href: string }[];
 }
 
 const fallback: NextSeoProps = {
@@ -17,7 +21,7 @@ const fallback: NextSeoProps = {
 export async function getSeo(
   locale: Locale,
   pageSeo: Partial<NextSeoProps> = {}
-): Promise<NextSeoProps> {
+): Promise<SeoResult> {
   const shop = process.env.NEXT_PUBLIC_SHOP_ID || "default";
   const { getShopSettings } = await import(
     "@platform-core/repositories/shops.server"
@@ -25,16 +29,24 @@ export async function getSeo(
   const settings: ShopSettings = await getShopSettings(shop);
   const shopSeo = (settings.seo ?? {}) as Record<string, ExtendedSeoProps>;
   const base: ExtendedSeoProps = shopSeo[locale] ?? {};
-  const canonicalBase = base.canonicalBase ?? "";
+
+  const canonicalUrls = LOCALES.reduce<Record<string, string>>((acc, l) => {
+    const cb = shopSeo[l]?.canonicalBase;
+    if (cb) acc[l] = `${cb}/${l}`;
+    return acc;
+  }, {});
+
+  const canonical =
+    pageSeo.canonical ??
+    base.canonical ??
+    canonicalUrls[locale] ??
+    fallback.canonical;
 
   return {
     title: pageSeo.title ?? base.title ?? fallback.title,
     description:
       pageSeo.description ?? base.description ?? fallback.description,
-    canonical:
-      pageSeo.canonical ??
-      base.canonical ??
-      (canonicalBase ? `${canonicalBase}/${locale}` : fallback.canonical),
+    canonical,
     openGraph: {
       ...(fallback.openGraph ?? {}),
       ...(base.openGraph ?? {}),
@@ -42,13 +54,17 @@ export async function getSeo(
       url:
         pageSeo.openGraph?.url ??
         base.openGraph?.url ??
-        (canonicalBase ? `${canonicalBase}/${locale}` : undefined),
+        canonicalUrls[locale],
     },
     twitter: {
       ...(fallback.twitter ?? {}),
       ...(base.twitter ?? {}),
       ...(pageSeo.twitter ?? {}),
     },
+    alternates: Object.entries(canonicalUrls).map(([hrefLang, href]) => ({
+      hrefLang,
+      href,
+    })),
   };
 }
 

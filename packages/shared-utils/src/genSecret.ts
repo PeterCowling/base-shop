@@ -1,4 +1,4 @@
-// packages/platform-core/src/utils/secret.ts
+// packages/shared-utils/src/genSecret.ts
 import { randomBytes } from "crypto";
 
 /** Generate a random secret represented as a hexadecimal string. */

@@ -1,4 +1,4 @@
-// packages/platform-core/src/utils/slugify.ts
+// packages/shared-utils/src/slugify.ts
 
 /** Convert a string into a URL-friendly slug. */
 export function slugify(str: string): string {

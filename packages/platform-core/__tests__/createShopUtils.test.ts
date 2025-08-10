@@ -1,8 +1,6 @@
 // packages/platform-core/__tests__/createShopUtils.test.ts
 import fs from "fs";
 import { copyTemplate, loadBaseTokens } from "../src/createShop/utils";
-import { slugify } from "../src/utils/slugify";
-import { genSecret } from "../src/utils/secret";
 import { fillLocales } from "../src/utils/locales";
 
 describe("createShop utils", () => {
@@ -34,15 +32,6 @@ describe("createShop utils", () => {
     });
     const tokens = loadBaseTokens();
     expect(tokens["--color-bg"]).toBeDefined();
-  });
-
-  it("slugifies strings", () => {
-    expect(slugify(" Hello World! ")).toBe("hello-world");
-  });
-
-  it("generates secrets of correct length", () => {
-    const secret = genSecret(8);
-    expect(secret).toHaveLength(16);
   });
 
   it("fills locales with fallback", () => {

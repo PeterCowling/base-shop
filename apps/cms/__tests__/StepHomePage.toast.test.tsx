@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import StepHomePage from "../src/app/cms/wizard/steps/StepHomePage";
-import { fetchJson } from "@ui/utils/network";
+import { fetchJson } from "@shared-utils";
 
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
@@ -35,7 +35,7 @@ jest.mock("@/components/cms/PageBuilder", () => {
   };
 });
 
-jest.mock("@ui/utils/network");
+jest.mock("@shared-utils");
 
 const defaultProps = {
   pageTemplates: [],

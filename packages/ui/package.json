@@ -21,7 +21,8 @@
     "dompurify": "^3.2.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "shadcn-ui": "^0.9.5"
+    "shadcn-ui": "^0.9.5",
+    "@acme/shared-utils": "workspace:*"
   },
   "peerDependencies": {
     "tailwindcss": "^4"

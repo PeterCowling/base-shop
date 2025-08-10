@@ -13,7 +13,7 @@ import PageBuilder from "@/components/cms/PageBuilder";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
 import { historyStateSchema } from "@types";
-import { fetchJson } from "@ui/utils/network";
+import { fetchJson } from "@shared-utils";
 import { ulid } from "ulid";
 import { useEffect, useState } from "react";
 import { toPageInfo } from "../utils/page-utils";

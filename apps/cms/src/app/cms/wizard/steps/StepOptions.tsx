@@ -2,7 +2,6 @@
 
 import {
   Button,
-  Checkbox,
   Input,
   Select,
   SelectContent,
@@ -10,9 +9,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { toggleItem } from "@shared-utils";
+import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
+  shopId: string;
   payment: string[];
   setPayment: React.Dispatch<React.SetStateAction<string[]>>;
   shipping: string[];
@@ -26,6 +27,7 @@ interface Props {
 }
 
 export default function StepOptions({
+  shopId,
   payment,
   setPayment,
   shipping,
@@ -37,42 +39,68 @@ export default function StepOptions({
   onBack,
   onNext,
 }: Props): React.JSX.Element {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const provider = searchParams.get("connected");
+    if (!provider) return;
+
+    if (["stripe", "paypal"].includes(provider) && !payment.includes(provider)) {
+      setPayment((l) => [...l, provider]);
+    }
+    if (["dhl", "ups"].includes(provider) && !shipping.includes(provider)) {
+      setShipping((l) => [...l, provider]);
+    }
+
+    router.replace("/cms/wizard");
+  }, [searchParams, payment, shipping, router, setPayment, setShipping]);
+
+  function connect(provider: string) {
+    const url = `/cms/api/providers/${provider}?shop=${encodeURIComponent(shopId)}`;
+    window.location.href = url;
+  }
+
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Options</h2>
       <div>
         <p className="font-medium">Payment Providers</p>
-        <label className="flex items-center gap-2 text-sm">
-          <Checkbox
-            checked={payment.includes("stripe")}
-            onCheckedChange={() => setPayment((l) => toggleItem(l, "stripe"))}
-          />
+        <div className="flex items-center gap-2 text-sm">
           Stripe
-        </label>
-        <label className="flex items-center gap-2 text-sm">
-          <Checkbox
-            checked={payment.includes("paypal")}
-            onCheckedChange={() => setPayment((l) => toggleItem(l, "paypal"))}
-          />
+          {payment.includes("stripe") ? (
+            <Button disabled>Connected</Button>
+          ) : (
+            <Button onClick={() => connect("stripe")}>Connect</Button>
+          )}
+        </div>
+        <div className="flex items-center gap-2 text-sm">
           PayPal
-        </label>
+          {payment.includes("paypal") ? (
+            <Button disabled>Connected</Button>
+          ) : (
+            <Button onClick={() => connect("paypal")}>Connect</Button>
+          )}
+        </div>
       </div>
       <div>
         <p className="font-medium">Shipping Providers</p>
-        <label className="flex items-center gap-2 text-sm">
-          <Checkbox
-            checked={shipping.includes("dhl")}
-            onCheckedChange={() => setShipping((l) => toggleItem(l, "dhl"))}
-          />
+        <div className="flex items-center gap-2 text-sm">
           DHL
-        </label>
-        <label className="flex items-center gap-2 text-sm">
-          <Checkbox
-            checked={shipping.includes("ups")}
-            onCheckedChange={() => setShipping((l) => toggleItem(l, "ups"))}
-          />
+          {shipping.includes("dhl") ? (
+            <Button disabled>Connected</Button>
+          ) : (
+            <Button onClick={() => connect("dhl")}>Connect</Button>
+          )}
+        </div>
+        <div className="flex items-center gap-2 text-sm">
           UPS
-        </label>
+          {shipping.includes("ups") ? (
+            <Button disabled>Connected</Button>
+          ) : (
+            <Button onClick={() => connect("ups")}>Connect</Button>
+          )}
+        </div>
       </div>
       <div>
         <p className="font-medium">Analytics</p>
@@ -80,7 +108,6 @@ export default function StepOptions({
           value={analyticsProvider}
           onValueChange={(v) => setAnalyticsProvider(v === "none" ? "" : v)}
         >
-          {" "}
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select provider" />
           </SelectTrigger>

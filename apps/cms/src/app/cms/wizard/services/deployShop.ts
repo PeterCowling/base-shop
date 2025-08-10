@@ -23,6 +23,15 @@ export async function deployShop(
     };
   }
 
+  if (domain) {
+    try {
+      await createDnsRecord(domain, `${shopId}.pages.dev`);
+      await issueCertificate(domain);
+    } catch (err) {
+      console.error("Cloudflare setup failed", err);
+    }
+  }
+
   const res = await fetch("/cms/api/deploy-shop", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -36,5 +45,33 @@ export async function deployShop(
   if (res.ok) return { ok: true, info: json };
 
   return { ok: false, error: json.error ?? "Deployment failed" };
+}
+
+async function createDnsRecord(domain: string, target: string): Promise<void> {
+  const zone = process.env.NEXT_PUBLIC_CF_ZONE_ID;
+  const token = process.env.NEXT_PUBLIC_CF_API_TOKEN;
+  if (!zone || !token) return;
+  await fetch(`https://api.cloudflare.com/client/v4/zones/${zone}/dns_records`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ type: "CNAME", name: domain, content: target }),
+  });
+}
+
+async function issueCertificate(domain: string): Promise<void> {
+  const zone = process.env.NEXT_PUBLIC_CF_ZONE_ID;
+  const token = process.env.NEXT_PUBLIC_CF_API_TOKEN;
+  if (!zone || !token) return;
+  await fetch(`https://api.cloudflare.com/client/v4/zones/${zone}/custom_hostnames`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ hostname: domain }),
+  });
 }
 

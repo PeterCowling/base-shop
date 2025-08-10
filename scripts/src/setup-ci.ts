@@ -34,19 +34,24 @@ try {
 }
 
 const wfPath = join(".github", "workflows", `shop-${shopId}.yml`);
+const envLines = Object.entries(env)
+  .map(([k, v]) => `      ${k}: ${JSON.stringify(v)}`)
+  .join("\n");
 const workflow = `on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+${envLines}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
       - run: pnpm install
       - run: pnpm lint && pnpm test
       - run: pnpm --filter @apps/shop-${shopId} build
-      - run: npx @cloudflare/next-on-pages deploy \
-               --project-name=shop-${shopId} \
+      - run: npx @cloudflare/next-on-pages deploy \\
+               --project-name=shop-${shopId} \\
                --branch=\${{ github.ref_name }}
 `;
 

@@ -15,6 +15,11 @@ export const envSchema = z.object({
   CHROMATIC_PROJECT_TOKEN: z.string().optional(),
   GMAIL_USER: z.string().optional(),
   GMAIL_PASS: z.string().optional(),
+  CF_API_TOKEN: z.string().optional(),
+  CF_ZONE_ID: z.string().optional(),
+  NEXT_PUBLIC_CF_API_TOKEN: z.string().optional(),
+  NEXT_PUBLIC_CF_ZONE_ID: z.string().optional(),
+  SHOP_DOMAIN: z.string().optional(),
 });
 
 export const env = envSchema.parse(process.env);

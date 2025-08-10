@@ -17,6 +17,18 @@
   --color-danger-dark: var(--token-color-danger-dark, 0 63% 31%);
   --color-danger-fg: var(--token-color-danger-fg, 0 74% 42%);
   --color-danger-fg-dark: var(--token-color-danger-fg-dark, 0 93% 94%);
+  --color-success: var(--token-color-success, 142 76% 97%);
+  --color-success-dark: var(--token-color-success-dark, 142 72% 27%);
+  --color-success-fg: var(--token-color-success-fg, 142 72% 30%);
+  --color-success-fg-dark: var(--token-color-success-fg-dark, 142 70% 94%);
+  --color-warning: var(--token-color-warning, 40 90% 96%);
+  --color-warning-dark: var(--token-color-warning-dark, 35 90% 30%);
+  --color-warning-fg: var(--token-color-warning-fg, 25 85% 31%);
+  --color-warning-fg-dark: var(--token-color-warning-fg-dark, 40 90% 96%);
+  --color-info: var(--token-color-info, 210 90% 96%);
+  --color-info-dark: var(--token-color-info-dark, 210 90% 35%);
+  --color-info-fg: var(--token-color-info-fg, 210 90% 35%);
+  --color-info-fg-dark: var(--token-color-info-fg-dark, 210 90% 96%);
   --color-muted: var(--token-color-muted, 0 0% 88%);
   --color-muted-dark: var(--token-color-muted-dark, 0 0% 60%);
   --font-sans: var(--token-font-sans, "Geist Sans", system-ui, sans-serif);
@@ -43,6 +55,12 @@
     --color-accent-fg: var(--color-accent-fg-dark);
     --color-danger: var(--color-danger-dark);
     --color-danger-fg: var(--color-danger-fg-dark);
+    --color-success: var(--color-success-dark);
+    --color-success-fg: var(--color-success-fg-dark);
+    --color-warning: var(--color-warning-dark);
+    --color-warning-fg: var(--color-warning-fg-dark);
+    --color-info: var(--color-info-dark);
+    --color-info-fg: var(--color-info-fg-dark);
     --color-muted: var(--color-muted-dark);
   }
 }
@@ -56,5 +74,11 @@ html.theme-dark {
   --color-accent-fg: var(--color-accent-fg-dark);
   --color-danger: var(--color-danger-dark);
   --color-danger-fg: var(--color-danger-fg-dark);
+  --color-success: var(--color-success-dark);
+  --color-success-fg: var(--color-success-fg-dark);
+  --color-warning: var(--color-warning-dark);
+  --color-warning-fg: var(--color-warning-fg-dark);
+  --color-info: var(--color-info-dark);
+  --color-info-fg: var(--color-info-fg-dark);
   --color-muted: var(--color-muted-dark);
 }

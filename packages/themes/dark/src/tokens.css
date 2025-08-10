@@ -9,6 +9,12 @@
   --color-accent-fg: 0 0% 90%;
   --color-danger: 0 63% 31%;
   --color-danger-fg: 0 93% 94%;
+  --color-success: 142 72% 27%;
+  --color-success-fg: 142 70% 94%;
+  --color-warning: 35 90% 30%;
+  --color-warning-fg: 40 90% 96%;
+  --color-info: 210 90% 35%;
+  --color-info-fg: 210 90% 96%;
   --color-muted: 0 0% 60%;
   --font-sans: "Geist Sans", system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;

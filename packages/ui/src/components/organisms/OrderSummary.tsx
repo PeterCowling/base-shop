@@ -5,32 +5,52 @@ import { useCart } from "@ui/hooks/useCart";
 import type { CartLine } from "@/lib/cartCookie";
 import React, { useMemo } from "react";
 
+type Totals = {
+  subtotal: number;
+  deposit: number;
+  total: number;
+};
+
+type Props = {
+  /** Optional cart data received from the server */
+  cart?: Record<string, CartLine>;
+  /** Pre-computed totals validated on the server */
+  totals?: Totals;
+};
+
 /**
  * Displays a breakdown of the current cart: line items, subtotal,
- * deposit, and total. Totals are memoised so they’re only recalculated
- * when the cart changes.
+ * deposit, and total. When `cart` and `totals` are provided, those
+ * server-validated values are rendered. Otherwise the component falls
+ * back to the client-side cart context.
  */
-function OrderSummary() {
+function OrderSummary({ cart: cartProp, totals }: Props) {
   /* ------------------------------------------------------------------
-   * Cart context
+   * Cart context (used as a fallback when server data isn't provided)
    * ------------------------------------------------------------------ */
-  const [cart] = useCart() as [Record<string, CartLine>, unknown];
+  const [cartCtx] = useCart() as [Record<string, CartLine>, unknown];
+  const cart = cartProp ?? cartCtx;
 
   /* ------------------------------------------------------------------
    * Derived values
    * ------------------------------------------------------------------ */
   const lines = useMemo<CartLine[]>(() => Object.values(cart), [cart]);
 
-  const subtotal = useMemo(
+  // When totals aren't provided, compute them from the cart lines.
+  const computedSubtotal = useMemo(
     () => lines.reduce((sum, line) => sum + line.sku.price * line.qty, 0),
     [lines]
   );
 
-  const deposit = useMemo(
+  const computedDeposit = useMemo(
     () =>
       lines.reduce((sum, line) => sum + (line.sku.deposit ?? 0) * line.qty, 0),
     [lines]
   );
+
+  const subtotal = totals?.subtotal ?? computedSubtotal;
+  const deposit = totals?.deposit ?? computedDeposit;
+  const total = totals?.total ?? subtotal + deposit;
 
   /* ------------------------------------------------------------------
    * Render
@@ -69,7 +89,7 @@ function OrderSummary() {
         <tr>
           <td />
           <td className="py-2 font-semibold">Total</td>
-          <td className="text-right font-semibold">€{subtotal + deposit}</td>
+          <td className="text-right font-semibold">€{total}</td>
         </tr>
       </tfoot>
     </table>

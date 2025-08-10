@@ -3,6 +3,8 @@ import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@platform-core/src/cartCookie";
+import { getProductById } from "@platform-core/src/products";
+import type { CartLine, CartState } from "@types";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/src/repositories/settings.server";
 
@@ -32,12 +34,31 @@ export default async function CheckoutPage({
     return <p className="p-8 text-center">Your cart is empty.</p>;
   }
 
+  /* ---------- fetch fresh product data & compute totals ---------- */
+  const validatedCart: CartState = {};
+  for (const [id, line] of Object.entries(cart)) {
+    const sku = getProductById(id);
+    if (!sku) continue; // skip items that no longer exist
+    validatedCart[id] = { sku, qty: line.qty, size: line.size } as CartLine;
+  }
+
+  const lines = Object.values(validatedCart);
+  const subtotal = lines.reduce((sum, l) => sum + l.sku.price * l.qty, 0);
+  const deposit = lines.reduce(
+    (sum, l) => sum + (l.sku.deposit ?? 0) * l.qty,
+    0
+  );
+  const total = subtotal + deposit;
+
   const settings = await getShopSettings("shop");
 
   /* ---------- render ---------- */
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
-      <OrderSummary />
+      <OrderSummary
+        cart={validatedCart}
+        totals={{ subtotal, deposit, total }}
+      />
       <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
     </div>
   );

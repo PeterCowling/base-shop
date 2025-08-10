@@ -417,10 +417,16 @@ export default function Wizard({
         analyticsId,
       };
 
-      const { ok, error, fieldErrors } = await submitShop(shopId, payload);
+      const { ok, error, fieldErrors, deployment } = await submitShop(
+        shopId,
+        payload
+      );
 
       if (ok) {
         setResult("Shop created successfully");
+        if (deployment && deployment.status !== "pending") {
+          setDeployInfo(deployment as DeployShopResult);
+        }
         /* Remain on the summary step so the success message is visible;
            navigation to the next step is left to the user. */
         resetWizardProgress();

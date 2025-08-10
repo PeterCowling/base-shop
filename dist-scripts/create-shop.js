@@ -73,4 +73,4 @@ async function ensureTheme() {
     }
 }
 await ensureTheme();
-await createShop(shopId, options);
+await createShop(shopId, options, { deploy: true });

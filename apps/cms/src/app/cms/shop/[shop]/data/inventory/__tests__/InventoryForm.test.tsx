@@ -26,10 +26,7 @@ jest.mock("@types", () => {
   const inventoryItemSchema = z.object({
     sku: z.string(),
     productId: z.string(),
-    variant: z.object({
-      size: z.string(),
-      color: z.string().optional(),
-    }),
+    variantAttributes: z.record(z.string()),
     quantity: z.number().min(1),
     lowStockThreshold: z.number().optional(),
   });
@@ -43,7 +40,7 @@ describe("InventoryForm", () => {
     {
       sku: "sku1",
       productId: "sku1",
-      variant: { size: "M", color: "red" },
+      variantAttributes: { size: "M", color: "red" },
       quantity: 5,
       lowStockThreshold: 2,
     },
@@ -61,8 +58,15 @@ describe("InventoryForm", () => {
     expect(screen.getAllByRole("row")).toHaveLength(2);
     fireEvent.click(screen.getByText("Add row"));
     expect(screen.getAllByRole("row")).toHaveLength(3);
-    fireEvent.click(screen.getAllByText("Delete")[1]);
+    fireEvent.click(screen.getAllByLabelText("delete-row")[1]);
     expect(screen.getAllByRole("row")).toHaveLength(2);
+  });
+
+  it("adds attribute columns", () => {
+    (window as any).prompt = jest.fn().mockReturnValue("material");
+    render(<InventoryForm shop="test" initial={initial} />);
+    fireEvent.click(screen.getByText("Add attribute"));
+    expect(screen.getByText("material")).toBeInTheDocument();
   });
 
   it("posts structured data on save", async () => {
@@ -81,7 +85,7 @@ describe("InventoryForm", () => {
           {
             sku: "sku2",
             productId: "sku2",
-            variant: { size: "M", color: "red" },
+            variantAttributes: { size: "M", color: "red" },
             quantity: 5,
             lowStockThreshold: 2,
           },

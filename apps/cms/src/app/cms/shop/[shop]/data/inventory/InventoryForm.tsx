@@ -20,22 +20,28 @@ interface Props {
 
 export default function InventoryForm({ shop, initial }: Props) {
   const [items, setItems] = useState<InventoryItem[]>(() => initial);
+  const [attributes, setAttributes] = useState<string[]>(() => {
+    const set = new Set<string>();
+    initial.forEach((i) =>
+      Object.keys(i.variantAttributes ?? {}).forEach((k) => set.add(k))
+    );
+    return Array.from(set);
+  });
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
   const updateItem = (
     index: number,
-    field: keyof InventoryItem | "variant.size" | "variant.color",
+    field: keyof InventoryItem | `variantAttributes.${string}`,
     value: string
   ) => {
     setItems((prev) => {
       const next = [...prev];
       const item = { ...next[index] } as InventoryItem;
-      if (field === "variant.size") {
-        item.variant = { ...item.variant, size: value };
-      } else if (field === "variant.color") {
-        item.variant = { ...item.variant, color: value || undefined };
+      if (field.startsWith("variantAttributes.")) {
+        const key = field.split(".")[1];
+        item.variantAttributes = { ...item.variantAttributes, [key]: value };
       } else if (field === "quantity") {
         item.quantity = Number(value);
       } else if (field === "lowStockThreshold") {
@@ -59,11 +65,33 @@ export default function InventoryForm({ shop, initial }: Props) {
       {
         sku: "",
         productId: "",
-        variant: { size: "", color: undefined },
+        variantAttributes: Object.fromEntries(attributes.map((a) => [a, ""])),
         quantity: 0,
         lowStockThreshold: undefined,
       },
     ]);
+  };
+
+  const addAttribute = () => {
+    const name = prompt("Attribute name");
+    if (!name) return;
+    setAttributes((prev) => [...prev, name]);
+    setItems((prev) =>
+      prev.map((i) => ({
+        ...i,
+        variantAttributes: { ...i.variantAttributes, [name]: "" },
+      }))
+    );
+  };
+
+  const deleteAttribute = (attr: string) => {
+    setAttributes((prev) => prev.filter((a) => a !== attr));
+    setItems((prev) =>
+      prev.map((i) => {
+        const { [attr]: _, ...rest } = i.variantAttributes;
+        return { ...i, variantAttributes: rest };
+      })
+    );
   };
 
   const deleteRow = (idx: number) => {
@@ -76,10 +104,9 @@ export default function InventoryForm({ shop, initial }: Props) {
       const normalized = items.map((i) => ({
         ...i,
         productId: i.productId || i.sku,
-        variant: {
-          size: i.variant.size,
-          ...(i.variant.color ? { color: i.variant.color } : {}),
-        },
+        variantAttributes: Object.fromEntries(
+          Object.entries(i.variantAttributes).filter(([, v]) => v !== "")
+        ),
         ...(i.lowStockThreshold === undefined
           ? {}
           : { lowStockThreshold: i.lowStockThreshold }),
@@ -127,6 +154,13 @@ export default function InventoryForm({ shop, initial }: Props) {
         throw new Error(body.error || "Failed to import");
       }
       setItems(body.items);
+      setAttributes(() => {
+        const set = new Set<string>();
+        body.items.forEach((i: InventoryItem) =>
+          Object.keys(i.variantAttributes).forEach((k) => set.add(k))
+        );
+        return Array.from(set);
+      });
       setStatus("saved");
       setError(null);
     } catch (err) {
@@ -166,8 +200,18 @@ export default function InventoryForm({ shop, initial }: Props) {
         <TableHeader>
           <TableRow>
             <TableHead>SKU</TableHead>
-            <TableHead>Size</TableHead>
-            <TableHead>Color</TableHead>
+            {attributes.map((attr) => (
+              <TableHead key={attr}>
+                {attr}
+                <Button
+                  type="button"
+                  onClick={() => deleteAttribute(attr)}
+                  aria-label={`delete-attr-${attr}`}
+                >
+                  Delete
+                </Button>
+              </TableHead>
+            ))}
             <TableHead>Quantity</TableHead>
             <TableHead>Low stock threshold</TableHead>
             <TableHead></TableHead>
@@ -182,20 +226,20 @@ export default function InventoryForm({ shop, initial }: Props) {
                   onChange={(e) => updateItem(idx, "sku", e.target.value)}
                 />
               </TableCell>
-              <TableCell>
-                <Input
-                  value={item.variant.size}
-                  onChange={(e) => updateItem(idx, "variant.size", e.target.value)}
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  value={item.variant.color ?? ""}
-                  onChange={(e) =>
-                    updateItem(idx, "variant.color", e.target.value)
-                  }
-                />
-              </TableCell>
+              {attributes.map((attr) => (
+                <TableCell key={attr}>
+                  <Input
+                    value={item.variantAttributes[attr] ?? ""}
+                    onChange={(e) =>
+                      updateItem(
+                        idx,
+                        `variantAttributes.${attr}`,
+                        e.target.value
+                      )
+                    }
+                  />
+                </TableCell>
+              ))}
               <TableCell>
                 <Input
                   type="number"
@@ -227,6 +271,9 @@ export default function InventoryForm({ shop, initial }: Props) {
       </Table>
       <Button type="button" onClick={addRow}>
         Add row
+      </Button>
+      <Button type="button" onClick={addAttribute}>
+        Add attribute
       </Button>
       {status === "saved" && (
         <p className="text-sm text-green-600">Saved!</p>

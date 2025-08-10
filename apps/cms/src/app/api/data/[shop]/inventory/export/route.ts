@@ -28,7 +28,12 @@ export async function GET(
           stream.write({
             sku: i.sku,
             productId: i.productId,
-            ...i.variantAttributes,
+            ...Object.fromEntries(
+              Object.entries(i.variantAttributes).map(([k, v]) => [
+                `variant.${k}`,
+                v,
+              ])
+            ),
             quantity: i.quantity,
             ...(i.lowStockThreshold !== undefined
               ? { lowStockThreshold: i.lowStockThreshold }
@@ -41,7 +46,21 @@ export async function GET(
         headers: { "content-type": "text/csv" },
       });
     }
-    return NextResponse.json(items);
+    const json = items.map((i) => ({
+      sku: i.sku,
+      productId: i.productId,
+      ...Object.fromEntries(
+        Object.entries(i.variantAttributes).map(([k, v]) => [
+          `variant.${k}`,
+          v,
+        ])
+      ),
+      quantity: i.quantity,
+      ...(i.lowStockThreshold !== undefined
+        ? { lowStockThreshold: i.lowStockThreshold }
+        : {}),
+    }));
+    return NextResponse.json(json);
   } catch (err) {
     return NextResponse.json(
       { error: (err as Error).message },

@@ -23,7 +23,41 @@ export async function POST(
     const text = await (file as any).text();
     let raw: unknown;
     if (file.type === "application/json" || file.name.endsWith(".json")) {
-      raw = JSON.parse(text);
+      const data = JSON.parse(text);
+      raw = Array.isArray(data)
+        ? data.map((row: Record<string, unknown>) => {
+            const {
+              sku,
+              productId,
+              quantity,
+              lowStockThreshold,
+              variantAttributes,
+              ...rest
+            } = row;
+            const attrs =
+              typeof variantAttributes === "object" && variantAttributes
+                ? (variantAttributes as Record<string, string>)
+                : Object.fromEntries(
+                    Object.entries(rest)
+                      .filter(
+                        ([k, v]) =>
+                          k.startsWith("variant.") &&
+                          v !== undefined &&
+                          v !== ""
+                      )
+                      .map(([k, v]) => [k.slice("variant.".length), v as string])
+                  );
+            return {
+              sku: sku as string,
+              productId: (productId as string) || (sku as string),
+              variantAttributes: attrs,
+              quantity: Number(quantity),
+              ...(lowStockThreshold !== undefined && lowStockThreshold !== ""
+                ? { lowStockThreshold: Number(lowStockThreshold) }
+                : {}),
+            };
+          })
+        : data;
     } else {
       raw = await new Promise((resolve, reject) => {
         const rows: unknown[] = [];
@@ -42,7 +76,9 @@ export async function POST(
               sku,
               productId: productId || sku,
               variantAttributes: Object.fromEntries(
-                Object.entries(variants).filter(([, v]) => v !== undefined && v !== "")
+                Object.entries(variants)
+                  .filter(([, v]) => v !== undefined && v !== "")
+                  .map(([k, v]) => [k.replace(/^variant\./, ""), v])
               ),
               quantity: Number(quantity),
               ...(lowStockThreshold

@@ -45,3 +45,26 @@ export async function getDeployStatus(
     return { status: "pending", error: (err as Error).message };
   }
 }
+
+export async function updateDeployStatus(
+  id: string,
+  data: Partial<DeployShopResult> & { domainStatus?: string }
+): Promise<void> {
+  await ensureAuthorized();
+  const file = path.join(
+    resolveRepoRoot(),
+    "data",
+    "shops",
+    id,
+    "deploy.json"
+  );
+  try {
+    const existing = await fs.readFile(file, "utf8").catch(() => "{}");
+    const parsed = JSON.parse(existing) as Record<string, unknown>;
+    const updated = { ...parsed, ...data };
+    await fs.mkdir(path.dirname(file), { recursive: true });
+    await fs.writeFile(file, JSON.stringify(updated, null, 2), "utf8");
+  } catch (err) {
+    console.error("Failed to write deploy status", err);
+  }
+}

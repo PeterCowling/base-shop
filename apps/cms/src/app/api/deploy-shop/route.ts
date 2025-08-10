@@ -1,6 +1,7 @@
 import {
   deployShopHosting,
   getDeployStatus,
+  updateDeployStatus,
 } from "@cms/actions/deployShop.server";
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
@@ -36,4 +37,29 @@ export async function GET(req: Request) {
   }
   const status = await getDeployStatus(id);
   return NextResponse.json(status);
+}
+
+export async function PUT(req: Request) {
+  const session = await getServerSession(authOptions);
+  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+  try {
+    const body = await req.json();
+    const { id, ...data } = body as {
+      id: string;
+      domainStatus?: string;
+      instructions?: string;
+    } & Record<string, unknown>;
+    if (!id) {
+      return NextResponse.json({ error: "Missing id" }, { status: 400 });
+    }
+    await updateDeployStatus(id, data);
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    return NextResponse.json(
+      { error: (err as Error).message },
+      { status: 400 }
+    );
+  }
 }

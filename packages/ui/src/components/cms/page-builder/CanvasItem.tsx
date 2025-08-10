@@ -51,7 +51,8 @@ const CanvasItem = memo(function CanvasItem({
     h: number;
   } | null>(null);
   const [resizing, setResizing] = useState(false);
-  const [snapping, setSnapping] = useState(false);
+  const [snapWidth, setSnapWidth] = useState(false);
+  const [snapHeight, setSnapHeight] = useState(false);
   const moveRef = useRef<{ x: number; y: number; l: number; t: number } | null>(
     null
   );
@@ -65,6 +66,8 @@ const CanvasItem = memo(function CanvasItem({
     ? ((component as any).children as PageComponent[]).map((c) => c.id)
     : [];
 
+  const snapping = snapWidth || snapHeight;
+
   useEffect(() => {
     if (!resizing) return;
     const handleMove = (e: PointerEvent) => {
@@ -77,19 +80,21 @@ const CanvasItem = memo(function CanvasItem({
       const newW = startRef.current.w + dx;
       const newH = startRef.current.h + dy;
       const threshold = 10;
-      const snapWidth = e.shiftKey || Math.abs(parentW - newW) <= threshold;
-      const snapHeight = e.shiftKey || Math.abs(parentH - newH) <= threshold;
+      const shouldSnapWidth = e.shiftKey || Math.abs(parentW - newW) <= threshold;
+      const shouldSnapHeight = e.shiftKey || Math.abs(parentH - newH) <= threshold;
       dispatch({
         type: "resize",
         id: component.id,
-        width: snapWidth ? "100%" : `${newW}px`,
-        height: snapHeight ? "100%" : `${newH}px`,
+        width: shouldSnapWidth ? "100%" : `${newW}px`,
+        height: shouldSnapHeight ? "100%" : `${newH}px`,
       });
-      setSnapping(snapWidth || snapHeight);
+      setSnapWidth(shouldSnapWidth);
+      setSnapHeight(shouldSnapHeight);
     };
     const stop = () => {
       setResizing(false);
-      setSnapping(false);
+      setSnapWidth(false);
+      setSnapHeight(false);
     };
     window.addEventListener("pointermove", handleMove);
     window.addEventListener("pointerup", stop);

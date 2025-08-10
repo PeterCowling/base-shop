@@ -14,6 +14,14 @@
   --color-accent-fg: 0 0% 10%;
   --color-muted: 0 0% 88%;
 
+  --color-bg-dark: 0 0% 4%;
+  --color-fg-dark: 0 0% 93%;
+  --color-primary-dark: 220 90% 66%;
+  --color-primary-fg-dark: 0 0% 10%;
+  --color-accent-dark: 260 83% 70%;
+  --color-accent-fg-dark: 0 0% 10%;
+  --color-muted-dark: 0 0% 60%;
+
   /* typography */
   --font-sans: "Geist Sans", system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;
@@ -32,22 +40,22 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg: 0 0% 4%;
-    --color-fg: 0 0% 93%;
-    --color-primary: 220 90% 66%;
-    --color-primary-fg: 0 0% 10%;
-    --color-accent: 260 83% 70%;
-    --color-accent-fg: 0 0% 10%;
-    --color-muted: 0 0% 60%;
+    --color-bg: var(--color-bg-dark);
+    --color-fg: var(--color-fg-dark);
+    --color-primary: var(--color-primary-dark);
+    --color-primary-fg: var(--color-primary-fg-dark);
+    --color-accent: var(--color-accent-dark);
+    --color-accent-fg: var(--color-accent-fg-dark);
+    --color-muted: var(--color-muted-dark);
   }
 }
 
 html.theme-dark {
-  --color-bg: 0 0% 4%;
-  --color-fg: 0 0% 93%;
-  --color-primary: 220 90% 66%;
-  --color-primary-fg: 0 0% 10%;
-  --color-accent: 260 83% 70%;
-  --color-accent-fg: 0 0% 10%;
-  --color-muted: 0 0% 60%;
+  --color-bg: var(--color-bg-dark);
+  --color-fg: var(--color-fg-dark);
+  --color-primary: var(--color-primary-dark);
+  --color-primary-fg: var(--color-primary-fg-dark);
+  --color-accent: var(--color-accent-dark);
+  --color-accent-fg: var(--color-accent-fg-dark);
+  --color-muted: var(--color-muted-dark);
 }

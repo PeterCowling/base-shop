@@ -16,6 +16,14 @@ import { fillLocales } from "./utils/locales";
 import { loadThemeTokensNode } from "./themeTokens";
 import { nowIso } from "@shared/date";
 import { defaultFilterMappings } from "./defaultFilterMappings";
+import {
+  defaultPaymentProviders,
+  type DefaultPaymentProvider,
+} from "./createShop/defaultPaymentProviders";
+import {
+  defaultShippingProviders,
+  type DefaultShippingProvider,
+} from "./createShop/defaultShippingProviders";
 
 export const createShopOptionsSchema = z.object({
   name: z.string().optional(),
@@ -24,8 +32,8 @@ export const createShopOptionsSchema = z.object({
   type: z.enum(["sale", "rental"]).optional(),
   theme: z.string().optional(),
   template: z.string().optional(),
-  payment: z.array(z.string()).default([]),
-  shipping: z.array(z.string()).default([]),
+  payment: z.array(z.enum(defaultPaymentProviders)).default([]),
+  shipping: z.array(z.enum(defaultShippingProviders)).default([]),
   pageTitle: z.record(localeSchema, z.string()).optional(),
   pageDescription: z.record(localeSchema, z.string()).optional(),
   socialImage: z.string().url().optional(),
@@ -59,8 +67,8 @@ export interface CreateShopOptions {
   type?: "sale" | "rental";
   theme?: string;
   template?: string;
-  payment?: string[];
-  shipping?: string[];
+  payment?: DefaultPaymentProvider[];
+  shipping?: DefaultShippingProvider[];
   pageTitle?: Partial<Record<Locale, string>>;
   pageDescription?: Partial<Record<Locale, string>>;
   socialImage?: string;

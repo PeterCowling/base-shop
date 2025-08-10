@@ -19,6 +19,8 @@ interface Props {
   setLogo: (v: string) => void;
   contactInfo: string;
   setContactInfo: (v: string) => void;
+  type: "sale" | "rental";
+  setType: (v: "sale" | "rental") => void;
   template: string;
   setTemplate: (v: string) => void;
   templates: string[];
@@ -35,6 +37,8 @@ export default function StepShopDetails({
   setLogo,
   contactInfo,
   setContactInfo,
+  type,
+  setType,
   template,
   setTemplate,
   templates,
@@ -86,6 +90,21 @@ export default function StepShopDetails({
         />
         {errors.contactInfo && (
           <p className="text-sm text-red-600">{errors.contactInfo[0]}</p>
+        )}
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Shop Type</span>
+        <Select value={type} onValueChange={setType}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="sale">Sale</SelectItem>
+            <SelectItem value="rental">Rental</SelectItem>
+          </SelectContent>
+        </Select>
+        {errors.type && (
+          <p className="text-sm text-red-600">{errors.type[0]}</p>
         )}
       </label>
       <label className="flex flex-col gap-1">

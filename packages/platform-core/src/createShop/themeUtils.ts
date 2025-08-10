@@ -1,8 +1,8 @@
-// packages/platform-core/createShop/utils/loadBaseTokens.ts
 import { readFileSync } from "fs";
 import { join } from "path";
 import ts from "typescript";
 import { runInNewContext } from "vm";
+import { loadThemeTokensNode } from "../themeTokens";
 
 /**
  * Load the base Tailwind token mappings.
@@ -29,11 +29,13 @@ export function loadBaseTokens(): Record<string, string> {
   };
   sandbox.exports = sandbox.module.exports;
   runInNewContext(transpiled, sandbox);
-  const tokenMap = sandbox.module.exports.tokens as Record<
-    string,
-    { light: string }
-  >;
+  const tokenMap = sandbox.module.exports.tokens as Record<string, { light: string }>;
   return Object.fromEntries(
     Object.entries(tokenMap).map(([k, v]) => [k, v.light])
   );
+}
+
+/** Load theme tokens combined with base tokens. */
+export function loadTokens(theme: string): Record<string, string> {
+  return { ...loadBaseTokens(), ...loadThemeTokensNode(theme) };
 }

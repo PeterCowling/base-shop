@@ -1,315 +1,17 @@
 // packages/platform-core/createShop.ts
-import { LOCALES } from "@i18n/locales";
-import type { Locale, PageComponent } from "@types";
-import { localeSchema } from "@types";
-import { pageComponentSchema } from "@types/Page";
 import { spawnSync } from "child_process";
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, readdirSync, writeFileSync } from "fs";
 import { join } from "path";
-import { ulid } from "ulid";
-import { z } from "zod";
 import { validateShopName } from "./shops";
-import { copyTemplate, loadBaseTokens } from "./createShop/utils";
-import { slugify, genSecret } from "@shared-utils";
-import { fillLocales } from "./utils/locales";
-import { loadThemeTokensNode } from "./themeTokens";
-import { nowIso } from "@shared/date";
-import { defaultFilterMappings } from "./defaultFilterMappings";
 import {
-  defaultPaymentProviders,
-  type DefaultPaymentProvider,
-} from "./createShop/defaultPaymentProviders";
+  prepareOptions,
+  type CreateShopOptions,
+} from "./createShop/schema";
 import {
-  defaultShippingProviders,
-  type DefaultShippingProvider,
-} from "./createShop/defaultShippingProviders";
-
-export const createShopOptionsSchema = z.object({
-  name: z.string().optional(),
-  logo: z.string().url().optional(),
-  contactInfo: z.string().optional(),
-  type: z.enum(["sale", "rental"]).optional(),
-  theme: z.string().optional(),
-  template: z.string().optional(),
-  payment: z.array(z.enum(defaultPaymentProviders)).default([]),
-  shipping: z.array(z.enum(defaultShippingProviders)).default([]),
-  pageTitle: z.record(localeSchema, z.string()).optional(),
-  pageDescription: z.record(localeSchema, z.string()).optional(),
-  socialImage: z.string().url().optional(),
-  analytics: z
-    .object({
-      provider: z.string(),
-      id: z.string().optional(),
-    })
-    .optional(),
-  navItems: z
-    .array(z.object({ label: z.string().min(1), url: z.string().min(1) }))
-    .default([]),
-  pages: z
-    .array(
-      z.object({
-        slug: z.string(),
-        title: z.record(localeSchema, z.string()),
-        description: z.record(localeSchema, z.string()).optional(),
-        image: z.record(localeSchema, z.string()).optional(),
-        components: z.array(pageComponentSchema),
-      })
-    )
-    .default([]),
-  checkoutPage: z.array(pageComponentSchema).default([]),
-});
-
-export interface CreateShopOptions {
-  name?: string;
-  logo?: string;
-  contactInfo?: string;
-  type?: "sale" | "rental";
-  theme?: string;
-  template?: string;
-  payment?: DefaultPaymentProvider[];
-  shipping?: DefaultShippingProvider[];
-  pageTitle?: Partial<Record<Locale, string>>;
-  pageDescription?: Partial<Record<Locale, string>>;
-  socialImage?: string;
-  analytics?: {
-    provider: string;
-    id?: string;
-  };
-  navItems?: { label: string; url: string }[];
-  pages?: {
-    slug: string;
-    title: Partial<Record<Locale, string>>;
-    description?: Partial<Record<Locale, string>>;
-    image?: Partial<Record<Locale, string>>;
-    components: PageComponent[];
-  }[];
-  checkoutPage?: PageComponent[];
-}
-
-interface PackageJSON {
-  name: string;
-  dependencies?: Record<string, string>;
-  [key: string]: unknown;
-}
-
-export interface PreparedCreateShopOptions extends Required<
-  Omit<CreateShopOptions, "analytics" | "checkoutPage">
-> {
-  analytics?: CreateShopOptions["analytics"];
-  checkoutPage: PageComponent[];
-}
-
-/** Parse and populate option defaults. */
-export function prepareOptions(
-  id: string,
-  opts: CreateShopOptions
-): PreparedCreateShopOptions {
-  const parsed = createShopOptionsSchema.parse(opts);
-  return {
-    name: parsed.name ?? id,
-    logo: parsed.logo ?? "",
-    contactInfo: parsed.contactInfo ?? "",
-    type: parsed.type ?? "sale",
-    theme: parsed.theme ?? "base",
-    template: parsed.template ?? "template-app",
-    payment: parsed.payment,
-    shipping: parsed.shipping,
-    pageTitle: fillLocales(parsed.pageTitle, "Home"),
-    pageDescription: fillLocales(parsed.pageDescription, ""),
-    socialImage: parsed.socialImage ?? "",
-    analytics: parsed.analytics
-      ? { provider: parsed.analytics.provider ?? "none", id: parsed.analytics.id }
-      : { provider: "none" },
-    navItems:
-      parsed.navItems?.map((n) => ({
-        label: n.label ?? "—",
-        url: n.url ?? "#",
-      })) ?? [],
-    pages: parsed.pages.map((p) => ({
-      slug: p.slug ?? slugify(p.title.en ?? Object.values(p.title)[0]),
-      title: p.title,
-      description: p.description,
-      image: p.image,
-      components: p.components ?? [],
-    })),
-    checkoutPage: parsed.checkoutPage,
-  };
-}
-
-/** Ensure selected theme and template are available. */
-export function ensureTemplateExists(theme: string, template: string): string {
-  if (!existsSync(join("packages", "themes", theme))) {
-    throw new Error(`Theme '${theme}' not found in packages/themes`);
-  }
-  const templateApp = join("packages", template);
-  if (!existsSync(templateApp)) {
-    throw new Error(`Template '${template}' not found in packages`);
-  }
-  return templateApp;
-}
-
-/** Write all files for the new shop and seed data. */
-export function writeFiles(
-  id: string,
-  options: PreparedCreateShopOptions,
-  templateApp: string,
-  newApp: string,
-  newData: string
-): void {
-  copyTemplate(templateApp, newApp);
-  // ensure PostCSS setup is available in the generated shop
-  cpSync("postcss.config.cjs", join(newApp, "postcss.config.cjs"));
-  const pkgPath = join(newApp, "package.json");
-  const pkg = JSON.parse(readFileSync(pkgPath, "utf8")) as PackageJSON;
-  pkg.dependencies ??= {};
-  Object.keys(pkg.dependencies).forEach((k) => {
-    if (k.startsWith("@themes/")) delete pkg.dependencies![k];
-  });
-  pkg.dependencies[`@themes/${options.theme}`] = "workspace:*";
-  pkg.name = `@apps/shop-${id}`;
-  writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-
-  const cssPath = join(newApp, "src", "app", "globals.css");
-  const css = readFileSync(cssPath, "utf8").replace(
-    /@themes\/[^/]+\/tokens.css/,
-    `@themes/${options.theme}/tokens.css`
-  );
-  writeFileSync(cssPath, css);
-
-  let envContent = `NEXT_PUBLIC_SHOP_ID=${id}\n`;
-  envContent += `PREVIEW_TOKEN_SECRET=${genSecret()}\n`;
-  const envVars = [...options.payment, ...options.shipping];
-  if (envVars.length === 0) envVars.push("stripe");
-  for (const provider of envVars) {
-    if (provider === "stripe") {
-      envContent += `STRIPE_SECRET_KEY=${genSecret()}\n`;
-      envContent += `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${genSecret()}\n`;
-    } else {
-      envContent += `${provider.toUpperCase()}_KEY=${genSecret()}\n`;
-    }
-  }
-  envContent += `NEXTAUTH_SECRET=${genSecret()}\n`;
-  envContent += `CMS_SPACE_URL=\n`;
-  envContent += `CMS_ACCESS_TOKEN=\n`;
-  envContent += `CHROMATIC_PROJECT_TOKEN=\n`;
-  writeFileSync(join(newApp, ".env"), envContent);
-
-  mkdirSync(newData, { recursive: true });
-  writeFileSync(
-    join(newData, "settings.json"),
-    JSON.stringify({ languages: [...LOCALES], analytics: options.analytics }, null, 2)
-  );
-
-  const themeTokens = {
-    ...loadBaseTokens(),
-    ...loadThemeTokensNode(options.theme),
-  };
-  writeFileSync(
-    join(newData, "shop.json"),
-    JSON.stringify(
-      {
-        id,
-        name: options.name,
-        logo: options.logo,
-        contactInfo: options.contactInfo,
-        catalogFilters: [],
-        themeId: options.theme,
-        themeTokens,
-        filterMappings: { ...defaultFilterMappings },
-        type: options.type,
-        paymentProviders: options.payment,
-        shippingProviders: options.shipping,
-        priceOverrides: {},
-        localeOverrides: {},
-        homeTitle: options.pageTitle,
-        homeDescription: options.pageDescription,
-        homeImage: options.socialImage,
-        navigation: options.navItems,
-      },
-      null,
-      2
-    )
-  );
-
-  const now = nowIso();
-  const sampleProduct = {
-    id: ulid(),
-    sku: "SAMPLE-1",
-    title: { en: "Sample", de: "Sample", it: "Sample" },
-    description: {
-      en: "Sample product",
-      de: "Sample product",
-      it: "Sample product",
-    },
-    price: 1000,
-    currency: "EUR",
-    images: [],
-    status: "draft",
-    shop: id,
-    row_version: 1,
-    created_at: now,
-    updated_at: now,
-  } as Record<string, unknown>;
-
-  if (options.type === "rental") {
-    (sampleProduct as Record<string, unknown>)["deposit"] = 1000;
-    (sampleProduct as Record<string, unknown>)["rentalTerms"] =
-      "Return within 30 days";
-  }
-
-  writeFileSync(
-    join(newData, "products.json"),
-    JSON.stringify([sampleProduct], null, 2)
-  );
-
-  const homePage = {
-    id: ulid(),
-    slug: "home",
-    status: "draft" as const,
-    components: [],
-    seo: {
-      title: options.pageTitle,
-      description: options.pageDescription,
-      image: Object.fromEntries(
-        LOCALES.map((locale: Locale) => [locale, options.socialImage])
-      ) as Record<Locale, string>,
-    },
-    createdAt: now,
-    updatedAt: now,
-    createdBy: "system",
-  } as const;
-
-  const emptySeo = Object.fromEntries(
-    LOCALES.map((locale: Locale) => [locale, ""])
-  ) as Record<Locale, string>;
-
-  const checkoutPage = {
-    id: ulid(),
-    slug: "checkout",
-    status: "draft" as const,
-    components: options.checkoutPage,
-    seo: { title: emptySeo, description: emptySeo, image: emptySeo },
-    createdAt: now,
-    updatedAt: now,
-    createdBy: "system",
-  } as const;
-
-  const extraPages = options.pages.map((p) => ({
-    id: ulid(),
-    slug: p.slug,
-    status: "draft" as const,
-    components: p.components,
-    seo: { title: p.title, description: p.description, image: p.image },
-    createdAt: now,
-    updatedAt: now,
-    createdBy: "system",
-  }));
-
-  writeFileSync(
-    join(newData, "pages.json"),
-    JSON.stringify([homePage, checkoutPage, ...extraPages], null, 2)
-  );
-}
+  ensureTemplateExists,
+  writeFiles,
+} from "./createShop/fsUtils";
+import { loadTokens } from "./createShop/themeUtils";
 
 /**
  * Create a new shop app and seed data.
@@ -332,8 +34,9 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
 
   const options = prepareOptions(id, opts);
   const templateApp = ensureTemplateExists(options.theme, options.template);
+  const themeTokens = loadTokens(options.theme);
 
-  writeFiles(id, options, templateApp, newApp, newData);
+  writeFiles(id, options, themeTokens, templateApp, newApp, newData);
 
   deployShop(id);
 }
@@ -395,3 +98,7 @@ export function listThemes(): string[] {
     .filter((d) => d.isDirectory())
     .map((d) => d.name);
 }
+
+export { prepareOptions } from "./createShop/schema";
+export { ensureTemplateExists, writeFiles, copyTemplate } from "./createShop/fsUtils";
+export { loadTokens, loadBaseTokens } from "./createShop/themeUtils";

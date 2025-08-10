@@ -1,4 +1,6 @@
 {
   "languages": ["en", "de", "it"],
-  "freezeTranslations": false
+  "freezeTranslations": false,
+  "currency": "EUR",
+  "taxRegion": "EU"
 }

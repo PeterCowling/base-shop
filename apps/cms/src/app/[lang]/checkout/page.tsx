@@ -4,6 +4,7 @@ import OrderSummary from "@/components/organisms/OrderSummary";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { cookies } from "next/headers";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 export const metadata = {
   title: "Checkout · Base-Shop",
@@ -31,11 +32,13 @@ export default async function CheckoutPage({
     return <p className="p-8 text-center">Your cart is empty.</p>;
   }
 
+  const settings = await getShopSettings("shop");
+
   /* ---------- render ---------- */
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
       <OrderSummary />
-      <CheckoutForm locale={lang} />
+      <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
     </div>
   );
 }

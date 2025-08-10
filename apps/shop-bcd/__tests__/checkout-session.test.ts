@@ -17,6 +17,10 @@ jest.mock("@lib/stripeServer.server", () => ({
 
 jest.mock("@platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
+  convertCurrency: jest.fn(async (n: number) => n),
+}));
+jest.mock("@platform-core/tax", () => ({
+  getTaxRate: jest.fn(async () => 0.2),
 }));
 
 import { stripe } from "@lib/stripeServer.server";
@@ -46,7 +50,7 @@ test("builds Stripe session with correct items and metadata", async () => {
   const cookie = encodeCartCookie(cart);
   const returnDate = "2025-01-02";
   const expectedDays = calculateRentalDays(returnDate);
-  const req = createRequest({ returnDate }, cookie);
+  const req = createRequest({ returnDate, currency: "EUR", taxRegion: "EU" }, cookie);
 
   const res = await POST(req);
   const body = await res.json();
@@ -54,9 +58,10 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(stripeCreate).toHaveBeenCalled();
   const args = stripeCreate.mock.calls[0][0];
 
-  expect(args.line_items).toHaveLength(2);
+  expect(args.line_items).toHaveLength(3);
   expect(args.line_items[0].price_data.unit_amount).toBe(1000);
   expect(args.line_items[1].price_data.unit_amount).toBe(sku.deposit * 100);
+  expect(args.line_items[2].price_data.unit_amount).toBe(400);
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
   expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: "40" }));
   expect(args.metadata.subtotal).toBe("20");
@@ -67,7 +72,7 @@ test("responds with 400 on invalid returnDate", async () => {
   const sku = PRODUCTS[0];
   const cart = { [sku.id]: { sku, qty: 1 } };
   const cookie = encodeCartCookie(cart);
-  const req = createRequest({ returnDate: "not-a-date" }, cookie);
+  const req = createRequest({ returnDate: "not-a-date", currency: "EUR", taxRegion: "EU" }, cookie);
   const res = await POST(req);
   expect(res.status).toBe(400);
   const body = await res.json();

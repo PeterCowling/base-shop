@@ -15,15 +15,17 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { isoDateInNDays } from "@/lib/date";
+import { useCurrency } from "@platform-core/src/contexts/CurrencyContext";
 
 const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-type Props = { locale: "en" | "de" | "it" }; // narrow to our three
+type Props = { locale: "en" | "de" | "it"; taxRegion: string };
 
 type FormValues = { returnDate: string };
 
-export default function CheckoutForm({ locale }: Props) {
+export default function CheckoutForm({ locale, taxRegion }: Props) {
   const [clientSecret, setClientSecret] = useState<string>();
+  const [currency] = useCurrency();
 
   const defaultDate = isoDateInNDays(7);
 
@@ -40,12 +42,12 @@ export default function CheckoutForm({ locale }: Props) {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ returnDate }),
+          body: JSON.stringify({ returnDate, currency, taxRegion }),
         }
       );
       setClientSecret(clientSecret);
     })();
-  }, [returnDate]);
+  }, [returnDate, currency, taxRegion]);
 
   if (!clientSecret) return <p>Loading payment form…</p>;
 

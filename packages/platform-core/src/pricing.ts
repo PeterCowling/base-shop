@@ -7,6 +7,7 @@ import * as path from "node:path";
 import { resolveDataRoot } from "./dataRoot";
 
 let cached: PricingMatrix | null = null;
+let rateCache: { base: string; rates: Record<string, number> } | null = null;
 
 export async function getPricing(): Promise<PricingMatrix> {
   if (cached) return cached;
@@ -14,6 +15,26 @@ export async function getPricing(): Promise<PricingMatrix> {
   const buf = await fs.readFile(file, "utf8");
   cached = pricingSchema.parse(JSON.parse(buf));
   return cached;
+}
+
+async function loadExchangeRates() {
+  if (rateCache) return rateCache;
+  const file = path.join(resolveDataRoot(), "..", "rental", "exchangeRates.json");
+  const buf = await fs.readFile(file, "utf8");
+  rateCache = JSON.parse(buf) as { base: string; rates: Record<string, number> };
+  return rateCache;
+}
+
+/** Convert an amount from the base currency to the target currency */
+export async function convertCurrency(
+  amount: number,
+  to: string
+): Promise<number> {
+  const { base, rates } = await loadExchangeRates();
+  if (to === base) return amount;
+  const rate = rates[to];
+  if (!rate) throw new Error(`Missing exchange rate for ${to}`);
+  return Math.round(amount * rate);
 }
 
 export function applyDurationDiscount(

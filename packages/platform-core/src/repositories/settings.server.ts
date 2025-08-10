@@ -50,6 +50,8 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
       return {
         freezeTranslations: false,
         ...(parsed.data.analytics ? { analytics: parsed.data.analytics } : {}),
+        currency: parsed.data.currency ?? "EUR",
+        taxRegion: parsed.data.taxRegion ?? "",
         ...parsed.data,
       };
     }
@@ -61,6 +63,8 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     seo: {},
     analytics: undefined,
     freezeTranslations: false,
+    currency: "EUR",
+    taxRegion: "",
     updatedAt: "",
     updatedBy: "",
   };

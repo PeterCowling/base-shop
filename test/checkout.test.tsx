@@ -5,6 +5,7 @@ process.env.STRIPE_SECRET_KEY = "sk_test_123";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 
 import CheckoutForm from "../packages/ui/components/checkout/CheckoutForm";
+import { CurrencyProvider } from "@platform-core/src/contexts/CurrencyContext";
 import { isoDateInNDays } from "@/lib/date";
 
 const pushMock = jest.fn();
@@ -40,7 +41,11 @@ test("renders Elements once client secret is fetched", async () => {
     })
   );
 
-  render(<CheckoutForm locale="en" />);
+  render(
+    <CurrencyProvider>
+      <CheckoutForm locale="en" taxRegion="EU" />
+    </CurrencyProvider>
+  );
 
   expect(screen.getByText("Loading payment form…")).toBeInTheDocument();
 
@@ -56,7 +61,11 @@ test("successful payment redirects to success", async () => {
   );
   confirmPaymentMock.mockResolvedValue({});
 
-  render(<CheckoutForm locale="en" />);
+  render(
+    <CurrencyProvider>
+      <CheckoutForm locale="en" taxRegion="EU" />
+    </CurrencyProvider>
+  );
   await screen.findByTestId("payment-element");
   fireEvent.click(screen.getByRole("button", { name: /pay/i }));
 
@@ -75,7 +84,11 @@ test("failed payment redirects to cancelled", async () => {
   );
   confirmPaymentMock.mockResolvedValue({ error: { message: "fail" } });
 
-  render(<CheckoutForm locale="en" />);
+  render(
+    <CurrencyProvider>
+      <CheckoutForm locale="en" taxRegion="EU" />
+    </CurrencyProvider>
+  );
   await screen.findByTestId("payment-element");
   fireEvent.click(screen.getByRole("button", { name: /pay/i }));
 
@@ -100,15 +113,23 @@ test("requests new session when return date changes", async () => {
 
   const expectedDefault = isoDateInNDays(7);
 
-  render(<CheckoutForm locale="en" />);
+  render(
+    <CurrencyProvider>
+      <CheckoutForm locale="en" taxRegion="EU" />
+    </CurrencyProvider>
+  );
   await screen.findByTestId("payment-element");
   expect(calls[0].returnDate).toBe(expectedDefault);
+  expect(calls[0].currency).toBe("EUR");
+  expect(calls[0].taxRegion).toBe("EU");
 
   const input = screen.getByLabelText(/checkout\.return/i);
   fireEvent.change(input, { target: { value: "2025-12-25" } });
 
   await waitFor(() => expect(calls).toHaveLength(2));
   expect(calls[1].returnDate).toBe("2025-12-25");
+  expect(calls[1].currency).toBe("EUR");
+  expect(calls[1].taxRegion).toBe("EU");
 });
 
 test("default return date is 7 days ahead", async () => {
@@ -120,7 +141,11 @@ test("default return date is 7 days ahead", async () => {
 
   const expected = isoDateInNDays(7);
 
-  render(<CheckoutForm locale="en" />);
+  render(
+    <CurrencyProvider>
+      <CheckoutForm locale="en" taxRegion="EU" />
+    </CurrencyProvider>
+  );
   await screen.findByTestId("payment-element");
   const input = screen.getByLabelText(/checkout\.return/i) as HTMLInputElement;
   expect(input.value).toBe(expected);

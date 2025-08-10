@@ -1,10 +1,30 @@
 // packages/platform-core/src/tax/index.ts
 
+import "server-only";
+import { promises as fs } from "node:fs";
+import * as path from "node:path";
+import { resolveDataRoot } from "../dataRoot";
+
 export interface TaxCalculationRequest {
   provider: "taxjar";
   amount: number;
   toCountry: string;
   toPostalCode?: string;
+}
+
+let rulesCache: Record<string, number> | null = null;
+
+async function loadRules() {
+  if (rulesCache) return rulesCache;
+  const file = path.join(resolveDataRoot(), "..", "tax", "rules.json");
+  const buf = await fs.readFile(file, "utf8");
+  rulesCache = JSON.parse(buf) as Record<string, number>;
+  return rulesCache;
+}
+
+export async function getTaxRate(region: string): Promise<number> {
+  const rules = await loadRules();
+  return rules[region] ?? 0;
 }
 
 /**

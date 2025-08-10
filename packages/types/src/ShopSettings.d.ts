@@ -90,6 +90,8 @@ export declare const shopSettingsSchema: z.ZodObject<{
         id?: string | undefined;
     }>>;
     freezeTranslations: z.ZodOptional<z.ZodBoolean>;
+    currency: z.ZodOptional<z.ZodString>;
+    taxRegion: z.ZodOptional<z.ZodString>;
     updatedAt: z.ZodString;
     updatedBy: z.ZodString;
 }, "strip", z.ZodTypeAny, {
@@ -121,6 +123,8 @@ export declare const shopSettingsSchema: z.ZodObject<{
         id?: string | undefined;
     } | undefined;
     freezeTranslations?: boolean | undefined;
+    currency?: string | undefined;
+    taxRegion?: string | undefined;
 }, {
     seo: Partial<Record<"en" | "de" | "it", {
         title?: string | undefined;
@@ -150,6 +154,8 @@ export declare const shopSettingsSchema: z.ZodObject<{
         id?: string | undefined;
     } | undefined;
     freezeTranslations?: boolean | undefined;
+    currency?: string | undefined;
+    taxRegion?: string | undefined;
 }>;
 export type ShopSettings = z.infer<typeof shopSettingsSchema>;
 //# sourceMappingURL=ShopSettings.d.ts.map

@@ -4,8 +4,9 @@ import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { calculateRentalDays } from "@/lib/date";
 import { stripe } from "@lib/stripeServer";
 import { getCustomerSession } from "@auth";
-import { priceForDays } from "@platform-core/pricing";
+import { priceForDays, convertCurrency } from "@platform-core/pricing";
 import { findCoupon } from "@platform-core/coupons";
+import { getTaxRate } from "@platform-core/tax";
 
 import type { CartLine, CartState } from "@types";
 import { NextRequest, NextResponse } from "next/server";
@@ -28,7 +29,8 @@ type Cart = CartState;
 const buildLineItemsForItem = async (
   item: CartItem,
   rentalDays: number,
-  discountRate: number
+  discountRate: number,
+  currency: string
 ): Promise<
   [
     Stripe.Checkout.SessionCreateParams.LineItem,
@@ -37,6 +39,8 @@ const buildLineItemsForItem = async (
 > => {
   const unitPrice = await priceForDays(item.sku, rentalDays);
   const discounted = Math.round(unitPrice * (1 - discountRate));
+  const unitConv = await convertCurrency(discounted, currency);
+  const depositConv = await convertCurrency(item.sku.deposit, currency);
   const baseName = item.size
     ? `${item.sku.title} (${item.size})`
     : item.sku.title;
@@ -44,16 +48,16 @@ const buildLineItemsForItem = async (
   return [
     {
       price_data: {
-        currency: "eur",
-        unit_amount: discounted * 100,
+        currency: currency.toLowerCase(),
+        unit_amount: unitConv * 100,
         product_data: { name: baseName },
       },
       quantity: item.qty,
     },
     {
       price_data: {
-        currency: "eur",
-        unit_amount: item.sku.deposit * 100,
+        currency: currency.toLowerCase(),
+        unit_amount: depositConv * 100,
         product_data: { name: `${baseName} deposit` },
       },
       quantity: item.qty,
@@ -67,7 +71,8 @@ const buildLineItemsForItem = async (
 const computeTotals = async (
   cart: Cart,
   rentalDays: number,
-  discountRate: number
+  discountRate: number,
+  currency: string
 ): Promise<{ subtotal: number; depositTotal: number; discount: number }> => {
   const subtotals = await Promise.all(
     Object.values(cart).map(async (item) => {
@@ -77,15 +82,19 @@ const computeTotals = async (
     })
   );
 
-  const subtotal = subtotals.reduce((sum, v) => sum + v.discounted, 0);
-  const original = subtotals.reduce((sum, v) => sum + v.base, 0);
-  const discount = original - subtotal;
-  const depositTotal = Object.values(cart).reduce(
+  const subtotalBase = subtotals.reduce((sum, v) => sum + v.discounted, 0);
+  const originalBase = subtotals.reduce((sum, v) => sum + v.base, 0);
+  const discountBase = originalBase - subtotalBase;
+  const depositBase = Object.values(cart).reduce(
     (sum, item) => sum + item.sku.deposit * item.qty,
     0
   );
 
-  return { subtotal, depositTotal, discount };
+  return {
+    subtotal: await convertCurrency(subtotalBase, currency),
+    depositTotal: await convertCurrency(depositBase, currency),
+    discount: await convertCurrency(discountBase, currency),
+  };
 };
 
 /* ------------------------------------------------------------------ *
@@ -104,10 +113,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   /* 2️⃣ Parse optional body ------------------------------------------------- */
-  const { returnDate, coupon } = (await req.json().catch(() => ({}))) as {
-    returnDate?: string;
-    coupon?: string;
-  };
+  const { returnDate, coupon, currency = "EUR", taxRegion = "" } =
+    (await req.json().catch(() => ({}))) as {
+      returnDate?: string;
+      coupon?: string;
+      currency?: string;
+      taxRegion?: string;
+    };
   const couponDef = findCoupon(coupon);
   const discountRate = couponDef ? couponDef.discountPercent / 100 : 0;
   let rentalDays: number;
@@ -120,7 +132,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   /* 3️⃣ Build Stripe line-items & totals ------------------------------------ */
   const lineItemsNested = await Promise.all(
     Object.values(cart).map((item) =>
-      buildLineItemsForItem(item, rentalDays, discountRate)
+      buildLineItemsForItem(item, rentalDays, discountRate, currency)
     )
   );
   const line_items = lineItemsNested.flat();
@@ -128,8 +140,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { subtotal, depositTotal, discount } = await computeTotals(
     cart,
     rentalDays,
-    discountRate
+    discountRate,
+    currency
   );
+
+  const taxRate = await getTaxRate(taxRegion);
+  const taxAmount = Math.round(subtotal * taxRate);
+  if (taxAmount > 0) {
+    line_items.push({
+      price_data: {
+        currency: currency.toLowerCase(),
+        unit_amount: taxAmount * 100,
+        product_data: { name: "Tax" },
+      },
+      quantity: 1,
+    });
+  }
 
   /* 4️⃣ Serialize sizes for metadata --------------------------------------- */
   const sizesMeta = JSON.stringify(
@@ -154,6 +180,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         customerId: customer?.customerId ?? "",
         discount: discount.toString(),
         coupon: couponDef?.code ?? "",
+        currency,
+        taxRate: taxRate.toString(),
+        taxAmount: taxAmount.toString(),
       },
     },
     metadata: {
@@ -165,6 +194,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       customerId: customer?.customerId ?? "",
       discount: discount.toString(),
       coupon: couponDef?.code ?? "",
+      currency,
+      taxRate: taxRate.toString(),
+      taxAmount: taxAmount.toString(),
     },
     expand: ["payment_intent"],
   });

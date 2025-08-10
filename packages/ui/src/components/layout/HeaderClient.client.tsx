@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "../../utils/style";
 import ThemeToggle from "../ThemeToggle";
+import { CurrencySwitcher } from "../molecules";
 
 export default function HeaderClient({
   lang,
@@ -44,6 +45,7 @@ export default function HeaderClient({
             {item.label}
           </Link>
         ))}
+        <CurrencySwitcher />
         <ThemeToggle />
         <Link href={`/${lang}/checkout`} className="relative hover:underline">
           Cart

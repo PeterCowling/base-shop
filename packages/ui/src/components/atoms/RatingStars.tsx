@@ -11,7 +11,7 @@ function Star({ filled, size = 16 }: { filled: boolean; size?: number }) {
     <svg
       aria-hidden="true"
       viewBox="0 0 24 24"
-      className={filled ? "fill-yellow-500" : "fill-gray-300"}
+      className={filled ? "fill-yellow-500" : "fill-muted"}
       width={size}
       height={size}
     >

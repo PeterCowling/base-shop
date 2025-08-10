@@ -57,7 +57,7 @@ export function MarketingEmailTemplate({
         )}
       </div>
       {footer && (
-        <div className="bg-muted border-t p-4 text-center text-xs text-gray-600">
+        <div className="bg-muted border-t p-4 text-center text-xs text-muted">
           {footer}
         </div>
       )}

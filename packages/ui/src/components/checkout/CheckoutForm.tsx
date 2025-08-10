@@ -115,7 +115,7 @@ function PaymentForm({
       <button
         type="submit"
         disabled={!stripe || processing}
-        className="w-full rounded bg-gray-900 py-2 text-white disabled:opacity-50"
+        className="w-full rounded bg-fg py-2 text-bg disabled:opacity-50"
       >
         {processing ? t("checkout.processing") : t("checkout.pay")}
       </button>

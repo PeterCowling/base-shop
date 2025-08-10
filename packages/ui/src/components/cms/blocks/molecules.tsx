@@ -70,10 +70,10 @@ export const PromoBanner = memo(function PromoBanner({
     typeof buttonLabel === "string" ? buttonLabel : (buttonLabel[locale] ?? "");
 
   return (
-    <div className="flex items-center justify-between bg-gray-900 p-4 text-white">
+    <div className="flex items-center justify-between bg-fg p-4 text-bg">
       <span>{txt}</span>
       {href && (
-        <a href={href} className="rounded bg-white px-3 py-1 text-gray-900">
+        <a href={href} className="rounded bg-bg px-3 py-1 text-fg">
           {label}
         </a>
       )}

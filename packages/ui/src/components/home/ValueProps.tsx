@@ -34,7 +34,7 @@ function ValuePropsInner({ items = [] }: { items?: ValuePropItem[] }) {
         <article key={title} className="text-center">
           <div className="mb-4 text-4xl">{icon}</div>
           <h3 className="mb-2 text-xl font-semibold">{title}</h3>
-          <p className="text-gray-600">{desc}</p>
+          <p className="text-muted">{desc}</p>
         </article>
       ))}
     </section>

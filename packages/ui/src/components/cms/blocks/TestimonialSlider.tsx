@@ -23,7 +23,7 @@ export default function TestimonialSlider({
   return (
     <section className="space-y-2 text-center">
       <blockquote className="italic">“{t.quote}”</blockquote>
-      {t.name && <footer className="text-sm text-gray-600">— {t.name}</footer>}
+      {t.name && <footer className="text-sm text-muted">— {t.name}</footer>}
     </section>
   );
 }

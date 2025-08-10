@@ -12,7 +12,7 @@ export const ProductBadge = React.forwardRef<
   ProductBadgeProps
 >(({ label, variant = "default", className, ...props }, ref) => {
   const variants: Record<string, string> = {
-    default: "bg-gray-200 text-gray-800",
+      default: "bg-muted text-fg",
     sale: "bg-red-500 text-white",
     new: "bg-green-500 text-white",
   };

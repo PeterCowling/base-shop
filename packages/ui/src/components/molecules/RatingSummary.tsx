@@ -26,7 +26,7 @@ export const RatingSummary = React.forwardRef<
       <span className="text-sm">
         {rounded}
         {typeof count === "number" && (
-          <span className="text-gray-500"> ({count})</span>
+          <span className="text-muted"> ({count})</span>
         )}
       </span>
     </div>

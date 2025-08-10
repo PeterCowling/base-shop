@@ -14,7 +14,7 @@ export default function Testimonials({
         <blockquote key={i} className="text-center">
           <p className="mb-2 italic">“{t.quote}”</p>
           {t.name && (
-            <footer className="text-sm text-gray-600">— {t.name}</footer>
+            <footer className="text-sm text-muted">— {t.name}</footer>
           )}
         </blockquote>
       ))}

@@ -27,7 +27,7 @@ export default function ProductRowActions({
       </Link>
       <Link
         href={`/en/product/${product.id}`}
-        className="rounded border px-2 py-1 text-xs hover:bg-gray-100 dark:hover:bg-gray-800"
+        className="rounded border px-2 py-1 text-xs hover:bg-muted"
       >
         View
       </Link>

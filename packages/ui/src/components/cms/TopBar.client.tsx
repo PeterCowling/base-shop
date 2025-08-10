@@ -24,14 +24,14 @@ function TopBarInner() {
   const showNewPage = shop && last === "pages";
 
   return (
-    <header className="bg-background/60 flex items-center justify-between gap-3 border-b border-gray-200 px-4 py-2 backdrop-blur dark:border-gray-800">
+    <header className="bg-background/60 flex items-center justify-between gap-3 border-b border-muted px-4 py-2 backdrop-blur">
       <div className="flex items-center gap-2">
         <Button variant="ghost" className="sm:hidden" onClick={toggleNav}>
           <span className="sr-only">Toggle navigation</span>☰
         </Button>
         <Link
           href="/cms"
-          className="focus-visible:ring-primary rounded-md px-3 py-2 text-sm hover:bg-gray-100 focus-visible:ring-2 focus-visible:outline-none dark:hover:bg-gray-800"
+          className="focus-visible:ring-primary rounded-md px-3 py-2 text-sm hover:bg-muted focus-visible:ring-2 focus-visible:outline-none"
         >
           Home
         </Link>

@@ -44,7 +44,7 @@ export function OrderTrackingTimeline({
           </span>
           <p className="font-medium">{step.label}</p>
           {step.date && (
-            <time className="block text-sm text-gray-500">{step.date}</time>
+            <time className="block text-sm text-muted">{step.date}</time>
           )}
         </li>
       ))}

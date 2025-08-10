@@ -5,6 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
+import { setupSanityBlog } from "@cms/actions/setupSanityBlog";
 
 export async function POST(
   req: NextRequest,
@@ -23,6 +24,19 @@ export async function POST(
       .map(([k, v]) => `${k}=${String(v)}`)
       .join("\n");
     await fs.writeFile(path.join(dir, ".env"), lines, "utf8");
+    if (
+      body.SANITY_PROJECT_ID &&
+      body.SANITY_DATASET &&
+      body.SANITY_WRITE_TOKEN
+    ) {
+      await setupSanityBlog({
+        projectId: body.SANITY_PROJECT_ID,
+        dataset: body.SANITY_DATASET,
+        token: body.SANITY_WRITE_TOKEN,
+      }).catch((err) => {
+        console.error("[env] failed to setup Sanity blog", err);
+      });
+    }
     return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json(

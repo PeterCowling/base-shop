@@ -21,6 +21,7 @@ export const createShopOptionsSchema = z.object({
   socialImage: z.string().url().optional(),
   analytics: z
     .object({
+      enabled: z.boolean().optional(),
       provider: z.string(),
       id: z.string().optional(),
     })
@@ -55,6 +56,7 @@ export interface CreateShopOptions {
   pageDescription?: Partial<Record<Locale, string>>;
   socialImage?: string;
   analytics?: {
+    enabled?: boolean;
     provider: string;
     id?: string;
   };
@@ -94,9 +96,13 @@ export function prepareOptions(
     pageTitle: fillLocales(parsed.pageTitle, "Home"),
     pageDescription: fillLocales(parsed.pageDescription, ""),
     socialImage: parsed.socialImage ?? "",
-    analytics: parsed.analytics
-      ? { provider: parsed.analytics.provider ?? "none", id: parsed.analytics.id }
-      : { provider: "none" },
+  analytics: parsed.analytics
+      ? {
+          enabled: parsed.analytics.enabled !== false,
+          provider: parsed.analytics.provider ?? "none",
+          id: parsed.analytics.id,
+        }
+      : { enabled: false, provider: "none" },
     navItems:
       parsed.navItems?.map((n) => ({
         label: n.label ?? "—",

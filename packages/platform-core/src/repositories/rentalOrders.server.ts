@@ -9,6 +9,7 @@ import { ulid } from "ulid";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "../dataRoot";
 import { nowIso } from "@shared/date";
+import { trackOrder } from "../analytics";
 
 function ordersPath(shop: string): string {
   shop = validateShopName(shop);
@@ -61,6 +62,7 @@ export async function addOrder(
   };
   orders.push(order);
   await writeOrders(shop, orders);
+  await trackOrder(shop, order.id, deposit);
   return order;
 }
 

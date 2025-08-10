@@ -8,6 +8,7 @@ import { getPages } from "@platform-core/repositories/pages/index.server";
 import { LOCALES } from "@acme/i18n";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
+import { trackPageView } from "@platform-core/analytics";
 
 async function loadComponents(slug: string): Promise<PageComponent[] | null> {
   const pages = await getPages(shop.id);
@@ -48,6 +49,7 @@ export default async function ProductDetailPage({
   if (!product) return notFound();
 
   const components = await loadComponents(params.slug);
+  await trackPageView(shop.id, `product/${params.slug}`);
   if (components && components.length) {
     return (
       <DynamicRenderer
@@ -57,7 +59,6 @@ export default async function ProductDetailPage({
       />
     );
   }
-
   return <PdpClient product={product} />;
 }
 

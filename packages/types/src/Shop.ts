@@ -52,6 +52,7 @@ export interface Shop {
   homeDescription?: Translated;
   homeImage?: string;
   navigation?: { label: string; url: string }[];
+  analyticsEnabled?: boolean;
 }
 
 export const shopSchema = z.object({
@@ -80,4 +81,5 @@ export const shopSchema = z.object({
   navigation: z
     .array(z.object({ label: z.string(), url: z.string() }))
     .optional(),
+  analyticsEnabled: z.boolean().optional(),
 });

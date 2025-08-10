@@ -106,6 +106,7 @@ export function writeFiles(
         shippingProviders: options.shipping,
         priceOverrides: {},
         localeOverrides: {},
+        analyticsEnabled: options.analytics.enabled,
         homeTitle: options.pageTitle,
         homeDescription: options.pageDescription,
         homeImage: options.socialImage,

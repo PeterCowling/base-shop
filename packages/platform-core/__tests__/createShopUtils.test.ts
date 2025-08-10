@@ -21,6 +21,8 @@ describe("createShop utils", () => {
     ) => boolean;
     expect(filter("a/node_modules/b")).toBe(false);
     expect(filter("a/src/index.ts")).toBe(true);
+    expect(filter("a/src/app/sitemap.ts")).toBe(true);
+    expect(filter("a/src/app/robots.ts")).toBe(true);
   });
 
   it("loads base tokens", () => {

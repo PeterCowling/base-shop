@@ -1,4 +1,4 @@
-import type { Shop, SanityBlogConfig } from "@types";
+import type { Shop, SanityBlogConfig, ShopDomain } from "@types";
 export { SHOP_NAME_RE, validateShopName } from "../../lib/src/validateShopName";
 
 export function getSanityConfig(shop: Shop): SanityBlogConfig | undefined {
@@ -18,4 +18,19 @@ export function setSanityConfig(
   return next;
 }
 
+export function getDomain(shop: Shop): ShopDomain | undefined {
+  return (shop as Shop & { domain?: ShopDomain }).domain;
+}
+
+export function setDomain(shop: Shop, domain: ShopDomain | undefined): Shop {
+  const next = { ...shop } as Shop & { domain?: ShopDomain };
+  if (domain) {
+    next.domain = domain;
+  } else {
+    delete next.domain;
+  }
+  return next;
+}
+
 export type { SanityBlogConfig };
+export type { ShopDomain };

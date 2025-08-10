@@ -48,7 +48,9 @@ export async function PUT(req: Request) {
     const body = await req.json();
     const { id, ...data } = body as {
       id: string;
+      domain?: string;
       domainStatus?: string;
+      certificateStatus?: string;
       instructions?: string;
     } & Record<string, unknown>;
     if (!id) {

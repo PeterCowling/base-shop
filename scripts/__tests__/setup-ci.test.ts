@@ -23,12 +23,16 @@ describe("setup-ci script", () => {
     const { envSchema } = await import("@config/src/env");
     (envSchema.parse as jest.Mock).mockReturnValue({});
 
-    const existsMock = jest.spyOn(fs, "existsSync").mockReturnValue(true);
     const env = [
       "STRIPE_SECRET_KEY=sk",
       "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk",
     ].join("\n");
-    const readMock = jest.spyOn(fs, "readFileSync").mockReturnValue(env);
+    const existsMock = jest
+      .spyOn(fs, "existsSync")
+      .mockImplementation((p) => p.toString().endsWith(".env"));
+    const readMock = jest
+      .spyOn(fs, "readFileSync")
+      .mockImplementation((p) => (p.toString().endsWith(".env") ? env : "{}"));
     const writeMock = jest
       .spyOn(fs, "writeFileSync")
       .mockImplementation(() => {});
@@ -48,7 +52,38 @@ describe("setup-ci script", () => {
     const [wfPath, content] = writeMock.mock.calls[0];
     expect(wfPath).toBe(path.join(".github", "workflows", "shop-abc.yml"));
     expect(content).toContain("shop-abc");
+    expect(content).toContain("STRIPE_SECRET_KEY: sk");
     expect(exitMock).not.toHaveBeenCalled();
+  });
+
+  it("injects domain env vars when configured", async () => {
+    const { envSchema } = await import("@config/src/env");
+    (envSchema.parse as jest.Mock).mockReturnValue({});
+
+    const env = [
+      "STRIPE_SECRET_KEY=sk",
+      "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk",
+    ].join("\n");
+    jest
+      .spyOn(fs, "existsSync")
+      .mockImplementation((p) => true);
+    jest
+      .spyOn(fs, "readFileSync")
+      .mockImplementation((p) =>
+        p.toString().endsWith(".env")
+          ? env
+          : JSON.stringify({ domain: { name: "shop.example.com" } })
+      );
+    const writeMock = jest
+      .spyOn(fs, "writeFileSync")
+      .mockImplementation(() => {});
+
+    process.argv = ["node", "setup-ci", "abc"];
+
+    await import("../src/setup-ci");
+
+    const [, content] = writeMock.mock.calls[0];
+    expect(content).toContain("SHOP_DOMAIN: shop.example.com");
   });
 
   it("fails when env file is missing", async () => {

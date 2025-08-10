@@ -48,7 +48,11 @@ export async function getDeployStatus(
 
 export async function updateDeployStatus(
   id: string,
-  data: Partial<DeployShopResult> & { domainStatus?: string }
+  data: Partial<DeployShopResult> & {
+    domain?: string;
+    domainStatus?: string;
+    certificateStatus?: string;
+  }
 ): Promise<void> {
   await ensureAuthorized();
   const file = path.join(
@@ -66,5 +70,23 @@ export async function updateDeployStatus(
     await fs.writeFile(file, JSON.stringify(updated, null, 2), "utf8");
   } catch (err) {
     console.error("Failed to write deploy status", err);
+  }
+
+  if (data.domain) {
+    try {
+      const { updateShopInRepo } = await import(
+        "@platform-core/repositories/shop.server"
+      );
+      await updateShopInRepo(id, {
+        id,
+        domain: {
+          name: data.domain,
+          status: data.domainStatus,
+          certificateStatus: data.certificateStatus,
+        },
+      });
+    } catch (err) {
+      console.error("Failed to update shop domain", err);
+    }
   }
 }

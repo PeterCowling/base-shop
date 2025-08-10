@@ -2,11 +2,11 @@
 
 Shared helpers for platform-core.
 
-- `slugify(str)` – convert a string into a URL-friendly slug.
-- `genSecret(bytes?)` – create a random hexadecimal secret.
+- `getShopFromPath(path)` – extract a shop identifier from a URL path.
+- `replaceShopInPath(path, shop)` – swap the shop identifier in a path.
 - `fillLocales(values, fallback)` – ensure all supported locales have a value,
   falling back when missing.
 
 These utilities are re-exported from the `@acme/platform-core` package root for
-easy consumption.
-
+easy consumption. Functions like `slugify` and `genSecret` now live in
+`@acme/shared-utils`.

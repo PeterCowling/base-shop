@@ -92,6 +92,8 @@
 
       /* ─── shared utilities ──────────────────────────────────────── */
       "@shared/*": ["packages/shared/*"],
+      "@shared-utils": ["packages/shared-utils/src/index.ts"],
+      "@shared-utils/*": ["packages/shared-utils/src/*"],
 
       /* ─── shared runtime types ──────────────────────────────────── */
       "@types": ["packages/types/src/index.ts"],

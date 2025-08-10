@@ -10,7 +10,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementLocale } from "@stripe/stripe-js";
-import { fetchJson } from "@ui/utils/network";
+import { fetchJson } from "@shared-utils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";

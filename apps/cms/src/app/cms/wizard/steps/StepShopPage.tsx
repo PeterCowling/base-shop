@@ -11,7 +11,7 @@ import {
 import PageBuilder from "@/components/cms/PageBuilder";
 import { LOCALES } from "@acme/i18n";
 import type { Locale, Page, PageComponent } from "@types";
-import { fetchJson } from "@ui/utils/network";
+import { fetchJson } from "@shared-utils";
 import { ulid } from "ulid";
 import { useState } from "react";
 import { Toast } from "@/components/atoms";

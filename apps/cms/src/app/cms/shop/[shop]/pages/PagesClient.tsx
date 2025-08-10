@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-query";
 import type { Page } from "@types";
 import { PagesTable } from "@ui/components/cms";
-import { fetchJson } from "@ui/utils/network";
+import { fetchJson } from "@shared-utils";
 import { useState } from "react";
 
 interface Props {

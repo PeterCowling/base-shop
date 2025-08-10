@@ -6,6 +6,9 @@
   "exports": {
     ".": "./index.ts"
   },
+  "dependencies": {
+    "@acme/shared-utils": "workspace:*"
+  },
   "peerDependencies": {
     "next": "^15.0.0",
     "react": "^18",

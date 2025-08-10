@@ -20,7 +20,8 @@ pnpm init-shop
 - theme and template
 - payment and shipping providers
 
-After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
+After answering the prompts the wizard scaffolds `apps/shop-<id>`, generates an `.env` file inside the new app and saves the
+provided logo and contact email in `data/shops/shop-<id>/shop.json`.
 
 For automated scripts you can still call `pnpm create-shop <id>` with flags:
 
@@ -54,7 +55,8 @@ Scaffolded apps/shop-demo
 
 ## 2. Configure environment variables
 
-Edit `apps/shop-<id>/.env` to replace placeholder secrets.
+Edit `apps/shop-<id>/.env` to replace placeholder secrets and review
+`data/shops/shop-<id>/shop.json` for the stored logo and contact details.
 
 ```bash
 pnpm validate-env <id>

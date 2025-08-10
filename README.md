@@ -30,10 +30,11 @@ Key points:
 
    `init-shop` launches an interactive wizard that asks for the shop ID, display name, logo URL,
    contact email and which theme, template, payment and shipping providers to use. It then
-   scaffolds `apps/shop-<id>` and writes an `.env` file inside the new app. Edit the `.env` file to
-   provide real secrets (see [Environment Variables](#environment-variables)). For scripted
-   setups you can still call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and
-   `--contact` to skip those prompts.
+   scaffolds `apps/shop-<id>`, writes an `.env` file inside the new app and stores the provided
+   logo and contact email in `data/shops/shop-<id>/shop.json`. Edit the `.env` file to provide
+   real secrets (see [Environment Variables](#environment-variables)). For scripted setups you
+   can still call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and `--contact`
+   to skip those prompts.
 
    ```bash
    pnpm create-shop <id> --name="Demo Shop" --logo=https://example.com/logo.png \

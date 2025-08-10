@@ -58,7 +58,7 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
                   <Button
                     variant="destructive"
                     onClick={() =>
-                      dispatch({ type: "remove", id: line.sku.id })
+                      void dispatch({ type: "remove", id: line.sku.id })
                     }
                     className="px-2 py-1 text-xs"
                   >

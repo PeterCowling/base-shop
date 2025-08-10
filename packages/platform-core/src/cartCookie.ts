@@ -1,4 +1,5 @@
 // packages/platform-core/src/cartCookie.ts
+import crypto from "crypto";
 import { z } from "zod";
 
 import { skuSchema } from "@types";
@@ -6,8 +7,9 @@ import { skuSchema } from "@types";
 /* ------------------------------------------------------------------
  * Cookie constants
  * ------------------------------------------------------------------ */
-export const CART_COOKIE = "CART_STATE";
+export const CART_COOKIE = "CART_ID";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+const SECRET = process.env.CART_COOKIE_SECRET || "cart-secret";
 
 /* ------------------------------------------------------------------
  * Zod schemas
@@ -37,27 +39,35 @@ export type CartState = z.infer<typeof cartStateSchema>;
  * Helper functions
  * ------------------------------------------------------------------ */
 
-/** Serialize cart state into a cookie-safe string. */
-export function encodeCartCookie(state: CartState): string {
-  return encodeURIComponent(JSON.stringify(state));
+/**
+ * Serialize a cart ID into a signed cookie value.
+ */
+export function encodeCartCookie(id: string): string {
+  const sig = crypto.createHmac("sha256", SECRET).update(id).digest("hex");
+  return `${id}.${sig}`;
 }
 
 /**
- * Parse a cookie string back into cart state.
- *
- * – Always returns a value of type `CartState`
- * – Catches and logs malformed cookies instead of throwing
+ * Verify and extract the cart ID from a signed cookie value.
+ * Returns `null` when the cookie is missing or invalid.
  */
-export function decodeCartCookie(raw?: string | null): CartState {
-  if (!raw) return {};
+export function decodeCartCookie(raw?: string | null): string | null {
+  if (!raw) return null;
+  const [id, sig] = raw.split(".");
+  if (!id || !sig) return null;
+  const expected = crypto
+    .createHmac("sha256", SECRET)
+    .update(id)
+    .digest("hex");
   try {
-    const parsed = JSON.parse(decodeURIComponent(raw));
-    // Cast is safe because the schema has validated the structure.
-    return cartStateSchema.parse(parsed) as CartState;
-  } catch (err) {
-    console.warn("Invalid cart cookie", err);
-    return {};
+    if (crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) {
+      return id;
+    }
+  } catch {
+    /* fall through */
   }
+  console.warn("Invalid cart cookie");
+  return null;
 }
 
 /** Build the Set-Cookie header value for HTTP responses. */

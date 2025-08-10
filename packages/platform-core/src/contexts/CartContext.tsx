@@ -1,22 +1,10 @@
 // packages/platform-core/src/contexts/CartContext.tsx
 "use client";
 
-import {
-  asSetCookieHeader,
-  CART_COOKIE,
-  decodeCartCookie,
-  encodeCartCookie,
-  type CartState,
-} from "../cartCookie";
+import { type CartState } from "../cartCookie";
 
 import type { SKU } from "@types";
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useReducer,
-} from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 /* ------------------------------------------------------------------
  * Action types
@@ -27,79 +15,65 @@ type Action =
   | { type: "setQty"; id: SKU["id"]; qty: number };
 
 /* ------------------------------------------------------------------
- * Reducer
- * ------------------------------------------------------------------ */
-function reducer(state: CartState, action: Action): CartState {
-  switch (action.type) {
-    case "add": {
-      const line = state[action.sku.id];
-      return {
-        ...state,
-        [action.sku.id]: {
-          sku: action.sku,
-          qty: (line?.qty ?? 0) + 1,
-          size: action.size ?? line?.size,
-        },
-      };
-    }
-
-    case "remove": {
-      const next = { ...state };
-      delete next[action.id];
-      return next;
-    }
-
-    case "setQty": {
-      return {
-        ...state,
-        [action.id]: {
-          ...state[action.id],
-          qty: Math.max(1, action.qty),
-        },
-      };
-    }
-
-    default:
-      return state;
-  }
-}
-
-/* ------------------------------------------------------------------
- * Persistence helpers
- * ------------------------------------------------------------------ */
-const LS_KEY = CART_COOKIE;
-
-/** Initialiser passed to `useReducer` so state is hydrated exactly once. */
-function readInitial(): CartState {
-  if (typeof window === "undefined") return {};
-  const raw = localStorage.getItem(LS_KEY);
-  return decodeCartCookie(raw); // already returns CartState
-}
-
-/** Persist cart state to both localStorage (for CSR) and cookie (for SSR). */
-function persist(state: CartState) {
-  if (typeof window === "undefined") return;
-  const encoded = encodeCartCookie(state);
-
-  /* client re-hydration */
-  localStorage.setItem(LS_KEY, encoded);
-
-  /* SSR routes that rely on the cookie */
-  document.cookie = asSetCookieHeader(encoded);
-}
-
-/* ------------------------------------------------------------------
  * React context
  * ------------------------------------------------------------------ */
-const CartContext = createContext<
-  [CartState, React.Dispatch<Action>] | undefined
->(undefined);
+type Dispatch = (action: Action) => Promise<void>;
+
+const CartContext = createContext<[CartState, Dispatch] | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, {}, readInitial);
+  const [state, setState] = useState<CartState>({});
 
-  /* persist any time the cart changes */
-  useEffect(() => persist(state), [state]);
+  /* initial fetch */
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/cart");
+        if (res.ok) {
+          const data = await res.json();
+          setState(data.cart as CartState);
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+    void load();
+  }, []);
+
+  const dispatch: Dispatch = async (action) => {
+    let method: string;
+    let body: unknown;
+    switch (action.type) {
+      case "add":
+        method = "POST";
+        body = { sku: action.sku, qty: 1, size: action.size };
+        break;
+      case "remove":
+        method = "DELETE";
+        body = { id: action.id };
+        break;
+      case "setQty":
+        method = "PATCH";
+        body = { id: action.id, qty: action.qty };
+        break;
+      default:
+        return;
+    }
+
+    const res = await fetch("/api/cart", {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error((data as { error?: string }).error || "Cart update failed");
+    }
+
+    const data = await res.json();
+    setState(data.cart as CartState);
+  };
 
   return (
     <CartContext.Provider value={[state, dispatch]}>

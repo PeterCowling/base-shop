@@ -1,7 +1,13 @@
 // packages/template-app/src/api/checkout-session/route.ts
 import { stripe } from "@/lib/stripeServer";
 import { calculateRentalDays } from "@/lib/date";
-import { CART_COOKIE, decodeCartCookie } from "@platform-core/src/cartCookie";
+import {
+  CART_COOKIE,
+  decodeCartCookie,
+  type CartLine,
+  type CartState,
+} from "@platform-core/src/cartCookie";
+import { getCart } from "@platform-core/src/cartStore";
 import { priceForDays, convertCurrency } from "@platform-core/src/pricing";
 import { getProductById } from "@platform-core/src/products";
 import { findCoupon } from "@platform-core/src/coupons";
@@ -12,19 +18,7 @@ import type Stripe from "stripe";
 /* ------------------------------------------------------------------
  * Types held in the cart cookie
  * ------------------------------------------------------------------ */
-interface CartSku {
-  id: string;
-  title: string;
-  deposit: number;
-}
-
-interface CartItem {
-  sku: CartSku;
-  qty: number;
-  size?: string;
-}
-
-type Cart = Record<string, CartItem>;
+type Cart = CartState;
 
 /* ------------------------------------------------------------------
  * Helpers
@@ -32,7 +26,7 @@ type Cart = Record<string, CartItem>;
 
 /** Build Stripe line-items for one cart entry */
 async function buildLineItemsForItem(
-  item: CartItem,
+  item: CartLine,
   rentalDays: number,
   discountRate: number,
   currency: string
@@ -72,7 +66,7 @@ async function buildLineItemsForItem(
 
 /** Cart-wide subtotals */
 async function computeTotals(
-  cart: Cart,
+  cart: CartState,
   rentalDays: number,
   discountRate: number,
   currency: string
@@ -112,7 +106,8 @@ export const runtime = "edge";
 export async function POST(req: NextRequest): Promise<NextResponse> {
   /* 1  Decode cart -------------------------------------------------- */
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(rawCookie) as Cart;
+  const cartId = decodeCartCookie(rawCookie);
+  const cart = cartId ? (getCart(cartId) as CartState) : {};
 
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });

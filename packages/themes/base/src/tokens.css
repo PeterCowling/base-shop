@@ -39,6 +39,20 @@
   --radius-lg: 12px;
 }
 
+html,
+body {
+  transition-property: background-color, color, border-color;
+  transition-duration: 250ms;
+  transition-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    transition: none;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg: var(--color-bg-dark);

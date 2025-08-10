@@ -15,7 +15,7 @@ function loadParseArgs() {
   const sandbox: any = {
     exports: {},
     module: { exports: {} },
-    process: { exit: jest.fn() },
+    process: { exit: jest.fn(), version: "v20.0.0" },
     console: { error: jest.fn() },
     require,
   };
@@ -95,7 +95,7 @@ function runCli(args: string[]) {
   const sandbox: any = {
     exports: {},
     module: { exports: {} },
-    process: { argv: ["node", "script", ...args], exit: jest.fn() },
+    process: { argv: ["node", "script", ...args], exit: jest.fn(), version: "v20.0.0" },
     console: { error: jest.fn() },
     require: (p: string) => {
       if (p.includes("packages/platform-core/src/createShop")) {

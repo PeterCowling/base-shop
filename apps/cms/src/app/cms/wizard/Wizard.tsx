@@ -3,7 +3,10 @@
 
 import { Progress, Toast } from "@/components/atoms";
 import { LOCALES } from "@acme/i18n";
-import { createShopOptionsSchema, type DeployShopResult } from "@platform-core/createShop";
+import {
+  createShopOptionsSchema,
+  type DeployStatusBase,
+} from "@platform-core/createShop";
 import { validateShopName } from "@platform-core/src/shops";
 import type { Locale, PageComponent } from "@types";
 import { useEffect, useRef, useState } from "react";
@@ -100,9 +103,7 @@ export default function Wizard({
   const [domain, setDomain] = useState("");
   const [deploying, setDeploying] = useState(false);
   const [deployResult, setDeployResult] = useState<string | null>(null);
-  const [deployInfo, setDeployInfo] = useState<
-    DeployShopResult | { status: "pending"; error?: string } | null
-  >(null);
+  const [deployInfo, setDeployInfo] = useState<DeployStatusBase | null>(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
@@ -444,14 +445,26 @@ export default function Wizard({
         body: JSON.stringify({ id: shopId, options: parsed.data }),
       });
 
+      const json = (await res.json().catch(() => ({}))) as {
+        deployment?: DeployStatusBase;
+        error?: string;
+      };
+
       if (res.ok) {
         setResult("Shop created successfully");
         /* Remain on the summary step so the success message is visible;
            navigation to the next step is left to the user. */
         resetWizardProgress();
+        if (json.deployment) {
+          setDeployInfo(json.deployment);
+          if (json.deployment.status === "pending") {
+            await deploy();
+          }
+        } else {
+          await deploy();
+        }
       } else {
-        const { error } = (await res.json()) as { error?: string };
-        setResult(error ?? "Failed to create shop");
+        setResult(json.error ?? "Failed to create shop");
       }
     } catch (err) {
       console.error("Error creating shop", err);
@@ -470,10 +483,9 @@ export default function Wizard({
       const res = await fetch("/cms/api/deploy-shop", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: shopId, domain }),
+        body: JSON.stringify(domain ? { id: shopId, domain } : { id: shopId }),
       });
-      const json: DeployShopResult | { status: "pending"; error?: string } =
-        await res.json();
+      const json: DeployStatusBase = await res.json();
       if (res.ok) {
         setDeployResult("Deployment started");
         setDeployInfo(json);
@@ -584,9 +596,7 @@ export default function Wizard({
     pollRef.current = setInterval(async () => {
       try {
         const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
-        const status = (await res.json()) as
-          | DeployShopResult
-          | { status: "pending"; error?: string };
+        const status = (await res.json()) as DeployStatusBase;
 
         setDeployInfo(status);
 

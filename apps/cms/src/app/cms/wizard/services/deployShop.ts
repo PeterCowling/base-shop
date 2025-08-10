@@ -2,11 +2,11 @@
 "use client";
 
 import { validateShopName } from "@platform-core/src/shops";
-import type { DeployShopResult } from "@platform-core/createShop";
+import type { DeployStatusBase } from "@platform-core/createShop";
 
 export interface DeployResult {
   ok: boolean;
-  info?: DeployShopResult | { status: "pending"; error?: string };
+  info?: DeployStatusBase;
   error?: string;
 }
 
@@ -26,12 +26,10 @@ export async function deployShop(
   const res = await fetch("/cms/api/deploy-shop", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id: shopId, domain }),
+    body: JSON.stringify(domain ? { id: shopId, domain } : { id: shopId }),
   });
 
-  const json = (await res.json()) as
-    | DeployShopResult
-    | { status: "pending"; error?: string };
+  const json = (await res.json()) as DeployStatusBase;
 
   if (res.ok) return { ok: true, info: json };
 

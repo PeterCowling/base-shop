@@ -29,6 +29,7 @@ export default function WizardPreview({ style }: Props): React.JSX.Element {
 
   /* ------------------------------------------------------------------ */
   /*             Sync wizard state from localStorage                    */
+  /*  Re-sync when localStorage changes or when a custom event fires.   */
   /* ------------------------------------------------------------------ */
   useEffect(() => {
     const load = () => {
@@ -46,7 +47,11 @@ export default function WizardPreview({ style }: Props): React.JSX.Element {
 
     load();
     window.addEventListener("storage", load);
-    return () => window.removeEventListener("storage", load);
+    window.addEventListener("wizard:update", load);
+    return () => {
+      window.removeEventListener("storage", load);
+      window.removeEventListener("wizard:update", load);
+    };
   }, []);
 
   /* ------------------------------------------------------------------ */

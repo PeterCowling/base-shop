@@ -24,7 +24,7 @@ export async function resetWizardProgress(): Promise<void> {
 }
 
 /**
- * Loads wizard state from the server and saves it back whenever the step
+ * Loads wizard state from the server and saves it back whenever the state
  * changes. A copy is mirrored to localStorage so the live preview can read it.
  */
 export function useWizardPersistence(
@@ -44,6 +44,7 @@ export function useWizardPersistence(
           setState(parsed.data);
           try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed.data));
+            window.dispatchEvent(new CustomEvent("wizard:update"));
           } catch {
             /* ignore */
           }
@@ -57,11 +58,12 @@ export function useWizardPersistence(
       });
   }, [setState]);
 
-  /* Persist whenever the step changes */
+  /* Persist whenever the state changes */
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      window.dispatchEvent(new CustomEvent("wizard:update"));
     } catch {
       /* ignore quota */
     }
@@ -72,5 +74,5 @@ export function useWizardPersistence(
     }).catch(() => {
       /* ignore network errors */
     });
-  }, [state.step]);
+  }, [state]);
 }

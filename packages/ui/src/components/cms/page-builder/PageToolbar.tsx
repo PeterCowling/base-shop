@@ -49,7 +49,7 @@ const PageToolbar = ({
       </p>
     )}
     {isValid === false && (
-      <p className="text-sm text-orange-600">
+      <p className="text-sm text-warning">
         Wrong orientation (needs landscape)
       </p>
     )}

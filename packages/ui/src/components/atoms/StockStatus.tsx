@@ -19,7 +19,7 @@ export const StockStatus = React.forwardRef<HTMLSpanElement, StockStatusProps>(
     },
     ref
   ) => {
-    const color = inStock ? "text-green-600" : "text-red-600";
+    const color = inStock ? "text-success" : "text-danger";
     return (
       <span
         ref={ref}

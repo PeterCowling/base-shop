@@ -26,7 +26,7 @@ export function AnalyticsDashboardTemplate<T>({
         <LineChart
           data={chartData}
           options={chartOptions}
-          className="bg-white"
+          className="bg-bg"
         />
         <DataTable rows={tableRows} columns={tableColumns} />
       </div>

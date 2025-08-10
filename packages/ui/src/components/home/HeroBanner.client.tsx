@@ -75,9 +75,9 @@ export default function HeroBanner({
         priority
         className="object-cover transition-opacity duration-700"
       />
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-fg/40" />
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white">
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-bg">
         {" "}
         <h2 className="mb-6 max-w-3xl text-4xl font-bold drop-shadow-md md:text-5xl">
           {t(slide.headlineKey)}
@@ -95,14 +95,14 @@ export default function HeroBanner({
       <button
         aria-label="Previous slide"
         onClick={prev}
-        className="absolute top-1/2 left-[var(--space-4)] -translate-y-1/2 rounded-full bg-black/50 p-1 hover:bg-black/70"
+        className="absolute top-1/2 left-[var(--space-4)] -translate-y-1/2 rounded-full bg-fg/50 p-1 hover:bg-fg/70"
       >
         ‹
       </button>
       <button
         aria-label="Next slide"
         onClick={next}
-        className="absolute top-1/2 right-[var(--space-4)] -translate-y-1/2 rounded-full bg-black/50 p-1 hover:bg-black/70"
+        className="absolute top-1/2 right-[var(--space-4)] -translate-y-1/2 rounded-full bg-fg/50 p-1 hover:bg-fg/70"
       >
         ›
       </button>

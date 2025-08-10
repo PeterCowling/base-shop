@@ -43,12 +43,12 @@ export function LiveShoppingEventTemplate({
   return (
     <div className={cn("grid gap-6 lg:grid-cols-3", className)} {...props}>
       <div className="space-y-4 lg:col-span-2">
-        <div className="aspect-video w-full bg-black">
+        <div className="aspect-video w-full bg-fg">
           <video src={streamUrl} controls className="h-full w-full" />
         </div>
         <div className="space-y-2">
           <h3 className="text-lg font-semibold">Chat</h3>
-          <div className="h-64 space-y-2 overflow-y-auto rounded-md border bg-white p-4">
+          <div className="h-64 space-y-2 overflow-y-auto rounded-md border bg-bg p-4">
             {chatMessages.map((m) => (
               <div key={m.id} className="text-sm">
                 <span className="mr-1 font-medium">{m.user}:</span>

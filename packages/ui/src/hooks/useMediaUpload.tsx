@@ -159,13 +159,13 @@ export function useImageUpload(
       <button
         type="button"
         onClick={openFileDialog}
-        className="bg-primary rounded px-3 py-1 text-white"
+        className="bg-primary rounded px-3 py-1 text-primary-fg"
       >
         Browse…
       </button>
 
       {pendingFile && (
-        <p className="mt-2 text-sm text-gray-500">{pendingFile.name}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{pendingFile.name}</p>
       )}
 
       {progress && (
@@ -174,9 +174,9 @@ export function useImageUpload(
         </p>
       )}
 
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-2 text-sm text-danger">{error}</p>}
       {isValid === false && (
-        <p className="mt-2 text-sm text-orange-600">
+        <p className="mt-2 text-sm text-warning">
           Wrong orientation (needs {requiredOrientation})
         </p>
       )}

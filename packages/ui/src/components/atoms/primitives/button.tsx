@@ -24,7 +24,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     // Exclude `undefined` from the key type with NonNullable<>
     const variants: Record<NonNullable<ButtonProps["variant"]>, string> = {
-      default: "bg-primary text-white hover:bg-primary/90",
+      default: "bg-primary text-primary-fg hover:bg-primary/90",
       outline:
         "border border-input hover:bg-accent hover:text-accent-foreground",
       ghost: "hover:bg-accent hover:text-accent-foreground",

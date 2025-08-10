@@ -13,7 +13,7 @@ export default function MediaFileItem({ item, onDelete }: Props) {
     <div className="relative h-32 w-full overflow-hidden rounded-md border">
       <button
         onClick={() => onDelete(item.url)}
-        className="absolute top-1 right-1 rounded bg-black/50 px-1.5 text-xs text-white"
+        className="absolute top-1 right-1 rounded bg-fg/50 px-1.5 text-xs text-bg"
       >
         Delete
       </button>
@@ -24,7 +24,7 @@ export default function MediaFileItem({ item, onDelete }: Props) {
         className="object-cover"
       />
       {item.altText && (
-        <p className="absolute bottom-1 left-1 bg-black/50 px-1 text-xs text-white">
+        <p className="absolute bottom-1 left-1 bg-fg/50 px-1 text-xs text-bg">
           {item.altText}
         </p>
       )}

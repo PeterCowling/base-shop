@@ -50,7 +50,7 @@ function ImageUploaderWithOrientationCheckInner({
       {file && isValid !== null && (
         <p
           className={
-            isValid ? "text-sm text-green-600" : "text-sm text-red-600"
+            isValid ? "text-sm text-success" : "text-sm text-danger"
           }
         >
           {isValid

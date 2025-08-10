@@ -44,7 +44,7 @@ describe("ImageUploaderWithOrientationCheck", () => {
     expect(
       screen.getByText("Image orientation is landscape; requirement satisfied.")
     ).toBeInTheDocument();
-    expect(container.querySelector("p")?.className).toContain("text-green-600");
+    expect(container.querySelector("p")?.className).toContain("text-success");
 
     fireEvent.change(input, { target: { files: [secondFile] } });
     expect(
@@ -52,6 +52,6 @@ describe("ImageUploaderWithOrientationCheck", () => {
         "Selected image is portrait; please upload a landscape image."
       )
     ).toBeInTheDocument();
-    expect(container.querySelector("p")?.className).toContain("text-red-600");
+    expect(container.querySelector("p")?.className).toContain("text-danger");
   });
 });

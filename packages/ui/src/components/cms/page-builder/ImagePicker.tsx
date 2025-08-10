@@ -79,7 +79,7 @@ function ImagePicker({ onSelect, children }: Props) {
               : `Selected image is ${actual}; please upload a landscape image.`}
           </p>
         )}
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-danger">{error}</p>}
         <div className="grid max-h-64 grid-cols-3 gap-2 overflow-auto">
           {media.map((m) => (
             <button

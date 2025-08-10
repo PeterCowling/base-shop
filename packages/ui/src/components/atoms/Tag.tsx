@@ -9,9 +9,9 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
   ({ className, variant = "default", ...props }, ref) => {
     const variants: Record<string, string> = {
       default: "bg-muted text-fg",
-      success: "bg-green-500 text-white",
-      warning: "bg-yellow-500 text-white",
-      destructive: "bg-red-500 text-white",
+      success: "bg-success text-success-fg",
+      warning: "bg-warning text-warning-fg",
+      destructive: "bg-danger text-danger-foreground",
     };
     return (
       <span

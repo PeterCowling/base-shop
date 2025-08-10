@@ -21,7 +21,7 @@ export default function ProductRowActions({
     <div className="flex flex-wrap gap-2">
       <Link
         href={`/cms/shop/${shop}/products/${product.id}/edit`}
-        className="bg-primary hover:bg-primary/90 rounded px-2 py-1 text-xs text-white"
+        className="bg-primary hover:bg-primary/90 rounded px-2 py-1 text-xs text-primary-fg"
       >
         Edit
       </Link>

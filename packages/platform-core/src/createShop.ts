@@ -9,7 +9,7 @@ import { join } from "path";
 import { ulid } from "ulid";
 import { z } from "zod";
 import { validateShopName } from "./shops";
-import { copyTemplate, loadBaseTokens } from "./createShop/utils";
+import { copyTemplate, loadBaseTokens } from "./createShop/utils/index";
 import { slugify, genSecret, fillLocales } from "./utils";
 import { loadThemeTokensNode } from "./themeTokens";
 import { nowIso } from "@shared/date";

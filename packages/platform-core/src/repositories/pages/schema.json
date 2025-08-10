@@ -74,6 +74,17 @@
               "maxItems": { "$ref": "#/definitions/nonNegativeInteger" }
             },
             "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "required": ["id", "type"],
+            "properties": {
+              "id": { "type": "string" },
+              "type": { "const": "ProductCarousel" },
+              "minItems": { "$ref": "#/definitions/nonNegativeInteger" },
+              "maxItems": { "$ref": "#/definitions/nonNegativeInteger" }
+            },
+            "additionalProperties": false
           }
         ]
       }

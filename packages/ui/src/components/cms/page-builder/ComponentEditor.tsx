@@ -125,6 +125,7 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
               )
             }
             min={0}
+            max={(component as any).maxItems ?? undefined}
           />
           <Input
             label="Max Items"

@@ -79,6 +79,11 @@ export interface ProductGridComponent extends PageComponentBase {
   type: "ProductGrid";
 }
 
+/** Carousel of products; `minItems`/`maxItems` clamp visible products */
+export interface ProductCarouselComponent extends PageComponentBase {
+  type: "ProductCarousel";
+}
+
 export interface GalleryComponent extends PageComponentBase {
   type: "Gallery";
   images?: { src: string; alt?: string }[];
@@ -132,6 +137,7 @@ export type PageComponent =
   | ValuePropsComponent
   | ReviewsCarouselComponent
   | ProductGridComponent
+  | ProductCarouselComponent
   | GalleryComponent
   | ContactFormComponent
   | ContactFormWithMapComponent
@@ -193,6 +199,10 @@ const reviewsCarouselComponentSchema = baseComponentSchema.extend({
 
 const productGridComponentSchema = baseComponentSchema.extend({
   type: z.literal("ProductGrid"),
+});
+
+const productCarouselComponentSchema = baseComponentSchema.extend({
+  type: z.literal("ProductCarousel"),
 });
 
 const galleryComponentSchema = baseComponentSchema.extend({
@@ -266,6 +276,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     valuePropsComponentSchema,
     reviewsCarouselComponentSchema,
     productGridComponentSchema,
+    productCarouselComponentSchema,
     galleryComponentSchema,
     contactFormComponentSchema,
     contactFormWithMapComponentSchema,

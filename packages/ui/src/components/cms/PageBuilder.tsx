@@ -56,6 +56,16 @@ type ComponentType =
 
 const CONTAINER_TYPES = Object.keys(containerRegistry) as ComponentType[];
 
+const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
+  HeroBanner: { minItems: 1, maxItems: 5 },
+  ValueProps: { minItems: 1, maxItems: 6 },
+  ReviewsCarousel: { minItems: 1, maxItems: 10 },
+  ProductGrid: { minItems: 1, maxItems: 3 },
+  ProductCarousel: { minItems: 1, maxItems: 10 },
+  Testimonials: { minItems: 1, maxItems: 10 },
+  TestimonialSlider: { minItems: 1, maxItems: 10 },
+};
+
 /* ════════════════ external contracts ════════════════ */
 interface Props {
   page: Page;
@@ -382,6 +392,7 @@ const PageBuilder = memo(function PageBuilder({
           type: "Image",
           src: item.url,
           alt: item.altText,
+          ...(defaults.Image ?? {}),
         } as PageComponent,
       });
     },
@@ -560,6 +571,7 @@ const PageBuilder = memo(function PageBuilder({
         const component = {
           id: ulid(),
           type: a.type! as ComponentType,
+          ...(defaults[a.type! as ComponentType] ?? {}),
           ...(isContainer ? { children: [] } : {}),
         } as PageComponent;
         dispatch({

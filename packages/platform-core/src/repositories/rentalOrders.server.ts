@@ -7,7 +7,7 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
 import { validateShopName } from "../shops";
-import { DATA_ROOT } from "./utils";
+import { DATA_ROOT } from "../dataRoot";
 import { nowIso } from "@shared/date";
 
 function ordersPath(shop: string): string {

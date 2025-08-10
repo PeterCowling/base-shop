@@ -6,7 +6,7 @@ import * as path from "node:path";
 import { shopSchema, type Shop } from "@types";
 import { validateShopName } from "../shops";
 
-import { DATA_ROOT } from "./utils";
+import { DATA_ROOT } from "../dataRoot";
 
 function shopPath(shop: string): string {
   shop = validateShopName(shop);

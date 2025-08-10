@@ -5,7 +5,7 @@ import * as path from "node:path";
 import { ulid } from "ulid";
 import { ProductPublication } from "../products";
 import { validateShopName } from "../shops";
-import { DATA_ROOT } from "./utils";
+import { DATA_ROOT } from "../dataRoot";
 import { nowIso } from "@shared/date";
 
 function filePath(shop: string): string {

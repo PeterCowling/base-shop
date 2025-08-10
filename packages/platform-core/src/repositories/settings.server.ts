@@ -7,7 +7,7 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { z } from "zod";
 import { validateShopName } from "../shops";
-import { DATA_ROOT } from "./utils";
+import { DATA_ROOT } from "../dataRoot";
 import { nowIso } from "@shared/date";
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
 

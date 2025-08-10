@@ -6,7 +6,8 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { defaultFilterMappings } from "../defaultFilterMappings";
 import { validateShopName } from "../shops";
-import { DATA_ROOT, loadThemeTokens } from "./utils";
+import { DATA_ROOT } from "../dataRoot";
+import { loadThemeTokens } from "../themeTokens";
 export {
   diffHistory,
   getShopSettings,

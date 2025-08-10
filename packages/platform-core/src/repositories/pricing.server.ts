@@ -3,7 +3,7 @@ import "server-only";
 import { pricingSchema, type PricingMatrix } from "@types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import { resolveDataRoot } from "../utils";
+import { resolveDataRoot } from "../dataRoot";
 
 function pricingPath(): string {
   return path.join(resolveDataRoot(), "..", "rental", "pricing.json");
@@ -25,4 +25,3 @@ export async function writePricing(data: PricingMatrix): Promise<void> {
   await fs.writeFile(tmp, JSON.stringify(data, null, 2), "utf8");
   await fs.rename(tmp, file);
 }
-

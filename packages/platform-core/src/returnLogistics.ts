@@ -2,7 +2,7 @@ import type { ReturnLogistics } from "@types";
 import { returnLogisticsSchema } from "@types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import { resolveDataRoot } from "./utils";
+import { resolveDataRoot } from "./dataRoot";
 
 let cached: ReturnLogistics | null = null;
 

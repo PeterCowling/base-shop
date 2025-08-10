@@ -18,3 +18,4 @@ export function resolveDataRoot(): string {
   return path.resolve(process.cwd(), "data", "shops");
 }
 
+export const DATA_ROOT = resolveDataRoot();

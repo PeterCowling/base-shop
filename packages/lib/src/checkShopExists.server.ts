@@ -3,7 +3,7 @@ import "server-only";
 
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import { resolveDataRoot } from "@platform-core/utils";
+import { resolveDataRoot } from "@platform-core/dataRoot";
 import { validateShopName } from "./validateShopName";
 
 const DATA_ROOT = resolveDataRoot();

@@ -23,6 +23,10 @@ import {
   defaultShippingProviders,
   type DefaultShippingProvider,
 } from "./createShop/defaultShippingProviders";
+import {
+  defaultTaxProviders,
+  type DefaultTaxProvider,
+} from "./createShop/defaultTaxProviders";
 
 export const createShopOptionsSchema = z.object({
   name: z.string().optional(),
@@ -33,6 +37,7 @@ export const createShopOptionsSchema = z.object({
   template: z.string().optional(),
   payment: z.array(z.enum(defaultPaymentProviders)).default([]),
   shipping: z.array(z.enum(defaultShippingProviders)).default([]),
+  tax: z.array(z.enum(defaultTaxProviders)).default([]),
   pageTitle: z.record(localeSchema, z.string()).optional(),
   pageDescription: z.record(localeSchema, z.string()).optional(),
   socialImage: z.string().url().optional(),
@@ -68,6 +73,7 @@ export interface CreateShopOptions {
   template?: string;
   payment?: DefaultPaymentProvider[];
   shipping?: DefaultShippingProvider[];
+  tax?: DefaultTaxProvider[];
   pageTitle?: Partial<Record<Locale, string>>;
   pageDescription?: Partial<Record<Locale, string>>;
   socialImage?: string;
@@ -114,6 +120,7 @@ export function prepareOptions(
     template: parsed.template ?? "template-app",
     payment: parsed.payment,
     shipping: parsed.shipping,
+    tax: parsed.tax,
     pageTitle: fillLocales(parsed.pageTitle, "Home"),
     pageDescription: fillLocales(parsed.pageDescription, ""),
     socialImage: parsed.socialImage ?? "",
@@ -178,7 +185,7 @@ export function writeFiles(
 
   let envContent = `NEXT_PUBLIC_SHOP_ID=${id}\n`;
   envContent += `PREVIEW_TOKEN_SECRET=${genSecret()}\n`;
-  const envVars = [...options.payment, ...options.shipping];
+  const envVars = [...options.payment, ...options.shipping, ...options.tax];
   if (envVars.length === 0) envVars.push("stripe");
   for (const provider of envVars) {
     if (provider === "stripe") {
@@ -219,6 +226,7 @@ export function writeFiles(
         type: options.type,
         paymentProviders: options.payment,
         shippingProviders: options.shipping,
+        taxProviders: options.tax,
         priceOverrides: {},
         localeOverrides: {},
         homeTitle: options.pageTitle,

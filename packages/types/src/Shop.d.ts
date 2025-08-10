@@ -97,6 +97,8 @@ export interface Shop {
     paymentProviders?: string[];
     /** Enabled shipping provider identifiers */
     shippingProviders?: string[];
+    /** Enabled tax provider identifiers */
+    taxProviders?: string[];
     homeTitle?: Translated;
     homeDescription?: Translated;
     homeImage?: string;
@@ -123,6 +125,7 @@ export declare const shopSchema: z.ZodObject<{
     type: z.ZodOptional<z.ZodString>;
     paymentProviders: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     shippingProviders: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    taxProviders: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     homeTitle: z.ZodOptional<z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodString>>;
     homeDescription: z.ZodOptional<z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodString>>;
     homeImage: z.ZodOptional<z.ZodString>;
@@ -150,6 +153,7 @@ export declare const shopSchema: z.ZodObject<{
     contactInfo?: string | undefined;
     paymentProviders?: string[] | undefined;
     shippingProviders?: string[] | undefined;
+    taxProviders?: string[] | undefined;
     homeTitle?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     homeDescription?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     homeImage?: string | undefined;
@@ -171,6 +175,7 @@ export declare const shopSchema: z.ZodObject<{
     localeOverrides?: Record<string, "en" | "de" | "it"> | undefined;
     paymentProviders?: string[] | undefined;
     shippingProviders?: string[] | undefined;
+    taxProviders?: string[] | undefined;
     homeTitle?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     homeDescription?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     homeImage?: string | undefined;

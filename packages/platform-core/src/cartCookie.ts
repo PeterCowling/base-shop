@@ -1,5 +1,6 @@
 // packages/platform-core/src/cartCookie.ts
 import { z } from "zod";
+import { createHmac } from "node:crypto";
 
 import type { CartState } from "@types";
 import { skuSchema } from "@types";
@@ -35,9 +36,18 @@ export const cartStateSchema = z.record(z.string(), cartLineSchema);
  * Helper functions
  * ------------------------------------------------------------------ */
 
-/** Serialize cart state into a cookie-safe string. */
+/** Serialize cart state into a cookie-safe string.
+ * If `CART_COOKIE_SECRET` is set, the payload is signed with HMAC-SHA256
+ * to guard against tampering. The result is `payload.signature` where
+ * `payload` is URL-encoded JSON and `signature` is the hex digest.
+ */
 export function encodeCartCookie(state: CartState): string {
-  return encodeURIComponent(JSON.stringify(state));
+  const payload = encodeURIComponent(JSON.stringify(state));
+  const secret = process.env.CART_COOKIE_SECRET;
+  if (!secret) return payload;
+
+  const signature = createHmac("sha256", secret).update(payload).digest("hex");
+  return `${payload}.${signature}`;
 }
 
 /**
@@ -48,8 +58,32 @@ export function encodeCartCookie(state: CartState): string {
  */
 export function decodeCartCookie(raw?: string | null): CartState {
   if (!raw) return {};
+
+  const secret = process.env.CART_COOKIE_SECRET;
+  let payload = raw;
+
+  if (secret) {
+    const idx = raw.lastIndexOf(".");
+    if (idx === -1) {
+      console.warn("Invalid cart cookie format");
+      return {};
+    }
+    const body = raw.slice(0, idx);
+    const signature = raw.slice(idx + 1);
+    if (!body || !signature) {
+      console.warn("Invalid cart cookie format");
+      return {};
+    }
+    const expected = createHmac("sha256", secret).update(body).digest("hex");
+    if (signature !== expected) {
+      console.warn("Invalid cart cookie signature");
+      return {};
+    }
+    payload = body;
+  }
+
   try {
-    const parsed = JSON.parse(decodeURIComponent(raw));
+    const parsed = JSON.parse(decodeURIComponent(payload));
     // Cast is safe because the schema has validated the structure.
     return cartStateSchema.parse(parsed) as CartState;
   } catch (err) {
@@ -60,5 +94,5 @@ export function decodeCartCookie(raw?: string | null): CartState {
 
 /** Build the Set-Cookie header value for HTTP responses. */
 export function asSetCookieHeader(value: string): string {
-  return `${CART_COOKIE}=${value}; Path=/; Max-Age=${MAX_AGE}; SameSite=Lax`;
+  return `${CART_COOKIE}=${value}; Path=/; Max-Age=${MAX_AGE}; SameSite=Lax; Secure; HttpOnly`;
 }

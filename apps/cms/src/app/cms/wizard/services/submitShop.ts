@@ -90,7 +90,14 @@ export async function submitShop(
     error?: string;
   };
 
-  if (res.ok) return { ok: true, deployment: json.deployment };
+  if (res.ok) {
+    await fetch(`/cms/api/providers/shop/${shopId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ payment, shipping }),
+    }).catch(() => undefined);
+    return { ok: true, deployment: json.deployment };
+  }
 
   return { ok: false, error: json.error ?? "Failed to create shop" };
 }

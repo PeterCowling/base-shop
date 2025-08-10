@@ -656,6 +656,7 @@ export default function Wizard({
       case 3:
         return (
           <StepOptions
+            shopId={shopId}
             payment={payment}
             setPayment={setPayment}
             shipping={shipping}

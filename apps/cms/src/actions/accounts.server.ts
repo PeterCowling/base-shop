@@ -6,7 +6,7 @@ import type { Role } from "@cms/auth/roles";
 import type { CmsUser } from "@cms/auth/users";
 import bcrypt from "bcryptjs";
 import { ulid } from "ulid";
-import { sendEmail } from "../../../../src/lib/email";
+import { sendEmail } from "@lib/email";
 import { readRbac, writeRbac } from "../lib/rbacStore";
 
 export interface PendingUser {

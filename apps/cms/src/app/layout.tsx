@@ -40,10 +40,22 @@ export default function RootLayout({
             __html: `
               (function() {
                 var theme = localStorage.getItem('theme');
-                if (theme === 'dark') {
-                  document.documentElement.classList.add('theme-dark');
+                var classList = document.documentElement.classList;
+                if (theme === 'system') {
+                  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    classList.add('theme-dark');
+                  } else {
+                    classList.remove('theme-dark');
+                  }
+                } else if (theme === 'dark') {
+                  classList.add('theme-dark');
                 } else {
-                  document.documentElement.classList.remove('theme-dark');
+                  classList.remove('theme-dark');
+                }
+                if (theme === 'brandx') {
+                  classList.add('theme-brandx');
+                } else {
+                  classList.remove('theme-brandx');
                 }
               })();
             `,

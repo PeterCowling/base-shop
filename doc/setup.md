@@ -25,7 +25,7 @@ After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates 
 For automated scripts you can still call `pnpm create-shop <id>` with flags:
 
 ```bash
-pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--payment=p1,p2] [--shipping=s1,s2]
+pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--payment=p1,p2] [--shipping=s1,s2] [--name=value] [--logo=url] [--contact=email]
 ```
 
 - `--type` – choose between a standard sales shop or a rental shop (default `sale`).
@@ -33,6 +33,9 @@ pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--p
 - `--template` – which starter app to clone from `packages/`. Omit to be prompted with a list.
 - `--payment` – comma‑separated payment providers to configure.
 - `--shipping` – comma‑separated shipping providers to configure.
+- `--name` – display name for the shop.
+- `--logo` – URL of the shop logo.
+- `--contact` – contact email for the shop.
 
 ### Example wizard run
 

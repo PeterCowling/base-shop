@@ -2,7 +2,7 @@
 
 import { Button, Textarea } from "@/components/atoms/shadcn";
 import { inventoryItemSchema, type InventoryItem } from "@types";
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 
 interface Props {
   shop: string;
@@ -15,6 +15,7 @@ export default function InventoryForm({ shop, initial }: Props) {
   );
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
+  const fileInput = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -44,6 +45,60 @@ export default function InventoryForm({ shop, initial }: Props) {
     }
   };
 
+  const onImport = () => {
+    fileInput.current?.click();
+  };
+
+  const onFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const data = new FormData();
+    data.set("file", file);
+    try {
+      const res = await fetch(`/api/data/${shop}/inventory/import`, {
+        method: "POST",
+        body: data,
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(body.error || "Failed to import");
+      }
+      setText(JSON.stringify(body.items, null, 2));
+      setStatus("saved");
+      setError(null);
+    } catch (err) {
+      setStatus("error");
+      setError((err as Error).message);
+    } finally {
+      if (fileInput.current) fileInput.current.value = "";
+    }
+  };
+
+  const onExport = async () => {
+    try {
+      const res = await fetch(`/api/data/${shop}/inventory/export?format=json`);
+      if (!res.ok) {
+        throw new Error("Failed to export");
+      }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = res.headers
+        .get("content-type")
+        ?.includes("json")
+        ? "inventory.json"
+        : "inventory.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setStatus("error");
+      setError((err as Error).message);
+    }
+  };
+
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <Textarea
@@ -57,7 +112,22 @@ export default function InventoryForm({ shop, initial }: Props) {
       {status === "error" && error && (
         <p className="text-sm text-red-600">{error}</p>
       )}
-      <Button type="submit">Save</Button>
+      <div className="space-x-2">
+        <Button type="submit">Save</Button>
+        <Button type="button" onClick={onImport}>
+          Import
+        </Button>
+        <Button type="button" onClick={onExport}>
+          Export
+        </Button>
+      </div>
+      <input
+        ref={fileInput}
+        type="file"
+        accept=".json,.csv"
+        className="hidden"
+        onChange={onFile}
+      />
     </form>
   );
 }

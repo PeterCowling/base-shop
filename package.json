@@ -71,6 +71,7 @@
     "@tanstack/react-query": "^5.81.4",
     "bcryptjs": "^3.0.2",
     "chart.js": "^4.5.0",
+    "fast-csv": "^5.0.5",
     "identity-obj-proxy": "^3.0.0",
     "next": "15.3.5",
     "next-auth": "4.24.11",

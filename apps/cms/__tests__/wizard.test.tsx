@@ -12,7 +12,7 @@ import { ResponseComposition, rest, RestContext, RestRequest } from "msw";
 import { server } from "../../../test/msw/server";
 import Wizard from "../src/app/cms/wizard/Wizard";
 import { baseTokens } from "../src/app/cms/wizard/tokenUtils";
-import { STORAGE_KEY } from "../src/app/cms/wizard/storageUtils";
+import { STORAGE_KEY } from "../src/app/cms/wizard/hooks/useWizardPersistence";
 
 /* -------------------------------------------------------------------------- */
 /*  External stubs                                                            */

@@ -35,7 +35,10 @@ import StepTokens from "./steps/StepTokens";
 import type { PageInfo } from "./schema";
 import { wizardStateSchema } from "./schema";
 import { baseTokens, loadThemeTokens, type TokenMap } from "./tokenUtils";
-import { resetWizardProgress, STORAGE_KEY } from "./storageUtils";
+import {
+  resetWizardProgress,
+  STORAGE_KEY,
+} from "./hooks/useWizardPersistence";
 
 /* ========================================================================== */
 /*  Types                                                                     */

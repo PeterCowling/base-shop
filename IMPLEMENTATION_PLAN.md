@@ -10,6 +10,9 @@ Payments Stripe Elements v2025-05-28 ✔ – edge-ready client (stripeServer.ts)
 API Edge Routes: /api/cart (stub) · /api/checkout-session (client-secret) NEW
 Tooling TS 5.8 · ESLint/Prettier · Jest/RTL · Playwright 1.53 · Wrangler –
 Inventory via JSON in data/shops/\*/inventory.json
+Inventory items use flexible `variantAttributes` maps with optional `lowStockThreshold`.
+Saving inventory triggers email alerts to `STOCK_ALERT_RECIPIENT` when quantity falls below threshold.
+CMS API supports JSON or CSV import/export; CSV headers map variant attribute keys.
 Rental pricing matrix at data/rental/pricing.json
 Return logistics configured in data/return-logistics.json
 RBAC: ShopAdmin scope = all shops

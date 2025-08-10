@@ -2,7 +2,11 @@
 "use server";
 
 import { authOptions } from "@cms/auth/options";
-import { createShop, type CreateShopOptions } from "@platform-core/createShop";
+import {
+  createShop,
+  type CreateShopOptions,
+  type DeployShopResult,
+} from "@platform-core/createShop";
 import { getServerSession } from "next-auth";
 import { readRbac, writeRbac } from "../lib/rbacStore";
 
@@ -17,18 +21,19 @@ async function ensureAuthorized() {
 export async function createNewShop(
   id: string,
   options: CreateShopOptions
-): Promise<void> {
+): Promise<DeployShopResult> {
   const session = await ensureAuthorized();
 
+  let result: DeployShopResult;
   try {
-    await createShop(id, options);
+    result = createShop(id, options);
   } catch (err) {
     console.error("createShop failed", err);
     throw err;
   }
 
   const userId = (session.user as { id?: string }).id;
-  if (!userId) return;
+  if (!userId) return result;
 
   const db = await readRbac();
   const current = db.roles[userId];
@@ -48,4 +53,6 @@ export async function createNewShop(
     db.roles[userId] = updated;
     await writeRbac(db);
   }
+
+  return result;
 }

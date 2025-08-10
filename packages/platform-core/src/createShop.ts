@@ -17,7 +17,10 @@ import { loadTokens } from "./createShop/themeUtils";
  * Create a new shop app and seed data.
  * Paths are resolved relative to the repository root.
  */
-export function createShop(id: string, opts: CreateShopOptions = {}): void {
+export function createShop(
+  id: string,
+  opts: CreateShopOptions = {}
+): DeployShopResult {
   id = validateShopName(id);
   const newApp = join("apps", id);
   const newData = join("data", "shops", id);
@@ -38,7 +41,7 @@ export function createShop(id: string, opts: CreateShopOptions = {}): void {
 
   writeFiles(id, options, themeTokens, templateApp, newApp, newData);
 
-  deployShop(id);
+  return deployShop(id);
 }
 
 export interface DeployStatusBase {

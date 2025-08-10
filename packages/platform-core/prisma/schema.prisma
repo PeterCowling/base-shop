@@ -37,3 +37,9 @@ model RentalOrder {
   @@unique([shop, sessionId])
   @@index([customerId])
 }
+
+model CustomerProfile {
+  customerId String @id
+  name       String
+  email      String
+}

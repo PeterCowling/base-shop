@@ -7,7 +7,8 @@
     ".": "./src/index.ts",
     "./shipping": "./src/shipping/index.ts",
     "./tax": "./src/tax/index.ts",
-    "./orders": "./src/orders.ts"
+    "./orders": "./src/orders.ts",
+    "./customerProfiles": "./src/customerProfiles.ts"
   },
   "dependencies": {
     "@acme/shared-utils": "workspace:*",

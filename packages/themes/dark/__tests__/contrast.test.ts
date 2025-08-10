@@ -1,0 +1,20 @@
+import { getContrast } from 'polished';
+import { tokens } from '../src/tailwind-tokens';
+
+type TokenKey = keyof typeof tokens;
+
+function tokenToHsl(value: string): string {
+  return `hsl(${value})`;
+}
+
+const colorPairs: [TokenKey, TokenKey][] = [
+  ['--color-bg', '--color-fg'],
+  ['--color-primary', '--color-primary-fg'],
+];
+
+describe('dark theme color contrast', () => {
+  test.each(colorPairs)("%s and %s meet WCAG AA", (a, b) => {
+    const ratio = getContrast(tokenToHsl(tokens[a]), tokenToHsl(tokens[b]));
+    expect(ratio).toBeGreaterThanOrEqual(4.5);
+  });
+});

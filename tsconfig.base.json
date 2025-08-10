@@ -59,10 +59,12 @@
       /* ─── lib helpers (stripe, products, cookies, …) ────────────── */
       "@lib/stripeServer": ["packages/lib/src/stripeServer.server.ts"],
       "@lib/stripeServer.server": ["packages/lib/src/stripeServer.server.ts"],
+      "@lib/email": ["packages/lib/src/email.ts"],
       "@lib/*": ["packages/platform-core/src/*", "packages/lib/src/*"],
 
       "@/lib/stripeServer": ["packages/lib/src/stripeServer.server.ts"],
       "@/lib/stripeServer.server": ["packages/lib/src/stripeServer.server.ts"],
+      "@/lib/email": ["packages/lib/src/email.ts"],
       "@/lib/products": ["packages/platform-core/src/products.ts"],
       "@/lib/cartCookie": ["packages/platform-core/src/cartCookie.ts"],
       "@/lib/*": ["packages/platform-core/src/*", "packages/lib/src/*"],

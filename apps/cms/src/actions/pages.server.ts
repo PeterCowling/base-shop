@@ -5,7 +5,7 @@ import * as Sentry from "@sentry/node";
 import type { Locale, Page, HistoryState } from "@types";
 import { historyStateSchema } from "@types";
 import { ulid } from "ulid";
-import { nowIso } from "../../../../packages/shared/date";
+import { nowIso } from "@shared/date";
 
 import { ensureAuthorized } from "./common/auth";
 import {

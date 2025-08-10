@@ -1,19 +1,11 @@
 // apps/cms/src/actions/deployShop.server.ts
 "use server";
 
-import { authOptions } from "@cms/auth/options";
 import { deployShop, type DeployShopResult } from "@platform-core/createShop";
-import { getServerSession } from "next-auth";
 import fsSync from "node:fs";
 import fs from "node:fs/promises";
 import path from "node:path";
-
-async function ensureAuthorized(): Promise<void> {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user?.role ?? "")) {
-    throw new Error("Forbidden");
-  }
-}
+import { ensureAuthorized } from "./common/auth";
 
 function resolveRepoRoot(): string {
   let dir = process.cwd();

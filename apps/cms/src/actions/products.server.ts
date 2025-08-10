@@ -3,7 +3,6 @@
 
 import type { ProductForm } from "@cms/actions/schemas";
 import { productSchema } from "@cms/actions/schemas";
-import { authOptions } from "@cms/auth/options";
 import {
   deleteProductFromRepo,
   duplicateProductInRepo,
@@ -17,7 +16,7 @@ import { fillLocales } from "@i18n/fillLocales";
 import type { ProductPublication } from "@platform-core/src/products";
 import * as Sentry from "@sentry/node";
 import type { Locale } from "@types";
-import { getServerSession } from "next-auth";
+import { ensureAuthorized } from "./common/auth";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
 import { nowIso } from "../../../../packages/shared/date";
@@ -25,13 +24,6 @@ import { nowIso } from "../../../../packages/shared/date";
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                    */
 /* -------------------------------------------------------------------------- */
-
-async function ensureAuthorized(): Promise<void> {
-  const session = await getServerSession(authOptions);
-  if (!session || session.user?.role === "viewer") {
-    throw new Error("Forbidden");
-  }
-}
 
 async function getLocales(shop: string): Promise<readonly Locale[]> {
   const settings = await readSettings(shop);

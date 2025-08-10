@@ -17,13 +17,25 @@ const fallback: NextSeoProps = {
 
 export async function getSeo(
   locale: Locale,
-  pageSeo: Partial<NextSeoProps> = {}
+  pageSeo: Partial<NextSeoProps> = {},
 ): Promise<NextSeoProps> {
   const shop = process.env.NEXT_PUBLIC_SHOP_ID || "default";
   const settings: ShopSettings = await getShopSettings(shop);
   const shopSeo = (settings.seo ?? {}) as Record<string, ExtendedSeoProps>;
   const base: ExtendedSeoProps = shopSeo[locale] ?? {};
   const canonicalBase = base.canonicalBase ?? "";
+
+  const imagePath =
+    pageSeo.openGraph?.images?.[0]?.url ||
+    (pageSeo.openGraph as any)?.image ||
+    pageSeo.image ||
+    base.openGraph?.images?.[0]?.url ||
+    (base.openGraph as any)?.image ||
+    base.image;
+  const resolvedImage =
+    imagePath && !/^https?:/i.test(imagePath)
+      ? `${canonicalBase}${imagePath}`
+      : imagePath;
 
   return {
     title: pageSeo.title ?? base.title ?? fallback.title,
@@ -41,6 +53,7 @@ export async function getSeo(
         pageSeo.openGraph?.url ??
         base.openGraph?.url ??
         (canonicalBase ? `${canonicalBase}/${locale}` : undefined),
+      images: resolvedImage ? [{ url: resolvedImage }] : undefined,
     },
     twitter: {
       ...(fallback.twitter ?? {}),

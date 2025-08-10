@@ -42,7 +42,7 @@ function TopBarInner() {
         {showNewProduct && (
           <Link
             href={`/cms/shop/${shop}/products/new`}
-            className="bg-primary hover:bg-primary/90 rounded-md px-3 py-2 text-sm text-white"
+            className="bg-primary hover:bg-primary/90 rounded-md px-3 py-2 text-sm text-primary-fg"
           >
             New product
           </Link>
@@ -50,7 +50,7 @@ function TopBarInner() {
         {showNewPage && (
           <Link
             href={`/cms/shop/${shop}/pages/new/builder`}
-            className="bg-primary hover:bg-primary/90 rounded-md px-3 py-2 text-sm text-white"
+            className="bg-primary hover:bg-primary/90 rounded-md px-3 py-2 text-sm text-primary-fg"
           >
             New page
           </Link>

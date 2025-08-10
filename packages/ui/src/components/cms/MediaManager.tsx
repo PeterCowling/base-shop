@@ -110,7 +110,7 @@ function MediaManagerBase({
       </div>
 
       {/* Validation / progress feedback */}
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-danger">{error}</p>}
       {progress && (
         <p className="text-sm text-muted">
           Uploaded {progress.done}/{progress.total}
@@ -120,7 +120,7 @@ function MediaManagerBase({
         <div className="space-y-2">
           <p
             className={
-              isValid ? "text-sm text-green-600" : "text-sm text-red-600"
+              isValid ? "text-sm text-success" : "text-sm text-danger"
             }
           >
             {isValid
@@ -138,7 +138,7 @@ function MediaManagerBase({
               />
               <button
                 onClick={handleUpload}
-                className="rounded bg-blue-600 px-2 text-sm text-white"
+                className="rounded bg-primary px-2 text-sm text-primary-fg"
               >
                 Upload
               </button>

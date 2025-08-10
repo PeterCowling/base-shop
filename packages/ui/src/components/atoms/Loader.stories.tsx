@@ -12,7 +12,7 @@ const meta: Meta<typeof Loader> = {
       },
     },
   },
-  args: { size: 32, className: "text-blue-500" },
+  args: { size: 32, className: "text-primary" },
 };
 export default meta;
 

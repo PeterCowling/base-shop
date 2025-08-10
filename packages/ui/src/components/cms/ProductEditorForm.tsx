@@ -49,7 +49,7 @@ export default function ProductEditorForm({
       <CardContent>
         <form onSubmit={handleSubmit} className="@container grid gap-6">
           {Object.keys(errors).length > 0 && (
-            <div className="text-sm text-red-600">
+            <div className="text-sm text-danger">
               {Object.entries(errors).map(([k, v]) => (
                 <p key={k}>{v.join("; ")}</p>
               ))}

@@ -50,7 +50,7 @@ export default function HeaderClient({
         <Link href={`/${lang}/checkout`} className="relative hover:underline">
           Cart
           {qty > 0 && (
-            <span className="absolute -top-2 -right-3 rounded-full bg-red-600 px-1.5 text-xs text-white">
+            <span className="absolute -top-2 -right-3 rounded-full bg-danger px-1.5 text-xs text-danger-foreground">
               {qty}
             </span>
           )}

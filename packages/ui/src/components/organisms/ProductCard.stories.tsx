@@ -34,7 +34,7 @@ export const OutOfStock: StoryObj<typeof ProductCard> = {
   render: (args) => (
     <div className="relative">
       <ProductCard {...args} />
-      <div className="absolute inset-0 flex items-center justify-center bg-black/60 font-semibold text-white">
+      <div className="absolute inset-0 flex items-center justify-center bg-fg/60 font-semibold text-bg">
         Out of stock
       </div>
     </div>

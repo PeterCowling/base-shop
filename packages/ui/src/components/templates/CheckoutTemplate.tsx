@@ -40,9 +40,9 @@ export function CheckoutTemplate({
               className={cn(
                 "mb-1 flex h-8 w-8 items-center justify-center rounded-full border",
                 idx === step
-                  ? "bg-primary border-primary text-white"
+                  ? "bg-primary border-primary text-primary-fg"
                   : idx < step
-                    ? "bg-primary/80 border-primary/80 text-white"
+                    ? "bg-primary/80 border-primary/80 text-primary-fg"
                     : "bg-muted text-muted-foreground"
               )}
             >

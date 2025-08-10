@@ -30,7 +30,7 @@ export function CheckoutStepper({
           <span
             className={cn(
               "grid size-6 place-content-center rounded-full border",
-              idx < currentStep && "bg-primary border-primary text-white",
+              idx < currentStep && "bg-primary border-primary text-primary-fg",
               idx === currentStep && "border-primary",
               idx > currentStep && "text-muted-foreground border-muted"
             )}

@@ -21,7 +21,7 @@ describe("Tag", () => {
   it("applies success variant classes", () => {
     const { container } = render(<Tag variant="success" />);
     const span = container.firstChild as HTMLElement;
-    expect(span.className).toContain("bg-green-500");
-    expect(span.className).toContain("text-white");
+    expect(span.className).toContain("bg-success");
+    expect(span.className).toContain("text-success-fg");
   });
 });

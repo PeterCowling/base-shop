@@ -73,7 +73,7 @@ export function CartTemplate({
                   <button
                     type="button"
                     onClick={() => onRemove(line.sku.id)}
-                    className="text-red-600 hover:underline"
+                    className="text-danger hover:underline"
                   >
                     Remove
                   </button>

@@ -258,26 +258,26 @@ const CanvasItem = memo(function CanvasItem({
         <>
           <div
             onPointerDown={startResize}
-            className="absolute -top-1 -left-1 h-2 w-2 cursor-nwse-resize bg-blue-500"
+            className="absolute -top-1 -left-1 h-2 w-2 cursor-nwse-resize bg-primary"
           />
           <div
             onPointerDown={startResize}
-            className="absolute -top-1 -right-1 h-2 w-2 cursor-nesw-resize bg-blue-500"
+            className="absolute -top-1 -right-1 h-2 w-2 cursor-nesw-resize bg-primary"
           />
           <div
             onPointerDown={startResize}
-            className="absolute -bottom-1 -left-1 h-2 w-2 cursor-nesw-resize bg-blue-500"
+            className="absolute -bottom-1 -left-1 h-2 w-2 cursor-nesw-resize bg-primary"
           />
           <div
             onPointerDown={startResize}
-            className="absolute -right-1 -bottom-1 h-2 w-2 cursor-nwse-resize bg-blue-500"
+            className="absolute -right-1 -bottom-1 h-2 w-2 cursor-nwse-resize bg-primary"
           />
         </>
       )}
       <button
         type="button"
         onClick={onRemove}
-        className="absolute top-1 right-1 rounded bg-red-500 px-2 text-xs text-white"
+        className="absolute top-1 right-1 rounded bg-danger px-2 text-xs text-danger-foreground"
       >
         ×
       </button>

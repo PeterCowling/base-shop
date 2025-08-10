@@ -27,7 +27,7 @@ export function StickyAddToCartBar({
   return (
     <div
       className={cn(
-        "sticky right-0 bottom-0 left-0 flex items-center justify-between gap-4 border-t bg-white shadow-md",
+        "sticky right-0 bottom-0 left-0 flex items-center justify-between gap-4 border-t bg-bg shadow-md",
         padding,
         className
       )}

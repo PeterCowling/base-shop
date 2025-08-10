@@ -6,6 +6,9 @@
   --color-primary: 220 90% 66%;
   --color-primary-fg: 0 0% 10%;
   --color-accent: 260 83% 70%;
+  --color-accent-fg: 0 0% 10%;
+  --color-danger: 0 63% 31%;
+  --color-danger-fg: 0 93% 94%;
   --color-muted: 0 0% 60%;
   --font-sans: "Geist Sans", system-ui, sans-serif;
   --font-mono: "Geist Mono", ui-monospace, monospace;

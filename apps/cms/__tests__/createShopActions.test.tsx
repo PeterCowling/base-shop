@@ -74,7 +74,8 @@ describe("createNewShop authorization", () => {
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
 
-    const createShop = jest.fn();
+    const deployResult = { status: "success", previewUrl: "https://shop2.pages.dev" };
+    const createShop = jest.fn().mockReturnValue(deployResult);
     jest.doMock("@platform-core/createShop", () => ({
       __esModule: true,
       createShop,
@@ -88,7 +89,9 @@ describe("createNewShop authorization", () => {
     const { createNewShop } = await import(
       /* webpackIgnore: true */ "../src/actions/createShop.server.ts"
     );
-    await createNewShop("shop2", { theme: "base" } as any);
+    await expect(
+      createNewShop("shop2", { theme: "base" } as any)
+    ).resolves.toEqual(deployResult);
 
     expect(createShop).toHaveBeenCalledTimes(1);
     expect(createShop).toHaveBeenCalledWith("shop2", { theme: "base" });

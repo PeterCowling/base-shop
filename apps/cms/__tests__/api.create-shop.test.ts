@@ -15,7 +15,11 @@ describe("create-shop API", () => {
   it("creates shop when authorized", async () => {
     const prevEnv = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
-    const createNewShop = jest.fn();
+    const deployResult = {
+      status: "success",
+      previewUrl: "https://new.pages.dev",
+    };
+    const createNewShop = jest.fn().mockResolvedValue(deployResult);
     const session: Session = {
       user: { role: "admin", email: "a" },
       expires: "",
@@ -40,6 +44,10 @@ describe("create-shop API", () => {
       pages: [],
       payment: [],
       shipping: [],
+    });
+    await expect(res.json()).resolves.toEqual({
+      success: true,
+      deployment: deployResult,
     });
     (process.env as Record<string, string>).NODE_ENV = prevEnv as string;
   });

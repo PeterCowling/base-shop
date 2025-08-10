@@ -1,6 +1,7 @@
 import { envSchema } from "@config/src/env";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { ZodError } from "zod";
 
 const shopId = process.argv[2];
 
@@ -29,6 +30,14 @@ try {
   envSchema.parse(env);
   console.log("Environment variables look valid.");
 } catch (err) {
-  console.error("Invalid environment variables:\n", err);
+  if (err instanceof ZodError) {
+    for (const issue of err.issues) {
+      const name = issue.path.join(".");
+      const message = issue.message === "Required" ? "is required" : issue.message;
+      console.error(`${name} ${message}`);
+    }
+  } else {
+    console.error(err);
+  }
   process.exit(1);
 }

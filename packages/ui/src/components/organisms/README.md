@@ -34,3 +34,9 @@ Current components:
 - `CategoryCard`
 - `ProductGallery`
 - `OrderSummary`
+
+## Responsive Carousels
+
+`ProductCarousel` and `RecommendationCarousel` automatically adjust their
+visible item count based on screen width. The `minItems` and `maxItems` props
+allow callers to bound how many products appear at once.

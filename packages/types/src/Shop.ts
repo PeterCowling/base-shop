@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { localeSchema, type Locale, type Translated } from "./Product";
+import { localeSchema } from "./Product";
 
 export const shopSeoFieldsSchema = z.object({
   canonicalBase: z.string().url().optional(),
@@ -35,37 +35,6 @@ export const sanityBlogConfigSchema = z.object({
 
 export type SanityBlogConfig = z.infer<typeof sanityBlogConfigSchema>;
 
-export interface Shop {
-  id: string;
-  name: string;
-  logo?: string;
-  contactInfo?: string;
-  catalogFilters: string[];
-  themeId: string;
-  /** Mapping of design tokens to theme values */
-  themeTokens: Record<string, string>;
-  /** Mapping of logical filter keys to catalog attributes */
-  filterMappings: Record<string, string>;
-  /** Optional price overrides per locale (minor units) */
-  priceOverrides: Partial<Record<Locale, number>>;
-  /** Optional redirect overrides for locale detection */
-  localeOverrides: Record<string, Locale>;
-  /** Sale or rental shop type */
-  type?: string;
-  /** Enabled payment provider identifiers */
-  paymentProviders?: string[];
-  /** Enabled shipping provider identifiers */
-  shippingProviders?: string[];
-  /** Enabled tax provider identifiers */
-  taxProviders?: string[];
-  homeTitle?: Translated;
-  homeDescription?: Translated;
-  homeImage?: string;
-  navigation?: { label: string; url: string }[];
-  sanityBlog?: SanityBlogConfig;
-  analyticsEnabled?: boolean;
-}
-
 export const shopSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -96,3 +65,5 @@ export const shopSchema = z.object({
   sanityBlog: sanityBlogConfigSchema.optional(),
   analyticsEnabled: z.boolean().optional(),
 });
+
+export type Shop = z.infer<typeof shopSchema>;

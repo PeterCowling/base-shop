@@ -1,6 +1,6 @@
 // packages/platform-core/createShop.ts
 import { spawnSync } from "child_process";
-import { existsSync, readdirSync, writeFileSync } from "fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { validateShopName } from "./shops";
 import {
@@ -102,6 +102,50 @@ export function listThemes(): string[] {
     .map((d) => d.name);
 }
 
+/**
+ * Update an existing shop to use a different theme.
+ *
+ * This adjusts the shop app's package dependency and global CSS token import.
+ * It returns the default token map for the selected theme so callers can merge
+ * in any overrides before persisting to the shop.json file.
+ */
+export function syncTheme(shop: string, theme: string): Record<string, string> {
+  const appDir = join("apps", shop);
+  const pkgPath = join(appDir, "package.json");
+  const cssPath = join(appDir, "src", "app", "globals.css");
+
+  try {
+    if (existsSync(pkgPath)) {
+      const pkg = JSON.parse(readFileSync(pkgPath, "utf8")) as {
+        dependencies?: Record<string, string>;
+      };
+      pkg.dependencies ??= {};
+      for (const dep of Object.keys(pkg.dependencies)) {
+        if (dep.startsWith("@themes/")) delete pkg.dependencies[dep];
+      }
+      pkg.dependencies[`@themes/${theme}`] = "workspace:*";
+      writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+    }
+  } catch {
+    // ignore errors when package.json is missing or invalid
+  }
+
+  try {
+    if (existsSync(cssPath)) {
+      const css = readFileSync(cssPath, "utf8").replace(
+        /@themes\/[^/]+\/tokens.css/,
+        `@themes/${theme}/tokens.css`
+      );
+      writeFileSync(cssPath, css);
+    }
+  } catch {
+    // ignore errors when globals.css cannot be read
+  }
+
+  return loadTokens(theme);
+}
+
 export { prepareOptions } from "./createShop/schema";
 export { ensureTemplateExists, writeFiles, copyTemplate } from "./createShop/fsUtils";
 export { loadTokens, loadBaseTokens } from "./createShop/themeUtils";
+export { syncTheme };

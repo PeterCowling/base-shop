@@ -54,5 +54,6 @@ export async function readShop(shop: string): Promise<Shop> {
     priceOverrides: {},
     localeOverrides: {},
     navigation: [],
+    analytics: undefined,
   };
 }

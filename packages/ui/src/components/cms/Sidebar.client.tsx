@@ -13,7 +13,7 @@ export default function Sidebar({ role }: { role?: string }) {
   const shop = getShopFromPath(pathname);
 
   const links = [
-    { href: shop ? `/shop/${shop}` : "", label: "Dashboard", icon: "📊" },
+    { href: shop ? `/shop/${shop}` : "/dashboard", label: "Dashboard", icon: "📊" },
     ...(shop ? [] : [{ href: "/shop", label: "Shops", icon: "🏬" }]),
 
     {
@@ -88,7 +88,7 @@ export default function Sidebar({ role }: { role?: string }) {
       : []),
   ];
 
-  const dashboardBase = shop ? `/cms/shop/${shop}` : "/cms";
+  const dashboardBase = shop ? `/cms/shop/${shop}` : "/cms/dashboard";
   return (
     <aside className="w-56 shrink-0 border-r border-muted">
       <h1 className="px-4 py-6 text-lg font-semibold tracking-tight">CMS</h1>

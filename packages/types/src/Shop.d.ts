@@ -104,6 +104,11 @@ export interface Shop {
         label: string;
         url: string;
     }[];
+    /** Analytics provider configuration */
+    analytics?: {
+        provider: string;
+        id?: string | undefined;
+    } | undefined;
 }
 export declare const shopSchema: z.ZodObject<{
     id: z.ZodString;
@@ -136,6 +141,16 @@ export declare const shopSchema: z.ZodObject<{
         url: string;
         label: string;
     }>, "many">>;
+    analytics: z.ZodOptional<z.ZodObject<{
+        provider: z.ZodString;
+        id: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
+        provider: string;
+        id?: string | undefined;
+    }, {
+        provider: string;
+        id?: string | undefined;
+    }>>;
 }, "strip", z.ZodTypeAny, {
     id: string;
     name: string;
@@ -157,6 +172,10 @@ export declare const shopSchema: z.ZodObject<{
         url: string;
         label: string;
     }[] | undefined;
+    analytics?: {
+        provider: string;
+        id?: string | undefined;
+    } | undefined;
 }, {
     id: string;
     name: string;

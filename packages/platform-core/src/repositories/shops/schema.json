@@ -36,6 +36,15 @@
     "localeOverrides": {
       "type": "object",
       "additionalProperties": { "type": "string" }
+    },
+    "analytics": {
+      "type": "object",
+      "required": ["provider"],
+      "properties": {
+        "provider": { "type": "string" },
+        "id": { "type": "string" }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

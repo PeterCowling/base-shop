@@ -7,3 +7,4 @@ export * from "./defaultFilterMappings";
 export * from "./themeTokens";
 export * from "./dataRoot";
 export * from "./utils";
+export * from "./analytics";

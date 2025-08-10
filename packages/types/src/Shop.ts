@@ -52,6 +52,11 @@ export interface Shop {
   homeDescription?: Translated;
   homeImage?: string;
   navigation?: { label: string; url: string }[];
+  /** Analytics provider configuration */
+  analytics?: {
+    provider: string;
+    id?: string;
+  };
 }
 
 export const shopSchema = z.object({
@@ -79,5 +84,11 @@ export const shopSchema = z.object({
   homeImage: z.string().optional(),
   navigation: z
     .array(z.object({ label: z.string(), url: z.string() }))
+    .optional(),
+  analytics: z
+    .object({
+      provider: z.string(),
+      id: z.string().optional(),
+    })
     .optional(),
 });

@@ -222,14 +222,17 @@ export function writeFiles(
         priceOverrides: {},
         localeOverrides: {},
         homeTitle: options.pageTitle,
-        homeDescription: options.pageDescription,
-        homeImage: options.socialImage,
-        navigation: options.navItems,
-      },
-      null,
-      2
-    )
-  );
+      homeDescription: options.pageDescription,
+      homeImage: options.socialImage,
+      navigation: options.navItems,
+      ...(options.analytics && options.analytics.provider !== "none"
+        ? { analytics: options.analytics }
+        : {}),
+    },
+    null,
+    2
+  )
+);
 
   const now = nowIso();
   const sampleProduct = {

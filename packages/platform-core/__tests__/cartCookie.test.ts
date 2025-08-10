@@ -41,7 +41,7 @@ describe("cart cookie helpers", () => {
     const encoded = "value";
 
     expect(asSetCookieHeader(encoded)).toBe(
-      `${CART_COOKIE}=${encoded}; Path=/; Max-Age=${60 * 60 * 24 * 30}; SameSite=Lax`
+      `${CART_COOKIE}=${encoded}; Path=/; Max-Age=${60 * 60 * 24 * 30}; SameSite=Lax; Secure; HttpOnly`
     );
   });
 });

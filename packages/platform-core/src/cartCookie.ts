@@ -62,5 +62,6 @@ export function decodeCartCookie(raw?: string | null): CartState {
 
 /** Build the Set-Cookie header value for HTTP responses. */
 export function asSetCookieHeader(value: string): string {
-  return `${CART_COOKIE}=${value}; Path=/; Max-Age=${MAX_AGE}; SameSite=Lax`;
+  // NOTE: Consider signing or encrypting the cookie value to prevent tampering.
+  return `${CART_COOKIE}=${value}; Path=/; Max-Age=${MAX_AGE}; SameSite=Lax; Secure; HttpOnly`;
 }

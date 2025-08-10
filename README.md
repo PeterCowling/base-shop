@@ -12,6 +12,8 @@ Key points:
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
 - Return logistics options stored in data/return-logistics.json.
 - RBAC: ShopAdmin currently manages all shops.
+- String utilities like slugify, genSecret, and fillLocales are documented in [doc/utils.md](doc/utils.md).
+
   A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **React 19**.
   The full technical roadmap is documented in [./IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md).
 

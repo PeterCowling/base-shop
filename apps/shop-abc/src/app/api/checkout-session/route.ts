@@ -3,6 +3,7 @@
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { calculateRentalDays } from "@/lib/date";
 import { stripe } from "@lib/stripeServer";
+import { getCustomerSession } from "@auth";
 import { priceForDays } from "@platform-core/pricing";
 
 import type { CartLine, CartState } from "@types";
@@ -121,6 +122,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   );
 
   /* 5️⃣ Create Checkout Session -------------------------------------------- */
+  const customer = await getCustomerSession();
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     line_items,
@@ -132,6 +134,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         depositTotal: depositTotal.toString(),
         returnDate: returnDate ?? "",
         rentalDays: rentalDays.toString(),
+        customerId: customer?.customerId ?? "",
       },
     },
     metadata: {
@@ -140,6 +143,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       returnDate: returnDate ?? "",
       rentalDays: rentalDays.toString(),
       sizes: sizesMeta,
+      customerId: customer?.customerId ?? "",
     },
     expand: ["payment_intent"],
   });

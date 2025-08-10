@@ -4,6 +4,9 @@ import {
   addOrder,
   markRefunded,
 } from "@platform-core/repositories/rentalOrders.server";
+import {
+  addOrder as addDbOrder,
+} from "@platform-core/repositories/rentalOrdersDb.server";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -24,7 +27,9 @@ export async function POST(req: NextRequest) {
       const session = data as Stripe.Checkout.Session;
       const deposit = Number(session.metadata?.depositTotal ?? 0);
       const returnDate = session.metadata?.returnDate || undefined;
-      await addOrder("abc", session.id, deposit, returnDate);
+      const customerId = session.metadata?.customerId || undefined;
+      await addDbOrder("abc", session.id, deposit, returnDate, customerId);
+      await addOrder("abc", session.id, deposit, returnDate, customerId);
       break;
     }
     case "charge.refunded": {

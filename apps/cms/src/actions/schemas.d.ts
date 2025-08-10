@@ -21,19 +21,19 @@ export declare const shopSchema: z.ZodObject<{
     name: z.ZodString;
     themeId: z.ZodString;
     catalogFilters: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, string[], string | undefined>;
-    themeTokens: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, any, string | undefined>;
-    filterMappings: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, any, string | undefined>;
-    priceOverrides: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, any, string | undefined>;
-    localeOverrides: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, any, string | undefined>;
+    themeTokens: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, Record<string, unknown>, string | undefined>;
+    filterMappings: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, Record<string, unknown>, string | undefined>;
+    priceOverrides: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, Record<string, unknown>, string | undefined>;
+    localeOverrides: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, Record<string, unknown>, string | undefined>;
 }, "strip", z.ZodTypeAny, {
     id: string;
     name: string;
     themeId: string;
     catalogFilters: string[];
-    themeTokens?: any;
-    filterMappings?: any;
-    priceOverrides?: any;
-    localeOverrides?: any;
+    themeTokens?: Record<string, unknown>;
+    filterMappings?: Record<string, unknown>;
+    priceOverrides?: Record<string, unknown>;
+    localeOverrides?: Record<string, unknown>;
 }, {
     id: string;
     name: string;

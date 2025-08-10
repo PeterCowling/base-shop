@@ -54,10 +54,10 @@ export async function updateShop(
     name: data.name,
     themeId: data.themeId,
     catalogFilters: data.catalogFilters,
-    themeTokens: data.themeTokens,
-    filterMappings: data.filterMappings,
-    priceOverrides: data.priceOverrides,
-    localeOverrides: data.localeOverrides,
+    themeTokens: data.themeTokens as Record<string, string>,
+    filterMappings: data.filterMappings as Record<string, string>,
+    priceOverrides: data.priceOverrides as Partial<Record<Locale, number>>,
+    localeOverrides: data.localeOverrides as Record<string, Locale>,
   };
 
   const saved = await updateShopInRepo(shop, patch);

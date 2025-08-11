@@ -20,7 +20,8 @@ export interface CartStore {
   removeItem(id: string, skuId: string): Promise<CartState | null>;
 }
 
-const TTL_SECONDS = Number(process.env.CART_TTL ?? 60 * 60 * 24);
+// Default cart expiration is 30 days (in seconds)
+const TTL_SECONDS = Number(process.env.CART_TTL ?? 60 * 60 * 24 * 30);
 
 class MemoryCartStore implements CartStore {
   private carts = new Map<string, { cart: CartState; expires: number }>();

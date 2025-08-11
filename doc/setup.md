@@ -77,6 +77,7 @@ The wizard scaffolds placeholders for common variables:
 
 - `STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` – Stripe API keys
 - `CART_COOKIE_SECRET` – secret for signing cart cookies
+- `CART_TTL` – cart expiration in seconds (default 30 days)
 - `NEXTAUTH_SECRET` – session encryption secret used by NextAuth
 - `PREVIEW_TOKEN_SECRET` – token used for preview URLs
 - `CMS_SPACE_URL` / `CMS_ACCESS_TOKEN` – headless CMS credentials

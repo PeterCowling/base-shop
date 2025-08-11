@@ -8,6 +8,7 @@ See [doc/setup.md](doc/setup.md) for full setup and CI guidance.
 Key points:
 
 - Stripe handles deposits via escrow sessions.
+- Returned deposits can be refunded automatically by the deposit release service. See [doc/machine.md](doc/machine.md).
 - Inventory lives in JSON files under data/shops/\*/inventory.json.
 - Low-stock alerts email the configured recipient (`STOCK_ALERT_RECIPIENT`) when inventory falls below its threshold.
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
@@ -209,6 +210,15 @@ green-sneaker-41,green-sneaker,41,green,2,1
 ```
 
 JSON import/export is an array of inventory objects matching the schema shown above.
+
+## Machine utilities
+
+The `@acme/platform-machine` package bundles a small set of runtime helpers:
+
+- **Deposit release service** – scans rental orders and issues Stripe refunds for returned items on a schedule.
+- **Finite State Machine** – a minimal, type-safe state machine for UI or service workflows.
+
+Configuration and usage examples for both are documented in [doc/machine.md](doc/machine.md).
 
 # Environment Variables
 

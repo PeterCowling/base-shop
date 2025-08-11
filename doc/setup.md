@@ -116,6 +116,18 @@ To send analytics events to Google Analytics and record aggregates:
 
 Ensure these API keys are kept secret and that the app has write access to the data directory for storing aggregates.
 
+## Deposit release service
+
+Rental shops that collect deposits can automate refunds when items are returned. Run the process once with:
+
+```bash
+pnpm release-deposits
+```
+
+To keep it running on a schedule, import `startDepositReleaseService` from `@acme/platform-machine` and optionally pass a custom interval (defaults to one hour). The service scans every shop under `data/shops/*`, issues Stripe refunds and marks orders as refunded.
+
+See [doc/machine.md](./machine.md#deposit-release-service) for more details and configuration options.
+
 ## Troubleshooting
 
 - **"Theme 'X' not found" or "Template 'Y' not found"** – ensure the names match directories in `packages/themes` or `packages/`.

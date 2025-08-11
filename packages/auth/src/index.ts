@@ -13,6 +13,7 @@ export {
   revokeSession,
   validateCsrfToken,
 } from "./session";
+export { getCsrfToken } from "./csrf";
 export type { CustomerSession } from "./session";
 
 export {

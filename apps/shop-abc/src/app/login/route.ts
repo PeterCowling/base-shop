@@ -1,6 +1,6 @@
 // apps/shop-abc/src/app/login/route.ts
 import { NextResponse } from "next/server";
-import { createCustomerSession } from "@auth";
+import { createCustomerSession, validateCsrfToken } from "@auth";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
 import {
@@ -28,6 +28,11 @@ async function validateCredentials(
 }
 
 export async function POST(req: Request) {
+  const headerToken = req.headers.get("x-csrf-token");
+  const validToken = await validateCsrfToken(headerToken);
+  if (!validToken) {
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
+  }
   const json = await req.json();
   const parsed = LoginSchema.safeParse(json);
   if (!parsed.success) {

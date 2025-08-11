@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { addUser, USER_STORE } from "../userStore";
+import { validateCsrfToken } from "@auth";
 
 const RegisterSchema = z.object({
   customerId: z.string(),
@@ -10,6 +11,11 @@ const RegisterSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  const headerToken = req.headers.get("x-csrf-token");
+  const validToken = await validateCsrfToken(headerToken);
+  if (!validToken) {
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
+  }
   const json = await req.json();
   const parsed = RegisterSchema.safeParse(json);
   if (!parsed.success) {

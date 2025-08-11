@@ -1,6 +1,7 @@
 // apps/shop-abc/__tests__/loginRateLimit.test.ts
 jest.mock("@auth", () => ({
   createCustomerSession: jest.fn(),
+  validateCsrfToken: jest.fn().mockResolvedValue(true),
 }));
 jest.mock("@upstash/redis", () => ({
   Redis: jest.fn(() => ({})),

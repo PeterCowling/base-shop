@@ -255,7 +255,7 @@ export default function Wizard({
     setStep(firstIncomplete === -1 ? steps.length - 1 : firstIncomplete);
   }, []);
 
-  useWizardPersistence(
+  const { markStepComplete } = useWizardPersistence(
     {
       shopId,
       storeName,
@@ -709,6 +709,8 @@ export default function Wizard({
     "additional-pages",
     "env-vars",
     "summary",
+    "import-data",
+    "seed-data",
   ]);
 
   const currentStepDef = steps[step];
@@ -718,13 +720,6 @@ export default function Wizard({
     currentStepDef.id === "shop-details"
       ? handleIdStepNext
       : () => setStep(step + 1);
-
-  const handleComplete = () => {
-    setCompleted((prev) => ({ ...prev, [currentStepDef.id]: true }));
-    if (!hasNext) {
-      setStep(step + 1);
-    }
-  };
 
   const progressValue =
     (Object.values(completed).filter(Boolean).length / steps.length) * 100;
@@ -748,7 +743,7 @@ export default function Wizard({
           {...stepProps[currentStepDef.id]}
           {...(step > 0 ? { onBack: () => setStep(step - 1) } : {})}
           {...(hasNext ? { onNext } : {})}
-          onComplete={handleComplete}
+          markStepComplete={markStepComplete}
         />
       </fieldset>
 

@@ -7,14 +7,14 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
 }
 
 export default function StepTokens({
   themeStyle,
   onBack,
   onNext,
-  onComplete,
+  markStepComplete,
 }: Props): React.JSX.Element {
   return (
     <div className="space-y-4">
@@ -26,7 +26,7 @@ export default function StepTokens({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markStepComplete("tokens", true);
             onNext();
           }}
         >

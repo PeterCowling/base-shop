@@ -17,7 +17,7 @@ interface Props {
   deploying: boolean;
   onBack: () => void;
   deploy: () => Promise<void> | void;
-  onComplete: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
 }
 
 export default function StepHosting({
@@ -30,7 +30,7 @@ export default function StepHosting({
   deploying,
   onBack,
   deploy,
-  onComplete,
+  markStepComplete,
 }: Props): React.JSX.Element {
   useEffect(() => {
     if (!shopId || !deployInfo) return;
@@ -104,7 +104,7 @@ export default function StepHosting({
           disabled={deploying}
           onClick={async () => {
             await deploy();
-            onComplete();
+            markStepComplete("hosting", true);
           }}
         >
           {deploying ? "Deploying…" : "Deploy"}

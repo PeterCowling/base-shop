@@ -30,7 +30,7 @@ interface Props {
   setEnv: (key: string, value: string) => void;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
 }
 
 export default function StepEnvVars({
@@ -38,7 +38,7 @@ export default function StepEnvVars({
   setEnv,
   onBack,
   onNext,
-  onComplete,
+  markStepComplete,
 }: Props): React.JSX.Element {
   return (
     <div className="space-y-4">
@@ -66,7 +66,7 @@ export default function StepEnvVars({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markStepComplete("env-vars", true);
             onNext();
           }}
         >

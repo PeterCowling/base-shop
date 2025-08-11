@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/wizard/hooks/useWizardPersistence.ts
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import { wizardStateSchema, type WizardState } from "../schema";
 
 /** Key used to mirror wizard progress in localStorage for preview components. */
@@ -31,7 +31,7 @@ export function useWizardPersistence(
   state: WizardState,
   setState: (s: WizardState) => void,
   onInvalid?: () => void
-): void {
+): { markStepComplete: (stepId: string, status: boolean) => void } {
   /* Load persisted state on mount */
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -80,24 +80,31 @@ export function useWizardPersistence(
     });
   }, [state]);
 
-  /* Persist completion changes */
-  const prevCompleted = useRef(state.completed);
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const prev = prevCompleted.current;
-    const curr = state.completed;
-    const keys = new Set([...Object.keys(prev), ...Object.keys(curr)]);
-    keys.forEach((k) => {
-      if (prev[k] !== curr[k]) {
+  const markStepComplete = useCallback(
+    (stepId: string, status: boolean) => {
+      const newState: WizardState = {
+        ...state,
+        completed: { ...state.completed, [stepId]: status },
+      };
+      setState(newState);
+      if (typeof window !== "undefined") {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
+          window.dispatchEvent(new CustomEvent("wizard:update"));
+        } catch {
+          /* ignore */
+        }
         fetch("/cms/api/wizard-progress", {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ stepId: k, completed: curr[k] ?? false }),
+          body: JSON.stringify({ stepId, completed: status }),
         }).catch(() => {
           /* ignore network errors */
         });
       }
-    });
-    prevCompleted.current = curr;
-  }, [state.completed]);
+    },
+    [state, setState]
+  );
+
+  return { markStepComplete };
 }

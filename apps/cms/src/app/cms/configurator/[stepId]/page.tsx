@@ -1,8 +1,7 @@
 "use client";
 
 import steps from "../steps";
-import { WizardProvider } from "../../wizard/WizardContext";
-import useStepCompletion from "../../wizard/hooks/useStepCompletion";
+import { WizardProvider, useWizard } from "../../wizard/WizardContext";
 
 interface PageProps {
   params: { stepId: string };
@@ -14,10 +13,10 @@ function StepContent({ stepId }: { stepId: string }) {
     return null;
   }
   const StepComponent = step.component as React.ComponentType<any>;
-  const [, setCompleted] = useStepCompletion(step.id);
+  const { markStepComplete } = useWizard();
   return (
     <StepComponent
-      onComplete={() => setCompleted(true)}
+      markStepComplete={markStepComplete}
       onNext={() => {}}
       onBack={() => {}}
     />

@@ -32,7 +32,7 @@ interface Props {
   /** Navigation */
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
 
   /** Optional inner content for the step */
   children?: ReactNode;
@@ -55,7 +55,7 @@ export default function StepLayout({
   themeStyle,
   onBack,
   onNext,
-  onComplete,
+  markStepComplete,
   children,
 }: Props): React.JSX.Element | null {
   /**
@@ -173,7 +173,7 @@ export default function StepLayout({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markStepComplete("layout", true);
             onNext();
           }}
         >

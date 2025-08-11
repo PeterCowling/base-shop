@@ -60,7 +60,7 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
 }
 
 export default function StepTheme({
@@ -72,7 +72,7 @@ export default function StepTheme({
   themeStyle,
   onBack,
   onNext,
-  onComplete,
+  markStepComplete,
 }: Props): React.JSX.Element {
   const [palette, setPalette] = useState(colorPalettes[0].name);
 
@@ -132,7 +132,7 @@ export default function StepTheme({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markStepComplete("theme", true);
             onNext();
           }}
         >

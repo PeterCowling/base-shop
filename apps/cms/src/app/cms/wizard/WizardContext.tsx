@@ -9,6 +9,7 @@ interface WizardContextValue {
   state: WizardState;
   setState: React.Dispatch<React.SetStateAction<WizardState>>;
   update: <K extends keyof WizardState>(key: K, value: WizardState[K]) => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
 }
 
 const WizardContext = createContext<WizardContextValue | null>(null);
@@ -21,7 +22,10 @@ export function WizardProvider({
   const [state, setState] = useState<WizardState>(wizardStateSchema.parse({}));
 
   // Persist state to localStorage
-  useWizardPersistence(state, (s) => setState(() => s));
+  const { markStepComplete } = useWizardPersistence(
+    state,
+    (s) => setState(() => s)
+  );
 
   const update = <K extends keyof WizardState>(
     key: K,
@@ -31,7 +35,9 @@ export function WizardProvider({
   };
 
   return (
-    <WizardContext.Provider value={{ state, setState, update }}>
+    <WizardContext.Provider
+      value={{ state, setState, update, markStepComplete }}
+    >
       {children}
     </WizardContext.Provider>
   );

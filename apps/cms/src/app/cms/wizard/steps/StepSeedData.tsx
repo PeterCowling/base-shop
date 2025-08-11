@@ -10,7 +10,8 @@ interface Props {
   seeding: boolean;
   onBack: () => void;
   seed: () => Promise<void> | void;
-  onComplete: () => void;
+  onNext: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
 }
 
 export default function StepSeedData({
@@ -21,7 +22,8 @@ export default function StepSeedData({
   seeding,
   onBack,
   seed,
-  onComplete,
+  onNext,
+  markStepComplete,
 }: Props): React.JSX.Element {
   return (
     <div className="space-y-4">
@@ -50,7 +52,8 @@ export default function StepSeedData({
           disabled={seeding}
           onClick={async () => {
             await seed();
-            onComplete();
+            markStepComplete("seed-data", true);
+            onNext();
           }}
         >
           {seeding ? "Saving…" : "Save & Continue"}

@@ -28,7 +28,7 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
 }
 
 export default function StepShopPage({
@@ -43,7 +43,7 @@ export default function StepShopPage({
   themeStyle,
   onBack,
   onNext,
-  onComplete,
+  markStepComplete,
 }: Props): React.JSX.Element {
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
@@ -140,7 +140,7 @@ export default function StepShopPage({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markStepComplete("shop-page", true);
             onNext();
           }}
         >

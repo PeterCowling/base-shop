@@ -23,7 +23,7 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
 }
 
 export default function StepAdditionalPages({
@@ -34,7 +34,7 @@ export default function StepAdditionalPages({
   themeStyle,
   onBack,
   onNext,
-  onComplete,
+  markStepComplete,
 }: Props): React.JSX.Element {
   const languages = LOCALES as readonly Locale[];
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
@@ -178,7 +178,7 @@ export default function StepAdditionalPages({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markStepComplete("additional-pages", true);
             onNext();
           }}
         >

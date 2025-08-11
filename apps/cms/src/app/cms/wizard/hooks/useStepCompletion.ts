@@ -1,10 +1,10 @@
 import { useWizard } from "../WizardContext";
 
 export function useStepCompletion(stepId: string): [boolean, (v: boolean) => void] {
-  const { state, update } = useWizard();
+  const { state, markStepComplete } = useWizard();
   const completed = state.completed[stepId] ?? false;
   const setCompleted = (v: boolean) => {
-    update("completed", { ...state.completed, [stepId]: v });
+    markStepComplete(stepId, v);
   };
   return [completed, setCompleted];
 }

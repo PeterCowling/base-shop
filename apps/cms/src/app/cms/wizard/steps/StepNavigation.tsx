@@ -15,7 +15,7 @@ interface Props {
   setNavItems: (v: NavItem[]) => void;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
 }
 
 export default function StepNavigation({
@@ -23,7 +23,7 @@ export default function StepNavigation({
   setNavItems,
   onBack,
   onNext,
-  onComplete,
+  markStepComplete,
 }: Props): React.JSX.Element {
   return (
     <div className="space-y-4">
@@ -35,7 +35,7 @@ export default function StepNavigation({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markStepComplete("navigation", true);
             onNext();
           }}
         >

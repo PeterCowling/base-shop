@@ -29,7 +29,7 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
   creating: boolean;
   submit: () => void;
   errors?: Record<string, string[]>;
@@ -56,7 +56,7 @@ export default function StepSummary({
   themeStyle,
   onBack,
   onNext,
-  onComplete,
+  markStepComplete,
   creating,
   submit,
   errors = {},
@@ -164,7 +164,7 @@ export default function StepSummary({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markStepComplete("summary", true);
             onNext();
           }}
         >

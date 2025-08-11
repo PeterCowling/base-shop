@@ -10,7 +10,8 @@ interface Props {
   importing: boolean;
   onBack: () => void;
   saveData: () => Promise<void> | void;
-  onComplete: () => void;
+  onNext: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
 }
 
 export default function StepImportData({
@@ -21,7 +22,8 @@ export default function StepImportData({
   importing,
   onBack,
   saveData,
-  onComplete,
+  onNext,
+  markStepComplete,
 }: Props): React.JSX.Element {
   return (
     <div className="space-y-4">
@@ -49,7 +51,8 @@ export default function StepImportData({
           disabled={importing}
           onClick={async () => {
             await saveData();
-            onComplete();
+            markStepComplete("import-data", true);
+            onNext();
           }}
         >
           {importing ? "Saving…" : "Save & Continue"}

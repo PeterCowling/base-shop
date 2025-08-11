@@ -25,7 +25,7 @@ interface Props {
   setTemplate: (v: string) => void;
   templates: string[];
   onNext: () => void;
-  onComplete: () => void;
+  markStepComplete: (stepId: string, status: boolean) => void;
   errors?: Record<string, string[]>;
 }
 
@@ -44,7 +44,7 @@ export default function StepShopDetails({
   setTemplate,
   templates,
   onNext,
-  onComplete,
+  markStepComplete,
   errors = {},
 }: Props): React.JSX.Element {
   return (
@@ -128,7 +128,7 @@ export default function StepShopDetails({
         <Button
           disabled={!shopId}
           onClick={() => {
-            onComplete();
+            markStepComplete("shop-details", true);
             onNext();
           }}
         >

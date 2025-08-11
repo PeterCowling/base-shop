@@ -70,7 +70,11 @@ export async function PUT(req: Request): Promise<NextResponse> {
   }
   try {
     const body = await req.json().catch(() => ({}));
-    const { stepId, data } = body as { stepId?: string | null; data?: unknown };
+    const { stepId, data, completed } = body as {
+      stepId?: string | null;
+      data?: unknown;
+      completed?: Record<string, boolean>;
+    };
     const parsed = wizardStateSchema.partial().safeParse(data ?? {});
     if (!parsed.success && stepId) {
       return NextResponse.json({ error: "Invalid state" }, { status: 400 });
@@ -87,6 +91,9 @@ export async function PUT(req: Request): Promise<NextResponse> {
       record = { state: {}, completed: {} };
     } else {
       record.state = { ...(record.state as object), ...parsed.data };
+      if (completed && typeof completed === "object") {
+        record.completed = { ...record.completed, ...completed };
+      }
     }
     db[session.user.id] = record;
     await writeDb(db);

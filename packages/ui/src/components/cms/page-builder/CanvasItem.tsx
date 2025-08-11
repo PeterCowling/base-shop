@@ -58,6 +58,13 @@ const CanvasItem = memo(function CanvasItem({
   );
   const [moving, setMoving] = useState(false);
   const [editing, setEditing] = useState(false);
+  const siblingEdgesRef = useRef<{ vertical: number[]; horizontal: number[] }>({
+    vertical: [],
+    horizontal: [],
+  });
+  const [guides, setGuides] = useState<{ x: number | null; y: number | null }>(
+    { x: null, y: null }
+  );
 
   const editor = useTextEditor(component, locale, editing);
 
@@ -66,7 +73,22 @@ const CanvasItem = memo(function CanvasItem({
     ? ((component as any).children as PageComponent[]).map((c) => c.id)
     : [];
 
-  const snapping = snapWidth || snapHeight;
+  const snapping = snapWidth || snapHeight || guides.x !== null || guides.y !== null;
+
+  const computeSiblingEdges = () => {
+    const el = containerRef.current;
+    const parent = el?.parentElement;
+    if (!el || !parent) return { vertical: [], horizontal: [] };
+    const vertical: number[] = [];
+    const horizontal: number[] = [];
+    Array.from(parent.children).forEach((child) => {
+      if (child === el) return;
+      const c = child as HTMLElement;
+      vertical.push(c.offsetLeft, c.offsetLeft + c.offsetWidth);
+      horizontal.push(c.offsetTop, c.offsetTop + c.offsetHeight);
+    });
+    return { vertical, horizontal };
+  };
 
   useEffect(() => {
     if (!resizing) return;
@@ -77,24 +99,47 @@ const CanvasItem = memo(function CanvasItem({
       const parent = containerRef.current.parentElement;
       const parentW = parent?.offsetWidth ?? startRef.current.w + dx;
       const parentH = parent?.offsetHeight ?? startRef.current.h + dy;
-      const newW = startRef.current.w + dx;
-      const newH = startRef.current.h + dy;
+      let newW = startRef.current.w + dx;
+      let newH = startRef.current.h + dy;
       const threshold = 10;
-      const shouldSnapWidth = e.shiftKey || Math.abs(parentW - newW) <= threshold;
-      const shouldSnapHeight = e.shiftKey || Math.abs(parentH - newH) <= threshold;
+      const left = containerRef.current.offsetLeft;
+      const top = containerRef.current.offsetTop;
+      let guideX: number | null = null;
+      let guideY: number | null = null;
+      siblingEdgesRef.current.vertical.forEach((edge) => {
+        const right = left + newW;
+        if (Math.abs(right - edge) <= threshold) {
+          newW = edge - left;
+          guideX = edge;
+        }
+      });
+      siblingEdgesRef.current.horizontal.forEach((edge) => {
+        const bottom = top + newH;
+        if (Math.abs(bottom - edge) <= threshold) {
+          newH = edge - top;
+          guideY = edge;
+        }
+      });
+      const snapW = e.shiftKey || Math.abs(parentW - newW) <= threshold;
+      const snapH = e.shiftKey || Math.abs(parentH - newH) <= threshold;
       dispatch({
         type: "resize",
         id: component.id,
-        width: shouldSnapWidth ? "100%" : `${newW}px`,
-        height: shouldSnapHeight ? "100%" : `${newH}px`,
+        width: snapW ? "100%" : `${newW}px`,
+        height: snapH ? "100%" : `${newH}px`,
       });
-      setSnapWidth(shouldSnapWidth);
-      setSnapHeight(shouldSnapHeight);
+      setSnapWidth(snapW || guideX !== null);
+      setSnapHeight(snapH || guideY !== null);
+      setGuides({
+        x: guideX !== null ? guideX - left : null,
+        y: guideY !== null ? guideY - top : null,
+      });
     };
     const stop = () => {
       setResizing(false);
       setSnapWidth(false);
       setSnapHeight(false);
+      setGuides({ x: null, y: null });
     };
     window.addEventListener("pointermove", handleMove);
     window.addEventListener("pointerup", stop);
@@ -107,17 +152,51 @@ const CanvasItem = memo(function CanvasItem({
   useEffect(() => {
     if (!moving) return;
     const handleMove = (e: PointerEvent) => {
-      if (!moveRef.current) return;
+      if (!moveRef.current || !containerRef.current) return;
       const dx = e.clientX - moveRef.current.x;
       const dy = e.clientY - moveRef.current.y;
+      let newL = moveRef.current.l + dx;
+      let newT = moveRef.current.t + dy;
+      const threshold = 10;
+      let guideX: number | null = null;
+      let guideY: number | null = null;
+      const width = containerRef.current.offsetWidth;
+      const height = containerRef.current.offsetHeight;
+      siblingEdgesRef.current.vertical.forEach((edge) => {
+        if (Math.abs(newL - edge) <= threshold) {
+          newL = edge;
+          guideX = edge;
+        }
+        if (Math.abs(newL + width - edge) <= threshold) {
+          newL = edge - width;
+          guideX = edge;
+        }
+      });
+      siblingEdgesRef.current.horizontal.forEach((edge) => {
+        if (Math.abs(newT - edge) <= threshold) {
+          newT = edge;
+          guideY = edge;
+        }
+        if (Math.abs(newT + height - edge) <= threshold) {
+          newT = edge - height;
+          guideY = edge;
+        }
+      });
       dispatch({
         type: "resize",
         id: component.id,
-        left: `${moveRef.current.l + dx}px`,
-        top: `${moveRef.current.t + dy}px`,
+        left: `${newL}px`,
+        top: `${newT}px`,
+      });
+      setGuides({
+        x: guideX !== null ? guideX - newL : null,
+        y: guideY !== null ? guideY - newT : null,
       });
     };
-    const stop = () => setMoving(false);
+    const stop = () => {
+      setMoving(false);
+      setGuides({ x: null, y: null });
+    };
     window.addEventListener("pointermove", handleMove);
     window.addEventListener("pointerup", stop);
     return () => {
@@ -145,6 +224,7 @@ const CanvasItem = memo(function CanvasItem({
       w: startWidth,
       h: startHeight,
     };
+    siblingEdgesRef.current = computeSiblingEdges();
     setResizing(true);
   };
 
@@ -158,6 +238,7 @@ const CanvasItem = memo(function CanvasItem({
       l: el.offsetLeft,
       t: el.offsetTop,
     };
+    siblingEdgesRef.current = computeSiblingEdges();
     setMoving(true);
   };
 
@@ -219,6 +300,22 @@ const CanvasItem = memo(function CanvasItem({
           startMove(e);
         }}
       />
+      {(guides.x !== null || guides.y !== null) && (
+        <div className="pointer-events-none absolute inset-0 z-20">
+          {guides.x !== null && (
+            <div
+              className="absolute top-0 bottom-0 w-px bg-primary"
+              style={{ left: guides.x }}
+            />
+          )}
+          {guides.y !== null && (
+            <div
+              className="absolute left-0 right-0 h-px bg-primary"
+              style={{ top: guides.y }}
+            />
+          )}
+        </div>
+      )}
       {component.type === "Text" ? (
         editing ? (
           <div onBlur={finishEdit} onClick={(e) => e.stopPropagation()}>

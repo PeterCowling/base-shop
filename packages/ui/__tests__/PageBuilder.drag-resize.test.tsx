@@ -170,5 +170,72 @@ describe("PageBuilder interactions", () => {
       expect.objectContaining({ width: "100%", height: "100%" })
     );
   });
+
+  it("snaps to sibling edge when moving", () => {
+    const c1: any = {
+      id: "c1",
+      type: "Image",
+      width: "100px",
+      height: "100px",
+      position: "absolute",
+      left: "0px",
+      top: "0px",
+    };
+    const c2: any = {
+      id: "c2",
+      type: "Image",
+      width: "100px",
+      height: "100px",
+      position: "absolute",
+      left: "120px",
+      top: "0px",
+    };
+    const dispatch = jest.fn();
+    const { container } = render(
+      <div id="parent">
+        <CanvasItem
+          component={c1}
+          index={0}
+          parentId="parent"
+          selectedId={null}
+          onSelectId={() => {}}
+          onRemove={() => {}}
+          dispatch={jest.fn()}
+          locale="en"
+        />
+        <CanvasItem
+          component={c2}
+          index={1}
+          parentId="parent"
+          selectedId="c2"
+          onSelectId={() => {}}
+          onRemove={() => {}}
+          dispatch={dispatch}
+          locale="en"
+        />
+      </div>
+    );
+
+    const parent = container.querySelector("#parent") as HTMLElement;
+    const el1 = parent.children[0] as HTMLElement;
+    const el2 = parent.children[1] as HTMLElement;
+    Object.defineProperty(el1, "offsetLeft", { value: 0, writable: true });
+    Object.defineProperty(el1, "offsetTop", { value: 0, writable: true });
+    Object.defineProperty(el1, "offsetWidth", { value: 100, writable: true });
+    Object.defineProperty(el1, "offsetHeight", { value: 100, writable: true });
+    Object.defineProperty(el2, "offsetLeft", { value: 120, writable: true });
+    Object.defineProperty(el2, "offsetTop", { value: 0, writable: true });
+    Object.defineProperty(el2, "offsetWidth", { value: 100, writable: true });
+    Object.defineProperty(el2, "offsetHeight", { value: 100, writable: true });
+
+    const handle = el2.querySelector(".cursor-move") as HTMLElement;
+    fireEvent.pointerDown(handle, { clientX: 120, clientY: 0 });
+    fireEvent.pointerMove(window, { clientX: 105, clientY: 0 });
+    fireEvent.pointerUp(window);
+
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ left: "100px" })
+    );
+  });
 });
 

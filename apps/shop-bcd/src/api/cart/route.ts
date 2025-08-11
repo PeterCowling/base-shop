@@ -27,12 +27,22 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const { sku, qty } = parsed.data;
+  const { sku, qty, size } = parsed.data;
+  const sizes = "sizes" in sku ? sku.sizes : [];
+  if (sizes.length > 0) {
+    if (!size) {
+      return NextResponse.json({ error: "Size required" }, { status: 400 });
+    }
+    if (!sizes.includes(size)) {
+      return NextResponse.json({ error: "Invalid size" }, { status: 400 });
+    }
+  }
   const cookie = req.cookies.get(CART_COOKIE)?.value;
   const cart = decodeCartCookie(cookie);
-  const line = cart[sku.id];
+  const id = size ? `${sku.id}:${size}` : sku.id;
+  const line = cart[id];
 
-  cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+  cart[id] = { sku, qty: (line?.qty ?? 0) + qty, size };
 
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));

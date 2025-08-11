@@ -65,7 +65,8 @@ test("Checkout page renders CMS components with cart data", async () => {
     { slug: "checkout", status: "published", components },
   ]);
 
-  const cart = { [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 1 } };
+  const size = PRODUCTS[0].sizes[0];
+  const cart = { [`${PRODUCTS[0].id}:${size}`]: { sku: PRODUCTS[0], qty: 1, size } };
   (cookies as jest.Mock).mockResolvedValue({
     get: () => ({ value: encodeCartCookie(cart) }),
   });

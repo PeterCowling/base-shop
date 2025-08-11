@@ -15,12 +15,10 @@ export function OrderConfirmationTemplate({
   className,
   ...props
 }: OrderConfirmationTemplateProps) {
-  const subtotal = Object.values(cart).reduce(
-    (s, l) => s + l.sku.price * l.qty,
-    0
-  );
-  const deposit = Object.values(cart).reduce(
-    (s, l) => s + (l.sku.deposit ?? 0) * l.qty,
+  const entries = Object.entries(cart);
+  const subtotal = entries.reduce((s, [, l]) => s + l.sku.price * l.qty, 0);
+  const deposit = entries.reduce(
+    (s, [, l]) => s + (l.sku.deposit ?? 0) * l.qty,
     0
   );
 
@@ -40,8 +38,8 @@ export function OrderConfirmationTemplate({
           </tr>
         </thead>
         <tbody>
-          {Object.values(cart).map((l) => (
-            <tr key={l.sku.id} className="border-b last:border-0">
+          {entries.map(([id, l]) => (
+            <tr key={id} className="border-b last:border-0">
               <td className="py-2">{l.sku.title}</td>
               <td>{l.qty}</td>
               <td className="text-right">

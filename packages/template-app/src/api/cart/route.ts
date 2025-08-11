@@ -29,11 +29,20 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const { sku: skuInput, qty } = parsed.data;
+  const { sku: skuInput, qty, size } = parsed.data;
   const sku = "title" in skuInput ? skuInput : getProductById(skuInput.id);
 
   if (!sku) {
     return NextResponse.json({ error: "Item not found" }, { status: 404 });
+  }
+
+  if (sku.sizes.length > 0) {
+    if (!size) {
+      return NextResponse.json({ error: "Size required" }, { status: 400 });
+    }
+    if (!sku.sizes.includes(size)) {
+      return NextResponse.json({ error: "Invalid size" }, { status: 400 });
+    }
   }
 
   let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
@@ -41,8 +50,9 @@ export async function POST(req: NextRequest) {
     cartId = await createCart();
   }
   const cart = await getCart(cartId);
-  const line = cart[sku.id];
-  cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+  const id = size ? `${sku.id}:${size}` : sku.id;
+  const line = cart[id];
+  cart[id] = { sku, qty: (line?.qty ?? 0) + qty, size };
   await setCart(cartId, cart);
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));

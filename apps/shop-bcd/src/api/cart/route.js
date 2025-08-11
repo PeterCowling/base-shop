@@ -13,11 +13,21 @@ export async function POST(req) {
     if (!parsed.success) {
         return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
     }
-    const { sku, qty = 1 } = parsed.data;
+    const { sku, qty = 1, size } = parsed.data;
+    const sizes = "sizes" in sku ? sku.sizes : [];
+    if (sizes.length > 0) {
+        if (!size) {
+            return NextResponse.json({ error: "Size required" }, { status: 400 });
+        }
+        if (!sizes.includes(size)) {
+            return NextResponse.json({ error: "Invalid size" }, { status: 400 });
+        }
+    }
     const cookie = req.cookies.get(CART_COOKIE)?.value;
     const cart = decodeCartCookie(cookie);
-    const line = cart[sku.id];
-    cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+    const id = size ? `${sku.id}:${size}` : sku.id;
+    const line = cart[id];
+    cart[id] = { sku, qty: (line?.qty ?? 0) + qty, size };
     const res = NextResponse.json({ ok: true, cart });
     res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
     return res;

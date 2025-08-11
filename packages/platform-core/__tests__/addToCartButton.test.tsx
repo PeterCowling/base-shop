@@ -9,7 +9,9 @@ jest.mock("react-dom", () => jest.requireActual("react-dom"));
 
 function Qty() {
   const [state] = useCart();
-  return <span data-testid="qty">{state[PRODUCTS[0].id]?.qty ?? 0}</span>;
+  const size = PRODUCTS[0].sizes[0];
+  const id = `${PRODUCTS[0].id}:${size}`;
+  return <span data-testid="qty">{state[id]?.qty ?? 0}</span>;
 }
 
 describe("AddToCartButton", () => {
@@ -20,6 +22,8 @@ describe("AddToCartButton", () => {
   });
 
   it("adds items to the cart", async () => {
+    const size = PRODUCTS[0].sizes[0];
+    const id = `${PRODUCTS[0].id}:${size}`;
     global.fetch = jest
       .fn()
       // initial GET
@@ -27,12 +31,12 @@ describe("AddToCartButton", () => {
       // POST
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ cart: { [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 1 } } }),
+        json: async () => ({ cart: { [id]: { sku: PRODUCTS[0], qty: 1, size } } }),
       });
 
     render(
       <CartProvider>
-        <AddToCartButton sku={PRODUCTS[0]} />
+        <AddToCartButton sku={PRODUCTS[0]} size={PRODUCTS[0].sizes[0]} />
         <Qty />
       </CartProvider>
     );
@@ -60,7 +64,7 @@ describe("AddToCartButton", () => {
 
     render(
       <CartProvider>
-        <AddToCartButton sku={PRODUCTS[0]} />
+        <AddToCartButton sku={PRODUCTS[0]} size={PRODUCTS[0].sizes[0]} />
         <Qty />
       </CartProvider>
     );

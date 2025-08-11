@@ -41,7 +41,8 @@ function CartInitializer({ items }: WrapperProps) {
     Object.values(items).forEach((line) => {
       dispatch({ type: "add", sku: line.sku, size: line.size });
       if (line.qty > 1) {
-        dispatch({ type: "setQty", id: line.sku.id, qty: line.qty });
+        const id = line.size ? `${line.sku.id}:${line.size}` : line.sku.id;
+        dispatch({ type: "setQty", id, qty: line.qty });
       }
     });
   }, [items, dispatch]);

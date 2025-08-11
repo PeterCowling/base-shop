@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import {
-  createUser,
+  addUser,
   getUserById,
   getUserByEmail,
-} from "@platform-core/users";
+} from "../../userStore";
 
 const RegisterSchema = z.object({
   customerId: z.string(),
@@ -32,6 +32,6 @@ export async function POST(req: Request) {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  await createUser({ id: customerId, email, passwordHash });
+  await addUser({ id: customerId, email, passwordHash });
   return NextResponse.json({ ok: true });
 }

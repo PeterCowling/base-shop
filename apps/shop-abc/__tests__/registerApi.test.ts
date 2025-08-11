@@ -6,11 +6,11 @@ jest.mock("next/server", () => ({
 }));
 
 import { POST } from "../src/app/register/route";
-import { USER_STORE } from "../src/app/userStore";
+import { deleteUser } from "../src/app/userStore";
 
 describe("/register POST", () => {
-  afterEach(() => {
-    delete USER_STORE["newuser"];
+  afterEach(async () => {
+    await deleteUser("newuser");
   });
 
   it("rejects weak passwords", async () => {

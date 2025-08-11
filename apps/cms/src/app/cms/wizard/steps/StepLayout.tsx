@@ -8,6 +8,7 @@ import type { Page, PageComponent } from "@types";
 import { fetchJson } from "@shared-utils";
 import { ReactNode, useState } from "react";
 import { Toast } from "@/components/atoms";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   currentStep: number;
@@ -32,7 +33,6 @@ interface Props {
   /** Navigation */
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
 
   /** Optional inner content for the step */
   children?: ReactNode;
@@ -55,7 +55,6 @@ export default function StepLayout({
   themeStyle,
   onBack,
   onNext,
-  onComplete,
   children,
 }: Props): React.JSX.Element | null {
   /**
@@ -70,6 +69,7 @@ export default function StepLayout({
     open: false,
     message: "",
   });
+  const [, markComplete] = useStepCompletion("layout");
 
   return (
     <fieldset className="space-y-4">
@@ -173,7 +173,7 @@ export default function StepLayout({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markComplete(true);
             onNext();
           }}
         >

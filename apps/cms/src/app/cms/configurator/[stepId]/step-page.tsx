@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { steps, stepOrder } from "../steps";
-import useStepCompletion from "../../wizard/hooks/useStepCompletion";
 
 interface Props {
   stepId: string;
@@ -15,7 +14,6 @@ export default function StepPage({ stepId }: Props) {
     return null;
   }
   const StepComponent = step.component as React.ComponentType<any>;
-  const [, setCompleted] = useStepCompletion(stepId);
   const index = stepOrder.indexOf(stepId);
   const nextId = index >= 0 && index < stepOrder.length - 1 ? stepOrder[index + 1] : null;
   const prevId = index > 0 ? stepOrder[index - 1] : null;
@@ -25,7 +23,5 @@ export default function StepPage({ stepId }: Props) {
   const goBack = () => {
     if (prevId) router.push(`/cms/configurator/${prevId}`);
   };
-  return (
-    <StepComponent onComplete={() => setCompleted(true)} onNext={goNext} onBack={goBack} />
-  );
+  return <StepComponent onNext={goNext} onBack={goBack} />;
 }

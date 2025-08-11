@@ -4,6 +4,7 @@ import { Button, Input } from "@/components/atoms/shadcn";
 import type { DeployStatusBase } from "@platform-core/createShop";
 import { useEffect } from "react";
 import { getDeployStatus, type DeployInfo } from "../services/deployShop";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   shopId: string;
@@ -17,7 +18,6 @@ interface Props {
   deploying: boolean;
   onBack: () => void;
   deploy: () => Promise<void> | void;
-  onComplete: () => void;
 }
 
 export default function StepHosting({
@@ -30,8 +30,8 @@ export default function StepHosting({
   deploying,
   onBack,
   deploy,
-  onComplete,
 }: Props): React.JSX.Element {
+  const [, markComplete] = useStepCompletion("hosting");
   useEffect(() => {
     if (!shopId || !deployInfo) return;
     if (
@@ -104,7 +104,7 @@ export default function StepHosting({
           disabled={deploying}
           onClick={async () => {
             await deploy();
-            onComplete();
+            markComplete(true);
           }}
         >
           {deploying ? "Deploying…" : "Deploy"}

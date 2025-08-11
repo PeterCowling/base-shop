@@ -7,6 +7,7 @@ import { LOCALES } from "@acme/i18n";
 import type { Locale } from "@types";
 import React from "react";
 import WizardPreview from "../WizardPreview";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   shopId: string;
@@ -29,7 +30,6 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
   creating: boolean;
   submit: () => void;
   errors?: Record<string, string[]>;
@@ -56,12 +56,12 @@ export default function StepSummary({
   themeStyle,
   onBack,
   onNext,
-  onComplete,
   creating,
   submit,
   errors = {},
 }: Props): React.JSX.Element {
   const languages = LOCALES as readonly Locale[];
+  const [, markComplete] = useStepCompletion("summary");
 
   return (
     <div className="space-y-4">
@@ -164,7 +164,7 @@ export default function StepSummary({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markComplete(true);
             onNext();
           }}
         >

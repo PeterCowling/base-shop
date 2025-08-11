@@ -11,6 +11,7 @@ import {
 } from "@/components/atoms/shadcn";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   shopId: string;
@@ -24,7 +25,6 @@ interface Props {
   setAnalyticsId: (v: string) => void;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
 }
 
 export default function StepOptions({
@@ -39,10 +39,10 @@ export default function StepOptions({
   setAnalyticsId,
   onBack,
   onNext,
-  onComplete,
 }: Props): React.JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [, markComplete] = useStepCompletion("options");
 
   useEffect(() => {
     const provider = searchParams.get("connected");
@@ -138,7 +138,7 @@ export default function StepOptions({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markComplete(true);
             onNext();
           }}
         >

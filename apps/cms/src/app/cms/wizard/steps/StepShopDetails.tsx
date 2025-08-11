@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   shopId: string;
@@ -25,7 +26,6 @@ interface Props {
   setTemplate: (v: string) => void;
   templates: string[];
   onNext: () => void;
-  onComplete: () => void;
   errors?: Record<string, string[]>;
 }
 
@@ -44,9 +44,9 @@ export default function StepShopDetails({
   setTemplate,
   templates,
   onNext,
-  onComplete,
   errors = {},
 }: Props): React.JSX.Element {
+  const [, markComplete] = useStepCompletion("shop-details");
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Shop Details</h2>
@@ -128,7 +128,7 @@ export default function StepShopDetails({
         <Button
           disabled={!shopId}
           onClick={() => {
-            onComplete();
+            markComplete(true);
             onNext();
           }}
         >

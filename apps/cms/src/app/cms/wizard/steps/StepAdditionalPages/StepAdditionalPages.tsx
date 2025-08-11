@@ -14,6 +14,7 @@ import PageLayoutSelector from "./PageLayoutSelector";
 import PageMetaForm from "./PageMetaForm";
 import useNewPageState from "./useNewPageState";
 import usePagesLoader from "./usePagesLoader";
+import useStepCompletion from "../../hooks/useStepCompletion";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -23,7 +24,6 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
 }
 
 export default function StepAdditionalPages({
@@ -34,7 +34,6 @@ export default function StepAdditionalPages({
   themeStyle,
   onBack,
   onNext,
-  onComplete,
 }: Props): React.JSX.Element {
   const languages = LOCALES as readonly Locale[];
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
@@ -61,6 +60,7 @@ export default function StepAdditionalPages({
     setPageLayout: setNewPageLayout,
     resetFields,
   } = useNewPageState(languages);
+  const [, markComplete] = useStepCompletion("additional-pages");
 
   usePagesLoader({
     shopId,
@@ -178,7 +178,7 @@ export default function StepAdditionalPages({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markComplete(true);
             onNext();
           }}
         >

@@ -6,6 +6,7 @@ import TestimonialsEditor from "../TestimonialsEditor";
 import HeroBannerEditor from "../HeroBannerEditor";
 import ValuePropsEditor from "../ValuePropsEditor";
 import ReviewsCarouselEditor from "../ReviewsCarouselEditor";
+import VideoBlockEditor from "../VideoBlockEditor";
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
@@ -58,6 +59,12 @@ describe("block editors", () => {
       ReviewsCarouselEditor,
       { type: "ReviewsCarousel", reviews: [{ nameKey: "", quoteKey: "" }] },
       "nameKey",
+    ],
+    [
+      "VideoBlockEditor",
+      VideoBlockEditor,
+      { type: "VideoBlock", src: "", autoplay: false },
+      "Video URL",
     ],
   ];
 

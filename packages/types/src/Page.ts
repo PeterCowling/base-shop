@@ -108,6 +108,12 @@ export interface ImageComponent extends PageComponentBase {
   alt?: string;
 }
 
+export interface VideoBlockComponent extends PageComponentBase {
+  type: "VideoBlock";
+  src?: string;
+  autoplay?: boolean;
+}
+
 export interface BlogListingComponent extends PageComponentBase {
   type: "BlogListing";
   posts?: { title: string; excerpt?: string; url?: string }[];
@@ -148,6 +154,7 @@ export type PageComponent =
   | TestimonialsComponent
   | TestimonialSliderComponent
   | ImageComponent
+  | VideoBlockComponent
   | TextComponent
   | SectionComponent;
 
@@ -266,6 +273,12 @@ const imageComponentSchema = baseComponentSchema.extend({
   alt: z.string().optional(),
 });
 
+const videoBlockComponentSchema = baseComponentSchema.extend({
+  type: z.literal("VideoBlock"),
+  src: z.string().optional(),
+  autoplay: z.boolean().optional(),
+});
+
 const textComponentSchema = baseComponentSchema.extend({
   type: z.literal("Text"),
   text: z.string().optional(),
@@ -291,6 +304,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     testimonialsComponentSchema,
     testimonialSliderComponentSchema,
     imageComponentSchema,
+    videoBlockComponentSchema,
     textComponentSchema,
     sectionComponentSchema,
   ])

@@ -105,6 +105,11 @@ export interface ImageComponent extends PageComponentBase {
     src?: string;
     alt?: string;
 }
+export interface VideoBlockComponent extends PageComponentBase {
+    type: "VideoBlock";
+    src?: string;
+    autoplay?: boolean;
+}
 export interface TextComponent extends PageComponentBase {
     type: "Text";
     text?: string;
@@ -136,7 +141,7 @@ export interface SectionComponent extends PageComponentBase {
     type: "Section";
     children?: PageComponent[];
 }
-export type PageComponent = HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent | ProductCarouselComponent | RecommendationCarouselComponent | GalleryComponent | ContactFormComponent | ContactFormWithMapComponent | BlogListingComponent | TestimonialsComponent | TestimonialSliderComponent | ImageComponent | TextComponent | SectionComponent;
+export type PageComponent = HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent | ProductCarouselComponent | RecommendationCarouselComponent | GalleryComponent | ContactFormComponent | ContactFormWithMapComponent | BlogListingComponent | TestimonialsComponent | TestimonialSliderComponent | ImageComponent | VideoBlockComponent | TextComponent | SectionComponent;
 export declare const pageSchema: z.ZodObject<{
     id: z.ZodString;
     slug: z.ZodString;

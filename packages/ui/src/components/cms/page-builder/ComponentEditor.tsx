@@ -19,6 +19,7 @@ import TestimonialsEditor from "./TestimonialsEditor";
 import HeroBannerEditor from "./HeroBannerEditor";
 import ValuePropsEditor from "./ValuePropsEditor";
 import ReviewsCarouselEditor from "./ReviewsCarouselEditor";
+import VideoBlockEditor from "./VideoBlockEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -49,6 +50,9 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "Image":
       specific = <ImageBlockEditor component={component} onChange={onChange} />;
+      break;
+    case "VideoBlock":
+      specific = <VideoBlockEditor component={component} onChange={onChange} />;
       break;
     case "Testimonials":
       specific = <TestimonialsEditor component={component} onChange={onChange} />;

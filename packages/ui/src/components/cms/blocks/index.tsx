@@ -11,6 +11,7 @@ import Testimonials from "./Testimonials";
 import ValueProps from "./ValueProps";
 import RecommendationCarousel from "./RecommendationCarousel";
 import Section from "./Section";
+import VideoBlock from "./VideoBlock";
 
 export {
   BlogListing,
@@ -26,6 +27,7 @@ export {
   TestimonialSlider,
   ValueProps,
   Section,
+  VideoBlock,
 };
 
 export * from "./atoms";
@@ -45,6 +47,7 @@ export const blockRegistry = {
   ...atomRegistry,
   ...moleculeRegistry,
   ...organismRegistry,
+  VideoBlock,
 } as const;
 
 export type BlockType = keyof typeof blockRegistry;

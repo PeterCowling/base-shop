@@ -18,7 +18,12 @@ const palette = {
       label: t.replace(/([A-Z])/g, " $1").trim(),
     })
   ),
-  atoms: (Object.keys(atomRegistry) as PageComponent["type"][]).map((t) => ({
+  atoms: (
+    [
+      ...Object.keys(atomRegistry),
+      "VideoBlock",
+    ] as PageComponent["type"][]
+  ).map((t) => ({
     type: t,
     label: t.replace(/([A-Z])/g, " $1").trim(),
   })),

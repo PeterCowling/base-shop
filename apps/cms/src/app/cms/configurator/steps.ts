@@ -25,6 +25,8 @@ export interface ConfiguratorStep {
 
 export type StepStatus = "pending" | "done";
 
+export type StepMeta = Omit<ConfiguratorStep, "component">;
+
 export const steps: Record<string, ConfiguratorStep> = {
   "shop-details": {
     id: "shop-details",
@@ -161,4 +163,11 @@ export const stepOrder = [
 export const initialStepStatus: Record<string, StepStatus> = Object.fromEntries(
   stepOrder.map((id) => [id, "pending"])
 );
+
+export function getSteps(): StepMeta[] {
+  return stepOrder.map((id) => {
+    const { component, ...meta } = steps[id];
+    return meta;
+  });
+}
 

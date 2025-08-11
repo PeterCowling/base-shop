@@ -10,6 +10,7 @@ interface Attempt {
 
 // Fallback in-memory store used when Redis is not configured
 const attempts = new Map<string, Attempt>();
+const registrationAttempts = new Map<string, Attempt>();
 
 // Redis client configured via environment variables. If the variables are not
 // set we simply fall back to the in-memory `Map` above which is suitable for
@@ -35,10 +36,13 @@ if (
 }
 
 export const MAX_ATTEMPTS = 3;
+export const MAX_REGISTRATION_ATTEMPTS = 3;
 const LOCK_MS = 5 * 60 * 1000; // 5 minutes
 
 const COUNT_PREFIX = "login:count:";
 const LOCK_PREFIX = "login:lock:";
+const REG_COUNT_PREFIX = "register:count:";
+const REG_LOCK_PREFIX = "register:lock:";
 
 function key(ip: string, user: string) {
   return `${ip}:${user}`;
@@ -135,5 +139,88 @@ export async function __resetLoginRateLimiter() {
     }
   } else {
     attempts.clear();
+  }
+}
+
+/**
+ * Check rate limit for registration attempts.
+ * Returns a 429 response if the limit is exceeded.
+ */
+export async function checkRegistrationRateLimit(
+  ip: string,
+): Promise<NextResponse | null> {
+  const k = ip;
+  const now = Date.now();
+
+  if (redis) {
+    const lockKey = `${REG_LOCK_PREFIX}${k}`;
+    const countKey = `${REG_COUNT_PREFIX}${k}`;
+
+    const locked = await redis.exists(lockKey);
+    if (locked) {
+      console.warn(`[register] locked out ${k}`);
+      return NextResponse.json(
+        { error: "Too many registration attempts. Try again later." },
+        { status: 429 },
+      );
+    }
+
+    const count = await redis.incr(countKey);
+    if (count === 1) {
+      await redis.pexpire(countKey, LOCK_MS);
+    }
+    if (count > MAX_REGISTRATION_ATTEMPTS) {
+      await redis.set(lockKey, "1", { px: LOCK_MS });
+      console.warn(`[register] lockout ${k}`);
+      return NextResponse.json(
+        { error: "Too many registration attempts. Try again later." },
+        { status: 429 },
+      );
+    }
+
+    return null;
+  }
+
+  const record = registrationAttempts.get(k) ?? { count: 0, lockedUntil: 0 };
+
+  if (record.lockedUntil > now) {
+    console.warn(`[register] locked out ${k}`);
+    return NextResponse.json(
+      { error: "Too many registration attempts. Try again later." },
+      { status: 429 },
+    );
+  }
+
+  if (record.lockedUntil && record.lockedUntil <= now) {
+    record.count = 0;
+    record.lockedUntil = 0;
+  }
+
+  record.count += 1;
+
+  if (record.count > MAX_REGISTRATION_ATTEMPTS) {
+    record.lockedUntil = now + LOCK_MS;
+    registrationAttempts.set(k, record);
+    console.warn(`[register] lockout ${k}`);
+    return NextResponse.json(
+      { error: "Too many registration attempts. Try again later." },
+      { status: 429 },
+    );
+  }
+
+  registrationAttempts.set(k, record);
+  return null;
+}
+
+/** Test helper to reset registration store */
+export async function __resetRegistrationRateLimiter() {
+  if (redis) {
+    try {
+      await redis.flushall();
+    } catch {
+      // ignore errors in tests; flushall may be restricted in shared instances
+    }
+  } else {
+    registrationAttempts.clear();
   }
 }

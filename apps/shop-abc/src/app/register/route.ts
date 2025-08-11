@@ -7,6 +7,7 @@ import {
   getUserById,
   getUserByEmail,
 } from "@platform-core/users";
+import { checkRegistrationRateLimit } from "../../middleware";
 
 const RegisterSchema = z.object({
   customerId: z.string(),
@@ -22,6 +23,10 @@ export async function POST(req: Request) {
       status: 400,
     });
   }
+
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  const rateLimited = await checkRegistrationRateLimit(ip);
+  if (rateLimited) return rateLimited;
 
   const { customerId, email, password } = parsed.data;
   if (await getUserById(customerId)) {

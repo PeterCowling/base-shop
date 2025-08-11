@@ -10,6 +10,7 @@ import {
   stepStatusSchema,
   type StepStatus,
 } from "@cms/app/cms/wizard/schema";
+import { z } from "zod";
 
 interface UserRecord {
   state: unknown;
@@ -19,6 +20,19 @@ interface UserRecord {
 interface DB {
   [userId: string]: UserRecord | unknown;
 }
+
+const putBodySchema = z.object({
+  stepId: z.string().nullish(),
+  data: wizardStateSchema.partial().optional(),
+  completed: z
+    .union([stepStatusSchema, z.record(stepStatusSchema)])
+    .optional(),
+});
+
+const patchBodySchema = z.object({
+  stepId: z.string(),
+  completed: stepStatusSchema,
+});
 
 function resolveFile(): string {
   let dir = process.cwd();
@@ -74,15 +88,11 @@ export async function PUT(req: Request): Promise<NextResponse> {
   }
   try {
     const body = await req.json().catch(() => ({}));
-    const { stepId, data, completed } = body as {
-      stepId?: string | null;
-      data?: unknown;
-      completed?: StepStatus | Record<string, StepStatus>;
-    };
-    const parsed = wizardStateSchema.partial().safeParse(data ?? {});
-    if (stepId && data && !parsed.success) {
-      return NextResponse.json({ error: "Invalid state" }, { status: 400 });
+    const parsed = putBodySchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
+    const { stepId, data, completed } = parsed.data;
     const db = await readDb();
     let record: UserRecord = { state: {}, completed: {} };
     const existing = db[session.user.id];
@@ -94,16 +104,13 @@ export async function PUT(req: Request): Promise<NextResponse> {
     if (!stepId) {
       record = { state: {}, completed: {} };
     } else {
-      record.state = { ...(record.state as object), ...parsed.data };
-      if (
-        typeof completed === "string" &&
-        stepStatusSchema.safeParse(completed).success
-      ) {
+      record.state = { ...(record.state as object), ...(data ?? {}) };
+      if (typeof completed === "string") {
         record.completed[stepId] = completed;
       }
     }
     if (completed && typeof completed === "object" && !stepId) {
-      record.completed = completed as Record<string, StepStatus>;
+      record.completed = completed;
     }
     db[session.user.id] = record;
     await writeDb(db);
@@ -123,13 +130,11 @@ export async function PATCH(req: Request): Promise<NextResponse> {
   }
   try {
     const body = await req.json().catch(() => ({}));
-    const { stepId, completed } = body as {
-      stepId?: string;
-      completed?: StepStatus;
-    };
-    if (!stepId || !stepStatusSchema.safeParse(completed).success) {
+    const parsed = patchBodySchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
+    const { stepId, completed } = parsed.data;
     const db = await readDb();
     let record: UserRecord = { state: {}, completed: {} };
     const existing = db[session.user.id];

@@ -30,3 +30,4 @@ export { StatsGrid } from "./StatsGrid";
 export { StickyAddToCartBar } from "./StickyAddToCartBar";
 export { StoreLocatorMap } from "./StoreLocatorMap";
 export { WishlistDrawer } from "./WishlistDrawer";
+export { default as AnnouncementBar } from "./AnnouncementBar";

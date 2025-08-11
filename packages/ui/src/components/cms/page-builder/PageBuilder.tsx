@@ -36,6 +36,12 @@ const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
   RecommendationCarousel: { minItems: 1, maxItems: 4 },
   Testimonials: { minItems: 1, maxItems: 10 },
   TestimonialSlider: { minItems: 1, maxItems: 10 },
+  AnnouncementBar: {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100%",
+  },
 };
 
 interface Props {

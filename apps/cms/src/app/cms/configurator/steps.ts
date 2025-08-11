@@ -45,6 +45,9 @@ const stepList: ConfiguratorStep[] = [
 export const getSteps = (): ConfiguratorStep[] =>
   [...stepList].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
+export const getRequiredSteps = (): ConfiguratorStep[] =>
+  getSteps().filter((s) => !s.optional);
+
 export const steps: Record<string, ConfiguratorStep> = Object.fromEntries(
   getSteps().map((s) => [s.id, s])
 );

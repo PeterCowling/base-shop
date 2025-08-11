@@ -6,7 +6,7 @@ import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast, Tooltip } from "@/components/atoms";
 import type { WizardState } from "../wizard/schema";
-import { getSteps } from "./steps";
+import { getRequiredSteps, getSteps } from "./steps";
 export type StepStatus = "idle" | "pending" | "success" | "failure";
 
 export default function ConfiguratorDashboard() {
@@ -35,10 +35,23 @@ export default function ConfiguratorDashboard() {
       .catch(() => setState(null));
   }, []);
   const stepList = getSteps();
-  const missingRequired = stepList.filter(
-    (s) => !s.optional && !state?.completed?.[s.id]
+  const missingRequired = getRequiredSteps().filter(
+    (s) => !state?.completed?.[s.id]
   );
   const allRequiredDone = missingRequired.length === 0;
+
+  const skipStep = async (id: string) => {
+    setState((prev) =>
+      prev ? { ...prev, completed: { ...prev.completed, [id]: true } } : prev
+    );
+    await fetch("/cms/api/wizard-progress", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ stepId: id, completed: true }),
+    }).catch(() => {
+      /* ignore */
+    });
+  };
 
   const launchShop = async () => {
     if (!state?.shopId) return;
@@ -92,6 +105,17 @@ export default function ConfiguratorDashboard() {
               <Link href={`/cms/configurator/${step.id}`} className="underline">
                 {step.label}
               </Link>
+              {step.optional && (
+                <span className="text-xs text-gray-500">(Optional)</span>
+              )}
+              {step.optional && !completed && (
+                <button
+                  onClick={() => skipStep(step.id)}
+                  className="text-xs text-blue-600 underline"
+                >
+                  Skip
+                </button>
+              )}
             </li>
           );
         })}

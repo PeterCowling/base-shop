@@ -52,7 +52,10 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
       if (!res.ok) {
         const data = await res.json();
         setStatus("error");
-        if (res.status === 400 && data && typeof data === "object" && !("error" in data)) {
+        if (res.status === 409) {
+          setErrors({ email: data.error ?? "Email already in use" });
+          setMessage(data.error ?? "Email already in use");
+        } else if (res.status === 400 && data && typeof data === "object" && !("error" in data)) {
           const fieldErrors = data as Record<string, string[]>;
           setErrors(
             Object.fromEntries(

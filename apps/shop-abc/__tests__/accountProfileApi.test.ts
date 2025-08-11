@@ -95,5 +95,22 @@ describe("/api/account/profile PUT", () => {
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true, profile });
   });
+
+  it("returns 409 when email already exists", async () => {
+    (getCustomerSession as jest.Mock).mockResolvedValue({
+      customerId: "cust1",
+    });
+    (validateCsrfToken as jest.Mock).mockResolvedValue(true);
+    (updateCustomerProfile as jest.Mock).mockRejectedValue(
+      new Error("Conflict: email already in use")
+    );
+    const req = {
+      headers: new Headers({ "x-csrf-token": "tok" }),
+      json: async () => ({ name: "Jane", email: "jane@test.com" }),
+    } as any;
+    const res = await PUT(req);
+    expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({ error: "email already in use" });
+  });
 });
 

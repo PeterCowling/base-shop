@@ -42,6 +42,7 @@ const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
     left: "0",
     width: "100%",
   },
+  MultiColumn: { columns: 2, gap: "1rem" },
 };
 
 interface Props {
@@ -64,7 +65,11 @@ const PageBuilder = memo(function PageBuilder({
   const storageKey = `page-builder-history-${page.id}`;
   const migrate = useCallback(
     (comps: PageComponent[]): PageComponent[] =>
-      comps.map((c) => (c.type === "Section" ? { ...c, children: c.children ?? [] } : c)),
+      comps.map((c) =>
+        c.type === "Section" || c.type === "MultiColumn"
+          ? { ...c, children: c.children ?? [] }
+          : c
+      ),
     []
   );
 

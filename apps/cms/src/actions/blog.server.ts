@@ -2,9 +2,10 @@
 
 import { getSanityConfig } from "@platform-core/src/shops";
 import { getShopById } from "@platform-core/src/repositories/shop.server";
+import { env } from "@acme/config";
 import { ensureAuthorized } from "./common/auth";
 
-const apiVersion = process.env.SANITY_API_VERSION || "2021-10-21";
+const apiVersion = env.SANITY_API_VERSION || "2021-10-21";
 
 interface SanityPost {
   _id: string;

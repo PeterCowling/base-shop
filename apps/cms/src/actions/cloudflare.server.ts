@@ -1,6 +1,7 @@
 // apps/cms/src/actions/cloudflare.server.ts
 "use server";
 
+import { env } from "@acme/config";
 import { ensureAuthorized } from "./common/auth";
 
 export async function provisionDomain(
@@ -8,8 +9,8 @@ export async function provisionDomain(
   domain: string
 ): Promise<{ status?: string; certificateStatus?: string }> {
   await ensureAuthorized();
-  const account = process.env.CLOUDFLARE_ACCOUNT_ID;
-  const token = process.env.CLOUDFLARE_API_TOKEN;
+  const account = env.CLOUDFLARE_ACCOUNT_ID;
+  const token = env.CLOUDFLARE_API_TOKEN;
   if (!account || !token) throw new Error("Cloudflare credentials not configured");
 
   const headers = {

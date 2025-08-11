@@ -13,6 +13,7 @@ import RecommendationCarousel from "./RecommendationCarousel";
 import Section from "./Section";
 import AnnouncementBar from "./AnnouncementBarBlock";
 import MapBlock from "./MapBlock";
+import FAQBlock from "./FAQBlock";
 
 export {
   BlogListing,
@@ -30,6 +31,7 @@ export {
   Section,
   AnnouncementBar,
   MapBlock,
+  FAQBlock,
 };
 
 export * from "./atoms";

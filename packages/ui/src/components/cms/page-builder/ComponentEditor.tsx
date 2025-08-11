@@ -21,6 +21,7 @@ import ValuePropsEditor from "./ValuePropsEditor";
 import ReviewsCarouselEditor from "./ReviewsCarouselEditor";
 import AnnouncementBarEditor from "./AnnouncementBarEditor";
 import MapBlockEditor from "./MapBlockEditor";
+import FAQBlockEditor from "./FAQBlockEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -80,6 +81,9 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "MapBlock":
       specific = <MapBlockEditor component={component} onChange={onChange} />;
+      break;
+    case "FAQBlock":
+      specific = <FAQBlockEditor component={component} onChange={onChange} />;
       break;
     default:
       specific = <p className="text-muted text-sm">No editable props</p>;

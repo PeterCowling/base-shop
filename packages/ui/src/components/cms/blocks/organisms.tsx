@@ -12,6 +12,7 @@ import ValueProps from "./ValueProps";
 import RecommendationCarousel from "./RecommendationCarousel";
 import AnnouncementBar from "./AnnouncementBarBlock";
 import MapBlock from "./MapBlock";
+import FAQBlock from "./FAQBlock";
 
 export const organismRegistry = {
   AnnouncementBar,
@@ -28,6 +29,7 @@ export const organismRegistry = {
   Testimonials,
   TestimonialSlider,
   MapBlock,
+  FAQBlock,
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

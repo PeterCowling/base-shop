@@ -69,6 +69,13 @@ export interface ValuePropsComponent extends PageComponentBase {
     desc: string;
   }[];
 }
+export interface FAQBlockComponent extends PageComponentBase {
+  type: "FAQBlock";
+  faqs?: {
+    question: string;
+    answer: string;
+  }[];
+}
 /** Carousel of customer reviews. `minItems`/`maxItems` limit visible reviews */
 export interface ReviewsCarouselComponent extends PageComponentBase {
   type: "ReviewsCarousel";
@@ -152,6 +159,7 @@ export type PageComponent =
   | AnnouncementBarComponent
   | HeroBannerComponent
   | ValuePropsComponent
+  | FAQBlockComponent
   | ReviewsCarouselComponent
   | ProductGridComponent
   | ProductCarouselComponent

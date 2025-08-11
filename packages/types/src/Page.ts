@@ -71,6 +71,11 @@ export interface ValuePropsComponent extends PageComponentBase {
   items?: { icon: string; title: string; desc: string }[];
 }
 
+export interface FAQBlockComponent extends PageComponentBase {
+  type: "FAQBlock";
+  faqs?: { question: string; answer: string }[];
+}
+
 /** Carousel of customer reviews. `minItems`/`maxItems` limit visible reviews */
 export interface ReviewsCarouselComponent extends PageComponentBase {
   type: "ReviewsCarousel";
@@ -152,6 +157,7 @@ export type PageComponent =
   | AnnouncementBarComponent
   | HeroBannerComponent
   | ValuePropsComponent
+  | FAQBlockComponent
   | ReviewsCarouselComponent
   | ProductGridComponent
   | ProductCarouselComponent
@@ -207,6 +213,15 @@ const valuePropsComponentSchema = baseComponentSchema.extend({
   type: z.literal("ValueProps"),
   items: z
     .array(z.object({ icon: z.string(), title: z.string(), desc: z.string() }))
+    .optional(),
+});
+
+const faqBlockComponentSchema = baseComponentSchema.extend({
+  type: z.literal("FAQBlock"),
+  faqs: z
+    .array(
+      z.object({ question: z.string(), answer: z.string() })
+    )
     .optional(),
 });
 
@@ -304,6 +319,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     announcementBarComponentSchema,
     heroBannerComponentSchema,
     valuePropsComponentSchema,
+    faqBlockComponentSchema,
     reviewsCarouselComponentSchema,
     productGridComponentSchema,
     productCarouselComponentSchema,

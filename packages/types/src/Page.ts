@@ -122,6 +122,11 @@ export interface VideoBlockComponent extends PageComponentBase {
   autoplay?: boolean;
 }
 
+export interface FAQBlockComponent extends PageComponentBase {
+  type: "FAQBlock";
+  items?: { question: string; answer: string }[];
+}
+
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -174,6 +179,7 @@ export type PageComponent =
   | ContactFormWithMapComponent
   | MapBlockComponent
   | VideoBlockComponent
+  | FAQBlockComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent
@@ -276,6 +282,18 @@ const videoBlockComponentSchema = baseComponentSchema.extend({
   autoplay: z.boolean().optional(),
 });
 
+const faqBlockComponentSchema = baseComponentSchema.extend({
+  type: z.literal("FAQBlock"),
+  items: z
+    .array(
+      z.object({
+        question: z.string(),
+        answer: z.string(),
+      })
+    )
+    .optional(),
+});
+
 const blogListingComponentSchema = baseComponentSchema.extend({
   type: z.literal("BlogListing"),
   posts: z
@@ -342,6 +360,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     contactFormWithMapComponentSchema,
     mapBlockComponentSchema,
     videoBlockComponentSchema,
+    faqBlockComponentSchema,
     blogListingComponentSchema,
     testimonialsComponentSchema,
     testimonialSliderComponentSchema,

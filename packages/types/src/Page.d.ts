@@ -117,6 +117,13 @@ export interface VideoBlockComponent extends PageComponentBase {
   src?: string;
   autoplay?: boolean;
 }
+export interface FAQBlockComponent extends PageComponentBase {
+  type: "FAQBlock";
+  items?: {
+    question: string;
+    answer: string;
+  }[];
+}
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -172,6 +179,7 @@ export type PageComponent =
   | ContactFormWithMapComponent
   | MapBlockComponent
   | VideoBlockComponent
+  | FAQBlockComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent

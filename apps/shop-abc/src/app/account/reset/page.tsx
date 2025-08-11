@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getCsrfToken } from "../../lib/csrf";
 
 export default function ResetPasswordPage() {
   const [msg, setMsg] = useState("");
@@ -12,7 +13,10 @@ export default function ResetPasswordPage() {
     const password = (form.namedItem("password") as HTMLInputElement).value;
     const res = await fetch("/api/account/reset/complete", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": getCsrfToken(),
+      },
       body: JSON.stringify({ token, password }),
     });
     await res.json().catch(() => ({}));

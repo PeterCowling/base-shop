@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { getUserByResetToken, updatePassword } from "../../../../userStore";
+import { validateCsrfToken } from "@auth";
 
 const schema = z.object({
   token: z.string(),
@@ -16,6 +17,11 @@ export async function POST(req: Request) {
     return NextResponse.json(parsed.error.flatten().fieldErrors, {
       status: 400,
     });
+  }
+
+  const csrfToken = req.headers.get("x-csrf-token");
+  if (!csrfToken || !(await validateCsrfToken(csrfToken))) {
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
   }
 
   const { token, password } = parsed.data;

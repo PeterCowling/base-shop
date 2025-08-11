@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getCsrfToken } from "../lib/csrf";
 
 export default function ForgotPasswordPage() {
   const [msg, setMsg] = useState("");
@@ -10,7 +11,10 @@ export default function ForgotPasswordPage() {
       .value;
     const res = await fetch("/api/account/reset/request", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": getCsrfToken(),
+      },
       body: JSON.stringify({ email }),
     });
     await res.json().catch(() => ({}));

@@ -7,7 +7,7 @@ jest.mock("@upstash/redis", () => ({
   Redis: jest.fn(() => ({})),
 }));
 
-jest.mock("@platform-core/users", () => ({
+jest.mock("../src/app/userStore", () => ({
   getUserById: jest.fn(async (id: string) =>
     id === "cust1" ? { passwordHash: "pass1", role: "customer" } : null,
   ),

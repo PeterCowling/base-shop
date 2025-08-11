@@ -1,7 +1,7 @@
 // apps/shop-abc/src/app/api/account/reset/request/route.ts
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getUserByEmail, setResetToken } from "@platform-core/users";
+import { getUserByEmail, setResetToken } from "../../../../userStore";
 import { sendEmail } from "@lib/email";
 
 const schema = z.object({

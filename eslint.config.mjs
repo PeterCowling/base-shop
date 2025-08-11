@@ -2,6 +2,8 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import tsParser from "@typescript-eslint/parser"; // still needed for parser
 import boundaries from "eslint-plugin-boundaries";
+import importPlugin from "eslint-plugin-import";
+import { fixupPluginRules } from "@eslint/compat";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -66,6 +68,45 @@ export default [
         },
       ],
       "@next/next/no-html-link-for-pages": "off",
+    },
+  },
+
+  /* ▸ Enforce UI component layering */
+  {
+    files: ["packages/ui/**/*.{ts,tsx}"],
+    plugins: { import: fixupPluginRules(importPlugin) },
+    rules: {
+      "import/no-restricted-paths": [
+        "error",
+        {
+          zones: [
+            {
+              target: "./packages/ui/src/components/atoms",
+              from: "./packages/ui/src/components/molecules",
+            },
+            {
+              target: "./packages/ui/src/components/atoms",
+              from: "./packages/ui/src/components/organisms",
+            },
+            {
+              target: "./packages/ui/src/components/atoms",
+              from: "./packages/ui/src/components/templates",
+            },
+            {
+              target: "./packages/ui/src/components/molecules",
+              from: "./packages/ui/src/components/organisms",
+            },
+            {
+              target: "./packages/ui/src/components/molecules",
+              from: "./packages/ui/src/components/templates",
+            },
+            {
+              target: "./packages/ui/src/components/organisms",
+              from: "./packages/ui/src/components/templates",
+            },
+          ],
+        },
+      ],
     },
   },
 ];

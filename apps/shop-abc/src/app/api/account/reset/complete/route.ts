@@ -3,21 +3,21 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { getUserById, updatePassword } from "@platform-core/users";
+import { parseJsonBody } from "@shared-utils/parseJsonBody";
 
-const schema = z.object({
-  customerId: z.string(),
-  token: z.string(),
-  password: z.string(),
-});
+export const schema = z
+  .object({
+    customerId: z.string(),
+    token: z.string(),
+    password: z.string().min(8),
+  })
+  .strict();
+
+export type ResetCompleteRequest = z.infer<typeof schema>;
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = schema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody(req, schema);
+  if (!parsed.success) return parsed.response;
 
   const { customerId, token, password } = parsed.data;
   const user = await getUserById(customerId);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { ResetCompleteRequest } from "../api/account/reset/complete/route";
 
 export default function ResetPasswordPage() {
   const [msg, setMsg] = useState("");
@@ -8,13 +9,15 @@ export default function ResetPasswordPage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget.elements as any;
-    const customerId = (form.namedItem("customerId") as HTMLInputElement).value;
-    const token = (form.namedItem("token") as HTMLInputElement).value;
-    const password = (form.namedItem("password") as HTMLInputElement).value;
+    const body: ResetCompleteRequest = {
+      customerId: (form.namedItem("customerId") as HTMLInputElement).value,
+      token: (form.namedItem("token") as HTMLInputElement).value,
+      password: (form.namedItem("password") as HTMLInputElement).value,
+    };
     const res = await fetch("/api/account/reset/complete", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ customerId, token, password }),
+      body: JSON.stringify(body),
     });
     await res.json().catch(() => ({}));
     setMsg(res.ok ? "Password updated" : "Error");

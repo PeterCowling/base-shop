@@ -9,6 +9,7 @@ interface WizardContextValue {
   state: WizardState;
   setState: React.Dispatch<React.SetStateAction<WizardState>>;
   update: <K extends keyof WizardState>(key: K, value: WizardState[K]) => void;
+  markCompleted: (id: string, value?: boolean) => void;
 }
 
 const WizardContext = createContext<WizardContextValue | null>(null);
@@ -30,8 +31,17 @@ export function WizardProvider({
     setState((prev) => ({ ...prev, [key]: value }));
   };
 
+  const markCompleted = (id: string, value = true) => {
+    setState((prev) => ({
+      ...prev,
+      completed: { ...(prev.completed ?? {}), [id]: value },
+    }));
+  };
+
   return (
-    <WizardContext.Provider value={{ state, setState, update }}>
+    <WizardContext.Provider
+      value={{ state, setState, update, markCompleted }}
+    >
       {children}
     </WizardContext.Provider>
   );

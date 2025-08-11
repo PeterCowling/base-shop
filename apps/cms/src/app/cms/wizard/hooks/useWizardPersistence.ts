@@ -4,7 +4,7 @@
 import { useEffect } from "react";
 import { wizardStateSchema, type WizardState } from "../schema";
 
-/** Key used to mirror wizard progress in localStorage for preview components. */
+/** Key used to mirror wizard progress (including completed steps) in localStorage for preview components. */
 export const STORAGE_KEY = "cms-wizard-progress";
 
 /** Clears persisted wizard progress on the server and localStorage. */

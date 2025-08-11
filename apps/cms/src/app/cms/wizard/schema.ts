@@ -70,7 +70,7 @@ export type PageInfo = z.infer<typeof pageInfoSchema>; // <- slug & components *
 
 export const wizardStateSchema = z.object({
   /* ------------ Wizard progress & identity ------------ */
-  step: z.number().optional().default(0),
+  completed: z.record(z.boolean()).optional().default({}),
   shopId: z.string().optional().default(""),
   storeName: z.string().optional().default(""),
   logo: z.string().optional().default(""),

@@ -37,6 +37,27 @@ import type { PageInfo, WizardState } from "./schema";
 import { baseTokens, loadThemeTokens, type TokenMap } from "./tokenUtils";
 import { resetWizardProgress, useWizardPersistence } from "./hooks/useWizardPersistence";
 
+const STEP_IDS = [
+  "shop-details",
+  "theme",
+  "tokens",
+  "options",
+  "navigation",
+  "layout",
+  "home-page",
+  "checkout-page",
+  "product-page",
+  "shop-page",
+  "additional-pages",
+  "env-vars",
+  "summary",
+  "import-data",
+  "seed-data",
+  "hosting",
+] as const;
+type StepId = typeof STEP_IDS[number];
+const TOTAL_STEPS = STEP_IDS.length;
+
 /* -------------------------------------------------------------------------- */
 /*  Services                                                                  */
 /* -------------------------------------------------------------------------- */
@@ -74,6 +95,7 @@ export default function Wizard({
   /*  Progress & basic shop details                                         */
   /* ---------------------------------------------------------------------- */
   const [step, setStep] = useState(0);
+  const [completed, setCompleted] = useState<Record<StepId, boolean>>({});
   const [shopId, setShopId] = useState("");
   const [storeName, setStoreName] = useState("");
   const [logo, setLogo] = useState("");
@@ -225,7 +247,8 @@ export default function Wizard({
 
   /* --- hydrate & persist wizard state via server --- */
   const hydrate = useCallback((data: WizardState) => {
-    setStep(data.step);
+    setCompleted(data.completed ?? {});
+    setStep(Object.values(data.completed ?? {}).filter(Boolean).length);
     setShopId(data.shopId);
     setStoreName(data.storeName);
     setLogo(data.logo);
@@ -266,7 +289,7 @@ export default function Wizard({
 
   useWizardPersistence(
     {
-      step,
+      completed,
       shopId,
       storeName,
       logo,
@@ -533,6 +556,11 @@ export default function Wizard({
     Object.entries(themeVars).map(([k, v]) => [k, v])
   ) as React.CSSProperties;
 
+  const goToStep = (next: number) => {
+    setCompleted((prev) => ({ ...prev, [STEP_IDS[step]]: true }));
+    setStep(next);
+  };
+
   function handleIdStepNext() {
     try {
       validateShopName(shopId);
@@ -540,7 +568,7 @@ export default function Wizard({
         const { id, ...rest } = prev;
         return rest;
       });
-      setStep(1);
+      goToStep(1);
     } catch (err) {
       setFieldErrors((prev) => ({
         ...prev,
@@ -583,7 +611,7 @@ export default function Wizard({
             setThemeVars={setThemeVars}
             themeStyle={themeStyle}
             onBack={() => setStep(0)}
-            onNext={() => setStep(2)}
+            onNext={() => goToStep(2)}
           />
         );
 
@@ -592,7 +620,7 @@ export default function Wizard({
           <StepTokens
             themeStyle={themeStyle}
             onBack={() => setStep(1)}
-            onNext={() => setStep(3)}
+            onNext={() => goToStep(3)}
           />
         );
 
@@ -609,7 +637,7 @@ export default function Wizard({
             analyticsId={analyticsId}
             setAnalyticsId={setAnalyticsId}
             onBack={() => setStep(2)}
-            onNext={() => setStep(4)}
+            onNext={() => goToStep(4)}
           />
         );
 
@@ -619,7 +647,7 @@ export default function Wizard({
             navItems={navItems}
             setNavItems={setNavItems}
             onBack={() => setStep(3)}
-            onNext={() => setStep(5)}
+            onNext={() => goToStep(5)}
           />
         );
 
@@ -639,7 +667,7 @@ export default function Wizard({
             shopId={shopId}
             themeStyle={themeStyle}
             onBack={() => setStep(4)}
-            onNext={() => setStep(6)}
+            onNext={() => goToStep(6)}
           />
         );
 
@@ -656,7 +684,7 @@ export default function Wizard({
             shopId={shopId}
             themeStyle={themeStyle}
             onBack={() => setStep(5)}
-            onNext={() => setStep(7)}
+            onNext={() => goToStep(7)}
           />
         );
 
@@ -673,7 +701,7 @@ export default function Wizard({
             shopId={shopId}
             themeStyle={themeStyle}
             onBack={() => setStep(6)}
-            onNext={() => setStep(8)}
+            onNext={() => goToStep(8)}
           />
         );
 
@@ -690,7 +718,7 @@ export default function Wizard({
             shopId={shopId}
             themeStyle={themeStyle}
             onBack={() => setStep(7)}
-            onNext={() => setStep(9)}
+            onNext={() => goToStep(9)}
           />
         );
 
@@ -707,7 +735,7 @@ export default function Wizard({
             shopId={shopId}
             themeStyle={themeStyle}
             onBack={() => setStep(8)}
-            onNext={() => setStep(10)}
+            onNext={() => goToStep(10)}
           />
         );
 
@@ -720,7 +748,7 @@ export default function Wizard({
             shopId={shopId}
             themeStyle={themeStyle}
             onBack={() => setStep(9)}
-            onNext={() => setStep(11)}
+            onNext={() => goToStep(11)}
           />
         );
 
@@ -730,7 +758,7 @@ export default function Wizard({
             env={envVars}
             setEnv={setEnv}
             onBack={() => setStep(10)}
-            onNext={() => setStep(12)}
+            onNext={() => goToStep(12)}
           />
         );
 
@@ -758,7 +786,7 @@ export default function Wizard({
             creating={creating}
             submit={submit}
             onBack={() => setStep(11)}
-            onNext={() => setStep(13)}
+            onNext={() => goToStep(13)}
             errors={fieldErrors}
           />
         );
@@ -813,11 +841,13 @@ export default function Wizard({
   /*  JSX                                                                   */
   /* ====================================================================== */
 
+  const completedCount = Object.values(completed).filter(Boolean).length;
+
   return (
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
         <div className="mb-6 flex items-center justify-between">
-          <Progress step={step} total={16} />
+          <Progress step={completedCount} total={TOTAL_STEPS} />
           {shopId && <MediaUploadDialog shop={shopId} />}
         </div>
 

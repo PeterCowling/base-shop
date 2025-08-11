@@ -14,6 +14,7 @@ import { findCoupon } from "@platform-core/coupons";
 import { getTaxRate } from "@platform-core/tax";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
+import { z } from "zod";
 
 /* ------------------------------------------------------------------ *
  *  Domain types
@@ -31,6 +32,15 @@ type Cart = CartState;
  * ------------------------------------------------------------------ */
 
 export const runtime = "edge";
+
+const schema = z
+  .object({
+    returnDate: z.string().optional(),
+    coupon: z.string().optional(),
+    currency: z.string().optional(),
+    taxRegion: z.string().optional(),
+  })
+  .strict();
 
 /* ------------------------------------------------------------------ *
  *  Helper functions
@@ -125,13 +135,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   /* 2️⃣  Parse request body ---------------------------------------------- */
+  const parsed = schema.safeParse(await req.json().catch(() => undefined));
+  if (!parsed.success) {
+    return NextResponse.json(parsed.error.flatten().fieldErrors, {
+      status: 400,
+    });
+  }
   const { returnDate, coupon, currency = "EUR", taxRegion = "" } =
-    (await req.json().catch(() => ({}))) as {
-      returnDate?: string;
-      coupon?: string;
-      currency?: string;
-      taxRegion?: string;
-    };
+    parsed.data;
   const couponDef = findCoupon(coupon);
   const discountRate = couponDef ? couponDef.discountPercent / 100 : 0;
   let rentalDays: number;

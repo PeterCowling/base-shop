@@ -10,6 +10,7 @@ import TestimonialSlider from "./TestimonialSlider";
 import Testimonials from "./Testimonials";
 import ValueProps from "./ValueProps";
 import RecommendationCarousel from "./RecommendationCarousel";
+import FAQBlock from "./FAQBlock";
 
 export const organismRegistry = {
   HeroBanner,
@@ -24,6 +25,7 @@ export const organismRegistry = {
   BlogListing,
   Testimonials,
   TestimonialSlider,
+  FAQBlock,
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

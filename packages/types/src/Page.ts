@@ -124,6 +124,11 @@ export interface TestimonialsComponent extends PageComponentBase {
   testimonials?: { quote: string; name?: string }[];
 }
 
+export interface FAQBlockComponent extends PageComponentBase {
+  type: "FAQBlock";
+  faqs?: { question: string; answer: string }[];
+}
+
 export interface TextComponent extends PageComponentBase {
   type: "Text";
   text?: string;
@@ -147,6 +152,7 @@ export type PageComponent =
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent
+  | FAQBlockComponent
   | ImageComponent
   | TextComponent
   | SectionComponent;
@@ -260,6 +266,15 @@ const testimonialsComponentSchema = baseComponentSchema.extend({
     .optional(),
 });
 
+const faqBlockComponentSchema = baseComponentSchema.extend({
+  type: z.literal("FAQBlock"),
+  faqs: z
+    .array(
+      z.object({ question: z.string(), answer: z.string() })
+    )
+    .optional(),
+});
+
 const imageComponentSchema = baseComponentSchema.extend({
   type: z.literal("Image"),
   src: z.string().optional(),
@@ -290,6 +305,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     blogListingComponentSchema,
     testimonialsComponentSchema,
     testimonialSliderComponentSchema,
+    faqBlockComponentSchema,
     imageComponentSchema,
     textComponentSchema,
     sectionComponentSchema,

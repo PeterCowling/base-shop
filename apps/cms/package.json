@@ -14,7 +14,12 @@
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/shared-utils": "workspace:*",
-    "@acme/email": "workspace:*"
+    "@acme/email": "workspace:*",
+    "@portabletext/editor": "^2.3.1",
+    "@portabletext/react": "^3.2.1",
+    "@sanity/schema": "^4.3.0",
+    "@sanity/types": "^4.3.0",
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "next": "^15.3.4"

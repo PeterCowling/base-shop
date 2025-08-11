@@ -18,6 +18,7 @@ describe("sanity blog accessors", () => {
     name: "shop",
     catalogFilters: [],
     themeId: "base",
+    themeOverrides: {},
     themeTokens: {},
     filterMappings: {},
     priceOverrides: {},

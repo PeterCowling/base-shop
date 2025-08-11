@@ -8,7 +8,7 @@
     "name",
     "catalogFilters",
     "themeId",
-    "themeTokens",
+    "themeOverrides",
     "filterMappings",
     "priceOverrides",
     "localeOverrides"
@@ -21,6 +21,10 @@
       "items": { "type": "string" }
     },
     "themeId": { "type": "string" },
+    "themeOverrides": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
     "themeTokens": {
       "type": "object",
       "additionalProperties": { "type": "string" }

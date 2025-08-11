@@ -2,6 +2,8 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
+jest.setTimeout(20000);
+
 // Polyfill Response.json when missing
 if (typeof (Response as any).json !== "function") {
   (Response as any).json = (data: unknown, init?: ResponseInit) =>

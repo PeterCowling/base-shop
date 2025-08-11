@@ -3,11 +3,12 @@ import { NextResponse } from "next/server";
 import { createCustomerSession } from "@auth";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
+import bcrypt from "bcryptjs";
 import {
   checkLoginRateLimit,
   clearLoginAttempts,
 } from "../../middleware";
-import { USER_STORE } from "../userStore";
+import { getUserById } from "@platform-core/users";
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
@@ -20,11 +21,11 @@ async function validateCredentials(
   customerId: string,
   password: string,
 ): Promise<{ customerId: string; role: Role } | null> {
-  const record = USER_STORE[customerId];
-  if (!record || record.password !== password) {
-    return null;
-  }
-  return { customerId, role: record.role };
+  const record = await getUserById(customerId);
+  if (!record) return null;
+  const match = await bcrypt.compare(password, record.passwordHash);
+  if (!match) return null;
+  return { customerId, role: record.role as Role };
 }
 
 export async function POST(req: Request) {

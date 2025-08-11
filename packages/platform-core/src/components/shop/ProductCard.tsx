@@ -2,6 +2,7 @@
 import type { SKU } from "@types";
 import Image from "next/image";
 import Link from "next/link";
+import { Price } from "@ui/components/atoms/Price";
 import { memo } from "react";
 import AddToCartButton from "./AddToCartButton.client";
 
@@ -22,7 +23,9 @@ function ProductCardInner({ sku }: { sku: SKU }) {
         />
       </Link>
       <h3 className="font-medium">{sku.title}</h3>
-      <div className="font-semibold text-gray-900">€{sku.price}</div>
+      <div className="font-semibold text-gray-900">
+        <Price amount={sku.price} />
+      </div>
       <AddToCartButton sku={sku} />
     </article>
   );

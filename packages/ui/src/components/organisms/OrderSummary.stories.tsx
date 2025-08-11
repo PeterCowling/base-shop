@@ -3,6 +3,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import OrderSummary from "./OrderSummary";
+import { Price } from "../atoms/Price";
 
 /* ------------------------------------------------------------------ *
  *  Storybook meta
@@ -31,17 +32,23 @@ export const Default: StoryObj<typeof OrderSummary> = {
           <tr>
             <td />
             <td className="py-2">Shipping</td>
-            <td className="text-right">€5</td>
+            <td className="text-right">
+              <Price amount={5} />
+            </td>
           </tr>
           <tr>
             <td />
             <td className="py-2">Tax</td>
-            <td className="text-right">€3</td>
+            <td className="text-right">
+              <Price amount={3} />
+            </td>
           </tr>
           <tr>
             <td />
             <td className="py-2">Discount</td>
-            <td className="text-right">-€2</td>
+            <td className="text-right">
+              <Price amount={-2} />
+            </td>
           </tr>
         </tbody>
       </table>

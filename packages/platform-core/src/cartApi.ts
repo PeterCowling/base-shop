@@ -4,23 +4,62 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
+  type CartState,
 } from "@platform-core/src/cartCookie";
 import {
   createCart,
   getCart,
   incrementQty,
+  setCart,
   setQty,
   removeItem,
 } from "@platform-core/src/cartStore";
 import { getProductById } from "@platform-core/src/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { postSchema, patchSchema } from "@platform-core/schemas/cart";
+import { postSchema, patchSchema, putSchema } from "@platform-core/schemas/cart";
 import { z } from "zod";
 
 export const runtime = "edge";
 
 const deleteSchema = z.object({ id: z.string() }).strict();
+
+/* ------------------------------------------------------------------
+ * PUT – replace cart with provided lines
+ * ------------------------------------------------------------------ */
+export async function PUT(req: NextRequest) {
+  const body = await req.json().catch(() => ({}));
+  const parsed = putSchema.safeParse(body);
+
+  if (!parsed.success) {
+    return NextResponse.json(parsed.error.flatten().fieldErrors, {
+      status: 400,
+    });
+  }
+
+  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
+  if (!cartId) {
+    cartId = await createCart();
+  }
+
+  const cart: CartState = {};
+  for (const line of parsed.data.lines) {
+    const sku = getProductById(line.sku.id);
+    if (!sku) {
+      return NextResponse.json({ error: "Item not found" }, { status: 404 });
+    }
+    if (sku.sizes.length && !line.size) {
+      return NextResponse.json({ error: "Size required" }, { status: 400 });
+    }
+    const key = line.size ? `${sku.id}:${line.size}` : sku.id;
+    cart[key] = { sku, size: line.size, qty: line.qty };
+  }
+
+  await setCart(cartId, cart);
+  const res = NextResponse.json({ ok: true, cart });
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
+  return res;
+}
 
 /* ------------------------------------------------------------------
  * POST – add an item to the cart

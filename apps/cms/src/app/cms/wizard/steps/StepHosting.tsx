@@ -5,6 +5,7 @@ import type { DeployStatusBase } from "@platform-core/createShop";
 import { useEffect } from "react";
 import { getDeployStatus, type DeployInfo } from "../services/deployShop";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { useRouter } from "next/navigation";
 
 interface Props {
   shopId: string;
@@ -16,7 +17,6 @@ interface Props {
     info: (DeployStatusBase & { domainStatus?: string }) | null
   ) => void;
   deploying: boolean;
-  onBack: () => void;
   deploy: () => Promise<void> | void;
 }
 
@@ -28,10 +28,10 @@ export default function StepHosting({
   deployInfo,
   setDeployInfo,
   deploying,
-  onBack,
   deploy,
 }: Props): React.JSX.Element {
   const [, markComplete] = useStepCompletion("hosting");
+  const router = useRouter();
   useEffect(() => {
     if (!shopId || !deployInfo) return;
     if (
@@ -96,18 +96,16 @@ export default function StepHosting({
       {deployInfo?.status === "error" && deployInfo.error && (
         <p className="text-sm text-red-600">{deployInfo.error}</p>
       )}
-      <div className="flex justify-between gap-2">
-        <Button variant="outline" onClick={onBack}>
-          Back
-        </Button>
+      <div className="flex justify-end">
         <Button
           disabled={deploying}
           onClick={async () => {
             await deploy();
             markComplete(true);
+            router.push("/cms/configurator");
           }}
         >
-          {deploying ? "Deploying…" : "Deploy"}
+          {deploying ? "Deploying…" : "Save & return"}
         </Button>
       </div>
     </div>

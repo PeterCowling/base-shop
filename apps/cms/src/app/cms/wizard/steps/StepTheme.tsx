@@ -12,6 +12,7 @@ import StyleEditor from "@/components/cms/StyleEditor";
 import { useState } from "react";
 import WizardPreview from "../WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { useRouter } from "next/navigation";
 
 const colorPalettes: Array<{
   name: string;
@@ -59,9 +60,7 @@ interface Props {
   themeVars: Record<string, string>;
   setThemeVars: (v: Record<string, string>) => void;
   themeStyle: React.CSSProperties;
-  onBack: () => void;
-  onNext: () => void;
-  
+
 }
 
 export default function StepTheme({
@@ -71,11 +70,10 @@ export default function StepTheme({
   themeVars,
   setThemeVars,
   themeStyle,
-  onBack,
-  onNext,
 }: Props): React.JSX.Element {
   const [palette, setPalette] = useState(colorPalettes[0].name);
   const [, markComplete] = useStepCompletion("theme");
+  const router = useRouter();
 
   const applyPalette = (name: string) => {
     setPalette(name);
@@ -127,17 +125,14 @@ export default function StepTheme({
 
       <WizardPreview style={themeStyle} />
 
-      <div className="flex justify-between">
-        <Button variant="outline" onClick={onBack}>
-          Back
-        </Button>
+      <div className="flex justify-end">
         <Button
           onClick={() => {
             markComplete(true);
-            onNext();
+            router.push("/cms/configurator");
           }}
         >
-          Next
+          Save & return
         </Button>
       </div>
     </div>

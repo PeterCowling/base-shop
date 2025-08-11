@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
+import { useRouter } from "next/navigation";
 import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
@@ -25,7 +26,6 @@ interface Props {
   template: string;
   setTemplate: (v: string) => void;
   templates: string[];
-  onNext: () => void;
   errors?: Record<string, string[]>;
 }
 
@@ -43,9 +43,9 @@ export default function StepShopDetails({
   template,
   setTemplate,
   templates,
-  onNext,
   errors = {},
 }: Props): React.JSX.Element {
+  const router = useRouter();
   const [, markComplete] = useStepCompletion("shop-details");
   return (
     <div className="space-y-4">
@@ -124,15 +124,15 @@ export default function StepShopDetails({
           </SelectContent>
         </Select>
       </label>
-      <div className="flex justify-end gap-2">
+      <div className="flex justify-end">
         <Button
           disabled={!shopId}
           onClick={() => {
             markComplete(true);
-            onNext();
+            router.push("/cms/configurator");
           }}
         >
-          Next
+          Save & return
         </Button>
       </div>
     </div>

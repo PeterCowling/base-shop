@@ -8,6 +8,7 @@ import type { Locale } from "@types";
 import React from "react";
 import WizardPreview from "../WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { useRouter } from "next/navigation";
 
 interface Props {
   shopId: string;
@@ -28,10 +29,8 @@ interface Props {
   setSocialImage: (v: string) => void;
   result: string | null;
   themeStyle: React.CSSProperties;
-  onBack: () => void;
-  onNext: () => void;
   creating: boolean;
-  submit: () => void;
+  submit: () => Promise<void> | void;
   errors?: Record<string, string[]>;
 }
 
@@ -54,14 +53,13 @@ export default function StepSummary({
   setSocialImage,
   result,
   themeStyle,
-  onBack,
-  onNext,
   creating,
   submit,
   errors = {},
 }: Props): React.JSX.Element {
   const languages = LOCALES as readonly Locale[];
   const [, markComplete] = useStepCompletion("summary");
+  const router = useRouter();
 
   return (
     <div className="space-y-4">
@@ -155,20 +153,17 @@ export default function StepSummary({
 
       <WizardPreview style={themeStyle} />
 
-      <div className="flex justify-between gap-2">
-        <Button variant="outline" onClick={onBack}>
-          Back
-        </Button>
-        <Button disabled={creating} onClick={submit} className="ml-auto">
-          {creating ? "Creating…" : "Create Shop"}
-        </Button>
+      <div className="flex justify-end">
         <Button
-          onClick={() => {
+          disabled={creating}
+          onClick={async () => {
+            await submit();
             markComplete(true);
-            onNext();
+            router.push("/cms/configurator");
           }}
+          className="ml-auto"
         >
-          Next
+          {creating ? "Saving…" : "Save & return"}
         </Button>
       </div>
     </div>

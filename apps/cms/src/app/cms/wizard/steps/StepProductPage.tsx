@@ -17,6 +17,7 @@ import { ulid } from "ulid";
 import { useEffect, useState } from "react";
 import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { useRouter } from "next/navigation";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -28,8 +29,6 @@ interface Props {
   setProductPageId: (v: string | null) => void;
   shopId: string;
   themeStyle: React.CSSProperties;
-  onBack: () => void;
-  onNext: () => void;
 }
 
 export default function StepProductPage({
@@ -42,8 +41,6 @@ export default function StepProductPage({
   setProductPageId,
   shopId,
   themeStyle,
-  onBack,
-  onNext,
 }: Props): React.JSX.Element {
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
@@ -82,6 +79,7 @@ export default function StepProductPage({
     })();
   }, [shopId, productPageId, setProductComponents, setProductPageId]);
   const [, markComplete] = useStepCompletion("product-page");
+  const router = useRouter();
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Product Detail Page</h2>
@@ -166,17 +164,14 @@ export default function StepProductPage({
         onChange={setProductComponents}
         style={themeStyle}
       />
-      <div className="flex justify-between">
-        <Button variant="outline" onClick={onBack}>
-          Back
-        </Button>
+      <div className="flex justify-end">
         <Button
           onClick={() => {
             markComplete(true);
-            onNext();
+            router.push("/cms/configurator");
           }}
         >
-          Next
+          Save & return
         </Button>
       </div>
       <Toast

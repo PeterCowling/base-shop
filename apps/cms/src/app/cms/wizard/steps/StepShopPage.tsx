@@ -16,6 +16,7 @@ import { ulid } from "ulid";
 import { useState } from "react";
 import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { useRouter } from "next/navigation";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -27,8 +28,6 @@ interface Props {
   setShopPageId: (v: string | null) => void;
   shopId: string;
   themeStyle: React.CSSProperties;
-  onBack: () => void;
-  onNext: () => void;
 }
 
 export default function StepShopPage({
@@ -41,14 +40,13 @@ export default function StepShopPage({
   setShopPageId,
   shopId,
   themeStyle,
-  onBack,
-  onNext,
 }: Props): React.JSX.Element {
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
     message: "",
   });
   const [, markComplete] = useStepCompletion("shop-page");
+  const router = useRouter();
 
   return (
     <div className="space-y-4">
@@ -134,17 +132,14 @@ export default function StepShopPage({
         onChange={setShopComponents}
         style={themeStyle}
       />
-      <div className="flex justify-between">
-        <Button variant="outline" onClick={onBack}>
-          Back
-        </Button>
+      <div className="flex justify-end">
         <Button
           onClick={() => {
             markComplete(true);
-            onNext();
+            router.push("/cms/configurator");
           }}
         >
-          Next
+          Save & return
         </Button>
       </div>
       <Toast

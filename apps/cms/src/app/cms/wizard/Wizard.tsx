@@ -212,7 +212,6 @@ export default function Wizard({
 
   /* --- hydrate & persist wizard state via server --- */
   const hydrate = useCallback((data: WizardState) => {
-    setStep(data.step);
     setShopId(data.shopId);
     setStoreName(data.storeName);
     setLogo(data.logo);
@@ -249,11 +248,13 @@ export default function Wizard({
     setEnvVars(data.env);
     setDomain(data.domain);
     setCategoriesText(data.categoriesText);
+    setCompleted(data.completed ?? {});
+    const firstIncomplete = steps.findIndex((s) => !data.completed?.[s.id]);
+    setStep(firstIncomplete === -1 ? steps.length - 1 : firstIncomplete);
   }, []);
 
   useWizardPersistence(
     {
-      step,
       shopId,
       storeName,
       logo,
@@ -289,6 +290,7 @@ export default function Wizard({
       pages,
       domain,
       categoriesText,
+      completed,
     },
     hydrate,
     () => setInvalidStateNotice(true)
@@ -722,6 +724,9 @@ export default function Wizard({
     }
   };
 
+  const progressValue =
+    (Object.values(completed).filter(Boolean).length / steps.length) * 100;
+
   /* ====================================================================== */
   /*  JSX                                                                   */
   /* ====================================================================== */
@@ -730,7 +735,10 @@ export default function Wizard({
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
         <div className="mb-6 flex items-center justify-between">
-          <Progress step={step} total={steps.length} />
+          <Progress
+            value={progressValue}
+            label={`Step ${step + 1} of ${steps.length}`}
+          />
           {shopId && <MediaUploadDialog shop={shopId} />}
         </div>
 

@@ -283,7 +283,7 @@ describe("Wizard", () => {
   it("uses defaults when fields are missing", async () => {
     server.use(
       rest.get("/cms/api/wizard-progress", (_req, res, ctx) =>
-        res(ctx.status(200), ctx.json({ step: 1 }))
+        res(ctx.status(200), ctx.json({ state: {}, completed: {} }))
       )
     );
     const { container } = render(

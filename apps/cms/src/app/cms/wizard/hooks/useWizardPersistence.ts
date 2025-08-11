@@ -39,7 +39,10 @@ export function useWizardPersistence(
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         if (!json) return;
-        const parsed = wizardStateSchema.safeParse(json.state ?? json);
+        const parsed = wizardStateSchema.safeParse({
+          ...(json.state ?? json),
+          completed: json.completed ?? {},
+        });
         if (parsed.success) {
           setState(parsed.data);
           try {
@@ -67,32 +70,34 @@ export function useWizardPersistence(
     } catch {
       /* ignore quota */
     }
+    const { completed, ...data } = state;
     fetch("/cms/api/wizard-progress", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ stepId: String(state.step ?? 0), data: state }),
+      body: JSON.stringify({ stepId: "wizard", data }),
     }).catch(() => {
       /* ignore network errors */
     });
   }, [state]);
 
-  /* Toggle completion when the step changes */
-  const prevStep = useRef(state.step);
+  /* Persist completion changes */
+  const prevCompleted = useRef(state.completed);
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const prev = prevStep.current;
-    if (state.step !== prev) {
-      fetch("/cms/api/wizard-progress", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          stepId: String(prev),
-          completed: state.step > prev,
-        }),
-      }).catch(() => {
-        /* ignore network errors */
-      });
-      prevStep.current = state.step;
-    }
-  }, [state.step]);
+    const prev = prevCompleted.current;
+    const curr = state.completed;
+    const keys = new Set([...Object.keys(prev), ...Object.keys(curr)]);
+    keys.forEach((k) => {
+      if (prev[k] !== curr[k]) {
+        fetch("/cms/api/wizard-progress", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ stepId: k, completed: curr[k] ?? false }),
+        }).catch(() => {
+          /* ignore network errors */
+        });
+      }
+    });
+    prevCompleted.current = curr;
+  }, [state.completed]);
 }

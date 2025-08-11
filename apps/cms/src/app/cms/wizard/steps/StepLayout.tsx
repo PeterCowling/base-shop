@@ -32,6 +32,7 @@ interface Props {
   /** Navigation */
   onBack: () => void;
   onNext: () => void;
+  onComplete: () => void;
 
   /** Optional inner content for the step */
   children?: ReactNode;
@@ -54,6 +55,7 @@ export default function StepLayout({
   themeStyle,
   onBack,
   onNext,
+  onComplete,
   children,
 }: Props): React.JSX.Element | null {
   /**
@@ -169,7 +171,14 @@ export default function StepLayout({
         <Button variant="outline" onClick={onBack}>
           Back
         </Button>
-        <Button onClick={onNext}>Next</Button>
+        <Button
+          onClick={() => {
+            onComplete();
+            onNext();
+          }}
+        >
+          Next
+        </Button>
       </div>
       <Toast
         open={toast.open}

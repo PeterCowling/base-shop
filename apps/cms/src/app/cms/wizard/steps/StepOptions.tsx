@@ -24,6 +24,7 @@ interface Props {
   setAnalyticsId: (v: string) => void;
   onBack: () => void;
   onNext: () => void;
+  onComplete: () => void;
 }
 
 export default function StepOptions({
@@ -38,6 +39,7 @@ export default function StepOptions({
   setAnalyticsId,
   onBack,
   onNext,
+  onComplete,
 }: Props): React.JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -134,7 +136,14 @@ export default function StepOptions({
         <Button variant="outline" onClick={onBack}>
           Back
         </Button>
-        <Button onClick={onNext}>Next</Button>
+        <Button
+          onClick={() => {
+            onComplete();
+            onNext();
+          }}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

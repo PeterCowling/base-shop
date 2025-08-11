@@ -13,22 +13,7 @@ import { ulid } from "ulid";
 /*  Wizard step views                                                         */
 /* -------------------------------------------------------------------------- */
 import MediaUploadDialog from "./MediaUploadDialog";
-import StepAdditionalPages from "./steps/StepAdditionalPages";
-import StepCheckoutPage from "./steps/StepCheckoutPage";
-import StepHomePage from "./steps/StepHomePage";
-import StepHosting from "./steps/StepHosting";
-import StepImportData from "./steps/StepImportData";
-import StepLayout from "./steps/StepLayout";
-import StepNavigation from "./steps/StepNavigation";
-import StepOptions from "./steps/StepOptions";
-import StepProductPage from "./steps/StepProductPage";
-import StepSeedData from "./steps/StepSeedData";
-import StepEnvVars from "./steps/StepEnvVars";
-import StepShopDetails from "./steps/StepShopDetails";
-import StepShopPage from "./steps/StepShopPage";
-import StepSummary from "./steps/StepSummary";
-import StepTheme from "./steps/StepTheme";
-import StepTokens from "./steps/StepTokens";
+import steps from "../configurator/steps";
 
 /* -------------------------------------------------------------------------- */
 /*  Schema / utils                                                            */
@@ -118,6 +103,8 @@ export default function Wizard({
   const pollRef = useRef<NodeJS.Timeout | null>(null);
   const pollRetries = useRef(0);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
+
+  const [completed, setCompleted] = useState<Record<string, boolean>>({});
 
   /* ---------------------------------------------------------------------- */
   /*  SEO fields                                                            */
@@ -415,7 +402,6 @@ export default function Wizard({
 
       if (ok) {
         setSeedResult("Data saved");
-        setStep(10);
       } else {
         setSeedResult(error ?? "Failed to save data");
       }
@@ -460,7 +446,6 @@ export default function Wizard({
       }
 
       setImportResult("Saved");
-      setStep(9);
     } catch (err) {
       console.error("Error importing data", err);
       setImportResult(
@@ -549,263 +534,191 @@ export default function Wizard({
     }
   }
 
-  /** Returns the JSX for the current step—only that step is mounted. */
-  const renderStep = () => {
-    switch (step) {
-      case 0:
-        return (
-          <StepShopDetails
-            shopId={shopId}
-            setShopId={setShopId}
-            storeName={storeName}
-            setStoreName={setStoreName}
-            logo={logo}
-            setLogo={setLogo}
-            contactInfo={contactInfo}
-            setContactInfo={setContactInfo}
-            type={type}
-            setType={setType}
-            template={template}
-            setTemplate={setTemplate}
-            templates={templates}
-            onNext={handleIdStepNext}
-            errors={fieldErrors}
-          />
-        );
+  const layoutIndex = steps.findIndex((s) => s.id === "layout");
 
-      case 1:
-        return (
-          <StepTheme
-            themes={themes}
-            theme={theme}
-            setTheme={setTheme}
-            themeVars={themeVars}
-            setThemeVars={setThemeVars}
-            themeStyle={themeStyle}
-            onBack={() => setStep(0)}
-            onNext={() => setStep(2)}
-          />
-        );
+  const stepProps: Record<string, any> = {
+    "shop-details": {
+      shopId,
+      setShopId,
+      storeName,
+      setStoreName,
+      logo,
+      setLogo,
+      contactInfo,
+      setContactInfo,
+      type,
+      setType,
+      template,
+      setTemplate,
+      templates,
+      errors: fieldErrors,
+    },
+    theme: {
+      themes,
+      theme,
+      setTheme,
+      themeVars,
+      setThemeVars,
+      themeStyle,
+    },
+    tokens: { themeStyle },
+    options: {
+      shopId,
+      payment,
+      setPayment,
+      shipping,
+      setShipping,
+      analyticsProvider,
+      setAnalyticsProvider,
+      analyticsId,
+      setAnalyticsId,
+    },
+    navigation: { navItems, setNavItems },
+    layout: {
+      currentStep: step,
+      stepIndex: layoutIndex,
+      headerComponents,
+      setHeaderComponents,
+      headerPageId,
+      setHeaderPageId,
+      footerComponents,
+      setFooterComponents,
+      footerPageId,
+      setFooterPageId,
+      shopId,
+      themeStyle,
+    },
+    "home-page": {
+      pageTemplates,
+      homeLayout,
+      setHomeLayout,
+      components,
+      setComponents,
+      homePageId,
+      setHomePageId,
+      shopId,
+      themeStyle,
+    },
+    "checkout-page": {
+      pageTemplates,
+      checkoutLayout,
+      setCheckoutLayout,
+      checkoutComponents,
+      setCheckoutComponents,
+      checkoutPageId,
+      setCheckoutPageId,
+      shopId,
+      themeStyle,
+    },
+    "shop-page": {
+      pageTemplates,
+      shopLayout,
+      setShopLayout,
+      shopComponents,
+      setShopComponents,
+      shopPageId,
+      setShopPageId,
+      shopId,
+      themeStyle,
+    },
+    "product-page": {
+      pageTemplates,
+      productLayout,
+      setProductLayout,
+      productComponents,
+      setProductComponents,
+      productPageId,
+      setProductPageId,
+      shopId,
+      themeStyle,
+    },
+    "additional-pages": {
+      pageTemplates,
+      pages,
+      setPages,
+      shopId,
+      themeStyle,
+    },
+    "env-vars": { env: envVars, setEnv },
+    summary: {
+      shopId,
+      name: storeName,
+      logo,
+      contactInfo,
+      type,
+      template,
+      theme,
+      payment,
+      shipping,
+      analyticsProvider,
+      pageTitle,
+      setPageTitle,
+      pageDescription,
+      setPageDescription,
+      socialImage,
+      setSocialImage,
+      result,
+      themeStyle,
+      creating,
+      submit,
+      errors: fieldErrors,
+    },
+    "import-data": {
+      setCsvFile,
+      categoriesText,
+      setCategoriesText,
+      importResult,
+      importing,
+      saveData,
+    },
+    "seed-data": {
+      setCsvFile,
+      categoriesText,
+      setCategoriesText,
+      seedResult,
+      seeding,
+      seed,
+    },
+    hosting: {
+      shopId,
+      domain,
+      setDomain,
+      deployResult,
+      deployInfo,
+      setDeployInfo,
+      deploying,
+      deploy,
+    },
+  };
 
-      case 2:
-        return (
-          <StepTokens
-            themeStyle={themeStyle}
-            onBack={() => setStep(1)}
-            onNext={() => setStep(3)}
-          />
-        );
+  const stepsWithNext = new Set([
+    "shop-details",
+    "theme",
+    "tokens",
+    "options",
+    "navigation",
+    "layout",
+    "home-page",
+    "checkout-page",
+    "shop-page",
+    "product-page",
+    "additional-pages",
+    "env-vars",
+    "summary",
+  ]);
 
-      case 3:
-        return (
-          <StepOptions
-            shopId={shopId}
-            payment={payment}
-            setPayment={setPayment}
-            shipping={shipping}
-            setShipping={setShipping}
-            analyticsProvider={analyticsProvider}
-            setAnalyticsProvider={setAnalyticsProvider}
-            analyticsId={analyticsId}
-            setAnalyticsId={setAnalyticsId}
-            onBack={() => setStep(2)}
-            onNext={() => setStep(4)}
-          />
-        );
+  const currentStepDef = steps[step];
+  const StepComponent = currentStepDef.component as any;
+  const hasNext = stepsWithNext.has(currentStepDef.id);
+  const onNext =
+    currentStepDef.id === "shop-details"
+      ? handleIdStepNext
+      : () => setStep(step + 1);
 
-      case 4:
-        return (
-          <StepNavigation
-            navItems={navItems}
-            setNavItems={setNavItems}
-            onBack={() => setStep(3)}
-            onNext={() => setStep(5)}
-          />
-        );
-
-      case 5:
-        return (
-          <StepLayout
-            currentStep={step}
-            stepIndex={5}
-            headerComponents={headerComponents}
-            setHeaderComponents={setHeaderComponents}
-            headerPageId={headerPageId}
-            setHeaderPageId={setHeaderPageId}
-            footerComponents={footerComponents}
-            setFooterComponents={setFooterComponents}
-            footerPageId={footerPageId}
-            setFooterPageId={setFooterPageId}
-            shopId={shopId}
-            themeStyle={themeStyle}
-            onBack={() => setStep(4)}
-            onNext={() => setStep(6)}
-          />
-        );
-
-      case 6:
-        return (
-          <StepHomePage
-            pageTemplates={pageTemplates}
-            homeLayout={homeLayout}
-            setHomeLayout={setHomeLayout}
-            components={components}
-            setComponents={setComponents}
-            homePageId={homePageId}
-            setHomePageId={setHomePageId}
-            shopId={shopId}
-            themeStyle={themeStyle}
-            onBack={() => setStep(5)}
-            onNext={() => setStep(7)}
-          />
-        );
-
-      case 7:
-        return (
-          <StepCheckoutPage
-            pageTemplates={pageTemplates}
-            checkoutLayout={checkoutLayout}
-            setCheckoutLayout={setCheckoutLayout}
-            checkoutComponents={checkoutComponents}
-            setCheckoutComponents={setCheckoutComponents}
-            checkoutPageId={checkoutPageId}
-            setCheckoutPageId={setCheckoutPageId}
-            shopId={shopId}
-            themeStyle={themeStyle}
-            onBack={() => setStep(6)}
-            onNext={() => setStep(8)}
-          />
-        );
-
-      case 8:
-        return (
-          <StepShopPage
-            pageTemplates={pageTemplates}
-            shopLayout={shopLayout}
-            setShopLayout={setShopLayout}
-            shopComponents={shopComponents}
-            setShopComponents={setShopComponents}
-            shopPageId={shopPageId}
-            setShopPageId={setShopPageId}
-            shopId={shopId}
-            themeStyle={themeStyle}
-            onBack={() => setStep(7)}
-            onNext={() => setStep(9)}
-          />
-        );
-
-      case 9:
-        return (
-          <StepProductPage
-            pageTemplates={pageTemplates}
-            productLayout={productLayout}
-            setProductLayout={setProductLayout}
-            productComponents={productComponents}
-            setProductComponents={setProductComponents}
-            productPageId={productPageId}
-            setProductPageId={setProductPageId}
-            shopId={shopId}
-            themeStyle={themeStyle}
-            onBack={() => setStep(8)}
-            onNext={() => setStep(10)}
-          />
-        );
-
-      case 10:
-        return (
-          <StepAdditionalPages
-            pageTemplates={pageTemplates}
-            pages={pages}
-            setPages={setPages}
-            shopId={shopId}
-            themeStyle={themeStyle}
-            onBack={() => setStep(9)}
-            onNext={() => setStep(11)}
-          />
-        );
-
-      case 11:
-        return (
-          <StepEnvVars
-            env={envVars}
-            setEnv={setEnv}
-            onBack={() => setStep(10)}
-            onNext={() => setStep(12)}
-          />
-        );
-
-      case 12:
-        return (
-          <StepSummary
-            shopId={shopId}
-            name={storeName}
-            logo={logo}
-            contactInfo={contactInfo}
-            type={type}
-            template={template}
-            theme={theme}
-            payment={payment}
-            shipping={shipping}
-            analyticsProvider={analyticsProvider}
-            pageTitle={pageTitle}
-            setPageTitle={setPageTitle}
-            pageDescription={pageDescription}
-            setPageDescription={setPageDescription}
-            socialImage={socialImage}
-            setSocialImage={setSocialImage}
-            result={result}
-            themeStyle={themeStyle}
-            creating={creating}
-            submit={submit}
-            onBack={() => setStep(11)}
-            onNext={() => setStep(13)}
-            errors={fieldErrors}
-          />
-        );
-
-      case 13:
-        return (
-          <StepImportData
-            setCsvFile={setCsvFile}
-            categoriesText={categoriesText}
-            setCategoriesText={setCategoriesText}
-            importResult={importResult}
-            importing={importing}
-            saveData={saveData}
-            onBack={() => setStep(12)}
-          />
-        );
-
-      case 14:
-        return (
-          <StepSeedData
-            setCsvFile={setCsvFile}
-            categoriesText={categoriesText}
-            setCategoriesText={setCategoriesText}
-            seedResult={seedResult}
-            seeding={seeding}
-            seed={seed}
-            onBack={() => setStep(13)}
-          />
-        );
-
-      case 15:
-        return (
-          <StepHosting
-            shopId={shopId}
-            domain={domain}
-            setDomain={setDomain}
-            deployResult={deployResult}
-            deployInfo={deployInfo}
-            setDeployInfo={setDeployInfo}
-            deploying={deploying}
-            deploy={deploy}
-            onBack={() => setStep(14)}
-          />
-        );
-
-      default:
-        return null;
+  const handleComplete = () => {
+    setCompleted((prev) => ({ ...prev, [currentStepDef.id]: true }));
+    if (!hasNext) {
+      setStep(step + 1);
     }
   };
 
@@ -817,12 +730,16 @@ export default function Wizard({
     <div className="mx-auto max-w-xl" style={themeStyle}>
       <fieldset disabled={disabled} className="space-y-6">
         <div className="mb-6 flex items-center justify-between">
-          <Progress step={step} total={16} />
+          <Progress step={step} total={steps.length} />
           {shopId && <MediaUploadDialog shop={shopId} />}
         </div>
 
-        {/* Only the active step is rendered */}
-        {renderStep()}
+        <StepComponent
+          {...stepProps[currentStepDef.id]}
+          {...(step > 0 ? { onBack: () => setStep(step - 1) } : {})}
+          {...(hasNext ? { onNext } : {})}
+          onComplete={handleComplete}
+        />
       </fieldset>
 
       <Toast

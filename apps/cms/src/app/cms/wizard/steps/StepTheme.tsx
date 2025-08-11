@@ -60,6 +60,7 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
+  onComplete: () => void;
 }
 
 export default function StepTheme({
@@ -71,6 +72,7 @@ export default function StepTheme({
   themeStyle,
   onBack,
   onNext,
+  onComplete,
 }: Props): React.JSX.Element {
   const [palette, setPalette] = useState(colorPalettes[0].name);
 
@@ -128,7 +130,14 @@ export default function StepTheme({
         <Button variant="outline" onClick={onBack}>
           Back
         </Button>
-        <Button onClick={onNext}>Next</Button>
+        <Button
+          onClick={() => {
+            onComplete();
+            onNext();
+          }}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

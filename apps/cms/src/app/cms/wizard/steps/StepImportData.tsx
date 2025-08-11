@@ -9,7 +9,8 @@ interface Props {
   importResult: string | null;
   importing: boolean;
   onBack: () => void;
-  saveData: () => void;
+  saveData: () => Promise<void> | void;
+  onComplete: () => void;
 }
 
 export default function StepImportData({
@@ -20,6 +21,7 @@ export default function StepImportData({
   importing,
   onBack,
   saveData,
+  onComplete,
 }: Props): React.JSX.Element {
   return (
     <div className="space-y-4">
@@ -43,7 +45,13 @@ export default function StepImportData({
         <Button variant="outline" onClick={onBack}>
           Back
         </Button>
-        <Button disabled={importing} onClick={saveData}>
+        <Button
+          disabled={importing}
+          onClick={async () => {
+            await saveData();
+            onComplete();
+          }}
+        >
           {importing ? "Saving…" : "Save & Continue"}
         </Button>
       </div>

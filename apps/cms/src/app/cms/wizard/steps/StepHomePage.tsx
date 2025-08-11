@@ -29,6 +29,7 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
+  onComplete: () => void;
 }
 
 export default function StepHomePage({
@@ -43,6 +44,7 @@ export default function StepHomePage({
   themeStyle,
   onBack,
   onNext,
+  onComplete,
 }: Props): React.JSX.Element {
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
@@ -166,7 +168,14 @@ export default function StepHomePage({
         <Button variant="outline" onClick={onBack}>
           Back
         </Button>
-        <Button onClick={onNext}>Next</Button>
+        <Button
+          onClick={() => {
+            onComplete();
+            onNext();
+          }}
+        >
+          Next
+        </Button>
       </div>
       <Toast
         open={toast.open}

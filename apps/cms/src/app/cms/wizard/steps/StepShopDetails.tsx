@@ -25,6 +25,7 @@ interface Props {
   setTemplate: (v: string) => void;
   templates: string[];
   onNext: () => void;
+  onComplete: () => void;
   errors?: Record<string, string[]>;
 }
 
@@ -43,6 +44,7 @@ export default function StepShopDetails({
   setTemplate,
   templates,
   onNext,
+  onComplete,
   errors = {},
 }: Props): React.JSX.Element {
   return (
@@ -123,7 +125,13 @@ export default function StepShopDetails({
         </Select>
       </label>
       <div className="flex justify-end gap-2">
-        <Button disabled={!shopId} onClick={onNext}>
+        <Button
+          disabled={!shopId}
+          onClick={() => {
+            onComplete();
+            onNext();
+          }}
+        >
           Next
         </Button>
       </div>

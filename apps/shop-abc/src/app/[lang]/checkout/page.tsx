@@ -10,7 +10,7 @@ import {
 } from "@platform-core/src/cartCookie";
 import { getCart } from "@platform-core/src/cartStore";
 import { getPages } from "@platform-core/repositories/pages/index.server";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";

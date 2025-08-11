@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import type { Page } from "@types";
+import type { Page } from "@acme/types";
 import PagesTable from "./PagesTable";
 
 const pages: Page[] = [

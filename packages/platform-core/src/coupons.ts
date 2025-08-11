@@ -1,5 +1,5 @@
 // packages/platform-core/src/coupons.ts
-import type { Coupon } from "@types";
+import type { Coupon } from "@acme/types";
 
 /** Sample coupons available on the storefront */
 export const COUPONS: readonly Coupon[] = [

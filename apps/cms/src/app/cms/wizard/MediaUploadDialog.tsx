@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/atoms/shadcn";
-import type { MediaItem } from "@types";
+import type { MediaItem } from "@acme/types";
 import MediaManager from "@ui/components/cms/MediaManager";
 import { ReactElement, useCallback, useEffect, useState } from "react";
 

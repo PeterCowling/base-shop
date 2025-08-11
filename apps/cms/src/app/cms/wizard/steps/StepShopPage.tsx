@@ -10,7 +10,7 @@ import {
 } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
-import type { Page, PageComponent } from "@types";
+import type { Page, PageComponent } from "@acme/types";
 import { fetchJson } from "@shared-utils";
 import { ulid } from "ulid";
 import { useState } from "react";

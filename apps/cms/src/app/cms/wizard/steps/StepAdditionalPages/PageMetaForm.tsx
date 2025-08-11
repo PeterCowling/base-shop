@@ -1,5 +1,5 @@
 import { Input } from "@/components/atoms/shadcn";
-import type { Locale } from "@types";
+import type { Locale } from "@acme/types";
 
 interface Props {
   languages: readonly Locale[];

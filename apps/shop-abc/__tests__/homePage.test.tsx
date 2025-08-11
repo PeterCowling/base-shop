@@ -8,7 +8,7 @@ jest.mock("../src/app/[lang]/page.client", () => ({
   default: jest.fn(() => null),
 }));
 
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import Page from "../src/app/[lang]/page";
 import Home from "../src/app/[lang]/page.client";
 import { getPages } from "@platform-core/repositories/pages/index.server";

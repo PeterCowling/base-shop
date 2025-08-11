@@ -1,5 +1,5 @@
 import { jest } from "@jest/globals";
-import type { RentalOrder } from "@types";
+import type { RentalOrder } from "@acme/types";
 import type { NextRequest } from "next/server";
 import type Stripe from "stripe";
 

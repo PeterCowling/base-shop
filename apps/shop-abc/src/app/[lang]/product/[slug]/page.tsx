@@ -1,6 +1,6 @@
 // apps/shop-abc/src/app/[lang]/product/[slug]/page.tsx
 import { getProductBySlug } from "@/lib/products";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DynamicRenderer from "@ui/components/DynamicRenderer";

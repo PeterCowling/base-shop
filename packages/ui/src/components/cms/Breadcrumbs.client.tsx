@@ -3,7 +3,7 @@
 
 import type { ProductPublication } from "@platform-core/src/products";
 import { getShopFromPath } from "@platform-core/utils";
-import type { Page } from "@types";
+import type { Page } from "@acme/types";
 import { usePathname } from "next/navigation";
 import { memo, useEffect, useState } from "react";
 import Breadcrumbs, { BreadcrumbItem } from "../molecules/Breadcrumbs";

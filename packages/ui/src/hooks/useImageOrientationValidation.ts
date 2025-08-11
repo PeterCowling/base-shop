@@ -1,4 +1,4 @@
-import type { ImageOrientation } from "@types";
+import type { ImageOrientation } from "@acme/types";
 import { useEffect, useState } from "react";
 
 export interface ImageOrientationValidationResult {

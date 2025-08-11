@@ -1,5 +1,5 @@
 import ComponentEditor from "./ComponentEditor";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import type { Action } from "./state";
 import { useCallback } from "react";
 

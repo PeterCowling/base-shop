@@ -1,6 +1,6 @@
 import "server-only";
 
-import { pricingSchema, type PricingMatrix } from "@types";
+import { pricingSchema, type PricingMatrix } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { resolveDataRoot } from "../dataRoot";

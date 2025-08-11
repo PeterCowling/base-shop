@@ -5,7 +5,7 @@ import { DATA_ROOT } from "../dataRoot";
 import { sendEmail } from "@acme/email";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import type { InventoryItem } from "@types";
+import type { InventoryItem } from "@acme/types";
 
 const LOG_FILE = "stock-alert-log.json";
 const SUPPRESS_HOURS = 24; // suppress repeat alerts for a day

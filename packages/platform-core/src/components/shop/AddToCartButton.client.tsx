@@ -2,7 +2,7 @@
 "use client";
 
 import { useCart } from "@platform-core/src/contexts/CartContext";
-import type { SKU } from "@types";
+import type { SKU } from "@acme/types";
 import { useState } from "react";
 
 type Props = {

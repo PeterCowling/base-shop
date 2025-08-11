@@ -2,7 +2,7 @@
 "use client";
 
 import { Input } from "@ui/components/atoms/shadcn";
-import type { ImageOrientation, MediaItem } from "@types";
+import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import { memo, ReactElement, useCallback, useState } from "react";
 import MediaFileList from "./MediaFileList";

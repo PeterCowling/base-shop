@@ -2,7 +2,7 @@
 
 import "server-only";
 
-import { pageSchema, type Page } from "@types";
+import { pageSchema, type Page } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { prisma } from "../../db";

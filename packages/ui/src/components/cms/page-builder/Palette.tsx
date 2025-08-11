@@ -2,7 +2,7 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import { memo } from "react";
 import {
   atomRegistry,

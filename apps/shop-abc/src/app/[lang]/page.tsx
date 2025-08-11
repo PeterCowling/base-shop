@@ -1,4 +1,4 @@
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { readShop } from "@platform-core/repositories/shops.server";
 import Home from "./page.client";

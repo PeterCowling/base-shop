@@ -2,7 +2,7 @@
 "use client";
 
 import { Button, Input } from "@ui/components/atoms/shadcn";
-import type { PublishLocation } from "@types";
+import type { PublishLocation } from "@acme/types";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { toggleItem } from "@shared-utils";
 import { memo, useCallback } from "react";

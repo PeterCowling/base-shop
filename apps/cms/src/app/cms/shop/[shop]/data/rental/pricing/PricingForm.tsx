@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Textarea } from "@/components/atoms/shadcn";
-import { pricingSchema, type PricingMatrix } from "@types";
+import { pricingSchema, type PricingMatrix } from "@acme/types";
 import { FormEvent, useState } from "react";
 
 interface Props {

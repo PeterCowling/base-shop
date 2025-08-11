@@ -7,7 +7,7 @@ import {
 import { baseTokens } from "../src/themeTokens";
 import { tokens as abcTokens } from "../../themes/abc/src/tailwind-tokens";
 import { tokens as darkTokens } from "../../themes/dark/src/tailwind-tokens";
-import type { Shop } from "@types";
+import type { Shop } from "@acme/types";
 
 describe("validateShopName", () => {
   it("trims and accepts safe names", () => {

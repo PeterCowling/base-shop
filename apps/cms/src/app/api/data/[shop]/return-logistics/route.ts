@@ -1,7 +1,7 @@
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { returnLogisticsSchema } from "@types";
+import { returnLogisticsSchema } from "@acme/types";
 import { writeReturnLogistics } from "@platform-core/repositories/returnLogistics.server";
 
 export async function POST(

@@ -3,7 +3,7 @@
 
 import { type CartState } from "../cartCookie";
 
-import type { SKU } from "@types";
+import type { SKU } from "@acme/types";
 import {
   createContext,
   ReactNode,

@@ -1,5 +1,5 @@
 // packages/platform-machine/__tests__/depositService.test.ts
-import type { RentalOrder } from "@types";
+import type { RentalOrder } from "@acme/types";
 
 describe("releaseDepositsOnce", () => {
   const OLD_ENV = process.env;

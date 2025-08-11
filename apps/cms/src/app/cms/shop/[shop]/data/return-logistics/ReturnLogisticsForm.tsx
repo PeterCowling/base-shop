@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input, Checkbox } from "@/components/atoms/shadcn";
-import { returnLogisticsSchema, type ReturnLogistics } from "@types";
+import { returnLogisticsSchema, type ReturnLogistics } from "@acme/types";
 import { FormEvent, useState } from "react";
 
 interface Props {

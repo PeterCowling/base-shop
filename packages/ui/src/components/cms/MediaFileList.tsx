@@ -1,6 +1,6 @@
 // packages/ui/components/cms/MediaFileList.tsx
 "use client";
-import type { MediaItem } from "@types";
+import type { MediaItem } from "@acme/types";
 import MediaFileItem from "./MediaFileItem";
 
 interface Props {

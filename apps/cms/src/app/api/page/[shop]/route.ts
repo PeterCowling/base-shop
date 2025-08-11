@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getPages, updatePage as updatePageInRepo } from "@platform-core/repositories/pages/index.server";
-import { pageComponentSchema, type PageComponent } from "@types";
+import { pageComponentSchema, type PageComponent } from "@acme/types";
 
 export async function POST(
   req: NextRequest,

@@ -2,7 +2,7 @@ import Link from "@tiptap/extension-link";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import type { Locale } from "@/i18n/locales";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import { useEffect } from "react";
 
 function getContent(component: PageComponent, locale: Locale) {

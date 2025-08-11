@@ -5,7 +5,7 @@ import {
   setFreezeTranslations,
   updateSeo,
 } from "@cms/actions/shops.server";
-import type { Locale } from "@types";
+import type { Locale } from "@acme/types";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface SeoData {

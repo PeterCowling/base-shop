@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------------------- */
 /*  Locale helpers                                                            */
 /* -------------------------------------------------------------------------- */
-import { type Locale, type SKU } from "@types";
+import { type Locale, type SKU } from "@acme/types";
 
 /* -------------------------------------------------------------------------- */
 /*  Storefront types & helpers                                                */
@@ -70,7 +70,7 @@ export type {
   ProductCore,
   ProductPublication,
   PublicationStatus,
-} from "@types";
+} from "@acme/types";
 
 /* -------------------------------------------------------------------------- */
 /*  Utility                                                                   */

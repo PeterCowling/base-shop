@@ -9,7 +9,7 @@ import {
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { ulid } from "ulid";
 import { useCallback } from "react";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import type { Action } from "./state";
 
 interface Params {

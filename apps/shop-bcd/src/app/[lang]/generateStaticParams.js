@@ -1,5 +1,5 @@
 // apps/shop-bcd/src/app/[lang]/generateStaticParams.ts
-import { LOCALES } from "@types";
+import { LOCALES } from "@acme/types";
 export default function generateStaticParams() {
     /* prerender /en, /de, /it — Next will also serve `/` via default locale */
     return LOCALES.map((lang) => ({ lang }));

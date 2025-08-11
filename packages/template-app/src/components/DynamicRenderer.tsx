@@ -18,7 +18,7 @@ import TestimonialSlider from "@/components/cms/blocks/TestimonialSlider";
 import { Textarea as TextBlock } from "@/components/atoms/primitives/textarea";
 
 import { PRODUCTS } from "@platform-core/src/products";
-import type { PageComponent, SKU } from "@types";
+import type { PageComponent, SKU } from "@acme/types";
 
 /* ------------------------------------------------------------------
  * next/image wrapper usable in CMS blocks

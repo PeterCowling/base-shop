@@ -2,7 +2,7 @@
 
 import { createPage } from "@cms/actions/pages.server";
 import { fillLocales } from "@i18n/fillLocales";
-import type { Page } from "@types";
+import type { Page } from "@acme/types";
 import dynamic from "next/dynamic";
 
 const PageBuilder = dynamic(() => import("@ui/components/cms/PageBuilder"));

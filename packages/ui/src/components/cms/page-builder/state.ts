@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { pageComponentSchema } from "@types";
-import type { PageComponent, HistoryState } from "@types";
+import { pageComponentSchema } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/types";
 
 /* ════════════════ runtime validation (Zod) ════════════════ */
 export const historyStateSchema: z.ZodType<HistoryState> = z

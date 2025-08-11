@@ -2,7 +2,7 @@
 import "server-only";
 
 import { LOCALES } from "@i18n/locales";
-import { shopSettingsSchema, type Locale, type ShopSettings } from "@types";
+import { shopSettingsSchema, type Locale, type ShopSettings } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { z } from "zod";

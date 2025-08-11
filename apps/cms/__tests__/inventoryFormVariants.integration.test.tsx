@@ -21,7 +21,7 @@ jest.mock(
   { virtual: true }
 );
 
-jest.mock("@types", () => {
+jest.mock("@acme/types", () => {
   const { z } = require("zod");
   const inventoryItemSchema = z.object({
     sku: z.string(),

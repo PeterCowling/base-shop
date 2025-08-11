@@ -1,7 +1,7 @@
 // packages/platform-core/repositories/shops.server.ts
 import "server-only";
 
-import { shopSchema, type Shop } from "@types";
+import { shopSchema, type Shop } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { prisma } from "../db";

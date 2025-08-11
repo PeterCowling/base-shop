@@ -1,4 +1,4 @@
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import shop from "../../../shop.json";

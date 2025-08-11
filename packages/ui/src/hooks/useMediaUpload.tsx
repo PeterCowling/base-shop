@@ -9,7 +9,7 @@
 import type { ChangeEvent, DragEvent, ReactElement, RefObject } from "react";
 import { useCallback, useRef, useState } from "react";
 
-import type { ImageOrientation, MediaItem } from "@types";
+import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useImageOrientationValidation } from "./useImageOrientationValidation";
 
 /* ──────────────────────────────────────────────────────────────────────

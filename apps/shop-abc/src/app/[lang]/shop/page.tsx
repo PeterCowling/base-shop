@@ -1,6 +1,6 @@
 // apps/shop-abc/src/app/[lang]/shop/page.tsx
 import { PRODUCTS } from "@/lib/products";
-import type { SKU, PageComponent } from "@types";
+import type { SKU, PageComponent } from "@acme/types";
 import type { Metadata } from "next";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import { getPages } from "@platform-core/repositories/pages/index.server";

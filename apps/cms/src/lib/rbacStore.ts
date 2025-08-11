@@ -1,6 +1,6 @@
 // apps/cms/src/lib/rbacStore.ts
 
-import type { CmsUser } from "@types";
+import type { CmsUser } from "@acme/types";
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";

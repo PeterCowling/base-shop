@@ -4,7 +4,7 @@ import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import type { Page } from "@types";
+import type { Page } from "@acme/types";
 
 if (typeof (Response as any).json !== "function") {
   (Response as any).json = (data: unknown, init?: ResponseInit) =>

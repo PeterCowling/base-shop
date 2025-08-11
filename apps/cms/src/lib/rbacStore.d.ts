@@ -1,4 +1,4 @@
-import type { CmsUser } from "@types";
+import type { CmsUser } from "@acme/types";
 import type { Role } from "../auth/roles";
 export interface RbacDB {
     users: Record<string, CmsUser>;

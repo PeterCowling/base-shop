@@ -1,4 +1,4 @@
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {

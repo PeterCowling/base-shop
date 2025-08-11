@@ -6,7 +6,7 @@ import {
   QueryClientProvider,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import type { Page } from "@types";
+import type { Page } from "@acme/types";
 import { PagesTable } from "@ui/components/cms";
 import { fetchJson } from "@shared-utils";
 import { useState } from "react";

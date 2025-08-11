@@ -10,7 +10,7 @@ interface Props {
   themes: string[];
   tokensByTheme: Record<string, Record<string, string>>;
   initialTheme: string;
-  initialTokens: Record<string, string>;
+  initialOverrides: Record<string, string>;
 }
 
 export default function ThemeEditor({
@@ -18,10 +18,10 @@ export default function ThemeEditor({
   themes,
   tokensByTheme,
   initialTheme,
-  initialTokens,
+  initialOverrides,
 }: Props) {
   const [theme, setTheme] = useState(initialTheme);
-  const [overrides, setOverrides] = useState<Record<string, string>>(initialTokens);
+  const [overrides, setOverrides] = useState<Record<string, string>>(initialOverrides);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
@@ -31,11 +31,19 @@ export default function ThemeEditor({
     setOverrides({});
   };
 
-  const handleOverrideChange = (key: string) => (
+  const handleOverrideChange = (key: string, defaultValue: string) => (
     e: ChangeEvent<HTMLInputElement>
   ) => {
     const { value } = e.target;
-    setOverrides((prev) => ({ ...prev, [key]: value }));
+    setOverrides((prev) => {
+      const next = { ...prev };
+      if (!value || value === defaultValue) {
+        delete next[key];
+      } else {
+        next[key] = value;
+      }
+      return next;
+    });
   };
 
   const handleReset = (key: string) => () => {
@@ -93,6 +101,7 @@ export default function ThemeEditor({
           const hasOverride = Object.prototype.hasOwnProperty.call(overrides, k);
           const overrideValue = hasOverride ? overrides[k] : "";
           const isOverridden = hasOverride && overrideValue !== defaultValue;
+          const isHex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(defaultValue);
           return (
             <label
               key={k}
@@ -101,12 +110,21 @@ export default function ThemeEditor({
               <span>{k}</span>
               <div className="flex items-center gap-2">
                 <Input value={defaultValue} disabled />
-                <Input
-                  placeholder={defaultValue}
-                  value={overrideValue}
-                  onChange={handleOverrideChange(k)}
-                  className={isOverridden ? "bg-amber-100" : ""}
-                />
+                {isHex ? (
+                  <input
+                    type="color"
+                    value={hasOverride ? overrideValue : defaultValue}
+                    onChange={handleOverrideChange(k, defaultValue)}
+                    className={isOverridden ? "bg-amber-100" : ""}
+                  />
+                ) : (
+                  <Input
+                    placeholder={defaultValue}
+                    value={overrideValue}
+                    onChange={handleOverrideChange(k, defaultValue)}
+                    className={isOverridden ? "bg-amber-100" : ""}
+                  />
+                )}
                 {hasOverride && (
                   <Button type="button" onClick={handleReset(k)}>
                     Reset

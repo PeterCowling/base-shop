@@ -27,7 +27,7 @@ describe("ThemeEditor", () => {
         themes={["base"]}
         tokensByTheme={tokensByTheme}
         initialTheme="base"
-        initialTokens={initialOverrides}
+        initialOverrides={initialOverrides}
       />
     );
 
@@ -56,7 +56,7 @@ describe("ThemeEditor", () => {
         themes={["base"]}
         tokensByTheme={tokensByTheme}
         initialTheme="base"
-        initialTokens={initialOverrides}
+        initialOverrides={initialOverrides}
       />
     );
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
+import { Toast, Tooltip } from "@/components/atoms";
 import type { WizardState } from "../wizard/schema";
 import { steps, stepOrder } from "./steps";
 export type StepStatus = "idle" | "pending" | "success" | "failure";
@@ -20,6 +21,12 @@ export default function ConfiguratorDashboard() {
     | null
   >(null);
   const [launchError, setLaunchError] = useState<string | null>(null);
+  const [toast, setToast] = useState<{ open: boolean; message: string }>(
+    {
+      open: false,
+      message: "",
+    }
+  );
 
   useEffect(() => {
     fetch("/cms/api/wizard-progress")
@@ -27,12 +34,22 @@ export default function ConfiguratorDashboard() {
       .then((json) => setState(json))
       .catch(() => setState(null));
   }, []);
-  const allRequiredDone = stepOrder.every(
-    (id) => !steps[id].required || Boolean(state?.completed?.[id])
+  const missingRequired = stepOrder.filter(
+    (id) => steps[id].required && !state?.completed?.[id]
   );
+  const allRequiredDone = missingRequired.length === 0;
 
   const launchShop = async () => {
     if (!state?.shopId) return;
+    if (!allRequiredDone) {
+      setToast({
+        open: true,
+        message: `Complete required steps: ${missingRequired
+          .map((id) => steps[id].label)
+          .join(", ")}`,
+      });
+      return;
+    }
     setLaunchError(null);
     const seed = Boolean(state.categoriesText);
     setLaunchStatus({
@@ -79,9 +96,17 @@ export default function ConfiguratorDashboard() {
           );
         })}
       </ul>
-      <Button disabled={!allRequiredDone} onClick={launchShop}>
-        Launch Shop
-      </Button>
+      {allRequiredDone ? (
+        <Button onClick={launchShop}>Launch Shop</Button>
+      ) : (
+        <Tooltip
+          text={`Complete required steps: ${missingRequired
+            .map((id) => steps[id].label)
+            .join(", ")}`}
+        >
+          <Button disabled>Launch Shop</Button>
+        </Tooltip>
+      )}
       {launchStatus && (
         <ul className="mt-4 space-y-1 text-sm">
           {Object.entries(launchStatus).map(([step, status]) => (
@@ -93,6 +118,13 @@ export default function ConfiguratorDashboard() {
       )}
       {launchError && (
         <p className="mt-2 text-sm text-red-600">{launchError}</p>
+      )}
+      {toast.open && (
+        <Toast
+          open={toast.open}
+          message={toast.message}
+          onClose={() => setToast({ open: false, message: "" })}
+        />
       )}
     </div>
   );

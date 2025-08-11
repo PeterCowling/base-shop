@@ -10,7 +10,12 @@ export interface CartStore {
   getCart(id: string): Promise<CartState>;
   setCart(id: string, cart: CartState): Promise<void>;
   deleteCart(id: string): Promise<void>;
-  incrementQty(id: string, sku: SKU, qty: number): Promise<CartState>;
+  incrementQty(
+    id: string,
+    sku: SKU,
+    qty: number,
+    size?: string
+  ): Promise<CartState>;
   setQty(id: string, skuId: string, qty: number): Promise<CartState | null>;
   removeItem(id: string, skuId: string): Promise<CartState | null>;
 }
@@ -46,14 +51,20 @@ class MemoryCartStore implements CartStore {
     this.carts.delete(id);
   }
 
-  async incrementQty(id: string, sku: SKU, qty: number): Promise<CartState> {
+  async incrementQty(
+    id: string,
+    sku: SKU,
+    qty: number,
+    size?: string
+  ): Promise<CartState> {
     let entry = this.carts.get(id);
     if (!entry || entry.expires < Date.now()) {
       entry = { cart: {}, expires: Date.now() };
       this.carts.set(id, entry);
     }
-    const line = entry.cart[sku.id];
-    entry.cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+    const key = size ? `${sku.id}:${size}` : sku.id;
+    const line = entry.cart[key];
+    entry.cart[key] = { sku, size, qty: (line?.qty ?? 0) + qty };
     entry.expires = Date.now() + this.ttl * 1000;
     return entry.cart;
   }
@@ -108,28 +119,32 @@ class RedisCartStore implements CartStore {
 
   async getCart(id: string): Promise<CartState> {
     const qty = (await this.client.hgetall<number>(id)) || {};
-    const skus = (await this.client.hgetall<string>(this.skuKey(id))) || {};
+    const lines = (await this.client.hgetall<string>(this.skuKey(id))) || {};
     const cart: CartState = {};
-    for (const [skuId, q] of Object.entries(qty)) {
-      const skuJson = skus[skuId];
-      if (!skuJson) continue;
-      cart[skuId] = { sku: JSON.parse(skuJson), qty: Number(q) };
+    for (const [lineId, q] of Object.entries(qty)) {
+      const lineJson = lines[lineId];
+      if (!lineJson) continue;
+      const parsed = JSON.parse(lineJson) as {
+        sku: SKU;
+        size?: string;
+      };
+      cart[lineId] = { sku: parsed.sku, size: parsed.size, qty: Number(q) };
     }
     return cart;
   }
 
   async setCart(id: string, cart: CartState): Promise<void> {
     const qty: Record<string, number> = {};
-    const skus: Record<string, string> = {};
-    for (const [skuId, line] of Object.entries(cart)) {
-      qty[skuId] = line.qty;
-      skus[skuId] = JSON.stringify(line.sku);
+    const lines: Record<string, string> = {};
+    for (const [lineId, line] of Object.entries(cart)) {
+      qty[lineId] = line.qty;
+      lines[lineId] = JSON.stringify({ sku: line.sku, size: line.size });
     }
     await this.client.del(id);
     await this.client.del(this.skuKey(id));
     if (Object.keys(qty).length) {
       await this.client.hset(id, qty);
-      await this.client.hset(this.skuKey(id), skus);
+      await this.client.hset(this.skuKey(id), lines);
     }
     await this.client.expire(id, this.ttl);
     await this.client.expire(this.skuKey(id), this.ttl);
@@ -140,9 +155,17 @@ class RedisCartStore implements CartStore {
     await this.client.del(this.skuKey(id));
   }
 
-  async incrementQty(id: string, sku: SKU, qty: number): Promise<CartState> {
-    await this.client.hincrby(id, sku.id, qty);
-    await this.client.hset(this.skuKey(id), { [sku.id]: JSON.stringify(sku) });
+  async incrementQty(
+    id: string,
+    sku: SKU,
+    qty: number,
+    size?: string
+  ): Promise<CartState> {
+    const key = size ? `${sku.id}:${size}` : sku.id;
+    await this.client.hincrby(id, key, qty);
+    await this.client.hset(this.skuKey(id), {
+      [key]: JSON.stringify({ sku, size }),
+    });
     await this.client.expire(id, this.ttl);
     await this.client.expire(this.skuKey(id), this.ttl);
     return this.getCart(id);
@@ -195,8 +218,12 @@ export const getCart = (id: string) => store.getCart(id);
 export const setCart = (id: string, cart: CartState) =>
   store.setCart(id, cart);
 export const deleteCart = (id: string) => store.deleteCart(id);
-export const incrementQty = (id: string, sku: SKU, qty: number) =>
-  store.incrementQty(id, sku, qty);
+export const incrementQty = (
+  id: string,
+  sku: SKU,
+  qty: number,
+  size?: string
+) => store.incrementQty(id, sku, qty, size);
 export const setQty = (id: string, skuId: string, qty: number) =>
   store.setQty(id, skuId, qty);
 export const removeItem = (id: string, skuId: string) =>

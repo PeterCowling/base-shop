@@ -11,8 +11,8 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
  * ------------------------------------------------------------------ */
 type Action =
   | { type: "add"; sku: SKU; size?: string }
-  | { type: "remove"; id: SKU["id"] }
-  | { type: "setQty"; id: SKU["id"]; qty: number };
+  | { type: "remove"; id: string }
+  | { type: "setQty"; id: string; qty: number };
 
 /* ------------------------------------------------------------------
  * React context
@@ -45,8 +45,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     let body: unknown;
     switch (action.type) {
       case "add":
+        if (action.sku.sizes.length && !action.size) {
+          throw new Error("Size is required");
+        }
         method = "POST";
-        body = { sku: { id: action.sku.id }, qty: 1 };
+        body = { sku: { id: action.sku.id }, qty: 1, size: action.size };
         break;
       case "remove":
         method = "DELETE";

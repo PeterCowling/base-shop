@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
   const {
     sku: { id: skuId },
     qty,
+    size,
   } = parsed.data;
   const sku = getProductById(skuId);
 
@@ -45,11 +46,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Item not found" }, { status: 404 });
   }
 
+  if (sku.sizes.length && !size) {
+    return NextResponse.json({ error: "Size required" }, { status: 400 });
+  }
+
   let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
   if (!cartId) {
     cartId = await createCart();
   }
-  const cart = await incrementQty(cartId, sku, qty);
+  const cart = await incrementQty(cartId, sku, qty, size);
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;

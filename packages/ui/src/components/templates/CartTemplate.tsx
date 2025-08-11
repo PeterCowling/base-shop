@@ -19,7 +19,7 @@ export function CartTemplate({
   className,
   ...props
 }: CartTemplateProps) {
-  const lines = Object.values(cart);
+  const lines = Object.entries(cart).map(([id, line]) => ({ id, ...line }));
   const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
   const deposit = lines.reduce((s, l) => s + (l.sku.deposit ?? 0) * l.qty, 0);
 
@@ -43,7 +43,7 @@ export function CartTemplate({
         </thead>
         <tbody>
           {lines.map((line) => (
-            <tr key={line.sku.id} className="border-b last:border-0">
+            <tr key={line.id} className="border-b last:border-0">
               <td className="py-2">
                 <div className="flex items-center gap-4">
                   <div className="relative hidden h-12 w-12 sm:block">
@@ -56,12 +56,15 @@ export function CartTemplate({
                     />
                   </div>
                   {line.sku.title}
+                  {line.size && (
+                    <span className="ml-1 text-xs text-muted">({line.size})</span>
+                  )}
                 </div>
               </td>
               <td>
                 <QuantityInput
                   value={line.qty}
-                  onChange={(v) => onQtyChange?.(line.sku.id, v)}
+                  onChange={(v) => onQtyChange?.(line.id, v)}
                   className="justify-center"
                 />
               </td>
@@ -72,7 +75,7 @@ export function CartTemplate({
                 <td className="text-right">
                   <button
                     type="button"
-                    onClick={() => onRemove(line.sku.id)}
+                    onClick={() => onRemove(line.id)}
                     className="text-danger hover:underline"
                   >
                     Remove

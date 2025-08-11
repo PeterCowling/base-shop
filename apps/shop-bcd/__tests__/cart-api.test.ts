@@ -38,13 +38,15 @@ afterEach(() => {
 
 test("POST adds items and sets cookie", async () => {
   const sku = { ...TEST_SKU };
-  const req = createRequest({ sku: { id: sku.id }, qty: 2 });
+  const size = sku.sizes[0];
+  const id = `${sku.id}:${size}`;
+  const req = createRequest({ sku: { id: sku.id }, qty: 2, size });
   const res = await POST(req);
   const body = (await res.json()) as any;
 
-  expect(body.cart[sku.id].qty).toBe(2);
+  expect(body.cart[id].qty).toBe(2);
   const expected = asSetCookieHeader(
-    encodeCartCookie({ [sku.id]: { sku, qty: 2 } })
+    encodeCartCookie({ [id]: { sku, qty: 2, size } })
   );
   expect(res.headers.get("Set-Cookie")).toBe(expected);
 });
@@ -56,22 +58,26 @@ test("POST validates body", async () => {
 
 test("PATCH updates quantity", async () => {
   const sku = { ...TEST_SKU };
-  const cart = { [sku.id]: { sku, qty: 1 } };
-  const req = createRequest({ id: sku.id, qty: 5 }, encodeCartCookie(cart));
+  const size = sku.sizes[0];
+  const id = `${sku.id}:${size}`;
+  const cart = { [id]: { sku, qty: 1, size } };
+  const req = createRequest({ id, qty: 5 }, encodeCartCookie(cart));
   const res = await PATCH(req);
   const body = (await res.json()) as any;
-  expect(body.cart[sku.id].qty).toBe(5);
+  expect(body.cart[id].qty).toBe(5);
   const encoded = res.headers.get("Set-Cookie")!.split(";")[0].split("=")[1];
   expect(decodeCartCookie(encoded)).toEqual(body.cart);
 });
 
 test("PATCH removes item when qty is 0", async () => {
   const sku = { ...TEST_SKU };
-  const cart = { [sku.id]: { sku, qty: 1 } };
-  const req = createRequest({ id: sku.id, qty: 0 }, encodeCartCookie(cart));
+  const size = sku.sizes[0];
+  const id = `${sku.id}:${size}`;
+  const cart = { [id]: { sku, qty: 1, size } };
+  const req = createRequest({ id, qty: 0 }, encodeCartCookie(cart));
   const res = await PATCH(req);
   const body = (await res.json()) as any;
-  expect(body.cart[sku.id]).toBeUndefined();
+  expect(body.cart[id]).toBeUndefined();
 });
 
 test("PATCH returns 404 for missing item", async () => {
@@ -86,16 +92,20 @@ test("PATCH returns 404 for missing item", async () => {
 
 test("DELETE removes item", async () => {
   const sku = { ...TEST_SKU };
-  const cart = { [sku.id]: { sku, qty: 2 } };
-  const req = createRequest({ id: sku.id }, encodeCartCookie(cart));
+  const size = sku.sizes[0];
+  const id = `${sku.id}:${size}`;
+  const cart = { [id]: { sku, qty: 2, size } };
+  const req = createRequest({ id }, encodeCartCookie(cart));
   const res = await DELETE(req);
   const body = (await res.json()) as any;
-  expect(body.cart[sku.id]).toBeUndefined();
+  expect(body.cart[id]).toBeUndefined();
 });
 
 test("GET returns cart", async () => {
   const sku = { ...TEST_SKU };
-  const cart = { [sku.id]: { sku, qty: 3 } };
+  const size = sku.sizes[0];
+  const id = `${sku.id}:${size}`;
+  const cart = { [id]: { sku, qty: 3, size } };
   const res = await GET(createRequest({}, encodeCartCookie(cart)));
   const body = (await res.json()) as any;
   expect(body.cart).toEqual(cart);

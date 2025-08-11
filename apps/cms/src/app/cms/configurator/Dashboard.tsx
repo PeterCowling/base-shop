@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import type { WizardState } from "../wizard/schema";
+import { getSteps } from "./steps";
 export type StepStatus = "idle" | "pending" | "success" | "failure";
 
 interface StepConfig {
@@ -35,29 +36,13 @@ export default function ConfiguratorDashboard() {
       .catch(() => setState(null));
   }, []);
 
-  const steps: StepConfig[] = [
-    {
-      id: "details",
-      title: "Shop Details",
-      href: "/cms/configurator/details",
-      required: true,
-      completed: Boolean(state?.storeName),
-    },
-    {
-      id: "theme",
-      title: "Theme",
-      href: "/cms/configurator/theme",
-      required: true,
-      completed: Boolean(state?.theme),
-    },
-    {
-      id: "products",
-      title: "Products",
-      href: "/cms/configurator/products",
-      required: false,
-      completed: (state?.components?.length ?? 0) > 0,
-    },
-  ];
+  const steps: StepConfig[] = getSteps().map((s) => ({
+    id: s.id,
+    title: s.label,
+    href: `/cms/configurator/${s.id}`,
+    required: s.required && !s.optional,
+    completed: Boolean((state as any)?.completed?.[s.id]),
+  }));
 
   const allRequiredDone = steps.every(
     (s) => !s.required || s.completed

@@ -23,6 +23,8 @@ import AnnouncementBarEditor from "./AnnouncementBarEditor";
 import MapBlockEditor from "./MapBlockEditor";
 import VideoBlockEditor from "./VideoBlockEditor";
 import FAQBlockEditor from "./FAQBlockEditor";
+import HeaderEditor from "./HeaderEditor";
+import FooterEditor from "./FooterEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -88,6 +90,12 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "FAQBlock":
       specific = <FAQBlockEditor component={component} onChange={onChange} />;
+      break;
+    case "Header":
+      specific = <HeaderEditor component={component} onChange={onChange} />;
+      break;
+    case "Footer":
+      specific = <FooterEditor component={component} onChange={onChange} />;
       break;
     default:
       specific = <p className="text-muted text-sm">No editable props</p>;

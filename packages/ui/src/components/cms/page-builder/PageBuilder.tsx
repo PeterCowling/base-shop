@@ -9,7 +9,13 @@ import type { Page, PageComponent, HistoryState, MediaItem } from "@types";
 import { Button } from "../../atoms/shadcn";
 import { Toast } from "../../atoms";
 import Palette from "./Palette";
-import { atomRegistry, moleculeRegistry, organismRegistry, containerRegistry } from "../blocks";
+import {
+  atomRegistry,
+  moleculeRegistry,
+  organismRegistry,
+  containerRegistry,
+  layoutRegistry,
+} from "../blocks";
 import { getShopFromPath } from "@platform-core/utils";
 import useMediaUpload from "@ui/hooks/useMediaUpload";
 import { historyStateSchema, reducer, type Action } from "./state";
@@ -23,7 +29,8 @@ type ComponentType =
   | keyof typeof atomRegistry
   | keyof typeof moleculeRegistry
   | keyof typeof organismRegistry
-  | keyof typeof containerRegistry;
+  | keyof typeof containerRegistry
+  | keyof typeof layoutRegistry;
 
 const CONTAINER_TYPES = Object.keys(containerRegistry) as ComponentType[];
 

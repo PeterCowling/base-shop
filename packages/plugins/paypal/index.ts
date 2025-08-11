@@ -1,12 +1,21 @@
 // packages/plugins/paypal/index.ts
 import type { Plugin, PaymentRegistry } from "@acme/platform-core/plugins";
+import { z } from "zod";
 
-const paypalPlugin: Plugin = {
+const configSchema = z.object({
+  clientId: z.string(),
+  secret: z.string(),
+});
+
+type PayPalConfig = z.infer<typeof configSchema>;
+
+const paypalPlugin: Plugin<any, any, any, PayPalConfig> = {
   id: "paypal",
   name: "PayPal",
   description: "Example PayPal payment provider",
   defaultConfig: { clientId: "", secret: "" },
-  registerPayments(registry: PaymentRegistry) {
+  configSchema,
+  registerPayments(registry: PaymentRegistry, _cfg: PayPalConfig) {
     registry.add("paypal", {
       async processPayment() {
         // placeholder implementation

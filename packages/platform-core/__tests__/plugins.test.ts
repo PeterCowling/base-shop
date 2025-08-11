@@ -10,12 +10,21 @@ async function createPluginsRoot(withPlugins = true) {
     const validDir = path.join(base, "good");
     await fs.mkdir(validDir, { recursive: true });
     const pluginCode = `
+const configSchema = {
+  safeParse(value) {
+    if (typeof value.enabled === 'boolean') {
+      return { success: true, data: value };
+    }
+    return { success: false, error: new Error('invalid') };
+  }
+};
 const registerPayments = jest.fn();
 const registerShipping = jest.fn();
 const registerWidgets = jest.fn();
 export default {
   id: 'good',
   defaultConfig: { enabled: true },
+  configSchema,
   registerPayments,
   registerShipping,
   registerWidgets,
@@ -41,6 +50,12 @@ export default {
       path.join(badDir, "package.json"),
       JSON.stringify({ name: "bad", main: "index.ts" })
     );
+    // link root node_modules so imports resolve
+    await fs.symlink(
+      path.join(process.cwd(), "node_modules"),
+      path.join(root, "node_modules"),
+      "dir",
+    ).catch(() => {});
   }
   return root;
 }
@@ -98,6 +113,23 @@ describe("plugins", () => {
     expect(plugin.registerPayments).toHaveBeenCalledWith(payments, cfg);
     expect(plugin.registerShipping).toHaveBeenCalledWith(shipping, cfg);
     expect(plugin.registerWidgets).toHaveBeenCalledWith(widgets, cfg);
+  });
+
+  it("skips plugins with invalid config", async () => {
+    const root = await createPluginsRoot(true);
+    jest.spyOn(process, "cwd").mockReturnValue(root);
+    const { initPlugins } = await import("../src/plugins");
+    const payments = { add: jest.fn() };
+    const plugins = await initPlugins(
+      { payments },
+      {
+        directories: [path.join(root, "packages", "plugins")],
+        // enabled should be boolean
+        config: { good: { enabled: "oops" as any } },
+      },
+    );
+    expect(plugins).toHaveLength(0);
+    expect(payments.add).not.toHaveBeenCalled();
   });
 });
 

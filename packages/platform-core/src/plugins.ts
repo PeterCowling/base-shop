@@ -2,6 +2,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import type { Dirent } from "node:fs";
 import path from "node:path";
+import type { z } from "zod";
 
 /** Interface for payment providers */
 export interface PaymentProvider {
@@ -37,32 +38,41 @@ export interface WidgetRegistry<T extends WidgetComponent = WidgetComponent> {
   add(id: string, component: T): void;
 }
 
-export interface PluginOptions {
+/**
+ * Plugins may expose configurable options. They can provide default values via
+ * `defaultConfig` and a Zod `configSchema` to validate user supplied
+ * configuration. During initialization the provided configuration is merged
+ * with defaults and validated before any registration hooks execute.
+ */
+export interface PluginOptions<Config = Record<string, unknown>> {
   /** Optional name shown in the CMS */
   name: string;
   /** Optional description for plugin */
   description?: string;
   /** Default configuration values */
-  defaultConfig?: Record<string, unknown>;
+  defaultConfig?: Config;
+  /** zod schema used to validate configuration */
+  configSchema?: z.ZodType<Config>;
 }
 
 export interface Plugin<
   P extends PaymentProvider = PaymentProvider,
   S extends ShippingProvider = ShippingProvider,
   W extends WidgetComponent = WidgetComponent,
-> extends PluginOptions {
+  Config = Record<string, unknown>,
+> extends PluginOptions<Config> {
   id: string;
   registerPayments?(
     registry: PaymentRegistry<P>,
-    config?: Record<string, unknown>,
+    config: Config,
   ): void;
   registerShipping?(
     registry: ShippingRegistry<S>,
-    config?: Record<string, unknown>,
+    config: Config,
   ): void;
   registerWidgets?(
     registry: WidgetRegistry<W>,
-    config?: Record<string, unknown>,
+    config: Config,
   ): void;
 }
 
@@ -142,18 +152,32 @@ export async function initPlugins<
   },
   options: InitPluginsOptions = {},
 ): Promise<Plugin<P, S, W>[]> {
-  const plugins = await loadPlugins(options);
-  for (const plugin of plugins) {
-    const cfg = options.config?.[plugin.id] ?? plugin.defaultConfig;
+  const loaded = await loadPlugins(options);
+  const registered: Plugin[] = [];
+  for (const plugin of loaded) {
+    const raw = {
+      ...(plugin.defaultConfig ?? {}),
+      ...(options.config?.[plugin.id] ?? {}),
+    } as Record<string, unknown>;
+    let cfg: Record<string, unknown> = raw;
+    if (plugin.configSchema) {
+      const result = plugin.configSchema.safeParse(raw);
+      if (!result.success) {
+        console.warn(`Invalid config for plugin ${plugin.id}`, result.error);
+        continue;
+      }
+      cfg = result.data;
+    }
     if (registries.payments && plugin.registerPayments) {
-      plugin.registerPayments(registries.payments, cfg);
+      plugin.registerPayments(registries.payments, cfg as any);
     }
     if (registries.shipping && plugin.registerShipping) {
-      plugin.registerShipping(registries.shipping, cfg);
+      plugin.registerShipping(registries.shipping, cfg as any);
     }
     if (registries.widgets && plugin.registerWidgets) {
-      plugin.registerWidgets(registries.widgets, cfg);
+      plugin.registerWidgets(registries.widgets, cfg as any);
     }
+    registered.push(plugin as Plugin);
   }
-  return plugins as Plugin<P, S, W>[];
+  return registered as Plugin<P, S, W>[];
 }

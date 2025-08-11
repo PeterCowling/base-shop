@@ -1,12 +1,15 @@
 // packages/plugins/sanity/index.ts
 import type { Plugin } from "@acme/platform-core/plugins";
 import { createClient, type SanityClient } from "@sanity/client";
+import { z } from "zod";
 
-interface SanityConfig {
-  projectId: string;
-  dataset: string;
-  token: string;
-}
+export const configSchema = z.object({
+  projectId: z.string(),
+  dataset: z.string(),
+  token: z.string(),
+});
+
+export type SanityConfig = z.infer<typeof configSchema>;
 
 export const defaultConfig: SanityConfig = {
   projectId: "",
@@ -42,11 +45,12 @@ export async function publishPost(
   return client.create({ _type: "post", ...post });
 }
 
-const sanityPlugin: Plugin = {
+const sanityPlugin: Plugin<any, any, any, SanityConfig> = {
   id: "sanity",
   name: "Sanity",
   description: "Sanity CMS integration",
   defaultConfig,
+  configSchema,
 };
 
 export default sanityPlugin;

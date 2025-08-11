@@ -60,14 +60,14 @@ export async function updateShop(
     themeId: data.themeId,
     catalogFilters: data.catalogFilters,
     themeOverrides: overrides,
-    themeTokens: undefined,
+    themeTokens,
     filterMappings: data.filterMappings as Record<string, string>,
     priceOverrides: data.priceOverrides as Partial<Record<Locale, number>>,
     localeOverrides: data.localeOverrides as Record<string, Locale>,
   };
 
   const saved = await updateShopInRepo(shop, patch);
-  return { shop: { ...saved, themeTokens } };
+  return { shop: saved };
 }
 
 export async function getSettings(shop: string) {

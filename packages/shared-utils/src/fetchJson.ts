@@ -1,6 +1,9 @@
+import { z } from "zod";
+
 export async function fetchJson<T>(
   input: RequestInfo | URL,
-  init?: RequestInit
+  init?: RequestInit,
+  schema?: z.ZodType<T>,
 ): Promise<T> {
   const res = await fetch(input, init);
   let data: any;
@@ -15,5 +18,5 @@ export async function fetchJson<T>(
       (data && data.error) || res.statusText || `HTTP ${res.status}`;
     throw new Error(message);
   }
-  return data as T;
+  return schema ? schema.parse(data) : (data as T);
 }

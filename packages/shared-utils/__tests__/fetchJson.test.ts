@@ -1,4 +1,5 @@
 import { fetchJson } from '../src/fetchJson';
+import { z } from 'zod';
 
 describe('fetchJson', () => {
   beforeEach(() => {
@@ -71,5 +72,33 @@ describe('fetchJson', () => {
     await expect(fetchJson('https://example.com')).rejects.toThrow(
       'Network failure',
     );
+  });
+
+  it('validates data against provided schema', async () => {
+    const responseData = { message: 'ok' };
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(JSON.stringify(responseData)),
+    });
+
+    const schema = z.object({ message: z.string() });
+
+    await expect(
+      fetchJson('https://example.com', undefined, schema),
+    ).resolves.toEqual(responseData);
+  });
+
+  it('throws validation error when schema parsing fails', async () => {
+    const responseData = { message: 'ok' };
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(JSON.stringify(responseData)),
+    });
+
+    const schema = z.object({ count: z.number() });
+
+    await expect(
+      fetchJson('https://example.com', undefined, schema),
+    ).rejects.toBeInstanceOf(z.ZodError);
   });
 });

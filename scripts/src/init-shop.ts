@@ -8,10 +8,12 @@ import { defaultPaymentProviders } from "../../packages/platform-core/src/create
 import { defaultShippingProviders } from "../../packages/platform-core/src/createShop/defaultShippingProviders";
 
 function ensureRuntime() {
-  const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);
+  const version = process.version;
+  if (!version) return;
+  const nodeMajor = Number(version.replace(/^v/, "").split(".")[0]);
   if (nodeMajor < 20) {
     console.error(
-      `Node.js v20 or later is required. Current version: ${process.version}`
+      `Node.js v20 or later is required. Current version: ${version}`
     );
     process.exit(1);
   }
@@ -105,7 +107,8 @@ async function main() {
   };
 
   const prefixedId = `shop-${shopId}`;
-  createShop(prefixedId, options, { deploy: true });
+  createShop(prefixedId, options);
+  console.log(`Scaffolded apps/${prefixedId}`);
 
   let validationError: unknown;
   try {
@@ -127,7 +130,7 @@ async function main() {
   }
 
   console.log(
-    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Review data/shops/${prefixedId}/shop.json\n  - Run: pnpm --filter @apps/${prefixedId} dev`
+    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Review data/shops/${prefixedId}/shop.json\n  - Lay out pages in the CMS Page Builder\n  - Run: pnpm --filter @apps/${prefixedId} dev`
   );
 }
 

@@ -10,6 +10,8 @@ describe('init-shop wizard', () => {
       'demo',
       'Demo Shop',
       '',
+      '',
+      '',
       'base',
       'template-app',
       '1,2',
@@ -91,6 +93,8 @@ describe('init-shop wizard', () => {
     expect(questions).toEqual([
       'Shop ID: ',
       'Display name (optional): ',
+      'Logo URL (optional): ',
+      'Contact email (optional): ',
       'Shop type (sale or rental) [sale]: ',
       'Theme [base]: ',
       'Template [template-app]: ',

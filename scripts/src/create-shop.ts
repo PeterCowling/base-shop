@@ -13,10 +13,12 @@ import { defaultPaymentProviders } from "../../packages/platform-core/src/create
 import { defaultShippingProviders } from "../../packages/platform-core/src/createShop/defaultShippingProviders";
 
 function ensureRuntime() {
-  const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);
+  const version = process.version;
+  if (!version) return;
+  const nodeMajor = Number(version.replace(/^v/, "").split(".")[0]);
   if (nodeMajor < 20) {
     console.error(
-      `Node.js v20 or later is required. Current version: ${process.version}`
+      `Node.js v20 or later is required. Current version: ${version}`
     );
     process.exit(1);
   }
@@ -290,5 +292,9 @@ await ensureName();
 await ensureLogo();
 await ensureContact();
 await ensurePayment();
-await ensureShipping();
-await createShop(shopId, options, { deploy: true });
+  await ensureShipping();
+  await createShop(shopId, options);
+  console.log(`Scaffolded apps/${shopId}`);
+  console.log(
+    `\nNext steps:\n  - Review apps/${shopId}/.env\n  - Review data/shops/${shopId}/shop.json\n  - Lay out pages in the CMS Page Builder\n  - Run: pnpm --filter @apps/${shopId} dev`
+  );

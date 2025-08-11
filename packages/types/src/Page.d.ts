@@ -46,6 +46,22 @@ export interface PageComponentBase {
   maxItems?: number;
   [key: string]: unknown;
 }
+export interface HeaderComponent extends PageComponentBase {
+  type: "Header";
+  nav?: {
+    label: string;
+    url: string;
+  }[];
+  logo?: string;
+}
+export interface FooterComponent extends PageComponentBase {
+  type: "Footer";
+  links?: {
+    label: string;
+    url: string;
+  }[];
+  logo?: string;
+}
 export interface AnnouncementBarComponent extends PageComponentBase {
   type: "AnnouncementBar";
   text?: string;
@@ -185,6 +201,8 @@ export type PageComponent =
   | TestimonialSliderComponent
   | ImageComponent
   | TextComponent
+  | HeaderComponent
+  | FooterComponent
   | SectionComponent
   | MultiColumnComponent;
 export declare const pageSchema: z.ZodObject<

@@ -16,6 +16,8 @@ import MapBlock from "./MapBlock";
 import MultiColumn from "./containers/MultiColumn";
 import VideoBlock from "./VideoBlock";
 import FAQBlock from "./FAQBlock";
+import Header from "./HeaderBlock";
+import Footer from "./FooterBlock";
 
 export {
   BlogListing,
@@ -36,21 +38,32 @@ export {
   MultiColumn,
   VideoBlock,
   FAQBlock,
+  Header,
+  Footer,
 };
 
 export * from "./atoms";
 export * from "./molecules";
 export * from "./organisms";
+export * from "./layout";
 
 import { atomRegistry } from "./atoms";
 import { moleculeRegistry } from "./molecules";
 import { organismRegistry } from "./organisms";
 import { containerRegistry } from "./containers";
+import { layoutRegistry } from "./layout";
 
 // Re-export individual registries so consumers can access them directly.
-export { atomRegistry, moleculeRegistry, organismRegistry, containerRegistry };
+export {
+  atomRegistry,
+  moleculeRegistry,
+  organismRegistry,
+  containerRegistry,
+  layoutRegistry,
+};
 
 export const blockRegistry = {
+  ...layoutRegistry,
   ...containerRegistry,
   ...atomRegistry,
   ...moleculeRegistry,

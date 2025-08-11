@@ -9,9 +9,14 @@ import {
   moleculeRegistry,
   organismRegistry,
   containerRegistry,
+  layoutRegistry,
 } from "../blocks";
 
 const palette = {
+  layout: (Object.keys(layoutRegistry) as PageComponent["type"][]).map((t) => ({
+    type: t,
+    label: t.replace(/([A-Z])/g, " $1").trim(),
+  })),
   containers: (Object.keys(containerRegistry) as PageComponent["type"][]).map(
     (t) => ({
       type: t,

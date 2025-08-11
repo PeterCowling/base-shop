@@ -19,10 +19,15 @@ export interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
   searchSuggestions?: string[];
   /** Currently selected locale */
   locale: Locale;
+  /** Optional logo text */
+  logo?: string;
 }
 
 export const Header = React.forwardRef<HTMLElement, HeaderProps>(
-  ({ nav = [], searchSuggestions = [], locale, className, ...props }, ref) => (
+  (
+    { nav = [], searchSuggestions = [], locale, logo, className, ...props },
+    ref,
+  ) => (
     <header
       ref={ref}
       data-token="--color-bg"
@@ -30,7 +35,13 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
       {...props}
     >
       <div className="mx-auto flex h-16 items-center justify-between gap-6 px-4">
-        <nav className="flex gap-6">
+        <div className="flex items-center gap-6">
+          {logo && (
+            <a href="/" className="font-bold" data-token="--color-fg">
+              {logo}
+            </a>
+          )}
+          <nav className="flex gap-6">
           {nav.map((section) => (
             <div key={section.title} className="group relative">
               <a
@@ -59,7 +70,8 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
               )}
             </div>
           ))}
-        </nav>
+          </nav>
+        </div>
 
         <div className="flex flex-1 justify-end gap-4">
           <div className="max-w-xs flex-1">

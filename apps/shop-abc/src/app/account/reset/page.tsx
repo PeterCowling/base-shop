@@ -26,6 +26,8 @@ export default function ResetPasswordPage() {
         name="password"
         type="password"
         placeholder="New password"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$"
+        title="Password must be at least 8 characters and include uppercase, lowercase, and number"
         className="border p-1"
       />
       <button type="submit" className="border px-2 py-1">

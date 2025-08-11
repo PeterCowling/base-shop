@@ -44,14 +44,18 @@ jest.mock("@platform-core/users", () => ({
 
 let registerPOST: typeof import("../src/app/api/register/route").POST;
 let loginPOST: typeof import("../src/app/login/route").POST;
-let forgotPOST: typeof import("../src/app/forgot-password/route").POST;
-let resetPOST: typeof import("../src/app/api/reset-password/route").POST;
+let requestPOST: typeof import("../src/app/api/account/reset/request/route").POST;
+let completePOST: typeof import("../src/app/api/account/reset/complete/route").POST;
 
 beforeAll(async () => {
   ({ POST: registerPOST } = await import("../src/app/api/register/route"));
   ({ POST: loginPOST } = await import("../src/app/login/route"));
-  ({ POST: forgotPOST } = await import("../src/app/forgot-password/route"));
-  ({ POST: resetPOST } = await import("../src/app/api/reset-password/route"));
+  ({ POST: requestPOST } = await import(
+    "../src/app/api/account/reset/request/route"
+  ));
+  ({ POST: completePOST } = await import(
+    "../src/app/api/account/reset/complete/route"
+  ));
 });
 
 function makeRequest(body: any, headers: Record<string, string> = {}) {
@@ -89,11 +93,11 @@ describe("auth flows", () => {
     );
     expect(res.status).toBe(200);
 
-    await forgotPOST(makeRequest({ email: "test@example.com" }));
+    await requestPOST(makeRequest({ email: "test@example.com" }));
     const { getUserById } = await import("@platform-core/users");
     const token = (await getUserById("cust1"))!.resetToken as string;
 
-    res = await resetPOST(
+    res = await completePOST(
       makeRequest({
         customerId: "cust1",
         token,

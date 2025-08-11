@@ -1,16 +1,16 @@
-// apps/shop-abc/src/app/forgot-password/route.ts
+// apps/shop-abc/src/app/api/account/reset/request/route.ts
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getUserByEmail, setResetToken } from "@platform-core/users";
 import { sendEmail } from "@lib/email";
 
-const ForgotSchema = z.object({
+const schema = z.object({
   email: z.string().email(),
 });
 
 export async function POST(req: Request) {
   const json = await req.json();
-  const parsed = ForgotSchema.safeParse(json);
+  const parsed = schema.safeParse(json);
   if (!parsed.success) {
     return NextResponse.json(parsed.error.flatten().fieldErrors, {
       status: 400,

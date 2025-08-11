@@ -1,10 +1,10 @@
-// apps/shop-abc/src/app/api/reset-password/route.ts
+// apps/shop-abc/src/app/api/account/reset/complete/route.ts
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { getUserById, updatePassword } from "@platform-core/users";
 
-const ResetSchema = z.object({
+const schema = z.object({
   customerId: z.string(),
   token: z.string(),
   password: z.string(),
@@ -12,7 +12,7 @@ const ResetSchema = z.object({
 
 export async function POST(req: Request) {
   const json = await req.json();
-  const parsed = ResetSchema.safeParse(json);
+  const parsed = schema.safeParse(json);
   if (!parsed.success) {
     return NextResponse.json(parsed.error.flatten().fieldErrors, {
       status: 400,

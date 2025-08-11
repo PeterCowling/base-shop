@@ -6,21 +6,23 @@ import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast, Tooltip } from "@/components/atoms";
 import type { WizardState } from "../wizard/schema";
-import { getSteps } from "./steps";
+import { getSteps, steps as configuratorSteps } from "./steps";
+
+const stepLinks: Record<string, string> = {
+  create: "summary",
+  init: "import-data",
+  deploy: "hosting",
+  seed: "seed-data",
+};
 export type StepStatus = "idle" | "pending" | "success" | "failure";
 
 export default function ConfiguratorDashboard() {
   const [state, setState] = useState<WizardState | null>(null);
   const [launchStatus, setLaunchStatus] = useState<
-    | {
-        create: StepStatus;
-        init: StepStatus;
-        deploy: StepStatus;
-        seed?: StepStatus;
-      }
-    | null
+    Record<string, StepStatus> | null
   >(null);
   const [launchError, setLaunchError] = useState<string | null>(null);
+  const [failedStep, setFailedStep] = useState<string | null>(null);
   const [toast, setToast] = useState<{ open: boolean; message: string }>(
     {
       open: false,
@@ -62,27 +64,45 @@ export default function ConfiguratorDashboard() {
       return;
     }
     setLaunchError(null);
+    setFailedStep(null);
     const seed = Boolean(state.categoriesText);
     setLaunchStatus({
       create: "pending",
       init: "pending",
       deploy: "pending",
-      ...(seed ? { seed: "pending" as StepStatus } : {}),
+      ...(seed ? { seed: "pending" } : {}),
     });
     const res = await fetch("/cms/api/launch-shop", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ shopId: state.shopId, state, seed }),
     });
-    const json = (await res.json().catch(() => ({}))) as {
-      statuses?: Record<string, StepStatus>;
-      error?: string;
-    };
-    if (json.statuses) {
-      setLaunchStatus(json.statuses as any);
+    if (!res.body) {
+      setLaunchError("Launch failed");
+      return;
     }
-    if (!res.ok) {
-      setLaunchError(json.error ?? "Launch failed");
+
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const parts = buffer.split("\n\n");
+      buffer = parts.pop() ?? "";
+      for (const part of parts) {
+        const line = part.trim();
+        if (!line.startsWith("data:")) continue;
+        const data = JSON.parse(line.slice(5));
+        if (data.step && data.status) {
+          setLaunchStatus((prev) => ({ ...(prev || {}), [data.step]: data.status }));
+          if (data.status === "failure") {
+            setLaunchError(data.error || "Launch failed");
+            setFailedStep(data.step);
+          }
+        }
+      }
     }
   };
 
@@ -127,7 +147,21 @@ export default function ConfiguratorDashboard() {
         </ul>
       )}
       {launchError && (
-        <p className="mt-2 text-sm text-red-600">{launchError}</p>
+        <p className="mt-2 text-sm text-red-600">
+          {launchError}
+          {failedStep && stepLinks[failedStep] && (
+            <>
+              {" "}
+              <Link
+                href={`/cms/configurator/${stepLinks[failedStep]}`}
+                className="underline"
+              >
+                Review {configuratorSteps[stepLinks[failedStep]].label}
+              </Link>{" "}
+              and retry.
+            </>
+          )}
+        </p>
       )}
       {toast.open && (
         <Toast

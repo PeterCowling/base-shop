@@ -81,6 +81,7 @@ export async function setupSanityBlog(
                   { name: "excerpt", type: "text", title: "Excerpt" },
                   { name: "body", type: "text", title: "Body" },
                   { name: "published", type: "boolean", title: "Published" },
+                  { name: "publishedAt", type: "datetime", title: "Published At" },
                 ],
               },
             },

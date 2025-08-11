@@ -3,25 +3,26 @@ import fetch from "cross-fetch";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { z } from "zod";
+import { env } from "@acme/config";
 const cliEnvSchema = envSchema.extend({
     CMS_SPACE_URL: z.string(),
     CMS_ACCESS_TOKEN: z.string(),
 });
-let env;
+let cliEnv;
 try {
-    env = cliEnvSchema.parse(process.env);
+    cliEnv = cliEnvSchema.parse(env);
 }
 catch (err) {
     console.error("Invalid environment variables:\n", err);
     process.exit(1);
 }
 async function pushSchema(name, file) {
-    const url = `${env.CMS_SPACE_URL}/schemas/${name}`;
+    const url = `${cliEnv.CMS_SPACE_URL}/schemas/${name}`;
     const body = await readFile(file, "utf8");
     const res = await fetch(url, {
         method: "PUT",
         headers: {
-            Authorization: `Bearer ${env.CMS_ACCESS_TOKEN}`,
+            Authorization: `Bearer ${cliEnv.CMS_ACCESS_TOKEN}`,
             "Content-Type": "application/json",
         },
         body,

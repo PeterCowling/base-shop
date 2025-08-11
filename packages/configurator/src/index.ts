@@ -1,8 +1,9 @@
 import { envSchema } from "@config/src/env";
 import { spawnSync } from "node:child_process";
+import { env } from "@acme/config";
 
 try {
-  envSchema.parse(process.env);
+  envSchema.parse(env);
 } catch (err) {
   console.error("Invalid environment variables:\n", err);
   process.exit(1);

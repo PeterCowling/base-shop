@@ -14,6 +14,7 @@ import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
 import { z } from "zod";
 import crypto from "crypto";
+import { env } from "@acme/config";
 
 export const runtime = "edge";
 
@@ -33,7 +34,7 @@ async function loadCart(
   // Fall back to migrating a legacy cookie only when properly signed.
   if (raw) {
     const [payload, sig] = raw.split(".");
-    const legacySecret = process.env.CART_COOKIE_LEGACY_SECRET;
+    const legacySecret = env.CART_COOKIE_LEGACY_SECRET;
     if (payload && sig && legacySecret) {
       const expected = crypto
         .createHmac("sha256", legacySecret)

@@ -11,15 +11,18 @@ export interface ShippingRateRequest {
  * Fetch a shipping rate from the configured provider.
  * The underlying provider API is called using the respective API key.
  */
+import { env } from "@acme/config";
+
 export async function getShippingRate({
   provider,
   fromPostalCode,
   toPostalCode,
   weight,
 }: ShippingRateRequest): Promise<unknown> {
-  const apiKey = process.env[`${provider.toUpperCase()}_KEY`];
+  const key = provider === "ups" ? "UPS_KEY" : "DHL_KEY";
+  const apiKey = env[key];
   if (!apiKey) {
-    throw new Error(`Missing ${provider.toUpperCase()}_KEY`);
+    throw new Error(`Missing ${key}`);
   }
 
   const url =

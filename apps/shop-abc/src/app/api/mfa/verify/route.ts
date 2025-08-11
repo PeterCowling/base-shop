@@ -8,7 +8,11 @@ import {
 } from "@auth";
 import type { Role } from "@auth/types/roles";
 import { getUserById } from "../../../userStore";
-import { clearLoginAttempts } from "../../../../middleware";
+import {
+  checkMfaRateLimit,
+  clearLoginAttempts,
+  clearMfaAttempts,
+} from "../../../../middleware";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const headerToken = req.headers.get("x-csrf-token");
@@ -23,14 +27,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const id = session?.customerId ?? customerId;
   if (!id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  const rateLimited = await checkMfaRateLimit(ip, id);
+  if (rateLimited) return rateLimited;
+
   const ok = await verifyMfa(id, token);
 
-  if (ok && !session) {
-    const user = await getUserById(id);
-    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    await createCustomerSession({ customerId: id, role: user.role as Role });
-    const ip = req.headers.get("x-forwarded-for") ?? "unknown";
-    await clearLoginAttempts(ip, id);
+  if (ok) {
+    await clearMfaAttempts(ip, id);
+    if (!session) {
+      const user = await getUserById(id);
+      if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      await createCustomerSession({ customerId: id, role: user.role as Role });
+      await clearLoginAttempts(ip, id);
+    }
   }
 
   return NextResponse.json({ verified: ok });

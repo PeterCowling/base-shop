@@ -12,6 +12,7 @@ interface Attempt {
 // Fallback in-memory store used when Redis is not configured
 const attempts = new Map<string, Attempt>();
 const registrationAttempts = new Map<string, Attempt>();
+const mfaAttempts = new Map<string, Attempt>();
 
 // Redis client configured via environment variables. If the variables are not
 // set we simply fall back to the in-memory `Map` above which is suitable for
@@ -44,6 +45,8 @@ const COUNT_PREFIX = "login:count:";
 const LOCK_PREFIX = "login:lock:";
 const REG_COUNT_PREFIX = "register:count:";
 const REG_LOCK_PREFIX = "register:lock:";
+const MFA_COUNT_PREFIX = "mfa:count:";
+const MFA_LOCK_PREFIX = "mfa:lock:";
 
 function key(ip: string, user: string) {
   return `${ip}:${user}`;
@@ -140,6 +143,100 @@ export async function __resetLoginRateLimiter() {
     }
   } else {
     attempts.clear();
+  }
+}
+
+/**
+ * Check rate limit for MFA verification attempts.
+ * Returns a 429 response if the account is locked or limit exceeded.
+ */
+export async function checkMfaRateLimit(
+  ip: string,
+  user: string,
+): Promise<NextResponse | null> {
+  const k = key(ip, user);
+  const now = Date.now();
+
+  if (redis) {
+    const lockKey = `${MFA_LOCK_PREFIX}${k}`;
+    const countKey = `${MFA_COUNT_PREFIX}${k}`;
+
+    const locked = await redis.exists(lockKey);
+    if (locked) {
+      console.warn(`[mfa] locked out ${k}`);
+      return NextResponse.json(
+        { error: "Too many MFA attempts. Try again later." },
+        { status: 429 },
+      );
+    }
+
+    const count = await redis.incr(countKey);
+    if (count === 1) {
+      await redis.pexpire(countKey, LOCK_MS);
+    }
+    if (count > MAX_ATTEMPTS) {
+      await redis.set(lockKey, "1", { px: LOCK_MS });
+      console.warn(`[mfa] lockout ${k}`);
+      return NextResponse.json(
+        { error: "Too many MFA attempts. Try again later." },
+        { status: 429 },
+      );
+    }
+
+    return null;
+  }
+
+  const record = mfaAttempts.get(k) ?? { count: 0, lockedUntil: 0 };
+
+  if (record.lockedUntil > now) {
+    console.warn(`[mfa] locked out ${k}`);
+    return NextResponse.json(
+      { error: "Too many MFA attempts. Try again later." },
+      { status: 429 },
+    );
+  }
+
+  if (record.lockedUntil && record.lockedUntil <= now) {
+    record.count = 0;
+    record.lockedUntil = 0;
+  }
+
+  record.count += 1;
+
+  if (record.count > MAX_ATTEMPTS) {
+    record.lockedUntil = now + LOCK_MS;
+    mfaAttempts.set(k, record);
+    console.warn(`[mfa] lockout ${k}`);
+    return NextResponse.json(
+      { error: "Too many MFA attempts. Try again later." },
+      { status: 429 },
+    );
+  }
+
+  mfaAttempts.set(k, record);
+  return null;
+}
+
+/** Clear MFA attempts after successful verification */
+export async function clearMfaAttempts(ip: string, user: string) {
+  const k = key(ip, user);
+  if (redis) {
+    await redis.del(`${MFA_COUNT_PREFIX}${k}`, `${MFA_LOCK_PREFIX}${k}`);
+  } else {
+    mfaAttempts.delete(k);
+  }
+}
+
+/** Test helper to reset MFA store */
+export async function __resetMfaRateLimiter() {
+  if (redis) {
+    try {
+      await redis.flushall();
+    } catch {
+      // ignore errors in tests; flushall may be restricted in shared instances
+    }
+  } else {
+    mfaAttempts.clear();
   }
 }
 

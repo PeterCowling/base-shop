@@ -1,10 +1,10 @@
 import "server-only";
 
+import { couponSchema, type Coupon } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "../dataRoot";
-import type { Coupon } from "@acme/types";
 
 function filePath(shop: string): string {
   shop = validateShopName(shop);
@@ -19,7 +19,7 @@ async function ensureDir(shop: string): Promise<void> {
 export async function readCouponRepo(shop: string): Promise<Coupon[]> {
   try {
     const buf = await fs.readFile(filePath(shop), "utf8");
-    return JSON.parse(buf) as Coupon[];
+    return couponSchema.array().parse(JSON.parse(buf));
   } catch {
     return [];
   }

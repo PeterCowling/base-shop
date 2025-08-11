@@ -4,11 +4,16 @@ import { getSanityConfig } from "@platform-core/shops";
 import { getShopById } from "@platform-core/repositories/shop.server";
 import type { SanityBlogConfig } from "@types";
 
+export interface ProductBlock {
+  _type: "productReference";
+  slug: string;
+}
+
 export interface BlogPost {
   title: string;
   slug: string;
   excerpt?: string;
-  body?: unknown;
+  body?: (unknown | ProductBlock)[];
 }
 
 export async function getConfig(shopId: string): Promise<SanityBlogConfig> {
@@ -48,7 +53,7 @@ export async function fetchPostBySlug(
 ): Promise<BlogPost | null> {
   try {
     const client = await getClient(shopId);
-    const query = `*[_type == "post" && slug.current == $slug && published == true][0]{title, "slug": slug.current, excerpt, body}`;
+    const query = `*[_type == "post" && slug.current == $slug && published == true][0]{title, "slug": slug.current, excerpt, body[]{..., _type == "productReference" => { _type, slug }}}`;
     const post = await client.fetch<BlogPost | null>(query, { slug });
     return post;
   } catch {

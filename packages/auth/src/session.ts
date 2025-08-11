@@ -3,11 +3,11 @@ import { cookies, headers } from "next/headers";
 import { sealData, unsealData } from "iron-session";
 import { randomUUID } from "node:crypto";
 import type { Role } from "./types";
+import type { SessionRecord } from "./store";
+import { createSessionStore, SESSION_TTL_S } from "./store";
 
 export const CUSTOMER_SESSION_COOKIE = "customer_session";
 export const CSRF_TOKEN_COOKIE = "csrf_token";
-const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // one week
-const SESSION_TTL_S = Math.floor(SESSION_TTL_MS / 1000);
 
 export interface CustomerSession {
   customerId: string;
@@ -18,113 +18,7 @@ interface InternalSession extends CustomerSession {
   sessionId: string;
 }
 
-interface SessionRecord {
-  sessionId: string;
-  customerId: string;
-  userAgent: string;
-  createdAt: Date;
-}
-
-interface SessionStore {
-  get(id: string): Promise<SessionRecord | null>;
-  set(record: SessionRecord): Promise<void>;
-  delete(id: string): Promise<void>;
-  list(customerId: string): Promise<SessionRecord[]>;
-}
-
-class MemorySessionStore implements SessionStore {
-  private sessions = new Map<string, { record: SessionRecord; expires: number }>();
-
-  constructor(private ttl: number) {}
-
-  async get(id: string): Promise<SessionRecord | null> {
-    const entry = this.sessions.get(id);
-    if (!entry) return null;
-    if (entry.expires < Date.now()) {
-      this.sessions.delete(id);
-      return null;
-    }
-    return entry.record;
-  }
-
-  async set(record: SessionRecord): Promise<void> {
-    this.sessions.set(record.sessionId, {
-      record,
-      expires: Date.now() + this.ttl * 1000,
-    });
-  }
-
-  async delete(id: string): Promise<void> {
-    this.sessions.delete(id);
-  }
-
-  async list(customerId: string): Promise<SessionRecord[]> {
-    const now = Date.now();
-    return Array.from(this.sessions.values())
-      .filter((s) => s.expires > now && s.record.customerId === customerId)
-      .map((s) => s.record);
-  }
-}
-
-class RedisSessionStore implements SessionStore {
-  constructor(private client: Redis, private ttl: number) {}
-
-  private key(id: string) {
-    return `session:${id}`;
-  }
-
-  private customerKey(customerId: string) {
-    return `customer_sessions:${customerId}`;
-  }
-
-  async get(id: string): Promise<SessionRecord | null> {
-    const data = await this.client.get<Record<string, any>>(this.key(id));
-    if (!data) return null;
-    return { ...data, createdAt: new Date(data.createdAt) } as SessionRecord;
-  }
-
-  async set(record: SessionRecord): Promise<void> {
-    await this.client.set(this.key(record.sessionId), record, { ex: this.ttl });
-    await this.client.sadd(this.customerKey(record.customerId), record.sessionId);
-    await this.client.expire(this.customerKey(record.customerId), this.ttl);
-  }
-
-  async delete(id: string): Promise<void> {
-    const rec = await this.get(id);
-    await this.client.del(this.key(id));
-    if (rec) {
-      await this.client.srem(this.customerKey(rec.customerId), id);
-    }
-  }
-
-  async list(customerId: string): Promise<SessionRecord[]> {
-    const ids = await this.client.smembers<string>(
-      this.customerKey(customerId)
-    );
-    if (!ids || ids.length === 0) return [];
-    const records = await this.client.mget<Record<string, any>>(
-      ...ids.map((id) => this.key(id))
-    );
-    return records
-      .filter((r): r is Record<string, any> => r !== null)
-      .map((r) => ({ ...r, createdAt: new Date(r.createdAt) } as SessionRecord));
-  }
-}
-
-const sessionStorePromise: Promise<SessionStore> = (async () => {
-  if (
-    process.env.UPSTASH_REDIS_REST_URL &&
-    process.env.UPSTASH_REDIS_REST_TOKEN
-  ) {
-    const { Redis } = await import("@upstash/redis");
-    const client = new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
-    });
-    return new RedisSessionStore(client, SESSION_TTL_S);
-  }
-  return new MemorySessionStore(SESSION_TTL_S);
-})();
+const sessionStorePromise = createSessionStore();
 
 function cookieOptions() {
   return {

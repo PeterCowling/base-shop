@@ -85,6 +85,8 @@ module.exports = {
     "^@platform-core/repositories/shopSettings$":
       "<rootDir>/packages/platform-core/src/repositories/settings.server.ts",
     "^@config/src/(.*)$": "<rootDir>/packages/config/src/$1",
+    "^@acme/config$": "<rootDir>/packages/config/src/env.ts",
+    "^@acme/config/(.*)$": "<rootDir>/packages/config/src/$1",
 
     // context mocks
     "^@platform-core/src/contexts/ThemeContext$":

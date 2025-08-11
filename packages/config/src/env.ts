@@ -24,6 +24,9 @@ export const envSchema = z.object({
   STOCK_ALERT_DEFAULT_THRESHOLD: z.coerce.number().optional(),
   // Legacy single-recipient support
   STOCK_ALERT_RECIPIENT: z.string().email().optional(),
+  SESSION_STORE: z.enum(["memory", "redis"]).optional(),
+  UPSTASH_REDIS_REST_URL: z.string().url().optional(),
+  UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
 });
 
 applyFriendlyZodMessages();

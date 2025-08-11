@@ -14,6 +14,8 @@ export {
   validateCsrfToken,
 } from "./session";
 export type { CustomerSession } from "./session";
+export type { SessionStore, SessionRecord } from "./store";
+export { setSessionStoreFactory } from "./store";
 
 export {
   enrollMfa,

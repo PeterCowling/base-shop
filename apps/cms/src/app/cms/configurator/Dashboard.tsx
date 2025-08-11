@@ -4,16 +4,18 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
+import { Toast, Tooltip } from "@/components/atoms";
 import type { WizardState } from "../wizard/schema";
 import { createShop } from "../wizard/services/createShop";
 import { initShop } from "../wizard/services/initShop";
 import { deployShop } from "../wizard/services/deployShop";
+import { steps as stepRegistry, stepOrder } from "./steps";
 
 interface StepConfig {
   id: string;
   title: string;
   href: string;
-  required?: boolean;
+  required: boolean;
   completed: boolean;
 }
 
@@ -27,35 +29,35 @@ export default function ConfiguratorDashboard() {
       .catch(() => setState(null));
   }, []);
 
-  const steps: StepConfig[] = [
-    {
-      id: "details",
-      title: "Shop Details",
-      href: "/cms/configurator/details",
-      required: true,
-      completed: Boolean(state?.storeName),
-    },
-    {
-      id: "theme",
-      title: "Theme",
-      href: "/cms/configurator/theme",
-      required: true,
-      completed: Boolean(state?.theme),
-    },
-    {
-      id: "products",
-      title: "Products",
-      href: "/cms/configurator/products",
-      required: false,
-      completed: (state?.components?.length ?? 0) > 0,
-    },
-  ];
+  const steps: StepConfig[] = stepOrder.map((id) => ({
+    id,
+    title: stepRegistry[id].label,
+    href: `/cms/configurator/${id}`,
+    required: stepRegistry[id].required,
+    completed: Boolean(state?.completed?.[id]),
+  }));
 
-  const allRequiredDone = steps.every(
-    (s) => !s.required || s.completed
+  const allRequiredDone = stepOrder.every(
+    (id) => !stepRegistry[id].required || state?.completed?.[id]
   );
 
-  const launchShop = async () => {
+  const missingRequiredSteps = stepOrder
+    .filter((id) => stepRegistry[id].required && !state?.completed?.[id])
+    .map((id) => stepRegistry[id].label);
+
+  const [toast, setToast] = useState<{ open: boolean; message: string }>({
+    open: false,
+    message: "",
+  });
+
+  const handleLaunch = async () => {
+    if (!allRequiredDone) {
+      setToast({
+        open: true,
+        message: `Complete required steps: ${missingRequiredSteps.join(", ")}`,
+      });
+      return;
+    }
     if (!state?.shopId) return;
     const createRes = await createShop(state.shopId, state);
     if (!createRes.ok) {
@@ -82,9 +84,24 @@ export default function ConfiguratorDashboard() {
           </li>
         ))}
       </ul>
-      <Button disabled={!allRequiredDone} onClick={launchShop}>
-        Launch Shop
-      </Button>
+      {missingRequiredSteps.length > 0 ? (
+        <Tooltip
+          text={`Complete required steps: ${missingRequiredSteps.join(", ")}`}
+        >
+          <span onClick={handleLaunch}>
+            <Button disabled={!allRequiredDone}>Launch Shop</Button>
+          </span>
+        </Tooltip>
+      ) : (
+        <span onClick={handleLaunch}>
+          <Button>Launch Shop</Button>
+        </span>
+      )}
+      <Toast
+        open={toast.open}
+        onClose={() => setToast({ open: false, message: "" })}
+        message={toast.message}
+      />
     </div>
   );
 }

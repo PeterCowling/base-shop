@@ -23,47 +23,37 @@ const store: Record<string, any> = {};
 
 let sendEmail: jest.Mock;
 
-jest.mock("../src/app/userStore", () => ({
+jest.mock("@acme/platform-core/users", () => ({
   getUserById: jest.fn(async (id: string) => store[id] ?? null),
   getUserByEmail: jest.fn(
     async (email: string) =>
-      Object.values(store).find((u: any) => u.email === email) ?? null
+      Object.values(store).find((u: any) => u.email === email) ?? null,
   ),
-  addUser: jest.fn(
+  createUser: jest.fn(
     async ({ id, email, passwordHash, role = "customer" }: any) => {
       const user = {
         id,
         email,
         passwordHash,
         role,
-        resetTokenHash: null,
-        resetTokenExpires: null,
+        resetToken: null,
       };
       store[id] = user;
       return user;
-    }
+    },
   ),
-  setResetToken: jest.fn(
-    async (id: string, tokenHash: string | null, expires: number | null) => {
-      if (store[id]) {
-        store[id].resetTokenHash = tokenHash;
-        store[id].resetTokenExpires = expires;
-      }
+  setResetToken: jest.fn(async (id: string, token: string | null) => {
+    if (store[id]) {
+      store[id].resetToken = token;
     }
-  ),
-  getUserByResetToken: jest.fn(async (tokenHash: string) =>
-    Object.values(store).find(
-      (u: any) =>
-        u.resetTokenHash === tokenHash &&
-        u.resetTokenExpires !== null &&
-        u.resetTokenExpires > Date.now(),
-    ) ?? null,
+  }),
+  getUserByResetToken: jest.fn(async (token: string) =>
+    Object.values(store).find((u: any) => u.resetToken === token) ?? null,
   ),
   updatePassword: jest.fn(async (id: string, hash: string) => {
     if (store[id]) {
       store[id].passwordHash = hash;
-      store[id].resetTokenHash = null;
-      store[id].resetTokenExpires = null;
+      store[id].resetToken = null;
     }
   }),
 }));
@@ -131,7 +121,6 @@ describe("auth flows", () => {
 
     res = await completePOST(
       makeRequest({
-        customerId: "cust1",
         token,
         password: "NewStr0ng1",
       })
@@ -170,7 +159,6 @@ describe("auth flows", () => {
 
     const res = await completePOST(
       makeRequest({
-        customerId: "cust1",
         token,
         password: "weakpass",
       })

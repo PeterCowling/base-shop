@@ -14,6 +14,10 @@ jest.mock("next/server", () => ({
   },
 }));
 
+jest.mock("@acme/platform-core/users", () => ({
+  getUserById: jest.fn().mockResolvedValue({ role: "customer" }),
+}));
+
 import {
   getCustomerSession,
   validateCsrfToken,

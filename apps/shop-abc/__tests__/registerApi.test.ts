@@ -2,9 +2,9 @@
 const USER_STORE: Record<string, any> = {};
 const PROFILE_STORE: Record<string, any> = {};
 
-jest.mock("../src/app/userStore", () => ({
+jest.mock("@acme/platform-core/users", () => ({
   __esModule: true,
-  addUser: jest.fn(async ({ id, email, passwordHash }) => {
+  createUser: jest.fn(async ({ id, email, passwordHash }) => {
     USER_STORE[id] = { id, email, passwordHash };
   }),
   getUserById: jest.fn(async (id: string) => USER_STORE[id] ?? null),

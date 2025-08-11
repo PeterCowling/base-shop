@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import {
-  addUser,
+  createUser,
   getUserById,
   getUserByEmail,
-} from "../userStore";
+} from "@acme/platform-core/users";
 import { checkRegistrationRateLimit } from "../../middleware";
 import { validateCsrfToken } from "@auth";
 import { updateCustomerProfile } from "@acme/platform-core/customerProfiles";
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  await addUser({ id: customerId, email, passwordHash });
+  await createUser({ id: customerId, email, passwordHash });
   await updateCustomerProfile(customerId, { name: "", email });
   return NextResponse.json({ ok: true });
 }

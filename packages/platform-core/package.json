@@ -10,7 +10,8 @@
     "./orders": "./src/orders/index.ts",
     "./customerProfiles": "./src/customerProfiles/index.ts",
     "./plugins": "./src/plugins/index.ts",
-    "./configurator": "./src/configurator.ts"
+    "./configurator": "./src/configurator.ts",
+    "./users": "./src/users.ts"
   },
   "dependencies": {
     "@acme/shared-utils": "workspace:*",

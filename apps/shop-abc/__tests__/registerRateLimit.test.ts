@@ -3,8 +3,8 @@ jest.mock("@upstash/redis", () => ({
   Redis: jest.fn(() => ({})),
 }));
 
-jest.mock("../src/app/userStore", () => ({
-  addUser: jest.fn().mockResolvedValue(undefined),
+jest.mock("@acme/platform-core/users", () => ({
+  createUser: jest.fn().mockResolvedValue(undefined),
   getUserById: jest.fn().mockResolvedValue(null),
   getUserByEmail: jest.fn().mockResolvedValue(null),
 }));

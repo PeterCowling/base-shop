@@ -6,6 +6,10 @@ jest.mock("@upstash/redis", () => ({
   Redis: jest.fn(() => ({})),
 }));
 
+jest.mock("@platform-core/users", () => ({
+  getUserById: jest.fn().mockResolvedValue(null),
+}));
+
 let POST: typeof import("../src/app/login/route").POST;
 let __resetLoginRateLimiter: typeof import("../src/middleware").__resetLoginRateLimiter;
 let MAX_ATTEMPTS: number;

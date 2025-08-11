@@ -2,11 +2,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import {
-  createUser,
-  getUserById,
-  getUserByEmail,
-} from "@platform-core/users";
+import { addUser, getUserById, getUserByEmail } from "../userStore";
 import { checkRegistrationRateLimit } from "../../middleware";
 
 const RegisterSchema = z.object({
@@ -43,6 +39,6 @@ export async function POST(req: Request) {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  await createUser({ id: customerId, email, passwordHash });
+  await addUser({ id: customerId, email, passwordHash });
   return NextResponse.json({ ok: true });
 }

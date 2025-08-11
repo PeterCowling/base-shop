@@ -5,12 +5,24 @@ jest.mock("next/server", () => ({
   },
 }));
 
+jest.mock("../src/middleware", () => ({ checkRegistrationRateLimit: jest.fn(async () => null) }));
+
+const store: Record<string, any> = {};
+jest.mock("@platform-core/users", () => ({
+  getUserById: jest.fn(async (id: string) => store[id] ?? null),
+  getUserByEmail: jest.fn(async (email: string) =>
+    Object.values(store).find((u: any) => u.email === email) ?? null,
+  ),
+  createUser: jest.fn(async ({ id, email, passwordHash }: any) => {
+    store[id] = { id, email, passwordHash };
+  }),
+}));
+
 import { POST } from "../src/app/register/route";
-import { USER_STORE } from "../src/app/userStore";
 
 describe("/register POST", () => {
   afterEach(() => {
-    delete USER_STORE["newuser"];
+    for (const key of Object.keys(store)) delete store[key];
   });
 
   it("rejects weak passwords", async () => {
@@ -20,6 +32,7 @@ describe("/register POST", () => {
         email: "user@example.com",
         password: "password",
       }),
+      headers: new Headers(),
     } as any;
     const res = await POST(req);
     expect(res.status).toBe(400);
@@ -34,6 +47,7 @@ describe("/register POST", () => {
         email: "user@example.com",
         password: "Str0ngPass",
       }),
+      headers: new Headers(),
     } as any;
     const res = await POST(req);
     expect(res.status).toBe(200);

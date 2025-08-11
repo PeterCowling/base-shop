@@ -37,9 +37,8 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const headerToken = req.headers.get("x-csrf-token");
-  const valid = await validateCsrfToken(headerToken);
-  if (!valid) {
+  const token = req.headers.get("x-csrf-token");
+  if (!token || !(await validateCsrfToken(token))) {
     return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
   }
 

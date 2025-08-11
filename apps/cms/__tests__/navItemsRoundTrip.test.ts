@@ -42,7 +42,7 @@ describe("navigation round-trip", () => {
     });
 
     const fetchMock = jest.fn(async (input: RequestInfo, init?: RequestInit) => {
-      if (typeof input === "string" && input === "/cms/api/create-shop") {
+      if (typeof input === "string" && input === "/cms/api/configurator") {
         const body = JSON.parse(init!.body as string) as any;
         const { createShop } = await import("@platform-core/createShop");
         const { id, ...opts } = body;

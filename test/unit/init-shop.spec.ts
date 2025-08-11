@@ -23,6 +23,12 @@ describe('init-shop wizard', () => {
       }
       return env;
     });
+    const validateShopEnv = jest.fn(() =>
+      envParse({
+        STRIPE_SECRET_KEY: '',
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: '',
+      })
+    );
 
     const sandbox: any = {
       exports: {},
@@ -63,6 +69,9 @@ describe('init-shop wizard', () => {
         }
         if (p.includes('../../packages/platform-core/src/createShop')) {
           return { createShop };
+        }
+        if (p.includes('../../packages/platform-core/src/configurator')) {
+          return { validateShopEnv };
         }
         return require(p);
       },

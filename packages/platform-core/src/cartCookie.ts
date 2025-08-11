@@ -7,7 +7,7 @@ import { skuSchema } from "@acme/types";
 /* ------------------------------------------------------------------
  * Cookie constants
  * ------------------------------------------------------------------ */
-export const CART_COOKIE = "CART_ID";
+export const CART_COOKIE = "__Host-CART_ID";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 const SECRET = process.env.CART_COOKIE_SECRET;
 
@@ -76,6 +76,5 @@ export function decodeCartCookie(raw?: string | null): string | null {
 
 /** Build the Set-Cookie header value for HTTP responses. */
 export function asSetCookieHeader(value: string): string {
-  // NOTE: Consider signing or encrypting the cookie value to prevent tampering.
-  return `${CART_COOKIE}=${value}; Path=/; Max-Age=${MAX_AGE}; SameSite=Lax; Secure; HttpOnly`;
+  return `${CART_COOKIE}=${value}; Path=/; Max-Age=${MAX_AGE}; SameSite=Strict; Secure; HttpOnly`;
 }

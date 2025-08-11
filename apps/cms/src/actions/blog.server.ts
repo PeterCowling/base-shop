@@ -48,6 +48,25 @@ async function mutate(config: Config, body: unknown) {
   });
 }
 
+function extractProductSlugs(value: unknown): string[] {
+  const slugs = new Set<string>();
+  const visit = (node: unknown): void => {
+    if (Array.isArray(node)) {
+      for (const item of node) visit(item);
+    } else if (node && typeof node === "object") {
+      const obj = node as Record<string, unknown>;
+      if (obj._type === "productReference" && typeof obj.slug === "string") {
+        slugs.add(obj.slug);
+      }
+      for (const v of Object.values(obj)) {
+        visit(v);
+      }
+    }
+  };
+  visit(value);
+  return Array.from(slugs);
+}
+
 export async function getPosts(shopId: string): Promise<SanityPost[]> {
   await ensureAuthorized();
   const config = await getConfig(shopId);
@@ -95,6 +114,7 @@ export async function createPost(
   } catch {
     body = [];
   }
+  const products = extractProductSlugs(body);
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   try {
@@ -108,6 +128,7 @@ export async function createPost(
             published: false,
             slug: slug ? { current: slug } : undefined,
             excerpt: excerpt || undefined,
+            products,
           },
         },
       ],
@@ -139,6 +160,7 @@ export async function updatePost(
   } catch {
     body = [];
   }
+  const products = extractProductSlugs(body);
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   try {
@@ -152,6 +174,7 @@ export async function updatePost(
               body,
               slug: slug ? { current: slug } : undefined,
               excerpt: excerpt || undefined,
+              products,
             },
           },
         },

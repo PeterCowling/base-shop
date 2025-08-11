@@ -6,6 +6,7 @@ import { memo, useCallback } from "react";
 import {
   Button,
   Input,
+  Textarea,
   Select,
   SelectContent,
   SelectItem,
@@ -154,6 +155,15 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "Footer":
       specific = <FooterEditor component={component} onChange={onChange} />;
+      break;
+    case "CustomHtml":
+      specific = (
+        <Textarea
+          label="HTML"
+          value={(component as any).html ?? ""}
+          onChange={(e) => handleInput("html", e.target.value)}
+        />
+      );
       break;
     default:
       specific = <p className="text-muted text-sm">No editable props</p>;

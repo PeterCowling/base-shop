@@ -13,32 +13,36 @@ import {
 } from "../blocks";
 
 const palette = {
-  layout: (Object.keys(layoutRegistry) as PageComponent["type"][]).map((t) => ({
-    type: t,
-    label: t.replace(/([A-Z])/g, " $1").trim(),
-  })),
-  containers: (Object.keys(containerRegistry) as PageComponent["type"][]).map(
-    (t) => ({
+  layout: (Object.keys(layoutRegistry) as PageComponent["type"][])
+    .sort()
+    .map((t) => ({
       type: t,
       label: t.replace(/([A-Z])/g, " $1").trim(),
-    })
-  ),
-  atoms: (Object.keys(atomRegistry) as PageComponent["type"][]).map((t) => ({
-    type: t,
-    label: t.replace(/([A-Z])/g, " $1").trim(),
-  })),
-  molecules: (Object.keys(moleculeRegistry) as PageComponent["type"][]).map(
-    (t) => ({
+    })),
+  containers: (Object.keys(containerRegistry) as PageComponent["type"][])
+    .sort()
+    .map((t) => ({
       type: t,
       label: t.replace(/([A-Z])/g, " $1").trim(),
-    })
-  ),
-  organisms: (Object.keys(organismRegistry) as PageComponent["type"][]).map(
-    (t) => ({
+    })),
+  atoms: (Object.keys(atomRegistry) as PageComponent["type"][])
+    .sort()
+    .map((t) => ({
       type: t,
       label: t.replace(/([A-Z])/g, " $1").trim(),
-    })
-  ),
+    })),
+  molecules: (Object.keys(moleculeRegistry) as PageComponent["type"][])
+    .sort()
+    .map((t) => ({
+      type: t,
+      label: t.replace(/([A-Z])/g, " $1").trim(),
+    })),
+  organisms: (Object.keys(organismRegistry) as PageComponent["type"][])
+    .sort()
+    .map((t) => ({
+      type: t,
+      label: t.replace(/([A-Z])/g, " $1").trim(),
+    })),
 } as const;
 
 const PaletteItem = memo(function PaletteItem({

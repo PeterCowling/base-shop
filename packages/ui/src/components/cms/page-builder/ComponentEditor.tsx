@@ -97,6 +97,36 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "Footer":
       specific = <FooterEditor component={component} onChange={onChange} />;
       break;
+    case "Button":
+      specific = (
+        <>
+          <Input
+            label="Label"
+            value={(component as any).label ?? ""}
+            onChange={(e) => handleInput("label", e.target.value)}
+          />
+          <Input
+            label="URL"
+            value={(component as any).url ?? ""}
+            onChange={(e) => handleInput("url", e.target.value)}
+          />
+          <Select
+            value={(component as any).variant ?? ""}
+            onValueChange={(v) => handleInput("variant", v || undefined)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Variant" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="default">default</SelectItem>
+              <SelectItem value="outline">outline</SelectItem>
+              <SelectItem value="ghost">ghost</SelectItem>
+              <SelectItem value="destructive">destructive</SelectItem>
+            </SelectContent>
+          </Select>
+        </>
+      );
+      break;
     default:
       specific = <p className="text-muted text-sm">No editable props</p>;
   }

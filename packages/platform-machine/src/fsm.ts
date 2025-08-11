@@ -17,13 +17,31 @@ export class FSM<State extends string, Event extends string> {
     return this.current;
   }
 
-  send(event: Event): State {
+  /**
+   * Sends an event to the state machine.
+   *
+   * If a matching transition is not found, this method will throw unless a
+   * fallback handler is provided. The fallback receives the event and current
+   * state and must return the next state.
+   */
+  send(
+    event: Event,
+    fallback?: (event: Event, state: State) => State
+  ): State {
     const match = this.transitions.find(
       (t) => t.from === this.current && t.event === event
     );
+
     if (match) {
       this.current = match.to;
+    } else if (fallback) {
+      this.current = fallback(event, this.current);
+    } else {
+      throw new Error(
+        `No transition for event ${event} from state ${this.current}`
+      );
     }
+
     return this.current;
   }
 }

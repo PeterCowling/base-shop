@@ -4,7 +4,9 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
-} from "@/lib/cartCookie";
+  type CartState,
+} from "@platform-core/src/cartCookie";
+import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
 import { getProductById } from "@/lib/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -15,9 +17,46 @@ export const runtime = "edge";
 
 const deleteSchema = z.object({ id: z.string() }).strict();
 
+async function loadCart(
+  req: NextRequest,
+  create: boolean
+): Promise<{ cartId: string | null; cart: CartState }> {
+  const raw = req.cookies.get(CART_COOKIE)?.value;
+  let cartId = decodeCartCookie(raw);
+
+  if (cartId) {
+    return { cartId, cart: await getCart(cartId) };
+  }
+
+  if (raw) {
+    let parsed: CartState | null = null;
+    try {
+      parsed = JSON.parse(Buffer.from(raw, "base64").toString("utf8")) as CartState;
+    } catch {
+      try {
+        parsed = JSON.parse(raw) as CartState;
+      } catch {
+        /* ignore */
+      }
+    }
+    if (parsed) {
+      cartId = await createCart();
+      await setCart(cartId, parsed);
+      return { cartId, cart: parsed };
+    }
+  }
+
+  if (!create) {
+    return { cartId: null, cart: {} };
+  }
+
+  cartId = await createCart();
+  return { cartId, cart: await getCart(cartId) };
+}
+
 export async function POST(req: NextRequest) {
-  const json = await req.json();
-  const parsed = postSchema.safeParse(json);
+  const body = await req.json().catch(() => ({}));
+  const parsed = postSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json(parsed.error.flatten().fieldErrors, {
@@ -25,25 +64,25 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const { sku, qty } = parsed.data;
-  const skuObj = "title" in sku ? sku : getProductById(sku.id);
-  if (!skuObj) {
+  const { sku: skuInput, qty } = parsed.data;
+  const sku = "title" in skuInput ? skuInput : getProductById(skuInput.id);
+  if (!sku) {
     return NextResponse.json({ error: "Item not found" }, { status: 404 });
   }
-  const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookie);
-  const line = cart[skuObj.id];
 
-  cart[skuObj.id] = { sku: skuObj, qty: (line?.qty ?? 0) + qty };
+  const { cartId, cart } = await loadCart(req, true);
+  const line = cart[sku.id];
+  cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+  await setCart(cartId!, cart);
 
   const res = NextResponse.json({ ok: true, cart });
-  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId!)));
   return res;
 }
 
 export async function PATCH(req: NextRequest) {
-  const json = await req.json();
-  const parsed = patchSchema.safeParse(json);
+  const body = await req.json().catch(() => ({}));
+  const parsed = patchSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json(parsed.error.flatten().fieldErrors, {
@@ -52,10 +91,11 @@ export async function PATCH(req: NextRequest) {
   }
 
   const { id, qty } = parsed.data;
-  const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookie);
+  const { cartId, cart } = await loadCart(req, false);
+  if (!cartId) {
+    return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+  }
   const line = cart[id];
-
   if (!line) {
     return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
   }
@@ -65,15 +105,16 @@ export async function PATCH(req: NextRequest) {
   } else {
     cart[id] = { ...line, qty };
   }
+  await setCart(cartId, cart);
 
   const res = NextResponse.json({ ok: true, cart });
-  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;
 }
 
 export async function DELETE(req: NextRequest) {
-  const json = await req.json().catch(() => ({}));
-  const parsed = deleteSchema.safeParse(json);
+  const body = await req.json().catch(() => ({}));
+  const parsed = deleteSchema.safeParse(body);
 
   if (!parsed.success) {
     return NextResponse.json(parsed.error.flatten().fieldErrors, {
@@ -82,22 +123,25 @@ export async function DELETE(req: NextRequest) {
   }
 
   const { id } = parsed.data;
-  const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookie);
-
+  const { cartId, cart } = await loadCart(req, false);
+  if (!cartId) {
+    return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+  }
   if (!cart[id]) {
     return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
   }
 
   delete cart[id];
+  await setCart(cartId, cart);
 
   const res = NextResponse.json({ ok: true, cart });
-  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;
 }
 
 export async function GET(req: NextRequest) {
-  const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookie);
-  return NextResponse.json({ ok: true, cart });
+  const { cartId, cart } = await loadCart(req, true);
+  const res = NextResponse.json({ ok: true, cart });
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId!)));
+  return res;
 }

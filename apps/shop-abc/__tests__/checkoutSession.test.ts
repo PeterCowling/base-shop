@@ -1,5 +1,6 @@
 // apps/shop-abc/__tests__/checkoutSession.test.ts
-import { encodeCartCookie } from "@/lib/cartCookie";
+import { encodeCartCookie } from "@platform-core/src/cartCookie";
+import { createCart, setCart } from "@platform-core/src/cartStore";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@/lib/date";
 import { POST } from "../src/app/api/checkout-session/route";
@@ -43,13 +44,15 @@ test("builds Stripe session with correct items and metadata", async () => {
 
   const sku = PRODUCTS[0];
   const cart = { [sku.id]: { sku, qty: 2, size: "40" } };
-  const cookie = encodeCartCookie(cart);
+  const cartId = await createCart();
+  await setCart(cartId, cart);
+  const cookie = encodeCartCookie(cartId);
   const returnDate = "2025-01-02";
   const expectedDays = calculateRentalDays(returnDate);
   const req = createRequest({ returnDate }, cookie);
 
   const res = await POST(req);
-  const body = (await res.json()) as any;
+  const body = await res.json();
 
   expect(stripeCreate).toHaveBeenCalled();
   const args = stripeCreate.mock.calls[0][0];
@@ -66,10 +69,12 @@ test("builds Stripe session with correct items and metadata", async () => {
 test("responds with 400 on invalid returnDate", async () => {
   const sku = PRODUCTS[0];
   const cart = { [sku.id]: { sku, qty: 1 } };
-  const cookie = encodeCartCookie(cart);
+  const cartId = await createCart();
+  await setCart(cartId, cart);
+  const cookie = encodeCartCookie(cartId);
   const req = createRequest({ returnDate: "not-a-date" }, cookie);
   const res = await POST(req);
   expect(res.status).toBe(400);
-  const body = (await res.json()) as any;
+  const body = await res.json();
   expect(body.error).toMatch(/invalid/i);
 });

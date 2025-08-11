@@ -1,7 +1,7 @@
 // apps/shop-bcd/src/app/api/checkout-session/route.ts
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
-import { calculateRentalDays } from "@/lib/date";
-import { stripe } from "@lib/stripeServer.server";
+import { calculateRentalDays } from "@acme/date-utils";
+import { stripe } from "@acme/stripe";
 import { priceForDays } from "@platform-core/pricing";
 import { NextResponse } from "next/server";
 /* ------------------------------------------------------------------ *

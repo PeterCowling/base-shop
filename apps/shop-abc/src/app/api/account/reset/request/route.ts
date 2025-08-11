@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getUserByEmail, setResetToken } from "../../../../userStore";
-import { sendEmail } from "@lib/email";
+import { sendEmail } from "@acme/email";
 import { checkLoginRateLimit } from "../../../../../middleware";
 import { validateCsrfToken } from "@auth";
 

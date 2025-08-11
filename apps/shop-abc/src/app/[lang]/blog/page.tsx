@@ -1,5 +1,5 @@
 import BlogListing from "@ui/components/cms/blocks/BlogListing";
-import { fetchPublishedPosts } from "@lib/sanity.server";
+import { fetchPublishedPosts } from "@acme/sanity";
 import shop from "../../../../shop.json";
 
 export default async function BlogPage({ params }: { params: { lang: string } }) {

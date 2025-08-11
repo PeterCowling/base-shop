@@ -41,7 +41,7 @@ async function withAnalytics(
   }));
 
   if (opts.now) {
-    jest.doMock("@lib/date", () => ({ nowIso: () => opts.now }));
+    jest.doMock("@acme/date-utils", () => ({ nowIso: () => opts.now }));
   }
 
   const analytics: AnalyticsModule = await import("../src/analytics");

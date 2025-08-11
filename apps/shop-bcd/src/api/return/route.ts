@@ -1,4 +1,4 @@
-import { stripe } from "@lib/stripeServer";
+import { stripe } from "@acme/stripe";
 import { computeDamageFee } from "@platform-core/pricing";
 import {
   markRefunded,

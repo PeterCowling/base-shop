@@ -4,7 +4,7 @@ import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { ulid } from "ulid";
 import { genSecret } from "@shared-utils";
-import { nowIso } from "@lib/date";
+import { nowIso } from "@acme/date-utils";
 import { defaultFilterMappings } from "../defaultFilterMappings";
 import type { PreparedCreateShopOptions } from "./schema";
 

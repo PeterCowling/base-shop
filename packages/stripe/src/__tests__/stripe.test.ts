@@ -1,4 +1,4 @@
-// packages/lib/__tests__/stripeServer.test.ts
+// packages/stripe/src/__tests__/stripe.test.ts
 import nock from "nock";
 import type Stripe from "stripe";
 
@@ -29,10 +29,10 @@ describe("stripe client", () => {
   });
 
   it("uses expected API version and fetch client", async () => {
-    const { stripe } = await import("@lib/stripeServer");
+    const { stripe } = await import("../index");
     const stripeInternal = stripe as StripeInternal;
 
-    expect(stripeInternal.getApiField("version")).toBe("2025-05-28.basil");
+    expect(stripeInternal.getApiField("version")).toBe("2025-06-30.basil");
 
     const httpClient = stripeInternal.getApiField("httpClient");
     expect(typeof httpClient).toBe("object");
@@ -40,7 +40,7 @@ describe("stripe client", () => {
   });
 
   it("performs requests successfully with mocked API", async () => {
-    const { stripe } = await import("@lib/stripeServer");
+    const { stripe } = await import("../index");
     const stripeInternal = stripe as StripeInternal;
 
     const scope = nock("https://api.stripe.com")

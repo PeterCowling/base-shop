@@ -8,7 +8,7 @@ jest.mock('@platform-core/shops', () => ({
   getSanityConfig: jest.fn(),
 }));
 
-import { fetchPublishedPosts, fetchPostBySlug, getConfig } from '../src/sanity.server';
+import { fetchPublishedPosts, fetchPostBySlug, getConfig } from '../index';
 import { createClient } from '@sanity/client';
 import { getShopById } from '@platform-core/repositories/shop.server';
 import { getSanityConfig } from '@platform-core/shops';

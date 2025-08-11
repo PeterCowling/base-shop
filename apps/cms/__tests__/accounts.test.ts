@@ -84,7 +84,7 @@ describe("account actions", () => {
     await withRepo(async () => {
       /* stub email sending so the test doesn't talk to SMTP */
       const sendEmail = jest.fn();
-      jest.doMock("@lib/email", () => ({
+      jest.doMock("@acme/email", () => ({
         __esModule: true,
         sendEmail,
       }));
@@ -112,7 +112,7 @@ describe("account actions", () => {
   it("approveAccount throws for unknown ID", async () => {
     await withRepo(async () => {
       const sendEmail = jest.fn();
-      jest.doMock("@lib/email", () => ({
+      jest.doMock("@acme/email", () => ({
         __esModule: true,
         sendEmail,
       }));

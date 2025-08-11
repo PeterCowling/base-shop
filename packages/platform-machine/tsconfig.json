@@ -33,9 +33,7 @@
       "@platform-core": ["packages/platform-core/src/index.ts"],
       "@platform-core/*": ["packages/platform-core/src/*"],
 
-      /* shared lib utilities (compiled output lives in ../lib/dist) */
-      "@lib/stripeServer": ["packages/lib/src/stripeServer.server.ts"],
-      "@lib/stripeServer.server": ["packages/lib/src/stripeServer.server.ts"],
+      /* shared lib utilities */
       "@lib/*": ["packages/lib/*"]
     }
   },

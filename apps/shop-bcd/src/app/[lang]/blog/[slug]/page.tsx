@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { fetchPostBySlug } from "@lib/sanity.server";
+import { fetchPostBySlug } from "@acme/sanity";
 import shop from "../../../../../shop.json";
 
 export default async function BlogPostPage({

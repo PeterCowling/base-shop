@@ -48,7 +48,7 @@ describe("rental order lifecycle", () => {
         });
       const refundCreate = jest.fn();
       jest.doMock(
-        "@/lib/stripeServer",
+        "@acme/stripe",
         () => ({
           __esModule: true,
           stripe: {

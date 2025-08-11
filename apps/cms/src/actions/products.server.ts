@@ -19,7 +19,7 @@ import type { Locale } from "@types";
 import { ensureAuthorized } from "./common/auth";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
-import { nowIso } from "@lib/date";
+import { nowIso } from "@acme/date-utils";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                    */

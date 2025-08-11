@@ -10,7 +10,10 @@
     "@themes/base": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
-    "@acme/template-app": "workspace:*"
+    "@acme/template-app": "workspace:*",
+    "@acme/stripe": "workspace:*",
+    "@acme/date-utils": "workspace:*",
+    "@acme/sanity": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.4"

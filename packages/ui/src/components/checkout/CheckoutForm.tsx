@@ -14,7 +14,7 @@ import { fetchJson } from "@shared-utils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-import { isoDateInNDays } from "@/lib/date";
+import { isoDateInNDays } from "@acme/date-utils";
 import { useCurrency } from "@platform-core/src/contexts/CurrencyContext";
 
 const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);

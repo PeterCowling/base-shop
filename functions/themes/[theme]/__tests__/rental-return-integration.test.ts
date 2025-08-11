@@ -47,7 +47,7 @@ test("rental order is returned and refunded", async () => {
       });
     const refundCreate = jest.fn();
     jest.doMock(
-      "@/lib/stripeServer",
+      "@acme/stripe",
       () => ({
         __esModule: true,
         stripe: {

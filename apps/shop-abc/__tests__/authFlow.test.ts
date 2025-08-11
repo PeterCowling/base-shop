@@ -11,7 +11,7 @@ jest.mock("../src/middleware", () => ({
   clearLoginAttempts: jest.fn(),
 }));
 
-jest.mock("@lib/email", () => ({
+jest.mock("@acme/email", () => ({
   sendEmail: jest.fn(),
 }));
 

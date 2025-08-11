@@ -1,4 +1,4 @@
-// packages/lib/stripeServer.server.ts
+// packages/stripe/src/index.ts
 import "server-only";
 
 import { env } from "@config/src/env";

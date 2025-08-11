@@ -2,7 +2,7 @@
 import { encodeCartCookie } from "@platform-core/src/cartCookie";
 import { createCart, setCart } from "@platform-core/src/cartStore";
 import { PRODUCTS } from "@platform-core/products";
-import { calculateRentalDays } from "@/lib/date";
+import { calculateRentalDays } from "@acme/date-utils";
 import { POST } from "../src/app/api/checkout-session/route";
 
 jest.mock("next/server", () => ({
@@ -12,7 +12,7 @@ jest.mock("next/server", () => ({
   },
 }));
 
-jest.mock("@/lib/stripeServer", () => ({
+jest.mock("@acme/stripe", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
 
@@ -20,7 +20,7 @@ jest.mock("@platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
 }));
 
-import { stripe } from "@/lib/stripeServer";
+import { stripe } from "@acme/stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
 function createRequest(

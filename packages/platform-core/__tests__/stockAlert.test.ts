@@ -15,7 +15,7 @@ describe("stock alerts", () => {
 
   it("sends an email when quantity is at or below threshold", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("@lib/email", () => ({ sendEmail }));
+    jest.doMock("@acme/email", () => ({ sendEmail }));
 
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
@@ -41,7 +41,7 @@ describe("stock alerts", () => {
 
   it("handles items with multiple variant attributes", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("@lib/email", () => ({ sendEmail }));
+    jest.doMock("@acme/email", () => ({ sendEmail }));
 
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
@@ -73,7 +73,7 @@ describe("stock alerts", () => {
 
   it("does not send when above threshold", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("@lib/email", () => ({ sendEmail }));
+    jest.doMock("@acme/email", () => ({ sendEmail }));
 
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
@@ -93,7 +93,7 @@ describe("stock alerts", () => {
 
   it("does not send when recipient env var is missing", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("@lib/email", () => ({ sendEmail }));
+    jest.doMock("@acme/email", () => ({ sendEmail }));
     delete process.env.STOCK_ALERT_RECIPIENT;
 
     const { checkAndAlert } = await import(
@@ -114,7 +114,7 @@ describe("stock alerts", () => {
 
   it("logs an error when sendEmail rejects", async () => {
     const sendEmail = jest.fn().mockRejectedValue(new Error("fail"));
-    jest.doMock("@lib/email", () => ({ sendEmail }));
+    jest.doMock("@acme/email", () => ({ sendEmail }));
     const consoleError = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});

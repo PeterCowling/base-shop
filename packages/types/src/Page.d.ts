@@ -149,6 +149,11 @@ export interface TextComponent extends PageComponentBase {
   type: "Text";
   text?: string;
 }
+
+export interface CustomHtmlComponent extends PageComponentBase {
+  type: "CustomHtml";
+  html?: string;
+}
 export interface BlogListingComponent extends PageComponentBase {
   type: "BlogListing";
   posts?: {
@@ -201,6 +206,7 @@ export type PageComponent =
   | TestimonialSliderComponent
   | ImageComponent
   | TextComponent
+  | CustomHtmlComponent
   | HeaderComponent
   | FooterComponent
   | SectionComponent

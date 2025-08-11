@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getUserByEmail, setResetToken } from "../../../../userStore";
 import { sendEmail } from "@lib/email";
 import { checkLoginRateLimit } from "../../../../../middleware";
+import crypto from "node:crypto";
 
 const schema = z.object({
   email: z.string().email(),
@@ -24,9 +25,18 @@ export async function POST(req: Request) {
 
   const user = await getUserByEmail(parsed.data.email);
   if (user) {
-    const token = Math.random().toString(36).slice(2);
-    await setResetToken(user.id, token);
-    await sendEmail(parsed.data.email, "Password reset", `Your token is ${token}`);
+    const token = crypto.randomUUID();
+    const tokenHash = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+    const expires = Date.now() + 1000 * 60 * 60;
+    await setResetToken(user.id, tokenHash, expires);
+    await sendEmail(
+      parsed.data.email,
+      "Password reset",
+      `Your token is ${token}`,
+    );
   }
 
   return NextResponse.json({ ok: true });

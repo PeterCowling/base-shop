@@ -6,7 +6,8 @@ export interface User {
   email: string;
   passwordHash: string;
   role: string;
-  resetToken: string | null;
+  resetTokenHash: string | null;
+  resetTokenExpires: number | null;
 }
 
 const DATA_PATH = path.join(process.cwd(), "data", "users.json");
@@ -40,7 +41,14 @@ export async function addUser({
   role?: string;
 }): Promise<User> {
   const store = await readStore();
-  const user: User = { id, email, passwordHash, role, resetToken: null };
+  const user: User = {
+    id,
+    email,
+    passwordHash,
+    role,
+    resetTokenHash: null,
+    resetTokenExpires: null,
+  };
   store[id] = user;
   await writeStore(store);
   return user;
@@ -56,18 +64,18 @@ export async function getUserByEmail(email: string): Promise<User | null> {
   return Object.values(store).find((u) => u.email === email) ?? null;
 }
 
-export async function setResetToken(id: string, token: string | null): Promise<void> {
+export async function setResetToken(
+  id: string,
+  tokenHash: string | null,
+  expires: number | null,
+): Promise<void> {
   const store = await readStore();
   const user = store[id];
   if (user) {
-    user.resetToken = token;
+    user.resetTokenHash = tokenHash;
+    user.resetTokenExpires = expires;
     await writeStore(store);
   }
-}
-
-export async function getUserByResetToken(token: string): Promise<User | null> {
-  const store = await readStore();
-  return Object.values(store).find((u) => u.resetToken === token) ?? null;
 }
 
 export async function updatePassword(id: string, passwordHash: string): Promise<void> {
@@ -75,7 +83,20 @@ export async function updatePassword(id: string, passwordHash: string): Promise<
   const user = store[id];
   if (user) {
     user.passwordHash = passwordHash;
-    user.resetToken = null;
+    user.resetTokenHash = null;
+    user.resetTokenExpires = null;
     await writeStore(store);
   }
+}
+
+export async function getUserByResetToken(tokenHash: string): Promise<User | null> {
+  const store = await readStore();
+  return (
+    Object.values(store).find(
+      (u) =>
+        u.resetTokenHash === tokenHash &&
+        u.resetTokenExpires !== null &&
+        u.resetTokenExpires > Date.now(),
+    ) ?? null
+  );
 }

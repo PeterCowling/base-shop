@@ -28,20 +28,38 @@ jest.mock("../src/app/userStore", () => ({
     passwordHash,
     role = "customer",
   }: any) => {
-    const user = { id, email, passwordHash, role, resetToken: null };
+    const user = {
+      id,
+      email,
+      passwordHash,
+      role,
+      resetTokenHash: null,
+      resetTokenExpires: null,
+    };
     store[id] = user;
     return user;
   }),
-  setResetToken: jest.fn(async (id: string, token: string | null) => {
-    if (store[id]) store[id].resetToken = token;
-  }),
-  getUserByResetToken: jest.fn(async (token: string) =>
-    Object.values(store).find((u: any) => u.resetToken === token) ?? null,
+  setResetToken: jest.fn(
+    async (id: string, tokenHash: string | null, expires: number | null) => {
+      if (store[id]) {
+        store[id].resetTokenHash = tokenHash;
+        store[id].resetTokenExpires = expires;
+      }
+    },
+  ),
+  getUserByResetToken: jest.fn(async (tokenHash: string) =>
+    Object.values(store).find(
+      (u: any) =>
+        u.resetTokenHash === tokenHash &&
+        u.resetTokenExpires &&
+        u.resetTokenExpires > Date.now(),
+    ) ?? null,
   ),
   updatePassword: jest.fn(async (id: string, hash: string) => {
     if (store[id]) {
       store[id].passwordHash = hash;
-      store[id].resetToken = null;
+      store[id].resetTokenHash = null;
+      store[id].resetTokenExpires = null;
     }
   }),
 }));
@@ -98,8 +116,9 @@ describe("auth flows", () => {
     expect(res.status).toBe(200);
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
-    const { getUserById } = await import("../src/app/userStore");
-    const token = (await getUserById("cust1"))!.resetToken as string;
+    const { sendEmail } = await import("@lib/email");
+    const emailBody = (sendEmail as jest.Mock).mock.calls[0][2] as string;
+    const token = emailBody.match(/Your token is (.*)/)![1];
 
     res = await completePOST(
       makeRequest({

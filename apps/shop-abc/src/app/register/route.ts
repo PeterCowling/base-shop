@@ -12,7 +12,13 @@ import { checkRegistrationRateLimit } from "../../middleware";
 const RegisterSchema = z.object({
   customerId: z.string(),
   email: z.string().email(),
-  password: z.string(),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+      "Password must include uppercase, lowercase, and number",
+    ),
 });
 
 export async function POST(req: Request) {

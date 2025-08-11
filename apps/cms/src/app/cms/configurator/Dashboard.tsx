@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
@@ -28,12 +28,22 @@ export default function ConfiguratorDashboard() {
     }
   );
 
-  useEffect(() => {
+  const fetchState = useCallback(() => {
     fetch("/cms/api/wizard-progress")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => setState(json))
       .catch(() => setState(null));
   }, []);
+
+  useEffect(() => {
+    fetchState();
+  }, [fetchState]);
+
+  useEffect(() => {
+    const handler = () => fetchState();
+    window.addEventListener("wizard:update", handler);
+    return () => window.removeEventListener("wizard:update", handler);
+  }, [fetchState]);
   const stepList = getSteps();
   const missingRequired = stepList.filter(
     (s) => !s.optional && !state?.completed?.[s.id]

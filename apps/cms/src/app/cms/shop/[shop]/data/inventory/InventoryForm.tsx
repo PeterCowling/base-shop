@@ -73,8 +73,8 @@ export default function InventoryForm({ shop, initial }: Props) {
   };
 
   const addAttribute = () => {
-    const name = prompt("Attribute name");
-    if (!name) return;
+    const name = prompt("Attribute name")?.trim();
+    if (!name || attributes.includes(name)) return;
     setAttributes((prev) => [...prev, name]);
     setItems((prev) =>
       prev.map((i) => ({

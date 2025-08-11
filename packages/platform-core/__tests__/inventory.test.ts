@@ -77,6 +77,27 @@ describe("inventory repository", () => {
     });
   });
 
+  it("normalizes missing variantAttributes when reading", async () => {
+    await withRepo(async (repo, shop, dir) => {
+      const file = path.join(dir, "data", "shops", shop, "inventory.json");
+      await fs.writeFile(
+        file,
+        JSON.stringify([
+          { sku: "s1", productId: "p1", quantity: 1 },
+        ]),
+        "utf8",
+      );
+      await expect(repo.readInventory(shop)).resolves.toEqual([
+        {
+          sku: "s1",
+          productId: "p1",
+          quantity: 1,
+          variantAttributes: {},
+        },
+      ]);
+    });
+  });
+
   it("invokes checkAndAlert after writing", async () => {
     await withRepo(async (repo, shop) => {
       const items = [

@@ -1,13 +1,15 @@
 "use client";
 
 // packages/ui/src/components/account/MfaSetup.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import QRCode from "qrcode";
 
 export default function MfaSetup() {
   const [secret, setSecret] = useState<string | null>(null);
   const [otpauth, setOtpauth] = useState<string | null>(null);
   const [token, setToken] = useState("");
   const [status, setStatus] = useState<string | null>(null);
+  const [qrCode, setQrCode] = useState<string | null>(null);
 
   const begin = async () => {
     const csrfToken =
@@ -49,6 +51,11 @@ export default function MfaSetup() {
     setStatus(data.verified ? "MFA enabled" : "Invalid code");
   };
 
+  useEffect(() => {
+    if (!otpauth) return;
+    QRCode.toDataURL(otpauth).then(setQrCode).catch(console.error);
+  }, [otpauth]);
+
   return (
     <div className="space-y-4">
       {!secret && (
@@ -62,14 +69,8 @@ export default function MfaSetup() {
       )}
       {secret && (
         <div>
-          {otpauth && (
-            <img
-              src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-                otpauth
-              )}`}
-              alt="MFA QR Code"
-              className="mb-2"
-            />
+          {qrCode && (
+            <img src={qrCode} alt="MFA QR Code" className="mb-2" />
           )}
           <p className="mb-2">Secret: {secret}</p>
           <form onSubmit={verify} className="space-y-2">

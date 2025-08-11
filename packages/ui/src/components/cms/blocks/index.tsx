@@ -1,6 +1,7 @@
 import BlogListing from "./BlogListing";
 import ContactForm from "./ContactForm";
 import ContactFormWithMap from "./ContactFormWithMap";
+import MapBlock from "./MapBlock";
 import Gallery from "./Gallery";
 import HeroBanner from "./HeroBanner";
 import ProductCarousel from "./ProductCarousel";
@@ -16,6 +17,7 @@ export {
   BlogListing,
   ContactForm,
   ContactFormWithMap,
+  MapBlock,
   Gallery,
   HeroBanner,
   ProductCarousel,

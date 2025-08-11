@@ -102,6 +102,13 @@ export interface ContactFormWithMapComponent extends PageComponentBase {
   mapSrc?: string;
 }
 
+export interface MapBlockComponent extends PageComponentBase {
+  type: "MapBlock";
+  latitude?: number;
+  longitude?: number;
+  zoom?: number;
+}
+
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -144,6 +151,7 @@ export type PageComponent =
   | GalleryComponent
   | ContactFormComponent
   | ContactFormWithMapComponent
+  | MapBlockComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent
@@ -229,6 +237,13 @@ const contactFormWithMapComponentSchema = baseComponentSchema.extend({
   mapSrc: z.string().optional(),
 });
 
+const mapBlockComponentSchema = baseComponentSchema.extend({
+  type: z.literal("MapBlock"),
+  latitude: z.number().optional(),
+  longitude: z.number().optional(),
+  zoom: z.number().optional(),
+});
+
 const blogListingComponentSchema = baseComponentSchema.extend({
   type: z.literal("BlogListing"),
   posts: z
@@ -287,6 +302,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     galleryComponentSchema,
     contactFormComponentSchema,
     contactFormWithMapComponentSchema,
+    mapBlockComponentSchema,
     blogListingComponentSchema,
     testimonialsComponentSchema,
     testimonialSliderComponentSchema,

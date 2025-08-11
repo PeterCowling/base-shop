@@ -100,6 +100,12 @@ export interface ContactFormWithMapComponent extends PageComponentBase {
     type: "ContactFormWithMap";
     mapSrc?: string;
 }
+export interface MapBlockComponent extends PageComponentBase {
+    type: "MapBlock";
+    latitude?: number;
+    longitude?: number;
+    zoom?: number;
+}
 export interface ImageComponent extends PageComponentBase {
     type: "Image";
     src?: string;
@@ -136,7 +142,7 @@ export interface SectionComponent extends PageComponentBase {
     type: "Section";
     children?: PageComponent[];
 }
-export type PageComponent = HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent | ProductCarouselComponent | RecommendationCarouselComponent | GalleryComponent | ContactFormComponent | ContactFormWithMapComponent | BlogListingComponent | TestimonialsComponent | TestimonialSliderComponent | ImageComponent | TextComponent | SectionComponent;
+export type PageComponent = HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent | ProductCarouselComponent | RecommendationCarouselComponent | GalleryComponent | ContactFormComponent | ContactFormWithMapComponent | MapBlockComponent | BlogListingComponent | TestimonialsComponent | TestimonialSliderComponent | ImageComponent | TextComponent | SectionComponent;
 export declare const pageSchema: z.ZodObject<{
     id: z.ZodString;
     slug: z.ZodString;

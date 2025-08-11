@@ -3,6 +3,9 @@ jest.mock("@auth", () => ({
   createCustomerSession: jest.fn(),
   validateCsrfToken: jest.fn().mockResolvedValue(true),
 }));
+jest.mock("@auth/mfa", () => ({
+  isMfaEnabled: jest.fn().mockResolvedValue(false),
+}));
 jest.mock("@upstash/redis", () => ({
   Redis: jest.fn(() => ({})),
 }));

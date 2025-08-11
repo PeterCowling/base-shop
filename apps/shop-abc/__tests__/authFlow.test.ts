@@ -6,6 +6,10 @@ jest.mock("@auth", () => ({
   validateCsrfToken: jest.fn().mockResolvedValue(true),
 }));
 
+jest.mock("@auth/mfa", () => ({
+  isMfaEnabled: jest.fn(),
+}));
+
 jest.mock("../src/middleware", () => ({
   checkLoginRateLimit: jest.fn(async () => null),
   clearLoginAttempts: jest.fn(),
@@ -50,6 +54,7 @@ let registerPOST: typeof import("../src/app/api/register/route").POST;
 let loginPOST: typeof import("../src/app/login/route").POST;
 let requestPOST: typeof import("../src/app/api/account/reset/request/route").POST;
 let completePOST: typeof import("../src/app/api/account/reset/complete/route").POST;
+import { isMfaEnabled } from "@auth/mfa";
 
 beforeAll(async () => {
   ({ POST: registerPOST } = await import("../src/app/api/register/route"));
@@ -72,6 +77,7 @@ beforeAll(async () => {
 describe("auth flows", () => {
   beforeEach(() => {
     for (const key in store) delete store[key];
+    (isMfaEnabled as jest.Mock).mockResolvedValue(false);
   });
 
   it("allows sign-up, login and password reset", async () => {
@@ -129,6 +135,26 @@ describe("auth flows", () => {
       ),
     );
     expect(res.status).toBe(200);
+  });
+
+  it("requires MFA when enabled", async () => {
+    await registerPOST(
+      makeRequest({
+        customerId: "cust1",
+        email: "test@example.com",
+        password: "Str0ngPass1",
+      }),
+    );
+
+    (isMfaEnabled as jest.Mock).mockResolvedValue(true);
+    const res = await loginPOST(
+      makeRequest(
+        { customerId: "cust1", password: "Str0ngPass1" },
+        { "x-forwarded-for": "1.1.1.1" },
+      ),
+    );
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ mfaRequired: true });
   });
 
   it("rejects weak passwords during reset", async () => {

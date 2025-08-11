@@ -5,6 +5,7 @@ jest.mock("@auth", () => ({
   validateCsrfToken: jest.fn(),
   enrollMfa: jest.fn(),
   verifyMfa: jest.fn(),
+  createCustomerSession: jest.fn(),
 }));
 
 jest.mock("next/server", () => ({

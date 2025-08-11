@@ -5,10 +5,11 @@ import { useState } from "react";
 import { getCsrfToken } from "@shared-utils";
 
 export interface MfaChallengeProps {
+  customerId?: string;
   onSuccess?: () => void;
 }
 
-export default function MfaChallenge({ onSuccess }: MfaChallengeProps) {
+export default function MfaChallenge({ customerId, onSuccess }: MfaChallengeProps) {
   const [token, setToken] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +22,7 @@ export default function MfaChallenge({ onSuccess }: MfaChallengeProps) {
         "Content-Type": "application/json",
         "x-csrf-token": csrfToken ?? "",
       },
-      body: JSON.stringify({ token }),
+      body: JSON.stringify({ token, customerId }),
     });
     const data = await res.json();
     if (data.verified) {

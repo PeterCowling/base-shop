@@ -1,6 +1,7 @@
 // apps/shop-abc/src/app/login/route.ts
 import { NextResponse } from "next/server";
 import { createCustomerSession, validateCsrfToken } from "@auth";
+import { isMfaEnabled } from "@auth/mfa";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
@@ -58,6 +59,11 @@ export async function POST(req: Request) {
   if (!ALLOWED_ROLES.includes(valid.role)) {
     // Ignore elevated roles by rejecting them
     return NextResponse.json({ error: "Unauthorized role" }, { status: 403 });
+  }
+
+  const mfaEnabled = await isMfaEnabled(valid.customerId);
+  if (mfaEnabled) {
+    return NextResponse.json({ mfaRequired: true });
   }
 
   await createCustomerSession(valid);

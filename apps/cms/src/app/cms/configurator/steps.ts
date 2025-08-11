@@ -19,146 +19,32 @@ export interface ConfiguratorStep {
   id: string;
   label: string;
   component: React.ComponentType<any>;
-  required: boolean;
-  prerequisites?: string[];
+  optional?: boolean;
+  order?: number;
 }
 
-export type StepStatus = "pending" | "done";
-
-export const steps: Record<string, ConfiguratorStep> = {
-  "shop-details": {
-    id: "shop-details",
-    label: "Shop Details",
-    component: StepShopDetails,
-    required: true,
-  },
-  theme: {
-    id: "theme",
-    label: "Theme",
-    component: StepTheme,
-    required: true,
-    prerequisites: ["shop-details"],
-  },
-  tokens: {
-    id: "tokens",
-    label: "Tokens",
-    component: StepTokens,
-    required: true,
-    prerequisites: ["theme"],
-  },
-  options: {
-    id: "options",
-    label: "Options",
-    component: StepOptions,
-    required: true,
-    prerequisites: ["tokens"],
-  },
-  navigation: {
-    id: "navigation",
-    label: "Navigation",
-    component: StepNavigation,
-    required: true,
-    prerequisites: ["options"],
-  },
-  layout: {
-    id: "layout",
-    label: "Layout",
-    component: StepLayout,
-    required: true,
-    prerequisites: ["navigation"],
-  },
-  "home-page": {
-    id: "home-page",
-    label: "Home Page",
-    component: StepHomePage,
-    required: true,
-    prerequisites: ["layout"],
-  },
-  "checkout-page": {
-    id: "checkout-page",
-    label: "Checkout Page",
-    component: StepCheckoutPage,
-    required: true,
-    prerequisites: ["home-page"],
-  },
-  "shop-page": {
-    id: "shop-page",
-    label: "Shop Page",
-    component: StepShopPage,
-    required: true,
-    prerequisites: ["checkout-page"],
-  },
-  "product-page": {
-    id: "product-page",
-    label: "Product Page",
-    component: StepProductPage,
-    required: true,
-    prerequisites: ["shop-page"],
-  },
-  "additional-pages": {
-    id: "additional-pages",
-    label: "Additional Pages",
-    component: StepAdditionalPages,
-    required: true,
-    prerequisites: ["product-page"],
-  },
-  "env-vars": {
-    id: "env-vars",
-    label: "Environment Variables",
-    component: StepEnvVars,
-    required: true,
-    prerequisites: ["additional-pages"],
-  },
-  summary: {
-    id: "summary",
-    label: "Summary",
-    component: StepSummary,
-    required: true,
-    prerequisites: ["env-vars"],
-  },
-  "import-data": {
-    id: "import-data",
-    label: "Import Data",
-    component: StepImportData,
-    required: false,
-    prerequisites: ["summary"],
-  },
-  "seed-data": {
-    id: "seed-data",
-    label: "Seed Data",
-    component: StepSeedData,
-    required: false,
-    prerequisites: ["import-data"],
-  },
-  hosting: {
-    id: "hosting",
-    label: "Hosting",
-    component: StepHosting,
-    required: false,
-    prerequisites: ["seed-data"],
-  },
-};
-
-export const stepOrder = [
-  "shop-details",
-  "theme",
-  "tokens",
-  "options",
-  "navigation",
-  "layout",
-  "home-page",
-  "checkout-page",
-  "shop-page",
-  "product-page",
-  "additional-pages",
-  "env-vars",
-  "summary",
-  "import-data",
-  "seed-data",
-  "hosting",
+const stepList: ConfiguratorStep[] = [
+  { id: "shop-details", label: "Shop Details", component: StepShopDetails, order: 1 },
+  { id: "theme", label: "Theme", component: StepTheme, order: 2 },
+  { id: "tokens", label: "Tokens", component: StepTokens, order: 3 },
+  { id: "options", label: "Options", component: StepOptions, order: 4 },
+  { id: "navigation", label: "Navigation", component: StepNavigation, order: 5 },
+  { id: "layout", label: "Layout", component: StepLayout, order: 6 },
+  { id: "home-page", label: "Home Page", component: StepHomePage, order: 7 },
+  { id: "checkout-page", label: "Checkout Page", component: StepCheckoutPage, order: 8 },
+  { id: "shop-page", label: "Shop Page", component: StepShopPage, order: 9 },
+  { id: "product-page", label: "Product Page", component: StepProductPage, order: 10 },
+  { id: "additional-pages", label: "Additional Pages", component: StepAdditionalPages, order: 11 },
+  { id: "env-vars", label: "Environment Variables", component: StepEnvVars, order: 12 },
+  { id: "summary", label: "Summary", component: StepSummary, order: 13 },
+  { id: "import-data", label: "Import Data", component: StepImportData, optional: true, order: 14 },
+  { id: "seed-data", label: "Seed Data", component: StepSeedData, optional: true, order: 15 },
+  { id: "hosting", label: "Hosting", component: StepHosting, optional: true, order: 16 },
 ];
 
-export const initialStepStatus: Record<string, StepStatus> = Object.fromEntries(
-  stepOrder.map((id) => [id, "pending"])
-);
+export const getSteps = (): ConfiguratorStep[] =>
+  [...stepList].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
+export const steps: Record<string, ConfiguratorStep> = Object.fromEntries(
+  getSteps().map((s) => [s.id, s])
+);

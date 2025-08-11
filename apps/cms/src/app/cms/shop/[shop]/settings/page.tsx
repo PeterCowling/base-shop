@@ -6,6 +6,7 @@ import {
   readSettings,
   readShop,
 } from "@platform-core/repositories/json.server";
+import { loadTokens } from "@platform-core/src/createShop";
 import type { Locale } from "@acme/types";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
@@ -36,6 +37,8 @@ export default async function SettingsPage({
         session.user.role
       )
     : false;
+  const defaultTokens = loadTokens(info.themeId);
+  const overrides = info.themeOverrides ?? {};
 
   return (
     <div>
@@ -57,11 +60,30 @@ export default async function SettingsPage({
       <h3 className="mt-4 font-medium">Theme</h3>
       <p className="mt-2 text-sm">{info.themeId}</p>
       <h3 className="mt-4 font-medium">Theme Tokens</h3>
-      <div className="mt-2 flex items-center gap-2">
-        <pre className="rounded bg-gray-50 p-2 text-sm">
-          {JSON.stringify(info.themeTokens, null, 2)}
-        </pre>
-        {Object.keys(info.themeTokens ?? {}).length === 0 && (
+      <div className="mt-2">
+        <table className="text-sm">
+          <thead>
+            <tr>
+              <th className="text-left">Token</th>
+              <th className="text-left">Default</th>
+              <th className="text-left">Override</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.keys(defaultTokens).sort().map((k) => {
+              const override = overrides[k];
+              const changed = override !== undefined && override !== defaultTokens[k];
+              return (
+                <tr key={k} className={changed ? "bg-yellow-50" : undefined}>
+                  <td className="pr-4 font-mono">{k}</td>
+                  <td className="pr-4 font-mono">{defaultTokens[k]}</td>
+                  <td className="pr-4 font-mono">{override ?? ""}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        {Object.keys(overrides ?? {}).length === 0 && (
           <span className="text-muted-foreground text-xs">
             (using theme defaults)
           </span>

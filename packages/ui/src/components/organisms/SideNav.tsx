@@ -10,6 +10,7 @@ export const SideNav = React.forwardRef<HTMLDivElement, SideNavProps>(
   ({ className, width = "w-48", ...props }, ref) => (
     <aside
       ref={ref}
+      data-token="--color-bg"
       className={cn(width, "border-r p-4", className)}
       {...props}
     />

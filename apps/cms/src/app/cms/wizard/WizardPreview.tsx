@@ -9,11 +9,15 @@ import { AppShell } from "@/components/templates/AppShell";
 import TranslationsProvider from "@/i18n/Translations";
 import enMessages from "@i18n/en.json";
 import type { PageComponent } from "@types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { STORAGE_KEY } from "./hooks/useWizardPersistence";
 
 interface Props {
   style: React.CSSProperties;
+  /** Enable inspection mode to highlight tokenised elements */
+  inspectMode?: boolean;
+  /** Called when a tokenised element is clicked */
+  onTokenSelect?: (token: string) => void;
 }
 
 /**
@@ -21,11 +25,17 @@ interface Props {
  * The preview reads wizard state from localStorage (keyed by `STORAGE_KEY`)
  * so it always shows the latest edits without needing a full refresh.
  */
-export default function WizardPreview({ style }: Props): React.JSX.Element {
+export default function WizardPreview({
+  style,
+  inspectMode = false,
+  onTokenSelect,
+}: Props): React.JSX.Element {
   const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
     "desktop"
   );
   const [components, setComponents] = useState<PageComponent[]>([]);
+  const [highlight, setHighlight] = useState<HTMLElement | null>(null);
+  const previewRef = useRef<HTMLDivElement | null>(null);
 
   /* ------------------------------------------------------------------ */
   /*             Sync wizard state from localStorage                    */
@@ -65,6 +75,42 @@ export default function WizardPreview({ style }: Props): React.JSX.Element {
   };
 
   const containerStyle = { ...style, width: widthMap[viewport] };
+
+  /* ------------------------------------------------------------------ */
+  /*                         Inspect mode                               */
+  /* ------------------------------------------------------------------ */
+
+  useEffect(() => {
+    if (!highlight) return;
+    const prev = highlight.style.outline;
+    highlight.style.outline = "2px solid #3b82f6";
+    return () => {
+      highlight.style.outline = prev;
+    };
+  }, [highlight]);
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!inspectMode) return;
+    const el = (e.target as HTMLElement).closest("[data-token]") as
+      | HTMLElement
+      | null;
+    setHighlight(el);
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!inspectMode) return;
+    const el = (e.target as HTMLElement).closest("[data-token]");
+    if (!el) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const token = el.getAttribute("data-token");
+    if (token) onTokenSelect?.(token);
+  };
+
+  const handleLeave = () => {
+    if (!inspectMode) return;
+    setHighlight(null);
+  };
 
   /** Renders a single block component */
   function Block({ component }: { component: PageComponent }) {
@@ -130,7 +176,14 @@ export default function WizardPreview({ style }: Props): React.JSX.Element {
       </div>
 
       {/* live preview */}
-      <div style={containerStyle} className="mx-auto rounded border">
+      <div
+        ref={previewRef}
+        style={containerStyle}
+        className={`mx-auto rounded border ${inspectMode ? "cursor-crosshair" : ""}`}
+        onPointerMove={handlePointerMove}
+        onClick={handleClick}
+        onPointerLeave={handleLeave}
+      >
         <TranslationsProvider messages={enMessages}>
           <AppShell
             header={<Header locale="en" />}

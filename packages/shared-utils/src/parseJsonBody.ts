@@ -9,7 +9,18 @@ export async function parseJsonBody<T>(
   req: Request,
   schema: z.ZodSchema<T>,
 ): Promise<ParseJsonResult<T>> {
-  const json = await req.json();
+  let json: unknown;
+  try {
+    json = await req.json();
+  } catch {
+    return {
+      success: false,
+      response: NextResponse.json(
+        { error: "Invalid JSON" },
+        { status: 400 },
+      ),
+    };
+  }
   const parsed = schema.safeParse(json);
   if (!parsed.success) {
     return {

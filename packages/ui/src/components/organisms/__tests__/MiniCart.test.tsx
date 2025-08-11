@@ -24,7 +24,7 @@ describe("MiniCart", () => {
     expect(await screen.findByText("Cart is empty.")).toBeInTheDocument();
   });
 
-  it("shows cart items and handles removal", async () => {
+  it("shows cart items and handles quantity changes and removal", async () => {
     const dispatch = jest.fn();
     mockUseCart.mockReturnValue([
       {
@@ -37,10 +37,28 @@ describe("MiniCart", () => {
       dispatch,
     ]);
 
-    render(<MiniCart trigger={<button>Cart</button>} />);
+    const { baseElement } = render(<MiniCart trigger={<button>Cart</button>} />);
     await userEvent.click(screen.getByText("Cart"));
-
     expect(await screen.findByText("Item")).toBeInTheDocument();
+    expect(baseElement).toMatchSnapshot();
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /increase quantity/i })
+    );
+    expect(dispatch).toHaveBeenCalledWith({
+      type: "setQty",
+      id: "sku1:m",
+      qty: 2,
+    });
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /decrease quantity/i })
+    );
+    expect(dispatch).toHaveBeenCalledWith({
+      type: "setQty",
+      id: "sku1:m",
+      qty: 0,
+    });
 
     await userEvent.click(screen.getByRole("button", { name: /remove/i }));
     expect(dispatch).toHaveBeenCalledWith({ type: "remove", id: "sku1:m" });

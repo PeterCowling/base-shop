@@ -1,6 +1,12 @@
 {
   "name": "@acme/template-app",
   "private": true,
+  "type": "module",
+  "exports": {
+    "./next.config.mjs": "./next.config.mjs",
+    "./tailwind.config.mjs": "./tailwind.config.mjs",
+    "./postcss.config.cjs": "./postcss.config.cjs"
+  },
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",

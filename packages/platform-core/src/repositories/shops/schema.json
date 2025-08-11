@@ -23,11 +23,13 @@
     "themeId": { "type": "string" },
     "themeOverrides": {
       "type": "object",
-      "additionalProperties": { "type": "string" }
+      "additionalProperties": { "type": "string" },
+      "default": {}
     },
     "themeTokens": {
       "type": "object",
-      "additionalProperties": { "type": "string" }
+      "additionalProperties": { "type": "string" },
+      "description": "Mapping of design tokens to theme values (defaults merged with overrides)"
     },
     "filterMappings": {
       "type": "object",

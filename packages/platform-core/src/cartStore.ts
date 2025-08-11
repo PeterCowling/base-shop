@@ -1,7 +1,9 @@
 import crypto from "crypto";
 import { Redis } from "@upstash/redis";
 
-import type { CartState } from "./cartCookie";
+import { cartLineKey, type CartState } from "./cartCookie";
+
+export { cartLineKey };
 
 /** Abstraction for cart storage backends */
 export interface CartStore {

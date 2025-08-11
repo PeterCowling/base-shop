@@ -32,12 +32,16 @@ export const cartLineSchema = z.object({
 });
 
 /**
- * Schema for the full cart, keyed by SKU ID (string).
+ * Schema for the full cart, keyed by a composite "SKUID[:size]" string.
  */
 export const cartStateSchema = z.record(z.string(), cartLineSchema);
 
 export type CartLine = z.infer<typeof cartLineSchema>;
 export type CartState = z.infer<typeof cartStateSchema>;
+
+/** Build a unique key for a cart line from SKU ID and optional size. */
+export const cartLineKey = (skuId: string, size?: string) =>
+  size ? `${skuId}:${size}` : skuId;
 
 /* ------------------------------------------------------------------
  * Helper functions

@@ -5,7 +5,12 @@ import {
   decodeCartCookie,
   encodeCartCookie,
 } from "@platform-core/src/cartCookie";
-import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
+import {
+  createCart,
+  getCart,
+  setCart,
+  cartLineKey,
+} from "@platform-core/src/cartStore";
 import { getProductById } from "@platform-core/src/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -29,7 +34,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const { sku: skuInput, qty } = parsed.data;
+  const { sku: skuInput, qty, size } = parsed.data;
   const sku = "title" in skuInput ? skuInput : getProductById(skuInput.id);
 
   if (!sku) {
@@ -41,8 +46,9 @@ export async function POST(req: NextRequest) {
     cartId = await createCart();
   }
   const cart = await getCart(cartId);
-  const line = cart[sku.id];
-  cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+  const key = cartLineKey(sku.id, size);
+  const line = cart[key];
+  cart[key] = { sku, qty: (line?.qty ?? 0) + qty, size };
   await setCart(cartId, cart);
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));

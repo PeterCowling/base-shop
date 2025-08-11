@@ -28,9 +28,10 @@ describe("MiniCart", () => {
     const dispatch = jest.fn();
     mockUseCart.mockReturnValue([
       {
-        sku1: {
-          sku: { id: "sku1", title: "Item", price: 10 },
+        "sku1:M": {
+          sku: { id: "sku1", title: "Item", price: 10 } as any,
           qty: 1,
+          size: "M",
         },
       },
       dispatch,
@@ -39,9 +40,10 @@ describe("MiniCart", () => {
     render(<MiniCart trigger={<button>Cart</button>} />);
     await userEvent.click(screen.getByText("Cart"));
 
-    expect(await screen.findByText("Item")).toBeInTheDocument();
+    expect(await screen.findByText(/Item/)).toBeInTheDocument();
+    expect(screen.getByText(/M/)).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole("button", { name: /remove/i }));
-    expect(dispatch).toHaveBeenCalledWith({ type: "remove", id: "sku1" });
+    expect(dispatch).toHaveBeenCalledWith({ type: "remove", id: "sku1:M" });
   });
 });

@@ -2,6 +2,7 @@
 import { asSetCookieHeader, CART_COOKIE, decodeCartCookie, encodeCartCookie, } from "@/lib/cartCookie";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
+import { cartLineKey } from "@platform-core/src/cartStore";
 import { z } from "zod";
 export const runtime = "edge";
 const deleteSchema = z.object({ id: z.string() }).strict();
@@ -13,11 +14,12 @@ export async function POST(req) {
     if (!parsed.success) {
         return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
     }
-    const { sku, qty = 1 } = parsed.data;
+    const { sku, qty = 1, size } = parsed.data;
     const cookie = req.cookies.get(CART_COOKIE)?.value;
     const cart = decodeCartCookie(cookie);
-    const line = cart[sku.id];
-    cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+    const key = cartLineKey(sku.id, size);
+    const line = cart[key];
+    cart[key] = { sku, qty: (line?.qty ?? 0) + qty, size };
     const res = NextResponse.json({ ok: true, cart });
     res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
     return res;

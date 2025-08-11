@@ -1,5 +1,5 @@
 // apps/shop-bcd/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "@/lib/cartCookie";
+import { encodeCartCookie, cartLineKey } from "@/lib/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@/lib/date";
 import { POST } from "../src/api/checkout-session/route";
@@ -46,7 +46,8 @@ test("builds Stripe session with correct items and metadata", async () => {
   });
 
   const sku = PRODUCTS[0];
-  const cart = { [sku.id]: { sku, qty: 2, size: "40" } };
+  const key = cartLineKey(sku.id, "40");
+  const cart = { [key]: { sku, qty: 2, size: "40" } };
   const cookie = encodeCartCookie(cart);
   const returnDate = "2025-01-02";
   const expectedDays = calculateRentalDays(returnDate);

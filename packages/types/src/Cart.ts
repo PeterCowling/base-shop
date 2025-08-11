@@ -14,11 +14,7 @@ export interface CartLine {
 }
 
 /**
- * The entire cart state keyed by SKU ID.
- *
- * `SKU["id"]` is declared as `string | undefined` in the product typings,
- * which violates the constraint that a `Record` key must be a concrete
- * string.  Wrapping it in `NonNullable<>` narrows the key to `string`,
- * preserving type-safety while still documenting intent.
+ * The entire cart state keyed by "SKUID[:size]".
  */
-export type CartState = Record<NonNullable<SKU["id"]>, CartLine>;
+export type CartLineKey = `${NonNullable<SKU["id"]>}${`:${string}` | ""}`;
+export type CartState = Record<CartLineKey, CartLine>;

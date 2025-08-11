@@ -1,5 +1,5 @@
 // packages/template-app/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "../../platform-core/src/cartCookie";
+import { encodeCartCookie, cartLineKey } from "../../platform-core/src/cartCookie";
 import { createCart, setCart } from "../../platform-core/src/cartStore";
 import { PRODUCTS } from "../../platform-core/src/products";
 import { calculateRentalDays } from "../../lib/src/date";
@@ -43,7 +43,8 @@ test("builds Stripe session with correct items and metadata", async () => {
   });
 
   const sku = PRODUCTS[0];
-  const cart = { [sku.id]: { sku, qty: 2, size: "40" } };
+  const key = cartLineKey(sku.id, "40");
+  const cart = { [key]: { sku, qty: 2, size: "40" } };
   const cartId = await createCart();
   await setCart(cartId, cart);
   const cookie = encodeCartCookie(cartId);

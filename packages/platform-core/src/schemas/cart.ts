@@ -17,3 +17,9 @@ export const patchSchema = z
   })
   .strict();
 
+export const putSchema = z
+  .object({
+    lines: z.array(postSchema),
+  })
+  .strict();
+

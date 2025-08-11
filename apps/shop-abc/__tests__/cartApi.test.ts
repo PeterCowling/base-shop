@@ -5,7 +5,7 @@ import {
 } from "@platform-core/src/cartCookie";
 import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
 import { PRODUCTS } from "@platform-core/products";
-import { DELETE, GET, PATCH, POST } from "../src/app/api/cart/route";
+import { DELETE, GET, PATCH, POST, PUT } from "../src/app/api/cart/route";
 import * as productLib from "@/lib/products";
 
 const TEST_SKU = PRODUCTS[0];
@@ -133,6 +133,24 @@ test("PATCH rejects negative or non-integer quantity", async () => {
     createRequest({ id: lineId, qty: 1.5 }, encodeCartCookie(cartId))
   );
   expect(res.status).toBe(400);
+});
+
+test("PUT replaces entire cart", async () => {
+  const sku = { ...TEST_SKU };
+  const size = sku.sizes[0];
+  const lineId = `${sku.id}:${size}`;
+  const req = createRequest({
+    lines: [{ sku: { id: sku.id }, qty: 2, size }],
+  });
+  const res = await PUT(req);
+  expect(res.status).toBe(200);
+  const body = await res.json();
+  expect(body.cart[lineId].qty).toBe(2);
+  const header = res.headers.get("Set-Cookie")!;
+  const encoded = header.split(";")[0].split("=")[1];
+  const id = decodeCartCookie(encoded)!;
+  const stored = await getCart(id);
+  expect(stored[lineId].qty).toBe(2);
 });
 
 test("DELETE removes item", async () => {

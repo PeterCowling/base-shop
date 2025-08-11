@@ -66,18 +66,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
             const cached = localStorage.getItem(STORAGE_KEY);
             if (!cached) return;
             const cart = JSON.parse(cached) as CartState;
-            for (const line of Object.values(cart)) {
-              await fetch("/api/cart", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
+            const res = await fetch("/api/cart", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                lines: Object.values(cart).map((line) => ({
                   sku: { id: line.sku.id },
                   qty: line.qty,
                   size: line.size,
-                }),
-              });
-            }
-            const res = await fetch("/api/cart");
+                })),
+              }),
+            });
             if (res.ok) {
               const data = await res.json();
               setState(data.cart as CartState);

@@ -29,8 +29,6 @@ export default function AddToCartButton({
 
     try {
       await dispatch({ type: "add", sku, size });
-      /* fake latency for UX feedback */
-      await new Promise((r) => setTimeout(r, 300));
     } catch (err) {
       setError((err as Error).message ?? "Unable to add to cart");
     } finally {
@@ -45,7 +43,32 @@ export default function AddToCartButton({
         disabled={adding || disabled}
         className="mt-auto rounded bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-800 disabled:opacity-50"
       >
-        {adding ? "✓" : "Add to cart"}
+        {adding ? (
+          <span className="flex items-center gap-2" aria-live="polite">
+            <svg
+              className="h-4 w-4 animate-spin"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              />
+            </svg>
+            Adding...
+          </span>
+        ) : (
+          "Add to cart"
+        )}
       </button>
       {error && (
         <p className="mt-2 text-sm text-red-600" role="alert">

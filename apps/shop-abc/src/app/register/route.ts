@@ -7,14 +7,29 @@ import {
   getUserById,
   getUserByEmail,
 } from "@platform-core/users";
+import { validateCsrfToken } from "@auth";
 
 const RegisterSchema = z.object({
   customerId: z.string(),
   email: z.string().email(),
-  password: z.string(),
+  password: z
+    .string()
+    .min(8)
+    .regex(/[A-Za-z]/, {
+      message: "Password must contain a letter",
+    })
+    .regex(/[0-9]/, {
+      message: "Password must contain a number",
+    }),
 });
 
 export async function POST(req: Request) {
+  const headerToken = req.headers.get("x-csrf-token");
+  const valid = await validateCsrfToken(headerToken);
+  if (!valid) {
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
+  }
+
   const json = await req.json();
   const parsed = RegisterSchema.safeParse(json);
   if (!parsed.success) {

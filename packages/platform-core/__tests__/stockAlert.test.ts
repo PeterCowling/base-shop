@@ -90,4 +90,53 @@ describe("stock alerts", () => {
 
     expect(sendEmail).not.toHaveBeenCalled();
   });
+
+  it("does not send when recipient env var is missing", async () => {
+    const sendEmail = jest.fn();
+    jest.doMock("@lib/email", () => ({ sendEmail }));
+    delete process.env.STOCK_ALERT_RECIPIENT;
+
+    const { checkAndAlert } = await import(
+      "../src/services/stockAlert.server"
+    );
+    await checkAndAlert("shop", [
+      {
+        sku: "sku-1",
+        productId: "p1",
+        variantAttributes: { size: "m" },
+        quantity: 1,
+        lowStockThreshold: 2,
+      },
+    ]);
+
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("logs an error when sendEmail rejects", async () => {
+    const sendEmail = jest.fn().mockRejectedValue(new Error("fail"));
+    jest.doMock("@lib/email", () => ({ sendEmail }));
+    const consoleError = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    const { checkAndAlert } = await import(
+      "../src/services/stockAlert.server"
+    );
+    await checkAndAlert("shop", [
+      {
+        sku: "sku-1",
+        productId: "p1",
+        variantAttributes: { size: "m" },
+        quantity: 1,
+        lowStockThreshold: 2,
+      },
+    ]);
+
+    expect(sendEmail).toHaveBeenCalledTimes(1);
+    expect(consoleError).toHaveBeenCalledWith(
+      "Failed to send stock alert",
+      expect.any(Error),
+    );
+    consoleError.mockRestore();
+  });
 });

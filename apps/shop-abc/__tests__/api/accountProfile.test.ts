@@ -24,8 +24,19 @@ jest.mock("@acme/platform-core/customerProfiles", () => ({
 
 import { PUT } from "../../src/app/api/account/profile/route";
 
-function createRequest(body: any): any {
-  return { json: async () => body } as any;
+function createRequest(
+  body: any,
+  opts: { headers?: Record<string, string>; cookies?: Record<string, string> } = {}
+): any {
+  const { headers = {}, cookies = {} } = opts;
+  return {
+    json: async () => body,
+    headers: { get: (name: string) => headers[name.toLowerCase()] },
+    cookies: {
+      get: (name: string) =>
+        cookies[name] ? { value: cookies[name] } : undefined,
+    },
+  } as any;
 }
 
 beforeEach(() => {
@@ -41,7 +52,13 @@ test("returns 401 for unauthorized", async () => {
 
 test("returns 400 with validation errors", async () => {
   getCustomerSession.mockResolvedValue({ customerId: "cust1" });
-  const res = await PUT(createRequest({ name: "", email: "invalid" }));
+  const token = "token1";
+  const res = await PUT(
+    createRequest(
+      { name: "", email: "invalid" },
+      { headers: { "x-csrf-token": token }, cookies: { csrfToken: token } }
+    )
+  );
   const body = await res.json();
   expect(res.status).toBe(400);
   expect(body.name).toBeDefined();
@@ -50,8 +67,12 @@ test("returns 400 with validation errors", async () => {
 
 test("updates profile with valid payload", async () => {
   getCustomerSession.mockResolvedValue({ customerId: "cust1" });
+  const token = "token1";
   const res = await PUT(
-    createRequest({ name: "New Name", email: "new@example.com" })
+    createRequest(
+      { name: "New Name", email: "new@example.com" },
+      { headers: { "x-csrf-token": token }, cookies: { csrfToken: token } }
+    )
   );
   const body = await res.json();
   expect(updateCustomerProfile).toHaveBeenCalledWith("cust1", {
@@ -62,5 +83,16 @@ test("updates profile with valid payload", async () => {
     ok: true,
     profile: { customerId: "cust1", name: "New Name", email: "new@example.com" },
   });
+});
+
+test("returns 403 when CSRF token invalid", async () => {
+  getCustomerSession.mockResolvedValue({ customerId: "cust1" });
+  const res = await PUT(
+    createRequest(
+      { name: "New", email: "new@example.com" },
+      { headers: { "x-csrf-token": "bad" }, cookies: { csrfToken: "good" } }
+    )
+  );
+  expect(res.status).toBe(403);
 });
 

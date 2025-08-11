@@ -15,6 +15,12 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [message, setMessage] = useState<string | null>(null);
 
+  const getCsrfToken = () =>
+    document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("csrfToken="))
+      ?.split("=")[1];
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -26,7 +32,10 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
     try {
       const res = await fetch("/api/account/profile", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": getCsrfToken() ?? "",
+        },
         body: JSON.stringify(form),
       });
       if (!res.ok) {

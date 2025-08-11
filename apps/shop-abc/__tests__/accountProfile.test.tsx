@@ -9,6 +9,10 @@ jest.mock("@acme/platform-core", () => ({
   getCustomerProfile: jest.fn(),
 }));
 
+jest.mock("next/headers", () => ({
+  cookies: jest.fn(() => ({ get: jest.fn(), set: jest.fn() })),
+}));
+
 import { getCustomerSession } from "@auth";
 import { getCustomerProfile } from "@acme/platform-core";
 import ProfilePage from "@ui/src/components/account/Profile";

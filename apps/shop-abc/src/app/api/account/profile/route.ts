@@ -37,6 +37,12 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const csrfHeader = req.headers.get("x-csrf-token");
+  const csrfCookie = req.cookies.get("csrfToken")?.value;
+  if (!csrfHeader || !csrfCookie || csrfHeader !== csrfCookie) {
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
+  }
+
   const json = await req.json();
   const parsed = schema.safeParse(json);
   if (!parsed.success) {

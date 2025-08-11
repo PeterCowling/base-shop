@@ -1,11 +1,13 @@
 // packages/platform-core/__tests__/cartContext.test.tsx
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { CartProvider, useCart } from "../contexts/CartContext";
+import { cartLineId } from "../cartCookie";
 import { PRODUCTS } from "../products";
 
 function TestComponent() {
   const [state, dispatch] = useCart();
-  const line = state[PRODUCTS[0].id];
+  const id = cartLineId(PRODUCTS[0].id);
+  const line = state[id];
 
   return (
     <div>
@@ -14,11 +16,11 @@ function TestComponent() {
       <button onClick={() => dispatch({ type: "add", sku: PRODUCTS[0] })}>
         add
       </button>
-      <button onClick={() => dispatch({ type: "remove", id: PRODUCTS[0].id })}>
+      <button onClick={() => dispatch({ type: "remove", id })}>
         remove
       </button>
       <button
-        onClick={() => dispatch({ type: "setQty", id: PRODUCTS[0].id, qty: 0 })}
+        onClick={() => dispatch({ type: "setQty", id, qty: 0 })}
       >
         set
       </button>
@@ -41,12 +43,16 @@ describe("CartContext actions", () => {
       // add
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ cart: { [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 1 } } }),
+        json: async () => ({
+          cart: { [cartLineId(PRODUCTS[0].id)]: { sku: PRODUCTS[0], qty: 1 } },
+        }),
       })
       // setQty
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ cart: { [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 3 } } }),
+        json: async () => ({
+          cart: { [cartLineId(PRODUCTS[0].id)]: { sku: PRODUCTS[0], qty: 3 } },
+        }),
       })
       // remove
       .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });

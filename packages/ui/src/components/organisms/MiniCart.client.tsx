@@ -32,8 +32,8 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
   const [toast, setToast] = React.useState<{ open: boolean; message: string }>(
     { open: false, message: "" }
   );
-  const lines = Object.values(cart);
-  const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
+  const lines = Object.entries(cart);
+  const subtotal = lines.reduce((s, [, l]) => s + l.sku.price * l.qty, 0);
   const { widthClass, style } = drawerWidthProps(width);
 
   const handleRemove = async (id: string) => {
@@ -63,16 +63,23 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
           ) : (
             <div className="flex h-full flex-col gap-4">
               <ul className="grow space-y-3 overflow-y-auto">
-                {lines.map((line) => (
+                {lines.map(([id, line]) => (
                   <li
-                    key={line.sku.id}
+                    key={id}
                     className="flex items-center justify-between gap-2"
                   >
-                    <span className="text-sm">{line.sku.title}</span>
+                    <span className="text-sm">
+                      {line.sku.title}
+                      {line.size && (
+                        <span className="ml-1 text-xs text-muted-foreground">
+                          ({line.size})
+                        </span>
+                      )}
+                    </span>
                     <span className="text-sm">× {line.qty}</span>
                     <Button
                       variant="destructive"
-                      onClick={() => void handleRemove(line.sku.id)}
+                      onClick={() => void handleRemove(id)}
                       className="px-2 py-1 text-xs"
                     >
                       Remove

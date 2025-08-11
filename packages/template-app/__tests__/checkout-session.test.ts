@@ -1,5 +1,5 @@
 // packages/template-app/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "../../platform-core/src/cartCookie";
+import { encodeCartCookie, cartLineId } from "../../platform-core/src/cartCookie";
 import { createCart, setCart } from "../../platform-core/src/cartStore";
 import { PRODUCTS } from "../../platform-core/src/products";
 import { calculateRentalDays } from "../../lib/src/date";
@@ -46,7 +46,8 @@ test("builds Stripe session with correct items and metadata", async () => {
   });
 
   const sku = PRODUCTS[0];
-  const cart = { [sku.id]: { sku, qty: 2, size: "40" } };
+  const id = cartLineId(sku.id, "40");
+  const cart = { [id]: { sku, qty: 2, size: "40" } };
   const cartId = await createCart();
   await setCart(cartId, cart);
   const cookie = encodeCartCookie(cartId);
@@ -71,7 +72,8 @@ test("builds Stripe session with correct items and metadata", async () => {
 
 test("returns 400 when returnDate is invalid", async () => {
   const sku = PRODUCTS[0];
-  const cart = { [sku.id]: { sku, qty: 1 } };
+  const id2 = cartLineId(sku.id);
+  const cart = { [id2]: { sku, qty: 1 } };
   const cartId = await createCart();
   await setCart(cartId, cart);
   const cookie = encodeCartCookie(cartId);

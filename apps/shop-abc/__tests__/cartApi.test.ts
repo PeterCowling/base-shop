@@ -2,6 +2,7 @@
 import {
   decodeCartCookie,
   encodeCartCookie,
+  cartLineId,
 } from "@platform-core/src/cartCookie";
 import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
 import { PRODUCTS } from "@platform-core/products";
@@ -37,16 +38,18 @@ afterEach(() => {
 
 test("POST adds items and sets cookie", async () => {
   const sku = { ...TEST_SKU };
-  const req = createRequest({ sku, qty: 2 });
+  const size = "M";
+  const lineId = cartLineId(sku.id, size);
+  const req = createRequest({ sku, qty: 2, size });
   const res = await POST(req);
   const body = await res.json();
 
-  expect(body.cart[sku.id].qty).toBe(2);
+  expect(body.cart[lineId].qty).toBe(2);
   const header = res.headers.get("Set-Cookie")!;
   const encoded = header.split(";")[0].split("=")[1];
   const id = decodeCartCookie(encoded)!;
   const stored = await getCart(id);
-  expect(stored[sku.id].qty).toBe(2);
+  expect(stored[lineId].qty).toBe(2);
 });
 
 test("POST validates body", async () => {
@@ -56,33 +59,35 @@ test("POST validates body", async () => {
 
 test("PATCH updates quantity", async () => {
   const sku = { ...TEST_SKU };
-  const cart = { [sku.id]: { sku, qty: 1 } };
+  const id = cartLineId(sku.id);
+  const cart = { [id]: { sku, qty: 1 } };
   const cartId = await createCart();
   await setCart(cartId, cart);
-  const req = createRequest({ id: sku.id, qty: 5 }, encodeCartCookie(cartId));
+  const req = createRequest({ id, qty: 5 }, encodeCartCookie(cartId));
   const res = await PATCH(req);
   const body = await res.json();
-  expect(body.cart[sku.id].qty).toBe(5);
+  expect(body.cart[id].qty).toBe(5);
   const encoded = res.headers.get("Set-Cookie")!.split(";")[0].split("=")[1];
   expect(decodeCartCookie(encoded)).toBe(cartId);
 });
 
 test("PATCH removes item when qty is 0", async () => {
   const sku = { ...TEST_SKU };
-  const cart = { [sku.id]: { sku, qty: 1 } };
+  const id = cartLineId(sku.id);
+  const cart = { [id]: { sku, qty: 1 } };
   const cartId = await createCart();
   await setCart(cartId, cart);
-  const req = createRequest({ id: sku.id, qty: 0 }, encodeCartCookie(cartId));
+  const req = createRequest({ id, qty: 0 }, encodeCartCookie(cartId));
   const res = await PATCH(req);
   const body = await res.json();
-  expect(body.cart[sku.id]).toBeUndefined();
+  expect(body.cart[id]).toBeUndefined();
 });
 
 test("PATCH returns 404 for missing item", async () => {
   const cartId = await createCart();
   const res = await PATCH(
     createRequest(
-      { id: "01ARZ3NDEKTSV4RRFFQ69G5FAA", qty: 1 },
+      { id: cartLineId("01ARZ3NDEKTSV4RRFFQ69G5FAA"), qty: 1 },
       encodeCartCookie(cartId)
     )
   );
@@ -106,33 +111,36 @@ test("POST rejects negative or non-integer quantity", async () => {
 
 test("PATCH rejects negative or non-integer quantity", async () => {
   const sku = { ...TEST_SKU };
-  const cart = { [sku.id]: { sku, qty: 1 } };
+  const id = cartLineId(sku.id);
+  const cart = { [id]: { sku, qty: 1 } };
   const cartId = await createCart();
   await setCart(cartId, cart);
   let res = await PATCH(
-    createRequest({ id: sku.id, qty: -2 }, encodeCartCookie(cartId))
+    createRequest({ id, qty: -2 }, encodeCartCookie(cartId))
   );
   expect(res.status).toBe(400);
   res = await PATCH(
-    createRequest({ id: sku.id, qty: 1.5 }, encodeCartCookie(cartId))
+    createRequest({ id, qty: 1.5 }, encodeCartCookie(cartId))
   );
   expect(res.status).toBe(400);
 });
 
 test("DELETE removes item", async () => {
   const sku = { ...TEST_SKU };
-  const cart = { [sku.id]: { sku, qty: 2 } };
+  const id = cartLineId(sku.id);
+  const cart = { [id]: { sku, qty: 2 } };
   const cartId = await createCart();
   await setCart(cartId, cart);
-  const req = createRequest({ id: sku.id }, encodeCartCookie(cartId));
+  const req = createRequest({ id }, encodeCartCookie(cartId));
   const res = await DELETE(req);
   const body = await res.json();
-  expect(body.cart[sku.id]).toBeUndefined();
+  expect(body.cart[id]).toBeUndefined();
 });
 
 test("GET returns cart", async () => {
   const sku = { ...TEST_SKU };
-  const cart = { [sku.id]: { sku, qty: 3 } };
+  const id = cartLineId(sku.id);
+  const cart = { [id]: { sku, qty: 3 } };
   const cartId = await createCart();
   await setCart(cartId, cart);
   const res = await GET(createRequest({}, encodeCartCookie(cartId)));

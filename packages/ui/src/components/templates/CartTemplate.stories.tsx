@@ -1,9 +1,10 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import type { CartState } from "@/lib/cartCookie";
+import { cartLineId } from "@/lib/cartCookie";
 import { CartTemplate } from "./CartTemplate";
 
 const cart: CartState = {
-  sku1: {
+  [cartLineId("sku1", "L")]: {
     sku: {
       id: "sku1",
       slug: "prod-1",
@@ -17,6 +18,7 @@ const cart: CartState = {
       description: "",
     },
     qty: 1,
+    size: "L",
   },
 };
 

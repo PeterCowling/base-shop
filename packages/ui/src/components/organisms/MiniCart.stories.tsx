@@ -1,6 +1,7 @@
 import { CartProvider, useCart } from "@platform-core/src/contexts/CartContext";
 import { type Meta, type StoryObj } from "@storybook/react";
 import type { CartState } from "@/lib/cartCookie";
+import { cartLineId } from "@/lib/cartCookie";
 import type { SKU } from "@types";
 import * as React from "react";
 import { Button } from "../atoms/shadcn";
@@ -38,10 +39,10 @@ interface WrapperProps {
 function CartInitializer({ items }: WrapperProps) {
   const [, dispatch] = useCart();
   React.useEffect(() => {
-    Object.values(items).forEach((line) => {
+    Object.entries(items).forEach(([id, line]) => {
       dispatch({ type: "add", sku: line.sku, size: line.size });
       if (line.qty > 1) {
-        dispatch({ type: "setQty", id: line.sku.id, qty: line.qty });
+        dispatch({ type: "setQty", id, qty: line.qty });
       }
     });
   }, [items, dispatch]);
@@ -70,8 +71,8 @@ export const Empty: StoryObj<typeof MiniCartWrapper> = {};
 export const Filled: StoryObj<typeof MiniCartWrapper> = {
   args: {
     items: {
-      [sku1.id]: { sku: sku1, qty: 2 },
-      [sku2.id]: { sku: sku2, qty: 1 },
+      [cartLineId(sku1.id, "M")]: { sku: sku1, qty: 2, size: "M" },
+      [cartLineId(sku2.id)]: { sku: sku2, qty: 1 },
     },
   },
 };

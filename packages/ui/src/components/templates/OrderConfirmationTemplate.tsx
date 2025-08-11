@@ -15,12 +15,10 @@ export function OrderConfirmationTemplate({
   className,
   ...props
 }: OrderConfirmationTemplateProps) {
-  const subtotal = Object.values(cart).reduce(
-    (s, l) => s + l.sku.price * l.qty,
-    0
-  );
-  const deposit = Object.values(cart).reduce(
-    (s, l) => s + (l.sku.deposit ?? 0) * l.qty,
+  const lines = Object.entries(cart);
+  const subtotal = lines.reduce((s, [, l]) => s + l.sku.price * l.qty, 0);
+  const deposit = lines.reduce(
+    (s, [, l]) => s + (l.sku.deposit ?? 0) * l.qty,
     0
   );
 
@@ -40,9 +38,14 @@ export function OrderConfirmationTemplate({
           </tr>
         </thead>
         <tbody>
-          {Object.values(cart).map((l) => (
-            <tr key={l.sku.id} className="border-b last:border-0">
-              <td className="py-2">{l.sku.title}</td>
+          {lines.map(([id, l]) => (
+            <tr key={id} className="border-b last:border-0">
+              <td className="py-2">
+                {l.sku.title}
+                {l.size && (
+                  <span className="ml-1 text-xs text-muted">({l.size})</span>
+                )}
+              </td>
               <td>{l.qty}</td>
               <td className="text-right">
                 <Price amount={l.sku.price * l.qty} />

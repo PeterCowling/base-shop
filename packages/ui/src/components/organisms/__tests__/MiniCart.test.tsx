@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { cartLineId } from "@/lib/cartCookie";
 import { MiniCart } from "../MiniCart.client";
 
 jest.mock("@platform-core/src/contexts/CurrencyContext", () => ({
@@ -26,11 +27,13 @@ describe("MiniCart", () => {
 
   it("shows cart items and handles removal", async () => {
     const dispatch = jest.fn();
+    const id = cartLineId("sku1", "L");
     mockUseCart.mockReturnValue([
       {
-        sku1: {
+        [id]: {
           sku: { id: "sku1", title: "Item", price: 10 },
           qty: 1,
+          size: "L",
         },
       },
       dispatch,
@@ -39,9 +42,10 @@ describe("MiniCart", () => {
     render(<MiniCart trigger={<button>Cart</button>} />);
     await userEvent.click(screen.getByText("Cart"));
 
-    expect(await screen.findByText("Item")).toBeInTheDocument();
+    expect(await screen.findByText("Item"));
+    expect(screen.getByText(/\(L\)/)).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole("button", { name: /remove/i }));
-    expect(dispatch).toHaveBeenCalledWith({ type: "remove", id: "sku1" });
+    expect(dispatch).toHaveBeenCalledWith({ type: "remove", id });
   });
 });

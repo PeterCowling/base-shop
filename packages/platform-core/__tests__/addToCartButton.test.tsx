@@ -3,13 +3,15 @@
 import { CartProvider, useCart } from "@/contexts/CartContext";
 import AddToCartButton from "@platform-core/src/components/shop/AddToCartButton.client";
 import { PRODUCTS } from "@platform-core/products";
+import { cartLineId } from "@platform-core/src/cartCookie";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 jest.mock("react", () => jest.requireActual("react"));
 jest.mock("react-dom", () => jest.requireActual("react-dom"));
 
 function Qty() {
   const [state] = useCart();
-  return <span data-testid="qty">{state[PRODUCTS[0].id]?.qty ?? 0}</span>;
+  const id = cartLineId(PRODUCTS[0].id);
+  return <span data-testid="qty">{state[id]?.qty ?? 0}</span>;
 }
 
 describe("AddToCartButton", () => {
@@ -27,7 +29,9 @@ describe("AddToCartButton", () => {
       // POST
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ cart: { [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 1 } } }),
+        json: async () => ({
+          cart: { [cartLineId(PRODUCTS[0].id)]: { sku: PRODUCTS[0], qty: 1 } },
+        }),
       });
 
     render(

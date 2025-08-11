@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { Redis } from "@upstash/redis";
 
 import type { CartState } from "./cartCookie";
+import { cartLineId } from "./cartCookie";
 import type { SKU } from "@types";
 
 /** Abstraction for cart storage backends */
@@ -10,9 +11,14 @@ export interface CartStore {
   getCart(id: string): Promise<CartState>;
   setCart(id: string, cart: CartState): Promise<void>;
   deleteCart(id: string): Promise<void>;
-  incrementQty(id: string, sku: SKU, qty: number): Promise<CartState>;
-  setQty(id: string, skuId: string, qty: number): Promise<CartState | null>;
-  removeItem(id: string, skuId: string): Promise<CartState | null>;
+  incrementQty(
+    id: string,
+    sku: SKU,
+    qty: number,
+    size?: string
+  ): Promise<CartState>;
+  setQty(id: string, lineId: string, qty: number): Promise<CartState | null>;
+  removeItem(id: string, lineId: string): Promise<CartState | null>;
 }
 
 const TTL_SECONDS = Number(process.env.CART_TTL ?? 60 * 60 * 24);
@@ -46,21 +52,27 @@ class MemoryCartStore implements CartStore {
     this.carts.delete(id);
   }
 
-  async incrementQty(id: string, sku: SKU, qty: number): Promise<CartState> {
+  async incrementQty(
+    id: string,
+    sku: SKU,
+    qty: number,
+    size?: string
+  ): Promise<CartState> {
     let entry = this.carts.get(id);
     if (!entry || entry.expires < Date.now()) {
       entry = { cart: {}, expires: Date.now() };
       this.carts.set(id, entry);
     }
-    const line = entry.cart[sku.id];
-    entry.cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+    const lineId = cartLineId(sku.id, size);
+    const line = entry.cart[lineId];
+    entry.cart[lineId] = { sku, qty: (line?.qty ?? 0) + qty, size };
     entry.expires = Date.now() + this.ttl * 1000;
     return entry.cart;
   }
 
   async setQty(
     id: string,
-    skuId: string,
+    lineId: string,
     qty: number
   ): Promise<CartState | null> {
     const entry = this.carts.get(id);
@@ -68,25 +80,25 @@ class MemoryCartStore implements CartStore {
       this.carts.delete(id);
       return null;
     }
-    const line = entry.cart[skuId];
+    const line = entry.cart[lineId];
     if (!line) return null;
     if (qty === 0) {
-      delete entry.cart[skuId];
+      delete entry.cart[lineId];
     } else {
-      entry.cart[skuId] = { ...line, qty };
+      entry.cart[lineId] = { ...line, qty };
     }
     entry.expires = Date.now() + this.ttl * 1000;
     return entry.cart;
   }
 
-  async removeItem(id: string, skuId: string): Promise<CartState | null> {
+  async removeItem(id: string, lineId: string): Promise<CartState | null> {
     const entry = this.carts.get(id);
     if (!entry || entry.expires < Date.now()) {
       this.carts.delete(id);
       return null;
     }
-    if (!(skuId in entry.cart)) return null;
-    delete entry.cart[skuId];
+    if (!(lineId in entry.cart)) return null;
+    delete entry.cart[lineId];
     entry.expires = Date.now() + this.ttl * 1000;
     return entry.cart;
   }
@@ -110,10 +122,11 @@ class RedisCartStore implements CartStore {
     const qty = (await this.client.hgetall<number>(id)) || {};
     const skus = (await this.client.hgetall<string>(this.skuKey(id))) || {};
     const cart: CartState = {};
-    for (const [skuId, q] of Object.entries(qty)) {
-      const skuJson = skus[skuId];
+    for (const [lineId, q] of Object.entries(qty)) {
+      const skuJson = skus[lineId];
       if (!skuJson) continue;
-      cart[skuId] = { sku: JSON.parse(skuJson), qty: Number(q) };
+      const parsed = JSON.parse(skuJson) as { sku: SKU; size?: string };
+      cart[lineId] = { sku: parsed.sku, size: parsed.size, qty: Number(q) };
     }
     return cart;
   }
@@ -121,9 +134,9 @@ class RedisCartStore implements CartStore {
   async setCart(id: string, cart: CartState): Promise<void> {
     const qty: Record<string, number> = {};
     const skus: Record<string, string> = {};
-    for (const [skuId, line] of Object.entries(cart)) {
-      qty[skuId] = line.qty;
-      skus[skuId] = JSON.stringify(line.sku);
+    for (const [lineId, line] of Object.entries(cart)) {
+      qty[lineId] = line.qty;
+      skus[lineId] = JSON.stringify({ sku: line.sku, size: line.size });
     }
     await this.client.del(id);
     await this.client.del(this.skuKey(id));
@@ -140,9 +153,17 @@ class RedisCartStore implements CartStore {
     await this.client.del(this.skuKey(id));
   }
 
-  async incrementQty(id: string, sku: SKU, qty: number): Promise<CartState> {
-    await this.client.hincrby(id, sku.id, qty);
-    await this.client.hset(this.skuKey(id), { [sku.id]: JSON.stringify(sku) });
+  async incrementQty(
+    id: string,
+    sku: SKU,
+    qty: number,
+    size?: string
+  ): Promise<CartState> {
+    const lineId = cartLineId(sku.id, size);
+    await this.client.hincrby(id, lineId, qty);
+    await this.client.hset(this.skuKey(id), {
+      [lineId]: JSON.stringify({ sku, size }),
+    });
     await this.client.expire(id, this.ttl);
     await this.client.expire(this.skuKey(id), this.ttl);
     return this.getCart(id);
@@ -150,26 +171,26 @@ class RedisCartStore implements CartStore {
 
   async setQty(
     id: string,
-    skuId: string,
+    lineId: string,
     qty: number
   ): Promise<CartState | null> {
-    const exists = await this.client.hexists(id, skuId);
+    const exists = await this.client.hexists(id, lineId);
     if (!exists) return null;
     if (qty === 0) {
-      await this.client.hdel(id, skuId);
-      await this.client.hdel(this.skuKey(id), skuId);
+      await this.client.hdel(id, lineId);
+      await this.client.hdel(this.skuKey(id), lineId);
     } else {
-      await this.client.hset(id, { [skuId]: qty });
+      await this.client.hset(id, { [lineId]: qty });
     }
     await this.client.expire(id, this.ttl);
     await this.client.expire(this.skuKey(id), this.ttl);
     return this.getCart(id);
   }
 
-  async removeItem(id: string, skuId: string): Promise<CartState | null> {
-    const removed = await this.client.hdel(id, skuId);
+  async removeItem(id: string, lineId: string): Promise<CartState | null> {
+    const removed = await this.client.hdel(id, lineId);
     if (removed === 0) return null;
-    await this.client.hdel(this.skuKey(id), skuId);
+    await this.client.hdel(this.skuKey(id), lineId);
     await this.client.expire(id, this.ttl);
     await this.client.expire(this.skuKey(id), this.ttl);
     return this.getCart(id);
@@ -195,10 +216,14 @@ export const getCart = (id: string) => store.getCart(id);
 export const setCart = (id: string, cart: CartState) =>
   store.setCart(id, cart);
 export const deleteCart = (id: string) => store.deleteCart(id);
-export const incrementQty = (id: string, sku: SKU, qty: number) =>
-  store.incrementQty(id, sku, qty);
-export const setQty = (id: string, skuId: string, qty: number) =>
-  store.setQty(id, skuId, qty);
-export const removeItem = (id: string, skuId: string) =>
-  store.removeItem(id, skuId);
+export const incrementQty = (
+  id: string,
+  sku: SKU,
+  qty: number,
+  size?: string
+) => store.incrementQty(id, sku, qty, size);
+export const setQty = (id: string, lineId: string, qty: number) =>
+  store.setQty(id, lineId, qty);
+export const removeItem = (id: string, lineId: string) =>
+  store.removeItem(id, lineId);
 

@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const { sku: skuInput, qty } = parsed.data;
+  const { sku: skuInput, qty, size } = parsed.data;
   const sku = "title" in skuInput ? skuInput : getProductById(skuInput.id);
 
   if (!sku) {
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
   if (!cartId) {
     cartId = await createCart();
   }
-  const cart = await incrementQty(cartId, sku, qty);
+  const cart = await incrementQty(cartId, sku, qty, size);
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;

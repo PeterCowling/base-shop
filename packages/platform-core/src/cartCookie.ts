@@ -32,7 +32,8 @@ export const cartLineSchema = z.object({
 });
 
 /**
- * Schema for the full cart, keyed by SKU ID (string).
+ * Schema for the full cart, keyed by cart line identifier
+ * (SKU ID plus optional size).
  */
 export const cartStateSchema = z.record(z.string(), cartLineSchema);
 
@@ -42,6 +43,14 @@ export type CartState = z.infer<typeof cartStateSchema>;
 /* ------------------------------------------------------------------
  * Helper functions
  * ------------------------------------------------------------------ */
+
+/**
+ * Compute the cart line identifier from SKU ID and optional size.
+ * The returned string is used as the key in {@link CartState}.
+ */
+export function cartLineId(skuId: string, size?: string): string {
+  return size ? `${skuId}:${size}` : skuId;
+}
 
 /**
  * Serialize a cart ID into a signed cookie value.

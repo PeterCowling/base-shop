@@ -23,7 +23,7 @@ export default async function Header({
 }) {
   const cookieStore = await cookies();
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
-  const cart = cartId ? getCart(cartId) : {};
+  const cart = cartId ? await getCart(cartId) : {};
   const initialQty = Object.values(cart).reduce((s, line) => s + line.qty, 0);
   const shopId = process.env.NEXT_PUBLIC_SHOP_ID || "default";
   const shop = await readShop(shopId);

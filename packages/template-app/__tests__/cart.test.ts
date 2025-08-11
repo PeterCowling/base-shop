@@ -43,7 +43,8 @@ test("POST adds items and sets cookie", async () => {
   const header = res.headers.get("Set-Cookie")!;
   const encoded = header.split(";")[0].split("=")[1];
   const id = decodeCartCookie(encoded)!;
-  expect(getCart(id)[sku.id].qty).toBe(2);
+  const stored = await getCart(id);
+  expect(stored[sku.id].qty).toBe(2);
 });
 
 test("POST validates body", async () => {
@@ -54,8 +55,8 @@ test("POST validates body", async () => {
 test("PATCH updates quantity", async () => {
   const sku = { ...TEST_SKU };
   const cart = { [sku.id]: { sku, qty: 1 } };
-  const cartId = createCart();
-  setCart(cartId, cart);
+  const cartId = await createCart();
+  await setCart(cartId, cart);
   const req = createRequest({ id: sku.id, qty: 5 }, encodeCartCookie(cartId));
   const res = await PATCH(req);
   const body = await res.json();
@@ -67,8 +68,8 @@ test("PATCH updates quantity", async () => {
 test("PATCH removes item when qty is 0", async () => {
   const sku = { ...TEST_SKU };
   const cart = { [sku.id]: { sku, qty: 1 } };
-  const cartId = createCart();
-  setCart(cartId, cart);
+  const cartId = await createCart();
+  await setCart(cartId, cart);
   const req = createRequest({ id: sku.id, qty: 0 }, encodeCartCookie(cartId));
   const res = await PATCH(req);
   const body = await res.json();
@@ -76,7 +77,7 @@ test("PATCH removes item when qty is 0", async () => {
 });
 
 test("PATCH returns 404 for missing item", async () => {
-  const cartId = createCart();
+  const cartId = await createCart();
   const res = await PATCH(
     createRequest(
       { id: "01ARZ3NDEKTSV4RRFFQ69G5FAA", qty: 1 },
@@ -104,8 +105,8 @@ test("POST rejects negative or non-integer quantity", async () => {
 test("PATCH rejects negative or non-integer quantity", async () => {
   const sku = { ...TEST_SKU };
   const cart = { [sku.id]: { sku, qty: 1 } };
-  const cartId = createCart();
-  setCart(cartId, cart);
+  const cartId = await createCart();
+  await setCart(cartId, cart);
   let res = await PATCH(
     createRequest({ id: sku.id, qty: -2 }, encodeCartCookie(cartId))
   );
@@ -119,8 +120,8 @@ test("PATCH rejects negative or non-integer quantity", async () => {
 test("DELETE removes item", async () => {
   const sku = { ...TEST_SKU };
   const cart = { [sku.id]: { sku, qty: 2 } };
-  const cartId = createCart();
-  setCart(cartId, cart);
+  const cartId = await createCart();
+  await setCart(cartId, cart);
   const req = createRequest({ id: sku.id }, encodeCartCookie(cartId));
   const res = await DELETE(req);
   const body = await res.json();
@@ -130,8 +131,8 @@ test("DELETE removes item", async () => {
 test("GET returns cart", async () => {
   const sku = { ...TEST_SKU };
   const cart = { [sku.id]: { sku, qty: 3 } };
-  const cartId = createCart();
-  setCart(cartId, cart);
+  const cartId = await createCart();
+  await setCart(cartId, cart);
   const res = await GET(createRequest({}, encodeCartCookie(cartId)));
   const body = await res.json();
   expect(body.cart).toEqual(cart);

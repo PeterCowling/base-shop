@@ -26,7 +26,14 @@ export interface FormState {
 interface Props {
   action: (_state: FormState, formData: FormData) => Promise<FormState>;
   submitLabel: string;
-  post?: { _id?: string; title?: string; body?: string; slug?: string; excerpt?: string };
+  post?: {
+    _id?: string;
+    title?: string;
+    body?: string;
+    slug?: string;
+    excerpt?: string;
+    publishedAt?: string;
+  };
 }
 
 const schema = defineSchema({
@@ -192,6 +199,9 @@ export default function PostForm({ action, submitLabel, post }: Props) {
   useEffect(() => {
     if (!editSlug) setSlug(slugify(title));
   }, [title, editSlug]);
+  const [publishedAt, setPublishedAt] = useState(
+    post?.publishedAt ? post.publishedAt.slice(0, 16) : "",
+  );
   const [content, setContent] = useState<PortableTextBlock[]>(
     Array.isArray(post?.body)
       ? (post?.body as PortableTextBlock[])
@@ -233,6 +243,13 @@ export default function PostForm({ action, submitLabel, post }: Props) {
           </div>
         </div>
         <Textarea name="excerpt" label="Excerpt" defaultValue={post?.excerpt ?? ""} />
+        <Input
+          type="datetime-local"
+          name="publishedAt"
+          label="Publish at"
+          value={publishedAt}
+          onChange={(e) => setPublishedAt(e.target.value)}
+        />
         <div className="space-y-2">
           <EditorProvider
             initialConfig={{ schemaDefinition: schema, initialValue: content }}
@@ -261,6 +278,12 @@ export default function PostForm({ action, submitLabel, post }: Props) {
         {post?._id && <input type="hidden" name="id" value={post._id} />}
         <Button type="submit">{submitLabel}</Button>
       </form>
+      <input
+        type="hidden"
+        name="publishedAt"
+        form="publish-form"
+        value={publishedAt}
+      />
       <Toast
         open={Boolean(state.message || state.error)}
         message={state.message || state.error || ""}

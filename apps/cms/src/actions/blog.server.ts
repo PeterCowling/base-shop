@@ -97,6 +97,10 @@ export async function createPost(
   }
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
+  const publishedAtInput = formData.get("publishedAt");
+  const publishedAt = publishedAtInput
+    ? new Date(String(publishedAtInput)).toISOString()
+    : undefined;
   try {
     const res = await mutate(config, {
       mutations: [
@@ -108,6 +112,7 @@ export async function createPost(
             published: false,
             slug: slug ? { current: slug } : undefined,
             excerpt: excerpt || undefined,
+            ...(publishedAt ? { publishedAt } : {}),
           },
         },
       ],
@@ -141,6 +146,10 @@ export async function updatePost(
   }
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
+  const publishedAtInput = formData.get("publishedAt");
+  const publishedAt = publishedAtInput
+    ? new Date(String(publishedAtInput)).toISOString()
+    : undefined;
   try {
     await mutate(config, {
       mutations: [
@@ -152,6 +161,7 @@ export async function updatePost(
               body,
               slug: slug ? { current: slug } : undefined,
               excerpt: excerpt || undefined,
+              ...(publishedAt ? { publishedAt } : {}),
             },
           },
         },
@@ -168,14 +178,18 @@ export async function publishPost(
   shopId: string,
   id: string,
   _prev?: unknown,
-  _formData?: FormData
+  formData?: FormData
 ): Promise<{ message?: string; error?: string }> {
   "use server";
   await ensureAuthorized();
   const config = await getConfig(shopId);
+  const publishedAtInput = formData?.get("publishedAt");
+  const publishedAt = publishedAtInput
+    ? new Date(String(publishedAtInput)).toISOString()
+    : new Date().toISOString();
   try {
     await mutate(config, {
-      mutations: [{ patch: { id, set: { published: true, publishedAt: new Date().toISOString() } } }],
+      mutations: [{ patch: { id, set: { published: true, publishedAt } } }],
     });
     return { message: "Post published" };
   } catch (err) {

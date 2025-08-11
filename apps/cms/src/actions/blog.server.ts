@@ -11,6 +11,8 @@ interface SanityPost {
   title?: string;
   body?: string;
   published?: boolean;
+  slug?: string;
+  excerpt?: string;
 }
 
 interface Config {
@@ -49,7 +51,10 @@ export async function getPosts(shopId: string): Promise<SanityPost[]> {
   await ensureAuthorized();
   const config = await getConfig(shopId);
   const res = await fetch(
-    queryUrl(config, '*[_type=="post"]{_id,title,body,published}'),
+    queryUrl(
+      config,
+      '*[_type=="post"]{_id,title,body,published,"slug":slug.current,excerpt}',
+    ),
     { headers: config.token ? { Authorization: `Bearer ${config.token}` } : undefined }
   );
   const json = await res.json();
@@ -65,7 +70,7 @@ export async function getPost(
   const res = await fetch(
     queryUrl(
       config,
-      `*[_type=="post" && _id=="${id}"][0]{_id,title,body,published}`
+      `*[_type=="post" && _id=="${id}"][0]{_id,title,body,published,"slug":slug.current,excerpt}`,
     ),
     { headers: config.token ? { Authorization: `Bearer ${config.token}` } : undefined }
   );
@@ -83,9 +88,22 @@ export async function createPost(
   const config = await getConfig(shopId);
   const title = String(formData.get("title") ?? "");
   const content = String(formData.get("content") ?? "");
+  const slug = String(formData.get("slug") ?? "");
+  const excerpt = String(formData.get("excerpt") ?? "");
   try {
     const res = await mutate(config, {
-      mutations: [{ create: { _type: "post", title, body: content, published: false } }],
+      mutations: [
+        {
+          create: {
+            _type: "post",
+            title,
+            body: content,
+            published: false,
+            slug: slug ? { current: slug } : undefined,
+            excerpt: excerpt || undefined,
+          },
+        },
+      ],
       returnIds: true,
     });
     const json = await res.json();
@@ -108,9 +126,23 @@ export async function updatePost(
   const id = String(formData.get("id") ?? "");
   const title = String(formData.get("title") ?? "");
   const content = String(formData.get("content") ?? "");
+  const slug = String(formData.get("slug") ?? "");
+  const excerpt = String(formData.get("excerpt") ?? "");
   try {
     await mutate(config, {
-      mutations: [{ patch: { id, set: { title, body: content } } }],
+      mutations: [
+        {
+          patch: {
+            id,
+            set: {
+              title,
+              body: content,
+              slug: slug ? { current: slug } : undefined,
+              excerpt: excerpt || undefined,
+            },
+          },
+        },
+      ],
     });
     return { message: "Post updated" };
   } catch (err) {
@@ -136,6 +168,22 @@ export async function publishPost(
   } catch (err) {
     console.error("Failed to publish post", err);
     return { error: "Failed to publish post" };
+  }
+}
+
+export async function deletePost(
+  shopId: string,
+  id: string,
+): Promise<{ message?: string; error?: string }> {
+  "use server";
+  await ensureAuthorized();
+  const config = await getConfig(shopId);
+  try {
+    await mutate(config, { mutations: [{ delete: { id } }] });
+    return { message: "Post deleted" };
+  } catch (err) {
+    console.error("Failed to delete post", err);
+    return { error: "Failed to delete post" };
   }
 }
 

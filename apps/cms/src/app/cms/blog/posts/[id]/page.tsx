@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import PostForm from "../PostForm.client";
 import PublishButton from "../PublishButton.client";
+import DeleteButton from "../DeleteButton.client";
 import { getPost, updatePost } from "@cms/actions/blog.server";
 import { getSanityConfig } from "@platform-core/src/shops";
 import { getShopById } from "@platform-core/src/repositories/shop.server";
@@ -44,7 +45,10 @@ export default async function EditPostPage({
         submitLabel="Save"
         post={post}
       />
-      <PublishButton id={post._id} shopId={shopId} />
+      <div className="flex items-center space-x-4">
+        <PublishButton id={post._id} shopId={shopId} />
+        <DeleteButton id={post._id} shopId={shopId} />
+      </div>
     </div>
   );
 }

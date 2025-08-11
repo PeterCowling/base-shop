@@ -1,19 +1,23 @@
 // apps/cms/src/app/cms/blog/sanity/connect/page.tsx
 import ConnectForm from "./ConnectForm.client";
+import { getShopById } from "@platform-core/src/repositories/shop.server";
+import { getSanityConfig } from "@platform-core/src/shops";
 
 export const revalidate = 0;
 
-export default function SanityConnectPage({
+export default async function SanityConnectPage({
   searchParams,
 }: {
   searchParams?: { shopId?: string };
 }) {
   const shopId = searchParams?.shopId;
   if (!shopId) return <p>No shop selected.</p>;
+  const shop = await getShopById(shopId);
+  const sanity = getSanityConfig(shop);
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-semibold">Connect Sanity</h2>
-      <ConnectForm shopId={shopId} />
+      <ConnectForm shopId={shopId} initial={sanity} />
     </div>
   );
 }

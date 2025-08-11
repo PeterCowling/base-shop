@@ -77,6 +77,8 @@ export async function setupSanityBlog(
                 type: "document",
                 fields: [
                   { name: "title", type: "string", title: "Title" },
+                  { name: "slug", type: "slug", title: "Slug", options: { source: "title" } },
+                  { name: "excerpt", type: "text", title: "Excerpt" },
                   { name: "body", type: "text", title: "Body" },
                   { name: "published", type: "boolean", title: "Published" },
                 ],

@@ -5,6 +5,7 @@ import { useFormState } from "react-dom";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast } from "@ui";
 import { saveSanityConfig } from "@cms/actions/saveSanityConfig";
+import { deleteSanityConfig } from "@cms/actions/deleteSanityConfig";
 
 interface FormState {
   message?: string;
@@ -13,13 +14,22 @@ interface FormState {
 
 interface Props {
   shopId: string;
+  initial?: { projectId: string; dataset: string; token?: string };
 }
 
 const initialState: FormState = { message: "", error: "" };
 
-export default function ConnectForm({ shopId }: Props) {
-  const action = saveSanityConfig.bind(null, shopId);
-  const [state, formAction] = useFormState<FormState>(action, initialState);
+export default function ConnectForm({ shopId, initial }: Props) {
+  const saveAction = saveSanityConfig.bind(null, shopId);
+  const [state, formAction] = useFormState<FormState>(saveAction, initialState);
+
+  const disconnectAction = deleteSanityConfig.bind(null, shopId);
+  const [disconnectState, disconnectFormAction] = useFormState<FormState>(
+    disconnectAction,
+    initialState,
+  );
+  const message = state.message || disconnectState.message;
+  const error = state.error || disconnectState.error;
   return (
     <div className="space-y-4 max-w-md">
       <form action={formAction} className="space-y-4">
@@ -31,6 +41,7 @@ export default function ConnectForm({ shopId }: Props) {
             id="projectId"
             name="projectId"
             className="w-full rounded border p-2"
+            defaultValue={initial?.projectId ?? ""}
             required
           />
         </div>
@@ -42,6 +53,7 @@ export default function ConnectForm({ shopId }: Props) {
             id="dataset"
             name="dataset"
             className="w-full rounded border p-2"
+            defaultValue={initial?.dataset ?? ""}
             required
           />
         </div>
@@ -54,6 +66,7 @@ export default function ConnectForm({ shopId }: Props) {
             name="token"
             type="password"
             className="w-full rounded border p-2"
+            defaultValue={initial?.token ?? ""}
             required
           />
         </div>
@@ -61,10 +74,14 @@ export default function ConnectForm({ shopId }: Props) {
           Save
         </Button>
       </form>
-      <Toast
-        open={Boolean(state.message || state.error)}
-        message={state.message || state.error || ""}
-      />
+      {initial && (
+        <form action={disconnectFormAction}>
+          <Button type="submit" variant="destructive">
+            Disconnect
+          </Button>
+        </form>
+      )}
+      <Toast open={Boolean(message || error)} message={message || error || ""} />
     </div>
   );
 }

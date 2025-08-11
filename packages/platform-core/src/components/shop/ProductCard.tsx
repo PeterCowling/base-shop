@@ -1,5 +1,5 @@
 // src/components/shop/ProductCard.tsx
-import type { SKU } from "@types";
+import type { SKU } from "@acme/types";
 import Image from "next/image";
 import Link from "next/link";
 import { Price } from "@ui/components/atoms/Price";

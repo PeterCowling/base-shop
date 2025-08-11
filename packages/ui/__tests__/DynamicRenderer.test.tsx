@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import DynamicRenderer from "../src/components/DynamicRenderer";
 import { blockRegistry } from "../src/components/cms/blocks";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 
 describe("DynamicRenderer", () => {
   it("warns on unknown component type", () => {

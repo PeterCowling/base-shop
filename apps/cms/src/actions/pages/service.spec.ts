@@ -1,5 +1,5 @@
 import { getPages, savePage, updatePage, deletePage } from "./service";
-import type { Page } from "@types";
+import type { Page } from "@acme/types";
 
 jest.mock("@platform-core/repositories/pages/index.server", () => ({
   getPages: jest.fn().mockResolvedValue([]),

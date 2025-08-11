@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { InventoryItem } from "@types";
+import type { InventoryItem } from "@acme/types";
 import { checkAndAlert } from "./stockAlert.server";
 
 /**

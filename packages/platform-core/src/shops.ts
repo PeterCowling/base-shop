@@ -1,4 +1,4 @@
-import type { Shop, SanityBlogConfig, ShopDomain } from "@types";
+import type { Shop, SanityBlogConfig, ShopDomain } from "@acme/types";
 export { SHOP_NAME_RE, validateShopName } from "../../lib/src/validateShopName";
 
 export function getSanityConfig(shop: Shop): SanityBlogConfig | undefined {

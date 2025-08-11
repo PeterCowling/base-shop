@@ -1,7 +1,7 @@
 import "server-only";
 
-import type { PricingMatrix, SKU } from "@types";
-import { pricingSchema } from "@types";
+import type { PricingMatrix, SKU } from "@acme/types";
+import { pricingSchema } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { resolveDataRoot } from "./dataRoot";

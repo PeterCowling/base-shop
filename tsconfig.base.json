@@ -97,10 +97,10 @@
       "@acme/date-utils": ["packages/date-utils/src/index.ts"],
 
       /* ─── shared runtime types ──────────────────────────────────── */
-      "@types": ["packages/types/src/index.ts"],
-      "@types/*": ["packages/types/src/*"],
-      "@types/root": ["src/types/index.ts"],
-      "@types/root/*": ["src/types/*"],
+      "@acme/types": ["packages/types/src/index.ts"],
+      "@acme/types/*": ["packages/types/src/*"],
+      "@acme/types/root": ["src/types/index.ts"],
+      "@acme/types/root/*": ["src/types/*"],
 
       /* ─── Tailwind preset ───────────────────────────────────────── */
       "@acme/tailwind-config": ["packages/tailwind-config/src/index.ts"]

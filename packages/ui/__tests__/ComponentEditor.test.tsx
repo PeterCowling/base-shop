@@ -1,6 +1,6 @@
 import { render, fireEvent } from "@testing-library/react";
 import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 
 describe("ComponentEditor", () => {
   it("updates width and height", () => {

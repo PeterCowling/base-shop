@@ -1,6 +1,6 @@
 // apps/cms/src/actions/schemas.ts
 
-import { localeSchema } from "@types";
+import { localeSchema } from "@acme/types";
 import { z } from "zod";
 
 export const productSchema = z

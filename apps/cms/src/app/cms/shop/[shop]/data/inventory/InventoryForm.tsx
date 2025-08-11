@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/atoms/shadcn";
-import { inventoryItemSchema, type InventoryItem } from "@types";
+import { inventoryItemSchema, type InventoryItem } from "@acme/types";
 import { FormEvent, useRef, useState } from "react";
 
 interface Props {

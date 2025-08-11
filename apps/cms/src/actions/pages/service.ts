@@ -6,7 +6,7 @@ import {
   updatePage as repoUpdatePage,
   deletePage as repoDeletePage,
 } from "@platform-core/repositories/pages/index.server";
-import type { Page } from "@types";
+import type { Page } from "@acme/types";
 
 export function getPages(shop: string) {
   return repoGetPages(shop);

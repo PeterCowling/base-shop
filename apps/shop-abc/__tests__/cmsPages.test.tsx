@@ -8,7 +8,7 @@ jest.mock("next/headers", () => ({
   cookies: jest.fn(),
 }));
 
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { cookies } from "next/headers";

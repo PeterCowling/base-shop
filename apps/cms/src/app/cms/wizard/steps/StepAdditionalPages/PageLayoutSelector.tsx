@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from "@/components/atoms/shadcn";
 import { ulid } from "ulid";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;

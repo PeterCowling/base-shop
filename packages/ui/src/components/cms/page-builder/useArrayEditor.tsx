@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
 import { useCallback } from "react";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import { Button, Input } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
 

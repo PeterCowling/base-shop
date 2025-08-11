@@ -1,4 +1,4 @@
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 
 interface Props {

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import type { MediaItem } from "@types";
+import type { MediaItem } from "@acme/types";
 import MediaManager from "./MediaManager";
 
 const files: MediaItem[] = [{ url: "/sample.jpg", altText: "Sample" }];

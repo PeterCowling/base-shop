@@ -1,5 +1,5 @@
 import type { Locale } from "@/i18n/locales";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import DOMPurify from "dompurify";
 import { memo } from "react";
 import { blockRegistry } from "../blocks";

@@ -2,7 +2,7 @@
 "use client";
 
 import DynamicRenderer from "@ui/components/DynamicRenderer";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import type { Locale } from "@/i18n/locales";
 
 export default function Home({

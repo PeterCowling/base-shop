@@ -1,7 +1,7 @@
 import { CartProvider, useCart } from "@platform-core/src/contexts/CartContext";
 import { type Meta, type StoryObj } from "@storybook/react";
 import type { CartState } from "@/lib/cartCookie";
-import type { SKU } from "@types";
+import type { SKU } from "@acme/types";
 import * as React from "react";
 import { Button } from "../atoms/shadcn";
 import { MiniCart } from "./MiniCart.client";

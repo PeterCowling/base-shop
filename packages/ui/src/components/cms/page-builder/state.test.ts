@@ -1,5 +1,5 @@
 import { historyStateSchema, reducer } from "./state";
-import type { PageComponent, HistoryState } from "@types";
+import type { PageComponent, HistoryState } from "@acme/types";
 
 describe("historyStateSchema", () => {
   it("applies defaults when input is undefined", () => {

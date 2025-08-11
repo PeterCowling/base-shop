@@ -4,7 +4,7 @@ import type { Locale } from "@/i18n/locales";
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { EditorContent } from "@tiptap/react";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import type { Action } from "../PageBuilder";
 import DOMPurify from "dompurify";

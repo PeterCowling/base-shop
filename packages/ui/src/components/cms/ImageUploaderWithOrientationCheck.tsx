@@ -2,7 +2,7 @@
 "use client";
 
 import { Input } from "@ui/components/atoms/shadcn";
-import type { ImageOrientation } from "@types";
+import type { ImageOrientation } from "@acme/types";
 import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
 import { memo, useCallback } from "react";
 

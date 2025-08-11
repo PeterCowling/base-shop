@@ -6,7 +6,7 @@ import {
   readSettings,
   readShop,
 } from "@platform-core/repositories/json.server";
-import type { Locale } from "@types";
+import type { Locale } from "@acme/types";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
 import Link from "next/link";

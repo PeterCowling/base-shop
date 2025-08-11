@@ -1,4 +1,4 @@
-import type { Role } from "@types";
+import type { Role } from "@acme/types";
 import "next-auth";
 import { DefaultSession, DefaultUser } from "next-auth";
 import "next-auth/adapters";

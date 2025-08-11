@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import type { CSSProperties, DragEvent } from "react";
 import { ulid } from "ulid";
-import type { Page, PageComponent, HistoryState, MediaItem } from "@types";
+import type { Page, PageComponent, HistoryState, MediaItem } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
 import { Toast } from "../../atoms";
 import Palette from "./Palette";

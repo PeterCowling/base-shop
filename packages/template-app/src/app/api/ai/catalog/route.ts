@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getProductById } from "@platform-core/src/products";
 import { readRepo } from "@platform-core/repositories/products.server";
-import type { ProductPublication } from "@types";
+import type { ProductPublication } from "@acme/types";
 
 export const runtime = "nodejs";
 

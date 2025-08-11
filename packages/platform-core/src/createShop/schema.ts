@@ -1,6 +1,6 @@
-import type { PageComponent } from "@types";
-import { localeSchema, sanityBlogConfigSchema } from "@types";
-import { pageComponentSchema } from "@types/Page";
+import type { PageComponent } from "@acme/types";
+import { localeSchema, sanityBlogConfigSchema } from "@acme/types";
+import { pageComponentSchema } from "@acme/types/Page";
 import { z } from "zod";
 import { slugify } from "@shared-utils";
 import { fillLocales } from "@i18n/fillLocales";

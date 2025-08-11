@@ -1,6 +1,6 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { CartProvider, useCart } from "../CartContext";
-import type { SKU } from "@types";
+import type { SKU } from "@acme/types";
 
 type CartState = Record<string, { sku: SKU; qty: number; size?: string }>
 

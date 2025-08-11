@@ -1,7 +1,7 @@
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { inventoryItemSchema } from "@types";
+import { inventoryItemSchema } from "@acme/types";
 import { writeInventory } from "@platform-core/repositories/inventory.server";
 import { parse } from "fast-csv";
 import { Readable } from "node:stream";

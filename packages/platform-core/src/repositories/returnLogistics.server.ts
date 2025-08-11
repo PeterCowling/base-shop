@@ -1,6 +1,6 @@
 import "server-only";
 
-import { returnLogisticsSchema, type ReturnLogistics } from "@types";
+import { returnLogisticsSchema, type ReturnLogistics } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { resolveDataRoot } from "../dataRoot";

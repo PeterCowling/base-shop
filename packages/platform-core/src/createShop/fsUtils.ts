@@ -1,5 +1,5 @@
 import { LOCALES } from "@i18n/locales";
-import type { Locale } from "@types";
+import type { Locale } from "@acme/types";
 import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { ulid } from "ulid";

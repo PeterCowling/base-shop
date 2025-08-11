@@ -2,7 +2,7 @@ import "server-only";
 import { createClient } from "@sanity/client";
 import { getSanityConfig } from "@platform-core/shops";
 import { getShopById } from "@platform-core/repositories/shop.server";
-import type { SanityBlogConfig } from "@types";
+import type { SanityBlogConfig } from "@acme/types";
 
 export interface ProductBlock {
   _type: "productReference";

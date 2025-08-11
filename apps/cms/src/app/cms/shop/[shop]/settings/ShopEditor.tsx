@@ -4,7 +4,7 @@
 import { Button, Input, Textarea } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
 import { shopSchema } from "@cms/actions/schemas";
-import type { Shop } from "@types";
+import type { Shop } from "@acme/types";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface Props {

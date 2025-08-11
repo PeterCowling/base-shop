@@ -1,7 +1,7 @@
 "use client";
 
 import { ProductGrid as BaseGrid } from "@platform-core/src/components/shop/ProductGrid";
-import type { SKU } from "@types";
+import type { SKU } from "@acme/types";
 
 export interface ProductGridProps {
   skus: SKU[];

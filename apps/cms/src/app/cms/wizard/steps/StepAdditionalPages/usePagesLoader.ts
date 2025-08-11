@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import type { Page, PageComponent } from "@types";
-import { historyStateSchema } from "@types";
+import type { Page, PageComponent } from "@acme/types";
+import { historyStateSchema } from "@acme/types";
 import { fetchJson } from "@shared-utils";
 import { toPageInfo } from "../utils/page-utils";
 import type { PageInfo } from "../schema";

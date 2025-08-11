@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Locale, PageComponent } from "@types";
+import type { Locale, PageComponent } from "@acme/types";
 
 export default function useNewPageState(languages: readonly Locale[]) {
   const createEmptyLocaleRecord = () =>

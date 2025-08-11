@@ -2,7 +2,7 @@
 import "server-only";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
-import type { RentalOrder } from "@types";
+import type { RentalOrder } from "@acme/types";
 import { trackOrder } from "./analytics";
 import { prisma } from "./db";
 

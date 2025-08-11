@@ -2,7 +2,7 @@
 "use server";
 
 import { validateShopName } from "@platform-core/src/shops";
-import type { ImageOrientation, MediaItem } from "@types";
+import type { ImageOrientation, MediaItem } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import sharp from "sharp";

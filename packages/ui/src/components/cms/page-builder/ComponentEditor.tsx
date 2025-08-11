@@ -1,7 +1,7 @@
 // packages/ui/src/components/cms/page-builder/ComponentEditor.tsx
 "use client";
 
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import { memo, useCallback } from "react";
 import {
   Button,

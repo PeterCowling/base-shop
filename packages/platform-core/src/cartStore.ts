@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { Redis } from "@upstash/redis";
 
 import type { CartState } from "./cartCookie";
-import type { SKU } from "@types";
+import type { SKU } from "@acme/types";
 
 /** Abstraction for cart storage backends */
 export interface CartStore {

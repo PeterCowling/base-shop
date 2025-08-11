@@ -7,7 +7,7 @@ import {
   getProductById,
   updateProductInRepo,
 } from "@platform-core/repositories/json.server";
-import type { Locale } from "@types";
+import type { Locale } from "@acme/types";
 
 /**
  * Server Action: patch an existing product (optimistic locking).

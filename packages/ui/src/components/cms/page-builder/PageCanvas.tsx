@@ -7,7 +7,7 @@ import {
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import type { CSSProperties, DragEvent } from "react";
 import { Fragment } from "react";
-import type { PageComponent } from "@types";
+import type { PageComponent } from "@acme/types";
 import CanvasItem from "./CanvasItem";
 import type { Locale } from "@/i18n/locales";
 import type { Action } from "./state";

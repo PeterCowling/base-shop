@@ -5,7 +5,7 @@ import FilterBar, {
   Filters,
 } from "@platform-core/src/components/shop/FilterBar";
 import { ProductGrid } from "@platform-core/src/components/shop/ProductGrid";
-import type { SKU } from "@types";
+import type { SKU } from "@acme/types";
 import { useMemo, useState } from "react";
 
 export default function ShopClient({ skus }: { skus: SKU[] }) {

@@ -1,7 +1,7 @@
 // src/components/shop/ProductGrid.tsx
 "use client";
 
-import type { SKU } from "@types";
+import type { SKU } from "@acme/types";
 import { memo, useMemo, useRef, useState, useEffect } from "react";
 import { ProductCard } from "./ProductCard";
 

@@ -2,8 +2,8 @@
 
 import { LOCALES } from "@acme/i18n";
 import * as Sentry from "@sentry/node";
-import type { Locale, Page, HistoryState } from "@types";
-import { historyStateSchema } from "@types";
+import type { Locale, Page, HistoryState } from "@acme/types";
+import { historyStateSchema } from "@acme/types";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
 

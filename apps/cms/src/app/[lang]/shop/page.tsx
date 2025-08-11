@@ -1,6 +1,6 @@
 // apps/cms/src/app/[lang]/shop/page.tsx
 import { PRODUCTS } from "@/lib/products";
-import type { SKU } from "@types";
+import type { SKU } from "@acme/types";
 import type { Metadata } from "next";
 import ShopClient from "./ShopClient.client";
 

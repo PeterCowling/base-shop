@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 
-import type { Page } from "@types";
+import type { Page } from "@acme/types";
 import DataTable, { type Column } from "./DataTable";
 
 interface Props {

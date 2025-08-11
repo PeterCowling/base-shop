@@ -5,7 +5,7 @@
 import { blockRegistry } from "@ui/components/cms/blocks";
 import type { Locale } from "@/i18n/locales";
 import { PRODUCTS } from "@platform-core/src/products";
-import type { PageComponent, SKU } from "@types";
+import type { PageComponent, SKU } from "@acme/types";
 import type { CSSProperties, ReactNode } from "react";
 import type { Product } from "./organisms/ProductCard";
 

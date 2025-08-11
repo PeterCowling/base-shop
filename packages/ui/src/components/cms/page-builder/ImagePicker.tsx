@@ -1,7 +1,7 @@
 // packages/ui/src/components/cms/page-builder/ImagePicker.tsx
 "use client";
 
-import type { MediaItem } from "@types";
+import type { MediaItem } from "@acme/types";
 import useMediaUpload from "@ui/hooks/useMediaUpload";
 import Image from "next/image";
 import { memo, useEffect, useState } from "react";

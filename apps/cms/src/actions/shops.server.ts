@@ -18,7 +18,7 @@ import {
   type Shop,
   type ShopSeoFields,
   type ShopSettings,
-} from "@types";
+} from "@acme/types";
 import { z } from "zod";
 import { shopSchema, type ShopForm } from "./schemas";
 import { ensureAuthorized } from "./common/auth";

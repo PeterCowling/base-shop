@@ -4,7 +4,7 @@ import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { LOCALES } from "@acme/i18n";
 import { fillLocales } from "@i18n/fillLocales";
-import type { Locale, Page, PageComponent } from "@types";
+import type { Locale, Page, PageComponent } from "@acme/types";
 import { fetchJson } from "@shared-utils";
 import { useState } from "react";
 import { Toast } from "@/components/atoms";

@@ -1,7 +1,7 @@
 "use client";
 
 import { updateSeo } from "@cms/actions/shops.server";
-import type { Locale } from "@types";
+import type { Locale } from "@acme/types";
 import { FormEvent, useCallback, useState } from "react";
 
 export interface SeoRecord {

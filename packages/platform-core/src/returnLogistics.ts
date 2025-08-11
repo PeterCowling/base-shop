@@ -1,5 +1,5 @@
-import type { ReturnLogistics } from "@types";
-import { returnLogisticsSchema } from "@types";
+import type { ReturnLogistics } from "@acme/types";
+import { returnLogisticsSchema } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { resolveDataRoot } from "./dataRoot";

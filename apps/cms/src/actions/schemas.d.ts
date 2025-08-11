@@ -1,4 +1,4 @@
-import { localeSchema } from "@types";
+import { localeSchema } from "@acme/types";
 import { z } from "zod";
 export declare const productSchema: z.ZodObject<{
     id: z.ZodString;

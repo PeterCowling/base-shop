@@ -2,7 +2,7 @@
 import crypto from "crypto";
 import { z } from "zod";
 
-import { skuSchema } from "@types";
+import { skuSchema } from "@acme/types";
 
 /* ------------------------------------------------------------------
  * Cookie constants

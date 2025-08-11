@@ -12,7 +12,8 @@ import type { PageComponent } from "@types";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { cookies } from "next/headers";
-import { encodeCartCookie } from "@/lib/cartCookie";
+import { encodeCartCookie } from "@platform-core/src/cartCookie";
+import { createCart, setCart } from "@platform-core/src/cartStore";
 import { PRODUCTS } from "@platform-core/products";
 
 import ShopPage from "../src/app/[lang]/shop/page";
@@ -66,8 +67,10 @@ test("Checkout page renders CMS components with cart data", async () => {
   ]);
 
   const cart = { [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 1 } };
+  const cartId = await createCart();
+  await setCart(cartId, cart);
   (cookies as jest.Mock).mockResolvedValue({
-    get: () => ({ value: encodeCartCookie(cart) }),
+    get: () => ({ value: encodeCartCookie(cartId) }),
   });
 
   const element = await CheckoutPage({

@@ -1,72 +1,111 @@
 // apps/shop-abc/src/app/api/cart/route.ts
-import { asSetCookieHeader, CART_COOKIE, decodeCartCookie, encodeCartCookie, } from "@/lib/cartCookie";
+import {
+  asSetCookieHeader,
+  CART_COOKIE,
+  decodeCartCookie,
+  encodeCartCookie,
+} from "@platform-core/src/cartCookie";
+import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
 import { getProductById } from "@/lib/products";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
 import { z } from "zod";
 export const runtime = "edge";
 const deleteSchema = z.object({ id: z.string() }).strict();
+async function loadCart(req, create) {
+  const raw = req.cookies.get(CART_COOKIE)?.value;
+  let cartId = decodeCartCookie(raw);
+  if (cartId) {
+    return { cartId, cart: await getCart(cartId) };
+  }
+  if (raw) {
+    let parsed = null;
+    try {
+      parsed = JSON.parse(Buffer.from(raw, "base64").toString("utf8"));
+    } catch {
+      try {
+        parsed = JSON.parse(raw);
+      } catch {}
+    }
+    if (parsed) {
+      cartId = await createCart();
+      await setCart(cartId, parsed);
+      return { cartId, cart: parsed };
+    }
+  }
+  if (!create) {
+    return { cartId: null, cart: {} };
+  }
+  cartId = await createCart();
+  return { cartId, cart: await getCart(cartId) };
+}
 export async function POST(req) {
-    const json = await req.json();
-    const parsed = postSchema.safeParse(json);
-    if (!parsed.success) {
-        return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
-    }
-    const { sku, qty = 1 } = parsed.data;
-    const skuObj = "title" in sku ? sku : getProductById(sku.id);
-    if (!skuObj) {
-        return NextResponse.json({ error: "Item not found" }, { status: 404 });
-    }
-    const cookie = req.cookies.get(CART_COOKIE)?.value;
-    const cart = decodeCartCookie(cookie);
-    const line = cart[skuObj.id];
-    cart[skuObj.id] = { sku: skuObj, qty: (line?.qty ?? 0) + qty };
-    const res = NextResponse.json({ ok: true, cart });
-    res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
-    return res;
+  const body = await req.json().catch(() => ({}));
+  const parsed = postSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
+  }
+  const { sku: skuInput, qty } = parsed.data;
+  const sku = "title" in skuInput ? skuInput : getProductById(skuInput.id);
+  if (!sku) {
+    return NextResponse.json({ error: "Item not found" }, { status: 404 });
+  }
+  const { cartId, cart } = await loadCart(req, true);
+  const line = cart[sku.id];
+  cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+  await setCart(cartId, cart);
+  const res = NextResponse.json({ ok: true, cart });
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
+  return res;
 }
 export async function PATCH(req) {
-    const json = await req.json();
-    const parsed = patchSchema.safeParse(json);
-    if (!parsed.success) {
-        return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
-    }
-    const { id, qty } = parsed.data;
-    const cookie = req.cookies.get(CART_COOKIE)?.value;
-    const cart = decodeCartCookie(cookie);
-    const line = cart[id];
-    if (!line) {
-        return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
-    }
-    if (qty === 0) {
-        delete cart[id];
-    }
-    else {
-        cart[id] = { ...line, qty };
-    }
-    const res = NextResponse.json({ ok: true, cart });
-    res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
-    return res;
+  const body = await req.json().catch(() => ({}));
+  const parsed = patchSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
+  }
+  const { id, qty } = parsed.data;
+  const { cartId, cart } = await loadCart(req, false);
+  if (!cartId) {
+    return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+  }
+  const line = cart[id];
+  if (!line) {
+    return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
+  }
+  if (qty === 0) {
+    delete cart[id];
+  } else {
+    cart[id] = { ...line, qty };
+  }
+  await setCart(cartId, cart);
+  const res = NextResponse.json({ ok: true, cart });
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
+  return res;
 }
 export async function DELETE(req) {
-    const json = await req.json().catch(() => ({}));
-    const parsed = deleteSchema.safeParse(json);
-    if (!parsed.success) {
-        return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
-    }
-    const { id } = parsed.data;
-    const cookie = req.cookies.get(CART_COOKIE)?.value;
-    const cart = decodeCartCookie(cookie);
-    if (!cart[id]) {
-        return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
-    }
-    delete cart[id];
-    const res = NextResponse.json({ ok: true, cart });
-    res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
-    return res;
+  const body = await req.json().catch(() => ({}));
+  const parsed = deleteSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
+  }
+  const { id } = parsed.data;
+  const { cartId, cart } = await loadCart(req, false);
+  if (!cartId) {
+    return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+  }
+  if (!cart[id]) {
+    return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
+  }
+  delete cart[id];
+  await setCart(cartId, cart);
+  const res = NextResponse.json({ ok: true, cart });
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
+  return res;
 }
 export async function GET(req) {
-    const cookie = req.cookies.get(CART_COOKIE)?.value;
-    const cart = decodeCartCookie(cookie);
-    return NextResponse.json({ ok: true, cart });
+  const { cartId, cart } = await loadCart(req, true);
+  const res = NextResponse.json({ ok: true, cart });
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
+  return res;
 }

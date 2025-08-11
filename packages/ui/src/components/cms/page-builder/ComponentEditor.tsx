@@ -20,6 +20,7 @@ import HeroBannerEditor from "./HeroBannerEditor";
 import ValuePropsEditor from "./ValuePropsEditor";
 import ReviewsCarouselEditor from "./ReviewsCarouselEditor";
 import AnnouncementBarEditor from "./AnnouncementBarEditor";
+import FAQBlockEditor from "./FAQBlockEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -69,6 +70,9 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       specific = (
         <ReviewsCarouselEditor component={component} onChange={onChange} />
       );
+      break;
+    case "FAQBlock":
+      specific = <FAQBlockEditor component={component} onChange={onChange} />;
       break;
     default:
       specific = <p className="text-sm text-muted">No editable props</p>;

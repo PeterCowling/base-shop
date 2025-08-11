@@ -8,6 +8,7 @@ export { default as HeroBannerEditor } from "./HeroBannerEditor";
 export { default as ValuePropsEditor } from "./ValuePropsEditor";
 export { default as ReviewsCarouselEditor } from "./ReviewsCarouselEditor";
 export { default as AnnouncementBarEditor } from "./AnnouncementBarEditor";
+export { default as FAQBlockEditor } from "./FAQBlockEditor";
 export { default as useMediaLibrary } from "./useMediaLibrary";
 export { useArrayEditor } from "./useArrayEditor";
 export { default as CanvasItem } from "./CanvasItem";

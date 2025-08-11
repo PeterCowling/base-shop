@@ -37,6 +37,7 @@ describe("PageBuilder interactions", () => {
         defaults: {},
         containerTypes: [],
         setInsertIndex: jest.fn(),
+        selectId: jest.fn(),
       })
     );
 
@@ -132,6 +133,38 @@ describe("PageBuilder interactions", () => {
       clientY: 150,
       shiftKey: true,
     });
+    fireEvent.pointerUp(window);
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ width: "100%", height: "100%" })
+    );
+  });
+
+  it("snaps to full size when dragged near edge", () => {
+    const component: any = { id: "c1", type: "Image", width: "100px", height: "100px" };
+    const dispatch = jest.fn();
+    const { container } = render(
+      <CanvasItem
+        component={component}
+        index={0}
+        parentId={undefined}
+        selectedId="c1"
+        onSelectId={() => {}}
+        onRemove={() => {}}
+        dispatch={dispatch}
+        locale="en"
+      />
+    );
+
+    const el = container.firstChild as HTMLElement;
+    const parent = container as HTMLElement;
+    Object.defineProperty(el, "offsetWidth", { value: 100, writable: true });
+    Object.defineProperty(el, "offsetHeight", { value: 100, writable: true });
+    Object.defineProperty(parent, "offsetWidth", { value: 150, writable: true });
+    Object.defineProperty(parent, "offsetHeight", { value: 150, writable: true });
+
+    const handle = el.querySelector(".cursor-nwse-resize") as HTMLElement;
+    fireEvent.pointerDown(handle, { clientX: 100, clientY: 100 });
+    fireEvent.pointerMove(window, { clientX: 145, clientY: 145 });
     fireEvent.pointerUp(window);
     expect(dispatch).toHaveBeenCalledWith(
       expect.objectContaining({ width: "100%", height: "100%" })

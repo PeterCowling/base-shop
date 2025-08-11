@@ -65,12 +65,12 @@ _Short description: drag the desired block from the list onto the canvas to add 
 
 ### Resize blocks
 
-- Use the **Width** and **Height** fields in the sidebar to set exact dimensions.
-- Drag the block's corner handles to resize directly on the canvas; hold **Shift** to snap to 100% width or height.
+- Select a block to expose **Width** and **Height** fields in the sidebar for exact dimensions.
+- Drag the block's corner handles to resize directly on the canvas; hold **Shift** or release near the edge to snap to 100% width or height.
 - Adjust margin and padding from the side panel before saving.
 
 _Short description (manual): type exact width and height values in the sidebar for precise sizing._
-_Short description (drag): corner handles highlight when the block snaps to full size with **Shift**._
+_Short description (drag): corner handles highlight when the block snaps to full size with **Shift** or when released near the canvas edge._
 
 ### Keyboard & screen reader support
 

@@ -2,8 +2,8 @@ import { historyStateSchema, reducer } from "./state";
 import type { PageComponent, HistoryState } from "@types";
 
 describe("historyStateSchema", () => {
-  it("applies defaults when parsing empty object", () => {
-    expect(historyStateSchema.parse({})).toEqual({
+  it("applies defaults when input is undefined", () => {
+    expect(historyStateSchema.parse(undefined)).toEqual({
       past: [],
       present: [],
       future: [],

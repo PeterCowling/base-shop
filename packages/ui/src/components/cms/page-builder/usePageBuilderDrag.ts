@@ -18,6 +18,7 @@ interface Params {
   defaults: Partial<Record<string, Partial<PageComponent>>>;
   containerTypes: string[];
   setInsertIndex: (i: number | null) => void;
+  selectId: (id: string) => void;
 }
 
 export function usePageBuilderDrag({
@@ -26,6 +27,7 @@ export function usePageBuilderDrag({
   defaults,
   containerTypes,
   setInsertIndex,
+  selectId,
 }: Params) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -101,6 +103,7 @@ export function usePageBuilderDrag({
           parentId,
           index: index ?? 0,
         });
+        selectId(component.id);
       } else if (a?.from === "canvas") {
         let toIndex = index ?? 0;
         if (a.parentId === parentId && a.index! < (index ?? 0)) {
@@ -113,7 +116,7 @@ export function usePageBuilderDrag({
         });
       }
     },
-    [dispatch, components, containerTypes, defaults, setInsertIndex]
+    [dispatch, components, containerTypes, defaults, setInsertIndex, selectId]
   );
 
   return { sensors, handleDragMove, handleDragEnd };

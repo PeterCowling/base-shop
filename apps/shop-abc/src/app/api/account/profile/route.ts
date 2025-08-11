@@ -3,7 +3,7 @@ import { getCustomerSession } from "@auth";
 import {
   getCustomerProfile,
   updateCustomerProfile,
-} from "@acme/platform-core";
+} from "@acme/platform-core/customerProfiles";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";

@@ -1,5 +1,5 @@
 // packages/plugins/paypal/index.ts
-import type { Plugin, PaymentRegistry } from "@acme/platform-core";
+import type { Plugin, PaymentRegistry } from "@acme/platform-core/plugins";
 
 const paypalPlugin: Plugin = {
   id: "paypal",

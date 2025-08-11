@@ -1,5 +1,5 @@
 // packages/plugins/sanity/index.ts
-import type { Plugin } from "@acme/platform-core";
+import type { Plugin } from "@acme/platform-core/plugins";
 import { createClient, type SanityClient } from "@sanity/client";
 
 interface SanityConfig {

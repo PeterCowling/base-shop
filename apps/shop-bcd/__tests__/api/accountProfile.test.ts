@@ -16,7 +16,7 @@ const updateCustomerProfile = jest.fn(async (id: string, data: any) => {
 const getCustomerProfile = jest.fn(async (id: string) => profile);
 
 jest.mock("@auth", () => ({ __esModule: true, getCustomerSession }));
-jest.mock("@acme/platform-core", () => ({
+jest.mock("@acme/platform-core/customerProfiles", () => ({
   __esModule: true,
   getCustomerProfile,
   updateCustomerProfile,

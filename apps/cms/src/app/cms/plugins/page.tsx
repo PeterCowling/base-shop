@@ -1,10 +1,12 @@
 // apps/cms/src/app/cms/plugins/page.tsx
-import { loadPlugins } from "@acme/platform-core";
+import path from "node:path";
+import { loadPlugins } from "@acme/platform-core/plugins";
 import Link from "next/link";
 import PluginList from "./PluginList.client";
 
 export default async function PluginsPage() {
-  const plugins = await loadPlugins();
+  const pluginsDir = path.resolve(process.cwd(), "packages/plugins");
+  const plugins = await loadPlugins({ directories: [pluginsDir] });
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Plugins</h2>

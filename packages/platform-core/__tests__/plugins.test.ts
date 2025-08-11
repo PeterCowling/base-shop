@@ -22,12 +22,25 @@ export default {
 };
 `;
     await fs.writeFile(path.join(validDir, "index.ts"), pluginCode);
+    await fs.writeFile(
+      path.join(validDir, "package.json"),
+      JSON.stringify({ name: "good", main: "index.ts" })
+    );
     // missing plugin dir (no index.ts)
-    await fs.mkdir(path.join(base, "missing"), { recursive: true });
+    const missingDir = path.join(base, "missing");
+    await fs.mkdir(missingDir, { recursive: true });
+    await fs.writeFile(
+      path.join(missingDir, "package.json"),
+      JSON.stringify({ name: "missing", main: "index.ts" })
+    );
     // plugin that throws
     const badDir = path.join(base, "bad");
     await fs.mkdir(badDir, { recursive: true });
     await fs.writeFile(path.join(badDir, "index.ts"), "throw new Error('boom')");
+    await fs.writeFile(
+      path.join(badDir, "package.json"),
+      JSON.stringify({ name: "bad", main: "index.ts" })
+    );
   }
   return root;
 }
@@ -42,7 +55,9 @@ describe("plugins", () => {
     const root = await createPluginsRoot(false);
     jest.spyOn(process, "cwd").mockReturnValue(root);
     const { loadPlugins } = await import("../src/plugins");
-    const plugins = await loadPlugins();
+    const plugins = await loadPlugins({
+      directories: [path.join(root, "packages", "plugins")],
+    });
     expect(plugins).toEqual([]);
   });
 
@@ -51,7 +66,9 @@ describe("plugins", () => {
     jest.spyOn(process, "cwd").mockReturnValue(root);
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
     const { loadPlugins } = await import("../src/plugins");
-    const plugins = await loadPlugins();
+    const plugins = await loadPlugins({
+      directories: [path.join(root, "packages", "plugins")],
+    });
     expect(plugins).toHaveLength(1);
     expect(plugins[0].id).toBe("good");
     expect(warn).toHaveBeenCalledTimes(2);
@@ -64,14 +81,20 @@ describe("plugins", () => {
     const payments = { add: jest.fn() };
     const shipping = { add: jest.fn() };
     const widgets = { add: jest.fn() };
-    const plugins = await initPlugins({
-      payments,
-      shipping,
-      widgets,
-    });
+    const plugins = await initPlugins(
+      {
+        payments,
+        shipping,
+        widgets,
+      },
+      {
+        directories: [path.join(root, "packages", "plugins")],
+        config: { good: { enabled: false } },
+      },
+    );
     expect(plugins).toHaveLength(1);
     const plugin = plugins[0];
-    const cfg = { enabled: true };
+    const cfg = { enabled: false };
     expect(plugin.registerPayments).toHaveBeenCalledWith(payments, cfg);
     expect(plugin.registerShipping).toHaveBeenCalledWith(shipping, cfg);
     expect(plugin.registerWidgets).toHaveBeenCalledWith(widgets, cfg);

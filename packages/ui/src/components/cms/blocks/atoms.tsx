@@ -7,6 +7,9 @@ import React, {
   type JSXElementConstructor,
   type JSX as ReactJSX,
 } from "react";
+import Divider from "./Divider";
+import Spacer from "./Spacer";
+export { Divider, Spacer };
 
 /* ──────────────────────────────────────────────────────────────────────────
  * Shared helpers
@@ -76,6 +79,8 @@ export const Image = memo(function Image({
 export const atomRegistry = {
   Text,
   Image,
+  Divider,
+  Spacer,
 } as const;
 
 export type AtomBlockType = keyof typeof atomRegistry;

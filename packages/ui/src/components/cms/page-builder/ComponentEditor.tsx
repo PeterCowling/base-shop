@@ -124,7 +124,7 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       <div className="flex items-end gap-2">
         <Input
           label="Height"
-          placeholder="e.g. 100px or 50%"
+          placeholder="e.g. 1px or 1rem"
           value={component.height ?? ""}
           onChange={(e) => {
             const v = e.target.value.trim();

@@ -3,7 +3,8 @@ export {};
 let service: typeof import("@acme/platform-machine");
 
 const readdir = jest.fn();
-jest.mock("node:fs/promises", () => ({ readdir }));
+const readFile = jest.fn();
+jest.mock("node:fs/promises", () => ({ readdir, readFile }));
 
 const retrieve = jest.fn();
 const createRefund = jest.fn();
@@ -27,6 +28,7 @@ jest.mock("@platform-core/repositories/rentalOrders.server", () => ({
 
 beforeEach(() => {
   jest.clearAllMocks();
+  readFile.mockResolvedValue("{}");
 });
 
 describe("releaseDepositsOnce", () => {
@@ -109,10 +111,19 @@ describe("releaseDepositsOnce", () => {
 });
 
 describe("startDepositReleaseService", () => {
-  it("schedules and clears interval", async () => {
+  it("uses per-shop configuration", async () => {
     service = await import("@acme/platform-machine");
-    readdir.mockResolvedValue([]);
+    readdir.mockResolvedValue(["shop1", "shop2"]);
     readOrders.mockResolvedValue([]);
+    readFile
+      .mockResolvedValueOnce(
+        JSON.stringify({ depositRelease: { enabled: true, intervalMs: 5000 } })
+      )
+      .mockResolvedValueOnce(
+        JSON.stringify({ depositRelease: { enabled: true } })
+      );
+    process.env.DEPOSIT_RELEASE_ENABLED_SHOP2 = "false";
+
     const setSpy = jest
       .spyOn(global, "setInterval")
       .mockImplementation((fn: any, ms?: number) => {
@@ -123,7 +134,7 @@ describe("startDepositReleaseService", () => {
       .spyOn(global, "clearInterval")
       .mockImplementation(() => undefined as any);
 
-    const stop = service.startDepositReleaseService(5000);
+    const stop = await service.startDepositReleaseService();
     await Promise.resolve();
     expect(setSpy).toHaveBeenCalledTimes(1);
 
@@ -132,5 +143,7 @@ describe("startDepositReleaseService", () => {
 
     setSpy.mockRestore();
     clearSpy.mockRestore();
+
+    delete process.env.DEPOSIT_RELEASE_ENABLED_SHOP2;
   });
 });

@@ -4,7 +4,7 @@ import type { CartState } from "@/lib/cartCookie";
 import OrderSummary from "../src/components/organisms/OrderSummary";
 
 const mockCart: CartState = {
-  a: {
+  "a:S": {
     sku: {
       id: "a",
       slug: "a",
@@ -14,10 +14,11 @@ const mockCart: CartState = {
       forSale: true,
       forRental: false,
       image: "/a.jpg",
-      sizes: [],
+      sizes: ["S"],
       description: "A",
     },
     qty: 2,
+    size: "S",
   },
   b: {
     sku: {
@@ -54,8 +55,9 @@ describe("OrderSummary", () => {
       </CartProvider>
     );
 
-    // item rows
+    // item rows (include size label)
     expect(await screen.findByText("Product A")).toBeInTheDocument();
+    expect(screen.getByText("(S)")).toBeInTheDocument();
     expect(screen.getByText("Product B")).toBeInTheDocument();
     expect(screen.getByText("2", { selector: "td" })).toBeInTheDocument();
     expect(screen.getByText("1", { selector: "td" })).toBeInTheDocument();

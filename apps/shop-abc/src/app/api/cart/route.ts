@@ -2,6 +2,7 @@
 import {
   asSetCookieHeader,
   CART_COOKIE,
+  cartStateSchema,
   decodeCartCookie,
   encodeCartCookie,
   type CartState,
@@ -12,6 +13,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
 import { z } from "zod";
+import crypto from "crypto";
 
 export const runtime = "edge";
 
@@ -28,21 +30,26 @@ async function loadCart(
     return { cartId, cart: await getCart(cartId) };
   }
 
+  // Fall back to migrating a legacy cookie only when properly signed.
   if (raw) {
-    let parsed: CartState | null = null;
-    try {
-      parsed = JSON.parse(Buffer.from(raw, "base64").toString("utf8")) as CartState;
-    } catch {
+    const [payload, sig] = raw.split(".");
+    const legacySecret = process.env.CART_COOKIE_LEGACY_SECRET;
+    if (payload && sig && legacySecret) {
+      const expected = crypto
+        .createHmac("sha256", legacySecret)
+        .update(payload)
+        .digest("hex");
       try {
-        parsed = JSON.parse(raw) as CartState;
+        if (crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) {
+          const json = Buffer.from(payload, "base64").toString("utf8");
+          const parsed = cartStateSchema.parse(JSON.parse(json));
+          cartId = await createCart();
+          await setCart(cartId, parsed);
+          return { cartId, cart: parsed };
+        }
       } catch {
         /* ignore */
       }
-    }
-    if (parsed) {
-      cartId = await createCart();
-      await setCart(cartId, parsed);
-      return { cartId, cart: parsed };
     }
   }
 

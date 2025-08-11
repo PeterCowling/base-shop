@@ -5,9 +5,13 @@ import {
 } from "@platform-core/src/cartCookie";
 import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
 import { PRODUCTS } from "@platform-core/products";
+import crypto from "crypto";
 import { DELETE, GET, PATCH, POST } from "../src/app/api/cart/route";
+import * as productLib from "@/lib/products";
 
 const TEST_SKU = PRODUCTS[0];
+
+process.env.CART_COOKIE_LEGACY_SECRET ||= "legacy-secret";
 
 // Minimal NextResponse mock using the native Response class
 jest.mock("next/server", () => ({
@@ -16,6 +20,8 @@ jest.mock("next/server", () => ({
       new Response(JSON.stringify(data), init),
   },
 }));
+
+jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 
 function createRequest(
   body: any,
@@ -36,13 +42,14 @@ afterEach(() => {
 });
 
 test("POST adds items and sets cookie", async () => {
-  const sku = { ...TEST_SKU };
+  const sku = { ...TEST_SKU, id: "01ARZ3NDEKTSV4RRFFQ69G5FAA" };
+  jest.spyOn(productLib, "getProductById").mockReturnValue(sku as any);
   const size = sku.sizes[0];
   const lineId = `${sku.id}:${size}`;
   const req = createRequest({ sku: { id: sku.id }, qty: 2, size });
   const res = await POST(req);
+  expect(res.status).toBe(200);
   const body = await res.json();
-
   expect(body.cart[lineId].qty).toBe(2);
   const header = res.headers.get("Set-Cookie")!;
   const encoded = header.split(";")[0].split("=")[1];
@@ -153,4 +160,36 @@ test("GET returns cart", async () => {
   const res = await GET(createRequest({}, encodeCartCookie(cartId)));
   const body = await res.json();
   expect(body.cart).toEqual(cart);
+});
+
+test("PATCH rejects unsigned legacy cookie", async () => {
+  const sku = { ...TEST_SKU, id: "01ARZ3NDEKTSV4RRFFQ69G5FAA" };
+  const size = sku.sizes[0];
+  const lineId = `${sku.id}:${size}`;
+  const cart = { [lineId]: { sku, qty: 1, size } };
+  const legacyPayload = Buffer.from(JSON.stringify(cart)).toString("base64");
+  // Missing signature
+  const res = await PATCH(createRequest({ id: lineId, qty: 2 }, legacyPayload));
+  expect(res.status).toBe(404);
+});
+
+test("GET migrates signed legacy cookie", async () => {
+  const sku = { ...TEST_SKU, id: "01ARZ3NDEKTSV4RRFFQ69G5FAA" };
+  const size = sku.sizes[0];
+  const lineId = `${sku.id}:${size}`;
+  const cart = { [lineId]: { sku, qty: 2, size } };
+  const payload = Buffer.from(JSON.stringify(cart)).toString("base64");
+  const sig = crypto
+    .createHmac("sha256", process.env.CART_COOKIE_LEGACY_SECRET!)
+    .update(payload)
+    .digest("hex");
+  const legacyCookie = `${payload}.${sig}`;
+  const res = await GET(createRequest({}, legacyCookie));
+  const body = await res.json();
+  expect(body.cart).toEqual(cart);
+  const header = res.headers.get("Set-Cookie")!;
+  const encoded = header.split(";")[0].split("=")[1];
+  const id = decodeCartCookie(encoded)!;
+  const stored = await getCart(id);
+  expect(stored).toEqual(cart);
 });

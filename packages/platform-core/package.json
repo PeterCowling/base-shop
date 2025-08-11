@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@acme/shared-utils": "workspace:*",
+    "@acme/ui": "workspace:*",
     "@prisma/client": "^5.15.1"
   },
   "peerDependencies": {

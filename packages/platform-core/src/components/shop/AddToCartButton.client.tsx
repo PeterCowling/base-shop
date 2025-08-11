@@ -4,6 +4,7 @@
 import { useCart } from "@platform-core/src/contexts/CartContext";
 import type { SKU } from "@types";
 import { useState } from "react";
+import { Loader } from "@ui";
 
 type Props = {
   sku: SKU;
@@ -29,8 +30,6 @@ export default function AddToCartButton({
 
     try {
       await dispatch({ type: "add", sku, size });
-      /* fake latency for UX feedback */
-      await new Promise((r) => setTimeout(r, 300));
     } catch (err) {
       setError((err as Error).message ?? "Unable to add to cart");
     } finally {
@@ -43,9 +42,9 @@ export default function AddToCartButton({
       <button
         onClick={handleClick}
         disabled={adding || disabled}
-        className="mt-auto rounded bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-800 disabled:opacity-50"
+        className="mt-auto flex items-center justify-center rounded bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-800 disabled:opacity-50"
       >
-        {adding ? "✓" : "Add to cart"}
+        {adding ? <Loader className="text-white" size={16} /> : "Add to cart"}
       </button>
       {error && (
         <p className="mt-2 text-sm text-red-600" role="alert">

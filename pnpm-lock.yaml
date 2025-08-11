@@ -392,6 +392,9 @@ importers:
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../shared-utils
+      '@acme/ui':
+        specifier: workspace:*
+        version: link:../ui
       '@prisma/client':
         specifier: ^5.15.1
         version: 5.22.0(prisma@5.22.0)

@@ -54,6 +54,13 @@ export interface PageComponentBase {
   [key: string]: unknown;
 }
 
+export interface AnnouncementBarComponent extends PageComponentBase {
+  type: "AnnouncementBar";
+  text?: string;
+  link?: string;
+  closable?: boolean;
+}
+
 export interface HeroBannerComponent extends PageComponentBase {
   type: "HeroBanner";
   slides?: { src: string; alt?: string; headlineKey: string; ctaKey: string }[];
@@ -135,6 +142,7 @@ export interface SectionComponent extends PageComponentBase {
 }
 
 export type PageComponent =
+  | AnnouncementBarComponent
   | HeroBannerComponent
   | ValuePropsComponent
   | ReviewsCarouselComponent
@@ -178,6 +186,13 @@ const heroBannerComponentSchema = baseComponentSchema.extend({
       })
     )
     .optional(),
+});
+
+const announcementBarComponentSchema = baseComponentSchema.extend({
+  type: z.literal("AnnouncementBar"),
+  text: z.string().optional(),
+  link: z.string().optional(),
+  closable: z.boolean().optional(),
 });
 
 const valuePropsComponentSchema = baseComponentSchema.extend({
@@ -278,6 +293,7 @@ const sectionComponentSchema: z.ZodType<SectionComponent> = baseComponentSchema.
 
 export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
   z.discriminatedUnion("type", [
+    announcementBarComponentSchema,
     heroBannerComponentSchema,
     valuePropsComponentSchema,
     reviewsCarouselComponentSchema,

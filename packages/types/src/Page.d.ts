@@ -46,6 +46,12 @@ export interface PageComponentBase {
     maxItems?: number;
     [key: string]: unknown;
 }
+export interface AnnouncementBarComponent extends PageComponentBase {
+    type: "AnnouncementBar";
+    text?: string;
+    link?: string;
+    closable?: boolean;
+}
 export interface HeroBannerComponent extends PageComponentBase {
     type: "HeroBanner";
     slides?: {
@@ -136,7 +142,7 @@ export interface SectionComponent extends PageComponentBase {
     type: "Section";
     children?: PageComponent[];
 }
-export type PageComponent = HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent | ProductCarouselComponent | RecommendationCarouselComponent | GalleryComponent | ContactFormComponent | ContactFormWithMapComponent | BlogListingComponent | TestimonialsComponent | TestimonialSliderComponent | ImageComponent | TextComponent | SectionComponent;
+export type PageComponent = AnnouncementBarComponent | HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent | ProductCarouselComponent | RecommendationCarouselComponent | GalleryComponent | ContactFormComponent | ContactFormWithMapComponent | BlogListingComponent | TestimonialsComponent | TestimonialSliderComponent | ImageComponent | TextComponent | SectionComponent;
 export declare const pageSchema: z.ZodObject<{
     id: z.ZodString;
     slug: z.ZodString;

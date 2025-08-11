@@ -10,8 +10,10 @@ import TestimonialSlider from "./TestimonialSlider";
 import Testimonials from "./Testimonials";
 import ValueProps from "./ValueProps";
 import RecommendationCarousel from "./RecommendationCarousel";
+import AnnouncementBar from "./AnnouncementBarBlock";
 
 export const organismRegistry = {
+  AnnouncementBar,
   HeroBanner,
   ValueProps,
   ReviewsCarousel,

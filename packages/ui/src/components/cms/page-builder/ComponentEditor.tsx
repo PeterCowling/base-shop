@@ -19,6 +19,7 @@ import TestimonialsEditor from "./TestimonialsEditor";
 import HeroBannerEditor from "./HeroBannerEditor";
 import ValuePropsEditor from "./ValuePropsEditor";
 import ReviewsCarouselEditor from "./ReviewsCarouselEditor";
+import AnnouncementBarEditor from "./AnnouncementBarEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -55,6 +56,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "HeroBanner":
       specific = <HeroBannerEditor component={component} onChange={onChange} />;
+      break;
+    case "AnnouncementBar":
+      specific = (
+        <AnnouncementBarEditor component={component} onChange={onChange} />
+      );
       break;
     case "ValueProps":
       specific = <ValuePropsEditor component={component} onChange={onChange} />;

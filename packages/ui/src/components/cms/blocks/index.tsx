@@ -18,6 +18,7 @@ import VideoBlock from "./VideoBlock";
 import FAQBlock from "./FAQBlock";
 import Header from "./HeaderBlock";
 import Footer from "./FooterBlock";
+import CountdownTimer from "./CountdownTimer";
 
 export {
   BlogListing,
@@ -38,6 +39,7 @@ export {
   MultiColumn,
   VideoBlock,
   FAQBlock,
+  CountdownTimer,
   Header,
   Footer,
 };

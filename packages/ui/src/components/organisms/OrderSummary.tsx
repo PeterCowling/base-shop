@@ -3,6 +3,7 @@
 
 import { useCart } from "@ui/hooks/useCart";
 import type { CartLine } from "@/lib/cartCookie";
+import { Price } from "../atoms/Price";
 import React, { useMemo } from "react";
 
 type Totals = {
@@ -76,7 +77,9 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
               )}
             </td>
             <td>{line.qty}</td>
-            <td className="text-right">€{line.sku.price * line.qty}</td>
+            <td className="text-right">
+              <Price amount={line.sku.price * line.qty} />
+            </td>
           </tr>
         ))}
       </tbody>
@@ -84,12 +87,16 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
         <tr>
           <td />
           <td className="py-2">Deposit</td>
-          <td className="text-right">€{deposit}</td>
+          <td className="text-right">
+            <Price amount={deposit} />
+          </td>
         </tr>
         <tr>
           <td />
           <td className="py-2 font-semibold">Total</td>
-          <td className="text-right font-semibold">€{total}</td>
+          <td className="text-right font-semibold">
+            <Price amount={total} />
+          </td>
         </tr>
       </tfoot>
     </table>

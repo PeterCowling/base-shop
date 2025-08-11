@@ -4,6 +4,7 @@
 import ImageGallery from "@platform-core/src/components/pdp/ImageGallery";
 import SizeSelector from "@platform-core/src/components/pdp/SizeSelector";
 import AddToCartButton from "@platform-core/src/components/shop/AddToCartButton.client";
+import { Price } from "@ui/components/atoms/Price";
 import type { SKU } from "@types";
 import { useState } from "react";
 
@@ -21,7 +22,9 @@ export default function PdpClient({ product }: { product: SKU }) {
           <div className="mb-2 font-medium">Select size:</div>
           <SizeSelector sizes={product.sizes} onSelect={setSize} />
         </div>
-        <div className="text-2xl font-semibold">€{product.price}</div>
+        <div className="text-2xl font-semibold">
+          <Price amount={product.price} />
+        </div>
         {/* size could be added to cart line later */}
         <AddToCartButton
           sku={product}

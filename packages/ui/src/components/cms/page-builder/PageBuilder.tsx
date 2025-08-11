@@ -43,6 +43,8 @@ const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
     width: "100%",
   },
   MultiColumn: { columns: 2, gap: "1rem" },
+  Divider: { width: "100%", height: "1px" },
+  Spacer: { width: "100%", height: "1rem" },
 };
 
 interface Props {

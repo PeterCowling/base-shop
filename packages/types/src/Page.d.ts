@@ -124,6 +124,13 @@ export interface FAQBlockComponent extends PageComponentBase {
     answer: string;
   }[];
 }
+export interface SocialLinksComponent extends PageComponentBase {
+  type: "SocialLinks";
+  instagram?: string;
+  facebook?: string;
+  x?: string;
+  linkedin?: string;
+}
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -180,6 +187,7 @@ export type PageComponent =
   | MapBlockComponent
   | VideoBlockComponent
   | FAQBlockComponent
+  | SocialLinksComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent

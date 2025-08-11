@@ -127,6 +127,14 @@ export interface FAQBlockComponent extends PageComponentBase {
   items?: { question: string; answer: string }[];
 }
 
+export interface SocialLinksComponent extends PageComponentBase {
+  type: "SocialLinks";
+  instagram?: string;
+  facebook?: string;
+  x?: string;
+  linkedin?: string;
+}
+
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -180,6 +188,7 @@ export type PageComponent =
   | MapBlockComponent
   | VideoBlockComponent
   | FAQBlockComponent
+  | SocialLinksComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent
@@ -294,6 +303,14 @@ const faqBlockComponentSchema = baseComponentSchema.extend({
     .optional(),
 });
 
+const socialLinksComponentSchema = baseComponentSchema.extend({
+  type: z.literal("SocialLinks"),
+  instagram: z.string().optional(),
+  facebook: z.string().optional(),
+  x: z.string().optional(),
+  linkedin: z.string().optional(),
+});
+
 const blogListingComponentSchema = baseComponentSchema.extend({
   type: z.literal("BlogListing"),
   posts: z
@@ -361,6 +378,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     mapBlockComponentSchema,
     videoBlockComponentSchema,
     faqBlockComponentSchema,
+    socialLinksComponentSchema,
     blogListingComponentSchema,
     testimonialsComponentSchema,
     testimonialSliderComponentSchema,

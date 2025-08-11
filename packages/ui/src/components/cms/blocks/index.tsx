@@ -16,6 +16,7 @@ import MapBlock from "./MapBlock";
 import MultiColumn from "./containers/MultiColumn";
 import VideoBlock from "./VideoBlock";
 import FAQBlock from "./FAQBlock";
+import SocialLinks from "./SocialLinks";
 
 export {
   BlogListing,
@@ -36,6 +37,7 @@ export {
   MultiColumn,
   VideoBlock,
   FAQBlock,
+  SocialLinks,
 };
 
 export * from "./atoms";

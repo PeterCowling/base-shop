@@ -5,6 +5,7 @@ import type { Locale } from "@/i18n/locales";
 import { memo } from "react";
 import type { CategoryCollectionTemplateProps } from "../../templates/CategoryCollectionTemplate";
 import { CategoryCollectionTemplate } from "../../templates/CategoryCollectionTemplate";
+import SocialLinks from "./SocialLinks";
 
 /* ──────────────────────────────────────────────────────────────────────────
  * NewsletterForm
@@ -101,6 +102,7 @@ export const moleculeRegistry = {
   NewsletterForm,
   PromoBanner,
   CategoryList,
+  SocialLinks,
 } as const;
 
 export type MoleculeBlockType = keyof typeof moleculeRegistry;

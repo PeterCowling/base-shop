@@ -15,12 +15,25 @@ describe("createFSM", () => {
     expect(fsm.state).toBe("success");
   });
 
-  it("ignores events with no matching transition", () => {
+  it("throws when no transition matches", () => {
     const fsm = createFSM("idle", [
       { from: "idle", event: "FETCH", to: "loading" },
     ]);
 
-    fsm.send("RESOLVE" as any);
+    expect(() => fsm.send("RESOLVE" as any)).toThrow(
+      "No transition for event RESOLVE from state idle"
+    );
+  });
+
+  it("invokes a fallback when provided", () => {
+    const fsm = createFSM("idle", [
+      { from: "idle", event: "FETCH", to: "loading" },
+    ]);
+
+    const fallback = jest.fn(() => "idle" as const);
+    fsm.send("RESOLVE" as any, fallback);
+
+    expect(fallback).toHaveBeenCalledWith("RESOLVE", "idle");
     expect(fsm.state).toBe("idle");
   });
 });

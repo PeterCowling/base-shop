@@ -46,6 +46,16 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
     }
   };
 
+  const handleQty = async (id: string, qty: number) => {
+    try {
+      await dispatch({ type: "setQty", id, qty });
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to update cart";
+      setToast({ open: true, message });
+    }
+  };
+
   return (
     <>
       <Dialog>
@@ -70,9 +80,27 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
                   >
                     <span className="text-sm">
                       {line.sku.title}
-                      {line.size && <span className="ml-1 text-muted">({line.size})</span>}
+                      {line.size && (
+                        <span className="ml-1 text-muted">({line.size})</span>
+                      )}
                     </span>
-                    <span className="text-sm">× {line.qty}</span>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        onClick={() => void handleQty(line.id, line.qty - 1)}
+                        className="px-2 py-1 text-xs"
+                        aria-label="Decrease quantity"
+                      >
+                        -
+                      </Button>
+                      <span className="text-sm">{line.qty}</span>
+                      <Button
+                        onClick={() => void handleQty(line.id, line.qty + 1)}
+                        className="px-2 py-1 text-xs"
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </Button>
+                    </div>
                     <Button
                       variant="destructive"
                       onClick={() => void handleRemove(line.id)}

@@ -7,6 +7,7 @@ import {
   getUserById,
   getUserByEmail,
 } from "@platform-core/users";
+import { updateCustomerProfile } from "@acme/platform-core/customerProfiles";
 
 const RegisterSchema = z.object({
   customerId: z.string(),
@@ -33,5 +34,6 @@ export async function POST(req: Request) {
 
   const passwordHash = await bcrypt.hash(password, 10);
   await createUser({ id: customerId, email, passwordHash });
+  await updateCustomerProfile(customerId, { name: "", email });
   return NextResponse.json({ ok: true });
 }

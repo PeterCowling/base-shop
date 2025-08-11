@@ -18,7 +18,10 @@ jest.mock("../../lib/src/stripeServer.server", () => ({
 
 jest.mock("../../platform-core/src/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
+  convertCurrency: jest.fn(async (v: number) => v),
 }));
+
+jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 
 import { stripe } from "../../lib/src/stripeServer.server";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;

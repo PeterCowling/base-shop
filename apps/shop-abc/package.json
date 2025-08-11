@@ -9,7 +9,11 @@
   "dependencies": {
     "@themes/base": "workspace:*",
     "@acme/i18n": "workspace:*",
-    "@acme/next-config": "workspace:*"
+    "@acme/next-config": "workspace:*",
+    "@acme/orders": "workspace:*",
+    "@acme/products": "workspace:*",
+    "@acme/pricing": "workspace:*",
+    "@acme/analytics": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.4"

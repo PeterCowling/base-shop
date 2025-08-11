@@ -14,7 +14,9 @@
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/shared-utils": "workspace:*",
-    "@acme/email": "workspace:*"
+    "@acme/email": "workspace:*",
+    "@acme/orders": "workspace:*",
+    "@acme/products": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.4"

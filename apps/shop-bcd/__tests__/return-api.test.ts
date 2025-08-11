@@ -44,7 +44,7 @@ describe("/api/return", () => {
       markRefunded,
       addOrder: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/pricing", () => ({
       __esModule: true,
       computeDamageFee,
       priceForDays: jest.fn(),
@@ -99,7 +99,7 @@ describe("/api/return", () => {
       markRefunded,
       addOrder: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/pricing", () => ({
       __esModule: true,
       computeDamageFee,
       priceForDays: jest.fn(),
@@ -130,7 +130,7 @@ describe("/api/return", () => {
       __esModule: true,
       stripe: { checkout: { sessions: { retrieve: jest.fn() } }, refunds: { create: jest.fn() } },
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/pricing", () => ({
       __esModule: true,
       computeDamageFee: jest.fn(),
       priceForDays: jest.fn(),

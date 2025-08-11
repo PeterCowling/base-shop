@@ -1,12 +1,12 @@
 // apps/shop-abc/src/app/[lang]/shop/page.tsx
-import { PRODUCTS } from "@/lib/products";
+import { PRODUCTS } from "@acme/products";
 import type { SKU, PageComponent } from "@types";
 import type { Metadata } from "next";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import shop from "../../../../shop.json";
 import ShopClient from "./ShopClient.client";
-import { trackPageView } from "@platform-core/analytics";
+import { trackPageView } from "@acme/analytics";
 
 async function loadComponents(): Promise<PageComponent[] | null> {
   const pages = await getPages(shop.id);

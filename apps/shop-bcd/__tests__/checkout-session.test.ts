@@ -1,6 +1,6 @@
 // apps/shop-bcd/__tests__/checkout-session.test.ts
 import { encodeCartCookie } from "@/lib/cartCookie";
-import { PRODUCTS } from "@platform-core/products";
+import { PRODUCTS } from "@acme/products";
 import { calculateRentalDays } from "@/lib/date";
 import { POST } from "../src/api/checkout-session/route";
 
@@ -15,7 +15,7 @@ jest.mock("@lib/stripeServer.server", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
 
-jest.mock("@platform-core/pricing", () => ({
+jest.mock("@acme/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
   convertCurrency: jest.fn(async (n: number) => n),
 }));

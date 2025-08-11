@@ -2,7 +2,7 @@ import type { PageComponent } from "@types";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { readShop } from "@platform-core/repositories/shops.server";
 import Home from "./page.client";
-import { trackPageView } from "@platform-core/analytics";
+import { trackPageView } from "@acme/analytics";
 
 async function loadComponents(shopId: string): Promise<PageComponent[]> {
   const pages = await getPages(shopId);

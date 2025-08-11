@@ -9,7 +9,7 @@ import {
 import { calculateRentalDays } from "@/lib/date";
 import { stripe } from "@lib/stripeServer.server";
 import { getCustomerSession } from "@auth";
-import { priceForDays, convertCurrency } from "@platform-core/pricing";
+import { priceForDays, convertCurrency } from "@acme/pricing";
 import { findCoupon } from "@platform-core/coupons";
 import { getTaxRate } from "@platform-core/tax";
 import { NextRequest, NextResponse } from "next/server";

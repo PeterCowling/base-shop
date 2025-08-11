@@ -3,13 +3,13 @@ jest.mock("@auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
 }));
-jest.mock("@platform-core/orders", () => ({
+jest.mock("@acme/orders", () => ({
   __esModule: true,
   getOrdersForCustomer: jest.fn(),
 }));
 
 import { getCustomerSession } from "@auth";
-import { getOrdersForCustomer } from "@platform-core/orders";
+import { getOrdersForCustomer } from "@acme/orders";
 import OrdersPage from "../src/app/account/orders/page";
 import shop from "../shop.json";
 

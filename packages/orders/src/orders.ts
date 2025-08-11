@@ -1,0 +1,79 @@
+// packages/orders/src/orders.ts
+import "server-only";
+import { ulid } from "ulid";
+import { nowIso } from "@lib/date";
+import type { RentalOrder } from "@types";
+import { trackOrder } from "@acme/analytics";
+import { prisma } from "@platform-core/db";
+
+type Order = RentalOrder;
+
+export async function listOrders(shop: string): Promise<Order[]> {
+  return prisma.rentalOrder.findMany({ where: { shop } });
+}
+
+export const readOrders = listOrders;
+
+export async function addOrder(
+  shop: string,
+  sessionId: string,
+  deposit: number,
+  expectedReturnDate?: string,
+  customerId?: string
+): Promise<Order> {
+  const order: Order = {
+    id: ulid(),
+    sessionId,
+    shop,
+    deposit,
+    expectedReturnDate,
+    startedAt: nowIso(),
+    ...(customerId ? { customerId } : {}),
+  };
+  await prisma.rentalOrder.create({ data: order });
+  await trackOrder(shop, order.id, deposit);
+  return order;
+}
+
+export async function markReturned(
+  shop: string,
+  sessionId: string,
+  damageFee?: number
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: {
+        returnedAt: nowIso(),
+        ...(typeof damageFee === "number" ? { damageFee } : {}),
+      },
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
+}
+
+export async function markRefunded(
+  shop: string,
+  sessionId: string
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: { refundedAt: nowIso() },
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
+}
+
+export async function getOrdersForCustomer(
+  shop: string,
+  customerId: string
+): Promise<Order[]> {
+  return prisma.rentalOrder.findMany({
+    where: { shop, customerId },
+  });
+}

@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/[lang]/product/[slug]/page.tsx
-import { getProductBySlug } from "@/lib/products";
+import { getProductBySlug } from "@acme/products";
 import type { PageComponent } from "@types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -8,7 +8,7 @@ import { getPages } from "@platform-core/repositories/pages/index.server";
 import { LOCALES } from "@acme/i18n";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
-import { trackPageView } from "@platform-core/analytics";
+import { trackPageView } from "@acme/analytics";
 
 async function loadComponents(slug: string): Promise<PageComponent[] | null> {
   const pages = await getPages(shop.id);

@@ -15,7 +15,11 @@
   "dependencies": {
     "@acme/shared-utils": "workspace:*",
     "@prisma/client": "^5.15.1",
-    "@upstash/redis": "^1.35.3"
+    "@upstash/redis": "^1.35.3",
+    "@acme/orders": "workspace:*",
+    "@acme/products": "workspace:*",
+    "@acme/pricing": "workspace:*",
+    "@acme/analytics": "workspace:*"
   },
   "peerDependencies": {
     "next": "^15.0.0",

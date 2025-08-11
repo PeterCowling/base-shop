@@ -1,6 +1,6 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 // apps/shop-bcd/src/app/[lang]/product/[slug]/page.tsx
-import { getProductBySlug } from "@/lib/products";
+import { getProductBySlug } from "@acme/products";
 import { LOCALES } from "@types";
 import { notFound } from "next/navigation";
 import PdpClient from "./PdpClient.client";

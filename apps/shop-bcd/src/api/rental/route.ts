@@ -1,5 +1,5 @@
 import { stripe } from "@lib/stripeServer";
-import { computeDamageFee } from "@platform-core/pricing";
+import { computeDamageFee } from "@acme/pricing";
 import {
   addOrder,
   markReturned,

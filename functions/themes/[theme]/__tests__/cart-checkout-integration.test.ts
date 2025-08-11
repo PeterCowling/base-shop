@@ -1,5 +1,5 @@
 import { jest } from "@jest/globals";
-import { PRODUCTS } from "@platform-core/products";
+import { PRODUCTS } from "@acme/products";
 import { POST as CART_POST } from "../../../../apps/shop-abc/src/app/api/cart/route";
 import { POST as CHECKOUT_POST } from "../../../../apps/shop-abc/src/app/api/checkout-session/route";
 
@@ -15,7 +15,7 @@ jest.mock("@/lib/stripeServer", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
 
-jest.mock("@platform-core/pricing", () => ({
+jest.mock("@acme/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
 }));
 

@@ -1,0 +1,18 @@
+// packages/products/tsconfig.json
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": false,
+    "types": ["node"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["dist", "__tests__", ".turbo", "node_modules"],
+  "references": []
+}

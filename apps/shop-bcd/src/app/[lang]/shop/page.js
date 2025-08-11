@@ -1,6 +1,6 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 // apps/shop-bcd/src/app/[lang]/shop/page.tsx
-import { PRODUCTS } from "@/lib/products";
+import { PRODUCTS } from "@acme/products";
 import ShopClient from "./ShopClient.client";
 export const metadata = {
     title: "Shop · Base-Shop",

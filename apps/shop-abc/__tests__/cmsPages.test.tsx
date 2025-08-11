@@ -14,7 +14,7 @@ import { getPages } from "@platform-core/repositories/pages/index.server";
 import { cookies } from "next/headers";
 import { encodeCartCookie } from "@platform-core/src/cartCookie";
 import { createCart, setCart } from "@platform-core/src/cartStore";
-import { PRODUCTS } from "@platform-core/products";
+import { PRODUCTS } from "@acme/products";
 
 import ShopPage from "../src/app/[lang]/shop/page";
 import ProductPage from "../src/app/[lang]/product/[slug]/page";

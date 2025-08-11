@@ -1,5 +1,5 @@
 // apps/cms/src/app/cms/orders/[shop]/page.tsx
-import { readOrders, markReturned, markRefunded } from "@platform-core/orders";
+import { readOrders, markReturned, markRefunded } from "@acme/orders";
 
 export default async function ShopOrdersPage({
   params,

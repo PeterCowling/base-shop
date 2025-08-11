@@ -8,7 +8,7 @@ import {
 } from "@cms/actions/products.server";
 import { authOptions } from "@cms/auth/options";
 import { checkShopExists } from "@lib/checkShopExists.server";
-import type { ProductPublication } from "@platform-core/products";
+import type { ProductPublication } from "@acme/products";
 import { readRepo } from "@platform-core/repositories/json.server";
 import ProductsTable from "@ui/components/cms/ProductsTable.client";
 import { getServerSession } from "next-auth";

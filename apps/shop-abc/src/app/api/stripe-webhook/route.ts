@@ -1,6 +1,6 @@
 // apps/shop-abc/src/app/api/stripe-webhook/route.ts
 
-import { addOrder, markRefunded } from "@platform-core/orders";
+import { addOrder, markRefunded } from "@acme/orders";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 

@@ -4,7 +4,7 @@ import {
   encodeCartCookie,
 } from "@platform-core/src/cartCookie";
 import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
-import { PRODUCTS } from "@platform-core/products";
+import { PRODUCTS } from "@acme/products";
 import { DELETE, GET, PATCH, POST } from "../src/app/api/cart/route";
 
 const TEST_SKU = PRODUCTS[0];

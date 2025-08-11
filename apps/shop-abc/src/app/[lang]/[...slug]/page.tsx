@@ -4,7 +4,7 @@ import type { Locale } from "@/i18n/locales";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import shop from "../../../../shop.json";
-import { trackPageView } from "@platform-core/analytics";
+import { trackPageView } from "@acme/analytics";
 
 async function loadComponents(slug: string): Promise<PageComponent[] | null> {
   const pages = await getPages(shop.id);

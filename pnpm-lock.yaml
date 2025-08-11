@@ -295,6 +295,12 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/orders':
+        specifier: workspace:*
+        version: link:../../packages/orders
+      '@acme/products':
+        specifier: workspace:*
+        version: link:../../packages/products
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../../packages/shared-utils
@@ -308,12 +314,24 @@ importers:
 
   apps/shop-abc:
     dependencies:
+      '@acme/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
       '@acme/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/orders':
+        specifier: workspace:*
+        version: link:../../packages/orders
+      '@acme/pricing':
+        specifier: workspace:*
+        version: link:../../packages/pricing
+      '@acme/products':
+        specifier: workspace:*
+        version: link:../../packages/products
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
@@ -330,6 +348,15 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/orders':
+        specifier: workspace:*
+        version: link:../../packages/orders
+      '@acme/pricing':
+        specifier: workspace:*
+        version: link:../../packages/pricing
+      '@acme/products':
+        specifier: workspace:*
+        version: link:../../packages/products
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
@@ -337,6 +364,8 @@ importers:
       next:
         specifier: ^15.3.4
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+
+  packages/analytics: {}
 
   packages/auth:
     dependencies:
@@ -400,8 +429,22 @@ importers:
 
   packages/next-config: {}
 
+  packages/orders: {}
+
   packages/platform-core:
     dependencies:
+      '@acme/analytics':
+        specifier: workspace:*
+        version: link:../analytics
+      '@acme/orders':
+        specifier: workspace:*
+        version: link:../orders
+      '@acme/pricing':
+        specifier: workspace:*
+        version: link:../pricing
+      '@acme/products':
+        specifier: workspace:*
+        version: link:../products
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../shared-utils
@@ -439,6 +482,10 @@ importers:
         specifier: ^6.15.0
         version: 6.29.1
 
+  packages/pricing: {}
+
+  packages/products: {}
+
   packages/shared-utils:
     devDependencies:
       next:
@@ -455,6 +502,9 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../next-config
+      '@acme/pricing':
+        specifier: workspace:*
+        version: link:../pricing
       '@themes/base':
         specifier: workspace:*
         version: link:../themes/base
@@ -488,6 +538,9 @@ importers:
       '@acme/i18n':
         specifier: workspace:*
         version: link:../i18n
+      '@acme/orders':
+        specifier: workspace:*
+        version: link:../orders
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../shared-utils

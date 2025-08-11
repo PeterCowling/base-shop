@@ -47,7 +47,7 @@ describe("/api/return", () => {
       markRefunded: jest.fn(),
       addOrder: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/pricing", () => ({
       computeDamageFee,
     }));
 
@@ -88,7 +88,7 @@ describe("/api/return", () => {
       markRefunded: jest.fn(),
       addOrder: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/pricing", () => ({
       computeDamageFee: jest.fn(),
     }));
 

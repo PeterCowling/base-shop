@@ -1,6 +1,6 @@
 // apps/shop-bcd/src/app/account/orders/page.tsx
 import { getCustomerSession } from "@auth";
-import { getOrdersForCustomer } from "@platform-core/orders";
+import { getOrdersForCustomer } from "@acme/orders";
 import shop from "../../../../shop.json";
 
 export const metadata = { title: "Orders" };

@@ -77,7 +77,7 @@ describe("/api/rental", () => {
       markReturned,
       markRefunded: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/pricing", () => ({
       computeDamageFee,
     }));
 
@@ -119,7 +119,7 @@ describe("/api/rental", () => {
       }),
       { virtual: true }
     );
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/pricing", () => ({
       computeDamageFee: jest.fn(),
     }));
 
@@ -160,7 +160,7 @@ describe("/api/rental", () => {
       markReturned,
       markRefunded: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/pricing", () => ({
       computeDamageFee,
     }));
 

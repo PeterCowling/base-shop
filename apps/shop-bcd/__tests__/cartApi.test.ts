@@ -1,6 +1,6 @@
 // apps/shop-bcd/__tests__/cartApi.test.ts
 import { encodeCartCookie } from "@/lib/cartCookie";
-import { PRODUCTS } from "@platform-core/products";
+import { PRODUCTS } from "@acme/products";
 import { PATCH, POST } from "../src/api/cart/route";
 
 jest.mock("next/server", () => ({

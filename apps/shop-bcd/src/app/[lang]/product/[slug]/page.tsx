@@ -1,6 +1,6 @@
 // apps/shop-bcd/src/app/[lang]/product/[slug]/page.tsx
 
-import { getProductBySlug } from "@/lib/products";
+import { getProductBySlug } from "@acme/products";
 import { LOCALES } from "@acme/i18n";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";

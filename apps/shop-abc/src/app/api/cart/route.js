@@ -6,7 +6,7 @@ import {
   encodeCartCookie,
 } from "@platform-core/src/cartCookie";
 import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
-import { getProductById } from "@/lib/products";
+import { getProductById } from "@acme/products";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
 import { z } from "zod";

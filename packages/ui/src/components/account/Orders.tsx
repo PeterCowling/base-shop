@@ -1,6 +1,6 @@
 // packages/ui/src/components/account/Orders.tsx
 import { getCustomerSession } from "@auth";
-import { getOrdersForCustomer } from "@platform-core/orders";
+import { getOrdersForCustomer } from "@acme/orders";
 
 export interface OrdersPageProps {
   /** ID of the current shop for fetching orders */

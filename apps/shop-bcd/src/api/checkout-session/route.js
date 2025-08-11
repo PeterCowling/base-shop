@@ -2,7 +2,7 @@
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { calculateRentalDays } from "@/lib/date";
 import { stripe } from "@lib/stripeServer.server";
-import { priceForDays } from "@platform-core/pricing";
+import { priceForDays } from "@acme/pricing";
 import { NextResponse } from "next/server";
 /* ------------------------------------------------------------------ *
  *  Constants

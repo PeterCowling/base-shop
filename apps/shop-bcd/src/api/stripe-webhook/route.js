@@ -1,5 +1,5 @@
 // apps/shop-bcd/src/app/api/stripe-webhook/route.ts
-import { addOrder, markRefunded, } from "@platform-core/orders";
+import { addOrder, markRefunded, } from "@acme/orders";
 import { NextResponse } from "next/server";
 export const runtime = "edge";
 export async function POST(req) {

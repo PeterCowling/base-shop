@@ -1,0 +1,15 @@
+{
+  "name": "@acme/orders",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "@acme/analytics": "workspace:*"
+  }
+}

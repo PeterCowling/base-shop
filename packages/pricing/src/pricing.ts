@@ -1,0 +1,71 @@
+// packages/pricing/src/pricing.ts
+import "server-only";
+
+import type { PricingMatrix, SKU } from "@types";
+import { pricingSchema } from "@types";
+import { promises as fs } from "node:fs";
+import * as path from "node:path";
+import { resolveDataRoot } from "@platform-core/dataRoot";
+
+let cached: PricingMatrix | null = null;
+let rateCache: { base: string; rates: Record<string, number> } | null = null;
+
+export async function getPricing(): Promise<PricingMatrix> {
+  if (cached) return cached;
+  const file = path.join(resolveDataRoot(), "..", "rental", "pricing.json");
+  const buf = await fs.readFile(file, "utf8");
+  cached = pricingSchema.parse(JSON.parse(buf));
+  return cached;
+}
+
+async function loadExchangeRates() {
+  if (rateCache) return rateCache;
+  const file = path.join(resolveDataRoot(), "..", "rental", "exchangeRates.json");
+  const buf = await fs.readFile(file, "utf8");
+  rateCache = JSON.parse(buf) as { base: string; rates: Record<string, number> };
+  return rateCache;
+}
+
+/** Convert an amount from the base currency to the target currency */
+export async function convertCurrency(
+  amount: number,
+  to: string
+): Promise<number> {
+  const { base, rates } = await loadExchangeRates();
+  if (to === base) return amount;
+  const rate = rates[to];
+  if (!rate) throw new Error(`Missing exchange rate for ${to}`);
+  return Math.round(amount * rate);
+}
+
+export function applyDurationDiscount(
+  baseRate: number,
+  days: number,
+  discounts: { minDays: number; rate: number }[]
+): number {
+  const sorted = [...discounts].sort((a, b) => b.minDays - a.minDays);
+  for (const d of sorted) {
+    if (days >= d.minDays) return Math.round(baseRate * d.rate);
+  }
+  return baseRate;
+}
+
+export async function priceForDays(sku: SKU, days: number): Promise<number> {
+  const pricing = await getPricing();
+  const base = sku.dailyRate ?? sku.price ?? pricing.baseDailyRate;
+  const rate = applyDurationDiscount(base, days, pricing.durationDiscounts);
+  return rate * days;
+}
+
+export async function computeDamageFee(
+  kind: string | number | undefined,
+  deposit: number
+): Promise<number> {
+  if (kind == null) return 0;
+  const pricing = await getPricing();
+  if (typeof kind === "number") return kind;
+  const rule = pricing.damageFees[kind];
+  if (rule === "deposit") return deposit;
+  if (typeof rule === "number") return rule;
+  return 0;
+}

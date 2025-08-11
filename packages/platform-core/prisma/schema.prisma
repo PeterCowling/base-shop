@@ -49,3 +49,10 @@ model CustomerMfa {
   secret     String
   enabled    Boolean @default(false)
 }
+
+model User {
+  customerId  String @id
+  email       String @unique
+  passwordHash String
+  role        String
+}

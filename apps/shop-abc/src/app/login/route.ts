@@ -7,13 +7,8 @@ import {
   checkLoginRateLimit,
   clearLoginAttempts,
 } from "../../middleware";
-
-// Mock customer store. In a real app this would query a database or identity provider.
-const CUSTOMER_STORE: Record<string, { password: string; role: Role }> = {
-  cust1: { password: "pass1", role: "customer" },
-  viewer1: { password: "view", role: "viewer" },
-  admin1: { password: "admin", role: "admin" },
-};
+import { getUser } from "@acme/platform-core/users";
+import bcrypt from "bcryptjs";
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
@@ -26,11 +21,15 @@ async function validateCredentials(
   customerId: string,
   password: string,
 ): Promise<{ customerId: string; role: Role } | null> {
-  const record = CUSTOMER_STORE[customerId];
-  if (!record || record.password !== password) {
+  const user = await getUser(customerId);
+  if (!user) {
     return null;
   }
-  return { customerId, role: record.role };
+  const valid = await bcrypt.compare(password, user.passwordHash);
+  if (!valid) {
+    return null;
+  }
+  return { customerId: user.customerId, role: user.role as Role };
 }
 
 export async function POST(req: Request) {

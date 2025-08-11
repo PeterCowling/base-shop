@@ -1,7 +1,7 @@
 // apps/shop-abc/src/app/forgot-password/route.ts
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { findUserByEmail } from "../userStore";
+import { findUserByEmail, updateUser } from "../userStore";
 import { sendEmail } from "@lib/email";
 
 const ForgotSchema = z.object({
@@ -17,11 +17,11 @@ export async function POST(req: Request) {
     });
   }
 
-  const match = findUserByEmail(parsed.data.email);
+  const match = await findUserByEmail(parsed.data.email);
   if (match) {
-    const [, user] = match;
+    const [id] = match;
     const token = Math.random().toString(36).slice(2);
-    user.resetToken = token;
+    await updateUser(id, { resetToken: token });
     await sendEmail(parsed.data.email, "Password reset", `Your token is ${token}`);
   }
 

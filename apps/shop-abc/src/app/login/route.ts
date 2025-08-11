@@ -7,7 +7,8 @@ import {
   checkLoginRateLimit,
   clearLoginAttempts,
 } from "../../middleware";
-import { USER_STORE } from "../userStore";
+import bcrypt from "bcryptjs";
+import { getUser } from "../userStore";
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
@@ -20,10 +21,10 @@ async function validateCredentials(
   customerId: string,
   password: string,
 ): Promise<{ customerId: string; role: Role } | null> {
-  const record = USER_STORE[customerId];
-  if (!record || record.password !== password) {
-    return null;
-  }
+  const record = await getUser(customerId);
+  if (!record) return null;
+  const ok = await bcrypt.compare(password, record.password);
+  if (!ok) return null;
   return { customerId, role: record.role };
 }
 

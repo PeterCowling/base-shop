@@ -1,0 +1,17 @@
+{
+  "cust1": {
+    "password": "$2b$10$vxwDn1x/rWxGtaGnpWNQbuLNHqnnVyzmTb.9wQ6/t8zsPqP5VM/XG",
+    "role": "customer",
+    "email": "cust1@example.com"
+  },
+  "viewer1": {
+    "password": "$2b$10$ch.MKZ4DOiWY/Ad6oVPUKuV.WJisqMU8D0EQIdeUm2sqY7IiW3DLC",
+    "role": "viewer",
+    "email": "viewer1@example.com"
+  },
+  "admin1": {
+    "password": "$2b$10$I9IVpZpVTfUrLnyh33tQO.85L7bmrhSLnkeS2oZWL8r2AzJTdglSq",
+    "role": "admin",
+    "email": "admin1@example.com"
+  }
+}

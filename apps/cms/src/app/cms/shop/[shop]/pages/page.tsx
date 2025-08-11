@@ -2,7 +2,7 @@
 
 import { canWrite } from "@auth";
 import { authOptions } from "@cms/auth/options";
-import { checkShopExists } from "@lib/checkShopExists.server";
+import { checkShopExists } from "@acme/lib";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";

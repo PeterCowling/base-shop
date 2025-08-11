@@ -1,4 +1,4 @@
-import { checkShopExists } from "@lib/checkShopExists.server";
+import { checkShopExists } from "@acme/lib";
 import { readPricing } from "@platform-core/repositories/pricing.server";
 import { notFound } from "next/navigation";
 import PricingForm from "./PricingForm";

@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/media/page.tsx
 
 import { deleteMedia, listMedia } from "@cms/actions/media.server";
-import { checkShopExists } from "@lib/checkShopExists.server";
+import { checkShopExists } from "@acme/lib";
 import MediaManager from "@ui/components/cms/MediaManager";
 import { notFound } from "next/navigation";
 

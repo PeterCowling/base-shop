@@ -34,7 +34,8 @@
       "@platform-core/*": ["packages/platform-core/src/*"],
 
       /* shared lib utilities */
-      "@lib/*": ["packages/lib/*"]
+      "@acme/lib": ["packages/lib/src/index.ts"],
+      "@acme/lib/*": ["packages/lib/src/*"]
     }
   },
 

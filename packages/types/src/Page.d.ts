@@ -62,6 +62,15 @@ export interface FooterComponent extends PageComponentBase {
   }[];
   logo?: string;
 }
+
+export interface SocialLinksComponent extends PageComponentBase {
+  type: "SocialLinks";
+  facebook?: string;
+  instagram?: string;
+  x?: string;
+  youtube?: string;
+  linkedin?: string;
+}
 export interface AnnouncementBarComponent extends PageComponentBase {
   type: "AnnouncementBar";
   text?: string;
@@ -203,6 +212,7 @@ export type PageComponent =
   | TextComponent
   | HeaderComponent
   | FooterComponent
+  | SocialLinksComponent
   | SectionComponent
   | MultiColumnComponent;
 export declare const pageSchema: z.ZodObject<

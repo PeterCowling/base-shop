@@ -19,6 +19,7 @@ import FAQBlock from "./FAQBlock";
 import Header from "./HeaderBlock";
 import Footer from "./FooterBlock";
 import CountdownTimer from "./CountdownTimer";
+import SocialLinks from "./SocialLinks";
 
 export {
   BlogListing,
@@ -42,6 +43,7 @@ export {
   CountdownTimer,
   Header,
   Footer,
+  SocialLinks,
 };
 
 export * from "./atoms";

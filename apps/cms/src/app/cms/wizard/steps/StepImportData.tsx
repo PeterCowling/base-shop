@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Input, Textarea } from "@/components/atoms/shadcn";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   setCsvFile: (f: File | null) => void;
@@ -10,7 +11,6 @@ interface Props {
   importing: boolean;
   onBack: () => void;
   saveData: () => Promise<void> | void;
-  onComplete: () => void;
 }
 
 export default function StepImportData({
@@ -21,8 +21,8 @@ export default function StepImportData({
   importing,
   onBack,
   saveData,
-  onComplete,
 }: Props): React.JSX.Element {
+  const [, markComplete] = useStepCompletion("import-data");
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Import Data</h2>
@@ -49,7 +49,7 @@ export default function StepImportData({
           disabled={importing}
           onClick={async () => {
             await saveData();
-            onComplete();
+            markComplete(true);
           }}
         >
           {importing ? "Saving…" : "Save & Continue"}

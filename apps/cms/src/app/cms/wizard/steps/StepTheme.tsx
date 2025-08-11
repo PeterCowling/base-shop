@@ -11,6 +11,7 @@ import {
 import StyleEditor from "@/components/cms/StyleEditor";
 import { useState } from "react";
 import WizardPreview from "../WizardPreview";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 const colorPalettes: Array<{
   name: string;
@@ -60,7 +61,7 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
+  
 }
 
 export default function StepTheme({
@@ -72,9 +73,9 @@ export default function StepTheme({
   themeStyle,
   onBack,
   onNext,
-  onComplete,
 }: Props): React.JSX.Element {
   const [palette, setPalette] = useState(colorPalettes[0].name);
+  const [, markComplete] = useStepCompletion("theme");
 
   const applyPalette = (name: string) => {
     setPalette(name);
@@ -132,7 +133,7 @@ export default function StepTheme({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markComplete(true);
             onNext();
           }}
         >

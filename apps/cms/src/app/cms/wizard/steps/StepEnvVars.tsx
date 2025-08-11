@@ -4,6 +4,7 @@ import {
   Button,
   Input,
 } from "@/components/atoms/shadcn";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 const ENV_KEYS = [
   "STRIPE_SECRET_KEY",
@@ -30,7 +31,6 @@ interface Props {
   setEnv: (key: string, value: string) => void;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
 }
 
 export default function StepEnvVars({
@@ -38,8 +38,8 @@ export default function StepEnvVars({
   setEnv,
   onBack,
   onNext,
-  onComplete,
 }: Props): React.JSX.Element {
+  const [, markComplete] = useStepCompletion("env-vars");
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Environment Variables</h2>
@@ -66,7 +66,7 @@ export default function StepEnvVars({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markComplete(true);
             onNext();
           }}
         >

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/atoms/shadcn";
 import NavigationEditor from "@/components/cms/NavigationEditor";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface NavItem {
   id: string;
@@ -15,7 +16,6 @@ interface Props {
   setNavItems: (v: NavItem[]) => void;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
 }
 
 export default function StepNavigation({
@@ -23,8 +23,8 @@ export default function StepNavigation({
   setNavItems,
   onBack,
   onNext,
-  onComplete,
 }: Props): React.JSX.Element {
+  const [, markComplete] = useStepCompletion("navigation");
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Navigation</h2>
@@ -35,7 +35,7 @@ export default function StepNavigation({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markComplete(true);
             onNext();
           }}
         >

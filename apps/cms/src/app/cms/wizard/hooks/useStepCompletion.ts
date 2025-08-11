@@ -9,12 +9,12 @@ const validators: Record<string, Validator> = {
 };
 
 export function useStepCompletion(stepId: string): [boolean, (v: boolean) => void] {
-  const { state, update } = useWizard();
+  const { state, markStepComplete } = useWizard();
   const validate = validators[stepId] ?? (() => true);
   const completed = (state.completed[stepId] ?? false) && validate(state);
   const setCompleted = (v: boolean) => {
     if (v && !validate(state)) return;
-    update("completed", { ...state.completed, [stepId]: v });
+    markStepComplete(stepId, v);
   };
   return [completed, setCompleted];
 }

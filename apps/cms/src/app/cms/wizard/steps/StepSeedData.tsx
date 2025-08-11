@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Input } from "@/components/atoms/shadcn";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   setCsvFile: (f: File | null) => void;
@@ -10,7 +11,6 @@ interface Props {
   seeding: boolean;
   onBack: () => void;
   seed: () => Promise<void> | void;
-  onComplete: () => void;
 }
 
 export default function StepSeedData({
@@ -21,8 +21,8 @@ export default function StepSeedData({
   seeding,
   onBack,
   seed,
-  onComplete,
 }: Props): React.JSX.Element {
+  const [, markComplete] = useStepCompletion("seed-data");
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Seed Data</h2>
@@ -50,7 +50,7 @@ export default function StepSeedData({
           disabled={seeding}
           onClick={async () => {
             await seed();
-            onComplete();
+            markComplete(true);
           }}
         >
           {seeding ? "Saving…" : "Save & Continue"}

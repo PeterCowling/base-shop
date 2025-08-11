@@ -16,6 +16,7 @@ import { fetchJson } from "@shared-utils";
 import { ulid } from "ulid";
 import { useEffect, useState } from "react";
 import { Toast } from "@/components/atoms";
+import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -29,7 +30,6 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
-  onComplete: () => void;
 }
 
 export default function StepHomePage({
@@ -44,12 +44,12 @@ export default function StepHomePage({
   themeStyle,
   onBack,
   onNext,
-  onComplete,
 }: Props): React.JSX.Element {
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
     message: "",
   });
+  const [, markComplete] = useStepCompletion("home-page");
 
   useEffect(() => {
     (async () => {
@@ -170,7 +170,7 @@ export default function StepHomePage({
         </Button>
         <Button
           onClick={() => {
-            onComplete();
+            markComplete(true);
             onNext();
           }}
         >

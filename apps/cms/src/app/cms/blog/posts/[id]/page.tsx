@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import PostForm from "../PostForm.client";
 import PublishButton from "../PublishButton.client";
+import UnpublishButton from "../UnpublishButton.client";
 import DeleteButton from "../DeleteButton.client";
 import { getPost, updatePost } from "@cms/actions/blog.server";
 import { getSanityConfig } from "@platform-core/src/shops";
@@ -37,6 +38,11 @@ export default async function EditPostPage({
   }
   const post = await getPost(shopId, params.id);
   if (!post) return notFound();
+  const status = post.published
+    ? "Published"
+    : post.publishedAt
+    ? `Scheduled for ${new Date(post.publishedAt).toLocaleString()}`
+    : "Draft";
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold">Edit Post</h1>
@@ -45,8 +51,13 @@ export default async function EditPostPage({
         submitLabel="Save"
         post={post}
       />
+      <p className="text-sm text-muted-foreground">Status: {status}</p>
       <div className="flex items-center space-x-4">
-        <PublishButton id={post._id} shopId={shopId} />
+        {post.published ? (
+          <UnpublishButton id={post._id} shopId={shopId} />
+        ) : (
+          <PublishButton id={post._id} shopId={shopId} />
+        )}
         <DeleteButton id={post._id} shopId={shopId} />
       </div>
     </div>

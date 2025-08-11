@@ -46,9 +46,13 @@ export default async function BlogPostsPage({
             >
               {post.title || "(untitled)"}
             </Link>
-            {post.published && (
-              <span className="ml-2 text-sm text-muted-foreground">published</span>
-            )}
+            <span className="ml-2 text-sm text-muted-foreground">
+              {post.published
+                ? "published"
+                : post.publishedAt
+                ? "scheduled"
+                : "draft"}
+            </span>
           </li>
         ))}
         {posts.length === 0 && <li>No posts found.</li>}

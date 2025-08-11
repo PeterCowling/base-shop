@@ -8,6 +8,7 @@ jest.mock("next/server", () => ({
 }));
 
 const getCustomerSession = jest.fn();
+const validateCsrfToken = jest.fn();
 let profile: any;
 const updateCustomerProfile = jest.fn(async (id: string, data: any) => {
   profile = { customerId: id, ...data };
@@ -15,7 +16,11 @@ const updateCustomerProfile = jest.fn(async (id: string, data: any) => {
 });
 const getCustomerProfile = jest.fn(async (id: string) => profile);
 
-jest.mock("@auth", () => ({ __esModule: true, getCustomerSession }));
+jest.mock("@auth", () => ({
+  __esModule: true,
+  getCustomerSession,
+  validateCsrfToken,
+}));
 jest.mock("@acme/platform-core/customerProfiles", () => ({
   __esModule: true,
   getCustomerProfile,
@@ -25,12 +30,16 @@ jest.mock("@acme/platform-core/customerProfiles", () => ({
 import { PUT } from "../../src/app/api/account/profile/route";
 
 function createRequest(body: any): any {
-  return { json: async () => body } as any;
+  return {
+    headers: new Headers({ "x-csrf-token": "token" }),
+    json: async () => body,
+  } as any;
 }
 
 beforeEach(() => {
   jest.clearAllMocks();
   profile = { customerId: "cust1", name: "Old", email: "old@example.com" };
+  (validateCsrfToken as jest.Mock).mockResolvedValue(true);
 });
 
 test("returns 401 for unauthorized", async () => {

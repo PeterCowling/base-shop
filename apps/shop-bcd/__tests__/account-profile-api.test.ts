@@ -32,13 +32,14 @@ describe("/api/account/profile GET", () => {
     expect(res.status).toBe(401);
   });
 
-  it("returns 404 when profile not found", async () => {
+  it("returns empty profile when not found", async () => {
     (getCustomerSession as jest.Mock).mockResolvedValue({
       customerId: "cust1",
     });
     (getCustomerProfile as jest.Mock).mockResolvedValue(null);
     const res = await GET();
-    expect(res.status).toBe(404);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true, profile: {} });
   });
 
   it("returns profile when found", async () => {

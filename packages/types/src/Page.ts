@@ -129,6 +129,13 @@ export interface TextComponent extends PageComponentBase {
   text?: string;
 }
 
+export interface MultiColumnComponent extends PageComponentBase {
+  type: "MultiColumn";
+  columns?: number;
+  gap?: string;
+  children?: PageComponent[];
+}
+
 export interface SectionComponent extends PageComponentBase {
   type: "Section";
   children?: PageComponent[];
@@ -149,7 +156,8 @@ export type PageComponent =
   | TestimonialSliderComponent
   | ImageComponent
   | TextComponent
-  | SectionComponent;
+  | SectionComponent
+  | MultiColumnComponent;
 
 const baseComponentSchema = z
   .object({
@@ -271,6 +279,14 @@ const textComponentSchema = baseComponentSchema.extend({
   text: z.string().optional(),
 });
 
+const multiColumnComponentSchema: z.ZodType<MultiColumnComponent> =
+  baseComponentSchema.extend({
+    type: z.literal("MultiColumn"),
+    columns: z.number().int().min(1).optional(),
+    gap: z.string().optional(),
+    children: z.array(z.lazy(() => pageComponentSchema)).default([]),
+  });
+
 const sectionComponentSchema: z.ZodType<SectionComponent> = baseComponentSchema.extend({
   type: z.literal("Section"),
   children: z.array(z.lazy(() => pageComponentSchema)).default([]),
@@ -293,6 +309,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     imageComponentSchema,
     textComponentSchema,
     sectionComponentSchema,
+    multiColumnComponentSchema,
   ])
 );
 

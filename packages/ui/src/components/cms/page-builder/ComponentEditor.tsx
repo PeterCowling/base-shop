@@ -176,6 +176,15 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
           max={(component as any).maxItems}
         />
       )}
+      {"gap" in component && (
+        <Input
+          label="Gap"
+          value={(component as any).gap ?? ""}
+          onChange={(e) =>
+            handleInput("gap", e.target.value === "" ? undefined : e.target.value)
+          }
+        />
+      )}
       <Select
         value={component.position ?? ""}
         onValueChange={(v) => handleInput("position", v || undefined)}

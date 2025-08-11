@@ -36,6 +36,7 @@ const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
   RecommendationCarousel: { minItems: 1, maxItems: 4 },
   Testimonials: { minItems: 1, maxItems: 10 },
   TestimonialSlider: { minItems: 1, maxItems: 10 },
+  MultiColumn: { columns: 2, gap: "1rem" },
 };
 
 interface Props {
@@ -58,8 +59,12 @@ const PageBuilder = memo(function PageBuilder({
   const storageKey = `page-builder-history-${page.id}`;
   const migrate = useCallback(
     (comps: PageComponent[]): PageComponent[] =>
-      comps.map((c) => (c.type === "Section" ? { ...c, children: c.children ?? [] } : c)),
-    []
+      comps.map((c) =>
+        CONTAINER_TYPES.includes(c.type as ComponentType)
+          ? { ...c, children: c.children ?? [] }
+          : c,
+      ),
+    [],
   );
 
   const [state, rawDispatch] = useReducer(reducer, undefined, (): HistoryState => {

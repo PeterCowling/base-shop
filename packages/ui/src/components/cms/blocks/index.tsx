@@ -11,6 +11,7 @@ import Testimonials from "./Testimonials";
 import ValueProps from "./ValueProps";
 import RecommendationCarousel from "./RecommendationCarousel";
 import Section from "./Section";
+import MultiColumn from "./containers/MultiColumn";
 
 export {
   BlogListing,
@@ -26,6 +27,7 @@ export {
   TestimonialSlider,
   ValueProps,
   Section,
+  MultiColumn,
 };
 
 export * from "./atoms";

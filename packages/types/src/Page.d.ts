@@ -109,6 +109,12 @@ export interface TextComponent extends PageComponentBase {
     type: "Text";
     text?: string;
 }
+export interface MultiColumnComponent extends PageComponentBase {
+    type: "MultiColumn";
+    columns?: number;
+    gap?: string;
+    children?: PageComponent[];
+}
 export interface BlogListingComponent extends PageComponentBase {
     type: "BlogListing";
     posts?: {
@@ -136,7 +142,7 @@ export interface SectionComponent extends PageComponentBase {
     type: "Section";
     children?: PageComponent[];
 }
-export type PageComponent = HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent | ProductCarouselComponent | RecommendationCarouselComponent | GalleryComponent | ContactFormComponent | ContactFormWithMapComponent | BlogListingComponent | TestimonialsComponent | TestimonialSliderComponent | ImageComponent | TextComponent | SectionComponent;
+export type PageComponent = HeroBannerComponent | ValuePropsComponent | ReviewsCarouselComponent | ProductGridComponent | ProductCarouselComponent | RecommendationCarouselComponent | GalleryComponent | ContactFormComponent | ContactFormWithMapComponent | BlogListingComponent | TestimonialsComponent | TestimonialSliderComponent | ImageComponent | TextComponent | SectionComponent | MultiColumnComponent;
 export declare const pageSchema: z.ZodObject<{
     id: z.ZodString;
     slug: z.ZodString;

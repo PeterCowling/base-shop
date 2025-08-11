@@ -6,19 +6,21 @@ import { getUserByEmail, setResetToken } from "../../../../userStore";
 import { sendEmail } from "@acme/email";
 import { checkLoginRateLimit } from "../../../../../middleware";
 import { validateCsrfToken } from "@auth";
+import { parseJsonBody } from "@shared-utils";
 
-const schema = z.object({
-  email: z.string().email(),
-});
+export const ResetRequestSchema = z
+  .object({
+    email: z.string().email(),
+  })
+  .strict();
+export type ResetRequestInput = z.infer<typeof ResetRequestSchema>;
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = schema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody<ResetRequestInput>(
+    req,
+    ResetRequestSchema,
+  );
+  if (!parsed.success) return parsed.response;
 
   const csrfToken = req.headers.get("x-csrf-token");
   if (!csrfToken || !(await validateCsrfToken(csrfToken))) {

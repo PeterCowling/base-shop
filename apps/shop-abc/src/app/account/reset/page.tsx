@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { getCsrfToken } from "@shared-utils";
+import type { ResetCompleteInput } from "../../api/account/reset/complete/route";
 
 export default function ResetPasswordPage() {
   const [msg, setMsg] = useState("");
@@ -12,13 +13,14 @@ export default function ResetPasswordPage() {
     const token = (form.namedItem("token") as HTMLInputElement).value;
     const password = (form.namedItem("password") as HTMLInputElement).value;
     const csrfToken = getCsrfToken();
+    const body: ResetCompleteInput = { token, password };
     const res = await fetch("/api/account/reset/complete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "x-csrf-token": csrfToken ?? "",
       },
-      body: JSON.stringify({ token, password }),
+      body: JSON.stringify(body),
     });
     await res.json().catch(() => ({}));
     setMsg(res.ok ? "Password updated" : "Error");

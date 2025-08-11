@@ -1,7 +1,12 @@
 // apps/shop-abc/src/app/register/route.ts
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { addUser, USER_STORE } from "../userStore";
+import bcrypt from "bcryptjs";
+import {
+  createUser,
+  getUserById,
+  getUserByEmail,
+} from "@platform-core/users";
 
 const RegisterSchema = z.object({
   customerId: z.string(),
@@ -19,13 +24,14 @@ export async function POST(req: Request) {
   }
 
   const { customerId, email, password } = parsed.data;
-  if (USER_STORE[customerId]) {
+  if (await getUserById(customerId)) {
     return NextResponse.json({ error: "User already exists" }, { status: 400 });
   }
-  if (Object.values(USER_STORE).some((u) => u.email === email)) {
+  if (await getUserByEmail(email)) {
     return NextResponse.json({ error: "Email already registered" }, { status: 400 });
   }
 
-  addUser(customerId, email, password);
+  const passwordHash = await bcrypt.hash(password, 10);
+  await createUser({ id: customerId, email, passwordHash });
   return NextResponse.json({ ok: true });
 }

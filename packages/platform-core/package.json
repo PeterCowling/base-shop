@@ -17,7 +17,8 @@
     "@prisma/client": "^5.15.1",
     "@upstash/redis": "^1.35.3",
     "@acme/email": "workspace:*",
-    "@acme/date-utils": "workspace:*"
+    "@acme/date-utils": "workspace:*",
+    "zod": "^3.25.67"
   },
   "peerDependencies": {
     "next": "^15.0.0",

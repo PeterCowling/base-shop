@@ -18,6 +18,7 @@ interface Result {
  */
 export async function setupSanityBlog(
   creds: SanityCredentials,
+  aclMode: "public" | "private" = "public",
 ): Promise<Result> {
   "use server";
   await ensureAuthorized();
@@ -39,7 +40,7 @@ export async function setupSanityBlog(
     const exists = json.datasets?.some((d) => d.name === dataset);
 
     if (!exists) {
-      // create dataset with public read access
+      // create dataset with requested access mode
       const createRes = await fetch(
         `https://api.sanity.io/v1/projects/${projectId}/datasets/${dataset}`,
         {
@@ -48,7 +49,7 @@ export async function setupSanityBlog(
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ aclMode: "public" }),
+          body: JSON.stringify({ aclMode }),
         },
       );
       if (!createRes.ok) {
@@ -69,7 +70,7 @@ export async function setupSanityBlog(
         body: JSON.stringify({
           mutations: [
             {
-              createIfNotExists: {
+              createOrReplace: {
                 _id: "schema-post",
                 _type: "schema",
                 name: "post",
@@ -96,6 +97,13 @@ export async function setupSanityBlog(
                     ],
                   },
                   { name: "published", type: "boolean", title: "Published" },
+                  {
+                    name: "products",
+                    type: "array",
+                    title: "Products",
+                    of: [{ type: "string" }],
+                    description: "Shop product IDs or slugs",
+                  },
                 ],
               },
             },

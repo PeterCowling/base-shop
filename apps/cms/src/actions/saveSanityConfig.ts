@@ -19,6 +19,7 @@ export async function saveSanityConfig(
   const projectId = String(formData.get("projectId") ?? "");
   const dataset = String(formData.get("dataset") ?? "");
   const token = String(formData.get("token") ?? "");
+  const aclMode = String(formData.get("aclMode") ?? "public");
 
   const config = { projectId, dataset, token };
 
@@ -27,7 +28,7 @@ export async function saveSanityConfig(
     return { error: "Invalid Sanity credentials" };
   }
 
-  const setup = await setupSanityBlog(config);
+  const setup = await setupSanityBlog(config, aclMode as "public" | "private");
   if (!setup.success) {
     return { error: setup.error ?? "Failed to setup Sanity blog" };
   }

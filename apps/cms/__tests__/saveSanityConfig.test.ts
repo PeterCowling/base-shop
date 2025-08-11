@@ -44,6 +44,7 @@ describe("saveSanityConfig", () => {
     fd.set("projectId", "p");
     fd.set("dataset", "d");
     fd.set("token", "t");
+    fd.set("aclMode", "public");
 
     const res = await saveSanityConfig("shop", fd);
 
@@ -52,11 +53,14 @@ describe("saveSanityConfig", () => {
       dataset: "d",
       token: "t",
     });
-    expect(setupSanityBlog).toHaveBeenCalledWith({
-      projectId: "p",
-      dataset: "d",
-      token: "t",
-    });
+    expect(setupSanityBlog).toHaveBeenCalledWith(
+      {
+        projectId: "p",
+        dataset: "d",
+        token: "t",
+      },
+      "public",
+    );
     expect(setSanityConfig).toHaveBeenCalledWith({ id: "shop" }, {
       projectId: "p",
       dataset: "d",
@@ -80,6 +84,7 @@ describe("saveSanityConfig", () => {
     fd.set("projectId", "p");
     fd.set("dataset", "d");
     fd.set("token", "t");
+    fd.set("aclMode", "public");
 
     const res = await saveSanityConfig("shop", fd);
     expect(res).toEqual({ error: "fail" });

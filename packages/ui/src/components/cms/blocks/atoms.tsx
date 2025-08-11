@@ -10,7 +10,8 @@ import React, {
 import Divider from "./Divider";
 import Spacer from "./Spacer";
 import CustomHtml from "./CustomHtml";
-export { Divider, Spacer, CustomHtml };
+import ButtonBlock from "./Button";
+export { Divider, Spacer, CustomHtml, ButtonBlock as Button };
 
 /* ──────────────────────────────────────────────────────────────────────────
  * Shared helpers
@@ -83,6 +84,7 @@ export const atomRegistry = {
   Divider,
   Spacer,
   CustomHtml,
+  Button: ButtonBlock,
 } as const;
 
 export type AtomBlockType = keyof typeof atomRegistry;

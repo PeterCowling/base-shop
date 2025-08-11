@@ -163,6 +163,14 @@ export interface CustomHtmlComponent extends PageComponentBase {
   type: "CustomHtml";
   html?: string;
 }
+
+export interface ButtonComponent extends PageComponentBase {
+  type: "Button";
+  label?: string;
+  href?: string;
+  variant?: "default" | "outline" | "ghost" | "destructive";
+  size?: "sm" | "md" | "lg";
+}
 export interface BlogListingComponent extends PageComponentBase {
   type: "BlogListing";
   posts?: {
@@ -216,6 +224,7 @@ export type PageComponent =
   | ImageComponent
   | TextComponent
   | CustomHtmlComponent
+  | ButtonComponent
   | HeaderComponent
   | FooterComponent
   | SocialLinksComponent

@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
+import { validateShopName } from "@platform-core/src/shops";
+import { z } from "zod";
 
 /**
  * POST /cms/api/configurator/init-shop
@@ -15,15 +17,40 @@ export async function POST(req: Request) {
   if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
+
   try {
-    const { id, csv, categories } = (await req.json()) as {
-      id: string;
-      csv?: string;
-      categories?: string[];
-    };
-    if (!id) {
-      return NextResponse.json({ error: "Missing id" }, { status: 400 });
+    const schema = z.object({
+      id: z
+        .string()
+        .transform((s) => validateShopName(s)),
+      csv: z
+        .string()
+        .optional()
+        .transform((s) => s.replace(/\s+/g, ""))
+        .refine(
+          (val) => {
+            if (!val) return true;
+            try {
+              return (
+                Buffer.from(val, "base64").toString("base64").replace(/=+$/, "") ===
+                val.replace(/=+$/, "")
+              );
+            } catch {
+              return false;
+            }
+          },
+          { message: "Invalid CSV encoding" }
+        ),
+      categories: z.array(z.string()).optional(),
+    });
+
+    const parsed = schema.safeParse(await req.json());
+    if (!parsed.success) {
+      const message = parsed.error.issues.map((i) => i.message).join(", ");
+      return NextResponse.json({ error: message }, { status: 400 });
     }
+
+    const { id, csv, categories } = parsed.data;
     const dir = path.join(resolveDataRoot(), id);
     await fs.mkdir(dir, { recursive: true });
     if (csv) {

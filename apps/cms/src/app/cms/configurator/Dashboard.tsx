@@ -1,13 +1,24 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type MouseEvent,
+} from "react";
 import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast, Tooltip } from "@/components/atoms";
 import { wizardStateSchema, type WizardState } from "../wizard/schema";
 import { useWizardPersistence } from "../wizard/hooks/useWizardPersistence";
-import { getRequiredSteps, getSteps, steps as configuratorSteps } from "./steps";
+import {
+  getRequiredSteps,
+  getSteps,
+  steps as configuratorSteps,
+  type ConfiguratorStep,
+} from "./steps";
 
 const stepLinks: Record<string, string> = {
   create: "summary",
@@ -64,6 +75,23 @@ export default function ConfiguratorDashboard() {
 
   const skipStep = (stepId: string) => markStepComplete(stepId, true);
   const resetStep = (stepId: string) => markStepComplete(stepId, false);
+
+  const handleStepClick = (step: ConfiguratorStep) => (
+    e: MouseEvent<HTMLAnchorElement>
+  ) => {
+    const missing = (step.prerequisites ?? []).filter(
+      (id) => !state?.completed?.[id]
+    );
+    if (missing.length > 0) {
+      e.preventDefault();
+      setToast({
+        open: true,
+        message: `Complete prerequisite steps: ${missing
+          .map((id) => configuratorSteps[id]?.label ?? id)
+          .join(", ")}`,
+      });
+    }
+  };
 
   const launchShop = async () => {
     if (!state?.shopId) return;
@@ -139,6 +167,7 @@ export default function ConfiguratorDashboard() {
                   <Link
                     href={`/cms/configurator/${step.id}`}
                     className="underline"
+                    onClick={handleStepClick(step)}
                   >
                     {step.label}
                   </Link>
@@ -178,6 +207,7 @@ export default function ConfiguratorDashboard() {
                       <Link
                         href={`/cms/configurator/${step.id}`}
                         className="underline"
+                        onClick={handleStepClick(step)}
                       >
                         {step.label}
                       </Link>

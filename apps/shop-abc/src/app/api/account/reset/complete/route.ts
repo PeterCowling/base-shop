@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { getUserByResetToken, updatePassword } from "../../../../userStore";
 import { validateCsrfToken } from "@auth";
 
@@ -12,7 +13,7 @@ const schema = z.object({
     .min(8, "Password must be at least 8 characters long")
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-      "Password must include uppercase, lowercase, and number",
+      "Password must include uppercase, lowercase, and number"
     ),
 });
 
@@ -31,7 +32,8 @@ export async function POST(req: Request) {
   }
 
   const { token, password } = parsed.data;
-  const user = await getUserByResetToken(token);
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+  const user = await getUserByResetToken(hashedToken);
   if (!user) {
     return NextResponse.json({ error: "Invalid token" }, { status: 400 });
   }

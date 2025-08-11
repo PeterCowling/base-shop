@@ -17,26 +17,27 @@ jest.mock("@acme/email", () => ({
 
 const store: Record<string, any> = {};
 
+let sendEmail: jest.Mock;
+
 jest.mock("../src/app/userStore", () => ({
   getUserById: jest.fn(async (id: string) => store[id] ?? null),
-  getUserByEmail: jest.fn(async (email: string) =>
-    Object.values(store).find((u: any) => u.email === email) ?? null,
+  getUserByEmail: jest.fn(
+    async (email: string) =>
+      Object.values(store).find((u: any) => u.email === email) ?? null
   ),
-  addUser: jest.fn(async ({
-    id,
-    email,
-    passwordHash,
-    role = "customer",
-  }: any) => {
-    const user = { id, email, passwordHash, role, resetToken: null };
-    store[id] = user;
-    return user;
-  }),
+  addUser: jest.fn(
+    async ({ id, email, passwordHash, role = "customer" }: any) => {
+      const user = { id, email, passwordHash, role, resetToken: null };
+      store[id] = user;
+      return user;
+    }
+  ),
   setResetToken: jest.fn(async (id: string, token: string | null) => {
     if (store[id]) store[id].resetToken = token;
   }),
-  getUserByResetToken: jest.fn(async (token: string) =>
-    Object.values(store).find((u: any) => u.resetToken === token) ?? null,
+  getUserByResetToken: jest.fn(
+    async (token: string) =>
+      Object.values(store).find((u: any) => u.resetToken === token) ?? null
   ),
   updatePassword: jest.fn(async (id: string, hash: string) => {
     if (store[id]) {
@@ -60,18 +61,20 @@ beforeAll(async () => {
   ({ POST: completePOST } = await import(
     "../src/app/api/account/reset/complete/route"
   ));
+  ({ sendEmail } = await import("@lib/email"));
 });
 
-  function makeRequest(body: any, headers: Record<string, string> = {}) {
-    return {
-      json: async () => body,
-      headers: new Headers({ "x-csrf-token": "tok", ...headers }),
-    } as any;
-  }
+function makeRequest(body: any, headers: Record<string, string> = {}) {
+  return {
+    json: async () => body,
+    headers: new Headers({ "x-csrf-token": "tok", ...headers }),
+  } as any;
+}
 
 describe("auth flows", () => {
   beforeEach(() => {
     for (const key in store) delete store[key];
+    sendEmail.mockClear();
   });
 
   it("allows sign-up, login and password reset", async () => {
@@ -80,7 +83,7 @@ describe("auth flows", () => {
         customerId: "cust1",
         email: "test@example.com",
         password: "Str0ngPass1",
-      }),
+      })
     );
     expect(res.status).toBe(200);
 
@@ -89,44 +92,44 @@ describe("auth flows", () => {
         customerId: "cust2",
         email: "test@example.com",
         password: "An0therPass1",
-      }),
+      })
     );
     expect(dup.status).toBe(400);
 
     res = await loginPOST(
       makeRequest(
         { customerId: "cust1", password: "Str0ngPass1" },
-        { "x-forwarded-for": "1.1.1.1" },
-      ),
+        { "x-forwarded-for": "1.1.1.1" }
+      )
     );
     expect(res.status).toBe(200);
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
-    const { getUserById } = await import("../src/app/userStore");
-    const token = (await getUserById("cust1"))!.resetToken as string;
+    const tokenEmail = sendEmail.mock.calls[0][2] as string;
+    const token = tokenEmail.replace("Your token is ", "");
 
     res = await completePOST(
       makeRequest({
         customerId: "cust1",
         token,
         password: "NewStr0ng1",
-      }),
+      })
     );
     expect(res.status).toBe(200);
 
     res = await loginPOST(
       makeRequest(
         { customerId: "cust1", password: "Str0ngPass1" },
-        { "x-forwarded-for": "1.1.1.1" },
-      ),
+        { "x-forwarded-for": "1.1.1.1" }
+      )
     );
     expect(res.status).toBe(401);
 
     res = await loginPOST(
       makeRequest(
         { customerId: "cust1", password: "NewStr0ng1" },
-        { "x-forwarded-for": "1.1.1.1" },
-      ),
+        { "x-forwarded-for": "1.1.1.1" }
+      )
     );
     expect(res.status).toBe(200);
   });
@@ -137,19 +140,19 @@ describe("auth flows", () => {
         customerId: "cust1",
         email: "test@example.com",
         password: "Str0ngPass1",
-      }),
+      })
     );
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
-    const { getUserById } = await import("../src/app/userStore");
-    const token = (await getUserById("cust1"))!.resetToken as string;
+    const tokenEmail = sendEmail.mock.calls[0][2] as string;
+    const token = tokenEmail.replace("Your token is ", "");
 
     const res = await completePOST(
       makeRequest({
         customerId: "cust1",
         token,
         password: "weakpass",
-      }),
+      })
     );
     expect(res.status).toBe(400);
   });

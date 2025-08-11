@@ -20,6 +20,8 @@ export interface ConfiguratorStep {
   label: string;
   component: React.ComponentType<any>;
   optional?: boolean;
+  /** IDs of steps that must be completed before this step */
+  prerequisites?: string[];
   order?: number;
 }
 

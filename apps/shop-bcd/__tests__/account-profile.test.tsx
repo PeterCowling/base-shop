@@ -9,10 +9,16 @@ jest.mock("@acme/platform-core", () => ({
   getCustomerProfile: jest.fn(),
 }));
 
+jest.mock("next/navigation", () => ({
+  __esModule: true,
+  redirect: jest.fn(),
+}));
+
 import { getCustomerSession } from "@auth";
 import { getCustomerProfile } from "@acme/platform-core";
 import ProfilePage from "@ui/src/components/account/Profile";
 import ProfileForm from "@ui/src/components/account/ProfileForm";
+import { redirect } from "next/navigation";
 
 describe("/account/profile", () => {
   beforeEach(() => {
@@ -21,10 +27,11 @@ describe("/account/profile", () => {
 
   it("redirects unauthenticated users", async () => {
     (getCustomerSession as jest.Mock).mockResolvedValue(null);
-    const element = await ProfilePage({});
+    await ProfilePage({});
     expect(getCustomerSession).toHaveBeenCalled();
-    expect(element.type).toBe("p");
-    expect(element.props.children).toBe("Please log in to view your profile.");
+    expect(redirect).toHaveBeenCalledWith(
+      "/login?callbackUrl=%2Faccount%2Fprofile",
+    );
     expect(getCustomerProfile).not.toHaveBeenCalled();
   });
 
@@ -37,6 +44,7 @@ describe("/account/profile", () => {
     const element = await ProfilePage({});
     expect(getCustomerSession).toHaveBeenCalled();
     expect(getCustomerProfile).toHaveBeenCalledWith("cust1");
+    expect(redirect).not.toHaveBeenCalled();
     expect(element.type).toBe("div");
     expect(element.props.children[0].props.children).toBe("Profile");
     const form = element.props.children[1];

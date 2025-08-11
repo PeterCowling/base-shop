@@ -4,6 +4,7 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "devDependencies": {

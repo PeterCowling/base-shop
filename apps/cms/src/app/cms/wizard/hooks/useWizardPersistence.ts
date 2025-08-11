@@ -15,7 +15,7 @@ export async function resetWizardProgress(): Promise<void> {
       await fetch("/cms/api/wizard-progress", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stepId: null, data: {} }),
+        body: JSON.stringify({ stepId: null, data: {}, completed: {} }),
       });
     } catch {
       /* ignore network errors */
@@ -74,7 +74,7 @@ export function useWizardPersistence(
     fetch("/cms/api/wizard-progress", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ stepId: "wizard", data }),
+      body: JSON.stringify({ stepId: "wizard", data, completed }),
     }).catch(() => {
       /* ignore network errors */
     });

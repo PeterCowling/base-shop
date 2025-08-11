@@ -31,13 +31,17 @@ export async function POST(req: Request) {
 
   const user = await getUserByEmail(parsed.data.email);
   if (user) {
-    const token = crypto.randomBytes(32).toString("hex");
-    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-    await setResetToken(user.id, hashedToken);
+    const token = crypto.randomUUID();
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+    const expires = Date.now() + 1000 * 60 * 60; // 1 hour
+    await setResetToken(user.id, hashedToken, expires);
     await sendEmail(
       parsed.data.email,
       "Password reset",
-      `Your token is ${token}`
+      `Your token is ${token}`,
     );
   }
 

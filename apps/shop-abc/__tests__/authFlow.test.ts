@@ -70,12 +70,16 @@ beforeAll(async () => {
   }
 
 describe("auth flows", () => {
+  beforeEach(() => {
+    for (const key in store) delete store[key];
+  });
+
   it("allows sign-up, login and password reset", async () => {
     let res = await registerPOST(
       makeRequest({
         customerId: "cust1",
         email: "test@example.com",
-        password: "pass1",
+        password: "Str0ngPass1",
       }),
     );
     expect(res.status).toBe(200);
@@ -84,14 +88,14 @@ describe("auth flows", () => {
       makeRequest({
         customerId: "cust2",
         email: "test@example.com",
-        password: "pass2",
+        password: "An0therPass1",
       }),
     );
     expect(dup.status).toBe(400);
 
     res = await loginPOST(
       makeRequest(
-        { customerId: "cust1", password: "pass1" },
+        { customerId: "cust1", password: "Str0ngPass1" },
         { "x-forwarded-for": "1.1.1.1" },
       ),
     );
@@ -105,14 +109,14 @@ describe("auth flows", () => {
       makeRequest({
         customerId: "cust1",
         token,
-        password: "newpass",
+        password: "NewStr0ng1",
       }),
     );
     expect(res.status).toBe(200);
 
     res = await loginPOST(
       makeRequest(
-        { customerId: "cust1", password: "pass1" },
+        { customerId: "cust1", password: "Str0ngPass1" },
         { "x-forwarded-for": "1.1.1.1" },
       ),
     );
@@ -120,10 +124,33 @@ describe("auth flows", () => {
 
     res = await loginPOST(
       makeRequest(
-        { customerId: "cust1", password: "newpass" },
+        { customerId: "cust1", password: "NewStr0ng1" },
         { "x-forwarded-for": "1.1.1.1" },
       ),
     );
     expect(res.status).toBe(200);
+  });
+
+  it("rejects weak passwords during reset", async () => {
+    await registerPOST(
+      makeRequest({
+        customerId: "cust1",
+        email: "test@example.com",
+        password: "Str0ngPass1",
+      }),
+    );
+
+    await requestPOST(makeRequest({ email: "test@example.com" }));
+    const { getUserById } = await import("../src/app/userStore");
+    const token = (await getUserById("cust1"))!.resetToken as string;
+
+    const res = await completePOST(
+      makeRequest({
+        customerId: "cust1",
+        token,
+        password: "weakpass",
+      }),
+    );
+    expect(res.status).toBe(400);
   });
 });

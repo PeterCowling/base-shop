@@ -1,5 +1,6 @@
 // apps/shop-abc/__tests__/registerApi.test.ts
 const USER_STORE: Record<string, any> = {};
+const PROFILE_STORE: Record<string, any> = {};
 
 jest.mock("@platform-core/users", () => ({
   __esModule: true,
@@ -10,6 +11,19 @@ jest.mock("@platform-core/users", () => ({
   getUserByEmail: jest.fn(async (email: string) =>
     Object.values(USER_STORE).find((u: any) => u.email === email) ?? null,
   ),
+}));
+
+const getCustomerSession = jest.fn();
+const validateCsrfToken = jest.fn().mockResolvedValue(true);
+jest.mock("@auth", () => ({ __esModule: true, getCustomerSession, validateCsrfToken }));
+
+jest.mock("@acme/platform-core/customerProfiles", () => ({
+  __esModule: true,
+  updateCustomerProfile: jest.fn(async (id: string, data: any) => {
+    PROFILE_STORE[id] = { customerId: id, ...data };
+    return PROFILE_STORE[id];
+  }),
+  getCustomerProfile: jest.fn(async (id: string) => PROFILE_STORE[id] ?? null),
 }));
 
 jest.mock("@upstash/redis", () => ({
@@ -28,10 +42,17 @@ jest.mock("next/server", () => ({
 }));
 
 import { POST } from "../src/app/register/route";
+import { GET as profileGET } from "../src/app/api/account/profile/route";
+import { updateCustomerProfile } from "@acme/platform-core/customerProfiles";
+import { getCustomerSession as getSession, validateCsrfToken as validateToken } from "@auth";
 
 describe("/register POST", () => {
   afterEach(() => {
     for (const key of Object.keys(USER_STORE)) delete USER_STORE[key];
+    for (const key of Object.keys(PROFILE_STORE)) delete PROFILE_STORE[key];
+    getSession.mockReset();
+    validateToken.mockReset();
+    validateToken.mockResolvedValue(true);
   });
 
   it("rejects weak passwords", async () => {
@@ -41,7 +62,7 @@ describe("/register POST", () => {
         email: "user@example.com",
         password: "password",
       }),
-      headers: new Headers(),
+      headers: new Headers({ "x-csrf-token": "tok" }),
     } as any;
     const res = await POST(req);
     expect(res.status).toBe(400);
@@ -56,7 +77,7 @@ describe("/register POST", () => {
         email: "user@example.com",
         password: "Str0ngPass",
       }),
-      headers: new Headers(),
+      headers: new Headers({ "x-csrf-token": "tok" }),
     } as any;
     const res = await POST(req);
     expect(res.status).toBe(200);
@@ -71,12 +92,40 @@ describe("/register POST", () => {
         email: "user@example.com",
         password: "Str0ngPass",
       }),
-      headers: new Headers(),
+      headers: new Headers({ "x-csrf-token": "tok" }),
     } as any;
     const first = await POST(req);
     expect(first.status).toBe(200);
     const second = await POST(req);
     expect(second.status).toBe(400);
     expect(await second.json()).toEqual({ error: "User already exists" });
+  });
+
+  it("initializes profile and can be fetched", async () => {
+    const req = {
+      json: async () => ({
+        customerId: "newuser",
+        email: "user@example.com",
+        password: "Str0ngPass",
+      }),
+      headers: new Headers({ "x-csrf-token": "tok" }),
+    } as any;
+    const res = await POST(req);
+    expect(res.status).toBe(200);
+    expect(updateCustomerProfile).toHaveBeenCalledWith("newuser", {
+      name: "",
+      email: "user@example.com",
+    });
+    getSession.mockResolvedValue({ customerId: "newuser" });
+    const profileRes = await profileGET();
+    expect(profileRes.status).toBe(200);
+    expect(await profileRes.json()).toEqual({
+      ok: true,
+      profile: {
+        customerId: "newuser",
+        name: "",
+        email: "user@example.com",
+      },
+    });
   });
 });

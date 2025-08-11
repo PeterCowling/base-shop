@@ -24,6 +24,7 @@ describe("AddToCartButton", () => {
   it("adds items to the cart", async () => {
     const size = PRODUCTS[0].sizes[0];
     const id = `${PRODUCTS[0].id}:${size}`;
+    const quantity = 2;
     global.fetch = jest
       .fn()
       // initial GET
@@ -31,12 +32,14 @@ describe("AddToCartButton", () => {
       // POST
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ cart: { [id]: { sku: PRODUCTS[0], qty: 1, size } } }),
+        json: async () => ({
+          cart: { [id]: { sku: PRODUCTS[0], qty: quantity, size } },
+        }),
       });
 
     render(
       <CartProvider>
-        <AddToCartButton sku={PRODUCTS[0]} size={size} />
+        <AddToCartButton sku={PRODUCTS[0]} size={size} quantity={quantity} />
         <Qty />
       </CartProvider>
     );
@@ -47,7 +50,9 @@ describe("AddToCartButton", () => {
     fireEvent.click(btn);
 
     await waitFor(() =>
-      expect(screen.getByTestId("qty").textContent).toBe("1")
+      expect(screen.getByTestId("qty").textContent).toBe(
+        quantity.toString()
+      )
     );
   });
 

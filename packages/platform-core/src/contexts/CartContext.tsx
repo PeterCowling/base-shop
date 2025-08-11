@@ -16,7 +16,7 @@ import {
  * Action types
  * ------------------------------------------------------------------ */
 type Action =
-  | { type: "add"; sku: SKU; size?: string }
+  | { type: "add"; sku: SKU; size?: string; qty?: number }
   | { type: "remove"; id: string }
   | { type: "setQty"; id: string; qty: number };
 
@@ -109,7 +109,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
           throw new Error("Size is required");
         }
         method = "POST";
-        body = { sku: { id: action.sku.id }, qty: 1, size: action.size };
+        body = {
+          sku: { id: action.sku.id },
+          qty: action.qty ?? 1,
+          size: action.size,
+        };
         break;
       case "remove":
         method = "DELETE";

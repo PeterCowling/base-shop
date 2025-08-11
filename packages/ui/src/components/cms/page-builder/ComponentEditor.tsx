@@ -91,6 +91,33 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "FAQBlock":
       specific = <FAQBlockEditor component={component} onChange={onChange} />;
       break;
+    case "CountdownTimer":
+      specific = (
+        <>
+          <Input
+            label="Target Date"
+            type="datetime-local"
+            value={(component as any).targetDate ?? ""}
+            onChange={(e) => handleInput("targetDate", e.target.value)}
+          />
+          <Input
+            label="Timezone"
+            value={(component as any).timezone ?? ""}
+            onChange={(e) => handleInput("timezone", e.target.value)}
+          />
+          <Input
+            label="Completion Text"
+            value={(component as any).completionText ?? ""}
+            onChange={(e) => handleInput("completionText", e.target.value)}
+          />
+          <Input
+            label="Styles"
+            value={(component as any).styles ?? ""}
+            onChange={(e) => handleInput("styles", e.target.value)}
+          />
+        </>
+      );
+      break;
     case "Header":
       specific = <HeaderEditor component={component} onChange={onChange} />;
       break;

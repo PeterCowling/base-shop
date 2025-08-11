@@ -1,4 +1,10 @@
-import { createCustomerSession, getCustomerSession, CUSTOMER_SESSION_COOKIE } from "../src/session";
+import {
+  createCustomerSession,
+  getCustomerSession,
+  CUSTOMER_SESSION_COOKIE,
+  listCustomerSessions,
+  revokeSession,
+} from "../src/session";
 import type { Role } from "../src/types";
 
 const mockCookies = jest.fn();
@@ -37,7 +43,9 @@ describe("customer session", () => {
     });
 
     store.get.mockReturnValue({ value });
-    await expect(getCustomerSession()).resolves.toEqual(session);
+    const result = await getCustomerSession();
+    expect(result).toMatchObject({ customerId: session.customerId, role: session.role });
+    expect(result?.sessionId).toBeDefined();
   });
 
   it("rejects tampered tokens", async () => {
@@ -61,5 +69,18 @@ describe("customer session", () => {
     store.get.mockReturnValue({ value: token });
     await expect(getCustomerSession()).resolves.toBeNull();
     nowSpy.mockRestore();
+  });
+
+  it("lists and revokes sessions", async () => {
+    const store = { get: jest.fn(), set: jest.fn(), delete: jest.fn() };
+    mockCookies.mockResolvedValue(store);
+    const session = { customerId: "abc", role: "customer" as Role };
+    await createCustomerSession(session, "agent");
+    const token = store.set.mock.calls[0][1] as string;
+    const payload = JSON.parse(Buffer.from(token.split(".")[0], "base64url").toString("utf8"));
+    const sessions = listCustomerSessions(session.customerId);
+    expect(sessions.length).toBe(1);
+    revokeSession(payload.sessionId);
+    expect(listCustomerSessions(session.customerId).length).toBe(0);
   });
 });

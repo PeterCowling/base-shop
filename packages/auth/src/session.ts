@@ -1,14 +1,29 @@
 // packages/auth/src/session.ts
 import { cookies } from "next/headers";
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual, randomBytes } from "node:crypto";
 import type { Role } from "./types";
 
 export const CUSTOMER_SESSION_COOKIE = "customer_session";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // one week
 
+interface StoredSession {
+  customerId: string;
+  role: Role;
+  userAgent?: string;
+  createdAt: number;
+}
+
+const sessionStore = new Map<string, StoredSession>();
+
 export interface CustomerSession {
   customerId: string;
   role: Role;
+  sessionId: string;
+}
+
+export interface ActiveSession extends CustomerSession {
+  userAgent?: string;
+  createdAt: number;
 }
 
 function encode(payload: unknown): string {
@@ -50,19 +65,35 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
     return null;
   }
 
-  const { customerId, role } = payload;
-  return { customerId, role };
+  const { sessionId, customerId, role } = payload;
+  const record = sessionStore.get(sessionId);
+  if (!record || record.customerId !== customerId) {
+    return null;
+  }
+
+  return { sessionId, customerId, role };
 }
 
-export async function createCustomerSession(session: CustomerSession): Promise<void> {
+export async function createCustomerSession(
+  session: { customerId: string; role: Role },
+  userAgent = "unknown",
+): Promise<void> {
   const store = await cookies();
   const secret = process.env.SESSION_SECRET;
   if (!secret) {
     throw new Error("SESSION_SECRET is not set");
   }
 
+  const sessionId = randomBytes(16).toString("hex");
+  sessionStore.set(sessionId, {
+    customerId: session.customerId,
+    role: session.role,
+    userAgent,
+    createdAt: Date.now(),
+  });
+
   const exp = Date.now() + SESSION_TTL_MS;
-  const encoded = encode({ ...session, exp });
+  const encoded = encode({ ...session, sessionId, exp });
   const signature = sign(encoded, secret);
   const token = `${encoded}.${signature}`;
 
@@ -77,5 +108,39 @@ export async function createCustomerSession(session: CustomerSession): Promise<v
 
 export async function destroyCustomerSession(): Promise<void> {
   const store = await cookies();
+  const token = store.get(CUSTOMER_SESSION_COOKIE)?.value;
+  if (token) {
+    const [encoded] = token.split(".");
+    try {
+      const payload = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8"));
+      if (payload.sessionId) {
+        sessionStore.delete(payload.sessionId);
+      }
+    } catch {
+      // ignore
+    }
+  }
   store.delete(CUSTOMER_SESSION_COOKIE);
 }
+
+export function listCustomerSessions(customerId: string): ActiveSession[] {
+  const sessions: ActiveSession[] = [];
+  for (const [id, s] of sessionStore.entries()) {
+    if (s.customerId === customerId) {
+      sessions.push({
+        sessionId: id,
+        customerId: s.customerId,
+        role: s.role,
+        userAgent: s.userAgent,
+        createdAt: s.createdAt,
+      });
+    }
+  }
+  return sessions;
+}
+
+export function revokeSession(sessionId: string): void {
+  sessionStore.delete(sessionId);
+}
+
+export { sessionStore };

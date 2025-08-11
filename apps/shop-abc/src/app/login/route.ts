@@ -52,7 +52,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized role" }, { status: 403 });
   }
 
-  await createCustomerSession(valid);
+  await createCustomerSession(valid, req.headers.get("user-agent") ?? "unknown");
 
   return NextResponse.json({ ok: true });
 }

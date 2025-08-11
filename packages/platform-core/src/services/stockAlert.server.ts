@@ -6,15 +6,18 @@ import { sendEmail } from "@acme/email";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import type { InventoryItem } from "@acme/types";
+import { z } from "zod";
 
 const LOG_FILE = "stock-alert-log.json";
 const SUPPRESS_HOURS = 24; // suppress repeat alerts for a day
+const logSchema = z.record(z.string(), z.number());
 
 async function readLog(shop: string): Promise<Record<string, number>> {
   try {
     const p = path.join(DATA_ROOT, shop, LOG_FILE);
     const buf = await fs.readFile(p, "utf8");
-    return JSON.parse(buf) as Record<string, number>;
+    const parsed = logSchema.safeParse(JSON.parse(buf));
+    return parsed.success ? parsed.data : {};
   } catch {
     return {};
   }

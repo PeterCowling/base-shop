@@ -4,8 +4,8 @@
 import { useFormState } from "react-dom";
 import { useState, useEffect } from "react";
 import { Button, Input, Switch, Textarea, Toast } from "@ui";
-import { PRODUCTS } from "@/lib/products";
 import { slugify } from "@acme/shared-utils";
+import type { SKU } from "@acme/types";
 import {
   EditorProvider,
   PortableTextEditable,
@@ -60,11 +60,49 @@ const schema = defineSchema({
   ],
 });
 
+function ProductPreview({ slug }: { slug: string }) {
+  const [product, setProduct] = useState<SKU | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    async function load() {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/products?slug=${encodeURIComponent(slug)}`);
+        if (!res.ok) throw new Error("Failed to load product");
+        const data: SKU = await res.json();
+        if (active) {
+          setProduct(data);
+          setError(null);
+        }
+      } catch {
+        if (active) setError("Failed to load product");
+      } finally {
+        if (active) setLoading(false);
+      }
+    }
+    load();
+    return () => {
+      active = false;
+    };
+  }, [slug]);
+
+  if (loading) return <div className="border p-2">Loading…</div>;
+  if (error || !product)
+    return <div className="border p-2 text-red-500">{error ?? "Not found"}</div>;
+  return (
+    <div className="border p-2 space-y-1">
+      <div className="font-semibold">{product.title}</div>
+      <div>{(product.price / 100).toFixed(2)}</div>
+    </div>
+  );
+}
+
 const previewComponents = {
   types: {
-    productReference: ({ value }: any) => (
-      <div className="border p-2">Product: {value.slug}</div>
-    ),
+    productReference: ({ value }: any) => <ProductPreview slug={value.slug} />,
     embed: ({ value }: any) => (
       <div className="aspect-video">
         <iframe src={value.url} className="h-full w-full" />
@@ -147,13 +185,38 @@ function Toolbar() {
 function ProductSearch({
   query,
   setQuery,
-  matches,
 }: {
   query: string;
   setQuery: (v: string) => void;
-  matches: typeof PRODUCTS;
 }) {
   const editor = useEditor();
+  const [matches, setMatches] = useState<SKU[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!query) {
+      setMatches([]);
+      setError(null);
+      return;
+    }
+    const handle = setTimeout(async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/products?q=${encodeURIComponent(query)}`);
+        if (!res.ok) throw new Error("Failed to load products");
+        const data: SKU[] = await res.json();
+        setMatches(data);
+        setError(null);
+      } catch {
+        setError("Failed to load products");
+      } finally {
+        setLoading(false);
+      }
+    }, 300);
+    return () => clearTimeout(handle);
+  }, [query]);
+
   return (
     <div className="space-y-1">
       <Input
@@ -161,7 +224,9 @@ function ProductSearch({
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      {query && (
+      {loading && <div>Loading…</div>}
+      {error && <div className="text-red-500">{error}</div>}
+      {query && !loading && !error && (
         <ul className="space-y-1">
           {matches.map((p) => (
             <li key={p.slug}>
@@ -200,9 +265,6 @@ export default function PostForm({ action, submitLabel, post }: Props) {
         : [],
   );
   const [query, setQuery] = useState("");
-  const matches = PRODUCTS.filter((p) =>
-    p.title.toLowerCase().includes(query.toLowerCase()),
-  ).slice(0, 5);
 
   return (
     <div className="space-y-4">
@@ -246,11 +308,7 @@ export default function PostForm({ action, submitLabel, post }: Props) {
             />
             <Toolbar />
             <PortableTextEditable className="min-h-[200px] rounded border p-2" />
-            <ProductSearch
-              query={query}
-              setQuery={setQuery}
-              matches={matches}
-            />
+            <ProductSearch query={query} setQuery={setQuery} />
           </EditorProvider>
         </div>
         <input

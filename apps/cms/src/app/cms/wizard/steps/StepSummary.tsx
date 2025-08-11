@@ -29,6 +29,7 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
+  onComplete: () => void;
   creating: boolean;
   submit: () => void;
   errors?: Record<string, string[]>;
@@ -55,6 +56,7 @@ export default function StepSummary({
   themeStyle,
   onBack,
   onNext,
+  onComplete,
   creating,
   submit,
   errors = {},
@@ -160,7 +162,14 @@ export default function StepSummary({
         <Button disabled={creating} onClick={submit} className="ml-auto">
           {creating ? "Creating…" : "Create Shop"}
         </Button>
-        <Button onClick={onNext}>Next</Button>
+        <Button
+          onClick={() => {
+            onComplete();
+            onNext();
+          }}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

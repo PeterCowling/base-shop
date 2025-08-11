@@ -7,12 +7,14 @@ interface Props {
   themeStyle: React.CSSProperties;
   onBack: () => void;
   onNext: () => void;
+  onComplete: () => void;
 }
 
 export default function StepTokens({
   themeStyle,
   onBack,
   onNext,
+  onComplete,
 }: Props): React.JSX.Element {
   return (
     <div className="space-y-4">
@@ -22,7 +24,14 @@ export default function StepTokens({
         <Button variant="outline" onClick={onBack}>
           Back
         </Button>
-        <Button onClick={onNext}>Next</Button>
+        <Button
+          onClick={() => {
+            onComplete();
+            onNext();
+          }}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

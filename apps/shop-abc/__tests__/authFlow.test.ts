@@ -67,7 +67,7 @@ describe("auth flows", () => {
       makeRequest({
         customerId: "cust1",
         email: "test@example.com",
-        password: "pass1",
+        password: "Passw0rd1!",
       }),
     );
     expect(res.status).toBe(200);
@@ -76,14 +76,14 @@ describe("auth flows", () => {
       makeRequest({
         customerId: "cust2",
         email: "test@example.com",
-        password: "pass2",
+        password: "Passw0rd2!",
       }),
     );
     expect(dup.status).toBe(400);
 
     res = await loginPOST(
       makeRequest(
-        { customerId: "cust1", password: "pass1" },
+        { customerId: "cust1", password: "Passw0rd1!" },
         { "x-forwarded-for": "1.1.1.1" },
       ),
     );
@@ -97,14 +97,14 @@ describe("auth flows", () => {
       makeRequest({
         customerId: "cust1",
         token,
-        password: "newpass",
+        password: "BetterP4ss!",
       }),
     );
     expect(res.status).toBe(200);
 
     res = await loginPOST(
       makeRequest(
-        { customerId: "cust1", password: "pass1" },
+        { customerId: "cust1", password: "Passw0rd1!" },
         { "x-forwarded-for": "1.1.1.1" },
       ),
     );
@@ -112,7 +112,7 @@ describe("auth flows", () => {
 
     res = await loginPOST(
       makeRequest(
-        { customerId: "cust1", password: "newpass" },
+        { customerId: "cust1", password: "BetterP4ss!" },
         { "x-forwarded-for": "1.1.1.1" },
       ),
     );

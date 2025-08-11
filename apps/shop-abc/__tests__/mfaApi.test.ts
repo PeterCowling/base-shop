@@ -36,6 +36,13 @@ describe("/api/mfa/enroll POST", () => {
     expect(res.status).toBe(403);
   });
 
+  it("returns 401 when unauthenticated", async () => {
+    (getCustomerSession as jest.Mock).mockResolvedValue(null);
+    const req = { headers: new Headers({ "x-csrf-token": "tok" }) } as any;
+    const res = await enrollPost(req);
+    expect(res.status).toBe(401);
+  });
+
   it("returns enrollment data", async () => {
     (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "cust1" });
     (validateCsrfToken as jest.Mock).mockResolvedValue(true);
@@ -64,6 +71,27 @@ describe("/api/mfa/verify POST", () => {
     expect(res.status).toBe(403);
   });
 
+  it("returns 401 when unauthenticated", async () => {
+    (getCustomerSession as jest.Mock).mockResolvedValue(null);
+    const req = {
+      headers: new Headers({ "x-csrf-token": "tok" }),
+      json: async () => ({ token: "123" }),
+    } as any;
+    const res = await verifyPost(req);
+    expect(res.status).toBe(401);
+  });
+
+  it("returns 400 when token missing", async () => {
+    (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "cust1" });
+    (validateCsrfToken as jest.Mock).mockResolvedValue(true);
+    const req = {
+      headers: new Headers({ "x-csrf-token": "tok" }),
+      json: async () => ({ token: undefined }),
+    } as any;
+    const res = await verifyPost(req);
+    expect(res.status).toBe(400);
+  });
+
   it("returns verification result", async () => {
     (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "cust1" });
     (validateCsrfToken as jest.Mock).mockResolvedValue(true);
@@ -75,5 +103,18 @@ describe("/api/mfa/verify POST", () => {
     const res = await verifyPost(req);
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ verified: true });
+  });
+
+  it("handles failed verification", async () => {
+    (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "cust1" });
+    (validateCsrfToken as jest.Mock).mockResolvedValue(true);
+    (verifyMfa as jest.Mock).mockResolvedValue(false);
+    const req = {
+      headers: new Headers({ "x-csrf-token": "tok" }),
+      json: async () => ({ token: "000" }),
+    } as any;
+    const res = await verifyPost(req);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ verified: false });
   });
 });

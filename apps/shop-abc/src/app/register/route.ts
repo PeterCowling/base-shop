@@ -9,10 +9,16 @@ import {
 } from "@platform-core/users";
 import { checkRegistrationRateLimit } from "../../middleware";
 
+const PasswordSchema = z
+  .string()
+  .min(8)
+  .regex(/[A-Za-z]/, "Password must include a letter")
+  .regex(/[0-9]/, "Password must include a number");
+
 const RegisterSchema = z.object({
   customerId: z.string(),
   email: z.string().email(),
-  password: z.string(),
+  password: PasswordSchema,
 });
 
 export async function POST(req: Request) {

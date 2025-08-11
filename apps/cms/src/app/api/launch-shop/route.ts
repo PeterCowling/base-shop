@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import type { WizardState } from "../../cms/wizard/schema";
 
 export type StepStatus = "pending" | "success" | "failure";
@@ -7,6 +6,13 @@ interface LaunchRequest {
   shopId: string;
   state: WizardState;
   seed?: boolean;
+}
+
+interface StreamMessage {
+  step?: keyof LaunchStatuses;
+  status?: StepStatus;
+  error?: string;
+  done?: boolean;
 }
 
 interface LaunchStatuses {
@@ -20,78 +26,89 @@ export async function POST(req: Request) {
   const body = (await req.json()) as LaunchRequest;
   const { shopId, state, seed } = body;
 
-  const statuses: LaunchStatuses = {
-    create: "pending",
-    init: "pending",
-    deploy: "pending",
-    ...(seed ? { seed: "pending" as StepStatus } : {}),
-  };
-
   const host = req.headers.get("host");
   const protocol = req.headers.get("x-forwarded-proto") || "http";
   const base = `${protocol}://${host}`;
 
-  const originalFetch = globalThis.fetch;
-  globalThis.fetch = ((input: any, init?: RequestInit) => {
-    if (typeof input === "string" && input.startsWith("/")) {
-      input = base + input;
-    } else if (input instanceof URL && input.pathname.startsWith("/")) {
-      input = new URL(input, base).toString();
-    }
-    return originalFetch(input, init);
-  }) as typeof fetch;
+  const encoder = new TextEncoder();
 
-  try {
-    const { createShop } = await import("../../cms/wizard/services/createShop");
-    const createRes = await createShop(shopId, state);
-    statuses.create = createRes.ok ? "success" : "failure";
-    if (!createRes.ok) {
-      return NextResponse.json(
-        { statuses, error: createRes.error },
-        { status: 400 }
-      );
-    }
+  const stream = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      const originalFetch = globalThis.fetch;
+      globalThis.fetch = ((input: any, init?: RequestInit) => {
+        if (typeof input === "string" && input.startsWith("/")) {
+          input = base + input;
+        } else if (input instanceof URL && input.pathname.startsWith("/")) {
+          input = new URL(input, base).toString();
+        }
+        return originalFetch(input, init);
+      }) as typeof fetch;
 
-    const { initShop } = await import("../../cms/wizard/services/initShop");
-    const initRes = await initShop(shopId, undefined, state.categoriesText);
-    statuses.init = initRes.ok ? "success" : "failure";
-    if (!initRes.ok) {
-      return NextResponse.json(
-        { statuses, error: initRes.error },
-        { status: 400 }
-      );
-    }
-
-    const { deployShop } = await import("../../cms/wizard/services/deployShop");
-    const deployRes = await deployShop(shopId, state.domain ?? "");
-    statuses.deploy = deployRes.ok ? "success" : "failure";
-    if (!deployRes.ok) {
-      return NextResponse.json(
-        { statuses, error: deployRes.error },
-        { status: 400 }
-      );
-    }
-
-    if (seed) {
-      const { seedShop } = await import("../../cms/wizard/services/seedShop");
-      const seedRes = await seedShop(shopId, undefined, state.categoriesText);
-      statuses.seed = seedRes.ok ? "success" : "failure";
-      if (!seedRes.ok) {
-        return NextResponse.json(
-          { statuses, error: seedRes.error },
-          { status: 400 }
+      const send = (msg: StreamMessage) => {
+        controller.enqueue(
+          encoder.encode(`data: ${JSON.stringify(msg)}\n\n`)
         );
-      }
-    }
+      };
 
-    return NextResponse.json({ statuses });
-  } catch (err) {
-    return NextResponse.json(
-      { statuses, error: (err as Error).message },
-      { status: 500 }
-    );
-  } finally {
-    globalThis.fetch = originalFetch;
-  }
+      const update = async (
+        step: keyof LaunchStatuses,
+        fn: () => Promise<{ ok: boolean; error?: string }>
+      ) => {
+        send({ step, status: "pending" });
+        const res = await fn();
+        send({ step, status: res.ok ? "success" : "failure", error: res.error });
+        return res.ok;
+      };
+
+      try {
+        const { createShop } = await import(
+          "../../cms/wizard/services/createShop"
+        );
+        const okCreate = await update("create", () => createShop(shopId, state));
+        if (!okCreate) return;
+
+        const { initShop } = await import(
+          "../../cms/wizard/services/initShop"
+        );
+        const okInit = await update("init", () =>
+          initShop(shopId, undefined, state.categoriesText)
+        );
+        if (!okInit) return;
+
+        const { deployShop } = await import(
+          "../../cms/wizard/services/deployShop"
+        );
+        const okDeploy = await update("deploy", () =>
+          deployShop(shopId, state.domain ?? "")
+        );
+        if (!okDeploy) return;
+
+        if (seed) {
+          const { seedShop } = await import(
+            "../../cms/wizard/services/seedShop"
+          );
+          const okSeed = await update("seed", () =>
+            seedShop(shopId, undefined, state.categoriesText)
+          );
+          if (!okSeed) return;
+        }
+
+        send({ done: true });
+      } catch (err) {
+        send({ step: undefined, status: "failure", error: (err as Error).message });
+      } finally {
+        globalThis.fetch = originalFetch;
+        controller.close();
+      }
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+    },
+  });
 }
 

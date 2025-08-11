@@ -7,10 +7,17 @@ export default function RegisterPage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
+    const password = (form.elements.namedItem("password") as HTMLInputElement).value;
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
+      setMsg(
+        "Password must be at least 8 characters and include uppercase, lowercase, and number",
+      );
+      return;
+    }
     const body = {
       customerId: (form.elements.namedItem("customerId") as HTMLInputElement).value,
       email: (form.elements.namedItem("email") as HTMLInputElement).value,
-      password: (form.elements.namedItem("password") as HTMLInputElement).value,
+      password,
     };
     const res = await fetch("/register", {
       method: "POST",
@@ -24,7 +31,14 @@ export default function RegisterPage() {
     <form onSubmit={handleSubmit} className="space-y-2">
       <input name="customerId" placeholder="User ID" className="border p-1" />
       <input name="email" type="email" placeholder="Email" className="border p-1" />
-      <input name="password" type="password" placeholder="Password" className="border p-1" />
+      <input
+        name="password"
+        type="password"
+        placeholder="Password"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$"
+        title="Password must be at least 8 characters and include uppercase, lowercase, and number"
+        className="border p-1"
+      />
       <button type="submit" className="border px-2 py-1">Register</button>
       {msg && <p>{msg}</p>}
     </form>

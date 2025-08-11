@@ -8,7 +8,7 @@ import {
   checkLoginRateLimit,
   clearLoginAttempts,
 } from "../../middleware";
-import { getUserById } from "@platform-core/users";
+import { getUserById } from "../userStore";
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 

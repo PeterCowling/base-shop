@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { getUserByResetToken, updatePassword } from "@platform-core/users";
+import { getUserByResetToken, updatePassword } from "../../../../userStore";
 
 const schema = z.object({
   token: z.string(),

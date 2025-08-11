@@ -46,6 +46,7 @@ packages/ui/src/**/*.d.ts.map
 *.pem
 *.tsbuildinfo
 next-env.d.ts
+data/users.json
 
 # ---------------------------
 # Debug logs

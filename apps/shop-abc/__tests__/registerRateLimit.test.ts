@@ -3,8 +3,8 @@ jest.mock("@upstash/redis", () => ({
   Redis: jest.fn(() => ({})),
 }));
 
-jest.mock("@platform-core/users", () => ({
-  createUser: jest.fn().mockResolvedValue(undefined),
+jest.mock("../src/app/userStore", () => ({
+  addUser: jest.fn().mockResolvedValue(undefined),
   getUserById: jest.fn().mockResolvedValue(null),
   getUserByEmail: jest.fn().mockResolvedValue(null),
 }));
@@ -49,7 +49,7 @@ describe("registration rate limiting", () => {
         makeRequest({
           customerId: `cust${i}`,
           email: `test${i}@example.com`,
-          password: "pw",
+          password: "Str0ngPass",
         }),
       );
       expect(res.status).toBe(200);
@@ -59,7 +59,7 @@ describe("registration rate limiting", () => {
       makeRequest({
         customerId: "cust-final",
         email: "final@example.com",
-        password: "pw",
+        password: "Str0ngPass",
       }),
     );
     expect(locked.status).toBe(429);
@@ -68,7 +68,7 @@ describe("registration rate limiting", () => {
       makeRequest({
         customerId: "cust-other",
         email: "other@example.com",
-        password: "pw",
+        password: "Str0ngPass",
       }),
     );
     expect(stillLocked.status).toBe(429);

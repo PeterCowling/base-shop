@@ -1,15 +1,19 @@
 // apps/shop-abc/__tests__/registerApi.test.ts
 const USER_STORE: Record<string, any> = {};
 
-jest.mock("@platform-core/users", () => ({
+jest.mock("../src/app/userStore", () => ({
   __esModule: true,
-  createUser: jest.fn(async ({ id, email, passwordHash }) => {
+  addUser: jest.fn(async ({ id, email, passwordHash }) => {
     USER_STORE[id] = { id, email, passwordHash };
   }),
   getUserById: jest.fn(async (id: string) => USER_STORE[id] ?? null),
   getUserByEmail: jest.fn(async (email: string) =>
     Object.values(USER_STORE).find((u: any) => u.email === email) ?? null,
   ),
+}));
+
+jest.mock("@auth", () => ({
+  validateCsrfToken: jest.fn().mockResolvedValue(true),
 }));
 
 jest.mock("@upstash/redis", () => ({
@@ -41,7 +45,7 @@ describe("/register POST", () => {
         email: "user@example.com",
         password: "password",
       }),
-      headers: new Headers(),
+      headers: new Headers({ "x-csrf-token": "tok" }),
     } as any;
     const res = await POST(req);
     expect(res.status).toBe(400);
@@ -56,7 +60,7 @@ describe("/register POST", () => {
         email: "user@example.com",
         password: "Str0ngPass",
       }),
-      headers: new Headers(),
+      headers: new Headers({ "x-csrf-token": "tok" }),
     } as any;
     const res = await POST(req);
     expect(res.status).toBe(200);
@@ -71,7 +75,7 @@ describe("/register POST", () => {
         email: "user@example.com",
         password: "Str0ngPass",
       }),
-      headers: new Headers(),
+      headers: new Headers({ "x-csrf-token": "tok" }),
     } as any;
     const first = await POST(req);
     expect(first.status).toBe(200);

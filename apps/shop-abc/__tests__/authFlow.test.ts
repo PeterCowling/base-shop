@@ -17,12 +17,12 @@ jest.mock("@lib/email", () => ({
 
 const store: Record<string, any> = {};
 
-jest.mock("@platform-core/users", () => ({
+jest.mock("../src/app/userStore", () => ({
   getUserById: jest.fn(async (id: string) => store[id] ?? null),
   getUserByEmail: jest.fn(async (email: string) =>
     Object.values(store).find((u: any) => u.email === email) ?? null,
   ),
-  createUser: jest.fn(async ({
+  addUser: jest.fn(async ({
     id,
     email,
     passwordHash,
@@ -35,6 +35,9 @@ jest.mock("@platform-core/users", () => ({
   setResetToken: jest.fn(async (id: string, token: string | null) => {
     if (store[id]) store[id].resetToken = token;
   }),
+  getUserByResetToken: jest.fn(async (token: string) =>
+    Object.values(store).find((u: any) => u.resetToken === token) ?? null,
+  ),
   updatePassword: jest.fn(async (id: string, hash: string) => {
     if (store[id]) {
       store[id].passwordHash = hash;
@@ -95,7 +98,7 @@ describe("auth flows", () => {
     expect(res.status).toBe(200);
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
-    const { getUserById } = await import("@platform-core/users");
+    const { getUserById } = await import("../src/app/userStore");
     const token = (await getUserById("cust1"))!.resetToken as string;
 
     res = await completePOST(

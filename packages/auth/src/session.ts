@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import type { Role } from "./types";
 
 export const CUSTOMER_SESSION_COOKIE = "customer_session";
+export const CSRF_TOKEN_COOKIE = "csrf_token";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // one week
 const SESSION_TTL_S = Math.floor(SESSION_TTL_MS / 1000);
 
@@ -29,6 +30,17 @@ const activeSessions = new Map<string, SessionRecord>();
 function cookieOptions() {
   return {
     httpOnly: true,
+    sameSite: "strict" as const,
+    secure: true,
+    path: "/",
+    maxAge: SESSION_TTL_S,
+    domain: process.env.COOKIE_DOMAIN,
+  };
+}
+
+function csrfCookieOptions() {
+  return {
+    httpOnly: false,
     sameSite: "strict" as const,
     secure: true,
     path: "/",
@@ -63,6 +75,10 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
     ttl: SESSION_TTL_S,
   });
   store.set(CUSTOMER_SESSION_COOKIE, newToken, cookieOptions());
+  if (!store.get(CSRF_TOKEN_COOKIE)) {
+    const csrf = randomUUID();
+    store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions());
+  }
   const ua = headers().get("user-agent") ?? "unknown";
   activeSessions.set(session.sessionId, {
     sessionId: session.sessionId,
@@ -90,6 +106,8 @@ export async function createCustomerSession(sessionData: CustomerSession): Promi
     ttl: SESSION_TTL_S,
   });
   store.set(CUSTOMER_SESSION_COOKIE, token, cookieOptions());
+  const csrf = randomUUID();
+  store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions());
   const ua = headers().get("user-agent") ?? "unknown";
   activeSessions.set(session.sessionId, {
     sessionId: session.sessionId,
@@ -118,6 +136,10 @@ export async function destroyCustomerSession(): Promise<void> {
     path: "/",
     domain: process.env.COOKIE_DOMAIN,
   });
+  store.delete(CSRF_TOKEN_COOKIE, {
+    path: "/",
+    domain: process.env.COOKIE_DOMAIN,
+  });
 }
 
 export function listSessions(customerId: string): SessionRecord[] {
@@ -128,4 +150,11 @@ export function listSessions(customerId: string): SessionRecord[] {
 
 export function revokeSession(sessionId: string): void {
   activeSessions.delete(sessionId);
+}
+
+export async function validateCsrfToken(token: string | null): Promise<boolean> {
+  if (!token) return false;
+  const store = await cookies();
+  const cookie = store.get(CSRF_TOKEN_COOKIE)?.value;
+  return token === cookie;
 }

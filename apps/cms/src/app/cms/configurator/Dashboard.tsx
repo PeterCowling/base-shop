@@ -5,7 +5,8 @@ import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast, Tooltip } from "@/components/atoms";
-import type { WizardState } from "../wizard/schema";
+import { wizardStateSchema, type WizardState } from "../wizard/schema";
+import { useWizardPersistence } from "../wizard/hooks/useWizardPersistence";
 import { getRequiredSteps, getSteps, steps as configuratorSteps } from "./steps";
 
 const stepLinks: Record<string, string> = {
@@ -17,7 +18,7 @@ const stepLinks: Record<string, string> = {
 export type StepStatus = "idle" | "pending" | "success" | "failure";
 
 export default function ConfiguratorDashboard() {
-  const [state, setState] = useState<WizardState | null>(null);
+  const [state, setState] = useState<WizardState>(wizardStateSchema.parse({}));
   const [launchStatus, setLaunchStatus] = useState<
     Record<string, StepStatus> | null
   >(null);
@@ -33,8 +34,11 @@ export default function ConfiguratorDashboard() {
   const fetchState = useCallback(() => {
     fetch("/cms/api/wizard-progress")
       .then((res) => (res.ok ? res.json() : null))
-      .then((json) => setState(json))
-      .catch(() => setState(null));
+      .then((json) => {
+        if (!json) return;
+        setState((prev) => ({ ...prev, ...(json.state ?? json), completed: json.completed ?? {} }));
+      })
+      .catch(() => setState(wizardStateSchema.parse({})));
   }, []);
 
   useEffect(() => {
@@ -46,6 +50,7 @@ export default function ConfiguratorDashboard() {
     window.addEventListener("wizard:update", handler);
     return () => window.removeEventListener("wizard:update", handler);
   }, [fetchState]);
+  const markStepComplete = useWizardPersistence(state, setState);
   const stepList = useMemo(() => getSteps(), []);
   const missingRequired = getRequiredSteps().filter(
     (s) => !state?.completed?.[s.id]
@@ -57,21 +62,8 @@ export default function ConfiguratorDashboard() {
         .map((s) => s.label)
         .join(", ")}`;
 
-  const skipStep = async (stepId: string) => {
-    try {
-      await fetch("/cms/api/wizard-progress", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stepId, completed: true }),
-      });
-    } catch {
-      /* ignore network errors */
-    }
-    fetchState();
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("wizard:update"));
-    }
-  };
+  const skipStep = (stepId: string) => markStepComplete(stepId, true);
+  const resetStep = (stepId: string) => markStepComplete(stepId, false);
 
   const launchShop = async () => {
     if (!state?.shopId) return;
@@ -130,45 +122,95 @@ export default function ConfiguratorDashboard() {
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Configuration Steps</h2>
+      <h3 className="mb-2 font-medium">Required</h3>
       <ul className="mb-6 space-y-2">
-        {stepList.map((step) => {
-          const completed = Boolean(state?.completed?.[step.id]);
-          return (
-            <li key={step.id} className="flex items-center gap-2">
-              {completed ? (
-                <CheckCircledIcon className="h-4 w-4 text-green-600" />
-              ) : (
-                <CircleIcon className="h-4 w-4 text-gray-400" />
-              )}
-              <div className="flex items-center gap-1">
-                <Link
-                  href={`/cms/configurator/${step.id}`}
-                  className="underline"
-                >
-                  {step.label}
-                </Link>
-                {step.optional && (
-                  <span className="text-xs italic text-gray-500">
-                    (Optional)
-                  </span>
+        {stepList
+          .filter((s) => !s.optional)
+          .map((step) => {
+            const completed = Boolean(state?.completed?.[step.id]);
+            return (
+              <li key={step.id} className="flex items-center gap-2">
+                {completed ? (
+                  <CheckCircledIcon className="h-4 w-4 text-green-600" />
+                ) : (
+                  <CircleIcon className="h-4 w-4 text-gray-400" />
                 )}
-              </div>
-              <span className="text-xs text-gray-500">
-                {completed ? "Done" : "Pending"}
-              </span>
-              {step.optional && !completed && (
-                <button
-                  type="button"
-                  onClick={() => skipStep(step.id)}
-                  className="text-xs underline"
-                >
-                  Skip
-                </button>
-              )}
-            </li>
-          );
-        })}
+                <div className="flex items-center gap-1">
+                  <Link
+                    href={`/cms/configurator/${step.id}`}
+                    className="underline"
+                  >
+                    {step.label}
+                  </Link>
+                </div>
+                <span className="text-xs text-gray-500">
+                  {completed ? "Done" : "Pending"}
+                </span>
+                {completed && (
+                  <button
+                    type="button"
+                    onClick={() => resetStep(step.id)}
+                    className="text-xs underline"
+                  >
+                    Reset
+                  </button>
+                )}
+              </li>
+            );
+          })}
       </ul>
+      {stepList.some((s) => s.optional) && (
+        <>
+          <h3 className="mb-2 font-medium">Optional</h3>
+          <ul className="mb-6 space-y-2">
+            {stepList
+              .filter((s) => s.optional)
+              .map((step) => {
+                const completed = Boolean(state?.completed?.[step.id]);
+                return (
+                  <li key={step.id} className="flex items-center gap-2">
+                    {completed ? (
+                      <CheckCircledIcon className="h-4 w-4 text-green-600" />
+                    ) : (
+                      <CircleIcon className="h-4 w-4 text-gray-400" />
+                    )}
+                    <div className="flex items-center gap-1">
+                      <Link
+                        href={`/cms/configurator/${step.id}`}
+                        className="underline"
+                      >
+                        {step.label}
+                      </Link>
+                      <span className="text-xs italic text-gray-500">
+                        (Optional)
+                      </span>
+                    </div>
+                    <span className="text-xs text-gray-500">
+                      {completed ? "Done" : "Pending"}
+                    </span>
+                    {completed ? (
+                      <button
+                        type="button"
+                        onClick={() => resetStep(step.id)}
+                        className="text-xs underline"
+                      >
+                        Reset
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => skipStep(step.id)}
+                        className="text-xs underline"
+                      >
+                        Skip
+                      </button>
+                    )}
+                  </li>
+                );
+              })}
+          </ul>
+        </>
+      )}
       <Tooltip text={tooltipText}>
         <Button onClick={launchShop} disabled={!allRequiredDone}>
           Launch Shop

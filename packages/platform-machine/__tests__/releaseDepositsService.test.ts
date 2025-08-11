@@ -106,6 +106,34 @@ describe("releaseDepositsOnce", () => {
     expect(markRefunded).toHaveBeenNthCalledWith(1, "shop1", "s1");
     expect(markRefunded).toHaveBeenNthCalledWith(2, "shop2", "s3");
   });
+
+  it("logs and continues on errors", async () => {
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValue(["shop1"]);
+    readOrders.mockResolvedValue([
+      { sessionId: "s1", returnedAt: "now", deposit: 10 },
+      { sessionId: "s2", returnedAt: "now", deposit: 10 },
+    ]);
+    retrieve.mockResolvedValue({ payment_intent: "pi_1" });
+    createRefund
+      .mockRejectedValueOnce(new Error("fail"))
+      .mockResolvedValueOnce({});
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    await service.releaseDepositsOnce();
+
+    expect(retrieve).toHaveBeenCalledTimes(2);
+    expect(createRefund).toHaveBeenCalledTimes(2);
+    expect(markRefunded).toHaveBeenCalledTimes(1);
+    expect(markRefunded).toHaveBeenCalledWith("shop1", "s2");
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy.mock.calls[0][0]).toContain("s1");
+    expect(errorSpy.mock.calls[0][0]).toContain("shop1");
+
+    errorSpy.mockRestore();
+  });
 });
 
 describe("startDepositReleaseService", () => {

@@ -256,3 +256,33 @@ export async function updateCurrencyAndTax(
   await saveShopSettings(shop, updated);
   return { settings: updated };
 }
+
+const depositSchema = z
+  .object({
+    enabled: z.preprocess((v) => v === "on", z.boolean()),
+    interval: z.coerce.number().int().min(1, "Must be at least 1"),
+  })
+  .strict();
+
+export async function updateDepositService(
+  shop: string,
+  formData: FormData
+): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
+  await ensureAuthorized();
+  const parsed = depositSchema.safeParse(
+    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+  );
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+  const current = await getShopSettings(shop);
+  const updated: ShopSettings = {
+    ...current,
+    depositService: {
+      enabled: parsed.data.enabled,
+      interval: parsed.data.interval,
+    },
+  };
+  await saveShopSettings(shop, updated);
+  return { settings: updated };
+}

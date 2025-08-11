@@ -53,6 +53,11 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
         currency: parsed.data.currency ?? "EUR",
         taxRegion: parsed.data.taxRegion ?? "",
         ...parsed.data,
+        depositService: {
+          enabled: false,
+          interval: 60,
+          ...(parsed.data.depositService ?? {}),
+        },
       };
     }
   } catch {
@@ -65,6 +70,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     freezeTranslations: false,
     currency: "EUR",
     taxRegion: "",
+    depositService: { enabled: false, interval: 60 },
     updatedAt: "",
     updatedBy: "",
   };

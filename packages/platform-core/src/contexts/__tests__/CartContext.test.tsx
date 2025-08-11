@@ -81,7 +81,7 @@ describe("CartProvider offline fallback", () => {
     await waitFor(() =>
       expect(fetchMock).toHaveBeenCalledWith(
         "/api/cart",
-        expect.objectContaining({ method: "POST" })
+        expect.objectContaining({ method: "PUT", body: JSON.stringify(mockCart) })
       )
     );
   });

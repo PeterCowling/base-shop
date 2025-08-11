@@ -18,6 +18,13 @@ import crypto from "crypto";
 export const runtime = "edge";
 
 const deleteSchema = z.object({ id: z.string() }).strict();
+const putSchema = z.record(
+  z.object({
+    sku: z.object({ id: z.string() }),
+    qty: z.number().int().min(1),
+    size: z.string().optional(),
+  })
+);
 
 async function loadCart(
   req: NextRequest,
@@ -153,6 +160,36 @@ export async function DELETE(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   const { cartId, cart } = await loadCart(req, true);
+  const res = NextResponse.json({ ok: true, cart });
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId!)));
+  return res;
+}
+
+export async function PUT(req: NextRequest) {
+  const body = await req.json().catch(() => ({}));
+  const parsed = putSchema.safeParse(body);
+
+  if (!parsed.success) {
+    return NextResponse.json(parsed.error.flatten().fieldErrors, {
+      status: 400,
+    });
+  }
+
+  const { cartId } = await loadCart(req, true);
+  const cart: CartState = {};
+  for (const line of Object.values(parsed.data)) {
+    const sku = getProductById(line.sku.id);
+    if (!sku) {
+      return NextResponse.json({ error: "Item not found" }, { status: 404 });
+    }
+    if (sku.sizes.length && !line.size) {
+      return NextResponse.json({ error: "Size required" }, { status: 400 });
+    }
+    const id = line.size ? `${sku.id}:${line.size}` : sku.id;
+    cart[id] = { sku, size: line.size, qty: line.qty };
+  }
+
+  await setCart(cartId!, cart);
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId!)));
   return res;

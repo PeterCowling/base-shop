@@ -15,6 +15,13 @@ import { z } from "zod";
 export const runtime = "edge";
 
 const deleteSchema = z.object({ id: z.string() }).strict();
+const putSchema = z.record(
+  z.object({
+    sku: z.object({ id: z.string() }),
+    qty: z.number().int().min(1),
+    size: z.string().optional(),
+  })
+);
 
 // This simple handler echoes back the posted body and status 200.
 // Stripe / KV integration will extend this in Sprint 5.
@@ -110,4 +117,30 @@ export async function GET(req: NextRequest) {
   const cookie = req.cookies.get(CART_COOKIE)?.value;
   const cart = decodeCartCookie(cookie);
   return NextResponse.json({ ok: true, cart });
+}
+
+export async function PUT(req: NextRequest) {
+  const json = await req.json().catch(() => ({}));
+  const parsed = putSchema.safeParse(json);
+  if (!parsed.success) {
+    return NextResponse.json(parsed.error.flatten().fieldErrors, {
+      status: 400,
+    });
+  }
+
+  const cart: Record<string, { sku: any; qty: number; size?: string }> = {};
+  for (const line of Object.values(parsed.data)) {
+    const sku = getProductById(line.sku.id);
+    if (!sku) {
+      return NextResponse.json({ error: "Item not found" }, { status: 404 });
+    }
+    if (sku.sizes.length && !line.size) {
+      return NextResponse.json({ error: "Size required" }, { status: 400 });
+    }
+    const id = line.size ? `${sku.id}:${line.size}` : sku.id;
+    cart[id] = { sku, size: line.size, qty: line.qty };
+  }
+  const res = NextResponse.json({ ok: true, cart });
+  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  return res;
 }

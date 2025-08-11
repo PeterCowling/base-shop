@@ -7,7 +7,7 @@ import {
 import { PRODUCTS } from "@platform-core/products";
 import { DELETE, GET, PATCH, POST } from "../src/api/cart/route";
 
-const TEST_SKU = { ...PRODUCTS[0], id: "01ARZ3NDEKTSV4RRFFQ69G5FAV" };
+const TEST_SKU = PRODUCTS[0];
 
 declare function expectType<T>(value: T): void;
 
@@ -38,7 +38,7 @@ afterEach(() => {
 
 test("POST adds items and sets cookie", async () => {
   const sku = { ...TEST_SKU };
-  const req = createRequest({ sku, qty: 2 });
+  const req = createRequest({ sku: { id: sku.id }, qty: 2 });
   const res = await POST(req);
   const body = (await res.json()) as any;
 

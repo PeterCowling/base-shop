@@ -51,7 +51,7 @@ afterEach(() => jest.resetAllMocks());
 
 test("add to cart then create checkout session", async () => {
   const sku = PRODUCTS[0];
-  const res = await CART_POST(cartReq({ sku, qty: 1 }));
+  const res = await CART_POST(cartReq({ sku: { id: sku.id }, qty: 1 }));
   const header = res.headers.get("Set-Cookie")!;
   const cookie = header.split("=")[1].split(";")[0];
 

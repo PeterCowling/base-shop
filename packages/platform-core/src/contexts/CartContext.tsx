@@ -46,7 +46,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     switch (action.type) {
       case "add":
         method = "POST";
-        body = { sku: action.sku, qty: 1, size: action.size };
+        body = { sku: { id: action.sku.id }, qty: 1 };
         break;
       case "remove":
         method = "DELETE";

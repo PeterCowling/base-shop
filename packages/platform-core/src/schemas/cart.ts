@@ -3,7 +3,7 @@ import { skuSchema } from "@types";
 
 export const postSchema = z
   .object({
-    sku: z.union([skuSchema, skuSchema.pick({ id: true })]),
+    sku: skuSchema.pick({ id: true }),
     qty: z.coerce.number().int().min(1).default(1),
   })
   .strict();

@@ -1,5 +1,6 @@
 // apps/shop-abc/src/app/api/cart/route.ts
 import { asSetCookieHeader, CART_COOKIE, decodeCartCookie, encodeCartCookie, } from "@/lib/cartCookie";
+import { getProductById } from "@/lib/products";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
 import { z } from "zod";
@@ -13,7 +14,11 @@ export async function POST(req) {
     if (!parsed.success) {
         return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
     }
-    const { sku, qty = 1 } = parsed.data;
+    const { sku: { id: skuId }, qty } = parsed.data;
+    const sku = getProductById(skuId);
+    if (!sku) {
+        return NextResponse.json({ error: "Item not found" }, { status: 404 });
+    }
     const cookie = req.cookies.get(CART_COOKIE)?.value;
     const cart = decodeCartCookie(cookie);
     const line = cart[sku.id];

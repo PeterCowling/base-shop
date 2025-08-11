@@ -30,9 +30,9 @@ afterEach(() => {
 
 test("POST rejects negative or non-integer quantity", async () => {
   const sku = PRODUCTS[0];
-  let res = await POST(createRequest({ sku, qty: -1 }));
+  let res = await POST(createRequest({ sku: { id: sku.id }, qty: -1 }));
   expect(res.status).toBe(400);
-  res = await POST(createRequest({ sku, qty: 1.5 }));
+  res = await POST(createRequest({ sku: { id: sku.id }, qty: 1.5 }));
   expect(res.status).toBe(400);
 });
 

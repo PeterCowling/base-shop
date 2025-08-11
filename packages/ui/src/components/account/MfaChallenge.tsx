@@ -6,9 +6,10 @@ import { getCsrfToken } from "@shared-utils";
 
 export interface MfaChallengeProps {
   onSuccess?: () => void;
+  customerId?: string;
 }
 
-export default function MfaChallenge({ onSuccess }: MfaChallengeProps) {
+export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProps) {
   const [token, setToken] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +22,7 @@ export default function MfaChallenge({ onSuccess }: MfaChallengeProps) {
         "Content-Type": "application/json",
         "x-csrf-token": csrfToken ?? "",
       },
-      body: JSON.stringify({ token }),
+      body: JSON.stringify(customerId ? { token, customerId } : { token }),
     });
     const data = await res.json();
     if (data.verified) {

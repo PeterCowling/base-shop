@@ -6,6 +6,10 @@ jest.mock("@auth", () => ({
   validateCsrfToken: jest.fn().mockResolvedValue(true),
 }));
 
+jest.mock("@auth/mfa", () => ({
+  isMfaEnabled: jest.fn().mockResolvedValue(false),
+}));
+
 jest.mock("../src/middleware", () => ({
   checkLoginRateLimit: jest.fn(async () => null),
   clearLoginAttempts: jest.fn(),

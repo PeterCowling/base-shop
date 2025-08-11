@@ -166,6 +166,7 @@ const PageBuilder = memo(function PageBuilder({
     defaults,
     containerTypes: CONTAINER_TYPES,
     setInsertIndex,
+    selectId: setSelectedId,
   });
 
   const widthMap = useMemo(

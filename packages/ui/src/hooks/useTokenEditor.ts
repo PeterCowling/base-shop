@@ -2,6 +2,13 @@ import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 
 export type TokenMap = Record<`--${string}`, string>;
 
+export interface TokenInfo {
+  key: string;
+  value: string;
+  defaultValue?: string;
+  isOverridden: boolean;
+}
+
 const defaultSansFonts = [
   '"Geist Sans", system-ui, sans-serif',
   "Arial, sans-serif",
@@ -23,9 +30,9 @@ const googleFontList = [
 ];
 
 export interface UseTokenEditorResult {
-  colors: Array<[string, string]>;
-  fonts: Array<[string, string]>;
-  others: Array<[string, string]>;
+  colors: TokenInfo[];
+  fonts: TokenInfo[];
+  others: TokenInfo[];
   sansFonts: string[];
   monoFonts: string[];
   newFont: string;
@@ -42,6 +49,7 @@ export interface UseTokenEditorResult {
 
 export function useTokenEditor(
   tokens: TokenMap,
+  baseTokens: TokenMap,
   onChange: (tokens: TokenMap) => void
 ): UseTokenEditorResult {
   const setToken = useCallback(
@@ -131,20 +139,32 @@ export function useTokenEditor(
   );
 
   const { colors, fonts, others } = useMemo(() => {
-    const c: Array<[string, string]> = [];
-    const f: Array<[string, string]> = [];
-    const o: Array<[string, string]> = [];
-    Object.entries(tokens).forEach(([k, v]) => {
+    const c: TokenInfo[] = [];
+    const f: TokenInfo[] = [];
+    const o: TokenInfo[] = [];
+    const keys = new Set([
+      ...Object.keys(baseTokens),
+      ...Object.keys(tokens),
+    ]);
+    keys.forEach((k) => {
+      const current = tokens[k as keyof TokenMap] ?? baseTokens[k as keyof TokenMap];
+      const def = baseTokens[k as keyof TokenMap];
+      const info: TokenInfo = {
+        key: k,
+        value: current,
+        defaultValue: def,
+        isOverridden: def !== undefined && current !== def,
+      };
       if (k.startsWith("--color")) {
-        c.push([k, v]);
+        c.push(info);
       } else if (k.startsWith("--font")) {
-        f.push([k, v]);
+        f.push(info);
       } else {
-        o.push([k, v]);
+        o.push(info);
       }
     });
     return { colors: c, fonts: f, others: o };
-  }, [tokens]);
+  }, [tokens, baseTokens]);
 
   return {
     colors,

@@ -28,7 +28,11 @@ describe("useTokenEditor", () => {
     const onChange = jest.fn();
 
     function Test() {
-      const { setToken } = useTokenEditor({ "--color-a": "red" }, onChange);
+      const { setToken } = useTokenEditor(
+        { "--color-a": "red" },
+        { "--color-a": "red" },
+        onChange
+      );
       return (
         <button onClick={() => setToken("--color-a", "blue")}>update</button>
       );
@@ -37,6 +41,25 @@ describe("useTokenEditor", () => {
     render(<Test />);
     fireEvent.click(screen.getByText("update"));
     expect(onChange).toHaveBeenCalledWith({ "--color-a": "blue" });
+  });
+
+  it("marks tokens as overridden when differing from base", () => {
+    function Test() {
+      const { colors } = useTokenEditor(
+        { "--color-a": "blue" },
+        { "--color-a": "red" },
+        () => {}
+      );
+      expect(colors[0]).toMatchObject({
+        key: "--color-a",
+        defaultValue: "red",
+        isOverridden: true,
+        value: "blue",
+      });
+      return null;
+    }
+
+    render(<Test />);
   });
 
   it("font upload adds styles and updates font lists", async () => {
@@ -48,7 +71,7 @@ describe("useTokenEditor", () => {
       latest = tokens;
       const handleChange = (t: TokenMap) =>
         setTokens((prev) => ({ ...prev, ...t }));
-      const hook = useTokenEditor(tokens, handleChange);
+      const hook = useTokenEditor(tokens, {}, handleChange);
       upload = hook.handleUpload; // assigned synchronously
       return <span data-testid="mono">{hook.monoFonts.join(",")}</span>;
     }
@@ -75,7 +98,7 @@ describe("useTokenEditor", () => {
     let getMono!: () => string[]; // !
 
     function Wrapper() {
-      const hook = useTokenEditor({}, () => {});
+      const hook = useTokenEditor({}, {}, () => {});
       add = hook.addCustomFont;
       setNF = hook.setNewFont;
       getSans = () => hook.sansFonts;

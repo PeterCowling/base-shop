@@ -2,7 +2,11 @@
 "use client";
 
 import { Input } from "@ui/components/atoms/shadcn";
-import { useTokenEditor, type TokenMap } from "@ui/hooks/useTokenEditor";
+import {
+  useTokenEditor,
+  type TokenMap,
+  type TokenInfo,
+} from "@ui/hooks/useTokenEditor";
 import {
   ColorInput,
   FontSelect,
@@ -13,10 +17,15 @@ import {
 
 interface StyleEditorProps {
   tokens: TokenMap;
+  baseTokens: TokenMap;
   onChange: (tokens: TokenMap) => void;
 }
 
-export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
+export default function StyleEditor({
+  tokens,
+  baseTokens,
+  onChange,
+}: StyleEditorProps) {
   const {
     colors,
     fonts,
@@ -30,9 +39,14 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
     handleUpload,
     addCustomFont,
     setGoogleFont,
-  } = useTokenEditor(tokens, onChange);
+  } = useTokenEditor(tokens, baseTokens, onChange);
 
-  const renderInput = (k: string, v: string) => {
+  const renderInput = ({
+    key: k,
+    value: v,
+    defaultValue,
+    isOverridden,
+  }: TokenInfo) => {
     if (k.startsWith("--color")) {
       let warning: JSX.Element | null = null;
       let pairKey = "";
@@ -41,7 +55,9 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
       } else if (k.startsWith("--color-fg")) {
         pairKey = `--color-bg${k.slice("--color-fg".length)}`;
       }
-      const pairVal = pairKey ? tokens[pairKey as keyof TokenMap] : undefined;
+      const pairVal = pairKey
+        ? tokens[pairKey as keyof TokenMap] ?? baseTokens[pairKey as keyof TokenMap]
+        : undefined;
       if (pairVal) {
         const contrast = getContrast(v, pairVal);
         if (contrast < 4.5) {
@@ -55,11 +71,30 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
         }
       }
       return (
-        <label key={k} className="flex flex-col gap-1 text-sm">
+        <label
+          key={k}
+          className={`flex flex-col gap-1 text-sm ${
+            isOverridden ? "border-l-2 border-l-blue-500 pl-2" : ""
+          }`}
+        >
           <span className="flex items-center gap-2">
             <span className="w-40 flex-shrink-0">{k}</span>
             <ColorInput value={v} onChange={(val) => setToken(k, val)} />
+            {isOverridden && (
+              <button
+                type="button"
+                className="rounded border px-2 py-1 text-xs"
+                onClick={() => setToken(k, defaultValue ?? "")}
+              >
+                Reset
+              </button>
+            )}
           </span>
+          {defaultValue && (
+            <span className="text-xs text-muted-foreground">
+              Default: {defaultValue}
+            </span>
+          )}
           {warning}
         </label>
       );
@@ -69,7 +104,12 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
       const options = k.includes("mono") ? monoFonts : sansFonts;
       const type: "mono" | "sans" = k.includes("mono") ? "mono" : "sans";
       return (
-        <label key={k} className="flex flex-col gap-1 text-sm">
+        <label
+          key={k}
+          className={`flex flex-col gap-1 text-sm ${
+            isOverridden ? "border-l-2 border-l-blue-500 pl-2" : ""
+          }`}
+        >
           <span className="flex items-center gap-2">
             <span className="w-40 flex-shrink-0">{k}</span>
             <FontSelect
@@ -78,6 +118,15 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
               onChange={(val) => setToken(k, val)}
               onUpload={(e) => handleUpload(type, e)}
             />
+            {isOverridden && (
+              <button
+                type="button"
+                className="rounded border px-2 py-1 text-xs"
+                onClick={() => setToken(k, defaultValue ?? "")}
+              >
+                Reset
+              </button>
+            )}
             <select
               className="rounded border p-1"
               onChange={(e) => {
@@ -95,23 +144,66 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
               ))}
             </select>
           </span>
+          {defaultValue && (
+            <span className="text-xs text-muted-foreground">
+              Default: {defaultValue}
+            </span>
+          )}
         </label>
       );
     }
 
     if (/px$/.test(v)) {
       return (
-        <label key={k} className="flex items-center gap-2 text-sm">
+        <label
+          key={k}
+          className={`flex items-center gap-2 text-sm ${
+            isOverridden ? "border-l-2 border-l-blue-500 pl-2" : ""
+          }`}
+        >
           <span className="w-40 flex-shrink-0">{k}</span>
           <RangeInput value={v} onChange={(val) => setToken(k, val)} />
+          {isOverridden && (
+            <button
+              type="button"
+              className="rounded border px-2 py-1 text-xs"
+              onClick={() => setToken(k, defaultValue ?? "")}
+            >
+              Reset
+            </button>
+          )}
+          {defaultValue && (
+            <span className="text-xs text-muted-foreground">
+              Default: {defaultValue}
+            </span>
+          )}
         </label>
       );
     }
 
     return (
-      <label key={k} className="flex items-center gap-2 text-sm">
+      <label
+        key={k}
+        className={`flex items-center gap-2 text-sm ${
+          isOverridden ? "border-l-2 border-l-blue-500 pl-2" : ""
+        }`}
+      >
         <span className="w-40 flex-shrink-0">{k}</span>
         <Input value={v} onChange={(e) => setToken(k, e.target.value)} />
+        {isOverridden && (
+          <button
+            type="button"
+            className="rounded border px-2 py-1 text-xs"
+            onClick={() => setToken(k, defaultValue ?? "")}
+          >
+            Reset
+          </button>
+        )}
+        {defaultValue && (
+          <span className="text-xs text-muted-foreground">
+            Default: {defaultValue}
+          </span>
+        )}
       </label>
     );
   };
@@ -121,13 +213,13 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
       {colors.length > 0 && (
         <div className="space-y-2">
           <p className="font-medium">Colors</p>
-          {colors.map(([k, v]) => renderInput(k, v))}
+          {colors.map((t) => renderInput(t))}
         </div>
       )}
       {fonts.length > 0 && (
         <div className="space-y-2">
           <p className="font-medium">Fonts</p>
-          {fonts.map(([k, v]) => renderInput(k, v))}
+          {fonts.map((t) => renderInput(t))}
           <div className="flex items-center gap-2 pt-2">
             <Input
               placeholder="Add font stack"
@@ -147,7 +239,7 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
       {others.length > 0 && (
         <div className="space-y-2">
           <p className="font-medium">Others</p>
-          {others.map(([k, v]) => renderInput(k, v))}
+          {others.map((t) => renderInput(t))}
         </div>
       )}
     </div>

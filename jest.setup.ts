@@ -18,6 +18,7 @@ const mutableEnv = process.env as unknown as Record<string, string>;
 
 mutableEnv.NODE_ENV ||= "development"; // relax “edge” runtime checks
 mutableEnv.NEXTAUTH_SECRET ||= "test-secret"; // dummy secret for Next-Auth
+mutableEnv.CART_COOKIE_SECRET ||= "test-cart-secret"; // cart cookie signing
 
 /* -------------------------------------------------------------------------- */
 /* 2.  Polyfills missing from the JSDOM / Node test runtime                    */

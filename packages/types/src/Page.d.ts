@@ -155,7 +155,7 @@ export declare const pageSchema: z.ZodObject<{
         title: z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodString>;
         description: z.ZodOptional<z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodString>>;
         image: z.ZodOptional<z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodString>>;
-    }, "strip", z.ZodTypeAny, {
+    }, "strict", z.ZodTypeAny, {
         title: Partial<Record<"en" | "de" | "it", string>>;
         image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
         description?: Partial<Record<"en" | "de" | "it", string>> | undefined;
@@ -167,7 +167,7 @@ export declare const pageSchema: z.ZodObject<{
     createdAt: z.ZodString;
     updatedAt: z.ZodString;
     createdBy: z.ZodString;
-}, "strip", z.ZodTypeAny, {
+}, "strict", z.ZodTypeAny, {
     id: string;
     slug: string;
     status: "draft" | "published";

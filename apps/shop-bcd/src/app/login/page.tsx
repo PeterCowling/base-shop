@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import type { LoginRequest } from "./route";
 
 export default function LoginPage() {
   const [msg, setMsg] = useState("");
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const body = {
+    const body: LoginRequest = {
       customerId: (form.elements.namedItem("customerId") as HTMLInputElement).value,
       password: (form.elements.namedItem("password") as HTMLInputElement).value,
     };

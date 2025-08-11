@@ -4,6 +4,7 @@ import { createCustomerSession, validateCsrfToken } from "@auth";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import { parseJsonBody } from "@lib/parseJsonBody";
 import {
   checkLoginRateLimit,
   clearLoginAttempts,
@@ -12,10 +13,14 @@ import { getUserById } from "@platform-core/users";
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
-const LoginSchema = z.object({
-  customerId: z.string(),
-  password: z.string(),
-});
+const LoginSchema = z
+  .object({
+    customerId: z.string(),
+    password: z.string().min(8),
+  })
+  .strict();
+
+export type LoginRequest = z.infer<typeof LoginSchema>;
 
 async function validateCredentials(
   customerId: string,
@@ -29,13 +34,8 @@ async function validateCredentials(
 }
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = LoginSchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody(req, LoginSchema);
+  if (!parsed.success) return parsed.error;
 
   const csrfToken = req.headers.get("x-csrf-token");
   if (!csrfToken || !(await validateCsrfToken(csrfToken))) {

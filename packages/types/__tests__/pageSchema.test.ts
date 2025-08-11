@@ -44,4 +44,19 @@ describe("pageSchema", () => {
     } as any;
     expect(pageSchema.safeParse(invalid).success).toBe(false);
   });
+
+  it("rejects unknown fields", () => {
+    const invalid = {
+      id: "p1",
+      slug: "home",
+      status: "draft",
+      components: [],
+      seo: { title: { en: "Home" } },
+      createdAt: "2024-01-01",
+      updatedAt: "2024-01-01",
+      createdBy: "user",
+      extra: true,
+    } as any;
+    expect(pageSchema.safeParse(invalid).success).toBe(false);
+  });
 });

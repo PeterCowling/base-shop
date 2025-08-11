@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { ResetRequestBody } from "../api/account/reset/request/route";
 
 export default function ForgotPasswordPage() {
   const [msg, setMsg] = useState("");
@@ -8,10 +9,11 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     const email = (e.currentTarget.elements.namedItem("email") as HTMLInputElement)
       .value;
+    const body: ResetRequestBody = { email };
     const res = await fetch("/api/account/reset/request", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify(body),
     });
     await res.json().catch(() => ({}));
     setMsg(res.ok ? "If the email exists, a token was sent." : "Error");

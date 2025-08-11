@@ -3,20 +3,20 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { getUserByResetToken, updatePassword } from "@platform-core/users";
+import { parseJsonBody } from "@lib/parseJsonBody";
 
-const schema = z.object({
-  token: z.string(),
-  password: z.string(),
-});
+const schema = z
+  .object({
+    token: z.string(),
+    password: z.string().min(8),
+  })
+  .strict();
+
+export type ResetCompleteBody = z.infer<typeof schema>;
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = schema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody(req, schema);
+  if (!parsed.success) return parsed.error;
 
   const { token, password } = parsed.data;
   const user = await getUserByResetToken(token);

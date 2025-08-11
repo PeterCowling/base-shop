@@ -3,20 +3,20 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getUserByEmail, setResetToken } from "@platform-core/users";
 import { sendEmail } from "@lib/email";
+import { parseJsonBody } from "@lib/parseJsonBody";
 import { checkLoginRateLimit } from "../../../../../middleware";
 
-const schema = z.object({
-  email: z.string().email(),
-});
+const schema = z
+  .object({
+    email: z.string().email(),
+  })
+  .strict();
+
+export type ResetRequestBody = z.infer<typeof schema>;
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = schema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody(req, schema);
+  if (!parsed.success) return parsed.error;
 
   const ip = req.headers.get("x-forwarded-for") ?? "unknown";
   const rateLimited = await checkLoginRateLimit(ip, parsed.data.email);

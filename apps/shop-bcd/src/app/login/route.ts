@@ -3,20 +3,25 @@ import { NextResponse } from "next/server";
 import { createCustomerSession, validateCsrfToken } from "@auth";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
+import { parseJsonBody } from "@lib/parseJsonBody";
 
 // Mock customer store. In a real application this would be a database or external identity provider.
 const CUSTOMER_STORE: Record<string, { password: string; role: Role }> = {
-  cust1: { password: "pass1", role: "customer" },
-  viewer1: { password: "view", role: "viewer" },
-  admin1: { password: "admin", role: "admin" },
+  cust1: { password: "Passw0rd1", role: "customer" },
+  viewer1: { password: "ViewerPass1", role: "viewer" },
+  admin1: { password: "AdminPass1", role: "admin" },
 };
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
-const LoginSchema = z.object({
-  customerId: z.string(),
-  password: z.string(),
-});
+const LoginSchema = z
+  .object({
+    customerId: z.string(),
+    password: z.string().min(8),
+  })
+  .strict();
+
+export type LoginRequest = z.infer<typeof LoginSchema>;
 
 async function validateCredentials(
   customerId: string,
@@ -30,13 +35,8 @@ async function validateCredentials(
 }
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = LoginSchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody(req, LoginSchema);
+  if (!parsed.success) return parsed.error;
 
   const csrfToken = req.headers.get("x-csrf-token");
   if (!csrfToken || !(await validateCsrfToken(csrfToken))) {

@@ -82,7 +82,7 @@ beforeAll(async () => {
   ({ POST: completePOST } = await import(
     "../src/app/api/account/reset/complete/route"
   ));
-  ({ sendEmail } = await import("@lib/email"));
+  ({ sendEmail } = await import("@acme/email"));
 });
 
 function makeRequest(body: any, headers: Record<string, string> = {}) {

@@ -7,7 +7,7 @@ import {
   duplicateProduct,
 } from "@cms/actions/products.server";
 import { authOptions } from "@cms/auth/options";
-import { checkShopExists } from "@lib/checkShopExists.server";
+import { checkShopExists } from "@acme/lib";
 import type { ProductPublication } from "@platform-core/products";
 import { readRepo } from "@platform-core/repositories/json.server";
 import ProductsTable from "@ui/components/cms/ProductsTable.client";

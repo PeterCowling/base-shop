@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/page.tsx
 
 import { authOptions } from "@cms/auth/options";
-import { checkShopExists } from "@lib/checkShopExists.server";
+import { checkShopExists } from "@acme/lib";
 import {
   readSettings,
   readShop,

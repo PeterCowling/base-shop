@@ -2,7 +2,7 @@ import { jsx as _jsx } from "react/jsx-runtime";
 // src/app/layout.tsx
 import "./globals.css";
 import { CartProvider } from "@/contexts/CartContext";
-import { applyFriendlyZodMessages } from "@lib/zodErrorMap";
+import { applyFriendlyZodMessages } from "@acme/lib";
 import { Geist, Geist_Mono } from "next/font/google";
 applyFriendlyZodMessages();
 const geistSans = Geist({

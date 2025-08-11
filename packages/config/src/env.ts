@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { applyFriendlyZodMessages } from "@lib/zodErrorMap";
+import { applyFriendlyZodMessages } from "@acme/lib";
 
 export const envSchema = z.object({
   STRIPE_SECRET_KEY: z.string().min(1),

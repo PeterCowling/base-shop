@@ -10,7 +10,7 @@ if (!shopId) {
   process.exit(1);
 }
 
-const envPath = join("apps", `shop-${shopId}", ".env");
+const envPath = join("apps", `shop-${shopId}`, ".env");
 
 if (!existsSync(envPath)) {
   console.error(`Missing ${envPath}`);

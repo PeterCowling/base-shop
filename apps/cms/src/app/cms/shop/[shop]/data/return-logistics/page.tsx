@@ -1,4 +1,4 @@
-import { checkShopExists } from "@lib/checkShopExists.server";
+import { checkShopExists } from "@acme/lib";
 import { readReturnLogistics } from "@platform-core/repositories/returnLogistics.server";
 import { notFound } from "next/navigation";
 import ReturnLogisticsForm from "./ReturnLogisticsForm";

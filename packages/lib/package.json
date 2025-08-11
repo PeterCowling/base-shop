@@ -3,6 +3,12 @@
   "private": true,
   "type": "module",
   "version": "0.0.0",
+  "exports": {
+    ".": "./src/index.ts",
+    "./validateShopName": "./src/validateShopName.ts",
+    "./checkShopExists.server": "./src/checkShopExists.server.ts",
+    "./zodErrorMap": "./src/zodErrorMap.ts"
+  },
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },

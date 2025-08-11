@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/page.tsx
 
-import { checkShopExists } from "@lib/checkShopExists.server";
+import { checkShopExists } from "@acme/lib";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 

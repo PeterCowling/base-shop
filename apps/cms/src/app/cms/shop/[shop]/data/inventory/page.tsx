@@ -1,4 +1,4 @@
-import { checkShopExists } from "@lib/checkShopExists.server";
+import { checkShopExists } from "@acme/lib";
 import { readInventory } from "@platform-core/repositories/inventory.server";
 import { notFound } from "next/navigation";
 import InventoryForm from "./InventoryForm";

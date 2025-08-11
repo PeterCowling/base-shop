@@ -22,4 +22,17 @@ describe("parseJsonBody", () => {
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(400);
   });
+
+  it("returns error when JSON is malformed", async () => {
+    const schema = z.object({ x: z.string() }).strict();
+    const req = new Request("http://test", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{invalid}",
+    });
+    const result = await parseJsonBody(req, schema);
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    expect(await result.response.json()).toEqual({ error: "Invalid JSON" });
+  });
 });

@@ -6,7 +6,7 @@ import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast, Tooltip } from "@/components/atoms";
 import type { WizardState } from "../wizard/schema";
-import { getSteps, steps as configuratorSteps } from "./steps";
+import { getRequiredSteps, getSteps, steps as configuratorSteps } from "./steps";
 
 const stepLinks: Record<string, string> = {
   create: "summary",
@@ -47,10 +47,26 @@ export default function ConfiguratorDashboard() {
     return () => window.removeEventListener("wizard:update", handler);
   }, [fetchState]);
   const stepList = getSteps();
-  const missingRequired = stepList.filter(
-    (s) => !s.optional && !state?.completed?.[s.id]
+  const missingRequired = getRequiredSteps().filter(
+    (s) => !state?.completed?.[s.id]
   );
   const allRequiredDone = missingRequired.length === 0;
+
+  const skipStep = async (stepId: string) => {
+    try {
+      await fetch("/cms/api/wizard-progress", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ stepId, completed: true }),
+      });
+    } catch {
+      /* ignore network errors */
+    }
+    fetchState();
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("wizard:update"));
+    }
+  };
 
   const launchShop = async () => {
     if (!state?.shopId) return;
@@ -119,9 +135,28 @@ export default function ConfiguratorDashboard() {
               ) : (
                 <CircleIcon className="h-4 w-4 text-gray-400" />
               )}
-              <Link href={`/cms/configurator/${step.id}`} className="underline">
-                {step.label}
-              </Link>
+              <div className="flex items-center gap-1">
+                <Link
+                  href={`/cms/configurator/${step.id}`}
+                  className="underline"
+                >
+                  {step.label}
+                </Link>
+                {step.optional && (
+                  <span className="text-xs italic text-gray-500">
+                    (Optional)
+                  </span>
+                )}
+              </div>
+              {step.optional && !completed && (
+                <button
+                  type="button"
+                  onClick={() => skipStep(step.id)}
+                  className="text-xs underline"
+                >
+                  Skip
+                </button>
+              )}
             </li>
           );
         })}
@@ -129,13 +164,18 @@ export default function ConfiguratorDashboard() {
       {allRequiredDone ? (
         <Button onClick={launchShop}>Launch Shop</Button>
       ) : (
-        <Tooltip
-          text={`Complete required steps: ${missingRequired
-            .map((s) => s.label)
-            .join(", ")}`}
-        >
-          <Button disabled>Launch Shop</Button>
-        </Tooltip>
+        <>
+          <Tooltip
+            text={`Complete required steps: ${missingRequired
+              .map((s) => s.label)
+              .join(", ")}`}
+          >
+            <Button disabled>Launch Shop</Button>
+          </Tooltip>
+          <p className="mt-1 text-xs text-gray-600">
+            Complete all required steps before launching.
+          </p>
+        </>
       )}
       {launchStatus && (
         <ul className="mt-4 space-y-1 text-sm">

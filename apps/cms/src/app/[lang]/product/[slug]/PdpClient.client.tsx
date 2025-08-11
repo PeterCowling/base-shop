@@ -10,6 +10,7 @@ import { useState } from "react";
 
 export default function PdpClient({ product }: { product: SKU }) {
   const [size, setSize] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState(1);
 
   return (
     <div className="mx-auto max-w-6xl p-6 lg:grid lg:grid-cols-2 lg:gap-10">
@@ -27,9 +28,27 @@ export default function PdpClient({ product }: { product: SKU }) {
         <div className="text-2xl font-semibold">
           <Price amount={product.price} />
         </div>
+        <div>
+          <label className="mb-2 block font-medium" htmlFor="qty">
+            Quantity:
+          </label>
+          <input
+            id="qty"
+            type="number"
+            min={1}
+            value={quantity}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+            className="w-20 rounded border p-2"
+          />
+        </div>
 
         {/* size could be added to cart line later */}
-        <AddToCartButton sku={product} size={size ?? undefined} disabled={!size} />
+        <AddToCartButton
+          sku={product}
+          size={size ?? undefined}
+          disabled={!size}
+          quantity={quantity}
+        />
       </section>
     </div>
   );

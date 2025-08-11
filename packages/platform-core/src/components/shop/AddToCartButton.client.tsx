@@ -11,12 +11,15 @@ type Props = {
   size?: string;
   /** Disable button until prerequisites are met (e.g. size chosen) */
   disabled?: boolean;
+  /** Number of items to add */
+  quantity?: number;
 };
 
 export default function AddToCartButton({
   sku,
   size,
   disabled = false,
+  quantity = 1,
 }: Props) {
   const [, dispatch] = useCart();
   const [adding, setAdding] = useState(false);
@@ -28,7 +31,7 @@ export default function AddToCartButton({
     setError(null);
 
     try {
-      await dispatch({ type: "add", sku, size });
+      await dispatch({ type: "add", sku, size, qty: quantity });
     } catch (err) {
       setError((err as Error).message ?? "Unable to add to cart");
     } finally {

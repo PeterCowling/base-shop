@@ -1,11 +1,13 @@
 // apps/cms/src/app/cms/blog/sanity/connect/ConnectForm.client.tsx
 "use client";
 
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
+import { useState } from "react";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast } from "@ui";
 import { saveSanityConfig } from "@cms/actions/saveSanityConfig";
 import { deleteSanityConfig } from "@cms/actions/deleteSanityConfig";
+import { connectSanity } from "@cms/actions/sanity.server";
 
 interface FormState {
   message?: string;
@@ -28,11 +30,36 @@ export default function ConnectForm({ shopId, initial }: Props) {
     disconnectAction,
     initialState,
   );
+
+  const [projectId, setProjectId] = useState(initial?.projectId ?? "");
+  const [dataset, setDataset] = useState(initial?.dataset ?? "");
+  const [token, setToken] = useState(initial?.token ?? "");
+  const [verifyStatus, setVerifyStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+
+  async function verify() {
+    if (!projectId || !dataset || !token) {
+      return;
+    }
+    setVerifyStatus("loading");
+    const fd = new FormData();
+    fd.append("projectId", projectId);
+    fd.append("dataset", dataset);
+    fd.append("token", token);
+    const valid = await connectSanity(fd);
+    setVerifyStatus(valid ? "success" : "error");
+  }
+
   const message = state.message || disconnectState.message;
   const error = state.error || disconnectState.error;
   return (
     <div className="space-y-4 max-w-md">
-      <form action={formAction} className="space-y-4">
+      <form
+        action={formAction}
+        className="space-y-4"
+        onSubmit={() => void verify()}
+      >
         <div className="space-y-1">
           <label className="block text-sm font-medium" htmlFor="projectId">
             Project ID
@@ -41,9 +68,14 @@ export default function ConnectForm({ shopId, initial }: Props) {
             id="projectId"
             name="projectId"
             className="w-full rounded border p-2"
-            defaultValue={initial?.projectId ?? ""}
+            value={projectId}
+            onChange={(e) => setProjectId(e.target.value)}
+            onBlur={verify}
             required
           />
+          <p className="text-xs text-muted-foreground">
+            Find this in your Sanity project settings.
+          </p>
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium" htmlFor="dataset">
@@ -53,9 +85,14 @@ export default function ConnectForm({ shopId, initial }: Props) {
             id="dataset"
             name="dataset"
             className="w-full rounded border p-2"
-            defaultValue={initial?.dataset ?? ""}
+            value={dataset}
+            onChange={(e) => setDataset(e.target.value)}
+            onBlur={verify}
             required
           />
+          <p className="text-xs text-muted-foreground">
+            Dataset with read and write permissions.
+          </p>
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium" htmlFor="token">
@@ -66,13 +103,25 @@ export default function ConnectForm({ shopId, initial }: Props) {
             name="token"
             type="password"
             className="w-full rounded border p-2"
-            defaultValue={initial?.token ?? ""}
+            value={token}
+            onChange={(e) => setToken(e.target.value)}
+            onBlur={verify}
             required
           />
+          <p className="text-xs text-muted-foreground">
+            Token with write scope for the above dataset.
+          </p>
+          {verifyStatus === "loading" && (
+            <p className="text-xs text-muted-foreground">Verifying...</p>
+          )}
+          {verifyStatus === "success" && (
+            <p className="text-xs text-green-600">Credentials verified</p>
+          )}
+          {verifyStatus === "error" && (
+            <p className="text-xs text-red-600">Invalid credentials</p>
+          )}
         </div>
-        <Button type="submit" className="bg-primary text-white">
-          Save
-        </Button>
+        <SubmitButton />
       </form>
       {initial && (
         <form action={disconnectFormAction}>
@@ -83,5 +132,18 @@ export default function ConnectForm({ shopId, initial }: Props) {
       )}
       <Toast open={Boolean(message || error)} message={message || error || ""} />
     </div>
+  );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      type="submit"
+      className="bg-primary text-white"
+      disabled={pending}
+    >
+      {pending ? "Saving..." : "Save"}
+    </Button>
   );
 }

@@ -7,8 +7,13 @@ import * as fsSync from "node:fs";
 import path from "node:path";
 import { wizardStateSchema } from "@cms/app/cms/wizard/schema";
 
+interface UserRecord {
+  state: unknown;
+  completed: Record<string, boolean>;
+}
+
 interface DB {
-  [userId: string]: unknown;
+  [userId: string]: UserRecord | unknown;
 }
 
 function resolveFile(): string {
@@ -51,8 +56,11 @@ export async function GET(): Promise<NextResponse> {
     return NextResponse.json({}, { status: 401 });
   }
   const db = await readDb();
-  const data = db[session.user.id] ?? {};
-  return NextResponse.json(data);
+  const entry = db[session.user.id];
+  if (entry && typeof entry === "object" && "state" in entry) {
+    return NextResponse.json(entry as UserRecord);
+  }
+  return NextResponse.json({ state: entry ?? {}, completed: {} });
 }
 
 export async function PUT(req: Request): Promise<NextResponse> {
@@ -62,12 +70,59 @@ export async function PUT(req: Request): Promise<NextResponse> {
   }
   try {
     const body = await req.json().catch(() => ({}));
-    const parsed = wizardStateSchema.safeParse(body);
-    if (!parsed.success) {
+    const { stepId, data } = body as { stepId?: string | null; data?: unknown };
+    const parsed = wizardStateSchema.partial().safeParse(data ?? {});
+    if (!parsed.success && stepId) {
       return NextResponse.json({ error: "Invalid state" }, { status: 400 });
     }
     const db = await readDb();
-    db[session.user.id] = parsed.data;
+    let record: UserRecord = { state: {}, completed: {} };
+    const existing = db[session.user.id];
+    if (existing && typeof existing === "object" && "state" in existing) {
+      record = existing as UserRecord;
+    } else if (existing) {
+      record.state = existing;
+    }
+    if (!stepId) {
+      record = { state: {}, completed: {} };
+    } else {
+      record.state = { ...(record.state as object), ...parsed.data };
+    }
+    db[session.user.id] = record;
+    await writeDb(db);
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    return NextResponse.json(
+      { error: (err as Error).message },
+      { status: 400 }
+    );
+  }
+}
+
+export async function PATCH(req: Request): Promise<NextResponse> {
+  const session = await getServerSession(authOptions);
+  if (!session || !session.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  try {
+    const body = await req.json().catch(() => ({}));
+    const { stepId, completed } = body as {
+      stepId?: string;
+      completed?: boolean;
+    };
+    if (!stepId || typeof completed !== "boolean") {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }
+    const db = await readDb();
+    let record: UserRecord = { state: {}, completed: {} };
+    const existing = db[session.user.id];
+    if (existing && typeof existing === "object" && "state" in existing) {
+      record = existing as UserRecord;
+    } else if (existing) {
+      record.state = existing;
+    }
+    record.completed[stepId] = completed;
+    db[session.user.id] = record;
     await writeDb(db);
     return NextResponse.json({ success: true });
   } catch (err) {

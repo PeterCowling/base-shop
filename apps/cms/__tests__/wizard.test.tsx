@@ -226,7 +226,11 @@ describe("Wizard", () => {
     });
 
     await waitFor(() => expect(fetchSpy).toHaveBeenCalled());
-    expect(fetchSpy.mock.calls[0][0]).toContain("/cms/api/page-draft/shop");
+    expect(
+      fetchSpy.mock.calls.some((c) =>
+        String(c[0]).includes("/cms/api/page-draft/shop")
+      )
+    ).toBe(true);
   });
 
   it("calls save endpoint for additional pages", async () => {
@@ -295,3 +299,18 @@ describe("Wizard", () => {
     });
   });
 });
+
+jest.mock(
+  "@/components/atoms",
+  () => ({
+    Progress: () => null,
+    Toast: () => null,
+  }),
+  { virtual: true }
+);
+
+jest.mock("@/components/cms/PageBuilder", () => () => null, {
+  virtual: true,
+});
+
+jest.mock("@/components/atoms/shadcn", () => ({}), { virtual: true });

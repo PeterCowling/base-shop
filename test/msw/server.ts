@@ -23,9 +23,12 @@ export const handlers = [
     res(ctx.status(200), ctx.json([]))
   ),
   rest.get("/cms/api/wizard-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({}))
+    res(ctx.status(200), ctx.json({ state: {}, completed: {} }))
   ),
   rest.put("/cms/api/wizard-progress", (_req, res, ctx) =>
+    res(ctx.status(200), ctx.json({}))
+  ),
+  rest.patch("/cms/api/wizard-progress", (_req, res, ctx) =>
     res(ctx.status(200), ctx.json({}))
   ),
 ];

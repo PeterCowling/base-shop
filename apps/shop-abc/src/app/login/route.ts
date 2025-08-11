@@ -7,13 +7,7 @@ import {
   checkLoginRateLimit,
   clearLoginAttempts,
 } from "../../middleware";
-
-// Mock customer store. In a real app this would query a database or identity provider.
-const CUSTOMER_STORE: Record<string, { password: string; role: Role }> = {
-  cust1: { password: "pass1", role: "customer" },
-  viewer1: { password: "view", role: "viewer" },
-  admin1: { password: "admin", role: "admin" },
-};
+import { USER_STORE } from "../userStore";
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
@@ -26,7 +20,7 @@ async function validateCredentials(
   customerId: string,
   password: string,
 ): Promise<{ customerId: string; role: Role } | null> {
-  const record = CUSTOMER_STORE[customerId];
+  const record = USER_STORE[customerId];
   if (!record || record.password !== password) {
     return null;
   }

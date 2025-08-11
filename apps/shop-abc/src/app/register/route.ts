@@ -8,6 +8,7 @@ import {
   getUserByEmail,
 } from "@platform-core/users";
 import { checkRegistrationRateLimit } from "../../middleware";
+import { validateCsrfToken } from "@auth";
 
 const RegisterSchema = z.object({
   customerId: z.string(),
@@ -28,6 +29,11 @@ export async function POST(req: Request) {
     return NextResponse.json(parsed.error.flatten().fieldErrors, {
       status: 400,
     });
+  }
+
+  const csrfToken = req.headers.get("x-csrf-token");
+  if (!csrfToken || !(await validateCsrfToken(csrfToken))) {
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
   }
 
   const ip = req.headers.get("x-forwarded-for") ?? "unknown";

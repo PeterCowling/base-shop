@@ -13,6 +13,10 @@ jest.mock("bcryptjs", () => ({
   hash: jest.fn().mockResolvedValue("hashed"),
 }));
 
+jest.mock("@auth", () => ({
+  validateCsrfToken: jest.fn().mockResolvedValue(true),
+}));
+
 let POST: typeof import("../src/app/register/route").POST;
 let __resetRegistrationRateLimiter: typeof import("../src/middleware").__resetRegistrationRateLimiter;
 let MAX_REGISTRATION_ATTEMPTS: number;
@@ -25,10 +29,13 @@ beforeAll(async () => {
 });
 
 function makeRequest(body: any, ip = "1.1.1.1") {
-  return {
-    json: async () => body,
-    headers: new Headers({ "x-forwarded-for": ip }),
-  } as any;
+    return {
+      json: async () => body,
+      headers: new Headers({
+        "x-forwarded-for": ip,
+        "x-csrf-token": "tok",
+      }),
+    } as any;
 }
 
 afterEach(async () => {

@@ -3,6 +3,7 @@ import { jest } from "@jest/globals";
 
 jest.mock("@auth", () => ({
   createCustomerSession: jest.fn(),
+  validateCsrfToken: jest.fn().mockResolvedValue(true),
 }));
 
 jest.mock("../src/middleware", () => ({
@@ -54,12 +55,12 @@ beforeAll(async () => {
   ({ POST: resetPOST } = await import("../src/app/api/reset-password/route"));
 });
 
-function makeRequest(body: any, headers: Record<string, string> = {}) {
-  return {
-    json: async () => body,
-    headers: new Headers(headers),
-  } as any;
-}
+  function makeRequest(body: any, headers: Record<string, string> = {}) {
+    return {
+      json: async () => body,
+      headers: new Headers({ "x-csrf-token": "tok", ...headers }),
+    } as any;
+  }
 
 describe("auth flows", () => {
   it("allows sign-up, login and password reset", async () => {

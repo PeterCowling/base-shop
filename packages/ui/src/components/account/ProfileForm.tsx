@@ -30,6 +30,15 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
     setStatus("idle");
     setMessage(null);
     setErrors({});
+    const newErrors: Record<string, string> = {};
+    if (!form.name) newErrors.name = "Name is required.";
+    if (!form.email) newErrors.email = "Email is required.";
+    if (Object.keys(newErrors).length) {
+      setErrors(newErrors);
+      setStatus("error");
+      setMessage("Please fix the errors below.");
+      return;
+    }
     try {
       const csrfToken =
         typeof document !== "undefined"
@@ -83,6 +92,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
           value={form.name}
           onChange={handleChange}
           className="rounded border p-2"
+          required
         />
         {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
       </div>
@@ -95,6 +105,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
           value={form.email}
           onChange={handleChange}
           className="rounded border p-2"
+          required
         />
         {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
       </div>

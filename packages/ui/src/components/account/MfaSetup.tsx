@@ -5,22 +5,44 @@ import { useState } from "react";
 
 export default function MfaSetup() {
   const [secret, setSecret] = useState<string | null>(null);
+  const [otpauth, setOtpauth] = useState<string | null>(null);
   const [token, setToken] = useState("");
   const [status, setStatus] = useState<string | null>(null);
 
   const begin = async () => {
-    const res = await fetch("/api/mfa/enroll", { method: "POST" });
+    const csrfToken =
+      typeof document !== "undefined"
+        ? document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("csrf_token="))
+            ?.split("=")[1]
+        : undefined;
+    const res = await fetch("/api/mfa/enroll", {
+      method: "POST",
+      headers: { "x-csrf-token": csrfToken ?? "" },
+    });
     if (res.ok) {
       const data = await res.json();
       setSecret(data.secret);
+      setOtpauth(data.otpauth);
     }
   };
 
   const verify = async (e: React.FormEvent) => {
     e.preventDefault();
+    const csrfToken =
+      typeof document !== "undefined"
+        ? document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("csrf_token="))
+            ?.split("=")[1]
+        : undefined;
     const res = await fetch("/api/mfa/verify", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": csrfToken ?? "",
+      },
       body: JSON.stringify({ token }),
     });
     const data = await res.json();
@@ -40,6 +62,15 @@ export default function MfaSetup() {
       )}
       {secret && (
         <div>
+          {otpauth && (
+            <img
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+                otpauth
+              )}`}
+              alt="MFA QR Code"
+              className="mb-2"
+            />
+          )}
           <p className="mb-2">Secret: {secret}</p>
           <form onSubmit={verify} className="space-y-2">
             <input

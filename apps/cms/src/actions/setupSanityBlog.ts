@@ -98,6 +98,12 @@ export async function setupSanityBlog(
                   },
                   { name: "published", type: "boolean", title: "Published" },
                   {
+                    name: "publishedAt",
+                    type: "datetime",
+                    title: "Published At",
+                    description: "Schedule publish time",
+                  },
+                  {
                     name: "products",
                     type: "array",
                     title: "Products",

@@ -11,6 +11,7 @@ interface SanityPost {
   title?: string;
   body?: string;
   published?: boolean;
+  publishedAt?: string;
   slug?: string;
   excerpt?: string;
 }
@@ -53,7 +54,7 @@ export async function getPosts(shopId: string): Promise<SanityPost[]> {
   const res = await fetch(
     queryUrl(
       config,
-      '*[_type=="post"]{_id,title,body,published,"slug":slug.current,excerpt}',
+      '*[_type=="post"]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt}',
     ),
     { headers: config.token ? { Authorization: `Bearer ${config.token}` } : undefined }
   );
@@ -70,7 +71,7 @@ export async function getPost(
   const res = await fetch(
     queryUrl(
       config,
-      `*[_type=="post" && _id=="${id}"][0]{_id,title,body,published,"slug":slug.current,excerpt}`,
+      `*[_type=="post" && _id=="${id}"][0]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt}`,
     ),
     { headers: config.token ? { Authorization: `Bearer ${config.token}` } : undefined }
   );
@@ -174,12 +175,32 @@ export async function publishPost(
   const config = await getConfig(shopId);
   try {
     await mutate(config, {
-      mutations: [{ patch: { id, set: { published: true } } }],
+      mutations: [{ patch: { id, set: { published: true, publishedAt: new Date().toISOString() } } }],
     });
     return { message: "Post published" };
   } catch (err) {
     console.error("Failed to publish post", err);
     return { error: "Failed to publish post" };
+  }
+}
+
+export async function unpublishPost(
+  shopId: string,
+  id: string,
+  _prev?: unknown,
+  _formData?: FormData,
+): Promise<{ message?: string; error?: string }> {
+  "use server";
+  await ensureAuthorized();
+  const config = await getConfig(shopId);
+  try {
+    await mutate(config, {
+      mutations: [{ patch: { id, set: { published: false }, unset: ["publishedAt"] } }],
+    });
+    return { message: "Post unpublished" };
+  } catch (err) {
+    console.error("Failed to unpublish post", err);
+    return { error: "Failed to unpublish post" };
   }
 }
 

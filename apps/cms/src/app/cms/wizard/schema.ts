@@ -68,6 +68,9 @@ export type PageInfo = z.infer<typeof pageInfoSchema>; // <- slug & components *
 /*  Wizard‑state schema                                                       */
 /* -------------------------------------------------------------------------- */
 
+export const stepStatusSchema = z.enum(["pending", "complete", "skipped"]);
+export type StepStatus = z.infer<typeof stepStatusSchema>;
+
 export const wizardStateSchema = z.object({
   /* ------------ Wizard progress & identity ------------ */
   shopId: z.string().optional().default(""),
@@ -75,7 +78,7 @@ export const wizardStateSchema = z.object({
   logo: z.string().optional().default(""),
   contactInfo: z.string().optional().default(""),
   type: z.enum(["sale", "rental"]).optional().default("sale"),
-  completed: z.record(z.boolean()).optional().default({}),
+  completed: z.record(stepStatusSchema).optional().default({}),
 
   /* ---------------- Template / theme ------------------ */
   template: z.string().optional().default(""),

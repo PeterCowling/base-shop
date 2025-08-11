@@ -20,7 +20,9 @@ export default function StepPage({ stepId }: Props) {
   }
 
   const prerequisites = steps[stepId]?.prerequisites ?? [];
-  const missingPrereq = prerequisites.find((id) => !state.completed[id]);
+  const missingPrereq = prerequisites.find(
+    (id) => state.completed[id] !== "complete"
+  );
 
   useEffect(() => {
     if (missingPrereq) {

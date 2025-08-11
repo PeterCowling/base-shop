@@ -48,7 +48,7 @@ export default function ConfiguratorDashboard() {
   }, [fetchState]);
   const stepList = useMemo(() => getSteps(), []);
   const missingRequired = getRequiredSteps().filter(
-    (s) => !state?.completed?.[s.id]
+    (s) => state?.completed?.[s.id] !== "complete"
   );
   const allRequiredDone = missingRequired.length === 0;
   const tooltipText = allRequiredDone
@@ -62,7 +62,7 @@ export default function ConfiguratorDashboard() {
       await fetch("/cms/api/wizard-progress", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stepId, completed: true }),
+        body: JSON.stringify({ stepId, completed: "skipped" }),
       });
     } catch {
       /* ignore network errors */
@@ -132,7 +132,8 @@ export default function ConfiguratorDashboard() {
       <h2 className="mb-4 text-xl font-semibold">Configuration Steps</h2>
       <ul className="mb-6 space-y-2">
         {stepList.map((step) => {
-          const completed = Boolean(state?.completed?.[step.id]);
+          const status = state?.completed?.[step.id];
+          const completed = status === "complete";
           return (
             <li key={step.id} className="flex items-center gap-2">
               {completed ? (
@@ -154,9 +155,13 @@ export default function ConfiguratorDashboard() {
                 )}
               </div>
               <span className="text-xs text-gray-500">
-                {completed ? "Done" : "Pending"}
+                {status === "complete"
+                  ? "Done"
+                  : status === "skipped"
+                    ? "Skipped"
+                    : "Pending"}
               </span>
-              {step.optional && !completed && (
+              {step.optional && status !== "complete" && status !== "skipped" && (
                 <button
                   type="button"
                   onClick={() => skipStep(step.id)}

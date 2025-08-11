@@ -2,14 +2,14 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
-import { wizardStateSchema, type WizardState } from "./schema";
+import { wizardStateSchema, type StepStatus, type WizardState } from "./schema";
 import { useWizardPersistence } from "./hooks/useWizardPersistence";
 
 interface WizardContextValue {
   state: WizardState;
   setState: React.Dispatch<React.SetStateAction<WizardState>>;
   update: <K extends keyof WizardState>(key: K, value: WizardState[K]) => void;
-  markStepComplete: (stepId: string, status: boolean) => void;
+  markStepComplete: (stepId: string, status: StepStatus) => void;
 }
 
 const WizardContext = createContext<WizardContextValue | null>(null);

@@ -1,5 +1,5 @@
 import { useWizard } from "../WizardContext";
-import type { WizardState } from "../schema";
+import type { StepStatus, WizardState } from "../schema";
 
 type Validator = (state: WizardState) => boolean;
 
@@ -11,10 +11,11 @@ const validators: Record<string, Validator> = {
 export function useStepCompletion(stepId: string): [boolean, (v: boolean) => void] {
   const { state, markStepComplete } = useWizard();
   const validate = validators[stepId] ?? (() => true);
-  const completed = (state.completed[stepId] ?? false) && validate(state);
+  const completed = state.completed[stepId] === "complete" && validate(state);
   const setCompleted = (v: boolean) => {
     if (v && !validate(state)) return;
-    markStepComplete(stepId, v);
+    const status: StepStatus = v ? "complete" : "pending";
+    markStepComplete(stepId, status);
   };
   return [completed, setCompleted];
 }

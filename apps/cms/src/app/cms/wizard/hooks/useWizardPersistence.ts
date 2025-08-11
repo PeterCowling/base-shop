@@ -2,7 +2,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { wizardStateSchema, type WizardState } from "../schema";
+import {
+  wizardStateSchema,
+  type WizardState,
+  type StepStatus,
+} from "../schema";
 
 /** Key used to mirror wizard progress in localStorage for preview components. */
 export const STORAGE_KEY = "cms-wizard-progress";
@@ -31,7 +35,7 @@ export function useWizardPersistence(
   state: WizardState,
   setState: (s: WizardState) => void,
   onInvalid?: () => void
-): (stepId: string, status: boolean) => void {
+): (stepId: string, status: StepStatus) => void {
   /* Load persisted state on mount */
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -81,7 +85,7 @@ export function useWizardPersistence(
   }, [state]);
 
   /* Expose completion helper */
-  const markStepComplete = (stepId: string, status: boolean) => {
+  const markStepComplete = (stepId: string, status: StepStatus) => {
     let updated: WizardState | null = null;
     setState((prev) => {
       updated = {

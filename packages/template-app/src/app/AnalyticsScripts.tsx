@@ -2,9 +2,10 @@ import {
   getShopSettings,
   readShop,
 } from "@platform-core/repositories/shops.server";
+import { env } from "@acme/config";
 
 export default async function AnalyticsScripts() {
-  const shop = process.env.NEXT_PUBLIC_SHOP_ID || "default";
+  const shop = env.NEXT_PUBLIC_SHOP_ID || "default";
   const [settings, shopData] = await Promise.all([
     getShopSettings(shop),
     readShop(shop),

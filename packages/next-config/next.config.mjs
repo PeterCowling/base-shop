@@ -1,5 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { env } from "@acme/config";
 import { baseConfig, withShopCode } from "./index.mjs";
 
 /* ------------------------------------------------------------------ */
@@ -8,7 +9,7 @@ import { baseConfig, withShopCode } from "./index.mjs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export default withShopCode(process.env.SHOP_CODE, {
+export default withShopCode(env.SHOP_CODE, {
   /* 1️⃣ ‒ keep CI/production green even if ESLint finds issues */
   eslint: { ignoreDuringBuilds: true },
 

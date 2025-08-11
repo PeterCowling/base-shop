@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { Redis } from "@upstash/redis";
 
+import { env } from "@acme/config";
 import type { CartState } from "./cartCookie";
 import type { SKU } from "@acme/types";
 
@@ -21,7 +22,7 @@ export interface CartStore {
 }
 
 // Default cart expiration is 30 days (in seconds)
-const TTL_SECONDS = Number(process.env.CART_TTL ?? 60 * 60 * 24 * 30);
+const TTL_SECONDS = Number(env.CART_TTL ?? 60 * 60 * 24 * 30);
 const MAX_REDIS_FAILURES = 3;
 
 class MemoryCartStore implements CartStore {
@@ -310,12 +311,12 @@ class RedisCartStore implements CartStore {
   }
 }
 if (
-  process.env.UPSTASH_REDIS_REST_URL &&
-  process.env.UPSTASH_REDIS_REST_TOKEN
+  env.UPSTASH_REDIS_REST_URL &&
+  env.UPSTASH_REDIS_REST_TOKEN
 ) {
   const client = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    url: env.UPSTASH_REDIS_REST_URL,
+    token: env.UPSTASH_REDIS_REST_TOKEN,
   });
   store = new RedisCartStore(client, TTL_SECONDS);
 }

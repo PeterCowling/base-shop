@@ -6,6 +6,7 @@ import type { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import { readRbac as defaultReadRbac } from "../lib/rbacStore";
 
+import { env } from "@acme/config";
 import type { Role } from "./roles";
 import { authSecret } from "./secret";
 
@@ -13,7 +14,7 @@ import { authSecret } from "./secret";
 /*  Secret handling                                                           */
 /* -------------------------------------------------------------------------- */
 
-const NODE_ENV = process.env.NODE_ENV ?? "development";
+const NODE_ENV = env.NODE_ENV ?? "development";
 
 /**
  * In tests we default to a dummy secret so Jest doesn't explode.

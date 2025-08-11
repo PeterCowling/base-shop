@@ -3,6 +3,7 @@
 // packages/ui/src/components/account/MfaSetup.tsx
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
+import { getCsrfToken } from "@shared-utils";
 
 export default function MfaSetup() {
   const [secret, setSecret] = useState<string | null>(null);
@@ -12,13 +13,7 @@ export default function MfaSetup() {
   const [qrCode, setQrCode] = useState<string | null>(null);
 
   const begin = async () => {
-    const csrfToken =
-      typeof document !== "undefined"
-        ? document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("csrf_token="))
-            ?.split("=")[1]
-        : undefined;
+    const csrfToken = getCsrfToken();
     const res = await fetch("/api/mfa/enroll", {
       method: "POST",
       headers: { "x-csrf-token": csrfToken ?? "" },
@@ -32,13 +27,7 @@ export default function MfaSetup() {
 
   const verify = async (e: React.FormEvent) => {
     e.preventDefault();
-    const csrfToken =
-      typeof document !== "undefined"
-        ? document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("csrf_token="))
-            ?.split("=")[1]
-        : undefined;
+    const csrfToken = getCsrfToken();
     const res = await fetch("/api/mfa/verify", {
       method: "POST",
       headers: {

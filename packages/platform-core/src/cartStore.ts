@@ -22,6 +22,7 @@ export interface CartStore {
 
 // Default cart expiration is 30 days (in seconds)
 const TTL_SECONDS = Number(process.env.CART_TTL ?? 60 * 60 * 24 * 30);
+const MAX_REDIS_FAILURES = 3;
 
 class MemoryCartStore implements CartStore {
   private carts = new Map<string, { cart: CartState; expires: number }>();
@@ -104,8 +105,35 @@ class MemoryCartStore implements CartStore {
   }
 }
 
+const memoryStore = new MemoryCartStore(TTL_SECONDS);
+
+let store: CartStore = memoryStore;
+
 class RedisCartStore implements CartStore {
-  constructor(private client: Redis, private ttl: number) {}
+  private failures = 0;
+
+  constructor(
+    private client: Redis,
+    private ttl: number
+  ) {}
+
+  private async exec<T>(fn: () => Promise<T>): Promise<T | undefined> {
+    try {
+      const result = await fn();
+      this.failures = 0;
+      return result;
+    } catch (err) {
+      console.error("Redis operation failed", err);
+      this.failures += 1;
+      if (this.failures >= MAX_REDIS_FAILURES) {
+        console.error(
+          "Falling back to MemoryCartStore after repeated Redis failures"
+        );
+        store = memoryStore;
+      }
+      return undefined;
+    }
+  }
 
   private skuKey(id: string) {
     return `${id}:sku`;
@@ -113,14 +141,22 @@ class RedisCartStore implements CartStore {
 
   async createCart(): Promise<string> {
     const id = crypto.randomUUID();
-    await this.client.hset(id, {});
-    await this.client.expire(id, this.ttl);
+    const ok1 = await this.exec(() => this.client.hset(id, {}));
+    const ok2 = await this.exec(() => this.client.expire(id, this.ttl));
+    if (ok1 === undefined || ok2 === undefined) {
+      return memoryStore.createCart();
+    }
     return id;
   }
 
   async getCart(id: string): Promise<CartState> {
-    const qty = (await this.client.hgetall<number>(id)) || {};
-    const lines = (await this.client.hgetall<string>(this.skuKey(id))) || {};
+    const qty = await this.exec(() => this.client.hgetall<number>(id));
+    const lines = await this.exec(() =>
+      this.client.hgetall<string>(this.skuKey(id))
+    );
+    if (!qty || !lines) {
+      return memoryStore.getCart(id);
+    }
     const cart: CartState = {};
     for (const [lineId, q] of Object.entries(qty)) {
       const lineJson = lines[lineId];
@@ -141,19 +177,39 @@ class RedisCartStore implements CartStore {
       qty[lineId] = line.qty;
       lines[lineId] = JSON.stringify({ sku: line.sku, size: line.size });
     }
-    await this.client.del(id);
-    await this.client.del(this.skuKey(id));
+    let ok = true;
+    if ((await this.exec(() => this.client.del(id))) === undefined) ok = false;
+    if ((await this.exec(() => this.client.del(this.skuKey(id)))) === undefined)
+      ok = false;
     if (Object.keys(qty).length) {
-      await this.client.hset(id, qty);
-      await this.client.hset(this.skuKey(id), lines);
+      if ((await this.exec(() => this.client.hset(id, qty))) === undefined)
+        ok = false;
+      if (
+        (await this.exec(() => this.client.hset(this.skuKey(id), lines))) ===
+        undefined
+      )
+        ok = false;
     }
-    await this.client.expire(id, this.ttl);
-    await this.client.expire(this.skuKey(id), this.ttl);
+    if ((await this.exec(() => this.client.expire(id, this.ttl))) === undefined)
+      ok = false;
+    if (
+      (await this.exec(() => this.client.expire(this.skuKey(id), this.ttl))) ===
+      undefined
+    )
+      ok = false;
+    if (!ok) {
+      await memoryStore.setCart(id, cart);
+    }
   }
 
   async deleteCart(id: string): Promise<void> {
-    await this.client.del(id);
-    await this.client.del(this.skuKey(id));
+    let ok = true;
+    if ((await this.exec(() => this.client.del(id))) === undefined) ok = false;
+    if ((await this.exec(() => this.client.del(this.skuKey(id)))) === undefined)
+      ok = false;
+    if (!ok) {
+      await memoryStore.deleteCart(id);
+    }
   }
 
   async incrementQty(
@@ -163,12 +219,29 @@ class RedisCartStore implements CartStore {
     size?: string
   ): Promise<CartState> {
     const key = size ? `${sku.id}:${size}` : sku.id;
-    await this.client.hincrby(id, key, qty);
-    await this.client.hset(this.skuKey(id), {
-      [key]: JSON.stringify({ sku, size }),
-    });
-    await this.client.expire(id, this.ttl);
-    await this.client.expire(this.skuKey(id), this.ttl);
+    let ok = true;
+    if (
+      (await this.exec(() => this.client.hincrby(id, key, qty))) === undefined
+    )
+      ok = false;
+    if (
+      (await this.exec(() =>
+        this.client.hset(this.skuKey(id), {
+          [key]: JSON.stringify({ sku, size }),
+        })
+      )) === undefined
+    )
+      ok = false;
+    if ((await this.exec(() => this.client.expire(id, this.ttl))) === undefined)
+      ok = false;
+    if (
+      (await this.exec(() => this.client.expire(this.skuKey(id), this.ttl))) ===
+      undefined
+    )
+      ok = false;
+    if (!ok) {
+      return memoryStore.incrementQty(id, sku, qty, size);
+    }
     return this.getCart(id);
   }
 
@@ -177,30 +250,65 @@ class RedisCartStore implements CartStore {
     skuId: string,
     qty: number
   ): Promise<CartState | null> {
-    const exists = await this.client.hexists(id, skuId);
-    if (!exists) return null;
-    if (qty === 0) {
-      await this.client.hdel(id, skuId);
-      await this.client.hdel(this.skuKey(id), skuId);
-    } else {
-      await this.client.hset(id, { [skuId]: qty });
+    const exists = await this.exec(() => this.client.hexists(id, skuId));
+    if (exists === undefined) {
+      return memoryStore.setQty(id, skuId, qty);
     }
-    await this.client.expire(id, this.ttl);
-    await this.client.expire(this.skuKey(id), this.ttl);
+    if (!exists) return null;
+    let ok = true;
+    if (qty === 0) {
+      if ((await this.exec(() => this.client.hdel(id, skuId))) === undefined)
+        ok = false;
+      if (
+        (await this.exec(() => this.client.hdel(this.skuKey(id), skuId))) ===
+        undefined
+      )
+        ok = false;
+    } else {
+      if (
+        (await this.exec(() => this.client.hset(id, { [skuId]: qty }))) ===
+        undefined
+      )
+        ok = false;
+    }
+    if ((await this.exec(() => this.client.expire(id, this.ttl))) === undefined)
+      ok = false;
+    if (
+      (await this.exec(() => this.client.expire(this.skuKey(id), this.ttl))) ===
+      undefined
+    )
+      ok = false;
+    if (!ok) {
+      return memoryStore.setQty(id, skuId, qty);
+    }
     return this.getCart(id);
   }
 
   async removeItem(id: string, skuId: string): Promise<CartState | null> {
-    const removed = await this.client.hdel(id, skuId);
+    const removed = await this.exec(() => this.client.hdel(id, skuId));
+    if (removed === undefined) {
+      return memoryStore.removeItem(id, skuId);
+    }
     if (removed === 0) return null;
-    await this.client.hdel(this.skuKey(id), skuId);
-    await this.client.expire(id, this.ttl);
-    await this.client.expire(this.skuKey(id), this.ttl);
+    let ok = true;
+    if (
+      (await this.exec(() => this.client.hdel(this.skuKey(id), skuId))) ===
+      undefined
+    )
+      ok = false;
+    if ((await this.exec(() => this.client.expire(id, this.ttl))) === undefined)
+      ok = false;
+    if (
+      (await this.exec(() => this.client.expire(this.skuKey(id), this.ttl))) ===
+      undefined
+    )
+      ok = false;
+    if (!ok) {
+      return memoryStore.removeItem(id, skuId);
+    }
     return this.getCart(id);
   }
 }
-
-let store: CartStore;
 if (
   process.env.UPSTASH_REDIS_REST_URL &&
   process.env.UPSTASH_REDIS_REST_TOKEN
@@ -210,14 +318,11 @@ if (
     token: process.env.UPSTASH_REDIS_REST_TOKEN,
   });
   store = new RedisCartStore(client, TTL_SECONDS);
-} else {
-  store = new MemoryCartStore(TTL_SECONDS);
 }
 
 export const createCart = () => store.createCart();
 export const getCart = (id: string) => store.getCart(id);
-export const setCart = (id: string, cart: CartState) =>
-  store.setCart(id, cart);
+export const setCart = (id: string, cart: CartState) => store.setCart(id, cart);
 export const deleteCart = (id: string) => store.deleteCart(id);
 export const incrementQty = (
   id: string,
@@ -229,4 +334,3 @@ export const setQty = (id: string, skuId: string, qty: number) =>
   store.setQty(id, skuId, qty);
 export const removeItem = (id: string, skuId: string) =>
   store.removeItem(id, skuId);
-

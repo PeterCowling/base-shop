@@ -1,4 +1,4 @@
-import { stripe } from "@lib/stripeServer.server";
+import { stripe } from "@acme/stripe";
 import {
   markRefunded,
   readOrders,

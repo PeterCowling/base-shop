@@ -29,7 +29,7 @@ describe("/api/return", () => {
     const computeDamageFee = jest.fn(async () => 20);
 
     jest.doMock(
-      "@/lib/stripeServer",
+      "@acme/stripe",
       () => ({
         __esModule: true,
         stripe: {
@@ -70,7 +70,7 @@ describe("/api/return", () => {
     const refundCreate = jest.fn();
 
     jest.doMock(
-      "@/lib/stripeServer",
+      "@acme/stripe",
       () => ({
         __esModule: true,
         stripe: {

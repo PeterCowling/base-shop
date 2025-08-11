@@ -1,4 +1,4 @@
-import { stripe } from "@lib/stripeServer.server";
+import { stripe } from "@acme/stripe";
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { markRefunded, readOrders } from "./repositories/rentalOrders.server";

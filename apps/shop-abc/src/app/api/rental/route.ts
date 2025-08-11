@@ -1,6 +1,6 @@
 // apps/shop-abc/src/app/api/rental/route.ts
 
-import { stripe } from "@lib/stripeServer";
+import { stripe } from "@acme/stripe";
 import {
   addOrder,
   markReturned,

@@ -8,7 +8,7 @@ jest.mock("node:fs/promises", () => ({ readdir }));
 const retrieve = jest.fn();
 const createRefund = jest.fn();
 jest.mock(
-  "@/lib/stripeServer",
+  "@acme/stripe",
   () => ({
     stripe: {
       checkout: { sessions: { retrieve } },

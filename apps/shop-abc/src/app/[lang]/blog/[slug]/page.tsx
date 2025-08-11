@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { fetchPostBySlug } from "@lib/sanity.server";
+import { fetchPostBySlug } from "@acme/sanity";
 import { getProductBySlug } from "@/lib/products";
 import { ProductCard } from "@/components/shop/ProductCard";
 import shop from "../../../../../shop.json";

@@ -28,7 +28,7 @@ describe("/api/return", () => {
     const computeDamageFee = jest.fn().mockResolvedValue(20);
 
     jest.doMock(
-      "@lib/stripeServer",
+      "@acme/stripe",
       () => ({
         __esModule: true,
         stripe: {
@@ -83,7 +83,7 @@ describe("/api/return", () => {
     const computeDamageFee = jest.fn().mockResolvedValue(10);
 
     jest.doMock(
-      "@lib/stripeServer",
+      "@acme/stripe",
       () => ({
         __esModule: true,
         stripe: {
@@ -126,7 +126,7 @@ describe("/api/return", () => {
       markRefunded: jest.fn(),
       addOrder: jest.fn(),
     }));
-    jest.doMock("@lib/stripeServer", () => ({
+    jest.doMock("@acme/stripe", () => ({
       __esModule: true,
       stripe: { checkout: { sessions: { retrieve: jest.fn() } }, refunds: { create: jest.fn() } },
     }));

@@ -7,8 +7,8 @@ import {
   type CartState,
 } from "@platform-core/src/cartCookie";
 import { getCart } from "@platform-core/src/cartStore";
-import { calculateRentalDays } from "@/lib/date";
-import { stripe } from "@lib/stripeServer";
+import { calculateRentalDays } from "@acme/date-utils";
+import { stripe } from "@acme/stripe";
 import { getCustomerSession } from "@auth";
 import { priceForDays, convertCurrency } from "@platform-core/pricing";
 import { findCoupon } from "@platform-core/coupons";

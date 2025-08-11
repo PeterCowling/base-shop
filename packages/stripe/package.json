@@ -1,0 +1,16 @@
+{
+  "name": "@acme/stripe",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "stripe": "^18.2.1",
+    "@acme/config": "workspace:*"
+  }
+}

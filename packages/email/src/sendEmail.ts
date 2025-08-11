@@ -1,4 +1,4 @@
-// packages/lib/src/email.ts
+// packages/email/src/sendEmail.ts
 
 import { env } from "@config/src/env";
 import nodemailer from "nodemailer";

@@ -24,7 +24,7 @@ describe("sendEmail", () => {
       createTransport: () => ({ sendMail }),
     }));
 
-    const { sendEmail } = await import("../src/email");
+    const { sendEmail } = await import("../sendEmail");
     await sendEmail("a@b.com", "Hello", "World");
 
     expect(sendMail).toHaveBeenCalledWith({
@@ -52,7 +52,7 @@ describe("sendEmail", () => {
       createTransport: jest.fn(),
     }));
 
-    const { sendEmail } = await import("../src/email");
+    const { sendEmail } = await import("../sendEmail");
     await sendEmail("a@b.com", "Hi", "There");
 
     expect(consoleSpy).toHaveBeenCalledWith(
@@ -89,7 +89,7 @@ describe("sendEmail", () => {
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
-    const { sendEmail } = await import("../src/email");
+    const { sendEmail } = await import("../sendEmail");
     await expect(sendEmail("a@b.com", "Hello", "World")).rejects.toThrow(
       "failure"
     );

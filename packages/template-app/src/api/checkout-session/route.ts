@@ -1,6 +1,6 @@
 // packages/template-app/src/api/checkout-session/route.ts
-import { stripe } from "@/lib/stripeServer";
-import { calculateRentalDays } from "@/lib/date";
+import { stripe } from "@acme/stripe";
+import { calculateRentalDays } from "@acme/date-utils";
 import {
   CART_COOKIE,
   decodeCartCookie,

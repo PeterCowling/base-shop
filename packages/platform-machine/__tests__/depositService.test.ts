@@ -18,7 +18,7 @@ describe("releaseDepositsOnce", () => {
   });
 
   it("refunds returned deposits and marks orders", async () => {
-    const stripeModule = await import("@lib/stripeServer");
+    const stripeModule = await import("@acme/stripe");
     const stripeRetrieve = jest
       .fn()
       .mockResolvedValue({ payment_intent: "pi_1" });

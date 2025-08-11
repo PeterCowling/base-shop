@@ -286,9 +286,12 @@ importers:
 
   apps/cms:
     dependencies:
+      '@acme/date-utils':
+        specifier: workspace:*
+        version: link:../../packages/date-utils
       '@acme/email':
         specifier: workspace:*
-        version: link:../../packages/lib/email
+        version: link:../../packages/email
       '@acme/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
@@ -308,12 +311,27 @@ importers:
 
   apps/shop-abc:
     dependencies:
+      '@acme/date-utils':
+        specifier: workspace:*
+        version: link:../../packages/date-utils
+      '@acme/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@acme/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/sanity':
+        specifier: workspace:*
+        version: link:../../packages/sanity
+      '@acme/stripe':
+        specifier: workspace:*
+        version: link:../../packages/stripe
+      '@acme/template-app':
+        specifier: workspace:*
+        version: link:../../packages/template-app
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
@@ -324,12 +342,24 @@ importers:
 
   apps/shop-bcd:
     dependencies:
+      '@acme/date-utils':
+        specifier: workspace:*
+        version: link:../../packages/date-utils
       '@acme/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/sanity':
+        specifier: workspace:*
+        version: link:../../packages/sanity
+      '@acme/stripe':
+        specifier: workspace:*
+        version: link:../../packages/stripe
+      '@acme/template-app':
+        specifier: workspace:*
+        version: link:../../packages/template-app
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
@@ -377,7 +407,18 @@ importers:
         specifier: ^4.20.4
         version: 4.23.0(@cloudflare/workers-types@4.20250704.0)
 
+  packages/date-utils: {}
+
   packages/design-tokens: {}
+
+  packages/email:
+    dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../config
+      nodemailer:
+        specifier: ^6.10.1
+        version: 6.10.1
 
   packages/i18n:
     devDependencies:
@@ -386,25 +427,21 @@ importers:
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/lib:
-    dependencies:
-      '@sanity/client':
-        specifier: ^6.15.0
-        version: 6.29.1
     devDependencies:
       next:
         specifier: ^15.3.4
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
-  packages/lib/email:
-    dependencies:
-      nodemailer:
-        specifier: ^6.10.1
-        version: 6.10.1
-
   packages/next-config: {}
 
   packages/platform-core:
     dependencies:
+      '@acme/date-utils':
+        specifier: workspace:*
+        version: link:../date-utils
+      '@acme/email':
+        specifier: workspace:*
+        version: link:../email
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../shared-utils
@@ -442,22 +479,46 @@ importers:
         specifier: ^6.15.0
         version: 6.29.1
 
+  packages/sanity:
+    dependencies:
+      '@acme/platform-core':
+        specifier: workspace:*
+        version: link:../platform-core
+      '@sanity/client':
+        specifier: ^6.15.0
+        version: 6.29.1
+
   packages/shared-utils:
     devDependencies:
       next:
         specifier: ^15.3.4
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
+  packages/stripe:
+    dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../config
+      stripe:
+        specifier: ^18.2.1
+        version: 18.3.0(@types/node@24.0.10)
+
   packages/tailwind-config: {}
 
   packages/template-app:
     dependencies:
+      '@acme/date-utils':
+        specifier: workspace:*
+        version: link:../date-utils
       '@acme/i18n':
         specifier: workspace:*
         version: link:../i18n
       '@acme/next-config':
         specifier: workspace:*
         version: link:../next-config
+      '@acme/stripe':
+        specifier: workspace:*
+        version: link:../stripe
       '@themes/base':
         specifier: workspace:*
         version: link:../themes/base
@@ -488,6 +549,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@acme/date-utils':
+        specifier: workspace:*
+        version: link:../date-utils
       '@acme/i18n':
         specifier: workspace:*
         version: link:../i18n
@@ -20023,6 +20087,12 @@ snapshots:
       qs: 6.14.0
     optionalDependencies:
       '@types/node': 20.19.4
+
+  stripe@18.3.0(@types/node@24.0.10):
+    dependencies:
+      qs: 6.14.0
+    optionalDependencies:
+      '@types/node': 24.0.10
 
   style-loader@3.3.4(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.5)):
     dependencies:

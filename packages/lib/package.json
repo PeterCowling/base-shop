@@ -9,7 +9,5 @@
   "devDependencies": {
     "next": "^15.3.4"
   },
-  "dependencies": {
-    "@sanity/client": "^6.15.0"
-  }
+  "dependencies": {}
 }

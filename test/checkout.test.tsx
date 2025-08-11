@@ -6,7 +6,7 @@ process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 
 import CheckoutForm from "../packages/ui/components/checkout/CheckoutForm";
 import { CurrencyProvider } from "@platform-core/src/contexts/CurrencyContext";
-import { isoDateInNDays } from "@/lib/date";
+import { isoDateInNDays } from "@acme/date-utils";
 
 const pushMock = jest.fn();
 

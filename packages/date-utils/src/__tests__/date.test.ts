@@ -4,7 +4,7 @@ import {
   isoDateInNDays,
   formatTimestamp,
   nowIso,
-} from '../src/date';
+} from '../index';
 
 describe('nowIso', () => {
   test('returns a valid ISO 8601 string near current time', () => {

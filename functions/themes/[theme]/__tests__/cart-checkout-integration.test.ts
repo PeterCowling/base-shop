@@ -10,7 +10,7 @@ jest.mock("next/server", () => ({
   },
 }));
 
-jest.mock("@/lib/stripeServer", () => ({
+jest.mock("@acme/stripe", () => ({
   __esModule: true,
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
@@ -19,7 +19,7 @@ jest.mock("@platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
 }));
 
-import { stripe } from "@/lib/stripeServer";
+import { stripe } from "@acme/stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
 function cartReq(body: any, cookie?: string): Parameters<typeof CART_POST>[0] {

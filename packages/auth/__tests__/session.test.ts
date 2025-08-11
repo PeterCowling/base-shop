@@ -2,12 +2,15 @@ import {
   createCustomerSession,
   getCustomerSession,
   CUSTOMER_SESSION_COOKIE,
+  CSRF_TOKEN_COOKIE,
 } from "../src/session";
 import type { Role } from "../src/types";
 
 const mockCookies = jest.fn();
+const mockHeaders = jest.fn(() => ({ get: () => null }));
 jest.mock("next/headers", () => ({
   cookies: () => mockCookies(),
+  headers: () => mockHeaders(),
 }));
 
 function createStore() {
@@ -57,11 +60,20 @@ describe("customer session", () => {
       maxAge: expect.any(Number),
     });
 
-    store.get.mockReturnValue({ value: firstToken });
+    const [csrfName, csrfToken, csrfOpts] = store.set.mock.calls[1];
+    expect(csrfName).toBe(CSRF_TOKEN_COOKIE);
+    expect(csrfOpts).toMatchObject({
+      httpOnly: false,
+      sameSite: "strict",
+      secure: true,
+      path: "/",
+      maxAge: expect.any(Number),
+    });
+
     await expect(getCustomerSession()).resolves.toEqual(session);
-    const secondToken = store.set.mock.calls[1][1];
+    const secondToken = store.set.mock.calls[2][1];
     expect(secondToken).not.toBe(firstToken);
-    const secondOpts = store.set.mock.calls[1][2];
+    const secondOpts = store.set.mock.calls[2][2];
     expect(secondOpts).toMatchObject({
       httpOnly: true,
       sameSite: "strict",
@@ -80,7 +92,7 @@ describe("customer session", () => {
     const firstToken = store.set.mock.calls[0][1];
 
     await createCustomerSession(session);
-    const secondToken = store.set.mock.calls[1][1];
+    const secondToken = store.set.mock.calls[2][1];
     expect(secondToken).not.toBe(firstToken);
   });
 });

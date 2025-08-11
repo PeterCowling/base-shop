@@ -24,9 +24,19 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
     setStatus("idle");
     setMessage(null);
     try {
+      const csrfToken =
+        typeof document !== "undefined"
+          ? document.cookie
+              .split("; ")
+              .find((row) => row.startsWith("csrf_token="))
+              ?.split("=")[1]
+          : undefined;
       const res = await fetch("/api/account/profile", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-csrf-token": csrfToken ?? "",
+        },
         body: JSON.stringify(form),
       });
       if (!res.ok) {

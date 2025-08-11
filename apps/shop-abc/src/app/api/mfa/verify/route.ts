@@ -1,5 +1,6 @@
 // apps/shop-abc/src/app/api/mfa/verify/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import {
   createCustomerSession,
   getCustomerSession,
@@ -10,13 +11,20 @@ import type { Role } from "@auth/types/roles";
 import { getUserById } from "../../../userStore";
 import { clearLoginAttempts } from "../../../../middleware";
 
+const schema = z
+  .object({ token: z.string(), customerId: z.string().optional() })
+  .strict();
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const headerToken = req.headers.get("x-csrf-token");
   const valid = await validateCsrfToken(headerToken);
   if (!valid)
     return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
 
-  const { token, customerId } = await req.json();
+  const parsed = schema.safeParse(await req.json());
+  if (!parsed.success)
+    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+  const { token, customerId } = parsed.data;
   if (!token) return NextResponse.json({ error: "Token required" }, { status: 400 });
 
   const session = await getCustomerSession();

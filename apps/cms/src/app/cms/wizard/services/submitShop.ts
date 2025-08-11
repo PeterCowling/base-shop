@@ -93,7 +93,7 @@ export async function submitShop(
     return { ok: false, fieldErrors: errs };
   }
 
-  const res = await fetch("/cms/api/create-shop", {
+  const res = await fetch("/cms/api/configurator", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id: shopId, ...parsed.data }),
@@ -122,6 +122,18 @@ export async function submitShop(
           errors.push(
             envJson.error ?? "Failed to save environment variables"
           );
+        } else {
+          const valRes = await fetch(
+            `/cms/api/configurator/validate-env/${shopId}`
+          );
+          if (!valRes.ok) {
+            const valJson = (await valRes.json().catch(() => ({}))) as {
+              error?: string;
+            };
+            errors.push(
+              valJson.error ?? "Environment validation failed"
+            );
+          }
         }
       } catch {
         errors.push("Failed to save environment variables");

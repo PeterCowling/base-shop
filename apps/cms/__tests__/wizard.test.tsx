@@ -112,7 +112,7 @@ describe("Wizard", () => {
 
     server.use(
       rest.post(
-        "/cms/api/create-shop",
+        "/cms/api/configurator",
         async (
           req: RestRequest,
           res: ResponseComposition,

@@ -4,7 +4,11 @@ describe("Shop wizard", () => {
   const shopId = `cyshop-${Date.now()}`;
 
   it("validates input and creates a shop via the wizard", () => {
-    cy.intercept("POST", "/cms/api/create-shop").as("createShop");
+    cy.intercept("POST", "/cms/api/configurator").as("createShop");
+    cy.intercept("GET", "/cms/api/configurator/validate-env/*", {
+      statusCode: 200,
+      body: { success: true },
+    });
 
     // ensure we land back on the wizard page after signing in
     cy.visit("/login?callbackUrl=/cms/wizard");

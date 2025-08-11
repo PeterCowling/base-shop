@@ -13,11 +13,14 @@ import { setupServer } from "msw/node";
  */
 export const handlers = [
   // ⬇️  Example “healthy” default; override as required in tests
-  rest.post("/cms/api/create-shop", (_req, res, ctx) =>
+  rest.post("/cms/api/configurator", (_req, res, ctx) =>
     res(
       ctx.status(200),
       ctx.json({ success: true, message: "default handler: OK" })
     )
+  ),
+  rest.get("/cms/api/configurator/validate-env/:shop", (_req, res, ctx) =>
+    res(ctx.status(200), ctx.json({ success: true }))
   ),
   rest.get("/cms/api/page-templates", (_req, res, ctx) =>
     res(ctx.status(200), ctx.json([]))

@@ -30,11 +30,18 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ghost: "hover:bg-accent hover:text-accent-foreground",
     };
 
+    const tokenMap: Record<NonNullable<ButtonProps["variant"]>, string> = {
+      default: "--color-primary",
+      outline: "--color-accent",
+      ghost: "--color-accent",
+    };
+
     const Comp = asChild ? Slot : "button";
 
     return (
       <Comp
         ref={ref}
+        data-token={tokenMap[variant]}
         className={cn(base, variants[variant], className)}
         {...props}
       />

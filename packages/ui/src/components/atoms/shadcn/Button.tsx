@@ -19,7 +19,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const styles =
         "bg-destructive text-destructive-foreground hover:bg-destructive/90";
       return (
-        <Comp ref={ref} className={cn(base, styles, className)} {...props} />
+        <Comp
+          ref={ref}
+          data-token="--color-danger"
+          className={cn(base, styles, className)}
+          {...props}
+        />
       );
     }
     return (

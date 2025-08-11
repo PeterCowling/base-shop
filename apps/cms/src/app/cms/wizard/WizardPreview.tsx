@@ -14,6 +14,8 @@ import { STORAGE_KEY } from "./hooks/useWizardPersistence";
 
 interface Props {
   style: React.CSSProperties;
+  inspectMode?: boolean;
+  onSelectToken?: (token: string) => void;
 }
 
 /**
@@ -21,11 +23,16 @@ interface Props {
  * The preview reads wizard state from localStorage (keyed by `STORAGE_KEY`)
  * so it always shows the latest edits without needing a full refresh.
  */
-export default function WizardPreview({ style }: Props): React.JSX.Element {
+export default function WizardPreview({
+  style,
+  inspectMode = false,
+  onSelectToken,
+}: Props): React.JSX.Element {
   const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
     "desktop"
   );
   const [components, setComponents] = useState<PageComponent[]>([]);
+  const [hovered, setHovered] = useState<HTMLElement | null>(null);
 
   /* ------------------------------------------------------------------ */
   /*             Sync wizard state from localStorage                    */
@@ -65,6 +72,38 @@ export default function WizardPreview({ style }: Props): React.JSX.Element {
   };
 
   const containerStyle = { ...style, width: widthMap[viewport] };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!inspectMode) return;
+    const el = (e.target as HTMLElement).closest<HTMLElement>("[data-token]");
+    if (hovered !== el) {
+      hovered?.classList.remove("outline", "outline-blue-500");
+      el?.classList.add("outline", "outline-blue-500");
+      setHovered(el);
+    }
+  };
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!inspectMode) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const token = (e.target as HTMLElement)
+      .closest("[data-token]")
+      ?.getAttribute("data-token");
+    if (token) onSelectToken?.(token);
+  };
+
+  const handleLeave = () => {
+    hovered?.classList.remove("outline", "outline-blue-500");
+    setHovered(null);
+  };
+
+  useEffect(() => {
+    if (!inspectMode) {
+      hovered?.classList.remove("outline", "outline-blue-500");
+      setHovered(null);
+    }
+  }, [inspectMode, hovered]);
 
   /** Renders a single block component */
   function Block({ component }: { component: PageComponent }) {
@@ -130,7 +169,13 @@ export default function WizardPreview({ style }: Props): React.JSX.Element {
       </div>
 
       {/* live preview */}
-      <div style={containerStyle} className="mx-auto rounded border">
+      <div
+        style={containerStyle}
+        className="mx-auto rounded border"
+        onMouseMove={handleMouseMove}
+        onClick={handleClick}
+        onMouseLeave={handleLeave}
+      >
         <TranslationsProvider messages={enMessages}>
           <AppShell
             header={<Header locale="en" />}

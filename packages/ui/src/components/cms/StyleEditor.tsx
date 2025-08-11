@@ -55,7 +55,7 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
         }
       }
       return (
-        <label key={k} className="flex flex-col gap-1 text-sm">
+        <label key={k} data-token={k} className="flex flex-col gap-1 text-sm">
           <span className="flex items-center gap-2">
             <span className="w-40 flex-shrink-0">{k}</span>
             <ColorInput value={v} onChange={(val) => setToken(k, val)} />
@@ -69,7 +69,7 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
       const options = k.includes("mono") ? monoFonts : sansFonts;
       const type: "mono" | "sans" = k.includes("mono") ? "mono" : "sans";
       return (
-        <label key={k} className="flex flex-col gap-1 text-sm">
+        <label key={k} data-token={k} className="flex flex-col gap-1 text-sm">
           <span className="flex items-center gap-2">
             <span className="w-40 flex-shrink-0">{k}</span>
             <FontSelect
@@ -101,7 +101,7 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
 
     if (/px$/.test(v)) {
       return (
-        <label key={k} className="flex items-center gap-2 text-sm">
+        <label key={k} data-token={k} className="flex items-center gap-2 text-sm">
           <span className="w-40 flex-shrink-0">{k}</span>
           <RangeInput value={v} onChange={(val) => setToken(k, val)} />
         </label>
@@ -109,7 +109,7 @@ export default function StyleEditor({ tokens, onChange }: StyleEditorProps) {
     }
 
     return (
-      <label key={k} className="flex items-center gap-2 text-sm">
+      <label key={k} data-token={k} className="flex items-center gap-2 text-sm">
         <span className="w-40 flex-shrink-0">{k}</span>
         <Input value={v} onChange={(e) => setToken(k, e.target.value)} />
       </label>

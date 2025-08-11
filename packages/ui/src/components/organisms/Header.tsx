@@ -25,6 +25,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
   ({ nav = [], searchSuggestions = [], locale, className, ...props }, ref) => (
     <header
       ref={ref}
+      data-token="--color-bg"
       className={cn("bg-background border-b", className)}
       {...props}
     >

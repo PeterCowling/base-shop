@@ -8,7 +8,7 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     const email = (e.currentTarget.elements.namedItem("email") as HTMLInputElement)
       .value;
-    const res = await fetch("/forgot-password", {
+    const res = await fetch("/api/account/reset", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),

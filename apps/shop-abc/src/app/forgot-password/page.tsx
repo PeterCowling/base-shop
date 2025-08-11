@@ -22,7 +22,7 @@ export default function ForgotPasswordPage() {
       body: JSON.stringify(body),
     });
     await res.json().catch(() => ({}));
-    setMsg(res.ok ? "If the email exists, a token was sent." : "Error");
+    setMsg(res.ok ? "If the email exists, a reset link was sent." : "Error");
   }
   return (
     <form onSubmit={handleSubmit} className="space-y-2">

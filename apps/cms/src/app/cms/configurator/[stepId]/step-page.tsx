@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getSteps, steps } from "../steps";
+import { steps } from "../steps";
 import { useWizard } from "../../wizard/WizardContext";
 
 interface Props {
@@ -12,14 +12,12 @@ interface Props {
 export default function StepPage({ stepId }: Props) {
   const router = useRouter();
   const { state } = useWizard();
-  const stepList = getSteps();
-  const index = stepList.findIndex((s) => s.id === stepId);
-  const step = stepList[index];
+  const step = steps[stepId];
   if (!step) {
     return null;
   }
 
-  const prerequisites = steps[stepId]?.prerequisites ?? [];
+  const prerequisites = step.prerequisites ?? [];
   const missingPrereq = prerequisites.find((id) => !state.completed[id]);
 
   useEffect(() => {
@@ -33,14 +31,6 @@ export default function StepPage({ stepId }: Props) {
   }
 
   const StepComponent = step.component as React.ComponentType<any>;
-  const nextId =
-    index >= 0 && index < stepList.length - 1 ? stepList[index + 1].id : null;
-  const prevId = index > 0 ? stepList[index - 1].id : null;
-  const goNext = () => {
-    if (nextId) router.push(`/cms/configurator/${nextId}`);
-  };
-  const goBack = () => {
-    if (prevId) router.push(`/cms/configurator/${prevId}`);
-  };
-  return <StepComponent onNext={goNext} onBack={goBack} />;
+
+  return <StepComponent />;
 }

@@ -118,6 +118,26 @@ test("POST rejects negative or non-integer quantity", async () => {
   expect(res.status).toBe(400);
 });
 
+test("POST rejects out-of-stock items", async () => {
+  const sku = { ...TEST_SKU, id: "01ARZ3NDEKTSV4RRFFQ69G5FAA", stock: 0 };
+  jest.spyOn(productLib, "getProductById").mockReturnValue(undefined as any);
+  const size = sku.sizes[0];
+  const res = await POST(
+    createRequest({ sku: { id: sku.id }, qty: 1, size })
+  );
+  expect(res.status).toBe(404);
+});
+
+test("POST rejects when requested quantity exceeds stock", async () => {
+  const sku = { ...TEST_SKU, id: "01ARZ3NDEKTSV4RRFFQ69G5FAB", stock: 2 };
+  jest.spyOn(productLib, "getProductById").mockReturnValue(sku as any);
+  const size = sku.sizes[0];
+  const res = await POST(
+    createRequest({ sku: { id: sku.id }, qty: sku.stock + 1, size })
+  );
+  expect(res.status).toBe(409);
+});
+
 test("PATCH rejects negative or non-integer quantity", async () => {
   const sku = { ...TEST_SKU };
   const size = sku.sizes[0];

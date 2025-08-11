@@ -6,7 +6,7 @@ import {
   decodeCartCookie,
   encodeCartCookie,
 } from "@/lib/cartCookie";
-import { getProductById } from "@/lib/products";
+import { getProductById, PRODUCTS } from "@/lib/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
@@ -35,7 +35,10 @@ export async function POST(req: NextRequest) {
   } = parsed.data;
   const sku = getProductById(skuId);
   if (!sku) {
-    return NextResponse.json({ error: "Item not found" }, { status: 404 });
+    const exists = PRODUCTS.some((p) => p.id === skuId);
+    const status = exists ? 409 : 404;
+    const error = exists ? "Out of stock" : "Item not found";
+    return NextResponse.json({ error }, { status });
   }
   if (sku.sizes.length && !size) {
     return NextResponse.json({ error: "Size required" }, { status: 400 });
@@ -44,8 +47,12 @@ export async function POST(req: NextRequest) {
   const cart = decodeCartCookie(cookie);
   const id = size ? `${sku.id}:${size}` : sku.id;
   const line = cart[id];
+  const newQty = (line?.qty ?? 0) + qty;
+  if (newQty > sku.stock) {
+    return NextResponse.json({ error: "Insufficient stock" }, { status: 409 });
+  }
 
-  cart[id] = { sku, size, qty: (line?.qty ?? 0) + qty };
+  cart[id] = { sku, size, qty: newQty };
 
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));

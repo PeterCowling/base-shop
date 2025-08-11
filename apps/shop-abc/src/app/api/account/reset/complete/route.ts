@@ -33,7 +33,10 @@ export async function POST(req: Request) {
   const { token, password } = parsed.data;
   const user = await getUserByResetToken(token);
   if (!user) {
-    return NextResponse.json({ error: "Invalid token" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid or expired token" },
+      { status: 400 },
+    );
   }
 
   const passwordHash = await bcrypt.hash(password, 10);

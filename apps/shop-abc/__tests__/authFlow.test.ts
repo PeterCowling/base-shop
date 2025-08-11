@@ -1,5 +1,6 @@
 // apps/shop-abc/__tests__/authFlow.test.ts
 import { jest } from "@jest/globals";
+import { createHash } from "crypto";
 
 jest.mock("@auth", () => ({
   createCustomerSession: jest.fn(),
@@ -28,20 +29,41 @@ jest.mock("../src/app/userStore", () => ({
     passwordHash,
     role = "customer",
   }: any) => {
-    const user = { id, email, passwordHash, role, resetToken: null };
+    const user = {
+      id,
+      email,
+      passwordHash,
+      role,
+      resetTokenHash: null,
+      resetTokenExpires: null,
+    };
     store[id] = user;
     return user;
   }),
-  setResetToken: jest.fn(async (id: string, token: string | null) => {
-    if (store[id]) store[id].resetToken = token;
-  }),
-  getUserByResetToken: jest.fn(async (token: string) =>
-    Object.values(store).find((u: any) => u.resetToken === token) ?? null,
+  setResetToken: jest.fn(
+    async (id: string, tokenHash: string | null, expires: number | null) => {
+      if (store[id]) {
+        store[id].resetTokenHash = tokenHash;
+        store[id].resetTokenExpires = expires;
+      }
+    },
   ),
+  getUserByResetToken: jest.fn(async (token: string) => {
+    const hash = createHash("sha256").update(token).digest("hex");
+    return (
+      Object.values(store).find(
+        (u: any) =>
+          u.resetTokenHash === hash &&
+          u.resetTokenExpires &&
+          u.resetTokenExpires > Date.now(),
+      ) ?? null
+    );
+  }),
   updatePassword: jest.fn(async (id: string, hash: string) => {
     if (store[id]) {
       store[id].passwordHash = hash;
-      store[id].resetToken = null;
+      store[id].resetTokenHash = null;
+      store[id].resetTokenExpires = null;
     }
   }),
 }));
@@ -70,8 +92,10 @@ beforeAll(async () => {
   }
 
 describe("auth flows", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     for (const key in store) delete store[key];
+    const { sendEmail } = await import("@lib/email");
+    (sendEmail as jest.Mock).mockReset();
   });
 
   it("allows sign-up, login and password reset", async () => {
@@ -102,8 +126,9 @@ describe("auth flows", () => {
     expect(res.status).toBe(200);
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
-    const { getUserById } = await import("../src/app/userStore");
-    const token = (await getUserById("cust1"))!.resetToken as string;
+    const { sendEmail } = await import("@lib/email");
+    const message = (sendEmail as jest.Mock).mock.calls[0][2];
+    const token = message.match(/Your token is (.+)/)[1];
 
     res = await completePOST(
       makeRequest({
@@ -141,8 +166,9 @@ describe("auth flows", () => {
     );
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
-    const { getUserById } = await import("../src/app/userStore");
-    const token = (await getUserById("cust1"))!.resetToken as string;
+    const { sendEmail } = await import("@lib/email");
+    const message = (sendEmail as jest.Mock).mock.calls[0][2];
+    const token = message.match(/Your token is (.+)/)[1];
 
     const res = await completePOST(
       makeRequest({

@@ -5,6 +5,7 @@ import { getUserByEmail, setResetToken } from "../../../../userStore";
 import { sendEmail } from "@lib/email";
 import { checkLoginRateLimit } from "../../../../../middleware";
 import { validateCsrfToken } from "@auth";
+import { randomUUID, createHash } from "crypto";
 
 const schema = z.object({
   email: z.string().email(),
@@ -30,8 +31,10 @@ export async function POST(req: Request) {
 
   const user = await getUserByEmail(parsed.data.email);
   if (user) {
-    const token = Math.random().toString(36).slice(2);
-    await setResetToken(user.id, token);
+    const token = randomUUID();
+    const tokenHash = createHash("sha256").update(token).digest("hex");
+    const expires = Date.now() + 60 * 60 * 1000; // 1 hour
+    await setResetToken(user.id, tokenHash, expires);
     await sendEmail(parsed.data.email, "Password reset", `Your token is ${token}`);
   }
 

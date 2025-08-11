@@ -340,6 +340,9 @@ importers:
 
   packages/auth:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../config
       '@acme/platform-core':
         specifier: workspace:*
         version: link:../platform-core

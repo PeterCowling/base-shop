@@ -90,3 +90,7 @@ items up to `maxItems`, while narrow screens never drop below `minItems`.
 1. Use **Save** to keep a draft version.
 2. Click **Publish** when you're ready for the page to go live at
    `/shop/{shop}/{slug}`.
+
+## Rental deposits
+
+Returned rental orders have their deposits refunded automatically by a background process. Administrators can adjust the schedule or run the process manually; see [doc/machine.md](./machine.md#deposit-release-service) for details on configuration and usage.

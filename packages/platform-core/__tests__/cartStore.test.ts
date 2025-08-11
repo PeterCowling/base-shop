@@ -1,10 +1,22 @@
 // packages/platform-core/__tests__/cartStore.test.ts
 import { jest } from "@jest/globals";
 
-const setMock = jest.fn();
-const getMock = jest.fn();
+const hsetMock = jest.fn();
+const hgetallMock = jest.fn();
+const expireMock = jest.fn();
 const delMock = jest.fn();
-const RedisMock = jest.fn(() => ({ set: setMock, get: getMock, del: delMock }));
+const hdelMock = jest.fn();
+const hincrbyMock = jest.fn();
+const hexistsMock = jest.fn();
+const RedisMock = jest.fn(() => ({
+  hset: hsetMock,
+  hgetall: hgetallMock,
+  expire: expireMock,
+  del: delMock,
+  hdel: hdelMock,
+  hincrby: hincrbyMock,
+  hexists: hexistsMock,
+}));
 
 jest.mock("@upstash/redis", () => ({ Redis: RedisMock }));
 
@@ -13,9 +25,13 @@ describe("MemoryCartStore", () => {
     jest.resetModules();
     jest.useFakeTimers();
     RedisMock.mockClear();
-    setMock.mockClear();
-    getMock.mockClear();
+    hsetMock.mockClear();
+    hgetallMock.mockClear();
+    expireMock.mockClear();
     delMock.mockClear();
+    hdelMock.mockClear();
+    hincrbyMock.mockClear();
+    hexistsMock.mockClear();
     process.env.CART_TTL = "1";
     delete process.env.UPSTASH_REDIS_REST_URL;
     delete process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -53,9 +69,13 @@ describe("RedisCartStore", () => {
   beforeEach(() => {
     jest.resetModules();
     RedisMock.mockClear();
-    setMock.mockClear();
-    getMock.mockClear();
+    hsetMock.mockClear();
+    hgetallMock.mockClear();
+    expireMock.mockClear();
     delMock.mockClear();
+    hdelMock.mockClear();
+    hincrbyMock.mockClear();
+    hexistsMock.mockClear();
     process.env.UPSTASH_REDIS_REST_URL = "http://localhost";
     process.env.UPSTASH_REDIS_REST_TOKEN = "token";
     process.env.CART_TTL = "1";
@@ -67,15 +87,17 @@ describe("RedisCartStore", () => {
     delete process.env.CART_TTL;
   });
 
-  it("passes TTL via ex option", async () => {
+  it("applies TTL via expire", async () => {
     const { createCart, setCart } = await import("../src/cartStore");
 
     await createCart();
     expect(RedisMock).toHaveBeenCalledTimes(1);
-    expect(setMock).toHaveBeenCalledWith(expect.any(String), {}, { ex: 1 });
+    expect(hsetMock).toHaveBeenCalledWith(expect.any(String), {});
+    expect(expireMock).toHaveBeenCalledWith(expect.any(String), 1);
 
     await setCart("abc", { test: 1 } as any);
-    expect(setMock).toHaveBeenLastCalledWith("abc", { test: 1 }, { ex: 1 });
+    expect(expireMock).toHaveBeenCalledWith("abc", 1);
+    expect(expireMock).toHaveBeenLastCalledWith("abc:sku", 1);
   });
 });
 
@@ -83,9 +105,13 @@ describe("createCart backend selection", () => {
   beforeEach(() => {
     jest.resetModules();
     RedisMock.mockClear();
-    setMock.mockClear();
-    getMock.mockClear();
+    hsetMock.mockClear();
+    hgetallMock.mockClear();
+    expireMock.mockClear();
     delMock.mockClear();
+    hdelMock.mockClear();
+    hincrbyMock.mockClear();
+    hexistsMock.mockClear();
     delete process.env.CART_TTL;
     delete process.env.UPSTASH_REDIS_REST_URL;
     delete process.env.UPSTASH_REDIS_REST_TOKEN;

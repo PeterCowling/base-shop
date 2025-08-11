@@ -221,6 +221,7 @@ After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:
 - `CHROMATIC_PROJECT_TOKEN` – token for publishing Storybook previews
 - `STOCK_ALERT_RECIPIENT` – email address that receives low stock alerts; leave unset to disable notifications
 - `CART_COOKIE_SECRET` – secret used to sign cart cookies (required)
+- `CART_TTL` – cart expiration in seconds (defaults to 30 days)
 
 The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET`
 and `PREVIEW_TOKEN_SECRET`. Replace all placeholders with real values or supply

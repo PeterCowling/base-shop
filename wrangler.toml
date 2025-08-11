@@ -8,3 +8,4 @@ id      = "TODO-replace-with-namespace-id"
 
 [env]
   NEXT_PUBLIC_SHOP_ID = "default"
+  CART_TTL = "2592000"

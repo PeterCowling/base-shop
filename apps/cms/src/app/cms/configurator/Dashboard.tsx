@@ -6,7 +6,7 @@ import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast, Tooltip } from "@/components/atoms";
 import type { WizardState } from "../wizard/schema";
-import { steps, stepOrder } from "./steps";
+import { getSteps } from "./steps";
 export type StepStatus = "idle" | "pending" | "success" | "failure";
 
 export default function ConfiguratorDashboard() {
@@ -34,8 +34,9 @@ export default function ConfiguratorDashboard() {
       .then((json) => setState(json))
       .catch(() => setState(null));
   }, []);
-  const missingRequired = stepOrder.filter(
-    (id) => steps[id].required && !state?.completed?.[id]
+  const stepList = getSteps();
+  const missingRequired = stepList.filter(
+    (s) => !s.optional && !state?.completed?.[s.id]
   );
   const allRequiredDone = missingRequired.length === 0;
 
@@ -45,7 +46,7 @@ export default function ConfiguratorDashboard() {
       setToast({
         open: true,
         message: `Complete required steps: ${missingRequired
-          .map((id) => steps[id].label)
+          .map((s) => s.label)
           .join(", ")}`,
       });
       return;
@@ -79,17 +80,16 @@ export default function ConfiguratorDashboard() {
     <div>
       <h2 className="mb-4 text-xl font-semibold">Configuration Steps</h2>
       <ul className="mb-6 space-y-2">
-        {stepOrder.map((id) => {
-          const step = steps[id];
-          const completed = Boolean(state?.completed?.[id]);
+        {stepList.map((step) => {
+          const completed = Boolean(state?.completed?.[step.id]);
           return (
-            <li key={id} className="flex items-center gap-2">
+            <li key={step.id} className="flex items-center gap-2">
               {completed ? (
                 <CheckCircledIcon className="h-4 w-4 text-green-600" />
               ) : (
                 <CircleIcon className="h-4 w-4 text-gray-400" />
               )}
-              <Link href={`/cms/configurator/${id}`} className="underline">
+              <Link href={`/cms/configurator/${step.id}`} className="underline">
                 {step.label}
               </Link>
             </li>
@@ -101,7 +101,7 @@ export default function ConfiguratorDashboard() {
       ) : (
         <Tooltip
           text={`Complete required steps: ${missingRequired
-            .map((id) => steps[id].label)
+            .map((s) => s.label)
             .join(", ")}`}
         >
           <Button disabled>Launch Shop</Button>

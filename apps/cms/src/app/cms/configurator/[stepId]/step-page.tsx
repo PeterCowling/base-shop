@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { steps, stepOrder } from "../steps";
+import { getSteps } from "../steps";
 
 interface Props {
   stepId: string;
@@ -9,14 +9,15 @@ interface Props {
 
 export default function StepPage({ stepId }: Props) {
   const router = useRouter();
-  const step = steps[stepId];
+  const stepList = getSteps();
+  const index = stepList.findIndex((s) => s.id === stepId);
+  const step = stepList[index];
   if (!step) {
     return null;
   }
   const StepComponent = step.component as React.ComponentType<any>;
-  const index = stepOrder.indexOf(stepId);
-  const nextId = index >= 0 && index < stepOrder.length - 1 ? stepOrder[index + 1] : null;
-  const prevId = index > 0 ? stepOrder[index - 1] : null;
+  const nextId = index >= 0 && index < stepList.length - 1 ? stepList[index + 1].id : null;
+  const prevId = index > 0 ? stepList[index - 1].id : null;
   const goNext = () => {
     if (nextId) router.push(`/cms/configurator/${nextId}`);
   };

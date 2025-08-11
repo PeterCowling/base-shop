@@ -47,7 +47,7 @@ module.exports = {
   },
   transformIgnorePatterns: [
     // transpile ESM-only dependencies that would break under CommonJS
-    "/node_modules/(?!(jose|next-auth|ulid)/)",
+    "/node_modules/(?!(jose|next-auth|ulid|@upstash/redis|uncrypto)/)",
   ],
 
   /* ------------------------------------------------------------------ */

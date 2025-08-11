@@ -37,7 +37,7 @@ export async function POST(req: Request) {
   }
 
   const ip = req.headers.get("x-forwarded-for") ?? "unknown";
-  const rateLimited = checkLoginRateLimit(ip, parsed.data.customerId);
+  const rateLimited = await checkLoginRateLimit(ip, parsed.data.customerId);
   if (rateLimited) return rateLimited;
 
   const valid = await validateCredentials(
@@ -55,7 +55,7 @@ export async function POST(req: Request) {
   }
 
   await createCustomerSession(valid);
-  clearLoginAttempts(ip, parsed.data.customerId);
+  await clearLoginAttempts(ip, parsed.data.customerId);
 
   return NextResponse.json({ ok: true });
 }

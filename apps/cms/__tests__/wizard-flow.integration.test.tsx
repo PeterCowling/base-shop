@@ -46,20 +46,29 @@ async function nextFrom(container: HTMLElement): Promise<void> {
   );
 }
 
-let serverState: any = {};
+  let serverState: any = { state: {}, completed: {} };
 
 beforeEach(() => {
-  serverState = {};
-  (global.fetch as any) = jest.fn((url: string, init?: any) => {
-    if (url === "/cms/api/wizard-progress") {
-      if (init && init.method === "PUT") {
-        serverState = JSON.parse(init.body as string);
-        return Promise.resolve({ ok: true, json: async () => ({}) });
+    serverState = { state: {}, completed: {} };
+    (global.fetch as any) = jest.fn((url: string, init?: any) => {
+      if (url === "/cms/api/wizard-progress") {
+        if (init && init.method === "PUT") {
+          const body = JSON.parse(init.body as string);
+          serverState.state = { ...serverState.state, ...(body.data ?? {}) };
+          return Promise.resolve({ ok: true, json: async () => ({}) });
+        }
+        if (init && init.method === "PATCH") {
+          const body = JSON.parse(init.body as string);
+          serverState.completed = {
+            ...serverState.completed,
+            [body.stepId]: body.completed,
+          };
+          return Promise.resolve({ ok: true, json: async () => ({}) });
+        }
+        return Promise.resolve({ ok: true, json: async () => serverState });
       }
-      return Promise.resolve({ ok: true, json: async () => serverState });
-    }
-    return Promise.resolve({ ok: true, json: async () => ({}) });
-  });
+      return Promise.resolve({ ok: true, json: async () => ({}) });
+    });
   Element.prototype.scrollIntoView = jest.fn();
 });
 
@@ -73,7 +82,7 @@ afterEach(() => {
 
 describe("Wizard locale flow", () => {
   it("preserves locale fields across navigation and reload", async () => {
-    serverState = { step: 11, shopId: "shop" };
+      serverState = { state: { step: 11, shopId: "shop" }, completed: {} };
     const { unmount } = render(
       <Wizard themes={themes} templates={templates} />
     );
@@ -124,4 +133,19 @@ describe("Wizard locale flow", () => {
       within(summary2).getByLabelText(/home page title \(de\)/i)
     ).toHaveValue("Hallo");
   });
+});
+
+jest.mock(
+  "@/components/atoms",
+  () => ({
+    Progress: () => null,
+    Toast: () => null,
+  }),
+  { virtual: true }
+);
+
+jest.mock("@/components/atoms/shadcn", () => ({}), { virtual: true });
+
+jest.mock("@/components/cms/PageBuilder", () => () => null, {
+  virtual: true,
 });

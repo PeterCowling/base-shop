@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/wizard/hooks/useWizardPersistence.ts
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { wizardStateSchema, type WizardState } from "../schema";
 
 /** Key used to mirror wizard progress in localStorage for preview components. */
@@ -15,7 +15,7 @@ export async function resetWizardProgress(): Promise<void> {
       await fetch("/cms/api/wizard-progress", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: "{}",
+        body: JSON.stringify({ stepId: null, data: {} }),
       });
     } catch {
       /* ignore network errors */
@@ -39,7 +39,7 @@ export function useWizardPersistence(
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         if (!json) return;
-        const parsed = wizardStateSchema.safeParse(json);
+        const parsed = wizardStateSchema.safeParse(json.state ?? json);
         if (parsed.success) {
           setState(parsed.data);
           try {
@@ -70,9 +70,29 @@ export function useWizardPersistence(
     fetch("/cms/api/wizard-progress", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(state),
+      body: JSON.stringify({ stepId: String(state.step ?? 0), data: state }),
     }).catch(() => {
       /* ignore network errors */
     });
   }, [state]);
+
+  /* Toggle completion when the step changes */
+  const prevStep = useRef(state.step);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const prev = prevStep.current;
+    if (state.step !== prev) {
+      fetch("/cms/api/wizard-progress", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          stepId: String(prev),
+          completed: state.step > prev,
+        }),
+      }).catch(() => {
+        /* ignore network errors */
+      });
+      prevStep.current = state.step;
+    }
+  }, [state.step]);
 }

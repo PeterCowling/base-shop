@@ -3,34 +3,29 @@
 import { Button } from "@/components/atoms/shadcn";
 import WizardPreview from "../WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { useRouter } from "next/navigation";
 
 interface Props {
   themeStyle: React.CSSProperties;
-  onBack: () => void;
-  onNext: () => void;
 }
 
 export default function StepTokens({
   themeStyle,
-  onBack,
-  onNext,
 }: Props): React.JSX.Element {
   const [, markComplete] = useStepCompletion("tokens");
+  const router = useRouter();
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Customize Tokens</h2>
       <WizardPreview style={themeStyle} />
-      <div className="flex justify-between">
-        <Button variant="outline" onClick={onBack}>
-          Back
-        </Button>
+      <div className="flex justify-end">
         <Button
           onClick={() => {
             markComplete(true);
-            onNext();
+            router.push("/cms/configurator");
           }}
         >
-          Next
+          Save & return
         </Button>
       </div>
     </div>

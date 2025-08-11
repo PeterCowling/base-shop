@@ -9,6 +9,7 @@ import { fetchJson } from "@shared-utils";
 import { ReactNode, useState } from "react";
 import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { useRouter } from "next/navigation";
 
 interface Props {
   currentStep: number;
@@ -30,10 +31,6 @@ interface Props {
   shopId: string;
   themeStyle: React.CSSProperties;
 
-  /** Navigation */
-  onBack: () => void;
-  onNext: () => void;
-
   /** Optional inner content for the step */
   children?: ReactNode;
 }
@@ -53,8 +50,6 @@ export default function StepLayout({
   setFooterPageId,
   shopId,
   themeStyle,
-  onBack,
-  onNext,
   children,
 }: Props): React.JSX.Element | null {
   /**
@@ -70,6 +65,7 @@ export default function StepLayout({
     message: "",
   });
   const [, markComplete] = useStepCompletion("layout");
+  const router = useRouter();
 
   return (
     <fieldset className="space-y-4">
@@ -167,17 +163,14 @@ export default function StepLayout({
       {children}
 
       {/* Navigation ------------------------------------------------------ */}
-      <div className="flex justify-between">
-        <Button variant="outline" onClick={onBack}>
-          Back
-        </Button>
+      <div className="flex justify-end">
         <Button
           onClick={() => {
             markComplete(true);
-            onNext();
+            router.push("/cms/configurator");
           }}
         >
-          Next
+          Save & return
         </Button>
       </div>
       <Toast

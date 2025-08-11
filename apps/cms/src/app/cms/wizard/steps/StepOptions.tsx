@@ -23,8 +23,6 @@ interface Props {
   setAnalyticsProvider: (v: string) => void;
   analyticsId: string;
   setAnalyticsId: (v: string) => void;
-  onBack: () => void;
-  onNext: () => void;
 }
 
 export default function StepOptions({
@@ -37,8 +35,6 @@ export default function StepOptions({
   setAnalyticsProvider,
   analyticsId,
   setAnalyticsId,
-  onBack,
-  onNext,
 }: Props): React.JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -132,17 +128,14 @@ export default function StepOptions({
           />
         )}
       </div>
-      <div className="flex justify-between">
-        <Button variant="outline" onClick={onBack}>
-          Back
-        </Button>
+      <div className="flex justify-end">
         <Button
           onClick={() => {
             markComplete(true);
-            onNext();
+            router.push("/cms/configurator");
           }}
         >
-          Next
+          Save & return
         </Button>
       </div>
     </div>

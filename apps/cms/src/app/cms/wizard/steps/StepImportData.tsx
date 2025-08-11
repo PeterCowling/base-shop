@@ -2,6 +2,7 @@
 
 import { Button, Input, Textarea } from "@/components/atoms/shadcn";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { useRouter } from "next/navigation";
 
 interface Props {
   setCsvFile: (f: File | null) => void;
@@ -9,7 +10,6 @@ interface Props {
   setCategoriesText: (v: string) => void;
   importResult: string | null;
   importing: boolean;
-  onBack: () => void;
   saveData: () => Promise<void> | void;
 }
 
@@ -19,10 +19,10 @@ export default function StepImportData({
   setCategoriesText,
   importResult,
   importing,
-  onBack,
   saveData,
 }: Props): React.JSX.Element {
   const [, markComplete] = useStepCompletion("import-data");
+  const router = useRouter();
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Import Data</h2>
@@ -41,18 +41,16 @@ export default function StepImportData({
         placeholder='["Shoes","Accessories"]'
       />
       {importResult && <p className="text-sm">{importResult}</p>}
-      <div className="flex justify-between gap-2">
-        <Button variant="outline" onClick={onBack}>
-          Back
-        </Button>
+      <div className="flex justify-end gap-2">
         <Button
           disabled={importing}
           onClick={async () => {
             await saveData();
             markComplete(true);
+            router.push("/cms/configurator");
           }}
         >
-          {importing ? "Saving…" : "Save & Continue"}
+          {importing ? "Saving…" : "Save & return"}
         </Button>
       </div>
     </div>

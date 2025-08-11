@@ -2,6 +2,7 @@
 
 import { Button, Input } from "@/components/atoms/shadcn";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { useRouter } from "next/navigation";
 
 interface Props {
   setCsvFile: (f: File | null) => void;
@@ -9,7 +10,6 @@ interface Props {
   setCategoriesText: (v: string) => void;
   seedResult: string | null;
   seeding: boolean;
-  onBack: () => void;
   seed: () => Promise<void> | void;
 }
 
@@ -19,10 +19,10 @@ export default function StepSeedData({
   setCategoriesText,
   seedResult,
   seeding,
-  onBack,
   seed,
 }: Props): React.JSX.Element {
   const [, markComplete] = useStepCompletion("seed-data");
+  const router = useRouter();
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Seed Data</h2>
@@ -42,18 +42,16 @@ export default function StepSeedData({
         />
       </label>
       {seedResult && <p className="text-sm">{seedResult}</p>}
-      <div className="flex justify-between gap-2">
-        <Button variant="outline" onClick={onBack}>
-          Back
-        </Button>
+      <div className="flex justify-end gap-2">
         <Button
           disabled={seeding}
           onClick={async () => {
             await seed();
             markComplete(true);
+            router.push("/cms/configurator");
           }}
         >
-          {seeding ? "Saving…" : "Save & Continue"}
+          {seeding ? "Saving…" : "Save & return"}
         </Button>
       </div>
     </div>

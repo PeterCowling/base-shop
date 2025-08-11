@@ -4,7 +4,13 @@
 import { type CartState } from "../cartCookie";
 
 import type { SKU } from "@types";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 /* ------------------------------------------------------------------
  * Action types
@@ -21,23 +27,77 @@ type Dispatch = (action: Action) => Promise<void>;
 
 const CartContext = createContext<[CartState, Dispatch] | undefined>(undefined);
 
+const STORAGE_KEY = "cart";
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<CartState>({});
 
   /* initial fetch */
   useEffect(() => {
+    let sync: (() => Promise<void>) | undefined;
+
     async function load() {
       try {
         const res = await fetch("/api/cart");
         if (res.ok) {
           const data = await res.json();
           setState(data.cart as CartState);
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data.cart));
+          } catch {
+            /* noop */
+          }
+          return;
         }
-      } catch {
-        /* ignore */
+        throw new Error("Cart fetch failed");
+      } catch (err) {
+        console.error(err);
+        try {
+          const cached = localStorage.getItem(STORAGE_KEY);
+          if (cached) {
+            setState(JSON.parse(cached) as CartState);
+          }
+        } catch {
+          /* noop */
+        }
+
+        sync = async () => {
+          try {
+            const cached = localStorage.getItem(STORAGE_KEY);
+            if (!cached) return;
+            const cart = JSON.parse(cached) as CartState;
+            for (const line of Object.values(cart)) {
+              await fetch("/api/cart", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  sku: { id: line.sku.id },
+                  qty: line.qty,
+                  size: line.size,
+                }),
+              });
+            }
+            const res = await fetch("/api/cart");
+            if (res.ok) {
+              const data = await res.json();
+              setState(data.cart as CartState);
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(data.cart));
+              window.removeEventListener("online", sync!);
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        };
+
+        window.addEventListener("online", sync);
       }
     }
+
     void load();
+
+    return () => {
+      if (sync) window.removeEventListener("online", sync);
+    };
   }, []);
 
   const dispatch: Dispatch = async (action) => {
@@ -76,6 +136,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     const data = await res.json();
     setState(data.cart as CartState);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data.cart));
+    } catch {
+      /* noop */
+    }
   };
 
   return (

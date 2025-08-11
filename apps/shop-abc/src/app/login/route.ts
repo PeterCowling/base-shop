@@ -1,6 +1,6 @@
 // apps/shop-abc/src/app/login/route.ts
 import { NextResponse } from "next/server";
-import { createCustomerSession } from "@auth";
+import { createCustomerSession, validateCsrfToken } from "@auth";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
@@ -35,6 +35,11 @@ export async function POST(req: Request) {
     return NextResponse.json(parsed.error.flatten().fieldErrors, {
       status: 400,
     });
+  }
+
+  const csrfToken = req.headers.get("x-csrf-token");
+  if (!csrfToken || !(await validateCsrfToken(csrfToken))) {
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
   }
 
   const ip = req.headers.get("x-forwarded-for") ?? "unknown";

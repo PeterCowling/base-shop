@@ -1,9 +1,20 @@
 // apps/shop-abc/__tests__/loginRateLimit.test.ts
 jest.mock("@auth", () => ({
   createCustomerSession: jest.fn(),
+  validateCsrfToken: jest.fn().mockResolvedValue(true),
 }));
 jest.mock("@upstash/redis", () => ({
   Redis: jest.fn(() => ({})),
+}));
+
+jest.mock("@platform-core/users", () => ({
+  getUserById: jest.fn(async (id: string) =>
+    id === "cust1" ? { passwordHash: "pass1", role: "customer" } : null,
+  ),
+}));
+
+jest.mock("bcryptjs", () => ({
+  compare: jest.fn(async (a: string, b: string) => a === b),
 }));
 
 let POST: typeof import("../src/app/login/route").POST;
@@ -16,10 +27,13 @@ beforeAll(async () => {
 });
 
 function makeRequest(body: any, ip = "1.1.1.1") {
-  return {
-    json: async () => body,
-    headers: new Headers({ "x-forwarded-for": ip }),
-  } as any;
+    return {
+      json: async () => body,
+      headers: new Headers({
+        "x-forwarded-for": ip,
+        "x-csrf-token": "tok",
+      }),
+    } as any;
 }
 
 afterEach(async () => {

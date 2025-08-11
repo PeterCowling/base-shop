@@ -188,6 +188,14 @@ export interface CustomHtmlComponent extends PageComponentBase {
   html?: string;
 }
 
+export interface ButtonComponent extends PageComponentBase {
+  type: "Button";
+  label?: string;
+  href?: string;
+  variant?: "default" | "outline" | "ghost" | "destructive";
+  size?: "sm" | "md" | "lg";
+}
+
 export interface SectionComponent extends PageComponentBase {
   type: "Section";
   children?: PageComponent[];
@@ -221,6 +229,7 @@ export type PageComponent =
   | ImageComponent
   | TextComponent
   | CustomHtmlComponent
+  | ButtonComponent
   | HeaderComponent
   | FooterComponent
   | SocialLinksComponent
@@ -409,6 +418,16 @@ const customHtmlComponentSchema = baseComponentSchema.extend({
   html: z.string().optional(),
 });
 
+const buttonComponentSchema = baseComponentSchema.extend({
+  type: z.literal("Button"),
+  label: z.string().optional(),
+  href: z.string().optional(),
+  variant: z
+    .enum(["default", "outline", "ghost", "destructive"])
+    .optional(),
+  size: z.enum(["sm", "md", "lg"]).optional(),
+});
+
 const sectionComponentSchema: z.ZodType<SectionComponent> =
   baseComponentSchema.extend({
     type: z.literal("Section"),
@@ -448,6 +467,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     imageComponentSchema,
     textComponentSchema,
     customHtmlComponentSchema,
+    buttonComponentSchema,
     sectionComponentSchema,
     multiColumnComponentSchema,
   ])

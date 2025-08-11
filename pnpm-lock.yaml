@@ -347,6 +347,9 @@ importers:
       '@acme/stripe':
         specifier: workspace:*
         version: link:../../packages/stripe
+      '@acme/tailwind-config':
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
       '@acme/template-app':
         specifier: workspace:*
         version: link:../../packages/template-app
@@ -375,6 +378,9 @@ importers:
       '@acme/stripe':
         specifier: workspace:*
         version: link:../../packages/stripe
+      '@acme/tailwind-config':
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
       '@acme/template-app':
         specifier: workspace:*
         version: link:../../packages/template-app
@@ -547,6 +553,9 @@ importers:
       '@acme/stripe':
         specifier: workspace:*
         version: link:../stripe
+      '@acme/tailwind-config':
+        specifier: workspace:*
+        version: link:../tailwind-config
       '@themes/base':
         specifier: workspace:*
         version: link:../themes/base

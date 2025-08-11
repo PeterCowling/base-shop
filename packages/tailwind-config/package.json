@@ -5,7 +5,8 @@
   "type": "commonjs",
   "main": "./dist/index.js",
   "exports": {
-    ".": "./dist/index.js"
+    ".": "./dist/index.js",
+    "./tailwind.config.mjs": "./tailwind.config.mjs"
   },
   "types": "./dist/index.d.ts",
   "files": [

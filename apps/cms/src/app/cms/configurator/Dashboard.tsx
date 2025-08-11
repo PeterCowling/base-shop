@@ -5,15 +5,8 @@ import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import type { WizardState } from "../wizard/schema";
+import { steps, stepOrder } from "./steps";
 export type StepStatus = "idle" | "pending" | "success" | "failure";
-
-interface StepConfig {
-  id: string;
-  title: string;
-  href: string;
-  required?: boolean;
-  completed: boolean;
-}
 
 export default function ConfiguratorDashboard() {
   const [state, setState] = useState<WizardState | null>(null);
@@ -34,33 +27,8 @@ export default function ConfiguratorDashboard() {
       .then((json) => setState(json))
       .catch(() => setState(null));
   }, []);
-
-  const steps: StepConfig[] = [
-    {
-      id: "details",
-      title: "Shop Details",
-      href: "/cms/configurator/details",
-      required: true,
-      completed: Boolean(state?.storeName),
-    },
-    {
-      id: "theme",
-      title: "Theme",
-      href: "/cms/configurator/theme",
-      required: true,
-      completed: Boolean(state?.theme),
-    },
-    {
-      id: "products",
-      title: "Products",
-      href: "/cms/configurator/products",
-      required: false,
-      completed: (state?.components?.length ?? 0) > 0,
-    },
-  ];
-
-  const allRequiredDone = steps.every(
-    (s) => !s.required || s.completed
+  const allRequiredDone = stepOrder.every(
+    (id) => !steps[id].required || Boolean(state?.completed?.[id])
   );
 
   const launchShop = async () => {
@@ -94,18 +62,22 @@ export default function ConfiguratorDashboard() {
     <div>
       <h2 className="mb-4 text-xl font-semibold">Configuration Steps</h2>
       <ul className="mb-6 space-y-2">
-        {steps.map((step) => (
-          <li key={step.id} className="flex items-center gap-2">
-            {step.completed ? (
-              <CheckCircledIcon className="h-4 w-4 text-green-600" />
-            ) : (
-              <CircleIcon className="h-4 w-4 text-gray-400" />
-            )}
-            <Link href={step.href} className="underline">
-              {step.title}
-            </Link>
-          </li>
-        ))}
+        {stepOrder.map((id) => {
+          const step = steps[id];
+          const completed = Boolean(state?.completed?.[id]);
+          return (
+            <li key={id} className="flex items-center gap-2">
+              {completed ? (
+                <CheckCircledIcon className="h-4 w-4 text-green-600" />
+              ) : (
+                <CircleIcon className="h-4 w-4 text-gray-400" />
+              )}
+              <Link href={`/cms/configurator/${id}`} className="underline">
+                {step.label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
       <Button disabled={!allRequiredDone} onClick={launchShop}>
         Launch Shop

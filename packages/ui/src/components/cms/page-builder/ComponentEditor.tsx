@@ -21,6 +21,7 @@ import ValuePropsEditor from "./ValuePropsEditor";
 import ReviewsCarouselEditor from "./ReviewsCarouselEditor";
 import AnnouncementBarEditor from "./AnnouncementBarEditor";
 import MapBlockEditor from "./MapBlockEditor";
+import VideoBlockEditor from "./VideoBlockEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -80,6 +81,9 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "MapBlock":
       specific = <MapBlockEditor component={component} onChange={onChange} />;
+      break;
+    case "VideoBlock":
+      specific = <VideoBlockEditor component={component} onChange={onChange} />;
       break;
     default:
       specific = <p className="text-muted text-sm">No editable props</p>;
@@ -191,6 +195,13 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
           }
           min={(component as any).minItems}
           max={(component as any).maxItems}
+        />
+      )}
+      {"gap" in component && (
+        <Input
+          label="Gap"
+          value={(component as any).gap ?? ""}
+          onChange={(e) => handleInput("gap", e.target.value)}
         />
       )}
       <Select

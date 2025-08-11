@@ -13,6 +13,8 @@ import RecommendationCarousel from "./RecommendationCarousel";
 import Section from "./Section";
 import AnnouncementBar from "./AnnouncementBarBlock";
 import MapBlock from "./MapBlock";
+import MultiColumn from "./containers/MultiColumn";
+import VideoBlock from "./VideoBlock";
 
 export {
   BlogListing,
@@ -30,6 +32,8 @@ export {
   Section,
   AnnouncementBar,
   MapBlock,
+  MultiColumn,
+  VideoBlock,
 };
 
 export * from "./atoms";

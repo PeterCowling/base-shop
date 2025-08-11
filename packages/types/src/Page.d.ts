@@ -112,6 +112,11 @@ export interface MapBlockComponent extends PageComponentBase {
   lng?: number;
   zoom?: number;
 }
+export interface VideoBlockComponent extends PageComponentBase {
+  type: "VideoBlock";
+  src?: string;
+  autoplay?: boolean;
+}
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -148,6 +153,12 @@ export interface SectionComponent extends PageComponentBase {
   type: "Section";
   children?: PageComponent[];
 }
+export interface MultiColumnComponent extends PageComponentBase {
+  type: "MultiColumn";
+  columns?: number;
+  gap?: string;
+  children?: PageComponent[];
+}
 export type PageComponent =
   | AnnouncementBarComponent
   | HeroBannerComponent
@@ -160,12 +171,14 @@ export type PageComponent =
   | ContactFormComponent
   | ContactFormWithMapComponent
   | MapBlockComponent
+  | VideoBlockComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent
   | ImageComponent
   | TextComponent
-  | SectionComponent;
+  | SectionComponent
+  | MultiColumnComponent;
 export declare const pageSchema: z.ZodObject<
   {
     id: z.ZodString;

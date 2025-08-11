@@ -116,6 +116,12 @@ export interface MapBlockComponent extends PageComponentBase {
   zoom?: number;
 }
 
+export interface VideoBlockComponent extends PageComponentBase {
+  type: "VideoBlock";
+  src?: string;
+  autoplay?: boolean;
+}
+
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -148,6 +154,13 @@ export interface SectionComponent extends PageComponentBase {
   children?: PageComponent[];
 }
 
+export interface MultiColumnComponent extends PageComponentBase {
+  type: "MultiColumn";
+  columns?: number;
+  gap?: string;
+  children?: PageComponent[];
+}
+
 export type PageComponent =
   | AnnouncementBarComponent
   | HeroBannerComponent
@@ -160,12 +173,14 @@ export type PageComponent =
   | ContactFormComponent
   | ContactFormWithMapComponent
   | MapBlockComponent
+  | VideoBlockComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent
   | ImageComponent
   | TextComponent
-  | SectionComponent;
+  | SectionComponent
+  | MultiColumnComponent;
 
 const baseComponentSchema = z
   .object({
@@ -255,6 +270,12 @@ const mapBlockComponentSchema = baseComponentSchema.extend({
   zoom: z.number().optional(),
 });
 
+const videoBlockComponentSchema = baseComponentSchema.extend({
+  type: z.literal("VideoBlock"),
+  src: z.string().optional(),
+  autoplay: z.boolean().optional(),
+});
+
 const blogListingComponentSchema = baseComponentSchema.extend({
   type: z.literal("BlogListing"),
   posts: z
@@ -299,6 +320,14 @@ const sectionComponentSchema: z.ZodType<SectionComponent> =
     children: z.array(z.lazy(() => pageComponentSchema)).default([]),
   });
 
+const multiColumnComponentSchema: z.ZodType<MultiColumnComponent> =
+  baseComponentSchema.extend({
+    type: z.literal("MultiColumn"),
+    columns: z.number().optional(),
+    gap: z.string().optional(),
+    children: z.array(z.lazy(() => pageComponentSchema)).default([]),
+  });
+
 export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
   z.discriminatedUnion("type", [
     announcementBarComponentSchema,
@@ -312,12 +341,14 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     contactFormComponentSchema,
     contactFormWithMapComponentSchema,
     mapBlockComponentSchema,
+    videoBlockComponentSchema,
     blogListingComponentSchema,
     testimonialsComponentSchema,
     testimonialSliderComponentSchema,
     imageComponentSchema,
     textComponentSchema,
     sectionComponentSchema,
+    multiColumnComponentSchema,
   ])
 );
 

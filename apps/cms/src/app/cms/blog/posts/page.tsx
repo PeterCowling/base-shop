@@ -38,23 +38,27 @@ export default async function BlogPostsPage({
         </Button>
       </div>
       <ul className="space-y-2">
-        {posts.map((post) => (
-          <li key={post._id}>
-            <Link
-              href={`/cms/blog/posts/${post._id}?shopId=${shopId}`}
-              className="text-primary underline"
-            >
-              {post.title || "(untitled)"}
-            </Link>
-            <span className="ml-2 text-sm text-muted-foreground">
-              {post.published
-                ? post.publishedAt && new Date(post.publishedAt) > new Date()
-                  ? `scheduled for ${new Date(post.publishedAt).toLocaleString()}`
-                  : "published"
-                : "draft"}
-            </span>
-          </li>
-        ))}
+        {posts.map((post) => {
+          const status =
+            post.publishedAt && new Date(post.publishedAt) > new Date()
+              ? `scheduled for ${new Date(post.publishedAt).toLocaleString()}`
+              : post.published
+                ? "published"
+                : "draft";
+          return (
+            <li key={post._id}>
+              <Link
+                href={`/cms/blog/posts/${post._id}?shopId=${shopId}`}
+                className="text-primary underline"
+              >
+                {post.title || "(untitled)"}
+              </Link>
+              <span className="ml-2 text-sm text-muted-foreground">
+                {status}
+              </span>
+            </li>
+          );
+        })}
         {posts.length === 0 && <li>No posts found.</li>}
       </ul>
     </div>

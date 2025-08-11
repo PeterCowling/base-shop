@@ -19,7 +19,7 @@ export default function PublishButton({ id, shopId }: Props) {
   });
   return (
     <div className="space-y-2">
-      <form action={formAction}>
+      <form id="publish-form" action={formAction}>
         <Button type="submit" variant="outline">
           Publish
         </Button>

@@ -22,12 +22,12 @@ export type LoginInput = z.infer<typeof LoginSchema>;
 async function validateCredentials(
   customerId: string,
   password: string,
-): Promise<{ customerId: string; role: Role } | null> {
+): Promise<{ customerId: string; role: Role; verified: boolean } | null> {
   const record = await getUserById(customerId);
   if (!record) return null;
   const match = await bcrypt.compare(password, record.passwordHash);
   if (!match) return null;
-  return { customerId, role: record.role as Role };
+  return { customerId, role: record.role as Role, verified: record.verified };
 }
 
 export async function POST(req: Request) {
@@ -50,6 +50,10 @@ export async function POST(req: Request) {
 
   if (!valid) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+  }
+
+  if (!valid.verified) {
+    return NextResponse.json({ error: "Account not verified" }, { status: 403 });
   }
 
   if (!ALLOWED_ROLES.includes(valid.role)) {

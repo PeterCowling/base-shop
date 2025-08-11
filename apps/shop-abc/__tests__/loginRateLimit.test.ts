@@ -9,7 +9,9 @@ jest.mock("@upstash/redis", () => ({
 
 jest.mock("../src/app/userStore", () => ({
   getUserById: jest.fn(async (id: string) =>
-    id === "cust1" ? { passwordHash: "pass1", role: "customer" } : null,
+    id === "cust1"
+      ? { passwordHash: "pass1", role: "customer", verified: true }
+      : null,
   ),
 }));
 

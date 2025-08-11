@@ -30,12 +30,13 @@ jest.mock("../src/app/userStore", () => ({
       Object.values(store).find((u: any) => u.email === email) ?? null
   ),
   addUser: jest.fn(
-    async ({ id, email, passwordHash, role = "customer" }: any) => {
+    async ({ id, email, passwordHash, role = "customer", verified = false }: any) => {
       const user = {
         id,
         email,
         passwordHash,
         role,
+        verified,
         resetTokenHash: null,
         resetTokenExpires: null,
       };
@@ -66,15 +67,22 @@ jest.mock("../src/app/userStore", () => ({
       store[id].resetTokenExpires = null;
     }
   }),
+  verifyUser: jest.fn(async (id: string) => {
+    if (store[id]) {
+      store[id].verified = true;
+    }
+  }),
 }));
 
-let registerPOST: typeof import("../src/app/api/register/route").POST;
+let registerPOST: typeof import("../src/app/register/route").POST;
 let loginPOST: typeof import("../src/app/login/route").POST;
 let requestPOST: typeof import("../src/app/api/account/reset/request/route").POST;
 let completePOST: typeof import("../src/app/api/account/reset/complete/route").POST;
+let verifyPOST: typeof import("../src/app/api/account/verify/route").POST;
 
 beforeAll(async () => {
-  ({ POST: registerPOST } = await import("../src/app/api/register/route"));
+  ({ POST: registerPOST } = await import("../src/app/register/route"));
+  ({ POST: verifyPOST } = await import("../src/app/api/account/verify/route"));
   ({ POST: loginPOST } = await import("../src/app/login/route"));
   ({ POST: requestPOST } = await import(
     "../src/app/api/account/reset/request/route"
@@ -108,6 +116,12 @@ describe("auth flows", () => {
     );
     expect(res.status).toBe(200);
 
+    const verificationEmail = sendEmail.mock.calls[0][2] as string;
+    const verifyToken = verificationEmail.replace(
+      "Your verification token is ",
+      "",
+    );
+
     const dup = await registerPOST(
       makeRequest({
         customerId: "cust2",
@@ -123,10 +137,21 @@ describe("auth flows", () => {
         { "x-forwarded-for": "1.1.1.1" }
       )
     );
+    expect(res.status).toBe(403);
+
+    const verifyRes = await verifyPOST(makeRequest({ token: verifyToken }));
+    expect(verifyRes.status).toBe(200);
+
+    res = await loginPOST(
+      makeRequest(
+        { customerId: "cust1", password: "Str0ngPass1" },
+        { "x-forwarded-for": "1.1.1.1" }
+      )
+    );
     expect(res.status).toBe(200);
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
-    const tokenEmail = sendEmail.mock.calls[0][2] as string;
+    const tokenEmail = sendEmail.mock.calls[1][2] as string;
     const token = tokenEmail.replace("Your token is ", "");
 
     res = await completePOST(
@@ -165,7 +190,7 @@ describe("auth flows", () => {
     );
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
-    const tokenEmail = sendEmail.mock.calls[0][2] as string;
+    const tokenEmail = sendEmail.mock.calls[1][2] as string;
     const token = tokenEmail.replace("Your token is ", "");
 
     const res = await completePOST(

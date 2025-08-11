@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/account/profile/route.ts
-import { getCustomerSession } from "@auth";
+import { getCustomerSession, verifyCsrfToken } from "@auth";
 import {
   getCustomerProfile,
   updateCustomerProfile,
@@ -35,6 +35,11 @@ export async function PUT(req: NextRequest) {
   const session = await getCustomerSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const csrfHeader = req.headers.get("x-csrf-token");
+  if (!(await verifyCsrfToken(csrfHeader))) {
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
   }
 
   const json = await req.json();

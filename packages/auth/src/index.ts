@@ -5,8 +5,11 @@ export { extendRoles, isRole } from "./types/roles";
 export type { Role } from "./types";
 export {
   CUSTOMER_SESSION_COOKIE,
+  CSRF_TOKEN_COOKIE,
   getCustomerSession,
   createCustomerSession,
   destroyCustomerSession,
+  verifyCsrfToken,
+  getCsrfToken,
 } from "./session";
 export type { CustomerSession } from "./session";

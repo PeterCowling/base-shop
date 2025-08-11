@@ -162,3 +162,7 @@ export const initialStepStatus: Record<string, StepStatus> = Object.fromEntries(
   stepOrder.map((id) => [id, "pending"])
 );
 
+export function getSteps(): ConfiguratorStep[] {
+  return stepOrder.map((id) => steps[id]);
+}
+

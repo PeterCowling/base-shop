@@ -37,3 +37,19 @@ export async function createUser({
 export async function setResetToken(id: string, token: string | null): Promise<void> {
   await prisma.user.update({ where: { id }, data: { resetToken: token } });
 }
+
+export async function getUserByResetToken(
+  token: string,
+): Promise<User | null> {
+  return prisma.user.findFirst({ where: { resetToken: token } });
+}
+
+export async function updatePassword(
+  id: string,
+  passwordHash: string,
+): Promise<void> {
+  await prisma.user.update({
+    where: { id },
+    data: { passwordHash, resetToken: null },
+  });
+}

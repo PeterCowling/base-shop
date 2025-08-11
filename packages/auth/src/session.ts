@@ -25,7 +25,106 @@ interface SessionRecord {
   createdAt: Date;
 }
 
-const activeSessions = new Map<string, SessionRecord>();
+interface SessionStore {
+  get(id: string): Promise<SessionRecord | null>;
+  set(record: SessionRecord): Promise<void>;
+  delete(id: string): Promise<void>;
+  list(customerId: string): Promise<SessionRecord[]>;
+}
+
+class MemorySessionStore implements SessionStore {
+  private sessions = new Map<string, { record: SessionRecord; expires: number }>();
+
+  constructor(private ttl: number) {}
+
+  async get(id: string): Promise<SessionRecord | null> {
+    const entry = this.sessions.get(id);
+    if (!entry) return null;
+    if (entry.expires < Date.now()) {
+      this.sessions.delete(id);
+      return null;
+    }
+    return entry.record;
+  }
+
+  async set(record: SessionRecord): Promise<void> {
+    this.sessions.set(record.sessionId, {
+      record,
+      expires: Date.now() + this.ttl * 1000,
+    });
+  }
+
+  async delete(id: string): Promise<void> {
+    this.sessions.delete(id);
+  }
+
+  async list(customerId: string): Promise<SessionRecord[]> {
+    const now = Date.now();
+    return Array.from(this.sessions.values())
+      .filter((s) => s.expires > now && s.record.customerId === customerId)
+      .map((s) => s.record);
+  }
+}
+
+class RedisSessionStore implements SessionStore {
+  constructor(private client: Redis, private ttl: number) {}
+
+  private key(id: string) {
+    return `session:${id}`;
+  }
+
+  private customerKey(customerId: string) {
+    return `customer_sessions:${customerId}`;
+  }
+
+  async get(id: string): Promise<SessionRecord | null> {
+    const data = await this.client.get<Record<string, any>>(this.key(id));
+    if (!data) return null;
+    return { ...data, createdAt: new Date(data.createdAt) } as SessionRecord;
+  }
+
+  async set(record: SessionRecord): Promise<void> {
+    await this.client.set(this.key(record.sessionId), record, { ex: this.ttl });
+    await this.client.sadd(this.customerKey(record.customerId), record.sessionId);
+    await this.client.expire(this.customerKey(record.customerId), this.ttl);
+  }
+
+  async delete(id: string): Promise<void> {
+    const rec = await this.get(id);
+    await this.client.del(this.key(id));
+    if (rec) {
+      await this.client.srem(this.customerKey(rec.customerId), id);
+    }
+  }
+
+  async list(customerId: string): Promise<SessionRecord[]> {
+    const ids = await this.client.smembers<string>(
+      this.customerKey(customerId)
+    );
+    if (!ids || ids.length === 0) return [];
+    const records = await this.client.mget<Record<string, any>>(
+      ...ids.map((id) => this.key(id))
+    );
+    return records
+      .filter((r): r is Record<string, any> => r !== null)
+      .map((r) => ({ ...r, createdAt: new Date(r.createdAt) } as SessionRecord));
+  }
+}
+
+const sessionStorePromise: Promise<SessionStore> = (async () => {
+  if (
+    process.env.UPSTASH_REDIS_REST_URL &&
+    process.env.UPSTASH_REDIS_REST_TOKEN
+  ) {
+    const { Redis } = await import("@upstash/redis");
+    const client = new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    });
+    return new RedisSessionStore(client, SESSION_TTL_S);
+  }
+  return new MemorySessionStore(SESSION_TTL_S);
+})();
 
 function cookieOptions() {
   return {
@@ -64,7 +163,9 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
   } catch {
     return null;
   }
-  if (!activeSessions.has(session.sessionId)) {
+  const sessionStore = await sessionStorePromise;
+  const exists = await sessionStore.get(session.sessionId);
+  if (!exists) {
     return null;
   }
   // rotate on activity
@@ -80,13 +181,13 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
     store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions());
   }
   const ua = headers().get("user-agent") ?? "unknown";
-  activeSessions.set(session.sessionId, {
+  await sessionStore.set({
     sessionId: session.sessionId,
     customerId: session.customerId,
     userAgent: ua,
     createdAt: new Date(),
   });
-  activeSessions.delete(oldId);
+  await sessionStore.delete(oldId);
   const { customerId, role } = session;
   return { customerId, role };
 }
@@ -109,7 +210,8 @@ export async function createCustomerSession(sessionData: CustomerSession): Promi
   const csrf = randomUUID();
   store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions());
   const ua = headers().get("user-agent") ?? "unknown";
-  activeSessions.set(session.sessionId, {
+  const sessionStore = await sessionStorePromise;
+  await sessionStore.set({
     sessionId: session.sessionId,
     customerId: session.customerId,
     userAgent: ua,
@@ -128,7 +230,8 @@ export async function destroyCustomerSession(): Promise<void> {
           password: secret,
           ttl: SESSION_TTL_S,
         });
-        activeSessions.delete(session.sessionId);
+        const sessionStore = await sessionStorePromise;
+        await sessionStore.delete(session.sessionId);
       } catch {}
     }
   }
@@ -142,14 +245,16 @@ export async function destroyCustomerSession(): Promise<void> {
   });
 }
 
-export function listSessions(customerId: string): SessionRecord[] {
-  return Array.from(activeSessions.values()).filter(
-    (s) => s.customerId === customerId
-  );
+export async function listSessions(
+  customerId: string
+): Promise<SessionRecord[]> {
+  const sessionStore = await sessionStorePromise;
+  return sessionStore.list(customerId);
 }
 
-export function revokeSession(sessionId: string): void {
-  activeSessions.delete(sessionId);
+export async function revokeSession(sessionId: string): Promise<void> {
+  const sessionStore = await sessionStorePromise;
+  await sessionStore.delete(sessionId);
 }
 
 export async function validateCsrfToken(token: string | null): Promise<boolean> {

@@ -6,8 +6,10 @@ import {
 import type { Role } from "../src/types";
 
 const mockCookies = jest.fn();
+const mockHeaders = jest.fn();
 jest.mock("next/headers", () => ({
   cookies: () => mockCookies(),
+  headers: () => mockHeaders(),
 }));
 
 function createStore() {
@@ -32,6 +34,8 @@ describe("customer session", () => {
     process.env.SESSION_SECRET =
       "0123456789abcdefghijklmnopqrstuvwxyz012345"; // 40 chars
     mockCookies.mockReset();
+    mockHeaders.mockReset();
+    mockHeaders.mockReturnValue({ get: () => "test-agent" });
   });
   afterAll(() => {
     if (originalSecret !== undefined) {

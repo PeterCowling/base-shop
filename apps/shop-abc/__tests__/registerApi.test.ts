@@ -89,6 +89,20 @@ describe("/register POST", () => {
     expect(data.ok).toBe(true);
   });
 
+  it("rejects unknown properties", async () => {
+    const req = {
+      json: async () => ({
+        customerId: "newuser",
+        email: "user@example.com",
+        password: "Str0ngPass",
+        extra: "nope",
+      }),
+      headers: new Headers({ "x-csrf-token": "tok" }),
+    } as any;
+    const res = await POST(req);
+    expect(res.status).toBe(400);
+  });
+
   it("rejects duplicate user IDs", async () => {
     const req = {
       json: async () => ({

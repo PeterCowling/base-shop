@@ -4,6 +4,7 @@ import {
   __resetLoginRateLimiter,
   MAX_ATTEMPTS,
 } from "../src/middleware";
+import { registerCustomer } from "@acme/platform-core/customerAuth";
 
 function makeRequest(body: any, ip = "1.1.1.1") {
   return {
@@ -11,6 +12,10 @@ function makeRequest(body: any, ip = "1.1.1.1") {
     headers: new Headers({ "x-forwarded-for": ip }),
   } as any;
 }
+
+beforeAll(async () => {
+  await registerCustomer("cust1", "pass1", "customer");
+});
 
 afterEach(() => __resetLoginRateLimiter());
 

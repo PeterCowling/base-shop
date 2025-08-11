@@ -49,3 +49,9 @@ model CustomerMfa {
   secret     String
   enabled    Boolean @default(false)
 }
+
+model CustomerAuth {
+  customerId String @id
+  password   String
+  role       String
+}

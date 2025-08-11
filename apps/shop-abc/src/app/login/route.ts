@@ -2,18 +2,13 @@
 import { NextResponse } from "next/server";
 import { createCustomerSession } from "@auth";
 import type { Role } from "@auth/types/roles";
+import bcrypt from "bcryptjs";
+import { getCustomerAuth } from "@acme/platform-core/customerAuth";
 import { z } from "zod";
 import {
   checkLoginRateLimit,
   clearLoginAttempts,
 } from "../../middleware";
-
-// Mock customer store. In a real app this would query a database or identity provider.
-const CUSTOMER_STORE: Record<string, { password: string; role: Role }> = {
-  cust1: { password: "pass1", role: "customer" },
-  viewer1: { password: "view", role: "viewer" },
-  admin1: { password: "admin", role: "admin" },
-};
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
@@ -26,11 +21,15 @@ async function validateCredentials(
   customerId: string,
   password: string,
 ): Promise<{ customerId: string; role: Role } | null> {
-  const record = CUSTOMER_STORE[customerId];
-  if (!record || record.password !== password) {
+  const record = await getCustomerAuth(customerId);
+  if (!record) {
     return null;
   }
-  return { customerId, role: record.role };
+  const ok = await bcrypt.compare(password, record.password);
+  if (!ok) {
+    return null;
+  }
+  return { customerId: record.customerId, role: record.role as Role };
 }
 
 export async function POST(req: Request) {

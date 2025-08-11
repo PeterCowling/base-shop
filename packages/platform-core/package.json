@@ -10,12 +10,14 @@
     "./orders": "./src/orders/index.ts",
     "./customerProfiles": "./src/customerProfiles/index.ts",
     "./plugins": "./src/plugins/index.ts",
-    "./configurator": "./src/configurator.ts"
+    "./configurator": "./src/configurator.ts",
+    "./customerAuth": "./src/customerAuth.ts"
   },
   "dependencies": {
     "@acme/shared-utils": "workspace:*",
     "@prisma/client": "^5.15.1",
-    "@upstash/redis": "^1.35.3"
+    "@upstash/redis": "^1.35.3",
+    "bcryptjs": "^3.0.2"
   },
   "peerDependencies": {
     "next": "^15.0.0",

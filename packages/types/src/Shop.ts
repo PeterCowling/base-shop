@@ -50,8 +50,10 @@ export const shopSchema = z.object({
   contactInfo: z.string().optional(),
   catalogFilters: z.array(z.string()),
   themeId: z.string(),
+  /** Overrides applied to theme tokens */
+  themeOverrides: z.record(z.string()).default({}),
   /** Mapping of design tokens to theme values */
-  themeTokens: z.record(z.string()),
+  themeTokens: z.record(z.string()).default({}),
   /** Mapping of logical filter keys to catalog attributes */
   filterMappings: z.record(z.string()),
   /** Optional price overrides per locale (minor units) */

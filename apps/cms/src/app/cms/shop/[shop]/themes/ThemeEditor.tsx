@@ -3,7 +3,7 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useMemo } from "react";
 
 interface Props {
   shop: string;
@@ -28,6 +28,13 @@ export default function ThemeEditor({
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
+  const overrides = useMemo(() => {
+    const defaults = tokensByTheme[theme] || {};
+    return Object.fromEntries(
+      Object.entries(tokens).filter(([k, v]) => defaults[k] !== v)
+    );
+  }, [tokens, theme, tokensByTheme]);
+
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
     setTheme(next);
@@ -46,6 +53,7 @@ export default function ThemeEditor({
     setSaving(true);
     const fd = new FormData(e.currentTarget);
     fd.set("themeTokens", JSON.stringify(tokens));
+    fd.set("themeOverrides", JSON.stringify(overrides));
     const result = await updateShop(shop, fd);
     if (result.errors) {
       setErrors(result.errors);
@@ -59,6 +67,11 @@ export default function ThemeEditor({
     <form onSubmit={onSubmit} className="space-y-4">
       <Input type="hidden" name="id" value={shop} />
       <input type="hidden" name="themeTokens" value={JSON.stringify(tokens)} />
+      <input
+        type="hidden"
+        name="themeOverrides"
+        value={JSON.stringify(overrides)}
+      />
       <label className="flex flex-col gap-1">
         <span>Theme</span>
         <select

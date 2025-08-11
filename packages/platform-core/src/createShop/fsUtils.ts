@@ -107,6 +107,7 @@ export function writeFiles(
         contactInfo: options.contactInfo,
         catalogFilters: [],
         themeId: options.theme,
+        themeOverrides: {},
         themeTokens,
         filterMappings: { ...defaultFilterMappings },
         type: options.type,

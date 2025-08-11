@@ -31,6 +31,7 @@ export async function createShop(
     name: prepared.name,
     catalogFilters: [],
     themeId: prepared.theme,
+    themeOverrides: {},
     themeTokens,
     filterMappings: {},
     priceOverrides: {},

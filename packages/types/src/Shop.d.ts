@@ -82,8 +82,10 @@ export declare const shopSchema: z.ZodObject<{
     contactInfo: z.ZodOptional<z.ZodString>;
     catalogFilters: z.ZodArray<z.ZodString, "many">;
     themeId: z.ZodString;
+    /** Overrides applied to theme tokens */
+    themeOverrides: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodString>>;
     /** Mapping of design tokens to theme values */
-    themeTokens: z.ZodRecord<z.ZodString, z.ZodString>;
+    themeTokens: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodString>>;
     /** Mapping of logical filter keys to catalog attributes */
     filterMappings: z.ZodRecord<z.ZodString, z.ZodString>;
     /** Optional price overrides per locale (minor units) */
@@ -113,6 +115,7 @@ export declare const shopSchema: z.ZodObject<{
     name: string;
     catalogFilters: string[];
     themeId: string;
+    themeOverrides: Record<string, string>;
     themeTokens: Record<string, string>;
     filterMappings: Record<string, string>;
     priceOverrides: Partial<Record<"en" | "de" | "it", number>>;
@@ -136,6 +139,7 @@ export declare const shopSchema: z.ZodObject<{
     name: string;
     catalogFilters: string[];
     themeId: string;
+    themeOverrides: Record<string, string>;
     themeTokens: Record<string, string>;
     filterMappings: Record<string, string>;
     type?: string | undefined;

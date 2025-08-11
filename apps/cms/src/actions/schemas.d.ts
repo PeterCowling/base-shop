@@ -21,6 +21,7 @@ export declare const shopSchema: z.ZodObject<{
     name: z.ZodString;
     themeId: z.ZodString;
     catalogFilters: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, string[], string | undefined>;
+    themeOverrides: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, Record<string, unknown>, string | undefined>;
     themeTokens: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, Record<string, unknown>, string | undefined>;
     filterMappings: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, Record<string, unknown>, string | undefined>;
     priceOverrides: z.ZodEffects<z.ZodDefault<z.ZodOptional<z.ZodString>>, Record<string, unknown>, string | undefined>;
@@ -30,6 +31,7 @@ export declare const shopSchema: z.ZodObject<{
     name: string;
     themeId: string;
     catalogFilters: string[];
+    themeOverrides?: Record<string, unknown>;
     themeTokens?: Record<string, unknown>;
     filterMappings?: Record<string, unknown>;
     priceOverrides?: Record<string, unknown>;
@@ -39,6 +41,7 @@ export declare const shopSchema: z.ZodObject<{
     name: string;
     themeId: string;
     catalogFilters?: string | undefined;
+    themeOverrides?: string | undefined;
     themeTokens?: string | undefined;
     filterMappings?: string | undefined;
     priceOverrides?: string | undefined;

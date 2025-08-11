@@ -11,7 +11,7 @@ import {
   getShopById,
   updateShopInRepo,
 } from "@platform-core/src/repositories/shop.server";
-import { syncTheme } from "@platform-core/src/createShop";
+import { syncTheme, loadTokens } from "@platform-core/src/createShop";
 import {
   localeSchema,
   type Locale,
@@ -48,17 +48,19 @@ export async function updateShop(
 
   const data: ShopForm = parsed.data;
 
-  let themeTokens = data.themeTokens as Record<string, string>;
-  if (current.themeId !== data.themeId) {
-    const defaults = syncTheme(shop, data.themeId);
-    themeTokens = { ...defaults, ...themeTokens };
-  }
+  const overrides = data.themeOverrides as Record<string, string>;
+  const defaults =
+    current.themeId !== data.themeId
+      ? syncTheme(shop, data.themeId)
+      : loadTokens(data.themeId);
+  const themeTokens = { ...defaults, ...overrides };
 
   const patch: Partial<Shop> & { id: string } = {
     id: current.id,
     name: data.name,
     themeId: data.themeId,
     catalogFilters: data.catalogFilters,
+    themeOverrides: overrides,
     themeTokens,
     filterMappings: data.filterMappings as Record<string, string>,
     priceOverrides: data.priceOverrides as Partial<Record<Locale, number>>,

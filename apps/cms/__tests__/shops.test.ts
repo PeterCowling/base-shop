@@ -40,6 +40,7 @@ describe("shop actions", () => {
             name: "Seed",
             catalogFilters: [],
             themeId: "base",
+            themeOverrides: {},
             themeTokens: {},
             filterMappings: {},
             priceOverrides: {},

@@ -3,13 +3,15 @@
 import { CartProvider, useCart } from "@/contexts/CartContext";
 import AddToCartButton from "@platform-core/src/components/shop/AddToCartButton.client";
 import { PRODUCTS } from "@platform-core/products";
+import { lineKey } from "@platform-core/src/cartStore";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 jest.mock("react", () => jest.requireActual("react"));
 jest.mock("react-dom", () => jest.requireActual("react-dom"));
 
 function Qty() {
   const [state] = useCart();
-  return <span data-testid="qty">{state[PRODUCTS[0].id]?.qty ?? 0}</span>;
+  const key = lineKey(PRODUCTS[0].id, "M");
+  return <span data-testid="qty">{state[key]?.qty ?? 0}</span>;
 }
 
 describe("AddToCartButton", () => {
@@ -27,12 +29,12 @@ describe("AddToCartButton", () => {
       // POST
       .mockResolvedValueOnce({
         ok: true,
-        json: async () => ({ cart: { [PRODUCTS[0].id]: { sku: PRODUCTS[0], qty: 1 } } }),
+        json: async () => ({ cart: { [lineKey(PRODUCTS[0].id, "M")]: { sku: PRODUCTS[0], qty: 1, size: "M" } } }),
       });
 
     render(
       <CartProvider>
-        <AddToCartButton sku={PRODUCTS[0]} />
+        <AddToCartButton sku={PRODUCTS[0]} size="M" />
         <Qty />
       </CartProvider>
     );
@@ -60,7 +62,7 @@ describe("AddToCartButton", () => {
 
     render(
       <CartProvider>
-        <AddToCartButton sku={PRODUCTS[0]} />
+        <AddToCartButton sku={PRODUCTS[0]} size="M" />
         <Qty />
       </CartProvider>
     );

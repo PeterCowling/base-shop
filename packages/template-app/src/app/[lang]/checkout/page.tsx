@@ -8,7 +8,7 @@ import {
   type CartLine,
   type CartState,
 } from "@platform-core/src/cartCookie";
-import { getCart } from "@platform-core/src/cartStore";
+import { getCart, parseLineKey } from "@platform-core/src/cartStore";
 import { getProductById } from "@platform-core/src/products";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/src/repositories/settings.server";
@@ -43,7 +43,8 @@ export default async function CheckoutPage({
   /* ---------- fetch fresh product data & compute totals ---------- */
   const validatedCart: CartState = {};
   for (const [id, line] of Object.entries(cart)) {
-    const sku = getProductById(id);
+    const { skuId } = parseLineKey(id);
+    const sku = getProductById(skuId);
     if (!sku) continue; // skip items that no longer exist
     validatedCart[id] = { sku, qty: line.qty, size: line.size } as CartLine;
   }

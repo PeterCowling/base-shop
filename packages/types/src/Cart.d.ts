@@ -11,12 +11,11 @@ export interface CartLine {
     size?: string;
 }
 /**
- * The entire cart state keyed by SKU ID.
- *
- * `SKU["id"]` is declared as `string | undefined` in the product typings,
- * which violates the constraint that a `Record` key must be a concrete
- * string.  Wrapping it in `NonNullable<>` narrows the key to `string`,
- * preserving type-safety while still documenting intent.
+ * Composite key combining SKU ID and optional size (e.g. "sku123:M").
  */
-export type CartState = Record<NonNullable<SKU["id"]>, CartLine>;
+export type CartLineKey = string;
+/**
+ * The entire cart state keyed by cart line key (SKU ID plus size).
+ */
+export type CartState = Record<CartLineKey, CartLine>;
 //# sourceMappingURL=Cart.d.ts.map

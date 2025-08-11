@@ -34,7 +34,8 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
   /* ------------------------------------------------------------------
    * Derived values
    * ------------------------------------------------------------------ */
-  const lines = useMemo<CartLine[]>(() => Object.values(cart), [cart]);
+  const entries = useMemo(() => Object.entries(cart), [cart]);
+  const lines = useMemo<CartLine[]>(() => entries.map(([, l]) => l), [entries]);
 
   // When totals aren't provided, compute them from the cart lines.
   const computedSubtotal = useMemo(
@@ -65,8 +66,8 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
         </tr>
       </thead>
       <tbody>
-        {lines.map((line) => (
-          <tr key={line.sku.id} className="border-b last:border-0">
+        {entries.map(([id, line]) => (
+          <tr key={id} className="border-b last:border-0">
             <td className="py-2">
               {line.sku.title}
               {line.size && (

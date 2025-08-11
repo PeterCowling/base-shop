@@ -1,6 +1,7 @@
 // packages/ui/src/components/account/Sessions.tsx
 import { getCustomerSession, listSessions, revokeSession } from "@auth";
 import { revalidatePath } from "next/cache";
+import RevokeSessionButton from "./RevokeSessionButton";
 
 export interface SessionsPageProps {
   /** Optional heading override */
@@ -11,8 +12,13 @@ export const metadata = { title: "Sessions" };
 
 export async function revoke(id: string) {
   "use server";
-  await revokeSession(id);
-  revalidatePath("/account/sessions");
+  try {
+    await revokeSession(id);
+    revalidatePath("/account/sessions");
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: "Failed to revoke session." };
+  }
 }
 
 export default async function SessionsPage({ title = "Sessions" }: SessionsPageProps = {}) {
@@ -30,11 +36,7 @@ export default async function SessionsPage({ title = "Sessions" }: SessionsPageP
               <div>{s.userAgent}</div>
               <div className="text-sm text-gray-500">{s.createdAt.toISOString()}</div>
             </div>
-            <form action={revoke.bind(null, s.sessionId)}>
-              <button type="submit" className="rounded bg-primary px-4 py-2 text-primary-fg">
-                Revoke
-              </button>
-            </form>
+            <RevokeSessionButton sessionId={s.sessionId} />
           </li>
         ))}
       </ul>

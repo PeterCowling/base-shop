@@ -13,6 +13,7 @@ describe("sanity server actions", () => {
     fd.set("projectId", "p");
     fd.set("dataset", "d");
     fd.set("token", "t");
+    fd.set("aclMode", "public");
     const res = await connectSanity(fd);
     expect(res).toBe(true);
     expect(verifyCredentials).toHaveBeenCalledWith({

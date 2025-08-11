@@ -4,6 +4,14 @@ import { NextResponse, type NextRequest } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
+import { z } from "zod";
+
+const schema = z
+  .object({
+    payment: z.array(z.string()).default([]),
+    shipping: z.array(z.string()).default([]),
+  })
+  .strict();
 
 export async function POST(
   req: NextRequest,
@@ -14,23 +22,19 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
-    const body = (await req.json()) as {
-      payment?: string[];
-      shipping?: string[];
-    };
+    const parsed = schema.safeParse(await req.json());
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.message },
+        { status: 400 }
+      );
+    }
     const { shop } = await context.params;
     const dir = path.join(resolveDataRoot(), shop);
     await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(
       path.join(dir, "providers.json"),
-      JSON.stringify(
-        {
-          payment: Array.isArray(body.payment) ? body.payment : [],
-          shipping: Array.isArray(body.shipping) ? body.shipping : [],
-        },
-        null,
-        2
-      ),
+      JSON.stringify(parsed.data, null, 2),
       "utf8"
     );
     return NextResponse.json({ success: true });

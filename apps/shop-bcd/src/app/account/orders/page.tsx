@@ -1,13 +1,17 @@
 // apps/shop-bcd/src/app/account/orders/page.tsx
 import { getCustomerSession } from "@auth";
 import { getOrdersForCustomer } from "@platform-core/orders";
+import { redirect } from "next/navigation";
 import shop from "../../../../shop.json";
 
 export const metadata = { title: "Orders" };
 
 export default async function Page() {
   const session = await getCustomerSession();
-  if (!session) return <p>Please log in to view your orders.</p>;
+  if (!session) {
+    redirect(`/login?callbackUrl=${encodeURIComponent("/account/orders")}`);
+    return null as never;
+  }
   try {
     const orders = await getOrdersForCustomer(shop.id, session.customerId);
     if (!orders.length) return <p className="p-6">No orders yet.</p>;

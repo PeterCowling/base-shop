@@ -10,6 +10,11 @@ jest.mock("next/cache", () => ({
   revalidatePath: jest.fn(),
 }));
 
+jest.mock("next/navigation", () => ({
+  __esModule: true,
+  redirect: jest.fn(),
+}));
+
 import {
   getCustomerSession,
   listSessions,
@@ -17,6 +22,7 @@ import {
 } from "@auth";
 import { revalidatePath } from "next/cache";
 import SessionsPage, { revoke } from "@ui/src/components/account/Sessions";
+import { redirect } from "next/navigation";
 
 describe("SessionsPage", () => {
   beforeEach(() => {
@@ -25,11 +31,10 @@ describe("SessionsPage", () => {
 
   it("requires login", async () => {
     (getCustomerSession as jest.Mock).mockResolvedValue(null);
-    const element = await SessionsPage({});
+    await SessionsPage({});
     expect(getCustomerSession).toHaveBeenCalled();
-    expect(element.type).toBe("p");
-    expect(element.props.children).toBe(
-      "Please log in to view your sessions.",
+    expect(redirect).toHaveBeenCalledWith(
+      "/login?callbackUrl=%2Faccount%2Fsessions",
     );
   });
 

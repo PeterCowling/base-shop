@@ -1,11 +1,14 @@
 // packages/ui/src/components/account/Sessions.tsx
 import { getCustomerSession, listSessions, revokeSession } from "@auth";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import RevokeSessionButton from "./RevokeSessionButton";
 
 export interface SessionsPageProps {
   /** Optional heading override */
   title?: string;
+  /** Destination to return to after login */
+  callbackUrl?: string;
 }
 
 export const metadata = { title: "Sessions" };
@@ -21,9 +24,15 @@ export async function revoke(id: string) {
   }
 }
 
-export default async function SessionsPage({ title = "Sessions" }: SessionsPageProps = {}) {
+export default async function SessionsPage({
+  title = "Sessions",
+  callbackUrl = "/account/sessions",
+}: SessionsPageProps = {}) {
   const session = await getCustomerSession();
-  if (!session) return <p>Please log in to view your sessions.</p>;
+  if (!session) {
+    redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
+    return null as never;
+  }
   const sessions = await listSessions(session.customerId);
   if (!sessions.length) return <p className="p-6">No active sessions.</p>;
   return (

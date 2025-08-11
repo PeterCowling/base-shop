@@ -1,5 +1,12 @@
 // packages/platform-core/__tests__/shops.test.ts
-import { getSanityConfig, setSanityConfig, validateShopName } from "../shops";
+import {
+  getSanityConfig,
+  setSanityConfig,
+  validateShopName,
+} from "../src/shops";
+import { baseTokens } from "../src/themeTokens";
+import { tokens as abcTokens } from "../../themes/abc/src/tailwind-tokens";
+import { tokens as darkTokens } from "../../themes/dark/src/tailwind-tokens";
 import type { Shop } from "@types";
 
 describe("validateShopName", () => {
@@ -41,5 +48,25 @@ describe("sanity blog accessors", () => {
       dataset: "d",
       token: "t",
     });
+  });
+});
+
+describe("theme overrides", () => {
+  it("merges overrides with base tokens", () => {
+    const overrides = { "--color-bg": "255 0% 50%" };
+    const defaults = { ...baseTokens, ...abcTokens };
+    const merged = { ...defaults, ...overrides };
+    expect(merged["--color-bg"]).toBe("255 0% 50%");
+    // token missing from theme overrides falls back to base token
+    expect(merged["--color-danger"]).toBe(baseTokens["--color-danger"]);
+  });
+
+  it("preserves overrides after theme changes", () => {
+    const overrides = { "--color-bg": "255 0% 50%" };
+    const newDefaults = { ...baseTokens, ...darkTokens };
+    const merged = { ...newDefaults, ...overrides };
+    expect(merged["--color-bg"]).toBe("255 0% 50%");
+    // non-overridden tokens use new theme defaults
+    expect(merged["--color-primary"]).toBe(darkTokens["--color-primary"]);
   });
 });

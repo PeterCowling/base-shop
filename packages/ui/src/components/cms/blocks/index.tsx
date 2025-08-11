@@ -18,6 +18,7 @@ import VideoBlock from "./VideoBlock";
 import FAQBlock from "./FAQBlock";
 import Header from "./HeaderBlock";
 import Footer from "./FooterBlock";
+import SocialLinks from "./SocialLinks";
 
 export {
   BlogListing,
@@ -40,6 +41,7 @@ export {
   FAQBlock,
   Header,
   Footer,
+  SocialLinks,
 };
 
 export * from "./atoms";

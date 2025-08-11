@@ -97,6 +97,32 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "Footer":
       specific = <FooterEditor component={component} onChange={onChange} />;
       break;
+    case "SocialLinks":
+      specific = (
+        <>
+          <Input
+            label="Instagram URL"
+            value={(component as any).instagram ?? ""}
+            onChange={(e) => handleInput("instagram", e.target.value)}
+          />
+          <Input
+            label="Facebook URL"
+            value={(component as any).facebook ?? ""}
+            onChange={(e) => handleInput("facebook", e.target.value)}
+          />
+          <Input
+            label="X URL"
+            value={(component as any).x ?? ""}
+            onChange={(e) => handleInput("x", e.target.value)}
+          />
+          <Input
+            label="LinkedIn URL"
+            value={(component as any).linkedin ?? ""}
+            onChange={(e) => handleInput("linkedin", e.target.value)}
+          />
+        </>
+      );
+      break;
     default:
       specific = <p className="text-muted text-sm">No editable props</p>;
   }

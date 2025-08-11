@@ -149,6 +149,13 @@ export interface TextComponent extends PageComponentBase {
   type: "Text";
   text?: string;
 }
+export interface SocialLinksComponent extends PageComponentBase {
+  type: "SocialLinks";
+  instagram?: string;
+  facebook?: string;
+  x?: string;
+  linkedin?: string;
+}
 export interface BlogListingComponent extends PageComponentBase {
   type: "BlogListing";
   posts?: {
@@ -201,6 +208,7 @@ export type PageComponent =
   | TestimonialSliderComponent
   | ImageComponent
   | TextComponent
+  | SocialLinksComponent
   | HeaderComponent
   | FooterComponent
   | SectionComponent

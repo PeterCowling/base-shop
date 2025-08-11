@@ -2,31 +2,30 @@
 import { NextResponse } from "next/server";
 import { createCustomerSession } from "@auth";
 import type { Role } from "@auth/types/roles";
+import bcrypt from "bcryptjs";
+import { getUserByEmail } from "@acme/platform-core/users";
 import { z } from "zod";
-
-// Mock customer store. In a real app this would query a database or identity provider.
-const CUSTOMER_STORE: Record<string, { password: string; role: Role }> = {
-  cust1: { password: "pass1", role: "customer" },
-  viewer1: { password: "view", role: "viewer" },
-  admin1: { password: "admin", role: "admin" },
-};
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
 const LoginSchema = z.object({
-  customerId: z.string(),
+  email: z.string().email(),
   password: z.string(),
 });
 
 async function validateCredentials(
-  customerId: string,
+  email: string,
   password: string,
 ): Promise<{ customerId: string; role: Role } | null> {
-  const record = CUSTOMER_STORE[customerId];
-  if (!record || record.password !== password) {
+  const user = await getUserByEmail(email);
+  if (!user) {
     return null;
   }
-  return { customerId, role: record.role };
+  const valid = await bcrypt.compare(password, user.passwordHash);
+  if (!valid) {
+    return null;
+  }
+  return { customerId: user.email, role: user.role as Role };
 }
 
 export async function POST(req: Request) {
@@ -39,7 +38,7 @@ export async function POST(req: Request) {
   }
 
   const valid = await validateCredentials(
-    parsed.data.customerId,
+    parsed.data.email,
     parsed.data.password,
   );
 

@@ -43,3 +43,9 @@ model CustomerProfile {
   name       String
   email      String
 }
+
+model User {
+  email        String @id
+  passwordHash String
+  role         String
+}

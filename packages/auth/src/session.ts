@@ -2,6 +2,7 @@
 import { cookies, headers } from "next/headers";
 import { sealData, unsealData } from "iron-session";
 import { randomUUID } from "node:crypto";
+import { env } from "@acme/config";
 import type { Role } from "./types";
 
 export const CUSTOMER_SESSION_COOKIE = "customer_session";
@@ -112,14 +113,11 @@ class RedisSessionStore implements SessionStore {
 }
 
 const sessionStorePromise: Promise<SessionStore> = (async () => {
-  if (
-    process.env.UPSTASH_REDIS_REST_URL &&
-    process.env.UPSTASH_REDIS_REST_TOKEN
-  ) {
+  if (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN) {
     const { Redis } = await import("@upstash/redis");
     const client = new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+      url: env.UPSTASH_REDIS_REST_URL,
+      token: env.UPSTASH_REDIS_REST_TOKEN,
     });
     return new RedisSessionStore(client, SESSION_TTL_S);
   }
@@ -133,7 +131,7 @@ function cookieOptions() {
     secure: true,
     path: "/",
     maxAge: SESSION_TTL_S,
-    domain: process.env.COOKIE_DOMAIN,
+    domain: env.COOKIE_DOMAIN,
   };
 }
 
@@ -144,12 +142,12 @@ function csrfCookieOptions() {
     secure: true,
     path: "/",
     maxAge: SESSION_TTL_S,
-    domain: process.env.COOKIE_DOMAIN,
+    domain: env.COOKIE_DOMAIN,
   };
 }
 
 export async function getCustomerSession(): Promise<CustomerSession | null> {
-  const secret = process.env.SESSION_SECRET;
+  const secret = env.SESSION_SECRET;
   if (!secret) return null;
   const store = await cookies();
   const token = store.get(CUSTOMER_SESSION_COOKIE)?.value;
@@ -193,7 +191,7 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
 }
 
 export async function createCustomerSession(sessionData: CustomerSession): Promise<void> {
-  const secret = process.env.SESSION_SECRET;
+  const secret = env.SESSION_SECRET;
   if (!secret) {
     throw new Error("SESSION_SECRET is not set");
   }
@@ -223,7 +221,7 @@ export async function destroyCustomerSession(): Promise<void> {
   const store = await cookies();
   const token = store.get(CUSTOMER_SESSION_COOKIE)?.value;
   if (token) {
-    const secret = process.env.SESSION_SECRET;
+    const secret = env.SESSION_SECRET;
     if (secret) {
       try {
         const session = await unsealData<InternalSession>(token, {
@@ -237,11 +235,11 @@ export async function destroyCustomerSession(): Promise<void> {
   }
   store.delete(CUSTOMER_SESSION_COOKIE, {
     path: "/",
-    domain: process.env.COOKIE_DOMAIN,
+    domain: env.COOKIE_DOMAIN,
   });
   store.delete(CSRF_TOKEN_COOKIE, {
     path: "/",
-    domain: process.env.COOKIE_DOMAIN,
+    domain: env.COOKIE_DOMAIN,
   });
 }
 

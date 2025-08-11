@@ -1,4 +1,4 @@
-import { envSchema } from "@config/src/env";
+import { env as baseEnv, envSchema } from "@acme/config";
 import fetch from "cross-fetch";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -11,7 +11,7 @@ const cliEnvSchema = envSchema.extend({
 
 let env: z.infer<typeof cliEnvSchema>;
 try {
-  env = cliEnvSchema.parse(process.env);
+  env = cliEnvSchema.parse(baseEnv);
 } catch (err) {
   console.error("Invalid environment variables:\n", err);
   process.exit(1);

@@ -1,3 +1,4 @@
 // apps/cms/src/auth/secret.ts
+import { env } from "@acme/config";
 
-export const authSecret = process.env.NEXTAUTH_SECRET || "dev-secret";
+export const authSecret = env.NEXTAUTH_SECRET || "dev-secret";

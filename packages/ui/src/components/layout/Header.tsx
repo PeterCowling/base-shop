@@ -7,6 +7,7 @@ import {
 import { getCart } from "@platform-core/src/cartStore";
 import { cookies } from "next/headers";
 import HeaderClient from "./HeaderClient.client";
+import { env } from "@acme/config";
 
 /**
  * Reads cart cookie on the server and injects the starting quantity so the
@@ -25,7 +26,7 @@ export default async function Header({
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
   const cart = cartId ? await getCart(cartId) : {};
   const initialQty = Object.values(cart).reduce((s, line) => s + line.qty, 0);
-  const shopId = process.env.NEXT_PUBLIC_SHOP_ID || "default";
+  const shopId = env.NEXT_PUBLIC_SHOP_ID || "default";
   const shop = await readShop(shopId);
   const nav = shop.navigation ?? [];
 

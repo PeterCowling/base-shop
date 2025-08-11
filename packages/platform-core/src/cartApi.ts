@@ -14,7 +14,7 @@ import {
   setQty,
   removeItem,
 } from "@platform-core/src/cartStore";
-import { getProductById } from "@platform-core/src/products";
+import { getProductById, PRODUCTS } from "@platform-core/src/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema, putSchema } from "@platform-core/schemas/cart";
@@ -80,9 +80,11 @@ export async function POST(req: NextRequest) {
     size,
   } = parsed.data;
   const sku = getProductById(skuId);
-
   if (!sku) {
-    return NextResponse.json({ error: "Item not found" }, { status: 404 });
+    const exists = PRODUCTS.some((p) => p.id === skuId);
+    const status = exists ? 409 : 404;
+    const error = exists ? "Out of stock" : "Item not found";
+    return NextResponse.json({ error }, { status });
   }
 
   if (sku.sizes.length && !size) {
@@ -93,8 +95,15 @@ export async function POST(req: NextRequest) {
   if (!cartId) {
     cartId = await createCart();
   }
-  const cart = await incrementQty(cartId, sku, qty, size);
-  const res = NextResponse.json({ ok: true, cart });
+  const cart = await getCart(cartId);
+  const id = size ? `${sku.id}:${size}` : sku.id;
+  const line = cart[id];
+  const newQty = (line?.qty ?? 0) + qty;
+  if (newQty > sku.stock) {
+    return NextResponse.json({ error: "Insufficient stock" }, { status: 409 });
+  }
+  const updated = await incrementQty(cartId, sku, qty, size);
+  const res = NextResponse.json({ ok: true, cart: updated });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;
 }

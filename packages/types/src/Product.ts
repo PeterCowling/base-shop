@@ -14,6 +14,8 @@ export const skuSchema = z.object({
   price: z.number().int().nonnegative(),
   /** Refundable deposit, required by business rules */
   deposit: z.number().int().nonnegative(),
+  /** Available stock count */
+  stock: z.number().int().nonnegative(),
   /** Item can be sold */
   forSale: z.boolean().default(true),
   /** Item can be rented */

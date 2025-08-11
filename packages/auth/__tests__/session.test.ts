@@ -1,6 +1,7 @@
 import {
   createCustomerSession,
   getCustomerSession,
+  destroyCustomerSession,
   CUSTOMER_SESSION_COOKIE,
   CSRF_TOKEN_COOKIE,
 } from "../src/session";
@@ -94,6 +95,22 @@ describe("customer session", () => {
     await createCustomerSession(session);
     const secondToken = store.set.mock.calls[2][1];
     expect(secondToken).not.toBe(firstToken);
+  });
+
+  it("invalidates server-side session on destroy", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const session = { customerId: "abc", role: "customer" as Role };
+
+    await createCustomerSession(session);
+    const token = store.set.mock.calls[0][1];
+
+    await destroyCustomerSession();
+
+    // simulate request with old token
+    store.set(CUSTOMER_SESSION_COOKIE, token);
+
+    await expect(getCustomerSession()).resolves.toBeNull();
   });
 });
 

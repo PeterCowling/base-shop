@@ -7,6 +7,27 @@ import { ensureAuthorized } from "./common/auth";
 
 const apiVersion = env.SANITY_API_VERSION || "2021-10-21";
 
+function collectProductSlugs(content: unknown): string[] {
+  const slugs = new Set<string>();
+  const walk = (node: any) => {
+    if (!node) return;
+    if (Array.isArray(node)) {
+      node.forEach(walk);
+      return;
+    }
+    if (typeof node === "object") {
+      if (node._type === "productReference" && typeof node.slug === "string") {
+        slugs.add(node.slug);
+      }
+      for (const value of Object.values(node)) {
+        walk(value);
+      }
+    }
+  };
+  walk(content);
+  return Array.from(slugs);
+}
+
 interface SanityPost {
   _id: string;
   title?: string;
@@ -101,10 +122,13 @@ export async function createPost(
   const title = String(formData.get("title") ?? "");
   const content = String(formData.get("content") ?? "[]");
   let body: unknown = [];
+  let products: string[] = [];
   try {
     body = JSON.parse(content);
+    products = collectProductSlugs(body);
   } catch {
     body = [];
+    products = [];
   }
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
@@ -123,6 +147,7 @@ export async function createPost(
             _type: "post",
             title,
             body,
+            products,
             published: false,
             slug: slug ? { current: slug } : undefined,
             excerpt: excerpt || undefined,
@@ -153,10 +178,13 @@ export async function updatePost(
   const title = String(formData.get("title") ?? "");
   const content = String(formData.get("content") ?? "[]");
   let body: unknown = [];
+  let products: string[] = [];
   try {
     body = JSON.parse(content);
+    products = collectProductSlugs(body);
   } catch {
     body = [];
+    products = [];
   }
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
@@ -176,6 +204,7 @@ export async function updatePost(
             set: {
               title,
               body,
+              products,
               slug: slug ? { current: slug } : undefined,
               excerpt: excerpt || undefined,
               ...(publishedAt ? { publishedAt } : {}),

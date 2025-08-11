@@ -2,6 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
+process.env.STRIPE_SECRET_KEY ||= 'test-sk';
+process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ||= 'test-pk';
+
 const moduleUrl = new URL('../index.mjs', import.meta.url);
 const freshImport = () => import(`${moduleUrl.href}?t=${Date.now()}&r=${Math.random()}`);
 

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./env.ts",
-    "./env": "./env.ts"
+    ".": "./src/env.ts",
+    "./env": "./src/env.ts"
   }
 }

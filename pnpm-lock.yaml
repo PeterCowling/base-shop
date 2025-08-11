@@ -286,6 +286,9 @@ importers:
 
   apps/cms:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@acme/email':
         specifier: workspace:*
         version: link:../../packages/lib/email
@@ -308,12 +311,18 @@ importers:
 
   apps/shop-abc:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@acme/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/template-app':
+        specifier: workspace:*
+        version: link:../../packages/template-app
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
@@ -324,12 +333,18 @@ importers:
 
   apps/shop-bcd:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@acme/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/template-app':
+        specifier: workspace:*
+        version: link:../../packages/template-app
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
@@ -363,6 +378,10 @@ importers:
   packages/config: {}
 
   packages/configurator:
+    dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../config
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20250702.0
@@ -397,14 +416,24 @@ importers:
 
   packages/lib/email:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../../config
       nodemailer:
         specifier: ^6.10.1
         version: 6.10.1
 
-  packages/next-config: {}
+  packages/next-config:
+    dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../config
 
   packages/platform-core:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../config
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../shared-utils
@@ -452,6 +481,9 @@ importers:
 
   packages/template-app:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../config
       '@acme/i18n':
         specifier: workspace:*
         version: link:../i18n
@@ -488,6 +520,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../config
       '@acme/i18n':
         specifier: workspace:*
         version: link:../i18n

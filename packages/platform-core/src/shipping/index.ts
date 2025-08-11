@@ -1,5 +1,7 @@
 // packages/platform-core/src/shipping/index.ts
 
+import { env } from "@acme/config";
+
 export interface ShippingRateRequest {
   provider: "ups" | "dhl";
   fromPostalCode: string;
@@ -17,7 +19,8 @@ export async function getShippingRate({
   toPostalCode,
   weight,
 }: ShippingRateRequest): Promise<unknown> {
-  const apiKey = process.env[`${provider.toUpperCase()}_KEY`];
+  const apiKey =
+    provider === "ups" ? env.UPS_KEY : provider === "dhl" ? env.DHL_KEY : undefined;
   if (!apiKey) {
     throw new Error(`Missing ${provider.toUpperCase()}_KEY`);
   }

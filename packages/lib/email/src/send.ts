@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { env } from "@acme/config";
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -19,11 +20,11 @@ export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
   const transport = nodemailer.createTransport({
-    url: process.env.SMTP_URL,
+    url: env.SMTP_URL,
   });
 
   await transport.sendMail({
-    from: process.env.CAMPAIGN_FROM || "no-reply@example.com",
+    from: env.CAMPAIGN_FROM || "no-reply@example.com",
     to: options.to,
     subject: options.subject,
     html: options.html,

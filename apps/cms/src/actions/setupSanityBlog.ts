@@ -1,5 +1,6 @@
 // apps/cms/src/actions/setupSanityBlog.ts
 import { ensureAuthorized } from "./common/auth";
+import { env } from "@acme/config";
 
 interface SanityCredentials {
   projectId: string;
@@ -58,7 +59,7 @@ export async function setupSanityBlog(
     }
 
     // Upload a minimal blog schema (post document)
-    const apiVersion = process.env.SANITY_API_VERSION || "2021-10-21";
+    const apiVersion = env.SANITY_API_VERSION || "2021-10-21";
     const schemaRes = await fetch(
       `https://${projectId}.api.sanity.io/v${apiVersion}/data/mutate/${dataset}`,
       {

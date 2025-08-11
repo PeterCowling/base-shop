@@ -14,6 +14,9 @@ import { TextDecoder, TextEncoder } from "node:util";
 Object.assign(process.env, {
   NODE_ENV: "test", // make it explicit
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET ?? "test-secret",
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ?? "sk",
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "pk",
 });
 
 /* -------------------------------------------------------------------------- */

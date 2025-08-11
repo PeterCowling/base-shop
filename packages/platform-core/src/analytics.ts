@@ -5,6 +5,7 @@ import { nowIso } from "@lib/date";
 import { DATA_ROOT } from "./dataRoot";
 import { validateShopName } from "./shops";
 import { getShopSettings, readShop } from "./repositories/shops.server";
+import { env } from "@acme/config";
 
 export interface AnalyticsEvent {
   type: string;
@@ -100,7 +101,7 @@ async function resolveProvider(shop: string): Promise<AnalyticsProvider> {
   }
   if (analytics.provider === "ga") {
     const measurementId = analytics.id;
-    const apiSecret = process.env.GA_API_SECRET;
+    const apiSecret = env.GA_API_SECRET;
     if (measurementId && apiSecret) {
       const p = new GoogleAnalyticsProvider(measurementId, apiSecret);
       providerCache.set(shop, p);

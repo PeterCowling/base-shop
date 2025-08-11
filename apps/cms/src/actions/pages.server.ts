@@ -6,6 +6,7 @@ import type { Locale, Page, HistoryState } from "@types";
 import { historyStateSchema } from "@types";
 import { ulid } from "ulid";
 import { nowIso } from "@lib/date";
+import { env } from "@acme/config";
 
 import { ensureAuthorized } from "./common/auth";
 import {
@@ -48,7 +49,7 @@ export async function createPage(
   );
   if (!parsed.success) {
     const context = { shop, id };
-    if (process.env.NODE_ENV === "development") {
+    if (env.NODE_ENV === "development") {
       console.warn("[createPage] validation failed", {
         ...context,
         error: parsed.error,
@@ -188,7 +189,7 @@ export async function updatePage(
   );
   if (!parsed.success) {
     const context = { shop, id: formData.get("id") || undefined };
-    if (process.env.NODE_ENV === "development") {
+    if (env.NODE_ENV === "development") {
       console.warn("[updatePage] validation failed", {
         ...context,
         error: parsed.error,

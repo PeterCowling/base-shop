@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
@@ -46,7 +46,7 @@ export default function ConfiguratorDashboard() {
     window.addEventListener("wizard:update", handler);
     return () => window.removeEventListener("wizard:update", handler);
   }, [fetchState]);
-  const stepList = getSteps();
+  const stepList = useMemo(() => getSteps(), []);
   const missingRequired = stepList.filter(
     (s) => !s.optional && !state?.completed?.[s.id]
   );
@@ -122,6 +122,9 @@ export default function ConfiguratorDashboard() {
               <Link href={`/cms/configurator/${step.id}`} className="underline">
                 {step.label}
               </Link>
+              <span className="ml-1 text-xs text-gray-500">
+                {completed ? "Done" : "Pending"}
+              </span>
             </li>
           );
         })}

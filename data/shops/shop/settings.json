@@ -2,6 +2,10 @@
   "freezeTranslations": false,
   "currency": "EUR",
   "taxRegion": "EU",
+  "depositService": {
+    "enabled": false,
+    "interval": 60
+  },
   "languages": [
     "en",
     "de",

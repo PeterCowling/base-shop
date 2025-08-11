@@ -17,6 +17,10 @@ jest.mock("@auth", () => ({
   validateCsrfToken: jest.fn().mockResolvedValue(true),
 }));
 
+jest.mock("@acme/platform-core/customerProfiles", () => ({
+  updateCustomerProfile: jest.fn().mockResolvedValue(undefined),
+}));
+
 let POST: typeof import("../src/app/register/route").POST;
 let __resetRegistrationRateLimiter: typeof import("../src/middleware").__resetRegistrationRateLimiter;
 let MAX_REGISTRATION_ATTEMPTS: number;

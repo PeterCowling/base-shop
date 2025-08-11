@@ -25,7 +25,10 @@ export async function GET() {
 
   const profile = await getCustomerProfile(session.customerId);
   if (!profile) {
-    return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+    return NextResponse.json({
+      ok: true,
+      profile: { customerId: session.customerId, name: "", email: "" },
+    });
   }
 
   return NextResponse.json({ ok: true, profile });

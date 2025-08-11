@@ -15,7 +15,11 @@ const updateCustomerProfile = jest.fn(async (id: string, data: any) => {
 });
 const getCustomerProfile = jest.fn(async (id: string) => profile);
 
-jest.mock("@auth", () => ({ __esModule: true, getCustomerSession }));
+jest.mock("@auth", () => ({
+  __esModule: true,
+  getCustomerSession,
+  validateCsrfToken: jest.fn().mockResolvedValue(true),
+}));
 jest.mock("@acme/platform-core/customerProfiles", () => ({
   __esModule: true,
   getCustomerProfile,
@@ -25,7 +29,10 @@ jest.mock("@acme/platform-core/customerProfiles", () => ({
 import { PUT } from "../../src/app/api/account/profile/route";
 
 function createRequest(body: any): any {
-  return { json: async () => body } as any;
+  return {
+    json: async () => body,
+    headers: new Headers({ "x-csrf-token": "tok" }),
+  } as any;
 }
 
 beforeEach(() => {

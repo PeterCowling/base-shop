@@ -13,9 +13,19 @@ export default function MfaChallenge({ onSuccess }: MfaChallengeProps) {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const csrfToken =
+      typeof document !== "undefined"
+        ? document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("csrf_token="))
+            ?.split("=")[1]
+        : undefined;
     const res = await fetch("/api/mfa/verify", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": csrfToken ?? "",
+      },
       body: JSON.stringify({ token }),
     });
     const data = await res.json();

@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Plugin } from "@acme/platform-core";
+import type { Plugin } from "@acme/platform-core/plugins";
 
 interface Props {
   plugins: Plugin[];

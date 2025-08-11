@@ -1,21 +1,40 @@
 // packages/platform-core/src/plugins.ts
-import { readdir } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import type { Dirent } from "node:fs";
 import path from "node:path";
 
+/** Interface for payment providers */
+export interface PaymentProvider {
+  processPayment(...args: any[]): Promise<unknown> | unknown;
+}
+
+/** Interface for shipping providers */
+export interface ShippingProvider {
+  calculateShipping(...args: any[]): Promise<unknown> | unknown;
+}
+
+/** Interface for widget components */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface WidgetComponent<P = any> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (props: P): any;
+}
+
 /** Registry for payment providers */
-export interface PaymentRegistry {
-  add(id: string, provider: unknown): void;
+export interface PaymentRegistry<T extends PaymentProvider = PaymentProvider> {
+  add(id: string, provider: T): void;
 }
 
 /** Registry for shipping providers */
-export interface ShippingRegistry {
-  add(id: string, provider: unknown): void;
+export interface ShippingRegistry<
+  T extends ShippingProvider = ShippingProvider,
+> {
+  add(id: string, provider: T): void;
 }
 
 /** Registry for widget components */
-export interface WidgetRegistry {
-  add(id: string, component: unknown): void;
+export interface WidgetRegistry<T extends WidgetComponent = WidgetComponent> {
+  add(id: string, component: T): void;
 }
 
 export interface PluginOptions {
@@ -27,47 +46,105 @@ export interface PluginOptions {
   defaultConfig?: Record<string, unknown>;
 }
 
-export interface Plugin extends PluginOptions {
+export interface Plugin<
+  P extends PaymentProvider = PaymentProvider,
+  S extends ShippingProvider = ShippingProvider,
+  W extends WidgetComponent = WidgetComponent,
+> extends PluginOptions {
   id: string;
-  registerPayments?(registry: PaymentRegistry, config?: Record<string, unknown>): void;
-  registerShipping?(registry: ShippingRegistry, config?: Record<string, unknown>): void;
-  registerWidgets?(registry: WidgetRegistry, config?: Record<string, unknown>): void;
+  registerPayments?(
+    registry: PaymentRegistry<P>,
+    config?: Record<string, unknown>,
+  ): void;
+  registerShipping?(
+    registry: ShippingRegistry<S>,
+    config?: Record<string, unknown>,
+  ): void;
+  registerWidgets?(
+    registry: WidgetRegistry<W>,
+    config?: Record<string, unknown>,
+  ): void;
 }
 
-/** Load all plugins from packages/plugins */
-export async function loadPlugins(): Promise<Plugin[]> {
-  const pluginsDir = path.resolve(process.cwd(), "packages", "plugins");
-  let dirs: Dirent[];
-  try {
-    dirs = await readdir(pluginsDir, { withFileTypes: true });
-  } catch {
-    return [];
-  }
-  const plugins: Plugin[] = [];
-  for (const dir of dirs) {
-    if (!dir.isDirectory()) continue;
-    const modPath = path.join(pluginsDir, dir.name, "index.ts");
+export interface LoadPluginsOptions {
+  /** directories containing plugin packages */
+  directories?: string[];
+  /** explicit plugin package paths */
+  plugins?: string[];
+}
+
+/** Load plugins from provided directories or explicit paths */
+export async function loadPlugins({
+  directories = [],
+  plugins = [],
+}: LoadPluginsOptions = {}): Promise<Plugin[]> {
+  const roots: string[] = [...plugins];
+  for (const dir of directories) {
     try {
-      const mod = await import(modPath);
-      if (mod.default) {
-        plugins.push(mod.default as Plugin);
+      const entries = await readdir(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        if (entry.isDirectory()) {
+          roots.push(path.join(dir, entry.name));
+        }
       }
     } catch (err) {
-      console.warn(`Failed to load plugin ${dir.name}`, err);
+      console.warn(`Failed to read plugins directory ${dir}`, err);
     }
   }
-  return plugins;
+
+  const loaded: Plugin[] = [];
+  for (const root of roots) {
+    try {
+      const pkgPath = path.join(root, "package.json");
+      let entry = root;
+      try {
+        const pkg = JSON.parse(await readFile(pkgPath, "utf8"));
+        let rel: string | undefined;
+        if (typeof pkg.exports === "string") {
+          rel = pkg.exports;
+        } else if (pkg.main) {
+          rel = pkg.main;
+        }
+        if (rel) {
+          entry = path.join(root, rel);
+        } else {
+          continue;
+        }
+      } catch {
+        console.warn(`No package.json found for plugin at ${root}`);
+        continue;
+      }
+      const mod = await import(entry);
+      if (mod.default) {
+        loaded.push(mod.default as Plugin);
+      }
+    } catch (err) {
+      console.warn(`Failed to load plugin at ${root}`, err);
+    }
+  }
+  return loaded;
+}
+
+export interface InitPluginsOptions extends LoadPluginsOptions {
+  config?: Record<string, Record<string, unknown>>;
 }
 
 /** Load plugins and call their registration hooks */
-export async function initPlugins(registries: {
-  payments?: PaymentRegistry;
-  shipping?: ShippingRegistry;
-  widgets?: WidgetRegistry;
-}): Promise<Plugin[]> {
-  const plugins = await loadPlugins();
+export async function initPlugins<
+  P extends PaymentProvider = PaymentProvider,
+  S extends ShippingProvider = ShippingProvider,
+  W extends WidgetComponent = WidgetComponent,
+>(
+  registries: {
+    payments?: PaymentRegistry<P>;
+    shipping?: ShippingRegistry<S>;
+    widgets?: WidgetRegistry<W>;
+  },
+  options: InitPluginsOptions = {},
+): Promise<Plugin<P, S, W>[]> {
+  const plugins = await loadPlugins(options);
   for (const plugin of plugins) {
-    const cfg = plugin.defaultConfig;
+    const cfg = options.config?.[plugin.id] ?? plugin.defaultConfig;
     if (registries.payments && plugin.registerPayments) {
       plugin.registerPayments(registries.payments, cfg);
     }
@@ -78,5 +155,5 @@ export async function initPlugins(registries: {
       plugin.registerWidgets(registries.widgets, cfg);
     }
   }
-  return plugins;
+  return plugins as Plugin<P, S, W>[];
 }

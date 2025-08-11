@@ -1,5 +1,5 @@
 // packages/platform-core/__tests__/shops.test.ts
-import { getSanityConfig, setSanityConfig, validateShopName } from "../shops";
+import { getSanityConfig, setSanityConfig, validateShopName } from "../src/shops";
 import type { Shop } from "@types";
 
 describe("validateShopName", () => {
@@ -9,6 +9,24 @@ describe("validateShopName", () => {
 
   it("throws for invalid characters", () => {
     expect(() => validateShopName("bad/name")).toThrow("Invalid shop name");
+  });
+});
+
+describe("theme token overrides", () => {
+  it("merges overrides with base tokens", () => {
+    const base = { "--color-bg": "white", "--color-primary": "blue" };
+    const overrides = { "--color-bg": "pink" };
+    const merged = { ...base, ...overrides };
+    expect(merged["--color-bg"]).toBe("pink");
+    expect(merged["--color-primary"]).toBe("blue");
+  });
+
+  it("retains overrides after theme change", () => {
+    const overrides = { "--color-bg": "pink" };
+    const newDefaults = { "--color-bg": "white", "--color-primary": "green" };
+    const merged = { ...newDefaults, ...overrides };
+    expect(merged["--color-bg"]).toBe("pink");
+    expect(merged["--color-primary"]).toBe("green");
   });
 });
 

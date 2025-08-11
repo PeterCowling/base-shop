@@ -55,6 +55,10 @@ export default function ThemeEditor({
     setSaving(false);
   };
 
+  const handleReset = () => {
+    setTokens({ ...tokensByTheme[theme] });
+  };
+
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <Input type="hidden" name="id" value={shop} />
@@ -83,13 +87,18 @@ export default function ThemeEditor({
         {Object.entries(tokens).map(([k, v]) => (
           <label key={k} className="flex flex-col gap-1">
             <span>{k}</span>
-            <Input value={v} onChange={handleTokenChange(k)} />
-          </label>
-        ))}
+          <Input value={v} onChange={handleTokenChange(k)} />
+        </label>
+      ))}
       </div>
-      <Button className="bg-primary text-white" disabled={saving} type="submit">
-        {saving ? "Saving…" : "Save"}
-      </Button>
+      <div className="flex gap-2">
+        <Button className="bg-primary text-white" disabled={saving} type="submit">
+          {saving ? "Saving…" : "Save"}
+        </Button>
+        <Button type="button" onClick={handleReset}>
+          Reset
+        </Button>
+      </div>
     </form>
   );
 }

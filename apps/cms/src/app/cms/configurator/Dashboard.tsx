@@ -5,8 +5,10 @@ import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import type { WizardState } from "../wizard/schema";
-import { steps, stepOrder } from "./steps";
+import { getSteps } from "./steps";
 export type StepStatus = "idle" | "pending" | "success" | "failure";
+
+const steps = getSteps();
 
 export default function ConfiguratorDashboard() {
   const [state, setState] = useState<WizardState | null>(null);
@@ -27,8 +29,8 @@ export default function ConfiguratorDashboard() {
       .then((json) => setState(json))
       .catch(() => setState(null));
   }, []);
-  const allRequiredDone = stepOrder.every(
-    (id) => !steps[id].required || Boolean(state?.completed?.[id])
+  const allRequiredDone = steps.every(
+    (step) => step.optional || Boolean(state?.completed?.[step.id])
   );
 
   const launchShop = async () => {
@@ -62,8 +64,8 @@ export default function ConfiguratorDashboard() {
     <div>
       <h2 className="mb-4 text-xl font-semibold">Configuration Steps</h2>
       <ul className="mb-6 space-y-2">
-        {stepOrder.map((id) => {
-          const step = steps[id];
+        {steps.map((step) => {
+          const id = step.id;
           const completed = Boolean(state?.completed?.[id]);
           return (
             <li key={id} className="flex items-center gap-2">

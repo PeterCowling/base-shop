@@ -20,6 +20,24 @@ describe('fetchJson', () => {
       .resolves.toEqual(responseData);
   });
 
+  it('returns undefined when response body is empty', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(''),
+    });
+
+    await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
+  });
+
+  it('returns undefined when response body contains invalid JSON', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue('not json'),
+    });
+
+    await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
+  });
+
   it('throws error message from JSON error payload', async () => {
     const errorPayload = { error: 'Bad Request' };
     (global.fetch as jest.Mock).mockResolvedValue({

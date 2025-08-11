@@ -32,7 +32,8 @@ export const cartLineSchema = z.object({
 });
 
 /**
- * Schema for the full cart, keyed by SKU ID (string).
+ * Schema for the full cart, keyed by a composite of SKU ID and size
+ * (`id:size`). Items without a size simply use their SKU ID.
  */
 export const cartStateSchema = z.record(z.string(), cartLineSchema);
 
@@ -42,6 +43,11 @@ export type CartState = z.infer<typeof cartStateSchema>;
 /* ------------------------------------------------------------------
  * Helper functions
  * ------------------------------------------------------------------ */
+
+/** Build a stable cart line identifier from SKU ID and optional size. */
+export function cartKey(id: string, size?: string): string {
+  return size ? `${id}:${size}` : id;
+}
 
 /**
  * Serialize a cart ID into a signed cookie value.

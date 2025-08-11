@@ -1,6 +1,7 @@
 import { CartProvider, useCart } from "@platform-core/src/contexts/CartContext";
 import { type Meta, type StoryObj } from "@storybook/react";
 import type { CartState } from "@/lib/cartCookie";
+import { cartKey } from "@/lib/cartCookie";
 import type { SKU } from "@types";
 import * as React from "react";
 import { Button } from "../atoms/shadcn";
@@ -41,7 +42,11 @@ function CartInitializer({ items }: WrapperProps) {
     Object.values(items).forEach((line) => {
       dispatch({ type: "add", sku: line.sku, size: line.size });
       if (line.qty > 1) {
-        dispatch({ type: "setQty", id: line.sku.id, qty: line.qty });
+        dispatch({
+          type: "setQty",
+          id: cartKey(line.sku.id, line.size),
+          qty: line.qty,
+        });
       }
     });
   }, [items, dispatch]);

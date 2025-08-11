@@ -1,4 +1,5 @@
 import type { CartState } from "@/lib/cartCookie";
+import { cartKey } from "@/lib/cartCookie";
 import Image from "next/image";
 import * as React from "react";
 import { cn } from "../../utils/style";
@@ -43,7 +44,10 @@ export function CartTemplate({
         </thead>
         <tbody>
           {lines.map((line) => (
-            <tr key={line.sku.id} className="border-b last:border-0">
+            <tr
+              key={cartKey(line.sku.id, line.size)}
+              className="border-b last:border-0"
+            >
               <td className="py-2">
                 <div className="flex items-center gap-4">
                   <div className="relative hidden h-12 w-12 sm:block">
@@ -61,7 +65,9 @@ export function CartTemplate({
               <td>
                 <QuantityInput
                   value={line.qty}
-                  onChange={(v) => onQtyChange?.(line.sku.id, v)}
+                  onChange={(v) =>
+                    onQtyChange?.(cartKey(line.sku.id, line.size), v)
+                  }
                   className="justify-center"
                 />
               </td>
@@ -72,7 +78,9 @@ export function CartTemplate({
                 <td className="text-right">
                   <button
                     type="button"
-                    onClick={() => onRemove(line.sku.id)}
+                    onClick={() =>
+                      onRemove(cartKey(line.sku.id, line.size))
+                    }
                     className="text-danger hover:underline"
                   >
                     Remove

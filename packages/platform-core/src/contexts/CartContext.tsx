@@ -11,8 +11,8 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
  * ------------------------------------------------------------------ */
 type Action =
   | { type: "add"; sku: SKU; size?: string }
-  | { type: "remove"; id: SKU["id"] }
-  | { type: "setQty"; id: SKU["id"]; qty: number };
+  | { type: "remove"; id: string }
+  | { type: "setQty"; id: string; qty: number };
 
 /* ------------------------------------------------------------------
  * React context

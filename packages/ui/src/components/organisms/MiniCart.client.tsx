@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "@platform-core/src/contexts/CartContext";
+import { cartKey } from "@/lib/cartCookie";
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { drawerWidthProps } from "../../utils/style";
@@ -65,14 +66,16 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
               <ul className="grow space-y-3 overflow-y-auto">
                 {lines.map((line) => (
                   <li
-                    key={line.sku.id}
+                    key={cartKey(line.sku.id, line.size)}
                     className="flex items-center justify-between gap-2"
                   >
                     <span className="text-sm">{line.sku.title}</span>
                     <span className="text-sm">× {line.qty}</span>
                     <Button
                       variant="destructive"
-                      onClick={() => void handleRemove(line.sku.id)}
+                      onClick={() =>
+                        void handleRemove(cartKey(line.sku.id, line.size))
+                      }
                       className="px-2 py-1 text-xs"
                     >
                       Remove

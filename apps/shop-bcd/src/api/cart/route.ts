@@ -5,6 +5,7 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
+  cartKey,
 } from "@/lib/cartCookie";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -27,12 +28,16 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const { sku, qty } = parsed.data;
+  const { sku, qty, size } = parsed.data;
   const cookie = req.cookies.get(CART_COOKIE)?.value;
   const cart = decodeCartCookie(cookie);
-  const line = cart[sku.id];
+  if (sku.sizes.length && !size) {
+    return NextResponse.json({ error: "Size is required" }, { status: 400 });
+    }
+  const key = cartKey(sku.id, size);
+  const line = cart[key];
 
-  cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+  cart[key] = { sku, qty: (line?.qty ?? 0) + qty, size };
 
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));

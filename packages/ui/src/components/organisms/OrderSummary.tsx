@@ -3,6 +3,7 @@
 
 import { useCart } from "@ui/hooks/useCart";
 import type { CartLine } from "@/lib/cartCookie";
+import { cartKey } from "@/lib/cartCookie";
 import { Price } from "../atoms/Price";
 import React, { useMemo } from "react";
 
@@ -67,7 +68,10 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
       </thead>
       <tbody>
         {lines.map((line) => (
-          <tr key={line.sku.id} className="border-b last:border-0">
+          <tr
+            key={cartKey(line.sku.id, line.size)}
+            className="border-b last:border-0"
+          >
             <td className="py-2">
               {line.sku.title}
               {line.size && (

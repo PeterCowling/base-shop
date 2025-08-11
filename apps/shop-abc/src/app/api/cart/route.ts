@@ -5,6 +5,7 @@ import {
   decodeCartCookie,
   encodeCartCookie,
   type CartState,
+  cartKey,
 } from "@platform-core/src/cartCookie";
 import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
 import { getProductById } from "@/lib/products";
@@ -64,15 +65,19 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const { sku: skuInput, qty } = parsed.data;
+  const { sku: skuInput, qty, size } = parsed.data;
   const sku = "title" in skuInput ? skuInput : getProductById(skuInput.id);
   if (!sku) {
     return NextResponse.json({ error: "Item not found" }, { status: 404 });
   }
+  if (sku.sizes.length && !size) {
+    return NextResponse.json({ error: "Size is required" }, { status: 400 });
+  }
 
   const { cartId, cart } = await loadCart(req, true);
-  const line = cart[sku.id];
-  cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+  const key = cartKey(sku.id, size);
+  const line = cart[key];
+  cart[key] = { sku, qty: (line?.qty ?? 0) + qty, size };
   await setCart(cartId!, cart);
 
   const res = NextResponse.json({ ok: true, cart });

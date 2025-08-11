@@ -26,6 +26,11 @@ export default function AddToCartButton({
     if (disabled) return;
     setAdding(true);
     setError(null);
+    if (sku.sizes.length && !size) {
+      setError("Please select a size");
+      setAdding(false);
+      return;
+    }
 
     try {
       await dispatch({ type: "add", sku, size });

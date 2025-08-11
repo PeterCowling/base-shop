@@ -5,7 +5,7 @@ Shop owners can connect a Sanity project to manage blog posts alongside the shop
 ## Connect your Sanity project
 
 1. Obtain your **project ID**, **dataset**, and an API **token** from the Sanity dashboard.
-2. In the CMS go to **Settings → Blog** and enter the credentials.
+2. In the CMS go to **Settings → Blog** and enter the credentials, then choose whether the dataset should be **public** or **private**.
 3. The CMS uses the values to verify access via the `verifyCredentials` helper from the plugin.
 4. On success the connection is stored with the shop settings.
 

@@ -34,6 +34,7 @@ export default function ConnectForm({ shopId, initial }: Props) {
   const [projectId, setProjectId] = useState(initial?.projectId ?? "");
   const [dataset, setDataset] = useState(initial?.dataset ?? "");
   const [token, setToken] = useState(initial?.token ?? "");
+  const [aclMode, setAclMode] = useState<"public" | "private">("public");
   const [verifyStatus, setVerifyStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
@@ -120,6 +121,24 @@ export default function ConnectForm({ shopId, initial }: Props) {
           {verifyStatus === "error" && (
             <p className="text-xs text-red-600">Invalid credentials</p>
           )}
+        </div>
+        <div className="space-y-1">
+          <label className="block text-sm font-medium" htmlFor="aclMode">
+            Access level
+          </label>
+          <select
+            id="aclMode"
+            name="aclMode"
+            className="w-full rounded border p-2"
+            value={aclMode}
+            onChange={(e) => setAclMode(e.target.value as "public" | "private")}
+          >
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </select>
+          <p className="text-xs text-muted-foreground">
+            Public datasets are readable by anyone; private require auth.
+          </p>
         </div>
         <SubmitButton />
       </form>

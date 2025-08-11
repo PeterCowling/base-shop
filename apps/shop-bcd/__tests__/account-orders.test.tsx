@@ -8,9 +8,15 @@ jest.mock("@platform-core/orders", () => ({
   getOrdersForCustomer: jest.fn(),
 }));
 
+jest.mock("next/navigation", () => ({
+  __esModule: true,
+  redirect: jest.fn(),
+}));
+
 import { getCustomerSession } from "@auth";
 import { getOrdersForCustomer } from "@platform-core/orders";
 import OrdersPage from "../src/app/account/orders/page";
+import { redirect } from "next/navigation";
 import shop from "../shop.json";
 
 describe("/account/orders", () => {
@@ -20,10 +26,11 @@ describe("/account/orders", () => {
 
   it("redirects unauthenticated users", async () => {
     (getCustomerSession as jest.Mock).mockResolvedValue(null);
-    const element = await OrdersPage();
+    await OrdersPage();
     expect(getCustomerSession).toHaveBeenCalled();
-    expect(element.type).toBe("p");
-    expect(element.props.children).toBe("Please log in to view your orders.");
+    expect(redirect).toHaveBeenCalledWith(
+      "/login?callbackUrl=%2Faccount%2Forders",
+    );
   });
 
   it("shows empty state when no orders", async () => {

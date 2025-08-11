@@ -1,19 +1,29 @@
 // packages/ui/src/components/account/Orders.tsx
 import { getCustomerSession } from "@auth";
 import { getOrdersForCustomer } from "@platform-core/orders";
+import { redirect } from "next/navigation";
 
 export interface OrdersPageProps {
   /** ID of the current shop for fetching orders */
   shopId: string;
   /** Optional heading override */
   title?: string;
+  /** Destination to return to after login */
+  callbackUrl?: string;
 }
 
 export const metadata = { title: "Orders" };
 
-export default async function OrdersPage({ shopId, title = "Orders" }: OrdersPageProps) {
+export default async function OrdersPage({
+  shopId,
+  title = "Orders",
+  callbackUrl = "/account/orders",
+}: OrdersPageProps) {
   const session = await getCustomerSession();
-  if (!session) return <p>Please log in to view your orders.</p>;
+  if (!session) {
+    redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
+    return null as never;
+  }
   const orders = await getOrdersForCustomer(shopId, session.customerId);
   if (!orders.length) return <p className="p-6">No orders yet.</p>;
   return (

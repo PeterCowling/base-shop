@@ -6,6 +6,7 @@ import {
   decodeCartCookie,
   encodeCartCookie,
 } from "@/lib/cartCookie";
+import { getProductById } from "@/lib/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
@@ -27,7 +28,14 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const { sku, qty } = parsed.data;
+  const {
+    sku: { id: skuId },
+    qty,
+  } = parsed.data;
+  const sku = getProductById(skuId);
+  if (!sku) {
+    return NextResponse.json({ error: "Item not found" }, { status: 404 });
+  }
   const cookie = req.cookies.get(CART_COOKIE)?.value;
   const cart = decodeCartCookie(cookie);
   const line = cart[sku.id];

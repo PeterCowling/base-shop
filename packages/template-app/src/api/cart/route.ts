@@ -35,8 +35,11 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const { sku: skuInput, qty } = parsed.data;
-  const sku = "title" in skuInput ? skuInput : getProductById(skuInput.id);
+  const {
+    sku: { id: skuId },
+    qty,
+  } = parsed.data;
+  const sku = getProductById(skuId);
 
   if (!sku) {
     return NextResponse.json({ error: "Item not found" }, { status: 404 });

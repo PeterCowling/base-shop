@@ -48,7 +48,7 @@ describe("Rental return flow", () => {
 
   it("records refunded rental order", () => {
     // 1️⃣ create rental cart
-    cy.request("POST", "/api/cart", { sku, qty: 1 });
+    cy.request("POST", "/api/cart", { sku: { id: sku.id }, qty: 1 });
 
     // 2️⃣ checkout
     cy.visit("/en/checkout");

@@ -9,6 +9,9 @@
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
+  "dependencies": {
+    "iron-session": "^6.3.1"
+  },
   "devDependencies": {
     "next": "^15.3.4"
   }

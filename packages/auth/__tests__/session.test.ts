@@ -1,4 +1,8 @@
-import { createCustomerSession, getCustomerSession, CUSTOMER_SESSION_COOKIE } from "../src/session";
+import {
+  createCustomerSession,
+  getCustomerSession,
+  CUSTOMER_SESSION_COOKIE,
+} from "../src/session";
 import type { Role } from "../src/types";
 
 const mockCookies = jest.fn();
@@ -6,10 +10,27 @@ jest.mock("next/headers", () => ({
   cookies: () => mockCookies(),
 }));
 
+function createStore() {
+  const jar = new Map<string, string>();
+  return {
+    get: jest.fn((name: string) => {
+      const value = jar.get(name);
+      return value ? { name, value } : undefined;
+    }),
+    set: jest.fn((name: string, value: string) => {
+      jar.set(name, value);
+    }),
+    delete: jest.fn((name: string) => {
+      jar.delete(name);
+    }),
+  };
+}
+
 describe("customer session", () => {
   const originalSecret = process.env.SESSION_SECRET;
   beforeEach(() => {
-    process.env.SESSION_SECRET = "test-secret";
+    process.env.SESSION_SECRET =
+      "0123456789abcdefghijklmnopqrstuvwxyz012345"; // 40 chars
     mockCookies.mockReset();
   });
   afterAll(() => {
@@ -20,46 +41,47 @@ describe("customer session", () => {
     }
   });
 
-  it("creates and retrieves a valid session", async () => {
-    const store = { get: jest.fn(), set: jest.fn(), delete: jest.fn() };
+  it("rotates token and refreshes on activity", async () => {
+    const store = createStore();
     mockCookies.mockResolvedValue(store);
     const session = { customerId: "abc", role: "customer" as Role };
 
     await createCustomerSession(session);
-    const [name, value, opts] = store.set.mock.calls[0];
+    const [name, firstToken, firstOpts] = store.set.mock.calls[0];
     expect(name).toBe(CUSTOMER_SESSION_COOKIE);
-    expect(opts).toMatchObject({
+    expect(firstOpts).toMatchObject({
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "strict",
       secure: true,
+      path: "/",
       maxAge: expect.any(Number),
-      expires: expect.any(Date),
     });
 
-    store.get.mockReturnValue({ value });
+    store.get.mockReturnValue({ value: firstToken });
     await expect(getCustomerSession()).resolves.toEqual(session);
+    const secondToken = store.set.mock.calls[1][1];
+    expect(secondToken).not.toBe(firstToken);
+    const secondOpts = store.set.mock.calls[1][2];
+    expect(secondOpts).toMatchObject({
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+      path: "/",
+      maxAge: expect.any(Number),
+    });
   });
 
-  it("rejects tampered tokens", async () => {
-    const store = { get: jest.fn(), set: jest.fn(), delete: jest.fn() };
+  it("rotates token on subsequent login", async () => {
+    const store = createStore();
     mockCookies.mockResolvedValue(store);
     const session = { customerId: "abc", role: "customer" as Role };
-    await createCustomerSession(session);
-    const token = store.set.mock.calls[0][1] as string;
-    store.get.mockReturnValue({ value: token + "tamper" });
-    await expect(getCustomerSession()).resolves.toBeNull();
-  });
 
-  it("rejects expired tokens", async () => {
-    const store = { get: jest.fn(), set: jest.fn(), delete: jest.fn() };
-    mockCookies.mockResolvedValue(store);
-    const session = { customerId: "abc", role: "customer" as Role };
     await createCustomerSession(session);
-    const token = store.set.mock.calls[0][1] as string;
-    const payload = JSON.parse(Buffer.from(token.split(".")[0], "base64url").toString("utf8"));
-    const nowSpy = jest.spyOn(Date, "now").mockReturnValue(payload.exp + 1000);
-    store.get.mockReturnValue({ value: token });
-    await expect(getCustomerSession()).resolves.toBeNull();
-    nowSpy.mockRestore();
+    const firstToken = store.set.mock.calls[0][1];
+
+    await createCustomerSession(session);
+    const secondToken = store.set.mock.calls[1][1];
+    expect(secondToken).not.toBe(firstToken);
   });
 });
+

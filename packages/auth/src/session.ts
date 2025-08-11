@@ -1,81 +1,80 @@
 // packages/auth/src/session.ts
 import { cookies } from "next/headers";
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { sealData, unsealData } from "iron-session";
+import { randomUUID } from "node:crypto";
 import type { Role } from "./types";
 
 export const CUSTOMER_SESSION_COOKIE = "customer_session";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // one week
+const SESSION_TTL_S = Math.floor(SESSION_TTL_MS / 1000);
 
 export interface CustomerSession {
   customerId: string;
   role: Role;
 }
 
-function encode(payload: unknown): string {
-  return Buffer.from(JSON.stringify(payload)).toString("base64url");
+interface InternalSession extends CustomerSession {
+  sessionId: string;
 }
 
-function sign(encoded: string, secret: string): string {
-  return createHmac("sha256", secret).update(encoded).digest("base64url");
+function cookieOptions() {
+  return {
+    httpOnly: true,
+    sameSite: "strict" as const,
+    secure: true,
+    path: "/",
+    maxAge: SESSION_TTL_S,
+    domain: process.env.COOKIE_DOMAIN,
+  };
 }
 
 export async function getCustomerSession(): Promise<CustomerSession | null> {
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) return null;
   const store = await cookies();
   const token = store.get(CUSTOMER_SESSION_COOKIE)?.value;
   if (!token) return null;
-
-  const secret = process.env.SESSION_SECRET;
-  if (!secret) return null;
-
-  const [encoded, signature] = token.split(".");
-  if (!encoded || !signature) return null;
-
-  const expected = sign(encoded, secret);
+  let session: InternalSession;
   try {
-    if (!timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) {
-      return null;
-    }
+    session = await unsealData<InternalSession>(token, {
+      password: secret,
+      ttl: SESSION_TTL_S,
+    });
   } catch {
     return null;
   }
-
-  let payload: any;
-  try {
-    payload = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8"));
-  } catch {
-    return null;
-  }
-
-  if (typeof payload.exp !== "number" || payload.exp < Date.now()) {
-    return null;
-  }
-
-  const { customerId, role } = payload;
+  // rotate on activity
+  session.sessionId = randomUUID();
+  const newToken = await sealData(session, {
+    password: secret,
+    ttl: SESSION_TTL_S,
+  });
+  store.set(CUSTOMER_SESSION_COOKIE, newToken, cookieOptions());
+  const { customerId, role } = session;
   return { customerId, role };
 }
 
-export async function createCustomerSession(session: CustomerSession): Promise<void> {
-  const store = await cookies();
+export async function createCustomerSession(sessionData: CustomerSession): Promise<void> {
   const secret = process.env.SESSION_SECRET;
   if (!secret) {
     throw new Error("SESSION_SECRET is not set");
   }
-
-  const exp = Date.now() + SESSION_TTL_MS;
-  const encoded = encode({ ...session, exp });
-  const signature = sign(encoded, secret);
-  const token = `${encoded}.${signature}`;
-
-  store.set(CUSTOMER_SESSION_COOKIE, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: true,
-    maxAge: Math.floor(SESSION_TTL_MS / 1000),
-    expires: new Date(exp),
+  const store = await cookies();
+  const session: InternalSession = {
+    ...sessionData,
+    sessionId: randomUUID(),
+  };
+  const token = await sealData(session, {
+    password: secret,
+    ttl: SESSION_TTL_S,
   });
+  store.set(CUSTOMER_SESSION_COOKIE, token, cookieOptions());
 }
 
 export async function destroyCustomerSession(): Promise<void> {
   const store = await cookies();
-  store.delete(CUSTOMER_SESSION_COOKIE);
+  store.delete(CUSTOMER_SESSION_COOKIE, {
+    path: "/",
+    domain: process.env.COOKIE_DOMAIN,
+  });
 }

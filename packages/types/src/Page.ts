@@ -66,6 +66,15 @@ export interface FooterComponent extends PageComponentBase {
   logo?: string;
 }
 
+export interface SocialLinksComponent extends PageComponentBase {
+  type: "SocialLinks";
+  facebook?: string;
+  instagram?: string;
+  x?: string;
+  youtube?: string;
+  linkedin?: string;
+}
+
 export interface AnnouncementBarComponent extends PageComponentBase {
   type: "AnnouncementBar";
   text?: string;
@@ -208,6 +217,7 @@ export type PageComponent =
   | TextComponent
   | HeaderComponent
   | FooterComponent
+  | SocialLinksComponent
   | SectionComponent
   | MultiColumnComponent;
 
@@ -341,6 +351,15 @@ const footerComponentSchema = baseComponentSchema.extend({
   logo: z.string().optional(),
 });
 
+const socialLinksComponentSchema = baseComponentSchema.extend({
+  type: z.literal("SocialLinks"),
+  facebook: z.string().optional(),
+  instagram: z.string().optional(),
+  x: z.string().optional(),
+  youtube: z.string().optional(),
+  linkedin: z.string().optional(),
+});
+
 const blogListingComponentSchema = baseComponentSchema.extend({
   type: z.literal("BlogListing"),
   posts: z
@@ -411,6 +430,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     countdownTimerComponentSchema,
     headerComponentSchema,
     footerComponentSchema,
+    socialLinksComponentSchema,
     blogListingComponentSchema,
     testimonialsComponentSchema,
     testimonialSliderComponentSchema,

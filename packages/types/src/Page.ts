@@ -109,6 +109,13 @@ export interface ContactFormWithMapComponent extends PageComponentBase {
   mapSrc?: string;
 }
 
+export interface MapBlockComponent extends PageComponentBase {
+  type: "MapBlock";
+  lat?: number;
+  lng?: number;
+  zoom?: number;
+}
+
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -152,6 +159,7 @@ export type PageComponent =
   | GalleryComponent
   | ContactFormComponent
   | ContactFormWithMapComponent
+  | MapBlockComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent
@@ -198,18 +206,14 @@ const announcementBarComponentSchema = baseComponentSchema.extend({
 const valuePropsComponentSchema = baseComponentSchema.extend({
   type: z.literal("ValueProps"),
   items: z
-    .array(
-      z.object({ icon: z.string(), title: z.string(), desc: z.string() })
-    )
+    .array(z.object({ icon: z.string(), title: z.string(), desc: z.string() }))
     .optional(),
 });
 
 const reviewsCarouselComponentSchema = baseComponentSchema.extend({
   type: z.literal("ReviewsCarousel"),
   reviews: z
-    .array(
-      z.object({ nameKey: z.string(), quoteKey: z.string() })
-    )
+    .array(z.object({ nameKey: z.string(), quoteKey: z.string() }))
     .optional(),
 });
 
@@ -244,6 +248,13 @@ const contactFormWithMapComponentSchema = baseComponentSchema.extend({
   mapSrc: z.string().optional(),
 });
 
+const mapBlockComponentSchema = baseComponentSchema.extend({
+  type: z.literal("MapBlock"),
+  lat: z.number().optional(),
+  lng: z.number().optional(),
+  zoom: z.number().optional(),
+});
+
 const blogListingComponentSchema = baseComponentSchema.extend({
   type: z.literal("BlogListing"),
   posts: z
@@ -260,18 +271,14 @@ const blogListingComponentSchema = baseComponentSchema.extend({
 const testimonialSliderComponentSchema = baseComponentSchema.extend({
   type: z.literal("TestimonialSlider"),
   testimonials: z
-    .array(
-      z.object({ quote: z.string(), name: z.string().optional() })
-    )
+    .array(z.object({ quote: z.string(), name: z.string().optional() }))
     .optional(),
 });
 
 const testimonialsComponentSchema = baseComponentSchema.extend({
   type: z.literal("Testimonials"),
   testimonials: z
-    .array(
-      z.object({ quote: z.string(), name: z.string().optional() })
-    )
+    .array(z.object({ quote: z.string(), name: z.string().optional() }))
     .optional(),
 });
 
@@ -286,10 +293,11 @@ const textComponentSchema = baseComponentSchema.extend({
   text: z.string().optional(),
 });
 
-const sectionComponentSchema: z.ZodType<SectionComponent> = baseComponentSchema.extend({
-  type: z.literal("Section"),
-  children: z.array(z.lazy(() => pageComponentSchema)).default([]),
-});
+const sectionComponentSchema: z.ZodType<SectionComponent> =
+  baseComponentSchema.extend({
+    type: z.literal("Section"),
+    children: z.array(z.lazy(() => pageComponentSchema)).default([]),
+  });
 
 export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
   z.discriminatedUnion("type", [
@@ -303,6 +311,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     galleryComponentSchema,
     contactFormComponentSchema,
     contactFormWithMapComponentSchema,
+    mapBlockComponentSchema,
     blogListingComponentSchema,
     testimonialsComponentSchema,
     testimonialSliderComponentSchema,

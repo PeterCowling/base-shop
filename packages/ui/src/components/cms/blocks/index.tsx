@@ -12,6 +12,7 @@ import ValueProps from "./ValueProps";
 import RecommendationCarousel from "./RecommendationCarousel";
 import Section from "./Section";
 import AnnouncementBar from "./AnnouncementBarBlock";
+import MapBlock from "./MapBlock";
 
 export {
   BlogListing,
@@ -28,6 +29,7 @@ export {
   ValueProps,
   Section,
   AnnouncementBar,
+  MapBlock,
 };
 
 export * from "./atoms";

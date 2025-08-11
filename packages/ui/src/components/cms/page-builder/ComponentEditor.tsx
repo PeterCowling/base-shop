@@ -20,13 +20,17 @@ import HeroBannerEditor from "./HeroBannerEditor";
 import ValuePropsEditor from "./ValuePropsEditor";
 import ReviewsCarouselEditor from "./ReviewsCarouselEditor";
 import AnnouncementBarEditor from "./AnnouncementBarEditor";
+import MapBlockEditor from "./MapBlockEditor";
 
 interface Props {
   component: PageComponent | null;
   onChange: (patch: Partial<PageComponent>) => void;
-  onResize: (
-    patch: { width?: string; height?: string; top?: string; left?: string }
-  ) => void;
+  onResize: (patch: {
+    width?: string;
+    height?: string;
+    top?: string;
+    left?: string;
+  }) => void;
 }
 
 function ComponentEditor({ component, onChange, onResize }: Props) {
@@ -36,14 +40,16 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     (field: string, value: string | number | undefined) => {
       onChange({ [field]: value } as Partial<PageComponent>);
     },
-    [onChange],
+    [onChange]
   );
 
   let specific: React.ReactNode = null;
 
   switch (component.type) {
     case "ContactForm":
-      specific = <ContactFormEditor component={component} onChange={onChange} />;
+      specific = (
+        <ContactFormEditor component={component} onChange={onChange} />
+      );
       break;
     case "Gallery":
       specific = <GalleryEditor component={component} onChange={onChange} />;
@@ -52,7 +58,9 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       specific = <ImageBlockEditor component={component} onChange={onChange} />;
       break;
     case "Testimonials":
-      specific = <TestimonialsEditor component={component} onChange={onChange} />;
+      specific = (
+        <TestimonialsEditor component={component} onChange={onChange} />
+      );
       break;
     case "HeroBanner":
       specific = <HeroBannerEditor component={component} onChange={onChange} />;
@@ -70,8 +78,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
         <ReviewsCarouselEditor component={component} onChange={onChange} />
       );
       break;
+    case "MapBlock":
+      specific = <MapBlockEditor component={component} onChange={onChange} />;
+      break;
     default:
-      specific = <p className="text-sm text-muted">No editable props</p>;
+      specific = <p className="text-muted text-sm">No editable props</p>;
   }
 
   return (

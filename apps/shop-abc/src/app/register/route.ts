@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { addUser, USER_STORE } from "../userStore";
+import { checkRegistrationRateLimit } from "../../middleware";
 
 const RegisterSchema = z.object({
   customerId: z.string(),
@@ -17,6 +18,10 @@ export async function POST(req: Request) {
       status: 400,
     });
   }
+
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  const rateLimited = await checkRegistrationRateLimit(ip);
+  if (rateLimited) return rateLimited;
 
   const { customerId, email, password } = parsed.data;
   if (USER_STORE[customerId]) {

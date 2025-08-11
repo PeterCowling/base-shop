@@ -161,7 +161,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const sizesMeta = JSON.stringify(
     Object.fromEntries(
-      Object.values(cart).map((item) => [item.sku.id, item.size ?? ""])
+      Object.entries(cart).map(([id, item]) => [id, item.size ?? ""])
     )
   );
 

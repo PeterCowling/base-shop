@@ -1,4 +1,5 @@
 import { CartProvider, useCart } from "@platform-core/src/contexts/CartContext";
+import { cartLineKey } from "@platform-core/src/cartCookie";
 import { type Meta, type StoryObj } from "@storybook/react";
 import type { CartState } from "@/lib/cartCookie";
 import type { SKU } from "@types";
@@ -41,7 +42,8 @@ function CartInitializer({ items }: WrapperProps) {
     Object.values(items).forEach((line) => {
       dispatch({ type: "add", sku: line.sku, size: line.size });
       if (line.qty > 1) {
-        dispatch({ type: "setQty", id: line.sku.id, qty: line.qty });
+        const id = cartLineKey(line.sku.id, line.size);
+        dispatch({ type: "setQty", id, qty: line.qty });
       }
     });
   }, [items, dispatch]);
@@ -70,7 +72,7 @@ export const Empty: StoryObj<typeof MiniCartWrapper> = {};
 export const Filled: StoryObj<typeof MiniCartWrapper> = {
   args: {
     items: {
-      [sku1.id]: { sku: sku1, qty: 2 },
+      [cartLineKey(sku1.id, "M")]: { sku: sku1, qty: 2, size: "M" },
       [sku2.id]: { sku: sku2, qty: 1 },
     },
   },

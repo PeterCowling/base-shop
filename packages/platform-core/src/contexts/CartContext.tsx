@@ -3,7 +3,7 @@
 
 import { type CartState } from "../cartCookie";
 
-import type { SKU } from "@types";
+import type { SKU, CartLineKey } from "@types";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 /* ------------------------------------------------------------------
@@ -11,8 +11,8 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
  * ------------------------------------------------------------------ */
 type Action =
   | { type: "add"; sku: SKU; size?: string }
-  | { type: "remove"; id: SKU["id"] }
-  | { type: "setQty"; id: SKU["id"]; qty: number };
+  | { type: "remove"; id: CartLineKey }
+  | { type: "setQty"; id: CartLineKey; qty: number };
 
 /* ------------------------------------------------------------------
  * React context

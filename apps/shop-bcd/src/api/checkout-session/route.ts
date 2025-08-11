@@ -171,7 +171,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   const sizesMeta = JSON.stringify(
-    Object.fromEntries(Object.values(cart).map((i) => [i.sku.id, i.size ?? ""]))
+    Object.fromEntries(Object.entries(cart).map(([id, i]) => [id, i.size ?? ""]))
   );
 
   /* 5️⃣  Create Stripe Checkout Session ---------------------------------- */

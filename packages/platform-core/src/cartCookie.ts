@@ -28,12 +28,17 @@ export const cartLineSchema = z.object({
 });
 
 /**
- * Schema for the full cart, keyed by SKU ID (string).
+ * Schema for the full cart, keyed by SKU ID optionally suffixed with a size
+ * (e.g. "sku123" or "sku123:M").
  */
 export const cartStateSchema = z.record(z.string(), cartLineSchema);
 
 export type CartLine = z.infer<typeof cartLineSchema>;
 export type CartState = z.infer<typeof cartStateSchema>;
+
+export function cartLineKey(id: string, size?: string): string {
+  return size ? `${id}:${size}` : id;
+}
 
 /* ------------------------------------------------------------------
  * Helper functions

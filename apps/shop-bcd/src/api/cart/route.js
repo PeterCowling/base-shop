@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/cart/route.ts
-import { asSetCookieHeader, CART_COOKIE, decodeCartCookie, encodeCartCookie, } from "@/lib/cartCookie";
+import { asSetCookieHeader, CART_COOKIE, decodeCartCookie, encodeCartCookie, cartLineKey, } from "@/lib/cartCookie";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
 import { z } from "zod";
@@ -13,11 +13,12 @@ export async function POST(req) {
     if (!parsed.success) {
         return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
     }
-    const { sku, qty = 1 } = parsed.data;
+    const { sku, qty = 1, size } = parsed.data;
     const cookie = req.cookies.get(CART_COOKIE)?.value;
     const cart = decodeCartCookie(cookie);
-    const line = cart[sku.id];
-    cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+    const id = cartLineKey(sku.id, size);
+    const line = cart[id];
+    cart[id] = { sku, qty: (line?.qty ?? 0) + qty, size };
     const res = NextResponse.json({ ok: true, cart });
     res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
     return res;

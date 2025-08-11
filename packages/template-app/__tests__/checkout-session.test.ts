@@ -1,5 +1,5 @@
 // packages/template-app/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "../../platform-core/src/cartCookie";
+import { encodeCartCookie, cartLineKey } from "../../platform-core/src/cartCookie";
 import { createCart, setCart } from "../../platform-core/src/cartStore";
 import { PRODUCTS } from "../../platform-core/src/products";
 import { calculateRentalDays } from "../../lib/src/date";
@@ -43,7 +43,8 @@ test("builds Stripe session with correct items and metadata", async () => {
   });
 
   const sku = PRODUCTS[0];
-  const cart = { [sku.id]: { sku, qty: 2, size: "40" } };
+  const id = cartLineKey(sku.id, "40");
+  const cart = { [id]: { sku, qty: 2, size: "40" } };
   const cartId = await createCart();
   await setCart(cartId, cart);
   const cookie = encodeCartCookie(cartId);
@@ -61,14 +62,15 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(args.line_items[0].price_data.unit_amount).toBe(1000);
   expect(args.line_items[1].price_data.unit_amount).toBe(sku.deposit * 100);
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
-  expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: "40" }));
+  expect(args.metadata.sizes).toBe(JSON.stringify({ [id]: "40" }));
   expect(args.metadata.subtotal).toBe("20");
   expect(body.clientSecret).toBe("cs_test");
 });
 
 test("returns 400 when returnDate is invalid", async () => {
   const sku = PRODUCTS[0];
-  const cart = { [sku.id]: { sku, qty: 1 } };
+  const id2 = cartLineKey(sku.id);
+  const cart = { [id2]: { sku, qty: 1 } };
   const cartId = await createCart();
   await setCart(cartId, cart);
   const cookie = encodeCartCookie(cartId);

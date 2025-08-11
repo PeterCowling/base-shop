@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/cart/route.ts
-import { asSetCookieHeader, CART_COOKIE, decodeCartCookie, encodeCartCookie, } from "@/lib/cartCookie";
+import { asSetCookieHeader, CART_COOKIE, decodeCartCookie, encodeCartCookie, cartLineKey, } from "@/lib/cartCookie";
 import { getProductById } from "@/lib/products";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
@@ -12,15 +12,16 @@ export async function POST(req) {
     if (!parsed.success) {
         return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
     }
-    const { sku, qty = 1 } = parsed.data;
+    const { sku, qty = 1, size } = parsed.data;
     const skuObj = "title" in sku ? sku : getProductById(sku.id);
     if (!skuObj) {
         return NextResponse.json({ error: "Item not found" }, { status: 404 });
     }
     const cookie = req.cookies.get(CART_COOKIE)?.value;
     const cart = decodeCartCookie(cookie);
-    const line = cart[skuObj.id];
-    cart[skuObj.id] = { sku: skuObj, qty: (line?.qty ?? 0) + qty };
+    const id = cartLineKey(skuObj.id, size);
+    const line = cart[id];
+    cart[id] = { sku: skuObj, qty: (line?.qty ?? 0) + qty, size };
     const res = NextResponse.json({ ok: true, cart });
     res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
     return res;

@@ -1,5 +1,5 @@
 // apps/shop-bcd/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "@/lib/cartCookie";
+import { encodeCartCookie, cartLineKey } from "@/lib/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@/lib/date";
 import { POST } from "../src/api/checkout-session/route";
@@ -46,7 +46,8 @@ test("builds Stripe session with correct items and metadata", async () => {
   });
 
   const sku = PRODUCTS[0];
-  const cart = { [sku.id]: { sku, qty: 2, size: "40" } };
+  const id = cartLineKey(sku.id, "40");
+  const cart = { [id]: { sku, qty: 2, size: "40" } };
   const cookie = encodeCartCookie(cart);
   const returnDate = "2025-01-02";
   const expectedDays = calculateRentalDays(returnDate);
@@ -63,14 +64,14 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(args.line_items[1].price_data.unit_amount).toBe(sku.deposit * 100);
   expect(args.line_items[2].price_data.unit_amount).toBe(400);
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
-  expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: "40" }));
+  expect(args.metadata.sizes).toBe(JSON.stringify({ [id]: "40" }));
   expect(args.metadata.subtotal).toBe("20");
   expect(body.clientSecret).toBe("cs_test");
 });
 
 test("responds with 400 on invalid returnDate", async () => {
   const sku = PRODUCTS[0];
-  const cart = { [sku.id]: { sku, qty: 1 } };
+  const cart = { [cartLineKey(sku.id)]: { sku, qty: 1 } };
   const cookie = encodeCartCookie(cart);
   const req = createRequest({ returnDate: "not-a-date", currency: "EUR", taxRegion: "EU" }, cookie);
   const res = await POST(req);

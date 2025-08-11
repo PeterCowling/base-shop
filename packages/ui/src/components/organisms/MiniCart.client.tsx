@@ -28,8 +28,8 @@ export interface MiniCartProps {
 
 export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
   const [cart, dispatch] = useCart();
-  const lines = Object.values(cart);
-  const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
+  const entries = Object.entries(cart);
+  const subtotal = entries.reduce((s, [, l]) => s + l.sku.price * l.qty, 0);
   const { widthClass, style } = drawerWidthProps(width);
 
   return (
@@ -43,23 +43,26 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
         )}
       >
         <DialogTitle className="mb-4">Your Cart</DialogTitle>
-        {lines.length === 0 ? (
+        {entries.length === 0 ? (
           <p className="text-muted-foreground text-sm">Cart is empty.</p>
         ) : (
           <div className="flex h-full flex-col gap-4">
             <ul className="grow space-y-3 overflow-y-auto">
-              {lines.map((line) => (
+              {entries.map(([id, line]) => (
                 <li
-                  key={line.sku.id}
+                  key={id}
                   className="flex items-center justify-between gap-2"
                 >
-                  <span className="text-sm">{line.sku.title}</span>
+                  <span className="text-sm">
+                    {line.sku.title}
+                    {line.size && (
+                      <span className="ml-1 text-xs text-muted">({line.size})</span>
+                    )}
+                  </span>
                   <span className="text-sm">× {line.qty}</span>
                   <Button
                     variant="destructive"
-                    onClick={() =>
-                      void dispatch({ type: "remove", id: line.sku.id })
-                    }
+                    onClick={() => void dispatch({ type: "remove", id })}
                     className="px-2 py-1 text-xs"
                   >
                     Remove

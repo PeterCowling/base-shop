@@ -68,7 +68,7 @@ export async function POST(req) {
     const line_items = lineItemsNested.flat();
     const { subtotal, depositTotal } = await computeTotals(cart, rentalDays);
     /* 4️⃣ Serialize sizes for metadata --------------------------------------- */
-    const sizesMeta = JSON.stringify(Object.fromEntries(Object.values(cart).map((item) => [item.sku.id, item.size ?? ""])));
+    const sizesMeta = JSON.stringify(Object.fromEntries(Object.entries(cart).map(([id, item]) => [id, item.size ?? ""])));
     /* 5️⃣ Create Checkout Session -------------------------------------------- */
     const session = await stripe.checkout.sessions.create({
         mode: "payment",

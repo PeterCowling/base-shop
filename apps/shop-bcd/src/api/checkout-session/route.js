@@ -71,7 +71,7 @@ export async function POST(req) {
     const line_items = nestedItems.flat();
     /* 4️⃣  Compute metadata ------------------------------------------------- */
     const { subtotal, depositTotal } = await computeTotals(cart, rentalDays);
-    const sizesMeta = JSON.stringify(Object.fromEntries(Object.values(cart).map((i) => [i.sku.id, i.size ?? ""])));
+    const sizesMeta = JSON.stringify(Object.fromEntries(Object.entries(cart).map(([id, i]) => [id, i.size ?? ""])));
     /* 5️⃣  Create Stripe Checkout Session ---------------------------------- */
     const session = await stripe.checkout.sessions.create({
         mode: "payment",

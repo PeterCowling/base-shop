@@ -127,7 +127,7 @@ async function main() {
   }
 
   console.log(
-    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Review data/shops/${prefixedId}/shop.json\n  - Run: pnpm --filter @apps/${prefixedId} dev`
+    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Review data/shops/${prefixedId}/shop.json\n  - Use the CMS Page Builder to lay out your pages\n  - Run: pnpm --filter @apps/${prefixedId} dev`
   );
 }
 

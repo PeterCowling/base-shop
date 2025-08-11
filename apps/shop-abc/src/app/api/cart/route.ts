@@ -72,6 +72,9 @@ export async function POST(req: NextRequest) {
   }
 
   const { sku: skuInput, qty, size } = parsed.data;
+  const { cartId, cart } = await loadCart(req, true);
+  const id = size ? `${skuInput.id}:${size}` : skuInput.id;
+  const line = cart[id];
   const sku = "title" in skuInput ? skuInput : getProductById(skuInput.id);
   if (!sku) {
     return NextResponse.json({ error: "Item not found" }, { status: 404 });
@@ -81,10 +84,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Size required" }, { status: 400 });
   }
 
-  const { cartId, cart } = await loadCart(req, true);
-  const id = size ? `${sku.id}:${size}` : sku.id;
-  const line = cart[id];
-  cart[id] = { sku, size, qty: (line?.qty ?? 0) + qty };
+  const newQty = (line?.qty ?? 0) + qty;
+  if (newQty > sku.stock) {
+    return NextResponse.json({ error: "Insufficient stock" }, { status: 400 });
+  }
+  cart[id] = { sku, size, qty: newQty };
   await setCart(cartId!, cart);
 
   const res = NextResponse.json({ ok: true, cart });

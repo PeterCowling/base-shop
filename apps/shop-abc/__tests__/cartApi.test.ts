@@ -109,6 +109,24 @@ test("POST returns 404 for unknown SKU", async () => {
   expect(res.status).toBe(404);
 });
 
+test("POST returns 400 for out-of-stock SKU", async () => {
+  const size = TEST_SKU.sizes[0];
+  const original = (PRODUCTS as any)[0].stock;
+  (PRODUCTS as any)[0].stock = 0;
+  const res = await POST(createRequest({ sku: { id: TEST_SKU.id }, qty: 1, size }));
+  expect(res.status).toBe(400);
+  (PRODUCTS as any)[0].stock = original;
+});
+
+test("POST rejects quantity over stock", async () => {
+  const size = TEST_SKU.sizes[0];
+  const original = (PRODUCTS as any)[0].stock;
+  (PRODUCTS as any)[0].stock = 1;
+  const res = await POST(createRequest({ sku: { id: TEST_SKU.id }, qty: 2, size }));
+  expect(res.status).toBe(400);
+  (PRODUCTS as any)[0].stock = original;
+});
+
 test("POST rejects negative or non-integer quantity", async () => {
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];

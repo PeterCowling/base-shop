@@ -44,8 +44,12 @@ export async function POST(req: NextRequest) {
   const cart = decodeCartCookie(cookie);
   const id = size ? `${sku.id}:${size}` : sku.id;
   const line = cart[id];
+  const newQty = (line?.qty ?? 0) + qty;
+  if (newQty > sku.stock) {
+    return NextResponse.json({ error: "Insufficient stock" }, { status: 400 });
+  }
 
-  cart[id] = { sku, size, qty: (line?.qty ?? 0) + qty };
+  cart[id] = { sku, size, qty: newQty };
 
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));

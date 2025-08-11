@@ -11,6 +11,8 @@ export declare const skuSchema: z.ZodObject<{
     price: z.ZodNumber;
     /** Refundable deposit, required by business rules */
     deposit: z.ZodNumber;
+    /** Units available in inventory */
+    stock: z.ZodNumber;
     /** Item can be sold */
     forSale: z.ZodDefault<z.ZodBoolean>;
     /** Item can be rented */
@@ -41,6 +43,7 @@ export declare const skuSchema: z.ZodObject<{
     title: string;
     price: number;
     deposit: number;
+    stock: number;
     forSale: boolean;
     forRental: boolean;
     image: string;
@@ -59,6 +62,7 @@ export declare const skuSchema: z.ZodObject<{
     title: string;
     price: number;
     deposit: number;
+    stock: number;
     image: string;
     sizes: string[];
     description: string;

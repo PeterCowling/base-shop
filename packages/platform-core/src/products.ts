@@ -16,6 +16,7 @@ export const PRODUCTS: readonly SKU[] = [
     title: "Eco Runner — Green",
     price: 119,
     deposit: 50,
+    stock: 10,
     forSale: true,
     forRental: false,
     image: "/shop/green.jpg",
@@ -29,6 +30,7 @@ export const PRODUCTS: readonly SKU[] = [
     title: "Eco Runner — Sand",
     price: 119,
     deposit: 50,
+    stock: 8,
     forSale: true,
     forRental: false,
     image: "/shop/sand.jpg",
@@ -42,6 +44,7 @@ export const PRODUCTS: readonly SKU[] = [
     title: "Eco Runner — Black",
     price: 119,
     deposit: 50,
+    stock: 6,
     forSale: true,
     forRental: false,
     image: "/shop/black.jpg",
@@ -58,7 +61,7 @@ export function getProductBySlug(slug: string): SKU | undefined {
 
 /** Lookup a product by SKU id */
 export function getProductById(id: string): SKU | undefined {
-  return PRODUCTS.find((p) => p.id === id);
+  return PRODUCTS.find((p) => p.id === id && p.stock > 0);
 }
 
 /* -------------------------------------------------------------------------- */

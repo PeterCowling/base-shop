@@ -4,6 +4,7 @@ packages:
   # Every package or app — one pattern is enough
   - "apps-script"
   - "apps/**"
+  - "packages/platform-machine"
   - "packages/**"
   - "packages/plugins/sanity"
 

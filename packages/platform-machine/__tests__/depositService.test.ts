@@ -73,7 +73,7 @@ describe("releaseDepositsOnce", () => {
     const readdir = jest.fn().mockResolvedValue(["test"]);
     jest.doMock("node:fs/promises", () => ({ __esModule: true, readdir }));
 
-    const { releaseDepositsOnce } = await import("../releaseDepositsService");
+    const { releaseDepositsOnce } = await import("@acme/platform-machine");
     await releaseDepositsOnce();
 
     expect(stripeRetrieve).toHaveBeenCalledTimes(1);

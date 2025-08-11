@@ -26,8 +26,8 @@
      * ---------------------------------------------------------------- */
     "paths": {
       /* this package itself */
-      "@platform-machine": ["."],
-      "@platform-machine/*": ["*"],
+      "@acme/platform-machine": ["packages/platform-machine/src/index.ts"],
+      "@acme/platform-machine/*": ["packages/platform-machine/src/*"],
 
       /* platform core utilities */
       "@platform-core": ["packages/platform-core/src/index.ts"],

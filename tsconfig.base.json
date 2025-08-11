@@ -37,8 +37,8 @@
       "@platform-core/src/*": ["packages/platform-core/src/*"],
 
       /* ─── platform-machine ──────────────────────────────────────── */
-      "@platform-machine": ["packages/platform-machine/src/index.ts"],
-      "@platform-machine/*": ["packages/platform-machine/src/*"],
+      "@acme/platform-machine": ["packages/platform-machine/src/index.ts"],
+      "@acme/platform-machine/*": ["packages/platform-machine/src/*"],
 
       /* ─── design-system UI ──────────────────────────────────────── */
       "@ui": ["packages/ui/src/index.ts"],

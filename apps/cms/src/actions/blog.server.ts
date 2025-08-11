@@ -48,6 +48,16 @@ async function mutate(config: Config, body: unknown) {
   });
 }
 
+async function slugExists(config: Config, slug: string, excludeId?: string) {
+  const query = `*[_type=="post" && slug.current=="${slug}"${excludeId ? ` && _id!="${excludeId}"` : ""}][0]{_id}`;
+  const res = await fetch(
+    queryUrl(config, query),
+    { headers: config.token ? { Authorization: `Bearer ${config.token}` } : undefined }
+  );
+  const json = await res.json();
+  return Boolean(json.result);
+}
+
 export async function getPosts(shopId: string): Promise<SanityPost[]> {
   await ensureAuthorized();
   const config = await getConfig(shopId);
@@ -98,6 +108,9 @@ export async function createPost(
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   try {
+    if (slug && (await slugExists(config, slug))) {
+      return { error: "Slug already exists" };
+    }
     const res = await mutate(config, {
       mutations: [
         {
@@ -142,6 +155,9 @@ export async function updatePost(
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   try {
+    if (slug && (await slugExists(config, slug, id))) {
+      return { error: "Slug already exists" };
+    }
     await mutate(config, {
       mutations: [
         {

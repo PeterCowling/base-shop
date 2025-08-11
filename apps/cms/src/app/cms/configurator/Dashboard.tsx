@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
@@ -46,11 +46,16 @@ export default function ConfiguratorDashboard() {
     window.addEventListener("wizard:update", handler);
     return () => window.removeEventListener("wizard:update", handler);
   }, [fetchState]);
-  const stepList = getSteps();
+  const stepList = useMemo(() => getSteps(), []);
   const missingRequired = getRequiredSteps().filter(
     (s) => !state?.completed?.[s.id]
   );
   const allRequiredDone = missingRequired.length === 0;
+  const tooltipText = allRequiredDone
+    ? "All steps complete"
+    : `Complete required steps: ${missingRequired
+        .map((s) => s.label)
+        .join(", ")}`;
 
   const skipStep = async (stepId: string) => {
     try {
@@ -148,6 +153,9 @@ export default function ConfiguratorDashboard() {
                   </span>
                 )}
               </div>
+              <span className="text-xs text-gray-500">
+                {completed ? "Done" : "Pending"}
+              </span>
               {step.optional && !completed && (
                 <button
                   type="button"
@@ -161,21 +169,15 @@ export default function ConfiguratorDashboard() {
           );
         })}
       </ul>
-      {allRequiredDone ? (
-        <Button onClick={launchShop}>Launch Shop</Button>
-      ) : (
-        <>
-          <Tooltip
-            text={`Complete required steps: ${missingRequired
-              .map((s) => s.label)
-              .join(", ")}`}
-          >
-            <Button disabled>Launch Shop</Button>
-          </Tooltip>
-          <p className="mt-1 text-xs text-gray-600">
-            Complete all required steps before launching.
-          </p>
-        </>
+      <Tooltip text={tooltipText}>
+        <Button onClick={launchShop} disabled={!allRequiredDone}>
+          Launch Shop
+        </Button>
+      </Tooltip>
+      {!allRequiredDone && (
+        <p className="mt-1 text-xs text-gray-600">
+          Complete all required steps before launching.
+        </p>
       )}
       {launchStatus && (
         <ul className="mt-4 space-y-1 text-sm">

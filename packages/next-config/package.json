@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./index.mjs"
+    ".": "./index.mjs",
+    "./next.config.mjs": "./next.config.mjs"
   },
   "scripts": {
     "test": "node --test"

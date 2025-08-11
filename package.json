@@ -37,6 +37,7 @@
     "format": "prettier --write .",
     "create-shop": "ts-node scripts/create-shop.ts",
     "init-shop": "ts-node scripts/src/init-shop.ts",
+    "generate-shop": "ts-node scripts/src/generate-shop.ts",
     "setup-ci": "ts-node scripts/setup-ci.ts",
     "gen": "plop --plopfile plopfile.ts",
     "plop": "pnpm gen",

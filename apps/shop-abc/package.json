@@ -10,6 +10,7 @@
     "@themes/base": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
+    "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",
     "@acme/email": "workspace:*",
     "@acme/stripe": "workspace:*",

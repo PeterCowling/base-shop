@@ -1,7 +1,7 @@
 // apps/shop-bcd/__tests__/checkout-session.test.ts
 import { encodeCartCookie } from "@/lib/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
-import { calculateRentalDays } from "@/lib/date";
+import { calculateRentalDays } from "@date-utils";
 import { POST } from "../src/api/checkout-session/route";
 
 jest.mock("next/server", () => ({
@@ -11,7 +11,7 @@ jest.mock("next/server", () => ({
   },
 }));
 
-jest.mock("@lib/stripeServer.server", () => ({
+jest.mock("@stripe", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
 
@@ -23,7 +23,7 @@ jest.mock("@platform-core/tax", () => ({
   getTaxRate: jest.fn(async () => 0.2),
 }));
 
-import { stripe } from "@lib/stripeServer.server";
+import { stripe } from "@stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
 function createRequest(

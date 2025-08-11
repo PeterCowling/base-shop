@@ -17,7 +17,7 @@ describe("/api/rental", () => {
     const addOrder = jest.fn();
 
     jest.doMock(
-      "@/lib/stripeServer",
+      "@stripe",
       () => ({
         __esModule: true,
         stripe: {
@@ -50,7 +50,7 @@ describe("/api/rental", () => {
     const refundCreate = jest.fn();
 
     jest.doMock(
-      "@/lib/stripeServer",
+      "@stripe",
       () => ({
         __esModule: true,
         stripe: {
@@ -92,7 +92,7 @@ describe("/api/rental", () => {
       markRefunded: jest.fn(),
     }));
     jest.doMock(
-      "@/lib/stripeServer",
+      "@stripe",
       () => ({
         __esModule: true,
         stripe: {
@@ -117,7 +117,7 @@ describe("/api/rental", () => {
     const refundCreate = jest.fn();
 
     jest.doMock(
-      "@/lib/stripeServer",
+      "@stripe",
       () => ({
         __esModule: true,
         stripe: {

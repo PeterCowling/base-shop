@@ -41,7 +41,7 @@ describe("inventory import/export routes", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
-      jest.doMock("@lib/email", () => ({ sendEmail: jest.fn() }));
+      jest.doMock("@email", () => ({ sendEmail: jest.fn() }));
       Object.assign(process.env, {
         STRIPE_SECRET_KEY: "sk",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
@@ -95,7 +95,7 @@ describe("inventory import/export routes", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
-      jest.doMock("@lib/email", () => ({ sendEmail: jest.fn() }));
+      jest.doMock("@email", () => ({ sendEmail: jest.fn() }));
       Object.assign(process.env, {
         STRIPE_SECRET_KEY: "sk",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
@@ -165,7 +165,7 @@ describe("inventory import/export routes", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
-      jest.doMock("@lib/email", () => ({ sendEmail: jest.fn() }));
+      jest.doMock("@email", () => ({ sendEmail: jest.fn() }));
       Object.assign(process.env, {
         STRIPE_SECRET_KEY: "sk",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
@@ -208,7 +208,7 @@ describe("inventory import/export routes", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
-      jest.doMock("@lib/email", () => ({ sendEmail: jest.fn() }));
+      jest.doMock("@email", () => ({ sendEmail: jest.fn() }));
       Object.assign(process.env, {
         STRIPE_SECRET_KEY: "sk",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",

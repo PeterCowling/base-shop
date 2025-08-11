@@ -53,11 +53,11 @@ review and regression testing.
 ## Date & Time Formatting
 
 For consistent locale-aware timestamps across UI components, use the
-`formatTimestamp` helper from `@lib/date` instead of calling
+`formatTimestamp` helper from `@date-utils` instead of calling
 `toLocaleString` directly:
 
 ```ts
-import { formatTimestamp } from "@lib/date";
+import { formatTimestamp } from "@date-utils";
 
 formatTimestamp("2025-01-01T12:34:56Z");
 ```

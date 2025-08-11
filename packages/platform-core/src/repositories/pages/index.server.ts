@@ -8,7 +8,7 @@ import * as path from "node:path";
 import { prisma } from "../../db";
 import { validateShopName } from "@platform-core/src/shops";
 import { DATA_ROOT } from "../../dataRoot";
-import { nowIso } from "@lib/date";
+import { nowIso } from "@date-utils";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */

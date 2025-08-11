@@ -2,7 +2,7 @@ import "server-only";
 
 import { env } from "@config/src/env";
 import { DATA_ROOT } from "../dataRoot";
-import { sendEmail } from "@lib/email";
+import { sendEmail } from "@email";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import type { InventoryItem } from "@types";

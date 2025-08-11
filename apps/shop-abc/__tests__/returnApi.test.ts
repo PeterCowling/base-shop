@@ -25,7 +25,7 @@ describe("/api/return", () => {
     >();
 
     jest.doMock(
-      "@/lib/stripeServer",
+      "@stripe",
       () => ({
         __esModule: true,
         stripe: {
@@ -72,7 +72,7 @@ describe("/api/return", () => {
     >();
 
     jest.doMock(
-      "@/lib/stripeServer",
+      "@stripe",
       () => ({
         __esModule: true,
         stripe: {

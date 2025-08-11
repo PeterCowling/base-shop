@@ -6,7 +6,7 @@ import { ulid } from "ulid";
 import { ProductPublication } from "../products";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "../dataRoot";
-import { nowIso } from "@lib/date";
+import { nowIso } from "@date-utils";
 
 function filePath(shop: string): string {
   shop = validateShopName(shop);

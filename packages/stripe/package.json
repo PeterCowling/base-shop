@@ -1,0 +1,9 @@
+{
+  "name": "@acme/stripe",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "stripe": "^18.2.1"
+  }
+}

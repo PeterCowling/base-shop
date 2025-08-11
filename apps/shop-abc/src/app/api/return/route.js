@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/return/route.ts
-import { stripe } from "@/lib/stripeServer";
+import { stripe } from "@stripe";
 import { markRefunded, markReturned, } from "@platform-core/repositories/rentalOrders.server";
 import { NextResponse } from "next/server";
 export const runtime = "edge";

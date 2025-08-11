@@ -1,0 +1,9 @@
+{
+  "name": "@acme/sanity",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@sanity/client": "^6.15.0"
+  }
+}

@@ -1,7 +1,7 @@
 // packages/platform-core/src/orders.ts
 import "server-only";
 import { ulid } from "ulid";
-import { nowIso } from "@lib/date";
+import { nowIso } from "@date-utils";
 import type { RentalOrder } from "@types";
 import { trackOrder } from "./analytics";
 import { prisma } from "./db";

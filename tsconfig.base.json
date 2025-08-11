@@ -56,18 +56,18 @@
       "@/components/pdp/*": ["packages/platform-core/src/components/pdp/*"],
       "@/components/shop/*": ["packages/platform-core/src/components/shop/*"],
 
-      /* ─── lib helpers (stripe, products, cookies, …) ────────────── */
-      "@lib/stripeServer": ["packages/lib/src/stripeServer.server.ts"],
-      "@lib/stripeServer.server": ["packages/lib/src/stripeServer.server.ts"],
-      "@lib/email": ["packages/lib/src/email.ts"],
+      /* ─── lib helpers (products, cookies, …) ───────────────────── */
       "@lib/*": ["packages/platform-core/src/*", "packages/lib/src/*"],
 
-      "@/lib/stripeServer": ["packages/lib/src/stripeServer.server.ts"],
-      "@/lib/stripeServer.server": ["packages/lib/src/stripeServer.server.ts"],
-      "@/lib/email": ["packages/lib/src/email.ts"],
       "@/lib/products": ["packages/platform-core/src/products.ts"],
       "@/lib/cartCookie": ["packages/platform-core/src/cartCookie.ts"],
       "@/lib/*": ["packages/platform-core/src/*", "packages/lib/src/*"],
+
+      /* ─── standalone utility packages ──────────────────────────── */
+      "@email": ["packages/email/src/index.ts"],
+      "@stripe": ["packages/stripe/src/index.ts"],
+      "@sanity": ["packages/sanity/src/index.ts"],
+      "@date-utils": ["packages/date-utils/src/index.ts"],
 
       /* ─── shared contexts ───────────────────────────────────────── */
       "@contexts/*": [

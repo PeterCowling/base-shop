@@ -2,7 +2,7 @@
 import { encodeCartCookie } from "../../platform-core/src/cartCookie";
 import { createCart, setCart } from "../../platform-core/src/cartStore";
 import { PRODUCTS } from "../../platform-core/src/products";
-import { calculateRentalDays } from "../../lib/src/date";
+import { calculateRentalDays } from "@date-utils";
 import { POST } from "../src/api/checkout-session/route";
 
 jest.mock("next/server", () => ({
@@ -12,7 +12,7 @@ jest.mock("next/server", () => ({
   },
 }));
 
-jest.mock("../../lib/src/stripeServer.server", () => ({
+jest.mock("@stripe", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
 
@@ -23,7 +23,7 @@ jest.mock("../../platform-core/src/pricing", () => ({
 
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 
-import { stripe } from "../../lib/src/stripeServer.server";
+import { stripe } from "@stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
 function createRequest(

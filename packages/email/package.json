@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@acme/config": "workspace:*",
     "nodemailer": "^6.10.1"
   }
 }

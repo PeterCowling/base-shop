@@ -29,7 +29,7 @@ describe("stripe client", () => {
   });
 
   it("uses expected API version and fetch client", async () => {
-    const { stripe } = await import("@lib/stripeServer");
+    const { stripe } = await import("@stripe");
     const stripeInternal = stripe as StripeInternal;
 
     expect(stripeInternal.getApiField("version")).toBe("2025-05-28.basil");
@@ -40,7 +40,7 @@ describe("stripe client", () => {
   });
 
   it("performs requests successfully with mocked API", async () => {
-    const { stripe } = await import("@lib/stripeServer");
+    const { stripe } = await import("@stripe");
     const stripeInternal = stripe as StripeInternal;
 
     const scope = nock("https://api.stripe.com")

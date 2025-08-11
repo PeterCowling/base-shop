@@ -11,7 +11,7 @@ import {
 import { revertSeo } from "@cms/actions/shops.server";
 import type { SettingsDiffEntry } from "@platform-core/repositories/settings.server";
 import { diffHistory } from "@platform-core/repositories/settings.server";
-import { formatTimestamp } from "@lib/date";
+import { formatTimestamp } from "@date-utils";
 import { useEffect, useState } from "react";
 
 interface VersionTimelineProps {

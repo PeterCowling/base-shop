@@ -1,7 +1,7 @@
 // apps/shop-abc/src/app/api/checkout-session/route.ts
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
-import { calculateRentalDays } from "@/lib/date";
-import { stripe } from "@/lib/stripeServer";
+import { calculateRentalDays } from "@date-utils";
+import { stripe } from "@stripe";
 import { priceForDays } from "@platform-core/pricing";
 import { NextResponse } from "next/server";
 /* ------------------------------------------------------------------ *

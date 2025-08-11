@@ -6,8 +6,8 @@ import {
   type CartLine,
   type CartState,
 } from "@/lib/cartCookie";
-import { calculateRentalDays } from "@/lib/date";
-import { stripe } from "@lib/stripeServer.server";
+import { calculateRentalDays } from "@date-utils";
+import { stripe } from "@stripe";
 import { getCustomerSession } from "@auth";
 import { priceForDays, convertCurrency } from "@platform-core/pricing";
 import { findCoupon } from "@platform-core/coupons";

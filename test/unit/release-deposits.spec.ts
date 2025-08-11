@@ -7,7 +7,7 @@ let readdirMock = require('node:fs/promises').readdir as jest.Mock;
 const retrieveMock = jest.fn();
 const refundMock = jest.fn();
 
-jest.mock('@/lib/stripeServer', () => ({
+jest.mock('@stripe', () => ({
   stripe: {
     checkout: { sessions: { retrieve: retrieveMock } },
     refunds: { create: refundMock },

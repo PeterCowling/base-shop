@@ -1,5 +1,5 @@
 // packages/auth/src/session.ts
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { sealData, unsealData } from "iron-session";
 import { randomUUID } from "node:crypto";
 import type { Role } from "./types";
@@ -16,6 +16,15 @@ export interface CustomerSession {
 interface InternalSession extends CustomerSession {
   sessionId: string;
 }
+
+interface SessionRecord {
+  sessionId: string;
+  customerId: string;
+  userAgent: string;
+  createdAt: Date;
+}
+
+const activeSessions = new Map<string, SessionRecord>();
 
 function cookieOptions() {
   return {
@@ -43,13 +52,25 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
   } catch {
     return null;
   }
+  if (!activeSessions.has(session.sessionId)) {
+    return null;
+  }
   // rotate on activity
+  const oldId = session.sessionId;
   session.sessionId = randomUUID();
   const newToken = await sealData(session, {
     password: secret,
     ttl: SESSION_TTL_S,
   });
   store.set(CUSTOMER_SESSION_COOKIE, newToken, cookieOptions());
+  const ua = headers().get("user-agent") ?? "unknown";
+  activeSessions.set(session.sessionId, {
+    sessionId: session.sessionId,
+    customerId: session.customerId,
+    userAgent: ua,
+    createdAt: new Date(),
+  });
+  activeSessions.delete(oldId);
   const { customerId, role } = session;
   return { customerId, role };
 }
@@ -69,12 +90,42 @@ export async function createCustomerSession(sessionData: CustomerSession): Promi
     ttl: SESSION_TTL_S,
   });
   store.set(CUSTOMER_SESSION_COOKIE, token, cookieOptions());
+  const ua = headers().get("user-agent") ?? "unknown";
+  activeSessions.set(session.sessionId, {
+    sessionId: session.sessionId,
+    customerId: session.customerId,
+    userAgent: ua,
+    createdAt: new Date(),
+  });
 }
 
 export async function destroyCustomerSession(): Promise<void> {
   const store = await cookies();
+  const token = store.get(CUSTOMER_SESSION_COOKIE)?.value;
+  if (token) {
+    const secret = process.env.SESSION_SECRET;
+    if (secret) {
+      try {
+        const session = await unsealData<InternalSession>(token, {
+          password: secret,
+          ttl: SESSION_TTL_S,
+        });
+        activeSessions.delete(session.sessionId);
+      } catch {}
+    }
+  }
   store.delete(CUSTOMER_SESSION_COOKIE, {
     path: "/",
     domain: process.env.COOKIE_DOMAIN,
   });
+}
+
+export function listSessions(customerId: string): SessionRecord[] {
+  return Array.from(activeSessions.values()).filter(
+    (s) => s.customerId === customerId
+  );
+}
+
+export function revokeSession(sessionId: string): void {
+  activeSessions.delete(sessionId);
 }

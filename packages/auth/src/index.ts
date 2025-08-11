@@ -8,5 +8,13 @@ export {
   getCustomerSession,
   createCustomerSession,
   destroyCustomerSession,
+  listSessions,
+  revokeSession,
 } from "./session";
 export type { CustomerSession } from "./session";
+
+export {
+  enrollMfa,
+  verifyMfa,
+  isMfaEnabled,
+} from "./mfa";

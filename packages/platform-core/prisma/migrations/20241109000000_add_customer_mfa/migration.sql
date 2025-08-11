@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS "CustomerMfa" (
+  "customerId" TEXT PRIMARY KEY,
+  "secret" TEXT NOT NULL,
+  "enabled" BOOLEAN NOT NULL DEFAULT FALSE
+);

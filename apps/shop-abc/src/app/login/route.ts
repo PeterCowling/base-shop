@@ -9,17 +9,22 @@ import {
   clearLoginAttempts,
 } from "../../middleware";
 import { getUserById } from "@platform-core/users";
+import { parseJsonBody } from "@lib/parseJsonBody";
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
-const LoginSchema = z.object({
-  customerId: z.string(),
-  password: z.string(),
-});
+const LoginSchema = z
+  .object({
+    customerId: z.string(),
+    password: z.string().min(8),
+  })
+  .strict();
+
+export type LoginInput = z.infer<typeof LoginSchema>;
 
 async function validateCredentials(
-  customerId: string,
-  password: string,
+  customerId: LoginInput["customerId"],
+  password: LoginInput["password"],
 ): Promise<{ customerId: string; role: Role } | null> {
   const record = await getUserById(customerId);
   if (!record) return null;
@@ -29,13 +34,9 @@ async function validateCredentials(
 }
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = LoginSchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const result = await parseJsonBody(req, LoginSchema);
+  if ("error" in result) return result.error;
+  const parsed = result.data;
 
   const csrfToken = req.headers.get("x-csrf-token");
   if (!csrfToken || !(await validateCsrfToken(csrfToken))) {
@@ -43,12 +44,12 @@ export async function POST(req: Request) {
   }
 
   const ip = req.headers.get("x-forwarded-for") ?? "unknown";
-  const rateLimited = await checkLoginRateLimit(ip, parsed.data.customerId);
+  const rateLimited = await checkLoginRateLimit(ip, parsed.customerId);
   if (rateLimited) return rateLimited;
 
   const valid = await validateCredentials(
-    parsed.data.customerId,
-    parsed.data.password,
+    parsed.customerId,
+    parsed.password,
   );
 
   if (!valid) {
@@ -61,7 +62,7 @@ export async function POST(req: Request) {
   }
 
   await createCustomerSession(valid);
-  await clearLoginAttempts(ip, parsed.data.customerId);
+  await clearLoginAttempts(ip, parsed.customerId);
 
   return NextResponse.json({ ok: true });
 }

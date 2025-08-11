@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { RegisterInput } from "./route";
 
 export default function RegisterPage() {
   const [msg, setMsg] = useState("");
@@ -14,7 +15,7 @@ export default function RegisterPage() {
       );
       return;
     }
-    const body = {
+    const body: RegisterInput = {
       customerId: (form.elements.namedItem("customerId") as HTMLInputElement).value,
       email: (form.elements.namedItem("email") as HTMLInputElement).value,
       password,

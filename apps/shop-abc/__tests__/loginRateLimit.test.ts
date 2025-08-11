@@ -9,7 +9,7 @@ jest.mock("@upstash/redis", () => ({
 
 jest.mock("@platform-core/users", () => ({
   getUserById: jest.fn(async (id: string) =>
-    id === "cust1" ? { passwordHash: "pass1", role: "customer" } : null,
+    id === "cust1" ? { passwordHash: "password1", role: "customer" } : null,
   ),
 }));
 
@@ -44,18 +44,18 @@ describe("login rate limiting", () => {
   it("returns 429 after too many attempts", async () => {
     for (let i = 0; i < MAX_ATTEMPTS; i++) {
       const res = await POST(
-        makeRequest({ customerId: "cust1", password: "wrong" }),
+        makeRequest({ customerId: "cust1", password: "wrongpass" }),
       );
       expect(res.status).toBe(401);
     }
 
     const locked = await POST(
-      makeRequest({ customerId: "cust1", password: "wrong" }),
+      makeRequest({ customerId: "cust1", password: "wrongpass" }),
     );
     expect(locked.status).toBe(429);
 
     const stillLocked = await POST(
-      makeRequest({ customerId: "cust1", password: "pass1" }),
+      makeRequest({ customerId: "cust1", password: "password1" }),
     );
     expect(stillLocked.status).toBe(429);
   });

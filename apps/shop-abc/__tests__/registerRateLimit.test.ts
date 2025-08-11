@@ -49,7 +49,7 @@ describe("registration rate limiting", () => {
         makeRequest({
           customerId: `cust${i}`,
           email: `test${i}@example.com`,
-          password: "pw",
+          password: "Password1",
         }),
       );
       expect(res.status).toBe(200);
@@ -59,7 +59,7 @@ describe("registration rate limiting", () => {
       makeRequest({
         customerId: "cust-final",
         email: "final@example.com",
-        password: "pw",
+        password: "Password1",
       }),
     );
     expect(locked.status).toBe(429);
@@ -68,7 +68,7 @@ describe("registration rate limiting", () => {
       makeRequest({
         customerId: "cust-other",
         email: "other@example.com",
-        password: "pw",
+        password: "Password1",
       }),
     );
     expect(stillLocked.status).toBe(429);

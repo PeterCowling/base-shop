@@ -164,18 +164,20 @@ const baseComponentSchema = z
     minItems: z.number().int().min(0).optional(),
     maxItems: z.number().int().min(0).optional(),
   })
-  .passthrough();
+  .strict();
 
 const heroBannerComponentSchema = baseComponentSchema.extend({
   type: z.literal("HeroBanner"),
   slides: z
     .array(
-      z.object({
-        src: z.string(),
-        alt: z.string().optional(),
-        headlineKey: z.string(),
-        ctaKey: z.string(),
-      })
+      z
+        .object({
+          src: z.string(),
+          alt: z.string().optional(),
+          headlineKey: z.string(),
+          ctaKey: z.string(),
+        })
+        .strict()
     )
     .optional(),
 });
@@ -184,7 +186,7 @@ const valuePropsComponentSchema = baseComponentSchema.extend({
   type: z.literal("ValueProps"),
   items: z
     .array(
-      z.object({ icon: z.string(), title: z.string(), desc: z.string() })
+      z.object({ icon: z.string(), title: z.string(), desc: z.string() }).strict()
     )
     .optional(),
 });
@@ -193,7 +195,7 @@ const reviewsCarouselComponentSchema = baseComponentSchema.extend({
   type: z.literal("ReviewsCarousel"),
   reviews: z
     .array(
-      z.object({ nameKey: z.string(), quoteKey: z.string() })
+      z.object({ nameKey: z.string(), quoteKey: z.string() }).strict()
     )
     .optional(),
 });
@@ -214,7 +216,9 @@ const recommendationCarouselComponentSchema = baseComponentSchema.extend({
 const galleryComponentSchema = baseComponentSchema.extend({
   type: z.literal("Gallery"),
   images: z
-    .array(z.object({ src: z.string(), alt: z.string().optional() }))
+    .array(
+      z.object({ src: z.string(), alt: z.string().optional() }).strict()
+    )
     .optional(),
 });
 
@@ -233,11 +237,13 @@ const blogListingComponentSchema = baseComponentSchema.extend({
   type: z.literal("BlogListing"),
   posts: z
     .array(
-      z.object({
-        title: z.string(),
-        excerpt: z.string().optional(),
-        url: z.string().optional(),
-      })
+      z
+        .object({
+          title: z.string(),
+          excerpt: z.string().optional(),
+          url: z.string().optional(),
+        })
+        .strict()
     )
     .optional(),
 });
@@ -246,7 +252,7 @@ const testimonialSliderComponentSchema = baseComponentSchema.extend({
   type: z.literal("TestimonialSlider"),
   testimonials: z
     .array(
-      z.object({ quote: z.string(), name: z.string().optional() })
+      z.object({ quote: z.string(), name: z.string().optional() }).strict()
     )
     .optional(),
 });
@@ -255,7 +261,7 @@ const testimonialsComponentSchema = baseComponentSchema.extend({
   type: z.literal("Testimonials"),
   testimonials: z
     .array(
-      z.object({ quote: z.string(), name: z.string().optional() })
+      z.object({ quote: z.string(), name: z.string().optional() }).strict()
     )
     .optional(),
 });
@@ -311,20 +317,24 @@ export const historyStateSchema: z.ZodType<HistoryState> = z
   .strict()
   .default({ past: [], present: [], future: [] });
 
-export const pageSchema = z.object({
-  id: z.string(),
-  slug: z.string(),
-  status: z.enum(["draft", "published"]),
-  components: z.array(pageComponentSchema).default([]),
-  seo: z.object({
-    title: z.record(localeSchema, z.string()),
-    description: z.record(localeSchema, z.string()).optional(),
-    image: z.record(localeSchema, z.string()).optional(),
-  }),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  createdBy: z.string(),
-  history: historyStateSchema.optional(),
-});
+export const pageSchema = z
+  .object({
+    id: z.string(),
+    slug: z.string(),
+    status: z.enum(["draft", "published"]),
+    components: z.array(pageComponentSchema).default([]),
+    seo: z
+      .object({
+        title: z.record(localeSchema, z.string()),
+        description: z.record(localeSchema, z.string()).optional(),
+        image: z.record(localeSchema, z.string()).optional(),
+      })
+      .strict(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    createdBy: z.string(),
+    history: historyStateSchema.optional(),
+  })
+  .strict();
 
 export type Page = z.infer<typeof pageSchema>;

@@ -23,7 +23,16 @@ async function ensureDir(shop: string): Promise<void> {
 export async function readInventory(shop: string): Promise<InventoryItem[]> {
   try {
     const buf = await fs.readFile(inventoryPath(shop), "utf8");
-    return inventoryItemSchema.array().parse(JSON.parse(buf));
+    const raw = JSON.parse(buf);
+    // Ensure variantAttributes is always a plain object
+    return inventoryItemSchema
+      .array()
+      .parse(
+        raw.map((i: any) => ({
+          variantAttributes: {},
+          ...i,
+        })),
+      );
   } catch (err) {
     console.error(`Failed to read inventory for ${shop}`, err);
     throw err;
@@ -34,14 +43,21 @@ export async function writeInventory(
   shop: string,
   items: InventoryItem[]
 ): Promise<void> {
-  inventoryItemSchema.array().parse(items);
+  const normalized = inventoryItemSchema
+    .array()
+    .parse(
+      items.map((i) => ({
+        ...i,
+        variantAttributes: { ...i.variantAttributes },
+      })),
+    );
   await ensureDir(shop);
   const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
-  await fs.writeFile(tmp, JSON.stringify(items, null, 2), "utf8");
+  await fs.writeFile(tmp, JSON.stringify(normalized, null, 2), "utf8");
   await fs.rename(tmp, inventoryPath(shop));
   try {
     const { checkAndAlert } = await import("../services/stockAlert.server");
-    await checkAndAlert(shop, items);
+    await checkAndAlert(shop, normalized);
   } catch (err) {
     console.error("Failed to run stock alert", err);
   }

@@ -62,17 +62,41 @@ describe("InventoryForm", () => {
     expect(screen.getAllByRole("row")).toHaveLength(2);
   });
 
-  it("adds attribute columns", () => {
+  it("adds attribute columns and persists values", async () => {
     (window as any).prompt = jest.fn().mockReturnValue("material");
     render(<InventoryForm shop="test" initial={initial} />);
     fireEvent.click(screen.getByText("Add attribute"));
     expect(screen.getByText("material")).toBeInTheDocument();
+    fireEvent.change(screen.getAllByRole("textbox")[3], {
+      target: { value: "cotton" },
+    });
+    fireEvent.click(screen.getByText("Save"));
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
+    expect(fetch).toHaveBeenCalledWith(
+      "/api/data/test/inventory",
+      expect.objectContaining({
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify([
+          {
+            sku: "sku1",
+            productId: "sku1",
+            variantAttributes: { size: "M", color: "red", material: "cotton" },
+            quantity: 5,
+            lowStockThreshold: 2,
+          },
+        ]),
+      }),
+    );
   });
 
   it("posts structured data on save", async () => {
     render(<InventoryForm shop="test" initial={initial} />);
     fireEvent.change(screen.getByDisplayValue("sku1"), {
       target: { value: "sku2" },
+    });
+    fireEvent.change(screen.getByDisplayValue("red"), {
+      target: { value: "blue" },
     });
     fireEvent.click(screen.getByText("Save"));
     await waitFor(() => expect(fetch).toHaveBeenCalled());
@@ -85,12 +109,12 @@ describe("InventoryForm", () => {
           {
             sku: "sku2",
             productId: "sku2",
-            variantAttributes: { size: "M", color: "red" },
+            variantAttributes: { size: "M", color: "blue" },
             quantity: 5,
             lowStockThreshold: 2,
           },
         ]),
-      })
+      }),
     );
   });
 

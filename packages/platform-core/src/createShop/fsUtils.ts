@@ -7,6 +7,7 @@ import { genSecret } from "@shared-utils";
 import { nowIso } from "@acme/date-utils";
 import { defaultFilterMappings } from "../defaultFilterMappings";
 import type { PreparedCreateShopOptions } from "./schema";
+import { loadTokens } from "./themeUtils";
 
 /**
  * Copy a template application into a new shop directory.
@@ -97,6 +98,8 @@ export function writeFiles(
     JSON.stringify({ languages: [...LOCALES], analytics: options.analytics }, null, 2)
   );
 
+  const themeTokens = { ...loadTokens(options.theme), ...themeOverrides };
+
   writeFileSync(
     join(newData, "shop.json"),
     JSON.stringify(
@@ -108,6 +111,7 @@ export function writeFiles(
         catalogFilters: [],
         themeId: options.theme,
         themeOverrides,
+        themeTokens,
         filterMappings: { ...defaultFilterMappings },
         type: options.type,
         paymentProviders: options.payment,

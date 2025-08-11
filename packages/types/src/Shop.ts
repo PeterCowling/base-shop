@@ -52,7 +52,7 @@ export const shopSchema = z.object({
   themeId: z.string(),
   /** Mapping of token overrides to theme values */
   themeOverrides: z.record(z.string()).default({}),
-  /** Mapping of design tokens to theme values (computed) */
+  /** Mapping of design tokens to theme values (defaults merged with overrides) */
   themeTokens: z.record(z.string()).default({}),
   /** Mapping of logical filter keys to catalog attributes */
   filterMappings: z.record(z.string()),

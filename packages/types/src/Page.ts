@@ -127,6 +127,14 @@ export interface FAQBlockComponent extends PageComponentBase {
   items?: { question: string; answer: string }[];
 }
 
+export interface CountdownTimerComponent extends PageComponentBase {
+  type: "CountdownTimer";
+  targetDate?: string;
+  timeZone?: string;
+  completionText?: string;
+  className?: string;
+}
+
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -180,6 +188,7 @@ export type PageComponent =
   | MapBlockComponent
   | VideoBlockComponent
   | FAQBlockComponent
+  | CountdownTimerComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent
@@ -294,6 +303,14 @@ const faqBlockComponentSchema = baseComponentSchema.extend({
     .optional(),
 });
 
+const countdownTimerComponentSchema = baseComponentSchema.extend({
+  type: z.literal("CountdownTimer"),
+  targetDate: z.string().optional(),
+  timeZone: z.string().optional(),
+  completionText: z.string().optional(),
+  className: z.string().optional(),
+});
+
 const blogListingComponentSchema = baseComponentSchema.extend({
   type: z.literal("BlogListing"),
   posts: z
@@ -361,6 +378,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     mapBlockComponentSchema,
     videoBlockComponentSchema,
     faqBlockComponentSchema,
+    countdownTimerComponentSchema,
     blogListingComponentSchema,
     testimonialsComponentSchema,
     testimonialSliderComponentSchema,

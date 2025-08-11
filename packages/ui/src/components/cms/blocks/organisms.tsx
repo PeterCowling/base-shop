@@ -14,6 +14,7 @@ import AnnouncementBar from "./AnnouncementBarBlock";
 import MapBlock from "./MapBlock";
 import VideoBlock from "./VideoBlock";
 import FAQBlock from "./FAQBlock";
+import CountdownTimer from "./CountdownTimer";
 
 export const organismRegistry = {
   AnnouncementBar,
@@ -32,6 +33,7 @@ export const organismRegistry = {
   MapBlock,
   VideoBlock,
   FAQBlock,
+  CountdownTimer,
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

@@ -124,6 +124,13 @@ export interface FAQBlockComponent extends PageComponentBase {
     answer: string;
   }[];
 }
+export interface CountdownTimerComponent extends PageComponentBase {
+  type: "CountdownTimer";
+  targetDate?: string;
+  timeZone?: string;
+  completionText?: string;
+  className?: string;
+}
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -180,6 +187,7 @@ export type PageComponent =
   | MapBlockComponent
   | VideoBlockComponent
   | FAQBlockComponent
+  | CountdownTimerComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent

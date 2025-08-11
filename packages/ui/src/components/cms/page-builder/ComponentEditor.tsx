@@ -89,6 +89,35 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "FAQBlock":
       specific = <FAQBlockEditor component={component} onChange={onChange} />;
       break;
+    case "CountdownTimer":
+      specific = (
+        <div className="space-y-2">
+          <Input
+            label="Target Date"
+            type="datetime-local"
+            value={(component as any).targetDate ?? ""}
+            onChange={(e) => handleInput("targetDate", e.target.value)}
+          />
+          <Input
+            label="Timezone"
+            value={(component as any).timeZone ?? ""}
+            onChange={(e) => handleInput("timeZone", e.target.value)}
+            placeholder="e.g. America/New_York"
+          />
+          <Input
+            label="Completion Text"
+            value={(component as any).completionText ?? ""}
+            onChange={(e) => handleInput("completionText", e.target.value)}
+          />
+          <Input
+            label="Class Name"
+            value={(component as any).className ?? ""}
+            onChange={(e) => handleInput("className", e.target.value)}
+            placeholder="optional styles"
+          />
+        </div>
+      );
+      break;
     default:
       specific = <p className="text-muted text-sm">No editable props</p>;
   }

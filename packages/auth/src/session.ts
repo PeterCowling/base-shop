@@ -1,9 +1,10 @@
 // packages/auth/src/session.ts
 import { cookies } from "next/headers";
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import type { Role } from "./types";
 
 export const CUSTOMER_SESSION_COOKIE = "customer_session";
+export const CSRF_TOKEN_COOKIE = "csrf_token";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // one week
 
 export interface CustomerSession {
@@ -68,11 +69,25 @@ export async function createCustomerSession(session: CustomerSession): Promise<v
 
   store.set(CUSTOMER_SESSION_COOKIE, token, {
     httpOnly: true,
-    sameSite: "lax",
+    sameSite: "strict",
     secure: true,
     maxAge: Math.floor(SESSION_TTL_MS / 1000),
     expires: new Date(exp),
   });
+
+  const csrfToken = randomBytes(32).toString("hex");
+  store.set(CSRF_TOKEN_COOKIE, csrfToken, {
+    httpOnly: false,
+    sameSite: "strict",
+    secure: true,
+  });
+}
+
+export async function validateCsrfToken(token: string | null): Promise<boolean> {
+  if (!token) return false;
+  const store = await cookies();
+  const cookieToken = store.get(CSRF_TOKEN_COOKIE)?.value;
+  return cookieToken === token;
 }
 
 export async function destroyCustomerSession(): Promise<void> {

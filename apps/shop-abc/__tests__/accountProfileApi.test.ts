@@ -2,6 +2,7 @@
 jest.mock("@auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
+  validateCsrfToken: jest.fn(),
 }));
 
 jest.mock("@acme/platform-core", () => ({
@@ -17,9 +18,9 @@ jest.mock("next/server", () => ({
   },
 }));
 
-import { getCustomerSession } from "@auth";
+import { getCustomerSession, validateCsrfToken } from "@auth";
 import { getCustomerProfile } from "@acme/platform-core";
-import { GET } from "../src/app/api/account/profile/route";
+import { GET, PUT } from "../src/app/api/account/profile/route";
 
 describe("/api/account/profile GET", () => {
   beforeEach(() => {
@@ -52,6 +53,37 @@ describe("/api/account/profile GET", () => {
     };
     (getCustomerProfile as jest.Mock).mockResolvedValue(profile);
     const res = await GET();
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true, profile });
+  });
+});
+
+describe("/api/account/profile PUT", () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  const body = { name: "Jane", email: "jane@test.com" };
+
+  it("returns 403 when CSRF token is missing", async () => {
+    (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "cust1" });
+    (validateCsrfToken as jest.Mock).mockResolvedValue(false);
+    const req = { headers: new Headers(), json: async () => body } as any;
+    const res = await PUT(req);
+    expect(validateCsrfToken).toHaveBeenCalledWith(null);
+    expect(res.status).toBe(403);
+  });
+
+  it("updates profile when CSRF token is valid", async () => {
+    (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "cust1" });
+    (validateCsrfToken as jest.Mock).mockResolvedValue(true);
+    const profile = { customerId: "cust1", ...body };
+    (getCustomerProfile as jest.Mock).mockResolvedValue(profile);
+    const req = {
+      headers: new Headers({ "x-csrf-token": "token" }),
+      json: async () => body,
+    } as any;
+    const res = await PUT(req);
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true, profile });
   });

@@ -1,4 +1,9 @@
-import { createCustomerSession, getCustomerSession, CUSTOMER_SESSION_COOKIE } from "../src/session";
+import {
+  createCustomerSession,
+  getCustomerSession,
+  CUSTOMER_SESSION_COOKIE,
+  CSRF_TOKEN_COOKIE,
+} from "../src/session";
 import type { Role } from "../src/types";
 
 const mockCookies = jest.fn();
@@ -30,10 +35,19 @@ describe("customer session", () => {
     expect(name).toBe(CUSTOMER_SESSION_COOKIE);
     expect(opts).toMatchObject({
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "strict",
       secure: true,
       maxAge: expect.any(Number),
       expires: expect.any(Date),
+    });
+
+    const [csrfName, csrfValue, csrfOpts] = store.set.mock.calls[1];
+    expect(csrfName).toBe(CSRF_TOKEN_COOKIE);
+    expect(typeof csrfValue).toBe("string");
+    expect(csrfOpts).toMatchObject({
+      httpOnly: false,
+      sameSite: "strict",
+      secure: true,
     });
 
     store.get.mockReturnValue({ value });

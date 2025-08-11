@@ -89,7 +89,7 @@ describe("Wizard locale flow", () => {
       serverState = {
         state: { shopId: "shop" },
         completed: Object.fromEntries(
-          steps.slice(0, summaryIndex).map((s) => [s.id, true])
+          steps.slice(0, summaryIndex).map((s) => [s.id, "complete"])
         ),
       };
     const { unmount } = render(

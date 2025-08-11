@@ -64,7 +64,7 @@ export default function ConfiguratorDashboard() {
   const markStepComplete = useWizardPersistence(state, setState);
   const stepList = useMemo(() => getSteps(), []);
   const missingRequired = getRequiredSteps().filter(
-    (s) => !state?.completed?.[s.id]
+    (s) => state?.completed?.[s.id] !== "complete"
   );
   const allRequiredDone = missingRequired.length === 0;
   const tooltipText = allRequiredDone
@@ -73,8 +73,8 @@ export default function ConfiguratorDashboard() {
         .map((s) => s.label)
         .join(", ")}`;
 
-  const skipStep = (stepId: string) => markStepComplete(stepId, true);
-  const resetStep = (stepId: string) => markStepComplete(stepId, false);
+  const skipStep = (stepId: string) => markStepComplete(stepId, "skipped");
+  const resetStep = (stepId: string) => markStepComplete(stepId, "pending");
 
   const handleStepClick = (step: ConfiguratorStep) => (
     e: MouseEvent<HTMLAnchorElement>
@@ -155,7 +155,8 @@ export default function ConfiguratorDashboard() {
         {stepList
           .filter((s) => !s.optional)
           .map((step) => {
-            const completed = Boolean(state?.completed?.[step.id]);
+            const status = state?.completed?.[step.id];
+            const completed = status === "complete";
             return (
               <li key={step.id} className="flex items-center gap-2">
                 {completed ? (
@@ -195,7 +196,9 @@ export default function ConfiguratorDashboard() {
             {stepList
               .filter((s) => s.optional)
               .map((step) => {
-                const completed = Boolean(state?.completed?.[step.id]);
+                const status = state?.completed?.[step.id];
+                const completed = status === "complete";
+                const skipped = status === "skipped";
                 return (
                   <li key={step.id} className="flex items-center gap-2">
                     {completed ? (
@@ -216,9 +219,9 @@ export default function ConfiguratorDashboard() {
                       </span>
                     </div>
                     <span className="text-xs text-gray-500">
-                      {completed ? "Done" : "Pending"}
+                      {completed ? "Done" : skipped ? "Skipped" : "Pending"}
                     </span>
-                    {completed ? (
+                    {completed || skipped ? (
                       <button
                         type="button"
                         onClick={() => resetStep(step.id)}

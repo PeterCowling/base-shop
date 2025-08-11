@@ -57,7 +57,7 @@ declare global {
   var fetch: jest.Mock;
 }
 
-let serverState: { state: any; completed: Record<string, boolean> };
+let serverState: { state: any; completed: Record<string, string> };
 let originalAddEventListener: any;
 
 beforeEach(() => {
@@ -66,7 +66,7 @@ beforeEach(() => {
   const required = getRequiredSteps();
   serverState = {
     state: { shopId: "shop" },
-    completed: Object.fromEntries(required.map((s) => [s.id, true])),
+    completed: Object.fromEntries(required.map((s) => [s.id, "complete"])),
   };
   global.fetch = jest.fn((url: string, init?: RequestInit) => {
     if (url === "/cms/api/wizard-progress") {
@@ -108,12 +108,12 @@ test("skipped optional steps do not block Launch Shop", async () => {
   stepLabel = await screen.findByText(optional.label);
   const resetBtn = within(stepLabel.closest("li")!).getByRole("button", { name: /reset/i });
   const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-  expect(stored.completed?.[optional.id]).toBe(true);
+  expect(stored.completed?.[optional.id]).toBe("skipped");
   expect(launchBtn).toBeEnabled();
 
   fireEvent.click(resetBtn);
   await screen.findByRole("button", { name: /skip/i });
   const stored2 = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-  expect(stored2.completed?.[optional.id]).toBe(false);
+  expect(stored2.completed?.[optional.id]).toBe("pending");
   expect(launchBtn).toBeEnabled();
 });

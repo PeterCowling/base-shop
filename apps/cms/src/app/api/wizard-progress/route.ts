@@ -5,11 +5,15 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import * as fsSync from "node:fs";
 import path from "node:path";
-import { wizardStateSchema } from "@cms/app/cms/wizard/schema";
+import {
+  wizardStateSchema,
+  stepStatusSchema,
+  type StepStatus,
+} from "@cms/app/cms/wizard/schema";
 
 interface UserRecord {
   state: unknown;
-  completed: Record<string, boolean>;
+  completed: Record<string, StepStatus>;
 }
 
 interface DB {
@@ -73,7 +77,7 @@ export async function PUT(req: Request): Promise<NextResponse> {
     const { stepId, data, completed } = body as {
       stepId?: string | null;
       data?: unknown;
-      completed?: boolean | Record<string, boolean>;
+      completed?: StepStatus | Record<string, StepStatus>;
     };
     const parsed = wizardStateSchema.partial().safeParse(data ?? {});
     if (stepId && data && !parsed.success) {
@@ -91,12 +95,15 @@ export async function PUT(req: Request): Promise<NextResponse> {
       record = { state: {}, completed: {} };
     } else {
       record.state = { ...(record.state as object), ...parsed.data };
-      if (typeof completed === "boolean") {
+      if (
+        typeof completed === "string" &&
+        stepStatusSchema.safeParse(completed).success
+      ) {
         record.completed[stepId] = completed;
       }
     }
     if (completed && typeof completed === "object" && !stepId) {
-      record.completed = completed;
+      record.completed = completed as Record<string, StepStatus>;
     }
     db[session.user.id] = record;
     await writeDb(db);
@@ -118,9 +125,9 @@ export async function PATCH(req: Request): Promise<NextResponse> {
     const body = await req.json().catch(() => ({}));
     const { stepId, completed } = body as {
       stepId?: string;
-      completed?: boolean;
+      completed?: StepStatus;
     };
-    if (!stepId || typeof completed !== "boolean") {
+    if (!stepId || !stepStatusSchema.safeParse(completed).success) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
     const db = await readDb();

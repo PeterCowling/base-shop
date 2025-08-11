@@ -32,7 +32,7 @@ export async function deployShop(
     };
   }
 
-  const res = await fetch("/cms/api/deploy-shop", {
+  const res = await fetch("/cms/api/configurator/deploy-shop", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id: shopId, domain }),
@@ -67,7 +67,7 @@ export async function deployShop(
         certificateStatus: cfJson.certificateStatus,
       };
 
-      await fetch("/cms/api/deploy-shop", {
+      await fetch("/cms/api/configurator/deploy-shop", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -94,7 +94,7 @@ export async function getDeployStatus(
   | DeployInfo
   | { status: "pending"; error?: string; domainStatus?: string; certificateStatus?: string }
 > {
-  const res = await fetch(`/cms/api/deploy-shop?id=${shopId}`);
+  const res = await fetch(`/cms/api/configurator/deploy-shop?id=${shopId}`);
   return (await res.json()) as
     | DeployInfo
     | { status: "pending"; error?: string; domainStatus?: string; certificateStatus?: string };

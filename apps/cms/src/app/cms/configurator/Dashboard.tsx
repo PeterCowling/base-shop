@@ -5,6 +5,9 @@ import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import type { WizardState } from "../wizard/schema";
+import { createShop } from "../wizard/services/createShop";
+import { initShop } from "../wizard/services/initShop";
+import { deployShop } from "../wizard/services/deployShop";
 
 interface StepConfig {
   id: string;
@@ -52,6 +55,16 @@ export default function ConfiguratorDashboard() {
     (s) => !s.required || s.completed
   );
 
+  const launchShop = async () => {
+    if (!state?.shopId) return;
+    const createRes = await createShop(state.shopId, state);
+    if (!createRes.ok) {
+      return;
+    }
+    await initShop(state.shopId, undefined, state.categoriesText);
+    await deployShop(state.shopId, state.domain ?? "");
+  };
+
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Configuration Steps</h2>
@@ -69,7 +82,9 @@ export default function ConfiguratorDashboard() {
           </li>
         ))}
       </ul>
-      <Button disabled={!allRequiredDone}>Launch Shop</Button>
+      <Button disabled={!allRequiredDone} onClick={launchShop}>
+        Launch Shop
+      </Button>
     </div>
   );
 }

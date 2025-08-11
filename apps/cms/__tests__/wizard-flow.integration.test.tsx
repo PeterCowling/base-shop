@@ -26,6 +26,7 @@ jest.mock("@platform-core/src", () => {
 
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import Wizard from "../src/app/cms/wizard/Wizard";
+import steps from "../src/app/cms/configurator/steps";
 
 const themes = ["base", "dark"];
 const templates = ["template-app"];
@@ -82,7 +83,13 @@ afterEach(() => {
 
 describe("Wizard locale flow", () => {
   it("preserves locale fields across navigation and reload", async () => {
-      serverState = { state: { step: 11, shopId: "shop" }, completed: {} };
+      const summaryIndex = steps.findIndex((s) => s.id === "summary");
+      serverState = {
+        state: { shopId: "shop" },
+        completed: Object.fromEntries(
+          steps.slice(0, summaryIndex).map((s) => [s.id, true])
+        ),
+      };
     const { unmount } = render(
       <Wizard themes={themes} templates={templates} />
     );

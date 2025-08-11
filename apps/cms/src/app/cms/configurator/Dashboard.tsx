@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
+import { Toast, Tooltip } from "@/components/atoms";
+import stepRegistry from "./steps";
 import type { WizardState } from "../wizard/schema";
 
 interface StepConfig {
@@ -16,6 +18,10 @@ interface StepConfig {
 
 export default function ConfiguratorDashboard() {
   const [state, setState] = useState<WizardState | null>(null);
+  const [toast, setToast] = useState<{ open: boolean; message: string }>({
+    open: false,
+    message: "",
+  });
 
   useEffect(() => {
     fetch("/cms/api/wizard-progress")
@@ -26,31 +32,44 @@ export default function ConfiguratorDashboard() {
 
   const steps: StepConfig[] = [
     {
-      id: "details",
+      id: "shop-details",
       title: "Shop Details",
-      href: "/cms/configurator/details",
+      href: "/cms/wizard",
       required: true,
-      completed: Boolean(state?.storeName),
+      completed: Boolean(state?.completed?.["shop-details"]),
     },
     {
       id: "theme",
       title: "Theme",
-      href: "/cms/configurator/theme",
+      href: "/cms/wizard",
       required: true,
-      completed: Boolean(state?.theme),
+      completed: Boolean(state?.completed?.theme),
     },
     {
-      id: "products",
+      id: "import-data",
       title: "Products",
-      href: "/cms/configurator/products",
+      href: "/cms/wizard",
       required: false,
-      completed: (state?.components?.length ?? 0) > 0,
+      completed: Boolean(state?.completed?.["import-data"]),
     },
   ];
 
-  const allRequiredDone = steps.every(
-    (s) => !s.required || s.completed
+  const completedRecord = state?.completed ?? {};
+  const missingRequired = stepRegistry.filter(
+    (s) => s.required && !completedRecord[s.id]
   );
+  const allRequiredDone = missingRequired.length === 0;
+
+  const missingLabels = missingRequired.map((s) => s.label).join(", ");
+
+  const handleLaunch = () => {
+    if (!allRequiredDone) {
+      setToast({
+        open: true,
+        message: `Complete required steps: ${missingLabels}`,
+      });
+    }
+  };
 
   return (
     <div>
@@ -69,7 +88,23 @@ export default function ConfiguratorDashboard() {
           </li>
         ))}
       </ul>
-      <Button disabled={!allRequiredDone}>Launch Shop</Button>
+      <Tooltip
+        text={!allRequiredDone ? `Complete: ${missingLabels}` : ""}
+      >
+        <span onClick={handleLaunch}>
+          <Button
+            disabled={!allRequiredDone}
+            className={!allRequiredDone ? "pointer-events-none" : undefined}
+          >
+            Launch Shop
+          </Button>
+        </span>
+      </Tooltip>
+      <Toast
+        open={toast.open}
+        onClose={() => setToast((t) => ({ ...t, open: false }))}
+        message={toast.message}
+      />
     </div>
   );
 }

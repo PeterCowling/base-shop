@@ -3,7 +3,8 @@ export {};
 let service: typeof import("@acme/platform-machine");
 
 const readdir = jest.fn();
-jest.mock("node:fs/promises", () => ({ readdir }));
+const readFile = jest.fn();
+jest.mock("node:fs/promises", () => ({ readdir, readFile }));
 
 const retrieve = jest.fn();
 const createRefund = jest.fn();
@@ -27,6 +28,7 @@ jest.mock("@platform-core/repositories/rentalOrders.server", () => ({
 
 beforeEach(() => {
   jest.clearAllMocks();
+  readFile.mockRejectedValue(new Error("no file"));
 });
 
 describe("releaseDepositsOnce", () => {
@@ -111,7 +113,7 @@ describe("releaseDepositsOnce", () => {
 describe("startDepositReleaseService", () => {
   it("schedules and clears interval", async () => {
     service = await import("@acme/platform-machine");
-    readdir.mockResolvedValue([]);
+    readdir.mockResolvedValue(["shop1"]);
     readOrders.mockResolvedValue([]);
     const setSpy = jest
       .spyOn(global, "setInterval")
@@ -123,8 +125,10 @@ describe("startDepositReleaseService", () => {
       .spyOn(global, "clearInterval")
       .mockImplementation(() => undefined as any);
 
-    const stop = service.startDepositReleaseService(5000);
-    await Promise.resolve();
+    const stop = service.startDepositReleaseService({
+      shop1: { intervalMs: 5000 },
+    });
+    await new Promise((r) => setTimeout(r, 0));
     expect(setSpy).toHaveBeenCalledTimes(1);
 
     stop();

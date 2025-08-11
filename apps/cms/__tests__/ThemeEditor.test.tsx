@@ -35,10 +35,13 @@ describe("ThemeEditor", () => {
     const [bgDefault, bgOverride] = within(bgLabel).getAllByRole("textbox");
     expect(bgDefault).toHaveValue("white");
     expect(bgOverride).toHaveValue("hotpink");
-    expect(within(bgLabel).getByRole("button", { name: /reset/i })).toBeInTheDocument();
+    expect(
+      within(bgLabel).getByRole("button", { name: /reset/i })
+    ).toBeInTheDocument();
 
     const primaryLabel = screen.getByText("--color-primary").closest("label")!;
-    const [primaryDefault, primaryOverride] = within(primaryLabel).getAllByRole("textbox");
+    const [primaryDefault, primaryOverride] =
+      within(primaryLabel).getAllByRole("textbox");
     expect(primaryDefault).toHaveValue("blue");
     expect(primaryOverride).toHaveValue("");
     expect(primaryOverride).toHaveAttribute("placeholder", "blue");
@@ -69,5 +72,25 @@ describe("ThemeEditor", () => {
     expect(
       within(bgLabel).queryByRole("button", { name: /reset/i })
     ).toBeNull();
+  });
+
+  it("focuses field when swatch clicked", () => {
+    const tokensByTheme = { base: { "--color-bg": "#ffffff" } };
+    render(
+      <ThemeEditor
+        shop="test"
+        themes={["base"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={{}}
+      />
+    );
+
+    const swatch = screen.getByRole("button", { name: "--color-bg" });
+    const colorInput = screen.getByLabelText("--color-bg", {
+      selector: 'input[type="color"]',
+    });
+    fireEvent.click(swatch);
+    expect(colorInput).toHaveFocus();
   });
 });

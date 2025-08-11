@@ -3,7 +3,7 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useMemo, useRef } from "react";
 
 interface Props {
   shop: string;
@@ -21,9 +21,29 @@ export default function ThemeEditor({
   initialOverrides,
 }: Props) {
   const [theme, setTheme] = useState(initialTheme);
-  const [overrides, setOverrides] = useState<Record<string, string>>(initialOverrides);
+  const [overrides, setOverrides] =
+    useState<Record<string, string>>(initialOverrides);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  const groupedTokens = useMemo(() => {
+    const tokens = tokensByTheme[theme];
+    const groups: Record<string, [string, string][]> = {
+      Background: [],
+      Text: [],
+      Accent: [],
+      Other: [],
+    };
+    Object.entries(tokens).forEach(([k, v]) => {
+      if (/bg|background/i.test(k)) groups.Background.push([k, v]);
+      else if (/text|foreground/i.test(k)) groups.Text.push([k, v]);
+      else if (/accent|primary|secondary|highlight/i.test(k))
+        groups.Accent.push([k, v]);
+      else groups.Other.push([k, v]);
+    });
+    return groups;
+  }, [theme, tokensByTheme]);
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
@@ -31,20 +51,20 @@ export default function ThemeEditor({
     setOverrides({});
   };
 
-  const handleOverrideChange = (key: string, defaultValue: string) => (
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
-    const { value } = e.target;
-    setOverrides((prev) => {
-      const next = { ...prev };
-      if (!value || value === defaultValue) {
-        delete next[key];
-      } else {
-        next[key] = value;
-      }
-      return next;
-    });
-  };
+  const handleOverrideChange =
+    (key: string, defaultValue: string) =>
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const { value } = e.target;
+      setOverrides((prev) => {
+        const next = { ...prev };
+        if (!value || value === defaultValue) {
+          delete next[key];
+        } else {
+          next[key] = value;
+        }
+        return next;
+      });
+    };
 
   const handleReset = (key: string) => () => {
     setOverrides((prev) => {
@@ -96,44 +116,92 @@ export default function ThemeEditor({
           </span>
         )}
       </label>
-      <div className="grid gap-2 md:grid-cols-2">
-        {Object.entries(tokensByTheme[theme]).map(([k, defaultValue]) => {
-          const hasOverride = Object.prototype.hasOwnProperty.call(overrides, k);
-          const overrideValue = hasOverride ? overrides[k] : "";
-          const isOverridden = hasOverride && overrideValue !== defaultValue;
-          const isHex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(defaultValue);
-          return (
-            <label
-              key={k}
-              className={`flex flex-col gap-1 ${isOverridden ? "bg-amber-50" : ""}`}
-            >
-              <span>{k}</span>
-              <div className="flex items-center gap-2">
-                <Input value={defaultValue} disabled />
-                {isHex ? (
-                  <input
-                    type="color"
-                    value={hasOverride ? overrideValue : defaultValue}
-                    onChange={handleOverrideChange(k, defaultValue)}
-                    className={isOverridden ? "bg-amber-100" : ""}
-                  />
-                ) : (
-                  <Input
-                    placeholder={defaultValue}
-                    value={overrideValue}
-                    onChange={handleOverrideChange(k, defaultValue)}
-                    className={isOverridden ? "bg-amber-100" : ""}
-                  />
-                )}
-                {hasOverride && (
-                  <Button type="button" onClick={handleReset(k)}>
-                    Reset
-                  </Button>
-                )}
-              </div>
-            </label>
-          );
-        })}
+      <div className="space-y-6">
+        {Object.entries(groupedTokens).map(([groupName, tokens]) => (
+          <fieldset key={groupName} className="space-y-2">
+            <legend className="font-semibold">{groupName}</legend>
+            <div className="mb-2 flex flex-wrap gap-2">
+              {tokens
+                .filter(([, v]) => /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(v))
+                .map(([k, defaultValue]) => {
+                  const current = overrides[k] || defaultValue;
+                  return (
+                    <button
+                      key={k}
+                      type="button"
+                      aria-label={k}
+                      title={k}
+                      className="h-6 w-6 rounded border"
+                      style={{ background: current }}
+                      onClick={() => {
+                        overrideRefs.current[k]?.scrollIntoView?.({
+                          behavior: "smooth",
+                          block: "center",
+                        });
+                        overrideRefs.current[k]?.focus();
+                      }}
+                    />
+                  );
+                })}
+            </div>
+            <div className="grid gap-2 md:grid-cols-2">
+              {tokens.map(([k, defaultValue]) => {
+                const hasOverride = Object.prototype.hasOwnProperty.call(
+                  overrides,
+                  k
+                );
+                const overrideValue = hasOverride ? overrides[k] : "";
+                const isOverridden =
+                  hasOverride && overrideValue !== defaultValue;
+                const isHex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(
+                  defaultValue
+                );
+                const current = hasOverride ? overrideValue : defaultValue;
+                return (
+                  <label
+                    key={k}
+                    className={`flex flex-col gap-1 ${
+                      isOverridden ? "bg-amber-50" : ""
+                    }`}
+                  >
+                    <span>{k}</span>
+                    <div className="flex items-center gap-2">
+                      <Input value={defaultValue} disabled />
+                      {isHex ? (
+                        <>
+                          <input
+                            type="color"
+                            value={current}
+                            onChange={handleOverrideChange(k, defaultValue)}
+                            ref={(el) => (overrideRefs.current[k] = el)}
+                            className={isOverridden ? "bg-amber-100" : ""}
+                          />
+                          <span
+                            className="h-6 w-6 rounded border"
+                            style={{ background: current }}
+                          />
+                        </>
+                      ) : (
+                        <Input
+                          placeholder={defaultValue}
+                          value={overrideValue}
+                          onChange={handleOverrideChange(k, defaultValue)}
+                          ref={(el) => (overrideRefs.current[k] = el)}
+                          className={isOverridden ? "bg-amber-100" : ""}
+                        />
+                      )}
+                      {hasOverride && (
+                        <Button type="button" onClick={handleReset(k)}>
+                          Reset
+                        </Button>
+                      )}
+                    </div>
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
+        ))}
       </div>
       <Button className="bg-primary text-white" disabled={saving} type="submit">
         {saving ? "Saving…" : "Save"}

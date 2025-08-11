@@ -155,6 +155,13 @@ switching shops and admin-only routes. Newcomers can follow the
 [Page Builder](doc/cms.md#page-builder) section to learn how to add,
 rearrange and publish blocks.
 
+### Theme overrides
+
+The CMS theme editor lets admins customize design tokens per shop. Tokens are
+grouped by purpose (Background, Text, Accent) and each color token displays a
+preview swatch. Clicking a swatch focuses its corresponding field, where a color
+picker enables quick overrides. Save the form to persist any changes.
+
 ## Inventory Management
 
 ### Variant schema

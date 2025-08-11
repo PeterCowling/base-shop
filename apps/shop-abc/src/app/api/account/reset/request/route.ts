@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getUserByEmail, setResetToken } from "@platform-core/users";
 import { sendEmail } from "@lib/email";
+import { checkLoginRateLimit } from "../../../../../middleware";
 
 const schema = z.object({
   email: z.string().email(),
@@ -16,6 +17,10 @@ export async function POST(req: Request) {
       status: 400,
     });
   }
+
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  const rateLimited = await checkLoginRateLimit(ip, parsed.data.email);
+  if (rateLimited) return rateLimited;
 
   const user = await getUserByEmail(parsed.data.email);
   if (user) {

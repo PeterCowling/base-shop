@@ -64,15 +64,20 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const { sku: skuInput, qty } = parsed.data;
+  const { sku: skuInput, qty, size } = parsed.data;
   const sku = "title" in skuInput ? skuInput : getProductById(skuInput.id);
   if (!sku) {
     return NextResponse.json({ error: "Item not found" }, { status: 404 });
   }
 
+  if (sku.sizes.length && !size) {
+    return NextResponse.json({ error: "Size required" }, { status: 400 });
+  }
+
   const { cartId, cart } = await loadCart(req, true);
-  const line = cart[sku.id];
-  cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+  const id = size ? `${sku.id}:${size}` : sku.id;
+  const line = cart[id];
+  cart[id] = { sku, size, qty: (line?.qty ?? 0) + qty };
   await setCart(cartId!, cart);
 
   const res = NextResponse.json({ ok: true, cart });

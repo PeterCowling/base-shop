@@ -30,19 +30,24 @@ afterEach(() => {
 
 test("POST rejects negative or non-integer quantity", async () => {
   const sku = PRODUCTS[0];
-  let res = await POST(createRequest({ sku: { id: sku.id }, qty: -1 }));
+  const size = sku.sizes[0];
+  let res = await POST(
+    createRequest({ sku: { id: sku.id }, qty: -1, size })
+  );
   expect(res.status).toBe(400);
-  res = await POST(createRequest({ sku: { id: sku.id }, qty: 1.5 }));
+  res = await POST(createRequest({ sku: { id: sku.id }, qty: 1.5, size }));
   expect(res.status).toBe(400);
 });
 
 test("PATCH rejects negative or non-integer quantity", async () => {
   const sku = PRODUCTS[0];
-  const cart = { [sku.id]: { sku, qty: 1 } };
+  const size = sku.sizes[0];
+  const id = `${sku.id}:${size}`;
+  const cart = { [id]: { sku, qty: 1, size } };
   const cookie = encodeCartCookie(cart);
-  let res = await PATCH(createRequest({ id: sku.id, qty: -2 }, cookie));
+  let res = await PATCH(createRequest({ id, qty: -2 }, cookie));
   expect(res.status).toBe(400);
-  res = await PATCH(createRequest({ id: sku.id, qty: 1.5 }, cookie));
+  res = await PATCH(createRequest({ id, qty: 1.5 }, cookie));
   expect(res.status).toBe(400);
 });
 

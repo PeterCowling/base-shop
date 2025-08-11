@@ -43,7 +43,8 @@ test("builds Stripe session with correct items and metadata", async () => {
   });
 
   const sku = PRODUCTS[0];
-  const cart = { [sku.id]: { sku, qty: 2, size: "40" } };
+  const size = "40";
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 2, size } };
   const cartId = await createCart();
   await setCart(cartId, cart);
   const cookie = encodeCartCookie(cartId);
@@ -61,14 +62,15 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(args.line_items[0].price_data.unit_amount).toBe(1000);
   expect(args.line_items[1].price_data.unit_amount).toBe(sku.deposit * 100);
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
-  expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: "40" }));
+  expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: size }));
   expect(args.metadata.subtotal).toBe("20");
   expect(body.clientSecret).toBe("cs_test");
 });
 
 test("responds with 400 on invalid returnDate", async () => {
   const sku = PRODUCTS[0];
-  const cart = { [sku.id]: { sku, qty: 1 } };
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
   const cartId = await createCart();
   await setCart(cartId, cart);
   const cookie = encodeCartCookie(cartId);

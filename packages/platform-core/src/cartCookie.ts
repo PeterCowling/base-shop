@@ -32,7 +32,7 @@ export const cartLineSchema = z.object({
 });
 
 /**
- * Schema for the full cart, keyed by SKU ID (string).
+ * Schema for the full cart, keyed by `${sku.id}` or `${sku.id}:${size}`.
  */
 export const cartStateSchema = z.record(z.string(), cartLineSchema);
 

@@ -31,16 +31,21 @@ export async function POST(req: NextRequest) {
   const {
     sku: { id: skuId },
     qty,
+    size,
   } = parsed.data;
   const sku = getProductById(skuId);
   if (!sku) {
     return NextResponse.json({ error: "Item not found" }, { status: 404 });
   }
+  if (sku.sizes.length && !size) {
+    return NextResponse.json({ error: "Size required" }, { status: 400 });
+  }
   const cookie = req.cookies.get(CART_COOKIE)?.value;
   const cart = decodeCartCookie(cookie);
-  const line = cart[sku.id];
+  const id = size ? `${sku.id}:${size}` : sku.id;
+  const line = cart[id];
 
-  cart[sku.id] = { sku, qty: (line?.qty ?? 0) + qty };
+  cart[id] = { sku, size, qty: (line?.qty ?? 0) + qty };
 
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));

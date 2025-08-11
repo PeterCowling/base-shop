@@ -32,7 +32,7 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
   const [toast, setToast] = React.useState<{ open: boolean; message: string }>(
     { open: false, message: "" }
   );
-  const lines = Object.values(cart);
+  const lines = Object.entries(cart).map(([id, line]) => ({ id, ...line }));
   const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
   const { widthClass, style } = drawerWidthProps(width);
 
@@ -65,14 +65,17 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
               <ul className="grow space-y-3 overflow-y-auto">
                 {lines.map((line) => (
                   <li
-                    key={line.sku.id}
+                    key={line.id}
                     className="flex items-center justify-between gap-2"
                   >
-                    <span className="text-sm">{line.sku.title}</span>
+                    <span className="text-sm">
+                      {line.sku.title}
+                      {line.size && <span className="ml-1 text-muted">({line.size})</span>}
+                    </span>
                     <span className="text-sm">× {line.qty}</span>
                     <Button
                       variant="destructive"
-                      onClick={() => void handleRemove(line.sku.id)}
+                      onClick={() => void handleRemove(line.id)}
                       className="px-2 py-1 text-xs"
                     >
                       Remove

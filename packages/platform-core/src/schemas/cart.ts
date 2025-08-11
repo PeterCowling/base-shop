@@ -5,6 +5,7 @@ export const postSchema = z
   .object({
     sku: skuSchema.pick({ id: true }),
     qty: z.coerce.number().int().min(1).default(1),
+    size: z.string().optional(),
   })
   .strict();
 

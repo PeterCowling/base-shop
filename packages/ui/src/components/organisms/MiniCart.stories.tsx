@@ -38,10 +38,10 @@ interface WrapperProps {
 function CartInitializer({ items }: WrapperProps) {
   const [, dispatch] = useCart();
   React.useEffect(() => {
-    Object.values(items).forEach((line) => {
+    Object.entries(items).forEach(([id, line]) => {
       dispatch({ type: "add", sku: line.sku, size: line.size });
       if (line.qty > 1) {
-        dispatch({ type: "setQty", id: line.sku.id, qty: line.qty });
+        dispatch({ type: "setQty", id, qty: line.qty });
       }
     });
   }, [items, dispatch]);

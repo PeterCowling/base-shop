@@ -11,17 +11,19 @@ import { checkRegistrationRateLimit } from "../../middleware";
 import { validateCsrfToken } from "@auth";
 import { updateCustomerProfile } from "@acme/platform-core/customerProfiles";
 
-const RegisterSchema = z.object({
-  customerId: z.string(),
-  email: z.string().email(),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters long")
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-      "Password must include uppercase, lowercase, and number",
-    ),
-});
+const RegisterSchema = z
+  .object({
+    customerId: z.string(),
+    email: z.string().email(),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+        "Password must include uppercase, lowercase, and number",
+      ),
+  })
+  .strict();
 
 export async function POST(req: Request) {
   const json = await req.json();

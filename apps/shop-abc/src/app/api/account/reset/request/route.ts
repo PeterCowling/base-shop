@@ -1,6 +1,7 @@
 // apps/shop-abc/src/app/api/account/reset/request/route.ts
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import crypto from "crypto";
 import { getUserByEmail, setResetToken } from "@platform-core/users";
 import { sendEmail } from "@lib/email";
 
@@ -19,8 +20,9 @@ export async function POST(req: Request) {
 
   const user = await getUserByEmail(parsed.data.email);
   if (user) {
-    const token = Math.random().toString(36).slice(2);
-    await setResetToken(user.id, token);
+    const token = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+    await setResetToken(user.id, hashedToken);
     await sendEmail(parsed.data.email, "Password reset", `Your token is ${token}`);
   }
 

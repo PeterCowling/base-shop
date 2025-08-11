@@ -91,7 +91,7 @@ export async function createShop(
     return { ok: false, fieldErrors: errs };
   }
 
-  const res = await fetch("/cms/api/configurator/create-shop", {
+  const res = await fetch("/cms/api/configurator", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id: shopId, ...parsed.data }),

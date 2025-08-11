@@ -8,9 +8,28 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     const email = (e.currentTarget.elements.namedItem("email") as HTMLInputElement)
       .value;
+    let csrfToken =
+      typeof document !== "undefined"
+        ? document
+            .querySelector('meta[name="csrf-token"]')
+            ?.getAttribute("content") ??
+          document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("csrf_token="))
+            ?.split("=")[1]
+        : undefined;
+    if (typeof document !== "undefined" && !csrfToken) {
+      csrfToken = crypto.randomUUID();
+      document.cookie = `csrf_token=${csrfToken}; path=/; SameSite=Strict${
+        location.protocol === "https:" ? "; secure" : ""
+      }`;
+    }
     const res = await fetch("/api/account/reset/request", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": csrfToken ?? "",
+      },
       body: JSON.stringify({ email }),
     });
     await res.json().catch(() => ({}));

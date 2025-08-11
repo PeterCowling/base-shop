@@ -25,6 +25,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
   ({ nav = [], searchSuggestions = [], locale, className, ...props }, ref) => (
     <header
       ref={ref}
+      data-token="--color-bg"
       className={cn("bg-background border-b", className)}
       {...props}
     >
@@ -32,7 +33,11 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
         <nav className="flex gap-6">
           {nav.map((section) => (
             <div key={section.title} className="group relative">
-              <a href={section.href} className="font-medium">
+              <a
+                href={section.href}
+                className="font-medium"
+                data-token="--color-fg"
+              >
                 {section.title}
               </a>
               {section.items && section.items.length > 0 && (
@@ -40,7 +45,11 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                   <ul className="flex flex-col gap-2">
                     {section.items.map((item) => (
                       <li key={item.title}>
-                        <a href={item.href} className="hover:underline">
+                        <a
+                          href={item.href}
+                          className="hover:underline"
+                          data-token="--color-fg"
+                        >
                           {item.title}
                         </a>
                       </li>

@@ -23,7 +23,10 @@ function ShellLayout({
   const { isMobileNavOpen } = useLayout();
 
   return (
-    <div className={cn("flex min-h-screen flex-col", className)}>
+    <div
+      data-token="--color-bg"
+      className={cn("flex min-h-screen flex-col", className)}
+    >
       {header}
       <div className="flex flex-1">
         {isMobileNavOpen && sideNav}

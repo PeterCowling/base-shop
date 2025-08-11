@@ -14,17 +14,21 @@ import {
   getContrast,
   suggestContrastColor,
 } from "./index";
+import { useEffect, useRef } from "react";
 
 interface StyleEditorProps {
   tokens: TokenMap;
   baseTokens: TokenMap;
   onChange: (tokens: TokenMap) => void;
+  /** Token key to focus when editor opens */
+  focusToken?: string | null;
 }
 
 export default function StyleEditor({
   tokens,
   baseTokens,
   onChange,
+  focusToken,
 }: StyleEditorProps) {
   const {
     colors,
@@ -40,6 +44,27 @@ export default function StyleEditor({
     addCustomFont,
     setGoogleFont,
   } = useTokenEditor(tokens, baseTokens, onChange);
+
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!focusToken) return;
+    const el = containerRef.current?.querySelector(
+      `[data-token-key="${focusToken}"]`
+    ) as HTMLElement | null;
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.classList.add("ring-2", "ring-blue-500");
+      const input = el.querySelector<HTMLElement>(
+        "input, select, textarea, button"
+      );
+      input?.focus();
+      const t = setTimeout(() => {
+        el.classList.remove("ring-2", "ring-blue-500");
+      }, 2000);
+      return () => clearTimeout(t);
+    }
+  }, [focusToken]);
 
   const renderInput = ({
     key: k,
@@ -73,6 +98,7 @@ export default function StyleEditor({
       return (
         <label
           key={k}
+          data-token-key={k}
           className={`flex flex-col gap-1 text-sm ${
             isOverridden ? "border-l-2 border-l-blue-500 pl-2" : ""
           }`}
@@ -106,6 +132,7 @@ export default function StyleEditor({
       return (
         <label
           key={k}
+          data-token-key={k}
           className={`flex flex-col gap-1 text-sm ${
             isOverridden ? "border-l-2 border-l-blue-500 pl-2" : ""
           }`}
@@ -157,6 +184,7 @@ export default function StyleEditor({
       return (
         <label
           key={k}
+          data-token-key={k}
           className={`flex items-center gap-2 text-sm ${
             isOverridden ? "border-l-2 border-l-blue-500 pl-2" : ""
           }`}
@@ -184,6 +212,7 @@ export default function StyleEditor({
     return (
       <label
         key={k}
+        data-token-key={k}
         className={`flex items-center gap-2 text-sm ${
           isOverridden ? "border-l-2 border-l-blue-500 pl-2" : ""
         }`}
@@ -209,7 +238,10 @@ export default function StyleEditor({
   };
 
   return (
-    <div className="max-h-64 space-y-4 overflow-y-auto rounded border p-2">
+    <div
+      ref={containerRef}
+      className="max-h-64 space-y-4 overflow-y-auto rounded border p-2"
+    >
       {colors.length > 0 && (
         <div className="space-y-2">
           <p className="font-medium">Colors</p>

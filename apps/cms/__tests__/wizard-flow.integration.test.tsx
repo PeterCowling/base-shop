@@ -26,7 +26,9 @@ jest.mock("@platform-core/src", () => {
 
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import Wizard from "../src/app/cms/wizard/Wizard";
-import steps from "../src/app/cms/configurator/steps";
+import { steps as stepConfig, stepOrder } from "../src/app/cms/configurator/steps";
+
+const steps = stepOrder.map((id) => stepConfig[id]);
 
 const themes = ["base", "dark"];
 const templates = ["template-app"];

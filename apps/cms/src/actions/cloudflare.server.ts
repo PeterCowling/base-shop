@@ -2,14 +2,15 @@
 "use server";
 
 import { ensureAuthorized } from "./common/auth";
+import { env } from "@acme/config";
 
 export async function provisionDomain(
   shopId: string,
   domain: string
 ): Promise<{ status?: string; certificateStatus?: string }> {
   await ensureAuthorized();
-  const account = process.env.CLOUDFLARE_ACCOUNT_ID;
-  const token = process.env.CLOUDFLARE_API_TOKEN;
+  const account = env.CLOUDFLARE_ACCOUNT_ID;
+  const token = env.CLOUDFLARE_API_TOKEN;
   if (!account || !token) throw new Error("Cloudflare credentials not configured");
 
   const headers = {

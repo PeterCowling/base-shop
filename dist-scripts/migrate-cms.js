@@ -1,4 +1,4 @@
-import { envSchema } from "@config/env";
+import { env, envSchema } from "@acme/config";
 import fetch from "cross-fetch";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -7,21 +7,21 @@ const cliEnvSchema = envSchema.extend({
     CMS_SPACE_URL: z.string(),
     CMS_ACCESS_TOKEN: z.string(),
 });
-let env;
+let envVars;
 try {
-    env = cliEnvSchema.parse(process.env);
+    envVars = cliEnvSchema.parse(env);
 }
 catch (err) {
     console.error("Invalid environment variables:\n", err);
     process.exit(1);
 }
 async function pushSchema(name, file) {
-    const url = `${env.CMS_SPACE_URL}/schemas/${name}`;
+    const url = `${envVars.CMS_SPACE_URL}/schemas/${name}`;
     const body = await readFile(file, "utf8");
     const res = await fetch(url, {
         method: "PUT",
         headers: {
-            Authorization: `Bearer ${env.CMS_ACCESS_TOKEN}`,
+            Authorization: `Bearer ${envVars.CMS_ACCESS_TOKEN}`,
             "Content-Type": "application/json",
         },
         body,

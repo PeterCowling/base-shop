@@ -8,6 +8,7 @@ import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
 
 import { ensureAuthorized } from "./common/auth";
+import { env } from "@acme/config";
 import {
   componentsField,
   createSchema,
@@ -48,7 +49,7 @@ export async function createPage(
   );
   if (!parsed.success) {
     const context = { shop, id };
-    if (process.env.NODE_ENV === "development") {
+    if (env.NODE_ENV === "development") {
       console.warn("[createPage] validation failed", {
         ...context,
         error: parsed.error,
@@ -188,7 +189,7 @@ export async function updatePage(
   );
   if (!parsed.success) {
     const context = { shop, id: formData.get("id") || undefined };
-    if (process.env.NODE_ENV === "development") {
+    if (env.NODE_ENV === "development") {
       console.warn("[updatePage] validation failed", {
         ...context,
         error: parsed.error,

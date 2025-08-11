@@ -1,9 +1,10 @@
-// packages/platform-core/src/tax/index.ts
+// packages-platform-core/src/tax/index.ts
 
 import "server-only";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { resolveDataRoot } from "../dataRoot";
+import { env } from "@acme/config";
 
 export interface TaxCalculationRequest {
   provider: "taxjar";
@@ -31,7 +32,9 @@ export async function getTaxRate(region: string): Promise<number> {
  * Calculate taxes using the configured provider API.
  */
 export async function calculateTax({ provider, ...payload }: TaxCalculationRequest): Promise<unknown> {
-  const apiKey = process.env[`${provider.toUpperCase()}_KEY`];
+  const apiKey = (env as Record<string, string | undefined>)[
+    `${provider.toUpperCase()}_KEY`
+  ];
   if (!apiKey) {
     throw new Error(`Missing ${provider.toUpperCase()}_KEY`);
   }

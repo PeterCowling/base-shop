@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import type { Role } from "./types";
 import type { SessionRecord } from "./store";
 import { createSessionStore, SESSION_TTL_S } from "./store";
+import { env } from "@acme/config";
 
 export const CUSTOMER_SESSION_COOKIE = "customer_session";
 export const CSRF_TOKEN_COOKIE = "csrf_token";
@@ -27,7 +28,7 @@ function cookieOptions() {
     secure: true,
     path: "/",
     maxAge: SESSION_TTL_S,
-    domain: process.env.COOKIE_DOMAIN,
+    domain: env.COOKIE_DOMAIN,
   };
 }
 
@@ -38,12 +39,12 @@ function csrfCookieOptions() {
     secure: true,
     path: "/",
     maxAge: SESSION_TTL_S,
-    domain: process.env.COOKIE_DOMAIN,
+    domain: env.COOKIE_DOMAIN,
   };
 }
 
 export async function getCustomerSession(): Promise<CustomerSession | null> {
-  const secret = process.env.SESSION_SECRET;
+  const secret = env.SESSION_SECRET;
   if (!secret) return null;
   const store = await cookies();
   const token = store.get(CUSTOMER_SESSION_COOKIE)?.value;
@@ -87,7 +88,7 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
 }
 
 export async function createCustomerSession(sessionData: CustomerSession): Promise<void> {
-  const secret = process.env.SESSION_SECRET;
+  const secret = env.SESSION_SECRET;
   if (!secret) {
     throw new Error("SESSION_SECRET is not set");
   }
@@ -117,7 +118,7 @@ export async function destroyCustomerSession(): Promise<void> {
   const store = await cookies();
   const token = store.get(CUSTOMER_SESSION_COOKIE)?.value;
   if (token) {
-    const secret = process.env.SESSION_SECRET;
+    const secret = env.SESSION_SECRET;
     if (secret) {
       try {
         const session = await unsealData<InternalSession>(token, {
@@ -131,11 +132,11 @@ export async function destroyCustomerSession(): Promise<void> {
   }
   store.delete(CUSTOMER_SESSION_COOKIE, {
     path: "/",
-    domain: process.env.COOKIE_DOMAIN,
+    domain: env.COOKIE_DOMAIN,
   });
   store.delete(CSRF_TOKEN_COOKIE, {
     path: "/",
-    domain: process.env.COOKIE_DOMAIN,
+    domain: env.COOKIE_DOMAIN,
   });
 }
 

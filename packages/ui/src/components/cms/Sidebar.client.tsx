@@ -3,8 +3,9 @@
 import { getShopFromPath } from "@platform-core/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { env } from "@acme/config";
 
-if (process.env.NODE_ENV === "development") {
+if (env.NODE_ENV === "development") {
   console.log("sidebar rendered on client");
 }
 

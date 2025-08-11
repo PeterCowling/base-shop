@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { env } from "@acme/config";
 
 export interface ProductData {
   id: string;
@@ -21,7 +22,7 @@ export interface GeneratedMeta {
  * `public/og/<id>.png` and the returned `image` field is the public path.
  */
 export async function generateMeta(product: ProductData): Promise<GeneratedMeta> {
-  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  const client = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 
   const prompt = `Generate SEO metadata for a product as JSON with keys title, description, alt.\n\nTitle: ${product.title}\nDescription: ${product.description}`;
 

@@ -3,6 +3,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+let env;
+try {
+  ({ env } = await import("@acme/config"));
+} catch {
+  env = process.env;
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ----------------------------------------------------------------------------
@@ -39,12 +46,11 @@ export const baseConfig = {
   // bundlePagesRouterDependencies: true,
 
   // Keep the existing "static export in CI only" logic
-  ...(process.env.OUTPUT_EXPORT === "1" ? { output: "export" } : {}),
+  ...(env.OUTPUT_EXPORT ? { output: "export" } : {}),
 
   env: {
-    NEXT_PUBLIC_PHASE: process.env.NEXT_PUBLIC_PHASE || "demo",
-    NEXT_PUBLIC_DEFAULT_SHOP:
-      process.env.NEXT_PUBLIC_DEFAULT_SHOP || firstShop,
+    NEXT_PUBLIC_PHASE: env.NEXT_PUBLIC_PHASE || "demo",
+    NEXT_PUBLIC_DEFAULT_SHOP: env.NEXT_PUBLIC_DEFAULT_SHOP || firstShop,
   },
 };
 
@@ -54,7 +60,7 @@ export const baseConfig = {
  * @param {import('next').NextConfig} [config={}] - Additional Next.js config.
  * @returns {import('next').NextConfig}
  */
-export function withShopCode(shopCode = process.env.SHOP_CODE, config = {}) {
+export function withShopCode(shopCode = env.SHOP_CODE, config = {}) {
   return {
     ...baseConfig,
     ...config,

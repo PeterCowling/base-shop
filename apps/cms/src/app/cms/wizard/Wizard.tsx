@@ -13,9 +13,9 @@ import { ulid } from "ulid";
 /*  Wizard step views                                                         */
 /* -------------------------------------------------------------------------- */
 import MediaUploadDialog from "./MediaUploadDialog";
-import { steps as stepConfig, stepOrder } from "../configurator/steps";
+import { getSteps } from "../configurator/steps";
 
-const steps = stepOrder.map((id) => stepConfig[id]);
+const steps = getSteps();
 
 /* -------------------------------------------------------------------------- */
 /*  Schema / utils                                                            */

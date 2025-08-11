@@ -8,6 +8,7 @@ import type { WizardState } from "../wizard/schema";
 import { createShop } from "../wizard/services/createShop";
 import { initShop } from "../wizard/services/initShop";
 import { deployShop } from "../wizard/services/deployShop";
+import { getSteps } from "./steps";
 
 interface StepConfig {
   id: string;
@@ -19,37 +20,28 @@ interface StepConfig {
 
 export default function ConfiguratorDashboard() {
   const [state, setState] = useState<WizardState | null>(null);
+  const [completed, setCompleted] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     fetch("/cms/api/wizard-progress")
       .then((res) => (res.ok ? res.json() : null))
-      .then((json) => setState(json))
-      .catch(() => setState(null));
+      .then((json) => {
+        setState(json?.state ?? null);
+        setCompleted(json?.completed ?? {});
+      })
+      .catch(() => {
+        setState(null);
+        setCompleted({});
+      });
   }, []);
 
-  const steps: StepConfig[] = [
-    {
-      id: "details",
-      title: "Shop Details",
-      href: "/cms/configurator/details",
-      required: true,
-      completed: Boolean(state?.storeName),
-    },
-    {
-      id: "theme",
-      title: "Theme",
-      href: "/cms/configurator/theme",
-      required: true,
-      completed: Boolean(state?.theme),
-    },
-    {
-      id: "products",
-      title: "Products",
-      href: "/cms/configurator/products",
-      required: false,
-      completed: (state?.components?.length ?? 0) > 0,
-    },
-  ];
+  const steps: StepConfig[] = getSteps().map((step) => ({
+    id: step.id,
+    title: step.label,
+    href: `/cms/configurator/${step.id}`,
+    required: step.required,
+    completed: Boolean(completed[step.id]),
+  }));
 
   const allRequiredDone = steps.every(
     (s) => !s.required || s.completed

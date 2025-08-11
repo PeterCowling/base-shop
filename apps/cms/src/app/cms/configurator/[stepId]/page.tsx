@@ -1,12 +1,14 @@
 "use client";
 
-import steps from "../steps";
+import { getSteps } from "../steps";
 import { WizardProvider } from "../../wizard/WizardContext";
 import useStepCompletion from "../../wizard/hooks/useStepCompletion";
 
 interface PageProps {
   params: { stepId: string };
 }
+
+const steps = getSteps();
 
 function StepContent({ stepId }: { stepId: string }) {
   const step = steps.find((s) => s.id === stepId);

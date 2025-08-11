@@ -1,9 +1,8 @@
 import { stripe } from "@acme/stripe";
+import { markRefunded, readOrders, } from "@platform-core/repositories/rentalOrders.server";
+import { resolveDataRoot } from "@platform-core/dataRoot";
 import { readdir } from "node:fs/promises";
-import { join } from "node:path";
-import { markRefunded, readOrders } from "./repositories/rentalOrders.server";
-export async function releaseDepositsOnce() {
-    const shopsDir = join(process.cwd(), "data", "shops");
+export async function releaseDepositsOnce(shopsDir = resolveDataRoot()) {
     const shops = await readdir(shopsDir);
     for (const shop of shops) {
         const orders = await readOrders(shop);
@@ -30,10 +29,10 @@ export async function releaseDepositsOnce() {
         }
     }
 }
-export function startDepositReleaseService(intervalMs = 1000 * 60 * 60) {
+export function startDepositReleaseService(intervalMs = 1000 * 60 * 60, shopsDir = resolveDataRoot()) {
     async function run() {
         try {
-            await releaseDepositsOnce();
+            await releaseDepositsOnce(shopsDir);
         }
         catch (err) {
             console.error("deposit release failed", err);

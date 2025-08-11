@@ -3,11 +3,12 @@ import {
   markRefunded,
   readOrders,
 } from "@platform-core/repositories/rentalOrders.server";
+import { resolveDataRoot } from "@platform-core/dataRoot";
 import { readdir } from "node:fs/promises";
-import { join } from "node:path";
 
-export async function releaseDepositsOnce(): Promise<void> {
-  const shopsDir = join(process.cwd(), "data", "shops");
+export async function releaseDepositsOnce(
+  shopsDir: string = resolveDataRoot()
+): Promise<void> {
   const shops = await readdir(shopsDir);
   for (const shop of shops) {
     const orders = await readOrders(shop);
@@ -39,11 +40,12 @@ export async function releaseDepositsOnce(): Promise<void> {
 }
 
 export function startDepositReleaseService(
-  intervalMs = 1000 * 60 * 60
+  intervalMs = 1000 * 60 * 60,
+  shopsDir: string = resolveDataRoot()
 ): () => void {
   async function run() {
     try {
-      await releaseDepositsOnce();
+      await releaseDepositsOnce(shopsDir);
     } catch (err) {
       console.error("deposit release failed", err);
     }

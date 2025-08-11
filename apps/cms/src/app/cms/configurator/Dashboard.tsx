@@ -133,6 +133,9 @@ export default function ConfiguratorDashboard() {
       <ul className="mb-6 space-y-2">
         {stepList.map((step) => {
           const completed = Boolean(state?.completed?.[step.id]);
+          const missingPrereqs = step.prerequisites?.filter(
+            (id) => !state?.completed?.[id]
+          );
           return (
             <li key={step.id} className="flex items-center gap-2">
               {completed ? (
@@ -144,6 +147,17 @@ export default function ConfiguratorDashboard() {
                 <Link
                   href={`/cms/configurator/${step.id}`}
                   className="underline"
+                  onClick={(e) => {
+                    if (missingPrereqs && missingPrereqs.length > 0) {
+                      e.preventDefault();
+                      setToast({
+                        open: true,
+                        message: `Complete prerequisite steps: ${missingPrereqs
+                          .map((id) => configuratorSteps[id].label)
+                          .join(", ")}`,
+                      });
+                    }
+                  }}
                 >
                   {step.label}
                 </Link>

@@ -1,9 +1,19 @@
 // apps/shop-abc/__tests__/loginRateLimit.test.ts
-import { POST } from "../src/app/login/route";
-import {
-  __resetLoginRateLimiter,
-  MAX_ATTEMPTS,
-} from "../src/middleware";
+jest.mock("@auth", () => ({
+  createCustomerSession: jest.fn(),
+}));
+jest.mock("@upstash/redis", () => ({
+  Redis: jest.fn(() => ({})),
+}));
+
+let POST: typeof import("../src/app/login/route").POST;
+let __resetLoginRateLimiter: typeof import("../src/middleware").__resetLoginRateLimiter;
+let MAX_ATTEMPTS: number;
+
+beforeAll(async () => {
+  ({ __resetLoginRateLimiter, MAX_ATTEMPTS } = await import("../src/middleware"));
+  ({ POST } = await import("../src/app/login/route"));
+});
 
 function makeRequest(body: any, ip = "1.1.1.1") {
   return {
@@ -12,7 +22,9 @@ function makeRequest(body: any, ip = "1.1.1.1") {
   } as any;
 }
 
-afterEach(() => __resetLoginRateLimiter());
+afterEach(async () => {
+  await __resetLoginRateLimiter();
+});
 
 describe("login rate limiting", () => {
   it("returns 429 after too many attempts", async () => {

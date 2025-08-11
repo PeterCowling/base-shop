@@ -8,27 +8,27 @@ import {
   getUserByEmail,
 } from "@platform-core/users";
 import { checkRegistrationRateLimit } from "../../middleware";
+import { parseJsonBody } from "@lib/parseJsonBody";
 
-const RegisterSchema = z.object({
-  customerId: z.string(),
-  email: z.string().email(),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters long")
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-      "Password must include uppercase, lowercase, and number",
-    ),
-});
+const RegisterSchema = z
+  .object({
+    customerId: z.string(),
+    email: z.string().email(),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+        "Password must include uppercase, lowercase, and number",
+      ),
+  })
+  .strict();
+
+export type RegisterInput = z.infer<typeof RegisterSchema>;
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = RegisterSchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody(req, RegisterSchema);
+  if (!parsed.success) return parsed.error;
 
   const ip = req.headers.get("x-forwarded-for") ?? "unknown";
   const rateLimited = await checkRegistrationRateLimit(ip);

@@ -4,6 +4,7 @@ import { createCustomerSession } from "@auth";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import { parseJsonBody } from "@lib/parseJsonBody";
 import {
   checkLoginRateLimit,
   clearLoginAttempts,
@@ -12,15 +13,19 @@ import { getUserById } from "@platform-core/users";
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
-const LoginSchema = z.object({
-  customerId: z.string(),
-  password: z.string(),
-});
+const LoginSchema = z
+  .object({
+    customerId: z.string(),
+    password: z.string().min(8),
+  })
+  .strict();
 
-async function validateCredentials(
-  customerId: string,
-  password: string,
-): Promise<{ customerId: string; role: Role } | null> {
+export type LoginInput = z.infer<typeof LoginSchema>;
+
+async function validateCredentials({
+  customerId,
+  password,
+}: LoginInput): Promise<{ customerId: string; role: Role } | null> {
   const record = await getUserById(customerId);
   if (!record) return null;
   const match = await bcrypt.compare(password, record.passwordHash);
@@ -29,22 +34,16 @@ async function validateCredentials(
 }
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = LoginSchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody(req, LoginSchema);
+  if (!parsed.success) return parsed.error;
+
+  const { customerId, password } = parsed.data;
 
   const ip = req.headers.get("x-forwarded-for") ?? "unknown";
-  const rateLimited = await checkLoginRateLimit(ip, parsed.data.customerId);
+  const rateLimited = await checkLoginRateLimit(ip, customerId);
   if (rateLimited) return rateLimited;
 
-  const valid = await validateCredentials(
-    parsed.data.customerId,
-    parsed.data.password,
-  );
+  const valid = await validateCredentials({ customerId, password });
 
   if (!valid) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
@@ -56,7 +55,7 @@ export async function POST(req: Request) {
   }
 
   await createCustomerSession(valid);
-  await clearLoginAttempts(ip, parsed.data.customerId);
+  await clearLoginAttempts(ip, customerId);
 
   return NextResponse.json({ ok: true });
 }

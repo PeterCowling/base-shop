@@ -3,19 +3,19 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getUserByEmail, setResetToken } from "@platform-core/users";
 import { sendEmail } from "@lib/email";
+import { parseJsonBody } from "@lib/parseJsonBody";
 
-const ForgotSchema = z.object({
-  email: z.string().email(),
-});
+const ForgotSchema = z
+  .object({
+    email: z.string().email(),
+  })
+  .strict();
+
+export type ForgotPasswordInput = z.infer<typeof ForgotSchema>;
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = ForgotSchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody(req, ForgotSchema);
+  if (!parsed.success) return parsed.error;
 
   const user = await getUserByEmail(parsed.data.email);
   if (user) {

@@ -3,25 +3,30 @@ import { NextResponse } from "next/server";
 import { createCustomerSession } from "@auth";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
+import { parseJsonBody } from "@lib/parseJsonBody";
 
 // Mock customer store. In a real application this would be a database or external identity provider.
 const CUSTOMER_STORE: Record<string, { password: string; role: Role }> = {
-  cust1: { password: "pass1", role: "customer" },
-  viewer1: { password: "view", role: "viewer" },
-  admin1: { password: "admin", role: "admin" },
+  cust1: { password: "password1", role: "customer" },
+  viewer1: { password: "viewpass", role: "viewer" },
+  admin1: { password: "adminpass", role: "admin" },
 };
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
-const LoginSchema = z.object({
-  customerId: z.string(),
-  password: z.string(),
-});
+const LoginSchema = z
+  .object({
+    customerId: z.string(),
+    password: z.string().min(8),
+  })
+  .strict();
 
-async function validateCredentials(
-  customerId: string,
-  password: string,
-): Promise<{ customerId: string; role: Role } | null> {
+export type LoginInput = z.infer<typeof LoginSchema>;
+
+async function validateCredentials({
+  customerId,
+  password,
+}: LoginInput): Promise<{ customerId: string; role: Role } | null> {
   const record = CUSTOMER_STORE[customerId];
   if (!record || record.password !== password) {
     return null;
@@ -30,18 +35,12 @@ async function validateCredentials(
 }
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = LoginSchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody(req, LoginSchema);
+  if (!parsed.success) return parsed.error;
 
-  const valid = await validateCredentials(
-    parsed.data.customerId,
-    parsed.data.password,
-  );
+  const { customerId, password } = parsed.data;
+
+  const valid = await validateCredentials({ customerId, password });
 
   if (!valid) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });

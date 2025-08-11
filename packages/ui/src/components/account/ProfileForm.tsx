@@ -26,7 +26,10 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
     try {
       const csrfToken =
         typeof document !== "undefined"
-          ? document.cookie
+          ? document
+              .querySelector('meta[name="csrf-token"]')
+              ?.getAttribute("content") ??
+            document.cookie
               .split("; ")
               .find((row) => row.startsWith("csrf_token="))
               ?.split("=")[1]

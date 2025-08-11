@@ -4,8 +4,7 @@ import { spawnSync, execSync } from "node:child_process";
 import { validateShopEnv } from "../../packages/platform-core/src/configurator";
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
-import { defaultPaymentProviders } from "../../packages/platform-core/src/createShop/defaultPaymentProviders";
-import { defaultShippingProviders } from "../../packages/platform-core/src/createShop/defaultShippingProviders";
+import { listProviders } from "../../packages/platform-core/src/createShop/listProviders";
 
 function ensureRuntime() {
   const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);
@@ -83,14 +82,10 @@ async function main() {
   const type = typeAns.toLowerCase() === "rental" ? "rental" : "sale";
   const theme = await prompt("Theme [base]: ", "base");
   const template = await prompt("Template [template-app]: ", "template-app");
-  const payment = await selectProviders(
-    "payment providers",
-    defaultPaymentProviders
-  );
-  const shipping = await selectProviders(
-    "shipping providers",
-    defaultShippingProviders
-  );
+  const paymentProviders = await listProviders("payment");
+  const payment = await selectProviders("payment providers", paymentProviders);
+  const shippingProviders = await listProviders("shipping");
+  const shipping = await selectProviders("shipping providers", shippingProviders);
   const ciAns = await prompt("Setup CI workflow? (y/N): ");
 
   const options = {

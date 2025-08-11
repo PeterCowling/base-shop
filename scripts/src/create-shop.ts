@@ -9,8 +9,7 @@ import {
   ensureTemplateExists,
 } from "../../packages/platform-core/src/createShop";
 import { validateShopName } from "../../packages/platform-core/src/shops";
-import { defaultPaymentProviders } from "../../packages/platform-core/src/createShop/defaultPaymentProviders";
-import { defaultShippingProviders } from "../../packages/platform-core/src/createShop/defaultShippingProviders";
+import { listProviders } from "../../packages/platform-core/src/createShop/listProviders";
 
 function ensureRuntime() {
   const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);
@@ -241,18 +240,19 @@ async function ensureContact() {
 /** Prompt for payment providers when none are provided on the command line. */
 async function ensurePayment() {
   if (options.payment.length === 0 && process.stdin.isTTY) {
+    const providers = await listProviders("payment");
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
     });
     await new Promise<void>((resolve) => {
       rl.question(
-        `Select payment providers (comma-separated) [${defaultPaymentProviders.join(", ")}]: `,
+        `Select payment providers (comma-separated) [${providers.join(", ")}]: `,
         (ans) => {
           options.payment = ans
             .split(",")
             .map((s) => s.trim())
-            .filter((p) => defaultPaymentProviders.includes(p));
+            .filter((p) => providers.includes(p));
           rl.close();
           resolve();
         }
@@ -264,18 +264,19 @@ async function ensurePayment() {
 /** Prompt for shipping providers when none are provided on the command line. */
 async function ensureShipping() {
   if (options.shipping.length === 0 && process.stdin.isTTY) {
+    const providers = await listProviders("shipping");
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
     });
     await new Promise<void>((resolve) => {
       rl.question(
-        `Select shipping providers (comma-separated) [${defaultShippingProviders.join(", ")}]: `,
+        `Select shipping providers (comma-separated) [${providers.join(", ")}]: `,
         (ans) => {
           options.shipping = ans
             .split(",")
             .map((s) => s.trim())
-            .filter((p) => defaultShippingProviders.includes(p));
+            .filter((p) => providers.includes(p));
           rl.close();
           resolve();
         }

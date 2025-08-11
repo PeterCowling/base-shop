@@ -1,6 +1,11 @@
 // packages/template-app/__tests__/cart.test.ts
 import { decodeCartCookie, encodeCartCookie } from "@platform-core/src/cartCookie";
-import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
+import {
+  createCart,
+  getCart,
+  setCart,
+  incrementQty,
+} from "@platform-core/src/cartStore";
 import { PRODUCTS } from "@platform-core/src/products";
 import { DELETE, GET, PATCH, POST } from "../src/api/cart/route";
 
@@ -13,6 +18,8 @@ jest.mock("next/server", () => ({
       new Response(JSON.stringify(data), init),
   },
 }));
+
+jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 
 function createRequest(
   body: any,
@@ -136,4 +143,14 @@ test("GET returns cart", async () => {
   const res = await GET(createRequest({}, encodeCartCookie(cartId)));
   const body = await res.json();
   expect(body.cart).toEqual(cart);
+});
+
+test("incrementQty handles concurrent updates", async () => {
+  const sku = { ...TEST_SKU };
+  const cartId = await createCart();
+  await Promise.all(
+    Array.from({ length: 20 }, () => incrementQty(cartId, sku, 1))
+  );
+  const cart = await getCart(cartId);
+  expect(cart[sku.id].qty).toBe(20);
 });

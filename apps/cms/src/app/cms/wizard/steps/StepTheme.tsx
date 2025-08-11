@@ -120,7 +120,11 @@ export default function StepTheme({
 
       {/* Style editor is purely presentational at this step */}
       <div aria-hidden="true">
-        <StyleEditor tokens={themeVars} onChange={setThemeVars} />
+        <StyleEditor
+          tokens={themeVars}
+          baseTokens={themeVars}
+          onChange={setThemeVars}
+        />
       </div>
 
       <WizardPreview style={themeStyle} />

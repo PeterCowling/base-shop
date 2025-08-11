@@ -72,4 +72,56 @@ describe("shop actions", () => {
       expect(result.errors?.themeId[0]).toBe("Required");
     });
   });
+
+  it("updateShop saves theme overrides and tokens", async () => {
+    await withRepo(async (dir) => {
+      const shopFile = path.join(dir, "data", "shops", "test", "shop.json");
+      await fs.writeFile(
+        shopFile,
+        JSON.stringify(
+          {
+            id: "test",
+            name: "Seed",
+            catalogFilters: [],
+            themeId: "base",
+            themeOverrides: {},
+            themeTokens: {},
+            filterMappings: {},
+            priceOverrides: {},
+            localeOverrides: {},
+          },
+          null,
+          2,
+        ),
+      );
+
+      const adminSession = { user: { role: "admin" } } as unknown as Session;
+
+      jest.doMock("next-auth", () => ({
+        getServerSession: jest.fn().mockResolvedValue(adminSession),
+      }));
+
+      const defaultTokens = { base: "default", accent: "blue" };
+      jest.doMock("@platform-core/src/createShop", () => ({
+        syncTheme: jest.fn(),
+        loadTokens: jest.fn().mockReturnValue(defaultTokens),
+      }));
+
+      const { updateShop } = await import("../src/actions/shops.server");
+
+      const overrides = { accent: "red" };
+      const fd = new FormData();
+      fd.append("id", "test");
+      fd.append("name", "Updated");
+      fd.append("themeId", "base");
+      fd.append("themeOverrides", JSON.stringify(overrides));
+
+      const result = await updateShop("test", fd);
+
+      const saved = JSON.parse(await fs.readFile(shopFile, "utf8"));
+      expect(saved.themeOverrides).toEqual(overrides);
+      expect(saved.themeTokens).toEqual({ ...defaultTokens, ...overrides });
+      expect(result.shop?.themeTokens).toEqual({ ...defaultTokens, ...overrides });
+    });
+  });
 });

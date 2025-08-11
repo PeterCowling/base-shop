@@ -5,9 +5,7 @@ import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import type { WizardState } from "../wizard/schema";
-import { createShop } from "../wizard/services/createShop";
-import { initShop } from "../wizard/services/initShop";
-import { deployShop } from "../wizard/services/deployShop";
+export type StepStatus = "idle" | "pending" | "success" | "failure";
 
 interface StepConfig {
   id: string;
@@ -19,6 +17,16 @@ interface StepConfig {
 
 export default function ConfiguratorDashboard() {
   const [state, setState] = useState<WizardState | null>(null);
+  const [launchStatus, setLaunchStatus] = useState<
+    | {
+        create: StepStatus;
+        init: StepStatus;
+        deploy: StepStatus;
+        seed?: StepStatus;
+      }
+    | null
+  >(null);
+  const [launchError, setLaunchError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/cms/api/wizard-progress")
@@ -57,12 +65,29 @@ export default function ConfiguratorDashboard() {
 
   const launchShop = async () => {
     if (!state?.shopId) return;
-    const createRes = await createShop(state.shopId, state);
-    if (!createRes.ok) {
-      return;
+    setLaunchError(null);
+    const seed = Boolean(state.categoriesText);
+    setLaunchStatus({
+      create: "pending",
+      init: "pending",
+      deploy: "pending",
+      ...(seed ? { seed: "pending" as StepStatus } : {}),
+    });
+    const res = await fetch("/cms/api/launch-shop", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ shopId: state.shopId, state, seed }),
+    });
+    const json = (await res.json().catch(() => ({}))) as {
+      statuses?: Record<string, StepStatus>;
+      error?: string;
+    };
+    if (json.statuses) {
+      setLaunchStatus(json.statuses as any);
     }
-    await initShop(state.shopId, undefined, state.categoriesText);
-    await deployShop(state.shopId, state.domain ?? "");
+    if (!res.ok) {
+      setLaunchError(json.error ?? "Launch failed");
+    }
   };
 
   return (
@@ -85,6 +110,18 @@ export default function ConfiguratorDashboard() {
       <Button disabled={!allRequiredDone} onClick={launchShop}>
         Launch Shop
       </Button>
+      {launchStatus && (
+        <ul className="mt-4 space-y-1 text-sm">
+          {Object.entries(launchStatus).map(([step, status]) => (
+            <li key={step}>
+              {step}: {status}
+            </li>
+          ))}
+        </ul>
+      )}
+      {launchError && (
+        <p className="mt-2 text-sm text-red-600">{launchError}</p>
+      )}
     </div>
   );
 }

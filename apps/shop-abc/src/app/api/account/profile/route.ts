@@ -47,8 +47,17 @@ export async function PUT(req: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
   }
-
-  await updateCustomerProfile(session.customerId, parsed.data);
+  try {
+    await updateCustomerProfile(session.customerId, parsed.data);
+  } catch (err) {
+    if (err instanceof Error && err.message.startsWith("Conflict:")) {
+      return NextResponse.json(
+        { error: err.message.replace("Conflict: ", "") },
+        { status: 409 }
+      );
+    }
+    return NextResponse.json({ error: "Update failed" }, { status: 400 });
+  }
   const profile = await getCustomerProfile(session.customerId);
   return NextResponse.json({ ok: true, profile });
 }

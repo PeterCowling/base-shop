@@ -4,8 +4,8 @@ const PROFILE_STORE: Record<string, any> = {};
 
 jest.mock("../src/app/userStore", () => ({
   __esModule: true,
-  addUser: jest.fn(async ({ id, email, passwordHash }) => {
-    USER_STORE[id] = { id, email, passwordHash };
+  addUser: jest.fn(async ({ id, email, passwordHash, verified }) => {
+    USER_STORE[id] = { id, email, passwordHash, verified };
   }),
   getUserById: jest.fn(async (id: string) => USER_STORE[id] ?? null),
   getUserByEmail: jest.fn(async (email: string) =>
@@ -35,6 +35,10 @@ jest.mock("@acme/platform-core/customerProfiles", () => ({
     return PROFILE_STORE[id];
   }),
   getCustomerProfile: jest.fn(async (id: string) => PROFILE_STORE[id] ?? null),
+}));
+
+jest.mock("@acme/email", () => ({
+  sendEmail: jest.fn(),
 }));
 
 jest.mock("next/server", () => ({

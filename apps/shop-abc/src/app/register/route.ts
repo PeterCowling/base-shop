@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import {
   addUser,
   getUserById,
@@ -10,6 +11,7 @@ import {
 import { checkRegistrationRateLimit } from "../../middleware";
 import { validateCsrfToken } from "@auth";
 import { updateCustomerProfile } from "@acme/platform-core/customerProfiles";
+import { sendEmail } from "@acme/email";
 
 const RegisterSchema = z.object({
   customerId: z.string(),
@@ -50,7 +52,20 @@ export async function POST(req: Request) {
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  await addUser({ id: customerId, email, passwordHash });
+  await addUser({ id: customerId, email, passwordHash, verified: false });
   await updateCustomerProfile(customerId, { name: "", email });
+
+  const secret = process.env.SESSION_SECRET ?? "test-secret";
+  const signature = crypto
+    .createHmac("sha256", secret)
+    .update(customerId)
+    .digest("hex");
+  const token = `${customerId}.${signature}`;
+  await sendEmail(
+    email,
+    "Verify your account",
+    `Your verification token is ${token}`,
+  );
+
   return NextResponse.json({ ok: true });
 }

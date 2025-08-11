@@ -9,6 +9,10 @@ jest.mock("../src/app/userStore", () => ({
   getUserByEmail: jest.fn().mockResolvedValue(null),
 }));
 
+jest.mock("@acme/email", () => ({
+  sendEmail: jest.fn(),
+}));
+
 jest.mock("bcryptjs", () => ({
   hash: jest.fn().mockResolvedValue("hashed"),
 }));

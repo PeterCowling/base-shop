@@ -6,6 +6,7 @@ export interface User {
   email: string;
   passwordHash: string;
   role: string;
+  verified: boolean;
   resetTokenHash: string | null;
   resetTokenExpires: number | null;
 }
@@ -34,11 +35,13 @@ export async function addUser({
   email,
   passwordHash,
   role = "customer",
+  verified = false,
 }: {
   id: string;
   email: string;
   passwordHash: string;
   role?: string;
+  verified?: boolean;
 }): Promise<User> {
   const store = await readStore();
   const user: User = {
@@ -46,6 +49,7 @@ export async function addUser({
     email,
     passwordHash,
     role,
+    verified,
     resetTokenHash: null,
     resetTokenExpires: null,
   };
@@ -103,6 +107,15 @@ export async function updatePassword(
     user.passwordHash = passwordHash;
     user.resetTokenHash = null;
     user.resetTokenExpires = null;
+    await writeStore(store);
+  }
+}
+
+export async function verifyUser(id: string): Promise<void> {
+  const store = await readStore();
+  const user = store[id];
+  if (user) {
+    user.verified = true;
     await writeStore(store);
   }
 }

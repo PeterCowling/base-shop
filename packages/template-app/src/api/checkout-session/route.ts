@@ -86,10 +86,14 @@ async function computeTotals(
   const subtotalBase = lineTotals.reduce((s, n) => s + n.discounted, 0);
   const originalBase = lineTotals.reduce((s, n) => s + n.base, 0);
   const discountBase = originalBase - subtotalBase;
-  const depositBase = Object.values(cart).reduce(
-    (s, item) => s + item.sku.deposit * item.qty,
-    0
-  );
+  const depositBase = Object.values(cart).reduce((s, item) => {
+    const deposit = getProductById(item.sku.id)?.deposit;
+    if (deposit === undefined) {
+      console.warn(`Deposit lookup failed for SKU ${item.sku.id}`);
+      return s;
+    }
+    return s + deposit * item.qty;
+  }, 0);
 
   return {
     subtotal: await convertCurrency(subtotalBase, currency),

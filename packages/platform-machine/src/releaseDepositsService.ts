@@ -3,12 +3,17 @@ import {
   markRefunded,
   readOrders,
 } from "@platform-core/repositories/rentalOrders.server";
+import { resolveDataRoot } from "@platform-core/dataRoot";
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-export async function releaseDepositsOnce(shopId?: string): Promise<void> {
-  const shopsDir = join(process.cwd(), "data", "shops");
-  const shops = shopId ? [shopId] : await readdir(shopsDir);
+const DATA_ROOT = resolveDataRoot();
+
+export async function releaseDepositsOnce(
+  shopId?: string,
+  dataRoot: string = DATA_ROOT,
+): Promise<void> {
+  const shops = shopId ? [shopId] : await readdir(dataRoot);
   for (const shop of shops) {
     const orders = await readOrders(shop);
     for (const order of orders) {
@@ -65,12 +70,13 @@ function readEnv(shop: string, key: string): string | undefined {
 
 async function resolveConfig(
   shop: string,
-  override: Partial<DepositReleaseConfig> = {}
+  dataRoot: string,
+  override: Partial<DepositReleaseConfig> = {},
 ): Promise<DepositReleaseConfig> {
   let config: DepositReleaseConfig = { ...DEFAULT_CONFIG };
 
   try {
-    const file = join(process.cwd(), "data", "shops", shop, "shop.json");
+    const file = join(dataRoot, shop, "shop.json");
     const json = JSON.parse(await readFile(file, "utf8"));
     const cfg = json.depositRelease;
     if (cfg) {
@@ -95,19 +101,19 @@ async function resolveConfig(
 }
 
 export async function startDepositReleaseService(
-  configs: Record<string, Partial<DepositReleaseConfig>> = {}
+  configs: Record<string, Partial<DepositReleaseConfig>> = {},
+  dataRoot: string = DATA_ROOT,
 ): Promise<() => void> {
-  const shopsDir = join(process.cwd(), "data", "shops");
-  const shops = await readdir(shopsDir);
+  const shops = await readdir(dataRoot);
   const timers: NodeJS.Timeout[] = [];
 
   for (const shop of shops) {
-    const cfg = await resolveConfig(shop, configs[shop]);
+    const cfg = await resolveConfig(shop, dataRoot, configs[shop]);
     if (!cfg.enabled) continue;
 
     async function run() {
       try {
-        await releaseDepositsOnce(shop);
+        await releaseDepositsOnce(shop, dataRoot);
       } catch (err) {
         console.error("deposit release failed", err);
       }

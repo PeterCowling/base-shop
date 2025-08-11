@@ -79,7 +79,22 @@ export async function setupSanityBlog(
                   { name: "title", type: "string", title: "Title" },
                   { name: "slug", type: "slug", title: "Slug", options: { source: "title" } },
                   { name: "excerpt", type: "text", title: "Excerpt" },
-                  { name: "body", type: "text", title: "Body" },
+                  {
+                    name: "body",
+                    title: "Body",
+                    type: "array",
+                    of: [
+                      { type: "block" },
+                      {
+                        type: "object",
+                        name: "productReference",
+                        title: "Product",
+                        fields: [
+                          { name: "slug", type: "string", title: "Product Slug" },
+                        ],
+                      },
+                    ],
+                  },
                   { name: "published", type: "boolean", title: "Published" },
                 ],
               },

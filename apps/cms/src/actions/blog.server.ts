@@ -87,7 +87,13 @@ export async function createPost(
   await ensureAuthorized();
   const config = await getConfig(shopId);
   const title = String(formData.get("title") ?? "");
-  const content = String(formData.get("content") ?? "");
+  const content = String(formData.get("content") ?? "[]");
+  let body: unknown = [];
+  try {
+    body = JSON.parse(content);
+  } catch {
+    body = [];
+  }
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   try {
@@ -97,7 +103,7 @@ export async function createPost(
           create: {
             _type: "post",
             title,
-            body: content,
+            body,
             published: false,
             slug: slug ? { current: slug } : undefined,
             excerpt: excerpt || undefined,
@@ -125,7 +131,13 @@ export async function updatePost(
   const config = await getConfig(shopId);
   const id = String(formData.get("id") ?? "");
   const title = String(formData.get("title") ?? "");
-  const content = String(formData.get("content") ?? "");
+  const content = String(formData.get("content") ?? "[]");
+  let body: unknown = [];
+  try {
+    body = JSON.parse(content);
+  } catch {
+    body = [];
+  }
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   try {
@@ -136,7 +148,7 @@ export async function updatePost(
             id,
             set: {
               title,
-              body: content,
+              body,
               slug: slug ? { current: slug } : undefined,
               excerpt: excerpt || undefined,
             },

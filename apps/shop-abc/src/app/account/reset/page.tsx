@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { getCsrfToken } from "@shared-utils";
 import type { ResetCompleteInput } from "../../api/account/reset/complete/route";
 
 export default function ResetPasswordPage() {
   const [msg, setMsg] = useState("");
+  const searchParams = useSearchParams();
+  const tokenParam = searchParams.get("token") ?? "";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -28,7 +31,7 @@ export default function ResetPasswordPage() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-2">
-      <input name="token" placeholder="Token" className="border p-1" />
+      <input type="hidden" name="token" value={tokenParam} />
       <input
         name="password"
         type="password"

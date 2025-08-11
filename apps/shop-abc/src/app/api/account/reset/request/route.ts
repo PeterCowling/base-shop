@@ -40,10 +40,11 @@ export async function POST(req: Request) {
       .digest("hex");
     const expires = Date.now() + 1000 * 60 * 60; // 1 hour
     await setResetToken(user.id, hashedToken, expires);
+    const resetUrl = `/account/reset?token=${token}`;
     await sendEmail(
       parsed.data.email,
       "Password reset",
-      `Your token is ${token}`,
+      `Reset your password: ${resetUrl}`,
     );
   }
 

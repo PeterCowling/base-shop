@@ -1,6 +1,6 @@
 export {};
 
-let service: typeof import("../releaseDepositsService");
+let service: typeof import("@acme/platform-machine");
 
 const readdir = jest.fn();
 jest.mock("node:fs/promises", () => ({ readdir }));
@@ -31,7 +31,7 @@ beforeEach(() => {
 
 describe("releaseDepositsOnce", () => {
   it("refunds deposits and marks orders as refunded", async () => {
-    service = await import("../releaseDepositsService");
+    service = await import("@acme/platform-machine");
     readdir.mockResolvedValue(["shop1"]);
     readOrders.mockResolvedValue([
       {
@@ -67,7 +67,7 @@ describe("releaseDepositsOnce", () => {
   });
 
   it("handles multiple shops", async () => {
-    service = await import("../releaseDepositsService");
+    service = await import("@acme/platform-machine");
     readdir.mockResolvedValue(["shop1", "shop2"]);
     readOrders
       .mockResolvedValueOnce([
@@ -110,7 +110,7 @@ describe("releaseDepositsOnce", () => {
 
 describe("startDepositReleaseService", () => {
   it("schedules and clears interval", async () => {
-    service = await import("../releaseDepositsService");
+    service = await import("@acme/platform-machine");
     readdir.mockResolvedValue([]);
     readOrders.mockResolvedValue([]);
     const setSpy = jest

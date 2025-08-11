@@ -492,7 +492,14 @@ importers:
         specifier: ^5.15.1
         version: 5.22.0
 
-  packages/platform-machine/src:
+  packages/platform-machine:
+    dependencies:
+      '@acme/platform-core':
+        specifier: workspace:*
+        version: link:../platform-core
+      '@acme/stripe':
+        specifier: workspace:*
+        version: link:../stripe
     devDependencies:
       next:
         specifier: ^15.3.4

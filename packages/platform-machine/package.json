@@ -1,0 +1,21 @@
+{
+  "name": "@acme/platform-machine",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./releaseDepositsService": "./src/releaseDepositsService.ts"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "@acme/stripe": "workspace:*",
+    "@acme/platform-core": "workspace:*"
+  },
+  "devDependencies": {
+    "next": "^15.3.4"
+  }
+}

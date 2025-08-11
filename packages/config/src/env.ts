@@ -16,6 +16,13 @@ export const envSchema = z.object({
   CHROMATIC_PROJECT_TOKEN: z.string().optional(),
   GMAIL_USER: z.string().optional(),
   GMAIL_PASS: z.string().optional(),
+  // Comma separated list of email recipients for stock alerts
+  STOCK_ALERT_RECIPIENTS: z.string().optional(),
+  // Optional webhook URL for stock alerts
+  STOCK_ALERT_WEBHOOK: z.string().url().optional(),
+  // Default low stock threshold if an item does not specify one
+  STOCK_ALERT_DEFAULT_THRESHOLD: z.coerce.number().optional(),
+  // Legacy single-recipient support
   STOCK_ALERT_RECIPIENT: z.string().email().optional(),
 });
 

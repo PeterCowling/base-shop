@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getUserByEmail, setResetToken } from "../../../../userStore";
 import { sendEmail } from "@lib/email";
 import { checkLoginRateLimit } from "../../../../../middleware";
+import { validateCsrfToken } from "@auth";
 
 const schema = z.object({
   email: z.string().email(),
@@ -16,6 +17,11 @@ export async function POST(req: Request) {
     return NextResponse.json(parsed.error.flatten().fieldErrors, {
       status: 400,
     });
+  }
+
+  const csrfToken = req.headers.get("x-csrf-token");
+  if (!csrfToken || !(await validateCsrfToken(csrfToken))) {
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
   }
 
   const ip = req.headers.get("x-forwarded-for") ?? "unknown";

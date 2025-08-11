@@ -3,7 +3,7 @@
   "name": "bcd",
   "catalogFilters": [],
   "themeId": "base",
-  "themeTokens": {},
+  "themeOverrides": {},
   "filterMappings": {},
   "shippingProviders": ["dhl"],
   "taxProviders": ["taxjar"],

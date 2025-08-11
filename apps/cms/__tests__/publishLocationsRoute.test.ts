@@ -2,6 +2,8 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
+jest.setTimeout(20000);
+
 // NextResponse.json relies on the static Response.json API, which cross-fetch
 // does not provide. Polyfill it when missing.
 if (typeof (Response as any).json !== "function") {

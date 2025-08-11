@@ -36,7 +36,7 @@ export function ensureTemplateExists(theme: string, template: string): string {
 export function writeFiles(
   id: string,
   options: PreparedCreateShopOptions,
-  themeTokens: Record<string, string>,
+  themeOverrides: Record<string, string>,
   templateApp: string,
   newApp: string,
   newData: string
@@ -107,7 +107,7 @@ export function writeFiles(
         contactInfo: options.contactInfo,
         catalogFilters: [],
         themeId: options.theme,
-        themeTokens,
+        themeOverrides,
         filterMappings: { ...defaultFilterMappings },
         type: options.type,
         paymentProviders: options.payment,

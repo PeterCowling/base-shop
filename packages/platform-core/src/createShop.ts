@@ -11,7 +11,6 @@ import {
   type PreparedCreateShopOptions,
 } from "./createShop/schema";
 import { loadTokens } from "./createShop/themeUtils";
-
 /**
  * Create a new shop app and seed data.
  * Paths are resolved relative to the repository root.
@@ -24,14 +23,13 @@ export async function createShop(
   id = validateShopName(id);
 
   const prepared = prepareOptions(id, opts);
-  const themeTokens = loadTokens(prepared.theme);
 
   const shopData = {
     id,
     name: prepared.name,
     catalogFilters: [],
     themeId: prepared.theme,
-    themeTokens,
+    themeOverrides: {},
     filterMappings: {},
     priceOverrides: {},
     localeOverrides: {},

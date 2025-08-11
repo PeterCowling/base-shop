@@ -3,7 +3,7 @@
   "name": "abc",
   "catalogFilters": [],
   "themeId": "base",
-  "themeTokens": {},
+  "themeOverrides": {},
   "filterMappings": {},
   "priceOverrides": {},
   "localeOverrides": {},

@@ -41,6 +41,7 @@ export const shopSchema = z
           .map((v) => v.trim())
           .filter(Boolean)
       ),
+    themeOverrides: jsonRecord,
     themeTokens: jsonRecord,
     filterMappings: jsonRecord,
     priceOverrides: jsonRecord,

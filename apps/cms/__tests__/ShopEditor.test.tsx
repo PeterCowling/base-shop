@@ -14,6 +14,7 @@ describe("ShopEditor", () => {
       name: "Test",
       themeId: "base",
       catalogFilters: [],
+      themeOverrides: {},
       themeTokens: {},
       filterMappings: {},
       priceOverrides: {},

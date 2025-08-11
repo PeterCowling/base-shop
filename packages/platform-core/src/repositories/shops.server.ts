@@ -8,7 +8,7 @@ import { prisma } from "../db";
 import { defaultFilterMappings } from "../defaultFilterMappings";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "../dataRoot";
-import { loadThemeTokens } from "../themeTokens";
+import { loadTokens } from "../createShop";
 export {
   diffHistory,
   getShopSettings,
@@ -31,9 +31,10 @@ export async function readShop(shop: string): Promise<Shop> {
     const rec = await prisma.shop.findUnique({ where: { id: shop } });
     if (rec) {
       const data = shopSchema.parse(rec.data);
-      if (!data.themeTokens || Object.keys(data.themeTokens).length === 0) {
-        data.themeTokens = await loadThemeTokens(data.themeId);
-      }
+      data.themeTokens = {
+        ...loadTokens(data.themeId),
+        ...data.themeOverrides,
+      };
       if (!data.navigation) data.navigation = [];
       return data as Shop;
     }
@@ -44,12 +45,10 @@ export async function readShop(shop: string): Promise<Shop> {
     const buf = await fs.readFile(shopPath(shop), "utf8");
     const parsed = shopSchema.safeParse(JSON.parse(buf));
     if (parsed.success && parsed.data.id) {
-      if (
-        !parsed.data.themeTokens ||
-        Object.keys(parsed.data.themeTokens).length === 0
-      ) {
-        parsed.data.themeTokens = await loadThemeTokens(parsed.data.themeId);
-      }
+      parsed.data.themeTokens = {
+        ...loadTokens(parsed.data.themeId),
+        ...parsed.data.themeOverrides,
+      };
       if (!parsed.data.navigation) parsed.data.navigation = [];
       return parsed.data as Shop;
     }
@@ -63,7 +62,8 @@ export async function readShop(shop: string): Promise<Shop> {
     name: shop,
     catalogFilters: [],
     themeId,
-    themeTokens: await loadThemeTokens(themeId),
+    themeOverrides: {},
+    themeTokens: loadTokens(themeId),
     filterMappings: { ...defaultFilterMappings },
     priceOverrides: {},
     localeOverrides: {},

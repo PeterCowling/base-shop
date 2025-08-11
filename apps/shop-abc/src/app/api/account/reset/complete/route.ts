@@ -5,26 +5,28 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { getUserByResetToken, updatePassword } from "../../../../userStore";
 import { validateCsrfToken } from "@auth";
+import { parseJsonBody } from "@shared-utils";
 
-const schema = z.object({
-  token: z.string(),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters long")
-    .regex(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-      "Password must include uppercase, lowercase, and number"
-    ),
-});
+export const ResetCompleteSchema = z
+  .object({
+    token: z.string(),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+        "Password must include uppercase, lowercase, and number",
+      ),
+  })
+  .strict();
+export type ResetCompleteInput = z.infer<typeof ResetCompleteSchema>;
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = schema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody<ResetCompleteInput>(
+    req,
+    ResetCompleteSchema,
+  );
+  if (!parsed.success) return parsed.response;
 
   const csrfToken = req.headers.get("x-csrf-token");
   if (!csrfToken || !(await validateCsrfToken(csrfToken))) {

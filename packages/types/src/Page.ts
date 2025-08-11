@@ -336,20 +336,22 @@ export const historyStateSchema: z.ZodType<HistoryState> = z
   .strict()
   .default({ past: [], present: [], future: [] });
 
-export const pageSchema = z.object({
-  id: z.string(),
-  slug: z.string(),
-  status: z.enum(["draft", "published"]),
-  components: z.array(pageComponentSchema).default([]),
-  seo: z.object({
-    title: z.record(localeSchema, z.string()),
-    description: z.record(localeSchema, z.string()).optional(),
-    image: z.record(localeSchema, z.string()).optional(),
-  }),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  createdBy: z.string(),
-  history: historyStateSchema.optional(),
-});
+export const pageSchema = z
+  .object({
+    id: z.string(),
+    slug: z.string(),
+    status: z.enum(["draft", "published"]),
+    components: z.array(pageComponentSchema).default([]),
+    seo: z.object({
+      title: z.record(localeSchema, z.string()),
+      description: z.record(localeSchema, z.string()).optional(),
+      image: z.record(localeSchema, z.string()).optional(),
+    }),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    createdBy: z.string(),
+    history: historyStateSchema.optional(),
+  })
+  .strict();
 
 export type Page = z.infer<typeof pageSchema>;

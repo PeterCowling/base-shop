@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getCsrfToken } from "@shared-utils";
+import type { LoginInput } from "./route";
 
 export default function LoginPage() {
   const [msg, setMsg] = useState("");
@@ -12,7 +13,7 @@ export default function LoginPage() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const body = {
+    const body: LoginInput = {
       customerId: (form.elements.namedItem("customerId") as HTMLInputElement)
         .value,
       password: (form.elements.namedItem("password") as HTMLInputElement).value,

@@ -18,6 +18,21 @@ describe("pageSchema", () => {
     expect(pageSchema.parse(valid)).toEqual(valid);
   });
 
+  it("rejects unknown fields", () => {
+    const invalid = {
+      id: "p1",
+      slug: "home",
+      status: "draft",
+      extra: true,
+      components: [],
+      seo: { title: { en: "Home" } },
+      createdAt: "2024-01-01T00:00:00Z",
+      updatedAt: "2024-01-01T00:00:00Z",
+      createdBy: "user",
+    } as any;
+    expect(pageSchema.safeParse(invalid).success).toBe(false);
+  });
+
   it("rejects unknown component type", () => {
     const invalid = {
       id: "p1",

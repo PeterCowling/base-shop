@@ -2,17 +2,26 @@
 import { getCustomerSession } from "@auth";
 import { getCustomerProfile } from "@acme/platform-core";
 import ProfileForm from "./ProfileForm";
+import { redirect } from "next/navigation";
 
 export interface ProfilePageProps {
   /** Optional heading to allow shop-specific overrides */
   title?: string;
+  /** Destination to return to after login */
+  callbackUrl?: string;
 }
 
 export const metadata = { title: "Profile" };
 
-export default async function ProfilePage({ title = "Profile" }: ProfilePageProps) {
+export default async function ProfilePage({
+  title = "Profile",
+  callbackUrl = "/account/profile",
+}: ProfilePageProps) {
   const session = await getCustomerSession();
-  if (!session) return <p>Please log in to view your profile.</p>;
+  if (!session) {
+    redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
+    return null as never;
+  }
   const profile = await getCustomerProfile(session.customerId);
   return (
     <div className="p-6">

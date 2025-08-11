@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { getUserById, updatePassword } from "@platform-core/users";
+import { getUserById, updatePassword } from "../../../../userStore";
 
 const schema = z.object({
   customerId: z.string(),

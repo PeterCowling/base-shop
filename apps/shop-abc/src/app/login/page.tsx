@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { getCsrfToken } from "@shared-utils";
+import { MfaChallenge } from "@ui/components/account";
 import type { LoginInput } from "./route";
 
 export default function LoginPage() {
   const [msg, setMsg] = useState("");
+  const [mfaUser, setMfaUser] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
 
@@ -29,11 +31,26 @@ export default function LoginPage() {
     });
     const data = await res.json().catch(() => ({}));
     if (res.ok) {
+      if (data.mfaRequired) {
+        setMfaUser(body.customerId);
+        return;
+      }
       window.location.href = callbackUrl ?? "/account";
       return;
     }
     setMsg(data.error || "Error");
   }
+  if (mfaUser) {
+    return (
+      <MfaChallenge
+        customerId={mfaUser}
+        onSuccess={() => {
+          window.location.href = callbackUrl ?? "/account";
+        }}
+      />
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-2">
       <input name="customerId" placeholder="User ID" className="border p-1" />

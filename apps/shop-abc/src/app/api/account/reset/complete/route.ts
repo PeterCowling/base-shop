@@ -2,10 +2,9 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { getUserById, updatePassword } from "@platform-core/users";
+import { getUserByResetToken, updatePassword } from "@platform-core/users";
 
 const schema = z.object({
-  customerId: z.string(),
   token: z.string(),
   password: z.string(),
 });
@@ -19,13 +18,13 @@ export async function POST(req: Request) {
     });
   }
 
-  const { customerId, token, password } = parsed.data;
-  const user = await getUserById(customerId);
-  if (!user || user.resetToken !== token) {
+  const { token, password } = parsed.data;
+  const user = await getUserByResetToken(token);
+  if (!user) {
     return NextResponse.json({ error: "Invalid token" }, { status: 400 });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  await updatePassword(customerId, passwordHash);
+  await updatePassword(user.id, passwordHash);
   return NextResponse.json({ ok: true });
 }

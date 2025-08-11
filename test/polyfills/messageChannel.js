@@ -1,5 +1,5 @@
 // Polyfill to track MessagePorts created by React's scheduler
-const { MessageChannel: NodeMessageChannel } = require("node:worker_threads");
+import { MessageChannel as NodeMessageChannel } from "node:worker_threads";
 
 const openPorts = [];
 class ManagedMessageChannel extends NodeMessageChannel {

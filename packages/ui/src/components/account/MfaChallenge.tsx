@@ -2,6 +2,7 @@
 
 // packages/ui/src/components/account/MfaChallenge.tsx
 import { useState } from "react";
+import { getCsrfToken } from "@shared-utils";
 
 export interface MfaChallengeProps {
   onSuccess?: () => void;
@@ -13,13 +14,7 @@ export default function MfaChallenge({ onSuccess }: MfaChallengeProps) {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const csrfToken =
-      typeof document !== "undefined"
-        ? document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("csrf_token="))
-            ?.split("=")[1]
-        : undefined;
+    const csrfToken = getCsrfToken();
     const res = await fetch("/api/mfa/verify", {
       method: "POST",
       headers: {

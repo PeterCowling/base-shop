@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getCsrfToken } from "@shared-utils";
 
 export default function RegisterPage() {
   const [msg, setMsg] = useState("");
@@ -19,19 +20,7 @@ export default function RegisterPage() {
       email: (form.elements.namedItem("email") as HTMLInputElement).value,
       password,
     };
-    let csrfToken =
-      typeof document !== "undefined"
-        ? document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("csrf_token="))
-            ?.split("=")[1]
-        : undefined;
-    if (typeof document !== "undefined" && !csrfToken) {
-      csrfToken = crypto.randomUUID();
-      document.cookie = `csrf_token=${csrfToken}; path=/; SameSite=Strict${
-        location.protocol === "https:" ? "; secure" : ""
-      }`;
-    }
+    const csrfToken = getCsrfToken();
     const res = await fetch("/register", {
       method: "POST",
       headers: {

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { getCsrfToken } from "@shared-utils";
 
 export default function LoginPage() {
   const [msg, setMsg] = useState("");
@@ -16,19 +17,7 @@ export default function LoginPage() {
         .value,
       password: (form.elements.namedItem("password") as HTMLInputElement).value,
     };
-    let csrfToken =
-      typeof document !== "undefined"
-        ? document.cookie
-            .split("; ")
-            .find((row) => row.startsWith("csrf_token="))
-            ?.split("=")[1]
-        : undefined;
-    if (typeof document !== "undefined" && !csrfToken) {
-      csrfToken = crypto.randomUUID();
-      document.cookie = `csrf_token=${csrfToken}; path=/; SameSite=Strict${
-        location.protocol === "https:" ? "; secure" : ""
-      }`;
-    }
+    const csrfToken = getCsrfToken();
     const res = await fetch("/login", {
       method: "POST",
       headers: {

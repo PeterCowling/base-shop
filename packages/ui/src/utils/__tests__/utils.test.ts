@@ -6,9 +6,17 @@ describe("cn", () => {
       "a b"
     );
   });
+
+  it("returns empty string with no arguments", () => {
+    expect(cn()).toBe("");
+  });
 });
 
 describe("boxProps", () => {
+  it("returns empty classes and style when no props provided", () => {
+    expect(boxProps({})).toEqual({ classes: "", style: {} });
+  });
+
   it("returns classes for tailwind width/height", () => {
     const result = boxProps({
       width: "w-16",
@@ -36,5 +44,12 @@ describe("drawerWidthProps", () => {
     const result = drawerWidthProps(250);
     expect(result.widthClass).toBeUndefined();
     expect(result.style).toEqual({ width: 250 });
+  });
+
+  it("handles percentage width string", () => {
+    expect(drawerWidthProps("50%")).toEqual({
+      widthClass: undefined,
+      style: { width: "50%" },
+    });
   });
 });

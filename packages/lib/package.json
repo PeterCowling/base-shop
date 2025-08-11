@@ -3,6 +3,10 @@
   "private": true,
   "type": "module",
   "version": "0.0.0",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*"
+  },
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },

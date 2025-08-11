@@ -16,6 +16,7 @@ import MapBlock from "./MapBlock";
 import MultiColumn from "./containers/MultiColumn";
 import VideoBlock from "./VideoBlock";
 import FAQBlock from "./FAQBlock";
+import CustomHtml from "./CustomHtml";
 import Header from "./HeaderBlock";
 import Footer from "./FooterBlock";
 
@@ -38,6 +39,7 @@ export {
   MultiColumn,
   VideoBlock,
   FAQBlock,
+  CustomHtml,
   Header,
   Footer,
 };

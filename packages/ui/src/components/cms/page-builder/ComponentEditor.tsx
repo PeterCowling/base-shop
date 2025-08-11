@@ -6,6 +6,7 @@ import { memo, useCallback } from "react";
 import {
   Button,
   Input,
+  Textarea,
   Select,
   SelectContent,
   SelectItem,
@@ -90,6 +91,15 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "FAQBlock":
       specific = <FAQBlockEditor component={component} onChange={onChange} />;
+      break;
+    case "CustomHtml":
+      specific = (
+        <Textarea
+          label="HTML"
+          value={(component as any).html ?? ""}
+          onChange={(e) => handleInput("html", e.target.value)}
+        />
+      );
       break;
     case "Header":
       specific = <HeaderEditor component={component} onChange={onChange} />;

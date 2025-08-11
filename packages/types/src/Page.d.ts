@@ -140,6 +140,10 @@ export interface FAQBlockComponent extends PageComponentBase {
     answer: string;
   }[];
 }
+export interface CustomHtmlComponent extends PageComponentBase {
+  type: "CustomHtml";
+  html?: string;
+}
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -196,6 +200,7 @@ export type PageComponent =
   | MapBlockComponent
   | VideoBlockComponent
   | FAQBlockComponent
+  | CustomHtmlComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent

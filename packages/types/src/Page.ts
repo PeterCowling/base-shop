@@ -139,6 +139,11 @@ export interface FAQBlockComponent extends PageComponentBase {
   items?: { question: string; answer: string }[];
 }
 
+export interface CustomHtmlComponent extends PageComponentBase {
+  type: "CustomHtml";
+  html?: string;
+}
+
 export interface ImageComponent extends PageComponentBase {
   type: "Image";
   src?: string;
@@ -192,6 +197,7 @@ export type PageComponent =
   | MapBlockComponent
   | VideoBlockComponent
   | FAQBlockComponent
+  | CustomHtmlComponent
   | BlogListingComponent
   | TestimonialsComponent
   | TestimonialSliderComponent
@@ -308,6 +314,11 @@ const faqBlockComponentSchema = baseComponentSchema.extend({
     .optional(),
 });
 
+const customHtmlComponentSchema = baseComponentSchema.extend({
+  type: z.literal("CustomHtml"),
+  html: z.string().optional(),
+});
+
 const headerComponentSchema = baseComponentSchema.extend({
   type: z.literal("Header"),
   nav: z
@@ -391,6 +402,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     mapBlockComponentSchema,
     videoBlockComponentSchema,
     faqBlockComponentSchema,
+    customHtmlComponentSchema,
     headerComponentSchema,
     footerComponentSchema,
     blogListingComponentSchema,

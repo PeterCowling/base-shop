@@ -107,7 +107,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   /* 1  Decode cart -------------------------------------------------- */
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
   const cartId = decodeCartCookie(rawCookie);
-  const cart = cartId ? (getCart(cartId) as CartState) : {};
+  const cart = cartId ? ((await getCart(cartId)) as CartState) : {};
 
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });

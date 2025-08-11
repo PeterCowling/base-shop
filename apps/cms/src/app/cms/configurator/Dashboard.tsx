@@ -5,20 +5,17 @@ import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import type { WizardState } from "../wizard/schema";
-import { steps, stepOrder } from "./steps";
+import { getSteps } from "./steps";
 export type StepStatus = "idle" | "pending" | "success" | "failure";
 
 export default function ConfiguratorDashboard() {
   const [state, setState] = useState<WizardState | null>(null);
-  const [launchStatus, setLaunchStatus] = useState<
-    | {
-        create: StepStatus;
-        init: StepStatus;
-        deploy: StepStatus;
-        seed?: StepStatus;
-      }
-    | null
-  >(null);
+  const [launchStatus, setLaunchStatus] = useState<{
+    create: StepStatus;
+    init: StepStatus;
+    deploy: StepStatus;
+    seed?: StepStatus;
+  } | null>(null);
   const [launchError, setLaunchError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,8 +24,9 @@ export default function ConfiguratorDashboard() {
       .then((json) => setState(json))
       .catch(() => setState(null));
   }, []);
-  const allRequiredDone = stepOrder.every(
-    (id) => !steps[id].required || Boolean(state?.completed?.[id])
+  const stepList = getSteps();
+  const allRequiredDone = stepList.every(
+    (step) => !step.required || Boolean(state?.completed?.[step.id])
   );
 
   const launchShop = async () => {
@@ -62,19 +60,21 @@ export default function ConfiguratorDashboard() {
     <div>
       <h2 className="mb-4 text-xl font-semibold">Configuration Steps</h2>
       <ul className="mb-6 space-y-2">
-        {stepOrder.map((id) => {
-          const step = steps[id];
-          const completed = Boolean(state?.completed?.[id]);
+        {stepList.map((step) => {
+          const completed = Boolean(state?.completed?.[step.id]);
           return (
-            <li key={id} className="flex items-center gap-2">
+            <li key={step.id} className="flex items-center gap-2">
               {completed ? (
                 <CheckCircledIcon className="h-4 w-4 text-green-600" />
               ) : (
                 <CircleIcon className="h-4 w-4 text-gray-400" />
               )}
-              <Link href={`/cms/configurator/${id}`} className="underline">
+              <Link href={`/cms/configurator/${step.id}`} className="underline">
                 {step.label}
               </Link>
+              <span className="text-xs text-gray-500">
+                {completed ? "done" : "pending"}
+              </span>
             </li>
           );
         })}
@@ -97,4 +97,3 @@ export default function ConfiguratorDashboard() {
     </div>
   );
 }
-

@@ -158,7 +158,8 @@ export const stepOrder = [
   "hosting",
 ];
 
+export const getSteps = () => stepOrder.map((id) => steps[id]);
+
 export const initialStepStatus: Record<string, StepStatus> = Object.fromEntries(
   stepOrder.map((id) => [id, "pending"])
 );
-

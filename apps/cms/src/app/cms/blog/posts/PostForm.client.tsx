@@ -13,7 +13,7 @@ export interface FormState {
 interface Props {
   action: (_state: FormState, formData: FormData) => Promise<FormState>;
   submitLabel: string;
-  post?: { _id?: string; title?: string; body?: string };
+  post?: { _id?: string; title?: string; body?: string; slug?: string; excerpt?: string };
 }
 
 export default function PostForm({ action, submitLabel, post }: Props) {
@@ -22,6 +22,8 @@ export default function PostForm({ action, submitLabel, post }: Props) {
     <div className="space-y-4">
       <form action={formAction} className="space-y-4 max-w-xl">
         <Input name="title" label="Title" defaultValue={post?.title ?? ""} required />
+        <Input name="slug" label="Slug" defaultValue={post?.slug ?? ""} required />
+        <Textarea name="excerpt" label="Excerpt" defaultValue={post?.excerpt ?? ""} />
         <Textarea
           name="content"
           label="Content"

@@ -22,10 +22,15 @@ export default function FilterBar({
     onChange({ size: deferredSize || undefined } as Filters);
   }, [deferredSize, onChange]);
 
+  function clearFilters() {
+    setSize("");
+    onChange({} as Filters);
+  }
+
   return (
     <form
       aria-label="Filters"
-      className="mb-6 flex gap-4 items-center justify-between flex-wrap"
+      className="mb-6 flex flex-wrap items-center justify-between gap-4"
       onSubmit={(e) => e.preventDefault()}
     >
       <label className="flex items-center gap-2 text-sm">
@@ -33,7 +38,7 @@ export default function FilterBar({
         <select
           value={size}
           onChange={(e) => setSize(e.target.value)}
-          className="border rounded px-2 py-1 text-sm"
+          className="rounded border px-2 py-1 text-sm"
         >
           <option value="">All</option>
           {sizes.map((s) => (
@@ -41,6 +46,13 @@ export default function FilterBar({
           ))}
         </select>
       </label>
+      <button
+        type="button"
+        onClick={clearFilters}
+        className="rounded border px-2 py-1 text-sm"
+      >
+        Clear Filters
+      </button>
     </form>
   );
 }

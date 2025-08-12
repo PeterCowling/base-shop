@@ -6,6 +6,7 @@ export const shopSeoFieldsSchema = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
   image: z.string().url().optional(),
+  alt: z.string().optional(),
   openGraph: z
     .object({
       title: z.string().optional(),

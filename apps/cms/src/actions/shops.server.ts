@@ -83,6 +83,7 @@ const seoSchema = z
     title: z.string().min(1, "Required"),
     description: z.string().optional().default(""),
     image: z.string().url().optional(),
+    alt: z.string().optional(),
     canonicalBase: z.string().url().optional(),
     ogUrl: z.string().url().optional(),
     twitterCard: z
@@ -119,6 +120,7 @@ export async function updateSeo(
     title,
     description,
     image,
+    alt,
     canonicalBase,
     ogUrl,
     twitterCard,
@@ -127,6 +129,7 @@ export async function updateSeo(
     title: string;
     description: string;
     image?: string;
+    alt?: string;
     canonicalBase?: string;
     ogUrl?: string;
     twitterCard?: "summary" | "summary_large_image" | "app" | "player";
@@ -143,6 +146,7 @@ export async function updateSeo(
     title,
     description,
     image,
+    alt,
     canonicalBase,
     openGraph: ogUrl ? { url: ogUrl } : undefined,
     twitter: twitterCard ? { card: twitterCard } : undefined,

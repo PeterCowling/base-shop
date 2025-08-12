@@ -5,6 +5,7 @@ import {
   readOrders,
 } from "@platform-core/repositories/rentalOrders.server";
 import { resolveDataRoot } from "@platform-core/dataRoot";
+import { logger } from "@platform-core/utils";
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 
@@ -39,12 +40,16 @@ export async function releaseDepositsOnce(
             });
           }
           await markRefunded(shop, order.sessionId);
-          console.log(`refunded deposit for ${order.sessionId} (${shop})`);
+          logger.info("refunded deposit", {
+            shopId: shop,
+            sessionId: order.sessionId,
+          });
         } catch (err) {
-          console.error(
-            `failed to release deposit for ${order.sessionId} (${shop})`,
-            err
-          );
+          logger.error("failed to release deposit", {
+            shopId: shop,
+            sessionId: order.sessionId,
+            err,
+          });
         }
       }
     }
@@ -120,7 +125,7 @@ export async function startDepositReleaseService(
         try {
           await releaseDepositsOnce(shop, dataRoot);
         } catch (err) {
-          console.error("deposit release failed", err);
+          logger.error("deposit release failed", { shopId: shop, err });
         }
       }
 

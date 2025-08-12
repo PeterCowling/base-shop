@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import crypto from "crypto";
-import { getUserByEmail, setResetToken } from "../../../../userStore";
+import { getUserByEmail, setResetToken } from "@acme/platform-core/users";
 import { sendEmail } from "@acme/email";
 import { checkLoginRateLimit } from "../../../../../middleware";
 import { validateCsrfToken } from "@auth";
@@ -38,8 +38,7 @@ export async function POST(req: Request) {
       .createHash("sha256")
       .update(token)
       .digest("hex");
-    const expires = Date.now() + 1000 * 60 * 60; // 1 hour
-    await setResetToken(user.id, hashedToken, expires);
+    await setResetToken(user.id, hashedToken);
     const resetUrl = `/account/reset?token=${token}`;
     await sendEmail(
       parsed.data.email,

@@ -7,7 +7,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { parseJsonBody } from "@shared-utils";
 import { checkLoginRateLimit, clearLoginAttempts } from "../../middleware";
-import { getUserById } from "../userStore";
+import { getUserById } from "@acme/platform-core/users";
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 
@@ -22,12 +22,12 @@ export type LoginInput = z.infer<typeof LoginSchema>;
 async function validateCredentials(
   customerId: string,
   password: string,
-): Promise<{ customerId: string; role: Role; verified: boolean } | null> {
+): Promise<{ customerId: string; role: Role } | null> {
   const record = await getUserById(customerId);
   if (!record) return null;
   const match = await bcrypt.compare(password, record.passwordHash);
   if (!match) return null;
-  return { customerId, role: record.role as Role, verified: record.verified };
+  return { customerId, role: record.role as Role };
 }
 
 export async function POST(req: Request) {
@@ -50,10 +50,6 @@ export async function POST(req: Request) {
 
   if (!valid) {
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
-  }
-
-  if (!valid.verified) {
-    return NextResponse.json({ error: "Account not verified" }, { status: 403 });
   }
 
   if (!ALLOWED_ROLES.includes(valid.role)) {

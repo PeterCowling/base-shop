@@ -8,7 +8,7 @@ import {
   verifyMfa,
 } from "@auth";
 import type { Role } from "@auth/types/roles";
-import { getUserById } from "../../../userStore";
+import { getUserById } from "@acme/platform-core/users";
 import {
   checkMfaRateLimit,
   clearLoginAttempts,

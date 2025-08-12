@@ -23,53 +23,37 @@ const store: Record<string, any> = {};
 
 let sendEmail: jest.Mock;
 
-jest.mock("../src/app/userStore", () => ({
+jest.mock("@acme/platform-core/users", () => ({
   getUserById: jest.fn(async (id: string) => store[id] ?? null),
   getUserByEmail: jest.fn(
     async (email: string) =>
-      Object.values(store).find((u: any) => u.email === email) ?? null
+      Object.values(store).find((u: any) => u.email === email) ?? null,
   ),
-  addUser: jest.fn(
-    async ({ id, email, passwordHash, role = "customer", verified = false }: any) => {
+  createUser: jest.fn(
+    async ({ id, email, passwordHash, role = "customer" }: any) => {
       const user = {
         id,
         email,
         passwordHash,
         role,
-        verified,
-        resetTokenHash: null,
-        resetTokenExpires: null,
+        resetToken: null,
       };
       store[id] = user;
       return user;
-    }
+    },
   ),
-  setResetToken: jest.fn(
-    async (id: string, tokenHash: string | null, expires: number | null) => {
-      if (store[id]) {
-        store[id].resetTokenHash = tokenHash;
-        store[id].resetTokenExpires = expires;
-      }
+  setResetToken: jest.fn(async (id: string, token: string | null) => {
+    if (store[id]) {
+      store[id].resetToken = token;
     }
-  ),
-  getUserByResetToken: jest.fn(async (tokenHash: string) =>
-    Object.values(store).find(
-      (u: any) =>
-        u.resetTokenHash === tokenHash &&
-        u.resetTokenExpires !== null &&
-        u.resetTokenExpires > Date.now(),
-    ) ?? null,
+  }),
+  getUserByResetToken: jest.fn(async (token: string) =>
+    Object.values(store).find((u: any) => u.resetToken === token) ?? null,
   ),
   updatePassword: jest.fn(async (id: string, hash: string) => {
     if (store[id]) {
       store[id].passwordHash = hash;
-      store[id].resetTokenHash = null;
-      store[id].resetTokenExpires = null;
-    }
-  }),
-  verifyUser: jest.fn(async (id: string) => {
-    if (store[id]) {
-      store[id].verified = true;
+      store[id].resetToken = null;
     }
   }),
 }));
@@ -78,11 +62,9 @@ let registerPOST: typeof import("../src/app/register/route").POST;
 let loginPOST: typeof import("../src/app/login/route").POST;
 let requestPOST: typeof import("../src/app/api/account/reset/request/route").POST;
 let completePOST: typeof import("../src/app/api/account/reset/complete/route").POST;
-let verifyPOST: typeof import("../src/app/api/account/verify/route").POST;
 
 beforeAll(async () => {
   ({ POST: registerPOST } = await import("../src/app/register/route"));
-  ({ POST: verifyPOST } = await import("../src/app/api/account/verify/route"));
   ({ POST: loginPOST } = await import("../src/app/login/route"));
   ({ POST: requestPOST } = await import(
     "../src/app/api/account/reset/request/route"
@@ -116,12 +98,6 @@ describe("auth flows", () => {
     );
     expect(res.status).toBe(200);
 
-    const verificationEmail = sendEmail.mock.calls[0][2] as string;
-    const verifyToken = verificationEmail.replace(
-      "Your verification token is ",
-      "",
-    );
-
     const dup = await registerPOST(
       makeRequest({
         customerId: "cust2",
@@ -137,22 +113,14 @@ describe("auth flows", () => {
         { "x-forwarded-for": "1.1.1.1" }
       )
     );
-    expect(res.status).toBe(403);
-
-    const verifyRes = await verifyPOST(makeRequest({ token: verifyToken }));
-    expect(verifyRes.status).toBe(200);
-
-    res = await loginPOST(
-      makeRequest(
-        { customerId: "cust1", password: "Str0ngPass1" },
-        { "x-forwarded-for": "1.1.1.1" }
-      )
-    );
     expect(res.status).toBe(200);
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
     const tokenEmail = sendEmail.mock.calls[1][2] as string;
-    const token = tokenEmail.replace("Your token is ", "");
+    const token = tokenEmail.replace(
+      "Reset your password: /account/reset?token=",
+      "",
+    );
 
     res = await completePOST(
       makeRequest({
@@ -191,7 +159,10 @@ describe("auth flows", () => {
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
     const tokenEmail = sendEmail.mock.calls[1][2] as string;
-    const token = tokenEmail.replace("Your token is ", "");
+    const token = tokenEmail.replace(
+      "Reset your password: /account/reset?token=",
+      "",
+    );
 
     const res = await completePOST(
       makeRequest({

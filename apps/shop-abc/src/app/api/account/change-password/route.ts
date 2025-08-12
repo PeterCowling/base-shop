@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { getCustomerSession, validateCsrfToken } from "@auth";
-import { getUserById, updatePassword } from "../../../userStore";
+import { getUserById, updatePassword } from "@acme/platform-core/users";
 
 const ChangePasswordSchema = z
   .object({

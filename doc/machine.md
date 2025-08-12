@@ -32,7 +32,7 @@ Environment variables can be used to configure the service:
 
 Both variables may also be suffixed with a shop ID (e.g. `DEPOSIT_RELEASE_ENABLED_SHOP1`) to override settings per shop.
 
-Stripe credentials (`STRIPE_SECRET_KEY` and `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`) must be configured in the shop `.env` files. A one-off CLI utility is also available:
+Stripe credentials (`STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, and `STRIPE_WEBHOOK_SECRET`) must be configured in the shop `.env` files. A one-off CLI utility is also available:
 
 ```bash
 pnpm release-deposits

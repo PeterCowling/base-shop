@@ -233,6 +233,7 @@ After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:
 
 - `STRIPE_SECRET_KEY` – secret key used by the Stripe server SDK
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` – public key for the Stripe client SDK
+- `STRIPE_WEBHOOK_SECRET` – secret used to verify Stripe webhook signatures
 - `CMS_SPACE_URL` – base URL of the CMS API
 - `CMS_ACCESS_TOKEN` – access token for pushing schemas
 - `CHROMATIC_PROJECT_TOKEN` – token for publishing Storybook previews

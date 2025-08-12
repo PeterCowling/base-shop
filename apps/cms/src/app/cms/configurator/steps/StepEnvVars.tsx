@@ -7,11 +7,12 @@ import {
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 
-const ENV_KEYS = [
-  "STRIPE_SECRET_KEY",
-  "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
-  "NEXTAUTH_SECRET",
-  "PREVIEW_TOKEN_SECRET",
+  const ENV_KEYS = [
+    "STRIPE_SECRET_KEY",
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+    "STRIPE_WEBHOOK_SECRET",
+    "NEXTAUTH_SECRET",
+    "PREVIEW_TOKEN_SECRET",
   "NODE_ENV",
   "OUTPUT_EXPORT",
   "NEXT_PUBLIC_PHASE",

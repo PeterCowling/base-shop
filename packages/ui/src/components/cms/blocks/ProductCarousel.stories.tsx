@@ -4,7 +4,7 @@ import { PRODUCTS } from "@platform-core/src/products";
 
 const meta: Meta<typeof ProductCarousel> = {
   component: ProductCarousel,
-  args: { products: PRODUCTS as any },
+  args: { skus: PRODUCTS as any },
 };
 export default meta;
 

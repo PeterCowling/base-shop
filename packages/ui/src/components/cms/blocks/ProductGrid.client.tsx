@@ -2,9 +2,12 @@
 
 import { ProductGrid as BaseGrid } from "@platform-core/src/components/shop/ProductGrid";
 import type { SKU } from "@acme/types";
+import { useEffect, useState } from "react";
+import { fetchCollection } from "./products/fetchCollection";
 
 export interface ProductGridProps {
-  skus: SKU[];
+  skus?: SKU[];
+  collectionId?: string;
   columns?: number;
   minItems?: number;
   maxItems?: number;
@@ -16,6 +19,7 @@ export interface ProductGridProps {
 
 export default function ProductGrid({
   skus,
+  collectionId,
   columns,
   minItems,
   maxItems,
@@ -24,9 +28,27 @@ export default function ProductGrid({
   mobileItems,
   className,
 }: ProductGridProps) {
+  const [items, setItems] = useState<SKU[]>(skus ?? []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      if (collectionId) {
+        const fetched = await fetchCollection(collectionId);
+        if (!cancelled) setItems(fetched);
+      } else {
+        setItems(skus ?? []);
+      }
+    };
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [collectionId, skus]);
+
   return (
     <BaseGrid
-      skus={skus}
+      skus={items}
       columns={columns}
       minItems={minItems}
       maxItems={maxItems}

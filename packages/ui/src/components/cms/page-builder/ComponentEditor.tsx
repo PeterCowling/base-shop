@@ -202,6 +202,46 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
         </>
       );
       break;
+    case "ProductGrid":
+    case "ProductCarousel":
+      specific = (
+        <>
+          <Select
+            value={(component as any).mode ?? "collection"}
+            onValueChange={(v) => handleInput("mode", v)}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Source" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="collection">Collection</SelectItem>
+              <SelectItem value="manual">Manual SKUs</SelectItem>
+            </SelectContent>
+          </Select>
+          {(component as any).mode === "collection" ? (
+            <Input
+              label="Collection ID"
+              value={(component as any).collectionId ?? ""}
+              onChange={(e) => handleInput("collectionId", e.target.value)}
+            />
+          ) : (
+            <Textarea
+              label="SKUs (comma separated)"
+              value={((component as any).skus ?? []).join(",")}
+              onChange={(e) =>
+                handleInput(
+                  "skus",
+                  e.target.value
+                    .split(/[\s,]+/)
+                    .map((s) => s.trim())
+                    .filter(Boolean)
+                )
+              }
+            />
+          )}
+        </>
+      );
+      break;
     case "CustomHtml":
       specific = (
         <Textarea

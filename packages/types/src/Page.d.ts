@@ -111,10 +111,16 @@ export interface ReviewsCarouselComponent extends PageComponentBase {
 /** Grid of products; `minItems`/`maxItems` clamp the responsive product count */
 export interface ProductGridComponent extends PageComponentBase {
   type: "ProductGrid";
+  skus?: string[];
+  collectionId?: string;
+  mode?: "collection" | "manual";
 }
 /** Carousel of products; `minItems`/`maxItems` clamp visible products */
 export interface ProductCarouselComponent extends PageComponentBase {
   type: "ProductCarousel";
+  skus?: string[];
+  collectionId?: string;
+  mode?: "collection" | "manual";
 }
 /** Carousel of recommended products fetched from an API */
 export interface RecommendationCarouselComponent extends PageComponentBase {

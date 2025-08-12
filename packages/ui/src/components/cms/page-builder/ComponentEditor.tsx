@@ -30,6 +30,7 @@ import FooterEditor from "./FooterEditor";
 import PricingTableEditor from "./PricingTableEditor";
 import NewsletterSignupEditor from "./NewsletterSignupEditor";
 import ImageSliderEditor from "./ImageSliderEditor";
+import RecommendationCarouselEditor from "./RecommendationCarouselEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -100,6 +101,14 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "ValueProps":
       specific = <ValuePropsEditor component={component} onChange={onChange} />;
+      break;
+    case "RecommendationCarousel":
+      specific = (
+        <RecommendationCarouselEditor
+          component={component}
+          onChange={onChange}
+        />
+      );
       break;
     case "ReviewsCarousel":
       specific = (
@@ -424,9 +433,10 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
           />
         </>
       )}
-      {("desktopItems" in component ||
-        "tabletItems" in component ||
-        "mobileItems" in component) && (
+      {component.type !== "RecommendationCarousel" &&
+        ("desktopItems" in component ||
+          "tabletItems" in component ||
+          "mobileItems" in component) && (
         <>
           <Input
             label="Desktop Items"

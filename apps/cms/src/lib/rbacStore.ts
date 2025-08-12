@@ -6,9 +6,12 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import type { Role } from "../auth/roles";
 
+export type Permission = string;
+
 export interface RbacDB {
   users: Record<string, CmsUser>;
   roles: Record<string, Role | Role[]>;
+  permissions: Record<Role, Permission[]>;
 }
 
 const DEFAULT_DB: RbacDB = {
@@ -51,6 +54,13 @@ const DEFAULT_DB: RbacDB = {
     "4": "CatalogManager",
     "5": "ThemeEditor",
   },
+  permissions: {
+    admin: [],
+    viewer: [],
+    ShopAdmin: [],
+    CatalogManager: [],
+    ThemeEditor: [],
+  },
 };
 
 function resolveFile(): string {
@@ -72,8 +82,14 @@ const FILE = resolveFile();
 export async function readRbac(): Promise<RbacDB> {
   try {
     const buf = await fs.readFile(FILE, "utf8");
-    const parsed = JSON.parse(buf) as RbacDB;
-    if (parsed && parsed.users && parsed.roles) return parsed;
+    const parsed = JSON.parse(buf) as Partial<RbacDB>;
+    if (parsed && parsed.users && parsed.roles) {
+      return {
+        users: parsed.users,
+        roles: parsed.roles,
+        permissions: parsed.permissions ?? { ...DEFAULT_DB.permissions },
+      };
+    }
   } catch {
     /* ignore */
   }

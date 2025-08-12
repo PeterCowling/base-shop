@@ -41,6 +41,13 @@ const DEFAULT_DB = {
         "4": "CatalogManager",
         "5": "ThemeEditor",
     },
+    permissions: {
+        admin: [],
+        viewer: [],
+        ShopAdmin: [],
+        CatalogManager: [],
+        ThemeEditor: [],
+    },
 };
 function resolveFile() {
     let dir = process.cwd();
@@ -61,8 +68,13 @@ export async function readRbac() {
     try {
         const buf = await fs.readFile(FILE, "utf8");
         const parsed = JSON.parse(buf);
-        if (parsed && parsed.users && parsed.roles)
-            return parsed;
+        if (parsed && parsed.users && parsed.roles) {
+            return {
+                users: parsed.users,
+                roles: parsed.roles,
+                permissions: parsed.permissions ?? { ...DEFAULT_DB.permissions },
+            };
+        }
     }
     catch {
         /* ignore */

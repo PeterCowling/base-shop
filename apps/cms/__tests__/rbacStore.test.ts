@@ -22,6 +22,7 @@ describe("rbacStore", () => {
       const db = await readRbac();
       expect(db.users["1"].email).toBe("admin@example.com");
       expect(db.roles["1"]).toBe("admin");
+      expect(db.permissions.admin).toEqual([]);
     });
   });
 
@@ -36,6 +37,7 @@ describe("rbacStore", () => {
         password: "pw",
       };
       db.roles["6"] = "viewer";
+      db.permissions.viewer.push("test-perm");
       await writeRbac(db);
       const stored = JSON.parse(
         await fs.readFile(path.join(dir, "data", "cms", "users.json"), "utf8")

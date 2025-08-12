@@ -1,6 +1,7 @@
 // apps/shop-bcd/src/app/api/stripe-webhook/route.ts
 
 import { addOrder, markRefunded } from "@platform-core/orders";
+import { trackDiscountRedeemed } from "@platform-core/analytics";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -23,6 +24,10 @@ export async function POST(req: NextRequest) {
       const returnDate = session.metadata?.returnDate || undefined;
       const customerId = session.metadata?.customerId || undefined;
       await addOrder("bcd", session.id, deposit, returnDate, customerId);
+      const coupon = session.metadata?.coupon;
+      if (coupon) {
+        await trackDiscountRedeemed("bcd", coupon);
+      }
       break;
     }
     case "charge.refunded": {

@@ -138,9 +138,17 @@ export async function trackOrder(
   await trackEvent(shop, { type: "order", orderId, amount });
 }
 
+export async function trackDiscountRedeemed(
+  shop: string,
+  code: string
+): Promise<void> {
+  await trackEvent(shop, { type: "discount_redeemed", code });
+}
+
 interface Aggregates {
   page_view: Record<string, number>;
   order: Record<string, { count: number; amount: number }>;
+  discount: Record<string, number>;
 }
 
 async function updateAggregates(
@@ -149,7 +157,7 @@ async function updateAggregates(
 ): Promise<void> {
   const fp = path.join(DATA_ROOT, validateShopName(shop), "analytics-aggregates.json");
   const day = (event.timestamp as string).slice(0, 10);
-  let agg: Aggregates = { page_view: {}, order: {} };
+  let agg: Aggregates = { page_view: {}, order: {}, discount: {} };
   try {
     const buf = await fs.readFile(fp, "utf8");
     agg = JSON.parse(buf) as Aggregates;
@@ -164,6 +172,11 @@ async function updateAggregates(
     entry.count += 1;
     entry.amount += amount;
     agg.order[day] = entry;
+  } else if (event.type === "discount_redeemed") {
+    const code = typeof event.code === "string" ? event.code : "";
+    if (code) {
+      agg.discount[code] = (agg.discount[code] || 0) + 1;
+    }
   }
   await fs.mkdir(path.dirname(fp), { recursive: true });
   await fs.writeFile(fp, JSON.stringify(agg), "utf8");

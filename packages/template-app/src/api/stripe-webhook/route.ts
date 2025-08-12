@@ -4,6 +4,7 @@ import {
   addOrder,
   markRefunded,
 } from "@platform-core/repositories/rentalOrders.server";
+import { trackDiscountRedeemed } from "@platform-core/analytics";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -25,6 +26,10 @@ export async function POST(req: NextRequest) {
       const deposit = Number(session.metadata?.depositTotal ?? 0);
       const returnDate = session.metadata?.returnDate || undefined;
       await addOrder("bcd", session.id, deposit, returnDate);
+      const coupon = session.metadata?.coupon;
+      if (coupon) {
+        await trackDiscountRedeemed("bcd", coupon);
+      }
       break;
     }
     case "charge.refunded": {

@@ -39,6 +39,8 @@ export default async function ShopDashboard({
     }),
   };
 
+  const redemptions = Object.entries(aggregates.discount || {});
+
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Dashboard: {shop}</h2>
@@ -48,6 +50,18 @@ export default async function ShopDashboard({
         </p>
       )}
       <Charts traffic={traffic} sales={sales} conversion={conversion} />
+      {redemptions.length > 0 && (
+        <div className="mt-6">
+          <h3 className="mb-2 font-semibold">Discount Redemptions</h3>
+          <ul className="list-disc pl-6">
+            {redemptions.map(([code, count]) => (
+              <li key={code}>
+                {code}: {count}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

@@ -11,12 +11,21 @@ afterEach(() => jest.resetModules());
 describe("/api/stripe-webhook", () => {
   test("checkout.session.completed creates an order", async () => {
     const addOrder = jest.fn();
+    const trackDiscountRedeemed = jest.fn();
     jest.doMock(
       "@platform-core/repositories/rentalOrders.server",
       () => ({
         __esModule: true,
         addOrder,
         markRefunded: jest.fn(),
+      }),
+      { virtual: true }
+    );
+    jest.doMock(
+      "@platform-core/analytics",
+      () => ({
+        __esModule: true,
+        trackDiscountRedeemed,
       }),
       { virtual: true }
     );
@@ -33,6 +42,7 @@ describe("/api/stripe-webhook", () => {
     } as any;
     const res = await POST({ json: async () => payload } as any);
     expect(addOrder).toHaveBeenCalledWith("bcd", "sess", 10, "2030-05-05");
+    expect(trackDiscountRedeemed).not.toHaveBeenCalled();
     expect(res.status).toBe(200);
   });
 

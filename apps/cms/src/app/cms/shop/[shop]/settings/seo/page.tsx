@@ -5,6 +5,7 @@ import { listEvents } from "@platform-core/repositories/analytics.server";
 import dynamic from "next/dynamic";
 import SeoProgressPanel from "./SeoProgressPanel";
 import AiCatalogSettings from "./AiCatalogSettings";
+import AiFeedPanel from "./AiFeedPanel";
 
 const SeoEditor = dynamic(() => import("./SeoEditor"));
 const SeoAuditPanel = dynamic(() => import("./SeoAuditPanel"));
@@ -36,7 +37,7 @@ export default async function SeoSettingsPage({
     pageSize: 50,
   };
   const lastCrawl = events
-    .filter((e) => e.type === "ai_catalog")
+    .filter((e) => e.type === "ai_crawl")
     .map((e) => e.timestamp as string)
     .filter(Boolean)
     .sort()
@@ -61,6 +62,7 @@ export default async function SeoSettingsPage({
           lastCrawl,
         }}
       />
+      <AiFeedPanel shop={shop} />
       <SeoAuditPanel shop={shop} />
     </div>
   );

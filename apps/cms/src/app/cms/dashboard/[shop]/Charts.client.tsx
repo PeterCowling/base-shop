@@ -35,7 +35,7 @@ interface ChartsProps {
   emailClicks: Series;
   campaignSales: Series;
   discountRedemptions: Series;
-  aiCatalog: Series;
+  aiCrawl: Series;
 }
 
 export function Charts({
@@ -46,7 +46,7 @@ export function Charts({
   emailClicks,
   campaignSales,
   discountRedemptions,
-  aiCatalog,
+  aiCrawl,
 }: ChartsProps) {
   return (
     <div className="space-y-8">
@@ -159,11 +159,11 @@ export function Charts({
         <h3 className="mb-2 font-semibold">AI Catalog Requests</h3>
         <Line
           data={{
-            labels: aiCatalog.labels,
+            labels: aiCrawl.labels,
             datasets: [
               {
                 label: "AI catalog requests",
-                data: aiCatalog.data,
+                data: aiCrawl.data,
                 borderColor: "rgb(99, 132, 255)",
               },
             ],

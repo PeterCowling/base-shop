@@ -28,6 +28,7 @@ export default async function ShopDashboard({
     : events;
 
   const emailOpenByDay: Record<string, number> = {};
+  const emailClickByDay: Record<string, number> = {};
   const campaignSalesByDay: Record<string, number> = {};
   const discountByDay: Record<string, number> = {};
   for (const e of filteredEvents) {
@@ -35,6 +36,8 @@ export default async function ShopDashboard({
     if (!day) continue;
     if (e.type === "email_open") {
       emailOpenByDay[day] = (emailOpenByDay[day] || 0) + 1;
+    } else if (e.type === "email_click") {
+      emailClickByDay[day] = (emailClickByDay[day] || 0) + 1;
     } else if (e.type === "campaign_sale") {
       const amount = typeof e.amount === "number" ? e.amount : 0;
       campaignSalesByDay[day] = (campaignSalesByDay[day] || 0) + amount;
@@ -48,6 +51,7 @@ export default async function ShopDashboard({
       ...Object.keys(aggregates.page_view),
       ...Object.keys(aggregates.order),
       ...Object.keys(emailOpenByDay),
+      ...Object.keys(emailClickByDay),
       ...Object.keys(campaignSalesByDay),
       ...Object.keys(discountByDay),
     ])
@@ -73,6 +77,10 @@ export default async function ShopDashboard({
     labels: days,
     data: days.map((d) => emailOpenByDay[d] || 0),
   };
+  const emailClicks = {
+    labels: days,
+    data: days.map((d) => emailClickByDay[d] || 0),
+  };
   const campaignSales = {
     labels: days,
     data: days.map((d) => campaignSalesByDay[d] || 0),
@@ -84,11 +92,13 @@ export default async function ShopDashboard({
 
   const totals = {
     emailOpens: emailOpens.data.reduce((a, b) => a + b, 0),
+    emailClicks: emailClicks.data.reduce((a, b) => a + b, 0),
     campaignSales: campaignSales.data.reduce((a, b) => a + b, 0),
     discountRedemptions: discountRedemptions.data.reduce((a, b) => a + b, 0),
   };
   const maxTotal = Math.max(
     totals.emailOpens,
+    totals.emailClicks,
     totals.campaignSales,
     totals.discountRedemptions,
     1,
@@ -116,6 +126,7 @@ export default async function ShopDashboard({
         sales={sales}
         conversion={conversion}
         emailOpens={emailOpens}
+        emailClicks={emailClicks}
         campaignSales={campaignSales}
         discountRedemptions={discountRedemptions}
       />
@@ -126,6 +137,13 @@ export default async function ShopDashboard({
           <Progress
             value={(totals.emailOpens / maxTotal) * 100}
             label={String(totals.emailOpens)}
+          />
+        </div>
+        <div>
+          <span className="mb-1 block text-sm font-medium">Email clicks</span>
+          <Progress
+            value={(totals.emailClicks / maxTotal) * 100}
+            label={String(totals.emailClicks)}
           />
         </div>
         <div>

@@ -13,6 +13,7 @@ export async function saveSanityConfig(
 ): Promise<{
   error?: string;
   message?: string;
+  errorCode?: string;
 }> {
   await ensureAuthorized();
 
@@ -30,12 +31,15 @@ export async function saveSanityConfig(
       aclMode as "public" | "private",
     );
     if (!setup.success) {
-      return { error: setup.error ?? "Failed to setup Sanity blog" };
+      return {
+        error: setup.error ?? "Failed to setup Sanity blog",
+        errorCode: setup.code,
+      };
     }
   } else {
     const valid = await verifyCredentials(config);
     if (!valid) {
-      return { error: "Invalid Sanity credentials" };
+      return { error: "Invalid Sanity credentials", errorCode: "INVALID_CREDENTIALS" };
     }
   }
 

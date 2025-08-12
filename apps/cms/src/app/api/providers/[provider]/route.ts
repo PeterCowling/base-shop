@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { z } from "zod";
 import { resolveDataRoot } from "@platform-core/dataRoot";
+
+const ParamsSchema = z.object({ shop: z.string(), code: z.string().optional() });
 
 export async function GET(
   req: NextRequest,
@@ -9,15 +12,17 @@ export async function GET(
 ) {
   const { provider } = await context.params;
   const url = new URL(req.url);
-  const shop = url.searchParams.get("shop");
-  const code = url.searchParams.get("code");
+  const parsed = ParamsSchema.safeParse(Object.fromEntries(url.searchParams));
 
-  if (!shop) {
-    return NextResponse.json({ error: "Missing shop" }, { status: 400 });
+  if (!parsed.success || !parsed.data.shop) {
+    return NextResponse.json({ error: "Invalid shop" }, { status: 400 });
   }
 
+  const { shop, code } = parsed.data;
+
   if (!code) {
-    const redirect = `${url.origin}/cms/api/providers/${provider}?shop=${encodeURIComponent(shop)}&code=dummy-token`;
+    const redirectParams = new URLSearchParams({ shop, code: "dummy-token" });
+    const redirect = `${url.origin}/cms/api/providers/${provider}?${redirectParams.toString()}`;
     return NextResponse.redirect(redirect);
   }
 

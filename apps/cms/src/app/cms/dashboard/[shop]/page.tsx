@@ -12,10 +12,15 @@ export default async function ShopDashboard({
   searchParams,
 }: {
   params: { shop: string };
-  searchParams: { campaign?: string };
+  searchParams: { campaign?: string | string[] };
 }) {
   const shop = params.shop;
-  const campaign = searchParams?.campaign;
+  const campaignParam = searchParams?.campaign;
+  const selectedCampaigns = campaignParam
+    ? Array.isArray(campaignParam)
+      ? campaignParam
+      : [campaignParam]
+    : [];
   const [events, aggregates, shopData] = await Promise.all([
     listEvents(shop),
     readAggregates(shop),
@@ -23,94 +28,147 @@ export default async function ShopDashboard({
   ]);
   const domain = shopData.domain?.name;
   const domainStatus = shopData.domain?.status;
-  const filteredEvents = campaign
-    ? events.filter((e) => e.campaign === campaign)
-    : events;
-
-  const emailOpenByDay: Record<string, number> = {};
-  const emailClickByDay: Record<string, number> = {};
-  const campaignSalesByDay: Record<string, number> = {};
-  const discountByDay: Record<string, number> = {};
-  for (const e of filteredEvents) {
-    const day = (e.timestamp || "").slice(0, 10);
-    if (!day) continue;
-    if (e.type === "email_open") {
-      emailOpenByDay[day] = (emailOpenByDay[day] || 0) + 1;
-    } else if (e.type === "email_click") {
-      emailClickByDay[day] = (emailClickByDay[day] || 0) + 1;
-    } else if (e.type === "campaign_sale") {
-      const amount = typeof e.amount === "number" ? e.amount : 0;
-      campaignSalesByDay[day] = (campaignSalesByDay[day] || 0) + amount;
-    } else if (e.type === "discount_redeemed") {
-      discountByDay[day] = (discountByDay[day] || 0) + 1;
-    }
-  }
-
-  const days = Array.from(
-    new Set([
-      ...Object.keys(aggregates.page_view),
-      ...Object.keys(aggregates.order),
-      ...Object.keys(emailOpenByDay),
-      ...Object.keys(emailClickByDay),
-      ...Object.keys(campaignSalesByDay),
-      ...Object.keys(discountByDay),
-      ...Object.keys(aggregates.discount_redeemed),
-    ])
-  ).sort();
-
-  const traffic = {
-    labels: days,
-    data: days.map((d) => aggregates.page_view[d] || 0),
-  };
-  const sales = {
-    labels: days,
-    data: days.map((d) => aggregates.order[d]?.amount ?? 0),
-  };
-  const conversion = {
-    labels: days,
-    data: days.map((d) => {
-      const views = aggregates.page_view[d] || 0;
-      const orders = aggregates.order[d]?.count || 0;
-      return views > 0 ? (orders / views) * 100 : 0;
-    }),
-  };
-  const emailOpens = {
-    labels: days,
-    data: days.map((d) => emailOpenByDay[d] || 0),
-  };
-  const emailClicks = {
-    labels: days,
-    data: days.map((d) => emailClickByDay[d] || 0),
-  };
-  const campaignSales = {
-    labels: days,
-    data: days.map((d) => campaignSalesByDay[d] || 0),
-  };
-  const discountRedemptions = {
-    labels: days,
-    data: days.map((d) => discountByDay[d] || 0),
-  };
-
-  const totals = {
-    emailOpens: emailOpens.data.reduce((a, b) => a + b, 0),
-    emailClicks: emailClicks.data.reduce((a, b) => a + b, 0),
-    campaignSales: campaignSales.data.reduce((a, b) => a + b, 0),
-    discountRedemptions: discountRedemptions.data.reduce((a, b) => a + b, 0),
-  };
-  const maxTotal = Math.max(
-    totals.emailOpens,
-    totals.emailClicks,
-    totals.campaignSales,
-    totals.discountRedemptions,
-    1,
-  );
-
   const campaigns = Array.from(
     new Set(
       events
         .map((e) => (typeof e.campaign === "string" ? e.campaign : null))
         .filter(Boolean) as string[],
     ),
+  );
+
+  function buildSeries(
+    eventList: typeof events,
+    useAggregates: boolean,
+  ) {
+    const emailOpenByDay: Record<string, number> = {};
+    const emailClickByDay: Record<string, number> = {};
+    const campaignSalesByDay: Record<string, number> = {};
+    const campaignSalesCountByDay: Record<string, number> = {};
+    const discountByDay: Record<string, number> = {};
+    for (const e of eventList) {
+      const day = (e.timestamp || "").slice(0, 10);
+      if (!day) continue;
+      if (e.type === "email_open") {
+        emailOpenByDay[day] = (emailOpenByDay[day] || 0) + 1;
+      } else if (e.type === "email_click") {
+        emailClickByDay[day] = (emailClickByDay[day] || 0) + 1;
+      } else if (e.type === "campaign_sale") {
+        const amount = typeof e.amount === "number" ? e.amount : 0;
+        campaignSalesByDay[day] = (campaignSalesByDay[day] || 0) + amount;
+        campaignSalesCountByDay[day] = (campaignSalesCountByDay[day] || 0) + 1;
+      } else if (e.type === "discount_redeemed") {
+        discountByDay[day] = (discountByDay[day] || 0) + 1;
+      }
+    }
+
+    const days = Array.from(
+      new Set([
+        ...(useAggregates ? Object.keys(aggregates.page_view) : []),
+        ...(useAggregates ? Object.keys(aggregates.order) : []),
+        ...Object.keys(emailOpenByDay),
+        ...Object.keys(emailClickByDay),
+        ...Object.keys(campaignSalesByDay),
+        ...Object.keys(discountByDay),
+        ...(useAggregates ? Object.keys(aggregates.discount_redeemed) : []),
+      ]),
+    ).sort();
+
+    const traffic = {
+      labels: days,
+      data: days.map((d) =>
+        useAggregates ? aggregates.page_view[d] || 0 : emailClickByDay[d] || 0,
+      ),
+    };
+    const sales = {
+      labels: days,
+      data: days.map((d) =>
+        useAggregates ? aggregates.order[d]?.amount ?? 0 : campaignSalesByDay[d] || 0,
+      ),
+    };
+    const conversion = {
+      labels: days,
+      data: days.map((d) => {
+        if (useAggregates) {
+          const views = aggregates.page_view[d] || 0;
+          const orders = aggregates.order[d]?.count || 0;
+          return views > 0 ? (orders / views) * 100 : 0;
+        }
+        const clicks = emailClickByDay[d] || 0;
+        const salesCount = campaignSalesCountByDay[d] || 0;
+        return clicks > 0 ? (salesCount / clicks) * 100 : 0;
+      }),
+    };
+    const emailOpens = {
+      labels: days,
+      data: days.map((d) => emailOpenByDay[d] || 0),
+    };
+    const emailClicks = {
+      labels: days,
+      data: days.map((d) => emailClickByDay[d] || 0),
+    };
+    const campaignSales = {
+      labels: days,
+      data: days.map((d) => campaignSalesByDay[d] || 0),
+    };
+    const discountRedemptions = {
+      labels: days,
+      data: days.map((d) => discountByDay[d] || 0),
+    };
+
+    const totals = {
+      emailOpens: emailOpens.data.reduce((a, b) => a + b, 0),
+      emailClicks: emailClicks.data.reduce((a, b) => a + b, 0),
+      campaignSales: campaignSales.data.reduce((a, b) => a + b, 0),
+      discountRedemptions: discountRedemptions.data.reduce((a, b) => a + b, 0),
+    };
+
+    const totalSalesCount = Object.values(campaignSalesCountByDay).reduce(
+      (a, b) => a + b,
+      0,
+    );
+    const summary = {
+      revenue: totals.campaignSales,
+      traffic: totals.emailClicks,
+      conversion:
+        totals.emailClicks > 0 ? (totalSalesCount / totals.emailClicks) * 100 : 0,
+    };
+
+    return {
+      traffic,
+      sales,
+      conversion,
+      emailOpens,
+      emailClicks,
+      campaignSales,
+      discountRedemptions,
+      totals,
+      summary,
+    };
+  }
+
+  const filteredEvents = selectedCampaigns.length
+    ? events.filter((e) => selectedCampaigns.includes(String(e.campaign)))
+    : events;
+
+  const aggregateSeries = buildSeries(filteredEvents, selectedCampaigns.length === 0);
+
+  const seriesList = selectedCampaigns.length
+    ? selectedCampaigns.map((c) => ({
+        campaign: c,
+        ...buildSeries(
+          events.filter((e) => String(e.campaign) === c),
+          false,
+        ),
+      }))
+    : [{ campaign: null, ...aggregateSeries }];
+
+  const totals = aggregateSeries.totals;
+  const maxTotal = Math.max(
+    totals.emailOpens,
+    totals.emailClicks,
+    totals.campaignSales,
+    totals.discountRedemptions,
+    1,
   );
 
   return (
@@ -122,15 +180,29 @@ export default async function ShopDashboard({
         </p>
       )}
       {campaigns.length > 0 && <CampaignFilter campaigns={campaigns} />}
-      <Charts
-        traffic={traffic}
-        sales={sales}
-        conversion={conversion}
-        emailOpens={emailOpens}
-        emailClicks={emailClicks}
-        campaignSales={campaignSales}
-        discountRedemptions={discountRedemptions}
-      />
+      {seriesList.map(({ campaign, summary, ...charts }) => (
+        <div key={campaign ?? "all"} className="mb-8">
+          {campaign && (
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold">{campaign}</h3>
+              <div className="flex gap-4 text-sm text-gray-700">
+                <span>Traffic: {summary.traffic}</span>
+                <span>Revenue: {summary.revenue.toFixed(2)}</span>
+                <span>Conversion: {summary.conversion.toFixed(2)}%</span>
+              </div>
+            </div>
+          )}
+          <Charts
+            traffic={charts.traffic}
+            sales={charts.sales}
+            conversion={charts.conversion}
+            emailOpens={charts.emailOpens}
+            emailClicks={charts.emailClicks}
+            campaignSales={charts.campaignSales}
+            discountRedemptions={charts.discountRedemptions}
+          />
+        </div>
+      ))}
       <div className="mt-8 space-y-4">
         <h3 className="text-lg font-semibold">Progress</h3>
         <div>

@@ -34,12 +34,11 @@ export async function GET(req: NextRequest) {
   }, new Date(0));
   const lastModified = new Date(lastModifiedDate.toUTCString());
 
-  await trackEvent(shop, { type: "ai_catalog" });
-
   const ims = req.headers.get("if-modified-since");
   if (ims) {
     const imsDate = new Date(ims);
     if (!Number.isNaN(imsDate.getTime()) && lastModified <= imsDate) {
+      await trackEvent(shop, { type: "ai_crawl", status: 304 });
       return new NextResponse(null, {
         status: 304,
         headers: { "Last-Modified": lastModified.toUTCString() },
@@ -70,6 +69,8 @@ export async function GET(req: NextRequest) {
     }
     return item;
   });
+
+  await trackEvent(shop, { type: "ai_crawl", status: 200, count: items.length });
 
   return NextResponse.json(
     { items, page, total: all.length },

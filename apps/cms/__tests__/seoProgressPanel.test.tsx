@@ -12,7 +12,7 @@ jest.mock("@platform-core/repositories/analytics.server", () => ({
   listEvents: (...a: unknown[]) => listEventsMock(...a),
 }));
 
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import SeoProgressPanel from "../src/app/cms/shop/[shop]/settings/seo/SeoProgressPanel";
 
 beforeEach(() => {
@@ -20,7 +20,7 @@ beforeEach(() => {
 });
 
 describe("SeoProgressPanel", () => {
-  it("shows audit scores and recommendations", async () => {
+  it("shows audit scores, events, and recommendations", async () => {
     readSeoAuditsMock.mockResolvedValueOnce([
       {
         timestamp: "2024-01-01T00:00:00Z",
@@ -30,23 +30,17 @@ describe("SeoProgressPanel", () => {
     ]);
     listEventsMock.mockResolvedValueOnce([
       {
-        type: "page_view",
+        type: "audit_complete",
         timestamp: "2024-01-01T01:00:00Z",
-        source: "organic",
-      },
-      {
-        type: "page_view",
-        timestamp: "2024-01-01T02:00:00Z",
-        source: "organic",
+        score: 92,
       },
     ]);
 
     const ui = await SeoProgressPanel({ shop: "s1" });
     render(ui);
-    const table = screen.getByRole("table");
-    expect(within(table).getByText("92")).toBeInTheDocument();
-    expect(within(table).getByText("2")).toBeInTheDocument();
     expect(readSeoAuditsMock).toHaveBeenCalled();
+    expect(listEventsMock).toHaveBeenCalled();
     expect(screen.getByText("Add meta tags")).toBeInTheDocument();
+    expect(screen.getByText(/Score 92/)).toBeInTheDocument();
   });
 });

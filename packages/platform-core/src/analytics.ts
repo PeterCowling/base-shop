@@ -142,7 +142,7 @@ interface Aggregates {
   page_view: Record<string, number>;
   order: Record<string, { count: number; amount: number }>;
   discount_redeemed: Record<string, number>;
-  ai_catalog: Record<string, number>;
+  ai_crawl: Record<string, number>;
 }
 
 async function updateAggregates(
@@ -155,7 +155,7 @@ async function updateAggregates(
     page_view: {},
     order: {},
     discount_redeemed: {},
-    ai_catalog: {},
+    ai_crawl: {},
   };
   try {
     const buf = await fs.readFile(fp, "utf8");
@@ -173,8 +173,8 @@ async function updateAggregates(
     agg.order[day] = entry;
   } else if (event.type === "discount_redeemed") {
     agg.discount_redeemed[day] = (agg.discount_redeemed[day] || 0) + 1;
-  } else if (event.type === "ai_catalog") {
-    agg.ai_catalog[day] = (agg.ai_catalog[day] || 0) + 1;
+  } else if (event.type === "ai_crawl") {
+    agg.ai_crawl[day] = (agg.ai_crawl[day] || 0) + 1;
   }
   await fs.mkdir(path.dirname(fp), { recursive: true });
   await fs.writeFile(fp, JSON.stringify(agg), "utf8");

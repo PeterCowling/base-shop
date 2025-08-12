@@ -144,7 +144,7 @@ describe("analytics aggregates", () => {
         await analytics.trackEvent("test", { type: "order", orderId: "o1", amount: 2 });
         await analytics.trackOrder("test", "o2", 5);
         await analytics.trackEvent("test", { type: "discount_redeemed", code: "SAVE" });
-        await analytics.trackEvent("test", { type: "ai_catalog" });
+        await analytics.trackEvent("test", { type: "ai_crawl" });
 
         const fp = path.join(
           dir,
@@ -157,7 +157,7 @@ describe("analytics aggregates", () => {
         expect(agg.page_view[now.slice(0, 10)]).toBe(2);
         expect(agg.order[now.slice(0, 10)]).toEqual({ count: 2, amount: 7 });
         expect(agg.discount_redeemed[now.slice(0, 10)]).toBe(1);
-        expect(agg.ai_catalog[now.slice(0, 10)]).toBe(1);
+        expect(agg.ai_crawl[now.slice(0, 10)]).toBe(1);
         expect(fetch).not.toHaveBeenCalled();
       },
       { now }

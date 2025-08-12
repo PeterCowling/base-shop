@@ -55,7 +55,7 @@ export default async function ShopDashboard({
       ...Object.keys(campaignSalesByDay),
       ...Object.keys(discountByDay),
       ...Object.keys(aggregates.discount_redeemed),
-      ...Object.keys(aggregates.ai_catalog),
+      ...Object.keys(aggregates.ai_crawl),
     ])
   ).sort();
 
@@ -91,9 +91,9 @@ export default async function ShopDashboard({
     labels: days,
     data: days.map((d) => discountByDay[d] || 0),
   };
-  const aiCatalog = {
+  const aiCrawl = {
     labels: days,
-    data: days.map((d) => aggregates.ai_catalog[d] || 0),
+    data: days.map((d) => aggregates.ai_crawl[d] || 0),
   };
 
   const totals = {
@@ -101,14 +101,14 @@ export default async function ShopDashboard({
     emailClicks: emailClicks.data.reduce((a, b) => a + b, 0),
     campaignSales: campaignSales.data.reduce((a, b) => a + b, 0),
     discountRedemptions: discountRedemptions.data.reduce((a, b) => a + b, 0),
-    aiCatalog: aiCatalog.data.reduce((a, b) => a + b, 0),
+    aiCrawl: aiCrawl.data.reduce((a, b) => a + b, 0),
   };
   const maxTotal = Math.max(
     totals.emailOpens,
     totals.emailClicks,
     totals.campaignSales,
     totals.discountRedemptions,
-    totals.aiCatalog,
+    totals.aiCrawl,
     1,
   );
 
@@ -137,7 +137,7 @@ export default async function ShopDashboard({
         emailClicks={emailClicks}
         campaignSales={campaignSales}
         discountRedemptions={discountRedemptions}
-        aiCatalog={aiCatalog}
+        aiCrawl={aiCrawl}
       />
       <div className="mt-8 space-y-4">
         <h3 className="text-lg font-semibold">Progress</h3>
@@ -172,12 +172,10 @@ export default async function ShopDashboard({
           />
         </div>
         <div>
-          <span className="mb-1 block text-sm font-medium">
-            AI catalog requests
-          </span>
+          <span className="mb-1 block text-sm font-medium">AI crawls</span>
           <Progress
-            value={(totals.aiCatalog / maxTotal) * 100}
-            label={String(totals.aiCatalog)}
+            value={(totals.aiCrawl / maxTotal) * 100}
+            label={String(totals.aiCrawl)}
           />
         </div>
       </div>

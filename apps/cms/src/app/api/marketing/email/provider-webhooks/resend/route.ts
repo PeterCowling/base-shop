@@ -1,0 +1,41 @@
+import { NextRequest, NextResponse } from "next/server";
+import crypto from "node:crypto";
+import { trackEvent } from "@platform-core/analytics";
+
+const typeMap: Record<string, string> = {
+  "email.delivered": "email_delivered",
+  "email.opened": "email_open",
+  "email.clicked": "email_click",
+  "email.unsubscribed": "email_unsubscribe",
+  "email.bounced": "email_bounce",
+};
+
+export async function POST(req: NextRequest): Promise<NextResponse> {
+  const shop = req.nextUrl.searchParams.get("shop");
+  if (!shop) {
+    return NextResponse.json({ error: "Missing shop" }, { status: 400 });
+  }
+  const secret = process.env.RESEND_WEBHOOK_SECRET;
+  const signature = req.headers.get("x-resend-signature") || "";
+  const body = await req.text();
+  if (!secret) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  const expected = crypto.createHmac("sha256", secret).update(body).digest("hex");
+  if (signature !== expected) {
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+  }
+  let event: any;
+  try {
+    event = JSON.parse(body);
+  } catch {
+    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+  }
+  const mapped = typeMap[event.type];
+  if (mapped) {
+    const campaign = event.data?.campaign || event.data?.campaign_id;
+    await trackEvent(shop, { type: mapped, ...(campaign ? { campaign } : {}) });
+  }
+  return NextResponse.json({ ok: true });
+}
+

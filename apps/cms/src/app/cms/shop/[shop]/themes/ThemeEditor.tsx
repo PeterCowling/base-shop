@@ -3,6 +3,8 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
+import { savePreset, deletePreset } from "./page";
+import ColorContrastChecker from "color-contrast-checker";
 import { useState, ChangeEvent, FormEvent, useMemo, useRef, useEffect } from "react";
 
 const HEX_RE = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
@@ -100,6 +102,7 @@ interface Props {
   tokensByTheme: Record<string, Record<string, string>>;
   initialTheme: string;
   initialOverrides: Record<string, string>;
+  presets: string[];
 }
 
 export default function ThemeEditor({
@@ -108,17 +111,24 @@ export default function ThemeEditor({
   tokensByTheme,
   initialTheme,
   initialOverrides,
+  presets,
 }: Props) {
   const [theme, setTheme] = useState(initialTheme);
   const [overrides, setOverrides] =
     useState<Record<string, string>>(initialOverrides);
+  const [availableThemes, setAvailableThemes] = useState(themes);
+  const [tokensByThemeState, setTokensByThemeState] =
+    useState<Record<string, Record<string, string>>>(tokensByTheme);
+  const [presetThemes, setPresetThemes] = useState(presets);
+  const [presetName, setPresetName] = useState("");
+  const [contrastWarnings, setContrastWarnings] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const previewRef = useRef<HTMLIFrameElement | null>(null);
 
   const groupedTokens = useMemo(() => {
-    const tokens = tokensByTheme[theme];
+    const tokens = tokensByThemeState[theme];
     const groups: Record<string, [string, string][]> = {
       Background: [],
       Text: [],
@@ -133,14 +143,14 @@ export default function ThemeEditor({
       else groups.Other.push([k, v]);
     });
     return groups;
-  }, [theme, tokensByTheme]);
+  }, [theme, tokensByThemeState]);
 
   const changedOverrides = useMemo(() => {
-    const tokens = tokensByTheme[theme];
+    const tokens = tokensByThemeState[theme];
     return Object.fromEntries(
       Object.entries(overrides).filter(([k, v]) => tokens[k] !== v)
     );
-  }, [overrides, tokensByTheme, theme]);
+  }, [overrides, tokensByThemeState, theme]);
 
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
@@ -180,7 +190,7 @@ export default function ThemeEditor({
       const doc = iframe.contentDocument;
       if (!doc) return;
       const root = doc.documentElement;
-      const tokens = tokensByTheme[theme];
+      const tokens = tokensByThemeState[theme];
       Object.entries(tokens).forEach(([k, v]) => {
         root.style.setProperty(k, overrides[k] ?? v);
       });
@@ -197,7 +207,7 @@ export default function ThemeEditor({
       const doc = iframe.contentDocument;
       doc?.removeEventListener("click", handleClick);
     };
-  }, [theme, overrides, tokensByTheme]);
+  }, [theme, overrides, tokensByThemeState]);
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
@@ -229,6 +239,41 @@ export default function ThemeEditor({
     });
   };
 
+  useEffect(() => {
+    const ccc = new ColorContrastChecker();
+    const baseTokens = tokensByThemeState[theme];
+    const merged = { ...baseTokens, ...overrides };
+    const textTokens = Object.keys(baseTokens).filter((k) =>
+      /text|foreground/i.test(k),
+    );
+    const bgTokens = Object.keys(baseTokens).filter((k) =>
+      /bg|background/i.test(k),
+    );
+    const warnings: string[] = [];
+    textTokens.forEach((t) => {
+      const fg = merged[t];
+      const fgDefault = baseTokens[t];
+      bgTokens.forEach((b) => {
+        const bg = merged[b];
+        const bgDefault = baseTokens[b];
+        if (!fg || !bg) return;
+        const fgHex = isHsl(fg) ? hslToHex(fg) : fg;
+        const bgHex = isHsl(bg) ? hslToHex(bg) : bg;
+        if (!isHex(fgHex) || !isHex(bgHex)) return;
+        const fgDefHex = isHsl(fgDefault) ? hslToHex(fgDefault) : fgDefault;
+        const bgDefHex = isHsl(bgDefault) ? hslToHex(bgDefault) : bgDefault;
+        const defaultRatio = ccc.getContrastRatio(fgDefHex, bgDefHex);
+        const ratio = ccc.getContrastRatio(fgHex, bgHex);
+        if (ratio < defaultRatio && ratio < 4.5) {
+          warnings.push(
+            `${t} on ${b} contrast ${ratio.toFixed(2)}:1`,
+          );
+        }
+      });
+    });
+    setContrastWarnings(warnings);
+  }, [theme, overrides, tokensByThemeState]);
+
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
@@ -241,6 +286,33 @@ export default function ThemeEditor({
       setErrors({});
     }
     setSaving(false);
+  };
+
+  const handleSavePreset = async () => {
+    const name = presetName.trim();
+    if (!name) return;
+    const tokens = { ...tokensByThemeState[theme], ...overrides };
+    await savePreset(shop, name, tokens);
+    setTokensByThemeState((prev) => ({ ...prev, [name]: tokens }));
+    setAvailableThemes((prev) => [...prev, name]);
+    setPresetThemes((prev) => [...prev, name]);
+    setTheme(name);
+    setOverrides({});
+    setPresetName("");
+  };
+
+  const handleDeletePreset = async () => {
+    await deletePreset(shop, theme);
+    setTokensByThemeState((prev) => {
+      const next = { ...prev };
+      delete next[theme];
+      return next;
+    });
+    setAvailableThemes((prev) => prev.filter((t) => t !== theme));
+    setPresetThemes((prev) => prev.filter((t) => t !== theme));
+    const fallback = themes[0];
+    setTheme(fallback);
+    setOverrides({});
   };
 
   return (
@@ -259,7 +331,7 @@ export default function ThemeEditor({
           value={theme}
           onChange={handleThemeChange}
         >
-          {themes.map((t) => (
+          {availableThemes.map((t) => (
             <option key={t} value={t}>
               {t}
             </option>
@@ -271,6 +343,31 @@ export default function ThemeEditor({
           </span>
         )}
       </label>
+      <div className="flex items-center gap-2">
+        <Input
+          placeholder="Preset name"
+          value={presetName}
+          onChange={(e) => setPresetName(e.target.value)}
+        />
+        <Button type="button" onClick={handleSavePreset} disabled={!presetName.trim()}>
+          Save Preset
+        </Button>
+        {presetThemes.includes(theme) && (
+          <Button type="button" onClick={handleDeletePreset}>
+            Delete Preset
+          </Button>
+        )}
+      </div>
+      {contrastWarnings.length > 0 && (
+        <div className="rounded border border-amber-300 bg-amber-50 p-2 text-sm text-amber-800">
+          <p>Contrast warnings:</p>
+          <ul className="list-disc pl-4">
+            {contrastWarnings.map((w, i) => (
+              <li key={i}>{w}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <iframe
         ref={previewRef}
         src={`/${shop}`}

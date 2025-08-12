@@ -2,6 +2,8 @@
 
 This document describes how to navigate the in-browser CMS and what each link in the sidebar does.
 
+For role and permission details, see the [permission guide](./permissions.md).
+
 ## Sidebar Links
 
 The sidebar inside the CMS provides quick access to different sections:

@@ -13,7 +13,7 @@ Key points:
 - Low-stock alerts email the configured recipient (`STOCK_ALERT_RECIPIENT`) when inventory falls below its threshold.
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
 - Return logistics options stored in data/return-logistics.json.
-- RBAC: ShopAdmin currently manages all shops.
+- RBAC: ShopAdmin currently manages all shops. See [doc/permissions.md](doc/permissions.md) for default roles and permissions.
 - Product and recommendation carousels adapt their visible item count to the screen width, clamped between caller-provided `minItems` and `maxItems` values.
   A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **React 19**.
   The full technical roadmap is documented in [./IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md).

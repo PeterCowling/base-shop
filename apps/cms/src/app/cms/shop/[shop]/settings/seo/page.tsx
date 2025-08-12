@@ -3,6 +3,7 @@
 import { getSettings } from "@cms/actions/shops.server";
 import dynamic from "next/dynamic";
 import SeoProgressPanel from "./SeoProgressPanel";
+import AiFeedPanel from "./AiFeedPanel";
 
 const SeoEditor = dynamic(() => import("./SeoEditor"));
 const SeoAuditPanel = dynamic(() => import("./SeoAuditPanel"));
@@ -30,6 +31,7 @@ export default async function SeoSettingsPage({
     <div className="space-y-6">
       <h2 className="text-xl font-semibold">SEO – {shop}</h2>
       <SeoProgressPanel shop={shop} />
+      <AiFeedPanel shop={shop} />
       <SeoEditor
         shop={shop}
         languages={languages}

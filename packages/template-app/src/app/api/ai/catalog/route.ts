@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getProductById } from "@platform-core/src/products";
 import { readRepo } from "@platform-core/repositories/products.server";
+import { trackEvent } from "@platform-core/analytics";
 import type { ProductPublication } from "@acme/types";
 import { env } from "@acme/config";
 
@@ -46,6 +47,8 @@ export async function GET(req: NextRequest) {
       images: p.images?.length ? p.images : (sku as any).image ? [(sku as any).image] : [],
     };
   });
+
+  await trackEvent(shop, { type: "ai_crawl", page, items: items.length });
 
   return NextResponse.json(
     { items, page, total: all.length },

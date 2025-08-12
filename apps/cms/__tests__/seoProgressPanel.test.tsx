@@ -39,6 +39,12 @@ describe("SeoProgressPanel", () => {
         timestamp: "2024-01-01T02:00:00Z",
         source: "organic",
       },
+      {
+        type: "audit_complete",
+        timestamp: "2024-01-01T03:00:00Z",
+        score: 0.92,
+        issues: 3,
+      },
     ]);
 
     const ui = await SeoProgressPanel({ shop: "s1" });
@@ -48,5 +54,6 @@ describe("SeoProgressPanel", () => {
     expect(within(table).getByText("2")).toBeInTheDocument();
     expect(readSeoAuditsMock).toHaveBeenCalled();
     expect(screen.getByText("Add meta tags")).toBeInTheDocument();
+    expect(screen.getByText(/score 92/)).toBeInTheDocument();
   });
 });

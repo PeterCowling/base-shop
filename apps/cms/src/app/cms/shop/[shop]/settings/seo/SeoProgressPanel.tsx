@@ -12,10 +12,13 @@ export default async function SeoProgressPanel({ shop }: Props) {
   const events = await listEvents(shop);
 
   const trafficByDay: Record<string, number> = {};
+  const auditEvents: any[] = [];
   for (const ev of events) {
     if (ev.type === "page_view" && (ev as { source?: string }).source === "organic") {
       const day = (ev.timestamp as string).slice(0, 10);
       trafficByDay[day] = (trafficByDay[day] ?? 0) + 1;
+    } else if (ev.type === "audit_complete") {
+      auditEvents.push(ev);
     }
   }
 
@@ -26,6 +29,7 @@ export default async function SeoProgressPanel({ shop }: Props) {
   }));
 
   const recs = audits.at(-1)?.recommendations ?? [];
+  const recent = auditEvents.slice(-5).reverse();
 
   return (
     <div className="space-y-4 text-sm">
@@ -57,6 +61,18 @@ export default async function SeoProgressPanel({ shop }: Props) {
           <ul className="list-disc pl-5 space-y-1">
             {recs.map((r) => (
               <li key={r}>{r}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {recent.length > 0 && (
+        <div className="space-y-2">
+          <h4 className="font-medium">Recent Events</h4>
+          <ul className="list-disc pl-5 space-y-1">
+            {recent.map((e) => (
+              <li key={e.timestamp as string}>
+                {formatTimestamp(e.timestamp as string)} – score {Math.round((e.score as number) * 100)} ({e.issues} issues)
+              </li>
             ))}
           </ul>
         </div>

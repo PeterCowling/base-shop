@@ -1,10 +1,14 @@
 // packages/template-app/__tests__/ai-catalog.test.ts
+jest.mock("@acme/config", () => ({
+  env: { NEXT_PUBLIC_SHOP_ID: "abc" },
+}));
+const trackEventMock = jest.fn();
+jest.mock("@platform-core/analytics", () => ({
+  trackEvent: (...a: unknown[]) => trackEventMock(...a),
+}));
 import { GET } from "../src/app/api/ai/catalog/route";
 
 describe("AI catalogue API", () => {
-  beforeAll(() => {
-    process.env.NEXT_PUBLIC_SHOP_ID = "abc";
-  });
 
   function createRequest(url: string, headers: Record<string, string> = {}) {
     return {
@@ -14,6 +18,7 @@ describe("AI catalogue API", () => {
   }
 
   test("returns product metadata", async () => {
+    trackEventMock.mockClear();
     const res = await GET(
       createRequest("http://localhost/api/ai/catalog?limit=1&page=1")
     );
@@ -27,6 +32,11 @@ describe("AI catalogue API", () => {
     expect(item).toHaveProperty("description");
     expect(item).toHaveProperty("price");
     expect(item).toHaveProperty("images");
+    expect(trackEventMock).toHaveBeenCalledWith("abc", {
+      type: "ai_crawl",
+      page: 1,
+      items: expect.any(Number),
+    });
   });
 
   test("responds 304 when not modified", async () => {

@@ -5,6 +5,9 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import lighthouse from "lighthouse";
 import chromeLauncher from "chrome-launcher";
+import { trackEvent } from "@platform-core/analytics";
+import { sendCampaignEmail } from "@acme/email";
+import { env } from "@acme/config";
 
 interface AuditRecord {
   timestamp: string;
@@ -71,5 +74,31 @@ export async function POST(
   }
   history.push(record);
   await fs.writeFile(file, JSON.stringify(history, null, 2), "utf8");
+
+  await trackEvent(safeShop, {
+    type: "audit_complete",
+    score: record.score,
+    issues: record.issues,
+  });
+
+  const recipientRaw = env.STOCK_ALERT_RECIPIENTS ?? env.STOCK_ALERT_RECIPIENT;
+  if (recipientRaw && record.score < 0.8) {
+    const recipients = recipientRaw
+      .split(",")
+      .map((r) => r.trim())
+      .filter(Boolean);
+    const subject = `Low SEO score for ${safeShop}`;
+    const html = `<p>Latest SEO audit scored ${Math.round(
+      record.score * 100,
+    )} with ${record.issues} issues.</p>`;
+    for (const to of recipients) {
+      try {
+        await sendCampaignEmail({ to, subject, html });
+      } catch {
+        // ignore email errors
+      }
+    }
+  }
+
   return NextResponse.json(record);
 }

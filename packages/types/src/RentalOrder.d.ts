@@ -11,6 +11,8 @@ export declare const rentalOrderSchema: z.ZodObject<{
     /** Optional damage fee deducted from the deposit */
     damageFee: z.ZodOptional<z.ZodNumber>;
     customerId: z.ZodOptional<z.ZodString>;
+    riskLevel: z.ZodOptional<z.ZodString>;
+    riskScore: z.ZodOptional<z.ZodNumber>;
 }, "strip", z.ZodTypeAny, {
     id: string;
     deposit: number;
@@ -22,6 +24,8 @@ export declare const rentalOrderSchema: z.ZodObject<{
     refundedAt?: string | undefined;
     damageFee?: number | undefined;
     customerId?: string | undefined;
+    riskLevel?: string | undefined;
+    riskScore?: number | undefined;
 }, {
     id: string;
     deposit: number;
@@ -33,6 +37,8 @@ export declare const rentalOrderSchema: z.ZodObject<{
     refundedAt?: string | undefined;
     damageFee?: number | undefined;
     customerId?: string | undefined;
-}>;
+    riskLevel?: string | undefined;
+    riskScore?: number | undefined;
+}>; 
 export type RentalOrder = z.infer<typeof rentalOrderSchema>;
 //# sourceMappingURL=RentalOrder.d.ts.map

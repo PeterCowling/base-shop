@@ -12,6 +12,8 @@ export const rentalOrderSchema = z.object({
   /** Optional damage fee deducted from the deposit */
   damageFee: z.number().optional(),
   customerId: z.string().optional(),
+  riskLevel: z.string().optional(),
+  riskScore: z.number().optional(),
 });
 
 export type RentalOrder = z.infer<typeof rentalOrderSchema>;

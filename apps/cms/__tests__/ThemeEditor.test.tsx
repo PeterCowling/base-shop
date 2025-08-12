@@ -93,4 +93,7 @@ describe("ThemeEditor", () => {
     fireEvent.click(swatch);
     expect(colorInput).toHaveFocus();
   });
+
+  it.todo("handles separate light and dark mode overrides");
+  it.todo("supports selecting elements from a preview to edit tokens");
 });

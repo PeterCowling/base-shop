@@ -55,6 +55,15 @@ describe("shop actions", () => {
        * -------------------------------------------------------------- */
       const adminSession = { user: { role: "admin" } } as unknown as Session;
 
+      jest.doMock("@platform-core/src/db", () => ({
+        prisma: {
+          shop: {
+            findUnique: jest.fn().mockResolvedValue(null),
+            upsert: jest.fn().mockRejectedValue(new Error("no db")),
+          },
+        },
+      }));
+
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue(adminSession),
       }));
@@ -97,6 +106,15 @@ describe("shop actions", () => {
 
       const adminSession = { user: { role: "admin" } } as unknown as Session;
 
+      jest.doMock("@platform-core/src/db", () => ({
+        prisma: {
+          shop: {
+            findUnique: jest.fn().mockResolvedValue(null),
+            upsert: jest.fn().mockRejectedValue(new Error("no db")),
+          },
+        },
+      }));
+
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue(adminSession),
       }));
@@ -122,6 +140,71 @@ describe("shop actions", () => {
       expect(saved.themeOverrides).toEqual(overrides);
       expect(saved.themeTokens).toEqual({ ...defaultTokens, ...overrides });
       expect(result.shop?.themeTokens).toEqual({ ...defaultTokens, ...overrides });
+    });
+  });
+
+  it("persists overrides and defaults after reload", async () => {
+    await withRepo(async (dir) => {
+      const shopFile = path.join(dir, "data", "shops", "test", "shop.json");
+      await fs.writeFile(
+        shopFile,
+        JSON.stringify(
+          {
+            id: "test",
+            name: "Seed",
+            catalogFilters: [],
+            themeId: "base",
+            themeOverrides: {},
+            themeTokens: {},
+            filterMappings: {},
+            priceOverrides: {},
+            localeOverrides: {},
+          },
+          null,
+          2,
+        ),
+      );
+
+      const adminSession = { user: { role: "admin" } } as unknown as Session;
+
+      jest.doMock("@platform-core/src/db", () => ({
+        prisma: {
+          shop: {
+            findUnique: jest.fn().mockResolvedValue(null),
+            upsert: jest.fn().mockRejectedValue(new Error("no db")),
+          },
+        },
+      }));
+
+      jest.doMock("next-auth", () => ({
+        getServerSession: jest.fn().mockResolvedValue(adminSession),
+      }));
+
+      const themeDefaults = { base: "default", accent: "blue" };
+      jest.doMock("@platform-core/src/createShop", () => ({
+        syncTheme: jest.fn(),
+        loadTokens: jest.fn().mockReturnValue(themeDefaults),
+      }));
+      jest.doMock("@platform-core/src/themeTokens", () => ({
+        baseTokens: { base: themeDefaults.base },
+        loadThemeTokens: jest.fn().mockResolvedValue({ accent: themeDefaults.accent }),
+      }));
+
+      const { updateShop } = await import("../src/actions/shops.server");
+      const { readShop } = await import("@platform-core/src/repositories/shops.server");
+
+      const overrides = { accent: "red" };
+      const fd = new FormData();
+      fd.append("id", "test");
+      fd.append("name", "Updated");
+      fd.append("themeId", "base");
+      fd.append("themeOverrides", JSON.stringify(overrides));
+
+      await updateShop("test", fd);
+
+      const reloaded = await readShop("test");
+      expect(reloaded.themeOverrides).toEqual(overrides);
+      expect(reloaded.themeTokens).toEqual({ ...themeDefaults, ...overrides });
     });
   });
 });

@@ -81,6 +81,13 @@ export interface SocialLinksComponent extends PageComponentBase {
   linkedin?: string;
 }
 
+export interface SocialFeedComponent extends PageComponentBase {
+  type: "SocialFeed";
+  platform?: "twitter" | "instagram";
+  account?: string;
+  hashtag?: string;
+}
+
 export interface AnnouncementBarComponent extends PageComponentBase {
   type: "AnnouncementBar";
   text?: string;
@@ -252,6 +259,7 @@ export type PageComponent =
   | HeaderComponent
   | FooterComponent
   | SocialLinksComponent
+  | SocialFeedComponent
   | SectionComponent
   | MultiColumnComponent;
 
@@ -397,6 +405,13 @@ const socialLinksComponentSchema = baseComponentSchema.extend({
   linkedin: z.string().optional(),
 });
 
+const socialFeedComponentSchema = baseComponentSchema.extend({
+  type: z.literal("SocialFeed"),
+  platform: z.enum(["twitter", "instagram"]).optional(),
+  account: z.string().optional(),
+  hashtag: z.string().optional(),
+});
+
 const blogListingComponentSchema = baseComponentSchema.extend({
   type: z.literal("BlogListing"),
   posts: z
@@ -499,6 +514,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     headerComponentSchema,
     footerComponentSchema,
     socialLinksComponentSchema,
+    socialFeedComponentSchema,
     blogListingComponentSchema,
     testimonialsComponentSchema,
     pricingTableComponentSchema,

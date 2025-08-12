@@ -16,6 +16,7 @@ import VideoBlock from "./VideoBlock";
 import FAQBlock from "./FAQBlock";
 import CountdownTimer from "./CountdownTimer";
 import SocialLinks from "./SocialLinks";
+import SocialFeed from "./SocialFeed";
 import PricingTable from "./PricingTable";
 
 export const organismRegistry = {
@@ -37,6 +38,7 @@ export const organismRegistry = {
   FAQBlock,
   CountdownTimer,
   SocialLinks,
+  SocialFeed,
   PricingTable,
 } as const;
 

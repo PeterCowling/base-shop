@@ -7,6 +7,7 @@ import HeroBannerEditor from "../HeroBannerEditor";
 import ValuePropsEditor from "../ValuePropsEditor";
 import ReviewsCarouselEditor from "../ReviewsCarouselEditor";
 import AnnouncementBarEditor from "../AnnouncementBarEditor";
+import SocialFeedEditor from "../SocialFeedEditor";
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
@@ -65,6 +66,12 @@ describe("block editors", () => {
       AnnouncementBarEditor,
       { type: "AnnouncementBar", text: "", link: "" },
       "text",
+    ],
+    [
+      "SocialFeedEditor",
+      SocialFeedEditor,
+      { type: "SocialFeed", platform: "twitter", account: "" },
+      "account",
     ],
   ];
 

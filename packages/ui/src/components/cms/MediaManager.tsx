@@ -1,7 +1,14 @@
 // packages/ui/src/components/cms/MediaManager.tsx
 "use client";
 
-import { Input } from "@ui/components/atoms/shadcn";
+import {
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@ui/components/atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import { memo, ReactElement, useCallback, useState } from "react";
@@ -32,6 +39,8 @@ function MediaManagerBase({
   onDelete,
 }: Props): ReactElement {
   const [files, setFiles] = useState<MediaItem[]>(initialFiles);
+  const [query, setQuery] = useState("");
+  const [tag, setTag] = useState("");
   const [dragActive, setDragActive] = useState(false);
   const feedbackId = "media-manager-feedback";
 
@@ -75,8 +84,45 @@ function MediaManagerBase({
   /* ---------------------------------------------------------------------- */
   /*  Render                                                                */
   /* ---------------------------------------------------------------------- */
+  const tags = Array.from(new Set(files.flatMap((f) => f.tags ?? [])));
+  const filteredFiles = files.filter((f) => {
+    const q = query.toLowerCase();
+    const matchesQuery =
+      !q ||
+      f.url.toLowerCase().includes(q) ||
+      f.altText?.toLowerCase().includes(q) ||
+      f.title?.toLowerCase().includes(q);
+    const matchesTag = !tag || (f.tags ?? []).includes(tag);
+    return matchesQuery && matchesTag;
+  });
+
   return (
     <div className="space-y-6">
+      <div className="flex gap-2">
+        <Input
+          type="search"
+          placeholder="Search media..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="flex-1"
+        />
+        {tags.length > 0 && (
+          <Select value={tag} onValueChange={setTag}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="All tags" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">All tags</SelectItem>
+              {tags.map((t) => (
+                <SelectItem key={t} value={t}>
+                  {t}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+      </div>
+
       {/* Upload drop-zone / picker */}
       <div
         tabIndex={0}
@@ -155,8 +201,8 @@ function MediaManagerBase({
       </div>
 
       {/* File list */}
-      {files.length > 0 && (
-        <MediaFileList files={files} onDelete={handleDelete} />
+      {filteredFiles.length > 0 && (
+        <MediaFileList files={filteredFiles} onDelete={handleDelete} />
       )}
     </div>
   );

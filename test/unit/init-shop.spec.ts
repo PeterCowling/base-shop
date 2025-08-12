@@ -9,6 +9,8 @@ describe('init-shop wizard', () => {
     const answers = [
       'demo',
       'Demo Shop',
+      'https://example.com/logo.png',
+      'contact@example.com',
       '',
       'base',
       'template-app',
@@ -91,6 +93,8 @@ describe('init-shop wizard', () => {
     expect(questions).toEqual([
       'Shop ID: ',
       'Display name (optional): ',
+      'Logo URL (optional): ',
+      'Contact email (optional): ',
       'Shop type (sale or rental) [sale]: ',
       'Theme [base]: ',
       'Template [template-app]: ',
@@ -99,19 +103,27 @@ describe('init-shop wizard', () => {
       'Setup CI workflow? (y/N): ',
     ]);
 
-    expect(createShop).toHaveBeenCalledWith('shop-demo', {
-      name: 'Demo Shop',
-      type: 'sale',
-      theme: 'base',
-      template: 'template-app',
-      payment: ['stripe', 'paypal'],
-      shipping: ['dhl'],
-    });
+    expect(createShop).toHaveBeenCalledWith(
+      'shop-demo',
+      {
+        name: 'Demo Shop',
+        logo: 'https://example.com/logo.png',
+        contactInfo: 'contact@example.com',
+        type: 'sale',
+        theme: 'base',
+        template: 'template-app',
+        payment: ['stripe', 'paypal'],
+        shipping: ['dhl'],
+      },
+      { deploy: true }
+    );
 
     expect(envParse).toHaveBeenCalledWith({
       STRIPE_SECRET_KEY: '',
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: '',
     });
+
+    expect(validateShopEnv).toHaveBeenCalledWith('shop-demo');
 
     expect(sandbox.console.error).toHaveBeenCalled();
     expect(sandbox.console.error.mock.calls[0][0]).toContain(

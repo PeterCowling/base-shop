@@ -23,4 +23,15 @@ describe("pageComponentSchema", () => {
     });
     expect(res.success).toBe(false);
   });
+
+  it("accepts ProductGrid with viewport counts", () => {
+    const res = pageComponentSchema.safeParse({
+      id: "1",
+      type: "ProductGrid",
+      desktopItems: 4,
+      tabletItems: 2,
+      mobileItems: 1,
+    });
+    expect(res.success).toBe(true);
+  });
 });

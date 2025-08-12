@@ -14,6 +14,12 @@ export interface ProductGridProps extends React.HTMLAttributes<HTMLDivElement> {
   minItems?: number;
   /** Maximum number of items to show */
   maxItems?: number;
+  /** Items shown on desktop viewports */
+  desktopItems?: number;
+  /** Items shown on tablet viewports */
+  tabletItems?: number;
+  /** Items shown on mobile viewports */
+  mobileItems?: number;
   showImage?: boolean;
   showPrice?: boolean;
   ctaLabel?: string;
@@ -25,6 +31,9 @@ export function ProductGrid({
   columns,
   minItems = 1,
   maxItems = 4,
+  desktopItems,
+  tabletItems,
+  mobileItems,
   showImage = true,
   showPrice = true,
   ctaLabel = "Add to cart",
@@ -33,7 +42,9 @@ export function ProductGrid({
   ...props
 }: ProductGridProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [cols, setCols] = React.useState(columns ?? minItems);
+  const [cols, setCols] = React.useState(
+    columns ?? desktopItems ?? minItems
+  );
 
   React.useEffect(() => {
     if (columns || typeof ResizeObserver === "undefined" || !containerRef.current)
@@ -42,6 +53,16 @@ export function ProductGrid({
     const ITEM_WIDTH = 250;
     const update = () => {
       const width = el.clientWidth;
+      if (desktopItems || tabletItems || mobileItems) {
+        const chosen =
+          width >= 1024
+            ? desktopItems
+            : width >= 768
+            ? tabletItems
+            : mobileItems;
+        setCols(chosen ?? minItems);
+        return;
+      }
       const ideal = Math.floor(width / ITEM_WIDTH) || 1;
       const clamped = Math.max(minItems, Math.min(maxItems, ideal));
       setCols(clamped);
@@ -50,7 +71,14 @@ export function ProductGrid({
     const observer = new ResizeObserver(update);
     observer.observe(el);
     return () => observer.disconnect();
-  }, [columns, minItems, maxItems]);
+  }, [
+    columns,
+    minItems,
+    maxItems,
+    desktopItems,
+    tabletItems,
+    mobileItems,
+  ]);
 
   const style = {
     gridTemplateColumns: `repeat(${columns ?? cols}, minmax(0, 1fr))`,

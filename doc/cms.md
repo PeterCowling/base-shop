@@ -80,10 +80,11 @@ _Short description (drag): corner handles highlight when the block snaps to full
 
 ### Product grids and carousels
 
-Blocks that show multiple products (grids or carousels) expose **Min Items** and
-**Max Items** settings. The block observes its width and automatically adjusts
-how many products are visible within those bounds. Wide screens may show more
-items up to `maxItems`, while narrow screens never drop below `minItems`.
+Blocks that show multiple products can define exact counts for each device
+size. Use **Desktop Items**, **Tablet Items** and **Mobile Items** to set the
+visible product count per viewport. If these fields are left blank, the block
+falls back to the **Min Items**/**Max Items** range and adjusts automatically
+based on available width.
 
 ### Publish changes
 

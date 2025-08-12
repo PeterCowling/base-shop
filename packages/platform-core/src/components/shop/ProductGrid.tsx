@@ -12,6 +12,12 @@ type Props = {
   minItems?: number;
   /** Maximum number of products to display */
   maxItems?: number;
+  /** Items shown on desktop viewports */
+  desktopItems?: number;
+  /** Items shown on tablet viewports */
+  tabletItems?: number;
+  /** Items shown on mobile viewports */
+  mobileItems?: number;
   className?: string;
 };
 
@@ -20,6 +26,9 @@ function ProductGridInner({
   columns,
   minItems = 1,
   maxItems = 3,
+  desktopItems,
+  tabletItems,
+  mobileItems,
   className,
 }: Props) {
   // simple alphabetic sort for deterministic order (SSR/CSR match)
@@ -29,7 +38,7 @@ function ProductGridInner({
   );
 
   const containerRef = useRef<HTMLElement>(null);
-  const [cols, setCols] = useState(columns ?? minItems);
+  const [cols, setCols] = useState(columns ?? desktopItems ?? minItems);
 
   useEffect(() => {
     if (columns || typeof ResizeObserver === "undefined" || !containerRef.current)
@@ -38,6 +47,16 @@ function ProductGridInner({
     const ITEM_WIDTH = 250;
     const update = () => {
       const width = el.clientWidth;
+      if (desktopItems || tabletItems || mobileItems) {
+        const chosen =
+          width >= 1024
+            ? desktopItems
+            : width >= 768
+            ? tabletItems
+            : mobileItems;
+        setCols(chosen ?? minItems);
+        return;
+      }
       const ideal = Math.floor(width / ITEM_WIDTH) || 1;
       const clamped = Math.max(minItems, Math.min(maxItems, ideal));
       setCols(clamped);
@@ -46,7 +65,14 @@ function ProductGridInner({
     const observer = new ResizeObserver(update);
     observer.observe(el);
     return () => observer.disconnect();
-  }, [columns, minItems, maxItems]);
+  }, [
+    columns,
+    minItems,
+    maxItems,
+    desktopItems,
+    tabletItems,
+    mobileItems,
+  ]);
 
   return (
     <section

@@ -37,7 +37,7 @@ Current components:
 
 ## Responsive Product Displays
 
-`ProductGrid`, `ProductCarousel` and `RecommendationCarousel` automatically
-adjust how many products are shown based on available width. Use `minItems`
-and `maxItems` to constrain the number of visible items so layouts remain
-attractive across screen sizes.
+`ProductGrid`, `ProductCarousel` and `RecommendationCarousel` can display
+different numbers of products per viewport. Configure `desktopItems`,
+`tabletItems` and `mobileItems` for explicit device counts. When left unset,
+the components fall back to responsive `minItems`/`maxItems` bounds.

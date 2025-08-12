@@ -292,6 +292,48 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
           />
         </>
       )}
+      {("desktopItems" in component ||
+        "tabletItems" in component ||
+        "mobileItems" in component) && (
+        <>
+          <Input
+            label="Desktop Items"
+            type="number"
+            value={(component as any).desktopItems ?? ""}
+            onChange={(e) =>
+              handleInput(
+                "desktopItems",
+                e.target.value === "" ? undefined : Number(e.target.value)
+              )
+            }
+            min={0}
+          />
+          <Input
+            label="Tablet Items"
+            type="number"
+            value={(component as any).tabletItems ?? ""}
+            onChange={(e) =>
+              handleInput(
+                "tabletItems",
+                e.target.value === "" ? undefined : Number(e.target.value)
+              )
+            }
+            min={0}
+          />
+          <Input
+            label="Mobile Items"
+            type="number"
+            value={(component as any).mobileItems ?? ""}
+            onChange={(e) =>
+              handleInput(
+                "mobileItems",
+                e.target.value === "" ? undefined : Number(e.target.value)
+              )
+            }
+            min={0}
+          />
+        </>
+      )}
       {"columns" in component && (
         <Input
           label="Columns"

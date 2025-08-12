@@ -75,21 +75,29 @@ export function writeFiles(
   writeFileSync(cssPath, css);
 
   let envContent = `NEXT_PUBLIC_SHOP_ID=${id}\n`;
-  envContent += `PREVIEW_TOKEN_SECRET=${genSecret()}\n`;
   const envVars = [...options.payment, ...options.shipping, options.tax];
   if (envVars.length === 0) envVars.push("stripe");
   for (const provider of envVars) {
     if (provider === "stripe") {
-      envContent += `STRIPE_SECRET_KEY=${genSecret()}\n`;
-      envContent += `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${genSecret()}\n`;
+      envContent += `STRIPE_SECRET_KEY=\n`;
+      envContent += `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\n`;
     } else {
-      envContent += `${provider.toUpperCase()}_KEY=${genSecret()}\n`;
+      envContent += `${provider.toUpperCase()}_KEY=\n`;
     }
   }
+  envContent += `CART_COOKIE_SECRET=${genSecret()}\n`;
+  envContent += `CART_TTL=\n`;
   envContent += `NEXTAUTH_SECRET=${genSecret()}\n`;
-  envContent += `# CMS_SPACE_URL=\n`;
-  envContent += `# CMS_ACCESS_TOKEN=\n`;
-  envContent += `# CHROMATIC_PROJECT_TOKEN=\n`;
+  envContent += `PREVIEW_TOKEN_SECRET=${genSecret()}\n`;
+  envContent += `CMS_SPACE_URL=\n`;
+  envContent += `CMS_ACCESS_TOKEN=\n`;
+  envContent += `SANITY_PROJECT_ID=\n`;
+  envContent += `SANITY_DATASET=\n`;
+  envContent += `SANITY_TOKEN=\n`;
+  envContent += `GMAIL_USER=\n`;
+  envContent += `GMAIL_PASS=\n`;
+  envContent += `CLOUDFLARE_ACCOUNT_ID=\n`;
+  envContent += `CLOUDFLARE_API_TOKEN=\n`;
   writeFileSync(join(newApp, ".env"), envContent);
 
   mkdirSync(newData, { recursive: true });

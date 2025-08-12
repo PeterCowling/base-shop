@@ -16,7 +16,7 @@ describe("envSchema", () => {
       CART_COOKIE_SECRET: "secret",
     } as NodeJS.ProcessEnv;
 
-    const { envSchema } = await import("../src/env");
+    const { envSchema } = await import("../src/env/index");
     const parsed = envSchema.parse({
       STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
@@ -38,7 +38,7 @@ describe("envSchema", () => {
       CART_COOKIE_SECRET: "secret",
     } as NodeJS.ProcessEnv;
 
-    const { envSchema } = await import("../src/env");
+    const { envSchema } = await import("../src/env/index");
 
     const invalid = {
       STRIPE_SECRET_KEY: "sk",

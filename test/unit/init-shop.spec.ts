@@ -60,7 +60,7 @@ describe('init-shop wizard', () => {
             }),
           };
         }
-        if (p.includes('@config/src/env')) {
+        if (p.includes('@acme/config/env')) {
           return { envSchema: { parse: envParse } };
         }
         if (p.includes('../../packages/platform-core/src/createShop/listProviders')) {

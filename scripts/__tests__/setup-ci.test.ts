@@ -2,7 +2,7 @@
 import fs from "fs";
 import path from "node:path";
 
-jest.mock("@config/src/env", () => ({
+jest.mock("@acme/config/env", () => ({
   envSchema: { parse: jest.fn() },
 }));
 
@@ -20,7 +20,7 @@ describe("setup-ci script", () => {
   });
 
   it("writes workflow using provided shop id", async () => {
-    const { envSchema } = await import("@config/src/env");
+    const { envSchema } = await import("@acme/config/env");
     (envSchema.parse as jest.Mock).mockReturnValue({});
 
     const env = [
@@ -57,7 +57,7 @@ describe("setup-ci script", () => {
   });
 
   it("injects domain env vars when configured", async () => {
-    const { envSchema } = await import("@config/src/env");
+    const { envSchema } = await import("@acme/config/env");
     (envSchema.parse as jest.Mock).mockReturnValue({});
 
     const env = [
@@ -87,7 +87,7 @@ describe("setup-ci script", () => {
   });
 
   it("fails when env file is missing", async () => {
-    const { envSchema } = await import("@config/src/env");
+    const { envSchema } = await import("@acme/config/env");
     (envSchema.parse as jest.Mock).mockReturnValue({});
 
     jest.spyOn(fs, "existsSync").mockReturnValue(false);
@@ -112,7 +112,7 @@ describe("setup-ci script", () => {
   });
 
   it("fails with invalid env vars", async () => {
-    const { envSchema } = await import("@config/src/env");
+    const { envSchema } = await import("@acme/config/env");
     (envSchema.parse as jest.Mock).mockImplementation(() => {
       throw new Error("bad env");
     });

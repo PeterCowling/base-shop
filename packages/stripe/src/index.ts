@@ -1,7 +1,7 @@
 // packages/stripe/src/index.ts
 import "server-only";
 
-import { env } from "@config/src/env";
+import { paymentEnv } from "@acme/config/env/payments";
 import Stripe from "stripe";
 
 /**
@@ -15,7 +15,7 @@ import Stripe from "stripe";
  * `apiVersion` line and Stripe will default to the newest version whenever
  * you bump the SDK.
  */
-export const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
+export const stripe = new Stripe(paymentEnv.STRIPE_SECRET_KEY, {
   apiVersion: "2025-06-30.basil",
   httpClient: Stripe.createFetchHttpClient(),
 });

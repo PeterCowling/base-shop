@@ -1,0 +1,8 @@
+{
+  "viewer": ["view_products"],
+  "customer": ["view_products", "add_to_cart", "checkout", "manage_profile"],
+  "admin": ["view_products", "add_to_cart", "checkout", "manage_profile"],
+  "ShopAdmin": ["view_products", "add_to_cart", "checkout", "manage_profile"],
+  "CatalogManager": ["view_products", "add_to_cart", "checkout", "manage_profile"],
+  "ThemeEditor": ["view_products", "add_to_cart", "checkout", "manage_profile"]
+}

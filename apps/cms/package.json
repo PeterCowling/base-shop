@@ -10,13 +10,14 @@
     "dev:debug": "cross-env NODE_OPTIONS='--enable-source-maps --trace-uncaught --inspect' next dev -p 3006"
   },
   "dependencies": {
-    "@themes/base": "workspace:*",
+    "@acme/config": "workspace:*",
+    "@acme/date-utils": "workspace:*",
+    "@acme/email": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/shared-utils": "workspace:*",
-    "@acme/email": "workspace:*",
-    "@acme/date-utils": "workspace:*",
-    "@acme/config": "workspace:*"
+    "@themes/base": "workspace:*",
+    "color-contrast-checker": "^2.1.0"
   },
   "devDependencies": {
     "next": "^15.3.4"

@@ -56,7 +56,7 @@ type DepositReleaseConfig = {
 };
 
 const DEFAULT_CONFIG: DepositReleaseConfig = {
-  enabled: true,
+  enabled: false,
   intervalMs: 1000 * 60 * 60,
 };
 
@@ -76,12 +76,13 @@ async function resolveConfig(
   let config: DepositReleaseConfig = { ...DEFAULT_CONFIG };
 
   try {
-    const file = join(dataRoot, shop, "shop.json");
+    const file = join(dataRoot, shop, "settings.json");
     const json = JSON.parse(await readFile(file, "utf8"));
-    const cfg = json.depositRelease;
+    const cfg = json.depositService;
     if (cfg) {
       if (typeof cfg.enabled === "boolean") config.enabled = cfg.enabled;
-      if (typeof cfg.intervalMs === "number") config.intervalMs = cfg.intervalMs;
+      if (typeof cfg.interval === "number")
+        config.intervalMs = cfg.interval * 60 * 1000;
     }
   } catch {}
 

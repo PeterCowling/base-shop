@@ -71,6 +71,7 @@ describe("PageBuilder drag highlight", () => {
         onRemove={() => {}}
         dispatch={() => {}}
         locale="en"
+        gridCols={12}
       />
     );
     expect(queryByTestId("drop-placeholder")).toBeInTheDocument();
@@ -85,6 +86,7 @@ describe("PageBuilder drag highlight", () => {
         onRemove={() => {}}
         dispatch={() => {}}
         locale="en"
+        gridCols={12}
       />
     );
     expect(queryByTestId("drop-placeholder")).toBeNull();

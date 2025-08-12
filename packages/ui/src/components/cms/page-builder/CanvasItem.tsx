@@ -24,7 +24,7 @@ const CanvasItem = memo(function CanvasItem({
   dispatch,
   locale,
   gridEnabled = false,
-  gridCols = 12,
+  gridCols,
 }: {
   component: PageComponent;
   index: number;
@@ -35,7 +35,7 @@ const CanvasItem = memo(function CanvasItem({
   dispatch: React.Dispatch<Action>;
   locale: Locale;
   gridEnabled?: boolean;
-  gridCols?: number;
+  gridCols: number;
 }) {
   const selected = selectedId === component.id;
   const {

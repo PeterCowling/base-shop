@@ -26,4 +26,46 @@ describe("SearchBar", () => {
     const input = screen.getByRole("searchbox", { name: "Search products" });
     expect(input).toHaveAttribute("aria-label", "Search products");
   });
+
+  it("renders suggestions with appropriate ARIA roles", async () => {
+    render(
+      <SearchBar suggestions={["apple", "banana"]} label="Search" />
+    );
+    const input = screen.getByRole("searchbox", { name: "Search" });
+    await userEvent.type(input, "a");
+    const list = screen.getByRole("listbox");
+    const options = screen.getAllByRole("option");
+    expect(list).toBeInTheDocument();
+    expect(options).toHaveLength(2);
+  });
+
+  it("supports keyboard navigation and selection", async () => {
+    const onSelect = jest.fn();
+    render(
+      <SearchBar
+        suggestions={["apple", "banana", "cherry"]}
+        onSelect={onSelect}
+        label="Search"
+      />
+    );
+    const input = screen.getByRole("searchbox", { name: "Search" });
+    await userEvent.type(input, "a");
+
+    let options = screen.getAllByRole("option");
+    await userEvent.keyboard("{ArrowDown}");
+    options = screen.getAllByRole("option");
+    expect(options[0]).toHaveAttribute("aria-selected", "true");
+
+    await userEvent.keyboard("{ArrowDown}");
+    options = screen.getAllByRole("option");
+    expect(options[1]).toHaveAttribute("aria-selected", "true");
+
+    await userEvent.keyboard("{ArrowUp}");
+    options = screen.getAllByRole("option");
+    expect(options[0]).toHaveAttribute("aria-selected", "true");
+
+    await userEvent.keyboard("{Enter}");
+    expect(onSelect).toHaveBeenCalledWith("apple");
+    expect(input).toHaveValue("apple");
+  });
 });

@@ -4,15 +4,18 @@ import { useEffect, useState } from "react";
 
 interface Campaign {
   id: string;
-  to: string;
+  recipients: string[];
   subject: string;
-  sentAt: string;
+  sendAt: string;
+  sentAt?: string;
   metrics: { sent: number; opened: number; clicked: number };
 }
 
 export default function EmailMarketingPage() {
   const [shop, setShop] = useState("");
-  const [to, setTo] = useState("");
+  const [recipients, setRecipients] = useState("");
+  const [segment, setSegment] = useState("");
+  const [sendAt, setSendAt] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [status, setStatus] = useState<string | null>(null);
@@ -20,7 +23,9 @@ export default function EmailMarketingPage() {
 
   async function loadCampaigns(s: string) {
     if (!s) return;
-    const res = await fetch(`/api/marketing/email?shop=${encodeURIComponent(s)}`);
+    const res = await fetch(
+      `/api/marketing/email?shop=${encodeURIComponent(s)}`
+    );
     if (res.ok) {
       const json = await res.json();
       setCampaigns(json.campaigns || []);
@@ -38,11 +43,23 @@ export default function EmailMarketingPage() {
       const res = await fetch("/api/marketing/email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ shop, to, subject, body }),
+        body: JSON.stringify({
+          shop,
+          subject,
+          body,
+          segment,
+          sendAt: sendAt || undefined,
+          recipients: recipients
+            .split(/[,\s]+/)
+            .map((r) => r.trim())
+            .filter(Boolean),
+        }),
       });
-      setStatus(res.ok ? "Sent" : "Failed");
+      setStatus(res.ok ? "Queued" : "Failed");
       if (res.ok) {
-        setTo("");
+        setRecipients("");
+        setSegment("");
+        setSendAt("");
         setSubject("");
         setBody("");
         await loadCampaigns(shop);
@@ -56,25 +73,37 @@ export default function EmailMarketingPage() {
     <div className="space-y-4 p-4">
       <form onSubmit={send} className="space-y-2">
         <input
-          className="border p-2 w-full"
+          className="w-full border p-2"
           placeholder="Shop"
           value={shop}
           onChange={(e) => setShop(e.target.value)}
         />
         <input
-          className="border p-2 w-full"
-          placeholder="Recipient"
-          value={to}
-          onChange={(e) => setTo(e.target.value)}
+          className="w-full border p-2"
+          placeholder="Recipients (comma separated)"
+          value={recipients}
+          onChange={(e) => setRecipients(e.target.value)}
         />
         <input
-          className="border p-2 w-full"
+          className="w-full border p-2"
+          placeholder="Segment"
+          value={segment}
+          onChange={(e) => setSegment(e.target.value)}
+        />
+        <input
+          type="datetime-local"
+          className="w-full border p-2"
+          value={sendAt}
+          onChange={(e) => setSendAt(e.target.value)}
+        />
+        <input
+          className="w-full border p-2"
           placeholder="Subject"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
         />
         <textarea
-          className="border p-2 w-full h-40"
+          className="h-40 w-full border p-2"
           placeholder="HTML body"
           value={body}
           onChange={(e) => setBody(e.target.value)}
@@ -89,8 +118,9 @@ export default function EmailMarketingPage() {
           <thead>
             <tr className="bg-gray-100">
               <th className="border px-2 py-1 text-left">Subject</th>
-              <th className="border px-2 py-1 text-left">To</th>
-              <th className="border px-2 py-1">Sent At</th>
+              <th className="border px-2 py-1 text-left">Recipients</th>
+              <th className="border px-2 py-1">Send At</th>
+              <th className="border px-2 py-1">Status</th>
               <th className="border px-2 py-1">Sent</th>
               <th className="border px-2 py-1">Opened</th>
               <th className="border px-2 py-1">Clicked</th>
@@ -100,13 +130,26 @@ export default function EmailMarketingPage() {
             {campaigns.map((c) => (
               <tr key={c.id}>
                 <td className="border px-2 py-1">{c.subject}</td>
-                <td className="border px-2 py-1">{c.to}</td>
+                <td className="border px-2 py-1">{c.recipients.join(", ")}</td>
                 <td className="border px-2 py-1 text-center">
-                  {new Date(c.sentAt).toLocaleString()}
+                  {new Date(c.sendAt).toLocaleString()}
                 </td>
-                <td className="border px-2 py-1 text-center">{c.metrics.sent}</td>
-                <td className="border px-2 py-1 text-center">{c.metrics.opened}</td>
-                <td className="border px-2 py-1 text-center">{c.metrics.clicked}</td>
+                <td className="border px-2 py-1 text-center">
+                  {c.sentAt
+                    ? "Sent"
+                    : new Date(c.sendAt) > new Date()
+                      ? "Scheduled"
+                      : "Pending"}
+                </td>
+                <td className="border px-2 py-1 text-center">
+                  {c.metrics.sent}
+                </td>
+                <td className="border px-2 py-1 text-center">
+                  {c.metrics.opened}
+                </td>
+                <td className="border px-2 py-1 text-center">
+                  {c.metrics.clicked}
+                </td>
               </tr>
             ))}
           </tbody>

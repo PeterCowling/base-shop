@@ -26,6 +26,7 @@ import VideoBlockEditor from "./VideoBlockEditor";
 import FAQBlockEditor from "./FAQBlockEditor";
 import HeaderEditor from "./HeaderEditor";
 import FooterEditor from "./FooterEditor";
+import SocialFeedEditor from "./SocialFeedEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -117,6 +118,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
             onChange={(e) => handleInput("styles", e.target.value)}
           />
         </>
+      );
+      break;
+    case "SocialFeed":
+      specific = (
+        <SocialFeedEditor component={component} onChange={onChange} />
       );
       break;
     case "SocialLinks":

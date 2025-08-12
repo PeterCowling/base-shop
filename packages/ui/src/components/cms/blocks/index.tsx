@@ -21,6 +21,7 @@ import Footer from "./FooterBlock";
 import CountdownTimer from "./CountdownTimer";
 import SocialLinks from "./SocialLinks";
 import Button from "./Button";
+import NewsletterSignup from "./NewsletterSignup";
 
 export {
   BlogListing,
@@ -46,6 +47,7 @@ export {
   Footer,
   SocialLinks,
   Button,
+  NewsletterSignup,
 };
 
 export * from "./atoms";

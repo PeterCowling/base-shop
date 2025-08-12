@@ -9,8 +9,8 @@ describe('init-shop wizard', () => {
     const answers = [
       'demo',
       'Demo Shop',
-      '',
-      '',
+      'https://example.com/logo.png',
+      'contact@example.com',
       '',
       'base',
       'template-app',
@@ -112,6 +112,8 @@ describe('init-shop wizard', () => {
       'shop-demo',
       {
         name: 'Demo Shop',
+        logo: 'https://example.com/logo.png',
+        contactInfo: 'contact@example.com',
         type: 'sale',
         theme: 'base',
         template: 'template-app',

@@ -6,5 +6,12 @@
   "depositService": {
     "enabled": false,
     "interval": 60
+  },
+  "seo": {
+    "aiCatalog": {
+      "enabled": false,
+      "fields": ["id", "title", "description", "price", "images"],
+      "pageSize": 50
+    }
   }
 }

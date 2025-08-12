@@ -1,8 +1,10 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/seo/page.tsx
 
 import { getSettings } from "@cms/actions/shops.server";
+import { listEvents } from "@platform-core/repositories/analytics.server";
 import dynamic from "next/dynamic";
 import SeoProgressPanel from "./SeoProgressPanel";
+import AiCatalogSettings from "./AiCatalogSettings";
 
 const SeoEditor = dynamic(() => import("./SeoEditor"));
 const SeoAuditPanel = dynamic(() => import("./SeoAuditPanel"));
@@ -21,10 +23,24 @@ export default async function SeoSettingsPage({
   params: Promise<Params>;
 }) {
   const { shop } = await params;
-  const settings = await getSettings(shop);
+  const [settings, events] = await Promise.all([
+    getSettings(shop),
+    listEvents(shop),
+  ]);
   const languages = settings.languages;
   const seo = settings.seo ?? {};
   const freeze = settings.freezeTranslations ?? false;
+  const ai = seo.aiCatalog ?? {
+    enabled: false,
+    fields: ["id", "title", "description", "price", "images"],
+    pageSize: 50,
+  };
+  const lastCrawl = events
+    .filter((e) => e.type === "ai_catalog")
+    .map((e) => e.timestamp as string)
+    .filter(Boolean)
+    .sort()
+    .pop();
 
   return (
     <div className="space-y-6">
@@ -35,6 +51,15 @@ export default async function SeoSettingsPage({
         languages={languages}
         initialSeo={seo}
         initialFreeze={freeze}
+      />
+      <AiCatalogSettings
+        shop={shop}
+        initial={{
+          enabled: ai.enabled,
+          fields: ai.fields,
+          pageSize: ai.pageSize,
+          lastCrawl,
+        }}
       />
       <SeoAuditPanel shop={shop} />
     </div>

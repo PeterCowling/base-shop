@@ -62,28 +62,34 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
           interval: 60,
           ...(parsed.data.depositService ?? {}),
         },
-        aiCatalog: {
-          enabled: false,
-          fields: ["id", "title", "description", "price", "images"],
-          ...(parsed.data.aiCatalog ?? {}),
+        seo: {
+          ...(parsed.data.seo ?? {}),
+          aiCatalog: {
+            enabled: false,
+            fields: ["id", "title", "description", "price", "images"],
+            pageSize: 50,
+            ...((parsed.data.seo ?? {}).aiCatalog ?? {}),
+          },
         },
-      };
+      } as ShopSettings;
     }
   } catch {
     // ignore
   }
   return {
     languages: DEFAULT_LANGUAGES,
-    seo: {},
+    seo: {
+      aiCatalog: {
+        enabled: false,
+        fields: ["id", "title", "description", "price", "images"],
+        pageSize: 50,
+      },
+    },
     analytics: undefined,
     freezeTranslations: false,
     currency: "EUR",
     taxRegion: "",
     depositService: { enabled: false, interval: 60 },
-    aiCatalog: {
-      enabled: false,
-      fields: ["id", "title", "description", "price", "images"],
-    },
     updatedAt: "",
     updatedBy: "",
   };

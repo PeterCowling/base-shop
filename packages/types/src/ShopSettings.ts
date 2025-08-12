@@ -13,11 +13,18 @@ export const aiCatalogFieldSchema = z.enum([
 export const aiCatalogConfigSchema = z.object({
   enabled: z.boolean(),
   fields: z.array(aiCatalogFieldSchema),
+  pageSize: z.number().int().positive(),
 });
+
+export const seoSettingsSchema = z
+  .object({
+    aiCatalog: aiCatalogConfigSchema.optional(),
+  })
+  .catchall(shopSeoFieldsSchema);
 
 export const shopSettingsSchema = z.object({
   languages: z.array(localeSchema).readonly(),
-  seo: z.record(localeSchema, shopSeoFieldsSchema),
+  seo: seoSettingsSchema,
   analytics: z
     .object({
       enabled: z.boolean().optional(),
@@ -36,7 +43,6 @@ export const shopSettingsSchema = z.object({
       interval: z.number().int().positive(),
     })
     .optional(),
-  aiCatalog: aiCatalogConfigSchema.optional(),
   updatedAt: z.string(),
   updatedBy: z.string(),
 });

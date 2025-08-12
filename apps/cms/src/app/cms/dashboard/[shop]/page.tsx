@@ -19,12 +19,14 @@ export default async function ShopDashboard({
     new Set([
       ...Object.keys(aggregates.page_view),
       ...Object.keys(aggregates.order),
+      ...Object.keys(aggregates.ai_catalog),
     ])
   ).sort();
 
   const traffic = {
     labels: days,
-    data: days.map((d) => aggregates.page_view[d] || 0),
+    pageViews: days.map((d) => aggregates.page_view[d] || 0),
+    aiCatalog: days.map((d) => aggregates.ai_catalog[d] || 0),
   };
   const sales = {
     labels: days,

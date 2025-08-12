@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getProductById } from "@platform-core/src/products";
 import { readRepo } from "@platform-core/repositories/products.server";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { trackEvent } from "@platform-core/src/analytics";
 import type { ProductPublication } from "@acme/types";
 import { env } from "@acme/config";
 
@@ -14,6 +16,11 @@ function parseIntOr(val: string | null, def: number): number {
 
 export async function GET(req: NextRequest) {
   const shop = env.NEXT_PUBLIC_SHOP_ID || "default";
+  const settings = await getShopSettings(shop);
+  if (!settings.aiCatalog?.enabled) {
+    return new NextResponse(null, { status: 404 });
+  }
+  await trackEvent(shop, { type: "ai_catalog" });
   const all = await readRepo<ProductPublication>(shop);
 
   const lastModifiedDate = all.reduce((max, p) => {
@@ -36,15 +43,25 @@ export async function GET(req: NextRequest) {
   const start = (page - 1) * limit;
   const paged = all.slice(start, start + limit);
 
+  const allowed = new Set(settings.aiCatalog.fields);
   const items = paged.map((p) => {
     const sku = getProductById(p.sku) || {};
-    return {
+    const base = {
       id: p.id,
       title: p.title,
       description: p.description,
       price: p.price ?? (sku as any).price ?? null,
-      images: p.images?.length ? p.images : (sku as any).image ? [(sku as any).image] : [],
-    };
+      images: p.images?.length
+        ? p.images
+        : (sku as any).image
+        ? [(sku as any).image]
+        : [],
+    } as Record<string, unknown>;
+    const out: Record<string, unknown> = {};
+    for (const f of allowed) {
+      if (f in base) out[f] = base[f];
+    }
+    return out;
   });
 
   return NextResponse.json(

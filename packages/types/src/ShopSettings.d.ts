@@ -1,4 +1,5 @@
 import { z } from "zod";
+export declare const aiCatalogFieldSchema: z.ZodEnum<["id", "title", "description", "price", "images"]>;
 export declare const shopSettingsSchema: z.ZodObject<{
     languages: z.ZodReadonly<z.ZodArray<z.ZodEnum<["en", "de", "it"]>, "many">>;
     seo: z.ZodRecord<z.ZodEnum<["en", "de", "it"]>, z.ZodObject<{
@@ -89,6 +90,16 @@ export declare const shopSettingsSchema: z.ZodObject<{
         provider: string;
         id?: string | undefined;
     }>>;
+    aiCatalog: z.ZodOptional<z.ZodObject<{
+        enabled: z.ZodBoolean;
+        fields: z.ZodArray<z.ZodEnum<["id", "title", "description", "price", "images"]>, "many">;
+    }, "strip", z.ZodTypeAny, {
+        enabled: boolean;
+        fields: ("id" | "title" | "description" | "price" | "images")[];
+    }, {
+        enabled: boolean;
+        fields: ("id" | "title" | "description" | "price" | "images")[];
+    }>>;
     freezeTranslations: z.ZodOptional<z.ZodBoolean>;
     currency: z.ZodOptional<z.ZodString>;
     taxRegion: z.ZodOptional<z.ZodString>;
@@ -132,6 +143,10 @@ export declare const shopSettingsSchema: z.ZodObject<{
         provider: string;
         id?: string | undefined;
     } | undefined;
+    aiCatalog?: {
+        enabled: boolean;
+        fields: ("id" | "title" | "description" | "price" | "images")[];
+    } | undefined;
     freezeTranslations?: boolean | undefined;
     currency?: string | undefined;
     taxRegion?: string | undefined;
@@ -167,6 +182,10 @@ export declare const shopSettingsSchema: z.ZodObject<{
         provider: string;
         id?: string | undefined;
     } | undefined;
+    aiCatalog?: {
+        enabled: boolean;
+        fields: ("id" | "title" | "description" | "price" | "images")[];
+    } | undefined;
     freezeTranslations?: boolean | undefined;
     currency?: string | undefined;
     taxRegion?: string | undefined;
@@ -176,4 +195,5 @@ export declare const shopSettingsSchema: z.ZodObject<{
     } | undefined;
 }>;
 export type ShopSettings = z.infer<typeof shopSettingsSchema>;
+export type AiCatalogField = z.infer<typeof aiCatalogFieldSchema>;
 //# sourceMappingURL=ShopSettings.d.ts.map

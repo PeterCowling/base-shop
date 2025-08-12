@@ -19,7 +19,7 @@ async function withAnalytics(
     mocks: Mocks,
     dir: string
   ) => Promise<void>,
-  opts: { now?: string } = {}
+  opts: { now?: string; env?: Record<string, string> } = {}
 ): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "analytics-"));
   const shopDir = path.join(dir, "data", "shops", "test");
@@ -39,6 +39,7 @@ async function withAnalytics(
     readShop,
     getShopSettings,
   }));
+  jest.doMock("@acme/config", () => ({ env: opts.env ?? {} }));
 
   if (opts.now) {
     jest.doMock("@acme/date-utils", () => ({ nowIso: () => opts.now }));
@@ -95,20 +96,20 @@ describe("analytics provider selection", () => {
   });
 
   it("uses Google Analytics provider when configured", async () => {
-    await withAnalytics(async (analytics, { readShop, getShopSettings, fetch }, _dir) => {
-      readShop.mockResolvedValue({ analyticsEnabled: true });
-      getShopSettings.mockResolvedValue({ analytics: { provider: "ga", id: "GA-1" } });
-      process.env.GA_API_SECRET = "secret";
+    await withAnalytics(
+      async (analytics, { readShop, getShopSettings, fetch }, _dir) => {
+        readShop.mockResolvedValue({ analyticsEnabled: true });
+        getShopSettings.mockResolvedValue({ analytics: { provider: "ga", id: "GA-1" } });
 
-      await analytics.trackEvent("test", { type: "page_view" });
+        await analytics.trackEvent("test", { type: "page_view" });
 
-      expect(fetch).toHaveBeenCalledTimes(1);
-      const url = fetch.mock.calls[0][0] as string;
-      expect(url).toContain("measurement_id=GA-1");
-      expect(url).toContain("api_secret=secret");
-
-      delete process.env.GA_API_SECRET;
-    });
+        expect(fetch).toHaveBeenCalledTimes(1);
+        const url = fetch.mock.calls[0][0] as string;
+        expect(url).toContain("measurement_id=GA-1");
+        expect(url).toContain("api_secret=secret");
+      },
+      { env: { GA_API_SECRET: "secret" } }
+    );
   });
 
   it("falls back to file provider when GA config missing", async () => {
@@ -143,6 +144,7 @@ describe("analytics aggregates", () => {
         await analytics.trackPageView("test", "/home");
         await analytics.trackEvent("test", { type: "order", orderId: "o1", amount: 2 });
         await analytics.trackOrder("test", "o2", 5);
+        await analytics.trackEvent("test", { type: "ai_catalog" });
 
         const fp = path.join(
           dir,
@@ -154,6 +156,7 @@ describe("analytics aggregates", () => {
         const agg = JSON.parse(await fs.readFile(fp, "utf8"));
         expect(agg.page_view[now.slice(0, 10)]).toBe(2);
         expect(agg.order[now.slice(0, 10)]).toEqual({ count: 2, amount: 7 });
+        expect(agg.ai_catalog[now.slice(0, 10)]).toBe(1);
         expect(fetch).not.toHaveBeenCalled();
       },
       { now }

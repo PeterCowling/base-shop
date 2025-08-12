@@ -141,6 +141,7 @@ export async function trackOrder(
 interface Aggregates {
   page_view: Record<string, number>;
   order: Record<string, { count: number; amount: number }>;
+  ai_catalog: Record<string, number>;
 }
 
 async function updateAggregates(
@@ -149,13 +150,14 @@ async function updateAggregates(
 ): Promise<void> {
   const fp = path.join(DATA_ROOT, validateShopName(shop), "analytics-aggregates.json");
   const day = (event.timestamp as string).slice(0, 10);
-  let agg: Aggregates = { page_view: {}, order: {} };
+  let agg: Aggregates = { page_view: {}, order: {}, ai_catalog: {} };
   try {
     const buf = await fs.readFile(fp, "utf8");
     agg = JSON.parse(buf) as Aggregates;
   } catch {
     // ignore
   }
+  agg.ai_catalog = agg.ai_catalog || {};
   if (event.type === "page_view") {
     agg.page_view[day] = (agg.page_view[day] || 0) + 1;
   } else if (event.type === "order") {
@@ -164,6 +166,8 @@ async function updateAggregates(
     entry.count += 1;
     entry.amount += amount;
     agg.order[day] = entry;
+  } else if (event.type === "ai_catalog") {
+    agg.ai_catalog[day] = (agg.ai_catalog[day] || 0) + 1;
   }
   await fs.mkdir(path.dirname(fp), { recursive: true });
   await fs.writeFile(fp, JSON.stringify(agg), "utf8");

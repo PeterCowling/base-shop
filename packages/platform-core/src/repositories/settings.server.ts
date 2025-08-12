@@ -10,6 +10,13 @@ import { validateShopName } from "../shops";
 import { DATA_ROOT } from "../dataRoot";
 import { nowIso } from "@acme/date-utils";
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
+const DEFAULT_AI_CATALOG_FIELDS = [
+  "id",
+  "title",
+  "description",
+  "price",
+  "images",
+];
 
 function settingsPath(shop: string): string {
   shop = validateShopName(shop);
@@ -58,6 +65,11 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
           interval: 60,
           ...(parsed.data.depositService ?? {}),
         },
+        aiCatalog: {
+          enabled: false,
+          fields: DEFAULT_AI_CATALOG_FIELDS,
+          ...(parsed.data.aiCatalog ?? {}),
+        },
       };
     }
   } catch {
@@ -71,6 +83,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     currency: "EUR",
     taxRegion: "",
     depositService: { enabled: false, interval: 60 },
+    aiCatalog: { enabled: false, fields: DEFAULT_AI_CATALOG_FIELDS },
     updatedAt: "",
     updatedBy: "",
   };

@@ -27,8 +27,14 @@ interface Series {
   data: number[];
 }
 
+interface TrafficSeries {
+  labels: string[];
+  pageViews: number[];
+  aiCatalog: number[];
+}
+
 interface ChartsProps {
-  traffic: Series;
+  traffic: TrafficSeries;
   conversion: Series;
   sales: Series;
 }
@@ -44,8 +50,13 @@ export function Charts({ traffic, conversion, sales }: ChartsProps) {
             datasets: [
               {
                 label: "Page views",
-                data: traffic.data,
+                data: traffic.pageViews,
                 borderColor: "rgb(75, 192, 192)",
+              },
+              {
+                label: "AI catalog",
+                data: traffic.aiCatalog,
+                borderColor: "rgb(255, 205, 86)",
               },
             ],
           }}

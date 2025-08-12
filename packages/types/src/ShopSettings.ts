@@ -2,6 +2,14 @@ import { z } from "zod";
 import { localeSchema } from "./Product";
 import { shopSeoFieldsSchema } from "./Shop";
 
+const aiCatalogFieldSchema = z.enum([
+  "id",
+  "title",
+  "description",
+  "price",
+  "images",
+]);
+
 export const shopSettingsSchema = z.object({
   languages: z.array(localeSchema).readonly(),
   seo: z.record(localeSchema, shopSeoFieldsSchema),
@@ -10,6 +18,12 @@ export const shopSettingsSchema = z.object({
       enabled: z.boolean().optional(),
       provider: z.string(),
       id: z.string().optional(),
+    })
+    .optional(),
+  aiCatalog: z
+    .object({
+      enabled: z.boolean(),
+      fields: z.array(aiCatalogFieldSchema),
     })
     .optional(),
   freezeTranslations: z.boolean().optional(),
@@ -28,3 +42,4 @@ export const shopSettingsSchema = z.object({
 });
 
 export type ShopSettings = z.infer<typeof shopSettingsSchema>;
+export type AiCatalogField = z.infer<typeof aiCatalogFieldSchema>;

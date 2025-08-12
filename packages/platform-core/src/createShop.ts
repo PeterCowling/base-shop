@@ -1,6 +1,5 @@
 // packages/platform-core/createShop.ts
-import { spawnSync } from "child_process";
-import { readdirSync } from "fs";
+import { readdirSync, existsSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 import { prisma } from "./db";
 import { validateShopName } from "./shops";
@@ -11,6 +10,11 @@ import {
   type PreparedCreateShopOptions,
 } from "./createShop/schema";
 import { loadTokens } from "./createShop/themeUtils";
+import type { DeployStatusBase, DeployShopResult } from "./createShop/deployTypes";
+import {
+  defaultDeploymentAdapter,
+  type ShopDeploymentAdapter,
+} from "./createShop/deploymentAdapter";
 /**
  * Create a new shop app and seed data.
  * Paths are resolved relative to the repository root.
@@ -18,7 +22,8 @@ import { loadTokens } from "./createShop/themeUtils";
 export async function createShop(
   id: string,
   opts: CreateShopOptions = {},
-  options?: { deploy?: boolean }
+  options?: { deploy?: boolean },
+  adapter: ShopDeploymentAdapter = defaultDeploymentAdapter
 ): Promise<DeployStatusBase> {
   id = validateShopName(id);
 
@@ -63,58 +68,34 @@ export async function createShop(
     return { status: "pending" };
   }
 
-  return deployShop(id);
+  return deployShop(id, undefined, adapter);
 }
 
-export interface DeployStatusBase {
-  status: "pending" | "success" | "error";
-  previewUrl?: string;
-  instructions?: string;
-  error?: string;
-}
-
-export interface DeployShopResult extends DeployStatusBase {
-  status: "success" | "error";
-  previewUrl: string;
-}
-
-export function deployShop(id: string, domain?: string): DeployShopResult {
+export function deployShop(
+  id: string,
+  domain?: string,
+  adapter: ShopDeploymentAdapter = defaultDeploymentAdapter
+): DeployShopResult {
   const newApp = join("apps", id);
-  const previewUrl = `https://${id}.pages.dev`;
   let status: DeployShopResult["status"] = "success";
   let error: string | undefined;
 
   try {
-    const result = spawnSync("npx", ["--yes", "create-cloudflare", newApp], {
-      stdio: "inherit",
-    });
-    if (result.status !== 0) {
-      status = "error";
-      error = "C3 process failed or not available. Skipping.";
-    }
+    adapter.scaffold(newApp);
   } catch (err) {
     status = "error";
     error = (err as Error).message;
   }
 
-  const instructions = domain
-    ? `Add a CNAME record for ${domain} pointing to ${id}.pages.dev`
-    : undefined;
+  const result = adapter.deploy(id, domain);
 
-  const resultObj: DeployShopResult = {
-    status,
-    previewUrl,
-    instructions,
-    error,
-  };
-
-  try {
-    const file = join("data", "shops", id, "deploy.json");
-    writeFileSync(file, JSON.stringify(resultObj, null, 2));
-  } catch {
-    // ignore write errors
+  if (status === "error") {
+    result.status = "error";
+    result.error = error;
   }
-  return resultObj;
+
+  adapter.writeDeployInfo(id, result);
+  return result;
 }
 
 export function listThemes(): string[] {
@@ -170,6 +151,7 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
 export const createShopOptionsSchema = baseCreateShopOptionsSchema.strict();
 export { prepareOptions };
 export type { CreateShopOptions, PreparedCreateShopOptions };
+export type { DeployStatusBase, DeployShopResult } from "./createShop/deployTypes";
 export {
   ensureTemplateExists,
   writeFiles,
@@ -177,3 +159,8 @@ export {
 } from "./createShop/fsUtils";
 export { loadTokens, loadBaseTokens } from "./createShop/themeUtils";
 export { syncTheme };
+export {
+  type ShopDeploymentAdapter,
+  CloudflareDeploymentAdapter,
+  defaultDeploymentAdapter,
+} from "./createShop/deploymentAdapter";

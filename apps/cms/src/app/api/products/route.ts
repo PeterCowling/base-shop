@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { z } from "zod";
 import {
   readRepo,
   readInventory,
@@ -7,11 +8,24 @@ import type {
   ProductPublication,
 } from "@platform-core/src/products";
 
+const searchSchema = z.object({
+  q: z.string().optional(),
+  slug: z.string().optional(),
+  shop: z.string().default("abc"),
+});
+
+const paramsToObject = (params: URLSearchParams) =>
+  Object.fromEntries(params.entries());
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const q = searchParams.get("q")?.toLowerCase() ?? "";
-  const slug = searchParams.get("slug");
-  const shop = searchParams.get("shop") ?? "abc";
+  const parsed = searchSchema.safeParse(paramsToObject(searchParams));
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid search parameters" }, { status: 400 });
+  }
+
+  const { q, slug, shop } = parsed.data;
+  const query = q?.toLowerCase() ?? "";
 
   const [catalogue, inventory] = await Promise.all([
     readRepo<ProductPublication>(shop),
@@ -45,10 +59,10 @@ export async function GET(req: NextRequest) {
   }
 
   let matches = catalogue;
-  if (q) {
+  if (query) {
     matches = matches.filter((p) => {
       const title = p.title?.en ?? Object.values(p.title ?? {})[0] ?? "";
-      return title.toLowerCase().includes(q);
+      return title.toLowerCase().includes(query);
     });
   }
   return NextResponse.json(matches.slice(0, 5).map(toSku));

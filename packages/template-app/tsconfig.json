@@ -1,57 +1,10 @@
-// packages/template-app/tsconfig.json
 {
-  "extends": "../../tsconfig.base.json",
-  /* ------------------------------------------------------------------
-   *  Compiler options ─ production / app source only
-   * ------------------------------------------------------------------ */
-  "compilerOptions": {
-    /* build behaviour ------------------------------------------------- */
-    "noEmit": true,
-    "incremental": true,
-    "rootDir": ".",
-    "outDir": "dist",
-    /* language / libs ------------------------------------------------- */
-    "target": "ES2017",
-    "module": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "jsx": "preserve",
-    /* module resolution ------------------------------------------------ */
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@i18n/*": ["../i18n/src/*"],
-      "@ui/*": ["../ui/src/*"]
-    },
-    /* tooling ---------------------------------------------------------- */
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "types": ["node", "react", "react-dom"],
-    "strict": false,
-    "skipLibCheck": true,
-    "allowJs": true
-  },
-  /* ------------------------------------------------------------------
-   *  Project references
-   * ------------------------------------------------------------------ */
+  "extends": "@acme/config/tsconfig.app.json",
+  "include": ["src/**/*", ".next/types/**/*.ts"],
+  "exclude": ["dist", "__tests__", ".turbo", "node_modules"],
   "references": [
     { "path": "../types" },
     { "path": "../ui" },
     { "path": "../i18n" }
-  ],
-  /* ------------------------------------------------------------------
-   *  File globs
-   * ------------------------------------------------------------------ */
-  "include": [
-    /* app source */
-    "src/**/*",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": ["dist", "__tests__", ".turbo", "node_modules"]
+  ]
 }

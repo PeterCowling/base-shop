@@ -5,6 +5,8 @@
   "type": "module",
   "exports": {
     ".": "./env.ts",
-    "./env": "./env.ts"
+    "./env": "./env.ts",
+    "./tsconfig.app.json": "./tsconfig.app.json",
+    "./jest.preset.cjs": "./jest.preset.cjs"
   }
 }

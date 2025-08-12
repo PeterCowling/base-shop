@@ -14,7 +14,8 @@
     "@acme/template-app": "workspace:*",
     "@acme/stripe": "workspace:*",
     "@acme/date-utils": "workspace:*",
-    "@acme/sanity": "workspace:*"
+    "@acme/sanity": "workspace:*",
+    "@acme/config": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.4"

@@ -1,32 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "noEmit": false,
-    "outDir": "dist",
-    "rootDir": "../../",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "target": "ES2017",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "jsx": "preserve",
-    "incremental": true,
-    "allowJs": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "typeRoots": ["../../packages/types/dist", "../../node_modules/@types"],
-    "types": ["node", "react", "react-dom"],
-    "isolatedModules": true
-  },
+  "extends": "@acme/config/tsconfig.app.json",
   "include": [
     "src/**/*",
     "../../src/lib/**/*",
@@ -35,22 +8,11 @@
   ],
   "exclude": ["dist", "node_modules", "../../apps-script"],
   "references": [
-    {
-      "path": "../../packages/auth"
-    },
-    {
-      "path": "../../packages/types"
-    },
-    {
-      "path": "../../packages/config"
-    },
+    { "path": "../../packages/auth" },
+    { "path": "../../packages/types" },
+    { "path": "../../packages/config" },
     { "path": "../../packages/i18n" },
-
-    {
-      "path": "../../packages/ui"
-    },
-    {
-      "path": "../../packages/themes/base"
-    }
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/themes/base" }
   ]
 }

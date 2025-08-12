@@ -18,6 +18,29 @@ export { default } from "@acme/template-app/tailwind.config.mjs";
 module.exports = require("@acme/template-app/postcss.config.cjs");
 ```
 
+### TypeScript and Jest
+
+New applications should also inherit the shared TypeScript and Jest presets from
+`@acme/config` to avoid duplicating boilerplate.
+
+```jsonc
+// tsconfig.json
+{
+  "extends": "@acme/config/tsconfig.app.json",
+  "include": ["src/**/*", ".next/types/**/*.ts"]
+}
+```
+
+```js
+// jest.config.cjs
+const preset = require("@acme/config/jest.preset.cjs");
+
+module.exports = {
+  ...preset,
+  roots: ["<rootDir>/apps/my-app/src", "<rootDir>/apps/my-app/__tests__"],
+};
+```
+
 ## Extending
 
 If a shop needs to customise these settings, import the base config and extend

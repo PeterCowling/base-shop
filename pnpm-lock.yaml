@@ -304,6 +304,9 @@ importers:
 
   apps/cms:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@acme/date-utils':
         specifier: workspace:*
         version: link:../../packages/date-utils
@@ -329,6 +332,9 @@ importers:
 
   apps/shop-abc:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@acme/date-utils':
         specifier: workspace:*
         version: link:../../packages/date-utils
@@ -363,6 +369,9 @@ importers:
 
   apps/shop-bcd:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../../packages/config
       '@acme/date-utils':
         specifier: workspace:*
         version: link:../../packages/date-utils
@@ -555,6 +564,9 @@ importers:
 
   packages/template-app:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../config
       '@acme/date-utils':
         specifier: workspace:*
         version: link:../date-utils

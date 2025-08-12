@@ -20,7 +20,7 @@ export const shopSettingsSchema = z.object({
   depositService: z
     .object({
       enabled: z.boolean(),
-      interval: z.number().int().positive(),
+      intervalMinutes: z.number().int().positive(),
     })
     .optional(),
   updatedAt: z.string(),

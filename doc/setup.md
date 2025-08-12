@@ -84,7 +84,7 @@ The wizard scaffolds placeholders for common variables:
 - `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_TOKEN` – Sanity blog configuration
 - `GMAIL_USER`, `GMAIL_PASS` – credentials for email sending
 - `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` – Cloudflare credentials for provisioning custom domains (server-side only)
-- `DEPOSIT_RELEASE_ENABLED`, `DEPOSIT_RELEASE_INTERVAL_MS` – control automated deposit refunds (default disabled, 60 minutes)
+- `DEPOSIT_RELEASE_ENABLED`, `DEPOSIT_RELEASE_INTERVAL_MINUTES` – control automated deposit refunds (default disabled, 60 minutes)
 
 Leave any value blank if the integration isn't needed. You can update the `.env`
 file later and rerun `pnpm validate-env <id>` to confirm everything is set up.
@@ -125,10 +125,10 @@ Rental shops that collect deposits can automate refunds when items are returned.
 pnpm release-deposits
 ```
 
-When a shop is scaffolded, `data/<id>/settings.json` includes a `depositService` block with `enabled: false` and `interval: 60` (minutes).
-The generated `.env` file also contains `DEPOSIT_RELEASE_ENABLED` and `DEPOSIT_RELEASE_INTERVAL_MS` placeholders for the background service.
+When a shop is scaffolded, `data/<id>/settings.json` includes a `depositService` block with `enabled: false` and `intervalMinutes: 60`.
+The generated `.env` file also contains `DEPOSIT_RELEASE_ENABLED` and `DEPOSIT_RELEASE_INTERVAL_MINUTES` placeholders for the background service.
 
-To keep it running on a schedule, import `startDepositReleaseService` from `@acme/platform-machine` and optionally pass a custom interval (defaults to one hour). The service scans every shop under `data/shops/*`, issues Stripe refunds and marks orders as refunded.
+To keep it running on a schedule, import `startDepositReleaseService` from `@acme/platform-machine`. The service scans every shop under `data/shops/*`, issues Stripe refunds and marks orders as refunded.
 
 See [doc/machine.md](./machine.md#deposit-release-service) for more details and configuration options.
 

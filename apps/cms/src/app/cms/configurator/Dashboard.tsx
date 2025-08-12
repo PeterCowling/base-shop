@@ -5,7 +5,6 @@ import {
   useEffect,
   useMemo,
   useState,
-  type MouseEvent,
 } from "react";
 import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
@@ -76,17 +75,14 @@ export default function ConfiguratorDashboard() {
   const skipStep = (stepId: string) => markStepComplete(stepId, "skipped");
   const resetStep = (stepId: string) => markStepComplete(stepId, "pending");
 
-  const handleStepClick = (step: ConfiguratorStep) => (
-    e: MouseEvent<HTMLAnchorElement>
-  ) => {
-    const missing = (step.prerequisites ?? []).filter(
+  const handleStepClick = (step: ConfiguratorStep) => () => {
+    const missing = (step.recommended ?? []).filter(
       (id) => !state?.completed?.[id]
     );
     if (missing.length > 0) {
-      e.preventDefault();
       setToast({
         open: true,
-        message: `Complete prerequisite steps: ${missing
+        message: `Recommended to complete: ${missing
           .map((id) => configuratorSteps[id]?.label ?? id)
           .join(", ")}`,
       });

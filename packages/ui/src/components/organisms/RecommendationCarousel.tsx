@@ -12,6 +12,12 @@ export interface RecommendationCarouselProps
   minItems?: number;
   /** Maximum number of items visible per slide. */
   maxItems?: number;
+  /** Items shown on desktop viewports */
+  desktopItems?: number;
+  /** Items shown on tablet viewports */
+  tabletItems?: number;
+  /** Items shown on mobile viewports */
+  mobileItems?: number;
   /** Tailwind class controlling gap between slides */
   gapClassName?: string;
   /** Function to calculate individual slide width */
@@ -28,17 +34,32 @@ export function RecommendationCarousel({
   endpoint,
   minItems = 1,
   maxItems = 4,
+  desktopItems,
+  tabletItems,
+  mobileItems,
   gapClassName = "gap-4",
   getSlideWidth = (n) => `${100 / n}%`,
   className,
   ...props
 }: RecommendationCarouselProps) {
   const [products, setProducts] = React.useState<Product[]>([]);
-  const [itemsPerSlide, setItemsPerSlide] = React.useState(minItems);
+  const [itemsPerSlide, setItemsPerSlide] = React.useState(
+    desktopItems ?? minItems
+  );
 
   React.useEffect(() => {
     const calculateItems = () => {
       const width = window.innerWidth;
+      if (desktopItems || tabletItems || mobileItems) {
+        const chosen =
+          width >= 1024
+            ? desktopItems
+            : width >= 768
+            ? tabletItems
+            : mobileItems;
+        setItemsPerSlide(chosen ?? minItems);
+        return;
+      }
       const approxItemWidth = 320;
       const count = Math.floor(width / approxItemWidth);
       setItemsPerSlide(
@@ -48,7 +69,13 @@ export function RecommendationCarousel({
     calculateItems();
     window.addEventListener("resize", calculateItems);
     return () => window.removeEventListener("resize", calculateItems);
-  }, [minItems, maxItems]);
+  }, [
+    minItems,
+    maxItems,
+    desktopItems,
+    tabletItems,
+    mobileItems,
+  ]);
 
   React.useEffect(() => {
     const load = async () => {

@@ -32,6 +32,7 @@ import NewsletterSignupEditor from "./NewsletterSignupEditor";
 import ImageSliderEditor from "./ImageSliderEditor";
 import CollectionListEditor from "./CollectionListEditor";
 import SearchBarEditor from "./SearchBarEditor";
+import RecommendationCarouselEditor from "./RecommendationCarouselEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -108,6 +109,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "CollectionList":
       specific = (
         <CollectionListEditor component={component} onChange={onChange} />
+      );
+      break;
+    case "RecommendationCarousel":
+      specific = (
+        <RecommendationCarouselEditor component={component} onChange={onChange} />
       );
       break;
     case "ValueProps":

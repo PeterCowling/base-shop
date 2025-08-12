@@ -10,7 +10,7 @@ import TranslationsProvider from "@/i18n/Translations";
 import enMessages from "@i18n/en.json";
 import type { PageComponent } from "@acme/types";
 import React, { useEffect, useRef, useState } from "react";
-import { STORAGE_KEY } from "./hooks/useWizardPersistence";
+import { STORAGE_KEY } from "../configurator/hooks/useConfiguratorPersistence";
 
 interface Props {
   style: React.CSSProperties;
@@ -57,10 +57,10 @@ export default function WizardPreview({
 
     load();
     window.addEventListener("storage", load);
-    window.addEventListener("wizard:update", load);
+    window.addEventListener("configurator:update", load);
     return () => {
       window.removeEventListener("storage", load);
-      window.removeEventListener("wizard:update", load);
+      window.removeEventListener("configurator:update", load);
     };
   }, []);
 

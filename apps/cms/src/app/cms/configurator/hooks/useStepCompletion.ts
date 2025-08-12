@@ -1,5 +1,5 @@
-import { useWizard } from "../WizardContext";
-import type { WizardState } from "../schema";
+import { useConfigurator } from "../ConfiguratorContext";
+import type { WizardState } from "../../wizard/schema";
 
 type Validator = (state: WizardState) => boolean;
 
@@ -9,7 +9,7 @@ const validators: Record<string, Validator> = {
 };
 
 export function useStepCompletion(stepId: string): [boolean, (v: boolean) => void] {
-  const { state, markStepComplete } = useWizard();
+  const { state, markStepComplete } = useConfigurator();
   const validate = validators[stepId] ?? (() => true);
   const completed = state.completed[stepId] === "complete" && validate(state);
   const setCompleted = (v: boolean) => {

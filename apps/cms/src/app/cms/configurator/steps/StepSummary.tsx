@@ -1,4 +1,4 @@
-// apps/cms/src/app/cms/wizard/steps/StepSummary.tsx
+// apps/cms/src/app/cms/configurator/steps/StepSummary.tsx
 
 "use client";
 
@@ -6,7 +6,7 @@ import { Button, Input } from "@/components/atoms/shadcn";
 import { LOCALES } from "@acme/i18n";
 import type { Locale } from "@acme/types";
 import React from "react";
-import WizardPreview from "../WizardPreview";
+import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 

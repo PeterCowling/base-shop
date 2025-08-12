@@ -1,39 +1,66 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import StepHomePage from "../src/app/cms/wizard/steps/StepHomePage";
+import StepHomePage from "../src/app/cms/configurator/steps/StepHomePage";
 import { fetchJson } from "@shared-utils";
 
-jest.mock("@/components/atoms/shadcn", () => {
-  const React = require("react");
-  return {
-    __esModule: true,
-    Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-    Select: ({ value, onValueChange, children }: any) => (
-      <select value={value} onChange={(e) => onValueChange(e.target.value)}>
-        {children}
-      </select>
-    ),
-    SelectContent: ({ children }: any) => <>{children}</>,
-    SelectItem: ({ value, children }: any) => <option value={value}>{children}</option>,
-    SelectTrigger: ({ children }: any) => <>{children}</>,
-    SelectValue: ({ placeholder }: any) => (
-      <option disabled value="">
-        {placeholder}
-      </option>
-    ),
-  };
-});
+jest.mock(
+  "@/components/atoms",
+  () => {
+    const React = require("react");
+    return {
+      __esModule: true,
+      Toast: ({ open, message }: { open: boolean; message: string }) =>
+        open ? React.createElement("div", { role: "alert" }, message) : null,
+    };
+  },
+  { virtual: true }
+);
 
-jest.mock("@/components/cms/PageBuilder", () => {
-  const React = require("react");
-  return function PageBuilder({ onSave, onPublish }: any) {
-    return (
-      <div>
-        <button onClick={() => onSave(new FormData())}>save</button>
-        <button onClick={() => onPublish(new FormData())}>publish</button>
-      </div>
-    );
-  };
-});
+jest.mock(
+  "@/components/atoms/shadcn",
+  () => {
+    const React = require("react");
+    return {
+      __esModule: true,
+      Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+      Select: ({ value, onValueChange, children }: any) => (
+        <select value={value} onChange={(e) => onValueChange(e.target.value)}>
+          {children}
+        </select>
+      ),
+      SelectContent: ({ children }: any) => <>{children}</>,
+      SelectItem: ({ value, children }: any) => (
+        <option value={value}>{children}</option>
+      ),
+      SelectTrigger: ({ children }: any) => <>{children}</>,
+      SelectValue: ({ placeholder }: any) => (
+        <option disabled value="">
+          {placeholder}
+        </option>
+      ),
+    };
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  "@/components/cms/PageBuilder",
+  () => {
+    const React = require("react");
+    return function PageBuilder({ onSave, onPublish }: any) {
+      return (
+        <div>
+          <button onClick={() => onSave(new FormData())}>save</button>
+          <button onClick={() => onPublish(new FormData())}>publish</button>
+        </div>
+      );
+    };
+  },
+  { virtual: true }
+);
+
+jest.mock("../src/app/cms/configurator/hooks/useStepCompletion", () => () => [false, jest.fn()]);
+
+jest.mock("next/navigation", () => ({ useRouter: () => ({ push: jest.fn() }) }));
 
 jest.mock("@shared-utils");
 

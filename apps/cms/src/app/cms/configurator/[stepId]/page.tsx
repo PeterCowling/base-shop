@@ -1,4 +1,4 @@
-import { WizardProvider } from "../../wizard/WizardContext";
+import { ConfiguratorProvider } from "../ConfiguratorContext";
 import StepPage from "./step-page";
 
 interface PageProps {
@@ -7,8 +7,8 @@ interface PageProps {
 
 export default function ConfiguratorStepPage({ params }: PageProps) {
   return (
-    <WizardProvider>
+    <ConfiguratorProvider>
       <StepPage stepId={params.stepId} />
-    </WizardProvider>
+    </ConfiguratorProvider>
   );
 }

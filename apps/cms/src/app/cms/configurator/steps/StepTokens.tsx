@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/atoms/shadcn";
 import StyleEditor from "@/components/cms/StyleEditor";
-import WizardPreview from "../WizardPreview";
+import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { baseTokens, type TokenMap } from "../tokenUtils";
-import { useWizard } from "../WizardContext";
+import { baseTokens, type TokenMap } from "../../wizard/tokenUtils";
+import { useConfigurator } from "../ConfiguratorContext";
 
 interface Props {
   themeStyle: React.CSSProperties;
@@ -16,7 +16,7 @@ interface Props {
 export default function StepTokens({ themeStyle }: Props): React.JSX.Element {
   const [, markComplete] = useStepCompletion("tokens");
   const router = useRouter();
-  const { state, update } = useWizard();
+  const { state, update } = useConfigurator();
   const [tokens, setTokens] = useState<TokenMap>(state.themeVars);
   const [selected, setSelected] = useState<string | null>(null);
 

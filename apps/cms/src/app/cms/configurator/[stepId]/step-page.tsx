@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { steps } from "../steps";
-import { useWizard } from "../../wizard/WizardContext";
+import { useConfigurator } from "../ConfiguratorContext";
 
 interface Props {
   stepId: string;
@@ -11,7 +11,7 @@ interface Props {
 
 export default function StepPage({ stepId }: Props) {
   const router = useRouter();
-  const { state } = useWizard();
+  const { state } = useConfigurator();
   const step = steps[stepId];
   if (!step) {
     return null;

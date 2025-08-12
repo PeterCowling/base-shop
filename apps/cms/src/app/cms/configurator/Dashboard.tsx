@@ -12,7 +12,7 @@ import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast, Tooltip } from "@/components/atoms";
 import { wizardStateSchema, type WizardState } from "../wizard/schema";
-import { useWizardPersistence } from "../wizard/hooks/useWizardPersistence";
+import { useConfiguratorPersistence } from "./hooks/useConfiguratorPersistence";
 import {
   getRequiredSteps,
   getSteps,
@@ -58,10 +58,10 @@ export default function ConfiguratorDashboard() {
 
   useEffect(() => {
     const handler = () => fetchState();
-    window.addEventListener("wizard:update", handler);
-    return () => window.removeEventListener("wizard:update", handler);
+    window.addEventListener("configurator:update", handler);
+    return () => window.removeEventListener("configurator:update", handler);
   }, [fetchState]);
-  const markStepComplete = useWizardPersistence(state, setState);
+  const markStepComplete = useConfiguratorPersistence(state, setState);
   const stepList = useMemo(() => getSteps(), []);
   const missingRequired = getRequiredSteps().filter(
     (s) => state?.completed?.[s.id] !== "complete"

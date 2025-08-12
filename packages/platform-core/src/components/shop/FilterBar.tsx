@@ -15,7 +15,7 @@ export default function FilterBar({
 
   // propagate filters when typing settles
   useEffect(() => {
-    onChange({ size: deferredSize ?? undefined } as Filters);
+    onChange({ size: deferredSize || undefined } as Filters);
   }, [deferredSize, onChange]);
 
   return (

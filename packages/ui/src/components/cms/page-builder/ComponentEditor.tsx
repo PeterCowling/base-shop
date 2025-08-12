@@ -29,6 +29,7 @@ import HeaderEditor from "./HeaderEditor";
 import FooterEditor from "./FooterEditor";
 import PricingTableEditor from "./PricingTableEditor";
 import NewsletterSignupEditor from "./NewsletterSignupEditor";
+import SearchBarEditor from "./SearchBarEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -93,6 +94,9 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       specific = (
         <NewsletterSignupEditor component={component} onChange={onChange} />
       );
+      break;
+    case "SearchBar":
+      specific = <SearchBarEditor component={component} onChange={onChange} />;
       break;
     case "ValueProps":
       specific = <ValuePropsEditor component={component} onChange={onChange} />;

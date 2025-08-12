@@ -63,6 +63,7 @@ const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
     left: "0",
     width: "100%",
   },
+  SearchBar: { limit: 5, placeholder: "Search products…" },
   MultiColumn: { columns: 2, gap: "1rem" },
   Divider: { width: "100%", height: "1px" },
   Spacer: { width: "100%", height: "1rem" },

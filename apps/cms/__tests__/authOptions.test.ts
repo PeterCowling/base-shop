@@ -7,6 +7,7 @@
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const rbacStorePath = require.resolve("../src/lib/rbacStore");
+const { ROLE_PERMISSIONS } = require("@auth/permissions");
 /* eslint-enable @typescript-eslint/no-var-requires */
 
 jest.doMock(rbacStorePath, () => ({
@@ -15,8 +16,11 @@ jest.doMock(rbacStorePath, () => ({
       "1": { id: "1", email: "admin@example.com", password: "admin" },
     },
     roles: { "1": "admin" },
+    permissions: ROLE_PERMISSIONS,
   }),
 }));
+
+process.env.CART_COOKIE_SECRET = "test";
 
 /* -------------------------------------------------------------------------- */
 /* 2.  Imports                                                                */

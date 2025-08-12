@@ -243,6 +243,22 @@ After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:
 - `DEPOSIT_RELEASE_INTERVAL_MS` – interval in milliseconds for running the refund service
 - `LOG_LEVEL` – controls logging output (`error`, `warn`, `info`, `debug`; defaults to `info`)
 
+### Email provider webhooks
+
+To record delivery metrics from SendGrid or Resend, expose the following webhook endpoints and configure the providers to call them with a `shop` query parameter:
+
+```
+/api/marketing/email/provider-webhooks/sendgrid?shop=<shopId>
+/api/marketing/email/provider-webhooks/resend?shop=<shopId>
+```
+
+Each request is validated using provider signatures. Set these environment variables with the values from your provider dashboards:
+
+```
+SENDGRID_WEBHOOK_PUBLIC_KEY=...  # RSA public key for the SendGrid event webhook
+RESEND_WEBHOOK_SECRET=...        # Signing secret for Resend webhooks
+```
+
 The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET`
 and `PREVIEW_TOKEN_SECRET`. Replace all placeholders with real values or supply
 them via your CI's secret store. Missing variables will cause the CLI to exit

@@ -20,6 +20,8 @@ export const coreEnvSchema = z.object({
   GA_API_SECRET: z.string().optional(),
   SMTP_URL: z.string().url().optional(),
   CAMPAIGN_FROM: z.string().optional(),
+  SENDGRID_WEBHOOK_PUBLIC_KEY: z.string().optional(),
+  RESEND_WEBHOOK_SECRET: z.string().optional(),
   DATABASE_URL: z.string().optional(),
   SANITY_API_VERSION: z.string().optional(),
   CLOUDFLARE_ACCOUNT_ID: z.string().optional(),

@@ -2,12 +2,18 @@
 
 import { getProductById } from "@platform-core/repositories/json.server";
 import { NextResponse, type NextRequest } from "next/server";
+import { z } from "zod";
+
+const ParamsSchema = z.object({ shop: z.string(), id: z.string() });
 
 export async function GET(
   _req: NextRequest,
   context: { params: Promise<{ shop: string; id: string }> }
 ) {
-  const { shop, id } = await context.params;
+  const parsed = ParamsSchema.safeParse(await context.params);
+  if (!parsed.success)
+    return NextResponse.json({ error: "Invalid params" }, { status: 400 });
+  const { shop, id } = parsed.data;
   const product = await getProductById(shop, id);
   if (!product)
     return NextResponse.json({ error: "Not found" }, { status: 404 });

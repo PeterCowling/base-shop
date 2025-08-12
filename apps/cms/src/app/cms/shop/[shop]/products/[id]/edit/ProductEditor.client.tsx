@@ -8,7 +8,7 @@ import ProductEditorForm from "@ui/components/cms/ProductEditorForm";
 
 interface Props {
   shop: string;
-  initialProduct: ProductPublication;
+  initialProduct: ProductPublication & { variants?: Record<string, string[]> };
   languages: readonly Locale[];
 }
 
@@ -20,7 +20,7 @@ export default function ProductEditor({
   const onSave = (fd: FormData) => updateProduct(shop, fd);
   return (
     <ProductEditorForm
-      product={initialProduct}
+      product={{ ...initialProduct, variants: initialProduct.variants ?? {} }}
       onSave={onSave}
       locales={languages}
     />

@@ -15,8 +15,12 @@ import {
 /* ------------------------------------------------------------------ */
 /* Hook return type                                                   */
 /* ------------------------------------------------------------------ */
+export interface ProductWithVariants extends ProductPublication {
+  variants: Record<string, string[]>;
+}
+
 export interface UseProductEditorFormReturn {
-  product: ProductPublication;
+  product: ProductWithVariants;
   errors: Record<string, string[]>;
   saving: boolean;
   publishTargets: string[];
@@ -32,7 +36,7 @@ export interface UseProductEditorFormReturn {
 /* Main hook                                                          */
 /* ------------------------------------------------------------------ */
 export function useProductEditorFormState(
-  init: ProductPublication,
+  init: ProductPublication & { variants?: Record<string, string[]> },
   locales: readonly Locale[],
   onSave: (fd: FormData) => Promise<{
     product?: ProductPublication;
@@ -40,7 +44,10 @@ export function useProductEditorFormState(
   }>
 ): UseProductEditorFormReturn {
   /* ---------- state ------------------------------------------------ */
-  const [product, setProduct] = useState(init);
+  const [product, setProduct] = useState<ProductWithVariants>({
+    ...init,
+    variants: init.variants ?? {},
+  });
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [publishTargets, setPublishTargets] = useState<string[]>([]);
@@ -87,6 +94,18 @@ export function useProductEditorFormState(
           return { ...prev, price: Number(value) };
         }
 
+        if (name.startsWith("variant_")) {
+          const key = name.replace(/^variant_/, "");
+          const values = value
+            .split(",")
+            .map((v) => v.trim())
+            .filter(Boolean);
+          return {
+            ...prev,
+            variants: { ...prev.variants, [key]: values },
+          };
+        }
+
         return prev;
       });
     },
@@ -107,6 +126,10 @@ export function useProductEditorFormState(
     if (imageFile) fd.append("image", imageFile);
 
     fd.append("publish", publishTargets.join(","));
+
+    Object.entries(product.variants).forEach(([k, vals]) => {
+      fd.append(`variant_${k}`, vals.join(","));
+    });
     return fd;
   }, [product, imageFile, publishTargets, locales]);
 
@@ -120,12 +143,15 @@ export function useProductEditorFormState(
       if (result.errors) {
         setErrors(result.errors);
       } else if (result.product) {
-        setProduct(result.product);
+        setProduct({
+          ...(result.product as ProductWithVariants),
+          variants: (result.product as any).variants ?? product.variants,
+        });
         setErrors({});
       }
       setSaving(false);
     },
-    [onSave, formData]
+    [onSave, formData, product.variants]
   );
 
   /* ---------- public API ------------------------------------------- */

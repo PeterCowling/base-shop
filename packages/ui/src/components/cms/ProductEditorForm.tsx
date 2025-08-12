@@ -4,6 +4,7 @@
 import { Button, Card, CardContent, Input } from "@ui/components/atoms/shadcn";
 import type { Locale, ProductPublication } from "@platform-core/src/products";
 import { useProductEditorFormState } from "@ui/hooks/useProductEditorFormState";
+import type { ProductWithVariants } from "@ui/hooks/useProductEditorFormState";
 import MultilingualFields from "./MultilingualFields";
 import PublishLocationSelector from "./PublishLocationSelector";
 
@@ -13,7 +14,7 @@ import PublishLocationSelector from "./PublishLocationSelector";
 
 interface BaseProps {
   /** Current product snapshot (all locales) */
-  product: ProductPublication;
+  product: ProductWithVariants;
   /** Called with FormData → resolves to updated product or errors */
   onSave(fd: FormData): Promise<{
     product?: ProductPublication;
@@ -68,6 +69,18 @@ export default function ProductEditorForm({
               required
             />
           </label>
+
+          {/* Variant attributes -------------------------------------- */}
+          {Object.entries(product.variants).map(([attr, values]) => (
+            <label key={attr} className="flex max-w-xs flex-col gap-1">
+              <span>{`Variant ${attr}`}</span>
+              <Input
+                name={`variant_${attr}`}
+                value={values.join(",")}
+                onChange={handleChange}
+              />
+            </label>
+          ))}
 
           {/* Publish locations ----------------------------------------- */}
           <PublishLocationSelector

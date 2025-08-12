@@ -18,6 +18,7 @@ import { getTaxRate } from "@platform-core/tax";
 
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
+import { z } from "zod";
 
 /* ------------------------------------------------------------------ *
  *  Types
@@ -121,13 +122,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   /* 2️⃣ Parse optional body ------------------------------------------------- */
-  const { returnDate, coupon, currency = "EUR", taxRegion = "" } =
-    (await req.json().catch(() => ({}))) as {
-      returnDate?: string;
-      coupon?: string;
-      currency?: string;
-      taxRegion?: string;
-    };
+  const schema = z.object({
+    returnDate: z.string().optional(),
+    coupon: z.string().optional(),
+    currency: z.string().default("EUR"),
+    taxRegion: z.string().default(""),
+  });
+
+  const parsed = schema.safeParse(await req.json().catch(() => undefined));
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: parsed.error.flatten().fieldErrors },
+      { status: 400 }
+    );
+  }
+
+  const { returnDate, coupon, currency, taxRegion } = parsed.data;
   const couponDef = await findCoupon(shop.id, coupon);
   if (couponDef) {
     await trackEvent(shop.id, { type: "discount_redeemed", code: couponDef.code });

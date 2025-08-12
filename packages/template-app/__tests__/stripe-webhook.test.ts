@@ -1,6 +1,7 @@
 import { jest } from "@jest/globals";
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
+process.env.STRIPE_WEBHOOK_SECRET = "whsec_test";
 if (typeof (Response as any).json !== "function") {
   (Response as any).json = (data: unknown, init?: ResponseInit) =>
     new Response(JSON.stringify(data), init);
@@ -20,8 +21,6 @@ describe("/api/stripe-webhook", () => {
       }),
       { virtual: true }
     );
-
-    const { POST } = await import("../src/api/stripe-webhook/route");
     const payload = {
       type: "checkout.session.completed",
       data: {
@@ -31,7 +30,20 @@ describe("/api/stripe-webhook", () => {
         },
       },
     } as any;
-    const res = await POST({ json: async () => payload } as any);
+    jest.doMock(
+      "@acme/stripe",
+      () => ({
+        stripe: { webhooks: { constructEvent: () => payload } },
+      }),
+      { virtual: true }
+    );
+
+    const { POST } = await import("../src/api/stripe-webhook/route");
+    const body = JSON.stringify(payload);
+    const res = await POST({
+      text: async () => body,
+      headers: { get: () => "sig" },
+    } as any);
     expect(addOrder).toHaveBeenCalledWith("bcd", "sess", 10, "2030-05-05");
     expect(res.status).toBe(200);
   });
@@ -47,8 +59,6 @@ describe("/api/stripe-webhook", () => {
       }),
       { virtual: true }
     );
-
-    const { POST } = await import("../src/api/stripe-webhook/route");
     const payload = {
       type: "charge.refunded",
       data: {
@@ -60,7 +70,20 @@ describe("/api/stripe-webhook", () => {
         },
       },
     } as any;
-    const res = await POST({ json: async () => payload } as any);
+    jest.doMock(
+      "@acme/stripe",
+      () => ({
+        stripe: { webhooks: { constructEvent: () => payload } },
+      }),
+      { virtual: true }
+    );
+
+    const { POST } = await import("../src/api/stripe-webhook/route");
+    const body = JSON.stringify(payload);
+    const res = await POST({
+      text: async () => body,
+      headers: { get: () => "sig" },
+    } as any);
     expect(markRefunded).toHaveBeenCalledWith("bcd", "sess_2");
     expect(res.status).toBe(200);
   });

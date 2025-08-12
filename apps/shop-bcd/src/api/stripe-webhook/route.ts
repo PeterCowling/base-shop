@@ -1,8 +1,9 @@
 // apps/shop-bcd/src/app/api/stripe-webhook/route.ts
 
 import { addOrder, markRefunded } from "@platform-core/orders";
+import { stripe } from "@acme/stripe";
+import { paymentEnv } from "@acme/config/env/payments";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
 import type Stripe from "stripe";
 
 type WebhookData =
@@ -10,21 +11,28 @@ type WebhookData =
   | Stripe.Charge
   | Record<string, unknown>;
 
-const StripeEventSchema = z.object({
-  type: z.string(),
-  data: z.object({ object: z.unknown() }),
-});
-
 export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
-  const result = StripeEventSchema.safeParse(await req.json());
-  if (!result.success) {
-    return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
+  const signature = req.headers.get("stripe-signature");
+  if (!signature) {
+    return NextResponse.json({ error: "Missing signature" }, { status: 400 });
   }
 
-  const { type: eventType, data } = result.data;
-  const webhookData = data.object as WebhookData;
+  let event: Stripe.Event;
+  try {
+    const payload = await req.text();
+    event = stripe.webhooks.constructEvent(
+      payload,
+      signature,
+      paymentEnv.STRIPE_WEBHOOK_SECRET,
+    );
+  } catch (error) {
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+  }
+
+  const eventType = event.type;
+  const webhookData = event.data.object as WebhookData;
 
   switch (eventType) {
     case "checkout.session.completed": {

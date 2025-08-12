@@ -10,6 +10,7 @@ describe("releaseDepositsOnce", () => {
       ...OLD_ENV,
       STRIPE_SECRET_KEY: "sk_test",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
+      STRIPE_WEBHOOK_SECRET: "wh",
     } as NodeJS.ProcessEnv;
   });
 

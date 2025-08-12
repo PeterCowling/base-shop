@@ -4,6 +4,8 @@ import {
   addOrder,
   markRefunded,
 } from "@platform-core/repositories/rentalOrders.server";
+import { stripe } from "@acme/stripe";
+import { paymentEnv } from "@acme/config/env/payments";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -15,9 +17,25 @@ type WebhookData =
 export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
-  const payload = (await req.json()) as Stripe.Event;
-  const eventType = payload.type;
-  const data = payload.data?.object as WebhookData;
+  const signature = req.headers.get("stripe-signature");
+  if (!signature) {
+    return NextResponse.json({ error: "Missing signature" }, { status: 400 });
+  }
+
+  let event: Stripe.Event;
+  try {
+    const payload = await req.text();
+    event = stripe.webhooks.constructEvent(
+      payload,
+      signature,
+      paymentEnv.STRIPE_WEBHOOK_SECRET,
+    );
+  } catch (error) {
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+  }
+
+  const eventType = event.type;
+  const data = event.data.object as WebhookData;
 
   switch (eventType) {
     case "checkout.session.completed": {

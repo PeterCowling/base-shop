@@ -15,6 +15,7 @@ describe("sendEmail", () => {
       GMAIL_PASS: "secret",
       STRIPE_SECRET_KEY: "sk",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      STRIPE_WEBHOOK_SECRET: "wh",
     } as NodeJS.ProcessEnv;
 
     const sendMail = jest.fn().mockResolvedValue(undefined);
@@ -40,6 +41,7 @@ describe("sendEmail", () => {
       ...OLD_ENV,
       STRIPE_SECRET_KEY: "sk",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      STRIPE_WEBHOOK_SECRET: "wh",
     } as NodeJS.ProcessEnv;
 
     const consoleSpy = jest
@@ -74,6 +76,7 @@ describe("sendEmail", () => {
       GMAIL_PASS: "secret",
       STRIPE_SECRET_KEY: "sk",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      STRIPE_WEBHOOK_SECRET: "wh",
     } as NodeJS.ProcessEnv;
 
     const error = new Error("failure");

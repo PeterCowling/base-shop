@@ -21,6 +21,7 @@ describe("validate-env script", () => {
     process.env.STRIPE_SECRET_KEY = "sk";
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
     process.env.CART_COOKIE_SECRET = "secret";
+    process.env.STRIPE_WEBHOOK_SECRET = "wh";
     existsSyncMock = require("node:fs").existsSync as jest.Mock;
     readFileSyncMock = require("node:fs").readFileSync as jest.Mock;
     existsSyncMock.mockReset();
@@ -35,7 +36,7 @@ describe("validate-env script", () => {
   it("exits 0 and logs success for valid env", async () => {
     existsSyncMock.mockReturnValue(true);
     readFileSyncMock.mockReturnValue(
-      "STRIPE_SECRET_KEY=sk\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk\nCART_COOKIE_SECRET=secret\n"
+      "STRIPE_SECRET_KEY=sk\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk\nSTRIPE_WEBHOOK_SECRET=wh\nCART_COOKIE_SECRET=secret\n"
     );
 
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
@@ -46,7 +47,7 @@ describe("validate-env script", () => {
         throw new Error(`exit:${code}`);
       }) as never);
 
-    await import("../../dist-scripts/validate-env.js");
+    await import("../src/validate-env");
 
     expect(logSpy).toHaveBeenCalledWith("Environment variables look valid.");
     expect(exitSpy).not.toHaveBeenCalled();
@@ -56,7 +57,7 @@ describe("validate-env script", () => {
   it("exits 1 and reports invalid env", async () => {
     existsSyncMock.mockReturnValue(true);
     readFileSyncMock.mockReturnValue(
-      "STRIPE_SECRET_KEY=sk\nCART_COOKIE_SECRET=secret\n"
+      "STRIPE_SECRET_KEY=sk\nSTRIPE_WEBHOOK_SECRET=wh\nCART_COOKIE_SECRET=secret\n"
     );
 
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
@@ -67,7 +68,7 @@ describe("validate-env script", () => {
         throw new Error(`exit:${code}`);
       }) as never);
 
-    await import("../../dist-scripts/validate-env.js").catch(() => {});
+    await import("../src/validate-env").catch(() => {});
 
     expect(exitSpy).toHaveBeenCalledWith(1);
     expect(errorSpy.mock.calls[0][0]).toBe(
@@ -87,7 +88,7 @@ describe("validate-env script", () => {
         throw new Error(`exit:${code}`);
       }) as never);
 
-    await import("../../dist-scripts/validate-env.js").catch(() => {});
+    await import("../src/validate-env").catch(() => {});
 
     expect(exitSpy).toHaveBeenCalledWith(1);
     expect(errorSpy).toHaveBeenCalledWith("Missing apps/shop-abc/.env");
@@ -97,7 +98,7 @@ describe("validate-env script", () => {
   it("exits 1 for invalid DEPOSIT_RELEASE values", async () => {
     existsSyncMock.mockReturnValue(true);
     readFileSyncMock.mockReturnValue(
-      "STRIPE_SECRET_KEY=sk\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk\nCART_COOKIE_SECRET=secret\nDEPOSIT_RELEASE_ENABLED=maybe\nDEPOSIT_RELEASE_INTERVAL_MS=foo\n",
+      "STRIPE_SECRET_KEY=sk\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk\nSTRIPE_WEBHOOK_SECRET=wh\nCART_COOKIE_SECRET=secret\nDEPOSIT_RELEASE_ENABLED=maybe\nDEPOSIT_RELEASE_INTERVAL_MS=foo\n",
     );
 
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
@@ -108,7 +109,7 @@ describe("validate-env script", () => {
         throw new Error(`exit:${code}`);
       }) as never);
 
-    await import("../../dist-scripts/validate-env.js").catch(() => {});
+    await import("../src/validate-env").catch(() => {});
 
     expect(exitSpy).toHaveBeenCalledWith(1);
     expect(errorSpy.mock.calls).toEqual([

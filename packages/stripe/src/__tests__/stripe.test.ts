@@ -1,5 +1,6 @@
 // packages/stripe/src/__tests__/stripe.test.ts
-import nock from "nock";
+import { rest } from "msw";
+import { server } from "../../../../test/msw/server";
 import type Stripe from "stripe";
 
 /**
@@ -21,12 +22,12 @@ describe("stripe client", () => {
       ...OLD_ENV,
       STRIPE_SECRET_KEY: "sk_test_123",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_123",
+      STRIPE_WEBHOOK_SECRET: "wh",
     } as NodeJS.ProcessEnv;
   });
 
   afterEach(() => {
     process.env = OLD_ENV;
-    nock.cleanAll();
   });
 
   it("uses expected API version and fetch client", async () => {
@@ -44,12 +45,13 @@ describe("stripe client", () => {
     const { stripe } = await import("../index");
     const stripeInternal = stripe as StripeInternal;
 
-    const scope = nock("https://api.stripe.com")
-      .post("/v1/customers")
-      .reply(200, { id: "cus_test", object: "customer" });
+    server.use(
+      rest.post("https://api.stripe.com/v1/customers", (_req, res, ctx) =>
+        res(ctx.status(200), ctx.json({ id: "cus_test", object: "customer" })),
+      ),
+    );
 
     const customer = await stripeInternal.customers.create();
     expect(customer.id).toBe("cus_test");
-    expect(scope.isDone()).toBe(true);
   });
 });

@@ -3,24 +3,39 @@
 
 import { useDeferredValue, useEffect, useState } from "react";
 
-export type Filters = { size?: string };
+export type FilterDefinition =
+  | { name: string; label: string; type: "select"; options: string[] }
+  | { name: string; label: string; type: "number" };
 
-const defaultSizes = ["36", "37", "38", "39", "40", "41", "42", "43", "44"];
+export type Filters = Record<string, string | number | undefined>;
+
+export interface FilterBarProps {
+  definitions: FilterDefinition[];
+  onChange: (filters: Filters) => void;
+}
 
 export default function FilterBar({
+  definitions,
   onChange,
-  sizes = defaultSizes,
-}: {
-  onChange: (f: Filters) => void;
-  sizes?: string[];
-}) {
-  const [size, setSize] = useState("");
-  const deferredSize = useDeferredValue(size);
+}: FilterBarProps) {
+  const [values, setValues] = useState<Filters>({});
+  const deferred = useDeferredValue(values);
 
-  // propagate filters when typing settles
   useEffect(() => {
-    onChange({ size: deferredSize || undefined } as Filters);
-  }, [deferredSize, onChange]);
+    onChange(deferred);
+  }, [deferred, onChange]);
+
+  function handleChange(def: FilterDefinition, value: string) {
+    setValues((prev) => ({
+      ...prev,
+      [def.name]:
+        value === ""
+          ? undefined
+          : def.type === "number"
+          ? Number(value)
+          : value,
+    }));
+  }
 
   return (
     <form
@@ -28,19 +43,38 @@ export default function FilterBar({
       className="mb-6 flex gap-4 items-center justify-between flex-wrap"
       onSubmit={(e) => e.preventDefault()}
     >
-      <label className="flex items-center gap-2 text-sm">
-        Size:
-        <select
-          value={size}
-          onChange={(e) => setSize(e.target.value)}
-          className="border rounded px-2 py-1 text-sm"
-        >
-          <option value="">All</option>
-          {sizes.map((s) => (
-            <option key={s}>{s}</option>
-          ))}
-        </select>
-      </label>
+      {definitions.map((def) =>
+        def.type === "select" ? (
+          <label key={def.name} className="flex items-center gap-2 text-sm">
+            {def.label}:
+            <select
+              value={(values[def.name] as string) ?? ""}
+              onChange={(e) => handleChange(def, e.target.value)}
+              className="border rounded px-2 py-1 text-sm"
+            >
+              <option value="">All</option>
+              {def.options.map((opt) => (
+                <option key={opt}>{opt}</option>
+              ))}
+            </select>
+          </label>
+        ) : (
+          <label key={def.name} className="flex items-center gap-2 text-sm">
+            {def.label}:
+            <input
+              type="number"
+              value={
+                values[def.name] === undefined
+                  ? ""
+                  : (values[def.name] as number)
+              }
+              onChange={(e) => handleChange(def, e.target.value)}
+              className="border rounded px-2 py-1 text-sm"
+            />
+          </label>
+        )
+      )}
     </form>
   );
 }
+

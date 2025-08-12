@@ -40,6 +40,18 @@ export const Default: StoryObj<typeof SearchResultsTemplate> = {};
 export const WithFilters: StoryObj<typeof SearchResultsTemplate> = {
   args: {
     ...meta.args,
-    filters: <FilterBar onChange={() => undefined} />,
+    filters: (
+      <FilterBar
+        onChange={() => undefined}
+        definitions={[
+          {
+            name: "size",
+            label: "Size",
+            type: "select",
+            options: ["S", "M"],
+          },
+        ]}
+      />
+    ),
   },
 };

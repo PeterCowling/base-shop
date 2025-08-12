@@ -10,17 +10,24 @@ const defaultSizes = ["36", "37", "38", "39", "40", "41", "42", "43", "44"];
 export default function FilterBar({
   onChange,
   sizes = defaultSizes,
+  initialSize = "",
 }: {
   onChange: (f: Filters) => void;
   sizes?: string[];
+  initialSize?: string;
 }) {
-  const [size, setSize] = useState("");
+  const [size, setSize] = useState(initialSize);
   const deferredSize = useDeferredValue(size);
 
   // propagate filters when typing settles
   useEffect(() => {
     onChange({ size: deferredSize || undefined } as Filters);
   }, [deferredSize, onChange]);
+
+  // sync external changes
+  useEffect(() => {
+    setSize(initialSize);
+  }, [initialSize]);
 
   return (
     <form

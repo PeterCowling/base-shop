@@ -11,6 +11,8 @@ import { getCart } from "@platform-core/src/cartStore";
 import { priceForDays, convertCurrency } from "@platform-core/src/pricing";
 import { getProductById } from "@platform-core/src/products";
 import { findCoupon } from "@platform-core/src/coupons";
+import { trackEvent } from "@platform-core/src/analytics";
+import { env } from "@acme/config";
 import { getTaxRate } from "@platform-core/src/tax";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
@@ -125,7 +127,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       currency?: string;
       taxRegion?: string;
     };
-  const couponDef = findCoupon(coupon);
+  const shop = env.NEXT_PUBLIC_DEFAULT_SHOP || "shop";
+  const couponDef = await findCoupon(shop, coupon);
+  if (couponDef) {
+    await trackEvent(shop, { type: "discount_redeemed", code: couponDef.code });
+  }
   const discountRate = couponDef ? couponDef.discountPercent / 100 : 0;
   let rentalDays: number;
   try {

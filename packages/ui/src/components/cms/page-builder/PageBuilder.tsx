@@ -309,6 +309,7 @@ const PageBuilder = memo(function PageBuilder({
           dispatch={dispatch}
           locale={locale}
           containerStyle={containerStyle}
+          viewport={viewport}
           showGrid={showGrid}
           gridCols={GRID_COLS}
         />

@@ -23,6 +23,7 @@ const CanvasItem = memo(function CanvasItem({
   onRemove,
   dispatch,
   locale,
+  viewport,
   gridEnabled = false,
   gridCols = 12,
 }: {
@@ -34,6 +35,7 @@ const CanvasItem = memo(function CanvasItem({
   onRemove: () => void;
   dispatch: React.Dispatch<Action>;
   locale: Locale;
+  viewport: "desktop" | "tablet" | "mobile";
   gridEnabled?: boolean;
   gridCols?: number;
 }) {
@@ -72,6 +74,12 @@ const CanvasItem = memo(function CanvasItem({
   );
 
   const editor = useTextEditor(component, locale, editing);
+
+  const cap = viewport.charAt(0).toUpperCase() + viewport.slice(1);
+  const widthKey = `width${cap}` as const;
+  const heightKey = `height${cap}` as const;
+  const width = (component as any)[widthKey] ?? component.width;
+  const height = (component as any)[heightKey] ?? component.height;
 
   const hasChildren = Array.isArray((component as any).children);
   const childIds = hasChildren
@@ -137,8 +145,8 @@ const CanvasItem = memo(function CanvasItem({
       dispatch({
         type: "resize",
         id: component.id,
-        width: snapW ? "100%" : `${newW}px`,
-        height: snapH ? "100%" : `${newH}px`,
+        [widthKey]: snapW ? "100%" : `${newW}px`,
+        [heightKey]: snapH ? "100%" : `${newH}px`,
       });
       setSnapWidth(snapW || guideX !== null);
       setSnapHeight(snapH || guideY !== null);
@@ -159,7 +167,7 @@ const CanvasItem = memo(function CanvasItem({
       window.removeEventListener("pointermove", handleMove);
       window.removeEventListener("pointerup", stop);
     };
-  }, [resizing, component.id, dispatch]);
+  }, [resizing, component.id, dispatch, widthKey, heightKey]);
 
   useEffect(() => {
     if (!moving) return;
@@ -292,8 +300,8 @@ const CanvasItem = memo(function CanvasItem({
       tabIndex={0}
       style={{
         transform: CSS.Transform.toString(transform),
-        ...(component.width ? { width: component.width } : {}),
-        ...(component.height ? { height: component.height } : {}),
+        ...(width ? { width } : {}),
+        ...(height ? { height } : {}),
         ...(component.margin ? { margin: component.margin } : {}),
         ...(component.padding ? { padding: component.padding } : {}),
         ...(component.position ? { position: component.position } : {}),
@@ -430,6 +438,7 @@ const CanvasItem = memo(function CanvasItem({
                   }
                   dispatch={dispatch}
                   locale={locale}
+                  viewport={viewport}
                   gridEnabled={gridEnabled}
                   gridCols={gridCols}
                 />

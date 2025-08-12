@@ -36,6 +36,12 @@ interface Props {
   onResize: (patch: {
     width?: string;
     height?: string;
+    widthDesktop?: string;
+    widthTablet?: string;
+    widthMobile?: string;
+    heightDesktop?: string;
+    heightTablet?: string;
+    heightMobile?: string;
     top?: string;
     left?: string;
   }) => void;
@@ -217,42 +223,50 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
 
   return (
     <div className="space-y-2">
-      <div className="flex items-end gap-2">
-        <Input
-          label="Width"
-          placeholder="e.g. 100px or 50%"
-          value={component.width ?? ""}
-          onChange={(e) => {
-            const v = e.target.value.trim();
-            onResize({ width: v || undefined });
-          }}
-        />
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => onResize({ width: "100%" })}
-        >
-          Full width
-        </Button>
-      </div>
-      <div className="flex items-end gap-2">
-        <Input
-          label="Height"
-          placeholder="e.g. 1px or 1rem"
-          value={component.height ?? ""}
-          onChange={(e) => {
-            const v = e.target.value.trim();
-            onResize({ height: v || undefined });
-          }}
-        />
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => onResize({ height: "100%" })}
-        >
-          Full height
-        </Button>
-      </div>
+      {(["Desktop", "Tablet", "Mobile"] as const).map((v) => {
+        const widthKey = `width${v}` as const;
+        const heightKey = `height${v}` as const;
+        return (
+          <div key={v} className="space-y-2">
+            <div className="flex items-end gap-2">
+              <Input
+                label={`Width (${v})`}
+                placeholder="e.g. 100px or 50%"
+                value={(component as any)[widthKey] ?? ""}
+                onChange={(e) => {
+                  const val = e.target.value.trim();
+                  onResize({ [widthKey]: val || undefined } as any);
+                }}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onResize({ [widthKey]: "100%" } as any)}
+              >
+                Full width
+              </Button>
+            </div>
+            <div className="flex items-end gap-2">
+              <Input
+                label={`Height (${v})`}
+                placeholder="e.g. 1px or 1rem"
+                value={(component as any)[heightKey] ?? ""}
+                onChange={(e) => {
+                  const val = e.target.value.trim();
+                  onResize({ [heightKey]: val || undefined } as any);
+                }}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onResize({ [heightKey]: "100%" } as any)}
+              >
+                Full height
+              </Button>
+            </div>
+          </div>
+        );
+      })}
       <Input
         label="Margin"
         value={component.margin ?? ""}

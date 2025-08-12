@@ -73,23 +73,26 @@ describe("PageBuilder interactions", () => {
               dispatch({ type: "resize", id: comp.id, ...patch })
             }
           />
-          <div data-testid="target" style={{ width: comp.width, height: comp.height }} />
+          <div
+            data-testid="target"
+            style={{ width: comp.widthDesktop, height: comp.heightDesktop }}
+          />
         </>
       );
     }
 
     render(<Wrapper />);
-    fireEvent.change(screen.getByLabelText("Width"), {
+    fireEvent.change(screen.getByLabelText("Width (Desktop)"), {
       target: { value: "200" },
     });
-    expect(screen.getByTestId("target")).toHaveStyle({ width: "200px" });
-    fireEvent.click(screen.getByText("Full width"));
+    expect(screen.getByTestId("target")).toHaveStyle({ width: "200" });
+    fireEvent.click(screen.getAllByText("Full width")[0]);
     expect(screen.getByTestId("target")).toHaveStyle({ width: "100%" });
-    fireEvent.change(screen.getByLabelText("Height"), {
+    fireEvent.change(screen.getByLabelText("Height (Desktop)"), {
       target: { value: "300" },
     });
     expect(screen.getByTestId("target")).toHaveStyle({ height: "300px" });
-    fireEvent.click(screen.getByText("Full height"));
+    fireEvent.click(screen.getAllByText("Full height")[0]);
     expect(screen.getByTestId("target")).toHaveStyle({ height: "100%" });
   });
 
@@ -106,6 +109,7 @@ describe("PageBuilder interactions", () => {
         onRemove={() => {}}
         dispatch={dispatch}
         locale="en"
+        viewport="desktop"
       />
     );
 
@@ -122,7 +126,7 @@ describe("PageBuilder interactions", () => {
     fireEvent.pointerMove(window, { clientX: 150, clientY: 150 });
     fireEvent.pointerUp(window);
     expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ width: "150px", height: "150px" })
+      expect.objectContaining({ widthDesktop: "150px", heightDesktop: "150px" })
     );
     dispatch.mockClear();
 
@@ -135,7 +139,7 @@ describe("PageBuilder interactions", () => {
     });
     fireEvent.pointerUp(window);
     expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ width: "100%", height: "100%" })
+      expect.objectContaining({ widthDesktop: "100%", heightDesktop: "100%" })
     );
   });
 
@@ -152,6 +156,7 @@ describe("PageBuilder interactions", () => {
         onRemove={() => {}}
         dispatch={dispatch}
         locale="en"
+        viewport="desktop"
       />
     );
 
@@ -167,7 +172,7 @@ describe("PageBuilder interactions", () => {
     fireEvent.pointerMove(window, { clientX: 145, clientY: 145 });
     fireEvent.pointerUp(window);
     expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ width: "100%", height: "100%" })
+      expect.objectContaining({ widthDesktop: "100%", heightDesktop: "100%" })
     );
   });
 
@@ -202,6 +207,7 @@ describe("PageBuilder interactions", () => {
           onRemove={() => {}}
           dispatch={jest.fn()}
           locale="en"
+          viewport="desktop"
         />
         <CanvasItem
           component={c2}
@@ -212,6 +218,7 @@ describe("PageBuilder interactions", () => {
           onRemove={() => {}}
           dispatch={dispatch}
           locale="en"
+          viewport="desktop"
         />
       </div>
     );
@@ -251,6 +258,7 @@ describe("PageBuilder interactions", () => {
         onRemove={() => {}}
         dispatch={dispatch}
         locale="en"
+        viewport="desktop"
         gridEnabled
         gridCols={4}
       />
@@ -269,7 +277,7 @@ describe("PageBuilder interactions", () => {
     fireEvent.pointerUp(window);
 
     expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ width: "200px", height: "200px" })
+      expect.objectContaining({ widthDesktop: "200px", heightDesktop: "200px" })
     );
   });
 
@@ -294,6 +302,7 @@ describe("PageBuilder interactions", () => {
         onRemove={() => {}}
         dispatch={dispatch}
         locale="en"
+        viewport="desktop"
         gridEnabled
         gridCols={4}
       />

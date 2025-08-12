@@ -28,6 +28,7 @@ interface Props {
   dispatch: (action: Action) => void;
   locale: Locale;
   containerStyle: CSSProperties;
+  viewport: "desktop" | "tablet" | "mobile";
   showGrid?: boolean;
   gridCols?: number;
 }
@@ -47,6 +48,7 @@ const PageCanvas = ({
   dispatch,
   locale,
   containerStyle,
+  viewport,
   showGrid = false,
   gridCols = 12,
 }: Props) => (
@@ -108,6 +110,7 @@ const PageCanvas = ({
               onRemove={() => dispatch({ type: "remove", id: c.id })}
               dispatch={dispatch}
               locale={locale}
+              viewport={viewport}
               gridEnabled={showGrid}
               gridCols={gridCols}
             />

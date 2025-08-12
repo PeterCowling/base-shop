@@ -32,6 +32,12 @@ export type ChangeAction =
       id: string;
       width?: string;
       height?: string;
+      widthDesktop?: string;
+      widthTablet?: string;
+      widthMobile?: string;
+      heightDesktop?: string;
+      heightTablet?: string;
+      heightMobile?: string;
       left?: string;
       top?: string;
     }
@@ -111,7 +117,18 @@ function updateComponent(
 function resizeComponent(
   list: PageComponent[],
   id: string,
-  patch: { width?: string; height?: string; left?: string; top?: string }
+  patch: {
+    width?: string;
+    height?: string;
+    widthDesktop?: string;
+    widthTablet?: string;
+    widthMobile?: string;
+    heightDesktop?: string;
+    heightTablet?: string;
+    heightMobile?: string;
+    left?: string;
+    top?: string;
+  },
 ): PageComponent[] {
   return list.map((c) => {
     if (c.id === id) return { ...c, ...patch } as PageComponent;

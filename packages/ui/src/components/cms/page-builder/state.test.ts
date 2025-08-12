@@ -56,12 +56,12 @@ describe("state reducer", () => {
     } as PageComponent;
     const state = reducer(
       { past: [], present: [comp], future: [] },
-      { type: "resize", id: "abs", width: "100%" }
+      { type: "resize", id: "abs", widthDesktop: "100%" }
     );
     expect(state.present[0]).toMatchObject({
       left: "5px",
       top: "10px",
-      width: "100%",
+      widthDesktop: "100%",
     });
   });
 

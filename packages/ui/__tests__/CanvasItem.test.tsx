@@ -17,11 +17,13 @@ describe("CanvasItem", () => {
           <CanvasItem
             component={component}
             index={0}
+            parentId={undefined}
+            selectedId={null}
+            onSelectId={() => {}}
             onRemove={() => {}}
-            selected={false}
-            onSelect={() => {}}
             dispatch={() => {}}
             locale="en"
+            viewport="desktop"
           />
         </SortableContext>
       </DndContext>

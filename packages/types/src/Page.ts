@@ -18,11 +18,23 @@ export interface PageComponentBase {
    * units (e.g. "30vw").
    */
   width?: string;
+  /** Width used on desktop viewports */
+  widthDesktop?: string;
+  /** Width used on tablet viewports */
+  widthTablet?: string;
+  /** Width used on mobile viewports */
+  widthMobile?: string;
   /**
    * Height of the rendered component. Supports any CSS length such as
    * pixels, percentages or viewport units.
    */
   height?: string;
+  /** Height used on desktop viewports */
+  heightDesktop?: string;
+  /** Height used on tablet viewports */
+  heightTablet?: string;
+  /** Height used on mobile viewports */
+  heightMobile?: string;
   /**
    * CSS position property used when rendering the component.
    */
@@ -276,7 +288,13 @@ const baseComponentSchema = z
   .object({
     id: z.string(),
     width: z.string().optional(),
+    widthDesktop: z.string().optional(),
+    widthTablet: z.string().optional(),
+    widthMobile: z.string().optional(),
     height: z.string().optional(),
+    heightDesktop: z.string().optional(),
+    heightTablet: z.string().optional(),
+    heightMobile: z.string().optional(),
     position: z.enum(["relative", "absolute"]).optional(),
     top: z.string().optional(),
     left: z.string().optional(),

@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import StepHomePage from "../src/app/cms/wizard/steps/StepHomePage";
+import StepHomePage from "../src/app/cms/configurator/steps/StepHomePage";
 import { fetchJson } from "@shared-utils";
 
 jest.mock("@/components/atoms/shadcn", () => {

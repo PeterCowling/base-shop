@@ -10,7 +10,7 @@ import { ReactNode, useState } from "react";
 import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
-import { useWizard } from "../WizardContext";
+import { useConfigurator } from "../ConfiguratorContext";
 import { useThemeLoader } from "../hooks/useThemeLoader";
 
 interface Props {
@@ -21,7 +21,7 @@ interface Props {
 const emptyTranslated = () => fillLocales(undefined, "");
 
 export default function StepLayout({ children }: Props): React.JSX.Element {
-  const { state, update } = useWizard();
+  const { state, update } = useConfigurator();
   const {
     headerComponents,
     headerPageId,

@@ -1,4 +1,4 @@
-// apps/cms/src/app/cms/wizard/WizardContext.tsx
+// apps/cms/src/app/cms/configurator/ConfiguratorContext.tsx
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
@@ -6,19 +6,19 @@ import {
   wizardStateSchema,
   type WizardState,
   type StepStatus,
-} from "./schema";
-import { useWizardPersistence } from "./hooks/useWizardPersistence";
+} from "../wizard/schema";
+import { useConfiguratorPersistence } from "./hooks/useConfiguratorPersistence";
 
-interface WizardContextValue {
+interface ConfiguratorContextValue {
   state: WizardState;
   setState: React.Dispatch<React.SetStateAction<WizardState>>;
   update: <K extends keyof WizardState>(key: K, value: WizardState[K]) => void;
   markStepComplete: (stepId: string, status: StepStatus) => void;
 }
 
-const WizardContext = createContext<WizardContextValue | null>(null);
+const ConfiguratorContext = createContext<ConfiguratorContextValue | null>(null);
 
-export function WizardProvider({
+export function ConfiguratorProvider({
   children,
 }: {
   children: React.ReactNode;
@@ -26,7 +26,10 @@ export function WizardProvider({
   const [state, setState] = useState<WizardState>(wizardStateSchema.parse({}));
 
   // Persist state to localStorage
-  const markStepComplete = useWizardPersistence(state, (s) => setState(() => s));
+  const markStepComplete = useConfiguratorPersistence(
+    state,
+    (s) => setState(() => s)
+  );
 
   const update = <K extends keyof WizardState>(
     key: K,
@@ -36,15 +39,18 @@ export function WizardProvider({
   };
 
   return (
-    <WizardContext.Provider value={{ state, setState, update, markStepComplete }}>
+    <ConfiguratorContext.Provider
+      value={{ state, setState, update, markStepComplete }}
+    >
       {children}
-    </WizardContext.Provider>
+    </ConfiguratorContext.Provider>
   );
 }
 
-export function useWizard(): WizardContextValue {
-  const ctx = useContext(WizardContext);
-  if (!ctx) throw new Error("useWizard must be used within WizardProvider");
+export function useConfigurator(): ConfiguratorContextValue {
+  const ctx = useContext(ConfiguratorContext);
+  if (!ctx)
+    throw new Error("useConfigurator must be used within ConfiguratorProvider");
   return ctx;
 }
 

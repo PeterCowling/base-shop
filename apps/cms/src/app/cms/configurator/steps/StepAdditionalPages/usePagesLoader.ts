@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import type { Page, PageComponent } from "@acme/types";
 import { historyStateSchema } from "@acme/types";
 import { fetchJson } from "@shared-utils";
-import { toPageInfo } from "../utils/page-utils";
-import type { PageInfo } from "../schema";
+import { toPageInfo } from "../../../wizard/utils/page-utils";
+import type { PageInfo } from "../../../wizard/schema";
 
 interface Params {
   shopId: string;

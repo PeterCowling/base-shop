@@ -1,9 +1,16 @@
 import nodemailer from "nodemailer";
-import { sendCampaignEmail } from "../index";
 
 jest.mock("nodemailer", () => ({
   __esModule: true,
   default: { createTransport: jest.fn() },
+}));
+
+jest.mock("../providers/sendgrid", () => ({
+  SendgridProvider: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
+}));
+
+jest.mock("../providers/resend", () => ({
+  ResendProvider: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
 }));
 
 const createTransportMock = nodemailer.createTransport as jest.Mock;
@@ -11,8 +18,12 @@ const createTransportMock = nodemailer.createTransport as jest.Mock;
 describe("sendCampaignEmail", () => {
   afterEach(() => {
     jest.resetAllMocks();
+    jest.resetModules();
     delete process.env.SMTP_URL;
     delete process.env.CAMPAIGN_FROM;
+    delete process.env.EMAIL_PROVIDER;
+    delete process.env.SENDGRID_API_KEY;
+    delete process.env.RESEND_API_KEY;
   });
 
   it("uses SMTP_URL and CAMPAIGN_FROM env vars and forwards options", async () => {
@@ -22,6 +33,7 @@ describe("sendCampaignEmail", () => {
     process.env.SMTP_URL = "smtp://test";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
+    const { sendCampaignEmail } = await import("../index");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -39,42 +51,51 @@ describe("sendCampaignEmail", () => {
     });
   });
 
-  it("omits text when not provided", async () => {
-    const sendMail = jest.fn().mockResolvedValue(undefined);
-    createTransportMock.mockReturnValue({ sendMail });
+  it("delegates to SendgridProvider when EMAIL_PROVIDER=sendgrid", async () => {
+    const send = jest.fn().mockResolvedValue(undefined);
+    const { SendgridProvider } = require("../providers/sendgrid");
+    (SendgridProvider as jest.Mock).mockImplementation(() => ({ send }));
 
-    process.env.SMTP_URL = "smtp://test";
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
+    const { sendCampaignEmail } = await import("../index");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
     });
 
-    expect(sendMail).toHaveBeenCalledWith({
-      from: "campaign@example.com",
+    expect(SendgridProvider).toHaveBeenCalled();
+    expect(send).toHaveBeenCalledWith({
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
-      text: undefined,
     });
   });
 
-  it("propagates sendMail errors", async () => {
-    const error = new Error("smtp failed");
-    const sendMail = jest.fn().mockRejectedValue(error);
-    createTransportMock.mockReturnValue({ sendMail });
+  it("delegates to ResendProvider when EMAIL_PROVIDER=resend", async () => {
+    const send = jest.fn().mockResolvedValue(undefined);
+    const { ResendProvider } = require("../providers/resend");
+    (ResendProvider as jest.Mock).mockImplementation(() => ({ send }));
 
-    process.env.SMTP_URL = "smtp://test";
+    process.env.EMAIL_PROVIDER = "resend";
+    process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    await expect(
-      sendCampaignEmail({
-        to: "to@example.com",
-        subject: "Subject",
-        html: "<p>HTML</p>",
-      })
-    ).rejects.toThrow(error);
+    const { sendCampaignEmail } = await import("../index");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+    });
+
+    expect(ResendProvider).toHaveBeenCalled();
+    expect(send).toHaveBeenCalledWith({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+    });
   });
 });

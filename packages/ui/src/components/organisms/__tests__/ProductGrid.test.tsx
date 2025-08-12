@@ -18,8 +18,8 @@ function mockResize(width: number) {
 }
 
 const products: Product[] = [
-  { id: "1", title: "A", image: "/a.jpg", price: 1 },
-  { id: "2", title: "B", image: "/b.jpg", price: 2 },
+  { id: "1", title: "A", media: [{ url: "/a.jpg", type: "image" }], price: 1 },
+  { id: "2", title: "B", media: [{ url: "/b.jpg", type: "image" }], price: 2 },
 ];
 
 describe("ProductGrid viewport counts", () => {

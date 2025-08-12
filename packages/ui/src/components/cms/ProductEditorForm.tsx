@@ -41,6 +41,9 @@ export default function ProductEditorForm({
     handleChange,
     handleSubmit,
     uploader,
+    media,
+    removeMedia,
+    moveMedia,
   } = useProductEditorFormState(init, locales, onSave);
 
   /* ---------------- UI ---------------- */
@@ -76,7 +79,57 @@ export default function ProductEditorForm({
             showReload
           />
 
-          {/* Image upload --------------------------------------------- */}
+          {/* Media upload --------------------------------------------- */}
+          <div className="flex flex-wrap gap-2">
+            {media.map((m, idx) => {
+              const src = m instanceof File ? URL.createObjectURL(m) : m.url;
+              const isVideo =
+                m instanceof File ? m.type.startsWith("video") : false;
+              return (
+                <div key={idx} className="relative h-24 w-24">
+                  {isVideo ? (
+                    <video
+                      src={src}
+                      className="h-full w-full rounded object-cover"
+                    />
+                  ) : (
+                    <img
+                      src={src}
+                      alt=""
+                      className="h-full w-full rounded object-cover"
+                    />
+                  )}
+                  <div className="absolute top-1 right-1 flex flex-col gap-1">
+                    {idx > 0 && (
+                      <button
+                        type="button"
+                        className="rounded bg-white/80 px-1 text-xs"
+                        onClick={() => moveMedia(idx, idx - 1)}
+                      >
+                        ↑
+                      </button>
+                    )}
+                    {idx < media.length - 1 && (
+                      <button
+                        type="button"
+                        className="rounded bg-white/80 px-1 text-xs"
+                        onClick={() => moveMedia(idx, idx + 1)}
+                      >
+                        ↓
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      className="rounded bg-white/80 px-1 text-xs"
+                      onClick={() => removeMedia(idx)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
           {uploader}
 
           {/* Multilingual fields -------------------------------------- */}

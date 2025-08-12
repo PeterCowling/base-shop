@@ -6,8 +6,18 @@ jest.mock("../src/components/organisms/ProductCard", () => ({
 }));
 
 const products = [
-  { id: "1", title: "A", image: "/placeholder.svg", price: 10 },
-  { id: "2", title: "B", image: "/placeholder.svg", price: 20 },
+  {
+    id: "1",
+    title: "A",
+    media: [{ url: "/placeholder.svg", type: "image" }],
+    price: 10,
+  },
+  {
+    id: "2",
+    title: "B",
+    media: [{ url: "/placeholder.svg", type: "image" }],
+    price: 20,
+  },
 ];
 
 describe("ProductGrid", () => {

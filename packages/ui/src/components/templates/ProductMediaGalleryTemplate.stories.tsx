@@ -7,11 +7,10 @@ const meta: Meta<typeof ProductMediaGalleryTemplate> = {
     product: {
       id: "1",
       title: "Media Product",
-      image: "/placeholder.svg",
       price: 49,
       media: [
-        { type: "image", src: "/placeholder.svg" },
-        { type: "image", src: "/placeholder.svg" },
+        { type: "image", url: "/placeholder.svg" },
+        { type: "image", url: "/placeholder.svg" },
       ],
     },
     ctaLabel: "Add to cart",

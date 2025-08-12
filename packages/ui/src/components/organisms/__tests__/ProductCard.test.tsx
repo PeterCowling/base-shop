@@ -10,7 +10,7 @@ describe("ProductCard", () => {
   const product: Product = {
     id: "1",
     title: "Test Product",
-    image: "/img.jpg",
+    media: [{ url: "/img.jpg", type: "image" }],
     price: 9.99,
   };
 

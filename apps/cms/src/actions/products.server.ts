@@ -50,7 +50,7 @@ export async function createDraftRecord(
     description,
     price: 0,
     currency: "EUR",
-    images: [],
+    media: [],
     status: "draft",
     shop,
     row_version: 1,

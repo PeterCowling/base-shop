@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     slug: p.sku ?? p.id,
     title: p.title?.en ?? Object.values(p.title ?? {})[0] ?? "",
     price: p.price ?? 0,
-    image: p.images?.[0] ?? "",
+    image: p.media?.[0]?.url ?? "",
     stock: stock.get(p.id) ?? 0,
     availability: p.availability ?? [],
   });

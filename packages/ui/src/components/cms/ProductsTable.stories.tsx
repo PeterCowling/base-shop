@@ -14,7 +14,7 @@ const rows: ProductPublication[] = [
     },
     price: 10000,
     currency: "USD",
-    images: [],
+    media: [],
     created_at: "2023-01-01",
     updated_at: "2023-01-01",
     shop: "shop1",

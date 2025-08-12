@@ -5,9 +5,9 @@ const meta: Meta<typeof MediaSelector> = {
   component: MediaSelector,
   args: {
     items: [
-      { type: "image", src: "/hero/slide-1.jpg" },
-      { type: "image", src: "/hero/slide-2.jpg" },
-      { type: "image", src: "/hero/slide-3.jpg" },
+      { type: "image", url: "/hero/slide-1.jpg" },
+      { type: "image", url: "/hero/slide-2.jpg" },
+      { type: "image", url: "/hero/slide-3.jpg" },
     ],
     active: 0,
   },

@@ -7,7 +7,7 @@ import { trackEvent } from "@platform-core/src/analytics";
 import type { ProductPublication } from "@acme/types";
 import { env } from "@acme/config";
 
-const DEFAULT_FIELDS = ["id", "title", "description", "price", "images"] as const;
+const DEFAULT_FIELDS = ["id", "title", "description", "price", "media"] as const;
 type Field = (typeof DEFAULT_FIELDS)[number];
 
 export const runtime = "nodejs";
@@ -61,12 +61,12 @@ export async function GET(req: NextRequest) {
     if (fields.includes("description")) item.description = p.description;
     if (fields.includes("price"))
       item.price = p.price ?? (sku as any).price ?? null;
-    if (fields.includes("images")) {
-      item.images = p.images?.length
-        ? p.images
+    if (fields.includes("media")) {
+      item.media = p.media?.length
+        ? p.media
         : (sku as any).image
-          ? [(sku as any).image]
-          : [];
+        ? [{ url: (sku as any).image }]
+        : [];
     }
     return item;
   });

@@ -13,7 +13,7 @@ const sample: ProductPublication = {
   },
   price: 1000,
   currency: "EUR",
-  images: [],
+  media: [],
   status: "draft",
   shop: "demo",
   row_version: 1,

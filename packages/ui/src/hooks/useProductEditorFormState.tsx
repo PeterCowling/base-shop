@@ -1,7 +1,6 @@
 // packages/ui/hooks/useProductEditorFormState.tsx
 import type { Locale, ProductPublication } from "@platform-core/src/products";
-import { useImageUpload } from "@ui/hooks/useImageUpload";
-import { usePublishLocations } from "@ui/hooks/usePublishLocations";
+import { useFileUpload } from "@ui/hooks/useFileUpload";
 import { parseMultilingualInput } from "@i18n/parseMultilingualInput";
 import {
   useCallback,
@@ -26,6 +25,9 @@ export interface UseProductEditorFormReturn {
   ) => void;
   handleSubmit: (e: FormEvent) => void;
   uploader: ReactElement;
+  media: (File | { url: string })[];
+  removeMedia: (idx: number) => void;
+  moveMedia: (from: number, to: number) => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -44,14 +46,16 @@ export function useProductEditorFormState(
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [publishTargets, setPublishTargets] = useState<string[]>([]);
+  const [media, setMedia] = useState<(File | { url: string })[]>(
+    init.media ?? []
+  );
 
   /* ---------- helpers ---------------------------------------------- */
-  const { locations } = usePublishLocations();
-  const requiredOrientation =
-    locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
-    "landscape";
 
-  const { file: imageFile, uploader } = useImageUpload(requiredOrientation);
+  const { uploader } = useFileUpload({
+    onFilesSelected: (files) =>
+      setMedia((prev) => [...prev, ...Array.from(files)]),
+  });
 
   /* ---------- input change handler --------------------------------- */
   const handleChange = useCallback(
@@ -104,11 +108,20 @@ export function useProductEditorFormState(
     });
 
     fd.append("price", String(product.price));
-    if (imageFile) fd.append("image", imageFile);
+
+    media.forEach((m) => {
+      if (m instanceof File) fd.append("media", m);
+    });
+    fd.append(
+      "mediaOrder",
+      JSON.stringify(
+        media.map((m) => (m instanceof File ? m.name : m.url))
+      )
+    );
 
     fd.append("publish", publishTargets.join(","));
     return fd;
-  }, [product, imageFile, publishTargets, locales]);
+  }, [product, media, publishTargets, locales]);
 
   /* ---------- submit handler --------------------------------------- */
   const handleSubmit = useCallback(
@@ -138,5 +151,15 @@ export function useProductEditorFormState(
     handleChange,
     handleSubmit,
     uploader,
+    media,
+    removeMedia: (idx: number) =>
+      setMedia((prev) => prev.filter((_, i) => i !== idx)),
+    moveMedia: (from: number, to: number) =>
+      setMedia((prev) => {
+        const next = [...prev];
+        const [m] = next.splice(from, 1);
+        next.splice(to, 0, m);
+        return next;
+      }),
   };
 }

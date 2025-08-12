@@ -7,12 +7,12 @@ const meta: Meta<typeof ProductGallery> = {
     media: [
       {
         type: "image",
-        src: "https://placehold.co/600x600",
+        url: "https://placehold.co/600x600",
         alt: "Image 1",
       },
       {
         type: "image",
-        src: "https://placehold.co/600x600?text=2",
+        url: "https://placehold.co/600x600?text=2",
         alt: "Image 2",
       },
     ],

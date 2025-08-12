@@ -6,7 +6,7 @@ import { StickyAddToCartBar } from "./StickyAddToCartBar";
 const product: Product = {
   id: "1",
   title: "Sample Product",
-  image: "https://placehold.co/300x300",
+  media: [{ url: "https://placehold.co/300x300", type: "image" }],
   price: 30,
 };
 

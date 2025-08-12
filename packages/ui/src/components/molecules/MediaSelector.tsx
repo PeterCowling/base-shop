@@ -7,7 +7,7 @@ export type MediaType = "image" | "video" | "360" | "model";
 
 export interface MediaItem {
   type: MediaType;
-  src: string;
+  url: string;
   thumbnail?: string;
   alt?: string;
   frames?: string[]; // for 360
@@ -41,7 +41,7 @@ export function MediaSelector({
         >
           {item.type === "image" || item.type === "360" ? (
             <Image
-              src={item.thumbnail || item.src}
+              src={item.thumbnail || item.url}
               alt="thumbnail"
               fill
               className="object-cover"

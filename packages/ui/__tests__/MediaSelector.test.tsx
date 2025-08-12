@@ -7,8 +7,8 @@ import {
 
 describe("MediaSelector", () => {
   const items: MediaItem[] = [
-    { type: "image", src: "/a.jpg" },
-    { type: "video", src: "/b.mp4" },
+    { type: "image", url: "/a.jpg" },
+    { type: "video", url: "/b.mp4" },
   ];
 
   function Wrapper({ onChange }: { onChange: (i: number) => void }) {

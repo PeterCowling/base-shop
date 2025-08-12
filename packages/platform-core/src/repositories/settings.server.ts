@@ -64,7 +64,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
         },
         aiCatalog: {
           enabled: false,
-          fields: ["id", "title", "description", "price", "images"],
+          fields: ["id", "title", "description", "price", "media"],
           ...(parsed.data.aiCatalog ?? {}),
         },
       };
@@ -82,7 +82,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     depositService: { enabled: false, interval: 60 },
     aiCatalog: {
       enabled: false,
-      fields: ["id", "title", "description", "price", "images"],
+      fields: ["id", "title", "description", "price", "media"],
     },
     updatedAt: "",
     updatedBy: "",

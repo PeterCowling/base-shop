@@ -1,10 +1,6 @@
 "use client";
 import { Button, Input, Textarea } from "@/components/atoms/shadcn";
-import {
-  generateSeo,
-  setFreezeTranslations,
-  updateSeo,
-} from "@cms/actions/shops.server";
+import { setFreezeTranslations, updateSeo } from "@cms/actions/shops.server";
 import type { Locale } from "@acme/types";
 import { ChangeEvent, FormEvent, useState } from "react";
 
@@ -12,6 +8,7 @@ interface SeoData {
   title?: string;
   description?: string;
   image?: string;
+  alt?: string;
   canonicalBase?: string;
   ogUrl?: string;
   twitterCard?: string;
@@ -36,6 +33,7 @@ export default function SeoEditor({
     initialSeo[locale]?.description ?? ""
   );
   const [image, setImage] = useState(initialSeo[locale]?.image ?? "");
+  const [alt, setAlt] = useState(initialSeo[locale]?.alt ?? "");
   const [canonicalBase, setCanonicalBase] = useState(
     initialSeo[locale]?.canonicalBase ?? ""
   );
@@ -57,6 +55,7 @@ export default function SeoEditor({
       setTitle(initialSeo[l]?.title ?? "");
       setDescription(initialSeo[l]?.description ?? "");
       setImage(initialSeo[l]?.image ?? "");
+      setAlt(initialSeo[l]?.alt ?? "");
       setOgUrl(initialSeo[l]?.ogUrl ?? "");
       setTwitterCard(initialSeo[l]?.twitterCard ?? "");
     }
@@ -78,6 +77,7 @@ export default function SeoEditor({
     fd.append("title", title);
     fd.append("description", description);
     fd.append("image", image);
+    fd.append("alt", alt);
     fd.append("canonicalBase", canonicalBase);
     fd.append("ogUrl", ogUrl);
     fd.append("twitterCard", twitterCard);
@@ -93,16 +93,27 @@ export default function SeoEditor({
 
     const handleGenerate = async () => {
       setGenerating(true);
-      const fd = new FormData();
-      fd.append("id", `${shop}-${locale}`);
-      fd.append("locale", locale);
-      fd.append("title", title);
-      fd.append("description", description);
-      const result = await generateSeo(shop, fd);
-      if (result.generated) {
-        setTitle(result.generated.title);
-        setDescription(result.generated.description);
-        setImage(result.generated.image);
+      const res = await fetch("/api/seo/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          shop,
+          id: `${shop}-${locale}`,
+          title,
+          description,
+        }),
+      });
+      if (res.ok) {
+        const data = (await res.json()) as {
+          title: string;
+          description: string;
+          alt: string;
+          image: string;
+        };
+        setTitle(data.title);
+        setDescription(data.description);
+        setAlt(data.alt);
+        setImage(data.image);
       }
       setGenerating(false);
     };
@@ -152,6 +163,14 @@ export default function SeoEditor({
         />
       </label>
       <label className="flex flex-col gap-1">
+        <span>Image Alt</span>
+        <Input
+          className="border p-2"
+          value={alt}
+          onChange={(e) => setAlt(e.target.value)}
+        />
+      </label>
+      <label className="flex flex-col gap-1">
         <span>Canonical Base</span>
         <Input
           className="border p-2"
@@ -196,7 +215,7 @@ export default function SeoEditor({
             onClick={handleGenerate}
             disabled={generating}
           >
-            {generating ? "Generating…" : "Generate"}
+            {generating ? "Generating…" : "Generate metadata"}
           </Button>
           <Button className="bg-primary text-white" type="submit" disabled={saving}>
             {saving ? "Saving…" : "Save"}

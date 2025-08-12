@@ -31,6 +31,26 @@ try {
     if (env[k] === "") delete env[k];
   });
   envSchema.parse(env);
+
+  const depositErrors: string[] = [];
+  for (const [key, value] of Object.entries(env)) {
+    if (key.startsWith("DEPOSIT_RELEASE_ENABLED")) {
+      if (value !== "true" && value !== "false") {
+        depositErrors.push(`${key} must be \"true\" or \"false\"`);
+      }
+    }
+    if (key.startsWith("DEPOSIT_RELEASE_INTERVAL_MS")) {
+      if (Number.isNaN(Number(value))) {
+        depositErrors.push(`${key} must be a number`);
+      }
+    }
+  }
+
+  if (depositErrors.length) {
+    depositErrors.forEach((e) => console.error(e));
+    process.exit(1);
+  }
+
   console.log("Environment variables look valid.");
 } catch (err) {
   if (err instanceof ZodError) {

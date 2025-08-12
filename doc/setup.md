@@ -84,6 +84,7 @@ The wizard scaffolds placeholders for common variables:
 - `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_TOKEN` – Sanity blog configuration
 - `GMAIL_USER`, `GMAIL_PASS` – credentials for email sending
 - `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` – Cloudflare credentials for provisioning custom domains (server-side only)
+- `DEPOSIT_RELEASE_ENABLED`, `DEPOSIT_RELEASE_INTERVAL_MS` – control automatic deposit refunds for rental shops
 
 Leave any value blank if the integration isn't needed. You can update the `.env`
 file later and rerun `pnpm validate-env <id>` to confirm everything is set up.
@@ -125,6 +126,11 @@ pnpm release-deposits
 ```
 
 To keep it running on a schedule, import `startDepositReleaseService` from `@acme/platform-machine` and optionally pass a custom interval (defaults to one hour). The service scans every shop under `data/shops/*`, issues Stripe refunds and marks orders as refunded.
+
+Environment variables can adjust the service:
+
+- `DEPOSIT_RELEASE_ENABLED` or `DEPOSIT_RELEASE_ENABLED_<SHOP>` – set to `false` to disable automatic refunds
+- `DEPOSIT_RELEASE_INTERVAL_MS` or `DEPOSIT_RELEASE_INTERVAL_MS_<SHOP>` – override the run interval in milliseconds
 
 See [doc/machine.md](./machine.md#deposit-release-service) for more details and configuration options.
 

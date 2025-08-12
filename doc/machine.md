@@ -17,6 +17,11 @@ const stop = startDepositReleaseService();
 
 `startDepositReleaseService(intervalMs)` accepts an optional interval in milliseconds (defaults to one hour) and returns a function to stop the timer. The service subtracts any `damageFee` from the refunded amount and calls `markRefunded` so the order is not processed again.
 
+Environment variables can adjust behavior globally or per shop:
+
+- `DEPOSIT_RELEASE_ENABLED` or `DEPOSIT_RELEASE_ENABLED_<SHOP>` – set to `false` to disable refunds
+- `DEPOSIT_RELEASE_INTERVAL_MS` or `DEPOSIT_RELEASE_INTERVAL_MS_<SHOP>` – override the run interval in milliseconds
+
 Stripe credentials (`STRIPE_SECRET_KEY` and `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`) must be configured in the shop `.env` files. A one-off CLI utility is also available:
 
 ```bash

@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 import type { MediaItem } from "@acme/types";
 import MediaManager from "./MediaManager";
 
-const files: MediaItem[] = [{ url: "/sample.jpg", altText: "Sample" }];
+const files: MediaItem[] = [
+  { url: "/sample.jpg", altText: "Sample", type: "image" },
+];
 
 const meta: Meta<typeof MediaManager> = {
   component: MediaManager,

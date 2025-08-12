@@ -22,7 +22,9 @@ jest.mock("@ui/hooks/useMediaUpload", () => ({
 describe("MediaManager accessibility", () => {
   it("links drop zone to live feedback region", () => {
     render(<MediaManager shop="s" initialFiles={[]} onDelete={jest.fn()} />);
-    const dropzone = screen.getByRole("button", { name: /drop image/i });
+    const dropzone = screen.getByRole("button", {
+      name: /drop image or video/i,
+    });
     const status = screen.getByRole("status");
     expect(dropzone).toHaveAttribute("aria-describedby", status.id);
     expect(status).toHaveTextContent("Upload failed");

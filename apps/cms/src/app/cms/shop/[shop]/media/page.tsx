@@ -4,6 +4,7 @@ import { deleteMedia, listMedia } from "@cms/actions/media.server";
 import { checkShopExists } from "@acme/lib";
 import MediaManager from "@ui/components/cms/MediaManager";
 import { notFound } from "next/navigation";
+import type { MediaItem } from "@acme/types";
 
 interface Params {
   shop: string;
@@ -20,7 +21,7 @@ export default async function MediaPage({
 
   if (!(await checkShopExists(shop))) return notFound();
 
-  const files = await listMedia(shop);
+  const files: MediaItem[] = await listMedia(shop);
 
   return (
     <div>

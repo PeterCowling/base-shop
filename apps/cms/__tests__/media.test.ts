@@ -13,12 +13,13 @@ const { resetModules } = jest;
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
 /* -------------------------------------------------------------------------- */
-interface ImageMeta {
+interface MediaMeta {
   altText: string;
+  type?: "image" | "video";
   width?: number;
   height?: number;
 }
-type MediaMetaFile = Record<string, ImageMeta>;
+type MediaMetaFile = Record<string, MediaMeta>;
 
 /* -------------------------------------------------------------------------- */
 /*  Utility helpers                                                           */
@@ -122,6 +123,7 @@ describe("media actions", () => {
         /* ---------- assertions ---------- */
         expect(item.url).toMatch(/\/uploads\/shop1\//);
         expect(item.altText).toBe("hello");
+        expect(item.type).toBe("image");
 
         const stored = path.join(dir, "public", item.url);
         await expect(fs.access(stored)).resolves.toBeUndefined();
@@ -137,6 +139,43 @@ describe("media actions", () => {
           await fs.readFile(metaPath, "utf8")
         ) as MediaMetaFile;
         expect(meta[path.basename(item.url)].altText).toBe("hello");
+        expect(meta[path.basename(item.url)].type).toBe("image");
+      })
+    );
+  });
+
+  it("uploadMedia stores video files", async () => {
+    await withTmpDir((dir) =>
+      withDevEnv(async () => {
+        mockAuth();
+        mockSharp();
+
+        const { uploadMedia } = await import(
+          /* @vite-ignore */ "../src/actions/media.server.ts"
+        );
+
+        const file = new File(["vid"], "test.mp4", { type: "video/mp4" });
+        const fd = new FormData();
+        fd.append("file", file);
+
+        const item = await uploadMedia("shop1", fd);
+
+        expect(item.type).toBe("video");
+
+        const stored = path.join(dir, "public", item.url);
+        await expect(fs.access(stored)).resolves.toBeUndefined();
+
+        const metaPath = path.join(
+          dir,
+          "public",
+          "uploads",
+          "shop1",
+          "metadata.json"
+        );
+        const meta = JSON.parse(
+          await fs.readFile(metaPath, "utf8")
+        ) as MediaMetaFile;
+        expect(meta[path.basename(item.url)].type).toBe("video");
       })
     );
   });

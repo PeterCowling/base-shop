@@ -18,7 +18,7 @@ jest.mock("next/image", () => (props: any) => <img {...props} />);
 
 describe("ImagePicker", () => {
   it("loads media and selects image", async () => {
-    const media = [{ url: "/img.jpg", altText: "img" }];
+    const media = [{ url: "/img.jpg", altText: "img", type: "image" }];
     const fetchSpy = jest
       .spyOn(global, "fetch")
       .mockResolvedValue({ ok: true, json: async () => media } as any);

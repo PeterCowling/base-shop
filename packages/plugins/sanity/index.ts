@@ -45,6 +45,32 @@ export async function publishPost(
   return client.create({ _type: "post", ...post });
 }
 
+export async function query<T>(config: SanityConfig, q: string): Promise<T> {
+  const client = getClient(config);
+  return client.fetch(q);
+}
+
+interface MutateBody {
+  mutations: unknown[];
+  returnIds?: boolean;
+}
+
+export async function mutate(config: SanityConfig, body: MutateBody) {
+  const client = getClient(config);
+  const { mutations, returnIds } = body;
+  return client.mutate(mutations, returnIds ? { returnIds } : {});
+}
+
+export async function slugExists(
+  config: SanityConfig,
+  slug: string,
+  excludeId?: string,
+) {
+  const queryStr = `*[_type=="post" && slug.current=="${slug}"${excludeId ? ` && _id!="${excludeId}"` : ""}][0]._id`;
+  const res = await query<{ _id?: string } | null>(config, queryStr);
+  return Boolean(res?._id);
+}
+
 const sanityPlugin: Plugin<any, any, any, SanityConfig> = {
   id: "sanity",
   name: "Sanity",

@@ -6,14 +6,7 @@ import {
   encodeCartCookie,
   type CartState,
 } from "@platform-core/src/cartCookie";
-import {
-  createCart,
-  getCart,
-  incrementQty,
-  setCart,
-  setQty,
-  removeItem,
-} from "@platform-core/src/cartStore";
+import { createCartStore } from "@platform-core/src/cartStore";
 import { getProductById, PRODUCTS } from "@platform-core/src/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -23,6 +16,8 @@ import { z } from "zod";
 export const runtime = "edge";
 
 const deleteSchema = z.object({ id: z.string() }).strict();
+
+const cartStore = createCartStore();
 
 /* ------------------------------------------------------------------
  * PUT – replace cart with provided lines
@@ -39,7 +34,7 @@ export async function PUT(req: NextRequest) {
 
   let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
   if (!cartId) {
-    cartId = await createCart();
+    cartId = await cartStore.createCart();
   }
 
   const cart: CartState = {};
@@ -55,7 +50,7 @@ export async function PUT(req: NextRequest) {
     cart[key] = { sku, size: line.size, qty: line.qty };
   }
 
-  await setCart(cartId, cart);
+  await cartStore.setCart(cartId, cart);
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;
@@ -93,16 +88,16 @@ export async function POST(req: NextRequest) {
 
   let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
   if (!cartId) {
-    cartId = await createCart();
+    cartId = await cartStore.createCart();
   }
-  const cart = await getCart(cartId);
+  const cart = await cartStore.getCart(cartId);
   const id = size ? `${sku.id}:${size}` : sku.id;
   const line = cart[id];
   const newQty = (line?.qty ?? 0) + qty;
   if (newQty > sku.stock) {
     return NextResponse.json({ error: "Insufficient stock" }, { status: 409 });
   }
-  const updated = await incrementQty(cartId, sku, qty, size);
+  const updated = await cartStore.incrementQty(cartId, sku, qty, size);
   const res = NextResponse.json({ ok: true, cart: updated });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;
@@ -127,7 +122,7 @@ export async function PATCH(req: NextRequest) {
   if (!cartId) {
     return NextResponse.json({ error: "Cart not found" }, { status: 404 });
   }
-  const cart = await setQty(cartId, id, qty);
+  const cart = await cartStore.setQty(cartId, id, qty);
   if (!cart) {
     return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
   }
@@ -155,7 +150,7 @@ export async function DELETE(req: NextRequest) {
   if (!cartId) {
     return NextResponse.json({ error: "Cart not found" }, { status: 404 });
   }
-  const cart = await removeItem(cartId, id);
+  const cart = await cartStore.removeItem(cartId, id);
   if (!cart) {
     return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
   }
@@ -170,9 +165,9 @@ export async function DELETE(req: NextRequest) {
 export async function GET(req: NextRequest) {
   let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
   if (!cartId) {
-    cartId = await createCart();
+    cartId = await cartStore.createCart();
   }
-  const cart = await getCart(cartId);
+  const cart = await cartStore.getCart(cartId);
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;

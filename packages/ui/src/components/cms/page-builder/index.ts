@@ -13,6 +13,7 @@ export { default as VideoBlockEditor } from "./VideoBlockEditor";
 export { default as FAQBlockEditor } from "./FAQBlockEditor";
 export { default as PricingTableEditor } from "./PricingTableEditor";
 export { default as NewsletterSignupEditor } from "./NewsletterSignupEditor";
+export { default as SearchBarEditor } from "./SearchBarEditor";
 export { default as ImageSliderEditor } from "./ImageSliderEditor";
 export { default as SocialFeedEditor } from "./SocialFeedEditor";
 export { default as useMediaLibrary } from "./useMediaLibrary";

@@ -168,6 +168,11 @@ export interface NewsletterSignupComponent extends PageComponentBase {
   placeholder?: string;
   submitLabel?: string;
 }
+export interface SearchBarComponent extends PageComponentBase {
+  type: "SearchBar";
+  placeholder?: string;
+  limit?: number;
+}
 export interface ContactFormWithMapComponent extends PageComponentBase {
   type: "ContactFormWithMap";
   mapSrc?: string;
@@ -263,6 +268,7 @@ export type PageComponent =
   | ImageSliderComponent
   | ContactFormComponent
   | NewsletterSignupComponent
+  | SearchBarComponent
   | ContactFormWithMapComponent
   | MapBlockComponent
   | VideoBlockComponent

@@ -9,6 +9,7 @@ import ReviewsCarouselEditor from "../ReviewsCarouselEditor";
 import AnnouncementBarEditor from "../AnnouncementBarEditor";
 import SocialFeedEditor from "../SocialFeedEditor";
 import NewsletterSignupEditor from "../NewsletterSignupEditor";
+import SearchBarEditor from "../SearchBarEditor";
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
@@ -73,6 +74,12 @@ describe("block editors", () => {
       NewsletterSignupEditor,
       { type: "NewsletterSignup", action: "" },
       "action",
+    ],
+    [
+      "SearchBarEditor",
+      SearchBarEditor,
+      { type: "SearchBar", placeholder: "" },
+      "placeholder",
     ],
     [
       "SocialFeedEditor",

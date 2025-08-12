@@ -19,6 +19,7 @@ import SocialLinks from "./SocialLinks";
 import SocialFeed from "./SocialFeed";
 import PricingTable from "./PricingTable";
 import NewsletterSignup from "./NewsletterSignup";
+import SearchBar from "./SearchBar";
 import Tabs from "./Tabs";
 import ImageSlider from "./ImageSlider";
 
@@ -44,6 +45,7 @@ export const organismRegistry = {
   SocialLinks,
   SocialFeed,
   NewsletterSignup,
+  SearchBar,
   PricingTable,
   Tabs,
 } as const;

@@ -30,6 +30,7 @@ import FooterEditor from "./FooterEditor";
 import PricingTableEditor from "./PricingTableEditor";
 import NewsletterSignupEditor from "./NewsletterSignupEditor";
 import ImageSliderEditor from "./ImageSliderEditor";
+import SearchBarEditor from "./SearchBarEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -93,6 +94,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "NewsletterSignup":
       specific = (
         <NewsletterSignupEditor component={component} onChange={onChange} />
+      );
+      break;
+    case "SearchBar":
+      specific = (
+        <SearchBarEditor component={component} onChange={onChange} />
       );
       break;
     case "ImageSlider":

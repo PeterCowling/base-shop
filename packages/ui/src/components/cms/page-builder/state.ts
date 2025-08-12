@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { pageComponentSchema } from "@acme/types";
 import type { PageComponent, HistoryState } from "@acme/types";
+import { ulid } from "ulid";
 
 /* ════════════════ runtime validation (Zod) ════════════════ */
 export const historyStateSchema: z.ZodType<HistoryState> = z
@@ -27,6 +28,7 @@ export type ChangeAction =
       to: { parentId?: string; index: number };
     }
   | { type: "remove"; id: string }
+  | { type: "duplicate"; id: string }
   | { type: "update"; id: string; patch: Partial<PageComponent> }
   | {
       type: "resize";
@@ -87,6 +89,39 @@ function removeComponent(list: PageComponent[], id: string): PageComponent[] {
         : c
     )
     .filter((c) => c.id !== id);
+}
+
+function cloneWithNewIds(component: PageComponent): PageComponent {
+  const copy: PageComponent = { ...component, id: ulid() } as PageComponent;
+  if ("children" in component && Array.isArray((component as any).children)) {
+    (copy as any).children = (component as any).children.map((child: PageComponent) =>
+      cloneWithNewIds(child)
+    );
+  }
+  return copy;
+}
+
+function duplicateComponent(list: PageComponent[], id: string): PageComponent[] {
+  let duplicated = false;
+  const result: PageComponent[] = [];
+  for (const c of list) {
+    if (!duplicated && c.id === id) {
+      const clone = cloneWithNewIds(c);
+      result.push(c, clone);
+      duplicated = true;
+      continue;
+    }
+    if (!duplicated && "children" in c && Array.isArray((c as any).children)) {
+      const children = duplicateComponent((c as any).children, id);
+      if (children !== (c as any).children) {
+        result.push({ ...(c as any), children } as PageComponent);
+        duplicated = true;
+        continue;
+      }
+    }
+    result.push(c);
+  }
+  return duplicated ? result : list;
 }
 
 function updateComponent(
@@ -197,6 +232,8 @@ function componentsReducer(
       return moveComponent(state, action.from, action.to);
     case "remove":
       return removeComponent(state, action.id);
+    case "duplicate":
+      return duplicateComponent(state, action.id);
     case "update":
       return updateComponent(state, action.id, action.patch);
     case "resize":

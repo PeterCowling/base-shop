@@ -2,6 +2,7 @@ import ComponentEditor from "./ComponentEditor";
 import type { PageComponent } from "@acme/types";
 import type { Action } from "./state";
 import { useCallback } from "react";
+import { Button } from "../../atoms/shadcn";
 
 interface Props {
   components: PageComponent[];
@@ -37,8 +38,15 @@ const PageSidebar = ({ components, selectedId, dispatch }: Props) => {
     [dispatch, selectedId],
   );
 
+  const handleDuplicate = useCallback(() => {
+    dispatch({ type: "duplicate", id: selectedId });
+  }, [dispatch, selectedId]);
+
   return (
-    <aside className="w-72 shrink-0">
+    <aside className="w-72 shrink-0 space-y-2">
+      <Button type="button" variant="outline" onClick={handleDuplicate}>
+        Duplicate
+      </Button>
       <ComponentEditor
         component={components.find((c) => c.id === selectedId)!}
         onChange={handleChange}

@@ -39,6 +39,31 @@ describe("state reducer", () => {
     expect(state.present).toEqual([b]);
   });
 
+  it("duplicates component with new id", () => {
+    const state = reducer(
+      { ...init, present: [a, b] },
+      { type: "duplicate", id: "a" }
+    );
+    expect(state.present).toHaveLength(3);
+    const dup = state.present[1];
+    expect(dup.id).not.toBe("a");
+    expect(dup.type).toBe("Text");
+  });
+
+  it("deep clones nested children when duplicating", () => {
+    const child = { id: "child", type: "Text" } as PageComponent;
+    const parent = { id: "parent", type: "Container", children: [child] } as any;
+    const state = reducer(
+      { ...init, present: [parent as PageComponent] },
+      { type: "duplicate", id: "parent" }
+    );
+    expect(state.present).toHaveLength(2);
+    const orig = state.present[0] as any;
+    const clone = state.present[1] as any;
+    expect(clone.id).not.toBe(orig.id);
+    expect(clone.children[0].id).not.toBe(orig.children[0].id);
+  });
+
   it("updates component", () => {
     const state = reducer(
       { ...init, present: [a] },

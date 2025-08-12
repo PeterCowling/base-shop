@@ -31,9 +31,19 @@ interface ChartsProps {
   traffic: Series;
   conversion: Series;
   sales: Series;
+  emailOpens: Series;
+  campaignSales: Series;
+  discountRedemptions: Series;
 }
 
-export function Charts({ traffic, conversion, sales }: ChartsProps) {
+export function Charts({
+  traffic,
+  conversion,
+  sales,
+  emailOpens,
+  campaignSales,
+  discountRedemptions,
+}: ChartsProps) {
   return (
     <div className="space-y-8">
       <div>
@@ -76,6 +86,51 @@ export function Charts({ traffic, conversion, sales }: ChartsProps) {
                 label: "Sales",
                 data: sales.data,
                 borderColor: "rgb(255, 99, 132)",
+              },
+            ],
+          }}
+        />
+      </div>
+      <div>
+        <h3 className="mb-2 font-semibold">Email Opens</h3>
+        <Line
+          data={{
+            labels: emailOpens.labels,
+            datasets: [
+              {
+                label: "Email opens",
+                data: emailOpens.data,
+                borderColor: "rgb(54, 162, 235)",
+              },
+            ],
+          }}
+        />
+      </div>
+      <div>
+        <h3 className="mb-2 font-semibold">Campaign Sales</h3>
+        <Line
+          data={{
+            labels: campaignSales.labels,
+            datasets: [
+              {
+                label: "Campaign sales",
+                data: campaignSales.data,
+                borderColor: "rgb(255, 159, 64)",
+              },
+            ],
+          }}
+        />
+      </div>
+      <div>
+        <h3 className="mb-2 font-semibold">Discount Redemptions</h3>
+        <Line
+          data={{
+            labels: discountRedemptions.labels,
+            datasets: [
+              {
+                label: "Discount redemptions",
+                data: discountRedemptions.data,
+                borderColor: "rgb(201, 203, 207)",
               },
             ],
           }}

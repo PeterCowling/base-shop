@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within, waitFor } from "@testing-library/react";
 import ThemeEditor from "../src/app/cms/shop/[shop]/themes/ThemeEditor";
 import { updateShop } from "@cms/actions/shops.server";
 
@@ -92,5 +92,27 @@ describe("ThemeEditor", () => {
     });
     fireEvent.click(swatch);
     expect(colorInput).toHaveFocus();
+  });
+
+  it("does not persist untouched tokens as overrides", async () => {
+    const tokensByTheme = { base: { "--color-bg": "white" } };
+    const mock = updateShop as jest.Mock;
+    mock.mockClear();
+    mock.mockResolvedValue({});
+    render(
+      <ThemeEditor
+        shop="test"
+        themes={["base"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={{}}
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /save/i }));
+
+    await waitFor(() => expect(mock).toHaveBeenCalled());
+    const fd = mock.mock.calls[0][1] as FormData;
+    expect(JSON.parse(fd.get("themeOverrides") as string)).toEqual({});
   });
 });

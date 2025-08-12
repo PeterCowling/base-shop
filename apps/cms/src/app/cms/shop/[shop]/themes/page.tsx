@@ -23,7 +23,7 @@ export default async function ShopThemePage({
         themes={themes}
         tokensByTheme={tokensByTheme}
         initialTheme={shopData.themeId}
-        initialOverrides={shopData.themeTokens}
+        initialOverrides={shopData.themeOverrides}
       />
     </div>
   );

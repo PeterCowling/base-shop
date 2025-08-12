@@ -318,6 +318,7 @@ const PageBuilder = memo(function PageBuilder({
           containerStyle={containerStyle}
           showGrid={showGrid}
           gridCols={gridCols}
+          viewport={viewport}
         />
         <div className="flex gap-2">
           <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>

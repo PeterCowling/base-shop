@@ -19,10 +19,40 @@ export interface PageComponentBase {
    */
   width?: string;
   /**
+   * Width of the component on desktop viewports. Overrides `width` when
+   * rendering on large screens.
+   */
+  widthDesktop?: string;
+  /**
+   * Width of the component on tablet viewports. Overrides `width` on medium
+   * screens.
+   */
+  widthTablet?: string;
+  /**
+   * Width of the component on mobile viewports. Overrides `width` on small
+   * screens.
+   */
+  widthMobile?: string;
+  /**
    * Height of the rendered component. Supports any CSS length such as
    * pixels, percentages or viewport units.
    */
   height?: string;
+  /**
+   * Height of the component on desktop viewports. Overrides `height` when
+   * rendering on large screens.
+   */
+  heightDesktop?: string;
+  /**
+   * Height of the component on tablet viewports. Overrides `height` on medium
+   * screens.
+   */
+  heightTablet?: string;
+  /**
+   * Height of the component on mobile viewports. Overrides `height` on small
+   * screens.
+   */
+  heightMobile?: string;
   /**
    * CSS position property used when rendering the component.
    */
@@ -290,7 +320,13 @@ const baseComponentSchema = z
   .object({
     id: z.string(),
     width: z.string().optional(),
+    widthDesktop: z.string().optional(),
+    widthTablet: z.string().optional(),
+    widthMobile: z.string().optional(),
     height: z.string().optional(),
+    heightDesktop: z.string().optional(),
+    heightTablet: z.string().optional(),
+    heightMobile: z.string().optional(),
     position: z.enum(["relative", "absolute"]).optional(),
     top: z.string().optional(),
     left: z.string().optional(),

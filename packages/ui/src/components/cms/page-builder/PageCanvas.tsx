@@ -30,6 +30,7 @@ interface Props {
   containerStyle: CSSProperties;
   showGrid?: boolean;
   gridCols: number;
+  viewport: "desktop" | "tablet" | "mobile";
 }
 
 const PageCanvas = ({
@@ -49,6 +50,7 @@ const PageCanvas = ({
   containerStyle,
   showGrid = false,
   gridCols,
+  viewport,
 }: Props) => (
   <DndContext
     sensors={sensors}
@@ -110,6 +112,7 @@ const PageCanvas = ({
               locale={locale}
               gridEnabled={showGrid}
               gridCols={gridCols}
+              viewport={viewport}
             />
           </Fragment>
         ))}

@@ -73,28 +73,36 @@ describe("PageBuilder interactions", () => {
               dispatch({ type: "resize", id: comp.id, ...patch })
             }
           />
-          <div data-testid="target" style={{ width: comp.width, height: comp.height }} />
+          <div
+            data-testid="target"
+            style={{ width: comp.widthDesktop, height: comp.heightDesktop }}
+          />
         </>
       );
     }
 
     render(<Wrapper />);
-    fireEvent.change(screen.getByLabelText("Width"), {
-      target: { value: "200" },
+    fireEvent.change(screen.getByLabelText("Width (Desktop)"), {
+      target: { value: "200px" },
     });
     expect(screen.getByTestId("target")).toHaveStyle({ width: "200px" });
-    fireEvent.click(screen.getByText("Full width"));
+    fireEvent.click(screen.getAllByText("Full width")[0]);
     expect(screen.getByTestId("target")).toHaveStyle({ width: "100%" });
-    fireEvent.change(screen.getByLabelText("Height"), {
-      target: { value: "300" },
+    fireEvent.change(screen.getByLabelText("Height (Desktop)"), {
+      target: { value: "300px" },
     });
     expect(screen.getByTestId("target")).toHaveStyle({ height: "300px" });
-    fireEvent.click(screen.getByText("Full height"));
+    fireEvent.click(screen.getAllByText("Full height")[0]);
     expect(screen.getByTestId("target")).toHaveStyle({ height: "100%" });
   });
 
   it("resizes via drag handle and snaps to full size with shift", () => {
-    const component: any = { id: "c1", type: "Image", width: "100px", height: "100px" };
+    const component: any = {
+      id: "c1",
+      type: "Image",
+      widthDesktop: "100px",
+      heightDesktop: "100px",
+    };
     const dispatch = jest.fn();
     const { container } = render(
       <CanvasItem
@@ -107,6 +115,7 @@ describe("PageBuilder interactions", () => {
         dispatch={dispatch}
         locale="en"
         gridCols={12}
+        viewport="desktop"
       />
     );
 
@@ -123,7 +132,7 @@ describe("PageBuilder interactions", () => {
     fireEvent.pointerMove(window, { clientX: 150, clientY: 150 });
     fireEvent.pointerUp(window);
     expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ width: "150px", height: "150px" })
+      expect.objectContaining({ widthDesktop: "150px", heightDesktop: "150px" })
     );
     dispatch.mockClear();
 
@@ -136,12 +145,17 @@ describe("PageBuilder interactions", () => {
     });
     fireEvent.pointerUp(window);
     expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ width: "100%", height: "100%" })
+      expect.objectContaining({ widthDesktop: "100%", heightDesktop: "100%" })
     );
   });
 
   it("snaps to full size when dragged near edge", () => {
-    const component: any = { id: "c1", type: "Image", width: "100px", height: "100px" };
+    const component: any = {
+      id: "c1",
+      type: "Image",
+      widthDesktop: "100px",
+      heightDesktop: "100px",
+    };
     const dispatch = jest.fn();
     const { container } = render(
       <CanvasItem
@@ -154,6 +168,7 @@ describe("PageBuilder interactions", () => {
         dispatch={dispatch}
         locale="en"
         gridCols={12}
+        viewport="desktop"
       />
     );
 
@@ -169,7 +184,7 @@ describe("PageBuilder interactions", () => {
     fireEvent.pointerMove(window, { clientX: 145, clientY: 145 });
     fireEvent.pointerUp(window);
     expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ width: "100%", height: "100%" })
+      expect.objectContaining({ widthDesktop: "100%", heightDesktop: "100%" })
     );
   });
 
@@ -177,8 +192,8 @@ describe("PageBuilder interactions", () => {
     const c1: any = {
       id: "c1",
       type: "Image",
-      width: "100px",
-      height: "100px",
+      widthDesktop: "100px",
+      heightDesktop: "100px",
       position: "absolute",
       left: "0px",
       top: "0px",
@@ -186,8 +201,8 @@ describe("PageBuilder interactions", () => {
     const c2: any = {
       id: "c2",
       type: "Image",
-      width: "100px",
-      height: "100px",
+      widthDesktop: "100px",
+      heightDesktop: "100px",
       position: "absolute",
       left: "120px",
       top: "0px",
@@ -205,6 +220,7 @@ describe("PageBuilder interactions", () => {
           dispatch={jest.fn()}
           locale="en"
           gridCols={12}
+          viewport="desktop"
         />
         <CanvasItem
           component={c2}
@@ -216,6 +232,7 @@ describe("PageBuilder interactions", () => {
           dispatch={dispatch}
           locale="en"
           gridCols={12}
+          viewport="desktop"
         />
       </div>
     );
@@ -243,7 +260,12 @@ describe("PageBuilder interactions", () => {
   });
 
   it("snaps resizing to grid units when grid is enabled", () => {
-    const component: any = { id: "c1", type: "Image", width: "100px", height: "100px" };
+    const component: any = {
+      id: "c1",
+      type: "Image",
+      widthDesktop: "100px",
+      heightDesktop: "100px",
+    };
     const dispatch = jest.fn();
     const { container } = render(
       <CanvasItem
@@ -257,6 +279,7 @@ describe("PageBuilder interactions", () => {
         locale="en"
         gridEnabled
         gridCols={4}
+        viewport="desktop"
       />
     );
     const el = container.firstChild as HTMLElement;
@@ -273,7 +296,7 @@ describe("PageBuilder interactions", () => {
     fireEvent.pointerUp(window);
 
     expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ width: "200px", height: "200px" })
+      expect.objectContaining({ widthDesktop: "200px", heightDesktop: "200px" })
     );
   });
 
@@ -281,8 +304,8 @@ describe("PageBuilder interactions", () => {
     const component: any = {
       id: "c1",
       type: "Image",
-      width: "100px",
-      height: "100px",
+      widthDesktop: "100px",
+      heightDesktop: "100px",
       position: "absolute",
       left: "0px",
       top: "0px",
@@ -300,6 +323,7 @@ describe("PageBuilder interactions", () => {
         locale="en"
         gridEnabled
         gridCols={4}
+        viewport="desktop"
       />
     );
 

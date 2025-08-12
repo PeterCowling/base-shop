@@ -41,7 +41,7 @@ export default async function ShopDashboard({
     } else if (e.type === "campaign_sale") {
       const amount = typeof e.amount === "number" ? e.amount : 0;
       campaignSalesByDay[day] = (campaignSalesByDay[day] || 0) + amount;
-    } else if (e.type === "discount_redemption") {
+    } else if (e.type === "discount_redeemed") {
       discountByDay[day] = (discountByDay[day] || 0) + 1;
     }
   }
@@ -54,6 +54,7 @@ export default async function ShopDashboard({
       ...Object.keys(emailClickByDay),
       ...Object.keys(campaignSalesByDay),
       ...Object.keys(discountByDay),
+      ...Object.keys(aggregates.discount_redeemed),
     ])
   ).sort();
 

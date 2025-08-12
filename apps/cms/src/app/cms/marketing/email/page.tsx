@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { marketingEmailVariants } from "@acme/ui";
 
 interface Campaign {
   id: string;
   to: string;
   subject: string;
+  body: string;
+  templateId?: string;
   sentAt: string;
   metrics: { sent: number; opened: number; clicked: number };
 }
@@ -15,6 +18,9 @@ export default function EmailMarketingPage() {
   const [to, setTo] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const [templateId, setTemplateId] = useState(
+    marketingEmailVariants[0].id
+  );
   const [status, setStatus] = useState<string | null>(null);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
 
@@ -38,7 +44,7 @@ export default function EmailMarketingPage() {
       const res = await fetch("/api/marketing/email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ shop, to, subject, body }),
+        body: JSON.stringify({ shop, to, subject, body, templateId }),
       });
       setStatus(res.ok ? "Sent" : "Failed");
       if (res.ok) {
@@ -73,6 +79,17 @@ export default function EmailMarketingPage() {
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
         />
+        <select
+          className="border p-2 w-full"
+          value={templateId}
+          onChange={(e) => setTemplateId(e.target.value)}
+        >
+          {marketingEmailVariants.map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.name}
+            </option>
+          ))}
+        </select>
         <textarea
           className="border p-2 w-full h-40"
           placeholder="HTML body"
@@ -84,6 +101,19 @@ export default function EmailMarketingPage() {
         </button>
         {status && <p>{status}</p>}
       </form>
+      {(() => {
+        const variant = marketingEmailVariants.find((v) => v.id === templateId);
+        if (!variant) return null;
+        const Template = variant.component;
+        return (
+          <div className="max-w-xl border p-4">
+            <Template
+              headline={subject || ""}
+              content={<div dangerouslySetInnerHTML={{ __html: body }} />}
+            />
+          </div>
+        );
+      })()}
       {campaigns.length > 0 && (
         <table className="mt-4 w-full border">
           <thead>

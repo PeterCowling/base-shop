@@ -64,3 +64,28 @@ export function MarketingEmailTemplate({
     </div>
   );
 }
+
+export interface MarketingEmailVariant {
+  id: string;
+  name: string;
+  component: React.ComponentType<MarketingEmailTemplateProps>;
+}
+
+export const marketingEmailVariants: MarketingEmailVariant[] = [
+  {
+    id: "default",
+    name: "Default",
+    component: MarketingEmailTemplate,
+  },
+  {
+    id: "minimal",
+    name: "Minimal",
+    component: (props: MarketingEmailTemplateProps) => (
+      <MarketingEmailTemplate
+        {...props}
+        logoSrc={undefined}
+        className={cn("border-none", props.className)}
+      />
+    ),
+  },
+];

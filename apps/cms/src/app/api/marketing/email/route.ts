@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { marketingEmailVariants } from "@acme/ui";
 import { sendCampaignEmail } from "@acme/email";
 import { trackEvent } from "@platform-core/analytics";
 import { listEvents } from "@platform-core/repositories/analytics.server";
@@ -13,6 +16,7 @@ interface Campaign {
   to: string;
   subject: string;
   body: string;
+  templateId?: string;
   sentAt: string;
 }
 
@@ -56,11 +60,14 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  const { shop, to, subject, body } = (await req.json().catch(() => ({}))) as {
+  const { shop, to, subject, body, templateId } = (await req
+    .json()
+    .catch(() => ({}))) as {
     shop?: string;
     to?: string;
     subject?: string;
     body?: string;
+    templateId?: string;
   };
   if (!shop || !to || !subject || !body) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -68,11 +75,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const id = Date.now().toString(36);
   const sentAt = new Date().toISOString();
   const base = env.NEXT_PUBLIC_BASE_URL || "";
+  const variant =
+    marketingEmailVariants.find((v) => v.id === templateId) ||
+    marketingEmailVariants[0];
+  const html = renderToStaticMarkup(
+    React.createElement(variant.component, {
+      headline: subject,
+      content: React.createElement("div", {
+        dangerouslySetInnerHTML: { __html: body },
+      }),
+    })
+  );
   const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
     shop
   )}&campaign=${encodeURIComponent(id)}`;
   const bodyWithPixel =
-    body +
+    html +
     `<img src="${pixelUrl}" alt="" style="display:none" width="1" height="1"/>`;
   const trackedBody = bodyWithPixel.replace(
     /href="([^"]+)"/g,
@@ -88,7 +106,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Failed to send" }, { status: 500 });
   }
   const campaigns = await readCampaigns(shop);
-  campaigns.push({ id, to, subject, body, sentAt });
+  campaigns.push({ id, to, subject, body: html, templateId, sentAt });
   await writeCampaigns(shop, campaigns);
   return NextResponse.json({ ok: true, id });
 }

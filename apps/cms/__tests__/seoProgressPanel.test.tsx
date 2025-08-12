@@ -30,14 +30,10 @@ describe("SeoProgressPanel", () => {
     ]);
     listEventsMock.mockResolvedValueOnce([
       {
-        type: "page_view",
-        timestamp: "2024-01-01T01:00:00Z",
-        source: "organic",
-      },
-      {
-        type: "page_view",
-        timestamp: "2024-01-01T02:00:00Z",
-        source: "organic",
+        type: "audit_complete",
+        timestamp: "2024-01-01T03:00:00Z",
+        score: 92,
+        success: true,
       },
     ]);
 
@@ -45,8 +41,9 @@ describe("SeoProgressPanel", () => {
     render(ui);
     const table = screen.getByRole("table");
     expect(within(table).getByText("92")).toBeInTheDocument();
-    expect(within(table).getByText("2")).toBeInTheDocument();
+    expect(within(table).getByText("ok")).toBeInTheDocument();
     expect(readSeoAuditsMock).toHaveBeenCalled();
+    expect(listEventsMock).toHaveBeenCalled();
     expect(screen.getByText("Add meta tags")).toBeInTheDocument();
   });
 });

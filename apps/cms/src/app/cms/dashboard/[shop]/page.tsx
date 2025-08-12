@@ -52,7 +52,7 @@ function buildMetrics(
       ...Object.keys(campaignSalesByDay),
       ...Object.keys(discountByDay),
       ...(aggregates ? Object.keys(aggregates.discount_redeemed) : []),
-      ...(aggregates ? Object.keys(aggregates.ai_catalog) : []),
+      ...(aggregates ? Object.keys(aggregates.ai_crawl) : []),
     ]),
   ).sort();
 
@@ -105,10 +105,10 @@ function buildMetrics(
     data: days.map((d) => discountByDay[d] || 0),
   };
 
-  const aiCatalog: Series = {
+  const aiCrawl: Series = {
     labels: days,
     data: aggregates
-      ? days.map((d) => aggregates.ai_catalog[d] || 0)
+      ? days.map((d) => aggregates.ai_crawl[d] || 0)
       : days.map(() => 0),
   };
 
@@ -121,7 +121,7 @@ function buildMetrics(
       0,
     ),
     discountRedemptions: discountRedemptions.data.reduce((a, b) => a + b, 0),
-    aiCatalog: aiCatalog.data.reduce((a, b) => a + b, 0),
+    aiCrawl: aiCrawl.data.reduce((a, b) => a + b, 0),
   };
 
   const maxTotal = Math.max(
@@ -129,7 +129,7 @@ function buildMetrics(
     totals.emailClicks,
     totals.campaignSales,
     totals.discountRedemptions,
-    totals.aiCatalog,
+    totals.aiCrawl,
     1,
   );
 
@@ -141,7 +141,7 @@ function buildMetrics(
     emailClicks,
     campaignSales,
     discountRedemptions,
-    aiCatalog,
+    aiCrawl,
     totals,
     maxTotal,
   };
@@ -193,7 +193,7 @@ export default async function ShopDashboard({
                 emailClicks={metrics.emailClicks}
                 campaignSales={metrics.campaignSales}
                 discountRedemptions={metrics.discountRedemptions}
-                aiCatalog={metrics.aiCatalog}
+                aiCrawl={metrics.aiCrawl}
               />
               <div className="mt-8 space-y-4">
                 <h3 className="text-lg font-semibold">Progress</h3>
@@ -241,8 +241,8 @@ export default async function ShopDashboard({
                     AI catalog requests
                   </span>
                   <Progress
-                    value={(metrics.totals.aiCatalog / metrics.maxTotal) * 100}
-                    label={String(metrics.totals.aiCatalog)}
+                    value={(metrics.totals.aiCrawl / metrics.maxTotal) * 100}
+                    label={String(metrics.totals.aiCrawl)}
                   />
                 </div>
               </div>
@@ -272,7 +272,7 @@ export default async function ShopDashboard({
                 emailClicks={metrics.emailClicks}
                 campaignSales={metrics.campaignSales}
                 discountRedemptions={metrics.discountRedemptions}
-                aiCatalog={metrics.aiCatalog}
+                aiCrawl={metrics.aiCrawl}
               />
             </div>
           );

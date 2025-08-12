@@ -33,24 +33,25 @@ export async function GET(req: NextRequest) {
   }, new Date(0));
   const lastModified = new Date(lastModifiedDate.toUTCString());
 
-  await trackEvent(shop, { type: "ai_catalog" });
-
-  const ims = req.headers.get("if-modified-since");
-  if (ims) {
-    const imsDate = new Date(ims);
-    if (!Number.isNaN(imsDate.getTime()) && lastModified <= imsDate) {
-      return new NextResponse(null, {
-        status: 304,
-        headers: { "Last-Modified": lastModified.toUTCString() },
-      });
-    }
-  }
-
   const { searchParams } = req.nextUrl;
   const page = parseIntOr(searchParams.get("page"), 1);
   const limit = parseIntOr(searchParams.get("limit"), ai.pageSize ?? 50);
   const start = (page - 1) * limit;
   const paged = all.slice(start, start + limit);
+
+  let status = 200;
+  const ims = req.headers.get("if-modified-since");
+  if (ims) {
+    const imsDate = new Date(ims);
+    if (!Number.isNaN(imsDate.getTime()) && lastModified <= imsDate) {
+      status = 304;
+      await trackEvent(shop, { type: "ai_crawl", page, status });
+      return new NextResponse(null, {
+        status,
+        headers: { "Last-Modified": lastModified.toUTCString() },
+      });
+    }
+  }
 
   const items = paged.map((p) => {
     const sku = getProductById(p.sku) || {};
@@ -68,6 +69,13 @@ export async function GET(req: NextRequest) {
           : [];
     }
     return item;
+  });
+
+  await trackEvent(shop, {
+    type: "ai_crawl",
+    page,
+    status,
+    items: items.length,
   });
 
   return NextResponse.json(

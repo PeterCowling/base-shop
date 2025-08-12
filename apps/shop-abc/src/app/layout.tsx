@@ -13,24 +13,13 @@ import shop from "../../shop.json";
 // Ensure friendly Zod messages for all validations
 applyFriendlyZodMessages();
 
-const payments = new Map<string, unknown>();
-const shipping = new Map<string, unknown>();
-const widgets = new Map<string, unknown>();
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const pluginsDir = path.resolve(__dirname, "../../../../packages/plugins");
 
-const pluginsReady = initPlugins(
-  {
-    payments: { add: (id: string, provider: unknown) => payments.set(id, provider) },
-    shipping: { add: (id: string, provider: unknown) => shipping.set(id, provider) },
-    widgets: { add: (id: string, component: unknown) => widgets.set(id, component) },
-  },
-  {
-    directories: [pluginsDir],
-    config: (shop as any).plugins,
-  },
-);
+const pluginsReady = initPlugins({
+  directories: [pluginsDir],
+  config: (shop as any).plugins,
+});
 
 const geistSans = Geist({
   subsets: ["latin"],

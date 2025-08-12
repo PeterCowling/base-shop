@@ -96,25 +96,15 @@ describe("plugins", () => {
     const root = await createPluginsRoot(true);
     jest.spyOn(process, "cwd").mockReturnValue(root);
     const { initPlugins } = await import("../src/plugins");
-    const payments = { add: jest.fn() };
-    const shipping = { add: jest.fn() };
-    const widgets = { add: jest.fn() };
-    const plugins = await initPlugins(
-      {
-        payments,
-        shipping,
-        widgets,
-      },
-      {
-        config: { good: { enabled: false } },
-      },
-    );
-    expect(plugins).toHaveLength(1);
-    const plugin = plugins[0] as any;
+    const manager = await initPlugins({
+      config: { good: { enabled: false } },
+    });
+    expect(manager.listPlugins()).toHaveLength(1);
+    const plugin = manager.getPlugin("good")!.plugin as any;
     const cfg = { enabled: false };
-    expect(plugin.registerPayments).toHaveBeenCalledWith(payments, cfg);
-    expect(plugin.registerShipping).toHaveBeenCalledWith(shipping, cfg);
-    expect(plugin.registerWidgets).toHaveBeenCalledWith(widgets, cfg);
+    expect(plugin.registerPayments).toHaveBeenCalledWith(manager.payments, cfg);
+    expect(plugin.registerShipping).toHaveBeenCalledWith(manager.shipping, cfg);
+    expect(plugin.registerWidgets).toHaveBeenCalledWith(manager.widgets, cfg);
     expect(plugin.init).toHaveBeenCalled();
     expect(plugin.callOrder).toEqual([
       'init',
@@ -128,16 +118,12 @@ describe("plugins", () => {
     const root = await createPluginsRoot(true);
     jest.spyOn(process, "cwd").mockReturnValue(root);
     const { initPlugins } = await import("../src/plugins");
-    const payments = { add: jest.fn() };
-    const plugins = await initPlugins(
-      { payments },
-      {
-        // enabled should be boolean
-        config: { good: { enabled: "oops" as any } },
-      },
-    );
-    expect(plugins).toHaveLength(0);
-    expect(payments.add).not.toHaveBeenCalled();
+    const manager = await initPlugins({
+      // enabled should be boolean
+      config: { good: { enabled: "oops" as any } },
+    });
+    expect(manager.listPlugins()).toHaveLength(0);
+    expect(manager.payments.list()).toHaveLength(0);
   });
 });
 

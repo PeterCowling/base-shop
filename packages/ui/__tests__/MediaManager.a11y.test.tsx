@@ -1,10 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import MediaManager from "@ui/components/cms/MediaManager";
 
-jest.mock("@ui/hooks/useFileUpload", () => ({
-  useFileUpload: () => ({
+jest.mock("@ui/hooks/useMediaUpload", () => ({
+  __esModule: true,
+  useMediaUpload: () => ({
     pendingFile: null,
+    thumbnail: null,
     altText: "",
     setAltText: jest.fn(),
     actual: null,
@@ -18,6 +19,9 @@ jest.mock("@ui/hooks/useFileUpload", () => ({
     handleUpload: jest.fn(),
   }),
 }));
+
+
+const MediaManager = require("@ui/components/cms/MediaManager").default;
 
 describe("MediaManager accessibility", () => {
   it("links drop zone to live feedback region", () => {

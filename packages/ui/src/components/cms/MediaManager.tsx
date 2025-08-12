@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@ui/components/atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
-import { useFileUpload } from "@ui/hooks/useFileUpload";
+import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import { memo, ReactElement, useCallback, useState } from "react";
 import MediaFileList from "./MediaFileList";
 
@@ -63,6 +63,7 @@ function MediaManagerBase({
   const REQUIRED_ORIENTATION: ImageOrientation = "landscape";
   const {
     pendingFile,
+    thumbnail,
     altText,
     setAltText,
     actual,
@@ -74,7 +75,7 @@ function MediaManagerBase({
     onDrop,
     onFileChange,
     handleUpload,
-  } = useFileUpload({
+  } = useMediaUpload({
     shop,
     requiredOrientation: REQUIRED_ORIENTATION,
     onUploaded: (item) => setFiles((prev) => [item, ...prev]),
@@ -86,15 +87,19 @@ function MediaManagerBase({
   /* ---------------------------------------------------------------------- */
   const tags = Array.from(new Set(files.flatMap((f) => f.tags ?? [])));
   const filteredFiles = files.filter((f) => {
+    const name = f.url.split("/").pop()?.toLowerCase() ?? "";
     const q = query.toLowerCase();
-    const matchesQuery =
-      !q ||
-      f.url.toLowerCase().includes(q) ||
-      f.altText?.toLowerCase().includes(q) ||
-      f.title?.toLowerCase().includes(q);
+    const matchesQuery = !q || name.includes(q);
     const matchesTag = !tag || (f.tags ?? []).includes(tag);
     return matchesQuery && matchesTag;
   });
+
+  const handleReplace = useCallback(
+    (oldUrl: string, item: MediaItem) => {
+      setFiles((prev) => prev.map((f) => (f.url === oldUrl ? item : f)));
+    },
+    []
+  );
 
   return (
     <div className="space-y-6">
@@ -168,6 +173,13 @@ function MediaManagerBase({
         )}
         {pendingFile && (isVideo || isValid !== null) && (
           <div className="space-y-2">
+            {thumbnail && (
+              <img
+                src={thumbnail}
+                alt="preview"
+                className="h-20 w-20 rounded object-cover"
+              />
+            )}
             {!isVideo && (
               <p
                 className={
@@ -202,7 +214,12 @@ function MediaManagerBase({
 
       {/* File list */}
       {filteredFiles.length > 0 && (
-        <MediaFileList files={filteredFiles} onDelete={handleDelete} />
+        <MediaFileList
+          files={filteredFiles}
+          shop={shop}
+          onDelete={handleDelete}
+          onReplace={handleReplace}
+        />
       )}
     </div>
   );

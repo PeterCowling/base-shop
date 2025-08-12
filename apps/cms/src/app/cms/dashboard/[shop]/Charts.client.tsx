@@ -27,13 +27,20 @@ interface Series {
   data: number[];
 }
 
+interface EmailSeries {
+  labels: string[];
+  opens: number[];
+  clicks: number[];
+}
+
 interface ChartsProps {
   traffic: Series;
   conversion: Series;
   sales: Series;
+  email: EmailSeries;
 }
 
-export function Charts({ traffic, conversion, sales }: ChartsProps) {
+export function Charts({ traffic, conversion, sales, email }: ChartsProps) {
   return (
     <div className="space-y-8">
       <div>
@@ -76,6 +83,26 @@ export function Charts({ traffic, conversion, sales }: ChartsProps) {
                 label: "Sales",
                 data: sales.data,
                 borderColor: "rgb(255, 99, 132)",
+              },
+            ],
+          }}
+        />
+      </div>
+      <div>
+        <h3 className="mb-2 font-semibold">Email</h3>
+        <Line
+          data={{
+            labels: email.labels,
+            datasets: [
+              {
+                label: "Opens",
+                data: email.opens,
+                borderColor: "rgb(54, 162, 235)",
+              },
+              {
+                label: "Clicks",
+                data: email.clicks,
+                borderColor: "rgb(255, 205, 86)",
               },
             ],
           }}

@@ -19,6 +19,8 @@ export default async function ShopDashboard({
     new Set([
       ...Object.keys(aggregates.page_view),
       ...Object.keys(aggregates.order),
+      ...Object.keys(aggregates.email_open),
+      ...Object.keys(aggregates.email_click),
     ])
   ).sort();
 
@@ -38,6 +40,11 @@ export default async function ShopDashboard({
       return views > 0 ? (orders / views) * 100 : 0;
     }),
   };
+  const email = {
+    labels: days,
+    opens: days.map((d) => aggregates.email_open[d] || 0),
+    clicks: days.map((d) => aggregates.email_click[d] || 0),
+  };
 
   return (
     <div>
@@ -47,7 +54,7 @@ export default async function ShopDashboard({
           Domain: {domain} {domainStatus ? `(${domainStatus})` : ""}
         </p>
       )}
-      <Charts traffic={traffic} sales={sales} conversion={conversion} />
+      <Charts traffic={traffic} sales={sales} conversion={conversion} email={email} />
     </div>
   );
 }

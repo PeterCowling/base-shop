@@ -32,17 +32,19 @@ async function filterExistingProductSlugs(
   shopId: string,
   slugs: string[],
 ): Promise<string[]> {
-  const checks = await Promise.all(
-    slugs.map(async (slug) => {
-      try {
-        const res = await fetch(`/api/products/${shopId}/${slug}`);
-        return res.ok ? slug : null;
-      } catch {
-        return null;
-      }
-    }),
-  );
-  return checks.filter((s): s is string => Boolean(s));
+  if (slugs.length === 0) return [];
+  try {
+    const res = await fetch(`/api/products/${shopId}/slugs`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slugs }),
+    });
+    if (!res.ok) return [];
+    const existing = await res.json();
+    return Array.isArray(existing) ? existing : [];
+  } catch {
+    return [];
+  }
 }
 
 interface SanityPost {
@@ -147,7 +149,8 @@ export async function createPost(
     body = [];
     products = [];
   }
-  products = await filterExistingProductSlugs(shopId, products);
+  const existingSlugs = await filterExistingProductSlugs(shopId, products);
+  products = existingSlugs;
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   const publishedAtInput = formData.get("publishedAt");
@@ -204,7 +207,8 @@ export async function updatePost(
     body = [];
     products = [];
   }
-  products = await filterExistingProductSlugs(shopId, products);
+  const existingSlugs = await filterExistingProductSlugs(shopId, products);
+  products = existingSlugs;
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   const publishedAtInput = formData.get("publishedAt");

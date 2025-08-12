@@ -107,21 +107,23 @@ export async function startDepositReleaseService(
   const shops = await readdir(dataRoot);
   const timers: NodeJS.Timeout[] = [];
 
-  for (const shop of shops) {
-    const cfg = await resolveConfig(shop, dataRoot, configs[shop]);
-    if (!cfg.enabled) continue;
+  await Promise.all(
+    shops.map(async (shop) => {
+      const cfg = await resolveConfig(shop, dataRoot, configs[shop]);
+      if (!cfg.enabled) return;
 
-    async function run() {
-      try {
-        await releaseDepositsOnce(shop, dataRoot);
-      } catch (err) {
-        console.error("deposit release failed", err);
+      async function run() {
+        try {
+          await releaseDepositsOnce(shop, dataRoot);
+        } catch (err) {
+          console.error("deposit release failed", err);
+        }
       }
-    }
 
-    await run();
-    timers.push(setInterval(run, cfg.intervalMs));
-  }
+      await run();
+      timers.push(setInterval(run, cfg.intervalMs));
+    }),
+  );
 
   return () => timers.forEach((t) => clearInterval(t));
 }

@@ -6,7 +6,7 @@ const items = [
   {
     id: "1",
     title: "Item One",
-    image: "https://placehold.co/64",
+    media: [{ url: "https://placehold.co/64", type: "image" }],
     price: 10,
   },
 ];

@@ -1,9 +1,18 @@
 import { LOCALES, type Locale } from "@acme/i18n";
 import { z } from "zod";
+import type { MediaItem } from "./MediaItem";
 
 export type { Locale } from "@acme/i18n";
 
 export const localeSchema = z.enum(LOCALES);
+
+/** Runtime validator + compile-time source of truth */
+export const mediaItemSchema = z.object({
+  url: z.string(),
+  title: z.string().optional(),
+  altText: z.string().optional(),
+  type: z.enum(["image", "video"]),
+});
 
 /** Runtime validator + compile-time source of truth */
 export const skuSchema = z.object({
@@ -30,7 +39,7 @@ export const skuSchema = z.object({
   availability: z
     .array(z.object({ from: z.string(), to: z.string() }))
     .optional(),
-  image: z.string(),
+  media: z.array(mediaItemSchema),
   sizes: z.array(z.string()),
   description: z.string(),
 });
@@ -46,7 +55,7 @@ export interface ProductCore {
   description: Translated;
   price: number; // minor units (e.g. cents)
   currency: string; // ISO-4217 code
-  images: string[];
+  media: MediaItem[];
   created_at: string; // ISO timestamp
   updated_at: string;
   rentalTerms?: string;

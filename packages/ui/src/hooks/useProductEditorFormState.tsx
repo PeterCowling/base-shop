@@ -1,7 +1,6 @@
 // packages/ui/hooks/useProductEditorFormState.tsx
 import type { Locale, ProductPublication } from "@platform-core/src/products";
-import { useImageUpload } from "@ui/hooks/useImageUpload";
-import { usePublishLocations } from "@ui/hooks/usePublishLocations";
+import { useFileUpload } from "@ui/hooks/useFileUpload";
 import { parseMultilingualInput } from "@i18n/parseMultilingualInput";
 import {
   useCallback,
@@ -11,12 +10,17 @@ import {
   type FormEvent,
   type ReactElement,
 } from "react";
+import type { MediaItem } from "@acme/types";
 
 /* ------------------------------------------------------------------ */
 /* Hook return type                                                   */
 /* ------------------------------------------------------------------ */
 export interface ProductWithVariants extends ProductPublication {
   variants: Record<string, string[]>;
+}
+
+interface MediaWithFile extends MediaItem {
+  file?: File;
 }
 
 export interface UseProductEditorFormReturn {
@@ -30,6 +34,9 @@ export interface UseProductEditorFormReturn {
   ) => void;
   handleSubmit: (e: FormEvent) => void;
   uploader: ReactElement;
+  openFileDialog: () => void;
+  removeMedia: (idx: number) => void;
+  moveMedia: (from: number, to: number) => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -46,6 +53,7 @@ export function useProductEditorFormState(
   /* ---------- state ------------------------------------------------ */
   const [product, setProduct] = useState<ProductWithVariants>({
     ...init,
+    media: (init.media as MediaWithFile[]) ?? [],
     variants: init.variants ?? {},
   });
   const [saving, setSaving] = useState(false);
@@ -53,12 +61,16 @@ export function useProductEditorFormState(
   const [publishTargets, setPublishTargets] = useState<string[]>([]);
 
   /* ---------- helpers ---------------------------------------------- */
-  const { locations } = usePublishLocations();
-  const requiredOrientation =
-    locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
-    "landscape";
+  const handleFiles = useCallback((files: File[]) => {
+    const items: MediaWithFile[] = files.map((f) => ({
+      url: URL.createObjectURL(f),
+      type: f.type.startsWith("video/") ? "video" : "image",
+      file: f,
+    }));
+    setProduct((prev) => ({ ...prev, media: [...prev.media, ...items] }));
+  }, []);
 
-  const { file: imageFile, uploader } = useImageUpload(requiredOrientation);
+  const { uploader, open } = useFileUpload(handleFiles);
 
   /* ---------- input change handler --------------------------------- */
   const handleChange = useCallback(
@@ -123,7 +135,13 @@ export function useProductEditorFormState(
     });
 
     fd.append("price", String(product.price));
-    if (imageFile) fd.append("image", imageFile);
+    product.media.forEach((m) => {
+      if ((m as MediaWithFile).file) {
+        fd.append("media", (m as MediaWithFile).file as File);
+      } else {
+        fd.append("mediaUrl", m.url);
+      }
+    });
 
     fd.append("publish", publishTargets.join(","));
 
@@ -131,7 +149,7 @@ export function useProductEditorFormState(
       fd.append(`variant_${k}`, vals.join(","));
     });
     return fd;
-  }, [product, imageFile, publishTargets, locales]);
+  }, [product, publishTargets, locales]);
 
   /* ---------- submit handler --------------------------------------- */
   const handleSubmit = useCallback(
@@ -154,6 +172,22 @@ export function useProductEditorFormState(
     [onSave, formData, product.variants]
   );
 
+  const removeMedia = useCallback((idx: number) => {
+    setProduct((prev) => ({
+      ...prev,
+      media: prev.media.filter((_, i) => i !== idx),
+    }));
+  }, []);
+
+  const moveMedia = useCallback((from: number, to: number) => {
+    setProduct((prev) => {
+      const updated = [...prev.media];
+      const [item] = updated.splice(from, 1);
+      updated.splice(to, 0, item);
+      return { ...prev, media: updated };
+    });
+  }, []);
+
   /* ---------- public API ------------------------------------------- */
   return {
     product,
@@ -164,5 +198,8 @@ export function useProductEditorFormState(
     handleChange,
     handleSubmit,
     uploader,
+    openFileDialog: open,
+    removeMedia,
+    moveMedia,
   };
 }

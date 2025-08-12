@@ -6,7 +6,7 @@ import { ProductCarousel, type ProductCarouselProps } from "./ProductCarousel";
 const products: Product[] = Array.from({ length: 5 }).map((_, i) => ({
   id: String(i + 1),
   title: `Product ${i + 1}`,
-  image: `https://placehold.co/300x300?text=${i + 1}`,
+  media: [{ url: `https://placehold.co/300x300?text=${i + 1}`, type: "image" }],
   price: (i + 1) * 10,
 }));
 

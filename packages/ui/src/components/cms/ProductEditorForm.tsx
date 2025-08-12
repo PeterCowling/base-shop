@@ -42,6 +42,9 @@ export default function ProductEditorForm({
     handleChange,
     handleSubmit,
     uploader,
+    openFileDialog,
+    removeMedia,
+    moveMedia,
   } = useProductEditorFormState(init, locales, onSave);
 
   /* ---------------- UI ---------------- */
@@ -89,8 +92,59 @@ export default function ProductEditorForm({
             showReload
           />
 
-          {/* Image upload --------------------------------------------- */}
-          {uploader}
+          {/* Media upload --------------------------------------------- */}
+          <div className="flex flex-wrap gap-2">
+            {product.media.map((m, idx) => (
+              <div key={idx} className="relative h-24 w-24">
+                {m.type === "video" ? (
+                  <video
+                    src={m.url}
+                    className="h-full w-full rounded object-cover"
+                  />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={m.url}
+                    alt={m.altText || ""}
+                    className="h-full w-full rounded object-cover"
+                  />
+                )}
+                <button
+                  type="button"
+                  onClick={() => removeMedia(idx)}
+                  className="absolute right-1 top-1 rounded bg-black/50 px-1 text-xs text-white"
+                >
+                  ×
+                </button>
+                {idx > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => moveMedia(idx, idx - 1)}
+                    className="absolute left-1 bottom-1 rounded bg-black/50 px-1 text-xs text-white"
+                  >
+                    ←
+                  </button>
+                )}
+                {idx < product.media.length - 1 && (
+                  <button
+                    type="button"
+                    onClick={() => moveMedia(idx, idx + 1)}
+                    className="absolute right-1 bottom-1 rounded bg-black/50 px-1 text-xs text-white"
+                  >
+                    →
+                  </button>
+                )}
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={openFileDialog}
+              className="flex h-24 w-24 items-center justify-center rounded border"
+            >
+              +
+            </button>
+            {uploader}
+          </div>
 
           {/* Multilingual fields -------------------------------------- */}
           <MultilingualFields

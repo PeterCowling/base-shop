@@ -3,14 +3,12 @@ import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { ProductBadge } from "../atoms/ProductBadge";
-import type { MediaItem } from "../molecules/MediaSelector";
 import type { Product } from "../organisms/ProductCard";
 import { ProductGallery } from "../organisms/ProductGallery";
 
 export interface ProductMediaGalleryTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
   product: Product & {
-    media: MediaItem[];
     description?: string;
     badges?: { label: string; variant?: "default" | "sale" | "new" }[];
   };

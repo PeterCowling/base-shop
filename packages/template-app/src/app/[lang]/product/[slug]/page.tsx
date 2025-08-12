@@ -41,7 +41,7 @@ export default function ProductDetailPage({
     name: product.title,
     description: product.description,
     url: `/${params.lang}/product/${params.slug}`,
-    image: product.image,
+    image: product.media[0]?.url,
     offers: { price: product.price, priceCurrency: "USD" },
   });
 

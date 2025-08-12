@@ -1,7 +1,25 @@
 import { z } from "zod";
 import { type Locale } from "./constants";
+import type { MediaItem } from "./MediaItem";
 export type { Locale } from "./constants";
 export declare const localeSchema: z.ZodEnum<["en", "de", "it"]>;
+/** Runtime validator + compile-time source of truth */
+export declare const mediaItemSchema: z.ZodObject<{
+    url: z.ZodString;
+    title: z.ZodOptional<z.ZodString>;
+    altText: z.ZodOptional<z.ZodString>;
+    type: z.ZodEnum<["image", "video"]>;
+}, "strip", z.ZodTypeAny, {
+    url: string;
+    type: "image" | "video";
+    title?: string | undefined;
+    altText?: string | undefined;
+}, {
+    url: string;
+    type: "image" | "video";
+    title?: string | undefined;
+    altText?: string | undefined;
+}>;
 /** Runtime validator + compile-time source of truth */
 export declare const skuSchema: z.ZodObject<{
     id: z.ZodString;
@@ -34,7 +52,22 @@ export declare const skuSchema: z.ZodObject<{
         from: string;
         to: string;
     }>, "many">>;
-    image: z.ZodString;
+    media: z.ZodArray<z.ZodObject<{
+        url: z.ZodString;
+        title: z.ZodOptional<z.ZodString>;
+        altText: z.ZodOptional<z.ZodString>;
+        type: z.ZodEnum<["image", "video"]>;
+    }, "strip", z.ZodTypeAny, {
+        url: string;
+        type: "image" | "video";
+        title?: string | undefined;
+        altText?: string | undefined;
+    }, {
+        url: string;
+        type: "image" | "video";
+        title?: string | undefined;
+        altText?: string | undefined;
+    }>, "many">;
     sizes: z.ZodArray<z.ZodString, "many">;
     description: z.ZodString;
 }, "strip", z.ZodTypeAny, {
@@ -46,7 +79,12 @@ export declare const skuSchema: z.ZodObject<{
     stock: number;
     forSale: boolean;
     forRental: boolean;
-    image: string;
+    media: {
+        url: string;
+        type: "image" | "video";
+        title?: string | undefined;
+        altText?: string | undefined;
+    }[];
     sizes: string[];
     description: string;
     dailyRate?: number | undefined;
@@ -63,7 +101,12 @@ export declare const skuSchema: z.ZodObject<{
     price: number;
     deposit: number;
     stock: number;
-    image: string;
+    media: {
+        url: string;
+        type: "image" | "video";
+        title?: string | undefined;
+        altText?: string | undefined;
+    }[];
     sizes: string[];
     description: string;
     forSale?: boolean | undefined;
@@ -85,7 +128,7 @@ export interface ProductCore {
     description: Translated;
     price: number;
     currency: string;
-    images: string[];
+    media: MediaItem[];
     created_at: string;
     updated_at: string;
     rentalTerms?: string;

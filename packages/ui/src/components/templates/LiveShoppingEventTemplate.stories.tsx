@@ -7,13 +7,13 @@ const products: Product[] = [
   {
     id: "1",
     title: "Product 1",
-    image: "https://placehold.co/300",
+    media: [{ url: "https://placehold.co/300", type: "image" }],
     price: 1000,
   },
   {
     id: "2",
     title: "Product 2",
-    image: "https://placehold.co/300",
+    media: [{ url: "https://placehold.co/300", type: "image" }],
     price: 1500,
   },
 ];

@@ -14,7 +14,7 @@ const sku1: SKU = {
   deposit: 0,
   forSale: true,
   forRental: false,
-  image: "https://placehold.co/64",
+  media: [{ url: "https://placehold.co/64", type: "image" }],
   sizes: [],
   description: "",
 };
@@ -26,7 +26,7 @@ const sku2: SKU = {
   deposit: 0,
   forSale: true,
   forRental: false,
-  image: "https://placehold.co/64",
+  media: [{ url: "https://placehold.co/64", type: "image" }],
   sizes: [],
   description: "",
 };

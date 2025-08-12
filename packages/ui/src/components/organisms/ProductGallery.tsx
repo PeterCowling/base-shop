@@ -39,24 +39,24 @@ export function ProductGallery({
   } else if (item.type === "image") {
     content = (
       <ZoomImage
-        src={item.src}
-        alt={item.alt ?? ""}
+        src={item.url}
+        alt={item.altText ?? ""}
         fill
         className="rounded-lg object-cover"
       />
     );
   } else if (item.type === "video") {
-    content = <VideoPlayer src={item.src} className="h-full w-full" />;
+    content = <VideoPlayer src={item.url} className="h-full w-full" />;
   } else if (item.type === "360") {
     content = (
       <Image360Viewer
-        frames={item.frames ?? [item.src]}
-        alt={item.alt ?? ""}
+        frames={item.frames ?? [item.url]}
+        alt={item.altText ?? ""}
         className="h-full w-full"
       />
     );
   } else if (item.type === "model") {
-    content = <ARViewer src={item.src} className="h-full w-full" />;
+    content = <ARViewer src={item.url} className="h-full w-full" />;
   }
 
   /* ------------------------------------------------------------------ *

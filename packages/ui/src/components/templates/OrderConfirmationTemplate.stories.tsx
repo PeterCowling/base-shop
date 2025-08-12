@@ -12,7 +12,7 @@ const cart: CartState = {
       deposit: 100,
       forSale: true,
       forRental: false,
-      image: "https://placehold.co/100",
+      media: [{ url: "https://placehold.co/100", type: "image" }],
       sizes: [],
       description: "",
     },

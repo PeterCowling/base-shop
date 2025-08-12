@@ -19,7 +19,10 @@ export async function addOrder(
   sessionId: string,
   deposit: number,
   expectedReturnDate?: string,
-  customerId?: string
+  customerId?: string,
+  riskLevel?: string,
+  riskScore?: number,
+  flaggedForReview?: boolean
 ): Promise<Order> {
   const order: Order = {
     id: ulid(),
@@ -29,6 +32,9 @@ export async function addOrder(
     expectedReturnDate,
     startedAt: nowIso(),
     ...(customerId ? { customerId } : {}),
+    ...(riskLevel ? { riskLevel } : {}),
+    ...(typeof riskScore === "number" ? { riskScore } : {}),
+    ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
   };
   await prisma.rentalOrder.create({ data: order });
   await trackOrder(shop, order.id, deposit);
@@ -56,12 +62,20 @@ export async function markReturned(
 
 export async function markRefunded(
   shop: string,
-  sessionId: string
+  sessionId: string,
+  riskLevel?: string,
+  riskScore?: number,
+  flaggedForReview?: boolean
 ): Promise<Order | null> {
   try {
     const order = await prisma.rentalOrder.update({
       where: { shop_sessionId: { shop, sessionId } },
-      data: { refundedAt: nowIso() },
+      data: {
+        refundedAt: nowIso(),
+        ...(riskLevel ? { riskLevel } : {}),
+        ...(typeof riskScore === "number" ? { riskScore } : {}),
+        ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
+      },
     });
     return order as Order;
   } catch {
@@ -82,9 +96,7 @@ export async function updateRisk(
       data: {
         ...(riskLevel ? { riskLevel } : {}),
         ...(typeof riskScore === "number" ? { riskScore } : {}),
-        ...(typeof flaggedForReview === "boolean"
-          ? { flaggedForReview }
-          : {}),
+        ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
       },
     });
     return order as Order;

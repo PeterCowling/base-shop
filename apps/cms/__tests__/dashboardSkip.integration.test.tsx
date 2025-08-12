@@ -50,7 +50,7 @@ jest.mock("../src/app/cms/configurator/steps", () => {
 
 import ConfiguratorDashboard from "../src/app/cms/configurator/Dashboard";
 import { getRequiredSteps, getSteps } from "../src/app/cms/configurator/steps";
-import { STORAGE_KEY } from "../src/app/cms/wizard/hooks/useWizardPersistence";
+import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
 
 declare global {
   // eslint-disable-next-line no-var,vars-on-top

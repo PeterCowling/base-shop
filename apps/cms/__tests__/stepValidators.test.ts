@@ -1,4 +1,4 @@
-import { validators } from "../src/app/cms/wizard/hooks/useStepCompletion";
+import { validators } from "../src/app/cms/configurator/hooks/useStepCompletion";
 import { wizardStateSchema } from "../src/app/cms/wizard/schema";
 import { fillLocales } from "@i18n/fillLocales";
 

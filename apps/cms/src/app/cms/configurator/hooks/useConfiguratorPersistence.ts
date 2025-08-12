@@ -1,4 +1,4 @@
-// apps/cms/src/app/cms/wizard/hooks/useWizardPersistence.ts
+// apps/cms/src/app/cms/configurator/hooks/useConfiguratorPersistence.ts
 "use client";
 
 import { useEffect } from "react";
@@ -6,13 +6,13 @@ import {
   wizardStateSchema,
   type WizardState,
   type StepStatus,
-} from "../schema";
+} from "../../wizard/schema";
 
-/** Key used to mirror wizard progress in localStorage for preview components. */
-export const STORAGE_KEY = "cms-wizard-progress";
+/** Key used to mirror configurator progress in localStorage for preview components. */
+export const STORAGE_KEY = "cms-configurator-progress";
 
-/** Clears persisted wizard progress on the server and localStorage. */
-export async function resetWizardProgress(): Promise<void> {
+/** Clears persisted configurator progress on the server and localStorage. */
+export async function resetConfiguratorProgress(): Promise<void> {
   if (typeof window !== "undefined") {
     localStorage.removeItem(STORAGE_KEY);
     try {
@@ -28,10 +28,10 @@ export async function resetWizardProgress(): Promise<void> {
 }
 
 /**
- * Loads wizard state from the server and saves it back whenever the state
+ * Loads configurator state from the server and saves it back whenever the state
  * changes. A copy is mirrored to localStorage so the live preview can read it.
  */
-export function useWizardPersistence(
+export function useConfiguratorPersistence(
   state: WizardState,
   setState: (s: WizardState) => void,
   onInvalid?: () => void
@@ -51,12 +51,12 @@ export function useWizardPersistence(
           setState(parsed.data);
           try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed.data));
-            window.dispatchEvent(new CustomEvent("wizard:update"));
+            window.dispatchEvent(new CustomEvent("configurator:update"));
           } catch {
             /* ignore */
           }
         } else {
-          resetWizardProgress();
+          resetConfiguratorProgress();
           onInvalid?.();
         }
       })
@@ -70,7 +70,7 @@ export function useWizardPersistence(
     if (typeof window === "undefined") return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      window.dispatchEvent(new CustomEvent("wizard:update"));
+      window.dispatchEvent(new CustomEvent("configurator:update"));
     } catch {
       /* ignore quota */
     }
@@ -78,7 +78,7 @@ export function useWizardPersistence(
     fetch("/cms/api/wizard-progress", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ stepId: "wizard", data }),
+      body: JSON.stringify({ stepId: "configurator", data }),
     }).catch(() => {
       /* ignore network errors */
     });
@@ -97,7 +97,7 @@ export function useWizardPersistence(
     if (typeof window !== "undefined" && updated) {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-        window.dispatchEvent(new CustomEvent("wizard:update"));
+        window.dispatchEvent(new CustomEvent("configurator:update"));
       } catch {
         /* ignore quota */
       }

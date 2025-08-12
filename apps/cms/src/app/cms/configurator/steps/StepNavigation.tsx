@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/atoms/shadcn";
 import NavigationEditor from "@/components/cms/NavigationEditor";
-import { useWizard } from "../WizardContext";
+import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 
@@ -14,7 +14,7 @@ interface NavItem {
 }
 
 export default function StepNavigation(): React.JSX.Element {
-  const { state, update } = useWizard();
+  const { state, update } = useConfigurator();
   const navItems = state.navItems;
   const setNavItems = (items: NavItem[]) => update("navItems", items);
   const [, markComplete] = useStepCompletion("navigation");

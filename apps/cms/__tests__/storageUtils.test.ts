@@ -3,8 +3,8 @@
 
 import {
   STORAGE_KEY,
-  resetWizardProgress,
-} from "../src/app/cms/wizard/hooks/useWizardPersistence";
+  resetConfiguratorProgress,
+} from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
 
 describe("storageUtils", () => {
   beforeEach(() => {
@@ -19,12 +19,12 @@ describe("storageUtils", () => {
   });
 
   it("uses a consistent storage key", () => {
-    expect(STORAGE_KEY).toBe("cms-wizard-progress");
+    expect(STORAGE_KEY).toBe("cms-configurator-progress");
   });
 
-  it("clears wizard progress from localStorage", async () => {
+  it("clears configurator progress from localStorage", async () => {
     localStorage.setItem(STORAGE_KEY, "data");
-    await resetWizardProgress();
+    await resetConfiguratorProgress();
     expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
     expect(global.fetch).toHaveBeenCalledWith(
       "/cms/api/wizard-progress",

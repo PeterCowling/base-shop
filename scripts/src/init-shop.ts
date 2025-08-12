@@ -6,6 +6,8 @@ import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 import { defaultPaymentProviders } from "../../packages/platform-core/src/createShop/defaultPaymentProviders";
 import { defaultShippingProviders } from "../../packages/platform-core/src/createShop/defaultShippingProviders";
+import { readdirSync } from "node:fs";
+import path from "node:path";
 
 function ensureRuntime() {
   const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);
@@ -67,6 +69,56 @@ async function selectProviders(
   return Array.from(result);
 }
 
+function listDirs(dir: string, filter?: (name: string) => boolean): string[] {
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((d) => d.isDirectory() && (!filter || filter(d.name)))
+    .map((d) => d.name);
+}
+
+async function selectOption(
+  label: string,
+  options: string[],
+  def: string
+): Promise<string> {
+  console.log(`Available ${label}:`);
+  options.forEach((o, i) => console.log(`  ${i + 1}) ${o}`));
+  const defIndex = Math.max(options.indexOf(def), 0) + 1;
+  while (true) {
+    const ans = await prompt(`Select ${label} by number [${defIndex}]: `);
+    if (!ans) return options[defIndex - 1];
+    const idx = Number(ans) - 1;
+    if (!Number.isNaN(idx) && options[idx]) {
+      return options[idx];
+    }
+    console.error("Invalid selection. Please try again.");
+  }
+}
+
+async function promptLogo(): Promise<string> {
+  while (true) {
+    const ans = await prompt("Logo URL (optional): ");
+    if (!ans) return "";
+    try {
+      new URL(ans);
+      return ans;
+    } catch {
+      console.error("Invalid URL. Please try again.");
+    }
+  }
+}
+
+async function promptContact(): Promise<string> {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  while (true) {
+    const ans = await prompt("Contact email (optional): ");
+    if (!ans) return "";
+    if (emailRegex.test(ans)) {
+      return ans;
+    }
+    console.error("Invalid email. Please try again.");
+  }
+}
+
 async function main() {
   const rawId = await prompt("Shop ID: ");
   let shopId: string;
@@ -77,12 +129,22 @@ async function main() {
     process.exit(1);
   }
   const name = await prompt("Display name (optional): ");
-  const logo = await prompt("Logo URL (optional): ");
-  const contact = await prompt("Contact email (optional): ");
+  const logo = await promptLogo();
+  const contact = await promptContact();
   const typeAns = await prompt("Shop type (sale or rental) [sale]: ", "sale");
   const type = typeAns.toLowerCase() === "rental" ? "rental" : "sale";
-  const theme = await prompt("Theme [base]: ", "base");
-  const template = await prompt("Template [template-app]: ", "template-app");
+  const repoRoot = path.resolve(__dirname, "..", "..");
+  const themes = listDirs(path.join(repoRoot, "packages", "themes"));
+  const templates = listDirs(
+    path.join(repoRoot, "packages"),
+    (n) => n.startsWith("template-")
+  );
+  const theme = await selectOption("theme", themes, "base");
+  const template = await selectOption(
+    "template",
+    templates,
+    "template-app"
+  );
   const payment = await selectProviders(
     "payment providers",
     defaultPaymentProviders

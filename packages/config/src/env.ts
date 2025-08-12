@@ -48,6 +48,8 @@ export const envSchema = z.object({
   SESSION_STORE: z.enum(["memory", "redis"]).optional(),
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+  DEPOSIT_RELEASE_ENABLED: z.coerce.boolean().optional(),
+  DEPOSIT_RELEASE_INTERVAL_MS: z.coerce.number().optional(),
 });
 
 applyFriendlyZodMessages();

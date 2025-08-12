@@ -1,3 +1,4 @@
+import { env } from "@acme/config";
 import { stripe } from "@acme/stripe";
 import {
   markRefunded,
@@ -64,10 +65,6 @@ function envKey(shop: string, key: string): string {
   return `DEPOSIT_RELEASE_${key}_${shop.toUpperCase().replace(/[^A-Z0-9]/g, "_")}`;
 }
 
-function readEnv(shop: string, key: string): string | undefined {
-  return process.env[envKey(shop, key)] ?? process.env[`DEPOSIT_RELEASE_${key}`];
-}
-
 async function resolveConfig(
   shop: string,
   dataRoot: string,
@@ -86,13 +83,19 @@ async function resolveConfig(
     }
   } catch {}
 
-  const envEnabled = readEnv(shop, "ENABLED");
-  if (envEnabled !== undefined) config.enabled = envEnabled !== "false";
+  const envEnabled = process.env[envKey(shop, "ENABLED")];
+  if (envEnabled !== undefined) {
+    config.enabled = envEnabled !== "false";
+  } else if (env.DEPOSIT_RELEASE_ENABLED !== undefined) {
+    config.enabled = env.DEPOSIT_RELEASE_ENABLED;
+  }
 
-  const envInterval = readEnv(shop, "INTERVAL_MS");
+  const envInterval = process.env[envKey(shop, "INTERVAL_MS")];
   if (envInterval !== undefined) {
     const num = Number(envInterval);
     if (!Number.isNaN(num)) config.intervalMs = num;
+  } else if (env.DEPOSIT_RELEASE_INTERVAL_MS !== undefined) {
+    config.intervalMs = env.DEPOSIT_RELEASE_INTERVAL_MS;
   }
 
   if (override.enabled !== undefined) config.enabled = override.enabled;

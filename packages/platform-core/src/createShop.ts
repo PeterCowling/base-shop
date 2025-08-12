@@ -25,13 +25,15 @@ export async function createShop(
   const prepared = prepareOptions(id, opts);
 
   const themeOverrides: Record<string, string> = {};
-  const themeTokens = { ...loadTokens(prepared.theme), ...themeOverrides };
+  const themeDefaults = loadTokens(prepared.theme);
+  const themeTokens = { ...themeDefaults, ...themeOverrides };
 
   const shopData = {
     id,
     name: prepared.name,
     catalogFilters: [],
     themeId: prepared.theme,
+    themeDefaults,
     themeOverrides,
     themeTokens,
     filterMappings: {},

@@ -31,14 +31,15 @@ export async function readShop(shop: string): Promise<Shop> {
     const rec = await prisma.shop.findUnique({ where: { id: shop } });
     if (rec) {
       const data = shopSchema.parse(rec.data);
-      const defaults = {
-        ...baseTokens,
-        ...(await loadThemeTokens(data.themeId)),
-      };
-      data.themeTokens = {
-        ...defaults,
-        ...data.themeOverrides,
-      };
+      const defaults =
+        Object.keys(data.themeDefaults ?? {}).length > 0
+          ? data.themeDefaults
+          : {
+              ...baseTokens,
+              ...(await loadThemeTokens(data.themeId)),
+            };
+      data.themeDefaults = defaults;
+      data.themeTokens = { ...defaults, ...data.themeOverrides };
       if (!data.navigation) data.navigation = [];
       return data as Shop;
     }
@@ -49,14 +50,15 @@ export async function readShop(shop: string): Promise<Shop> {
     const buf = await fs.readFile(shopPath(shop), "utf8");
     const parsed = shopSchema.safeParse(JSON.parse(buf));
     if (parsed.success && parsed.data.id) {
-      const defaults = {
-        ...baseTokens,
-        ...(await loadThemeTokens(parsed.data.themeId)),
-      };
-      parsed.data.themeTokens = {
-        ...defaults,
-        ...parsed.data.themeOverrides,
-      };
+      const defaults =
+        Object.keys(parsed.data.themeDefaults ?? {}).length > 0
+          ? parsed.data.themeDefaults
+          : {
+              ...baseTokens,
+              ...(await loadThemeTokens(parsed.data.themeId)),
+            };
+      parsed.data.themeDefaults = defaults;
+      parsed.data.themeTokens = { ...defaults, ...parsed.data.themeOverrides };
       if (!parsed.data.navigation) parsed.data.navigation = [];
       return parsed.data as Shop;
     }
@@ -64,16 +66,18 @@ export async function readShop(shop: string): Promise<Shop> {
     // ignore
   }
   const themeId = "base";
-  const themeTokens = {
+  const themeDefaults = {
     ...baseTokens,
     ...(await loadThemeTokens(themeId)),
   };
+  const themeTokens = { ...themeDefaults };
 
   return {
     id: shop,
     name: shop,
     catalogFilters: [],
     themeId,
+    themeDefaults,
     themeOverrides: {},
     themeTokens,
     filterMappings: { ...defaultFilterMappings },

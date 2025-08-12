@@ -98,7 +98,8 @@ export function writeFiles(
     JSON.stringify({ languages: [...LOCALES], analytics: options.analytics }, null, 2)
   );
 
-  const themeTokens = { ...loadTokens(options.theme), ...themeOverrides };
+  const themeDefaults = loadTokens(options.theme);
+  const themeTokens = { ...themeDefaults, ...themeOverrides };
 
   writeFileSync(
     join(newData, "shop.json"),
@@ -110,6 +111,7 @@ export function writeFiles(
         contactInfo: options.contactInfo,
         catalogFilters: [],
         themeId: options.theme,
+        themeDefaults,
         themeOverrides,
         themeTokens,
         filterMappings: { ...defaultFilterMappings },

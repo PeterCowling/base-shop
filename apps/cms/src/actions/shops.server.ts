@@ -18,6 +18,7 @@ import {
   type Shop,
   type ShopSeoFields,
   type ShopSettings,
+  aiCatalogFieldSchema,
 } from "@acme/types";
 import { z } from "zod";
 import { shopSchema, type ShopForm } from "./schemas";
@@ -285,6 +286,40 @@ export async function updateDepositService(
       interval: parsed.data.interval,
     },
   };
+  await saveShopSettings(shop, updated);
+  return { settings: updated };
+}
+
+const aiCatalogFormSchema = z
+  .object({
+    enabled: z.preprocess((v) => v === "on", z.boolean()),
+    pageSize: z.coerce.number().int().positive(),
+    fields: z.array(aiCatalogFieldSchema),
+  })
+  .strict();
+
+export async function updateAiCatalog(
+  shop: string,
+  formData: FormData,
+): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
+  await ensureAuthorized();
+  const data = {
+    enabled: formData.get("enabled"),
+    pageSize: formData.get("pageSize"),
+    fields: formData.getAll("fields"),
+  };
+  const parsed = aiCatalogFormSchema.safeParse(data);
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+  const current = await getShopSettings(shop);
+  const seo = { ...(current.seo ?? {}) };
+  seo.aiCatalog = {
+    enabled: parsed.data.enabled,
+    fields: parsed.data.fields,
+    pageSize: parsed.data.pageSize,
+  };
+  const updated: ShopSettings = { ...current, seo };
   await saveShopSettings(shop, updated);
   return { settings: updated };
 }

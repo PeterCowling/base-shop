@@ -20,12 +20,11 @@ function parseIntOr(val: string | null, def: number): number {
 export async function GET(req: NextRequest) {
   const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
   const settings = await getShopSettings(shop);
-  if (!settings.aiCatalog?.enabled) {
+  const ai = settings.seo?.aiCatalog;
+  if (!ai?.enabled) {
     return new NextResponse(null, { status: 404 });
   }
-  const fields = (settings.aiCatalog.fields?.length
-    ? settings.aiCatalog.fields
-    : DEFAULT_FIELDS) as Field[];
+  const fields = (ai.fields?.length ? ai.fields : DEFAULT_FIELDS) as Field[];
   const all = await readRepo<ProductPublication>(shop);
 
   const lastModifiedDate = all.reduce((max, p) => {
@@ -49,7 +48,7 @@ export async function GET(req: NextRequest) {
 
   const { searchParams } = req.nextUrl;
   const page = parseIntOr(searchParams.get("page"), 1);
-  const limit = parseIntOr(searchParams.get("limit"), 50);
+  const limit = parseIntOr(searchParams.get("limit"), ai.pageSize ?? 50);
   const start = (page - 1) * limit;
   const paged = all.slice(start, start + limit);
 

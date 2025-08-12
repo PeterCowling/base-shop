@@ -17,6 +17,12 @@ export const shopSettingsSchema = z.object({
   currency: z.string().length(3).optional(),
   /** Region identifier for tax calculations */
   taxRegion: z.string().optional(),
+  aiCatalog: z
+    .object({
+      enabled: z.boolean(),
+      fields: z.array(z.string()),
+    })
+    .optional(),
   depositService: z
     .object({
       enabled: z.boolean(),

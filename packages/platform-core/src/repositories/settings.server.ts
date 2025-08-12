@@ -53,6 +53,11 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
         currency: parsed.data.currency ?? "EUR",
         taxRegion: parsed.data.taxRegion ?? "",
         ...parsed.data,
+        aiCatalog: {
+          enabled: false,
+          fields: [],
+          ...(parsed.data.aiCatalog ?? {}),
+        },
         depositService: {
           enabled: false,
           interval: 60,
@@ -70,6 +75,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     freezeTranslations: false,
     currency: "EUR",
     taxRegion: "",
+    aiCatalog: { enabled: false, fields: [] },
     depositService: { enabled: false, interval: 60 },
     updatedAt: "",
     updatedBy: "",

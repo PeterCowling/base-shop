@@ -47,6 +47,7 @@ export default async function ShopDashboard({
     new Set([
       ...Object.keys(aggregates.page_view),
       ...Object.keys(aggregates.order),
+      ...Object.keys(aggregates.ai_catalog),
       ...Object.keys(emailOpenByDay),
       ...Object.keys(campaignSalesByDay),
       ...Object.keys(discountByDay),
@@ -81,16 +82,17 @@ export default async function ShopDashboard({
     labels: days,
     data: days.map((d) => discountByDay[d] || 0),
   };
-
   const totals = {
     emailOpens: emailOpens.data.reduce((a, b) => a + b, 0),
     campaignSales: campaignSales.data.reduce((a, b) => a + b, 0),
     discountRedemptions: discountRedemptions.data.reduce((a, b) => a + b, 0),
+    aiCatalog: Object.values(aggregates.ai_catalog).reduce((a, b) => a + b, 0),
   };
   const maxTotal = Math.max(
     totals.emailOpens,
     totals.campaignSales,
     totals.discountRedemptions,
+    totals.aiCatalog,
     1,
   );
 
@@ -142,6 +144,13 @@ export default async function ShopDashboard({
           <Progress
             value={(totals.discountRedemptions / maxTotal) * 100}
             label={String(totals.discountRedemptions)}
+          />
+        </div>
+        <div>
+          <span className="mb-1 block text-sm font-medium">AI catalog hits</span>
+          <Progress
+            value={(totals.aiCatalog / maxTotal) * 100}
+            label={String(totals.aiCatalog)}
           />
         </div>
       </div>

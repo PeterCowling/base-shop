@@ -143,6 +143,7 @@ describe("analytics aggregates", () => {
         await analytics.trackPageView("test", "/home");
         await analytics.trackEvent("test", { type: "order", orderId: "o1", amount: 2 });
         await analytics.trackOrder("test", "o2", 5);
+        await analytics.trackEvent("test", { type: "ai_catalog" });
 
         const fp = path.join(
           dir,
@@ -154,6 +155,7 @@ describe("analytics aggregates", () => {
         const agg = JSON.parse(await fs.readFile(fp, "utf8"));
         expect(agg.page_view[now.slice(0, 10)]).toBe(2);
         expect(agg.order[now.slice(0, 10)]).toEqual({ count: 2, amount: 7 });
+        expect(agg.ai_catalog[now.slice(0, 10)]).toBe(1);
         expect(fetch).not.toHaveBeenCalled();
       },
       { now }

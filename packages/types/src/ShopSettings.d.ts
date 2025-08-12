@@ -12,15 +12,15 @@ export declare const shopSettingsSchema: z.ZodObject<{
             url: z.ZodOptional<z.ZodString>;
             image: z.ZodOptional<z.ZodString>;
         }, "strip", z.ZodTypeAny, {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            url?: string | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            url?: string;
         }, {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            url?: string | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            url?: string;
         }>>;
         twitter: z.ZodOptional<z.ZodObject<{
             card: z.ZodOptional<z.ZodString>;
@@ -28,70 +28,82 @@ export declare const shopSettingsSchema: z.ZodObject<{
             description: z.ZodOptional<z.ZodString>;
             image: z.ZodOptional<z.ZodString>;
         }, "strip", z.ZodTypeAny, {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            card?: string | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            card?: string;
         }, {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            card?: string | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            card?: string;
         }>>;
         structuredData: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
-        title?: string | undefined;
-        image?: string | undefined;
-        description?: string | undefined;
-        canonicalBase?: string | undefined;
+        title?: string;
+        image?: string;
+        description?: string;
+        canonicalBase?: string;
         openGraph?: {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            url?: string | undefined;
-        } | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            url?: string;
+        };
         twitter?: {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            card?: string | undefined;
-        } | undefined;
-        structuredData?: string | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            card?: string;
+        };
+        structuredData?: string;
     }, {
-        title?: string | undefined;
-        image?: string | undefined;
-        description?: string | undefined;
-        canonicalBase?: string | undefined;
+        title?: string;
+        image?: string;
+        description?: string;
+        canonicalBase?: string;
         openGraph?: {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            url?: string | undefined;
-        } | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            url?: string;
+        };
         twitter?: {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            card?: string | undefined;
-        } | undefined;
-        structuredData?: string | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            card?: string;
+        };
+        structuredData?: string;
     }>>;
     analytics: z.ZodOptional<z.ZodObject<{
         enabled: z.ZodOptional<z.ZodBoolean>;
         provider: z.ZodString;
         id: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
-        enabled?: boolean | undefined;
-        provider: string;
-        id?: string | undefined;
+        id?: string;
+        enabled?: boolean;
+        provider?: string;
     }, {
-        enabled?: boolean | undefined;
-        provider: string;
-        id?: string | undefined;
+        id?: string;
+        enabled?: boolean;
+        provider?: string;
     }>>;
     freezeTranslations: z.ZodOptional<z.ZodBoolean>;
+    /** ISO currency code used as the shop's base currency */
     currency: z.ZodOptional<z.ZodString>;
+    /** Region identifier for tax calculations */
     taxRegion: z.ZodOptional<z.ZodString>;
+    aiCatalog: z.ZodOptional<z.ZodObject<{
+        enabled: z.ZodBoolean;
+        fields: z.ZodArray<z.ZodString, "many">;
+    }, "strip", z.ZodTypeAny, {
+        enabled: boolean;
+        fields: string[];
+    }, {
+        enabled: boolean;
+        fields: string[];
+    }>>;
     depositService: z.ZodOptional<z.ZodObject<{
         enabled: z.ZodBoolean;
         interval: z.ZodNumber;
@@ -105,75 +117,83 @@ export declare const shopSettingsSchema: z.ZodObject<{
     updatedAt: z.ZodString;
     updatedBy: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    seo: Partial<Record<"en" | "de" | "it", {
-        title?: string | undefined;
-        image?: string | undefined;
-        description?: string | undefined;
-        canonicalBase?: string | undefined;
+    languages?: readonly ("en" | "de" | "it")[];
+    seo?: Partial<Record<"en" | "de" | "it", {
+        title?: string;
+        image?: string;
+        description?: string;
+        canonicalBase?: string;
         openGraph?: {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            url?: string | undefined;
-        } | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            url?: string;
+        };
         twitter?: {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            card?: string | undefined;
-        } | undefined;
-        structuredData?: string | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            card?: string;
+        };
+        structuredData?: string;
     }>>;
-    updatedAt: string;
-    languages: readonly ("en" | "de" | "it")[];
-    updatedBy: string;
     analytics?: {
-        enabled?: boolean | undefined;
-        provider: string;
-        id?: string | undefined;
-    } | undefined;
-    freezeTranslations?: boolean | undefined;
-    currency?: string | undefined;
-    taxRegion?: string | undefined;
+        id?: string;
+        enabled?: boolean;
+        provider?: string;
+    };
+    freezeTranslations?: boolean;
+    currency?: string;
+    taxRegion?: string;
+    aiCatalog?: {
+        enabled: boolean;
+        fields: string[];
+    };
     depositService?: {
         enabled: boolean;
         interval: number;
-    } | undefined;
+    };
+    updatedAt?: string;
+    updatedBy?: string;
 }, {
-    seo: Partial<Record<"en" | "de" | "it", {
-        title?: string | undefined;
-        image?: string | undefined;
-        description?: string | undefined;
-        canonicalBase?: string | undefined;
+    languages?: readonly ("en" | "de" | "it")[];
+    seo?: Partial<Record<"en" | "de" | "it", {
+        title?: string;
+        image?: string;
+        description?: string;
+        canonicalBase?: string;
         openGraph?: {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            url?: string | undefined;
-        } | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            url?: string;
+        };
         twitter?: {
-            title?: string | undefined;
-            image?: string | undefined;
-            description?: string | undefined;
-            card?: string | undefined;
-        } | undefined;
-        structuredData?: string | undefined;
+            title?: string;
+            image?: string;
+            description?: string;
+            card?: string;
+        };
+        structuredData?: string;
     }>>;
-    updatedAt: string;
-    languages: readonly ("en" | "de" | "it")[];
-    updatedBy: string;
     analytics?: {
-        enabled?: boolean | undefined;
-        provider: string;
-        id?: string | undefined;
-    } | undefined;
-    freezeTranslations?: boolean | undefined;
-    currency?: string | undefined;
-    taxRegion?: string | undefined;
+        id?: string;
+        enabled?: boolean;
+        provider?: string;
+    };
+    freezeTranslations?: boolean;
+    currency?: string;
+    taxRegion?: string;
+    aiCatalog?: {
+        enabled: boolean;
+        fields: string[];
+    };
     depositService?: {
         enabled: boolean;
         interval: number;
-    } | undefined;
+    };
+    updatedAt?: string;
+    updatedBy?: string;
 }>;
 export type ShopSettings = z.infer<typeof shopSettingsSchema>;
 //# sourceMappingURL=ShopSettings.d.ts.map

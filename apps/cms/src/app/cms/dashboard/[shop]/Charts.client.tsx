@@ -32,6 +32,7 @@ interface ChartsProps {
   conversion: Series;
   sales: Series;
   emailOpens: Series;
+  emailClicks: Series;
   campaignSales: Series;
   discountRedemptions: Series;
 }
@@ -41,6 +42,7 @@ export function Charts({
   conversion,
   sales,
   emailOpens,
+  emailClicks,
   campaignSales,
   discountRedemptions,
 }: ChartsProps) {
@@ -101,6 +103,21 @@ export function Charts({
                 label: "Email opens",
                 data: emailOpens.data,
                 borderColor: "rgb(54, 162, 235)",
+              },
+            ],
+          }}
+        />
+      </div>
+      <div>
+        <h3 className="mb-2 font-semibold">Email Clicks</h3>
+        <Line
+          data={{
+            labels: emailClicks.labels,
+            datasets: [
+              {
+                label: "Email clicks",
+                data: emailClicks.data,
+                borderColor: "rgb(255, 205, 86)",
               },
             ],
           }}

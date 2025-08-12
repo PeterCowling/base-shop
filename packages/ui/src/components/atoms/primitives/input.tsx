@@ -89,6 +89,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <input
               id={inputId}
               ref={ref}
+              data-token="--color-bg"
               className={baseClasses}
               aria-invalid={error ? true : undefined}
               onFocus={handleFocus}
@@ -98,6 +99,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {label && (
               <label
                 htmlFor={inputId}
+                data-token="--color-fg"
                 className={cn(
                   "text-muted-foreground pointer-events-none absolute top-2 left-3 transition-all",
                   (focused || hasValue) && "-translate-y-3 text-xs"
@@ -112,6 +114,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {label && (
               <label
                 htmlFor={inputId}
+                data-token="--color-fg"
                 className="mb-1 block text-sm font-medium"
               >
                 {label}
@@ -120,6 +123,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <input
               id={inputId}
               ref={ref}
+              data-token="--color-bg"
               className={baseClasses}
               aria-invalid={error ? true : undefined}
               onFocus={handleFocus}

@@ -3,7 +3,14 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
-import { useState, ChangeEvent, FormEvent, useMemo, useRef } from "react";
+import {
+  useState,
+  ChangeEvent,
+  FormEvent,
+  useMemo,
+  useRef,
+  useEffect,
+} from "react";
 
 interface Props {
   shop: string;
@@ -26,6 +33,7 @@ export default function ThemeEditor({
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const previewRef = useRef<HTMLIFrameElement | null>(null);
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByTheme[theme];
@@ -95,124 +103,159 @@ export default function ThemeEditor({
     setSaving(false);
   };
 
+  useEffect(() => {
+    const iframe = previewRef.current;
+    if (!iframe) return;
+
+    const handleClick = (e: MouseEvent) => {
+      const token = (e.target as HTMLElement)
+        .closest('[data-token]')
+        ?.getAttribute('data-token');
+      if (token) {
+        overrideRefs.current[token]?.scrollIntoView?.({
+          behavior: 'smooth',
+          block: 'center',
+        });
+        overrideRefs.current[token]?.focus();
+      }
+    };
+
+    const attach = () => iframe.contentDocument?.addEventListener('click', handleClick);
+    iframe.addEventListener('load', attach);
+    attach();
+
+    return () => {
+      iframe.removeEventListener('load', attach);
+      iframe.contentDocument?.removeEventListener('click', handleClick);
+    };
+  }, []);
+
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <Input type="hidden" name="id" value={shop} />
-      <input
-        type="hidden"
-        name="themeOverrides"
-        value={JSON.stringify(changedOverrides)}
-      />
-      <label className="flex flex-col gap-1">
-        <span>Theme</span>
-        <select
-          className="border p-2"
-          name="themeId"
-          value={theme}
-          onChange={handleThemeChange}
-        >
-          {themes.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-        {errors.themeId && (
-          <span className="text-sm text-red-600">
-            {errors.themeId.join("; ")}
-          </span>
-        )}
-      </label>
-      <div className="space-y-6">
-        {Object.entries(groupedTokens).map(([groupName, tokens]) => (
-          <fieldset key={groupName} className="space-y-2">
-            <legend className="font-semibold">{groupName}</legend>
-            <div className="mb-2 flex flex-wrap gap-2">
-              {tokens
-                .filter(([, v]) => /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(v))
-                .map(([k, defaultValue]) => {
-                  const current = overrides[k] || defaultValue;
-                  return (
-                    <button
-                      key={k}
-                      type="button"
-                      aria-label={k}
-                      title={k}
-                      className="h-6 w-6 rounded border"
-                      style={{ background: current }}
-                      onClick={() => {
-                        overrideRefs.current[k]?.scrollIntoView?.({
-                          behavior: "smooth",
-                          block: "center",
-                        });
-                        overrideRefs.current[k]?.focus();
-                      }}
-                    />
+    <div className="flex flex-col gap-4 md:flex-row">
+      <form onSubmit={onSubmit} className="space-y-4 flex-1">
+        <Input type="hidden" name="id" value={shop} />
+        <input
+          type="hidden"
+          name="themeOverrides"
+          value={JSON.stringify(changedOverrides)}
+        />
+        <label className="flex flex-col gap-1">
+          <span>Theme</span>
+          <select
+            className="border p-2"
+            name="themeId"
+            value={theme}
+            onChange={handleThemeChange}
+          >
+            {themes.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+          {errors.themeId && (
+            <span className="text-sm text-red-600">
+              {errors.themeId.join("; ")}
+            </span>
+          )}
+        </label>
+        <div className="space-y-6">
+          {Object.entries(groupedTokens).map(([groupName, tokens]) => (
+            <fieldset key={groupName} className="space-y-2">
+              <legend className="font-semibold">{groupName}</legend>
+              <div className="mb-2 flex flex-wrap gap-2">
+                {tokens
+                  .filter(([, v]) => /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(v))
+                  .map(([k, defaultValue]) => {
+                    const current = overrides[k] || defaultValue;
+                    return (
+                      <button
+                        key={k}
+                        type="button"
+                        aria-label={k}
+                        title={k}
+                        className="h-6 w-6 rounded border"
+                        style={{ background: current }}
+                        onClick={() => {
+                          overrideRefs.current[k]?.scrollIntoView?.({
+                            behavior: 'smooth',
+                            block: 'center',
+                          });
+                          overrideRefs.current[k]?.focus();
+                        }}
+                      />
+                    );
+                  })}
+              </div>
+              <div className="grid gap-2 md:grid-cols-2">
+                {tokens.map(([k, defaultValue]) => {
+                  const hasOverride = Object.prototype.hasOwnProperty.call(
+                    overrides,
+                    k
                   );
-                })}
-            </div>
-            <div className="grid gap-2 md:grid-cols-2">
-              {tokens.map(([k, defaultValue]) => {
-                const hasOverride = Object.prototype.hasOwnProperty.call(
-                  overrides,
-                  k
-                );
-                const overrideValue = hasOverride ? overrides[k] : "";
-                const isOverridden =
-                  hasOverride && overrideValue !== defaultValue;
-                const isHex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(
-                  defaultValue
-                );
-                const current = hasOverride ? overrideValue : defaultValue;
-                return (
-                  <label
-                    key={k}
-                    className={`flex flex-col gap-1 ${
-                      isOverridden ? "bg-amber-50" : ""
-                    }`}
-                  >
-                    <span>{k}</span>
-                    <div className="flex items-center gap-2">
-                      <Input value={defaultValue} disabled />
-                      {isHex ? (
-                        <>
-                          <input
-                            type="color"
-                            value={current}
+                  const overrideValue = hasOverride ? overrides[k] : '';
+                  const isOverridden =
+                    hasOverride && overrideValue !== defaultValue;
+                  const isHex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(
+                    defaultValue
+                  );
+                  const current = hasOverride ? overrideValue : defaultValue;
+                  return (
+                    <label
+                      key={k}
+                      className={`flex flex-col gap-1 ${
+                        isOverridden ? 'bg-amber-50' : ''
+                      }`}
+                    >
+                      <span>{k}</span>
+                      <div className="flex items-center gap-2">
+                        <Input value={defaultValue} disabled />
+                        {isHex ? (
+                          <>
+                            <input
+                              type="color"
+                              value={current}
+                              onChange={handleOverrideChange(k, defaultValue)}
+                              ref={(el) => (overrideRefs.current[k] = el)}
+                              className={isOverridden ? 'bg-amber-100' : ''}
+                            />
+                            <span
+                              className="h-6 w-6 rounded border"
+                              style={{ background: current }}
+                            />
+                          </>
+                        ) : (
+                          <Input
+                            placeholder={defaultValue}
+                            value={overrideValue}
                             onChange={handleOverrideChange(k, defaultValue)}
                             ref={(el) => (overrideRefs.current[k] = el)}
-                            className={isOverridden ? "bg-amber-100" : ""}
+                            className={isOverridden ? 'bg-amber-100' : ''}
                           />
-                          <span
-                            className="h-6 w-6 rounded border"
-                            style={{ background: current }}
-                          />
-                        </>
-                      ) : (
-                        <Input
-                          placeholder={defaultValue}
-                          value={overrideValue}
-                          onChange={handleOverrideChange(k, defaultValue)}
-                          ref={(el) => (overrideRefs.current[k] = el)}
-                          className={isOverridden ? "bg-amber-100" : ""}
-                        />
-                      )}
-                      {hasOverride && (
-                        <Button type="button" onClick={handleReset(k)}>
-                          Reset
-                        </Button>
-                      )}
-                    </div>
-                  </label>
-                );
-              })}
-            </div>
-          </fieldset>
-        ))}
-      </div>
-      <Button className="bg-primary text-white" disabled={saving} type="submit">
-        {saving ? "Saving…" : "Save"}
-      </Button>
-    </form>
+                        )}
+                        {hasOverride && (
+                          <Button type="button" onClick={handleReset(k)}>
+                            Reset
+                          </Button>
+                        )}
+                      </div>
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+          ))}
+        </div>
+        <Button className="bg-primary text-white" disabled={saving} type="submit">
+          {saving ? 'Saving…' : 'Save'}
+        </Button>
+      </form>
+      <iframe
+        ref={previewRef}
+        title="shop-preview"
+        src={`/${shop}`}
+        className="h-[600px] w-full flex-1 border"
+      />
+    </div>
   );
 }

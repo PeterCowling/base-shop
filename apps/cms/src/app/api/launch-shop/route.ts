@@ -1,4 +1,5 @@
 import type { WizardState } from "../../cms/wizard/schema";
+import { getRequiredSteps } from "../../cms/configurator/steps";
 
 export type StepStatus = "pending" | "success" | "failure";
 
@@ -25,6 +26,17 @@ interface LaunchStatuses {
 export async function POST(req: Request) {
   const body = (await req.json()) as LaunchRequest;
   const { shopId, state, seed } = body;
+
+  const missingSteps = getRequiredSteps()
+    .filter((s) => state.completed?.[s.id] !== "complete")
+    .map((s) => s.id);
+
+  if (missingSteps.length > 0) {
+    return Response.json(
+      { error: "Missing required steps", missingSteps },
+      { status: 400 }
+    );
+  }
 
   const host = req.headers.get("host");
   const protocol = req.headers.get("x-forwarded-proto") || "http";

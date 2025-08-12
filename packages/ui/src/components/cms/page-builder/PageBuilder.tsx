@@ -38,6 +38,7 @@ const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
   HeroBanner: { minItems: 1, maxItems: 5 },
   ValueProps: { minItems: 1, maxItems: 6 },
   ReviewsCarousel: { minItems: 1, maxItems: 10 },
+  SearchBar: { placeholder: "Search products…", limit: 5 },
   ProductGrid: {
     minItems: 1,
     maxItems: 3,

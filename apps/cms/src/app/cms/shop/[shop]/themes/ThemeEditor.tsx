@@ -3,7 +3,7 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
-import { useState, ChangeEvent, FormEvent, useMemo, useRef } from "react";
+import { useState, ChangeEvent, FormEvent, useMemo, useRef, useEffect } from "react";
 
 const HEX_RE = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
 const HSL_RE = /^\d+(?:\.\d+)?\s+\d+(?:\.\d+)?%\s+\d+(?:\.\d+)?%$/;
@@ -115,6 +115,7 @@ export default function ThemeEditor({
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const previewRef = useRef<HTMLIFrameElement | null>(null);
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByTheme[theme];
@@ -140,6 +141,63 @@ export default function ThemeEditor({
       Object.entries(overrides).filter(([k, v]) => tokens[k] !== v)
     );
   }, [overrides, tokensByTheme, theme]);
+
+  useEffect(() => {
+    const handleMessage = (e: MessageEvent) => {
+      const token = (e.data as { token?: string })?.token;
+      if (token) {
+        overrideRefs.current[token]?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        overrideRefs.current[token]?.focus();
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
+
+  useEffect(() => {
+    const iframe = previewRef.current;
+    if (!iframe) return;
+
+    const handleClick = (e: MouseEvent) => {
+      const el = (e.target as HTMLElement).closest("[data-token]");
+      if (!el) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const token = el.getAttribute("data-token");
+      if (token) {
+        overrideRefs.current[token]?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+        overrideRefs.current[token]?.focus();
+      }
+    };
+
+    const applyTokens = () => {
+      const doc = iframe.contentDocument;
+      if (!doc) return;
+      const root = doc.documentElement;
+      const tokens = tokensByTheme[theme];
+      Object.entries(tokens).forEach(([k, v]) => {
+        root.style.setProperty(k, overrides[k] ?? v);
+      });
+      doc.addEventListener("click", handleClick);
+    };
+
+    iframe.addEventListener("load", applyTokens);
+    if (iframe.contentDocument?.readyState === "complete") {
+      applyTokens();
+    }
+
+    return () => {
+      iframe.removeEventListener("load", applyTokens);
+      const doc = iframe.contentDocument;
+      doc?.removeEventListener("click", handleClick);
+    };
+  }, [theme, overrides, tokensByTheme]);
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
@@ -213,6 +271,12 @@ export default function ThemeEditor({
           </span>
         )}
       </label>
+      <iframe
+        ref={previewRef}
+        src={`/${shop}`}
+        title="shop-preview"
+        className="h-64 w-full rounded border"
+      />
       <div className="space-y-6">
         {Object.entries(groupedTokens).map(([groupName, tokens]) => (
           <fieldset key={groupName} className="space-y-2">

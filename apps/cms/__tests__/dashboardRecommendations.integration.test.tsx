@@ -1,4 +1,4 @@
-/* apps/cms/__tests__/dashboardPrerequisites.integration.test.tsx */
+/* apps/cms/__tests__/dashboardRecommendations.integration.test.tsx */
 /* eslint-env jest */
 
 import { fireEvent, render, screen } from "@testing-library/react";
@@ -39,14 +39,12 @@ jest.mock("../src/app/cms/configurator/steps", () => {
       id: "a",
       label: "Step A",
       component: () => null,
-      order: 1,
     },
     {
       id: "b",
       label: "Step B",
       component: () => null,
-      order: 2,
-      prerequisites: ["a"],
+      recommended: ["a"],
     },
   ];
   return {
@@ -98,12 +96,15 @@ afterEach(() => {
   window.addEventListener = originalAddEventListener;
 });
 
-test("shows prerequisites message when launching step with unmet requirements", async () => {
-  render(<ConfiguratorDashboard />);
-  const link = await screen.findByRole("link", { name: /step b/i });
-  fireEvent.click(link);
-  const alert = await screen.findByRole("alert");
-  expect(alert).toHaveTextContent(/step a/i);
-  const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-  expect(stored.completed?.b).toBeFalsy();
-});
+test(
+  "shows recommendation message when launching step with suggested steps",
+  async () => {
+    render(<ConfiguratorDashboard />);
+    const link = await screen.findByRole("link", { name: /step b/i });
+    fireEvent.click(link);
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent(/step a/i);
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    expect(stored.completed?.b).toBeFalsy();
+  }
+);

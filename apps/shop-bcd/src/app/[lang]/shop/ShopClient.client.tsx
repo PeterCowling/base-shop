@@ -10,6 +10,10 @@ import { useMemo, useState } from "react";
 
 export default function ShopClient({ skus }: { skus: SKU[] }) {
   const [filters, setFilters] = useState<Filters>({});
+  const sizes = useMemo(
+    () => Array.from(new Set(skus.flatMap((p) => p.sizes))).sort(),
+    [skus]
+  );
 
   const visible = useMemo(() => {
     if (!filters.size) return skus;
@@ -19,7 +23,7 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="mb-4 text-3xl font-bold">Shop</h1>
-      <FilterBar onChange={setFilters} />
+      <FilterBar onChange={setFilters} sizes={sizes} />
       <ProductGrid skus={visible} />
     </div>
   );

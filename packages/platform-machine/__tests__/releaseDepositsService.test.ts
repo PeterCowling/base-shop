@@ -174,4 +174,46 @@ describe("startDepositReleaseService", () => {
 
     delete process.env.DEPOSIT_RELEASE_ENABLED_SHOP2;
   });
+
+  it("runs each shop in parallel and schedules timers after initial run", async () => {
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValue(["shop1", "shop2"]);
+    readFile.mockResolvedValue("{}");
+
+    const resolvers: Record<string, () => void> = {};
+    readOrders.mockImplementation((shop: string) => {
+      return new Promise((resolve) => {
+        resolvers[shop] = () => resolve([]);
+      });
+    });
+
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const startPromise = service.startDepositReleaseService();
+
+    const flush = () => new Promise((r) => setTimeout(r, 0));
+
+    await flush();
+    expect(readOrders).toHaveBeenCalledTimes(2);
+    expect(setSpy).not.toHaveBeenCalled();
+
+    resolvers["shop1"]();
+    await flush();
+    expect(setSpy).toHaveBeenCalledTimes(1);
+
+    resolvers["shop2"]();
+    const stop = await startPromise;
+    expect(setSpy).toHaveBeenCalledTimes(2);
+
+    stop();
+    expect(clearSpy).toHaveBeenCalledTimes(2);
+
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+  });
 });

@@ -21,6 +21,14 @@ interface Props {
 
 const initialState: FormState = { message: "", error: "", errorCode: "" };
 
+const errorMessages: Record<string, string> = {
+  INVALID_CREDENTIALS: "Invalid Sanity credentials",
+  DATASET_CREATE_ERROR: "Failed to create dataset",
+  DATASET_LIST_ERROR: "Failed to list datasets",
+  SCHEMA_UPLOAD_ERROR: "Failed to upload schema",
+  UNKNOWN_ERROR: "An unknown error occurred",
+};
+
 export default function ConnectForm({ shopId, initial }: Props) {
   const saveAction = saveSanityConfig.bind(null, shopId);
   const [state, formAction] = useFormState<FormState>(saveAction, initialState);
@@ -74,7 +82,9 @@ export default function ConnectForm({ shopId, initial }: Props) {
   }, []);
 
   const message = state.message || disconnectState.message;
-  const error = state.error || disconnectState.error;
+  const errorCode = state.errorCode || disconnectState.errorCode;
+  const rawError = state.error || disconnectState.error;
+  const error = errorCode ? errorMessages[errorCode] ?? rawError : rawError;
   return (
     <div className="space-y-4 max-w-md">
       <form
@@ -147,6 +157,7 @@ export default function ConnectForm({ shopId, initial }: Props) {
           <p className="text-xs text-muted-foreground">
             Dataset with read and write permissions.
           </p>
+          <DatasetCreationStatus isAddingDataset={isAddingDataset} />
         </div>
         <div className="space-y-1">
           <label className="block text-sm font-medium" htmlFor="token">
@@ -193,7 +204,7 @@ export default function ConnectForm({ shopId, initial }: Props) {
             Public datasets are readable by anyone; private require auth.
           </p>
         </div>
-        <SubmitButton />
+        <SubmitButton isCreating={isAddingDataset} />
       </form>
       {initial && (
         <form action={disconnectFormAction}>
@@ -207,15 +218,28 @@ export default function ConnectForm({ shopId, initial }: Props) {
   );
 }
 
-function SubmitButton() {
+function SubmitButton({ isCreating }: { isCreating: boolean }) {
   const { pending } = useFormStatus();
+  const label = pending ? (isCreating ? "Creating dataset..." : "Saving...") : "Save";
   return (
     <Button
       type="submit"
       className="bg-primary text-white"
       disabled={pending}
     >
-      {pending ? "Saving..." : "Save"}
+      {label}
     </Button>
+  );
+}
+
+function DatasetCreationStatus({
+  isAddingDataset,
+}: {
+  isAddingDataset: boolean;
+}) {
+  const { pending } = useFormStatus();
+  if (!pending || !isAddingDataset) return null;
+  return (
+    <p className="text-xs text-muted-foreground">Creating dataset...</p>
   );
 }

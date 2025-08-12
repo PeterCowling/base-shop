@@ -38,3 +38,13 @@ export async function inviteUser(formData: FormData): Promise<void> {
   db.roles[id] = roles.length <= 1 ? (roles[0] as Role) : roles;
   await writeRbac(db);
 }
+
+export async function updateRolePermissions(
+  formData: FormData
+): Promise<void> {
+  const role = String(formData.get("role") ?? "") as Role;
+  const permissions = formData.getAll("permissions") as string[];
+  const db = await readRbac();
+  db.permissions[role] = permissions;
+  await writeRbac(db);
+}

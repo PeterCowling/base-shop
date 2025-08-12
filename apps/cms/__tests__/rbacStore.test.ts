@@ -22,6 +22,7 @@ describe("rbacStore", () => {
       const db = await readRbac();
       expect(db.users["1"].email).toBe("admin@example.com");
       expect(db.roles["1"]).toBe("admin");
+      expect(db.permissions.admin).toEqual(["read", "write"]);
     });
   });
 
@@ -41,6 +42,19 @@ describe("rbacStore", () => {
         await fs.readFile(path.join(dir, "data", "cms", "users.json"), "utf8")
       );
       expect(stored).toEqual(db);
+    });
+  });
+
+  it("updates permissions for roles", async () => {
+    await withTempDir(async (dir) => {
+      const { readRbac, writeRbac } = await import("../src/lib/rbacStore");
+      const db = await readRbac();
+      db.permissions.admin = ["read"];
+      await writeRbac(db);
+      const stored = JSON.parse(
+        await fs.readFile(path.join(dir, "data", "cms", "users.json"), "utf8")
+      );
+      expect(stored.permissions.admin).toEqual(["read"]);
     });
   });
 });

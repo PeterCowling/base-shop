@@ -1,10 +1,10 @@
 import fs from "fs";
-import { deployShop } from "../createShop";
 
 jest.mock("fs");
 jest.mock("child_process", () => ({
   spawnSync: jest.fn(() => ({ status: 0 })),
 }));
+jest.mock("../src/db", () => ({ prisma: {} }));
 
 const fsMock = fs as jest.Mocked<typeof fs>;
 
@@ -13,7 +13,8 @@ describe("deployShop", () => {
     jest.resetAllMocks();
   });
 
-  it("writes deploy.json and returns preview url", () => {
+  it("writes deploy.json and returns preview url", async () => {
+    const { deployShop } = await import("../src/createShop");
     const result = deployShop("shopx", "shop.example.com");
     expect(fsMock.writeFileSync).toHaveBeenCalledWith(
       expect.stringContaining("data/shops/shopx/deploy.json"),

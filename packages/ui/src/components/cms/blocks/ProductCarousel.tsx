@@ -6,9 +6,19 @@ import {
 export default function CmsProductCarousel({
   minItems,
   maxItems,
+  desktopItems,
+  tabletItems,
+  mobileItems,
   ...rest
 }: ProductCarouselProps) {
   return (
-    <BaseCarousel minItems={minItems} maxItems={maxItems} {...rest} />
+    <BaseCarousel
+      minItems={minItems}
+      maxItems={maxItems}
+      desktopItems={desktopItems}
+      tabletItems={tabletItems}
+      mobileItems={mobileItems}
+      {...rest}
+    />
   );
 }

@@ -51,6 +51,12 @@ export interface PageComponentBase {
   minItems?: number;
   /** Maximum number of items allowed for components with lists */
   maxItems?: number;
+  /** Explicit item counts for large screens */
+  desktopItems?: number;
+  /** Explicit item counts for medium screens */
+  tabletItems?: number;
+  /** Explicit item counts for small screens */
+  mobileItems?: number;
   [key: string]: unknown;
 }
 
@@ -248,6 +254,9 @@ const baseComponentSchema = z
     padding: z.string().optional(),
     minItems: z.number().int().min(0).optional(),
     maxItems: z.number().int().min(0).optional(),
+    desktopItems: z.number().int().min(0).optional(),
+    tabletItems: z.number().int().min(0).optional(),
+    mobileItems: z.number().int().min(0).optional(),
   })
   .passthrough();
 

@@ -9,6 +9,12 @@ export interface ProductCarouselProps
   minItems?: number;
   /** Maximum number of items to show at once */
   maxItems?: number;
+  /** Items shown on desktop viewports */
+  desktopItems?: number;
+  /** Items shown on tablet viewports */
+  tabletItems?: number;
+  /** Items shown on mobile viewports */
+  mobileItems?: number;
   /** flex gap class applied to the inner scroller */
   gapClassName?: string;
   /**
@@ -29,13 +35,18 @@ export function ProductCarousel({
   products,
   minItems = 1,
   maxItems = 5,
+  desktopItems,
+  tabletItems,
+  mobileItems,
   gapClassName = "gap-4",
   getSlideWidth = (n) => `${100 / n}%`,
   className,
   ...props
 }: ProductCarouselProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const [itemsPerSlide, setItemsPerSlide] = React.useState(minItems);
+  const [itemsPerSlide, setItemsPerSlide] = React.useState(
+    desktopItems ?? minItems
+  );
 
   React.useEffect(() => {
     if (!containerRef.current || typeof ResizeObserver === "undefined")
@@ -44,6 +55,16 @@ export function ProductCarousel({
     const ITEM_WIDTH = 250;
     const update = () => {
       const width = el.clientWidth;
+      if (desktopItems || tabletItems || mobileItems) {
+        const chosen =
+          width >= 1024
+            ? desktopItems
+            : width >= 768
+            ? tabletItems
+            : mobileItems;
+        setItemsPerSlide(chosen ?? minItems);
+        return;
+      }
       const ideal = Math.floor(width / ITEM_WIDTH) || 1;
       const clamped = Math.max(minItems, Math.min(maxItems, ideal));
       setItemsPerSlide(clamped);
@@ -52,7 +73,13 @@ export function ProductCarousel({
     const observer = new ResizeObserver(update);
     observer.observe(el);
     return () => observer.disconnect();
-  }, [minItems, maxItems]);
+  }, [
+    minItems,
+    maxItems,
+    desktopItems,
+    tabletItems,
+    mobileItems,
+  ]);
 
   const width = getSlideWidth(itemsPerSlide);
   const slideStyle = { flex: `0 0 ${width}` } as React.CSSProperties;

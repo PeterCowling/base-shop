@@ -8,6 +8,9 @@ export interface ProductGridProps {
   columns?: number;
   minItems?: number;
   maxItems?: number;
+  desktopItems?: number;
+  tabletItems?: number;
+  mobileItems?: number;
   className?: string;
 }
 
@@ -16,6 +19,9 @@ export default function ProductGrid({
   columns,
   minItems,
   maxItems,
+  desktopItems,
+  tabletItems,
+  mobileItems,
   className,
 }: ProductGridProps) {
   return (
@@ -24,6 +30,9 @@ export default function ProductGrid({
       columns={columns}
       minItems={minItems}
       maxItems={maxItems}
+      desktopItems={desktopItems}
+      tabletItems={tabletItems}
+      mobileItems={mobileItems}
       className={className}
     />
   );

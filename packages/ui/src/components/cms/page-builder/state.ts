@@ -83,10 +83,26 @@ function updateComponent(
   id: string,
   patch: Partial<PageComponent>
 ): PageComponent[] {
+  const numericFields = [
+    "minItems",
+    "maxItems",
+    "columns",
+    "desktopItems",
+    "tabletItems",
+    "mobileItems",
+  ] as const;
+  const normalized: Partial<PageComponent> = { ...patch };
+  for (const key of numericFields) {
+    const val = (normalized as any)[key];
+    if (typeof val === "string") {
+      const num = Number(val);
+      (normalized as any)[key] = Number.isNaN(num) ? undefined : num;
+    }
+  }
   return list.map((c) => {
-    if (c.id === id) return { ...c, ...patch } as PageComponent;
+    if (c.id === id) return { ...c, ...normalized } as PageComponent;
     if ("children" in c && Array.isArray(c.children)) {
-      return { ...c, children: updateComponent(c.children, id, patch) } as PageComponent;
+      return { ...c, children: updateComponent(c.children, id, normalized) } as PageComponent;
     }
     return c;
   });

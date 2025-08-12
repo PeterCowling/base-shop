@@ -36,15 +36,24 @@ export function WishlistTemplate({
             key={item.id}
             className="flex items-center gap-4 border-b pb-4 last:border-b-0"
           >
-            {item.images[0] && (
+            {item.media[0] && (
               <div className="relative h-16 w-16 shrink-0">
-                <Image
-                  src={item.images[0].url}
-                  alt={item.title}
-                  fill
-                  sizes="64px"
-                  className="rounded object-cover"
-                />
+                {item.media[0].type === "image" ? (
+                  <Image
+                    src={item.media[0].url}
+                    alt={item.title}
+                    fill
+                    sizes="64px"
+                    className="rounded object-cover"
+                  />
+                ) : (
+                  <video
+                    src={item.media[0].url}
+                    className="h-full w-full rounded object-cover"
+                    muted
+                    playsInline
+                  />
+                )}
               </div>
             )}
             <div className="flex-1">

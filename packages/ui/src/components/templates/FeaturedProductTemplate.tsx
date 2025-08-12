@@ -23,15 +23,24 @@ export function FeaturedProductTemplate({
 }: FeaturedProductTemplateProps) {
   return (
     <div className={cn("grid gap-6 md:grid-cols-2", className)} {...props}>
-      {product.images[0] && (
+      {product.media[0] && (
         <div className="relative aspect-square w-full">
-          <Image
-            src={product.images[0].url}
-            alt={product.title}
-            fill
-            sizes="(min-width: 768px) 50vw, 100vw"
-            className="rounded-md object-cover"
-          />
+          {product.media[0].type === "image" ? (
+            <Image
+              src={product.media[0].url}
+              alt={product.title}
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="rounded-md object-cover"
+            />
+          ) : (
+            <video
+              src={product.media[0].url}
+              className="h-full w-full rounded-md object-cover"
+              muted
+              playsInline
+            />
+          )}
         </div>
       )}
       <div className="flex flex-col gap-4">

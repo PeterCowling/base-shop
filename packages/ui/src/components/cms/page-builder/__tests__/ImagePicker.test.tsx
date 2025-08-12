@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import ImagePicker from "../ImagePicker";
 
-jest.mock("@ui/hooks/useMediaUpload", () => () => ({
+jest.mock("@ui/hooks/useFileUpload", () => () => ({
   pendingFile: null,
   altText: "",
   setAltText: jest.fn(),

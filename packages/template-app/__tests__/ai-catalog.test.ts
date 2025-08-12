@@ -26,7 +26,7 @@ describe("AI catalogue API", () => {
     expect(item).toHaveProperty("title");
     expect(item).toHaveProperty("description");
     expect(item).toHaveProperty("price");
-    expect(item).toHaveProperty("images");
+    expect(item).toHaveProperty("media");
   });
 
   test("responds 304 when not modified", async () => {

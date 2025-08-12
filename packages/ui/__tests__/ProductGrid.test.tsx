@@ -9,13 +9,13 @@ const products = [
   {
     id: "1",
     title: "A",
-    images: [{ url: "/placeholder.svg", type: "image" }],
+    media: [{ url: "/placeholder.svg", type: "image" }],
     price: 10,
   },
   {
     id: "2",
     title: "B",
-    images: [{ url: "/placeholder.svg", type: "image" }],
+    media: [{ url: "/placeholder.svg", type: "image" }],
     price: 20,
   },
 ];

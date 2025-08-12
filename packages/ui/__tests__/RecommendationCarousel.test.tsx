@@ -12,7 +12,7 @@ jest.mock("../src/components/organisms/ProductCard", () => ({
 const products: Product[] = Array.from({ length: 3 }).map((_, i) => ({
   id: String(i + 1),
   title: `Product ${i + 1}`,
-  images: [{ url: "", type: "image" }],
+  media: [{ url: "", type: "image" }],
   price: (i + 1) * 10,
 }));
 

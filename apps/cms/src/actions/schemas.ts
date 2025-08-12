@@ -16,7 +16,7 @@ export const productSchema = z
     price: z.coerce.number().min(0, "Invalid price"),
     title: z.record(localeSchema, z.string().min(1)),
     description: z.record(localeSchema, z.string().min(1)),
-    images: z.array(mediaItemSchema).default([]),
+    media: z.array(mediaItemSchema).default([]),
   })
   .strict();
 

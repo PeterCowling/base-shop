@@ -35,8 +35,11 @@ export const skuSchema = z.object({
   /** monthly rental rate in minor currency units */
   monthlyRate: z.number().int().nonnegative().optional(),
   /** availability windows as ISO timestamps */
-  availability: z.array(z.object({ from: z.string(), to: z.string() })).optional(),
-  images: z.array(mediaItemSchema),
+  availability: z
+    .array(z.object({ from: z.string(), to: z.string() }))
+    .optional(),
+  /** Ordered media gallery for the product */
+  media: z.array(mediaItemSchema),
   sizes: z.array(z.string()),
   description: z.string(),
 });
@@ -52,7 +55,7 @@ export interface ProductCore {
   description: Translated;
   price: number; // minor units (e.g. cents)
   currency: string; // ISO-4217 code
-  images: MediaItem[];
+  media: MediaItem[];
   created_at: string; // ISO timestamp
   updated_at: string;
   rentalTerms?: string;

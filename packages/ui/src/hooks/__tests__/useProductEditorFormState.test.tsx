@@ -5,12 +5,13 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useProductEditorFormState } from "../useProductEditorFormState";
 
 /* ------------------------------------------------------------------ *
- *  Mock the image-upload and publish-location hooks (no network, no DOM)
+ *  Mock the file-upload and publish-location hooks (no network, no DOM)
  * ------------------------------------------------------------------ */
-jest.mock("../useImageUpload", () => ({
-  useImageUpload: () => ({
-    file: null,
-    setFile: jest.fn(),
+jest.mock("../useFileUpload", () => ({
+  useFileUpload: () => ({
+    pendingFile: null,
+    altText: "",
+    setAltText: jest.fn(),
     uploader: <div />,
   }),
 }));
@@ -29,7 +30,7 @@ const product: ProductPublication & { variants: Record<string, string[]> } = {
   description: { en: "Desc EN", de: "Desc DE", it: "Desc IT" },
   price: 100,
   currency: "EUR",
-  images: [],
+  media: [],
   created_at: "2023-01-01",
   updated_at: "2023-01-01",
   shop: "shop",

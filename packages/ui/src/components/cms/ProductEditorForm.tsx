@@ -42,8 +42,8 @@ export default function ProductEditorForm({
     handleChange,
     handleSubmit,
     uploader,
-    removeImage,
-    moveImage,
+    removeMedia,
+    moveMedia,
   } = useProductEditorFormState(init, locales, onSave);
 
   /* ---------------- UI ---------------- */
@@ -94,9 +94,9 @@ export default function ProductEditorForm({
           {/* Image upload --------------------------------------------- */}
           {uploader}
 
-          {product.images.length > 0 && (
+          {product.media.length > 0 && (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {product.images.map((img, idx) => (
+              {product.media.map((img, idx) => (
                 <div
                   key={img.url}
                   className="relative h-32 w-full overflow-hidden rounded-md border"
@@ -118,16 +118,16 @@ export default function ProductEditorForm({
                     {idx > 0 && (
                       <button
                         type="button"
-                        onClick={() => moveImage(idx, idx - 1)}
+                        onClick={() => moveMedia(idx, idx - 1)}
                         className="rounded bg-fg/50 px-1 text-xs text-bg"
                       >
                         ↑
                       </button>
                     )}
-                    {idx < product.images.length - 1 && (
+                    {idx < product.media.length - 1 && (
                       <button
                         type="button"
-                        onClick={() => moveImage(idx, idx + 1)}
+                        onClick={() => moveMedia(idx, idx + 1)}
                         className="rounded bg-fg/50 px-1 text-xs text-bg"
                       >
                         ↓
@@ -135,7 +135,7 @@ export default function ProductEditorForm({
                     )}
                     <button
                       type="button"
-                      onClick={() => removeImage(idx)}
+                      onClick={() => removeMedia(idx)}
                       className="ml-auto rounded bg-fg/50 px-1 text-xs text-bg"
                     >
                       ✕

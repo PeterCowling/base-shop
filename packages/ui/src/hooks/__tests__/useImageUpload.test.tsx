@@ -1,7 +1,7 @@
 import { act, render, renderHook } from "@testing-library/react";
 import ImageUploaderWithOrientationCheck from "@ui/components/cms/ImageUploaderWithOrientationCheck";
 import { useImageUpload as useLocalImageUpload } from "../useImageUpload";
-import useImageUpload from "../useMediaUpload";
+import useImageUpload from "../useFileUpload";
 
 jest.mock("@ui/components/cms/ImageUploaderWithOrientationCheck", () => {
   return {

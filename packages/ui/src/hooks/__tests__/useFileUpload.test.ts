@@ -9,7 +9,7 @@ const { uploadMedia } = require("@cms/actions/media.server");
 const {
   useImageOrientationValidation,
 } = require("../useImageOrientationValidation.ts");
-const { useMediaUpload } = require("../useMediaUpload.ts");
+const { useFileUpload } = require("../useFileUpload.tsx");
 
 const mockUpload = uploadMedia as jest.MockedFunction<typeof uploadMedia>;
 const mockOrientation = useImageOrientationValidation as jest.MockedFunction<
@@ -28,7 +28,7 @@ beforeEach(() => {
 it("updates progress during upload", async () => {
   const file = new File(["x"], "x.png", { type: "image/png" });
   const { result } = renderHook(() =>
-    useMediaUpload({ shop: "s", requiredOrientation: "landscape" })
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
   );
 
   act(() => {
@@ -62,7 +62,7 @@ it("sets error when upload fails", async () => {
   mockUpload.mockRejectedValueOnce(new Error("fail"));
   const file = new File(["x"], "x.png", { type: "image/png" });
   const { result } = renderHook(() =>
-    useMediaUpload({ shop: "s", requiredOrientation: "landscape" })
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
   );
 
   act(() => {
@@ -80,7 +80,7 @@ it("sets error when upload fails", async () => {
 it("clears file and alt text after upload", async () => {
   const file = new File(["x"], "x.png", { type: "image/png" });
   const { result } = renderHook(() =>
-    useMediaUpload({ shop: "s", requiredOrientation: "landscape" })
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
   );
 
   act(() => {

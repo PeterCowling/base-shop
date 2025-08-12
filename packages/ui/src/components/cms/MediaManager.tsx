@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@ui/components/atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
-import { useMediaUpload } from "@ui/hooks/useMediaUpload";
+import { useFileUpload } from "@ui/hooks/useFileUpload";
 import { memo, ReactElement, useCallback, useState } from "react";
 import MediaFileList from "./MediaFileList";
 
@@ -74,7 +74,7 @@ function MediaManagerBase({
     onDrop,
     onFileChange,
     handleUpload,
-  } = useMediaUpload({
+  } = useFileUpload({
     shop,
     requiredOrientation: REQUIRED_ORIENTATION,
     onUploaded: (item) => setFiles((prev) => [item, ...prev]),

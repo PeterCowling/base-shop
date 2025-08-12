@@ -17,7 +17,7 @@ import {
   layoutRegistry,
 } from "../blocks";
 import { getShopFromPath } from "@platform-core/utils";
-import useMediaUpload from "@ui/hooks/useMediaUpload";
+import useFileUpload from "@ui/hooks/useFileUpload";
 import { historyStateSchema, reducer, type Action } from "./state";
 import usePageBuilderDrag from "./usePageBuilderDrag";
 import PageToolbar from "./PageToolbar";
@@ -172,7 +172,7 @@ const PageBuilder = memo(function PageBuilder({
     error,
     pendingFile,
     isValid,
-  } = useMediaUpload({
+  } = useFileUpload({
     shop: shop ?? "",
     requiredOrientation: "landscape",
     onUploaded: (item: MediaItem) => {

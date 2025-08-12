@@ -6,13 +6,13 @@ const results: Product[] = [
   {
     id: "1",
     title: "Product 1",
-    images: [{ url: "https://placehold.co/300", type: "image" }],
+    media: [{ url: "https://placehold.co/300", type: "image" }],
     price: 1000,
   },
   {
     id: "2",
     title: "Product 2",
-    images: [{ url: "https://placehold.co/300", type: "image" }],
+    media: [{ url: "https://placehold.co/300", type: "image" }],
     price: 1500,
   },
 ];

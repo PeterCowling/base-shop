@@ -50,7 +50,7 @@ export async function createDraftRecord(
     description,
     price: 0,
     currency: "EUR",
-    images: [],
+    media: [],
     status: "draft",
     shop,
     row_version: 1,
@@ -93,9 +93,9 @@ export async function updateProduct(
     title[l] = String(formEntries[`title_${l}`] ?? "");
     description[l] = String(formEntries[`desc_${l}`] ?? "");
   });
-  const images = (() => {
+  const media = (() => {
     try {
-      return JSON.parse(String(formEntries.images ?? "[]"));
+      return JSON.parse(String(formEntries.media ?? "[]"));
     } catch {
       return [];
     }
@@ -106,7 +106,7 @@ export async function updateProduct(
     price: formEntries.price,
     title,
     description,
-    images,
+    media,
   });
   if (!parsed.success) {
     const { fieldErrors } = parsed.error.flatten();
@@ -116,7 +116,7 @@ export async function updateProduct(
   }
 
   const data: ProductForm = parsed.data;
-  const { id, price, images: nextImages } = data;
+  const { id, price, media: nextMedia } = data;
   const current = await getProductById(shop, id);
   if (!current) throw new Error(`Product ${id} not found in ${shop}`);
 
@@ -125,7 +125,7 @@ export async function updateProduct(
     title: { ...current.title, ...data.title },
     description: { ...current.description, ...data.description },
     price,
-    images: nextImages,
+    media: nextMedia,
     row_version: current.row_version + 1,
     updated_at: nowIso(),
   };

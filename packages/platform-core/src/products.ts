@@ -19,9 +19,7 @@ export const PRODUCTS: readonly SKU[] = [
     stock: 5,
     forSale: true,
     forRental: false,
-    images: [
-      { url: "/shop/green.jpg", type: "image" },
-    ],
+    media: [{ url: "/shop/green.jpg", type: "image" }],
     sizes: ["36", "37", "38", "39", "40", "41", "42", "43"],
     description:
       "Lightweight upper knit from 90 % recycled PET. Natural cork insole.",
@@ -35,9 +33,7 @@ export const PRODUCTS: readonly SKU[] = [
     stock: 2,
     forSale: true,
     forRental: false,
-    images: [
-      { url: "/shop/sand.jpg", type: "image" },
-    ],
+    media: [{ url: "/shop/sand.jpg", type: "image" }],
     sizes: ["36", "37", "38", "39", "40", "41", "42", "43", "44"],
     description:
       "Earth-tone edition coloured with mineral pigments; zero water waste.",
@@ -51,9 +47,7 @@ export const PRODUCTS: readonly SKU[] = [
     stock: 0,
     forSale: true,
     forRental: false,
-    images: [
-      { url: "/shop/black.jpg", type: "image" },
-    ],
+    media: [{ url: "/shop/black.jpg", type: "image" }],
     sizes: ["38", "39", "40", "41", "42", "43", "44"],
     description:
       "All-black favourite with algae-based foam midsole for extra bounce.",

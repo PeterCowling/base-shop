@@ -3,6 +3,7 @@
 
 import { useFormState } from "react-dom";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button, Input, Switch, Textarea, Toast } from "@ui";
 import { slugify } from "@acme/shared-utils";
 import type { SKU } from "@acme/types";
@@ -288,6 +289,40 @@ export default function PostForm({ action, submitLabel, post }: Props) {
   useEffect(() => {
     if (!editSlug) setSlug(slugify(title));
   }, [title, editSlug]);
+  const searchParams = useSearchParams();
+  const shopId = searchParams.get("shopId") ?? "";
+  const [checkingSlug, setCheckingSlug] = useState(false);
+  const [slugError, setSlugError] = useState<string | null>(null);
+  const slugId = post?._id;
+  useEffect(() => {
+    if (!slug || !shopId) {
+      setSlugError(null);
+      return;
+    }
+    const handle = setTimeout(async () => {
+      setCheckingSlug(true);
+      try {
+        const params = new URLSearchParams({ slug, shopId });
+        if (slugId) params.append("exclude", slugId);
+        const res = await fetch(`/api/blog/slug?${params.toString()}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.exists) {
+            setSlugError("Slug already exists");
+          } else {
+            setSlugError(null);
+          }
+        } else {
+          setSlugError("Failed to check slug");
+        }
+      } catch {
+        setSlugError("Failed to check slug");
+      } finally {
+        setCheckingSlug(false);
+      }
+    }, 300);
+    return () => clearTimeout(handle);
+  }, [slug, shopId, slugId]);
   const [publishedAt, setPublishedAt] = useState(
     post?.publishedAt ? post.publishedAt.slice(0, 16) : "",
   );
@@ -318,6 +353,7 @@ export default function PostForm({ action, submitLabel, post }: Props) {
             onChange={(e) => setSlug(e.target.value)}
             disabled={!editSlug}
             required
+            error={slugError ?? undefined}
           />
           <div className="flex items-center gap-2">
             <Switch
@@ -358,7 +394,9 @@ export default function PostForm({ action, submitLabel, post }: Props) {
           value={JSON.stringify(content)}
         />
         {post?._id && <input type="hidden" name="id" value={post._id} />}
-        <Button type="submit">{submitLabel}</Button>
+        <Button type="submit" disabled={checkingSlug || Boolean(slugError)}>
+          {submitLabel}
+        </Button>
       </form>
       <input
         type="hidden"

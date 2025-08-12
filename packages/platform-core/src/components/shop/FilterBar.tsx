@@ -11,15 +11,28 @@ export type Filters = Record<string, string | number | undefined>;
 
 export interface FilterBarProps {
   definitions: FilterDefinition[];
+  /**
+   * Current values for the filters. When provided, the component becomes
+   * controlled and will mirror any external updates. When omitted, an empty
+   * object is assumed.
+   */
+  values?: Filters;
   onChange: (filters: Filters) => void;
 }
 
 export default function FilterBar({
   definitions,
+  values: externalValues = {},
   onChange,
 }: FilterBarProps) {
-  const [values, setValues] = useState<Filters>({});
+  const [values, setValues] = useState<Filters>(externalValues);
   const deferred = useDeferredValue(values);
+
+  // Keep internal state in sync when parent updates its values (e.g. after a
+  // reload where values are read from the URL).
+  useEffect(() => {
+    setValues(externalValues);
+  }, [externalValues]);
 
   useEffect(() => {
     onChange(deferred);

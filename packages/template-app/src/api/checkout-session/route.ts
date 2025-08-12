@@ -120,13 +120,23 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   /* 2  Rental days -------------------------------------------------- */
-  const { returnDate, coupon, currency = "EUR", taxRegion = "" } =
-    (await req.json().catch(() => ({}))) as {
-      returnDate?: string;
-      coupon?: string;
-      currency?: string;
-      taxRegion?: string;
-    };
+  const {
+    returnDate,
+    coupon,
+    currency = "EUR",
+    taxRegion = "",
+    customer,
+    shipping,
+    billing_details,
+  } = (await req.json().catch(() => ({}))) as {
+    returnDate?: string;
+    coupon?: string;
+    currency?: string;
+    taxRegion?: string;
+    customer?: string;
+    shipping?: Stripe.Checkout.SessionCreateParams.ShippingAddress;
+    billing_details?: Record<string, any>;
+  };
   const shop = coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop";
   const couponDef = await findCoupon(shop, coupon);
   if (couponDef) {
@@ -176,24 +186,39 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   );
 
   /* 5  Create checkout session ------------------------------------- */
+  const clientIp =
+    req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
+
+  const paymentIntentData: Stripe.Checkout.SessionCreateParams.PaymentIntentData = {
+    ...(shipping ? { shipping } : {}),
+    payment_method_options: {
+      card: { request_three_d_secure: "automatic" },
+    },
+    metadata: {
+      subtotal: String(subtotal),
+      depositTotal: String(depositTotal),
+      returnDate: returnDate ?? "",
+      rentalDays: String(rentalDays),
+      discount: String(discount),
+      coupon: couponDef?.code ?? "",
+      currency,
+      taxRate: String(taxRate),
+      taxAmount: String(taxAmount),
+      ...(clientIp ? { client_ip: clientIp } : {}),
+    },
+  } as any;
+
+  if (billing_details) {
+    (paymentIntentData as any).billing_details = billing_details;
+  }
+
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
+    customer,
     line_items,
     success_url: `${req.nextUrl.origin}/success`,
     cancel_url: `${req.nextUrl.origin}/cancelled`,
-    payment_intent_data: {
-      metadata: {
-        subtotal: String(subtotal),
-        depositTotal: String(depositTotal),
-        returnDate: returnDate ?? "",
-        rentalDays: String(rentalDays),
-        discount: String(discount),
-        coupon: couponDef?.code ?? "",
-        currency,
-        taxRate: String(taxRate),
-        taxAmount: String(taxAmount),
-      },
-    },
+    payment_intent_data: paymentIntentData,
     metadata: {
       subtotal: String(subtotal),
       depositTotal: String(depositTotal),
@@ -205,6 +230,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       currency,
       taxRate: String(taxRate),
       taxAmount: String(taxAmount),
+      ...(clientIp ? { client_ip: clientIp } : {}),
     },
     expand: ["payment_intent"],
   });

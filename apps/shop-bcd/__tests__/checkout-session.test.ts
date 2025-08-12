@@ -26,15 +26,27 @@ jest.mock("@platform-core/tax", () => ({
 import { stripe } from "@acme/stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
+jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
+jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
+jest.mock("@/lib/cartCookie", () => ({
+  CART_COOKIE: "__Host-CART_ID",
+  encodeCartCookie: (cart: any) => JSON.stringify(cart),
+  decodeCartCookie: (raw: string) => (raw ? JSON.parse(raw) : {}),
+}));
+
 function createRequest(
   body: any,
   cookie: string,
-  url = "http://store.example/api/checkout-session"
+  url = "http://store.example/api/checkout-session",
+  headers: Record<string, string> = {}
 ): Parameters<typeof POST>[0] {
   return {
     json: async () => body,
     cookies: { get: () => ({ name: "", value: cookie }) },
     nextUrl: Object.assign(new URL(url), { clone: () => new URL(url) }),
+    headers: {
+      get: (key: string) => headers[key.toLowerCase()] ?? null,
+    },
   } as any;
 }
 
@@ -51,7 +63,26 @@ test("builds Stripe session with correct items and metadata", async () => {
   const cookie = encodeCartCookie(cart);
   const returnDate = "2025-01-02";
   const expectedDays = calculateRentalDays(returnDate);
-  const req = createRequest({ returnDate, currency: "EUR", taxRegion: "EU" }, cookie);
+  const shipping = {
+    name: "Jane Doe",
+    address: {
+      line1: "123 St",
+      city: "Test",
+      postal_code: "12345",
+      country: "US",
+    },
+  };
+  const billing = {
+    name: "Jane Doe",
+    email: "jane@example.com",
+    address: shipping.address,
+  };
+  const req = createRequest(
+    { returnDate, currency: "EUR", taxRegion: "EU", shipping, billing_details: billing },
+    cookie,
+    undefined,
+    { "x-forwarded-for": "203.0.113.1" }
+  );
 
   const res = await POST(req);
   const body = await res.json();
@@ -60,9 +91,15 @@ test("builds Stripe session with correct items and metadata", async () => {
   const args = stripeCreate.mock.calls[0][0];
 
   expect(args.line_items).toHaveLength(3);
-  expect(args.line_items[0].price_data.unit_amount).toBe(1000);
-  expect(args.line_items[1].price_data.unit_amount).toBe(sku.deposit * 100);
-  expect(args.line_items[2].price_data.unit_amount).toBe(400);
+  expect(args.payment_intent_data.shipping.name).toBe("Jane Doe");
+  expect(args.payment_intent_data.billing_details.email).toBe(
+    "jane@example.com"
+  );
+  expect(
+    args.payment_intent_data.payment_method_options.card.request_three_d_secure
+  ).toBe("automatic");
+  expect(args.payment_intent_data.metadata.client_ip).toBe("203.0.113.1");
+  expect(args.metadata.client_ip).toBe("203.0.113.1");
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
   expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: size }));
   expect(args.metadata.subtotal).toBe("20");

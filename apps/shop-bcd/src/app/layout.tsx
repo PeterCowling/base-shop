@@ -3,11 +3,34 @@ import "./globals.css";
 import { CartProvider } from "@/contexts/CartContext";
 import { initTheme } from "@platform-core/utils";
 import { applyFriendlyZodMessages } from "@acme/lib";
+import { initPlugins } from "@acme/platform-core/plugins";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import shop from "../../shop.json";
 
 // Ensure friendly Zod messages for all validations
 applyFriendlyZodMessages();
+
+const payments = new Map<string, unknown>();
+const shipping = new Map<string, unknown>();
+const widgets = new Map<string, unknown>();
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const pluginsDir = path.resolve(__dirname, "../../../../packages/plugins");
+
+const pluginsReady = initPlugins(
+  {
+    payments: { add: (id: string, provider: unknown) => payments.set(id, provider) },
+    shipping: { add: (id: string, provider: unknown) => shipping.set(id, provider) },
+    widgets: { add: (id: string, component: unknown) => widgets.set(id, component) },
+  },
+  {
+    directories: [pluginsDir],
+    config: (shop as any).plugins,
+  },
+);
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -23,11 +46,12 @@ export const metadata: Metadata = {
   description: "Sustainable footwear built with Next.js 15",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  await pluginsReady;
   return (
     <html
       lang="en"

@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen, within, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, within, waitFor, act } from "@testing-library/react";
 import ThemeEditor from "../src/app/cms/shop/[shop]/themes/ThemeEditor";
 import { updateShop } from "@cms/actions/shops.server";
 
@@ -201,5 +201,28 @@ describe("ThemeEditor", () => {
     expect(JSON.parse(fd.get("themeOverrides") as string)).toEqual({
       "--color-bg": "0 0% 0%",
     });
+  });
+
+  it("focuses override when preview element clicked", async () => {
+    const tokensByTheme = { base: { "--color-primary": "#0000ff" } };
+    render(
+      <ThemeEditor
+        shop="test"
+        themes={["base"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={{}}
+      />
+    );
+
+    const iframe = screen.getByTitle("shop-preview") as HTMLIFrameElement;
+    const colorInput = screen.getByLabelText("--color-primary", {
+      selector: 'input[type="color"]',
+    });
+    (colorInput as any).scrollIntoView = jest.fn();
+    act(() => {
+      window.postMessage({ token: "--color-primary" }, "*");
+    });
+    await waitFor(() => expect(colorInput).toHaveFocus());
   });
 });

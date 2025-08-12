@@ -89,6 +89,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <input
               id={inputId}
               ref={ref}
+              data-token="--color-bg"
               className={baseClasses}
               aria-invalid={error ? true : undefined}
               onFocus={handleFocus}
@@ -120,6 +121,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             <input
               id={inputId}
               ref={ref}
+              data-token="--color-bg"
               className={baseClasses}
               aria-invalid={error ? true : undefined}
               onFocus={handleFocus}

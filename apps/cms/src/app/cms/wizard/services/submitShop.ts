@@ -1,8 +1,12 @@
 // apps/cms/src/app/cms/wizard/services/submitShop.ts
 "use client";
 
-import { createShopOptionsSchema, type DeployStatusBase } from "@platform-core/createShop";
+import {
+  createShopOptionsSchema,
+  type DeployStatusBase,
+} from "@platform-core/createShop";
 import { validateShopName } from "@platform-core/src/shops";
+import { loadThemeTokens } from "../tokenUtils";
 import type { WizardState } from "../schema";
 
 export interface SubmitResult {
@@ -44,6 +48,7 @@ export async function submitShop(
     type,
     template,
     theme,
+    themeVars,
     payment,
     shipping,
     pageTitle,
@@ -57,6 +62,11 @@ export async function submitShop(
     env,
   } = state;
 
+  const defaults = await loadThemeTokens(theme);
+  const themeOverrides = Object.fromEntries(
+    Object.entries(themeVars ?? {}).filter(([k, v]) => defaults[k] !== v)
+  );
+
   const options = {
     name: storeName || undefined,
     logo: logo || undefined,
@@ -64,6 +74,7 @@ export async function submitShop(
     type,
     template,
     theme,
+    themeOverrides,
     payment,
     shipping,
     analytics: analyticsProvider
@@ -119,9 +130,7 @@ export async function submitShop(
           const envJson = (await envRes.json().catch(() => ({}))) as {
             error?: string;
           };
-          errors.push(
-            envJson.error ?? "Failed to save environment variables"
-          );
+          errors.push(envJson.error ?? "Failed to save environment variables");
         } else {
           const valRes = await fetch(
             `/cms/api/configurator/validate-env/${shopId}`
@@ -130,9 +139,7 @@ export async function submitShop(
             const valJson = (await valRes.json().catch(() => ({}))) as {
               error?: string;
             };
-            errors.push(
-              valJson.error ?? "Environment validation failed"
-            );
+            errors.push(valJson.error ?? "Environment validation failed");
           }
         }
       } catch {
@@ -147,9 +154,7 @@ export async function submitShop(
         body: JSON.stringify({ payment, shipping }),
       });
       if (!providerRes.ok) {
-        const providerJson = (await providerRes
-          .json()
-          .catch(() => ({}))) as {
+        const providerJson = (await providerRes.json().catch(() => ({}))) as {
           error?: string;
         };
         errors.push(
@@ -169,4 +174,3 @@ export async function submitShop(
 
   return { ok: false, error: json.error ?? "Failed to create shop" };
 }
-

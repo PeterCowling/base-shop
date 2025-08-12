@@ -24,40 +24,41 @@ const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
 
 export const createShopOptionsSchema = z
   .object({
-  name: z.string().optional(),
-  logo: z.string().url().optional(),
-  contactInfo: z.string().optional(),
-  type: z.enum(["sale", "rental"]).optional(),
-  theme: z.string().optional(),
-  template: z.string().optional(),
-  payment: z.array(z.enum(defaultPaymentProviders)).default([]),
-  shipping: z.array(z.enum(defaultShippingProviders)).default([]),
-  tax: z.enum(defaultTaxProviders).default("taxjar"),
-  pageTitle: z.record(localeSchema, z.string()).optional(),
-  pageDescription: z.record(localeSchema, z.string()).optional(),
-  socialImage: z.string().url().optional(),
-  analytics: z
-    .object({
-      enabled: z.boolean().optional(),
-      provider: z.string(),
-      id: z.string().optional(),
-    })
-    .optional(),
-  sanityBlog: sanityBlogConfigSchema.optional(),
-  navItems: z.array(navItemSchema).default([]),
-  pages: z
-    .array(
-      z.object({
-        slug: z.string(),
-        title: z.record(localeSchema, z.string()),
-        description: z.record(localeSchema, z.string()).optional(),
-        image: z.record(localeSchema, z.string()).optional(),
-        components: z.array(pageComponentSchema),
+    name: z.string().optional(),
+    logo: z.string().url().optional(),
+    contactInfo: z.string().optional(),
+    type: z.enum(["sale", "rental"]).optional(),
+    theme: z.string().optional(),
+    themeOverrides: z.record(z.string()).default({}),
+    template: z.string().optional(),
+    payment: z.array(z.enum(defaultPaymentProviders)).default([]),
+    shipping: z.array(z.enum(defaultShippingProviders)).default([]),
+    tax: z.enum(defaultTaxProviders).default("taxjar"),
+    pageTitle: z.record(localeSchema, z.string()).optional(),
+    pageDescription: z.record(localeSchema, z.string()).optional(),
+    socialImage: z.string().url().optional(),
+    analytics: z
+      .object({
+        enabled: z.boolean().optional(),
+        provider: z.string(),
+        id: z.string().optional(),
       })
-    )
-    .default([]),
-  checkoutPage: z.array(pageComponentSchema).default([]),
-})
+      .optional(),
+    sanityBlog: sanityBlogConfigSchema.optional(),
+    navItems: z.array(navItemSchema).default([]),
+    pages: z
+      .array(
+        z.object({
+          slug: z.string(),
+          title: z.record(localeSchema, z.string()),
+          description: z.record(localeSchema, z.string()).optional(),
+          image: z.record(localeSchema, z.string()).optional(),
+          components: z.array(pageComponentSchema),
+        })
+      )
+      .default([]),
+    checkoutPage: z.array(pageComponentSchema).default([]),
+  })
   .strict();
 
 export type CreateShopOptions = z.infer<typeof createShopOptionsSchema>;
@@ -93,13 +94,14 @@ export function prepareOptions(
     type: parsed.type ?? "sale",
     theme: parsed.theme ?? "base",
     template: parsed.template ?? "template-app",
+    themeOverrides: parsed.themeOverrides ?? {},
     payment: parsed.payment,
     shipping: parsed.shipping,
     tax: parsed.tax,
     pageTitle: fillLocales(parsed.pageTitle, "Home"),
     pageDescription: fillLocales(parsed.pageDescription, ""),
     socialImage: parsed.socialImage ?? "",
-  analytics: parsed.analytics
+    analytics: parsed.analytics
       ? {
           enabled: parsed.analytics.enabled !== false,
           provider: parsed.analytics.provider ?? "none",

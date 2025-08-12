@@ -101,7 +101,7 @@ async function resolveProvider(shop: string): Promise<AnalyticsProvider> {
   }
   if (analytics.provider === "ga") {
     const measurementId = analytics.id;
-    const apiSecret = coreEnv.GA_API_SECRET;
+    const apiSecret = process.env.GA_API_SECRET || coreEnv.GA_API_SECRET;
     if (measurementId && apiSecret) {
       const p = new GoogleAnalyticsProvider(measurementId, apiSecret);
       providerCache.set(shop, p);
@@ -141,7 +141,7 @@ export async function trackOrder(
 interface Aggregates {
   page_view: Record<string, number>;
   order: Record<string, { count: number; amount: number }>;
-  discount_redeemed: Record<string, number>;
+  discount_redeemed: Record<string, Record<string, number>>;
   ai_crawl: Record<string, number>;
 }
 
@@ -172,7 +172,12 @@ async function updateAggregates(
     entry.amount += amount;
     agg.order[day] = entry;
   } else if (event.type === "discount_redeemed") {
-    agg.discount_redeemed[day] = (agg.discount_redeemed[day] || 0) + 1;
+    const code = typeof (event as any).code === "string" ? (event as any).code : "";
+    if (code) {
+      const entry = agg.discount_redeemed[day] || {};
+      entry[code] = (entry[code] || 0) + 1;
+      agg.discount_redeemed[day] = entry;
+    }
   } else if (event.type === "ai_crawl") {
     agg.ai_crawl[day] = (agg.ai_crawl[day] || 0) + 1;
   }

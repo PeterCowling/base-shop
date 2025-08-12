@@ -16,6 +16,11 @@ interface Series {
   data: number[];
 }
 
+interface MultiSeries {
+  labels: string[];
+  datasets: { label: string; data: number[] }[];
+}
+
 function buildMetrics(
   events: AnalyticsEvent[],
   aggregates?: AnalyticsAggregates,
@@ -24,7 +29,7 @@ function buildMetrics(
   const emailClickByDay: Record<string, number> = {};
   const campaignSalesByDay: Record<string, number> = {};
   const campaignSalesCountByDay: Record<string, number> = {};
-  const discountByDay: Record<string, number> = {};
+  const discountByCodeByDay: Record<string, Record<string, number>> = {};
 
   for (const e of events) {
     const day = (e.timestamp || "").slice(0, 10);
@@ -38,8 +43,11 @@ function buildMetrics(
       campaignSalesByDay[day] = (campaignSalesByDay[day] || 0) + amount;
       campaignSalesCountByDay[day] =
         (campaignSalesCountByDay[day] || 0) + 1;
-    } else if (e.type === "discount_redeemed") {
-      discountByDay[day] = (discountByDay[day] || 0) + 1;
+    } else if (e.type === "discount_redeemed" && typeof (e as any).code === "string") {
+      const code = (e as any).code as string;
+      const entry = discountByCodeByDay[day] || {};
+      entry[code] = (entry[code] || 0) + 1;
+      discountByCodeByDay[day] = entry;
     }
   }
 
@@ -50,7 +58,7 @@ function buildMetrics(
       ...Object.keys(emailOpenByDay),
       ...Object.keys(emailClickByDay),
       ...Object.keys(campaignSalesByDay),
-      ...Object.keys(discountByDay),
+      ...Object.keys(discountByCodeByDay),
       ...(aggregates ? Object.keys(aggregates.discount_redeemed) : []),
       ...(aggregates ? Object.keys(aggregates.ai_crawl) : []),
     ]),
@@ -102,8 +110,48 @@ function buildMetrics(
 
   const discountRedemptions: Series = {
     labels: days,
-    data: days.map((d) => discountByDay[d] || 0),
+    data: days.map((d) => {
+      const byCode = aggregates
+        ? aggregates.discount_redeemed[d]
+        : discountByCodeByDay[d];
+      return byCode ? Object.values(byCode).reduce((a, b) => a + b, 0) : 0;
+    }),
   };
+
+  const codes = new Set<string>();
+  if (aggregates) {
+    for (const day of Object.keys(aggregates.discount_redeemed)) {
+      for (const code of Object.keys(aggregates.discount_redeemed[day])) {
+        codes.add(code);
+      }
+    }
+  } else {
+    for (const day of Object.keys(discountByCodeByDay)) {
+      for (const code of Object.keys(discountByCodeByDay[day])) {
+        codes.add(code);
+      }
+    }
+  }
+
+  const discountRedemptionsByCode = {
+    labels: days,
+    datasets: Array.from(codes).map((code) => ({
+      label: code,
+      data: days.map((d) => {
+        const byCode = aggregates
+          ? aggregates.discount_redeemed[d]
+          : discountByCodeByDay[d];
+        return byCode ? byCode[code] || 0 : 0;
+      }),
+    })),
+  };
+
+  const topDiscountCodes = Array.from(codes).map((code) => {
+    const total = discountRedemptionsByCode.datasets
+      .find((d) => d.label === code)!
+      .data.reduce((a, b) => a + b, 0);
+    return [code, total] as [string, number];
+  }).sort((a, b) => b[1] - a[1]);
 
   const aiCrawl: Series = {
     labels: days,
@@ -141,9 +189,11 @@ function buildMetrics(
     emailClicks,
     campaignSales,
     discountRedemptions,
+    discountRedemptionsByCode,
     aiCrawl,
     totals,
     maxTotal,
+    topDiscountCodes,
   };
 }
 
@@ -193,8 +243,21 @@ export default async function ShopDashboard({
                 emailClicks={metrics.emailClicks}
                 campaignSales={metrics.campaignSales}
                 discountRedemptions={metrics.discountRedemptions}
+                discountRedemptionsByCode={metrics.discountRedemptionsByCode}
                 aiCrawl={metrics.aiCrawl}
               />
+              {metrics.topDiscountCodes.length > 0 && (
+                <div className="mt-4">
+                  <h3 className="mb-2 font-semibold">Top discount codes</h3>
+                  <ul className="list-inside list-disc">
+                    {metrics.topDiscountCodes.map(([code, count]) => (
+                      <li key={code}>
+                        {code}: {count}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <div className="mt-8 space-y-4">
                 <h3 className="text-lg font-semibold">Progress</h3>
                 <div>
@@ -272,6 +335,7 @@ export default async function ShopDashboard({
                 emailClicks={metrics.emailClicks}
                 campaignSales={metrics.campaignSales}
                 discountRedemptions={metrics.discountRedemptions}
+                discountRedemptionsByCode={metrics.discountRedemptionsByCode}
                 aiCrawl={metrics.aiCrawl}
               />
             </div>

@@ -27,6 +27,11 @@ interface Series {
   data: number[];
 }
 
+interface MultiSeries {
+  labels: string[];
+  datasets: { label: string; data: number[] }[];
+}
+
 interface ChartsProps {
   traffic: Series;
   conversion: Series;
@@ -35,6 +40,7 @@ interface ChartsProps {
   emailClicks: Series;
   campaignSales: Series;
   discountRedemptions: Series;
+  discountRedemptionsByCode: MultiSeries;
   aiCrawl: Series;
 }
 
@@ -46,8 +52,18 @@ export function Charts({
   emailClicks,
   campaignSales,
   discountRedemptions,
+  discountRedemptionsByCode,
   aiCrawl,
 }: ChartsProps) {
+  const colors = [
+    "rgb(255, 99, 132)",
+    "rgb(54, 162, 235)",
+    "rgb(255, 205, 86)",
+    "rgb(75, 192, 192)",
+    "rgb(153, 102, 255)",
+    "rgb(201, 203, 207)",
+    "rgb(255, 159, 64)",
+  ];
   return (
     <div className="space-y-8">
       <div>
@@ -152,6 +168,19 @@ export function Charts({
                 borderColor: "rgb(201, 203, 207)",
               },
             ],
+          }}
+        />
+      </div>
+      <div>
+        <h3 className="mb-2 font-semibold">Redemptions by Code</h3>
+        <Line
+          data={{
+            labels: discountRedemptionsByCode.labels,
+            datasets: discountRedemptionsByCode.datasets.map((d, i) => ({
+              label: d.label,
+              data: d.data,
+              borderColor: colors[i % colors.length],
+            })),
           }}
         />
       </div>

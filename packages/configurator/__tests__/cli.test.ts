@@ -16,6 +16,7 @@ describe("configurator CLI", () => {
 
     process.env.STRIPE_SECRET_KEY = "sk";
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
+    process.env.CART_COOKIE_SECRET = "secret";
   });
 
   afterEach(() => {

@@ -13,6 +13,7 @@ describe("envSchema", () => {
       ...OLD_ENV,
       STRIPE_SECRET_KEY: "sk",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      CART_COOKIE_SECRET: "secret",
     } as NodeJS.ProcessEnv;
 
     const { envSchema } = await import("../src/env");
@@ -20,10 +21,12 @@ describe("envSchema", () => {
       STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
         process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+      CART_COOKIE_SECRET: process.env.CART_COOKIE_SECRET!,
     });
     expect(parsed).toEqual({
       STRIPE_SECRET_KEY: "sk",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      CART_COOKIE_SECRET: "secret",
     });
   });
 
@@ -32,12 +35,14 @@ describe("envSchema", () => {
       ...OLD_ENV,
       STRIPE_SECRET_KEY: "sk",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      CART_COOKIE_SECRET: "secret",
     } as NodeJS.ProcessEnv;
 
     const { envSchema } = await import("../src/env");
 
     const invalid = {
       STRIPE_SECRET_KEY: "sk",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
     } as Record<string, string>;
 
     expect(() => envSchema.parse(invalid)).toThrow();

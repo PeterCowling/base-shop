@@ -20,6 +20,7 @@ describe("validate-env script", () => {
     process.argv = ["node", "validate-env", "abc"];
     process.env.STRIPE_SECRET_KEY = "sk";
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
+    process.env.CART_COOKIE_SECRET = "secret";
     existsSyncMock = require("node:fs").existsSync as jest.Mock;
     readFileSyncMock = require("node:fs").readFileSync as jest.Mock;
     existsSyncMock.mockReset();
@@ -34,7 +35,7 @@ describe("validate-env script", () => {
   it("exits 0 and logs success for valid env", async () => {
     existsSyncMock.mockReturnValue(true);
     readFileSyncMock.mockReturnValue(
-      "STRIPE_SECRET_KEY=sk\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk\n"
+      "STRIPE_SECRET_KEY=sk\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk\nCART_COOKIE_SECRET=secret\n"
     );
 
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
@@ -54,7 +55,9 @@ describe("validate-env script", () => {
 
   it("exits 1 and reports invalid env", async () => {
     existsSyncMock.mockReturnValue(true);
-    readFileSyncMock.mockReturnValue("STRIPE_SECRET_KEY=sk\n");
+    readFileSyncMock.mockReturnValue(
+      "STRIPE_SECRET_KEY=sk\nCART_COOKIE_SECRET=secret\n"
+    );
 
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});

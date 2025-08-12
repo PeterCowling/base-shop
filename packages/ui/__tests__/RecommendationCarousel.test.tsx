@@ -47,4 +47,35 @@ describe("RecommendationCarousel", () => {
     expect(calledUrl.searchParams.get("minItems")).toBe("1");
     expect(calledUrl.searchParams.get("maxItems")).toBe("3");
   });
+
+  it("uses explicit item counts when provided", async () => {
+    Object.defineProperty(window, "innerWidth", { value: 1200, configurable: true });
+    let seen = 0;
+    render(
+      <RecommendationCarousel
+        endpoint="/api"
+        desktopItems={3}
+        tabletItems={2}
+        mobileItems={1}
+        getSlideWidth={(n) => {
+          seen = n;
+          return `${100 / n}%`;
+        }}
+      />
+    );
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
+    expect(seen).toBe(3);
+
+    Object.defineProperty(window, "innerWidth", { value: 800, configurable: true });
+    act(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
+    expect(seen).toBe(2);
+
+    Object.defineProperty(window, "innerWidth", { value: 500, configurable: true });
+    act(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
+    expect(seen).toBe(1);
+  });
 });

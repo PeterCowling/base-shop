@@ -94,7 +94,10 @@
               "type": { "const": "RecommendationCarousel" },
               "endpoint": { "type": "string" },
               "minItems": { "$ref": "#/definitions/nonNegativeInteger" },
-              "maxItems": { "$ref": "#/definitions/nonNegativeInteger" }
+              "maxItems": { "$ref": "#/definitions/nonNegativeInteger" },
+              "desktopItems": { "$ref": "#/definitions/nonNegativeInteger" },
+              "tabletItems": { "$ref": "#/definitions/nonNegativeInteger" },
+              "mobileItems": { "$ref": "#/definitions/nonNegativeInteger" }
             },
             "additionalProperties": false
           }

@@ -29,6 +29,7 @@ import HeaderEditor from "./HeaderEditor";
 import FooterEditor from "./FooterEditor";
 import PricingTableEditor from "./PricingTableEditor";
 import NewsletterSignupEditor from "./NewsletterSignupEditor";
+import RecommendationCarouselEditor from "./RecommendationCarouselEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -100,6 +101,14 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "ReviewsCarousel":
       specific = (
         <ReviewsCarouselEditor component={component} onChange={onChange} />
+      );
+      break;
+    case "RecommendationCarousel":
+      specific = (
+        <RecommendationCarouselEditor
+          component={component}
+          onChange={onChange}
+        />
       );
       break;
     case "SocialFeed":

@@ -20,3 +20,7 @@ export const Bounded: StoryObj<typeof RecommendationCarousel> = {
 export const Mobile: StoryObj<typeof RecommendationCarousel> = {
   parameters: { viewport: { defaultViewport: "mobile1" } },
 };
+
+export const ResponsiveItems: StoryObj<typeof RecommendationCarousel> = {
+  args: { desktopItems: 4, tabletItems: 2, mobileItems: 1 },
+};

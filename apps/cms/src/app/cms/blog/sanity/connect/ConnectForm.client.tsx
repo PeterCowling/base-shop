@@ -11,6 +11,7 @@ import { deleteSanityConfig } from "@cms/actions/deleteSanityConfig";
 interface FormState {
   message?: string;
   error?: string;
+  errorCode?: string;
 }
 
 interface Props {
@@ -18,7 +19,7 @@ interface Props {
   initial?: { projectId: string; dataset: string; token?: string };
 }
 
-const initialState: FormState = { message: "", error: "" };
+const initialState: FormState = { message: "", error: "", errorCode: "" };
 
 export default function ConnectForm({ shopId, initial }: Props) {
   const saveAction = saveSanityConfig.bind(null, shopId);

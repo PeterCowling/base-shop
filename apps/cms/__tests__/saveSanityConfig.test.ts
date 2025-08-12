@@ -109,6 +109,7 @@ describe("saveSanityConfig", () => {
     (setupSanityBlog as jest.Mock).mockResolvedValue({
       success: false,
       error: "fail",
+      code: "DATASET_CREATE_ERROR",
     });
 
     const fd = new FormData();
@@ -119,6 +120,6 @@ describe("saveSanityConfig", () => {
     fd.set("createDataset", "true");
 
     const res = await saveSanityConfig("shop", fd);
-    expect(res).toEqual({ error: "fail" });
+    expect(res).toEqual({ error: "fail", errorCode: "DATASET_CREATE_ERROR" });
   });
 });

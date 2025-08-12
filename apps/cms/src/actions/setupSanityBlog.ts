@@ -8,9 +8,16 @@ interface SanityCredentials {
   token: string;
 }
 
+export type SetupSanityBlogErrorCode =
+  | "DATASET_LIST_ERROR"
+  | "DATASET_CREATE_ERROR"
+  | "SCHEMA_UPLOAD_ERROR"
+  | "UNKNOWN_ERROR";
+
 interface Result {
   success: boolean;
   error?: string;
+  code?: SetupSanityBlogErrorCode;
 }
 
 /**
@@ -33,9 +40,16 @@ export async function setupSanityBlog(
       {
         headers: { Authorization: `Bearer ${token}` },
       },
-    );
-    if (!listRes.ok) {
-      throw new Error("Failed to list datasets");
+    ).catch((err) => {
+      console.error("[setupSanityBlog]", err);
+      return null;
+    });
+    if (!listRes || !listRes.ok) {
+      return {
+        success: false,
+        error: "Failed to list datasets",
+        code: "DATASET_LIST_ERROR",
+      };
     }
     const json = (await listRes.json()) as { datasets?: { name: string }[] };
     const exists = json.datasets?.some((d) => d.name === dataset);
@@ -52,9 +66,16 @@ export async function setupSanityBlog(
           },
           body: JSON.stringify({ aclMode }),
         },
-      );
-      if (!createRes.ok) {
-        throw new Error("Failed to create dataset");
+      ).catch((err) => {
+        console.error("[setupSanityBlog]", err);
+        return null;
+      });
+      if (!createRes || !createRes.ok) {
+        return {
+          success: false,
+          error: "Failed to create dataset",
+          code: "DATASET_CREATE_ERROR",
+        };
       }
     }
 
@@ -117,15 +138,26 @@ export async function setupSanityBlog(
           ],
         }),
       },
-    );
-    if (!schemaRes.ok) {
-      throw new Error("Failed to upload schema");
+    ).catch((err) => {
+      console.error("[setupSanityBlog]", err);
+      return null;
+    });
+    if (!schemaRes || !schemaRes.ok) {
+      return {
+        success: false,
+        error: "Failed to upload schema",
+        code: "SCHEMA_UPLOAD_ERROR",
+      };
     }
 
     return { success: true };
   } catch (err) {
     console.error("[setupSanityBlog]", err);
-    return { success: false, error: (err as Error).message };
+    return {
+      success: false,
+      error: (err as Error).message,
+      code: "UNKNOWN_ERROR",
+    };
   }
 }
 

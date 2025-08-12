@@ -20,17 +20,23 @@ export async function saveSanityConfig(
   const dataset = String(formData.get("dataset") ?? "");
   const token = String(formData.get("token") ?? "");
   const aclMode = String(formData.get("aclMode") ?? "public");
+  const createDataset = String(formData.get("createDataset") ?? "false") === "true";
 
   const config = { projectId, dataset, token };
 
-  const valid = await verifyCredentials(config);
-  if (!valid) {
-    return { error: "Invalid Sanity credentials" };
-  }
-
-  const setup = await setupSanityBlog(config, aclMode as "public" | "private");
-  if (!setup.success) {
-    return { error: setup.error ?? "Failed to setup Sanity blog" };
+  if (createDataset) {
+    const setup = await setupSanityBlog(
+      config,
+      aclMode as "public" | "private",
+    );
+    if (!setup.success) {
+      return { error: setup.error ?? "Failed to setup Sanity blog" };
+    }
+  } else {
+    const valid = await verifyCredentials(config);
+    if (!valid) {
+      return { error: "Invalid Sanity credentials" };
+    }
   }
 
   const shop = await getShopById(shopId);

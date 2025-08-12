@@ -2,12 +2,11 @@
 "use client";
 
 import { useFormState, useFormStatus } from "react-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast } from "@ui";
 import { saveSanityConfig } from "@cms/actions/saveSanityConfig";
 import { deleteSanityConfig } from "@cms/actions/deleteSanityConfig";
-import { connectSanity } from "@cms/actions/sanity.server";
 
 interface FormState {
   message?: string;
@@ -34,23 +33,44 @@ export default function ConnectForm({ shopId, initial }: Props) {
   const [projectId, setProjectId] = useState(initial?.projectId ?? "");
   const [dataset, setDataset] = useState(initial?.dataset ?? "");
   const [token, setToken] = useState(initial?.token ?? "");
+  const [datasets, setDatasets] = useState<string[]>(
+    initial?.dataset ? [initial.dataset] : [],
+  );
+  const [isAddingDataset, setIsAddingDataset] = useState(false);
   const [aclMode, setAclMode] = useState<"public" | "private">("public");
   const [verifyStatus, setVerifyStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
 
   async function verify() {
-    if (!projectId || !dataset || !token) {
+    if (!projectId || !token) {
       return;
     }
     setVerifyStatus("loading");
-    const fd = new FormData();
-    fd.append("projectId", projectId);
-    fd.append("dataset", dataset);
-    fd.append("token", token);
-    const valid = await connectSanity(fd);
-    setVerifyStatus(valid ? "success" : "error");
+    try {
+      const res = await fetch(
+        `https://api.sanity.io/v1/projects/${projectId}/datasets`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      if (!res.ok) throw new Error("Failed to fetch datasets");
+      const json = (await res.json()) as {
+        datasets?: { name: string }[];
+      };
+      setDatasets(json.datasets?.map((d) => d.name) ?? []);
+      setVerifyStatus("success");
+    } catch {
+      setVerifyStatus("error");
+    }
   }
+
+  useEffect(() => {
+    if (projectId && token) {
+      void verify();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const message = state.message || disconnectState.message;
   const error = state.error || disconnectState.error;
@@ -82,14 +102,46 @@ export default function ConnectForm({ shopId, initial }: Props) {
           <label className="block text-sm font-medium" htmlFor="dataset">
             Dataset
           </label>
+          {isAddingDataset ? (
+            <input
+              id="dataset"
+              name="dataset"
+              className="w-full rounded border p-2"
+              value={dataset}
+              onChange={(e) => setDataset(e.target.value)}
+              required
+            />
+          ) : (
+            <select
+              id="dataset"
+              name="dataset"
+              className="w-full rounded border p-2"
+              value={dataset}
+              onChange={(e) => {
+                if (e.target.value === "__add__") {
+                  setIsAddingDataset(true);
+                  setDataset("");
+                } else {
+                  setDataset(e.target.value);
+                }
+              }}
+              required
+            >
+              <option value="" disabled>
+                Select dataset
+              </option>
+              {datasets.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+              <option value="__add__">Add dataset</option>
+            </select>
+          )}
           <input
-            id="dataset"
-            name="dataset"
-            className="w-full rounded border p-2"
-            value={dataset}
-            onChange={(e) => setDataset(e.target.value)}
-            onBlur={verify}
-            required
+            type="hidden"
+            name="createDataset"
+            value={isAddingDataset ? "true" : "false"}
           />
           <p className="text-xs text-muted-foreground">
             Dataset with read and write permissions.

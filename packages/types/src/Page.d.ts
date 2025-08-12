@@ -223,6 +223,12 @@ export interface MultiColumnComponent extends PageComponentBase {
   gap?: string;
   children?: PageComponent[];
 }
+export interface TabsComponent extends PageComponentBase {
+  type: "Tabs";
+  labels?: string[];
+  active?: number;
+  children?: PageComponent[];
+}
 export type PageComponent =
   | AnnouncementBarComponent
   | HeroBannerComponent
@@ -250,7 +256,8 @@ export type PageComponent =
   | SocialLinksComponent
   | SocialFeedComponent
   | SectionComponent
-  | MultiColumnComponent;
+  | MultiColumnComponent
+  | TabsComponent;
 export declare const pageSchema: z.ZodObject<
   {
     id: z.ZodString;

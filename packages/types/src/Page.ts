@@ -247,6 +247,13 @@ export interface MultiColumnComponent extends PageComponentBase {
   children?: PageComponent[];
 }
 
+export interface TabsComponent extends PageComponentBase {
+  type: "Tabs";
+  labels?: string[];
+  active?: number;
+  children?: PageComponent[];
+}
+
 export type PageComponent =
   | AnnouncementBarComponent
   | HeroBannerComponent
@@ -276,7 +283,8 @@ export type PageComponent =
   | SocialLinksComponent
   | SocialFeedComponent
   | SectionComponent
-  | MultiColumnComponent;
+  | MultiColumnComponent
+  | TabsComponent;
 
 const baseComponentSchema = z
   .object({
@@ -518,6 +526,14 @@ const multiColumnComponentSchema: z.ZodType<MultiColumnComponent> =
     children: z.array(z.lazy(() => pageComponentSchema)).default([]),
   });
 
+const tabsComponentSchema: z.ZodType<TabsComponent> =
+  baseComponentSchema.extend({
+    type: z.literal("Tabs"),
+    labels: z.array(z.string()).default([]),
+    active: z.number().optional(),
+    children: z.array(z.lazy(() => pageComponentSchema)).default([]),
+  });
+
 export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
   z.discriminatedUnion("type", [
     announcementBarComponentSchema,
@@ -549,6 +565,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     buttonComponentSchema,
     sectionComponentSchema,
     multiColumnComponentSchema,
+    tabsComponentSchema,
   ])
 );
 

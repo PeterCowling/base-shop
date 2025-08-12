@@ -6,17 +6,21 @@ import {
 } from "@platform-core/repositories/rentalOrders.server";
 
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 export const runtime = "edge";
 
+const schema = z.object({
+  sessionId: z.string(),
+  damage: z.union([z.string(), z.number()]).optional(),
+});
+
 export async function POST(req: NextRequest) {
-  const { sessionId, damage } = (await req.json()) as {
-    sessionId?: string;
-    damage?: string | number;
-  };
-  if (!sessionId) {
-    return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
+  const parsed = schema.safeParse(await req.json());
+  if (!parsed.success) {
+    return NextResponse.json({ errors: parsed.error.flatten() }, { status: 400 });
   }
+  const { sessionId, damage } = parsed.data;
 
   const order = await markReturned("bcd", sessionId);
   if (!order) {

@@ -149,6 +149,7 @@ describe("/api/return", () => {
 
   test("returns 400 for invalid request body", async () => {
     const { POST } = await import("../src/api/return/route");
-    await expect(POST({ json: async () => null } as any)).rejects.toThrow();
+    const res = await POST({ json: async () => null } as any);
+    expect(res.status).toBe(400);
   });
 });

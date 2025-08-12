@@ -28,6 +28,7 @@ const meta: Meta<typeof SearchResultsTemplate> = {
     minItems: 1,
     maxItems: 4,
     isLoading: false,
+    query: "",
   },
   argTypes: {
     minItems: { control: { type: "number" } },

@@ -14,6 +14,8 @@ export interface SearchBarProps {
   placeholder?: string;
   /** Accessible label for the search input */
   label: string;
+  /** Optional search query to display */
+  query?: string;
 }
 
 export function SearchBar({
@@ -22,12 +24,17 @@ export function SearchBar({
   onSearch,
   placeholder = "Search…",
   label,
+  query: initialQuery = "",
 }: SearchBarProps) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [matches, setMatches] = useState<string[]>([]);
   const [isSelecting, setIsSelecting] = useState(false);
   const [focused, setFocused] = useState(false);
   const inputId = useId();
+
+  useEffect(() => {
+    setQuery(initialQuery);
+  }, [initialQuery]);
 
   useEffect(() => {
     if (isSelecting || !focused) {

@@ -70,7 +70,9 @@ describe("validate-env script", () => {
     await import("../../dist-scripts/validate-env.js").catch(() => {});
 
     expect(exitSpy).toHaveBeenCalledWith(1);
-    expect(errorSpy.mock.calls[0][0]).toBe("Invalid environment variables:\n");
+    expect(errorSpy.mock.calls[0][0]).toBe(
+      "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is required",
+    );
     expect(logSpy).not.toHaveBeenCalled();
   });
 
@@ -89,6 +91,30 @@ describe("validate-env script", () => {
 
     expect(exitSpy).toHaveBeenCalledWith(1);
     expect(errorSpy).toHaveBeenCalledWith("Missing apps/shop-abc/.env");
+    expect(logSpy).not.toHaveBeenCalled();
+  });
+
+  it("exits 1 for invalid DEPOSIT_RELEASE values", async () => {
+    existsSyncMock.mockReturnValue(true);
+    readFileSyncMock.mockReturnValue(
+      "STRIPE_SECRET_KEY=sk\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk\nCART_COOKIE_SECRET=secret\nDEPOSIT_RELEASE_ENABLED=maybe\nDEPOSIT_RELEASE_INTERVAL_MS=foo\n",
+    );
+
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const exitSpy = jest
+      .spyOn(process, "exit")
+      .mockImplementation(((code?: number) => {
+        throw new Error(`exit:${code}`);
+      }) as never);
+
+    await import("../../dist-scripts/validate-env.js").catch(() => {});
+
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    expect(errorSpy.mock.calls).toEqual([
+      ["DEPOSIT_RELEASE_ENABLED must be true or false"],
+      ["DEPOSIT_RELEASE_INTERVAL_MS must be a number"],
+    ]);
     expect(logSpy).not.toHaveBeenCalled();
   });
 });

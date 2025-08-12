@@ -2,6 +2,10 @@ export {};
 
 let service: typeof import("@acme/platform-machine");
 
+process.env.STRIPE_SECRET_KEY = "sk";
+process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
+process.env.CART_COOKIE_SECRET = "secret";
+
 const readdir = jest.fn();
 const readFile = jest.fn();
 jest.mock("node:fs/promises", () => ({ readdir, readFile }));

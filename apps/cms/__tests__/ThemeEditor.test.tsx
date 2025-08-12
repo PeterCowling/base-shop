@@ -115,4 +115,52 @@ describe("ThemeEditor", () => {
     const fd = mock.mock.calls[0][1] as FormData;
     expect(JSON.parse(fd.get("themeOverrides") as string)).toEqual({});
   });
+
+  it("converts HSL tokens to hex for color input", () => {
+    const tokensByTheme = { base: { "--color-bg": "0 0% 100%" } };
+    render(
+      <ThemeEditor
+        shop="test"
+        themes={["base"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={{}}
+      />
+    );
+
+    const colorInput = screen.getByLabelText("--color-bg", {
+      selector: 'input[type="color"]',
+    });
+    expect(colorInput).toHaveValue("#ffffff");
+  });
+
+  it("stores HSL overrides in original format", async () => {
+    const tokensByTheme = { base: { "--color-bg": "0 0% 100%" } };
+    const mock = updateShop as jest.Mock;
+    mock.mockClear();
+    mock.mockResolvedValue({});
+
+    render(
+      <ThemeEditor
+        shop="test"
+        themes={["base"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={{}}
+      />
+    );
+
+    const colorInput = screen.getByLabelText("--color-bg", {
+      selector: 'input[type="color"]',
+    });
+    fireEvent.change(colorInput, { target: { value: "#000000" } });
+
+    fireEvent.click(screen.getByRole("button", { name: /save/i }));
+
+    await waitFor(() => expect(mock).toHaveBeenCalled());
+    const fd = mock.mock.calls[0][1] as FormData;
+    expect(JSON.parse(fd.get("themeOverrides") as string)).toEqual({
+      "--color-bg": "0 0% 0%",
+    });
+  });
 });

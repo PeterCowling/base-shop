@@ -26,7 +26,7 @@ export interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
 export const Header = React.forwardRef<HTMLElement, HeaderProps>(
   (
     { nav = [], searchSuggestions = [], locale, logo, className, ...props },
-    ref,
+    ref
   ) => (
     <header
       ref={ref}
@@ -42,40 +42,43 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
             </a>
           )}
           <nav className="flex gap-6">
-          {nav.map((section) => (
-            <div key={section.title} className="group relative">
-              <a
-                href={section.href}
-                className="font-medium"
-                data-token="--color-fg"
-              >
-                {section.title}
-              </a>
-              {section.items && section.items.length > 0 && (
-                <div className="bg-background absolute top-full left-0 z-10 hidden min-w-[12rem] rounded-md border p-4 shadow-lg group-hover:block">
-                  <ul className="flex flex-col gap-2">
-                    {section.items.map((item) => (
-                      <li key={item.title}>
-                        <a
-                          href={item.href}
-                          className="hover:underline"
-                          data-token="--color-fg"
-                        >
-                          {item.title}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          ))}
+            {nav.map((section) => (
+              <div key={section.title} className="group relative">
+                <a
+                  href={section.href}
+                  className="font-medium"
+                  data-token="--color-fg"
+                >
+                  {section.title}
+                </a>
+                {section.items && section.items.length > 0 && (
+                  <div className="bg-background absolute top-full left-0 z-10 hidden min-w-[12rem] rounded-md border p-4 shadow-lg group-hover:block">
+                    <ul className="flex flex-col gap-2">
+                      {section.items.map((item) => (
+                        <li key={item.title}>
+                          <a
+                            href={item.href}
+                            className="hover:underline"
+                            data-token="--color-fg"
+                          >
+                            {item.title}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ))}
           </nav>
         </div>
 
         <div className="flex flex-1 justify-end gap-4">
           <div className="max-w-xs flex-1">
-            <SearchBar suggestions={searchSuggestions} />
+            <SearchBar
+              suggestions={searchSuggestions}
+              label="Search products"
+            />
           </div>
           <LanguageSwitcher current={locale} />
         </div>

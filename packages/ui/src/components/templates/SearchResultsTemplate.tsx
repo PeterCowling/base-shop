@@ -37,9 +37,14 @@ export function SearchResultsTemplate({
         suggestions={suggestions}
         onSelect={onQueryChange}
         placeholder="Search products…"
+        label="Search products"
       />
       {results.length > 0 ? (
-        <ProductGrid products={results} minItems={minItems} maxItems={maxItems} />
+        <ProductGrid
+          products={results}
+          minItems={minItems}
+          maxItems={maxItems}
+        />
       ) : (
         <p>No results found.</p>
       )}

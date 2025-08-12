@@ -1,7 +1,7 @@
 "use client";
 
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useId } from "react";
 import { Input } from "../atoms/shadcn";
 
 export interface SearchBarProps {
@@ -10,15 +10,19 @@ export interface SearchBarProps {
   /** Callback when a suggestion is selected */
   onSelect?(value: string): void;
   placeholder?: string;
+  /** Accessible label for the search input */
+  label: string;
 }
 
 export function SearchBar({
   suggestions,
   onSelect,
   placeholder = "Search…",
+  label,
 }: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [matches, setMatches] = useState<string[]>([]);
+  const inputId = useId();
 
   useEffect(() => {
     if (!query) {
@@ -39,8 +43,13 @@ export function SearchBar({
 
   return (
     <div className="relative w-full max-w-sm">
+      <label htmlFor={inputId} className="sr-only">
+        {label}
+      </label>
       <Input
+        id={inputId}
         type="search"
+        aria-label={label}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}

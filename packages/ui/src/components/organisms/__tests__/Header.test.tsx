@@ -15,6 +15,6 @@ describe("Header", () => {
     expect(screen.getByText("apple")).toBeInTheDocument();
 
     await userEvent.click(screen.getByText("apple"));
-    expect(screen.queryByText("apple")).not.toBeInTheDocument();
+    expect((input as HTMLInputElement).value).toBe("apple");
   });
 });

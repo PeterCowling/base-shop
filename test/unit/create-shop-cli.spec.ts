@@ -15,7 +15,7 @@ function loadParseArgs() {
   const sandbox: any = {
     exports: {},
     module: { exports: {} },
-    process: { exit: jest.fn() },
+    process: { version: 'v20.0.0', exit: jest.fn() },
     console: { error: jest.fn() },
     require,
   };
@@ -95,15 +95,18 @@ function runCli(args: string[]) {
   const sandbox: any = {
     exports: {},
     module: { exports: {} },
-    process: { argv: ["node", "script", ...args], exit: jest.fn() },
+    process: { argv: ["node", "script", ...args], version: 'v20.0.0', exit: jest.fn() },
     console: { error: jest.fn() },
     require: (p: string) => {
       if (p.includes("packages/platform-core/src/createShop")) {
-        if (p.endsWith("defaultPaymentProviders")) {
-          return { defaultPaymentProviders: ["stripe", "paypal"] };
-        }
-        if (p.endsWith("defaultShippingProviders")) {
-          return { defaultShippingProviders: ["dhl", "ups"] };
+        if (p.endsWith("listProviders")) {
+          return {
+            listProviders: jest.fn((kind: string) =>
+              Promise.resolve(
+                kind === "payment" ? ["stripe", "paypal"] : ["dhl", "ups"]
+              )
+            ),
+          };
         }
         return { createShop: jest.fn() };
       }

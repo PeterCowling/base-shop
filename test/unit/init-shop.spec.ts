@@ -10,6 +10,8 @@ describe('init-shop wizard', () => {
       'demo',
       'Demo Shop',
       '',
+      '',
+      '',
       'base',
       'template-app',
       '1,2',
@@ -61,11 +63,16 @@ describe('init-shop wizard', () => {
         if (p.includes('@config/src/env')) {
           return { envSchema: { parse: envParse } };
         }
-        if (p.includes('../../packages/platform-core/src/createShop/defaultPaymentProviders')) {
-          return { defaultPaymentProviders: ['stripe', 'paypal'] };
-        }
-        if (p.includes('../../packages/platform-core/src/createShop/defaultShippingProviders')) {
-          return { defaultShippingProviders: ['dhl', 'ups'] };
+        if (p.includes('../../packages/platform-core/src/createShop/listProviders')) {
+          return {
+            listProviders: jest.fn((kind: string) =>
+              Promise.resolve(
+                kind === 'payment'
+                  ? ['stripe', 'paypal']
+                  : ['dhl', 'ups']
+              )
+            ),
+          };
         }
         if (p.includes('../../packages/platform-core/src/createShop')) {
           return { createShop };
@@ -91,6 +98,8 @@ describe('init-shop wizard', () => {
     expect(questions).toEqual([
       'Shop ID: ',
       'Display name (optional): ',
+      'Logo URL (optional): ',
+      'Contact email (optional): ',
       'Shop type (sale or rental) [sale]: ',
       'Theme [base]: ',
       'Template [template-app]: ',
@@ -99,14 +108,18 @@ describe('init-shop wizard', () => {
       'Setup CI workflow? (y/N): ',
     ]);
 
-    expect(createShop).toHaveBeenCalledWith('shop-demo', {
-      name: 'Demo Shop',
-      type: 'sale',
-      theme: 'base',
-      template: 'template-app',
-      payment: ['stripe', 'paypal'],
-      shipping: ['dhl'],
-    });
+    expect(createShop).toHaveBeenCalledWith(
+      'shop-demo',
+      {
+        name: 'Demo Shop',
+        type: 'sale',
+        theme: 'base',
+        template: 'template-app',
+        payment: ['stripe', 'paypal'],
+        shipping: ['dhl'],
+      },
+      { deploy: true }
+    );
 
     expect(envParse).toHaveBeenCalledWith({
       STRIPE_SECRET_KEY: '',

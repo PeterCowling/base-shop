@@ -24,6 +24,7 @@ import Button from "./Button";
 import PricingTable from "./PricingTable";
 import SocialFeed from "./SocialFeed";
 import NewsletterSignup from "./NewsletterSignup";
+import Tabs from "./Tabs";
 
 export {
   BlogListing,
@@ -52,6 +53,7 @@ export {
   Button,
   NewsletterSignup,
   PricingTable,
+  Tabs,
 };
 
 export * from "./atoms";

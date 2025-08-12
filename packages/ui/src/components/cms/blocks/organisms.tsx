@@ -19,6 +19,7 @@ import SocialLinks from "./SocialLinks";
 import SocialFeed from "./SocialFeed";
 import PricingTable from "./PricingTable";
 import NewsletterSignup from "./NewsletterSignup";
+import Tabs from "./Tabs";
 
 export const organismRegistry = {
   AnnouncementBar,
@@ -42,6 +43,7 @@ export const organismRegistry = {
   SocialFeed,
   NewsletterSignup,
   PricingTable,
+  Tabs,
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

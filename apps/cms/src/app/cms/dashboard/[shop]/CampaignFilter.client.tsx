@@ -6,25 +6,24 @@ export function CampaignFilter({ campaigns }: { campaigns: string[] }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const selected = searchParams.get("campaign") ?? "";
+  const selected = searchParams.getAll("campaign");
 
   return (
     <select
+      multiple
       className="mb-4 rounded border p-1"
       value={selected}
       onChange={(e) => {
         const params = new URLSearchParams(searchParams.toString());
-        const value = e.target.value;
-        if (value) {
-          params.set("campaign", value);
-        } else {
-          params.delete("campaign");
+        params.delete("campaign");
+        const values = Array.from(e.target.selectedOptions).map((o) => o.value);
+        for (const v of values) {
+          if (v) params.append("campaign", v);
         }
         const query = params.toString();
         router.push(query ? `${pathname}?${query}` : pathname);
       }}
     >
-      <option value="">All campaigns</option>
       {campaigns.map((c) => (
         <option key={c} value={c}>
           {c}

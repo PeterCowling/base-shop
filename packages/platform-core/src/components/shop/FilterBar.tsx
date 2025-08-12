@@ -50,6 +50,10 @@ export default function FilterBar({
     }));
   }
 
+  function handleClear() {
+    setValues({});
+  }
+
   return (
     <form
       aria-label="Filters"
@@ -87,6 +91,13 @@ export default function FilterBar({
           </label>
         )
       )}
+      <button
+        type="button"
+        onClick={handleClear}
+        className="text-sm underline"
+      >
+        Clear Filters
+      </button>
     </form>
   );
 }

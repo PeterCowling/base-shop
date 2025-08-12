@@ -17,6 +17,8 @@ export interface SearchResultsTemplateProps
   maxItems?: number;
   onQueryChange?: (query: string) => void;
   onPageChange?: (page: number) => void;
+  /** Optional filters to render between the search bar and results */
+  filters?: React.ReactNode;
 }
 
 export function SearchResultsTemplate({
@@ -28,6 +30,7 @@ export function SearchResultsTemplate({
   maxItems,
   onQueryChange,
   onPageChange,
+  filters,
   className,
   ...props
 }: SearchResultsTemplateProps) {
@@ -38,6 +41,7 @@ export function SearchResultsTemplate({
         onSelect={onQueryChange}
         placeholder="Search products…"
       />
+      {filters}
       {results.length > 0 ? (
         <ProductGrid products={results} minItems={minItems} maxItems={maxItems} />
       ) : (

@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react";
+import FilterBar from "@platform-core/src/components/shop/FilterBar";
 import type { Product } from "../organisms/ProductCard";
 import { SearchResultsTemplate } from "./SearchResultsTemplate";
 
@@ -35,3 +36,10 @@ const meta: Meta<typeof SearchResultsTemplate> = {
 export default meta;
 
 export const Default: StoryObj<typeof SearchResultsTemplate> = {};
+
+export const WithFilters: StoryObj<typeof SearchResultsTemplate> = {
+  args: {
+    ...meta.args,
+    filters: <FilterBar onChange={() => undefined} />,
+  },
+};

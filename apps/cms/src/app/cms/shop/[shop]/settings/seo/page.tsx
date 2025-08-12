@@ -5,7 +5,9 @@ import dynamic from "next/dynamic";
 import SeoProgressPanel from "./SeoProgressPanel";
 
 const SeoEditor = dynamic(() => import("./SeoEditor"));
+const SeoAuditPanel = dynamic(() => import("./SeoAuditPanel"));
 void SeoEditor;
+void SeoAuditPanel;
 
 export const revalidate = 0;
 
@@ -34,6 +36,7 @@ export default async function SeoSettingsPage({
         initialSeo={seo}
         initialFreeze={freeze}
       />
+      <SeoAuditPanel shop={shop} />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import {
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
+import { logger } from "./logger";
 
 const DATA_ROOT = resolveDataRoot();
 
@@ -38,12 +39,16 @@ export async function releaseDepositsOnce(
             });
           }
           await markRefunded(shop, order.sessionId);
-          console.log(`refunded deposit for ${order.sessionId} (${shop})`);
+          logger.info("refunded deposit", {
+            shopId: shop,
+            sessionId: order.sessionId,
+          });
         } catch (err) {
-          console.error(
-            `failed to release deposit for ${order.sessionId} (${shop})`,
-            err
-          );
+          logger.error("failed to release deposit", {
+            shopId: shop,
+            sessionId: order.sessionId,
+            error: err,
+          });
         }
       }
     }
@@ -115,7 +120,10 @@ export async function startDepositReleaseService(
       try {
         await releaseDepositsOnce(shop, dataRoot);
       } catch (err) {
-        console.error("deposit release failed", err);
+        logger.error("deposit release failed", {
+          shopId: shop,
+          error: err,
+        });
       }
     }
 

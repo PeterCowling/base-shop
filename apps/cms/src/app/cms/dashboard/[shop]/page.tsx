@@ -30,7 +30,6 @@ export default async function ShopDashboard({
   const emailOpenByDay: Record<string, number> = {};
   const emailClickByDay: Record<string, number> = {};
   const campaignSalesByDay: Record<string, number> = {};
-  const discountByDay: Record<string, number> = {};
   for (const e of filteredEvents) {
     const day = (e.timestamp || "").slice(0, 10);
     if (!day) continue;
@@ -41,9 +40,12 @@ export default async function ShopDashboard({
     } else if (e.type === "campaign_sale") {
       const amount = typeof e.amount === "number" ? e.amount : 0;
       campaignSalesByDay[day] = (campaignSalesByDay[day] || 0) + amount;
-    } else if (e.type === "discount_redeemed") {
-      discountByDay[day] = (discountByDay[day] || 0) + 1;
     }
+  }
+
+  const discountDays = new Set<string>();
+  for (const byDay of Object.values(aggregates.discount_redeemed)) {
+    for (const d of Object.keys(byDay)) discountDays.add(d);
   }
 
   const days = Array.from(
@@ -53,8 +55,7 @@ export default async function ShopDashboard({
       ...Object.keys(emailOpenByDay),
       ...Object.keys(emailClickByDay),
       ...Object.keys(campaignSalesByDay),
-      ...Object.keys(discountByDay),
-      ...Object.keys(aggregates.discount_redeemed),
+      ...Array.from(discountDays),
     ])
   ).sort();
 
@@ -88,14 +89,26 @@ export default async function ShopDashboard({
   };
   const discountRedemptions = {
     labels: days,
-    data: days.map((d) => discountByDay[d] || 0),
+    datasets: Object.entries(aggregates.discount_redeemed).map(
+      ([code, byDay]) => ({
+        label: code,
+        data: days.map((d) => byDay[d] || 0),
+      })
+    ),
   };
+
+  const topDiscounts = discountRedemptions.datasets
+    .map((d) => ({ code: d.label, count: d.data.reduce((a, b) => a + b, 0) }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 3);
 
   const totals = {
     emailOpens: emailOpens.data.reduce((a, b) => a + b, 0),
     emailClicks: emailClicks.data.reduce((a, b) => a + b, 0),
     campaignSales: campaignSales.data.reduce((a, b) => a + b, 0),
-    discountRedemptions: discountRedemptions.data.reduce((a, b) => a + b, 0),
+    discountRedemptions: discountRedemptions.datasets
+      .map((d) => d.data.reduce((a, b) => a + b, 0))
+      .reduce((a, b) => a + b, 0),
   };
   const maxTotal = Math.max(
     totals.emailOpens,
@@ -131,6 +144,18 @@ export default async function ShopDashboard({
         campaignSales={campaignSales}
         discountRedemptions={discountRedemptions}
       />
+      {topDiscounts.length > 0 && (
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold">Top Discount Codes</h3>
+          <ul className="list-disc list-inside">
+            {topDiscounts.map((d) => (
+              <li key={d.code}>
+                {d.code}: {d.count}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className="mt-8 space-y-4">
         <h3 className="text-lg font-semibold">Progress</h3>
         <div>

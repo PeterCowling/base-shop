@@ -24,7 +24,7 @@ export async function createShop(
 
   const prepared = prepareOptions(id, opts);
 
-  const themeOverrides: Record<string, string> = {};
+  const themeOverrides: Record<string, string> = prepared.themeOverrides;
   const themeDefaults = loadTokens(prepared.theme);
   const themeTokens = { ...themeDefaults, ...themeOverrides };
 
@@ -167,10 +167,13 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
   return loadTokens(theme);
 }
 
-export const createShopOptionsSchema =
-  baseCreateShopOptionsSchema.strict();
+export const createShopOptionsSchema = baseCreateShopOptionsSchema.strict();
 export { prepareOptions };
 export type { CreateShopOptions, PreparedCreateShopOptions };
-export { ensureTemplateExists, writeFiles, copyTemplate } from "./createShop/fsUtils";
+export {
+  ensureTemplateExists,
+  writeFiles,
+  copyTemplate,
+} from "./createShop/fsUtils";
 export { loadTokens, loadBaseTokens } from "./createShop/themeUtils";
 export { syncTheme };

@@ -245,6 +245,16 @@ After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:
 - `EMAIL_PROVIDER` – campaign email provider (`smtp`, `sendgrid`, or `resend`)
 - `SENDGRID_API_KEY` – API key for SendGrid when using the SendGrid provider
 - `RESEND_API_KEY` – API key for Resend when using the Resend provider
+- `SENDGRID_WEBHOOK_PUBLIC_KEY` – public key to verify SendGrid event webhook signatures
+- `RESEND_WEBHOOK_SECRET` – secret used to verify Resend webhook signatures
+
+SendGrid and Resend can be configured to POST event webhooks to:
+
+- `/api/marketing/email/provider-webhooks/sendgrid?shop=<SHOP_ID>`
+- `/api/marketing/email/provider-webhooks/resend?shop=<SHOP_ID>`
+
+Both endpoints verify the signatures using the environment variables above and
+map delivered, open, click, unsubscribe and bounce events to internal analytics.
 
 The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET`
 and `PREVIEW_TOKEN_SECRET`. Replace all placeholders with real values or supply

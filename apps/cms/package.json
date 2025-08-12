@@ -17,7 +17,8 @@
     "@acme/next-config": "workspace:*",
     "@acme/shared-utils": "workspace:*",
     "@themes/base": "workspace:*",
-    "color-contrast-checker": "^2.1.0"
+    "color-contrast-checker": "^2.1.0",
+    "@sendgrid/eventwebhook": "^7.2.7"
   },
   "devDependencies": {
     "next": "^15.3.4"

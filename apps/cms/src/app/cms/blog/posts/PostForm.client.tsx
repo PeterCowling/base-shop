@@ -99,10 +99,23 @@ function ProductPreview({ slug }: { slug: string }) {
   if (loading) return <div className="border p-2">Loading…</div>;
   if (error || !product)
     return <div className="border p-2 text-red-500">{error ?? "Not found"}</div>;
+  const available = (product.stock ?? 0) > 0;
   return (
-    <div className="border p-2 space-y-1">
-      <div className="font-semibold">{product.title}</div>
-      <div>{(product.price / 100).toFixed(2)}</div>
+    <div className="flex gap-2 border p-2">
+      {product.image && (
+        <img
+          src={product.image}
+          alt={product.title}
+          className="h-16 w-16 object-cover"
+        />
+      )}
+      <div className="space-y-1">
+        <div className="font-semibold">{product.title}</div>
+        <div>{(product.price / 100).toFixed(2)}</div>
+        <div className="text-sm">
+          {available ? "In stock" : "Out of stock"}
+        </div>
+      </div>
     </div>
   );
 }
@@ -240,13 +253,24 @@ function ProductSearch({
               <Button
                 type="button"
                 variant="outline"
+                className="flex items-center gap-2"
                 onClick={() =>
                   PortableTextEditor.insertBlock(editor, "productReference", {
                     slug: p.slug,
                   })
                 }
               >
-                {p.title}
+                {p.image && (
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    className="h-8 w-8 object-cover"
+                  />
+                )}
+                <span className="flex-1 text-left">{p.title}</span>
+                <span className="text-sm">
+                  {(p.price / 100).toFixed(2)}
+                </span>
               </Button>
             </li>
           ))}

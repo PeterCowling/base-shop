@@ -1,21 +1,55 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { PRODUCTS } from "@/lib/products";
+import {
+  readRepo,
+  readInventory,
+} from "@platform-core/repositories/json.server";
+import type {
+  ProductPublication,
+} from "@platform-core/src/products";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const q = searchParams.get("q");
+  const q = searchParams.get("q")?.toLowerCase() ?? "";
   const slug = searchParams.get("slug");
+  const shop = searchParams.get("shop") ?? "abc";
+
+  const [catalogue, inventory] = await Promise.all([
+    readRepo<ProductPublication>(shop),
+    readInventory(shop),
+  ]);
+
+  const stock = new Map<string, number>();
+  for (const item of inventory) {
+    stock.set(
+      item.productId,
+      (stock.get(item.productId) ?? 0) + item.quantity,
+    );
+  }
+
+  const toSku = (p: ProductPublication) => ({
+    slug: p.sku ?? p.id,
+    title: p.title?.en ?? Object.values(p.title ?? {})[0] ?? "",
+    price: p.price ?? 0,
+    image: p.images?.[0] ?? "",
+    stock: stock.get(p.id) ?? 0,
+    availability: p.availability ?? [],
+  });
+
   if (slug) {
-    const product = PRODUCTS.find((p) => p.slug === slug);
-    if (!product) {
+    const product = catalogue.find(
+      (p) => p.sku === slug || p.id === slug,
+    );
+    if (!product)
       return NextResponse.json({ error: "Not found" }, { status: 404 });
-    }
-    return NextResponse.json(product);
+    return NextResponse.json(toSku(product));
   }
-  let matches = PRODUCTS;
+
+  let matches = catalogue;
   if (q) {
-    const norm = q.toLowerCase();
-    matches = matches.filter((p) => p.title.toLowerCase().includes(norm));
+    matches = matches.filter((p) => {
+      const title = p.title?.en ?? Object.values(p.title ?? {})[0] ?? "";
+      return title.toLowerCase().includes(q);
+    });
   }
-  return NextResponse.json(matches.slice(0, 5));
+  return NextResponse.json(matches.slice(0, 5).map(toSku));
 }

@@ -12,7 +12,7 @@ export const envSchema = z.object({
   NEXT_PUBLIC_DEFAULT_SHOP: z.string().optional(),
   NEXT_PUBLIC_SHOP_ID: z.string().optional(),
   SHOP_CODE: z.string().optional(),
-  CART_COOKIE_SECRET: z.string().min(1).optional(),
+  CART_COOKIE_SECRET: z.string().min(1),
   CART_TTL: z.coerce.number().optional(),
   CMS_SPACE_URL: z.string().url().optional(),
   CMS_ACCESS_TOKEN: z.string().optional(),

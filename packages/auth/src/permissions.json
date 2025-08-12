@@ -1,8 +1,38 @@
 {
   "viewer": ["view_products"],
-  "customer": ["view_products", "add_to_cart", "checkout", "manage_profile"],
-  "admin": ["view_products", "add_to_cart", "checkout", "manage_profile"],
-  "ShopAdmin": ["view_products", "add_to_cart", "checkout", "manage_profile"],
-  "CatalogManager": ["view_products", "add_to_cart", "checkout", "manage_profile"],
-  "ThemeEditor": ["view_products", "add_to_cart", "checkout", "manage_profile"]
+  "customer": [
+    "view_products",
+    "add_to_cart",
+    "checkout",
+    "manage_profile",
+    "manage_cart"
+  ],
+  "admin": [
+    "view_products",
+    "add_to_cart",
+    "checkout",
+    "manage_profile",
+    "manage_cart"
+  ],
+  "ShopAdmin": [
+    "view_products",
+    "add_to_cart",
+    "checkout",
+    "manage_profile",
+    "manage_cart"
+  ],
+  "CatalogManager": [
+    "view_products",
+    "add_to_cart",
+    "checkout",
+    "manage_profile",
+    "manage_cart"
+  ],
+  "ThemeEditor": [
+    "view_products",
+    "add_to_cart",
+    "checkout",
+    "manage_profile",
+    "manage_cart"
+  ]
 }

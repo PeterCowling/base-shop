@@ -1,6 +1,7 @@
 import { createShop } from "../../packages/platform-core/src/createShop";
 import { validateShopName } from "../../packages/platform-core/src/shops";
 import { spawnSync, execSync } from "node:child_process";
+import { readdirSync } from "node:fs";
 import { validateShopEnv } from "../../packages/platform-core/src/configurator";
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
@@ -66,6 +67,57 @@ async function selectProviders(
   return Array.from(result);
 }
 
+function listDirNames(path: URL): string[] {
+  return readdirSync(path, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name);
+}
+
+async function selectOption(
+  label: string,
+  options: readonly string[],
+  defIndex = 0
+): Promise<string> {
+  console.log(`Available ${label}:`);
+  options.forEach((p, i) => console.log(`  ${i + 1}) ${p}`));
+  while (true) {
+    const ans = await prompt(
+      `Select ${label} by number [${defIndex + 1}]: `,
+      String(defIndex + 1)
+    );
+    const idx = Number(ans) - 1;
+    if (!Number.isNaN(idx) && options[idx]) {
+      return options[idx];
+    }
+    console.error(`Invalid ${label} selection.`);
+  }
+}
+
+async function promptUrl(question: string): Promise<string | undefined> {
+  while (true) {
+    const ans = await prompt(question);
+    if (!ans) return undefined;
+    try {
+      new URL(ans);
+      return ans;
+    } catch {
+      console.error("Invalid URL.");
+    }
+  }
+}
+
+async function promptEmail(question: string): Promise<string | undefined> {
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  while (true) {
+    const ans = await prompt(question);
+    if (!ans) return undefined;
+    if (emailRe.test(ans)) {
+      return ans;
+    }
+    console.error("Invalid email address.");
+  }
+}
+
 async function main() {
   const rawId = await prompt("Shop ID: ");
   let shopId: string;
@@ -76,12 +128,24 @@ async function main() {
     process.exit(1);
   }
   const name = await prompt("Display name (optional): ");
-  const logo = await prompt("Logo URL (optional): ");
-  const contact = await prompt("Contact email (optional): ");
+  const logo = await promptUrl("Logo URL (optional): ");
+  const contact = await promptEmail("Contact email (optional): ");
   const typeAns = await prompt("Shop type (sale or rental) [sale]: ", "sale");
   const type = typeAns.toLowerCase() === "rental" ? "rental" : "sale";
-  const theme = await prompt("Theme [base]: ", "base");
-  const template = await prompt("Template [template-app]: ", "template-app");
+  const themes = listDirNames(new URL("../../packages/themes", import.meta.url));
+  const theme = await selectOption(
+    "theme",
+    themes,
+    Math.max(themes.indexOf("base"), 0)
+  );
+  const templates = listDirNames(new URL("../../packages", import.meta.url)).filter(
+    (n) => n.startsWith("template-")
+  );
+  const template = await selectOption(
+    "template",
+    templates,
+    Math.max(templates.indexOf("template-app"), 0)
+  );
   const paymentProviders = await listProviders("payment");
   const payment = await selectProviders("payment providers", paymentProviders);
   const shippingProviders = await listProviders("shipping");

@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 import FilterBar, {
   type FilterDefinition,
 } from "../src/components/shop/FilterBar";
@@ -32,6 +33,36 @@ describe("FilterBar", () => {
     await waitFor(() => {
       expect(onChange).toHaveBeenLastCalledWith({ size: undefined, maxPrice: undefined });
     });
+  });
+
+  it("defers rapid input changes", async () => {
+    const onChange = jest.fn();
+    const defs: FilterDefinition[] = [
+      { name: "maxPrice", label: "Max Price", type: "number" },
+    ];
+    render(<FilterBar definitions={defs} onChange={onChange} />);
+    const price = screen.getByLabelText(/Max Price/);
+
+    act(() => {
+      fireEvent.change(price, { target: { value: "1" } });
+      fireEvent.change(price, { target: { value: "12" } });
+      fireEvent.change(price, { target: { value: "123" } });
+    });
+
+    await waitFor(() => {
+      expect(onChange).toHaveBeenCalledTimes(2);
+      expect(onChange).toHaveBeenLastCalledWith({ maxPrice: 123 });
+    });
+  });
+
+  it("provides accessible labels", () => {
+    const onChange = jest.fn();
+    const defs: FilterDefinition[] = [
+      { name: "size", label: "Size", type: "select", options: ["39"] },
+    ];
+    render(<FilterBar definitions={defs} onChange={onChange} />);
+    expect(screen.getByRole("form", { name: /filters/i })).toBeInTheDocument();
+    expect(screen.getByLabelText(/Size/)).toBeInTheDocument();
   });
 });
 

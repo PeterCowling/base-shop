@@ -8,9 +8,18 @@ interface SanityCredentials {
   token: string;
 }
 
+interface SetupError {
+  code:
+    | "DATASET_LIST_FAILED"
+    | "DATASET_CREATE_FAILED"
+    | "SCHEMA_UPLOAD_FAILED"
+    | "UNKNOWN";
+  message: string;
+}
+
 interface Result {
   success: boolean;
-  error?: string;
+  error?: SetupError;
 }
 
 /**
@@ -35,7 +44,13 @@ export async function setupSanityBlog(
       },
     );
     if (!listRes.ok) {
-      throw new Error("Failed to list datasets");
+      return {
+        success: false,
+        error: {
+          code: "DATASET_LIST_FAILED",
+          message: "Failed to list datasets",
+        },
+      };
     }
     const json = (await listRes.json()) as { datasets?: { name: string }[] };
     const exists = json.datasets?.some((d) => d.name === dataset);
@@ -54,7 +69,13 @@ export async function setupSanityBlog(
         },
       );
       if (!createRes.ok) {
-        throw new Error("Failed to create dataset");
+        return {
+          success: false,
+          error: {
+            code: "DATASET_CREATE_FAILED",
+            message: "Failed to create dataset",
+          },
+        };
       }
     }
 
@@ -119,13 +140,25 @@ export async function setupSanityBlog(
       },
     );
     if (!schemaRes.ok) {
-      throw new Error("Failed to upload schema");
+      return {
+        success: false,
+        error: {
+          code: "SCHEMA_UPLOAD_FAILED",
+          message: "Failed to upload schema",
+        },
+      };
     }
 
     return { success: true };
   } catch (err) {
     console.error("[setupSanityBlog]", err);
-    return { success: false, error: (err as Error).message };
+    return {
+      success: false,
+      error: {
+        code: "UNKNOWN",
+        message: (err as Error).message,
+      },
+    };
   }
 }
 

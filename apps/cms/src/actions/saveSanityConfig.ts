@@ -30,7 +30,9 @@ export async function saveSanityConfig(
 
   const setup = await setupSanityBlog(config, aclMode as "public" | "private");
   if (!setup.success) {
-    return { error: setup.error ?? "Failed to setup Sanity blog" };
+    return {
+      error: setup.error?.message ?? "Failed to setup Sanity blog",
+    };
   }
 
   const shop = await getShopById(shopId);

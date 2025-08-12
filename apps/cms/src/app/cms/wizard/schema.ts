@@ -83,7 +83,8 @@ export const wizardStateSchema = z.object({
   /* ---------------- Template / theme ------------------ */
   template: z.string().optional().default(""),
   theme: z.string().optional().default(""),
-  themeVars: z.record(z.string()).optional().default(baseTokens),
+  themeDefaults: z.record(z.string()).optional().default(baseTokens),
+  themeOverrides: z.record(z.string()).optional().default({}),
 
   /* -------------- Commerce settings ------------------- */
   payment: z.array(z.string()).default([]),

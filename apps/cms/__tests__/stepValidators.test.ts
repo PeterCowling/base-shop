@@ -13,8 +13,8 @@ describe("step validators", () => {
     expect(validators.theme(base)).toBe(false);
   });
 
-  it("tokens require theme variables", () => {
-    const state = { ...base, themeVars: {} };
+  it("tokens require theme defaults", () => {
+    const state = { ...base, themeDefaults: {} };
     expect(validators.tokens(state)).toBe(false);
   });
 

@@ -11,24 +11,30 @@ import { useConfigurator } from "../ConfiguratorContext";
  */
 export function useThemeLoader(): React.CSSProperties {
   const { state, setState } = useConfigurator();
-  const { theme, themeVars } = state;
+  const { theme, themeDefaults, themeOverrides } = state;
 
   /* On initial mount ensure base tokens exist */
   useEffect(() => {
-    if (!themeVars || Object.keys(themeVars).length === 0) {
-      setState((prev) => ({ ...prev, themeVars: baseTokens }));
+    if (!themeDefaults || Object.keys(themeDefaults).length === 0) {
+      setState((prev) => ({
+        ...prev,
+        themeDefaults: baseTokens,
+        themeOverrides: {},
+      }));
     }
   }, []);
 
   /* Load tokens for selected theme */
   useEffect(() => {
     loadThemeTokens(theme).then((tv) => {
-      setState((prev) => ({ ...prev, themeVars: tv }));
+      setState((prev) => ({
+        ...prev,
+        themeDefaults: tv,
+        themeOverrides: {},
+      }));
     });
   }, [theme, setState]);
 
-  return Object.fromEntries(
-    Object.entries(themeVars ?? {}).map(([k, v]) => [k, v])
-  ) as React.CSSProperties;
+  return { ...themeDefaults, ...themeOverrides } as React.CSSProperties;
 }
 

@@ -157,6 +157,15 @@ export interface ProductCarouselComponent extends PageComponentBase {
   mode?: "collection" | "manual";
 }
 
+/** Grid of collections; `minItems`/`maxItems` clamp visible collections */
+export interface CollectionListComponent extends PageComponentBase {
+  type: "CollectionList";
+  collections?: { id: string; title: string; image: string }[];
+  desktopItems?: number;
+  tabletItems?: number;
+  mobileItems?: number;
+}
+
 /** Carousel of recommended products fetched from an API. `minItems`/`maxItems` limit visible products */
 export interface RecommendationCarouselComponent extends PageComponentBase {
   type: "RecommendationCarousel";
@@ -298,6 +307,7 @@ export type PageComponent =
   | ReviewsCarouselComponent
   | ProductGridComponent
   | ProductCarouselComponent
+  | CollectionListComponent
   | RecommendationCarouselComponent
   | GalleryComponent
   | ImageSliderComponent

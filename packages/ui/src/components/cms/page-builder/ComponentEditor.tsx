@@ -30,6 +30,7 @@ import FooterEditor from "./FooterEditor";
 import PricingTableEditor from "./PricingTableEditor";
 import NewsletterSignupEditor from "./NewsletterSignupEditor";
 import ImageSliderEditor from "./ImageSliderEditor";
+import CollectionListEditor from "./CollectionListEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -97,6 +98,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "ImageSlider":
       specific = <ImageSliderEditor component={component} onChange={onChange} />;
+      break;
+    case "CollectionList":
+      specific = (
+        <CollectionListEditor component={component} onChange={onChange} />
+      );
       break;
     case "ValueProps":
       specific = <ValuePropsEditor component={component} onChange={onChange} />;

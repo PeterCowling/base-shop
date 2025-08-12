@@ -21,6 +21,7 @@ import PricingTable from "./PricingTable";
 import NewsletterSignup from "./NewsletterSignup";
 import Tabs from "./Tabs";
 import ImageSlider from "./ImageSlider";
+import CollectionList from "./CollectionList";
 
 export const organismRegistry = {
   AnnouncementBar,
@@ -31,6 +32,7 @@ export const organismRegistry = {
   ProductCarousel,
   RecommendationCarousel,
   ImageSlider,
+  CollectionList,
   Gallery,
   ContactForm,
   ContactFormWithMap,

@@ -26,6 +26,7 @@ import SocialFeed from "./SocialFeed";
 import NewsletterSignup from "./NewsletterSignup";
 import Tabs from "./Tabs";
 import ImageSlider from "./ImageSlider";
+import CollectionList from "./CollectionList";
 
 export {
   BlogListing,
@@ -56,6 +57,7 @@ export {
   ImageSlider,
   PricingTable,
   Tabs,
+  CollectionList,
 };
 
 export * from "./atoms";

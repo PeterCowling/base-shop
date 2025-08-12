@@ -41,6 +41,7 @@ export function SearchResultsTemplate({
         onSelect={onQueryChange}
         onSearch={onQueryChange}
         placeholder="Search products…"
+        label="Search products"
       />
       {filters}
       {results.length > 0 ? (

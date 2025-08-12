@@ -31,6 +31,7 @@ describe("SearchResultsTemplate", () => {
         results={results}
         page={1}
         pageCount={1}
+        query=""
       />
     );
 
@@ -46,6 +47,7 @@ describe("SearchResultsTemplate", () => {
         results={[]}
         page={1}
         pageCount={1}
+        query=""
       />
     );
 
@@ -60,6 +62,7 @@ describe("SearchResultsTemplate", () => {
         page={1}
         pageCount={1}
         isLoading
+        query=""
       />
     );
 
@@ -76,6 +79,7 @@ describe("SearchResultsTemplate", () => {
         results={results}
         page={1}
         pageCount={3}
+        query=""
       />
     );
 
@@ -87,6 +91,7 @@ describe("SearchResultsTemplate", () => {
         results={results}
         page={1}
         pageCount={1}
+        query=""
       />
     );
 
@@ -102,6 +107,7 @@ describe("SearchResultsTemplate", () => {
         page={1}
         pageCount={1}
         onQueryChange={onQueryChange}
+        query=""
       />
     );
 

@@ -16,6 +16,8 @@ export interface SearchResultsTemplateProps
   minItems?: number;
   /** Maximum items to show */
   maxItems?: number;
+  /** Optional search query to display */
+  query?: string;
   onQueryChange?: (query: string) => void;
   onPageChange?: (page: number) => void;
   /** Optional filters to render between the search bar and results */
@@ -31,6 +33,7 @@ export function SearchResultsTemplate({
   pageCount,
   minItems,
   maxItems,
+  query,
   onQueryChange,
   onPageChange,
   filters,
@@ -41,6 +44,7 @@ export function SearchResultsTemplate({
   return (
     <div className={cn("space-y-6", className)} {...props}>
       <SearchBar
+        query={query}
         suggestions={suggestions}
         onSelect={onQueryChange}
         onSearch={onQueryChange}

@@ -18,7 +18,8 @@
     "@acme/next-config": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/stripe": "workspace:*",
-    "@acme/date-utils": "workspace:*"
+    "@acme/date-utils": "workspace:*",
+    "@acme/config": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.4"

@@ -1,34 +1,5 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    /* ---------- build-mode flags ---------- */
-    "composite": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "noEmit": false,
-    /* ---------- where emitted d.ts go ----- */
-    "outDir": "dist",
-    "declarationDir": "dist",
-    /* ---------- overrides / Next defaults -- */
-    "allowImportingTsExtensions": false,
-    "jsx": "preserve",
-    "target": "ES2017",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["node", "react", "react-dom"],
-    "skipLibCheck": true,
-    "strict": false,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "allowJs": true,
-    "incremental": true,
-    "isolatedModules": true
-  },
-  /* ---------- what this app itself owns --- */
+  "extends": "@acme/config/tsconfig.app.json",
   "include": ["src/**/*", ".next/types/**/*.ts"],
   "exclude": [
     "dist",
@@ -37,22 +8,11 @@
     "src/routes/preview/[pageId].ts",
     ".next"
   ],
-  /* ---------- build-order graph ----------- */
   "references": [
-    {
-      "path": "../../packages/types"
-    },
-    {
-      "path": "../../packages/platform-core"
-    },
-    {
-      "path": "../../packages/i18n"
-    },
-    {
-      "path": "../../packages/ui"
-    },
-    {
-      "path": "../../packages/lib"
-    }
+    { "path": "../../packages/types" },
+    { "path": "../../packages/platform-core" },
+    { "path": "../../packages/i18n" },
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/lib" }
   ]
 }

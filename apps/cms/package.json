@@ -15,7 +15,8 @@
     "@acme/next-config": "workspace:*",
     "@acme/shared-utils": "workspace:*",
     "@acme/email": "workspace:*",
-    "@acme/date-utils": "workspace:*"
+    "@acme/date-utils": "workspace:*",
+    "@acme/config": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.4"

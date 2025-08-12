@@ -5,7 +5,7 @@ import { readRepo } from "@platform-core/repositories/products.server";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { trackEvent } from "@platform-core/src/analytics";
 import type { ProductPublication } from "@acme/types";
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 
 const DEFAULT_FIELDS = ["id", "title", "description", "price", "images"] as const;
 type Field = (typeof DEFAULT_FIELDS)[number];
@@ -18,7 +18,7 @@ function parseIntOr(val: string | null, def: number): number {
 }
 
 export async function GET(req: NextRequest) {
-  const shop = env.NEXT_PUBLIC_SHOP_ID || "default";
+  const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
   const settings = await getShopSettings(shop);
   if (!settings.aiCatalog?.enabled) {
     return new NextResponse(null, { status: 404 });

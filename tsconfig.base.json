@@ -81,9 +81,9 @@
       "@auth/*": ["packages/auth/src/*"],
 
       /* ─── runtime config helper ─────────────────────────────────── */
-      "@config": ["packages/config/src/env.ts"],
-      "@config/*": ["packages/config/src/*"],
-      "@config/src/*": ["packages/config/src/*"],
+      "@config": ["packages/config/src/env/index.ts"],
+      "@config/*": ["packages/config/src/env/*"],
+      "@config/src/*": ["packages/config/src/env/*"],
 
       /* ─── shared utilities ──────────────────────────────────────── */
       "@shared-utils": ["packages/shared-utils/src/index.ts"],

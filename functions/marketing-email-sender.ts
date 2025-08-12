@@ -3,7 +3,7 @@ import path from "node:path";
 import { sendCampaignEmail } from "@acme/email";
 import { trackEvent } from "@platform-core/analytics";
 import { DATA_ROOT } from "@platform-core/dataRoot";
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 
 interface Campaign {
   id: string;
@@ -45,7 +45,7 @@ export async function sendScheduledCampaigns(): Promise<void> {
     let changed = false;
     for (const c of campaigns) {
       if (c.sentAt || new Date(c.sendAt) > now) continue;
-      const base = env.NEXT_PUBLIC_BASE_URL || "";
+      const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";
       const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
         shop
       )}&campaign=${encodeURIComponent(c.id)}`;

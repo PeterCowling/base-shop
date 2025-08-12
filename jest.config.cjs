@@ -88,6 +88,12 @@ module.exports = {
     "^@acme/config$": "<rootDir>/packages/config/src/env/index.ts",
     "^@acme/config/(.*)$": "<rootDir>/packages/config/src/$1",
 
+    // force a single React runtime
+    "^react$": "<rootDir>/node_modules/react/index.js",
+    "^react-dom$": "<rootDir>/node_modules/react-dom/index.js",
+    "^react/jsx-runtime$": "<rootDir>/node_modules/react/jsx-runtime.js",
+    "^react/jsx-dev-runtime$": "<rootDir>/node_modules/react/jsx-dev-runtime.js",
+
     // context mocks
     "^@platform-core/src/contexts/ThemeContext$":
       "<rootDir>/test/__mocks__/themeContextMock.tsx",

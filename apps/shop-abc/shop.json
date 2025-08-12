@@ -7,5 +7,11 @@
   "filterMappings": {},
   "priceOverrides": {},
   "localeOverrides": {},
-  "analyticsEnabled": true
+  "analyticsEnabled": true,
+  "plugins": {
+    "paypal": {
+      "clientId": "abc-client",
+      "secret": "abc-secret"
+    }
+  }
 }

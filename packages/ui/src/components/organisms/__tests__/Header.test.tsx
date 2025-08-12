@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Header } from "../Header";
 import "../../../../../../test/resetNextMocks";
@@ -15,6 +15,8 @@ describe("Header", () => {
     expect(screen.getByText("apple")).toBeInTheDocument();
 
     await userEvent.click(screen.getByText("apple"));
-    expect(screen.queryByText("apple")).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.queryByText("apple")).not.toBeInTheDocument()
+    );
   });
 });

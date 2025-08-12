@@ -36,6 +36,7 @@ export function SearchResultsTemplate({
       <SearchBar
         suggestions={suggestions}
         onSelect={onQueryChange}
+        onSearch={onQueryChange}
         placeholder="Search products…"
       />
       {results.length > 0 ? (

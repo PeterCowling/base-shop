@@ -9,18 +9,27 @@ export interface SearchBarProps {
   suggestions: string[];
   /** Callback when a suggestion is selected */
   onSelect?(value: string): void;
+  /** Callback when a search is manually submitted */
+  onSearch?(value: string): void;
   placeholder?: string;
 }
 
 export function SearchBar({
   suggestions,
   onSelect,
+  onSearch,
   placeholder = "Search…",
 }: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [matches, setMatches] = useState<string[]>([]);
+  const [isSelecting, setIsSelecting] = useState(false);
+  const [focused, setFocused] = useState(false);
 
   useEffect(() => {
+    if (isSelecting || !focused) {
+      setMatches([]);
+      return;
+    }
     if (!query) {
       setMatches([]);
       return;
@@ -29,9 +38,10 @@ export function SearchBar({
     setMatches(
       suggestions.filter((s) => s.toLowerCase().includes(q)).slice(0, 5)
     );
-  }, [query, suggestions]);
+  }, [query, suggestions, isSelecting, focused]);
 
   const handleSelect = (value: string) => {
+    setIsSelecting(true);
     setQuery(value);
     setMatches([]);
     onSelect?.(value);
@@ -43,6 +53,21 @@ export function SearchBar({
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            setMatches([]);
+            onSearch?.(query);
+          }
+        }}
+        onFocus={() => setFocused(true)}
+        onBlur={() => {
+          setFocused(false);
+          if (isSelecting) {
+            setIsSelecting(false);
+            return;
+          }
+          onSearch?.(query);
+        }}
         placeholder={placeholder}
         className="pr-8"
       />

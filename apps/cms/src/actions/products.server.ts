@@ -93,12 +93,20 @@ export async function updateProduct(
     title[l] = String(formEntries[`title_${l}`] ?? "");
     description[l] = String(formEntries[`desc_${l}`] ?? "");
   });
+  const images = (() => {
+    try {
+      return JSON.parse(String(formEntries.images ?? "[]"));
+    } catch {
+      return [];
+    }
+  })();
 
   const parsed = productSchema.safeParse({
     id: formEntries.id,
     price: formEntries.price,
     title,
     description,
+    images,
   });
   if (!parsed.success) {
     const { fieldErrors } = parsed.error.flatten();
@@ -108,7 +116,7 @@ export async function updateProduct(
   }
 
   const data: ProductForm = parsed.data;
-  const { id, price } = data;
+  const { id, price, images: nextImages } = data;
   const current = await getProductById(shop, id);
   if (!current) throw new Error(`Product ${id} not found in ${shop}`);
 
@@ -117,6 +125,7 @@ export async function updateProduct(
     title: { ...current.title, ...data.title },
     description: { ...current.description, ...data.description },
     price,
+    images: nextImages,
     row_version: current.row_version + 1,
     updated_at: nowIso(),
   };

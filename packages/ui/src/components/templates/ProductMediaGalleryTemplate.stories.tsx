@@ -7,7 +7,7 @@ const meta: Meta<typeof ProductMediaGalleryTemplate> = {
     product: {
       id: "1",
       title: "Media Product",
-      image: "/placeholder.svg",
+      images: [{ url: "/placeholder.svg", type: "image" }],
       price: 49,
       media: [
         { type: "image", src: "/placeholder.svg" },

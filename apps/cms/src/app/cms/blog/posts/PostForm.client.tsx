@@ -105,9 +105,9 @@ function ProductPreview({ slug }: { slug: string }) {
   const available = (product.stock ?? 0) > 0;
   return (
     <div className="flex gap-2 border p-2">
-      {product.image && (
+      {product.images?.[0] && (
         <img
-          src={product.image}
+          src={product.images[0].url}
           alt={product.title}
           className="h-16 w-16 object-cover"
         />

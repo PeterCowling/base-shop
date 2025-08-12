@@ -36,15 +36,17 @@ export function WishlistTemplate({
             key={item.id}
             className="flex items-center gap-4 border-b pb-4 last:border-b-0"
           >
-            <div className="relative h-16 w-16 shrink-0">
-              <Image
-                src={item.image}
-                alt={item.title}
-                fill
-                sizes="64px"
-                className="rounded object-cover"
-              />
-            </div>
+            {item.images[0] && (
+              <div className="relative h-16 w-16 shrink-0">
+                <Image
+                  src={item.images[0].url}
+                  alt={item.title}
+                  fill
+                  sizes="64px"
+                  className="rounded object-cover"
+                />
+              </div>
+            )}
             <div className="flex-1">
               <h3 className="font-medium">{item.title}</h3>
               <div className="text-muted-foreground flex items-center gap-2 text-sm">

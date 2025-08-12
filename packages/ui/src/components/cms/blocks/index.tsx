@@ -22,6 +22,7 @@ import CountdownTimer from "./CountdownTimer";
 import SocialLinks from "./SocialLinks";
 import Button from "./Button";
 import PricingTable from "./PricingTable";
+import SocialFeed from "./SocialFeed";
 
 export {
   BlogListing,
@@ -46,6 +47,7 @@ export {
   Header,
   Footer,
   SocialLinks,
+  SocialFeed,
   Button,
   PricingTable,
 };

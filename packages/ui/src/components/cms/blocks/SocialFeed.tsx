@@ -1,0 +1,41 @@
+// packages/ui/src/components/cms/blocks/SocialFeed.tsx
+"use client";
+
+import { useState } from "react";
+
+interface Props {
+  /** Social platform to embed */
+  platform: "twitter" | "instagram";
+  /** Account handle without @ */
+  account?: string;
+  /** Hashtag without # */
+  hashtag?: string;
+}
+
+/** Embed a social media feed from Twitter or Instagram */
+export default function SocialFeed({ platform, account, hashtag }: Props) {
+  const [failed, setFailed] = useState(false);
+
+  if (!account && !hashtag) return null;
+
+  const src =
+    platform === "twitter"
+      ? account
+        ? `https://twitframe.com/show?url=https://twitter.com/${account}`
+        : `https://twitframe.com/show?url=https://twitter.com/hashtag/${hashtag}`
+      : account
+        ? `https://www.instagram.com/${account}/embed`
+        : `https://www.instagram.com/explore/tags/${hashtag}/embed`;
+
+  if (failed) return <p>Unable to load social feed.</p>;
+
+  return (
+    <iframe
+      title="social-feed"
+      src={src}
+      className="w-full"
+      onError={() => setFailed(true)}
+    />
+  );
+}
+

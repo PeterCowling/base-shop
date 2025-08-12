@@ -71,6 +71,12 @@ export interface SocialLinksComponent extends PageComponentBase {
   youtube?: string;
   linkedin?: string;
 }
+export interface SocialFeedComponent extends PageComponentBase {
+  type: "SocialFeed";
+  platform?: "twitter" | "instagram";
+  account?: string;
+  hashtag?: string;
+}
 export interface AnnouncementBarComponent extends PageComponentBase {
   type: "AnnouncementBar";
   text?: string;
@@ -228,6 +234,7 @@ export type PageComponent =
   | HeaderComponent
   | FooterComponent
   | SocialLinksComponent
+  | SocialFeedComponent
   | SectionComponent
   | MultiColumnComponent;
 export declare const pageSchema: z.ZodObject<

@@ -15,12 +15,17 @@ export default function StepTokens(): React.JSX.Element {
   const [, markComplete] = useStepCompletion("tokens");
   const router = useRouter();
   const { themeDefaults, themeOverrides, setThemeOverrides } = useConfigurator();
-  const [tokens, setTokens] = useState<TokenMap>(themeOverrides);
+  const tokens = { ...themeDefaults, ...themeOverrides } as TokenMap;
   const [selected, setSelected] = useState<string | null>(null);
 
   const handleChange = (next: TokenMap) => {
-    setTokens(next);
-    setThemeOverrides(next);
+    const overrides: TokenMap = { ...next };
+    for (const key of Object.keys(overrides)) {
+      if (overrides[key as keyof TokenMap] === themeDefaults[key as keyof TokenMap]) {
+        delete overrides[key as keyof TokenMap];
+      }
+    }
+    setThemeOverrides(overrides);
   };
 
   const previewStyle = { ...themeStyle, ...tokens } as React.CSSProperties;
@@ -35,7 +40,7 @@ export default function StepTokens(): React.JSX.Element {
       />
       {selected && (
         <StyleEditor
-          tokens={tokens}
+          tokens={themeOverrides}
           baseTokens={themeDefaults}
           onChange={handleChange}
           focusToken={selected}

@@ -8,6 +8,7 @@ import {
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export const revalidate = 0;
@@ -41,6 +42,13 @@ export default async function RbacPage() {
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">User Roles</h2>
+      <p className="mb-4 text-sm">
+        See the
+        <Link href="/doc/permissions.md" target="_blank" rel="noreferrer" className="underline">
+          permission guide
+        </Link>
+        for default role mappings.
+      </p>
       {users.map((u) => (
         <form key={u.id} action={save} className="mb-4 rounded border p-3">
           <input type="hidden" name="id" value={u.id} />

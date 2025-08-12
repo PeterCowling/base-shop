@@ -81,6 +81,34 @@ export function useImageUpload(
   );
   const isValid = isVideo ? true : orientationValid;
 
+  const createVideoThumbnail = useCallback(
+    (file: File): Promise<Blob | null> =>
+      new Promise((resolve) => {
+        const video = document.createElement("video");
+        video.preload = "metadata";
+        video.src = URL.createObjectURL(file);
+        video.muted = true;
+        video.currentTime = 0;
+        video.onloadeddata = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            resolve(null);
+            return;
+          }
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => {
+            resolve(blob);
+            URL.revokeObjectURL(video.src);
+          }, "image/jpeg");
+        };
+        video.onerror = () => resolve(null);
+      }),
+    []
+  );
+
   /* ---------- upload handler -------------------------------------- */
   const handleUpload = useCallback(async () => {
     if (!pendingFile) return;
@@ -90,6 +118,10 @@ export function useImageUpload(
     const fd = new FormData();
     fd.append("file", pendingFile);
     if (altText) fd.append("altText", altText);
+    if (pendingFile.type.startsWith("video/")) {
+      const thumb = await createVideoThumbnail(pendingFile);
+      if (thumb) fd.append("thumbnail", thumb, "thumbnail.jpg");
+    }
 
     try {
       const res = await fetch(
@@ -108,7 +140,7 @@ export function useImageUpload(
     setProgress(null);
     setPendingFile(null);
     setAltText("");
-  }, [pendingFile, altText, shop, requiredOrientation, onUploaded]);
+  }, [pendingFile, altText, shop, requiredOrientation, onUploaded, createVideoThumbnail]);
 
   /* ---------- drag-and-drop & picker ------------------------------ */
   const onDrop = useCallback((e: DragEvent<HTMLDivElement>) => {

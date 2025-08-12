@@ -4,7 +4,7 @@
 import { Input } from "@ui/components/atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
-import { memo, ReactElement, useCallback, useState } from "react";
+import { memo, ReactElement, useCallback, useMemo, useState } from "react";
 import MediaFileList from "./MediaFileList";
 
 /* -------------------------------------------------------------------------- */
@@ -33,6 +33,7 @@ function MediaManagerBase({
 }: Props): ReactElement {
   const [files, setFiles] = useState<MediaItem[]>(initialFiles);
   const [dragActive, setDragActive] = useState(false);
+  const [query, setQuery] = useState("");
   const feedbackId = "media-manager-feedback";
 
   /* ---------------------------------------------------------------------- */
@@ -46,6 +47,21 @@ function MediaManagerBase({
       setFiles((prev) => prev.filter((f) => f.url !== src));
     },
     [onDelete, shop]
+  );
+
+  const handleAltTextSave = useCallback(
+    async (src: string, altText: string) => {
+      const fd = new FormData();
+      if (altText) fd.append("altText", altText);
+      await fetch(
+        `/cms/api/media?shop=${shop}&file=${encodeURIComponent(src)}`,
+        { method: "POST", body: fd }
+      );
+      setFiles((prev) =>
+        prev.map((f) => (f.url === src ? { ...f, altText } : f))
+      );
+    },
+    [shop]
   );
 
   /* ---------------------------------------------------------------------- */
@@ -71,6 +87,16 @@ function MediaManagerBase({
     onUploaded: (item) => setFiles((prev) => [item, ...prev]),
   });
   const isVideo = pendingFile?.type.startsWith("video/") ?? false;
+
+  const filteredFiles = useMemo(() => {
+    if (!query) return files;
+    const q = query.toLowerCase();
+    return files.filter((f) => {
+      const filename = f.url.split("/").pop()?.toLowerCase() ?? "";
+      const tags = `${f.altText ?? ""} ${f.title ?? ""}`.toLowerCase();
+      return filename.includes(q) || tags.includes(q);
+    });
+  }, [files, query]);
 
   /* ---------------------------------------------------------------------- */
   /*  Render                                                                */
@@ -154,9 +180,23 @@ function MediaManagerBase({
         )}
       </div>
 
-      {/* File list */}
+      {/* Search / filter */}
       {files.length > 0 && (
-        <MediaFileList files={files} onDelete={handleDelete} />
+        <Input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search by filename or tag"
+        />
+      )}
+
+      {/* File list */}
+      {filteredFiles.length > 0 && (
+        <MediaFileList
+          files={filteredFiles}
+          onDelete={handleDelete}
+          onAltTextSave={handleAltTextSave}
+        />
       )}
     </div>
   );

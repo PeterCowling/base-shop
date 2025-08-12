@@ -51,4 +51,37 @@ describe("MediaManager", () => {
     const fd = (global.fetch as jest.Mock).mock.calls[0][1].body as FormData;
     expect(fd.get("altText")).toBe("alt");
   });
+
+  it("filters files by search query", () => {
+    render(
+      <MediaManager
+        shop="s"
+        initialFiles={[
+          { url: "/a.jpg", type: "image" } as any,
+          { url: "/b.jpg", type: "image" } as any,
+        ]}
+      />
+    );
+    expect(screen.getAllByText("Delete").length).toBe(2);
+    fireEvent.change(screen.getByPlaceholderText("Search by filename or tag"), {
+      target: { value: "a" },
+    });
+    expect(screen.getAllByText("Delete").length).toBe(1);
+  });
+
+  it("updates alt text inline", async () => {
+    render(
+      <MediaManager
+        shop="s"
+        initialFiles={[{ url: "/img.jpg", altText: "", type: "image" } as any]}
+      />
+    );
+    fireEvent.click(screen.getByText("Edit"));
+    fireEvent.change(screen.getByPlaceholderText("Alt text"), {
+      target: { value: "new" },
+    });
+    fireEvent.click(screen.getByText("Save"));
+    await waitFor(() => expect(global.fetch).toHaveBeenCalled());
+    expect(screen.getByText("new")).toBeInTheDocument();
+  });
 });

@@ -93,4 +93,28 @@ describe("ThemeEditor", () => {
     fireEvent.click(swatch);
     expect(colorInput).toHaveFocus();
   });
+
+  it("round-trips HSL tokens through color input", () => {
+    const tokensByTheme = { base: { "--color-bg": "hsl(0 0% 0%)" } };
+    const { container } = render(
+      <ThemeEditor
+        shop="test"
+        themes={["base"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={{}}
+      />
+    );
+    const colorInput = screen.getByLabelText("--color-bg", {
+      selector: 'input[type="color"]',
+    });
+    expect(colorInput).toHaveValue("#000000");
+    fireEvent.change(colorInput, { target: { value: "#ffffff" } });
+    const hidden = container.querySelector(
+      'input[name="themeOverrides"]'
+    ) as HTMLInputElement;
+    expect(JSON.parse(hidden.value)).toEqual({
+      "--color-bg": "hsl(0 0% 100%)",
+    });
+  });
 });

@@ -5,6 +5,95 @@ import { Button, Input } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
 import { useState, ChangeEvent, FormEvent, useMemo, useRef } from "react";
 
+const HEX_RE = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
+const HSL_RE = /^\d+(?:\.\d+)?\s+\d+(?:\.\d+)?%\s+\d+(?:\.\d+)?%$/;
+
+function isHex(value: string) {
+  return HEX_RE.test(value);
+}
+
+function isHsl(value: string) {
+  return HSL_RE.test(value);
+}
+
+function hslToHex(hsl: string): string {
+  const [h, s, l] = hsl
+    .split(/\s+/)
+    .map((part, i) => (i === 0 ? parseFloat(part) : parseFloat(part) / 100));
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
+  let r = 0,
+    g = 0,
+    b = 0;
+  if (h < 60) {
+    r = c;
+    g = x;
+  } else if (h < 120) {
+    r = x;
+    g = c;
+  } else if (h < 180) {
+    g = c;
+    b = x;
+  } else if (h < 240) {
+    g = x;
+    b = c;
+  } else if (h < 300) {
+    r = x;
+    b = c;
+  } else {
+    r = c;
+    b = x;
+  }
+  return (
+    "#" +
+    [r, g, b]
+      .map((v) => Math.round((v + m) * 255).toString(16).padStart(2, "0"))
+      .join("")
+  );
+}
+
+function hexToHsl(hex: string): string {
+  let r = 0,
+    g = 0,
+    b = 0;
+  let cleaned = hex.replace("#", "");
+  if (cleaned.length === 3) {
+    r = parseInt(cleaned[0] + cleaned[0], 16);
+    g = parseInt(cleaned[1] + cleaned[1], 16);
+    b = parseInt(cleaned[2] + cleaned[2], 16);
+  } else {
+    r = parseInt(cleaned.slice(0, 2), 16);
+    g = parseInt(cleaned.slice(2, 4), 16);
+    b = parseInt(cleaned.slice(4, 6), 16);
+  }
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h = 0,
+    s = 0;
+  const l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+    h *= 60;
+  }
+  return `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
+}
+
 interface Props {
   shop: string;
   themes: string[];
@@ -62,12 +151,13 @@ export default function ThemeEditor({
     (key: string, defaultValue: string) =>
     (e: ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
+      const converted = isHsl(defaultValue) ? hexToHsl(value) : value;
       setOverrides((prev) => {
         const next = { ...prev };
-        if (!value || value === defaultValue) {
+        if (!value || converted === defaultValue) {
           delete next[key];
         } else {
-          next[key] = value;
+          next[key] = converted;
         }
         return next;
       });
@@ -129,9 +219,14 @@ export default function ThemeEditor({
             <legend className="font-semibold">{groupName}</legend>
             <div className="mb-2 flex flex-wrap gap-2">
               {tokens
-                .filter(([, v]) => /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(v))
+                .filter(([, v]) => isHex(v) || isHsl(v))
                 .map(([k, defaultValue]) => {
                   const current = overrides[k] || defaultValue;
+                  const colorValue = isHsl(defaultValue)
+                    ? isHex(current)
+                      ? current
+                      : hslToHex(current)
+                    : current;
                   return (
                     <button
                       key={k}
@@ -139,7 +234,7 @@ export default function ThemeEditor({
                       aria-label={k}
                       title={k}
                       className="h-6 w-6 rounded border"
-                      style={{ background: current }}
+                      style={{ background: colorValue }}
                       onClick={() => {
                         overrideRefs.current[k]?.scrollIntoView?.({
                           behavior: "smooth",
@@ -160,10 +255,15 @@ export default function ThemeEditor({
                 const overrideValue = hasOverride ? overrides[k] : "";
                 const isOverridden =
                   hasOverride && overrideValue !== defaultValue;
-                const isHex = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/.test(
-                  defaultValue
-                );
-                const current = hasOverride ? overrideValue : defaultValue;
+                const defaultIsHsl = isHsl(defaultValue);
+                const defaultIsHex = isHex(defaultValue);
+                const isColor = defaultIsHsl || defaultIsHex;
+                const currentOriginal = hasOverride ? overrideValue : defaultValue;
+                const colorValue = defaultIsHsl
+                  ? isHex(currentOriginal)
+                    ? currentOriginal
+                    : hslToHex(currentOriginal)
+                  : currentOriginal;
                 return (
                   <label
                     key={k}
@@ -174,18 +274,18 @@ export default function ThemeEditor({
                     <span>{k}</span>
                     <div className="flex items-center gap-2">
                       <Input value={defaultValue} disabled />
-                      {isHex ? (
+                      {isColor ? (
                         <>
                           <input
                             type="color"
-                            value={current}
+                            value={colorValue}
                             onChange={handleOverrideChange(k, defaultValue)}
                             ref={(el) => (overrideRefs.current[k] = el)}
                             className={isOverridden ? "bg-amber-100" : ""}
                           />
                           <span
                             className="h-6 w-6 rounded border"
-                            style={{ background: current }}
+                            style={{ background: colorValue }}
                           />
                         </>
                       ) : (

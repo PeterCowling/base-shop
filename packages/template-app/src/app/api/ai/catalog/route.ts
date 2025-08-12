@@ -2,8 +2,13 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getProductById } from "@platform-core/src/products";
 import { readRepo } from "@platform-core/repositories/products.server";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { trackEvent } from "@platform-core/src/analytics";
 import type { ProductPublication } from "@acme/types";
 import { env } from "@acme/config";
+
+const DEFAULT_FIELDS = ["id", "title", "description", "price", "images"] as const;
+type Field = (typeof DEFAULT_FIELDS)[number];
 
 export const runtime = "nodejs";
 
@@ -14,6 +19,13 @@ function parseIntOr(val: string | null, def: number): number {
 
 export async function GET(req: NextRequest) {
   const shop = env.NEXT_PUBLIC_SHOP_ID || "default";
+  const settings = await getShopSettings(shop);
+  if (!settings.aiCatalog?.enabled) {
+    return new NextResponse(null, { status: 404 });
+  }
+  const fields = (settings.aiCatalog.fields?.length
+    ? settings.aiCatalog.fields
+    : DEFAULT_FIELDS) as Field[];
   const all = await readRepo<ProductPublication>(shop);
 
   const lastModifiedDate = all.reduce((max, p) => {
@@ -22,11 +34,16 @@ export async function GET(req: NextRequest) {
   }, new Date(0));
   const lastModified = new Date(lastModifiedDate.toUTCString());
 
+  await trackEvent(shop, { type: "ai_catalog" });
+
   const ims = req.headers.get("if-modified-since");
   if (ims) {
     const imsDate = new Date(ims);
     if (!Number.isNaN(imsDate.getTime()) && lastModified <= imsDate) {
-      return new NextResponse(null, { status: 304 });
+      return new NextResponse(null, {
+        status: 304,
+        headers: { "Last-Modified": lastModified.toUTCString() },
+      });
     }
   }
 
@@ -38,13 +55,20 @@ export async function GET(req: NextRequest) {
 
   const items = paged.map((p) => {
     const sku = getProductById(p.sku) || {};
-    return {
-      id: p.id,
-      title: p.title,
-      description: p.description,
-      price: p.price ?? (sku as any).price ?? null,
-      images: p.images?.length ? p.images : (sku as any).image ? [(sku as any).image] : [],
-    };
+    const item: Record<string, unknown> = {};
+    if (fields.includes("id")) item.id = p.id;
+    if (fields.includes("title")) item.title = p.title;
+    if (fields.includes("description")) item.description = p.description;
+    if (fields.includes("price"))
+      item.price = p.price ?? (sku as any).price ?? null;
+    if (fields.includes("images")) {
+      item.images = p.images?.length
+        ? p.images
+        : (sku as any).image
+          ? [(sku as any).image]
+          : [];
+    }
+    return item;
   });
 
   return NextResponse.json(

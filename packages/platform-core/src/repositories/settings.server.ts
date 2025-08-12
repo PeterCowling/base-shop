@@ -2,7 +2,11 @@
 import "server-only";
 
 import { LOCALES } from "@i18n/locales";
-import { shopSettingsSchema, type Locale, type ShopSettings } from "@acme/types";
+import {
+  shopSettingsSchema,
+  type Locale,
+  type ShopSettings,
+} from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { z } from "zod";
@@ -58,6 +62,11 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
           interval: 60,
           ...(parsed.data.depositService ?? {}),
         },
+        aiCatalog: {
+          enabled: false,
+          fields: ["id", "title", "description", "price", "images"],
+          ...(parsed.data.aiCatalog ?? {}),
+        },
       };
     }
   } catch {
@@ -71,6 +80,10 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     currency: "EUR",
     taxRegion: "",
     depositService: { enabled: false, interval: 60 },
+    aiCatalog: {
+      enabled: false,
+      fields: ["id", "title", "description", "price", "images"],
+    },
     updatedAt: "",
     updatedBy: "",
   };

@@ -1,3 +1,4 @@
+import { ROLE_PERMISSIONS } from "@auth/permissions";
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
@@ -41,6 +42,7 @@ const DEFAULT_DB = {
         "4": "CatalogManager",
         "5": "ThemeEditor",
     },
+    permissions: { ...ROLE_PERMISSIONS },
 };
 function resolveFile() {
     let dir = process.cwd();
@@ -61,7 +63,7 @@ export async function readRbac() {
     try {
         const buf = await fs.readFile(FILE, "utf8");
         const parsed = JSON.parse(buf);
-        if (parsed && parsed.users && parsed.roles)
+        if (parsed && parsed.users && parsed.roles && parsed.permissions)
             return parsed;
     }
     catch {

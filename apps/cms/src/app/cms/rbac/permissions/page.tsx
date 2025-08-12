@@ -3,6 +3,8 @@ import { Button } from "@/components/atoms/shadcn";
 import { updateRolePermissions } from "@cms/actions/rbac.server";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
+import type { Permission } from "@auth";
+import { PERMISSIONS } from "@auth/types/permissions";
 import { readRbac } from "@cms/lib/rbacStore";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -30,7 +32,7 @@ export default async function PermissionsPage() {
     "ThemeEditor",
   ];
 
-  const permissions = ["read", "write"];
+  const permissions: Permission[] = PERMISSIONS;
 
   return (
     <div>

@@ -3,6 +3,7 @@
 
 import type { Role } from "@cms/auth/roles";
 import type { CmsUser } from "@cms/auth/users";
+import type { Permission } from "@auth";
 import bcrypt from "bcryptjs";
 import { ulid } from "ulid";
 import { readRbac, writeRbac } from "../lib/rbacStore";
@@ -43,7 +44,7 @@ export async function updateRolePermissions(
   formData: FormData
 ): Promise<void> {
   const role = String(formData.get("role") ?? "") as Role;
-  const permissions = formData.getAll("permissions") as string[];
+  const permissions = formData.getAll("permissions") as Permission[];
   const db = await readRbac();
   db.permissions[role] = permissions;
   await writeRbac(db);

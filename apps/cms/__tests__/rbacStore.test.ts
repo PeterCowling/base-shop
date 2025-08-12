@@ -1,6 +1,8 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { ROLE_PERMISSIONS } from "@auth/permissions";
+import { PERMISSIONS } from "@auth/types/permissions";
 
 async function withTempDir(cb: (dir: string) => Promise<void>): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "rbac-"));
@@ -22,7 +24,7 @@ describe("rbacStore", () => {
       const db = await readRbac();
       expect(db.users["1"].email).toBe("admin@example.com");
       expect(db.roles["1"]).toBe("admin");
-      expect(db.permissions.admin).toEqual(["read", "write"]);
+      expect(db.permissions.admin).toEqual(ROLE_PERMISSIONS.admin);
     });
   });
 
@@ -49,12 +51,12 @@ describe("rbacStore", () => {
     await withTempDir(async (dir) => {
       const { readRbac, writeRbac } = await import("../src/lib/rbacStore");
       const db = await readRbac();
-      db.permissions.admin = ["read"];
+      db.permissions.admin = [PERMISSIONS[0]];
       await writeRbac(db);
       const stored = JSON.parse(
         await fs.readFile(path.join(dir, "data", "cms", "users.json"), "utf8")
       );
-      expect(stored.permissions.admin).toEqual(["read"]);
+      expect(stored.permissions.admin).toEqual([PERMISSIONS[0]]);
     });
   });
 });

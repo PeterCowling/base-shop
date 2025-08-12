@@ -1,6 +1,8 @@
 // apps/cms/src/lib/rbacStore.ts
 
 import type { CmsUser } from "@acme/types";
+import type { Permission } from "@auth";
+import { ROLE_PERMISSIONS } from "@auth/permissions";
 import * as fsSync from "node:fs";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
@@ -9,7 +11,7 @@ import type { Role } from "../auth/roles";
 export interface RbacDB {
   users: Record<string, CmsUser>;
   roles: Record<string, Role | Role[]>;
-  permissions: Record<Role, string[]>;
+  permissions: Record<Role, Permission[]>;
 }
 
 const DEFAULT_DB: RbacDB = {
@@ -52,13 +54,7 @@ const DEFAULT_DB: RbacDB = {
     "4": "CatalogManager",
     "5": "ThemeEditor",
   },
-  permissions: {
-    admin: ["read", "write"],
-    viewer: [],
-    ShopAdmin: [],
-    CatalogManager: [],
-    ThemeEditor: [],
-  },
+  permissions: { ...ROLE_PERMISSIONS },
 };
 
 function resolveFile(): string {

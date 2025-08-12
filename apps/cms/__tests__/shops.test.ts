@@ -84,7 +84,7 @@ describe("shop actions", () => {
     });
   });
 
-  it("updateShop saves theme overrides and tokens", async () => {
+  it("updateShop persists theme overrides and defaults after reload", async () => {
     await withRepo(async (dir) => {
       const shopFile = path.join(dir, "data", "shops", "test", "shop.json");
       await fs.writeFile(
@@ -124,7 +124,11 @@ describe("shop actions", () => {
         getServerSession: jest.fn().mockResolvedValue(adminSession),
       }));
 
-      const defaultTokens = { base: "default", accent: "blue" };
+      const defaultTokens = {
+        base: "default",
+        accent: "blue",
+        "accent-dark": "navy",
+      };
       jest.doMock("@platform-core/src/createShop", () => ({
         syncTheme: jest.fn(),
         loadTokens: jest.fn().mockReturnValue(defaultTokens),
@@ -132,7 +136,7 @@ describe("shop actions", () => {
 
       const { updateShop } = await import("../src/actions/shops.server");
 
-      const overrides = { accent: "red" };
+      const overrides = { accent: "red", "accent-dark": "black" };
       const fd = new FormData();
       fd.append("id", "test");
       fd.append("name", "Updated");
@@ -146,6 +150,13 @@ describe("shop actions", () => {
       expect(saved.themeOverrides).toEqual(overrides);
       expect(saved.themeTokens).toEqual({ ...defaultTokens, ...overrides });
       expect(result.shop?.themeTokens).toEqual({ ...defaultTokens, ...overrides });
+
+      const { getShopById } = await import(
+        "@platform-core/src/repositories/shop.server"
+      );
+      const reloaded = await getShopById("test");
+      expect(reloaded.themeDefaults).toEqual(defaultTokens);
+      expect(reloaded.themeOverrides).toEqual(overrides);
     });
   });
 });

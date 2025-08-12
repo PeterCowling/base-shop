@@ -49,16 +49,18 @@ export async function updateShop(
   const data: ShopForm = parsed.data;
 
   const overrides = data.themeOverrides as Record<string, string>;
-  if (current.themeId !== data.themeId) {
-    syncTheme(shop, data.themeId);
-  }
-  const themeTokens = { ...loadTokens(data.themeId), ...overrides };
+  const themeDefaults =
+    current.themeId !== data.themeId
+      ? syncTheme(shop, data.themeId)
+      : loadTokens(data.themeId);
+  const themeTokens = { ...themeDefaults, ...overrides };
 
   const patch: Partial<Shop> & { id: string } = {
     id: current.id,
     name: data.name,
     themeId: data.themeId,
     catalogFilters: data.catalogFilters,
+    themeDefaults,
     themeOverrides: overrides,
     themeTokens,
     filterMappings: data.filterMappings as Record<string, string>,

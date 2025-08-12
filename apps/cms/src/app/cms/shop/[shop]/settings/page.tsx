@@ -6,7 +6,6 @@ import {
   readSettings,
   readShop,
 } from "@platform-core/repositories/json.server";
-import { loadTokens } from "@platform-core/src/createShop";
 import type { Locale } from "@acme/types";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
@@ -37,7 +36,7 @@ export default async function SettingsPage({
         session.user.role
       )
     : false;
-  const defaultTokens = loadTokens(info.themeId);
+  const defaultTokens = info.themeDefaults ?? {};
   const overrides = info.themeOverrides ?? {};
 
   return (

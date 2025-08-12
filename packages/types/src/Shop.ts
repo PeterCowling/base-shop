@@ -50,6 +50,8 @@ export const shopSchema = z.object({
   contactInfo: z.string().optional(),
   catalogFilters: z.array(z.string()),
   themeId: z.string(),
+  /** Mapping of design tokens to original theme values */
+  themeDefaults: z.record(z.string()).default({}),
   /** Mapping of token overrides to theme values */
   themeOverrides: z.record(z.string()).default({}),
   /** Mapping of design tokens to theme values (defaults merged with overrides) */

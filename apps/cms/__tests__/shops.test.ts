@@ -50,6 +50,17 @@ describe("shop actions", () => {
         )
       );
 
+      jest.doMock("@platform-core/src/db", () => ({
+        prisma: {
+          shop: {
+            findUnique: jest.fn().mockResolvedValue(null),
+            upsert: jest.fn().mockRejectedValue(new Error("no db")),
+          },
+        },
+      }));
+
+      jest.doMock("@acme/config", () => ({ env: {} }));
+
       /* ----------------------------------------------------------------
        *  Mock an admin session
        * -------------------------------------------------------------- */
@@ -84,6 +95,7 @@ describe("shop actions", () => {
             name: "Seed",
             catalogFilters: [],
             themeId: "base",
+            themeDefaults: {},
             themeOverrides: {},
             themeTokens: {},
             filterMappings: {},
@@ -94,6 +106,17 @@ describe("shop actions", () => {
           2,
         ),
       );
+
+      jest.doMock("@platform-core/src/db", () => ({
+      prisma: {
+        shop: {
+          findUnique: jest.fn().mockResolvedValue(null),
+          upsert: jest.fn().mockRejectedValue(new Error("no db")),
+        },
+      },
+    }));
+
+      jest.doMock("@acme/config", () => ({ env: {} }));
 
       const adminSession = { user: { role: "admin" } } as unknown as Session;
 
@@ -119,6 +142,7 @@ describe("shop actions", () => {
       const result = await updateShop("test", fd);
 
       const saved = JSON.parse(await fs.readFile(shopFile, "utf8"));
+      expect(saved.themeDefaults).toEqual(defaultTokens);
       expect(saved.themeOverrides).toEqual(overrides);
       expect(saved.themeTokens).toEqual({ ...defaultTokens, ...overrides });
       expect(result.shop?.themeTokens).toEqual({ ...defaultTokens, ...overrides });

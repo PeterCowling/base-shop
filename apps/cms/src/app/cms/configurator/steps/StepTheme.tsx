@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/atoms/shadcn";
 import StyleEditor from "@/components/cms/StyleEditor";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
@@ -61,28 +61,48 @@ interface Props {
 
 export default function StepTheme({ themes }: Props): React.JSX.Element {
   const themeStyle = useThemeLoader();
-  const { state, update, themeDefaults, themeOverrides, setThemeOverrides } =
+  const { state, update, themeDefaults, setThemeOverrides } =
     useConfigurator();
-  const { theme } = state;
+  const { theme, themeOverrides } = state;
   const [palette, setPalette] = useState(colorPalettes[0].name);
   const [, markComplete] = useStepCompletion("theme");
   const router = useRouter();
 
-  const applyPalette = (name: string) => {
-    setPalette(name);
-    const cp = colorPalettes.find((c) => c.name === name);
-    if (!cp) return;
-    const next = { ...themeOverrides };
-    Object.entries(cp.colors).forEach(([k, v]) => (next[k] = v));
-    setThemeOverrides(next);
-  };
+  const applyPalette = useCallback(
+    (name: string) => {
+      const cp = colorPalettes.find((c) => c.name === name);
+      if (!cp) return;
+      setThemeOverrides((prev) => {
+        const next = { ...prev };
+        Object.entries(cp.colors).forEach(([k, v]) => {
+          if (themeDefaults[k] !== v) {
+            next[k] = v;
+          } else {
+            delete next[k];
+          }
+        });
+        return next;
+      });
+    },
+    [themeDefaults, setThemeOverrides]
+  );
+
+  useEffect(() => {
+    applyPalette(palette);
+  }, [palette, applyPalette]);
 
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Select Theme</h2>
 
       {/* single accessible combobox (theme) */}
-      <Select value={theme} onValueChange={(v) => update("theme", v)}>
+      <Select
+        value={theme}
+        onValueChange={(v) => {
+          update("theme", v);
+          setThemeOverrides({});
+        }}
+      >
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select theme" />
         </SelectTrigger>
@@ -103,7 +123,7 @@ export default function StepTheme({ themes }: Props): React.JSX.Element {
             <Button
               key={p.name}
               variant={p.name === palette ? "default" : "outline"}
-              onClick={() => applyPalette(p.name)}
+              onClick={() => setPalette(p.name)}
             >
               {p.name}
             </Button>

@@ -11,31 +11,23 @@ import {
 } from "@/components/atoms/shadcn";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useWizard } from "../WizardContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 
-interface Props {
-  shopId: string;
-  payment: string[];
-  setPayment: React.Dispatch<React.SetStateAction<string[]>>;
-  shipping: string[];
-  setShipping: React.Dispatch<React.SetStateAction<string[]>>;
-  analyticsProvider: string;
-  setAnalyticsProvider: (v: string) => void;
-  analyticsId: string;
-  setAnalyticsId: (v: string) => void;
-}
+export default function StepOptions(): React.JSX.Element {
+  const { state, update } = useWizard();
+  const {
+    shopId,
+    payment,
+    shipping,
+    analyticsProvider,
+    analyticsId,
+  } = state;
+  const setPayment = (v: string[]) => update("payment", v);
+  const setShipping = (v: string[]) => update("shipping", v);
+  const setAnalyticsProvider = (v: string) => update("analyticsProvider", v);
+  const setAnalyticsId = (v: string) => update("analyticsId", v);
 
-export default function StepOptions({
-  shopId,
-  payment,
-  setPayment,
-  shipping,
-  setShipping,
-  analyticsProvider,
-  setAnalyticsProvider,
-  analyticsId,
-  setAnalyticsId,
-}: Props): React.JSX.Element {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, markComplete] = useStepCompletion("options");
@@ -45,14 +37,14 @@ export default function StepOptions({
     if (!provider) return;
 
     if (["stripe", "paypal"].includes(provider) && !payment.includes(provider)) {
-      setPayment((l) => [...l, provider]);
+      setPayment([...payment, provider]);
     }
     if (["dhl", "ups"].includes(provider) && !shipping.includes(provider)) {
-      setShipping((l) => [...l, provider]);
+      setShipping([...shipping, provider]);
     }
 
     router.replace("/cms/wizard");
-  }, [searchParams, payment, shipping, router, setPayment, setShipping]);
+  }, [searchParams, payment, shipping, router]);
 
   function connect(provider: string) {
     const url = `/cms/api/providers/${provider}?shop=${encodeURIComponent(shopId)}`;

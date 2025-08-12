@@ -10,10 +10,12 @@ import { env } from "@acme/config";
 
 interface Campaign {
   id: string;
-  to: string;
+  recipients: string[];
   subject: string;
   body: string;
-  sentAt: string;
+  segment?: string | null;
+  sendAt: string;
+  sentAt?: string;
 }
 
 function campaignsPath(shop: string): string {
@@ -25,8 +27,20 @@ async function readCampaigns(shop: string): Promise<Campaign[]> {
   try {
     const buf = await fs.readFile(campaignsPath(shop), "utf8");
     const json = JSON.parse(buf);
-    if (Array.isArray(json)) return json as Campaign[];
-    return [];
+    if (!Array.isArray(json)) return [];
+    return json.map((c: any) => ({
+      id: c.id,
+      recipients: Array.isArray(c.recipients)
+        ? c.recipients
+        : c.to
+          ? [c.to]
+          : [],
+      subject: c.subject,
+      body: c.body,
+      segment: c.segment ?? null,
+      sendAt: c.sendAt ?? c.sentAt ?? new Date().toISOString(),
+      sentAt: c.sentAt,
+    })) as Campaign[];
   } catch {
     return [];
   }
@@ -34,12 +48,17 @@ async function readCampaigns(shop: string): Promise<Campaign[]> {
 
 async function writeCampaigns(shop: string, items: Campaign[]): Promise<void> {
   await fs.mkdir(path.dirname(campaignsPath(shop)), { recursive: true });
-  await fs.writeFile(campaignsPath(shop), JSON.stringify(items, null, 2), "utf8");
+  await fs.writeFile(
+    campaignsPath(shop),
+    JSON.stringify(items, null, 2),
+    "utf8"
+  );
 }
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
-  if (!shop) return NextResponse.json({ error: "Missing shop" }, { status: 400 });
+  if (!shop)
+    return NextResponse.json({ error: "Missing shop" }, { status: 400 });
   const campaigns = await readCampaigns(shop);
   const events = await listEvents(shop);
   const withMetrics = campaigns.map((c) => {
@@ -56,17 +75,22 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  const { shop, to, subject, body } = (await req.json().catch(() => ({}))) as {
+  const { shop, recipients, to, subject, body, segment, sendAt } = (await req
+    .json()
+    .catch(() => ({}))) as {
     shop?: string;
+    recipients?: string[];
     to?: string;
     subject?: string;
     body?: string;
+    segment?: string;
+    sendAt?: string;
   };
-  if (!shop || !to || !subject || !body) {
+  const list = Array.isArray(recipients) ? recipients : to ? [to] : [];
+  if (!shop || !subject || !body || list.length === 0) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
   const id = Date.now().toString(36);
-  const sentAt = new Date().toISOString();
   const base = env.NEXT_PUBLIC_BASE_URL || "";
   const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
     shop
@@ -81,14 +105,29 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         shop
       )}&campaign=${encodeURIComponent(id)}&url=${encodeURIComponent(url)}"`
   );
-  try {
-    await sendCampaignEmail({ to, subject, html: trackedBody });
-    await trackEvent(shop, { type: "email_sent", campaign: id });
-  } catch {
-    return NextResponse.json({ error: "Failed to send" }, { status: 500 });
+  const scheduled = sendAt ? new Date(sendAt) : new Date();
+  let sentAt: string | undefined;
+  if (scheduled <= new Date()) {
+    try {
+      for (const r of list) {
+        await sendCampaignEmail({ to: r, subject, html: trackedBody });
+        await trackEvent(shop, { type: "email_sent", campaign: id });
+      }
+      sentAt = new Date().toISOString();
+    } catch {
+      return NextResponse.json({ error: "Failed to send" }, { status: 500 });
+    }
   }
   const campaigns = await readCampaigns(shop);
-  campaigns.push({ id, to, subject, body, sentAt });
+  campaigns.push({
+    id,
+    recipients: list,
+    subject,
+    body,
+    segment: segment ?? null,
+    sendAt: scheduled.toISOString(),
+    ...(sentAt ? { sentAt } : {}),
+  });
   await writeCampaigns(shop, campaigns);
   return NextResponse.json({ ok: true, id });
 }

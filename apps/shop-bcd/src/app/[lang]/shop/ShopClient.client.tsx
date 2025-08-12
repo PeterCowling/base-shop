@@ -7,10 +7,28 @@ import FilterBar, {
 } from "@platform-core/src/components/shop/FilterBar";
 import { ProductGrid } from "@platform-core/src/components/shop/ProductGrid";
 import type { SKU } from "@acme/types";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function ShopClient({ skus }: { skus: SKU[] }) {
-  const [filters, setFilters] = useState<Filters>({});
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
+  const [filters, setFilters] = useState<Filters>(() => {
+    const init: Filters = {};
+    const size = searchParams.get("size");
+    const color = searchParams.get("color");
+    const maxPrice = searchParams.get("maxPrice");
+    if (size) init.size = size;
+    if (color) init.color = color;
+    if (maxPrice) {
+      const n = Number(maxPrice);
+      if (!Number.isNaN(n)) init.maxPrice = n;
+    }
+    return init;
+  });
+  const synced = useRef(false);
   const sizes = useMemo(
     () => Array.from(new Set(skus.flatMap((p) => p.sizes))).sort(),
     [skus]
@@ -27,6 +45,9 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
 
   const visible = useMemo(() => {
     return skus.filter((p) => {
+      if (query && !p.title.toLowerCase().includes(query.toLowerCase())) {
+        return false;
+      }
       if (filters.size && !p.sizes.includes(filters.size as string)) return false;
       if (filters.color && !p.slug.startsWith(filters.color as string)) return false;
       if (typeof filters.maxPrice === "number" && p.price > filters.maxPrice) {
@@ -34,12 +55,38 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
       }
       return true;
     });
-  }, [filters, skus]);
+  }, [filters, query, skus]);
+
+  useEffect(() => {
+    if (!synced.current) {
+      synced.current = true;
+      return;
+    }
+    const params = new URLSearchParams();
+    if (query) params.set("q", query);
+    Object.entries(filters).forEach(([k, v]) => {
+      if (v !== undefined && v !== "") params.set(k, String(v));
+    });
+    const search = params.toString();
+    router.push(`${pathname}${search ? `?${search}` : ""}`);
+  }, [filters, pathname, query, router]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="mb-4 text-3xl font-bold">Shop</h1>
-      <FilterBar definitions={defs} onChange={setFilters} />
+      <input
+        aria-label="Search products"
+        type="search"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search products"
+        className="mb-4 w-full max-w-xs border rounded px-2 py-1"
+      />
+      <FilterBar
+        definitions={defs}
+        values={filters}
+        onChange={setFilters}
+      />
       <ProductGrid skus={visible} />
     </div>
   );

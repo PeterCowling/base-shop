@@ -75,7 +75,9 @@ describe("ThemeEditor", () => {
   });
 
   it("focuses field when swatch clicked", () => {
-    const tokensByTheme = { base: { "--color-bg": "#ffffff" } };
+    const tokensByTheme = {
+      base: { "--color-bg": "#ffffff", "--color-bg-dark": "#000000" },
+    };
     render(
       <ThemeEditor
         shop="test"
@@ -86,12 +88,49 @@ describe("ThemeEditor", () => {
       />
     );
 
-    const swatch = screen.getByRole("button", { name: "--color-bg" });
-    const colorInput = screen.getByLabelText("--color-bg", {
+    const swatch = screen.getByRole("button", { name: "--color-bg-dark" });
+    const colorInput = screen.getByLabelText("--color-bg-dark", {
       selector: 'input[type="color"]',
     });
     fireEvent.click(swatch);
     expect(colorInput).toHaveFocus();
+  });
+
+  it("saves overrides for light and dark tokens", async () => {
+    const tokensByTheme = {
+      base: { "--color-bg": "#ffffff", "--color-bg-dark": "#000000" },
+    };
+    const mock = updateShop as jest.Mock;
+    mock.mockClear();
+    mock.mockResolvedValue({});
+    render(
+      <ThemeEditor
+        shop="test"
+        themes={["base"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={{}}
+      />
+    );
+
+    const lightInput = screen.getByLabelText("--color-bg", {
+      selector: 'input[type="color"]',
+    });
+    fireEvent.change(lightInput, { target: { value: "#ff0000" } });
+
+    const darkInput = screen.getByLabelText("--color-bg-dark", {
+      selector: 'input[type="color"]',
+    });
+    fireEvent.change(darkInput, { target: { value: "#00ff00" } });
+
+    fireEvent.click(screen.getByRole("button", { name: /save/i }));
+
+    await waitFor(() => expect(mock).toHaveBeenCalled());
+    const fd = mock.mock.calls[0][1] as FormData;
+    expect(JSON.parse(fd.get("themeOverrides") as string)).toEqual({
+      "--color-bg": "#ff0000",
+      "--color-bg-dark": "#00ff00",
+    });
   });
 
   it("does not persist untouched tokens as overrides", async () => {

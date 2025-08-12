@@ -6,7 +6,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react";
 
 interface Props {
   shop: string;
-  initial: { enabled: boolean; interval: number };
+  initial: { enabled: boolean; intervalMinutes: number };
 }
 
 export default function DepositsEditor({ shop, initial }: Props) {
@@ -49,13 +49,13 @@ export default function DepositsEditor({ shop, initial }: Props) {
         <span>Interval (minutes)</span>
         <Input
           type="number"
-          name="interval"
-          value={state.interval}
+          name="intervalMinutes"
+          value={state.intervalMinutes}
           onChange={handleChange}
         />
-        {errors.interval && (
+        {errors.intervalMinutes && (
           <span className="text-sm text-red-600">
-            {errors.interval.join("; ")}
+            {errors.intervalMinutes.join("; ")}
           </span>
         )}
       </label>

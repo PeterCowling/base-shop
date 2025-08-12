@@ -14,8 +14,8 @@
     "rootDir": "src",
     "outDir": "dist",
 
-    /* Node targets only --------------------------------------------- */
-    "types": ["node"],
+    /* Node + React targets ------------------------------------------- */
+    "types": ["node", "react"],
 
     /* Keep imports package-relative --------------------------------- */
     "allowImportingTsExtensions": false,

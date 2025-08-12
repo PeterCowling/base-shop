@@ -149,10 +149,14 @@ describe("startDepositReleaseService", () => {
     readOrders.mockResolvedValue([]);
     readFile
       .mockResolvedValueOnce(
-        JSON.stringify({ depositService: { enabled: true, interval: 1 } })
+        JSON.stringify({
+          depositService: { enabled: true, intervalMinutes: 1 },
+        }),
       )
       .mockResolvedValueOnce(
-        JSON.stringify({ depositService: { enabled: true, interval: 1 } })
+        JSON.stringify({
+          depositService: { enabled: true, intervalMinutes: 1 },
+        }),
       );
     process.env.DEPOSIT_RELEASE_ENABLED_SHOP2 = "false";
 

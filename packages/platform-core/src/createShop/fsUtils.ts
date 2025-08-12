@@ -115,7 +115,7 @@ export function writeFiles(
       {
         languages: [...LOCALES],
         analytics: options.analytics,
-        depositService: { enabled: false, interval: 60 },
+        depositService: { enabled: false, intervalMinutes: 60 },
       },
       null,
       2

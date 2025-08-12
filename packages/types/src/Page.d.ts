@@ -146,6 +146,16 @@ export interface GalleryComponent extends PageComponentBase {
     alt?: string;
   }[];
 }
+export interface ImageSliderComponent extends PageComponentBase {
+  type: "ImageSlider";
+  slides?: {
+    src: string;
+    alt?: string;
+    caption?: string;
+  }[];
+  minItems?: number;
+  maxItems?: number;
+}
 export interface ContactFormComponent extends PageComponentBase {
   type: "ContactForm";
   action?: string;
@@ -250,6 +260,7 @@ export type PageComponent =
   | ProductCarouselComponent
   | RecommendationCarouselComponent
   | GalleryComponent
+  | ImageSliderComponent
   | ContactFormComponent
   | NewsletterSignupComponent
   | ContactFormWithMapComponent

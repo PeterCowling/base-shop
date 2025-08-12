@@ -20,6 +20,7 @@ import SocialFeed from "./SocialFeed";
 import PricingTable from "./PricingTable";
 import NewsletterSignup from "./NewsletterSignup";
 import Tabs from "./Tabs";
+import ImageSlider from "./ImageSlider";
 
 export const organismRegistry = {
   AnnouncementBar,
@@ -29,6 +30,7 @@ export const organismRegistry = {
   ProductGrid,
   ProductCarousel,
   RecommendationCarousel,
+  ImageSlider,
   Gallery,
   ContactForm,
   ContactFormWithMap,

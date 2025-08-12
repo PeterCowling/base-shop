@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/atoms/shadcn";
 import StyleEditor from "@/components/cms/StyleEditor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
@@ -57,17 +57,20 @@ interface Props {
   themes: string[];
   theme: string;
   setTheme: (v: string) => void;
-  themeVars: Record<string, string>;
+  themeDefaults: Record<string, string>;
+  themeOverrides: Record<string, string>;
+  setThemeOverrides: (v: Record<string, string>) => void;
   setThemeVars: (v: Record<string, string>) => void;
   themeStyle: React.CSSProperties;
-
 }
 
 export default function StepTheme({
   themes,
   theme,
   setTheme,
-  themeVars,
+  themeDefaults,
+  themeOverrides,
+  setThemeOverrides,
   setThemeVars,
   themeStyle,
 }: Props): React.JSX.Element {
@@ -75,13 +78,31 @@ export default function StepTheme({
   const [, markComplete] = useStepCompletion("theme");
   const router = useRouter();
 
+  const themeVars = { ...themeDefaults, ...themeOverrides };
+
+  useEffect(() => {
+    setThemeVars({ ...themeDefaults, ...themeOverrides });
+  }, [themeDefaults, themeOverrides, setThemeVars]);
+
+  const handleThemeChange = (next: string) => {
+    setTheme(next);
+    setPalette(colorPalettes[0].name);
+    setThemeOverrides({});
+  };
+
   const applyPalette = (name: string) => {
     setPalette(name);
     const cp = colorPalettes.find((c) => c.name === name);
     if (!cp) return;
-    const next = { ...themeVars };
-    Object.entries(cp.colors).forEach(([k, v]) => (next[k] = v));
-    setThemeVars(next);
+    const next = { ...themeOverrides } as Record<string, string>;
+    Object.entries(cp.colors).forEach(([k, v]) => {
+      if (themeDefaults[k] === v) {
+        delete next[k];
+      } else {
+        next[k] = v;
+      }
+    });
+    setThemeOverrides(next);
   };
 
   return (
@@ -89,7 +110,7 @@ export default function StepTheme({
       <h2 className="text-xl font-semibold">Select Theme</h2>
 
       {/* single accessible combobox (theme) */}
-      <Select value={theme} onValueChange={setTheme}>
+      <Select value={theme} onValueChange={handleThemeChange}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select theme" />
         </SelectTrigger>
@@ -118,12 +139,12 @@ export default function StepTheme({
         </div>
       </div>
 
-      {/* Style editor is purely presentational at this step */}
+      {/* Style editor shows default values and overrides */}
       <div aria-hidden="true">
         <StyleEditor
           tokens={themeVars}
-          baseTokens={themeVars}
-          onChange={setThemeVars}
+          baseTokens={themeDefaults}
+          onChange={() => {}}
         />
       </div>
 

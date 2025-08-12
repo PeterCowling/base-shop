@@ -34,7 +34,28 @@ export declare const skuSchema: z.ZodObject<{
         from: string;
         to: string;
     }>, "many">>;
-    image: z.ZodString;
+    media: z.ZodArray<z.ZodObject<{
+        url: z.ZodString;
+        type: z.ZodOptional<z.ZodEnum<["image", "video", "360", "model"]>>;
+        title: z.ZodOptional<z.ZodString>;
+        altText: z.ZodOptional<z.ZodString>;
+        thumbnail: z.ZodOptional<z.ZodString>;
+        frames: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+    }, "strip", z.ZodTypeAny, {
+        url: string;
+        type?: "image" | "video" | "360" | "model" | undefined;
+        title?: string | undefined;
+        altText?: string | undefined;
+        thumbnail?: string | undefined;
+        frames?: string[] | undefined;
+    }, {
+        url: string;
+        type?: "image" | "video" | "360" | "model" | undefined;
+        title?: string | undefined;
+        altText?: string | undefined;
+        thumbnail?: string | undefined;
+        frames?: string[] | undefined;
+    }>, "many">;
     sizes: z.ZodArray<z.ZodString, "many">;
     description: z.ZodString;
 }, "strip", z.ZodTypeAny, {
@@ -46,7 +67,14 @@ export declare const skuSchema: z.ZodObject<{
     stock: number;
     forSale: boolean;
     forRental: boolean;
-    image: string;
+    media: {
+        url: string;
+        type?: "image" | "video" | "360" | "model" | undefined;
+        title?: string | undefined;
+        altText?: string | undefined;
+        thumbnail?: string | undefined;
+        frames?: string[] | undefined;
+    }[];
     sizes: string[];
     description: string;
     dailyRate?: number | undefined;
@@ -63,7 +91,14 @@ export declare const skuSchema: z.ZodObject<{
     price: number;
     deposit: number;
     stock: number;
-    image: string;
+    media: {
+        url: string;
+        type?: "image" | "video" | "360" | "model" | undefined;
+        title?: string | undefined;
+        altText?: string | undefined;
+        thumbnail?: string | undefined;
+        frames?: string[] | undefined;
+    }[];
     sizes: string[];
     description: string;
     forSale?: boolean | undefined;

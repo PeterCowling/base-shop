@@ -74,8 +74,9 @@ export function useImageUpload(
   const feedbackId = "uploader-feedback";
 
   /* ---------- orientation check ----------------------------------- */
+  const isImage = pendingFile?.type.startsWith("image/") ?? false;
   const { actual, isValid } = useImageOrientationValidation(
-    pendingFile,
+    isImage ? pendingFile : null,
     requiredOrientation
   );
 
@@ -132,7 +133,7 @@ export function useImageUpload(
     <div
       tabIndex={0}
       role="button"
-      aria-label="Drop image here or press Enter to browse"
+      aria-label="Drop file here or press Enter to browse"
       aria-describedby={feedbackId}
       onDragOver={(e) => e.preventDefault()}
       onDragEnter={() => setDragActive(true)}
@@ -152,7 +153,7 @@ export function useImageUpload(
       <input
         ref={inputRef}
         type="file"
-        accept="image/*"
+        accept="image/*,video/*"
         className="hidden"
         onChange={onFileChange}
       />
@@ -178,7 +179,7 @@ export function useImageUpload(
         )}
 
         {error && <p className="mt-2 text-sm text-danger">{error}</p>}
-        {isValid === false && (
+        {isImage && isValid === false && (
           <p className="mt-2 text-sm text-warning">
             Wrong orientation (needs {requiredOrientation})
           </p>

@@ -58,7 +58,7 @@ describe("json repository", () => {
         description: { en: "", de: "", it: "" },
         price: 10,
         currency: "EUR",
-        images: [],
+        media: [],
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         shop,

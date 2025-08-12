@@ -6,6 +6,8 @@ import type { Locale, ProductPublication } from "@platform-core/src/products";
 import { useProductEditorFormState } from "@ui/hooks/useProductEditorFormState";
 import MultilingualFields from "./MultilingualFields";
 import PublishLocationSelector from "./PublishLocationSelector";
+import Image from "next/image";
+import { VideoPlayer } from "../atoms/VideoPlayer";
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -41,6 +43,9 @@ export default function ProductEditorForm({
     handleChange,
     handleSubmit,
     uploader,
+    media,
+    moveMedia,
+    removeMedia,
   } = useProductEditorFormState(init, locales, onSave);
 
   /* ---------------- UI ---------------- */
@@ -76,8 +81,53 @@ export default function ProductEditorForm({
             showReload
           />
 
-          {/* Image upload --------------------------------------------- */}
+          {/* Media upload --------------------------------------------- */}
           {uploader}
+          {media.length > 0 && (
+            <div className="flex flex-wrap gap-4">
+              {media.map((m, idx) => (
+                <div key={m.url} className="relative w-24">
+                  <div className="relative h-24 w-24 overflow-hidden rounded">
+                    {m.type === "video" ? (
+                      <VideoPlayer
+                        src={m.url}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <Image
+                        src={m.url}
+                        alt={m.altText || "media"}
+                        fill
+                        className="object-cover"
+                      />
+                    )}
+                  </div>
+                  <div className="mt-1 flex justify-between text-xs">
+                    <button
+                      type="button"
+                      disabled={idx === 0}
+                      onClick={() => moveMedia(idx, idx - 1)}
+                    >
+                      ↑
+                    </button>
+                    <button
+                      type="button"
+                      disabled={idx === media.length - 1}
+                      onClick={() => moveMedia(idx, idx + 1)}
+                    >
+                      ↓
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => removeMedia(idx)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Multilingual fields -------------------------------------- */}
           <MultilingualFields

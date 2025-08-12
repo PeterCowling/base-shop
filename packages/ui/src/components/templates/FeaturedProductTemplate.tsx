@@ -6,6 +6,7 @@ import { Price } from "../atoms/Price";
 import { RatingStars } from "../atoms/RatingStars";
 import type { Product } from "../organisms/ProductCard";
 import { ProductFeatures } from "../organisms/ProductFeatures";
+import { VideoPlayer } from "../atoms/VideoPlayer";
 
 export interface FeaturedProductTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -24,13 +25,20 @@ export function FeaturedProductTemplate({
   return (
     <div className={cn("grid gap-6 md:grid-cols-2", className)} {...props}>
       <div className="relative aspect-square w-full">
-        <Image
-          src={product.image}
-          alt={product.title}
-          fill
-          sizes="(min-width: 768px) 50vw, 100vw"
-          className="rounded-md object-cover"
-        />
+        {product.media?.[0]?.type === "video" ? (
+          <VideoPlayer
+            src={product.media[0].url}
+            className="h-full w-full rounded-md object-cover"
+          />
+        ) : (
+          <Image
+            src={product.media?.[0]?.url || ""}
+            alt={product.title}
+            fill
+            sizes="(min-width: 768px) 50vw, 100vw"
+            className="rounded-md object-cover"
+          />
+        )}
       </div>
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold">{product.title}</h2>

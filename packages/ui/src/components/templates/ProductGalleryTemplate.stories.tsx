@@ -5,9 +5,24 @@ const meta: Meta<typeof ProductGalleryTemplate> = {
   component: ProductGalleryTemplate,
   args: {
     products: [
-      { id: "1", title: "Product 1", image: "/placeholder.svg", price: 10 },
-      { id: "2", title: "Product 2", image: "/placeholder.svg", price: 20 },
-      { id: "3", title: "Product 3", image: "/placeholder.svg", price: 30 },
+      {
+        id: "1",
+        title: "Product 1",
+        media: [{ url: "/placeholder.svg", type: "image" }],
+        price: 10,
+      },
+      {
+        id: "2",
+        title: "Product 2",
+        media: [{ url: "/placeholder.svg", type: "image" }],
+        price: 20,
+      },
+      {
+        id: "3",
+        title: "Product 3",
+        media: [{ url: "/placeholder.svg", type: "image" }],
+        price: 30,
+      },
     ],
     useCarousel: false,
     minItems: 1,

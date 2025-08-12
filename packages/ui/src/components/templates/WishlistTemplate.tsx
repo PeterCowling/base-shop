@@ -4,6 +4,7 @@ import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import type { Product } from "../organisms/ProductCard";
+import { VideoPlayer } from "../atoms/VideoPlayer";
 
 export interface WishlistItem extends Product {
   quantity?: number;
@@ -37,13 +38,20 @@ export function WishlistTemplate({
             className="flex items-center gap-4 border-b pb-4 last:border-b-0"
           >
             <div className="relative h-16 w-16 shrink-0">
-              <Image
-                src={item.image}
-                alt={item.title}
-                fill
-                sizes="64px"
-                className="rounded object-cover"
-              />
+              {item.media?.[0]?.type === "video" ? (
+                <VideoPlayer
+                  src={item.media[0].url}
+                  className="h-full w-full rounded object-cover"
+                />
+              ) : (
+                <Image
+                  src={item.media?.[0]?.url || ""}
+                  alt={item.title}
+                  fill
+                  sizes="64px"
+                  className="rounded object-cover"
+                />
+              )}
             </div>
             <div className="flex-1">
               <h3 className="font-medium">{item.title}</h3>

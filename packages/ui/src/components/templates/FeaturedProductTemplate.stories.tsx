@@ -7,7 +7,7 @@ const meta: Meta<typeof FeaturedProductTemplate> = {
     product: {
       id: "1",
       title: "Sample Product",
-      image: "/placeholder.svg",
+      media: [{ url: "/placeholder.svg", type: "image" }],
       price: 99,
       rating: 4,
       features: ["Feature A", "Feature B"],

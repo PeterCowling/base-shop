@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn } from "../../utils/style";
 import { Price } from "../atoms/Price";
 import { QuantityInput } from "../molecules/QuantityInput";
+import { VideoPlayer } from "../atoms/VideoPlayer";
 
 export interface CartTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -47,13 +48,20 @@ export function CartTemplate({
               <td className="py-2">
                 <div className="flex items-center gap-4">
                   <div className="relative hidden h-12 w-12 sm:block">
-                    <Image
-                      src={line.sku.image}
-                      alt={line.sku.title}
-                      fill
-                      sizes="3rem"
-                      className="rounded-md object-cover"
-                    />
+                    {line.sku.media?.[0]?.type === "video" ? (
+                      <VideoPlayer
+                        src={line.sku.media[0].url}
+                        className="h-full w-full rounded-md object-cover"
+                      />
+                    ) : (
+                      <Image
+                        src={line.sku.media?.[0]?.url || ""}
+                        alt={line.sku.title}
+                        fill
+                        sizes="3rem"
+                        className="rounded-md object-cover"
+                      />
+                    )}
                   </div>
                   {line.sku.title}
                   {line.size && (

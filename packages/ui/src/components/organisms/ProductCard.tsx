@@ -1,14 +1,16 @@
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import * as React from "react";
 import { boxProps } from "../../utils/style";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
+import { VideoPlayer } from "../atoms/VideoPlayer";
+import type { MediaItem } from "@acme/types";
 
 export interface Product {
   id: string;
   title: string;
-  image: string | StaticImageData;
+  media: MediaItem[];
   price: number;
 }
 
@@ -59,13 +61,20 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       >
         {showImage && (
           <div className="relative aspect-square">
-            <Image
-              src={product.image}
-              alt={product.title}
-              fill
-              sizes="(min-width: 640px) 25vw, 50vw"
-              className="rounded-md object-cover"
-            />
+            {product.media?.[0]?.type === "video" ? (
+              <VideoPlayer
+                src={product.media[0].url}
+                className="h-full w-full rounded-md object-cover"
+              />
+            ) : (
+              <Image
+                src={product.media?.[0]?.url || ""}
+                alt={product.title}
+                fill
+                sizes="(min-width: 640px) 25vw, 50vw"
+                className="rounded-md object-cover"
+              />
+            )}
           </div>
         )}
         <h3 className="font-medium">{product.title}</h3>

@@ -7,7 +7,8 @@ import { ARViewer } from "../atoms/ARViewer";
 import { VideoPlayer } from "../atoms/VideoPlayer";
 import { ZoomImage } from "../atoms/ZoomImage";
 import { Image360Viewer } from "../molecules/Image360Viewer";
-import { MediaItem, MediaSelector } from "../molecules/MediaSelector";
+import { MediaSelector, type MediaItem as SelectorItem } from "../molecules/MediaSelector";
+import type { MediaItem } from "@acme/types";
 
 /* ------------------------------------------------------------------ *
  *  Props
@@ -26,8 +27,15 @@ export function ProductGallery({
   className,
   ...props
 }: ProductGalleryProps) {
+  const items: SelectorItem[] = media.map((m) => ({
+    type: m.type ?? "image",
+    src: m.url,
+    thumbnail: m.thumbnail,
+    alt: m.altText,
+    frames: m.frames,
+  }));
   const [index, setIndex] = React.useState(0);
-  const item = media[index];
+  const item = items[index];
 
   /* ------------------------------------------------------------------ *
    *  Determine which viewer to render
@@ -66,8 +74,8 @@ export function ProductGallery({
     <div className={cn("space-y-2", className)} {...props}>
       <div className="relative aspect-square w-full">{content}</div>
 
-      {media.length > 1 && (
-        <MediaSelector items={media} active={index} onChange={setIndex} />
+      {items.length > 1 && (
+        <MediaSelector items={items} active={index} onChange={setIndex} />
       )}
     </div>
   );

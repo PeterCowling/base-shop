@@ -1,6 +1,7 @@
 // packages/ui/hooks/useProductEditorFormState.tsx
 import type { Locale, ProductPublication } from "@platform-core/src/products";
-import { useImageUpload } from "@ui/hooks/useImageUpload";
+import { useMediaUpload } from "@ui/hooks/useMediaUpload";
+import type { MediaItem } from "@acme/types";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { parseMultilingualInput } from "@i18n/parseMultilingualInput";
 import {
@@ -26,6 +27,9 @@ export interface UseProductEditorFormReturn {
   ) => void;
   handleSubmit: (e: FormEvent) => void;
   uploader: ReactElement;
+  media: MediaItem[];
+  moveMedia: (from: number, to: number) => void;
+  removeMedia: (idx: number) => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -51,7 +55,15 @@ export function useProductEditorFormState(
     locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
     "landscape";
 
-  const { file: imageFile, uploader } = useImageUpload(requiredOrientation);
+  const { uploader } = useMediaUpload({
+    shop: init.shop,
+    requiredOrientation,
+    onUploaded: (item) =>
+      setProduct((prev) => ({
+        ...prev,
+        media: [...(prev.media ?? []), item],
+      })),
+  });
 
   /* ---------- input change handler --------------------------------- */
   const handleChange = useCallback(
@@ -104,7 +116,7 @@ export function useProductEditorFormState(
     });
 
     fd.append("price", String(product.price));
-    if (imageFile) fd.append("image", imageFile);
+    fd.append("media", JSON.stringify(product.media ?? []));
 
     fd.append("publish", publishTargets.join(","));
     return fd;
@@ -138,5 +150,20 @@ export function useProductEditorFormState(
     handleChange,
     handleSubmit,
     uploader,
+    media: product.media ?? [],
+    moveMedia: (from: number, to: number) => {
+      setProduct((prev) => {
+        const next = [...(prev.media ?? [])];
+        const [item] = next.splice(from, 1);
+        next.splice(to, 0, item);
+        return { ...prev, media: next };
+      });
+    },
+    removeMedia: (idx: number) => {
+      setProduct((prev) => ({
+        ...prev,
+        media: (prev.media ?? []).filter((_, i) => i !== idx),
+      }));
+    },
   };
 }

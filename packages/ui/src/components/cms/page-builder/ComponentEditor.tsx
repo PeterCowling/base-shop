@@ -28,6 +28,7 @@ import FAQBlockEditor from "./FAQBlockEditor";
 import HeaderEditor from "./HeaderEditor";
 import FooterEditor from "./FooterEditor";
 import PricingTableEditor from "./PricingTableEditor";
+import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -49,6 +50,8 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     },
     [onChange]
   );
+
+  const arrayEditor = useArrayEditor(onChange);
 
   let specific: React.ReactNode = null;
 
@@ -72,6 +75,26 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "PricingTable":
       specific = (
         <PricingTableEditor component={component} onChange={onChange} />
+      );
+      break;
+    case "Tabs":
+      specific = (
+        <>
+          {arrayEditor("tabs", (component as any).tabs, ["label"])}
+          <Input
+            label="Active Tab"
+            type="number"
+            value={(component as any).activeTab ?? 0}
+            onChange={(e) =>
+              handleInput(
+                "activeTab",
+                e.target.value === "" ? undefined : Number(e.target.value)
+              )
+            }
+            min={0}
+            max={((component as any).tabs?.length ?? 1) - 1}
+          />
+        </>
       );
       break;
     case "HeroBanner":

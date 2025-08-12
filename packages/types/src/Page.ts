@@ -221,6 +221,13 @@ export interface ButtonComponent extends PageComponentBase {
   size?: "sm" | "md" | "lg";
 }
 
+export interface TabsComponent extends PageComponentBase {
+  type: "Tabs";
+  tabs?: { label: string }[];
+  activeTab?: number;
+  children?: PageComponent[];
+}
+
 export interface SectionComponent extends PageComponentBase {
   type: "Section";
   children?: PageComponent[];
@@ -260,6 +267,7 @@ export type PageComponent =
   | FooterComponent
   | SocialLinksComponent
   | SocialFeedComponent
+  | TabsComponent
   | SectionComponent
   | MultiColumnComponent;
 
@@ -481,6 +489,13 @@ const buttonComponentSchema = baseComponentSchema.extend({
   size: z.enum(["sm", "md", "lg"]).optional(),
 });
 
+const tabsComponentSchema: any = baseComponentSchema.extend({
+  type: z.literal("Tabs"),
+  tabs: z.array(z.object({ label: z.string() })).optional(),
+  activeTab: z.number().int().nonnegative().optional(),
+  children: z.array(z.lazy(() => pageComponentSchema as any)).default([]),
+});
+
 const sectionComponentSchema: z.ZodType<SectionComponent> =
   baseComponentSchema.extend({
     type: z.literal("Section"),
@@ -523,6 +538,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     textComponentSchema,
     customHtmlComponentSchema,
     buttonComponentSchema,
+    tabsComponentSchema,
     sectionComponentSchema,
     multiColumnComponentSchema,
   ])

@@ -18,6 +18,7 @@ import CountdownTimer from "./CountdownTimer";
 import SocialLinks from "./SocialLinks";
 import SocialFeed from "./SocialFeed";
 import PricingTable from "./PricingTable";
+import Tabs from "./Tabs";
 
 export const organismRegistry = {
   AnnouncementBar,
@@ -40,6 +41,7 @@ export const organismRegistry = {
   SocialLinks,
   SocialFeed,
   PricingTable,
+  Tabs,
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

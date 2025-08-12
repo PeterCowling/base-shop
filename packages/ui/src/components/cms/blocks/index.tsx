@@ -10,6 +10,7 @@ import TestimonialSlider from "./TestimonialSlider";
 import Testimonials from "./Testimonials";
 import ValueProps from "./ValueProps";
 import RecommendationCarousel from "./RecommendationCarousel";
+import Tabs from "./Tabs";
 import Section from "./Section";
 import AnnouncementBar from "./AnnouncementBarBlock";
 import MapBlock from "./MapBlock";
@@ -37,6 +38,7 @@ export {
   Testimonials,
   TestimonialSlider,
   ValueProps,
+  Tabs,
   Section,
   AnnouncementBar,
   MapBlock,

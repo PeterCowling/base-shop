@@ -200,6 +200,12 @@ export interface TestimonialsComponent extends PageComponentBase {
     name?: string;
   }[];
 }
+export interface TabsComponent extends PageComponentBase {
+  type: "Tabs";
+  tabs?: { label: string }[];
+  activeTab?: number;
+  children?: PageComponent[];
+}
 export interface SectionComponent extends PageComponentBase {
   type: "Section";
   children?: PageComponent[];
@@ -235,6 +241,7 @@ export type PageComponent =
   | FooterComponent
   | SocialLinksComponent
   | SocialFeedComponent
+  | TabsComponent
   | SectionComponent
   | MultiColumnComponent;
 export declare const pageSchema: z.ZodObject<

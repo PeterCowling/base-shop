@@ -1,29 +1,50 @@
-import { spawn } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
+import { fileURLToPath } from "node:url";
+import lighthouse from "lighthouse";
+import chromeLauncher from "chrome-launcher";
+
+export interface SeoAuditResult {
+  score: number;
+  recommendations: string[];
+}
+
+/**
+ * Run a Lighthouse SEO audit for the given URL and return the score and
+ * recommendations for failing audits.
+ */
+export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
+  const chrome = await chromeLauncher.launch({ chromeFlags: ["--headless"] });
+  try {
+    const result = await lighthouse(url, {
+      port: chrome.port,
+      onlyCategories: ["seo"],
+      preset: "desktop",
+    });
+    const lhr = result.lhr;
+    const score = Math.round((lhr.categories?.seo?.score ?? 0) * 100);
+    const recommendations = Object.values(lhr.audits)
+      .filter((a) =>
+        a.score !== 1 &&
+        a.scoreDisplayMode !== "notApplicable" &&
+        a.title
+      )
+      .map((a) => a.title as string);
+    return { score, recommendations };
+  } finally {
+    await chrome.kill();
+  }
+}
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-const lighthouseBin = path.resolve(__dirname, '../node_modules/.bin/lighthouse');
-
-const url = process.argv[2] || 'http://localhost:3000';
-const output = process.argv[3] || 'seo-report.html';
-
-const args = [
-  url,
-  '--chrome-flags=--headless',
-  '--only-categories=seo',
-  '--preset=desktop',
-  '--output=html',
-  `--output-path=${output}`,
-];
-
-const child = spawn(lighthouseBin, args, { stdio: 'inherit' });
-
-child.on('exit', (code) => {
-  if (code !== 0) {
-    console.error(`Lighthouse audit failed with code ${code}`);
-    process.exit(code ?? 1);
-  }
-});
+// Allow the script to be invoked directly from the command line.
+if (process.argv[1] === __filename) {
+  const url = process.argv[2] || "http://localhost:3000";
+  runSeoAudit(url)
+    .then((res) => {
+      console.log(JSON.stringify(res));
+    })
+    .catch((err) => {
+      console.error(err);
+      process.exit(1);
+    });
+}

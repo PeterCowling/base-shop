@@ -241,6 +241,7 @@ After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:
 - `CART_TTL` – cart expiration in seconds (defaults to 30 days)
 - `DEPOSIT_RELEASE_ENABLED` – `true` or `false` to toggle automated deposit refunds
 - `DEPOSIT_RELEASE_INTERVAL_MS` – interval in milliseconds for running the refund service
+- `LOG_LEVEL` – controls logging output (`error`, `warn`, `info`, `debug`; defaults to `info`)
 
 The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET`
 and `PREVIEW_TOKEN_SECRET`. Replace all placeholders with real values or supply

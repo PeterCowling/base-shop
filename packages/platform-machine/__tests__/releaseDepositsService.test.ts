@@ -145,17 +145,17 @@ describe("startDepositReleaseService", () => {
     readOrders.mockResolvedValue([]);
     readFile
       .mockResolvedValueOnce(
-        JSON.stringify({ depositRelease: { enabled: true, intervalMs: 5000 } })
+        JSON.stringify({ depositService: { enabled: true, interval: 1 } })
       )
       .mockResolvedValueOnce(
-        JSON.stringify({ depositRelease: { enabled: true } })
+        JSON.stringify({ depositService: { enabled: true, interval: 1 } })
       );
     process.env.DEPOSIT_RELEASE_ENABLED_SHOP2 = "false";
 
     const setSpy = jest
       .spyOn(global, "setInterval")
       .mockImplementation((fn: any, ms?: number) => {
-        expect(ms).toBe(5000);
+        expect(ms).toBe(60000);
         return 123 as any;
       });
     const clearSpy = jest

@@ -55,6 +55,7 @@
       /* ─── short '@/…' imports for components & hooks ────────────── */
       "@/components/pdp/*": ["packages/platform-core/src/components/pdp/*"],
       "@/components/shop/*": ["packages/platform-core/src/components/shop/*"],
+      "@/components/blog/*": ["packages/platform-core/src/components/blog/*"],
 
       /* ─── lib helpers (products, cookies, …) ────────────── */
       "@lib/*": ["packages/platform-core/src/*"],

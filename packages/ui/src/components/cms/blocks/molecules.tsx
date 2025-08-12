@@ -98,9 +98,9 @@ export const CategoryList = memo(function CategoryList({
  * Molecule registry
  * --------------------------------------------------------------------------*/
 export const moleculeRegistry = {
-  NewsletterForm,
-  PromoBanner,
-  CategoryList,
+  NewsletterForm: { component: NewsletterForm },
+  PromoBanner: { component: PromoBanner },
+  CategoryList: { component: CategoryList },
 } as const;
 
 export type MoleculeBlockType = keyof typeof moleculeRegistry;

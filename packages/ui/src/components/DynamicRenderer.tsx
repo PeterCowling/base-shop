@@ -4,10 +4,8 @@
 
 import { blockRegistry } from "@ui/components/cms/blocks";
 import type { Locale } from "@/i18n/locales";
-import { PRODUCTS } from "@platform-core/src/products";
-import type { PageComponent, SKU } from "@acme/types";
-import type { CSSProperties, ReactNode } from "react";
-import type { Product } from "./organisms/ProductCard";
+import type { PageComponent } from "@acme/types";
+import type { CSSProperties, ReactNode, ComponentType } from "react";
 
 export default function DynamicRenderer({
   components,
@@ -19,11 +17,18 @@ export default function DynamicRenderer({
   runtimeData?: Record<string, Record<string, unknown>>;
 }) {
   const renderBlock = (block: PageComponent): ReactNode => {
-    const Comp = blockRegistry[block.type as keyof typeof blockRegistry];
-    if (!Comp) {
+    const entry = blockRegistry[block.type as keyof typeof blockRegistry];
+    if (!entry) {
       console.warn(`Unknown component type: ${block.type}`);
       return null;
     }
+
+    const { component: Comp, getRuntimeProps } = entry as {
+      component: ComponentType<any>;
+      getRuntimeProps?: (block: PageComponent, locale: Locale) =>
+        | Record<string, unknown>
+        | Promise<Record<string, unknown>>;
+    };
 
     const {
       id,
@@ -49,22 +54,9 @@ export default function DynamicRenderer({
     };
 
     let extraProps: Record<string, unknown> = {};
-    if (block.type === "ProductGrid") {
-      extraProps = { skus: PRODUCTS as SKU[] };
-    }
-
-    if (block.type === "ProductCarousel") {
-      const products: Product[] = PRODUCTS.map(
-        ({ id, title, image, price }) => ({ id, title, image, price })
-      );
-      extraProps = { products };
-    }
-
-    if (block.type === "RecommendationCarousel") {
-      const products: Product[] = PRODUCTS.map(
-        ({ id, title, image, price }) => ({ id, title, image, price })
-      );
-      extraProps = { endpoint: "/api", products };
+    if (getRuntimeProps) {
+      const runtime = getRuntimeProps(block, locale);
+      extraProps = { ...extraProps, ...(runtime as Record<string, unknown>) };
     }
 
     if (runtimeData && runtimeData[block.type]) {

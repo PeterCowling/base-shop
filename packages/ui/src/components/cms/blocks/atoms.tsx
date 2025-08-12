@@ -79,12 +79,12 @@ export const Image = memo(function Image({
  * Atom registry
  * --------------------------------------------------------------------------*/
 export const atomRegistry = {
-  Text,
-  Image,
-  Divider,
-  Spacer,
-  CustomHtml,
-  Button: ButtonBlock,
+  Text: { component: Text },
+  Image: { component: Image },
+  Divider: { component: Divider },
+  Spacer: { component: Spacer },
+  CustomHtml: { component: CustomHtml },
+  Button: { component: ButtonBlock },
 } as const;
 
 export type AtomBlockType = keyof typeof atomRegistry;

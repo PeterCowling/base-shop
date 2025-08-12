@@ -1,6 +1,6 @@
 "use client";
 import { useState, type ReactNode } from "react";
-import { cn } from "../../../../utils/style";
+import { cn } from "../../../utils/style";
 
 export interface TabsBlockProps {
   /** Labels for each tab */

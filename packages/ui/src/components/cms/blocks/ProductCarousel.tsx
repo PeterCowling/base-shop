@@ -2,6 +2,7 @@ import {
   ProductCarousel as BaseCarousel,
   type ProductCarouselProps as BaseProps,
 } from "../../organisms/ProductCarousel";
+import { PRODUCTS } from "@platform-core/src/products";
 import type { SKU } from "@acme/types";
 import { useEffect, useState } from "react";
 import { Product } from "../../organisms/ProductCard";
@@ -11,6 +12,16 @@ export interface CmsProductCarouselProps
   extends Omit<BaseProps, "products"> {
   skus?: SKU[];
   collectionId?: string;
+}
+
+export function getRuntimeProps() {
+  const products: Product[] = PRODUCTS.map(({ id, title, image, price }) => ({
+    id,
+    title,
+    image,
+    price,
+  }));
+  return { products };
 }
 
 export default function CmsProductCarousel({

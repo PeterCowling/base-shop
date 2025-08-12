@@ -2,6 +2,7 @@
 
 import { getSettings } from "@cms/actions/shops.server";
 import dynamic from "next/dynamic";
+import SeoProgressPanel from "./SeoProgressPanel";
 
 const SeoEditor = dynamic(() => import("./SeoEditor"));
 void SeoEditor;
@@ -24,8 +25,9 @@ export default async function SeoSettingsPage({
   const freeze = settings.freezeTranslations ?? false;
 
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">SEO – {shop}</h2>
+    <div className="space-y-6">
+      <h2 className="text-xl font-semibold">SEO – {shop}</h2>
+      <SeoProgressPanel shop={shop} />
       <SeoEditor
         shop={shop}
         languages={languages}

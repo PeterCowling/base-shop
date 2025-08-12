@@ -7,7 +7,7 @@ import { historyStateSchema } from "@acme/types";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
 
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 import { ensureAuthorized } from "./common/auth";
 import {
   componentsField,
@@ -49,7 +49,7 @@ export async function createPage(
   );
   if (!parsed.success) {
     const context = { shop, id };
-    if (env.NODE_ENV === "development") {
+    if (coreEnv.NODE_ENV === "development") {
       console.warn("[createPage] validation failed", {
         ...context,
         error: parsed.error,
@@ -189,7 +189,7 @@ export async function updatePage(
   );
   if (!parsed.success) {
     const context = { shop, id: formData.get("id") || undefined };
-    if (env.NODE_ENV === "development") {
+    if (coreEnv.NODE_ENV === "development") {
       console.warn("[updatePage] validation failed", {
         ...context,
         error: parsed.error,

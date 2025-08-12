@@ -2,7 +2,7 @@
 "use client";
 
 import { useTranslations } from "@/i18n/Translations";
-import { env } from "@config/src/env";
+import { paymentEnv } from "@acme/config/env/payments";
 import {
   Elements,
   PaymentElement,
@@ -17,7 +17,9 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { isoDateInNDays } from "@acme/date-utils";
 import { useCurrency } from "@platform-core/src/contexts/CurrencyContext";
 
-const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(
+  paymentEnv.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
 
 type Props = { locale: "en" | "de" | "it"; taxRegion: string };
 

@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 
 const databaseUrl =
-  env.DATABASE_URL ?? "file:./packages/platform-core/dev.db";
+  coreEnv.DATABASE_URL ?? "file:./packages/platform-core/dev.db";
 
 export const prisma = new PrismaClient({
   datasources: { db: { url: databaseUrl } },

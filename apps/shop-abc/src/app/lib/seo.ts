@@ -2,7 +2,7 @@ import type { Locale } from "@i18n/locales";
 import { getShopSettings } from "@platform-core/src/repositories/settings.server";
 import type { ShopSettings } from "@acme/types";
 import type { NextSeoProps } from "next-seo";
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 
 interface ExtendedSeoProps extends Partial<NextSeoProps> {
   canonicalBase?: string;
@@ -20,7 +20,7 @@ export async function getSeo(
   locale: Locale,
   pageSeo: Partial<NextSeoProps> = {}
 ): Promise<NextSeoProps> {
-  const shop = env.NEXT_PUBLIC_SHOP_ID || "default";
+  const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
   const settings: ShopSettings = await getShopSettings(shop);
   const shopSeo = (settings.seo ?? {}) as Record<string, ExtendedSeoProps>;
   const base: ExtendedSeoProps = shopSeo[locale] ?? {};

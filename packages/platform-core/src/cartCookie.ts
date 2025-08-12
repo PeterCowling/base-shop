@@ -2,7 +2,7 @@
 import crypto from "crypto";
 import { z } from "zod";
 
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 import { skuSchema } from "@acme/types";
 
 /* ------------------------------------------------------------------
@@ -10,7 +10,7 @@ import { skuSchema } from "@acme/types";
  * ------------------------------------------------------------------ */
 export const CART_COOKIE = "__Host-CART_ID";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
-const SECRET = env.CART_COOKIE_SECRET;
+const SECRET = coreEnv.CART_COOKIE_SECRET;
 
 if (!SECRET) {
   throw new Error("env.CART_COOKIE_SECRET is required");

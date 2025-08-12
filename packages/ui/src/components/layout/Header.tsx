@@ -6,7 +6,7 @@ import {
 } from "@platform-core/src/cartCookie";
 import { getCart } from "@platform-core/src/cartStore";
 import { cookies } from "next/headers";
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 import HeaderClient from "./HeaderClient.client";
 
 /**
@@ -26,7 +26,7 @@ export default async function Header({
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
   const cart = cartId ? await getCart(cartId) : {};
   const initialQty = Object.values(cart).reduce((s, line) => s + line.qty, 0);
-  const shopId = env.NEXT_PUBLIC_SHOP_ID || "default";
+  const shopId = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
   const shop = await readShop(shopId);
   const nav = shop.navigation ?? [];
 

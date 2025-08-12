@@ -1,5 +1,5 @@
 import { getShopSettings } from "@platform-core/repositories/settings.server";
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 const fallback = {
     title: "",
     description: "",
@@ -8,7 +8,7 @@ const fallback = {
     twitter: {},
 };
 export async function getSeo(locale, pageSeo = {}) {
-    const shop = env.NEXT_PUBLIC_SHOP_ID || "default";
+    const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
     const settings = await getShopSettings(shop);
     const shopSeo = (settings.seo ?? {});
     const base = shopSeo[locale] ?? {};

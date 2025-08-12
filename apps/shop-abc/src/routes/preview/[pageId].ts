@@ -4,9 +4,9 @@
 import type { EventContext } from "@cloudflare/workers-types";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 
-const secret = env.PREVIEW_TOKEN_SECRET;
+const secret = coreEnv.PREVIEW_TOKEN_SECRET;
 
 function verify(id: string, token: string | null): boolean {
   if (!secret || !token) return false;
@@ -27,7 +27,7 @@ export const onRequest = async ({
   if (!verify(pageId, token)) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const shop = env.NEXT_PUBLIC_SHOP_ID || "default";
+  const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
   const pages = await getPages(shop);
   const page = pages.find((p) => p.id === pageId);
   if (!page) return new Response("Not Found", { status: 404 });

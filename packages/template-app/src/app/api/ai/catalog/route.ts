@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { getProductById } from "@platform-core/src/products";
 import { readRepo } from "@platform-core/repositories/products.server";
 import type { ProductPublication } from "@acme/types";
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 
 export const runtime = "nodejs";
 
@@ -13,7 +13,7 @@ function parseIntOr(val: string | null, def: number): number {
 }
 
 export async function GET(req: NextRequest) {
-  const shop = env.NEXT_PUBLIC_SHOP_ID || "default";
+  const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
   const all = await readRepo<ProductPublication>(shop);
 
   const lastModifiedDate = all.reduce((max, p) => {

@@ -2,10 +2,10 @@
 
 import { getSanityConfig } from "@platform-core/src/shops";
 import { getShopById } from "@platform-core/src/repositories/shop.server";
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 import { ensureAuthorized } from "./common/auth";
 
-const apiVersion = env.SANITY_API_VERSION || "2021-10-21";
+const apiVersion = coreEnv.SANITY_API_VERSION || "2021-10-21";
 
 function collectProductSlugs(content: unknown): string[] {
   const slugs = new Set<string>();

@@ -1,7 +1,7 @@
 // apps/shop-abc/src/middleware.ts
 import { NextResponse } from "next/server";
 import { Redis } from "@upstash/redis";
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 
 /** Track login attempts per IP + user */
 interface Attempt {
@@ -19,21 +19,21 @@ const mfaAttempts = new Map<string, Attempt>();
 // local development and unit tests.
 let redis: Redis | null = null;
 if (
-  env.LOGIN_RATE_LIMIT_REDIS_URL &&
-  env.LOGIN_RATE_LIMIT_REDIS_TOKEN
+  coreEnv.LOGIN_RATE_LIMIT_REDIS_URL &&
+  coreEnv.LOGIN_RATE_LIMIT_REDIS_TOKEN
 ) {
   redis = new Redis({
-    url: env.LOGIN_RATE_LIMIT_REDIS_URL,
-    token: env.LOGIN_RATE_LIMIT_REDIS_TOKEN,
+    url: coreEnv.LOGIN_RATE_LIMIT_REDIS_URL,
+    token: coreEnv.LOGIN_RATE_LIMIT_REDIS_TOKEN,
   });
 } else if (
-  env.UPSTASH_REDIS_REST_URL &&
-  env.UPSTASH_REDIS_REST_TOKEN
+  coreEnv.UPSTASH_REDIS_REST_URL &&
+  coreEnv.UPSTASH_REDIS_REST_TOKEN
 ) {
   // Fall back to generic Upstash env vars if provided
   redis = new Redis({
-    url: env.UPSTASH_REDIS_REST_URL,
-    token: env.UPSTASH_REDIS_REST_TOKEN,
+    url: coreEnv.UPSTASH_REDIS_REST_URL,
+    token: coreEnv.UPSTASH_REDIS_REST_TOKEN,
   });
 }
 

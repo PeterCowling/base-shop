@@ -1,6 +1,6 @@
 import "server-only";
 
-import { env } from "@config/src/env";
+import { coreEnv } from "@acme/config/env/core";
 import { DATA_ROOT } from "../dataRoot";
 import { sendEmail } from "@acme/email";
 import { promises as fs } from "node:fs";
@@ -33,8 +33,9 @@ export async function checkAndAlert(
   shop: string,
   items: InventoryItem[],
 ): Promise<void> {
-  const recipientRaw = env.STOCK_ALERT_RECIPIENTS ?? env.STOCK_ALERT_RECIPIENT;
-  const webhook = env.STOCK_ALERT_WEBHOOK;
+  const recipientRaw =
+    coreEnv.STOCK_ALERT_RECIPIENTS ?? coreEnv.STOCK_ALERT_RECIPIENT;
+  const webhook = coreEnv.STOCK_ALERT_WEBHOOK;
   if (!recipientRaw && !webhook) return;
 
   const recipients = recipientRaw
@@ -50,7 +51,7 @@ export async function checkAndAlert(
       const threshold =
         typeof i.lowStockThreshold === "number"
           ? i.lowStockThreshold
-          : env.STOCK_ALERT_DEFAULT_THRESHOLD;
+          : coreEnv.STOCK_ALERT_DEFAULT_THRESHOLD;
       return typeof threshold === "number" && i.quantity <= threshold;
     })
     .filter((i) => {
@@ -66,7 +67,7 @@ export async function checkAndAlert(
       .join(", ");
     const variant = attrs ? ` (${attrs})` : "";
     const threshold =
-      i.lowStockThreshold ?? env.STOCK_ALERT_DEFAULT_THRESHOLD;
+      i.lowStockThreshold ?? coreEnv.STOCK_ALERT_DEFAULT_THRESHOLD;
     return `${i.sku}${variant} – qty ${i.quantity} (threshold ${threshold})`;
   });
   const body = `The following items in shop ${shop} are low on stock:\n${lines.join("\n")}`;

@@ -1,5 +1,5 @@
 // apps/cms/src/auth/secret.ts
 
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 
-export const authSecret = env.NEXTAUTH_SECRET || "dev-secret";
+export const authSecret = coreEnv.NEXTAUTH_SECRET || "dev-secret";

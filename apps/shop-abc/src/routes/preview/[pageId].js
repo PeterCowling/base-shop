@@ -2,8 +2,8 @@
 // apps/shop-abc/src/routes/preview/[pageId].ts
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { env } from "@acme/config";
-const secret = env.PREVIEW_TOKEN_SECRET;
+import { coreEnv } from "@acme/config/env/core";
+const secret = coreEnv.PREVIEW_TOKEN_SECRET;
 function verify(id, token) {
     if (!secret || !token)
         return false;
@@ -21,7 +21,7 @@ export const onRequest = async ({ params, request, }) => {
     if (!verify(pageId, token)) {
         return new Response("Unauthorized", { status: 401 });
     }
-    const shop = env.NEXT_PUBLIC_SHOP_ID || "default";
+    const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
     const pages = await getPages(shop);
     const page = pages.find((p) => p.id === pageId);
     if (!page)

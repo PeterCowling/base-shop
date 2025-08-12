@@ -52,12 +52,12 @@ export async function releaseDepositsOnce(
 
 type DepositReleaseConfig = {
   enabled: boolean;
-  intervalMs: number;
+  intervalMinutes: number;
 };
 
 const DEFAULT_CONFIG: DepositReleaseConfig = {
   enabled: false,
-  intervalMs: 1000 * 60 * 60,
+  intervalMinutes: 60,
 };
 
 function envKey(shop: string, key: string): string {
@@ -81,22 +81,31 @@ async function resolveConfig(
     const cfg = json.depositService;
     if (cfg) {
       if (typeof cfg.enabled === "boolean") config.enabled = cfg.enabled;
-      if (typeof cfg.interval === "number")
-        config.intervalMs = cfg.interval * 60 * 1000;
+      if (typeof cfg.intervalMinutes === "number")
+        config.intervalMinutes = cfg.intervalMinutes;
+      else if (typeof cfg.interval === "number")
+        config.intervalMinutes = cfg.interval;
     }
   } catch {}
 
   const envEnabled = readEnv(shop, "ENABLED");
   if (envEnabled !== undefined) config.enabled = envEnabled !== "false";
 
-  const envInterval = readEnv(shop, "INTERVAL_MS");
+  const envInterval = readEnv(shop, "INTERVAL_MINUTES");
   if (envInterval !== undefined) {
     const num = Number(envInterval);
-    if (!Number.isNaN(num)) config.intervalMs = num;
+    if (!Number.isNaN(num)) config.intervalMinutes = num;
+  } else {
+    const envIntervalMs = readEnv(shop, "INTERVAL_MS");
+    if (envIntervalMs !== undefined) {
+      const num = Number(envIntervalMs);
+      if (!Number.isNaN(num)) config.intervalMinutes = num / (60 * 1000);
+    }
   }
 
   if (override.enabled !== undefined) config.enabled = override.enabled;
-  if (override.intervalMs !== undefined) config.intervalMs = override.intervalMs;
+  if (override.intervalMinutes !== undefined)
+    config.intervalMinutes = override.intervalMinutes;
 
   return config;
 }
@@ -122,7 +131,7 @@ export async function startDepositReleaseService(
       }
 
       await run();
-      timers.push(setInterval(run, cfg.intervalMs));
+      timers.push(setInterval(run, cfg.intervalMinutes * 60 * 1000));
     }),
   );
 

@@ -55,7 +55,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
         ...parsed.data,
         depositService: {
           enabled: false,
-          interval: 60,
+          intervalMinutes: 60,
           ...(parsed.data.depositService ?? {}),
         },
       };
@@ -70,7 +70,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     freezeTranslations: false,
     currency: "EUR",
     taxRegion: "",
-    depositService: { enabled: false, interval: 60 },
+    depositService: { enabled: false, intervalMinutes: 60 },
     updatedAt: "",
     updatedBy: "",
   };

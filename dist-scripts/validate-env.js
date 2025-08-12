@@ -34,7 +34,7 @@ for (const [key, value] of Object.entries(env)) {
             depositErrors.push(`${key} must be true or false`);
         }
     }
-    else if (key.includes("INTERVAL_MS")) {
+    else if (key.includes("INTERVAL_MINUTES")) {
         if (Number.isNaN(Number(value))) {
             depositErrors.push(`${key} must be a number`);
         }

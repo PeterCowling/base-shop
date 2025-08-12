@@ -5,6 +5,6 @@
   "taxRegion": "EU",
   "depositService": {
     "enabled": false,
-    "interval": 60
+    "intervalMinutes": 60
   }
 }

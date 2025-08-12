@@ -105,7 +105,7 @@ export function writeFiles(
   envContent += `CLOUDFLARE_ACCOUNT_ID=\n`;
   envContent += `CLOUDFLARE_API_TOKEN=\n`;
   envContent += `DEPOSIT_RELEASE_ENABLED=\n`;
-  envContent += `DEPOSIT_RELEASE_INTERVAL_MS=\n`;
+  envContent += `DEPOSIT_RELEASE_INTERVAL_MINUTES=\n`;
   writeFileSync(join(newApp, ".env"), envContent);
 
   mkdirSync(newData, { recursive: true });
@@ -115,7 +115,7 @@ export function writeFiles(
       {
         languages: [...LOCALES],
         analytics: options.analytics,
-        depositService: { enabled: false, interval: 60 },
+        depositService: { enabled: false, intervalMinutes: 60 },
       },
       null,
       2

@@ -27,7 +27,7 @@ export const envSchema = z.object({
   CLOUDFLARE_ACCOUNT_ID: z.string().optional(),
   CLOUDFLARE_API_TOKEN: z.string().optional(),
   DEPOSIT_RELEASE_ENABLED: z.enum(["true", "false"]).optional(),
-  DEPOSIT_RELEASE_INTERVAL_MS: z.coerce.number().optional(),
+  DEPOSIT_RELEASE_INTERVAL_MINUTES: z.coerce.number().optional(),
   OPENAI_API_KEY: z.string().optional(),
   TAXJAR_KEY: z.string().optional(),
   UPS_KEY: z.string().optional(),

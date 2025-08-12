@@ -20,7 +20,8 @@ export const shopSettingsSchema = z.object({
   depositService: z
     .object({
       enabled: z.boolean(),
-      interval: z.number().int().positive(),
+      /** Interval in minutes between deposit release runs */
+      intervalMinutes: z.number().int().positive(),
     })
     .optional(),
   updatedAt: z.string(),

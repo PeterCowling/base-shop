@@ -9,7 +9,7 @@ import { Price } from "../atoms/Price";
 export interface Product {
   id: string;
   title: string;
-  images: MediaItem[];
+  media: MediaItem[];
   price: number;
 }
 
@@ -58,15 +58,24 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         )}
         {...props}
       >
-        {showImage && product.images[0] && (
+        {showImage && product.media[0] && (
           <div className="relative aspect-square">
-            <Image
-              src={product.images[0].url}
-              alt={product.title}
-              fill
-              sizes="(min-width: 640px) 25vw, 50vw"
-              className="rounded-md object-cover"
-            />
+            {product.media[0].type === "image" ? (
+              <Image
+                src={product.media[0].url}
+                alt={product.title}
+                fill
+                sizes="(min-width: 640px) 25vw, 50vw"
+                className="rounded-md object-cover"
+              />
+            ) : (
+              <video
+                src={product.media[0].url}
+                className="h-full w-full rounded-md object-cover"
+                muted
+                playsInline
+              />
+            )}
           </div>
         )}
         <h3 className="font-medium">{product.title}</h3>

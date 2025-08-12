@@ -3,7 +3,7 @@
     "id": "123",
     "title": { "en": "Demo" },
     "price": 1999,
-    "images": [],
+    "media": [],
     "row_version": 0,
     "dailyRate": 100,
     "weeklyRate": 500,

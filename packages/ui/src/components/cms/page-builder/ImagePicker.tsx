@@ -2,7 +2,7 @@
 "use client";
 
 import type { MediaItem } from "@acme/types";
-import useMediaUpload from "@ui/hooks/useMediaUpload";
+import useFileUpload from "@ui/hooks/useFileUpload";
 import Image from "next/image";
 import { memo, useEffect, useState } from "react";
 import {
@@ -34,7 +34,7 @@ function ImagePicker({ onSelect, children }: Props) {
     onFileChange,
     handleUpload,
     error,
-  } = useMediaUpload({
+  } = useFileUpload({
     shop: shop ?? "",
     requiredOrientation: "landscape",
     onUploaded: (item: MediaItem) => {

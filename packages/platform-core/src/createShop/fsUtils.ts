@@ -168,7 +168,7 @@ export function writeFiles(
     },
     price: 1000,
     currency: "EUR",
-    images: [],
+    media: [],
     status: "draft",
     shop: id,
     row_version: 1,

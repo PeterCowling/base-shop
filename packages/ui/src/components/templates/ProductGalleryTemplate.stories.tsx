@@ -8,19 +8,19 @@ const meta: Meta<typeof ProductGalleryTemplate> = {
       {
         id: "1",
         title: "Product 1",
-        images: [{ url: "/placeholder.svg", type: "image" }],
+        media: [{ url: "/placeholder.svg", type: "image" }],
         price: 10,
       },
       {
         id: "2",
         title: "Product 2",
-        images: [{ url: "/placeholder.svg", type: "image" }],
+        media: [{ url: "/placeholder.svg", type: "image" }],
         price: 20,
       },
       {
         id: "3",
         title: "Product 3",
-        images: [{ url: "/placeholder.svg", type: "image" }],
+        media: [{ url: "/placeholder.svg", type: "image" }],
         price: 30,
       },
     ],

@@ -46,15 +46,24 @@ export function CartTemplate({
             <tr key={line.id} className="border-b last:border-0">
               <td className="py-2">
                 <div className="flex items-center gap-4">
-                  {line.sku.images[0] && (
+                  {line.sku.media[0] && (
                     <div className="relative hidden h-12 w-12 sm:block">
-                      <Image
-                        src={line.sku.images[0].url}
-                        alt={line.sku.title}
-                        fill
-                        sizes="3rem"
-                        className="rounded-md object-cover"
-                      />
+                      {line.sku.media[0].type === "image" ? (
+                        <Image
+                          src={line.sku.media[0].url}
+                          alt={line.sku.title}
+                          fill
+                          sizes="3rem"
+                          className="rounded-md object-cover"
+                        />
+                      ) : (
+                        <video
+                          src={line.sku.media[0].url}
+                          className="h-full w-full rounded-md object-cover"
+                          muted
+                          playsInline
+                        />
+                      )}
                     </div>
                   )}
                   {line.sku.title}

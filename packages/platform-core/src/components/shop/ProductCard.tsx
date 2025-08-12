@@ -14,14 +14,23 @@ function ProductCardInner({ sku }: { sku: SKU }) {
         href={`../product/${sku.slug}`}
         className="relative block aspect-square"
       >
-        {sku.images[0] && (
-          <Image
-            src={sku.images[0].url}
-            alt={sku.title}
-            fill
-            sizes="(min-width: 640px) 25vw, 50vw"
-            className="rounded-md object-cover"
-          />
+        {sku.media[0] && (
+          sku.media[0].type === "image" ? (
+            <Image
+              src={sku.media[0].url}
+              alt={sku.title}
+              fill
+              sizes="(min-width: 640px) 25vw, 50vw"
+              className="rounded-md object-cover"
+            />
+          ) : (
+            <video
+              src={sku.media[0].url}
+              className="h-full w-full rounded-md object-cover"
+              muted
+              playsInline
+            />
+          )
         )}
       </Link>
       <h3 className="font-medium">{sku.title}</h3>

@@ -2,8 +2,8 @@ import { render, screen } from "@testing-library/react";
 import React from "react";
 import MediaManager from "@ui/components/cms/MediaManager";
 
-jest.mock("@ui/hooks/useMediaUpload", () => ({
-  useMediaUpload: () => ({
+jest.mock("@ui/hooks/useFileUpload", () => ({
+  useFileUpload: () => ({
     pendingFile: null,
     altText: "",
     setAltText: jest.fn(),

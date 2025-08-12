@@ -10,7 +10,7 @@ const ALL_FIELDS: AiCatalogField[] = [
   "title",
   "description",
   "price",
-  "images",
+  "media",
 ];
 
 interface Props {

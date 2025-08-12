@@ -4,7 +4,7 @@ import { ProductDetailTemplate } from "./ProductDetailTemplate";
 const product = {
   id: "1",
   title: "Sample Product",
-  images: [{ url: "https://placehold.co/600", type: "image" }],
+  media: [{ url: "https://placehold.co/600", type: "image" }],
   price: 99.99,
   description: "A wonderful item",
 };

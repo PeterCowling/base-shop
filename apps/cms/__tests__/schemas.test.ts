@@ -12,7 +12,7 @@ describe("zod schemas", () => {
       price: "10",
       title: { en: "Hello", de: "Hallo", it: "Ciao" },
       description: { en: "World", de: "Welt", it: "Mondo" },
-      images: [],
+      media: [],
     };
 
     const parsed = productSchema.parse(data);
@@ -28,7 +28,7 @@ describe("zod schemas", () => {
       price: "-1",
       title: { en: "Hey", de: "Hallo", it: "Ciao" },
       description: { en: "World", de: "Welt", it: "Mondo" },
-      images: [],
+      media: [],
     });
 
     expect(result.success).toBe(false);

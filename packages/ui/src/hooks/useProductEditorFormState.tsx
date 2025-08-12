@@ -1,6 +1,6 @@
 // packages/ui/hooks/useProductEditorFormState.tsx
 import type { Locale, ProductPublication } from "@platform-core/src/products";
-import { useMediaUpload } from "@ui/hooks/useMediaUpload";
+import { useFileUpload } from "@ui/hooks/useFileUpload";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { parseMultilingualInput } from "@i18n/parseMultilingualInput";
 import {
@@ -30,8 +30,8 @@ export interface UseProductEditorFormReturn {
   ) => void;
   handleSubmit: (e: FormEvent) => void;
   uploader: ReactElement;
-  removeImage: (index: number) => void;
-  moveImage: (from: number, to: number) => void;
+  removeMedia: (index: number) => void;
+  moveMedia: (from: number, to: number) => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -60,11 +60,11 @@ export function useProductEditorFormState(
     locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
     "landscape";
 
-  const { uploader } = useMediaUpload({
+  const { uploader } = useFileUpload({
     shop: init.shop,
     requiredOrientation,
     onUploaded: (item) =>
-      setProduct((prev) => ({ ...prev, images: [...prev.images, item] })),
+      setProduct((prev) => ({ ...prev, media: [...prev.media, item] })),
   });
 
   /* ---------- input change handler --------------------------------- */
@@ -130,7 +130,7 @@ export function useProductEditorFormState(
     });
 
     fd.append("price", String(product.price));
-    fd.append("images", JSON.stringify(product.images));
+    fd.append("media", JSON.stringify(product.media));
 
     fd.append("publish", publishTargets.join(","));
 
@@ -161,20 +161,20 @@ export function useProductEditorFormState(
     [onSave, formData, product.variants]
   );
 
-  /* ---------- image helpers --------------------------------------- */
-  const removeImage = useCallback((index: number) => {
+  /* ---------- media helpers --------------------------------------- */
+  const removeMedia = useCallback((index: number) => {
     setProduct((prev) => ({
       ...prev,
-      images: prev.images.filter((_, i) => i !== index),
+      media: prev.media.filter((_, i) => i !== index),
     }));
   }, []);
 
-  const moveImage = useCallback((from: number, to: number) => {
+  const moveMedia = useCallback((from: number, to: number) => {
     setProduct((prev) => {
-      const imgs = [...prev.images];
-      const [moved] = imgs.splice(from, 1);
-      imgs.splice(to, 0, moved);
-      return { ...prev, images: imgs };
+      const gallery = [...prev.media];
+      const [moved] = gallery.splice(from, 1);
+      gallery.splice(to, 0, moved);
+      return { ...prev, media: gallery };
     });
   }, []);
 
@@ -188,7 +188,7 @@ export function useProductEditorFormState(
     handleChange,
     handleSubmit,
     uploader,
-    removeImage,
-    moveImage,
+    removeMedia,
+    moveMedia,
   };
 }

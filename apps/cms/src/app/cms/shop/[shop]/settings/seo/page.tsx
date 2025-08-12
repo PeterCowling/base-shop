@@ -33,7 +33,7 @@ export default async function SeoSettingsPage({
   const freeze = settings.freezeTranslations ?? false;
   const ai = seo.aiCatalog ?? {
     enabled: false,
-    fields: ["id", "title", "description", "price", "images"],
+    fields: ["id", "title", "description", "price", "media"],
     pageSize: 50,
   };
   const lastCrawl = events

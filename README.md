@@ -236,6 +236,7 @@ After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:
 - `CMS_SPACE_URL` – base URL of the CMS API
 - `CMS_ACCESS_TOKEN` – access token for pushing schemas
 - `CHROMATIC_PROJECT_TOKEN` – token for publishing Storybook previews
+- `LOG_LEVEL` – logging verbosity (`error`, `warn`, `info`, `debug`; defaults to `info`)
 - `STOCK_ALERT_RECIPIENT` – email address that receives low stock alerts; leave unset to disable notifications
 - `CART_COOKIE_SECRET` – secret used to sign cart cookies (required)
 - `CART_TTL` – cart expiration in seconds (defaults to 30 days)

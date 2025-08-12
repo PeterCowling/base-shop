@@ -1,4 +1,4 @@
 export { getShopFromPath } from "./getShopFromPath";
 export { replaceShopInPath } from "./replaceShopInPath";
 export { initTheme } from "./initTheme";
-export { logger } from "./logger";
+export { logger, type LogMeta } from "./logger";

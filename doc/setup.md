@@ -125,7 +125,7 @@ Rental shops that collect deposits can automate refunds when items are returned.
 pnpm release-deposits
 ```
 
-When a shop is scaffolded, `data/<id>/settings.json` includes a `depositService` block with `enabled: false` and `interval: 60` (minutes).
+When a shop is scaffolded, `data/<id>/settings.json` includes a `depositService` block with `enabled: false` and `intervalMinutes: 60` (minutes).
 The generated `.env` file also contains `DEPOSIT_RELEASE_ENABLED` and `DEPOSIT_RELEASE_INTERVAL_MS` placeholders for the background service.
 
 To keep it running on a schedule, import `startDepositReleaseService` from `@acme/platform-machine` and optionally pass a custom interval (defaults to one hour). The service scans every shop under `data/shops/*`, issues Stripe refunds and marks orders as refunded.

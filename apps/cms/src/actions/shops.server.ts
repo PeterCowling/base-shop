@@ -267,7 +267,7 @@ export async function updateCurrencyAndTax(
 const depositSchema = z
   .object({
     enabled: z.preprocess((v) => v === "on", z.boolean()),
-    interval: z.coerce.number().int().min(1, "Must be at least 1"),
+    intervalMinutes: z.coerce.number().int().min(1, "Must be at least 1"),
   })
   .strict();
 
@@ -287,7 +287,7 @@ export async function updateDepositService(
     ...current,
     depositService: {
       enabled: parsed.data.enabled,
-      interval: parsed.data.interval,
+      intervalMinutes: parsed.data.intervalMinutes,
     },
   };
   await saveShopSettings(shop, updated);

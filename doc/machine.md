@@ -19,11 +19,11 @@ Each shop configures the service in `data/shops/<id>/settings.json` under the `d
 
 ```json
 {
-  "depositService": { "enabled": true, "interval": 60 }
+  "depositService": { "enabled": true, "intervalMinutes": 60 }
 }
 ```
 
-The `interval` value is specified in minutes and converted to milliseconds internally. The service subtracts any `damageFee` from the refunded amount and calls `markRefunded` so the order is not processed again.
+The `intervalMinutes` value is specified in minutes and converted to milliseconds internally. The service subtracts any `damageFee` from the refunded amount and calls `markRefunded` so the order is not processed again.
 
 Environment variables can be used to configure the service:
 

@@ -5,10 +5,14 @@ import { useDeferredValue, useEffect, useState } from "react";
 
 export type Filters = { size?: string };
 
+const defaultSizes = ["36", "37", "38", "39", "40", "41", "42", "43", "44"];
+
 export default function FilterBar({
   onChange,
+  sizes = defaultSizes,
 }: {
   onChange: (f: Filters) => void;
+  sizes?: string[];
 }) {
   const [size, setSize] = useState("");
   const deferredSize = useDeferredValue(size);
@@ -32,7 +36,7 @@ export default function FilterBar({
           className="border rounded px-2 py-1 text-sm"
         >
           <option value="">All</option>
-          {["36", "37", "38", "39", "40", "41", "42", "43", "44"].map((s) => (
+          {sizes.map((s) => (
             <option key={s}>{s}</option>
           ))}
         </select>

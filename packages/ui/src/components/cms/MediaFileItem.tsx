@@ -17,13 +17,21 @@ export default function MediaFileItem({ item, onDelete }: Props) {
       >
         Delete
       </button>
-      <Image
-        src={item.url}
-        alt={item.altText || "media"}
-        fill
-        className="object-cover"
-      />
-      {item.altText && (
+      {item.type === "image" ? (
+        <Image
+          src={item.url}
+          alt={item.altText || "media"}
+          fill
+          className="object-cover"
+        />
+      ) : (
+        <video
+          src={item.url}
+          controls
+          className="h-full w-full object-cover"
+        />
+      )}
+      {item.altText && item.type === "image" && (
         <p className="absolute bottom-1 left-1 bg-fg/50 px-1 text-xs text-bg">
           {item.altText}
         </p>

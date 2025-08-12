@@ -81,7 +81,7 @@ function ImagePicker({ onSelect, children }: Props) {
         )}
         {error && <p className="text-sm text-danger">{error}</p>}
         <div className="grid max-h-64 grid-cols-3 gap-2 overflow-auto">
-          {media.map((m) => (
+          {media.filter((m) => m.type === "image").map((m) => (
             <button
               key={m.url}
               type="button"
@@ -99,7 +99,7 @@ function ImagePicker({ onSelect, children }: Props) {
               />
             </button>
           ))}
-          {media.length === 0 && (
+          {media.filter((m) => m.type === "image").length === 0 && (
             <p className="text-muted-foreground col-span-3 text-sm">
               No media found.
             </p>

@@ -28,7 +28,7 @@ function metadataPath(shop: string): string {
 
 async function readMetadata(
   shop: string
-): Promise<Record<string, { title?: string; altText?: string }>> {
+): Promise<Record<string, { title?: string; altText?: string; type?: "image" | "video" }>> {
   try {
     const data = await fs.readFile(metadataPath(shop), "utf8");
     return JSON.parse(data);
@@ -39,7 +39,7 @@ async function readMetadata(
 
 async function writeMetadata(
   shop: string,
-  data: Record<string, { title?: string; altText?: string }>
+  data: Record<string, { title?: string; altText?: string; type?: "image" | "video" }>
 ): Promise<void> {
   await fs.writeFile(metadataPath(shop), JSON.stringify(data, null, 2));
 }
@@ -62,6 +62,7 @@ export async function listMedia(shop: string): Promise<MediaItem[]> {
         url: path.posix.join("/uploads", shop, f),
         title: meta[f]?.title,
         altText: meta[f]?.altText,
+        type: meta[f]?.type ?? "image",
       }));
   } catch (err) {
     console.error("Failed to list media", err);
@@ -85,45 +86,51 @@ export async function uploadMedia(
 
   const title = formData.get("title")?.toString();
   const altText = formData.get("altText")?.toString();
+  let type: "image" | "video";
+  let buffer: Buffer;
 
-  if (!file.type.startsWith("image/")) throw new Error("Invalid file type");
+  if (file.type.startsWith("image/")) {
+    type = "image";
+    const maxSize = 5 * 1024 * 1024; // 5 MB
+    if (file.size > maxSize) throw new Error("File too large");
 
-  const maxSize = 5 * 1024 * 1024; // 5 MB
-  if (file.size > maxSize) throw new Error("File too large");
+    buffer = Buffer.from(await new Response(file).arrayBuffer());
+    const { width, height } = await sharp(buffer).metadata();
 
-  /* -------------------------------- orientation check --------------------- */
-
-  const buffer = Buffer.from(await new Response(file).arrayBuffer());
-  const { width, height } = await sharp(buffer).metadata();
-
-  if (
-    width &&
-    height &&
-    requiredOrientation === "landscape" &&
-    width < height
-  ) {
-    throw new Error("Image orientation must be landscape");
-  }
-
-  if (
-    width &&
-    height &&
-    requiredOrientation === "portrait" &&
-    width >= height
-  ) {
-    throw new Error("Image orientation must be portrait");
-  }
-
-  /* --------------------------- heavy processing block --------------------- */
-
-  try {
-    // placeholder for resize/optimisation – ensures the buffer is valid
-    await sharp(buffer).toBuffer();
-  } catch (err) {
-    if (err instanceof Error && /orientation must be/i.test(err.message)) {
-      throw err;
+    if (
+      width &&
+      height &&
+      requiredOrientation === "landscape" &&
+      width < height
+    ) {
+      throw new Error("Image orientation must be landscape");
     }
-    throw new Error("Failed to process image");
+
+    if (
+      width &&
+      height &&
+      requiredOrientation === "portrait" &&
+      width >= height
+    ) {
+      throw new Error("Image orientation must be portrait");
+    }
+
+    try {
+      // placeholder for resize/optimisation – ensures the buffer is valid
+      await sharp(buffer).toBuffer();
+    } catch (err) {
+      if (err instanceof Error && /orientation must be/i.test(err.message)) {
+        throw err;
+      }
+      throw new Error("Failed to process image");
+    }
+  } else if (file.type.startsWith("video/")) {
+    type = "video";
+    const maxSize = 50 * 1024 * 1024; // 50 MB
+    if (file.size > maxSize) throw new Error("File too large");
+    buffer = Buffer.from(await new Response(file).arrayBuffer());
+  } else {
+    throw new Error("Invalid file type");
   }
 
   /* -------------------------------- save file ----------------------------- */
@@ -131,18 +138,20 @@ export async function uploadMedia(
   const dir = uploadsDir(shop);
   await fs.mkdir(dir, { recursive: true });
 
-  const ext = path.extname(file.name) || ".jpg";
+  const ext =
+    path.extname(file.name) || (type === "video" ? ".mp4" : ".jpg");
   const filename = `${ulid()}${ext}`;
   await fs.writeFile(path.join(dir, filename), buffer);
 
   const meta = await readMetadata(shop);
-  meta[filename] = { title, altText };
+  meta[filename] = { title, altText, type };
   await writeMetadata(shop, meta);
 
   return {
     url: path.posix.join("/uploads", shop, filename),
     title,
     altText,
+    type,
   };
 }
 

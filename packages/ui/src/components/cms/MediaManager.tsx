@@ -70,6 +70,7 @@ function MediaManagerBase({
     requiredOrientation: REQUIRED_ORIENTATION,
     onUploaded: (item) => setFiles((prev) => [item, ...prev]),
   });
+  const isVideo = pendingFile?.type.startsWith("video/") ?? false;
 
   /* ---------------------------------------------------------------------- */
   /*  Render                                                                */
@@ -80,7 +81,7 @@ function MediaManagerBase({
       <div
         tabIndex={0}
         role="button"
-        aria-label="Drop image here or press Enter to browse"
+        aria-label="Drop image or video here or press Enter to browse"
         aria-describedby={feedbackId}
         onDrop={(e) => {
           onDrop(e);
@@ -103,12 +104,12 @@ function MediaManagerBase({
         <Input
           ref={inputRef}
           type="file"
-          accept="image/*"
+          accept="image/*,video/*"
           multiple
           className="hidden"
           onChange={onFileChange}
         />
-        Drop image here or click to upload
+        Drop image or video here or click to upload
       </div>
 
       {/* Validation / progress feedback */}
@@ -119,24 +120,26 @@ function MediaManagerBase({
             Uploaded {progress.done}/{progress.total}
           </p>
         )}
-        {pendingFile && isValid !== null && (
+        {pendingFile && (isVideo || isValid !== null) && (
           <div className="space-y-2">
-            <p
-              className={
-                isValid ? "text-sm text-success" : "text-sm text-danger"
-              }
-            >
-              {isValid
-                ? `Image orientation is ${actual}; requirement satisfied.`
-                : `Selected image is ${actual}; please upload a ${REQUIRED_ORIENTATION} image.`}
-            </p>
-            {isValid && (
+            {!isVideo && (
+              <p
+                className={
+                  isValid ? "text-sm text-success" : "text-sm text-danger"
+                }
+              >
+                {isValid
+                  ? `Image orientation is ${actual}; requirement satisfied.`
+                  : `Selected image is ${actual}; please upload a ${REQUIRED_ORIENTATION} image.`}
+              </p>
+            )}
+            {(isVideo || isValid) && (
               <div className="flex gap-2">
                 <Input
                   type="text"
                   value={altText}
                   onChange={(e) => setAltText(e.target.value)}
-                  placeholder="Alt text"
+                  placeholder={isVideo ? "Title" : "Alt text"}
                   className="flex-1"
                 />
                 <button

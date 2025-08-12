@@ -16,7 +16,7 @@ beforeEach(() => {
   mockDelete.mockResolvedValue(undefined as any);
   global.fetch = jest.fn().mockResolvedValue({
     ok: true,
-    json: async () => ({ url: "/new.png", altText: "a" }),
+    json: async () => ({ url: "/new.png", altText: "a", type: "image" }),
   } as any);
 });
 
@@ -24,7 +24,10 @@ describe("MediaManager", () => {
   it("deletes file when confirmed", async () => {
     (global as any).confirm = jest.fn(() => true);
     render(
-      <MediaManager shop="s" initialFiles={[{ url: "/img.jpg" } as any]} />
+      <MediaManager
+        shop="s"
+        initialFiles={[{ url: "/img.jpg", type: "image" } as any]}
+      />
     );
     fireEvent.click(screen.getByText("Delete"));
     await waitFor(() =>
@@ -36,7 +39,9 @@ describe("MediaManager", () => {
     mockHook.mockReturnValue({ actual: "landscape", isValid: true });
     const file = new File(["a"], "a.png", { type: "image/png" });
     render(<MediaManager shop="s" initialFiles={[]} />);
-    const drop = screen.getByText("Drop image here or click to upload");
+    const drop = screen.getByText(
+      "Drop image or video here or click to upload"
+    );
     fireEvent.drop(drop, { dataTransfer: { files: [file] } });
     fireEvent.change(screen.getByPlaceholderText("Alt text"), {
       target: { value: "alt" },

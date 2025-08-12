@@ -18,7 +18,11 @@ const mockOrientation = useImageOrientationValidation as jest.MockedFunction<
 
 beforeEach(() => {
   mockOrientation.mockReturnValue({ actual: "landscape", isValid: true });
-  mockUpload.mockResolvedValue({ url: "/img.png", altText: "" } as any);
+  mockUpload.mockResolvedValue({
+    url: "/img.png",
+    altText: "",
+    type: "image",
+  } as any);
 });
 
 it("updates progress during upload", async () => {

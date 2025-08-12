@@ -12,13 +12,13 @@ const results: Product[] = [
   {
     id: "1",
     title: "Product 1",
-    images: [{ url: "/img1.jpg", type: "image" }],
+    media: [{ url: "/img1.jpg", type: "image" }],
     price: 1000,
   },
   {
     id: "2",
     title: "Product 2",
-    images: [{ url: "/img2.jpg", type: "image" }],
+    media: [{ url: "/img2.jpg", type: "image" }],
     price: 1500,
   },
 ];
@@ -50,6 +50,23 @@ describe("SearchResultsTemplate", () => {
     );
 
     expect(screen.getByText("No results found.")).toBeInTheDocument();
+  });
+
+  it("renders loading skeleton when isLoading is true", () => {
+    render(
+      <SearchResultsTemplate
+        suggestions={[]}
+        results={[]}
+        page={1}
+        pageCount={1}
+        isLoading
+      />
+    );
+
+    expect(
+      screen.getByTestId("search-results-loading")
+    ).toBeInTheDocument();
+    expect(screen.queryByText("No results found.")).not.toBeInTheDocument();
   });
 
   it("toggles pagination visibility based on pageCount", () => {

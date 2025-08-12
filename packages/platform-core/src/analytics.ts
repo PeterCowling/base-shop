@@ -141,7 +141,7 @@ export async function trackOrder(
 interface Aggregates {
   page_view: Record<string, number>;
   order: Record<string, { count: number; amount: number }>;
-  discount_redeemed: Record<string, number>;
+  discount_redeemed: Record<string, Record<string, number>>;
   ai_catalog: Record<string, number>;
 }
 
@@ -172,7 +172,11 @@ async function updateAggregates(
     entry.amount += amount;
     agg.order[day] = entry;
   } else if (event.type === "discount_redeemed") {
-    agg.discount_redeemed[day] = (agg.discount_redeemed[day] || 0) + 1;
+    const code = typeof (event as any).code === "string" ? (event as any).code : "";
+    const dayMap = agg.discount_redeemed[day] || {};
+    const key = code || "unknown";
+    dayMap[key] = (dayMap[key] || 0) + 1;
+    agg.discount_redeemed[day] = dayMap;
   } else if (event.type === "ai_catalog") {
     agg.ai_catalog[day] = (agg.ai_catalog[day] || 0) + 1;
   }

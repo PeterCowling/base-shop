@@ -36,7 +36,12 @@ export async function readAggregates(
     const buf = await fs.readFile(aggregatesPath(shop), "utf8");
     return JSON.parse(buf) as AnalyticsAggregates;
   } catch {
-    return { page_view: {}, order: {}, discount_redeemed: {}, ai_catalog: {} };
+    return {
+      page_view: {},
+      order: {},
+      discount_redeemed: {},
+      ai_catalog: {},
+    };
   }
 }
 

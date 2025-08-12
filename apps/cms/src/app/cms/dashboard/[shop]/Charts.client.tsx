@@ -27,6 +27,16 @@ interface Series {
   data: number[];
 }
 
+interface MultiSeries {
+  labels: string[];
+  datasets: { label: string; data: number[] }[];
+}
+
+interface CodeStat {
+  code: string;
+  total: number;
+}
+
 interface ChartsProps {
   traffic: Series;
   conversion: Series;
@@ -35,6 +45,8 @@ interface ChartsProps {
   emailClicks: Series;
   campaignSales: Series;
   discountRedemptions: Series;
+  discountRedemptionsByCode: MultiSeries;
+  topDiscountCodes: CodeStat[];
   aiCatalog: Series;
 }
 
@@ -46,8 +58,19 @@ export function Charts({
   emailClicks,
   campaignSales,
   discountRedemptions,
+  discountRedemptionsByCode,
+  topDiscountCodes,
   aiCatalog,
 }: ChartsProps) {
+  const colors = [
+    "rgb(255, 99, 132)",
+    "rgb(54, 162, 235)",
+    "rgb(255, 205, 86)",
+    "rgb(75, 192, 192)",
+    "rgb(153, 102, 255)",
+    "rgb(201, 203, 207)",
+  ];
+
   return (
     <div className="space-y-8">
       <div>
@@ -154,6 +177,28 @@ export function Charts({
             ],
           }}
         />
+      </div>
+      <div>
+        <h3 className="mb-2 font-semibold">Discount Redemptions by Code</h3>
+        <Line
+          data={{
+            labels: discountRedemptionsByCode.labels,
+            datasets: discountRedemptionsByCode.datasets.map((ds, i) => ({
+              label: ds.label,
+              data: ds.data,
+              borderColor: colors[i % colors.length],
+            })),
+          }}
+        />
+        {topDiscountCodes.length > 0 && (
+          <ul className="mt-2 text-sm">
+            {topDiscountCodes.map((c) => (
+              <li key={c.code}>
+                {c.code}: {c.total}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       <div>
         <h3 className="mb-2 font-semibold">AI Catalog Requests</h3>

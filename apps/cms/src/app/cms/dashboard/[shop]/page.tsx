@@ -16,6 +16,16 @@ interface Series {
   data: number[];
 }
 
+interface MultiSeries {
+  labels: string[];
+  datasets: { label: string; data: number[] }[];
+}
+
+interface CodeStat {
+  code: string;
+  total: number;
+}
+
 function buildMetrics(
   events: AnalyticsEvent[],
   aggregates?: AnalyticsAggregates,
@@ -25,6 +35,7 @@ function buildMetrics(
   const campaignSalesByDay: Record<string, number> = {};
   const campaignSalesCountByDay: Record<string, number> = {};
   const discountByDay: Record<string, number> = {};
+  const discountByCode: Record<string, Record<string, number>> = {};
 
   for (const e of events) {
     const day = (e.timestamp || "").slice(0, 10);
@@ -38,8 +49,23 @@ function buildMetrics(
       campaignSalesByDay[day] = (campaignSalesByDay[day] || 0) + amount;
       campaignSalesCountByDay[day] =
         (campaignSalesCountByDay[day] || 0) + 1;
-    } else if (e.type === "discount_redeemed") {
+    } else if (e.type === "discount_redeemed" && !aggregates) {
       discountByDay[day] = (discountByDay[day] || 0) + 1;
+      const code = typeof (e as any).code === "string" ? (e as any).code : "unknown";
+      const map = discountByCode[code] || {};
+      map[day] = (map[day] || 0) + 1;
+      discountByCode[code] = map;
+    }
+  }
+
+  if (aggregates) {
+    for (const [day, codes] of Object.entries(aggregates.discount_redeemed)) {
+      discountByDay[day] = Object.values(codes).reduce((a, b) => a + b, 0);
+      for (const [code, count] of Object.entries(codes)) {
+        const map = discountByCode[code] || {};
+        map[day] = count;
+        discountByCode[code] = map;
+      }
     }
   }
 
@@ -105,6 +131,22 @@ function buildMetrics(
     data: days.map((d) => discountByDay[d] || 0),
   };
 
+  const discountRedemptionsByCode: MultiSeries = {
+    labels: days,
+    datasets: Object.keys(discountByCode).map((code) => ({
+      label: code,
+      data: days.map((d) => discountByCode[code]?.[d] || 0),
+    })),
+  };
+
+  const bestCodes: CodeStat[] = Object.keys(discountByCode)
+    .map((code) => ({
+      code,
+      total: Object.values(discountByCode[code]).reduce((a, b) => a + b, 0),
+    }))
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 5);
+
   const aiCatalog: Series = {
     labels: days,
     data: aggregates
@@ -141,6 +183,8 @@ function buildMetrics(
     emailClicks,
     campaignSales,
     discountRedemptions,
+    discountRedemptionsByCode,
+    bestCodes,
     aiCatalog,
     totals,
     maxTotal,
@@ -193,6 +237,8 @@ export default async function ShopDashboard({
                 emailClicks={metrics.emailClicks}
                 campaignSales={metrics.campaignSales}
                 discountRedemptions={metrics.discountRedemptions}
+                discountRedemptionsByCode={metrics.discountRedemptionsByCode}
+                topDiscountCodes={metrics.bestCodes}
                 aiCatalog={metrics.aiCatalog}
               />
               <div className="mt-8 space-y-4">
@@ -272,6 +318,8 @@ export default async function ShopDashboard({
                 emailClicks={metrics.emailClicks}
                 campaignSales={metrics.campaignSales}
                 discountRedemptions={metrics.discountRedemptions}
+                discountRedemptionsByCode={metrics.discountRedemptionsByCode}
+                topDiscountCodes={metrics.bestCodes}
                 aiCatalog={metrics.aiCatalog}
               />
             </div>

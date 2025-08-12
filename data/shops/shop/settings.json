@@ -16,6 +16,10 @@
       "title": "t",
       "description": "",
       "image": "ftp://bad"
+    },
+    "aiCatalog": {
+      "fields": ["id", "title", "description", "price", "images"],
+      "pageSize": 50
     }
   },
   "updatedAt": "",

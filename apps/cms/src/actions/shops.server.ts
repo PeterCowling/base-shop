@@ -231,6 +231,45 @@ export async function setFreezeTranslations(shop: string, freeze: boolean) {
   return updated;
 }
 
+const aiCatalogSchema = z
+  .object({
+    fields: z.string().optional(),
+    pageSize: z.coerce.number().int().positive().optional(),
+  })
+  .strict();
+
+export async function updateAiCatalog(
+  shop: string,
+  formData: FormData,
+): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
+  await ensureAuthorized();
+  const parsed = aiCatalogSchema.safeParse(
+    Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>,
+    ),
+  );
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+  const fields = (parsed.data.fields || "")
+    .split(",")
+    .map((f) => f.trim())
+    .filter(Boolean);
+  const current = await getShopSettings(shop);
+  const updated: ShopSettings = {
+    ...current,
+    seo: {
+      ...(current.seo ?? {}),
+      aiCatalog: {
+        fields,
+        pageSize: parsed.data.pageSize ?? current.seo?.aiCatalog?.pageSize ?? 50,
+      },
+    },
+  };
+  await saveShopSettings(shop, updated);
+  return { settings: updated };
+}
+
 const currencyTaxSchema = z
   .object({
     currency: z.string().length(3, "Required"),

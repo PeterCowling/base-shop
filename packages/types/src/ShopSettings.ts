@@ -2,9 +2,18 @@ import { z } from "zod";
 import { localeSchema } from "./Product";
 import { shopSeoFieldsSchema } from "./Shop";
 
+const aiCatalogSchema = z.object({
+  fields: z.array(z.string()),
+  pageSize: z.number().int().positive().optional(),
+});
+
 export const shopSettingsSchema = z.object({
   languages: z.array(localeSchema).readonly(),
-  seo: z.record(localeSchema, shopSeoFieldsSchema),
+  seo: z
+    .object({
+      aiCatalog: aiCatalogSchema.optional(),
+    })
+    .catchall(shopSeoFieldsSchema),
   analytics: z
     .object({
       enabled: z.boolean().optional(),

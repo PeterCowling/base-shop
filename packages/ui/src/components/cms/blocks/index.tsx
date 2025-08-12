@@ -25,6 +25,7 @@ import PricingTable from "./PricingTable";
 import SocialFeed from "./SocialFeed";
 import NewsletterSignup from "./NewsletterSignup";
 import Tabs from "./Tabs";
+import ImageSlider from "./ImageSlider";
 
 export {
   BlogListing,
@@ -52,6 +53,7 @@ export {
   SocialFeed,
   Button,
   NewsletterSignup,
+  ImageSlider,
   PricingTable,
   Tabs,
 };

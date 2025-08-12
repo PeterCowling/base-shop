@@ -53,12 +53,12 @@ export async function releaseDepositsOnce(
 
 type DepositReleaseConfig = {
   enabled: boolean;
-  intervalMs: number;
+  intervalMinutes: number;
 };
 
 const DEFAULT_CONFIG: DepositReleaseConfig = {
   enabled: false,
-  intervalMs: 1000 * 60 * 60,
+  intervalMinutes: 60,
 };
 
 function envKey(shop: string, key: string): string {
@@ -78,8 +78,8 @@ async function resolveConfig(
     const cfg = json.depositService;
     if (cfg) {
       if (typeof cfg.enabled === "boolean") config.enabled = cfg.enabled;
-      if (typeof cfg.interval === "number")
-        config.intervalMs = cfg.interval * 60 * 1000;
+      if (typeof cfg.intervalMinutes === "number")
+        config.intervalMinutes = cfg.intervalMinutes;
     }
   } catch {}
 
@@ -90,16 +90,17 @@ async function resolveConfig(
     config.enabled = env.DEPOSIT_RELEASE_ENABLED;
   }
 
-  const envInterval = process.env[envKey(shop, "INTERVAL_MS")];
+  const envInterval = process.env[envKey(shop, "INTERVAL_MINUTES")];
   if (envInterval !== undefined) {
     const num = Number(envInterval);
-    if (!Number.isNaN(num)) config.intervalMs = num;
-  } else if (env.DEPOSIT_RELEASE_INTERVAL_MS !== undefined) {
-    config.intervalMs = env.DEPOSIT_RELEASE_INTERVAL_MS;
+    if (!Number.isNaN(num)) config.intervalMinutes = num;
+  } else if (env.DEPOSIT_RELEASE_INTERVAL_MINUTES !== undefined) {
+    config.intervalMinutes = env.DEPOSIT_RELEASE_INTERVAL_MINUTES;
   }
 
   if (override.enabled !== undefined) config.enabled = override.enabled;
-  if (override.intervalMs !== undefined) config.intervalMs = override.intervalMs;
+  if (override.intervalMinutes !== undefined)
+    config.intervalMinutes = override.intervalMinutes;
 
   return config;
 }
@@ -125,7 +126,7 @@ export async function startDepositReleaseService(
       }
 
       await run();
-      timers.push(setInterval(run, cfg.intervalMs));
+      timers.push(setInterval(run, cfg.intervalMinutes * 60 * 1000));
     }),
   );
 

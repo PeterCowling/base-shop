@@ -97,7 +97,7 @@ describe("validate-env script", () => {
   it("exits 1 for invalid DEPOSIT_RELEASE values", async () => {
     existsSyncMock.mockReturnValue(true);
     readFileSyncMock.mockReturnValue(
-      "STRIPE_SECRET_KEY=sk\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk\nCART_COOKIE_SECRET=secret\nDEPOSIT_RELEASE_ENABLED=maybe\nDEPOSIT_RELEASE_INTERVAL_MS=foo\n",
+      "STRIPE_SECRET_KEY=sk\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk\nCART_COOKIE_SECRET=secret\nDEPOSIT_RELEASE_ENABLED=maybe\nDEPOSIT_RELEASE_INTERVAL_MINUTES=foo\n",
     );
 
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
@@ -113,7 +113,7 @@ describe("validate-env script", () => {
     expect(exitSpy).toHaveBeenCalledWith(1);
     expect(errorSpy.mock.calls).toEqual([
       ["DEPOSIT_RELEASE_ENABLED must be true or false"],
-      ["DEPOSIT_RELEASE_INTERVAL_MS must be a number"],
+      ["DEPOSIT_RELEASE_INTERVAL_MINUTES must be a number"],
     ]);
     expect(logSpy).not.toHaveBeenCalled();
   });

@@ -94,13 +94,13 @@ export declare const shopSettingsSchema: z.ZodObject<{
     taxRegion: z.ZodOptional<z.ZodString>;
     depositService: z.ZodOptional<z.ZodObject<{
         enabled: z.ZodBoolean;
-        interval: z.ZodNumber;
+        intervalMinutes: z.ZodNumber;
     }, "strip", z.ZodTypeAny, {
         enabled: boolean;
-        interval: number;
+        intervalMinutes: number;
     }, {
         enabled: boolean;
-        interval: number;
+        intervalMinutes: number;
     }>>;
     updatedAt: z.ZodString;
     updatedBy: z.ZodString;
@@ -137,7 +137,7 @@ export declare const shopSettingsSchema: z.ZodObject<{
     taxRegion?: string | undefined;
     depositService?: {
         enabled: boolean;
-        interval: number;
+        intervalMinutes: number;
     } | undefined;
 }, {
     seo: Partial<Record<"en" | "de" | "it", {
@@ -172,7 +172,7 @@ export declare const shopSettingsSchema: z.ZodObject<{
     taxRegion?: string | undefined;
     depositService?: {
         enabled: boolean;
-        interval: number;
+        intervalMinutes: number;
     } | undefined;
 }>;
 export type ShopSettings = z.infer<typeof shopSettingsSchema>;

@@ -19,16 +19,16 @@ Each shop configures the service in `data/shops/<id>/settings.json` under the `d
 
 ```json
 {
-  "depositService": { "enabled": true, "interval": 60 }
+  "depositService": { "enabled": true, "intervalMinutes": 60 }
 }
 ```
 
-The `interval` value is specified in minutes and converted to milliseconds internally. The service subtracts any `damageFee` from the refunded amount and calls `markRefunded` so the order is not processed again.
+The `intervalMinutes` value is specified in minutes and converted to milliseconds internally. The service subtracts any `damageFee` from the refunded amount and calls `markRefunded` so the order is not processed again.
 
 Environment variables can be used to configure the service:
 
 - `DEPOSIT_RELEASE_ENABLED` (boolean) toggles the service globally.
-- `DEPOSIT_RELEASE_INTERVAL_MS` (number) sets the default interval.
+- `DEPOSIT_RELEASE_INTERVAL_MINUTES` (number) sets the default interval.
 
 Both variables may also be suffixed with a shop ID (e.g. `DEPOSIT_RELEASE_ENABLED_SHOP1`) to override settings per shop.
 

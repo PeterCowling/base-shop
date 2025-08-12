@@ -59,7 +59,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
         ...parsed.data,
         depositService: {
           enabled: false,
-          interval: 60,
+          intervalMinutes: 60,
           ...(parsed.data.depositService ?? {}),
         },
         aiCatalog: {
@@ -79,7 +79,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     freezeTranslations: false,
     currency: "EUR",
     taxRegion: "",
-    depositService: { enabled: false, interval: 60 },
+    depositService: { enabled: false, intervalMinutes: 60 },
     aiCatalog: {
       enabled: false,
       fields: ["id", "title", "description", "price", "images"],

@@ -21,7 +21,7 @@ export default async function DepositsSettingsPage({
   const settings = await getSettings(shop);
   const depositService = settings.depositService ?? {
     enabled: false,
-    interval: 60,
+    intervalMinutes: 60,
   };
 
   return (

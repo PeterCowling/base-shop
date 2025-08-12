@@ -3,7 +3,14 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
-import { useState, ChangeEvent, FormEvent, useMemo, useRef } from "react";
+import {
+  useState,
+  ChangeEvent,
+  FormEvent,
+  useMemo,
+  useRef,
+  useEffect,
+} from "react";
 
 interface Props {
   shop: string;
@@ -26,6 +33,7 @@ export default function ThemeEditor({
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const previewRef = useRef<HTMLIFrameElement>(null);
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByTheme[theme];
@@ -74,6 +82,40 @@ export default function ThemeEditor({
     });
   };
 
+  const previewSrc = useMemo(() => {
+    const params = new URLSearchParams();
+    params.set("theme", theme);
+    if (Object.keys(overrides).length) {
+      params.set("overrides", encodeURIComponent(JSON.stringify(overrides)));
+    }
+    return `/${shop}?${params.toString()}`;
+  }, [shop, theme, overrides]);
+
+  useEffect(() => {
+    const iframe = previewRef.current;
+    if (!iframe) return;
+
+    const handleClick = (e: MouseEvent) => {
+      const el = (e.target as HTMLElement).closest("[data-token]");
+      if (!el) return;
+      const token = el.getAttribute("data-token");
+      if (!token) return;
+      const input = overrideRefs.current[token];
+      input?.scrollIntoView?.({ behavior: "smooth", block: "center" });
+      input?.focus();
+    };
+
+    const onLoad = () => {
+      iframe.contentDocument?.addEventListener("click", handleClick);
+    };
+
+    iframe.addEventListener("load", onLoad);
+    return () => {
+      iframe.removeEventListener("load", onLoad);
+      iframe.contentDocument?.removeEventListener("click", handleClick);
+    };
+  }, [previewSrc]);
+
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
@@ -116,6 +158,12 @@ export default function ThemeEditor({
           </span>
         )}
       </label>
+      <iframe
+        ref={previewRef}
+        src={previewSrc}
+        title="preview"
+        className="h-96 w-full border"
+      />
       <div className="space-y-6">
         {Object.entries(groupedTokens).map(([groupName, tokens]) => (
           <fieldset key={groupName} className="space-y-2">

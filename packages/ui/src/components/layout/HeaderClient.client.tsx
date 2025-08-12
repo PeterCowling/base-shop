@@ -30,9 +30,14 @@ export default function HeaderClient({
 
   return (
     <header
+      data-token="--color-bg"
       className={cn("flex items-center justify-between", height, padding)}
     >
-      <Link href={`/${lang}`} className="text-xl font-bold">
+      <Link
+        href={`/${lang}`}
+        className="text-xl font-bold"
+        data-token="--color-fg"
+      >
         Base-Shop
       </Link>
 
@@ -41,16 +46,24 @@ export default function HeaderClient({
           <Link
             key={item.url}
             href={item.url.startsWith("/") ? `/${lang}${item.url}` : item.url}
+            data-token="--color-fg"
           >
             {item.label}
           </Link>
         ))}
         <CurrencySwitcher />
         <ThemeToggle />
-        <Link href={`/${lang}/checkout`} className="relative hover:underline">
+        <Link
+          href={`/${lang}/checkout`}
+          className="relative hover:underline"
+          data-token="--color-fg"
+        >
           Cart
           {qty > 0 && (
-            <span className="absolute -top-2 -right-3 rounded-full bg-danger px-1.5 text-xs text-danger-foreground">
+            <span
+              className="absolute -top-2 -right-3 rounded-full bg-danger px-1.5 text-xs text-danger-foreground"
+              data-token="--color-danger"
+            >
               {qty}
             </span>
           )}

@@ -93,4 +93,30 @@ describe("ThemeEditor", () => {
     fireEvent.click(swatch);
     expect(colorInput).toHaveFocus();
   });
+
+  it("focuses field when preview element clicked", () => {
+    const tokensByTheme = { base: { "--color-primary": "#0000ff" } };
+    render(
+      <ThemeEditor
+        shop="test"
+        themes={["base"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={{}}
+      />
+    );
+
+    const iframe = screen.getByTitle("preview") as HTMLIFrameElement;
+    const doc = document.implementation.createHTMLDocument();
+    doc.body.innerHTML = '<button data-token="--color-primary">x</button>';
+    Object.defineProperty(iframe, "contentDocument", { value: doc });
+    fireEvent.load(iframe);
+    const previewBtn = doc.querySelector("button")!;
+    previewBtn.dispatchEvent(new window.MouseEvent("click", { bubbles: true }));
+
+    const colorInput = screen.getByLabelText("--color-primary", {
+      selector: 'input[type="color"]',
+    });
+    expect(colorInput).toHaveFocus();
+  });
 });

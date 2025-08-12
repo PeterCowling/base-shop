@@ -12,6 +12,7 @@ const Footer = memo(function Footer({
 }) {
   return (
     <footer
+      data-token="--color-muted"
       className={cn(
         "flex items-center justify-center bg-muted text-sm text-muted",
         height,
@@ -20,11 +21,19 @@ const Footer = memo(function Footer({
     >
       {" "}
       <p className="space-x-4">
-        <Link href="/legal/privacy" className="hover:underline">
+        <Link
+          href="/legal/privacy"
+          className="hover:underline"
+          data-token="--color-fg"
+        >
           Privacy
         </Link>
         <span>&middot;</span>
-        <Link href="/legal/terms" className="hover:underline">
+        <Link
+          href="/legal/terms"
+          className="hover:underline"
+          data-token="--color-fg"
+        >
           Terms
         </Link>
       </p>

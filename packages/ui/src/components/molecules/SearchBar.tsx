@@ -12,6 +12,8 @@ export interface SearchBarProps {
   /** Callback when a search is manually submitted */
   onSearch?(value: string): void;
   placeholder?: string;
+  /** Optional initial query */
+  query?: string;
 }
 
 export function SearchBar({
@@ -19,8 +21,10 @@ export function SearchBar({
   onSelect,
   onSearch,
   placeholder = "Search…",
+  query = "",
 }: SearchBarProps) {
-  const [query, setQuery] = useState("");
+  const [value, setValue] = useState(query);
+  useEffect(() => setValue(query), [query]);
   const [matches, setMatches] = useState<string[]>([]);
   const [isSelecting, setIsSelecting] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -30,19 +34,19 @@ export function SearchBar({
       setMatches([]);
       return;
     }
-    if (!query) {
+    if (!value) {
       setMatches([]);
       return;
     }
-    const q = query.toLowerCase();
+    const q = value.toLowerCase();
     setMatches(
       suggestions.filter((s) => s.toLowerCase().includes(q)).slice(0, 5)
     );
-  }, [query, suggestions, isSelecting, focused]);
+  }, [value, suggestions, isSelecting, focused]);
 
   const handleSelect = (value: string) => {
     setIsSelecting(true);
-    setQuery(value);
+    setValue(value);
     setMatches([]);
     onSelect?.(value);
   };
@@ -51,12 +55,12 @@ export function SearchBar({
     <div className="relative w-full max-w-sm">
       <Input
         type="search"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             setMatches([]);
-            onSearch?.(query);
+            onSearch?.(value);
           }
         }}
         onFocus={() => setFocused(true)}
@@ -66,7 +70,7 @@ export function SearchBar({
             setIsSelecting(false);
             return;
           }
-          onSearch?.(query);
+          onSearch?.(value);
         }}
         placeholder={placeholder}
         className="pr-8"

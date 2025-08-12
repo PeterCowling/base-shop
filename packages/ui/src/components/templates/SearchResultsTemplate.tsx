@@ -9,6 +9,8 @@ export interface SearchResultsTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "results"> {
   suggestions: string[];
   results: Product[];
+  /** Current search query */
+  query?: string;
   page: number;
   pageCount: number;
   /** Minimum items to show */
@@ -24,6 +26,7 @@ export interface SearchResultsTemplateProps
 export function SearchResultsTemplate({
   suggestions,
   results,
+  query,
   page,
   pageCount,
   minItems,
@@ -38,6 +41,7 @@ export function SearchResultsTemplate({
     <div className={cn("space-y-6", className)} {...props}>
       <SearchBar
         suggestions={suggestions}
+        query={query}
         onSelect={onQueryChange}
         onSearch={onQueryChange}
         placeholder="Search products…"

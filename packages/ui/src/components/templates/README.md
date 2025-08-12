@@ -17,8 +17,8 @@ Shared page-level layouts used across apps. Currently includes:
 - `CartTemplate` – editable list of cart items with totals.
 - `CategoryCollectionTemplate` – grid of category cards.
 - `SearchResultsTemplate` – search bar with optional filters and paginated
-  product results. Accepts `minItems` and `maxItems` to adjust the responsive
-  product grid.
+  product results. Accepts `query` to prefill the search bar and `minItems`
+  and `maxItems` to adjust the responsive product grid.
 - `CheckoutTemplate` – multi-step layout for collecting checkout information.
 - `OrderConfirmationTemplate` – summary of purchased items and totals.
 - `WishlistTemplate` – list of saved items with add-to-cart and remove actions.

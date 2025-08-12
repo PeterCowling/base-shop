@@ -12,13 +12,13 @@ const results: Product[] = [
   {
     id: "1",
     title: "Product 1",
-    images: [{ url: "/img1.jpg", type: "image" }],
+    media: [{ url: "/img1.jpg", type: "image" }],
     price: 1000,
   },
   {
     id: "2",
     title: "Product 2",
-    images: [{ url: "/img2.jpg", type: "image" }],
+    media: [{ url: "/img2.jpg", type: "image" }],
     price: 1500,
   },
 ];
@@ -29,6 +29,7 @@ describe("SearchResultsTemplate", () => {
       <SearchResultsTemplate
         suggestions={[]}
         results={results}
+        query=""
         page={1}
         pageCount={1}
       />
@@ -44,6 +45,7 @@ describe("SearchResultsTemplate", () => {
       <SearchResultsTemplate
         suggestions={[]}
         results={[]}
+        query=""
         page={1}
         pageCount={1}
       />
@@ -57,6 +59,7 @@ describe("SearchResultsTemplate", () => {
       <SearchResultsTemplate
         suggestions={[]}
         results={results}
+        query=""
         page={1}
         pageCount={3}
       />
@@ -68,6 +71,7 @@ describe("SearchResultsTemplate", () => {
       <SearchResultsTemplate
         suggestions={[]}
         results={results}
+        query=""
         page={1}
         pageCount={1}
       />
@@ -82,6 +86,7 @@ describe("SearchResultsTemplate", () => {
       <SearchResultsTemplate
         suggestions={["Product 1", "Product 2"]}
         results={results}
+        query=""
         page={1}
         pageCount={1}
         onQueryChange={onQueryChange}
@@ -94,5 +99,21 @@ describe("SearchResultsTemplate", () => {
     await userEvent.click(within(list).getByText("Product 1"));
 
     expect(onQueryChange).toHaveBeenCalledWith("Product 1");
+  });
+
+  it("prefills the query when provided", () => {
+    render(
+      <SearchResultsTemplate
+        suggestions={[]}
+        results={results}
+        query="Product"
+        page={1}
+        pageCount={1}
+      />
+    );
+
+    expect(
+      screen.getByPlaceholderText("Search products…")
+    ).toHaveValue("Product");
   });
 });

@@ -23,6 +23,7 @@ const meta: Meta<typeof SearchResultsTemplate> = {
   args: {
     suggestions: ["Product 1", "Product 2"],
     results,
+    query: "Product",
     page: 1,
     pageCount: 5,
     minItems: 1,

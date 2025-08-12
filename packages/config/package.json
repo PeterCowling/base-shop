@@ -4,7 +4,11 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./env.ts",
-    "./env": "./env.ts"
+    ".": "./src/env/index.ts",
+    "./env": "./src/env/index.ts",
+    "./env/core": "./src/env/core.ts",
+    "./env/payments": "./src/env/payments.ts",
+    "./env/shipping": "./src/env/shipping.ts",
+    "./env/tax": "./src/env/tax.ts"
   }
 }

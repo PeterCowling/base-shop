@@ -3,7 +3,7 @@
 import "server-only";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import { env } from "@acme/config";
+import { taxEnv } from "@acme/config/env/tax";
 import { resolveDataRoot } from "../dataRoot";
 
 export interface TaxCalculationRequest {
@@ -32,7 +32,7 @@ export async function getTaxRate(region: string): Promise<number> {
  * Calculate taxes using the configured provider API.
  */
 export async function calculateTax({ provider, ...payload }: TaxCalculationRequest): Promise<unknown> {
-  const apiKey = (env as Record<string, string | undefined>)[
+  const apiKey = (taxEnv as Record<string, string | undefined>)[
     `${provider.toUpperCase()}_KEY`
   ];
   if (!apiKey) {

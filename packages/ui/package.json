@@ -13,6 +13,7 @@
     "@acme/i18n": "workspace:*",
     "@acme/shared-utils": "workspace:*",
     "@acme/date-utils": "workspace:*",
+    "@acme/config": "workspace:*",
     "@radix-ui/react-checkbox": "^1.3.2",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-icons": "^1.3.2",

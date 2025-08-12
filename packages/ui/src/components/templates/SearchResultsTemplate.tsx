@@ -4,6 +4,7 @@ import { PaginationControl } from "../molecules/PaginationControl";
 import { SearchBar } from "../molecules/SearchBar";
 import type { Product } from "../organisms/ProductCard";
 import { ProductGrid } from "../organisms/ProductGrid";
+import { Skeleton } from "../atoms/Skeleton";
 
 export interface SearchResultsTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "results"> {
@@ -19,6 +20,8 @@ export interface SearchResultsTemplateProps
   onPageChange?: (page: number) => void;
   /** Optional filters to render between the search bar and results */
   filters?: React.ReactNode;
+  /** Show loading state */
+  isLoading?: boolean;
 }
 
 export function SearchResultsTemplate({
@@ -31,6 +34,7 @@ export function SearchResultsTemplate({
   onQueryChange,
   onPageChange,
   filters,
+  isLoading,
   className,
   ...props
 }: SearchResultsTemplateProps) {
@@ -44,7 +48,19 @@ export function SearchResultsTemplate({
         label="Search products"
       />
       {filters}
-      {results.length > 0 ? (
+      {isLoading ? (
+        <div
+          data-testid="search-results-loading"
+          className="grid gap-6"
+          style={{
+            gridTemplateColumns: `repeat(${maxItems ?? minItems ?? 1}, minmax(0, 1fr))`,
+          }}
+        >
+          {Array.from({ length: maxItems ?? minItems ?? 1 }).map((_, i) => (
+            <Skeleton key={i} className="h-48 w-full" />
+          ))}
+        </div>
+      ) : results.length > 0 ? (
         <ProductGrid products={results} minItems={minItems} maxItems={maxItems} />
       ) : (
         <p>No results found.</p>

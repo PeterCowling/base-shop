@@ -27,6 +27,7 @@ const meta: Meta<typeof SearchResultsTemplate> = {
     pageCount: 5,
     minItems: 1,
     maxItems: 4,
+    isLoading: false,
   },
   argTypes: {
     minItems: { control: { type: "number" } },
@@ -53,5 +54,13 @@ export const WithFilters: StoryObj<typeof SearchResultsTemplate> = {
         ]}
       />
     ),
+  },
+};
+
+export const Loading: StoryObj<typeof SearchResultsTemplate> = {
+  args: {
+    ...meta.args,
+    results: [],
+    isLoading: true,
   },
 };

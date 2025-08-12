@@ -130,4 +130,31 @@ describe("inventory repository", () => {
       await expect(repo.writeInventory(shop, bad as any)).rejects.toThrow();
     });
   });
+
+  it("indexes inventory by sku and variant attributes", async () => {
+    await withRepo(async (repo, shop) => {
+      const items = [
+        {
+          sku: "sku-1",
+          productId: "p1",
+          variantAttributes: { size: "m", color: "red" },
+          quantity: 1,
+        },
+        {
+          sku: "sku-1",
+          productId: "p1",
+          variantAttributes: { size: "l", color: "red" },
+          quantity: 3,
+        },
+      ];
+      await repo.writeInventory(shop, items);
+      const map = await repo.readInventoryMap(shop);
+      expect(
+        map[repo.variantKey("sku-1", { size: "m", color: "red" })],
+      ).toEqual(items[0]);
+      expect(
+        map[repo.variantKey("sku-1", { size: "l", color: "red" })].quantity,
+      ).toBe(3);
+    });
+  });
 });

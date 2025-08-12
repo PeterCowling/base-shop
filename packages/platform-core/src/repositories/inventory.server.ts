@@ -62,3 +62,28 @@ export async function writeInventory(
     console.error("Failed to run stock alert", err);
   }
 }
+
+/** Create a unique key for a SKU + variant attribute combination */
+export function variantKey(
+  sku: string,
+  attrs: Record<string, string>,
+): string {
+  const variantPart = Object.entries(attrs)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([k, v]) => `${k}:${v}`)
+    .join("|");
+  return variantPart ? `${sku}#${variantPart}` : sku;
+}
+
+/**
+ * Map inventory records by SKU and variant attributes, enabling quick lookup
+ * of stock entries for specific product variants.
+ */
+export async function readInventoryMap(
+  shop: string,
+): Promise<Record<string, InventoryItem>> {
+  const items = await readInventory(shop);
+  return Object.fromEntries(
+    items.map((i) => [variantKey(i.sku, i.variantAttributes), i]),
+  );
+}

@@ -22,7 +22,7 @@ jest.mock("../usePublishLocations", () => ({
 /* ------------------------------------------------------------------ *
  *  Shared fixtures
  * ------------------------------------------------------------------ */
-const product: ProductPublication = {
+const product: ProductPublication & { variants: Record<string, string[]> } = {
   id: "p1",
   sku: "sku1",
   title: { en: "Old EN", de: "Old DE", it: "Old IT" },
@@ -35,6 +35,7 @@ const product: ProductPublication = {
   shop: "shop",
   status: "draft",
   row_version: 1,
+  variants: { size: ["m", "l"] },
 };
 
 const locales: readonly Locale[] = ["en", "de"];
@@ -66,6 +67,12 @@ function Wrapper({
         value={state.product.price}
         onChange={state.handleChange}
       />
+      <input
+        data-testid="variant-size"
+        name="variant_size"
+        value={state.product.variants.size.join(",")}
+        onChange={state.handleChange}
+      />
       <button type="submit">save</button>
     </form>
   );
@@ -75,7 +82,7 @@ function Wrapper({
  *  Tests
  * ------------------------------------------------------------------ */
 describe("useProductEditorFormState", () => {
-  it("handleChange updates multilingual fields and price", () => {
+  it("handleChange updates multilingual, price and variant fields", () => {
     const onSave = jest.fn().mockResolvedValue({ product });
     render(<Wrapper onSave={onSave} />);
 
@@ -85,11 +92,17 @@ describe("useProductEditorFormState", () => {
     fireEvent.change(screen.getByTestId("price"), {
       target: { value: "200" },
     });
+    fireEvent.change(screen.getByTestId("variant-size"), {
+      target: { value: "xl" },
+    });
 
     expect((screen.getByTestId("title-en") as HTMLInputElement).value).toBe(
       "New"
     );
     expect((screen.getByTestId("price") as HTMLInputElement).value).toBe("200");
+    expect(
+      (screen.getByTestId("variant-size") as HTMLInputElement).value
+    ).toBe("xl");
   });
 
   it("handleSubmit calls save callback with generated FormData", async () => {
@@ -104,6 +117,9 @@ describe("useProductEditorFormState", () => {
     });
     fireEvent.change(screen.getByTestId("price"), {
       target: { value: "200" },
+    });
+    fireEvent.change(screen.getByTestId("variant-size"), {
+      target: { value: "xl" },
     });
     fireEvent.click(screen.getByText("save"));
 
@@ -121,6 +137,7 @@ describe("useProductEditorFormState", () => {
         ["desc_de", "Desc DE"],
         ["price", "200"],
         ["publish", ""],
+        ["variant_size", "xl"],
       ])
     );
   });

@@ -2,7 +2,7 @@ import type { Locale, ProductPublication } from "@platform-core/src/products";
 import type { Meta, StoryObj } from "@storybook/react";
 import ProductEditorForm from "./ProductEditorForm";
 
-const sample: ProductPublication = {
+const sample: ProductPublication & { variants: Record<string, string[]> } = {
   id: "1",
   sku: "SAMPLE-1",
   title: { en: "Sample", de: "Sample", it: "Sample" },
@@ -19,6 +19,8 @@ const sample: ProductPublication = {
   row_version: 1,
   created_at: "",
   updated_at: "",
+  // no variants by default
+  variants: {},
 };
 
 const meta: Meta<typeof ProductEditorForm> = {

@@ -156,7 +156,7 @@ describe("analytics aggregates", () => {
         const agg = JSON.parse(await fs.readFile(fp, "utf8"));
         expect(agg.page_view[now.slice(0, 10)]).toBe(2);
         expect(agg.order[now.slice(0, 10)]).toEqual({ count: 2, amount: 7 });
-        expect(agg.discount_redeemed[now.slice(0, 10)]).toBe(1);
+        expect(agg.discount_redeemed.SAVE[now.slice(0, 10)]).toBe(1);
         expect(agg.ai_catalog[now.slice(0, 10)]).toBe(1);
         expect(fetch).not.toHaveBeenCalled();
       },

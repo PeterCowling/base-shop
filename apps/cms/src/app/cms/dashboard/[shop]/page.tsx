@@ -6,6 +6,7 @@ import { readShop } from "@platform-core/repositories/shops.server";
 import { Progress } from "@acme/ui";
 import { CampaignFilter } from "./CampaignFilter.client";
 import { Charts } from "./Charts.client";
+import { DiscountCodesChart } from "./DiscountCodesChart.client";
 
 export default async function ShopDashboard({
   params,
@@ -46,6 +47,9 @@ export default async function ShopDashboard({
     }
   }
 
+  const discountAggDays = Object.values(aggregates.discount_redeemed).flatMap(
+    (d) => Object.keys(d)
+  );
   const days = Array.from(
     new Set([
       ...Object.keys(aggregates.page_view),
@@ -54,7 +58,7 @@ export default async function ShopDashboard({
       ...Object.keys(emailClickByDay),
       ...Object.keys(campaignSalesByDay),
       ...Object.keys(discountByDay),
-      ...Object.keys(aggregates.discount_redeemed),
+      ...discountAggDays,
       ...Object.keys(aggregates.ai_catalog),
     ])
   ).sort();
@@ -95,6 +99,19 @@ export default async function ShopDashboard({
     labels: days,
     data: days.map((d) => aggregates.ai_catalog[d] || 0),
   };
+
+  const discountCodeSeries = Object.entries(aggregates.discount_redeemed).map(
+    ([code, counts]) => ({
+      label: code,
+      data: days.map((d) => counts[d] || 0),
+    })
+  );
+  const discountCodeTotals = Object.entries(aggregates.discount_redeemed)
+    .map(([code, counts]) => ({
+      code,
+      total: Object.values(counts).reduce((a, b) => a + b, 0),
+    }))
+    .sort((a, b) => b.total - a.total);
 
   const totals = {
     emailOpens: emailOpens.data.reduce((a, b) => a + b, 0),
@@ -139,6 +156,23 @@ export default async function ShopDashboard({
         discountRedemptions={discountRedemptions}
         aiCatalog={aiCatalog}
       />
+      {discountCodeSeries.length > 0 && (
+        <div className="mt-8">
+          <DiscountCodesChart labels={days} series={discountCodeSeries} />
+          {discountCodeTotals.length > 0 && (
+            <div className="mt-4">
+              <h4 className="mb-2 font-medium">Top discount codes</h4>
+              <ul className="list-disc pl-5">
+                {discountCodeTotals.map((d) => (
+                  <li key={d.code}>
+                    {d.code}: {d.total}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
       <div className="mt-8 space-y-4">
         <h3 className="text-lg font-semibold">Progress</h3>
         <div>

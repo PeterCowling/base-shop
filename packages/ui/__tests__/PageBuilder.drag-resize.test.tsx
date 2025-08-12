@@ -237,5 +237,84 @@ describe("PageBuilder interactions", () => {
       expect.objectContaining({ left: "100px" })
     );
   });
+
+  it("snaps resizing to grid units when grid is enabled", () => {
+    const component: any = { id: "c1", type: "Image", width: "100px", height: "100px" };
+    const dispatch = jest.fn();
+    const { container } = render(
+      <CanvasItem
+        component={component}
+        index={0}
+        parentId={undefined}
+        selectedId="c1"
+        onSelectId={() => {}}
+        onRemove={() => {}}
+        dispatch={dispatch}
+        locale="en"
+        gridEnabled
+        gridCols={4}
+      />
+    );
+    const el = container.firstChild as HTMLElement;
+    Object.defineProperty(container, "offsetWidth", { value: 400, writable: true });
+    Object.defineProperty(container, "offsetHeight", { value: 400, writable: true });
+    Object.defineProperty(el, "offsetWidth", { value: 100, writable: true });
+    Object.defineProperty(el, "offsetHeight", { value: 100, writable: true });
+    Object.defineProperty(el, "offsetLeft", { value: 0, writable: true });
+    Object.defineProperty(el, "offsetTop", { value: 0, writable: true });
+
+    const handle = el.querySelector(".cursor-nwse-resize") as HTMLElement;
+    fireEvent.pointerDown(handle, { clientX: 100, clientY: 100 });
+    fireEvent.pointerMove(window, { clientX: 175, clientY: 175 });
+    fireEvent.pointerUp(window);
+
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ width: "200px", height: "200px" })
+    );
+  });
+
+  it("snaps movement to grid units when grid is enabled", () => {
+    const component: any = {
+      id: "c1",
+      type: "Image",
+      width: "100px",
+      height: "100px",
+      position: "absolute",
+      left: "0px",
+      top: "0px",
+    };
+    const dispatch = jest.fn();
+    const { container } = render(
+      <CanvasItem
+        component={component}
+        index={0}
+        parentId={undefined}
+        selectedId="c1"
+        onSelectId={() => {}}
+        onRemove={() => {}}
+        dispatch={dispatch}
+        locale="en"
+        gridEnabled
+        gridCols={4}
+      />
+    );
+
+    const el = container.firstChild as HTMLElement;
+    Object.defineProperty(container, "offsetWidth", { value: 400, writable: true });
+    Object.defineProperty(container, "offsetHeight", { value: 400, writable: true });
+    Object.defineProperty(el, "offsetLeft", { value: 0, writable: true });
+    Object.defineProperty(el, "offsetTop", { value: 0, writable: true });
+    Object.defineProperty(el, "offsetWidth", { value: 100, writable: true });
+    Object.defineProperty(el, "offsetHeight", { value: 100, writable: true });
+
+    const handle = el.querySelector(".cursor-move") as HTMLElement;
+    fireEvent.pointerDown(handle, { clientX: 0, clientY: 0 });
+    fireEvent.pointerMove(window, { clientX: 130, clientY: 130 });
+    fireEvent.pointerUp(window);
+
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ left: "100px", top: "100px" })
+    );
+  });
 });
 

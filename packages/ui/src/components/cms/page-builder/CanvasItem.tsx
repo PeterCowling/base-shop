@@ -12,6 +12,7 @@ import Block from "./Block";
 import MenuBar from "./MenuBar";
 import useTextEditor from "./useTextEditor";
 import useSortableBlock from "./useSortableBlock";
+import { snapToGrid } from "./usePageBuilderDrag";
 
 const CanvasItem = memo(function CanvasItem({
   component,
@@ -22,6 +23,8 @@ const CanvasItem = memo(function CanvasItem({
   onRemove,
   dispatch,
   locale,
+  gridEnabled = false,
+  gridCols = 12,
 }: {
   component: PageComponent;
   index: number;
@@ -31,6 +34,8 @@ const CanvasItem = memo(function CanvasItem({
   onRemove: () => void;
   dispatch: React.Dispatch<Action>;
   locale: Locale;
+  gridEnabled?: boolean;
+  gridCols?: number;
 }) {
   const selected = selectedId === component.id;
   const {
@@ -122,6 +127,13 @@ const CanvasItem = memo(function CanvasItem({
       });
       const snapW = e.shiftKey || Math.abs(parentW - newW) <= threshold;
       const snapH = e.shiftKey || Math.abs(parentH - newH) <= threshold;
+      if (gridEnabled) {
+        const unit = parent ? parent.offsetWidth / gridCols : null;
+        if (unit) {
+          newW = snapToGrid(newW, unit);
+          newH = snapToGrid(newH, unit);
+        }
+      }
       dispatch({
         type: "resize",
         id: component.id,
@@ -182,6 +194,14 @@ const CanvasItem = memo(function CanvasItem({
           guideY = edge;
         }
       });
+      if (gridEnabled) {
+        const parent = containerRef.current.parentElement;
+        const unit = parent ? parent.offsetWidth / gridCols : null;
+        if (unit) {
+          newL = snapToGrid(newL, unit);
+          newT = snapToGrid(newT, unit);
+        }
+      }
       dispatch({
         type: "resize",
         id: component.id,
@@ -410,6 +430,8 @@ const CanvasItem = memo(function CanvasItem({
                   }
                   dispatch={dispatch}
                   locale={locale}
+                  gridEnabled={gridEnabled}
+                  gridCols={gridCols}
                 />
               )
             )}

@@ -28,6 +28,8 @@ interface Props {
   dispatch: (action: Action) => void;
   locale: Locale;
   containerStyle: CSSProperties;
+  showGrid?: boolean;
+  gridCols?: number;
 }
 
 const PageCanvas = ({
@@ -45,6 +47,8 @@ const PageCanvas = ({
   dispatch,
   locale,
   containerStyle,
+  showGrid = false,
+  gridCols = 12,
 }: Props) => (
   <DndContext
     sensors={sensors}
@@ -70,10 +74,23 @@ const PageCanvas = ({
         onDragLeave={() => setDragOver(false)}
         onDragEnd={() => setDragOver(false)}
         className={cn(
-          "mx-auto flex flex-col gap-4 rounded border",
+          "relative mx-auto flex flex-col gap-4 rounded border",
           dragOver && "ring-2 ring-primary"
         )}
       >
+        {showGrid && (
+          <div
+            className="pointer-events-none absolute inset-0 z-10 grid"
+            style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}
+          >
+            {Array.from({ length: gridCols }).map((_, i) => (
+              <div
+                key={i}
+                className="border-l border-dashed border-muted-foreground/40"
+              />
+            ))}
+          </div>
+        )}
         {components.map((c, i) => (
           <Fragment key={c.id}>
             {insertIndex === i && (
@@ -91,6 +108,8 @@ const PageCanvas = ({
               onRemove={() => dispatch({ type: "remove", id: c.id })}
               dispatch={dispatch}
               locale={locale}
+              gridEnabled={showGrid}
+              gridCols={gridCols}
             />
           </Fragment>
         ))}

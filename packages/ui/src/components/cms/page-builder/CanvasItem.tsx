@@ -25,6 +25,7 @@ const CanvasItem = memo(function CanvasItem({
   locale,
   gridEnabled = false,
   gridCols,
+  viewport,
 }: {
   component: PageComponent;
   index: number;
@@ -36,6 +37,7 @@ const CanvasItem = memo(function CanvasItem({
   locale: Locale;
   gridEnabled?: boolean;
   gridCols: number;
+  viewport: "desktop" | "tablet" | "mobile";
 }) {
   const selected = selectedId === component.id;
   const {
@@ -70,6 +72,21 @@ const CanvasItem = memo(function CanvasItem({
   const [guides, setGuides] = useState<{ x: number | null; y: number | null }>(
     { x: null, y: null }
   );
+
+  const widthKey =
+    viewport === "desktop"
+      ? "widthDesktop"
+      : viewport === "tablet"
+      ? "widthTablet"
+      : "widthMobile";
+  const heightKey =
+    viewport === "desktop"
+      ? "heightDesktop"
+      : viewport === "tablet"
+      ? "heightTablet"
+      : "heightMobile";
+  const widthVal = (component as any)[widthKey] ?? component.width;
+  const heightVal = (component as any)[heightKey] ?? component.height;
 
   const editor = useTextEditor(component, locale, editing);
 
@@ -137,9 +154,9 @@ const CanvasItem = memo(function CanvasItem({
       dispatch({
         type: "resize",
         id: component.id,
-        width: snapW ? "100%" : `${newW}px`,
-        height: snapH ? "100%" : `${newH}px`,
-      });
+        [widthKey]: snapW ? "100%" : `${newW}px`,
+        [heightKey]: snapH ? "100%" : `${newH}px`,
+      } as any);
       setSnapWidth(snapW || guideX !== null);
       setSnapHeight(snapH || guideY !== null);
       setGuides({
@@ -231,12 +248,10 @@ const CanvasItem = memo(function CanvasItem({
     const el = containerRef.current;
     if (!el) return;
     const startWidth =
-      component.width && component.width.endsWith("px")
-        ? parseFloat(component.width)
-        : el.offsetWidth;
+      widthVal && widthVal.endsWith("px") ? parseFloat(widthVal) : el.offsetWidth;
     const startHeight =
-      component.height && component.height.endsWith("px")
-        ? parseFloat(component.height)
+      heightVal && heightVal.endsWith("px")
+        ? parseFloat(heightVal)
         : el.offsetHeight;
     startRef.current = {
       x: e.clientX,
@@ -292,8 +307,8 @@ const CanvasItem = memo(function CanvasItem({
       tabIndex={0}
       style={{
         transform: CSS.Transform.toString(transform),
-        ...(component.width ? { width: component.width } : {}),
-        ...(component.height ? { height: component.height } : {}),
+        ...(widthVal ? { width: widthVal } : {}),
+        ...(heightVal ? { height: heightVal } : {}),
         ...(component.margin ? { margin: component.margin } : {}),
         ...(component.padding ? { padding: component.padding } : {}),
         ...(component.position ? { position: component.position } : {}),

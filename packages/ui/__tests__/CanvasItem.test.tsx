@@ -25,6 +25,7 @@ describe("CanvasItem", () => {
             locale="en"
             gridEnabled={false}
             gridCols={12}
+            viewport="desktop"
           />
         </SortableContext>
       </DndContext>

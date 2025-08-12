@@ -14,10 +14,22 @@ export interface PageComponentBase {
    * or a percentage (e.g. "50%").
    */
   width?: string;
+  /** Width on large (desktop) viewports. Overrides `width` when provided. */
+  widthDesktop?: string;
+  /** Width on medium (tablet) viewports. Overrides `width` when provided. */
+  widthTablet?: string;
+  /** Width on small (mobile) viewports. Overrides `width` when provided. */
+  widthMobile?: string;
   /**
    * Height of the rendered component. Can be a pixel value or percentage.
    */
   height?: string;
+  /** Height on large (desktop) viewports. Overrides `height` when provided. */
+  heightDesktop?: string;
+  /** Height on medium (tablet) viewports. Overrides `height` when provided. */
+  heightTablet?: string;
+  /** Height on small (mobile) viewports. Overrides `height` when provided. */
+  heightMobile?: string;
   /**
    * CSS position property used when rendering the component.
    */

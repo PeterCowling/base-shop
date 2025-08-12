@@ -19,7 +19,20 @@ const PageSidebar = ({ components, selectedId, dispatch }: Props) => {
   );
 
   const handleResize = useCallback(
-    (size: { width?: string; height?: string; top?: string; left?: string }) =>
+    (
+      size: {
+        width?: string;
+        height?: string;
+        top?: string;
+        left?: string;
+        widthDesktop?: string;
+        widthTablet?: string;
+        widthMobile?: string;
+        heightDesktop?: string;
+        heightTablet?: string;
+        heightMobile?: string;
+      },
+    ) =>
       dispatch({ type: "resize", id: selectedId, ...size }),
     [dispatch, selectedId],
   );

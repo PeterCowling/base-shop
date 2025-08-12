@@ -9,21 +9,21 @@ describe("ComponentEditor", () => {
       type: "Image",
     } as PageComponent;
     const onResize = jest.fn();
-    const { getByLabelText, getByText } = render(
+    const { getByLabelText, getAllByText } = render(
       <ComponentEditor
         component={component}
         onChange={() => {}}
         onResize={onResize}
       />
     );
-    fireEvent.change(getByLabelText("Width"), { target: { value: "200" } });
-    expect(onResize).toHaveBeenCalledWith({ width: "200" });
-    fireEvent.click(getByText("Full width"));
-    expect(onResize).toHaveBeenCalledWith({ width: "100%" });
-    fireEvent.change(getByLabelText("Height"), { target: { value: "300" } });
-    expect(onResize).toHaveBeenCalledWith({ height: "300" });
-    fireEvent.click(getByText("Full height"));
-    expect(onResize).toHaveBeenCalledWith({ height: "100%" });
+    fireEvent.change(getByLabelText("Width (Desktop)"), { target: { value: "200" } });
+    expect(onResize).toHaveBeenCalledWith({ widthDesktop: "200" });
+    fireEvent.click(getAllByText("Full width")[0]);
+    expect(onResize).toHaveBeenCalledWith({ widthDesktop: "100%" });
+    fireEvent.change(getByLabelText("Height (Desktop)"), { target: { value: "300" } });
+    expect(onResize).toHaveBeenCalledWith({ heightDesktop: "300" });
+    fireEvent.click(getAllByText("Full height")[0]);
+    expect(onResize).toHaveBeenCalledWith({ heightDesktop: "100%" });
   });
 
   it("updates minItems and maxItems", () => {

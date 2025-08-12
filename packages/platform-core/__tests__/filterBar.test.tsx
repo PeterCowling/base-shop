@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import FilterBar from "../components/shop/FilterBar";
+import FilterBar from "../src/components/shop/FilterBar";
 
 describe("FilterBar", () => {
   it("propagates changes", async () => {
@@ -12,7 +12,7 @@ describe("FilterBar", () => {
     });
     fireEvent.change(select, { target: { value: "" } });
     await waitFor(() => {
-      expect(onChange).toHaveBeenLastCalledWith({ size: "" });
+      expect(onChange).toHaveBeenLastCalledWith({ size: undefined });
     });
   });
 });

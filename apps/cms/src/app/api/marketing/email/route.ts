@@ -3,7 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { sendCampaignEmail } from "@acme/email";
+import { sendCampaignEmail, resolveSegment } from "@acme/email";
 import { trackEvent } from "@platform-core/analytics";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { DATA_ROOT } from "@platform-core/dataRoot";
@@ -101,7 +101,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     sendAt?: string;
     templateId?: string;
   };
-  const list = Array.isArray(recipients) ? recipients : to ? [to] : [];
+  let list = Array.isArray(recipients) ? recipients : to ? [to] : [];
+  if (list.length === 0 && shop && segment) {
+    list = await resolveSegment(shop, segment);
+  }
   if (!shop || !subject || !body || list.length === 0) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }

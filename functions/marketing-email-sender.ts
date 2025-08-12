@@ -1,6 +1,6 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { sendCampaignEmail } from "@acme/email";
+import { sendCampaignEmail, resolveSegment } from "@acme/email";
 import { trackEvent } from "@platform-core/analytics";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { coreEnv } from "@acme/config/env/core";
@@ -59,7 +59,12 @@ export async function sendScheduledCampaigns(): Promise<void> {
             shop
           )}&campaign=${encodeURIComponent(c.id)}&url=${encodeURIComponent(url)}"`
       );
-      for (const r of c.recipients) {
+      let recipients = c.recipients;
+      if (c.segment) {
+        recipients = await resolveSegment(shop, c.segment);
+        c.recipients = recipients;
+      }
+      for (const r of recipients) {
         await sendCampaignEmail({
           to: r,
           subject: c.subject,

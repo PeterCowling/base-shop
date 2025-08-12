@@ -26,6 +26,7 @@ import VideoBlockEditor from "./VideoBlockEditor";
 import FAQBlockEditor from "./FAQBlockEditor";
 import HeaderEditor from "./HeaderEditor";
 import FooterEditor from "./FooterEditor";
+import PricingTableEditor from "./PricingTableEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -65,6 +66,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "Testimonials":
       specific = (
         <TestimonialsEditor component={component} onChange={onChange} />
+      );
+      break;
+    case "PricingTable":
+      specific = (
+        <PricingTableEditor component={component} onChange={onChange} />
       );
       break;
     case "HeroBanner":

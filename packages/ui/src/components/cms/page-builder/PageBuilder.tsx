@@ -33,6 +33,7 @@ type ComponentType =
   | keyof typeof layoutRegistry;
 
 const CONTAINER_TYPES = Object.keys(containerRegistry) as ComponentType[];
+const GRID_COLS = 12;
 
 const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
   HeroBanner: { minItems: 1, maxItems: 5 },
@@ -144,6 +145,8 @@ const PageBuilder = memo(function PageBuilder({
     open: false,
     message: "",
   });
+  const [showGrid, setShowGrid] = useState(false);
+  const [gridSize, setGridSize] = useState(1);
 
   const {
     onDrop,
@@ -187,6 +190,7 @@ const PageBuilder = memo(function PageBuilder({
     containerTypes: CONTAINER_TYPES,
     setInsertIndex,
     selectId: setSelectedId,
+    gridSize,
   });
 
   const widthMap = useMemo(
@@ -197,6 +201,14 @@ const PageBuilder = memo(function PageBuilder({
     () => ({ width: widthMap[viewport] }),
     [viewport, widthMap]
   );
+
+  useEffect(() => {
+    if (showGrid && canvasRef.current) {
+      setGridSize(canvasRef.current.offsetWidth / GRID_COLS);
+    } else {
+      setGridSize(1);
+    }
+  }, [showGrid, viewport]);
 
   useEffect(() => {
     onChange?.(components);
@@ -264,6 +276,8 @@ const PageBuilder = memo(function PageBuilder({
           locales={locales}
           progress={progress}
           isValid={isValid}
+          showGrid={showGrid}
+          toggleGrid={() => setShowGrid((g) => !g)}
         />
         <div aria-live="polite" role="status" className="sr-only">
           {liveMessage}
@@ -283,6 +297,8 @@ const PageBuilder = memo(function PageBuilder({
           dispatch={dispatch}
           locale={locale}
           containerStyle={containerStyle}
+          showGrid={showGrid}
+          gridCols={GRID_COLS}
         />
         <div className="flex gap-2">
           <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>

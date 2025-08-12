@@ -9,6 +9,8 @@ interface Props {
   locales: readonly Locale[];
   progress: { done: number; total: number } | null;
   isValid: boolean | null;
+  showGrid: boolean;
+  toggleGrid: () => void;
 }
 
 const PageToolbar = ({
@@ -19,6 +21,8 @@ const PageToolbar = ({
   locales,
   progress,
   isValid,
+  showGrid,
+  toggleGrid,
 }: Props) => (
   <div className="flex flex-col gap-4">
     <div className="flex justify-end gap-2">
@@ -31,6 +35,14 @@ const PageToolbar = ({
           {v.charAt(0).toUpperCase() + v.slice(1)}
         </Button>
       ))}
+    </div>
+    <div className="flex justify-end">
+      <Button
+        variant={showGrid ? "default" : "outline"}
+        onClick={toggleGrid}
+      >
+        {showGrid ? "Hide grid" : "Show grid"}
+      </Button>
     </div>
     <div className="flex justify-end gap-2">
       {locales.map((l) => (

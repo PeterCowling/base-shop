@@ -19,7 +19,11 @@ interface Params {
   containerTypes: string[];
   setInsertIndex: (i: number | null) => void;
   selectId: (id: string) => void;
+  gridSize?: number;
 }
+
+export const snapToGrid = (value: number, gridSize: number) =>
+  Math.round(value / gridSize) * gridSize;
 
 export function usePageBuilderDrag({
   components,
@@ -28,6 +32,7 @@ export function usePageBuilderDrag({
   containerTypes,
   setInsertIndex,
   selectId,
+  gridSize = 1,
 }: Params) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -39,7 +44,8 @@ export function usePageBuilderDrag({
       const { over, delta } = ev;
       if (!over) return;
       const overData = over.data.current as { index?: number };
-      const pointerY = (ev.activatorEvent as any)?.clientY + delta.y;
+      const rawY = (ev.activatorEvent as any)?.clientY + delta.y;
+      const pointerY = snapToGrid(rawY, gridSize);
       if (over.id === "canvas") {
         setInsertIndex(components.length);
         return;
@@ -48,7 +54,7 @@ export function usePageBuilderDrag({
       const index = (overData?.index ?? components.length) + (isBelow ? 1 : 0);
       setInsertIndex(index);
     },
-    [components.length, setInsertIndex]
+    [components.length, setInsertIndex, gridSize]
   );
 
   const handleDragEnd = useCallback(

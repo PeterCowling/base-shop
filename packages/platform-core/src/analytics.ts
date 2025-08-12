@@ -142,6 +142,7 @@ interface Aggregates {
   page_view: Record<string, number>;
   order: Record<string, { count: number; amount: number }>;
   discount_redeemed: Record<string, number>;
+  ai_catalog: Record<string, number>;
 }
 
 async function updateAggregates(
@@ -150,7 +151,12 @@ async function updateAggregates(
 ): Promise<void> {
   const fp = path.join(DATA_ROOT, validateShopName(shop), "analytics-aggregates.json");
   const day = (event.timestamp as string).slice(0, 10);
-  let agg: Aggregates = { page_view: {}, order: {}, discount_redeemed: {} };
+  let agg: Aggregates = {
+    page_view: {},
+    order: {},
+    discount_redeemed: {},
+    ai_catalog: {},
+  };
   try {
     const buf = await fs.readFile(fp, "utf8");
     agg = JSON.parse(buf) as Aggregates;
@@ -167,6 +173,8 @@ async function updateAggregates(
     agg.order[day] = entry;
   } else if (event.type === "discount_redeemed") {
     agg.discount_redeemed[day] = (agg.discount_redeemed[day] || 0) + 1;
+  } else if (event.type === "ai_catalog") {
+    agg.ai_catalog[day] = (agg.ai_catalog[day] || 0) + 1;
   }
   await fs.mkdir(path.dirname(fp), { recursive: true });
   await fs.writeFile(fp, JSON.stringify(agg), "utf8");

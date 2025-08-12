@@ -35,6 +35,7 @@ interface ChartsProps {
   emailClicks: Series;
   campaignSales: Series;
   discountRedemptions: Series;
+  aiCatalog: Series;
 }
 
 export function Charts({
@@ -45,6 +46,7 @@ export function Charts({
   emailClicks,
   campaignSales,
   discountRedemptions,
+  aiCatalog,
 }: ChartsProps) {
   return (
     <div className="space-y-8">
@@ -148,6 +150,21 @@ export function Charts({
                 label: "Discount redemptions",
                 data: discountRedemptions.data,
                 borderColor: "rgb(201, 203, 207)",
+              },
+            ],
+          }}
+        />
+      </div>
+      <div>
+        <h3 className="mb-2 font-semibold">AI Catalog Requests</h3>
+        <Line
+          data={{
+            labels: aiCatalog.labels,
+            datasets: [
+              {
+                label: "AI catalog requests",
+                data: aiCatalog.data,
+                borderColor: "rgb(99, 132, 255)",
               },
             ],
           }}

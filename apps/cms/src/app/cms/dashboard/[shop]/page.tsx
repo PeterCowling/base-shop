@@ -55,6 +55,7 @@ export default async function ShopDashboard({
       ...Object.keys(campaignSalesByDay),
       ...Object.keys(discountByDay),
       ...Object.keys(aggregates.discount_redeemed),
+      ...Object.keys(aggregates.ai_catalog),
     ])
   ).sort();
 
@@ -90,18 +91,24 @@ export default async function ShopDashboard({
     labels: days,
     data: days.map((d) => discountByDay[d] || 0),
   };
+  const aiCatalog = {
+    labels: days,
+    data: days.map((d) => aggregates.ai_catalog[d] || 0),
+  };
 
   const totals = {
     emailOpens: emailOpens.data.reduce((a, b) => a + b, 0),
     emailClicks: emailClicks.data.reduce((a, b) => a + b, 0),
     campaignSales: campaignSales.data.reduce((a, b) => a + b, 0),
     discountRedemptions: discountRedemptions.data.reduce((a, b) => a + b, 0),
+    aiCatalog: aiCatalog.data.reduce((a, b) => a + b, 0),
   };
   const maxTotal = Math.max(
     totals.emailOpens,
     totals.emailClicks,
     totals.campaignSales,
     totals.discountRedemptions,
+    totals.aiCatalog,
     1,
   );
 
@@ -130,6 +137,7 @@ export default async function ShopDashboard({
         emailClicks={emailClicks}
         campaignSales={campaignSales}
         discountRedemptions={discountRedemptions}
+        aiCatalog={aiCatalog}
       />
       <div className="mt-8 space-y-4">
         <h3 className="text-lg font-semibold">Progress</h3>
@@ -161,6 +169,15 @@ export default async function ShopDashboard({
           <Progress
             value={(totals.discountRedemptions / maxTotal) * 100}
             label={String(totals.discountRedemptions)}
+          />
+        </div>
+        <div>
+          <span className="mb-1 block text-sm font-medium">
+            AI catalog requests
+          </span>
+          <Progress
+            value={(totals.aiCatalog / maxTotal) * 100}
+            label={String(totals.aiCatalog)}
           />
         </div>
       </div>

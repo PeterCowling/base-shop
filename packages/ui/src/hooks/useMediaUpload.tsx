@@ -7,7 +7,7 @@
  * -------------------------------------------------------------------------- */
 
 import type { ChangeEvent, DragEvent, ReactElement, RefObject } from "react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useImageOrientationValidation } from "./useImageOrientationValidation";
@@ -35,6 +35,7 @@ export interface UseMediaUploadResult {
   pendingFile: File | null;
   altText: string;
   setAltText: (text: string) => void;
+  thumbnail: string | null;
 
   /* ─── validation ──────────────────────── */
   actual: ImageOrientation | null;
@@ -67,6 +68,7 @@ export function useImageUpload(
   /* ---------- state ------------------------------------------------ */
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [altText, setAltText] = useState("");
+  const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [progress, setProgress] = useState<UploadProgress | null>(null);
   const [error, setError] = useState<string>();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -80,6 +82,55 @@ export function useImageUpload(
     requiredOrientation
   );
   const isValid = isVideo ? true : orientationValid;
+
+  /* ---------- thumbnail generation -------------------------------- */
+  useEffect(() => {
+    if (!pendingFile) {
+      setThumbnail(null);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(pendingFile);
+
+    if (pendingFile.type.startsWith("image/")) {
+      setThumbnail(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+
+    if (pendingFile.type.startsWith("video/")) {
+      const video = document.createElement("video");
+      video.src = objectUrl;
+      video.preload = "metadata";
+      video.muted = true;
+      video.playsInline = true;
+
+      const handleLoaded = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          try {
+            setThumbnail(canvas.toDataURL("image/png"));
+          } catch {
+            setThumbnail(null);
+          }
+        }
+        URL.revokeObjectURL(objectUrl);
+      };
+
+      video.addEventListener("loadeddata", handleLoaded, { once: true });
+      return () => {
+        video.removeEventListener("loadeddata", handleLoaded);
+        URL.revokeObjectURL(objectUrl);
+      };
+    }
+
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+  }, [pendingFile]);
 
   /* ---------- upload handler -------------------------------------- */
   const handleUpload = useCallback(async () => {
@@ -194,6 +245,7 @@ export function useImageUpload(
     pendingFile,
     altText,
     setAltText,
+    thumbnail,
     actual,
     isValid,
     progress,

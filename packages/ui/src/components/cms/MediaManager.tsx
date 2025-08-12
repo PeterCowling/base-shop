@@ -57,6 +57,34 @@ function MediaManagerBase({
     [onDelete, shop]
   );
 
+  const handleUpdate = useCallback(
+    async (src: string, newAlt: string) => {
+      try {
+        const res = await fetch(src);
+        const blob = await res.blob();
+        const fileName = src.split("/").pop() ?? "file";
+        const file = new File([blob], fileName, { type: blob.type });
+        const fd = new FormData();
+        fd.append("file", file);
+        if (newAlt) fd.append("altText", newAlt);
+        const uploadRes = await fetch(
+          `/cms/api/media?shop=${shop}&orientation=${REQUIRED_ORIENTATION}`,
+          { method: "POST", body: fd }
+        );
+        const newItem = (await uploadRes.json()) as MediaItem;
+        if (uploadRes.ok) {
+          await onDelete(shop, src);
+          setFiles((prev) =>
+            prev.map((f) => (f.url === src ? newItem : f))
+          );
+        }
+      } catch {
+        /* ignore */
+      }
+    },
+    [REQUIRED_ORIENTATION, onDelete, shop]
+  );
+
   /* ---------------------------------------------------------------------- */
   /*  Upload workflow (via custom hook)                                     */
   /* ---------------------------------------------------------------------- */
@@ -65,6 +93,7 @@ function MediaManagerBase({
     pendingFile,
     altText,
     setAltText,
+    thumbnail,
     actual,
     isValid,
     progress,
@@ -166,6 +195,13 @@ function MediaManagerBase({
             Uploaded {progress.done}/{progress.total}
           </p>
         )}
+        {pendingFile && thumbnail && (
+          <img
+            src={thumbnail}
+            alt="Preview"
+            className="h-24 w-24 rounded object-cover"
+          />
+        )}
         {pendingFile && (isVideo || isValid !== null) && (
           <div className="space-y-2">
             {!isVideo && (
@@ -202,7 +238,11 @@ function MediaManagerBase({
 
       {/* File list */}
       {filteredFiles.length > 0 && (
-        <MediaFileList files={filteredFiles} onDelete={handleDelete} />
+        <MediaFileList
+          files={filteredFiles}
+          onDelete={handleDelete}
+          onUpdate={handleUpdate}
+        />
       )}
     </div>
   );

@@ -7,13 +7,19 @@ interface Props {
   /** List of files already filtered by the parent component */
   files: MediaItem[];
   onDelete: (url: string) => void;
+  onUpdate: (url: string, altText: string) => Promise<void>;
 }
 
-export default function MediaFileList({ files, onDelete }: Props) {
+export default function MediaFileList({ files, onDelete, onUpdate }: Props) {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
       {files.map((item) => (
-        <MediaFileItem key={item.url} item={item} onDelete={onDelete} />
+        <MediaFileItem
+          key={item.url}
+          item={item}
+          onDelete={onDelete}
+          onUpdate={onUpdate}
+        />
       ))}
     </div>
   );

@@ -2,7 +2,8 @@
 "use client";
 
 import FilterBar, {
-  Filters,
+  type Filters,
+  type FilterDefinition,
 } from "@platform-core/src/components/shop/FilterBar";
 import { ProductGrid } from "@platform-core/src/components/shop/ProductGrid";
 import type { SKU } from "@acme/types";
@@ -14,16 +15,31 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
     () => Array.from(new Set(skus.flatMap((p) => p.sizes))).sort(),
     [skus]
   );
+  const colors = useMemo(
+    () => Array.from(new Set(skus.map((p) => p.slug.split("-")[0]))).sort(),
+    [skus]
+  );
+  const defs: FilterDefinition[] = [
+    { name: "size", label: "Size", type: "select", options: sizes },
+    { name: "color", label: "Color", type: "select", options: colors },
+    { name: "maxPrice", label: "Max Price", type: "number" },
+  ];
 
   const visible = useMemo(() => {
-    if (!filters.size) return skus;
-    return skus.filter((p) => p.sizes.includes(filters.size!));
+    return skus.filter((p) => {
+      if (filters.size && !p.sizes.includes(filters.size as string)) return false;
+      if (filters.color && !p.slug.startsWith(filters.color as string)) return false;
+      if (typeof filters.maxPrice === "number" && p.price > filters.maxPrice) {
+        return false;
+      }
+      return true;
+    });
   }, [filters, skus]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="mb-4 text-3xl font-bold">Shop</h1>
-      <FilterBar onChange={setFilters} sizes={sizes} />
+      <FilterBar definitions={defs} onChange={setFilters} />
       <ProductGrid skus={visible} />
     </div>
   );

@@ -22,6 +22,7 @@ import NewsletterSignup from "./NewsletterSignup";
 import Tabs from "./Tabs";
 import ImageSlider from "./ImageSlider";
 import CollectionList from "./CollectionList";
+import SearchBar from "./SearchBar";
 
 export const organismRegistry = {
   AnnouncementBar,
@@ -46,6 +47,7 @@ export const organismRegistry = {
   SocialLinks,
   SocialFeed,
   NewsletterSignup,
+  SearchBar,
   PricingTable,
   Tabs,
 } as const;

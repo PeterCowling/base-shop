@@ -27,6 +27,7 @@ import NewsletterSignup from "./NewsletterSignup";
 import Tabs from "./Tabs";
 import ImageSlider from "./ImageSlider";
 import CollectionList from "./CollectionList";
+import SearchBar from "./SearchBar";
 
 export {
   BlogListing,
@@ -55,6 +56,7 @@ export {
   Button,
   NewsletterSignup,
   ImageSlider,
+  SearchBar,
   PricingTable,
   Tabs,
   CollectionList,

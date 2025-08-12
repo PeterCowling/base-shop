@@ -3,6 +3,7 @@ import { readdir, readFile } from "node:fs/promises";
 import type { Dirent } from "node:fs";
 import path from "node:path";
 import type { z } from "zod";
+import { logger } from "./utils/logger";
 
 /** Interface for payment providers */
 export interface PaymentProvider {
@@ -74,6 +75,8 @@ export interface Plugin<
     registry: WidgetRegistry<W>,
     config: Config,
   ): void;
+  /** optional async initialization hook */
+  init?(config: Config): Promise<void> | void;
 }
 
 export interface LoadPluginsOptions {
@@ -88,8 +91,10 @@ export async function loadPlugins({
   directories = [],
   plugins = [],
 }: LoadPluginsOptions = {}): Promise<Plugin[]> {
+  const workspaceDir = path.join(process.cwd(), "packages", "plugins");
+  const searchDirs = Array.from(new Set([workspaceDir, ...directories]));
   const roots: string[] = [...plugins];
-  for (const dir of directories) {
+  for (const dir of searchDirs) {
     try {
       const entries = await readdir(dir, { withFileTypes: true });
       for (const entry of entries) {
@@ -98,7 +103,7 @@ export async function loadPlugins({
         }
       }
     } catch (err) {
-      console.warn(`Failed to read plugins directory ${dir}`, err);
+      logger.warn("Failed to read plugins directory", { directory: dir, err });
     }
   }
 
@@ -121,7 +126,7 @@ export async function loadPlugins({
           continue;
         }
       } catch {
-        console.warn(`No package.json found for plugin at ${root}`);
+        logger.warn("No package.json found for plugin", { root });
         continue;
       }
       const mod = await import(entry);
@@ -129,7 +134,7 @@ export async function loadPlugins({
         loaded.push(mod.default as Plugin);
       }
     } catch (err) {
-      console.warn(`Failed to load plugin at ${root}`, err);
+      logger.error("Failed to load plugin", { root, err });
     }
   }
   return loaded;
@@ -163,10 +168,16 @@ export async function initPlugins<
     if (plugin.configSchema) {
       const result = plugin.configSchema.safeParse(raw);
       if (!result.success) {
-        console.warn(`Invalid config for plugin ${plugin.id}`, result.error);
+        logger.error("Invalid config for plugin", {
+          plugin: plugin.id,
+          error: result.error,
+        });
         continue;
       }
       cfg = result.data;
+    }
+    if (plugin.init) {
+      await plugin.init(cfg as any);
     }
     if (registries.payments && plugin.registerPayments) {
       plugin.registerPayments(registries.payments, cfg as any);

@@ -18,16 +18,23 @@ const configSchema = {
     return { success: false, error: new Error('invalid') };
   }
 };
-const registerPayments = jest.fn();
-const registerShipping = jest.fn();
-const registerWidgets = jest.fn();
+const callOrder = [];
+const init = jest.fn(async () => {
+  await new Promise(resolve => setTimeout(resolve, 10));
+  callOrder.push('init');
+});
+const registerPayments = jest.fn(() => callOrder.push('registerPayments'));
+const registerShipping = jest.fn(() => callOrder.push('registerShipping'));
+const registerWidgets = jest.fn(() => callOrder.push('registerWidgets'));
 export default {
   id: 'good',
   defaultConfig: { enabled: true },
   configSchema,
+  init,
   registerPayments,
   registerShipping,
   registerWidgets,
+  callOrder,
 };
 `;
     await fs.writeFile(path.join(validDir, "index.ts"), pluginCode);
@@ -70,26 +77,22 @@ describe("plugins", () => {
     const root = await createPluginsRoot(false);
     jest.spyOn(process, "cwd").mockReturnValue(root);
     const { loadPlugins } = await import("../src/plugins");
-    const plugins = await loadPlugins({
-      directories: [path.join(root, "packages", "plugins")],
-    });
+    const plugins = await loadPlugins();
     expect(plugins).toEqual([]);
   });
 
   it("loads valid plugins and skips missing and failing ones", async () => {
     const root = await createPluginsRoot(true);
     jest.spyOn(process, "cwd").mockReturnValue(root);
-    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const error = jest.spyOn(console, "error").mockImplementation(() => {});
     const { loadPlugins } = await import("../src/plugins");
-    const plugins = await loadPlugins({
-      directories: [path.join(root, "packages", "plugins")],
-    });
+    const plugins = await loadPlugins();
     expect(plugins).toHaveLength(1);
     expect(plugins[0].id).toBe("good");
-    expect(warn).toHaveBeenCalledTimes(2);
+    expect(error).toHaveBeenCalledTimes(2);
   });
 
-  it("initPlugins calls all registration hooks", async () => {
+  it("initPlugins awaits init before registration hooks", async () => {
     const root = await createPluginsRoot(true);
     jest.spyOn(process, "cwd").mockReturnValue(root);
     const { initPlugins } = await import("../src/plugins");
@@ -103,16 +106,22 @@ describe("plugins", () => {
         widgets,
       },
       {
-        directories: [path.join(root, "packages", "plugins")],
         config: { good: { enabled: false } },
       },
     );
     expect(plugins).toHaveLength(1);
-    const plugin = plugins[0];
+    const plugin = plugins[0] as any;
     const cfg = { enabled: false };
     expect(plugin.registerPayments).toHaveBeenCalledWith(payments, cfg);
     expect(plugin.registerShipping).toHaveBeenCalledWith(shipping, cfg);
     expect(plugin.registerWidgets).toHaveBeenCalledWith(widgets, cfg);
+    expect(plugin.init).toHaveBeenCalled();
+    expect(plugin.callOrder).toEqual([
+      'init',
+      'registerPayments',
+      'registerShipping',
+      'registerWidgets',
+    ]);
   });
 
   it("skips plugins with invalid config", async () => {
@@ -123,7 +132,6 @@ describe("plugins", () => {
     const plugins = await initPlugins(
       { payments },
       {
-        directories: [path.join(root, "packages", "plugins")],
         // enabled should be boolean
         config: { good: { enabled: "oops" as any } },
       },

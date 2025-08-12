@@ -4,6 +4,7 @@ import type { MediaItem } from "@acme/types";
 import MediaFileItem from "./MediaFileItem";
 
 interface Props {
+  /** List of media files already filtered by the parent component */
   files: MediaItem[];
   onDelete: (url: string) => void;
 }

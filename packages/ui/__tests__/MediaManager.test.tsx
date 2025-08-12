@@ -46,4 +46,20 @@ describe("MediaManager", () => {
     const fd = (global.fetch as jest.Mock).mock.calls[0][1].body as FormData;
     expect(fd.get("altText")).toBe("alt");
   });
+
+  it("filters files via search", () => {
+    render(
+      <MediaManager
+        shop="s"
+        initialFiles={[
+          { url: "/a.jpg", altText: "first" } as any,
+          { url: "/b.jpg", altText: "second" } as any,
+        ]}
+      />
+    );
+    const search = screen.getByPlaceholderText("Search media");
+    fireEvent.change(search, { target: { value: "sec" } });
+    expect(screen.getByAltText("second")).toBeInTheDocument();
+    expect(screen.queryByAltText("first")).toBeNull();
+  });
 });

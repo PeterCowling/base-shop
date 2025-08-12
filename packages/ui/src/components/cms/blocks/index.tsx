@@ -1,86 +1,54 @@
-import BlogListing from "./BlogListing";
-import ContactForm from "./ContactForm";
-import ContactFormWithMap from "./ContactFormWithMap";
-import Gallery from "./Gallery";
-import HeroBanner from "./HeroBanner";
-import ProductCarousel from "./ProductCarousel";
-import ProductGrid from "./ProductGrid.client";
-import ReviewsCarousel from "./ReviewsCarousel";
-import TestimonialSlider from "./TestimonialSlider";
-import Testimonials from "./Testimonials";
-import ValueProps from "./ValueProps";
-import RecommendationCarousel from "./RecommendationCarousel";
-import Section from "./Section";
-import AnnouncementBar from "./AnnouncementBarBlock";
-import MapBlock from "./MapBlock";
-import MultiColumn from "./containers/MultiColumn";
-import VideoBlock from "./VideoBlock";
-import FAQBlock from "./FAQBlock";
-import Header from "./HeaderBlock";
-import Footer from "./FooterBlock";
-import CountdownTimer from "./CountdownTimer";
-import SocialLinks from "./SocialLinks";
-import Button from "./Button";
-import PricingTable from "./PricingTable";
-import SocialFeed from "./SocialFeed";
-import NewsletterSignup from "./NewsletterSignup";
-import Tabs from "./Tabs";
-import ImageSlider from "./ImageSlider";
-import CollectionList from "./CollectionList";
-import SearchBar from "./SearchBar";
-
-export {
-  BlogListing,
-  ContactForm,
-  ContactFormWithMap,
-  Gallery,
-  HeroBanner,
-  ProductCarousel,
-  ProductGrid,
-  RecommendationCarousel,
-  ReviewsCarousel,
-  Testimonials,
-  TestimonialSlider,
-  ValueProps,
-  Section,
-  AnnouncementBar,
-  MapBlock,
-  MultiColumn,
-  VideoBlock,
-  FAQBlock,
-  CountdownTimer,
-  Header,
-  Footer,
-  SocialLinks,
-  SocialFeed,
-  Button,
-  NewsletterSignup,
-  ImageSlider,
-  SearchBar,
-  PricingTable,
-  Tabs,
-  CollectionList,
-};
-
-export * from "./atoms";
-export * from "./molecules";
-export * from "./organisms";
-export * from "./layout";
+import type { ComponentType } from "react";
 
 import { atomRegistry } from "./atoms";
 import { moleculeRegistry } from "./molecules";
-import { organismRegistry } from "./organisms";
 import { containerRegistry } from "./containers";
 import { layoutRegistry } from "./layout";
 
-// Re-export individual registries so consumers can access them directly.
-export {
-  atomRegistry,
-  moleculeRegistry,
-  organismRegistry,
-  containerRegistry,
-  layoutRegistry,
-};
+export * from "./atoms";
+export * from "./molecules";
+export * from "./layout";
+
+type BlockModule = { default: ComponentType<any> };
+
+const modules = import.meta.glob<BlockModule>("./**/*.tsx", { eager: true });
+
+const EXCLUDE = new Set([
+  "index.tsx",
+  "atoms.tsx",
+  "molecules.tsx",
+  "organisms.tsx",
+  "layout.tsx",
+  "containers.tsx",
+  "Section.tsx",
+  "Button.tsx",
+  "Divider.tsx",
+  "Spacer.tsx",
+  "CustomHtml.tsx",
+  "HeaderBlock.tsx",
+  "FooterBlock.tsx",
+]);
+
+function toName(path: string) {
+  const file = path.split("/").pop()!.replace(/\.tsx$/, "");
+  const base = file.replace(/\.client$/, "");
+  return base === "AnnouncementBarBlock" ? "AnnouncementBar" : base;
+}
+
+const organismRegistry = Object.fromEntries(
+  Object.entries(modules)
+    .filter(([path]) => {
+      const file = path.split("/").pop()!;
+      if (EXCLUDE.has(file)) return false;
+      if (file.endsWith(".stories.tsx")) return false;
+      if (path.includes("/__tests__/")) return false;
+      if (path.includes("/containers/")) return false;
+      return true;
+    })
+    .map(([path, mod]) => [toName(path), mod.default])
+) as const;
+
+export { atomRegistry, moleculeRegistry, containerRegistry, layoutRegistry, organismRegistry };
 
 export const blockRegistry = {
   ...layoutRegistry,
@@ -91,3 +59,4 @@ export const blockRegistry = {
 } as const;
 
 export type BlockType = keyof typeof blockRegistry;
+

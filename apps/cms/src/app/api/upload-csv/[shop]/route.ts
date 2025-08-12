@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
+import { z } from "zod";
 
 export async function POST(
   req: NextRequest,
@@ -14,13 +15,20 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
+    const paramsResult = z
+      .object({ shop: z.string() })
+      .safeParse(await context.params);
+    if (!paramsResult.success) {
+      return NextResponse.json({ error: "Invalid shop" }, { status: 400 });
+    }
+
     const data = await req.formData();
-    const file = data.get("file");
-    if (!(file instanceof File)) {
+    const fileResult = z.instanceof(File).safeParse(data.get("file"));
+    if (!fileResult.success) {
       return NextResponse.json({ error: "Missing file" }, { status: 400 });
     }
-    const buf = Buffer.from(await file.arrayBuffer());
-    const { shop } = await context.params;
+    const buf = Buffer.from(await fileResult.data.arrayBuffer());
+    const { shop } = paramsResult.data;
     const dir = path.join(resolveDataRoot(), shop);
     await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(path.join(dir, "products.csv"), buf);

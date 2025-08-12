@@ -45,6 +45,7 @@ const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
     desktopItems: 3,
     tabletItems: 2,
     mobileItems: 1,
+    mode: "collection",
   },
   ProductCarousel: {
     minItems: 1,
@@ -52,6 +53,7 @@ const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
     desktopItems: 4,
     tabletItems: 2,
     mobileItems: 1,
+    mode: "collection",
   },
   RecommendationCarousel: { minItems: 1, maxItems: 4 },
   Testimonials: { minItems: 1, maxItems: 10 },

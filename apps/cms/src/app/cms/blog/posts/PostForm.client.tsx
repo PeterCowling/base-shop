@@ -13,6 +13,8 @@ import {
   useEditor,
   defineSchema,
   type PortableTextBlock,
+  type RenderBlockFunction,
+  type BlockRenderProps,
 } from "@portabletext/editor";
 import { EventListenerPlugin } from "@portabletext/editor/plugins";
 import { PortableText } from "@portabletext/react";
@@ -146,6 +148,55 @@ const previewComponents = {
     h2: ({ children }: any) => <h2>{children}</h2>,
     h3: ({ children }: any) => <h3>{children}</h3>,
   },
+};
+
+function ProductReferenceBlock(props: BlockRenderProps) {
+  const editor = useEditor();
+  const slug = props.value.slug as string;
+  const remove = () => {
+    const sel = {
+      anchor: { path: props.path, offset: 0 },
+      focus: { path: props.path, offset: 0 },
+    };
+    PortableTextEditor.delete(editor, sel, { mode: "blocks" });
+  };
+  const edit = () => {
+    const next = prompt("Product slug", slug);
+    if (!next) return;
+    const sel = {
+      anchor: { path: props.path, offset: 0 },
+      focus: { path: props.path, offset: 0 },
+    };
+    PortableTextEditor.delete(editor, sel, { mode: "blocks" });
+    PortableTextEditor.insertBlock(editor, "productReference", { slug: next });
+  };
+  return (
+    <div className="space-y-2">
+      <ProductPreview slug={slug} />
+      <div className="flex gap-2">
+        <Button type="button" variant="outline" onClick={edit}>
+          Edit
+        </Button>
+        <Button type="button" variant="outline" onClick={remove}>
+          Remove
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+const renderBlock: RenderBlockFunction = (props) => {
+  if (props.value._type === "productReference") {
+    return <ProductReferenceBlock {...props} />;
+  }
+  if (props.value._type === "embed") {
+    return (
+      <div className="aspect-video">
+        <iframe src={props.value.url} className="h-full w-full" />
+      </div>
+    );
+  }
+  return <div>{props.children}</div>;
 };
 
 function Toolbar() {
@@ -348,7 +399,10 @@ export default function PostForm({ action, submitLabel, post }: Props) {
               }}
             />
             <Toolbar />
-            <PortableTextEditable className="min-h-[200px] rounded border p-2" />
+            <PortableTextEditable
+              className="min-h-[200px] rounded border p-2"
+              renderBlock={renderBlock}
+            />
             <ProductSearch query={query} setQuery={setQuery} />
           </EditorProvider>
         </div>

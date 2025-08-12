@@ -1,4 +1,4 @@
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 import { stripe } from "@acme/stripe";
 import {
   markRefunded,
@@ -86,16 +86,16 @@ async function resolveConfig(
   const envEnabled = process.env[envKey(shop, "ENABLED")];
   if (envEnabled !== undefined) {
     config.enabled = envEnabled !== "false";
-  } else if (env.DEPOSIT_RELEASE_ENABLED !== undefined) {
-    config.enabled = env.DEPOSIT_RELEASE_ENABLED;
+  } else if (coreEnv.DEPOSIT_RELEASE_ENABLED !== undefined) {
+    config.enabled = coreEnv.DEPOSIT_RELEASE_ENABLED;
   }
 
   const envInterval = process.env[envKey(shop, "INTERVAL_MS")];
   if (envInterval !== undefined) {
     const num = Number(envInterval);
     if (!Number.isNaN(num)) config.intervalMs = num;
-  } else if (env.DEPOSIT_RELEASE_INTERVAL_MS !== undefined) {
-    config.intervalMs = env.DEPOSIT_RELEASE_INTERVAL_MS;
+  } else if (coreEnv.DEPOSIT_RELEASE_INTERVAL_MS !== undefined) {
+    config.intervalMs = coreEnv.DEPOSIT_RELEASE_INTERVAL_MS;
   }
 
   if (override.enabled !== undefined) config.enabled = override.enabled;

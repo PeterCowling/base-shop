@@ -1,4 +1,4 @@
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 
 export const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7; // one week
 export const SESSION_TTL_S = Math.floor(SESSION_TTL_MS / 1000);
@@ -30,17 +30,19 @@ export async function createSessionStore(): Promise<SessionStore> {
     return customFactory();
   }
 
-  const storeType = env.SESSION_STORE;
+  const storeType = coreEnv.SESSION_STORE;
 
   if (
     storeType === "redis" ||
-    (!storeType && env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN)
+    (!storeType &&
+      coreEnv.UPSTASH_REDIS_REST_URL &&
+      coreEnv.UPSTASH_REDIS_REST_TOKEN)
   ) {
     const { Redis } = await import("@upstash/redis");
     const { RedisSessionStore } = await import("./redisStore");
     const client = new Redis({
-      url: env.UPSTASH_REDIS_REST_URL!,
-      token: env.UPSTASH_REDIS_REST_TOKEN!,
+      url: coreEnv.UPSTASH_REDIS_REST_URL!,
+      token: coreEnv.UPSTASH_REDIS_REST_TOKEN!,
     });
     return new RedisSessionStore(client, SESSION_TTL_S);
   }

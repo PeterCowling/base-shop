@@ -1,16 +1,16 @@
 // packages/email/src/sendEmail.ts
 
-import { env } from "@config/src/env";
+import { coreEnv } from "@acme/config/env/core";
 import nodemailer from "nodemailer";
 
-const hasCreds = env.GMAIL_USER && env.GMAIL_PASS;
+const hasCreds = coreEnv.GMAIL_USER && coreEnv.GMAIL_PASS;
 
 const transporter = hasCreds
   ? nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: env.GMAIL_USER,
-        pass: env.GMAIL_PASS,
+        user: coreEnv.GMAIL_USER,
+        pass: coreEnv.GMAIL_PASS,
       },
     })
   : null;
@@ -23,7 +23,7 @@ export async function sendEmail(
   if (transporter) {
     try {
       await transporter.sendMail({
-        from: env.GMAIL_USER,
+        from: coreEnv.GMAIL_USER,
         to,
         subject,
         text: body,

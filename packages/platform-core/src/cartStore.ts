@@ -1,5 +1,5 @@
 import { Redis } from "@upstash/redis";
-import { env } from "@acme/config";
+import { coreEnv } from "@acme/config/env/core";
 import type { CartState } from "./cartCookie";
 import type { SKU } from "@acme/types";
 import { MemoryCartStore } from "./cartStore/memoryStore";
@@ -41,21 +41,21 @@ export function createRedisCartStore(
 }
 
 export function createCartStore(options: CartStoreOptions = {}): CartStore {
-  const ttl = options.ttlSeconds ?? Number(env.CART_TTL ?? DEFAULT_TTL);
+  const ttl = options.ttlSeconds ?? Number(coreEnv.CART_TTL ?? DEFAULT_TTL);
   const backend =
     options.backend ??
-    env.SESSION_STORE ??
-    (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN
+    coreEnv.SESSION_STORE ??
+    (coreEnv.UPSTASH_REDIS_REST_URL && coreEnv.UPSTASH_REDIS_REST_TOKEN
       ? "redis"
       : "memory");
 
   if (backend === "redis") {
     const client =
       options.redis ??
-      (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN
+      (coreEnv.UPSTASH_REDIS_REST_URL && coreEnv.UPSTASH_REDIS_REST_TOKEN
         ? new Redis({
-            url: env.UPSTASH_REDIS_REST_URL,
-            token: env.UPSTASH_REDIS_REST_TOKEN,
+            url: coreEnv.UPSTASH_REDIS_REST_URL,
+            token: coreEnv.UPSTASH_REDIS_REST_TOKEN,
           })
         : undefined);
     if (client) {

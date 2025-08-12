@@ -71,7 +71,7 @@ describe("createShop helpers", () => {
         }
         return "";
       });
-      fsMock.existsSync.mockReturnValue(true);
+      fsMock.existsSync.mockReturnValue(false);
     });
 
     it("writes env and shop files", () => {
@@ -92,6 +92,26 @@ describe("createShop helpers", () => {
         String(c[0]).includes("shop.json")
       );
       expect(shopCall).toBeTruthy();
+    });
+
+    it("throws if target directories exist", () => {
+      const options = prepareOptions("shop", {});
+      fsMock.existsSync.mockImplementation((p: fs.PathLike) => {
+        const path = String(p);
+        return (
+          path === "apps/shop" || path === "data/shops/shop"
+        );
+      });
+      expect(() =>
+        writeFiles(
+          "shop",
+          options,
+          {},
+          "packages/template-app",
+          "apps/shop",
+          "data/shops/shop"
+        )
+      ).toThrow(/already exists/);
     });
   });
 });

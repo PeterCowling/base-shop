@@ -42,6 +42,12 @@ export function writeFiles(
   newApp: string,
   newData: string
 ): void {
+  if (existsSync(newApp)) {
+    throw new Error(`App directory already exists: ${newApp}`);
+  }
+  if (existsSync(newData)) {
+    throw new Error(`Data directory already exists: ${newData}`);
+  }
   copyTemplate(templateApp, newApp);
   cpSync(
     join(templateApp, "src", "app", "sitemap.ts"),

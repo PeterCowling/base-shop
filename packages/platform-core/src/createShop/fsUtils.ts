@@ -104,12 +104,22 @@ export function writeFiles(
   envContent += `GMAIL_PASS=\n`;
   envContent += `CLOUDFLARE_ACCOUNT_ID=\n`;
   envContent += `CLOUDFLARE_API_TOKEN=\n`;
+  envContent += `DEPOSIT_RELEASE_ENABLED=\n`;
+  envContent += `DEPOSIT_RELEASE_INTERVAL_MS=\n`;
   writeFileSync(join(newApp, ".env"), envContent);
 
   mkdirSync(newData, { recursive: true });
   writeFileSync(
     join(newData, "settings.json"),
-    JSON.stringify({ languages: [...LOCALES], analytics: options.analytics }, null, 2)
+    JSON.stringify(
+      {
+        languages: [...LOCALES],
+        analytics: options.analytics,
+        depositService: { enabled: false, interval: 60 },
+      },
+      null,
+      2
+    )
   );
 
   const themeDefaults = loadTokens(options.theme);

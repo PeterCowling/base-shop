@@ -12,6 +12,7 @@ export { default as MapBlockEditor } from "./MapBlockEditor";
 export { default as VideoBlockEditor } from "./VideoBlockEditor";
 export { default as FAQBlockEditor } from "./FAQBlockEditor";
 export { default as PricingTableEditor } from "./PricingTableEditor";
+export { default as NewsletterSignupEditor } from "./NewsletterSignupEditor";
 export { default as SocialFeedEditor } from "./SocialFeedEditor";
 export { default as useMediaLibrary } from "./useMediaLibrary";
 export { useArrayEditor } from "./useArrayEditor";

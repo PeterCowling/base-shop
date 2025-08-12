@@ -133,6 +133,13 @@ export interface ContactFormComponent extends PageComponentBase {
   action?: string;
   method?: string;
 }
+export interface NewsletterSignupComponent extends PageComponentBase {
+  type: "NewsletterSignup";
+  text?: string;
+  action?: string;
+  placeholder?: string;
+  submitLabel?: string;
+}
 export interface ContactFormWithMapComponent extends PageComponentBase {
   type: "ContactFormWithMap";
   mapSrc?: string;
@@ -220,6 +227,7 @@ export type PageComponent =
   | RecommendationCarouselComponent
   | GalleryComponent
   | ContactFormComponent
+  | NewsletterSignupComponent
   | ContactFormWithMapComponent
   | MapBlockComponent
   | VideoBlockComponent

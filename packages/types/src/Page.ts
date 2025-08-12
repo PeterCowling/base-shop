@@ -138,6 +138,14 @@ export interface ContactFormComponent extends PageComponentBase {
   method?: string;
 }
 
+export interface NewsletterSignupComponent extends PageComponentBase {
+  type: "NewsletterSignup";
+  text?: string;
+  action?: string;
+  placeholder?: string;
+  submitLabel?: string;
+}
+
 export interface ContactFormWithMapComponent extends PageComponentBase {
   type: "ContactFormWithMap";
   mapSrc?: string;
@@ -243,6 +251,7 @@ export type PageComponent =
   | RecommendationCarouselComponent
   | GalleryComponent
   | ContactFormComponent
+  | NewsletterSignupComponent
   | ContactFormWithMapComponent
   | MapBlockComponent
   | VideoBlockComponent
@@ -340,6 +349,14 @@ const contactFormComponentSchema = baseComponentSchema.extend({
   type: z.literal("ContactForm"),
   action: z.string().optional(),
   method: z.string().optional(),
+});
+
+const newsletterSignupComponentSchema = baseComponentSchema.extend({
+  type: z.literal("NewsletterSignup"),
+  text: z.string().optional(),
+  action: z.string().optional(),
+  placeholder: z.string().optional(),
+  submitLabel: z.string().optional(),
 });
 
 const contactFormWithMapComponentSchema = baseComponentSchema.extend({
@@ -506,6 +523,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     recommendationCarouselComponentSchema,
     galleryComponentSchema,
     contactFormComponentSchema,
+    newsletterSignupComponentSchema,
     contactFormWithMapComponentSchema,
     mapBlockComponentSchema,
     videoBlockComponentSchema,

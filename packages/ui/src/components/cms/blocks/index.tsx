@@ -23,6 +23,7 @@ import SocialLinks from "./SocialLinks";
 import Button from "./Button";
 import PricingTable from "./PricingTable";
 import SocialFeed from "./SocialFeed";
+import NewsletterSignup from "./NewsletterSignup";
 
 export {
   BlogListing,
@@ -49,6 +50,7 @@ export {
   SocialLinks,
   SocialFeed,
   Button,
+  NewsletterSignup,
   PricingTable,
 };
 

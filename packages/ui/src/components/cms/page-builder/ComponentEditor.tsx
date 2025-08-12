@@ -28,6 +28,7 @@ import FAQBlockEditor from "./FAQBlockEditor";
 import HeaderEditor from "./HeaderEditor";
 import FooterEditor from "./FooterEditor";
 import PricingTableEditor from "./PricingTableEditor";
+import NewsletterSignupEditor from "./NewsletterSignupEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -80,6 +81,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "AnnouncementBar":
       specific = (
         <AnnouncementBarEditor component={component} onChange={onChange} />
+      );
+      break;
+    case "NewsletterSignup":
+      specific = (
+        <NewsletterSignupEditor component={component} onChange={onChange} />
       );
       break;
     case "ValueProps":

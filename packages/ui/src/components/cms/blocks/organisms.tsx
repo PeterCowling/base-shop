@@ -18,6 +18,7 @@ import CountdownTimer from "./CountdownTimer";
 import SocialLinks from "./SocialLinks";
 import SocialFeed from "./SocialFeed";
 import PricingTable from "./PricingTable";
+import NewsletterSignup from "./NewsletterSignup";
 
 export const organismRegistry = {
   AnnouncementBar,
@@ -39,6 +40,7 @@ export const organismRegistry = {
   CountdownTimer,
   SocialLinks,
   SocialFeed,
+  NewsletterSignup,
   PricingTable,
 } as const;
 

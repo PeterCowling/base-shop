@@ -11,11 +11,11 @@ import {
 } from "@/components/atoms/shadcn";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useWizard } from "../WizardContext";
+import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 
 export default function StepOptions(): React.JSX.Element {
-  const { state, update } = useWizard();
+  const { state, update } = useConfigurator();
   const {
     shopId,
     payment,
@@ -43,7 +43,7 @@ export default function StepOptions(): React.JSX.Element {
       setShipping([...shipping, provider]);
     }
 
-    router.replace("/cms/wizard");
+    router.replace("/cms/configurator");
   }, [searchParams, payment, shipping, router]);
 
   function connect(provider: string) {

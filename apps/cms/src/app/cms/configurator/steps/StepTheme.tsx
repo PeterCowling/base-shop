@@ -10,7 +10,7 @@ import {
 } from "@/components/atoms/shadcn";
 import StyleEditor from "@/components/cms/StyleEditor";
 import { useState } from "react";
-import WizardPreview from "../WizardPreview";
+import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 

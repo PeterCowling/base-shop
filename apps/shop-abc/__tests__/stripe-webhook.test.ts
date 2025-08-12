@@ -9,59 +9,17 @@ if (typeof (Response as any).json !== "function") {
 afterEach(() => jest.resetModules());
 
 describe("/api/stripe-webhook", () => {
-  test("checkout.session.completed creates an order", async () => {
-    const addOrder = jest.fn();
-    jest.doMock(
-      "@platform-core/repositories/rentalOrders.server",
-      () => ({
-        __esModule: true,
-        addOrder,
-        markRefunded: jest.fn(),
-      }),
-      { virtual: true }
-    );
+  test("forwards events to common handler", async () => {
+    const handleStripeWebhook = jest.fn();
+    jest.doMock("@platform-core/stripe-webhook", () => ({
+      __esModule: true,
+      handleStripeWebhook,
+    }), { virtual: true });
 
     const { POST } = await import("../src/app/api/stripe-webhook/route");
-    const payload = {
-      type: "checkout.session.completed",
-      data: {
-        object: {
-          id: "sess",
-          metadata: { depositTotal: "10", returnDate: "2030-05-05" },
-        },
-      },
-    } as any;
+    const payload = { type: "checkout.session.completed", data: { object: {} } } as any;
     const res = await POST({ json: async () => payload } as any);
-    expect(addOrder).toHaveBeenCalledWith("abc", "sess", 10, "2030-05-05");
-    expect(res.status).toBe(200);
-  });
-
-  test("charge.refunded marks order refunded", async () => {
-    const markRefunded = jest.fn();
-    jest.doMock(
-      "@platform-core/repositories/rentalOrders.server",
-      () => ({
-        __esModule: true,
-        addOrder: jest.fn(),
-        markRefunded,
-      }),
-      { virtual: true }
-    );
-
-    const { POST } = await import("../src/app/api/stripe-webhook/route");
-    const payload = {
-      type: "charge.refunded",
-      data: {
-        object: {
-          id: "ch_1",
-          payment_intent: {
-            charges: { data: [{ invoice: "sess_2" }] },
-          },
-        },
-      },
-    } as any;
-    const res = await POST({ json: async () => payload } as any);
-    expect(markRefunded).toHaveBeenCalledWith("abc", "sess_2");
+    expect(handleStripeWebhook).toHaveBeenCalledWith("abc", payload);
     expect(res.status).toBe(200);
   });
 });

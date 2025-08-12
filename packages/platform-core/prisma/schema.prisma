@@ -33,6 +33,9 @@ model RentalOrder {
   refundedAt         String?
   damageFee          Int?
   customerId         String?
+  riskLevel          String?
+  riskScore          Int?
+  flaggedForReview   Boolean? @default(false)
 
   @@unique([shop, sessionId])
   @@index([customerId])

@@ -10,55 +10,30 @@ import { ReactNode, useState } from "react";
 import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+import { useWizard } from "../WizardContext";
+import { useThemeLoader } from "../hooks/useThemeLoader";
 
 interface Props {
-  currentStep: number;
-  stepIndex: number;
-
-  /** Header */
-  headerComponents: PageComponent[];
-  setHeaderComponents: (v: PageComponent[]) => void;
-  headerPageId: string | null;
-  setHeaderPageId: (v: string | null) => void;
-
-  /** Footer */
-  footerComponents: PageComponent[];
-  setFooterComponents: (v: PageComponent[]) => void;
-  footerPageId: string | null;
-  setFooterPageId: (v: string | null) => void;
-
-  /** Context */
-  shopId: string;
-  themeStyle: React.CSSProperties;
-
   /** Optional inner content for the step */
   children?: ReactNode;
 }
 
 const emptyTranslated = () => fillLocales(undefined, "");
 
-export default function StepLayout({
-  currentStep,
-  stepIndex,
-  headerComponents,
-  setHeaderComponents,
-  headerPageId,
-  setHeaderPageId,
-  footerComponents,
-  setFooterComponents,
-  footerPageId,
-  setFooterPageId,
-  shopId,
-  themeStyle,
-  children,
-}: Props): React.JSX.Element | null {
-  /**
-   * Render **nothing at all** for inactive steps so the DOM
-   * contains only a single set of navigation buttons.
-   * This keeps Testing-Library queries (and screen-reader focus)
-   * unambiguous.
-   */
-  if (stepIndex !== currentStep) return null;
+export default function StepLayout({ children }: Props): React.JSX.Element {
+  const { state, update } = useWizard();
+  const {
+    headerComponents,
+    headerPageId,
+    footerComponents,
+    footerPageId,
+    shopId,
+  } = state;
+  const themeStyle = useThemeLoader();
+  const setHeaderComponents = (v: PageComponent[]) => update("headerComponents", v);
+  const setHeaderPageId = (v: string | null) => update("headerPageId", v);
+  const setFooterComponents = (v: PageComponent[]) => update("footerComponents", v);
+  const setFooterPageId = (v: string | null) => update("footerPageId", v);
 
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,

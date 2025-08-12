@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/atoms/shadcn";
 import NavigationEditor from "@/components/cms/NavigationEditor";
+import { useWizard } from "../WizardContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 
@@ -12,15 +13,10 @@ interface NavItem {
   children?: NavItem[];
 }
 
-interface Props {
-  navItems: NavItem[];
-  setNavItems: (v: NavItem[]) => void;
-}
-
-export default function StepNavigation({
-  navItems,
-  setNavItems,
-}: Props): React.JSX.Element {
+export default function StepNavigation(): React.JSX.Element {
+  const { state, update } = useWizard();
+  const navItems = state.navItems;
+  const setNavItems = (items: NavItem[]) => update("navItems", items);
   const [, markComplete] = useStepCompletion("navigation");
   const router = useRouter();
   return (

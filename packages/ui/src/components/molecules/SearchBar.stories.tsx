@@ -9,6 +9,7 @@ const meta: Meta<typeof SearchBar> = {
   },
   argTypes: {
     onSelect: { action: "select" },
+    onSearch: { action: "search" },
   },
 };
 export default meta;

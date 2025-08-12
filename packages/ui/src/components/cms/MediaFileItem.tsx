@@ -2,21 +2,64 @@
 "use client";
 import type { MediaItem } from "@acme/types";
 import Image from "next/image";
+import { useState } from "react";
+import { Input } from "@ui/components/atoms/shadcn";
 
 interface Props {
   item: MediaItem;
+  shop: string;
   onDelete: (url: string) => void;
+  onReplace: (oldUrl: string, item: MediaItem) => void;
 }
 
-export default function MediaFileItem({ item, onDelete }: Props) {
+export default function MediaFileItem({ item, shop, onDelete, onReplace }: Props) {
+  const [editing, setEditing] = useState(false);
+  const [text, setText] = useState(item.altText ?? "");
+  const [saving, setSaving] = useState(false);
+
+  async function handleSave() {
+    setSaving(true);
+    try {
+      const res = await fetch(item.url);
+      const blob = await res.blob();
+      const file = new File([blob], item.url.split("/").pop() || "file", {
+        type: blob.type,
+      });
+      const fd = new FormData();
+      fd.append("file", file);
+      if (text) fd.append("altText", text);
+      const uploadRes = await fetch(`/cms/api/media?shop=${shop}`, {
+        method: "POST",
+        body: fd,
+      });
+      const data = (await uploadRes.json()) as MediaItem;
+      if (!uploadRes.ok) throw new Error((data as any).error || uploadRes.statusText);
+      await onDelete(item.url);
+      onReplace(item.url, data);
+      setEditing(false);
+    } catch {
+      /* ignore errors for now */
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <div className="relative h-32 w-full overflow-hidden rounded-md border">
-      <button
-        onClick={() => onDelete(item.url)}
-        className="absolute top-1 right-1 rounded bg-fg/50 px-1.5 text-xs text-bg"
-      >
-        Delete
-      </button>
+      <div className="absolute top-1 right-1 flex gap-1">
+        <button
+          onClick={() => setEditing((e) => !e)}
+          className="rounded bg-fg/50 px-1.5 text-xs text-bg"
+        >
+          {editing ? "Cancel" : "Edit"}
+        </button>
+        <button
+          onClick={() => onDelete(item.url)}
+          className="rounded bg-fg/50 px-1.5 text-xs text-bg"
+        >
+          Delete
+        </button>
+      </div>
       {item.type === "image" ? (
         <Image
           src={item.url}
@@ -31,10 +74,27 @@ export default function MediaFileItem({ item, onDelete }: Props) {
           className="h-full w-full object-cover"
         />
       )}
-      {item.altText && item.type === "image" && (
-        <p className="absolute bottom-1 left-1 bg-fg/50 px-1 text-xs text-bg">
-          {item.altText}
-        </p>
+      {editing ? (
+        <div className="absolute bottom-1 left-1 right-1 flex gap-1 bg-fg/50 p-1 text-bg">
+          <Input
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="h-6 flex-1 rounded bg-bg text-xs"
+          />
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="rounded bg-primary px-1 text-xs text-primary-fg"
+          >
+            Save
+          </button>
+        </div>
+      ) : (
+        item.altText && item.type === "image" && (
+          <p className="absolute bottom-1 left-1 bg-fg/50 px-1 text-xs text-bg">
+            {item.altText}
+          </p>
+        )
       )}
     </div>
   );

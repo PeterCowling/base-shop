@@ -31,6 +31,8 @@ beforeEach(() => {
     ok: true,
     json: async () => ({ url: "/new.png", altText: "a", type: "image" }),
   } as any);
+  global.URL.createObjectURL = jest.fn(() => "blob:url");
+  global.URL.revokeObjectURL = jest.fn();
 });
 
 describe("MediaManager", () => {
@@ -74,7 +76,7 @@ describe("MediaManager", () => {
         shop="s"
         initialFiles={[
           { url: "/a.jpg", altText: "Cat", type: "image" } as any,
-          { url: "/b.jpg", altText: "Dog", type: "image" } as any,
+          { url: "/dog.jpg", altText: "Dog", type: "image" } as any,
         ]}
         onDelete={mockDelete}
       />

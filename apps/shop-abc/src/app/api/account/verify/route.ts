@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import crypto from "crypto";
-import { getUserById, verifyUser } from "../../../../userStore";
+import { getUserById } from "@acme/platform-core/users";
 import { validateCsrfToken } from "@auth";
 import { parseJsonBody } from "@shared-utils";
 
@@ -32,6 +32,5 @@ export async function POST(req: Request) {
   if (!user)
     return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-  await verifyUser(id);
   return NextResponse.json({ ok: true });
 }

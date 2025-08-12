@@ -45,6 +45,13 @@ export default function ThemeEditor({
     return groups;
   }, [theme, tokensByTheme]);
 
+  const changedOverrides = useMemo(() => {
+    const tokens = tokensByTheme[theme];
+    return Object.fromEntries(
+      Object.entries(overrides).filter(([k, v]) => tokens[k] !== v)
+    );
+  }, [overrides, tokensByTheme, theme]);
+
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
     setTheme(next);
@@ -78,7 +85,7 @@ export default function ThemeEditor({
     e.preventDefault();
     setSaving(true);
     const fd = new FormData(e.currentTarget);
-    fd.set("themeOverrides", JSON.stringify(overrides));
+    fd.set("themeOverrides", JSON.stringify(changedOverrides));
     const result = await updateShop(shop, fd);
     if (result.errors) {
       setErrors(result.errors);
@@ -94,7 +101,7 @@ export default function ThemeEditor({
       <input
         type="hidden"
         name="themeOverrides"
-        value={JSON.stringify(overrides)}
+        value={JSON.stringify(changedOverrides)}
       />
       <label className="flex flex-col gap-1">
         <span>Theme</span>

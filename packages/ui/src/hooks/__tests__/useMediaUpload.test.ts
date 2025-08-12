@@ -1,24 +1,23 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 
-jest.mock("@cms/actions/media.server", () => ({ uploadMedia: jest.fn() }));
 jest.mock("../useImageOrientationValidation.ts", () => ({
   useImageOrientationValidation: jest.fn(),
 }));
 
-const { uploadMedia } = require("@cms/actions/media.server");
 const {
   useImageOrientationValidation,
 } = require("../useImageOrientationValidation.ts");
-const { useMediaUpload } = require("../useMediaUpload.ts");
-
-const mockUpload = uploadMedia as jest.MockedFunction<typeof uploadMedia>;
+const { useMediaUpload } = require("../useMediaUpload.tsx");
 const mockOrientation = useImageOrientationValidation as jest.MockedFunction<
   typeof useImageOrientationValidation
 >;
 
 beforeEach(() => {
   mockOrientation.mockReturnValue({ actual: "landscape", isValid: true });
-  mockUpload.mockResolvedValue({ url: "/img.png", altText: "" } as any);
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: async () => ({ url: "/img.png", altText: "" }),
+  } as any);
 });
 
 it("updates progress during upload", async () => {
@@ -34,8 +33,8 @@ it("updates progress during upload", async () => {
   await waitFor(() => expect(result.current.pendingFile).not.toBeNull());
 
   let resolveUpload: (v: any) => void = () => {};
-  mockUpload.mockImplementationOnce(
-    () => new Promise((r) => (resolveUpload = r))
+  (global.fetch as jest.Mock).mockImplementationOnce(
+    () => new Promise((r) => (resolveUpload = r as any))
   );
 
   act(() => {
@@ -55,7 +54,7 @@ it("updates progress during upload", async () => {
 });
 
 it("sets error when upload fails", async () => {
-  mockUpload.mockRejectedValueOnce(new Error("fail"));
+  (global.fetch as jest.Mock).mockRejectedValueOnce(new Error("fail"));
   const file = new File(["x"], "x.png", { type: "image/png" });
   const { result } = renderHook(() =>
     useMediaUpload({ shop: "s", requiredOrientation: "landscape" })

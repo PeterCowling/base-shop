@@ -4,7 +4,7 @@
 import { Input } from "@ui/components/atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
-import { memo, ReactElement, useCallback, useState } from "react";
+import { memo, ReactElement, useCallback, useMemo, useState } from "react";
 import MediaFileList from "./MediaFileList";
 
 /* -------------------------------------------------------------------------- */
@@ -32,6 +32,7 @@ function MediaManagerBase({
   onDelete,
 }: Props): ReactElement {
   const [files, setFiles] = useState<MediaItem[]>(initialFiles);
+  const [query, setQuery] = useState("");
   const [dragActive, setDragActive] = useState(false);
   const feedbackId = "media-manager-feedback";
 
@@ -41,11 +42,29 @@ function MediaManagerBase({
   const handleDelete = useCallback(
     async (src: string) => {
       /* eslint-disable no-alert -- simple confirmation is fine */
-      if (!confirm("Delete this image?")) return;
+      if (!confirm("Delete this media?")) return;
       await onDelete(shop, src);
       setFiles((prev) => prev.filter((f) => f.url !== src));
     },
     [onDelete, shop]
+  );
+
+  /* ---------------------------------------------------------------------- */
+  /*  Alt text update                                                       */
+  /* ---------------------------------------------------------------------- */
+  const handleAltTextUpdate = useCallback(
+    async (src: string, alt: string) => {
+      const fd = new FormData();
+      if (alt) fd.append("altText", alt);
+      await fetch(
+        `/cms/api/media?shop=${encodeURIComponent(shop)}&src=${encodeURIComponent(src)}`,
+        { method: "POST", body: fd }
+      );
+      setFiles((prev) =>
+        prev.map((f) => (f.url === src ? { ...f, altText: alt } : f))
+      );
+    },
+    [shop]
   );
 
   /* ---------------------------------------------------------------------- */
@@ -71,6 +90,19 @@ function MediaManagerBase({
     onUploaded: (item) => setFiles((prev) => [item, ...prev]),
   });
 
+  const filteredFiles = useMemo(() => {
+    if (!query) return files;
+    const q = query.toLowerCase();
+    return files.filter((f) => {
+      const filename = f.url.split("/").pop()?.toLowerCase() ?? "";
+      const tags: string[] = (f as any).tags ?? [];
+      return (
+        filename.includes(q) ||
+        tags.some((t) => t.toLowerCase().includes(q))
+      );
+    });
+  }, [files, query]);
+
   /* ---------------------------------------------------------------------- */
   /*  Render                                                                */
   /* ---------------------------------------------------------------------- */
@@ -80,7 +112,7 @@ function MediaManagerBase({
       <div
         tabIndex={0}
         role="button"
-        aria-label="Drop image here or press Enter to browse"
+        aria-label="Drop image or video here or press Enter to browse"
         aria-describedby={feedbackId}
         onDrop={(e) => {
           onDrop(e);
@@ -103,12 +135,12 @@ function MediaManagerBase({
         <Input
           ref={inputRef}
           type="file"
-          accept="image/*"
+          accept="image/*,video/*"
           multiple
           className="hidden"
           onChange={onFileChange}
         />
-        Drop image here or click to upload
+        Drop image or video here or click to upload
       </div>
 
       {/* Validation / progress feedback */}
@@ -119,18 +151,20 @@ function MediaManagerBase({
             Uploaded {progress.done}/{progress.total}
           </p>
         )}
-        {pendingFile && isValid !== null && (
+        {pendingFile && (
           <div className="space-y-2">
-            <p
-              className={
-                isValid ? "text-sm text-success" : "text-sm text-danger"
-              }
-            >
-              {isValid
-                ? `Image orientation is ${actual}; requirement satisfied.`
-                : `Selected image is ${actual}; please upload a ${REQUIRED_ORIENTATION} image.`}
-            </p>
-            {isValid && (
+            {!pendingFile.type.startsWith("video/") && isValid !== null && (
+              <p
+                className={
+                  isValid ? "text-sm text-success" : "text-sm text-danger"
+                }
+              >
+                {isValid
+                  ? `Image orientation is ${actual}; requirement satisfied.`
+                  : `Selected image is ${actual}; please upload a ${REQUIRED_ORIENTATION} image.`}
+              </p>
+            )}
+            {(pendingFile.type.startsWith("video/") || isValid) && (
               <div className="flex gap-2">
                 <Input
                   type="text"
@@ -153,7 +187,19 @@ function MediaManagerBase({
 
       {/* File list */}
       {files.length > 0 && (
-        <MediaFileList files={files} onDelete={handleDelete} />
+        <div className="space-y-2">
+          <Input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Filter by filename or tag"
+          />
+          <MediaFileList
+            files={filteredFiles}
+            onDelete={handleDelete}
+            onUpdate={handleAltTextUpdate}
+          />
+        </div>
       )}
     </div>
   );

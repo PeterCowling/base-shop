@@ -11,8 +11,9 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
     const sanitized = DOMPurify.sanitize(value);
     return <div dangerouslySetInnerHTML={{ __html: sanitized }} />;
   }
-  const Comp = blockRegistry[component.type];
-  if (!Comp) return null;
+  const entry = blockRegistry[component.type];
+  if (!entry) return null;
+  const Comp = entry.component;
   const { id, type, ...props } = component as any;
   return <Comp {...props} locale={locale} />;
 }

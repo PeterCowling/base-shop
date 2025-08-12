@@ -3,13 +3,19 @@ import ContactForm from "./ContactForm";
 import ContactFormWithMap from "./ContactFormWithMap";
 import Gallery from "./Gallery";
 import HeroBanner from "./HeroBanner";
-import ProductCarousel from "./ProductCarousel";
-import ProductGrid from "./ProductGrid.client";
+import ProductCarousel, {
+  getRuntimeProps as getProductCarouselRuntimeProps,
+} from "./ProductCarousel";
+import ProductGrid, {
+  getRuntimeProps as getProductGridRuntimeProps,
+} from "./ProductGrid.client";
 import ReviewsCarousel from "./ReviewsCarousel";
 import TestimonialSlider from "./TestimonialSlider";
 import Testimonials from "./Testimonials";
 import ValueProps from "./ValueProps";
-import RecommendationCarousel from "./RecommendationCarousel";
+import RecommendationCarousel, {
+  getRuntimeProps as getRecommendationCarouselRuntimeProps,
+} from "./RecommendationCarousel";
 import AnnouncementBar from "./AnnouncementBarBlock";
 import MapBlock from "./MapBlock";
 import VideoBlock from "./VideoBlock";
@@ -25,31 +31,40 @@ import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
 
 export const organismRegistry = {
-  AnnouncementBar,
-  HeroBanner,
-  ValueProps,
-  ReviewsCarousel,
-  ProductGrid,
-  ProductCarousel,
-  RecommendationCarousel,
-  ImageSlider,
-  CollectionList,
-  Gallery,
-  ContactForm,
-  ContactFormWithMap,
-  BlogListing,
-  Testimonials,
-  TestimonialSlider,
-  MapBlock,
-  VideoBlock,
-  FAQBlock,
-  CountdownTimer,
-  SocialLinks,
-  SocialFeed,
-  NewsletterSignup,
-  SearchBar,
-  PricingTable,
-  Tabs,
+  AnnouncementBar: { component: AnnouncementBar },
+  HeroBanner: { component: HeroBanner },
+  ValueProps: { component: ValueProps },
+  ReviewsCarousel: { component: ReviewsCarousel },
+  ProductGrid: {
+    component: ProductGrid,
+    getRuntimeProps: getProductGridRuntimeProps,
+  },
+  ProductCarousel: {
+    component: ProductCarousel,
+    getRuntimeProps: getProductCarouselRuntimeProps,
+  },
+  RecommendationCarousel: {
+    component: RecommendationCarousel,
+    getRuntimeProps: getRecommendationCarouselRuntimeProps,
+  },
+  ImageSlider: { component: ImageSlider },
+  CollectionList: { component: CollectionList },
+  Gallery: { component: Gallery },
+  ContactForm: { component: ContactForm },
+  ContactFormWithMap: { component: ContactFormWithMap },
+  BlogListing: { component: BlogListing },
+  Testimonials: { component: Testimonials },
+  TestimonialSlider: { component: TestimonialSlider },
+  MapBlock: { component: MapBlock },
+  VideoBlock: { component: VideoBlock },
+  FAQBlock: { component: FAQBlock },
+  CountdownTimer: { component: CountdownTimer },
+  SocialLinks: { component: SocialLinks },
+  SocialFeed: { component: SocialFeed },
+  NewsletterSignup: { component: NewsletterSignup },
+  SearchBar: { component: SearchBar },
+  PricingTable: { component: PricingTable },
+  Tabs: { component: Tabs },
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

@@ -1,6 +1,7 @@
 "use client";
 
 import { ProductGrid as BaseGrid } from "@platform-core/src/components/shop/ProductGrid";
+import { PRODUCTS } from "@platform-core/src/products";
 import type { SKU } from "@acme/types";
 import { useEffect, useState } from "react";
 import { fetchCollection } from "./products/fetchCollection";
@@ -58,4 +59,8 @@ export default function ProductGrid({
       className={className}
     />
   );
+}
+
+export function getRuntimeProps() {
+  return { skus: PRODUCTS as SKU[] };
 }

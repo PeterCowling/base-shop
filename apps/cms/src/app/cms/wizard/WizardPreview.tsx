@@ -128,12 +128,14 @@ export default function WizardPreview({
        We cast through `unknown` first to silence TS2352, because
        individual block components have stricter prop requirements
        than the generic Record<string, unknown> we use here. */
-    const Comp = (
+    const entry = (
       blockRegistry as unknown as Record<
         string,
-        React.ComponentType<Record<string, unknown>>
+        { component: React.ComponentType<Record<string, unknown>> }
       >
     )[component.type];
+
+    const Comp = entry?.component;
 
     if (!Comp) return null;
 

@@ -1,4 +1,4 @@
-import { cn } from "../../utils/style";
+import { cn } from "../../../utils/style";
 import React from "react";
 
 export interface SocialLinksProps extends React.HTMLAttributes<HTMLDivElement> {

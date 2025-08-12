@@ -79,31 +79,36 @@ describe("DynamicRenderer", () => {
     expect(screen.getByText("deep")).toBeInTheDocument();
   });
 
-  it("passes runtime props to components like ProductGrid", () => {
-    const spy = jest
-      .spyOn(blockRegistry, "ProductGrid")
+  it("calls getRuntimeProps for components that define it", () => {
+    const renderSpy = jest
+      .spyOn(blockRegistry.ProductGrid, "component")
       .mockImplementation(({ runtime }: any) => (
         <div data-testid="grid">{runtime}</div>
       ));
+    const runtimeSpy = jest
+      .spyOn(blockRegistry.ProductGrid, "getRuntimeProps")
+      .mockReturnValue({ runtime: "value" });
 
     const components: PageComponent[] = [
-      { id: "1", type: "ProductGrid", runtime: "value" } as any,
+      { id: "1", type: "ProductGrid" } as any,
     ];
 
     render(<DynamicRenderer components={components} locale="en" />);
 
-    expect(screen.getByText("value")).toBeInTheDocument();
-    expect(spy).toHaveBeenCalled();
-    expect(spy.mock.calls[0][0]).toEqual(
-      expect.objectContaining({ runtime: "value" })
+    expect(runtimeSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ id: "1", type: "ProductGrid" }),
+      "en"
     );
+    expect(screen.getByText("value")).toBeInTheDocument();
+    expect(renderSpy).toHaveBeenCalled();
 
-    spy.mockRestore();
+    renderSpy.mockRestore();
+    runtimeSpy.mockRestore();
   });
 
   it("injects runtimeData into matching block types", () => {
     const spy = jest
-      .spyOn(blockRegistry, "HeroBanner")
+      .spyOn(blockRegistry.HeroBanner, "component")
       .mockImplementation(({ foo }: any) => <div>{foo}</div>);
 
     const components: PageComponent[] = [
@@ -160,9 +165,13 @@ describe("DynamicRenderer block registry coverage", () => {
   const stubRegistry = Object.fromEntries(
     blockTypes.map((key) => [
       key,
-      jest.fn(({ children }: any) => <div data-testid={key}>{children}</div>),
+      {
+        component: jest.fn(({ children }: any) => (
+          <div data-testid={key}>{children}</div>
+        )),
+      },
     ])
-  ) as Record<string, jest.Mock>;
+  ) as Record<string, { component: jest.Mock }>;
 
   let StubDynamicRenderer: typeof DynamicRenderer;
   beforeAll(() => {
@@ -183,8 +192,8 @@ describe("DynamicRenderer block registry coverage", () => {
       />
     );
     expect(screen.getByTestId(type)).toBeInTheDocument();
-    expect(stubRegistry[type]).toHaveBeenCalled();
-    expect(stubRegistry[type].mock.calls[0][0]).toEqual(
+    expect(stubRegistry[type].component).toHaveBeenCalled();
+    expect(stubRegistry[type].component.mock.calls[0][0]).toEqual(
       expect.objectContaining({ locale: "en" })
     );
   });

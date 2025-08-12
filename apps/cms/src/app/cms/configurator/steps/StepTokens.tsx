@@ -6,23 +6,21 @@ import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { baseTokens, type TokenMap } from "../../wizard/tokenUtils";
+import { type TokenMap } from "../../wizard/tokenUtils";
 import { useConfigurator } from "../ConfiguratorContext";
+import { useThemeLoader } from "../hooks/useThemeLoader";
 
-interface Props {
-  themeStyle: React.CSSProperties;
-}
-
-export default function StepTokens({ themeStyle }: Props): React.JSX.Element {
+export default function StepTokens(): React.JSX.Element {
+  const themeStyle = useThemeLoader();
   const [, markComplete] = useStepCompletion("tokens");
   const router = useRouter();
-  const { state, update } = useConfigurator();
-  const [tokens, setTokens] = useState<TokenMap>(state.themeVars);
+  const { themeDefaults, themeOverrides, setThemeOverrides } = useConfigurator();
+  const [tokens, setTokens] = useState<TokenMap>(themeOverrides);
   const [selected, setSelected] = useState<string | null>(null);
 
   const handleChange = (next: TokenMap) => {
     setTokens(next);
-    update("themeVars", next);
+    setThemeOverrides(next);
   };
 
   const previewStyle = { ...themeStyle, ...tokens } as React.CSSProperties;
@@ -38,7 +36,7 @@ export default function StepTokens({ themeStyle }: Props): React.JSX.Element {
       {selected && (
         <StyleEditor
           tokens={tokens}
-          baseTokens={baseTokens}
+          baseTokens={themeDefaults}
           onChange={handleChange}
           focusToken={selected}
         />

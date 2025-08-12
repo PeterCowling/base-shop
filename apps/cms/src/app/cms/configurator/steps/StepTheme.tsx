@@ -13,6 +13,8 @@ import { useState } from "react";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+import { useConfigurator } from "../ConfiguratorContext";
+import { useThemeLoader } from "../hooks/useThemeLoader";
 
 const colorPalettes: Array<{
   name: string;
@@ -55,22 +57,13 @@ const colorPalettes: Array<{
 
 interface Props {
   themes: string[];
-  theme: string;
-  setTheme: (v: string) => void;
-  themeVars: Record<string, string>;
-  setThemeVars: (v: Record<string, string>) => void;
-  themeStyle: React.CSSProperties;
-
 }
 
-export default function StepTheme({
-  themes,
-  theme,
-  setTheme,
-  themeVars,
-  setThemeVars,
-  themeStyle,
-}: Props): React.JSX.Element {
+export default function StepTheme({ themes }: Props): React.JSX.Element {
+  const themeStyle = useThemeLoader();
+  const { state, update, themeDefaults, themeOverrides, setThemeOverrides } =
+    useConfigurator();
+  const { theme } = state;
   const [palette, setPalette] = useState(colorPalettes[0].name);
   const [, markComplete] = useStepCompletion("theme");
   const router = useRouter();
@@ -79,9 +72,9 @@ export default function StepTheme({
     setPalette(name);
     const cp = colorPalettes.find((c) => c.name === name);
     if (!cp) return;
-    const next = { ...themeVars };
+    const next = { ...themeOverrides };
     Object.entries(cp.colors).forEach(([k, v]) => (next[k] = v));
-    setThemeVars(next);
+    setThemeOverrides(next);
   };
 
   return (
@@ -89,7 +82,7 @@ export default function StepTheme({
       <h2 className="text-xl font-semibold">Select Theme</h2>
 
       {/* single accessible combobox (theme) */}
-      <Select value={theme} onValueChange={setTheme}>
+      <Select value={theme} onValueChange={(v) => update("theme", v)}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select theme" />
         </SelectTrigger>
@@ -121,9 +114,9 @@ export default function StepTheme({
       {/* Style editor is purely presentational at this step */}
       <div aria-hidden="true">
         <StyleEditor
-          tokens={themeVars}
-          baseTokens={themeVars}
-          onChange={setThemeVars}
+          tokens={themeOverrides}
+          baseTokens={themeDefaults}
+          onChange={setThemeOverrides}
         />
       </div>
 

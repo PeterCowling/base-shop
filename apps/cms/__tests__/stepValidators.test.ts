@@ -14,7 +14,7 @@ describe("step validators", () => {
   });
 
   it("tokens require theme variables", () => {
-    const state = { ...base, themeVars: {} };
+    const state = { ...base, themeDefaults: {} };
     expect(validators.tokens(state)).toBe(false);
   });
 

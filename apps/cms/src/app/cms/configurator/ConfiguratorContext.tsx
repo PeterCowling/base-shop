@@ -14,6 +14,9 @@ interface ConfiguratorContextValue {
   setState: React.Dispatch<React.SetStateAction<WizardState>>;
   update: <K extends keyof WizardState>(key: K, value: WizardState[K]) => void;
   markStepComplete: (stepId: string, status: StepStatus) => void;
+  themeDefaults: Record<string, string>;
+  themeOverrides: Record<string, string>;
+  setThemeOverrides: (v: Record<string, string>) => void;
 }
 
 const ConfiguratorContext = createContext<ConfiguratorContextValue | null>(null);
@@ -38,9 +41,21 @@ export function ConfiguratorProvider({
     setState((prev) => ({ ...prev, [key]: value }));
   };
 
+  const setThemeOverrides = (v: Record<string, string>) => {
+    setState((prev) => ({ ...prev, themeOverrides: v }));
+  };
+
   return (
     <ConfiguratorContext.Provider
-      value={{ state, setState, update, markStepComplete }}
+      value={{
+        state,
+        setState,
+        update,
+        markStepComplete,
+        themeDefaults: state.themeDefaults,
+        themeOverrides: state.themeOverrides,
+        setThemeOverrides,
+      }}
     >
       {children}
     </ConfiguratorContext.Provider>

@@ -6,7 +6,7 @@ type Validator = (state: WizardState) => boolean;
 export const validators: Record<string, Validator> = {
   "shop-details": (s) => Boolean(s.shopId && s.storeName),
   theme: (s) => Boolean(s.theme),
-  tokens: (s) => Object.keys(s.themeVars ?? {}).length > 0,
+  tokens: (s) => Object.keys(s.themeDefaults ?? {}).length > 0,
   options: (s) =>
     s.analyticsProvider !== "ga" || Boolean(s.analyticsId),
   navigation: (s) => s.navItems.length > 0,

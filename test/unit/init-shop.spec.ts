@@ -19,18 +19,23 @@ describe('init-shop wizard', () => {
       'n',
     ];
     const createShop = jest.fn();
-    const envParse = jest.fn((env: Record<string, string>) => {
-      if (!env.STRIPE_SECRET_KEY || !env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
-        throw new Error('invalid env');
-      }
-      return env;
-    });
-    const validateShopEnv = jest.fn(() =>
-      envParse({
-        STRIPE_SECRET_KEY: '',
-        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: '',
-      })
-    );
+      const envParse = jest.fn((env: Record<string, string>) => {
+        if (
+          !env.STRIPE_SECRET_KEY ||
+          !env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ||
+          !env.STRIPE_WEBHOOK_SECRET
+        ) {
+          throw new Error('invalid env');
+        }
+        return env;
+      });
+      const validateShopEnv = jest.fn(() =>
+        envParse({
+          STRIPE_SECRET_KEY: '',
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: '',
+          STRIPE_WEBHOOK_SECRET: '',
+        })
+      );
 
     const sandbox: any = {
       exports: {},
@@ -41,8 +46,8 @@ describe('init-shop wizard', () => {
         if (p === 'node:fs') {
           return {
             existsSync: () => true,
-            readFileSync: () =>
-              'STRIPE_SECRET_KEY=\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\n',
+              readFileSync: () =>
+                'STRIPE_SECRET_KEY=\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\nSTRIPE_WEBHOOK_SECRET=\n',
           };
         }
         if (p === 'node:path') return require('node:path');
@@ -123,10 +128,11 @@ describe('init-shop wizard', () => {
       { deploy: true }
     );
 
-    expect(envParse).toHaveBeenCalledWith({
-      STRIPE_SECRET_KEY: '',
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: '',
-    });
+      expect(envParse).toHaveBeenCalledWith({
+        STRIPE_SECRET_KEY: '',
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: '',
+        STRIPE_WEBHOOK_SECRET: '',
+      });
 
     expect(sandbox.console.error).toHaveBeenCalled();
     expect(sandbox.console.error.mock.calls[0][0]).toContain(

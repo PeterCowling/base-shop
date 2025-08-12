@@ -9,25 +9,28 @@ describe("envSchema", () => {
   });
 
   it("parses when required variables are present", async () => {
-    process.env = {
-      ...OLD_ENV,
-      STRIPE_SECRET_KEY: "sk",
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
-      CART_COOKIE_SECRET: "secret",
-    } as NodeJS.ProcessEnv;
+      process.env = {
+        ...OLD_ENV,
+        STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+        CART_COOKIE_SECRET: "secret",
+        STRIPE_WEBHOOK_SECRET: "whsec",
+      } as NodeJS.ProcessEnv;
 
     const { envSchema } = await import("../src/env");
-    const parsed = envSchema.parse({
-      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
-      CART_COOKIE_SECRET: process.env.CART_COOKIE_SECRET!,
-    });
-    expect(parsed).toEqual({
-      STRIPE_SECRET_KEY: "sk",
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
-      CART_COOKIE_SECRET: "secret",
-    });
+      const parsed = envSchema.parse({
+        STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
+          process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+        CART_COOKIE_SECRET: process.env.CART_COOKIE_SECRET!,
+        STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET!,
+      });
+      expect(parsed).toEqual({
+        STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+        CART_COOKIE_SECRET: "secret",
+        STRIPE_WEBHOOK_SECRET: "whsec",
+      });
   });
 
   it("throws when variables are missing", async () => {

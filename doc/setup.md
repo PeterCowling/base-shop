@@ -75,7 +75,7 @@ Lines that have no value after the equals sign (e.g. `MY_VAR=`) are treated as p
 
 The wizard scaffolds placeholders for common variables:
 
-- `STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` – Stripe API keys
+- `STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` / `STRIPE_WEBHOOK_SECRET` – Stripe API keys and webhook signature secret
 - `CART_COOKIE_SECRET` – secret for signing cart cookies (required)
 - `CART_TTL` – cart expiration in seconds (default 30 days)
 - `NEXTAUTH_SECRET` – session encryption secret used by NextAuth

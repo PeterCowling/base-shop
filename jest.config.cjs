@@ -82,9 +82,10 @@ module.exports = {
     // specific rules that must override tsconfig-derived ones
     "^@platform-core/src/(.*)$": "<rootDir>/packages/platform-core/src/$1",
     "^@ui/src/(.*)$": "<rootDir>/packages/ui/src/$1",
-    "^@platform-core/repositories/shopSettings$":
-      "<rootDir>/packages/platform-core/src/repositories/settings.server.ts",
-    "^@config/src/(.*)$": "<rootDir>/packages/config/src/$1",
+      "^@platform-core/repositories/shopSettings$":
+        "<rootDir>/packages/platform-core/src/repositories/settings.server.ts",
+      "^@config/src/env$": "<rootDir>/packages/config/src/env/index.ts",
+      "^@config/src/(.*)$": "<rootDir>/packages/config/src/$1",
     "^@acme/config$": "<rootDir>/packages/config/src/env/index.ts",
     "^@acme/config/(.*)$": "<rootDir>/packages/config/src/$1",
 

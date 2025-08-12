@@ -83,14 +83,15 @@ export function writeFiles(
   let envContent = `NEXT_PUBLIC_SHOP_ID=${id}\n`;
   const envVars = [...options.payment, ...options.shipping, options.tax];
   if (envVars.length === 0) envVars.push("stripe");
-  for (const provider of envVars) {
-    if (provider === "stripe") {
-      envContent += `STRIPE_SECRET_KEY=\n`;
-      envContent += `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\n`;
-    } else {
-      envContent += `${provider.toUpperCase()}_KEY=\n`;
+    for (const provider of envVars) {
+      if (provider === "stripe") {
+        envContent += `STRIPE_SECRET_KEY=\n`;
+        envContent += `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\n`;
+        envContent += `STRIPE_WEBHOOK_SECRET=\n`;
+      } else {
+        envContent += `${provider.toUpperCase()}_KEY=\n`;
+      }
     }
-  }
   envContent += `CART_COOKIE_SECRET=${genSecret()}\n`;
   envContent += `CART_TTL=\n`;
   envContent += `NEXTAUTH_SECRET=${genSecret()}\n`;

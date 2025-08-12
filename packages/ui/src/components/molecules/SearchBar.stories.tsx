@@ -6,6 +6,7 @@ const meta: Meta<typeof SearchBar> = {
   args: {
     suggestions: ["Apple", "Banana", "Cherry", "Date"],
     placeholder: "Search…",
+    label: "Search",
   },
   argTypes: {
     onSelect: { action: "select" },

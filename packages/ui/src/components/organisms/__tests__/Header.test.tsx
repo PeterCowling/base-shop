@@ -10,7 +10,7 @@ describe("Header", () => {
 
     expect(screen.getByRole("link", { name: "Home" })).toBeInTheDocument();
 
-    const input = screen.getByPlaceholderText("Search…");
+    const input = screen.getByRole("searchbox", { name: "Search products" });
     await userEvent.type(input, "app");
     expect(screen.getByText("apple")).toBeInTheDocument();
 

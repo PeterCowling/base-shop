@@ -75,7 +75,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
 
         <div className="flex flex-1 justify-end gap-4">
           <div className="max-w-xs flex-1">
-            <SearchBar suggestions={searchSuggestions} />
+            <SearchBar suggestions={searchSuggestions} label="Search products" />
           </div>
           <LanguageSwitcher current={locale} />
         </div>

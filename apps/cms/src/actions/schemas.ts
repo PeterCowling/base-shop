@@ -3,12 +3,20 @@
 import { localeSchema } from "@acme/types";
 import { z } from "zod";
 
+const mediaItemSchema = z.object({
+  url: z.string(),
+  title: z.string().optional(),
+  altText: z.string().optional(),
+  type: z.enum(["image", "video"]),
+});
+
 export const productSchema = z
   .object({
     id: z.string(),
     price: z.coerce.number().min(0, "Invalid price"),
     title: z.record(localeSchema, z.string().min(1)),
     description: z.record(localeSchema, z.string().min(1)),
+    images: z.array(mediaItemSchema).default([]),
   })
   .strict();
 

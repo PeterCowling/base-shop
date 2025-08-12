@@ -1,6 +1,6 @@
 // packages/ui/hooks/useProductEditorFormState.tsx
 import type { Locale, ProductPublication } from "@platform-core/src/products";
-import { useImageUpload } from "@ui/hooks/useImageUpload";
+import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import { usePublishLocations } from "@ui/hooks/usePublishLocations";
 import { parseMultilingualInput } from "@i18n/parseMultilingualInput";
 import {
@@ -30,6 +30,8 @@ export interface UseProductEditorFormReturn {
   ) => void;
   handleSubmit: (e: FormEvent) => void;
   uploader: ReactElement;
+  removeImage: (index: number) => void;
+  moveImage: (from: number, to: number) => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -58,7 +60,12 @@ export function useProductEditorFormState(
     locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
     "landscape";
 
-  const { file: imageFile, uploader } = useImageUpload(requiredOrientation);
+  const { uploader } = useMediaUpload({
+    shop: init.shop,
+    requiredOrientation,
+    onUploaded: (item) =>
+      setProduct((prev) => ({ ...prev, images: [...prev.images, item] })),
+  });
 
   /* ---------- input change handler --------------------------------- */
   const handleChange = useCallback(
@@ -123,7 +130,7 @@ export function useProductEditorFormState(
     });
 
     fd.append("price", String(product.price));
-    if (imageFile) fd.append("image", imageFile);
+    fd.append("images", JSON.stringify(product.images));
 
     fd.append("publish", publishTargets.join(","));
 
@@ -131,7 +138,7 @@ export function useProductEditorFormState(
       fd.append(`variant_${k}`, vals.join(","));
     });
     return fd;
-  }, [product, imageFile, publishTargets, locales]);
+  }, [product, publishTargets, locales]);
 
   /* ---------- submit handler --------------------------------------- */
   const handleSubmit = useCallback(
@@ -154,6 +161,23 @@ export function useProductEditorFormState(
     [onSave, formData, product.variants]
   );
 
+  /* ---------- image helpers --------------------------------------- */
+  const removeImage = useCallback((index: number) => {
+    setProduct((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  }, []);
+
+  const moveImage = useCallback((from: number, to: number) => {
+    setProduct((prev) => {
+      const imgs = [...prev.images];
+      const [moved] = imgs.splice(from, 1);
+      imgs.splice(to, 0, moved);
+      return { ...prev, images: imgs };
+    });
+  }, []);
+
   /* ---------- public API ------------------------------------------- */
   return {
     product,
@@ -164,5 +188,7 @@ export function useProductEditorFormState(
     handleChange,
     handleSubmit,
     uploader,
+    removeImage,
+    moveImage,
   };
 }

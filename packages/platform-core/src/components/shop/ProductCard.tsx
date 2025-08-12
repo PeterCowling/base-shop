@@ -14,13 +14,15 @@ function ProductCardInner({ sku }: { sku: SKU }) {
         href={`../product/${sku.slug}`}
         className="relative block aspect-square"
       >
-        <Image
-          src={sku.image}
-          alt={sku.title}
-          fill
-          sizes="(min-width: 640px) 25vw, 50vw"
-          className="rounded-md object-cover"
-        />
+        {sku.images[0] && (
+          <Image
+            src={sku.images[0].url}
+            alt={sku.title}
+            fill
+            sizes="(min-width: 640px) 25vw, 50vw"
+            className="rounded-md object-cover"
+          />
+        )}
       </Link>
       <h3 className="font-medium">{sku.title}</h3>
       <div className="font-semibold text-gray-900">

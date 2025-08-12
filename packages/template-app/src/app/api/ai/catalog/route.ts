@@ -64,9 +64,7 @@ export async function GET(req: NextRequest) {
     if (fields.includes("images")) {
       item.images = p.images?.length
         ? p.images
-        : (sku as any).image
-          ? [(sku as any).image]
-          : [];
+        : (sku as any).images ?? [];
     }
     return item;
   });

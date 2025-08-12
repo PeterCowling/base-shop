@@ -1,5 +1,6 @@
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import * as React from "react";
+import type { MediaItem } from "@acme/types";
 import { boxProps } from "../../utils/style";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
@@ -8,7 +9,7 @@ import { Price } from "../atoms/Price";
 export interface Product {
   id: string;
   title: string;
-  image: string | StaticImageData;
+  images: MediaItem[];
   price: number;
 }
 
@@ -57,10 +58,10 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         )}
         {...props}
       >
-        {showImage && (
+        {showImage && product.images[0] && (
           <div className="relative aspect-square">
             <Image
-              src={product.image}
+              src={product.images[0].url}
               alt={product.title}
               fill
               sizes="(min-width: 640px) 25vw, 50vw"

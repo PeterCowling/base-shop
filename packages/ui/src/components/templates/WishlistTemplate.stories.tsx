@@ -5,14 +5,14 @@ const items: WishlistItem[] = [
   {
     id: "1",
     title: "Product One",
-    image: "https://placehold.co/64",
+    images: [{ url: "https://placehold.co/64", type: "image" }],
     price: 29.99,
     quantity: 1,
   },
   {
     id: "2",
     title: "Product Two",
-    image: "https://placehold.co/64",
+    images: [{ url: "https://placehold.co/64", type: "image" }],
     price: 49.99,
     quantity: 2,
   },

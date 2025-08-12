@@ -18,7 +18,7 @@ describe("CartProvider offline fallback", () => {
     deposit: 0,
     forSale: true,
     forRental: false,
-    image: "img",
+    images: [{ url: "img", type: "image" }],
     sizes: [],
     description: "desc",
   };

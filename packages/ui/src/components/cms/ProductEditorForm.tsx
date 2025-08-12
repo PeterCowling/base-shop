@@ -42,6 +42,8 @@ export default function ProductEditorForm({
     handleChange,
     handleSubmit,
     uploader,
+    removeImage,
+    moveImage,
   } = useProductEditorFormState(init, locales, onSave);
 
   /* ---------------- UI ---------------- */
@@ -91,6 +93,58 @@ export default function ProductEditorForm({
 
           {/* Image upload --------------------------------------------- */}
           {uploader}
+
+          {product.images.length > 0 && (
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+              {product.images.map((img, idx) => (
+                <div
+                  key={img.url}
+                  className="relative h-32 w-full overflow-hidden rounded-md border"
+                >
+                  {img.type === "image" ? (
+                    <img
+                      src={img.url}
+                      alt={img.altText || ""}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <video
+                      src={img.url}
+                      className="h-full w-full object-cover"
+                      controls
+                    />
+                  )}
+                  <div className="absolute inset-x-1 top-1 flex justify-between gap-1">
+                    {idx > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => moveImage(idx, idx - 1)}
+                        className="rounded bg-fg/50 px-1 text-xs text-bg"
+                      >
+                        ↑
+                      </button>
+                    )}
+                    {idx < product.images.length - 1 && (
+                      <button
+                        type="button"
+                        onClick={() => moveImage(idx, idx + 1)}
+                        className="rounded bg-fg/50 px-1 text-xs text-bg"
+                      >
+                        ↓
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => removeImage(idx)}
+                      className="ml-auto rounded bg-fg/50 px-1 text-xs text-bg"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Multilingual fields -------------------------------------- */}
           <MultilingualFields

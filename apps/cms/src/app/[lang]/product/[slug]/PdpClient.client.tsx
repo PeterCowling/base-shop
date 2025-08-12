@@ -14,7 +14,7 @@ export default function PdpClient({ product }: { product: SKU }) {
 
   return (
     <div className="mx-auto max-w-6xl p-6 lg:grid lg:grid-cols-2 lg:gap-10">
-      <ImageGallery src={product.image} alt={product.title} />
+      <ImageGallery items={product.images} />
 
       <section className="flex flex-col gap-6">
         <h1 className="text-3xl font-bold">{product.title}</h1>

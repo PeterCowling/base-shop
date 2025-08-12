@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { marketingEmailTemplates } from "@acme/ui";
 
 interface Campaign {
   id: string;
@@ -9,6 +10,7 @@ interface Campaign {
   sendAt: string;
   sentAt?: string;
   metrics: { sent: number; opened: number; clicked: number };
+  templateId?: string;
 }
 
 export default function EmailMarketingPage() {
@@ -18,6 +20,9 @@ export default function EmailMarketingPage() {
   const [sendAt, setSendAt] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const [templateId, setTemplateId] = useState(
+    marketingEmailTemplates[0]?.id || ""
+  );
   const [status, setStatus] = useState<string | null>(null);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
 
@@ -48,6 +53,7 @@ export default function EmailMarketingPage() {
           subject,
           body,
           segment,
+          templateId,
           sendAt: sendAt || undefined,
           recipients: recipients
             .split(/[,\s]+/)
@@ -102,6 +108,17 @@ export default function EmailMarketingPage() {
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
         />
+        <select
+          className="w-full border p-2"
+          value={templateId}
+          onChange={(e) => setTemplateId(e.target.value)}
+        >
+          {marketingEmailTemplates.map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.name}
+            </option>
+          ))}
+        </select>
         <textarea
           className="h-40 w-full border p-2"
           placeholder="HTML body"
@@ -155,6 +172,20 @@ export default function EmailMarketingPage() {
           </tbody>
         </table>
       )}
+      <div className="mt-4">
+        {marketingEmailTemplates
+          .find((t) => t.id === templateId)
+          ?.render({
+            headline: subject || "",
+            content: (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: body || "<p>Preview content</p>",
+                }}
+              />
+            ),
+          })}
+      </div>
     </div>
   );
 }

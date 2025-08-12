@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import * as React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { sendCampaignEmail } from "@acme/email";
 import { trackEvent } from "@platform-core/analytics";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
 import { env } from "@acme/config";
+import { marketingEmailTemplates } from "@acme/ui";
 
 interface Campaign {
   id: string;
@@ -16,6 +19,7 @@ interface Campaign {
   segment?: string | null;
   sendAt: string;
   sentAt?: string;
+  templateId?: string | null;
 }
 
 function campaignsPath(shop: string): string {
@@ -40,6 +44,7 @@ async function readCampaigns(shop: string): Promise<Campaign[]> {
       segment: c.segment ?? null,
       sendAt: c.sendAt ?? c.sentAt ?? new Date().toISOString(),
       sentAt: c.sentAt,
+      templateId: c.templateId ?? null,
     })) as Campaign[];
   } catch {
     return [];
@@ -75,7 +80,16 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  const { shop, recipients, to, subject, body, segment, sendAt } = (await req
+  const {
+    shop,
+    recipients,
+    to,
+    subject,
+    body,
+    segment,
+    sendAt,
+    templateId,
+  } = (await req
     .json()
     .catch(() => ({}))) as {
     shop?: string;
@@ -85,6 +99,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     body?: string;
     segment?: string;
     sendAt?: string;
+    templateId?: string;
   };
   const list = Array.isArray(recipients) ? recipients : to ? [to] : [];
   if (!shop || !subject || !body || list.length === 0) {
@@ -95,8 +110,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
     shop
   )}&campaign=${encodeURIComponent(id)}`;
+  let html = body;
+  if (templateId) {
+    const variant = marketingEmailTemplates.find((t) => t.id === templateId);
+    if (variant) {
+      html = renderToStaticMarkup(
+        variant.render({
+          headline: subject,
+          content: React.createElement("div", {
+            dangerouslySetInnerHTML: { __html: body },
+          }),
+        })
+      );
+    }
+  }
   const bodyWithPixel =
-    body +
+    html +
     `<img src="${pixelUrl}" alt="" style="display:none" width="1" height="1"/>`;
   const trackedBody = bodyWithPixel.replace(
     /href="([^"]+)"/g,
@@ -126,6 +155,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     body,
     segment: segment ?? null,
     sendAt: scheduled.toISOString(),
+    templateId: templateId ?? null,
     ...(sentAt ? { sentAt } : {}),
   });
   await writeCampaigns(shop, campaigns);

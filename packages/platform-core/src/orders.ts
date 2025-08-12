@@ -69,6 +69,30 @@ export async function markRefunded(
   }
 }
 
+export async function updateRisk(
+  shop: string,
+  sessionId: string,
+  riskLevel?: string,
+  riskScore?: number,
+  flaggedForReview?: boolean
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: {
+        ...(riskLevel ? { riskLevel } : {}),
+        ...(typeof riskScore === "number" ? { riskScore } : {}),
+        ...(typeof flaggedForReview === "boolean"
+          ? { flaggedForReview }
+          : {}),
+      },
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
+}
+
 export async function getOrdersForCustomer(
   shop: string,
   customerId: string

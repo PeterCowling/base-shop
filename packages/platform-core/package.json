@@ -11,7 +11,8 @@
     "./customerProfiles": "./src/customerProfiles/index.ts",
     "./plugins": "./src/plugins/index.ts",
     "./configurator": "./src/configurator.ts",
-    "./users": "./src/users.ts"
+    "./users": "./src/users.ts",
+    "./stripe-webhook": "./src/stripe-webhook.ts"
   },
   "dependencies": {
     "@acme/shared-utils": "workspace:*",

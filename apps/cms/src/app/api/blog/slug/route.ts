@@ -1,0 +1,41 @@
+import { NextRequest, NextResponse } from "next/server";
+import { env } from "@acme/config";
+import { getShopById } from "@platform-core/src/repositories/shop.server";
+import { getSanityConfig } from "@platform-core/src/shops";
+import { ensureAuthorized } from "@cms/actions/common/auth";
+
+const apiVersion = env.SANITY_API_VERSION || "2021-10-21";
+
+interface Config {
+  projectId: string;
+  dataset: string;
+  token?: string;
+  apiVersion: string;
+}
+
+function queryUrl(config: Config, query: string) {
+  return `https://${config.projectId}.api.sanity.io/v${config.apiVersion}/data/query/${config.dataset}?query=${encodeURIComponent(query)}`;
+}
+
+export async function GET(req: NextRequest) {
+  await ensureAuthorized();
+  const { searchParams } = new URL(req.url);
+  const slug = searchParams.get("slug");
+  const shopId = searchParams.get("shopId");
+  const excludeId = searchParams.get("exclude");
+  if (!slug || !shopId) {
+    return NextResponse.json({ error: "Missing slug or shopId" }, { status: 400 });
+  }
+  const shop = await getShopById(shopId);
+  const sanity = getSanityConfig(shop);
+  if (!sanity) {
+    return NextResponse.json({ error: "Missing Sanity config" }, { status: 400 });
+  }
+  const config: Config = { ...sanity, apiVersion };
+  const query = `*[_type=="post" && slug.current=="${slug}"${excludeId ? ` && _id!="${excludeId}"` : ""}][0]{_id}`;
+  const res = await fetch(queryUrl(config, query), {
+    headers: config.token ? { Authorization: `Bearer ${config.token}` } : undefined,
+  });
+  const json = await res.json();
+  return NextResponse.json({ exists: Boolean(json.result) });
+}

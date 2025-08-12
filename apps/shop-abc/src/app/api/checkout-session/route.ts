@@ -9,7 +9,7 @@ import {
 import { getCart } from "@platform-core/src/cartStore";
 import { calculateRentalDays } from "@acme/date-utils";
 import { stripe } from "@acme/stripe";
-import { getCustomerSession } from "@auth";
+import { getCustomerSession, hasPermission } from "@auth";
 import { priceForDays, convertCurrency } from "@platform-core/pricing";
 import { findCoupon } from "@platform-core/coupons";
 import { trackEvent } from "@platform-core/analytics";
@@ -112,6 +112,11 @@ const computeTotals = async (
 export const runtime = "edge";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  const customer = await getCustomerSession();
+  if (!customer || !hasPermission(customer.role, "checkout")) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   /* 1️⃣ Decode cart cookie -------------------------------------------------- */
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
   const cartId = decodeCartCookie(rawCookie);
@@ -186,7 +191,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   );
 
   /* 5️⃣ Create Checkout Session -------------------------------------------- */
-  const customer = await getCustomerSession();
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     line_items,

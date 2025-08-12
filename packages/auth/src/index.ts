@@ -1,8 +1,9 @@
 // packages/auth/src/index.ts
 
-export { canRead, canWrite, READ_ROLES, WRITE_ROLES } from "./rbac";
+export { canRead, canWrite, READ_ROLES, WRITE_ROLES, hasPermission } from "./rbac";
 export { extendRoles, isRole } from "./types/roles";
 export type { Role } from "./types";
+export type { Permission } from "./rbac";
 export {
   CUSTOMER_SESSION_COOKIE,
   CSRF_TOKEN_COOKIE,

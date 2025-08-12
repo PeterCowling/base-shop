@@ -19,6 +19,10 @@ export interface SearchResultsTemplateProps
   onPageChange?: (page: number) => void;
   /** Optional filters to render between the search bar and results */
   filters?: React.ReactNode;
+  /** Controlled query value */
+  query?: string;
+  /** Show loading indicator instead of results */
+  loading?: boolean;
 }
 
 export function SearchResultsTemplate({
@@ -31,6 +35,8 @@ export function SearchResultsTemplate({
   onQueryChange,
   onPageChange,
   filters,
+  query,
+  loading = false,
   className,
   ...props
 }: SearchResultsTemplateProps) {
@@ -38,12 +44,17 @@ export function SearchResultsTemplate({
     <div className={cn("space-y-6", className)} {...props}>
       <SearchBar
         suggestions={suggestions}
+        value={query}
+        onValueChange={onQueryChange}
         onSelect={onQueryChange}
         onSearch={onQueryChange}
+        loading={loading}
         placeholder="Search products…"
       />
       {filters}
-      {results.length > 0 ? (
+      {loading ? (
+        <p>Loading…</p>
+      ) : results.length > 0 ? (
         <ProductGrid products={results} minItems={minItems} maxItems={maxItems} />
       ) : (
         <p>No results found.</p>

@@ -2,10 +2,13 @@
 
 import { getSanityConfig } from "@platform-core/src/shops";
 import { getShopById } from "@platform-core/src/repositories/shop.server";
-import { env } from "@acme/config";
 import { ensureAuthorized } from "./common/auth";
-
-const apiVersion = env.SANITY_API_VERSION || "2021-10-21";
+import {
+  query,
+  mutate,
+  slugExists,
+  type SanityConfig,
+} from "@acme/plugin-sanity";
 
 function collectProductSlugs(content: unknown): string[] {
   const slugs = new Set<string>();
@@ -54,61 +57,23 @@ interface SanityPost {
   slug?: string;
   excerpt?: string;
 }
-
-interface Config {
-  projectId: string;
-  dataset: string;
-  token?: string;
-  apiVersion: string;
-}
-
-async function getConfig(shopId: string): Promise<Config> {
+async function getConfig(shopId: string): Promise<SanityConfig> {
   const shop = await getShopById(shopId);
   const sanity = getSanityConfig(shop);
   if (!sanity) {
     throw new Error(`Missing Sanity config for shop ${shopId}`);
   }
-  return { ...sanity, apiVersion };
-}
-
-function queryUrl(config: Config, query: string) {
-  return `https://${config.projectId}.api.sanity.io/v${config.apiVersion}/data/query/${config.dataset}?query=${encodeURIComponent(query)}`;
-}
-
-async function mutate(config: Config, body: unknown) {
-  const url = `https://${config.projectId}.api.sanity.io/v${config.apiVersion}/data/mutate/${config.dataset}`;
-  return fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...(config.token ? { Authorization: `Bearer ${config.token}` } : {}),
-    },
-    body: JSON.stringify(body),
-  });
-}
-
-async function slugExists(config: Config, slug: string, excludeId?: string) {
-  const query = `*[_type=="post" && slug.current=="${slug}"${excludeId ? ` && _id!="${excludeId}"` : ""}][0]{_id}`;
-  const res = await fetch(
-    queryUrl(config, query),
-    { headers: config.token ? { Authorization: `Bearer ${config.token}` } : undefined }
-  );
-  const json = await res.json();
-  return Boolean(json.result);
+  return sanity;
 }
 
 export async function getPosts(shopId: string): Promise<SanityPost[]> {
   await ensureAuthorized();
   const config = await getConfig(shopId);
-  const res = await fetch(
-    queryUrl(
-      config,
-      '*[_type=="post"]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt}',
-    ),
-    { headers: config.token ? { Authorization: `Bearer ${config.token}` } : undefined }
+  const posts = await query<SanityPost[]>(
+    config,
+    '*[_type=="post"]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt}',
   );
-  const json = await res.json();
-  return json.result ?? [];
+  return posts ?? [];
 }
 
 export async function getPost(
@@ -117,15 +82,11 @@ export async function getPost(
 ): Promise<SanityPost | null> {
   await ensureAuthorized();
   const config = await getConfig(shopId);
-  const res = await fetch(
-    queryUrl(
-      config,
-      `*[_type=="post" && _id=="${id}"][0]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt}`,
-    ),
-    { headers: config.token ? { Authorization: `Bearer ${config.token}` } : undefined }
+  const post = await query<SanityPost | null>(
+    config,
+    `*[_type=="post" && _id=="${id}"][0]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt}`,
   );
-  const json = await res.json();
-  return json.result ?? null;
+  return post ?? null;
 }
 
 export async function createPost(
@@ -158,7 +119,7 @@ export async function createPost(
     if (slug && (await slugExists(config, slug))) {
       return { error: "Slug already exists" };
     }
-    const res = await mutate(config, {
+    const result = await mutate(config, {
       mutations: [
         {
           create: {
@@ -175,8 +136,7 @@ export async function createPost(
       ],
       returnIds: true,
     });
-    const json = await res.json();
-    const id = json?.results?.[0]?.id as string | undefined;
+    const id = (result as any)?.results?.[0]?.id as string | undefined;
     return { message: "Post created", id };
   } catch (err) {
     console.error("Failed to create post", err);

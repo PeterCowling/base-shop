@@ -106,6 +106,7 @@ describe("PageBuilder interactions", () => {
         onRemove={() => {}}
         dispatch={dispatch}
         locale="en"
+        gridCols={12}
       />
     );
 
@@ -152,6 +153,7 @@ describe("PageBuilder interactions", () => {
         onRemove={() => {}}
         dispatch={dispatch}
         locale="en"
+        gridCols={12}
       />
     );
 
@@ -202,6 +204,7 @@ describe("PageBuilder interactions", () => {
           onRemove={() => {}}
           dispatch={jest.fn()}
           locale="en"
+          gridCols={12}
         />
         <CanvasItem
           component={c2}
@@ -212,6 +215,7 @@ describe("PageBuilder interactions", () => {
           onRemove={() => {}}
           dispatch={dispatch}
           locale="en"
+          gridCols={12}
         />
       </div>
     );

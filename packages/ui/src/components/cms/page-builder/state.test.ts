@@ -7,6 +7,7 @@ describe("historyStateSchema", () => {
       past: [],
       present: [],
       future: [],
+      gridCols: 12,
     });
   });
 });
@@ -14,7 +15,7 @@ describe("historyStateSchema", () => {
 describe("state reducer", () => {
   const a = { id: "a", type: "Text" } as PageComponent;
   const b = { id: "b", type: "Image" } as PageComponent;
-  const init: HistoryState = { past: [], present: [], future: [] };
+  const init: HistoryState = { past: [], present: [], future: [], gridCols: 12 };
 
   it("adds components", () => {
     const state = reducer(init, { type: "add", component: a });

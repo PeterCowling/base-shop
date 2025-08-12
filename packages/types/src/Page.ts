@@ -556,6 +556,7 @@ export interface HistoryState {
   past: PageComponent[][];
   present: PageComponent[];
   future: PageComponent[][];
+  gridCols: number;
 }
 
 export const historyStateSchema: z.ZodType<HistoryState> = z
@@ -563,9 +564,10 @@ export const historyStateSchema: z.ZodType<HistoryState> = z
     past: z.array(z.array(pageComponentSchema)),
     present: z.array(pageComponentSchema),
     future: z.array(z.array(pageComponentSchema)),
+    gridCols: z.number().int().min(1).max(24).default(12),
   })
   .strict()
-  .default({ past: [], present: [], future: [] });
+  .default({ past: [], present: [], future: [], gridCols: 12 });
 
 export const pageSchema = z
   .object({

@@ -29,7 +29,7 @@ interface Props {
   locale: Locale;
   containerStyle: CSSProperties;
   showGrid?: boolean;
-  gridCols?: number;
+  gridCols: number;
 }
 
 const PageCanvas = ({
@@ -48,7 +48,7 @@ const PageCanvas = ({
   locale,
   containerStyle,
   showGrid = false,
-  gridCols = 12,
+  gridCols,
 }: Props) => (
   <DndContext
     sensors={sensors}

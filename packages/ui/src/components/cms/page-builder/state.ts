@@ -8,9 +8,10 @@ export const historyStateSchema: z.ZodType<HistoryState> = z
     past: z.array(z.array(pageComponentSchema)),
     present: z.array(pageComponentSchema),
     future: z.array(z.array(pageComponentSchema)),
+    gridCols: z.number().int().min(1).max(24).default(12),
   })
   .strict()
-  .default({ past: [], present: [], future: [] });
+  .default({ past: [], present: [], future: [], gridCols: 12 });
 
 /* ════════════════ reducers ════════════════ */
 export type ChangeAction =
@@ -37,7 +38,11 @@ export type ChangeAction =
     }
   | { type: "set"; components: PageComponent[] };
 
-export type Action = ChangeAction | { type: "undo" } | { type: "redo" };
+export type Action =
+  | ChangeAction
+  | { type: "undo" }
+  | { type: "redo" }
+  | { type: "set-grid-cols"; gridCols: number };
 
 function addAt(list: PageComponent[], index: number, item: PageComponent) {
   return [...list.slice(0, index), item, ...list.slice(index)];
@@ -215,6 +220,7 @@ export function reducer(state: HistoryState, action: Action): HistoryState {
         past: state.past.slice(0, -1),
         present: previous,
         future: [state.present, ...state.future],
+        gridCols: state.gridCols,
       };
     }
     case "redo": {
@@ -224,7 +230,11 @@ export function reducer(state: HistoryState, action: Action): HistoryState {
         past: [...state.past, state.present],
         present: next,
         future: state.future.slice(1),
+        gridCols: state.gridCols,
       };
+    }
+    case "set-grid-cols": {
+      return { ...state, gridCols: action.gridCols };
     }
     default: {
       const next = componentsReducer(state.present, action as ChangeAction);
@@ -233,6 +243,7 @@ export function reducer(state: HistoryState, action: Action): HistoryState {
         past: [...state.past, state.present],
         present: next,
         future: [],
+        gridCols: state.gridCols,
       };
     }
   }

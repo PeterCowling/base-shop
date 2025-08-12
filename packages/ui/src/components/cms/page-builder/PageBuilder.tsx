@@ -33,7 +33,6 @@ type ComponentType =
   | keyof typeof layoutRegistry;
 
 const CONTAINER_TYPES = Object.keys(containerRegistry) as ComponentType[];
-const GRID_COLS = 12;
 
 const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
   HeroBanner: { minItems: 1, maxItems: 5 },
@@ -106,10 +105,10 @@ const PageBuilder = memo(function PageBuilder({
             const valid = historyStateSchema.parse(fromServer);
             return { ...valid, present: migrate(valid.present) };
           } catch {
-            return { past: [], present: initial, future: [] };
+            return { past: [], present: initial, future: [], gridCols: 12 };
           }
         })()
-      : { past: [], present: initial, future: [] };
+      : { past: [], present: initial, future: [], gridCols: 12 };
 
     if (typeof window === "undefined") {
       return parsedServer;
@@ -126,6 +125,7 @@ const PageBuilder = memo(function PageBuilder({
   });
 
   const components = state.present;
+  const [gridCols, setGridCols] = useState(state.gridCols);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [liveMessage, setLiveMessage] = useState("");
   const dispatch = useCallback(
@@ -218,11 +218,11 @@ const PageBuilder = memo(function PageBuilder({
 
   useEffect(() => {
     if (showGrid && canvasRef.current) {
-      setGridSize(canvasRef.current.offsetWidth / GRID_COLS);
+      setGridSize(canvasRef.current.offsetWidth / gridCols);
     } else {
       setGridSize(1);
     }
-  }, [showGrid, viewport]);
+  }, [showGrid, viewport, gridCols]);
 
   useEffect(() => {
     onChange?.(components);
@@ -288,11 +288,16 @@ const PageBuilder = memo(function PageBuilder({
           locale={locale}
           setLocale={setLocale}
           locales={locales}
-          progress={progress}
-          isValid={isValid}
-          showGrid={showGrid}
-          toggleGrid={() => setShowGrid((g) => !g)}
-        />
+        progress={progress}
+        isValid={isValid}
+        showGrid={showGrid}
+        toggleGrid={() => setShowGrid((g) => !g)}
+        gridCols={gridCols}
+        setGridCols={(n) => {
+          setGridCols(n);
+          dispatch({ type: "set-grid-cols", gridCols: n });
+        }}
+      />
         <div aria-live="polite" role="status" className="sr-only">
           {liveMessage}
         </div>
@@ -312,7 +317,7 @@ const PageBuilder = memo(function PageBuilder({
           locale={locale}
           containerStyle={containerStyle}
           showGrid={showGrid}
-          gridCols={GRID_COLS}
+          gridCols={gridCols}
         />
         <div className="flex gap-2">
           <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>

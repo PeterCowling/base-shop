@@ -28,6 +28,23 @@ function collectProductSlugs(content: unknown): string[] {
   return Array.from(slugs);
 }
 
+async function filterExistingProductSlugs(
+  shopId: string,
+  slugs: string[],
+): Promise<string[]> {
+  const checks = await Promise.all(
+    slugs.map(async (slug) => {
+      try {
+        const res = await fetch(`/api/products/${shopId}/${slug}`);
+        return res.ok ? slug : null;
+      } catch {
+        return null;
+      }
+    }),
+  );
+  return checks.filter((s): s is string => Boolean(s));
+}
+
 interface SanityPost {
   _id: string;
   title?: string;
@@ -130,6 +147,7 @@ export async function createPost(
     body = [];
     products = [];
   }
+  products = await filterExistingProductSlugs(shopId, products);
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   const publishedAtInput = formData.get("publishedAt");
@@ -186,6 +204,7 @@ export async function updatePost(
     body = [];
     products = [];
   }
+  products = await filterExistingProductSlugs(shopId, products);
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   const publishedAtInput = formData.get("publishedAt");

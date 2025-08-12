@@ -38,21 +38,19 @@ Each plugin directory must include a `package.json` with a `main` or
 
 ## Initialisation and configuration
 
-`initPlugins` wires discovered plugins into the platform.  Configuration can be
-supplied per plugin using the plugin id:
+`initPlugins` wires discovered plugins into the platform and returns a
+`PluginManager` instance that exposes registered providers and metadata. Configuration
+can be supplied per plugin using the plugin id:
 
 ```ts
 import { initPlugins } from "@acme/platform-core/plugins";
 
-await initPlugins(
-  { payments: paymentRegistry },
-  {
-    directories: [pluginsDir],
-    config: {
-      "my-plugin": { enabled: false },
-    },
+const manager = await initPlugins({
+  directories: [pluginsDir],
+  config: {
+    "my-plugin": { enabled: false },
   },
-);
+});
 ```
 
 The relevant configuration object (or the plugin's `defaultConfig`) is passed to

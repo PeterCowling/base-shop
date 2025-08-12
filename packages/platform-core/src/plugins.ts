@@ -4,6 +4,7 @@ import type { Dirent } from "node:fs";
 import path from "node:path";
 import type { z } from "zod";
 import { logger } from "./utils/logger";
+import { PluginManager } from "./plugins/PluginManager";
 
 /** Interface for payment providers */
 export interface PaymentProvider {
@@ -25,6 +26,8 @@ export interface WidgetComponent<P = any> {
 /** Registry for payment providers */
 export interface PaymentRegistry<T extends PaymentProvider = PaymentProvider> {
   add(id: string, provider: T): void;
+  get(id: string): T | undefined;
+  list(): { id: string; value: T }[];
 }
 
 /** Registry for shipping providers */
@@ -32,11 +35,15 @@ export interface ShippingRegistry<
   T extends ShippingProvider = ShippingProvider,
 > {
   add(id: string, provider: T): void;
+  get(id: string): T | undefined;
+  list(): { id: string; value: T }[];
 }
 
 /** Registry for widget components */
 export interface WidgetRegistry<T extends WidgetComponent = WidgetComponent> {
   add(id: string, component: T): void;
+  get(id: string): T | undefined;
+  list(): { id: string; value: T }[];
 }
 
 /**
@@ -84,16 +91,48 @@ export interface LoadPluginsOptions {
   directories?: string[];
   /** explicit plugin package paths */
   plugins?: string[];
+  /** optional path to JSON config listing directories/plugins */
+  configFile?: string;
 }
 
 /** Load plugins from provided directories or explicit paths */
 export async function loadPlugins({
   directories = [],
   plugins = [],
+  configFile,
 }: LoadPluginsOptions = {}): Promise<Plugin[]> {
   const workspaceDir = path.join(process.cwd(), "packages", "plugins");
-  const searchDirs = Array.from(new Set([workspaceDir, ...directories]));
-  const roots: string[] = [...plugins];
+
+  const envDirs = process.env.PLUGIN_DIRS
+    ? process.env.PLUGIN_DIRS.split(path.delimiter).filter(Boolean)
+    : [];
+
+  const configDirs: string[] = [];
+  const configPlugins: string[] = [];
+  const configPaths = [
+    configFile,
+    process.env.PLUGIN_CONFIG,
+    path.join(process.cwd(), "plugins.config.json"),
+  ].filter(Boolean) as string[];
+  for (const cfgPath of configPaths) {
+    try {
+      const cfg = JSON.parse(await readFile(cfgPath, "utf8"));
+      if (Array.isArray(cfg.directories)) {
+        configDirs.push(...cfg.directories);
+      }
+      if (Array.isArray(cfg.plugins)) {
+        configPlugins.push(...cfg.plugins);
+      }
+      break; // use first found config
+    } catch {
+      // ignore missing/invalid config
+    }
+  }
+
+  const searchDirs = Array.from(
+    new Set([workspaceDir, ...envDirs, ...configDirs, ...directories]),
+  );
+  const roots: string[] = [...configPlugins, ...plugins];
   for (const dir of searchDirs) {
     try {
       const entries = await readdir(dir, { withFileTypes: true });
@@ -150,15 +189,10 @@ export async function initPlugins<
   S extends ShippingProvider = ShippingProvider,
   W extends WidgetComponent = WidgetComponent,
 >(
-  registries: {
-    payments?: PaymentRegistry<P>;
-    shipping?: ShippingRegistry<S>;
-    widgets?: WidgetRegistry<W>;
-  },
   options: InitPluginsOptions = {},
-): Promise<Plugin<P, S, W>[]> {
+): Promise<PluginManager<P, S, W>> {
+  const manager = new PluginManager<P, S, W>();
   const loaded = await loadPlugins(options);
-  const registered: Plugin[] = [];
   for (const plugin of loaded) {
     const raw = {
       ...(plugin.defaultConfig ?? {}),
@@ -179,16 +213,16 @@ export async function initPlugins<
     if (plugin.init) {
       await plugin.init(cfg as any);
     }
-    if (registries.payments && plugin.registerPayments) {
-      plugin.registerPayments(registries.payments, cfg as any);
+    if (plugin.registerPayments) {
+      plugin.registerPayments(manager.payments, cfg as any);
     }
-    if (registries.shipping && plugin.registerShipping) {
-      plugin.registerShipping(registries.shipping, cfg as any);
+    if (plugin.registerShipping) {
+      plugin.registerShipping(manager.shipping, cfg as any);
     }
-    if (registries.widgets && plugin.registerWidgets) {
-      plugin.registerWidgets(registries.widgets, cfg as any);
+    if (plugin.registerWidgets) {
+      plugin.registerWidgets(manager.widgets, cfg as any);
     }
-    registered.push(plugin as Plugin);
+    manager.addPlugin(plugin);
   }
-  return registered as Plugin<P, S, W>[];
+  return manager;
 }

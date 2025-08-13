@@ -26,4 +26,16 @@ describe("hasPermission", () => {
   it("customer can checkout", () => {
     expect(hasPermission("customer", "checkout")).toBe(true);
   });
+
+  it("customer can view orders and change password but not manage orders or sessions", () => {
+    expect(hasPermission("customer", "view_orders")).toBe(true);
+    expect(hasPermission("customer", "change_password")).toBe(true);
+    expect(hasPermission("customer", "manage_orders")).toBe(false);
+    expect(hasPermission("customer", "manage_sessions")).toBe(false);
+  });
+
+  it("admin can manage orders and sessions", () => {
+    expect(hasPermission("admin", "manage_orders")).toBe(true);
+    expect(hasPermission("admin", "manage_sessions")).toBe(true);
+  });
 });

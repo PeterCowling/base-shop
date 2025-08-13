@@ -44,6 +44,17 @@ if (!canWrite(session.user.role)) {
 }
 ```
 
+## Granular permissions
+
+In addition to the broad `read`/`write` flags, roles can have more specific permissions:
+
+- `view_orders` – view order history. Roles: `customer`, `admin`, `ShopAdmin`
+- `manage_orders` – create or modify orders. Roles: `admin`, `ShopAdmin`
+- `manage_sessions` – manage active user sessions. Roles: `admin`, `ShopAdmin`
+- `change_password` – change the user's password. Roles: `customer`, `admin`, `ShopAdmin`, `CatalogManager`, `ThemeEditor`
+
+Use `hasPermission(role, permission)` from `@acme/auth` to check them.
+
 ## Extending roles
 
 Roles and their permissions can be extended at runtime using `extendRoles` from `@acme/auth`.

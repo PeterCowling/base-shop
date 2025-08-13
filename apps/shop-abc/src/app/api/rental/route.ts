@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
   try {
     await requirePermission("manage_orders");
   } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   const parsed = await parseJsonBody(req, RentalSchema, "1mb");
   if (!parsed.success) return parsed.response;
@@ -38,7 +38,7 @@ export async function PATCH(req: NextRequest) {
   try {
     await requirePermission("manage_orders");
   } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;

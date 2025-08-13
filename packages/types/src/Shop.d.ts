@@ -4,28 +4,29 @@ export declare const shopSeoFieldsSchema: z.ZodObject<{
     title: z.ZodOptional<z.ZodString>;
     description: z.ZodOptional<z.ZodString>;
     image: z.ZodOptional<z.ZodString>;
+    alt: z.ZodOptional<z.ZodString>;
     openGraph: z.ZodOptional<z.ZodObject<{
         title: z.ZodOptional<z.ZodString>;
         description: z.ZodOptional<z.ZodString>;
         url: z.ZodOptional<z.ZodString>;
         image: z.ZodOptional<z.ZodString>;
-    }, "strip", z.ZodTypeAny, {
+    }, "strict", z.ZodTypeAny, {
         title?: string | undefined;
         image?: string | undefined;
-        description?: string | undefined;
         url?: string | undefined;
+        description?: string | undefined;
     }, {
         title?: string | undefined;
         image?: string | undefined;
-        description?: string | undefined;
         url?: string | undefined;
+        description?: string | undefined;
     }>>;
     twitter: z.ZodOptional<z.ZodObject<{
         card: z.ZodOptional<z.ZodString>;
         title: z.ZodOptional<z.ZodString>;
         description: z.ZodOptional<z.ZodString>;
         image: z.ZodOptional<z.ZodString>;
-    }, "strip", z.ZodTypeAny, {
+    }, "strict", z.ZodTypeAny, {
         title?: string | undefined;
         image?: string | undefined;
         description?: string | undefined;
@@ -37,16 +38,17 @@ export declare const shopSeoFieldsSchema: z.ZodObject<{
         card?: string | undefined;
     }>>;
     structuredData: z.ZodOptional<z.ZodString>;
-}, "strip", z.ZodTypeAny, {
+}, "strict", z.ZodTypeAny, {
     title?: string | undefined;
     image?: string | undefined;
     description?: string | undefined;
     canonicalBase?: string | undefined;
+    alt?: string | undefined;
     openGraph?: {
         title?: string | undefined;
         image?: string | undefined;
-        description?: string | undefined;
         url?: string | undefined;
+        description?: string | undefined;
     } | undefined;
     twitter?: {
         title?: string | undefined;
@@ -60,11 +62,12 @@ export declare const shopSeoFieldsSchema: z.ZodObject<{
     image?: string | undefined;
     description?: string | undefined;
     canonicalBase?: string | undefined;
+    alt?: string | undefined;
     openGraph?: {
         title?: string | undefined;
         image?: string | undefined;
-        description?: string | undefined;
         url?: string | undefined;
+        description?: string | undefined;
     } | undefined;
     twitter?: {
         title?: string | undefined;
@@ -75,6 +78,34 @@ export declare const shopSeoFieldsSchema: z.ZodObject<{
     structuredData?: string | undefined;
 }>;
 export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;
+export declare const sanityBlogConfigSchema: z.ZodObject<{
+    projectId: z.ZodString;
+    dataset: z.ZodString;
+    token: z.ZodString;
+}, "strict", z.ZodTypeAny, {
+    projectId: string;
+    dataset: string;
+    token: string;
+}, {
+    projectId: string;
+    dataset: string;
+    token: string;
+}>;
+export type SanityBlogConfig = z.infer<typeof sanityBlogConfigSchema>;
+export declare const shopDomainSchema: z.ZodObject<{
+    name: z.ZodString;
+    status: z.ZodOptional<z.ZodString>;
+    certificateStatus: z.ZodOptional<z.ZodString>;
+}, "strict", z.ZodTypeAny, {
+    name: string;
+    status?: string | undefined;
+    certificateStatus?: string | undefined;
+}, {
+    name: string;
+    status?: string | undefined;
+    certificateStatus?: string | undefined;
+}>;
+export type ShopDomain = z.infer<typeof shopDomainSchema>;
 export declare const shopSchema: z.ZodObject<{
     id: z.ZodString;
     name: z.ZodString;
@@ -104,15 +135,43 @@ export declare const shopSchema: z.ZodObject<{
     navigation: z.ZodOptional<z.ZodArray<z.ZodObject<{
         label: z.ZodString;
         url: z.ZodString;
-    }, "strip", z.ZodTypeAny, {
+    }, "strict", z.ZodTypeAny, {
         url: string;
         label: string;
     }, {
         url: string;
         label: string;
     }>, "many">>;
+    sanityBlog: z.ZodOptional<z.ZodObject<{
+        projectId: z.ZodString;
+        dataset: z.ZodString;
+        token: z.ZodString;
+    }, "strict", z.ZodTypeAny, {
+        projectId: string;
+        dataset: string;
+        token: string;
+    }, {
+        projectId: string;
+        dataset: string;
+        token: string;
+    }>>;
+    domain: z.ZodOptional<z.ZodObject<{
+        name: z.ZodString;
+        status: z.ZodOptional<z.ZodString>;
+        certificateStatus: z.ZodOptional<z.ZodString>;
+    }, "strict", z.ZodTypeAny, {
+        name: string;
+        status?: string | undefined;
+        certificateStatus?: string | undefined;
+    }, {
+        name: string;
+        status?: string | undefined;
+        certificateStatus?: string | undefined;
+    }>>;
     analyticsEnabled: z.ZodOptional<z.ZodBoolean>;
-}, "strip", z.ZodTypeAny, {
+    lastUpgrade: z.ZodOptional<z.ZodString>;
+    componentVersions: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodString>>;
+}, "strict", z.ZodTypeAny, {
     id: string;
     name: string;
     catalogFilters: string[];
@@ -136,19 +195,31 @@ export declare const shopSchema: z.ZodObject<{
         url: string;
         label: string;
     }[] | undefined;
+    sanityBlog?: {
+        projectId: string;
+        dataset: string;
+        token: string;
+    } | undefined;
+    domain?: {
+        name: string;
+        status?: string | undefined;
+        certificateStatus?: string | undefined;
+    } | undefined;
     analyticsEnabled?: boolean | undefined;
+    lastUpgrade?: string | undefined;
+    componentVersions: Record<string, string>;
 }, {
     id: string;
     name: string;
     catalogFilters: string[];
     themeId: string;
-    themeDefaults: Record<string, string>;
-    themeOverrides: Record<string, string>;
-    themeTokens: Record<string, string>;
     filterMappings: Record<string, string>;
     type?: string | undefined;
     logo?: string | undefined;
     contactInfo?: string | undefined;
+    themeDefaults?: Record<string, string> | undefined;
+    themeOverrides?: Record<string, string> | undefined;
+    themeTokens?: Record<string, string> | undefined;
     priceOverrides?: Partial<Record<"en" | "de" | "it", number>> | undefined;
     localeOverrides?: Record<string, "en" | "de" | "it"> | undefined;
     paymentProviders?: string[] | undefined;
@@ -161,7 +232,19 @@ export declare const shopSchema: z.ZodObject<{
         url: string;
         label: string;
     }[] | undefined;
+    sanityBlog?: {
+        projectId: string;
+        dataset: string;
+        token: string;
+    } | undefined;
+    domain?: {
+        name: string;
+        status?: string | undefined;
+        certificateStatus?: string | undefined;
+    } | undefined;
     analyticsEnabled?: boolean | undefined;
+    lastUpgrade?: string | undefined;
+    componentVersions?: Record<string, string> | undefined;
 }>;
 export type Shop = z.infer<typeof shopSchema>;
 //# sourceMappingURL=Shop.d.ts.map

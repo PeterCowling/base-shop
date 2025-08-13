@@ -8,5 +8,7 @@
   "shippingProviders": ["ups"],
   "taxProviders": ["taxjar"],
   "priceOverrides": {},
-  "localeOverrides": {}
+  "localeOverrides": {},
+  "componentVersions": {},
+  "lastUpgrade": "1970-01-01T00:00:00.000Z"
 }

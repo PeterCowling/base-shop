@@ -30,6 +30,7 @@ if (rollback) {
   if (existsSync(shopJsonPath)) {
     const data = JSON.parse(readFileSync(shopJsonPath, "utf8"));
     delete (data as any).lastUpgrade;
+    delete (data as any).componentVersions;
     writeFileSync(shopJsonPath, JSON.stringify(data, null, 2));
   }
   console.log(`Rollback completed for ${shopId}`);
@@ -42,6 +43,10 @@ if (existsSync(shopJsonPath)) {
   cpSync(shopJsonPath, shopJsonPath + ".bak");
   const data = JSON.parse(readFileSync(shopJsonPath, "utf8"));
   (data as any).lastUpgrade = new Date().toISOString();
+  const pkgPath = path.join(appDir, "package.json");
+  (data as any).componentVersions = existsSync(pkgPath)
+    ? JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {}
+    : {};
   writeFileSync(shopJsonPath, JSON.stringify(data, null, 2));
 }
 

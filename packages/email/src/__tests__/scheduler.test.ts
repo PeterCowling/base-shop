@@ -56,9 +56,10 @@ describe("sendScheduledCampaigns", () => {
     await sendScheduledCampaigns();
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
-    expect(sendCampaignEmailMock).toHaveBeenCalledWith(
-      expect.objectContaining({ to: "past@example.com", subject: "Past" })
-    );
+    const args = sendCampaignEmailMock.mock.calls[0][0];
+    expect(args.to).toBe("past@example.com");
+    expect(args.subject).toBe("Past");
+    expect(args.html).toMatch(/open\?shop=.*&campaign=.*&t=\d+/);
 
     const updated = JSON.parse(
       await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8")

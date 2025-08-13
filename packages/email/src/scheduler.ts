@@ -51,7 +51,7 @@ export async function sendScheduledCampaigns(): Promise<void> {
       const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";
       const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
         shop
-      )}&campaign=${encodeURIComponent(c.id)}`;
+      )}&campaign=${encodeURIComponent(c.id)}&t=${Date.now()}`;
       const bodyWithPixel =
         c.body +
         `<img src="${pixelUrl}" alt="" style="display:none" width="1" height="1"/>`;

@@ -112,7 +112,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const base = env.NEXT_PUBLIC_BASE_URL || "";
   const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
     shop
-  )}&campaign=${encodeURIComponent(id)}`;
+  )}&campaign=${encodeURIComponent(id)}&t=${Date.now()}`;
   let html = body;
   if (templateId) {
     const variant = marketingEmailTemplates.find((t) => t.id === templateId);

@@ -8,6 +8,8 @@ const pixel = Buffer.from(
 );
 
 export async function GET(req: NextRequest) {
+  // ignore cache-busting token
+  req.nextUrl.searchParams.get("t");
   const shop = req.nextUrl.searchParams.get("shop");
   const campaign = req.nextUrl.searchParams.get("campaign");
   if (shop && campaign) {

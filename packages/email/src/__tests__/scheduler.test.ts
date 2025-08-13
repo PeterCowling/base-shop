@@ -20,16 +20,23 @@ const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
 describe("sendScheduledCampaigns", () => {
   const shop = "schedulertest";
   const shopDir = path.join(DATA_ROOT, shop);
+  const base = new Date("2020-01-01T00:00:00Z");
 
   beforeEach(async () => {
+    jest.useFakeTimers();
+    jest.setSystemTime(base);
     jest.clearAllMocks();
     await fs.rm(shopDir, { recursive: true, force: true });
     await fs.mkdir(shopDir, { recursive: true });
   });
 
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it("sends due campaigns and marks them as sent", async () => {
-    const past = new Date(Date.now() - 1000).toISOString();
-    const future = new Date(Date.now() + 1000).toISOString();
+    const past = new Date(base.getTime() - 1000).toISOString();
+    const future = new Date(base.getTime() + 1000).toISOString();
     const campaigns = [
       {
         id: "c1",
@@ -53,7 +60,7 @@ describe("sendScheduledCampaigns", () => {
     );
 
     const { sendScheduledCampaigns } = await import("../scheduler");
-    await sendScheduledCampaigns();
+    await sendScheduledCampaigns({ now: () => new Date() });
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
     expect(sendCampaignEmailMock).toHaveBeenCalledWith(

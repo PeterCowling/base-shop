@@ -5,6 +5,12 @@ import { trackEvent } from "@platform-core/analytics";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { coreEnv } from "@acme/config/env/core";
 
+export interface Clock {
+  now(): Date;
+}
+
+const systemClock: Clock = { now: () => new Date(Date.now()) };
+
 interface Campaign {
   id: string;
   recipients: string[];
@@ -40,9 +46,11 @@ export async function writeCampaigns(
   );
 }
 
-export async function sendScheduledCampaigns(): Promise<void> {
+export async function sendScheduledCampaigns(
+  clock: Clock = systemClock
+): Promise<void> {
   const shops = await fs.readdir(DATA_ROOT).catch(() => []);
-  const now = new Date();
+  const now = clock.now();
   for (const shop of shops) {
     const campaigns = await readCampaigns(shop);
     let changed = false;
@@ -75,7 +83,7 @@ export async function sendScheduledCampaigns(): Promise<void> {
         });
         await trackEvent(shop, { type: "email_sent", campaign: c.id });
       }
-      c.sentAt = new Date().toISOString();
+      c.sentAt = clock.now().toISOString();
       changed = true;
     }
     if (changed) await writeCampaigns(shop, campaigns);

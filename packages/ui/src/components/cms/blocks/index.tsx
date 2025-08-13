@@ -35,6 +35,7 @@ import FeaturedProductBlock from "./FeaturedProductBlock";
 import GiftCardBlock from "./GiftCardBlock";
 import FormBuilderBlock from "./FormBuilderBlock";
 import PopupModal from "./PopupModal";
+import ProductBundle from "./ProductBundle";
 
 export {
   BlogListing,
@@ -73,6 +74,7 @@ export {
   FeaturedProductBlock,
   GiftCardBlock,
   FormBuilderBlock,
+  ProductBundle,
   PopupModal,
 };
 

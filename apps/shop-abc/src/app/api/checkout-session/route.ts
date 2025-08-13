@@ -19,6 +19,8 @@ import { getTaxRate } from "@platform-core/tax";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { z } from "zod";
+import { shippingSchema, billingSchema } from "@platform-core/schemas/address";
+export type { Address, Shipping, Billing } from "@platform-core/schemas/address";
 
 /* ------------------------------------------------------------------ *
  *  Types
@@ -122,28 +124,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   /* 2️⃣ Parse optional body ------------------------------------------------- */
-  const addressSchema = z.object({
-    line1: z.string(),
-    line2: z.string().optional(),
-    city: z.string(),
-    postal_code: z.string(),
-    country: z.string(),
-    state: z.string().optional(),
-  });
-
-  const shippingSchema = z.object({
-    name: z.string(),
-    address: addressSchema,
-    phone: z.string().optional(),
-  });
-
-  const billingSchema = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    address: addressSchema,
-    phone: z.string().optional(),
-  });
-
   const schema = z.object({
     returnDate: z.string().optional(),
     coupon: z.string().optional(),

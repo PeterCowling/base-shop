@@ -18,6 +18,16 @@ Key points:
   A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **React 19**.
   The full technical roadmap is documented in [./IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md).
 
+## Security Headers
+
+The root middleware applies [next-secure-headers](https://www.npmjs.com/package/next-secure-headers) to every request with:
+
+- **Content-Security-Policy** – limits all resources to this origin (`default-src 'self'`, `base-uri 'self'`, `object-src 'none'`, `form-action 'self'`, `frame-ancestors 'none'`).
+- **Strict-Transport-Security** – `max-age=31536000; includeSubDomains; preload` to enforce HTTPS.
+- **X-Frame-Options** – `DENY` to block iframe embedding.
+- **Referrer-Policy** – `no-referrer`.
+- **X-Content-Type-Options** and **X-Download-Options** – `nosniff` and `noopen`.
+
 ---
 
 ## Getting Started

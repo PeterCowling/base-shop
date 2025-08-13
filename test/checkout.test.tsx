@@ -7,6 +7,7 @@ process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 import CheckoutForm from "../packages/ui/components/checkout/CheckoutForm";
 import { CurrencyProvider } from "@platform-core/src/contexts/CurrencyContext";
 import { isoDateInNDays } from "@acme/date-utils";
+import * as sharedUtils from "@shared-utils";
 
 const pushMock = jest.fn();
 
@@ -187,4 +188,24 @@ test("default return date is 7 days ahead", async () => {
   await screen.findByTestId("payment-element");
   const input = screen.getByLabelText(/checkout\.return/i) as HTMLInputElement;
   expect(input.value).toBe(expected);
+});
+
+test("shows fallback when session request fails", async () => {
+  const fetchSpy = jest
+    .spyOn(sharedUtils, "fetchJson")
+    .mockRejectedValueOnce(new Error("fail"));
+
+  render(
+    <CurrencyProvider>
+      <CheckoutForm locale="en" taxRegion="EU" />
+    </CurrencyProvider>
+  );
+
+  expect(
+    await screen.findByText("Failed to load payment form.", undefined, {
+      timeout: 3000,
+    })
+  ).toBeInTheDocument();
+
+  fetchSpy.mockRestore();
 });

@@ -27,6 +27,8 @@ type FormValues = { returnDate: string };
 
 export default function CheckoutForm({ locale, taxRegion }: Props) {
   const [clientSecret, setClientSecret] = useState<string>();
+  const [fetchError, setFetchError] = useState(false);
+  const [retry, setRetry] = useState(0);
   const [currency] = useCurrency();
 
   const defaultDate = isoDateInNDays(7);
@@ -51,8 +53,12 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
           }
         );
         setClientSecret(clientSecret);
+        setFetchError(false);
       } catch (err: any) {
-        if (err?.name !== "AbortError") console.error(err);
+        if (err?.name !== "AbortError") {
+          console.error(err);
+          setFetchError(true);
+        }
       }
     }, 300);
 
@@ -60,9 +66,28 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
       controller.abort();
       clearTimeout(timeout);
     };
-  }, [returnDate, currency, taxRegion]);
+  }, [returnDate, currency, taxRegion, retry]);
 
-  if (!clientSecret) return <p>Loading payment form…</p>;
+  if (!clientSecret) {
+    if (fetchError)
+      return (
+        <div className="space-y-2">
+          <p>Failed to load payment form.</p>
+          <button
+            type="button"
+            className="rounded bg-fg px-2 py-1 text-bg"
+            data-token="--color-fg"
+            onClick={() => {
+              setFetchError(false);
+              setRetry((r) => r + 1);
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      );
+    return <p>Loading payment form…</p>;
+  }
 
   return (
     <Elements

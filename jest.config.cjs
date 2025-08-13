@@ -95,6 +95,10 @@ module.exports = {
     "^@platform-core/src/contexts/CurrencyContext$":
       "<rootDir>/test/__mocks__/currencyContextMock.tsx",
 
+    // email provider client mocks
+    "^resend$": "<rootDir>/packages/email/src/providers/__mocks__/resend.ts",
+    "^@sendgrid/mail$": "<rootDir>/packages/email/src/providers/__mocks__/@sendgrid/mail.ts",
+
     // component stubs – structure isn’t under test
     "^@ui/components/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
     "^@ui/atoms/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",

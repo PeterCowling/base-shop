@@ -1,10 +1,4 @@
-jest.mock("resend", () => ({
-  Resend: jest.fn(),
-}));
-
-const { Resend } = require("resend");
-const sendMock = jest.fn();
-(Resend as jest.Mock).mockImplementation(() => ({ emails: { send: sendMock } }));
+const { Resend, send } = require("resend");
 
 describe("ResendProvider", () => {
   afterEach(() => {
@@ -29,7 +23,7 @@ describe("ResendProvider", () => {
     });
 
     expect(Resend).toHaveBeenCalledWith("rs");
-    expect(sendMock).toHaveBeenCalledWith({
+    expect(send).toHaveBeenCalledWith({
       from: "campaign@example.com",
       to: "to@example.com",
       subject: "Subject",

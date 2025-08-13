@@ -1,6 +1,6 @@
 import { sendCampaignEmail } from "./send";
 import { resolveSegment } from "./segments";
-import { trackEvent } from "@platform-core/analytics";
+import { emitSend } from "./hooks";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
@@ -77,7 +77,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
         subject: c.subject,
         html,
       });
-      await trackEvent(shop, { type: "email_sent", campaign: c.id });
+      await emitSend(shop, { campaign: c.id });
     }
     if (i + batchSize < recipients.length && batchDelay > 0) {
       await new Promise((resolve) => setTimeout(resolve, batchDelay));

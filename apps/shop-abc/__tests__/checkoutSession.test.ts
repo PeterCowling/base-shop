@@ -3,6 +3,7 @@ import { encodeCartCookie } from "@platform-core/src/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@acme/date-utils";
 import { POST } from "../src/app/api/checkout-session/route";
+import { ReadableStream } from "node:stream/web";
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -22,14 +23,39 @@ jest.mock("@platform-core/pricing", () => ({
 
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
-jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
+jest.mock("@auth", () => ({
+  getCustomerSession: jest.fn(async () => ({
+    role: "customer",
+    customerId: "cust_123",
+  })),
+  hasPermission: jest.fn(() => true),
+}));
+jest.mock("@platform-core/coupons", () => ({ findCoupon: jest.fn() }));
+jest.mock("@platform-core/tax", () => ({ getTaxRate: jest.fn() }));
 let mockCart: any;
 jest.mock("@platform-core/src/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
 }));
 
 import { stripe } from "@acme/stripe";
+import { findCoupon } from "@platform-core/coupons";
+import { getTaxRate } from "@platform-core/tax";
+
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
+const findCouponMock = findCoupon as jest.Mock;
+const getTaxRateMock = getTaxRate as jest.Mock;
+
+beforeEach(() => {
+  stripeCreate.mockReset();
+  findCouponMock.mockReset();
+  findCouponMock.mockResolvedValue(null);
+  getTaxRateMock.mockReset();
+  getTaxRateMock.mockResolvedValue(0);
+});
+
+afterEach(() => {
+  jest.useRealTimers();
+});
 
 function createRequest(
   body: any,
@@ -37,7 +63,15 @@ function createRequest(
   url = "http://store.example/api/checkout-session",
   headers: Record<string, string> = {}
 ): Parameters<typeof POST>[0] {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(encoder.encode(JSON.stringify(body)));
+      controller.close();
+    },
+  });
   return {
+    body: stream,
     json: async () => body,
     cookies: { get: () => ({ name: "", value: cookie }) },
     nextUrl: Object.assign(new URL(url), { clone: () => new URL(url) }),
@@ -102,6 +136,49 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: size }));
   expect(args.metadata.subtotal).toBe("20");
   expect(body.clientSecret).toBe("cs_test");
+});
+
+test("applies coupon discount and sets metadata", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockResolvedValue({
+    id: "sess_test",
+    payment_intent: { client_secret: "cs_test" },
+  });
+  findCouponMock.mockResolvedValue({ code: "SAVE20", discountPercent: 20 });
+
+  const sku = PRODUCTS[0];
+  const size = "40";
+  mockCart = { [`${sku.id}:${size}`]: { sku, qty: 2, size } };
+  const cookie = encodeCartCookie("test");
+  const returnDate = "2025-01-02";
+  const req = createRequest({ returnDate, coupon: "SAVE20" }, cookie);
+
+  await POST(req);
+  const args = stripeCreate.mock.calls[0][0];
+  expect(args.metadata.subtotal).toBe("16");
+  expect(args.metadata.discount).toBe("4");
+  expect(args.metadata.coupon).toBe("SAVE20");
+});
+
+test("adds tax line item and metadata", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockResolvedValue({
+    id: "sess_test",
+    payment_intent: { client_secret: "cs_test" },
+  });
+  getTaxRateMock.mockResolvedValue(0.1);
+
+  const sku = PRODUCTS[0];
+  const size = "40";
+  mockCart = { [`${sku.id}:${size}`]: { sku, qty: 2, size } };
+  const cookie = encodeCartCookie("test");
+  const returnDate = "2025-01-02";
+  const req = createRequest({ returnDate, taxRegion: "DE" }, cookie);
+
+  await POST(req);
+  const args = stripeCreate.mock.calls[0][0];
+  expect(args.line_items).toHaveLength(3);
+  expect(args.metadata.taxAmount).toBe("2");
 });
 
 test("responds with 400 on invalid returnDate", async () => {

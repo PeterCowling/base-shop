@@ -91,6 +91,7 @@
 
       /* ─── dedicated utility packages ───────────────────────────── */
       "@acme/email": ["packages/email/src/index.ts"],
+      "@acme/email/analytics": ["packages/email/src/analytics.ts"],
       "@acme/stripe": ["packages/stripe/src/index.ts"],
       "@acme/sanity": ["packages/sanity/src/index.ts"],
       "@acme/date-utils": ["packages/date-utils/src/index.ts"],

@@ -1,14 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { trackEvent } from "@platform-core/analytics";
-
-const typeMap: Record<string, string> = {
-  "email.delivered": "email_delivered",
-  "email.opened": "email_open",
-  "email.clicked": "email_click",
-  "email.unsubscribed": "email_unsubscribe",
-  "email.bounced": "email_bounce",
-};
+import { mapResendEvent } from "@acme/email/analytics";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
@@ -31,10 +24,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
-  const mapped = typeMap[event.type];
+  const mapped = mapResendEvent(event);
   if (mapped) {
-    const campaign = event.data?.campaign || event.data?.campaign_id;
-    await trackEvent(shop, { type: mapped, ...(campaign ? { campaign } : {}) });
+    await trackEvent(shop, mapped);
   }
   return NextResponse.json({ ok: true });
 }

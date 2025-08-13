@@ -1,14 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { EventWebhook } from "@sendgrid/eventwebhook";
 import { trackEvent } from "@platform-core/analytics";
-
-const typeMap: Record<string, string> = {
-  delivered: "email_delivered",
-  open: "email_open",
-  click: "email_click",
-  unsubscribe: "email_unsubscribe",
-  bounce: "email_bounce",
-};
+import { mapSendGridEvent } from "@acme/email/analytics";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
@@ -38,12 +31,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
   for (const ev of events) {
-    const mapped = typeMap[ev.event];
+    const mapped = mapSendGridEvent(ev);
     if (mapped) {
-      const campaign = Array.isArray(ev.category)
-        ? ev.category[0]
-        : ev.category;
-      await trackEvent(shop, { type: mapped, ...(campaign ? { campaign } : {}) });
+      await trackEvent(shop, mapped);
     }
   }
   return NextResponse.json({ ok: true });

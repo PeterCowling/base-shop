@@ -249,6 +249,10 @@ After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:
 - `SENDGRID_WEBHOOK_PUBLIC_KEY` – public key to verify SendGrid event webhook signatures
 - `RESEND_WEBHOOK_SECRET` – secret used to verify Resend webhook signatures
 
+When using the SendGrid or Resend providers, a lightweight API request is
+performed during initialization to verify the supplied API key. If the
+check fails, a descriptive error is thrown.
+
 SendGrid and Resend can be configured to POST event webhooks to:
 
 - `/api/marketing/email/provider-webhooks/sendgrid?shop=<SHOP_ID>`

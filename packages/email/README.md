@@ -2,6 +2,16 @@
 
 Email helper utilities used across the monorepo.
 
+## Environment variables
+
+The utilities read configuration from the following variables:
+
+- `EMAIL_PROVIDER` – campaign email provider (`smtp`, `sendgrid`, or `resend`).
+- `SENDGRID_API_KEY` – API key used for sending email through SendGrid.
+- `SENDGRID_MARKETING_KEY` – API key for SendGrid marketing features such as contact and segment management.
+- `RESEND_API_KEY` – API key for Resend with `sending`, `audiences.read` and `audiences.write` scopes.
+- `CAMPAIGN_FROM` – default "from" address when sending mail.
+
 ## Provider sanity checks
 
 `SendgridProvider` and `ResendProvider` accept an optional `{ sanityCheck: true }`

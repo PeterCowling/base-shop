@@ -19,11 +19,12 @@ describe("Campaign providers segmentation", () => {
     jest.resetModules();
     jest.clearAllMocks();
     delete process.env.SENDGRID_API_KEY;
+    delete process.env.SENDGRID_MARKETING_KEY;
     delete process.env.RESEND_API_KEY;
   });
 
   it("sendgrid segmentation methods call API", async () => {
-    process.env.SENDGRID_API_KEY = "sg";
+    process.env.SENDGRID_MARKETING_KEY = "sg";
     const { SendgridProvider } = await import("../providers/sendgrid");
     const provider = new SendgridProvider();
 

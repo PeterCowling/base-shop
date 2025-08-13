@@ -1,19 +1,11 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { sendCampaignEmail, resolveSegment } from "./index";
+import type { Campaign } from "./types";
 import { trackEvent } from "@platform-core/analytics";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { coreEnv } from "@acme/config/env/core";
 
-interface Campaign {
-  id: string;
-  recipients: string[];
-  subject: string;
-  body: string;
-  segment?: string | null;
-  sendAt: string;
-  sentAt?: string;
-}
 
 function campaignsPath(shop: string): string {
   return path.join(DATA_ROOT, shop, "campaigns.json");

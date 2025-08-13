@@ -3,7 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { sendCampaignEmail, resolveSegment } from "@acme/email";
+import { sendCampaignEmail, resolveSegment, type Campaign } from "@acme/email";
 import { trackEvent } from "@platform-core/analytics";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { DATA_ROOT } from "@platform-core/dataRoot";
@@ -11,16 +11,6 @@ import { validateShopName } from "@acme/lib";
 import { env } from "@acme/config";
 import { marketingEmailTemplates } from "@acme/ui";
 
-interface Campaign {
-  id: string;
-  recipients: string[];
-  subject: string;
-  body: string;
-  segment?: string | null;
-  sendAt: string;
-  sentAt?: string;
-  templateId?: string | null;
-}
 
 function campaignsPath(shop: string): string {
   shop = validateShopName(shop);

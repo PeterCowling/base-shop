@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import sanitizeHtml from "sanitize-html";
 import { coreEnv } from "@acme/config/env/core";
 import { getDefaultSender } from "./config";
 import { SendgridProvider } from "./providers/sendgrid";
@@ -22,6 +23,8 @@ export interface CampaignOptions {
   templateId?: string;
   /** Variables to substitute into the template */
   variables?: Record<string, string>;
+  /** Sanitize HTML content before sending. Defaults to true. */
+  sanitize?: boolean;
 }
 
 function deriveText(html: string): string {
@@ -74,9 +77,40 @@ if (!coreEnv.EMAIL_PROVIDER) {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
-  let opts = { ...options };
+  const { sanitize = true, ...rest } = options;
+  let opts = { ...rest } as CampaignOptions;
   if (opts.templateId) {
     opts.html = renderTemplate(opts.templateId, opts.variables ?? {});
+  }
+  if (sanitize && opts.html) {
+    opts.html = sanitizeHtml(opts.html, {
+      allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+        "img",
+        "p",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "br",
+        "span",
+        "div",
+        "ul",
+        "ol",
+        "li",
+        "table",
+        "thead",
+        "tbody",
+        "tr",
+        "td",
+        "th",
+      ]),
+      allowedAttributes: {
+        ...sanitizeHtml.defaults.allowedAttributes,
+        '*': ["href", "src", "alt", "title", "width", "height", "style"],
+      },
+    });
   }
   const optsWithText = ensureText(opts);
   const primary = coreEnv.EMAIL_PROVIDER ?? "";

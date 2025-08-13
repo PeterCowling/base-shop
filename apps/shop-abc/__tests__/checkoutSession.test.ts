@@ -22,7 +22,10 @@ jest.mock("@platform-core/pricing", () => ({
 
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
-jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
+jest.mock("@auth", () => ({
+  getCustomerSession: jest.fn(async () => ({ role: "user", customerId: "c1" })),
+  hasPermission: jest.fn(() => true),
+}));
 let mockCart: any;
 jest.mock("@platform-core/src/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
@@ -115,4 +118,36 @@ test("responds with 400 on invalid returnDate", async () => {
   expect(res.status).toBe(400);
   const body = await res.json();
   expect(body.error).toMatch(/invalid/i);
+});
+
+test("responds with 400 on invalid currency", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest(
+    { returnDate: "2025-01-02", currency: "JPY" },
+    cookie
+  );
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+  const body = await res.json();
+  expect(body.error).toMatch(/currency/i);
+});
+
+test("responds with 400 on invalid tax region", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest(
+    { returnDate: "2025-01-02", taxRegion: "CA" },
+    cookie
+  );
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+  const body = await res.json();
+  expect(body.error).toMatch(/tax region/i);
 });

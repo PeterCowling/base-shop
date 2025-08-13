@@ -21,7 +21,6 @@ import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { z } from "zod";
 import { shippingSchema, billingSchema } from "@platform-core/schemas/address";
-import { parseJsonBody } from "@shared-utils";
 
 /* ------------------------------------------------------------------ *
  *  Types
@@ -118,8 +117,8 @@ const schema = z
   .object({
     returnDate: z.string().optional(),
     coupon: z.string().optional(),
-    currency: z.string().default("EUR"),
-    taxRegion: z.string().default(""),
+    currency: z.enum(["EUR", "USD", "GBP"]).optional(),
+    taxRegion: z.enum(["EU", "US"]).optional(),
     customer: z.string().optional(),
     shipping: shippingSchema.optional(),
     billing_details: billingSchema.optional(),
@@ -141,21 +140,38 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   /* 2️⃣ Parse optional body ------------------------------------------------- */
-  const parsed = await parseJsonBody(req, schema, "1mb");
-  if (!parsed.success) return parsed.response;
+  let body: unknown;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+  const parsed = schema.safeParse(body);
+  if (!parsed.success) {
+    const errors = parsed.error.flatten().fieldErrors;
+    const message = errors.currency
+      ? "Invalid currency"
+      : errors.taxRegion
+        ? "Invalid tax region"
+        : "Invalid request body";
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
 
   const {
     returnDate,
     coupon,
-    currency,
-    taxRegion,
+    currency = "EUR",
+    taxRegion = "",
     customer: customerId,
     shipping,
     billing_details,
   } = parsed.data;
   const couponDef = await findCoupon(shop.id, coupon);
   if (couponDef) {
-    await trackEvent(shop.id, { type: "discount_redeemed", code: couponDef.code });
+    await trackEvent(shop.id, {
+      type: "discount_redeemed",
+      code: couponDef.code,
+    });
   }
   const discountRate = couponDef ? couponDef.discountPercent / 100 : 0;
   let rentalDays: number;
@@ -202,28 +218,28 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   /* 5️⃣ Create Checkout Session -------------------------------------------- */
   const customer = customerId ?? customerSession.customerId;
-  const clientIp =
-    req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
+  const clientIp = req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
 
-  const paymentIntentData: Stripe.Checkout.SessionCreateParams.PaymentIntentData = {
-    ...(shipping ? { shipping } : {}),
-    payment_method_options: {
-      card: { request_three_d_secure: "automatic" },
-    },
-    metadata: {
-      subtotal: subtotal.toString(),
-      depositTotal: depositTotal.toString(),
-      returnDate: returnDate ?? "",
-      rentalDays: rentalDays.toString(),
-      customerId: customer ?? "",
-      discount: discount.toString(),
-      coupon: couponDef?.code ?? "",
-      currency,
-      taxRate: taxRate.toString(),
-      taxAmount: taxAmount.toString(),
-      ...(clientIp ? { client_ip: clientIp } : {}),
-    },
-  } as any;
+  const paymentIntentData: Stripe.Checkout.SessionCreateParams.PaymentIntentData =
+    {
+      ...(shipping ? { shipping } : {}),
+      payment_method_options: {
+        card: { request_three_d_secure: "automatic" },
+      },
+      metadata: {
+        subtotal: subtotal.toString(),
+        depositTotal: depositTotal.toString(),
+        returnDate: returnDate ?? "",
+        rentalDays: rentalDays.toString(),
+        customerId: customer ?? "",
+        discount: discount.toString(),
+        coupon: couponDef?.code ?? "",
+        currency,
+        taxRate: taxRate.toString(),
+        taxAmount: taxAmount.toString(),
+        ...(clientIp ? { client_ip: clientIp } : {}),
+      },
+    } as any;
 
   if (billing_details) {
     (paymentIntentData as any).billing_details = billing_details;

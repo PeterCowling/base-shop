@@ -36,6 +36,9 @@ interface Props {
     slug?: string;
     excerpt?: string;
     publishedAt?: string;
+    mainImage?: string;
+    author?: string;
+    categories?: string[];
   };
 }
 
@@ -416,6 +419,21 @@ export default function PostForm({ action, submitLabel, post }: Props) {
           </div>
         </div>
         <Textarea name="excerpt" label="Excerpt" defaultValue={post?.excerpt ?? ""} />
+        <Input
+          name="mainImage"
+          label="Main image URL"
+          defaultValue={post?.mainImage ?? ""}
+        />
+        <Input
+          name="author"
+          label="Author"
+          defaultValue={post?.author ?? ""}
+        />
+        <Input
+          name="categories"
+          label="Categories (comma separated)"
+          defaultValue={(post?.categories ?? []).join(", ")}
+        />
         <Input
           type="datetime-local"
           name="publishedAt"

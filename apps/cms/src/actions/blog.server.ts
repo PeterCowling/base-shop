@@ -58,6 +58,9 @@ interface SanityPost {
   publishedAt?: string;
   slug?: string;
   excerpt?: string;
+  mainImage?: string;
+  author?: string;
+  categories?: string[];
 }
 async function getConfig(shopId: string): Promise<SanityConfig> {
   const shop = await getShopById(shopId);
@@ -73,7 +76,7 @@ export async function getPosts(shopId: string): Promise<SanityPost[]> {
   const config = await getConfig(shopId);
   const posts = await query<SanityPost[]>(
     config,
-    '*[_type=="post"]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt}',
+    '*[_type=="post"]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt,mainImage,author,categories}',
   );
   return posts ?? [];
 }
@@ -86,7 +89,7 @@ export async function getPost(
   const config = await getConfig(shopId);
   const post = await query<SanityPost | null>(
     config,
-    `*[_type=="post" && _id=="${id}"][0]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt}`,
+    `*[_type=="post" && _id=="${id}"][0]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt,mainImage,author,categories}`,
   );
   return post ?? null;
 }
@@ -114,6 +117,13 @@ export async function createPost(
   products = existingSlugs;
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
+  const mainImage = String(formData.get("mainImage") ?? "");
+  const author = String(formData.get("author") ?? "");
+  const categoriesInput = String(formData.get("categories") ?? "");
+  const categories = categoriesInput
+    .split(",")
+    .map((c) => c.trim())
+    .filter(Boolean);
   const publishedAtInput = formData.get("publishedAt");
   const publishedAt = publishedAtInput
     ? new Date(String(publishedAtInput)).toISOString()
@@ -133,6 +143,9 @@ export async function createPost(
             published: false,
             slug: slug ? { current: slug } : undefined,
             excerpt: excerpt || undefined,
+            mainImage: mainImage || undefined,
+            author: author || undefined,
+            ...(categories.length ? { categories } : {}),
             ...(publishedAt ? { publishedAt } : {}),
           },
         },
@@ -171,6 +184,13 @@ export async function updatePost(
   products = existingSlugs;
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
+  const mainImage = String(formData.get("mainImage") ?? "");
+  const author = String(formData.get("author") ?? "");
+  const categoriesInput = String(formData.get("categories") ?? "");
+  const categories = categoriesInput
+    .split(",")
+    .map((c) => c.trim())
+    .filter(Boolean);
   const publishedAtInput = formData.get("publishedAt");
   const publishedAt = publishedAtInput
     ? new Date(String(publishedAtInput)).toISOString()
@@ -190,6 +210,9 @@ export async function updatePost(
               products,
               slug: slug ? { current: slug } : undefined,
               excerpt: excerpt || undefined,
+              mainImage: mainImage || undefined,
+              author: author || undefined,
+              ...(categories.length ? { categories } : {}),
               ...(publishedAt ? { publishedAt } : {}),
             },
           },

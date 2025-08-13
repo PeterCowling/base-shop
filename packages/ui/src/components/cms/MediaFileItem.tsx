@@ -15,6 +15,7 @@ interface Props {
 export default function MediaFileItem({ item, shop, onDelete, onReplace }: Props) {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(item.altText ?? "");
+  const [tagText, setTagText] = useState(item.tags?.join(", ") ?? "");
   const [saving, setSaving] = useState(false);
 
   async function handleSave() {
@@ -28,6 +29,11 @@ export default function MediaFileItem({ item, shop, onDelete, onReplace }: Props
       const fd = new FormData();
       fd.append("file", file);
       if (text) fd.append("altText", text);
+      const tags = tagText
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+      if (tags.length) fd.append("tags", JSON.stringify(tags));
       const uploadRes = await fetch(`/cms/api/media?shop=${shop}`, {
         method: "POST",
         body: fd,
@@ -75,11 +81,18 @@ export default function MediaFileItem({ item, shop, onDelete, onReplace }: Props
         />
       )}
       {editing ? (
-        <div className="absolute bottom-1 left-1 right-1 flex gap-1 bg-fg/50 p-1 text-bg">
+        <div className="absolute bottom-1 left-1 right-1 flex flex-col gap-1 bg-fg/50 p-1 text-bg">
           <Input
             value={text}
             onChange={(e) => setText(e.target.value)}
-            className="h-6 flex-1 rounded bg-bg text-xs"
+            className="h-6 rounded bg-bg text-xs"
+            placeholder={item.type === "image" ? "Alt text" : "Title"}
+          />
+          <Input
+            value={tagText}
+            onChange={(e) => setTagText(e.target.value)}
+            className="h-6 rounded bg-bg text-xs"
+            placeholder="Tags (comma separated)"
           />
           <button
             onClick={handleSave}
@@ -89,13 +102,12 @@ export default function MediaFileItem({ item, shop, onDelete, onReplace }: Props
             Save
           </button>
         </div>
-      ) : (
-        item.altText && item.type === "image" && (
-          <p className="absolute bottom-1 left-1 bg-fg/50 px-1 text-xs text-bg">
-            {item.altText}
-          </p>
-        )
-      )}
+      ) : (item.altText || (item.tags && item.tags.length > 0)) ? (
+        <div className="absolute bottom-1 left-1 right-1 bg-fg/50 px-1 text-xs text-bg">
+          {item.altText && item.type === "image" && <p>{item.altText}</p>}
+          {item.tags && item.tags.length > 0 && <p>{item.tags.join(", ")}</p>}
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";
 import type { Campaign } from "./storage";
+import { syncCampaignAnalytics as fetchCampaignAnalytics } from "./analytics";
 
 function trackedBody(shop: string, id: string, body: string): string {
   const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";
@@ -106,4 +107,11 @@ export async function sendDueCampaigns(): Promise<void> {
     }
     if (changed) await store.writeCampaigns(shop, campaigns);
   }
+}
+
+/**
+ * Periodically sync campaign analytics for all shops.
+ */
+export async function syncCampaignAnalytics(): Promise<void> {
+  await fetchCampaignAnalytics();
 }

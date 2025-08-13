@@ -51,7 +51,8 @@ export async function updateShop(
   const data: ShopForm = parsed.data;
 
   const overrides = data.themeOverrides as Record<string, string>;
-  let themeDefaults = data.themeDefaults as Record<string, string>;
+  let themeDefaults =
+    data.themeDefaults as Record<string, string> | undefined;
   if (!themeDefaults || Object.keys(themeDefaults).length === 0) {
     themeDefaults =
       current.themeId !== data.themeId

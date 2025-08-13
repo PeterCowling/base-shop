@@ -59,7 +59,11 @@ describe("shop actions", () => {
         },
       }));
 
-      jest.doMock("@acme/config", () => ({ env: {} }));
+      jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "secret" } }));
+      jest.doMock("@platform-core/src/createShop", () => ({
+        syncTheme: jest.fn(),
+        loadTokens: jest.fn().mockReturnValue({}),
+      }));
 
       /* ----------------------------------------------------------------
        *  Mock an admin session
@@ -116,7 +120,7 @@ describe("shop actions", () => {
       },
     }));
 
-      jest.doMock("@acme/config", () => ({ env: {} }));
+      jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "secret" } }));
 
       const adminSession = { user: { role: "admin" } } as unknown as Session;
 
@@ -132,6 +136,10 @@ describe("shop actions", () => {
       jest.doMock("@platform-core/src/createShop", () => ({
         syncTheme: jest.fn(),
         loadTokens: jest.fn().mockReturnValue(defaultTokens),
+      }));
+      jest.doMock("@platform-core/src/themeTokens", () => ({
+        baseTokens: {},
+        loadThemeTokens: jest.fn().mockResolvedValue(defaultTokens),
       }));
 
       const { updateShop } = await import("../src/actions/shops.server");
@@ -151,12 +159,13 @@ describe("shop actions", () => {
       expect(saved.themeTokens).toEqual({ ...defaultTokens, ...overrides });
       expect(result.shop?.themeTokens).toEqual({ ...defaultTokens, ...overrides });
 
-      const { getShopById } = await import(
-        "@platform-core/src/repositories/shop.server"
+      const { readShop } = await import(
+        "@platform-core/src/repositories/shops.server"
       );
-      const reloaded = await getShopById("test");
+      const reloaded = await readShop("test");
       expect(reloaded.themeDefaults).toEqual(defaultTokens);
       expect(reloaded.themeOverrides).toEqual(overrides);
+      expect(reloaded.themeTokens).toEqual({ ...defaultTokens, ...overrides });
     });
   });
 });

@@ -39,6 +39,7 @@ export async function readShop(shop: string): Promise<Shop> {
               ...(await loadThemeTokens(data.themeId)),
             };
       const overrides = data.themeOverrides ?? {};
+      // ensure callers always receive defaults, overrides, and merged tokens
       data.themeDefaults = defaults;
       data.themeOverrides = overrides;
       data.themeTokens = { ...defaults, ...overrides };
@@ -60,6 +61,7 @@ export async function readShop(shop: string): Promise<Shop> {
               ...(await loadThemeTokens(parsed.data.themeId)),
             };
       const overrides = parsed.data.themeOverrides ?? {};
+      // ensure callers always receive defaults, overrides, and merged tokens
       parsed.data.themeDefaults = defaults;
       parsed.data.themeOverrides = overrides;
       parsed.data.themeTokens = { ...defaults, ...overrides };

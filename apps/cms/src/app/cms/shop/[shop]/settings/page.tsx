@@ -12,6 +12,20 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+const HEX_RE = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
+const HSL_RE =
+  /^\d+(?:\.\d+)?\s+\d+(?:\.\d+)?%\s+\d+(?:\.\d+)?%$/;
+
+function isColor(value: string) {
+  return HEX_RE.test(value) || HSL_RE.test(value);
+}
+
+function swatchStyle(value: string) {
+  return {
+    backgroundColor: HSL_RE.test(value) ? `hsl(${value})` : value,
+  } as const;
+}
+
 const ShopEditor = dynamic(() => import("./ShopEditor"));
 void ShopEditor;
 const CurrencyTaxEditor = dynamic(() => import("./CurrencyTaxEditor"));
@@ -75,8 +89,32 @@ export default async function SettingsPage({
               return (
                 <tr key={k} className={changed ? "bg-yellow-50" : undefined}>
                   <td className="pr-4 font-mono">{k}</td>
-                  <td className="pr-4 font-mono">{defaultTokens[k]}</td>
-                  <td className="pr-4 font-mono">{override ?? ""}</td>
+                  <td className="pr-4 font-mono">
+                    {defaultTokens[k]}
+                    {isColor(defaultTokens[k]) && (
+                      <span
+                        className="ml-2 inline-block h-4 w-4 rounded border align-middle"
+                        style={swatchStyle(defaultTokens[k])}
+                      />
+                    )}
+                  </td>
+                  <td className="pr-4 font-mono">
+                    {override ?? ""}
+                    {override && isColor(override) && (
+                      <span
+                        className="ml-2 inline-block h-4 w-4 rounded border align-middle"
+                        style={swatchStyle(override)}
+                      />
+                    )}
+                    {changed && (
+                      <Link
+                        href={`/cms/shop/${shop}/themes#${k}`}
+                        className="ml-2 text-xs text-primary underline"
+                      >
+                        reset override
+                      </Link>
+                    )}
+                  </td>
                 </tr>
               );
             })}

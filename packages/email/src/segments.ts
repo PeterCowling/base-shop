@@ -13,6 +13,12 @@ interface SegmentDef {
   filters: { field: string; value: string }[];
 }
 
+interface CacheEntry {
+  emails: string[];
+  expires: number;
+  mtimeMs: number;
+}
+
 const providers: Record<string, CampaignProvider> = {
   sendgrid: new SendgridProvider(),
   resend: new ResendProvider(),
@@ -34,6 +40,27 @@ async function readSegments(shop: string): Promise<SegmentDef[]> {
     return [];
   }
 }
+
+function cacheTtl(): number {
+  const ttl = Number(process.env.SEGMENT_CACHE_TTL);
+  return Number.isFinite(ttl) && ttl > 0 ? ttl : 60_000;
+}
+
+async function analyticsMTime(shop: string): Promise<number> {
+  const file = path.join(
+    DATA_ROOT,
+    validateShopName(shop),
+    "analytics.jsonl"
+  );
+  try {
+    const stat = await fs.stat(file);
+    return stat.mtimeMs;
+  } catch {
+    return 0;
+  }
+}
+
+const segmentCache = new Map<string, CacheEntry>();
 
 export async function createContact(email: string): Promise<string> {
   const provider = getProvider();
@@ -62,9 +89,21 @@ export async function resolveSegment(
   shop: string,
   id: string
 ): Promise<string[]> {
+  const key = `${shop}:${id}`;
+  const now = Date.now();
+  const mtime = await analyticsMTime(shop);
+  const cached = segmentCache.get(key);
+  if (cached && cached.expires > now && cached.mtimeMs === mtime) {
+    return cached.emails;
+  }
+
   const segments = await readSegments(shop);
   const def = segments.find((s) => s.id === id);
-  if (!def) return [];
+  if (!def) {
+    segmentCache.delete(key);
+    return [];
+  }
+
   const events = await listEvents(shop);
   const emails = new Set<string>();
   for (const e of events) {
@@ -80,5 +119,11 @@ export async function resolveSegment(
       if (typeof email === "string") emails.add(email);
     }
   }
-  return Array.from(emails);
+  const resolved = Array.from(emails);
+  segmentCache.set(key, {
+    emails: resolved,
+    expires: now + cacheTtl(),
+    mtimeMs: mtime,
+  });
+  return resolved;
 }

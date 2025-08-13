@@ -58,6 +58,33 @@ export async function handleStripeWebhook(
       await persistRiskFromCharge(shop, charge);
       break;
     }
+    case "review.opened": {
+      const review = data.object as Stripe.Review;
+      const charge = review.charge;
+      const chargeId = typeof charge === "string" ? charge : charge?.id;
+      if (chargeId) {
+        await updateRisk(shop, chargeId, undefined, undefined, true);
+      }
+      break;
+    }
+    case "review.closed": {
+      const review = data.object as Stripe.Review;
+      const charge = review.charge as Stripe.Charge | string | null;
+      const chargeId = typeof charge === "string" ? charge : charge?.id;
+      if (chargeId) {
+        const outcome = typeof charge === "string" ? undefined : charge?.outcome;
+        const riskLevel = outcome?.risk_level;
+        const riskScore = outcome?.risk_score;
+        await updateRisk(
+          shop,
+          chargeId,
+          riskLevel,
+          typeof riskScore === "number" ? riskScore : undefined,
+          false
+        );
+      }
+      break;
+    }
     default: {
       if (type.startsWith("radar.early_fraud_warning.")) {
         const warning = data.object as any; // Stripe.Radar.EarlyFraudWarning

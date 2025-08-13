@@ -4,35 +4,45 @@
     "view_products",
     "add_to_cart",
     "checkout",
+    "view_profile",
     "manage_profile",
+    "change_password",
     "manage_cart"
   ],
   "admin": [
     "view_products",
     "add_to_cart",
     "checkout",
+    "view_profile",
     "manage_profile",
+    "change_password",
     "manage_cart"
   ],
   "ShopAdmin": [
     "view_products",
     "add_to_cart",
     "checkout",
+    "view_profile",
     "manage_profile",
+    "change_password",
     "manage_cart"
   ],
   "CatalogManager": [
     "view_products",
     "add_to_cart",
     "checkout",
+    "view_profile",
     "manage_profile",
+    "change_password",
     "manage_cart"
   ],
   "ThemeEditor": [
     "view_products",
     "add_to_cart",
     "checkout",
+    "view_profile",
     "manage_profile",
+    "change_password",
     "manage_cart"
   ]
 }

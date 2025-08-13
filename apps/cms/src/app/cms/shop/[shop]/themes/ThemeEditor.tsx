@@ -2,10 +2,21 @@
 
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
+import StyleEditor from "@/components/cms/StyleEditor";
 import { updateShop } from "@cms/actions/shops.server";
-import { savePreset, deletePreset } from "./page";
 import ColorContrastChecker from "color-contrast-checker";
-import { useState, ChangeEvent, FormEvent, useMemo, useRef, useEffect } from "react";
+import {
+  useState,
+  ChangeEvent,
+  FormEvent,
+  useMemo,
+  useRef,
+  useEffect,
+  type CSSProperties,
+} from "react";
+import WizardPreview from "../../../wizard/WizardPreview";
+import { type TokenMap } from "../../../wizard/tokenUtils";
+import { savePreset, deletePreset } from "./page";
 
 const HEX_RE = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
 const HSL_RE = /^\d+(?:\.\d+)?\s+\d+(?:\.\d+)?%\s+\d+(?:\.\d+)?%$/;
@@ -125,7 +136,7 @@ export default function ThemeEditor({
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
-  const previewRef = useRef<HTMLIFrameElement | null>(null);
+  const [selectedToken, setSelectedToken] = useState<string | null>(null);
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByThemeState[theme];
@@ -152,62 +163,6 @@ export default function ThemeEditor({
     );
   }, [overrides, tokensByThemeState, theme]);
 
-  useEffect(() => {
-    const handleMessage = (e: MessageEvent) => {
-      const token = (e.data as { token?: string })?.token;
-      if (token) {
-        overrideRefs.current[token]?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        overrideRefs.current[token]?.focus();
-      }
-    };
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, []);
-
-  useEffect(() => {
-    const iframe = previewRef.current;
-    if (!iframe) return;
-
-    const handleClick = (e: MouseEvent) => {
-      const el = (e.target as HTMLElement).closest("[data-token]");
-      if (!el) return;
-      e.preventDefault();
-      e.stopPropagation();
-      const token = el.getAttribute("data-token");
-      if (token) {
-        overrideRefs.current[token]?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-        overrideRefs.current[token]?.focus();
-      }
-    };
-
-    const applyTokens = () => {
-      const doc = iframe.contentDocument;
-      if (!doc) return;
-      const root = doc.documentElement;
-      const tokens = tokensByThemeState[theme];
-      Object.entries(tokens).forEach(([k, v]) => {
-        root.style.setProperty(k, overrides[k] ?? v);
-      });
-      doc.addEventListener("click", handleClick);
-    };
-
-    iframe.addEventListener("load", applyTokens);
-    if (iframe.contentDocument?.readyState === "complete") {
-      applyTokens();
-    }
-
-    return () => {
-      iframe.removeEventListener("load", applyTokens);
-      const doc = iframe.contentDocument;
-      doc?.removeEventListener("click", handleClick);
-    };
-  }, [theme, overrides, tokensByThemeState]);
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
@@ -238,6 +193,22 @@ export default function ThemeEditor({
       return next;
     });
   };
+
+  const handleStyleChange = (next: TokenMap) => {
+    const baseTokens = tokensByThemeState[theme] as TokenMap;
+    const overridesCopy: TokenMap = { ...next };
+    for (const key of Object.keys(overridesCopy)) {
+      if (overridesCopy[key as keyof TokenMap] === baseTokens[key as keyof TokenMap]) {
+        delete overridesCopy[key as keyof TokenMap];
+      }
+    }
+    setOverrides(overridesCopy);
+  };
+
+  const previewStyle = useMemo(
+    () => ({ ...tokensByThemeState[theme], ...overrides } as CSSProperties),
+    [tokensByThemeState, theme, overrides]
+  );
 
   useEffect(() => {
     const ccc = new ColorContrastChecker();
@@ -368,12 +339,19 @@ export default function ThemeEditor({
           </ul>
         </div>
       )}
-      <iframe
-        ref={previewRef}
-        src={`/${shop}`}
-        title="shop-preview"
-        className="h-64 w-full rounded border"
+      <WizardPreview
+        style={previewStyle}
+        inspectMode
+        onTokenSelect={(t) => setSelectedToken(t)}
       />
+      {selectedToken && (
+        <StyleEditor
+          tokens={overrides as TokenMap}
+          baseTokens={tokensByThemeState[theme] as TokenMap}
+          onChange={handleStyleChange}
+          focusToken={selectedToken}
+        />
+      )}
       <div className="space-y-6">
         {Object.entries(groupedTokens).map(([groupName, tokens]) => (
           <fieldset key={groupName} className="space-y-2">

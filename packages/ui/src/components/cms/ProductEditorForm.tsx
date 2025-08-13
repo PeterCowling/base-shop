@@ -44,6 +44,8 @@ export default function ProductEditorForm({
     uploader,
     removeMedia,
     moveMedia,
+    addVariantValue,
+    removeVariantValue,
   } = useProductEditorFormState(init, locales, onSave);
 
   /* ---------------- UI ---------------- */
@@ -74,14 +76,35 @@ export default function ProductEditorForm({
 
           {/* Variant attributes -------------------------------------- */}
           {Object.entries(product.variants).map(([attr, values]) => (
-            <label key={attr} className="flex max-w-xs flex-col gap-1">
+            <div key={attr} className="flex flex-col gap-2">
               <span>{`Variant ${attr}`}</span>
-              <Input
-                name={`variant_${attr}`}
-                value={values.join(",")}
-                onChange={handleChange}
-              />
-            </label>
+              {values.map((v, i) => (
+                <div
+                  key={i}
+                  className="flex max-w-xs items-center gap-2"
+                >
+                  <Input
+                    name={`variant_${attr}_${i}`}
+                    value={v}
+                    onChange={handleChange}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeVariantValue(attr, i)}
+                    className="rounded bg-fg/50 px-1 text-xs text-bg"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={() => addVariantValue(attr)}
+                className="w-fit rounded border px-2 py-1 text-xs"
+              >
+                Add
+              </button>
+            </div>
           ))}
 
           {/* Publish locations ----------------------------------------- */}

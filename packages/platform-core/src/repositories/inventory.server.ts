@@ -87,3 +87,74 @@ export async function readInventoryMap(
     items.map((i) => [variantKey(i.sku, i.variantAttributes), i]),
   );
 }
+
+const shopLocks = new Map<string, Promise<void>>();
+
+function mergeDefined<T extends object>(base: T, patch: Partial<T>): T {
+  const defined = Object.fromEntries(
+    Object.entries(patch).filter(([, v]) => v !== undefined)
+  ) as Partial<T>;
+  return { ...base, ...defined } as T;
+}
+
+async function withLock<T>(shop: string, fn: () => Promise<T>): Promise<T> {
+  shop = validateShopName(shop);
+  const prev = shopLocks.get(shop) ?? Promise.resolve();
+  let release: () => void;
+  const next = new Promise<void>((resolve) => (release = resolve));
+  shopLocks.set(shop, prev.then(() => next));
+  await prev;
+  try {
+    return await fn();
+  } finally {
+    release();
+    if (shopLocks.get(shop) === next) shopLocks.delete(shop);
+  }
+}
+
+export async function updateInventoryItem(
+  shop: string,
+  sku: string,
+  variantAttributes: Record<string, string>,
+  patch: Partial<Omit<InventoryItem, "sku" | "variantAttributes"> & { productId: string }>
+): Promise<InventoryItem> {
+  return withLock(shop, async () => {
+    let items: InventoryItem[];
+    try {
+      items = await readInventory(shop);
+    } catch {
+      items = [];
+    }
+    const key = variantKey(sku, variantAttributes);
+    const idx = items.findIndex(
+      (i) => variantKey(i.sku, i.variantAttributes) === key
+    );
+    let item: InventoryItem;
+    if (idx === -1) {
+      if (patch.productId === undefined || patch.quantity === undefined) {
+        throw new Error(`Inventory item ${key} not found in ${shop}`);
+      }
+      item = inventoryItemSchema.parse({
+        sku,
+        productId: patch.productId,
+        quantity: patch.quantity,
+        variantAttributes,
+        ...(patch.lowStockThreshold !== undefined
+          ? { lowStockThreshold: patch.lowStockThreshold }
+          : {}),
+      });
+      items.push(item);
+    } else {
+      const current = items[idx];
+      const updated = mergeDefined(current, patch);
+      item = inventoryItemSchema.parse({
+        ...updated,
+        sku,
+        variantAttributes: { ...variantAttributes },
+      });
+      items[idx] = item;
+    }
+    await writeInventory(shop, items);
+    return item;
+  });
+}

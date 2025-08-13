@@ -1,4 +1,7 @@
 import { jest } from "@jest/globals";
+import { promises as fs } from "node:fs";
+import * as path from "node:path";
+import { DATA_ROOT } from "../src/dataRoot";
 
 const REQUIRED_ENV = {
   STRIPE_SECRET_KEY: "sk",
@@ -6,10 +9,13 @@ const REQUIRED_ENV = {
 };
 
 describe("stock alerts", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.resetModules();
     Object.assign(process.env, REQUIRED_ENV, {
       STOCK_ALERT_RECIPIENT: "alert@example.com",
+    });
+    await fs.rm(path.join(DATA_ROOT, "shop", "stock-alert-log.json"), {
+      force: true,
     });
   });
 
@@ -110,6 +116,36 @@ describe("stock alerts", () => {
     ]);
 
     expect(sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("suppresses alerts only for the same variant", async () => {
+    const sendEmail = jest.fn();
+    jest.doMock("@acme/email", () => ({ sendEmail }));
+
+    const { checkAndAlert } = await import(
+      "../src/services/stockAlert.server"
+    );
+
+    const item = {
+      sku: "sku-1",
+      productId: "p1",
+      variantAttributes: { size: "m" },
+      quantity: 1,
+      lowStockThreshold: 2,
+    };
+
+    await checkAndAlert("shop", [item]);
+    expect(sendEmail).toHaveBeenCalledTimes(1);
+    sendEmail.mockClear();
+
+    // Same variant again should be suppressed
+    await checkAndAlert("shop", [item]);
+    expect(sendEmail).not.toHaveBeenCalled();
+
+    // Different variant of same SKU should trigger
+    const otherVariant = { ...item, variantAttributes: { size: "l" } };
+    await checkAndAlert("shop", [otherVariant]);
+    expect(sendEmail).toHaveBeenCalledTimes(1);
   });
 
   it("logs an error when sendEmail rejects", async () => {

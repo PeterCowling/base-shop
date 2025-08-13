@@ -36,6 +36,8 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    /** Enabled tracking providers like UPS, DHL, etc. */
+    trackingProviders: z.array(z.string()).optional(),
     freezeTranslations: z.boolean().optional(),
     /** ISO currency code used as the shop's base currency */
     currency: z.string().length(3).optional(),

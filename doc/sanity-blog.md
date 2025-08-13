@@ -2,6 +2,10 @@
 
 Shop owners can connect a Sanity project to manage blog posts alongside the shop catalog. Follow these steps to enable and use the integration.
 
+## Schema
+
+When setting up the connection the CMS seeds a minimal schema. Posts include a `mainImage` field using Sanity's `image` type and a `categories` field that stores references to `category` documents. A `category` document contains a `title` and generated `slug` so categories can be reused across posts.
+
 ## Connect your Sanity project
 
 1. Obtain your **project ID**, **dataset**, and an API **token** from the Sanity dashboard.

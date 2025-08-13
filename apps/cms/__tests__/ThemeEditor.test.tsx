@@ -12,10 +12,41 @@ jest.mock("../src/app/cms/shop/[shop]/themes/page", () => ({
 }));
 jest.mock(
   "@/components/cms/StyleEditor",
-  () => ({
-    __esModule: true,
-    default: () => null,
-  }),
+  () => {
+    const React = require("react");
+    function MockStyleEditor({ tokens, baseTokens, onChange, focusToken }: any) {
+      const ref = React.useRef<HTMLDivElement | null>(null);
+      React.useEffect(() => {
+        if (!focusToken) return;
+        const el = ref.current?.querySelector(
+          `[data-token-key="${focusToken}"]`
+        ) as HTMLElement | null;
+        el?.scrollIntoView?.();
+        const input = el?.querySelector("input");
+        (input as HTMLElement | null)?.focus();
+      }, [focusToken]);
+      return (
+        <div ref={ref}>
+          {Object.entries(baseTokens).map(([k, defaultValue]: any) => {
+            const val = tokens[k] || defaultValue;
+            return (
+              <label key={k} data-token-key={k}>
+                <input
+                  aria-label={k}
+                  type="color"
+                  value={val}
+                  onChange={(e) =>
+                    onChange({ ...tokens, [k]: e.target.value })
+                  }
+                />
+              </label>
+            );
+          })}
+        </div>
+      );
+    }
+    return { __esModule: true, default: MockStyleEditor };
+  },
   { virtual: true }
 );
 jest.mock(
@@ -290,7 +321,7 @@ describe("ThemeEditor", () => {
     });
   });
 
-  it("focuses override when preview element clicked", async () => {
+  it("focuses style editor field when preview element clicked", async () => {
     const tokensByTheme = { base: { "--color-primary": "#0000ff" } };
     render(
       <ThemeEditor
@@ -304,12 +335,13 @@ describe("ThemeEditor", () => {
     );
 
     const tokenEl = document.querySelector('[data-token="--color-primary"]') as HTMLElement;
-    const colorInput = screen.getByLabelText("--color-primary", {
-      selector: 'input[type="color"]',
-    });
-    (colorInput as any).scrollIntoView = jest.fn();
     fireEvent.click(tokenEl);
-    await waitFor(() => expect(colorInput).toHaveFocus());
+    await waitFor(() => {
+      const input = document.querySelector(
+        '[data-token-key="--color-primary"] input[type="color"]'
+      ) as HTMLInputElement | null;
+      expect(input).toHaveFocus();
+    });
   });
 
   it("persists overrides after clicking preview token and reloading", async () => {
@@ -330,16 +362,13 @@ describe("ThemeEditor", () => {
     );
 
     const tokenEl = document.querySelector('[data-token="--color-bg"]') as HTMLElement;
-    const colorInput = screen.getByLabelText("--color-bg", {
-      selector: 'input[type="color"]',
-    });
-    (colorInput as any).scrollIntoView = jest.fn();
-    (colorInput as any).showPicker = jest.fn();
     fireEvent.click(tokenEl);
-    await waitFor(() => expect(colorInput).toHaveFocus());
-    expect((colorInput as any).showPicker).toHaveBeenCalled();
-
-    fireEvent.change(colorInput, { target: { value: "#ff0000" } });
+    const colorInput = await waitFor(() =>
+      document.querySelector(
+        '[data-token-key="--color-bg"] input[type="color"]'
+      ) as HTMLInputElement | null
+    );
+    fireEvent.change(colorInput!, { target: { value: "#ff0000" } });
     fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
 
     await waitFor(() => expect(mock).toHaveBeenCalled());

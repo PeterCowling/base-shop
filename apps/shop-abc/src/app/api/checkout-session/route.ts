@@ -114,12 +114,20 @@ const computeTotals = async (
 
 export const runtime = "edge";
 
+const currencySchema = z.enum(["EUR", "USD", "GBP"], {
+  errorMap: () => ({ message: "Invalid currency" }),
+});
+
+const taxRegionSchema = z.enum(["EU", "US"], {
+  errorMap: () => ({ message: "Invalid taxRegion" }),
+});
+
 const schema = z
   .object({
     returnDate: z.string().optional(),
     coupon: z.string().optional(),
-    currency: z.string().default("EUR"),
-    taxRegion: z.string().default(""),
+    currency: currencySchema.default("EUR"),
+    taxRegion: taxRegionSchema.optional().transform((v) => v ?? ""),
     customer: z.string().optional(),
     shipping: shippingSchema.optional(),
     billing_details: billingSchema.optional(),
@@ -135,9 +143,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
   }
-  let session;
+  let userSession;
   try {
-    session = await requirePermission("checkout");
+    userSession = await requirePermission("checkout");
   } catch {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -203,7 +211,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   );
 
   /* 5️⃣ Create Checkout Session -------------------------------------------- */
-  const customer = customerId ?? session.customerId;
+  const customer = customerId ?? userSession.customerId;
   const clientIp =
     req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
 
@@ -231,7 +239,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     (paymentIntentData as any).billing_details = billing_details;
   }
 
-  const session = await stripe.checkout.sessions.create({
+  const stripeSession = await stripe.checkout.sessions.create({
     mode: "payment",
     customer,
     line_items,
@@ -257,9 +265,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   /* 6️⃣ Return client credentials ------------------------------------------ */
   const clientSecret =
-    typeof session.payment_intent === "string"
+    typeof stripeSession.payment_intent === "string"
       ? undefined
-      : session.payment_intent?.client_secret;
+      : stripeSession.payment_intent?.client_secret;
 
-  return NextResponse.json({ clientSecret, sessionId: session.id });
+  return NextResponse.json({ clientSecret, sessionId: stripeSession.id });
 }

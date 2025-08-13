@@ -2,6 +2,7 @@
 import { encodeCartCookie } from "@platform-core/src/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@acme/date-utils";
+import { ReadableStream } from "node:stream/web";
 import { POST } from "../src/app/api/checkout-session/route";
 
 jest.mock("next/server", () => ({
@@ -37,8 +38,16 @@ function createRequest(
   url = "http://store.example/api/checkout-session",
   headers: Record<string, string> = {}
 ): Parameters<typeof POST>[0] {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream<Uint8Array>({
+    start(controller) {
+      controller.enqueue(encoder.encode(JSON.stringify(body)));
+      controller.close();
+    },
+  });
+
   return {
-    json: async () => body,
+    body: stream,
     cookies: { get: () => ({ name: "", value: cookie }) },
     nextUrl: Object.assign(new URL(url), { clone: () => new URL(url) }),
     headers: {
@@ -115,4 +124,30 @@ test("responds with 400 on invalid returnDate", async () => {
   expect(res.status).toBe(400);
   const body = await res.json();
   expect(body.error).toMatch(/invalid/i);
+});
+
+test("responds with 400 on invalid currency", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest({ returnDate: "2025-01-02", currency: "XYZ" }, cookie);
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+  const body = await res.json();
+  expect(body.currency?.[0]).toMatch(/invalid/i);
+});
+
+test("responds with 400 on invalid taxRegion", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest({ returnDate: "2025-01-02", taxRegion: "XX" }, cookie);
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+  const body = await res.json();
+  expect(body.taxRegion?.[0]).toMatch(/invalid/i);
 });

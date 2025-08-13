@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 import { coreEnv } from "@acme/config/env/core";
 import type { CampaignOptions } from "../send";
-import type { CampaignProvider } from "./types";
+import type { CampaignProvider, CampaignStat } from "./types";
 
 export class ResendProvider implements CampaignProvider {
   private client: Resend;
@@ -18,5 +18,10 @@ export class ResendProvider implements CampaignProvider {
       html: options.html,
       text: options.text,
     });
+  }
+
+  async getCampaignStats(): Promise<CampaignStat[]> {
+    // Resend currently lacks a public stats API; return empty metrics.
+    return [];
   }
 }

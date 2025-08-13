@@ -1,7 +1,7 @@
 import sgMail from "@sendgrid/mail";
 import { coreEnv } from "@acme/config/env/core";
 import type { CampaignOptions } from "../send";
-import type { CampaignProvider } from "./types";
+import type { CampaignProvider, CampaignStat } from "./types";
 
 export class SendgridProvider implements CampaignProvider {
   constructor() {
@@ -18,5 +18,10 @@ export class SendgridProvider implements CampaignProvider {
       html: options.html,
       text: options.text,
     });
+  }
+
+  async getCampaignStats(): Promise<CampaignStat[]> {
+    // Sendgrid stats are not fetched in tests; return empty metrics.
+    return [];
   }
 }

@@ -1,49 +1,15 @@
-import { promises as fs } from "node:fs";
-import path from "node:path";
-import { sendCampaignEmail, resolveSegment } from "./index";
+import { sendCampaignEmail } from "./send";
+import { resolveSegment } from "./segments";
 import { trackEvent } from "@platform-core/analytics";
-import { DATA_ROOT } from "@platform-core/dataRoot";
 import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
-
-interface Campaign {
-  id: string;
-  recipients: string[];
-  subject: string;
-  body: string;
-  segment?: string | null;
-  sendAt: string;
-  sentAt?: string;
-  templateId?: string | null;
-}
-
-function campaignsPath(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "campaigns.json");
-}
-
-async function readCampaigns(shop: string): Promise<Campaign[]> {
-  try {
-    const buf = await fs.readFile(campaignsPath(shop), "utf8");
-    const json = JSON.parse(buf);
-    if (Array.isArray(json)) return json as Campaign[];
-  } catch {}
-  return [];
-}
-
-async function writeCampaigns(shop: string, items: Campaign[]): Promise<void> {
-  await fs.mkdir(path.dirname(campaignsPath(shop)), { recursive: true });
-  await fs.writeFile(
-    campaignsPath(shop),
-    JSON.stringify(items, null, 2),
-    "utf8"
-  );
-}
+import { getCampaignStore } from "./storage";
+import type { Campaign } from "./storage";
 
 function trackedBody(shop: string, id: string, body: string): string {
   const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";
   const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
-    shop
+    shop,
   )}&campaign=${encodeURIComponent(id)}`;
   const bodyWithPixel =
     body +
@@ -52,8 +18,8 @@ function trackedBody(shop: string, id: string, body: string): string {
     /href="([^"]+)"/g,
     (_m, url) =>
       `href="${base}/api/marketing/email/click?shop=${encodeURIComponent(
-        shop
-      )}&campaign=${encodeURIComponent(id)}&url=${encodeURIComponent(url)}"`
+        shop,
+      )}&campaign=${encodeURIComponent(id)}&url=${encodeURIComponent(url)}"`,
   );
 }
 
@@ -77,7 +43,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
 }
 
 export async function listCampaigns(shop: string): Promise<Campaign[]> {
-  return readCampaigns(shop);
+  return getCampaignStore().readCampaigns(shop);
 }
 
 export async function createCampaign(opts: {
@@ -119,24 +85,25 @@ export async function createCampaign(opts: {
   if (scheduled <= new Date()) {
     await deliverCampaign(shop, campaign);
   }
-  const campaigns = await readCampaigns(shop);
+  const store = getCampaignStore();
+  const campaigns = await store.readCampaigns(shop);
   campaigns.push(campaign);
-  await writeCampaigns(shop, campaigns);
+  await store.writeCampaigns(shop, campaigns);
   return id;
 }
 
 export async function sendDueCampaigns(): Promise<void> {
-  const shops = await fs.readdir(DATA_ROOT).catch(() => []);
+  const store = getCampaignStore();
+  const shops = await store.listShops();
   const now = new Date();
   for (const shop of shops) {
-    const campaigns = await readCampaigns(shop);
+    const campaigns = await store.readCampaigns(shop);
     let changed = false;
     for (const c of campaigns) {
       if (c.sentAt || new Date(c.sendAt) > now) continue;
       await deliverCampaign(shop, c);
       changed = true;
     }
-    if (changed) await writeCampaigns(shop, campaigns);
+    if (changed) await store.writeCampaigns(shop, campaigns);
   }
 }
-

@@ -46,7 +46,9 @@ function createRequest(
   } as any;
 }
 
-test("builds Stripe session with correct items and metadata", async () => {
+test(
+  "builds Stripe session with correct items and metadata and forwards IP",
+  async () => {
   jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
   stripeCreate.mockResolvedValue({
     id: "sess_test",
@@ -85,7 +87,7 @@ test("builds Stripe session with correct items and metadata", async () => {
   const body = await res.json();
 
   expect(stripeCreate).toHaveBeenCalled();
-  const args = stripeCreate.mock.calls[0][0];
+  const [args, options] = stripeCreate.mock.calls[0];
 
   expect(args.line_items).toHaveLength(2);
   expect(args.line_items).toHaveLength(2);
@@ -97,8 +99,7 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(
     args.payment_intent_data.payment_method_options.card.request_three_d_secure
   ).toBe("automatic");
-  expect(args.payment_intent_data.metadata.client_ip).toBe("203.0.113.1");
-  expect(args.metadata.client_ip).toBe("203.0.113.1");
+  expect(options.headers["Stripe-Client-IP"]).toBe("203.0.113.1");
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
   expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: size }));
   expect(args.metadata.subtotal).toBe("20");

@@ -8,8 +8,10 @@ const pixel = Buffer.from(
 );
 
 export async function GET(req: NextRequest) {
-  const shop = req.nextUrl.searchParams.get("shop");
-  const campaign = req.nextUrl.searchParams.get("campaign");
+  const params = req.nextUrl.searchParams;
+  params.delete("t");
+  const shop = params.get("shop");
+  const campaign = params.get("campaign");
   if (shop && campaign) {
     await emitOpen(shop, { campaign });
   }

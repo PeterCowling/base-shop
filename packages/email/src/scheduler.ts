@@ -12,7 +12,7 @@ function trackedBody(shop: string, id: string, body: string): string {
   const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";
   const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
     shop,
-  )}&campaign=${encodeURIComponent(id)}`;
+  )}&campaign=${encodeURIComponent(id)}&t=${Date.now()}`;
   const bodyWithPixel =
     body +
     `<img src="${pixelUrl}" alt="" style="display:none" width="1" height="1"/>`;

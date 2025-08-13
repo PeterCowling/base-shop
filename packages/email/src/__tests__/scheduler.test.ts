@@ -83,6 +83,30 @@ describe("scheduler", () => {
     expect(futureCampaign.sentAt).toBeUndefined();
   });
 
+  it("includes token in tracking pixel URL", async () => {
+    const past = new Date(Date.now() - 1000).toISOString();
+    const campaigns = [
+      {
+        id: "c1",
+        recipients: ["token@example.com"],
+        subject: "Token",
+        body: "<p>Token</p>",
+        sendAt: past,
+      },
+    ];
+    await fs.writeFile(
+      path.join(shopDir, "campaigns.json"),
+      JSON.stringify(campaigns, null, 2),
+      "utf8",
+    );
+
+    const { sendDueCampaigns } = await import("../scheduler");
+    await sendDueCampaigns();
+
+    const call = sendCampaignEmailMock.mock.calls[0][0];
+    expect(call.html).toMatch(/open\?shop=.*&campaign=.*&t=\d+/);
+  });
+
   it("creates campaigns and lists them", async () => {
     const { createCampaign, listCampaigns } = await import("../scheduler");
     const future = new Date(Date.now() + 1000).toISOString();

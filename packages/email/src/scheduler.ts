@@ -7,6 +7,7 @@ import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";
 import type { Campaign } from "./types";
 import { syncCampaignAnalytics as fetchCampaignAnalytics } from "./analytics";
+import { renderTemplate } from "./templates";
 
 export interface Clock {
   now(): Date;
@@ -59,7 +60,14 @@ async function filterUnsubscribed(
 
 async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   shop = validateShopName(shop);
-  const baseHtml = trackedBody(shop, c.id, c.body);
+  let rendered = c.body;
+  if (c.templateId) {
+    rendered = renderTemplate(c.templateId, {
+      subject: c.subject,
+      body: c.body,
+    });
+  }
+  const baseHtml = trackedBody(shop, c.id, rendered);
   let recipients = c.recipients;
   if (c.segment) {
     recipients = await resolveSegment(shop, c.segment);

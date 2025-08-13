@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-import { createCampaign, listCampaigns, type Campaign } from "@acme/email";
+import {
+  createCampaign,
+  listCampaigns,
+  type Campaign,
+  renderTemplate,
+} from "@acme/email";
 import { listEvents } from "@platform-core/repositories/analytics.server";
-import { marketingEmailTemplates } from "@acme/ui";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
@@ -52,20 +54,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
   let html = body;
   if (templateId) {
-    const variant = marketingEmailTemplates.find((t) => t.id === templateId);
-    if (variant) {
-      html = renderToStaticMarkup(
-        variant.render({
-          headline: subject,
-          content: React.createElement("div", {
-            dangerouslySetInnerHTML: { __html: body },
-          }),
-          footer: React.createElement("p", null, "%%UNSUBSCRIBE%%"),
-        })
-      );
-    }
-  }
-  if (!templateId) {
+    html = renderTemplate(templateId, { subject, body });
+  } else {
     html = `${body}<p>%%UNSUBSCRIBE%%</p>`;
   }
   try {

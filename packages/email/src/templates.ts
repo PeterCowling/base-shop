@@ -1,3 +1,7 @@
+import * as React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { marketingEmailTemplates } from "@acme/ui";
+
 const templates: Record<string, string> = {};
 
 /**
@@ -22,11 +26,31 @@ export function clearTemplates(): void {
  */
 export function renderTemplate(
   id: string,
-  variables: Record<string, string>,
+  params: Record<string, string>,
 ): string {
   const source = templates[id];
-  if (!source) throw new Error(`Unknown template: ${id}`);
-  return source.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => {
-    return variables[key] ?? "";
-  });
+  if (source) {
+    return source.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => {
+      return params[key] ?? "";
+    });
+  }
+
+  const variant = marketingEmailTemplates.find((t) => t.id === id);
+  if (variant) {
+    return renderToStaticMarkup(
+      variant.render({
+        headline: params.headline ?? params.subject ?? "",
+        content: React.createElement("div", {
+          dangerouslySetInnerHTML: { __html: params.body ?? params.content ?? "" },
+        }),
+        footer: React.createElement(
+          "p",
+          null,
+          params.footer ?? "%%UNSUBSCRIBE%%",
+        ),
+      }),
+    );
+  }
+
+  throw new Error(`Unknown template: ${id}`);
 }

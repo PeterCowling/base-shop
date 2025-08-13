@@ -22,6 +22,7 @@ if (rollback) {
     if (existsSync(shopJsonPath)) {
         const data = JSON.parse(readFileSync(shopJsonPath, "utf8"));
         delete data.lastUpgrade;
+        delete data.componentVersions;
         writeFileSync(shopJsonPath, JSON.stringify(data, null, 2));
     }
     console.log(`Rollback completed for ${shopId}`);
@@ -32,6 +33,10 @@ if (existsSync(shopJsonPath)) {
     cpSync(shopJsonPath, shopJsonPath + ".bak");
     const data = JSON.parse(readFileSync(shopJsonPath, "utf8"));
     data.lastUpgrade = new Date().toISOString();
+    const pkgPath = path.join(appDir, "package.json");
+    data.componentVersions = existsSync(pkgPath)
+        ? JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {}
+        : {};
     writeFileSync(shopJsonPath, JSON.stringify(data, null, 2));
 }
 console.log(`Upgrade staged for ${shopId}. Backups saved with .bak extension. Use --rollback to undo.`);

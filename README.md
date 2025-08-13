@@ -237,6 +237,10 @@ The `@acme/platform-machine` package bundles a small set of runtime helpers:
 
 Configuration and usage examples for both are documented in [doc/machine.md](doc/machine.md).
 
+## Shop maintenance
+
+See [doc/upgrade-preview-republish.md](doc/upgrade-preview-republish.md) for details on upgrading existing shops, previewing changes and republishing metadata.
+
 # Environment Variables
 
 After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:

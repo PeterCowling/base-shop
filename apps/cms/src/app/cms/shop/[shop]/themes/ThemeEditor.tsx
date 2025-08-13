@@ -176,14 +176,30 @@ export default function ThemeEditor({
       if (!el) return;
       e.preventDefault();
       e.stopPropagation();
+
       const token = el.getAttribute("data-token");
       if (token) {
-        overrideRefs.current[token]?.scrollIntoView({
+        const input = overrideRefs.current[token];
+        input?.scrollIntoView({
           behavior: "smooth",
           block: "center",
         });
-        overrideRefs.current[token]?.focus();
+        input?.focus();
+        // open the native color picker when possible
+        const colorInput = input as HTMLInputElement | undefined;
+        if (colorInput?.showPicker) {
+          colorInput.showPicker();
+        } else {
+          colorInput?.click();
+        }
       }
+
+      // visually highlight the clicked element within the iframe
+      const previousOutline = el.style.outline;
+      el.style.outline = "2px solid #f59e0b"; // amber outline
+      setTimeout(() => {
+        el.style.outline = previousOutline;
+      }, 1500);
     };
 
     const applyTokens = () => {

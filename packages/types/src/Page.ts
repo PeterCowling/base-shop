@@ -130,6 +130,12 @@ export interface SocialFeedComponent extends PageComponentBase {
   hashtag?: string;
 }
 
+export interface SocialProofComponent extends PageComponentBase {
+  type: "SocialProof";
+  source?: string;
+  frequency?: number;
+}
+
 export interface AnnouncementBarComponent extends PageComponentBase {
   type: "AnnouncementBar";
   text?: string;
@@ -356,6 +362,7 @@ export type PageComponent =
   | FooterComponent
   | SocialLinksComponent
   | SocialFeedComponent
+  | SocialProofComponent
   | SectionComponent
   | MultiColumnComponent
   | TabsComponent;
@@ -549,6 +556,12 @@ const socialFeedComponentSchema = baseComponentSchema.extend({
   hashtag: z.string().optional(),
 });
 
+const socialProofComponentSchema = baseComponentSchema.extend({
+  type: z.literal("SocialProof"),
+  source: z.string().optional(),
+  frequency: z.number().optional(),
+});
+
 const blogListingComponentSchema = baseComponentSchema.extend({
   type: z.literal("BlogListing"),
   posts: z
@@ -663,6 +676,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     footerComponentSchema,
     socialLinksComponentSchema,
     socialFeedComponentSchema,
+    socialProofComponentSchema,
     blogListingComponentSchema,
     testimonialsComponentSchema,
     pricingTableComponentSchema,

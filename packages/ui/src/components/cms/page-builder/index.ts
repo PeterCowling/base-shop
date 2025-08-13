@@ -16,6 +16,7 @@ export { default as PricingTableEditor } from "./PricingTableEditor";
 export { default as NewsletterSignupEditor } from "./NewsletterSignupEditor";
 export { default as ImageSliderEditor } from "./ImageSliderEditor";
 export { default as SocialFeedEditor } from "./SocialFeedEditor";
+export { default as SocialProofEditor } from "./SocialProofEditor";
 export { default as SearchBarEditor } from "./SearchBarEditor";
 export { default as RecommendationCarouselEditor } from "./RecommendationCarouselEditor";
 export { default as ProductComparisonEditor } from "./ProductComparisonEditor";

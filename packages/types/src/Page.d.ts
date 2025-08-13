@@ -101,6 +101,11 @@ export interface SocialFeedComponent extends PageComponentBase {
   account?: string;
   hashtag?: string;
 }
+export interface SocialProofComponent extends PageComponentBase {
+  type: "SocialProof";
+  source?: string;
+  frequency?: number;
+}
 export interface AnnouncementBarComponent extends PageComponentBase {
   type: "AnnouncementBar";
   text?: string;
@@ -315,6 +320,7 @@ export type PageComponent =
   | FooterComponent
   | SocialLinksComponent
   | SocialFeedComponent
+  | SocialProofComponent
   | SectionComponent
   | MultiColumnComponent
   | TabsComponent;

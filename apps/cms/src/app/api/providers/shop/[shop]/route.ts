@@ -1,3 +1,4 @@
+import "@acme/lib/initZod";
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";

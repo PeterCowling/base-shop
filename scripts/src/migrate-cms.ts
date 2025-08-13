@@ -1,3 +1,4 @@
+import "@acme/lib/initZod";
 import { env, envSchema } from "@acme/config";
 import fetch from "cross-fetch";
 import { readFile } from "node:fs/promises";

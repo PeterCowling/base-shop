@@ -1,4 +1,5 @@
 // apps/shop-bcd/src/app/api/account/profile/route.ts
+import "@acme/lib/initZod";
 import { getCustomerSession } from "@auth";
 import {
   getCustomerProfile,

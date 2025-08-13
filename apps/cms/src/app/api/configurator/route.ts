@@ -1,3 +1,4 @@
+import "@acme/lib/initZod";
 import { createNewShop } from "@cms/actions/createShop.server";
 import { createShopOptionsSchema } from "@platform-core/createShop";
 import { validateShopEnv } from "@platform-core/configurator";

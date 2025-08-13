@@ -1,4 +1,5 @@
 // apps/shop-bcd/src/app/api/shipping-rate/route.ts
+import "@acme/lib/initZod";
 import { getShippingRate } from "@acme/platform-core/shipping";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";

@@ -1,4 +1,5 @@
 // apps/shop-abc/src/app/login/route.ts
+import "@acme/lib/initZod";
 import { NextResponse } from "next/server";
 import { createCustomerSession, validateCsrfToken } from "@auth";
 import { isMfaEnabled } from "@auth/mfa";

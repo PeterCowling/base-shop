@@ -1,4 +1,5 @@
 // apps/cms/src/app/api/products/[shop]/[id]/route.ts
+import "@acme/lib/initZod";
 
 import { getProductById } from "@platform-core/repositories/json.server";
 import { NextResponse, type NextRequest } from "next/server";

@@ -1,6 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/page.tsx
 
 import { authOptions } from "@cms/auth/options";
+import { resetThemeOverride } from "@cms/actions/shops.server";
 import { checkShopExists } from "@acme/lib";
 import {
   readSettings,
@@ -78,41 +79,54 @@ export default async function SettingsPage({
           <thead>
             <tr>
               <th className="text-left">Token</th>
-              <th className="text-left">Default</th>
-              <th className="text-left">Override</th>
+              <th className="text-left">Values</th>
+              <th className="text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {Object.keys(defaultTokens).sort().map((k) => {
               const override = overrides[k];
-              const changed = override !== undefined && override !== defaultTokens[k];
+              const hasOverride = override !== undefined;
+              const changed = hasOverride && override !== defaultTokens[k];
               return (
                 <tr key={k} className={changed ? "bg-yellow-50" : undefined}>
                   <td className="pr-4 font-mono">{k}</td>
-                  <td className="pr-4 font-mono">
-                    {defaultTokens[k]}
-                    {isColor(defaultTokens[k]) && (
-                      <span
-                        className="ml-2 inline-block h-4 w-4 rounded border align-middle"
-                        style={swatchStyle(defaultTokens[k])}
-                      />
-                    )}
+                  <td className="pr-4">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-1">
+                        <span className="font-mono">{defaultTokens[k]}</span>
+                        {isColor(defaultTokens[k]) && (
+                          <span
+                            className="ml-1 inline-block h-4 w-4 rounded border align-middle"
+                            style={swatchStyle(defaultTokens[k])}
+                          />
+                        )}
+                        <span className="text-xs text-muted-foreground">default</span>
+                      </div>
+                      {hasOverride && (
+                        <div className="flex items-center gap-1">
+                          <span className="font-mono">{override}</span>
+                          {isColor(override) && (
+                            <span
+                              className="ml-1 inline-block h-4 w-4 rounded border align-middle"
+                              style={swatchStyle(override)}
+                            />
+                          )}
+                          <span className="text-xs text-muted-foreground">override</span>
+                        </div>
+                      )}
+                    </div>
                   </td>
-                  <td className="pr-4 font-mono">
-                    {override ?? ""}
-                    {override && isColor(override) && (
-                      <span
-                        className="ml-2 inline-block h-4 w-4 rounded border align-middle"
-                        style={swatchStyle(override)}
-                      />
-                    )}
-                    {changed && (
-                      <Link
-                        href={`/cms/shop/${shop}/themes#${k}`}
-                        className="ml-2 text-xs text-primary underline"
-                      >
-                        reset override
-                      </Link>
+                  <td className="pr-4">
+                    {hasOverride && isAdmin && (
+                      <form action={resetThemeOverride.bind(null, shop, k)}>
+                        <button
+                          type="submit"
+                          className="text-xs text-primary underline"
+                        >
+                          Reset
+                        </button>
+                      </form>
                     )}
                   </td>
                 </tr>

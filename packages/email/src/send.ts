@@ -20,6 +20,18 @@ const providers: Record<string, CampaignProvider> = {
   resend: new ResendProvider(),
 };
 
+const availableProviders = [...Object.keys(providers), "smtp"];
+
+if (!coreEnv.EMAIL_PROVIDER) {
+  console.error(
+    `EMAIL_PROVIDER is not set. Available providers: ${availableProviders.join(", ")}`
+  );
+} else if (!availableProviders.includes(coreEnv.EMAIL_PROVIDER)) {
+  throw new Error(
+    `Unsupported EMAIL_PROVIDER "${coreEnv.EMAIL_PROVIDER}". Available providers: ${availableProviders.join(", ")}`
+  );
+}
+
 /**
  * Send a campaign email using the configured provider.
  * Falls back to Nodemailer when EMAIL_PROVIDER is unset or unrecognized.

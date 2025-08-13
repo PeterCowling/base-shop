@@ -12,6 +12,7 @@ The sidebar inside the CMS provides quick access to different sections:
 - **Products** – Lists all products. If a shop is selected, also shows **New Product**.
 - **Pages** – Lists pages for the current shop with a **New Page** link when a shop is selected.
 - **Media** – Upload and manage media files.
+- **Theme** – Customize the shop's appearance. Visible to admins and shop owners.
 - **Settings** – Shop settings. When a shop is active an additional **SEO** option appears.
 - **Live** – Opens a list of running shop instances.
 - **RBAC** – (Admin only) Manage user roles.

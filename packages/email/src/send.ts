@@ -4,16 +4,21 @@ import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
 import { ProviderError } from "./providers/types";
+import { renderTemplate } from "./templates";
 
 export interface CampaignOptions {
   /** Recipient email address */
   to: string;
   /** Email subject line */
-  subject: string;
+  subject?: string;
   /** HTML body */
-  html: string;
+  html?: string;
   /** Optional plain-text body */
   text?: string;
+  /** Optional template identifier */
+  templateId?: string;
+  /** Variables for template rendering */
+  variables?: Record<string, string>;
 }
 
 function deriveText(html: string): string {
@@ -32,7 +37,7 @@ function deriveText(html: string): string {
 }
 
 function ensureText(options: CampaignOptions): CampaignOptions {
-  if (options.text) return options;
+  if (options.text || !options.html) return options;
   return { ...options, text: deriveText(options.html) };
 }
 
@@ -49,9 +54,18 @@ const providers: Record<string, CampaignProvider> = {
  * retryable.
  */
 export async function sendCampaignEmail(
-  options: CampaignOptions
+  options: CampaignOptions,
 ): Promise<void> {
-  const opts = ensureText(options);
+  let { subject, html, text, templateId, variables, to } = options;
+  if (templateId) {
+    const rendered = renderTemplate(templateId, variables ?? {});
+    subject = rendered.subject;
+    html = rendered.html;
+  }
+  if (!subject || !html) {
+    throw new Error("Missing subject or html");
+  }
+  const opts = ensureText({ to, subject, html, text });
   const primary = coreEnv.EMAIL_PROVIDER ?? "";
   const provider = providers[primary];
 
@@ -114,8 +128,8 @@ async function sendWithNodemailer(options: CampaignOptions): Promise<void> {
   await transport.sendMail({
     from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
     to: options.to,
-    subject: options.subject,
-    html: options.html,
+    subject: options.subject!,
+    html: options.html!,
     text: options.text,
   });
 }

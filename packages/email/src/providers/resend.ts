@@ -44,8 +44,8 @@ export class ResendProvider implements CampaignProvider {
       await this.client.emails.send({
         from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
         to: options.to,
-        subject: options.subject,
-        html: options.html,
+        subject: options.subject!,
+        html: options.html!,
         text: options.text,
       });
     } catch (error: any) {

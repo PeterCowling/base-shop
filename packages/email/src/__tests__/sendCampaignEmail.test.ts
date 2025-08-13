@@ -87,4 +87,35 @@ describe("sendCampaignEmail", () => {
       text: "HTML",
     });
   });
+
+  it("renders templates with variables before sending", async () => {
+    const sendMail = jest.fn().mockResolvedValue(undefined);
+
+    process.env.SMTP_URL = "smtp://test";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const { registerTemplate } = await import("../templates");
+    registerTemplate("welcome", {
+      subject: "Hi {{name}}",
+      html: "<p>Hello {{name}}</p>",
+    });
+
+    const { sendCampaignEmail } = await import("../send");
+    const nodemailerMod = await import("nodemailer");
+    (nodemailerMod.default.createTransport as jest.Mock).mockReturnValue({ sendMail });
+
+    await sendCampaignEmail({
+      to: "to@example.com",
+      templateId: "welcome",
+      variables: { name: "Alice" },
+    });
+
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: "to@example.com",
+      subject: "Hi Alice",
+      html: "<p>Hello Alice</p>",
+      text: "Hello Alice",
+    });
+  });
 });

@@ -50,8 +50,8 @@ export class SendgridProvider implements CampaignProvider {
       await sgMail.send({
         to: options.to,
         from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
-        subject: options.subject,
-        html: options.html,
+        subject: options.subject!,
+        html: options.html!,
         text: options.text,
       });
     } catch (error: any) {

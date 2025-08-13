@@ -17,7 +17,7 @@ import { getTaxRate } from "@platform-core/tax";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { z } from "zod";
-import { shippingSchema, billingSchema } from "@acme/types";
+import { shippingSchema, billingSchema } from "@platform-core/schemas/address";
 
 /* ------------------------------------------------------------------ *
  *  Domain types

@@ -31,3 +31,4 @@ export const billingSchema = z
 export type Address = z.infer<typeof addressSchema>;
 export type Shipping = z.infer<typeof shippingSchema>;
 export type Billing = z.infer<typeof billingSchema>;
+

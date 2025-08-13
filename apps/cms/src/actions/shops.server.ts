@@ -50,10 +50,16 @@ export async function updateShop(
   const data: ShopForm = parsed.data;
 
   const overrides = data.themeOverrides as Record<string, string>;
-  const themeDefaults =
-    current.themeId !== data.themeId
-      ? syncTheme(shop, data.themeId)
-      : loadTokens(data.themeId);
+  let themeDefaults = data.themeDefaults as Record<string, string>;
+  if (!themeDefaults || Object.keys(themeDefaults).length === 0) {
+    themeDefaults =
+      current.themeId !== data.themeId
+        ? syncTheme(shop, data.themeId)
+        : loadTokens(data.themeId);
+  } else if (current.themeId !== data.themeId) {
+    // Ensure theme assets are synchronized when theme changes
+    syncTheme(shop, data.themeId);
+  }
   const themeTokens = { ...themeDefaults, ...overrides };
 
   const patch: Partial<Shop> & { id: string } = {

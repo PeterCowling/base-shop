@@ -307,4 +307,41 @@ describe("ThemeEditor", () => {
     });
     expect(overrideInput).toHaveValue("#ff0000");
   });
+
+  it("updates defaults and tokens when switching themes", async () => {
+    const tokensByTheme = {
+      light: { "--color-bg": "#ffffff" },
+      dark: { "--color-bg": "#000000" },
+    };
+    const mock = updateShop as jest.Mock;
+    mock.mockClear();
+    mock.mockImplementation(async (_shop, fd: FormData) => {
+      const defaults = JSON.parse(fd.get("themeDefaults") as string);
+      const overrides = JSON.parse(fd.get("themeOverrides") as string);
+      return {
+        shop: { themeDefaults: defaults, themeTokens: { ...defaults, ...overrides } },
+      };
+    });
+
+    render(
+      <ThemeEditor
+        shop="test"
+        themes={["light", "dark"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="light"
+        initialOverrides={{ "--color-bg": "#ff0000" }}
+        presets={[]}
+      />
+    );
+
+    fireEvent.change(screen.getByRole("combobox", { name: /theme/i }), {
+      target: { value: "dark" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
+
+    await waitFor(() => expect(mock).toHaveBeenCalled());
+    const result = await mock.mock.results[0].value;
+    expect(result.shop.themeDefaults).toEqual(tokensByTheme.dark);
+    expect(result.shop.themeTokens).toEqual(tokensByTheme.dark);
+  });
 });

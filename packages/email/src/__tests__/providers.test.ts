@@ -19,11 +19,13 @@ describe("Campaign providers segmentation", () => {
     jest.resetModules();
     jest.clearAllMocks();
     delete process.env.SENDGRID_API_KEY;
+    delete process.env.SENDGRID_MARKETING_KEY;
     delete process.env.RESEND_API_KEY;
   });
 
   it("sendgrid segmentation methods call API", async () => {
     process.env.SENDGRID_API_KEY = "sg";
+    process.env.SENDGRID_MARKETING_KEY = "smk";
     const { SendgridProvider } = await import("../providers/sendgrid");
     const provider = new SendgridProvider();
 
@@ -36,7 +38,7 @@ describe("Campaign providers segmentation", () => {
       "https://api.sendgrid.com/v3/marketing/contacts",
       expect.objectContaining({
         method: "PUT",
-        headers: expect.objectContaining({ Authorization: "Bearer sg" }),
+        headers: expect.objectContaining({ Authorization: "Bearer smk" }),
       })
     );
     expect(id).toBe("c1");

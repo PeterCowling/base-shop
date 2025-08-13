@@ -87,12 +87,13 @@ export class SendgridProvider implements CampaignProvider {
   }
 
   async createContact(email: string): Promise<string> {
-    if (!coreEnv.SENDGRID_API_KEY) return "";
+    const key = coreEnv.SENDGRID_MARKETING_KEY || coreEnv.SENDGRID_API_KEY;
+    if (!key) return "";
     try {
       const res = await fetch("https://api.sendgrid.com/v3/marketing/contacts", {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${coreEnv.SENDGRID_API_KEY}`,
+          Authorization: `Bearer ${key}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ contacts: [{ email }] }),
@@ -106,11 +107,12 @@ export class SendgridProvider implements CampaignProvider {
   }
 
   async addToList(contactId: string, listId: string): Promise<void> {
-    if (!coreEnv.SENDGRID_API_KEY) return;
+    const key = coreEnv.SENDGRID_MARKETING_KEY || coreEnv.SENDGRID_API_KEY;
+    if (!key) return;
     await fetch(`https://api.sendgrid.com/v3/marketing/lists/${listId}/contacts`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${coreEnv.SENDGRID_API_KEY}`,
+        Authorization: `Bearer ${key}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ contact_ids: [contactId] }),
@@ -118,10 +120,11 @@ export class SendgridProvider implements CampaignProvider {
   }
 
   async listSegments(): Promise<{ id: string; name?: string }[]> {
-    if (!coreEnv.SENDGRID_API_KEY) return [];
+    const key = coreEnv.SENDGRID_MARKETING_KEY || coreEnv.SENDGRID_API_KEY;
+    if (!key) return [];
     try {
       const res = await fetch("https://api.sendgrid.com/v3/marketing/segments", {
-        headers: { Authorization: `Bearer ${coreEnv.SENDGRID_API_KEY}` },
+        headers: { Authorization: `Bearer ${key}` },
       });
       const json = await res.json().catch(() => ({}));
       const segments = Array.isArray(json?.result) ? json.result : [];

@@ -15,6 +15,7 @@ describe("sendCampaignEmail", () => {
     delete process.env.CAMPAIGN_FROM;
     delete process.env.EMAIL_PROVIDER;
     delete process.env.SENDGRID_API_KEY;
+    delete process.env.SENDGRID_MARKETING_KEY;
     delete process.env.RESEND_API_KEY;
   });
 

@@ -44,6 +44,7 @@ describe("sendCampaignEmail fallback and retry", () => {
     jest.clearAllTimers();
     delete process.env.EMAIL_PROVIDER;
     delete process.env.SENDGRID_API_KEY;
+    delete process.env.SENDGRID_MARKETING_KEY;
     delete process.env.RESEND_API_KEY;
     delete process.env.CAMPAIGN_FROM;
   });

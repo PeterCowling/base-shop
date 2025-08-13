@@ -4,6 +4,7 @@ import { z } from "zod";
 export const coreEnvBaseSchema = z.object({
   NEXTAUTH_SECRET: z.string().min(1),
   PREVIEW_TOKEN_SECRET: z.string().optional(),
+  UPGRADE_PREVIEW_TOKEN_SECRET: z.string().optional(),
   NODE_ENV: z.enum(["development", "test", "production"]).optional(),
   OUTPUT_EXPORT: z.coerce.boolean().optional(),
   NEXT_PUBLIC_PHASE: z.string().optional(),

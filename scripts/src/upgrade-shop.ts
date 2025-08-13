@@ -1,5 +1,6 @@
 import { cpSync, existsSync, mkdirSync, readdirSync, unlinkSync, renameSync, readFileSync, writeFileSync } from "node:fs";
 import * as path from "node:path";
+import { randomBytes } from "node:crypto";
 
 const args = process.argv.slice(2);
 const rollback = args.includes("--rollback");
@@ -42,6 +43,18 @@ if (existsSync(shopJsonPath)) {
   const data = JSON.parse(readFileSync(shopJsonPath, "utf8"));
   (data as any).lastUpgrade = new Date().toISOString();
   writeFileSync(shopJsonPath, JSON.stringify(data, null, 2));
+}
+
+const envPath = path.join(appDir, ".env");
+if (existsSync(envPath)) {
+  const envContent = readFileSync(envPath, "utf8");
+  if (!envContent.includes("UPGRADE_PREVIEW_TOKEN_SECRET=")) {
+    const upgradeToken = randomBytes(32).toString("hex");
+    writeFileSync(
+      envPath,
+      envContent + `\nUPGRADE_PREVIEW_TOKEN_SECRET=${upgradeToken}\n`,
+    );
+  }
 }
 
 console.log(

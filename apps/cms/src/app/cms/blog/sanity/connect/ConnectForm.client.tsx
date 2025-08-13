@@ -39,11 +39,15 @@ export default function ConnectForm({ shopId, initial }: Props) {
     initialState,
   );
 
+  const DEFAULT_DATASET = "blog";
+
   const [projectId, setProjectId] = useState(initial?.projectId ?? "");
-  const [dataset, setDataset] = useState(initial?.dataset ?? "");
+  const [dataset, setDataset] = useState(
+    initial?.dataset ?? DEFAULT_DATASET,
+  );
   const [token, setToken] = useState(initial?.token ?? "");
   const [datasets, setDatasets] = useState<string[]>(
-    initial?.dataset ? [initial.dataset] : [],
+    initial?.dataset ? [initial.dataset] : [DEFAULT_DATASET],
   );
   const [isAddingDataset, setIsAddingDataset] = useState(false);
   const [aclMode, setAclMode] = useState<"public" | "private">("public");
@@ -67,7 +71,10 @@ export default function ConnectForm({ shopId, initial }: Props) {
       const json = (await res.json()) as {
         datasets?: { name: string }[];
       };
-      setDatasets(json.datasets?.map((d) => d.name) ?? []);
+      const fetched = json.datasets?.map((d) => d.name) ?? [];
+      setDatasets(
+        fetched.includes(dataset) ? fetched : [dataset, ...fetched],
+      );
       setVerifyStatus("success");
     } catch {
       setVerifyStatus("error");
@@ -131,7 +138,6 @@ export default function ConnectForm({ shopId, initial }: Props) {
               onChange={(e) => {
                 if (e.target.value === "__add__") {
                   setIsAddingDataset(true);
-                  setDataset("");
                 } else {
                   setDataset(e.target.value);
                 }
@@ -149,11 +155,9 @@ export default function ConnectForm({ shopId, initial }: Props) {
               <option value="__add__">Add dataset</option>
             </select>
           )}
-          <input
-            type="hidden"
-            name="createDataset"
-            value={isAddingDataset ? "true" : "false"}
-          />
+          {isAddingDataset && dataset !== DEFAULT_DATASET && (
+            <input type="hidden" name="createDataset" value="true" />
+          )}
           <p className="text-xs text-muted-foreground">
             Dataset with read and write permissions.
           </p>

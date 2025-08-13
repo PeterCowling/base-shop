@@ -62,3 +62,23 @@ const clickRate = sent ? clicked / sent : 0;
 ```
 
 These metrics correspond to the values returned by the CMS `/api/marketing/email` endpoint and can guide future campaign iterations.
+
+Custom analytics handlers can be registered through hooks exported from `@acme/email`. Use `onSend`, `onOpen`, and `onClick` to listen for campaign activity and run additional logic:
+
+```ts
+import { onSend, onOpen, onClick } from "@acme/email";
+
+onSend((shop, { campaign }) => {
+  console.log("sent", shop, campaign);
+});
+
+onOpen((shop, { campaign }) => {
+  // send to an external analytics service
+});
+
+onClick((shop, { campaign }) => {
+  // custom click tracking
+});
+```
+
+The default listeners continue to record analytics events, so existing metrics remain available while allowing additional tracking behavior.

@@ -7,11 +7,15 @@
     ".": "./src/index.ts",
     "./analytics": "./src/analytics.ts"
   },
+  "bin": {
+    "email": "./src/cli.ts"
+  },
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {
     "@acme/config": "workspace:*",
+    "commander": "^11.1.0",
     "@sendgrid/mail": "^8.1.5",
     "nodemailer": "^6.10.1",
     "resend": "^3.5.0"

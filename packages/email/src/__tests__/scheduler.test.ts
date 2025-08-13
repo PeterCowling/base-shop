@@ -24,6 +24,14 @@ jest.mock("@platform-core/repositories/analytics.server", () => ({
   __esModule: true,
   listEvents: jest.fn().mockResolvedValue([]),
 }));
+jest.mock(
+  "@acme/ui",
+  () => ({
+    __esModule: true,
+    marketingEmailTemplates: [],
+  }),
+  { virtual: true },
+);
 const { sendCampaignEmail } = require("../send");
 const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
 const { listEvents } = require("@platform-core/repositories/analytics.server");
@@ -98,7 +106,7 @@ describe("scheduler", () => {
   });
 
   it("includes token in tracking pixel URL", async () => {
-    const past = new Date(Date.now() - 1000).toISOString();
+    const past = new Date(baseNow.getTime() - 1000).toISOString();
     const campaigns = [
       {
         id: "c1",
@@ -114,7 +122,7 @@ describe("scheduler", () => {
       "utf8",
     );
 
-    const { sendDueCampaigns } = await import("../scheduler");
+    const { sendDueCampaigns } = await loadScheduler();
     await sendDueCampaigns();
 
     const call = sendCampaignEmailMock.mock.calls[0][0];

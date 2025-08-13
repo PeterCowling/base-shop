@@ -18,7 +18,7 @@ const ReturnSchema = z
   .strict();
 
 export async function POST(req: NextRequest) {
-  const parsed = await parseJsonBody(req, RentalSchema);
+  const parsed = await parseJsonBody(req, RentalSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { sessionId } = parsed.data;
   const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const parsed = await parseJsonBody(req, ReturnSchema);
+  const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { sessionId, damageFee } = parsed.data;
   const order = await markReturned("abc", sessionId, damageFee);

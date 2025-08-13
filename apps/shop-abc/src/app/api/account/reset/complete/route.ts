@@ -29,6 +29,7 @@ export async function POST(req: Request) {
   const parsed = await parseJsonBody<ResetCompleteInput>(
     req,
     ResetCompleteSchema,
+    "1mb",
   );
   if (!parsed.success) return parsed.response;
 

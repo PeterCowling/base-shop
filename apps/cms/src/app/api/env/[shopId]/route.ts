@@ -21,7 +21,7 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
-    const parsed = await parseJsonBody(req, schema);
+    const parsed = await parseJsonBody(req, schema, "1mb");
     if (!parsed.success) return parsed.response;
     const data = parsed.data;
     const { shopId } = await context.params;

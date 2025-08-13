@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import getRawBody from "raw-body";
+import { Readable } from "node:stream";
 
 export type ParseJsonResult<T> =
   | { success: true; data: T }
@@ -8,10 +10,37 @@ export type ParseJsonResult<T> =
 export async function parseJsonBody<T>(
   req: Request,
   schema: z.ZodSchema<T>,
+  limit: string | number,
 ): Promise<ParseJsonResult<T>> {
+  let text: string;
+  try {
+    if (!req.body) throw new Error("No body");
+    const stream = Readable.fromWeb(req.body as any);
+    text = await getRawBody(stream, {
+      limit,
+      encoding: "utf8",
+    });
+  } catch (err: any) {
+    if (err?.type === "entity.too.large") {
+      return {
+        success: false,
+        response: NextResponse.json(
+          { error: "Payload Too Large" },
+          { status: 413 },
+        ),
+      };
+    }
+    return {
+      success: false,
+      response: NextResponse.json(
+        { error: "Invalid JSON" },
+        { status: 400 },
+      ),
+    };
+  }
   let json: unknown;
   try {
-    json = await req.json();
+    json = JSON.parse(text);
   } catch {
     return {
       success: false,

@@ -48,7 +48,7 @@ export async function POST(req: Request) {
       })
       .strict();
 
-    const parsed = await parseJsonBody(req, schema);
+    const parsed = await parseJsonBody(req, schema, "1mb");
     if (!parsed.success) return parsed.response;
 
     const { id, csv, categories } = parsed.data;

@@ -17,7 +17,7 @@ const ReturnSchema = z
   .strict();
 
 export async function POST(req: NextRequest) {
-  const parsed = await parseJsonBody(req, ReturnSchema);
+  const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { sessionId, damageFee } = parsed.data;
 

@@ -23,6 +23,7 @@ import {
 import { z } from "zod";
 import { shopSchema, type ShopForm } from "./schemas";
 import { ensureAuthorized } from "./common/auth";
+import { revalidatePath } from "next/cache";
 
 export async function updateShop(
   shop: string,
@@ -326,4 +327,18 @@ export async function updateAiCatalog(
   const updated: ShopSettings = { ...current, seo };
   await saveShopSettings(shop, updated);
   return { settings: updated };
+}
+
+export async function resetThemeOverride(shop: string, token: string) {
+  await ensureAuthorized();
+  const current = await getShopById<Shop>(shop);
+  const overrides = { ...(current.themeOverrides ?? {}) };
+  delete overrides[token];
+  const themeTokens = { ...(current.themeDefaults ?? {}), ...overrides };
+  await updateShopInRepo(shop, {
+    id: current.id,
+    themeOverrides: overrides,
+    themeTokens,
+  });
+  revalidatePath(`/cms/shop/${shop}/settings`);
 }

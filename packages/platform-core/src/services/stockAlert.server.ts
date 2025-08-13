@@ -7,6 +7,7 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import type { InventoryItem } from "@acme/types";
 import { z } from "zod";
+import { variantKey } from "../repositories/inventory.server";
 
 const LOG_FILE = "stock-alert-log.json";
 const SUPPRESS_HOURS = 24; // suppress repeat alerts for a day
@@ -55,7 +56,8 @@ export async function checkAndAlert(
       return typeof threshold === "number" && i.quantity <= threshold;
     })
     .filter((i) => {
-      const last = log[i.sku];
+      const key = variantKey(i.sku, i.variantAttributes);
+      const last = log[key];
       return !last || last < suppressBefore;
     });
 
@@ -94,7 +96,7 @@ export async function checkAndAlert(
   }
 
   for (const item of lowItems) {
-    log[item.sku] = now;
+    log[variantKey(item.sku, item.variantAttributes)] = now;
   }
   await writeLog(shop, log);
 }

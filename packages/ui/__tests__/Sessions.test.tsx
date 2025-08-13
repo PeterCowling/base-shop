@@ -47,6 +47,7 @@ describe("SessionsPage", () => {
     (listSessions as jest.Mock).mockResolvedValue([]);
     const element = await SessionsPage({});
     expect(listSessions).toHaveBeenCalledWith(session.customerId);
+    expect(hasPermission).toHaveBeenCalledWith(session.role, "manage_sessions");
     expect(element.type).toBe("p");
     expect(element.props.children).toBe("No active sessions.");
   });
@@ -62,6 +63,7 @@ describe("SessionsPage", () => {
     (listSessions as jest.Mock).mockResolvedValue(sessions);
     const element = await SessionsPage({});
     const list = element.props.children[1];
+    expect(hasPermission).toHaveBeenCalledWith(session.role, "manage_sessions");
     expect(list.type).toBe("ul");
     expect(list.props.children).toHaveLength(2);
   });
@@ -71,6 +73,7 @@ describe("SessionsPage", () => {
     (getCustomerSession as jest.Mock).mockResolvedValue(session);
     (hasPermission as jest.Mock).mockReturnValue(false);
     const element = await SessionsPage({});
+    expect(hasPermission).toHaveBeenCalledWith(session.role, "manage_sessions");
     expect(listSessions).not.toHaveBeenCalled();
     expect(element.type).toBe("p");
     expect(element.props.children).toBe("Not authorized.");
@@ -88,7 +91,19 @@ describe("revoke", () => {
     (hasPermission as jest.Mock).mockReturnValue(true);
     (listSessions as jest.Mock).mockResolvedValue([{ sessionId: "s1" }]);
     await revoke("s1");
+    expect(hasPermission).toHaveBeenCalledWith(session.role, "manage_sessions");
     expect(revokeSession).toHaveBeenCalledWith("s1");
     expect(revalidatePath).toHaveBeenCalledWith("/account/sessions");
+  });
+
+  it("fails to revoke a session without permission", async () => {
+    const session = { customerId: "cust1", role: "viewer" };
+    (getCustomerSession as jest.Mock).mockResolvedValue(session);
+    (hasPermission as jest.Mock).mockReturnValue(false);
+    const result = await revoke("s1");
+    expect(hasPermission).toHaveBeenCalledWith(session.role, "manage_sessions");
+    expect(listSessions).not.toHaveBeenCalled();
+    expect(revokeSession).not.toHaveBeenCalled();
+    expect(result.success).toBe(false);
   });
 });

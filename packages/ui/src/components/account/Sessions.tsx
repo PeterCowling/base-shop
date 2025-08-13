@@ -56,7 +56,9 @@ export default async function SessionsPage({
           <li key={s.sessionId} className="flex items-center justify-between rounded border p-4">
             <div>
               <div>{s.userAgent}</div>
-              <div className="text-sm text-gray-500">{s.createdAt.toISOString()}</div>
+              <div className="text-sm text-muted" data-token="--color-muted">
+                {s.createdAt.toISOString()}
+              </div>
             </div>
             <RevokeSessionButton sessionId={s.sessionId} />
           </li>

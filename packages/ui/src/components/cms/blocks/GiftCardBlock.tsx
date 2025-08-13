@@ -40,12 +40,15 @@ export default function GiftCardBlock({
             type="button"
             onClick={() => setAmount(value)}
             className={`rounded border px-3 py-2 ${
-              amount === value
-                ? "bg-gray-900 text-white"
-                : "bg-white text-gray-900"
+              amount === value ? "bg-fg" : "bg-bg"
             }`}
+            data-token={amount === value ? "--color-fg" : "--color-bg"}
           >
-            <Price amount={value} />
+            <Price
+              amount={value}
+              className={amount === value ? "text-bg" : "text-fg"}
+              data-token={amount === value ? "--color-bg" : "--color-fg"}
+            />
           </button>
         ))}
       </div>

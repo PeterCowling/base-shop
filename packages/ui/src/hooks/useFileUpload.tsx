@@ -193,7 +193,7 @@ export function useFileUpload(
           </p>
         )}
 
-        {error && <p className="mt-2 text-sm text-danger">{error}</p>}
+        {error && (<p className="mt-2 text-sm text-danger" data-token="--color-danger">{error}</p>)}
         {isValid === false && !isVideo && (
           <p className="mt-2 text-sm text-warning">
             Wrong orientation (needs {requiredOrientation})

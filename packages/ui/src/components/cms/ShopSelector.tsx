@@ -62,7 +62,7 @@ export default function ShopSelector() {
     return <span className="text-sm">Loading shops…</span>;
   if (status === "error")
     return (
-      <span className="text-sm text-danger">
+      <span className="text-sm text-danger" data-token="--color-danger">
         {errorMsg ?? "Failed to load shops"}
       </span>
     );

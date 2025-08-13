@@ -49,13 +49,21 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
         <label htmlFor={htmlFor} className="text-sm font-medium">
           {label}
           {required && (
-            <span aria-hidden="true" className="text-danger">
+            <span
+              aria-hidden="true"
+              className="text-danger"
+              data-token="--color-danger"
+            >
               *
             </span>
           )}
         </label>
         {children}
-        {error && <p className="text-sm text-danger">{error}</p>}
+        {error && (
+          <p className="text-sm text-danger" data-token="--color-danger">
+            {error}
+          </p>
+        )}
       </div>
     );
   }

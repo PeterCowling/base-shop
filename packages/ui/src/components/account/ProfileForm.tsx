@@ -89,7 +89,11 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
           className="rounded border p-2"
           required
         />
-        {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>}
+        {errors.name && (
+          <p className="text-danger text-sm" data-token="--color-danger">
+            {errors.name}
+          </p>
+        )}
       </div>
       <div className="flex flex-col">
         <label htmlFor="email" className="mb-1">Email</label>
@@ -102,11 +106,31 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
           className="rounded border p-2"
           required
         />
-        {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
+        {errors.email && (
+          <p className="text-danger text-sm" data-token="--color-danger">
+            {errors.email}
+          </p>
+        )}
       </div>
-      <button type="submit" className="rounded bg-primary px-4 py-2 text-primary-fg">Save</button>
-      {status === "success" && <p className="text-green-600">{message}</p>}
-      {status === "error" && <p className="text-red-600">{message}</p>}
+      <button
+        type="submit"
+        className="rounded bg-primary px-4 py-2"
+        data-token="--color-primary"
+      >
+        <span className="text-primary-fg" data-token="--color-primary-fg">
+          Save
+        </span>
+      </button>
+      {status === "success" && (
+        <p className="text-success" data-token="--color-success">
+          {message}
+        </p>
+      )}
+      {status === "error" && (
+        <p className="text-danger" data-token="--color-danger">
+          {message}
+        </p>
+      )}
     </form>
   );
 }

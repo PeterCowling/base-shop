@@ -13,8 +13,12 @@ describe("ProfileForm", () => {
     render(<ProfileForm />);
     fireEvent.click(screen.getByRole("button", { name: /save/i }));
     expect(fetchSpy).not.toHaveBeenCalled();
-    expect(await screen.findByText("Name is required.")).toBeInTheDocument();
-    expect(await screen.findByText("Email is required.")).toBeInTheDocument();
+    const nameError = await screen.findByText("Name is required.");
+    const emailError = await screen.findByText("Email is required.");
+    expect(nameError).toBeInTheDocument();
+    expect(emailError).toBeInTheDocument();
+    expect(nameError).toHaveAttribute("data-token", "--color-danger");
+    expect(emailError).toHaveAttribute("data-token", "--color-danger");
     fetchSpy.mockRestore();
   });
 });

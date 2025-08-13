@@ -20,10 +20,12 @@ export const StockStatus = React.forwardRef<HTMLSpanElement, StockStatusProps>(
     ref
   ) => {
     const color = inStock ? "text-success" : "text-danger";
+    const token = inStock ? "--color-success" : "--color-danger";
     return (
       <span
         ref={ref}
         className={cn("text-sm font-medium", color, className)}
+        data-token={token}
         {...props}
       >
         {inStock ? labelInStock : labelOutOfStock}

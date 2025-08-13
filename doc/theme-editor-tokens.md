@@ -14,4 +14,11 @@ The following components expose design tokens via `data-token` attributes so the
 | Toast | `--color-fg`, `--color-bg` |
 | CheckoutTemplate | `--color-primary`, `--color-muted` |
 | CartTemplate | `--color-muted`, `--color-danger` |
+| GiftCardBlock | `--color-fg`, `--color-bg` |
+| ImageSlider | `--color-fg`, `--color-bg` |
+| RevokeSessionButton | `--color-primary`, `--color-primary-fg`, `--color-danger` |
+| MfaChallenge | `--color-primary`, `--color-primary-fg`, `--color-danger` |
+| Sessions | `--color-muted` |
+| ProfileForm | `--color-primary`, `--color-primary-fg`, `--color-success`, `--color-danger` |
+| CheckoutForm | `--color-danger`, `--color-fg`, `--color-bg` |
 

@@ -167,9 +167,13 @@ function MediaManagerBase({
 
       {/* Validation / progress feedback */}
       <div id={feedbackId} role="status" aria-live="polite" className="space-y-2">
-        {error && <p className="text-sm text-danger">{error}</p>}
+        {error && (
+          <p className="text-sm text-danger" data-token="--color-danger">
+            {error}
+          </p>
+        )}
         {progress && (
-          <p className="text-sm text-muted">
+          <p className="text-sm text-muted" data-token="--color-muted">
             Uploaded {progress.done}/{progress.total}
           </p>
         )}
@@ -187,6 +191,7 @@ function MediaManagerBase({
                 className={
                   isValid ? "text-sm text-success" : "text-sm text-danger"
                 }
+                data-token={isValid ? "--color-success" : "--color-danger"}
               >
                 {isValid
                   ? `Image orientation is ${actual}; requirement satisfied.`

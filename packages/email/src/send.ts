@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import sanitizeHtml from "sanitize-html";
 import { coreEnv } from "@acme/config/env/core";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
@@ -14,6 +15,8 @@ export interface CampaignOptions {
   html: string;
   /** Optional plain-text body */
   text?: string;
+  /** Skip HTML sanitization for trusted templates */
+  skipSanitization?: boolean;
 }
 
 const providers: Record<string, CampaignProvider> = {
@@ -31,12 +34,18 @@ const providers: Record<string, CampaignProvider> = {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
+  const { skipSanitization, ...rest } = options;
+  const sanitizedOptions: CampaignOptions = {
+    ...rest,
+    html: skipSanitization ? rest.html : sanitizeHtml(rest.html),
+  };
+
   const primary = coreEnv.EMAIL_PROVIDER ?? "";
   const provider = providers[primary];
 
   // No configured provider – use Nodemailer directly
   if (!provider) {
-    await sendWithNodemailer(options);
+    await sendWithNodemailer(sanitizedOptions);
     return;
   }
 
@@ -49,14 +58,14 @@ export async function sendCampaignEmail(
     const current = providers[name];
     if (!current) continue;
     try {
-      await sendWithRetry(current, options);
+      await sendWithRetry(current, sanitizedOptions);
       return;
     } catch {
       // Try next provider
     }
   }
 
-  await sendWithNodemailer(options);
+  await sendWithNodemailer(sanitizedOptions);
 }
 
 async function sendWithRetry(

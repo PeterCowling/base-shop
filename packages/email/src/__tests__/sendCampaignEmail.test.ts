@@ -1,5 +1,3 @@
-import nodemailer from "nodemailer";
-
 jest.mock("nodemailer", () => ({
   __esModule: true,
   default: { createTransport: jest.fn() },
@@ -13,7 +11,6 @@ jest.mock("../providers/resend", () => ({
   ResendProvider: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
 }));
 
-const createTransportMock = nodemailer.createTransport as jest.Mock;
 
 describe("sendCampaignEmail", () => {
   afterEach(() => {
@@ -28,12 +25,13 @@ describe("sendCampaignEmail", () => {
 
   it("uses SMTP_URL and CAMPAIGN_FROM env vars and forwards options", async () => {
     const sendMail = jest.fn().mockResolvedValue(undefined);
-    createTransportMock.mockReturnValue({ sendMail });
-
     process.env.SMTP_URL = "smtp://test";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
+    const { default: nodemailer } = await import("nodemailer");
+    const createTransportMock = nodemailer.createTransport as jest.Mock;
+    createTransportMock.mockReturnValue({ sendMail });
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -60,7 +58,7 @@ describe("sendCampaignEmail", () => {
     process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -84,7 +82,7 @@ describe("sendCampaignEmail", () => {
     process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -96,6 +94,58 @@ describe("sendCampaignEmail", () => {
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
+    });
+  });
+
+  it("sanitizes HTML by default", async () => {
+    const sendMail = jest.fn().mockResolvedValue(undefined);
+    process.env.SMTP_URL = "smtp://test";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+    const { default: nodemailer } = await import("nodemailer");
+    const createTransportMock = nodemailer.createTransport as jest.Mock;
+    createTransportMock.mockReturnValue({ sendMail });
+
+    const { sendCampaignEmail } = await import("../send");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: '<b onmouseover="alert(1)">hello</b><script>alert(1)</script>',
+    });
+
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<b>hello</b>",
+      text: undefined,
+    });
+  });
+
+  it("allows bypassing sanitization", async () => {
+    const sendMail = jest.fn().mockResolvedValue(undefined);
+    process.env.SMTP_URL = "smtp://test";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+    const { default: nodemailer } = await import("nodemailer");
+    const createTransportMock = nodemailer.createTransport as jest.Mock;
+    createTransportMock.mockReturnValue({ sendMail });
+
+    const malicious =
+      '<b onmouseover="alert(1)">hello</b><script>alert(1)</script>';
+
+    const { sendCampaignEmail } = await import("../send");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: malicious,
+      skipSanitization: true,
+    });
+
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: "to@example.com",
+      subject: "Subject",
+      html: malicious,
+      text: undefined,
     });
   });
 });

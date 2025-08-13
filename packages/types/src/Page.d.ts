@@ -280,6 +280,12 @@ export interface GiftCardBlockComponent extends PageComponentBase {
   denominations?: number[];
   description?: string;
 }
+export interface PopupModalComponent extends PageComponentBase {
+  type: "PopupModal";
+  trigger?: "load" | "delay" | "exit";
+  delay?: number;
+  content?: string;
+}
 export interface SectionComponent extends PageComponentBase {
   type: "Section";
   children?: PageComponent[];
@@ -318,6 +324,7 @@ export type PageComponent =
   | BlogListingComponent
   | TestimonialsComponent
   | GiftCardBlockComponent
+  | PopupModalComponent
   | TestimonialSliderComponent
   | ImageComponent
   | TextComponent

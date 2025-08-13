@@ -43,6 +43,12 @@ export type ChangeAction =
       heightDesktop?: string;
       heightTablet?: string;
       heightMobile?: string;
+      marginDesktop?: string;
+      marginTablet?: string;
+      marginMobile?: string;
+      paddingDesktop?: string;
+      paddingTablet?: string;
+      paddingMobile?: string;
     }
   | { type: "set"; components: PageComponent[] };
 
@@ -168,6 +174,12 @@ function resizeComponent(
     heightDesktop?: string;
     heightTablet?: string;
     heightMobile?: string;
+    marginDesktop?: string;
+    marginTablet?: string;
+    marginMobile?: string;
+    paddingDesktop?: string;
+    paddingTablet?: string;
+    paddingMobile?: string;
   },
 ): PageComponent[] {
   return list.map((c) => {
@@ -248,15 +260,51 @@ function componentsReducer(
         height?: string;
         left?: string;
         top?: string;
+        widthDesktop?: string;
+        widthTablet?: string;
+        widthMobile?: string;
+        heightDesktop?: string;
+        heightTablet?: string;
+        heightMobile?: string;
+        marginDesktop?: string;
+        marginTablet?: string;
+        marginMobile?: string;
+        paddingDesktop?: string;
+        paddingTablet?: string;
+        paddingMobile?: string;
       } = {};
       const width = normalize(action.width);
       const height = normalize(action.height);
       const left = normalize(action.left);
       const top = normalize(action.top);
+      const widthDesktop = normalize(action.widthDesktop);
+      const widthTablet = normalize(action.widthTablet);
+      const widthMobile = normalize(action.widthMobile);
+      const heightDesktop = normalize(action.heightDesktop);
+      const heightTablet = normalize(action.heightTablet);
+      const heightMobile = normalize(action.heightMobile);
+      const marginDesktop = normalize(action.marginDesktop);
+      const marginTablet = normalize(action.marginTablet);
+      const marginMobile = normalize(action.marginMobile);
+      const paddingDesktop = normalize(action.paddingDesktop);
+      const paddingTablet = normalize(action.paddingTablet);
+      const paddingMobile = normalize(action.paddingMobile);
       if (width !== undefined) patch.width = width;
       if (height !== undefined) patch.height = height;
       if (left !== undefined) patch.left = left;
       if (top !== undefined) patch.top = top;
+      if (widthDesktop !== undefined) patch.widthDesktop = widthDesktop;
+      if (widthTablet !== undefined) patch.widthTablet = widthTablet;
+      if (widthMobile !== undefined) patch.widthMobile = widthMobile;
+      if (heightDesktop !== undefined) patch.heightDesktop = heightDesktop;
+      if (heightTablet !== undefined) patch.heightTablet = heightTablet;
+      if (heightMobile !== undefined) patch.heightMobile = heightMobile;
+      if (marginDesktop !== undefined) patch.marginDesktop = marginDesktop;
+      if (marginTablet !== undefined) patch.marginTablet = marginTablet;
+      if (marginMobile !== undefined) patch.marginMobile = marginMobile;
+      if (paddingDesktop !== undefined) patch.paddingDesktop = paddingDesktop;
+      if (paddingTablet !== undefined) patch.paddingTablet = paddingTablet;
+      if (paddingMobile !== undefined) patch.paddingMobile = paddingMobile;
       return resizeComponent(state, action.id, patch);
     case "set":
       return action.components;

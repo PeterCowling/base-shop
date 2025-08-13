@@ -3,7 +3,7 @@ import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor"
 import type { PageComponent } from "@acme/types";
 
 describe("ComponentEditor", () => {
-  it("updates width and height", () => {
+  it("updates width, height, margin and padding", () => {
     const component: PageComponent = {
       id: "1",
       type: "Image",
@@ -16,14 +16,26 @@ describe("ComponentEditor", () => {
         onResize={onResize}
       />
     );
-    fireEvent.change(getByLabelText("Width (Desktop)"), { target: { value: "200" } });
+    fireEvent.change(getByLabelText("Width (Desktop)"), {
+      target: { value: "200" },
+    });
     expect(onResize).toHaveBeenCalledWith({ widthDesktop: "200" });
     fireEvent.click(getAllByText("Full width")[0]);
     expect(onResize).toHaveBeenCalledWith({ widthDesktop: "100%" });
-    fireEvent.change(getByLabelText("Height (Desktop)"), { target: { value: "300" } });
+    fireEvent.change(getByLabelText("Height (Desktop)"), {
+      target: { value: "300" },
+    });
     expect(onResize).toHaveBeenCalledWith({ heightDesktop: "300" });
     fireEvent.click(getAllByText("Full height")[0]);
     expect(onResize).toHaveBeenCalledWith({ heightDesktop: "100%" });
+    fireEvent.change(getByLabelText("Margin (Desktop)"), {
+      target: { value: "10px" },
+    });
+    expect(onResize).toHaveBeenCalledWith({ marginDesktop: "10px" });
+    fireEvent.change(getByLabelText("Padding (Desktop)"), {
+      target: { value: "5px" },
+    });
+    expect(onResize).toHaveBeenCalledWith({ paddingDesktop: "5px" });
   });
 
   it("updates minItems and maxItems", () => {

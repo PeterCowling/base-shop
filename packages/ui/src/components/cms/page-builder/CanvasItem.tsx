@@ -87,6 +87,20 @@ const CanvasItem = memo(function CanvasItem({
       : "heightMobile";
   const widthVal = (component as any)[widthKey] ?? component.width;
   const heightVal = (component as any)[heightKey] ?? component.height;
+  const marginKey =
+    viewport === "desktop"
+      ? "marginDesktop"
+      : viewport === "tablet"
+      ? "marginTablet"
+      : "marginMobile";
+  const paddingKey =
+    viewport === "desktop"
+      ? "paddingDesktop"
+      : viewport === "tablet"
+      ? "paddingTablet"
+      : "paddingMobile";
+  const marginVal = (component as any)[marginKey] ?? component.margin;
+  const paddingVal = (component as any)[paddingKey] ?? component.padding;
 
   const editor = useTextEditor(component, locale, editing);
 
@@ -309,8 +323,8 @@ const CanvasItem = memo(function CanvasItem({
         transform: CSS.Transform.toString(transform),
         ...(widthVal ? { width: widthVal } : {}),
         ...(heightVal ? { height: heightVal } : {}),
-        ...(component.margin ? { margin: component.margin } : {}),
-        ...(component.padding ? { padding: component.padding } : {}),
+        ...(marginVal ? { margin: marginVal } : {}),
+        ...(paddingVal ? { padding: paddingVal } : {}),
         ...(component.position ? { position: component.position } : {}),
         ...(component.top ? { top: component.top } : {}),
         ...(component.left ? { left: component.left } : {}),

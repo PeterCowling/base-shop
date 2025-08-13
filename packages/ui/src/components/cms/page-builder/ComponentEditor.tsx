@@ -48,6 +48,12 @@ interface Props {
     heightDesktop?: string;
     heightTablet?: string;
     heightMobile?: string;
+    marginDesktop?: string;
+    marginTablet?: string;
+    marginMobile?: string;
+    paddingDesktop?: string;
+    paddingTablet?: string;
+    paddingMobile?: string;
   }) => void;
 }
 
@@ -385,6 +391,22 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
               Full height
             </Button>
           </div>
+          <Input
+            label={`Margin (${vp})`}
+            value={(component as any)[`margin${vp}`] ?? ""}
+            onChange={(e) => {
+              const v = e.target.value.trim();
+              onResize({ [`margin${vp}`]: v || undefined } as any);
+            }}
+          />
+          <Input
+            label={`Padding (${vp})`}
+            value={(component as any)[`padding${vp}`] ?? ""}
+            onChange={(e) => {
+              const v = e.target.value.trim();
+              onResize({ [`padding${vp}`]: v || undefined } as any);
+            }}
+          />
         </div>
       ))}
       <Input

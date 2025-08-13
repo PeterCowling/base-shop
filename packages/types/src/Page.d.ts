@@ -47,11 +47,23 @@ export interface PageComponentBase {
    * Accepts any valid CSS margin value or Tailwind class.
    */
   margin?: string;
+  /** Margin on large (desktop) viewports. Overrides `margin` when provided. */
+  marginDesktop?: string;
+  /** Margin on medium (tablet) viewports. Overrides `margin` when provided. */
+  marginTablet?: string;
+  /** Margin on small (mobile) viewports. Overrides `margin` when provided. */
+  marginMobile?: string;
   /**
    * Padding applied to the outer container when rendered.
    * Accepts any valid CSS padding value or Tailwind class.
    */
   padding?: string;
+  /** Padding on large (desktop) viewports. Overrides `padding` when provided. */
+  paddingDesktop?: string;
+  /** Padding on medium (tablet) viewports. Overrides `padding` when provided. */
+  paddingTablet?: string;
+  /** Padding on small (mobile) viewports. Overrides `padding` when provided. */
+  paddingMobile?: string;
   /** Minimum number of items allowed for list components */
   minItems?: number;
   /** Maximum number of items allowed for list components */

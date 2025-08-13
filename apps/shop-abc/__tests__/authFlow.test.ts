@@ -69,6 +69,7 @@ let requestPOST: typeof import("../src/app/api/account/reset/request/route").POS
 let completePOST: typeof import("../src/app/api/account/reset/complete/route").POST;
 
 beforeAll(async () => {
+  process.env.SESSION_SECRET = "test-secret";
   ({ POST: registerPOST } = await import("../src/app/register/route"));
   ({ POST: loginPOST } = await import("../src/app/login/route"));
   ({ POST: requestPOST } = await import(

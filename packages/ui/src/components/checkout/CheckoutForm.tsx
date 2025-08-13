@@ -12,22 +12,42 @@ import {
 import { loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 import { fetchJson } from "@shared-utils";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { isoDateInNDays } from "@acme/date-utils";
 import { useCurrency } from "@platform-core/src/contexts/CurrencyContext";
+import { DeliveryScheduler } from "../organisms/DeliveryScheduler";
 
 const stripePromise = loadStripe(
   paymentEnv.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
 );
 
-type Props = { locale: "en" | "de" | "it"; taxRegion: string };
+type Props = {
+  locale: "en" | "de" | "it";
+  taxRegion: string;
+  premierDelivery?: { regions: string[]; windows: string[] };
+};
 
 type FormValues = { returnDate: string };
 
-export default function CheckoutForm({ locale, taxRegion }: Props) {
+export default function CheckoutForm({ locale, taxRegion, premierDelivery }: Props) {
   const [clientSecret, setClientSecret] = useState<string>();
   const [currency] = useCurrency();
+  const handleSchedule = useCallback(
+    (info: { mode: "delivery" | "pickup"; date: string; window: string }) => {
+      if (!premierDelivery) return;
+      fetchJson("/api/delivery/schedule", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          region: premierDelivery.regions[0] ?? "",
+          window: info.window,
+          date: info.date,
+        }),
+      }).catch(() => {});
+    },
+    [premierDelivery]
+  );
 
   const defaultDate = isoDateInNDays(7);
 
@@ -65,14 +85,22 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
   if (!clientSecret) return <p>Loading payment form…</p>;
 
   return (
-    <Elements
-      stripe={stripePromise}
-      /*  👇 cast locale to StripeElementLocale to satisfy TS  */
-      options={{ clientSecret, locale: locale as StripeElementLocale }}
-      key={clientSecret} // re-mount if locale changes
-    >
-      <PaymentForm form={form} locale={locale} />
-    </Elements>
+    <div className="space-y-6">
+      {premierDelivery && (
+        <DeliveryScheduler
+          windows={premierDelivery.windows}
+          onChange={handleSchedule}
+        />
+      )}
+      <Elements
+        stripe={stripePromise}
+        /*  👇 cast locale to StripeElementLocale to satisfy TS  */
+        options={{ clientSecret, locale: locale as StripeElementLocale }}
+        key={clientSecret} // re-mount if locale changes
+      >
+        <PaymentForm form={form} locale={locale} />
+      </Elements>
+    </div>
   );
 }
 

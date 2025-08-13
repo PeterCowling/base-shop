@@ -49,6 +49,13 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    premierDelivery: z
+      .object({
+        regions: z.array(z.string()),
+        windows: z.array(z.string()),
+      })
+      .strict()
+      .optional(),
     updatedAt: z.string(),
     updatedBy: z.string(),
   })

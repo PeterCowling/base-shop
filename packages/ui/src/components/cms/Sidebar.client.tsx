@@ -76,6 +76,11 @@ export default function Sidebar({ role }: { role?: string }) {
             label: "Deposits",
             icon: "💰",
           },
+          {
+            href: `/shop/${shop}/settings/delivery`,
+            label: "Premier Delivery",
+            icon: "🚚",
+          },
         ]
       : []),
     { href: "/live", label: "Live", icon: "🌐" },

@@ -102,6 +102,16 @@ export declare const shopSettingsSchema: z.ZodObject<{
         enabled: boolean;
         intervalMinutes: number;
     }>>;
+    premierDelivery: z.ZodOptional<z.ZodObject<{
+        regions: z.ZodArray<z.ZodString, "many">;
+        windows: z.ZodArray<z.ZodString, "many">;
+    }, "strip", z.ZodTypeAny, {
+        regions: string[];
+        windows: string[];
+    }, {
+        regions: string[];
+        windows: string[];
+    }>>;
     updatedAt: z.ZodString;
     updatedBy: z.ZodString;
 }, "strip", z.ZodTypeAny, {
@@ -139,6 +149,10 @@ export declare const shopSettingsSchema: z.ZodObject<{
         enabled: boolean;
         intervalMinutes: number;
     } | undefined;
+    premierDelivery?: {
+        regions: string[];
+        windows: string[];
+    } | undefined;
 }, {
     seo: Partial<Record<"en" | "de" | "it", {
         title?: string | undefined;
@@ -174,6 +188,10 @@ export declare const shopSettingsSchema: z.ZodObject<{
         enabled: boolean;
         intervalMinutes: number;
     } | undefined;
-}>; 
+    premierDelivery?: {
+        regions: string[];
+        windows: string[];
+    } | undefined;
+}>;
 export type ShopSettings = z.infer<typeof shopSettingsSchema>;
 //# sourceMappingURL=ShopSettings.d.ts.map

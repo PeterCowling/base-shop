@@ -62,6 +62,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
           intervalMinutes: 60,
           ...(parsed.data.depositService ?? {}),
         },
+        premierDelivery: parsed.data.premierDelivery,
         seo: {
           ...(parsed.data.seo ?? {}),
           aiCatalog: {

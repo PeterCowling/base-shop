@@ -11,11 +11,12 @@ import {
 
 export interface DeliverySchedulerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+  windows?: string[];
   /** Callback fired whenever the user changes any field */
   onChange?: (info: {
     mode: "delivery" | "pickup";
     date: string;
-    time: string;
+    window: string;
   }) => void;
 }
 
@@ -26,10 +27,16 @@ export function DeliveryScheduler({
 }: DeliverySchedulerProps) {
   const [mode, setMode] = React.useState<"delivery" | "pickup">("delivery");
   const [date, setDate] = React.useState("");
-  const [time, setTime] = React.useState("");
+  const [windowValue, setWindowValue] = React.useState("");
+  const slots = React.useMemo(
+    () =>
+      windows ??
+      Array.from({ length: 8 }, (_, i) => `${10 + i}-${11 + i}`),
+    [windows]
+  );
 
   const emitChange = React.useCallback(
-    (next: { mode: "delivery" | "pickup"; date: string; time: string }) => {
+    (next: { mode: "delivery" | "pickup"; date: string; window: string }) => {
       onChange?.(next);
     },
     [onChange]
@@ -37,17 +44,17 @@ export function DeliveryScheduler({
 
   const handleMode = (value: "delivery" | "pickup") => {
     setMode(value);
-    emitChange({ mode: value, date, time });
+    emitChange({ mode: value, date, window: windowValue });
   };
 
   const handleDate = (value: string) => {
     setDate(value);
-    emitChange({ mode, date: value, time });
+    emitChange({ mode, date: value, window: windowValue });
   };
 
-  const handleTime = (value: string) => {
-    setTime(value);
-    emitChange({ mode, date, time: value });
+  const handleWindow = (value: string) => {
+    setWindowValue(value);
+    emitChange({ mode, date, window: value });
   };
 
   return (
@@ -72,14 +79,21 @@ export function DeliveryScheduler({
           onChange={(e) => handleDate(e.target.value)}
         />
       </label>
-      <label className="flex flex-col gap-1 text-sm">
-        Time
-        <Input
-          type="time"
-          value={time}
-          onChange={(e) => handleTime(e.target.value)}
-        />
-      </label>
+      <div>
+        <label className="mb-1 block text-sm font-medium">Window</label>
+        <Select value={windowValue} onValueChange={handleWindow}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select window" />
+          </SelectTrigger>
+          <SelectContent>
+            {slots.map((w) => (
+              <SelectItem key={w} value={w}>
+                {w}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
     </div>
   );
 }

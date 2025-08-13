@@ -34,6 +34,22 @@ Certain pages are restricted to users with the `admin` role:
 
 Attempting to access these pages without the proper role will redirect back to the CMS dashboard.
 
+## Shop Creation Wizard
+
+Admins can scaffold and launch a shop directly from the CMS at `/cms/wizard`. The workflow proceeds through these steps:
+
+1. **Shop details** – provide the shop ID, display name, logo URL, contact email and choose whether it's for sales or rentals.
+2. **Options** – select the starter template and theme.
+3. **Theme tokens** – tweak design tokens to match your brand.
+4. **Navigation** – build the header navigation tree.
+5. **Page layouts** – configure home, shop, product and checkout pages and any optional additional pages.
+6. **Environment** – supply required environment variables.
+7. **Seed/Import data** – seed example products or import existing data.
+8. **Hosting** – optionally provision CI and deployment settings.
+9. **Summary** – review all selections and launch the shop.
+
+Progress saves automatically, so returning to `/cms/wizard` resumes from the last completed step.
+
 ## Wizard Resume & Page Drafts
 
 The shop creation wizard now resumes where you left off. If you log in via

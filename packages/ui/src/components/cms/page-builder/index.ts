@@ -20,6 +20,7 @@ export { default as SearchBarEditor } from "./SearchBarEditor";
 export { default as RecommendationCarouselEditor } from "./RecommendationCarouselEditor";
 export { default as ProductComparisonEditor } from "./ProductComparisonEditor";
 export { default as FeaturedProductEditor } from "./FeaturedProductEditor";
+export { default as GiftCardEditor } from "./GiftCardEditor";
 export { default as useMediaLibrary } from "./useMediaLibrary";
 export { useArrayEditor } from "./useArrayEditor";
 export { default as CanvasItem } from "./CanvasItem";

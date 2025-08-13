@@ -164,4 +164,62 @@ describe("scheduler", () => {
     expect(call.html).toContain("unsubscribe");
     expect(call.html).toContain(encodeURIComponent("stay@example.com"));
   });
+
+  it("sends recipients in batches with delays", async () => {
+    process.env.EMAIL_BATCH_SIZE = "2";
+    process.env.EMAIL_BATCH_DELAY_MS = "1";
+    jest.resetModules();
+
+    const setTimeoutSpy = jest.spyOn(global, "setTimeout");
+
+    const { sendCampaignEmail } = require("../send");
+    const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
+    const { setCampaignStore, fsCampaignStore } = await import("../storage");
+    setCampaignStore(fsCampaignStore);
+    const { createCampaign, sendDueCampaigns } = await import("../scheduler");
+
+    const past = new Date(Date.now() - 1000).toISOString();
+    const future = new Date(Date.now() + 1000).toISOString();
+    const recipients = [
+      "r1@example.com",
+      "r2@example.com",
+      "r3@example.com",
+      "r4@example.com",
+      "r5@example.com",
+    ];
+    await createCampaign({
+      shop,
+      recipients,
+      subject: "Hi",
+      body: "<p>Hi</p>",
+      sendAt: future,
+    });
+
+    const file = JSON.parse(
+      await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8"),
+    );
+    file[0].sendAt = past;
+    await fs.writeFile(
+      path.join(shopDir, "campaigns.json"),
+      JSON.stringify(file, null, 2),
+      "utf8",
+    );
+
+    await sendDueCampaigns();
+    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(5);
+    expect(setTimeoutSpy).toHaveBeenCalledTimes(2);
+    expect(setTimeoutSpy).toHaveBeenNthCalledWith(
+      1,
+      expect.any(Function),
+      1,
+    );
+    expect(setTimeoutSpy).toHaveBeenNthCalledWith(
+      2,
+      expect.any(Function),
+      1,
+    );
+
+    delete process.env.EMAIL_BATCH_SIZE;
+    delete process.env.EMAIL_BATCH_DELAY_MS;
+  });
 });

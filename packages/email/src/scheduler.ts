@@ -56,23 +56,31 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   }
   recipients = await filterUnsubscribed(shop, recipients);
   const hasPlaceholder = baseHtml.includes("%%UNSUBSCRIBE%%");
-  for (const r of recipients) {
-    const url = unsubscribeUrl(shop, c.id, r);
-    let html = baseHtml;
-    if (hasPlaceholder) {
-      html = baseHtml.replace(
-        /%%UNSUBSCRIBE%%/g,
-        `<a href="${url}">Unsubscribe</a>`,
-      );
-    } else {
-      html = `${baseHtml}<p><a href="${url}">Unsubscribe</a></p>`;
+  const batchSize = coreEnv.EMAIL_BATCH_SIZE ?? 100;
+  const batchDelay = coreEnv.EMAIL_BATCH_DELAY_MS ?? 1000;
+  for (let i = 0; i < recipients.length; i += batchSize) {
+    const batch = recipients.slice(i, i + batchSize);
+    for (const r of batch) {
+      const url = unsubscribeUrl(shop, c.id, r);
+      let html = baseHtml;
+      if (hasPlaceholder) {
+        html = baseHtml.replace(
+          /%%UNSUBSCRIBE%%/g,
+          `<a href="${url}">Unsubscribe</a>`,
+        );
+      } else {
+        html = `${baseHtml}<p><a href="${url}">Unsubscribe</a></p>`;
+      }
+      await sendCampaignEmail({
+        to: r,
+        subject: c.subject,
+        html,
+      });
+      await trackEvent(shop, { type: "email_sent", campaign: c.id });
     }
-    await sendCampaignEmail({
-      to: r,
-      subject: c.subject,
-      html,
-    });
-    await trackEvent(shop, { type: "email_sent", campaign: c.id });
+    if (i + batchSize < recipients.length && batchDelay > 0) {
+      await new Promise((resolve) => setTimeout(resolve, batchDelay));
+    }
   }
   c.sentAt = new Date().toISOString();
 }

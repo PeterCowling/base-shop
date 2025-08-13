@@ -23,6 +23,8 @@ export const coreEnvBaseSchema = z.object({
   EMAIL_PROVIDER: z.enum(["sendgrid", "resend", "smtp"]).optional(),
   SENDGRID_API_KEY: z.string().optional(),
   RESEND_API_KEY: z.string().optional(),
+  EMAIL_BATCH_SIZE: z.coerce.number().optional(),
+  EMAIL_BATCH_DELAY_MS: z.coerce.number().optional(),
   DATABASE_URL: z.string().optional(),
   SANITY_API_VERSION: z.string().optional(),
   CLOUDFLARE_ACCOUNT_ID: z.string().optional(),

@@ -38,17 +38,28 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
 
   /* --- create session on mount or when returnDate changes --- */
   useEffect(() => {
-    (async () => {
-      const { clientSecret } = await fetchJson<{ clientSecret: string }>(
-        "/api/checkout-session",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ returnDate, currency, taxRegion }),
-        }
-      );
-      setClientSecret(clientSecret);
-    })();
+    const controller = new AbortController();
+    const timeout = setTimeout(async () => {
+      try {
+        const { clientSecret } = await fetchJson<{ clientSecret: string }>(
+          "/api/checkout-session",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ returnDate, currency, taxRegion }),
+            signal: controller.signal,
+          }
+        );
+        setClientSecret(clientSecret);
+      } catch (err: any) {
+        if (err?.name !== "AbortError") console.error(err);
+      }
+    }, 300);
+
+    return () => {
+      controller.abort();
+      clearTimeout(timeout);
+    };
   }, [returnDate, currency, taxRegion]);
 
   if (!clientSecret) return <p>Loading payment form…</p>;

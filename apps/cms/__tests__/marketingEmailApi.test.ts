@@ -20,6 +20,8 @@ jest.doMock(
 process.env.CART_COOKIE_SECRET = "secret";
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
+process.env.STRIPE_WEBHOOK_SECRET = "whsec";
+process.env.RESEND_API_KEY = "re_test";
 
 const ResponseWithJson = Response as unknown as typeof Response & {
   json?: (data: unknown, init?: ResponseInit) => Response;
@@ -40,10 +42,16 @@ describe("marketing email API segments", () => {
 
   test("resolves recipients from segment when list empty", async () => {
     await fs.writeFile(
+      path.join(shopDir, "segments.json"),
+      JSON.stringify([
+        { id: "vip", name: "VIP", filters: [{ field: "type", value: "purchase" }] },
+      ]),
+      "utf8"
+    );
+    await fs.writeFile(
       path.join(shopDir, "analytics.jsonl"),
-      JSON.stringify({ type: "segment:vip", email: "a@example.com" }) + "\n" +
-        JSON.stringify({ type: "segment", segment: "vip", email: "b@example.com" }) +
-        "\n",
+      JSON.stringify({ type: "purchase", email: "a@example.com" }) + "\n" +
+        JSON.stringify({ type: "purchase", email: "b@example.com" }) + "\n",
       "utf8"
     );
 

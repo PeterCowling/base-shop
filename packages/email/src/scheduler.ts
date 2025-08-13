@@ -1,6 +1,10 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { sendCampaignEmail, resolveSegment } from "./index";
+import {
+  sendCampaignEmail,
+  resolveSegment,
+  filterUnsubscribed,
+} from "./index";
 import { trackEvent } from "@platform-core/analytics";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { coreEnv } from "@acme/config/env/core";
@@ -67,11 +71,16 @@ export async function sendScheduledCampaigns(): Promise<void> {
         recipients = await resolveSegment(shop, c.segment);
         c.recipients = recipients;
       }
+      recipients = await filterUnsubscribed(shop, recipients);
       for (const r of recipients) {
+        const unsubUrl = `${base}/api/marketing/email/unsubscribe?shop=${encodeURIComponent(
+          shop
+        )}&email=${encodeURIComponent(r)}&campaign=${encodeURIComponent(c.id)}`;
+        const bodyWithUnsub = `${trackedBody}<p><a href="${unsubUrl}">Unsubscribe</a></p>`;
         await sendCampaignEmail({
           to: r,
           subject: c.subject,
-          html: trackedBody,
+          html: bodyWithUnsub,
         });
         await trackEvent(shop, { type: "email_sent", campaign: c.id });
       }

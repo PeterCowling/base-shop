@@ -14,8 +14,14 @@ export async function resolveSegment(
 ): Promise<string[]> {
   const events = await listEvents(shop);
   const emails = new Set<string>();
+  const unsubscribed = new Set<string>();
   for (const e of events) {
     const type = (e as { type?: string }).type;
+    if (type === "email_unsubscribe") {
+      const email = (e as any).email;
+      if (typeof email === "string") unsubscribed.add(email);
+      continue;
+    }
     const seg =
       type === `segment:${id}`
         ? id
@@ -27,5 +33,5 @@ export async function resolveSegment(
       if (typeof email === "string") emails.add(email);
     }
   }
-  return Array.from(emails);
+  return Array.from(emails).filter((e) => !unsubscribed.has(e));
 }

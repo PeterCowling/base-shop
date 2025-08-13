@@ -8,6 +8,11 @@ jest.mock("../index", () => ({
   __esModule: true,
   sendCampaignEmail: jest.fn().mockResolvedValue(undefined),
   resolveSegment: jest.fn(),
+  filterUnsubscribed: jest
+    .fn()
+    .mockImplementation((_shop: string, emails: string[]) =>
+      Promise.resolve(emails)
+    ),
 }));
 
 jest.mock("@platform-core/analytics", () => ({

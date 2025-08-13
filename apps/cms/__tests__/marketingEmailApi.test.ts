@@ -20,6 +20,7 @@ jest.doMock(
 process.env.CART_COOKIE_SECRET = "secret";
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
+process.env.RESEND_API_KEY = "test";
 
 const ResponseWithJson = Response as unknown as typeof Response & {
   json?: (data: unknown, init?: ResponseInit) => Response;
@@ -90,5 +91,37 @@ describe("marketing email API segments", () => {
       await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8")
     );
     expect(campaigns[0].recipients).toEqual(["manual@example.com"]);
+  });
+
+  test("excludes unsubscribed emails from segment", async () => {
+    await fs.writeFile(
+      path.join(shopDir, "analytics.jsonl"),
+      JSON.stringify({ type: "segment:vip", email: "a@example.com" }) +
+        "\n" +
+        JSON.stringify({ type: "segment:vip", email: "b@example.com" }) +
+        "\n" +
+        JSON.stringify({ type: "email_unsubscribe", email: "a@example.com" }) +
+        "\n",
+      "utf8"
+    );
+
+    const { POST } = await import("../src/app/api/marketing/email/route");
+
+    const res = await POST({
+      json: async () => ({
+        shop,
+        recipients: [],
+        subject: "Hello",
+        body: "<p>Hi</p>",
+        segment: "vip",
+        sendAt: new Date(Date.now() + 3600 * 1000).toISOString(),
+      }),
+    } as unknown as NextRequest);
+
+    expect(res.status).toBe(200);
+    const campaigns = JSON.parse(
+      await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8")
+    );
+    expect(campaigns[0].recipients).toEqual(["b@example.com"]);
   });
 });

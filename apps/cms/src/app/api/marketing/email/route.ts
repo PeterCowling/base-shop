@@ -3,7 +3,11 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { sendCampaignEmail, resolveSegment } from "@acme/email";
+import {
+  sendCampaignEmail,
+  resolveSegment,
+  filterUnsubscribed,
+} from "@acme/email";
 import { trackEvent } from "@platform-core/analytics";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { DATA_ROOT } from "@platform-core/dataRoot";
@@ -105,6 +109,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (list.length === 0 && shop && segment) {
     list = await resolveSegment(shop, segment);
   }
+  if (shop) {
+    list = await filterUnsubscribed(shop, list);
+  }
   if (!shop || !subject || !body || list.length === 0) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -142,7 +149,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (scheduled <= new Date()) {
     try {
       for (const r of list) {
-        await sendCampaignEmail({ to: r, subject, html: trackedBody });
+        const unsubUrl = `${base}/api/marketing/email/unsubscribe?shop=${encodeURIComponent(
+          shop
+        )}&email=${encodeURIComponent(r)}&campaign=${encodeURIComponent(id)}`;
+        const bodyWithUnsub = `${trackedBody}<p><a href="${unsubUrl}">Unsubscribe</a></p>`;
+        await sendCampaignEmail({ to: r, subject, html: bodyWithUnsub });
         await trackEvent(shop, { type: "email_sent", campaign: id });
       }
       sentAt = new Date().toISOString();

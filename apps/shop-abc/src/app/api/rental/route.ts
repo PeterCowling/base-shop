@@ -7,6 +7,7 @@ import {
   markReturned,
 } from "@platform-core/repositories/rentalOrders.server";
 import { NextRequest, NextResponse } from "next/server";
+import { requirePermission } from "@auth";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 
@@ -18,6 +19,11 @@ const ReturnSchema = z
   .strict();
 
 export async function POST(req: NextRequest) {
+  try {
+    await requirePermission("manage_orders");
+  } catch {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
   const parsed = await parseJsonBody(req, RentalSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { sessionId } = parsed.data;
@@ -29,6 +35,11 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  try {
+    await requirePermission("manage_orders");
+  } catch {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { sessionId, damageFee } = parsed.data;

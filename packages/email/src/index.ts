@@ -9,3 +9,4 @@ export {
   listCampaigns,
   sendDueCampaigns,
 } from "./scheduler";
+export { registerTemplate } from "./templates";

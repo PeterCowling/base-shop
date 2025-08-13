@@ -4,6 +4,7 @@ import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
 import { ProviderError } from "./providers/types";
+import { renderTemplate } from "./templates";
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -11,9 +12,13 @@ export interface CampaignOptions {
   /** Email subject line */
   subject: string;
   /** HTML body */
-  html: string;
+  html?: string;
   /** Optional plain-text body */
   text?: string;
+  /** Optional template identifier */
+  templateId?: string;
+  /** Variables for template rendering */
+  variables?: Record<string, string>;
 }
 
 const providers: Record<string, CampaignProvider> = {
@@ -31,12 +36,20 @@ const providers: Record<string, CampaignProvider> = {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
+  const { templateId, variables, html: rawHtml, ...rest } = options;
+  let html = rawHtml;
+  if (!html && templateId) {
+    html = renderTemplate(templateId, variables ?? {});
+  }
+  if (!html) throw new Error("Missing html content");
+  const prepared: CampaignOptions = { ...rest, html };
+
   const primary = coreEnv.EMAIL_PROVIDER ?? "";
   const provider = providers[primary];
 
   // No configured provider – use Nodemailer directly
   if (!provider) {
-    await sendWithNodemailer(options);
+    await sendWithNodemailer(prepared);
     return;
   }
 
@@ -49,14 +62,14 @@ export async function sendCampaignEmail(
     const current = providers[name];
     if (!current) continue;
     try {
-      await sendWithRetry(current, options);
+      await sendWithRetry(current, prepared);
       return;
     } catch {
       // Try next provider
     }
   }
 
-  await sendWithNodemailer(options);
+  await sendWithNodemailer(prepared);
 }
 
 async function sendWithRetry(

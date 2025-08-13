@@ -11,3 +11,5 @@ export {
 } from "./scheduler";
 export { setCampaignStore, fsCampaignStore } from "./storage";
 export type { CampaignStore, Campaign } from "./storage";
+export { renderTemplate } from "./templates";
+export type { TemplateParams } from "./templates";

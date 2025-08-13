@@ -1,4 +1,5 @@
 import { sendCampaignEmail } from "./send";
+import { renderTemplate } from "./templates";
 import { resolveSegment } from "./segments";
 import { trackEvent } from "@platform-core/analytics";
 import { coreEnv } from "@acme/config/env/core";
@@ -25,7 +26,14 @@ function trackedBody(shop: string, id: string, body: string): string {
 
 async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   shop = validateShopName(shop);
-  const html = trackedBody(shop, c.id, c.body);
+  let rendered = c.body;
+  if (c.templateId && !c.body.startsWith("<!--template:")) {
+    rendered = renderTemplate(c.templateId, {
+      subject: c.subject,
+      body: c.body,
+    });
+  }
+  const html = trackedBody(shop, c.id, rendered);
   let recipients = c.recipients;
   if (c.segment) {
     recipients = await resolveSegment(shop, c.segment);

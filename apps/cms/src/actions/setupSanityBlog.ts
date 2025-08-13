@@ -102,6 +102,14 @@ export async function setupSanityBlog(
                   { name: "title", type: "string", title: "Title" },
                   { name: "slug", type: "slug", title: "Slug", options: { source: "title" } },
                   { name: "excerpt", type: "text", title: "Excerpt" },
+                  { name: "mainImage", type: "string", title: "Main Image URL" },
+                  { name: "author", type: "string", title: "Author" },
+                  {
+                    name: "categories",
+                    type: "array",
+                    title: "Categories",
+                    of: [{ type: "string" }],
+                  },
                   {
                     name: "body",
                     title: "Body",

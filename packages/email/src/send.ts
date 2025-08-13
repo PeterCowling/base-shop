@@ -16,6 +16,26 @@ export interface CampaignOptions {
   text?: string;
 }
 
+function deriveText(html: string): string {
+  return html
+    .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, "")
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&#39;/gi, "'")
+    .replace(/&quot;/gi, '"')
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function ensureText(options: CampaignOptions): CampaignOptions {
+  if (options.text) return options;
+  return { ...options, text: deriveText(options.html) };
+}
+
 const providers: Record<string, CampaignProvider> = {
   sendgrid: new SendgridProvider(),
   resend: new ResendProvider(),
@@ -31,12 +51,13 @@ const providers: Record<string, CampaignProvider> = {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
+  const opts = ensureText(options);
   const primary = coreEnv.EMAIL_PROVIDER ?? "";
   const provider = providers[primary];
 
   // No configured provider – use Nodemailer directly
   if (!provider) {
-    await sendWithNodemailer(options);
+    await sendWithNodemailer(opts);
     return;
   }
 
@@ -49,14 +70,14 @@ export async function sendCampaignEmail(
     const current = providers[name];
     if (!current) continue;
     try {
-      await sendWithRetry(current, options);
+      await sendWithRetry(current, opts);
       return;
     } catch {
       // Try next provider
     }
   }
 
-  await sendWithNodemailer(options);
+  await sendWithNodemailer(opts);
 }
 
 async function sendWithRetry(
@@ -75,7 +96,7 @@ async function sendWithRetry(
       const retryable =
         err instanceof ProviderError
           ? err.retryable
-          : (err as any)?.retryable ?? true;
+          : ((err as any)?.retryable ?? true);
       if (!retryable || attempt >= maxRetries) {
         throw err;
       }

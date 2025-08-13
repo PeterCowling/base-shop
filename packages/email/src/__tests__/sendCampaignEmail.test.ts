@@ -26,7 +26,7 @@ describe("sendCampaignEmail", () => {
     delete process.env.RESEND_API_KEY;
   });
 
-  it("uses SMTP_URL and CAMPAIGN_FROM env vars and forwards options", async () => {
+  it("uses SMTP_URL and CAMPAIGN_FROM env vars and derives text from HTML", async () => {
     const sendMail = jest.fn().mockResolvedValue(undefined);
     createTransportMock.mockReturnValue({ sendMail });
 
@@ -38,7 +38,6 @@ describe("sendCampaignEmail", () => {
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
-      text: "Text body",
     });
 
     expect(createTransportMock).toHaveBeenCalledWith({ url: "smtp://test" });
@@ -47,7 +46,7 @@ describe("sendCampaignEmail", () => {
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
-      text: "Text body",
+      text: "HTML",
     });
   });
 
@@ -72,6 +71,7 @@ describe("sendCampaignEmail", () => {
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
+      text: "HTML",
     });
   });
 
@@ -96,6 +96,7 @@ describe("sendCampaignEmail", () => {
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
+      text: "HTML",
     });
   });
 });

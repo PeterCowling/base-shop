@@ -130,6 +130,9 @@ export default function ThemeEditor({
   const [availableThemes, setAvailableThemes] = useState(themes);
   const [tokensByThemeState, setTokensByThemeState] =
     useState<Record<string, Record<string, string>>>(tokensByTheme);
+  const [themeDefaults, setThemeDefaults] = useState<Record<string, string>>(
+    tokensByTheme[initialTheme],
+  );
   const [presetThemes, setPresetThemes] = useState(presets);
   const [presetName, setPresetName] = useState("");
   const [contrastWarnings, setContrastWarnings] = useState<string[]>([]);
@@ -138,8 +141,18 @@ export default function ThemeEditor({
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (selectedToken) {
+      overrideRefs.current[selectedToken]?.scrollIntoView?.({
+        behavior: "smooth",
+        block: "center",
+      });
+      overrideRefs.current[selectedToken]?.focus();
+    }
+  }, [selectedToken]);
+
   const groupedTokens = useMemo(() => {
-    const tokens = tokensByThemeState[theme];
+    const tokens = themeDefaults;
     const groups: Record<string, [string, string][]> = {
       Background: [],
       Text: [],
@@ -154,19 +167,20 @@ export default function ThemeEditor({
       else groups.Other.push([k, v]);
     });
     return groups;
-  }, [theme, tokensByThemeState]);
+  }, [themeDefaults]);
 
   const changedOverrides = useMemo(() => {
-    const tokens = tokensByThemeState[theme];
+    const tokens = themeDefaults;
     return Object.fromEntries(
-      Object.entries(overrides).filter(([k, v]) => tokens[k] !== v)
+      Object.entries(overrides).filter(([k, v]) => tokens[k] !== v),
     );
-  }, [overrides, tokensByThemeState, theme]);
+  }, [overrides, themeDefaults]);
 
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
     setTheme(next);
+    setThemeDefaults(tokensByThemeState[next]);
     setOverrides({});
   };
 
@@ -195,10 +209,13 @@ export default function ThemeEditor({
   };
 
   const handleStyleChange = (next: TokenMap) => {
-    const baseTokens = tokensByThemeState[theme] as TokenMap;
+    const baseTokens = themeDefaults as TokenMap;
     const overridesCopy: TokenMap = { ...next };
     for (const key of Object.keys(overridesCopy)) {
-      if (overridesCopy[key as keyof TokenMap] === baseTokens[key as keyof TokenMap]) {
+      if (
+        overridesCopy[key as keyof TokenMap] ===
+        baseTokens[key as keyof TokenMap]
+      ) {
         delete overridesCopy[key as keyof TokenMap];
       }
     }
@@ -206,13 +223,13 @@ export default function ThemeEditor({
   };
 
   const previewStyle = useMemo(
-    () => ({ ...tokensByThemeState[theme], ...overrides } as CSSProperties),
-    [tokensByThemeState, theme, overrides]
+    () => ({ ...themeDefaults, ...overrides } as CSSProperties),
+    [themeDefaults, overrides],
   );
 
   useEffect(() => {
     const ccc = new ColorContrastChecker();
-    const baseTokens = tokensByThemeState[theme];
+    const baseTokens = themeDefaults;
     const merged = { ...baseTokens, ...overrides };
     const textTokens = Object.keys(baseTokens).filter((k) =>
       /text|foreground/i.test(k),
@@ -243,13 +260,14 @@ export default function ThemeEditor({
       });
     });
     setContrastWarnings(warnings);
-  }, [theme, overrides, tokensByThemeState]);
+  }, [themeDefaults, overrides]);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
     const fd = new FormData(e.currentTarget);
     fd.set("themeOverrides", JSON.stringify(changedOverrides));
+    fd.set("themeDefaults", JSON.stringify(themeDefaults));
     const result = await updateShop(shop, fd);
     if (result.errors) {
       setErrors(result.errors);
@@ -262,12 +280,13 @@ export default function ThemeEditor({
   const handleSavePreset = async () => {
     const name = presetName.trim();
     if (!name) return;
-    const tokens = { ...tokensByThemeState[theme], ...overrides };
+    const tokens = { ...themeDefaults, ...overrides };
     await savePreset(shop, name, tokens);
     setTokensByThemeState((prev) => ({ ...prev, [name]: tokens }));
     setAvailableThemes((prev) => [...prev, name]);
     setPresetThemes((prev) => [...prev, name]);
     setTheme(name);
+    setThemeDefaults(tokens);
     setOverrides({});
     setPresetName("");
   };
@@ -283,6 +302,7 @@ export default function ThemeEditor({
     setPresetThemes((prev) => prev.filter((t) => t !== theme));
     const fallback = themes[0];
     setTheme(fallback);
+    setThemeDefaults(tokensByThemeState[fallback]);
     setOverrides({});
   };
 
@@ -293,6 +313,11 @@ export default function ThemeEditor({
         type="hidden"
         name="themeOverrides"
         value={JSON.stringify(changedOverrides)}
+      />
+      <input
+        type="hidden"
+        name="themeDefaults"
+        value={JSON.stringify(themeDefaults)}
       />
       <label className="flex flex-col gap-1">
         <span>Theme</span>
@@ -347,7 +372,7 @@ export default function ThemeEditor({
       {selectedToken && (
         <StyleEditor
           tokens={overrides as TokenMap}
-          baseTokens={tokensByThemeState[theme] as TokenMap}
+          baseTokens={themeDefaults as TokenMap}
           onChange={handleStyleChange}
           focusToken={selectedToken}
         />

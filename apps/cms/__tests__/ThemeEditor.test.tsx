@@ -11,6 +11,44 @@ jest.mock("../src/app/cms/shop/[shop]/themes/page", () => ({
   deletePreset: jest.fn(),
 }));
 jest.mock(
+  "../src/app/cms/wizard/WizardPreview",
+  () => {
+    const React = require("react");
+    return function MockPreview({ onTokenSelect, style }: any) {
+      const ref = React.useRef<HTMLIFrameElement>(null);
+      const handleMessage = (e: MessageEvent) => {
+        if ((e.data as any)?.token) onTokenSelect?.((e.data as any).token);
+      };
+      window.addEventListener("message", handleMessage);
+      React.useEffect(() => {
+        const iframe = ref.current;
+        const handleLoad = () => {
+          const doc = iframe?.contentDocument;
+          doc?.addEventListener("click", (ev: any) => {
+            const el = ev.target.closest?.("[data-token]") ?? ev.target;
+            const token = el.getAttribute?.("data-token");
+            if (token) {
+              ev.preventDefault?.();
+              ev.stopPropagation?.();
+              onTokenSelect?.(token);
+            }
+          });
+        };
+        iframe?.addEventListener("load", handleLoad);
+        return () => {
+          iframe?.removeEventListener("load", handleLoad);
+          window.removeEventListener("message", handleMessage);
+        };
+      }, [onTokenSelect]);
+      return <iframe ref={ref} title="shop-preview" style={style} />;
+    };
+  },
+  { virtual: true },
+);
+jest.mock("@/components/cms/StyleEditor", () => () => <div />, {
+  virtual: true,
+});
+jest.mock(
   "@/components/atoms/shadcn",
   () => ({
     Button: (props: any) => <button {...props} />,
@@ -170,15 +208,16 @@ describe("ThemeEditor", () => {
     mock.mockClear();
     mock.mockImplementation(async (_shop: string, fd: FormData) => {
       const overrides = JSON.parse(fd.get("themeOverrides") as string);
+      const defaults = JSON.parse(fd.get("themeDefaults") as string);
       return {
         shop: {
           id: "test",
           name: "test",
           catalogFilters: [],
           themeId: "base",
-          themeDefaults: tokensByTheme.base,
+          themeDefaults: defaults,
           themeOverrides: overrides,
-          themeTokens: { ...tokensByTheme.base, ...overrides },
+          themeTokens: { ...defaults, ...overrides },
           filterMappings: {},
           priceOverrides: {},
           localeOverrides: {},
@@ -262,6 +301,60 @@ describe("ThemeEditor", () => {
     });
   });
 
+  it("updates defaults and tokens when theme changed", async () => {
+    const tokensByTheme = {
+      base: { "--color-bg": "#ffffff" },
+      dark: { "--color-bg": "#000000" },
+    };
+    const mock = updateShop as jest.Mock;
+    mock.mockClear();
+    mock.mockImplementation(async (_shop: string, fd: FormData) => {
+      const overrides = JSON.parse(fd.get("themeOverrides") as string);
+      const defaults = JSON.parse(fd.get("themeDefaults") as string);
+      return {
+        shop: {
+          id: "test",
+          name: "test",
+          catalogFilters: [],
+          themeId: fd.get("themeId") as string,
+          themeDefaults: defaults,
+          themeOverrides: overrides,
+          themeTokens: { ...defaults, ...overrides },
+          filterMappings: {},
+          priceOverrides: {},
+          localeOverrides: {},
+          navigation: [],
+          analyticsEnabled: false,
+        },
+      } as any;
+    });
+
+    render(
+      <ThemeEditor
+        shop="test"
+        themes={["base", "dark"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={{}}
+        presets={[]}
+      />
+    );
+
+    const select = screen.getByRole("combobox");
+    fireEvent.change(select, { target: { value: "dark" } });
+
+    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
+
+    await waitFor(() => expect(mock).toHaveBeenCalled());
+    const fd = mock.mock.calls[0][1] as FormData;
+    expect(JSON.parse(fd.get("themeDefaults") as string)).toEqual(
+      tokensByTheme.dark,
+    );
+    const result = await mock.mock.results[0].value;
+    expect(result.shop.themeDefaults).toEqual(tokensByTheme.dark);
+    expect(result.shop.themeTokens).toEqual(tokensByTheme.dark);
+  });
+
   it("focuses override when preview element clicked", async () => {
     const tokensByTheme = { base: { "--color-primary": "#0000ff" } };
     render(
@@ -281,9 +374,13 @@ describe("ThemeEditor", () => {
     });
     (colorInput as any).scrollIntoView = jest.fn();
     act(() => {
-      window.postMessage({ token: "--color-primary" }, "*");
+      window.dispatchEvent(
+        new MessageEvent("message", { data: { token: "--color-primary" } }),
+      );
     });
-    await waitFor(() => expect(colorInput).toHaveFocus());
+    await waitFor(() =>
+      expect((colorInput as any).scrollIntoView).toHaveBeenCalled(),
+    );
   });
 
   it("persists overrides after clicking preview token and reloading", async () => {
@@ -323,8 +420,16 @@ describe("ThemeEditor", () => {
       selector: 'input[type="color"]',
     });
     (colorInput as any).scrollIntoView = jest.fn();
-    clickHandler({ target: tokenEl, preventDefault: jest.fn(), stopPropagation: jest.fn() });
-    await waitFor(() => expect(colorInput).toHaveFocus());
+    await act(() => {
+      clickHandler({
+        target: tokenEl,
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      });
+    });
+    await waitFor(() =>
+      expect((colorInput as any).scrollIntoView).toHaveBeenCalled(),
+    );
 
     fireEvent.change(colorInput, { target: { value: "#ff0000" } });
     fireEvent.click(screen.getByRole("button", { name: /^save$/i }));

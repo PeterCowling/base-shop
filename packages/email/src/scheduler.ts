@@ -8,6 +8,16 @@ import { getCampaignStore } from "./storage";
 import type { Campaign } from "./storage";
 import { syncCampaignAnalytics as fetchCampaignAnalytics } from "./analytics";
 
+export interface Clock {
+  now(): Date;
+}
+
+let clock: Clock = { now: () => new Date() };
+
+export function setClock(c: Clock): void {
+  clock = c;
+}
+
 function trackedBody(shop: string, id: string, body: string): string {
   const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";
   const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
@@ -83,7 +93,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
       await new Promise((resolve) => setTimeout(resolve, batchDelay));
     }
   }
-  c.sentAt = new Date().toISOString();
+  c.sentAt = clock.now().toISOString();
 }
 
 export async function listCampaigns(shop: string): Promise<Campaign[]> {
@@ -115,8 +125,8 @@ export async function createCampaign(opts: {
   if (!shop || !subject || !body || recipients.length === 0) {
     throw new Error("Missing fields");
   }
-  const id = Date.now().toString(36);
-  const scheduled = sendAt ? new Date(sendAt) : new Date();
+  const id = clock.now().getTime().toString(36);
+  const scheduled = sendAt ? new Date(sendAt) : clock.now();
   const campaign: Campaign = {
     id,
     recipients,
@@ -126,7 +136,7 @@ export async function createCampaign(opts: {
     sendAt: scheduled.toISOString(),
     templateId: templateId ?? null,
   };
-  if (scheduled <= new Date()) {
+  if (scheduled <= clock.now()) {
     await deliverCampaign(shop, campaign);
   }
   const store = getCampaignStore();
@@ -139,7 +149,7 @@ export async function createCampaign(opts: {
 export async function sendDueCampaigns(): Promise<void> {
   const store = getCampaignStore();
   const shops = await store.listShops();
-  const now = new Date();
+  const now = clock.now();
   for (const shop of shops) {
     const campaigns = await store.readCampaigns(shop);
     let changed = false;

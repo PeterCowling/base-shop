@@ -32,18 +32,32 @@ const listEventsMock = listEvents as jest.Mock;
 describe("scheduler", () => {
   const shop = "schedulertest";
   const shopDir = path.join(DATA_ROOT, shop);
+  const baseNow = new Date("2020-01-01T00:00:00Z");
+  let now: Date;
+
+  const loadScheduler = async () => {
+    const mod = await import("../scheduler");
+    mod.setClock({ now: () => now });
+    return mod;
+  };
 
   beforeEach(async () => {
+    jest.useFakeTimers();
     jest.clearAllMocks();
     setCampaignStore(fsCampaignStore);
     await fs.rm(shopDir, { recursive: true, force: true });
     await fs.mkdir(shopDir, { recursive: true });
     listEventsMock.mockResolvedValue([]);
+    now = new Date(baseNow);
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it("sends due campaigns and marks them as sent", async () => {
-    const past = new Date(Date.now() - 1000).toISOString();
-    const future = new Date(Date.now() + 1000).toISOString();
+    const past = new Date(now.getTime() - 1000).toISOString();
+    const future = new Date(now.getTime() + 1000).toISOString();
     const campaigns = [
       {
         id: "c1",
@@ -66,7 +80,7 @@ describe("scheduler", () => {
       "utf8",
     );
 
-    const { sendDueCampaigns } = await import("../scheduler");
+    const { sendDueCampaigns } = await loadScheduler();
     await sendDueCampaigns();
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
@@ -84,8 +98,8 @@ describe("scheduler", () => {
   });
 
   it("creates campaigns and lists them", async () => {
-    const { createCampaign, listCampaigns } = await import("../scheduler");
-    const future = new Date(Date.now() + 1000).toISOString();
+    const { createCampaign, listCampaigns } = await loadScheduler();
+    const future = new Date(now.getTime() + 1000).toISOString();
     const id = await createCampaign({
       shop,
       recipients: ["user@example.com"],
@@ -117,8 +131,8 @@ describe("scheduler", () => {
     };
     setCampaignStore(customStore);
 
-    const { createCampaign, sendDueCampaigns } = await import("../scheduler");
-    const future = new Date(Date.now() + 1000).toISOString();
+    const { createCampaign, sendDueCampaigns } = await loadScheduler();
+    const future = new Date(now.getTime() + 1000).toISOString();
     await createCampaign({
       shop,
       recipients: ["user@example.com"],
@@ -128,14 +142,14 @@ describe("scheduler", () => {
     });
     expect(memory[shop]).toHaveLength(1);
 
-    memory[shop][0].sendAt = new Date(Date.now() - 1000).toISOString();
+    memory[shop][0].sendAt = new Date(now.getTime() - 1000).toISOString();
     await sendDueCampaigns();
     expect(memory[shop][0].sentAt).toBeDefined();
     expect(sendCampaignEmailMock).toHaveBeenCalled();
   });
 
   it("skips unsubscribed recipients and personalizes unsubscribe links", async () => {
-    const past = new Date(Date.now() - 1000).toISOString();
+    const past = new Date(now.getTime() - 1000).toISOString();
     const campaigns = [
       {
         id: "c1",
@@ -155,7 +169,7 @@ describe("scheduler", () => {
       { type: "email_unsubscribe", email: "leave@example.com" },
     ]);
 
-    const { sendDueCampaigns } = await import("../scheduler");
+    const { sendDueCampaigns } = await loadScheduler();
     await sendDueCampaigns();
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
@@ -166,6 +180,7 @@ describe("scheduler", () => {
   });
 
   it("sends recipients in batches with delays", async () => {
+    jest.useRealTimers();
     process.env.EMAIL_BATCH_SIZE = "2";
     process.env.EMAIL_BATCH_DELAY_MS = "1";
     jest.resetModules();
@@ -176,10 +191,11 @@ describe("scheduler", () => {
     const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
     const { setCampaignStore, fsCampaignStore } = await import("../storage");
     setCampaignStore(fsCampaignStore);
-    const { createCampaign, sendDueCampaigns } = await import("../scheduler");
+    const { createCampaign, sendDueCampaigns, setClock } = await import("../scheduler");
+    setClock({ now: () => now });
 
-    const past = new Date(Date.now() - 1000).toISOString();
-    const future = new Date(Date.now() + 1000).toISOString();
+    const past = new Date(now.getTime() - 1000).toISOString();
+    const future = new Date(now.getTime() + 1000).toISOString();
     const recipients = [
       "r1@example.com",
       "r2@example.com",

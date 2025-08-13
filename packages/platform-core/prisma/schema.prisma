@@ -59,5 +59,6 @@ model User {
   passwordHash String
   role         String
   resetToken   String?
+  resetTokenExpiresAt DateTime?
   emailVerified Boolean @default(false)
 }

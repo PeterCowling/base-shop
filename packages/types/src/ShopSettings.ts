@@ -49,6 +49,12 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    returnService: z
+      .object({
+        upsEnabled: z.boolean(),
+      })
+      .strict()
+      .optional(),
     updatedAt: z.string(),
     updatedBy: z.string(),
   })

@@ -7,6 +7,7 @@
     "enabled": false,
     "intervalMinutes": 60
   },
+  "returnService": { "upsEnabled": false },
   "seo": {
     "aiCatalog": {
       "enabled": false,

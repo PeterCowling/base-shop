@@ -299,6 +299,30 @@ export async function updateDepositService(
   return { settings: updated };
 }
 
+const returnsSchema = z
+  .object({ enabled: z.preprocess((v) => v === "on", z.boolean()) })
+  .strict();
+
+export async function updateUpsReturns(
+  shop: string,
+  formData: FormData
+): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
+  await ensureAuthorized();
+  const parsed = returnsSchema.safeParse(
+    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+  );
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+  const current = await getShopSettings(shop);
+  const updated: ShopSettings = {
+    ...current,
+    returnService: { upsEnabled: parsed.data.enabled },
+  };
+  await saveShopSettings(shop, updated);
+  return { settings: updated };
+}
+
 const aiCatalogFormSchema = z
   .object({
     enabled: z.preprocess((v) => v === "on", z.boolean()),

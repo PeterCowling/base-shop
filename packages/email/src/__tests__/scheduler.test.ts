@@ -14,8 +14,8 @@ jest.mock("@platform-core/analytics", () => ({
   __esModule: true,
   trackEvent: jest.fn().mockResolvedValue(undefined),
 }));
-const { sendCampaignEmail } = require("../index");
-const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
+
+let sendCampaignEmailMock: jest.Mock;
 
 describe("sendScheduledCampaigns", () => {
   const shop = "schedulertest";
@@ -23,6 +23,9 @@ describe("sendScheduledCampaigns", () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
+    jest.resetModules();
+    const { sendCampaignEmail } = require("../index");
+    sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
     await fs.rm(shopDir, { recursive: true, force: true });
     await fs.mkdir(shopDir, { recursive: true });
   });
@@ -67,6 +70,43 @@ describe("sendScheduledCampaigns", () => {
     const futureCampaign = updated.find((c: any) => c.id === "c2");
     expect(pastCampaign.sentAt).toBeDefined();
     expect(futureCampaign.sentAt).toBeUndefined();
+  });
+
+  it("processes recipients in batches with delays", async () => {
+    const timeoutSpy = jest.spyOn(global, "setTimeout");
+    process.env.EMAIL_BATCH_SIZE = "2";
+    process.env.EMAIL_BATCH_DELAY_MS = "1";
+    const past = new Date(Date.now() - 1000).toISOString();
+    const recipients = [
+      "a@example.com",
+      "b@example.com",
+      "c@example.com",
+      "d@example.com",
+      "e@example.com",
+    ];
+    const campaigns = [
+      {
+        id: "c1",
+        recipients,
+        subject: "Batch",
+        body: "<p>Batch</p>",
+        sendAt: past,
+      },
+    ];
+    await fs.writeFile(
+      path.join(shopDir, "campaigns.json"),
+      JSON.stringify(campaigns, null, 2),
+      "utf8"
+    );
+
+    const { sendScheduledCampaigns } = await import("../scheduler");
+    await sendScheduledCampaigns();
+    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(5);
+    expect(timeoutSpy).toHaveBeenCalledTimes(2);
+    expect(timeoutSpy).toHaveBeenCalledWith(expect.any(Function), 1);
+    timeoutSpy.mockRestore();
+    delete process.env.EMAIL_BATCH_SIZE;
+    delete process.env.EMAIL_BATCH_DELAY_MS;
   });
 });
 

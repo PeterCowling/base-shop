@@ -21,6 +21,8 @@ export const coreEnvSchema = z.object({
   SMTP_URL: z.string().url().optional(),
   CAMPAIGN_FROM: z.string().optional(),
   EMAIL_PROVIDER: z.enum(["sendgrid", "resend", "smtp"]).optional(),
+  EMAIL_BATCH_SIZE: z.coerce.number().optional(),
+  EMAIL_BATCH_DELAY_MS: z.coerce.number().optional(),
   SENDGRID_API_KEY: z.string().optional(),
   RESEND_API_KEY: z.string().optional(),
   DATABASE_URL: z.string().optional(),

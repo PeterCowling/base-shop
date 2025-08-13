@@ -5,6 +5,18 @@ import { trackEvent } from "@platform-core/analytics";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { coreEnv } from "@acme/config/env/core";
 
+function chunk<T>(arr: T[], size: number): T[][] {
+  const res: T[][] = [];
+  for (let i = 0; i < arr.length; i += size) {
+    res.push(arr.slice(i, i + size));
+  }
+  return res;
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 interface Campaign {
   id: string;
   recipients: string[];
@@ -67,13 +79,19 @@ export async function sendScheduledCampaigns(): Promise<void> {
         recipients = await resolveSegment(shop, c.segment);
         c.recipients = recipients;
       }
-      for (const r of recipients) {
-        await sendCampaignEmail({
-          to: r,
-          subject: c.subject,
-          html: trackedBody,
-        });
-        await trackEvent(shop, { type: "email_sent", campaign: c.id });
+      const batchSize = coreEnv.EMAIL_BATCH_SIZE ?? 50;
+      const delayMs = coreEnv.EMAIL_BATCH_DELAY_MS ?? 1000;
+      const batches = chunk(recipients, batchSize);
+      for (const [i, batch] of batches.entries()) {
+        for (const r of batch) {
+          await sendCampaignEmail({
+            to: r,
+            subject: c.subject,
+            html: trackedBody,
+          });
+          await trackEvent(shop, { type: "email_sent", campaign: c.id });
+        }
+        if (i < batches.length - 1) await sleep(delayMs);
       }
       c.sentAt = new Date().toISOString();
       changed = true;

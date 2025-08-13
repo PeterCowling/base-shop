@@ -57,6 +57,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
         currency: parsed.data.currency ?? "EUR",
         taxRegion: parsed.data.taxRegion ?? "",
         ...parsed.data,
+        trackingProviders: parsed.data.trackingProviders ?? [],
         depositService: {
           enabled: false,
           intervalMinutes: 60,
@@ -95,6 +96,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     taxRegion: "",
     depositService: { enabled: false, intervalMinutes: 60 },
     returnService: { upsEnabled: false },
+    trackingProviders: [],
     updatedAt: "",
     updatedBy: "",
   };

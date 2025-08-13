@@ -55,6 +55,8 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    /** Optional list of shipping/return tracking providers */
+    trackingProviders: z.array(z.string()).optional(),
     updatedAt: z.string(),
     updatedBy: z.string(),
   })

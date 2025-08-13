@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import sanitizeHtml from "sanitize-html";
 import { coreEnv } from "@acme/config/env/core";
 import { getDefaultSender } from "./config";
 import { SendgridProvider } from "./providers/sendgrid";
@@ -17,6 +18,10 @@ export interface CampaignOptions {
   text?: string;
   /** Optional campaign identifier for logging */
   campaignId?: string;
+  /**
+   * When false, bypass HTML sanitization. Defaults to true.
+   */
+  sanitize?: boolean;
 }
 
 function deriveText(html: string): string {
@@ -66,7 +71,9 @@ if (!coreEnv.EMAIL_PROVIDER) {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
-  const opts = ensureText(options);
+  const { sanitize = true } = options;
+  const html = sanitize ? sanitizeHtml(options.html) : options.html;
+  const opts = ensureText({ ...options, html });
   const primary = coreEnv.EMAIL_PROVIDER ?? "";
   const provider = providers[primary];
 

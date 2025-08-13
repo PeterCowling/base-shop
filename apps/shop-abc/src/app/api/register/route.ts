@@ -7,6 +7,7 @@ import {
   getUserById,
   getUserByEmail,
 } from "@acme/platform-core/users";
+import { parseJsonBody } from "@shared-utils";
 
 const RegisterSchema = z.object({
   customerId: z.string(),
@@ -15,20 +16,18 @@ const RegisterSchema = z.object({
 });
 
 export async function POST(req: Request) {
-  const json = await req.json();
-  const parsed = RegisterSchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, {
-      status: 400,
-    });
-  }
+  const parsed = await parseJsonBody(req, RegisterSchema);
+  if (!parsed.success) return parsed.response;
 
   const { customerId, email, password } = parsed.data;
   if (await getUserById(customerId)) {
     return NextResponse.json({ error: "User already exists" }, { status: 400 });
   }
   if (await getUserByEmail(email)) {
-    return NextResponse.json({ error: "Email already registered" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Email already registered" },
+      { status: 400 }
+    );
   }
 
   const passwordHash = await bcrypt.hash(password, 10);

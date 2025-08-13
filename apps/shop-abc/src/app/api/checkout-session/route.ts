@@ -19,6 +19,7 @@ import { getTaxRate } from "@platform-core/tax";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { z } from "zod";
+import { parseJsonBody } from "@shared-utils";
 
 /* ------------------------------------------------------------------ *
  *  Types
@@ -153,14 +154,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     shipping: shippingSchema.optional(),
     billing_details: billingSchema.optional(),
   });
-
-  const parsed = schema.safeParse(await req.json().catch(() => undefined));
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: parsed.error.flatten().fieldErrors },
-      { status: 400 }
-    );
-  }
+  const parsed = await parseJsonBody(req, schema);
+  if (!parsed.success) return parsed.response;
 
   const {
     returnDate,
@@ -173,7 +168,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } = parsed.data;
   const couponDef = await findCoupon(shop.id, coupon);
   if (couponDef) {
-    await trackEvent(shop.id, { type: "discount_redeemed", code: couponDef.code });
+    await trackEvent(shop.id, {
+      type: "discount_redeemed",
+      code: couponDef.code,
+    });
   }
   const discountRate = couponDef ? couponDef.discountPercent / 100 : 0;
   let rentalDays: number;
@@ -221,28 +219,28 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   /* 5️⃣ Create Checkout Session -------------------------------------------- */
   const customerSession = await getCustomerSession();
   const customer = customerId ?? customerSession?.customerId;
-  const clientIp =
-    req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
+  const clientIp = req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
 
-  const paymentIntentData: Stripe.Checkout.SessionCreateParams.PaymentIntentData = {
-    ...(shipping ? { shipping } : {}),
-    payment_method_options: {
-      card: { request_three_d_secure: "automatic" },
-    },
-    metadata: {
-      subtotal: subtotal.toString(),
-      depositTotal: depositTotal.toString(),
-      returnDate: returnDate ?? "",
-      rentalDays: rentalDays.toString(),
-      customerId: customer ?? "",
-      discount: discount.toString(),
-      coupon: couponDef?.code ?? "",
-      currency,
-      taxRate: taxRate.toString(),
-      taxAmount: taxAmount.toString(),
-      ...(clientIp ? { client_ip: clientIp } : {}),
-    },
-  } as any;
+  const paymentIntentData: Stripe.Checkout.SessionCreateParams.PaymentIntentData =
+    {
+      ...(shipping ? { shipping } : {}),
+      payment_method_options: {
+        card: { request_three_d_secure: "automatic" },
+      },
+      metadata: {
+        subtotal: subtotal.toString(),
+        depositTotal: depositTotal.toString(),
+        returnDate: returnDate ?? "",
+        rentalDays: rentalDays.toString(),
+        customerId: customer ?? "",
+        discount: discount.toString(),
+        coupon: couponDef?.code ?? "",
+        currency,
+        taxRate: taxRate.toString(),
+        taxAmount: taxAmount.toString(),
+        ...(clientIp ? { client_ip: clientIp } : {}),
+      },
+    } as any;
 
   if (billing_details) {
     (paymentIntentData as any).billing_details = billing_details;

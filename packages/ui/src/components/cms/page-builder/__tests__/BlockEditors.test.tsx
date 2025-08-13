@@ -13,6 +13,7 @@ import NewsletterSignupEditor from "../NewsletterSignupEditor";
 import StoreLocatorBlockEditor from "../StoreLocatorBlockEditor";
 import FeaturedProductEditor from "../FeaturedProductEditor";
 import FormBuilderEditor from "../FormBuilderEditor";
+import ProductBundleEditor from "../ProductBundleEditor";
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
@@ -101,6 +102,12 @@ describe("block editors", () => {
       FeaturedProductEditor,
       { type: "FeaturedProduct", sku: "" },
       "sku",
+    ],
+    [
+      "ProductBundleEditor",
+      ProductBundleEditor,
+      { type: "ProductBundle", skus: [] },
+      "skus",
     ],
     [
       "FormBuilderEditor",

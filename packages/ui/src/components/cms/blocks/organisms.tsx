@@ -38,6 +38,9 @@ import ProductComparisonBlock from "./ProductComparisonBlock";
 import GiftCardBlock from "./GiftCardBlock";
 import FormBuilderBlock from "./FormBuilderBlock";
 import PopupModal from "./PopupModal";
+import ProductBundle, {
+  getRuntimeProps as getProductBundleRuntimeProps,
+} from "./ProductBundle";
 
 export const organismRegistry = {
   AnnouncementBar: { component: AnnouncementBar },
@@ -84,6 +87,10 @@ export const organismRegistry = {
   GiftCardBlock: { component: GiftCardBlock },
   FormBuilderBlock: { component: FormBuilderBlock },
   PopupModal: { component: PopupModal },
+  ProductBundle: {
+    component: ProductBundle,
+    getRuntimeProps: getProductBundleRuntimeProps,
+  },
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

@@ -39,6 +39,7 @@ import ProductComparisonEditor from "./ProductComparisonEditor";
 import GiftCardEditor from "./GiftCardEditor";
 import FormBuilderEditor from "./FormBuilderEditor";
 import PopupModalEditor from "./PopupModalEditor";
+import ProductBundleEditor from "./ProductBundleEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -131,6 +132,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "ProductComparison":
       specific = (
         <ProductComparisonEditor component={component} onChange={onChange} />
+      );
+      break;
+    case "ProductBundle":
+      specific = (
+        <ProductBundleEditor component={component} onChange={onChange} />
       );
       break;
     case "GiftCardBlock":

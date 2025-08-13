@@ -172,6 +172,10 @@ grouped by purpose (Background, Text, Accent) and each color token displays a
 preview swatch. Clicking a swatch focuses its corresponding field, where a color
 picker enables quick overrides. Save the form to persist any changes.
 
+## Shop maintenance
+
+See [doc/upgrade-preview-republish.md](doc/upgrade-preview-republish.md) for guidance on upgrading a shop, previewing changes and republishing.
+
 ## Inventory Management
 
 ### Variant schema

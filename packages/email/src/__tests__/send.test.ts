@@ -25,6 +25,11 @@ jest.mock("../providers/resend", () => ({
   })),
 }));
 
+jest.mock("../scheduler", () => ({}));
+jest.mock("@platform-core/analytics", () => ({
+  trackEvent: jest.fn(),
+}));
+
 describe("sendCampaignEmail fallback and retry", () => {
   const setupEnv = () => {
     process.env.EMAIL_PROVIDER = "sendgrid";
@@ -106,5 +111,40 @@ describe("sendCampaignEmail fallback and retry", () => {
     expect(sendgridSendMock.mock.calls[1][0].text).toBe("HTML");
     expect(resendSendMock).not.toHaveBeenCalled();
     timeoutSpy.mockRestore();
+  });
+
+  it("logs provider, campaign, and recipient on failure", async () => {
+    sendgridSendMock = jest
+      .fn()
+      .mockRejectedValue(new ProviderError("fail", false));
+    resendSendMock = jest.fn().mockResolvedValue(undefined);
+    sendMailMock = jest.fn();
+
+    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    setupEnv();
+
+    const { sendCampaignEmail } = await import("../index");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+      campaignId: "camp123",
+    });
+
+    expect(consoleSpy.mock.calls).toEqual(
+      expect.arrayContaining([
+        [
+          "Campaign email send failed",
+          expect.objectContaining({
+            provider: "sendgrid",
+            recipient: "to@example.com",
+            campaignId: "camp123",
+          }),
+        ],
+      ])
+    );
+
+    consoleSpy.mockRestore();
   });
 });

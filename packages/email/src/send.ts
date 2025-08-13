@@ -14,6 +14,8 @@ export interface CampaignOptions {
   html: string;
   /** Optional plain-text body */
   text?: string;
+  /** Optional campaign identifier for logging */
+  campaignId?: string;
 }
 
 function deriveText(html: string): string {
@@ -84,7 +86,13 @@ export async function sendCampaignEmail(
     try {
       await sendWithRetry(current, opts);
       return;
-    } catch {
+    } catch (err) {
+      console.error("Campaign email send failed", {
+        provider: name,
+        recipient: opts.to,
+        campaignId: opts.campaignId,
+        error: err,
+      });
       // Try next provider
     }
   }

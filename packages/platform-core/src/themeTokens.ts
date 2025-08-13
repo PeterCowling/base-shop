@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { runInNewContext } from "node:vm";
+import { createRequire } from "module";
 import ts from "typescript";
 
 import {
@@ -40,9 +41,9 @@ function transpileTokens(filePath: string, requireFn: NodeRequire): TokenMap {
 export function loadThemeTokensNode(theme: string): TokenMap {
   if (!theme || theme === "base") return {};
   // obtain a `require` function in both CJS and ESM environments
-  // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-implied-eval
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const requireFn: NodeRequire =
-    typeof require !== "undefined" ? require : (eval("require") as NodeRequire);
+    typeof require !== "undefined" ? require : createRequire(import.meta.url);
   try {
     // attempt to load compiled module
     const mod = requireFn(

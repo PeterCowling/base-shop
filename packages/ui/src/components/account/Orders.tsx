@@ -24,7 +24,7 @@ export default async function OrdersPage({
     redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
     return null as never;
   }
-  if (!hasPermission(session.role, "manage_profile")) {
+  if (!hasPermission(session.role, "view_orders")) {
     return <p className="p-6">Not authorized.</p>;
   }
   const orders = await getOrdersForCustomer(shopId, session.customerId);

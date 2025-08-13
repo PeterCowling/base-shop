@@ -287,6 +287,12 @@ export interface PricingTableComponent extends PageComponentBase {
   }[];
 }
 
+export interface GiftCardBlockComponent extends PageComponentBase {
+  type: "GiftCardBlock";
+  denominations?: number[];
+  description?: string;
+}
+
 export interface TextComponent extends PageComponentBase {
   type: "Text";
   text?: string;
@@ -348,6 +354,7 @@ export type PageComponent =
   | TestimonialsComponent
   | PricingTableComponent
   | TestimonialSliderComponent
+  | GiftCardBlockComponent
   | ImageComponent
   | TextComponent
   | CustomHtmlComponent
@@ -592,6 +599,12 @@ const pricingTableComponentSchema = baseComponentSchema.extend({
     .optional(),
 });
 
+const giftCardBlockComponentSchema = baseComponentSchema.extend({
+  type: z.literal("GiftCardBlock"),
+  denominations: z.array(z.number()).optional(),
+  description: z.string().optional(),
+});
+
 const imageComponentSchema = baseComponentSchema.extend({
   type: z.literal("Image"),
   src: z.string().optional(),
@@ -666,6 +679,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     blogListingComponentSchema,
     testimonialsComponentSchema,
     pricingTableComponentSchema,
+    giftCardBlockComponentSchema,
     testimonialSliderComponentSchema,
     imageComponentSchema,
     textComponentSchema,

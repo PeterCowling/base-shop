@@ -269,6 +269,12 @@ export interface TestimonialsComponent extends PageComponentBase {
     name?: string;
   }[];
 }
+
+export interface GiftCardBlockComponent extends PageComponentBase {
+  type: "GiftCardBlock";
+  denominations?: number[];
+  description?: string;
+}
 export interface SectionComponent extends PageComponentBase {
   type: "Section";
   children?: PageComponent[];
@@ -306,6 +312,7 @@ export type PageComponent =
   | FAQBlockComponent
   | BlogListingComponent
   | TestimonialsComponent
+  | GiftCardBlockComponent
   | TestimonialSliderComponent
   | ImageComponent
   | TextComponent

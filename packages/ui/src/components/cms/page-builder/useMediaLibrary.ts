@@ -1,11 +1,15 @@
 import { getShopFromPath } from "@platform-core/utils";
 import type { MediaItem } from "@acme/types";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 
 export default function useMediaLibrary() {
   const pathname = usePathname() ?? "";
-  const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
+  const searchParams = useSearchParams();
+  const shop = useMemo(() => {
+    const fromPath = getShopFromPath(pathname);
+    return fromPath ?? searchParams?.get("shopId") ?? undefined;
+  }, [pathname, searchParams]);
   const [media, setMedia] = useState<MediaItem[]>([]);
 
   const loadMedia = useCallback(async () => {

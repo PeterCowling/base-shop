@@ -10,7 +10,7 @@ import {
   useCallback,
 } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, Input, Switch, Textarea, Toast } from "@ui";
+import { Button, Input, Switch, Textarea, Toast, ImagePicker } from "@ui";
 import { slugify } from "@acme/shared-utils";
 import type { SKU } from "@acme/types";
 import {
@@ -75,6 +75,14 @@ const schema = defineSchema({
       name: "embed",
       type: "object",
       fields: [{ name: "url", type: "string" }],
+    },
+    {
+      name: "image",
+      type: "object",
+      fields: [
+        { name: "url", type: "string" },
+        { name: "alt", type: "string" },
+      ],
     },
   ],
 });
@@ -155,6 +163,9 @@ const previewComponents = {
         <iframe src={value.url} className="h-full w-full" />
       </div>
     ),
+    image: ({ value }: any) => (
+      <img src={value.url} alt={value.alt || ""} className="max-w-full" />
+    ),
   },
   marks: {
     link: ({ children, value }: any) => (
@@ -227,6 +238,15 @@ const renderBlock: RenderBlockFunction = (props) => {
       </div>
     );
   }
+  if (props.value._type === "image") {
+    return (
+      <img
+        src={props.value.url}
+        alt={props.value.alt || ""}
+        className="max-w-full"
+      />
+    );
+  }
   return <div>{props.children}</div>;
 };
 
@@ -244,6 +264,12 @@ function Toolbar() {
     const url = prompt("Embed URL");
     if (url) PortableTextEditor.insertBlock(editor, "embed", { url });
   };
+  const addImage = useCallback(
+    (url: string) => {
+      PortableTextEditor.insertBlock(editor, "image", { url });
+    },
+    [editor],
+  );
   return (
     <div className="flex flex-wrap gap-2">
       <Button
@@ -280,6 +306,11 @@ function Toolbar() {
       <Button type="button" variant="outline" onClick={addEmbed}>
         Embed
       </Button>
+      <ImagePicker onSelect={addImage}>
+        <Button type="button" variant="outline">
+          Image
+        </Button>
+      </ImagePicker>
     </div>
   );
 }
@@ -407,6 +438,7 @@ export default function PostForm({ action, submitLabel, post }: Props) {
   const [publishedAt, setPublishedAt] = useState(
     post?.publishedAt ? post.publishedAt.slice(0, 16) : "",
   );
+  const [mainImage, setMainImage] = useState(post?.mainImage ?? "");
   const [content, setContent] = useState<PortableTextBlock[]>(
     Array.isArray(post?.body)
       ? (post?.body as PortableTextBlock[])
@@ -463,11 +495,22 @@ export default function PostForm({ action, submitLabel, post }: Props) {
           </div>
         </div>
         <Textarea name="excerpt" label="Excerpt" defaultValue={post?.excerpt ?? ""} />
-        <Input
-          name="mainImage"
-          label="Main image URL"
-          defaultValue={post?.mainImage ?? ""}
-        />
+        <div className="space-y-2">
+          <label className="block font-medium">Main image</label>
+          <ImagePicker onSelect={(url) => setMainImage(url)}>
+            <Button type="button" variant="outline">
+              {mainImage ? "Change image" : "Select image"}
+            </Button>
+          </ImagePicker>
+          {mainImage && (
+            <img
+              src={mainImage}
+              alt="Main image"
+              className="h-32 w-auto rounded object-cover"
+            />
+          )}
+          <input type="hidden" name="mainImage" value={mainImage} />
+        </div>
         <Input
           name="author"
           label="Author"

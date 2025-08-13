@@ -9,3 +9,11 @@ export {
   listCampaigns,
   sendDueCampaigns,
 } from "./scheduler";
+export {
+  onSend,
+  onOpen,
+  onClick,
+  triggerSend,
+  triggerOpen,
+  triggerClick,
+} from "./hooks";

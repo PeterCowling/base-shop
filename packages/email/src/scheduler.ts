@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { sendCampaignEmail, resolveSegment } from "./index";
-import { trackEvent } from "@platform-core/analytics";
+import { triggerSend } from "./hooks";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
@@ -71,7 +71,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
       subject: c.subject,
       html,
     });
-    await trackEvent(shop, { type: "email_sent", campaign: c.id });
+    await triggerSend(shop, { campaign: c.id });
   }
   c.sentAt = new Date().toISOString();
 }

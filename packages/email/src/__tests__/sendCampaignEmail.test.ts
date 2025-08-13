@@ -33,7 +33,7 @@ describe("sendCampaignEmail", () => {
     process.env.SMTP_URL = "smtp://test";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -60,7 +60,7 @@ describe("sendCampaignEmail", () => {
     process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -84,7 +84,7 @@ describe("sendCampaignEmail", () => {
     process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",

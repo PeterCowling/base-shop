@@ -1,4 +1,7 @@
-import { recoverAbandonedCarts, type AbandonedCart } from "../index";
+import {
+  recoverAbandonedCarts,
+  type AbandonedCart,
+} from "../abandonedCart";
 import { sendCampaignEmail } from "../send";
 
 jest.mock("../send", () => ({

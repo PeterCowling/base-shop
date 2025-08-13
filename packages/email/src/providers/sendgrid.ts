@@ -2,6 +2,7 @@ import sgMail from "@sendgrid/mail";
 import { coreEnv } from "@acme/config/env/core";
 import type { CampaignOptions } from "../send";
 import type { CampaignProvider } from "./types";
+import { defaultFrom } from "../config";
 
 export class SendgridProvider implements CampaignProvider {
   constructor() {
@@ -13,7 +14,7 @@ export class SendgridProvider implements CampaignProvider {
   async send(options: CampaignOptions): Promise<void> {
     await sgMail.send({
       to: options.to,
-      from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
+      from: defaultFrom,
       subject: options.subject,
       html: options.html,
       text: options.text,

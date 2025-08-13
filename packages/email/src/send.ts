@@ -3,6 +3,7 @@ import { coreEnv } from "@acme/config/env/core";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
+import { defaultFrom } from "./config";
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -38,7 +39,7 @@ export async function sendCampaignEmail(
   });
 
   await transport.sendMail({
-    from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
+    from: defaultFrom,
     to: options.to,
     subject: options.subject,
     html: options.html,

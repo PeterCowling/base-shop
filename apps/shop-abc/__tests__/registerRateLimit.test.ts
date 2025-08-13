@@ -26,6 +26,7 @@ let __resetRegistrationRateLimiter: typeof import("../src/middleware").__resetRe
 let MAX_REGISTRATION_ATTEMPTS: number;
 
 beforeAll(async () => {
+  process.env.SESSION_SECRET = "test-secret";
   ({ __resetRegistrationRateLimiter, MAX_REGISTRATION_ATTEMPTS } = await import(
     "../src/middleware"
   ));

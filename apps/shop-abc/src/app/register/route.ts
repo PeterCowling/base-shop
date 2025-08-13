@@ -13,6 +13,7 @@ import { checkRegistrationRateLimit } from "../../middleware";
 import { validateCsrfToken } from "@auth";
 import { updateCustomerProfile } from "@acme/platform-core/customerProfiles";
 import { sendEmail } from "@acme/email";
+import { coreEnv } from "@acme/config/env/core";
 
 const RegisterSchema = z
   .object({
@@ -58,7 +59,10 @@ export async function POST(req: Request) {
   await createUser({ id: customerId, email, passwordHash });
   await updateCustomerProfile(customerId, { name: "", email });
 
-  const secret = process.env.SESSION_SECRET ?? "test-secret";
+  const secret = coreEnv.SESSION_SECRET;
+  if (!secret) {
+    throw new Error("SESSION_SECRET is not set");
+  }
   const signature = crypto
     .createHmac("sha256", secret)
     .update(customerId)

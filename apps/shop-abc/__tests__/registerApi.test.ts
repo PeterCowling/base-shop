@@ -48,9 +48,16 @@ jest.mock("next/server", () => ({
   },
 }));
 
-import { POST } from "../src/app/register/route";
-import { GET as profileGET } from "../src/app/api/account/profile/route";
 import { updateCustomerProfile } from "@acme/platform-core/customerProfiles";
+
+let POST: typeof import("../src/app/register/route").POST;
+let profileGET: typeof import("../src/app/api/account/profile/route").GET;
+
+beforeAll(async () => {
+  process.env.SESSION_SECRET = "test-secret";
+  ({ POST } = await import("../src/app/register/route"));
+  ({ GET: profileGET } = await import("../src/app/api/account/profile/route"));
+});
 
 describe("/register POST", () => {
   afterEach(() => {

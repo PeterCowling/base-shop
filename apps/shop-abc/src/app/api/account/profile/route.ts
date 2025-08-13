@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/account/profile/route.ts
-import { getCustomerSession, validateCsrfToken } from "@auth";
+import { getCustomerSession, validateCsrfToken, hasPermission } from "@auth";
 import {
   getCustomerProfile,
   updateCustomerProfile,
@@ -23,6 +23,10 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  if (!hasPermission(session.role, "view_profile")) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const profile = await getCustomerProfile(session.customerId);
   if (!profile) {
     return NextResponse.json({
@@ -38,6 +42,10 @@ export async function PUT(req: NextRequest) {
   const session = await getCustomerSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (!hasPermission(session.role, "manage_profile")) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const token = req.headers.get("x-csrf-token");

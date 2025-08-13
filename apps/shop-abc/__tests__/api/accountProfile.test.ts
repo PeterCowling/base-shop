@@ -16,7 +16,12 @@ const updateCustomerProfile = jest.fn(async (id: string, data: any) => {
 });
 const getCustomerProfile = jest.fn(async (id: string) => profile);
 
-jest.mock("@auth", () => ({ __esModule: true, getCustomerSession, validateCsrfToken }));
+jest.mock("@auth", () => ({
+  __esModule: true,
+  getCustomerSession,
+  validateCsrfToken,
+  hasPermission: jest.requireActual("@auth/permissions").hasPermission,
+}));
 jest.mock("@acme/platform-core/customerProfiles", () => ({
   __esModule: true,
   getCustomerProfile,
@@ -41,7 +46,10 @@ test("returns 401 for unauthorized", async () => {
 });
 
 test("returns 400 with validation errors", async () => {
-  getCustomerSession.mockResolvedValue({ customerId: "cust1" });
+  getCustomerSession.mockResolvedValue({
+    customerId: "cust1",
+    role: "customer",
+  });
   const res = await PUT(createRequest({ name: "", email: "invalid" }));
   const body = await res.json();
   expect(res.status).toBe(400);
@@ -50,7 +58,10 @@ test("returns 400 with validation errors", async () => {
 });
 
 test("updates profile with valid payload", async () => {
-  getCustomerSession.mockResolvedValue({ customerId: "cust1" });
+  getCustomerSession.mockResolvedValue({
+    customerId: "cust1",
+    role: "customer",
+  });
   const res = await PUT(
     createRequest({ name: "New Name", email: "new@example.com" })
   );
@@ -66,7 +77,10 @@ test("updates profile with valid payload", async () => {
 });
 
 test("returns 409 when email already exists", async () => {
-  getCustomerSession.mockResolvedValue({ customerId: "cust1" });
+  getCustomerSession.mockResolvedValue({
+    customerId: "cust1",
+    role: "customer",
+  });
   updateCustomerProfile.mockRejectedValue(
     new Error("Conflict: email already in use")
   );
@@ -76,5 +90,16 @@ test("returns 409 when email already exists", async () => {
   const body = await res.json();
   expect(res.status).toBe(409);
   expect(body).toEqual({ error: "email already in use" });
+});
+
+test("returns 403 for unauthorized role", async () => {
+  getCustomerSession.mockResolvedValue({
+    customerId: "cust1",
+    role: "viewer",
+  });
+  const res = await PUT(
+    createRequest({ name: "New Name", email: "new@example.com" })
+  );
+  expect(res.status).toBe(403);
 });
 

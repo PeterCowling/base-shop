@@ -1,7 +1,13 @@
-import { mapSendGridEvent, mapResendEvent, mapSendGridStats, mapResendStats } from "../analytics";
+process.env.CART_COOKIE_SECRET = "secret";
 
 describe("analytics mapping", () => {
-  it("normalizes SendGrid webhook events", () => {
+  it("normalizes SendGrid webhook events", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapSendGridEvent } = await import("../analytics");
     const ev = {
       event: "open",
       sg_message_id: "msg-1",
@@ -16,7 +22,13 @@ describe("analytics mapping", () => {
     });
   });
 
-  it("normalizes Resend webhook events", () => {
+  it("normalizes Resend webhook events", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapResendEvent } = await import("../analytics");
     const ev = {
       type: "email.opened",
       data: {
@@ -33,7 +45,13 @@ describe("analytics mapping", () => {
     });
   });
 
-  it("maps SendGrid stats", () => {
+  it("maps SendGrid stats", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapSendGridStats } = await import("../analytics");
     const stats = {
       delivered: 1,
       opens: 2,
@@ -50,7 +68,13 @@ describe("analytics mapping", () => {
     });
   });
 
-  it("maps Resend stats", () => {
+  it("maps Resend stats", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapResendStats } = await import("../analytics");
     const stats = {
       delivered_count: 1,
       opened_count: 2,
@@ -64,6 +88,67 @@ describe("analytics mapping", () => {
       clicked: 3,
       unsubscribed: 4,
       bounced: 5,
+    });
+  });
+});
+
+describe("syncCampaignAnalytics", () => {
+  it("fetches stats and forwards them to analytics", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    process.env.EMAIL_PROVIDER = "sendgrid";
+
+    const trackEvent = jest.fn().mockResolvedValue(undefined);
+    jest.doMock("@platform-core/analytics", () => ({
+      __esModule: true,
+      trackEvent,
+    }));
+    const stats = {
+      delivered: 1,
+      opened: 2,
+      clicked: 3,
+      unsubscribed: 4,
+      bounced: 5,
+    };
+    const getCampaignStats = jest.fn().mockResolvedValue(stats);
+    jest.doMock("../providers/sendgrid", () => ({
+      SendgridProvider: jest.fn().mockImplementation(() => ({
+        getCampaignStats,
+      })),
+    }));
+    jest.doMock("../providers/resend", () => ({
+      ResendProvider: jest.fn(),
+    }));
+
+    const { setCampaignStore } = await import("../storage");
+    const memoryStore = {
+      async readCampaigns() {
+        return [
+          {
+            id: "c1",
+            recipients: [],
+            subject: "s",
+            body: "b",
+            sendAt: new Date().toISOString(),
+            sentAt: new Date().toISOString(),
+          },
+        ];
+      },
+      async writeCampaigns() {},
+      async listShops() {
+        return ["shop1"];
+      },
+    };
+    setCampaignStore(memoryStore as any);
+
+    const { syncCampaignAnalytics } = await import("../analytics");
+    await syncCampaignAnalytics();
+
+    expect(getCampaignStats).toHaveBeenCalledWith("c1");
+    expect(trackEvent).toHaveBeenCalledWith("shop1", {
+      type: "email_campaign_stats",
+      campaign: "c1",
+      ...stats,
     });
   });
 });

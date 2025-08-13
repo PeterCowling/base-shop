@@ -8,6 +8,7 @@ export {
   createCampaign,
   listCampaigns,
   sendDueCampaigns,
+  syncCampaignAnalytics,
 } from "./scheduler";
 export { setCampaignStore, fsCampaignStore } from "./storage";
 export type { CampaignStore, Campaign } from "./storage";

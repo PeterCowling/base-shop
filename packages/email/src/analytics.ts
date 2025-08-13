@@ -1,3 +1,10 @@
+import { trackEvent } from "@platform-core/analytics";
+import { coreEnv } from "@acme/config/env/core";
+import { getCampaignStore } from "./storage";
+import { SendgridProvider } from "./providers/sendgrid";
+import { ResendProvider } from "./providers/resend";
+import type { CampaignProvider } from "./providers/types";
+
 export type EmailEventType =
   | "email_delivered"
   | "email_open"
@@ -99,4 +106,39 @@ export function normalizeProviderStats(
   if (provider === "sendgrid") return mapSendGridStats(stats);
   if (provider === "resend") return mapResendStats(stats);
   return { ...emptyStats };
+}
+
+const providers: Record<string, CampaignProvider> = {
+  sendgrid: new SendgridProvider(),
+  resend: new ResendProvider(),
+};
+
+/**
+ * Fetch campaign stats from the configured provider and forward them to the
+ * platform analytics system. Intended to run on a periodic schedule.
+ */
+export async function syncCampaignAnalytics(): Promise<void> {
+  const providerName = coreEnv.EMAIL_PROVIDER ?? "";
+  const provider = providers[providerName];
+  if (!provider) return;
+
+  const store = getCampaignStore();
+  const shops = await store.listShops();
+  for (const shop of shops) {
+    const campaigns = await store.readCampaigns(shop);
+    for (const c of campaigns) {
+      if (!c.sentAt) continue;
+      let stats: CampaignStats;
+      try {
+        stats = await provider.getCampaignStats(c.id);
+      } catch {
+        stats = { ...emptyStats };
+      }
+      await trackEvent(shop, {
+        type: "email_campaign_stats",
+        campaign: c.id,
+        ...stats,
+      });
+    }
+  }
 }

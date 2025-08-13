@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { readInventory } from "@platform-core/repositories/inventory.server";
 import { format as formatCsv } from "fast-csv";
+import { flattenInventoryItem } from "@platform-core/utils/inventory";
 
 export async function GET(
   req: NextRequest,
@@ -24,42 +25,14 @@ export async function GET(
           .on("error", reject)
           .on("data", (c) => chunks.push(c.toString()))
           .on("end", () => resolve(chunks.join("")));
-        items.forEach((i) => {
-          stream.write({
-            sku: i.sku,
-            productId: i.productId,
-            ...Object.fromEntries(
-              Object.entries(i.variantAttributes).map(([k, v]) => [
-                `variant.${k}`,
-                v,
-              ])
-            ),
-            quantity: i.quantity,
-            ...(i.lowStockThreshold !== undefined
-              ? { lowStockThreshold: i.lowStockThreshold }
-              : {}),
-          });
-        });
+        items.map(flattenInventoryItem).forEach((i) => stream.write(i));
         stream.end();
       });
       return new Response(csv, {
         headers: { "content-type": "text/csv" },
       });
     }
-    const json = items.map((i) => ({
-      sku: i.sku,
-      productId: i.productId,
-      ...Object.fromEntries(
-        Object.entries(i.variantAttributes).map(([k, v]) => [
-          `variant.${k}`,
-          v,
-        ])
-      ),
-      quantity: i.quantity,
-      ...(i.lowStockThreshold !== undefined
-        ? { lowStockThreshold: i.lowStockThreshold }
-        : {}),
-    }));
+    const json = items.map((i) => flattenInventoryItem(i));
     return NextResponse.json(json);
   } catch (err) {
     return NextResponse.json(

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { inventoryItemSchema } from "@acme/types";
 import { writeInventory } from "@platform-core/repositories/inventory.server";
+import { expandInventoryItem } from "@platform-core/utils/inventory";
 import { parse } from "fast-csv";
 import { Readable } from "node:stream";
 
@@ -25,39 +26,8 @@ export async function POST(
     if (file.type === "application/json" || file.name.endsWith(".json")) {
       const data = JSON.parse(text);
       raw = Array.isArray(data)
-        ? data.map((row: Record<string, unknown>) => {
-            const {
-              sku,
-              productId,
-              quantity,
-              lowStockThreshold,
-              variantAttributes,
-              ...rest
-            } = row;
-            const attrs =
-              typeof variantAttributes === "object" && variantAttributes
-                ? (variantAttributes as Record<string, string>)
-                : Object.fromEntries(
-                    Object.entries(rest)
-                      .filter(
-                        ([k, v]) =>
-                          k.startsWith("variant.") &&
-                          v !== undefined &&
-                          v !== ""
-                      )
-                      .map(([k, v]) => [k.slice("variant.".length), v as string])
-                  );
-            return {
-              sku: sku as string,
-              productId: (productId as string) || (sku as string),
-              variantAttributes: attrs,
-              quantity: Number(quantity),
-              ...(lowStockThreshold !== undefined && lowStockThreshold !== ""
-                ? { lowStockThreshold: Number(lowStockThreshold) }
-                : {}),
-            };
-          })
-        : data;
+        ? data.map((row: Record<string, unknown>) => expandInventoryItem(row))
+        : expandInventoryItem(data as Record<string, unknown>);
     } else {
       raw = await new Promise((resolve, reject) => {
         const rows: unknown[] = [];
@@ -65,26 +35,7 @@ export async function POST(
           .pipe(parse({ headers: true, ignoreEmpty: true }))
           .on("error", reject)
           .on("data", (row) => {
-            const {
-              sku,
-              productId,
-              quantity,
-              lowStockThreshold,
-              ...variants
-            } = row as Record<string, string>;
-            rows.push({
-              sku,
-              productId: productId || sku,
-              variantAttributes: Object.fromEntries(
-                Object.entries(variants)
-                  .filter(([, v]) => v !== undefined && v !== "")
-                  .map(([k, v]) => [k.replace(/^variant\./, ""), v])
-              ),
-              quantity: Number(quantity),
-              ...(lowStockThreshold
-                ? { lowStockThreshold: Number(lowStockThreshold) }
-                : {}),
-            });
+            rows.push(expandInventoryItem(row as Record<string, unknown>));
           })
           .on("end", () => resolve(rows));
       });

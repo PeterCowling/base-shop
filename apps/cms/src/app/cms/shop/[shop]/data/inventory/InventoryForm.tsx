@@ -11,6 +11,7 @@ import {
   TableRow,
 } from "@/components/atoms/shadcn";
 import { inventoryItemSchema, type InventoryItem } from "@acme/types";
+import { expandInventoryItem } from "@platform-core/utils/inventory";
 import { FormEvent, useRef, useState } from "react";
 
 interface Props {
@@ -101,16 +102,7 @@ export default function InventoryForm({ shop, initial }: Props) {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const normalized = items.map((i) => ({
-        ...i,
-        productId: i.productId || i.sku,
-        variantAttributes: Object.fromEntries(
-          Object.entries(i.variantAttributes).filter(([, v]) => v !== "")
-        ),
-        ...(i.lowStockThreshold === undefined
-          ? {}
-          : { lowStockThreshold: i.lowStockThreshold }),
-      }));
+      const normalized = items.map((i) => expandInventoryItem(i));
       const parsed = inventoryItemSchema.array().safeParse(normalized);
       if (!parsed.success) {
         setStatus("error");

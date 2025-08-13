@@ -4,10 +4,11 @@ import { getPages } from "@platform-core/repositories/pages/index.server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { env } from "@acme/config";
 const secret = env.PREVIEW_TOKEN_SECRET;
-function verify(id, token) {
-    if (!secret || !token)
+const upgradeSecret = env.UPGRADE_PREVIEW_TOKEN_SECRET;
+function verify(id, token, key) {
+    if (!key || !token)
         return false;
-    const digest = createHmac("sha256", secret).update(id).digest("hex");
+    const digest = createHmac("sha256", key).update(id).digest("hex");
     try {
         return timingSafeEqual(Buffer.from(digest), Buffer.from(token));
     }
@@ -17,8 +18,15 @@ function verify(id, token) {
 }
 export const onRequest = async ({ params, request, }) => {
     const pageId = String(params.pageId);
-    const token = new URL(request.url).searchParams.get("token");
-    if (!verify(pageId, token)) {
+    const search = new URL(request.url).searchParams;
+    const upgradeToken = search.get("upgrade");
+    const token = search.get("token");
+    if (upgradeToken) {
+        if (!verify(pageId, upgradeToken, upgradeSecret)) {
+            return new Response("Unauthorized", { status: 401 });
+        }
+    }
+    else if (!verify(pageId, token, secret)) {
         return new Response("Unauthorized", { status: 401 });
     }
     const shop = env.NEXT_PUBLIC_SHOP_ID || "default";

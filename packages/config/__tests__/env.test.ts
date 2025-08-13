@@ -15,6 +15,8 @@ describe("envSchema", () => {
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
         CART_COOKIE_SECRET: "secret",
         STRIPE_WEBHOOK_SECRET: "whsec",
+        NEXTAUTH_SECRET: "nextauth",
+        SESSION_SECRET: "session",
       } as NodeJS.ProcessEnv;
 
     const { envSchema } = await import("../src/env");
@@ -24,12 +26,16 @@ describe("envSchema", () => {
           process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
         CART_COOKIE_SECRET: process.env.CART_COOKIE_SECRET!,
         STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET!,
+        NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET!,
+        SESSION_SECRET: process.env.SESSION_SECRET!,
       });
       expect(parsed).toEqual({
         STRIPE_SECRET_KEY: "sk",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
         CART_COOKIE_SECRET: "secret",
         STRIPE_WEBHOOK_SECRET: "whsec",
+        NEXTAUTH_SECRET: "nextauth",
+        SESSION_SECRET: "session",
       });
   });
 
@@ -39,6 +45,9 @@ describe("envSchema", () => {
       STRIPE_SECRET_KEY: "sk",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
       CART_COOKIE_SECRET: "secret",
+      STRIPE_WEBHOOK_SECRET: "whsec",
+      NEXTAUTH_SECRET: "nextauth",
+      SESSION_SECRET: "session",
     } as NodeJS.ProcessEnv;
 
     const { envSchema } = await import("../src/env");

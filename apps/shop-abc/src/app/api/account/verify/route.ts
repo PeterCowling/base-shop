@@ -6,7 +6,7 @@ import crypto from "crypto";
 import { getUserById, verifyEmail } from "@acme/platform-core/users";
 import { validateCsrfToken } from "@auth";
 import { parseJsonBody } from "@shared-utils";
-import { coreEnv } from "@acme/config/env/core";
+import { env } from "@acme/config";
 
 export const VerifySchema = z.object({ token: z.string() }).strict();
 export type VerifyInput = z.infer<typeof VerifySchema>;
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   if (!id || !sig)
     return NextResponse.json({ error: "Invalid token" }, { status: 400 });
 
-  const secret = coreEnv.SESSION_SECRET;
+  const secret = env.SESSION_SECRET;
   if (!secret) {
     throw new Error("SESSION_SECRET is not set");
   }

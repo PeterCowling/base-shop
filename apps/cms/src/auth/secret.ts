@@ -2,4 +2,8 @@
 
 import { env } from "@acme/config";
 
-export const authSecret = env.NEXTAUTH_SECRET || "dev-secret";
+if (!env.NEXTAUTH_SECRET) {
+  throw new Error("NEXTAUTH_SECRET is not set");
+}
+
+export const authSecret = env.NEXTAUTH_SECRET;

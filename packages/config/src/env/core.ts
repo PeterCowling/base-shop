@@ -2,7 +2,7 @@ import "@acme/lib/initZod";
 import { z } from "zod";
 
 export const coreEnvBaseSchema = z.object({
-  NEXTAUTH_SECRET: z.string().optional(),
+  NEXTAUTH_SECRET: z.string().min(1),
   PREVIEW_TOKEN_SECRET: z.string().optional(),
   NODE_ENV: z.enum(["development", "test", "production"]).optional(),
   OUTPUT_EXPORT: z.coerce.boolean().optional(),
@@ -45,7 +45,7 @@ export const coreEnvBaseSchema = z.object({
     .transform((v) => Number(v))
     .optional(),
   OPENAI_API_KEY: z.string().optional(),
-  SESSION_SECRET: z.string().optional(),
+  SESSION_SECRET: z.string().min(1),
   COOKIE_DOMAIN: z.string().optional(),
   LOGIN_RATE_LIMIT_REDIS_URL: z.string().url().optional(),
   LOGIN_RATE_LIMIT_REDIS_TOKEN: z.string().optional(),

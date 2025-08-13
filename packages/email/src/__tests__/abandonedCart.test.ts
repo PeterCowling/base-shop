@@ -5,6 +5,7 @@ jest.mock("../send", () => ({
   __esModule: true,
   sendCampaignEmail: jest.fn().mockResolvedValue(undefined),
 }));
+jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
 
 const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
 

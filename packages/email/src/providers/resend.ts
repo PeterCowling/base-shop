@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import * as Sentry from "@sentry/node";
 import { coreEnv } from "@acme/config/env/core";
 import type { CampaignOptions } from "../send";
 import { ProviderError } from "./types";
@@ -24,6 +25,17 @@ export class ResendProvider implements CampaignProvider {
     } catch (error: any) {
       const status = error?.code ?? error?.response?.statusCode ?? error?.statusCode;
       const retryable = typeof status !== "number" || status >= 500;
+      const context = {
+        provider: "resend",
+        campaignId: options.campaignId,
+        to: options.to,
+      };
+      try {
+        Sentry.captureException(error, { extra: context });
+      } catch {
+        /* ignore Sentry failure */
+      }
+      console.error("Resend send error", context);
       throw new ProviderError(error.message, retryable);
     }
   }

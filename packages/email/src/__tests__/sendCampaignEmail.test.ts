@@ -1,5 +1,8 @@
 import nodemailer from "nodemailer";
 
+jest.mock("@sentry/node", () => ({ captureException: jest.fn() }));
+jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
+
 jest.mock("nodemailer", () => ({
   __esModule: true,
   default: { createTransport: jest.fn() },

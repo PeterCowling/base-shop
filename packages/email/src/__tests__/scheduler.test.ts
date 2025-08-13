@@ -57,7 +57,11 @@ describe("scheduler", () => {
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
     expect(sendCampaignEmailMock).toHaveBeenCalledWith(
-      expect.objectContaining({ to: "past@example.com", subject: "Past" }),
+      expect.objectContaining({
+        to: "past@example.com",
+        subject: "Past",
+        campaignId: "c1",
+      }),
     );
 
     const updated = JSON.parse(

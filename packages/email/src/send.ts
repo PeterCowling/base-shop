@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import * as Sentry from "@sentry/node";
 import { coreEnv } from "@acme/config/env/core";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
@@ -14,6 +15,8 @@ export interface CampaignOptions {
   html: string;
   /** Optional plain-text body */
   text?: string;
+  /** Optional campaign identifier */
+  campaignId?: string;
 }
 
 const providers: Record<string, CampaignProvider> = {
@@ -49,9 +52,20 @@ export async function sendCampaignEmail(
     const current = providers[name];
     if (!current) continue;
     try {
-      await sendWithRetry(current, options);
+      await sendWithRetry(current, options, name);
       return;
-    } catch {
+    } catch (err) {
+      const context = {
+        provider: name,
+        campaignId: options.campaignId,
+        to: options.to,
+      };
+      try {
+        Sentry.captureException(err, { extra: context });
+      } catch {
+        /* ignore Sentry failure */
+      }
+      console.error("Provider send error", context);
       // Try next provider
     }
   }
@@ -62,6 +76,7 @@ export async function sendCampaignEmail(
 async function sendWithRetry(
   provider: CampaignProvider,
   options: CampaignOptions,
+  providerName: string,
   maxRetries = 3
 ): Promise<void> {
   let attempt = 0;
@@ -77,6 +92,17 @@ async function sendWithRetry(
           ? err.retryable
           : (err as any)?.retryable ?? true;
       if (!retryable || attempt >= maxRetries) {
+        const context = {
+          provider: providerName,
+          campaignId: options.campaignId,
+          to: options.to,
+        };
+        try {
+          Sentry.captureException(err, { extra: context });
+        } catch {
+          /* ignore Sentry failure */
+        }
+        console.error("Provider send error", context);
         throw err;
       }
       const delay = 100 * 2 ** (attempt - 1);

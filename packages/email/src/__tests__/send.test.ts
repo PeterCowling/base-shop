@@ -1,5 +1,8 @@
 import { ProviderError } from "../providers/types";
 
+jest.mock("@sentry/node", () => ({ captureException: jest.fn() }));
+jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
+
 let sendgridSendMock: jest.Mock;
 let resendSendMock: jest.Mock;
 let sendMailMock: jest.Mock;
@@ -92,5 +95,34 @@ describe("sendCampaignEmail fallback and retry", () => {
     expect(sendgridSendMock).toHaveBeenCalledTimes(2);
     expect(resendSendMock).not.toHaveBeenCalled();
     timeoutSpy.mockRestore();
+  });
+
+  it("logs provider errors with context", async () => {
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
+    sendgridSendMock = jest
+      .fn()
+      .mockRejectedValue(new ProviderError("fail", false));
+    resendSendMock = jest.fn().mockResolvedValue(undefined);
+    sendMailMock = jest.fn();
+
+    setupEnv();
+
+    const { sendCampaignEmail } = await import("../index");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+      campaignId: "cmp1",
+    });
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Provider send error",
+      expect.objectContaining({
+        provider: "sendgrid",
+        campaignId: "cmp1",
+        to: "to@example.com",
+      })
+    );
+    consoleErrorSpy.mockRestore();
   });
 });

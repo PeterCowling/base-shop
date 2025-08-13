@@ -70,6 +70,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
       to: r,
       subject: c.subject,
       html,
+      campaignId: c.id,
     });
     await trackEvent(shop, { type: "email_sent", campaign: c.id });
   }

@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`upgrade preview page renders changes and publish CTA 1`] = `
+<body>
+  <div>
+    <div
+      class="space-y-8"
+    >
+      <div
+        class="space-y-2"
+      >
+        <h2
+          class="text-lg font-semibold"
+        >
+          TestComp
+        </h2>
+        <div
+          class="flex gap-4"
+        >
+          <div
+            class="flex-1 border p-2"
+          />
+          <div
+            class="flex-1 border p-2"
+          />
+        </div>
+      </div>
+      <button
+        class="rounded border px-4 py-2"
+        type="button"
+      >
+        Approve & publish
+      </button>
+    </div>
+  </div>
+</body>
+`;

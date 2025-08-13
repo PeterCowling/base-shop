@@ -127,6 +127,9 @@ export default function ThemeEditor({
   const [theme, setTheme] = useState(initialTheme);
   const [overrides, setOverrides] =
     useState<Record<string, string>>(initialOverrides);
+  const [themeDefaults, setThemeDefaults] = useState<Record<string, string>>(
+    tokensByTheme[initialTheme],
+  );
   const [availableThemes, setAvailableThemes] = useState(themes);
   const [tokensByThemeState, setTokensByThemeState] =
     useState<Record<string, Record<string, string>>>(tokensByTheme);
@@ -168,6 +171,7 @@ export default function ThemeEditor({
     const next = e.target.value;
     setTheme(next);
     setOverrides({});
+    setThemeDefaults(tokensByThemeState[next]);
   };
 
   const handleOverrideChange =
@@ -262,6 +266,7 @@ export default function ThemeEditor({
     setSaving(true);
     const fd = new FormData(e.currentTarget);
     fd.set("themeOverrides", JSON.stringify(changedOverrides));
+    fd.set("themeDefaults", JSON.stringify(themeDefaults));
     const result = await updateShop(shop, fd);
     if (result.errors) {
       setErrors(result.errors);
@@ -281,6 +286,7 @@ export default function ThemeEditor({
     setPresetThemes((prev) => [...prev, name]);
     setTheme(name);
     setOverrides({});
+    setThemeDefaults(tokens);
     setPresetName("");
   };
 
@@ -296,6 +302,7 @@ export default function ThemeEditor({
     const fallback = themes[0];
     setTheme(fallback);
     setOverrides({});
+    setThemeDefaults(tokensByThemeState[fallback]);
   };
 
   return (
@@ -305,6 +312,11 @@ export default function ThemeEditor({
         type="hidden"
         name="themeOverrides"
         value={JSON.stringify(changedOverrides)}
+      />
+      <input
+        type="hidden"
+        name="themeDefaults"
+        value={JSON.stringify(themeDefaults)}
       />
       <label className="flex flex-col gap-1">
         <span>Theme</span>

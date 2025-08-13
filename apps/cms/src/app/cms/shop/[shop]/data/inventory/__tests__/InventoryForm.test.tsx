@@ -28,8 +28,8 @@ jest.mock("@acme/types", () => {
       sku: z.string(),
       productId: z.string(),
       variantAttributes: z.record(z.string()),
-      quantity: z.number().min(1),
-      lowStockThreshold: z.number().optional(),
+      quantity: z.number().int().min(0),
+      lowStockThreshold: z.number().int().min(0).optional(),
     })
     .strict();
   return { inventoryItemSchema };
@@ -123,10 +123,10 @@ describe("InventoryForm", () => {
   it("shows validation errors", async () => {
     render(<InventoryForm shop="test" initial={initial} />);
     fireEvent.change(screen.getByDisplayValue("5"), {
-      target: { value: "0" },
+      target: { value: "-1" },
     });
-    fireEvent.click(screen.getByText("Save"));
-    await screen.findByText(/greater than or equal to 1/i);
+    fireEvent.submit(screen.getByText("Save").closest("form")!);
+    await screen.findByText(/greater than or equal to 0/i);
     expect(fetch).not.toHaveBeenCalled();
   });
 });

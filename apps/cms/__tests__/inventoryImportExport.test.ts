@@ -19,6 +19,12 @@ async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   await fs.mkdir(shopDir, { recursive: true });
   const cwd = process.cwd();
   process.chdir(dir);
+  process.env.NEXTAUTH_SECRET = "test";
+  process.env.SESSION_SECRET = "test";
+  process.env.CART_COOKIE_SECRET = "test-cart-secret";
+  process.env.STRIPE_SECRET_KEY = "sk";
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
+  process.env.STRIPE_WEBHOOK_SECRET = "whsec_test";
   jest.resetModules();
   try {
     await cb(dir);
@@ -138,6 +144,45 @@ describe("inventory import/export routes", () => {
           lowStockThreshold: 1,
         },
       ]);
+    });
+  });
+
+  it("rejects negative values during import", async () => {
+    await withTempRepo(async () => {
+      jest.doMock("next-auth", () => ({
+        getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+      }));
+      jest.doMock("@acme/email", () => ({ sendEmail: jest.fn() }));
+      Object.assign(process.env, {
+        STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      });
+      const route = await import(
+        "../src/app/api/data/[shop]/inventory/import/route"
+      );
+      const file = {
+        name: "inv.json",
+        type: "application/json",
+        text: async () =>
+          JSON.stringify([
+            {
+              sku: "a",
+              productId: "a",
+              quantity: -1,
+              lowStockThreshold: -1,
+              variantAttributes: {},
+            },
+          ]),
+      };
+      const req = {
+        formData: async () => ({ get: () => file }),
+      } as any;
+      const res = await route.POST(req, {
+        params: Promise.resolve({ shop: "test" }),
+      });
+      expect(res.status).toBe(400);
+      const body = await res.json();
+      expect(body.error).toMatch(/greater than or equal to 0/);
     });
   });
 

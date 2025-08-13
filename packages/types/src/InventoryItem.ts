@@ -7,10 +7,10 @@ export const inventoryItemSchema = z
   .object({
     sku: z.string(),
     productId: z.string(),
-    quantity: z.number(),
+    quantity: z.number().int().min(0),
     // Each variant attribute is a free-form key/value string pair
     variantAttributes: variantAttributesSchema,
-    lowStockThreshold: z.number().optional(),
+    lowStockThreshold: z.number().int().min(0).optional(),
   })
   .strict();
 

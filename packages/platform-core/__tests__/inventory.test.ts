@@ -17,6 +17,8 @@ async function withRepo(
   process.chdir(dir);
   process.env.STRIPE_SECRET_KEY = "sk";
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
+  process.env.NEXTAUTH_SECRET = "test";
+  process.env.SESSION_SECRET = "test";
   jest.resetModules();
 
   const repo = await import("../src/repositories/inventory.server");
@@ -128,6 +130,34 @@ describe("inventory repository", () => {
         },
       ];
       await expect(repo.writeInventory(shop, bad as any)).rejects.toThrow();
+    });
+  });
+
+  it("writeInventory rejects negative quantity or lowStockThreshold", async () => {
+    await withRepo(async (repo, shop) => {
+      jest.doMock("../src/services/stockAlert.server", () => ({
+        checkAndAlert: jest.fn(),
+      }));
+      const negativeQty = [
+        {
+          sku: "sku-1",
+          productId: "p1",
+          variantAttributes: {},
+          quantity: -1,
+        },
+      ];
+      await expect(repo.writeInventory(shop, negativeQty as any)).rejects.toThrow();
+
+      const negativeThreshold = [
+        {
+          sku: "sku-1",
+          productId: "p1",
+          variantAttributes: {},
+          quantity: 1,
+          lowStockThreshold: -1,
+        },
+      ];
+      await expect(repo.writeInventory(shop, negativeThreshold as any)).rejects.toThrow();
     });
   });
 

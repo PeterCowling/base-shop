@@ -27,14 +27,9 @@ jest.mock("@acme/types", () => {
     .object({
       sku: z.string(),
       productId: z.string(),
-      variant: z
-        .object({
-          size: z.string(),
-          color: z.string().optional(),
-        })
-        .strict(),
-      quantity: z.number().min(1),
-      lowStockThreshold: z.number().optional(),
+      variantAttributes: z.record(z.string()),
+      quantity: z.number().int().min(0),
+      lowStockThreshold: z.number().int().min(0).optional(),
     })
     .strict();
   return { inventoryItemSchema };
@@ -54,14 +49,14 @@ describe("InventoryForm integration", () => {
       {
         sku: "sku1",
         productId: "sku1",
-        variant: { size: "M", color: "red" },
+        variantAttributes: { size: "M", color: "red" },
         quantity: 5,
         lowStockThreshold: 2,
       },
       {
         sku: "sku2",
         productId: "sku2",
-        variant: { size: "L", color: "blue" },
+        variantAttributes: { size: "L", color: "blue" },
         quantity: 3,
         lowStockThreshold: 1,
       },

@@ -3,6 +3,7 @@ import { coreEnv } from "@acme/config/env/core";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
+import { ProviderError } from "./providers/types";
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -23,16 +24,68 @@ const providers: Record<string, CampaignProvider> = {
 /**
  * Send a campaign email using the configured provider.
  * Falls back to Nodemailer when EMAIL_PROVIDER is unset or unrecognized.
+ * If the chosen provider fails, alternate providers are attempted. Each
+ * provider is retried with exponential backoff when the error is marked as
+ * retryable.
  */
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
-  const provider = providers[coreEnv.EMAIL_PROVIDER ?? ""];
-  if (provider) {
-    await provider.send(options);
+  const primary = coreEnv.EMAIL_PROVIDER ?? "";
+  const provider = providers[primary];
+
+  // No configured provider – use Nodemailer directly
+  if (!provider) {
+    await sendWithNodemailer(options);
     return;
   }
 
+  const providerOrder = [
+    primary,
+    ...Object.keys(providers).filter((p) => p !== primary),
+  ];
+
+  for (const name of providerOrder) {
+    const current = providers[name];
+    if (!current) continue;
+    try {
+      await sendWithRetry(current, options);
+      return;
+    } catch {
+      // Try next provider
+    }
+  }
+
+  await sendWithNodemailer(options);
+}
+
+async function sendWithRetry(
+  provider: CampaignProvider,
+  options: CampaignOptions,
+  maxRetries = 3
+): Promise<void> {
+  let attempt = 0;
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    try {
+      await provider.send(options);
+      return;
+    } catch (err) {
+      attempt++;
+      const retryable =
+        err instanceof ProviderError
+          ? err.retryable
+          : (err as any)?.retryable ?? true;
+      if (!retryable || attempt >= maxRetries) {
+        throw err;
+      }
+      const delay = 100 * 2 ** (attempt - 1);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+}
+
+async function sendWithNodemailer(options: CampaignOptions): Promise<void> {
   const transport = nodemailer.createTransport({
     url: coreEnv.SMTP_URL,
   });

@@ -40,6 +40,7 @@ describe("OrdersPage permissions", () => {
     });
     (hasPermission as jest.Mock).mockReturnValue(false);
     const element = await OrdersPage({ shopId });
+    expect(hasPermission).toHaveBeenCalledWith("viewer", "view_orders");
     expect(getOrdersForCustomer).not.toHaveBeenCalled();
     expect(element.type).toBe("p");
     expect(element.props.children).toBe("Not authorized.");
@@ -55,7 +56,24 @@ describe("OrdersPage permissions", () => {
       { id: "o1" },
     ]);
     const element = await OrdersPage({ shopId });
+    expect(hasPermission).toHaveBeenCalledWith("customer", "view_orders");
     const list = element.props.children[1];
     expect(list.type).toBe("ul");
+  });
+
+  it("prevents roles without view_orders from seeing orders", async () => {
+    (getCustomerSession as jest.Mock).mockResolvedValue({
+      customerId: "cust1",
+      role: "CatalogManager",
+    });
+    (hasPermission as jest.Mock).mockReturnValue(false);
+    const element = await OrdersPage({ shopId });
+    expect(hasPermission).toHaveBeenCalledWith(
+      "CatalogManager",
+      "view_orders",
+    );
+    expect(getOrdersForCustomer).not.toHaveBeenCalled();
+    expect(element.type).toBe("p");
+    expect(element.props.children).toBe("Not authorized.");
   });
 });

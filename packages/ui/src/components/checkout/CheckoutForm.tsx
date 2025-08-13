@@ -27,7 +27,13 @@ type FormValues = { returnDate: string };
 
 export default function CheckoutForm({ locale, taxRegion }: Props) {
   const [clientSecret, setClientSecret] = useState<string>();
-  const [currency] = useCurrency();
+  let currency = "EUR";
+  try {
+    const currencyCtx = useCurrency() as any;
+    currency = Array.isArray(currencyCtx)
+      ? currencyCtx[0]
+      : currencyCtx.currency;
+  } catch {}
 
   const defaultDate = isoDateInNDays(7);
 
@@ -96,9 +102,10 @@ function PaymentForm({
     });
 
     if (error) {
-      setError(error.message ?? "Payment failed");
+      const message = error.message ?? "Payment failed";
+      setError(message);
       setProcessing(false);
-      router.push(`/${locale}/cancelled`);
+      router.push(`/${locale}/cancelled?error=${encodeURIComponent(message)}`);
     } else {
       router.push(`/${locale}/success`);
     }

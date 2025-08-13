@@ -1,12 +1,13 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { rest } from "msw";
-import { server } from "./msw/server";
 process.env.STRIPE_SECRET_KEY = "sk_test_123";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 
-import CheckoutForm from "../packages/ui/components/checkout/CheckoutForm";
-import { CurrencyProvider } from "@platform-core/src/contexts/CurrencyContext";
+const fetchJsonMock = jest.fn();
+jest.mock("@shared-utils", () => ({ fetchJson: fetchJsonMock }));
+
 import { isoDateInNDays } from "@acme/date-utils";
+import Cancelled from "../packages/template-app/src/app/cancelled/page";
+import CheckoutForm from "../packages/ui/components/checkout/CheckoutForm";
 
 const pushMock = jest.fn();
 
@@ -32,20 +33,23 @@ jest.mock("@stripe/react-stripe-js", () => {
   };
 });
 
-test("renders Elements once client secret is fetched", async () => {
-  server.use(
-    rest.post("/api/checkout-session", (_req, res, ctx) => {
-      return res(
-        ctx.json({ clientSecret: "cs_test_123", sessionId: "sess_123" })
-      );
-    })
-  );
+beforeEach(() => {
+  fetchJsonMock.mockReset();
+});
 
-  render(
-    <CurrencyProvider>
-      <CheckoutForm locale="en" taxRegion="EU" />
-    </CurrencyProvider>
-  );
+const CheckoutForm = require("../packages/ui/components/checkout/CheckoutForm").default;
+
+jest.mock("@platform-core/src/contexts/CurrencyContext", () =>
+  require("./__mocks__/currencyContextMock")
+);
+
+test("renders Elements once client secret is fetched", async () => {
+  fetchJsonMock.mockResolvedValueOnce({
+    clientSecret: "cs_test_123",
+    sessionId: "sess_123",
+  });
+
+  render(<CheckoutForm locale="en" taxRegion="EU" />);
 
   expect(screen.getByText("Loading payment form…")).toBeInTheDocument();
 
@@ -54,18 +58,13 @@ test("renders Elements once client secret is fetched", async () => {
 });
 
 test("successful payment redirects to success", async () => {
-  server.use(
-    rest.post("/api/checkout-session", (_req, res, ctx) => {
-      return res(ctx.json({ clientSecret: "cs_test", sessionId: "sess" }));
-    })
-  );
+  fetchJsonMock.mockResolvedValueOnce({
+    clientSecret: "cs_test",
+    sessionId: "sess",
+  });
   confirmPaymentMock.mockResolvedValue({});
 
-  render(
-    <CurrencyProvider>
-      <CheckoutForm locale="en" taxRegion="EU" />
-    </CurrencyProvider>
-  );
+  render(<CheckoutForm locale="en" taxRegion="EU" />);
   await screen.findByTestId("payment-element");
   fireEvent.click(screen.getByRole("button", { name: /pay/i }));
 
@@ -76,48 +75,44 @@ test("successful payment redirects to success", async () => {
   expect(pushMock).toHaveBeenCalledWith("/en/success");
 });
 
-test("failed payment redirects to cancelled", async () => {
-  server.use(
-    rest.post("/api/checkout-session", (_req, res, ctx) => {
-      return res(ctx.json({ clientSecret: "cs_test", sessionId: "sess" }));
-    })
-  );
+test("failed payment redirects to cancelled with error message", async () => {
+  fetchJsonMock.mockResolvedValueOnce({
+    clientSecret: "cs_test",
+    sessionId: "sess",
+  });
   confirmPaymentMock.mockResolvedValue({ error: { message: "fail" } });
 
-  render(
-    <CurrencyProvider>
-      <CheckoutForm locale="en" taxRegion="EU" />
-    </CurrencyProvider>
+  const { unmount } = render(
+    <CheckoutForm locale="en" taxRegion="EU" />
   );
   await screen.findByTestId("payment-element");
   fireEvent.click(screen.getByRole("button", { name: /pay/i }));
 
   await waitFor(() => expect(confirmPaymentMock).toHaveBeenCalled());
-  expect(pushMock).toHaveBeenCalledWith("/en/cancelled");
+  expect(pushMock).toHaveBeenCalledWith("/en/cancelled?error=fail");
+
+  // simulate visiting the cancelled page and ensure the error is shown
+  unmount();
+  const url = new URL(pushMock.mock.calls[0][0], "http://localhost");
+  render(
+    <Cancelled searchParams={{ error: url.searchParams.get("error") ?? undefined }} />
+  );
   expect(await screen.findByText("fail")).toBeInTheDocument();
 });
 
 test("requests new session when return date changes", async () => {
   const calls: any[] = [];
-  server.use(
-    rest.post("/api/checkout-session", async (req, res, ctx) => {
-      calls.push(await req.json());
-      return res(
-        ctx.json({
-          clientSecret: `cs_${calls.length}`,
-          sessionId: `sess_${calls.length}`,
-        })
-      );
-    })
-  );
+  fetchJsonMock.mockImplementation(async (url, opts) => {
+    calls.push(JSON.parse((opts as any).body));
+    return {
+      clientSecret: `cs_${calls.length}`,
+      sessionId: `sess_${calls.length}`,
+    };
+  });
 
   const expectedDefault = isoDateInNDays(7);
 
-  render(
-    <CurrencyProvider>
-      <CheckoutForm locale="en" taxRegion="EU" />
-    </CurrencyProvider>
-  );
+  render(<CheckoutForm locale="en" taxRegion="EU" />);
   await screen.findByTestId("payment-element");
   expect(calls[0].returnDate).toBe(expectedDefault);
   expect(calls[0].currency).toBe("EUR");
@@ -133,19 +128,11 @@ test("requests new session when return date changes", async () => {
 });
 
 test("default return date is 7 days ahead", async () => {
-  server.use(
-    rest.post("/api/checkout-session", (_req, res, ctx) => {
-      return res(ctx.json({ clientSecret: "cs", sessionId: "sess" }));
-    })
-  );
+  fetchJsonMock.mockResolvedValueOnce({ clientSecret: "cs", sessionId: "sess" });
 
   const expected = isoDateInNDays(7);
 
-  render(
-    <CurrencyProvider>
-      <CheckoutForm locale="en" taxRegion="EU" />
-    </CurrencyProvider>
-  );
+  render(<CheckoutForm locale="en" taxRegion="EU" />);
   await screen.findByTestId("payment-element");
   const input = screen.getByLabelText(/checkout\.return/i) as HTMLInputElement;
   expect(input.value).toBe(expected);

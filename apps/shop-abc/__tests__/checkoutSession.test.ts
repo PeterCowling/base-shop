@@ -184,7 +184,7 @@ test("adds tax line item and metadata", async () => {
   mockCart = cart;
   const cookie = encodeCartCookie("test");
   const req = createRequest(
-    { returnDate: "2025-01-02", taxRegion: "DE" },
+    { returnDate: "2025-01-02", taxRegion: "EU" },
     cookie,
   );
 
@@ -197,4 +197,36 @@ test("adds tax line item and metadata", async () => {
   expect(args.metadata.taxAmount).toBe("2");
   expect(args.metadata.taxRate).toBe("0.2");
   expect(args.payment_intent_data.metadata.taxAmount).toBe("2");
+});
+
+test("returns 400 for unsupported currency", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest(
+    { returnDate: "2025-01-02", currency: "JPY" },
+    cookie,
+  );
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+  const body = await res.json();
+  expect(body.currency[0]).toMatch(/invalid/i);
+});
+
+test("returns 400 for unsupported tax region", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest(
+    { returnDate: "2025-01-02", taxRegion: "DE" },
+    cookie,
+  );
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+  const body = await res.json();
+  expect(body.taxRegion[0]).toMatch(/invalid/i);
 });

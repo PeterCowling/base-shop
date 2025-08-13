@@ -25,3 +25,5 @@ declare module "react" {
     }
   }
 }
+
+declare module "better-sqlite3";

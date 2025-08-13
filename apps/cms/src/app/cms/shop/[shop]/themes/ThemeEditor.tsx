@@ -205,6 +205,18 @@ export default function ThemeEditor({
     setOverrides(overridesCopy);
   };
 
+  const handleTokenSelect = (token: string) => {
+    setSelectedToken(token);
+    const input = overrideRefs.current[token];
+    input?.scrollIntoView?.({ behavior: "smooth", block: "center" });
+    input?.focus();
+    (input as any)?.showPicker?.();
+    if (!(input as any)?.showPicker) {
+      // Fallback for browsers without showPicker support
+      input?.click?.();
+    }
+  };
+
   const previewStyle = useMemo(
     () => ({ ...tokensByThemeState[theme], ...overrides } as CSSProperties),
     [tokensByThemeState, theme, overrides]
@@ -342,7 +354,7 @@ export default function ThemeEditor({
       <WizardPreview
         style={previewStyle}
         inspectMode
-        onTokenSelect={(t) => setSelectedToken(t)}
+        onTokenSelect={handleTokenSelect}
       />
       {selectedToken && (
         <StyleEditor
@@ -375,11 +387,16 @@ export default function ThemeEditor({
                       className="h-6 w-6 rounded border"
                       style={{ background: colorValue }}
                       onClick={() => {
-                        overrideRefs.current[k]?.scrollIntoView?.({
+                        const input = overrideRefs.current[k];
+                        input?.scrollIntoView?.({
                           behavior: "smooth",
                           block: "center",
                         });
-                        overrideRefs.current[k]?.focus();
+                        input?.focus();
+                        (input as any)?.showPicker?.();
+                        if (!(input as any)?.showPicker) {
+                          input?.click?.();
+                        }
                       }}
                     />
                   );

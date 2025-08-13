@@ -1,15 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import * as React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-import { sendCampaignEmail, resolveSegment } from "@acme/email";
+import { sendCampaignEmail, resolveSegment, renderTemplate } from "@acme/email";
 import { trackEvent } from "@platform-core/analytics";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
 import { env } from "@acme/config";
-import { marketingEmailTemplates } from "@acme/ui";
 
 interface Campaign {
   id: string;
@@ -113,20 +110,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
     shop
   )}&campaign=${encodeURIComponent(id)}`;
-  let html = body;
-  if (templateId) {
-    const variant = marketingEmailTemplates.find((t) => t.id === templateId);
-    if (variant) {
-      html = renderToStaticMarkup(
-        variant.render({
-          headline: subject,
-          content: React.createElement("div", {
-            dangerouslySetInnerHTML: { __html: body },
-          }),
-        })
-      );
-    }
-  }
+  const html = renderTemplate(templateId, { subject, body });
   const bodyWithPixel =
     html +
     `<img src="${pixelUrl}" alt="" style="display:none" width="1" height="1"/>`;

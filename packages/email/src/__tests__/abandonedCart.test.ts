@@ -1,6 +1,15 @@
 import { recoverAbandonedCarts, type AbandonedCart } from "../index";
 import { sendCampaignEmail } from "../send";
 
+jest.mock(
+  "@acme/ui",
+  () => ({
+    __esModule: true,
+    marketingEmailTemplates: [],
+  }),
+  { virtual: true }
+);
+
 jest.mock("../send", () => ({
   __esModule: true,
   sendCampaignEmail: jest.fn().mockResolvedValue(undefined),

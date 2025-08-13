@@ -1,6 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { sendCampaignEmail, resolveSegment } from "./index";
+import { renderTemplate } from "./templates";
 import { trackEvent } from "@platform-core/analytics";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { coreEnv } from "@acme/config/env/core";
@@ -13,6 +14,7 @@ interface Campaign {
   segment?: string | null;
   sendAt: string;
   sentAt?: string;
+  templateId?: string | null;
 }
 
 function campaignsPath(shop: string): string {
@@ -52,8 +54,12 @@ export async function sendScheduledCampaigns(): Promise<void> {
       const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
         shop
       )}&campaign=${encodeURIComponent(c.id)}`;
+      const html = renderTemplate(c.templateId, {
+        subject: c.subject,
+        body: c.body,
+      });
       const bodyWithPixel =
-        c.body +
+        html +
         `<img src="${pixelUrl}" alt="" style="display:none" width="1" height="1"/>`;
       const trackedBody = bodyWithPixel.replace(
         /href="([^"]+)"/g,

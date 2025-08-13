@@ -5,6 +5,15 @@ jest.mock("nodemailer", () => ({
   default: { createTransport: jest.fn() },
 }));
 
+jest.mock(
+  "@acme/ui",
+  () => ({
+    __esModule: true,
+    marketingEmailTemplates: [],
+  }),
+  { virtual: true }
+);
+
 jest.mock("../providers/sendgrid", () => ({
   SendgridProvider: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
 }));

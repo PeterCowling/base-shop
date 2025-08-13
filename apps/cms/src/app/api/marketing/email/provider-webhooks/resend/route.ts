@@ -14,8 +14,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (!secret) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const expected = crypto.createHmac("sha256", secret).update(body).digest("hex");
-  if (signature !== expected) {
+  const expected = crypto
+    .createHmac("sha256", secret)
+    .update(body)
+    .digest("hex");
+  try {
+    if (
+      !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))
+    ) {
+      return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+    }
+  } catch {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
   let event: any;
@@ -30,4 +39,3 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
   return NextResponse.json({ ok: true });
 }
-

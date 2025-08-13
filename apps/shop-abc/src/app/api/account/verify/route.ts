@@ -26,8 +26,13 @@ export async function POST(req: Request) {
 
   const secret = process.env.SESSION_SECRET ?? "test-secret";
   const expected = crypto.createHmac("sha256", secret).update(id).digest("hex");
-  if (sig !== expected)
+  try {
+    if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 400 });
+    }
+  } catch {
     return NextResponse.json({ error: "Invalid token" }, { status: 400 });
+  }
 
   const user = await getUserById(id);
   if (!user)

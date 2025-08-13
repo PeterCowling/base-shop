@@ -12,7 +12,8 @@ export {
   syncCampaignAnalytics,
 } from "./scheduler";
 export { setCampaignStore, fsCampaignStore } from "./storage";
-export type { CampaignStore, Campaign } from "./storage";
+export type { CampaignStore } from "./storage";
+export type { Campaign } from "./types";
 export {
   onSend,
   onOpen,

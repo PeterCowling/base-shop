@@ -17,6 +17,21 @@ jest.doMock(
   { virtual: true }
 );
 
+jest.doMock(
+  "../../../packages/email/src/providers/sendgrid",
+  () => ({
+    __esModule: true,
+    SendgridProvider: class {},
+  }),
+);
+jest.doMock(
+  "../../../packages/email/src/providers/resend",
+  () => ({
+    __esModule: true,
+    ResendProvider: class {},
+  }),
+);
+
 process.env.CART_COOKIE_SECRET = "secret";
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";

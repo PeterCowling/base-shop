@@ -20,3 +20,4 @@ export {
   emitOpen,
   emitClick,
 } from "./hooks";
+export { renderTemplate } from "./templates";

@@ -1,6 +1,7 @@
 import { sendCampaignEmail } from "./send";
 import { resolveSegment } from "./segments";
 import { emitSend } from "./hooks";
+import { renderTemplate } from "./templates";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
@@ -49,7 +50,13 @@ async function filterUnsubscribed(
 
 async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   shop = validateShopName(shop);
-  const baseHtml = trackedBody(shop, c.id, c.body);
+  const templated = c.body.includes("%%UNSUBSCRIBE%%")
+    ? c.body
+    : renderTemplate(c.templateId ?? null, {
+        subject: c.subject,
+        body: c.body,
+      });
+  const baseHtml = trackedBody(shop, c.id, templated);
   let recipients = c.recipients;
   if (c.segment) {
     recipients = await resolveSegment(shop, c.segment);

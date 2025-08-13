@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-import { createCampaign, listCampaigns } from "@acme/email";
+import { createCampaign, listCampaigns, renderTemplate } from "@acme/email";
 import { listEvents } from "@platform-core/repositories/analytics.server";
-import { marketingEmailTemplates } from "@acme/ui";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
@@ -50,24 +47,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (!shop || !subject || !body || (list.length === 0 && !segment)) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
-  let html = body;
-  if (templateId) {
-    const variant = marketingEmailTemplates.find((t) => t.id === templateId);
-    if (variant) {
-      html = renderToStaticMarkup(
-        variant.render({
-          headline: subject,
-          content: React.createElement("div", {
-            dangerouslySetInnerHTML: { __html: body },
-          }),
-          footer: React.createElement("p", null, "%%UNSUBSCRIBE%%"),
-        })
-      );
-    }
-  }
-  if (!templateId) {
-    html = `${body}<p>%%UNSUBSCRIBE%%</p>`;
-  }
+  const html = renderTemplate(templateId ?? null, { subject, body });
   try {
     const id = await createCampaign({
       shop,

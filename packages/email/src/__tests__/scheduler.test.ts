@@ -6,6 +6,15 @@ import type { CampaignStore, Campaign } from "../storage";
 
 process.env.CART_COOKIE_SECRET = "secret";
 
+jest.mock(
+  "@acme/ui",
+  () => ({
+    __esModule: true,
+    marketingEmailTemplates: [],
+  }),
+  { virtual: true },
+);
+
 jest.mock("../send", () => ({
   __esModule: true,
   sendCampaignEmail: jest.fn().mockResolvedValue(undefined),

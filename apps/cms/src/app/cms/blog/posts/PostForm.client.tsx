@@ -2,7 +2,13 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect,
+  createContext,
+  useContext,
+  useCallback,
+} from "react";
 import { useSearchParams } from "next/navigation";
 import { Button, Input, Switch, Textarea, Toast } from "@ui";
 import { slugify } from "@acme/shared-utils";
@@ -70,7 +76,17 @@ const schema = defineSchema({
   ],
 });
 
-function ProductPreview({ slug }: { slug: string }) {
+const InvalidProductContext = createContext<
+  ((key: string, valid: boolean, slug: string) => void) | null
+>(null);
+
+function ProductPreview({
+  slug,
+  onValidChange,
+}: {
+  slug: string;
+  onValidChange?: (valid: boolean) => void;
+}) {
   const [product, setProduct] = useState<SKU | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -86,9 +102,13 @@ function ProductPreview({ slug }: { slug: string }) {
         if (active) {
           setProduct(data);
           setError(null);
+          onValidChange?.(true);
         }
       } catch {
-        if (active) setError("Failed to load product");
+        if (active) {
+          setError("Failed to load product");
+          onValidChange?.(false);
+        }
       } finally {
         if (active) setLoading(false);
       }
@@ -96,8 +116,9 @@ function ProductPreview({ slug }: { slug: string }) {
     load();
     return () => {
       active = false;
+      onValidChange?.(true);
     };
-  }, [slug]);
+  }, [slug, onValidChange]);
 
   if (loading) return <div className="border p-2">Loading…</div>;
   if (error || !product)
@@ -153,6 +174,7 @@ const previewComponents = {
 
 function ProductReferenceBlock(props: BlockRenderProps) {
   const editor = useEditor();
+  const markValidity = useContext(InvalidProductContext);
   const slug = props.value.slug as string;
   const remove = () => {
     const sel = {
@@ -173,7 +195,12 @@ function ProductReferenceBlock(props: BlockRenderProps) {
   };
   return (
     <div className="space-y-2">
-      <ProductPreview slug={slug} />
+      <ProductPreview
+        slug={slug}
+        onValidChange={(valid) =>
+          markValidity?.(props.value._key as string, valid, slug)
+        }
+      />
       <div className="flex gap-2">
         <Button type="button" variant="outline" onClick={edit}>
           Edit
@@ -385,10 +412,27 @@ export default function PostForm({ action, submitLabel, post }: Props) {
         : [],
   );
   const [query, setQuery] = useState("");
+  const [invalidProducts, setInvalidProducts] = useState<Record<string, string>>({});
+  const markValidity = useCallback(
+    (key: string, valid: boolean, slug: string) => {
+      setInvalidProducts((prev) => {
+        const next = { ...prev };
+        if (valid) {
+          delete next[key];
+        } else {
+          next[key] = slug;
+        }
+        return next;
+      });
+    },
+    [],
+  );
+  const hasInvalidProducts = Object.keys(invalidProducts).length > 0;
 
   return (
-    <div className="space-y-4">
-      <form action={formAction} className="space-y-4 max-w-xl">
+    <InvalidProductContext.Provider value={markValidity}>
+      <div className="space-y-4">
+        <form action={formAction} className="space-y-4 max-w-xl">
         <Input
           name="title"
           label="Title"
@@ -448,7 +492,15 @@ export default function PostForm({ action, submitLabel, post }: Props) {
           value={JSON.stringify(content)}
         />
         {post?._id && <input type="hidden" name="id" value={post._id} />}
-        <Button type="submit" disabled={checkingSlug || Boolean(slugError)}>
+        {hasInvalidProducts && (
+          <div className="text-red-500">
+            Product not found: {Object.values(invalidProducts).join(", ")}
+          </div>
+        )}
+        <Button
+          type="submit"
+          disabled={checkingSlug || Boolean(slugError) || hasInvalidProducts}
+        >
           {submitLabel}
         </Button>
       </form>
@@ -468,6 +520,7 @@ export default function PostForm({ action, submitLabel, post }: Props) {
           <PortableText value={content} components={previewComponents} />
         </div>
       </div>
-    </div>
+      </div>
+    </InvalidProductContext.Provider>
   );
 }

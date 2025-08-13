@@ -3,13 +3,18 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { sendCampaignEmail, resolveSegment } from "@acme/email";
+import { sendCampaignEmail, resolveSegment, onSend } from "@acme/email";
+import { emitSend } from "@acme/email/hooks";
 import { trackEvent } from "@platform-core/analytics";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
 import { env } from "@acme/config";
 import { marketingEmailTemplates } from "@acme/ui";
+
+onSend(({ shop, campaign }) =>
+  trackEvent(shop, { type: "email_sent", campaign })
+);
 
 interface Campaign {
   id: string;
@@ -143,7 +148,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
       for (const r of list) {
         await sendCampaignEmail({ to: r, subject, html: trackedBody });
-        await trackEvent(shop, { type: "email_sent", campaign: id });
+        await emitSend({ shop, campaign: id, to: r });
       }
       sentAt = new Date().toISOString();
     } catch {

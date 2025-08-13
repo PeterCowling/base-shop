@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { EventWebhook } from "@sendgrid/eventwebhook";
+import { onOpen, onClick } from "@acme/email";
+import { emitOpen, emitClick } from "@acme/email/hooks";
 import { trackEvent } from "@platform-core/analytics";
+
+onOpen(({ shop, campaign }) =>
+  trackEvent(shop, { type: "email_open", campaign })
+);
+onClick(({ shop, campaign }) =>
+  trackEvent(shop, { type: "email_click", campaign })
+);
 
 const typeMap: Record<string, string> = {
   delivered: "email_delivered",
@@ -39,10 +48,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
   for (const ev of events) {
     const mapped = typeMap[ev.event];
-    if (mapped) {
-      const campaign = Array.isArray(ev.category)
-        ? ev.category[0]
-        : ev.category;
+    const campaign = Array.isArray(ev.category)
+      ? ev.category[0]
+      : ev.category;
+    if (mapped === "email_open") {
+      await emitOpen({ shop, campaign: campaign || "" });
+    } else if (mapped === "email_click") {
+      const url = ev.url || "";
+      await emitClick({ shop, campaign: campaign || "", url });
+    } else if (mapped) {
       await trackEvent(shop, { type: mapped, ...(campaign ? { campaign } : {}) });
     }
   }

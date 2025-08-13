@@ -4,3 +4,4 @@ export type { AbandonedCart } from "./abandonedCart";
 export { recoverAbandonedCarts } from "./abandonedCart";
 export { sendEmail } from "./sendEmail";
 export { resolveSegment } from "./segments";
+export { onSend, onOpen, onClick } from "./hooks";

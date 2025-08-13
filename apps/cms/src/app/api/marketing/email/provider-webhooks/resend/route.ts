@@ -1,6 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "node:crypto";
+import { onOpen, onClick } from "@acme/email";
+import { emitOpen, emitClick } from "@acme/email/hooks";
 import { trackEvent } from "@platform-core/analytics";
+
+onOpen(({ shop, campaign }) =>
+  trackEvent(shop, { type: "email_open", campaign })
+);
+onClick(({ shop, campaign }) =>
+  trackEvent(shop, { type: "email_click", campaign })
+);
 
 const typeMap: Record<string, string> = {
   "email.delivered": "email_delivered",
@@ -32,7 +41,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
   const mapped = typeMap[event.type];
-  if (mapped) {
+  if (mapped === "email_open") {
+    const campaign = event.data?.campaign || event.data?.campaign_id || "";
+    await emitOpen({ shop, campaign });
+  } else if (mapped === "email_click") {
+    const campaign = event.data?.campaign || event.data?.campaign_id || "";
+    const url = event.data?.url || "";
+    await emitClick({ shop, campaign, url });
+  } else if (mapped) {
     const campaign = event.data?.campaign || event.data?.campaign_id;
     await trackEvent(shop, { type: mapped, ...(campaign ? { campaign } : {}) });
   }

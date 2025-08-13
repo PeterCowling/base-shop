@@ -1,9 +1,14 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { sendCampaignEmail, resolveSegment } from "@acme/email";
+import { sendCampaignEmail, resolveSegment, onSend } from "@acme/email";
+import { emitSend } from "@acme/email/hooks";
 import { trackEvent } from "@platform-core/analytics";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { coreEnv } from "@acme/config/env/core";
+
+onSend(({ shop, campaign }) =>
+  trackEvent(shop, { type: "email_sent", campaign })
+);
 
 interface Campaign {
   id: string;
@@ -70,7 +75,7 @@ export async function sendScheduledCampaigns(): Promise<void> {
           subject: c.subject,
           html: trackedBody,
         });
-        await trackEvent(shop, { type: "email_sent", campaign: c.id });
+        await emitSend({ shop, campaign: c.id, to: r });
       }
       c.sentAt = new Date().toISOString();
       changed = true;

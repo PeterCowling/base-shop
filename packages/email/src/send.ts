@@ -3,16 +3,21 @@ import { coreEnv } from "@acme/config/env/core";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
+import { renderTemplate } from "./templates";
 
 export interface CampaignOptions {
   /** Recipient email address */
   to: string;
   /** Email subject line */
-  subject: string;
+  subject?: string;
   /** HTML body */
-  html: string;
+  html?: string;
   /** Optional plain-text body */
   text?: string;
+  /** Optional template to render */
+  templateId?: string;
+  /** Variables for template rendering */
+  variables?: Record<string, string>;
 }
 
 const providers: Record<string, CampaignProvider> = {
@@ -27,9 +32,17 @@ const providers: Record<string, CampaignProvider> = {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
+  let finalOptions = options;
+  if (options.templateId) {
+    const rendered = renderTemplate(options.templateId, options.variables ?? {});
+    finalOptions = { ...options, ...rendered };
+  }
+
+  const { templateId: _t, variables: _v, ...sendOptions } = finalOptions;
+
   const provider = providers[coreEnv.EMAIL_PROVIDER ?? ""];
   if (provider) {
-    await provider.send(options);
+    await provider.send(sendOptions as CampaignOptions);
     return;
   }
 
@@ -39,9 +52,9 @@ export async function sendCampaignEmail(
 
   await transport.sendMail({
     from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
-    to: options.to,
-    subject: options.subject,
-    html: options.html,
-    text: options.text,
+    to: sendOptions.to,
+    subject: sendOptions.subject!,
+    html: sendOptions.html!,
+    text: sendOptions.text,
   });
 }

@@ -1,5 +1,3 @@
-import nodemailer from "nodemailer";
-
 jest.mock("nodemailer", () => ({
   __esModule: true,
   default: { createTransport: jest.fn() },
@@ -13,7 +11,10 @@ jest.mock("../providers/resend", () => ({
   ResendProvider: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
 }));
 
-const createTransportMock = nodemailer.createTransport as jest.Mock;
+jest.mock("@platform-core/analytics", () => ({
+  __esModule: true,
+  trackEvent: jest.fn(),
+}));
 
 describe("sendCampaignEmail", () => {
   afterEach(() => {
@@ -27,6 +28,9 @@ describe("sendCampaignEmail", () => {
   });
 
   it("uses SMTP_URL and CAMPAIGN_FROM env vars and forwards options", async () => {
+    const nodemailer = require("nodemailer");
+    const createTransportMock =
+      nodemailer.default.createTransport as jest.Mock;
     const sendMail = jest.fn().mockResolvedValue(undefined);
     createTransportMock.mockReturnValue({ sendMail });
 
@@ -96,6 +100,56 @@ describe("sendCampaignEmail", () => {
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
+    });
+  });
+
+  it("renders template before delegating to provider", async () => {
+    const send = jest.fn().mockResolvedValue(undefined);
+    const { SendgridProvider } = require("../providers/sendgrid");
+    (SendgridProvider as jest.Mock).mockImplementation(() => ({ send }));
+
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    process.env.SENDGRID_API_KEY = "sg";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const { sendCampaignEmail } = await import("../index");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      templateId: "welcome",
+      variables: { name: "Bob" },
+    });
+
+    expect(send).toHaveBeenCalledWith({
+      to: "to@example.com",
+      subject: "Welcome, Bob!",
+      html: "<p>Hello Bob, welcome.</p>",
+      text: "Hello Bob, welcome.",
+    });
+  });
+
+  it("renders template before sending", async () => {
+    const nodemailer = require("nodemailer");
+    const createTransportMock =
+      nodemailer.default.createTransport as jest.Mock;
+    const sendMail = jest.fn().mockResolvedValue(undefined);
+    createTransportMock.mockReturnValue({ sendMail });
+
+    process.env.SMTP_URL = "smtp://test";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const { sendCampaignEmail } = await import("../index");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      templateId: "welcome",
+      variables: { name: "Alice" },
+    });
+
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: "to@example.com",
+      subject: "Welcome, Alice!",
+      html: "<p>Hello Alice, welcome.</p>",
+      text: "Hello Alice, welcome.",
     });
   });
 });

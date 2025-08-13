@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/cart/route.ts
-import { getCustomerSession, hasPermission } from "@auth";
+import { requirePermission } from "@auth";
 import {
   runtime,
   DELETE as coreDELETE,
@@ -14,9 +14,10 @@ async function guard(
   req: NextRequest,
   handler: (req: NextRequest) => Promise<NextResponse>
 ): Promise<NextResponse> {
-  const session = await getCustomerSession();
-  if (!session || !hasPermission(session.role, "manage_cart")) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  try {
+    await requirePermission("manage_cart");
+  } catch {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   return handler(req);
 }

@@ -8,17 +8,17 @@ jest.mock("next/server", () => ({
   },
 }));
 
-jest.mock("@auth", () => {
-  const { hasPermission } = require("../../../packages/auth/src/permissions");
-  return { getCustomerSession: jest.fn(), validateCsrfToken: jest.fn(), hasPermission };
-});
+jest.mock("@auth", () => ({
+  requirePermission: jest.fn(),
+  validateCsrfToken: jest.fn(),
+}));
 
 jest.mock("@acme/platform-core/users", () => ({
   getUserById: jest.fn(),
   updatePassword: jest.fn(),
 }));
 
-import { getCustomerSession, validateCsrfToken } from "@auth";
+import { requirePermission, validateCsrfToken } from "@auth";
 import { getUserById, updatePassword } from "@acme/platform-core/users";
 
 function createRequest(body: any, token = "tok"): Parameters<typeof POST>[0] {
@@ -30,13 +30,13 @@ afterEach(() => {
 });
 
 test("denies change without permission", async () => {
-  (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "c1", role: "viewer" });
+  (requirePermission as jest.Mock).mockRejectedValue(new Error("Unauthorized"));
   const res = await POST(createRequest({ currentPassword: "OldPass1", newPassword: "NewPass1" }));
-  expect(res.status).toBe(403);
+  expect(res.status).toBe(401);
 });
 
 test("allows change with permission", async () => {
-  (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "c1", role: "customer" });
+  (requirePermission as jest.Mock).mockResolvedValue({ customerId: "c1" });
   (validateCsrfToken as jest.Mock).mockResolvedValue(true);
   const hash = await bcrypt.hash("OldPass1", 10);
   (getUserById as jest.Mock).mockResolvedValue({

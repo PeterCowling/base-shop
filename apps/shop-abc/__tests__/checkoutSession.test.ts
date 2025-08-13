@@ -22,7 +22,7 @@ jest.mock("@platform-core/pricing", () => ({
 
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
-jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
+jest.mock("@auth", () => ({ requirePermission: jest.fn(async () => ({ customerId: "c1" })) }));
 let mockCart: any;
 jest.mock("@platform-core/src/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),

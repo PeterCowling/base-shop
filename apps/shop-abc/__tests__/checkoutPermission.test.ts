@@ -25,11 +25,8 @@ jest.mock("@platform-core/src/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
 }));
 
-jest.mock("@auth", () => {
-  const { hasPermission } = require("../../../packages/auth/src/permissions");
-  return { getCustomerSession: jest.fn(), hasPermission };
-});
-import { getCustomerSession } from "@auth";
+jest.mock("@auth", () => ({ requirePermission: jest.fn() }));
+import { requirePermission } from "@auth";
 
 function createRequest(cookie: string): Parameters<typeof POST>[0] {
   const url = "http://localhost/api/checkout-session";
@@ -49,16 +46,16 @@ test("denies checkout without permission", async () => {
   const sku = PRODUCTS[0];
   mockCart = { [sku.id]: { sku, qty: 1 } };
   const cookie = encodeCartCookie("test");
-  (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "c1", role: "viewer" });
+  (requirePermission as jest.Mock).mockRejectedValue(new Error("Unauthorized"));
   const res = await POST(createRequest(cookie));
-  expect(res.status).toBe(403);
+  expect(res.status).toBe(401);
 });
 
 test("allows checkout with permission", async () => {
   const sku = PRODUCTS[0];
   mockCart = { [sku.id]: { sku, qty: 1 } };
   const cookie = encodeCartCookie("test");
-  (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "c1", role: "customer" });
+  (requirePermission as jest.Mock).mockResolvedValue({ customerId: "c1" });
   const res = await POST(createRequest(cookie));
   expect(res.status).toBe(200);
 });

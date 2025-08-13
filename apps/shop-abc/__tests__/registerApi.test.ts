@@ -13,12 +13,11 @@ jest.mock("@acme/platform-core/users", () => ({
   ),
 }));
 
-const getCustomerSession = jest.fn();
+const requirePermission = jest.fn();
 
 jest.mock("@auth", () => ({
   validateCsrfToken: jest.fn().mockResolvedValue(true),
-  getCustomerSession,
-  hasPermission: jest.fn().mockReturnValue(true),
+  requirePermission,
 }));
 
 jest.mock("@upstash/redis", () => ({
@@ -142,7 +141,7 @@ describe("/register POST", () => {
       name: "",
       email: "user@example.com",
     });
-    getCustomerSession.mockResolvedValue({ customerId: "newuser" });
+    requirePermission.mockResolvedValue({ customerId: "newuser" });
     const profRes = await profileGET();
     expect(profRes.status).toBe(200);
     expect(await profRes.json()).toEqual({

@@ -9,11 +9,8 @@ jest.mock("next/server", () => ({
 
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 
-jest.mock("@auth", () => {
-  const { hasPermission } = require("../../../packages/auth/src/permissions");
-  return { getCustomerSession: jest.fn(), hasPermission };
-});
-import { getCustomerSession } from "@auth";
+jest.mock("@auth", () => ({ requirePermission: jest.fn() }));
+import { requirePermission } from "@auth";
 
 function createRequest(): Parameters<typeof GET>[0] {
   const url = "http://localhost/api/cart";
@@ -29,13 +26,13 @@ afterEach(() => {
 });
 
 test("denies access without manage_cart permission", async () => {
-  (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "c1", role: "viewer" });
+  (requirePermission as jest.Mock).mockRejectedValue(new Error("Unauthorized"));
   const res = await GET(createRequest());
-  expect(res.status).toBe(403);
+  expect(res.status).toBe(401);
 });
 
 test("allows access with manage_cart permission", async () => {
-  (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "c1", role: "customer" });
+  (requirePermission as jest.Mock).mockResolvedValue({});
   const res = await GET(createRequest());
   expect(res.status).toBe(200);
 });

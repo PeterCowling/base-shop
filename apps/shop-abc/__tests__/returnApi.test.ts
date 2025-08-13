@@ -43,6 +43,7 @@ describe("/api/return", () => {
       markRefunded: jest.fn(),
       addOrder: jest.fn(),
     }));
+    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
     const { POST } = await import("../src/app/api/return/route");
     const res = await POST({
       json: async () => ({ sessionId: "sess", damageFee: 20 }),
@@ -82,7 +83,7 @@ describe("/api/return", () => {
       }),
       { virtual: true }
     );
-
+    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
     const { POST } = await import("../src/app/api/return/route");
     const res = await POST({
       json: async () => ({ sessionId: "sess" }),
@@ -97,12 +98,14 @@ describe("/api/return", () => {
   });
 
   test("returns 400 for missing sessionId", async () => {
+    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
     const { POST } = await import("../src/app/api/return/route");
     const res = await POST({ json: async () => ({}) } as any);
     expect(res.status).toBe(400);
   });
 
   test("returns 400 for invalid request body", async () => {
+    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
     const { POST } = await import("../src/app/api/return/route");
     await expect(POST({ json: async () => null } as any)).rejects.toThrow();
   });

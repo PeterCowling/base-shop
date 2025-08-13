@@ -2,7 +2,7 @@ import "@acme/lib/initZod";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import bcrypt from "bcryptjs";
-import { getCustomerSession, hasPermission, validateCsrfToken } from "@auth";
+import { requirePermission, validateCsrfToken } from "@auth";
 import { getUserById, updatePassword } from "@acme/platform-core/users";
 
 const ChangePasswordSchema = z
@@ -21,13 +21,11 @@ const ChangePasswordSchema = z
 export type ChangePasswordInput = z.infer<typeof ChangePasswordSchema>;
 
 export async function POST(req: Request) {
-  const session = await getCustomerSession();
-  if (!session) {
+  let session;
+  try {
+    session = await requirePermission("change_password");
+  } catch {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  if (!hasPermission(session.role, "change_password")) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const token = req.headers.get("x-csrf-token");

@@ -2,6 +2,7 @@
 import "@acme/lib/initZod";
 
 import { stripe } from "@acme/stripe";
+import { requirePermission } from "@auth";
 import {
   markRefunded,
   markReturned,
@@ -17,6 +18,11 @@ const ReturnSchema = z
   .strict();
 
 export async function POST(req: NextRequest) {
+  try {
+    await requirePermission("manage_orders");
+  } catch {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { sessionId, damageFee } = parsed.data;

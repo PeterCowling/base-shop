@@ -10,7 +10,7 @@ import {
 import { getCart } from "@platform-core/src/cartStore";
 import { calculateRentalDays } from "@acme/date-utils";
 import { stripe } from "@acme/stripe";
-import { getCustomerSession, hasPermission } from "@auth";
+import { requirePermission } from "@auth";
 import { priceForDays, convertCurrency } from "@platform-core/pricing";
 import { findCoupon } from "@platform-core/coupons";
 import { trackEvent } from "@platform-core/analytics";
@@ -135,9 +135,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
   }
-  const customerSession = await getCustomerSession();
-  if (!customerSession || !hasPermission(customerSession.role, "checkout")) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  let session;
+  try {
+    session = await requirePermission("checkout");
+  } catch {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   /* 2️⃣ Parse optional body ------------------------------------------------- */
@@ -201,7 +203,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   );
 
   /* 5️⃣ Create Checkout Session -------------------------------------------- */
-  const customer = customerId ?? customerSession.customerId;
+  const customer = customerId ?? session.customerId;
   const clientIp =
     req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
 

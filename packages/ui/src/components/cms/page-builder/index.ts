@@ -9,6 +9,7 @@ export { default as ValuePropsEditor } from "./ValuePropsEditor";
 export { default as ReviewsCarouselEditor } from "./ReviewsCarouselEditor";
 export { default as AnnouncementBarEditor } from "./AnnouncementBarEditor";
 export { default as MapBlockEditor } from "./MapBlockEditor";
+export { default as StoreLocatorBlockEditor } from "./StoreLocatorBlockEditor";
 export { default as VideoBlockEditor } from "./VideoBlockEditor";
 export { default as FAQBlockEditor } from "./FAQBlockEditor";
 export { default as PricingTableEditor } from "./PricingTableEditor";

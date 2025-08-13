@@ -191,6 +191,15 @@ export interface MapBlockComponent extends PageComponentBase {
   lng?: number;
   zoom?: number;
 }
+export interface StoreLocatorBlockComponent extends PageComponentBase {
+  type: "StoreLocatorBlock";
+  locations?: {
+    lat?: number;
+    lng?: number;
+    label?: string;
+  }[];
+  zoom?: number;
+}
 export interface VideoBlockComponent extends PageComponentBase {
   type: "VideoBlock";
   src?: string;
@@ -280,6 +289,7 @@ export type PageComponent =
   | SearchBarComponent
   | ContactFormWithMapComponent
   | MapBlockComponent
+  | StoreLocatorBlockComponent
   | VideoBlockComponent
   | FAQBlockComponent
   | BlogListingComponent

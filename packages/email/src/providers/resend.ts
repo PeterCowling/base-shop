@@ -4,6 +4,7 @@ import type { CampaignOptions } from "../send";
 import { ProviderError } from "./types";
 import type { CampaignProvider } from "./types";
 import { mapResendStats, type CampaignStats } from "../analytics";
+import { getDefaultSender } from "../config";
 
 interface ProviderOptions {
   /**
@@ -42,7 +43,7 @@ export class ResendProvider implements CampaignProvider {
   async send(options: CampaignOptions): Promise<void> {
     try {
       await this.client.emails.send({
-        from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
+        from: getDefaultSender(),
         to: options.to,
         subject: options.subject,
         html: options.html,

@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { coreEnv } from "@acme/config/env/core";
+import { getDefaultSender } from "./config";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
@@ -132,7 +133,7 @@ async function sendWithNodemailer(options: CampaignOptions): Promise<void> {
   });
 
   await transport.sendMail({
-    from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
+    from: getDefaultSender(),
     to: options.to,
     subject: options.subject,
     html: options.html,

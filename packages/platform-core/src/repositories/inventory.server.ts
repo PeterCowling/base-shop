@@ -126,3 +126,95 @@ export async function readInventoryMap(
     items.map((i) => [variantKey(i.sku, i.variantAttributes), i]),
   );
 }
+
+/**
+ * Atomically update a single inventory variant using a read-modify-write cycle.
+ *
+ * The `mutate` callback receives the current item (if any) and should return
+ * the updated item. Returning `undefined` will remove the item.
+ */
+export async function updateInventoryItem(
+  shop: string,
+  sku: string,
+  variantAttributes: Record<string, string>,
+  mutate: (current: InventoryItem | undefined) => InventoryItem | undefined,
+): Promise<InventoryItem | undefined> {
+  if (process.env.INVENTORY_BACKEND === "sqlite") {
+    const mod = await import("./inventory.sqlite.server");
+    return (mod as any).updateInventoryItem(
+      shop,
+      sku,
+      variantAttributes,
+      mutate,
+    );
+  }
+
+  const lockFile = `${inventoryPath(shop)}.lock`;
+  let normalized: InventoryItem[] = [];
+  const handle = await acquireLock(lockFile);
+  let updated: InventoryItem | undefined;
+  try {
+    let items: InventoryItem[] = [];
+    try {
+      const buf = await fs.readFile(inventoryPath(shop), "utf8");
+      const raw = JSON.parse(buf);
+      items = inventoryItemSchema
+        .array()
+        .parse(
+          raw.map((i: any) => ({
+            variantAttributes: {},
+            ...i,
+          })),
+        );
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
+    }
+
+    const key = variantKey(sku, variantAttributes);
+    const idx = items.findIndex(
+      (i) => variantKey(i.sku, i.variantAttributes) === key,
+    );
+    const current = idx === -1 ? undefined : items[idx];
+    updated = mutate(current);
+    if (updated === undefined) {
+      if (idx !== -1) items.splice(idx, 1);
+    } else {
+      const nextItem = inventoryItemSchema.parse({
+        ...current,
+        ...updated,
+        sku,
+        variantAttributes,
+      });
+      if (idx === -1) items.push(nextItem);
+      else items[idx] = nextItem;
+    }
+
+    normalized = inventoryItemSchema
+      .array()
+      .parse(
+        items.map((i) => ({
+          ...i,
+          variantAttributes: { ...i.variantAttributes },
+        })),
+      );
+
+    const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
+    await ensureDir(shop);
+    await fs.writeFile(tmp, JSON.stringify(normalized, null, 2), "utf8");
+    await fs.rename(tmp, inventoryPath(shop));
+  } finally {
+    await handle.close();
+    await fs.unlink(lockFile).catch(() => {});
+  }
+
+  try {
+    if (process.env.SKIP_STOCK_ALERT !== "1") {
+      const { checkAndAlert } = await import("../services/stockAlert.server");
+      await checkAndAlert(shop, normalized);
+    }
+  } catch (err) {
+    console.error("Failed to run stock alert", err);
+  }
+
+  return updated;
+}

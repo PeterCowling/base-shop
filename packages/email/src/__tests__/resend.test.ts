@@ -37,4 +37,19 @@ describe("ResendProvider", () => {
       text: "Text",
     });
   });
+
+  it("throws when sanity check fails", async () => {
+    process.env.RESEND_API_KEY = "rs";
+    const originalFetch = global.fetch;
+    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 401 });
+
+    const { ResendProvider } = await import("../providers/resend");
+    const provider = new ResendProvider({ sanityCheck: true });
+
+    await expect(provider.ready).rejects.toThrow(
+      "Resend credentials rejected with status 401"
+    );
+
+    global.fetch = originalFetch;
+  });
 });

@@ -5,11 +5,38 @@ import { ProviderError } from "./types";
 import type { CampaignProvider } from "./types";
 import { mapResendStats, type CampaignStats } from "../analytics";
 
+interface ProviderOptions {
+  /**
+    * When true, perform a lightweight API request to verify credentials. The
+    * request result can be awaited via the `ready` promise.  Failure to
+    * authenticate will reject the promise with a descriptive error.
+    */
+  sanityCheck?: boolean;
+}
+
 export class ResendProvider implements CampaignProvider {
   private client: Resend;
+  /** Promise resolving when optional credential checks finish. */
+  readonly ready: Promise<void>;
 
-  constructor() {
+  constructor(options: ProviderOptions = {}) {
     this.client = new Resend(coreEnv.RESEND_API_KEY || "");
+
+    if (options.sanityCheck && coreEnv.RESEND_API_KEY) {
+      this.ready = fetch("https://api.resend.com/domains", {
+        headers: {
+          Authorization: `Bearer ${coreEnv.RESEND_API_KEY}`,
+        },
+      }).then((res) => {
+        if (!res.ok) {
+          throw new Error(
+            `Resend credentials rejected with status ${res.status}`
+          );
+        }
+      });
+    } else {
+      this.ready = Promise.resolve();
+    }
   }
 
   async send(options: CampaignOptions): Promise<void> {

@@ -4,8 +4,9 @@ import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
 import { ProviderError } from "./providers/types";
+import { renderTemplate } from "./templates";
 
-export interface CampaignOptions {
+export interface ResolvedCampaignOptions {
   /** Recipient email address */
   to: string;
   /** Email subject line */
@@ -14,6 +15,15 @@ export interface CampaignOptions {
   html: string;
   /** Optional plain-text body */
   text?: string;
+}
+
+export interface CampaignOptions extends Partial<Omit<ResolvedCampaignOptions, "to">> {
+  /** Recipient email address */
+  to: string;
+  /** Optional template identifier */
+  templateId?: string;
+  /** Variables for template rendering */
+  variables?: Record<string, string>;
 }
 
 const providers: Record<string, CampaignProvider> = {
@@ -31,12 +41,28 @@ const providers: Record<string, CampaignProvider> = {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
+  let resolved: ResolvedCampaignOptions;
+  if (options.templateId) {
+    const rendered = renderTemplate(options.templateId, options.variables || {});
+    resolved = { to: options.to, ...rendered };
+  } else {
+    if (!options.subject || !options.html) {
+      throw new Error("Missing subject or html");
+    }
+    resolved = {
+      to: options.to,
+      subject: options.subject,
+      html: options.html,
+      text: options.text,
+    };
+  }
+
   const primary = coreEnv.EMAIL_PROVIDER ?? "";
   const provider = providers[primary];
 
   // No configured provider – use Nodemailer directly
   if (!provider) {
-    await sendWithNodemailer(options);
+    await sendWithNodemailer(resolved);
     return;
   }
 
@@ -49,19 +75,19 @@ export async function sendCampaignEmail(
     const current = providers[name];
     if (!current) continue;
     try {
-      await sendWithRetry(current, options);
+      await sendWithRetry(current, resolved);
       return;
     } catch {
       // Try next provider
     }
   }
 
-  await sendWithNodemailer(options);
+  await sendWithNodemailer(resolved);
 }
 
 async function sendWithRetry(
   provider: CampaignProvider,
-  options: CampaignOptions,
+  options: ResolvedCampaignOptions,
   maxRetries = 3
 ): Promise<void> {
   let attempt = 0;
@@ -85,7 +111,9 @@ async function sendWithRetry(
   }
 }
 
-async function sendWithNodemailer(options: CampaignOptions): Promise<void> {
+async function sendWithNodemailer(
+  options: ResolvedCampaignOptions
+): Promise<void> {
   const transport = nodemailer.createTransport({
     url: coreEnv.SMTP_URL,
   });

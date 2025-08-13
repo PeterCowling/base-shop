@@ -1,5 +1,6 @@
-export type { CampaignOptions } from "./send";
+export type { CampaignOptions, ResolvedCampaignOptions } from "./send";
 export { sendCampaignEmail } from "./send";
+export { registerTemplate } from "./templates";
 export type { AbandonedCart } from "./abandonedCart";
 export { recoverAbandonedCarts, resolveAbandonedCartDelay } from "./abandonedCart";
 export { sendEmail } from "./sendEmail";

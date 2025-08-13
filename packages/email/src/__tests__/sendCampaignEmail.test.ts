@@ -33,7 +33,7 @@ describe("sendCampaignEmail", () => {
     process.env.SMTP_URL = "smtp://test";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -51,6 +51,36 @@ describe("sendCampaignEmail", () => {
     });
   });
 
+  it("renders templates before sending", async () => {
+    const send = jest.fn().mockResolvedValue(undefined);
+    const { SendgridProvider } = require("../providers/sendgrid");
+    (SendgridProvider as jest.Mock).mockImplementation(() => ({ send }));
+
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    process.env.SENDGRID_API_KEY = "sg";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const { sendCampaignEmail } = await import("../send");
+    const { registerTemplate } = await import("../templates");
+    registerTemplate("welcome", {
+      subject: "Hello {{name}}",
+      html: "<p>Hello {{name}}</p>",
+    });
+
+    await sendCampaignEmail({
+      to: "to@example.com",
+      templateId: "welcome",
+      variables: { name: "Ada" },
+    });
+
+    expect(send).toHaveBeenCalledWith({
+      to: "to@example.com",
+      subject: "Hello Ada",
+      html: "<p>Hello Ada</p>",
+      text: undefined,
+    });
+  });
+
   it("delegates to SendgridProvider when EMAIL_PROVIDER=sendgrid", async () => {
     const send = jest.fn().mockResolvedValue(undefined);
     const { SendgridProvider } = require("../providers/sendgrid");
@@ -60,7 +90,7 @@ describe("sendCampaignEmail", () => {
     process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -72,6 +102,7 @@ describe("sendCampaignEmail", () => {
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
+      text: undefined,
     });
   });
 
@@ -84,7 +115,7 @@ describe("sendCampaignEmail", () => {
     process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -96,6 +127,7 @@ describe("sendCampaignEmail", () => {
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
+      text: undefined,
     });
   });
 });

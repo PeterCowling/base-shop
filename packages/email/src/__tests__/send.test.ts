@@ -52,7 +52,7 @@ describe("sendCampaignEmail fallback and retry", () => {
 
     setupEnv();
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -75,7 +75,7 @@ describe("sendCampaignEmail fallback and retry", () => {
 
     setupEnv();
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
 
     const promise = sendCampaignEmail({
       to: "to@example.com",

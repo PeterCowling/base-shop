@@ -1,8 +1,8 @@
-import type { CampaignOptions } from "../send";
+import type { ResolvedCampaignOptions } from "../send";
 import type { CampaignStats } from "../analytics";
 
 export interface CampaignProvider {
-  send(options: CampaignOptions): Promise<void>;
+  send(options: ResolvedCampaignOptions): Promise<void>;
   getCampaignStats(campaignId: string): Promise<CampaignStats>;
   /**
    * Optionally create or upsert a contact with the given email address and

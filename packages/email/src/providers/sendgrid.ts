@@ -1,6 +1,6 @@
 import sgMail from "@sendgrid/mail";
 import { coreEnv } from "@acme/config/env/core";
-import type { CampaignOptions } from "../send";
+import type { ResolvedCampaignOptions } from "../send";
 import { ProviderError } from "./types";
 import type { CampaignProvider } from "./types";
 import { mapSendGridStats, type CampaignStats } from "../analytics";
@@ -12,7 +12,7 @@ export class SendgridProvider implements CampaignProvider {
     }
   }
 
-  async send(options: CampaignOptions): Promise<void> {
+  async send(options: ResolvedCampaignOptions): Promise<void> {
     try {
       await sgMail.send({
         to: options.to,

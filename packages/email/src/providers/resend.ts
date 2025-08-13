@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 import { coreEnv } from "@acme/config/env/core";
-import type { CampaignOptions } from "../send";
+import type { ResolvedCampaignOptions } from "../send";
 import { ProviderError } from "./types";
 import type { CampaignProvider } from "./types";
 import { mapResendStats, type CampaignStats } from "../analytics";
@@ -12,7 +12,7 @@ export class ResendProvider implements CampaignProvider {
     this.client = new Resend(coreEnv.RESEND_API_KEY || "");
   }
 
-  async send(options: CampaignOptions): Promise<void> {
+  async send(options: ResolvedCampaignOptions): Promise<void> {
     try {
       await this.client.emails.send({
         from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",

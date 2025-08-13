@@ -38,13 +38,14 @@ export function LoyaltyHubTemplate<T>({
           {progress.label && (
             <span className="text-sm font-medium">{progress.label}</span>
           )}
-          <div className="bg-muted h-2 w-full overflow-hidden rounded">
+          <div className="bg-muted h-2 w-full overflow-hidden rounded" data-token="--color-muted">
             <div
               className="bg-primary h-full"
               style={{ width: `${percent}%` }}
+              data-token="--color-primary"
             />
           </div>
-          <div className="text-muted-foreground text-sm">
+          <div className="text-muted-foreground text-sm" data-token="--color-muted">
             {progress.current}/{progress.goal} points
           </div>
         </div>

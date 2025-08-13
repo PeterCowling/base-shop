@@ -13,6 +13,12 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
       warning: "bg-warning text-warning-fg",
       destructive: "bg-danger text-danger-foreground",
     };
+    const tokenMap: Record<string, string> = {
+      default: "--color-muted",
+      success: "--color-success",
+      warning: "--color-warning",
+      destructive: "--color-danger",
+    };
     return (
       <span
         ref={ref}
@@ -21,6 +27,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
           variants[variant],
           className
         )}
+        data-token={tokenMap[variant]}
         {...props}
       />
     );

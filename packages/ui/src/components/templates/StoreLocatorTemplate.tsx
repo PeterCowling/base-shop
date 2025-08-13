@@ -28,13 +28,17 @@ export function StoreLocatorTemplate({
   return (
     <div className={cn("grid gap-6 md:grid-cols-2", className)} {...props}>
       <div className="min-h-[300px] w-full">
-        {map ?? <div className="bg-muted h-full w-full rounded-md" />}
+        {map ?? (
+          <div className="bg-muted h-full w-full rounded-md" data-token="--color-muted" />
+        )}
       </div>
       <ul className="space-y-4">
         {stores.map((store) => (
           <li key={store.id} className="rounded-md border p-4">
             <h3 className="font-semibold">{store.name}</h3>
-            <p className="text-muted-foreground text-sm">{store.address}</p>
+            <p className="text-muted-foreground text-sm" data-token="--color-muted">
+              {store.address}
+            </p>
           </li>
         ))}
       </ul>

@@ -31,6 +31,7 @@ export default function AnnouncementBar({
         "flex w-full items-center justify-center gap-2 bg-primary px-4 py-2 text-sm text-primary-foreground",
         className,
       )}
+      data-token="--color-primary"
       {...props}
     >
       <span>{text}</span>
@@ -40,6 +41,7 @@ export default function AnnouncementBar({
           aria-label="Close announcement"
           onClick={() => setOpen(false)}
           className="ml-2 text-primary-foreground/70 hover:text-primary-foreground"
+          data-token="--color-primary-fg"
         >
           &times;
         </button>

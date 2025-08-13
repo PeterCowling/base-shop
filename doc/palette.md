@@ -10,5 +10,6 @@ The base and dark themes share a minimal colour system built around WCAG AA cont
 | `--color-success` / `--color-success-fg` | `142 76% 97%` / `142 72% 30%` | `142 72% 27%` / `142 70% 94%` | 4.58, 5.22 |
 | `--color-warning` / `--color-warning-fg` | `40 90% 96%` / `25 85% 31%` | `35 90% 30%` / `40 90% 96%` | 6.49, 5.52 |
 | `--color-info` / `--color-info-fg` | `210 90% 96%` / `210 90% 35%` | `210 90% 35%` / `210 90% 96%` | 6.31, 6.31 |
+| `--color-muted` | `0 0% 88%` | `0 0% 60%` | — |
 
 All contrast ratios were measured using the relative luminance method and meet WCAG AA for normal text.

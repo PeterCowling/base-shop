@@ -76,6 +76,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
             classes,
             className
           )}
+          data-token="--color-muted"
         >
           {fallback ?? (typeof alt === "string" ? alt.charAt(0) : null)}
         </div>

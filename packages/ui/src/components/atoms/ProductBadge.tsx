@@ -12,9 +12,14 @@ export const ProductBadge = React.forwardRef<
   ProductBadgeProps
 >(({ label, variant = "default", className, ...props }, ref) => {
   const variants: Record<string, string> = {
-      default: "bg-muted text-fg",
+    default: "bg-muted text-fg",
     sale: "bg-danger text-danger-foreground",
     new: "bg-success text-success-fg",
+  };
+  const tokenMap: Record<string, string> = {
+    default: "--color-muted",
+    sale: "--color-danger",
+    new: "--color-success",
   };
   return (
     <span
@@ -24,6 +29,7 @@ export const ProductBadge = React.forwardRef<
         variants[variant],
         className
       )}
+      data-token={tokenMap[variant]}
       {...props}
     >
       {label}

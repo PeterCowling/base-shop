@@ -31,13 +31,18 @@ export const AccountPanel = React.forwardRef<HTMLDivElement, AccountPanelProps>(
           className="rounded-full object-cover"
         />
       ) : (
-        <div className="bg-muted text-muted-foreground flex size-12 items-center justify-center rounded-full">
+        <div
+          className="bg-muted text-muted-foreground flex size-12 items-center justify-center rounded-full"
+          data-token="--color-muted"
+        >
           {user.name.charAt(0).toUpperCase()}
         </div>
       )}
       <div className="flex-1 overflow-hidden">
         <p className="truncate font-medium">{user.name}</p>
-        <p className="text-muted-foreground truncate text-sm">{user.email}</p>
+        <p className="text-muted-foreground truncate text-sm" data-token="--color-muted">
+          {user.email}
+        </p>
       </div>
       {onLogout && (
         <Button variant="outline" onClick={onLogout} className="shrink-0">

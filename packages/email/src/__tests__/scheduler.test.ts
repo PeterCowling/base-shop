@@ -59,6 +59,8 @@ describe("scheduler", () => {
     expect(sendCampaignEmailMock).toHaveBeenCalledWith(
       expect.objectContaining({ to: "past@example.com", subject: "Past" }),
     );
+    const html = sendCampaignEmailMock.mock.calls[0][0].html as string;
+    expect(html).toMatch(/open\?shop=[^&]+&campaign=[^&]+&t=\d+/);
 
     const updated = JSON.parse(
       await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8"),

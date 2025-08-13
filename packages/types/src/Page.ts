@@ -202,6 +202,19 @@ export interface ContactFormComponent extends PageComponentBase {
   method?: string;
 }
 
+export interface FormBuilderComponent extends PageComponentBase {
+  type: "FormBuilder";
+  action?: string;
+  method?: string;
+  fields?: {
+    type: string;
+    name: string;
+    label?: string;
+    placeholder?: string;
+    options?: string[];
+  }[];
+}
+
 export interface NewsletterSignupComponent extends PageComponentBase {
   type: "NewsletterSignup";
   text?: string;
@@ -336,6 +349,7 @@ export type PageComponent =
   | GalleryComponent
   | ImageSliderComponent
   | ContactFormComponent
+  | FormBuilderComponent
   | NewsletterSignupComponent
   | SearchBarComponent
   | ContactFormWithMapComponent
@@ -449,6 +463,23 @@ const contactFormComponentSchema = baseComponentSchema.extend({
   type: z.literal("ContactForm"),
   action: z.string().optional(),
   method: z.string().optional(),
+});
+
+const formBuilderComponentSchema = baseComponentSchema.extend({
+  type: z.literal("FormBuilder"),
+  action: z.string().optional(),
+  method: z.string().optional(),
+  fields: z
+    .array(
+      z.object({
+        type: z.string(),
+        name: z.string(),
+        label: z.string().optional(),
+        placeholder: z.string().optional(),
+        options: z.array(z.string()).optional(),
+      })
+    )
+    .optional(),
 });
 
 const newsletterSignupComponentSchema = baseComponentSchema.extend({
@@ -651,6 +682,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     recommendationCarouselComponentSchema,
     galleryComponentSchema,
     contactFormComponentSchema,
+    formBuilderComponentSchema,
     newsletterSignupComponentSchema,
     searchBarComponentSchema,
     contactFormWithMapComponentSchema,

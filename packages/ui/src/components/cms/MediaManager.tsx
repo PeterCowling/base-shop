@@ -66,6 +66,8 @@ function MediaManagerBase({
     thumbnail,
     altText,
     setAltText,
+    tags: uploadTags,
+    setTags: setUploadTags,
     actual,
     isValid,
     progress,
@@ -85,7 +87,7 @@ function MediaManagerBase({
   /* ---------------------------------------------------------------------- */
   /*  Render                                                                */
   /* ---------------------------------------------------------------------- */
-  const tags = Array.from(new Set(files.flatMap((f) => f.tags ?? [])));
+  const allTags = Array.from(new Set(files.flatMap((f) => f.tags ?? [])));
   const filteredFiles = files.filter((f) => {
     const name = f.url.split("/").pop()?.toLowerCase() ?? "";
     const q = query.toLowerCase();
@@ -111,14 +113,14 @@ function MediaManagerBase({
           onChange={(e) => setQuery(e.target.value)}
           className="flex-1"
         />
-        {tags.length > 0 && (
+        {allTags.length > 0 && (
           <Select value={tag} onValueChange={setTag}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="All tags" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">All tags</SelectItem>
-              {tags.map((t) => (
+              {allTags.map((t) => (
                 <SelectItem key={t} value={t}>
                   {t}
                 </SelectItem>
@@ -192,12 +194,19 @@ function MediaManagerBase({
               </p>
             )}
             {(isVideo || isValid) && (
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <Input
                   type="text"
                   value={altText}
                   onChange={(e) => setAltText(e.target.value)}
                   placeholder={isVideo ? "Title" : "Alt text"}
+                  className="flex-1"
+                />
+                <Input
+                  type="text"
+                  value={uploadTags}
+                  onChange={(e) => setUploadTags(e.target.value)}
+                  placeholder="Tags (comma separated)"
                   className="flex-1"
                 />
                 <button

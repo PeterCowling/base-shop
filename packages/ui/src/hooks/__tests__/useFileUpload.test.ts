@@ -1,28 +1,31 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 
-jest.mock("@cms/actions/media.server", () => ({ uploadMedia: jest.fn() }));
 jest.mock("../useImageOrientationValidation.ts", () => ({
   useImageOrientationValidation: jest.fn(),
 }));
 
-const { uploadMedia } = require("@cms/actions/media.server");
-const {
-  useImageOrientationValidation,
-} = require("../useImageOrientationValidation.ts");
+const { useImageOrientationValidation } = require("../useImageOrientationValidation.ts");
 const { useFileUpload } = require("../useFileUpload.tsx");
 
-const mockUpload = uploadMedia as jest.MockedFunction<typeof uploadMedia>;
 const mockOrientation = useImageOrientationValidation as jest.MockedFunction<
   typeof useImageOrientationValidation
 >;
 
+const originalFetch = global.fetch;
+const mockFetch = jest.fn();
+
 beforeEach(() => {
   mockOrientation.mockReturnValue({ actual: "landscape", isValid: true });
-  mockUpload.mockResolvedValue({
-    url: "/img.png",
-    altText: "",
-    type: "image",
+  mockFetch.mockResolvedValue({
+    ok: true,
+    json: () => Promise.resolve({ url: "/img.png", altText: "", type: "image" }),
   } as any);
+  (global as any).fetch = mockFetch;
+});
+
+afterEach(() => {
+  (global as any).fetch = originalFetch;
+  jest.clearAllMocks();
 });
 
 it("updates progress during upload", async () => {
@@ -37,9 +40,9 @@ it("updates progress during upload", async () => {
 
   await waitFor(() => expect(result.current.pendingFile).not.toBeNull());
 
-  let resolveUpload: (v: any) => void = () => {};
-  mockUpload.mockImplementationOnce(
-    () => new Promise((r) => (resolveUpload = r))
+  let resolveFetch: (v: any) => void = () => {};
+  mockFetch.mockImplementationOnce(
+    () => new Promise((r) => (resolveFetch = r)) as any
   );
 
   act(() => {
@@ -50,7 +53,7 @@ it("updates progress during upload", async () => {
     expect(result.current.progress).toEqual({ done: 0, total: 1 })
   );
 
-  resolveUpload({ url: "/img.png" });
+  resolveFetch({ ok: true, json: () => Promise.resolve({ url: "/img.png" }) });
   await act(async () => {
     await Promise.resolve();
   });
@@ -59,7 +62,7 @@ it("updates progress during upload", async () => {
 });
 
 it("sets error when upload fails", async () => {
-  mockUpload.mockRejectedValueOnce(new Error("fail"));
+  mockFetch.mockRejectedValueOnce(new Error("fail"));
   const file = new File(["x"], "x.png", { type: "image/png" });
   const { result } = renderHook(() =>
     useFileUpload({ shop: "s", requiredOrientation: "landscape" })
@@ -86,6 +89,7 @@ it("clears file and alt text after upload", async () => {
   act(() => {
     result.current.onFileChange({ target: { files: [file] } } as any);
     result.current.setAltText("alt");
+    result.current.setTags("tag1, tag2");
   });
 
   await act(async () => {
@@ -94,4 +98,5 @@ it("clears file and alt text after upload", async () => {
 
   expect(result.current.pendingFile).toBeNull();
   expect(result.current.altText).toBe("");
+  expect(result.current.tags).toBe("");
 });

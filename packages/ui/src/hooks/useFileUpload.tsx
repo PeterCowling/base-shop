@@ -35,6 +35,9 @@ export interface UseFileUploadResult {
   pendingFile: File | null;
   altText: string;
   setAltText: (text: string) => void;
+  /** Comma separated list of tags */
+  tags: string;
+  setTags: (tags: string) => void;
 
   /* ─── validation ──────────────────────── */
   actual: ImageOrientation | null;
@@ -67,6 +70,7 @@ export function useFileUpload(
   /* ---------- state ------------------------------------------------ */
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [altText, setAltText] = useState("");
+  const [tags, setTags] = useState("");
   const [progress, setProgress] = useState<UploadProgress | null>(null);
   const [error, setError] = useState<string>();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -90,6 +94,13 @@ export function useFileUpload(
     const fd = new FormData();
     fd.append("file", pendingFile);
     if (altText) fd.append("altText", altText);
+    if (tags) {
+      const tagList = tags
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean);
+      if (tagList.length) fd.append("tags", JSON.stringify(tagList));
+    }
 
     try {
       const res = await fetch(
@@ -108,7 +119,8 @@ export function useFileUpload(
     setProgress(null);
     setPendingFile(null);
     setAltText("");
-  }, [pendingFile, altText, shop, requiredOrientation, onUploaded]);
+    setTags("");
+  }, [pendingFile, altText, tags, shop, requiredOrientation, onUploaded]);
 
   /* ---------- drag-and-drop & picker ------------------------------ */
   const onDrop = useCallback((e: DragEvent<HTMLDivElement>) => {
@@ -116,6 +128,7 @@ export function useFileUpload(
     const file = e.dataTransfer.files?.[0] ?? null;
     setPendingFile(file);
     setAltText("");
+    setTags("");
     setDragActive(false);
   }, []);
 
@@ -123,6 +136,7 @@ export function useFileUpload(
     const file = e.target.files?.[0] ?? null;
     setPendingFile(file);
     setAltText("");
+    setTags("");
   }, []);
 
   const openFileDialog = useCallback(() => {
@@ -194,6 +208,8 @@ export function useFileUpload(
     pendingFile,
     altText,
     setAltText,
+    tags,
+    setTags,
     actual,
     isValid,
     progress,

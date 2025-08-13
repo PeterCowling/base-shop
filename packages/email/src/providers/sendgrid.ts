@@ -5,10 +5,43 @@ import { ProviderError } from "./types";
 import type { CampaignProvider } from "./types";
 import { mapSendGridStats, type CampaignStats } from "../analytics";
 
+interface ProviderOptions {
+  /**
+   * When true, the constructor will make a lightweight API request to verify
+   * that the configured credentials are accepted by SendGrid.  The result of
+   * this request can be awaited via the `ready` promise exposed on the
+   * instance.  Consumers that do not wish to block on this check can ignore the
+   * promise.
+   */
+  sanityCheck?: boolean;
+}
+
 export class SendgridProvider implements CampaignProvider {
-  constructor() {
+  /**
+   * Promise that resolves once optional credential checks complete.  If the
+   * credentials are rejected, this promise rejects with a descriptive error.
+   */
+  readonly ready: Promise<void>;
+
+  constructor(options: ProviderOptions = {}) {
     if (coreEnv.SENDGRID_API_KEY) {
       sgMail.setApiKey(coreEnv.SENDGRID_API_KEY);
+    }
+
+    if (options.sanityCheck && coreEnv.SENDGRID_API_KEY) {
+      this.ready = fetch("https://api.sendgrid.com/v3/user/profile", {
+        headers: {
+          Authorization: `Bearer ${coreEnv.SENDGRID_API_KEY}`,
+        },
+      }).then((res) => {
+        if (!res.ok) {
+          throw new Error(
+            `Sendgrid credentials rejected with status ${res.status}`
+          );
+        }
+      });
+    } else {
+      this.ready = Promise.resolve();
     }
   }
 

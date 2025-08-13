@@ -39,4 +39,19 @@ describe("SendgridProvider", () => {
       text: "Text",
     });
   });
+
+  it("throws when sanity check fails", async () => {
+    process.env.SENDGRID_API_KEY = "sg";
+    const originalFetch = global.fetch;
+    global.fetch = jest.fn().mockResolvedValue({ ok: false, status: 401 });
+
+    const { SendgridProvider } = await import("../providers/sendgrid");
+    const provider = new SendgridProvider({ sanityCheck: true });
+
+    await expect(provider.ready).rejects.toThrow(
+      "Sendgrid credentials rejected with status 401"
+    );
+
+    global.fetch = originalFetch;
+  });
 });

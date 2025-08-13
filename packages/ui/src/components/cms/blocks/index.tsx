@@ -28,6 +28,7 @@ import Tabs from "./Tabs";
 import ImageSlider from "./ImageSlider";
 import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
+import GiftCardBlock from "./GiftCardBlock";
 
 export {
   BlogListing,
@@ -60,6 +61,7 @@ export {
   PricingTable,
   Tabs,
   CollectionList,
+  GiftCardBlock,
 };
 
 export * from "./atoms";

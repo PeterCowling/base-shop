@@ -198,6 +198,12 @@ export interface NewsletterSignupComponent extends PageComponentBase {
   submitLabel?: string;
 }
 
+export interface GiftCardBlockComponent extends PageComponentBase {
+  type: "GiftCardBlock";
+  amounts?: number[];
+  description?: string;
+}
+
 export interface SearchBarComponent extends PageComponentBase {
   type: "SearchBar";
   placeholder?: string;
@@ -319,6 +325,7 @@ export type PageComponent =
   | ImageSliderComponent
   | ContactFormComponent
   | NewsletterSignupComponent
+  | GiftCardBlockComponent
   | SearchBarComponent
   | ContactFormWithMapComponent
   | MapBlockComponent
@@ -432,6 +439,12 @@ const newsletterSignupComponentSchema = baseComponentSchema.extend({
   action: z.string().optional(),
   placeholder: z.string().optional(),
   submitLabel: z.string().optional(),
+});
+
+const giftCardBlockComponentSchema = baseComponentSchema.extend({
+  type: z.literal("GiftCardBlock"),
+  amounts: z.array(z.number()).optional(),
+  description: z.string().optional(),
 });
 
 const searchBarComponentSchema = baseComponentSchema.extend({
@@ -613,6 +626,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     galleryComponentSchema,
     contactFormComponentSchema,
     newsletterSignupComponentSchema,
+    giftCardBlockComponentSchema,
     searchBarComponentSchema,
     contactFormWithMapComponentSchema,
     mapBlockComponentSchema,

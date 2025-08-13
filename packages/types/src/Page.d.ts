@@ -176,6 +176,11 @@ export interface NewsletterSignupComponent extends PageComponentBase {
   placeholder?: string;
   submitLabel?: string;
 }
+export interface GiftCardBlockComponent extends PageComponentBase {
+  type: "GiftCardBlock";
+  amounts?: number[];
+  description?: string;
+}
 export interface SearchBarComponent extends PageComponentBase {
   type: "SearchBar";
   placeholder?: string;
@@ -277,6 +282,7 @@ export type PageComponent =
   | ImageSliderComponent
   | ContactFormComponent
   | NewsletterSignupComponent
+  | GiftCardBlockComponent
   | SearchBarComponent
   | ContactFormWithMapComponent
   | MapBlockComponent

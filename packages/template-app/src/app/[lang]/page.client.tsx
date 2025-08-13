@@ -4,13 +4,9 @@
 import HeroBanner from "@/components/home/HeroBanner";
 import ReviewsCarousel from "@/components/home/ReviewsCarousel";
 import { ValueProps } from "@/components/home/ValueProps";
-import { getStructuredData } from "../../lib/seo";
+import { getStructuredData, serializeJsonLd } from "../../lib/seo";
 
-export default function Home({
-  params,
-}: {
-  params: { lang: string };
-}) {
+export default function Home({ params }: { params: { lang: string } }) {
   const jsonLd = getStructuredData({
     type: "WebPage",
     name: "Home",
@@ -20,7 +16,7 @@ export default function Home({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <HeroBanner />
       <ValueProps />

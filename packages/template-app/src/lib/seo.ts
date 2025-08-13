@@ -17,7 +17,7 @@ const fallback: NextSeoProps = {
 
 export async function getSeo(
   locale: Locale,
-  pageSeo: Partial<NextSeoProps> = {},
+  pageSeo: Partial<NextSeoProps> = {}
 ): Promise<NextSeoProps> {
   const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
   const { getShopSettings } = await import(
@@ -34,7 +34,7 @@ export async function getSeo(
     try {
       canonicalPath = new URL(canonicalOverride).pathname.replace(
         new RegExp(`^/${locale}`),
-        "",
+        ""
       );
     } catch {
       canonicalPath = "";
@@ -183,3 +183,6 @@ export function getStructuredData(input: StructuredDataInput) {
   } as Record<string, unknown>;
 }
 
+export function serializeJsonLd(data: Record<string, unknown>) {
+  return JSON.stringify(data).replace(/</g, "\\u003c");
+}

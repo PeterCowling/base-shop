@@ -126,4 +126,21 @@ describe("scheduler", () => {
     expect(memory[shop][0].sentAt).toBeDefined();
     expect(sendCampaignEmailMock).toHaveBeenCalled();
   });
+
+  it("adds a cache-busting token to the tracking pixel URL", async () => {
+    const now = 123456789;
+    jest.spyOn(Date, "now").mockReturnValue(now);
+    const { createCampaign, sendDueCampaigns } = await import("../scheduler");
+    await createCampaign({
+      shop,
+      recipients: ["user@example.com"],
+      subject: "Hello",
+      body: "<p>Hello</p>",
+      sendAt: new Date(now - 1000).toISOString(),
+    });
+    await sendDueCampaigns();
+    const html = sendCampaignEmailMock.mock.calls[0][0].html as string;
+    expect(html).toContain(`&t=${now}`);
+    (Date.now as jest.Mock).mockRestore();
+  });
 });

@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import sanitizeHtml from "sanitize-html";
 import { coreEnv } from "@acme/config/env/core";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
@@ -13,6 +14,8 @@ export interface CampaignOptions {
   html: string;
   /** Optional plain-text body */
   text?: string;
+  /** Skip HTML sanitization for trusted templates */
+  skipSanitization?: boolean;
 }
 
 const providers: Record<string, CampaignProvider> = {
@@ -27,9 +30,17 @@ const providers: Record<string, CampaignProvider> = {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
+  const { skipSanitization, ...emailOptions } = options;
+  const sanitizedOptions = {
+    ...emailOptions,
+    html: skipSanitization
+      ? emailOptions.html
+      : sanitizeHtml(emailOptions.html),
+  };
+
   const provider = providers[coreEnv.EMAIL_PROVIDER ?? ""];
   if (provider) {
-    await provider.send(options);
+    await provider.send(sanitizedOptions);
     return;
   }
 
@@ -39,9 +50,6 @@ export async function sendCampaignEmail(
 
   await transport.sendMail({
     from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
-    to: options.to,
-    subject: options.subject,
-    html: options.html,
-    text: options.text,
+    ...sanitizedOptions,
   });
 }

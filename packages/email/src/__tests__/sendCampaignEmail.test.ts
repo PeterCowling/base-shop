@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import sanitizeHtml from "sanitize-html";
 
 jest.mock("nodemailer", () => ({
   __esModule: true,
@@ -13,8 +13,6 @@ jest.mock("../providers/resend", () => ({
   ResendProvider: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
 }));
 
-const createTransportMock = nodemailer.createTransport as jest.Mock;
-
 describe("sendCampaignEmail", () => {
   afterEach(() => {
     jest.resetAllMocks();
@@ -28,12 +26,13 @@ describe("sendCampaignEmail", () => {
 
   it("uses SMTP_URL and CAMPAIGN_FROM env vars and forwards options", async () => {
     const sendMail = jest.fn().mockResolvedValue(undefined);
-    createTransportMock.mockReturnValue({ sendMail });
+    const { default: nodemailer } = require("nodemailer");
+    (nodemailer.createTransport as jest.Mock).mockReturnValue({ sendMail });
 
     process.env.SMTP_URL = "smtp://test";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -41,7 +40,7 @@ describe("sendCampaignEmail", () => {
       text: "Text body",
     });
 
-    expect(createTransportMock).toHaveBeenCalledWith({ url: "smtp://test" });
+    expect(nodemailer.createTransport).toHaveBeenCalledWith({ url: "smtp://test" });
     expect(sendMail).toHaveBeenCalledWith({
       from: "campaign@example.com",
       to: "to@example.com",
@@ -60,7 +59,7 @@ describe("sendCampaignEmail", () => {
     process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -84,7 +83,7 @@ describe("sendCampaignEmail", () => {
     process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -96,6 +95,58 @@ describe("sendCampaignEmail", () => {
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
+    });
+  });
+
+  it("sanitizes HTML by default", async () => {
+    const sendMail = jest.fn().mockResolvedValue(undefined);
+    const { default: nodemailer } = require("nodemailer");
+    (nodemailer.createTransport as jest.Mock).mockReturnValue({ sendMail });
+
+    process.env.SMTP_URL = "smtp://test";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const maliciousHtml =
+      '<div onclick="evil()">Hello<script>alert(1)</script></div>';
+
+    const { sendCampaignEmail } = await import("../send");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: maliciousHtml,
+    });
+
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: "to@example.com",
+      subject: "Subject",
+      html: sanitizeHtml(maliciousHtml),
+    });
+  });
+
+  it("allows bypassing sanitization for trusted templates", async () => {
+    const sendMail = jest.fn().mockResolvedValue(undefined);
+    const { default: nodemailer } = require("nodemailer");
+    (nodemailer.createTransport as jest.Mock).mockReturnValue({ sendMail });
+
+    process.env.SMTP_URL = "smtp://test";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const maliciousHtml = '<img src=x onerror="alert(1)">';
+
+    const { sendCampaignEmail } = await import("../send");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: maliciousHtml,
+      skipSanitization: true,
+    });
+
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: "to@example.com",
+      subject: "Subject",
+      html: maliciousHtml,
     });
   });
 });

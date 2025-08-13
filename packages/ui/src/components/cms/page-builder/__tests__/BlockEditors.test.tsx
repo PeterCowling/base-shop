@@ -10,6 +10,7 @@ import AnnouncementBarEditor from "../AnnouncementBarEditor";
 import SocialFeedEditor from "../SocialFeedEditor";
 import NewsletterSignupEditor from "../NewsletterSignupEditor";
 import StoreLocatorBlockEditor from "../StoreLocatorBlockEditor";
+import FeaturedProductEditor from "../FeaturedProductEditor";
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
@@ -86,6 +87,12 @@ describe("block editors", () => {
       StoreLocatorBlockEditor,
       { type: "StoreLocatorBlock", locations: [{ lat: "", lng: "", label: "" }] },
       "lat",
+    ],
+    [
+      "FeaturedProductEditor",
+      FeaturedProductEditor,
+      { type: "FeaturedProduct", sku: "" },
+      "sku",
     ],
   ];
 

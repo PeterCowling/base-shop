@@ -5,7 +5,7 @@ const PROFILE_STORE: Record<string, any> = {};
 jest.mock("@acme/platform-core/users", () => ({
   __esModule: true,
   createUser: jest.fn(async ({ id, email, passwordHash }) => {
-    USER_STORE[id] = { id, email, passwordHash };
+    USER_STORE[id] = { id, email, passwordHash, emailVerified: false };
   }),
   getUserById: jest.fn(async (id: string) => USER_STORE[id] ?? null),
   getUserByEmail: jest.fn(async (email: string) =>
@@ -18,6 +18,7 @@ const getCustomerSession = jest.fn();
 jest.mock("@auth", () => ({
   validateCsrfToken: jest.fn().mockResolvedValue(true),
   getCustomerSession,
+  hasPermission: jest.fn().mockReturnValue(true),
 }));
 
 jest.mock("@upstash/redis", () => ({

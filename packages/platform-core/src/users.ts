@@ -8,6 +8,7 @@ export interface User {
   passwordHash: string;
   role: string;
   resetToken: string | null;
+  emailVerified: boolean;
 }
 
 export async function getUserById(id: string): Promise<User | null> {
@@ -30,7 +31,7 @@ export async function createUser({
   role?: string;
 }): Promise<User> {
   return prisma.user.create({
-    data: { id, email, passwordHash, role },
+    data: { id, email, passwordHash, role, emailVerified: false },
   });
 }
 
@@ -52,4 +53,11 @@ export async function updatePassword(
     where: { id },
     data: { passwordHash, resetToken: null },
   });
+}
+
+export async function setEmailVerified(
+  id: string,
+  verified: boolean,
+): Promise<void> {
+  await prisma.user.update({ where: { id }, data: { emailVerified: verified } });
 }

@@ -3,7 +3,7 @@ import "@acme/lib/initZod";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import crypto from "crypto";
-import { getUserById } from "@acme/platform-core/users";
+import { getUserById, setEmailVerified } from "@acme/platform-core/users";
 import { validateCsrfToken } from "@auth";
 import { parseJsonBody } from "@shared-utils";
 
@@ -32,6 +32,8 @@ export async function POST(req: Request) {
   const user = await getUserById(id);
   if (!user)
     return NextResponse.json({ error: "User not found" }, { status: 404 });
+
+  await setEmailVerified(id, true);
 
   return NextResponse.json({ ok: true });
 }

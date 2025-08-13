@@ -39,7 +39,11 @@ test("allows change with permission", async () => {
   (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "c1", role: "customer" });
   (validateCsrfToken as jest.Mock).mockResolvedValue(true);
   const hash = await bcrypt.hash("OldPass1", 10);
-  (getUserById as jest.Mock).mockResolvedValue({ id: "c1", passwordHash: hash });
+  (getUserById as jest.Mock).mockResolvedValue({
+    id: "c1",
+    passwordHash: hash,
+    emailVerified: true,
+  });
   const res = await POST(createRequest({ currentPassword: "OldPass1", newPassword: "NewPass1A" }));
   expect(res.status).toBe(200);
   expect(updatePassword).toHaveBeenCalled();

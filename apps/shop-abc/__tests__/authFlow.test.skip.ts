@@ -42,24 +42,32 @@ jest.mock("@acme/platform-core/users", () => ({
         passwordHash,
         role,
         resetToken: null,
+        resetTokenExpiresAt: null,
         emailVerified: false,
       };
       store[id] = user;
       return user;
     },
   ),
-  setResetToken: jest.fn(async (id: string, token: string | null) => {
-    if (store[id]) {
-      store[id].resetToken = token;
-    }
-  }),
+  setResetToken: jest.fn(
+    async (id: string, token: string | null, expiresAt: Date | null) => {
+      if (store[id]) {
+        store[id].resetToken = token;
+        store[id].resetTokenExpiresAt = expiresAt;
+      }
+    },
+  ),
   getUserByResetToken: jest.fn(async (token: string) =>
-    Object.values(store).find((u: any) => u.resetToken === token) ?? null,
+    Object.values(store).find(
+      (u: any) =>
+        u.resetToken === token &&
+        u.resetTokenExpiresAt &&
+        u.resetTokenExpiresAt > new Date(),
+    ) ?? null,
   ),
   updatePassword: jest.fn(async (id: string, hash: string) => {
     if (store[id]) {
       store[id].passwordHash = hash;
-      store[id].resetToken = null;
     }
   }),
   verifyEmail: jest.fn(async (id: string) => {
@@ -77,6 +85,9 @@ let verifyPOST: typeof import("../src/app/api/account/verify/route").POST;
 
 beforeAll(async () => {
   process.env.SESSION_SECRET = "test-secret";
+  process.env.NEXTAUTH_SECRET = "test-secret";
+  process.env.STRIPE_SECRET_KEY = "sk";
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
   ({ POST: registerPOST } = await import("../src/app/register/route"));
   ({ POST: loginPOST } = await import("../src/app/login/route"));
   ({ POST: requestPOST } = await import(
@@ -148,19 +159,19 @@ describe("auth flows", () => {
     expect(res.status).toBe(200);
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
-  const tokenEmail = sendEmail.mock.calls[1][2] as string;
-  const token = tokenEmail.replace(
-    "Reset your password: /account/reset?token=",
-    "",
-  );
+    const tokenEmail = sendEmail.mock.calls[1][2] as string;
+    const token = tokenEmail.replace(
+      "Reset your password: /account/reset?token=",
+      "",
+    );
 
-  res = await completePOST(
-    makeRequest({
+    res = await completePOST(
+      makeRequest({
         token,
         password: "NewStr0ng1",
-      })
-  );
-  expect(res.status).toBe(200);
+      }),
+    );
+    expect(res.status).toBe(200);
 
     res = await loginPOST(
       makeRequest(
@@ -195,12 +206,41 @@ describe("auth flows", () => {
       "",
     );
 
-  const res = await completePOST(
-    makeRequest({
+    const res = await completePOST(
+      makeRequest({
         token,
         password: "weakpass",
-      })
-  );
-  expect(res.status).toBe(400);
+      }),
+    );
+    expect(res.status).toBe(400);
+  });
+
+  it("rejects expired reset tokens", async () => {
+    await registerPOST(
+      makeRequest({
+        customerId: "cust1",
+        email: "test@example.com",
+        password: "Str0ngPass1",
+      }),
+    );
+
+    await requestPOST(makeRequest({ email: "test@example.com" }));
+    const tokenEmail = sendEmail.mock.calls[1][2] as string;
+    const token = tokenEmail.replace(
+      "Reset your password: /account/reset?token=",
+      "",
+    );
+
+    // simulate expiry
+    const user = Object.values(store)[0];
+    user.resetTokenExpiresAt = new Date(Date.now() - 60 * 1000);
+
+    const res = await completePOST(
+      makeRequest({
+        token,
+        password: "NewStr0ng1",
+      }),
+    );
+    expect(res.status).toBe(400);
   });
 });

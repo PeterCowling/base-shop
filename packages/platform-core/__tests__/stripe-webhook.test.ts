@@ -47,4 +47,43 @@ describe("handleStripeWebhook", () => {
     expect(updateRisk).toHaveBeenCalledWith("test", "ch_2", "highest", 90, true);
     expect(markRefunded).toHaveBeenCalledWith("test", "ch_2");
   });
+
+  test("review.opened flags order", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const event: Stripe.Event = {
+      type: "review.opened",
+      data: { object: { charge: "ch_3" } },
+    } as any;
+    await handleStripeWebhook("test", event);
+    expect(updateRisk).toHaveBeenCalledWith(
+      "test",
+      "ch_3",
+      undefined,
+      undefined,
+      true
+    );
+  });
+
+  test("review.closed clears flag and updates risk", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const event: Stripe.Event = {
+      type: "review.closed",
+      data: {
+        object: {
+          charge: {
+            id: "ch_4",
+            outcome: { risk_level: "not_assessed", risk_score: 10 },
+          },
+        },
+      },
+    } as any;
+    await handleStripeWebhook("test", event);
+    expect(updateRisk).toHaveBeenCalledWith(
+      "test",
+      "ch_4",
+      "not_assessed",
+      10,
+      false
+    );
+  });
 });

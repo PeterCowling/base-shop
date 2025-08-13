@@ -51,3 +51,7 @@ setCampaignStore(memoryStore);
 ```
 
 This allows persisting campaigns in a database or any other backend.
+
+## Unsubscribe
+
+Each email includes a per-recipient unsubscribe link. When a recipient clicks the link, a request is sent to `/api/marketing/email/unsubscribe` which records an `email_unsubscribe` event. Unsubscribed addresses are automatically skipped by future campaigns.

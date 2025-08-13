@@ -1,6 +1,7 @@
 import { sendCampaignEmail } from "./send";
 import { resolveSegment } from "./segments";
 import { trackEvent } from "@platform-core/analytics";
+import { listEvents } from "@platform-core/repositories/analytics.server";
 import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";
@@ -23,15 +24,49 @@ function trackedBody(shop: string, id: string, body: string): string {
   );
 }
 
+function unsubscribeUrl(shop: string, campaign: string, recipient: string): string {
+  const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";
+  return `${base}/api/marketing/email/unsubscribe?shop=${encodeURIComponent(
+    shop,
+  )}&campaign=${encodeURIComponent(campaign)}&email=${encodeURIComponent(
+    recipient,
+  )}`;
+}
+
+async function filterUnsubscribed(
+  shop: string,
+  recipients: string[],
+): Promise<string[]> {
+  const events = await listEvents(shop).catch(() => []);
+  const unsub = new Set(
+    events
+      .filter((e: any) => e.type === "email_unsubscribe" && e.email)
+      .map((e: any) => e.email),
+  );
+  return recipients.filter((r) => !unsub.has(r));
+}
+
 async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   shop = validateShopName(shop);
-  const html = trackedBody(shop, c.id, c.body);
+  const baseHtml = trackedBody(shop, c.id, c.body);
   let recipients = c.recipients;
   if (c.segment) {
     recipients = await resolveSegment(shop, c.segment);
     c.recipients = recipients;
   }
+  recipients = await filterUnsubscribed(shop, recipients);
+  const hasPlaceholder = baseHtml.includes("%%UNSUBSCRIBE%%");
   for (const r of recipients) {
+    const url = unsubscribeUrl(shop, c.id, r);
+    let html = baseHtml;
+    if (hasPlaceholder) {
+      html = baseHtml.replace(
+        /%%UNSUBSCRIBE%%/g,
+        `<a href="${url}">Unsubscribe</a>`,
+      );
+    } else {
+      html = `${baseHtml}<p><a href="${url}">Unsubscribe</a></p>`;
+    }
     await sendCampaignEmail({
       to: r,
       subject: c.subject,

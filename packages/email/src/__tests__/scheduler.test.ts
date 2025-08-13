@@ -20,8 +20,14 @@ jest.mock("@platform-core/analytics", () => ({
   __esModule: true,
   trackEvent: jest.fn().mockResolvedValue(undefined),
 }));
+jest.mock("@platform-core/repositories/analytics.server", () => ({
+  __esModule: true,
+  listEvents: jest.fn().mockResolvedValue([]),
+}));
 const { sendCampaignEmail } = require("../send");
 const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
+const { listEvents } = require("@platform-core/repositories/analytics.server");
+const listEventsMock = listEvents as jest.Mock;
 
 describe("scheduler", () => {
   const shop = "schedulertest";
@@ -32,6 +38,7 @@ describe("scheduler", () => {
     setCampaignStore(fsCampaignStore);
     await fs.rm(shopDir, { recursive: true, force: true });
     await fs.mkdir(shopDir, { recursive: true });
+    listEventsMock.mockResolvedValue([]);
   });
 
   it("sends due campaigns and marks them as sent", async () => {
@@ -125,5 +132,36 @@ describe("scheduler", () => {
     await sendDueCampaigns();
     expect(memory[shop][0].sentAt).toBeDefined();
     expect(sendCampaignEmailMock).toHaveBeenCalled();
+  });
+
+  it("skips unsubscribed recipients and personalizes unsubscribe links", async () => {
+    const past = new Date(Date.now() - 1000).toISOString();
+    const campaigns = [
+      {
+        id: "c1",
+        recipients: ["stay@example.com", "leave@example.com"],
+        subject: "Hi",
+        body: "<p>Hello %%UNSUBSCRIBE%%</p>",
+        sendAt: past,
+      },
+    ];
+    await fs.writeFile(
+      path.join(shopDir, "campaigns.json"),
+      JSON.stringify(campaigns, null, 2),
+      "utf8",
+    );
+
+    listEventsMock.mockResolvedValue([
+      { type: "email_unsubscribe", email: "leave@example.com" },
+    ]);
+
+    const { sendDueCampaigns } = await import("../scheduler");
+    await sendDueCampaigns();
+
+    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
+    const call = sendCampaignEmailMock.mock.calls[0][0];
+    expect(call.to).toBe("stay@example.com");
+    expect(call.html).toContain("unsubscribe");
+    expect(call.html).toContain(encodeURIComponent("stay@example.com"));
   });
 });

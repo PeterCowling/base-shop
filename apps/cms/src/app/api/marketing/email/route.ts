@@ -60,9 +60,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           content: React.createElement("div", {
             dangerouslySetInnerHTML: { __html: body },
           }),
+          footer: React.createElement("p", null, "%%UNSUBSCRIBE%%"),
         })
       );
     }
+  }
+  if (!templateId) {
+    html = `${body}<p>%%UNSUBSCRIBE%%</p>`;
   }
   try {
     const id = await createCampaign({

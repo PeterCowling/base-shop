@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Sidebar from "../components/cms/Sidebar.client";
+import Sidebar from "../src/components/cms/Sidebar.client";
 
 jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
@@ -26,5 +26,23 @@ describe("Sidebar", () => {
 
     render(<Sidebar />);
     expect(screen.queryByText("Shops")).toBeNull();
+  });
+
+  it("shows Theme link for shop owners", () => {
+    mockPathname.mockReturnValue("/cms/shop/abc");
+
+    render(<Sidebar role="ShopAdmin" />);
+    const theme = screen.getByText("Theme");
+    expect(theme.closest("a")).toHaveAttribute(
+      "href",
+      "/cms/shop/abc/themes",
+    );
+  });
+
+  it("hides Theme link for viewers", () => {
+    mockPathname.mockReturnValue("/cms/shop/abc");
+
+    render(<Sidebar role="viewer" />);
+    expect(screen.queryByText("Theme")).toBeNull();
   });
 });

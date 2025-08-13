@@ -4,6 +4,7 @@ jest.mock("@auth", () => ({
   getCustomerSession: jest.fn(),
   listSessions: jest.fn(),
   revokeSession: jest.fn(),
+  hasPermission: jest.fn(),
 }));
 
 jest.mock("next/cache", () => ({
@@ -19,6 +20,7 @@ import {
   getCustomerSession,
   listSessions,
   revokeSession,
+  hasPermission,
 } from "@auth";
 import { revalidatePath } from "next/cache";
 import SessionsPage, { revoke } from "../src/components/account/Sessions";
@@ -39,8 +41,9 @@ describe("SessionsPage", () => {
   });
 
   it("shows empty state when no sessions", async () => {
-    const session = { customerId: "cust1", role: "user" };
+    const session = { customerId: "cust1", role: "customer" };
     (getCustomerSession as jest.Mock).mockResolvedValue(session);
+    (hasPermission as jest.Mock).mockReturnValue(true);
     (listSessions as jest.Mock).mockResolvedValue([]);
     const element = await SessionsPage({});
     expect(listSessions).toHaveBeenCalledWith(session.customerId);
@@ -49,17 +52,28 @@ describe("SessionsPage", () => {
   });
 
   it("lists active sessions", async () => {
-    const session = { customerId: "cust1", role: "user" };
+    const session = { customerId: "cust1", role: "customer" };
     const sessions = [
       { sessionId: "s1", userAgent: "ua1", createdAt: new Date() },
       { sessionId: "s2", userAgent: "ua2", createdAt: new Date() },
     ];
     (getCustomerSession as jest.Mock).mockResolvedValue(session);
+    (hasPermission as jest.Mock).mockReturnValue(true);
     (listSessions as jest.Mock).mockResolvedValue(sessions);
     const element = await SessionsPage({});
     const list = element.props.children[1];
     expect(list.type).toBe("ul");
     expect(list.props.children).toHaveLength(2);
+  });
+
+  it("hides sessions without permission", async () => {
+    const session = { customerId: "cust1", role: "viewer" };
+    (getCustomerSession as jest.Mock).mockResolvedValue(session);
+    (hasPermission as jest.Mock).mockReturnValue(false);
+    const element = await SessionsPage({});
+    expect(listSessions).not.toHaveBeenCalled();
+    expect(element.type).toBe("p");
+    expect(element.props.children).toBe("Not authorized.");
   });
 });
 
@@ -69,6 +83,10 @@ describe("revoke", () => {
   });
 
   it("revokes a session", async () => {
+    const session = { customerId: "cust1", role: "customer" };
+    (getCustomerSession as jest.Mock).mockResolvedValue(session);
+    (hasPermission as jest.Mock).mockReturnValue(true);
+    (listSessions as jest.Mock).mockResolvedValue([{ sessionId: "s1" }]);
     await revoke("s1");
     expect(revokeSession).toHaveBeenCalledWith("s1");
     expect(revalidatePath).toHaveBeenCalledWith("/account/sessions");

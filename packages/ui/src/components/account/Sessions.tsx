@@ -15,10 +15,10 @@ export const metadata = { title: "Sessions" };
 
 export async function revoke(id: string) {
   "use server";
-  const { getCustomerSession, listSessions } = await import("@auth");
+  const { getCustomerSession, listSessions, hasPermission } = await import("@auth");
   try {
     const session = await getCustomerSession();
-    if (!session) {
+    if (!session || !hasPermission(session.role, "manage_profile")) {
       return { success: false, error: "Failed to revoke session." };
     }
     const sessions = await listSessions(session.customerId);
@@ -37,11 +37,14 @@ export default async function SessionsPage({
   title = "Sessions",
   callbackUrl = "/account/sessions",
 }: SessionsPageProps = {}) {
-  const { getCustomerSession, listSessions } = await import("@auth");
+  const { getCustomerSession, listSessions, hasPermission } = await import("@auth");
   const session = await getCustomerSession();
   if (!session) {
     redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
     return null as never;
+  }
+  if (!hasPermission(session.role, "manage_profile")) {
+    return <p className="p-6">Not authorized.</p>;
   }
   const sessions = await listSessions(session.customerId);
   if (!sessions.length) return <p className="p-6">No active sessions.</p>;

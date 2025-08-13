@@ -13,10 +13,15 @@ jest.mock("@auth/mfa", () => ({
 jest.mock("../src/middleware", () => ({
   checkLoginRateLimit: jest.fn(async () => null),
   clearLoginAttempts: jest.fn(),
+  checkRegistrationRateLimit: jest.fn(async () => null),
 }));
 
 jest.mock("@acme/email", () => ({
   sendEmail: jest.fn(),
+}));
+
+jest.mock("@acme/platform-core/customerProfiles", () => ({
+  updateCustomerProfile: jest.fn(),
 }));
 
 const store: Record<string, any> = {};
@@ -37,23 +42,33 @@ jest.mock("@acme/platform-core/users", () => ({
         passwordHash,
         role,
         resetToken: null,
+        resetTokenExpiresAt: null,
       };
       store[id] = user;
       return user;
     },
   ),
-  setResetToken: jest.fn(async (id: string, token: string | null) => {
-    if (store[id]) {
-      store[id].resetToken = token;
-    }
-  }),
+  setResetToken: jest.fn(
+    async (id: string, token: string | null, expiresAt: Date | null) => {
+      if (store[id]) {
+        store[id].resetToken = token;
+        store[id].resetTokenExpiresAt = expiresAt;
+      }
+    },
+  ),
   getUserByResetToken: jest.fn(async (token: string) =>
-    Object.values(store).find((u: any) => u.resetToken === token) ?? null,
+    Object.values(store).find(
+      (u: any) =>
+        u.resetToken === token &&
+        u.resetTokenExpiresAt &&
+        u.resetTokenExpiresAt > new Date(),
+    ) ?? null,
   ),
   updatePassword: jest.fn(async (id: string, hash: string) => {
     if (store[id]) {
       store[id].passwordHash = hash;
       store[id].resetToken = null;
+      store[id].resetTokenExpiresAt = null;
     }
   }),
 }));
@@ -124,7 +139,6 @@ describe("auth flows", () => {
 
     res = await completePOST(
       makeRequest({
-        customerId: "cust1",
         token,
         password: "NewStr0ng1",
       })
@@ -166,9 +180,36 @@ describe("auth flows", () => {
 
     const res = await completePOST(
       makeRequest({
-        customerId: "cust1",
         token,
         password: "weakpass",
+      })
+    );
+    expect(res.status).toBe(400);
+  });
+
+  it("rejects expired tokens during reset", async () => {
+    await registerPOST(
+      makeRequest({
+        customerId: "cust1",
+        email: "test@example.com",
+        password: "Str0ngPass1",
+      })
+    );
+
+    await requestPOST(makeRequest({ email: "test@example.com" }));
+    const tokenEmail = sendEmail.mock.calls[1][2] as string;
+    const token = tokenEmail.replace(
+      "Reset your password: /account/reset?token=",
+      "",
+    );
+
+    // Expire the token
+    store["cust1"].resetTokenExpiresAt = new Date(Date.now() - 60 * 60 * 1000);
+
+    const res = await completePOST(
+      makeRequest({
+        token,
+        password: "NewStr0ng1",
       })
     );
     expect(res.status).toBe(400);

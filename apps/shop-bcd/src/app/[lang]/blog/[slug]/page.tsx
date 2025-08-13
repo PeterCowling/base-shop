@@ -12,6 +12,9 @@ export default async function BlogPostPage({
   if (!post) notFound();
   return (
     <article className="space-y-4">
+      {shop.editorialBlog?.enabled && shop.editorialBlog.promoteSchedule && (
+        <p className="text-sm font-medium">Daily Edit</p>
+      )}
       <h1 className="text-2xl font-bold">{post.title}</h1>
       {post.excerpt && <p className="text-muted">{post.excerpt}</p>}
       {Array.isArray(post.body) ? (

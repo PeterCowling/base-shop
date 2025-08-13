@@ -7,6 +7,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
 import { resolveDataRoot } from "@platform-core/dataRoot";
+import { getShopById } from "@platform-core/src/repositories/shop.server";
 import { setupSanityBlog } from "@cms/actions/setupSanityBlog";
 import { parseJsonBody } from "@shared-utils";
 
@@ -36,11 +37,16 @@ export async function POST(
       data.SANITY_DATASET &&
       data.SANITY_TOKEN
     ) {
-      await setupSanityBlog({
-        projectId: data.SANITY_PROJECT_ID,
-        dataset: data.SANITY_DATASET,
-        token: data.SANITY_TOKEN,
-      }).catch((err) => {
+      const shop = await getShopById(shopId).catch(() => undefined);
+      await setupSanityBlog(
+        {
+          projectId: data.SANITY_PROJECT_ID,
+          dataset: data.SANITY_DATASET,
+          token: data.SANITY_TOKEN,
+        },
+        "public",
+        shop?.editorialBlog,
+      ).catch((err) => {
         console.error("[env] failed to setup Sanity blog", err);
       });
     }

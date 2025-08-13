@@ -27,9 +27,14 @@ interface Result {
 export async function setupSanityBlog(
   creds: SanityCredentials,
   aclMode: "public" | "private" = "public",
+  editorial?: { enabled?: boolean; promoteSchedule?: string },
 ): Promise<Result> {
   "use server";
   await ensureAuthorized();
+
+  if (editorial && editorial.enabled === false) {
+    return { success: true };
+  }
 
   const { projectId, dataset, token } = creds;
 
@@ -176,6 +181,10 @@ export async function setupSanityBlog(
       };
     }
 
+    if (editorial?.promoteSchedule) {
+      scheduleFrontPagePromotion(editorial.promoteSchedule);
+    }
+
     return { success: true };
   } catch (err) {
     console.error("[setupSanityBlog]", err);
@@ -188,3 +197,15 @@ export async function setupSanityBlog(
 }
 
 export type { SanityCredentials };
+
+function scheduleFrontPagePromotion(schedule: string) {
+  const delay = new Date(schedule).getTime() - Date.now();
+  if (delay > 0) {
+    setTimeout(() => {
+      console.log(
+        "[setupSanityBlog] front-page promotion triggered",
+        schedule,
+      );
+    }, delay);
+  }
+}

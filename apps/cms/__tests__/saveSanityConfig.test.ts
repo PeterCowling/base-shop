@@ -92,6 +92,7 @@ describe("saveSanityConfig", () => {
         token: "t",
       },
       "public",
+      undefined,
     );
     expect(setSanityConfig).toHaveBeenCalledWith({ id: "shop" }, {
       projectId: "p",

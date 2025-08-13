@@ -1,6 +1,6 @@
 // apps/cms/src/actions/blog.server.ts
 
-import { getSanityConfig } from "@platform-core/src/shops";
+import { getSanityConfig, getEditorialBlog } from "@platform-core/src/shops";
 import { getShopById } from "@platform-core/src/repositories/shop.server";
 import { ensureAuthorized } from "./common/auth";
 import {
@@ -9,6 +9,7 @@ import {
   slugExists,
   type SanityConfig,
 } from "@acme/plugin-sanity";
+import type { EditorialBlogConfig } from "@acme/types";
 
 function collectProductSlugs(content: unknown): string[] {
   const slugs = new Set<string>();
@@ -62,18 +63,24 @@ interface SanityPost {
   author?: string;
   categories?: string[];
 }
-async function getConfig(shopId: string): Promise<SanityConfig> {
+async function getConfig(
+  shopId: string,
+): Promise<{ config: SanityConfig; editorial?: EditorialBlogConfig }> {
   const shop = await getShopById(shopId);
+  const editorial = getEditorialBlog(shop);
+  if (!editorial?.enabled) {
+    throw new Error(`Editorial blog disabled for shop ${shopId}`);
+  }
   const sanity = getSanityConfig(shop);
   if (!sanity) {
     throw new Error(`Missing Sanity config for shop ${shopId}`);
   }
-  return sanity;
+  return { config: sanity, editorial };
 }
 
 export async function getPosts(shopId: string): Promise<SanityPost[]> {
   await ensureAuthorized();
-  const config = await getConfig(shopId);
+  const { config } = await getConfig(shopId);
   const posts = await query<SanityPost[]>(
     config,
     '*[_type=="post"]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt,mainImage,author,categories}',
@@ -86,7 +93,7 @@ export async function getPost(
   id: string
 ): Promise<SanityPost | null> {
   await ensureAuthorized();
-  const config = await getConfig(shopId);
+  const { config } = await getConfig(shopId);
   const post = await query<SanityPost | null>(
     config,
     `*[_type=="post" && _id=="${id}"][0]{_id,title,body,published,publishedAt,"slug":slug.current,excerpt,mainImage,author,categories}`,
@@ -101,7 +108,7 @@ export async function createPost(
 ): Promise<{ message?: string; error?: string; id?: string }> {
   "use server";
   await ensureAuthorized();
-  const config = await getConfig(shopId);
+  const { config } = await getConfig(shopId);
   const title = String(formData.get("title") ?? "");
   const content = String(formData.get("content") ?? "[]");
   let body: unknown = [];
@@ -167,7 +174,7 @@ export async function updatePost(
 ): Promise<{ message?: string; error?: string }> {
   "use server";
   await ensureAuthorized();
-  const config = await getConfig(shopId);
+  const { config } = await getConfig(shopId);
   const id = String(formData.get("id") ?? "");
   const title = String(formData.get("title") ?? "");
   const content = String(formData.get("content") ?? "[]");
@@ -234,7 +241,7 @@ export async function publishPost(
 ): Promise<{ message?: string; error?: string }> {
   "use server";
   await ensureAuthorized();
-  const config = await getConfig(shopId);
+  const { config, editorial } = await getConfig(shopId);
   const publishedAtInput = formData?.get("publishedAt");
   const publishedAt = publishedAtInput
     ? new Date(String(publishedAtInput)).toISOString()
@@ -243,6 +250,9 @@ export async function publishPost(
     await mutate(config, {
       mutations: [{ patch: { id, set: { published: true, publishedAt } } }],
     });
+    if (editorial?.promoteSchedule) {
+      scheduleFrontPagePromotion(editorial.promoteSchedule);
+    }
     return { message: "Post published" };
   } catch (err) {
     console.error("Failed to publish post", err);
@@ -258,7 +268,7 @@ export async function unpublishPost(
 ): Promise<{ message?: string; error?: string }> {
   "use server";
   await ensureAuthorized();
-  const config = await getConfig(shopId);
+  const { config } = await getConfig(shopId);
   try {
     await mutate(config, {
       mutations: [{ patch: { id, set: { published: false }, unset: ["publishedAt"] } }],
@@ -276,7 +286,7 @@ export async function deletePost(
 ): Promise<{ message?: string; error?: string }> {
   "use server";
   await ensureAuthorized();
-  const config = await getConfig(shopId);
+  const { config } = await getConfig(shopId);
   try {
     await mutate(config, { mutations: [{ delete: { id } }] });
     return { message: "Post deleted" };
@@ -287,3 +297,12 @@ export async function deletePost(
 }
 
 export type { SanityPost };
+
+function scheduleFrontPagePromotion(schedule: string) {
+  const delay = new Date(schedule).getTime() - Date.now();
+  if (delay > 0) {
+    setTimeout(() => {
+      console.log("[blog] front-page promotion triggered", schedule);
+    }, delay);
+  }
+}

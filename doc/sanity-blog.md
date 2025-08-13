@@ -26,3 +26,13 @@ When setting up the connection the CMS seeds a minimal schema. Posts include a `
 - Deleting a post removes it from Sanity.
 
 The plugin uses the official [`@sanity/client`](https://www.sanity.io/docs/js-client) to interact with the API. All calls are server‑side so tokens are never exposed to browsers.
+
+## Editorial Daily Edit
+
+Shops can optionally enable an editorial blog that features a scheduled "Daily Edit" on the storefront.
+
+1. In the shop settings set `editorialBlog.enabled` to `true`.
+2. Provide an optional `editorialBlog.promoteSchedule` ISO timestamp to schedule front‑page promotion.
+3. When enabled, the CMS only connects to Sanity and schedules promotion if the editorial option is active.
+
+Storefront blog pages automatically highlight the Daily Edit when these settings are configured.

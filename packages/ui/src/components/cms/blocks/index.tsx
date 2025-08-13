@@ -80,12 +80,14 @@ export * from "./atoms";
 export * from "./molecules";
 export * from "./organisms";
 export * from "./layout";
+export * from "./overlays";
 
 import { atomRegistry } from "./atoms";
 import { moleculeRegistry } from "./molecules";
 import { organismRegistry } from "./organisms";
 import { containerRegistry } from "./containers";
 import { layoutRegistry } from "./layout";
+import { overlayRegistry } from "./overlays";
 
 // Re-export individual registries so consumers can access them directly.
 export {
@@ -94,6 +96,7 @@ export {
   organismRegistry,
   containerRegistry,
   layoutRegistry,
+  overlayRegistry,
 };
 
 export const blockRegistry = {
@@ -102,6 +105,7 @@ export const blockRegistry = {
   ...atomRegistry,
   ...moleculeRegistry,
   ...organismRegistry,
+  ...overlayRegistry,
 } as const;
 
 export type BlockType = keyof typeof blockRegistry;

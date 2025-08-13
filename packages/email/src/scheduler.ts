@@ -1,6 +1,6 @@
 import { sendCampaignEmail } from "./send";
 import { resolveSegment } from "./segments";
-import { trackEvent } from "@platform-core/analytics";
+import { emitSend } from "./hooks";
 import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";
@@ -37,7 +37,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
       subject: c.subject,
       html,
     });
-    await trackEvent(shop, { type: "email_sent", campaign: c.id });
+    await emitSend({ shop, campaign: c.id });
   }
   c.sentAt = new Date().toISOString();
 }

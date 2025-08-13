@@ -11,3 +11,4 @@ export {
 } from "./scheduler";
 export { setCampaignStore, fsCampaignStore } from "./storage";
 export type { CampaignStore, Campaign } from "./storage";
+export { onSend, onOpen, onClick, emitSend, emitOpen, emitClick } from "./hooks";

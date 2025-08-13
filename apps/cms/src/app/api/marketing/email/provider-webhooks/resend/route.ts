@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { trackEvent } from "@platform-core/analytics";
 import { mapResendEvent } from "@acme/email/analytics";
+import { emitOpen, emitClick } from "@acme/email";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
@@ -26,7 +27,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
   const mapped = mapResendEvent(event);
   if (mapped) {
-    await trackEvent(shop, mapped);
+    if (mapped.type === "email_open" && mapped.campaign) {
+      await emitOpen({ shop, campaign: mapped.campaign });
+    } else if (mapped.type === "email_click" && mapped.campaign) {
+      await emitClick({ shop, campaign: mapped.campaign });
+    } else {
+      await trackEvent(shop, mapped);
+    }
   }
   return NextResponse.json({ ok: true });
 }

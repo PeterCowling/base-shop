@@ -51,3 +51,27 @@ setCampaignStore(memoryStore);
 ```
 
 This allows persisting campaigns in a database or any other backend.
+
+## Hooks
+
+Custom analytics or side effects can be registered using hooks. The email
+package emits events when messages are sent, opened, or clicked.
+
+```ts
+import { onSend, onOpen, onClick } from "@acme/email";
+
+onSend(({ shop, campaign }) => {
+  console.log("sent", shop, campaign);
+});
+
+onOpen(({ shop, campaign }) => {
+  console.log("opened", shop, campaign);
+});
+
+onClick(({ shop, campaign, url }) => {
+  console.log("clicked", shop, campaign, url);
+});
+```
+
+These hooks run alongside the built-in analytics tracking and allow external
+consumers to add their own listeners.

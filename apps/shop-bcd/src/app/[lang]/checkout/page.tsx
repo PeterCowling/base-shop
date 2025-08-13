@@ -1,6 +1,7 @@
 // apps/shop-bcd/src/app/[lang]/checkout/page.tsx
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";
+import DeliveryScheduler from "@ui/components/organisms/DeliveryScheduler";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { cookies } from "next/headers";
@@ -34,12 +35,41 @@ export default async function CheckoutPage({
   }
 
   const settings = await getShopSettings(shop.id);
+  const premierDelivery = settings.premierDelivery;
 
   /* ---------- render ---------- */
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
       <OrderSummary />
+      {premierDelivery && (
+        <PremierDeliveryPicker
+          windows={premierDelivery.windows}
+          region={premierDelivery.regions[0] ?? ""}
+        />
+      )}
       <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
     </div>
+  );
+}
+
+function PremierDeliveryPicker({
+  windows,
+  region,
+}: {
+  windows: string[];
+  region: string;
+}) {
+  "use client";
+  return (
+    <DeliveryScheduler
+      windows={windows}
+      onChange={({ time }) => {
+        fetch("/api/delivery/schedule", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ region, window: time }),
+        }).catch(() => {});
+      }}
+    />
   );
 }

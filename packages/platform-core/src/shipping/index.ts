@@ -7,6 +7,9 @@ export interface ShippingRateRequest {
   fromPostalCode: string;
   toPostalCode: string;
   weight: number;
+  region?: string;
+  window?: string;
+  premierDelivery?: { regions: string[]; windows: string[] };
 }
 
 /**
@@ -18,7 +21,21 @@ export async function getShippingRate({
   fromPostalCode,
   toPostalCode,
   weight,
+  region,
+  window,
+  premierDelivery,
 }: ShippingRateRequest): Promise<unknown> {
+  if (region || window) {
+    if (!premierDelivery) {
+      throw new Error("Premier delivery not configured");
+    }
+    if (!region || !premierDelivery.regions.includes(region)) {
+      throw new Error("Region not eligible for premier delivery");
+    }
+    if (!window || !premierDelivery.windows.includes(window)) {
+      throw new Error("Invalid delivery window");
+    }
+  }
   const apiKey = (shippingEnv as Record<string, string | undefined>)[
     `${provider.toUpperCase()}_KEY`
   ];

@@ -66,6 +66,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
           upsEnabled: false,
           ...(parsed.data.returnService ?? {}),
         },
+        premierDelivery: parsed.data.premierDelivery,
         seo: {
           ...(parsed.data.seo ?? {}),
           aiCatalog: {
@@ -95,6 +96,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     taxRegion: "",
     depositService: { enabled: false, intervalMinutes: 60 },
     returnService: { upsEnabled: false },
+    premierDelivery: undefined,
     updatedAt: "",
     updatedBy: "",
   };

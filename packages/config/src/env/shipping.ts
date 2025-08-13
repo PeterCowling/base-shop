@@ -1,13 +1,11 @@
+import "@acme/lib/initZod";
 import { z } from "zod";
-import { applyFriendlyZodMessages } from "@acme/lib";
 
 export const shippingEnvSchema = z.object({
   TAXJAR_KEY: z.string().optional(),
   UPS_KEY: z.string().optional(),
   DHL_KEY: z.string().optional(),
 });
-
-applyFriendlyZodMessages();
 
 const parsed = shippingEnvSchema.safeParse(process.env);
 if (!parsed.success) {

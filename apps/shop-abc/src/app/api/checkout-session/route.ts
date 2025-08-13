@@ -1,4 +1,5 @@
 // apps/shop-abc/src/app/api/checkout-session/route.ts
+import "@acme/lib/initZod";
 
 import {
   CART_COOKIE,

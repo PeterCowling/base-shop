@@ -1,3 +1,4 @@
+import "@acme/lib/initZod";
 import { stripe } from "@acme/stripe";
 import { computeDamageFee } from "@platform-core/pricing";
 import {

@@ -1,4 +1,5 @@
 // apps/shop-abc/src/app/api/account/profile/route.ts
+import "@acme/lib/initZod";
 import { getCustomerSession, hasPermission, validateCsrfToken } from "@auth";
 import {
   getCustomerProfile,

@@ -1,4 +1,5 @@
 // apps/shop-abc/src/app/api/rental/route.ts
+import "@acme/lib/initZod";
 
 import { stripe } from "@acme/stripe";
 import {

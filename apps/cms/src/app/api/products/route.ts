@@ -1,3 +1,4 @@
+import "@acme/lib/initZod";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import {

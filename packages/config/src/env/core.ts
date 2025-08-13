@@ -1,5 +1,5 @@
+import "@acme/lib/initZod";
 import { z } from "zod";
-import { applyFriendlyZodMessages } from "@acme/lib";
 
 export const coreEnvBaseSchema = z.object({
   NEXTAUTH_SECRET: z.string().optional(),
@@ -89,8 +89,6 @@ export function depositReleaseEnvRefinement(
 export const coreEnvSchema = coreEnvBaseSchema.superRefine(
   depositReleaseEnvRefinement,
 );
-
-applyFriendlyZodMessages();
 
 const parsed = coreEnvSchema.safeParse(process.env);
 if (!parsed.success) {

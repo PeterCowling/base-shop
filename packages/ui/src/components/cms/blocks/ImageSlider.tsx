@@ -59,17 +59,19 @@ export default function ImageSlider({
             type="button"
             onClick={prev}
             aria-label="Previous slide"
-            className="absolute left-2 top-1/2 -translate-y-1/2 rounded bg-black/50 p-2 text-white"
+            className="absolute left-2 top-1/2 -translate-y-1/2 rounded bg-fg/50 p-2"
+            data-token="--color-fg"
           >
-            ‹
+            <span className="text-bg" data-token="--color-bg">‹</span>
           </button>
           <button
             type="button"
             onClick={next}
             aria-label="Next slide"
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded bg-black/50 p-2 text-white"
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded bg-fg/50 p-2"
+            data-token="--color-fg"
           >
-            ›
+            <span className="text-bg" data-token="--color-bg">›</span>
           </button>
         </>
       )}

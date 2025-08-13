@@ -115,13 +115,20 @@ function PaymentForm({
         />
       </label>
       <PaymentElement />
-      {error && <p className="text-sm text-danger">{error}</p>}
+      {error && (
+        <p className="text-sm text-danger" data-token="--color-danger">
+          {error}
+        </p>
+      )}
       <button
         type="submit"
         disabled={!stripe || processing}
-        className="w-full rounded bg-fg py-2 text-bg disabled:opacity-50"
+        className="w-full rounded bg-fg py-2 disabled:opacity-50"
+        data-token="--color-fg"
       >
-        {processing ? t("checkout.processing") : t("checkout.pay")}
+        <span className="text-bg" data-token="--color-bg">
+          {processing ? t("checkout.processing") : t("checkout.pay")}
+        </span>
       </button>
     </form>
   );

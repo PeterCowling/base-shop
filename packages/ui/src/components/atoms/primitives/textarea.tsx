@@ -113,7 +113,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             />
           </>
         )}
-        {error && <p className="mt-1 text-sm text-danger">{error}</p>}
+        {error && (
+          <p className="mt-1 text-sm text-danger" data-token="--color-danger">
+            {error}
+          </p>
+        )}
       </div>
     );
   }

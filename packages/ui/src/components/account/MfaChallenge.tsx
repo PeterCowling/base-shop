@@ -43,11 +43,18 @@ export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProp
       />
       <button
         type="submit"
-        className="rounded bg-primary px-4 py-2 text-primary-fg"
+        className="rounded bg-primary px-4 py-2"
+        data-token="--color-primary"
       >
-        Verify
+        <span className="text-primary-fg" data-token="--color-primary-fg">
+          Verify
+        </span>
       </button>
-      {error && <p className="text-red-600">{error}</p>}
+      {error && (
+        <p className="text-danger" data-token="--color-danger">
+          {error}
+        </p>
+      )}
     </form>
   );
 }

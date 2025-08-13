@@ -422,9 +422,12 @@ const CanvasItem = memo(function CanvasItem({
       <button
         type="button"
         onClick={onRemove}
-        className="absolute top-1 right-1 rounded bg-danger px-2 text-xs text-danger-foreground"
+        className="absolute top-1 right-1 rounded bg-danger px-2 text-xs"
+        data-token="--color-danger"
       >
-        ×
+        <span className="text-danger-foreground" data-token="--color-danger-fg">
+          ×
+        </span>
       </button>
       {hasChildren && (
         <SortableContext

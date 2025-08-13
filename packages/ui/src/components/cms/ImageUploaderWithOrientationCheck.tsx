@@ -52,6 +52,7 @@ function ImageUploaderWithOrientationCheckInner({
           className={
             isValid ? "text-sm text-success" : "text-sm text-danger"
           }
+          data-token={isValid ? "--color-success" : "--color-danger"}
         >
           {isValid
             ? `Image orientation is ${actual}; requirement satisfied.`

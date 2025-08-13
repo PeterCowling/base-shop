@@ -32,11 +32,18 @@ export default function RevokeSessionButton({ sessionId }: RevokeSessionButtonPr
         type="button"
         onClick={handleClick}
         disabled={isPending}
-        className="rounded bg-primary px-4 py-2 text-primary-fg"
+        className="rounded bg-primary px-4 py-2"
+        data-token="--color-primary"
       >
-        {isPending ? "Revoking..." : "Revoke"}
+        <span className="text-primary-fg" data-token="--color-primary-fg">
+          {isPending ? "Revoking..." : "Revoke"}
+        </span>
       </button>
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="mt-2 text-sm text-danger" data-token="--color-danger">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

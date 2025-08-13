@@ -41,4 +41,47 @@ export class ResendProvider implements CampaignProvider {
       return mapResendStats({});
     }
   }
+
+  async createContact(email: string): Promise<string> {
+    try {
+      const res = await fetch("https://api.resend.com/contacts", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${coreEnv.RESEND_API_KEY || ""}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+      const json = await res.json().catch(() => ({}));
+      return json?.id || "";
+    } catch {
+      return "";
+    }
+  }
+
+  async addToList(contactId: string, listId: string): Promise<void> {
+    await fetch(`https://api.resend.com/segments/${listId}/contacts`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${coreEnv.RESEND_API_KEY || ""}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ contact_id: contactId }),
+    }).catch(() => undefined);
+  }
+
+  async listSegments(): Promise<{ id: string; name?: string }[]> {
+    try {
+      const res = await fetch("https://api.resend.com/segments", {
+        headers: { Authorization: `Bearer ${coreEnv.RESEND_API_KEY || ""}` },
+      });
+      const json = await res.json().catch(() => ({}));
+      const segments = Array.isArray(json?.data ?? json?.segments)
+        ? json.data ?? json.segments
+        : [];
+      return segments.map((s: any) => ({ id: s.id, name: s.name }));
+    } catch {
+      return [];
+    }
+  }
 }

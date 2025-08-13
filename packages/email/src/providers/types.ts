@@ -4,6 +4,19 @@ import type { CampaignStats } from "../analytics";
 export interface CampaignProvider {
   send(options: CampaignOptions): Promise<void>;
   getCampaignStats(campaignId: string): Promise<CampaignStats>;
+  /**
+   * Optionally create or upsert a contact with the given email address and
+   * return the provider-specific identifier for the contact.
+   */
+  createContact?(email: string): Promise<string>;
+  /**
+   * Optionally associate a contact with a list/segment on the provider.
+   */
+  addToList?(contactId: string, listId: string): Promise<void>;
+  /**
+   * Optionally list available segments from the provider.
+   */
+  listSegments?(): Promise<{ id: string; name?: string }[]>;
 }
 
 /**

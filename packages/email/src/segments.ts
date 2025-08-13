@@ -3,10 +3,24 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
+import { coreEnv } from "@acme/config/env/core";
+import { SendgridProvider } from "./providers/sendgrid";
+import { ResendProvider } from "./providers/resend";
+import type { CampaignProvider } from "./providers/types";
 
 interface SegmentDef {
   id: string;
   filters: { field: string; value: string }[];
+}
+
+const providers: Record<string, CampaignProvider> = {
+  sendgrid: new SendgridProvider(),
+  resend: new ResendProvider(),
+};
+
+function getProvider(): CampaignProvider | undefined {
+  const name = coreEnv.EMAIL_PROVIDER ?? "";
+  return providers[name];
 }
 
 async function readSegments(shop: string): Promise<SegmentDef[]> {
@@ -19,6 +33,25 @@ async function readSegments(shop: string): Promise<SegmentDef[]> {
   } catch {
     return [];
   }
+}
+
+export async function createContact(email: string): Promise<string> {
+  const provider = getProvider();
+  return provider?.createContact ? provider.createContact(email) : "";
+}
+
+export async function addToList(
+  contactId: string,
+  listId: string
+): Promise<void> {
+  const provider = getProvider();
+  if (provider?.addToList) await provider.addToList(contactId, listId);
+}
+
+export async function listSegments(): Promise<{ id: string; name?: string }[]> {
+  const provider = getProvider();
+  if (provider?.listSegments) return provider.listSegments();
+  return [];
 }
 
 /**

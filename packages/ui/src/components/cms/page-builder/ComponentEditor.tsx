@@ -37,6 +37,7 @@ import SearchBarEditor from "./SearchBarEditor";
 import RecommendationCarouselEditor from "./RecommendationCarouselEditor";
 import ProductComparisonEditor from "./ProductComparisonEditor";
 import GiftCardEditor from "./GiftCardEditor";
+import ProductBundleEditor from "./ProductBundleEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -134,6 +135,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "GiftCardBlock":
       specific = (
         <GiftCardEditor component={component} onChange={onChange} />
+      );
+      break;
+    case "ProductBundle":
+      specific = (
+        <ProductBundleEditor component={component} onChange={onChange} />
       );
       break;
     case "ValueProps":

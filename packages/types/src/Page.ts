@@ -299,6 +299,13 @@ export interface GiftCardBlockComponent extends PageComponentBase {
   description?: string;
 }
 
+export interface ProductBundleComponent extends PageComponentBase {
+  type: "ProductBundle";
+  products?: { sku: string; quantity?: number }[];
+  discount?: number;
+  collectionId?: string;
+}
+
 export interface TextComponent extends PageComponentBase {
   type: "Text";
   text?: string;
@@ -361,6 +368,7 @@ export type PageComponent =
   | PricingTableComponent
   | TestimonialSliderComponent
   | GiftCardBlockComponent
+  | ProductBundleComponent
   | ImageComponent
   | TextComponent
   | CustomHtmlComponent
@@ -618,6 +626,20 @@ const giftCardBlockComponentSchema = baseComponentSchema.extend({
   description: z.string().optional(),
 });
 
+const productBundleComponentSchema = baseComponentSchema.extend({
+  type: z.literal("ProductBundle"),
+  products: z
+    .array(
+      z.object({
+        sku: z.string(),
+        quantity: z.number().optional(),
+      }),
+    )
+    .optional(),
+  discount: z.number().optional(),
+  collectionId: z.string().optional(),
+});
+
 const imageComponentSchema = baseComponentSchema.extend({
   type: z.literal("Image"),
   src: z.string().optional(),
@@ -694,6 +716,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     testimonialsComponentSchema,
     pricingTableComponentSchema,
     giftCardBlockComponentSchema,
+    productBundleComponentSchema,
     testimonialSliderComponentSchema,
     imageComponentSchema,
     textComponentSchema,

@@ -36,6 +36,9 @@ import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
 import ProductComparisonBlock from "./ProductComparisonBlock";
 import GiftCardBlock from "./GiftCardBlock";
+import ProductBundle, {
+  getRuntimeProps as getProductBundleRuntimeProps,
+} from "./ProductBundle";
 
 export const organismRegistry = {
   AnnouncementBar: { component: AnnouncementBar },
@@ -57,6 +60,10 @@ export const organismRegistry = {
   FeaturedProduct: {
     component: FeaturedProductBlock,
     getRuntimeProps: getFeaturedProductRuntimeProps,
+  },
+  ProductBundle: {
+    component: ProductBundle,
+    getRuntimeProps: getProductBundleRuntimeProps,
   },
   ImageSlider: { component: ImageSlider },
   CollectionList: { component: CollectionList },

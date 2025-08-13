@@ -36,6 +36,7 @@ export default function WizardPreview({
   const [components, setComponents] = useState<PageComponent[]>([]);
   const [highlight, setHighlight] = useState<HTMLElement | null>(null);
   const previewRef = useRef<HTMLDivElement | null>(null);
+  const clickTimeoutRef = useRef<number | null>(null);
 
   /* ------------------------------------------------------------------ */
   /*             Sync wizard state from localStorage                    */
@@ -89,8 +90,16 @@ export default function WizardPreview({
     };
   }, [highlight]);
 
+  useEffect(() => {
+    return () => {
+      if (clickTimeoutRef.current) {
+        clearTimeout(clickTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!inspectMode) return;
+    if (!inspectMode || clickTimeoutRef.current) return;
     const el = (e.target as HTMLElement).closest("[data-token]") as
       | HTMLElement
       | null;
@@ -103,12 +112,20 @@ export default function WizardPreview({
     if (!el) return;
     e.preventDefault();
     e.stopPropagation();
+    setHighlight(el as HTMLElement);
+    if (clickTimeoutRef.current) {
+      clearTimeout(clickTimeoutRef.current);
+    }
+    clickTimeoutRef.current = window.setTimeout(() => {
+      clickTimeoutRef.current = null;
+      setHighlight(null);
+    }, 1000);
     const token = el.getAttribute("data-token");
     if (token) onTokenSelect?.(token);
   };
 
   const handleLeave = () => {
-    if (!inspectMode) return;
+    if (!inspectMode || clickTimeoutRef.current) return;
     setHighlight(null);
   };
 

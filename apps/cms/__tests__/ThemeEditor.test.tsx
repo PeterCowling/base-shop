@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { fireEvent, render, screen, within, waitFor, act } from "@testing-library/react";
+import { fireEvent, render, screen, within, waitFor } from "@testing-library/react";
 import ThemeEditor from "../src/app/cms/shop/[shop]/themes/ThemeEditor";
 import { updateShop } from "@cms/actions/shops.server";
 
@@ -11,6 +11,14 @@ jest.mock("../src/app/cms/shop/[shop]/themes/page", () => ({
   deletePreset: jest.fn(),
 }));
 jest.mock(
+  "@/components/cms/StyleEditor",
+  () => ({
+    __esModule: true,
+    default: () => null,
+  }),
+  { virtual: true }
+);
+jest.mock(
   "@/components/atoms/shadcn",
   () => ({
     Button: (props: any) => <button {...props} />,
@@ -18,6 +26,25 @@ jest.mock(
   }),
   { virtual: true }
 );
+jest.mock("../src/app/cms/wizard/WizardPreview", () => ({
+  __esModule: true,
+  default: ({ onTokenSelect }: any) => (
+    <div>
+      <div
+        data-token="--color-primary"
+        onClick={(e: any) =>
+          onTokenSelect(e.currentTarget.getAttribute("data-token"))
+        }
+      />
+      <div
+        data-token="--color-bg"
+        onClick={(e: any) =>
+          onTokenSelect(e.currentTarget.getAttribute("data-token"))
+        }
+      />
+    </div>
+  ),
+}));
 
 describe("ThemeEditor", () => {
   it("shows default and override values", () => {
@@ -275,14 +302,12 @@ describe("ThemeEditor", () => {
       />
     );
 
-    const iframe = screen.getByTitle("shop-preview") as HTMLIFrameElement;
+    const tokenEl = document.querySelector('[data-token="--color-primary"]') as HTMLElement;
     const colorInput = screen.getByLabelText("--color-primary", {
       selector: 'input[type="color"]',
     });
     (colorInput as any).scrollIntoView = jest.fn();
-    act(() => {
-      window.postMessage({ token: "--color-primary" }, "*");
-    });
+    fireEvent.click(tokenEl);
     await waitFor(() => expect(colorInput).toHaveFocus());
   });
 
@@ -303,28 +328,15 @@ describe("ThemeEditor", () => {
       />
     );
 
-    const iframe = screen.getByTitle("shop-preview") as HTMLIFrameElement;
-    let clickHandler: any;
-    const docStub = {
-      documentElement: { style: { setProperty: jest.fn() } },
-      addEventListener: (event: string, handler: any) => {
-        if (event === "click") clickHandler = handler;
-      },
-      removeEventListener: jest.fn(),
-      body: document.createElement("body"),
-    } as any;
-    docStub.body.innerHTML = '<div data-token="--color-bg"></div>';
-    Object.defineProperty(iframe, "contentDocument", { value: docStub });
-    act(() => {
-      fireEvent.load(iframe);
-    });
-    const tokenEl = docStub.body.querySelector('[data-token="--color-bg"]') as HTMLElement;
+    const tokenEl = document.querySelector('[data-token="--color-bg"]') as HTMLElement;
     const colorInput = screen.getByLabelText("--color-bg", {
       selector: 'input[type="color"]',
     });
     (colorInput as any).scrollIntoView = jest.fn();
-    clickHandler({ target: tokenEl, preventDefault: jest.fn(), stopPropagation: jest.fn() });
+    (colorInput as any).showPicker = jest.fn();
+    fireEvent.click(tokenEl);
     await waitFor(() => expect(colorInput).toHaveFocus());
+    expect((colorInput as any).showPicker).toHaveBeenCalled();
 
     fireEvent.change(colorInput, { target: { value: "#ff0000" } });
     fireEvent.click(screen.getByRole("button", { name: /^save$/i }));

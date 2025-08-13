@@ -50,26 +50,40 @@ export default function ConnectForm({ shopId, initial }: Props) {
   const [verifyStatus, setVerifyStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
+  const [verifyError, setVerifyError] = useState("");
 
   async function verify() {
     if (!projectId || !token) {
       return;
     }
     setVerifyStatus("loading");
+    setVerifyError("");
     try {
-      const res = await fetch(
-        `https://api.sanity.io/v1/projects/${projectId}/datasets`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
-      if (!res.ok) throw new Error("Failed to fetch datasets");
+      const res = await fetch("/api/sanity/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ projectId, dataset, token }),
+      });
       const json = (await res.json()) as {
-        datasets?: { name: string }[];
+        ok: boolean;
+        datasets?: string[];
+        error?: string;
+        errorCode?: string;
       };
-      setDatasets(json.datasets?.map((d) => d.name) ?? []);
-      setVerifyStatus("success");
+      if (json.ok) {
+        setDatasets(json.datasets ?? []);
+        setVerifyStatus("success");
+      } else {
+        setDatasets(json.datasets ?? []);
+        setVerifyError(
+          (json.errorCode && errorMessages[json.errorCode]) ||
+            json.error ||
+            "Invalid Sanity credentials",
+        );
+        setVerifyStatus("error");
+      }
     } catch {
+      setVerifyError("Invalid Sanity credentials");
       setVerifyStatus("error");
     }
   }
@@ -183,7 +197,7 @@ export default function ConnectForm({ shopId, initial }: Props) {
             <p className="text-xs text-green-600">Credentials verified</p>
           )}
           {verifyStatus === "error" && (
-            <p className="text-xs text-red-600">Invalid credentials</p>
+            <p className="text-xs text-red-600">{verifyError}</p>
           )}
         </div>
         <div className="space-y-1">

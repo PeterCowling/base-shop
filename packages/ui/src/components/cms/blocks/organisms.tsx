@@ -34,6 +34,7 @@ import ImageSlider from "./ImageSlider";
 import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
 import ProductComparisonBlock from "./ProductComparisonBlock";
+import PopupModal from "./PopupModal";
 
 export const organismRegistry = {
   AnnouncementBar: { component: AnnouncementBar },
@@ -76,6 +77,7 @@ export const organismRegistry = {
   PricingTable: { component: PricingTable },
   Tabs: { component: Tabs },
   ProductComparison: { component: ProductComparisonBlock },
+  PopupModal: { component: PopupModal },
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

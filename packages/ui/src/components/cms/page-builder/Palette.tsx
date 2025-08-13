@@ -37,12 +37,16 @@ const palette = {
       type: t,
       label: t.replace(/([A-Z])/g, " $1").trim(),
     })),
-  organisms: (Object.keys(organismRegistry) as PageComponent["type"][])
-    .sort()
-    .map((t) => ({
-      type: t,
-      label: t.replace(/([A-Z])/g, " $1").trim(),
-    })),
+  organisms: [
+    { type: "PopupModal", label: "Popup Modal" },
+    ...(Object.keys(organismRegistry) as PageComponent["type"][])
+      .filter((t) => t !== "PopupModal")
+      .sort()
+      .map((t) => ({
+        type: t,
+        label: t.replace(/([A-Z])/g, " $1").trim(),
+      })),
+  ],
 } as const;
 
 const PaletteItem = memo(function PaletteItem({

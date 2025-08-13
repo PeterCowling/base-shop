@@ -31,6 +31,7 @@ import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
 import ProductComparison from "./ProductComparisonBlock";
 import FeaturedProductBlock from "./FeaturedProductBlock";
+import PopupModal from "./PopupModal";
 
 export {
   BlogListing,
@@ -66,6 +67,7 @@ export {
   CollectionList,
   ProductComparison,
   FeaturedProductBlock,
+  PopupModal,
 };
 
 export * from "./atoms";

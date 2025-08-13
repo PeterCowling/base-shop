@@ -32,6 +32,14 @@ jest.mock("@stripe/react-stripe-js", () => {
   };
 });
 
+jest.mock("@platform-core/src/contexts/CurrencyContext", () =>
+  require("./__mocks__/currencyContextMock")
+);
+
+afterEach(() => {
+  confirmPaymentMock.mockReset();
+});
+
 test("renders Elements once client secret is fetched", async () => {
   server.use(
     rest.post("/api/checkout-session", (_req, res, ctx) => {
@@ -130,6 +138,36 @@ test("requests new session when return date changes", async () => {
   expect(calls[1].returnDate).toBe("2025-12-25");
   expect(calls[1].currency).toBe("EUR");
   expect(calls[1].taxRegion).toBe("EU");
+});
+
+test("only final return date triggers request", async () => {
+  const calls: any[] = [];
+  server.use(
+    rest.post("/api/checkout-session", async (req, res, ctx) => {
+      calls.push(await req.json());
+      return res(
+        ctx.json({
+          clientSecret: `cs_${calls.length}`,
+          sessionId: `sess_${calls.length}`,
+        })
+      );
+    })
+  );
+
+  render(
+    <CurrencyProvider>
+      <CheckoutForm locale="en" taxRegion="EU" />
+    </CurrencyProvider>
+  );
+  await screen.findByTestId("payment-element");
+
+  const input = screen.getByLabelText(/checkout\.return/i);
+  fireEvent.change(input, { target: { value: "2025-12-24" } });
+  fireEvent.change(input, { target: { value: "2025-12-25" } });
+  fireEvent.change(input, { target: { value: "2025-12-26" } });
+
+  await waitFor(() => expect(calls).toHaveLength(2));
+  expect(calls[1].returnDate).toBe("2025-12-26");
 });
 
 test("default return date is 7 days ahead", async () => {

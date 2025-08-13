@@ -19,4 +19,18 @@ export class ResendProvider implements CampaignProvider {
       text: options.text,
     });
   }
+
+  async createContact(email: string): Promise<string> {
+    const res = await this.client.contacts.create({ email });
+    return res.data?.id ?? "";
+  }
+
+  async addToList(email: string, listId: string): Promise<void> {
+    await this.client.contacts.update({ id: email, audienceId: listId });
+  }
+
+  async listSegments(id: string): Promise<string[]> {
+    const res = await this.client.contacts.list({ audienceId: id });
+    return res.data?.data?.map((c: any) => c.email) ?? [];
+  }
 }

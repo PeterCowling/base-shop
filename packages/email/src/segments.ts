@@ -1,4 +1,13 @@
 import { listEvents } from "@platform-core/repositories/analytics.server";
+import { coreEnv } from "@acme/config/env/core";
+import { SendgridProvider } from "./providers/sendgrid";
+import { ResendProvider } from "./providers/resend";
+import type { CampaignProvider } from "./providers/types";
+
+const providers: Record<string, CampaignProvider> = {
+  sendgrid: new SendgridProvider(),
+  resend: new ResendProvider(),
+};
 
 /**
  * Resolve a segment identifier to a list of customer email addresses.
@@ -12,6 +21,11 @@ export async function resolveSegment(
   shop: string,
   id: string
 ): Promise<string[]> {
+  const provider = providers[coreEnv.EMAIL_PROVIDER ?? ""];
+  if (provider?.listSegments) {
+    return provider.listSegments(id);
+  }
+
   const events = await listEvents(shop);
   const emails = new Set<string>();
   for (const e of events) {

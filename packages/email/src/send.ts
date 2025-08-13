@@ -5,6 +5,7 @@ import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
 import { ProviderError } from "./providers/types";
+import { renderTemplate } from "./templates";
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -12,11 +13,15 @@ export interface CampaignOptions {
   /** Email subject line */
   subject: string;
   /** HTML body */
-  html: string;
+  html?: string;
   /** Optional plain-text body */
   text?: string;
   /** Optional campaign identifier for logging */
   campaignId?: string;
+  /** Optional template identifier */
+  templateId?: string;
+  /** Variables to substitute into the template */
+  variables?: Record<string, string>;
 }
 
 function deriveText(html: string): string {
@@ -35,6 +40,9 @@ function deriveText(html: string): string {
 }
 
 function ensureText(options: CampaignOptions): CampaignOptions {
+  if (!options.html) {
+    throw new Error("Missing html content for campaign email");
+  }
   if (options.text) return options;
   return { ...options, text: deriveText(options.html) };
 }
@@ -66,13 +74,17 @@ if (!coreEnv.EMAIL_PROVIDER) {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
-  const opts = ensureText(options);
+  let opts = { ...options };
+  if (opts.templateId) {
+    opts.html = renderTemplate(opts.templateId, opts.variables ?? {});
+  }
+  const optsWithText = ensureText(opts);
   const primary = coreEnv.EMAIL_PROVIDER ?? "";
   const provider = providers[primary];
 
   // No configured provider – use Nodemailer directly
   if (!provider) {
-    await sendWithNodemailer(opts);
+    await sendWithNodemailer(optsWithText);
     return;
   }
 
@@ -85,20 +97,20 @@ export async function sendCampaignEmail(
     const current = providers[name];
     if (!current) continue;
     try {
-      await sendWithRetry(current, opts);
+      await sendWithRetry(current, optsWithText);
       return;
     } catch (err) {
       console.error("Campaign email send failed", {
         provider: name,
-        recipient: opts.to,
-        campaignId: opts.campaignId,
+        recipient: optsWithText.to,
+        campaignId: optsWithText.campaignId,
         error: err,
       });
       // Try next provider
     }
   }
 
-  await sendWithNodemailer(opts);
+  await sendWithNodemailer(optsWithText);
 }
 
 async function sendWithRetry(

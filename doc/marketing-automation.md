@@ -25,3 +25,29 @@ pnpm --filter @acme/email exec email campaign send
 ```
 
 The scheduler will deliver any campaigns whose `sendAt` timestamp has passed.
+
+## Custom campaign stores
+
+Campaigns are persisted using a filesystem store by default. You can replace
+this storage layer by providing your own implementation of the `CampaignStore`
+interface and registering it with `setCampaignStore`.
+
+```ts
+import { setCampaignStore, type CampaignStore } from "@acme/email";
+
+const memoryStore: CampaignStore = {
+  async readCampaigns(shop) {
+    return memory[shop] || [];
+  },
+  async writeCampaigns(shop, campaigns) {
+    memory[shop] = campaigns;
+  },
+  async listShops() {
+    return Object.keys(memory);
+  },
+};
+
+setCampaignStore(memoryStore);
+```
+
+This allows persisting campaigns in a database or any other backend.

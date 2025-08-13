@@ -9,3 +9,5 @@ export {
   listCampaigns,
   sendDueCampaigns,
 } from "./scheduler";
+export { setCampaignStore, fsCampaignStore } from "./storage";
+export type { CampaignStore, Campaign } from "./storage";

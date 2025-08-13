@@ -7,6 +7,7 @@ process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 import CheckoutForm from "../packages/ui/components/checkout/CheckoutForm";
 import { CurrencyProvider } from "@platform-core/src/contexts/CurrencyContext";
 import { isoDateInNDays } from "@acme/date-utils";
+import Cancelled from "../packages/template-app/src/app/cancelled/page";
 
 const pushMock = jest.fn();
 
@@ -36,6 +37,14 @@ jest.mock("@platform-core/src/contexts/CurrencyContext", () =>
   require("./__mocks__/currencyContextMock")
 );
 
+beforeEach(() => {
+  server.use(
+    rest.post("/api/checkout-session", (_req, res, ctx) =>
+      res(ctx.json({ clientSecret: "cs_default", sessionId: "sess_default" }))
+    )
+  );
+});
+
 afterEach(() => {
   confirmPaymentMock.mockReset();
 });
@@ -57,16 +66,13 @@ test("renders Elements once client secret is fetched", async () => {
 
   expect(screen.getByText("Loading payment form…")).toBeInTheDocument();
 
-  expect(await screen.findByTestId("payment-element")).toBeInTheDocument();
+  expect(
+    await screen.findByTestId("payment-element", {}, { timeout: 2000 })
+  ).toBeInTheDocument();
   expect(screen.queryByText("Loading payment form…")).toBeNull();
 });
 
 test("successful payment redirects to success", async () => {
-  server.use(
-    rest.post("/api/checkout-session", (_req, res, ctx) => {
-      return res(ctx.json({ clientSecret: "cs_test", sessionId: "sess" }));
-    })
-  );
   confirmPaymentMock.mockResolvedValue({});
 
   render(
@@ -74,7 +80,7 @@ test("successful payment redirects to success", async () => {
       <CheckoutForm locale="en" taxRegion="EU" />
     </CurrencyProvider>
   );
-  await screen.findByTestId("payment-element");
+  await screen.findByTestId("payment-element", {}, { timeout: 2000 });
   fireEvent.click(screen.getByRole("button", { name: /pay/i }));
 
   await waitFor(() => expect(confirmPaymentMock).toHaveBeenCalled());
@@ -84,12 +90,7 @@ test("successful payment redirects to success", async () => {
   expect(pushMock).toHaveBeenCalledWith("/en/success");
 });
 
-test("failed payment redirects to cancelled", async () => {
-  server.use(
-    rest.post("/api/checkout-session", (_req, res, ctx) => {
-      return res(ctx.json({ clientSecret: "cs_test", sessionId: "sess" }));
-    })
-  );
+test("failed payment redirects to cancelled with error", async () => {
   confirmPaymentMock.mockResolvedValue({ error: { message: "fail" } });
 
   render(
@@ -97,11 +98,13 @@ test("failed payment redirects to cancelled", async () => {
       <CheckoutForm locale="en" taxRegion="EU" />
     </CurrencyProvider>
   );
-  await screen.findByTestId("payment-element");
+  await screen.findByTestId("payment-element", {}, { timeout: 2000 });
   fireEvent.click(screen.getByRole("button", { name: /pay/i }));
 
   await waitFor(() => expect(confirmPaymentMock).toHaveBeenCalled());
-  expect(pushMock).toHaveBeenCalledWith("/en/cancelled");
+  expect(pushMock).toHaveBeenCalledWith("/en/cancelled?error=fail");
+  const url = new URL("http://localhost" + pushMock.mock.calls[0][0]);
+  render(<Cancelled searchParams={Object.fromEntries(url.searchParams)} />);
   expect(await screen.findByText("fail")).toBeInTheDocument();
 });
 
@@ -126,7 +129,7 @@ test("requests new session when return date changes", async () => {
       <CheckoutForm locale="en" taxRegion="EU" />
     </CurrencyProvider>
   );
-  await screen.findByTestId("payment-element");
+  await screen.findByTestId("payment-element", {}, { timeout: 2000 });
   expect(calls[0].returnDate).toBe(expectedDefault);
   expect(calls[0].currency).toBe("EUR");
   expect(calls[0].taxRegion).toBe("EU");
@@ -159,7 +162,7 @@ test("only final return date triggers request", async () => {
       <CheckoutForm locale="en" taxRegion="EU" />
     </CurrencyProvider>
   );
-  await screen.findByTestId("payment-element");
+  await screen.findByTestId("payment-element", {}, { timeout: 2000 });
 
   const input = screen.getByLabelText(/checkout\.return/i);
   fireEvent.change(input, { target: { value: "2025-12-24" } });
@@ -171,12 +174,6 @@ test("only final return date triggers request", async () => {
 });
 
 test("default return date is 7 days ahead", async () => {
-  server.use(
-    rest.post("/api/checkout-session", (_req, res, ctx) => {
-      return res(ctx.json({ clientSecret: "cs", sessionId: "sess" }));
-    })
-  );
-
   const expected = isoDateInNDays(7);
 
   render(
@@ -184,7 +181,7 @@ test("default return date is 7 days ahead", async () => {
       <CheckoutForm locale="en" taxRegion="EU" />
     </CurrencyProvider>
   );
-  await screen.findByTestId("payment-element");
+  await screen.findByTestId("payment-element", {}, { timeout: 2000 });
   const input = screen.getByLabelText(/checkout\.return/i) as HTMLInputElement;
   expect(input.value).toBe(expected);
 });

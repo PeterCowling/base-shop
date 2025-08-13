@@ -92,7 +92,6 @@ function PaymentForm({
   const router = useRouter();
 
   const [processing, setProcessing] = useState(false);
-  const [error, setError] = useState<string>();
 
   const onSubmit = handleSubmit(async () => {
     if (!stripe || !elements) return;
@@ -107,9 +106,9 @@ function PaymentForm({
     });
 
     if (error) {
-      setError(error.message ?? "Payment failed");
       setProcessing(false);
-      router.push(`/${locale}/cancelled`);
+      const message = encodeURIComponent(error.message ?? "Payment failed");
+      router.push(`/${locale}/cancelled?error=${message}`);
     } else {
       router.push(`/${locale}/success`);
     }
@@ -126,11 +125,6 @@ function PaymentForm({
         />
       </label>
       <PaymentElement />
-      {error && (
-        <p className="text-sm text-danger" data-token="--color-danger">
-          {error}
-        </p>
-      )}
       <button
         type="submit"
         disabled={!stripe || processing}

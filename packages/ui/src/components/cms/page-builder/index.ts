@@ -19,6 +19,7 @@ export { default as SocialFeedEditor } from "./SocialFeedEditor";
 export { default as SearchBarEditor } from "./SearchBarEditor";
 export { default as RecommendationCarouselEditor } from "./RecommendationCarouselEditor";
 export { default as ProductComparisonEditor } from "./ProductComparisonEditor";
+export { default as FormBuilderEditor } from "./FormBuilderEditor";
 export { default as useMediaLibrary } from "./useMediaLibrary";
 export { useArrayEditor } from "./useArrayEditor";
 export { default as CanvasItem } from "./CanvasItem";

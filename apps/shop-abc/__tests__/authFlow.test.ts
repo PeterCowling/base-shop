@@ -13,10 +13,15 @@ jest.mock("@auth/mfa", () => ({
 jest.mock("../src/middleware", () => ({
   checkLoginRateLimit: jest.fn(async () => null),
   clearLoginAttempts: jest.fn(),
+  checkRegistrationRateLimit: jest.fn(async () => null),
 }));
 
 jest.mock("@acme/email", () => ({
   sendEmail: jest.fn(),
+}));
+
+jest.mock("@acme/platform-core/customerProfiles", () => ({
+  updateCustomerProfile: jest.fn(),
 }));
 
 const store: Record<string, any> = {};
@@ -116,20 +121,19 @@ describe("auth flows", () => {
     expect(res.status).toBe(200);
 
     await requestPOST(makeRequest({ email: "test@example.com" }));
-    const tokenEmail = sendEmail.mock.calls[1][2] as string;
-    const token = tokenEmail.replace(
-      "Reset your password: /account/reset?token=",
-      "",
-    );
+  const tokenEmail = sendEmail.mock.calls[1][2] as string;
+  const token = tokenEmail.replace(
+    "Reset your password: /account/reset?token=",
+    "",
+  );
 
-    res = await completePOST(
-      makeRequest({
-        customerId: "cust1",
+  res = await completePOST(
+    makeRequest({
         token,
         password: "NewStr0ng1",
       })
-    );
-    expect(res.status).toBe(200);
+  );
+  expect(res.status).toBe(200);
 
     res = await loginPOST(
       makeRequest(
@@ -164,13 +168,12 @@ describe("auth flows", () => {
       "",
     );
 
-    const res = await completePOST(
-      makeRequest({
-        customerId: "cust1",
+  const res = await completePOST(
+    makeRequest({
         token,
         password: "weakpass",
       })
-    );
-    expect(res.status).toBe(400);
+  );
+  expect(res.status).toBe(400);
   });
 });

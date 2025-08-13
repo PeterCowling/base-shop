@@ -31,6 +31,7 @@ import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
 import ProductComparison from "./ProductComparisonBlock";
 import FeaturedProductBlock from "./FeaturedProductBlock";
+import BookingCalendar from "./BookingCalendar";
 
 export {
   BlogListing,
@@ -66,6 +67,7 @@ export {
   CollectionList,
   ProductComparison,
   FeaturedProductBlock,
+  BookingCalendar,
 };
 
 export * from "./atoms";

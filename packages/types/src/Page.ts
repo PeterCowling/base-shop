@@ -234,6 +234,14 @@ export interface StoreLocatorBlockComponent extends PageComponentBase {
   zoom?: number;
 }
 
+export interface BookingCalendarComponent extends PageComponentBase {
+  type: "BookingCalendar";
+  resource?: string;
+  startDate?: string;
+  endDate?: string;
+  slotDuration?: number;
+}
+
 export interface VideoBlockComponent extends PageComponentBase {
   type: "VideoBlock";
   src?: string;
@@ -341,6 +349,7 @@ export type PageComponent =
   | ContactFormWithMapComponent
   | MapBlockComponent
   | StoreLocatorBlockComponent
+  | BookingCalendarComponent
   | VideoBlockComponent
   | FAQBlockComponent
   | CountdownTimerComponent
@@ -489,6 +498,14 @@ const storeLocatorBlockComponentSchema = baseComponentSchema.extend({
     )
     .optional(),
   zoom: z.number().optional(),
+});
+
+const bookingCalendarComponentSchema = baseComponentSchema.extend({
+  type: z.literal("BookingCalendar"),
+  resource: z.string().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  slotDuration: z.number().optional(),
 });
 
 const videoBlockComponentSchema = baseComponentSchema.extend({
@@ -656,6 +673,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     contactFormWithMapComponentSchema,
     mapBlockComponentSchema,
     storeLocatorBlockComponentSchema,
+    bookingCalendarComponentSchema,
     videoBlockComponentSchema,
     faqBlockComponentSchema,
     countdownTimerComponentSchema,

@@ -35,6 +35,7 @@ import CollectionListEditor from "./CollectionListEditor";
 import SearchBarEditor from "./SearchBarEditor";
 import RecommendationCarouselEditor from "./RecommendationCarouselEditor";
 import ProductComparisonEditor from "./ProductComparisonEditor";
+import BookingCalendarEditor from "./BookingCalendarEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -217,6 +218,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "Footer":
       specific = <FooterEditor component={component} onChange={onChange} />;
+      break;
+    case "BookingCalendar":
+      specific = (
+        <BookingCalendarEditor component={component} onChange={onChange} />
+      );
       break;
     case "Button":
       specific = (

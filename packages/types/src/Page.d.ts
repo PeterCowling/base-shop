@@ -212,6 +212,14 @@ export interface StoreLocatorBlockComponent extends PageComponentBase {
   }[];
   zoom?: number;
 }
+
+export interface BookingCalendarComponent extends PageComponentBase {
+  type: "BookingCalendar";
+  resource?: string;
+  startDate?: string;
+  endDate?: string;
+  slotDuration?: number;
+}
 export interface VideoBlockComponent extends PageComponentBase {
   type: "VideoBlock";
   src?: string;
@@ -302,6 +310,7 @@ export type PageComponent =
   | ContactFormWithMapComponent
   | MapBlockComponent
   | StoreLocatorBlockComponent
+  | BookingCalendarComponent
   | VideoBlockComponent
   | FAQBlockComponent
   | BlogListingComponent

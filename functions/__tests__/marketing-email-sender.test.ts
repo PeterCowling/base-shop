@@ -2,8 +2,12 @@ import { jest } from "@jest/globals";
 import path from "node:path";
 import { promises as fs } from "node:fs";
 import { DATA_ROOT } from "@platform-core/dataRoot";
+import type { CampaignStore, Campaign } from "@acme/email";
 
 process.env.CART_COOKIE_SECRET = "secret";
+process.env.RESEND_API_KEY = "test";
+
+let createFsCampaignStore: (root: string) => CampaignStore;
 
 jest.mock("@acme/email", () => {
   const actual = jest.requireActual("@acme/email") as Record<string, any>;
@@ -17,17 +21,20 @@ jest.mock("@platform-core/analytics", () => ({
 
 let sendCampaignEmail: jest.Mock;
 beforeAll(async () => {
-  ({ sendCampaignEmail } = (await import("@acme/email")) as any);
+  const mod = (await import("@acme/email")) as any;
+  ({ sendCampaignEmail, createFsCampaignStore } = mod);
 });
 
 describe("sendScheduledCampaigns", () => {
   const shop = "segshop2";
   const shopDir = path.join(DATA_ROOT, shop);
+  let store: CampaignStore;
 
   beforeEach(async () => {
     jest.clearAllMocks();
     await fs.rm(shopDir, { recursive: true, force: true });
     await fs.mkdir(shopDir, { recursive: true });
+    store = createFsCampaignStore(DATA_ROOT);
   });
 
   test("refreshes segment recipients at send time and uses manual list otherwise", async () => {
@@ -62,7 +69,7 @@ describe("sendScheduledCampaigns", () => {
     );
 
     const { sendScheduledCampaigns } = await import("../marketing-email-sender");
-    await sendScheduledCampaigns();
+    await sendScheduledCampaigns(store);
 
     expect(sendCampaignEmail).toHaveBeenCalledWith(
       expect.objectContaining({ to: "new@example.com", subject: "Seg" })
@@ -80,5 +87,31 @@ describe("sendScheduledCampaigns", () => {
     expect(seg.sentAt).toBeDefined();
     expect(man.recipients).toEqual(["manual@example.com"]);
     expect(man.sentAt).toBeDefined();
+  });
+  test("supports custom stores", async () => {
+    const past = new Date(Date.now() - 1000).toISOString();
+    const campaigns: Campaign[] = [
+      {
+        id: "c1",
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        sendAt: past,
+      },
+    ];
+    const custom: CampaignStore = {
+      listShops: jest.fn().mockResolvedValue(["shop"]),
+      readCampaigns: jest.fn().mockResolvedValue(campaigns),
+      writeCampaigns: jest.fn().mockResolvedValue(undefined),
+    };
+
+    const { sendScheduledCampaigns } = await import("../marketing-email-sender");
+    await sendScheduledCampaigns(custom);
+
+    expect(custom.listShops).toHaveBeenCalled();
+    expect(custom.writeCampaigns).toHaveBeenCalled();
+    expect(sendCampaignEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ to: "a@example.com" })
+    );
   });
 });

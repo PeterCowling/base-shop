@@ -79,9 +79,13 @@ const schema = defineSchema({
   ],
 });
 
-const InvalidProductContext = createContext<
-  ((key: string, valid: boolean, slug: string) => void) | null
->(null);
+interface InvalidProductContextValue {
+  invalidProducts: Record<string, string>;
+  markValidity: (key: string, valid: boolean, slug: string) => void;
+}
+
+const InvalidProductContext =
+  createContext<InvalidProductContextValue | null>(null);
 
 function ProductPreview({
   slug,
@@ -177,8 +181,9 @@ const previewComponents = {
 
 function ProductReferenceBlock(props: BlockRenderProps) {
   const editor = useEditor();
-  const markValidity = useContext(InvalidProductContext);
+  const ctx = useContext(InvalidProductContext);
   const slug = props.value.slug as string;
+  const isInvalid = Boolean(ctx?.invalidProducts[props.value._key as string]);
   const remove = () => {
     const sel = {
       anchor: { path: props.path, offset: 0 },
@@ -197,11 +202,15 @@ function ProductReferenceBlock(props: BlockRenderProps) {
     PortableTextEditor.insertBlock(editor, "productReference", { slug: next });
   };
   return (
-    <div className="space-y-2">
+    <div
+      className={`space-y-2 ${
+        isInvalid ? "rounded border border-red-500 p-2" : ""
+      }`}
+    >
       <ProductPreview
         slug={slug}
         onValidChange={(valid) =>
-          markValidity?.(props.value._key as string, valid, slug)
+          ctx?.markValidity(props.value._key as string, valid, slug)
         }
       />
       <div className="flex gap-2">
@@ -433,7 +442,9 @@ export default function PostForm({ action, submitLabel, post }: Props) {
   const hasInvalidProducts = Object.keys(invalidProducts).length > 0;
 
   return (
-    <InvalidProductContext.Provider value={markValidity}>
+    <InvalidProductContext.Provider
+      value={{ markValidity, invalidProducts }}
+    >
       <div className="space-y-4">
         <form action={formAction} className="space-y-4 max-w-xl">
         <Input

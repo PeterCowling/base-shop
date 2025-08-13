@@ -29,6 +29,7 @@ import ImageSlider from "./ImageSlider";
 import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
 import ProductComparison from "./ProductComparisonBlock";
+import GiftCard from "./GiftCardBlock";
 
 export {
   BlogListing,
@@ -62,6 +63,7 @@ export {
   Tabs,
   CollectionList,
   ProductComparison,
+  GiftCard,
 };
 
 export * from "./atoms";

@@ -9,6 +9,7 @@ import ReviewsCarouselEditor from "../ReviewsCarouselEditor";
 import AnnouncementBarEditor from "../AnnouncementBarEditor";
 import SocialFeedEditor from "../SocialFeedEditor";
 import NewsletterSignupEditor from "../NewsletterSignupEditor";
+import FormBuilderEditor from "../FormBuilderEditor";
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
@@ -79,6 +80,12 @@ describe("block editors", () => {
       SocialFeedEditor,
       { type: "SocialFeed", platform: "twitter", account: "" },
       "account",
+    ],
+    [
+      "FormBuilderEditor",
+      FormBuilderEditor,
+      { type: "FormBuilder", action: "", fields: [] },
+      "action",
     ],
   ];
 

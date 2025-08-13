@@ -33,6 +33,7 @@ import ImageSliderEditor from "./ImageSliderEditor";
 import CollectionListEditor from "./CollectionListEditor";
 import SearchBarEditor from "./SearchBarEditor";
 import RecommendationCarouselEditor from "./RecommendationCarouselEditor";
+import FormBuilderEditor from "./FormBuilderEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -114,6 +115,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "RecommendationCarousel":
       specific = (
         <RecommendationCarouselEditor component={component} onChange={onChange} />
+      );
+      break;
+    case "FormBuilder":
+      specific = (
+        <FormBuilderEditor component={component} onChange={onChange} />
       );
       break;
     case "ValueProps":

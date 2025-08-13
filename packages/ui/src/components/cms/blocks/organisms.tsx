@@ -36,6 +36,7 @@ import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
 import ProductComparisonBlock from "./ProductComparisonBlock";
 import GiftCardBlock from "./GiftCardBlock";
+import FormBuilderBlock from "./FormBuilderBlock";
 
 export const organismRegistry = {
   AnnouncementBar: { component: AnnouncementBar },
@@ -80,6 +81,7 @@ export const organismRegistry = {
   Tabs: { component: Tabs },
   ProductComparison: { component: ProductComparisonBlock },
   GiftCardBlock: { component: GiftCardBlock },
+  FormBuilderBlock: { component: FormBuilderBlock },
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

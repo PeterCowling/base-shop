@@ -12,6 +12,7 @@ import SocialProofEditor from "../SocialProofEditor";
 import NewsletterSignupEditor from "../NewsletterSignupEditor";
 import StoreLocatorBlockEditor from "../StoreLocatorBlockEditor";
 import FeaturedProductEditor from "../FeaturedProductEditor";
+import FormBuilderEditor from "../FormBuilderEditor";
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
@@ -100,6 +101,12 @@ describe("block editors", () => {
       FeaturedProductEditor,
       { type: "FeaturedProduct", sku: "" },
       "sku",
+    ],
+    [
+      "FormBuilderEditor",
+      FormBuilderEditor,
+      { type: "FormBuilderBlock", fields: [{ type: "text", name: "" }] },
+      "name",
     ],
   ];
 

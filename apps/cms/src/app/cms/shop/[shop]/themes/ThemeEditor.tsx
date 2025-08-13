@@ -140,6 +140,7 @@ export default function ThemeEditor({
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
+  const styleEditorRef = useRef<HTMLDivElement | null>(null);
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByThemeState[theme];
@@ -158,14 +159,6 @@ export default function ThemeEditor({
     });
     return groups;
   }, [theme, tokensByThemeState]);
-
-  const changedOverrides = useMemo(() => {
-    const tokens = tokensByThemeState[theme];
-    return Object.fromEntries(
-      Object.entries(overrides).filter(([k, v]) => tokens[k] !== v)
-    );
-  }, [overrides, tokensByThemeState, theme]);
-
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
@@ -211,15 +204,16 @@ export default function ThemeEditor({
 
   const handleTokenSelect = (token: string) => {
     setSelectedToken(token);
-    const input = overrideRefs.current[token];
-    input?.scrollIntoView?.({ behavior: "smooth", block: "center" });
-    input?.focus();
-    (input as any)?.showPicker?.();
-    if (!(input as any)?.showPicker) {
-      // Fallback for browsers without showPicker support
-      input?.click?.();
-    }
   };
+
+  useEffect(() => {
+    if (selectedToken) {
+      styleEditorRef.current?.scrollIntoView?.({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [selectedToken]);
 
   const previewStyle = useMemo(
     () => ({ ...tokensByThemeState[theme], ...overrides } as CSSProperties),
@@ -265,7 +259,7 @@ export default function ThemeEditor({
     e.preventDefault();
     setSaving(true);
     const fd = new FormData(e.currentTarget);
-    fd.set("themeOverrides", JSON.stringify(changedOverrides));
+    fd.set("themeOverrides", JSON.stringify(overrides));
     fd.set("themeDefaults", JSON.stringify(themeDefaults));
     const result = await updateShop(shop, fd);
     if (result.errors) {
@@ -311,7 +305,7 @@ export default function ThemeEditor({
       <input
         type="hidden"
         name="themeOverrides"
-        value={JSON.stringify(changedOverrides)}
+        value={JSON.stringify(overrides)}
       />
       <input
         type="hidden"
@@ -369,12 +363,14 @@ export default function ThemeEditor({
         onTokenSelect={handleTokenSelect}
       />
       {selectedToken && (
-        <StyleEditor
-          tokens={overrides as TokenMap}
-          baseTokens={tokensByThemeState[theme] as TokenMap}
-          onChange={handleStyleChange}
-          focusToken={selectedToken}
-        />
+        <div ref={styleEditorRef}>
+          <StyleEditor
+            tokens={overrides as TokenMap}
+            baseTokens={tokensByThemeState[theme] as TokenMap}
+            onChange={handleStyleChange}
+            focusToken={selectedToken}
+          />
+        </div>
       )}
       <div className="space-y-6">
         {Object.entries(groupedTokens).map(([groupName, tokens]) => (

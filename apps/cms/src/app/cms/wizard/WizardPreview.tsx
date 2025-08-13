@@ -200,7 +200,7 @@ export default function WizardPreview({
         style={containerStyle}
         className={`mx-auto rounded border ${inspectMode ? "cursor-crosshair" : ""}`}
         onPointerMove={handlePointerMove}
-        onClick={handleClick}
+        onClickCapture={handleClick}
         onPointerLeave={handleLeave}
       >
         <TranslationsProvider messages={enMessages}>

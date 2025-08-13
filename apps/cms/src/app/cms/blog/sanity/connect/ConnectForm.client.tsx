@@ -29,6 +29,8 @@ const errorMessages: Record<string, string> = {
   UNKNOWN_ERROR: "An unknown error occurred",
 };
 
+const defaultDataset = "blog";
+
 export default function ConnectForm({ shopId, initial }: Props) {
   const saveAction = saveSanityConfig.bind(null, shopId);
   const [state, formAction] = useFormState<FormState>(saveAction, initialState);
@@ -40,10 +42,10 @@ export default function ConnectForm({ shopId, initial }: Props) {
   );
 
   const [projectId, setProjectId] = useState(initial?.projectId ?? "");
-  const [dataset, setDataset] = useState(initial?.dataset ?? "");
+  const [dataset, setDataset] = useState(initial?.dataset ?? defaultDataset);
   const [token, setToken] = useState(initial?.token ?? "");
   const [datasets, setDatasets] = useState<string[]>(
-    initial?.dataset ? [initial.dataset] : [],
+    initial?.dataset ? [initial.dataset] : [defaultDataset],
   );
   const [isAddingDataset, setIsAddingDataset] = useState(false);
   const [aclMode, setAclMode] = useState<"public" | "private">("public");
@@ -71,10 +73,18 @@ export default function ConnectForm({ shopId, initial }: Props) {
         errorCode?: string;
       };
       if (json.ok) {
-        setDatasets(json.datasets ?? []);
+        setDatasets(
+          json.datasets && json.datasets.length
+            ? json.datasets
+            : [dataset || defaultDataset],
+        );
         setVerifyStatus("success");
       } else {
-        setDatasets(json.datasets ?? []);
+        setDatasets(
+          json.datasets && json.datasets.length
+            ? json.datasets
+            : [dataset || defaultDataset],
+        );
         setVerifyError(
           (json.errorCode && errorMessages[json.errorCode]) ||
             json.error ||
@@ -83,6 +93,7 @@ export default function ConnectForm({ shopId, initial }: Props) {
         setVerifyStatus("error");
       }
     } catch {
+      setDatasets([dataset || defaultDataset]);
       setVerifyError("Invalid Sanity credentials");
       setVerifyStatus("error");
     }
@@ -145,8 +156,8 @@ export default function ConnectForm({ shopId, initial }: Props) {
               onChange={(e) => {
                 if (e.target.value === "__add__") {
                   setIsAddingDataset(true);
-                  setDataset("");
                 } else {
+                  setIsAddingDataset(false);
                   setDataset(e.target.value);
                 }
               }}
@@ -163,11 +174,9 @@ export default function ConnectForm({ shopId, initial }: Props) {
               <option value="__add__">Add dataset</option>
             </select>
           )}
-          <input
-            type="hidden"
-            name="createDataset"
-            value={isAddingDataset ? "true" : "false"}
-          />
+          {isAddingDataset && dataset !== defaultDataset && (
+            <input type="hidden" name="createDataset" value="true" />
+          )}
           <p className="text-xs text-muted-foreground">
             Dataset with read and write permissions.
           </p>

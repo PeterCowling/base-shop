@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { applyFriendlyZodMessages } from "@acme/lib";
+import "@acme/lib/initZod";
 
 export const shippingEnvSchema = z.object({
   TAXJAR_KEY: z.string().optional(),
@@ -7,13 +7,11 @@ export const shippingEnvSchema = z.object({
   DHL_KEY: z.string().optional(),
 });
 
-applyFriendlyZodMessages();
-
 const parsed = shippingEnvSchema.safeParse(process.env);
 if (!parsed.success) {
   console.error(
     "❌ Invalid shipping environment variables:",
-    parsed.error.format(),
+    parsed.error.format()
   );
   process.exit(1);
 }

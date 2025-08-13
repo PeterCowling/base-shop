@@ -1,14 +1,13 @@
 // apps/cms/src/app/layout.tsx
 import { CartProvider } from "@/contexts/CartContext";
 import { initTheme } from "@platform-core/utils";
-import { applyFriendlyZodMessages } from "@acme/lib";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
-import "./globals.css";
-
 // Ensure friendly Zod messages for all validations
-applyFriendlyZodMessages();
+import "@acme/lib/initZod";
+
+import "./globals.css";
 
 const geistSans = Geist({
   subsets: ["latin"],

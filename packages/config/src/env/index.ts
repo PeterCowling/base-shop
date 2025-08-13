@@ -1,9 +1,6 @@
 import { z } from "zod";
-import { applyFriendlyZodMessages } from "@acme/lib";
-import {
-  coreEnvBaseSchema,
-  depositReleaseEnvRefinement,
-} from "./core";
+import "@acme/lib/initZod";
+import { coreEnvBaseSchema, depositReleaseEnvRefinement } from "./core";
 import { paymentEnvSchema } from "./payments";
 import { shippingEnvSchema } from "./shipping";
 
@@ -14,10 +11,8 @@ export const mergeEnvSchemas = (
 export const envSchema = mergeEnvSchemas(
   coreEnvBaseSchema,
   paymentEnvSchema,
-  shippingEnvSchema,
+  shippingEnvSchema
 ).superRefine(depositReleaseEnvRefinement);
-
-applyFriendlyZodMessages();
 
 const parsed = envSchema.safeParse(process.env);
 if (!parsed.success) {

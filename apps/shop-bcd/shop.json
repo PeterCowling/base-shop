@@ -7,11 +7,16 @@
   "filterMappings": {},
   "priceOverrides": {},
   "localeOverrides": {},
+  "shippingProviders": ["dhl", "premier-shipping"],
   "analyticsEnabled": false,
   "plugins": {
     "paypal": {
       "clientId": "bcd-client",
       "secret": "bcd-secret"
+    },
+    "premier-shipping": {
+      "regions": ["north", "south"],
+      "hourWindows": ["09:00-10:00", "10:00-11:00"]
     }
   }
 }

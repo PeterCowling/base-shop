@@ -77,6 +77,13 @@ export const shopSchema = z
     type: z.string().optional(),
     paymentProviders: z.array(z.string()).optional(),
     shippingProviders: z.array(z.string()).optional(),
+    premierShipping: z
+      .object({
+        regions: z.array(z.string()),
+        hourWindows: z.array(z.string()),
+      })
+      .strict()
+      .optional(),
     taxProviders: z.array(z.string()).optional(),
     homeTitle: z.record(localeSchema, z.string()).optional(),
     homeDescription: z.record(localeSchema, z.string()).optional(),

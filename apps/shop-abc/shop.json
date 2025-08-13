@@ -7,11 +7,16 @@
   "filterMappings": {},
   "priceOverrides": {},
   "localeOverrides": {},
+  "shippingProviders": ["ups", "premier-shipping"],
   "analyticsEnabled": true,
   "plugins": {
     "paypal": {
       "clientId": "abc-client",
       "secret": "abc-secret"
+    },
+    "premier-shipping": {
+      "regions": ["north", "south"],
+      "hourWindows": ["09:00-10:00", "10:00-11:00"]
     }
   }
 }

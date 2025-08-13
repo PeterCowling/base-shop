@@ -67,7 +67,17 @@ export default async function CheckoutPage({
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
       <OrderSummary />
-      <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
+      <CheckoutForm
+        locale={lang}
+        taxRegion={settings.taxRegion}
+        shippingProviders={shop.shippingProviders ?? []}
+        premierRegions={
+          ((shop as any).plugins?.["premier-shipping"]?.regions as string[]) || []
+        }
+        premierHourWindows={
+          ((shop as any).plugins?.["premier-shipping"]?.hourWindows as string[]) || []
+        }
+      />
     </div>
   );
 }

@@ -21,11 +21,29 @@ const stripePromise = loadStripe(
   paymentEnv.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
 );
 
-type Props = { locale: "en" | "de" | "it"; taxRegion: string };
+type Props = {
+  locale: "en" | "de" | "it";
+  taxRegion: string;
+  shippingProviders?: string[];
+  premierRegions?: string[];
+  premierHourWindows?: string[];
+};
 
-type FormValues = { returnDate: string };
+type FormValues = {
+  returnDate: string;
+  shippingProvider: string;
+  region?: string;
+  pickupDate?: string;
+  hourWindow?: string;
+};
 
-export default function CheckoutForm({ locale, taxRegion }: Props) {
+export default function CheckoutForm({
+  locale,
+  taxRegion,
+  shippingProviders = [],
+  premierRegions = [],
+  premierHourWindows = [],
+}: Props) {
   const [clientSecret, setClientSecret] = useState<string>();
   const [fetchError, setFetchError] = useState(false);
   const [retry, setRetry] = useState(0);
@@ -34,9 +52,36 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
   const defaultDate = isoDateInNDays(7);
 
   const form = useForm<FormValues>({
-    defaultValues: { returnDate: defaultDate },
+    defaultValues: {
+      returnDate: defaultDate,
+      shippingProvider: shippingProviders[0] ?? "",
+      region: premierRegions[0],
+      pickupDate: defaultDate,
+      hourWindow: premierHourWindows[0],
+    },
   });
   const returnDate = form.watch("returnDate");
+  const provider = form.watch("shippingProvider");
+  const region = form.watch("region");
+  const pickupDate = form.watch("pickupDate");
+  const hourWindow = form.watch("hourWindow");
+
+  useEffect(() => {
+    if (provider === "premier-shipping" && region && pickupDate && hourWindow) {
+      fetchJson("/api/shipping-rate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          provider,
+          region,
+          date: pickupDate,
+          hourWindow,
+        }),
+      }).catch(() => {
+        /* ignore */
+      });
+    }
+  }, [provider, region, pickupDate, hourWindow]);
 
   /* --- create session on mount or when returnDate changes --- */
   useEffect(() => {
@@ -96,7 +141,13 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
       options={{ clientSecret, locale: locale as StripeElementLocale }}
       key={clientSecret} // re-mount if locale changes
     >
-      <PaymentForm form={form} locale={locale} />
+      <PaymentForm
+        form={form}
+        locale={locale}
+        shippingProviders={shippingProviders}
+        premierRegions={premierRegions}
+        premierHourWindows={premierHourWindows}
+      />
     </Elements>
   );
 }
@@ -106,11 +157,17 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
 function PaymentForm({
   form,
   locale,
+  shippingProviders,
+  premierRegions,
+  premierHourWindows,
 }: {
   form: UseFormReturn<FormValues>;
   locale: "en" | "de" | "it";
+  shippingProviders: string[];
+  premierRegions: string[];
+  premierHourWindows: string[];
 }) {
-  const { register, handleSubmit } = form;
+  const { register, handleSubmit, watch } = form;
   const stripe = useStripe();
   const elements = useElements();
   const t = useTranslations();
@@ -140,8 +197,61 @@ function PaymentForm({
     }
   });
 
+  const provider = watch("shippingProvider");
+
   return (
     <form onSubmit={onSubmit} className="space-y-6">
+      <label className="block text-sm">
+        Shipping Provider
+        <select
+          {...register("shippingProvider")}
+          className="block w-full border px-2 py-1"
+        >
+          {shippingProviders.map((p) => (
+            <option key={p} value={p}>
+              {p}
+            </option>
+          ))}
+        </select>
+      </label>
+      {provider === "premier-shipping" && (
+        <>
+          <label className="block text-sm">
+            Region
+            <select
+              {...register("region")}
+              className="block w-full border px-2 py-1"
+            >
+              {premierRegions.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block text-sm">
+            Pickup Date
+            <input
+              type="date"
+              {...register("pickupDate")}
+              className="block w-full border px-2 py-1"
+            />
+          </label>
+          <label className="block text-sm">
+            Time Window
+            <select
+              {...register("hourWindow")}
+              className="block w-full border px-2 py-1"
+            >
+              {premierHourWindows.map((h) => (
+                <option key={h} value={h}>
+                  {h}
+                </option>
+              ))}
+            </select>
+          </label>
+        </>
+      )}
       <label className="block text-sm">
         {t("checkout.return")}
         <input

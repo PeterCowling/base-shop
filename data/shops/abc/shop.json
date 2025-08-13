@@ -5,7 +5,11 @@
   "themeId": "base",
   "themeOverrides": {},
   "filterMappings": {},
-  "shippingProviders": ["ups"],
+  "shippingProviders": ["ups", "premier-shipping"],
+  "premierShipping": {
+    "regions": ["north", "south"],
+    "hourWindows": ["09:00-10:00", "10:00-11:00"]
+  },
   "taxProviders": ["taxjar"],
   "priceOverrides": {},
   "localeOverrides": {}

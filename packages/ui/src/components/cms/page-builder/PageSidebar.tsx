@@ -32,6 +32,12 @@ const PageSidebar = ({ components, selectedId, dispatch }: Props) => {
         heightDesktop?: string;
         heightTablet?: string;
         heightMobile?: string;
+        marginDesktop?: string;
+        marginTablet?: string;
+        marginMobile?: string;
+        paddingDesktop?: string;
+        paddingTablet?: string;
+        paddingMobile?: string;
       },
     ) =>
       dispatch({ type: "resize", id: selectedId, ...size }),

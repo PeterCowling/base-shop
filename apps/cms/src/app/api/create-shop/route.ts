@@ -3,6 +3,7 @@ import { createNewShop } from "@cms/actions/createShop.server";
 import { createShopOptionsSchema } from "@platform-core/createShop";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { parseJsonBody } from "@shared-utils";
 
 /**
  * POST /cms/api/create-shop
@@ -18,21 +19,12 @@ export async function POST(req: Request) {
   /* ------------------------------------------------------------------
    *  Parse request and delegate to the server action
    * ---------------------------------------------------------------- */
+  const schema = createShopOptionsSchema.extend({ id: z.string() });
+  const parsed = await parseJsonBody(req, schema);
+  if (!parsed.success) return parsed.response;
+
   try {
-    const body = await req.json();
-    const parsed = createShopOptionsSchema
-      .extend({ id: z.string() })
-      .safeParse(body);
-
-    if (!parsed.success) {
-      const message = parsed.error.issues
-        .map((i) => i.message)
-        .join(", ");
-      return NextResponse.json({ error: message }, { status: 400 });
-    }
-
     const { id, ...options } = parsed.data;
-
     const deployment = await createNewShop(id, options);
 
     /* --------------------------------------------------------------

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { pricingSchema } from "@acme/types";
 import { writePricing } from "@platform-core/repositories/pricing.server";
+import { parseJsonBody } from "@shared-utils";
 
 export async function POST(
   req: NextRequest,
@@ -12,15 +13,9 @@ export async function POST(
   if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
+  const parsed = await parseJsonBody(req, pricingSchema);
+  if (!parsed.success) return parsed.response;
   try {
-    const body = await req.json();
-    const parsed = pricingSchema.safeParse(body);
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: parsed.error.flatten().formErrors.join(", ") },
-        { status: 400 }
-      );
-    }
     await writePricing(parsed.data);
     return NextResponse.json({ success: true });
   } catch (err) {

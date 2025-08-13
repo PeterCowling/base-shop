@@ -11,6 +11,7 @@ import {
   type StepStatus,
 } from "@cms/app/cms/wizard/schema";
 import { z } from "zod";
+import { parseJsonBody } from "@shared-utils";
 
 interface UserRecord {
   state: unknown;
@@ -90,12 +91,9 @@ export async function PUT(req: Request): Promise<NextResponse> {
   if (!session || !session.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const parsed = await parseJsonBody(req, putBodySchema);
+  if (!parsed.success) return parsed.response;
   try {
-    const body = await req.json().catch(() => ({}));
-    const parsed = putBodySchema.safeParse(body);
-    if (!parsed.success) {
-      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-    }
     const { stepId, data, completed } = parsed.data;
     const db = await readDb();
     let record: UserRecord = { state: {}, completed: {} };
@@ -132,12 +130,9 @@ export async function PATCH(req: Request): Promise<NextResponse> {
   if (!session || !session.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  const parsed = await parseJsonBody(req, patchBodySchema);
+  if (!parsed.success) return parsed.response;
   try {
-    const body = await req.json().catch(() => ({}));
-    const parsed = patchBodySchema.safeParse(body);
-    if (!parsed.success) {
-      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-    }
     const { stepId, completed } = parsed.data;
     const db = await readDb();
     let record: UserRecord = { state: {}, completed: {} };

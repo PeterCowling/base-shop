@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { parseJsonBody } from "@shared-utils";
 import bcrypt from "bcryptjs";
 import { getCustomerSession, hasPermission, validateCsrfToken } from "@auth";
 import { getUserById, updatePassword } from "@acme/platform-core/users";
@@ -34,11 +35,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
   }
 
-  const json = await req.json();
-  const parsed = ChangePasswordSchema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
-  }
+  const parsed = await parseJsonBody(req, ChangePasswordSchema);
+  if (!parsed.success) return parsed.response;
 
   const { currentPassword, newPassword } = parsed.data;
   const user = await getUserById(session.customerId);

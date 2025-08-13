@@ -7,6 +7,7 @@ import path from "node:path";
 import { z } from "zod";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { setupSanityBlog } from "@cms/actions/setupSanityBlog";
+import { parseJsonBody } from "@shared-utils";
 
 const schema = z.record(z.string(), z.string());
 
@@ -19,12 +20,9 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
-    const body = schema.safeParse(await req.json());
+    const body = await parseJsonBody(req, schema);
     if (!body.success) {
-      return NextResponse.json(
-        { error: body.error.message },
-        { status: 400 }
-      );
+      return body.response;
     }
     const { shopId } = await context.params;
     const dir = path.join(resolveDataRoot(), shopId);

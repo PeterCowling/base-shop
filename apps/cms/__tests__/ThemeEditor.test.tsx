@@ -197,15 +197,16 @@ describe("ThemeEditor", () => {
     mock.mockClear();
     mock.mockImplementation(async (_shop: string, fd: FormData) => {
       const overrides = JSON.parse(fd.get("themeOverrides") as string);
+      const defaults = JSON.parse(fd.get("themeDefaults") as string);
       return {
         shop: {
           id: "test",
           name: "test",
           catalogFilters: [],
           themeId: "base",
-          themeDefaults: tokensByTheme.base,
+          themeDefaults: defaults,
           themeOverrides: overrides,
-          themeTokens: { ...tokensByTheme.base, ...overrides },
+          themeTokens: { ...defaults, ...overrides },
           filterMappings: {},
           priceOverrides: {},
           localeOverrides: {},
@@ -366,5 +367,52 @@ describe("ThemeEditor", () => {
       selector: 'input[type="color"]',
     });
     expect(overrideInput).toHaveValue("#ff0000");
+  });
+
+  it("updates theme defaults and tokens when theme changes", async () => {
+    const tokensByTheme = {
+      base: { "--color-bg": "#ffffff" },
+      dark: { "--color-bg": "#222222" },
+    };
+    const mock = updateShop as jest.Mock;
+    mock.mockClear();
+    mock.mockImplementation(async (_shop: string, fd: FormData) => {
+      const defaults = JSON.parse(fd.get("themeDefaults") as string);
+      const overrides = JSON.parse(fd.get("themeOverrides") as string);
+      return {
+        shop: {
+          themeDefaults: defaults,
+          themeOverrides: overrides,
+          themeTokens: { ...defaults, ...overrides },
+        },
+      } as any;
+    });
+
+    render(
+      <ThemeEditor
+        shop="test"
+        themes={["base", "dark"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={{}}
+        presets={[]}
+      />,
+    );
+
+    fireEvent.change(screen.getByLabelText(/theme/i), {
+      target: { value: "dark" },
+    });
+
+    const colorInput = screen.getByLabelText("--color-bg", {
+      selector: 'input[type="color"]',
+    });
+    fireEvent.change(colorInput, { target: { value: "#000000" } });
+
+    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
+
+    await waitFor(() => expect(mock).toHaveBeenCalled());
+    const result = await mock.mock.results[0].value;
+    expect(result.shop.themeDefaults["--color-bg"]).toBe("#222222");
+    expect(result.shop.themeTokens["--color-bg"]).toBe("#000000");
   });
 });

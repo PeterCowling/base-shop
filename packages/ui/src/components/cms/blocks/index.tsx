@@ -32,6 +32,7 @@ import SearchBar from "./SearchBar";
 import ProductComparison from "./ProductComparisonBlock";
 import FeaturedProductBlock from "./FeaturedProductBlock";
 import GiftCardBlock from "./GiftCardBlock";
+import PopupModal from "./PopupModal";
 
 export {
   BlogListing,
@@ -68,6 +69,7 @@ export {
   ProductComparison,
   FeaturedProductBlock,
   GiftCardBlock,
+  PopupModal,
 };
 
 export * from "./atoms";

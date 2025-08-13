@@ -43,6 +43,9 @@ const palette = {
       type: t,
       label: t.replace(/([A-Z])/g, " $1").trim(),
     })),
+  overlays: [
+    { type: "PopupModal", label: "Popup Modal" },
+  ] as { type: PageComponent["type"]; label: string }[],
 } as const;
 
 const PaletteItem = memo(function PaletteItem({

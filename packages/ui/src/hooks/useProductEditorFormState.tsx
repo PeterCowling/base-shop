@@ -32,6 +32,8 @@ export interface UseProductEditorFormReturn {
   uploader: ReactElement;
   removeMedia: (index: number) => void;
   moveMedia: (from: number, to: number) => void;
+  addVariantValue: (attr: string) => void;
+  removeVariantValue: (attr: string, index: number) => void;
 }
 
 /* ------------------------------------------------------------------ */
@@ -102,14 +104,16 @@ export function useProductEditorFormState(
         }
 
         if (name.startsWith("variant_")) {
-          const key = name.replace(/^variant_/, "");
-          const values = value
-            .split(",")
-            .map((v) => v.trim())
-            .filter(Boolean);
+          const match = name.match(/^variant_(.+)_(\d+)$/);
+          if (!match) return prev;
+          const [, key, idxStr] = match;
+          const idx = Number(idxStr);
+          const existing = prev.variants[key] ?? [];
+          const next = [...existing];
+          next[idx] = value;
           return {
             ...prev,
-            variants: { ...prev.variants, [key]: values },
+            variants: { ...prev.variants, [key]: next },
           };
         }
 
@@ -135,7 +139,7 @@ export function useProductEditorFormState(
     fd.append("publish", publishTargets.join(","));
 
     Object.entries(product.variants).forEach(([k, vals]) => {
-      fd.append(`variant_${k}`, vals.join(","));
+      fd.append(`variant_${k}`, vals.filter(Boolean).join(","));
     });
     return fd;
   }, [product, publishTargets, locales]);
@@ -178,6 +182,29 @@ export function useProductEditorFormState(
     });
   }, []);
 
+  const addVariantValue = useCallback((attr: string) => {
+    setProduct((prev) => ({
+      ...prev,
+      variants: {
+        ...prev.variants,
+        [attr]: [...(prev.variants[attr] ?? []), ""],
+      },
+    }));
+  }, []);
+
+  const removeVariantValue = useCallback((attr: string, index: number) => {
+    setProduct((prev) => {
+      const values = prev.variants[attr] ?? [];
+      return {
+        ...prev,
+        variants: {
+          ...prev.variants,
+          [attr]: values.filter((_, i) => i !== index),
+        },
+      };
+    });
+  }, []);
+
   /* ---------- public API ------------------------------------------- */
   return {
     product,
@@ -190,5 +217,7 @@ export function useProductEditorFormState(
     uploader,
     removeMedia,
     moveMedia,
+    addVariantValue,
+    removeVariantValue,
   };
 }

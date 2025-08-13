@@ -6,6 +6,10 @@ import { updateShop } from "@cms/actions/shops.server";
 jest.mock("@cms/actions/shops.server", () => ({
   updateShop: jest.fn(),
 }));
+jest.mock("../src/app/cms/shop/[shop]/themes/page", () => ({
+  savePreset: jest.fn(),
+  deletePreset: jest.fn(),
+}));
 jest.mock(
   "@/components/atoms/shadcn",
   () => ({
@@ -28,6 +32,7 @@ describe("ThemeEditor", () => {
         tokensByTheme={tokensByTheme}
         initialTheme="base"
         initialOverrides={initialOverrides}
+        presets={[]}
       />
     );
 
@@ -60,6 +65,7 @@ describe("ThemeEditor", () => {
         tokensByTheme={tokensByTheme}
         initialTheme="base"
         initialOverrides={initialOverrides}
+        presets={[]}
       />
     );
 
@@ -85,6 +91,7 @@ describe("ThemeEditor", () => {
         tokensByTheme={tokensByTheme}
         initialTheme="base"
         initialOverrides={{}}
+        presets={[]}
       />
     );
 
@@ -110,6 +117,7 @@ describe("ThemeEditor", () => {
         tokensByTheme={tokensByTheme}
         initialTheme="base"
         initialOverrides={{}}
+        presets={[]}
       />
     );
 
@@ -123,7 +131,7 @@ describe("ThemeEditor", () => {
     });
     fireEvent.change(darkInput, { target: { value: "#00ff00" } });
 
-    fireEvent.click(screen.getByRole("button", { name: /save/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
 
     await waitFor(() => expect(mock).toHaveBeenCalled());
     const fd = mock.mock.calls[0][1] as FormData;
@@ -145,10 +153,11 @@ describe("ThemeEditor", () => {
         tokensByTheme={tokensByTheme}
         initialTheme="base"
         initialOverrides={{}}
+        presets={[]}
       />
     );
 
-    fireEvent.click(screen.getByRole("button", { name: /save/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
 
     await waitFor(() => expect(mock).toHaveBeenCalled());
     const fd = mock.mock.calls[0][1] as FormData;
@@ -164,6 +173,7 @@ describe("ThemeEditor", () => {
         tokensByTheme={tokensByTheme}
         initialTheme="base"
         initialOverrides={{}}
+        presets={[]}
       />
     );
 
@@ -186,6 +196,7 @@ describe("ThemeEditor", () => {
         tokensByTheme={tokensByTheme}
         initialTheme="base"
         initialOverrides={{}}
+        presets={[]}
       />
     );
 
@@ -194,7 +205,7 @@ describe("ThemeEditor", () => {
     });
     fireEvent.change(colorInput, { target: { value: "#000000" } });
 
-    fireEvent.click(screen.getByRole("button", { name: /save/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
 
     await waitFor(() => expect(mock).toHaveBeenCalled());
     const fd = mock.mock.calls[0][1] as FormData;
@@ -212,6 +223,7 @@ describe("ThemeEditor", () => {
         tokensByTheme={tokensByTheme}
         initialTheme="base"
         initialOverrides={{}}
+        presets={[]}
       />
     );
 
@@ -224,5 +236,75 @@ describe("ThemeEditor", () => {
       window.postMessage({ token: "--color-primary" }, "*");
     });
     await waitFor(() => expect(colorInput).toHaveFocus());
+  });
+
+  it("persists overrides after clicking preview token and reloading", async () => {
+    const tokensByTheme = { base: { "--color-bg": "#ffffff" } };
+    const mock = updateShop as jest.Mock;
+    mock.mockClear();
+    mock.mockResolvedValue({});
+
+    const { unmount } = render(
+      <ThemeEditor
+        shop="test"
+        themes={["base"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={{}}
+        presets={[]}
+      />
+    );
+
+    const iframe = screen.getByTitle("shop-preview") as HTMLIFrameElement;
+    let clickHandler: any;
+    const docStub = {
+      documentElement: { style: { setProperty: jest.fn() } },
+      addEventListener: (event: string, handler: any) => {
+        if (event === "click") clickHandler = handler;
+      },
+      removeEventListener: jest.fn(),
+      body: document.createElement("body"),
+    } as any;
+    docStub.body.innerHTML = '<div data-token="--color-bg"></div>';
+    Object.defineProperty(iframe, "contentDocument", { value: docStub });
+    act(() => {
+      fireEvent.load(iframe);
+    });
+    const tokenEl = docStub.body.querySelector('[data-token="--color-bg"]') as HTMLElement;
+    const colorInput = screen.getByLabelText("--color-bg", {
+      selector: 'input[type="color"]',
+    });
+    (colorInput as any).scrollIntoView = jest.fn();
+    clickHandler({ target: tokenEl, preventDefault: jest.fn(), stopPropagation: jest.fn() });
+    await waitFor(() => expect(colorInput).toHaveFocus());
+
+    fireEvent.change(colorInput, { target: { value: "#ff0000" } });
+    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
+
+    await waitFor(() => expect(mock).toHaveBeenCalled());
+    const fd = mock.mock.calls[0][1] as FormData;
+    const overridesSaved = JSON.parse(fd.get("themeOverrides") as string);
+    expect(overridesSaved).toEqual({ "--color-bg": "#ff0000" });
+
+    unmount();
+
+    render(
+      <ThemeEditor
+        shop="test"
+        themes={["base"]}
+        tokensByTheme={tokensByTheme}
+        initialTheme="base"
+        initialOverrides={overridesSaved}
+        presets={[]}
+      />
+    );
+
+    const bgLabel = screen.getByText("--color-bg").closest("label")!;
+    const defaultInput = within(bgLabel).getByRole("textbox");
+    expect(defaultInput).toHaveValue("#ffffff");
+    const overrideInput = within(bgLabel).getByLabelText("--color-bg", {
+      selector: 'input[type="color"]',
+    });
+    expect(overrideInput).toHaveValue("#ff0000");
   });
 });

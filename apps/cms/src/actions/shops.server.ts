@@ -323,6 +323,37 @@ export async function updateUpsReturns(
   return { settings: updated };
 }
 
+const premierDeliverySchema = z
+  .object({
+    regions: z
+      .string()
+      .transform((v) => v.split(/\s*,\s*/).filter(Boolean)),
+    windows: z
+      .string()
+      .transform((v) => v.split(/\s*,\s*/).filter(Boolean)),
+  })
+  .strict();
+
+export async function updatePremierDelivery(
+  shop: string,
+  formData: FormData
+): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
+  await ensureAuthorized();
+  const parsed = premierDeliverySchema.safeParse(
+    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+  );
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+  const current = await getShopSettings(shop);
+  const updated: ShopSettings = {
+    ...current,
+    premierDelivery: parsed.data,
+  };
+  await saveShopSettings(shop, updated);
+  return { settings: updated };
+}
+
 const aiCatalogFormSchema = z
   .object({
     enabled: z.preprocess((v) => v === "on", z.boolean()),

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { Input } from "../atoms/primitives/input";
@@ -17,6 +19,8 @@ export interface DeliverySchedulerProps
     date: string;
     time: string;
   }) => void;
+  /** Optional preset windows (e.g. `10-11`, `11-12`) */
+  windows?: string[];
 }
 
 export function DeliveryScheduler({
@@ -74,11 +78,26 @@ export function DeliveryScheduler({
       </label>
       <label className="flex flex-col gap-1 text-sm">
         Time
-        <Input
-          type="time"
-          value={time}
-          onChange={(e) => handleTime(e.target.value)}
-        />
+        {windows && windows.length ? (
+          <Select value={time} onValueChange={handleTime}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select window" />
+            </SelectTrigger>
+            <SelectContent>
+              {windows.map((w) => (
+                <SelectItem key={w} value={w}>
+                  {w}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ) : (
+          <Input
+            type="time"
+            value={time}
+            onChange={(e) => handleTime(e.target.value)}
+          />
+        )}
       </label>
     </div>
   );

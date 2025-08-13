@@ -38,8 +38,10 @@ export async function readShop(shop: string): Promise<Shop> {
               ...baseTokens,
               ...(await loadThemeTokens(data.themeId)),
             };
+      const overrides = data.themeOverrides ?? {};
       data.themeDefaults = defaults;
-      data.themeTokens = { ...defaults, ...data.themeOverrides };
+      data.themeOverrides = overrides;
+      data.themeTokens = { ...defaults, ...overrides };
       if (!data.navigation) data.navigation = [];
       return data as Shop;
     }
@@ -57,8 +59,10 @@ export async function readShop(shop: string): Promise<Shop> {
               ...baseTokens,
               ...(await loadThemeTokens(parsed.data.themeId)),
             };
+      const overrides = parsed.data.themeOverrides ?? {};
       parsed.data.themeDefaults = defaults;
-      parsed.data.themeTokens = { ...defaults, ...parsed.data.themeOverrides };
+      parsed.data.themeOverrides = overrides;
+      parsed.data.themeTokens = { ...defaults, ...overrides };
       if (!parsed.data.navigation) parsed.data.navigation = [];
       return parsed.data as Shop;
     }

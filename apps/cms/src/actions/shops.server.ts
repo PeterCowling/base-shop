@@ -52,8 +52,8 @@ export async function updateShop(
   const overrides = data.themeOverrides as Record<string, string>;
   const themeDefaults =
     current.themeId !== data.themeId
-      ? syncTheme(shop, data.themeId)
-      : loadTokens(data.themeId);
+      ? await syncTheme(shop, data.themeId)
+      : await loadTokens(data.themeId);
   const themeTokens = { ...themeDefaults, ...overrides };
 
   const patch: Partial<Shop> & { id: string } = {

@@ -11,7 +11,7 @@ export const VerifySchema = z.object({ token: z.string() }).strict();
 export type VerifyInput = z.infer<typeof VerifySchema>;
 
 export async function POST(req: Request) {
-  const parsed = await parseJsonBody<VerifyInput>(req, VerifySchema);
+  const parsed = await parseJsonBody<VerifyInput>(req, VerifySchema, "1mb");
   if (!parsed.success) return parsed.response;
 
   const csrfToken = req.headers.get("x-csrf-token");

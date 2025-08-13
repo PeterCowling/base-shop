@@ -6,6 +6,9 @@
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
+  "dependencies": {
+    "raw-body": "2.4.1"
+  },
   "devDependencies": {
     "next": "^15.3.4"
   }

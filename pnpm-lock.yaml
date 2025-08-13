@@ -561,6 +561,10 @@ importers:
         version: 6.29.1
 
   packages/shared-utils:
+    dependencies:
+      raw-body:
+        specifier: 2.4.1
+        version: 2.4.1
     devDependencies:
       next:
         specifier: ^15.3.4

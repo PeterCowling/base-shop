@@ -141,7 +141,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   /* 2️⃣ Parse optional body ------------------------------------------------- */
-  const parsed = await parseJsonBody(req, schema);
+  const parsed = await parseJsonBody(req, schema, "1mb");
   if (!parsed.success) return parsed.response;
 
   const {

@@ -8,6 +8,7 @@ import path from "node:path";
 import { z } from "zod";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { setupSanityBlog } from "@cms/actions/setupSanityBlog";
+import { parseJsonBody } from "@shared-utils";
 
 const schema = z.record(z.string(), z.string());
 
@@ -20,29 +21,25 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
-    const body = schema.safeParse(await req.json());
-    if (!body.success) {
-      return NextResponse.json(
-        { error: body.error.message },
-        { status: 400 }
-      );
-    }
+    const parsed = await parseJsonBody(req, schema);
+    if (!parsed.success) return parsed.response;
+    const data = parsed.data;
     const { shopId } = await context.params;
     const dir = path.join(resolveDataRoot(), shopId);
     await fs.mkdir(dir, { recursive: true });
-    const lines = Object.entries(body.data)
+    const lines = Object.entries(data)
       .map(([k, v]) => `${k}=${String(v)}`)
       .join("\n");
     await fs.writeFile(path.join(dir, ".env"), lines, "utf8");
     if (
-      body.data.SANITY_PROJECT_ID &&
-      body.data.SANITY_DATASET &&
-      body.data.SANITY_TOKEN
+      data.SANITY_PROJECT_ID &&
+      data.SANITY_DATASET &&
+      data.SANITY_TOKEN
     ) {
       await setupSanityBlog({
-        projectId: body.data.SANITY_PROJECT_ID,
-        dataset: body.data.SANITY_DATASET,
-        token: body.data.SANITY_TOKEN,
+        projectId: data.SANITY_PROJECT_ID,
+        dataset: data.SANITY_DATASET,
+        token: data.SANITY_TOKEN,
       }).catch((err) => {
         console.error("[env] failed to setup Sanity blog", err);
       });

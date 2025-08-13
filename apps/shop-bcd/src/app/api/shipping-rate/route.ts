@@ -4,6 +4,7 @@ import { getShippingRate } from "@acme/platform-core/shipping";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { parseJsonBody } from "@shared-utils";
 
 export const runtime = "edge";
 
@@ -17,11 +18,8 @@ const schema = z
   .strict();
 
 export async function POST(req: NextRequest) {
-  const json = await req.json();
-  const parsed = schema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
-  }
+  const parsed = await parseJsonBody(req, schema);
+  if (!parsed.success) return parsed.response;
 
   try {
     const rate = await getShippingRate(parsed.data);

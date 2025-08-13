@@ -8,6 +8,7 @@ import {
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { parseJsonBody } from "@shared-utils";
 
 export const runtime = "edge";
 
@@ -38,11 +39,8 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const json = await req.json();
-  const parsed = schema.safeParse(json);
-  if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
-  }
+  const parsed = await parseJsonBody(req, schema);
+  if (!parsed.success) return parsed.response;
 
   await updateCustomerProfile(session.customerId, parsed.data);
   const profile = await getCustomerProfile(session.customerId);

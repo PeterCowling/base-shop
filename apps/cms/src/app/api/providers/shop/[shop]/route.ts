@@ -6,6 +6,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { z } from "zod";
+import { parseJsonBody } from "@shared-utils";
 
 const schema = z
   .object({
@@ -23,13 +24,8 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
-    const parsed = schema.safeParse(await req.json());
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: parsed.error.message },
-        { status: 400 }
-      );
-    }
+    const parsed = await parseJsonBody(req, schema);
+    if (!parsed.success) return parsed.response;
     const { shop } = await context.params;
     const dir = path.join(resolveDataRoot(), shop);
     await fs.mkdir(dir, { recursive: true });

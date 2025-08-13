@@ -89,6 +89,7 @@ export function LiveChatWidget({
           widthClass,
           bottomClass
         )}
+        data-token="--color-bg"
       >
         {" "}
         <DialogHeader>
@@ -107,6 +108,9 @@ export function LiveChatWidget({
                     ? "bg-primary text-primary-foreground"
                     : "bg-muted"
                 )}
+                data-token={
+                  m.sender === "user" ? "--color-primary" : "--color-muted"
+                }
               >
                 {m.text}
               </div>

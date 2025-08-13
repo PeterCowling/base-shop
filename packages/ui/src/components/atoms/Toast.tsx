@@ -17,11 +17,17 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
           "bg-fg text-bg fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-md px-4 py-2 shadow-lg",
           className
         )}
+        data-token="--color-fg"
         {...props}
       >
-        {message}
+        <span data-token="--color-bg">{message}</span>
         {onClose && (
-          <button type="button" onClick={onClose} className="ml-2 font-bold">
+          <button
+            type="button"
+            onClick={onClose}
+            className="ml-2 font-bold"
+            data-token="--color-bg"
+          >
             ×
           </button>
         )}

@@ -31,6 +31,7 @@ export function StickyAddToCartBar({
         padding,
         className
       )}
+      data-token="--color-bg"
       {...props}
     >
       <div className="flex flex-col">

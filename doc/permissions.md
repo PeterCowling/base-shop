@@ -17,6 +17,41 @@ This guide lists built-in permissions and their default role mappings.
 | `manage_orders` | admin, ShopAdmin |
 | `manage_sessions` | admin, ShopAdmin |
 
+## Sample role scenarios
+
+### Viewer
+- Can browse products (`view_products`) but cannot add items to the cart or checkout.
+
+```tsx
+import { hasPermission } from "@acme/auth";
+
+if (!hasPermission(role, "add_to_cart")) {
+  return <button disabled>Login to buy</button>;
+}
+```
+
+### Customer
+- Typical shopper with permission to manage a cart and complete checkout.
+
+```ts
+import { hasPermission } from "@acme/auth";
+
+if (hasPermission(role, "checkout")) {
+  // proceed with checkout
+}
+```
+
+### Admin
+- Includes all customer abilities plus order and session management.
+
+```ts
+import { hasPermission } from "@acme/auth";
+
+if (hasPermission(role, "manage_orders")) {
+  // render link to admin dashboard
+}
+```
+
 ## read
 Allows viewing CMS content and APIs.
 

@@ -1,7 +1,11 @@
 // apps/shop-abc/__tests__/checkoutPermission.test.ts
-import { encodeCartCookie } from "@platform-core/src/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { POST } from "../src/app/api/checkout-session/route";
+
+jest.mock("@platform-core/src/cartCookie", () => ({
+  CART_COOKIE: "cart",
+  decodeCartCookie: () => "test",
+}));
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -48,17 +52,23 @@ afterEach(() => {
 test("denies checkout without permission", async () => {
   const sku = PRODUCTS[0];
   mockCart = { [sku.id]: { sku, qty: 1 } };
-  const cookie = encodeCartCookie("test");
   (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "c1", role: "viewer" });
-  const res = await POST(createRequest(cookie));
+  const res = await POST(createRequest("cookie"));
   expect(res.status).toBe(403);
 });
 
 test("allows checkout with permission", async () => {
   const sku = PRODUCTS[0];
   mockCart = { [sku.id]: { sku, qty: 1 } };
-  const cookie = encodeCartCookie("test");
   (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "c1", role: "customer" });
-  const res = await POST(createRequest(cookie));
+  const res = await POST(createRequest("cookie"));
+  expect(res.status).toBe(200);
+});
+
+test("allows checkout for admin role", async () => {
+  const sku = PRODUCTS[0];
+  mockCart = { [sku.id]: { sku, qty: 1 } };
+  (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "c1", role: "admin" });
+  const res = await POST(createRequest("cookie"));
   expect(res.status).toBe(200);
 });

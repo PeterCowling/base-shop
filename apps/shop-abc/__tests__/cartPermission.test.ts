@@ -39,3 +39,9 @@ test("allows access with manage_cart permission", async () => {
   const res = await GET(createRequest());
   expect(res.status).toBe(200);
 });
+
+test("allows access for admin role", async () => {
+  (getCustomerSession as jest.Mock).mockResolvedValue({ customerId: "c1", role: "admin" });
+  const res = await GET(createRequest());
+  expect(res.status).toBe(200);
+});

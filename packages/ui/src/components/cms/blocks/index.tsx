@@ -30,6 +30,7 @@ import ImageSlider from "./ImageSlider";
 import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
 import ProductComparison from "./ProductComparisonBlock";
+import FeaturedProductBlock from "./FeaturedProductBlock";
 
 export {
   BlogListing,
@@ -64,6 +65,7 @@ export {
   Tabs,
   CollectionList,
   ProductComparison,
+  FeaturedProductBlock,
 };
 
 export * from "./atoms";

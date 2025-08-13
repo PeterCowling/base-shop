@@ -16,6 +16,9 @@ import ValueProps from "./ValueProps";
 import RecommendationCarousel, {
   getRuntimeProps as getRecommendationCarouselRuntimeProps,
 } from "./RecommendationCarousel";
+import FeaturedProductBlock, {
+  getRuntimeProps as getFeaturedProductRuntimeProps,
+} from "./FeaturedProductBlock";
 import AnnouncementBar from "./AnnouncementBarBlock";
 import MapBlock from "./MapBlock";
 import StoreLocatorBlock from "./StoreLocatorBlock";
@@ -48,6 +51,10 @@ export const organismRegistry = {
   RecommendationCarousel: {
     component: RecommendationCarousel,
     getRuntimeProps: getRecommendationCarouselRuntimeProps,
+  },
+  FeaturedProduct: {
+    component: FeaturedProductBlock,
+    getRuntimeProps: getFeaturedProductRuntimeProps,
   },
   ImageSlider: { component: ImageSlider },
   CollectionList: { component: CollectionList },

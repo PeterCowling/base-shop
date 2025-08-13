@@ -20,6 +20,7 @@ import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { z } from "zod";
 import { shippingSchema, billingSchema } from "@platform-core/schemas/address";
+import { parseJsonBody } from "@shared-utils";
 
 /* ------------------------------------------------------------------ *
  *  Types
@@ -139,13 +140,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   /* 2️⃣ Parse optional body ------------------------------------------------- */
-  const parsed = schema.safeParse(await req.json().catch(() => undefined));
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: parsed.error.flatten().fieldErrors },
-      { status: 400 }
-    );
-  }
+  const parsed = await parseJsonBody(req, schema);
+  if (!parsed.success) return parsed.response;
 
   const {
     returnDate,

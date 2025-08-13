@@ -14,6 +14,7 @@ import {
   clearLoginAttempts,
   clearMfaAttempts,
 } from "../../../../middleware";
+import { parseJsonBody } from "@shared-utils";
 
 const schema = z
   .object({ token: z.string(), customerId: z.string().optional() })
@@ -25,9 +26,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (!valid)
     return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
 
-  const parsed = schema.safeParse(await req.json());
-  if (!parsed.success)
-    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+  const parsed = await parseJsonBody(req, schema);
+  if (!parsed.success) return parsed.response;
   const { token, customerId } = parsed.data;
   if (!token) return NextResponse.json({ error: "Token required" }, { status: 400 });
 

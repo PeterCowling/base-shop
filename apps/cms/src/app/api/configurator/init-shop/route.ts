@@ -6,6 +6,7 @@ import path from "node:path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { validateShopName } from "@platform-core/src/shops";
 import { z } from "zod";
+import { parseJsonBody } from "@shared-utils";
 
 /**
  * POST /cms/api/configurator/init-shop
@@ -46,11 +47,8 @@ export async function POST(req: Request) {
       })
       .strict();
 
-    const parsed = schema.safeParse(await req.json());
-    if (!parsed.success) {
-      const message = parsed.error.issues.map((i) => i.message).join(", ");
-      return NextResponse.json({ error: message }, { status: 400 });
-    }
+    const parsed = await parseJsonBody(req, schema);
+    if (!parsed.success) return parsed.response;
 
     const { id, csv, categories } = parsed.data;
     const dir = path.join(resolveDataRoot(), id);

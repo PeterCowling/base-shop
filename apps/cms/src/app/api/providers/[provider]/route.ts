@@ -3,6 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
 import { resolveDataRoot } from "@platform-core/dataRoot";
+import "@acme/lib/initZod";
 
 const ParamsSchema = z.object({ shop: z.string(), code: z.string().optional() });
 

@@ -3,6 +3,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { getCustomerSession, validateCsrfToken } from "@auth";
 import { getUserById, updatePassword } from "@acme/platform-core/users";
+import "@acme/lib/initZod";
 
 const ChangePasswordSchema = z
   .object({

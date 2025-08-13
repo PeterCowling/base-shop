@@ -3,6 +3,7 @@ import fetch from "cross-fetch";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { z } from "zod";
+import "@acme/lib/initZod";
 const cliEnvSchema = envSchema.extend({
     CMS_SPACE_URL: z.string(),
     CMS_ACCESS_TOKEN: z.string(),

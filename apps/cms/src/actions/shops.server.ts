@@ -23,6 +23,7 @@ import {
 import { z } from "zod";
 import { shopSchema, type ShopForm } from "./schemas";
 import { ensureAuthorized } from "./common/auth";
+import "@acme/lib/initZod";
 
 export async function updateShop(
   shop: string,

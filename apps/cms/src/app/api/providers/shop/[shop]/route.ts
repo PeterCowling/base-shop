@@ -5,6 +5,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { z } from "zod";
+import "@acme/lib/initZod";
 
 const schema = z
   .object({

@@ -11,6 +11,7 @@ import {
   type StepStatus,
 } from "@cms/app/cms/wizard/schema";
 import { z } from "zod";
+import "@acme/lib/initZod";
 
 interface UserRecord {
   state: unknown;

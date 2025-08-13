@@ -14,6 +14,7 @@ import {
   clearLoginAttempts,
   clearMfaAttempts,
 } from "../../../../middleware";
+import "@acme/lib/initZod";
 
 const schema = z
   .object({ token: z.string(), customerId: z.string().optional() })

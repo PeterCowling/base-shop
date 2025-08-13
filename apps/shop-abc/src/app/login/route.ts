@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 import { parseJsonBody } from "@shared-utils";
 import { checkLoginRateLimit, clearLoginAttempts } from "../../middleware";
 import { getUserById } from "@acme/platform-core/users";
+import "@acme/lib/initZod";
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 

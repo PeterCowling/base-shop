@@ -3,6 +3,7 @@ import { createShopOptionsSchema } from "@platform-core/createShop";
 import { validateShopEnv } from "@platform-core/configurator";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import "@acme/lib/initZod";
 
 /**
  * POST /cms/api/configurator

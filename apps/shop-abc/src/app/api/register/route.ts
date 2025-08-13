@@ -7,6 +7,7 @@ import {
   getUserById,
   getUserByEmail,
 } from "@acme/platform-core/users";
+import "@acme/lib/initZod";
 
 const RegisterSchema = z.object({
   customerId: z.string(),

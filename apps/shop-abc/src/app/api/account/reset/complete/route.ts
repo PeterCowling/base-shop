@@ -9,6 +9,7 @@ import {
 } from "@acme/platform-core/users";
 import { validateCsrfToken } from "@auth";
 import { parseJsonBody } from "@shared-utils";
+import "@acme/lib/initZod";
 
 export const ResetCompleteSchema = z
   .object({

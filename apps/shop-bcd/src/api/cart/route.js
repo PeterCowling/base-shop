@@ -4,6 +4,7 @@ import { getProductById } from "@/lib/products";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
 import { z } from "zod";
+import "@acme/lib/initZod";
 export const runtime = "edge";
 const deleteSchema = z.object({ id: z.string() }).strict();
 // This simple handler echoes back the posted body and status 200.

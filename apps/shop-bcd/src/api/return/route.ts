@@ -7,6 +7,7 @@ import {
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import "@acme/lib/initZod";
 
 export const runtime = "edge";
 

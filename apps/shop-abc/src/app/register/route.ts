@@ -12,6 +12,7 @@ import { checkRegistrationRateLimit } from "../../middleware";
 import { validateCsrfToken } from "@auth";
 import { updateCustomerProfile } from "@acme/platform-core/customerProfiles";
 import { sendEmail } from "@acme/email";
+import "@acme/lib/initZod";
 
 const RegisterSchema = z
   .object({

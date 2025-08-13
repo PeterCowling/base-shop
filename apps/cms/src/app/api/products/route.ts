@@ -7,6 +7,7 @@ import {
 import type {
   ProductPublication,
 } from "@platform-core/src/products";
+import "@acme/lib/initZod";
 
 const searchSchema = z.object({
   q: z.string().optional(),

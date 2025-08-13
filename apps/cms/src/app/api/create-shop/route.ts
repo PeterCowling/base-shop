@@ -3,6 +3,7 @@ import { createNewShop } from "@cms/actions/createShop.server";
 import { createShopOptionsSchema } from "@platform-core/createShop";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import "@acme/lib/initZod";
 
 /**
  * POST /cms/api/create-shop

@@ -19,6 +19,7 @@ import { getTaxRate } from "@platform-core/tax";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { z } from "zod";
+import "@acme/lib/initZod";
 
 /* ------------------------------------------------------------------ *
  *  Types

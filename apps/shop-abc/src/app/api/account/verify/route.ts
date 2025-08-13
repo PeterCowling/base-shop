@@ -5,6 +5,7 @@ import crypto from "crypto";
 import { getUserById } from "@acme/platform-core/users";
 import { validateCsrfToken } from "@auth";
 import { parseJsonBody } from "@shared-utils";
+import "@acme/lib/initZod";
 
 export const VerifySchema = z.object({ token: z.string() }).strict();
 export type VerifyInput = z.infer<typeof VerifySchema>;

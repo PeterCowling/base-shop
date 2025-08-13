@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { applyFriendlyZodMessages } from "@acme/lib";
+import "@acme/lib/initZod";
 
 export const coreEnvSchema = z.object({
   NEXTAUTH_SECRET: z.string().optional(),
@@ -44,7 +44,6 @@ export const coreEnvSchema = z.object({
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
 });
 
-applyFriendlyZodMessages();
 
 const parsed = coreEnvSchema.safeParse(process.env);
 if (!parsed.success) {

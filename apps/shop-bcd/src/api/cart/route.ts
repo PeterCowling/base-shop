@@ -11,6 +11,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";
 import { z } from "zod";
+import "@acme/lib/initZod";
 
 export const runtime = "edge";
 

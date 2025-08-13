@@ -3,6 +3,7 @@ import { computeDamageFee } from "@platform-core/pricing";
 import { markRefunded, markReturned, } from "@platform-core/repositories/rentalOrders.server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import "@acme/lib/initZod";
 export const runtime = "edge";
 const schema = z.object({ sessionId: z.string(), damage: z.union([z.string(), z.number()]).optional(), });
 export async function POST(req) {

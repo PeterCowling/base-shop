@@ -7,6 +7,7 @@ import path from "node:path";
 import { z } from "zod";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { setupSanityBlog } from "@cms/actions/setupSanityBlog";
+import "@acme/lib/initZod";
 
 const schema = z.record(z.string(), z.string());
 

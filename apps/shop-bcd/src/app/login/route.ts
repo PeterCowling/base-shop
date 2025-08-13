@@ -4,6 +4,7 @@ import { createCustomerSession, validateCsrfToken } from "@auth";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
+import "@acme/lib/initZod";
 
 // Mock customer store. In a real application this would be a database or external identity provider.
 const CUSTOMER_STORE: Record<string, { password: string; role: Role }> = {

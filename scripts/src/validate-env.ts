@@ -2,6 +2,7 @@ import { envSchema } from "@config/src/env";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ZodError } from "zod";
+import "@acme/lib/initZod";
 
 const shopId = process.argv[2];
 

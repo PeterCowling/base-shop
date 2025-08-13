@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { applyFriendlyZodMessages } from "@acme/lib";
+import "@acme/lib/initZod";
 
 export const paymentEnvSchema = z.object({
   STRIPE_SECRET_KEY: z.string().min(1),
@@ -7,7 +7,6 @@ export const paymentEnvSchema = z.object({
   STRIPE_WEBHOOK_SECRET: z.string().min(1),
 });
 
-applyFriendlyZodMessages();
 
 const parsed = paymentEnvSchema.safeParse(process.env);
 if (!parsed.success) {

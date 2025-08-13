@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { applyFriendlyZodMessages } from "@acme/lib";
+import "@acme/lib/initZod";
 import { coreEnvSchema } from "./core";
 import { paymentEnvSchema } from "./payments";
 import { shippingEnvSchema } from "./shipping";
@@ -14,7 +14,6 @@ export const envSchema = mergeEnvSchemas(
   shippingEnvSchema,
 );
 
-applyFriendlyZodMessages();
 
 const parsed = envSchema.safeParse(process.env);
 if (!parsed.success) {

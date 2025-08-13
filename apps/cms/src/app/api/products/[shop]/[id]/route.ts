@@ -3,6 +3,7 @@
 import { getProductById } from "@platform-core/repositories/json.server";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
+import "@acme/lib/initZod";
 
 const ParamsSchema = z.object({ shop: z.string(), id: z.string() });
 

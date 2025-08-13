@@ -6,6 +6,7 @@ import path from "node:path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { validateShopName } from "@platform-core/src/shops";
 import { z } from "zod";
+import "@acme/lib/initZod";
 
 /**
  * POST /cms/api/configurator/init-shop

@@ -7,6 +7,7 @@ import { sendEmail } from "@acme/email";
 import { checkLoginRateLimit } from "../../../../../middleware";
 import { validateCsrfToken } from "@auth";
 import { parseJsonBody } from "@shared-utils";
+import "@acme/lib/initZod";
 
 export const ResetRequestSchema = z
   .object({

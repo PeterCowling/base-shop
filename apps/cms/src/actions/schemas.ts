@@ -2,6 +2,7 @@
 
 import { localeSchema } from "@acme/types";
 import { z } from "zod";
+import "@acme/lib/initZod";
 
 const mediaItemSchema = z.object({
   url: z.string(),

@@ -41,19 +41,21 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
   );
 
   // When totals aren't provided, compute them from the cart lines.
-  const computedSubtotal = useMemo(
-    () => lines.reduce((sum, line) => sum + line.sku.price * line.qty, 0),
-    [lines]
-  );
-
-  const computedDeposit = useMemo(
+  const computedTotals = useMemo(
     () =>
-      lines.reduce((sum, line) => sum + (line.sku.deposit ?? 0) * line.qty, 0),
+      lines.reduce(
+        (sum, line) => {
+          sum.subtotal += line.sku.price * line.qty;
+          sum.deposit += (line.sku.deposit ?? 0) * line.qty;
+          return sum;
+        },
+        { subtotal: 0, deposit: 0 }
+      ),
     [lines]
   );
 
-  const subtotal = totals?.subtotal ?? computedSubtotal;
-  const deposit = totals?.deposit ?? computedDeposit;
+  const subtotal = totals?.subtotal ?? computedTotals.subtotal;
+  const deposit = totals?.deposit ?? computedTotals.deposit;
   const total = totals?.total ?? subtotal + deposit;
 
   /* ------------------------------------------------------------------

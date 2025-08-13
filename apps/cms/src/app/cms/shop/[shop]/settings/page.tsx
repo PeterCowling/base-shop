@@ -1,12 +1,16 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/page.tsx
 
 import { authOptions } from "@cms/auth/options";
+import { ensureAuthorized } from "@cms/actions/common/auth";
 import { checkShopExists } from "@acme/lib";
 import {
   readSettings,
   readShop,
+  getShopById,
+  updateShopInRepo,
 } from "@platform-core/repositories/json.server";
-import type { Locale } from "@acme/types";
+import type { Locale, Shop } from "@acme/types";
+import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -18,6 +22,21 @@ const CurrencyTaxEditor = dynamic(() => import("./CurrencyTaxEditor"));
 void CurrencyTaxEditor;
 
 export const revalidate = 0;
+
+async function resetToken(shop: string, key: string) {
+  "use server";
+  await ensureAuthorized();
+  const current = await getShopById<Shop>(shop);
+  const overrides = { ...(current.themeOverrides ?? {}) };
+  delete overrides[key];
+  const themeTokens = { ...(current.themeDefaults ?? {}), ...overrides };
+  await updateShopInRepo(shop, {
+    id: current.id,
+    themeOverrides: overrides,
+    themeTokens,
+  });
+  revalidatePath(`/cms/shop/${shop}/settings`);
+}
 
 export default async function SettingsPage({
   params,
@@ -64,19 +83,59 @@ export default async function SettingsPage({
           <thead>
             <tr>
               <th className="text-left">Token</th>
-              <th className="text-left">Default</th>
-              <th className="text-left">Override</th>
+              <th className="text-left">Color</th>
+              <th />
             </tr>
           </thead>
           <tbody>
             {Object.keys(defaultTokens).sort().map((k) => {
+              const defaultValue = defaultTokens[k];
               const override = overrides[k];
-              const changed = override !== undefined && override !== defaultTokens[k];
+              const changed =
+                override !== undefined && override !== defaultValue;
               return (
                 <tr key={k} className={changed ? "bg-yellow-50" : undefined}>
-                  <td className="pr-4 font-mono">{k}</td>
-                  <td className="pr-4 font-mono">{defaultTokens[k]}</td>
-                  <td className="pr-4 font-mono">{override ?? ""}</td>
+                  <td className="pr-4 font-mono align-top">{k}</td>
+                  <td className="pr-4">
+                    <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="h-5 w-5 rounded border"
+                          style={{ background: defaultValue }}
+                        />
+                        <span className="font-mono">{defaultValue}</span>
+                        {override && (
+                          <span className="text-xs text-muted-foreground">
+                            Default
+                          </span>
+                        )}
+                      </div>
+                      {override && (
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="h-5 w-5 rounded border"
+                            style={{ background: override }}
+                          />
+                          <span className="font-mono">{override}</span>
+                          <span className="text-xs text-muted-foreground">
+                            Override
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  <td className="pr-4 align-top">
+                    {changed && isAdmin && (
+                      <form action={resetToken.bind(null, shop, k)}>
+                        <button
+                          type="submit"
+                          className="text-primary underline"
+                        >
+                          Reset
+                        </button>
+                      </form>
+                    )}
+                  </td>
                 </tr>
               );
             })}

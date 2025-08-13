@@ -15,6 +15,23 @@ export interface CampaignOptions {
   text?: string;
 }
 
+function ensureText(
+  options: CampaignOptions
+): CampaignOptions & { text: string } {
+  if (options.text) {
+    return options as CampaignOptions & { text: string };
+  }
+
+  const text = options.html
+    .replace(/<br\s*\/?>(\n)?/gi, "\n")
+    .replace(/<\/p>/gi, "\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return { ...options, text };
+}
+
 const providers: Record<string, CampaignProvider> = {
   sendgrid: new SendgridProvider(),
   resend: new ResendProvider(),
@@ -27,9 +44,10 @@ const providers: Record<string, CampaignProvider> = {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
+  const payload = ensureText(options);
   const provider = providers[coreEnv.EMAIL_PROVIDER ?? ""];
   if (provider) {
-    await provider.send(options);
+    await provider.send(payload);
     return;
   }
 
@@ -39,9 +57,9 @@ export async function sendCampaignEmail(
 
   await transport.sendMail({
     from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
-    to: options.to,
-    subject: options.subject,
-    html: options.html,
-    text: options.text,
+    to: payload.to,
+    subject: payload.subject,
+    html: payload.html,
+    text: payload.text,
   });
 }

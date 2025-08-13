@@ -70,3 +70,38 @@ import { extendRoles } from "@acme/auth";
 
 extendRoles({ write: ["author"], read: ["reader"] });
 ```
+
+## Sample role scenarios
+
+The storefront enforces permissions on both UI and API routes. The following
+examples show how common roles interact with those checks.
+
+### Viewer
+
+- Can browse products using the `view_products` permission.
+- Attempts to add items to the cart fail because `manage_cart` is missing.
+
+```ts
+import { requirePermission } from "@auth";
+
+export async function addItem() {
+  await requirePermission("manage_cart"); // throws for viewers
+}
+```
+
+### Customer
+
+- Can add to cart and proceed to checkout.
+- Can view and update their profile information.
+
+```ts
+await requirePermission("checkout"); // allowed
+```
+
+### Admin
+
+- Has full access including order management and returns processing.
+
+```ts
+await requirePermission("manage_orders");
+```

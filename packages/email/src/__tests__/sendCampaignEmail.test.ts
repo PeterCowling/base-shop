@@ -133,4 +133,55 @@ describe("sendCampaignEmail", () => {
       text: "Hello Alice",
     });
   });
+
+  it("sanitizes HTML content by default", async () => {
+    const nodemailer = require("nodemailer");
+    const createTransportMock = nodemailer.default.createTransport as jest.Mock;
+    const sendMail = jest.fn().mockResolvedValue(undefined);
+    createTransportMock.mockReturnValue({ sendMail });
+
+    process.env.SMTP_URL = "smtp://test";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const { sendCampaignEmail } = await import("../send");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: '<p>Hi</p><img src="x" onerror="alert(1)"><script>alert(1)</script>',
+    });
+
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: "to@example.com",
+      subject: "Subject",
+      html: '<p>Hi</p><img src="x" />',
+      text: "Hi",
+    });
+  });
+
+  it("allows bypassing sanitization", async () => {
+    const nodemailer = require("nodemailer");
+    const createTransportMock = nodemailer.default.createTransport as jest.Mock;
+    const sendMail = jest.fn().mockResolvedValue(undefined);
+    createTransportMock.mockReturnValue({ sendMail });
+
+    process.env.SMTP_URL = "smtp://test";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const { sendCampaignEmail } = await import("../send");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: '<img src="x" onerror="alert(1)">',
+      sanitize: false,
+    });
+
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: "to@example.com",
+      subject: "Subject",
+      html: '<img src="x" onerror="alert(1)">',
+      text: '',
+    });
+  });
 });

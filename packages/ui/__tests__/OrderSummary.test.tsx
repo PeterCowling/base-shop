@@ -1,7 +1,22 @@
-import { CartProvider } from "@/contexts/CartContext";
 import { render, screen } from "@testing-library/react";
 import type { CartState } from "@/lib/cartCookie";
 import OrderSummary from "../src/components/organisms/OrderSummary";
+import { useCart } from "@ui/hooks/useCart";
+
+jest.mock("@ui/hooks/useCart", () => ({
+  useCart: jest.fn(),
+}));
+
+jest.mock("../src/components/atoms/Price", () => ({
+  Price: ({ amount }: { amount: number }) => (
+    <span>
+      {new Intl.NumberFormat(undefined, {
+        style: "currency",
+        currency: "EUR",
+      }).format(amount)}
+    </span>
+  ),
+}));
 
 const mockCart: CartState = {
   "a:S": {
@@ -38,22 +53,12 @@ const mockCart: CartState = {
 };
 
 describe("OrderSummary", () => {
-  const originalFetch = global.fetch;
-
-  afterEach(() => {
-    global.fetch = originalFetch;
-  });
+  const mockUseCart = useCart as jest.Mock;
 
   it("renders quantities, totals and formatted prices", async () => {
-    global.fetch = jest
-      .fn()
-      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: mockCart }) });
+    mockUseCart.mockReturnValue([mockCart, jest.fn()]);
 
-    render(
-      <CartProvider>
-        <OrderSummary />
-      </CartProvider>
-    );
+    render(<OrderSummary />);
 
     // item rows (include size label)
     expect(await screen.findByText("Product A")).toBeInTheDocument();
@@ -79,5 +84,22 @@ describe("OrderSummary", () => {
     expect(screen.getByText(fmt(deposit))).toBeInTheDocument();
     expect(screen.getByText("Total")).toBeInTheDocument();
     expect(screen.getByText(fmt(total))).toBeInTheDocument();
+  });
+
+  it("uses provided totals when given", async () => {
+    mockUseCart.mockReturnValue([{}, jest.fn()]);
+
+    render(<OrderSummary cart={mockCart} totals={{ subtotal: 30, deposit: 7, total: 37 }} />);
+
+    const fmt = (n: number) =>
+      new Intl.NumberFormat(undefined, {
+        style: "currency",
+        currency: "EUR",
+      }).format(n);
+
+    expect(await screen.findByText("Deposit")).toBeInTheDocument();
+    expect(screen.getByText(fmt(7))).toBeInTheDocument();
+    expect(screen.getByText("Total")).toBeInTheDocument();
+    expect(screen.getByText(fmt(37))).toBeInTheDocument();
   });
 });

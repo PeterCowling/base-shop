@@ -10,6 +10,7 @@ import {
   organismRegistry,
   containerRegistry,
   layoutRegistry,
+  overlayRegistry,
 } from "../blocks";
 
 const palette = {
@@ -39,17 +40,16 @@ const palette = {
     })),
   organisms: (Object.keys(organismRegistry) as PageComponent["type"][])
     .sort()
-    .filter((t) => t !== "PopupModal")
     .map((t) => ({
       type: t,
       label: t.replace(/([A-Z])/g, " $1").trim(),
     })),
-  overlays: [
-    {
-      type: "PopupModal" as PageComponent["type"],
-      label: "Popup Modal",
-    },
-  ],
+  overlays: (Object.keys(overlayRegistry) as PageComponent["type"][])
+    .sort()
+    .map((t) => ({
+      type: t,
+      label: t.replace(/([A-Z])/g, " $1").trim(),
+    })),
 } as const;
 
 const PaletteItem = memo(function PaletteItem({

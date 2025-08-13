@@ -44,6 +44,17 @@ export default function PopupModalEditor({ component, onChange }: Props) {
           <SelectItem value="exit">exit intent</SelectItem>
         </SelectContent>
       </Select>
+      <Input
+        type="number"
+        value={(component as any).delay ?? ""}
+        onChange={(e) =>
+          handleInput(
+            "delay",
+            e.target.value ? Number(e.target.value) : undefined
+          )
+        }
+        placeholder="delay (ms)"
+      />
       <Textarea
         value={(component as any).content ?? ""}
         onChange={(e) => handleInput("content", e.target.value)}

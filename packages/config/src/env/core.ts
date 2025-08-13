@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { applyFriendlyZodMessages } from "@acme/lib";
 
-export const coreEnvSchema = z.object({
+export const coreEnvBaseSchema = z.object({
   NEXTAUTH_SECRET: z.string().optional(),
   PREVIEW_TOKEN_SECRET: z.string().optional(),
   NODE_ENV: z.enum(["development", "test", "production"]).optional(),
@@ -27,8 +27,20 @@ export const coreEnvSchema = z.object({
   SANITY_API_VERSION: z.string().optional(),
   CLOUDFLARE_ACCOUNT_ID: z.string().optional(),
   CLOUDFLARE_API_TOKEN: z.string().optional(),
-  DEPOSIT_RELEASE_ENABLED: z.coerce.boolean().optional(),
-  DEPOSIT_RELEASE_INTERVAL_MS: z.coerce.number().optional(),
+  DEPOSIT_RELEASE_ENABLED: z
+    .string()
+    .refine((v) => v === "true" || v === "false", {
+      message: "must be true or false",
+    })
+    .transform((v) => v === "true")
+    .optional(),
+  DEPOSIT_RELEASE_INTERVAL_MS: z
+    .string()
+    .refine((v) => !Number.isNaN(Number(v)), {
+      message: "must be a number",
+    })
+    .transform((v) => Number(v))
+    .optional(),
   OPENAI_API_KEY: z.string().optional(),
   SESSION_SECRET: z.string().optional(),
   COOKIE_DOMAIN: z.string().optional(),
@@ -42,7 +54,39 @@ export const coreEnvSchema = z.object({
   SESSION_STORE: z.enum(["memory", "redis"]).optional(),
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
-});
+}).passthrough();
+
+export function depositReleaseEnvRefinement(
+  env: Record<string, unknown>,
+  ctx: z.RefinementCtx,
+): void {
+  for (const [key, value] of Object.entries(env)) {
+    if (!key.startsWith("DEPOSIT_RELEASE_")) continue;
+    if (key === "DEPOSIT_RELEASE_ENABLED" || key === "DEPOSIT_RELEASE_INTERVAL_MS")
+      continue;
+    if (key.includes("ENABLED")) {
+      if (value !== "true" && value !== "false") {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [key],
+          message: "must be true or false",
+        });
+      }
+    } else if (key.includes("INTERVAL_MS")) {
+      if (Number.isNaN(Number(value))) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [key],
+          message: "must be a number",
+        });
+      }
+    }
+  }
+}
+
+export const coreEnvSchema = coreEnvBaseSchema.superRefine(
+  depositReleaseEnvRefinement,
+);
 
 applyFriendlyZodMessages();
 

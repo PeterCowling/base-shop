@@ -60,6 +60,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           content: React.createElement("div", {
             dangerouslySetInnerHTML: { __html: body },
           }),
+          footer: React.createElement(
+            "a",
+            { href: "{{unsubscribe_url}}", "data-unsubscribe": "true" },
+            "Unsubscribe"
+          ),
         })
       );
     }

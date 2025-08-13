@@ -5,6 +5,7 @@ import { trackEvent } from "@platform-core/analytics";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
+import { listUnsubscribed } from "./unsubscribe";
 
 interface Campaign {
   id: string;
@@ -49,23 +50,43 @@ function trackedBody(shop: string, id: string, body: string): string {
     body +
     `<img src="${pixelUrl}" alt="" style="display:none" width="1" height="1"/>`;
   return bodyWithPixel.replace(
-    /href="([^"]+)"/g,
-    (_m, url) =>
-      `href="${base}/api/marketing/email/click?shop=${encodeURIComponent(
-        shop
-      )}&campaign=${encodeURIComponent(id)}&url=${encodeURIComponent(url)}"`
+    /<a\s+([^>]*?)href="([^"]+)"([^>]*?)>/g,
+    (_m, pre, url, post) =>
+      pre.includes("data-unsubscribe") || post.includes("data-unsubscribe")
+        ? `<a ${pre}href="${url}"${post}>`
+        : `<a ${pre}href="${base}/api/marketing/email/click?shop=${encodeURIComponent(
+            shop
+          )}&campaign=${encodeURIComponent(id)}&url=${encodeURIComponent(url)}"${post}>`
   );
+}
+
+function unsubscribeUrl(shop: string, campaign: string, email: string): string {
+  const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";
+  return `${base}/api/marketing/email/unsubscribe?shop=${encodeURIComponent(
+    shop
+  )}&campaign=${encodeURIComponent(campaign)}&email=${encodeURIComponent(email)}`;
 }
 
 async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   shop = validateShopName(shop);
-  const html = trackedBody(shop, c.id, c.body);
   let recipients = c.recipients;
   if (c.segment) {
     recipients = await resolveSegment(shop, c.segment);
-    c.recipients = recipients;
   }
+  const unsubscribed = await listUnsubscribed(shop);
+  recipients = recipients.filter((r) => !unsubscribed.has(r));
+  c.recipients = recipients;
   for (const r of recipients) {
+    let body = c.body;
+    if (!body.includes("{{unsubscribe_url}}")) {
+      body +=
+        '<p><a data-unsubscribe="true" href="{{unsubscribe_url}}">Unsubscribe</a></p>';
+    }
+    body = body.replace(
+      /{{unsubscribe_url}}/g,
+      unsubscribeUrl(shop, c.id, r)
+    );
+    const html = trackedBody(shop, c.id, body);
     await sendCampaignEmail({
       to: r,
       subject: c.subject,

@@ -29,7 +29,7 @@ describe("scheduler", () => {
 
   it("sends due campaigns and marks them as sent", async () => {
     const past = new Date(Date.now() - 1000).toISOString();
-    const future = new Date(Date.now() + 1000).toISOString();
+    const future = new Date(Date.now() + 60_000).toISOString();
     const campaigns = [
       {
         id: "c1",
@@ -86,6 +86,35 @@ describe("scheduler", () => {
     const created = campaigns.find((c) => c.id === id);
     expect(created).toBeDefined();
     expect(created?.subject).toBe("Hello");
+  });
+
+  it("skips unsubscribed recipients", async () => {
+    const past = new Date(Date.now() - 1000).toISOString();
+    await fs.writeFile(
+      path.join(shopDir, "unsubscribes.json"),
+      JSON.stringify(["nope@example.com"]),
+      "utf8"
+    );
+    const campaigns = [
+      {
+        id: "c3",
+        recipients: ["ok@example.com", "nope@example.com"],
+        subject: "Hello",
+        body: "<p>Hi</p>",
+        sendAt: past,
+      },
+    ];
+    await fs.writeFile(
+      path.join(shopDir, "campaigns.json"),
+      JSON.stringify(campaigns, null, 2),
+      "utf8"
+    );
+    const { sendDueCampaigns } = await import("../scheduler");
+    await sendDueCampaigns();
+    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
+    expect(sendCampaignEmailMock).toHaveBeenCalledWith(
+      expect.objectContaining({ to: "ok@example.com" })
+    );
   });
 });
 

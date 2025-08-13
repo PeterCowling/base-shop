@@ -257,6 +257,12 @@ SendGrid and Resend can be configured to POST event webhooks to:
 Both endpoints verify the signatures using the environment variables above and
 map delivered, open, click, unsubscribe and bounce events to internal analytics.
 
+Marketing emails include an unsubscribe link of the form
+`/api/marketing/email/unsubscribe?shop=<SHOP_ID>&email=<EMAIL>&campaign=<ID>`.
+Following this link records an `email_unsubscribe` event and stores the address
+in `data/<SHOP_ID>/unsubscribes.json` so future campaigns and segments exclude
+it automatically.
+
 The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET`
 and `PREVIEW_TOKEN_SECRET`. Replace all placeholders with real values or supply
 them via your CI's secret store. Missing variables will cause the CLI to exit

@@ -5,7 +5,8 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./analytics": "./src/analytics.ts"
+    "./analytics": "./src/analytics.ts",
+    "./unsubscribe": "./src/unsubscribe.ts"
   },
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"

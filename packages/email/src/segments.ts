@@ -3,6 +3,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
+import { listUnsubscribed } from "./unsubscribe";
 
 interface SegmentDef {
   id: string;
@@ -47,5 +48,6 @@ export async function resolveSegment(
       if (typeof email === "string") emails.add(email);
     }
   }
-  return Array.from(emails);
+  const unsubscribed = await listUnsubscribed(shop);
+  return Array.from(emails).filter((e) => !unsubscribed.has(e));
 }

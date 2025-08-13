@@ -1,5 +1,6 @@
 import { fsCampaignStore } from "./fsStore";
-import type { CampaignStore, Campaign } from "./types";
+import type { CampaignStore } from "./types";
+import type { Campaign } from "../types";
 
 let store: CampaignStore = fsCampaignStore;
 

@@ -42,6 +42,7 @@ jest.mock("@acme/platform-core/users", () => ({
         passwordHash,
         role,
         resetToken: null,
+        emailVerified: false,
       };
       store[id] = user;
       return user;
@@ -61,12 +62,18 @@ jest.mock("@acme/platform-core/users", () => ({
       store[id].resetToken = null;
     }
   }),
+  verifyEmail: jest.fn(async (id: string) => {
+    if (store[id]) {
+      store[id].emailVerified = true;
+    }
+  }),
 }));
 
 let registerPOST: typeof import("../src/app/register/route").POST;
 let loginPOST: typeof import("../src/app/login/route").POST;
 let requestPOST: typeof import("../src/app/api/account/reset/request/route").POST;
 let completePOST: typeof import("../src/app/api/account/reset/complete/route").POST;
+let verifyPOST: typeof import("../src/app/api/account/verify/route").POST;
 
 beforeAll(async () => {
   process.env.SESSION_SECRET = "test-secret";
@@ -77,6 +84,9 @@ beforeAll(async () => {
   ));
   ({ POST: completePOST } = await import(
     "../src/app/api/account/reset/complete/route"
+  ));
+  ({ POST: verifyPOST } = await import(
+    "../src/app/api/account/verify/route"
   ));
   ({ sendEmail } = await import("@acme/email"));
 });
@@ -112,6 +122,22 @@ describe("auth flows", () => {
       })
     );
     expect(dup.status).toBe(400);
+    // login should fail until email is verified
+    res = await loginPOST(
+      makeRequest(
+        { customerId: "cust1", password: "Str0ngPass1" },
+        { "x-forwarded-for": "1.1.1.1" }
+      )
+    );
+    expect(res.status).toBe(403);
+
+    const verifyEmailText = sendEmail.mock.calls[0][2] as string;
+    const verifyToken = verifyEmailText.replace(
+      "Your verification token is ",
+      "",
+    );
+    res = await verifyPOST(makeRequest({ token: verifyToken }));
+    expect(res.status).toBe(200);
 
     res = await loginPOST(
       makeRequest(

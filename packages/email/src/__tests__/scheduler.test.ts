@@ -17,7 +17,7 @@ jest.mock("@platform-core/analytics", () => ({
 const { sendCampaignEmail } = require("../index");
 const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
 
-describe("sendScheduledCampaigns", () => {
+describe("scheduler", () => {
   const shop = "schedulertest";
   const shopDir = path.join(DATA_ROOT, shop);
 
@@ -49,24 +49,43 @@ describe("sendScheduledCampaigns", () => {
     await fs.writeFile(
       path.join(shopDir, "campaigns.json"),
       JSON.stringify(campaigns, null, 2),
-      "utf8"
+      "utf8",
     );
 
-    const { sendScheduledCampaigns } = await import("../scheduler");
-    await sendScheduledCampaigns();
+    const { sendDueCampaigns } = await import("../scheduler");
+    await sendDueCampaigns();
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
     expect(sendCampaignEmailMock).toHaveBeenCalledWith(
-      expect.objectContaining({ to: "past@example.com", subject: "Past" })
+      expect.objectContaining({ to: "past@example.com", subject: "Past" }),
     );
 
     const updated = JSON.parse(
-      await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8")
+      await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8"),
     );
     const pastCampaign = updated.find((c: any) => c.id === "c1");
     const futureCampaign = updated.find((c: any) => c.id === "c2");
     expect(pastCampaign.sentAt).toBeDefined();
     expect(futureCampaign.sentAt).toBeUndefined();
+  });
+
+  it("creates campaigns and lists them", async () => {
+    const { createCampaign, listCampaigns } = await import("../scheduler");
+    const future = new Date(Date.now() + 1000).toISOString();
+    const id = await createCampaign({
+      shop,
+      recipients: ["user@example.com"],
+      subject: "Hello",
+      body: "<p>Hello</p>",
+      sendAt: future,
+    });
+    expect(typeof id).toBe("string");
+    expect(sendCampaignEmailMock).not.toHaveBeenCalled();
+
+    const campaigns = await listCampaigns(shop);
+    const created = campaigns.find((c) => c.id === id);
+    expect(created).toBeDefined();
+    expect(created?.subject).toBe("Hello");
   });
 });
 

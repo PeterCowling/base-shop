@@ -1,8 +1,8 @@
-import { sendScheduledCampaigns } from "@acme/email";
+import { sendDueCampaigns } from "@acme/email";
 
-export { sendScheduledCampaigns };
+export { sendDueCampaigns };
 
 export const onScheduled = async () => {
-  await sendScheduledCampaigns();
+  await sendDueCampaigns();
 };
 

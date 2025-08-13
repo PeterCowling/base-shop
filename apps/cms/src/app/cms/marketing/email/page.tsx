@@ -17,6 +17,7 @@ export default function EmailMarketingPage() {
   const [shop, setShop] = useState("");
   const [recipients, setRecipients] = useState("");
   const [segment, setSegment] = useState("");
+  const [segments, setSegments] = useState<{ id: string; name: string }[]>([]);
   const [sendAt, setSendAt] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -39,7 +40,17 @@ export default function EmailMarketingPage() {
 
   useEffect(() => {
     loadCampaigns(shop);
+    loadSegments(shop);
   }, [shop]);
+
+  async function loadSegments(s: string) {
+    if (!s) return;
+    const res = await fetch(`/api/segments?shop=${encodeURIComponent(s)}`);
+    if (res.ok) {
+      const json = await res.json();
+      setSegments(json.segments || []);
+    }
+  }
 
   async function send(e: React.FormEvent) {
     e.preventDefault();
@@ -90,12 +101,18 @@ export default function EmailMarketingPage() {
           value={recipients}
           onChange={(e) => setRecipients(e.target.value)}
         />
-        <input
+        <select
           className="w-full border p-2"
-          placeholder="Segment"
           value={segment}
           onChange={(e) => setSegment(e.target.value)}
-        />
+        >
+          <option value="">Select segment</option>
+          {segments.map((s) => (
+            <option key={s.id} value={s.id}>
+              {s.name}
+            </option>
+          ))}
+        </select>
         <input
           type="datetime-local"
           className="w-full border p-2"

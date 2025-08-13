@@ -216,6 +216,12 @@ export interface MapBlockComponent extends PageComponentBase {
   zoom?: number;
 }
 
+export interface StoreLocatorBlockComponent extends PageComponentBase {
+  type: "StoreLocatorBlock";
+  locations?: { lat?: number; lng?: number; label?: string }[];
+  zoom?: number;
+}
+
 export interface VideoBlockComponent extends PageComponentBase {
   type: "VideoBlock";
   src?: string;
@@ -322,6 +328,7 @@ export type PageComponent =
   | SearchBarComponent
   | ContactFormWithMapComponent
   | MapBlockComponent
+  | StoreLocatorBlockComponent
   | VideoBlockComponent
   | FAQBlockComponent
   | CountdownTimerComponent
@@ -449,6 +456,20 @@ const mapBlockComponentSchema = baseComponentSchema.extend({
   type: z.literal("MapBlock"),
   lat: z.number().optional(),
   lng: z.number().optional(),
+  zoom: z.number().optional(),
+});
+
+const storeLocatorBlockComponentSchema = baseComponentSchema.extend({
+  type: z.literal("StoreLocatorBlock"),
+  locations: z
+    .array(
+      z.object({
+        lat: z.number().optional(),
+        lng: z.number().optional(),
+        label: z.string().optional(),
+      })
+    )
+    .optional(),
   zoom: z.number().optional(),
 });
 
@@ -616,6 +637,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     searchBarComponentSchema,
     contactFormWithMapComponentSchema,
     mapBlockComponentSchema,
+    storeLocatorBlockComponentSchema,
     videoBlockComponentSchema,
     faqBlockComponentSchema,
     countdownTimerComponentSchema,

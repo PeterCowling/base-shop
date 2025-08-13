@@ -23,6 +23,7 @@ import ReviewsCarouselEditor from "./ReviewsCarouselEditor";
 import AnnouncementBarEditor from "./AnnouncementBarEditor";
 import SocialFeedEditor from "./SocialFeedEditor";
 import MapBlockEditor from "./MapBlockEditor";
+import StoreLocatorBlockEditor from "./StoreLocatorBlockEditor";
 import VideoBlockEditor from "./VideoBlockEditor";
 import FAQBlockEditor from "./FAQBlockEditor";
 import HeaderEditor from "./HeaderEditor";
@@ -129,6 +130,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "MapBlock":
       specific = <MapBlockEditor component={component} onChange={onChange} />;
+      break;
+    case "StoreLocatorBlock":
+      specific = (
+        <StoreLocatorBlockEditor component={component} onChange={onChange} />
+      );
       break;
     case "VideoBlock":
       specific = <VideoBlockEditor component={component} onChange={onChange} />;

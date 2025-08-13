@@ -18,6 +18,7 @@ import RecommendationCarousel, {
 } from "./RecommendationCarousel";
 import AnnouncementBar from "./AnnouncementBarBlock";
 import MapBlock from "./MapBlock";
+import StoreLocatorBlock from "./StoreLocatorBlock";
 import VideoBlock from "./VideoBlock";
 import FAQBlock from "./FAQBlock";
 import CountdownTimer from "./CountdownTimer";
@@ -56,6 +57,7 @@ export const organismRegistry = {
   Testimonials: { component: Testimonials },
   TestimonialSlider: { component: TestimonialSlider },
   MapBlock: { component: MapBlock },
+  StoreLocatorBlock: { component: StoreLocatorBlock },
   VideoBlock: { component: VideoBlock },
   FAQBlock: { component: FAQBlock },
   CountdownTimer: { component: CountdownTimer },

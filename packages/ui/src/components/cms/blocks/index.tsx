@@ -13,6 +13,7 @@ import RecommendationCarousel from "./RecommendationCarousel";
 import Section from "./Section";
 import AnnouncementBar from "./AnnouncementBarBlock";
 import MapBlock from "./MapBlock";
+import StoreLocatorBlock from "./StoreLocatorBlock";
 import MultiColumn from "./containers/MultiColumn";
 import VideoBlock from "./VideoBlock";
 import FAQBlock from "./FAQBlock";
@@ -45,6 +46,7 @@ export {
   Section,
   AnnouncementBar,
   MapBlock,
+  StoreLocatorBlock,
   MultiColumn,
   VideoBlock,
   FAQBlock,

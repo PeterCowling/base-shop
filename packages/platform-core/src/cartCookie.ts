@@ -26,11 +26,13 @@ if (!SECRET) {
  * `CartLine` / `CartState` so the rest of the codebase stays strongly
  * typed without running into “required vs optional” variance issues.
  */
-export const cartLineSchema = z.object({
-  sku: skuSchema, // full SKU object
-  qty: z.number().int().min(0), // quantity validated by API schemas
-  size: z.string().optional(),
-});
+export const cartLineSchema = z
+  .object({
+    sku: skuSchema, // full SKU object
+    qty: z.number().int().min(0), // quantity validated by API schemas
+    size: z.string().optional(),
+  })
+  .strict();
 
 /**
  * Schema for the full cart, keyed by `${sku.id}` or `${sku.id}:${size}`.

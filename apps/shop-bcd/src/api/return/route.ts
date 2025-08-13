@@ -10,10 +10,12 @@ import { z } from "zod";
 
 export const runtime = "edge";
 
-const schema = z.object({
-  sessionId: z.string(),
-  damage: z.union([z.string(), z.number()]).optional(),
-});
+const schema = z
+  .object({
+    sessionId: z.string(),
+    damage: z.union([z.string(), z.number()]).optional(),
+  })
+  .strict();
 
 export async function POST(req: NextRequest) {
   const parsed = schema.safeParse(await req.json());

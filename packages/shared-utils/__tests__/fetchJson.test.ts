@@ -81,7 +81,7 @@ describe('fetchJson', () => {
       text: jest.fn().mockResolvedValue(JSON.stringify(responseData)),
     });
 
-    const schema = z.object({ message: z.string() });
+    const schema = z.object({ message: z.string() }).strict();
 
     await expect(
       fetchJson('https://example.com', undefined, schema),
@@ -95,7 +95,7 @@ describe('fetchJson', () => {
       text: jest.fn().mockResolvedValue(JSON.stringify(responseData)),
     });
 
-    const schema = z.object({ count: z.number() });
+    const schema = z.object({ count: z.number() }).strict();
 
     await expect(
       fetchJson('https://example.com', undefined, schema),

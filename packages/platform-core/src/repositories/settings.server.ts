@@ -121,10 +121,12 @@ export interface SettingsDiffEntry {
   diff: Partial<ShopSettings>;
 }
 
-const entrySchema = z.object({
-  timestamp: z.string().datetime(),
-  diff: shopSettingsSchema.partial(),
-});
+const entrySchema = z
+  .object({
+    timestamp: z.string().datetime(),
+    diff: shopSettingsSchema.partial(),
+  })
+  .strict();
 
 export async function diffHistory(shop: string): Promise<SettingsDiffEntry[]> {
   try {

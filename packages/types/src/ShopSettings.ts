@@ -10,11 +10,13 @@ export const aiCatalogFieldSchema = z.enum([
   "images",
 ]);
 
-export const aiCatalogConfigSchema = z.object({
-  enabled: z.boolean(),
-  fields: z.array(aiCatalogFieldSchema),
-  pageSize: z.number().int().positive(),
-});
+export const aiCatalogConfigSchema = z
+  .object({
+    enabled: z.boolean(),
+    fields: z.array(aiCatalogFieldSchema),
+    pageSize: z.number().int().positive(),
+  })
+  .strict();
 
 export const seoSettingsSchema = z
   .object({
@@ -22,31 +24,35 @@ export const seoSettingsSchema = z
   })
   .catchall(shopSeoFieldsSchema);
 
-export const shopSettingsSchema = z.object({
-  languages: z.array(localeSchema).readonly(),
-  seo: seoSettingsSchema,
-  analytics: z
-    .object({
-      enabled: z.boolean().optional(),
-      provider: z.string(),
-      id: z.string().optional(),
-    })
-    .optional(),
-  freezeTranslations: z.boolean().optional(),
-  /** ISO currency code used as the shop's base currency */
-  currency: z.string().length(3).optional(),
-  /** Region identifier for tax calculations */
-  taxRegion: z.string().optional(),
-  depositService: z
-    .object({
-      enabled: z.boolean(),
-      /** Interval in minutes between deposit release checks */
-      intervalMinutes: z.number().int().positive(),
-    })
-    .optional(),
-  updatedAt: z.string(),
-  updatedBy: z.string(),
-});
+export const shopSettingsSchema = z
+  .object({
+    languages: z.array(localeSchema).readonly(),
+    seo: seoSettingsSchema,
+    analytics: z
+      .object({
+        enabled: z.boolean().optional(),
+        provider: z.string(),
+        id: z.string().optional(),
+      })
+      .strict()
+      .optional(),
+    freezeTranslations: z.boolean().optional(),
+    /** ISO currency code used as the shop's base currency */
+    currency: z.string().length(3).optional(),
+    /** Region identifier for tax calculations */
+    taxRegion: z.string().optional(),
+    depositService: z
+      .object({
+        enabled: z.boolean(),
+        /** Interval in minutes between deposit release checks */
+        intervalMinutes: z.number().int().positive(),
+      })
+      .strict()
+      .optional(),
+    updatedAt: z.string(),
+    updatedBy: z.string(),
+  })
+  .strict();
 
 export type ShopSettings = z.infer<typeof shopSettingsSchema>;
 export type AiCatalogConfig = z.infer<typeof aiCatalogConfigSchema>;

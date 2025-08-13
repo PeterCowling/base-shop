@@ -21,18 +21,22 @@ interface DB {
   [userId: string]: UserRecord | unknown;
 }
 
-const putBodySchema = z.object({
-  stepId: z.string().nullish(),
-  data: wizardStateSchema.partial().optional(),
-  completed: z
-    .union([stepStatusSchema, z.record(stepStatusSchema)])
-    .optional(),
-});
+const putBodySchema = z
+  .object({
+    stepId: z.string().nullish(),
+    data: wizardStateSchema.partial().optional(),
+    completed: z
+      .union([stepStatusSchema, z.record(stepStatusSchema)])
+      .optional(),
+  })
+  .strict();
 
-const patchBodySchema = z.object({
-  stepId: z.string(),
-  completed: stepStatusSchema,
-});
+const patchBodySchema = z
+  .object({
+    stepId: z.string(),
+    completed: stepStatusSchema,
+  })
+  .strict();
 
 function resolveFile(): string {
   let dir = process.cwd();

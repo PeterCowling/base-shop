@@ -2,10 +2,12 @@
 import type { Plugin, PaymentRegistry } from "@acme/platform-core/plugins";
 import { z } from "zod";
 
-const configSchema = z.object({
-  clientId: z.string(),
-  secret: z.string(),
-});
+const configSchema = z
+  .object({
+    clientId: z.string(),
+    secret: z.string(),
+  })
+  .strict();
 
 type PayPalConfig = z.infer<typeof configSchema>;
 

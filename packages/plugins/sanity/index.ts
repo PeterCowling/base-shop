@@ -3,11 +3,13 @@ import type { Plugin } from "@acme/platform-core/plugins";
 import { createClient, type SanityClient } from "@sanity/client";
 import { z } from "zod";
 
-export const configSchema = z.object({
-  projectId: z.string(),
-  dataset: z.string(),
-  token: z.string(),
-});
+export const configSchema = z
+  .object({
+    projectId: z.string(),
+    dataset: z.string(),
+    token: z.string(),
+  })
+  .strict();
 
 export type SanityConfig = z.infer<typeof configSchema>;
 

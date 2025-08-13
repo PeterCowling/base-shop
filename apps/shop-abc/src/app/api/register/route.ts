@@ -8,11 +8,13 @@ import {
   getUserByEmail,
 } from "@acme/platform-core/users";
 
-const RegisterSchema = z.object({
-  customerId: z.string(),
-  email: z.string().email(),
-  password: z.string(),
-});
+const RegisterSchema = z
+  .object({
+    customerId: z.string(),
+    email: z.string().email(),
+    password: z.string(),
+  })
+  .strict();
 
 export async function POST(req: Request) {
   const json = await req.json();

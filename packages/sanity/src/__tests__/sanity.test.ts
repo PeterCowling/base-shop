@@ -6,17 +6,19 @@ jest.mock('@platform-core/repositories/shop.server', () => ({
 }));
 jest.mock('@platform-core/shops', () => ({
   getSanityConfig: jest.fn(),
+  getEditorialBlog: jest.fn().mockReturnValue({ enabled: true }),
 }));
 
 import { fetchPublishedPosts, fetchPostBySlug, getConfig } from '../index';
 import { createClient } from '@sanity/client';
 import { getShopById } from '@platform-core/repositories/shop.server';
-import { getSanityConfig } from '@platform-core/shops';
+import { getSanityConfig, getEditorialBlog } from '@platform-core/shops';
 
 describe('sanity.server', () => {
   const createClientMock = createClient as jest.Mock;
   const getShopByIdMock = getShopById as jest.Mock;
   const getSanityConfigMock = getSanityConfig as jest.Mock;
+  const getEditorialBlogMock = getEditorialBlog as jest.Mock;
   let fetchMock: jest.Mock;
 
   beforeEach(() => {
@@ -28,6 +30,7 @@ describe('sanity.server', () => {
       dataset: 'ds',
       token: 'tkn',
     });
+    getEditorialBlogMock.mockReturnValue({ enabled: true });
   });
 
   afterEach(() => {

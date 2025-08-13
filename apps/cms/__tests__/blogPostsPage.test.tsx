@@ -6,6 +6,7 @@ jest.mock("@cms/actions/blog.server", () => ({
 
 jest.mock("@platform-core/src/shops", () => ({
   getSanityConfig: jest.fn().mockReturnValue({}),
+  getEditorialBlog: jest.fn().mockReturnValue({ enabled: true }),
 }));
 
 jest.mock("@platform-core/src/repositories/shop.server", () => ({

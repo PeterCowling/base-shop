@@ -1,6 +1,6 @@
 import "server-only";
 import { createClient } from "@sanity/client";
-import { getSanityConfig } from "@platform-core/shops";
+import { getSanityConfig, getEditorialBlog } from "@platform-core/shops";
 import { getShopById } from "@platform-core/repositories/shop.server";
 import type { SanityBlogConfig } from "@acme/types";
 
@@ -21,6 +21,10 @@ export interface BlogPost {
 
 export async function getConfig(shopId: string): Promise<SanityBlogConfig> {
   const shop = await getShopById(shopId);
+  const editorial = getEditorialBlog(shop);
+  if (!editorial?.enabled) {
+    throw new Error(`Editorial blog disabled for shop ${shopId}`);
+  }
   const config = getSanityConfig(shop);
   if (!config) {
     throw new Error(`Missing Sanity credentials for shop ${shopId}`);

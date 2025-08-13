@@ -9,5 +9,16 @@ export default async function BlogPage({ params }: { params: { lang: string } })
     excerpt: p.excerpt,
     url: `/${params.lang}/blog/${p.slug}`,
   }));
-  return <BlogListing posts={items} />;
+  const dailyEdit =
+    shop.editorialBlog?.enabled && shop.editorialBlog.promoteSchedule;
+  return (
+    <>
+      {dailyEdit && (
+        <div className="mb-4 rounded bg-yellow-100 p-2 text-center text-sm">
+          Daily Edit scheduled for {shop.editorialBlog!.promoteSchedule}
+        </div>
+      )}
+      <BlogListing posts={items} />
+    </>
+  );
 }

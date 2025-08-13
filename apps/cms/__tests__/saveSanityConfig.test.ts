@@ -23,6 +23,7 @@ jest.mock("@platform-core/src/repositories/shop.server", () => ({
 
 jest.mock("@platform-core/src/shops", () => ({
   setSanityConfig: jest.fn(),
+  getEditorialBlog: jest.fn().mockReturnValue({ enabled: true }),
 }));
 
 describe("saveSanityConfig", () => {
@@ -92,6 +93,7 @@ describe("saveSanityConfig", () => {
         token: "t",
       },
       "public",
+      { enabled: true },
     );
     expect(setSanityConfig).toHaveBeenCalledWith({ id: "shop" }, {
       projectId: "p",

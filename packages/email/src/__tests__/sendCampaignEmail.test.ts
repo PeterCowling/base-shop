@@ -5,14 +5,6 @@ jest.mock("nodemailer", () => ({
   default: { createTransport: jest.fn() },
 }));
 
-jest.mock("../providers/sendgrid", () => ({
-  SendgridProvider: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
-}));
-
-jest.mock("../providers/resend", () => ({
-  ResendProvider: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
-}));
-
 const createTransportMock = nodemailer.createTransport as jest.Mock;
 
 describe("sendCampaignEmail", () => {
@@ -33,7 +25,7 @@ describe("sendCampaignEmail", () => {
     process.env.SMTP_URL = "smtp://test";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -51,24 +43,22 @@ describe("sendCampaignEmail", () => {
   });
 
   it("delegates to SendgridProvider when EMAIL_PROVIDER=sendgrid", async () => {
-    const send = jest.fn().mockResolvedValue(undefined);
-    const { SendgridProvider } = require("../providers/sendgrid");
-    (SendgridProvider as jest.Mock).mockImplementation(() => ({ send }));
-
     process.env.EMAIL_PROVIDER = "sendgrid";
     process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
     });
 
-    expect(SendgridProvider).toHaveBeenCalled();
-    expect(send).toHaveBeenCalledWith({
+    const sgMail = require("@sendgrid/mail").default;
+    expect(sgMail.setApiKey).toHaveBeenCalledWith("sg");
+    expect(sgMail.send).toHaveBeenCalledWith({
       to: "to@example.com",
+      from: "campaign@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
       text: "HTML",
@@ -76,23 +66,21 @@ describe("sendCampaignEmail", () => {
   });
 
   it("delegates to ResendProvider when EMAIL_PROVIDER=resend", async () => {
-    const send = jest.fn().mockResolvedValue(undefined);
-    const { ResendProvider } = require("../providers/resend");
-    (ResendProvider as jest.Mock).mockImplementation(() => ({ send }));
-
     process.env.EMAIL_PROVIDER = "resend";
     process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
     });
 
-    expect(ResendProvider).toHaveBeenCalled();
+    const { Resend, send } = require("resend");
+    expect(Resend).toHaveBeenCalledWith("rs");
     expect(send).toHaveBeenCalledWith({
+      from: "campaign@example.com",
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",

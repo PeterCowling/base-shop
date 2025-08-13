@@ -1,11 +1,3 @@
-jest.mock("@sendgrid/mail", () => ({
-  __esModule: true,
-  default: {
-    setApiKey: jest.fn(),
-    send: jest.fn(),
-  },
-}));
-
 const sgMail = require("@sendgrid/mail").default;
 
 describe("SendgridProvider", () => {

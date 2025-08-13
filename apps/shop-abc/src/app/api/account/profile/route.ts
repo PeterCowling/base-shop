@@ -1,6 +1,6 @@
 // apps/shop-abc/src/app/api/account/profile/route.ts
 import "@acme/lib/initZod";
-import { getCustomerSession, hasPermission, validateCsrfToken } from "@auth";
+import { requirePermission, validateCsrfToken } from "@auth";
 import {
   getCustomerProfile,
   updateCustomerProfile,
@@ -20,13 +20,11 @@ const schema = z
   .strict();
 
 export async function GET() {
-  const session = await getCustomerSession();
-  if (!session) {
+  let session;
+  try {
+    session = await requirePermission("view_profile");
+  } catch {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  if (!hasPermission(session.role, "view_profile")) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const profile = await getCustomerProfile(session.customerId);
@@ -41,13 +39,11 @@ export async function GET() {
 }
 
 export async function PUT(req: NextRequest) {
-  const session = await getCustomerSession();
-  if (!session) {
+  let session;
+  try {
+    session = await requirePermission("manage_profile");
+  } catch {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  if (!hasPermission(session.role, "manage_profile")) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
   const token = req.headers.get("x-csrf-token");

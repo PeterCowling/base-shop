@@ -33,6 +33,7 @@ describe("/api/rental", () => {
       markReturned: jest.fn(),
       markRefunded: jest.fn(),
     }));
+    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
 
     const { POST } = await import("../src/app/api/rental/route");
     const res = await POST({
@@ -66,7 +67,7 @@ describe("/api/rental", () => {
       markReturned,
       markRefunded: jest.fn(),
     }));
-
+    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
     const { PATCH } = await import("../src/app/api/rental/route");
     const res = await PATCH({
       json: async () => ({ sessionId: "sess", damageFee: 30 }),
@@ -102,7 +103,7 @@ describe("/api/rental", () => {
       }),
       { virtual: true }
     );
-
+    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
     const { PATCH } = await import("../src/app/api/rental/route");
     const res = await PATCH({
       json: async () => ({ sessionId: "missing" }),
@@ -133,7 +134,7 @@ describe("/api/rental", () => {
       markReturned,
       markRefunded: jest.fn(),
     }));
-
+    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
     const { PATCH } = await import("../src/app/api/rental/route");
     const res = await PATCH({
       json: async () => ({ sessionId: "sess", damageFee: 25 }),

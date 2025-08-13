@@ -72,7 +72,7 @@ describe("validate-env script", () => {
 
     expect(exitSpy).toHaveBeenCalledWith(1);
     expect(errorSpy.mock.calls[0][0]).toBe(
-      "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is required",
+      "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY Required",
     );
     expect(logSpy).not.toHaveBeenCalled();
   });

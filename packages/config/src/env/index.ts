@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { applyFriendlyZodMessages } from "@acme/lib";
-import { coreEnvSchema } from "./core";
+import {
+  coreEnvBaseSchema,
+  depositReleaseEnvRefinement,
+} from "./core";
 import { paymentEnvSchema } from "./payments";
 import { shippingEnvSchema } from "./shipping";
 
@@ -9,10 +12,10 @@ export const mergeEnvSchemas = (
 ) => schemas.reduce((acc, s) => acc.merge(s), z.object({}));
 
 export const envSchema = mergeEnvSchemas(
-  coreEnvSchema,
+  coreEnvBaseSchema,
   paymentEnvSchema,
   shippingEnvSchema,
-);
+).superRefine(depositReleaseEnvRefinement);
 
 applyFriendlyZodMessages();
 

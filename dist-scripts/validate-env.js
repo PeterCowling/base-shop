@@ -25,26 +25,6 @@ Object.keys(env).forEach((k) => {
     if (env[k] === "")
         delete env[k];
 });
-const depositErrors = [];
-for (const [key, value] of Object.entries(env)) {
-    if (!key.startsWith("DEPOSIT_RELEASE_"))
-        continue;
-    if (key.includes("ENABLED")) {
-        if (value !== "true" && value !== "false") {
-            depositErrors.push(`${key} must be true or false`);
-        }
-    }
-    else if (key.includes("INTERVAL_MS")) {
-        if (Number.isNaN(Number(value))) {
-            depositErrors.push(`${key} must be a number`);
-        }
-    }
-}
-if (depositErrors.length) {
-    for (const err of depositErrors)
-        console.error(err);
-    process.exit(1);
-}
 try {
     envSchema.parse(env);
     console.log("Environment variables look valid.");
@@ -53,8 +33,7 @@ catch (err) {
     if (err instanceof ZodError) {
         for (const issue of err.issues) {
             const name = issue.path.join(".");
-            const message = issue.message === "Required" ? "is required" : issue.message;
-            console.error(`${name} ${message}`);
+            console.error(`${name} ${issue.message}`);
         }
     }
     else {

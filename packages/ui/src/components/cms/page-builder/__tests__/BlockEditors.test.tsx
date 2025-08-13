@@ -8,6 +8,7 @@ import ValuePropsEditor from "../ValuePropsEditor";
 import ReviewsCarouselEditor from "../ReviewsCarouselEditor";
 import AnnouncementBarEditor from "../AnnouncementBarEditor";
 import SocialFeedEditor from "../SocialFeedEditor";
+import SocialProofEditor from "../SocialProofEditor";
 import NewsletterSignupEditor from "../NewsletterSignupEditor";
 import StoreLocatorBlockEditor from "../StoreLocatorBlockEditor";
 import FeaturedProductEditor from "../FeaturedProductEditor";
@@ -81,6 +82,12 @@ describe("block editors", () => {
       SocialFeedEditor,
       { type: "SocialFeed", platform: "twitter", account: "" },
       "account",
+    ],
+    [
+      "SocialProofEditor",
+      SocialProofEditor,
+      { type: "SocialProof", source: "" },
+      "data source URL",
     ],
     [
       "StoreLocatorBlockEditor",

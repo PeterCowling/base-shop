@@ -22,6 +22,7 @@ import ValuePropsEditor from "./ValuePropsEditor";
 import ReviewsCarouselEditor from "./ReviewsCarouselEditor";
 import AnnouncementBarEditor from "./AnnouncementBarEditor";
 import SocialFeedEditor from "./SocialFeedEditor";
+import SocialProofEditor from "./SocialProofEditor";
 import MapBlockEditor from "./MapBlockEditor";
 import StoreLocatorBlockEditor from "./StoreLocatorBlockEditor";
 import VideoBlockEditor from "./VideoBlockEditor";
@@ -145,6 +146,11 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       break;
     case "SocialFeed":
       specific = <SocialFeedEditor component={component} onChange={onChange} />;
+      break;
+    case "SocialProof":
+      specific = (
+        <SocialProofEditor component={component} onChange={onChange} />
+      );
       break;
     case "MapBlock":
       specific = <MapBlockEditor component={component} onChange={onChange} />;

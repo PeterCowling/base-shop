@@ -27,6 +27,7 @@ import FAQBlock from "./FAQBlock";
 import CountdownTimer from "./CountdownTimer";
 import SocialLinks from "./SocialLinks";
 import SocialFeed from "./SocialFeed";
+import SocialProof from "./SocialProof";
 import PricingTable from "./PricingTable";
 import NewsletterSignup from "./NewsletterSignup";
 import Tabs from "./Tabs";
@@ -72,6 +73,7 @@ export const organismRegistry = {
   CountdownTimer: { component: CountdownTimer },
   SocialLinks: { component: SocialLinks },
   SocialFeed: { component: SocialFeed },
+  SocialProof: { component: SocialProof },
   NewsletterSignup: { component: NewsletterSignup },
   SearchBar: { component: SearchBar },
   PricingTable: { component: PricingTable },

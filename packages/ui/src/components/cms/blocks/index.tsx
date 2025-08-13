@@ -24,6 +24,7 @@ import SocialLinks from "./SocialLinks";
 import Button from "./Button";
 import PricingTable from "./PricingTable";
 import SocialFeed from "./SocialFeed";
+import SocialProof from "./SocialProof";
 import NewsletterSignup from "./NewsletterSignup";
 import Tabs from "./Tabs";
 import ImageSlider from "./ImageSlider";
@@ -58,6 +59,7 @@ export {
   Footer,
   SocialLinks,
   SocialFeed,
+  SocialProof,
   Button,
   NewsletterSignup,
   ImageSlider,

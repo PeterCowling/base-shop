@@ -102,6 +102,13 @@ export declare const shopSettingsSchema: z.ZodObject<{
         enabled: boolean;
         intervalMinutes: number;
     }>>;
+    returnService: z.ZodOptional<z.ZodObject<{
+        upsEnabled: z.ZodBoolean;
+    }, "strip", z.ZodTypeAny, {
+        upsEnabled: boolean;
+    }, {
+        upsEnabled: boolean;
+    }>>;
     updatedAt: z.ZodString;
     updatedBy: z.ZodString;
 }, "strip", z.ZodTypeAny, {
@@ -139,6 +146,9 @@ export declare const shopSettingsSchema: z.ZodObject<{
         enabled: boolean;
         intervalMinutes: number;
     } | undefined;
+    returnService?: {
+        upsEnabled: boolean;
+    } | undefined;
 }, {
     seo: Partial<Record<"en" | "de" | "it", {
         title?: string | undefined;
@@ -173,6 +183,9 @@ export declare const shopSettingsSchema: z.ZodObject<{
     depositService?: {
         enabled: boolean;
         intervalMinutes: number;
+    } | undefined;
+    returnService?: {
+        upsEnabled: boolean;
     } | undefined;
 }>; 
 export type ShopSettings = z.infer<typeof shopSettingsSchema>;

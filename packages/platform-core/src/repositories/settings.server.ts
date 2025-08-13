@@ -62,6 +62,10 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
           intervalMinutes: 60,
           ...(parsed.data.depositService ?? {}),
         },
+        returnService: {
+          upsEnabled: false,
+          ...(parsed.data.returnService ?? {}),
+        },
         seo: {
           ...(parsed.data.seo ?? {}),
           aiCatalog: {
@@ -90,6 +94,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     currency: "EUR",
     taxRegion: "",
     depositService: { enabled: false, intervalMinutes: 60 },
+    returnService: { upsEnabled: false },
     updatedAt: "",
     updatedBy: "",
   };

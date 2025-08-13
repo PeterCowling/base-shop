@@ -1,4 +1,4 @@
-// apps/shop-abc/src/app/api/return/route.ts
+// apps/shop-bcd/src/app/api/return/route.ts
 import "@acme/lib/initZod";
 
 import { NextRequest, NextResponse } from "next/server";

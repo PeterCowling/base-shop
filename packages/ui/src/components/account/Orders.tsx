@@ -1,5 +1,5 @@
 // packages/ui/src/components/account/Orders.tsx
-import { getCustomerSession } from "@auth";
+import { getCustomerSession, hasPermission } from "@auth";
 import { getOrdersForCustomer } from "@platform-core/orders";
 import { redirect } from "next/navigation";
 
@@ -23,6 +23,9 @@ export default async function OrdersPage({
   if (!session) {
     redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
     return null as never;
+  }
+  if (!hasPermission(session.role, "manage_profile")) {
+    return <p className="p-6">Not authorized.</p>;
   }
   const orders = await getOrdersForCustomer(shopId, session.customerId);
   if (!orders.length) return <p className="p-6">No orders yet.</p>;

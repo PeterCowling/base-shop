@@ -1,5 +1,5 @@
 // packages/ui/src/components/account/Profile.tsx
-import { getCustomerSession } from "@auth";
+import { getCustomerSession, hasPermission } from "@auth";
 import { getCustomerProfile } from "@acme/platform-core";
 import ProfileForm from "./ProfileForm";
 import { redirect } from "next/navigation";
@@ -24,15 +24,18 @@ export default async function ProfilePage({
     return null as never;
   }
   const profile = await getCustomerProfile(session.customerId);
+  const canManageProfile = hasPermission(session.role, "manage_profile");
   return (
     <div className="p-6">
       <h1 className="mb-4 text-xl">{title}</h1>
       <ProfileForm name={profile?.name} email={profile?.email} />
-      <div className="mt-4">
-        <Link href="/account/change-password" className="text-sm underline">
-          Change password
-        </Link>
-      </div>
+      {canManageProfile && (
+        <div className="mt-4">
+          <Link href="/account/change-password" className="text-sm underline">
+            Change password
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

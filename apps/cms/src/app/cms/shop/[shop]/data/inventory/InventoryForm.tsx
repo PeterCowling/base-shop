@@ -243,6 +243,7 @@ export default function InventoryForm({ shop, initial }: Props) {
               <TableCell>
                 <Input
                   type="number"
+                  min={0}
                   value={item.quantity}
                   onChange={(e) => updateItem(idx, "quantity", e.target.value)}
                 />
@@ -250,6 +251,7 @@ export default function InventoryForm({ shop, initial }: Props) {
               <TableCell>
                 <Input
                   type="number"
+                  min={0}
                   value={item.lowStockThreshold ?? ""}
                   onChange={(e) =>
                     updateItem(idx, "lowStockThreshold", e.target.value)

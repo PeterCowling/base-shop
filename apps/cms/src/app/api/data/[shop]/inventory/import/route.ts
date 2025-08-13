@@ -92,7 +92,7 @@ export async function POST(
     const parsed = inventoryItemSchema.array().safeParse(raw);
     if (!parsed.success) {
       return NextResponse.json(
-        { error: parsed.error.flatten().formErrors.join(", ") },
+        { error: parsed.error.issues.map((i) => i.message).join(", ") },
         { status: 400 }
       );
     }

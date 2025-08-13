@@ -5,7 +5,7 @@ import { getProductBySlug } from "@platform-core/src/products";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PdpClient from "./PdpClient.client";
-import { getStructuredData } from "../../../../lib/seo";
+import { getStructuredData, serializeJsonLd } from "../../../../lib/seo";
 
 export async function generateStaticParams() {
   return LOCALES.flatMap((lang) =>
@@ -50,7 +50,7 @@ export default function ProductDetailPage({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <PdpClient product={product} />
     </>

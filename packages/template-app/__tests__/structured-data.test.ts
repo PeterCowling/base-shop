@@ -1,4 +1,4 @@
-import { getStructuredData } from "../src/lib/seo";
+import { getStructuredData, serializeJsonLd } from "../src/lib/seo";
 
 describe("getStructuredData", () => {
   test("builds product schema", () => {
@@ -39,5 +39,12 @@ describe("getStructuredData", () => {
       name: "Home",
       url: "/en",
     });
+  });
+
+  test("serializeJsonLd escapes '<'", () => {
+    const raw = { text: "<script>" };
+    const serialized = serializeJsonLd(raw);
+    expect(serialized).toContain("\\u003cscript>");
+    expect(serialized).not.toContain("<");
   });
 });

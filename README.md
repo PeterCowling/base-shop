@@ -245,7 +245,8 @@ After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:
 - `LOG_LEVEL` – controls logging output (`error`, `warn`, `info`, `debug`; defaults to `info`)
 - `EMAIL_PROVIDER` – campaign email provider (`smtp`, `sendgrid`, or `resend`)
 - `SENDGRID_API_KEY` – API key for SendGrid when using the SendGrid provider
-- `RESEND_API_KEY` – API key for Resend when using the Resend provider
+- `SENDGRID_MARKETING_KEY` – optional API key for SendGrid's Marketing Campaigns API
+- `RESEND_API_KEY` – API key for Resend when using the Resend provider (requires send and schedule scopes)
 - `SENDGRID_WEBHOOK_PUBLIC_KEY` – public key to verify SendGrid event webhook signatures
 - `RESEND_WEBHOOK_SECRET` – secret used to verify Resend webhook signatures
 

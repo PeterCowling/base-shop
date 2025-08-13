@@ -13,11 +13,12 @@ describe("SendgridProvider", () => {
     jest.resetModules();
     jest.clearAllMocks();
     delete process.env.SENDGRID_API_KEY;
+    delete process.env.SENDGRID_MARKETING_KEY;
     delete process.env.CAMPAIGN_FROM;
   });
 
   it("forwards payload to @sendgrid/mail", async () => {
-    process.env.SENDGRID_API_KEY = "sg";
+    process.env.SENDGRID_MARKETING_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
     const { SendgridProvider } = await import("../providers/sendgrid");

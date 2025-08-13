@@ -23,6 +23,7 @@ describe("sendCampaignEmail", () => {
     delete process.env.CAMPAIGN_FROM;
     delete process.env.EMAIL_PROVIDER;
     delete process.env.SENDGRID_API_KEY;
+    delete process.env.SENDGRID_MARKETING_KEY;
     delete process.env.RESEND_API_KEY;
   });
 
@@ -57,7 +58,7 @@ describe("sendCampaignEmail", () => {
     (SendgridProvider as jest.Mock).mockImplementation(() => ({ send }));
 
     process.env.EMAIL_PROVIDER = "sendgrid";
-    process.env.SENDGRID_API_KEY = "sg";
+    process.env.SENDGRID_MARKETING_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
     const { sendCampaignEmail } = await import("../index");

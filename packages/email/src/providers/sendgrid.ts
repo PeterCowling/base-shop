@@ -5,8 +5,9 @@ import type { CampaignProvider } from "./types";
 
 export class SendgridProvider implements CampaignProvider {
   constructor() {
-    if (coreEnv.SENDGRID_API_KEY) {
-      sgMail.setApiKey(coreEnv.SENDGRID_API_KEY);
+    const key = coreEnv.SENDGRID_MARKETING_KEY || coreEnv.SENDGRID_API_KEY;
+    if (key) {
+      sgMail.setApiKey(key);
     }
   }
 

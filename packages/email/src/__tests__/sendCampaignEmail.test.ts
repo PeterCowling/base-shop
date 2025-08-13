@@ -1,5 +1,3 @@
-import nodemailer from "nodemailer";
-
 jest.mock("nodemailer", () => ({
   __esModule: true,
   default: { createTransport: jest.fn() },
@@ -13,8 +11,6 @@ jest.mock("../providers/resend", () => ({
   ResendProvider: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
 }));
 
-const createTransportMock = nodemailer.createTransport as jest.Mock;
-
 describe("sendCampaignEmail", () => {
   afterEach(() => {
     jest.resetAllMocks();
@@ -27,13 +23,15 @@ describe("sendCampaignEmail", () => {
   });
 
   it("uses SMTP_URL and CAMPAIGN_FROM env vars and forwards options", async () => {
+    const nodemailer = await import("nodemailer");
+    const createTransportMock = nodemailer.default.createTransport as jest.Mock;
     const sendMail = jest.fn().mockResolvedValue(undefined);
     createTransportMock.mockReturnValue({ sendMail });
 
     process.env.SMTP_URL = "smtp://test";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -52,15 +50,15 @@ describe("sendCampaignEmail", () => {
   });
 
   it("delegates to SendgridProvider when EMAIL_PROVIDER=sendgrid", async () => {
-    const send = jest.fn().mockResolvedValue(undefined);
-    const { SendgridProvider } = require("../providers/sendgrid");
-    (SendgridProvider as jest.Mock).mockImplementation(() => ({ send }));
-
     process.env.EMAIL_PROVIDER = "sendgrid";
     process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const send = jest.fn().mockResolvedValue(undefined);
+    const { SendgridProvider } = require("../providers/sendgrid");
+    (SendgridProvider as jest.Mock).mockImplementation(() => ({ send }));
+
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -76,15 +74,15 @@ describe("sendCampaignEmail", () => {
   });
 
   it("delegates to ResendProvider when EMAIL_PROVIDER=resend", async () => {
-    const send = jest.fn().mockResolvedValue(undefined);
-    const { ResendProvider } = require("../providers/resend");
-    (ResendProvider as jest.Mock).mockImplementation(() => ({ send }));
-
     process.env.EMAIL_PROVIDER = "resend";
     process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const send = jest.fn().mockResolvedValue(undefined);
+    const { ResendProvider } = require("../providers/resend");
+    (ResendProvider as jest.Mock).mockImplementation(() => ({ send }));
+
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -97,5 +95,42 @@ describe("sendCampaignEmail", () => {
       subject: "Subject",
       html: "<p>HTML</p>",
     });
+  });
+
+  it("logs context when sending fails", async () => {
+    const error = new Error("oops");
+    const nodemailer = await import("nodemailer");
+    const createTransportMock = nodemailer.default.createTransport as jest.Mock;
+    const sendMail = jest.fn().mockRejectedValue(error);
+    createTransportMock.mockReturnValue({ sendMail });
+    const consoleError = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    process.env.SMTP_URL = "smtp://test";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const { sendCampaignEmail } = await import("../send");
+
+    await expect(
+      sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+        campaignId: "camp-1",
+      })
+    ).rejects.toThrow("oops");
+
+    expect(consoleError).toHaveBeenCalledWith(
+      "Failed to send campaign email",
+      expect.objectContaining({
+        campaignId: "camp-1",
+        to: "to@example.com",
+        provider: "smtp",
+        err: error,
+      })
+    );
+
+    consoleError.mockRestore();
   });
 });

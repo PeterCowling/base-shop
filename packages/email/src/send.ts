@@ -3,6 +3,7 @@ import { coreEnv } from "@acme/config/env/core";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
+import { logEmailError } from "./logging";
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -13,6 +14,8 @@ export interface CampaignOptions {
   html: string;
   /** Optional plain-text body */
   text?: string;
+  /** Optional campaign identifier */
+  campaignId?: string;
 }
 
 const providers: Record<string, CampaignProvider> = {
@@ -37,11 +40,20 @@ export async function sendCampaignEmail(
     url: coreEnv.SMTP_URL,
   });
 
-  await transport.sendMail({
-    from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
-    to: options.to,
-    subject: options.subject,
-    html: options.html,
-    text: options.text,
-  });
+  try {
+    await transport.sendMail({
+      from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
+      to: options.to,
+      subject: options.subject,
+      html: options.html,
+      text: options.text,
+    });
+  } catch (err) {
+    await logEmailError(err, {
+      campaignId: options.campaignId,
+      to: options.to,
+      provider: "smtp",
+    });
+    throw err;
+  }
 }

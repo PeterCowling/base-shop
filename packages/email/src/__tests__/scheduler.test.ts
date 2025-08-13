@@ -33,12 +33,19 @@ describe("scheduler", () => {
   const shop = "schedulertest";
   const shopDir = path.join(DATA_ROOT, shop);
 
+  const base = new Date("2020-01-01T00:00:00Z");
+
   beforeEach(async () => {
+    jest.useFakeTimers().setSystemTime(base);
     jest.clearAllMocks();
     setCampaignStore(fsCampaignStore);
     await fs.rm(shopDir, { recursive: true, force: true });
     await fs.mkdir(shopDir, { recursive: true });
     listEventsMock.mockResolvedValue([]);
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it("sends due campaigns and marks them as sent", async () => {
@@ -66,7 +73,8 @@ describe("scheduler", () => {
       "utf8",
     );
 
-    const { sendDueCampaigns } = await import("../scheduler");
+    const { sendDueCampaigns, setClock } = await import("../scheduler");
+    setClock({ now: () => new Date(Date.now()) });
     await sendDueCampaigns();
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
@@ -84,7 +92,8 @@ describe("scheduler", () => {
   });
 
   it("creates campaigns and lists them", async () => {
-    const { createCampaign, listCampaigns } = await import("../scheduler");
+    const { createCampaign, listCampaigns, setClock } = await import("../scheduler");
+    setClock({ now: () => new Date(Date.now()) });
     const future = new Date(Date.now() + 1000).toISOString();
     const id = await createCampaign({
       shop,
@@ -117,7 +126,8 @@ describe("scheduler", () => {
     };
     setCampaignStore(customStore);
 
-    const { createCampaign, sendDueCampaigns } = await import("../scheduler");
+    const { createCampaign, sendDueCampaigns, setClock } = await import("../scheduler");
+    setClock({ now: () => new Date(Date.now()) });
     const future = new Date(Date.now() + 1000).toISOString();
     await createCampaign({
       shop,
@@ -155,7 +165,8 @@ describe("scheduler", () => {
       { type: "email_unsubscribe", email: "leave@example.com" },
     ]);
 
-    const { sendDueCampaigns } = await import("../scheduler");
+    const { sendDueCampaigns, setClock } = await import("../scheduler");
+    setClock({ now: () => new Date(Date.now()) });
     await sendDueCampaigns();
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);

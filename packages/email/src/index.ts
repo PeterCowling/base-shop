@@ -8,6 +8,8 @@ export {
   createCampaign,
   listCampaigns,
   sendDueCampaigns,
+  setClock,
 } from "./scheduler";
+export type { Clock } from "./scheduler";
 export { setCampaignStore, fsCampaignStore } from "./storage";
 export type { CampaignStore, Campaign } from "./storage";

@@ -28,6 +28,7 @@ import Tabs from "./Tabs";
 import ImageSlider from "./ImageSlider";
 import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
+import ProductComparison from "./ProductComparisonBlock";
 
 export {
   BlogListing,
@@ -60,6 +61,7 @@ export {
   PricingTable,
   Tabs,
   CollectionList,
+  ProductComparison,
 };
 
 export * from "./atoms";

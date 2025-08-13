@@ -89,7 +89,18 @@ The wizard scaffolds placeholders for common variables:
 Leave any value blank if the integration isn't needed. You can update the `.env`
 file later and rerun `pnpm validate-env <id>` to confirm everything is set up.
 
-## 3. (Optional) Setup CI and deploy
+## 3. Run the shop
+
+Start the development server for your newly created shop:
+
+```bash
+cd apps/shop-<id>
+pnpm dev
+```
+
+Open <http://localhost:3000> to view the storefront. Pages hot‑reload on save.
+
+## 4. (Optional) Setup CI and deploy
 
 ```bash
 pnpm setup-ci <id>
@@ -97,7 +108,7 @@ pnpm setup-ci <id>
 
 This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs lint/tests, builds the app and deploys it to Cloudflare Pages via `@cloudflare/next-on-pages`.
 
-## 4. Install plugins
+## 5. Install plugins
 
 Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. The platform automatically loads any plugin found under `packages/plugins/*`.
 
@@ -107,7 +118,7 @@ Some plugins require additional environment variables (for example Stripe API
 keys). Add these to the shop's `.env` file and rerun `pnpm validate-env <id>`
 before using the plugin.
 
-## 5. Analytics and event tracking
+## 6. Analytics and event tracking
 
 To send analytics events to Google Analytics and record aggregates:
 
@@ -117,7 +128,7 @@ To send analytics events to Google Analytics and record aggregates:
 
 Ensure these API keys are kept secret and that the app has write access to the data directory for storing aggregates.
 
-## Deposit release service
+## 7. Deposit release service
 
 Rental shops that collect deposits can automate refunds when items are returned. Run the process once with:
 
@@ -132,7 +143,7 @@ To keep it running on a schedule, import `startDepositReleaseService` from `@acm
 
 See [doc/machine.md](./machine.md#deposit-release-service) for more details and configuration options.
 
-## Troubleshooting
+## 8. Troubleshooting
 
 - **"Theme 'X' not found" or "Template 'Y' not found"** – ensure the names match directories in `packages/themes` or `packages/`.
 - **`validate-env` fails** – verify `apps/shop-<id>/.env` contains all variables listed in the error. Missing values will stop the script.

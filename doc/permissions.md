@@ -16,6 +16,8 @@ This guide lists built-in permissions and their default role mappings.
 | `view_orders` | customer, admin, ShopAdmin |
 | `manage_orders` | admin, ShopAdmin |
 | `manage_sessions` | admin, ShopAdmin |
+| `process_returns` | admin, ShopAdmin |
+| `manage_rentals` | admin, ShopAdmin |
 
 ## read
 Allows viewing CMS content and APIs.

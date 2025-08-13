@@ -77,12 +77,17 @@ export async function readRbac(): Promise<RbacDB> {
   try {
     const buf = await fs.readFile(FILE, "utf8");
     const parsed = JSON.parse(buf) as RbacDB;
-    if (parsed && parsed.users && parsed.roles && parsed.permissions)
-      return {
-        ...DEFAULT_DB,
-        ...parsed,
-        permissions: { ...DEFAULT_DB.permissions, ...parsed.permissions },
+    if (parsed && parsed.users && parsed.roles && parsed.permissions) {
+      const permissions: Record<Role, Permission[]> = {
+        ...DEFAULT_DB.permissions,
       };
+      for (const role of Object.keys(parsed.permissions) as Role[]) {
+        permissions[role] = Array.from(
+          new Set([...(permissions[role] ?? []), ...parsed.permissions[role]])
+        );
+      }
+      return { ...DEFAULT_DB, ...parsed, permissions };
+    }
   } catch {
     /* ignore */
   }

@@ -54,9 +54,10 @@ model CustomerMfa {
 }
 
 model User {
-  id           String  @id
-  email        String  @unique
-  passwordHash String
-  role         String
-  resetToken   String?
+  id                 String   @id
+  email              String   @unique
+  passwordHash       String
+  role               String
+  resetToken         String?
+  resetTokenExpiresAt DateTime?
 }

@@ -39,7 +39,8 @@ export async function POST(req: Request) {
       .createHash("sha256")
       .update(token)
       .digest("hex");
-    await setResetToken(user.id, hashedToken);
+    const expiresAt = new Date(Date.now() + 1000 * 60 * 60);
+    await setResetToken(user.id, hashedToken, expiresAt);
     const resetUrl = `/account/reset?token=${token}`;
     await sendEmail(
       parsed.data.email,

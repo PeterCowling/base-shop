@@ -8,6 +8,7 @@ export interface User {
   passwordHash: string;
   role: string;
   resetToken: string | null;
+  resetTokenExpiresAt: Date | null;
 }
 
 export async function getUserById(id: string): Promise<User | null> {
@@ -34,14 +35,26 @@ export async function createUser({
   });
 }
 
-export async function setResetToken(id: string, token: string | null): Promise<void> {
-  await prisma.user.update({ where: { id }, data: { resetToken: token } });
+export async function setResetToken(
+  id: string,
+  token: string | null,
+  expiresAt: Date | null,
+): Promise<void> {
+  await prisma.user.update({
+    where: { id },
+    data: { resetToken: token, resetTokenExpiresAt: expiresAt },
+  });
 }
 
 export async function getUserByResetToken(
   token: string,
 ): Promise<User | null> {
-  return prisma.user.findFirst({ where: { resetToken: token } });
+  return prisma.user.findFirst({
+    where: {
+      resetToken: token,
+      resetTokenExpiresAt: { gt: new Date() },
+    },
+  });
 }
 
 export async function updatePassword(
@@ -50,6 +63,6 @@ export async function updatePassword(
 ): Promise<void> {
   await prisma.user.update({
     where: { id },
-    data: { passwordHash, resetToken: null },
+    data: { passwordHash },
   });
 }

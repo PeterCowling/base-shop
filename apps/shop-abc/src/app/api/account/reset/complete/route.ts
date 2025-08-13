@@ -7,6 +7,7 @@ import crypto from "crypto";
 import {
   getUserByResetToken,
   updatePassword,
+  setResetToken,
 } from "@acme/platform-core/users";
 import { validateCsrfToken } from "@auth";
 import { parseJsonBody } from "@shared-utils";
@@ -49,5 +50,6 @@ export async function POST(req: Request) {
 
   const passwordHash = await bcrypt.hash(password, 10);
   await updatePassword(user.id, passwordHash);
+  await setResetToken(user.id, null, null);
   return NextResponse.json({ ok: true });
 }

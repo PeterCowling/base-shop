@@ -5,7 +5,7 @@ import { listEvents } from "@platform-core/repositories/analytics.server";
 import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";
-import type { Campaign } from "./storage";
+import type { Campaign } from "./types";
 
 function trackedBody(shop: string, id: string, body: string): string {
   const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";

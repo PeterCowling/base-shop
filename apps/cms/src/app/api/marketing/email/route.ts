@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { createCampaign, listCampaigns } from "@acme/email";
+import { createCampaign, listCampaigns, type Campaign } from "@acme/email";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { marketingEmailTemplates } from "@acme/ui";
 
@@ -9,7 +9,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
   if (!shop)
     return NextResponse.json({ error: "Missing shop" }, { status: 400 });
-  const campaigns = await listCampaigns(shop);
+  const campaigns: Campaign[] = await listCampaigns(shop);
   const events = await listEvents(shop);
   const withMetrics = campaigns.map((c) => {
     const metrics = { sent: 0, opened: 0, clicked: 0 };

@@ -1,6 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { Campaign, CampaignStore } from "./types";
+import type { Campaign } from "../types";
+import type { CampaignStore } from "./types";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
 

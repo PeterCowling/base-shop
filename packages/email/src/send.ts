@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import sanitizeHtml from "sanitize-html";
 import { coreEnv } from "@acme/config/env/core";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
@@ -14,6 +15,8 @@ export interface CampaignOptions {
   html: string;
   /** Optional plain-text body */
   text?: string;
+  /** Treat HTML as trusted and skip sanitization */
+  trusted?: boolean;
 }
 
 function deriveText(html: string): string {
@@ -51,7 +54,8 @@ const providers: Record<string, CampaignProvider> = {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
-  const opts = ensureText(options);
+  const html = options.trusted ? options.html : sanitizeHtml(options.html);
+  const opts = ensureText({ ...options, html });
   const primary = coreEnv.EMAIL_PROVIDER ?? "";
   const provider = providers[primary];
 

@@ -5,8 +5,6 @@ jest.mock("nodemailer", () => ({
   default: { createTransport: jest.fn() },
 }));
 
-const createTransportMock = nodemailer.createTransport as jest.Mock;
-
 describe("sendCampaignEmail", () => {
   afterEach(() => {
     jest.resetAllMocks();
@@ -20,6 +18,9 @@ describe("sendCampaignEmail", () => {
 
   it("uses SMTP_URL and CAMPAIGN_FROM env vars and derives text from HTML", async () => {
     const sendMail = jest.fn().mockResolvedValue(undefined);
+    const nodemailerMod = await import("nodemailer");
+    const createTransportMock = nodemailerMod.default
+      .createTransport as jest.Mock;
     createTransportMock.mockReturnValue({ sendMail });
 
     process.env.SMTP_URL = "smtp://test";
@@ -39,6 +40,52 @@ describe("sendCampaignEmail", () => {
       subject: "Subject",
       html: "<p>HTML</p>",
       text: "HTML",
+    });
+  });
+
+  it("sanitizes HTML by default and allows trusted bypass", async () => {
+    const sendMail = jest.fn().mockResolvedValue(undefined);
+    const nodemailerMod = await import("nodemailer");
+    const createTransportMock = nodemailerMod.default
+      .createTransport as jest.Mock;
+    createTransportMock.mockReturnValue({ sendMail });
+
+    process.env.SMTP_URL = "smtp://test";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const malicious =
+      '<p onclick="evil">Hello<script>alert("x")</script></p>';
+
+    const { sendCampaignEmail } = await import("../send");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: malicious,
+    });
+
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>Hello</p>",
+      text: "Hello",
+    });
+
+    sendMail.mockClear();
+
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: malicious,
+      trusted: true,
+    });
+
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: "to@example.com",
+      subject: "Subject",
+      html: malicious,
+      text: "Hello",
     });
   });
 

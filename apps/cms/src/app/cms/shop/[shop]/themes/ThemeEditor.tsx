@@ -119,6 +119,9 @@ export default function ThemeEditor({
   const [availableThemes, setAvailableThemes] = useState(themes);
   const [tokensByThemeState, setTokensByThemeState] =
     useState<Record<string, Record<string, string>>>(tokensByTheme);
+  const [themeDefaults, setThemeDefaults] = useState(
+    tokensByTheme[initialTheme],
+  );
   const [presetThemes, setPresetThemes] = useState(presets);
   const [presetName, setPresetName] = useState("");
   const [contrastWarnings, setContrastWarnings] = useState<string[]>([]);
@@ -128,7 +131,7 @@ export default function ThemeEditor({
   const previewRef = useRef<HTMLIFrameElement | null>(null);
 
   const groupedTokens = useMemo(() => {
-    const tokens = tokensByThemeState[theme];
+    const tokens = themeDefaults;
     const groups: Record<string, [string, string][]> = {
       Background: [],
       Text: [],
@@ -143,14 +146,13 @@ export default function ThemeEditor({
       else groups.Other.push([k, v]);
     });
     return groups;
-  }, [theme, tokensByThemeState]);
+  }, [themeDefaults]);
 
   const changedOverrides = useMemo(() => {
-    const tokens = tokensByThemeState[theme];
     return Object.fromEntries(
-      Object.entries(overrides).filter(([k, v]) => tokens[k] !== v)
+      Object.entries(overrides).filter(([k, v]) => themeDefaults[k] !== v),
     );
-  }, [overrides, tokensByThemeState, theme]);
+  }, [overrides, themeDefaults]);
 
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
@@ -190,8 +192,7 @@ export default function ThemeEditor({
       const doc = iframe.contentDocument;
       if (!doc) return;
       const root = doc.documentElement;
-      const tokens = tokensByThemeState[theme];
-      Object.entries(tokens).forEach(([k, v]) => {
+      Object.entries(themeDefaults).forEach(([k, v]) => {
         root.style.setProperty(k, overrides[k] ?? v);
       });
       doc.addEventListener("click", handleClick);
@@ -207,12 +208,13 @@ export default function ThemeEditor({
       const doc = iframe.contentDocument;
       doc?.removeEventListener("click", handleClick);
     };
-  }, [theme, overrides, tokensByThemeState]);
+  }, [themeDefaults, overrides]);
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
     setTheme(next);
     setOverrides({});
+    setThemeDefaults(tokensByThemeState[next]);
   };
 
   const handleOverrideChange =
@@ -241,7 +243,7 @@ export default function ThemeEditor({
 
   useEffect(() => {
     const ccc = new ColorContrastChecker();
-    const baseTokens = tokensByThemeState[theme];
+    const baseTokens = themeDefaults;
     const merged = { ...baseTokens, ...overrides };
     const textTokens = Object.keys(baseTokens).filter((k) =>
       /text|foreground/i.test(k),
@@ -272,13 +274,14 @@ export default function ThemeEditor({
       });
     });
     setContrastWarnings(warnings);
-  }, [theme, overrides, tokensByThemeState]);
+  }, [themeDefaults, overrides]);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
     const fd = new FormData(e.currentTarget);
     fd.set("themeOverrides", JSON.stringify(changedOverrides));
+    fd.set("themeDefaults", JSON.stringify(themeDefaults));
     const result = await updateShop(shop, fd);
     if (result.errors) {
       setErrors(result.errors);
@@ -291,13 +294,14 @@ export default function ThemeEditor({
   const handleSavePreset = async () => {
     const name = presetName.trim();
     if (!name) return;
-    const tokens = { ...tokensByThemeState[theme], ...overrides };
+    const tokens = { ...themeDefaults, ...overrides };
     await savePreset(shop, name, tokens);
     setTokensByThemeState((prev) => ({ ...prev, [name]: tokens }));
     setAvailableThemes((prev) => [...prev, name]);
     setPresetThemes((prev) => [...prev, name]);
     setTheme(name);
     setOverrides({});
+    setThemeDefaults(tokens);
     setPresetName("");
   };
 
@@ -313,6 +317,7 @@ export default function ThemeEditor({
     const fallback = themes[0];
     setTheme(fallback);
     setOverrides({});
+    setThemeDefaults(tokensByThemeState[fallback]);
   };
 
   return (
@@ -322,6 +327,11 @@ export default function ThemeEditor({
         type="hidden"
         name="themeOverrides"
         value={JSON.stringify(changedOverrides)}
+      />
+      <input
+        type="hidden"
+        name="themeDefaults"
+        value={JSON.stringify(themeDefaults)}
       />
       <label className="flex flex-col gap-1">
         <span>Theme</span>

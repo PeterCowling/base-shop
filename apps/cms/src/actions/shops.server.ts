@@ -11,7 +11,7 @@ import {
   getShopById,
   updateShopInRepo,
 } from "@platform-core/src/repositories/shop.server";
-import { syncTheme, loadTokens } from "@platform-core/src/createShop";
+import { syncTheme } from "@platform-core/src/createShop";
 import {
   localeSchema,
   type Locale,
@@ -34,11 +34,12 @@ export async function updateShop(
   const current = await getShopById<Shop>(shop);
   if (current.id !== id) throw new Error(`Shop ${id} not found in ${shop}`);
 
-  const parsed = shopSchema.safeParse(
-    Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>
-    )
+  const entries = Object.fromEntries(
+    formData as unknown as Iterable<[string, FormDataEntryValue]>,
   );
+  const defaultsEntry = entries.themeDefaults as string | undefined;
+  if ("themeDefaults" in entries) delete entries.themeDefaults;
+  const parsed = shopSchema.safeParse(entries);
   if (!parsed.success) {
     console.error(
       `[updateShop] validation failed for shop ${shop}`,
@@ -50,10 +51,12 @@ export async function updateShop(
   const data: ShopForm = parsed.data;
 
   const overrides = data.themeOverrides as Record<string, string>;
-  const themeDefaults =
-    current.themeId !== data.themeId
-      ? syncTheme(shop, data.themeId)
-      : loadTokens(data.themeId);
+  if (current.themeId !== data.themeId) {
+    await syncTheme(shop, data.themeId);
+  }
+  const themeDefaults = defaultsEntry
+    ? JSON.parse(defaultsEntry as string)
+    : {};
   const themeTokens = { ...themeDefaults, ...overrides };
 
   const patch: Partial<Shop> & { id: string } = {

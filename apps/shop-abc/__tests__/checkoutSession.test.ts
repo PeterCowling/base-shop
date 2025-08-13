@@ -3,6 +3,9 @@ import { encodeCartCookie } from "@platform-core/src/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@acme/date-utils";
 import { POST } from "../src/app/api/checkout-session/route";
+import { findCoupon } from "@platform-core/coupons";
+import { getTaxRate } from "@platform-core/tax";
+import { ReadableStream } from "node:stream/web";
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -20,6 +23,9 @@ jest.mock("@platform-core/pricing", () => ({
   convertCurrency: jest.fn(async (n: number) => n),
 }));
 
+jest.mock("@platform-core/coupons", () => ({ findCoupon: jest.fn() }));
+jest.mock("@platform-core/tax", () => ({ getTaxRate: jest.fn() }));
+
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
 jest.mock("@auth", () => ({ requirePermission: jest.fn(async () => ({ customerId: "c1" })) }));
@@ -30,6 +36,8 @@ jest.mock("@platform-core/src/cartStore", () => ({
 
 import { stripe } from "@acme/stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
+const findCouponMock = findCoupon as jest.Mock;
+const getTaxRateMock = getTaxRate as jest.Mock;
 
 function createRequest(
   body: any,
@@ -37,8 +45,16 @@ function createRequest(
   url = "http://store.example/api/checkout-session",
   headers: Record<string, string> = {}
 ): Parameters<typeof POST>[0] {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(encoder.encode(JSON.stringify(body)));
+      controller.close();
+    },
+  });
   return {
     json: async () => body,
+    body: stream,
     cookies: { get: () => ({ name: "", value: cookie }) },
     nextUrl: Object.assign(new URL(url), { clone: () => new URL(url) }),
     headers: {
@@ -49,10 +65,15 @@ function createRequest(
 
 test("builds Stripe session with correct items and metadata", async () => {
   jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockReset();
+  findCouponMock.mockReset();
+  getTaxRateMock.mockReset();
   stripeCreate.mockResolvedValue({
     id: "sess_test",
     payment_intent: { client_secret: "cs_test" },
   });
+  findCouponMock.mockResolvedValue(null);
+  getTaxRateMock.mockResolvedValue(0);
 
   const sku = PRODUCTS[0];
   const size = "40";
@@ -115,4 +136,65 @@ test("responds with 400 on invalid returnDate", async () => {
   expect(res.status).toBe(400);
   const body = await res.json();
   expect(body.error).toMatch(/invalid/i);
+});
+
+test("applies coupon discount and sets metadata", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockReset();
+  findCouponMock.mockReset();
+  getTaxRateMock.mockReset();
+  stripeCreate.mockResolvedValue({
+    id: "sess_test",
+    payment_intent: { client_secret: "cs_test" },
+  });
+  findCouponMock.mockResolvedValue({ code: "SAVE10", discountPercent: 10 });
+  getTaxRateMock.mockResolvedValue(0);
+
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest({ returnDate: "2025-01-02", coupon: "SAVE10" }, cookie);
+
+  await POST(req);
+  const args = stripeCreate.mock.calls[0][0];
+
+  expect(args.metadata.subtotal).toBe("9");
+  expect(args.metadata.discount).toBe("1");
+  expect(args.payment_intent_data.metadata.subtotal).toBe("9");
+  expect(args.payment_intent_data.metadata.discount).toBe("1");
+});
+
+test("adds tax line item and metadata", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockReset();
+  findCouponMock.mockReset();
+  getTaxRateMock.mockReset();
+  stripeCreate.mockResolvedValue({
+    id: "sess_test",
+    payment_intent: { client_secret: "cs_test" },
+  });
+  findCouponMock.mockResolvedValue(null);
+  getTaxRateMock.mockResolvedValue(0.2);
+
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest(
+    { returnDate: "2025-01-02", taxRegion: "DE" },
+    cookie,
+  );
+
+  await POST(req);
+  const args = stripeCreate.mock.calls[0][0];
+
+  expect(args.line_items).toHaveLength(3);
+  const taxItem = args.line_items[2];
+  expect(taxItem.price_data.unit_amount).toBe(200);
+  expect(args.metadata.taxAmount).toBe("2");
+  expect(args.metadata.taxRate).toBe("0.2");
+  expect(args.payment_intent_data.metadata.taxAmount).toBe("2");
 });

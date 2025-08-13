@@ -231,7 +231,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     (paymentIntentData as any).billing_details = billing_details;
   }
 
-  const session = await stripe.checkout.sessions.create({
+    const stripeSession = await stripe.checkout.sessions.create({
     mode: "payment",
     customer,
     line_items,
@@ -256,10 +256,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   });
 
   /* 6️⃣ Return client credentials ------------------------------------------ */
-  const clientSecret =
-    typeof session.payment_intent === "string"
-      ? undefined
-      : session.payment_intent?.client_secret;
+    const clientSecret =
+      typeof stripeSession.payment_intent === "string"
+        ? undefined
+        : stripeSession.payment_intent?.client_secret;
 
-  return NextResponse.json({ clientSecret, sessionId: session.id });
+    return NextResponse.json({
+      clientSecret,
+      sessionId: stripeSession.id,
+    });
 }

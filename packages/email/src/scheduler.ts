@@ -6,6 +6,7 @@ import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";
 import type { Campaign } from "./storage";
+import { renderTemplate } from "./templates";
 
 function trackedBody(shop: string, id: string, body: string): string {
   const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";
@@ -113,6 +114,9 @@ export async function createCampaign(opts: {
   }
   if (!shop || !subject || !body || recipients.length === 0) {
     throw new Error("Missing fields");
+  }
+  if (!body.includes("%%UNSUBSCRIBE%%")) {
+    body = renderTemplate(templateId ?? null, { subject, body });
   }
   const id = Date.now().toString(36);
   const scheduled = sendAt ? new Date(sendAt) : new Date();

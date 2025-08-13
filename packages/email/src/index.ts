@@ -4,6 +4,7 @@ export type { AbandonedCart } from "./abandonedCart";
 export { recoverAbandonedCarts, resolveAbandonedCartDelay } from "./abandonedCart";
 export { sendEmail } from "./sendEmail";
 export { resolveSegment, createContact, addToList, listSegments } from "./segments";
+export { renderTemplate } from "./templates";
 export {
   createCampaign,
   listCampaigns,

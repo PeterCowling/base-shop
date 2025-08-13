@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@acme/config": "workspace:*",
+    "@acme/ui": "workspace:*",
     "commander": "^11.1.0",
     "@sendgrid/mail": "^8.1.5",
     "nodemailer": "^6.10.1",

@@ -7,7 +7,8 @@
     "view_profile",
     "manage_profile",
     "change_password",
-    "manage_cart"
+    "manage_cart",
+    "view_orders"
   ],
   "admin": [
     "view_products",
@@ -16,7 +17,10 @@
     "view_profile",
     "manage_profile",
     "change_password",
-    "manage_cart"
+    "manage_cart",
+    "view_orders",
+    "manage_orders",
+    "manage_sessions"
   ],
   "ShopAdmin": [
     "view_products",
@@ -25,7 +29,10 @@
     "view_profile",
     "manage_profile",
     "change_password",
-    "manage_cart"
+    "manage_cart",
+    "view_orders",
+    "manage_orders",
+    "manage_sessions"
   ],
   "CatalogManager": [
     "view_products",

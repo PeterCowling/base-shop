@@ -26,4 +26,20 @@ describe("hasPermission", () => {
   it("customer can checkout", () => {
     expect(hasPermission("customer", "checkout")).toBe(true);
   });
+
+  it("customer can view orders but cannot manage them", () => {
+    expect(hasPermission("customer", "view_orders")).toBe(true);
+    expect(hasPermission("customer", "manage_orders")).toBe(false);
+  });
+
+  it("admin and ShopAdmin can manage orders and sessions", () => {
+    expect(hasPermission("admin", "manage_orders")).toBe(true);
+    expect(hasPermission("admin", "manage_sessions")).toBe(true);
+    expect(hasPermission("ShopAdmin", "manage_orders")).toBe(true);
+    expect(hasPermission("ShopAdmin", "manage_sessions")).toBe(true);
+  });
+
+  it("viewer cannot view orders", () => {
+    expect(hasPermission("viewer", "view_orders")).toBe(false);
+  });
 });

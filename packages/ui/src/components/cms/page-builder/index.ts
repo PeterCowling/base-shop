@@ -11,6 +11,7 @@ export { default as AnnouncementBarEditor } from "./AnnouncementBarEditor";
 export { default as MapBlockEditor } from "./MapBlockEditor";
 export { default as VideoBlockEditor } from "./VideoBlockEditor";
 export { default as FAQBlockEditor } from "./FAQBlockEditor";
+export { default as FeaturedProductEditor } from "./FeaturedProductEditor";
 export { default as PricingTableEditor } from "./PricingTableEditor";
 export { default as NewsletterSignupEditor } from "./NewsletterSignupEditor";
 export { default as ImageSliderEditor } from "./ImageSliderEditor";

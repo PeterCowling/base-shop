@@ -16,6 +16,9 @@ import ValueProps from "./ValueProps";
 import RecommendationCarousel, {
   getRuntimeProps as getRecommendationCarouselRuntimeProps,
 } from "./RecommendationCarousel";
+import FeaturedProduct, {
+  getRuntimeProps as getFeaturedProductRuntimeProps,
+} from "./FeaturedProductBlock";
 import AnnouncementBar from "./AnnouncementBarBlock";
 import MapBlock from "./MapBlock";
 import VideoBlock from "./VideoBlock";
@@ -65,6 +68,10 @@ export const organismRegistry = {
   SearchBar: { component: SearchBar },
   PricingTable: { component: PricingTable },
   Tabs: { component: Tabs },
+  FeaturedProduct: {
+    component: FeaturedProduct,
+    getRuntimeProps: getFeaturedProductRuntimeProps,
+  },
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

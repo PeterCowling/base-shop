@@ -157,6 +157,13 @@ export interface ProductCarouselComponent extends PageComponentBase {
   mode?: "collection" | "manual";
 }
 
+export interface FeaturedProductComponent extends PageComponentBase {
+  type: "FeaturedProduct";
+  sku?: string;
+  collectionId?: string;
+  mode?: "sku" | "collection";
+}
+
 /** Grid of collections; `minItems`/`maxItems` clamp visible collections */
 export interface CollectionListComponent extends PageComponentBase {
   type: "CollectionList";
@@ -313,6 +320,7 @@ export type PageComponent =
   | ReviewsCarouselComponent
   | ProductGridComponent
   | ProductCarouselComponent
+  | FeaturedProductComponent
   | CollectionListComponent
   | RecommendationCarouselComponent
   | GalleryComponent
@@ -406,6 +414,10 @@ const productGridComponentSchema = baseComponentSchema.extend({
 
 const productCarouselComponentSchema = baseComponentSchema.extend({
   type: z.literal("ProductCarousel"),
+});
+
+const featuredProductComponentSchema = baseComponentSchema.extend({
+  type: z.literal("FeaturedProduct"),
 });
 
 const recommendationCarouselComponentSchema = baseComponentSchema.extend({
@@ -609,6 +621,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     reviewsCarouselComponentSchema,
     productGridComponentSchema,
     productCarouselComponentSchema,
+    featuredProductComponentSchema,
     recommendationCarouselComponentSchema,
     galleryComponentSchema,
     contactFormComponentSchema,

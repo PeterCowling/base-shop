@@ -27,6 +27,7 @@ export default async function PermissionsPage() {
   const roles: Role[] = [
     "admin",
     "viewer",
+    "customer",
     "ShopAdmin",
     "CatalogManager",
     "ThemeEditor",

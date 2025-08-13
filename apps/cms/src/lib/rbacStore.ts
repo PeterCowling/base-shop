@@ -77,7 +77,12 @@ export async function readRbac(): Promise<RbacDB> {
   try {
     const buf = await fs.readFile(FILE, "utf8");
     const parsed = JSON.parse(buf) as RbacDB;
-    if (parsed && parsed.users && parsed.roles && parsed.permissions) return parsed;
+    if (parsed && parsed.users && parsed.roles && parsed.permissions)
+      return {
+        ...DEFAULT_DB,
+        ...parsed,
+        permissions: { ...DEFAULT_DB.permissions, ...parsed.permissions },
+      };
   } catch {
     /* ignore */
   }

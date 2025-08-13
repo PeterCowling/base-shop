@@ -9,8 +9,16 @@ jest.mock("@acme/platform-core/users", () => ({
   getUserByEmail: jest.fn().mockResolvedValue(null),
 }));
 
+jest.mock("@acme/config", () => ({
+  env: {},
+}));
+
 jest.mock("@acme/email", () => ({
   sendEmail: jest.fn(),
+}));
+
+jest.mock("@acme/platform-core/customerProfiles", () => ({
+  updateCustomerProfile: jest.fn(),
 }));
 
 jest.mock("bcryptjs", () => ({

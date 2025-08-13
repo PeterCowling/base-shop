@@ -18,6 +18,7 @@ const getCustomerSession = jest.fn();
 jest.mock("@auth", () => ({
   validateCsrfToken: jest.fn().mockResolvedValue(true),
   getCustomerSession,
+  hasPermission: jest.fn().mockReturnValue(true),
 }));
 
 jest.mock("@upstash/redis", () => ({

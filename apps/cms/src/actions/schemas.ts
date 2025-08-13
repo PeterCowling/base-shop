@@ -3,12 +3,14 @@
 import { localeSchema } from "@acme/types";
 import { z } from "zod";
 
-const mediaItemSchema = z.object({
-  url: z.string(),
-  title: z.string().optional(),
-  altText: z.string().optional(),
-  type: z.enum(["image", "video"]),
-});
+const mediaItemSchema = z
+  .object({
+    url: z.string(),
+    title: z.string().optional(),
+    altText: z.string().optional(),
+    type: z.enum(["image", "video"]),
+  })
+  .strict();
 
 export const productSchema = z
   .object({

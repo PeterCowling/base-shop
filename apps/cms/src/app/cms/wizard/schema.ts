@@ -36,12 +36,14 @@ export interface NavItem {
 }
 
 export const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
-  z.object({
-    id: z.string(),
-    label: z.string(),
-    url: z.string().url(),
-    children: z.array(navItemSchema).optional(),
-  })
+  z
+    .object({
+      id: z.string(),
+      label: z.string(),
+      url: z.string().url(),
+      children: z.array(navItemSchema).optional(),
+    })
+    .strict()
 );
 
 /* -------------------------------------------------------------------------- */

@@ -15,11 +15,13 @@ interface NavItem {
 }
 
 const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
-  z.object({
-    label: z.string().min(1),
-    url: z.string().min(1),
-    children: z.array(navItemSchema).optional(),
-  })
+  z
+    .object({
+      label: z.string().min(1),
+      url: z.string().min(1),
+      children: z.array(navItemSchema).optional(),
+    })
+    .strict()
 );
 
 export const createShopOptionsSchema = z

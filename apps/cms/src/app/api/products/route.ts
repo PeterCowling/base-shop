@@ -8,11 +8,13 @@ import type {
   ProductPublication,
 } from "@platform-core/src/products";
 
-const searchSchema = z.object({
-  q: z.string().optional(),
-  slug: z.string().optional(),
-  shop: z.string().default("abc"),
-});
+const searchSchema = z
+  .object({
+    q: z.string().optional(),
+    slug: z.string().optional(),
+    shop: z.string().default("abc"),
+  })
+  .strict();
 
 const paramsToObject = (params: URLSearchParams) =>
   Object.fromEntries(params.entries());

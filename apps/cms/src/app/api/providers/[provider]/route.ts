@@ -4,7 +4,9 @@ import path from "node:path";
 import { z } from "zod";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 
-const ParamsSchema = z.object({ shop: z.string(), code: z.string().optional() });
+const ParamsSchema = z
+  .object({ shop: z.string(), code: z.string().optional() })
+  .strict();
 
 export async function GET(
   req: NextRequest,

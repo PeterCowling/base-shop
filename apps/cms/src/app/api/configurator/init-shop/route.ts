@@ -19,30 +19,32 @@ export async function POST(req: Request) {
   }
 
   try {
-    const schema = z.object({
-      id: z
-        .string()
-        .transform((s) => validateShopName(s)),
-      csv: z
-        .string()
-        .optional()
-        .transform((s) => s.replace(/\s+/g, ""))
-        .refine(
-          (val) => {
-            if (!val) return true;
-            try {
-              return (
-                Buffer.from(val, "base64").toString("base64").replace(/=+$/, "") ===
-                val.replace(/=+$/, "")
-              );
-            } catch {
-              return false;
-            }
-          },
-          { message: "Invalid CSV encoding" }
-        ),
-      categories: z.array(z.string()).optional(),
-    });
+    const schema = z
+      .object({
+        id: z
+          .string()
+          .transform((s) => validateShopName(s)),
+        csv: z
+          .string()
+          .optional()
+          .transform((s) => s.replace(/\s+/g, ""))
+          .refine(
+            (val) => {
+              if (!val) return true;
+              try {
+                return (
+                  Buffer.from(val, "base64").toString("base64").replace(/=+$/, "") ===
+                  val.replace(/=+$/, "")
+                );
+              } catch {
+                return false;
+              }
+            },
+            { message: "Invalid CSV encoding" }
+          ),
+        categories: z.array(z.string()).optional(),
+      })
+      .strict();
 
     const parsed = schema.safeParse(await req.json());
     if (!parsed.success) {

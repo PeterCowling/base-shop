@@ -23,13 +23,15 @@ jest.mock(
 
 jest.mock("@acme/types", () => {
   const { z } = require("zod");
-  const inventoryItemSchema = z.object({
-    sku: z.string(),
-    productId: z.string(),
-    variantAttributes: z.record(z.string()),
-    quantity: z.number().min(1),
-    lowStockThreshold: z.number().optional(),
-  });
+  const inventoryItemSchema = z
+    .object({
+      sku: z.string(),
+      productId: z.string(),
+      variantAttributes: z.record(z.string()),
+      quantity: z.number().min(1),
+      lowStockThreshold: z.number().optional(),
+    })
+    .strict();
   return { inventoryItemSchema };
 });
 

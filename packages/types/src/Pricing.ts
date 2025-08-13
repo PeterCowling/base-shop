@@ -7,15 +7,19 @@ import { z } from "zod";
  * - `durationDiscounts` contains rate multipliers applied when `minDays` is met.
  * - `damageFees` maps damage codes to a fixed amount or the string `"deposit"`.
  */
-export const pricingSchema = z.object({
-  baseDailyRate: z.number(),
-  durationDiscounts: z.array(
-    z.object({
-      minDays: z.number(),
-      rate: z.number(),
-    })
-  ),
-  damageFees: z.record(z.union([z.number(), z.literal("deposit")])),
-});
+export const pricingSchema = z
+  .object({
+    baseDailyRate: z.number(),
+    durationDiscounts: z.array(
+      z
+        .object({
+          minDays: z.number(),
+          rate: z.number(),
+        })
+        .strict()
+    ),
+    damageFees: z.record(z.union([z.number(), z.literal("deposit")])),
+  })
+  .strict();
 
 export type PricingMatrix = z.infer<typeof pricingSchema>;

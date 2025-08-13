@@ -16,12 +16,7 @@ import { authSecret } from "./secret";
 
 const NODE_ENV = env.NODE_ENV ?? "development";
 
-/**
- * In tests we default to a dummy secret so Jest doesn't explode.
- * Production *still* requires NEXTAUTH_SECRET — we just relax the rule
- * for "development" and "test".
- */
-const secret = authSecret || (NODE_ENV === "test" ? "test-secret" : undefined);
+const secret = authSecret;
 
 if (NODE_ENV === "production" && !secret) {
   throw new Error("NEXTAUTH_SECRET must be set when NODE_ENV is 'production'");

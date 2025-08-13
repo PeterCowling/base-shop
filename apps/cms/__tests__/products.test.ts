@@ -3,7 +3,7 @@
 import type { ProductPublication } from "../../../packages/platform-core/src/products";
 
 // Ensure auth options do not throw on import
-process.env.NEXTAUTH_SECRET = "test-secret";
+process.env.NEXTAUTH_SECRET = "secret";
 jest.mock("next-auth", () => ({
   getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
 }));

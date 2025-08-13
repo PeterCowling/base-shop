@@ -2,6 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
+process.env.NEXTAUTH_SECRET ||= 'secret';
+process.env.SESSION_SECRET ||= 'secret';
+
 const moduleUrl = new URL('../index.mjs', import.meta.url);
 const freshImport = () => import(`${moduleUrl.href}?t=${Date.now()}&r=${Math.random()}`);
 

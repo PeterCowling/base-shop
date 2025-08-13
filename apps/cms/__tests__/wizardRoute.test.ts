@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 /*  Environment setup                                                 */
 /* ------------------------------------------------------------------ */
 
-process.env.NEXTAUTH_SECRET = "test-secret";
+process.env.NEXTAUTH_SECRET = "secret";
 
 /* ------------------------------------------------------------------ */
 /*  External-module stubs                                             */

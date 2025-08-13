@@ -17,7 +17,8 @@
 const mutableEnv = process.env as unknown as Record<string, string>;
 
 mutableEnv.NODE_ENV ||= "development"; // relax “edge” runtime checks
-mutableEnv.NEXTAUTH_SECRET ||= "test-secret"; // dummy secret for Next-Auth
+mutableEnv.NEXTAUTH_SECRET ||= "secret"; // dummy secret for Next-Auth
+mutableEnv.SESSION_SECRET ||= "secret"; // dummy secret for sessions
 mutableEnv.CART_COOKIE_SECRET ||= "test-cart-secret"; // cart cookie signing
 mutableEnv.STRIPE_WEBHOOK_SECRET ||= "whsec_test"; // dummy Stripe webhook secret
 

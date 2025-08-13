@@ -5,7 +5,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 
 process.env.STRIPE_SECRET_KEY = "sk_test_123";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
-process.env.CART_COOKIE_SECRET = "test-secret";
+process.env.CART_COOKIE_SECRET = "secret";
 process.env.STRIPE_WEBHOOK_SECRET = "whsec_test";
 
 async function withRepo(cb: () => Promise<void>): Promise<void> {

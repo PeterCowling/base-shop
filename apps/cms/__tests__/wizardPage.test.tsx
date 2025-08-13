@@ -7,7 +7,7 @@ import path from "node:path";
 /* -------------------------------------------------------------------------- */
 /*  Minimal env & auth/navigation stubs                                       */
 /* -------------------------------------------------------------------------- */
-process.env.NEXTAUTH_SECRET = "test-secret";
+process.env.NEXTAUTH_SECRET = "secret";
 
 jest.mock("next-auth", () => ({
   getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),

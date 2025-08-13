@@ -45,6 +45,11 @@ export function CheckoutTemplate({
                     ? "bg-primary/80 border-primary/80 text-primary-fg"
                     : "bg-muted text-muted-foreground"
               )}
+              data-token={
+                idx === step || idx < step
+                  ? "--color-primary"
+                  : "--color-muted"
+              }
             >
               {idx + 1}
             </div>

@@ -68,7 +68,9 @@ export function CartTemplate({
                   )}
                   {line.sku.title}
                   {line.size && (
-                    <span className="ml-1 text-xs text-muted">({line.size})</span>
+                    <span className="ml-1 text-xs text-muted" data-token="--color-muted">
+                      ({line.size})
+                    </span>
                   )}
                 </div>
               </td>
@@ -88,6 +90,7 @@ export function CartTemplate({
                     type="button"
                     onClick={() => onRemove(line.id)}
                     className="text-danger hover:underline"
+                    data-token="--color-danger"
                   >
                     Remove
                   </button>

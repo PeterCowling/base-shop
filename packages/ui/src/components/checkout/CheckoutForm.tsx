@@ -12,7 +12,7 @@ import {
 import { loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 import { fetchJson } from "@shared-utils";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { isoDateInNDays } from "@acme/date-utils";
 import { useCurrency } from "@platform-core/src/contexts/CurrencyContext";
@@ -27,6 +27,7 @@ type FormValues = { returnDate: string };
 
 export default function CheckoutForm({ locale, taxRegion }: Props) {
   const [clientSecret, setClientSecret] = useState<string>();
+  const [fetchError, setFetchError] = useState<string>();
   const [currency] = useCurrency();
 
   const defaultDate = isoDateInNDays(7);
@@ -36,9 +37,8 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
   });
   const returnDate = form.watch("returnDate");
 
-  /* --- create session on mount or when returnDate changes --- */
-  useEffect(() => {
-    (async () => {
+  const fetchClientSecret = useCallback(async () => {
+    try {
       const { clientSecret } = await fetchJson<{ clientSecret: string }>(
         "/api/checkout-session",
         {
@@ -48,8 +48,24 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
         }
       );
       setClientSecret(clientSecret);
-    })();
+      setFetchError(undefined);
+    } catch (e) {
+      setFetchError("Could not load payment form.");
+    }
   }, [returnDate, currency, taxRegion]);
+
+  /* --- create session on mount or when returnDate changes --- */
+  useEffect(() => {
+    fetchClientSecret();
+  }, [fetchClientSecret]);
+
+  if (fetchError)
+    return (
+      <div>
+        <p>{fetchError}</p>
+        <button onClick={fetchClientSecret}>Retry</button>
+      </div>
+    );
 
   if (!clientSecret) return <p>Loading payment form…</p>;
 

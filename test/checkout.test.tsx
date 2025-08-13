@@ -53,6 +53,26 @@ test("renders Elements once client secret is fetched", async () => {
   expect(screen.queryByText("Loading payment form…")).toBeNull();
 });
 
+test("error fetching client secret shows fallback", async () => {
+  server.use(
+    rest.post("/api/checkout-session", (_req, res, ctx) => {
+      return res(ctx.status(500));
+    })
+  );
+
+  render(
+    <CurrencyProvider>
+      <CheckoutForm locale="en" taxRegion="EU" />
+    </CurrencyProvider>
+  );
+
+  expect(
+    await screen.findByText("Could not load payment form.")
+  ).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /retry/i })).toBeInTheDocument();
+  expect(screen.queryByTestId("payment-element")).toBeNull();
+});
+
 test("successful payment redirects to success", async () => {
   server.use(
     rest.post("/api/checkout-session", (_req, res, ctx) => {

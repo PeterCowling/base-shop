@@ -118,8 +118,8 @@ const schema = z
   .object({
     returnDate: z.string().optional(),
     coupon: z.string().optional(),
-    currency: z.string().default("EUR"),
-    taxRegion: z.string().default(""),
+    currency: z.enum(["EUR", "USD", "GBP"]).default("EUR"),
+    taxRegion: z.enum(["", "EU", "US"]).default(""),
     customer: z.string().optional(),
     shipping: shippingSchema.optional(),
     billing_details: billingSchema.optional(),

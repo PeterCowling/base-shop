@@ -37,6 +37,7 @@ import SearchBar from "./SearchBar";
 import ProductComparisonBlock from "./ProductComparisonBlock";
 import GiftCardBlock from "./GiftCardBlock";
 import FormBuilderBlock from "./FormBuilderBlock";
+import PopupModal from "./PopupModal";
 
 export const organismRegistry = {
   AnnouncementBar: { component: AnnouncementBar },
@@ -82,6 +83,7 @@ export const organismRegistry = {
   ProductComparison: { component: ProductComparisonBlock },
   GiftCardBlock: { component: GiftCardBlock },
   FormBuilderBlock: { component: FormBuilderBlock },
+  PopupModal: { component: PopupModal },
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

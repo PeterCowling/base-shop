@@ -38,6 +38,7 @@ import RecommendationCarouselEditor from "./RecommendationCarouselEditor";
 import ProductComparisonEditor from "./ProductComparisonEditor";
 import GiftCardEditor from "./GiftCardEditor";
 import FormBuilderEditor from "./FormBuilderEditor";
+import PopupModalEditor from "./PopupModalEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -141,6 +142,9 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       specific = (
         <FormBuilderEditor component={component} onChange={onChange} />
       );
+      break;
+    case "PopupModal":
+      specific = <PopupModalEditor component={component} onChange={onChange} />;
       break;
     case "ValueProps":
       specific = <ValuePropsEditor component={component} onChange={onChange} />;

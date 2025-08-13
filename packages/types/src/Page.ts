@@ -299,6 +299,13 @@ export interface GiftCardBlockComponent extends PageComponentBase {
   description?: string;
 }
 
+export interface PopupModalComponent extends PageComponentBase {
+  type: "PopupModal";
+  trigger?: "load" | "delay" | "exit";
+  delay?: number;
+  content?: string;
+}
+
 export interface TextComponent extends PageComponentBase {
   type: "Text";
   text?: string;
@@ -361,6 +368,7 @@ export type PageComponent =
   | PricingTableComponent
   | TestimonialSliderComponent
   | GiftCardBlockComponent
+  | PopupModalComponent
   | ImageComponent
   | TextComponent
   | CustomHtmlComponent
@@ -618,6 +626,13 @@ const giftCardBlockComponentSchema = baseComponentSchema.extend({
   description: z.string().optional(),
 });
 
+const popupModalComponentSchema = baseComponentSchema.extend({
+  type: z.literal("PopupModal"),
+  trigger: z.enum(["load", "delay", "exit"]).optional(),
+  delay: z.number().int().min(0).optional(),
+  content: z.string().optional(),
+});
+
 const imageComponentSchema = baseComponentSchema.extend({
   type: z.literal("Image"),
   src: z.string().optional(),
@@ -694,6 +709,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     testimonialsComponentSchema,
     pricingTableComponentSchema,
     giftCardBlockComponentSchema,
+    popupModalComponentSchema,
     testimonialSliderComponentSchema,
     imageComponentSchema,
     textComponentSchema,

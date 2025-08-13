@@ -2,6 +2,7 @@
 
 import { coreEnv } from "@acme/config/env/core";
 import nodemailer from "nodemailer";
+import { getDefaultSender } from "./config";
 
 const hasCreds = coreEnv.GMAIL_USER && coreEnv.GMAIL_PASS;
 
@@ -23,7 +24,7 @@ export async function sendEmail(
   if (transporter) {
     try {
       await transporter.sendMail({
-        from: coreEnv.GMAIL_USER,
+        from: getDefaultSender(),
         to,
         subject,
         text: body,

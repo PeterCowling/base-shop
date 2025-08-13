@@ -4,6 +4,7 @@ import type { CampaignOptions } from "../send";
 import { ProviderError } from "./types";
 import type { CampaignProvider } from "./types";
 import { mapSendGridStats, type CampaignStats } from "../analytics";
+import { getDefaultSender } from "../config";
 
 interface ProviderOptions {
   /**
@@ -49,7 +50,7 @@ export class SendgridProvider implements CampaignProvider {
     try {
       await sgMail.send({
         to: options.to,
-        from: coreEnv.CAMPAIGN_FROM || "no-reply@example.com",
+        from: getDefaultSender(),
         subject: options.subject,
         html: options.html,
         text: options.text,

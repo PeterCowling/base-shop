@@ -34,6 +34,7 @@ import ProductComparison from "./ProductComparisonBlock";
 import FeaturedProductBlock from "./FeaturedProductBlock";
 import GiftCardBlock from "./GiftCardBlock";
 import FormBuilderBlock from "./FormBuilderBlock";
+import PopupModal from "./PopupModal";
 
 export {
   BlogListing,
@@ -72,6 +73,7 @@ export {
   FeaturedProductBlock,
   GiftCardBlock,
   FormBuilderBlock,
+  PopupModal,
 };
 
 export * from "./atoms";

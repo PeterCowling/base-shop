@@ -23,6 +23,20 @@ These providers are tested against Node.js 18+. When upgrading SDK versions,
 ensure the APIs remain compatible with our wrapper implementations and supported
 Node versions.
 
+## Environment variables
+
+The email package relies on several environment variables when sending
+campaigns or managing contacts:
+
+- `SENDGRID_API_KEY` – used to send mail via the SendGrid provider
+- `SENDGRID_MARKETING_KEY` – grants access to SendGrid marketing APIs for
+  contact and segment management
+- `RESEND_API_KEY` – used by the Resend provider and must include `emails.send`,
+  `contacts.write`, `contacts.read`, and `segments.read` scopes
+
+Set the relevant variables in the host environment before invoking any of the
+package helpers.
+
 ## Provider sanity checks
 
 `SendgridProvider` and `ResendProvider` accept an optional `{ sanityCheck: true }`

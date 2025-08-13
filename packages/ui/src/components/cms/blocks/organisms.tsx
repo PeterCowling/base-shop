@@ -34,6 +34,9 @@ import ImageSlider from "./ImageSlider";
 import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
 import ProductComparisonBlock from "./ProductComparisonBlock";
+import ProductBundle, {
+  getRuntimeProps as getProductBundleRuntimeProps,
+} from "./ProductBundle";
 
 export const organismRegistry = {
   AnnouncementBar: { component: AnnouncementBar },
@@ -76,6 +79,10 @@ export const organismRegistry = {
   PricingTable: { component: PricingTable },
   Tabs: { component: Tabs },
   ProductComparison: { component: ProductComparisonBlock },
+  ProductBundle: {
+    component: ProductBundle,
+    getRuntimeProps: getProductBundleRuntimeProps,
+  },
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

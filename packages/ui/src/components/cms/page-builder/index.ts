@@ -23,6 +23,7 @@ export { default as ProductComparisonEditor } from "./ProductComparisonEditor";
 export { default as FeaturedProductEditor } from "./FeaturedProductEditor";
 export { default as GiftCardEditor } from "./GiftCardEditor";
 export { default as FormBuilderEditor } from "./FormBuilderEditor";
+export { default as ProductBundleEditor } from "./ProductBundleEditor";
 export { default as useMediaLibrary } from "./useMediaLibrary";
 export { useArrayEditor } from "./useArrayEditor";
 export { default as CanvasItem } from "./CanvasItem";

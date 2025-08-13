@@ -34,6 +34,7 @@ import ProductComparison from "./ProductComparisonBlock";
 import FeaturedProductBlock from "./FeaturedProductBlock";
 import GiftCardBlock from "./GiftCardBlock";
 import FormBuilderBlock from "./FormBuilderBlock";
+import ProductBundle from "./ProductBundle";
 
 export {
   BlogListing,
@@ -72,6 +73,7 @@ export {
   FeaturedProductBlock,
   GiftCardBlock,
   FormBuilderBlock,
+  ProductBundle,
 };
 
 export * from "./atoms";

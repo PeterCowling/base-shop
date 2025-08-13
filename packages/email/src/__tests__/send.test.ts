@@ -62,6 +62,18 @@ describe("sendCampaignEmail fallback and retry", () => {
     expect(sendgridSendMock).toHaveBeenCalledTimes(1);
     expect(resendSendMock).toHaveBeenCalledTimes(1);
     expect(sendMailMock).not.toHaveBeenCalled();
+    expect(sendgridSendMock).toHaveBeenCalledWith({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+      text: "HTML",
+    });
+    expect(resendSendMock).toHaveBeenCalledWith({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+      text: "HTML",
+    });
   });
 
   it("retries with exponential backoff on retryable error", async () => {
@@ -90,6 +102,8 @@ describe("sendCampaignEmail fallback and retry", () => {
     await promise;
 
     expect(sendgridSendMock).toHaveBeenCalledTimes(2);
+    expect(sendgridSendMock.mock.calls[0][0].text).toBe("HTML");
+    expect(sendgridSendMock.mock.calls[1][0].text).toBe("HTML");
     expect(resendSendMock).not.toHaveBeenCalled();
     timeoutSpy.mockRestore();
   });

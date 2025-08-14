@@ -35,19 +35,22 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
+  const session = await stripe.checkout.sessions.retrieve(sessionId, {
+    expand: ["payment_intent"],
+  });
+  const coverageCodes =
+    session.metadata?.coverage?.split(",").filter(Boolean) ?? [];
+
   const shop = await readShop("bcd");
   const damageFee = await computeDamageFee(
     damage,
     order.deposit,
-    [],
+    coverageCodes,
     shop.coverageIncluded,
   );
   if (damageFee) {
     await markReturned("bcd", sessionId, damageFee);
   }
-  const session = await stripe.checkout.sessions.retrieve(sessionId, {
-    expand: ["payment_intent"],
-  });
   const pi =
     typeof session.payment_intent === "string"
       ? session.payment_intent

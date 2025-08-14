@@ -16,7 +16,7 @@ describe("/api/return", () => {
     const retrieve = jest
       .fn<Promise<Stripe.Checkout.Session>, [string, { expand: string[] }]>()
       .mockResolvedValue({
-        metadata: { depositTotal: "50" },
+        metadata: { depositTotal: "50", coverage: "scuff" },
         payment_intent: { id: "pi_123" },
       } as unknown as Stripe.Checkout.Session);
     const refundCreate = jest.fn<Promise<unknown>, [Stripe.RefundCreateParams]>();
@@ -44,6 +44,10 @@ describe("/api/return", () => {
       markRefunded,
       addOrder: jest.fn(),
     }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest.fn().mockResolvedValue({ coverageIncluded: true }),
+    }));
     jest.doMock("@platform-core/pricing", () => ({
       __esModule: true,
       computeDamageFee,
@@ -56,7 +60,12 @@ describe("/api/return", () => {
     } as any);
 
     expect(retrieve).toHaveBeenCalledWith("sess", { expand: ["payment_intent"] });
-    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 50, [], true);
+    expect(computeDamageFee).toHaveBeenCalledWith(
+      "scratch",
+      50,
+      ["scuff"],
+      true,
+    );
     expect(refundCreate).toHaveBeenCalledWith({
       payment_intent: "pi_123",
       amount: 30 * 100,

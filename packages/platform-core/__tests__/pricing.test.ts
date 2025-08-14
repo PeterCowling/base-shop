@@ -101,5 +101,18 @@ describe('pricing utilities', () => {
       computeDamageFee('scuff', 0, [], true),
     ).resolves.toBe(10);
   });
+
+  it('applies coverage to deposit-based damage fees', async () => {
+    const { computeDamageFee } = await setup({
+      baseDailyRate: 0,
+      durationDiscounts: [],
+      damageFees: { lost: 'deposit' },
+      coverage: { lost: { fee: 5, waiver: 50 } },
+    });
+
+    await expect(
+      computeDamageFee('lost', 50, [], true),
+    ).resolves.toBe(0);
+  });
 });
 

@@ -22,14 +22,15 @@ export async function POST(req) {
         expand: ["payment_intent"],
     });
     const deposit = Number((_b = (_a = session.metadata) === null || _a === void 0 ? void 0 : _a.depositTotal) !== null && _b !== void 0 ? _b : 0);
+    const coverageCodes = ((_c = session.metadata) === null || _c === void 0 ? void 0 : _c.coverage) ? session.metadata.coverage.split(",").filter(Boolean) : [];
     const pi = typeof session.payment_intent === "string"
         ? session.payment_intent
-        : (_c = session.payment_intent) === null || _c === void 0 ? void 0 : _c.id;
+        : session.payment_intent?.id;
     if (!deposit || !pi) {
         return NextResponse.json({ ok: false, message: "No deposit found" });
     }
     const shop = await readShop("bcd");
-    const damageFee = await computeDamageFee(damage, deposit, [], shop.coverageIncluded);
+    const damageFee = await computeDamageFee(damage, deposit, coverageCodes, shop.coverageIncluded);
     if (damageFee) {
         await markReturned("bcd", sessionId, damageFee);
     }

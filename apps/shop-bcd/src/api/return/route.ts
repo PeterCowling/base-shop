@@ -35,6 +35,8 @@ export async function POST(req: NextRequest) {
     expand: ["payment_intent"],
   });
   const deposit = Number(session.metadata?.depositTotal ?? 0);
+  const coverageCodes =
+    session.metadata?.coverage?.split(",").filter(Boolean) ?? [];
   const pi =
     typeof session.payment_intent === "string"
       ? session.payment_intent
@@ -48,7 +50,7 @@ export async function POST(req: NextRequest) {
   const damageFee = await computeDamageFee(
     damage,
     deposit,
-    [],
+    coverageCodes,
     shop.coverageIncluded,
   );
   if (damageFee) {

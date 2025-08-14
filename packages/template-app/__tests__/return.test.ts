@@ -47,6 +47,12 @@ describe("/api/return", () => {
       markRefunded: jest.fn(),
       addOrder: jest.fn(),
     }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest
+        .fn()
+        .mockResolvedValue({ coverageIncluded: true, returnsEnabled: true }),
+    }));
     jest.doMock("@platform-core/pricing", () => ({
       computeDamageFee,
     }));
@@ -87,6 +93,12 @@ describe("/api/return", () => {
         .mockResolvedValue({} as RentalOrder),
       markRefunded: jest.fn(),
       addOrder: jest.fn(),
+    }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest
+        .fn()
+        .mockResolvedValue({ coverageIncluded: true, returnsEnabled: true }),
     }));
     jest.doMock("@platform-core/pricing", () => ({
       computeDamageFee: jest.fn(),

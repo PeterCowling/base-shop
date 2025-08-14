@@ -11,6 +11,7 @@
   },
   "coverage": {
     "scuff": { "fee": 5, "waiver": 20 },
-    "tear": { "fee": 10, "waiver": 50 }
+    "tear": { "fee": 10, "waiver": 50 },
+    "lost": { "fee": 15, "waiver": 100 }
   }
 }

@@ -2,6 +2,7 @@
 import { encodeCartCookie } from "@platform-core/src/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { POST } from "../src/app/api/checkout-session/route";
+import { ReadableStream } from "node:stream/web";
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -20,6 +21,7 @@ jest.mock("@platform-core/pricing", () => ({
 
 jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
+jest.mock("@platform-core/coupons", () => ({ findCoupon: jest.fn(async () => null) }));
 let mockCart: any;
 jest.mock("@platform-core/src/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
@@ -30,8 +32,17 @@ import { requirePermission } from "@auth";
 
 function createRequest(cookie: string): Parameters<typeof POST>[0] {
   const url = "http://localhost/api/checkout-session";
+  const body = { returnDate: "2099-01-02" };
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(encoder.encode(JSON.stringify(body)));
+      controller.close();
+    },
+  });
   return {
-    json: async () => ({}),
+    json: async () => body,
+    body: stream,
     cookies: { get: () => ({ name: "", value: cookie }) },
     nextUrl: Object.assign(new URL(url), { clone: () => new URL(url) }),
     headers: { get: () => null },

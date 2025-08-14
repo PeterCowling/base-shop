@@ -1,121 +1,23 @@
 // packages/template-app/src/api/checkout-session/route.ts
-import { stripe } from "@acme/stripe";
-import { calculateRentalDays } from "@acme/date-utils";
 import {
   CART_COOKIE,
   decodeCartCookie,
-  type CartLine,
   type CartState,
 } from "@platform-core/src/cartCookie";
 import { getCart } from "@platform-core/src/cartStore";
 import {
-  priceForDays,
   convertCurrency,
   getPricing,
 } from "@platform-core/src/pricing";
-import { getProductById } from "@platform-core/src/products";
-import { findCoupon } from "@platform-core/src/coupons";
-import { trackEvent } from "@platform-core/src/analytics";
+import { createCheckoutSession } from "@platform-core/src/checkout/session";
 import { coreEnv } from "@acme/config/env/core";
-import { getTaxRate } from "@platform-core/src/tax";
 import { readShop } from "@platform-core/src/repositories/shops.server";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
-/* ------------------------------------------------------------------
- * Types held in the cart cookie
- * ------------------------------------------------------------------ */
-type Cart = CartState;
-
-/* ------------------------------------------------------------------
- * Helpers
- * ------------------------------------------------------------------ */
-
-/** Build Stripe line-items for one cart entry */
-async function buildLineItemsForItem(
-  item: CartLine,
-  rentalDays: number,
-  discountRate: number,
-  currency: string
-): Promise<
-  [
-    Stripe.Checkout.SessionCreateParams.LineItem,
-    Stripe.Checkout.SessionCreateParams.LineItem,
-  ]
-> {
-  const sku = getProductById(item.sku.id); // ← full SKU
-
-  const baseName = item.size ? `${sku.title} (${item.size})` : sku.title;
-  const unit = await priceForDays(sku, rentalDays);
-  const discounted = Math.round(unit * (1 - discountRate));
-  const unitConv = await convertCurrency(discounted, currency);
-  const depositConv = await convertCurrency(sku.deposit, currency);
-
-  return [
-    {
-      price_data: {
-        currency: currency.toLowerCase(),
-        unit_amount: unitConv * 100,
-        product_data: { name: baseName },
-      },
-      quantity: item.qty,
-    },
-    {
-      price_data: {
-        currency: currency.toLowerCase(),
-        unit_amount: depositConv * 100,
-        product_data: { name: `${baseName} deposit` },
-      },
-      quantity: item.qty,
-    },
-  ];
-}
-
-/** Cart-wide subtotals */
-async function computeTotals(
-  cart: CartState,
-  rentalDays: number,
-  discountRate: number,
-  currency: string
-) {
-  const lineTotals = await Promise.all(
-    Object.values(cart).map(async (item) => {
-      const sku = getProductById(item.sku.id);
-      const unit = await priceForDays(sku, rentalDays);
-      const discounted = Math.round(unit * (1 - discountRate));
-      return {
-        base: unit * item.qty,
-        discounted: discounted * item.qty,
-      };
-    })
-  );
-
-  const subtotalBase = lineTotals.reduce((s, n) => s + n.discounted, 0);
-  const originalBase = lineTotals.reduce((s, n) => s + n.base, 0);
-  const discountBase = originalBase - subtotalBase;
-  const depositBase = Object.values(cart).reduce((s, item) => {
-    const deposit = getProductById(item.sku.id)?.deposit;
-    if (deposit === undefined) {
-      console.warn(`Deposit lookup failed for SKU ${item.sku.id}`);
-      return s;
-    }
-    return s + deposit * item.qty;
-  }, 0);
-
-  return {
-    subtotal: await convertCurrency(subtotalBase, currency),
-    depositTotal: await convertCurrency(depositBase, currency),
-    discount: await convertCurrency(discountBase, currency),
-  };
-}
-
-/* ------------------------------------------------------------------
- *  Route handler
- * ------------------------------------------------------------------ */
 export const runtime = "edge";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  /* 1  Decode cart -------------------------------------------------- */
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
   const cartId = decodeCartCookie(rawCookie);
   const cart = cartId ? ((await getCart(cartId)) as CartState) : {};
@@ -124,13 +26,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
   }
 
-  /* 2  Rental days -------------------------------------------------- */
   const {
     returnDate,
     coupon,
     currency = "EUR",
     taxRegion = "",
-    customer,
+    customer: customerId,
     shipping,
     billing_details,
     coverage,
@@ -144,41 +45,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     billing_details?: Record<string, any>;
     coverage?: string[];
   };
+
   const shop = coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop";
   const shopInfo = await readShop(shop);
-  const couponDef = await findCoupon(shop, coupon);
-  if (couponDef) {
-    await trackEvent(shop, { type: "discount_redeemed", code: couponDef.code });
-  }
-  const discountRate = couponDef ? couponDef.discountPercent / 100 : 0;
-  let rentalDays: number;
-  try {
-    rentalDays = calculateRentalDays(returnDate);
-  } catch {
-    return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 });
-  }
 
-  /* 3  Stripe line-items ------------------------------------------- */
-  const nested = await Promise.all(
-    Object.values(cart).map((item) =>
-      buildLineItemsForItem(item, rentalDays, discountRate, currency)
-    )
-  );
-  const line_items = nested.flat();
-
-  /* 4  Totals / metadata ------------------------------------------- */
-  let { subtotal, depositTotal, discount } = await computeTotals(
-    cart,
-    rentalDays,
-    discountRate,
-    currency
-  );
-
-  let coverageFee = 0;
-  let coverageWaiver = 0;
   const coverageCodes = Array.isArray(coverage) ? coverage : [];
+  let lineItemsExtra: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+  let metadataExtra: Record<string, string> = {};
+  let subtotalExtra = 0;
+  let depositAdjustment = 0;
+
   if (shopInfo.coverageIncluded && coverageCodes.length) {
     const pricing = await getPricing();
+    let coverageFee = 0;
+    let coverageWaiver = 0;
     for (const code of coverageCodes) {
       const rule = pricing.coverage?.[code];
       if (rule) {
@@ -189,7 +69,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const feeConv = await convertCurrency(coverageFee, currency);
     const waiveConv = await convertCurrency(coverageWaiver, currency);
     if (feeConv > 0) {
-      line_items.push({
+      lineItemsExtra.push({
         price_data: {
           currency: currency.toLowerCase(),
           unit_amount: feeConv * 100,
@@ -197,105 +77,44 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         },
         quantity: 1,
       });
-      subtotal += feeConv;
-      coverageFee = feeConv;
+      subtotalExtra = feeConv;
     }
     if (waiveConv > 0) {
-      depositTotal = Math.max(0, depositTotal - waiveConv);
-      coverageWaiver = waiveConv;
+      depositAdjustment = -waiveConv;
     }
-  }
-
-  const taxRate = await getTaxRate(taxRegion);
-  const taxAmount = Math.round(subtotal * taxRate);
-  if (taxAmount > 0) {
-    line_items.push({
-      price_data: {
-        currency: currency.toLowerCase(),
-        unit_amount: taxAmount * 100,
-        product_data: { name: "Tax" },
-      },
-      quantity: 1,
-    });
-  }
-
-  const sizesMeta = JSON.stringify(
-    Object.fromEntries(
-      Object.values(cart).map((item) => [item.sku.id, item.size ?? ""])
-    )
-  );
-
-  /* 5  Create checkout session ------------------------------------- */
-  const clientIp =
-    req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
-
-  const paymentIntentData: Stripe.Checkout.SessionCreateParams.PaymentIntentData = {
-    ...(shipping ? { shipping } : {}),
-    payment_method_options: {
-      card: { request_three_d_secure: "automatic" },
-    },
-    metadata: {
-      subtotal: String(subtotal),
-      depositTotal: String(depositTotal),
-      returnDate: returnDate ?? "",
-      rentalDays: String(rentalDays),
+    metadataExtra = {
       coverage: coverageCodes.join(","),
-      coverageFee: String(coverageFee),
-      coverageWaiver: String(coverageWaiver),
-      discount: String(discount),
-      coupon: couponDef?.code ?? "",
-      currency,
-      taxRate: String(taxRate),
-      taxAmount: String(taxAmount),
-    },
-  } as any;
-
-  if (billing_details) {
-    (paymentIntentData as any).billing_details = billing_details;
+      coverageFee: String(feeConv),
+      coverageWaiver: String(waiveConv),
+    };
   }
 
-  let session: Stripe.Checkout.Session;
+  const clientIp = req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
+
   try {
-    session = await stripe.checkout.sessions.create(
-      {
-        mode: "payment",
-        customer,
-        line_items,
-        success_url: `${req.nextUrl.origin}/success`,
-        cancel_url: `${req.nextUrl.origin}/cancelled`,
-        payment_intent_data: paymentIntentData,
-        metadata: {
-          subtotal: String(subtotal),
-          depositTotal: String(depositTotal),
-          returnDate: returnDate ?? "",
-          rentalDays: String(rentalDays),
-          sizes: sizesMeta,
-          coverage: coverageCodes.join(","),
-          coverageFee: String(coverageFee),
-          coverageWaiver: String(coverageWaiver),
-          discount: String(discount),
-          coupon: couponDef?.code ?? "",
-          currency,
-          taxRate: String(taxRate),
-          taxAmount: String(taxAmount),
-        },
-        expand: ["payment_intent"],
-      },
-      { headers: { "Stripe-Client-IP": clientIp } }
-    );
-  } catch (error) {
-    console.error("Failed to create Stripe checkout session", error);
-    return NextResponse.json(
-      { error: "Checkout failed" },
-      { status: 502 }
-    );
+    const result = await createCheckoutSession(cart, {
+      returnDate,
+      coupon,
+      currency,
+      taxRegion,
+      customerId,
+      shipping,
+      billing_details,
+      successUrl: `${req.nextUrl.origin}/success`,
+      cancelUrl: `${req.nextUrl.origin}/cancelled`,
+      clientIp,
+      shopId: shop,
+      lineItemsExtra,
+      metadataExtra,
+      subtotalExtra,
+      depositAdjustment,
+    });
+    return NextResponse.json(result);
+  } catch (err) {
+    if (err instanceof Error && /Invalid returnDate/.test(err.message)) {
+      return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 });
+    }
+    console.error("Failed to create Stripe checkout session", err);
+    return NextResponse.json({ error: "Checkout failed" }, { status: 502 });
   }
-
-  /* 6  Return client credentials ----------------------------------- */
-  const clientSecret =
-    typeof session.payment_intent === "string"
-      ? undefined
-      : session.payment_intent?.client_secret;
-
-  return NextResponse.json({ clientSecret, sessionId: session.id });
 }

@@ -156,3 +156,9 @@ export async function startLateFeeService(
 
   return () => timers.forEach((t) => clearInterval(t));
 }
+
+if (process.env.NODE_ENV === "production") {
+  startLateFeeService().catch((err) =>
+    logger.error("late fee service failed to start", { err }),
+  );
+}

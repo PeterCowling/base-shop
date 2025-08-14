@@ -46,5 +46,8 @@
       "prorateOnChange": true
     }
   ],
-  "lateFeePolicy": { "gracePeriodDays": 3, "feeAmount": 25 }
+  "lateFeePolicy": {
+    "gracePeriodDays": 3,
+    "feeAmount": 25
+  }
 }

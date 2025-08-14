@@ -2,7 +2,7 @@ import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { inventoryItemSchema } from "@acme/types";
-import { updateInventoryItem } from "@platform-core/repositories/inventory.server";
+import { inventoryRepository } from "@platform-core/repositories/inventory.server";
 
 export async function PATCH(
   req: NextRequest,
@@ -24,7 +24,7 @@ export async function PATCH(
     const { shop, sku } = await context.params;
     const patch = parsed.data;
     const variantAttributes = patch.variantAttributes ?? {};
-    const updated = await updateInventoryItem(
+    const updated = await inventoryRepository.update(
       shop,
       sku,
       variantAttributes,

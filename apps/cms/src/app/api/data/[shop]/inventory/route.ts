@@ -2,7 +2,7 @@ import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { inventoryItemSchema } from "@acme/types";
-import { writeInventory } from "@platform-core/repositories/inventory.server";
+import { inventoryRepository } from "@platform-core/repositories/inventory.server";
 
 export async function POST(
   req: NextRequest,
@@ -22,7 +22,7 @@ export async function POST(
       );
     }
     const { shop } = await context.params;
-    await writeInventory(shop, parsed.data);
+    await inventoryRepository.write(shop, parsed.data);
     return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json(

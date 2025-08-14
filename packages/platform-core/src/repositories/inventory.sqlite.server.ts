@@ -5,6 +5,7 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "../dataRoot";
+import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
 
 let Database: any;
 
@@ -22,7 +23,7 @@ async function getDb(shop: string) {
   return db;
 }
 
-export async function readInventory(shop: string): Promise<InventoryItem[]> {
+async function read(shop: string): Promise<InventoryItem[]> {
   const db = await getDb(shop);
   const rows = db
     .prepare("SELECT sku, variantAttributes, quantity FROM inventory")
@@ -34,10 +35,7 @@ export async function readInventory(shop: string): Promise<InventoryItem[]> {
   }));
 }
 
-export async function writeInventory(
-  shop: string,
-  items: InventoryItem[],
-): Promise<void> {
+async function write(shop: string, items: InventoryItem[]): Promise<void> {
   const normalized = inventoryItemSchema
     .array()
     .parse(
@@ -62,3 +60,49 @@ export async function writeInventory(
   });
   tx(normalized);
 }
+
+async function update(
+  shop: string,
+  sku: string,
+  variantAttributes: Record<string, string>,
+  mutate: InventoryMutateFn,
+): Promise<InventoryItem | undefined> {
+  const db = await getDb(shop);
+  const key = JSON.stringify(variantAttributes || {});
+  const row = db
+    .prepare(
+      "SELECT sku, variantAttributes, quantity FROM inventory WHERE sku = ? AND variantAttributes = ?",
+    )
+    .get(sku, key);
+  const current: InventoryItem | undefined = row
+    ? {
+        sku: row.sku,
+        quantity: row.quantity,
+        variantAttributes: JSON.parse(row.variantAttributes || "{}"),
+      }
+    : undefined;
+  const updated = mutate(current);
+  if (updated === undefined) {
+    db.prepare(
+      "DELETE FROM inventory WHERE sku = ? AND variantAttributes = ?",
+    ).run(sku, key);
+    return undefined;
+  }
+  const nextItem = inventoryItemSchema.parse({
+    ...current,
+    ...updated,
+    sku,
+    variantAttributes,
+  });
+  db.prepare(
+    "REPLACE INTO inventory (sku, variantAttributes, quantity) VALUES (?, ?, ?)",
+  ).run(sku, key, nextItem.quantity);
+  return nextItem;
+}
+
+export const sqliteInventoryRepository: InventoryRepository = {
+  read,
+  write,
+  update,
+};
+

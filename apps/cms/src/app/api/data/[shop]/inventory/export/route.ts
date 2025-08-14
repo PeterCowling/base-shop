@@ -1,7 +1,7 @@
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { readInventory } from "@platform-core/repositories/inventory.server";
+import { inventoryRepository } from "@platform-core/repositories/inventory.server";
 import { format as formatCsv } from "fast-csv";
 import { flattenInventoryItem } from "@platform-core/utils/inventory";
 
@@ -15,7 +15,7 @@ export async function GET(
   }
   try {
     const { shop } = await context.params;
-    const items = await readInventory(shop);
+    const items = await inventoryRepository.read(shop);
     const format = new URL(req.url).searchParams.get("format");
     if (format === "csv") {
       const csv = await new Promise<string>((resolve, reject) => {

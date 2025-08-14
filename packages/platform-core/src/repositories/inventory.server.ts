@@ -1,108 +1,47 @@
-// packages/platform-core/repositories/inventory.server.ts
-
 import "server-only";
 
-import { inventoryItemSchema, type InventoryItem } from "@acme/types";
-// InventoryItem uses flexible variantAttributes for SKU differentiation
-import { promises as fs } from "node:fs";
-import * as path from "node:path";
-import { validateShopName } from "../shops";
+import type { InventoryItem } from "@acme/types";
+import type {
+  InventoryRepository,
+  InventoryMutateFn,
+} from "./inventory.types";
 
-import { DATA_ROOT } from "../dataRoot";
+let repoPromise: Promise<InventoryRepository> | undefined;
 
-async function acquireLock(lockFile: string): Promise<fs.FileHandle> {
-  while (true) {
-    try {
-      return await fs.open(lockFile, "wx");
-    } catch (err) {
-      if ((err as NodeJS.ErrnoException).code !== "EEXIST") throw err;
-      await new Promise((res) => setTimeout(res, 50));
-    }
+async function getRepo(): Promise<InventoryRepository> {
+  if (!repoPromise) {
+    repoPromise = (async () => {
+      if (process.env.INVENTORY_BACKEND === "sqlite") {
+        const mod = await import("./inventory.sqlite.server");
+        return mod.sqliteInventoryRepository;
+      }
+      const mod = await import("./inventory.json.server");
+      return mod.jsonInventoryRepository;
+    })();
   }
+  return repoPromise;
 }
 
-function inventoryPath(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "inventory.json");
-}
+export const inventoryRepository: InventoryRepository = {
+  async read(shop: string) {
+    const repo = await getRepo();
+    return repo.read(shop);
+  },
+  async write(shop: string, items: InventoryItem[]) {
+    const repo = await getRepo();
+    return repo.write(shop, items);
+  },
+  async update(
+    shop: string,
+    sku: string,
+    variantAttributes: Record<string, string>,
+    mutate: InventoryMutateFn,
+  ) {
+    const repo = await getRepo();
+    return repo.update(shop, sku, variantAttributes, mutate);
+  },
+};
 
-async function ensureDir(shop: string): Promise<void> {
-  shop = validateShopName(shop);
-  await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
-}
-
-async function readInventoryFile(shop: string): Promise<InventoryItem[]> {
-  try {
-    const buf = await fs.readFile(inventoryPath(shop), "utf8");
-    const raw = JSON.parse(buf);
-    // Ensure variantAttributes is always a plain object
-    return inventoryItemSchema
-      .array()
-      .parse(
-        raw.map((i: any) => ({
-          variantAttributes: {},
-          ...i,
-        })),
-      );
-  } catch (err) {
-    console.error(`Failed to read inventory for ${shop}`, err);
-    throw err;
-  }
-}
-
-async function writeInventoryFile(
-  shop: string,
-  items: InventoryItem[]
-): Promise<void> {
-  const normalized = inventoryItemSchema
-    .array()
-    .parse(
-      items.map((i) => ({
-        ...i,
-        variantAttributes: { ...i.variantAttributes },
-      })),
-    );
-  await ensureDir(shop);
-  const lockFile = `${inventoryPath(shop)}.lock`;
-  const handle = await acquireLock(lockFile);
-  try {
-    const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
-    await fs.writeFile(tmp, JSON.stringify(normalized, null, 2), "utf8");
-    await fs.rename(tmp, inventoryPath(shop));
-  } finally {
-    await handle.close();
-    await fs.unlink(lockFile).catch(() => {});
-  }
-  try {
-    if (process.env.SKIP_STOCK_ALERT !== "1") {
-      const { checkAndAlert } = await import("../services/stockAlert.server");
-      await checkAndAlert(shop, normalized);
-    }
-  } catch (err) {
-    console.error("Failed to run stock alert", err);
-  }
-}
-
-export async function readInventory(shop: string): Promise<InventoryItem[]> {
-  if (process.env.INVENTORY_BACKEND === "sqlite") {
-    const mod = await import("./inventory.sqlite.server");
-    return mod.readInventory(shop);
-  }
-  return readInventoryFile(shop);
-}
-
-export async function writeInventory(
-  shop: string,
-  items: InventoryItem[],
-): Promise<void> {
-  if (process.env.INVENTORY_BACKEND === "sqlite") {
-    const mod = await import("./inventory.sqlite.server");
-    return mod.writeInventory(shop, items);
-  }
-  return writeInventoryFile(shop, items);
-}
-
-/** Create a unique key for a SKU + variant attribute combination */
 export function variantKey(
   sku: string,
   attrs: Record<string, string>,
@@ -114,107 +53,28 @@ export function variantKey(
   return variantPart ? `${sku}#${variantPart}` : sku;
 }
 
-/**
- * Map inventory records by SKU and variant attributes, enabling quick lookup
- * of stock entries for specific product variants.
- */
 export async function readInventoryMap(
   shop: string,
 ): Promise<Record<string, InventoryItem>> {
-  const items = await readInventory(shop);
+  const items = await inventoryRepository.read(shop);
   return Object.fromEntries(
     items.map((i) => [variantKey(i.sku, i.variantAttributes), i]),
   );
 }
 
-/**
- * Atomically update a single inventory variant using a read-modify-write cycle.
- *
- * The `mutate` callback receives the current item (if any) and should return
- * the updated item. Returning `undefined` will remove the item.
- */
-export async function updateInventoryItem(
+export function readInventory(shop: string) {
+  return inventoryRepository.read(shop);
+}
+
+export function writeInventory(shop: string, items: InventoryItem[]) {
+  return inventoryRepository.write(shop, items);
+}
+
+export function updateInventoryItem(
   shop: string,
   sku: string,
   variantAttributes: Record<string, string>,
-  mutate: (current: InventoryItem | undefined) => InventoryItem | undefined,
-): Promise<InventoryItem | undefined> {
-  if (process.env.INVENTORY_BACKEND === "sqlite") {
-    const mod = await import("./inventory.sqlite.server");
-    return (mod as any).updateInventoryItem(
-      shop,
-      sku,
-      variantAttributes,
-      mutate,
-    );
-  }
-
-  const lockFile = `${inventoryPath(shop)}.lock`;
-  let normalized: InventoryItem[] = [];
-  const handle = await acquireLock(lockFile);
-  let updated: InventoryItem | undefined;
-  try {
-    let items: InventoryItem[] = [];
-    try {
-      const buf = await fs.readFile(inventoryPath(shop), "utf8");
-      const raw = JSON.parse(buf);
-      items = inventoryItemSchema
-        .array()
-        .parse(
-          raw.map((i: any) => ({
-            variantAttributes: {},
-            ...i,
-          })),
-        );
-    } catch (err) {
-      if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
-    }
-
-    const key = variantKey(sku, variantAttributes);
-    const idx = items.findIndex(
-      (i) => variantKey(i.sku, i.variantAttributes) === key,
-    );
-    const current = idx === -1 ? undefined : items[idx];
-    updated = mutate(current);
-    if (updated === undefined) {
-      if (idx !== -1) items.splice(idx, 1);
-    } else {
-      const nextItem = inventoryItemSchema.parse({
-        ...current,
-        ...updated,
-        sku,
-        variantAttributes,
-      });
-      if (idx === -1) items.push(nextItem);
-      else items[idx] = nextItem;
-    }
-
-    normalized = inventoryItemSchema
-      .array()
-      .parse(
-        items.map((i) => ({
-          ...i,
-          variantAttributes: { ...i.variantAttributes },
-        })),
-      );
-
-    const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
-    await ensureDir(shop);
-    await fs.writeFile(tmp, JSON.stringify(normalized, null, 2), "utf8");
-    await fs.rename(tmp, inventoryPath(shop));
-  } finally {
-    await handle.close();
-    await fs.unlink(lockFile).catch(() => {});
-  }
-
-  try {
-    if (process.env.SKIP_STOCK_ALERT !== "1") {
-      const { checkAndAlert } = await import("../services/stockAlert.server");
-      await checkAndAlert(shop, normalized);
-    }
-  } catch (err) {
-    console.error("Failed to run stock alert", err);
-  }
-
-  return updated;
+  mutate: InventoryMutateFn,
+) {
+  return inventoryRepository.update(shop, sku, variantAttributes, mutate);
 }

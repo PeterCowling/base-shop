@@ -112,8 +112,7 @@ export function ProductCarousel({
               {enableQuickView && (
                 <Button
                   variant="outline"
-                  size="sm"
-                  className="absolute right-2 top-2"
+                  className="absolute right-2 top-2 h-8 px-2"
                   aria-label={`Quick view ${p.title}`}
                   onClick={() => setQuickViewProduct(p)}
                 >

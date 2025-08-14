@@ -269,7 +269,7 @@ const PageBuilder = memo(function PageBuilder({
             )}
             <Button
               variant="outline"
-              size="sm"
+              className="h-8 px-2"
               onClick={() => setShowPreview((p) => !p)}
             >
               {showPreview ? "Hide preview" : "Show preview"}

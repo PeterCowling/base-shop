@@ -85,7 +85,7 @@ export function useProductEditorFormState(
 
           // previous translations, guaranteed object or default to {}
           const translations =
-            (prev as ProductPublication)[
+            (prev as ProductWithVariants)[
               realField as "title" | "description"
             ] ?? ({} as Record<Locale, string>);
 
@@ -97,7 +97,7 @@ export function useProductEditorFormState(
           return {
             ...prev,
             [realField]: updatedTranslations,
-          } as ProductPublication;
+          } as ProductWithVariants;
         }
 
         /* single-field updates */

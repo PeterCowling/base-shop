@@ -4,11 +4,7 @@ import { locales, type Locale } from "@/i18n/locales";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
-import {
-  DndContext,
-  DragOverlay,
-  closestCenter,
-} from "@dnd-kit/core";
+import { DndContext, DragOverlay, closestCenter } from "@dnd-kit/core";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
 import { Toast, Spinner } from "../../atoms";
@@ -24,9 +20,14 @@ import PageToolbar from "./PageToolbar";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES } from "./defaults";
-import { devicePresets, getLegacyPreset, type DevicePreset } from "@ui/utils/devicePresets";
+import {
+  devicePresets,
+  getLegacyPreset,
+  type DevicePreset,
+} from "@ui/utils/devicePresets";
 import { usePreviewDevice } from "@ui/hooks";
 import DeviceSelector from "@ui/components/common/DeviceSelector";
+import DynamicRenderer from "@ui/components/DynamicRenderer";
 
 interface Props {
   page: Page;
@@ -85,30 +86,22 @@ const PageBuilder = memo(function PageBuilder({
   const [locale, setLocale] = useState<Locale>("en");
   const [showPreview, setShowPreview] = useState(false);
   const [previewDeviceId, setPreviewDeviceId] = useState(
-    getLegacyPreset("desktop").id,
+    getLegacyPreset("desktop").id
   );
   const previewDevice = useMemo<DevicePreset>(
     () =>
       devicePresets.find((d) => d.id === previewDeviceId) ?? devicePresets[0],
-    [previewDeviceId],
+    [previewDeviceId]
   );
   const previewViewport: "desktop" | "tablet" | "mobile" = previewDevice.type;
-  const previewRef = useRef<HTMLDivElement>(null);
-  const {
-    viewportStyle: previewViewportStyle,
-    frameClass: previewFrameClass,
-  } = useViewport(previewDevice);
+  const { viewportStyle: previewViewportStyle, frameClass: previewFrameClass } =
+    useViewport(previewDevice);
   const [publishCount, setPublishCount] = useState(0);
   const prevId = useRef(page.id);
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
-  const {
-    dragOver,
-    setDragOver,
-    handleFileDrop,
-    progress,
-    isValid,
-  } = useFileDrop({ shop: shop ?? "", dispatch });
+  const { dragOver, setDragOver, handleFileDrop, progress, isValid } =
+    useFileDrop({ shop: shop ?? "", dispatch });
   const canvasRef = useRef<HTMLDivElement>(null);
   const [toast, setToast] = useState<{
     open: boolean;
@@ -157,7 +150,7 @@ const PageBuilder = memo(function PageBuilder({
       dispatch({ type: "add", component });
       setSelectedId(component.id);
     },
-    [dispatch, setSelectedId],
+    [dispatch, setSelectedId]
   );
 
   const { viewportStyle, frameClass } = useViewport(device);
@@ -258,12 +251,12 @@ const PageBuilder = memo(function PageBuilder({
           />
           <div className="flex items-center gap-2">
             {autoSaveState === "saving" && (
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <div className="text-muted-foreground flex items-center gap-1 text-sm">
                 <Spinner className="h-4 w-4" /> Saving…
               </div>
             )}
             {autoSaveState === "saved" && (
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <div className="text-muted-foreground flex items-center gap-1 text-sm">
                 <CheckIcon className="h-4 w-4 text-green-500" /> Saved
               </div>
             )}
@@ -286,71 +279,71 @@ const PageBuilder = memo(function PageBuilder({
           onDragMove={handleDragMove}
           onDragEnd={handleDragEnd}
         >
-          <div className={frameClass[viewport]} style={viewportStyle}>
-            <PageCanvas
-              components={components}
-              selectedId={selectedId}
-              onSelectId={setSelectedId}
-              canvasRef={canvasRef}
-              dragOver={dragOver}
-              setDragOver={setDragOver}
-              onFileDrop={handleFileDrop}
-              insertIndex={insertIndex}
-              dispatch={dispatch}
-              locale={locale}
-              containerStyle={{ width: "100%" }}
-              showGrid={showGrid}
-              gridCols={gridCols}
-              viewport={viewport}
-              device={device}
-              snapPosition={snapPosition}
-            />
+          <div className="flex gap-4">
+            <div className={frameClass[viewport]} style={viewportStyle}>
+              <PageCanvas
+                components={components}
+                selectedId={selectedId}
+                onSelectId={setSelectedId}
+                canvasRef={canvasRef}
+                dragOver={dragOver}
+                setDragOver={setDragOver}
+                onFileDrop={handleFileDrop}
+                insertIndex={insertIndex}
+                dispatch={dispatch}
+                locale={locale}
+                containerStyle={{ width: "100%" }}
+                showGrid={showGrid}
+                gridCols={gridCols}
+                viewport={viewport}
+                device={device}
+                snapPosition={snapPosition}
+              />
+            </div>
+            {showPreview && (
+              <div className="flex flex-1 flex-col gap-2">
+                <DeviceSelector
+                  deviceId={previewDeviceId}
+                  onChange={setPreviewDeviceId}
+                  showLegacyButtons
+                />
+                <div
+                  className={previewFrameClass[previewViewport]}
+                  style={previewViewportStyle}
+                >
+                  <div className="mx-auto flex w-full flex-col gap-4">
+                    <DynamicRenderer components={components} locale={locale} />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           <DragOverlay>
             {activeType && (
-              <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">
+              <div className="bg-muted pointer-events-none rounded border px-4 py-2 opacity-50 shadow">
                 {activeType}
               </div>
             )}
           </DragOverlay>
         </DndContext>
-        {showPreview && (
-          <div className="flex flex-col gap-2">
-            <DeviceSelector
-              deviceId={previewDeviceId}
-              onChange={setPreviewDeviceId}
-              showLegacyButtons
-            />
-            <div
-              className={previewFrameClass[previewViewport]}
-              style={previewViewportStyle}
-            >
-              <PageCanvas
-                preview
-                components={components}
-                locale={locale}
-                containerStyle={{ width: "100%" }}
-                viewport={previewViewport}
-                device={previewDevice}
-                canvasRef={previewRef}
-              />
-            </div>
-          </div>
-        )}
         <div className="flex gap-2">
-          <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>
+          <Button
+            onClick={() => dispatch({ type: "undo" })}
+            disabled={!state.past.length}
+          >
             Undo
           </Button>
-          <Button onClick={() => dispatch({ type: "redo" })} disabled={!state.future.length}>
+          <Button
+            onClick={() => dispatch({ type: "redo" })}
+            disabled={!state.future.length}
+          >
             Redo
           </Button>
           <div className="flex flex-col gap-1">
             <Button onClick={() => onSave(formData)} disabled={saving}>
               {saving ? <Spinner className="h-4 w-4" /> : "Save"}
             </Button>
-            {saveError && (
-              <p className="text-sm text-red-500">{saveError}</p>
-            )}
+            {saveError && <p className="text-sm text-red-500">{saveError}</p>}
           </div>
           <div className="flex flex-col gap-1">
             <Button

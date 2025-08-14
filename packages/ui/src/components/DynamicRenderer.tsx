@@ -3,9 +3,10 @@
 "use client";
 
 import { blockRegistry } from "@ui/components/cms/blocks";
+import type { BlockRegistryEntry } from "@ui/components/cms/blocks/types";
 import type { Locale } from "@/i18n/locales";
 import type { PageComponent } from "@acme/types";
-import type { CSSProperties, ReactNode, ComponentType } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 export default function DynamicRenderer({
   components,
@@ -17,21 +18,18 @@ export default function DynamicRenderer({
   runtimeData?: Record<string, Record<string, unknown>>;
 }) {
   const renderBlock = (block: PageComponent): ReactNode => {
-    const entry = blockRegistry[block.type as keyof typeof blockRegistry];
+    const entry = blockRegistry[block.type];
     if (!entry) {
       console.warn(`Unknown component type: ${block.type}`);
       return null;
     }
 
-    const { component: Comp, getRuntimeProps } = entry as {
-      component: ComponentType<any>;
-      getRuntimeProps?: (block: PageComponent, locale: Locale) =>
-        | Record<string, unknown>
-        | Promise<Record<string, unknown>>;
-    };
+    type Block = Extract<PageComponent, { type: typeof block.type }>;
+    const { component: Comp, getRuntimeProps } = entry as BlockRegistryEntry<Block>;
 
     const {
       id,
+      type: _type,
       children,
       width,
       height,
@@ -40,8 +38,8 @@ export default function DynamicRenderer({
       position,
       top,
       left,
-      ...props
-    } = block as any;
+      ...rest
+    } = block as Block;
 
     const style: CSSProperties = {
       width,
@@ -53,20 +51,38 @@ export default function DynamicRenderer({
       left,
     };
 
-    let extraProps: Record<string, unknown> = {};
+    type BlockProps = Omit<
+      Block,
+      | "id"
+      | "type"
+      | "children"
+      | "width"
+      | "height"
+      | "margin"
+      | "padding"
+      | "position"
+      | "top"
+      | "left"
+    >;
+    const props = rest as BlockProps;
+
+    let extraProps: Partial<BlockProps> = {};
     if (getRuntimeProps) {
       const runtime = getRuntimeProps(block, locale);
-      extraProps = { ...extraProps, ...(runtime as Record<string, unknown>) };
+      extraProps = { ...extraProps, ...(runtime as Partial<BlockProps>) };
     }
 
     if (runtimeData && runtimeData[block.type]) {
-      extraProps = { ...extraProps, ...runtimeData[block.type] };
+      extraProps = {
+        ...extraProps,
+        ...(runtimeData[block.type] as Partial<BlockProps>),
+      };
     }
 
     return (
       <div key={id} style={style}>
         <Comp {...props} {...extraProps} locale={locale}>
-          {children?.map((child: PageComponent) => renderBlock(child))}
+          {children?.map((child) => renderBlock(child))}
         </Comp>
       </div>
     );
@@ -74,4 +90,3 @@ export default function DynamicRenderer({
 
   return <>{components.map((c) => renderBlock(c))}</>;
 }
-

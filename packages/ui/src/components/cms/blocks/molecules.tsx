@@ -3,6 +3,7 @@
 
 import type { Locale } from "@/i18n/locales";
 import { memo } from "react";
+import type { BlockRegistryEntry } from "./types";
 import type { CategoryCollectionTemplateProps } from "../../templates/CategoryCollectionTemplate";
 import { CategoryCollectionTemplate } from "../../templates/CategoryCollectionTemplate";
 
@@ -101,6 +102,6 @@ export const moleculeRegistry = {
   NewsletterForm: { component: NewsletterForm },
   PromoBanner: { component: PromoBanner },
   CategoryList: { component: CategoryList },
-} as const;
+} as const satisfies Record<string, BlockRegistryEntry<any>>;
 
 export type MoleculeBlockType = keyof typeof moleculeRegistry;

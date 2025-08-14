@@ -7,6 +7,7 @@ import React, {
   type JSXElementConstructor,
   type JSX as ReactJSX,
 } from "react";
+import type { BlockRegistryEntry } from "./types";
 import Divider from "./Divider";
 import Spacer from "./Spacer";
 import CustomHtml from "./CustomHtml";
@@ -85,6 +86,6 @@ export const atomRegistry = {
   Spacer: { component: Spacer },
   CustomHtml: { component: CustomHtml },
   Button: { component: ButtonBlock },
-} as const;
+} as const satisfies Record<string, BlockRegistryEntry<any>>;
 
 export type AtomBlockType = keyof typeof atomRegistry;

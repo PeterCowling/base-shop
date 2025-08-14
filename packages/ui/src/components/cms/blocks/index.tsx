@@ -38,6 +38,7 @@ import FormBuilderBlock from "./FormBuilderBlock";
 import PopupModal from "./PopupModal";
 import ProductBundle from "./ProductBundle";
 import ProductFilter from "./ProductFilter";
+import type { BlockRegistryEntry } from "./types";
 
 export {
   BlogListing,
@@ -112,6 +113,6 @@ export const blockRegistry = {
   ...moleculeRegistry,
   ...organismRegistry,
   ...overlayRegistry,
-} as const;
+} satisfies Record<string, BlockRegistryEntry<any>>;
 
 export type BlockType = keyof typeof blockRegistry;

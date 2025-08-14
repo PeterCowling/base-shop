@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { ProductCard } from "../ProductCard";
 import type { SKU } from "@acme/types";
+import "@testing-library/jest-dom";
 import "../../../../../../test/resetNextMocks";
 
 jest.mock("@platform-core/src/contexts/CurrencyContext", () => ({

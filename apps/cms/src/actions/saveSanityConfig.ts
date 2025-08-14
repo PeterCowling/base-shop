@@ -24,6 +24,11 @@ export async function saveSanityConfig(
   const token = String(formData.get("token") ?? "");
   const aclMode = String(formData.get("aclMode") ?? "public");
   const createDataset = String(formData.get("createDataset") ?? "false") === "true";
+  const enableEditorialRaw = formData.get("enableEditorial");
+  const enableEditorial =
+    enableEditorialRaw == null
+      ? Boolean(shop.enableEditorial)
+      : enableEditorialRaw === "on" || enableEditorialRaw === "true";
 
   const config = { projectId, dataset, token };
 
@@ -46,6 +51,7 @@ export async function saveSanityConfig(
     }
   }
   const updated = setSanityConfig(shop, config);
+  updated.enableEditorial = enableEditorial;
   await updateShopInRepo(shopId, updated);
 
   return { message: "Sanity connected" };

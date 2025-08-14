@@ -54,7 +54,7 @@ describe("saveSanityConfig", () => {
       token: "t",
     });
     expect(setupSanityBlog).not.toHaveBeenCalled();
-    expect(setSanityConfig).toHaveBeenCalledWith({ id: "shop" }, {
+    expect(setSanityConfig).toHaveBeenCalledWith({ id: "shop", enableEditorial: false }, {
       projectId: "p",
       dataset: "d",
       token: "t",
@@ -62,6 +62,7 @@ describe("saveSanityConfig", () => {
     expect(updateShopInRepo).toHaveBeenCalledWith("shop", {
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
+      enableEditorial: false,
     });
     expect(res).toEqual({ message: "Sanity connected" });
   });
@@ -94,7 +95,7 @@ describe("saveSanityConfig", () => {
       true,
       "public",
     );
-    expect(setSanityConfig).toHaveBeenCalledWith({ id: "shop" }, {
+    expect(setSanityConfig).toHaveBeenCalledWith({ id: "shop", enableEditorial: true }, {
       projectId: "p",
       dataset: "d",
       token: "t",
@@ -102,8 +103,38 @@ describe("saveSanityConfig", () => {
     expect(updateShopInRepo).toHaveBeenCalledWith("shop", {
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
+      enableEditorial: true,
     });
     expect(res).toEqual({ message: "Sanity connected" });
+  });
+
+  it("overrides enableEditorial when provided", async () => {
+    (verifyCredentials as jest.Mock).mockResolvedValue(true);
+    (getShopById as jest.Mock).mockResolvedValue({
+      id: "shop",
+      enableEditorial: false,
+    });
+    (setSanityConfig as jest.Mock).mockReturnValue({
+      id: "shop",
+      sanityBlog: { projectId: "p", dataset: "d", token: "t" },
+    });
+    (updateShopInRepo as jest.Mock).mockResolvedValue({ id: "shop" });
+
+    const fd = new FormData();
+    fd.set("projectId", "p");
+    fd.set("dataset", "d");
+    fd.set("token", "t");
+    fd.set("aclMode", "public");
+    fd.set("createDataset", "false");
+    fd.set("enableEditorial", "on");
+
+    await saveSanityConfig("shop", fd);
+
+    expect(updateShopInRepo).toHaveBeenCalledWith("shop", {
+      id: "shop",
+      sanityBlog: { projectId: "p", dataset: "d", token: "t" },
+      enableEditorial: true,
+    });
   });
 
   it("returns error when dataset creation fails", async () => {

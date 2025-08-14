@@ -51,6 +51,7 @@ describe("zod schemas", () => {
     });
 
     expect(parsed.catalogFilters).toEqual(["color", "size", "type"]);
+    expect(parsed.enableEditorial).toBe(false);
   });
 
   it("shopSchema requires name and themeId", () => {
@@ -67,5 +68,17 @@ describe("zod schemas", () => {
 
     expect(errs.name?.[0]).toBe("Required");
     expect(errs.themeId?.[0]).toBe("Required");
+  });
+
+  it("shopSchema parses enableEditorial checkbox", () => {
+    const parsed = shopSchema.parse({
+      id: "s1",
+      name: "Shop",
+      themeId: "base",
+      catalogFilters: "",
+      enableEditorial: "on",
+    });
+
+    expect(parsed.enableEditorial).toBe(true);
   });
 });

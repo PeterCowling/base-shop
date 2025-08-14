@@ -63,3 +63,19 @@ export async function fetchPostBySlug(
     return null;
   }
 }
+
+export async function publishQueuedPost(shopId: string): Promise<void> {
+  try {
+    const client = await getClient(shopId);
+    const next = await client.fetch<{ _id: string } | null>(
+      `*[_type == "post" && published != true && !(_id in path('drafts.**'))]|order(_createdAt asc)[0]{_id}`,
+    );
+    if (!next?._id) return;
+    await client
+      .patch(next._id)
+      .set({ published: true, publishedAt: new Date().toISOString() })
+      .commit();
+  } catch {
+    // swallow errors; scheduled job will handle logging
+  }
+}

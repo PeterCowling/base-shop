@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/ShopEditor.tsx
 
 "use client";
-import { Button, Input, Textarea } from "@/components/atoms/shadcn";
+import { Button, Input, Textarea, Checkbox } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
 import { shopSchema } from "@cms/actions/schemas";
 import type { Shop } from "@acme/types";
@@ -138,6 +138,23 @@ export default function ShopEditor({ shop, initial }: Props) {
           </span>
         )}
       </label>
+      <div className="flex flex-col gap-1">
+        <label className="flex items-center gap-2">
+          <Checkbox
+            name="enableEditorial"
+            checked={info.enableEditorial ?? false}
+            onCheckedChange={(v) =>
+              setInfo((prev) => ({ ...prev, enableEditorial: Boolean(v) }))
+            }
+          />
+          <span>Enable blog</span>
+        </label>
+        {errors.enableEditorial && (
+          <span className="text-sm text-red-600">
+            {errors.enableEditorial.join("; ")}
+          </span>
+        )}
+      </div>
       <label className="flex flex-col gap-1">
         <span>Catalog Filters (comma separated)</span>
         <Input

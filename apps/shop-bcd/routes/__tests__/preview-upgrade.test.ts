@@ -33,13 +33,24 @@ test("valid upgrade token returns page JSON", async () => {
     __esModule: true,
     getPages,
   }));
+  jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
+  jest.doMock("@acme/config", () => ({
+    __esModule: true,
+    env: { UPGRADE_PREVIEW_TOKEN_SECRET: "upgradesecret" },
+  }));
+
+  const { GET: tokenGET } = await import(
+    "../../src/app/api/preview-token/route"
+  );
+  const tokenRes = await tokenGET(
+    new Request("http://test?pageId=1") as any,
+  );
+  const { token } = await tokenRes.json();
 
   const { onRequest } = await import("../../src/routes/preview/[pageId].ts");
   const res = await onRequest({
     params: { pageId: "1" },
-    request: new Request(
-      `http://test?upgrade=${tokenFor("1", "upgradesecret")}`,
-    ),
+    request: new Request(`http://test?upgrade=${token}`),
   } as any);
 
   expect(res.status).toBe(200);

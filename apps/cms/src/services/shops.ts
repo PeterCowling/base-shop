@@ -14,6 +14,7 @@ import {
   parseGenerateSeoForm,
   parseCurrencyTaxForm,
   parseDepositForm,
+  parseReverseLogisticsForm,
   parseUpsReturnsForm,
   parsePremierDeliveryForm,
   parseAiCatalogForm,
@@ -221,6 +222,27 @@ export async function updateDepositService(
   const updated: ShopSettings = {
     ...current,
     depositService: {
+      enabled: data.enabled,
+      intervalMinutes: data.intervalMinutes,
+    },
+  };
+  await persistSettings(shop, updated);
+  return { settings: updated };
+}
+
+export async function updateReverseLogistics(
+  shop: string,
+  formData: FormData,
+): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
+  await authorize();
+  const { data, errors } = parseReverseLogisticsForm(formData);
+  if (!data) {
+    return { errors };
+  }
+  const current = await fetchSettings(shop);
+  const updated: ShopSettings = {
+    ...current,
+    reverseLogisticsService: {
       enabled: data.enabled,
       intervalMinutes: data.intervalMinutes,
     },

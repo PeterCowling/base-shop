@@ -62,6 +62,11 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
           intervalMinutes: 60,
           ...(parsed.data.depositService ?? {}),
         },
+        reverseLogisticsService: {
+          enabled: false,
+          intervalMinutes: 60,
+          ...(parsed.data.reverseLogisticsService ?? {}),
+        },
         returnService: {
           upsEnabled: false,
           ...(parsed.data.returnService ?? {}),
@@ -95,6 +100,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     currency: "EUR",
     taxRegion: "",
     depositService: { enabled: false, intervalMinutes: 60 },
+    reverseLogisticsService: { enabled: false, intervalMinutes: 60 },
     returnService: { upsEnabled: false },
     premierDelivery: undefined,
     luxuryFeatures: {

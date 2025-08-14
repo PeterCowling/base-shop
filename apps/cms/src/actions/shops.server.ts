@@ -9,6 +9,7 @@ import {
   setFreezeTranslations as serviceSetFreezeTranslations,
   updateCurrencyAndTax as serviceUpdateCurrencyAndTax,
   updateDeposit as serviceUpdateDeposit,
+  updateReverseLogistics as serviceUpdateReverseLogistics,
   updateUpsReturns as serviceUpdateUpsReturns,
   updatePremierDelivery as serviceUpdatePremierDelivery,
   updateAiCatalog as serviceUpdateAiCatalog,
@@ -66,6 +67,11 @@ export async function updateCurrencyAndTax(
 export async function updateDeposit(shop: string, formData: FormData) {
   "use server";
   return serviceUpdateDeposit(shop, formData);
+}
+
+export async function updateReverseLogistics(shop: string, formData: FormData) {
+  "use server";
+  return serviceUpdateReverseLogistics(shop, formData);
 }
 
 export async function updateUpsReturns(shop: string, formData: FormData) {

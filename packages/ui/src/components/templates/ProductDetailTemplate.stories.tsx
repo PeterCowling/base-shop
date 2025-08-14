@@ -11,7 +11,7 @@ const product: SKU = {
   stock: 0,
   forSale: true,
   forRental: false,
-  media: [{ url: "https://placehold.co/600", type: "image" }],
+  media: [{ url: "https://placehold.co/600", type: "image" as const }],
   sizes: [],
   description: "A wonderful item",
 };

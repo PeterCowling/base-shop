@@ -53,6 +53,16 @@ export const shopDomainSchema = z
 
 export type ShopDomain = z.infer<typeof shopDomainSchema>;
 
+export const lateFeeServiceSchema = z
+  .object({
+    enabled: z.boolean(),
+    /** Interval in minutes between service runs */
+    intervalMinutes: z.number().int().positive(),
+  })
+  .strict();
+
+export type LateFeeService = z.infer<typeof lateFeeServiceSchema>;
+
 export const shopSchema = z
   .object({
     id: z.string(),

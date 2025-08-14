@@ -1,3 +1,4 @@
 {
-  "reverseLogisticsService": { "enabled": true, "intervalMinutes": 30 }
+  "reverseLogisticsService": { "enabled": true, "intervalMinutes": 30 },
+  "lateFeeService": { "enabled": false, "intervalMinutes": 60 }
 }

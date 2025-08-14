@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { localeSchema } from "./Product";
-import { shopSeoFieldsSchema } from "./Shop";
+import { shopSeoFieldsSchema, lateFeeServiceSchema } from "./Shop";
 
 export const aiCatalogFieldSchema = z.enum([
   "id",
@@ -64,6 +64,7 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    lateFeeService: lateFeeServiceSchema.optional(),
     returnService: z
       .object({
         upsEnabled: z.boolean(),

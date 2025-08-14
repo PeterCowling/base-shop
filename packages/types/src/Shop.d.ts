@@ -106,6 +106,18 @@ export declare const shopDomainSchema: z.ZodObject<{
     certificateStatus?: string | undefined;
 }>;
 export type ShopDomain = z.infer<typeof shopDomainSchema>;
+
+export declare const lateFeeServiceSchema: z.ZodObject<{
+    enabled: z.ZodBoolean;
+    intervalMinutes: z.ZodNumber;
+}, "strict", z.ZodTypeAny, {
+    enabled: boolean;
+    intervalMinutes: number;
+}, {
+    enabled: boolean;
+    intervalMinutes: number;
+}>;
+export type LateFeeService = z.infer<typeof lateFeeServiceSchema>;
 export declare const shopSchema: z.ZodObject<{
     id: z.ZodString;
     name: z.ZodString;

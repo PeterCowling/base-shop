@@ -1,4 +1,4 @@
-import { slugify } from '../src/slugify';
+import slugify from '../src/slugify';
 
 describe('slugify', () => {
   it('converts strings to URL-friendly slugs', () => {
@@ -17,5 +17,9 @@ describe('slugify', () => {
 
   it('trims leading/trailing dashes and converts to lowercase', () => {
     expect(slugify('--MiXeD-Case--')).toBe('mixed-case');
+  });
+
+  it('handles diacritics and UTF-8 characters', () => {
+    expect(slugify('Crème Brûlée')).toBe('creme-brulee');
   });
 });

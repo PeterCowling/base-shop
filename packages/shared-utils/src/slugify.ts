@@ -1,11 +1,6 @@
-// packages/shared-utils/src/slugify.ts
+import slugifyLib from "slugify";
 
-/** Convert a string into a URL-friendly slug. */
-export function slugify(str: string): string {
-  return str
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+/** Convert a string into a URL-friendly slug using the `slugify` package. */
+export default function slugify(str: string): string {
+  return slugifyLib(str.replace(/_/g, " "), { lower: true, strict: true });
 }
-

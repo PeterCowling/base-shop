@@ -59,6 +59,11 @@ interface Props {
   themes: string[];
 }
 
+function themeThumb(label: string): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><rect width="32" height="32" rx="4" ry="4" fill="#e5e5e5"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="14" fill="#666" font-family="sans-serif">${label.slice(0,1).toUpperCase()}</text></svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
 export default function StepTheme({ themes }: Props): React.JSX.Element {
   const themeStyle = useThemeLoader();
   const { state, update, themeDefaults, setThemeOverrides } =
@@ -101,6 +106,9 @@ export default function StepTheme({ themes }: Props): React.JSX.Element {
         onValueChange={(v) => {
           update("theme", v);
           setThemeOverrides({});
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("configurator:update"));
+          }
         }}
       >
         <SelectTrigger className="w-full">
@@ -109,7 +117,14 @@ export default function StepTheme({ themes }: Props): React.JSX.Element {
         <SelectContent>
           {themes.map((t) => (
             <SelectItem key={t} value={t}>
-              {t}
+              <div className="flex items-center gap-2">
+                <img
+                  src={themeThumb(t)}
+                  alt={`${t} theme preview`}
+                  className="h-8 w-8 rounded object-cover"
+                />
+                <span>{t}</span>
+              </div>
             </SelectItem>
           ))}
         </SelectContent>

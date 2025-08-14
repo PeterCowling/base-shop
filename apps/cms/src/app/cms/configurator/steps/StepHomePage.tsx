@@ -20,7 +20,7 @@ import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 
 interface Props {
-  pageTemplates: Array<{ name: string; components: PageComponent[] }>;
+  pageTemplates: Array<{ name: string; preview?: string; components: PageComponent[] }>;
   homeLayout: string;
   setHomeLayout: (v: string) => void;
   components: PageComponent[];
@@ -29,6 +29,11 @@ interface Props {
   setHomePageId: (v: string | null) => void;
   shopId: string;
   themeStyle: React.CSSProperties;
+}
+
+function templateThumb(label: string): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><rect width="32" height="32" rx="4" ry="4" fill="#e5e5e5"/><text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-size="14" fill="#666" font-family="sans-serif">${label.slice(0,1).toUpperCase()}</text></svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
 export default function StepHomePage({
@@ -61,6 +66,9 @@ export default function StepHomePage({
           setHomePageId(existing.id);
           setComponents(existing.components);
           if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("configurator:update"));
+          }
+          if (typeof window !== "undefined") {
             localStorage.setItem(
               `page-builder-history-${existing.id}`,
               JSON.stringify(
@@ -89,10 +97,12 @@ export default function StepHomePage({
           const layout = val === "blank" ? "" : val;
           setHomeLayout(layout);
           const tpl = pageTemplates.find((t) => t.name === layout);
-          if (tpl) {
-            setComponents(tpl.components.map((c) => ({ ...c, id: ulid() })));
-          } else {
-            setComponents([]);
+          const next = tpl
+            ? tpl.components.map((c) => ({ ...c, id: ulid() }))
+            : [];
+          setComponents(next);
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("configurator:update"));
           }
         }}
       >
@@ -103,7 +113,14 @@ export default function StepHomePage({
           <SelectItem value="blank">Blank</SelectItem>
           {pageTemplates.map((t) => (
             <SelectItem key={t.name} value={t.name}>
-              {t.name}
+              <div className="flex items-center gap-2">
+                <img
+                  src={t.preview ?? templateThumb(t.name)}
+                  alt={`${t.name} template preview`}
+                  className="h-8 w-8 rounded object-cover"
+                />
+                <span>{t.name}</span>
+              </div>
             </SelectItem>
           ))}
         </SelectContent>

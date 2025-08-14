@@ -2,6 +2,8 @@
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { readShop } from "@platform-core/src/repositories/shops.server";
 import { addOrder } from "@platform-core/src/repositories/rentalOrders.server";
+import { stripe } from "@acme/stripe";
+import { setStripeSubscriptionId } from "@platform-core/repositories/users";
 
 export default async function SubscribePage({
   params,
@@ -15,7 +17,14 @@ export default async function SubscribePage({
   async function selectPlan(formData: FormData) {
     "use server";
     const planId = formData.get("plan") as string;
-    if (!planId) return;
+    const userId = formData.get("userId") as string;
+    if (!planId || !userId) return;
+    const sub = await stripe.subscriptions.create({
+      customer: userId,
+      items: [{ price: planId }],
+      metadata: { userId, shop: shop.id },
+    });
+    await setStripeSubscriptionId(userId, sub.id);
     await addOrder("shop", `sub-${planId}-${Date.now()}`, 0);
   }
 
@@ -32,6 +41,7 @@ export default async function SubscribePage({
             </span>
           </label>
         ))}
+        <input type="hidden" name="userId" value="demo-user" />
         <button
           type="submit"
           className="mt-4 rounded bg-black px-4 py-2 text-white"

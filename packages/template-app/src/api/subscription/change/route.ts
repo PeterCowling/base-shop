@@ -6,8 +6,7 @@ import {
   getUserById,
   setStripeSubscriptionId,
 } from "@platform-core/repositories/users";
-
-const SHOP_ID = "bcd";
+import { coreEnv } from "@acme/config/env/core";
 
 export const runtime = "edge";
 
@@ -21,7 +20,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
   }
 
-  const shop = await readShop(SHOP_ID);
+  const shopId =
+    req.nextUrl.searchParams.get("shop") ||
+    coreEnv.NEXT_PUBLIC_SHOP_ID ||
+    "default";
+  const shop = await readShop(shopId);
   if (shop.billingProvider !== "stripe") {
     return NextResponse.json({ error: "Billing not enabled" }, { status: 400 });
   }
@@ -32,7 +35,7 @@ export async function POST(req: NextRequest) {
   }
 
   const plan = shop.rentalSubscriptions.find((p) => p.id === planId);
-  const prorate = plan?.prorateOnChange !== false;
+  const prorate = plan?.prorateOnChange === true;
 
   try {
     const sub = await stripe.subscriptions.update(user.stripeSubscriptionId, {

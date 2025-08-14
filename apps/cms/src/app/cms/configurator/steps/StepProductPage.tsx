@@ -8,6 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/atoms";
 import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
@@ -20,7 +27,11 @@ import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 
 interface Props {
-  pageTemplates: Array<{ name: string; components: PageComponent[] }>;
+  pageTemplates: Array<{
+    name: string;
+    components: PageComponent[];
+    preview: string;
+  }>;
   productLayout: string;
   setProductLayout: (v: string) => void;
   productComponents: PageComponent[];
@@ -51,6 +62,11 @@ export default function StepProductPage({
   const [isPublishing, setIsPublishing] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [publishError, setPublishError] = useState<string | null>(null);
+  const [selectOpen, setSelectOpen] = useState(false);
+  const [pendingTemplate, setPendingTemplate] =
+    useState<{ name: string; components: PageComponent[]; preview: string } | null>(
+      null,
+    );
 
   useEffect(() => {
     (async () => {
@@ -92,31 +108,103 @@ export default function StepProductPage({
       <h2 className="text-xl font-semibold">Product Detail Page</h2>
       <Select
         value={productLayout}
-        onValueChange={(val) => {
-          const layout = val === "blank" ? "" : val;
-          setProductLayout(layout);
-          const tpl = pageTemplates.find((t) => t.name === layout);
-          if (tpl) {
-            setProductComponents(
-              tpl.components.map((c) => ({ ...c, id: ulid() }))
-            );
-          } else {
-            setProductComponents([]);
-          }
-        }}
+        open={selectOpen}
+        onOpenChange={setSelectOpen}
+        onValueChange={() => {}}
       >
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select template" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="blank">Blank</SelectItem>
+          <SelectItem
+            value="blank"
+            asChild
+            onSelect={(e) => {
+              e.preventDefault();
+              setSelectOpen(false);
+              setPendingTemplate({ name: "blank", components: [], preview: "" });
+            }}
+          >
+            <button type="button" className="w-full text-left">
+              Blank
+            </button>
+          </SelectItem>
           {pageTemplates.map((t) => (
-            <SelectItem key={t.name} value={t.name}>
-              {t.name}
+            <SelectItem
+              key={t.name}
+              value={t.name}
+              asChild
+              onSelect={(e) => {
+                e.preventDefault();
+                setSelectOpen(false);
+                setPendingTemplate(t);
+              }}
+            >
+              <button type="button" className="w-full text-left">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={t.preview}
+                    alt={`${t.name} preview`}
+                    className="h-8 w-8 rounded object-cover"
+                  />
+                  {t.name}
+                </div>
+              </button>
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
+      <Dialog
+        open={!!pendingTemplate}
+        onOpenChange={(o) => {
+          if (!o) setPendingTemplate(null);
+        }}
+      >
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>
+              Use
+              {pendingTemplate?.name === "blank"
+                ? " Blank"
+                : ` ${pendingTemplate?.name}`}
+              {" "}template?
+            </DialogTitle>
+          </DialogHeader>
+          {pendingTemplate?.preview && (
+            <img
+              src={pendingTemplate.preview}
+              alt={`${pendingTemplate.name} preview`}
+              className="w-full rounded"
+            />
+          )}
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setPendingTemplate(null)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                if (!pendingTemplate) return;
+                const layout =
+                  pendingTemplate.name === "blank"
+                    ? ""
+                    : pendingTemplate.name;
+                setProductLayout(layout);
+                const comps = pendingTemplate.components.map((c) => ({
+                  ...c,
+                  id: ulid(),
+                }));
+                setProductComponents(comps);
+                setPendingTemplate(null);
+              }}
+            >
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <ProductPageBuilder
         page={
           {

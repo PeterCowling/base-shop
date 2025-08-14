@@ -6,7 +6,7 @@ import PageBuilder from "@/components/cms/PageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
 import { apiRequest } from "../lib/api";
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { Toast, Spinner } from "@/components/atoms";
 import { CheckIcon } from "@radix-ui/react-icons";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -31,10 +31,6 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
     shopId,
   } = state;
   const themeStyle = useThemeLoader();
-  const setHeaderComponents = (v: PageComponent[]) => update("headerComponents", v);
-  const setHeaderPageId = (v: string | null) => update("headerPageId", v);
-  const setFooterComponents = (v: PageComponent[]) => update("footerComponents", v);
-  const setFooterPageId = (v: string | null) => update("footerPageId", v);
 
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
@@ -48,6 +44,32 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
   const [footerSaving, setFooterSaving] = useState(false);
   const [footerError, setFooterError] = useState<string | null>(null);
   const [footerSaved, setFooterSaved] = useState(false);
+  const [headerDirty, setHeaderDirty] = useState(false);
+  const [footerDirty, setFooterDirty] = useState(false);
+
+  const setHeaderComponents = (v: PageComponent[]) => {
+    setHeaderDirty(true);
+    setHeaderSaved(false);
+    update("headerComponents", v);
+  };
+  const setHeaderPageId = (v: string | null) => update("headerPageId", v);
+  const setFooterComponents = (v: PageComponent[]) => {
+    setFooterDirty(true);
+    setFooterSaved(false);
+    update("footerComponents", v);
+  };
+  const setFooterPageId = (v: string | null) => update("footerPageId", v);
+
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (headerDirty || footerDirty || headerSaving || footerSaving) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [headerDirty, footerDirty, headerSaving, footerSaving]);
 
   return (
     <fieldset className="space-y-4">
@@ -88,6 +110,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
             if (data) {
               setHeaderPageId(data.id);
               setHeaderSaved(true);
+              setHeaderDirty(false);
               setToast({ open: true, message: "Header saved" });
             } else if (error) {
               setHeaderError(error);
@@ -146,6 +169,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
             if (data) {
               setFooterPageId(data.id);
               setFooterSaved(true);
+              setFooterDirty(false);
               setToast({ open: true, message: "Footer saved" });
             } else if (error) {
               setFooterError(error);
@@ -176,12 +200,18 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
       <div className="flex justify-end">
         <Button
           onClick={() => {
+            if (
+              (headerDirty || footerDirty) &&
+              !confirm("You have unsaved changes. Are you sure you want to leave?")
+            ) {
+              return;
+            }
             markComplete(true);
             router.push("/cms/configurator");
           }}
           disabled={headerSaving || footerSaving}
         >
-          {headerSaving || footerSaving && (
+          {(headerSaving || footerSaving) && (
             <Spinner className="mr-2 h-4 w-4" />
           )}
           Save & return

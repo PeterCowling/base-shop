@@ -221,7 +221,7 @@ const PageBuilder = memo(function PageBuilder({
     if (saveDebounceRef.current) {
       clearTimeout(saveDebounceRef.current);
     }
-    saveDebounceRef.current = window.setTimeout(handleAutoSave, 1000);
+    saveDebounceRef.current = window.setTimeout(handleAutoSave, 2000);
     return () => {
       if (saveDebounceRef.current) {
         clearTimeout(saveDebounceRef.current);
@@ -256,25 +256,13 @@ const PageBuilder = memo(function PageBuilder({
             gridCols={gridCols}
             setGridCols={setGridCols}
           />
-          <div className="flex items-center gap-2">
-            {autoSaveState === "saving" && (
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Spinner className="h-4 w-4" /> Saving…
-              </div>
-            )}
-            {autoSaveState === "saved" && (
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <CheckIcon className="h-4 w-4 text-green-500" /> Saved
-              </div>
-            )}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowPreview((p) => !p)}
-            >
-              {showPreview ? "Hide preview" : "Show preview"}
-            </Button>
-          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowPreview((p) => !p)}
+          >
+            {showPreview ? "Hide preview" : "Show preview"}
+          </Button>
         </div>
         <div aria-live="polite" role="status" className="sr-only">
           {liveMessage}
@@ -337,7 +325,7 @@ const PageBuilder = memo(function PageBuilder({
             </div>
           </div>
         )}
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>
             Undo
           </Button>
@@ -348,10 +336,18 @@ const PageBuilder = memo(function PageBuilder({
             <Button onClick={() => onSave(formData)} disabled={saving}>
               {saving ? <Spinner className="h-4 w-4" /> : "Save"}
             </Button>
-            {saveError && (
-              <p className="text-sm text-red-500">{saveError}</p>
-            )}
+            {saveError && <p className="text-sm text-red-500">{saveError}</p>}
           </div>
+          {autoSaveState === "saving" && (
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <Spinner className="h-4 w-4" /> Saving…
+            </div>
+          )}
+          {autoSaveState === "saved" && (
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <CheckIcon className="h-4 w-4 text-green-500" /> All changes saved
+            </div>
+          )}
           <div className="flex flex-col gap-1">
             <Button
               variant="outline"
@@ -361,9 +357,7 @@ const PageBuilder = memo(function PageBuilder({
             >
               {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
             </Button>
-            {publishError && (
-              <p className="text-sm text-red-500">{publishError}</p>
-            )}
+            {publishError && <p className="text-sm text-red-500">{publishError}</p>}
           </div>
         </div>
       </div>

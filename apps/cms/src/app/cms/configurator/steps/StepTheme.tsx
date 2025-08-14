@@ -57,9 +57,15 @@ const colorPalettes: Array<{
 
 interface Props {
   themes: string[];
+  prevStepId?: string;
+  nextStepId?: string;
 }
 
-export default function StepTheme({ themes }: Props): React.JSX.Element {
+export default function StepTheme({
+  themes,
+  prevStepId,
+  nextStepId,
+}: Props): React.JSX.Element {
   const themeStyle = useThemeLoader();
   const { state, update, themeDefaults, setThemeOverrides } =
     useConfigurator();
@@ -142,15 +148,25 @@ export default function StepTheme({ themes }: Props): React.JSX.Element {
 
       <WizardPreview style={themeStyle} />
 
-      <div className="flex justify-end">
-        <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
+      <div className="flex justify-between">
+        {prevStepId && (
+          <Button
+            variant="outline"
+            onClick={() => router.push(`/cms/configurator/${prevStepId}`)}
+          >
+            Back
+          </Button>
+        )}
+        {nextStepId && (
+          <Button
+            onClick={() => {
+              markComplete(true);
+              router.push(`/cms/configurator/${nextStepId}`);
+            }}
+          >
+            Next
+          </Button>
+        )}
       </div>
     </div>
   );

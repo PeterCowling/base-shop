@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/atoms/shadcn";
+import { formatTimestamp } from "@acme/date-utils";
 
 interface AuditRecord {
   timestamp: string;
@@ -49,7 +50,7 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
       {running && <p className="mt-2 text-sm">Audit in progress…</p>}
       {last && (
         <div className="mt-4 text-sm">
-          <p>Last run: {new Date(last.timestamp).toLocaleString()}</p>
+          <p>Last run: {formatTimestamp(last.timestamp)}</p>
           <p>Score: {Math.round(last.score * 100)}</p>
           <p>Issues found: {last.issues}</p>
         </div>

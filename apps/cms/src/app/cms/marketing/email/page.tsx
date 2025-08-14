@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { formatTimestamp } from "@acme/date-utils";
 import { marketingEmailTemplates } from "@acme/ui";
 
 interface Campaign {
@@ -166,7 +167,7 @@ export default function EmailMarketingPage() {
                 <td className="border px-2 py-1">{c.subject}</td>
                 <td className="border px-2 py-1">{c.recipients.join(", ")}</td>
                 <td className="border px-2 py-1 text-center">
-                  {new Date(c.sendAt).toLocaleString()}
+                  {formatTimestamp(c.sendAt)}
                 </td>
                 <td className="border px-2 py-1 text-center">
                   {c.sentAt

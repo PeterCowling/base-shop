@@ -1,3 +1,4 @@
+import { formatTimestamp } from "@acme/date-utils";
 import { listEvents } from "@platform-core/repositories/reverseLogisticsEvents.server";
 import shop from "../../../../../shop.json";
 
@@ -29,7 +30,7 @@ export default async function OrderTimeline({
                 {STATUS_LABELS[evt.event] ?? evt.event}
               </span>
               <time dateTime={evt.createdAt} className="text-sm text-gray-500">
-                {new Date(evt.createdAt).toLocaleString()}
+                {formatTimestamp(evt.createdAt)}
               </time>
             </div>
           </li>

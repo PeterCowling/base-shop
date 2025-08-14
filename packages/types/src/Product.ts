@@ -37,6 +37,10 @@ export const skuSchema = z
     weeklyRate: z.number().int().nonnegative().optional(),
     /** monthly rental rate in minor currency units */
     monthlyRate: z.number().int().nonnegative().optional(),
+    /** maximum number of rentals before retirement */
+    wearAndTearLimit: z.number().int().nonnegative().optional(),
+    /** number of rentals between required maintenance */
+    maintenanceCycle: z.number().int().nonnegative().optional(),
     /** availability windows as ISO timestamps */
     availability: z
       .array(z.object({ from: z.string(), to: z.string() }).strict())
@@ -72,6 +76,10 @@ export interface ProductCore {
   weeklyRate?: number;
   /** monthly rental rate in minor currency units */
   monthlyRate?: number;
+  /** maximum number of rentals before retirement */
+  wearAndTearLimit?: number;
+  /** number of rentals between required maintenance */
+  maintenanceCycle?: number;
   /** availability windows as ISO timestamps */
   availability?: { from: string; to: string }[];
 }

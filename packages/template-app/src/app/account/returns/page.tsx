@@ -50,7 +50,7 @@ function ReturnForm({ bagType, tracking: trackingEnabled }: ReturnFormProps) {
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
         }
-        const detector = new (window as any).BarcodeDetector({
+        const detector = new window.BarcodeDetector({
           formats: ["qr_code"],
         });
         const scan = async () => {

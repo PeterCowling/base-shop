@@ -5,6 +5,7 @@ import OrderSummary from "@/components/organisms/OrderSummary";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import DeliveryScheduler from "@ui/components/organisms/DeliveryScheduler";
 import { Locale, resolveLocale } from "@/i18n/locales";
+import { useTranslations } from "@/i18n/useTranslations";
 import {
   CART_COOKIE,
   decodeCartCookie,
@@ -40,6 +41,7 @@ export default async function CheckoutPage({
   /* ---------- await params ---------- */
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
+  const t = await useTranslations(lang);
 
   /* ---------- read cart from cookie ---------- */
   const cookieStore = await cookies(); // ← await here
@@ -48,7 +50,7 @@ export default async function CheckoutPage({
 
   /* ---------- empty cart guard ---------- */
   if (!Object.keys(cart).length) {
-    return <p className="p-8 text-center">Your cart is empty.</p>;
+    return <p className="p-8 text-center">{t("checkout.empty")}</p>;
   }
 
   const components = await loadComponents();

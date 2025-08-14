@@ -4,6 +4,7 @@ import type { Locale } from "@/i18n/locales";
 
 export interface BlockRegistryEntry<P> {
   component: ComponentType<P>;
+  previewImage?: string;
   getRuntimeProps?: (
     block: PageComponent,
     locale: Locale

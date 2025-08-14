@@ -7,6 +7,8 @@ import type { BlockRegistryEntry } from "./types";
 import type { CategoryCollectionTemplateProps } from "../../templates/CategoryCollectionTemplate";
 import { CategoryCollectionTemplate } from "../../templates/CategoryCollectionTemplate";
 
+const defaultPreview = "/window.svg";
+
 /* ──────────────────────────────────────────────────────────────────────────
  * NewsletterForm
  * --------------------------------------------------------------------------*/
@@ -100,10 +102,17 @@ export const CategoryList = memo(function CategoryList({
 /* ──────────────────────────────────────────────────────────────────────────
  * Molecule registry
  * --------------------------------------------------------------------------*/
-export const moleculeRegistry = {
+const moleculeEntries = {
   NewsletterForm: { component: NewsletterForm },
   PromoBanner: { component: PromoBanner },
   CategoryList: { component: CategoryList },
-} as const satisfies Record<string, BlockRegistryEntry<any>>;
+} as const;
 
-export type MoleculeBlockType = keyof typeof moleculeRegistry;
+export const moleculeRegistry = Object.fromEntries(
+  Object.entries(moleculeEntries).map(([k, v]) => [
+    k,
+    { previewImage: defaultPreview, ...v },
+  ]),
+) as typeof moleculeEntries satisfies Record<string, BlockRegistryEntry<any>>;
+
+export type MoleculeBlockType = keyof typeof moleculeEntries;

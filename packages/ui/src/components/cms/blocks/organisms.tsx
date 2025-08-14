@@ -45,7 +45,9 @@ import ProductBundle, {
 import ProductFilter from "./ProductFilter";
 import type { BlockRegistryEntry } from "./types";
 
-export const organismRegistry = {
+const defaultPreview = "/window.svg";
+
+const organismEntries = {
   AnnouncementBar: { component: AnnouncementBar },
   HeroBanner: { component: HeroBanner },
   ValueProps: { component: ValueProps },
@@ -96,6 +98,13 @@ export const organismRegistry = {
     getRuntimeProps: getProductBundleRuntimeProps,
   },
   ProductFilter: { component: ProductFilter },
-} as const satisfies Record<string, BlockRegistryEntry<any>>;
+} as const;
 
-export type OrganismBlockType = keyof typeof organismRegistry;
+export const organismRegistry = Object.fromEntries(
+  Object.entries(organismEntries).map(([k, v]) => [
+    k,
+    { previewImage: defaultPreview, ...v },
+  ]),
+) as typeof organismEntries satisfies Record<string, BlockRegistryEntry<any>>;
+
+export type OrganismBlockType = keyof typeof organismEntries;

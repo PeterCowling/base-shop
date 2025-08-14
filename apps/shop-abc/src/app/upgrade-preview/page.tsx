@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 interface UpgradeComponent {
   file: string;
   componentName: string;
+  oldChecksum: string;
+  newChecksum: string;
 }
 
 const exampleProps: Record<string, any> = {
@@ -158,4 +160,3 @@ export default function UpgradePreviewPage() {
     </div>
   );
 }
-

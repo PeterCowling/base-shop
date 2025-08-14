@@ -5,7 +5,7 @@
   "tracking": true,
   "bagType": "reusable",
   "returnCarrier": ["UPS"],
-  "homePickupZipCodes": ["94105", "94107"],
+  "homePickupZipCodes": ["94105", "94107", "94109", "94110"],
   "requireTags": true,
   "allowWear": false
 }

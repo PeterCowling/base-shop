@@ -3,7 +3,7 @@ import { readdir, readFile } from "node:fs/promises";
 import type { Dirent } from "node:fs";
 import path from "node:path";
 import type { z } from "zod";
-import { logger } from "./utils/logger";
+import { logger } from "./utils";
 import { PluginManager } from "./plugins/PluginManager";
 
 /** Interface for payment providers */

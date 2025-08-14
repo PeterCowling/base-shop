@@ -1,3 +1,4 @@
+/// <reference types="@testing-library/jest-dom" />
 import { render, fireEvent, screen } from "@testing-library/react";
 import { PaginationControl } from "../PaginationControl";
 

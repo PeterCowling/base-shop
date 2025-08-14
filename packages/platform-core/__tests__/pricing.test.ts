@@ -39,6 +39,8 @@ describe('pricing utilities', () => {
 
     await expect(convertCurrency(100, 'USD')).resolves.toBe(100);
     await expect(convertCurrency(100, 'EUR')).resolves.toBe(50);
+    // HALF_EVEN rounding: 101 * 0.5 = 50.5 -> 50
+    await expect(convertCurrency(101, 'EUR')).resolves.toBe(50);
     await expect(convertCurrency(100, 'GBP')).rejects.toThrow(
       'Missing exchange rate for GBP'
     );

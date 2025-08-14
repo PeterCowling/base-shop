@@ -111,6 +111,13 @@ export const shopSchema = z
         fraudReview: false,
         strictReturnConditions: false,
       }),
+    lateFeePolicy: z
+      .object({
+        gracePeriodDays: z.number().int().nonnegative().default(0),
+        feeAmount: z.number().int().nonnegative().default(0),
+      })
+      .strict()
+      .default({ gracePeriodDays: 0, feeAmount: 0 }),
     lastUpgrade: z.string().datetime().optional(),
     componentVersions: z.record(z.string()).default({}),
   })

@@ -1,4 +1,6 @@
+export * from "./ApiError";
 export * from "./Cart";
+export * from "./CmsUser";
 export * from "./constants";
 export * from "./ImageOrientation";
 export * from "./InventoryItem";
@@ -8,7 +10,9 @@ export * from "./Pricing";
 export * from "./Product";
 export * from "./PublishLocation";
 export * from "./RentalOrder";
+export * from "./ReverseLogisticsEvent";
 export * from "./ReturnLogistics";
+export * from "./ReturnAuthorization";
 export * from "./Shop";
 export * from "./ShopSettings";
-//# sourceMappingURL=index.d.ts.map
+export * from "./Coupon";

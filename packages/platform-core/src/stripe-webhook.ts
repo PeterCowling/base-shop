@@ -36,7 +36,14 @@ export async function handleStripeWebhook(
       const deposit = Number(session.metadata?.depositTotal ?? 0);
       const returnDate = session.metadata?.returnDate || undefined;
       const customerId = session.metadata?.customerId || undefined;
-      await addOrder(shop, session.id, deposit, returnDate, customerId);
+      await addOrder(
+        shop,
+        session.id,
+        deposit,
+        returnDate,
+        undefined,
+        customerId,
+      );
       break;
     }
     case "charge.refunded": {

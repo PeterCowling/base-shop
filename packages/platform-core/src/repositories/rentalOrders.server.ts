@@ -8,4 +8,6 @@ export {
   markRefunded,
   updateRisk,
   setReturnTracking,
+  markReturnReceived,
+  markLateFeeCharged,
 } from "../orders";

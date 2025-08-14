@@ -32,6 +32,9 @@ model RentalOrder {
   returnedAt         String?
   refundedAt         String?
   damageFee          Int?
+  returnDueDate      String?
+  returnReceivedAt   String?
+  lateFeeCharged     Int?
   customerId         String?
   riskLevel          String?
   riskScore          Int?

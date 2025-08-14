@@ -11,15 +11,15 @@ export declare const shopSeoFieldsSchema: z.ZodObject<{
         url: z.ZodOptional<z.ZodString>;
         image: z.ZodOptional<z.ZodString>;
     }, "strict", z.ZodTypeAny, {
-        title?: string | undefined;
-        image?: string | undefined;
-        url?: string | undefined;
-        description?: string | undefined;
+        url?: string;
+        title?: string;
+        image?: string;
+        description?: string;
     }, {
-        title?: string | undefined;
-        image?: string | undefined;
-        url?: string | undefined;
-        description?: string | undefined;
+        url?: string;
+        title?: string;
+        image?: string;
+        description?: string;
     }>>;
     twitter: z.ZodOptional<z.ZodObject<{
         card: z.ZodOptional<z.ZodString>;
@@ -27,55 +27,55 @@ export declare const shopSeoFieldsSchema: z.ZodObject<{
         description: z.ZodOptional<z.ZodString>;
         image: z.ZodOptional<z.ZodString>;
     }, "strict", z.ZodTypeAny, {
-        title?: string | undefined;
-        image?: string | undefined;
-        description?: string | undefined;
-        card?: string | undefined;
+        title?: string;
+        image?: string;
+        description?: string;
+        card?: string;
     }, {
-        title?: string | undefined;
-        image?: string | undefined;
-        description?: string | undefined;
-        card?: string | undefined;
+        title?: string;
+        image?: string;
+        description?: string;
+        card?: string;
     }>>;
     structuredData: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
-    title?: string | undefined;
-    image?: string | undefined;
-    description?: string | undefined;
-    canonicalBase?: string | undefined;
-    alt?: string | undefined;
-    openGraph?: {
-        title?: string | undefined;
-        image?: string | undefined;
-        url?: string | undefined;
-        description?: string | undefined;
-    } | undefined;
+    title?: string;
+    image?: string;
+    description?: string;
+    alt?: string;
     twitter?: {
-        title?: string | undefined;
-        image?: string | undefined;
-        description?: string | undefined;
-        card?: string | undefined;
-    } | undefined;
-    structuredData?: string | undefined;
+        title?: string;
+        image?: string;
+        description?: string;
+        card?: string;
+    };
+    canonicalBase?: string;
+    openGraph?: {
+        url?: string;
+        title?: string;
+        image?: string;
+        description?: string;
+    };
+    structuredData?: string;
 }, {
-    title?: string | undefined;
-    image?: string | undefined;
-    description?: string | undefined;
-    canonicalBase?: string | undefined;
-    alt?: string | undefined;
-    openGraph?: {
-        title?: string | undefined;
-        image?: string | undefined;
-        url?: string | undefined;
-        description?: string | undefined;
-    } | undefined;
+    title?: string;
+    image?: string;
+    description?: string;
+    alt?: string;
     twitter?: {
-        title?: string | undefined;
-        image?: string | undefined;
-        description?: string | undefined;
-        card?: string | undefined;
-    } | undefined;
-    structuredData?: string | undefined;
+        title?: string;
+        image?: string;
+        description?: string;
+        card?: string;
+    };
+    canonicalBase?: string;
+    openGraph?: {
+        url?: string;
+        title?: string;
+        image?: string;
+        description?: string;
+    };
+    structuredData?: string;
 }>;
 export type ShopSeoFields = z.infer<typeof shopSeoFieldsSchema>;
 export declare const sanityBlogConfigSchema: z.ZodObject<{
@@ -83,13 +83,13 @@ export declare const sanityBlogConfigSchema: z.ZodObject<{
     dataset: z.ZodString;
     token: z.ZodString;
 }, "strict", z.ZodTypeAny, {
-    projectId: string;
-    dataset: string;
-    token: string;
+    dataset?: string;
+    projectId?: string;
+    token?: string;
 }, {
-    projectId: string;
-    dataset: string;
-    token: string;
+    dataset?: string;
+    projectId?: string;
+    token?: string;
 }>;
 export type SanityBlogConfig = z.infer<typeof sanityBlogConfigSchema>;
 export declare const shopDomainSchema: z.ZodObject<{
@@ -97,13 +97,13 @@ export declare const shopDomainSchema: z.ZodObject<{
     status: z.ZodOptional<z.ZodString>;
     certificateStatus: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
-    name: string;
-    status?: string | undefined;
-    certificateStatus?: string | undefined;
+    name?: string;
+    status?: string;
+    certificateStatus?: string;
 }, {
-    name: string;
-    status?: string | undefined;
-    certificateStatus?: string | undefined;
+    name?: string;
+    status?: string;
+    certificateStatus?: string;
 }>;
 export type ShopDomain = z.infer<typeof shopDomainSchema>;
 export declare const shopSchema: z.ZodObject<{
@@ -136,123 +136,187 @@ export declare const shopSchema: z.ZodObject<{
         label: z.ZodString;
         url: z.ZodString;
     }, "strict", z.ZodTypeAny, {
-        url: string;
-        label: string;
+        url?: string;
+        label?: string;
     }, {
-        url: string;
-        label: string;
+        url?: string;
+        label?: string;
     }>, "many">>;
     sanityBlog: z.ZodOptional<z.ZodObject<{
         projectId: z.ZodString;
         dataset: z.ZodString;
         token: z.ZodString;
     }, "strict", z.ZodTypeAny, {
-        projectId: string;
-        dataset: string;
-        token: string;
+        dataset?: string;
+        projectId?: string;
+        token?: string;
     }, {
-        projectId: string;
-        dataset: string;
-        token: string;
+        dataset?: string;
+        projectId?: string;
+        token?: string;
     }>>;
+    editorialBlog: z.ZodOptional<z.ZodObject<{
+        enabled: z.ZodBoolean;
+        promoteSchedule: z.ZodOptional<z.ZodString>;
+    }, "strict", z.ZodTypeAny, {
+        enabled?: boolean;
+        promoteSchedule?: string;
+    }, {
+        enabled?: boolean;
+        promoteSchedule?: string;
+    }>>;
+    enableEditorial: z.ZodOptional<z.ZodBoolean>;
     domain: z.ZodOptional<z.ZodObject<{
         name: z.ZodString;
         status: z.ZodOptional<z.ZodString>;
         certificateStatus: z.ZodOptional<z.ZodString>;
     }, "strict", z.ZodTypeAny, {
-        name: string;
-        status?: string | undefined;
-        certificateStatus?: string | undefined;
+        name?: string;
+        status?: string;
+        certificateStatus?: string;
     }, {
-        name: string;
-        status?: string | undefined;
-        certificateStatus?: string | undefined;
+        name?: string;
+        status?: string;
+        certificateStatus?: string;
     }>>;
     returnPolicyUrl: z.ZodOptional<z.ZodString>;
     returnsEnabled: z.ZodOptional<z.ZodBoolean>;
     analyticsEnabled: z.ZodOptional<z.ZodBoolean>;
+    luxuryFeatures: z.ZodDefault<z.ZodObject<{
+        contentMerchandising: z.ZodDefault<z.ZodBoolean>;
+        raTicketing: z.ZodDefault<z.ZodBoolean>;
+        fraudReview: z.ZodDefault<z.ZodBoolean>;
+        strictReturnConditions: z.ZodDefault<z.ZodBoolean>;
+    }, "strict", z.ZodTypeAny, {
+        contentMerchandising?: boolean;
+        raTicketing?: boolean;
+        fraudReview?: boolean;
+        strictReturnConditions?: boolean;
+    }, {
+        contentMerchandising?: boolean;
+        raTicketing?: boolean;
+        fraudReview?: boolean;
+        strictReturnConditions?: boolean;
+    }>>;
+    lateFeePolicy: z.ZodDefault<z.ZodObject<{
+        gracePeriodDays: z.ZodDefault<z.ZodNumber>;
+        feeAmount: z.ZodDefault<z.ZodNumber>;
+    }, "strict", z.ZodTypeAny, {
+        gracePeriodDays?: number;
+        feeAmount?: number;
+    }, {
+        gracePeriodDays?: number;
+        feeAmount?: number;
+    }>>;
     lastUpgrade: z.ZodOptional<z.ZodString>;
     componentVersions: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodString>>;
 }, "strict", z.ZodTypeAny, {
-    id: string;
-    name: string;
-    catalogFilters: string[];
-    themeId: string;
-    themeDefaults: Record<string, string>;
-    themeOverrides: Record<string, string>;
-    themeTokens: Record<string, string>;
-    filterMappings: Record<string, string>;
-    priceOverrides: Partial<Record<"en" | "de" | "it", number>>;
-    localeOverrides: Record<string, "en" | "de" | "it">;
-    type?: string | undefined;
-    logo?: string | undefined;
-    contactInfo?: string | undefined;
-    paymentProviders?: string[] | undefined;
-    shippingProviders?: string[] | undefined;
-    taxProviders?: string[] | undefined;
-    homeTitle?: Partial<Record<"en" | "de" | "it", string>> | undefined;
-    homeDescription?: Partial<Record<"en" | "de" | "it", string>> | undefined;
-    homeImage?: string | undefined;
+    name?: string;
+    type?: string;
+    id?: string;
+    logo?: string;
+    contactInfo?: string;
+    catalogFilters?: string[];
+    themeId?: string;
+    themeDefaults?: Record<string, string>;
+    themeOverrides?: Record<string, string>;
+    themeTokens?: Record<string, string>;
+    filterMappings?: Record<string, string>;
+    priceOverrides?: Partial<Record<"en" | "de" | "it", number>>;
+    localeOverrides?: Record<string, "en" | "de" | "it">;
+    paymentProviders?: string[];
+    shippingProviders?: string[];
+    taxProviders?: string[];
+    homeTitle?: Partial<Record<"en" | "de" | "it", string>>;
+    homeDescription?: Partial<Record<"en" | "de" | "it", string>>;
+    homeImage?: string;
     navigation?: {
-        url: string;
-        label: string;
-    }[] | undefined;
+        url?: string;
+        label?: string;
+    }[];
     sanityBlog?: {
-        projectId: string;
-        dataset: string;
-        token: string;
-    } | undefined;
-    enableEditorial?: boolean | undefined;
+        dataset?: string;
+        projectId?: string;
+        token?: string;
+    };
+    editorialBlog?: {
+        enabled?: boolean;
+        promoteSchedule?: string;
+    };
+    enableEditorial?: boolean;
     domain?: {
-        name: string;
-        status?: string | undefined;
-        certificateStatus?: string | undefined;
-    } | undefined;
-    returnPolicyUrl?: string | undefined;
-    returnsEnabled?: boolean | undefined;
-    analyticsEnabled?: boolean | undefined;
-    lastUpgrade?: string | undefined;
-    componentVersions: Record<string, string>;
+        name?: string;
+        status?: string;
+        certificateStatus?: string;
+    };
+    returnPolicyUrl?: string;
+    returnsEnabled?: boolean;
+    analyticsEnabled?: boolean;
+    luxuryFeatures?: {
+        contentMerchandising?: boolean;
+        raTicketing?: boolean;
+        fraudReview?: boolean;
+        strictReturnConditions?: boolean;
+    };
+    lateFeePolicy?: {
+        gracePeriodDays?: number;
+        feeAmount?: number;
+    };
+    lastUpgrade?: string;
+    componentVersions?: Record<string, string>;
 }, {
-    id: string;
-    name: string;
-    catalogFilters: string[];
-    themeId: string;
-    filterMappings: Record<string, string>;
-    type?: string | undefined;
-    logo?: string | undefined;
-    contactInfo?: string | undefined;
-    themeDefaults?: Record<string, string> | undefined;
-    themeOverrides?: Record<string, string> | undefined;
-    themeTokens?: Record<string, string> | undefined;
-    priceOverrides?: Partial<Record<"en" | "de" | "it", number>> | undefined;
-    localeOverrides?: Record<string, "en" | "de" | "it"> | undefined;
-    paymentProviders?: string[] | undefined;
-    shippingProviders?: string[] | undefined;
-    taxProviders?: string[] | undefined;
-    homeTitle?: Partial<Record<"en" | "de" | "it", string>> | undefined;
-    homeDescription?: Partial<Record<"en" | "de" | "it", string>> | undefined;
-    homeImage?: string | undefined;
+    name?: string;
+    type?: string;
+    id?: string;
+    logo?: string;
+    contactInfo?: string;
+    catalogFilters?: string[];
+    themeId?: string;
+    themeDefaults?: Record<string, string>;
+    themeOverrides?: Record<string, string>;
+    themeTokens?: Record<string, string>;
+    filterMappings?: Record<string, string>;
+    priceOverrides?: Partial<Record<"en" | "de" | "it", number>>;
+    localeOverrides?: Record<string, "en" | "de" | "it">;
+    paymentProviders?: string[];
+    shippingProviders?: string[];
+    taxProviders?: string[];
+    homeTitle?: Partial<Record<"en" | "de" | "it", string>>;
+    homeDescription?: Partial<Record<"en" | "de" | "it", string>>;
+    homeImage?: string;
     navigation?: {
-        url: string;
-        label: string;
-    }[] | undefined;
+        url?: string;
+        label?: string;
+    }[];
     sanityBlog?: {
-        projectId: string;
-        dataset: string;
-        token: string;
-    } | undefined;
-    enableEditorial?: boolean | undefined;
+        dataset?: string;
+        projectId?: string;
+        token?: string;
+    };
+    editorialBlog?: {
+        enabled?: boolean;
+        promoteSchedule?: string;
+    };
+    enableEditorial?: boolean;
     domain?: {
-        name: string;
-        status?: string | undefined;
-        certificateStatus?: string | undefined;
-    } | undefined;
-    returnPolicyUrl?: string | undefined;
-    returnsEnabled?: boolean | undefined;
-    analyticsEnabled?: boolean | undefined;
-    lastUpgrade?: string | undefined;
-    componentVersions?: Record<string, string> | undefined;
+        name?: string;
+        status?: string;
+        certificateStatus?: string;
+    };
+    returnPolicyUrl?: string;
+    returnsEnabled?: boolean;
+    analyticsEnabled?: boolean;
+    luxuryFeatures?: {
+        contentMerchandising?: boolean;
+        raTicketing?: boolean;
+        fraudReview?: boolean;
+        strictReturnConditions?: boolean;
+    };
+    lateFeePolicy?: {
+        gracePeriodDays?: number;
+        feeAmount?: number;
+    };
+    lastUpgrade?: string;
+    componentVersions?: Record<string, string>;
 }>;
 export type Shop = z.infer<typeof shopSchema>;
-//# sourceMappingURL=Shop.d.ts.map

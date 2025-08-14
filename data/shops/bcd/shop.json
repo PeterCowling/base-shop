@@ -22,5 +22,6 @@
     "raTicketing": false,
     "fraudReview": false,
     "strictReturnConditions": false
-  }
+  },
+  "lateFeePolicy": { "gracePeriodDays": 3, "feeAmount": 5 }
 }

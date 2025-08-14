@@ -8,7 +8,14 @@ describe("rental order repository", () => {
   });
 
   it("adds orders and updates status", async () => {
-    const order = await repo.addOrder("test", "sess", 42, "2025-01-01");
+    const order = await repo.addOrder(
+      "test",
+      "sess",
+      42,
+      "2025-01-01",
+      undefined,
+      "cust"
+    );
     expect(order).toMatchObject({
       sessionId: "sess",
       deposit: 42,
@@ -35,9 +42,9 @@ describe("rental order repository", () => {
 
   it("returns only orders for matching customer", async () => {
     const shop = "customer-test";
-    await repo.addOrder(shop, "s1", 10, undefined, "cust1");
-    await repo.addOrder(shop, "s2", 20, undefined, "cust2");
-    await repo.addOrder(shop, "s3", 30, undefined, "cust1");
+    await repo.addOrder(shop, "s1", 10, undefined, undefined, "cust1");
+    await repo.addOrder(shop, "s2", 20, undefined, undefined, "cust2");
+    await repo.addOrder(shop, "s3", 30, undefined, undefined, "cust1");
 
     const cust1Orders = await getOrdersForCustomer(shop, "cust1");
     expect(cust1Orders).toHaveLength(2);

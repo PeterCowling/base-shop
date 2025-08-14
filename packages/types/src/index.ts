@@ -10,6 +10,7 @@ export * from "./Pricing";
 export * from "./Product";
 export * from "./PublishLocation";
 export * from "./RentalOrder";
+export * from "./ReverseLogisticsEvent";
 export * from "./ReturnLogistics";
 export * from "./ReturnAuthorization";
 export * from "./Shop";

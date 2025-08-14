@@ -11,6 +11,14 @@
     "./releaseDepositsService": {
       "types": "./dist/releaseDepositsService.d.ts",
       "default": "./dist/releaseDepositsService.js"
+    },
+    "./lateFeeService": {
+      "types": "./dist/lateFeeService.d.ts",
+      "default": "./dist/lateFeeService.js"
+    },
+    "./reverseLogisticsWorker": {
+      "types": "./dist/reverseLogisticsWorker.d.ts",
+      "default": "./dist/reverseLogisticsWorker.js"
     }
   },
   "scripts": {

@@ -9,6 +9,7 @@ describe("useViewport", () => {
     type: "desktop",
     width: 1000,
     height: 800,
+    orientation: "portrait",
   };
   const tablet: DevicePreset = {
     id: "t",
@@ -16,6 +17,7 @@ describe("useViewport", () => {
     type: "tablet",
     width: 500,
     height: 400,
+    orientation: "portrait",
   };
 
   beforeEach(() => {
@@ -45,5 +47,24 @@ describe("useViewport", () => {
     expect(result.current.canvasWidth).toBe(500);
     expect(result.current.canvasHeight).toBe(400);
     expect(result.current.scale).toBe(1);
+  });
+
+  it("updates dimensions when orientation changes", () => {
+    const { result, rerender } = renderHook(
+      ({ device }) => useViewport(device),
+      { initialProps: { device: desktop } }
+    );
+
+    const landscape = {
+      ...desktop,
+      width: desktop.height,
+      height: desktop.width,
+      orientation: "landscape" as const,
+    };
+
+    rerender({ device: landscape });
+
+    expect(result.current.canvasWidth).toBe(800);
+    expect(result.current.canvasHeight).toBe(1000);
   });
 });

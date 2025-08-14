@@ -1,0 +1,50 @@
+import { ReloadIcon } from "@radix-ui/react-icons";
+import {
+  Button,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "../atoms/shadcn";
+import { devicePresets } from "@ui/utils/devicePresets";
+
+interface Props {
+  deviceId: string;
+  orientation: "portrait" | "landscape";
+  setDeviceId: (id: string) => void;
+  toggleOrientation: () => void;
+}
+
+export default function DeviceSelector({
+  deviceId,
+  orientation,
+  setDeviceId,
+  toggleOrientation,
+}: Props): React.JSX.Element {
+  return (
+    <div className="flex items-center gap-2">
+      <Select value={deviceId} onValueChange={setDeviceId}>
+        <SelectTrigger aria-label="Device" className="w-40">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {devicePresets.map((p) => (
+            <SelectItem key={p.id} value={p.id}>
+              {p.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Button
+        variant="outline"
+        onClick={toggleOrientation}
+        aria-label="Rotate"
+      >
+        <ReloadIcon
+          className={orientation === "landscape" ? "rotate-90" : ""}
+        />
+      </Button>
+    </div>
+  );
+}

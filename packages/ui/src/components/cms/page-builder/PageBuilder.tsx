@@ -63,9 +63,21 @@ const PageBuilder = memo(function PageBuilder({
   } = usePageBuilderState({ page, history: historyProp, onChange });
 
   const [deviceId, setDeviceId] = useState(devicePresets[0].id);
-  const device = useMemo< DevicePreset>(() => {
-    return devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
-  }, [deviceId]);
+  const [orientation, setOrientation] = useState<"portrait" | "landscape">(
+    "portrait"
+  );
+  const device = useMemo<DevicePreset>(() => {
+    const preset =
+      devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
+    return orientation === "portrait"
+      ? { ...preset, orientation }
+      : {
+          ...preset,
+          width: preset.height,
+          height: preset.width,
+          orientation,
+        };
+  }, [deviceId, orientation]);
   const viewport: "desktop" | "tablet" | "mobile" = device.type;
   const [locale, setLocale] = useState<Locale>("en");
   const [publishCount, setPublishCount] = useState(0);
@@ -199,6 +211,8 @@ const PageBuilder = memo(function PageBuilder({
             viewport={viewport}
             deviceId={deviceId}
             setDeviceId={setDeviceId}
+            orientation={orientation}
+            setOrientation={setOrientation}
             locale={locale}
             setLocale={setLocale}
             locales={locales}

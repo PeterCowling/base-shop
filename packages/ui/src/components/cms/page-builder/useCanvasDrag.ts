@@ -52,9 +52,9 @@ export default function useCanvasDrag({
       let guideY: number | null = null;
       let distX: number | null = null;
       let distY: number | null = null;
-      const width = containerRef.current.offsetWidth;
-      const height = containerRef.current.offsetHeight;
-      siblingEdgesRef.current.vertical.forEach((edge) => {
+      const { offsetWidth: width, offsetHeight: height } =
+        containerRef.current;
+      for (const edge of siblingEdgesRef.current.vertical) {
         const leftDist = Math.abs(originalL - edge);
         const rightDist = Math.abs(originalL + width - edge);
         if (leftDist <= threshold && (distX === null || leftDist < distX)) {
@@ -67,8 +67,8 @@ export default function useCanvasDrag({
           guideX = edge;
           distX = rightDist;
         }
-      });
-      siblingEdgesRef.current.horizontal.forEach((edge) => {
+      }
+      for (const edge of siblingEdgesRef.current.horizontal) {
         const topDist = Math.abs(originalT - edge);
         const bottomDist = Math.abs(originalT + height - edge);
         if (topDist <= threshold && (distY === null || topDist < distY)) {
@@ -81,7 +81,7 @@ export default function useCanvasDrag({
           guideY = edge;
           distY = bottomDist;
         }
-      });
+      }
       const parent = containerRef.current.parentElement;
       const unit = parent ? parent.offsetWidth / gridCols : null;
       if (gridEnabled && unit) {

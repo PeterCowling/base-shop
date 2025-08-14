@@ -127,7 +127,7 @@ const PageCanvas = ({
           />
         )}
         {showGrid && <GridOverlay gridCols={gridCols} />}
-        <SnapLine position={snapPosition} />
+        <SnapLine x={snapPosition} />
         {components.map((c, i) => (
           <Fragment key={c.id}>
             {insertIndex === i && (

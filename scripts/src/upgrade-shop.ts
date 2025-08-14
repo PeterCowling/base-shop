@@ -49,14 +49,18 @@ if (rollback) {
 
 copyTemplate(templateDir, appDir);
 
+// track metadata about the upgrade for later publishing
+let componentVersions: Record<string, string> = {};
+const timestamp = new Date().toISOString();
 if (existsSync(shopJsonPath)) {
   cpSync(shopJsonPath, shopJsonPath + ".bak");
   const data = JSON.parse(readFileSync(shopJsonPath, "utf8"));
-  (data as any).lastUpgrade = new Date().toISOString();
+  (data as any).lastUpgrade = timestamp;
   const pkgPath = path.join(appDir, "package.json");
-  (data as any).componentVersions = existsSync(pkgPath)
+  componentVersions = existsSync(pkgPath)
     ? (JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {})
     : {};
+  (data as any).componentVersions = componentVersions;
   writeFileSync(shopJsonPath, JSON.stringify(data, null, 2));
 }
 
@@ -83,6 +87,20 @@ const changedComponents = Object.entries(componentMap).flatMap(
 writeFileSync(
   path.join(appDir, "upgrade-changes.json"),
   JSON.stringify({ components: changedComponents }, null, 2)
+);
+
+// write upgrade metadata for republishing
+writeFileSync(
+  path.join(rootDir, "data", "shops", shopId, "upgrade.json"),
+  JSON.stringify(
+    {
+      timestamp,
+      componentVersions,
+      components: changedComponents,
+    },
+    null,
+    2
+  )
 );
 
 const envPath = path.join(appDir, ".env");

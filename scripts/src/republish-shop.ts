@@ -1,10 +1,15 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, unlinkSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
 function readUpgradeMeta(root: string, id: string): unknown {
   const file = join(root, "data", "shops", id, "upgrade.json");
   return JSON.parse(readFileSync(file, "utf8"));
+}
+
+function removeUpgradeMeta(root: string, id: string): void {
+  const file = join(root, "data", "shops", id, "upgrade.json");
+  unlinkSync(file);
 }
 
 function run(cmd: string, args: string[]): void {
@@ -26,6 +31,7 @@ export function republishShop(id: string, root = process.cwd()): void {
   run("pnpm", ["--filter", `apps/${id}`, "build"]);
   run("pnpm", ["--filter", `apps/${id}`, "deploy"]);
   updateStatus(root, id);
+  removeUpgradeMeta(root, id);
 }
 
 function main(): void {

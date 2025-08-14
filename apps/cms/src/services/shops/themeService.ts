@@ -49,14 +49,17 @@ export async function updateShop(
 
 export async function patchTheme(
   shop: string,
-  patch: { themeOverrides: Record<string, string>; themeDefaults: Record<string, string> },
+  patch: {
+    themeOverrides?: Record<string, string>;
+    themeDefaults?: Record<string, string>;
+  },
 ): Promise<{ shop: Shop }> {
   await authorize();
   const current = await fetchShop(shop);
   const { themeDefaults, overrides, themeTokens } = mergeThemePatch(
     current,
-    patch.themeOverrides,
-    patch.themeDefaults,
+    patch.themeOverrides ?? {},
+    patch.themeDefaults ?? {},
   );
   const saved = await persistShop(shop, {
     id: current.id,

@@ -8,7 +8,7 @@ export async function PATCH(
   try {
     const body = await req.json();
     const { shop } = await context.params;
-    const { themeOverrides = {}, themeDefaults = {} } = body ?? {};
+    const { themeOverrides, themeDefaults } = body ?? {};
     const result = await patchTheme(shop, {
       themeOverrides,
       themeDefaults,

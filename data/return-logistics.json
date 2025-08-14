@@ -1,10 +1,10 @@
 {
-  "labelService": "UPS",
+  "labelService": "ups",
   "inStore": true,
   "dropOffProvider": "UPS",
   "tracking": true,
   "bagType": "reusable",
-  "returnCarrier": ["UPS"],
+  "returnCarrier": ["ups"],
   "homePickupZipCodes": ["94105", "94107", "94109", "94110"],
   "mobileApp": true,
   "requireTags": true,

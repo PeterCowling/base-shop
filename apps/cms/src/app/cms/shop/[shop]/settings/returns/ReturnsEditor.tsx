@@ -6,11 +6,13 @@ import { useState, type FormEvent } from "react";
 
 interface Props {
   shop: string;
-  initial: boolean;
+  initial: { upsEnabled: boolean; bagEnabled: boolean; homePickupEnabled: boolean };
 }
 
 export default function ReturnsEditor({ shop, initial }: Props) {
-  const [enabled, setEnabled] = useState(initial);
+  const [enabled, setEnabled] = useState(initial.upsEnabled);
+  const [bagEnabled, setBagEnabled] = useState(initial.bagEnabled);
+  const [pickupEnabled, setPickupEnabled] = useState(initial.homePickupEnabled);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
@@ -23,6 +25,8 @@ export default function ReturnsEditor({ shop, initial }: Props) {
       setErrors(result.errors);
     } else if (result.settings?.returnService) {
       setEnabled(result.settings.returnService.upsEnabled);
+      setBagEnabled(result.settings.returnService.bagEnabled ?? false);
+      setPickupEnabled(result.settings.returnService.homePickupEnabled ?? false);
       setErrors({});
     }
     setSaving(false);
@@ -41,6 +45,22 @@ export default function ReturnsEditor({ shop, initial }: Props) {
       {errors.enabled && (
         <span className="text-sm text-red-600">{errors.enabled.join("; ")}</span>
       )}
+      <label className="flex items-center gap-2">
+        <Checkbox
+          name="bagEnabled"
+          checked={bagEnabled}
+          onCheckedChange={(v) => setBagEnabled(Boolean(v))}
+        />
+        <span>Provide return bags</span>
+      </label>
+      <label className="flex items-center gap-2">
+        <Checkbox
+          name="homePickupEnabled"
+          checked={pickupEnabled}
+          onCheckedChange={(v) => setPickupEnabled(Boolean(v))}
+        />
+        <span>Enable home pickup</span>
+      </label>
       <Button className="bg-primary text-white" disabled={saving} type="submit">
         {saving ? "Saving…" : "Save"}
       </Button>

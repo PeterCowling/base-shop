@@ -1,4 +1,10 @@
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import {
+  getReturnLogistics,
+  getReturnBagAndLabel,
+} from "@platform-core/returnLogistics";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
+
+const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";
 import shop from "../../../../shop.json";
 
@@ -9,8 +15,13 @@ export default async function PickupPage({
 }: {
   searchParams?: { zip?: string };
 }) {
-  const cfg = await getReturnLogistics();
-  const allowed = cfg.homePickupZipCodes;
+  const [info, settings] = await Promise.all([
+    getReturnBagAndLabel(),
+    getShopSettings(SHOP_ID),
+  ]);
+  const allowed = settings.returnService?.homePickupEnabled
+    ? info.homePickupZipCodes
+    : [];
   const zip = searchParams?.zip || "";
   const isAllowed = zip ? allowed.includes(zip) : false;
   return (

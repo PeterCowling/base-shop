@@ -18,11 +18,23 @@ export default async function ReturnsSettingsPage({
 }) {
   const { shop } = await params;
   const settings = await getSettings(shop);
-  const returnService = settings.returnService ?? { upsEnabled: false };
+  const returnService =
+    settings.returnService ?? {
+      upsEnabled: false,
+      bagEnabled: false,
+      homePickupEnabled: false,
+    };
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Returns – {shop}</h2>
-      <ReturnsEditor shop={shop} initial={returnService.upsEnabled} />
+      <ReturnsEditor
+        shop={shop}
+        initial={{
+          upsEnabled: returnService.upsEnabled,
+          bagEnabled: returnService.bagEnabled ?? false,
+          homePickupEnabled: returnService.homePickupEnabled ?? false,
+        }}
+      />
     </div>
   );
 }

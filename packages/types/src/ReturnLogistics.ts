@@ -16,13 +16,13 @@ import { z } from "zod";
  */
 export const returnLogisticsSchema = z
   .object({
-    labelService: z.string(),
+    labelService: z.literal("ups"),
     inStore: z.boolean(),
     dropOffProvider: z.string().optional(),
     tracking: z.boolean().optional(),
-    bagType: z.string(),
-    returnCarrier: z.array(z.string()),
-    homePickupZipCodes: z.array(z.string()),
+    bagType: z.literal("reusable"),
+    returnCarrier: z.array(z.literal("ups")),
+    homePickupZipCodes: z.array(z.string().regex(/^\d{5}$/)),
     mobileApp: z.boolean().optional(),
     requireTags: z.boolean(),
     allowWear: z.boolean(),

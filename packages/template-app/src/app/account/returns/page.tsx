@@ -2,21 +2,29 @@ import {
   getReturnLogistics,
   getReturnBagAndLabel,
 } from "@platform-core/returnLogistics";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 import React, { useEffect, useRef, useState } from "react";
+
+const SHOP_ID = "bcd";
 
 export const metadata = { title: "Mobile Returns" };
 
 export default async function ReturnsPage() {
-  const cfg = await getReturnLogistics();
+  const [cfg, info, settings] = await Promise.all([
+    getReturnLogistics(),
+    getReturnBagAndLabel(),
+    getShopSettings(SHOP_ID),
+  ]);
   if (!cfg.mobileApp) {
     return <p className="p-6">Mobile returns are not enabled.</p>;
   }
-  const info = await getReturnBagAndLabel();
-  return <ReturnForm bagType={info.bagType} tracking={info.tracking} />;
+  const bagType = settings.returnService?.bagEnabled ? info.bagType : undefined;
+  const tracking = info.tracking;
+  return <ReturnForm bagType={bagType} tracking={tracking} />;
 }
 
 interface ReturnFormProps {
-  bagType: string;
+  bagType?: string;
   tracking?: boolean;
 }
 
@@ -99,7 +107,7 @@ function ReturnForm({ bagType, tracking: trackingEnabled }: ReturnFormProps) {
   return (
     <div className="space-y-4 p-6">
       <h1 className="text-xl font-semibold">Return Item</h1>
-      <p>Please reuse the {bagType} bag for your return.</p>
+      {bagType && <p>Please reuse the {bagType} bag for your return.</p>}
       <video ref={videoRef} className="w-full max-w-md" />
       <form onSubmit={handleSubmit} className="space-y-2">
         <input

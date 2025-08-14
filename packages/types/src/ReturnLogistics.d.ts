@@ -14,34 +14,34 @@ import { z } from "zod";
  * - `allowWear` indicates whether signs of wear are acceptable.
  */
 export declare const returnLogisticsSchema: z.ZodObject<{
-    labelService: z.ZodString;
+    labelService: z.ZodLiteral<"ups">;
     inStore: z.ZodBoolean;
     dropOffProvider: z.ZodOptional<z.ZodString>;
     tracking: z.ZodOptional<z.ZodBoolean>;
-    bagType: z.ZodString;
-    returnCarrier: z.ZodArray<z.ZodString, "many">;
+    bagType: z.ZodLiteral<"reusable">;
+    returnCarrier: z.ZodArray<z.ZodLiteral<"ups">, "many">;
     homePickupZipCodes: z.ZodArray<z.ZodString, "many">;
     mobileApp: z.ZodOptional<z.ZodBoolean>;
     requireTags: z.ZodBoolean;
     allowWear: z.ZodBoolean;
 }, "strip", z.ZodTypeAny, {
-    labelService: string;
+    labelService: "ups";
     inStore: boolean;
     dropOffProvider?: string | undefined;
     tracking?: boolean | undefined;
-    bagType: string;
-    returnCarrier: string[];
+    bagType: "reusable";
+    returnCarrier: ("ups")[];
     homePickupZipCodes: string[];
     mobileApp?: boolean | undefined;
     requireTags: boolean;
     allowWear: boolean;
 }, {
-    labelService: string;
+    labelService: "ups";
     inStore: boolean;
     dropOffProvider?: string | undefined;
     tracking?: boolean | undefined;
-    bagType: string;
-    returnCarrier: string[];
+    bagType: "reusable";
+    returnCarrier: ("ups")[];
     homePickupZipCodes: string[];
     mobileApp?: boolean | undefined;
     requireTags: boolean;

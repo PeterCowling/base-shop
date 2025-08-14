@@ -187,7 +187,15 @@ export function parseReverseLogisticsForm(formData: FormData): {
 }
 
 const returnsSchema = z
-  .object({ enabled: z.preprocess((v) => v === "on", z.boolean()) })
+  .object({
+    enabled: z.preprocess((v) => v === "on", z.boolean()),
+    bagEnabled: z
+      .preprocess((v) => v === "on", z.boolean())
+      .optional(),
+    homePickupEnabled: z
+      .preprocess((v) => v === "on", z.boolean())
+      .optional(),
+  })
   .strict();
 
 export function parseUpsReturnsForm(formData: FormData): {

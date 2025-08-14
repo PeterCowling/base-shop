@@ -15,7 +15,7 @@
     "enabled": true,
     "intervalMinutes": 60
   },
-  "returnService": { "upsEnabled": false },
+  "returnService": { "upsEnabled": false, "bagEnabled": false, "homePickupEnabled": false },
   "premierDelivery": {
     "regions": ["us-east"],
     "windows": ["10-11", "11-12"]

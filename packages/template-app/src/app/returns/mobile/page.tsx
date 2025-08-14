@@ -1,14 +1,27 @@
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import {
+  getReturnLogistics,
+  getReturnBagAndLabel,
+} from "@platform-core/returnLogistics";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
+
+const SHOP_ID = "bcd";
 import { useEffect, useRef, useState } from "react";
 
 export const metadata = { title: "Mobile Returns" };
 
 export default async function MobileReturnPage() {
-  const cfg = await getReturnLogistics();
+  const [cfg, info, settings] = await Promise.all([
+    getReturnLogistics(),
+    getReturnBagAndLabel(),
+    getShopSettings(SHOP_ID),
+  ]);
   if (!cfg.mobileApp) {
     return <p className="p-6">Mobile returns are not enabled.</p>;
   }
-  return <Scanner allowedZips={cfg.homePickupZipCodes} />;
+  const allowed = settings.returnService?.homePickupEnabled
+    ? info.homePickupZipCodes
+    : [];
+  return <Scanner allowedZips={allowed} />;
 }
 
 function Scanner({ allowedZips }: { allowedZips: string[] }) {

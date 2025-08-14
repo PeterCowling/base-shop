@@ -41,10 +41,10 @@ async function withConfig(
 describe("return logistics config", () => {
   it("parses file once and caches result", async () => {
     const cfg = {
-      labelService: "MockLabelCo",
+      labelService: "ups",
       inStore: true,
       bagType: "reusable",
-      returnCarrier: ["UPS"],
+      returnCarrier: ["ups"],
       homePickupZipCodes: [],
       requireTags: true,
       allowWear: false,
@@ -59,10 +59,10 @@ describe("return logistics config", () => {
 
   it("rejects when file missing and does not cache failure", async () => {
     const cfg = {
-      labelService: "MockLabelCo",
+      labelService: "ups",
       inStore: true,
       bagType: "reusable",
-      returnCarrier: ["UPS"],
+      returnCarrier: ["ups"],
       homePickupZipCodes: [],
       requireTags: true,
       allowWear: false,
@@ -85,10 +85,10 @@ describe("return logistics config", () => {
 
   it("rejects invalid JSON and does not cache failure", async () => {
     const valid = {
-      labelService: "MockLabelCo",
+      labelService: "ups",
       inStore: true,
       bagType: "reusable",
-      returnCarrier: ["UPS"],
+      returnCarrier: ["ups"],
       homePickupZipCodes: [],
       requireTags: true,
       allowWear: false,
@@ -97,7 +97,7 @@ describe("return logistics config", () => {
       labelService: 123,
       inStore: true,
       bagType: "reusable",
-      returnCarrier: ["UPS"],
+      returnCarrier: ["ups"],
       homePickupZipCodes: [],
       requireTags: true,
       allowWear: false,

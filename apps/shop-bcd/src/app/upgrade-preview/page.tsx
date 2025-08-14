@@ -104,6 +104,8 @@ function ComponentPreview({ component }: { component: UpgradeComponent }) {
 
 export default function UpgradePreviewPage() {
   const [changes, setChanges] = useState<UpgradeComponent[]>([]);
+  const [publishing, setPublishing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -119,10 +121,19 @@ export default function UpgradePreviewPage() {
   }, []);
 
   async function handlePublish() {
+    setPublishing(true);
+    setError(null);
     try {
-      await fetch("/api/publish", { method: "POST" });
+      const res = await fetch("/api/publish", { method: "POST" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error((data as any).error || "Publish failed");
+      }
     } catch (err) {
       console.error("Publish failed", err);
+      setError(err instanceof Error ? err.message : "Publish failed");
+    } finally {
+      setPublishing(false);
     }
   }
 
@@ -139,9 +150,11 @@ export default function UpgradePreviewPage() {
         type="button"
         onClick={handlePublish}
         className="rounded border px-4 py-2"
+        disabled={publishing}
       >
-        Approve &amp; publish
+        {publishing ? "Publishing..." : "Approve & publish"}
       </button>
+      {error && <p role="alert" className="text-red-600">{error}</p>}
     </div>
   );
 }

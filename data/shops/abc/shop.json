@@ -26,5 +26,14 @@
     "raTicketing": false,
     "fraudReview": false,
     "strictReturnConditions": false
-  }
+  },
+  "subscriptionPlans": [
+    {
+      "id": "basic",
+      "name": "Basic",
+      "priceId": "price_basic",
+      "shipmentsPerMonth": 1,
+      "prorateOnChange": true
+    }
+  ]
 }

@@ -55,6 +55,16 @@ model CustomerMfa {
   enabled    Boolean @default(false)
 }
 
+model SubscriptionUsage {
+  id         String @id @default(cuid())
+  shop       String
+  customerId String
+  period     String
+  shipments  Int    @default(0)
+
+  @@unique([shop, customerId, period], name: "shop_customerId_period")
+}
+
 model User {
   id           String  @id
   email        String  @unique

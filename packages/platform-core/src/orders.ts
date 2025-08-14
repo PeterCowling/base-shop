@@ -5,6 +5,7 @@ import { nowIso } from "@acme/date-utils";
 import type { RentalOrder } from "@acme/types";
 import { trackOrder } from "./analytics";
 import { prisma } from "./db";
+import { currentPeriod, incrementUsage } from "./repositories/subscriptionUsage.server";
 
 type Order = RentalOrder;
 
@@ -38,6 +39,10 @@ export async function addOrder(
   };
   await prisma.rentalOrder.create({ data: order });
   await trackOrder(shop, order.id, deposit);
+  if (customerId) {
+    const period = currentPeriod();
+    await incrementUsage(shop, customerId, period);
+  }
   return order;
 }
 

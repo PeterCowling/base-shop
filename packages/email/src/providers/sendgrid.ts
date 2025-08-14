@@ -3,7 +3,11 @@ import { coreEnv } from "@acme/config/env/core";
 import type { CampaignOptions } from "../send";
 import { ProviderError } from "./types";
 import type { CampaignProvider } from "./types";
-import { mapSendGridStats, type CampaignStats } from "../analytics";
+import {
+  mapSendGridStats,
+  type CampaignStats,
+  type SendGridStatsResponse,
+} from "../analytics";
 import { getDefaultSender } from "../config";
 
 interface ProviderOptions {
@@ -90,7 +94,9 @@ export class SendgridProvider implements CampaignProvider {
           },
         }
       );
-      const json = await res.json().catch(() => ({}));
+      const json: SendGridStatsResponse = await res
+        .json()
+        .catch(() => ({} as SendGridStatsResponse));
       return mapSendGridStats(json);
     } catch {
       return mapSendGridStats({});

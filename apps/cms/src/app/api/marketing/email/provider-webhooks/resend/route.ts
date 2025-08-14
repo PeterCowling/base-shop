@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { trackEvent } from "@platform-core/analytics";
-import { mapResendEvent } from "@acme/email/analytics";
+import {
+  mapResendEvent,
+  type ResendWebhookEvent,
+} from "@acme/email/analytics";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
@@ -27,9 +30,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
-  let event: any;
+  let event: ResendWebhookEvent;
   try {
-    event = JSON.parse(body);
+    event = JSON.parse(body) as ResendWebhookEvent;
   } catch {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }

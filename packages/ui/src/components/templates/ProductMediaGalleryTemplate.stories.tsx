@@ -15,8 +15,8 @@ const meta: Meta<typeof ProductMediaGalleryTemplate> = {
       forSale: true,
       forRental: false,
       media: [
-        { type: "image", url: "/placeholder.svg" },
-        { type: "image", url: "/placeholder.svg" },
+        { type: "image" as const, url: "/placeholder.svg" },
+        { type: "image" as const, url: "/placeholder.svg" },
       ],
       sizes: [],
       description: "",

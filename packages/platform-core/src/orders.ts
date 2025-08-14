@@ -113,3 +113,20 @@ export async function getOrdersForCustomer(
     where: { shop, customerId },
   });
 }
+
+export async function setReturnTracking(
+  shop: string,
+  sessionId: string,
+  trackingNumber: string,
+  labelUrl: string
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: { trackingNumber, labelUrl },
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
+}

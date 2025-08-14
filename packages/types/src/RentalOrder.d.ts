@@ -14,6 +14,8 @@ export declare const rentalOrderSchema: z.ZodObject<{
     riskLevel: z.ZodOptional<z.ZodString>;
     riskScore: z.ZodOptional<z.ZodNumber>;
     flaggedForReview: z.ZodOptional<z.ZodBoolean>;
+    trackingNumber: z.ZodOptional<z.ZodString>;
+    labelUrl: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     id: string;
     deposit: number;
@@ -28,6 +30,8 @@ export declare const rentalOrderSchema: z.ZodObject<{
     riskLevel?: string | undefined;
     riskScore?: number | undefined;
     flaggedForReview?: boolean | undefined;
+    trackingNumber?: string | undefined;
+    labelUrl?: string | undefined;
 }, {
     id: string;
     deposit: number;
@@ -42,6 +46,8 @@ export declare const rentalOrderSchema: z.ZodObject<{
     riskLevel?: string | undefined;
     riskScore?: number | undefined;
     flaggedForReview?: boolean | undefined;
+    trackingNumber?: string | undefined;
+    labelUrl?: string | undefined;
 }>;
 export type RentalOrder = z.infer<typeof rentalOrderSchema>;
 //# sourceMappingURL=RentalOrder.d.ts.map

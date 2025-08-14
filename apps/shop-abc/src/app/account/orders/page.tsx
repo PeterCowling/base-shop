@@ -5,5 +5,11 @@ import shop from "../../../../shop.json";
 export { metadata };
 
 export default function Page() {
-  return <Orders shopId={shop.id} />;
+  return (
+    <Orders
+      shopId={shop.id}
+      returnsEnabled={shop.returnsEnabled}
+      returnPolicyUrl={shop.returnPolicyUrl}
+    />
+  );
 }

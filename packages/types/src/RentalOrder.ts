@@ -16,6 +16,8 @@ export const rentalOrderSchema = z
     riskLevel: z.string().optional(),
     riskScore: z.number().optional(),
     flaggedForReview: z.boolean().optional(),
+    trackingNumber: z.string().optional(),
+    labelUrl: z.string().url().optional(),
   })
   .strict();
 

@@ -168,6 +168,8 @@ export declare const shopSchema: z.ZodObject<{
         status?: string | undefined;
         certificateStatus?: string | undefined;
     }>>;
+    returnPolicyUrl: z.ZodOptional<z.ZodString>;
+    returnsEnabled: z.ZodOptional<z.ZodBoolean>;
     analyticsEnabled: z.ZodOptional<z.ZodBoolean>;
     lastUpgrade: z.ZodOptional<z.ZodString>;
     componentVersions: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodString>>;
@@ -206,6 +208,8 @@ export declare const shopSchema: z.ZodObject<{
         status?: string | undefined;
         certificateStatus?: string | undefined;
     } | undefined;
+    returnPolicyUrl?: string | undefined;
+    returnsEnabled?: boolean | undefined;
     analyticsEnabled?: boolean | undefined;
     lastUpgrade?: string | undefined;
     componentVersions: Record<string, string>;
@@ -244,6 +248,8 @@ export declare const shopSchema: z.ZodObject<{
         status?: string | undefined;
         certificateStatus?: string | undefined;
     } | undefined;
+    returnPolicyUrl?: string | undefined;
+    returnsEnabled?: boolean | undefined;
     analyticsEnabled?: boolean | undefined;
     lastUpgrade?: string | undefined;
     componentVersions?: Record<string, string> | undefined;

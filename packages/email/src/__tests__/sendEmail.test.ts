@@ -35,7 +35,7 @@ describe("sendEmail", () => {
     });
   });
 
-  it("logs email details when credentials are missing", async () => {
+  it("does not log email details when credentials are missing", async () => {
     process.env = {
       ...OLD_ENV,
       STRIPE_SECRET_KEY: "sk",
@@ -55,14 +55,7 @@ describe("sendEmail", () => {
     const { sendEmail } = await import("../sendEmail");
     await sendEmail("a@b.com", "Hi", "There");
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      "Email to",
-      "a@b.com",
-      "|",
-      "Hi",
-      "|",
-      "There"
-    );
+    expect(consoleSpy).not.toHaveBeenCalled();
 
     consoleSpy.mockRestore();
   });

@@ -2,6 +2,7 @@
 
 import { coreEnv } from "@acme/config/env/core";
 import nodemailer from "nodemailer";
+import pino from "pino";
 import { getDefaultSender } from "./config";
 
 const hasCreds = coreEnv.GMAIL_USER && coreEnv.GMAIL_PASS;
@@ -15,6 +16,10 @@ const transporter = hasCreds
       },
     })
   : null;
+
+const logger = pino({
+  level: process.env.EMAIL_LOG_LEVEL ?? "silent",
+});
 
 export async function sendEmail(
   to: string,
@@ -34,6 +39,6 @@ export async function sendEmail(
       throw error;
     }
   } else {
-    console.log("Email to", to, "|", subject, "|", body);
+    logger.info({ to }, "Email simulated");
   }
 }

@@ -1,4 +1,7 @@
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import {
+  getReturnLogistics,
+  getReturnBagAndLabel,
+} from "@platform-core/returnLogistics";
 import React, { useEffect, useRef, useState } from "react";
 
 export const metadata = { title: "Mobile Returns" };
@@ -8,16 +11,22 @@ export default async function ReturnsPage() {
   if (!cfg.mobileApp) {
     return <p className="p-6">Mobile returns are not enabled.</p>;
   }
-  return <ReturnForm />;
+  const info = await getReturnBagAndLabel();
+  return <ReturnForm bagType={info.bagType} tracking={info.tracking} />;
 }
 
-function ReturnForm() {
+interface ReturnFormProps {
+  bagType: string;
+  tracking?: boolean;
+}
+
+function ReturnForm({ bagType, tracking: trackingEnabled }: ReturnFormProps) {
   "use client";
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const [sessionId, setSessionId] = useState("");
   const [labelUrl, setLabelUrl] = useState<string | null>(null);
-  const [tracking, setTracking] = useState<string | null>(null);
+  const [trackingNumber, setTrackingNumber] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -68,7 +77,7 @@ function ReturnForm() {
     e.preventDefault();
     setError(null);
     setLabelUrl(null);
-    setTracking(null);
+    setTrackingNumber(null);
     try {
       const res = await fetch("/api/returns/mobile", {
         method: "POST",
@@ -81,7 +90,7 @@ function ReturnForm() {
         return;
       }
       setLabelUrl(data.labelUrl ?? null);
-      setTracking(data.tracking ?? null);
+      setTrackingNumber(data.tracking ?? null);
     } catch {
       setError("Failed to create return");
     }
@@ -90,6 +99,7 @@ function ReturnForm() {
   return (
     <div className="space-y-4 p-6">
       <h1 className="text-xl font-semibold">Return Item</h1>
+      <p>Please reuse the {bagType} bag for your return.</p>
       <video ref={videoRef} className="w-full max-w-md" />
       <form onSubmit={handleSubmit} className="space-y-2">
         <input
@@ -102,7 +112,7 @@ function ReturnForm() {
           Submit
         </button>
       </form>
-      {labelUrl && (
+      {labelUrl && trackingEnabled && (
         <p>
           <a
             href={labelUrl}
@@ -110,9 +120,11 @@ function ReturnForm() {
             target="_blank"
             rel="noreferrer"
           >
-            Download Label
+            Print Label
           </a>
-          {tracking && <span className="block">Tracking: {tracking}</span>}
+          {trackingNumber && (
+            <span className="block">Tracking: {trackingNumber}</span>
+          )}
         </p>
       )}
       {error && <p className="text-red-600">{error}</p>}

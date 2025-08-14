@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../atoms/shadcn";
+import { Tooltip } from "../../../atoms";
 
 interface Props {
   component: PageComponent;
@@ -25,18 +26,30 @@ export default function LayoutPanel({
   handleResize,
   handleFullSize,
 }: Props) {
+  const cssError = (prop: string, value?: string) =>
+    value && !globalThis.CSS?.supports(prop, value)
+      ? `Invalid ${prop} value`
+      : undefined;
   return (
     <div className="space-y-2">
       {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
         <div key={vp} className="space-y-2">
           <div className="flex items-end gap-2">
             <Input
-              label={`Width (${vp})`}
+              label={
+                <span className="flex items-center gap-1">
+                  {`Width (${vp})`}
+                  <Tooltip text="CSS width value with units">?</Tooltip>
+                </span>
+              }
               placeholder="e.g. 100px or 50%"
-              title="CSS width value with units"
               value={
                 (component[`width${vp}` as keyof PageComponent] as string) ?? ""
               }
+              error={cssError(
+                "width",
+                component[`width${vp}` as keyof PageComponent] as string
+              )}
               onChange={(e) => handleResize(`width${vp}`, e.target.value)}
             />
             <Button
@@ -49,13 +62,21 @@ export default function LayoutPanel({
           </div>
           <div className="flex items-end gap-2">
             <Input
-              label={`Height (${vp})`}
+              label={
+                <span className="flex items-center gap-1">
+                  {`Height (${vp})`}
+                  <Tooltip text="CSS height value with units">?</Tooltip>
+                </span>
+              }
               placeholder="e.g. 1px or 1rem"
-              title="CSS height value with units"
               value={
                 (component[`height${vp}` as keyof PageComponent] as string) ??
                 ""
               }
+              error={cssError(
+                "height",
+                component[`height${vp}` as keyof PageComponent] as string
+              )}
               onChange={(e) => handleResize(`height${vp}`, e.target.value)}
             />
             <Button
@@ -72,9 +93,11 @@ export default function LayoutPanel({
         value={component.position ?? ""}
         onValueChange={(v) => handleInput("position", v || undefined)}
       >
-        <SelectTrigger title="CSS position property">
-          <SelectValue placeholder="Position" />
-        </SelectTrigger>
+        <Tooltip text="CSS position property" className="block">
+          <SelectTrigger>
+            <SelectValue placeholder="Position" />
+          </SelectTrigger>
+        </Tooltip>
         <SelectContent>
           <SelectItem value="relative">relative</SelectItem>
           <SelectItem value="absolute">absolute</SelectItem>
@@ -83,17 +106,27 @@ export default function LayoutPanel({
       {component.position === "absolute" && (
         <>
           <Input
-            label="Top"
+            label={
+              <span className="flex items-center gap-1">
+                Top
+                <Tooltip text="CSS top offset with units">?</Tooltip>
+              </span>
+            }
             placeholder="e.g. 10px"
-            title="CSS top offset with units"
             value={component.top ?? ""}
+            error={cssError("top", component.top)}
             onChange={(e) => handleResize("top", e.target.value)}
           />
           <Input
-            label="Left"
+            label={
+              <span className="flex items-center gap-1">
+                Left
+                <Tooltip text="CSS left offset with units">?</Tooltip>
+              </span>
+            }
             placeholder="e.g. 10px"
-            title="CSS left offset with units"
             value={component.left ?? ""}
+            error={cssError("left", component.left)}
             onChange={(e) => handleResize("left", e.target.value)}
           />
         </>
@@ -101,49 +134,78 @@ export default function LayoutPanel({
       {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
         <div key={`spacing-${vp}`} className="space-y-2">
           <Input
-            label={`Margin (${vp})`}
+            label={
+              <span className="flex items-center gap-1">
+                {`Margin (${vp})`}
+                <Tooltip text="CSS margin value with units">?</Tooltip>
+              </span>
+            }
             placeholder="e.g. 1rem"
-            title="CSS margin value with units"
             value={
               (component[`margin${vp}` as keyof PageComponent] as string) ??
               ""
             }
+            error={cssError(
+              "margin",
+              component[`margin${vp}` as keyof PageComponent] as string
+            )}
             onChange={(e) => handleResize(`margin${vp}`, e.target.value)}
           />
           <Input
-            label={`Padding (${vp})`}
+            label={
+              <span className="flex items-center gap-1">
+                {`Padding (${vp})`}
+                <Tooltip text="CSS padding value with units">?</Tooltip>
+              </span>
+            }
             placeholder="e.g. 1rem"
-            title="CSS padding value with units"
             value={
               (component[`padding${vp}` as keyof PageComponent] as string) ??
               ""
             }
+            error={cssError(
+              "padding",
+              component[`padding${vp}` as keyof PageComponent] as string
+            )}
             onChange={(e) => handleResize(`padding${vp}`, e.target.value)}
           />
         </div>
       ))}
       <Input
-        label="Margin"
+        label={
+          <span className="flex items-center gap-1">
+            Margin
+            <Tooltip text="Global CSS margin value with units">?</Tooltip>
+          </span>
+        }
         placeholder="e.g. 1rem"
-        title="Global CSS margin value with units"
         value={component.margin ?? ""}
+        error={cssError("margin", component.margin)}
         onChange={(e) => handleInput("margin", e.target.value)}
       />
       <Input
-        label="Padding"
+        label={
+          <span className="flex items-center gap-1">
+            Padding
+            <Tooltip text="Global CSS padding value with units">?</Tooltip>
+          </span>
+        }
         placeholder="e.g. 1rem"
-        title="Global CSS padding value with units"
         value={component.padding ?? ""}
+        error={cssError("padding", component.padding)}
         onChange={(e) => handleInput("padding", e.target.value)}
       />
       {"gap" in component && (
         <Input
-          label="Gap"
-          placeholder="e.g. 1rem"
-          title="Gap between items"
-          value={
-            (component as { gap?: string }).gap ?? ""
+          label={
+            <span className="flex items-center gap-1">
+              Gap
+              <Tooltip text="Gap between items">?</Tooltip>
+            </span>
           }
+          placeholder="e.g. 1rem"
+          value={(component as { gap?: string }).gap ?? ""}
+          error={cssError("gap", (component as { gap?: string }).gap)}
           onChange={(e) => handleInput("gap", e.target.value)}
         />
       )}

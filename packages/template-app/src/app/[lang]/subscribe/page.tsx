@@ -50,9 +50,13 @@ export default async function SubscribePage({
           >
             <input type="radio" name="plan" value={p.id} className="sr-only" />
             <span className="text-lg font-semibold">{p.id}</span>
-            <span>{p.itemsIncluded} items included</span>
-            <span>{p.swapLimit} swaps/month</span>
-            <span>{p.shipmentsPerMonth} shipments/month</span>
+            {shop.subscriptionsEnabled && (
+              <>
+                <span>{p.itemsIncluded} items included</span>
+                <span>{p.swapLimit} swaps/month</span>
+                <span>{p.shipmentsPerMonth} shipments/month</span>
+              </>
+            )}
           </label>
         ))}
         <button

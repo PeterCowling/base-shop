@@ -128,7 +128,12 @@ export const shopSchema = z
     rentalSubscriptions: z
       .array(subscriptionPlanSchema)
       .default([]),
-    subscriptionsEnabled: z.boolean().optional(),
+    /**
+     * Feature flag to enable rental subscription flows.
+     * Sale-only shops should leave this disabled to retain
+     * traditional purchasing behavior.
+     */
+    subscriptionsEnabled: z.boolean().default(false),
     lateFeePolicy: z
       .object({
         gracePeriodDays: z.number().int().nonnegative(),

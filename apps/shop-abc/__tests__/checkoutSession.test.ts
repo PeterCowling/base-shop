@@ -128,6 +128,33 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(body.clientSecret).toBe("cs_test");
 });
 
+test("omits deposit line when deposit is zero", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockReset();
+  findCouponMock.mockReset();
+  getTaxRateMock.mockReset();
+  stripeCreate.mockResolvedValue({
+    id: "sess_test",
+    payment_intent: { client_secret: "cs_test" },
+  });
+  findCouponMock.mockResolvedValue(null);
+  getTaxRateMock.mockResolvedValue(0);
+
+  const sku = { ...PRODUCTS[0], deposit: 0 };
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest({ returnDate: "2025-01-02" }, cookie);
+
+  await POST(req);
+  const args = stripeCreate.mock.calls[0][0];
+
+  expect(args.line_items).toHaveLength(1);
+  expect(args.metadata.depositTotal).toBe("0");
+  expect(args.payment_intent_data.metadata.depositTotal).toBe("0");
+});
+
 test("responds with 400 on invalid returnDate", async () => {
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];

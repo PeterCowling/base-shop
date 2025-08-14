@@ -202,7 +202,10 @@ export declare const shopSchema: z.ZodObject<{
         dataset: string;
         token: string;
     } | undefined;
-    enableEditorial?: boolean | undefined;
+    editorialBlog?: {
+        enabled: boolean;
+        promoteSchedule?: string | undefined;
+    } | undefined;
     domain?: {
         name: string;
         status?: string | undefined;
@@ -242,7 +245,10 @@ export declare const shopSchema: z.ZodObject<{
         dataset: string;
         token: string;
     } | undefined;
-    enableEditorial?: boolean | undefined;
+    editorialBlog?: {
+        enabled: boolean;
+        promoteSchedule?: string | undefined;
+    } | undefined;
     domain?: {
         name: string;
         status?: string | undefined;

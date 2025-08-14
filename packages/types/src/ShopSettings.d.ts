@@ -76,6 +76,16 @@ export declare const shopSettingsSchema: z.ZodObject<{
         } | undefined;
         structuredData?: string | undefined;
     }>>;
+    editorialBlog: z.ZodOptional<z.ZodObject<{
+        enabled: z.ZodBoolean;
+        promoteSchedule: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
+        enabled: boolean;
+        promoteSchedule?: string | undefined;
+    }, {
+        enabled: boolean;
+        promoteSchedule?: string | undefined;
+    }>>;
     analytics: z.ZodOptional<z.ZodObject<{
         enabled: z.ZodOptional<z.ZodBoolean>;
         provider: z.ZodString;
@@ -145,6 +155,10 @@ export declare const shopSettingsSchema: z.ZodObject<{
     updatedAt: string;
     languages: readonly ("en" | "de" | "it")[];
     updatedBy: string;
+    editorialBlog?: {
+        enabled: boolean;
+        promoteSchedule?: string | undefined;
+    } | undefined;
     analytics?: {
         enabled?: boolean | undefined;
         provider: string;
@@ -188,6 +202,10 @@ export declare const shopSettingsSchema: z.ZodObject<{
     updatedAt: string;
     languages: readonly ("en" | "de" | "it")[];
     updatedBy: string;
+    editorialBlog?: {
+        enabled: boolean;
+        promoteSchedule?: string | undefined;
+    } | undefined;
     analytics?: {
         enabled?: boolean | undefined;
         provider: string;

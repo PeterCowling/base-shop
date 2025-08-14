@@ -64,6 +64,9 @@ interface SanityPost {
 }
 async function getConfig(shopId: string): Promise<SanityConfig> {
   const shop = await getShopById(shopId);
+  if (!shop.editorialBlog?.enabled) {
+    throw new Error(`Editorial blog not enabled for shop ${shopId}`);
+  }
   const sanity = getSanityConfig(shop);
   if (!sanity) {
     throw new Error(`Missing Sanity config for shop ${shopId}`);

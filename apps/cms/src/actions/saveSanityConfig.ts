@@ -30,7 +30,7 @@ export async function saveSanityConfig(
   if (createDataset) {
     const setup = await setupSanityBlog(
       config,
-      Boolean(shop.enableEditorial),
+      shop.editorialBlog,
       aclMode as "public" | "private",
     );
     if (!setup.success) {

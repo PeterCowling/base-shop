@@ -27,12 +27,12 @@ interface Result {
  */
 export async function setupSanityBlog(
   creds: SanityCredentials,
-  enableEditorial: boolean,
+  editorial: { enabled: boolean; promoteSchedule?: string } | undefined,
   aclMode: "public" | "private" = "public",
 ): Promise<Result> {
   "use server";
   await ensureAuthorized();
-  if (!enableEditorial) return { success: true };
+  if (!editorial?.enabled) return { success: true };
 
   const { projectId, dataset, token } = creds;
 
@@ -213,6 +213,13 @@ export async function setupSanityBlog(
       };
     }
 
+    if (editorial.promoteSchedule) {
+      await fetch("/api/promotions/daily-edit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ schedule: editorial.promoteSchedule }),
+      }).catch((err) => console.error("[setupSanityBlog]", err));
+    }
     return { success: true };
   } catch (err) {
     console.error("[setupSanityBlog]", err);

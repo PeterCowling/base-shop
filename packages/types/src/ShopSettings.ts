@@ -28,6 +28,13 @@ export const shopSettingsSchema = z
   .object({
     languages: z.array(localeSchema).readonly(),
     seo: seoSettingsSchema,
+    editorialBlog: z
+      .object({
+        enabled: z.boolean(),
+        promoteSchedule: z.string().optional(),
+      })
+      .strict()
+      .optional(),
     analytics: z
       .object({
         enabled: z.boolean().optional(),

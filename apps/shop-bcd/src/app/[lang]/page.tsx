@@ -33,7 +33,7 @@ export default async function Page({
 }) {
   const components = await loadComponents();
   let latestPost: BlogPost | undefined;
-  if (shop.enableEditorial) {
+  if (shop.editorialBlog?.enabled) {
     const posts = await fetchPublishedPosts(shop.id);
     const first = posts[0];
     if (first) {
@@ -44,5 +44,11 @@ export default async function Page({
       };
     }
   }
-  return <Home components={components} locale={params.lang} latestPost={latestPost} />;
+  return (
+    <Home
+      components={components}
+      locale={params.lang}
+      latestPost={latestPost}
+    />
+  );
 }

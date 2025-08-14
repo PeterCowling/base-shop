@@ -8,6 +8,9 @@ export default async function BlogPostPage({
 }: {
   params: { lang: string; slug: string };
 }) {
+  if (!shop.editorialBlog?.enabled) {
+    notFound();
+  }
   const post = await fetchPostBySlug(shop.id, params.slug);
   if (!post) notFound();
   return (

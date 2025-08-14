@@ -47,7 +47,13 @@ export const createShopOptionsSchema = z
       })
       .optional(),
     sanityBlog: sanityBlogConfigSchema.optional(),
-    enableEditorial: z.boolean().optional(),
+    editorialBlog: z
+      .object({
+        enabled: z.boolean(),
+        promoteSchedule: z.string().optional(),
+      })
+      .strict()
+      .optional(),
     navItems: z.array(navItemSchema).default([]),
     pages: z
       .array(
@@ -69,12 +75,12 @@ export type CreateShopOptions = z.infer<typeof createShopOptionsSchema>;
 export type PreparedCreateShopOptions = Required<
   Omit<
     CreateShopOptions,
-    "analytics" | "checkoutPage" | "sanityBlog" | "enableEditorial"
+    "analytics" | "checkoutPage" | "sanityBlog" | "editorialBlog"
   >
 > & {
   analytics?: CreateShopOptions["analytics"];
   sanityBlog?: CreateShopOptions["sanityBlog"];
-  enableEditorial: boolean;
+  editorialBlog?: CreateShopOptions["editorialBlog"];
   checkoutPage: PageComponent[];
 };
 
@@ -125,6 +131,11 @@ export function prepareOptions(
     })),
     checkoutPage: parsed.checkoutPage,
     sanityBlog: parsed.sanityBlog,
-    enableEditorial: parsed.enableEditorial ?? false,
+    editorialBlog: parsed.editorialBlog
+      ? {
+          enabled: parsed.editorialBlog.enabled,
+          promoteSchedule: parsed.editorialBlog.promoteSchedule,
+        }
+      : undefined,
   };
 }

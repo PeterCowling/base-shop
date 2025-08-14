@@ -93,6 +93,24 @@ export async function writeShop(
   shop: string,
   patch: Partial<Shop> & { id: string }
 ): Promise<Shop> {
-  const updated = await updateShopInRepo<Shop>(shop, patch);
+  const current = await readShop(shop);
+  const themeDefaults = {
+    ...(current.themeDefaults ?? {}),
+    ...(patch.themeDefaults ?? {}),
+  } as Record<string, string>;
+  const themeOverrides = {
+    ...(current.themeOverrides ?? {}),
+    ...(patch.themeOverrides ?? {}),
+  } as Record<string, string>;
+  for (const [k, v] of Object.entries(themeOverrides)) {
+    if (v == null || v === themeDefaults[k]) delete themeOverrides[k];
+  }
+  const themeTokens = { ...themeDefaults, ...themeOverrides } as Record<string, string>;
+  const updated = await updateShopInRepo<Shop>(shop, {
+    ...patch,
+    themeDefaults,
+    themeOverrides,
+    themeTokens,
+  });
   return applyThemeData(updated);
 }

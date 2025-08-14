@@ -227,14 +227,4 @@ export function useFileUpload(
  *  Compatibility exports
  * ------------------------------------------------------------------ */
 
-// 1. allow `import { useMediaUpload } from "@ui/hooks/useMediaUpload"`
-export { useFileUpload as useMediaUpload };
-
-// 2. allow `import useMediaUpload from "@ui/hooks/useMediaUpload"`
 export default useFileUpload;
-
-// legacy type aliases
-export type {
-  UseFileUploadOptions as UseMediaUploadOptions,
-  UseFileUploadResult as UseMediaUploadResult,
-};

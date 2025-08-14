@@ -71,8 +71,5 @@ export function useMediaUpload(
   return { ...base, thumbnail };
 }
 
-export type {
-  UseFileUploadOptions as UseMediaUploadOptions,
-  UseMediaUploadResult,
-};
+export type { UseFileUploadOptions as UseMediaUploadOptions };
 export default useMediaUpload;

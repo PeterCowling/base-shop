@@ -56,6 +56,7 @@ export async function processReverseLogisticsEventsOnce(
             break;
           case "available":
             await markAvailable(shop, evt.sessionId);
+            await recordEvent(shop, evt.sessionId, "available");
             break;
         }
       } catch (err) {

@@ -9,7 +9,6 @@ import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListin
 import { fetchPublishedPosts } from "@acme/sanity";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { LOCALES } from "@acme/i18n";
-import { env } from "@acme/config";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 import { trackPageView } from "@platform-core/analytics";
@@ -96,9 +95,8 @@ export default async function ProductDetailPage({
   const components = await loadComponents(params.slug);
   await trackPageView(shop.id, `product/${params.slug}`);
   let latestPost: BlogPost | undefined;
-  try {
-    const luxury = JSON.parse(env.NEXT_PUBLIC_LUXURY_FEATURES ?? "{}");
-    if (luxury.contentMerchandising) {
+  if (shop.luxuryFeatures.contentMerchandising) {
+    try {
       const posts = await fetchPublishedPosts(shop.id);
       const first = posts[0];
       if (first) {
@@ -108,9 +106,9 @@ export default async function ProductDetailPage({
           url: `/${params.lang}/blog/${first.slug}`,
         };
       }
+    } catch {
+      /* ignore failed blog fetch */
     }
-  } catch {
-    /* ignore bad feature flags */
   }
 
   const content =

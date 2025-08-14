@@ -66,7 +66,7 @@ export default function GeneralSettings({
           <label className="flex items-center gap-2">
             <Checkbox
               name="contentMerchandising"
-              checked={info.luxuryFeatures.contentMerchandising}
+              checked={info.luxuryFeatures.contentMerchandising ?? false}
               onCheckedChange={(v) =>
                 setInfo((prev) => ({
                   ...prev,

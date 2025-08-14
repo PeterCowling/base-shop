@@ -5,7 +5,7 @@ import {
   screen,
   waitFor,
   within,
-  mockUpdateShop,
+  mockPatchShopTheme,
 } from "./ThemeEditor.test-utils";
 
 const mockReadShop = jest.fn();
@@ -35,11 +35,9 @@ describe("ThemeEditor reload", () => {
     mockReadShop.mockImplementation(async () =>
       JSON.parse(JSON.stringify(persisted)),
     );
-    mockUpdateShop.mockImplementation(async (_shop: string, fd: FormData) => {
-      const overrides = JSON.parse(fd.get("themeOverrides") as string);
-      const defaults = JSON.parse(fd.get("themeDefaults") as string);
-      persisted.themeOverrides = JSON.parse(JSON.stringify(overrides));
-      persisted.themeDefaults = JSON.parse(JSON.stringify(defaults));
+    mockPatchShopTheme.mockImplementation(async (_shop: string, body: any) => {
+      persisted.themeOverrides = JSON.parse(JSON.stringify(body.themeOverrides));
+      persisted.themeDefaults = JSON.parse(JSON.stringify(body.themeDefaults));
       persisted.themeTokens = { ...persisted.themeDefaults, ...persisted.themeOverrides };
       return { shop: JSON.parse(JSON.stringify(persisted)) } as any;
     });
@@ -54,9 +52,8 @@ describe("ThemeEditor reload", () => {
       selector: 'input[type="color"]',
     });
     fireEvent.change(colorInput, { target: { value: "#000000" } });
-    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
 
-    await waitFor(() => expect(mockUpdateShop).toHaveBeenCalled());
+    await waitFor(() => expect(mockPatchShopTheme).toHaveBeenCalled());
 
     unmount();
 

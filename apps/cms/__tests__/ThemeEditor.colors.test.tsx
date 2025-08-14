@@ -4,7 +4,7 @@ import {
   screen,
   within,
   waitFor,
-  mockUpdateShop,
+  mockPatchShopTheme,
 } from "./ThemeEditor.test-utils";
 
 describe("ThemeEditor - colors", () => {
@@ -68,8 +68,8 @@ describe("ThemeEditor - colors", () => {
     const tokensByTheme = {
       base: { "--color-bg": "#ffffff", "--color-bg-dark": "#000000" },
     };
-    mockUpdateShop.mockClear();
-    mockUpdateShop.mockResolvedValue({});
+    mockPatchShopTheme.mockClear();
+    mockPatchShopTheme.mockResolvedValue({ ok: true });
     renderThemeEditor({ tokensByTheme });
 
     const lightInput = screen.getByLabelText("--color-bg", {
@@ -82,11 +82,9 @@ describe("ThemeEditor - colors", () => {
     });
     fireEvent.change(darkInput, { target: { value: "#00ff00" } });
 
-    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
-
-    await waitFor(() => expect(mockUpdateShop).toHaveBeenCalled());
-    const fd = mockUpdateShop.mock.calls[0][1] as FormData;
-    expect(JSON.parse(fd.get("themeOverrides") as string)).toEqual({
+    await waitFor(() => expect(mockPatchShopTheme).toHaveBeenCalled());
+    const args = mockPatchShopTheme.mock.calls[0][1];
+    expect(args.themeOverrides).toEqual({
       "--color-bg": "#ff0000",
       "--color-bg-dark": "#00ff00",
     });
@@ -94,40 +92,34 @@ describe("ThemeEditor - colors", () => {
 
   it("does not persist untouched tokens as overrides", async () => {
     const tokensByTheme = { base: { "--color-bg": "white" } };
-    mockUpdateShop.mockClear();
-    mockUpdateShop.mockResolvedValue({});
+    mockPatchShopTheme.mockClear();
+    mockPatchShopTheme.mockResolvedValue({ ok: true });
     renderThemeEditor({ tokensByTheme });
 
-    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
-
-    await waitFor(() => expect(mockUpdateShop).toHaveBeenCalled());
-    const fd = mockUpdateShop.mock.calls[0][1] as FormData;
-    expect(JSON.parse(fd.get("themeOverrides") as string)).toEqual({});
+    await waitFor(() =>
+      expect(mockPatchShopTheme).not.toHaveBeenCalled(),
+    );
   });
 
   it("returns shop config with defaults and overrides after editing", async () => {
     const tokensByTheme = { base: { "--color-bg": "#ffffff" } };
-    mockUpdateShop.mockClear();
-    mockUpdateShop.mockImplementation(async (_shop: string, fd: FormData) => {
-      const overrides = JSON.parse(fd.get("themeOverrides") as string);
-      const defaults = JSON.parse(fd.get("themeDefaults") as string);
-      return {
-        shop: {
-          id: "test",
-          name: "test",
-          catalogFilters: [],
-          themeId: "base",
-          themeDefaults: defaults,
-          themeOverrides: overrides,
-          themeTokens: { ...defaults, ...overrides },
-          filterMappings: {},
-          priceOverrides: {},
-          localeOverrides: {},
-          navigation: [],
-          analyticsEnabled: false,
-        },
-      } as any;
-    });
+    mockPatchShopTheme.mockClear();
+    mockPatchShopTheme.mockImplementation(async (_shop: string, body: any) => ({
+      shop: {
+        id: "test",
+        name: "test",
+        catalogFilters: [],
+        themeId: "base",
+        themeDefaults: body.themeDefaults,
+        themeOverrides: body.themeOverrides,
+        themeTokens: { ...body.themeDefaults, ...body.themeOverrides },
+        filterMappings: {},
+        priceOverrides: {},
+        localeOverrides: {},
+        navigation: [],
+        analyticsEnabled: false,
+      },
+    }));
     renderThemeEditor({ tokensByTheme });
 
     const colorInput = screen.getByLabelText("--color-bg", {
@@ -135,10 +127,8 @@ describe("ThemeEditor - colors", () => {
     });
     fireEvent.change(colorInput, { target: { value: "#000000" } });
 
-    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
-
-    await waitFor(() => expect(mockUpdateShop).toHaveBeenCalled());
-    const result = await mockUpdateShop.mock.results[0].value;
+    await waitFor(() => expect(mockPatchShopTheme).toHaveBeenCalled());
+    const result = await mockPatchShopTheme.mock.results[0].value;
     expect(result.shop.themeDefaults["--color-bg"]).toBe("#ffffff");
     expect(result.shop.themeOverrides["--color-bg"]).toBe("#000000");
     expect(result.shop.themeTokens["--color-bg"]).toBe("#000000");
@@ -156,8 +146,8 @@ describe("ThemeEditor - colors", () => {
 
   it("stores HSL overrides in original format", async () => {
     const tokensByTheme = { base: { "--color-bg": "0 0% 100%" } };
-    mockUpdateShop.mockClear();
-    mockUpdateShop.mockResolvedValue({});
+    mockPatchShopTheme.mockClear();
+    mockPatchShopTheme.mockResolvedValue({ ok: true });
 
     renderThemeEditor({ tokensByTheme });
 
@@ -166,13 +156,9 @@ describe("ThemeEditor - colors", () => {
     });
     fireEvent.change(colorInput, { target: { value: "#000000" } });
 
-    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
-
-    await waitFor(() => expect(mockUpdateShop).toHaveBeenCalled());
-    const fd = mockUpdateShop.mock.calls[0][1] as FormData;
-    expect(JSON.parse(fd.get("themeOverrides") as string)).toEqual({
-      "--color-bg": "0 0% 0%",
-    });
+    await waitFor(() => expect(mockPatchShopTheme).toHaveBeenCalled());
+    const args2 = mockPatchShopTheme.mock.calls[0][1];
+    expect(args2.themeOverrides).toEqual({ "--color-bg": "0 0% 0%" });
   });
 
   it("shows inline color picker when preview element clicked", async () => {
@@ -192,8 +178,8 @@ describe("ThemeEditor - colors", () => {
 
   it("persists overrides after clicking preview token and reloading", async () => {
     const tokensByTheme = { base: { "--color-bg": "#ffffff" } };
-    mockUpdateShop.mockClear();
-    mockUpdateShop.mockResolvedValue({});
+    mockPatchShopTheme.mockClear();
+    mockPatchShopTheme.mockResolvedValue({ ok: true });
 
     const { unmount } = renderThemeEditor({ tokensByTheme });
 
@@ -206,11 +192,10 @@ describe("ThemeEditor - colors", () => {
     );
     fireEvent.change(pickerInput, { target: { value: "#ff0000" } });
     fireEvent.blur(pickerInput);
-    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
 
-    await waitFor(() => expect(mockUpdateShop).toHaveBeenCalled());
-    const fd = mockUpdateShop.mock.calls[0][1] as FormData;
-    const overridesSaved = JSON.parse(fd.get("themeOverrides") as string);
+    await waitFor(() => expect(mockPatchShopTheme).toHaveBeenCalled());
+    const args3 = mockPatchShopTheme.mock.calls[0][1];
+    const overridesSaved = args3.themeOverrides;
     expect(overridesSaved).toEqual({ "--color-bg": "#ff0000" });
 
     unmount();
@@ -234,18 +219,14 @@ describe("ThemeEditor - colors", () => {
       base: { "--color-bg": "#ffffff" },
       dark: { "--color-bg": "#222222" },
     };
-    mockUpdateShop.mockClear();
-    mockUpdateShop.mockImplementation(async (_shop: string, fd: FormData) => {
-      const defaults = JSON.parse(fd.get("themeDefaults") as string);
-      const overrides = JSON.parse(fd.get("themeOverrides") as string);
-      return {
-        shop: {
-          themeDefaults: defaults,
-          themeOverrides: overrides,
-          themeTokens: { ...defaults, ...overrides },
-        },
-      } as any;
-    });
+    mockPatchShopTheme.mockClear();
+    mockPatchShopTheme.mockImplementation(async (_shop: string, body: any) => ({
+      shop: {
+        themeDefaults: body.themeDefaults,
+        themeOverrides: body.themeOverrides,
+        themeTokens: { ...body.themeDefaults, ...body.themeOverrides },
+      },
+    }));
 
     renderThemeEditor({ tokensByTheme, themes: ["base", "dark"] });
 
@@ -258,10 +239,8 @@ describe("ThemeEditor - colors", () => {
     });
     fireEvent.change(colorInput, { target: { value: "#000000" } });
 
-    fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
-
-    await waitFor(() => expect(mockUpdateShop).toHaveBeenCalled());
-    const result = await mockUpdateShop.mock.results[0].value;
+    await waitFor(() => expect(mockPatchShopTheme).toHaveBeenCalled());
+    const result = await mockPatchShopTheme.mock.results.at(-1)?.value;
     expect(result.shop.themeDefaults["--color-bg"]).toBe("#222222");
     expect(result.shop.themeTokens["--color-bg"]).toBe("#000000");
   });

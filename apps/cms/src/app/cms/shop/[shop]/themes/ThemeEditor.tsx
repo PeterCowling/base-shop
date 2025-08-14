@@ -2,11 +2,10 @@
 
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
-import { updateShop } from "@cms/actions/shops.server";
+import { patchShopTheme } from "../../../wizard/services/submitShop";
 import {
   useState,
   ChangeEvent,
-  FormEvent,
   useMemo,
   useRef,
   useEffect,
@@ -22,6 +21,7 @@ import ColorInput from "./ColorInput";
 import InlineColorPicker from "./InlineColorPicker";
 import WizardPreview from "../../../wizard/WizardPreview";
 import { savePreviewTokens } from "../../../wizard/previewTokens";
+import { tokenGroups } from "./tokenGroups";
 
 interface Props {
   shop: string;
@@ -67,14 +67,14 @@ export default function ThemeEditor({
   });
   const [contrastWarnings, setContrastWarnings] =
     useState<Record<string, string>>({});
-  const [saving, setSaving] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [previewTokens, setPreviewTokens] = useState<Record<string, string>>({
     ...tokensByThemeState[initialTheme],
     ...initialOverrides,
   });
   const debounceRef = useRef<number | null>(null);
+  const saveDebounceRef = useRef<number | null>(null);
+  const initialSaveRef = useRef(true);
   const [picker, setPicker] = useState<
     | null
     | { token: string; x: number; y: number; defaultValue: string }
@@ -103,19 +103,20 @@ export default function ThemeEditor({
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByThemeState[theme];
-    const groups: Record<string, [string, string][]> = {
-      Background: [],
-      Text: [],
-      Accent: [],
-      Other: [],
-    };
-    Object.entries(tokens).forEach(([k, v]) => {
-      if (/bg|background/i.test(k)) groups.Background.push([k, v]);
-      else if (/text|foreground/i.test(k)) groups.Text.push([k, v]);
-      else if (/accent|primary|secondary|highlight/i.test(k))
-        groups.Accent.push([k, v]);
-      else groups.Other.push([k, v]);
+    const groups: Record<string, [string, string][]> = {};
+    const assigned = new Set<string>();
+    Object.entries(tokenGroups).forEach(([groupName, keys]) => {
+      const arr: [string, string][] = [];
+      keys.forEach((k) => {
+        if (k in tokens) {
+          arr.push([k, tokens[k]]);
+          assigned.add(k);
+        }
+      });
+      if (arr.length) groups[groupName] = arr;
     });
+    const other = Object.entries(tokens).filter(([k]) => !assigned.has(k));
+    if (other.length) groups.Other = other as [string, string][];
     return groups;
   }, [theme, tokensByThemeState]);
 
@@ -172,6 +173,16 @@ export default function ThemeEditor({
     });
   };
 
+  const handleGroupReset = (keys: string[]) => () => {
+    setOverrides((prev) => {
+      const next = { ...prev };
+      keys.forEach((k) => delete next[k]);
+      const merged = { ...tokensByThemeState[theme], ...next };
+      schedulePreviewUpdate(merged);
+      return next;
+    });
+  };
+
   const handleTokenSelect = (
     token: string,
     coords?: { x: number; y: number },
@@ -197,6 +208,9 @@ export default function ThemeEditor({
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
+      if (saveDebounceRef.current) {
+        clearTimeout(saveDebounceRef.current);
+      }
     };
   }, []);
 
@@ -204,6 +218,22 @@ export default function ThemeEditor({
   useEffect(() => {
     savePreviewTokens(previewTokens);
   }, [previewTokens]);
+
+  useEffect(() => {
+    if (initialSaveRef.current) {
+      initialSaveRef.current = false;
+      return;
+    }
+    if (saveDebounceRef.current) {
+      clearTimeout(saveDebounceRef.current);
+    }
+    saveDebounceRef.current = window.setTimeout(() => {
+      patchShopTheme(shop, {
+        themeOverrides: overrides,
+        themeDefaults,
+      });
+    }, 300);
+  }, [overrides, themeDefaults, shop]);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -222,8 +252,7 @@ export default function ThemeEditor({
 
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <Input type="hidden" name="id" value={shop} />
+    <div className="space-y-4">
       {picker && (
         <InlineColorPicker
           token={picker.token}
@@ -239,21 +268,10 @@ export default function ThemeEditor({
           }}
         />
       )}
-      <input
-        type="hidden"
-        name="themeOverrides"
-        value={JSON.stringify(overrides)}
-      />
-      <input
-        type="hidden"
-        name="themeDefaults"
-        value={JSON.stringify(themeDefaults)}
-      />
       <label className="flex flex-col gap-1">
         <span>Theme</span>
         <select
           className="border p-2"
-          name="themeId"
           value={theme}
           onChange={handleThemeChange}
         >
@@ -263,11 +281,6 @@ export default function ThemeEditor({
             </option>
           ))}
         </select>
-        {errors.themeId && (
-          <span className="text-sm text-red-600">
-            {errors.themeId.join("; ")}
-          </span>
-        )}
       </label>
       <div className="flex items-center gap-2">
         <Input
@@ -302,7 +315,19 @@ export default function ThemeEditor({
       <div className="space-y-6">
         {Object.entries(groupedTokens).map(([groupName, tokens]) => (
           <fieldset key={groupName} className="space-y-2">
-            <legend className="font-semibold">{groupName}</legend>
+            <div className="flex items-center justify-between">
+              <legend className="font-semibold">{groupName}</legend>
+              {tokens.some(([k]) =>
+                Object.prototype.hasOwnProperty.call(overrides, k),
+              ) && (
+                <Button
+                  type="button"
+                  onClick={handleGroupReset(tokens.map(([k]) => k))}
+                >
+                  Reset
+                </Button>
+              )}
+            </div>
             <div className="mb-2 flex flex-wrap gap-2">
               {tokens
                 .filter(([, v]) => isHex(v) || isHsl(v))
@@ -353,9 +378,6 @@ export default function ThemeEditor({
           </fieldset>
         ))}
       </div>
-      <Button className="bg-primary text-white" disabled={saving} type="submit">
-        {saving ? "Saving…" : "Save"}
-      </Button>
-    </form>
+    </div>
   );
 }

@@ -9,12 +9,18 @@ describe("theme service", () => {
   it("computes theme data", async () => {
     const form: any = {
       themeOverrides: { b: "2" },
-      themeDefaults: {},
+      themeDefaults: { c: "3" },
       themeId: "t1",
     };
-    const current: any = { themeId: "t2" };
+    const current: any = {
+      themeId: "t1",
+      themeOverrides: { a: "1" },
+      themeDefaults: { a: "0" },
+    };
     const result = await buildThemeData("shop", form, current);
-    expect(result.themeTokens).toEqual({ a: "1", b: "2" });
+    expect(result.overrides).toEqual({ a: "1", b: "2" });
+    expect(result.themeDefaults).toEqual({ a: "0", c: "3" });
+    expect(result.themeTokens).toEqual({ a: "1", b: "2", c: "3" });
   });
 
   it("removes theme token", () => {

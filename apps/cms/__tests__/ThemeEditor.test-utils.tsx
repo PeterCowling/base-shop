@@ -2,11 +2,11 @@ import "@testing-library/jest-dom";
 import { fireEvent, render, screen, within, waitFor, act } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import ThemeEditor from "../src/app/cms/shop/[shop]/themes/ThemeEditor";
-import { updateShop } from "@cms/actions/shops.server";
+import { patchShopTheme } from "../src/app/cms/wizard/services/submitShop";
 import { savePreset, deletePreset } from "../src/app/cms/shop/[shop]/themes/page";
 
-jest.mock("@cms/actions/shops.server", () => ({
-  updateShop: jest.fn(),
+jest.mock("../src/app/cms/wizard/services/submitShop", () => ({
+  patchShopTheme: jest.fn(),
 }));
 jest.mock("../src/app/cms/shop/[shop]/themes/page", () => ({
   savePreset: jest.fn(),
@@ -87,7 +87,7 @@ jest.mock("../src/app/cms/wizard/WizardPreview", () => ({
 
 export { fireEvent, render, screen, within, waitFor, act };
 
-export const mockUpdateShop = updateShop as jest.Mock;
+export const mockPatchShopTheme = patchShopTheme as jest.Mock;
 export const mockSavePreset = savePreset as jest.Mock;
 export const mockDeletePreset = deletePreset as jest.Mock;
 

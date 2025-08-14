@@ -174,3 +174,36 @@ export async function submitShop(
 
   return { ok: false, error: json.error ?? "Failed to create shop" };
 }
+
+export interface PatchThemeResult {
+  ok: boolean;
+  error?: string;
+  shop?: unknown;
+}
+
+export async function patchShopTheme(
+  shopId: string,
+  data: { themeOverrides: Record<string, string>; themeDefaults: Record<string, string> },
+): Promise<PatchThemeResult> {
+  try {
+    const res = await fetch(`/cms/api/configure-shop/${shopId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const json = (await res.json().catch(() => ({}))) as {
+      success?: boolean;
+      shop?: unknown;
+      error?: string;
+    };
+    if (!res.ok || json.success === false) {
+      return { ok: false, error: json.error ?? "Failed to update theme" };
+    }
+    return { ok: true, shop: json.shop };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : String(err),
+    };
+  }
+}

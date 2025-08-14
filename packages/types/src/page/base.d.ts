@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { type Translated } from "./Product";
+import { type Translated } from "../Product";
 export type PageStatus = "draft" | "published";
 export interface SeoMeta {
   title: Translated;

@@ -1,4 +1,4 @@
-import { pageSchema } from "../src/Page.ts";
+import { pageSchema } from "../src/page";
 
 describe("pageSchema", () => {
   it("parses valid data", () => {

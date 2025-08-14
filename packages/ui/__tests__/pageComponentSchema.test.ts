@@ -1,4 +1,4 @@
-import { pageComponentSchema } from "@acme/types/Page";
+import { pageComponentSchema } from "@acme/types/page";
 
 describe("pageComponentSchema", () => {
   it("rejects unknown component type", () => {

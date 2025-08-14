@@ -5,7 +5,7 @@ export * from "./constants";
 export * from "./ImageOrientation";
 export * from "./InventoryItem";
 export * from "./MediaItem";
-export * from "./Page";
+export * from "./page";
 export * from "./Pricing";
 export * from "./Product";
 export * from "./PublishLocation";

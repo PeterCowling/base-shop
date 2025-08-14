@@ -63,4 +63,5 @@ model User {
   resetToken   String?
   resetTokenExpiresAt DateTime?
   emailVerified Boolean @default(false)
+  stripeSubscriptionId String?
 }

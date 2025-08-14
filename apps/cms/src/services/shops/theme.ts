@@ -35,3 +35,42 @@ export function removeThemeToken(
   >;
   return { overrides, themeTokens };
 }
+
+export function mergeThemeUpdates(
+  current: Shop,
+  patch: {
+    themeOverrides?: Record<string, string | null>;
+    themeDefaults?: Record<string, string>;
+  },
+): {
+  themeDefaults: Record<string, string>;
+  overrides: Record<string, string>;
+  themeTokens: Record<string, string>;
+} {
+  const defaults = { ...(current.themeDefaults ?? {}) } as Record<string, string>;
+  const overrides = { ...(current.themeOverrides ?? {}) } as Record<
+    string,
+    string
+  >;
+
+  if (patch.themeDefaults) {
+    for (const [k, v] of Object.entries(patch.themeDefaults)) {
+      if (v === null || v === undefined) delete defaults[k];
+      else defaults[k] = v;
+    }
+  }
+
+  if (patch.themeOverrides) {
+    for (const [k, v] of Object.entries(patch.themeOverrides)) {
+      if (v === null || v === undefined) delete overrides[k];
+      else overrides[k] = v;
+    }
+  }
+
+  for (const [k, v] of Object.entries(overrides)) {
+    if (defaults[k] === v) delete overrides[k];
+  }
+
+  const themeTokens = { ...defaults, ...overrides } as Record<string, string>;
+  return { themeDefaults: defaults, overrides, themeTokens };
+}

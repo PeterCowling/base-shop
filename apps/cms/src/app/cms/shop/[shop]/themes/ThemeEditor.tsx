@@ -3,6 +3,7 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
+import { patchTheme } from "../../../wizard/services/patchTheme";
 import ColorContrastChecker from "color-contrast-checker";
 import {
   useState,
@@ -75,6 +76,11 @@ export default function ThemeEditor({
     ...initialOverrides,
   });
   const debounceRef = useRef<number | null>(null);
+  const saveDebounceRef = useRef<number | null>(null);
+  const pendingRef = useRef<{
+    overrides: Record<string, string | null>;
+    defaults: Record<string, string>;
+  }>({ overrides: {}, defaults: {} });
   const [picker, setPicker] = useState<
     | null
     | { token: string; x: number; y: number; defaultValue: string }
@@ -115,6 +121,23 @@ export default function ThemeEditor({
     }, 100);
   };
 
+  const scheduleThemeSave = (
+    token: string,
+    value: string | null,
+    defaultValue: string,
+  ) => {
+    pendingRef.current.overrides[token] = value;
+    pendingRef.current.defaults[token] = defaultValue;
+    if (saveDebounceRef.current) {
+      clearTimeout(saveDebounceRef.current);
+    }
+    saveDebounceRef.current = window.setTimeout(() => {
+      const { overrides, defaults } = pendingRef.current;
+      pendingRef.current = { overrides: {}, defaults: {} };
+      patchTheme(shop, { themeOverrides: overrides, themeDefaults: defaults });
+    }, 300);
+  };
+
   const handleOverrideChange =
     (key: string, defaultValue: string) =>
     (value: string) => {
@@ -122,8 +145,10 @@ export default function ThemeEditor({
         const next = { ...prev };
         if (!value || value === defaultValue) {
           delete next[key];
+          scheduleThemeSave(key, null, defaultValue);
         } else {
           next[key] = value;
+          scheduleThemeSave(key, value, defaultValue);
         }
         const merged = { ...tokensByThemeState[theme], ...next };
         schedulePreviewUpdate(merged);
@@ -132,6 +157,7 @@ export default function ThemeEditor({
     };
 
   const handleReset = (key: string) => () => {
+    const def = tokensByThemeState[theme][key];
     setOverrides((prev) => {
       const next = { ...prev };
       delete next[key];
@@ -139,6 +165,7 @@ export default function ThemeEditor({
       schedulePreviewUpdate(merged);
       return next;
     });
+    scheduleThemeSave(key, null, def);
   };
 
   const handleTokenSelect = (
@@ -165,6 +192,9 @@ export default function ThemeEditor({
     return () => {
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
+      }
+      if (saveDebounceRef.current) {
+        clearTimeout(saveDebounceRef.current);
       }
     };
   }, []);

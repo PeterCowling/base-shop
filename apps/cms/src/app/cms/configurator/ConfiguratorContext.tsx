@@ -10,7 +10,7 @@ import {
 import { useConfiguratorPersistence } from "./hooks/useConfiguratorPersistence";
 import ConfiguratorStatusBar from "./ConfiguratorStatusBar";
 
-interface ConfiguratorContextValue {
+export interface ConfiguratorContextValue {
   state: WizardState;
   setState: React.Dispatch<React.SetStateAction<WizardState>>;
   update: <K extends keyof WizardState>(key: K, value: WizardState[K]) => void;
@@ -88,7 +88,7 @@ export function ConfiguratorProvider({
 }
 
 export function useConfigurator(): ConfiguratorContextValue {
-const ctx = useContext(ConfiguratorContext);
+  const ctx = useContext(ConfiguratorContext);
   if (!ctx)
     throw new Error("useConfigurator must be used within ConfiguratorProvider");
   return ctx;

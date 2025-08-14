@@ -1,6 +1,8 @@
 // packages/ui/src/components/account/Orders.tsx
 import { getCustomerSession, hasPermission } from "@auth";
 import { getOrdersForCustomer } from "@platform-core/orders";
+import { getTrackingStatus as getShippingTrackingStatus } from "@platform-core/shipping";
+import { getTrackingStatus as getReturnTrackingStatus } from "@platform-core/returnAuthorization";
 import { redirect } from "next/navigation";
 import StartReturnButton from "./StartReturnButton";
 import type { OrderStep } from "../organisms/OrderTrackingTimeline";
@@ -17,6 +19,10 @@ export interface OrdersPageProps {
   returnsEnabled?: boolean;
   /** Optional return policy link */
   returnPolicyUrl?: string;
+  /** Whether tracking is enabled for this shop */
+  trackingEnabled?: boolean;
+  /** List of carriers supported for tracking */
+  trackingProviders?: string[];
 }
 
 export const metadata = { title: "Orders" };
@@ -27,6 +33,8 @@ export default async function OrdersPage({
   callbackUrl = "/account/orders",
   returnsEnabled,
   returnPolicyUrl,
+  trackingEnabled = true,
+  trackingProviders = [],
 }: OrdersPageProps) {
   const session = await getCustomerSession();
   if (!session) {
@@ -39,39 +47,35 @@ export default async function OrdersPage({
   const orders = await getOrdersForCustomer(shopId, session.customerId);
   if (!orders.length) return <p className="p-6">No orders yet.</p>;
 
-  async function fetchStatus(tracking: string) {
-    try {
-      const res = await fetch(
-        `https://www.ups.com/track/api/Track/GetStatus?loc=en_US&tracknum=${tracking}`,
-      );
-      const data = await res.json();
-      return data?.trackDetails?.[0]?.packageStatus?.statusType ?? null;
-    } catch {
-      return null;
-    }
-  }
-
   const items = await Promise.all(
     orders.map(async (o) => {
-      const steps: OrderStep[] = [
-        { label: "Placed", date: o.startedAt, complete: true },
-      ];
-      if (o.returnedAt) {
-        steps.push({ label: "Returned", date: o.returnedAt, complete: true });
-      } else {
-        steps.push({ label: "Return pending", complete: false });
+      let shippingSteps: OrderStep[] = [];
+      let returnSteps: OrderStep[] = [];
+      let status: string | null = null;
+      if (trackingEnabled && trackingProviders.length > 0 && o.trackingNumber) {
+        const provider = trackingProviders[0] as "ups" | "dhl";
+        const ship = await getShippingTrackingStatus({
+          provider,
+          trackingNumber: o.trackingNumber,
+        });
+        shippingSteps = ship.steps as OrderStep[];
+        status = ship.status;
+        const ret = await getReturnTrackingStatus({
+          provider,
+          trackingNumber: o.trackingNumber,
+        });
+        returnSteps = ret.steps as OrderStep[];
       }
-      if (o.refundedAt) {
-        steps.push({ label: "Refunded", date: o.refundedAt, complete: true });
-      }
-      const status = o.trackingNumber
-        ? await fetchStatus(o.trackingNumber)
-        : null;
       return (
         <li key={o.id} className="rounded border p-4">
           <div>Order: {o.id}</div>
           {o.expectedReturnDate && <div>Return: {o.expectedReturnDate}</div>}
-          <OrderTrackingTimeline steps={steps} className="mt-2" />
+          <OrderTrackingTimeline
+            shippingSteps={shippingSteps}
+            returnSteps={returnSteps}
+            trackingEnabled={trackingEnabled}
+            className="mt-2"
+          />
           {status && <p className="mt-2 text-sm">Status: {status}</p>}
           {returnsEnabled && !o.returnedAt && (
             <StartReturnButton sessionId={o.sessionId} />

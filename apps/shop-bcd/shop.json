@@ -13,6 +13,8 @@
   "localeOverrides": {},
   "rentalInventoryAllocation": false,
   "analyticsEnabled": false,
+  "trackingEnabled": true,
+  "trackingProviders": ["dhl"],
   "plugins": {
     "paypal": {
       "clientId": "bcd-client",

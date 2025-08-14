@@ -104,6 +104,8 @@ export const shopSettingsSchema = z
         requireStrongCustomerAuth: false,
         strictReturnConditions: false,
       }),
+    /** Feature flag to enable or disable all tracking */
+    trackingEnabled: z.boolean().default(true).optional(),
     /** Tracking providers enabled for shipment/return tracking */
     trackingProviders: z.array(z.string()).optional(),
     updatedAt: z.string(),

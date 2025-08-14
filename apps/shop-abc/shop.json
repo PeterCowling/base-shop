@@ -16,6 +16,8 @@
   "localeOverrides": {},
   "analyticsEnabled": true,
   "rentalInventoryAllocation": false,
+  "trackingEnabled": true,
+  "trackingProviders": ["ups"],
   "plugins": {
     "paypal": {
       "clientId": "abc-client",

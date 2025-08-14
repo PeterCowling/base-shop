@@ -4,6 +4,12 @@ import {
   readReturnAuthorizations,
   getReturnAuthorization,
 } from "./repositories/returnAuthorization.server";
+export {
+  getTrackingStatus,
+  type TrackingStatusRequest,
+  type TrackingStatus,
+  type TrackingStep,
+} from "./shipping";
 
 export { getReturnAuthorization };
 

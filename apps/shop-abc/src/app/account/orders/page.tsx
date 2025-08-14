@@ -10,6 +10,8 @@ export default function Page() {
       shopId={shop.id}
       returnsEnabled={shop.returnsEnabled}
       returnPolicyUrl={shop.returnPolicyUrl}
+      trackingEnabled={shop.trackingEnabled}
+      trackingProviders={shop.trackingProviders}
     />
   );
 }

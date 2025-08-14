@@ -57,7 +57,8 @@ describe("OrdersPage permissions", () => {
     ]);
     const element = await OrdersPage({ shopId });
     expect(hasPermission).toHaveBeenCalledWith("customer", "view_orders");
-    const list = element.props.children[1];
+    const children = element.props.children;
+    const list = children[children.length - 1];
     expect(list.type).toBe("ul");
   });
 

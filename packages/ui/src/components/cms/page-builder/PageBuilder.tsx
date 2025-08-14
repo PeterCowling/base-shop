@@ -184,12 +184,40 @@ const PageBuilder = memo(function PageBuilder({
   });
 
   const widthMap = useMemo(
-    () => ({ desktop: "100%", tablet: "768px", mobile: "375px" }) as const,
+    () => ({ desktop: 1024, tablet: 768, mobile: 375 }) as const,
     []
   );
-  const containerStyle = useMemo(
-    () => ({ width: widthMap[viewport] }),
-    [viewport, widthMap]
+  const [canvasWidth, setCanvasWidth] = useState(widthMap.desktop);
+  const [scale, setScale] = useState(1);
+  const prevWidth = useRef(widthMap.desktop);
+
+  useEffect(() => {
+    const nextWidth = widthMap[viewport];
+    const prev = prevWidth.current;
+    setCanvasWidth(nextWidth);
+    setScale(prev / nextWidth);
+    const raf = requestAnimationFrame(() => setScale(1));
+    prevWidth.current = nextWidth;
+    return () => cancelAnimationFrame(raf);
+  }, [viewport, widthMap]);
+
+  const viewportStyle = useMemo(
+    () => ({
+      width: `${canvasWidth}px`,
+      transform: `scale(${scale})`,
+      transformOrigin: "top center",
+      transition: "transform 0.3s ease",
+    }),
+    [canvasWidth, scale]
+  );
+
+  const frameClass = useMemo(
+    () => ({
+      desktop: "",
+      tablet: "rounded-xl border border-muted-foreground/40 p-2",
+      mobile: "rounded-[2rem] border border-muted-foreground/40 p-4",
+    }),
+    []
   );
 
   useEffect(() => {
@@ -256,23 +284,25 @@ const PageBuilder = memo(function PageBuilder({
           onDragMove={handleDragMove}
           onDragEnd={handleDragEnd}
         >
-          <PageCanvas
-            components={components}
-            selectedId={selectedId}
-            onSelectId={setSelectedId}
-            canvasRef={canvasRef}
-            dragOver={dragOver}
-            setDragOver={setDragOver}
-            onFileDrop={handleFileDrop}
-            insertIndex={insertIndex}
-            dispatch={dispatch}
-            locale={locale}
-            containerStyle={containerStyle}
-            showGrid={showGrid}
-            gridCols={gridCols}
-            viewport={viewport}
-            snapPosition={snapPosition}
-          />
+          <div className={frameClass[viewport]} style={viewportStyle}>
+            <PageCanvas
+              components={components}
+              selectedId={selectedId}
+              onSelectId={setSelectedId}
+              canvasRef={canvasRef}
+              dragOver={dragOver}
+              setDragOver={setDragOver}
+              onFileDrop={handleFileDrop}
+              insertIndex={insertIndex}
+              dispatch={dispatch}
+              locale={locale}
+              containerStyle={{ width: "100%" }}
+              showGrid={showGrid}
+              gridCols={gridCols}
+              viewport={viewport}
+              snapPosition={snapPosition}
+            />
+          </div>
           <DragOverlay>
             {activeType && (
               <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { rest } from "msw";
 import { server } from "./msw/server";
 process.env.STRIPE_SECRET_KEY = "sk_test_123";
@@ -13,7 +13,10 @@ const pushMock = jest.fn();
 
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock }),
+  useSearchParams: () => new URLSearchParams(window.location.search),
 }));
+
+const Cancelled = require("../packages/template-app/src/app/cancelled/page").default;
 
 jest.mock("@stripe/stripe-js", () => ({
   loadStripe: () => Promise.resolve({}),
@@ -39,6 +42,8 @@ jest.mock("@platform-core/src/contexts/CurrencyContext", () =>
 
 afterEach(() => {
   confirmPaymentMock.mockReset();
+  window.history.replaceState(null, "", "/");
+  cleanup();
 });
 
 test("renders Elements once client secret is fetched", async () => {
@@ -85,7 +90,7 @@ test("successful payment redirects to success", async () => {
   expect(pushMock).toHaveBeenCalledWith("/en/success");
 });
 
-test("failed payment redirects to cancelled", async () => {
+test("failed payment redirects to cancelled with error message", async () => {
   server.use(
     rest.post("/api/checkout-session", (_req, res, ctx) => {
       return res(ctx.json({ clientSecret: "cs_test", sessionId: "sess" }));
@@ -93,7 +98,7 @@ test("failed payment redirects to cancelled", async () => {
   );
   confirmPaymentMock.mockResolvedValue({ error: { message: "fail" } });
 
-  render(
+  const { unmount } = render(
     <CurrencyProvider>
       <CheckoutForm locale="en" taxRegion="EU" />
     </CurrencyProvider>
@@ -102,8 +107,11 @@ test("failed payment redirects to cancelled", async () => {
   fireEvent.click(screen.getByRole("button", { name: /pay/i }));
 
   await waitFor(() => expect(confirmPaymentMock).toHaveBeenCalled());
-  expect(pushMock).toHaveBeenCalledWith("/en/cancelled");
-  expect(await screen.findByText("fail")).toBeInTheDocument();
+  expect(pushMock).toHaveBeenCalledWith("/en/cancelled?error=fail");
+  unmount();
+  window.history.replaceState(null, "", "/en/cancelled?error=fail");
+  render(<Cancelled />);
+  expect(screen.getByText("fail")).toBeInTheDocument();
 });
 
 test("requests new session when return date changes", async () => {

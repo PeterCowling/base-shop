@@ -132,9 +132,11 @@ function PaymentForm({
     });
 
     if (error) {
-      setError(error.message ?? "Payment failed");
+      const message = error.message ?? "Payment failed";
+      setError(message);
       setProcessing(false);
-      router.push(`/${locale}/cancelled`);
+      const query = new URLSearchParams({ error: message }).toString();
+      router.push(`/${locale}/cancelled?${query}`);
     } else {
       router.push(`/${locale}/success`);
     }

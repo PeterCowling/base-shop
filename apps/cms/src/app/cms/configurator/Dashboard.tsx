@@ -12,6 +12,8 @@ import { Button } from "@/components/atoms/shadcn";
 import { Toast, Tooltip } from "@/components/atoms";
 import { wizardStateSchema, type WizardState } from "../wizard/schema";
 import { useConfiguratorPersistence } from "./hooks/useConfiguratorPersistence";
+import { calculateConfiguratorProgress } from "./lib/progress";
+import { useLayout } from "@platform-core/contexts/LayoutContext";
 import {
   getRequiredSteps,
   getSteps,
@@ -40,6 +42,7 @@ export default function ConfiguratorDashboard() {
       message: "",
     }
   );
+  const { setConfiguratorProgress } = useLayout();
 
   const fetchState = useCallback(() => {
     fetch("/cms/api/wizard-progress")
@@ -71,6 +74,12 @@ export default function ConfiguratorDashboard() {
     : `Complete required steps: ${missingRequired
         .map((s) => s.label)
         .join(", ")}`;
+
+  useEffect(() => {
+    setConfiguratorProgress(calculateConfiguratorProgress(state.completed));
+  }, [state.completed, setConfiguratorProgress]);
+
+  useEffect(() => () => setConfiguratorProgress(undefined), [setConfiguratorProgress]);
 
   const skipStep = (stepId: string) => markStepComplete(stepId, "skipped");
   const resetStep = (stepId: string) => markStepComplete(stepId, "pending");

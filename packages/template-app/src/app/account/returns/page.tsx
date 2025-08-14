@@ -1,67 +1,121 @@
 import { getReturnLogistics } from "@platform-core/returnLogistics";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-export const metadata = { title: "Return Pickup" };
+export const metadata = { title: "Mobile Returns" };
 
 export default async function ReturnsPage() {
   const cfg = await getReturnLogistics();
-  return (
-    <div className="p-6 space-y-4">
-      <h1 className="text-xl font-semibold">Schedule Return Pickup</h1>
-      <PickupForm allowed={cfg.homePickupZipCodes} />
-    </div>
-  );
+  if (!cfg.mobileApp) {
+    return <p className="p-6">Mobile returns are not enabled.</p>;
+  }
+  return <ReturnForm />;
 }
 
-function PickupForm({ allowed }: { allowed: string[] }) {
+function ReturnForm() {
   "use client";
 
-  const [zip, setZip] = React.useState("");
-  const [date, setDate] = React.useState("");
-  const [time, setTime] = React.useState("");
-  const [message, setMessage] = React.useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [sessionId, setSessionId] = useState("");
+  const [labelUrl, setLabelUrl] = useState<string | null>(null);
+  const [tracking, setTracking] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!allowed.includes(zip)) {
-      setMessage("ZIP not eligible for pickup");
-      return;
+  useEffect(() => {
+    let stream: MediaStream | null = null;
+    let active = true;
+    async function init() {
+      if (!("BarcodeDetector" in window)) return;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" },
+        });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          await videoRef.current.play();
+        }
+        const detector = new (window as any).BarcodeDetector({
+          formats: ["qr_code"],
+        });
+        const scan = async () => {
+          if (!active || !videoRef.current) return;
+          try {
+            const codes = await detector.detect(videoRef.current);
+            if (codes.length > 0) {
+              const code = codes[0].rawValue;
+              setSessionId(code);
+              active = false;
+              stream?.getTracks().forEach((t) => t.stop());
+              return;
+            }
+          } catch {
+            /* noop */
+          }
+          requestAnimationFrame(scan);
+        };
+        requestAnimationFrame(scan);
+      } catch {
+        setError("Unable to access camera.");
+      }
     }
-    const res = await fetch("/api/return", {
-      method: "POST",
-      body: JSON.stringify({ zip, date, time }),
-    });
-    setMessage(res.ok ? "Pickup scheduled" : "Failed to schedule pickup");
+    init();
+    return () => {
+      active = false;
+      stream?.getTracks().forEach((t) => t.stop());
+    };
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLabelUrl(null);
+    setTracking(null);
+    try {
+      const res = await fetch("/api/returns/mobile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Failed to create return");
+        return;
+      }
+      setLabelUrl(data.labelUrl ?? null);
+      setTracking(data.tracking ?? null);
+    } catch {
+      setError("Failed to create return");
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
-      <input
-        className="border p-2 block w-full"
-        placeholder="ZIP code"
-        value={zip}
-        onChange={(e) => setZip(e.target.value)}
-      />
-      <input
-        type="date"
-        className="border p-2 block w-full"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      />
-      <input
-        type="time"
-        className="border p-2 block w-full"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
-      />
-      <button
-        type="submit"
-        className="px-4 py-2 bg-primary text-white"
-      >
-        Schedule
-      </button>
-      {message && <p>{message}</p>}
-    </form>
+    <div className="space-y-4 p-6">
+      <h1 className="text-xl font-semibold">Return Item</h1>
+      <video ref={videoRef} className="w-full max-w-md" />
+      <form onSubmit={handleSubmit} className="space-y-2">
+        <input
+          className="w-full border p-2"
+          placeholder="Session ID"
+          value={sessionId}
+          onChange={(e) => setSessionId(e.target.value)}
+        />
+        <button type="submit" className="bg-primary px-4 py-2 text-white">
+          Submit
+        </button>
+      </form>
+      {labelUrl && (
+        <p>
+          <a
+            href={labelUrl}
+            className="text-blue-600 underline"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Download Label
+          </a>
+          {tracking && <span className="block">Tracking: {tracking}</span>}
+        </p>
+      )}
+      {error && <p className="text-red-600">{error}</p>}
+    </div>
   );
 }
-

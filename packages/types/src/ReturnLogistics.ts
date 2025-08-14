@@ -10,6 +10,7 @@ import { z } from "zod";
  * - `bagType` describes the packaging customers should reuse when returning items.
  * - `returnCarrier` lists supported carriers for return shipments.
  * - `homePickupZipCodes` enumerates ZIP codes eligible for carrier pickup.
+ * - `mobileApp` toggles access to the mobile return application.
  */
 export const returnLogisticsSchema = z
   .object({
@@ -20,6 +21,7 @@ export const returnLogisticsSchema = z
     bagType: z.string(),
     returnCarrier: z.array(z.string()),
     homePickupZipCodes: z.array(z.string()),
+    mobileApp: z.boolean().optional(),
   })
   .strict();
 

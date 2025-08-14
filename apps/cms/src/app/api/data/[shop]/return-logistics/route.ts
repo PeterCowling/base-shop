@@ -29,6 +29,7 @@ export async function POST(
       bagType,
       returnCarrier,
       homePickupZipCodes,
+      mobileApp,
     } = parsed.data;
     await writeReturnLogistics({
       labelService,
@@ -38,6 +39,7 @@ export async function POST(
       bagType,
       returnCarrier,
       homePickupZipCodes,
+      mobileApp,
     });
     return NextResponse.json({ success: true });
   } catch (err) {

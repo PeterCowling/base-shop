@@ -1,9 +1,14 @@
 // apps/shop-abc/src/app/account/orders/[id]/page.tsx
 import { getCustomerSession, hasPermission } from "@auth";
 import { getOrdersForCustomer } from "@platform-core/orders";
-import { OrderTrackingTimeline, type OrderStep } from "@ui/components/organisms/OrderTrackingTimeline";
+import { getReturnLogistics } from "@platform-core/returnLogistics";
+import {
+  OrderTrackingTimeline,
+  type OrderStep,
+} from "@ui/components/organisms/OrderTrackingTimeline";
 import { redirect } from "next/navigation";
-import { useState } from "react";
+import QRCode from "qrcode";
+import { useEffect, useState } from "react";
 import shop from "../../../../../shop.json";
 
 export const metadata = { title: "Order details" };
@@ -38,6 +43,7 @@ export default async function Page({
   const order = orders.find((o) => o.id === params.id);
   if (!order) return <p className="p-6">Order not found.</p>;
   const steps = await getTracking(order.id);
+  const cfg = await getReturnLogistics();
   return (
     <div className="space-y-4 p-6">
       <h1 className="text-xl">Order {order.id}</h1>
@@ -45,6 +51,7 @@ export default async function Page({
         <OrderTrackingTimeline steps={steps} className="mt-2" />
       )}
       <StartReturn orderId={order.id} />
+      {cfg.mobileApp && <MobileReturnLink />}
     </div>
   );
 }
@@ -96,6 +103,23 @@ function StartReturn({ orderId }: { orderId: string }) {
       )}
       {result?.trackingNumber && <p>Tracking #: {result.trackingNumber}</p>}
       {error && <p className="text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+function MobileReturnLink() {
+  "use client";
+  const [qr, setQr] = useState<string | null>(null);
+  useEffect(() => {
+    const url = `${window.location.origin}/returns/mobile`;
+    QRCode.toDataURL(url).then(setQr).catch(console.error);
+  }, []);
+  return (
+    <div className="space-y-2">
+      <a href="/returns/mobile" className="text-blue-600 underline">
+        Return using mobile app
+      </a>
+      {qr && <img src={qr} alt="Mobile return QR" className="h-32 w-32" />}
     </div>
   );
 }

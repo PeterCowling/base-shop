@@ -5,6 +5,7 @@
   "themeId": "base",
   "themeOverrides": {},
   "filterMappings": {},
+  "showCleaningTransparency": true,
   "shippingProviders": ["dhl"],
   "taxProviders": ["taxjar"],
   "billingProvider": "stripe",

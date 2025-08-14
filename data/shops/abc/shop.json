@@ -5,6 +5,7 @@
   "themeId": "base",
   "themeOverrides": {},
   "filterMappings": {},
+  "showCleaningTransparency": true,
   "shippingProviders": ["ups", "premier-shipping"],
   "taxProviders": ["taxjar"],
   "premierDelivery": {

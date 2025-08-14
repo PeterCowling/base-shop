@@ -19,7 +19,7 @@
 
     /* ---------- misc ---------------------------------------------- */
     "allowImportingTsExtensions": false,
-    "types": ["react", "react-dom", "jest"]
+    "types": ["react", "react-dom", "jest", "@testing-library/jest-dom"]
   },
 
   /* ---------- project references (build order) -------------------- */

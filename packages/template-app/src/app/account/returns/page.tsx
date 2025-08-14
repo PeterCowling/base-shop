@@ -6,6 +6,8 @@ import { getShopSettings } from "@platform-core/repositories/settings.server";
 import React, { useEffect, useRef, useState } from "react";
 
 const SHOP_ID = "bcd";
+import CleaningInfo from "../../../components/CleaningInfo";
+import shop from "../../../../shop.json";
 
 export const metadata = { title: "Mobile Returns" };
 
@@ -20,7 +22,12 @@ export default async function ReturnsPage() {
   }
   const bagType = settings.returnService?.bagEnabled ? info.bagType : undefined;
   const tracking = info.tracking;
-  return <ReturnForm bagType={bagType} tracking={tracking} />;
+  return (
+    <>
+      <ReturnForm bagType={bagType} tracking={tracking} />
+      {shop.showCleaningTransparency && <CleaningInfo />}
+    </>
+  );
 }
 
 interface ReturnFormProps {

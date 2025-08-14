@@ -5,6 +5,8 @@ import {
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 const SHOP_ID = "bcd";
+import CleaningInfo from "../../../components/CleaningInfo";
+import shop from "../../../../shop.json";
 import { useEffect, useRef, useState } from "react";
 
 export const metadata = { title: "Mobile Returns" };
@@ -21,7 +23,12 @@ export default async function MobileReturnPage() {
   const allowed = settings.returnService?.homePickupEnabled
     ? info.homePickupZipCodes
     : [];
-  return <Scanner allowedZips={allowed} />;
+  return (
+    <>
+      <Scanner allowedZips={allowed} />
+      {shop.showCleaningTransparency && <CleaningInfo />}
+    </>
+  );
 }
 
 function Scanner({ allowedZips }: { allowedZips: string[] }) {

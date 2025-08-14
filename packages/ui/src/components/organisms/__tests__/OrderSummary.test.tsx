@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import OrderSummary from "../OrderSummary";
+import type { CartLine } from "@/lib/cartCookie";
 import { formatPrice } from "@acme/shared-utils";
 
 jest.mock("@ui/hooks/useCart", () => ({
@@ -14,13 +16,37 @@ describe("OrderSummary", () => {
   const format = (amount: number) => formatPrice(amount, "EUR");
 
   it("renders subtotal and deposit without tax or discount by default", () => {
-    const cart = {
-      "sku1": {
-        sku: { id: "sku1", title: "Item1", price: 10, deposit: 2 },
+    const cart: Record<string, CartLine> = {
+      sku1: {
+        sku: {
+          id: "sku1",
+          slug: "item1",
+          title: "Item1",
+          price: 10,
+          deposit: 2,
+          stock: 5,
+          forSale: true,
+          forRental: false,
+          media: [],
+          sizes: [],
+          description: "",
+        },
         qty: 1,
       },
-      "sku2": {
-        sku: { id: "sku2", title: "Item2", price: 5, deposit: 1 },
+      sku2: {
+        sku: {
+          id: "sku2",
+          slug: "item2",
+          title: "Item2",
+          price: 5,
+          deposit: 1,
+          stock: 5,
+          forSale: true,
+          forRental: false,
+          media: [],
+          sizes: [],
+          description: "",
+        },
         qty: 2,
       },
     };

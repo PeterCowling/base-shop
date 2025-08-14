@@ -11,6 +11,10 @@ import enMessages from "@i18n/en.json";
 import type { PageComponent } from "@acme/types";
 import React, { useEffect, useRef, useState } from "react";
 import { STORAGE_KEY } from "../configurator/hooks/useConfiguratorPersistence";
+import {
+  loadPreviewTokens,
+  PREVIEW_TOKENS_EVENT,
+} from "./previewTokens";
 
 interface Props {
   style: React.CSSProperties;
@@ -34,6 +38,10 @@ export default function WizardPreview({
     "desktop"
   );
   const [components, setComponents] = useState<PageComponent[]>([]);
+  const [themeStyle, setThemeStyle] = useState<React.CSSProperties>(() => ({
+    ...style,
+    ...loadPreviewTokens(),
+  }));
   const [highlight, setHighlight] = useState<HTMLElement | null>(null);
   const previewRef = useRef<HTMLDivElement | null>(null);
   const clickTimeoutRef = useRef<number | null>(null);
@@ -66,6 +74,26 @@ export default function WizardPreview({
   }, []);
 
   /* ------------------------------------------------------------------ */
+  /*                  Theme token subscription                           */
+  /* ------------------------------------------------------------------ */
+  useEffect(() => {
+    const handle = () => {
+      setThemeStyle((prev) => ({ ...prev, ...loadPreviewTokens() }));
+    };
+    handle();
+    window.addEventListener("storage", handle);
+    window.addEventListener(PREVIEW_TOKENS_EVENT, handle);
+    return () => {
+      window.removeEventListener("storage", handle);
+      window.removeEventListener(PREVIEW_TOKENS_EVENT, handle);
+    };
+  }, []);
+
+  useEffect(() => {
+    setThemeStyle((prev) => ({ ...prev, ...style }));
+  }, [style]);
+
+  /* ------------------------------------------------------------------ */
   /*                         Helpers                                    */
   /* ------------------------------------------------------------------ */
 
@@ -75,7 +103,7 @@ export default function WizardPreview({
     mobile: "375px",
   };
 
-  const containerStyle = { ...style, width: widthMap[viewport] };
+  const containerStyle = { ...themeStyle, width: widthMap[viewport] };
 
   /* ------------------------------------------------------------------ */
   /*                         Inspect mode                               */

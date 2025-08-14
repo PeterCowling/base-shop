@@ -40,7 +40,10 @@ export default function ColorInput({
   };
 
   return (
-    <label className={`flex flex-col gap-1 ${isOverridden ? "bg-amber-50" : ""}`}>
+    <label
+      data-token-key={name}
+      className={`flex flex-col gap-1 ${isOverridden ? "bg-amber-50" : ""}`}
+    >
       <span>{name}</span>
       <div className="flex items-center gap-2">
         <Input value={defaultValue} disabled />

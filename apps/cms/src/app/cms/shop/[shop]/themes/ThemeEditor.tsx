@@ -21,6 +21,7 @@ import {
 import { useThemePresets } from "./useThemePresets";
 import ColorInput from "./ColorInput";
 import WizardPreview from "../../../wizard/WizardPreview";
+import { savePreviewTokens } from "../../../wizard/previewTokens";
 
 interface Props {
   shop: string;
@@ -68,6 +69,11 @@ export default function ThemeEditor({
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const [previewTokens, setPreviewTokens] = useState<Record<string, string>>({
+    ...tokensByThemeState[initialTheme],
+    ...initialOverrides,
+  });
+  const debounceRef = useRef<number | null>(null);
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByThemeState[theme];
@@ -92,6 +98,16 @@ export default function ThemeEditor({
     setTheme(next);
     setOverrides({});
     setThemeDefaults(tokensByThemeState[next]);
+    schedulePreviewUpdate(tokensByThemeState[next]);
+  };
+
+  const schedulePreviewUpdate = (tokens: Record<string, string>) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+    debounceRef.current = window.setTimeout(() => {
+      setPreviewTokens(tokens);
+    }, 100);
   };
 
   const handleOverrideChange =
@@ -104,6 +120,8 @@ export default function ThemeEditor({
         } else {
           next[key] = value;
         }
+        const merged = { ...tokensByThemeState[theme], ...next };
+        schedulePreviewUpdate(merged);
         return next;
       });
     };
@@ -112,6 +130,8 @@ export default function ThemeEditor({
     setOverrides((prev) => {
       const next = { ...prev };
       delete next[key];
+      const merged = { ...tokensByThemeState[theme], ...next };
+      schedulePreviewUpdate(merged);
       return next;
     });
   };
@@ -119,7 +139,7 @@ export default function ThemeEditor({
   const handleTokenSelect = (token: string) => {
     const input = overrideRefs.current[token];
     if (!input) return;
-    input.scrollIntoView({ behavior: "smooth", block: "center" });
+    input.scrollIntoView?.({ behavior: "smooth", block: "center" });
     input.focus();
     (input as any).showPicker?.();
     if (!(input as any).showPicker) {
@@ -127,15 +147,18 @@ export default function ThemeEditor({
     }
   };
 
-  const previewStyle = useMemo(
-    () => ({ ...tokensByThemeState[theme], ...overrides } as CSSProperties),
-    [tokensByThemeState, theme, overrides]
-  );
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const ccc = new ColorContrastChecker();
     const baseTokens = tokensByThemeState[theme];
-    const merged = { ...baseTokens, ...overrides };
+    const merged = previewTokens;
     const textTokens = Object.keys(baseTokens).filter((k) =>
       /text|foreground/i.test(k),
     );
@@ -165,7 +188,11 @@ export default function ThemeEditor({
       });
     });
     setContrastWarnings(warnings);
-  }, [theme, overrides, tokensByThemeState]);
+  }, [theme, previewTokens, tokensByThemeState]);
+
+  useEffect(() => {
+    savePreviewTokens(previewTokens);
+  }, [previewTokens]);
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -242,7 +269,7 @@ export default function ThemeEditor({
         </div>
       )}
       <WizardPreview
-        style={previewStyle}
+        style={previewTokens as CSSProperties}
         inspectMode
         onTokenSelect={handleTokenSelect}
       />

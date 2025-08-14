@@ -41,6 +41,14 @@ export const devicePresets: DevicePreset[] = [
     orientation: "portrait",
   },
   {
+    id: "ipad-mini",
+    label: "iPad Mini",
+    width: 744,
+    height: 1133,
+    type: "tablet",
+    orientation: "portrait",
+  },
+  {
     id: "iphone-se",
     label: "iPhone SE",
     width: 375,
@@ -57,6 +65,30 @@ export const devicePresets: DevicePreset[] = [
     orientation: "portrait",
   },
   {
+    id: "iphone-14",
+    label: "iPhone 14",
+    width: 390,
+    height: 844,
+    type: "mobile",
+    orientation: "portrait",
+  },
+  {
+    id: "pixel-7",
+    label: "Pixel 7",
+    width: 412,
+    height: 915,
+    type: "mobile",
+    orientation: "portrait",
+  },
+  {
+    id: "galaxy-note",
+    label: "Galaxy Note",
+    width: 412,
+    height: 869,
+    type: "mobile",
+    orientation: "portrait",
+  },
+  {
     id: "galaxy-s8",
     label: "Galaxy S8",
     width: 360,
@@ -66,9 +98,10 @@ export const devicePresets: DevicePreset[] = [
   },
 ];
 
-export function getLegacyPreset(type: "desktop" | "tablet" | "mobile"): DevicePreset {
-  const preset =
-    devicePresets.find((p) => p.type === type) || devicePresets[0];
+export function getLegacyPreset(
+  type: "desktop" | "tablet" | "mobile"
+): DevicePreset {
+  const preset = devicePresets.find((p) => p.type === type) || devicePresets[0];
   return { ...preset };
 }
 

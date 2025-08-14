@@ -325,12 +325,10 @@ export async function updateUpsReturns(
 
 const premierDeliverySchema = z
   .object({
-    regions: z
-      .string()
-      .transform((v) => v.split(/\s*,\s*/).filter(Boolean)),
+    regions: z.array(z.string().min(1)).default([]),
     windows: z
-      .string()
-      .transform((v) => v.split(/\s*,\s*/).filter(Boolean)),
+      .array(z.string().regex(/^\d{2}-\d{2}$/))
+      .default([]),
   })
   .strict();
 
@@ -339,9 +337,19 @@ export async function updatePremierDelivery(
   formData: FormData
 ): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
   await ensureAuthorized();
-  const parsed = premierDeliverySchema.safeParse(
-    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
-  );
+  const data = {
+    regions: formData
+      .getAll("regions")
+      .map(String)
+      .map((v) => v.trim())
+      .filter(Boolean),
+    windows: formData
+      .getAll("windows")
+      .map(String)
+      .map((v) => v.trim())
+      .filter(Boolean),
+  };
+  const parsed = premierDeliverySchema.safeParse(data);
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }

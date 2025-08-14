@@ -1,4 +1,7 @@
 // packages/plugins/premier-shipping/index.ts
+//
+// Shops that do not offer luxury models can omit this plugin by removing
+// "premier-shipping" from their `shippingProviders` configuration.
 import type { Plugin, ShippingRegistry } from "@acme/platform-core/plugins";
 
 interface PremierPickupState {

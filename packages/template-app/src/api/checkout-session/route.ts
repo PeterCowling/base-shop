@@ -42,7 +42,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     taxRegion?: string;
     customer?: string;
     shipping?: Stripe.Checkout.SessionCreateParams.ShippingAddress;
-    billing_details?: Record<string, any>;
+    billing_details?: Stripe.Checkout.SessionCreateParams.PaymentIntentData.BillingDetails;
     coverage?: string[];
   };
 

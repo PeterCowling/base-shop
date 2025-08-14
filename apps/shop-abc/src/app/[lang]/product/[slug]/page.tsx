@@ -1,8 +1,9 @@
 // apps/shop-abc/src/app/[lang]/product/[slug]/page.tsx
-import { getProductBySlug } from "@/lib/products";
-import type { PageComponent } from "@acme/types";
+import type { SKU, ProductPublication, Locale, PageComponent } from "@acme/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { draftMode } from "next/headers";
+import { readRepo } from "@platform-core/repositories/json.server";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";
 import { fetchPublishedPosts } from "@acme/sanity";
@@ -21,6 +22,41 @@ async function loadComponents(slug: string): Promise<PageComponent[] | null> {
   return page?.components ?? null;
 }
 
+async function getProduct(
+  slug: string,
+  lang: Locale,
+  preview: boolean
+): Promise<SKU | null> {
+  const catalogue = await readRepo<ProductPublication>(shop.id);
+  const record = catalogue.find((p) => p.sku === slug || p.id === slug);
+  if (!record) return null;
+  if (!preview && record.status !== "active") return null;
+  const title =
+    record.title[lang] ?? record.title.en ?? Object.values(record.title)[0] ?? "";
+  const description =
+    record.description[lang] ??
+    record.description.en ??
+    Object.values(record.description)[0] ??
+    "";
+  return {
+    id: record.id,
+    slug: record.sku ?? record.id,
+    title,
+    price: record.price,
+    deposit: record.deposit ?? 0,
+    stock: 0,
+    forSale: record.forSale ?? true,
+    forRental: record.forRental ?? false,
+    dailyRate: record.dailyRate,
+    weeklyRate: record.weeklyRate,
+    monthlyRate: record.monthlyRate,
+    availability: record.availability ?? [],
+    media: record.media ?? [],
+    sizes: [],
+    description,
+  };
+}
+
 export async function generateStaticParams() {
   return LOCALES.flatMap((lang) =>
     ["green-sneaker", "sand-sneaker", "black-sneaker"].map((slug) => ({
@@ -32,12 +68,12 @@ export async function generateStaticParams() {
 
 export const revalidate = 60;
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}): Metadata {
-  const product = getProductBySlug(params.slug);
+  params: { slug: string; lang: string };
+}): Promise<Metadata> {
+  const product = await getProduct(params.slug, params.lang as Locale, false);
   return {
     title: product ? `${product.title} · Base-Shop` : "Product not found",
   };
@@ -48,7 +84,12 @@ export default async function ProductDetailPage({
 }: {
   params: { slug: string; lang: string };
 }) {
-  const product = getProductBySlug(params.slug);
+  const { isEnabled } = draftMode();
+  const product = await getProduct(
+    params.slug,
+    params.lang as Locale,
+    isEnabled
+  );
   if (!product) return notFound();
 
   const components = await loadComponents(params.slug);

@@ -164,4 +164,21 @@ describe("product actions", () => {
       expect(repo).toHaveLength(0);
     });
   });
+
+  it("promoteProduct advances status", async () => {
+    await withRepo(async () => {
+      const now = "2024-01-01T00:00:00.000Z";
+      jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
+      const actions = (await import(
+        "../src/actions/products.server"
+      )) as typeof import("../src/actions/products.server");
+
+      const draft = await actions.createDraftRecord("test");
+      const review = await actions.promoteProduct("test", draft.id);
+      expect(review.status).toBe("review");
+
+      const active = await actions.promoteProduct("test", draft.id);
+      expect(active.status).toBe("active");
+    });
+  });
 });

@@ -2,7 +2,7 @@
 import "@acme/lib/initZod";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import bcrypt from "bcryptjs";
+import argon2 from "argon2";
 import crypto from "crypto";
 import {
   getUserByResetToken,
@@ -20,7 +20,7 @@ export const ResetCompleteSchema = z
       .min(8, "Password must be at least 8 characters long")
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-        "Password must include uppercase, lowercase, and number",
+        "Password must include uppercase, lowercase, and number"
       ),
   })
   .strict();
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
   const parsed = await parseJsonBody<ResetCompleteInput>(
     req,
     ResetCompleteSchema,
-    "1mb",
+    "1mb"
   );
   if (!parsed.success) return parsed.response;
 
@@ -45,11 +45,11 @@ export async function POST(req: Request) {
   if (!user) {
     return NextResponse.json(
       { error: "Invalid or expired token" },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  const passwordHash = await argon2.hash(password);
   await updatePassword(user.id, passwordHash);
   await setResetToken(user.id, null, null);
   return NextResponse.json({ ok: true });

@@ -4,7 +4,7 @@
 import type { Role } from "@cms/auth/roles";
 import type { CmsUser } from "@cms/auth/users";
 import type { Permission } from "@auth";
-import bcrypt from "bcryptjs";
+import argon2 from "argon2";
 import { ulid } from "ulid";
 import { readRbac, writeRbac } from "../lib/rbacStore";
 
@@ -32,7 +32,7 @@ export async function inviteUser(formData: FormData): Promise<void> {
   const password = String(formData.get("password") ?? "");
   const roles = formData.getAll("roles") as Role[];
 
-  const hashed = await bcrypt.hash(password, 10);
+  const hashed = await argon2.hash(password);
   const id = ulid();
   const db = await readRbac();
   db.users[id] = { id, name, email, password: hashed };
@@ -40,9 +40,7 @@ export async function inviteUser(formData: FormData): Promise<void> {
   await writeRbac(db);
 }
 
-export async function updateRolePermissions(
-  formData: FormData
-): Promise<void> {
+export async function updateRolePermissions(formData: FormData): Promise<void> {
   const role = String(formData.get("role") ?? "") as Role;
   const permissions = formData.getAll("permissions") as Permission[];
   const db = await readRbac();

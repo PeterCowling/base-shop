@@ -2,7 +2,7 @@
 import "@acme/lib/initZod";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import bcrypt from "bcryptjs";
+import argon2 from "argon2";
 import crypto from "crypto";
 import {
   createUser,
@@ -24,7 +24,7 @@ const RegisterSchema = z
       .min(8, "Password must be at least 8 characters long")
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-        "Password must include uppercase, lowercase, and number",
+        "Password must include uppercase, lowercase, and number"
       ),
   })
   .strict();
@@ -52,10 +52,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "User already exists" }, { status: 400 });
   }
   if (await getUserByEmail(email)) {
-    return NextResponse.json({ error: "Email already registered" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Email already registered" },
+      { status: 400 }
+    );
   }
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  const passwordHash = await argon2.hash(password);
   await createUser({ id: customerId, email, passwordHash });
   await updateCustomerProfile(customerId, { name: "", email });
 
@@ -71,7 +74,7 @@ export async function POST(req: Request) {
   await sendEmail(
     email,
     "Verify your account",
-    `Your verification token is ${token}`,
+    `Your verification token is ${token}`
   );
 
   return NextResponse.json({ ok: true });

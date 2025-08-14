@@ -1,7 +1,7 @@
 // apps/cms/__tests__/accounts.test.ts
 /* eslint-env jest */
 
-import bcrypt from "bcryptjs";
+import argon2 from "argon2";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -55,7 +55,7 @@ describe("account actions", () => {
 
       const stored = pending[0];
       expect(stored.password).not.toBe("secret");
-      await expect(bcrypt.compare("secret", stored.password)).resolves.toBe(
+      await expect(argon2.verify(stored.password, "secret")).resolves.toBe(
         true
       );
     });

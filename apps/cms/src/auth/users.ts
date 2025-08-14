@@ -17,27 +17,31 @@ export const USERS: Record<string, CmsUser> = {
     name: "Viewer",
     email: "viewer@example.com",
     //password: "viewer",
-    password: "$2b$10$zrw7b.7IguK2cWtM83jgKOKe0YiM6BTzGI.S60J1nlanjPw7G5dt6",
+    password:
+      "$argon2id$v=19$m=65536,t=3,p=4$EJTukba6cgu3oddf7NWibw$925GwzuYHM9wGz+R+j8TDed1jF1sllCqEOyQ63g5Iw4",
   },
   shopAdmin: {
     id: "3",
     name: "Shop Admin",
     email: "shopadmin@example.com",
     //password: "shopadmin",
-    password: "$2b$10$iiBPVdzX6hr0R.9eOSN36uhBqt0iOIj6ecZlPA.NBpzswomxcTvfi",
+    password:
+      "$argon2id$v=19$m=65536,t=3,p=4$Qzzwz9iLHAK1XFp0gY8CaA$mRWqHTICaS4hB/E7TheLtyQjbmvzN2QKVuz0NnCKr+w",
   },
   catalogManager: {
     id: "4",
     name: "Catalog Manager",
     email: "catalogmanager@example.com",
     //password: "catalogmanager",
-    password: "$2b$10$bXz7QTWvPrn7okbbk58uDOJKBPJfPU6RI8F5HV4M5DnBFwSIbXi/y",
+    password:
+      "$argon2id$v=19$m=65536,t=3,p=4$1ie22pUv+lwFEJcQy15tHg$zJRHh2i3T5UpBpO0ffpDSnQbRpDwWh5bTqbCgLq22JE",
   },
   themeEditor: {
     id: "5",
     name: "Theme Editor",
     email: "themeeditor@example.com",
     //password: "themeeditor",
-    password: "$2b$10$XCLdGULFzVh56kw/oRP2husM07I1fPe0NqjIUxk9d2/PZBTwVIruK",
+    password:
+      "$argon2id$v=19$m=65536,t=3,p=4$XCickdgFmjP4faHZ2TCafA$x/vBXe/eGRdl3IgI1fNbb9RBXhOGpUGkJPsHbmV98Bw",
   },
 };

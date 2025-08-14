@@ -21,7 +21,7 @@ jest.mock("@acme/platform-core/customerProfiles", () => ({
   updateCustomerProfile: jest.fn(),
 }));
 
-jest.mock("bcryptjs", () => ({
+jest.mock("argon2", () => ({
   hash: jest.fn().mockResolvedValue("hashed"),
 }));
 
@@ -42,13 +42,13 @@ beforeAll(async () => {
 });
 
 function makeRequest(body: any, ip = "1.1.1.1") {
-    return {
-      json: async () => body,
-      headers: new Headers({
-        "x-forwarded-for": ip,
-        "x-csrf-token": "tok",
-      }),
-    } as any;
+  return {
+    json: async () => body,
+    headers: new Headers({
+      "x-forwarded-for": ip,
+      "x-csrf-token": "tok",
+    }),
+  } as any;
 }
 
 afterEach(async () => {
@@ -63,7 +63,7 @@ describe("registration rate limiting", () => {
           customerId: `cust${i}`,
           email: `test${i}@example.com`,
           password: "Str0ngPass",
-        }),
+        })
       );
       expect(res.status).toBe(200);
     }
@@ -73,7 +73,7 @@ describe("registration rate limiting", () => {
         customerId: "cust-final",
         email: "final@example.com",
         password: "Str0ngPass",
-      }),
+      })
     );
     expect(locked.status).toBe(429);
 
@@ -82,7 +82,7 @@ describe("registration rate limiting", () => {
         customerId: "cust-other",
         email: "other@example.com",
         password: "Str0ngPass",
-      }),
+      })
     );
     expect(stillLocked.status).toBe(429);
   });

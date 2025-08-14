@@ -1,6 +1,6 @@
 // apps/cms/src/auth/options.ts
 /* eslint-disable no-console */
-import bcrypt from "bcryptjs";
+import argon2 from "argon2";
 import type { NextAuthOptions } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
@@ -21,12 +21,12 @@ const secret = authSecret;
 
 interface Overrides {
   readRbac?: typeof defaultReadRbac;
-  bcryptCompare?: typeof bcrypt.compare;
+  argonVerify?: typeof argon2.verify;
 }
 
 export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
   const readRbac = overrides.readRbac ?? defaultReadRbac;
-  const bcryptCompare = overrides.bcryptCompare ?? bcrypt.compare;
+  const argonVerify = overrides.argonVerify ?? argon2.verify;
 
   return {
     secret,
@@ -53,13 +53,13 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
           /* -------------------------------------------------------------- */
           /*  Password check                                                */
           /*  - user.id === "1": plain‑text (dev fixture)                   */
-          /*  - everyone else : bcrypt                                      */
+          /*  - everyone else : argon2                                     */
           /* -------------------------------------------------------------- */
           const ok =
             user &&
             (user.id === "1"
               ? credentials.password === user.password
-              : await bcryptCompare(credentials.password, user.password));
+              : await argonVerify(user.password, credentials.password));
 
           if (ok && user) {
             /* Strip the password before returning */

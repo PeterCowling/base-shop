@@ -10,6 +10,8 @@ import {
   SelectValue,
 } from "@/components/atoms/shadcn";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { z } from "zod";
 import useStepCompletion from "../hooks/useStepCompletion";
 
 interface Props {
@@ -47,9 +49,60 @@ export default function StepShopDetails({
 }: Props): React.JSX.Element {
   const router = useRouter();
   const [, markComplete] = useStepCompletion("shop-details");
+  const [validationErrors, setValidationErrors] = useState<Record<string, string[]>>({});
+
+  const schema = z
+    .object({
+      id: z
+        .string()
+        .min(1, "Required")
+        .regex(/^[a-z0-9-]+$/, {
+          message: "Lowercase letters, numbers, and dashes only",
+        }),
+      name: z.string().min(1, "Required"),
+      logo: z.string().url("Invalid URL"),
+      contactInfo: z.string().min(1, "Required"),
+      type: z.enum(["sale", "rental"]),
+      template: z.string().min(1, "Required"),
+    })
+    .strict();
+
+  useEffect(() => {
+    const parsed = schema.safeParse({
+      id: shopId,
+      name: storeName,
+      logo,
+      contactInfo,
+      type,
+      template,
+    });
+    if (!parsed.success) {
+      setValidationErrors(parsed.error.flatten().fieldErrors);
+    } else {
+      setValidationErrors({});
+    }
+  }, [shopId, storeName, logo, contactInfo, type, template]);
+
+  const getError = (field: string) =>
+    validationErrors[field]?.[0] || errors[field]?.[0];
+
+  const isValid = Object.keys(validationErrors).length === 0;
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Shop Details</h2>
+      <div className="flex items-center gap-2 rounded border p-2">
+        {logo ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={logo}
+            alt="Logo preview"
+            className="h-8 w-8 object-contain"
+          />
+        ) : (
+          <div className="h-8 w-8 bg-gray-200" />
+        )}
+        <span>{storeName || "Store Name"}</span>
+      </div>
       <label className="flex flex-col gap-1">
         <span>Shop ID</span>
         <Input
@@ -57,8 +110,8 @@ export default function StepShopDetails({
           onChange={(e) => setShopId(e.target.value)}
           placeholder="my-shop"
         />
-        {errors.id && (
-          <p className="text-sm text-red-600">{errors.id[0]}</p>
+        {getError("id") && (
+          <p className="text-sm text-red-600">{getError("id")}</p>
         )}
       </label>
       <label className="flex flex-col gap-1">
@@ -68,8 +121,8 @@ export default function StepShopDetails({
           onChange={(e) => setStoreName(e.target.value)}
           placeholder="My Store"
         />
-        {errors.name && (
-          <p className="text-sm text-red-600">{errors.name[0]}</p>
+        {getError("name") && (
+          <p className="text-sm text-red-600">{getError("name")}</p>
         )}
       </label>
       <label className="flex flex-col gap-1">
@@ -79,8 +132,8 @@ export default function StepShopDetails({
           onChange={(e) => setLogo(e.target.value)}
           placeholder="https://example.com/logo.png"
         />
-        {errors.logo && (
-          <p className="text-sm text-red-600">{errors.logo[0]}</p>
+        {getError("logo") && (
+          <p className="text-sm text-red-600">{getError("logo")}</p>
         )}
       </label>
       <label className="flex flex-col gap-1">
@@ -90,8 +143,8 @@ export default function StepShopDetails({
           onChange={(e) => setContactInfo(e.target.value)}
           placeholder="Email or phone"
         />
-        {errors.contactInfo && (
-          <p className="text-sm text-red-600">{errors.contactInfo[0]}</p>
+        {getError("contactInfo") && (
+          <p className="text-sm text-red-600">{getError("contactInfo")}</p>
         )}
       </label>
       <label className="flex flex-col gap-1">
@@ -105,8 +158,8 @@ export default function StepShopDetails({
             <SelectItem value="rental">Rental</SelectItem>
           </SelectContent>
         </Select>
-        {errors.type && (
-          <p className="text-sm text-red-600">{errors.type[0]}</p>
+        {getError("type") && (
+          <p className="text-sm text-red-600">{getError("type")}</p>
         )}
       </label>
       <label className="flex flex-col gap-1">
@@ -123,10 +176,13 @@ export default function StepShopDetails({
             ))}
           </SelectContent>
         </Select>
+        {getError("template") && (
+          <p className="text-sm text-red-600">{getError("template")}</p>
+        )}
       </label>
       <div className="flex justify-end">
         <Button
-          disabled={!shopId}
+          disabled={!isValid}
           onClick={() => {
             markComplete(true);
             router.push("/cms/configurator");

@@ -8,6 +8,8 @@ import path from "node:path";
 import { z } from "zod";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { setupSanityBlog } from "@cms/actions/setupSanityBlog";
+import { getShopById } from "@platform-core/src/repositories/shop.server";
+import { getEditorialBlog } from "@platform-core/src/shops";
 import { parseJsonBody } from "@shared-utils";
 
 const schema = z.record(z.string(), z.string());
@@ -36,13 +38,21 @@ export async function POST(
       data.SANITY_DATASET &&
       data.SANITY_TOKEN
     ) {
-      await setupSanityBlog({
-        projectId: data.SANITY_PROJECT_ID,
-        dataset: data.SANITY_DATASET,
-        token: data.SANITY_TOKEN,
-      }).catch((err) => {
-        console.error("[env] failed to setup Sanity blog", err);
-      });
+      const shop = await getShopById(shopId);
+      const editorial = getEditorialBlog(shop);
+      if (editorial?.enabled) {
+        await setupSanityBlog(
+          {
+            projectId: data.SANITY_PROJECT_ID,
+            dataset: data.SANITY_DATASET,
+            token: data.SANITY_TOKEN,
+          },
+          "public",
+          editorial,
+        ).catch((err) => {
+          console.error("[env] failed to setup Sanity blog", err);
+        });
+      }
     }
     return NextResponse.json({ success: true });
   } catch (err) {

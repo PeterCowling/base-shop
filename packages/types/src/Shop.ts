@@ -42,6 +42,15 @@ export const sanityBlogConfigSchema = z
 
 export type SanityBlogConfig = z.infer<typeof sanityBlogConfigSchema>;
 
+export const editorialBlogConfigSchema = z
+  .object({
+    enabled: z.boolean(),
+    promoteSchedule: z.string().optional(),
+  })
+  .strict();
+
+export type EditorialBlogConfig = z.infer<typeof editorialBlogConfigSchema>;
+
 export const shopDomainSchema = z
   .object({
     name: z.string(),
@@ -85,6 +94,7 @@ export const shopSchema = z
       .array(z.object({ label: z.string(), url: z.string() }).strict())
       .optional(),
     sanityBlog: sanityBlogConfigSchema.optional(),
+    editorialBlog: editorialBlogConfigSchema.optional(),
     domain: shopDomainSchema.optional(),
     analyticsEnabled: z.boolean().optional(),
     lastUpgrade: z.string().datetime().optional(),

@@ -3,7 +3,7 @@
 
 import { verifyCredentials } from "@acme/plugin-sanity";
 import { getShopById, updateShopInRepo } from "@platform-core/src/repositories/shop.server";
-import { setSanityConfig } from "@platform-core/src/shops";
+import { setSanityConfig, getEditorialBlog } from "@platform-core/src/shops";
 import { ensureAuthorized } from "./common/auth";
 import { setupSanityBlog } from "./setupSanityBlog";
 
@@ -25,10 +25,14 @@ export async function saveSanityConfig(
 
   const config = { projectId, dataset, token };
 
+  const shop = await getShopById(shopId);
+  const editorial = getEditorialBlog(shop);
+
   if (createDataset) {
     const setup = await setupSanityBlog(
       config,
       aclMode as "public" | "private",
+      editorial,
     );
     if (!setup.success) {
       return {
@@ -43,7 +47,6 @@ export async function saveSanityConfig(
     }
   }
 
-  const shop = await getShopById(shopId);
   const updated = setSanityConfig(shop, config);
   await updateShopInRepo(shopId, updated);
 

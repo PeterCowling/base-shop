@@ -2,7 +2,7 @@ import { saveSanityConfig } from "../src/actions/saveSanityConfig";
 import { verifyCredentials } from "@acme/plugin-sanity";
 import { setupSanityBlog } from "../src/actions/setupSanityBlog";
 import { getShopById, updateShopInRepo } from "@platform-core/src/repositories/shop.server";
-import { setSanityConfig } from "@platform-core/src/shops";
+import { setSanityConfig, getEditorialBlog } from "@platform-core/src/shops";
 
 jest.mock("../src/actions/common/auth", () => ({
   ensureAuthorized: jest.fn(),
@@ -23,11 +23,13 @@ jest.mock("@platform-core/src/repositories/shop.server", () => ({
 
 jest.mock("@platform-core/src/shops", () => ({
   setSanityConfig: jest.fn(),
+  getEditorialBlog: jest.fn(),
 }));
 
 describe("saveSanityConfig", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    (getEditorialBlog as jest.Mock).mockReturnValue({ enabled: true });
   });
 
   it("verifies credentials and saves config when using existing dataset", async () => {
@@ -92,6 +94,7 @@ describe("saveSanityConfig", () => {
         token: "t",
       },
       "public",
+      { enabled: true },
     );
     expect(setSanityConfig).toHaveBeenCalledWith({ id: "shop" }, {
       projectId: "p",

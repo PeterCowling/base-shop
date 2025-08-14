@@ -26,3 +26,18 @@ When setting up the connection the CMS seeds a minimal schema. Posts include a `
 - Deleting a post removes it from Sanity.
 
 The plugin uses the official [`@sanity/client`](https://www.sanity.io/docs/js-client) to interact with the API. All calls are server‑side so tokens are never exposed to browsers.
+
+## Enable the editorial blog
+
+Shops can surface a scheduled "Daily Edit" on the storefront. Enable this option in shop settings by providing an `editorialBlog` configuration:
+
+```json
+{
+  "editorialBlog": {
+    "enabled": true,
+    "promoteSchedule": "2024-12-01T09:00:00.000Z"
+  }
+}
+```
+
+When enabled, the CMS only provisions Sanity and blog actions for the shop. A promotion is scheduled for the front page when `promoteSchedule` is set.

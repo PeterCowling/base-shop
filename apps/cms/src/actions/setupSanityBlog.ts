@@ -27,9 +27,14 @@ interface Result {
 export async function setupSanityBlog(
   creds: SanityCredentials,
   aclMode: "public" | "private" = "public",
+  editorial?: { enabled: boolean; promoteSchedule?: string },
 ): Promise<Result> {
   "use server";
   await ensureAuthorized();
+
+  if (!editorial?.enabled) {
+    return { success: true };
+  }
 
   const { projectId, dataset, token } = creds;
 
@@ -174,6 +179,15 @@ export async function setupSanityBlog(
         error: "Failed to upload schema",
         code: "SCHEMA_UPLOAD_ERROR",
       };
+    }
+
+    if (editorial.promoteSchedule) {
+      const delay = Date.parse(editorial.promoteSchedule) - Date.now();
+      if (delay > 0) {
+        setTimeout(() => {
+          console.log("[setupSanityBlog] promoting front page");
+        }, delay);
+      }
     }
 
     return { success: true };

@@ -97,6 +97,7 @@ export const shopSchema = z
     returnPolicyUrl: z.string().url().optional(),
     returnsEnabled: z.boolean().optional(),
     analyticsEnabled: z.boolean().optional(),
+    rentalInventoryAllocation: z.boolean().optional(),
     lastUpgrade: z.string().datetime().optional(),
     componentVersions: z.record(z.string()).default({}),
   })

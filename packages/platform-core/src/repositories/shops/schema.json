@@ -48,7 +48,8 @@
     "localeOverrides": {
       "type": "object",
       "additionalProperties": { "type": "string" }
-    }
+    },
+    "rentalInventoryAllocation": { "type": "boolean" }
   },
   "additionalProperties": false
 }

@@ -46,6 +46,7 @@ export async function createShop(
     localeOverrides: {},
     navigation: prepared.navItems,
     analyticsEnabled: prepared.analytics?.enabled ?? false,
+    rentalInventoryAllocation: false,
     shippingProviders: prepared.shipping,
     taxProviders: [prepared.tax],
     paymentProviders: prepared.payment,

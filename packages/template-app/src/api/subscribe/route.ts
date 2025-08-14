@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
         user.stripeSubscriptionId,
         {
           items: [{ price: priceId }],
-          // @ts-ignore - `prorate` is deprecated but required for this flow
+          // `prorate` is deprecated but required for this flow
           prorate: true,
         },
       );
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     const sub = await stripe.subscriptions.create({
       customer: userId,
       items: [{ price: priceId }],
-      // @ts-ignore - `prorate` is deprecated but required for this flow
+      // `prorate` is deprecated but required for this flow
       prorate: true,
       metadata: { userId, shop: SHOP_ID },
     });

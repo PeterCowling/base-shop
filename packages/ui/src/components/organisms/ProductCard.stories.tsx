@@ -12,7 +12,13 @@ const product: SKU = {
   stock: 0,
   forSale: true,
   forRental: false,
-  media: [{ url: "https://placehold.co/300x300", type: "image" }],
+  media: [
+    {
+      url: "https://placehold.co/300x300",
+      type: "image",
+      altText: "Sample product",
+    },
+  ],
   sizes: [],
   description: "",
 };

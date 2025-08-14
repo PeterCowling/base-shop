@@ -1,3 +1,5 @@
+import "@acme/lib/initZod";
+
 import { stripe } from "@acme/stripe";
 import { computeDamageFee } from "@platform-core/pricing";
 import {
@@ -7,14 +9,23 @@ import {
 import { readShop } from "@platform-core/repositories/shops.server";
 
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { parseJsonBody } from "@shared-utils";
 
 export const runtime = "edge";
 
+const RentalSchema = z.object({ sessionId: z.string() }).strict();
+const ReturnSchema = z
+  .object({
+    sessionId: z.string(),
+    damage: z.union([z.string(), z.number()]).optional(),
+  })
+  .strict();
+
 export async function POST(req: NextRequest) {
-  const { sessionId } = (await req.json()) as { sessionId?: string };
-  if (!sessionId) {
-    return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
-  }
+  const parsed = await parseJsonBody(req, RentalSchema, "1mb");
+  if (!parsed.success) return parsed.response;
+  const { sessionId } = parsed.data;
   const session = await stripe.checkout.sessions.retrieve(sessionId);
   const deposit = Number(session.metadata?.depositTotal ?? 0);
   const expected = session.metadata?.returnDate || undefined;
@@ -23,13 +34,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  const { sessionId, damage } = (await req.json()) as {
-    sessionId?: string;
-    damage?: string | number;
-  };
-  if (!sessionId) {
-    return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
-  }
+  const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
+  if (!parsed.success) return parsed.response;
+  const { sessionId, damage } = parsed.data;
   const order = await markReturned("bcd", sessionId);
   if (!order) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });

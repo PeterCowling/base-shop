@@ -2,7 +2,12 @@
 
 "use client";
 
-import { Button } from "@/components/atoms";
+import {
+  Button,
+  Popover,
+  PopoverAnchor,
+  PopoverContent,
+} from "@/components/atoms";
 import { blockRegistry } from "@/components/cms/blocks";
 import { Footer, Header, SideNav } from "@/components/organisms";
 import { AppShell } from "@/components/templates/AppShell";
@@ -64,9 +69,18 @@ export default function WizardPreview({
     ...style,
     ...loadPreviewTokens(),
   }));
-  const [highlight, setHighlight] = useState<HTMLElement | null>(null);
+  const [hoverEl, setHoverEl] = useState<HTMLElement | null>(null);
+  const [selected, setSelected] = useState<{
+    el: HTMLElement;
+    token: string;
+  } | null>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [popoverPos, setPopoverPos] = useState<{ x: number; y: number } | null>(
+    null
+  );
+  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const tokenElsRef = useRef<HTMLElement[]>([]);
   const previewRef = useRef<HTMLDivElement | null>(null);
-  const clickTimeoutRef = useRef<number | null>(null);
 
   /* ------------------------------------------------------------------ */
   /*             Sync wizard state from localStorage                    */
@@ -132,56 +146,110 @@ export default function WizardPreview({
   /* ------------------------------------------------------------------ */
 
   useEffect(() => {
-    if (!highlight) return;
-    const prev = highlight.style.outline;
-    highlight.style.outline = "2px solid #3b82f6";
+    if (!hoverEl || selected?.el === hoverEl) return;
+    const prev = hoverEl.style.outline;
+    hoverEl.style.outline = "2px solid #3b82f6";
     return () => {
-      highlight.style.outline = prev;
+      hoverEl.style.outline = prev;
     };
-  }, [highlight]);
+  }, [hoverEl, selected]);
 
   useEffect(() => {
+    if (!selected || !popoverOpen) return;
+    const el = selected.el;
+    const prevOutline = el.style.outline;
+    const prevAnimation = el.style.animation;
+    el.style.outline = "2px solid #3b82f6";
+    el.style.animation = "wizard-outline 1s ease-in-out infinite";
     return () => {
-      if (clickTimeoutRef.current) {
-        clearTimeout(clickTimeoutRef.current);
-      }
+      el.style.outline = prevOutline;
+      el.style.animation = prevAnimation;
+    };
+  }, [selected, popoverOpen]);
+
+  useEffect(() => {
+    const styleEl = document.createElement("style");
+    styleEl.textContent =
+      "@keyframes wizard-outline{0%,100%{outline-color:#3b82f6;}50%{outline-color:#93c5fd;}}";
+    document.head.appendChild(styleEl);
+    return () => {
+      document.head.removeChild(styleEl);
     };
   }, []);
 
+  useEffect(() => {
+    if (!inspectMode || !previewRef.current) return;
+    tokenElsRef.current = Array.from(
+      previewRef.current.querySelectorAll("[data-token]")
+    ) as HTMLElement[];
+  }, [components, inspectMode]);
+
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!inspectMode || clickTimeoutRef.current) return;
+    if (!inspectMode || popoverOpen) return;
     const el = (e.target as HTMLElement).closest("[data-token]") as
       | HTMLElement
       | null;
-    setHighlight(el);
+    setHoverEl(el);
   };
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!inspectMode) return;
-    const el = (e.target as HTMLElement).closest("[data-token]");
+    const el = (e.target as HTMLElement).closest("[data-token]") as
+      | HTMLElement
+      | null;
     if (!el) return;
     e.preventDefault();
     e.stopPropagation();
-    setHighlight(el as HTMLElement);
     const token = el.getAttribute("data-token");
-    if (token) {
-      const rect = (el as HTMLElement).getBoundingClientRect();
-      const coords = { x: rect.left + rect.width / 2, y: rect.bottom };
-      onTokenSelect?.(token, coords);
-    }
-    if (clickTimeoutRef.current) {
-      clearTimeout(clickTimeoutRef.current);
-    }
-    clickTimeoutRef.current = window.setTimeout(() => {
-      clickTimeoutRef.current = null;
-      setHighlight(null);
-    }, 1000);
+    if (!token) return;
+    const rect = el.getBoundingClientRect();
+    setSelected({ el, token });
+    setPopoverPos({ x: rect.left + rect.width / 2, y: rect.bottom });
+    setPopoverOpen(true);
+    const idx = tokenElsRef.current.indexOf(el);
+    if (idx >= 0) setSelectedIndex(idx);
   };
 
   const handleLeave = () => {
-    if (!inspectMode || clickTimeoutRef.current) return;
-    setHighlight(null);
+    if (!inspectMode || popoverOpen) return;
+    setHoverEl(null);
   };
+
+  const selectByIndex = (idx: number) => {
+    const els = tokenElsRef.current;
+    if (!els.length) return;
+    const el = els[idx];
+    const token = el.getAttribute("data-token");
+    if (!token) return;
+    const rect = el.getBoundingClientRect();
+    setSelected({ el, token });
+    setPopoverPos({ x: rect.left + rect.width / 2, y: rect.bottom });
+    setPopoverOpen(true);
+    setSelectedIndex(idx);
+  };
+
+  useEffect(() => {
+    if (!inspectMode) return;
+    const keyHandler = (e: KeyboardEvent) => {
+      if (e.altKey && e.key === "ArrowRight") {
+        e.preventDefault();
+        const next =
+          selectedIndex + 1 < tokenElsRef.current.length
+            ? selectedIndex + 1
+            : 0;
+        selectByIndex(next);
+      } else if (e.altKey && e.key === "ArrowLeft") {
+        e.preventDefault();
+        const prev =
+          selectedIndex - 1 >= 0
+            ? selectedIndex - 1
+            : tokenElsRef.current.length - 1;
+        selectByIndex(prev);
+      }
+    };
+    window.addEventListener("keydown", keyHandler);
+    return () => window.removeEventListener("keydown", keyHandler);
+  }, [inspectMode, selectedIndex]);
 
   /** Renders a single block component */
   function Block({ component }: { component: PageComponent }) {
@@ -276,6 +344,41 @@ export default function WizardPreview({
           </AppShell>
         </TranslationsProvider>
       </div>
+      {selected && popoverPos && (
+        <Popover
+          open={popoverOpen}
+          onOpenChange={(o) => {
+            setPopoverOpen(o);
+            if (!o) {
+              setSelected(null);
+              setSelectedIndex(-1);
+            }
+          }}
+        >
+          <PopoverAnchor asChild>
+            <div
+              style={{
+                position: "fixed",
+                left: popoverPos.x,
+                top: popoverPos.y,
+              }}
+            />
+          </PopoverAnchor>
+          <PopoverContent side="top" align="center">
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs">{selected.token}</span>
+              <Button
+                size="sm"
+                onClick={() =>
+                  onTokenSelect?.(selected.token, popoverPos)
+                }
+              >
+                Jump to editor
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
+      )}
     </div>
   );
 }

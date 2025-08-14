@@ -12,7 +12,7 @@ import * as path from "node:path";
 import { randomBytes, createHash } from "node:crypto";
 import { getComponentNameMap } from "./component-names";
 import { generateExampleProps } from "./generate-example-props";
-import type { PageRecord, ShopMetadata } from "./types";
+import type { Page, ShopMetadata } from "@acme/types";
 
 const args = process.argv.slice(2);
 const rollback = args.includes("--rollback");
@@ -90,7 +90,7 @@ const pageIds = new Set<string>();
 if (existsSync(pagesJsonPath)) {
   try {
     const parsed = JSON.parse(readFileSync(pagesJsonPath, "utf8"));
-    const pages: PageRecord[] = Array.isArray(parsed) ? parsed : [];
+    const pages: Page[] = Array.isArray(parsed) ? parsed : [];
     const changedTypes = new Set(changedComponents.map((c) => c.componentName));
     for (const page of pages) {
       if (!Array.isArray(page.components)) continue;

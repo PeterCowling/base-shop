@@ -10,3 +10,12 @@ export const upgradeComponentSchema = z
   .strict();
 
 export type UpgradeComponent = z.infer<typeof upgradeComponentSchema>;
+
+export const shopMetadataSchema = z
+  .object({
+    lastUpgrade: z.string().datetime().optional(),
+    componentVersions: z.record(z.string()).optional(),
+  })
+  .catchall(z.unknown());
+
+export type ShopMetadata = z.infer<typeof shopMetadataSchema>;

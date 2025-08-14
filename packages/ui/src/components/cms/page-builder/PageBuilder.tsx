@@ -54,6 +54,12 @@ const PageBuilder = memo(function PageBuilder({
   onChange,
   style,
 }: Props) {
+  const formDataRef = useRef<FormData | null>(null);
+  const handleSaveShortcut = useCallback(() => {
+    if (formDataRef.current) {
+      void onSave(formDataRef.current);
+    }
+  }, [onSave]);
   const {
     state,
     components,
@@ -64,7 +70,15 @@ const PageBuilder = memo(function PageBuilder({
     setGridCols,
     liveMessage,
     clearHistory,
-  } = usePageBuilderState({ page, history: historyProp, onChange });
+  } = usePageBuilderState({
+    page,
+    history: historyProp,
+    onChange,
+    onSaveShortcut: handleSaveShortcut,
+    onTogglePreview: () => setShowPreview((p) => !p),
+    onRotateDevice: () =>
+      setOrientation((o) => (o === "portrait" ? "landscape" : "portrait")),
+  });
 
   const [deviceId, setDeviceId] = usePreviewDevice(devicePresets[0].id);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">(
@@ -228,6 +242,9 @@ const PageBuilder = memo(function PageBuilder({
     fd.append("history", JSON.stringify(state));
     return fd;
   }, [page, components, state]);
+  useEffect(() => {
+    formDataRef.current = formData;
+  }, [formData]);
 
   const handleAutoSave = useCallback(() => {
     setAutoSaveState("saving");

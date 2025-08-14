@@ -52,6 +52,7 @@ interface Options {
   name?: string;
   logo?: string;
   contactInfo?: string;
+  subscriptions?: boolean;
 }
 
 function parseArgs(argv: string[]): [string, Options, boolean, boolean] {
@@ -76,6 +77,7 @@ function parseArgs(argv: string[]): [string, Options, boolean, boolean] {
     template: "template-app",
     payment: [],
     shipping: [],
+    subscriptions: false,
   };
 
   let themeProvided = false;
@@ -115,6 +117,9 @@ function parseArgs(argv: string[]): [string, Options, boolean, boolean] {
         break;
       case "contact":
         opts.contactInfo = val;
+        break;
+      case "subscriptions":
+        opts.subscriptions = val !== "false";
         break;
       default:
         console.error(`Unknown option ${key}`);

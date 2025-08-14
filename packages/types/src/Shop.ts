@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { localeSchema } from "./Product";
+import { subscriptionPlanSchema } from "./SubscriptionPlan";
 
 export const shopSeoFieldsSchema = z
   .object({
@@ -99,6 +100,7 @@ export const shopSchema = z
     analyticsEnabled: z.boolean().optional(),
     lastUpgrade: z.string().datetime().optional(),
     componentVersions: z.record(z.string()).default({}),
+    rentalSubscriptions: z.array(subscriptionPlanSchema).default([]),
   })
   .strict();
 

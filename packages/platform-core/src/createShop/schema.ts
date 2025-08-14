@@ -48,6 +48,7 @@ export const createShopOptionsSchema = z
       .optional(),
     sanityBlog: sanityBlogConfigSchema.optional(),
     enableEditorial: z.boolean().optional(),
+    subscriptions: z.boolean().optional(),
     navItems: z.array(navItemSchema).default([]),
     pages: z
       .array(
@@ -126,5 +127,6 @@ export function prepareOptions(
     checkoutPage: parsed.checkoutPage,
     sanityBlog: parsed.sanityBlog,
     enableEditorial: parsed.enableEditorial ?? false,
+    subscriptions: parsed.subscriptions ?? false,
   };
 }

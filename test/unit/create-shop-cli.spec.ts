@@ -37,6 +37,7 @@ describe("parseArgs", () => {
       template: "template-app",
       payment: [],
       shipping: [],
+      subscriptions: false,
     });
   });
 
@@ -58,6 +59,7 @@ describe("parseArgs", () => {
       template: "tpl",
       payment: ["p1", "p2"],
       shipping: ["s1"],
+      subscriptions: false,
     });
   });
 

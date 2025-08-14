@@ -7,7 +7,7 @@ import { join } from "path";
 function parseArgs(argv) {
     const id = argv[0];
     if (!id) {
-        console.error("Usage: pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--payment=p1,p2] [--shipping=s1,s2] [--template=name]");
+        console.error("Usage: pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--payment=p1,p2] [--shipping=s1,s2] [--template=name] [--subscriptions]");
         process.exit(1);
     }
     const opts = {
@@ -16,6 +16,7 @@ function parseArgs(argv) {
         template: "template-app",
         payment: [],
         shipping: [],
+        subscriptions: false,
     };
     let themeProvided = false;
     argv.slice(1).forEach((arg) => {
@@ -43,6 +44,9 @@ function parseArgs(argv) {
                 break;
             case "shipping":
                 opts.shipping = val.split(",").filter(Boolean);
+                break;
+            case "subscriptions":
+                opts.subscriptions = val !== "false";
                 break;
             default:
                 console.error(`Unknown option ${key}`);

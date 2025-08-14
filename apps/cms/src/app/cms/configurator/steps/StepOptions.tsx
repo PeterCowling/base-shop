@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { providersByType } from "@acme/configurator/providers";
 
 export default function StepOptions(): React.JSX.Element {
   const { state, update } = useConfigurator();
@@ -32,14 +33,20 @@ export default function StepOptions(): React.JSX.Element {
   const searchParams = useSearchParams();
   const [, markComplete] = useStepCompletion("options");
 
+  const paymentProviders = providersByType("payment");
+  const paymentIds = paymentProviders.map((p) => p.id);
+  const shippingProviders = providersByType("shipping");
+  const shippingIds = shippingProviders.map((p) => p.id);
+  const analyticsProviders = providersByType("analytics");
+
   useEffect(() => {
     const provider = searchParams.get("connected");
     if (!provider) return;
 
-    if (["stripe", "paypal"].includes(provider) && !payment.includes(provider)) {
+    if (paymentIds.includes(provider) && !payment.includes(provider)) {
       setPayment([...payment, provider]);
     }
-    if (["dhl", "ups"].includes(provider) && !shipping.includes(provider)) {
+    if (shippingIds.includes(provider) && !shipping.includes(provider)) {
       setShipping([...shipping, provider]);
     }
 
@@ -61,41 +68,29 @@ export default function StepOptions(): React.JSX.Element {
       </p>
       <div>
         <p className="font-medium">Payment Providers</p>
-        <div className="flex items-center gap-2 text-sm">
-          Stripe
-          {payment.includes("stripe") ? (
-            <Button disabled>Connected</Button>
-          ) : (
-            <Button onClick={() => connect("stripe")}>Connect</Button>
-          )}
-        </div>
-        <div className="flex items-center gap-2 text-sm">
-          PayPal
-          {payment.includes("paypal") ? (
-            <Button disabled>Connected</Button>
-          ) : (
-            <Button onClick={() => connect("paypal")}>Connect</Button>
-          )}
-        </div>
+        {paymentProviders.map((p) => (
+          <div key={p.id} className="flex items-center gap-2 text-sm">
+            {p.name}
+            {payment.includes(p.id) ? (
+              <Button disabled>Connected</Button>
+            ) : (
+              <Button onClick={() => connect(p.id)}>Connect</Button>
+            )}
+          </div>
+        ))}
       </div>
       <div>
         <p className="font-medium">Shipping Providers</p>
-        <div className="flex items-center gap-2 text-sm">
-          DHL
-          {shipping.includes("dhl") ? (
-            <Button disabled>Connected</Button>
-          ) : (
-            <Button onClick={() => connect("dhl")}>Connect</Button>
-          )}
-        </div>
-        <div className="flex items-center gap-2 text-sm">
-          UPS
-          {shipping.includes("ups") ? (
-            <Button disabled>Connected</Button>
-          ) : (
-            <Button onClick={() => connect("ups")}>Connect</Button>
-          )}
-        </div>
+        {shippingProviders.map((p) => (
+          <div key={p.id} className="flex items-center gap-2 text-sm">
+            {p.name}
+            {shipping.includes(p.id) ? (
+              <Button disabled>Connected</Button>
+            ) : (
+              <Button onClick={() => connect(p.id)}>Connect</Button>
+            )}
+          </div>
+        ))}
       </div>
       <div>
         <p className="font-medium">Analytics</p>
@@ -108,7 +103,11 @@ export default function StepOptions(): React.JSX.Element {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="none">None</SelectItem>
-            <SelectItem value="ga">Google Analytics</SelectItem>
+            {analyticsProviders.map((p) => (
+              <SelectItem key={p.id} value={p.id}>
+                {p.name}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
         {analyticsProvider === "ga" && (

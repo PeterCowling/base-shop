@@ -8,6 +8,7 @@ import type {
   SetStateAction,
 } from "react";
 import { jsonFieldHandler, ErrorSetter } from "../utils/formValidators";
+import type { Provider } from "@acme/configurator/providers";
 
 interface Props {
   info: Shop;
@@ -16,6 +17,7 @@ interface Props {
   setTrackingProviders: Dispatch<SetStateAction<string[]>>;
   errors: Record<string, string[]>;
   setErrors: ErrorSetter;
+  shippingProviders: Provider[];
 }
 
 export default function SEOSettings({
@@ -25,6 +27,7 @@ export default function SEOSettings({
   setTrackingProviders,
   errors,
   setErrors,
+  shippingProviders,
 }: Props) {
   const handleFilters = (e: ChangeEvent<HTMLInputElement>) => {
     setInfo((prev) => ({
@@ -69,8 +72,11 @@ export default function SEOSettings({
           onChange={handleTracking}
           className="border p-2"
         >
-          <option value="ups">UPS</option>
-          <option value="dhl">DHL</option>
+          {shippingProviders.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.name}
+            </option>
+          ))}
         </select>
         {errors.trackingProviders && (
           <span className="text-sm text-red-600">

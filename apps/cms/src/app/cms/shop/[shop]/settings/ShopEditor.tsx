@@ -10,6 +10,7 @@ import GeneralSettings from "./GeneralSettings";
 import SEOSettings from "./SEOSettings";
 import ThemeTokens from "./ThemeTokens";
 import OverridesSettings from "./OverridesSettings";
+import { providersByType } from "@acme/configurator/providers";
 
 export { default as GeneralSettings } from "./GeneralSettings";
 export { default as SEOSettings } from "./SEOSettings";
@@ -29,6 +30,8 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
   );
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+
+  const shippingProviders = providersByType("shipping");
 
   const tokenRows = useMemo(() => {
     const defaults = info.themeDefaults ?? {};
@@ -93,6 +96,7 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
         setTrackingProviders={setTrackingProviders}
         errors={errors}
         setErrors={setErrors}
+        shippingProviders={shippingProviders}
       />
       <ThemeTokens
         shop={shop}

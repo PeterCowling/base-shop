@@ -21,7 +21,9 @@ describe("ShopEditor", () => {
       localeOverrides: {},
     };
 
-    render(<ShopEditor shop="shop" initial={initial} />);
+    render(
+      <ShopEditor shop="shop" initial={initial} initialTrackingProviders={[]} />,
+    );
 
     fireEvent.change(screen.getByLabelText(/theme tokens/i), {
       target: { value: "{invalid" },

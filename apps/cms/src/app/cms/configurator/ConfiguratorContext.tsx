@@ -9,6 +9,8 @@ import {
 } from "../wizard/schema";
 import { useConfiguratorPersistence } from "./hooks/useConfiguratorPersistence";
 import ConfiguratorStatusBar from "./ConfiguratorStatusBar";
+import { calculateConfiguratorProgress } from "./lib/progress";
+import { useLayout } from "@platform-core/contexts/LayoutContext";
 
 export interface ConfiguratorContextValue {
   state: WizardState;
@@ -32,6 +34,7 @@ export function ConfiguratorProvider({
 }): React.JSX.Element {
   const [state, setState] = useState<WizardState>(wizardStateSchema.parse({}));
   const [dirty, setDirty] = useState(false);
+  const { setConfiguratorProgress } = useLayout();
 
   const resetDirty = () => setDirty(false);
 
@@ -65,6 +68,12 @@ export function ConfiguratorProvider({
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
   }, [dirty]);
+
+  useEffect(() => {
+    setConfiguratorProgress(calculateConfiguratorProgress(state.completed));
+  }, [state.completed, setConfiguratorProgress]);
+
+  useEffect(() => () => setConfiguratorProgress(undefined), [setConfiguratorProgress]);
 
   return (
     <ConfiguratorContext.Provider

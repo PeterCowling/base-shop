@@ -191,7 +191,11 @@ const PageBuilder = memo(function PageBuilder({
   return (
     <div className="flex gap-4" style={style}>
       <aside className="w-48 shrink-0">
-        <Palette />
+        <Palette
+          components={components}
+          dispatch={dispatch}
+          selectId={setSelectedId}
+        />
       </aside>
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex items-center justify-between">

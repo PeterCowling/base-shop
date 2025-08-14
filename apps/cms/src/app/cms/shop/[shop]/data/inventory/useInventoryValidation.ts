@@ -6,15 +6,19 @@ import { expandInventoryItem } from "@platform-core/utils/inventory";
  * @returns parsed items on success or an error message on failure.
  */
 export function validateInventoryItems(items: InventoryItem[]) {
-  const normalized = items.map((i) => expandInventoryItem(i));
-  const parsed = inventoryItemSchema.array().safeParse(normalized);
-  if (!parsed.success) {
-    return {
-      success: false as const,
-      error: parsed.error.issues.map((i) => i.message).join(", "),
-    };
+  try {
+    const normalized = items.map((i) => expandInventoryItem(i));
+    const parsed = inventoryItemSchema.array().safeParse(normalized);
+    if (!parsed.success) {
+      return {
+        success: false as const,
+        error: parsed.error.issues.map((i) => i.message).join(", "),
+      };
+    }
+    return { success: true as const, data: parsed.data };
+  } catch (err) {
+    return { success: false as const, error: (err as Error).message };
   }
-  return { success: true as const, data: parsed.data };
 }
 
 /**

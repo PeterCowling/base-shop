@@ -128,7 +128,11 @@ To send analytics events to Google Analytics and record aggregates:
 
 Ensure these API keys are kept secret and that the app has write access to the data directory for storing aggregates.
 
-## 7. Deposit release service
+## 7. Shipment tracking providers
+
+Configure supported tracking providers in **CMS → Settings**. Select one or more carriers like UPS or DHL to enable order tracking in the storefront. Leaving all providers unselected disables tracking entirely, which is useful for rental or high-volume shops where shipment updates are unnecessary.
+
+## 8. Deposit release service
 
 Rental shops that collect deposits can automate refunds when items are returned. Run the process once with:
 
@@ -143,7 +147,7 @@ To keep it running on a schedule, import `startDepositReleaseService` from `@acm
 
 See [doc/machine.md](./machine.md#deposit-release-service) for more details and configuration options.
 
-## 8. Troubleshooting
+## 9. Troubleshooting
 
 - **"Theme 'X' not found" or "Template 'Y' not found"** – ensure the names match directories in `packages/themes` or `packages/`.
 - **`validate-env` fails** – verify `apps/shop-<id>/.env` contains all variables listed in the error. Missing values will stop the script.

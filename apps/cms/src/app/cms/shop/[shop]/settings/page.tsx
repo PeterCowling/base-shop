@@ -167,7 +167,11 @@ export default async function SettingsPage({
       </p>
       {isAdmin && (
         <div className="mt-6">
-          <ShopEditor shop={shop} initial={info} />
+          <ShopEditor
+            shop={shop}
+            initial={info}
+            initialTrackingProviders={settings.trackingProviders ?? []}
+          />
           <div className="mt-6">
             <CurrencyTaxEditor
               shop={shop}

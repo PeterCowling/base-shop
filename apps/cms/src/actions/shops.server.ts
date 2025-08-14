@@ -35,11 +35,12 @@ export async function updateShop(
   const current = await getShopById<Shop>(shop);
   if (current.id !== id) throw new Error(`Shop ${id} not found in ${shop}`);
 
-  const parsed = shopSchema.safeParse(
-    Object.fromEntries(
+  const parsed = shopSchema.safeParse({
+    ...Object.fromEntries(
       formData as unknown as Iterable<[string, FormDataEntryValue]>
-    )
-  );
+    ),
+    trackingProviders: formData.getAll("trackingProviders"),
+  });
   if (!parsed.success) {
     console.error(
       `[updateShop] validation failed for shop ${shop}`,
@@ -75,6 +76,14 @@ export async function updateShop(
   };
 
   const saved = await updateShopInRepo(shop, patch);
+
+  const settings = await getShopSettings(shop);
+  const updatedSettings: ShopSettings = {
+    ...settings,
+    trackingProviders: data.trackingProviders,
+  };
+  await saveShopSettings(shop, updatedSettings);
+
   return { shop: saved };
 }
 

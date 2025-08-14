@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type Stripe from "stripe";
 
 export const addressSchema = z
   .object({
@@ -19,7 +20,9 @@ export const shippingSchema = z
   })
   .strict();
 
-export const billingSchema = z
+export const billingSchema: z.ZodType<
+  Stripe.Checkout.SessionCreateParams.PaymentIntentData.BillingDetails
+> = z
   .object({
     name: z.string(),
     email: z.string().email(),
@@ -30,5 +33,6 @@ export const billingSchema = z
 
 export type Address = z.infer<typeof addressSchema>;
 export type Shipping = z.infer<typeof shippingSchema>;
-export type Billing = z.infer<typeof billingSchema>;
+export type Billing =
+  Stripe.Checkout.SessionCreateParams.PaymentIntentData.BillingDetails;
 

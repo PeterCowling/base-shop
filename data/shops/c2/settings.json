@@ -7,6 +7,10 @@
     "enabled": false,
     "intervalMinutes": 60
   },
+  "reverseLogisticsService": {
+    "enabled": false,
+    "intervalMinutes": 60
+  },
   "returnService": { "upsEnabled": false },
   "seo": {
     "aiCatalog": {

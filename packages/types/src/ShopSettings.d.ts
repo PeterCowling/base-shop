@@ -102,6 +102,16 @@ export declare const shopSettingsSchema: z.ZodObject<{
         enabled: boolean;
         intervalMinutes: number;
     }>>;
+    reverseLogisticsService: z.ZodOptional<z.ZodObject<{
+        enabled: z.ZodBoolean;
+        intervalMinutes: z.ZodNumber;
+    }, "strip", z.ZodTypeAny, {
+        enabled: boolean;
+        intervalMinutes: number;
+    }, {
+        enabled: boolean;
+        intervalMinutes: number;
+    }>>;
     returnService: z.ZodOptional<z.ZodObject<{
         upsEnabled: z.ZodBoolean;
     }, "strip", z.ZodTypeAny, {
@@ -157,6 +167,10 @@ export declare const shopSettingsSchema: z.ZodObject<{
         enabled: boolean;
         intervalMinutes: number;
     } | undefined;
+    reverseLogisticsService?: {
+        enabled: boolean;
+        intervalMinutes: number;
+    } | undefined;
     returnService?: {
         upsEnabled: boolean;
     } | undefined;
@@ -197,6 +211,10 @@ export declare const shopSettingsSchema: z.ZodObject<{
     currency?: string | undefined;
     taxRegion?: string | undefined;
     depositService?: {
+        enabled: boolean;
+        intervalMinutes: number;
+    } | undefined;
+    reverseLogisticsService?: {
         enabled: boolean;
         intervalMinutes: number;
     } | undefined;

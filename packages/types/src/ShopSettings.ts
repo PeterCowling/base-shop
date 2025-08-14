@@ -49,6 +49,13 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    reverseLogisticsService: z
+      .object({
+        enabled: z.boolean(),
+        intervalMinutes: z.number().int().positive(),
+      })
+      .strict()
+      .optional(),
     returnService: z
       .object({
         upsEnabled: z.boolean(),

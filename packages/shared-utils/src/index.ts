@@ -6,3 +6,4 @@ export { getCsrfToken } from "./getCsrfToken";
 export { parseJsonBody } from "./parseJsonBody";
 export { jsonFieldHandler, type ErrorSetter } from "./jsonFieldHandler";
 export { formatCurrency } from "./formatCurrency";
+export { formatPrice } from "./formatPrice";

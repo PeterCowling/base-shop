@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import type { CartState } from "@/lib/cartCookie";
 import OrderSummary from "../src/components/organisms/OrderSummary";
 import { useCart } from "@ui/hooks/useCart";
+import { formatPrice } from "@acme/shared-utils";
 
 jest.mock("@ui/hooks/useCart", () => ({
   useCart: jest.fn(),
@@ -9,12 +10,7 @@ jest.mock("@ui/hooks/useCart", () => ({
 
 jest.mock("../src/components/atoms/Price", () => ({
   Price: ({ amount }: { amount: number }) => (
-    <span>
-      {new Intl.NumberFormat(undefined, {
-        style: "currency",
-        currency: "EUR",
-      }).format(amount)}
-    </span>
+    <span>{formatPrice(amount, "EUR")}</span>
   ),
 }));
 
@@ -67,11 +63,7 @@ describe("OrderSummary", () => {
     expect(screen.getByText("2", { selector: "td" })).toBeInTheDocument();
     expect(screen.getByText("1", { selector: "td" })).toBeInTheDocument();
 
-    const fmt = (n: number) =>
-      new Intl.NumberFormat(undefined, {
-        style: "currency",
-        currency: "EUR",
-      }).format(n);
+    const fmt = (n: number) => formatPrice(n, "EUR");
 
     // per-item totals
     expect(screen.getAllByText(fmt(20)).length).toBe(2);

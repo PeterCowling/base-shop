@@ -95,6 +95,8 @@
       "@acme/stripe": ["packages/stripe/src/index.ts"],
       "@acme/sanity": ["packages/sanity/src/index.ts"],
       "@acme/date-utils": ["packages/date-utils/src/index.ts"],
+      "@acme/shared-utils": ["packages/shared-utils/src/index.ts"],
+      "@acme/shared-utils/*": ["packages/shared-utils/src/*"],
 
       /* ─── shared runtime types ──────────────────────────────────── */
       "@acme/types": ["packages/types/src/index.ts"],

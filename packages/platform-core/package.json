@@ -21,6 +21,7 @@
     "@acme/email": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "better-sqlite3": "^12.2.0",
+    "pino": "^9.9.0",
     "zod": "^3.25.67"
   },
   "peerDependencies": {

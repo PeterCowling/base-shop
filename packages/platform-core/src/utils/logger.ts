@@ -1,49 +1,25 @@
+import pino from "pino";
+
 export interface LogMeta {
   [key: string]: unknown;
 }
 
-type LogLevel = "error" | "warn" | "info" | "debug";
-
-const levelPriority: Record<LogLevel, number> = {
-  error: 0,
-  warn: 1,
-  info: 2,
-  debug: 3,
-};
-
-const envLevel = process.env.LOG_LEVEL as LogLevel | undefined;
-const currentLevel = levelPriority[envLevel ?? "info"] ?? levelPriority.info;
-
-function log(level: LogLevel, message: string, meta: LogMeta = {}) {
-  if (levelPriority[level] <= currentLevel) {
-    const output = { level, message, ...meta };
-    switch (level) {
-      case "error":
-        console.error(output);
-        break;
-      case "warn":
-        console.warn(output);
-        break;
-      case "debug":
-        console.debug(output);
-        break;
-      default:
-        console.info(output);
-    }
-  }
-}
+const baseLogger = pino({
+  level: process.env.LOG_LEVEL ?? "info",
+});
 
 export const logger = {
   error(message: string, meta: LogMeta = {}) {
-    log("error", message, meta);
+    baseLogger.error(meta, message);
   },
   warn(message: string, meta: LogMeta = {}) {
-    log("warn", message, meta);
+    baseLogger.warn(meta, message);
   },
   info(message: string, meta: LogMeta = {}) {
-    log("info", message, meta);
+    baseLogger.info(meta, message);
   },
   debug(message: string, meta: LogMeta = {}) {
-    log("debug", message, meta);
+    baseLogger.debug(meta, message);
   },
 };
+

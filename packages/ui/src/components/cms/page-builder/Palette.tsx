@@ -3,7 +3,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { PageComponent } from "@acme/types";
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import {
   atomRegistry,
   moleculeRegistry,
@@ -56,13 +56,31 @@ const PaletteItem = memo(function PaletteItem({
   icon,
   description,
   previewImage,
-}: PaletteMeta) {
+  onAdd,
+}: PaletteMeta & {
+  onAdd: (type: PageComponent["type"], label: string) => void;
+}) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
       id: type,
       data: { from: "palette", type },
     });
   const [open, setOpen] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
+
+  useEffect(() => {
+    if (!announcement) return;
+    const t = setTimeout(() => setAnnouncement(""), 500);
+    return () => clearTimeout(t);
+  }, [announcement]);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onAdd(type, label);
+      setAnnouncement(`${label} added`);
+    }
+  };
 
   const content = (
     <div
@@ -77,6 +95,7 @@ const PaletteItem = memo(function PaletteItem({
       className="flex cursor-grab items-center gap-2 rounded border p-2 text-sm"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
+      onKeyDown={handleKeyDown}
     >
       <img
         src={icon}
@@ -89,26 +108,44 @@ const PaletteItem = memo(function PaletteItem({
     </div>
   );
 
-  if (!description && !previewImage) return content;
+  const wrapped = (
+    <>
+      {content}
+      <span className="sr-only" aria-live="polite">
+        {announcement}
+      </span>
+    </>
+  );
+
+  if (!description && !previewImage) return wrapped;
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>{content}</PopoverTrigger>
-      <PopoverContent className="w-64 space-y-2 text-sm">
-        {previewImage && (
-          <img
-            src={previewImage}
-            alt=""
-            className="w-full rounded"
-            loading="lazy"
-          />
-        )}
-        {description && <p>{description}</p>}
-      </PopoverContent>
-    </Popover>
+    <>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>{content}</PopoverTrigger>
+        <PopoverContent className="w-64 space-y-2 text-sm">
+          {previewImage && (
+            <img
+              src={previewImage}
+              alt=""
+              className="w-full rounded"
+              loading="lazy"
+            />
+          )}
+          {description && <p>{description}</p>}
+        </PopoverContent>
+      </Popover>
+      <span className="sr-only" aria-live="polite">
+        {announcement}
+      </span>
+    </>
   );
 });
-const Palette = memo(function Palette() {
+const Palette = memo(function Palette({
+  onAdd,
+}: {
+  onAdd: (type: PageComponent["type"], label: string) => void;
+}) {
   const [search, setSearch] = useState("");
 
   return (
@@ -138,6 +175,7 @@ const Palette = memo(function Palette() {
                   icon={p.icon}
                   description={p.description}
                   previewImage={p.previewImage}
+                  onAdd={onAdd}
                 />
               ))}
             </div>

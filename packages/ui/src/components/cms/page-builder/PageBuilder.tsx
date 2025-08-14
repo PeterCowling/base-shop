@@ -24,6 +24,7 @@ import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES } from "./defaults";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+import { ulid } from "ulid";
 
 interface Props {
   page: Page;
@@ -127,6 +128,26 @@ const PageBuilder = memo(function PageBuilder({
     setSnapPosition,
   });
 
+  const handleAddFromPalette = useCallback(
+    (type: PageComponent["type"]) => {
+      const isContainer = CONTAINER_TYPES.includes(type);
+      const component = {
+        id: ulid(),
+        type,
+        ...(defaults[type] ?? {}),
+        ...(isContainer ? { children: [] } : {}),
+      } as PageComponent;
+      dispatch({
+        type: "add",
+        component,
+        parentId: undefined,
+        index: components.length,
+      });
+      setSelectedId(component.id);
+    },
+    [dispatch, components.length, setSelectedId]
+  );
+
   const { viewportStyle, frameClass } = useViewport(device);
 
   useEffect(() => {
@@ -203,7 +224,7 @@ const PageBuilder = memo(function PageBuilder({
   return (
     <div className="flex gap-4" style={style}>
       <aside className="w-48 shrink-0">
-        <Palette />
+        <Palette onAdd={handleAddFromPalette} />
       </aside>
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex items-center justify-between">

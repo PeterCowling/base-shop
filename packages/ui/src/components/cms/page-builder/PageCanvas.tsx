@@ -9,55 +9,59 @@ import { cn } from "../../../utils/style";
 import type { DevicePreset } from "@ui/utils/devicePresets";
 import GridOverlay from "./GridOverlay";
 import SnapLine from "./SnapLine";
+import Block from "./Block";
 
 interface Props {
   components: PageComponent[];
-  selectedId: string | null;
-  onSelectId: (id: string | null) => void;
-  canvasRef: React.RefObject<HTMLDivElement>;
-  dragOver: boolean;
-  setDragOver: (v: boolean) => void;
-  onFileDrop: (e: DragEvent<HTMLDivElement>) => void;
-  insertIndex: number | null;
-  dispatch: (action: Action) => void;
+  selectedId?: string | null;
+  onSelectId?: (id: string | null) => void;
+  canvasRef?: React.RefObject<HTMLDivElement>;
+  dragOver?: boolean;
+  setDragOver?: (v: boolean) => void;
+  onFileDrop?: (e: DragEvent<HTMLDivElement>) => void;
+  insertIndex?: number | null;
+  dispatch?: (action: Action) => void;
   locale: Locale;
   containerStyle: CSSProperties;
   showGrid?: boolean;
-  gridCols: number;
+  gridCols?: number;
   viewport: "desktop" | "tablet" | "mobile";
-  snapPosition: number | null;
+  snapPosition?: number | null;
   device?: DevicePreset;
+  preview?: boolean;
 }
 
 const PageCanvas = ({
   components,
-  selectedId,
-  onSelectId,
+  selectedId = null,
+  onSelectId = () => {},
   canvasRef,
-  dragOver,
-  setDragOver,
-  onFileDrop,
-  insertIndex,
-  dispatch,
+  dragOver = false,
+  setDragOver = () => {},
+  onFileDrop = () => {},
+  insertIndex = null,
+  dispatch = () => {},
   locale,
   containerStyle,
   showGrid = false,
-  gridCols,
+  gridCols = 1,
   viewport,
-  snapPosition,
+  snapPosition = null,
   device,
+  preview = false,
 }: Props) => {
   const [dropRect, setDropRect] = useState<
     { left: number; top: number; width: number; height: number } | null
   >(null);
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    if (preview) return;
     e.preventDefault();
     setDragOver(true);
     const target = (e.target as HTMLElement).closest(
       '[role="listitem"], #canvas'
     );
-    if (target instanceof HTMLElement && canvasRef.current) {
+    if (target instanceof HTMLElement && canvasRef?.current) {
       const canvasBounds = canvasRef.current.getBoundingClientRect();
       const rect = target.getBoundingClientRect();
       setDropRect({
@@ -75,6 +79,21 @@ const PageCanvas = ({
     setDragOver(false);
     setDropRect(null);
   };
+
+  if (preview) {
+    return (
+      <div
+        id="canvas"
+        ref={canvasRef}
+        style={containerStyle}
+        className="relative mx-auto flex flex-col gap-4"
+      >
+        {components.map((c) => (
+          <Block key={c.id} component={c} locale={locale} />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <SortableContext

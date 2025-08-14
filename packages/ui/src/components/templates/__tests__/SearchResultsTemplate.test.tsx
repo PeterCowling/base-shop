@@ -1,8 +1,9 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { SearchResultsTemplate } from "./SearchResultsTemplate";
+import "@testing-library/jest-dom";
+import { SearchResultsTemplate } from "../SearchResultsTemplate";
 import type { SKU } from "@acme/types";
-import "../../../../../test/resetNextMocks";
+import "../../../../../../test/resetNextMocks";
 
 jest.mock("@platform-core/src/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],

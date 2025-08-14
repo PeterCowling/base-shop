@@ -1,18 +1,19 @@
 "use client";
 
 import type { Locale } from "@/i18n/locales";
-import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { EditorContent } from "@tiptap/react";
 import type { PageComponent } from "@acme/types";
-import { memo, useRef } from "react";
-import type { Action } from "./state";
-import Block from "./Block";
-import TextBlock from "./TextBlock";
+import { memo, useCallback, useRef, useState } from "react";
+import DOMPurify from "dompurify";
+import MenuBar from "./MenuBar";
+import useTextEditor from "./useTextEditor";
 import useSortableBlock from "./useSortableBlock";
 import useCanvasResize from "./useCanvasResize";
 import useCanvasDrag from "./useCanvasDrag";
+import type { Action } from "./state";
 
-const CanvasItem = memo(function CanvasItem({
+const TextBlock = memo(function TextBlock({
   component,
   index,
   parentId,
@@ -37,24 +38,6 @@ const CanvasItem = memo(function CanvasItem({
   gridCols: number;
   viewport: "desktop" | "tablet" | "mobile";
 }) {
-  if (component.type === "Text") {
-    return (
-      <TextBlock
-        component={component}
-        index={index}
-        parentId={parentId}
-        selectedId={selectedId}
-        onSelectId={onSelectId}
-        onRemove={onRemove}
-        dispatch={dispatch}
-        locale={locale}
-        gridEnabled={gridEnabled}
-        gridCols={gridCols}
-        viewport={viewport}
-      />
-    );
-  }
-
   const selected = selectedId === component.id;
   const {
     attributes,
@@ -62,11 +45,10 @@ const CanvasItem = memo(function CanvasItem({
     setNodeRef,
     transform,
     isDragging,
-    setDropRef,
-    isOver,
   } = useSortableBlock(component.id, index, parentId);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const [editing, setEditing] = useState(false);
 
   const widthKey =
     viewport === "desktop"
@@ -111,6 +93,7 @@ const CanvasItem = memo(function CanvasItem({
     gridEnabled,
     gridCols,
     containerRef,
+    disabled: editing,
   });
 
   const {
@@ -123,6 +106,7 @@ const CanvasItem = memo(function CanvasItem({
     gridEnabled,
     gridCols,
     containerRef,
+    disabled: editing,
   });
 
   const guides =
@@ -131,10 +115,24 @@ const CanvasItem = memo(function CanvasItem({
       : dragGuides;
   const snapping = resizeSnapping || dragSnapping;
 
-  const hasChildren = Array.isArray((component as any).children);
-  const childIds = hasChildren
-    ? ((component as any).children as PageComponent[]).map((c) => c.id)
-    : [];
+  const editor = useTextEditor(component, locale, editing);
+
+  const finishEdit = useCallback(() => {
+    if (!editor) return;
+    dispatch({
+      type: "update",
+      id: component.id,
+      patch: {
+        text: {
+          ...(typeof (component as any).text === "object"
+            ? (component as any).text
+            : {}),
+          [locale]: editor.getHTML(),
+        },
+      } as Partial<PageComponent>,
+    });
+    setEditing(false);
+  }, [editor, dispatch, component.id, locale, component]);
 
   return (
     <div
@@ -145,7 +143,6 @@ const CanvasItem = memo(function CanvasItem({
       onClick={() => onSelectId(component.id)}
       role="listitem"
       aria-grabbed={isDragging}
-      aria-dropeffect="move"
       tabIndex={0}
       style={{
         transform: CSS.Transform.toString(transform),
@@ -174,7 +171,7 @@ const CanvasItem = memo(function CanvasItem({
         onPointerDown={(e) => {
           e.stopPropagation();
           onSelectId(component.id);
-          if (component.position === "absolute") startDrag(e);
+          startDrag(e);
         }}
       />
       {(guides.x !== null || guides.y !== null) && (
@@ -193,7 +190,36 @@ const CanvasItem = memo(function CanvasItem({
           )}
         </div>
       )}
-      <Block component={component} locale={locale} />
+      {editing ? (
+        <div onBlur={finishEdit} onClick={(e) => e.stopPropagation()}>
+          <MenuBar editor={editor} />
+          <EditorContent
+            editor={editor}
+            className="min-h-[1rem] outline-none"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                finishEdit();
+              }
+            }}
+          />
+        </div>
+      ) : (
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            setEditing(true);
+            onSelectId(component.id);
+          }}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(
+              typeof (component as any).text === "string"
+                ? (component as any).text
+                : (component as any).text?.[locale] ?? ""
+            ),
+          }}
+        />
+      )}
       {selected && (
         <>
           <div
@@ -224,48 +250,8 @@ const CanvasItem = memo(function CanvasItem({
           ×
         </span>
       </button>
-      {hasChildren && (
-        <SortableContext
-          id={`context-${component.id}`}
-          items={childIds}
-          strategy={rectSortingStrategy}
-        >
-          <div
-            ref={setDropRef}
-            id={`container-${component.id}`}
-            role="list"
-            aria-dropeffect="move"
-            className="m-2 flex flex-col gap-4 border border-dashed border-muted p-2"
-          >
-            {isOver && (
-              <div
-                data-testid="drop-placeholder"
-                className="h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10"
-              />
-            )}
-            {(component as any).children.map(
-              (child: PageComponent, i: number) => (
-                <CanvasItem
-                  key={child.id}
-                  component={child}
-                  index={i}
-                  parentId={component.id}
-                  selectedId={selectedId}
-                  onSelectId={onSelectId}
-                  onRemove={() => dispatch({ type: "remove", id: child.id })}
-                  dispatch={dispatch}
-                  locale={locale}
-                  gridEnabled={gridEnabled}
-                  gridCols={gridCols}
-                  viewport={viewport}
-                />
-              )
-            )}
-          </div>
-        </SortableContext>
-      )}
     </div>
   );
 });
 
-export default CanvasItem;
+export default TextBlock;

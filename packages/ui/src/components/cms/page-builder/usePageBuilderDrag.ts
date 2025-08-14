@@ -11,6 +11,7 @@ import { ulid } from "ulid";
 import { useCallback } from "react";
 import type { PageComponent } from "@acme/types";
 import type { Action } from "./state";
+import { snapToGrid } from "./gridSnap";
 
 interface Params {
   components: PageComponent[];
@@ -21,9 +22,6 @@ interface Params {
   selectId: (id: string) => void;
   gridSize?: number;
 }
-
-export const snapToGrid = (value: number, gridSize: number) =>
-  Math.round(value / gridSize) * gridSize;
 
 export function usePageBuilderDrag({
   components,

@@ -34,3 +34,5 @@ export { default as PageCanvas } from "./PageCanvas";
 export { default as PageSidebar } from "./PageSidebar";
 export { historyStateSchema, reducer } from "./state";
 export { default as usePageBuilderDrag } from "./usePageBuilderDrag";
+export { default as useCanvasDrag } from "./useCanvasDrag";
+export { default as useCanvasResize } from "./useCanvasResize";

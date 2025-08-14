@@ -211,30 +211,39 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     (paymentIntentData as any).billing_details = billing_details;
   }
 
-  const session = await stripe.checkout.sessions.create(
-    {
-      mode: "payment",
-      customer,
-      line_items,
-      success_url: `${req.nextUrl.origin}/success`,
-      cancel_url: `${req.nextUrl.origin}/cancelled`,
-      payment_intent_data: paymentIntentData,
-      metadata: {
-        subtotal: String(subtotal),
-        depositTotal: String(depositTotal),
-        returnDate: returnDate ?? "",
-        rentalDays: String(rentalDays),
-        sizes: sizesMeta,
-        discount: String(discount),
-        coupon: couponDef?.code ?? "",
-        currency,
-        taxRate: String(taxRate),
-        taxAmount: String(taxAmount),
+  let session: Stripe.Checkout.Session;
+  try {
+    session = await stripe.checkout.sessions.create(
+      {
+        mode: "payment",
+        customer,
+        line_items,
+        success_url: `${req.nextUrl.origin}/success`,
+        cancel_url: `${req.nextUrl.origin}/cancelled`,
+        payment_intent_data: paymentIntentData,
+        metadata: {
+          subtotal: String(subtotal),
+          depositTotal: String(depositTotal),
+          returnDate: returnDate ?? "",
+          rentalDays: String(rentalDays),
+          sizes: sizesMeta,
+          discount: String(discount),
+          coupon: couponDef?.code ?? "",
+          currency,
+          taxRate: String(taxRate),
+          taxAmount: String(taxAmount),
+        },
+        expand: ["payment_intent"],
       },
-      expand: ["payment_intent"],
-    },
-    { headers: { "Stripe-Client-IP": clientIp } }
-  );
+      { headers: { "Stripe-Client-IP": clientIp } }
+    );
+  } catch (error) {
+    console.error("Failed to create Stripe checkout session", error);
+    return NextResponse.json(
+      { error: "Checkout failed" },
+      { status: 502 }
+    );
+  }
 
   /* 6  Return client credentials ----------------------------------- */
   const clientSecret =

@@ -19,6 +19,8 @@ const mutableEnv = process.env as unknown as Record<string, string>;
 mutableEnv.NODE_ENV ||= "development"; // relax “edge” runtime checks
 mutableEnv.CART_COOKIE_SECRET ||= "test-cart-secret"; // cart cookie signing
 mutableEnv.STRIPE_WEBHOOK_SECRET ||= "whsec_test"; // dummy Stripe webhook secret
+mutableEnv.NEXTAUTH_SECRET ||= "test-nextauth-secret";
+mutableEnv.SESSION_SECRET ||= "test-session-secret";
 
 /* -------------------------------------------------------------------------- */
 /* 2.  Polyfills missing from the JSDOM / Node test runtime                    */

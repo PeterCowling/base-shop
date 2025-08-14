@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import PdpClient from "./PdpClient.client";
 import { getStructuredData, serializeJsonLd } from "../../../../lib/seo";
-import CleaningInfo from "../../../../components/CleaningInfo";
+import { CleaningInfo } from "../../../../components/CleaningInfo";
 import shop from "../../../../../shop.json";
 
 export async function generateStaticParams() {

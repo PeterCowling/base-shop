@@ -1,6 +1,6 @@
 import cleaning from "../../../../data/rental/cleaning.json";
 
-export default function CleaningInfo() {
+export function CleaningInfo() {
   return (
     <section className="space-y-4">
       <h2 className="text-lg font-semibold">Cleaning Information</h2>
@@ -15,3 +15,5 @@ export default function CleaningInfo() {
     </section>
   );
 }
+
+export default CleaningInfo;

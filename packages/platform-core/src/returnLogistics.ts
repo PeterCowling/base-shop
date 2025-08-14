@@ -13,3 +13,13 @@ export async function getReturnLogistics(): Promise<ReturnLogistics> {
   cached = returnLogisticsSchema.parse(JSON.parse(buf));
   return cached;
 }
+
+export type ReturnBagAndLabel = Pick<
+  ReturnLogistics,
+  "bagType" | "labelService" | "tracking"
+>;
+
+export async function getReturnBagAndLabel(): Promise<ReturnBagAndLabel> {
+  const { bagType, labelService, tracking } = await getReturnLogistics();
+  return { bagType, labelService, tracking };
+}

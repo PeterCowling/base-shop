@@ -12,6 +12,7 @@ interface Props {
     defaultValue: string,
   ) => (value: string) => void;
   handleReset: (key: string) => () => void;
+  handleGroupReset: (keys: string[]) => () => void;
   overrideRefs: MutableRefObject<Record<string, HTMLInputElement | null>>;
   mergedTokens: Record<string, string>;
   textTokenKeys: string[];
@@ -25,6 +26,7 @@ export default function PalettePicker({
   overrides,
   handleOverrideChange,
   handleReset,
+  handleGroupReset,
   overrideRefs,
   mergedTokens,
   textTokenKeys,
@@ -36,7 +38,16 @@ export default function PalettePicker({
     <div className="space-y-6">
       {Object.entries(groupedTokens).map(([groupName, tokens]) => (
         <fieldset key={groupName} className="space-y-2">
-          <legend className="font-semibold">{groupName}</legend>
+          <legend className="flex items-center justify-between font-semibold">
+            {groupName}
+            <button
+              type="button"
+              className="text-sm underline"
+              onClick={handleGroupReset(tokens.map(([k]) => k))}
+            >
+              Reset
+            </button>
+          </legend>
           <div className="mb-2 flex flex-wrap gap-2">
             {tokens
               .filter(([, v]) => isHex(v) || isHsl(v))

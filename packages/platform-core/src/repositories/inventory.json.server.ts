@@ -18,28 +18,36 @@ async function acquireLock(lockFile: string): Promise<fs.FileHandle> {
   }
 }
 
-function inventoryPath(shop: string): string {
+function inventoryDir(shop: string): string {
   shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "inventory.json");
+  return path.join(DATA_ROOT, shop, "inventory");
+}
+
+function itemPath(shop: string, key: string): string {
+  return path.join(inventoryDir(shop), `${key}.json`);
 }
 
 async function ensureDir(shop: string): Promise<void> {
-  shop = validateShopName(shop);
-  await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
+  await fs.mkdir(inventoryDir(shop), { recursive: true });
 }
 
 async function read(shop: string): Promise<InventoryItem[]> {
   try {
-    const buf = await fs.readFile(inventoryPath(shop), "utf8");
-    const raw = JSON.parse(buf);
-    return inventoryItemSchema
-      .array()
-      .parse(
-        raw.map((i: any) => ({
-          variantAttributes: {},
-          ...i,
-        })),
-      );
+    const dir = inventoryDir(shop);
+    const entries = await fs.readdir(dir, { withFileTypes: true });
+    const items = await Promise.all(
+      entries
+        .filter((e) => e.isFile() && e.name.endsWith(".json"))
+        .map(async (e) => {
+          const buf = await fs.readFile(path.join(dir, e.name), "utf8");
+          const raw = JSON.parse(buf);
+          return inventoryItemSchema.parse({
+            variantAttributes: {},
+            ...raw,
+          });
+        }),
+    );
+    return items;
   } catch (err) {
     console.error(`Failed to read inventory for ${shop}`, err);
     throw err;
@@ -56,20 +64,26 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
       })),
     );
   await ensureDir(shop);
-  const lockFile = `${inventoryPath(shop)}.lock`;
-  const handle = await acquireLock(lockFile);
-  try {
-    const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
-    await fs.writeFile(tmp, JSON.stringify(normalized, null, 2), "utf8");
-    await fs.rename(tmp, inventoryPath(shop));
-  } finally {
-    await handle.close();
-    await fs.unlink(lockFile).catch(() => {});
-  }
+  await Promise.all(
+    normalized.map(async (item) => {
+      const key = variantKey(item.sku, item.variantAttributes);
+      const file = itemPath(shop, key);
+      const lockFile = `${file}.lock`;
+      const handle = await acquireLock(lockFile);
+      try {
+        const tmp = `${file}.${Date.now()}.tmp`;
+        await fs.writeFile(tmp, JSON.stringify(item, null, 2), "utf8");
+        await fs.rename(tmp, file);
+      } finally {
+        await handle.close();
+        await fs.unlink(lockFile).catch(() => {});
+      }
+    }),
+  );
   try {
     if (process.env.SKIP_STOCK_ALERT !== "1") {
       const { checkAndAlert } = await import("../services/stockAlert.server");
-      await checkAndAlert(shop, normalized);
+      await checkAndAlert(shop, await read(shop));
     }
   } catch (err) {
     console.error("Failed to run stock alert", err);
@@ -82,35 +96,28 @@ async function update(
   variantAttributes: Record<string, string>,
   mutate: InventoryMutateFn,
 ): Promise<InventoryItem | undefined> {
-  const lockFile = `${inventoryPath(shop)}.lock`;
-  let normalized: InventoryItem[] = [];
+  const key = variantKey(sku, variantAttributes);
+  const file = itemPath(shop, key);
+  await ensureDir(shop);
+  const lockFile = `${file}.lock`;
   const handle = await acquireLock(lockFile);
   let updated: InventoryItem | undefined;
   try {
-    let items: InventoryItem[] = [];
+    let current: InventoryItem | undefined;
     try {
-      const buf = await fs.readFile(inventoryPath(shop), "utf8");
+      const buf = await fs.readFile(file, "utf8");
       const raw = JSON.parse(buf);
-      items = inventoryItemSchema
-        .array()
-        .parse(
-          raw.map((i: any) => ({
-            variantAttributes: {},
-            ...i,
-          })),
-        );
+      current = inventoryItemSchema.parse({
+        variantAttributes: {},
+        ...raw,
+      });
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
     }
 
-    const key = variantKey(sku, variantAttributes);
-    const idx = items.findIndex(
-      (i) => variantKey(i.sku, i.variantAttributes) === key,
-    );
-    const current = idx === -1 ? undefined : items[idx];
     updated = mutate(current);
     if (updated === undefined) {
-      if (idx !== -1) items.splice(idx, 1);
+      await fs.unlink(file).catch(() => {});
     } else {
       const nextItem = inventoryItemSchema.parse({
         ...current,
@@ -118,23 +125,10 @@ async function update(
         sku,
         variantAttributes,
       });
-      if (idx === -1) items.push(nextItem);
-      else items[idx] = nextItem;
+      const tmp = `${file}.${Date.now()}.tmp`;
+      await fs.writeFile(tmp, JSON.stringify(nextItem, null, 2), "utf8");
+      await fs.rename(tmp, file);
     }
-
-    normalized = inventoryItemSchema
-      .array()
-      .parse(
-        items.map((i) => ({
-          ...i,
-          variantAttributes: { ...i.variantAttributes },
-        })),
-      );
-
-    const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
-    await ensureDir(shop);
-    await fs.writeFile(tmp, JSON.stringify(normalized, null, 2), "utf8");
-    await fs.rename(tmp, inventoryPath(shop));
   } finally {
     await handle.close();
     await fs.unlink(lockFile).catch(() => {});
@@ -143,7 +137,7 @@ async function update(
   try {
     if (process.env.SKIP_STOCK_ALERT !== "1") {
       const { checkAndAlert } = await import("../services/stockAlert.server");
-      await checkAndAlert(shop, normalized);
+      await checkAndAlert(shop, await read(shop));
     }
   } catch (err) {
     console.error("Failed to run stock alert", err);

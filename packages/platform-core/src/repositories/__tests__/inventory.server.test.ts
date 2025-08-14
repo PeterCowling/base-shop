@@ -17,9 +17,11 @@ describe("inventory repository concurrency", () => {
     await fs.rm(tmpDir, { recursive: true, force: true });
   });
 
-  it("handles simultaneous writes without corruption", async () => {
+  it("merges simultaneous writes without losing data", async () => {
     process.env.SKIP_STOCK_ALERT = "1";
-    const { writeInventory, readInventory } = await import("../inventory.server");
+    const { writeInventory, readInventory, variantKey } = await import(
+      "../inventory.server",
+    );
     const shop = "demo";
     const sets = [
       [
@@ -43,8 +45,15 @@ describe("inventory repository concurrency", () => {
     await Promise.all(sets.map((s) => writeInventory(shop, s)));
 
     const result = await readInventory(shop);
-    const json = JSON.stringify(result);
-    expect(sets.map((s) => JSON.stringify(s))).toContain(json);
+    const combined = sets.flat();
+    expect(result).toEqual(expect.arrayContaining(combined));
+    expect(result).toHaveLength(combined.length);
+
+    const dir = path.join(process.cwd(), "data", "shops", shop, "inventory");
+    const files = (await fs.readdir(dir)).sort();
+    expect(files).toEqual(
+      combined.map((i) => `${variantKey(i.sku, i.variantAttributes)}.json`).sort(),
+    );
   });
 
   it("updates items concurrently without losing changes", async () => {

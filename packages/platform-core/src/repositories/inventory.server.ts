@@ -67,7 +67,11 @@ export function readInventory(shop: string) {
 }
 
 export function writeInventory(shop: string, items: InventoryItem[]) {
-  return inventoryRepository.write(shop, items);
+  return Promise.all(
+    items.map((i) =>
+      inventoryRepository.update(shop, i.sku, i.variantAttributes, () => i),
+    ),
+  ).then(() => {});
 }
 
 export function updateInventoryItem(

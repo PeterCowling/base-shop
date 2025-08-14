@@ -19,6 +19,7 @@ async function withRepo(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
   process.env.NEXTAUTH_SECRET = "test";
   process.env.SESSION_SECRET = "test";
+  process.env.SKIP_STOCK_ALERT = "1";
   jest.resetModules();
 
   const repo = await import("../src/repositories/inventory.server");
@@ -34,20 +35,18 @@ describe("inventory repository", () => {
     await withRepo(async (repo, shop, dir) => {
       await expect(repo.readInventory(shop)).rejects.toThrow();
 
-      await fs.writeFile(
-        path.join(dir, "data", "shops", shop, "inventory.json"),
-        "bad",
-        "utf8",
-      );
+      const invDir = path.join(dir, "data", "shops", shop, "inventory");
+      await fs.mkdir(invDir, { recursive: true });
+      const badFile = path.join(invDir, "sku-1.json");
 
+      await fs.writeFile(badFile, "bad", "utf8");
       await expect(repo.readInventory(shop)).rejects.toThrow();
 
       await fs.writeFile(
-        path.join(dir, "data", "shops", shop, "inventory.json"),
-        JSON.stringify([{ sku: "sku-1", quantity: 1 }]),
+        badFile,
+        JSON.stringify({ sku: "sku-1", quantity: 1 }),
         "utf8",
       );
-
       await expect(repo.readInventory(shop)).rejects.toThrow();
     });
   });
@@ -70,23 +69,35 @@ describe("inventory repository", () => {
         },
       ];
       await repo.writeInventory(shop, items);
-      const buf = await fs.readFile(
-        path.join(dir, "data", "shops", shop, "inventory.json"),
-        "utf8",
+      const dirPath = path.join(dir, "data", "shops", shop, "inventory");
+      const files = (await fs.readdir(dirPath)).sort();
+      expect(files).toEqual(
+        items
+          .map((i) => `${repo.variantKey(i.sku, i.variantAttributes)}.json`)
+          .sort(),
       );
-      expect(JSON.parse(buf)).toEqual(items);
-      await expect(repo.readInventory(shop)).resolves.toEqual(items);
+      const parsed = await Promise.all(
+        files.map((f) =>
+          fs
+            .readFile(path.join(dirPath, f), "utf8")
+            .then((b) => JSON.parse(b)),
+        ),
+      );
+      expect(parsed).toEqual(items);
+      await expect(repo.readInventory(shop)).resolves.toEqual(
+        expect.arrayContaining(items),
+      );
     });
   });
 
   it("normalizes missing variantAttributes when reading", async () => {
     await withRepo(async (repo, shop, dir) => {
-      const file = path.join(dir, "data", "shops", shop, "inventory.json");
+      const invDir = path.join(dir, "data", "shops", shop, "inventory");
+      await fs.mkdir(invDir, { recursive: true });
+      const file = path.join(invDir, "s1.json");
       await fs.writeFile(
         file,
-        JSON.stringify([
-          { sku: "s1", productId: "p1", quantity: 1 },
-        ]),
+        JSON.stringify({ sku: "s1", productId: "p1", quantity: 1 }),
         "utf8",
       );
       await expect(repo.readInventory(shop)).resolves.toEqual([
@@ -113,6 +124,7 @@ describe("inventory repository", () => {
       ];
       const checkAndAlert = jest.fn();
       jest.doMock("../src/services/stockAlert.server", () => ({ checkAndAlert }));
+      process.env.SKIP_STOCK_ALERT = "0";
       await repo.writeInventory(shop, items);
       expect(checkAndAlert).toHaveBeenCalledWith(shop, items);
     });

@@ -1,4 +1,5 @@
 import { prisma } from "../src/db";
+import { nowIso } from "@date-utils";
 
 async function main() {
   await prisma.rentalOrder.createMany({
@@ -8,7 +9,7 @@ async function main() {
         shop: "seed-shop",
         sessionId: "seed-session",
         deposit: 0,
-        startedAt: new Date().toISOString(),
+        startedAt: nowIso(),
       },
     ],
     skipDuplicates: true,

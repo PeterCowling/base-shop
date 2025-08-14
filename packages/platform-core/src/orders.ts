@@ -1,7 +1,7 @@
 // packages/platform-core/src/orders.ts
 import "server-only";
 import { ulid } from "ulid";
-import { nowIso } from "@acme/date-utils";
+import { nowIso } from "@date-utils";
 import type { RentalOrder, Shop } from "@acme/types";
 import { trackOrder } from "./analytics";
 import { prisma } from "./db";
@@ -42,7 +42,7 @@ export async function addOrder(
   await prisma.rentalOrder.create({ data: order });
   await trackOrder(shop, order.id, deposit);
   if (customerId) {
-    const month = new Date().toISOString().slice(0, 7);
+    const month = nowIso().slice(0, 7);
     const record = await prisma.shop.findUnique({
       select: { data: true },
       where: { id: shop },

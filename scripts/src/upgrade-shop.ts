@@ -10,6 +10,7 @@ import {
 } from "node:fs";
 import * as path from "node:path";
 import { randomBytes, createHash } from "node:crypto";
+import { nowIso } from "@date-utils";
 import { getComponentNameMap } from "./component-names";
 import { generateExampleProps } from "./generate-example-props";
 import type { Page, ShopMetadata } from "@acme/types";
@@ -57,7 +58,7 @@ generateExampleProps(shopId, rootDir);
 if (existsSync(shopJsonPath)) {
   cpSync(shopJsonPath, shopJsonPath + ".bak");
   const data = JSON.parse(readFileSync(shopJsonPath, "utf8")) as ShopMetadata;
-  data.lastUpgrade = new Date().toISOString();
+  data.lastUpgrade = nowIso();
   data.componentVersions = existsSync(pkgPath)
     ? (JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {})
     : {};
@@ -129,7 +130,7 @@ writeFileSync(
   upgradeMetaPath,
   JSON.stringify(
     {
-      timestamp: new Date().toISOString(),
+      timestamp: nowIso(),
       componentVersions,
       components: changedComponents,
     },

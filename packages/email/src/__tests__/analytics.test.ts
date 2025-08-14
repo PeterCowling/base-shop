@@ -1,3 +1,5 @@
+import { nowIso } from "@date-utils";
+
 process.env.CART_COOKIE_SECRET = "secret";
 
 describe("analytics mapping", () => {
@@ -129,8 +131,8 @@ describe("syncCampaignAnalytics", () => {
             recipients: [],
             subject: "s",
             body: "b",
-            sendAt: new Date().toISOString(),
-            sentAt: new Date().toISOString(),
+            sendAt: nowIso(),
+            sentAt: nowIso(),
           },
         ];
       },

@@ -3,6 +3,7 @@ import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import type { ProductPublication } from "../products";
+import { nowIso } from "@date-utils";
 
 /** The shape of the JSON-repository module we import dynamically */
 type JsonRepo = typeof import("../repositories/json.server");
@@ -59,8 +60,8 @@ describe("json repository", () => {
         price: 10,
         currency: "EUR",
         media: [],
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
+        created_at: nowIso(),
+        updated_at: nowIso(),
         shop,
         status: "active",
         row_version: 1,

@@ -13,6 +13,7 @@ import {
   type SanityConfig,
 } from "@platform-core/src/repositories/blog.server";
 import { ensureAuthorized } from "../actions/common/auth";
+import { nowIso } from "@date-utils";
 
 function collectProductSlugs(content: unknown): string[] {
   const slugs = new Set<string>();
@@ -193,7 +194,7 @@ export async function publishPost(
   const publishedAtInput = formData?.get("publishedAt");
   const publishedAt = publishedAtInput
     ? new Date(String(publishedAtInput)).toISOString()
-    : new Date().toISOString();
+    : nowIso();
   try {
     await repoPublishPost(config, id, publishedAt);
     return { message: "Post published" };

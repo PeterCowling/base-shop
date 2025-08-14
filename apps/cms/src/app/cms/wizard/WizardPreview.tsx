@@ -262,6 +262,7 @@ export default function WizardPreview({
         ref={previewRef}
         style={containerStyle}
         className={`mx-auto rounded border ${inspectMode ? "cursor-crosshair" : ""}`}
+        data-token="--color-bg"
         onPointerMove={handlePointerMove}
         onClickCapture={handleClick}
         onPointerLeave={handleLeave}

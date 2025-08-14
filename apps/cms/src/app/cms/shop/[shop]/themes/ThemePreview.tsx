@@ -1,5 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/ThemePreview.tsx
 "use client";
+import { useState } from "react";
 import InlineColorPicker from "./InlineColorPicker";
 import WizardPreview from "../../../wizard/WizardPreview";
 import type { CSSProperties } from "react";
@@ -12,22 +13,36 @@ interface Picker {
 }
 
 interface Props {
-  picker: Picker | null;
   overrides: Record<string, string>;
   onChange: (token: string, defaultValue: string) => (value: string) => void;
-  onPickerClose: () => void;
   previewTokens: Record<string, string>;
-  onTokenSelect: (token: string, coords?: { x: number; y: number }) => void;
+  /** Default theme values so we can determine the original token format */
+  themeDefaults: Record<string, string>;
+  /** Optional callback to focus a token's input in the editor */
+  onTokenSelect?: (token: string) => void;
 }
 
 export default function ThemePreview({
-  picker,
   overrides,
   onChange,
-  onPickerClose,
   previewTokens,
+  themeDefaults,
   onTokenSelect,
 }: Props) {
+  const [picker, setPicker] = useState<Picker | null>(null);
+
+  const handleTokenClick = (
+    token: string,
+    coords: { x: number; y: number },
+  ) => {
+    const defaultValue = themeDefaults[token];
+    if (!defaultValue) return;
+    setPicker({ token, x: coords.x, y: coords.y, defaultValue });
+    onTokenSelect?.(token);
+  };
+
+  const handlePickerClose = () => setPicker(null);
+
   return (
     <>
       {picker && (
@@ -38,13 +53,13 @@ export default function ThemePreview({
           x={picker.x}
           y={picker.y}
           onChange={onChange(picker.token, picker.defaultValue)}
-          onClose={onPickerClose}
+          onClose={handlePickerClose}
         />
       )}
       <WizardPreview
         style={previewTokens as CSSProperties}
         inspectMode
-        onTokenSelect={onTokenSelect}
+        onTokenSelect={handleTokenClick}
       />
     </>
   );

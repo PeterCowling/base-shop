@@ -21,7 +21,7 @@ export default function NewsletterSignup({
 }: Props) {
   return (
     <div className="space-y-2">
-      {text && <p>{text}</p>}
+      {text && <p data-token="--color-fg">{text}</p>}
       <NewsletterForm
         action={action}
         placeholder={placeholder}

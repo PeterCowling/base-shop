@@ -38,12 +38,14 @@ export const NewsletterForm = memo(function NewsletterForm({
         name="email"
         placeholder={ph}
         className="flex-1 rounded border p-2"
+        data-token="--color-bg"
       />
       <button
         type="submit"
         className="rounded bg-primary px-4 py-2 text-primary-fg"
+        data-token="--color-primary"
       >
-        {label}
+        <span data-token="--color-primary-fg">{label}</span>
       </button>
     </form>
   );

@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/configurator/hooks/useConfiguratorPersistence.ts
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   wizardStateSchema,
   type WizardState,
@@ -34,8 +34,13 @@ export async function resetConfiguratorProgress(): Promise<void> {
 export function useConfiguratorPersistence(
   state: WizardState,
   setState: (s: WizardState) => void,
-  onInvalid?: () => void
-): (stepId: string, status: StepStatus) => void {
+  onInvalid?: () => void,
+  onSave?: () => void
+): [
+  (stepId: string, status: StepStatus) => void,
+  boolean
+] {
+  const [saving, setSaving] = useState(false);
   /* Load persisted state on mount */
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -68,21 +73,30 @@ export function useConfiguratorPersistence(
   /* Persist whenever the state changes */
   useEffect(() => {
     if (typeof window === "undefined") return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      window.dispatchEvent(new CustomEvent("configurator:update"));
-    } catch {
-      /* ignore quota */
-    }
-    const { completed, ...data } = state;
-    fetch("/cms/api/wizard-progress", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ stepId: "configurator", data }),
-    }).catch(() => {
-      /* ignore network errors */
-    });
-  }, [state]);
+    setSaving(true);
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        window.dispatchEvent(new CustomEvent("configurator:update"));
+      } catch {
+        /* ignore quota */
+      }
+      const { completed, ...data } = state;
+      fetch("/cms/api/wizard-progress", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ stepId: "configurator", data }),
+      })
+        .catch(() => {
+          /* ignore network errors */
+        })
+        .finally(() => {
+          setSaving(false);
+          onSave?.();
+        });
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [state, onSave]);
 
   /* Expose completion helper */
   const markStepComplete = (stepId: string, status: StepStatus) => {
@@ -111,5 +125,5 @@ export function useConfiguratorPersistence(
     }
   };
 
-  return markStepComplete;
+  return [markStepComplete, saving];
 }

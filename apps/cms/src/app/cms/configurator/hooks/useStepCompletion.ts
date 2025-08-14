@@ -26,12 +26,13 @@ export const validators: Record<string, Validator> = {
 };
 
 export function useStepCompletion(stepId: string): [boolean, (v: boolean) => void] {
-  const { state, markStepComplete } = useConfigurator();
+  const { state, markStepComplete, resetDirty } = useConfigurator();
   const validate = validators[stepId] ?? (() => true);
   const completed = state.completed[stepId] === "complete" && validate(state);
   const setCompleted = (v: boolean) => {
     if (v && !validate(state)) return;
     markStepComplete(stepId, v ? "complete" : "pending");
+    if (v) resetDirty();
   };
   return [completed, setCompleted];
 }

@@ -21,6 +21,9 @@
   "pdp.added": "Added!",
   "checkout.pay": "Pay",
   "checkout.processing": "Processing…",
+  "checkout.loadError": "Failed to load payment form.",
+  "checkout.loading": "Loading payment form…",
+  "checkout.retry": "Retry",
   "checkout.empty": "Your cart is empty.",
   "checkout.return": "Return date",
   "checkout.deposit": "Deposit"

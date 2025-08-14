@@ -30,6 +30,7 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
   const [fetchError, setFetchError] = useState(false);
   const [retry, setRetry] = useState(0);
   const [currency] = useCurrency();
+  const t = useTranslations();
 
   const defaultDate = isoDateInNDays(7);
 
@@ -72,7 +73,7 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
     if (fetchError)
       return (
         <div className="space-y-2">
-          <p>Failed to load payment form.</p>
+          <p>{t("checkout.loadError")}</p>
           <button
             type="button"
             className="rounded bg-fg px-2 py-1 text-bg"
@@ -82,11 +83,11 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
               setRetry((r) => r + 1);
             }}
           >
-            Retry
+            {t("checkout.retry")}
           </button>
         </div>
       );
-    return <p>Loading payment form…</p>;
+    return <p>{t("checkout.loading")}</p>;
   }
 
   return (

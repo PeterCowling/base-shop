@@ -6,6 +6,8 @@ import CanvasItem from "./CanvasItem";
 import type { Locale } from "@/i18n/locales";
 import type { Action } from "./state";
 import { cn } from "../../../utils/style";
+import GridOverlay from "./GridOverlay";
+import SnapLine from "./SnapLine";
 
 interface Props {
   components: PageComponent[];
@@ -64,25 +66,8 @@ const PageCanvas = ({
         dragOver && "ring-2 ring-primary"
       )}
     >
-      {showGrid && (
-        <div
-          className="pointer-events-none absolute inset-0 z-10 grid"
-          style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}
-        >
-          {Array.from({ length: gridCols }).map((_, i) => (
-            <div
-              key={i}
-              className="border-l border-dashed border-muted-foreground/40"
-            />
-          ))}
-        </div>
-      )}
-      {snapPosition !== null && (
-        <div
-          className="pointer-events-none absolute top-0 bottom-0 w-px bg-primary"
-          style={{ left: snapPosition }}
-        />
-      )}
+      {showGrid && <GridOverlay gridCols={gridCols} />}
+      <SnapLine position={snapPosition} />
       {components.map((c, i) => (
         <Fragment key={c.id}>
           {insertIndex === i && (

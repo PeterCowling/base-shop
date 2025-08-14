@@ -23,6 +23,7 @@ import PageToolbar from "./PageToolbar";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES } from "./defaults";
+import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 
 interface Props {
   page: Page;
@@ -61,7 +62,11 @@ const PageBuilder = memo(function PageBuilder({
     clearHistory,
   } = usePageBuilderState({ page, history: historyProp, onChange });
 
-  const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">("desktop");
+  const [deviceId, setDeviceId] = useState(devicePresets[0].id);
+  const device = useMemo< DevicePreset>(() => {
+    return devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
+  }, [deviceId]);
+  const viewport: "desktop" | "tablet" | "mobile" = device.type;
   const [locale, setLocale] = useState<Locale>("en");
   const [publishCount, setPublishCount] = useState(0);
   const prevId = useRef(page.id);
@@ -139,32 +144,30 @@ const PageBuilder = memo(function PageBuilder({
     setSnapPosition,
   });
 
-  const widthMap = useMemo(
-    () => ({ desktop: 1024, tablet: 768, mobile: 375 }) as const,
-    []
-  );
-  const [canvasWidth, setCanvasWidth] = useState(widthMap.desktop);
+  const [canvasWidth, setCanvasWidth] = useState(device.width);
+  const [canvasHeight, setCanvasHeight] = useState(device.height);
   const [scale, setScale] = useState(1);
-  const prevWidth = useRef(widthMap.desktop);
+  const prevWidth = useRef(device.width);
 
   useEffect(() => {
-    const nextWidth = widthMap[viewport];
     const prev = prevWidth.current;
-    setCanvasWidth(nextWidth);
-    setScale(prev / nextWidth);
+    setCanvasWidth(device.width);
+    setCanvasHeight(device.height);
+    setScale(prev / device.width);
     const raf = requestAnimationFrame(() => setScale(1));
-    prevWidth.current = nextWidth;
+    prevWidth.current = device.width;
     return () => cancelAnimationFrame(raf);
-  }, [viewport, widthMap]);
+  }, [device]);
 
   const viewportStyle = useMemo(
     () => ({
       width: `${canvasWidth}px`,
+      height: `${canvasHeight}px`,
       transform: `scale(${scale})`,
       transformOrigin: "top center",
       transition: "transform 0.3s ease",
     }),
-    [canvasWidth, scale]
+    [canvasWidth, canvasHeight, scale]
   );
 
   const frameClass = useMemo(
@@ -182,7 +185,7 @@ const PageBuilder = memo(function PageBuilder({
     } else {
       setGridSize(1);
     }
-  }, [showGrid, viewport, gridCols]);
+  }, [showGrid, device, gridCols]);
 
   useEffect(() => {
     const idChanged = prevId.current !== page.id;
@@ -256,7 +259,8 @@ const PageBuilder = memo(function PageBuilder({
         <div className="flex items-center justify-between">
           <PageToolbar
             viewport={viewport}
-            setViewport={setViewport}
+            deviceId={deviceId}
+            setDeviceId={setDeviceId}
             locale={locale}
             setLocale={setLocale}
             locales={locales}
@@ -304,6 +308,7 @@ const PageBuilder = memo(function PageBuilder({
               showGrid={showGrid}
               gridCols={gridCols}
               viewport={viewport}
+              device={device}
               snapPosition={snapPosition}
             />
           </div>

@@ -2,19 +2,20 @@
 
 "use client";
 
-import { Button } from "@/components/atoms";
+import { Button, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/atoms";
 import { blockRegistry } from "@/components/cms/blocks";
 import { Footer, Header, SideNav } from "@/components/organisms";
 import { AppShell } from "@/components/templates/AppShell";
 import TranslationsProvider from "@/i18n/Translations";
 import enMessages from "@i18n/en.json";
 import type { PageComponent } from "@acme/types";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { STORAGE_KEY } from "../configurator/hooks/useConfiguratorPersistence";
 import {
   loadPreviewTokens,
   PREVIEW_TOKENS_EVENT,
 } from "./previewTokens";
+import { devicePresets, getLegacyPreset, type DevicePreset } from "@ui/utils/devicePresets";
 
 interface Props {
   style: React.CSSProperties;
@@ -34,9 +35,11 @@ export default function WizardPreview({
   inspectMode = false,
   onTokenSelect,
 }: Props): React.JSX.Element {
-  const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
-    "desktop"
-  );
+  const [deviceId, setDeviceId] = useState(devicePresets[0].id);
+  const device = useMemo<DevicePreset>(() => {
+    return devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
+  }, [deviceId]);
+  const viewport: "desktop" | "tablet" | "mobile" = device.type;
   const [components, setComponents] = useState<PageComponent[]>([]);
   const [themeStyle, setThemeStyle] = useState<React.CSSProperties>(() => ({
     ...style,
@@ -99,13 +102,11 @@ export default function WizardPreview({
   /*                         Helpers                                    */
   /* ------------------------------------------------------------------ */
 
-  const widthMap: Record<"desktop" | "tablet" | "mobile", string> = {
-    desktop: "100%",
-    tablet: "768px",
-    mobile: "375px",
+  const containerStyle = {
+    ...themeStyle,
+    width: `${device.width}px`,
+    height: `${device.height}px`,
   };
-
-  const containerStyle = { ...themeStyle, width: widthMap[viewport] };
 
   /* ------------------------------------------------------------------ */
   /*                         Inspect mode                               */
@@ -208,24 +209,30 @@ export default function WizardPreview({
     <div className="space-y-2">
       {/* viewport switcher */}
       <div className="flex justify-end gap-2">
-        <Button
-          variant={viewport === "desktop" ? "default" : "outline"}
-          onClick={() => setViewport("desktop")}
-        >
-          Desktop
-        </Button>
-        <Button
-          variant={viewport === "tablet" ? "default" : "outline"}
-          onClick={() => setViewport("tablet")}
-        >
-          Tablet
-        </Button>
-        <Button
-          variant={viewport === "mobile" ? "default" : "outline"}
-          onClick={() => setViewport("mobile")}
-        >
-          Mobile
-        </Button>
+        {(["desktop", "tablet", "mobile"] as const).map((t) => {
+          const preset = getLegacyPreset(t);
+          return (
+            <Button
+              key={t}
+              variant={deviceId === preset.id ? "default" : "outline"}
+              onClick={() => setDeviceId(preset.id)}
+            >
+              {t.charAt(0).toUpperCase() + t.slice(1)}
+            </Button>
+          );
+        })}
+        <Select value={deviceId} onValueChange={setDeviceId}>
+          <SelectTrigger aria-label="Device" className="w-40">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {devicePresets.map((p) => (
+              <SelectItem key={p.id} value={p.id}>
+                {p.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* live preview */}

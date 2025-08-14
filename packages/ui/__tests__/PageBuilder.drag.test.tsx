@@ -1,6 +1,16 @@
 import { render, fireEvent } from "@testing-library/react";
 import React from "react";
 import { CanvasItem, renderCanvasItem, setRect } from "./helpers/pageBuilderSetup";
+jest.mock("../src/components/cms/page-builder/PageCanvas.tsx", () => ({
+  __esModule: true,
+  default: ({ viewport }: any) => (
+    <div id="canvas" data-viewport={viewport}></div>
+  ),
+}));
+jest.mock("../src/components/cms/page-builder/Palette", () => () => <div />);
+jest.mock("../src/components/cms/page-builder/PageSidebar", () => () => <div />);
+import PageBuilder from "@ui/components/cms/PageBuilder";
+import { devicePresets, getLegacyPreset } from "../src/utils/devicePresets";
 
 describe("PageBuilder drag interactions", () => {
 
@@ -94,5 +104,30 @@ describe("PageBuilder drag interactions", () => {
     expect(dispatch).toHaveBeenCalledWith(
       expect.objectContaining({ left: "100px", top: "100px" })
     );
+  });
+
+  it("updates canvas width and viewport when switching device presets", () => {
+    const desktop = getLegacyPreset("desktop");
+    const mobile = getLegacyPreset("mobile");
+    function Wrapper() {
+      const [deviceId, setDeviceId] = React.useState(desktop.id);
+      const device = devicePresets.find((d) => d.id === deviceId)!;
+      return (
+        <>
+          <button aria-label="mobile" onClick={() => setDeviceId(mobile.id)} />
+          <div
+            id="canvas"
+            data-viewport={device.type}
+            style={{ width: `${device.width}px` }}
+          />
+        </>
+      );
+    }
+    const { getByLabelText } = render(<Wrapper />);
+    const canvas = document.getElementById("canvas") as HTMLElement;
+    expect(canvas.style.width).toBe(`${desktop.width}px`);
+    fireEvent.click(getByLabelText("mobile"));
+    expect(canvas.style.width).toBe(`${mobile.width}px`);
+    expect(canvas.dataset.viewport).toBe("mobile");
   });
 });

@@ -1,10 +1,20 @@
 import type { Locale } from "@/i18n/locales";
 import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
-import { Button, Input } from "../../atoms/shadcn";
+import {
+  Button,
+  Input,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "../../atoms/shadcn";
+import { devicePresets, getLegacyPreset } from "@ui/utils/devicePresets";
 
 interface Props {
   viewport: "desktop" | "tablet" | "mobile";
-  setViewport: (v: "desktop" | "tablet" | "mobile") => void;
+  deviceId: string;
+  setDeviceId: (id: string) => void;
   locale: Locale;
   setLocale: (l: Locale) => void;
   locales: readonly Locale[];
@@ -18,7 +28,8 @@ interface Props {
 
 const PageToolbar = ({
   viewport,
-  setViewport,
+  deviceId,
+  setDeviceId,
   locale,
   setLocale,
   locales,
@@ -31,23 +42,36 @@ const PageToolbar = ({
 }: Props) => (
   <div className="flex flex-col gap-4">
     <div className="flex justify-end gap-2">
-      {(["desktop", "tablet", "mobile"] as const).map((v) => {
+      {(["desktop", "tablet", "mobile"] as const).map((t) => {
+        const preset = getLegacyPreset(t);
         const Icon =
-          v === "desktop" ? DesktopIcon : v === "tablet" ? LaptopIcon : MobileIcon;
+          t === "desktop" ? DesktopIcon : t === "tablet" ? LaptopIcon : MobileIcon;
         return (
           <Button
-            key={v}
-            variant={viewport === v ? "default" : "outline"}
-            onClick={() => setViewport(v)}
-            aria-label={v}
+            key={t}
+            variant={deviceId === preset.id ? "default" : "outline"}
+            onClick={() => setDeviceId(preset.id)}
+            aria-label={t}
           >
             <Icon />
             <span className="sr-only">
-              {v.charAt(0).toUpperCase() + v.slice(1)}
+              {t.charAt(0).toUpperCase() + t.slice(1)}
             </span>
           </Button>
         );
       })}
+      <Select value={deviceId} onValueChange={setDeviceId}>
+        <SelectTrigger aria-label="Device" className="w-40">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {devicePresets.map((p) => (
+            <SelectItem key={p.id} value={p.id}>
+              {p.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
     <div className="flex items-center justify-end gap-2">
       <Button

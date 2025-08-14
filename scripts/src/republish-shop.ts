@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -29,6 +29,9 @@ export function republishShop(id: string, root = process.cwd()): void {
   run("pnpm", ["--filter", `apps/${id}`, "build"]);
   run("pnpm", ["--filter", `apps/${id}`, "deploy"]);
   updateStatus(root, id);
+  if (existsSync(upgradeFile)) {
+    unlinkSync(upgradeFile);
+  }
 }
 
 function main(): void {

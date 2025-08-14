@@ -12,7 +12,7 @@ Run the script with a shop identifier to copy files from the template:
 pnpm ts-node scripts/src/upgrade-shop.ts <shop-id>
 ```
 
-Existing files are backed up with a `.bak` suffix and the shop's `shop.json` gains a `lastUpgrade` timestamp. Use `--rollback` to restore the backups:
+Existing files are backed up with a `.bak` suffix, the shop's `shop.json` gains a `lastUpgrade` timestamp, and `data/shops/<id>/upgrade.json` is generated with metadata about the staged components. Use `--rollback` to restore the backups:
 
 ```bash
 pnpm ts-node scripts/src/upgrade-shop.ts <shop-id> --rollback
@@ -26,7 +26,7 @@ After testing an upgrade, rebuild and deploy the shop:
 pnpm ts-node scripts/src/republish-shop.ts <shop-id>
 ```
 
-The script requires a corresponding `data/shops/<id>/upgrade.json`, runs `pnpm --filter apps/<id> build` followed by `deploy`, and marks the shop as `published` in `shop.json`.
+The script requires a corresponding `data/shops/<id>/upgrade.json`, runs `pnpm --filter apps/<id> build` followed by `deploy`, marks the shop as `published` in `shop.json`, and removes the upgrade metadata file.
 
 ## API endpoints
 
@@ -39,5 +39,5 @@ CMS components fetch the preview endpoint and render changes live. The wizard's 
 ## Metadata
 
 - `data/shops/<id>/shop.json` stores `lastUpgrade` and the publish `status`.
-- `data/shops/<id>/upgrade.json` captures information about the staged upgrade.
+- `data/shops/<id>/upgrade.json` captures information about the staged upgrade and is deleted after publishing.
 - `data/shops/<id>/deploy.json` stores the `previewUrl` and deployment instructions.

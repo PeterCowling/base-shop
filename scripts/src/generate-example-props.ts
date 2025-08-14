@@ -1,8 +1,9 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { ExampleProps } from "@acme/types";
 import { getComponentNameMap } from "./component-names";
 
-const examples: Record<string, any> = {
+const examples: ExampleProps = {
   Breadcrumbs: {
     items: [
       { label: "Home", href: "/" },
@@ -26,7 +27,7 @@ export function generateExampleProps(
   const names = Array.from(
     new Set(componentNames.filter((n) => /^[A-Z][A-Za-z0-9]*$/.test(n)))
   );
-  const map: Record<string, any> = {};
+  const map: ExampleProps = {};
   for (const name of names) {
     map[name] = examples[name] ?? {};
   }
@@ -43,7 +44,9 @@ export function generateExampleProps(
   const content = `// apps/${shopId}/src/app/upgrade-preview/example-props.ts
 // Map of example props for all UI components so upgrade previews can render reliably
 
-export const exampleProps: Record<string, any> = ${JSON.stringify(
+import type { ExampleProps } from "@acme/types";
+
+export const exampleProps: ExampleProps = ${JSON.stringify(
     map,
     null,
     2

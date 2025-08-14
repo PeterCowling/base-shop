@@ -1,14 +1,27 @@
 interface Props {
-  position: number | null;
+  /** X-coordinate for a vertical snap line */
+  x?: number | null;
+  /** Y-coordinate for a horizontal snap line */
+  y?: number | null;
 }
 
-const SnapLine = ({ position }: Props) => {
-  if (position === null) return null;
+const SnapLine = ({ x = null, y = null }: Props) => {
+  if (x === null && y === null) return null;
   return (
-    <div
-      className="pointer-events-none absolute top-0 bottom-0 w-px bg-primary"
-      style={{ left: position }}
-    />
+    <>
+      {x !== null && (
+        <div
+          className="pointer-events-none absolute top-0 bottom-0 w-px bg-primary"
+          style={{ left: x }}
+        />
+      )}
+      {y !== null && (
+        <div
+          className="pointer-events-none absolute left-0 right-0 h-px bg-primary"
+          style={{ top: y }}
+        />
+      )}
+    </>
   );
 };
 

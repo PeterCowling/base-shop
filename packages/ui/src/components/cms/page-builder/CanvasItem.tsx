@@ -229,13 +229,8 @@ const CanvasItem = memo(function CanvasItem({
         />
         {distances.y !== null && (
           <div
-            className="absolute rounded bg-black/75 px-1 text-[10px] font-mono text-white shadow transition-opacity duration-150 dark:bg-white/75 dark:text-black"
-            style={{
-              top: (guides.y ?? 0) + 4,
-              left: 0,
-              opacity: guides.y !== null ? 1 : 0,
-              transform: "translateX(-100%)",
-            }}
+            className="absolute -left-4 rounded bg-black/75 px-1 text-[10px] font-mono text-white shadow transition-opacity duration-150 dark:bg-white/75 dark:text-black"
+            style={{ top: (guides.y ?? 0) + 4, opacity: guides.y !== null ? 1 : 0 }}
           >
             {Math.round(distances.y)}
           </div>

@@ -4,6 +4,7 @@
 
 import { ProductPublication } from "@platform-core/src/products";
 import { useProductFilters } from "@ui/hooks/useProductFilters";
+import { formatCurrency } from "@acme/shared-utils";
 import Link from "next/link";
 import { memo, ReactElement, ReactNode, useCallback, useMemo } from "react";
 import DataTable from "./DataTable";
@@ -94,7 +95,7 @@ function ProductsTableBase({
       },
       {
         header: "Price",
-        render: (p) => `${(p.price / 100).toFixed(2)} ${p.currency}`,
+        render: (p) => formatCurrency(p.price, p.currency),
       },
       {
         header: "Status",

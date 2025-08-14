@@ -10,6 +10,7 @@ import { EventListenerPlugin } from "@portabletext/editor/plugins";
 import type { PortableTextBlock } from "./schema";
 import { schema, renderBlock } from "./schema";
 import type { SKU } from "@acme/types";
+import { formatCurrency } from "@acme/shared-utils";
 
 function Toolbar() {
   const editor = useEditor();
@@ -29,7 +30,7 @@ function Toolbar() {
     (url: string) => {
       PortableTextEditor.insertBlock(editor, "image", { url });
     },
-    [editor],
+    [editor]
   );
   return (
     <div className="flex flex-wrap gap-2">
@@ -142,7 +143,7 @@ function ProductSearch({
                   />
                 )}
                 <span className="flex-1 text-left">{p.title}</span>
-                <span className="text-sm">{(p.price / 100).toFixed(2)}</span>
+                <span className="text-sm">{formatCurrency(p.price)}</span>
               </Button>
             </li>
           ))}
@@ -161,7 +162,9 @@ export default function RichTextEditor({
 }) {
   const [query, setQuery] = useState("");
   return (
-    <EditorProvider initialConfig={{ schemaDefinition: schema, initialValue: value }}>
+    <EditorProvider
+      initialConfig={{ schemaDefinition: schema, initialValue: value }}
+    >
       <EventListenerPlugin
         on={(event) => {
           if (event.type === "mutation") {

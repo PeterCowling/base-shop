@@ -66,13 +66,19 @@ jest.mock("../src/app/cms/wizard/WizardPreview", () => ({
       <div
         data-token="--color-primary"
         onClick={(e: any) =>
-          onTokenSelect(e.currentTarget.getAttribute("data-token"))
+          onTokenSelect(e.currentTarget.getAttribute("data-token"), {
+            x: 0,
+            y: 0,
+          })
         }
       />
       <div
         data-token="--color-bg"
         onClick={(e: any) =>
-          onTokenSelect(e.currentTarget.getAttribute("data-token"))
+          onTokenSelect(e.currentTarget.getAttribute("data-token"), {
+            x: 0,
+            y: 0,
+          })
         }
       />
     </div>

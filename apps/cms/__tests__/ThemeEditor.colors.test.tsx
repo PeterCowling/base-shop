@@ -175,17 +175,18 @@ describe("ThemeEditor - colors", () => {
     });
   });
 
-  it("focuses style editor field when preview element clicked", async () => {
+  it("shows inline color picker when preview element clicked", async () => {
     const tokensByTheme = { base: { "--color-primary": "#0000ff" } };
     renderThemeEditor({ tokensByTheme });
 
     const tokenEl = document.querySelector('[data-token="--color-primary"]') as HTMLElement;
     fireEvent.click(tokenEl);
     await waitFor(() => {
-      const input = document.querySelector(
-        '[data-token-key="--color-primary"] input[type="color"]'
-      ) as HTMLInputElement | null;
-      expect(input).toHaveFocus();
+      const inputs = screen.getAllByLabelText("--color-primary", {
+        selector: 'input[type="color"]',
+      });
+      expect(inputs.length).toBeGreaterThan(1);
+      expect(inputs[1]).toHaveFocus();
     });
   });
 
@@ -198,12 +199,13 @@ describe("ThemeEditor - colors", () => {
 
     const tokenEl = document.querySelector('[data-token="--color-bg"]') as HTMLElement;
     fireEvent.click(tokenEl);
-    const colorInput = await waitFor(() =>
-      document.querySelector(
-        '[data-token-key="--color-bg"] input[type="color"]'
-      ) as HTMLInputElement | null
+    const pickerInput = await waitFor(() =>
+      screen.getAllByLabelText("--color-bg", {
+        selector: 'input[type="color"]',
+      })[1]
     );
-    fireEvent.change(colorInput!, { target: { value: "#ff0000" } });
+    fireEvent.change(pickerInput, { target: { value: "#ff0000" } });
+    fireEvent.blur(pickerInput);
     fireEvent.click(screen.getByRole("button", { name: /^save$/i }));
 
     await waitFor(() => expect(mockUpdateShop).toHaveBeenCalled());

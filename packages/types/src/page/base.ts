@@ -99,6 +99,12 @@ export interface PageComponentBase {
   tabletItems?: number;
   /** Explicit item counts for small screens */
   mobileItems?: number;
+  /** Action performed when component is clicked */
+  clickAction?: "none" | "navigate";
+  /** Destination when using a navigation click action */
+  href?: string;
+  /** Simple animation applied on render */
+  animation?: "none" | "fade" | "slide";
   [key: string]: unknown;
 }
 
@@ -129,6 +135,9 @@ export const baseComponentSchema = z
     desktopItems: z.number().int().min(0).optional(),
     tabletItems: z.number().int().min(0).optional(),
     mobileItems: z.number().int().min(0).optional(),
+    clickAction: z.enum(["none", "navigate"]).optional(),
+    href: z.string().optional(),
+    animation: z.enum(["none", "fade", "slide"]).optional(),
   })
   .passthrough();
 

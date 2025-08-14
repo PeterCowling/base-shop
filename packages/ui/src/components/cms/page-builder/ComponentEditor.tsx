@@ -65,7 +65,12 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
         },
         {
           title: "Interactions",
-          content: <InteractionsPanel component={component} />,
+          content: (
+            <InteractionsPanel
+              component={component}
+              handleInput={handleInput}
+            />
+          ),
         },
       ]}
     />

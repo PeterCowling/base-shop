@@ -22,6 +22,7 @@ import { useThemePresets } from "./useThemePresets";
 import ColorInput from "./ColorInput";
 import WizardPreview from "../../../wizard/WizardPreview";
 import { savePreviewTokens } from "../../../wizard/previewTokens";
+import { patchShopTheme } from "../../../wizard/services/submitShop";
 
 interface Props {
   shop: string;
@@ -74,6 +75,11 @@ export default function ThemeEditor({
     ...initialOverrides,
   });
   const debounceRef = useRef<number | null>(null);
+  const saveDebounceRef = useRef<number | null>(null);
+  const pendingPatch = useRef<{
+    overrides: Record<string, string | null>;
+    defaults: Record<string, string>;
+  }>({ overrides: {}, defaults: {} });
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByThemeState[theme];
@@ -122,6 +128,7 @@ export default function ThemeEditor({
         }
         const merged = { ...tokensByThemeState[theme], ...next };
         schedulePreviewUpdate(merged);
+        schedulePatch({ [key]: next[key] ?? null }, { [key]: defaultValue });
         return next;
       });
     };
@@ -132,6 +139,7 @@ export default function ThemeEditor({
       delete next[key];
       const merged = { ...tokensByThemeState[theme], ...next };
       schedulePreviewUpdate(merged);
+      schedulePatch({ [key]: null }, {});
       return next;
     });
   };
@@ -152,8 +160,36 @@ export default function ThemeEditor({
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
+      if (saveDebounceRef.current) {
+        clearTimeout(saveDebounceRef.current);
+      }
     };
   }, []);
+
+  const schedulePatch = (
+    overrides: Record<string, string | null>,
+    defaults: Record<string, string>
+  ) => {
+    pendingPatch.current = {
+      overrides: { ...pendingPatch.current.overrides, ...overrides },
+      defaults: { ...pendingPatch.current.defaults, ...defaults },
+    };
+    if (saveDebounceRef.current) {
+      clearTimeout(saveDebounceRef.current);
+    }
+    saveDebounceRef.current = window.setTimeout(async () => {
+      const payload = pendingPatch.current;
+      pendingPatch.current = { overrides: {}, defaults: {} };
+      try {
+        await patchShopTheme(shop, {
+          themeOverrides: payload.overrides,
+          themeDefaults: payload.defaults,
+        });
+      } catch (err) {
+        console.error("Failed to save theme", err);
+      }
+    }, 500);
+  };
 
   useEffect(() => {
     const ccc = new ColorContrastChecker();

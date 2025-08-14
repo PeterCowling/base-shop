@@ -11,15 +11,35 @@ export async function buildThemeData(
   overrides: Record<string, string>;
   themeTokens: Record<string, string>;
 }> {
-  const overrides = form.themeOverrides as Record<string, string>;
-  let themeDefaults = form.themeDefaults as Record<string, string> | undefined;
-  if (!themeDefaults || Object.keys(themeDefaults).length === 0) {
+  const overridePatch =
+    (form.themeOverrides as Record<string, string | null | undefined>) ?? {};
+  const overrides = { ...(current.themeOverrides ?? {}) } as Record<
+    string,
+    string
+  >;
+  for (const [k, v] of Object.entries(overridePatch)) {
+    if (v == null || v === "") delete overrides[k];
+    else overrides[k] = v;
+  }
+
+  const defaultsPatch =
+    (form.themeDefaults as Record<string, string> | undefined) ?? {};
+  let themeDefaults: Record<string, string>;
+  if (Object.keys(defaultsPatch).length > 0) {
+    themeDefaults = {
+      ...(current.themeDefaults ?? {}),
+      ...defaultsPatch,
+    } as Record<string, string>;
+  } else if (!current.themeDefaults || current.themeId !== form.themeId) {
     themeDefaults =
       current.themeId !== form.themeId
         ? await syncTheme(shop, form.themeId)
         : await loadTokens(form.themeId);
+  } else {
+    themeDefaults = current.themeDefaults as Record<string, string>;
   }
-  const themeTokens = { ...themeDefaults, ...overrides };
+
+  const themeTokens = { ...themeDefaults, ...overrides } as Record<string, string>;
   return { themeDefaults, overrides, themeTokens };
 }
 

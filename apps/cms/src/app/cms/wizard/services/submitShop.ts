@@ -16,6 +16,11 @@ export interface SubmitResult {
   fieldErrors?: Record<string, string[]>;
 }
 
+export interface PatchThemeResult {
+  ok: boolean;
+  error?: string;
+}
+
 function serializeNavItems(
   items: WizardState["navItems"]
 ): { label: string; url: string; children?: any[] }[] {
@@ -173,4 +178,25 @@ export async function submitShop(
   }
 
   return { ok: false, error: json.error ?? "Failed to create shop" };
+}
+
+export async function patchShopTheme(
+  shopId: string,
+  data: {
+    themeOverrides?: Record<string, string | null>;
+    themeDefaults?: Record<string, string>;
+  }
+): Promise<PatchThemeResult> {
+  const res = await fetch(`/cms/api/theme/${shopId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  const json = (await res.json().catch(() => ({}))) as {
+    success?: boolean;
+    error?: string;
+  };
+
+  return { ok: res.ok && json.success === true, error: json.error };
 }

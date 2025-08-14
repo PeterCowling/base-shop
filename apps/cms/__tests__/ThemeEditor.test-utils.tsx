@@ -4,6 +4,7 @@ import type { ComponentProps } from "react";
 import ThemeEditor from "../src/app/cms/shop/[shop]/themes/ThemeEditor";
 import { updateShop } from "@cms/actions/shops.server";
 import { savePreset, deletePreset } from "../src/app/cms/shop/[shop]/themes/page";
+import { patchShopTheme } from "../src/app/cms/wizard/services/submitShop";
 
 jest.mock("@cms/actions/shops.server", () => ({
   updateShop: jest.fn(),
@@ -11,6 +12,9 @@ jest.mock("@cms/actions/shops.server", () => ({
 jest.mock("../src/app/cms/shop/[shop]/themes/page", () => ({
   savePreset: jest.fn(),
   deletePreset: jest.fn(),
+}));
+jest.mock("../src/app/cms/wizard/services/submitShop", () => ({
+  patchShopTheme: jest.fn(),
 }));
 jest.mock(
   "@/components/cms/StyleEditor",
@@ -84,6 +88,9 @@ export { fireEvent, render, screen, within, waitFor, act };
 export const mockUpdateShop = updateShop as jest.Mock;
 export const mockSavePreset = savePreset as jest.Mock;
 export const mockDeletePreset = deletePreset as jest.Mock;
+export const mockPatchShopTheme = patchShopTheme as jest.Mock;
+
+mockPatchShopTheme.mockResolvedValue({ ok: true });
 
 export interface RenderOptions
   extends Partial<ComponentProps<typeof ThemeEditor>> {}

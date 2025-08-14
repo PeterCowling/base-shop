@@ -17,6 +17,39 @@ describe("theme service", () => {
     expect(result.themeTokens).toEqual({ a: "1", b: "2" });
   });
 
+  it("merges partial updates", async () => {
+    const form: any = {
+      themeOverrides: { b: "2" },
+      themeDefaults: { b: "1" },
+      themeId: "t1",
+    };
+    const current: any = {
+      themeId: "t1",
+      themeDefaults: { a: "0", b: "1" },
+      themeOverrides: { a: "1" },
+    };
+    const result = await buildThemeData("shop", form, current);
+    expect(result.themeDefaults).toEqual({ a: "0", b: "1" });
+    expect(result.overrides).toEqual({ a: "1", b: "2" });
+    expect(result.themeTokens).toEqual({ a: "1", b: "2" });
+  });
+
+  it("removes overrides when value is null", async () => {
+    const form: any = {
+      themeOverrides: { a: null },
+      themeDefaults: {},
+      themeId: "t1",
+    };
+    const current: any = {
+      themeId: "t1",
+      themeDefaults: { a: "0" },
+      themeOverrides: { a: "1", b: "2" },
+    };
+    const result = await buildThemeData("shop", form, current);
+    expect(result.overrides).toEqual({ b: "2" });
+    expect(result.themeTokens).toEqual({ a: "0", b: "2" });
+  });
+
   it("removes theme token", () => {
     const current: any = {
       themeOverrides: { a: "1", b: "2" },

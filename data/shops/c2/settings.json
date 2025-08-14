@@ -11,6 +11,10 @@
     "enabled": true,
     "intervalMinutes": 30
   },
+  "lateFeeService": {
+    "enabled": true,
+    "intervalMinutes": 60
+  },
   "returnService": { "upsEnabled": false },
   "seo": {
     "aiCatalog": {

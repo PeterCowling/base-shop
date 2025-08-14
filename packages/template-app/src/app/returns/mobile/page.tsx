@@ -8,14 +8,30 @@ export default async function MobileReturnPage() {
   if (!cfg.mobileApp) {
     return <p className="p-6">Mobile returns are not enabled.</p>;
   }
-  return <Scanner />;
+  return <Scanner allowedZips={cfg.homePickupZipCodes} />;
 }
 
-function Scanner() {
+function Scanner({ allowedZips }: { allowedZips: string[] }) {
   "use client";
   const videoRef = useRef<HTMLVideoElement>(null);
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [zip, setZip] = useState("");
+  const [done, setDone] = useState(false);
+
+  async function finalize(sessionId: string) {
+    try {
+      await fetch("/api/returns/mobile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(zip ? { sessionId, zip } : { sessionId }),
+      });
+      setDone(true);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to record return.");
+    }
+  }
 
   useEffect(() => {
     let stream: MediaStream | null = null;
@@ -45,11 +61,9 @@ function Scanner() {
               setResult(code);
               active = false;
               stream?.getTracks().forEach((t) => t.stop());
-              await fetch("/api/returns/mobile", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ sessionId: code }),
-              });
+              if (allowedZips.length === 0) {
+                await finalize(code);
+              }
               return;
             }
           } catch (err) {
@@ -67,13 +81,48 @@ function Scanner() {
       active = false;
       stream?.getTracks().forEach((t) => t.stop());
     };
-  }, []);
+  }, [allowedZips]);
+
+  if (done) {
+    return (
+      <div className="p-6 space-y-4">
+        <p>Return recorded.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-4">
       <h1 className="text-xl font-semibold">Scan to mark return</h1>
-      <video ref={videoRef} className="w-full max-w-md" />
-      {result && <p>Scanned: {result}</p>}
+      {!result && <video ref={videoRef} className="w-full max-w-md" />}
+      {result && allowedZips.length > 0 && (
+        <div className="space-y-2">
+          <p>Scanned: {result}</p>
+          <label className="flex flex-col gap-1">
+            Home pickup ZIP
+            <select
+              className="border p-2"
+              value={zip}
+              onChange={(e) => setZip(e.target.value)}
+            >
+              <option value="">Select ZIP</option>
+              {allowedZips.map((z) => (
+                <option key={z} value={z}>
+                  {z}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            className="px-4 py-2 bg-blue-600 text-white disabled:opacity-50"
+            disabled={!zip}
+            onClick={() => result && finalize(result)}
+          >
+            Finalize
+          </button>
+        </div>
+      )}
+      {result && allowedZips.length === 0 && <p>Processing...</p>}
       {error && <p className="text-red-600">{error}</p>}
     </div>
   );

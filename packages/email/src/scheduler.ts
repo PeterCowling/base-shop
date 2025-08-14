@@ -2,6 +2,7 @@ import { sendCampaignEmail } from "./send";
 import { resolveSegment } from "./segments";
 import { emitSend } from "./hooks";
 import { listEvents } from "@platform-core/repositories/analytics.server";
+import type { AnalyticsEvent } from "@platform-core/analytics";
 import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";
@@ -52,8 +53,11 @@ async function filterUnsubscribed(
   const events = await listEvents(shop).catch(() => []);
   const unsub = new Set(
     events
-      .filter((e: any) => e.type === "email_unsubscribe" && e.email)
-      .map((e: any) => e.email),
+      .filter(
+        (e): e is AnalyticsEvent & { email: string } =>
+          e.type === "email_unsubscribe" && typeof e.email === "string",
+      )
+      .map((e) => e.email),
   );
   return recipients.filter((r) => !unsub.has(r));
 }

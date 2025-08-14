@@ -1,98 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { exampleProps } from "./example-props";
 import { z } from "zod";
-import {
-  type UpgradeComponent,
-  upgradeComponentSchema,
-} from "@acme/types/upgrade";
-
-class PreviewErrorBoundary extends React.Component<
-  { children: React.ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: unknown) {
-    console.error("Component preview failed", error);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="rounded border p-4 text-red-500">
-          Failed to render preview
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
-function ComponentPreview({ component }: { component: UpgradeComponent }) {
-  const [NewComp, setNewComp] = useState<React.ComponentType | null>(null);
-  const [OldComp, setOldComp] = useState<React.ComponentType | null>(null);
-  const [showCompare, setShowCompare] = useState(false);
-
-  useEffect(() => {
-    const basePath = `@ui/components/${component.file.replace(/\.[jt]sx?$/, "")}`;
-    const load = async (p: string) => {
-      if (
-        typeof globalThis !== "undefined" &&
-        (globalThis as any).__UPGRADE_MOCKS__?.[p]
-      ) {
-        return (globalThis as any).__UPGRADE_MOCKS__[p];
-      }
-      return import(p);
-    };
-
-    load(basePath)
-      .then((m) => setNewComp(() => (m[component.componentName] ?? m.default)))
-      .catch((err) =>
-        console.error("Failed to load component", component.componentName, err)
-      );
-    load(`${basePath}.bak`)
-      .then((m) => setOldComp(() => (m[component.componentName] ?? m.default)))
-      .catch(() => {});
-  }, [component]);
-
-  const props = exampleProps[component.componentName] ?? {};
-
-  return (
-    <div className="space-y-2 rounded border p-4">
-      <div className="flex items-center justify-between">
-        <h3>{component.componentName}</h3>
-        {OldComp && (
-          <button
-            type="button"
-            className="rounded border px-2 py-1"
-            onClick={() => setShowCompare((s) => !s)}
-          >
-            {showCompare ? "Hide comparison" : "Compare"}
-          </button>
-        )}
-      </div>
-      <PreviewErrorBoundary>
-        {showCompare && OldComp ? (
-          <div className="grid grid-cols-2 gap-4">
-            <div>{NewComp ? <NewComp {...props} /> : null}</div>
-            <div>{OldComp ? <OldComp {...props} /> : null}</div>
-          </div>
-        ) : NewComp ? (
-          <NewComp {...props} />
-        ) : null}
-      </PreviewErrorBoundary>
-    </div>
-  );
-}
+import { type UpgradeComponent } from "@acme/types/upgrade";
+import ComponentPreview from "@ui/src/components/ComponentPreview";
 
 export default function UpgradePreviewPage() {
   const [changes, setChanges] = useState<UpgradeComponent[]>([]);
@@ -105,11 +17,18 @@ export default function UpgradePreviewPage() {
       try {
         const res = await fetch("/api/upgrade-changes");
         const schema = z.object({
-          components: z.array(upgradeComponentSchema),
+          components: z.array(
+            z.object({
+              file: z.string(),
+              componentName: z.string(),
+              oldChecksum: z.string().optional(),
+              newChecksum: z.string().optional(),
+            }),
+          ),
           pages: z.array(z.string()).optional(),
         });
         const data = schema.parse(await res.json());
-        setChanges(data.components);
+        setChanges(data.components as UpgradeComponent[]);
         if (data.pages) {
           const pageLinks = (
             await Promise.all(
@@ -175,7 +94,10 @@ export default function UpgradePreviewPage() {
       <ul className="space-y-4">
         {changes.map((c) => (
           <li key={c.file}>
-            <ComponentPreview component={c} />
+            <ComponentPreview
+              component={c}
+              componentProps={exampleProps[c.componentName] ?? {}}
+            />
           </li>
         ))}
       </ul>

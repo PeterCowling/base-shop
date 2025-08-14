@@ -7,7 +7,7 @@ import type {
   ShippingRequest,
   WidgetComponent,
   WidgetProps,
-} from "../plugins";
+} from "@acme/types";
 
 export interface RegistryItem<T> {
   id: string;

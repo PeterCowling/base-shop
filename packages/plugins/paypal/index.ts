@@ -3,7 +3,7 @@ import type {
   PaymentPayload,
   PaymentRegistry,
   Plugin,
-} from "@acme/platform-core/plugins";
+} from "@acme/types";
 import { z } from "zod";
 
 const configSchema = z

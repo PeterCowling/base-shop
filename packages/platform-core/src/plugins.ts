@@ -2,111 +2,21 @@
 import { readdir, readFile } from "node:fs/promises";
 import type { Dirent } from "node:fs";
 import path from "node:path";
-import type { z } from "zod";
 import { logger } from "./utils";
 import { PluginManager } from "./plugins/PluginManager";
-
-export interface PaymentPayload {
-  [key: string]: unknown;
-}
-
-export interface ShippingRequest {
-  [key: string]: unknown;
-}
-
-export interface WidgetProps {
-  [key: string]: unknown;
-}
-
-/** Interface for payment providers */
-export interface PaymentProvider<Payload = PaymentPayload> {
-  processPayment(payload: Payload): Promise<unknown> | unknown;
-}
-
-/** Interface for shipping providers */
-export interface ShippingProvider<Request = ShippingRequest> {
-  calculateShipping(request: Request): Promise<unknown> | unknown;
-}
-
-/** Interface for widget components */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface WidgetComponent<P = WidgetProps> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (props: P): any;
-}
-
-/** Registry for payment providers */
-export interface PaymentRegistry<
-  Payload = PaymentPayload,
-  T extends PaymentProvider<Payload> = PaymentProvider<Payload>,
-> {
-  add(id: string, provider: T): void;
-  get(id: string): T | undefined;
-  list(): { id: string; value: T }[];
-}
-
-/** Registry for shipping providers */
-export interface ShippingRegistry<
-  Request = ShippingRequest,
-  T extends ShippingProvider<Request> = ShippingProvider<Request>,
-> {
-  add(id: string, provider: T): void;
-  get(id: string): T | undefined;
-  list(): { id: string; value: T }[];
-}
-
-/** Registry for widget components */
-export interface WidgetRegistry<
-  Props = WidgetProps,
-  T extends WidgetComponent<Props> = WidgetComponent<Props>,
-> {
-  add(id: string, component: T): void;
-  get(id: string): T | undefined;
-  list(): { id: string; value: T }[];
-}
-
-/**
- * Plugins may expose configurable options. They can provide default values via
- * `defaultConfig` and a Zod `configSchema` to validate user supplied
- * configuration. During initialization the provided configuration is merged
- * with defaults and validated before any registration hooks execute.
- */
-export interface PluginOptions<Config = Record<string, unknown>> {
-  /** Optional name shown in the CMS */
-  name: string;
-  /** Optional description for plugin */
-  description?: string;
-  /** Default configuration values */
-  defaultConfig?: Config;
-  /** zod schema used to validate configuration */
-  configSchema?: z.ZodType<Config>;
-}
-
-export interface Plugin<
-  Config = Record<string, unknown>,
-  PPay = PaymentPayload,
-  SReq = ShippingRequest,
-  WProp = WidgetProps,
-  P extends PaymentProvider<PPay> = PaymentProvider<PPay>,
-  S extends ShippingProvider<SReq> = ShippingProvider<SReq>,
-  W extends WidgetComponent<WProp> = WidgetComponent<WProp>,
-> extends PluginOptions<Config> {
-  id: string;
-  registerPayments?(
-    registry: PaymentRegistry<PPay, P>,
-    config: Config,
-  ): void;
-  registerShipping?(
-    registry: ShippingRegistry<SReq, S>,
-    config: Config,
-  ): void;
-  registerWidgets?(
-    registry: WidgetRegistry<WProp, W>,
-    config: Config,
-  ): void;
-  /** optional async initialization hook */
-  init?(config: Config): Promise<void> | void;
-}
+import type {
+  PaymentPayload,
+  ShippingRequest,
+  WidgetProps,
+  PaymentProvider,
+  ShippingProvider,
+  WidgetComponent,
+  PaymentRegistry,
+  ShippingRegistry,
+  WidgetRegistry,
+  PluginOptions,
+  Plugin,
+} from "@acme/types";
 
 export interface LoadPluginsOptions {
   /** directories containing plugin packages */
@@ -243,3 +153,17 @@ export async function initPlugins<
   }
   return manager;
 }
+
+export type {
+  PaymentPayload,
+  ShippingRequest,
+  WidgetProps,
+  WidgetComponent,
+  PaymentProvider,
+  ShippingProvider,
+  PaymentRegistry,
+  ShippingRegistry,
+  WidgetRegistry,
+  PluginOptions,
+  Plugin,
+};

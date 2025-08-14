@@ -16,6 +16,7 @@ import { findCoupon } from "@platform-core/coupons";
 import { trackEvent } from "@platform-core/analytics";
 import shop from "../../../../shop.json";
 import { getTaxRate } from "@platform-core/tax";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
@@ -159,17 +160,14 @@ const buildCheckoutMetadata = ({
 
 export const runtime = "edge";
 
-const schema = z
-  .object({
-    returnDate: z.string().optional(),
-    coupon: z.string().optional(),
-    currency: z.enum(["EUR", "USD", "GBP"]).default("EUR"),
-    taxRegion: z.enum(["", "EU", "US"]).default(""),
-    customer: z.string().optional(),
-    shipping: shippingSchema.optional(),
-    billing_details: billingSchema.optional(),
-  })
-  .strict();
+const schema = z.object({
+  returnDate: z.string().optional(),
+  coupon: z.string().optional(),
+  currency: z.enum(["EUR", "USD", "GBP"]).default("EUR"),
+  customer: z.string().optional(),
+  shipping: shippingSchema.optional(),
+  billing_details: billingSchema.optional(),
+});
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   /* 1️⃣ Decode cart cookie -------------------------------------------------- */
@@ -191,15 +189,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const parsed = await parseJsonBody(req, schema, "1mb");
   if (!parsed.success) return parsed.response;
 
-  const {
-    returnDate,
-    coupon,
-    currency,
-    taxRegion,
-    customer: customerId,
-    shipping,
-    billing_details,
-  } = parsed.data;
+  const { returnDate, coupon, currency, customer: customerId, shipping, billing_details } =
+    parsed.data;
+  const { taxRegion } = await getShopSettings(shop.id);
   const couponDef = await findCoupon(shop.id, coupon);
   if (couponDef) {
     await trackEvent(shop.id, { type: "discount_redeemed", code: couponDef.code });

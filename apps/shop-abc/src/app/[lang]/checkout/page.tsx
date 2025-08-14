@@ -80,7 +80,7 @@ export default async function CheckoutPage({
             region={premierDelivery.regions[0] ?? ""}
           />
         )}
-      <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
+      <CheckoutForm locale={lang} />
     </div>
   );
 }

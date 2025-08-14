@@ -7,6 +7,7 @@ import { POST } from "../src/app/api/checkout-session/route";
 import { findCoupon } from "@platform-core/coupons";
 import { getTaxRate } from "@platform-core/tax";
 import { ReadableStream } from "node:stream/web";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -26,6 +27,14 @@ jest.mock("@platform-core/pricing", () => ({
 
 jest.mock("@platform-core/coupons", () => ({ findCoupon: jest.fn() }));
 jest.mock("@platform-core/tax", () => ({ getTaxRate: jest.fn() }));
+jest.mock("@platform-core/repositories/settings.server", () => ({
+  getShopSettings: jest.fn(),
+}));
+jest.mock("@platform-core/src/cartCookie", () => ({
+  encodeCartCookie: (val: string) => val,
+  decodeCartCookie: (val: string) => val,
+  CART_COOKIE: "__cart",
+}));
 
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
@@ -41,6 +50,11 @@ const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 const findCouponMock = findCoupon as jest.Mock;
 const getTaxRateMock = getTaxRate as jest.Mock;
 const convertCurrencyMock = convertCurrency as jest.Mock;
+const getShopSettingsMock = getShopSettings as jest.Mock;
+
+beforeEach(() => {
+  getShopSettingsMock.mockResolvedValue({ taxRegion: "" });
+});
 
 function createRequest(
   body: any,
@@ -196,16 +210,14 @@ test("adds tax line item and metadata", async () => {
   });
   findCouponMock.mockResolvedValue(null);
   getTaxRateMock.mockResolvedValue(0.2);
+  getShopSettingsMock.mockResolvedValue({ taxRegion: "EU" });
 
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
   mockCart = cart;
   const cookie = encodeCartCookie("test");
-  const req = createRequest(
-    { returnDate: "2025-01-02", taxRegion: "EU" },
-    cookie,
-  );
+  const req = createRequest({ returnDate: "2025-01-02" }, cookie);
 
   await POST(req);
   const args = stripeCreate.mock.calls[0][0];
@@ -234,20 +246,31 @@ test("returns 400 for unsupported currency", async () => {
   expect(body.currency[0]).toMatch(/invalid/i);
 });
 
-test("returns 400 for unsupported tax region", async () => {
+test("ignores forged tax region value", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockReset();
+  findCouponMock.mockReset();
+  getTaxRateMock.mockReset();
+  getShopSettingsMock.mockResolvedValue({ taxRegion: "EU" });
+  stripeCreate.mockResolvedValue({
+    id: "sess_test",
+    payment_intent: { client_secret: "cs_test" },
+  });
+  findCouponMock.mockResolvedValue(null);
+  getTaxRateMock.mockResolvedValue(0.2);
+
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
   mockCart = cart;
   const cookie = encodeCartCookie("test");
   const req = createRequest(
-    { returnDate: "2025-01-02", taxRegion: "DE" },
+    { returnDate: "2025-01-02", taxRegion: "US" },
     cookie,
   );
   const res = await POST(req);
-  expect(res.status).toBe(400);
-  const body = await res.json();
-  expect(body.taxRegion[0]).toMatch(/invalid/i);
+  expect(res.status).toBe(200);
+  expect(getTaxRateMock).toHaveBeenCalledWith("EU");
 });
 
 test("rounds unit amounts before sending to Stripe", async () => {

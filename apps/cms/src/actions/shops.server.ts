@@ -3,19 +3,20 @@
 import {
   updateShop as serviceUpdateShop,
   getSettings as serviceGetSettings,
-  updateSeo as serviceUpdateSeo,
-  generateSeo as serviceGenerateSeo,
-  revertSeo as serviceRevertSeo,
   setFreezeTranslations as serviceSetFreezeTranslations,
   updateCurrencyAndTax as serviceUpdateCurrencyAndTax,
-  updateDeposit as serviceUpdateDeposit,
+  updateDepositService as serviceUpdateDeposit,
   updateUpsReturns as serviceUpdateUpsReturns,
   updatePremierDelivery as serviceUpdatePremierDelivery,
   updateAiCatalog as serviceUpdateAiCatalog,
-  resetThemeOverride as serviceResetThemeOverride,
-  type Shop,
-  type ShopSettings,
-} from "../services/shops";
+} from "../services/shops/settingsService";
+import {
+  updateSeo as serviceUpdateSeo,
+  generateSeo as serviceGenerateSeo,
+  revertSeo as serviceRevertSeo,
+} from "../services/shops/seoService";
+import { resetThemeOverride as serviceResetThemeOverride } from "../services/shops/themeService";
+import type { Shop, ShopSettings } from "@acme/types";
 
 export async function updateShop(
   shop: string,
@@ -63,7 +64,7 @@ export async function updateCurrencyAndTax(
   return serviceUpdateCurrencyAndTax(shop, formData);
 }
 
-export async function updateDeposit(shop: string, formData: FormData) {
+export async function updateDepositService(shop: string, formData: FormData) {
   "use server";
   return serviceUpdateDeposit(shop, formData);
 }

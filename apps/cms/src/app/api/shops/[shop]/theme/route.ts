@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { patchTheme } from "@cms/services/shops";
+import { patchTheme } from "@cms/services/shops/themeService";
 
 export async function PATCH(
   req: NextRequest,

@@ -20,6 +20,7 @@ interface Props {
   bgTokenKeys: string[];
   handleWarningChange: (token: string, warning: string | null) => void;
   onTokenSelect: (token: string) => void;
+  selectedToken: string | null;
 }
 
 export default function TokenGroup({
@@ -35,6 +36,7 @@ export default function TokenGroup({
   bgTokenKeys,
   handleWarningChange,
   onTokenSelect,
+  selectedToken,
 }: Props) {
   return (
     <fieldset className="space-y-2">
@@ -71,7 +73,9 @@ export default function TokenGroup({
                 type="button"
                 aria-label={k}
                 title={k}
-                className="h-6 w-6 overflow-hidden rounded border p-0"
+                className={`h-6 w-6 overflow-hidden rounded border p-0 ${
+                  hasOverride ? "ring-2 ring-amber-400" : ""
+                } ${selectedToken === k ? "ring-2 ring-blue-500" : ""}`}
                 onClick={() => onTokenSelect(k)}
               >
                 {hasOverride ? (
@@ -114,6 +118,7 @@ export default function TokenGroup({
               textTokens={textTokenKeys}
               bgTokens={bgTokenKeys}
               onWarningChange={handleWarningChange}
+              isSelected={selectedToken === k}
             />
           );
         })}

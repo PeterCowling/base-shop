@@ -1,5 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/PalettePicker.tsx
 "use client";
+import { useState } from "react";
 import type { MutableRefObject } from "react";
 import TokenGroup from "./TokenGroup";
 
@@ -33,6 +34,12 @@ export default function PalettePicker({
   handleWarningChange,
   onTokenSelect,
 }: Props) {
+  const [selectedToken, setSelectedToken] = useState<string | null>(null);
+
+  const handleSelect = (token: string) => {
+    setSelectedToken(token);
+    onTokenSelect(token);
+  };
   return (
     <div className="space-y-6">
       {Object.entries(groupedTokens).map(([groupName, tokens]) => (
@@ -49,7 +56,8 @@ export default function PalettePicker({
           textTokenKeys={textTokenKeys}
           bgTokenKeys={bgTokenKeys}
           handleWarningChange={handleWarningChange}
-          onTokenSelect={onTokenSelect}
+          onTokenSelect={handleSelect}
+          selectedToken={selectedToken}
         />
       ))}
     </div>

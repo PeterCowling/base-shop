@@ -55,20 +55,23 @@ function ComponentPreview({ component }: { component: UpgradeComponent }) {
     const load = async (p: string) => {
       if (
         typeof globalThis !== "undefined" &&
-        (globalThis as any).__UPGRADE_MOCKS__?.[p]
+        globalThis.__UPGRADE_MOCKS__?.[p]
       ) {
-        return (globalThis as any).__UPGRADE_MOCKS__[p];
+        return globalThis.__UPGRADE_MOCKS__[p];
       }
-      return import(p);
+      const m = await import(p);
+      return (m as Record<string, React.ComponentType>)[
+        component.componentName
+      ] ?? m.default;
     };
 
     load(basePath)
-      .then((m) => setNewComp(() => (m[component.componentName] ?? m.default)))
+      .then((comp) => setNewComp(() => comp))
       .catch((err) =>
         console.error("Failed to load component", component.componentName, err)
       );
     load(`${basePath}.bak`)
-      .then((m) => setOldComp(() => (m[component.componentName] ?? m.default)))
+      .then((comp) => setOldComp(() => comp))
       .catch(() => {});
   }, [component]);
 

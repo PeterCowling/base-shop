@@ -4,18 +4,18 @@ import UpgradePreviewPage from "../src/app/upgrade-preview/page";
 
 describe("upgrade preview page", () => {
   beforeEach(() => {
-    (global as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/molecules/Breadcrumbs": {
-        default: () => <div data-testid="new-comp">new-breadcrumbs</div>,
-      },
-      "@ui/components/molecules/Breadcrumbs.bak": {
-        default: () => <div data-testid="old-comp">old-breadcrumbs</div>,
-      },
+    global.__UPGRADE_MOCKS__ = {
+      "@ui/components/molecules/Breadcrumbs": () => (
+        <div data-testid="new-comp">new-breadcrumbs</div>
+      ),
+      "@ui/components/molecules/Breadcrumbs.bak": () => (
+        <div data-testid="old-comp">old-breadcrumbs</div>
+      ),
     };
   });
 
   afterEach(() => {
-    delete (global as any).__UPGRADE_MOCKS__;
+    delete global.__UPGRADE_MOCKS__;
   });
 
   it("renders component and toggles comparison", async () => {

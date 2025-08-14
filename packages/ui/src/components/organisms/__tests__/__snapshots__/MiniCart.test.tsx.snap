@@ -76,6 +76,7 @@ exports[`MiniCart shows cart items and handles quantity changes and removal 1`] 
             <button
               aria-label="Decrease quantity"
               class="inline-flex items-center justify-center rounded-md text-sm font-medium text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-fg hover:bg-primary/90 px-2 py-1 text-xs"
+              data-token="--color-primary"
             >
               -
             </button>
@@ -87,6 +88,7 @@ exports[`MiniCart shows cart items and handles quantity changes and removal 1`] 
             <button
               aria-label="Increase quantity"
               class="inline-flex items-center justify-center rounded-md text-sm font-medium text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-fg hover:bg-primary/90 px-2 py-1 text-xs"
+              data-token="--color-primary"
             >
               +
             </button>

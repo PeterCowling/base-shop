@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/atoms/shadcn";
 import StyleEditor from "@/components/cms/StyleEditor";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import type { TokenMap } from "@ui/hooks/useTokenEditor";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import { useThemeLoader } from "../hooks/useThemeLoader";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
+import { devicePresets } from "@ui/utils/devicePresets";
 
 const colorPalettes: Array<{
   name: string;
@@ -75,6 +76,10 @@ export default function StepTheme({
   const [palette, setPalette] = useState(colorPalettes[0].name);
   const [, markComplete] = useStepCompletion("theme");
   const router = useRouter();
+  const [deviceId, setDeviceId] = useState(devicePresets[0].id);
+  const device = useMemo(() => {
+    return devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
+  }, [deviceId]);
 
   const applyPalette = useCallback(
     (name: string) => {
@@ -190,7 +195,22 @@ export default function StepTheme({
         onChange={handleTokenChange}
       />
 
-      <WizardPreview style={themeStyle} />
+      <div className="flex justify-end">
+        <Select value={deviceId} onValueChange={setDeviceId}>
+          <SelectTrigger aria-label="Device" className="w-40">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {devicePresets.map((p) => (
+              <SelectItem key={p.id} value={p.id}>
+                {p.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <WizardPreview style={themeStyle} device={device} />
 
       <div className="flex justify-between">
         {prevStepId && (

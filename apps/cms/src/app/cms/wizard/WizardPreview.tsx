@@ -23,6 +23,7 @@ interface Props {
   inspectMode?: boolean;
   /** Called when a tokenised element is clicked */
   onTokenSelect?: (token: string, coords: { x: number; y: number }) => void;
+  device?: DevicePreset;
 }
 
 /**
@@ -34,11 +35,13 @@ export default function WizardPreview({
   style,
   inspectMode = false,
   onTokenSelect,
+  device: deviceProp,
 }: Props): React.JSX.Element {
   const [deviceId, setDeviceId] = useState(devicePresets[0].id);
   const device = useMemo<DevicePreset>(() => {
+    if (deviceProp) return deviceProp;
     return devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
-  }, [deviceId]);
+  }, [deviceId, deviceProp]);
   const viewport: "desktop" | "tablet" | "mobile" = device.type;
   const [components, setComponents] = useState<PageComponent[]>([]);
   const [themeStyle, setThemeStyle] = useState<React.CSSProperties>(() => ({
@@ -208,32 +211,34 @@ export default function WizardPreview({
   return (
     <div className="space-y-2">
       {/* viewport switcher */}
-      <div className="flex justify-end gap-2">
-        {(["desktop", "tablet", "mobile"] as const).map((t) => {
-          const preset = getLegacyPreset(t);
-          return (
-            <Button
-              key={t}
-              variant={deviceId === preset.id ? "default" : "outline"}
-              onClick={() => setDeviceId(preset.id)}
-            >
-              {t.charAt(0).toUpperCase() + t.slice(1)}
-            </Button>
-          );
-        })}
-        <Select value={deviceId} onValueChange={setDeviceId}>
-          <SelectTrigger aria-label="Device" className="w-40">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {devicePresets.map((p) => (
-              <SelectItem key={p.id} value={p.id}>
-                {p.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      {!deviceProp && (
+        <div className="flex justify-end gap-2">
+          {(["desktop", "tablet", "mobile"] as const).map((t) => {
+            const preset = getLegacyPreset(t);
+            return (
+              <Button
+                key={t}
+                variant={deviceId === preset.id ? "default" : "outline"}
+                onClick={() => setDeviceId(preset.id)}
+              >
+                {t.charAt(0).toUpperCase() + t.slice(1)}
+              </Button>
+            );
+          })}
+          <Select value={deviceId} onValueChange={setDeviceId}>
+            <SelectTrigger aria-label="Device" className="w-40">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {devicePresets.map((p) => (
+                <SelectItem key={p.id} value={p.id}>
+                  {p.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       {/* live preview */}
       <div

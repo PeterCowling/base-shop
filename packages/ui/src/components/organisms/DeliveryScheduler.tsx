@@ -17,8 +17,11 @@ export interface DeliverySchedulerProps
   onChange?: (info: {
     mode: "delivery" | "pickup";
     date: string;
-    time: string;
+    region?: string;
+    window?: string;
   }) => void;
+  /** Optional regions eligible for premier delivery */
+  regions?: string[];
   /** Optional preset windows (e.g. `10-11`, `11-12`) */
   windows?: string[];
 }
@@ -30,10 +33,16 @@ export function DeliveryScheduler({
 }: DeliverySchedulerProps) {
   const [mode, setMode] = React.useState<"delivery" | "pickup">("delivery");
   const [date, setDate] = React.useState("");
-  const [time, setTime] = React.useState("");
+  const [region, setRegion] = React.useState("");
+  const [win, setWin] = React.useState("");
 
   const emitChange = React.useCallback(
-    (next: { mode: "delivery" | "pickup"; date: string; time: string }) => {
+    (next: {
+      mode: "delivery" | "pickup";
+      date: string;
+      region?: string;
+      window?: string;
+    }) => {
       onChange?.(next);
     },
     [onChange]
@@ -41,17 +50,21 @@ export function DeliveryScheduler({
 
   const handleMode = (value: "delivery" | "pickup") => {
     setMode(value);
-    emitChange({ mode: value, date, time });
+    emitChange({ mode: value, date, region, window: win });
   };
 
   const handleDate = (value: string) => {
     setDate(value);
-    emitChange({ mode, date: value, time });
+    emitChange({ mode, date: value, region, window: win });
   };
 
   const handleTime = (value: string) => {
-    setTime(value);
-    emitChange({ mode, date, time: value });
+    setWin(value);
+    emitChange({ mode, date, region, window: value });
+  };
+  const handleRegion = (value: string) => {
+    setRegion(value);
+    emitChange({ mode, date, region: value, window: win });
   };
 
   return (
@@ -76,10 +89,27 @@ export function DeliveryScheduler({
           onChange={(e) => handleDate(e.target.value)}
         />
       </label>
+      {regions && regions.length ? (
+        <div>
+          <label className="mb-1 block text-sm font-medium">Region</label>
+          <Select value={region} onValueChange={handleRegion}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select region" />
+            </SelectTrigger>
+            <SelectContent>
+              {regions.map((r) => (
+                <SelectItem key={r} value={r}>
+                  {r}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      ) : null}
       <label className="flex flex-col gap-1 text-sm">
-        Time
+        {windows && windows.length ? "Window" : "Time"}
         {windows && windows.length ? (
-          <Select value={time} onValueChange={handleTime}>
+          <Select value={win} onValueChange={handleTime}>
             <SelectTrigger>
               <SelectValue placeholder="Select window" />
             </SelectTrigger>
@@ -94,7 +124,7 @@ export function DeliveryScheduler({
         ) : (
           <Input
             type="time"
-            value={time}
+            value={win}
             onChange={(e) => handleTime(e.target.value)}
           />
         )}

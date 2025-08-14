@@ -3,7 +3,7 @@
 import { shippingEnv } from "@acme/config/env/shipping";
 
 export interface ShippingRateRequest {
-  provider: "ups" | "dhl";
+  provider: "ups" | "dhl" | "premier-shipping";
   fromPostalCode: string;
   toPostalCode: string;
   weight: number;
@@ -25,6 +25,19 @@ export async function getShippingRate({
   window,
   premierDelivery,
 }: ShippingRateRequest): Promise<unknown> {
+  if (provider === "premier-shipping") {
+    if (!premierDelivery) {
+      throw new Error("Premier delivery not configured");
+    }
+    if (!region || !premierDelivery.regions.includes(region)) {
+      throw new Error("Region not eligible for premier delivery");
+    }
+    if (!window || !premierDelivery.windows.includes(window)) {
+      throw new Error("Invalid delivery window");
+    }
+    return { rate: 0 };
+  }
+
   if (region || window) {
     if (!premierDelivery) {
       throw new Error("Premier delivery not configured");

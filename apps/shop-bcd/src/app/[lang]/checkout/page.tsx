@@ -34,22 +34,22 @@ export default async function CheckoutPage({
     return <p className="p-8 text-center">Your cart is empty.</p>;
   }
 
-    const settings = await getShopSettings(shop.id);
-    const premierDelivery = settings.premierDelivery;
-    const hasPremierShipping = shop.shippingProviders?.includes(
-      "premier-shipping",
-    );
+  const settings = await getShopSettings(shop.id);
+  const premierDelivery = settings.premierDelivery;
+  const hasPremierShipping = shop.shippingProviders?.includes(
+    "premier-shipping",
+  );
 
   /* ---------- render ---------- */
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
       <OrderSummary />
-        {hasPremierShipping && premierDelivery && (
-          <PremierDeliveryPicker
-            windows={premierDelivery.windows}
-            region={premierDelivery.regions[0] ?? ""}
-          />
-        )}
+      {hasPremierShipping && premierDelivery && (
+        <PremierDeliveryPicker
+          windows={premierDelivery.windows}
+          regions={premierDelivery.regions}
+        />
+      )}
       <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
     </div>
   );
@@ -57,20 +57,22 @@ export default async function CheckoutPage({
 
 function PremierDeliveryPicker({
   windows,
-  region,
+  regions,
 }: {
   windows: string[];
-  region: string;
+  regions: string[];
 }) {
   "use client";
   return (
     <DeliveryScheduler
       windows={windows}
-      onChange={({ time }) => {
-        fetch("/api/delivery/schedule", {
+      regions={regions}
+      onChange={({ region, window, date }) => {
+        if (!region || !window || !date) return;
+        fetch("/api/delivery", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ region, window: time }),
+          body: JSON.stringify({ region, date, window }),
         }).catch(() => {});
       }}
     />

@@ -87,6 +87,10 @@ export const shopSchema = z
     sanityBlog: sanityBlogConfigSchema.optional(),
     domain: shopDomainSchema.optional(),
     analyticsEnabled: z.boolean().optional(),
+    /** Whether customers can initiate returns */
+    returnsEnabled: z.boolean().optional(),
+    /** URL to the shop's return policy */
+    returnPolicyUrl: z.string().url().optional(),
   })
   .strict();
 

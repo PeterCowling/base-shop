@@ -31,6 +31,7 @@ model RentalOrder {
   startedAt          String
   returnedAt         String?
   refundedAt         String?
+  trackingNumber     String?
   damageFee          Int?
   customerId         String?
   riskLevel          String?

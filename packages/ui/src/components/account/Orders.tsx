@@ -6,6 +6,20 @@ import StartReturnButton from "./StartReturnButton";
 import type { OrderStep } from "../organisms/OrderTrackingTimeline";
 import { OrderTrackingTimeline } from "../organisms/OrderTrackingTimeline";
 
+async function fetchTrackingStatus(
+  trackingNumber: string,
+): Promise<string | null> {
+  try {
+    const res = await fetch(
+      `https://www.ups.com/track/api/Track/GetStatus?loc=en_US&tracknum=${trackingNumber}`,
+    );
+    const data = await res.json();
+    return data?.trackDetails?.[0]?.packageStatus || null;
+  } catch {
+    return null;
+  }
+}
+
 export interface OrdersPageProps {
   /** ID of the current shop for fetching orders */
   shopId: string;
@@ -13,6 +27,10 @@ export interface OrdersPageProps {
   title?: string;
   /** Destination to return to after login */
   callbackUrl?: string;
+  /** Whether returns are enabled */
+  returnsEnabled?: boolean;
+  /** URL to the shop's return policy */
+  returnPolicyUrl?: string;
 }
 
 export const metadata = { title: "Orders" };
@@ -21,6 +39,8 @@ export default async function OrdersPage({
   shopId,
   title = "Orders",
   callbackUrl = "/account/orders",
+  returnsEnabled = false,
+  returnPolicyUrl,
 }: OrdersPageProps) {
   const session = await getCustomerSession();
   if (!session) {
@@ -32,11 +52,28 @@ export default async function OrdersPage({
   }
   const orders = await getOrdersForCustomer(shopId, session.customerId);
   if (!orders.length) return <p className="p-6">No orders yet.</p>;
+  const statuses = await Promise.all(
+    orders.map((o) =>
+      o.trackingNumber ? fetchTrackingStatus(o.trackingNumber) : Promise.resolve(null),
+    ),
+  );
   return (
     <>
       <h1 className="p-6 text-xl">{title}</h1>
+      {returnsEnabled && returnPolicyUrl && (
+        <p className="px-6">
+          <a
+            href={returnPolicyUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="underline"
+          >
+            Return policy
+          </a>
+        </p>
+      )}
       <ul className="space-y-2 p-6">
-        {orders.map((o) => {
+        {orders.map((o, i) => {
           const steps: OrderStep[] = [
             { label: "Placed", date: o.startedAt, complete: true },
           ];
@@ -48,6 +85,7 @@ export default async function OrdersPage({
           if (o.refundedAt) {
             steps.push({ label: "Refunded", date: o.refundedAt, complete: true });
           }
+          const status = statuses[i];
           return (
             <li key={o.id} className="rounded border p-4">
               <div>Order: {o.id}</div>
@@ -55,7 +93,12 @@ export default async function OrdersPage({
                 <div>Return: {o.expectedReturnDate}</div>
               )}
               <OrderTrackingTimeline steps={steps} className="mt-2" />
-              {!o.returnedAt && <StartReturnButton sessionId={o.sessionId} />}
+              {o.trackingNumber && status && (
+                <div className="mt-1 text-sm">Tracking: {status}</div>
+              )}
+              {returnsEnabled && !o.returnedAt && (
+                <StartReturnButton sessionId={o.sessionId} />
+              )}
             </li>
           );
         })}

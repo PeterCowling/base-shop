@@ -112,6 +112,8 @@ export declare const shopSchema: z.ZodObject<{
         label: string;
     }>, "many">>;
     analyticsEnabled: z.ZodOptional<z.ZodBoolean>;
+    returnsEnabled: z.ZodOptional<z.ZodBoolean>;
+    returnPolicyUrl: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     id: string;
     name: string;
@@ -137,6 +139,8 @@ export declare const shopSchema: z.ZodObject<{
         label: string;
     }[] | undefined;
     analyticsEnabled?: boolean | undefined;
+    returnsEnabled?: boolean | undefined;
+    returnPolicyUrl?: string | undefined;
 }, {
     id: string;
     name: string;
@@ -162,6 +166,8 @@ export declare const shopSchema: z.ZodObject<{
         label: string;
     }[] | undefined;
     analyticsEnabled?: boolean | undefined;
+    returnsEnabled?: boolean | undefined;
+    returnPolicyUrl?: string | undefined;
 }>;
 export type Shop = z.infer<typeof shopSchema>;
 //# sourceMappingURL=Shop.d.ts.map

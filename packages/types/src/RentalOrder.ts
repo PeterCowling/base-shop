@@ -10,6 +10,8 @@ export const rentalOrderSchema = z
     startedAt: z.string(),
     returnedAt: z.string().optional(),
     refundedAt: z.string().optional(),
+    /** Tracking number for return shipments */
+    trackingNumber: z.string().optional(),
     /** Optional damage fee deducted from the deposit */
     damageFee: z.number().optional(),
     customerId: z.string().optional(),

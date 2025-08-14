@@ -83,6 +83,22 @@ export async function markRefunded(
   }
 }
 
+export async function setTrackingNumber(
+  shop: string,
+  sessionId: string,
+  trackingNumber: string,
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: { trackingNumber },
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
+}
+
 export async function updateRisk(
   shop: string,
   sessionId: string,

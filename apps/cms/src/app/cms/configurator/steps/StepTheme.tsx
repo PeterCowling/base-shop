@@ -1,9 +1,17 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
+import {
+  Button,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/atoms/shadcn";
 import StyleEditor from "@/components/cms/StyleEditor";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import type { TokenMap } from "@ui/hooks/useTokenEditor";
+import { getContrast } from "@ui/components/cms";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
@@ -51,6 +59,13 @@ const colorPalettes: Array<{
     },
   },
 ];
+
+const MIN_CONTRAST = 4.5;
+
+function checkContrast(fg?: string, bg?: string): number {
+  if (!fg || !bg) return MIN_CONTRAST;
+  return getContrast(fg, bg);
+}
 
 interface Props {
   themes: string[];
@@ -119,6 +134,24 @@ export default function StepTheme({
     [setThemeOverrides, themeDefaults]
   );
 
+  const handleReset = useCallback(() => {
+    setPalette(colorPalettes[0].name);
+    setThemeOverrides({});
+    if (typeof window !== "undefined") {
+      try {
+        const json = localStorage.getItem(STORAGE_KEY);
+        if (json) {
+          const data = JSON.parse(json);
+          data.themeOverrides = {};
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          window.dispatchEvent(new CustomEvent("configurator:update"));
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+  }, [setThemeOverrides]);
+
   useEffect(() => {
     applyPalette(palette);
   }, [palette, applyPalette]);
@@ -172,26 +205,43 @@ export default function StepTheme({
       <div className="space-y-2">
         <h3 className="font-medium">Color Palette</h3>
         <div className="flex flex-wrap gap-2">
-          {colorPalettes.map((p) => (
-            <Button
-              key={p.name}
-              variant={p.name === palette ? "default" : "outline"}
-              onClick={() => setPalette(p.name)}
-              className="h-10 w-10 p-0"
-              aria-label={p.name}
-            >
-              <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
-                {Object.values(p.colors).map((c, i) => (
-                  <span
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={i}
-                    className="h-1/2 w-1/2"
-                    style={{ backgroundColor: `hsl(${c})` }}
-                  />
-                ))}
+          {colorPalettes.map((p) => {
+            const c1 = checkContrast(
+              p.colors["--color-fg"],
+              p.colors["--color-bg"]
+            );
+            const c2 = checkContrast(
+              p.colors["--color-primary-fg"],
+              p.colors["--color-primary"]
+            );
+            const warn = c1 < MIN_CONTRAST || c2 < MIN_CONTRAST;
+            return (
+              <div key={p.name} className="relative">
+                <Button
+                  variant={p.name === palette ? "default" : "outline"}
+                  onClick={() => setPalette(p.name)}
+                  className="h-10 w-10 p-0"
+                  aria-label={p.name}
+                >
+                  <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
+                    {Object.values(p.colors).map((c, i) => (
+                      <span
+                        // eslint-disable-next-line react/no-array-index-key
+                        key={i}
+                        className="h-1/2 w-1/2"
+                        style={{ backgroundColor: `hsl(${c})` }}
+                      />
+                    ))}
+                  </div>
+                </Button>
+                {warn && (
+                  <span className="absolute -top-1 -right-1 rounded bg-amber-100 px-1 text-xs text-amber-800">
+                    Low contrast
+                  </span>
+                )}
               </div>
-            </Button>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -200,8 +250,10 @@ export default function StepTheme({
         baseTokens={themeDefaults}
         onChange={handleTokenChange}
       />
-
-      <div className="flex justify-end">
+      <div className="flex justify-between">
+        <Button variant="outline" onClick={handleReset}>
+          Reset to defaults
+        </Button>
         <DeviceSelector
           deviceId={deviceId}
           orientation={orientation}

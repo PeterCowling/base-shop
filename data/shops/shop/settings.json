@@ -10,6 +10,10 @@
     "enabled": false,
     "intervalMinutes": 60
   },
+  "lateFeeService": {
+    "enabled": true,
+    "intervalMinutes": 60
+  },
   "returnService": { "upsEnabled": false },
   "languages": [
     "en",

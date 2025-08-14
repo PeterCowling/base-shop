@@ -3,6 +3,8 @@ import * as React from "react";
 import { StickyAddToCartBar } from "./StickyAddToCartBar";
 import type { SKU } from "@acme/types";
 
+// Use the "media" collection to describe product imagery
+// instead of the deprecated single "image" field.
 const product: SKU = {
   id: "1",
   slug: "sample-product",

@@ -48,13 +48,13 @@ const PageSidebar = ({ components, selectedId, dispatch }: Props) => {
     dispatch({ type: "duplicate", id: selectedId });
   }, [dispatch, selectedId]);
 
-  return (
-    <aside className="w-72 shrink-0 space-y-2">
-      <Button type="button" variant="outline" onClick={handleDuplicate}>
-        Duplicate
-      </Button>
-      <ComponentEditor
-        component={components.find((c) => c.id === selectedId)!}
+    return (
+      <aside className="w-72 shrink-0 space-y-2" data-tour="edit-properties">
+        <Button type="button" variant="outline" onClick={handleDuplicate}>
+          Duplicate
+        </Button>
+        <ComponentEditor
+          component={components.find((c) => c.id === selectedId)!}
         onChange={handleChange}
         onResize={handleResize}
       />

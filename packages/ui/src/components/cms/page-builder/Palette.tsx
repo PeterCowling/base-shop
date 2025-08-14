@@ -80,21 +80,21 @@ const PaletteItem = memo(function PaletteItem({
   );
 });
 
-const Palette = memo(function Palette() {
-  return (
-    <div className="flex flex-col gap-4">
-      {Object.entries(palette).map(([category, items]) => (
-        <div key={category} className="space-y-2">
-          <h4 className="font-semibold capitalize">{category}</h4>
-          <div className="flex flex-col gap-2">
-            {items.map((p) => (
-              <PaletteItem key={p.type} type={p.type} />
-            ))}
+  const Palette = memo(function Palette() {
+    return (
+      <div className="flex flex-col gap-4" data-tour="drag-component">
+        {Object.entries(palette).map(([category, items]) => (
+          <div key={category} className="space-y-2">
+            <h4 className="font-semibold capitalize">{category}</h4>
+            <div className="flex flex-col gap-2">
+              {items.map((p) => (
+                <PaletteItem key={p.type} type={p.type} />
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
-  );
-});
+        ))}
+      </div>
+    );
+  });
 
 export default Palette;

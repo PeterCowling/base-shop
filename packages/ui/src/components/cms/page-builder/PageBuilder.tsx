@@ -297,7 +297,12 @@ const PageBuilder = memo(function PageBuilder({
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <Button variant="outline" onClick={handlePublish} disabled={publishing}>
+            <Button
+              variant="outline"
+              onClick={handlePublish}
+              disabled={publishing}
+              data-tour="publish"
+            >
               {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
             </Button>
             {publishError && (

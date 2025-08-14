@@ -116,7 +116,7 @@ export default function StepHomePage({
         onOpenChange={setSelectOpen}
         onValueChange={() => {}}
       >
-        <SelectTrigger className="w-full">
+        <SelectTrigger className="w-full" data-tour="select-template">
           <SelectValue placeholder="Select template" />
         </SelectTrigger>
         <SelectContent>

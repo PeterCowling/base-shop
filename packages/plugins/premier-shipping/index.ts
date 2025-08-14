@@ -33,10 +33,12 @@ class PremierShipping implements PremierShippingProvider {
 
 const provider = new PremierShipping();
 
-const premierShippingPlugin: Plugin<any, ShippingRequest, any, any, PremierShippingProvider> = {
+const premierShippingPlugin: Plugin = {
   id: "premier-shipping",
   name: "Premier Shipping",
-  registerShipping(registry: ShippingRegistry<PremierShippingProvider>) {
+  registerShipping(
+    registry: ShippingRegistry<ShippingRequest, PremierShippingProvider>,
+  ) {
     registry.add("premier-shipping", provider);
   },
 };

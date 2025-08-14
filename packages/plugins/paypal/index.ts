@@ -1,8 +1,8 @@
 // packages/plugins/paypal/index.ts
 import type {
   PaymentPayload,
-  Plugin,
   PaymentRegistry,
+  Plugin,
 } from "@acme/platform-core/plugins";
 import { z } from "zod";
 
@@ -15,7 +15,7 @@ const configSchema = z
 
 type PayPalConfig = z.infer<typeof configSchema>;
 
-const paypalPlugin: Plugin<any, any, any, any, any, any, PayPalConfig> = {
+const paypalPlugin: Plugin<PayPalConfig> = {
   id: "paypal",
   name: "PayPal",
   description: "Example PayPal payment provider",

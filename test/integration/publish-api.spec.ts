@@ -1,5 +1,5 @@
 import { createRequire } from "module";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { join } from "path";
 import { tmpdir } from "os";
 import ts from "typescript";
@@ -27,7 +27,7 @@ describe("publish API", () => {
       (globalThis as any).__calls__ = calls;
       writeFileSync(
         join(scriptsDir, "republish-shop.js"),
-        `const fs=require('fs');\nconst path=require('path');\nexports.republishShop=(id)=>{\n global.__calls__.push("--filter apps/"+id+" build");\n global.__calls__.push("--filter apps/"+id+" deploy");\n const file=path.join('${tmp.replace(/\\/g, '/')}',"data","shops",id,"shop.json");\n const json=JSON.parse(fs.readFileSync(file,"utf8"));\n json.status="published";\n fs.writeFileSync(file,JSON.stringify(json,null,2));\n};`
+        `const fs=require('fs');\nconst path=require('path');\nexports.republishShop=(id)=>{\n global.__calls__.push("--filter apps/"+id+" build");\n global.__calls__.push("--filter apps/"+id+" deploy");\n const file=path.join('${tmp.replace(/\\/g, '/')}',"data","shops",id,"shop.json");\n const json=JSON.parse(fs.readFileSync(file,"utf8"));\n json.status="published";\n fs.writeFileSync(file,JSON.stringify(json,null,2));\n const ufile=path.join('${tmp.replace(/\\/g, '/')}',"data","shops",id,"upgrade.json");\n if(fs.existsSync(ufile)) fs.unlinkSync(ufile);\n};`
       );
       jest.doMock("@auth", () => ({ requirePermission: jest.fn() }), {
         virtual: true,
@@ -58,6 +58,7 @@ describe("publish API", () => {
       expect(calls).toContain("--filter apps/shop-test deploy");
       const final = JSON.parse(readFileSync(join(dataDir, "shop.json"), "utf8"));
       expect(final.status).toBe("published");
+      expect(existsSync(join(dataDir, "upgrade.json"))).toBe(false);
     } finally {
       process.chdir(originalCwd);
       rmSync(tmp, { recursive: true, force: true });

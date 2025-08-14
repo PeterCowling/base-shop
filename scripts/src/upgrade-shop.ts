@@ -28,6 +28,7 @@ const rootDir = path.resolve(__dirname, "..", "..");
 const appDir = path.join(rootDir, "apps", shopId);
 const templateDir = path.join(rootDir, "packages", "template-app");
 const shopJsonPath = path.join(rootDir, "data", "shops", shopId, "shop.json");
+const pkgPath = path.join(appDir, "package.json");
 
 if (!existsSync(appDir)) {
   console.error(`Shop app does not exist: ${appDir}`);
@@ -53,7 +54,6 @@ if (existsSync(shopJsonPath)) {
   cpSync(shopJsonPath, shopJsonPath + ".bak");
   const data = JSON.parse(readFileSync(shopJsonPath, "utf8"));
   (data as any).lastUpgrade = new Date().toISOString();
-  const pkgPath = path.join(appDir, "package.json");
   (data as any).componentVersions = existsSync(pkgPath)
     ? (JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {})
     : {};
@@ -119,6 +119,29 @@ writeFileSync(
     null,
     2
   )
+);
+
+const upgradeMetaPath = path.join(
+  rootDir,
+  "data",
+  "shops",
+  shopId,
+  "upgrade.json",
+);
+const componentVersions = existsSync(pkgPath)
+  ? (JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {})
+  : {};
+writeFileSync(
+  upgradeMetaPath,
+  JSON.stringify(
+    {
+      timestamp: new Date().toISOString(),
+      componentVersions,
+      components: changedComponents,
+    },
+    null,
+    2,
+  ),
 );
 
 const envPath = path.join(appDir, ".env");

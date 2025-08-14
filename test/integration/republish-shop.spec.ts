@@ -1,6 +1,7 @@
 import { execFileSync } from "child_process";
 import {
   chmodSync,
+  existsSync,
   mkdtempSync,
   mkdirSync,
   readFileSync,
@@ -59,6 +60,7 @@ describe("republish-shop script", () => {
       expect(log).toContain("--filter apps/shop-test deploy");
       const final = JSON.parse(readFileSync(join(dataDir, "shop.json"), "utf8"));
       expect(final.status).toBe("published");
+      expect(existsSync(join(dataDir, "upgrade.json"))).toBe(false);
     } finally {
       rmSync(tmp, { recursive: true, force: true });
     }

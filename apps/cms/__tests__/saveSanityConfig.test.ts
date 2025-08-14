@@ -23,6 +23,10 @@ jest.mock("@platform-core/src/repositories/shop.server", () => ({
 
 jest.mock("@platform-core/src/shops", () => ({
   setSanityConfig: jest.fn(),
+  setEditorialBlog: jest.fn((shop, editorial) => ({
+    ...shop,
+    editorialBlog: editorial,
+  })),
 }));
 
 describe("saveSanityConfig", () => {
@@ -32,7 +36,10 @@ describe("saveSanityConfig", () => {
 
   it("verifies credentials and saves config when using existing dataset", async () => {
     (verifyCredentials as jest.Mock).mockResolvedValue(true);
-    (getShopById as jest.Mock).mockResolvedValue({ id: "shop", enableEditorial: false });
+    (getShopById as jest.Mock).mockResolvedValue({
+      id: "shop",
+      editorialBlog: { enabled: false },
+    });
     (setSanityConfig as jest.Mock).mockReturnValue({
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
@@ -54,7 +61,10 @@ describe("saveSanityConfig", () => {
       token: "t",
     });
     expect(setupSanityBlog).not.toHaveBeenCalled();
-    expect(setSanityConfig).toHaveBeenCalledWith({ id: "shop", enableEditorial: false }, {
+    expect(setSanityConfig).toHaveBeenCalledWith({
+      id: "shop",
+      editorialBlog: { enabled: false },
+    }, {
       projectId: "p",
       dataset: "d",
       token: "t",
@@ -62,6 +72,7 @@ describe("saveSanityConfig", () => {
     expect(updateShopInRepo).toHaveBeenCalledWith("shop", {
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
+      editorialBlog: { enabled: false },
       enableEditorial: false,
     });
     expect(res).toEqual({ message: "Sanity connected" });
@@ -69,7 +80,10 @@ describe("saveSanityConfig", () => {
 
   it("creates dataset when requested", async () => {
     (setupSanityBlog as jest.Mock).mockResolvedValue({ success: true });
-    (getShopById as jest.Mock).mockResolvedValue({ id: "shop", enableEditorial: true });
+    (getShopById as jest.Mock).mockResolvedValue({
+      id: "shop",
+      editorialBlog: { enabled: true },
+    });
     (setSanityConfig as jest.Mock).mockReturnValue({
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
@@ -92,10 +106,13 @@ describe("saveSanityConfig", () => {
         dataset: "d",
         token: "t",
       },
-      true,
+      { enabled: true },
       "public",
     );
-    expect(setSanityConfig).toHaveBeenCalledWith({ id: "shop", enableEditorial: true }, {
+    expect(setSanityConfig).toHaveBeenCalledWith({
+      id: "shop",
+      editorialBlog: { enabled: true },
+    }, {
       projectId: "p",
       dataset: "d",
       token: "t",
@@ -103,6 +120,7 @@ describe("saveSanityConfig", () => {
     expect(updateShopInRepo).toHaveBeenCalledWith("shop", {
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
+      editorialBlog: { enabled: true },
       enableEditorial: true,
     });
     expect(res).toEqual({ message: "Sanity connected" });
@@ -112,7 +130,7 @@ describe("saveSanityConfig", () => {
     (verifyCredentials as jest.Mock).mockResolvedValue(true);
     (getShopById as jest.Mock).mockResolvedValue({
       id: "shop",
-      enableEditorial: false,
+      editorialBlog: { enabled: false },
     });
     (setSanityConfig as jest.Mock).mockReturnValue({
       id: "shop",
@@ -133,6 +151,7 @@ describe("saveSanityConfig", () => {
     expect(updateShopInRepo).toHaveBeenCalledWith("shop", {
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
+      editorialBlog: { enabled: true },
       enableEditorial: true,
     });
   });
@@ -143,7 +162,10 @@ describe("saveSanityConfig", () => {
       error: "fail",
       code: "DATASET_CREATE_ERROR",
     });
-    (getShopById as jest.Mock).mockResolvedValue({ id: "shop", enableEditorial: true });
+    (getShopById as jest.Mock).mockResolvedValue({
+      id: "shop",
+      editorialBlog: { enabled: true },
+    });
 
     const fd = new FormData();
     fd.set("projectId", "p");
@@ -154,5 +176,43 @@ describe("saveSanityConfig", () => {
 
     const res = await saveSanityConfig("shop", fd);
     expect(res).toEqual({ error: "fail", errorCode: "DATASET_CREATE_ERROR" });
+  });
+
+  it("schedules promotion when promoteSchedule provided", async () => {
+    (verifyCredentials as jest.Mock).mockResolvedValue(true);
+    (getShopById as jest.Mock).mockResolvedValue({
+      id: "shop",
+      editorialBlog: { enabled: false },
+    });
+    (setSanityConfig as jest.Mock).mockReturnValue({
+      id: "shop",
+      sanityBlog: { projectId: "p", dataset: "d", token: "t" },
+    });
+    (updateShopInRepo as jest.Mock).mockResolvedValue({ id: "shop" });
+    const fetchMock = jest
+      .spyOn(global, "fetch" as any)
+      .mockResolvedValue({ ok: true } as any);
+
+    const fd = new FormData();
+    fd.set("projectId", "p");
+    fd.set("dataset", "d");
+    fd.set("token", "t");
+    fd.set("aclMode", "public");
+    fd.set("createDataset", "false");
+    fd.set("promoteSchedule", "2025-01-01T00:00:00Z");
+
+    await saveSanityConfig("shop", fd);
+
+    expect(fetchMock).toHaveBeenCalled();
+    expect(updateShopInRepo).toHaveBeenCalledWith(
+      "shop",
+      expect.objectContaining({
+        editorialBlog: {
+          enabled: false,
+          promoteSchedule: "2025-01-01T00:00:00Z",
+        },
+      }),
+    );
+    fetchMock.mockRestore();
   });
 });

@@ -18,6 +18,28 @@ export function setSanityConfig(
   return next;
 }
 
+export function getEditorialBlog(
+  shop: Shop,
+): Shop["editorialBlog"] | undefined {
+  return (shop as Shop & { editorialBlog?: Shop["editorialBlog"] })
+    .editorialBlog;
+}
+
+export function setEditorialBlog(
+  shop: Shop,
+  editorial: Shop["editorialBlog"] | undefined,
+): Shop {
+  const next = { ...shop } as Shop & {
+    editorialBlog?: Shop["editorialBlog"];
+  };
+  if (editorial) {
+    next.editorialBlog = editorial;
+  } else {
+    delete next.editorialBlog;
+  }
+  return next;
+}
+
 export function getDomain(shop: Shop): ShopDomain | undefined {
   return (shop as Shop & { domain?: ShopDomain }).domain;
 }

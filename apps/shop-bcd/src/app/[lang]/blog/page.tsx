@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import shop from "../../../../shop.json";
 
 export default async function BlogPage({ params }: { params: { lang: string } }) {
-  if (!shop.enableEditorial) {
+  if (!shop.editorialBlog?.enabled) {
     notFound();
   }
   const posts = await fetchPublishedPosts(shop.id);
@@ -13,5 +13,14 @@ export default async function BlogPage({ params }: { params: { lang: string } })
     excerpt: p.excerpt,
     url: `/${params.lang}/blog/${p.slug}`,
   }));
-  return <BlogListing posts={items} />;
+  return (
+    <>
+      {shop.editorialBlog?.promoteSchedule && (
+        <div className="rounded bg-muted p-2">
+          Daily Edit scheduled for {shop.editorialBlog.promoteSchedule}
+        </div>
+      )}
+      <BlogListing posts={items} />
+    </>
+  );
 }

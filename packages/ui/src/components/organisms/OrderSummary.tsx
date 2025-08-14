@@ -9,6 +9,10 @@ import React, { useMemo } from "react";
 type Totals = {
   subtotal: number;
   deposit: number;
+  /** Tax amount applied to the order */
+  tax?: number;
+  /** Discount amount applied to the order */
+  discount?: number;
   total: number;
 };
 
@@ -56,7 +60,9 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
 
   const subtotal = totals?.subtotal ?? computedTotals.subtotal;
   const deposit = totals?.deposit ?? computedTotals.deposit;
-  const total = totals?.total ?? subtotal + deposit;
+  const tax = totals?.tax ?? 0;
+  const discount = totals?.discount ?? 0;
+  const total = totals?.total ?? subtotal + deposit + tax - discount;
 
   /* ------------------------------------------------------------------
    * Render
@@ -91,11 +97,36 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
       <tfoot>
         <tr>
           <td />
+          <td className="py-2">Subtotal</td>
+          <td className="text-right">
+            <Price amount={subtotal} />
+          </td>
+        </tr>
+        <tr>
+          <td />
           <td className="py-2">Deposit</td>
           <td className="text-right">
             <Price amount={deposit} />
           </td>
         </tr>
+        {totals?.tax !== undefined && (
+          <tr>
+            <td />
+            <td className="py-2">Tax</td>
+            <td className="text-right">
+              <Price amount={tax} />
+            </td>
+          </tr>
+        )}
+        {totals?.discount !== undefined && (
+          <tr>
+            <td />
+            <td className="py-2">Discount</td>
+            <td className="text-right">
+              <Price amount={-discount} />
+            </td>
+          </tr>
+        )}
         <tr>
           <td />
           <td className="py-2 font-semibold">Total</td>

@@ -235,16 +235,21 @@ export async function createCheckoutSession(
     extra: metadataExtra,
   });
 
-  const paymentIntentData: Stripe.Checkout.SessionCreateParams.PaymentIntentData = {
+  const paymentIntentData: Stripe.Checkout.SessionCreateParams.PaymentIntentData & {
+    payment_method_options: {
+      card: { request_three_d_secure: "automatic" };
+    };
+    billing_details?: Stripe.Checkout.SessionCreateParams.PaymentIntentData.BillingDetails;
+  } = {
     ...(shipping ? { shipping } : {}),
     payment_method_options: {
       card: { request_three_d_secure: "automatic" },
     },
     metadata,
-  } as any;
+  };
 
   if (billing_details) {
-    (paymentIntentData as any).billing_details = billing_details;
+    paymentIntentData.billing_details = billing_details;
   }
 
   const session = await stripe.checkout.sessions.create({

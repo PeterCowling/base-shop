@@ -10,6 +10,7 @@ export interface User {
   resetToken: string | null;
   resetTokenExpiresAt: Date | null;
   emailVerified: boolean;
+  stripeSubscriptionId?: string | null;
 }
 
 export async function getUserById(id: string): Promise<User | null> {

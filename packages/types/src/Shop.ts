@@ -78,6 +78,7 @@ export const shopSchema = z
     paymentProviders: z.array(z.string()).optional(),
     shippingProviders: z.array(z.string()).optional(),
     taxProviders: z.array(z.string()).optional(),
+    billingProvider: z.string().optional(),
     homeTitle: z.record(localeSchema, z.string()).optional(),
     homeDescription: z.record(localeSchema, z.string()).optional(),
     homeImage: z.string().optional(),

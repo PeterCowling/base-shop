@@ -7,6 +7,7 @@
   "filterMappings": {},
   "shippingProviders": ["dhl"],
   "taxProviders": ["taxjar"],
+  "billingProvider": "stripe",
   "priceOverrides": {},
   "localeOverrides": {},
   "componentVersions": {},

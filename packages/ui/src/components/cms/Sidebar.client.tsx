@@ -4,6 +4,7 @@ import { getShopFromPath } from "@platform-core/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { coreEnv } from "@acme/config/env/core";
+import { luxuryFeatures } from "@platform-core/luxuryFeatures";
 
 if (coreEnv.NODE_ENV === "development") {
   console.log("sidebar rendered on client");
@@ -77,6 +78,9 @@ export default function Sidebar({ role }: { role?: string }) {
             icon: "💰",
           },
         ]
+      : []),
+    ...(luxuryFeatures.raTicketing
+      ? [{ href: "/ra", label: "RA", icon: "↩️" }]
       : []),
     { href: "/live", label: "Live", icon: "🌐" },
     ...(role === "admin"

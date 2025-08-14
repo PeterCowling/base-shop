@@ -1,4 +1,16 @@
-import { historyStateSchema, reducer } from "./state";
+import { historyStateSchema } from "./schema";
+import {
+  add,
+  move,
+  remove,
+  duplicate,
+  update,
+  resize,
+  set,
+  undo,
+  redo,
+  setGridCols,
+} from "./reducer";
 import type { PageComponent, HistoryState } from "@acme/types";
 
 describe("historyStateSchema", () => {
@@ -12,37 +24,37 @@ describe("historyStateSchema", () => {
   });
 });
 
-describe("state reducer", () => {
+describe("action handlers", () => {
   const a = { id: "a", type: "Text" } as PageComponent;
   const b = { id: "b", type: "Image" } as PageComponent;
   const init: HistoryState = { past: [], present: [], future: [], gridCols: 12 };
 
   it("adds components", () => {
-    const state = reducer(init, { type: "add", component: a });
+    const state = add(init, { type: "add", component: a });
     expect(state.present).toEqual([a]);
     expect(state.past).toEqual([[]]);
   });
 
   it("moves components", () => {
-    const state = reducer(
+    const state = move(
       { ...init, present: [a, b] },
-      { type: "move", from: { index: 0 }, to: { index: 1 } }
+      { type: "move", from: { index: 0 }, to: { index: 1 } },
     );
     expect(state.present).toEqual([b, a]);
   });
 
   it("removes component", () => {
-    const state = reducer(
+    const state = remove(
       { ...init, present: [a, b] },
-      { type: "remove", id: "a" }
+      { type: "remove", id: "a" },
     );
     expect(state.present).toEqual([b]);
   });
 
   it("duplicates component with new id", () => {
-    const state = reducer(
+    const state = duplicate(
       { ...init, present: [a, b] },
-      { type: "duplicate", id: "a" }
+      { type: "duplicate", id: "a" },
     );
     expect(state.present).toHaveLength(3);
     const dup = state.present[1];
@@ -53,9 +65,9 @@ describe("state reducer", () => {
   it("deep clones nested children when duplicating", () => {
     const child = { id: "child", type: "Text" } as PageComponent;
     const parent = { id: "parent", type: "Container", children: [child] } as any;
-    const state = reducer(
+    const state = duplicate(
       { ...init, present: [parent as PageComponent] },
-      { type: "duplicate", id: "parent" }
+      { type: "duplicate", id: "parent" },
     );
     expect(state.present).toHaveLength(2);
     const orig = state.present[0] as any;
@@ -65,9 +77,9 @@ describe("state reducer", () => {
   });
 
   it("updates component", () => {
-    const state = reducer(
+    const state = update(
       { ...init, present: [a] },
-      { type: "update", id: "a", patch: { foo: "bar" } }
+      { type: "update", id: "a", patch: { foo: "bar" } },
     );
     expect((state.present[0] as any).foo).toBe("bar");
   });
@@ -80,9 +92,9 @@ describe("state reducer", () => {
       left: "5px",
       top: "10px",
     } as PageComponent;
-    const state = reducer(
-      { past: [], present: [comp], future: [] },
-      { type: "resize", id: "abs", width: "100%" }
+    const state = resize(
+      { past: [], present: [comp], future: [], gridCols: 12 },
+      { type: "resize", id: "abs", width: "100%" },
     );
     expect(state.present[0]).toMatchObject({
       left: "5px",
@@ -91,11 +103,22 @@ describe("state reducer", () => {
     });
   });
 
+  it("sets components", () => {
+    const state = set(init, { type: "set", components: [a, b] });
+    expect(state.present).toEqual([a, b]);
+    expect(state.past).toEqual([[]]);
+  });
+
   it("undo and redo", () => {
-    const added = reducer(init, { type: "add", component: a });
-    const undone = reducer(added, { type: "undo" });
+    const added = add(init, { type: "add", component: a });
+    const undone = undo(added);
     expect(undone.present).toEqual([]);
-    const redone = reducer(undone, { type: "redo" });
+    const redone = redo(undone);
     expect(redone.present).toEqual([a]);
+  });
+
+  it("sets grid columns", () => {
+    const state = setGridCols(init, { type: "set-grid-cols", gridCols: 16 });
+    expect(state.gridCols).toBe(16);
   });
 });

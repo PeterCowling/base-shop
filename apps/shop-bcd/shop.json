@@ -8,6 +8,12 @@
   "priceOverrides": {},
   "localeOverrides": {},
   "analyticsEnabled": false,
+  "sanityBlog": {
+    "projectId": "demo",
+    "dataset": "production",
+    "token": "demo-token"
+  },
+  "enableEditorial": true,
   "plugins": {
     "paypal": {
       "clientId": "bcd-client",

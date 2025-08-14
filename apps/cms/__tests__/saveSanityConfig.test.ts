@@ -32,7 +32,7 @@ describe("saveSanityConfig", () => {
 
   it("verifies credentials and saves config when using existing dataset", async () => {
     (verifyCredentials as jest.Mock).mockResolvedValue(true);
-    (getShopById as jest.Mock).mockResolvedValue({ id: "shop" });
+    (getShopById as jest.Mock).mockResolvedValue({ id: "shop", enableEditorial: true });
     (setSanityConfig as jest.Mock).mockReturnValue({
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
@@ -68,7 +68,7 @@ describe("saveSanityConfig", () => {
 
   it("creates dataset when requested", async () => {
     (setupSanityBlog as jest.Mock).mockResolvedValue({ success: true });
-    (getShopById as jest.Mock).mockResolvedValue({ id: "shop" });
+    (getShopById as jest.Mock).mockResolvedValue({ id: "shop", enableEditorial: true });
     (setSanityConfig as jest.Mock).mockReturnValue({
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
@@ -92,6 +92,7 @@ describe("saveSanityConfig", () => {
         token: "t",
       },
       "public",
+      true,
     );
     expect(setSanityConfig).toHaveBeenCalledWith({ id: "shop" }, {
       projectId: "p",
@@ -111,6 +112,7 @@ describe("saveSanityConfig", () => {
       error: "fail",
       code: "DATASET_CREATE_ERROR",
     });
+    (getShopById as jest.Mock).mockResolvedValue({ id: "shop", enableEditorial: true });
 
     const fd = new FormData();
     fd.set("projectId", "p");

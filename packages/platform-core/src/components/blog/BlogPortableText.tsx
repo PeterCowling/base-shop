@@ -2,10 +2,11 @@
 import { PortableText } from "@portabletext/react";
 import { getProductBySlug } from "@/lib/products";
 import { ProductCard } from "@/components/shop/ProductCard";
+import type { ProductBlock } from "@acme/sanity";
 
 const components = {
   types: {
-    productReference: ({ value }: any) => {
+    productReference: ({ value }: { value: ProductBlock }) => {
       if (typeof value?.slug !== "string") return null;
       const sku = getProductBySlug(value.slug);
       return sku ? <ProductCard sku={sku} /> : null;
@@ -36,6 +37,6 @@ const components = {
   },
 };
 
-export function BlogPortableText({ value }: { value: any[] }) {
+export function BlogPortableText({ value }: { value: (unknown | ProductBlock)[] }) {
   return <PortableText value={value} components={components} />;
 }

@@ -7,9 +7,17 @@ import type { PageComponent } from "@acme/types";
 export default function Home({
   components,
   locale,
+  runtimeData,
 }: {
   components: PageComponent[];
   locale: string;
+  runtimeData?: Record<string, Record<string, unknown>>;
 }) {
-  return <DynamicRenderer components={components} locale={locale} />;
+  return (
+    <DynamicRenderer
+      components={components}
+      locale={locale}
+      runtimeData={runtimeData}
+    />
+  );
 }

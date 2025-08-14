@@ -8,9 +8,17 @@ import type { Locale } from "@/i18n/locales";
 export default function Home({
   components,
   locale,
+  runtimeData,
 }: {
   components: PageComponent[];
   locale: Locale;
+  runtimeData?: Record<string, Record<string, unknown>>;
 }) {
-  return <DynamicRenderer components={components} locale={locale} />;
+  return (
+    <DynamicRenderer
+      components={components}
+      locale={locale}
+      runtimeData={runtimeData}
+    />
+  );
 }

@@ -8,5 +8,11 @@
   "shippingProviders": ["dhl"],
   "taxProviders": ["taxjar"],
   "priceOverrides": {},
-  "localeOverrides": {}
+  "localeOverrides": {},
+  "sanityBlog": {
+    "projectId": "demo",
+    "dataset": "production",
+    "token": "demo-token"
+  },
+  "enableEditorial": true
 }

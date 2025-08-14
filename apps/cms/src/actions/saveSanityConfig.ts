@@ -24,11 +24,13 @@ export async function saveSanityConfig(
   const createDataset = String(formData.get("createDataset") ?? "false") === "true";
 
   const config = { projectId, dataset, token };
+  const shop = await getShopById(shopId);
 
   if (createDataset) {
     const setup = await setupSanityBlog(
       config,
       aclMode as "public" | "private",
+      shop.enableEditorial,
     );
     if (!setup.success) {
       return {
@@ -43,7 +45,6 @@ export async function saveSanityConfig(
     }
   }
 
-  const shop = await getShopById(shopId);
   const updated = setSanityConfig(shop, config);
   await updateShopInRepo(shopId, updated);
 

@@ -2,7 +2,7 @@ import type { Shop, SanityBlogConfig, ShopDomain } from "@acme/types";
 export { SHOP_NAME_RE, validateShopName } from "@acme/lib";
 
 export function getSanityConfig(shop: Shop): SanityBlogConfig | undefined {
-  return shop.sanityBlog;
+  return shop.enableEditorial ? shop.sanityBlog : undefined;
 }
 
 export function setSanityConfig(

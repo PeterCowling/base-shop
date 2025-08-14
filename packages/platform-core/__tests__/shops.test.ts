@@ -32,14 +32,25 @@ describe("sanity blog accessors", () => {
     localeOverrides: {},
     navigation: [],
     analyticsEnabled: false,
+    enableEditorial: false,
   };
 
   it("gets undefined when not set", () => {
-    expect(getSanityConfig(baseShop)).toBeUndefined();
+    expect(getSanityConfig({ ...baseShop, enableEditorial: true })).toBeUndefined();
   });
 
-  it("sets and retrieves config", () => {
+  it("returns undefined when disabled", () => {
     const updated = setSanityConfig(baseShop, {
+      projectId: "p",
+      dataset: "d",
+      token: "t",
+    });
+    expect(getSanityConfig(updated)).toBeUndefined();
+  });
+
+  it("sets and retrieves config when enabled", () => {
+    const enabled = { ...baseShop, enableEditorial: true };
+    const updated = setSanityConfig(enabled, {
       projectId: "p",
       dataset: "d",
       token: "t",

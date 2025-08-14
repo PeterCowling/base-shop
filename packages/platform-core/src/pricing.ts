@@ -58,13 +58,29 @@ export async function priceForDays(sku: SKU, days: number): Promise<number> {
 
 export async function computeDamageFee(
   kind: string | number | undefined,
-  deposit: number
+  deposit: number,
+  coverageCodes: string[] = [],
 ): Promise<number> {
   if (kind == null) return 0;
   const pricing = await getPricing();
   if (typeof kind === "number") return kind;
   const rule = pricing.damageFees[kind];
-  if (rule === "deposit") return deposit;
-  if (typeof rule === "number") return rule;
-  return 0;
+
+  let fee = 0;
+  if (rule === "deposit") {
+    fee = deposit;
+  } else if (typeof rule === "number") {
+    fee = rule;
+  }
+
+  if (coverageCodes.length && pricing.coverage) {
+    const coverage = coverageCodes.includes(kind)
+      ? pricing.coverage[kind]
+      : undefined;
+    if (coverage && typeof rule === "number") {
+      fee = Math.max(0, fee - coverage.waiver);
+    }
+  }
+
+  return fee;
 }

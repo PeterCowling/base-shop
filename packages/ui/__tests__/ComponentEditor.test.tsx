@@ -1,4 +1,4 @@
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, screen } from "@testing-library/react";
 import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor";
 import type { PageComponent } from "@acme/types";
 
@@ -70,5 +70,16 @@ describe("ComponentEditor", () => {
     expect(onChange).toHaveBeenNthCalledWith(1, { minItems: 6, maxItems: 6 });
     fireEvent.change(getByLabelText("Max Items"), { target: { value: "0" } });
     expect(onChange).toHaveBeenNthCalledWith(2, { maxItems: 0, minItems: 0 });
+  });
+
+  it("loads editor from registry", async () => {
+    const component: PageComponent = {
+      id: "1",
+      type: "Image",
+    } as PageComponent;
+    render(
+      <ComponentEditor component={component} onChange={() => {}} onResize={() => {}} />
+    );
+    expect(await screen.findByPlaceholderText("src")).toBeInTheDocument();
   });
 });

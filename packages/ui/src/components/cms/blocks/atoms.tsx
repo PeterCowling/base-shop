@@ -14,6 +14,8 @@ import CustomHtml from "./CustomHtml";
 import ButtonBlock from "./Button";
 export { Divider, Spacer, CustomHtml, ButtonBlock as Button };
 
+const defaultPreview = "/window.svg";
+
 /* ──────────────────────────────────────────────────────────────────────────
  * Shared helpers
  * --------------------------------------------------------------------------*/
@@ -79,13 +81,20 @@ export const Image = memo(function Image({
 /* ──────────────────────────────────────────────────────────────────────────
  * Atom registry
  * --------------------------------------------------------------------------*/
-export const atomRegistry = {
-  Text: { component: Text },
-  Image: { component: Image },
+const atomEntries = {
+  Text: { component: Text, previewImage: "/file.svg" },
+  Image: { component: Image, previewImage: "/globe.svg" },
   Divider: { component: Divider },
   Spacer: { component: Spacer },
   CustomHtml: { component: CustomHtml },
   Button: { component: ButtonBlock },
-} as const satisfies Record<string, BlockRegistryEntry<any>>;
+} as const;
 
-export type AtomBlockType = keyof typeof atomRegistry;
+export const atomRegistry = Object.fromEntries(
+  Object.entries(atomEntries).map(([k, v]) => [
+    k,
+    { previewImage: defaultPreview, ...v },
+  ]),
+) as typeof atomEntries satisfies Record<string, BlockRegistryEntry<any>>;
+
+export type AtomBlockType = keyof typeof atomEntries;

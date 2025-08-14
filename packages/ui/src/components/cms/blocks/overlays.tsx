@@ -1,9 +1,18 @@
 import PopupModal from "./PopupModal";
 import type { BlockRegistryEntry } from "./types";
 
-export const overlayRegistry = {
-  PopupModal: { component: PopupModal },
-} as const satisfies Record<string, BlockRegistryEntry<any>>;
+const defaultPreview = "/window.svg";
 
-export type OverlayBlockType = keyof typeof overlayRegistry;
+const overlayEntries = {
+  PopupModal: { component: PopupModal },
+} as const;
+
+export const overlayRegistry = Object.fromEntries(
+  Object.entries(overlayEntries).map(([k, v]) => [
+    k,
+    { previewImage: defaultPreview, ...v },
+  ]),
+) as typeof overlayEntries satisfies Record<string, BlockRegistryEntry<any>>;
+
+export type OverlayBlockType = keyof typeof overlayEntries;
 

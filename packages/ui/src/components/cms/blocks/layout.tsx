@@ -2,9 +2,18 @@ import Header from "./HeaderBlock";
 import Footer from "./FooterBlock";
 import type { BlockRegistryEntry } from "./types";
 
-export const layoutRegistry = {
+const defaultPreview = "/window.svg";
+
+const layoutEntries = {
   Header: { component: Header },
   Footer: { component: Footer },
-} as const satisfies Record<string, BlockRegistryEntry<any>>;
+} as const;
 
-export type LayoutBlockType = keyof typeof layoutRegistry;
+export const layoutRegistry = Object.fromEntries(
+  Object.entries(layoutEntries).map(([k, v]) => [
+    k,
+    { previewImage: defaultPreview, ...v },
+  ]),
+) as typeof layoutEntries satisfies Record<string, BlockRegistryEntry<any>>;
+
+export type LayoutBlockType = keyof typeof layoutEntries;

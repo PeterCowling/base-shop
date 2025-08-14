@@ -25,7 +25,7 @@ interface PaletteMeta {
   label: string;
   icon: string;
   description?: string;
-  previewImage?: string;
+  previewImage: string;
 }
 
 const createPaletteItems = (
@@ -36,9 +36,9 @@ const createPaletteItems = (
     .map((t) => ({
       type: t,
       label: t.replace(/([A-Z])/g, " $1").trim(),
-      icon: defaultIcon,
+      icon: registry[t]?.previewImage ?? defaultIcon,
       description: registry[t]?.description,
-      previewImage: registry[t]?.previewImage,
+      previewImage: registry[t]?.previewImage ?? defaultIcon,
     }));
 
 const palette = {
@@ -92,33 +92,31 @@ const PaletteItem = memo(function PaletteItem({
       className="flex cursor-grab items-center gap-2 rounded border p-2 text-sm"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
+      onFocus={() => setOpen(true)}
+      onBlur={() => setOpen(false)}
       onKeyDown={handleKeyDown}
     >
       <img
         src={icon}
         alt=""
         aria-hidden="true"
-        className="h-4 w-4"
+        className="h-6 w-6 rounded"
         loading="lazy"
       />
       <span>{label}</span>
     </div>
   );
 
-  if (!description && !previewImage) return content;
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>{content}</PopoverTrigger>
       <PopoverContent className="w-64 space-y-2 text-sm">
-        {previewImage && (
-          <img
-            src={previewImage}
-            alt=""
-            className="w-full rounded"
-            loading="lazy"
-          />
-        )}
+        <img
+          src={previewImage}
+          alt=""
+          className="w-full rounded"
+          loading="lazy"
+        />
         {description && <p>{description}</p>}
       </PopoverContent>
     </Popover>

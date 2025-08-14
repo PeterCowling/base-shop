@@ -31,7 +31,7 @@ export default async function SubscribePage({
     const sub = await stripe.subscriptions.create({
       customer: session.customerId,
       items: [{ price: priceId }],
-      // @ts-ignore - `prorate` is deprecated but required for this flow
+      // `prorate` is deprecated but required for this flow
       prorate: true,
       metadata: { userId: session.customerId, shop: shopId },
     });

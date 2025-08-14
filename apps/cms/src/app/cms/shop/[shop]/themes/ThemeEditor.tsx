@@ -95,10 +95,19 @@ export default function ThemeEditor({
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
+    const currentOverrides = overrides;
+    const keep =
+      Object.keys(currentOverrides).length > 0 &&
+      window.confirm("Keep current overrides?");
     setTheme(next);
-    setOverrides({});
-    setThemeDefaults(tokensByThemeState[next]);
-    schedulePreviewUpdate(tokensByThemeState[next]);
+    const defaults = tokensByThemeState[next];
+    setThemeDefaults(defaults);
+    if (keep) {
+      schedulePreviewUpdate({ ...defaults, ...currentOverrides });
+    } else {
+      setOverrides({});
+      schedulePreviewUpdate(defaults);
+    }
   };
 
   const schedulePreviewUpdate = (tokens: Record<string, string>) => {

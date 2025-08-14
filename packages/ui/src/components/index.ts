@@ -1,6 +1,7 @@
 export * from "./account";
 export * from "./cms";
 export * from "./atoms";
+export * from "./common";
 export * from "./molecules";
 export * from "./organisms";
 export * from "./templates";

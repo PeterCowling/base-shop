@@ -9,6 +9,7 @@ import { AppShell } from "@/components/templates/AppShell";
 import TranslationsProvider from "@/i18n/Translations";
 import enMessages from "@i18n/en.json";
 import type { PageComponent } from "@acme/types";
+import DOMPurify from "dompurify";
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { STORAGE_KEY } from "../configurator/hooks/useConfiguratorPersistence";
 import {
@@ -191,7 +192,8 @@ export default function WizardPreview({
         typeof text === "string"
           ? text
           : ((text as Record<string, string>).en ?? "");
-      return <div dangerouslySetInnerHTML={{ __html: value }} />;
+      const sanitized = DOMPurify.sanitize(value);
+      return <div dangerouslySetInnerHTML={{ __html: sanitized }} />;
     }
 
     /* Look up the React component in the block registry.

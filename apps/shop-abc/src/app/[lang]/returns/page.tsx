@@ -9,10 +9,19 @@ export default async function ReturnPolicyPage() {
     <div className="p-6 space-y-4">
       <h1 className="text-xl font-semibold">Return policy</h1>
       <p>Return labels provided by {cfg.labelService}.</p>
-      {cfg.dropOffProvider && <p>Drop-off: {cfg.dropOffProvider}</p>}
+      {cfg.dropOffProvider && (
+        <p>
+          Drop-off: {cfg.dropOffProvider}
+          {cfg.dropOffProvider.toLowerCase() === "ups" &&
+            " – bring your package to any UPS drop-off location."}
+        </p>
+      )}
       <p>In-store returns {cfg.inStore ? "available" : "unavailable"}.</p>
       {typeof cfg.tracking !== "undefined" && (
-        <p>Tracking {cfg.tracking ? "enabled" : "disabled"}.</p>
+        <p>
+          Tracking {cfg.tracking ? "enabled" : "disabled"}
+          {cfg.tracking && " and numbers provided with each label."}
+        </p>
       )}
     </div>
   );

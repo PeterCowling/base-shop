@@ -3,6 +3,7 @@ import { getCustomerSession, hasPermission } from "@auth";
 import { getOrdersForCustomer } from "@platform-core/orders";
 import { OrderTrackingTimeline, type OrderStep } from "@ui/components/organisms/OrderTrackingTimeline";
 import { redirect } from "next/navigation";
+import { useState } from "react";
 import shop from "../../../../../shop.json";
 
 export const metadata = { title: "Order details" };
@@ -43,6 +44,58 @@ export default async function Page({
       {steps && steps.length > 0 && (
         <OrderTrackingTimeline steps={steps} className="mt-2" />
       )}
+      <StartReturn orderId={order.id} />
+    </div>
+  );
+}
+
+function StartReturn({ orderId }: { orderId: string }) {
+  "use client";
+  const [result, setResult] = useState<{ labelUrl?: string; trackingNumber?: string } | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const start = async () => {
+    setError(null);
+    try {
+      const res = await fetch("/api/return", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId: orderId }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || "Failed to create return");
+      }
+      const data = (await res.json()) as {
+        tracking: { number: string; labelUrl: string } | null;
+      };
+      if (data.tracking) {
+        setResult({
+          labelUrl: data.tracking.labelUrl,
+          trackingNumber: data.tracking.number,
+        });
+      }
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <button
+        type="button"
+        onClick={start}
+        className="rounded bg-blue-600 px-4 py-2 text-white"
+      >
+        Start return
+      </button>
+      {result?.labelUrl && (
+        <p>
+          Label: <a href={result.labelUrl} className="text-blue-600 underline" target="_blank" rel="noreferrer">Download</a>
+        </p>
+      )}
+      {result?.trackingNumber && <p>Tracking #: {result.trackingNumber}</p>}
+      {error && <p className="text-red-600">{error}</p>}
     </div>
   );
 }

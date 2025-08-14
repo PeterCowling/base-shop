@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom";
 import { fireEvent, render } from "@testing-library/react";
 import { QuantityInput } from "../QuantityInput";
 
@@ -5,7 +6,7 @@ describe("QuantityInput", () => {
   it("disables decrement at minimum and increments", () => {
     const handleChange = jest.fn();
     const { getByText } = render(
-      <QuantityInput value={1} min={1} max={5} onChange={handleChange} />,
+      <QuantityInput value={1} min={1} max={5} onChange={handleChange} />
     );
     const dec = getByText("-");
     const inc = getByText("+");
@@ -24,7 +25,7 @@ describe("QuantityInput", () => {
   it("disables increment at maximum and decrements", () => {
     const handleChange = jest.fn();
     const { getByText } = render(
-      <QuantityInput value={5} min={1} max={5} onChange={handleChange} />,
+      <QuantityInput value={5} min={1} max={5} onChange={handleChange} />
     );
     const dec = getByText("-");
     const inc = getByText("+");
@@ -40,4 +41,3 @@ describe("QuantityInput", () => {
     expect(handleChange).toHaveBeenCalledWith(4);
   });
 });
-

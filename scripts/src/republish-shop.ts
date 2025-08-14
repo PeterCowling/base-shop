@@ -26,6 +26,10 @@ function updateStatus(root: string, id: string): void {
   const file = join(root, "data", "shops", id, "shop.json");
   const json = JSON.parse(readFileSync(file, "utf8"));
   json.status = "published";
+  const pkgPath = join(root, "apps", id, "package.json");
+  json.componentVersions = existsSync(pkgPath)
+    ? JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {}
+    : {};
   writeFileSync(file, JSON.stringify(json, null, 2));
 }
 

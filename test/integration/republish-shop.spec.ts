@@ -44,7 +44,10 @@ describe("republish-shop script", () => {
 
       const appDir = join(tmp, "apps", "shop-test");
       mkdirSync(appDir, { recursive: true });
-      writeFileSync(join(appDir, "shop.json"), JSON.stringify({ id: "shop-test" }, null, 2));
+      writeFileSync(
+        join(appDir, "package.json"),
+        JSON.stringify({ dependencies: { comp: "1.0.0" } }, null, 2)
+      );
       const dataDir = join(tmp, "data", "shops", "shop-test");
       mkdirSync(dataDir, { recursive: true });
       writeFileSync(join(dataDir, "upgrade.json"), JSON.stringify({ ok: true }));
@@ -60,6 +63,7 @@ describe("republish-shop script", () => {
       expect(log).toContain("--filter apps/shop-test deploy");
       const final = JSON.parse(readFileSync(join(dataDir, "shop.json"), "utf8"));
       expect(final.status).toBe("published");
+      expect(final.componentVersions).toEqual({ comp: "1.0.0" });
       expect(existsSync(join(dataDir, "upgrade.json"))).toBe(false);
     } finally {
       rmSync(tmp, { recursive: true, force: true });
@@ -97,7 +101,10 @@ describe("republish-shop script", () => {
 
       const appDir = join(tmp, "apps", "shop-edit");
       mkdirSync(appDir, { recursive: true });
-      writeFileSync(join(appDir, "shop.json"), JSON.stringify({ id: "shop-edit" }, null, 2));
+      writeFileSync(
+        join(appDir, "package.json"),
+        JSON.stringify({ dependencies: { comp: "1.0.0" } }, null, 2)
+      );
       const dataDir = join(tmp, "data", "shops", "shop-edit");
       mkdirSync(dataDir, { recursive: true });
       writeFileSync(join(dataDir, "shop.json"), JSON.stringify({ id: "shop-edit" }, null, 2));
@@ -112,6 +119,7 @@ describe("republish-shop script", () => {
       expect(log).toContain("--filter apps/shop-edit deploy");
       const final = JSON.parse(readFileSync(join(dataDir, "shop.json"), "utf8"));
       expect(final.status).toBe("published");
+      expect(final.componentVersions).toEqual({ comp: "1.0.0" });
     } finally {
       rmSync(tmp, { recursive: true, force: true });
     }

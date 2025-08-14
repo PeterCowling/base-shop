@@ -3,7 +3,10 @@ import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { inventoryItemSchema } from "@acme/types";
 import { inventoryRepository } from "@platform-core/repositories/inventory.server";
-import { expandInventoryItem } from "@platform-core/utils/inventory";
+import {
+  expandInventoryItem,
+  type RawInventoryItem,
+} from "@platform-core/utils/inventory";
 import { parse } from "fast-csv";
 import { Readable } from "node:stream";
 
@@ -26,8 +29,8 @@ export async function POST(
     if (file.type === "application/json" || file.name.endsWith(".json")) {
       const data = JSON.parse(text);
       raw = Array.isArray(data)
-        ? data.map((row: Record<string, unknown>) => expandInventoryItem(row))
-        : expandInventoryItem(data as Record<string, unknown>);
+        ? data.map((row: RawInventoryItem) => expandInventoryItem(row))
+        : expandInventoryItem(data as RawInventoryItem);
     } else {
       raw = await new Promise((resolve, reject) => {
         const rows: unknown[] = [];
@@ -35,7 +38,7 @@ export async function POST(
           .pipe(parse({ headers: true, ignoreEmpty: true }))
           .on("error", reject)
           .on("data", (row) => {
-            rows.push(expandInventoryItem(row as Record<string, unknown>));
+            rows.push(expandInventoryItem(row as RawInventoryItem));
           })
           .on("end", () => resolve(rows));
       });

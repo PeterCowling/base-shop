@@ -1,4 +1,4 @@
-import type { InventoryItem } from "@acme/types";
+import { inventoryItemSchema, type InventoryItem } from "@acme/types";
 
 export type FlattenedInventoryItem = {
   sku: string;
@@ -6,6 +6,15 @@ export type FlattenedInventoryItem = {
   quantity: number;
   lowStockThreshold?: number;
 } & Record<`variant.${string}`, string>;
+
+export interface RawInventoryItem {
+  sku: unknown;
+  productId?: unknown;
+  quantity: unknown;
+  lowStockThreshold?: unknown;
+  variantAttributes?: Record<string, unknown>;
+  [key: string]: unknown;
+}
 
 export function flattenInventoryItem(item: InventoryItem): FlattenedInventoryItem {
   const variants = Object.fromEntries(
@@ -22,9 +31,21 @@ export function flattenInventoryItem(item: InventoryItem): FlattenedInventoryIte
   };
 }
 
+function isInventoryItem(data: RawInventoryItem | InventoryItem): data is InventoryItem {
+  return (
+    typeof (data as any).sku === "string" &&
+    typeof (data as any).productId === "string" &&
+    typeof (data as any).quantity === "number" &&
+    typeof (data as any).variantAttributes === "object"
+  );
+}
+
 export function expandInventoryItem(
-  data: Record<string, unknown> | InventoryItem
+  data: RawInventoryItem | InventoryItem
 ): InventoryItem {
+  if (isInventoryItem(data)) {
+    return inventoryItemSchema.parse(data);
+  }
   const {
     sku,
     productId,
@@ -32,7 +53,7 @@ export function expandInventoryItem(
     lowStockThreshold,
     variantAttributes,
     ...rest
-  } = data as Record<string, unknown> & { variantAttributes?: Record<string, unknown> };
+  } = data;
 
   const attrs =
     typeof variantAttributes === "object" && variantAttributes !== null
@@ -46,7 +67,7 @@ export function expandInventoryItem(
             .map(([k, v]) => [k.slice("variant.".length), String(v)])
         );
 
-  return {
+  const item = {
     sku: String(sku),
     productId: productId ? String(productId) : String(sku),
     variantAttributes: attrs,
@@ -55,4 +76,6 @@ export function expandInventoryItem(
       ? { lowStockThreshold: Number(lowStockThreshold) }
       : {}),
   };
+
+  return inventoryItemSchema.parse(item);
 }

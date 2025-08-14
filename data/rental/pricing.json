@@ -7,10 +7,12 @@
   "damageFees": {
     "scuff": 20,
     "tear": 50,
-    "lost": "deposit"
+    "lost": "deposit",
+    "scratch": 15
   },
   "coverage": {
     "scuff": { "fee": 5, "waiver": 20 },
-    "tear": { "fee": 10, "waiver": 50 }
+    "tear": { "fee": 10, "waiver": 50 },
+    "scratch": { "fee": 4, "waiver": 15 }
   }
 }

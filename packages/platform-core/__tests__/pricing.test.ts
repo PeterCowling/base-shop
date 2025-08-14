@@ -88,5 +88,17 @@ describe('pricing utilities', () => {
     expect(readFile).toHaveBeenCalledTimes(1);
     expect(readFile.mock.calls[0][0]).toContain('pricing.json');
   });
+
+  it('waives fee when coverage purchased or included', async () => {
+    const { computeDamageFee } = await setup({
+      baseDailyRate: 0,
+      durationDiscounts: [],
+      damageFees: { scuff: 20 },
+      coverage: { scuff: { fee: 5, waiver: 20 } },
+    });
+
+    await expect(computeDamageFee('scuff', 50, ['scuff'])).resolves.toBe(0);
+    await expect(computeDamageFee('scuff', 50, [], true)).resolves.toBe(0);
+  });
 });
 

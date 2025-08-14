@@ -4,6 +4,7 @@ import {
   markReturned,
 } from "@platform-core/repositories/rentalOrders.server";
 import { computeDamageFee } from "@platform-core/src/pricing";
+import { readShop } from "@platform-core/src/repositories/shops.server";
 
 import { NextRequest, NextResponse } from "next/server";
 import { getReturnLogistics } from "@platform-core/returnLogistics";
@@ -46,6 +47,8 @@ export async function POST(req: NextRequest) {
       expand: ["payment_intent"],
     });
     const deposit = Number(session.metadata?.depositTotal ?? 0);
+    const coverageCodes = session.metadata?.coverage?.split(",").filter(Boolean) ?? [];
+    const shopInfo = await readShop("bcd");
     const pi =
       typeof session.payment_intent === "string"
         ? session.payment_intent
@@ -55,7 +58,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, message: "No deposit found" });
     }
 
-    const damageFee = await computeDamageFee(damage, deposit);
+    const damageFee = await computeDamageFee(
+      damage,
+      deposit,
+      coverageCodes,
+      shopInfo.coverageIncluded,
+    );
     if (damageFee) {
       await markReturned("bcd", sessionId, damageFee);
     }

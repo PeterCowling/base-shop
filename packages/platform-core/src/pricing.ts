@@ -60,6 +60,7 @@ export async function computeDamageFee(
   kind: string | number | undefined,
   deposit: number,
   coverageCodes: string[] = [],
+  coverageIncluded = false,
 ): Promise<number> {
   if (kind == null) return 0;
   const pricing = await getPricing();
@@ -73,10 +74,9 @@ export async function computeDamageFee(
     fee = rule;
   }
 
-  if (coverageCodes.length && pricing.coverage) {
-    const coverage = coverageCodes.includes(kind)
-      ? pricing.coverage[kind]
-      : undefined;
+  if (pricing.coverage) {
+    const covered = coverageIncluded || coverageCodes.includes(kind);
+    const coverage = covered ? pricing.coverage[kind] : undefined;
     if (coverage && typeof rule === "number") {
       fee = Math.max(0, fee - coverage.waiver);
     }

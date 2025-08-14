@@ -7,6 +7,7 @@ import { readInventory } from "@platform-core/repositories/inventory.server";
 import { readRepo as readProducts } from "@platform-core/repositories/products.server";
 import { reserveRentalInventory } from "@platform-core/orders/rentalAllocation";
 import { computeDamageFee } from "@platform-core/src/pricing";
+import { readShop } from "@platform-core/src/repositories/shops.server";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
@@ -53,10 +54,12 @@ export async function PATCH(req: NextRequest) {
 
   const session = await stripe.checkout.sessions.retrieve(sessionId);
   const coverageCodes = session.metadata?.coverage?.split(",").filter(Boolean) ?? [];
+  const shopInfo = await readShop("bcd");
   const damageFee = await computeDamageFee(
     damage,
     order.deposit,
     coverageCodes,
+    shopInfo.coverageIncluded,
   );
   if (damageFee) {
     await markReturned("bcd", sessionId, damageFee);

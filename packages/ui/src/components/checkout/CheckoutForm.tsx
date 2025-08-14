@@ -21,11 +21,15 @@ const stripePromise = loadStripe(
   paymentEnv.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
 );
 
-type Props = { locale: "en" | "de" | "it"; taxRegion: string };
+type Props = {
+  locale: "en" | "de" | "it";
+  taxRegion: string;
+  coverage?: string[];
+};
 
 type FormValues = { returnDate: string };
 
-export default function CheckoutForm({ locale, taxRegion }: Props) {
+export default function CheckoutForm({ locale, taxRegion, coverage = [] }: Props) {
   const [clientSecret, setClientSecret] = useState<string>();
   const [fetchError, setFetchError] = useState(false);
   const [retry, setRetry] = useState(0);
@@ -38,6 +42,7 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
     defaultValues: { returnDate: defaultDate },
   });
   const returnDate = form.watch("returnDate");
+  const coverageCodes = coverage;
 
   /* --- create session on mount or when returnDate changes --- */
   useEffect(() => {
@@ -49,7 +54,12 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ returnDate, currency, taxRegion }),
+            body: JSON.stringify({
+              returnDate,
+              currency,
+              taxRegion,
+              coverage: coverageCodes,
+            }),
             signal: controller.signal,
           }
         );
@@ -67,7 +77,7 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
       controller.abort();
       clearTimeout(timeout);
     };
-  }, [returnDate, currency, taxRegion, retry]);
+  }, [returnDate, currency, taxRegion, coverageCodes, retry]);
 
   if (!clientSecret) {
     if (fetchError)

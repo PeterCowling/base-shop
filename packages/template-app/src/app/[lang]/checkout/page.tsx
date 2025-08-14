@@ -1,5 +1,4 @@
 // packages/template-app/src/app/[lang]/checkout/page.tsx
-import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import {
@@ -12,6 +11,8 @@ import { getCart } from "@platform-core/src/cartStore";
 import { getProductById } from "@platform-core/src/products";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/src/repositories/settings.server";
+import { useState } from "react";
+import CheckoutForm from "@/components/checkout/CheckoutForm";
 
 export const metadata = {
   title: "Checkout · Base-Shop",
@@ -65,7 +66,35 @@ export default async function CheckoutPage({
         cart={validatedCart}
         totals={{ subtotal, deposit, total }}
       />
-      <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
+      <CheckoutWithCoverage locale={lang} taxRegion={settings.taxRegion} />
+    </div>
+  );
+}
+
+function CheckoutWithCoverage({
+  locale,
+  taxRegion,
+}: {
+  locale: Locale;
+  taxRegion: string;
+}) {
+  "use client";
+  const [selected, setSelected] = useState(false);
+  return (
+    <div className="space-y-4">
+      <label className="flex items-center gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked={selected}
+          onChange={(e) => setSelected(e.target.checked)}
+        />
+        Add damage coverage
+      </label>
+      <CheckoutForm
+        locale={locale}
+        taxRegion={taxRegion}
+        coverage={selected ? ["scuff", "tear", "scratch"] : []}
+      />
     </div>
   );
 }

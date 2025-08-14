@@ -9,7 +9,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import * as path from "node:path";
-import { randomBytes } from "node:crypto";
+import { randomBytes, createHash } from "node:crypto";
 import { getComponentNameMap } from "./component-names";
 
 const args = process.argv.slice(2);
@@ -55,21 +55,34 @@ if (existsSync(shopJsonPath)) {
   (data as any).lastUpgrade = new Date().toISOString();
   const pkgPath = path.join(appDir, "package.json");
   (data as any).componentVersions = existsSync(pkgPath)
-    ? JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {}
+    ? (JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {})
     : {};
   writeFileSync(shopJsonPath, JSON.stringify(data, null, 2));
 }
 
-// generate upgrade-changes.json with component name mappings
+// generate upgrade-changes.json with metadata for changed components only
 const componentsDir = path.join(rootDir, "packages", "ui", "src", "components");
 const componentMap = getComponentNameMap(componentsDir);
-const components = Object.entries(componentMap).map(([file, componentName]) => ({
-  file,
-  componentName,
-}));
+const changedComponents = Object.entries(componentMap).flatMap(
+  ([file, componentName]) => {
+    const destPath = path.join(appDir, "src", "components", file);
+    const bakPath = destPath + ".bak";
+    if (!existsSync(destPath) || !existsSync(bakPath)) return [];
+    const newHash = createHash("sha256")
+      .update(readFileSync(destPath))
+      .digest("hex");
+    const oldHash = createHash("sha256")
+      .update(readFileSync(bakPath))
+      .digest("hex");
+    if (newHash === oldHash) return [];
+    return [
+      { file, componentName, oldChecksum: oldHash, newChecksum: newHash },
+    ];
+  }
+);
 writeFileSync(
   path.join(appDir, "upgrade-changes.json"),
-  JSON.stringify({ components }, null, 2),
+  JSON.stringify({ components: changedComponents }, null, 2)
 );
 
 const envPath = path.join(appDir, ".env");
@@ -79,7 +92,7 @@ if (existsSync(envPath)) {
     const upgradeToken = randomBytes(32).toString("hex");
     writeFileSync(
       envPath,
-      envContent + `\nUPGRADE_PREVIEW_TOKEN_SECRET=${upgradeToken}\n`,
+      envContent + `\nUPGRADE_PREVIEW_TOKEN_SECRET=${upgradeToken}\n`
     );
   }
 }

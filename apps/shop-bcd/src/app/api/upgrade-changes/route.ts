@@ -19,7 +19,10 @@ export async function GET() {
       "utf8"
     );
     const data = JSON.parse(raw);
-    const components = Array.isArray(data.components) ? data.components : [];
+    const rawComponents = Array.isArray(data.components) ? data.components : [];
+    const components = rawComponents.filter(
+      (c: any) => c.oldChecksum !== c.newChecksum
+    );
     return NextResponse.json({ components });
   } catch {
     return NextResponse.json({ components: [] });

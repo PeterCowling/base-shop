@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 interface UpgradeComponent {
   file: string;
   componentName: string;
+  oldChecksum: string;
+  newChecksum: string;
 }
 
 export default function UpgradePreviewPage() {
@@ -50,4 +52,3 @@ export default function UpgradePreviewPage() {
     </div>
   );
 }
-

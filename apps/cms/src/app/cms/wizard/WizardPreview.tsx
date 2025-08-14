@@ -12,6 +12,8 @@ import type { PageComponent } from "@acme/types";
 import React, { useEffect, useRef, useState } from "react";
 import { STORAGE_KEY } from "../configurator/hooks/useConfiguratorPersistence";
 
+const THEME_PREVIEW_KEY = "cms-theme-preview";
+
 interface Props {
   style: React.CSSProperties;
   /** Enable inspection mode to highlight tokenised elements */
@@ -34,6 +36,7 @@ export default function WizardPreview({
     "desktop"
   );
   const [components, setComponents] = useState<PageComponent[]>([]);
+  const [tokenStyle, setTokenStyle] = useState<Record<string, string>>({});
   const [highlight, setHighlight] = useState<HTMLElement | null>(null);
   const previewRef = useRef<HTMLDivElement | null>(null);
   const clickTimeoutRef = useRef<number | null>(null);
@@ -46,11 +49,14 @@ export default function WizardPreview({
     const load = () => {
       try {
         const json = localStorage.getItem(STORAGE_KEY);
-        if (!json) return;
-        const data = JSON.parse(json);
-        if (Array.isArray(data.components)) {
-          setComponents(data.components as PageComponent[]);
+        if (json) {
+          const data = JSON.parse(json);
+          if (Array.isArray(data.components)) {
+            setComponents(data.components as PageComponent[]);
+          }
         }
+        const tokens = localStorage.getItem(THEME_PREVIEW_KEY);
+        if (tokens) setTokenStyle(JSON.parse(tokens));
       } catch {
         /* ignore JSON errors */
       }
@@ -59,9 +65,11 @@ export default function WizardPreview({
     load();
     window.addEventListener("storage", load);
     window.addEventListener("configurator:update", load);
+    window.addEventListener("theme-preview:update", load);
     return () => {
       window.removeEventListener("storage", load);
       window.removeEventListener("configurator:update", load);
+      window.removeEventListener("theme-preview:update", load);
     };
   }, []);
 
@@ -75,7 +83,7 @@ export default function WizardPreview({
     mobile: "375px",
   };
 
-  const containerStyle = { ...style, width: widthMap[viewport] };
+  const containerStyle = { ...tokenStyle, ...style, width: widthMap[viewport] };
 
   /* ------------------------------------------------------------------ */
   /*                         Inspect mode                               */
@@ -100,9 +108,9 @@ export default function WizardPreview({
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!inspectMode || clickTimeoutRef.current) return;
-    const el = (e.target as HTMLElement).closest("[data-token]") as
-      | HTMLElement
-      | null;
+    const el = (e.target as HTMLElement).closest(
+      "[data-token]"
+    ) as HTMLElement | null;
     setHighlight(el);
   };
 

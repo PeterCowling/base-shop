@@ -14,11 +14,7 @@ import {
   type CSSProperties,
 } from "react";
 import { type TokenMap } from "../../../wizard/tokenUtils";
-import {
-  hslToHex,
-  isHex,
-  isHsl,
-} from "@ui/utils/colorUtils";
+import { hslToHex, isHex, isHsl } from "@ui/utils/colorUtils";
 import { useThemePresets } from "./useThemePresets";
 import ColorInput from "./ColorInput";
 import PreviewPane from "./PreviewPane";
@@ -44,7 +40,7 @@ export default function ThemeEditor({
   const [overrides, setOverrides] =
     useState<Record<string, string>>(initialOverrides);
   const [themeDefaults, setThemeDefaults] = useState<Record<string, string>>(
-    tokensByTheme[initialTheme],
+    tokensByTheme[initialTheme]
   );
   const {
     availableThemes,
@@ -64,6 +60,10 @@ export default function ThemeEditor({
     setTheme,
     setOverrides,
     setThemeDefaults,
+  });
+  const [previewTokens, setPreviewTokens] = useState<Record<string, string>>({
+    ...tokensByTheme[initialTheme],
+    ...initialOverrides,
   });
   const [contrastWarnings, setContrastWarnings] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
@@ -93,11 +93,11 @@ export default function ThemeEditor({
     setTheme(next);
     setOverrides({});
     setThemeDefaults(tokensByThemeState[next]);
+    setPreviewTokens(tokensByThemeState[next]);
   };
 
   const handleOverrideChange =
-    (key: string, defaultValue: string) =>
-    (value: string) => {
+    (key: string, defaultValue: string) => (value: string) => {
       setOverrides((prev) => {
         const next = { ...prev };
         if (!value || value === defaultValue) {
@@ -105,6 +105,7 @@ export default function ThemeEditor({
         } else {
           next[key] = value;
         }
+        setPreviewTokens({ ...tokensByThemeState[theme], ...next });
         return next;
       });
     };
@@ -113,6 +114,7 @@ export default function ThemeEditor({
     setOverrides((prev) => {
       const next = { ...prev };
       delete next[key];
+      setPreviewTokens({ ...tokensByThemeState[theme], ...next });
       return next;
     });
   };
@@ -129,22 +131,28 @@ export default function ThemeEditor({
       }
     }
     setOverrides(overridesCopy);
+    setPreviewTokens({ ...baseTokens, ...overridesCopy });
   };
 
-  const previewStyle = useMemo(
-    () => ({ ...tokensByThemeState[theme], ...overrides } as CSSProperties),
-    [tokensByThemeState, theme, overrides]
-  );
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      localStorage.setItem("cms-theme-preview", JSON.stringify(previewTokens));
+      window.dispatchEvent(new CustomEvent("theme-preview:update"));
+    } catch {
+      /* ignore */
+    }
+  }, [previewTokens]);
 
   useEffect(() => {
     const ccc = new ColorContrastChecker();
     const baseTokens = tokensByThemeState[theme];
     const merged = { ...baseTokens, ...overrides };
     const textTokens = Object.keys(baseTokens).filter((k) =>
-      /text|foreground/i.test(k),
+      /text|foreground/i.test(k)
     );
     const bgTokens = Object.keys(baseTokens).filter((k) =>
-      /bg|background/i.test(k),
+      /bg|background/i.test(k)
     );
     const warnings: string[] = [];
     textTokens.forEach((t) => {
@@ -162,9 +170,7 @@ export default function ThemeEditor({
         const defaultRatio = ccc.getContrastRatio(fgDefHex, bgDefHex);
         const ratio = ccc.getContrastRatio(fgHex, bgHex);
         if (ratio < defaultRatio && ratio < 4.5) {
-          warnings.push(
-            `${t} on ${b} contrast ${ratio.toFixed(2)}:1`,
-          );
+          warnings.push(`${t} on ${b} contrast ${ratio.toFixed(2)}:1`);
         }
       });
     });
@@ -185,7 +191,6 @@ export default function ThemeEditor({
     }
     setSaving(false);
   };
-
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
@@ -226,7 +231,11 @@ export default function ThemeEditor({
           value={presetName}
           onChange={(e) => setPresetName(e.target.value)}
         />
-        <Button type="button" onClick={handleSavePreset} disabled={!presetName.trim()}>
+        <Button
+          type="button"
+          onClick={handleSavePreset}
+          disabled={!presetName.trim()}
+        >
           Save Preset
         </Button>
         {presetThemes.includes(theme) && (
@@ -246,7 +255,7 @@ export default function ThemeEditor({
         </div>
       )}
       <PreviewPane
-        style={previewStyle}
+        style={previewTokens as CSSProperties}
         tokens={overrides as TokenMap}
         baseTokens={tokensByThemeState[theme] as TokenMap}
         onChange={handleStyleChange}
@@ -293,7 +302,7 @@ export default function ThemeEditor({
               {tokens.map(([k, defaultValue]) => {
                 const hasOverride = Object.prototype.hasOwnProperty.call(
                   overrides,
-                  k,
+                  k
                 );
                 const overrideValue = hasOverride ? overrides[k] : "";
                 return (

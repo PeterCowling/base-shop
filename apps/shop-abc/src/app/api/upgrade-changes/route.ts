@@ -23,8 +23,9 @@ export async function GET() {
     const components = rawComponents.filter(
       (c: any) => c.oldChecksum !== c.newChecksum
     );
-    return NextResponse.json({ components });
+    const pages = Array.isArray(data.pages) ? data.pages : [];
+    return NextResponse.json({ components, pages });
   } catch {
-    return NextResponse.json({ components: [] });
+    return NextResponse.json({ components: [], pages: [] });
   }
 }

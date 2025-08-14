@@ -61,6 +61,7 @@ describe("/api/upgrade-changes", () => {
           newChecksum: "new1",
         },
       ],
+      pages: [],
     });
   });
 

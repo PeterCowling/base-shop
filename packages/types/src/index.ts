@@ -19,3 +19,18 @@ export * from "./SubscriptionPlan";
 export * from "./Coverage";
 export * from "./upgrade";
 export * from "./ExampleProps";
+
+export type {
+  PaymentPayload,
+  PaymentProvider,
+  ShippingProvider,
+  ShippingRequest,
+  WidgetComponent,
+  WidgetProps,
+  PaymentRegistry,
+  ShippingRegistry,
+  WidgetRegistry,
+  PluginOptions,
+  Plugin,
+  LoadPluginsOptions,
+} from "@acme/platform-core/plugins";

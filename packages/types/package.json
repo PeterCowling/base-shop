@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@acme/i18n": "workspace:*"
+    "@acme/i18n": "workspace:*",
+    "@acme/platform-core": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.4"

@@ -2,10 +2,10 @@
 
 This platform supports a pluggable architecture for payments, shipping and UI widgets.  
 Plugins are plain npm packages that export a default object implementing the
-`Plugin` interface from `@acme/platform-core/plugins`.
+`Plugin` interface from `@acme/types`.
 
 ```ts
-import type { Plugin, PaymentRegistry } from "@acme/platform-core/plugins";
+import type { Plugin, PaymentRegistry } from "@acme/types";
 
 const myPlugin: Plugin = {
   id: "my-plugin",

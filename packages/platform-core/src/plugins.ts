@@ -2,6 +2,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import type { Dirent } from "node:fs";
 import path from "node:path";
+import type React from "react";
 import type { z } from "zod";
 import { logger } from "./utils";
 import { PluginManager } from "./plugins/PluginManager";
@@ -29,10 +30,8 @@ export interface ShippingProvider<Request = ShippingRequest> {
 }
 
 /** Interface for widget components */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface WidgetComponent<P = WidgetProps> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (props: P): any;
+  (props: P): React.ReactElement | null;
 }
 
 /** Registry for payment providers */

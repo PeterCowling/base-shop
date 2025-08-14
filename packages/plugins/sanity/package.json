@@ -10,6 +10,7 @@
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../../jest.config.cjs"
   },
   "dependencies": {
+    "@acme/types": "workspace:*",
     "@sanity/client": "^6.15.0",
     "zod": "^3.25.67"
   }

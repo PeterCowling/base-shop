@@ -1,5 +1,5 @@
 // packages/plugins/sanity/index.ts
-import type { Plugin } from "@acme/platform-core/plugins";
+import type { Plugin } from "@acme/types";
 import { createClient, type SanityClient } from "@sanity/client";
 import { z } from "zod";
 

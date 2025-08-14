@@ -16,6 +16,7 @@
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/shared-utils": "workspace:*",
+    "@acme/types": "workspace:*",
     "@themes/base": "workspace:*",
     "color-contrast-checker": "^2.1.0",
     "@sendgrid/eventwebhook": "^7.2.7"

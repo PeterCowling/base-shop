@@ -6,7 +6,7 @@ import type {
   Plugin,
   ShippingRegistry,
   ShippingRequest,
-} from "@acme/platform-core/plugins";
+} from "@acme/types";
 
 interface PremierPickupState {
   region?: string;

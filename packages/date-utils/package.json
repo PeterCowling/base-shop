@@ -8,5 +8,8 @@
   },
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0"
   }
 }

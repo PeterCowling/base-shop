@@ -1,5 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/style";
+import { Button } from "../atoms/shadcn";
+import { ProductQuickView } from "../overlays/ProductQuickView";
 import { Product, ProductCard } from "./ProductCard";
 
 export interface ProductCarouselProps
@@ -24,6 +26,9 @@ export interface ProductCarouselProps
    */
   getSlideWidth?: (itemsPerSlide: number) => string;
   className?: string;
+  /** Show quick view trigger for each item */
+  enableQuickView?: boolean;
+  onAddToCart?: (product: Product) => void;
 }
 
 /**
@@ -41,11 +46,16 @@ export function ProductCarousel({
   gapClassName = "gap-4",
   getSlideWidth = (n) => `${100 / n}%`,
   className,
+  enableQuickView = false,
+  onAddToCart,
   ...props
 }: ProductCarouselProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [itemsPerSlide, setItemsPerSlide] = React.useState(
     desktopItems ?? minItems
+  );
+  const [quickViewProduct, setQuickViewProduct] = React.useState<Product | null>(
+    null
   );
 
   React.useEffect(() => {
@@ -84,18 +94,44 @@ export function ProductCarousel({
   const width = getSlideWidth(itemsPerSlide);
   const slideStyle = { flex: `0 0 ${width}` } as React.CSSProperties;
   return (
-    <div
-      ref={containerRef}
-      className={cn("overflow-hidden", className)}
-      {...props}
-    >
-      <div className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)}>
-        {products.map((p) => (
-          <div key={p.id} style={slideStyle} className="snap-start">
-            <ProductCard product={p} className="h-full" />
-          </div>
-        ))}
+    <>
+      <div
+        ref={containerRef}
+        className={cn("overflow-hidden", className)}
+        {...props}
+      >
+        <div className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)}>
+          {products.map((p) => (
+            <div
+              key={p.id}
+              style={slideStyle}
+              className="relative snap-start"
+            >
+              <ProductCard product={p} className="h-full" />
+              {enableQuickView && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="absolute right-2 top-2"
+                  aria-label={`Quick view ${p.title}`}
+                  onClick={() => setQuickViewProduct(p)}
+                >
+                  Quick View
+                </Button>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+      {enableQuickView && quickViewProduct && (
+        <ProductQuickView
+          product={quickViewProduct}
+          open={!!quickViewProduct}
+          onOpenChange={(o) => !o && setQuickViewProduct(null)}
+          container={containerRef.current}
+          onAddToCart={onAddToCart}
+        />
+      )}
+    </>
   );
 }

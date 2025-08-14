@@ -33,20 +33,6 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
     }));
   };
 
-  const handleTokens = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = e.target;
-    try {
-      const parsed = JSON.parse(value);
-      setInfo((prev) => ({ ...prev, themeTokens: parsed }));
-      setErrors((prev) => {
-        const { themeTokens, ...rest } = prev;
-        return rest;
-      });
-    } catch {
-      setErrors((prev) => ({ ...prev, themeTokens: ["Invalid JSON"] }));
-    }
-  };
-
   const handleMappings = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     try {
@@ -201,16 +187,30 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
         )}
       </label>
       <label className="flex flex-col gap-1">
-        <span>Theme Tokens (JSON)</span>
+        <span>Theme Defaults (JSON)</span>
         <Textarea
-          name="themeTokens"
-          defaultValue={JSON.stringify(info.themeTokens, null, 2)}
-          onChange={handleTokens}
+          name="themeDefaults"
+          defaultValue={JSON.stringify(info.themeDefaults ?? {}, null, 2)}
+          readOnly
           rows={4}
         />
-        {errors.themeTokens && (
+        {errors.themeDefaults && (
           <span className="text-sm text-red-600">
-            {errors.themeTokens.join("; ")}
+            {errors.themeDefaults.join("; ")}
+          </span>
+        )}
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Theme Overrides (JSON)</span>
+        <Textarea
+          name="themeOverrides"
+          defaultValue={JSON.stringify(info.themeOverrides ?? {}, null, 2)}
+          readOnly
+          rows={4}
+        />
+        {errors.themeOverrides && (
+          <span className="text-sm text-red-600">
+            {errors.themeOverrides.join("; ")}
           </span>
         )}
       </label>

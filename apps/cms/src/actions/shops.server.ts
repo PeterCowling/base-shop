@@ -1,72 +1,48 @@
-// apps/cms/src/actions/shops.ts
+// apps/cms/src/actions/shops.server.ts
 
 "use server";
 
-import {
-  diffHistory,
-  getShopSettings,
-  saveShopSettings,
-} from "@platform-core/src/repositories/settings.server";
-import {
-  getShopById,
-  updateShopInRepo,
-} from "@platform-core/src/repositories/shop.server";
-import { syncTheme, loadTokens } from "@platform-core/src/createShop";
-import {
-  localeSchema,
-  type Locale,
-  type Shop,
-  type ShopSeoFields,
-  type ShopSettings,
-  aiCatalogFieldSchema,
-} from "@acme/types";
-import { z } from "zod";
-import { shopSchema, type ShopForm } from "./schemas";
-import { ensureAuthorized } from "./common/auth";
 import { revalidatePath } from "next/cache";
+import type {
+  Locale,
+  Shop,
+  ShopSeoFields,
+  ShopSettings,
+} from "@acme/types";
+import { authorize } from "../services/shops/authorization";
+import {
+  parseShopForm,
+  parseSeoForm,
+  parseGenerateSeoForm,
+  parseCurrencyTaxForm,
+  parseDepositForm,
+  parseUpsReturnsForm,
+  parsePremierDeliveryForm,
+  parseAiCatalogForm,
+} from "../services/shops/validation";
+import { buildThemeData, removeThemeToken } from "../services/shops/theme";
+import {
+  fetchShop,
+  persistShop,
+  fetchSettings,
+  persistSettings,
+  fetchDiffHistory,
+} from "../services/shops/persistence";
 
 export async function updateShop(
   shop: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<{ shop?: Shop; errors?: Record<string, string[]> }> {
-  await ensureAuthorized();
-
-  const id = String(formData.get("id"));
-  const current = await getShopById<Shop>(shop);
-  if (current.id !== id) throw new Error(`Shop ${id} not found in ${shop}`);
-
-  // Read theme data separately so we can persist defaults and overrides
-  const themeDefaultsRaw = formData.get("themeDefaults") as string | null;
-  const themeOverridesRaw = formData.get("themeOverrides") as string | null;
-
-  const parsed = shopSchema.safeParse({
-    ...Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>
-    ),
-    themeDefaults: themeDefaultsRaw ?? "{}",
-    themeOverrides: themeOverridesRaw ?? "{}",
-    trackingProviders: formData.getAll("trackingProviders"),
-  });
-  if (!parsed.success) {
-    console.error(
-      `[updateShop] validation failed for shop ${shop}`,
-      parsed.error
-    );
-    return { errors: parsed.error.flatten().fieldErrors };
+  await authorize();
+  const current = await fetchShop(shop);
+  const { data, errors } = parseShopForm(formData);
+  if (!data) {
+    console.error(`[updateShop] validation failed for shop ${shop}`, errors);
+    return { errors };
   }
+  if (current.id !== data.id) throw new Error(`Shop ${data.id} not found in ${shop}`);
 
-  const data: ShopForm = parsed.data;
-
-  const overrides = data.themeOverrides as Record<string, string>;
-  let themeDefaults =
-    data.themeDefaults as Record<string, string> | undefined;
-  if (!themeDefaults || Object.keys(themeDefaults).length === 0) {
-    themeDefaults =
-      current.themeId !== data.themeId
-        ? await syncTheme(shop, data.themeId)
-        : await loadTokens(data.themeId);
-  }
-  const themeTokens = { ...themeDefaults, ...overrides };
+  const theme = await buildThemeData(shop, data, current);
 
   const patch: Partial<Shop> & { id: string } = {
     id: current.id,
@@ -74,66 +50,43 @@ export async function updateShop(
     themeId: data.themeId,
     catalogFilters: data.catalogFilters,
     enableEditorial: data.enableEditorial,
-    themeDefaults,
-    themeOverrides: overrides,
-    themeTokens,
+    themeDefaults: theme.themeDefaults,
+    themeOverrides: theme.overrides,
+    themeTokens: theme.themeTokens,
     filterMappings: data.filterMappings as Record<string, string>,
     priceOverrides: data.priceOverrides as Partial<Record<Locale, number>>,
     localeOverrides: data.localeOverrides as Record<string, Locale>,
   };
 
-  const saved = await updateShopInRepo(shop, patch);
+  const saved = await persistShop(shop, patch);
 
-  const settings = await getShopSettings(shop);
+  const settings = await fetchSettings(shop);
   const updatedSettings: ShopSettings = {
     ...settings,
     trackingProviders: data.trackingProviders,
   };
-  await saveShopSettings(shop, updatedSettings);
+  await persistSettings(shop, updatedSettings);
 
   return { shop: saved };
 }
 
-export async function getSettings(shop: string) {
-  return getShopSettings(shop);
+export function getSettings(shop: string) {
+  return fetchSettings(shop);
 }
-
-const seoSchema = z
-  .object({
-    locale: localeSchema,
-    title: z.string().min(1, "Required"),
-    description: z.string().optional().default(""),
-    image: z.string().url().optional(),
-    alt: z.string().optional(),
-    canonicalBase: z.string().url().optional(),
-    ogUrl: z.string().url().optional(),
-    twitterCard: z
-      .enum(["summary", "summary_large_image", "app", "player"])
-      .optional(),
-  })
-  .strict();
 
 export async function updateSeo(
   shop: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<{
   settings?: unknown;
   errors?: Record<string, string[]>;
   warnings?: string[];
 }> {
-  await ensureAuthorized();
-
-  const parsed = seoSchema.safeParse(
-    Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>
-    )
-  );
-  if (!parsed.success) {
-    console.error(
-      `[updateSeo] validation failed for shop ${shop}`,
-      parsed.error
-    );
-    return { errors: parsed.error.flatten().fieldErrors };
+  await authorize();
+  const { data, errors } = parseSeoForm(formData);
+  if (!data) {
+    console.error(`[updateSeo] validation failed for shop ${shop}`, errors);
+    return { errors };
   }
 
   const {
@@ -145,23 +98,14 @@ export async function updateSeo(
     canonicalBase,
     ogUrl,
     twitterCard,
-  } = parsed.data as {
-    locale: Locale;
-    title: string;
-    description: string;
-    image?: string;
-    alt?: string;
-    canonicalBase?: string;
-    ogUrl?: string;
-    twitterCard?: "summary" | "summary_large_image" | "app" | "player";
-  };
+  } = data;
 
   const warnings: string[] = [];
   if (title.length > 70) warnings.push("Title exceeds 70 characters");
   if (description.length > 160)
     warnings.push("Description exceeds 160 characters");
 
-  const current = await getShopSettings(shop);
+  const current = await fetchSettings(shop);
   const seo = { ...(current.seo ?? {}) } as Record<Locale, ShopSeoFields>;
   seo[locale] = {
     title,
@@ -176,19 +120,10 @@ export async function updateSeo(
     ...current,
     seo,
   };
-  await saveShopSettings(shop, updated);
+  await persistSettings(shop, updated);
 
   return { settings: updated, warnings };
 }
-
-const generateSchema = z
-  .object({
-    id: z.string().min(1),
-    locale: localeSchema,
-    title: z.string().min(1),
-    description: z.string().min(1),
-  })
-  .strict();
 
 export async function generateSeo(
   shop: string,
@@ -197,24 +132,19 @@ export async function generateSeo(
   generated?: { title: string; description: string; image: string };
   errors?: Record<string, string[]>;
 }> {
-  await ensureAuthorized();
-
-  const parsed = generateSchema.safeParse(
-    Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>,
-    ),
-  );
-  if (!parsed.success) {
-    return { errors: parsed.error.flatten().fieldErrors };
+  await authorize();
+  const { data, errors } = parseGenerateSeoForm(formData);
+  if (!data) {
+    return { errors };
   }
 
-  const { id, locale, title, description } = parsed.data;
+  const { id, locale, title, description } = data;
   const { generateMeta } = await import(
     /* @vite-ignore */ "../../../../scripts/generate-meta.ts"
   );
 
   const result = await generateMeta({ id, title, description });
-  const current = await getShopSettings(shop);
+  const current = await fetchSettings(shop);
   const seo = { ...(current.seo ?? {}) } as Record<Locale, ShopSeoFields>;
   seo[locale] = {
     ...(seo[locale] ?? {}),
@@ -224,16 +154,18 @@ export async function generateSeo(
     openGraph: { ...(seo[locale]?.openGraph ?? {}), image: result.image },
   };
   const updated: ShopSettings = { ...current, seo };
-  await saveShopSettings(shop, updated);
+  await persistSettings(shop, updated);
 
   return { generated: result };
 }
 
 export async function revertSeo(shop: string, timestamp: string) {
-  await ensureAuthorized();
-  const history = await diffHistory(shop);
-  const sorted = history.sort((a, b) => a.timestamp.localeCompare(b.timestamp));
-  const idx = sorted.findIndex((e) => e.timestamp === timestamp);
+  await authorize();
+  const history = await fetchDiffHistory(shop);
+  const sorted = history.sort((a: any, b: any) =>
+    a.timestamp.localeCompare(b.timestamp),
+  );
+  const idx = sorted.findIndex((e: any) => e.timestamp === timestamp);
   if (idx === -1) throw new Error("Version not found");
   let state: ShopSettings = {
     languages: [],
@@ -245,180 +177,120 @@ export async function revertSeo(shop: string, timestamp: string) {
   for (let i = 0; i < idx; i++) {
     state = { ...state, ...sorted[i].diff } as ShopSettings;
   }
-  await saveShopSettings(shop, state);
+  await persistSettings(shop, state);
   return state;
 }
 
 export async function setFreezeTranslations(shop: string, freeze: boolean) {
-  await ensureAuthorized();
-  const current = await getShopSettings(shop);
+  await authorize();
+  const current = await fetchSettings(shop);
   const updated: ShopSettings = { ...current, freezeTranslations: freeze };
-  await saveShopSettings(shop, updated);
+  await persistSettings(shop, updated);
   return updated;
 }
 
-const currencyTaxSchema = z
-  .object({
-    currency: z.string().length(3, "Required"),
-    taxRegion: z.string().min(1, "Required"),
-  })
-  .strict();
-
 export async function updateCurrencyAndTax(
   shop: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
-  await ensureAuthorized();
-  const parsed = currencyTaxSchema.safeParse(
-    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
-  );
-  if (!parsed.success) {
-    return { errors: parsed.error.flatten().fieldErrors };
+  await authorize();
+  const { data, errors } = parseCurrencyTaxForm(formData);
+  if (!data) {
+    return { errors };
   }
-  const current = await getShopSettings(shop);
+  const current = await fetchSettings(shop);
   const updated: ShopSettings = {
     ...current,
-    currency: parsed.data.currency,
-    taxRegion: parsed.data.taxRegion,
+    currency: data.currency,
+    taxRegion: data.taxRegion,
   };
-  await saveShopSettings(shop, updated);
+  await persistSettings(shop, updated);
   return { settings: updated };
 }
-
-const depositSchema = z
-  .object({
-    enabled: z.preprocess((v) => v === "on", z.boolean()),
-    intervalMinutes: z.coerce.number().int().min(1, "Must be at least 1"),
-  })
-  .strict();
 
 export async function updateDepositService(
   shop: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
-  await ensureAuthorized();
-  const parsed = depositSchema.safeParse(
-    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
-  );
-  if (!parsed.success) {
-    return { errors: parsed.error.flatten().fieldErrors };
+  await authorize();
+  const { data, errors } = parseDepositForm(formData);
+  if (!data) {
+    return { errors };
   }
-  const current = await getShopSettings(shop);
+  const current = await fetchSettings(shop);
   const updated: ShopSettings = {
     ...current,
     depositService: {
-      enabled: parsed.data.enabled,
-      intervalMinutes: parsed.data.intervalMinutes,
+      enabled: data.enabled,
+      intervalMinutes: data.intervalMinutes,
     },
   };
-  await saveShopSettings(shop, updated);
+  await persistSettings(shop, updated);
   return { settings: updated };
 }
-
-const returnsSchema = z
-  .object({ enabled: z.preprocess((v) => v === "on", z.boolean()) })
-  .strict();
 
 export async function updateUpsReturns(
   shop: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
-  await ensureAuthorized();
-  const parsed = returnsSchema.safeParse(
-    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
-  );
-  if (!parsed.success) {
-    return { errors: parsed.error.flatten().fieldErrors };
+  await authorize();
+  const { data, errors } = parseUpsReturnsForm(formData);
+  if (!data) {
+    return { errors };
   }
-  const current = await getShopSettings(shop);
+  const current = await fetchSettings(shop);
   const updated: ShopSettings = {
     ...current,
-    returnService: { upsEnabled: parsed.data.enabled },
+    returnService: { upsEnabled: data.enabled },
   };
-  await saveShopSettings(shop, updated);
+  await persistSettings(shop, updated);
   return { settings: updated };
 }
-
-const premierDeliverySchema = z
-  .object({
-    regions: z.array(z.string().min(1)).default([]),
-    windows: z
-      .array(z.string().regex(/^\d{2}-\d{2}$/))
-      .default([]),
-  })
-  .strict();
 
 export async function updatePremierDelivery(
   shop: string,
-  formData: FormData
+  formData: FormData,
 ): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
-  await ensureAuthorized();
-  const data = {
-    regions: formData
-      .getAll("regions")
-      .map(String)
-      .map((v) => v.trim())
-      .filter(Boolean),
-    windows: formData
-      .getAll("windows")
-      .map(String)
-      .map((v) => v.trim())
-      .filter(Boolean),
-  };
-  const parsed = premierDeliverySchema.safeParse(data);
-  if (!parsed.success) {
-    return { errors: parsed.error.flatten().fieldErrors };
+  await authorize();
+  const { data, errors } = parsePremierDeliveryForm(formData);
+  if (!data) {
+    return { errors };
   }
-  const current = await getShopSettings(shop);
+  const current = await fetchSettings(shop);
   const updated: ShopSettings = {
     ...current,
-    premierDelivery: parsed.data,
+    premierDelivery: data,
   };
-  await saveShopSettings(shop, updated);
+  await persistSettings(shop, updated);
   return { settings: updated };
 }
-
-const aiCatalogFormSchema = z
-  .object({
-    enabled: z.preprocess((v) => v === "on", z.boolean()),
-    pageSize: z.coerce.number().int().positive(),
-    fields: z.array(aiCatalogFieldSchema),
-  })
-  .strict();
 
 export async function updateAiCatalog(
   shop: string,
   formData: FormData,
 ): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
-  await ensureAuthorized();
-  const data = {
-    enabled: formData.get("enabled"),
-    pageSize: formData.get("pageSize"),
-    fields: formData.getAll("fields"),
-  };
-  const parsed = aiCatalogFormSchema.safeParse(data);
-  if (!parsed.success) {
-    return { errors: parsed.error.flatten().fieldErrors };
+  await authorize();
+  const { data, errors } = parseAiCatalogForm(formData);
+  if (!data) {
+    return { errors };
   }
-  const current = await getShopSettings(shop);
+  const current = await fetchSettings(shop);
   const seo = { ...(current.seo ?? {}) };
-  seo.aiCatalog = {
-    enabled: parsed.data.enabled,
-    fields: parsed.data.fields,
-    pageSize: parsed.data.pageSize,
+  (seo as any).aiCatalog = {
+    enabled: data.enabled,
+    fields: data.fields,
+    pageSize: data.pageSize,
   };
   const updated: ShopSettings = { ...current, seo };
-  await saveShopSettings(shop, updated);
+  await persistSettings(shop, updated);
   return { settings: updated };
 }
 
 export async function resetThemeOverride(shop: string, token: string) {
-  await ensureAuthorized();
-  const current = await getShopById<Shop>(shop);
-  const overrides = { ...(current.themeOverrides ?? {}) };
-  delete overrides[token];
-  const themeTokens = { ...(current.themeDefaults ?? {}), ...overrides };
-  await updateShopInRepo(shop, {
+  await authorize();
+  const current = await fetchShop(shop);
+  const { overrides, themeTokens } = removeThemeToken(current, token);
+  await persistShop(shop, {
     id: current.id,
     themeOverrides: overrides,
     themeTokens,

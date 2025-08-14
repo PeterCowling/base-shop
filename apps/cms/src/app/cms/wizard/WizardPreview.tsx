@@ -17,6 +17,7 @@ import {
 } from "./previewTokens";
 import { devicePresets, getLegacyPreset, type DevicePreset } from "@ui/utils/devicePresets";
 import DeviceSelector from "@ui/components/cms/DeviceSelector";
+import { usePreviewDevice } from "@ui/hooks";
 
 interface Props {
   style: React.CSSProperties;
@@ -38,7 +39,7 @@ export default function WizardPreview({
   onTokenSelect,
   device: deviceProp,
 }: Props): React.JSX.Element {
-  const [deviceId, setDeviceId] = useState(devicePresets[0].id);
+  const [deviceId, setDeviceId] = usePreviewDevice(devicePresets[0].id);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">(
     "portrait"
   );

@@ -24,6 +24,7 @@ import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES } from "./defaults";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+import { usePreviewDevice } from "@ui/hooks";
 
 interface Props {
   page: Page;
@@ -62,7 +63,7 @@ const PageBuilder = memo(function PageBuilder({
     clearHistory,
   } = usePageBuilderState({ page, history: historyProp, onChange });
 
-  const [deviceId, setDeviceId] = useState(devicePresets[0].id);
+  const [deviceId, setDeviceId] = usePreviewDevice(devicePresets[0].id);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">(
     "portrait"
   );

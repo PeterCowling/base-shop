@@ -7,3 +7,4 @@ export * from "./useProductEditorFormState";
 export * from "./useProductFilters";
 export * from "./useTokenEditor";
 export * from "./usePublishLocations";
+export * from "./usePreviewDevice";

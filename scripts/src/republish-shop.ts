@@ -1,4 +1,10 @@
-import { existsSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  readFileSync,
+  readdirSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -10,7 +16,9 @@ function readUpgradeMeta(root: string, id: string): unknown {
 function run(cmd: string, args: string[]): void {
   const res = spawnSync(cmd, args, { stdio: "inherit" });
   if (res.status !== 0) {
-    throw new Error(`${cmd} ${args.join(" ")} failed with status ${res.status}`);
+    throw new Error(
+      `${cmd} ${args.join(" ")} failed with status ${res.status}`
+    );
   }
 }
 
@@ -19,6 +27,18 @@ function updateStatus(root: string, id: string): void {
   const json = JSON.parse(readFileSync(file, "utf8"));
   json.status = "published";
   writeFileSync(file, JSON.stringify(json, null, 2));
+}
+
+function removeBakFiles(dir: string): void {
+  if (!existsSync(dir)) return;
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const filePath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      removeBakFiles(filePath);
+    } else if (entry.isFile() && filePath.endsWith(".bak")) {
+      unlinkSync(filePath);
+    }
+  }
 }
 
 export function republishShop(id: string, root = process.cwd()): void {
@@ -32,14 +52,18 @@ export function republishShop(id: string, root = process.cwd()): void {
   if (existsSync(upgradeFile)) {
     unlinkSync(upgradeFile);
   }
+  const appDir = join(root, "apps", id);
+  const upgradeChanges = join(appDir, "upgrade-changes.json");
+  if (existsSync(upgradeChanges)) {
+    unlinkSync(upgradeChanges);
+  }
+  removeBakFiles(join(appDir, "src", "components"));
 }
 
 function main(): void {
   const shopId = process.argv[2];
   if (!shopId) {
-    console.error(
-      "Usage: pnpm ts-node scripts/src/republish-shop.ts <shopId>"
-    );
+    console.error("Usage: pnpm ts-node scripts/src/republish-shop.ts <shopId>");
     process.exit(1);
   }
   try {

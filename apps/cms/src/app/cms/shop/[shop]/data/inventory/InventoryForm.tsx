@@ -2,17 +2,16 @@
 
 import {
   Button,
-  Input,
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/atoms/shadcn";
-import { inventoryItemSchema, type InventoryItem } from "@acme/types";
-import { expandInventoryItem } from "@platform-core/utils/inventory";
+import type { InventoryItem } from "@acme/types";
 import { FormEvent, useRef, useState } from "react";
+import InventoryRow from "./InventoryRow";
+import { useInventoryValidation } from "./useInventoryValidation";
 
 interface Props {
   shop: string;
@@ -31,6 +30,7 @@ export default function InventoryForm({ shop, initial }: Props) {
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+  const validate = useInventoryValidation();
 
   const updateItem = (
     index: number,
@@ -102,11 +102,10 @@ export default function InventoryForm({ shop, initial }: Props) {
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const normalized = items.map((i) => expandInventoryItem(i));
-      const parsed = inventoryItemSchema.array().safeParse(normalized);
-      if (!parsed.success) {
+      const result = validate(items);
+      if (!result.success) {
         setStatus("error");
-        setError(parsed.error.issues.map((i) => i.message).join(", "));
+        setError(result.error);
         return;
       }
       setStatus("saved");
@@ -114,7 +113,7 @@ export default function InventoryForm({ shop, initial }: Props) {
       const res = await fetch(`/api/data/${shop}/inventory`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
+        body: JSON.stringify(result.data),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
@@ -211,55 +210,14 @@ export default function InventoryForm({ shop, initial }: Props) {
         </TableHeader>
         <TableBody>
           {items.map((item, idx) => (
-            <TableRow key={idx}>
-              <TableCell>
-                <Input
-                  value={item.sku}
-                  onChange={(e) => updateItem(idx, "sku", e.target.value)}
-                />
-              </TableCell>
-              {attributes.map((attr) => (
-                <TableCell key={attr}>
-                  <Input
-                    value={item.variantAttributes[attr] ?? ""}
-                    onChange={(e) =>
-                      updateItem(
-                        idx,
-                        `variantAttributes.${attr}`,
-                        e.target.value
-                      )
-                    }
-                  />
-                </TableCell>
-              ))}
-              <TableCell>
-                <Input
-                  type="number"
-                  min={0}
-                  value={item.quantity}
-                  onChange={(e) => updateItem(idx, "quantity", e.target.value)}
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  type="number"
-                  min={0}
-                  value={item.lowStockThreshold ?? ""}
-                  onChange={(e) =>
-                    updateItem(idx, "lowStockThreshold", e.target.value)
-                  }
-                />
-              </TableCell>
-              <TableCell>
-                <Button
-                  type="button"
-                  onClick={() => deleteRow(idx)}
-                  aria-label="delete-row"
-                >
-                  Delete
-                </Button>
-              </TableCell>
-            </TableRow>
+            <InventoryRow
+              key={idx}
+              item={item}
+              index={idx}
+              attributes={attributes}
+              updateItem={updateItem}
+              deleteRow={deleteRow}
+            />
           ))}
         </TableBody>
       </Table>

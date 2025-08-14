@@ -3,7 +3,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { PageComponent } from "@acme/types";
-import { memo } from "react";
+import { memo, useState, type ElementType } from "react";
 import {
   atomRegistry,
   moleculeRegistry,
@@ -13,49 +13,49 @@ import {
   overlayRegistry,
 } from "../blocks";
 
+import {
+  Component1Icon,
+  ContainerIcon,
+  DotFilledIcon,
+  LayersIcon,
+  RowsIcon,
+  TransparencyGridIcon,
+} from "@radix-ui/react-icons";
+
+type PaletteEntry = {
+  type: PageComponent["type"];
+  label: string;
+  Icon: ElementType;
+};
+
+function buildPalette(
+  registry: Record<string, unknown>,
+  Icon: PaletteEntry["Icon"]
+): PaletteEntry[] {
+  return (Object.keys(registry) as PageComponent["type"][]).sort().map((t) => ({
+    type: t,
+    label: t.replace(/([A-Z])/g, " $1").trim(),
+    Icon,
+  }));
+}
+
 const palette = {
-  layout: (Object.keys(layoutRegistry) as PageComponent["type"][])
-    .sort()
-    .map((t) => ({
-      type: t,
-      label: t.replace(/([A-Z])/g, " $1").trim(),
-    })),
-  containers: (Object.keys(containerRegistry) as PageComponent["type"][])
-    .sort()
-    .map((t) => ({
-      type: t,
-      label: t.replace(/([A-Z])/g, " $1").trim(),
-    })),
-  atoms: (Object.keys(atomRegistry) as PageComponent["type"][])
-    .sort()
-    .map((t) => ({
-      type: t,
-      label: t.replace(/([A-Z])/g, " $1").trim(),
-    })),
-  molecules: (Object.keys(moleculeRegistry) as PageComponent["type"][])
-    .sort()
-    .map((t) => ({
-      type: t,
-      label: t.replace(/([A-Z])/g, " $1").trim(),
-    })),
-  organisms: (Object.keys(organismRegistry) as PageComponent["type"][])
-    .sort()
-    .map((t) => ({
-      type: t,
-      label: t.replace(/([A-Z])/g, " $1").trim(),
-    })),
-  overlays: (Object.keys(overlayRegistry) as PageComponent["type"][])
-    .sort()
-    .map((t) => ({
-      type: t,
-      label: t.replace(/([A-Z])/g, " $1").trim(),
-    })),
+  layout: buildPalette(layoutRegistry, RowsIcon),
+  containers: buildPalette(containerRegistry, ContainerIcon),
+  atoms: buildPalette(atomRegistry, DotFilledIcon),
+  molecules: buildPalette(moleculeRegistry, Component1Icon),
+  organisms: buildPalette(organismRegistry, LayersIcon),
+  overlays: buildPalette(overlayRegistry, TransparencyGridIcon),
 } as const;
 
 const PaletteItem = memo(function PaletteItem({
   type,
+  label,
+  Icon,
 }: {
   type: PageComponent["type"];
+  label: string;
+  Icon: PaletteEntry["Icon"];
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
@@ -73,26 +73,48 @@ const PaletteItem = memo(function PaletteItem({
       aria-grabbed={isDragging}
       title="Drag or press space/enter to add"
       style={{ transform: CSS.Transform.toString(transform) }}
-      className="cursor-grab rounded border p-2 text-center text-sm"
+      className="flex cursor-grab items-center gap-2 rounded border p-2 text-sm"
     >
-      {type}
+      <Icon className="h-4 w-4" />
+      <span>{label}</span>
     </div>
   );
 });
 
 const Palette = memo(function Palette() {
+  const [search, setSearch] = useState("");
+  const query = search.toLowerCase();
+
   return (
     <div className="flex flex-col gap-4">
-      {Object.entries(palette).map(([category, items]) => (
-        <div key={category} className="space-y-2">
-          <h4 className="font-semibold capitalize">{category}</h4>
-          <div className="flex flex-col gap-2">
-            {items.map((p) => (
-              <PaletteItem key={p.type} type={p.type} />
-            ))}
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search components..."
+        className="rounded border p-2 text-sm"
+      />
+      {Object.entries(palette).map(([category, items]) => {
+        const filtered = items.filter((p) =>
+          p.label.toLowerCase().includes(query)
+        );
+        if (filtered.length === 0) return null;
+        return (
+          <div key={category} className="space-y-2">
+            <h4 className="font-semibold capitalize">{category}</h4>
+            <div className="flex flex-col gap-2">
+              {filtered.map((p) => (
+                <PaletteItem
+                  key={p.type}
+                  type={p.type}
+                  label={p.label}
+                  Icon={p.Icon}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 });

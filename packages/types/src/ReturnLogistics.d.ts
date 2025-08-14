@@ -9,6 +9,7 @@ import { z } from "zod";
  * - `bagType` describes the packaging customers should reuse when returning items.
  * - `returnCarrier` lists supported carriers for return shipments.
  * - `homePickupZipCodes` enumerates ZIP codes eligible for carrier pickup.
+ * - `mobileApp` toggles access to the mobile return application.
  */
 export declare const returnLogisticsSchema: z.ZodObject<{
     labelService: z.ZodString;
@@ -18,6 +19,7 @@ export declare const returnLogisticsSchema: z.ZodObject<{
     bagType: z.ZodString;
     returnCarrier: z.ZodArray<z.ZodString, "many">;
     homePickupZipCodes: z.ZodArray<z.ZodString, "many">;
+    mobileApp: z.ZodOptional<z.ZodBoolean>;
 }, "strip", z.ZodTypeAny, {
     labelService: string;
     inStore: boolean;
@@ -26,6 +28,7 @@ export declare const returnLogisticsSchema: z.ZodObject<{
     bagType: string;
     returnCarrier: string[];
     homePickupZipCodes: string[];
+    mobileApp?: boolean | undefined;
 }, {
     labelService: string;
     inStore: boolean;
@@ -34,5 +37,6 @@ export declare const returnLogisticsSchema: z.ZodObject<{
     bagType: string;
     returnCarrier: string[];
     homePickupZipCodes: string[];
+    mobileApp?: boolean | undefined;
 }>;
 export type ReturnLogistics = z.infer<typeof returnLogisticsSchema>;

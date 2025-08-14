@@ -121,6 +121,15 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
         />
         <span>Enable tracking numbers</span>
       </label>
+      <label className="flex items-center gap-2">
+        <Checkbox
+          checked={Boolean(form.mobileApp)}
+          onCheckedChange={(v) =>
+            setForm((f) => ({ ...f, mobileApp: Boolean(v) }))
+          }
+        />
+        <span>Enable mobile returns</span>
+      </label>
       {status === "saved" && (
         <p className="text-sm text-green-600">Saved!</p>
       )}

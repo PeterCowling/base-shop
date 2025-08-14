@@ -14,6 +14,9 @@ import StepSummary from "./steps/StepSummary";
 import StepImportData from "./steps/StepImportData";
 import StepSeedData from "./steps/StepSeedData";
 import StepHosting from "./steps/StepHosting";
+import { CheckIcon } from "@radix-ui/react-icons";
+import type { StepStatus } from "../wizard/schema";
+import { cn } from "@ui/utils/style";
 
 export interface ConfiguratorStep {
   id: string;
@@ -96,3 +99,52 @@ export const getRequiredSteps = (): ConfiguratorStep[] =>
 export const steps: Record<string, ConfiguratorStep> = Object.fromEntries(
   getSteps().map((s) => [s.id, s])
 );
+
+/** Mapping of step id to its index in the overall flow */
+export const stepIndex: Record<string, number> = Object.fromEntries(
+  stepList.map((s, i) => [s.id, i])
+);
+
+interface ProgressProps {
+  currentStepId: string;
+  completed: Record<string, StepStatus | undefined>;
+}
+
+/** Horizontal progress indicator for the configurator wizard. */
+export function ConfiguratorProgress({
+  currentStepId,
+  completed,
+}: ProgressProps) {
+  const list = getSteps();
+  const currentIdx = stepIndex[currentStepId] ?? 0;
+  return (
+    <ol className="flex items-center gap-4 text-sm">
+      {list.map((s, idx) => (
+        <li key={s.id} className="flex flex-1 items-center gap-2">
+          <span
+            className={cn(
+              "grid size-6 place-content-center rounded-full border",
+              completed[s.id] === "complete" &&
+                "bg-primary border-primary text-primary-fg",
+              idx === currentIdx && "border-primary",
+              idx > currentIdx && "text-muted-foreground border-muted"
+            )}
+          >
+            {completed[s.id] === "complete" ? (
+              <CheckIcon className="h-4 w-4" />
+            ) : (
+              idx + 1
+            )}
+          </span>
+          <span className={cn(idx === currentIdx && "font-medium")}>{
+            s.label
+          }</span>
+          {idx < list.length - 1 && (
+            <span className="border-muted ml-2 flex-1 border-t" />
+          )}
+        </li>
+      ))}
+    </ol>
+  );
+}
+

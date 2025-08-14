@@ -28,6 +28,8 @@ interface Props {
   setShopPageId: (v: string | null) => void;
   shopId: string;
   themeStyle: React.CSSProperties;
+  prevStepId?: string;
+  nextStepId?: string;
 }
 
 export default function StepShopPage({
@@ -40,6 +42,8 @@ export default function StepShopPage({
   setShopPageId,
   shopId,
   themeStyle,
+  prevStepId,
+  nextStepId,
 }: Props): React.JSX.Element {
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
@@ -140,15 +144,25 @@ export default function StepShopPage({
         onChange={setShopComponents}
         style={themeStyle}
       />
-      <div className="flex justify-end">
-        <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
+      <div className="flex justify-between">
+        {prevStepId && (
+          <Button
+            variant="outline"
+            onClick={() => router.push(`/cms/configurator/${prevStepId}`)}
+          >
+            Back
+          </Button>
+        )}
+        {nextStepId && (
+          <Button
+            onClick={() => {
+              markComplete(true);
+              router.push(`/cms/configurator/${nextStepId}`);
+            }}
+          >
+            Next
+          </Button>
+        )}
       </div>
       <Toast
         open={toast.open}

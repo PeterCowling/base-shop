@@ -80,9 +80,45 @@ const changedComponents = Object.entries(componentMap).flatMap(
     ];
   }
 );
+// determine pages that reference updated components
+const pagesJsonPath = path.join(
+  rootDir,
+  "data",
+  "shops",
+  shopId,
+  "pages.json"
+);
+const pageIds = new Set<string>();
+if (existsSync(pagesJsonPath)) {
+  try {
+    const rawPages = JSON.parse(readFileSync(pagesJsonPath, "utf8"));
+    if (Array.isArray(rawPages)) {
+      const changedTypes = new Set(
+        changedComponents.map((c) => c.componentName)
+      );
+      for (const page of rawPages) {
+        if (!page || typeof page !== "object") continue;
+        if (!Array.isArray((page as any).components)) continue;
+        const hasMatch = (page as any).components.some((comp: any) =>
+          changedTypes.has(comp?.type as string)
+        );
+        if (hasMatch && typeof (page as any).id === "string") {
+          pageIds.add((page as any).id);
+        }
+      }
+    }
+  } catch {
+    // ignore parsing errors
+  }
+}
+
 writeFileSync(
   path.join(appDir, "upgrade-changes.json"),
-  JSON.stringify({ components: changedComponents }, null, 2)
+  JSON.stringify(
+    { components: changedComponents, pages: Array.from(pageIds) },
+    null,
+    2
+  )
 );
 
 const envPath = path.join(appDir, ".env");

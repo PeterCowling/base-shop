@@ -1,0 +1,162 @@
+import {
+  defineSchema,
+  type BlockRenderProps,
+  type RenderBlockFunction,
+  PortableTextEditor,
+  useEditor,
+} from "@portabletext/editor";
+import type { PortableTextBlock } from "@portabletext/editor";
+import React, { useContext } from "react";
+import { Button } from "@ui";
+import ProductPreview from "./ProductPreview";
+import { InvalidProductContext } from "./invalidProductContext";
+
+export const schema = defineSchema({
+  decorators: [{ name: "strong" }, { name: "em" }],
+  styles: [
+    { name: "normal" },
+    { name: "h1" },
+    { name: "h2" },
+    { name: "h3" },
+  ],
+  lists: [{ name: "bullet" }, { name: "number" }],
+  annotations: [
+    {
+      name: "link",
+      type: "object",
+      fields: [{ name: "href", type: "string" }],
+    },
+  ],
+  inlineObjects: [],
+  blockObjects: [
+    {
+      name: "productReference",
+      type: "object",
+      fields: [{ name: "slug", type: "string" }],
+    },
+    {
+      name: "embed",
+      type: "object",
+      fields: [{ name: "url", type: "string" }],
+    },
+    {
+      name: "image",
+      type: "object",
+      fields: [
+        { name: "url", type: "string" },
+        { name: "alt", type: "string" },
+      ],
+    },
+  ],
+});
+
+function ProductReferenceBlock(props: BlockRenderProps) {
+  const editor = useEditor();
+  const ctx = useContext(InvalidProductContext);
+  const slug = props.value.slug as string;
+  const isInvalid = Boolean(ctx?.invalidProducts[props.value._key as string]);
+  const remove = () => {
+    const sel = {
+      anchor: { path: props.path, offset: 0 },
+      focus: { path: props.path, offset: 0 },
+    };
+    PortableTextEditor.delete(editor, sel, { mode: "blocks" });
+  };
+  const edit = () => {
+    const next = prompt("Product slug", slug);
+    if (!next) return;
+    const sel = {
+      anchor: { path: props.path, offset: 0 },
+      focus: { path: props.path, offset: 0 },
+    };
+    PortableTextEditor.delete(editor, sel, { mode: "blocks" });
+    PortableTextEditor.insertBlock(editor, "productReference", { slug: next });
+  };
+  const className = `space-y-2 ${isInvalid ? "rounded border border-red-500 p-2" : ""}`;
+  return React.createElement(
+    "div",
+    { className },
+    React.createElement(ProductPreview, {
+      slug,
+      onValidChange: (valid: boolean) =>
+        ctx?.markValidity(props.value._key as string, valid, slug),
+    }),
+    React.createElement(
+      "div",
+      { className: "flex gap-2" },
+      React.createElement(
+        Button,
+        { type: "button", variant: "outline", onClick: edit },
+        "Edit",
+      ),
+      React.createElement(
+        Button,
+        { type: "button", variant: "outline", onClick: remove },
+        "Remove",
+      ),
+    ),
+  );
+}
+
+export const renderBlock: RenderBlockFunction = (props) => {
+  if (props.value._type === "productReference") {
+    return React.createElement(ProductReferenceBlock, props);
+  }
+  if (props.value._type === "embed") {
+    return React.createElement(
+      "div",
+      { className: "aspect-video" },
+      React.createElement("iframe", {
+        src: (props as any).value.url,
+        className: "h-full w-full",
+      }),
+    );
+  }
+  if (props.value._type === "image") {
+    return React.createElement("img", {
+      src: (props as any).value.url,
+      alt: (props as any).value.alt || "",
+      className: "max-w-full",
+    });
+  }
+  return React.createElement("div", null, props.children as any);
+};
+
+export const previewComponents = {
+  types: {
+    productReference: ({ value }: any) =>
+      React.createElement(ProductPreview, { slug: value.slug }),
+    embed: ({ value }: any) =>
+      React.createElement(
+        "div",
+        { className: "aspect-video" },
+        React.createElement("iframe", { src: value.url, className: "h-full w-full" }),
+      ),
+    image: ({ value }: any) =>
+      React.createElement("img", {
+        src: value.url,
+        alt: value.alt || "",
+        className: "max-w-full",
+      }),
+  },
+  marks: {
+    link: ({ children, value }: any) =>
+      React.createElement(
+        "a",
+        {
+          href: value.href,
+          className: "text-blue-600 underline",
+          target: "_blank",
+          rel: "noopener noreferrer",
+        },
+        children,
+      ),
+  },
+  block: {
+    h1: ({ children }: any) => React.createElement("h1", null, children),
+    h2: ({ children }: any) => React.createElement("h2", null, children),
+    h3: ({ children }: any) => React.createElement("h3", null, children),
+  },
+};
+
+export type { PortableTextBlock };

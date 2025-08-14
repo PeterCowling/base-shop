@@ -3,6 +3,7 @@
 
 import type { PageComponent } from "@acme/types";
 import { Input } from "../../../atoms/shadcn";
+import { Tooltip } from "../../../atoms";
 import { Suspense } from "react";
 import editorRegistry from "../editorRegistry";
 
@@ -26,14 +27,43 @@ export default function ContentPanel({
     mobileItems?: number;
     columns?: number;
   };
+  const nonNegative = (v?: number) => (v !== undefined && v < 0 ? "Must be ≥ 0" : undefined);
+  const minItemsError =
+    nonNegative(comp.minItems) ||
+    (comp.minItems !== undefined &&
+    comp.maxItems !== undefined &&
+    comp.minItems > comp.maxItems
+      ? "Min Items cannot exceed Max Items"
+      : undefined);
+  const maxItemsError =
+    nonNegative(comp.maxItems) ||
+    (comp.minItems !== undefined &&
+    comp.maxItems !== undefined &&
+    comp.maxItems < comp.minItems
+      ? "Max Items cannot be less than Min Items"
+      : undefined);
+  const desktopItemsError = nonNegative(comp.desktopItems);
+  const tabletItemsError = nonNegative(comp.tabletItems);
+  const mobileItemsError = nonNegative(comp.mobileItems);
+  const columnsError =
+    nonNegative(comp.columns) ||
+    (comp.columns !== undefined &&
+    ((comp.minItems !== undefined && comp.columns < comp.minItems) ||
+      (comp.maxItems !== undefined && comp.columns > comp.maxItems))
+      ? "Columns must be between min and max items"
+      : undefined);
   return (
     <div className="space-y-2">
       {("minItems" in component || "maxItems" in component) && (
         <>
           <Input
-            label="Min Items"
+            label={
+              <span className="flex items-center gap-1">
+                Min Items
+                <Tooltip text="Minimum number of items">?</Tooltip>
+              </span>
+            }
             type="number"
-            title="Minimum number of items"
             value={comp.minItems ?? ""}
             onChange={(e) => {
               const val =
@@ -51,11 +81,16 @@ export default function ContentPanel({
             }}
             min={0}
             max={comp.maxItems ?? undefined}
+            error={minItemsError}
           />
           <Input
-            label="Max Items"
+            label={
+              <span className="flex items-center gap-1">
+                Max Items
+                <Tooltip text="Maximum number of items">?</Tooltip>
+              </span>
+            }
             type="number"
-            title="Maximum number of items"
             value={comp.maxItems ?? ""}
             onChange={(e) => {
               const val =
@@ -72,6 +107,7 @@ export default function ContentPanel({
               onChange(patch);
             }}
             min={comp.minItems ?? 0}
+            error={maxItemsError}
           />
         </>
       )}
@@ -80,9 +116,13 @@ export default function ContentPanel({
         "mobileItems" in component) && (
         <>
           <Input
-            label="Desktop Items"
+            label={
+              <span className="flex items-center gap-1">
+                Desktop Items
+                <Tooltip text="Items shown on desktop">?</Tooltip>
+              </span>
+            }
             type="number"
-            title="Items shown on desktop"
             value={comp.desktopItems ?? ""}
             onChange={(e) =>
               handleInput(
@@ -91,11 +131,16 @@ export default function ContentPanel({
               )
             }
             min={0}
+            error={desktopItemsError}
           />
           <Input
-            label="Tablet Items"
+            label={
+              <span className="flex items-center gap-1">
+                Tablet Items
+                <Tooltip text="Items shown on tablet">?</Tooltip>
+              </span>
+            }
             type="number"
-            title="Items shown on tablet"
             value={comp.tabletItems ?? ""}
             onChange={(e) =>
               handleInput(
@@ -104,11 +149,16 @@ export default function ContentPanel({
               )
             }
             min={0}
+            error={tabletItemsError}
           />
           <Input
-            label="Mobile Items"
+            label={
+              <span className="flex items-center gap-1">
+                Mobile Items
+                <Tooltip text="Items shown on mobile">?</Tooltip>
+              </span>
+            }
             type="number"
-            title="Items shown on mobile"
             value={comp.mobileItems ?? ""}
             onChange={(e) =>
               handleInput(
@@ -117,14 +167,19 @@ export default function ContentPanel({
               )
             }
             min={0}
+            error={mobileItemsError}
           />
         </>
       )}
       {"columns" in component && (
         <Input
-          label="Columns"
+          label={
+            <span className="flex items-center gap-1">
+              Columns
+              <Tooltip text="Number of columns">?</Tooltip>
+            </span>
+          }
           type="number"
-          title="Number of columns"
           value={comp.columns ?? ""}
           onChange={(e) =>
             handleInput(
@@ -134,6 +189,7 @@ export default function ContentPanel({
           }
           min={comp.minItems}
           max={comp.maxItems}
+          error={columnsError}
         />
       )}
       <Suspense fallback={<p className="text-muted text-sm">Loading...</p>}>

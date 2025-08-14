@@ -6,19 +6,9 @@ import { DATA_ROOT } from "./dataRoot";
 import { validateShopName } from "./shops";
 import { getShopSettings, readShop } from "./repositories/shops.server";
 import { coreEnv } from "@acme/config/env/core";
+import type { AnalyticsEvent } from "@acme/types";
 
-export type AnalyticsEvent =
-  | {
-      type: "discount_redeemed";
-      code: string;
-      timestamp?: string;
-      [key: string]: unknown;
-    }
-  | {
-    type: string;
-    timestamp?: string;
-    [key: string]: unknown;
-  };
+export type { AnalyticsEvent } from "@acme/types";
 
 export interface AnalyticsProvider {
   track(event: AnalyticsEvent): Promise<void> | void;

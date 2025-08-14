@@ -19,3 +19,4 @@ export * from "./SubscriptionPlan";
 export * from "./Coverage";
 export * from "./upgrade";
 export * from "./ExampleProps";
+export * from "./AnalyticsEvent";

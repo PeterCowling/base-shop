@@ -8,6 +8,7 @@
   "showCleaningTransparency": true,
   "shippingProviders": ["ups", "premier-shipping"],
   "taxProviders": ["taxjar"],
+  "coverageIncluded": true,
   "premierDelivery": {
     "regions": ["us-east"],
     "windows": ["10-11", "11-12"]

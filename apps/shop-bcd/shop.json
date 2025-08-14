@@ -7,6 +7,7 @@
   "filterMappings": {},
   "shippingProviders": ["dhl"],
   "showCleaningTransparency": true,
+  "coverageIncluded": true,
   "billingProvider": "stripe",
   "priceOverrides": {},
   "localeOverrides": {},

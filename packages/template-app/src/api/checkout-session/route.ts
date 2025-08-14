@@ -8,12 +8,17 @@ import {
   type CartState,
 } from "@platform-core/src/cartCookie";
 import { getCart } from "@platform-core/src/cartStore";
-import { priceForDays, convertCurrency } from "@platform-core/src/pricing";
+import {
+  priceForDays,
+  convertCurrency,
+  getPricing,
+} from "@platform-core/src/pricing";
 import { getProductById } from "@platform-core/src/products";
 import { findCoupon } from "@platform-core/src/coupons";
 import { trackEvent } from "@platform-core/src/analytics";
 import { coreEnv } from "@acme/config/env/core";
 import { getTaxRate } from "@platform-core/src/tax";
+import { readShop } from "@platform-core/src/repositories/shops.server";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -128,6 +133,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     customer,
     shipping,
     billing_details,
+    coverage,
   } = (await req.json().catch(() => ({}))) as {
     returnDate?: string;
     coupon?: string;
@@ -136,8 +142,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     customer?: string;
     shipping?: Stripe.Checkout.SessionCreateParams.ShippingAddress;
     billing_details?: Record<string, any>;
+    coverage?: string[];
   };
   const shop = coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop";
+  const shopInfo = await readShop(shop);
   const couponDef = await findCoupon(shop, coupon);
   if (couponDef) {
     await trackEvent(shop, { type: "discount_redeemed", code: couponDef.code });
@@ -159,12 +167,44 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const line_items = nested.flat();
 
   /* 4  Totals / metadata ------------------------------------------- */
-  const { subtotal, depositTotal, discount } = await computeTotals(
+  let { subtotal, depositTotal, discount } = await computeTotals(
     cart,
     rentalDays,
     discountRate,
     currency
   );
+
+  let coverageFee = 0;
+  let coverageWaiver = 0;
+  const coverageCodes = Array.isArray(coverage) ? coverage : [];
+  if (shopInfo.coverageIncluded && coverageCodes.length) {
+    const pricing = await getPricing();
+    for (const code of coverageCodes) {
+      const rule = pricing.coverage?.[code];
+      if (rule) {
+        coverageFee += rule.fee;
+        coverageWaiver += rule.waiver;
+      }
+    }
+    const feeConv = await convertCurrency(coverageFee, currency);
+    const waiveConv = await convertCurrency(coverageWaiver, currency);
+    if (feeConv > 0) {
+      line_items.push({
+        price_data: {
+          currency: currency.toLowerCase(),
+          unit_amount: feeConv * 100,
+          product_data: { name: "Coverage" },
+        },
+        quantity: 1,
+      });
+      subtotal += feeConv;
+      coverageFee = feeConv;
+    }
+    if (waiveConv > 0) {
+      depositTotal = Math.max(0, depositTotal - waiveConv);
+      coverageWaiver = waiveConv;
+    }
+  }
 
   const taxRate = await getTaxRate(taxRegion);
   const taxAmount = Math.round(subtotal * taxRate);
@@ -199,6 +239,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       depositTotal: String(depositTotal),
       returnDate: returnDate ?? "",
       rentalDays: String(rentalDays),
+      coverage: coverageCodes.join(","),
+      coverageFee: String(coverageFee),
+      coverageWaiver: String(coverageWaiver),
       discount: String(discount),
       coupon: couponDef?.code ?? "",
       currency,
@@ -227,6 +270,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           returnDate: returnDate ?? "",
           rentalDays: String(rentalDays),
           sizes: sizesMeta,
+          coverage: coverageCodes.join(","),
+          coverageFee: String(coverageFee),
+          coverageWaiver: String(coverageWaiver),
           discount: String(discount),
           coupon: couponDef?.code ?? "",
           currency,

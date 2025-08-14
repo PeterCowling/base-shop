@@ -8,6 +8,7 @@
   "showCleaningTransparency": true,
   "shippingProviders": ["dhl"],
   "taxProviders": ["taxjar"],
+  "coverageIncluded": true,
   "billingProvider": "stripe",
   "priceOverrides": {},
   "localeOverrides": {},

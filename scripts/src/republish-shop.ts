@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -22,7 +22,10 @@ function updateStatus(root: string, id: string): void {
 }
 
 export function republishShop(id: string, root = process.cwd()): void {
-  readUpgradeMeta(root, id);
+  const upgradeFile = join(root, "data", "shops", id, "upgrade.json");
+  if (existsSync(upgradeFile)) {
+    readUpgradeMeta(root, id);
+  }
   run("pnpm", ["--filter", `apps/${id}`, "build"]);
   run("pnpm", ["--filter", `apps/${id}`, "deploy"]);
   updateStatus(root, id);
@@ -31,7 +34,9 @@ export function republishShop(id: string, root = process.cwd()): void {
 function main(): void {
   const shopId = process.argv[2];
   if (!shopId) {
-    console.error("Usage: republish-shop <shopId>");
+    console.error(
+      "Usage: pnpm ts-node scripts/src/republish-shop.ts <shopId>"
+    );
     process.exit(1);
   }
   try {

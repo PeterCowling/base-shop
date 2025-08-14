@@ -1,8 +1,16 @@
 // apps/cms/src/auth/options.ts
 import bcrypt from "bcryptjs";
+import pino from "pino";
 import Credentials from "next-auth/providers/credentials";
 import { readRbac } from "../lib/rbacStore";
 import { authSecret } from "./secret";
+const logger = pino({
+    level: process.env.LOG_LEVEL ?? "info",
+    redact: {
+        paths: ["email", "password", "*.email", "*.password"],
+        censor: "[REDACTED]",
+    },
+});
 const secret = authSecret;
 export const authOptions = {
     secret,
@@ -14,12 +22,11 @@ export const authOptions = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials) {
-                console.log("[auth] authorize called", credentials);
+                logger.debug({ email: credentials?.email }, "[auth] authorize called");
                 if (!credentials)
                     return null;
                 const { users, roles } = await readRbac();
                 const user = Object.values(users).find((u) => u.email === credentials.email);
-                console.log("[auth] found user", Boolean(user));
                 if (user &&
                     (user.id === "1"
                         ? credentials.password === user.password
@@ -29,10 +36,10 @@ export const authOptions = {
                     void _password;
                     const r = roles[user.id];
                     const role = Array.isArray(r) ? r[0] : r;
-                    console.log("[auth] login success", { id: user.id, role });
+                    logger.info({ id: user.id, role }, "[auth] login success");
                     return { ...safeUser, role };
                 }
-                console.log("[auth] login failed for", credentials.email);
+                logger.warn({ email: credentials.email }, "[auth] login failed");
                 throw new Error("Invalid email or password");
             },
         }),
@@ -43,7 +50,7 @@ export const authOptions = {
             /* `user` exists only on sign-in; cast to access `role` */
             if (user) {
                 const u = user;
-                console.log("[auth] jwt assign role", u.role);
+                logger.debug({ role: u.role }, "[auth] jwt assign role");
                 token.role = u.role;
             }
             return token;
@@ -51,7 +58,7 @@ export const authOptions = {
         async session({ session, token }) {
             /* Forward the role from JWT to the client session */
             const role = token.role;
-            console.log("[auth] session role", role);
+            logger.debug({ role }, "[auth] session role");
             if (role) {
                 session.user.role = role;
             }

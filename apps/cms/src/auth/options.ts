@@ -1,6 +1,6 @@
 // apps/cms/src/auth/options.ts
-/* eslint-disable no-console */
 import bcrypt from "bcryptjs";
+import pino from "pino";
 import type { NextAuthOptions } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
@@ -14,6 +14,14 @@ import { authSecret } from "./secret";
 /* -------------------------------------------------------------------------- */
 
 const secret = authSecret;
+
+const logger = pino({
+  level: process.env.LOG_LEVEL ?? "info",
+  redact: {
+    paths: ["email", "password", "*.email", "*.password"],
+    censor: "[REDACTED]",
+  },
+});
 
 /* -------------------------------------------------------------------------- */
 /*  AuthOptions factory (dependency‑injectable for tests)                     */
@@ -39,7 +47,7 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
           password: { label: "Password", type: "password" },
         },
         async authorize(credentials) {
-          console.log("[auth] authorize called", credentials);
+          logger.debug({ email: credentials?.email }, "[auth] authorize called");
 
           if (!credentials) return null;
 
@@ -48,7 +56,6 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
             (u) => u.email === credentials.email
           );
 
-          console.log("[auth] found user", Boolean(user));
 
           /* -------------------------------------------------------------- */
           /*  Password check                                                */
@@ -68,12 +75,12 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
             const r = roles[user.id];
             const role = Array.isArray(r) ? r[0] : (r as Role);
 
-            console.log("[auth] login success", { id: user.id, role });
+            logger.info({ id: user.id, role }, "[auth] login success");
 
             return { ...safeUser, role };
           }
 
-          console.log("[auth] login failed for", credentials.email);
+          logger.warn({ email: credentials.email }, "[auth] login failed");
           throw new Error("Invalid email or password");
         },
       }),
@@ -85,7 +92,7 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
       async jwt({ token, user }) {
         if (user) {
           const u = user as typeof user & { role: Role };
-          console.log("[auth] jwt assign role", u.role);
+          logger.debug({ role: u.role }, "[auth] jwt assign role");
           (token as JWT & { role: Role }).role = u.role;
         }
         return token;
@@ -93,7 +100,7 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
 
       async session({ session, token }) {
         const role = (token as JWT & { role?: Role }).role;
-        console.log("[auth] session role", role);
+        logger.debug({ role }, "[auth] session role");
 
         if (role) {
           (session.user as typeof session.user & { role: Role }).role = role;

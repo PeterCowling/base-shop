@@ -18,7 +18,8 @@
     "@acme/shared-utils": "workspace:*",
     "@themes/base": "workspace:*",
     "color-contrast-checker": "^2.1.0",
-    "@sendgrid/eventwebhook": "^7.2.7"
+    "@sendgrid/eventwebhook": "^7.2.7",
+    "pino": "^9.9.0"
   },
   "devDependencies": {
     "next": "^15.3.4"

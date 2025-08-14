@@ -75,6 +75,11 @@ export const shopSchema = z
       .default({}),
     /** Optional redirect overrides for locale detection */
     localeOverrides: z.record(z.string(), localeSchema).default({}),
+    /**
+     * Shop business model.
+     * "sale" indicates a traditional commerce shop while "rental" enables
+     * rental-specific features.
+     */
     type: z.string().optional(),
     paymentProviders: z.array(z.string()).optional(),
     shippingProviders: z.array(z.string()).optional(),
@@ -100,6 +105,7 @@ export const shopSchema = z
     returnsEnabled: z.boolean().optional(),
     analyticsEnabled: z.boolean().optional(),
     coverageIncluded: z.boolean().default(true),
+    showCleaningTransparency: z.boolean().optional(),
     rentalInventoryAllocation: z.boolean().optional(),
     luxuryFeatures: z
       .object({
@@ -122,7 +128,7 @@ export const shopSchema = z
     rentalSubscriptions: z
       .array(subscriptionPlanSchema)
       .default([]),
-    subscriptionsEnabled: z.boolean().default(false),
+    subscriptionsEnabled: z.boolean().optional(),
     lateFeePolicy: z
       .object({
         gracePeriodDays: z.number().int().nonnegative(),

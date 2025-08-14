@@ -5,6 +5,7 @@
   "themeId": "base",
   "themeOverrides": {},
   "filterMappings": {},
+  "type": "rental",
   "showCleaningTransparency": true,
   "shippingProviders": [
     "dhl"
@@ -52,6 +53,7 @@
       "prorateOnChange": true
     }
   ],
+  "subscriptionsEnabled": true,
   "lateFeePolicy": {
     "gracePeriodDays": 3,
     "feeAmount": 25

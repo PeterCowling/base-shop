@@ -3,7 +3,6 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
-import ColorContrastChecker from "color-contrast-checker";
 import {
   useState,
   ChangeEvent,
@@ -66,7 +65,8 @@ export default function ThemeEditor({
     setOverrides,
     setThemeDefaults,
   });
-  const [contrastWarnings, setContrastWarnings] = useState<string[]>([]);
+  const [contrastWarnings, setContrastWarnings] =
+    useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
@@ -79,6 +79,27 @@ export default function ThemeEditor({
     | null
     | { token: string; x: number; y: number; defaultValue: string }
   >(null);
+
+  const mergedTokens = useMemo(
+    () => ({ ...tokensByThemeState[theme], ...overrides }),
+    [theme, tokensByThemeState, overrides],
+  );
+
+  const textTokenKeys = useMemo(
+    () =>
+      Object.keys(tokensByThemeState[theme]).filter((k) =>
+        /text|foreground/i.test(k),
+      ),
+    [theme, tokensByThemeState],
+  );
+
+  const bgTokenKeys = useMemo(
+    () =>
+      Object.keys(tokensByThemeState[theme]).filter((k) =>
+        /bg|background/i.test(k),
+      ),
+    [theme, tokensByThemeState],
+  );
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByThemeState[theme];
@@ -104,6 +125,7 @@ export default function ThemeEditor({
     setOverrides({});
     setThemeDefaults(tokensByThemeState[next]);
     schedulePreviewUpdate(tokensByThemeState[next]);
+    setContrastWarnings({});
   };
 
   const schedulePreviewUpdate = (tokens: Record<string, string>) => {
@@ -113,6 +135,15 @@ export default function ThemeEditor({
     debounceRef.current = window.setTimeout(() => {
       setPreviewTokens(tokens);
     }, 100);
+  };
+
+  const handleWarningChange = (token: string, warning: string | null) => {
+    setContrastWarnings((prev) => {
+      const next = { ...prev };
+      if (warning) next[token] = warning;
+      else delete next[token];
+      return next;
+    });
   };
 
   const handleOverrideChange =
@@ -169,40 +200,6 @@ export default function ThemeEditor({
     };
   }, []);
 
-  useEffect(() => {
-    const ccc = new ColorContrastChecker();
-    const baseTokens = tokensByThemeState[theme];
-    const merged = previewTokens;
-    const textTokens = Object.keys(baseTokens).filter((k) =>
-      /text|foreground/i.test(k),
-    );
-    const bgTokens = Object.keys(baseTokens).filter((k) =>
-      /bg|background/i.test(k),
-    );
-    const warnings: string[] = [];
-    textTokens.forEach((t) => {
-      const fg = merged[t];
-      const fgDefault = baseTokens[t];
-      bgTokens.forEach((b) => {
-        const bg = merged[b];
-        const bgDefault = baseTokens[b];
-        if (!fg || !bg) return;
-        const fgHex = isHsl(fg) ? hslToHex(fg) : fg;
-        const bgHex = isHsl(bg) ? hslToHex(bg) : bg;
-        if (!isHex(fgHex) || !isHex(bgHex)) return;
-        const fgDefHex = isHsl(fgDefault) ? hslToHex(fgDefault) : fgDefault;
-        const bgDefHex = isHsl(bgDefault) ? hslToHex(bgDefault) : bgDefault;
-        const defaultRatio = ccc.getContrastRatio(fgDefHex, bgDefHex);
-        const ratio = ccc.getContrastRatio(fgHex, bgHex);
-        if (ratio < defaultRatio && ratio < 4.5) {
-          warnings.push(
-            `${t} on ${b} contrast ${ratio.toFixed(2)}:1`,
-          );
-        }
-      });
-    });
-    setContrastWarnings(warnings);
-  }, [theme, previewTokens, tokensByThemeState]);
 
   useEffect(() => {
     savePreviewTokens(previewTokens);
@@ -287,11 +284,11 @@ export default function ThemeEditor({
           </Button>
         )}
       </div>
-      {contrastWarnings.length > 0 && (
+      {Object.keys(contrastWarnings).length > 0 && (
         <div className="rounded border border-amber-300 bg-amber-50 p-2 text-sm text-amber-800">
           <p>Contrast warnings:</p>
           <ul className="list-disc pl-4">
-            {contrastWarnings.map((w, i) => (
+            {Object.values(contrastWarnings).map((w, i) => (
               <li key={i}>{w}</li>
             ))}
           </ul>
@@ -345,6 +342,10 @@ export default function ThemeEditor({
                     onChange={handleOverrideChange(k, defaultValue)}
                     onReset={handleReset(k)}
                     inputRef={(el) => (overrideRefs.current[k] = el)}
+                    tokens={mergedTokens}
+                    textTokens={textTokenKeys}
+                    bgTokens={bgTokenKeys}
+                    onWarningChange={handleWarningChange}
                   />
                 );
               })}

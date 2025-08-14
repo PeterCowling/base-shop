@@ -279,29 +279,38 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     (paymentIntentData as any).billing_details = billing_details;
   }
 
-  const stripeSession = await stripe.checkout.sessions.create({
-    mode: "payment",
-    customer,
-    line_items,
-    success_url: `${req.nextUrl.origin}/success`,
-    cancel_url: `${req.nextUrl.origin}/cancelled`,
-    payment_intent_data: paymentIntentData,
-    metadata: buildCheckoutMetadata({
-      subtotal,
-      depositTotal,
-      returnDate,
-      rentalDays,
-      sizes: sizesMeta,
-      customerId: customer,
-      discount,
-      coupon: couponDef?.code,
-      currency,
-      taxRate,
-      taxAmount,
-      clientIp,
-    }),
-    expand: ["payment_intent"],
-  });
+  let stripeSession: Stripe.Checkout.Session;
+  try {
+    stripeSession = await stripe.checkout.sessions.create({
+      mode: "payment",
+      customer,
+      line_items,
+      success_url: `${req.nextUrl.origin}/success`,
+      cancel_url: `${req.nextUrl.origin}/cancelled`,
+      payment_intent_data: paymentIntentData,
+      metadata: buildCheckoutMetadata({
+        subtotal,
+        depositTotal,
+        returnDate,
+        rentalDays,
+        sizes: sizesMeta,
+        customerId: customer,
+        discount,
+        coupon: couponDef?.code,
+        currency,
+        taxRate,
+        taxAmount,
+        clientIp,
+      }),
+      expand: ["payment_intent"],
+    });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Checkout session failed" },
+      { status: 502 }
+    );
+  }
 
   /* 6️⃣ Return client credentials ------------------------------------------ */
   const clientSecret =

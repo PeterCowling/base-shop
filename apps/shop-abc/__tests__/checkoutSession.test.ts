@@ -317,3 +317,18 @@ test("rounds unit amounts before sending to Stripe", async () => {
     true,
   );
 });
+
+test("responds with 502 when Stripe session creation fails", async () => {
+  stripeCreate.mockReset();
+  stripeCreate.mockRejectedValue(new Error("Stripe error"));
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest({ returnDate: "2025-01-02" }, cookie);
+  const res = await POST(req);
+  expect(res.status).toBe(502);
+  const body = await res.json();
+  expect(body.error).toBe("Checkout session failed");
+});

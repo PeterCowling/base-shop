@@ -43,6 +43,9 @@ export default function useCanvasResize({
   const { guides, setGuides, siblingEdgesRef, computeSiblingEdges } = useGuides(
     containerRef
   );
+  const [distances, setDistances] = useState<{ x: number | null; y: number | null }>(
+    { x: null, y: null }
+  );
 
   useEffect(() => {
     if (!resizing) return;
@@ -53,36 +56,52 @@ export default function useCanvasResize({
       const parent = containerRef.current.parentElement;
       const parentW = parent?.offsetWidth ?? startRef.current.w + dx;
       const parentH = parent?.offsetHeight ?? startRef.current.h + dy;
-      let newW = startRef.current.w + dx;
-      let newH = startRef.current.h + dy;
+      const originalW = startRef.current.w + dx;
+      const originalH = startRef.current.h + dy;
+      let newW = originalW;
+      let newH = originalH;
       const threshold = 10;
       const left = containerRef.current.offsetLeft;
       const top = containerRef.current.offsetTop;
       let guideX: number | null = null;
       let guideY: number | null = null;
+      let distX: number | null = null;
+      let distY: number | null = null;
       siblingEdgesRef.current.vertical.forEach((edge) => {
-        const right = left + newW;
-        if (Math.abs(right - edge) <= threshold) {
+        const rightDist = Math.abs(left + originalW - edge);
+        if (rightDist <= threshold && (distX === null || rightDist < distX)) {
           newW = edge - left;
           guideX = edge;
+          distX = rightDist;
         }
       });
       siblingEdgesRef.current.horizontal.forEach((edge) => {
-        const bottom = top + newH;
-        if (Math.abs(bottom - edge) <= threshold) {
+        const bottomDist = Math.abs(top + originalH - edge);
+        if (bottomDist <= threshold && (distY === null || bottomDist < distY)) {
           newH = edge - top;
           guideY = edge;
+          distY = bottomDist;
         }
       });
-      const snapW = e.shiftKey || Math.abs(parentW - newW) <= threshold;
-      const snapH = e.shiftKey || Math.abs(parentH - newH) <= threshold;
-      if (gridEnabled) {
-        const unit = parent ? parent.offsetWidth / gridCols : null;
-        if (unit) {
-          newW = snapToGrid(newW, unit);
-          newH = snapToGrid(newH, unit);
+      if (gridEnabled && parent) {
+        const unit = parent.offsetWidth / gridCols;
+        const snappedW = snapToGrid(newW, unit);
+        const snappedH = snapToGrid(newH, unit);
+        const gridDistX = Math.abs(snappedW - newW);
+        const gridDistY = Math.abs(snappedH - newH);
+        newW = snappedW;
+        newH = snappedH;
+        if (gridDistX <= threshold && (distX === null || gridDistX < distX)) {
+          guideX = left + snappedW;
+          distX = gridDistX;
+        }
+        if (gridDistY <= threshold && (distY === null || gridDistY < distY)) {
+          guideY = top + snappedH;
+          distY = gridDistY;
         }
       }
+      const snapW = e.shiftKey || Math.abs(parentW - newW) <= threshold;
+      const snapH = e.shiftKey || Math.abs(parentH - newH) <= threshold;
       dispatch({
         type: "resize",
         id: componentId,
@@ -96,12 +115,14 @@ export default function useCanvasResize({
         x: guideX !== null ? guideX - left : null,
         y: guideY !== null ? guideY - top : null,
       });
+      setDistances({ x: distX, y: distY });
     };
     const stop = () => {
       setResizing(false);
       setSnapWidth(false);
       setSnapHeight(false);
       setGuides({ x: null, y: null });
+      setDistances({ x: null, y: null });
     };
     window.addEventListener("pointermove", handleMove);
     window.addEventListener("pointerup", stop);
@@ -155,6 +176,7 @@ export default function useCanvasResize({
   return {
     startResize,
     guides,
+    distances,
     snapping,
     resizing,
     width: current.width,

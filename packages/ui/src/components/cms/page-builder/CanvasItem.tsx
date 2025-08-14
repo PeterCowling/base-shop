@@ -111,6 +111,7 @@ const CanvasItem = memo(function CanvasItem({
   const {
     startResize,
     guides: resizeGuides,
+    distances: resizeDistances,
     snapping: resizeSnapping,
     width: resizeWidth,
     height: resizeHeight,
@@ -132,6 +133,7 @@ const CanvasItem = memo(function CanvasItem({
   const {
     startDrag,
     guides: dragGuides,
+    distances: dragDistances,
     snapping: dragSnapping,
     width: dragWidth,
     height: dragHeight,
@@ -150,6 +152,10 @@ const CanvasItem = memo(function CanvasItem({
     resizeGuides.x !== null || resizeGuides.y !== null
       ? resizeGuides
       : dragGuides;
+  const distances =
+    resizeGuides.x !== null || resizeGuides.y !== null
+      ? resizeDistances
+      : dragDistances;
   const snapping = resizeSnapping || dragSnapping;
 
   const showOverlay = resizing || moving;
@@ -204,22 +210,37 @@ const CanvasItem = memo(function CanvasItem({
           if (component.position === "absolute") startDrag(e);
         }}
       />
-      {(guides.x !== null || guides.y !== null) && (
-        <div className="pointer-events-none absolute inset-0 z-20">
-          {guides.x !== null && (
-            <div
-              className="absolute top-0 bottom-0 w-px bg-primary"
-              style={{ left: guides.x }}
-            />
-          )}
-          {guides.y !== null && (
-            <div
-              className="absolute left-0 right-0 h-px bg-primary"
-              style={{ top: guides.y }}
-            />
-          )}
-        </div>
-      )}
+      <div className="pointer-events-none absolute inset-0 z-20">
+        <div
+          className="absolute top-0 bottom-0 w-px bg-primary transition-opacity duration-150"
+          style={{ left: guides.x ?? 0, opacity: guides.x !== null ? 1 : 0 }}
+        />
+        {distances.x !== null && (
+          <div
+            className="absolute -top-4 rounded bg-black/75 px-1 text-[10px] font-mono text-white shadow transition-opacity duration-150 dark:bg-white/75 dark:text-black"
+            style={{ left: (guides.x ?? 0) + 4, opacity: guides.x !== null ? 1 : 0 }}
+          >
+            {Math.round(distances.x)}
+          </div>
+        )}
+        <div
+          className="absolute left-0 right-0 h-px bg-primary transition-opacity duration-150"
+          style={{ top: guides.y ?? 0, opacity: guides.y !== null ? 1 : 0 }}
+        />
+        {distances.y !== null && (
+          <div
+            className="absolute rounded bg-black/75 px-1 text-[10px] font-mono text-white shadow transition-opacity duration-150 dark:bg-white/75 dark:text-black"
+            style={{
+              top: (guides.y ?? 0) + 4,
+              left: 0,
+              opacity: guides.y !== null ? 1 : 0,
+              transform: "translateX(-100%)",
+            }}
+          >
+            {Math.round(distances.y)}
+          </div>
+        )}
+      </div>
       <Block component={component} locale={locale} />
       {showOverlay && (
         <div className="pointer-events-none absolute -top-5 left-0 z-30 rounded bg-black/75 px-1 text-[10px] font-mono text-white shadow dark:bg-white/75 dark:text-black">

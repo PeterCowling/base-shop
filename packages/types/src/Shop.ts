@@ -85,6 +85,7 @@ export const shopSchema = z
       .array(z.object({ label: z.string(), url: z.string() }).strict())
       .optional(),
     sanityBlog: sanityBlogConfigSchema.optional(),
+    enableEditorial: z.boolean().optional(),
     domain: shopDomainSchema.optional(),
     analyticsEnabled: z.boolean().optional(),
     lastUpgrade: z.string().datetime().optional(),

@@ -4,6 +4,8 @@ import { readShop } from "@platform-core/repositories/shops.server";
 import Home from "./page.client";
 import { trackPageView } from "@platform-core/analytics";
 import { env } from "@acme/config";
+import { fetchPublishedPosts } from "@acme/sanity";
+import type { BlogPost } from "@ui/components/cms/blocks/BlogListing";
 
 async function loadComponents(shopId: string): Promise<PageComponent[]> {
   const pages = await getPages(shopId);
@@ -17,6 +19,18 @@ export default async function Page({
 }) {
   const shop = await readShop(env.NEXT_PUBLIC_SHOP_ID || "shop-abc");
   const components = await loadComponents(shop.id);
+  let latestPost: BlogPost | undefined;
+  if (shop.enableEditorial) {
+    const posts = await fetchPublishedPosts(shop.id);
+    const first = posts[0];
+    if (first) {
+      latestPost = {
+        title: first.title,
+        excerpt: first.excerpt,
+        url: `/${params.lang}/blog/${first.slug}`,
+      };
+    }
+  }
   await trackPageView(shop.id, "home");
-  return <Home components={components} locale={params.lang} />;
+  return <Home components={components} locale={params.lang} latestPost={latestPost} />;
 }

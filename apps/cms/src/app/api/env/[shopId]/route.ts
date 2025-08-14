@@ -40,7 +40,7 @@ export async function POST(
         projectId: data.SANITY_PROJECT_ID,
         dataset: data.SANITY_DATASET,
         token: data.SANITY_TOKEN,
-      }).catch((err) => {
+      }, data.ENABLE_EDITORIAL === "true").catch((err) => {
         console.error("[env] failed to setup Sanity blog", err);
       });
     }

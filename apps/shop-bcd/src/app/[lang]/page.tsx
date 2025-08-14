@@ -3,6 +3,8 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import shop from "../../../shop.json";
 import Home from "./page.client";
+import { fetchPublishedPosts } from "@acme/sanity";
+import type { BlogPost } from "@ui/components/cms/blocks/BlogListing";
 
 async function loadComponents(): Promise<PageComponent[]> {
   try {
@@ -30,5 +32,17 @@ export default async function Page({
   params: { lang: string };
 }) {
   const components = await loadComponents();
-  return <Home components={components} locale={params.lang} />;
+  let latestPost: BlogPost | undefined;
+  if (shop.enableEditorial) {
+    const posts = await fetchPublishedPosts(shop.id);
+    const first = posts[0];
+    if (first) {
+      latestPost = {
+        title: first.title,
+        excerpt: first.excerpt,
+        url: `/${params.lang}/blog/${first.slug}`,
+      };
+    }
+  }
+  return <Home components={components} locale={params.lang} latestPost={latestPost} />;
 }

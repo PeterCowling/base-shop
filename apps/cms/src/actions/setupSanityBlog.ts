@@ -12,6 +12,7 @@ export type SetupSanityBlogErrorCode =
   | "DATASET_LIST_ERROR"
   | "DATASET_CREATE_ERROR"
   | "SCHEMA_UPLOAD_ERROR"
+  | "CATEGORY_SEED_ERROR"
   | "UNKNOWN_ERROR";
 
 interface Result {
@@ -26,10 +27,12 @@ interface Result {
  */
 export async function setupSanityBlog(
   creds: SanityCredentials,
+  enableEditorial: boolean,
   aclMode: "public" | "private" = "public",
 ): Promise<Result> {
   "use server";
   await ensureAuthorized();
+  if (!enableEditorial) return { success: true };
 
   const { projectId, dataset, token } = creds;
 
@@ -173,6 +176,40 @@ export async function setupSanityBlog(
         success: false,
         error: "Failed to upload schema",
         code: "SCHEMA_UPLOAD_ERROR",
+      };
+    }
+
+    // Seed default Daily Editorial category
+    const categoryRes = await fetch(
+      `https://${projectId}.api.sanity.io/v${apiVersion}/data/mutate/${dataset}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          mutations: [
+            {
+              createIfNotExists: {
+                _id: "category-daily-editorial",
+                _type: "category",
+                title: "Daily Editorial",
+                slug: { _type: "slug", current: "daily-editorial" },
+              },
+            },
+          ],
+        }),
+      },
+    ).catch((err) => {
+      console.error("[setupSanityBlog]", err);
+      return null;
+    });
+    if (!categoryRes || !categoryRes.ok) {
+      return {
+        success: false,
+        error: "Failed to seed category",
+        code: "CATEGORY_SEED_ERROR",
       };
     }
 

@@ -1,13 +1,17 @@
 // src/components/blog/BlogPortableText.tsx
 import { PortableText } from "@portabletext/react";
-import { getProductBySlug } from "@/lib/products";
+import { getProductBySlug, getProductById } from "@/lib/products";
 import { ProductCard } from "@/components/shop/ProductCard";
 
 const components = {
   types: {
     productReference: ({ value }: any) => {
-      if (typeof value?.slug !== "string") return null;
-      const sku = getProductBySlug(value.slug);
+      let sku;
+      if (typeof value?.slug === "string") {
+        sku = getProductBySlug(value.slug);
+      } else if (typeof value?.id === "string") {
+        sku = getProductById(value.id);
+      }
       return sku ? <ProductCard sku={sku} /> : null;
     },
     embed: ({ value }: any) => (

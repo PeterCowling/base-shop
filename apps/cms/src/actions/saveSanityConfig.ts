@@ -17,6 +17,8 @@ export async function saveSanityConfig(
 }> {
   await ensureAuthorized();
 
+  const shop = await getShopById(shopId);
+
   const projectId = String(formData.get("projectId") ?? "");
   const dataset = String(formData.get("dataset") ?? "");
   const token = String(formData.get("token") ?? "");
@@ -28,6 +30,7 @@ export async function saveSanityConfig(
   if (createDataset) {
     const setup = await setupSanityBlog(
       config,
+      Boolean(shop.enableEditorial),
       aclMode as "public" | "private",
     );
     if (!setup.success) {
@@ -42,8 +45,6 @@ export async function saveSanityConfig(
       return { error: "Invalid Sanity credentials", errorCode: "INVALID_CREDENTIALS" };
     }
   }
-
-  const shop = await getShopById(shopId);
   const updated = setSanityConfig(shop, config);
   await updateShopInRepo(shopId, updated);
 

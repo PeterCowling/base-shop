@@ -51,14 +51,21 @@ function mergeDefined<T extends object>(base: T, patch: Partial<T>): T {
   return { ...base, ...(Object.fromEntries(definedEntries) as Partial<T>) };
 }
 
+function setPatchValue<T extends object, K extends keyof T>(
+  patch: Partial<T>,
+  key: K,
+  value: T[K]
+): void {
+  patch[key] = value;
+}
+
 function diffPages(oldP: Page | undefined, newP: Page): Partial<Page> {
   const patch: Partial<Page> = {};
   for (const key of Object.keys(newP) as (keyof Page)[]) {
     const a = oldP ? JSON.stringify(oldP[key]) : undefined;
     const b = JSON.stringify(newP[key]);
     if (a !== b) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (patch as any)[key] = newP[key];
+      setPatchValue<Page>(patch, key, newP[key]);
     }
   }
   return patch;

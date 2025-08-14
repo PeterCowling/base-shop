@@ -30,6 +30,14 @@ async function ensureDir(shop: string): Promise<void> {
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 
+function setPatchValue<T extends object, K extends keyof T>(
+  patch: Partial<T>,
+  key: K,
+  value: T[K]
+): void {
+  patch[key] = value;
+}
+
 function diffSettings(
   oldS: ShopSettings,
   newS: ShopSettings
@@ -39,8 +47,7 @@ function diffSettings(
     const a = JSON.stringify(oldS[key]);
     const b = JSON.stringify(newS[key]);
     if (a !== b) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (patch as any)[key] = newS[key];
+      setPatchValue<ShopSettings>(patch, key, newS[key]);
     }
   }
   return patch;

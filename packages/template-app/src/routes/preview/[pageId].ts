@@ -6,10 +6,15 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { coreEnv } from "@acme/config/env/core";
 
 const secret = coreEnv.PREVIEW_TOKEN_SECRET;
+const upgradeSecret = coreEnv.UPGRADE_PREVIEW_TOKEN_SECRET;
 
-function verify(id: string, token: string | null): boolean {
-  if (!secret || !token) return false;
-  const digest = createHmac("sha256", secret).update(id).digest("hex");
+function verify(
+  id: string,
+  token: string | null,
+  key: string | undefined,
+): boolean {
+  if (!key || !token) return false;
+  const digest = createHmac("sha256", key).update(id).digest("hex");
   try {
     return timingSafeEqual(Buffer.from(digest), Buffer.from(token));
   } catch {
@@ -22,8 +27,14 @@ export const onRequest = async ({
   request,
 }: EventContext<unknown, string, Record<string, unknown>>) => {
   const pageId = String(params.pageId);
-  const token = new URL(request.url).searchParams.get("token");
-  if (!verify(pageId, token)) {
+  const search = new URL(request.url).searchParams;
+  const upgradeToken = search.get("upgrade");
+  const token = search.get("token");
+  if (upgradeToken) {
+    if (!verify(pageId, upgradeToken, upgradeSecret)) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+  } else if (!verify(pageId, token, secret)) {
     return new Response("Unauthorized", { status: 401 });
   }
   const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";

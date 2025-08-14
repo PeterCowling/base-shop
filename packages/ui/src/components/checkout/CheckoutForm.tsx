@@ -55,9 +55,14 @@ export default function CheckoutForm({ locale, taxRegion }: Props) {
         );
         setClientSecret(clientSecret);
         setFetchError(false);
-      } catch (err: any) {
-        if (err?.name !== "AbortError") {
-          console.error(err);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          if (err.name !== "AbortError") {
+            console.error(err);
+            setFetchError(true);
+          }
+        } else {
+          console.error("An unknown error occurred");
           setFetchError(true);
         }
       }

@@ -52,7 +52,11 @@ export async function POST(req: NextRequest) {
     });
     await setStripeSubscriptionId(userId, sub.id);
     return NextResponse.json({ id: sub.id, status: sub.status });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      return NextResponse.json({ error: err.message }, { status: 500 });
+    }
+    console.error("An unknown error occurred");
+    return NextResponse.json({ error: "Unknown error" }, { status: 500 });
   }
 }

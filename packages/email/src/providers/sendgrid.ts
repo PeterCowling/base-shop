@@ -55,16 +55,27 @@ export class SendgridProvider implements CampaignProvider {
         html: options.html,
         text: options.text,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Campaign email send failed", {
+          provider: "sendgrid",
+          recipient: options.to,
+          campaignId: options.campaignId,
+          error,
+        });
+        const status =
+          (error as any)?.code ??
+          (error as any)?.response?.statusCode ??
+          (error as any)?.statusCode;
+        const retryable = typeof status !== "number" || status >= 500;
+        throw new ProviderError(error.message, retryable);
+      }
       console.error("Campaign email send failed", {
         provider: "sendgrid",
         recipient: options.to,
         campaignId: options.campaignId,
-        error,
       });
-      const status = error?.code ?? error?.response?.statusCode ?? error?.statusCode;
-      const retryable = typeof status !== "number" || status >= 500;
-      throw new ProviderError(error.message, retryable);
+      throw new ProviderError("Unknown error", true);
     }
   }
 

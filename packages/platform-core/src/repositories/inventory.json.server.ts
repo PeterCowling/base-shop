@@ -1,15 +1,23 @@
 import "server-only";
 
-import {
-  inventoryItemSchema,
-  type InventoryItem,
-  type SerializedInventoryItem,
-} from "@acme/types";
+import { inventoryItemSchema, type InventoryItem } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "../dataRoot";
 import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
+
+interface RawInventoryItem {
+  sku: string;
+  productId: string;
+  quantity: number;
+  variant?: Record<string, string>;
+  lowStockThreshold?: number;
+  wearCount?: number;
+  wearAndTearLimit?: number;
+  maintenanceCycle?: number;
+  [key: string]: unknown;
+}
 
 async function acquireLock(lockFile: string): Promise<fs.FileHandle> {
   while (true) {
@@ -35,15 +43,13 @@ async function ensureDir(shop: string): Promise<void> {
 async function read(shop: string): Promise<InventoryItem[]> {
   try {
     const buf = await fs.readFile(inventoryPath(shop), "utf8");
-    const raw: SerializedInventoryItem[] = JSON.parse(buf);
-    return inventoryItemSchema
-      .array()
-      .parse(
-        raw.map((i: SerializedInventoryItem) => ({
-          variantAttributes: {},
-          ...i,
-        })),
-      );
+    const raw: RawInventoryItem[] = JSON.parse(buf);
+    return raw.map(({ variant, ...rest }) =>
+      inventoryItemSchema.parse({
+        ...rest,
+        variantAttributes: variant ?? {},
+      })
+    );
   } catch (err) {
     console.error(`Failed to read inventory for ${shop}`, err);
     throw err;
@@ -51,17 +57,20 @@ async function read(shop: string): Promise<InventoryItem[]> {
 }
 
 async function write(shop: string, items: InventoryItem[]): Promise<void> {
-  const normalized = inventoryItemSchema
-    .array()
-    .parse(
-      items.map((i) => ({
-        ...i,
-        variantAttributes: { ...i.variantAttributes },
-      })),
-    );
-  const serialized: SerializedInventoryItem[] = normalized.map((i) => ({
-    ...i,
-  }));
+  const normalized = inventoryItemSchema.array().parse(
+    items.map((i) => ({
+      ...i,
+      variantAttributes: { ...i.variantAttributes },
+    }))
+  );
+  const serialized: RawInventoryItem[] = normalized.map(
+    ({ variantAttributes, ...rest }) => ({
+      ...rest,
+      ...(Object.keys(variantAttributes).length
+        ? { variant: variantAttributes }
+        : {}),
+    })
+  );
   await ensureDir(shop);
   const lockFile = `${inventoryPath(shop)}.lock`;
   const handle = await acquireLock(lockFile);
@@ -87,7 +96,7 @@ async function update(
   shop: string,
   sku: string,
   variantAttributes: Record<string, string>,
-  mutate: InventoryMutateFn,
+  mutate: InventoryMutateFn
 ): Promise<InventoryItem | undefined> {
   const lockFile = `${inventoryPath(shop)}.lock`;
   let normalized: InventoryItem[] = [];
@@ -97,22 +106,20 @@ async function update(
     let items: InventoryItem[] = [];
     try {
       const buf = await fs.readFile(inventoryPath(shop), "utf8");
-      const raw: SerializedInventoryItem[] = JSON.parse(buf);
-      items = inventoryItemSchema
-        .array()
-        .parse(
-          raw.map((i: SerializedInventoryItem) => ({
-            variantAttributes: {},
-            ...i,
-          })),
-        );
+      const raw: RawInventoryItem[] = JSON.parse(buf);
+      items = raw.map(({ variant, ...rest }) =>
+        inventoryItemSchema.parse({
+          ...rest,
+          variantAttributes: variant ?? {},
+        })
+      );
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
     }
 
     const key = variantKey(sku, variantAttributes);
     const idx = items.findIndex(
-      (i) => variantKey(i.sku, i.variantAttributes) === key,
+      (i) => variantKey(i.sku, i.variantAttributes) === key
     );
     const current = idx === -1 ? undefined : items[idx];
     updated = mutate(current);
@@ -129,17 +136,20 @@ async function update(
       else items[idx] = nextItem;
     }
 
-    normalized = inventoryItemSchema
-      .array()
-      .parse(
-        items.map((i) => ({
-          ...i,
-          variantAttributes: { ...i.variantAttributes },
-        })),
-      );
-    const serialized: SerializedInventoryItem[] = normalized.map((i) => ({
-      ...i,
-    }));
+    normalized = inventoryItemSchema.array().parse(
+      items.map((i) => ({
+        ...i,
+        variantAttributes: { ...i.variantAttributes },
+      }))
+    );
+    const serialized: RawInventoryItem[] = normalized.map(
+      ({ variantAttributes, ...rest }) => ({
+        ...rest,
+        ...(Object.keys(variantAttributes).length
+          ? { variant: variantAttributes }
+          : {}),
+      })
+    );
 
     const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
     await ensureDir(shop);
@@ -162,10 +172,7 @@ async function update(
   return updated;
 }
 
-function variantKey(
-  sku: string,
-  attrs: Record<string, string>,
-): string {
+function variantKey(sku: string, attrs: Record<string, string>): string {
   const variantPart = Object.entries(attrs)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([k, v]) => `${k}:${v}`)

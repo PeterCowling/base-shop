@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useProductFilters } from "@ui/hooks/useProductFilters";
-import { PRODUCTS } from "@platform-core/src/products";
+import { PRODUCTS, type SKU } from "@platform-core/src/products";
 
 export interface ProductFilterProps {
   showSize?: boolean;
@@ -15,25 +15,25 @@ export default function ProductFilter({
   showColor = true,
   showPrice = true,
 }: ProductFilterProps) {
-  const { filteredRows } = useProductFilters(PRODUCTS as any);
+  const { filteredRows } = useProductFilters<SKU>(PRODUCTS);
 
   const sizes = useMemo(() => {
     const s = new Set<string>();
-    filteredRows.forEach((p: any) => p.sizes?.forEach((sz: string) => s.add(sz)));
+    filteredRows.forEach((p) => p.sizes?.forEach((sz) => s.add(sz)));
     return Array.from(s).sort();
   }, [filteredRows]);
 
   const colors = useMemo(() => {
     const s = new Set<string>();
-    filteredRows.forEach((p: any) => {
-      const c = (p.id ?? "").split("-")[0];
+    filteredRows.forEach((p) => {
+      const c = p.id.split("-")[0];
       if (c) s.add(c);
     });
     return Array.from(s).sort();
   }, [filteredRows]);
 
   const priceBounds = useMemo(() => {
-    const prices = filteredRows.map((p: any) => p.price ?? 0);
+    const prices = filteredRows.map((p) => p.price ?? 0);
     const min = prices.length ? Math.min(...prices) : 0;
     const max = prices.length ? Math.max(...prices) : 0;
     return [min, max];
@@ -45,9 +45,9 @@ export default function ProductFilter({
   const [maxPrice, setMaxPrice] = useState(priceBounds[1]);
 
   const results = useMemo(() => {
-    return filteredRows.filter((p: any) => {
+    return filteredRows.filter((p) => {
       const sizeMatch = !size || p.sizes?.includes(size);
-      const colorMatch = !color || (p.id ?? "").includes(color);
+      const colorMatch = !color || p.id.includes(color);
       const price = p.price ?? 0;
       const priceMatch = price >= minPrice && price <= maxPrice;
       return sizeMatch && colorMatch && priceMatch;

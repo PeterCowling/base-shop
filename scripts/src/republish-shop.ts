@@ -2,23 +2,30 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
-function readUpgradeMeta(id: string): unknown {
-  const file = join("data", "shops", id, "upgrade.json");
+function readUpgradeMeta(root: string, id: string): unknown {
+  const file = join(root, "data", "shops", id, "upgrade.json");
   return JSON.parse(readFileSync(file, "utf8"));
 }
 
 function run(cmd: string, args: string[]): void {
   const res = spawnSync(cmd, args, { stdio: "inherit" });
   if (res.status !== 0) {
-    process.exit(res.status ?? 1);
+    throw new Error(`${cmd} ${args.join(" ")} failed with status ${res.status}`);
   }
 }
 
-function updateStatus(id: string): void {
-  const file = join("data", "shops", id, "shop.json");
+function updateStatus(root: string, id: string): void {
+  const file = join(root, "data", "shops", id, "shop.json");
   const json = JSON.parse(readFileSync(file, "utf8"));
   json.status = "published";
   writeFileSync(file, JSON.stringify(json, null, 2));
+}
+
+export function republishShop(id: string, root = process.cwd()): void {
+  readUpgradeMeta(root, id);
+  run("pnpm", ["--filter", `apps/${id}`, "build"]);
+  run("pnpm", ["--filter", `apps/${id}`, "deploy"]);
+  updateStatus(root, id);
 }
 
 function main(): void {
@@ -27,10 +34,14 @@ function main(): void {
     console.error("Usage: republish-shop <shopId>");
     process.exit(1);
   }
-  readUpgradeMeta(shopId);
-  run("pnpm", ["--filter", `apps/${shopId}`, "build"]);
-  run("pnpm", ["--filter", `apps/${shopId}`, "deploy"]);
-  updateStatus(shopId);
+  try {
+    republishShop(shopId);
+  } catch (err) {
+    console.error(err instanceof Error ? err.message : err);
+    process.exit(1);
+  }
 }
 
-main();
+if (require.main === module) {
+  main();
+}

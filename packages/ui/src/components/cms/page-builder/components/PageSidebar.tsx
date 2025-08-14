@@ -1,8 +1,8 @@
-import ComponentEditor from "./ComponentEditor";
+import ComponentEditor from "../ComponentEditor";
 import type { PageComponent } from "@acme/types";
-import type { Action } from "./state";
+import type { Action } from "../state";
 import { useCallback } from "react";
-import { Button } from "../../atoms/shadcn";
+import { Button } from "../../../atoms/shadcn";
 
 interface Props {
   components: PageComponent[];

@@ -1,5 +1,5 @@
 import type { Locale } from "@/i18n/locales";
-import { Button, Input } from "../../atoms/shadcn";
+import { Button, Input } from "../../../atoms/shadcn";
 
 interface Props {
   viewport: "desktop" | "tablet" | "mobile";

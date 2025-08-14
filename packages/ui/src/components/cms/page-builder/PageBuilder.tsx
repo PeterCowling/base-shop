@@ -2,20 +2,13 @@
 
 import { locales, type Locale } from "@/i18n/locales";
 import { usePathname } from "next/navigation";
-import { memo, useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, DragEvent } from "react";
-import {
-  DndContext,
-  DragOverlay,
-  closestCenter,
-  type DragStartEvent,
-  type DragEndEvent,
-} from "@dnd-kit/core";
+import { DndContext, DragOverlay, closestCenter } from "@dnd-kit/core";
 import { ulid } from "ulid";
 import type { Page, PageComponent, HistoryState, MediaItem } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
 import { Toast, Spinner } from "../../atoms";
-import Palette from "./Palette";
 import {
   atomRegistry,
   moleculeRegistry,
@@ -23,13 +16,14 @@ import {
   containerRegistry,
   layoutRegistry,
 } from "../blocks";
+import Palette from "./components/Palette";
+import PageToolbar from "./components/PageToolbar";
+import PageCanvas from "./components/PageCanvas";
+import PageSidebar from "./components/PageSidebar";
 import { getShopFromPath } from "@platform-core/utils";
 import useFileUpload from "@ui/hooks/useFileUpload";
-import { historyStateSchema, reducer, type Action } from "./state";
-import usePageBuilderDrag from "./usePageBuilderDrag";
-import PageToolbar from "./PageToolbar";
-import PageCanvas from "./PageCanvas";
-import PageSidebar from "./PageSidebar";
+import { usePageBuilderState } from "./hooks/usePageBuilderState";
+import { usePageBuilderDnD } from "./hooks/usePageBuilderDnD";
 
 /* ════════════════ component catalogue ════════════════ */
 type ComponentType =
@@ -94,7 +88,7 @@ interface Props {
 
 const PageBuilder = memo(function PageBuilder({
   page,
-  history: historyProp,
+  history,
   onSave,
   onPublish,
   saving = false,
@@ -104,71 +98,22 @@ const PageBuilder = memo(function PageBuilder({
   onChange,
   style,
 }: Props) {
-  const storageKey = `page-builder-history-${page.id}`;
-  const migrate = useCallback(
-    (comps: PageComponent[]): PageComponent[] =>
-      comps.map((c) =>
-        c.type === "Section" || c.type === "MultiColumn"
-          ? { ...c, children: c.children ?? [] }
-          : c
-      ),
-    []
+  const {
+    components,
+    dispatch,
+    state,
+    gridCols,
+    setGridCols,
+    selectedId,
+    setSelectedId,
+    liveMessage,
+    markPublished,
+  } = usePageBuilderState({ page, history, onChange });
+
+  const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">(
+    "desktop"
   );
-
-  const [state, rawDispatch] = useReducer(reducer, undefined, (): HistoryState => {
-    const initial = migrate(page.components as PageComponent[]);
-    const fromServer = historyProp ?? page.history;
-    const parsedServer = fromServer
-      ? (() => {
-          try {
-            const valid = historyStateSchema.parse(fromServer);
-            return { ...valid, present: migrate(valid.present) };
-          } catch {
-            return { past: [], present: initial, future: [], gridCols: 12 };
-          }
-        })()
-      : { past: [], present: initial, future: [], gridCols: 12 };
-
-    if (typeof window === "undefined") {
-      return parsedServer;
-    }
-    try {
-      const stored = localStorage.getItem(storageKey);
-      if (!stored) throw new Error("no stored state");
-      const parsed = historyStateSchema.parse(JSON.parse(stored));
-      return { ...parsed, present: migrate(parsed.present) };
-    } catch (err) {
-      console.warn("Failed to parse stored page builder state", err);
-      return parsedServer;
-    }
-  });
-
-  const components = state.present;
-  const [gridCols, setGridCols] = useState(state.gridCols);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [liveMessage, setLiveMessage] = useState("");
-  const dispatch = useCallback(
-    (action: Action) => {
-      rawDispatch(action);
-      if (action.type === "add") {
-        setLiveMessage("Block added");
-      } else if (action.type === "move") {
-        setLiveMessage("Block moved");
-      } else if (action.type === "resize") {
-        setLiveMessage("Block resized");
-      }
-    },
-    [rawDispatch]
-  );
-  useEffect(() => {
-    if (!liveMessage) return;
-    const t = setTimeout(() => setLiveMessage(""), 500);
-    return () => clearTimeout(t);
-  }, [liveMessage]);
-  const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [locale, setLocale] = useState<Locale>("en");
-  const [publishCount, setPublishCount] = useState(0);
-  const prevId = useRef(page.id);
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
   const [dragOver, setDragOver] = useState(false);
@@ -181,7 +126,6 @@ const PageBuilder = memo(function PageBuilder({
   const [showGrid, setShowGrid] = useState(false);
   const [gridSize, setGridSize] = useState(1);
   const [snapPosition, setSnapPosition] = useState<number | null>(null);
-  const [activeType, setActiveType] = useState<ComponentType | null>(null);
 
   const {
     onDrop,
@@ -218,30 +162,18 @@ const PageBuilder = memo(function PageBuilder({
     [onDrop]
   );
 
-  const { sensors, handleDragMove, handleDragEnd } = usePageBuilderDrag({
-    components,
-    dispatch,
-    defaults,
-    containerTypes: CONTAINER_TYPES,
-    setInsertIndex,
-    selectId: setSelectedId,
-    gridSize,
-    canvasRef,
-    setSnapPosition,
-  });
-
-  const handleDragStart = useCallback((ev: DragStartEvent) => {
-    const a = ev.active.data.current as { type?: ComponentType };
-    setActiveType((a?.type as ComponentType) ?? null);
-  }, []);
-
-  const handleDragEndWrapper = useCallback(
-    (ev: DragEndEvent) => {
-      setActiveType(null);
-      handleDragEnd(ev);
-    },
-    [handleDragEnd]
-  );
+  const { sensors, handleDragStart, handleDragMove, handleDragEnd, activeType } =
+    usePageBuilderDnD({
+      components,
+      dispatch,
+      defaults,
+      containerTypes: CONTAINER_TYPES,
+      setInsertIndex,
+      selectId: setSelectedId,
+      gridSize,
+      canvasRef,
+      setSnapPosition,
+    });
 
   const widthMap = useMemo(
     () => ({ desktop: "100%", tablet: "768px", mobile: "375px" }) as const,
@@ -260,41 +192,6 @@ const PageBuilder = memo(function PageBuilder({
     }
   }, [showGrid, viewport, gridCols]);
 
-  useEffect(() => {
-    onChange?.(components);
-    if (typeof window !== "undefined") {
-      localStorage.setItem(storageKey, JSON.stringify(state));
-    }
-  }, [components, onChange, state, storageKey]);
-
-  useEffect(() => {
-    const idChanged = prevId.current !== page.id;
-    if (publishCount > 0 || idChanged) {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem(storageKey);
-      }
-    }
-    if (idChanged) {
-      prevId.current = page.id;
-    }
-  }, [page.id, publishCount, storageKey]);
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (!(e.ctrlKey || e.metaKey)) return;
-      const k = e.key.toLowerCase();
-      if (k === "z") {
-        e.preventDefault();
-        dispatch({ type: "undo" });
-      } else if (k === "y") {
-        e.preventDefault();
-        dispatch({ type: "redo" });
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
-
   const formData = useMemo(() => {
     const fd = new FormData();
     fd.append("id", page.id);
@@ -309,8 +206,8 @@ const PageBuilder = memo(function PageBuilder({
   }, [page, components, state]);
 
   const handlePublish = useCallback(() => {
-    return onPublish(formData).then(() => setPublishCount((c) => c + 1));
-  }, [onPublish, formData]);
+    return onPublish(formData).then(() => markPublished());
+  }, [onPublish, formData, markPublished]);
 
   return (
     <div className="flex gap-4" style={style}>
@@ -324,16 +221,16 @@ const PageBuilder = memo(function PageBuilder({
           locale={locale}
           setLocale={setLocale}
           locales={locales}
-        progress={progress}
-        isValid={isValid}
-        showGrid={showGrid}
-        toggleGrid={() => setShowGrid((g) => !g)}
-        gridCols={gridCols}
-        setGridCols={(n) => {
-          setGridCols(n);
-          dispatch({ type: "set-grid-cols", gridCols: n });
-        }}
-      />
+          progress={progress}
+          isValid={isValid}
+          showGrid={showGrid}
+          toggleGrid={() => setShowGrid((g) => !g)}
+          gridCols={gridCols}
+          setGridCols={(n) => {
+            setGridCols(n);
+            dispatch({ type: "set-grid-cols", gridCols: n });
+          }}
+        />
         <div aria-live="polite" role="status" className="sr-only">
           {liveMessage}
         </div>
@@ -342,7 +239,7 @@ const PageBuilder = memo(function PageBuilder({
           collisionDetection={closestCenter}
           onDragStart={handleDragStart}
           onDragMove={handleDragMove}
-          onDragEnd={handleDragEndWrapper}
+          onDragEnd={handleDragEnd}
         >
           <PageCanvas
             components={components}
@@ -370,10 +267,16 @@ const PageBuilder = memo(function PageBuilder({
           </DragOverlay>
         </DndContext>
         <div className="flex gap-2">
-          <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>
+          <Button
+            onClick={() => dispatch({ type: "undo" })}
+            disabled={!state.past.length}
+          >
             Undo
           </Button>
-          <Button onClick={() => dispatch({ type: "redo" })} disabled={!state.future.length}>
+          <Button
+            onClick={() => dispatch({ type: "redo" })}
+            disabled={!state.future.length}
+          >
             Redo
           </Button>
           <div className="flex flex-col gap-1">
@@ -385,7 +288,11 @@ const PageBuilder = memo(function PageBuilder({
             )}
           </div>
           <div className="flex flex-col gap-1">
-            <Button variant="outline" onClick={handlePublish} disabled={publishing}>
+            <Button
+              variant="outline"
+              onClick={handlePublish}
+              disabled={publishing}
+            >
               {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
             </Button>
             {publishError && (

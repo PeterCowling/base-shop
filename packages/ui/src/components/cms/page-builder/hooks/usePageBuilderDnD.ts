@@ -1,6 +1,7 @@
 import {
   DragEndEvent,
   DragMoveEvent,
+  DragStartEvent,
   KeyboardSensor,
   PointerSensor,
   useSensor,
@@ -8,11 +9,11 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { ulid } from "ulid";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import type React from "react";
 import type { PageComponent } from "@acme/types";
-import type { Action } from "./state";
-import { snapToGrid } from "./gridSnap";
+import type { Action } from "../state";
+import { snapToGrid } from "../gridSnap";
 
 interface Params {
   components: PageComponent[];
@@ -26,7 +27,7 @@ interface Params {
   setSnapPosition?: (x: number | null) => void;
 }
 
-export function usePageBuilderDrag({
+export function usePageBuilderDnD({
   components,
   dispatch,
   defaults,
@@ -41,6 +42,7 @@ export function usePageBuilderDrag({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
+  const [activeType, setActiveType] = useState<string | null>(null);
 
   const handleDragMove = useCallback(
     (ev: DragMoveEvent) => {
@@ -65,7 +67,7 @@ export function usePageBuilderDrag({
     [components.length, setInsertIndex, gridSize, canvasRef, setSnapPosition]
   );
 
-  const handleDragEnd = useCallback(
+  const handleDragEndCore = useCallback(
     (ev: DragEndEvent) => {
       setInsertIndex(null);
       setSnapPosition(null);
@@ -131,10 +133,23 @@ export function usePageBuilderDrag({
         });
       }
     },
-    [dispatch, components, containerTypes, defaults, setInsertIndex, selectId]
+    [dispatch, components, containerTypes, defaults, setInsertIndex, selectId, setSnapPosition]
   );
 
-  return { sensors, handleDragMove, handleDragEnd };
+  const handleDragStart = useCallback((ev: DragStartEvent) => {
+    const a = ev.active.data.current as { type?: string };
+    setActiveType(a?.type ?? null);
+  }, []);
+
+  const handleDragEnd = useCallback(
+    (ev: DragEndEvent) => {
+      setActiveType(null);
+      handleDragEndCore(ev);
+    },
+    [handleDragEndCore]
+  );
+
+  return { sensors, handleDragStart, handleDragMove, handleDragEnd, activeType } as const;
 }
 
-export default usePageBuilderDrag;
+export default usePageBuilderDnD;

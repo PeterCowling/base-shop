@@ -11,7 +11,7 @@ import {
   containerRegistry,
   layoutRegistry,
   overlayRegistry,
-} from "../blocks";
+} from "../../blocks";
 
 const palette = {
   layout: (Object.keys(layoutRegistry) as PageComponent["type"][])

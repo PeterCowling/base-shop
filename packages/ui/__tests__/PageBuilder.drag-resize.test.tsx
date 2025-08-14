@@ -2,7 +2,7 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import { renderHook, act } from "@testing-library/react";
 import React from "react";
 import reducer from "../src/components/cms/page-builder/state";
-import usePageBuilderDrag from "../src/components/cms/page-builder/usePageBuilderDrag";
+import usePageBuilderDnD from "../src/components/cms/page-builder/hooks/usePageBuilderDnD";
 import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor";
 import CanvasItem from "../src/components/cms/page-builder/CanvasItem";
 
@@ -31,7 +31,7 @@ describe("PageBuilder interactions", () => {
   it("adds component on drag from palette to canvas", () => {
     const dispatch = jest.fn();
     const { result } = renderHook(() =>
-      usePageBuilderDrag({
+      usePageBuilderDnD({
         components: [],
         dispatch,
         defaults: {},

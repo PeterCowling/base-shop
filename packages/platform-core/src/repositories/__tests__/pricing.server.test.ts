@@ -26,6 +26,7 @@ describe("pricing repository", () => {
     baseDailyRate: 10,
     durationDiscounts: [],
     damageFees: {},
+    coverage: { fees: {}, waivers: {} },
   };
 
   afterEach(() => {

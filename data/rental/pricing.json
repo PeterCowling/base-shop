@@ -8,5 +8,17 @@
     "scuff": 20,
     "tear": 50,
     "lost": "deposit"
+  },
+  "coverage": {
+    "fees": {
+      "scuff": 5,
+      "tear": 15,
+      "lost": 60
+    },
+    "waivers": {
+      "scuff": 20,
+      "tear": 50,
+      "lost": "deposit"
+    }
   }
 }

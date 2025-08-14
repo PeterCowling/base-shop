@@ -8,12 +8,17 @@ import {
   type CartState,
 } from "@platform-core/src/cartCookie";
 import { getCart } from "@platform-core/src/cartStore";
-import { priceForDays, convertCurrency } from "@platform-core/src/pricing";
+import {
+  priceForDays,
+  convertCurrency,
+  getPricing,
+} from "@platform-core/src/pricing";
 import { getProductById } from "@platform-core/src/products";
 import { findCoupon } from "@platform-core/src/coupons";
 import { trackEvent } from "@platform-core/src/analytics";
 import { coreEnv } from "@acme/config/env/core";
 import { getTaxRate } from "@platform-core/src/tax";
+import { getShopById } from "@platform-core/src/repositories/shop.server";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -138,6 +143,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     billing_details?: Record<string, any>;
   };
   const shop = coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop";
+  const shopDef = await getShopById(shop);
+  const coverageEnabled = shopDef.coverageIncluded !== false;
   const couponDef = await findCoupon(shop, coupon);
   if (couponDef) {
     await trackEvent(shop, { type: "discount_redeemed", code: couponDef.code });
@@ -165,6 +172,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     discountRate,
     currency
   );
+  let coverageConv = 0;
+  if (coverageEnabled) {
+    const pricing = await getPricing();
+    const perItemFee = Object.values(pricing.coverage.fees).reduce(
+      (s, n) => s + n,
+      0
+    );
+    const itemCount = Object.values(cart).reduce((s, i) => s + i.qty, 0);
+    const coverageBase = perItemFee * itemCount;
+    coverageConv = await convertCurrency(coverageBase, currency);
+    if (coverageConv > 0) {
+      line_items.push({
+        price_data: {
+          currency: currency.toLowerCase(),
+          unit_amount: coverageConv * 100,
+          product_data: { name: "Coverage" },
+        },
+        quantity: 1,
+      });
+    }
+  }
 
   const taxRate = await getTaxRate(taxRegion);
   const taxAmount = Math.round(subtotal * taxRate);
@@ -197,6 +225,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     metadata: {
       subtotal: String(subtotal),
       depositTotal: String(depositTotal),
+      coverage: String(coverageConv),
       returnDate: returnDate ?? "",
       rentalDays: String(rentalDays),
       discount: String(discount),
@@ -224,6 +253,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         metadata: {
           subtotal: String(subtotal),
           depositTotal: String(depositTotal),
+          coverage: String(coverageConv),
           returnDate: returnDate ?? "",
           rentalDays: String(rentalDays),
           sizes: sizesMeta,

@@ -9,6 +9,7 @@
   "shippingProviders": ["dhl"],
   "taxProviders": ["taxjar"],
   "billingProvider": "stripe",
+  "coverageIncluded": true,
   "priceOverrides": {},
   "localeOverrides": {},
   "componentVersions": {},

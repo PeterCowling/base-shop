@@ -4,6 +4,7 @@ const defaultPricing = {
   baseDailyRate: 10,
   durationDiscounts: [],
   damageFees: { lost: 'deposit', scratch: 20 },
+  coverage: { fees: {}, waivers: {} },
 };
 
 const defaultRates = {
@@ -64,6 +65,7 @@ describe('pricing utilities', () => {
       baseDailyRate: 5,
       durationDiscounts: [],
       damageFees: {},
+      coverage: { fees: {}, waivers: {} },
     });
 
     await expect(priceForDays({ price: 7 } as any, 3)).resolves.toBe(21);
@@ -78,6 +80,7 @@ describe('pricing utilities', () => {
       baseDailyRate: 0,
       durationDiscounts: [],
       damageFees: { lost: 'deposit', scratch: 20 },
+      coverage: { fees: {}, waivers: {} },
     });
 
     await expect(computeDamageFee(30, 50)).resolves.toBe(30);

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { coverageSchema } from "./Coverage";
 
 /**
  * Rental pricing configuration loaded from `data/rental/pricing.json`.
@@ -19,6 +20,7 @@ export const pricingSchema = z
         .strict()
     ),
     damageFees: z.record(z.union([z.number(), z.literal("deposit")])),
+    coverage: coverageSchema,
   })
   .strict();
 

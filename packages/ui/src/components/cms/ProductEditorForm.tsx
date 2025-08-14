@@ -4,7 +4,10 @@
 import { Button, Card, CardContent, Input } from "@ui/components/atoms/shadcn";
 import type { Locale, ProductPublication } from "@platform-core/src/products";
 import { useProductEditorFormState } from "@ui/hooks/useProductEditorFormState";
-import type { ProductWithVariants } from "@ui/hooks/useProductEditorFormState";
+import type {
+  ProductWithVariants,
+  ProductSaveResult,
+} from "@ui/hooks/useProductEditorFormState";
 import MultilingualFields from "./MultilingualFields";
 import PublishLocationSelector from "./PublishLocationSelector";
 
@@ -16,10 +19,7 @@ interface BaseProps {
   /** Current product snapshot (all locales) */
   product: ProductWithVariants;
   /** Called with FormData → resolves to updated product or errors */
-  onSave(fd: FormData): Promise<{
-    product?: ProductPublication;
-    errors?: Record<string, string[]>;
-  }>;
+  onSave(fd: FormData): Promise<ProductSaveResult>;
   /** Locales enabled for the current shop */
   locales: readonly Locale[];
 }

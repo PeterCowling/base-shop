@@ -19,6 +19,11 @@ export interface ProductWithVariants extends ProductPublication {
   variants: Record<string, string[]>;
 }
 
+export interface ProductSaveResult {
+  product?: ProductPublication & { variants?: Record<string, string[]> };
+  errors?: Record<string, string[]>;
+}
+
 export interface UseProductEditorFormReturn {
   product: ProductWithVariants;
   errors: Record<string, string[]>;
@@ -42,10 +47,7 @@ export interface UseProductEditorFormReturn {
 export function useProductEditorFormState(
   init: ProductPublication & { variants?: Record<string, string[]> },
   locales: readonly Locale[],
-  onSave: (fd: FormData) => Promise<{
-    product?: ProductPublication;
-    errors?: Record<string, string[]>;
-  }>
+  onSave: (fd: FormData) => Promise<ProductSaveResult>
 ): UseProductEditorFormReturn {
   /* ---------- state ------------------------------------------------ */
   const [product, setProduct] = useState<ProductWithVariants>({
@@ -154,10 +156,11 @@ export function useProductEditorFormState(
       if (result.errors) {
         setErrors(result.errors);
       } else if (result.product) {
-        setProduct({
-          ...(result.product as ProductWithVariants),
-          variants: (result.product as any).variants ?? product.variants,
-        });
+        const updated: ProductWithVariants = {
+          ...result.product,
+          variants: result.product.variants ?? product.variants,
+        };
+        setProduct(updated);
         setErrors({});
       }
       setSaving(false);

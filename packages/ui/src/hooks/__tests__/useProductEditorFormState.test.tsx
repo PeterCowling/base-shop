@@ -2,7 +2,10 @@
 
 import type { Locale, ProductPublication } from "@platform-core/src/products";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { useProductEditorFormState } from "../useProductEditorFormState";
+import {
+  useProductEditorFormState,
+  type ProductSaveResult,
+} from "../useProductEditorFormState";
 
 /* ------------------------------------------------------------------ *
  *  Mock the file-upload and publish-location hooks (no network, no DOM)
@@ -47,10 +50,7 @@ const locales: readonly Locale[] = ["en", "de"];
 function Wrapper({
   onSave,
 }: {
-  onSave: (fd: FormData) => Promise<{
-    product?: ProductPublication;
-    errors?: Record<string, string[]>;
-  }>;
+  onSave: (fd: FormData) => Promise<ProductSaveResult>;
 }) {
   const state = useProductEditorFormState(product, locales, onSave);
 
@@ -108,7 +108,7 @@ describe("useProductEditorFormState", () => {
 
   it("handleSubmit calls save callback with generated FormData", async () => {
     const onSave = jest
-      .fn<Promise<{ product: ProductPublication }>, [FormData]>()
+      .fn<Promise<ProductSaveResult>, [FormData]>()
       .mockResolvedValue({ product });
 
     render(<Wrapper onSave={onSave} />);

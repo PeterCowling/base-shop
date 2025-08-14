@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   sessionId: string;
@@ -9,6 +9,24 @@ interface Props {
 export default function StartReturnButton({ sessionId }: Props) {
   const [loading, setLoading] = useState(false);
   const [tracking, setTracking] = useState<string | null>(null);
+  const [labelUrl, setLabelUrl] = useState<string | null>(null);
+  const [status, setStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!tracking) return;
+    const fetchStatus = async () => {
+      try {
+        const res = await fetch(`/api/return?tracking=${tracking}`);
+        const data = await res.json();
+        if (data.status) {
+          setStatus(data.status);
+        }
+      } catch {
+        // ignore errors
+      }
+    };
+    fetchStatus();
+  }, [tracking]);
 
   const handleClick = async () => {
     setLoading(true);
@@ -21,6 +39,7 @@ export default function StartReturnButton({ sessionId }: Props) {
       const data = await res.json();
       if (data.trackingNumber) {
         setTracking(data.trackingNumber);
+        setLabelUrl(data.labelUrl ?? null);
       }
     } catch {
       // ignore errors
@@ -39,9 +58,22 @@ export default function StartReturnButton({ sessionId }: Props) {
       >
         {loading ? "Processing…" : "Start return"}
       </button>
+      {labelUrl && (
+        <p className="mt-1 text-sm">
+          <a
+            href={labelUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            Download label
+          </a>
+        </p>
+      )}
       {tracking && (
         <p className="mt-1 text-sm">Tracking: {tracking}</p>
       )}
+      {status && <p className="mt-1 text-sm">Status: {status}</p>}
     </div>
   );
 }

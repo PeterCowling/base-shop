@@ -13,6 +13,10 @@ export interface OrdersPageProps {
   title?: string;
   /** Destination to return to after login */
   callbackUrl?: string;
+  /** Whether returns are enabled */
+  returnsEnabled?: boolean;
+  /** Optional return policy link */
+  returnPolicyUrl?: string;
 }
 
 export const metadata = { title: "Orders" };
@@ -21,6 +25,8 @@ export default async function OrdersPage({
   shopId,
   title = "Orders",
   callbackUrl = "/account/orders",
+  returnsEnabled,
+  returnPolicyUrl,
 }: OrdersPageProps) {
   const session = await getCustomerSession();
   if (!session) {
@@ -32,34 +38,65 @@ export default async function OrdersPage({
   }
   const orders = await getOrdersForCustomer(shopId, session.customerId);
   if (!orders.length) return <p className="p-6">No orders yet.</p>;
+
+  async function fetchStatus(tracking: string) {
+    try {
+      const res = await fetch(
+        `https://www.ups.com/track/api/Track/GetStatus?loc=en_US&tracknum=${tracking}`,
+      );
+      const data = await res.json();
+      return data?.trackDetails?.[0]?.packageStatus?.statusType ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  const items = await Promise.all(
+    orders.map(async (o) => {
+      const steps: OrderStep[] = [
+        { label: "Placed", date: o.startedAt, complete: true },
+      ];
+      if (o.returnedAt) {
+        steps.push({ label: "Returned", date: o.returnedAt, complete: true });
+      } else {
+        steps.push({ label: "Return pending", complete: false });
+      }
+      if (o.refundedAt) {
+        steps.push({ label: "Refunded", date: o.refundedAt, complete: true });
+      }
+      const status = o.trackingNumber
+        ? await fetchStatus(o.trackingNumber)
+        : null;
+      return (
+        <li key={o.id} className="rounded border p-4">
+          <div>Order: {o.id}</div>
+          {o.expectedReturnDate && <div>Return: {o.expectedReturnDate}</div>}
+          <OrderTrackingTimeline steps={steps} className="mt-2" />
+          {status && <p className="mt-2 text-sm">Status: {status}</p>}
+          {returnsEnabled && !o.returnedAt && (
+            <StartReturnButton sessionId={o.sessionId} />
+          )}
+        </li>
+      );
+    }),
+  );
+
   return (
     <>
       <h1 className="p-6 text-xl">{title}</h1>
-      <ul className="space-y-2 p-6">
-        {orders.map((o) => {
-          const steps: OrderStep[] = [
-            { label: "Placed", date: o.startedAt, complete: true },
-          ];
-          if (o.returnedAt) {
-            steps.push({ label: "Returned", date: o.returnedAt, complete: true });
-          } else {
-            steps.push({ label: "Return pending", complete: false });
-          }
-          if (o.refundedAt) {
-            steps.push({ label: "Refunded", date: o.refundedAt, complete: true });
-          }
-          return (
-            <li key={o.id} className="rounded border p-4">
-              <div>Order: {o.id}</div>
-              {o.expectedReturnDate && (
-                <div>Return: {o.expectedReturnDate}</div>
-              )}
-              <OrderTrackingTimeline steps={steps} className="mt-2" />
-              {!o.returnedAt && <StartReturnButton sessionId={o.sessionId} />}
-            </li>
-          );
-        })}
-      </ul>
+      {returnsEnabled && returnPolicyUrl && (
+        <p className="p-6 pt-0">
+          <a
+            href={returnPolicyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            Return policy
+          </a>
+        </p>
+      )}
+      <ul className="space-y-2 p-6">{items}</ul>
     </>
   );
 }

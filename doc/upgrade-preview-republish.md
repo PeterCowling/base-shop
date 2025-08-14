@@ -12,10 +12,21 @@ Run the script with a shop identifier to copy files from the template:
 pnpm ts-node scripts/src/upgrade-shop.ts <shop-id>
 ```
 
-Existing files are backed up with a `.bak` suffix, the shop's `shop.json` gains a `lastUpgrade` timestamp, and `data/shops/<id>/upgrade.json` is generated with metadata about the staged components. Use `--rollback` to restore the backups:
+Existing files are backed up with a `.bak` suffix, the shop's `shop.json` gains a `lastUpgrade` timestamp, and `data/shops/<id>/upgrade.json` is generated with metadata about the staged components. The script also regenerates the upgrade preview props file so new components render correctly. Use `--rollback` to restore the backups:
 
 ```bash
 pnpm ts-node scripts/src/upgrade-shop.ts <shop-id> --rollback
+```
+
+### `generate-example-props`
+
+Scans `packages/ui/src/components` for exported components and writes
+`apps/<shop>/src/app/upgrade-preview/example-props.ts` with sample props for
+known components and empty objects for others. This runs automatically during
+`upgrade-shop` but can be invoked directly:
+
+```bash
+pnpm ts-node scripts/src/generate-example-props.ts <shop-id>
 ```
 
 ### `republish-shop`

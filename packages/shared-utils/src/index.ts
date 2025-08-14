@@ -7,3 +7,5 @@ export { parseJsonBody } from "./parseJsonBody";
 export { jsonFieldHandler, type ErrorSetter } from "./jsonFieldHandler";
 export { formatCurrency } from "./formatCurrency";
 export { formatPrice } from "./formatPrice";
+export { logger } from "./logger";
+export type { LogMeta } from "./logger";

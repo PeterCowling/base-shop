@@ -2,7 +2,11 @@ import { Resend } from "resend";
 import { coreEnv } from "@acme/config/env/core";
 import type { CampaignOptions } from "../send";
 import { ProviderError } from "./types";
-import type { CampaignProvider } from "./types";
+import type {
+  CampaignProvider,
+  ResendError,
+  ResendSegment,
+} from "./types";
 import {
   mapResendStats,
   type CampaignStats,
@@ -54,19 +58,18 @@ export class ResendProvider implements CampaignProvider {
         text: options.text,
       });
     } catch (error: unknown) {
-      if (error instanceof Error) {
+      if (error && typeof error === "object" && "message" in error) {
+        const err = error as ResendError;
         console.error("Campaign email send failed", {
           provider: "resend",
           recipient: options.to,
           campaignId: options.campaignId,
-          error,
+          error: err,
         });
         const status =
-          (error as any)?.code ??
-          (error as any)?.response?.statusCode ??
-          (error as any)?.statusCode;
+          err.code ?? err.response?.statusCode ?? err.statusCode;
         const retryable = typeof status !== "number" || status >= 500;
-        throw new ProviderError(error.message, retryable);
+        throw new ProviderError(err.message, retryable);
       }
       console.error("Campaign email send failed", {
         provider: "resend",
@@ -126,11 +129,16 @@ export class ResendProvider implements CampaignProvider {
       const res = await fetch("https://api.resend.com/segments", {
         headers: { Authorization: `Bearer ${coreEnv.RESEND_API_KEY || ""}` },
       });
-      const json = await res.json().catch(() => ({}));
+      const json: {
+        data?: ResendSegment[];
+        segments?: ResendSegment[];
+      } = await res
+        .json()
+        .catch(() => ({} as { data?: ResendSegment[]; segments?: ResendSegment[] }));
       const segments = Array.isArray(json?.data ?? json?.segments)
-        ? json.data ?? json.segments
+        ? (json.data ?? json.segments)!
         : [];
-      return segments.map((s: any) => ({ id: s.id, name: s.name }));
+      return segments.map((s: ResendSegment) => ({ id: s.id, name: s.name }));
     } catch {
       return [];
     }

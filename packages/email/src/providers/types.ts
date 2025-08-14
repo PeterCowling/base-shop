@@ -31,3 +31,20 @@ export class ProviderError extends Error {
     this.name = "ProviderError";
   }
 }
+
+export interface ResendError {
+  message: string;
+  /** HTTP status code returned by the Resend API */
+  statusCode?: number;
+  /** Optional internal error code */
+  code?: number;
+  /** Error name provided by the API */
+  name?: string;
+  /** Nested response object from the client */
+  response?: { statusCode?: number };
+}
+
+export interface ResendSegment {
+  id: string;
+  name: string;
+}

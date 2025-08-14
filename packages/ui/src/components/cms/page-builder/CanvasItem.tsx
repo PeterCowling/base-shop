@@ -11,6 +11,7 @@ import TextBlock from "./TextBlock";
 import useSortableBlock from "./useSortableBlock";
 import useCanvasResize from "./useCanvasResize";
 import useCanvasDrag from "./useCanvasDrag";
+import useCanvasSpacing from "./useCanvasSpacing";
 import type { DevicePreset } from "@ui/utils/devicePresets";
 
 const CanvasItem = memo(function CanvasItem({
@@ -148,6 +149,16 @@ const CanvasItem = memo(function CanvasItem({
     containerRef,
   });
 
+  const { startSpacing, overlay: spacingOverlay } = useCanvasSpacing({
+    componentId: component.id,
+    marginKey,
+    paddingKey,
+    marginVal,
+    paddingVal,
+    dispatch,
+    containerRef,
+  });
+
   const guides =
     resizeGuides.x !== null || resizeGuides.y !== null
       ? resizeGuides
@@ -242,6 +253,17 @@ const CanvasItem = memo(function CanvasItem({
         )}
       </div>
       <Block component={component} locale={locale} />
+      {spacingOverlay && (
+        <div
+          className="pointer-events-none absolute z-30 bg-primary/20"
+          style={{
+            top: spacingOverlay.top,
+            left: spacingOverlay.left,
+            width: spacingOverlay.width,
+            height: spacingOverlay.height,
+          }}
+        />
+      )}
       {showOverlay && (
         <div className="pointer-events-none absolute -top-5 left-0 z-30 rounded bg-black/75 px-1 text-[10px] font-mono text-white shadow dark:bg-white/75 dark:text-black">
           {Math.round(overlayWidth)}×{Math.round(overlayHeight)} | {Math.round(overlayLeft)},{" "}
@@ -265,6 +287,38 @@ const CanvasItem = memo(function CanvasItem({
           <div
             onPointerDown={startResize}
             className="absolute -right-1 -bottom-1 h-2 w-2 cursor-nwse-resize bg-primary"
+          />
+          <div
+            onPointerDown={(e) => startSpacing(e, "margin", "top")}
+            className="absolute -top-2 left-1/2 h-1 w-4 -translate-x-1/2 cursor-n-resize bg-primary"
+          />
+          <div
+            onPointerDown={(e) => startSpacing(e, "margin", "bottom")}
+            className="absolute -bottom-2 left-1/2 h-1 w-4 -translate-x-1/2 cursor-s-resize bg-primary"
+          />
+          <div
+            onPointerDown={(e) => startSpacing(e, "margin", "left")}
+            className="absolute -left-2 top-1/2 w-1 h-4 -translate-y-1/2 cursor-w-resize bg-primary"
+          />
+          <div
+            onPointerDown={(e) => startSpacing(e, "margin", "right")}
+            className="absolute -right-2 top-1/2 w-1 h-4 -translate-y-1/2 cursor-e-resize bg-primary"
+          />
+          <div
+            onPointerDown={(e) => startSpacing(e, "padding", "top")}
+            className="absolute top-0 left-1/2 h-1 w-4 -translate-x-1/2 cursor-n-resize bg-primary"
+          />
+          <div
+            onPointerDown={(e) => startSpacing(e, "padding", "bottom")}
+            className="absolute bottom-0 left-1/2 h-1 w-4 -translate-x-1/2 cursor-s-resize bg-primary"
+          />
+          <div
+            onPointerDown={(e) => startSpacing(e, "padding", "left")}
+            className="absolute left-0 top-1/2 w-1 h-4 -translate-y-1/2 cursor-w-resize bg-primary"
+          />
+          <div
+            onPointerDown={(e) => startSpacing(e, "padding", "right")}
+            className="absolute right-0 top-1/2 w-1 h-4 -translate-y-1/2 cursor-e-resize bg-primary"
           />
         </>
       )}

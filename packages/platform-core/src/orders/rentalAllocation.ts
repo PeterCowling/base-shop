@@ -28,24 +28,30 @@ export async function reserveRentalInventory(
   const limit = sku.wearAndTearLimit ?? Infinity;
   const cycle = sku.maintenanceCycle ?? Infinity;
 
-  const selected = items.find((item) => {
+  const candidate = items.find((item) => {
     const wear = item.wearCount ?? 0;
     if (wear >= limit) return false; // item exceeded wear limit
     if (cycle !== Infinity && wear > 0 && wear % cycle === 0) return false; // due for maintenance
     return item.quantity > 0; // must have stock
   });
 
-  if (!selected) return null;
+  if (!candidate) return null;
 
-  selected.quantity -= 1;
-  selected.wearCount = (selected.wearCount ?? 0) + 1;
-
-  await updateInventoryItem(
+  const updated = await updateInventoryItem(
     shop,
-    selected.sku,
-    selected.variantAttributes,
-    () => selected,
+    candidate.sku,
+    candidate.variantAttributes,
+    (current) => {
+      if (!current) return current;
+      return {
+        ...current,
+        quantity: current.quantity - 1,
+        wearCount: (current.wearCount ?? 0) + 1,
+      };
+    },
   );
 
-  return selected as InventoryItem & { wearCount: number };
+  return updated
+    ? (updated as InventoryItem & { wearCount: number })
+    : null;
 }

@@ -56,7 +56,7 @@ describe("/api/return", () => {
     } as any);
 
     expect(retrieve).toHaveBeenCalledWith("sess", { expand: ["payment_intent"] });
-    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 50);
+    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 50, [], true);
     expect(refundCreate).toHaveBeenCalledWith({
       payment_intent: "pi_123",
       amount: 30 * 100,

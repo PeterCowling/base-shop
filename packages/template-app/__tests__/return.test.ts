@@ -55,7 +55,7 @@ describe("/api/return", () => {
     const res = await POST({
       json: async () => ({ sessionId: "sess", damage: "scratch" }),
     } as unknown as NextRequest);
-    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 50);
+    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 50, [], true);
     expect(refundCreate).toHaveBeenCalledWith({
       payment_intent: "pi_1",
       amount: 30 * 100,

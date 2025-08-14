@@ -3,20 +3,27 @@ import "server-only";
 import { inventoryItemSchema, type InventoryItem } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
+import type Database from "better-sqlite3";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "../dataRoot";
 import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
 
-let Database: any;
+interface SqliteInventoryRow {
+  sku: string;
+  variantAttributes: string | null;
+  quantity: number;
+}
 
-async function getDb(shop: string) {
-  if (!Database) {
-    ({ default: Database } = await import("better-sqlite3"));
+let DatabaseConstructor: typeof Database;
+
+async function getDb(shop: string): Promise<Database> {
+  if (!DatabaseConstructor) {
+    ({ default: DatabaseConstructor } = await import("better-sqlite3"));
   }
   shop = validateShopName(shop);
   const dir = path.join(DATA_ROOT, shop);
   await fs.mkdir(dir, { recursive: true });
-  const db = new Database(path.join(dir, "inventory.sqlite"));
+  const db: Database = new DatabaseConstructor(path.join(dir, "inventory.sqlite"));
   db.exec(
     "CREATE TABLE IF NOT EXISTS inventory (sku TEXT, variantAttributes TEXT, quantity INTEGER, PRIMARY KEY (sku, variantAttributes))",
   );
@@ -24,14 +31,16 @@ async function getDb(shop: string) {
 }
 
 async function read(shop: string): Promise<InventoryItem[]> {
-  const db = await getDb(shop);
+  const db: Database = await getDb(shop);
   const rows = db
-    .prepare("SELECT sku, variantAttributes, quantity FROM inventory")
+    .prepare<[], SqliteInventoryRow>(
+      "SELECT sku, variantAttributes, quantity FROM inventory",
+    )
     .all();
-  return rows.map((r: any) => ({
+  return rows.map((r) => ({
     sku: r.sku,
     quantity: r.quantity,
-    variantAttributes: JSON.parse(r.variantAttributes || "{}"),
+    variantAttributes: JSON.parse(r.variantAttributes ?? "{}"),
   }));
 }
 
@@ -44,7 +53,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
         variantAttributes: { ...i.variantAttributes },
       })),
     );
-  const db = await getDb(shop);
+  const db: Database = await getDb(shop);
   const insert = db.prepare(
     "REPLACE INTO inventory (sku, variantAttributes, quantity) VALUES (?, ?, ?)",
   );
@@ -67,12 +76,12 @@ export async function updateInventoryItem(
   variantAttributes: Record<string, string>,
   mutate: InventoryMutateFn,
 ): Promise<InventoryItem | undefined> {
-  const db = await getDb(shop);
+  const db: Database = await getDb(shop);
   const key = JSON.stringify(variantAttributes || {});
   const tx = db
     .transaction(() => {
       const row = db
-        .prepare(
+        .prepare<[string, string], SqliteInventoryRow>(
           "SELECT sku, variantAttributes, quantity FROM inventory WHERE sku = ? AND variantAttributes = ?",
         )
         .get(sku, key);
@@ -80,7 +89,7 @@ export async function updateInventoryItem(
         ? {
             sku: row.sku,
             quantity: row.quantity,
-            variantAttributes: JSON.parse(row.variantAttributes || "{}"),
+            variantAttributes: JSON.parse(row.variantAttributes ?? "{}"),
           }
         : undefined;
       const updated = mutate(current);

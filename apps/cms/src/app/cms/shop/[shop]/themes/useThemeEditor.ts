@@ -31,7 +31,7 @@ export function useThemeEditor({
 }: Options) {
   const [theme, setTheme] = useState(initialTheme);
   const [overrides, setOverrides] = useState<Record<string, string>>(initialOverrides);
-  const [themeDefaults, setThemeDefaults] = useState<Record<string, string>>(
+  const [, setThemeDefaults] = useState<Record<string, string>>(
     tokensByTheme[initialTheme],
   );
   const {
@@ -65,10 +65,6 @@ export function useThemeEditor({
     overrides: Record<string, string>;
     defaults: Record<string, string>;
   }>({ overrides: {}, defaults: {} });
-  const [picker, setPicker] = useState<
-    | null
-    | { token: string; x: number; y: number; defaultValue: string }
-  >(null);
 
   const mergedTokens = useMemo(
     () => ({ ...tokensByThemeState[theme], ...overrides }),
@@ -208,30 +204,16 @@ export function useThemeEditor({
     });
   };
 
-  const handleTokenSelect = (
-    token: string,
-    coords?: { x: number; y: number },
-  ) => {
+  const handleTokenSelect = (token: string) => {
     const input = overrideRefs.current[token];
     if (input) {
       input.scrollIntoView?.({ behavior: "smooth", block: "center" });
       input.focus();
-    }
-    if (coords) {
-      const defaultValue = tokensByThemeState[theme][token];
-      setPicker({ token, x: coords.x, y: coords.y, defaultValue });
-    } else if (input) {
       (input as any).showPicker?.();
       if (!(input as any).showPicker) {
         input.click();
       }
     }
-  };
-
-  const handlePickerClose = () => {
-    setPicker(null);
-    const merged = { ...tokensByThemeState[theme], ...overrides };
-    schedulePreviewUpdate(merged);
   };
 
   useEffect(() => {
@@ -298,8 +280,6 @@ export function useThemeEditor({
     handleWarningChange,
     contrastWarnings,
     handleTokenSelect,
-    picker,
-    handlePickerClose,
     handleThemeChange,
     handleResetAll,
   };

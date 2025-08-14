@@ -32,10 +32,8 @@ export default function ThemeEditor(props: Props) {
     presetThemes,
     handleDeletePreset,
     contrastWarnings,
-    picker,
     overrides,
     handleOverrideChange,
-    handlePickerClose,
     previewTokens,
     handleTokenSelect,
     groupedTokens,
@@ -76,11 +74,10 @@ export default function ThemeEditor(props: Props) {
         </div>
       )}
       <ThemePreview
-        picker={picker}
         overrides={overrides}
         onChange={handleOverrideChange}
-        onPickerClose={handlePickerClose}
         previewTokens={previewTokens}
+        themeDefaults={tokensByThemeState[theme]}
         onTokenSelect={handleTokenSelect}
       />
       <PalettePicker

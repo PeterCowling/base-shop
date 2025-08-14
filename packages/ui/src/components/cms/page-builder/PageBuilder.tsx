@@ -25,6 +25,7 @@ import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES } from "./defaults";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import { usePreviewDevice } from "@ui/hooks";
+import Joyride, { STATUS, type CallBackProps, type Step } from "react-joyride";
 
 interface Props {
   page: Page;
@@ -101,6 +102,44 @@ const PageBuilder = memo(function PageBuilder({
     viewportStyle: previewViewportStyle,
     frameClass: previewFrameClass,
   } = useViewport(previewDevice);
+  const [runTour, setRunTour] = useState(false);
+  const [tourKey, setTourKey] = useState(0);
+  const steps: Step[] = useMemo(
+    () => [
+      {
+        target: '[data-tour="palette"]',
+        content: 'Choose components and drag them onto the canvas.',
+      },
+      {
+        target: '[data-tour="canvas"]',
+        content: 'Arrange components on the page here.',
+      },
+      {
+        target: '[data-tour="edit-properties"]',
+        content: 'Use the sidebar to fine-tune the selected component.',
+      },
+    ],
+    [],
+  );
+  useEffect(() => {
+    if (
+      typeof window !== 'undefined' &&
+      !localStorage.getItem('pageBuilderTourSeen')
+    ) {
+      setRunTour(true);
+    }
+  }, []);
+  const handleTourCallback = useCallback((data: CallBackProps) => {
+    const { status } = data;
+    if (status === STATUS.FINISHED || status === STATUS.SKIPPED) {
+      localStorage.setItem('pageBuilderTourSeen', 'true');
+      setRunTour(false);
+    }
+  }, []);
+  const startTour = useCallback(() => {
+    setTourKey((k) => k + 1);
+    setRunTour(true);
+  }, []);
   const [publishCount, setPublishCount] = useState(0);
   const prevId = useRef(page.id);
   const pathname = usePathname() ?? "";
@@ -223,7 +262,17 @@ const PageBuilder = memo(function PageBuilder({
 
   return (
     <div className="flex gap-4" style={style}>
-      <aside className="w-48 shrink-0">
+      <Joyride
+        key={tourKey}
+        steps={steps}
+        run={runTour}
+        continuous
+        showProgress
+        showSkipButton
+        callback={handleTourCallback}
+        styles={{ options: { zIndex: 10000 } }}
+      />
+      <aside className="w-48 shrink-0" data-tour="palette">
         <Palette />
       </aside>
       <div className="flex flex-1 flex-col gap-4">
@@ -262,6 +311,9 @@ const PageBuilder = memo(function PageBuilder({
             >
               {showPreview ? "Hide preview" : "Show preview"}
             </Button>
+            <Button variant="outline" size="sm" onClick={startTour}>
+              Replay tour
+            </Button>
           </div>
         </div>
         <div aria-live="polite" role="status" className="sr-only">
@@ -274,7 +326,11 @@ const PageBuilder = memo(function PageBuilder({
           onDragMove={handleDragMove}
           onDragEnd={handleDragEnd}
         >
-          <div className={frameClass[viewport]} style={viewportStyle}>
+          <div
+            className={frameClass[viewport]}
+            style={viewportStyle}
+            data-tour="canvas"
+          >
             <PageCanvas
               components={components}
               selectedId={selectedId}
@@ -379,11 +435,15 @@ const PageBuilder = memo(function PageBuilder({
           </div>
         </div>
       </div>
-      <PageSidebar
-        components={components}
-        selectedId={selectedId}
-        dispatch={dispatch}
-      />
+      {selectedId ? (
+        <PageSidebar
+          components={components}
+          selectedId={selectedId}
+          dispatch={dispatch}
+        />
+      ) : (
+        <aside className="w-72 shrink-0" data-tour="edit-properties" />
+      )}
       <Toast
         open={toast.open}
         onClose={() => setToast((t) => ({ ...t, open: false }))}

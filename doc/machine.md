@@ -38,6 +38,36 @@ Stripe credentials (`STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, a
 pnpm release-deposits
 ```
 
+## Reverse logistics service
+
+Rental operations often track returned items through several post‑rental stages. The reverse logistics worker in `@acme/platform-machine` reads event files for each shop and updates rental order statuses.
+
+```ts
+import {
+  processReverseLogisticsEventsOnce,
+  startReverseLogisticsService,
+} from "@acme/platform-machine";
+
+// handle all pending events once
+await processReverseLogisticsEventsOnce();
+
+// or run on an interval (default: hourly)
+const stop = await startReverseLogisticsService();
+// stop(); // call to clear the interval
+```
+
+Events are JSON files placed in `data/shops/<id>/reverse-logistics/` with a `sessionId` and `status` field (e.g. `received`, `cleaning`, `repair`, `qa`, or `available`).
+
+Each shop controls the worker in `data/shops/<id>/settings.json` under `reverseLogisticsService`:
+
+```json
+{
+  "reverseLogisticsService": { "enabled": true, "intervalMinutes": 60 }
+}
+```
+
+Running `pnpm ts-node scripts/setup-ci.ts <shop>` exposes a `REVERSE_LOGISTICS_ENABLED` environment variable in the generated workflow so the service can be toggled per shop.
+
 ## Finite State Machine (FSM)
 
 The package also exports a tiny, type-safe FSM helper for modeling UI or service workflows.

@@ -1,5 +1,5 @@
 {
-  "labelService": "MockLabelCo",
+  "labelService": "UPS",
   "inStore": true,
   "dropOffProvider": "UPS",
   "tracking": true,

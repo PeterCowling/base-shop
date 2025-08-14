@@ -3,13 +3,13 @@ import type { SKU } from "@acme/types";
 interface Props {
   skus?: SKU[];
   /** Attributes to display from each SKU (e.g. price, stock) */
-  attributes?: (keyof SKU)[];
+  attributes: Array<keyof SKU>;
 }
 
 /**
  * Display a simple comparison table for selected products.
  */
-export default function ProductComparisonBlock({ skus = [], attributes = [] }: Props) {
+export default function ProductComparisonBlock({ skus = [], attributes }: Props) {
   if (!skus.length || !attributes.length) return null;
 
   return (
@@ -30,7 +30,7 @@ export default function ProductComparisonBlock({ skus = [], attributes = [] }: P
             <td className="border px-2 py-1">{sku.title}</td>
             {attributes.map((attr) => (
               <td key={attr} className="border px-2 py-1">
-                {String((sku as any)[attr] ?? "")}
+                {String(sku[attr] ?? "")}
               </td>
             ))}
           </tr>

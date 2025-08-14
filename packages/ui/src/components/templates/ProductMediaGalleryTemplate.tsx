@@ -3,18 +3,16 @@ import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { ProductBadge } from "../atoms/ProductBadge";
-import type { MediaItem } from "../molecules/MediaSelector";
-import type { Product } from "../organisms/ProductCard";
+import type { MediaItem as GalleryMediaItem } from "../molecules/MediaSelector";
+import type { SKU } from "@acme/types";
 import { ProductGallery } from "../organisms/ProductGallery";
 
 export interface ProductMediaGalleryTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  product: Product & {
-    media: MediaItem[];
-    description?: string;
+  product: SKU & {
     badges?: { label: string; variant?: "default" | "sale" | "new" }[];
   };
-  onAddToCart?: (product: Product) => void;
+  onAddToCart?: (product: SKU) => void;
   ctaLabel?: string;
 }
 
@@ -25,9 +23,14 @@ export function ProductMediaGalleryTemplate({
   className,
   ...props
 }: ProductMediaGalleryTemplateProps) {
+  const galleryMedia: GalleryMediaItem[] = product.media.map((m) => ({
+    type: m.type as GalleryMediaItem["type"],
+    src: m.url,
+    alt: m.altText,
+  }));
   return (
     <div className={cn("grid gap-6 md:grid-cols-2", className)} {...props}>
-      <ProductGallery media={product.media} />
+      <ProductGallery media={galleryMedia} />
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold">{product.title}</h2>
         {product.badges && (

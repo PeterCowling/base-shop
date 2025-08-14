@@ -2,14 +2,14 @@ import * as React from "react";
 import { cn } from "../../utils/style";
 import { PaginationControl } from "../molecules/PaginationControl";
 import { SearchBar } from "../molecules/SearchBar";
-import type { Product } from "../organisms/ProductCard";
+import type { SKU } from "@acme/types";
 import { ProductGrid } from "../organisms/ProductGrid";
 import { Skeleton } from "../atoms/Skeleton";
 
 export interface SearchResultsTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "results"> {
   suggestions: string[];
-  results: Product[];
+  results: SKU[];
   page: number;
   pageCount: number;
   /** Minimum items to show */

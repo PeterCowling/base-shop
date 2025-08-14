@@ -2,10 +2,11 @@ import * as React from "react";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { ProductQuickView } from "../overlays/ProductQuickView";
-import { Product, ProductCard } from "./ProductCard";
+import type { SKU } from "@acme/types";
+import { ProductCard } from "./ProductCard";
 
 export interface ProductGridProps extends React.HTMLAttributes<HTMLDivElement> {
-  products: Product[];
+  products: SKU[];
   /**
    * Explicit number of columns. If omitted, the grid will
    * determine a responsive column count within the
@@ -25,7 +26,7 @@ export interface ProductGridProps extends React.HTMLAttributes<HTMLDivElement> {
   showImage?: boolean;
   showPrice?: boolean;
   ctaLabel?: string;
-  onAddToCart?: (product: Product) => void;
+  onAddToCart?: (product: SKU) => void;
   /** Show quick view trigger for each product */
   enableQuickView?: boolean;
 }
@@ -50,7 +51,7 @@ export function ProductGrid({
   const [cols, setCols] = React.useState(
     columns ?? desktopItems ?? minItems
   );
-  const [quickViewProduct, setQuickViewProduct] = React.useState<Product | null>(
+  const [quickViewProduct, setQuickViewProduct] = React.useState<SKU | null>(
     null
   );
 

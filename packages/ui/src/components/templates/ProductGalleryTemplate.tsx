@@ -1,11 +1,11 @@
 import * as React from "react";
-import { Product } from "../organisms/ProductCard";
+import type { SKU } from "@acme/types";
 import { ProductCarousel } from "../organisms/ProductCarousel";
 import { ProductGrid } from "../organisms/ProductGrid";
 
 export interface ProductGalleryTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  products: Product[];
+  products: SKU[];
   useCarousel?: boolean;
   /** Minimum items to show per row or slide */
   minItems?: number;

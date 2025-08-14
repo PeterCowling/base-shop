@@ -4,13 +4,13 @@ import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { RatingStars } from "../atoms/RatingStars";
-import type { Product } from "../organisms/ProductCard";
+import type { SKU } from "@acme/types";
 import { ProductFeatures } from "../organisms/ProductFeatures";
 
 export interface FeaturedProductTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  product: Product & { rating?: number; features?: string[] };
-  onAddToCart?: (product: Product) => void;
+  product: SKU & { rating?: number; features?: string[] };
+  onAddToCart?: (product: SKU) => void;
   ctaLabel?: string;
 }
 

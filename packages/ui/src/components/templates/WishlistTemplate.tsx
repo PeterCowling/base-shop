@@ -3,9 +3,9 @@ import * as React from "react";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
-import type { Product } from "../organisms/ProductCard";
+import type { SKU } from "@acme/types";
 
-export interface WishlistItem extends Product {
+export interface WishlistItem extends SKU {
   quantity?: number;
 }
 

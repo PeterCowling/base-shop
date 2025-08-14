@@ -1,11 +1,11 @@
 import * as React from "react";
 import { cn } from "../../utils/style";
-import type { Product } from "../organisms/ProductCard";
+import type { SKU } from "@acme/types";
 import { ProductCard } from "../organisms/ProductCard";
 
 export interface ProductComparisonTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  products: Product[];
+  products: SKU[];
 }
 
 /**

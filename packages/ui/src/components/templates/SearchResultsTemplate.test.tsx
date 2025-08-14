@@ -1,25 +1,39 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SearchResultsTemplate } from "./SearchResultsTemplate";
-import type { Product } from "../organisms/ProductCard";
+import type { SKU } from "@acme/types";
 import "../../../../../test/resetNextMocks";
 
 jest.mock("@platform-core/src/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],
 }));
 
-const results: Product[] = [
+const results: SKU[] = [
   {
     id: "1",
+    slug: "product-1",
     title: "Product 1",
-    media: [{ url: "/img1.jpg", type: "image" }],
     price: 1000,
+    deposit: 0,
+    stock: 0,
+    forSale: true,
+    forRental: false,
+    media: [{ url: "/img1.jpg", type: "image" }],
+    sizes: [],
+    description: "",
   },
   {
     id: "2",
+    slug: "product-2",
     title: "Product 2",
-    media: [{ url: "/img2.jpg", type: "image" }],
     price: 1500,
+    deposit: 0,
+    stock: 0,
+    forSale: true,
+    forRental: false,
+    media: [{ url: "/img2.jpg", type: "image" }],
+    sizes: [],
+    description: "",
   },
 ];
 
@@ -113,7 +127,7 @@ describe("SearchResultsTemplate", () => {
 
     const input = screen.getByPlaceholderText("Search products…");
     await userEvent.type(input, "Pro");
-    const list = await screen.findByRole("list");
+    const list = await screen.findByRole("listbox");
     await userEvent.click(within(list).getByText("Product 1"));
 
     expect(onQueryChange).toHaveBeenCalledWith("Product 1");

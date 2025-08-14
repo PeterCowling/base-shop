@@ -2,12 +2,12 @@ import * as React from "react";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
-import type { Product } from "./ProductCard";
+import type { SKU } from "@acme/types";
 
 export interface StickyAddToCartBarProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  product: Product;
-  onAddToCart?: (product: Product) => void;
+  product: SKU;
+  onAddToCart?: (product: SKU) => void;
   ctaLabel?: string;
   /** Override default padding classes. */
   padding?: string;

@@ -4,15 +4,14 @@ import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { ProductBadge } from "../atoms/ProductBadge";
-import type { Product } from "../organisms/ProductCard";
+import type { SKU } from "@acme/types";
 
 export interface ProductDetailTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  product: Product & {
-    description?: string;
+  product: SKU & {
     badges?: { label: string; variant?: "default" | "sale" | "new" }[];
   };
-  onAddToCart?: (product: Product) => void;
+  onAddToCart?: (product: SKU) => void;
   ctaLabel?: string;
 }
 

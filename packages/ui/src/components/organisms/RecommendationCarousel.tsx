@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import { cn } from "../../utils/style";
-import { Product, ProductCard } from "./ProductCard";
+import type { SKU } from "@acme/types";
+import { ProductCard } from "./ProductCard";
 
 export interface RecommendationCarouselProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -42,7 +43,7 @@ export function RecommendationCarousel({
   className,
   ...props
 }: RecommendationCarouselProps) {
-  const [products, setProducts] = React.useState<Product[]>([]);
+  const [products, setProducts] = React.useState<SKU[]>([]);
   const [itemsPerSlide, setItemsPerSlide] = React.useState(
     desktopItems ?? minItems
   );
@@ -85,7 +86,7 @@ export function RecommendationCarousel({
         url.searchParams.set("maxItems", String(maxItems));
         const res = await fetch(url);
         if (!res.ok) return;
-        const data = (await res.json()) as Product[];
+        const data = (await res.json()) as SKU[];
         setProducts(data);
       } catch (err) {
         console.error("Failed loading recommendations", err);

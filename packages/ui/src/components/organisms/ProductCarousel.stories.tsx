@@ -1,13 +1,22 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import * as React from "react";
-import type { Product } from "./ProductCard";
+import type { SKU } from "@acme/types";
 import { ProductCarousel, type ProductCarouselProps } from "./ProductCarousel";
 
-const products: Product[] = Array.from({ length: 5 }).map((_, i) => ({
+const products: SKU[] = Array.from({ length: 5 }).map((_, i) => ({
   id: String(i + 1),
+  slug: `product-${i + 1}`,
   title: `Product ${i + 1}`,
-  image: `https://placehold.co/300x300?text=${i + 1}`,
   price: (i + 1) * 10,
+  deposit: 0,
+  stock: 0,
+  forSale: true,
+  forRental: false,
+  media: [
+    { url: `https://placehold.co/300x300?text=${i + 1}`, type: "image" },
+  ],
+  sizes: [],
+  description: "",
 }));
 
 function AutoCarousel(props: ProductCarouselProps & { autoplay?: boolean }) {

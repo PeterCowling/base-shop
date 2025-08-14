@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { Button, Input } from "../atoms/shadcn";
-import type { Product } from "../organisms/ProductCard";
+import type { SKU } from "@acme/types";
 import { ProductCard } from "../organisms/ProductCard";
 
 export interface ChatMessage {
@@ -13,10 +13,10 @@ export interface ChatMessage {
 export interface LiveShoppingEventTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
   streamUrl: string;
-  products?: Product[];
+  products?: SKU[];
   chatMessages?: ChatMessage[];
   onSendMessage?: (message: string) => void;
-  onAddToCart?: (product: Product) => void;
+  onAddToCart?: (product: SKU) => void;
   ctaLabel?: string;
 }
 

@@ -1,16 +1,40 @@
 import { render, waitFor } from "@testing-library/react";
 import { RecommendationCarousel } from "../RecommendationCarousel";
-import type { Product } from "../ProductCard";
+import type { SKU } from "@acme/types";
 
 jest.mock("../ProductCard", () => ({
-  ProductCard: ({ product }: { product: Product }) => (
+  ProductCard: ({ product }: { product: SKU }) => (
     <div data-testid={`product-${product.id}`} />
   ),
 }));
 
-const products: Product[] = [
-  { id: "1", title: "A", images: [{ url: "", type: "image" }], price: 1 },
-  { id: "2", title: "B", images: [{ url: "", type: "image" }], price: 2 },
+const products: SKU[] = [
+  {
+    id: "1",
+    slug: "a",
+    title: "A",
+    price: 1,
+    deposit: 0,
+    stock: 0,
+    forSale: true,
+    forRental: false,
+    media: [{ url: "", type: "image" }],
+    sizes: [],
+    description: "",
+  },
+  {
+    id: "2",
+    slug: "b",
+    title: "B",
+    price: 2,
+    deposit: 0,
+    stock: 0,
+    forSale: true,
+    forRental: false,
+    media: [{ url: "", type: "image" }],
+    sizes: [],
+    description: "",
+  },
 ];
 
 describe("RecommendationCarousel responsive counts", () => {

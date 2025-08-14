@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Dialog, DialogContent } from "../atoms/shadcn";
-import { Product, ProductCard } from "../organisms/ProductCard";
+import type { SKU } from "@acme/types";
+import { ProductCard } from "../organisms/ProductCard";
 
 export interface ProductQuickViewProps {
   /** Product to display */
-  product: Product;
+  product: SKU;
   /** Controls modal visibility */
   open: boolean;
   /** Handler when open state changes */
@@ -12,7 +13,7 @@ export interface ProductQuickViewProps {
   /** Optional element whose dimensions should bound the overlay */
   container?: HTMLElement | null;
   /** Callback for adding item to cart */
-  onAddToCart?: (product: Product) => void;
+  onAddToCart?: (product: SKU) => void;
 }
 
 /** Modal displaying a product with add-to-cart controls. */

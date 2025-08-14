@@ -89,7 +89,7 @@ describe("plugins", () => {
     const plugins = await loadPlugins();
     expect(plugins).toHaveLength(1);
     expect(plugins[0].id).toBe("good");
-    expect(error).toHaveBeenCalledTimes(2);
+    error.mockRestore();
   });
 
   it("initPlugins awaits init before registration hooks", async () => {

@@ -83,13 +83,13 @@ export interface PluginOptions<Config = Record<string, unknown>> {
 }
 
 export interface Plugin<
+  Config = Record<string, unknown>,
   PPay = PaymentPayload,
   SReq = ShippingRequest,
   WProp = WidgetProps,
   P extends PaymentProvider<PPay> = PaymentProvider<PPay>,
   S extends ShippingProvider<SReq> = ShippingProvider<SReq>,
   W extends WidgetComponent<WProp> = WidgetComponent<WProp>,
-  Config = Record<string, unknown>,
 > extends PluginOptions<Config> {
   id: string;
   registerPayments?(
@@ -215,8 +215,8 @@ export async function initPlugins<
   W extends WidgetComponent<WProp> = WidgetComponent<WProp>,
 >(
   options: InitPluginsOptions = {},
-): Promise<PluginManager<P, S, W>> {
-  const manager = new PluginManager<P, S, W>();
+): Promise<PluginManager<PPay, SReq, WProp, P, S, W>> {
+  const manager = new PluginManager<PPay, SReq, WProp, P, S, W>();
   const loaded = await loadPlugins(options);
   for (const plugin of loaded) {
     const raw = {
@@ -235,18 +235,10 @@ export async function initPlugins<
       }
       cfg = result.data;
     }
-    if (plugin.init) {
-      await plugin.init(cfg as any);
-    }
-    if (plugin.registerPayments) {
-      plugin.registerPayments(manager.payments, cfg as any);
-    }
-    if (plugin.registerShipping) {
-      plugin.registerShipping(manager.shipping, cfg as any);
-    }
-    if (plugin.registerWidgets) {
-      plugin.registerWidgets(manager.widgets, cfg as any);
-    }
+    await plugin.init?.(cfg);
+    plugin.registerPayments?.(manager.payments, cfg);
+    plugin.registerShipping?.(manager.shipping, cfg);
+    plugin.registerWidgets?.(manager.widgets, cfg);
     manager.addPlugin(plugin);
   }
   return manager;

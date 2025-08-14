@@ -1,4 +1,14 @@
 // packages/platform-core/src/plugins/PluginManager.ts
+import type {
+  PaymentPayload,
+  PaymentProvider,
+  Plugin,
+  ShippingProvider,
+  ShippingRequest,
+  WidgetComponent,
+  WidgetProps,
+} from "../plugins";
+
 export interface RegistryItem<T> {
   id: string;
   value: T;
@@ -20,29 +30,27 @@ class MapRegistry<T> {
   }
 }
 
-export interface PluginMetadata {
+export interface PluginMetadata<T extends Plugin = Plugin> {
   id: string;
   name?: string;
   description?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  plugin: any;
+  plugin: T;
 }
 
 export class PluginManager<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  P = any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  S = any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  W = any,
+  PPay = PaymentPayload,
+  SReq = ShippingRequest,
+  WProp = WidgetProps,
+  P extends PaymentProvider<PPay> = PaymentProvider<PPay>,
+  S extends ShippingProvider<SReq> = ShippingProvider<SReq>,
+  W extends WidgetComponent<WProp> = WidgetComponent<WProp>,
 > {
   readonly payments = new MapRegistry<P>();
   readonly shipping = new MapRegistry<S>();
   readonly widgets = new MapRegistry<W>();
-  private plugins = new Map<string, PluginMetadata>();
+  private plugins = new Map<string, PluginMetadata<Plugin<unknown, PPay, SReq, WProp, P, S, W>>>();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  addPlugin(plugin: { id: string; name?: string; description?: string } & any): void {
+  addPlugin<C>(plugin: Plugin<C, PPay, SReq, WProp, P, S, W>): void {
     this.plugins.set(plugin.id, {
       id: plugin.id,
       name: plugin.name,
@@ -51,11 +59,13 @@ export class PluginManager<
     });
   }
 
-  getPlugin(id: string): PluginMetadata | undefined {
+  getPlugin(
+    id: string,
+  ): PluginMetadata<Plugin<unknown, PPay, SReq, WProp, P, S, W>> | undefined {
     return this.plugins.get(id);
   }
 
-  listPlugins(): PluginMetadata[] {
+  listPlugins(): PluginMetadata<Plugin<unknown, PPay, SReq, WProp, P, S, W>>[] {
     return Array.from(this.plugins.values());
   }
 }

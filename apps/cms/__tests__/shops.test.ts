@@ -74,7 +74,7 @@ describe("shop actions", () => {
         getServerSession: jest.fn().mockResolvedValue(adminSession),
       }));
 
-      const { updateShop } = await import("../src/actions/shops.server");
+      const { updateShop } = await import("../src/services/shops");
 
       const fd = new FormData();
       fd.append("id", "test");
@@ -142,7 +142,7 @@ describe("shop actions", () => {
         loadThemeTokens: jest.fn().mockResolvedValue(defaultTokens),
       }));
 
-      const { updateShop } = await import("../src/actions/shops.server");
+      const { updateShop } = await import("../src/services/shops");
 
       const overrides = { accent: "red", "accent-dark": "black" };
       const fd = new FormData();

@@ -14,6 +14,7 @@ import { getCustomerSession } from "@auth";
 import { readShop } from "@platform-core/src/repositories/shops.server";
 import { notFound } from "next/navigation";
 import { coreEnv } from "@acme/config/env/core";
+import { nowIso } from "@date-utils";
 import {
   getUserPlan,
   getRemainingSwaps,
@@ -34,7 +35,7 @@ export default async function SwapPage() {
   const selectedPlan = planId
     ? shop.rentalSubscriptions.find((p) => p.id === planId)
     : undefined;
-  const month = new Date().toISOString().slice(0, 7);
+  const month = nowIso().slice(0, 7);
   const remainingSwaps =
     session?.customerId && selectedPlan
       ? await getRemainingSwaps(
@@ -61,7 +62,7 @@ export default async function SwapPage() {
     const selectedPlan = planId
       ? shop.rentalSubscriptions.find((p) => p.id === planId)
       : undefined;
-    const month = new Date().toISOString().slice(0, 7);
+    const month = nowIso().slice(0, 7);
     if (!selectedPlan) return;
     const remaining = await getRemainingSwaps(
       shopId,

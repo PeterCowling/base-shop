@@ -2,7 +2,7 @@
 import "server-only";
 
 import type { RentalOrder } from "@acme/types";
-import { nowIso } from "@acme/date-utils";
+import { nowIso } from "@date-utils";
 import { prisma } from "../db";
 
 export {

@@ -3,6 +3,7 @@ import { createHmac } from "node:crypto";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { nowIso } from "@date-utils";
 
 import type { Page } from "@acme/types";
 
@@ -54,7 +55,7 @@ describe("CMS → storefront flow", () => {
 
   test("published page is returned via preview route", async () => {
     await withRepo(async (repo) => {
-      const now = new Date().toISOString();
+      const now = nowIso();
       const page: Page = {
         id: "p1",
         slug: "home",

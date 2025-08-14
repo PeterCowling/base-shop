@@ -33,6 +33,9 @@ export default function useCanvasDrag({
   const { guides, setGuides, siblingEdgesRef, computeSiblingEdges } = useGuides(
     containerRef
   );
+  const [distances, setDistances] = useState<{ x: number | null; y: number | null }>(
+    { x: null, y: null }
+  );
 
   useEffect(() => {
     if (!moving) return;
@@ -40,39 +43,61 @@ export default function useCanvasDrag({
       if (!moveRef.current || !containerRef.current) return;
       const dx = e.clientX - moveRef.current.x;
       const dy = e.clientY - moveRef.current.y;
-      let newL = moveRef.current.l + dx;
-      let newT = moveRef.current.t + dy;
+      const originalL = moveRef.current.l + dx;
+      const originalT = moveRef.current.t + dy;
+      let newL = originalL;
+      let newT = originalT;
       const threshold = 10;
       let guideX: number | null = null;
       let guideY: number | null = null;
+      let distX: number | null = null;
+      let distY: number | null = null;
       const width = containerRef.current.offsetWidth;
       const height = containerRef.current.offsetHeight;
       siblingEdgesRef.current.vertical.forEach((edge) => {
-        if (Math.abs(newL - edge) <= threshold) {
+        const leftDist = Math.abs(originalL - edge);
+        const rightDist = Math.abs(originalL + width - edge);
+        if (leftDist <= threshold && (distX === null || leftDist < distX)) {
           newL = edge;
           guideX = edge;
+          distX = leftDist;
         }
-        if (Math.abs(newL + width - edge) <= threshold) {
+        if (rightDist <= threshold && (distX === null || rightDist < distX)) {
           newL = edge - width;
           guideX = edge;
+          distX = rightDist;
         }
       });
       siblingEdgesRef.current.horizontal.forEach((edge) => {
-        if (Math.abs(newT - edge) <= threshold) {
+        const topDist = Math.abs(originalT - edge);
+        const bottomDist = Math.abs(originalT + height - edge);
+        if (topDist <= threshold && (distY === null || topDist < distY)) {
           newT = edge;
           guideY = edge;
+          distY = topDist;
         }
-        if (Math.abs(newT + height - edge) <= threshold) {
+        if (bottomDist <= threshold && (distY === null || bottomDist < distY)) {
           newT = edge - height;
           guideY = edge;
+          distY = bottomDist;
         }
       });
-      if (gridEnabled) {
-        const parent = containerRef.current.parentElement;
-        const unit = parent ? parent.offsetWidth / gridCols : null;
-        if (unit) {
-          newL = snapToGrid(newL, unit);
-          newT = snapToGrid(newT, unit);
+      const parent = containerRef.current.parentElement;
+      const unit = parent ? parent.offsetWidth / gridCols : null;
+      if (gridEnabled && unit) {
+        const snappedL = snapToGrid(newL, unit);
+        const snappedT = snapToGrid(newT, unit);
+        const gridDistX = Math.abs(snappedL - newL);
+        const gridDistY = Math.abs(snappedT - newT);
+        newL = snappedL;
+        newT = snappedT;
+        if (gridDistX <= threshold && (distX === null || gridDistX < distX)) {
+          guideX = snappedL;
+          distX = gridDistX;
+        }
+        if (gridDistY <= threshold && (distY === null || gridDistY < distY)) {
+          guideY = snappedT;
+          distY = gridDistY;
         }
       }
       dispatch({
@@ -86,10 +111,12 @@ export default function useCanvasDrag({
         x: guideX !== null ? guideX - newL : null,
         y: guideY !== null ? guideY - newT : null,
       });
+      setDistances({ x: distX, y: distY });
     };
     const stop = () => {
       setMoving(false);
       setGuides({ x: null, y: null });
+      setDistances({ x: null, y: null });
     };
     window.addEventListener("pointermove", handleMove);
     window.addEventListener("pointerup", stop);
@@ -124,6 +151,7 @@ export default function useCanvasDrag({
   return {
     startDrag,
     guides,
+    distances,
     snapping,
     moving,
     left: current.left,

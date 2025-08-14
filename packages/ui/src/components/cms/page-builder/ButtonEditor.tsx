@@ -1,4 +1,4 @@
-import type { PageComponent } from "@acme/types";
+import type { ButtonComponent } from "@acme/types";
 import {
   Input,
   Select,
@@ -10,26 +10,26 @@ import {
 import useComponentInputs from "./useComponentInputs";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: ButtonComponent;
+  onChange: (patch: Partial<ButtonComponent>) => void;
 }
 
 export default function ButtonEditor({ component, onChange }: Props) {
-  const { handleInput } = useComponentInputs(onChange);
+  const { handleInput } = useComponentInputs<ButtonComponent>(onChange);
   return (
     <>
       <Input
         label="Label"
-        value={(component as any).label ?? ""}
+        value={component.label ?? ""}
         onChange={(e) => handleInput("label", e.target.value)}
       />
       <Input
         label="URL"
-        value={(component as any).href ?? ""}
+        value={component.href ?? ""}
         onChange={(e) => handleInput("href", e.target.value)}
       />
       <Select
-        value={(component as any).variant ?? ""}
+        value={component.variant ?? ""}
         onValueChange={(v) => handleInput("variant", v || undefined)}
       >
         <SelectTrigger>

@@ -1,22 +1,22 @@
-import type { PageComponent } from "@types";
+import type { HeaderComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: HeaderComponent;
+  onChange: (patch: Partial<HeaderComponent>) => void;
 }
 
 export default function HeaderEditor({ component, onChange }: Props) {
-  const arrayEditor = useArrayEditor(onChange);
+  const arrayEditor = useArrayEditor<HeaderComponent>(onChange);
   return (
     <div className="space-y-2">
       <Input
-        value={(component as any).logo ?? ""}
-        onChange={(e) => onChange({ logo: e.target.value } as Partial<PageComponent>)}
+        value={component.logo ?? ""}
+        onChange={(e) => onChange({ logo: e.target.value } as Partial<HeaderComponent>)}
         placeholder="logo"
       />
-      {arrayEditor("nav", (component as any).nav, ["label", "url"])}
+      {arrayEditor("nav", component.nav, ["label", "url"])}
     </div>
   );
 }

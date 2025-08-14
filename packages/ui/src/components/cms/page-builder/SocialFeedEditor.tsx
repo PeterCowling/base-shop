@@ -1,20 +1,23 @@
-import type { PageComponent } from "@acme/types";
+import type { SocialFeedComponent } from "@acme/types";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: SocialFeedComponent;
+  onChange: (patch: Partial<SocialFeedComponent>) => void;
 }
 
 export default function SocialFeedEditor({ component, onChange }: Props) {
-  const handleInput = (field: string, value: string) => {
-    onChange({ [field]: value } as Partial<PageComponent>);
+  const handleInput = (
+    field: keyof SocialFeedComponent & string,
+    value: string,
+  ) => {
+    onChange({ [field]: value } as Partial<SocialFeedComponent>);
   };
 
   return (
     <div className="space-y-2">
       <Select
-        value={(component as any).platform ?? ""}
+        value={component.platform ?? ""}
         onValueChange={(v) => handleInput("platform", v)}
       >
         <SelectTrigger>
@@ -26,12 +29,12 @@ export default function SocialFeedEditor({ component, onChange }: Props) {
         </SelectContent>
       </Select>
       <Input
-        value={(component as any).account ?? ""}
+        value={component.account ?? ""}
         onChange={(e) => handleInput("account", e.target.value)}
         placeholder="account"
       />
       <Input
-        value={(component as any).hashtag ?? ""}
+        value={component.hashtag ?? ""}
         onChange={(e) => handleInput("hashtag", e.target.value)}
         placeholder="hashtag"
       />

@@ -1,18 +1,18 @@
-import type { PageComponent } from "@acme/types";
+import type { CustomHtmlComponent } from "@acme/types";
 import { Textarea } from "../../atoms/shadcn";
 import useComponentInputs from "./useComponentInputs";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: CustomHtmlComponent;
+  onChange: (patch: Partial<CustomHtmlComponent>) => void;
 }
 
 export default function CustomHtmlEditor({ component, onChange }: Props) {
-  const { handleInput } = useComponentInputs(onChange);
+  const { handleInput } = useComponentInputs<CustomHtmlComponent>(onChange);
   return (
     <Textarea
       label="HTML"
-      value={(component as any).html ?? ""}
+      value={component.html ?? ""}
       onChange={(e) => handleInput("html", e.target.value)}
     />
   );

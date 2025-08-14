@@ -1,27 +1,30 @@
 // packages/ui/src/components/cms/page-builder/SocialProofEditor.tsx
-import type { PageComponent } from "@acme/types";
+import type { SocialProofComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: SocialProofComponent;
+  onChange: (patch: Partial<SocialProofComponent>) => void;
 }
 
 export default function SocialProofEditor({ component, onChange }: Props) {
-  const handleInput = (field: string, value: string | number | undefined) => {
-    onChange({ [field]: value } as Partial<PageComponent>);
+  const handleInput = (
+    field: keyof SocialProofComponent & string,
+    value: string | number | undefined,
+  ) => {
+    onChange({ [field]: value } as Partial<SocialProofComponent>);
   };
 
   return (
     <div className="space-y-2">
       <Input
-        value={(component as any).source ?? ""}
+        value={component.source ?? ""}
         onChange={(e) => handleInput("source", e.target.value)}
         placeholder="data source URL"
       />
       <Input
         type="number"
-        value={(component as any).frequency ?? ""}
+        value={component.frequency ?? ""}
         onChange={(e) =>
           handleInput(
             "frequency",

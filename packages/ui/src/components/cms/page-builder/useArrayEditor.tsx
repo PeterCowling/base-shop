@@ -1,15 +1,14 @@
 import type { ChangeEvent } from "react";
 import { useCallback } from "react";
-import type { PageComponent } from "@acme/types";
 import { Button, Input } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
 
-export function useArrayEditor(
-  onChange: (patch: Partial<PageComponent>) => void,
+export function useArrayEditor<T>(
+  onChange: (patch: Partial<T>) => void,
 ) {
   return useCallback(
     (
-      prop: string,
+      prop: keyof T & string,
       items: unknown[] | undefined,
       fields: string[],
       limits?: { minItems?: number; maxItems?: number }
@@ -28,7 +27,7 @@ export function useArrayEditor(
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       const next = [...list];
                       next[idx] = { ...next[idx], [f]: e.target.value };
-                      onChange({ [prop]: next } as Partial<PageComponent>);
+                      onChange({ [prop]: next } as Partial<T>);
                     }}
                     placeholder={f}
                     className="flex-1"
@@ -38,7 +37,7 @@ export function useArrayEditor(
                       onSelect={(url) => {
                         const next = [...list];
                         next[idx] = { ...next[idx], src: url };
-                        onChange({ [prop]: next } as Partial<PageComponent>);
+                        onChange({ [prop]: next } as Partial<T>);
                       }}
                     >
                       <Button type="button" variant="outline">
@@ -52,7 +51,7 @@ export function useArrayEditor(
                 variant="destructive"
                 onClick={() => {
                   const next = list.filter((_, i) => i !== idx);
-                  onChange({ [prop]: next } as Partial<PageComponent>);
+                  onChange({ [prop]: next } as Partial<T>);
                 }}
                 disabled={list.length <= min}
               >
@@ -63,7 +62,7 @@ export function useArrayEditor(
           <Button
             onClick={() => {
               const blank = Object.fromEntries(fields.map((f) => [f, ""]));
-              onChange({ [prop]: [...list, blank] } as Partial<PageComponent>);
+              onChange({ [prop]: [...list, blank] } as Partial<T>);
             }}
             disabled={list.length >= max}
           >

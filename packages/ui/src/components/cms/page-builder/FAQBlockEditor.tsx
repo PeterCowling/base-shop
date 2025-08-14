@@ -1,20 +1,15 @@
-import type { PageComponent } from "@acme/types";
+import type { FAQBlockComponent } from "@acme/types";
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: FAQBlockComponent;
+  onChange: (patch: Partial<FAQBlockComponent>) => void;
 }
 
 export default function FAQBlockEditor({ component, onChange }: Props) {
-  const arrayEditor = useArrayEditor(onChange);
-  return arrayEditor(
-    "items",
-    (component as any).items,
-    ["question", "answer"],
-    {
-      minItems: (component as any).minItems,
-      maxItems: (component as any).maxItems,
-    }
-  );
+  const arrayEditor = useArrayEditor<FAQBlockComponent>(onChange);
+  return arrayEditor("items", component.items, ["question", "answer"], {
+    minItems: component.minItems,
+    maxItems: component.maxItems,
+  });
 }

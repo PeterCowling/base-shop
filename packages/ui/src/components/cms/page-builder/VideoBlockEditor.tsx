@@ -1,16 +1,16 @@
-import type { PageComponent } from "@acme/types";
+import type { VideoBlockComponent } from "@acme/types";
 import { Button, Checkbox, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
 import { useEffect, useState } from "react";
 import useMediaLibrary from "./useMediaLibrary";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: VideoBlockComponent;
+  onChange: (patch: Partial<VideoBlockComponent>) => void;
 }
 
 export default function VideoBlockEditor({ component, onChange }: Props) {
-  const handleInput = (field: string, value: string | boolean) => {
-    onChange({ [field]: value } as Partial<PageComponent>);
+  const handleInput = (field: keyof VideoBlockComponent & string, value: string | boolean) => {
+    onChange({ [field]: value } as Partial<VideoBlockComponent>);
   };
 
   const [open, setOpen] = useState(false);
@@ -20,7 +20,7 @@ export default function VideoBlockEditor({ component, onChange }: Props) {
   }, [open, loadMedia]);
 
   const videos = media.filter((m) => m.type === "video");
-  const src = (component as any).src as string | undefined;
+  const src = component.src;
 
   return (
     <div className="space-y-2">
@@ -60,7 +60,7 @@ export default function VideoBlockEditor({ component, onChange }: Props) {
       <div className="flex items-center gap-2">
         <Checkbox
           id="autoplay"
-          checked={(component as any).autoplay ?? false}
+          checked={component.autoplay ?? false}
           onCheckedChange={(checked) => handleInput("autoplay", Boolean(checked))}
         />
         <label htmlFor="autoplay" className="text-sm">

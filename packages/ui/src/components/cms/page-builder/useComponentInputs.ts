@@ -1,14 +1,13 @@
 import { useCallback } from "react";
-import type { PageComponent } from "@acme/types";
 
-export default function useComponentInputs(
-  onChange: (patch: Partial<PageComponent>) => void
+export default function useComponentInputs<T>(
+  onChange: (patch: Partial<T>) => void,
 ) {
   const handleInput = useCallback(
-    (field: string, value: any) => {
-      onChange({ [field]: value } as Partial<PageComponent>);
+    (field: keyof T & string, value: any) => {
+      onChange({ [field]: value } as Partial<T>);
     },
-    [onChange]
+    [onChange],
   );
 
   return { handleInput };

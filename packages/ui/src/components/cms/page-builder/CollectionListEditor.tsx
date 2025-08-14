@@ -1,46 +1,46 @@
-import type { PageComponent } from "@acme/types";
+import type { CollectionListComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: CollectionListComponent;
+  onChange: (patch: Partial<CollectionListComponent>) => void;
 }
 
 export default function CollectionListEditor({ component, onChange }: Props) {
-  const arrayEditor = useArrayEditor(onChange);
-  const handleNum = (field: string, value: string) => {
+  const arrayEditor = useArrayEditor<CollectionListComponent>(onChange);
+  const handleNum = (field: keyof CollectionListComponent & string, value: string) => {
     const num = value ? Number(value) : undefined;
-    onChange({ [field]: isNaN(num!) ? undefined : num } as Partial<PageComponent>);
+    onChange({ [field]: isNaN(num!) ? undefined : num } as Partial<CollectionListComponent>);
   };
 
   return (
     <div className="space-y-2">
       {arrayEditor(
         "collections",
-        (component as any).collections,
+        component.collections,
         ["id", "title", "image"],
         {
-          minItems: (component as any).minItems,
-          maxItems: (component as any).maxItems,
+          minItems: component.minItems,
+          maxItems: component.maxItems,
         }
       )}
       <Input
         label="Desktop Items"
         type="number"
-        value={(component as any).desktopItems ?? ""}
+        value={component.desktopItems ?? ""}
         onChange={(e) => handleNum("desktopItems", e.target.value)}
       />
       <Input
         label="Tablet Items"
         type="number"
-        value={(component as any).tabletItems ?? ""}
+        value={component.tabletItems ?? ""}
         onChange={(e) => handleNum("tabletItems", e.target.value)}
       />
       <Input
         label="Mobile Items"
         type="number"
-        value={(component as any).mobileItems ?? ""}
+        value={component.mobileItems ?? ""}
         onChange={(e) => handleNum("mobileItems", e.target.value)}
       />
     </div>

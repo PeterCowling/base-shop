@@ -1,20 +1,15 @@
-import type { PageComponent } from "@acme/types";
+import type { HeroBannerComponent } from "@acme/types";
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: HeroBannerComponent;
+  onChange: (patch: Partial<HeroBannerComponent>) => void;
 }
 
 export default function HeroBannerEditor({ component, onChange }: Props) {
-  const arrayEditor = useArrayEditor(onChange);
-  return arrayEditor(
-    "slides",
-    (component as any).slides,
-    ["src", "alt", "headlineKey", "ctaKey"],
-    {
-      minItems: (component as any).minItems,
-      maxItems: (component as any).maxItems,
-    }
-  );
+  const arrayEditor = useArrayEditor<HeroBannerComponent>(onChange);
+  return arrayEditor("slides", component.slides, ["src", "alt", "headlineKey", "ctaKey"], {
+    minItems: component.minItems,
+    maxItems: component.maxItems,
+  });
 }

@@ -1,35 +1,35 @@
-import type { PageComponent } from "@acme/types";
+import type { CountdownTimerComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import useComponentInputs from "./useComponentInputs";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: CountdownTimerComponent;
+  onChange: (patch: Partial<CountdownTimerComponent>) => void;
 }
 
 export default function CountdownTimerEditor({ component, onChange }: Props) {
-  const { handleInput } = useComponentInputs(onChange);
+  const { handleInput } = useComponentInputs<CountdownTimerComponent>(onChange);
   return (
     <>
       <Input
         label="Target Date"
         type="datetime-local"
-        value={(component as any).targetDate ?? ""}
+        value={component.targetDate ?? ""}
         onChange={(e) => handleInput("targetDate", e.target.value)}
       />
       <Input
         label="Timezone"
-        value={(component as any).timezone ?? ""}
+        value={component.timezone ?? ""}
         onChange={(e) => handleInput("timezone", e.target.value)}
       />
       <Input
         label="Completion Text"
-        value={(component as any).completionText ?? ""}
+        value={component.completionText ?? ""}
         onChange={(e) => handleInput("completionText", e.target.value)}
       />
       <Input
         label="Styles"
-        value={(component as any).styles ?? ""}
+        value={component.styles ?? ""}
         onChange={(e) => handleInput("styles", e.target.value)}
       />
     </>

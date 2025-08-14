@@ -1,25 +1,28 @@
-import type { PageComponent } from "@acme/types";
+import type { SearchBarComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: SearchBarComponent;
+  onChange: (patch: Partial<SearchBarComponent>) => void;
 }
 
 export default function SearchBarEditor({ component, onChange }: Props) {
-  const handleInput = (field: string, value: string | number | undefined) => {
-    onChange({ [field]: value } as Partial<PageComponent>);
+  const handleInput = (
+    field: keyof SearchBarComponent & string,
+    value: string | number | undefined,
+  ) => {
+    onChange({ [field]: value } as Partial<SearchBarComponent>);
   };
   return (
     <div className="space-y-2">
       <Input
-        value={(component as any).placeholder ?? ""}
+        value={component.placeholder ?? ""}
         onChange={(e) => handleInput("placeholder", e.target.value)}
         placeholder="placeholder"
       />
       <Input
         type="number"
-        value={(component as any).limit ?? ""}
+        value={component.limit ?? ""}
         onChange={(e) =>
           handleInput(
             "limit",

@@ -1,15 +1,15 @@
-import type { PageComponent } from "@acme/types";
+import type { MapBlockComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: MapBlockComponent;
+  onChange: (patch: Partial<MapBlockComponent>) => void;
 }
 
 export default function MapBlockEditor({ component, onChange }: Props) {
   const handleNumber = (field: string, value: string) => {
     const num = value === "" ? undefined : Number(value);
-    onChange({ [field]: num } as Partial<PageComponent>);
+    onChange({ [field]: num } as Partial<MapBlockComponent>);
   };
 
   return (
@@ -17,19 +17,19 @@ export default function MapBlockEditor({ component, onChange }: Props) {
       <Input
         label="Latitude"
         type="number"
-        value={(component as any).lat ?? ""}
+        value={component.lat ?? ""}
         onChange={(e) => handleNumber("lat", e.target.value)}
       />
       <Input
         label="Longitude"
         type="number"
-        value={(component as any).lng ?? ""}
+        value={component.lng ?? ""}
         onChange={(e) => handleNumber("lng", e.target.value)}
       />
       <Input
         label="Zoom"
         type="number"
-        value={(component as any).zoom ?? ""}
+        value={component.zoom ?? ""}
         onChange={(e) => handleNumber("zoom", e.target.value)}
       />
     </div>

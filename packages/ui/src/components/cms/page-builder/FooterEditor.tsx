@@ -1,22 +1,22 @@
-import type { PageComponent } from "@types";
+import type { FooterComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: FooterComponent;
+  onChange: (patch: Partial<FooterComponent>) => void;
 }
 
 export default function FooterEditor({ component, onChange }: Props) {
-  const arrayEditor = useArrayEditor(onChange);
+  const arrayEditor = useArrayEditor<FooterComponent>(onChange);
   return (
     <div className="space-y-2">
       <Input
-        value={(component as any).logo ?? ""}
-        onChange={(e) => onChange({ logo: e.target.value } as Partial<PageComponent>)}
+        value={component.logo ?? ""}
+        onChange={(e) => onChange({ logo: e.target.value } as Partial<FooterComponent>)}
         placeholder="logo"
       />
-      {arrayEditor("links", (component as any).links, ["label", "url"])}
+      {arrayEditor("links", component.links, ["label", "url"])}
     </div>
   );
 }

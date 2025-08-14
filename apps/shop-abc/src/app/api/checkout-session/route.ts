@@ -8,7 +8,7 @@ import {
 } from "@platform-core/src/cartCookie";
 import { getCart } from "@platform-core/src/cartStore";
 import { requirePermission } from "@auth";
-import { createCheckoutSession } from "@platform-core/src/checkout/session";
+import { createCheckoutSession } from "../../../services/checkout";
 import shop from "../../../../shop.json";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";

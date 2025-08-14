@@ -21,7 +21,7 @@ interface Props {
   /** Enable inspection mode to highlight tokenised elements */
   inspectMode?: boolean;
   /** Called when a tokenised element is clicked */
-  onTokenSelect?: (token: string) => void;
+  onTokenSelect?: (token: string, coords: { x: number; y: number }) => void;
 }
 
 /**
@@ -142,7 +142,11 @@ export default function WizardPreview({
     e.stopPropagation();
     setHighlight(el as HTMLElement);
     const token = el.getAttribute("data-token");
-    if (token) onTokenSelect?.(token);
+    if (token) {
+      const rect = (el as HTMLElement).getBoundingClientRect();
+      const coords = { x: rect.left + rect.width / 2, y: rect.bottom };
+      onTokenSelect?.(token, coords);
+    }
     if (clickTimeoutRef.current) {
       clearTimeout(clickTimeoutRef.current);
     }

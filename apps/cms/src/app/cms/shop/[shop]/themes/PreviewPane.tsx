@@ -35,7 +35,7 @@ export default function PreviewPane({
       <WizardPreview
         style={style}
         inspectMode
-        onTokenSelect={setSelectedToken}
+        onTokenSelect={(t) => setSelectedToken(t)}
       />
       {selectedToken && (
         <div ref={styleEditorRef}>

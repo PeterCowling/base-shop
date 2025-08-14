@@ -20,6 +20,7 @@ import {
 } from "@ui/utils/colorUtils";
 import { useThemePresets } from "./useThemePresets";
 import ColorInput from "./ColorInput";
+import InlineColorPicker from "./InlineColorPicker";
 import WizardPreview from "../../../wizard/WizardPreview";
 import { savePreviewTokens } from "../../../wizard/previewTokens";
 
@@ -74,6 +75,10 @@ export default function ThemeEditor({
     ...initialOverrides,
   });
   const debounceRef = useRef<number | null>(null);
+  const [picker, setPicker] = useState<
+    | null
+    | { token: string; x: number; y: number; defaultValue: string }
+  >(null);
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByThemeState[theme];
@@ -136,14 +141,23 @@ export default function ThemeEditor({
     });
   };
 
-  const handleTokenSelect = (token: string) => {
+  const handleTokenSelect = (
+    token: string,
+    coords?: { x: number; y: number },
+  ) => {
     const input = overrideRefs.current[token];
-    if (!input) return;
-    input.scrollIntoView?.({ behavior: "smooth", block: "center" });
-    input.focus();
-    (input as any).showPicker?.();
-    if (!(input as any).showPicker) {
-      input.click();
+    if (input) {
+      input.scrollIntoView?.({ behavior: "smooth", block: "center" });
+      input.focus();
+    }
+    if (coords) {
+      const defaultValue = tokensByThemeState[theme][token];
+      setPicker({ token, x: coords.x, y: coords.y, defaultValue });
+    } else if (input) {
+      (input as any).showPicker?.();
+      if (!(input as any).showPicker) {
+        input.click();
+      }
     }
   };
 
@@ -213,6 +227,21 @@ export default function ThemeEditor({
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <Input type="hidden" name="id" value={shop} />
+      {picker && (
+        <InlineColorPicker
+          token={picker.token}
+          defaultValue={picker.defaultValue}
+          value={overrides[picker.token] || picker.defaultValue}
+          x={picker.x}
+          y={picker.y}
+          onChange={handleOverrideChange(picker.token, picker.defaultValue)}
+          onClose={() => {
+            setPicker(null);
+            const merged = { ...tokensByThemeState[theme], ...overrides };
+            schedulePreviewUpdate(merged);
+          }}
+        />
+      )}
       <input
         type="hidden"
         name="themeOverrides"

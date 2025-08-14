@@ -29,6 +29,8 @@ export interface DeliverySchedulerProps
 export function DeliveryScheduler({
   className,
   onChange,
+  regions,
+  windows,
   ...props
 }: DeliverySchedulerProps) {
   const [mode, setMode] = React.useState<"delivery" | "pickup">("delivery");

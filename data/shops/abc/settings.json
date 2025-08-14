@@ -22,5 +22,14 @@
       "fields": ["id", "title", "description", "price", "media"],
       "pageSize": 50
     }
-  }
+  },
+  "luxuryFeatures": {
+    "contentMerchandising": false,
+    "raTicketing": false,
+    "fraudReviewThreshold": 0,
+    "requireStrongCustomerAuth": false,
+    "strictReturnConditions": true
+  },
+  "updatedAt": "",
+  "updatedBy": ""
 }

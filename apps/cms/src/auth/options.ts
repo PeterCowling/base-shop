@@ -1,10 +1,11 @@
 // apps/cms/src/auth/options.ts
-/* eslint-disable no-console */
 import argon2 from "argon2";
 import type { NextAuthOptions } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import { readRbac as defaultReadRbac } from "../lib/rbacStore";
+
+import { logger } from "@acme/shared-utils/logger";
 
 import type { Role } from "./roles";
 import { authSecret } from "./secret";
@@ -39,7 +40,7 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
           password: { label: "Password", type: "password" },
         },
         async authorize(credentials) {
-          console.log("[auth] authorize called", credentials);
+          logger.debug("[auth] authorize called");
 
           if (!credentials) return null;
 
@@ -47,8 +48,7 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
           const user = Object.values(users).find(
             (u) => u.email === credentials.email
           );
-
-          console.log("[auth] found user", Boolean(user));
+          logger.debug("[auth] user lookup", { found: Boolean(user) });
 
           /* -------------------------------------------------------------- */
           /*  Password check                                                */
@@ -68,12 +68,12 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
             const r = roles[user.id];
             const role = Array.isArray(r) ? r[0] : (r as Role);
 
-            console.log("[auth] login success", { id: user.id, role });
+            logger.info("[auth] login success", { userId: user.id, role });
 
             return { ...safeUser, role };
           }
 
-          console.log("[auth] login failed for", credentials.email);
+          logger.warn("[auth] login failed");
           throw new Error("Invalid email or password");
         },
       }),
@@ -85,7 +85,7 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
       async jwt({ token, user }) {
         if (user) {
           const u = user as typeof user & { role: Role };
-          console.log("[auth] jwt assign role", u.role);
+          logger.debug("[auth] jwt assign role", { role: u.role });
           (token as JWT & { role: Role }).role = u.role;
         }
         return token;
@@ -93,7 +93,7 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
 
       async session({ session, token }) {
         const role = (token as JWT & { role?: Role }).role;
-        console.log("[auth] session role", role);
+        logger.debug("[auth] session role", { role });
 
         if (role) {
           (session.user as typeof session.user & { role: Role }).role = role;

@@ -4,6 +4,7 @@ import type { PricingMatrix, SKU } from "@acme/types";
 import { pricingSchema } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
+import Dinero from "dinero.js";
 import { resolveDataRoot } from "./dataRoot";
 
 let cached: PricingMatrix | null = null;
@@ -34,7 +35,9 @@ export async function convertCurrency(
   if (to === base) return amount;
   const rate = rates[to];
   if (!rate) throw new Error(`Missing exchange rate for ${to}`);
-  return Math.round(amount * rate);
+  const baseMoney = Dinero({ amount, currency: base });
+  const converted = baseMoney.multiply(rate, "HALF_UP");
+  return converted.getAmount();
 }
 
 export function applyDurationDiscount(

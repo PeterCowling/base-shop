@@ -15,12 +15,13 @@
     "./stripe-webhook": "./src/stripe-webhook.ts"
   },
   "dependencies": {
+    "@acme/date-utils": "workspace:*",
+    "@acme/email": "workspace:*",
     "@acme/shared-utils": "workspace:*",
     "@prisma/client": "^5.15.1",
     "@upstash/redis": "^1.35.3",
-    "@acme/email": "workspace:*",
-    "@acme/date-utils": "workspace:*",
     "better-sqlite3": "^12.2.0",
+    "dinero.js": "^1.9.1",
     "zod": "^3.25.67"
   },
   "peerDependencies": {

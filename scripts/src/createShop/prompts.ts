@@ -1,0 +1,188 @@
+import { readdirSync } from "fs";
+import readline from "node:readline";
+import { join } from "path";
+import { listProviders } from "../../../packages/platform-core/src/createShop/listProviders";
+import type { Options } from "./parse";
+
+/**
+ * Prompt for any options not provided on the command line.
+ */
+export async function gatherOptions(
+  shopId: string,
+  options: Options,
+  themeProvided: boolean,
+  templateProvided: boolean
+): Promise<void> {
+  /** Prompt for theme when none is provided on the command line. */
+  async function ensureTheme() {
+    if (!themeProvided && process.stdin.isTTY) {
+      const themesDir = join("packages", "themes");
+      const themes = readdirSync(themesDir, { withFileTypes: true })
+        .filter((d) => d.isDirectory())
+        .map((d) => d.name);
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      await new Promise<void>((resolve) => {
+        rl.question(`Select theme [${themes.join(", ")}]: `, (ans) => {
+          if (themes.includes(ans)) options.theme = ans;
+          rl.close();
+          resolve();
+        });
+      });
+    }
+  }
+
+  /** Prompt for template when none is provided on the command line. */
+  async function ensureTemplate() {
+    if (!templateProvided && process.stdin.isTTY) {
+      const packagesDir = join("packages");
+      const templates = readdirSync(packagesDir, { withFileTypes: true })
+        .filter((d) => d.isDirectory() && d.name.startsWith("template-"))
+        .map((d) => d.name);
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      await new Promise<void>((resolve) => {
+        rl.question(`Select template [${templates.join(", ")}]: `, (ans) => {
+          if (templates.includes(ans)) options.template = ans;
+          rl.close();
+          resolve();
+        });
+      });
+    }
+  }
+
+  /** Prompt for shop name when none is provided on the command line. */
+  async function ensureName() {
+    if (!options.name && process.stdin.isTTY) {
+      const defaultName = shopId
+        .split(/[-_]/)
+        .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+        .join(" ");
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      await new Promise<void>((resolve) => {
+        rl.question(`Shop name [${defaultName}]: `, (ans) => {
+          options.name = ans || defaultName;
+          rl.close();
+          resolve();
+        });
+      });
+    }
+  }
+
+  /** Prompt for logo URL when none is provided on the command line. */
+  async function ensureLogo() {
+    if (options.logo === undefined && process.stdin.isTTY) {
+      const defaultLogo = `https://example.com/${shopId}.png`;
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      await new Promise<void>((resolve) => {
+        rl.question(`Logo URL [${defaultLogo}]: `, (ans) => {
+          options.logo = ans || "";
+          rl.close();
+          resolve();
+        });
+      });
+    }
+  }
+
+  /** Prompt for contact info when none is provided on the command line. */
+  async function ensureContact() {
+    if (options.contactInfo === undefined && process.stdin.isTTY) {
+      const defaultContact = `support@${shopId}.com`;
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      await new Promise<void>((resolve) => {
+        rl.question(`Contact info [${defaultContact}]: `, (ans) => {
+          options.contactInfo = ans || "";
+          rl.close();
+          resolve();
+        });
+      });
+    }
+  }
+
+  /** Prompt for payment providers when none are provided on the command line. */
+  async function ensurePayment() {
+    if (options.payment.length === 0 && process.stdin.isTTY) {
+      const providers = await listProviders("payment");
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      await new Promise<void>((resolve) => {
+        rl.question(
+          `Select payment providers (comma-separated) [${providers.join(", ")}]: `,
+          (ans) => {
+            options.payment = ans
+              .split(",")
+              .map((s) => s.trim())
+              .filter((p) => providers.includes(p));
+            rl.close();
+            resolve();
+          }
+        );
+      });
+    }
+  }
+
+  /** Prompt for shipping providers when none are provided on the command line. */
+  async function ensureShipping() {
+    if (options.shipping.length === 0 && process.stdin.isTTY) {
+      const providers = await listProviders("shipping");
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      await new Promise<void>((resolve) => {
+        rl.question(
+          `Select shipping providers (comma-separated) [${providers.join(", ")}]: `,
+          (ans) => {
+            options.shipping = ans
+              .split(",")
+              .map((s) => s.trim())
+              .filter((p) => providers.includes(p));
+            rl.close();
+            resolve();
+          }
+        );
+      });
+    }
+  }
+
+  /** Prompt for subscription module toggle when not provided. */
+  async function ensureSubscriptions() {
+    if (options.enableSubscriptions === undefined && process.stdin.isTTY) {
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+      });
+      await new Promise<void>((resolve) => {
+        rl.question("Enable subscriptions? [y/N]: ", (ans) => {
+          options.enableSubscriptions = ans.toLowerCase() === "y";
+          rl.close();
+          resolve();
+        });
+      });
+    }
+  }
+
+  await ensureTemplate();
+  await ensureTheme();
+  await ensureName();
+  await ensureLogo();
+  await ensureContact();
+  await ensurePayment();
+  await ensureShipping();
+  await ensureSubscriptions();
+}

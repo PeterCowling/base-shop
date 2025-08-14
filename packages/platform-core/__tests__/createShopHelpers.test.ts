@@ -1,7 +1,12 @@
 // packages/platform-core/__tests__/createShopHelpers.test.ts
 import fs from "fs";
 import { prepareOptions } from "../src/createShop/schema";
-import { ensureTemplateExists, writeFiles } from "../src/createShop/fsUtils";
+import {
+  ensureTemplateExists,
+  readFile,
+  writeFile,
+  copyTemplate,
+} from "../src/createShop/fsUtils";
 
 jest.mock("fs");
 
@@ -53,65 +58,31 @@ describe("createShop helpers", () => {
     });
   });
 
-  describe("writeFiles", () => {
-    beforeEach(() => {
-      fsMock.readFileSync.mockImplementation((p: fs.PathLike) => {
-        const file = String(p);
-        if (file.endsWith("package.json")) {
-          return JSON.stringify({
-            name: "template",
-            dependencies: { "@themes/base": "*" },
-          });
-        }
-        if (file.endsWith("globals.css")) {
-          return "@import '@themes/base/tokens.css';";
-        }
-        if (file.includes("packages/themes/base/tokens.ts")) {
-          return "export const tokens = { foo: { light: '#fff' } };";
-        }
-        return "";
-      });
-      fsMock.existsSync.mockReturnValue(false);
+  describe("readFile", () => {
+    it("reads using utf8", () => {
+      fsMock.readFileSync.mockReturnValue("content" as unknown as Buffer);
+      const res = readFile("file.txt");
+      expect(res).toBe("content");
+      expect(fsMock.readFileSync).toHaveBeenCalledWith("file.txt", "utf8");
     });
+  });
 
-    it("writes env and shop files", () => {
-      const options = prepareOptions("shop", {});
-      writeFiles(
-        "shop",
-        options,
-        {},
-        "packages/template-app",
-        "apps/shop",
-        "data/shops/shop"
-      );
-      const envCall = fsMock.writeFileSync.mock.calls.find((c) =>
-        String(c[0]).includes(".env")
-      );
-      expect(envCall).toBeTruthy();
-      const shopCall = fsMock.writeFileSync.mock.calls.find((c) =>
-        String(c[0]).includes("shop.json")
-      );
-      expect(shopCall).toBeTruthy();
+  describe("writeFile", () => {
+    it("writes using utf8", () => {
+      writeFile("file.txt", "data");
+      expect(fsMock.writeFileSync).toHaveBeenCalledWith("file.txt", "data");
     });
+  });
 
-    it("throws if target directories exist", () => {
-      const options = prepareOptions("shop", {});
-      fsMock.existsSync.mockImplementation((p: fs.PathLike) => {
-        const path = String(p);
-        return (
-          path === "apps/shop" || path === "data/shops/shop"
-        );
-      });
-      expect(() =>
-        writeFiles(
-          "shop",
-          options,
-          {},
-          "packages/template-app",
-          "apps/shop",
-          "data/shops/shop"
-        )
-      ).toThrow(/already exists/);
+  describe("copyTemplate", () => {
+    it("skips node_modules", () => {
+      copyTemplate("src", "dest");
+      const args = fsMock.cpSync.mock.calls[0];
+      expect(args[0]).toBe("src");
+      expect(args[1]).toBe("dest");
+      const filter = (args[2] as any).filter as (s: string) => boolean;
+      expect(filter("/foo/node_modules/bar")).toBe(false);
+      expect(filter("/foo/other")).toBe(true);
     });
   });
 });

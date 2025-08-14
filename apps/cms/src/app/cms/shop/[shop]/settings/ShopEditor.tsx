@@ -189,21 +189,38 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
             />
             <span>RA ticketing</span>
           </label>
+          <label className="flex flex-col gap-1">
+            <span>Fraud review threshold</span>
+            <Input
+              type="number"
+              name="fraudReviewThreshold"
+              value={info.luxuryFeatures.fraudReviewThreshold}
+              onChange={(e) =>
+                setInfo((prev) => ({
+                  ...prev,
+                  luxuryFeatures: {
+                    ...prev.luxuryFeatures,
+                    fraudReviewThreshold: Number(e.target.value),
+                  },
+                }))
+              }
+            />
+          </label>
           <label className="flex items-center gap-2">
             <Checkbox
-              name="fraudReview"
-              checked={info.luxuryFeatures.fraudReview}
+              name="requireStrongCustomerAuth"
+              checked={info.luxuryFeatures.requireStrongCustomerAuth}
               onCheckedChange={(v) =>
                 setInfo((prev) => ({
                   ...prev,
                   luxuryFeatures: {
                     ...prev.luxuryFeatures,
-                    fraudReview: Boolean(v),
+                    requireStrongCustomerAuth: Boolean(v),
                   },
                 }))
               }
             />
-            <span>Fraud review</span>
+            <span>Require strong customer auth</span>
           </label>
           <label className="flex items-center gap-2">
             <Checkbox

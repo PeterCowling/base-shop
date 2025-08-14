@@ -81,7 +81,8 @@ export async function readShop(shop: string): Promise<Shop> {
     luxuryFeatures: {
       contentMerchandising: false,
       raTicketing: false,
-      fraudReview: false,
+      fraudReviewThreshold: 0,
+      requireStrongCustomerAuth: false,
       strictReturnConditions: false,
     },
   };

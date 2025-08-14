@@ -55,7 +55,8 @@ describe("zod schemas", () => {
     expect(parsed.luxuryFeatures).toEqual({
       contentMerchandising: false,
       raTicketing: false,
-      fraudReview: false,
+      fraudReviewThreshold: 0,
+      requireStrongCustomerAuth: false,
       strictReturnConditions: false,
     });
   });
@@ -96,12 +97,15 @@ describe("zod schemas", () => {
       catalogFilters: "",
       contentMerchandising: "on",
       raTicketing: "on",
+      fraudReviewThreshold: "150",
+      requireStrongCustomerAuth: "on",
     });
 
     expect(parsed.luxuryFeatures).toEqual({
       contentMerchandising: true,
       raTicketing: true,
-      fraudReview: false,
+      fraudReviewThreshold: 150,
+      requireStrongCustomerAuth: true,
       strictReturnConditions: false,
     });
   });

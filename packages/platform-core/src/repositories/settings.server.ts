@@ -100,7 +100,8 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     luxuryFeatures: {
       contentMerchandising: false,
       raTicketing: false,
-      fraudReview: false,
+      fraudReviewThreshold: 0,
+      requireStrongCustomerAuth: false,
       strictReturnConditions: false,
     },
     updatedAt: "",

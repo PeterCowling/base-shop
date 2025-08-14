@@ -34,7 +34,8 @@ describe("shop schema", () => {
     expect(parsed.luxuryFeatures).toEqual({
       contentMerchandising: false,
       raTicketing: false,
-      fraudReview: false,
+      fraudReviewThreshold: 0,
+      requireStrongCustomerAuth: false,
       strictReturnConditions: false,
     });
   });

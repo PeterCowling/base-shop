@@ -63,7 +63,11 @@ export const shopSchema = z
       .preprocess((v) => v === "on", z.boolean())
       .optional()
       .default(false),
-    fraudReview: z
+    fraudReviewThreshold: z
+      .preprocess((v) => (v === "" ? 0 : Number(v)), z.number())
+      .optional()
+      .default(0),
+    requireStrongCustomerAuth: z
       .preprocess((v) => v === "on", z.boolean())
       .optional()
       .default(false),
@@ -84,7 +88,8 @@ export const shopSchema = z
     ({
       contentMerchandising,
       raTicketing,
-      fraudReview,
+      fraudReviewThreshold,
+      requireStrongCustomerAuth,
       strictReturnConditions,
       ...rest
     }) => ({
@@ -92,7 +97,8 @@ export const shopSchema = z
       luxuryFeatures: {
         contentMerchandising,
         raTicketing,
-        fraudReview,
+        fraudReviewThreshold,
+        requireStrongCustomerAuth,
         strictReturnConditions,
       },
     })

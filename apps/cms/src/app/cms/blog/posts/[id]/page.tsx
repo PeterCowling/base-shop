@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { formatTimestamp } from "@acme/date-utils";
+import { getPost, updatePost } from "@cms/actions/blog.server";
+import { getSanityConfig } from "@platform-core/src/shops";
+import { getShopById } from "@platform-core/src/repositories/shop.server";
 import PostForm from "../PostForm.client";
 import PublishButton from "../PublishButton.client";
 import UnpublishButton from "../UnpublishButton.client";
 import DeleteButton from "../DeleteButton.client";
-import { getPost, updatePost } from "@cms/actions/blog.server";
-import { getSanityConfig } from "@platform-core/src/shops";
-import { getShopById } from "@platform-core/src/repositories/shop.server";
 
 interface Params {
   params: { id: string };
@@ -40,11 +41,9 @@ export default async function EditPostPage({
   if (!post) return notFound();
   const status = post.published
     ? post.publishedAt && new Date(post.publishedAt) > new Date()
-      ? `Scheduled for ${new Date(post.publishedAt).toLocaleString()}`
+      ? `Scheduled for ${formatTimestamp(post.publishedAt)}`
       : `Published${
-          post.publishedAt
-            ? ` on ${new Date(post.publishedAt).toLocaleString()}`
-            : ""
+          post.publishedAt ? ` on ${formatTimestamp(post.publishedAt)}` : ""
         }`
     : "Draft";
   return (

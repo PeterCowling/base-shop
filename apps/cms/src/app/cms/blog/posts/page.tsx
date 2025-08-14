@@ -1,6 +1,7 @@
 // apps/cms/src/app/cms/blog/posts/page.tsx
 
 import Link from "next/link";
+import { formatTimestamp } from "@acme/date-utils";
 import { Button } from "@ui";
 import { getPosts } from "@cms/actions/blog.server";
 import { getSanityConfig } from "@platform-core/src/shops";
@@ -41,7 +42,7 @@ export default async function BlogPostsPage({
         {posts.map((post) => {
           const status =
             post.publishedAt && new Date(post.publishedAt) > new Date()
-              ? `scheduled for ${new Date(post.publishedAt).toLocaleString()}`
+              ? `scheduled for ${formatTimestamp(post.publishedAt)}`
               : post.published
                 ? "published"
                 : "draft";

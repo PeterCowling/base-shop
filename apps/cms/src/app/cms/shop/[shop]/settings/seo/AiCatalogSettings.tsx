@@ -1,9 +1,10 @@
 "use client";
 
+import { useState, type FormEvent } from "react";
 import { Button, Checkbox, Input } from "@/components/atoms/shadcn";
 import { updateAiCatalog } from "@cms/actions/shops.server";
+import { formatTimestamp } from "@acme/date-utils";
 import type { AiCatalogField } from "@acme/types";
-import { useState, type FormEvent } from "react";
 
 const ALL_FIELDS: AiCatalogField[] = [
   "id",
@@ -96,7 +97,7 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
       </label>
       {state.lastCrawl && (
         <p className="text-sm text-gray-600">
-          Last crawl: {new Date(state.lastCrawl).toLocaleString()}
+          Last crawl: {formatTimestamp(state.lastCrawl)}
         </p>
       )}
       <Button className="bg-primary text-white" type="submit" disabled={saving}>

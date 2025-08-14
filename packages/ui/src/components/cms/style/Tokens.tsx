@@ -82,14 +82,18 @@ export default function Tokens({
         pairKey = `--color-bg${k.slice("--color-fg".length)}`;
       }
       const pairVal = pairKey
-        ? tokens[pairKey as keyof TokenMap] ?? baseTokens[pairKey as keyof TokenMap]
+        ? (tokens[pairKey as keyof TokenMap] ??
+          baseTokens[pairKey as keyof TokenMap])
         : undefined;
       if (pairVal) {
         const contrast = getContrast(v, pairVal);
         if (contrast < 4.5) {
           const suggestion = suggestContrastColor(v, pairVal);
           warning = (
-            <span className="text-xs text-danger" data-token="--color-danger">
+            <span
+              className="bg-danger/10 text-danger rounded px-1.5 py-0.5 text-xs"
+              data-token="--color-danger"
+            >
               Low contrast ({contrast.toFixed(2)}:1)
               {suggestion ? ` – try ${suggestion}` : ""}
             </span>
@@ -101,13 +105,14 @@ export default function Tokens({
           key={k}
           data-token-key={k}
           className={`flex flex-col gap-1 text-sm ${
-            isOverridden ? "border-l-2 border-l-info pl-2" : ""
+            isOverridden ? "border-l-info border-l-2 pl-2" : ""
           }`}
           data-token={isOverridden ? "--color-info" : undefined}
         >
           <span className="flex items-center gap-2">
             <span className="w-40 flex-shrink-0">{k}</span>
             <ColorInput value={v} onChange={(val) => setToken(k, val)} />
+            {warning}
             {isOverridden && (
               <button
                 type="button"
@@ -119,11 +124,10 @@ export default function Tokens({
             )}
           </span>
           {defaultValue && (
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               Default: {defaultValue}
             </span>
           )}
-          {warning}
         </label>
       );
     }
@@ -136,7 +140,7 @@ export default function Tokens({
           key={k}
           data-token-key={k}
           className={`flex flex-col gap-1 text-sm ${
-            isOverridden ? "border-l-2 border-l-info pl-2" : ""
+            isOverridden ? "border-l-info border-l-2 pl-2" : ""
           }`}
           data-token={isOverridden ? "--color-info" : undefined}
         >
@@ -175,7 +179,7 @@ export default function Tokens({
             </select>
           </span>
           {defaultValue && (
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               Default: {defaultValue}
             </span>
           )}
@@ -189,7 +193,7 @@ export default function Tokens({
           key={k}
           data-token-key={k}
           className={`flex items-center gap-2 text-sm ${
-            isOverridden ? "border-l-2 border-l-info pl-2" : ""
+            isOverridden ? "border-l-info border-l-2 pl-2" : ""
           }`}
           data-token={isOverridden ? "--color-info" : undefined}
         >
@@ -205,7 +209,7 @@ export default function Tokens({
             </button>
           )}
           {defaultValue && (
-            <span className="text-xs text-muted-foreground">
+            <span className="text-muted-foreground text-xs">
               Default: {defaultValue}
             </span>
           )}
@@ -218,7 +222,7 @@ export default function Tokens({
         key={k}
         data-token-key={k}
         className={`flex items-center gap-2 text-sm ${
-          isOverridden ? "border-l-2 border-l-info pl-2" : ""
+          isOverridden ? "border-l-info border-l-2 pl-2" : ""
         }`}
         data-token={isOverridden ? "--color-info" : undefined}
       >
@@ -234,7 +238,7 @@ export default function Tokens({
           </button>
         )}
         {defaultValue && (
-          <span className="text-xs text-muted-foreground">
+          <span className="text-muted-foreground text-xs">
             Default: {defaultValue}
           </span>
         )}
@@ -282,4 +286,3 @@ export default function Tokens({
     </div>
   );
 }
-

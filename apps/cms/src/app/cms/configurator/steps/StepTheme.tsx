@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/atoms/shadcn";
 import StyleEditor from "@/components/cms/StyleEditor";
+import { getContrast } from "@/components/cms";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import type { TokenMap } from "@ui/hooks/useTokenEditor";
 import WizardPreview from "../../wizard/WizardPreview";
@@ -58,6 +59,19 @@ const colorPalettes: Array<{
   },
 ];
 
+function checkContrast(colors: Record<string, string>): boolean {
+  const pairs: Array<[string, string]> = [
+    ["--color-bg", "--color-fg"],
+    ["--color-primary", "--color-primary-fg"],
+  ];
+  return pairs.every(([bg, fg]) => {
+    const bgVal = colors[bg];
+    const fgVal = colors[fg];
+    if (!bgVal || !fgVal) return true;
+    return getContrast(bgVal, fgVal) >= 4.5;
+  });
+}
+
 interface Props {
   themes: string[];
   prevStepId?: string;
@@ -70,8 +84,7 @@ export default function StepTheme({
   nextStepId,
 }: Props): React.JSX.Element {
   const themeStyle = useThemeLoader();
-  const { state, update, themeDefaults, setThemeOverrides } =
-    useConfigurator();
+  const { state, update, themeDefaults, setThemeOverrides } = useConfigurator();
   const { theme, themeOverrides } = state;
   const [palette, setPalette] = useState(colorPalettes[0].name);
   const [, markComplete] = useStepCompletion("theme");
@@ -104,14 +117,17 @@ export default function StepTheme({
     (tokens: TokenMap) => {
       setThemeOverrides(
         Object.fromEntries(
-          Object.entries(tokens).filter(
-            ([k, v]) => themeDefaults[k] !== v
-          )
+          Object.entries(tokens).filter(([k, v]) => themeDefaults[k] !== v)
         )
       );
     },
     [setThemeOverrides, themeDefaults]
   );
+
+  const resetToDefaults = useCallback(() => {
+    setThemeOverrides({});
+    setPalette(colorPalettes[0].name);
+  }, [setThemeOverrides]);
 
   useEffect(() => {
     applyPalette(palette);
@@ -166,26 +182,38 @@ export default function StepTheme({
       <div className="space-y-2">
         <h3 className="font-medium">Color Palette</h3>
         <div className="flex flex-wrap gap-2">
-          {colorPalettes.map((p) => (
-            <Button
-              key={p.name}
-              variant={p.name === palette ? "default" : "outline"}
-              onClick={() => setPalette(p.name)}
-              className="h-10 w-10 p-0"
-              aria-label={p.name}
-            >
-              <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
-                {Object.values(p.colors).map((c, i) => (
+          {colorPalettes.map((p) => {
+            const hasIssue = !checkContrast(p.colors);
+            return (
+              <div key={p.name} className="flex flex-col items-center gap-1">
+                <Button
+                  variant={p.name === palette ? "default" : "outline"}
+                  onClick={() => setPalette(p.name)}
+                  className="h-10 w-10 p-0"
+                  aria-label={p.name}
+                >
+                  <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
+                    {Object.values(p.colors).map((c, i) => (
+                      <span
+                        // eslint-disable-next-line react/no-array-index-key
+                        key={i}
+                        className="h-1/2 w-1/2"
+                        style={{ backgroundColor: `hsl(${c})` }}
+                      />
+                    ))}
+                  </div>
+                </Button>
+                {hasIssue && (
                   <span
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={i}
-                    className="h-1/2 w-1/2"
-                    style={{ backgroundColor: `hsl(${c})` }}
-                  />
-                ))}
+                    className="text-danger text-xs"
+                    data-token="--color-danger"
+                  >
+                    Low contrast
+                  </span>
+                )}
               </div>
-            </Button>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -195,7 +223,10 @@ export default function StepTheme({
         onChange={handleTokenChange}
       />
 
-      <div className="flex justify-end">
+      <div className="flex items-center justify-between">
+        <Button variant="outline" onClick={resetToDefaults}>
+          Reset to defaults
+        </Button>
         <Select value={deviceId} onValueChange={setDeviceId}>
           <SelectTrigger aria-label="Device" className="w-40">
             <SelectValue />

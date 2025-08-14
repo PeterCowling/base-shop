@@ -110,13 +110,19 @@ export async function handleStripeWebhook(
     }
     default: {
       if (type.startsWith("radar.early_fraud_warning.")) {
-        const warning = data.object as any; // Stripe.Radar.EarlyFraudWarning
-        const chargeId =
-          typeof warning.charge === "string" ? warning.charge : warning.charge?.id;
+        const warning = data.object as Stripe.Radar.EarlyFraudWarning;
+        const charge = warning.charge;
+        const chargeId = typeof charge === "string" ? charge : charge?.id;
         if (chargeId) {
-          const riskLevel = warning.risk_level as string | undefined;
-          const riskScore = warning.risk_score as number | undefined;
-          await updateRisk(shop, chargeId, riskLevel, riskScore, true);
+          const riskLevel = warning.risk_level;
+          const riskScore = warning.risk_score;
+          await updateRisk(
+            shop,
+            chargeId,
+            riskLevel,
+            typeof riskScore === "number" ? riskScore : undefined,
+            true
+          );
           if (
             riskLevel === "highest" ||
             (typeof riskScore === "number" && riskScore > 75)

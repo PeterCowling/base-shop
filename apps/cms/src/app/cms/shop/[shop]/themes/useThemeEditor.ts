@@ -119,6 +119,7 @@ export function useThemeEditor({
     }
     debounceRef.current = window.setTimeout(() => {
       setPreviewTokens(tokens);
+      savePreviewTokens(tokens);
     }, 100);
   };
 
@@ -245,9 +246,11 @@ export function useThemeEditor({
     };
   }, []);
 
+  // Broadcast initial tokens so previews reflect the current theme on mount
   useEffect(() => {
     savePreviewTokens(previewTokens);
-  }, [previewTokens]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleThemeChange = async (
     e: ChangeEvent<HTMLSelectElement>,
@@ -257,8 +260,7 @@ export function useThemeEditor({
     setOverrides({});
     setThemeDefaults(tokensByThemeState[newTheme]);
     const merged = { ...tokensByThemeState[newTheme] };
-    setPreviewTokens(merged);
-    savePreviewTokens(merged);
+    schedulePreviewUpdate(merged);
   };
 
   const handleResetAll = async () => {
@@ -272,7 +274,6 @@ export function useThemeEditor({
     setOverrides({});
     const merged = { ...tokensByThemeState[theme] };
     schedulePreviewUpdate(merged);
-    savePreviewTokens(merged);
     scheduleSave(patch);
   };
 

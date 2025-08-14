@@ -45,11 +45,30 @@ function removeBakFiles(dir: string): void {
   }
 }
 
+function saveHistory(root: string, id: string): void {
+  const dir = join(root, "data", "shops", id);
+  const shopFile = join(dir, "shop.json");
+  const historyFile = join(dir, "history.json");
+  if (!existsSync(shopFile)) return;
+  const current = JSON.parse(readFileSync(shopFile, "utf8"));
+  const entry = {
+    componentVersions: current.componentVersions ?? {},
+    lastUpgrade: current.lastUpgrade,
+    timestamp: new Date().toISOString(),
+  };
+  const history = existsSync(historyFile)
+    ? JSON.parse(readFileSync(historyFile, "utf8"))
+    : [];
+  history.push(entry);
+  writeFileSync(historyFile, JSON.stringify(history, null, 2));
+}
+
 export function republishShop(id: string, root = process.cwd()): void {
   const upgradeFile = join(root, "data", "shops", id, "upgrade.json");
   if (existsSync(upgradeFile)) {
     readUpgradeMeta(root, id);
   }
+  saveHistory(root, id);
   run("pnpm", ["--filter", `apps/${id}`, "build"]);
   run("pnpm", ["--filter", `apps/${id}`, "deploy"]);
   updateStatus(root, id);

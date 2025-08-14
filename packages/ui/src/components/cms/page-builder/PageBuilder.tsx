@@ -3,22 +3,22 @@
 import { locales, type Locale } from "@/i18n/locales";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties, DragEvent } from "react";
+import type { CSSProperties } from "react";
 import {
   DndContext,
   DragOverlay,
   closestCenter,
 } from "@dnd-kit/core";
-import { ulid } from "ulid";
-import type { Page, PageComponent, HistoryState, MediaItem } from "@acme/types";
+import type { Page, PageComponent, HistoryState } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
 import { Toast, Spinner } from "../../atoms";
 import { CheckIcon } from "@radix-ui/react-icons";
 import Palette from "./Palette";
 import { getShopFromPath } from "@platform-core/utils";
-import useFileUpload from "@ui/hooks/useFileUpload";
+import useFileDrop from "./hooks/useFileDrop";
 import usePageBuilderState from "./hooks/usePageBuilderState";
 import usePageBuilderDnD from "./hooks/usePageBuilderDnD";
+import useViewport from "./hooks/useViewport";
 import PageToolbar from "./PageToolbar";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
@@ -72,7 +72,13 @@ const PageBuilder = memo(function PageBuilder({
   const prevId = useRef(page.id);
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
-  const [dragOver, setDragOver] = useState(false);
+  const {
+    dragOver,
+    setDragOver,
+    handleFileDrop,
+    progress,
+    isValid,
+  } = useFileDrop({ shop: shop ?? "", dispatch });
   const canvasRef = useRef<HTMLDivElement>(null);
   const [toast, setToast] = useState<{
     open: boolean;
@@ -92,41 +98,6 @@ const PageBuilder = memo(function PageBuilder({
   const initialRender = useRef(true);
 
   const {
-    onDrop,
-    setAltText,
-    handleUpload,
-    progress,
-    error,
-    pendingFile,
-    isValid,
-  } = useFileUpload({
-    shop: shop ?? "",
-    requiredOrientation: "landscape",
-    onUploaded: (item: MediaItem) => {
-      dispatch({
-        type: "add",
-        component: {
-          id: ulid(),
-          type: "Image",
-          src: item.url,
-          alt: item.altText,
-          ...(defaults.Image ?? {}),
-        } as PageComponent,
-      });
-    },
-  });
-
-  const handleFileDrop = useCallback(
-    (ev: DragEvent<HTMLDivElement>) => {
-      setDragOver(false);
-      onDrop(ev.dataTransfer).catch((err: unknown) => {
-        console.error(err);
-      });
-    },
-    [onDrop]
-  );
-
-  const {
     sensors,
     handleDragStart,
     handleDragMove,
@@ -144,40 +115,7 @@ const PageBuilder = memo(function PageBuilder({
     setSnapPosition,
   });
 
-  const [canvasWidth, setCanvasWidth] = useState(device.width);
-  const [canvasHeight, setCanvasHeight] = useState(device.height);
-  const [scale, setScale] = useState(1);
-  const prevWidth = useRef(device.width);
-
-  useEffect(() => {
-    const prev = prevWidth.current;
-    setCanvasWidth(device.width);
-    setCanvasHeight(device.height);
-    setScale(prev / device.width);
-    const raf = requestAnimationFrame(() => setScale(1));
-    prevWidth.current = device.width;
-    return () => cancelAnimationFrame(raf);
-  }, [device]);
-
-  const viewportStyle = useMemo(
-    () => ({
-      width: `${canvasWidth}px`,
-      height: `${canvasHeight}px`,
-      transform: `scale(${scale})`,
-      transformOrigin: "top center",
-      transition: "transform 0.3s ease",
-    }),
-    [canvasWidth, canvasHeight, scale]
-  );
-
-  const frameClass = useMemo(
-    () => ({
-      desktop: "",
-      tablet: "rounded-xl border border-muted-foreground/40 p-2",
-      mobile: "rounded-[2rem] border border-muted-foreground/40 p-4",
-    }),
-    []
-  );
+  const { viewportStyle, frameClass } = useViewport(device);
 
   useEffect(() => {
     if (showGrid && canvasRef.current) {

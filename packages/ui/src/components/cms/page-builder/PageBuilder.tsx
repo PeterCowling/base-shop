@@ -24,8 +24,9 @@ import PageToolbar from "./PageToolbar";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES } from "./defaults";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+import { devicePresets, getLegacyPreset, type DevicePreset } from "@ui/utils/devicePresets";
 import { usePreviewDevice } from "@ui/hooks";
+import DeviceSelector from "@ui/components/common/DeviceSelector";
 
 interface Props {
   page: Page;
@@ -83,20 +84,15 @@ const PageBuilder = memo(function PageBuilder({
   const viewport: "desktop" | "tablet" | "mobile" = device.type;
   const [locale, setLocale] = useState<Locale>("en");
   const [showPreview, setShowPreview] = useState(false);
-  const [previewViewport, setPreviewViewport] =
-    useState<"desktop" | "tablet" | "mobile">("desktop");
-  const presetByType = useMemo(
-    () => ({
-      desktop: devicePresets.find((d) => d.type === "desktop")!,
-      tablet: devicePresets.find((d) => d.type === "tablet")!,
-      mobile: devicePresets.find((d) => d.type === "mobile")!,
-    }),
-    []
+  const [previewDeviceId, setPreviewDeviceId] = useState(
+    getLegacyPreset("desktop").id,
   );
   const previewDevice = useMemo<DevicePreset>(
-    () => presetByType[previewViewport],
-    [presetByType, previewViewport]
+    () =>
+      devicePresets.find((d) => d.id === previewDeviceId) ?? devicePresets[0],
+    [previewDeviceId],
   );
+  const previewViewport: "desktop" | "tablet" | "mobile" = previewDevice.type;
   const previewRef = useRef<HTMLDivElement>(null);
   const {
     viewportStyle: previewViewportStyle,
@@ -320,35 +316,11 @@ const PageBuilder = memo(function PageBuilder({
         </DndContext>
         {showPreview && (
           <div className="flex flex-col gap-2">
-            <div className="flex gap-2">
-              <Button
-                variant={
-                  previewViewport === "desktop" ? "default" : "outline"
-                }
-                size="sm"
-                onClick={() => setPreviewViewport("desktop")}
-              >
-                Desktop
-              </Button>
-              <Button
-                variant={
-                  previewViewport === "tablet" ? "default" : "outline"
-                }
-                size="sm"
-                onClick={() => setPreviewViewport("tablet")}
-              >
-                Tablet
-              </Button>
-              <Button
-                variant={
-                  previewViewport === "mobile" ? "default" : "outline"
-                }
-                size="sm"
-                onClick={() => setPreviewViewport("mobile")}
-              >
-                Mobile
-              </Button>
-            </div>
+            <DeviceSelector
+              deviceId={previewDeviceId}
+              onChange={setPreviewDeviceId}
+              showLegacyButtons
+            />
             <div
               className={previewFrameClass[previewViewport]}
               style={previewViewportStyle}

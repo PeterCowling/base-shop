@@ -12,6 +12,12 @@ interface Props {
 export default function PremierDeliveryEditor({ shop, initial }: Props) {
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [regions, setRegions] = useState<string[]>(
+    initial.regions.length ? initial.regions : [""]
+  );
+  const [windows, setWindows] = useState<string[]>(
+    initial.windows.length ? initial.windows : [""]
+  );
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,22 +32,82 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
     setSaving(false);
   };
 
+  const updateRegion = (index: number, value: string) => {
+    setRegions((prev) => {
+      const next = [...prev];
+      next[index] = value;
+      return next;
+    });
+  };
+
+  const updateWindow = (index: number, value: string) => {
+    setWindows((prev) => {
+      const next = [...prev];
+      next[index] = value;
+      return next;
+    });
+  };
+
+  const addRegion = () => setRegions((prev) => [...prev, ""]);
+  const removeRegion = (index: number) =>
+    setRegions((prev) => prev.filter((_, i) => i !== index));
+
+  const addWindow = () => setWindows((prev) => [...prev, ""]);
+  const removeWindow = (index: number) =>
+    setWindows((prev) => prev.filter((_, i) => i !== index));
+
   return (
     <form onSubmit={onSubmit} className="grid max-w-md gap-4">
-      <label className="flex flex-col gap-1">
-        <span>Regions (comma separated)</span>
-        <Input name="regions" defaultValue={initial.regions.join(", ")} />
+      <fieldset className="flex flex-col gap-2">
+        <legend className="font-medium">Regions</legend>
+        {regions.map((region, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <Input
+              name="regions"
+              value={region}
+              onChange={(e) => updateRegion(i, e.target.value)}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => removeRegion(i)}
+            >
+              Remove
+            </Button>
+          </div>
+        ))}
+        <Button type="button" variant="secondary" onClick={addRegion}>
+          Add region
+        </Button>
         {errors.regions && (
           <span className="text-sm text-red-600">{errors.regions.join("; ")}</span>
         )}
-      </label>
-      <label className="flex flex-col gap-1">
-        <span>Windows (comma separated)</span>
-        <Input name="windows" defaultValue={initial.windows.join(", ")} />
+      </fieldset>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="font-medium">One-hour Windows</legend>
+        {windows.map((window, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <Input
+              name="windows"
+              value={window}
+              onChange={(e) => updateWindow(i, e.target.value)}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => removeWindow(i)}
+            >
+              Remove
+            </Button>
+          </div>
+        ))}
+        <Button type="button" variant="secondary" onClick={addWindow}>
+          Add window
+        </Button>
         {errors.windows && (
           <span className="text-sm text-red-600">{errors.windows.join("; ")}</span>
         )}
-      </label>
+      </fieldset>
       <Button className="bg-primary text-white" disabled={saving} type="submit">
         {saving ? "Saving…" : "Save"}
       </Button>

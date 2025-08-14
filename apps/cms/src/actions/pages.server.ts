@@ -96,8 +96,11 @@ export async function createPage(
     createdBy: session.user.email ?? "unknown",
   };
 
+  const pages = await getPages(shop);
+  const prev = pages.find((p) => p.id === id);
+
   try {
-    const saved = await savePageInService(shop, page);
+    const saved = await savePageInService(shop, page, prev);
     return { page: saved };
   } catch (err) {
     Sentry.captureException(err);
@@ -164,7 +167,7 @@ export async function savePageDraft(
       };
 
   try {
-    const saved = await savePageInService(shop, page);
+    const saved = await savePageInService(shop, page, existing);
     return { page: saved };
   } catch (err) {
     Sentry.captureException(err);
@@ -234,8 +237,13 @@ export async function updatePage(
     ...(history ? { history } : {}),
   };
 
+  const pages = await getPages(shop);
+  const previous = pages.find((p) => p.id === patch.id);
+  if (!previous) {
+    throw new Error(`Page ${patch.id} not found`);
+  }
   try {
-    const saved = await updatePageInService(shop, patch);
+    const saved = await updatePageInService(shop, patch, previous);
     return { page: saved };
   } catch (err) {
     Sentry.captureException(err);

@@ -3,7 +3,9 @@ import type { Page } from "@acme/types";
 
 jest.mock("@platform-core/repositories/pages/index.server", () => ({
   getPages: jest.fn().mockResolvedValue([]),
-  savePage: jest.fn().mockImplementation((_s, p) => Promise.resolve(p)),
+  savePage: jest
+    .fn()
+    .mockImplementation((_s, p) => Promise.resolve(p)),
   updatePage: jest
     .fn()
     .mockImplementation((_s, p) => Promise.resolve({ ...(p as any) })),
@@ -22,14 +24,15 @@ describe("pages service", () => {
 
   it("calls repository savePage", async () => {
     const page = { id: "p1" } as unknown as Page;
-    await savePage("shop1", page);
-    expect(repo.savePage).toHaveBeenCalledWith("shop1", page);
+    await savePage("shop1", page, undefined);
+    expect(repo.savePage).toHaveBeenCalledWith("shop1", page, undefined);
   });
 
   it("calls repository updatePage", async () => {
-    const patch = { id: "p1", updatedAt: "now" };
-    await updatePage("shop1", patch);
-    expect(repo.updatePage).toHaveBeenCalledWith("shop1", patch);
+    const patch = { id: "p1", updatedAt: "now" } as any;
+    const prev = { id: "p1", updatedAt: "now" } as any;
+    await updatePage("shop1", patch, prev);
+    expect(repo.updatePage).toHaveBeenCalledWith("shop1", patch, prev);
   });
 
   it("calls repository deletePage", async () => {

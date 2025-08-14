@@ -12,15 +12,16 @@ export function getPages(shop: string) {
   return repoGetPages(shop);
 }
 
-export function savePage(shop: string, page: Page) {
-  return repoSavePage(shop, page);
+export function savePage(shop: string, page: Page, previous?: Page) {
+  return repoSavePage(shop, page, previous);
 }
 
 export function updatePage(
   shop: string,
-  page: Partial<Page> & { id: string; updatedAt: string }
+  page: Partial<Page> & { id: string; updatedAt: string },
+  previous: Page
 ) {
-  return repoUpdatePage(shop, page);
+  return repoUpdatePage(shop, page, previous);
 }
 
 export function deletePage(shop: string, id: string) {

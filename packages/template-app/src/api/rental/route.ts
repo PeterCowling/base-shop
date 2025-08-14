@@ -32,22 +32,32 @@ export async function PATCH(req: NextRequest) {
   if (!order) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
-  const damageFee = await computeDamageFee(damage, order.deposit);
+
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+  const coverageCodes = session.metadata?.coverage?.split(",").filter(Boolean) ?? [];
+  const damageFee = await computeDamageFee(
+    damage,
+    order.deposit,
+    coverageCodes,
+  );
   if (damageFee) {
     await markReturned("bcd", sessionId, damageFee);
   }
-  const session = await stripe.checkout.sessions.retrieve(sessionId, {
-    expand: ["payment_intent"],
-  });
-  const pi =
-    typeof session.payment_intent === "string"
-      ? session.payment_intent
-      : session.payment_intent?.id;
-  if (pi && order.deposit) {
-    const refund = Math.max(order.deposit - damageFee, 0);
-    if (refund > 0) {
-      await stripe.refunds.create({ payment_intent: pi, amount: refund * 100 });
-    }
+
+  let clientSecret: string | undefined;
+  if (damageFee > order.deposit) {
+    const remaining = damageFee - order.deposit;
+    const intent = await stripe.paymentIntents.create({
+      amount: remaining * 100,
+      currency: session.currency ?? "usd",
+      ...(session.customer ? { customer: session.customer as string } : {}),
+      metadata: { sessionId, purpose: "damage_fee" },
+    });
+    clientSecret = intent.client_secret ?? undefined;
   }
-  return NextResponse.json({ ok: true });
+
+  return NextResponse.json(
+    { ok: true, ...(clientSecret ? { clientSecret } : {}) },
+    { status: 200 },
+  );
 }

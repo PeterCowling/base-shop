@@ -138,3 +138,9 @@ export async function startDepositReleaseService(
 
   return () => timers.forEach((t) => clearInterval(t));
 }
+
+if (process.env.NODE_ENV !== "test") {
+  startDepositReleaseService().catch((err) =>
+    logger.error("failed to start deposit release service", { err }),
+  );
+}

@@ -8,7 +8,7 @@ import { z } from "zod";
 export const runtime = "edge";
 const schema = z.object({ sessionId: z.string(), damage: z.union([z.string(), z.number()]).optional(), });
 export async function POST(req) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e;
     const parsed = schema.safeParse(await req.json());
     if (!parsed.success) {
         return NextResponse.json({ errors: parsed.error.flatten() }, { status: 400 });
@@ -29,7 +29,11 @@ export async function POST(req) {
         return NextResponse.json({ ok: false, message: "No deposit found" });
     }
     const shop = await readShop("bcd");
-    const damageFee = await computeDamageFee(damage, deposit, [], shop.coverageIncluded);
+    let coverageCodes = ((_e = (_d = session.metadata) === null || _d === void 0 ? void 0 : _d.coverage) === null || _e === void 0 ? void 0 : _e.split(",").filter(Boolean)) ?? [];
+    if (shop.coverageIncluded && typeof damage === "string") {
+        coverageCodes = Array.from(new Set([...coverageCodes, damage]));
+    }
+    const damageFee = await computeDamageFee(damage, deposit, coverageCodes, shop.coverageIncluded);
     if (damageFee) {
         await markReturned("bcd", sessionId, damageFee);
     }

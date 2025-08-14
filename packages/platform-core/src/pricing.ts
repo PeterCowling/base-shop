@@ -80,7 +80,7 @@ export async function computeDamageFee(
     const hasCoverage = coverageIncluded || coverageCodes.includes(kind);
     if (hasCoverage) {
       const coverage = pricing.coverage[kind];
-      if (coverage && typeof rule === "number") {
+      if (coverage) {
         fee = Math.max(0, fee - coverage.waiver);
       }
     }

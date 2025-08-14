@@ -17,6 +17,8 @@ import {
 } from "./previewTokens";
 import { devicePresets, getLegacyPreset, type DevicePreset } from "@ui/utils/devicePresets";
 
+const DEVICE_STORAGE_KEY = "preview-device";
+
 interface Props {
   style: React.CSSProperties;
   /** Enable inspection mode to highlight tokenised elements */
@@ -36,6 +38,26 @@ export default function WizardPreview({
   onTokenSelect,
 }: Props): React.JSX.Element {
   const [deviceId, setDeviceId] = useState(devicePresets[0].id);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(DEVICE_STORAGE_KEY);
+      if (stored && devicePresets.some((d) => d.id === stored)) {
+        setDeviceId(stored);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(DEVICE_STORAGE_KEY, deviceId);
+    } catch {
+      /* ignore */
+    }
+  }, [deviceId]);
+
   const device = useMemo<DevicePreset>(() => {
     return devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
   }, [deviceId]);

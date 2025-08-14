@@ -25,6 +25,8 @@ import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES } from "./defaults";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 
+const DEVICE_STORAGE_KEY = "preview-device";
+
 interface Props {
   page: Page;
   history?: HistoryState;
@@ -63,6 +65,26 @@ const PageBuilder = memo(function PageBuilder({
   } = usePageBuilderState({ page, history: historyProp, onChange });
 
   const [deviceId, setDeviceId] = useState(devicePresets[0].id);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(DEVICE_STORAGE_KEY);
+      if (stored && devicePresets.some((d) => d.id === stored)) {
+        setDeviceId(stored);
+      }
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(DEVICE_STORAGE_KEY, deviceId);
+    } catch {
+      /* ignore */
+    }
+  }, [deviceId]);
+
   const device = useMemo< DevicePreset>(() => {
     return devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
   }, [deviceId]);

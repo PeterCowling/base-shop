@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+  parseTargetDate,
+  getTimeRemaining,
+  formatDuration,
+} from "@acme/date-utils";
 
 interface Props {
   targetDate?: string;
@@ -8,37 +13,29 @@ interface Props {
   children?: React.ReactNode;
 }
 
-function getTargetDate(targetDate?: string, timezone?: string) {
-  if (!targetDate) return null;
-  const date = new Date(targetDate);
-  if (Number.isNaN(date.getTime())) return null;
-  if (timezone) {
-    const localized = new Date(date.toLocaleString("en-US", { timeZone: timezone }));
-    return localized;
-  }
-  return date;
-}
-
 export default function CountdownTimer({
   targetDate,
   timezone,
   completionText,
   styles,
 }: Props) {
-  const target = getTargetDate(targetDate, timezone);
+  const target = useMemo(
+    () => parseTargetDate(targetDate, timezone),
+    [targetDate, timezone]
+  );
   const [remaining, setRemaining] = useState(() =>
-    target ? target.getTime() - Date.now() : 0
+    target ? getTimeRemaining(target) : 0
   );
 
   useEffect(() => {
     if (!target) return;
     const tick = () => {
-      setRemaining(target.getTime() - Date.now());
+      setRemaining(getTimeRemaining(target));
     };
     const id = setInterval(tick, 1000);
     tick();
     return () => clearInterval(id);
-  }, [targetDate, timezone]);
+  }, [target]);
 
   if (!target) return null;
 
@@ -46,18 +43,6 @@ export default function CountdownTimer({
     return completionText ? <div className={styles}>{completionText}</div> : null;
   }
 
-  const totalSeconds = Math.floor(remaining / 1000);
-  const days = Math.floor(totalSeconds / 86400);
-  const hours = Math.floor((totalSeconds % 86400) / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-
-  const parts = [] as string[];
-  if (days) parts.push(`${days}d`);
-  if (days || hours) parts.push(`${hours}h`);
-  if (days || hours || minutes) parts.push(`${minutes}m`);
-  parts.push(`${seconds}s`);
-
-  return <div className={styles}>{parts.join(" ")}</div>;
+  return <div className={styles}>{formatDuration(remaining)}</div>;
 }
 

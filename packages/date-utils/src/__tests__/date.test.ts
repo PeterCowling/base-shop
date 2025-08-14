@@ -6,6 +6,9 @@ import {
   isoDateInNDays,
   formatTimestamp,
   nowIso,
+  parseTargetDate,
+  getTimeRemaining,
+  formatDuration,
 } from '../index';
 
 describe('nowIso', () => {
@@ -84,5 +87,40 @@ describe('formatTimestamp', () => {
 
   test('returns input for invalid timestamp', () => {
     expect(formatTimestamp('nope')).toBe('nope');
+  });
+});
+
+describe('parseTargetDate', () => {
+  test('parses ISO string', () => {
+    expect(parseTargetDate('2025-01-01T00:00:00Z')?.toISOString()).toBe(
+      '2025-01-01T00:00:00.000Z'
+    );
+  });
+
+  test('parses with timezone', () => {
+    expect(
+      parseTargetDate('2025-01-01T00:00:00', 'America/New_York')?.toISOString()
+    ).toBe('2025-01-01T05:00:00.000Z');
+  });
+
+  test('returns null for invalid input', () => {
+    expect(parseTargetDate('invalid')).toBeNull();
+  });
+});
+
+describe('getTimeRemaining and formatDuration', () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2025-01-01T00:00:00Z'));
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  test('calculates remaining ms and formats', () => {
+    const target = new Date('2025-01-02T01:02:03Z');
+    const remaining = getTimeRemaining(target);
+    expect(remaining).toBe( (24 * 3600 + 3600 + 120 + 3) * 1000 );
+    expect(formatDuration(remaining)).toBe('1d 1h 2m 3s');
   });
 });

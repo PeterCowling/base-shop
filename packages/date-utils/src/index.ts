@@ -1,6 +1,7 @@
 import { addDays, format, parseISO } from "date-fns";
+import { fromZonedTime } from "date-fns-tz";
 
-export { addDays, format, parseISO };
+export { addDays, format, parseISO, fromZonedTime };
 
 export const nowIso = (): string => new Date().toISOString();
 
@@ -40,3 +41,51 @@ export function formatTimestamp(
   const date = new Date(ts);
   return Number.isNaN(date.getTime()) ? ts : date.toLocaleString(locale);
 }
+
+/**
+ * Parse a target date string with optional IANA timezone.
+ *
+ * When `timezone` is provided, the `targetDate` is treated as being in that
+ * timezone and converted to a UTC `Date` object. Returns `null` for invalid
+ * input.
+ */
+export function parseTargetDate(
+  targetDate?: string,
+  timezone?: string
+): Date | null {
+  if (!targetDate) return null;
+  try {
+    const date = timezone
+      ? fromZonedTime(targetDate, timezone)
+      : parseISO(targetDate);
+    return Number.isNaN(date.getTime()) ? null : date;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Calculate the remaining time in milliseconds until `target`.
+ */
+export function getTimeRemaining(target: Date, now: Date = new Date()): number {
+  return target.getTime() - now.getTime();
+}
+
+/**
+ * Format a duration in milliseconds as a human readable string like
+ * "1d 2h 3m 4s".
+ */
+export function formatDuration(ms: number): string {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const parts: string[] = [];
+  if (days) parts.push(`${days}d`);
+  if (days || hours) parts.push(`${hours}h`);
+  if (days || hours || minutes) parts.push(`${minutes}m`);
+  parts.push(`${seconds}s`);
+  return parts.join(" ");
+}
+

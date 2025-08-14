@@ -35,9 +35,11 @@ jest.mock("@platform-core/src/cartStore", () => ({
 }));
 
 import { stripe } from "@acme/stripe";
+import { convertCurrency } from "@platform-core/pricing";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 const findCouponMock = findCoupon as jest.Mock;
 const getTaxRateMock = getTaxRate as jest.Mock;
+const convertCurrencyMock = convertCurrency as jest.Mock;
 
 function createRequest(
   body: any,
@@ -229,4 +231,45 @@ test("returns 400 for unsupported tax region", async () => {
   expect(res.status).toBe(400);
   const body = await res.json();
   expect(body.taxRegion[0]).toMatch(/invalid/i);
+});
+
+test("rounds unit amounts before sending to Stripe", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockReset();
+  findCouponMock.mockReset();
+  getTaxRateMock.mockReset();
+  convertCurrencyMock.mockReset();
+  stripeCreate.mockResolvedValue({
+    id: "sess_test",
+    payment_intent: { client_secret: "cs_test" },
+  });
+  findCouponMock.mockResolvedValue(null);
+  getTaxRateMock.mockResolvedValue(0);
+  convertCurrencyMock
+    .mockImplementationOnce(async () => 10.345)
+    .mockImplementationOnce(async () => 20.265)
+    .mockImplementation(async (n: number) => n);
+
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest({ returnDate: "2025-01-02" }, cookie);
+
+  await POST(req);
+  const args = stripeCreate.mock.calls[0][0];
+
+  expect(args.line_items[0].price_data.unit_amount).toBe(
+    Math.round(10.345 * 100),
+  );
+  expect(args.line_items[1].price_data.unit_amount).toBe(
+    Math.round(20.265 * 100),
+  );
+  expect(Number.isInteger(args.line_items[0].price_data.unit_amount)).toBe(
+    true,
+  );
+  expect(Number.isInteger(args.line_items[1].price_data.unit_amount)).toBe(
+    true,
+  );
 });

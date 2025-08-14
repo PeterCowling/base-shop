@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Checkbox, Input } from "@/components/atoms/shadcn";
-import { updateDepositService } from "@cms/actions/shops.server";
+import { updateDeposit } from "@cms/actions/shops.server";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
 interface Props {
@@ -23,7 +23,7 @@ export default function DepositsEditor({ shop, initial }: Props) {
     e.preventDefault();
     setSaving(true);
     const fd = new FormData(e.currentTarget);
-    const result = await updateDepositService(shop, fd);
+    const result = await updateDeposit(shop, fd);
     if (result.errors) {
       setErrors(result.errors);
     } else if (result.settings?.depositService) {

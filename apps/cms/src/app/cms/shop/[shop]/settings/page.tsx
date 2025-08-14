@@ -73,6 +73,22 @@ export default async function SettingsPage({
           Premier delivery settings
         </Link>
       </p>
+      <p className="mb-4 text-sm">
+        <Link
+          href={`/cms/shop/${shop}/settings/deposits`}
+          className="text-primary underline"
+        >
+          Deposit release settings
+        </Link>
+      </p>
+      <p className="mb-4 text-sm">
+        <Link
+          href={`/cms/shop/${shop}/settings/returns`}
+          className="text-primary underline"
+        >
+          Return service settings
+        </Link>
+      </p>
       <h3 className="mt-4 font-medium">Languages</h3>
       <ul className="mt-2 list-disc pl-5 text-sm">
         {settings.languages.map((l: Locale) => (

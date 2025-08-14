@@ -63,3 +63,50 @@ export async function getShippingRate({
 
   return res.json();
 }
+
+export interface TrackingStatusRequest {
+  provider: "ups" | "dhl";
+  trackingNumber: string;
+}
+
+export interface TrackingStep {
+  label: string;
+  date?: string;
+  complete?: boolean;
+}
+
+export interface TrackingStatus {
+  status: string | null;
+  steps: TrackingStep[];
+}
+
+/**
+ * Fetch the tracking status for a shipment.
+ * Implementations call the provider APIs but gracefully fall back on failure.
+ */
+export async function getTrackingStatus({
+  provider,
+  trackingNumber,
+}: TrackingStatusRequest): Promise<TrackingStatus> {
+  const url =
+    provider === "dhl"
+      ? `https://api.dhl.com/track/shipments?trackingNumber=${trackingNumber}`
+      : `https://www.ups.com/track/api/Track/GetStatus?loc=en_US&tracknum=${trackingNumber}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      return { status: null, steps: [] };
+    }
+    const data = await res.json();
+    const status =
+      provider === "dhl"
+        ? data?.shipments?.[0]?.status?.status
+        : data?.trackDetails?.[0]?.packageStatus?.statusType;
+    return {
+      status: status ?? null,
+      steps: status ? [{ label: status, complete: true }] : [],
+    };
+  } catch {
+    return { status: null, steps: [] };
+  }
+}

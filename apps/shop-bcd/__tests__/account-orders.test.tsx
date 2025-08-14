@@ -11,11 +11,14 @@ import shop from "../shop.json";
 
 describe("/account/orders page", () => {
   it("renders Orders component with shop config", () => {
-    OrdersPage();
-    expect((Orders as jest.Mock).mock.calls[0][0]).toEqual({
+    const element = OrdersPage();
+    expect(element.type).toBe(Orders);
+    expect(element.props).toEqual({
       shopId: shop.id,
       returnsEnabled: shop.returnsEnabled,
       returnPolicyUrl: shop.returnPolicyUrl,
+      trackingEnabled: shop.trackingEnabled,
+      trackingProviders: shop.trackingProviders,
     });
   });
 

@@ -5,7 +5,7 @@ import PageBuilder from "@/components/cms/PageBuilder";
 import { LOCALES } from "@acme/i18n";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Locale, Page, PageComponent } from "@acme/types";
-import { fetchJson } from "@shared-utils";
+import { apiRequest } from "../../lib/api";
 import { useState } from "react";
 import { Toast } from "@/components/atoms";
 import type { PageInfo } from "../../../wizard/schema";
@@ -37,6 +37,8 @@ export default function StepAdditionalPages({
     open: false,
     message: "",
   });
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const {
     slug: newSlug,
@@ -119,21 +121,23 @@ export default function StepAdditionalPages({
               } as Page
             }
             onSave={async (fd) => {
-              try {
-                const json = await fetchJson<{ id: string }>(
-                  `/cms/api/page-draft/${shopId}`,
-                  {
-                    method: "POST",
-                    body: fd,
-                  }
-                );
-                setNewDraftId(json.id);
+              setIsSaving(true);
+              setSaveError(null);
+              const { data, error } = await apiRequest<{ id: string }>(
+                `/cms/api/page-draft/${shopId}`,
+                { method: "POST", body: fd },
+              );
+              setIsSaving(false);
+              if (data) {
+                setNewDraftId(data.id);
                 setToast({ open: true, message: "Draft saved" });
-              } catch {
-                setToast({ open: true, message: "Failed to save page" });
+              } else if (error) {
+                setSaveError(error);
               }
             }}
             onPublish={async () => {}}
+            saving={isSaving}
+            saveError={saveError}
             onChange={setNewComponents}
             style={themeStyle}
           />

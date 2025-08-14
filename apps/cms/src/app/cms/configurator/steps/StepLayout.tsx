@@ -5,7 +5,7 @@ import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
-import { fetchJson } from "@shared-utils";
+import { apiRequest } from "../lib/api";
 import { ReactNode, useState } from "react";
 import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -41,6 +41,10 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
   });
   const [, markComplete] = useStepCompletion("layout");
   const router = useRouter();
+  const [headerSaving, setHeaderSaving] = useState(false);
+  const [headerError, setHeaderError] = useState<string | null>(null);
+  const [footerSaving, setFooterSaving] = useState(false);
+  const [footerError, setFooterError] = useState<string | null>(null);
 
   return (
     <fieldset className="space-y-4">
@@ -70,21 +74,23 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
             } as Page
           }
           onSave={async (fd) => {
-            try {
-              const json = await fetchJson<{ id: string }>(
-                `/cms/api/page-draft/${shopId}`,
-                {
-                  method: "POST",
-                  body: fd,
-                }
-              );
-              setHeaderPageId(json.id);
+            setHeaderSaving(true);
+            setHeaderError(null);
+            const { data, error } = await apiRequest<{ id: string }>(
+              `/cms/api/page-draft/${shopId}`,
+              { method: "POST", body: fd },
+            );
+            setHeaderSaving(false);
+            if (data) {
+              setHeaderPageId(data.id);
               setToast({ open: true, message: "Header saved" });
-            } catch {
-              setToast({ open: true, message: "Failed to save header" });
+            } else if (error) {
+              setHeaderError(error);
             }
           }}
           onPublish={async () => {}}
+          saving={headerSaving}
+          saveError={headerError}
           onChange={setHeaderComponents}
           style={themeStyle}
         />
@@ -114,21 +120,23 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
             } as Page
           }
           onSave={async (fd) => {
-            try {
-              const json = await fetchJson<{ id: string }>(
-                `/cms/api/page-draft/${shopId}`,
-                {
-                  method: "POST",
-                  body: fd,
-                }
-              );
-              setFooterPageId(json.id);
+            setFooterSaving(true);
+            setFooterError(null);
+            const { data, error } = await apiRequest<{ id: string }>(
+              `/cms/api/page-draft/${shopId}`,
+              { method: "POST", body: fd },
+            );
+            setFooterSaving(false);
+            if (data) {
+              setFooterPageId(data.id);
               setToast({ open: true, message: "Footer saved" });
-            } catch {
-              setToast({ open: true, message: "Failed to save footer" });
+            } else if (error) {
+              setFooterError(error);
             }
           }}
           onPublish={async () => {}}
+          saving={footerSaving}
+          saveError={footerError}
           onChange={setFooterComponents}
           style={themeStyle}
         />

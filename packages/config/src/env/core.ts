@@ -32,6 +32,10 @@ export const coreEnvBaseSchema = z.object({
   CLOUDFLARE_ACCOUNT_ID: z.string().optional(),
   CLOUDFLARE_API_TOKEN: z.string().optional(),
   LUXURY_FEATURES_RA_TICKETING: z.coerce.boolean().optional(),
+  LUXURY_FEATURES_FRAUD_REVIEW_THRESHOLD: z.coerce.number().optional(),
+  LUXURY_FEATURES_REQUIRE_STRONG_CUSTOMER_AUTH: z.coerce
+    .boolean()
+    .optional(),
   DEPOSIT_RELEASE_ENABLED: z
     .string()
     .refine((v) => v === "true" || v === "false", {

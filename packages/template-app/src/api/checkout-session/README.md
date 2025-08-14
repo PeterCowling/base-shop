@@ -14,3 +14,8 @@ Clients must provide the following fields when POSTing to `/api/checkout-session
   - `phone` (string, optional)
 
 The client's IP address should be set via the `x-forwarded-for` header so it can be forwarded to Stripe for fraud checks.
+
+Shops can configure additional fraud protection under `luxuryFeatures`:
+
+- `fraudReviewThreshold` (number): charges above this amount are placed into manual review.
+- `requireStrongCustomerAuth` (boolean): when enabled, 3‑D Secure verification is requested for qualifying charges.

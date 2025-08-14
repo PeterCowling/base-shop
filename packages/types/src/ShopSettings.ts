@@ -73,14 +73,16 @@ export const shopSettingsSchema = z
       .object({
         contentMerchandising: z.boolean().default(false),
         raTicketing: z.boolean().default(false),
-        fraudReview: z.boolean().default(false),
+        fraudReviewThreshold: z.number().nonnegative().default(0),
+        requireStrongCustomerAuth: z.boolean().default(false),
         strictReturnConditions: z.boolean().default(false),
       })
       .strict()
       .default({
         contentMerchandising: false,
         raTicketing: false,
-        fraudReview: false,
+        fraudReviewThreshold: 0,
+        requireStrongCustomerAuth: false,
         strictReturnConditions: false,
       }),
     /** Tracking providers enabled for shipment/return tracking */

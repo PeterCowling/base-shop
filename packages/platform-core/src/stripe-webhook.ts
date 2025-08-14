@@ -1,6 +1,8 @@
 // packages/platform-core/src/stripe-webhook.ts
 import type Stripe from "stripe";
+import { stripe } from "@acme/stripe";
 import { addOrder, markRefunded, updateRisk } from "./orders";
+import { getShopSettings } from "./repositories/settings.server";
 
 function extractSessionIdFromCharge(charge: Stripe.Charge): string | undefined {
   if (charge.invoice) return charge.invoice as string;
@@ -37,6 +39,27 @@ export async function handleStripeWebhook(
       const returnDate = session.metadata?.returnDate || undefined;
       const customerId = session.metadata?.customerId || undefined;
       await addOrder(shop, session.id, deposit, returnDate, customerId);
+
+      const settings = await getShopSettings(shop);
+      const threshold = settings.luxuryFeatures.fraudReviewThreshold;
+      const requireSCA = settings.luxuryFeatures.requireStrongCustomerAuth;
+      if (deposit > threshold) {
+        const piId =
+          typeof session.payment_intent === "string"
+            ? session.payment_intent
+            : session.payment_intent?.id;
+        if (piId) {
+          await (stripe.reviews as any).create({ payment_intent: piId });
+          if (requireSCA) {
+            await stripe.paymentIntents.update(piId, {
+              payment_method_options: {
+                card: { request_three_d_secure: "any" },
+              },
+            });
+          }
+        }
+        await updateRisk(shop, session.id, undefined, undefined, true);
+      }
       break;
     }
     case "charge.refunded": {

@@ -31,6 +31,7 @@ export const coreEnvBaseSchema = z.object({
   SANITY_API_VERSION: z.string().optional(),
   CLOUDFLARE_ACCOUNT_ID: z.string().optional(),
   CLOUDFLARE_API_TOKEN: z.string().optional(),
+  LUXURY_FEATURES_RA_TICKETING: z.coerce.boolean().optional(),
   DEPOSIT_RELEASE_ENABLED: z
     .string()
     .refine((v) => v === "true" || v === "false", {

@@ -11,6 +11,7 @@ import {
 import * as path from "node:path";
 import { randomBytes, createHash } from "node:crypto";
 import { getComponentNameMap } from "./component-names";
+import { generateExampleProps } from "./generate-example-props";
 import type { PageRecord, ShopMetadata } from "./types";
 
 const args = process.argv.slice(2);
@@ -50,6 +51,8 @@ if (rollback) {
 }
 
 copyTemplate(templateDir, appDir);
+
+generateExampleProps(shopId, rootDir);
 
 if (existsSync(shopJsonPath)) {
   cpSync(shopJsonPath, shopJsonPath + ".bak");

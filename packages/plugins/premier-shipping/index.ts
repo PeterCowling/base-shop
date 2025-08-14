@@ -1,0 +1,37 @@
+// packages/plugins/premier-shipping/index.ts
+import type { Plugin, ShippingRegistry } from "@acme/platform-core/plugins";
+
+interface PremierPickupState {
+  region?: string;
+  date?: string;
+  window?: string;
+}
+interface PremierShippingProvider {
+  calculateShipping(): unknown;
+  schedulePickup(region: string, date: string, hourWindow: string): void;
+}
+
+class PremierShipping implements PremierShippingProvider {
+  private state: PremierPickupState = {};
+
+  calculateShipping() {
+    // placeholder implementation
+    return { rate: 0 };
+  }
+
+  schedulePickup(region: string, date: string, hourWindow: string) {
+    this.state = { region, date, window: hourWindow };
+  }
+}
+
+const provider = new PremierShipping();
+
+const premierShippingPlugin: Plugin<any, PremierShippingProvider> = {
+  id: "premier-shipping",
+  name: "Premier Shipping",
+  registerShipping(registry: ShippingRegistry<PremierShippingProvider>) {
+    registry.add("premier-shipping", provider);
+  },
+};
+
+export default premierShippingPlugin;

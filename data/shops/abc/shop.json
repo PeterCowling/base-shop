@@ -5,8 +5,12 @@
   "themeId": "base",
   "themeOverrides": {},
   "filterMappings": {},
-  "shippingProviders": ["ups"],
+  "shippingProviders": ["ups", "premier-shipping"],
   "taxProviders": ["taxjar"],
+  "premierShipping": {
+    "regions": ["us-east"],
+    "windows": ["10-11", "11-12"]
+  },
   "priceOverrides": {},
   "localeOverrides": {},
   "componentVersions": {},

@@ -8,6 +8,10 @@
     "intervalMinutes": 60
   },
   "returnService": { "upsEnabled": false },
+  "premierDelivery": {
+    "regions": ["us-west"],
+    "windows": ["09-10", "10-11"]
+  },
   "seo": {
     "aiCatalog": {
       "enabled": false,

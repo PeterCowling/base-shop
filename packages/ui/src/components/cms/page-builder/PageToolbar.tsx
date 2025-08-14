@@ -1,9 +1,9 @@
 import type { Locale } from "@/i18n/locales";
-import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 import { Button, Input } from "../../atoms/shadcn";
 import { getLegacyPreset } from "@ui/utils/devicePresets";
-import DeviceSelector from "../DeviceSelector";
+import DeviceSelector from "@ui/components/common/DeviceSelector";
 
 interface Props {
   viewport: "desktop" | "tablet" | "mobile";
@@ -70,40 +70,25 @@ const PageToolbar = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end gap-2">
-        {(["desktop", "tablet", "mobile"] as const).map((t, i) => {
-          const preset = getLegacyPreset(t);
-          const Icon =
-            t === "desktop" ? DesktopIcon : t === "tablet" ? LaptopIcon : MobileIcon;
-          const shortcut = `Ctrl+${i + 1}`;
-          return (
-            <Button
-              key={t}
-              variant={deviceId === preset.id ? "default" : "outline"}
-              onClick={() => {
-                setDeviceId(preset.id);
-                setOrientation("portrait");
-              }}
-              title={`${t.charAt(0).toUpperCase() + t.slice(1)} (${shortcut})`}
-              aria-label={`${t} (${shortcut})`}
-            >
-              <Icon />
-              <span className="sr-only">
-                {t.charAt(0).toUpperCase() + t.slice(1)}
-              </span>
-            </Button>
-          );
-        })}
         <DeviceSelector
           deviceId={deviceId}
-          orientation={orientation}
-          setDeviceId={(id) => {
+          onChange={(id) => {
             setDeviceId(id);
             setOrientation("portrait");
           }}
-          toggleOrientation={() =>
+          showLegacyButtons
+        />
+        <Button
+          variant="outline"
+          onClick={() =>
             setOrientation((o) => (o === "portrait" ? "landscape" : "portrait"))
           }
-        />
+          aria-label="Rotate"
+        >
+          <ReloadIcon
+            className={orientation === "landscape" ? "rotate-90" : ""}
+          />
+        </Button>
       </div>
       <div className="flex items-center justify-end gap-2">
         <Button

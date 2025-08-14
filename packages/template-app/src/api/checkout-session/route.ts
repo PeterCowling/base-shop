@@ -146,6 +146,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   };
   const shop = coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop";
   const shopInfo = await readShop(shop);
+  if (shopInfo.type !== "rental") {
+    return NextResponse.json(
+      { error: "Rental checkout disabled" },
+      { status: 403 },
+    );
+  }
   const couponDef = await findCoupon(shop, coupon);
   if (couponDef) {
     await trackEvent(shop, { type: "discount_redeemed", code: couponDef.code });

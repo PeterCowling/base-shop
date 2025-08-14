@@ -12,6 +12,8 @@ import { getCart } from "@platform-core/src/cartStore";
 import { getProductById } from "@platform-core/src/products";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/src/repositories/settings.server";
+import { readShop } from "@platform-core/src/repositories/shops.server";
+import { coreEnv } from "@acme/config/env/core";
 
 export const metadata = {
   title: "Checkout · Base-Shop",
@@ -29,15 +31,21 @@ export default async function CheckoutPage({
   /* ---------- await params ---------- */
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
-
-  /* ---------- read cart from cookie ---------- */
-  const cookieStore = await cookies(); // ← await here
+  const cookieStore = await cookies();
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
-  const cart = cartId ? await getCart(cartId) : {};
-
-  /* ---------- empty cart guard ---------- */
+  const cart = (cartId ? await getCart(cartId) : {}) as CartState;
   if (!Object.keys(cart).length) {
     return <p className="p-8 text-center">Your cart is empty.</p>;
+  }
+  const shop = await readShop(coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop");
+  if (shop.type !== "rental") {
+    const settings = await getShopSettings(shop.id);
+    return (
+      <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
+        <OrderSummary cart={cart} />
+        <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
+      </div>
+    );
   }
 
   /* ---------- fetch fresh product data & compute totals ---------- */
@@ -56,7 +64,7 @@ export default async function CheckoutPage({
   );
   const total = subtotal + deposit;
 
-  const settings = await getShopSettings("shop");
+  const settings = await getShopSettings(shop.id);
 
   /* ---------- render ---------- */
   return (

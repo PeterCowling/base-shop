@@ -11,6 +11,9 @@ export default async function SubscribePage({
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
   const shop = await readShop("shop");
+  if (!shop.subscriptionsEnabled || shop.type !== "rental") {
+    return <p className="p-6">Subscriptions are not enabled.</p>;
+  }
 
   async function selectPlan(formData: FormData) {
     "use server";

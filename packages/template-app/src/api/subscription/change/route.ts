@@ -2,12 +2,13 @@
 import { stripe } from "@acme/stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { readShop } from "@platform-core/repositories/shops.server";
+import { coreEnv } from "@acme/config/env/core";
 import {
   getUserById,
   setStripeSubscriptionId,
 } from "@platform-core/repositories/users";
 
-const SHOP_ID = "bcd";
+const SHOP_ID = coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop";
 
 export const runtime = "edge";
 
@@ -22,6 +23,9 @@ export async function POST(req: NextRequest) {
   }
 
   const shop = await readShop(SHOP_ID);
+  if (!shop.subscriptionsEnabled || shop.type !== "rental") {
+    return NextResponse.json({ error: "Subscriptions not enabled" }, { status: 403 });
+  }
   if (shop.billingProvider !== "stripe") {
     return NextResponse.json({ error: "Billing not enabled" }, { status: 400 });
   }

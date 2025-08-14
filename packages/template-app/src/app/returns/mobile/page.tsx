@@ -1,9 +1,15 @@
 import { getReturnLogistics } from "@platform-core/returnLogistics";
+import { readShop } from "@platform-core/src/repositories/shops.server";
+import { coreEnv } from "@acme/config/env/core";
 import { useEffect, useRef, useState } from "react";
 
 export const metadata = { title: "Mobile Returns" };
 
 export default async function MobileReturnPage() {
+  const shop = await readShop(coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop");
+  if (!shop.returnsEnabled || shop.type !== "rental") {
+    return <p className="p-6">Returns are not enabled.</p>;
+  }
   const cfg = await getReturnLogistics();
   if (!cfg.mobileApp) {
     return <p className="p-6">Mobile returns are not enabled.</p>;

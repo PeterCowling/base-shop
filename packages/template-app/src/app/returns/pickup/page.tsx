@@ -1,6 +1,7 @@
 import { getReturnLogistics } from "@platform-core/returnLogistics";
 import CleaningInfo from "../../../components/CleaningInfo";
-import shop from "../../../../shop.json";
+import { readShop } from "@platform-core/src/repositories/shops.server";
+import { coreEnv } from "@acme/config/env/core";
 
 export const metadata = { title: "Schedule pickup" };
 
@@ -9,6 +10,10 @@ export default async function PickupPage({
 }: {
   searchParams?: { zip?: string };
 }) {
+  const shop = await readShop(coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop");
+  if (!shop.returnsEnabled || shop.type !== "rental") {
+    return <p className="p-6">Returns are not enabled.</p>;
+  }
   const cfg = await getReturnLogistics();
   const allowed = cfg.homePickupZipCodes;
   const zip = searchParams?.zip || "";

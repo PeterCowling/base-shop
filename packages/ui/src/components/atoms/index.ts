@@ -38,7 +38,7 @@ export { Chip } from "./Chip";
 export { ColorSwatch } from "./ColorSwatch";
 export { Icon } from "./Icon";
 export { LineChart } from "./LineChart";
-export { Loader } from "./Loader";
+export { Loader, Loader as Spinner } from "./Loader";
 export { Logo } from "./Logo";
 export { PaginationDot } from "./PaginationDot";
 export {

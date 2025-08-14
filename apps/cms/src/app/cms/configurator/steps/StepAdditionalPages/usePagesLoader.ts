@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import type { Page, PageComponent } from "@acme/types";
 import { historyStateSchema } from "@acme/types";
-import { fetchJson } from "@shared-utils";
+import { apiRequest } from "../../lib/api";
 import { toPageInfo } from "../../../wizard/utils/page-utils";
 import type { PageInfo } from "../../../wizard/schema";
 
@@ -25,11 +25,11 @@ export default function usePagesLoader({
   useEffect(() => {
     if (!shopId) return;
     (async () => {
-      try {
-        const loaded = await fetchJson<Page[]>(`/cms/api/pages/${shopId}`);
-        setPages(loaded.map((p) => toPageInfo(p)));
+      const { data, error } = await apiRequest<Page[]>(`/cms/api/pages/${shopId}`);
+      if (data) {
+        setPages(data.map((p) => toPageInfo(p)));
         if (typeof window !== "undefined") {
-          loaded.forEach((p) => {
+          data.forEach((p) => {
             localStorage.setItem(
               `page-builder-history-${p.id}`,
               JSON.stringify(
@@ -44,8 +44,8 @@ export default function usePagesLoader({
             );
           });
         }
-      } catch {
-        setToast({ open: true, message: "Failed to load pages" });
+      } else if (error) {
+        setToast({ open: true, message: error });
       }
     })();
   }, [shopId, setPages, setToast]);
@@ -53,9 +53,9 @@ export default function usePagesLoader({
   useEffect(() => {
     if (!adding || !draftId || !shopId) return;
     (async () => {
-      try {
-        const pages = await fetchJson<Page[]>(`/cms/api/pages/${shopId}`);
-        const p = pages.find((pg) => pg.id === draftId);
+      const { data, error } = await apiRequest<Page[]>(`/cms/api/pages/${shopId}`);
+      if (data) {
+        const p = data.find((pg) => pg.id === draftId);
         if (p) {
           setComponents(p.components);
           if (typeof window !== "undefined") {
@@ -73,8 +73,8 @@ export default function usePagesLoader({
             );
           }
         }
-      } catch {
-        setToast({ open: true, message: "Failed to load pages" });
+      } else if (error) {
+        setToast({ open: true, message: error });
       }
     })();
   }, [adding, draftId, shopId, setComponents, setToast]);

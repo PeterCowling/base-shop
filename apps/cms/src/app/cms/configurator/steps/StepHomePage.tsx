@@ -12,7 +12,7 @@ import PageBuilder from "@/components/cms/PageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
 import { historyStateSchema } from "@acme/types";
-import { fetchJson } from "@shared-utils";
+import { apiRequest } from "../lib/api";
 import { ulid } from "ulid";
 import { useEffect, useState } from "react";
 import { Toast } from "@/components/atoms";
@@ -48,15 +48,21 @@ export default function StepHomePage({
   });
   const [, markComplete] = useStepCompletion("home-page");
   const router = useRouter();
+  const [isSaving, setIsSaving] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [publishError, setPublishError] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
       if (!shopId) return;
-      try {
-        const pages = await fetchJson<Page[]>(`/cms/api/pages/${shopId}`);
+      const { data, error } = await apiRequest<Page[]>(
+        `/cms/api/pages/${shopId}`,
+      );
+      if (data) {
         const existing = homePageId
-          ? pages.find((p) => p.id === homePageId)
-          : pages.find((p) => p.slug === "");
+          ? data.find((p) => p.id === homePageId)
+          : data.find((p) => p.slug === "");
         if (existing) {
           setHomePageId(existing.id);
           setComponents(existing.components);
@@ -75,8 +81,8 @@ export default function StepHomePage({
             );
           }
         }
-      } catch {
-        setToast({ open: true, message: "Failed to load pages" });
+      } else if (error) {
+        setToast({ open: true, message: error });
       }
     })();
   }, [shopId, homePageId, setComponents, setHomePageId]);
@@ -129,36 +135,40 @@ export default function StepHomePage({
           } as Page
         }
         onSave={async (fd) => {
-          try {
-            const json = await fetchJson<{ id: string }>(
-              `/cms/api/page-draft/${shopId}`,
-              {
-                method: "POST",
-                body: fd,
-              }
-            );
-            setHomePageId(json.id);
+          setIsSaving(true);
+          setSaveError(null);
+          const { data, error } = await apiRequest<{ id: string }>(
+            `/cms/api/page-draft/${shopId}`,
+            { method: "POST", body: fd },
+          );
+          setIsSaving(false);
+          if (data) {
+            setHomePageId(data.id);
             setToast({ open: true, message: "Draft saved" });
-          } catch {
-            setToast({ open: true, message: "Failed to save page" });
+          } else if (error) {
+            setSaveError(error);
           }
         }}
         onPublish={async (fd) => {
-          try {
-            fd.set("status", "published");
-            const json = await fetchJson<{ id: string }>(
-              `/cms/api/page/${shopId}`,
-              {
-                method: "POST",
-                body: fd,
-              }
-            );
-            setHomePageId(json.id);
+          setIsPublishing(true);
+          setPublishError(null);
+          fd.set("status", "published");
+          const { data, error } = await apiRequest<{ id: string }>(
+            `/cms/api/page/${shopId}`,
+            { method: "POST", body: fd },
+          );
+          setIsPublishing(false);
+          if (data) {
+            setHomePageId(data.id);
             setToast({ open: true, message: "Page published" });
-          } catch {
-            setToast({ open: true, message: "Failed to publish page" });
+          } else if (error) {
+            setPublishError(error);
           }
         }}
+        saving={isSaving}
+        publishing={isPublishing}
+        saveError={saveError}
+        publishError={publishError}
         onChange={setComponents}
         style={themeStyle}
       />

@@ -11,7 +11,7 @@ import {
 import PageBuilder from "@/components/cms/PageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
-import { fetchJson } from "@shared-utils";
+import { apiRequest } from "../lib/api";
 import { ulid } from "ulid";
 import { useState } from "react";
 import { Toast } from "@/components/atoms";
@@ -47,6 +47,8 @@ export default function StepCheckoutPage({
   });
   const [, markComplete] = useStepCompletion("checkout-page");
   const router = useRouter();
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   return (
     <div className="space-y-4">
@@ -99,21 +101,23 @@ export default function StepCheckoutPage({
           } as Page
         }
         onSave={async (fd) => {
-          try {
-            const json = await fetchJson<{ id: string }>(
-              `/cms/api/page-draft/${shopId}`,
-              {
-                method: "POST",
-                body: fd,
-              }
-            );
-            setCheckoutPageId(json.id);
+          setIsSaving(true);
+          setSaveError(null);
+          const { data, error } = await apiRequest<{ id: string }>(
+            `/cms/api/page-draft/${shopId}`,
+            { method: "POST", body: fd },
+          );
+          setIsSaving(false);
+          if (data) {
+            setCheckoutPageId(data.id);
             setToast({ open: true, message: "Draft saved" });
-          } catch {
-            setToast({ open: true, message: "Failed to save page" });
+          } else if (error) {
+            setSaveError(error);
           }
         }}
         onPublish={async () => {}}
+        saving={isSaving}
+        saveError={saveError}
         onChange={setCheckoutComponents}
         style={themeStyle}
       />

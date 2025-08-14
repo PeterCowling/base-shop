@@ -11,7 +11,7 @@ import {
 import PageBuilder from "@/components/cms/PageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
-import { fetchJson } from "@shared-utils";
+import { apiRequest } from "../lib/api";
 import { ulid } from "ulid";
 import { useState } from "react";
 import { Toast } from "@/components/atoms";
@@ -47,6 +47,10 @@ export default function StepShopPage({
   });
   const [, markComplete] = useStepCompletion("shop-page");
   const router = useRouter();
+  const [isSaving, setIsSaving] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [publishError, setPublishError] = useState<string | null>(null);
 
   return (
     <div className="space-y-4">
@@ -99,36 +103,40 @@ export default function StepShopPage({
           } as Page
         }
         onSave={async (fd) => {
-          try {
-            const json = await fetchJson<{ id: string }>(
-              `/cms/api/page-draft/${shopId}`,
-              {
-                method: "POST",
-                body: fd,
-              }
-            );
-            setShopPageId(json.id);
+          setIsSaving(true);
+          setSaveError(null);
+          const { data, error } = await apiRequest<{ id: string }>(
+            `/cms/api/page-draft/${shopId}`,
+            { method: "POST", body: fd },
+          );
+          setIsSaving(false);
+          if (data) {
+            setShopPageId(data.id);
             setToast({ open: true, message: "Draft saved" });
-          } catch {
-            setToast({ open: true, message: "Failed to save page" });
+          } else if (error) {
+            setSaveError(error);
           }
         }}
         onPublish={async (fd) => {
-          try {
-            fd.set("status", "published");
-            const json = await fetchJson<{ id: string }>(
-              `/cms/api/page/${shopId}`,
-              {
-                method: "POST",
-                body: fd,
-              }
-            );
-            setShopPageId(json.id);
+          setIsPublishing(true);
+          setPublishError(null);
+          fd.set("status", "published");
+          const { data, error } = await apiRequest<{ id: string }>(
+            `/cms/api/page/${shopId}`,
+            { method: "POST", body: fd },
+          );
+          setIsPublishing(false);
+          if (data) {
+            setShopPageId(data.id);
             setToast({ open: true, message: "Page published" });
-          } catch {
-            setToast({ open: true, message: "Failed to publish page" });
+          } else if (error) {
+            setPublishError(error);
           }
         }}
+        saving={isSaving}
+        publishing={isPublishing}
+        saveError={saveError}
+        publishError={publishError}
         onChange={setShopComponents}
         style={themeStyle}
       />

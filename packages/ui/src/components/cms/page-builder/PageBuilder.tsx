@@ -7,7 +7,7 @@ import type { CSSProperties, DragEvent } from "react";
 import { ulid } from "ulid";
 import type { Page, PageComponent, HistoryState, MediaItem } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
-import { Toast } from "../../atoms";
+import { Toast, Spinner } from "../../atoms";
 import Palette from "./Palette";
 import {
   atomRegistry,
@@ -77,6 +77,10 @@ interface Props {
   history?: HistoryState;
   onSave: (fd: FormData) => Promise<unknown>;
   onPublish: (fd: FormData) => Promise<unknown>;
+  saving?: boolean;
+  publishing?: boolean;
+  saveError?: string | null;
+  publishError?: string | null;
   onChange?: (components: PageComponent[]) => void;
   style?: CSSProperties;
 }
@@ -86,6 +90,10 @@ const PageBuilder = memo(function PageBuilder({
   history: historyProp,
   onSave,
   onPublish,
+  saving = false,
+  publishing = false,
+  saveError,
+  publishError,
   onChange,
   style,
 }: Props) {
@@ -331,10 +339,22 @@ const PageBuilder = memo(function PageBuilder({
           <Button onClick={() => dispatch({ type: "redo" })} disabled={!state.future.length}>
             Redo
           </Button>
-          <Button onClick={() => onSave(formData)}>Save</Button>
-          <Button variant="outline" onClick={handlePublish}>
-            Publish
-          </Button>
+          <div className="flex flex-col gap-1">
+            <Button onClick={() => onSave(formData)} disabled={saving}>
+              {saving ? <Spinner className="h-4 w-4" /> : "Save"}
+            </Button>
+            {saveError && (
+              <p className="text-sm text-red-500">{saveError}</p>
+            )}
+          </div>
+          <div className="flex flex-col gap-1">
+            <Button variant="outline" onClick={handlePublish} disabled={publishing}>
+              {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
+            </Button>
+            {publishError && (
+              <p className="text-sm text-red-500">{publishError}</p>
+            )}
+          </div>
         </div>
       </div>
       <PageSidebar

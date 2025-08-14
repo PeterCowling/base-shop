@@ -20,8 +20,11 @@ export async function parseJsonBody<T>(
       limit,
       encoding: "utf8",
     });
-  } catch (err: any) {
-    if (err?.type === "entity.too.large") {
+  } catch (err: unknown) {
+    if (
+      err instanceof Error &&
+      (err as { type?: string }).type === "entity.too.large"
+    ) {
       return {
         success: false,
         response: NextResponse.json(
@@ -30,6 +33,7 @@ export async function parseJsonBody<T>(
         ),
       };
     }
+    console.error(err instanceof Error ? err : "Unknown error");
     return {
       success: false,
       response: NextResponse.json(

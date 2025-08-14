@@ -2,7 +2,8 @@
 import "server-only";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
-import type { RentalOrder } from "@acme/types";
+import type { RentalOrder, TrackingEvent } from "@acme/types";
+import type { Prisma } from "@prisma/client";
 import { trackOrder } from "./analytics";
 import { prisma } from "./db";
 
@@ -97,6 +98,24 @@ export async function updateRisk(
         ...(riskLevel ? { riskLevel } : {}),
         ...(typeof riskScore === "number" ? { riskScore } : {}),
         ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
+      },
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
+}
+
+export async function updateTrackingEvents(
+  shop: string,
+  sessionId: string,
+  events: TrackingEvent[]
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: {
+        trackingEvents: events as unknown as Prisma.JsonArray,
       },
     });
     return order as Order;

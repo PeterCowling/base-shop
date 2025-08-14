@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { trackingEventSchema } from "./TrackingEvent";
 
 export const rentalOrderSchema = z
   .object({
@@ -16,6 +17,7 @@ export const rentalOrderSchema = z
     riskLevel: z.string().optional(),
     riskScore: z.number().optional(),
     flaggedForReview: z.boolean().optional(),
+    trackingEvents: z.array(trackingEventSchema).optional(),
   })
   .strict();
 

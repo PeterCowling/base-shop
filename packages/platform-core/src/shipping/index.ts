@@ -46,3 +46,36 @@ export async function getShippingRate({
 
   return res.json();
 }
+
+/**
+ * Retrieve the current tracking status for a shipment.
+ * Returns the raw provider response for now.
+ */
+export async function getTrackingStatus(
+  provider: "ups" | "dhl",
+  trackingNumber: string
+): Promise<unknown> {
+  const apiKey = (shippingEnv as Record<string, string | undefined>)[
+    `${provider.toUpperCase()}_KEY`
+  ];
+  if (!apiKey) {
+    throw new Error(`Missing ${provider.toUpperCase()}_KEY`);
+  }
+
+  const url =
+    provider === "ups"
+      ? `https://onlinetools.ups.com/track/v1/details/${trackingNumber}`
+      : `https://api.dhl.com/track/shipments?trackingNumber=${trackingNumber}`;
+
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch tracking from ${provider}`);
+  }
+
+  return res.json();
+}

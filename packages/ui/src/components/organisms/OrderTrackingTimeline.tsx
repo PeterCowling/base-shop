@@ -10,7 +10,8 @@ export interface OrderStep {
 
 export interface OrderTrackingTimelineProps
   extends React.HTMLAttributes<HTMLOListElement> {
-  steps: OrderStep[];
+  shippingSteps: OrderStep[];
+  returnSteps?: OrderStep[];
   /** Tailwind vertical spacing utility like `space-y-6` */
   itemSpacing?: string;
 }
@@ -19,11 +20,16 @@ export interface OrderTrackingTimelineProps
  * Vertical timeline showing progress of an order.
  */
 export function OrderTrackingTimeline({
-  steps,
+  shippingSteps,
+  returnSteps = [],
   itemSpacing = "space-y-6",
   className,
   ...props
 }: OrderTrackingTimelineProps) {
+  const steps = [...shippingSteps, ...returnSteps].sort((a, b) => {
+    if (a.date && b.date) return a.date.localeCompare(b.date);
+    return 0;
+  });
   return (
     <ol
       className={cn("relative border-l pl-4", itemSpacing, className)}

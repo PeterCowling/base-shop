@@ -36,6 +36,7 @@ model RentalOrder {
   riskLevel          String?
   riskScore          Int?
   flaggedForReview   Boolean? @default(false)
+  trackingEvents     Json?
 
   @@unique([shop, sessionId])
   @@index([customerId])

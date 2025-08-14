@@ -87,6 +87,7 @@ export const shopSchema = z
     sanityBlog: sanityBlogConfigSchema.optional(),
     domain: shopDomainSchema.optional(),
     analyticsEnabled: z.boolean().optional(),
+    orderTrackingEnabled: z.boolean().optional(),
   })
   .strict();
 

@@ -28,7 +28,7 @@
   },
   "luxuryFeatures": {
     "contentMerchandising": false,
-    "raTicketing": false,
+    "raTicketing": true,
     "fraudReviewThreshold": 0,
     "requireStrongCustomerAuth": false,
     "strictReturnConditions": true

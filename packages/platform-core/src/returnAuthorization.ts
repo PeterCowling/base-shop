@@ -12,7 +12,9 @@ export async function listReturnAuthorizations(): Promise<ReturnAuthorization[]>
 }
 
 export async function createReturnAuthorization(
-  ra: ReturnAuthorization,
-): Promise<void> {
-  await addReturnAuthorization(ra);
+  ra: Omit<ReturnAuthorization, "raId">,
+): Promise<string> {
+  const raId = `RA${Date.now().toString(36).toUpperCase()}`;
+  await addReturnAuthorization({ ...ra, raId });
+  return raId;
 }

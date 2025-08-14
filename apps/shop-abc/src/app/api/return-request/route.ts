@@ -38,9 +38,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const raId = `RA${Date.now().toString(36).toUpperCase()}`;
-  await createReturnAuthorization({
-    raId,
+  const raId = await createReturnAuthorization({
     orderId,
     status: "pending",
     inspectionNotes: "",

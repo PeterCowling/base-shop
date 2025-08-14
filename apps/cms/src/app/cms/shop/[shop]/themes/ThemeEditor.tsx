@@ -224,6 +224,28 @@ export default function ThemeEditor({
     setSaving(false);
   };
 
+  const handleResetAll = async () => {
+    if (!window.confirm("Are you sure you want to reset all overrides?")) {
+      return;
+    }
+    setOverrides({});
+    const merged = { ...tokensByThemeState[theme] };
+    schedulePreviewUpdate(merged);
+    savePreviewTokens(merged);
+    setSaving(true);
+    const fd = new FormData();
+    fd.set("id", shop);
+    fd.set("themeOverrides", JSON.stringify({}));
+    fd.set("themeDefaults", JSON.stringify(themeDefaults));
+    const result = await updateShop(shop, fd);
+    if (result.errors) {
+      setErrors(result.errors);
+    } else if (result.shop) {
+      setErrors({});
+    }
+    setSaving(false);
+  };
+
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
@@ -383,9 +405,14 @@ export default function ThemeEditor({
           </fieldset>
         ))}
       </div>
-      <Button className="bg-primary text-white" disabled={saving} type="submit">
-        {saving ? "Saving…" : "Save"}
-      </Button>
+      <div className="flex gap-2">
+        <Button type="button" onClick={handleResetAll} disabled={saving}>
+          Reset all overrides
+        </Button>
+        <Button className="bg-primary text-white" disabled={saving} type="submit">
+          {saving ? "Saving…" : "Save"}
+        </Button>
+      </div>
     </form>
   );
 }

@@ -1,0 +1,3 @@
+{
+  "reverseLogisticsService": { "enabled": true, "intervalMinutes": 30 }
+}

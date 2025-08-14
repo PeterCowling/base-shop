@@ -5,6 +5,7 @@ import {
   markRefunded,
   markReturned,
 } from "@platform-core/repositories/rentalOrders.server";
+import { readShop } from "@platform-core/repositories/shops.server";
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -43,7 +44,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, message: "No deposit found" });
   }
 
-  const damageFee = await computeDamageFee(damage, deposit);
+  const shop = await readShop("bcd");
+  const damageFee = await computeDamageFee(
+    damage,
+    deposit,
+    [],
+    shop.coverageIncluded,
+  );
   if (damageFee) {
     await markReturned("bcd", sessionId, damageFee);
   }

@@ -119,7 +119,7 @@ describe("/api/rental", () => {
     } as any);
     expect(markReturned).toHaveBeenCalledWith("bcd", "sess");
     expect(markReturned).toHaveBeenCalledWith("bcd", "sess", 30);
-    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 100);
+    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 100, [], true);
     expect(retrieve).toHaveBeenCalledWith("sess", {
       expand: ["payment_intent"],
     });

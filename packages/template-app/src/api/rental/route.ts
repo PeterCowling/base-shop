@@ -74,6 +74,7 @@ export async function PATCH(req: NextRequest) {
     damage,
     order.deposit,
     coverageCodes,
+    shop.coverageIncluded,
   );
   if (damageFee) {
     await markReturned(SHOP_ID, sessionId, damageFee);

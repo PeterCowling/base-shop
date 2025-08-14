@@ -4,6 +4,7 @@ import {
   addOrder,
   markReturned,
 } from "@platform-core/repositories/rentalOrders.server";
+import { readShop } from "@platform-core/repositories/shops.server";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -34,7 +35,13 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
-  const damageFee = await computeDamageFee(damage, order.deposit);
+  const shop = await readShop("bcd");
+  const damageFee = await computeDamageFee(
+    damage,
+    order.deposit,
+    [],
+    shop.coverageIncluded,
+  );
   if (damageFee) {
     await markReturned("bcd", sessionId, damageFee);
   }

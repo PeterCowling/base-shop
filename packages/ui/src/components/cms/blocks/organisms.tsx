@@ -41,6 +41,7 @@ import PopupModal from "./PopupModal";
 import ProductBundle, {
   getRuntimeProps as getProductBundleRuntimeProps,
 } from "./ProductBundle";
+import ProductFilter from "./ProductFilter";
 
 export const organismRegistry = {
   AnnouncementBar: { component: AnnouncementBar },
@@ -91,6 +92,7 @@ export const organismRegistry = {
     component: ProductBundle,
     getRuntimeProps: getProductBundleRuntimeProps,
   },
+  ProductFilter: { component: ProductFilter },
 } as const;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

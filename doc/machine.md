@@ -5,7 +5,10 @@
 Rental shops can automatically refund customer deposits after items are returned. The helpers in `@acme/platform-machine` read rental orders for each shop and issue Stripe refunds for any deposits that are marked as returned but not yet refunded.
 
 ```ts
-import { startDepositReleaseService, releaseDepositsOnce } from "@acme/platform-machine";
+import {
+  startDepositReleaseService,
+  releaseDepositsOnce,
+} from "@acme/platform-machine";
 
 // process all shops once
 await releaseDepositsOnce();
@@ -40,7 +43,7 @@ pnpm release-deposits
 
 ## Reverse logistics service
 
-Rental operations often track returned items through several post‑rental stages. The reverse logistics worker in `@acme/platform-machine` reads event files for each shop and updates rental order statuses.
+Rental operations often track returned items through several post‑rental stages. The reverse logistics worker in `@acme/platform-machine` reads event files for each shop and updates rental order statuses. Each transition is also recorded through the `reverseLogisticsEvents` repository so other services and dashboards can observe the flow of goods.
 
 ```ts
 import {
@@ -56,7 +59,9 @@ const stop = await startReverseLogisticsService();
 // stop(); // call to clear the interval
 ```
 
-Events are JSON files placed in `data/shops/<id>/reverse-logistics/` with a `sessionId` and `status` field (e.g. `received`, `cleaning`, `repair`, `qa`, or `available`).
+Events are JSON files placed in `data/shops/<id>/reverse-logistics/` with a `sessionId` and `status` field (e.g. `received`, `cleaning`, `repair`, `qa`, or `available`). As the worker processes each file it emits a matching event to the `reverseLogisticsEvents` table, providing an auditable history of lifecycle changes.
+
+Operational dashboards can read from this event log to provide real‑time visibility into how many items are in each stage of the reverse logistics pipeline and to spot bottlenecks.
 
 Each shop controls the worker in `data/shops/<id>/settings.json` under `reverseLogisticsService`:
 

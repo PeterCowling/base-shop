@@ -230,3 +230,22 @@ test("returns 400 for unsupported tax region", async () => {
   const body = await res.json();
   expect(body.taxRegion[0]).toMatch(/invalid/i);
 });
+
+test("returns 502 when Stripe session creation fails", async () => {
+  stripeCreate.mockReset();
+  findCouponMock.mockResolvedValue(null);
+  getTaxRateMock.mockResolvedValue(0);
+  stripeCreate.mockRejectedValue(new Error("boom"));
+
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest({ returnDate: "2025-01-02" }, cookie);
+
+  const res = await POST(req);
+  expect(res.status).toBe(502);
+  const body = await res.json();
+  expect(body.error).toBe("Checkout session failed");
+});

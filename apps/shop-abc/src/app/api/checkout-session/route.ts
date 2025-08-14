@@ -231,38 +231,47 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     (paymentIntentData as any).billing_details = billing_details;
   }
 
-    const stripeSession = await stripe.checkout.sessions.create({
-    mode: "payment",
-    customer,
-    line_items,
-    success_url: `${req.nextUrl.origin}/success`,
-    cancel_url: `${req.nextUrl.origin}/cancelled`,
-    payment_intent_data: paymentIntentData,
-    metadata: {
-      subtotal: subtotal.toString(),
-      depositTotal: depositTotal.toString(),
-      returnDate: returnDate ?? "",
-      rentalDays: rentalDays.toString(),
-      sizes: sizesMeta,
-      customerId: customer ?? "",
-      discount: discount.toString(),
-      coupon: couponDef?.code ?? "",
-      currency,
-      taxRate: taxRate.toString(),
-      taxAmount: taxAmount.toString(),
-      ...(clientIp ? { client_ip: clientIp } : {}),
-    },
-    expand: ["payment_intent"],
-  });
+  let stripeSession: Stripe.Checkout.Session;
+  try {
+    stripeSession = await stripe.checkout.sessions.create({
+      mode: "payment",
+      customer,
+      line_items,
+      success_url: `${req.nextUrl.origin}/success`,
+      cancel_url: `${req.nextUrl.origin}/cancelled`,
+      payment_intent_data: paymentIntentData,
+      metadata: {
+        subtotal: subtotal.toString(),
+        depositTotal: depositTotal.toString(),
+        returnDate: returnDate ?? "",
+        rentalDays: rentalDays.toString(),
+        sizes: sizesMeta,
+        customerId: customer ?? "",
+        discount: discount.toString(),
+        coupon: couponDef?.code ?? "",
+        currency,
+        taxRate: taxRate.toString(),
+        taxAmount: taxAmount.toString(),
+        ...(clientIp ? { client_ip: clientIp } : {}),
+      },
+      expand: ["payment_intent"],
+    });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      { error: "Checkout session failed" },
+      { status: 502 },
+    );
+  }
 
   /* 6️⃣ Return client credentials ------------------------------------------ */
-    const clientSecret =
-      typeof stripeSession.payment_intent === "string"
-        ? undefined
-        : stripeSession.payment_intent?.client_secret;
+  const clientSecret =
+    typeof stripeSession.payment_intent === "string"
+      ? undefined
+      : stripeSession.payment_intent?.client_secret;
 
-    return NextResponse.json({
-      clientSecret,
-      sessionId: stripeSession.id,
-    });
+  return NextResponse.json({
+    clientSecret,
+    sessionId: stripeSession.id,
+  });
 }

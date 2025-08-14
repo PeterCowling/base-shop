@@ -2,6 +2,6 @@ export interface CmsUser {
   id: string;
   name: string;
   email: string;
-  /** bcrypt hashed password */
+  /** argon2 hashed password */
   password: string;
 }

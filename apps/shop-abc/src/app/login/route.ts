@@ -5,7 +5,7 @@ import { createCustomerSession, validateCsrfToken } from "@auth";
 import { isMfaEnabled } from "@auth/mfa";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
-import bcrypt from "bcryptjs";
+import argon2 from "argon2";
 import { parseJsonBody } from "@shared-utils";
 import { checkLoginRateLimit, clearLoginAttempts } from "../../middleware";
 import { getUserById } from "@acme/platform-core/users";
@@ -22,11 +22,11 @@ export type LoginInput = z.infer<typeof LoginSchema>;
 
 async function validateCredentials(
   customerId: string,
-  password: string,
+  password: string
 ): Promise<{ customerId: string; role: Role; emailVerified: boolean } | null> {
   const record = await getUserById(customerId);
   if (!record) return null;
-  const match = await bcrypt.compare(password, record.passwordHash);
+  const match = await argon2.verify(record.passwordHash, password);
   if (!match) return null;
   return {
     customerId,
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
 
   const valid = await validateCredentials(
     parsed.data.customerId,
-    parsed.data.password,
+    parsed.data.password
   );
 
   if (!valid) {

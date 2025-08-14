@@ -4,7 +4,7 @@
 
 import type { Role } from "@cms/auth/roles";
 import type { CmsUser } from "@cms/auth/users";
-import bcrypt from "bcryptjs";
+import argon2 from "argon2";
 import { ulid } from "ulid";
 import { sendEmail } from "@acme/email";
 import { readRbac, writeRbac } from "../lib/rbacStore";
@@ -22,7 +22,7 @@ export async function requestAccount(formData: FormData): Promise<void> {
   const name = String(formData.get("name") ?? "");
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
-  const hashed = await bcrypt.hash(password, 10);
+  const hashed = await argon2.hash(password);
   const id = ulid();
   PENDING_USERS[id] = { id, name, email, password: hashed };
 }

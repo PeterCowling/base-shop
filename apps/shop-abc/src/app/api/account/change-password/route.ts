@@ -1,7 +1,7 @@
 import "@acme/lib/initZod";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import bcrypt from "bcryptjs";
+import argon2 from "argon2";
 import { requirePermission, validateCsrfToken } from "@auth";
 import { getUserById, updatePassword } from "@acme/platform-core/users";
 
@@ -13,7 +13,7 @@ const ChangePasswordSchema = z
       .min(8, "Password must be at least 8 characters long")
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-        "Password must include uppercase, lowercase, and number",
+        "Password must include uppercase, lowercase, and number"
       ),
   })
   .strict();
@@ -36,7 +36,9 @@ export async function POST(req: Request) {
   const json = await req.json();
   const parsed = ChangePasswordSchema.safeParse(json);
   if (!parsed.success) {
-    return NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 });
+    return NextResponse.json(parsed.error.flatten().fieldErrors, {
+      status: 400,
+    });
   }
 
   const { currentPassword, newPassword } = parsed.data;
@@ -45,12 +47,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "User not found" }, { status: 404 });
   }
 
-  const valid = await bcrypt.compare(currentPassword, user.passwordHash);
+  const valid = await argon2.verify(user.passwordHash, currentPassword);
   if (!valid) {
-    return NextResponse.json({ error: "Current password incorrect" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Current password incorrect" },
+      { status: 400 }
+    );
   }
 
-  const newHash = await bcrypt.hash(newPassword, 10);
+  const newHash = await argon2.hash(newPassword);
   await updatePassword(user.id, newHash);
   return NextResponse.json({ ok: true });
 }

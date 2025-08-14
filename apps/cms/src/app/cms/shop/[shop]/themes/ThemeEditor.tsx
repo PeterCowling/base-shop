@@ -10,18 +10,16 @@ import {
   useMemo,
   useRef,
   useEffect,
-  type CSSProperties,
 } from "react";
-import {
-  hslToHex,
-  isHex,
-  isHsl,
-} from "@ui/utils/colorUtils";
 import { useThemePresets } from "./useThemePresets";
-import ColorInput from "./ColorInput";
-import InlineColorPicker from "./InlineColorPicker";
-import WizardPreview from "../../../wizard/WizardPreview";
 import { savePreviewTokens } from "../../../wizard/previewTokens";
+import ThemePreview from "./ThemePreview";
+import PalettePicker from "./PalettePicker";
+import TypographySettings from "./TypographySettings";
+
+export { default as ThemePreview } from "./ThemePreview";
+export { default as PalettePicker } from "./PalettePicker";
+export { default as TypographySettings } from "./TypographySettings";
 
 interface Props {
   shop: string;
@@ -196,6 +194,12 @@ export default function ThemeEditor({
     }
   };
 
+  const handlePickerClose = () => {
+    setPicker(null);
+    const merged = { ...tokensByThemeState[theme], ...overrides };
+    schedulePreviewUpdate(merged);
+  };
+
   useEffect(() => {
     return () => {
       if (debounceRef.current) {
@@ -250,21 +254,6 @@ export default function ThemeEditor({
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <Input type="hidden" name="id" value={shop} />
-      {picker && (
-        <InlineColorPicker
-          token={picker.token}
-          defaultValue={picker.defaultValue}
-          value={overrides[picker.token] || picker.defaultValue}
-          x={picker.x}
-          y={picker.y}
-          onChange={handleOverrideChange(picker.token, picker.defaultValue)}
-          onClose={() => {
-            setPicker(null);
-            const merged = { ...tokensByThemeState[theme], ...overrides };
-            schedulePreviewUpdate(merged);
-          }}
-        />
-      )}
       <input
         type="hidden"
         name="themeOverrides"
@@ -320,91 +309,33 @@ export default function ThemeEditor({
           </ul>
         </div>
       )}
-      <WizardPreview
-        style={previewTokens as CSSProperties}
-        inspectMode
+      <ThemePreview
+        picker={picker}
+        overrides={overrides}
+        onChange={handleOverrideChange}
+        onPickerClose={handlePickerClose}
+        previewTokens={previewTokens}
         onTokenSelect={handleTokenSelect}
       />
-      <div className="space-y-6">
-        {Object.entries(groupedTokens).map(([groupName, tokens]) => (
-          <fieldset key={groupName} className="space-y-2">
-            <legend className="font-semibold">{groupName}</legend>
-            <div className="mb-2 flex flex-wrap gap-2">
-              {tokens
-                .filter(([, v]) => isHex(v) || isHsl(v))
-                .map(([k, defaultValue]) => {
-                  const hasOverride = Object.prototype.hasOwnProperty.call(
-                    overrides,
-                    k,
-                  );
-                  const current = hasOverride ? overrides[k] : defaultValue;
-                  const defaultHex = isHsl(defaultValue)
-                    ? hslToHex(defaultValue)
-                    : defaultValue;
-                  const currentHex = isHsl(defaultValue)
-                    ? isHex(current)
-                      ? current
-                      : hslToHex(current)
-                    : current;
-                  return (
-                    <button
-                      key={k}
-                      type="button"
-                      aria-label={k}
-                      title={k}
-                      className="h-6 w-6 overflow-hidden rounded border p-0"
-                      onClick={() => handleTokenSelect(k)}
-                    >
-                      {hasOverride ? (
-                        <span className="flex h-full w-full">
-                          <span
-                            className="h-full w-1/2"
-                            style={{ background: defaultHex }}
-                            title="Default"
-                          />
-                          <span
-                            className="h-full w-1/2"
-                            style={{ background: currentHex }}
-                            title="Custom"
-                          />
-                        </span>
-                      ) : (
-                        <span
-                          className="block h-full w-full"
-                          style={{ background: defaultHex }}
-                        />
-                      )}
-                    </button>
-                  );
-                })}
-            </div>
-            <div className="grid gap-2 md:grid-cols-2">
-              {tokens.map(([k, defaultValue]) => {
-                const hasOverride = Object.prototype.hasOwnProperty.call(
-                  overrides,
-                  k,
-                );
-                const overrideValue = hasOverride ? overrides[k] : "";
-                return (
-                  <ColorInput
-                    key={k}
-                    name={k}
-                    defaultValue={defaultValue}
-                    value={overrideValue}
-                    onChange={handleOverrideChange(k, defaultValue)}
-                    onReset={handleReset(k)}
-                    inputRef={(el) => (overrideRefs.current[k] = el)}
-                    tokens={mergedTokens}
-                    textTokens={textTokenKeys}
-                    bgTokens={bgTokenKeys}
-                    onWarningChange={handleWarningChange}
-                  />
-                );
-              })}
-            </div>
-          </fieldset>
-        ))}
-      </div>
+      <PalettePicker
+        groupedTokens={groupedTokens}
+        overrides={overrides}
+        handleOverrideChange={handleOverrideChange}
+        handleReset={handleReset}
+        overrideRefs={overrideRefs}
+        mergedTokens={mergedTokens}
+        textTokenKeys={textTokenKeys}
+        bgTokenKeys={bgTokenKeys}
+        handleWarningChange={handleWarningChange}
+        onTokenSelect={handleTokenSelect}
+      />
+      <TypographySettings
+        tokens={tokensByThemeState[theme]}
+        overrides={overrides}
+        handleOverrideChange={handleOverrideChange}
+        handleReset={handleReset}
+        overrideRefs={overrideRefs}
+      />
       <div className="flex gap-2">
         <Button type="button" onClick={handleResetAll} disabled={saving}>
           Reset all overrides

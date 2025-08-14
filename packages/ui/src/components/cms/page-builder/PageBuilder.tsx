@@ -24,6 +24,7 @@ import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES } from "./defaults";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+import { TourProvider, type StepType } from "@reactour/tour";
 
 interface Props {
   page: Page;
@@ -108,6 +109,40 @@ const PageBuilder = memo(function PageBuilder({
   >("idle");
   const saveDebounceRef = useRef<number | null>(null);
   const initialRender = useRef(true);
+  const [isTourOpen, setIsTourOpen] = useState(false);
+  const tourSteps = useMemo<StepType[]>(
+    () => [
+      {
+        selector: '[data-tour="palette"]',
+        content: 'Drag components from the palette onto the canvas.',
+      },
+      {
+        selector: '[data-tour="canvas"]',
+        content: 'Arrange components on the canvas.',
+      },
+      {
+        selector: '[data-tour="sidebar"]',
+        content: 'Edit component settings in the sidebar.',
+      },
+    ],
+    []
+  );
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const seen = localStorage.getItem('pageBuilderTourSeen');
+      if (!seen) {
+        setIsTourOpen(true);
+      }
+    }
+  }, []);
+
+  const handleTourClose = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('pageBuilderTourSeen', 'true');
+    }
+    setIsTourOpen(false);
+  }, []);
 
   const {
     sensors,
@@ -201,119 +236,132 @@ const PageBuilder = memo(function PageBuilder({
   }, [onPublish, formData]);
 
   return (
-    <div className="flex gap-4" style={style}>
-      <aside className="w-48 shrink-0">
-        <Palette />
-      </aside>
-      <div className="flex flex-1 flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <PageToolbar
-            viewport={viewport}
-            deviceId={deviceId}
-            setDeviceId={setDeviceId}
-            orientation={orientation}
-            setOrientation={setOrientation}
-            locale={locale}
-            setLocale={setLocale}
-            locales={locales}
-            progress={progress}
-            isValid={isValid}
-            showGrid={showGrid}
-            toggleGrid={() => setShowGrid((g) => !g)}
-            gridCols={gridCols}
-            setGridCols={setGridCols}
-          />
-          {autoSaveState === "saving" && (
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <Spinner className="h-4 w-4" /> Saving…
+    <TourProvider steps={tourSteps} isOpen={isTourOpen} onClose={handleTourClose}>
+      <div className="flex gap-4" style={style}>
+        <aside className="w-48 shrink-0" data-tour="palette">
+          <Palette />
+        </aside>
+        <div className="flex flex-1 flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <PageToolbar
+                viewport={viewport}
+                deviceId={deviceId}
+                setDeviceId={setDeviceId}
+                orientation={orientation}
+                setOrientation={setOrientation}
+                locale={locale}
+                setLocale={setLocale}
+                locales={locales}
+                progress={progress}
+                isValid={isValid}
+                showGrid={showGrid}
+                toggleGrid={() => setShowGrid((g) => !g)}
+                gridCols={gridCols}
+                setGridCols={setGridCols}
+              />
+              <Button variant="outline" onClick={() => setIsTourOpen(true)}>
+                Tour
+              </Button>
             </div>
-          )}
-          {autoSaveState === "saved" && (
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <CheckIcon className="h-4 w-4 text-green-500" /> Saved
-            </div>
-          )}
-        </div>
-        <div aria-live="polite" role="status" className="sr-only">
-          {liveMessage}
-        </div>
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragStart={handleDragStart}
-          onDragMove={handleDragMove}
-          onDragEnd={handleDragEnd}
-        >
-          <div className={frameClass[viewport]} style={viewportStyle}>
-            <PageCanvas
-              components={components}
-              selectedId={selectedId}
-              onSelectId={setSelectedId}
-              canvasRef={canvasRef}
-              dragOver={dragOver}
-              setDragOver={setDragOver}
-              onFileDrop={handleFileDrop}
-              insertIndex={insertIndex}
-              dispatch={dispatch}
-              locale={locale}
-              containerStyle={{ width: "100%" }}
-              showGrid={showGrid}
-              gridCols={gridCols}
-              viewport={viewport}
-              device={device}
-              snapPosition={snapPosition}
-            />
-          </div>
-          <DragOverlay>
-            {activeType && (
-              <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">
-                {activeType}
+            {autoSaveState === "saving" && (
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <Spinner className="h-4 w-4" /> Saving…
               </div>
             )}
-          </DragOverlay>
-        </DndContext>
-        <div className="flex gap-2">
-          <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>
-            Undo
-          </Button>
-          <Button onClick={() => dispatch({ type: "redo" })} disabled={!state.future.length}>
-            Redo
-          </Button>
-          <div className="flex flex-col gap-1">
-            <Button onClick={() => onSave(formData)} disabled={saving}>
-              {saving ? <Spinner className="h-4 w-4" /> : "Save"}
-            </Button>
-            {saveError && (
-              <p className="text-sm text-red-500">{saveError}</p>
+            {autoSaveState === "saved" && (
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <CheckIcon className="h-4 w-4 text-green-500" /> Saved
+              </div>
             )}
           </div>
-          <div className="flex flex-col gap-1">
-            <Button
-              variant="outline"
-              onClick={handlePublish}
-              disabled={publishing}
-              data-tour="publish"
+          <div aria-live="polite" role="status" className="sr-only">
+            {liveMessage}
+          </div>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragStart={handleDragStart}
+            onDragMove={handleDragMove}
+            onDragEnd={handleDragEnd}
+          >
+            <div
+              className={frameClass[viewport]}
+              style={viewportStyle}
+              data-tour="canvas"
             >
-              {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
+              <PageCanvas
+                components={components}
+                selectedId={selectedId}
+                onSelectId={setSelectedId}
+                canvasRef={canvasRef}
+                dragOver={dragOver}
+                setDragOver={setDragOver}
+                onFileDrop={handleFileDrop}
+                insertIndex={insertIndex}
+                dispatch={dispatch}
+                locale={locale}
+                containerStyle={{ width: "100%" }}
+                showGrid={showGrid}
+                gridCols={gridCols}
+                viewport={viewport}
+                device={device}
+                snapPosition={snapPosition}
+              />
+            </div>
+            <DragOverlay>
+              {activeType && (
+                <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">
+                  {activeType}
+                </div>
+              )}
+            </DragOverlay>
+          </DndContext>
+          <div className="flex gap-2">
+            <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>
+              Undo
             </Button>
-            {publishError && (
-              <p className="text-sm text-red-500">{publishError}</p>
-            )}
+            <Button onClick={() => dispatch({ type: "redo" })} disabled={!state.future.length}>
+              Redo
+            </Button>
+            <div className="flex flex-col gap-1">
+              <Button onClick={() => onSave(formData)} disabled={saving}>
+                {saving ? <Spinner className="h-4 w-4" /> : "Save"}
+              </Button>
+              {saveError && (
+                <p className="text-sm text-red-500">{saveError}</p>
+              )}
+            </div>
+            <div className="flex flex-col gap-1">
+              <Button
+                variant="outline"
+                onClick={handlePublish}
+                disabled={publishing}
+                data-tour="publish"
+              >
+                {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
+              </Button>
+              {publishError && (
+                <p className="text-sm text-red-500">{publishError}</p>
+              )}
+            </div>
           </div>
         </div>
+        <div data-tour="sidebar">
+          <PageSidebar
+            components={components}
+            selectedId={selectedId}
+            dispatch={dispatch}
+          />
+        </div>
+        <Toast
+          open={toast.open}
+          onClose={() => setToast((t) => ({ ...t, open: false }))}
+          onClick={toast.retry}
+          message={toast.message}
+        />
       </div>
-      <PageSidebar
-        components={components}
-        selectedId={selectedId}
-        dispatch={dispatch}
-      />
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        onClick={toast.retry}
-        message={toast.message}
-      />
-    </div>
+    </TourProvider>
   );
 });
 

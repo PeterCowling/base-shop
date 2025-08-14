@@ -71,4 +71,23 @@ describe("ComponentEditor", () => {
     fireEvent.change(getByLabelText("Max Items"), { target: { value: "0" } });
     expect(onChange).toHaveBeenNthCalledWith(2, { maxItems: 0, minItems: 0 });
   });
+
+  it("allows adding hotspots for Lookbook", () => {
+    const component: PageComponent = {
+      id: "1",
+      type: "Lookbook",
+      src: "image.jpg",
+      hotspots: [],
+      minItems: 0,
+      maxItems: 5,
+    } as any;
+    const onChange = jest.fn();
+    const { getByText } = render(
+      <ComponentEditor component={component} onChange={onChange} onResize={() => {}} />
+    );
+    fireEvent.click(getByText("Add hotspot"));
+    expect(onChange).toHaveBeenCalledWith({
+      hotspots: [{ x: 50, y: 50, sku: "" }],
+    });
+  });
 });

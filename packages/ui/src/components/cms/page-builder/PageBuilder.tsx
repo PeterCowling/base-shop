@@ -59,6 +59,7 @@ const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
   Testimonials: { minItems: 1, maxItems: 10 },
   TestimonialSlider: { minItems: 1, maxItems: 10 },
   ImageSlider: { minItems: 1, maxItems: 10 },
+  Lookbook: { minItems: 0, maxItems: 10 },
   AnnouncementBar: {
     position: "absolute",
     top: "0",

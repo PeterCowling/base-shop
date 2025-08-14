@@ -195,6 +195,13 @@ export interface GalleryComponent extends PageComponentBase {
   images?: { src: string; alt?: string }[];
 }
 
+export interface LookbookComponent extends PageComponentBase {
+  type: "Lookbook";
+  src?: string;
+  alt?: string;
+  hotspots?: { x: number; y: number; sku?: string }[];
+}
+
 export interface ImageSliderComponent extends PageComponentBase {
   type: "ImageSlider";
   slides?: { src: string; alt?: string; caption?: string }[];
@@ -353,6 +360,7 @@ export type PageComponent =
   | CollectionListComponent
   | RecommendationCarouselComponent
   | GalleryComponent
+  | LookbookComponent
   | ImageSliderComponent
   | ContactFormComponent
   | NewsletterSignupComponent
@@ -464,6 +472,21 @@ const galleryComponentSchema = baseComponentSchema.extend({
   type: z.literal("Gallery"),
   images: z
     .array(z.object({ src: z.string(), alt: z.string().optional() }))
+    .optional(),
+});
+
+const lookbookComponentSchema = baseComponentSchema.extend({
+  type: z.literal("Lookbook"),
+  src: z.string().optional(),
+  alt: z.string().optional(),
+  hotspots: z
+    .array(
+      z.object({
+        x: z.number(),
+        y: z.number(),
+        sku: z.string().optional(),
+      })
+    )
     .optional(),
 });
 
@@ -691,6 +714,7 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     productCarouselComponentSchema,
     recommendationCarouselComponentSchema,
     galleryComponentSchema,
+    lookbookComponentSchema,
     contactFormComponentSchema,
     newsletterSignupComponentSchema,
     searchBarComponentSchema,

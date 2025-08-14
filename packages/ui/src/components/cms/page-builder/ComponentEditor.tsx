@@ -40,6 +40,7 @@ import GiftCardEditor from "./GiftCardEditor";
 import FormBuilderEditor from "./FormBuilderEditor";
 import PopupModalEditor from "./PopupModalEditor";
 import ProductBundleEditor from "./ProductBundleEditor";
+import LookbookEditor from "./LookbookEditor";
 
 interface Props {
   component: PageComponent | null;
@@ -138,6 +139,9 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
       specific = (
         <ProductBundleEditor component={component} onChange={onChange} />
       );
+      break;
+    case "Lookbook":
+      specific = <LookbookEditor component={component} onChange={onChange} />;
       break;
     case "GiftCardBlock":
       specific = (

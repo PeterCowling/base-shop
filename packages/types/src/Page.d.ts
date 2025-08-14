@@ -171,6 +171,13 @@ export interface GalleryComponent extends PageComponentBase {
     alt?: string;
   }[];
 }
+
+export interface LookbookComponent extends PageComponentBase {
+  type: "Lookbook";
+  src?: string;
+  alt?: string;
+  hotspots?: { x: number; y: number; sku?: string }[];
+}
 export interface ImageSliderComponent extends PageComponentBase {
   type: "ImageSlider";
   slides?: {
@@ -312,6 +319,7 @@ export type PageComponent =
   | CollectionListComponent
   | RecommendationCarouselComponent
   | GalleryComponent
+  | LookbookComponent
   | ImageSliderComponent
   | ContactFormComponent
   | NewsletterSignupComponent

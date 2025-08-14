@@ -90,7 +90,15 @@ export async function createPost(
     body = [];
     products = [];
   }
-  const existingSlugs = await filterExistingProductSlugs(shopId, products);
+  const manualProductsInput = String(formData.get("products") ?? "");
+  const manualProducts = manualProductsInput
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean);
+  const existingSlugs = await filterExistingProductSlugs(shopId, [
+    ...products,
+    ...manualProducts,
+  ]);
   products = existingSlugs;
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
@@ -147,7 +155,15 @@ export async function updatePost(
     body = [];
     products = [];
   }
-  const existingSlugs = await filterExistingProductSlugs(shopId, products);
+  const manualProductsInput = String(formData.get("products") ?? "");
+  const manualProducts = manualProductsInput
+    .split(",")
+    .map((p) => p.trim())
+    .filter(Boolean);
+  const existingSlugs = await filterExistingProductSlugs(shopId, [
+    ...products,
+    ...manualProducts,
+  ]);
   products = existingSlugs;
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");

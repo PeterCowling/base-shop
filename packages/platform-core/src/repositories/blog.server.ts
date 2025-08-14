@@ -13,9 +13,10 @@ export interface SanityPost {
   mainImage?: string;
   author?: string;
   categories?: string[];
+  products?: string[];
 }
 
-const POST_FIELDS = '_id,title,body,published,publishedAt,"slug":slug.current,excerpt,mainImage,author,categories';
+const POST_FIELDS = '_id,title,body,published,publishedAt,"slug":slug.current,excerpt,mainImage,author,categories,products';
 
 export async function listPosts(config: SanityConfig): Promise<SanityPost[]> {
   const posts = await query<SanityPost[]>(config, `*[_type=="post"]{${POST_FIELDS}}`);

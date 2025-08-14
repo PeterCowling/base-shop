@@ -110,6 +110,24 @@ describe("blog actions", () => {
     expect(body.mutations[0].create.products).toEqual([]);
   });
 
+  test("createPost forwards products from field", async () => {
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ["foo", "bar"] })
+      .mockResolvedValueOnce({ json: async () => ({ result: null }) })
+      .mockResolvedValueOnce({ json: async () => ({ results: [{ id: "1" }] }) }) as any;
+    const { createPost } = await import("../src/actions/blog.server");
+    const fd = new FormData();
+    fd.set("title", "T");
+    fd.set("content", "[]");
+    fd.set("slug", "t");
+    fd.set("excerpt", "");
+    fd.set("products", "foo, bar");
+    await createPost("s", {} as any, fd);
+    const body = JSON.parse((fetch as jest.Mock).mock.calls.at(-1)[1].body);
+    expect(body.mutations[0].create.products).toEqual(["foo", "bar"]);
+  });
+
   test("updatePost filters invalid product slugs", async () => {
     global.fetch = jest
       .fn()

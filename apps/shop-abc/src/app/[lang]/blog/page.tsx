@@ -12,6 +12,9 @@ export default async function BlogPage({ params }: { params: { lang: string } })
     title: p.title,
     excerpt: p.excerpt,
     url: `/${params.lang}/blog/${p.slug}`,
+    shopUrl: p.products?.[0]
+      ? `/${params.lang}/product/${p.products[0]}`
+      : undefined,
   }));
   return (
     <>

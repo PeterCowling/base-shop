@@ -5,6 +5,10 @@ export * from "../users";
 
 import { prisma } from "../db";
 
+/**
+ * Persist the Stripe subscription identifier for a user.
+ * Passing `null` will clear the stored subscription reference.
+ */
 export async function setStripeSubscriptionId(
   id: string,
   subscriptionId: string | null,

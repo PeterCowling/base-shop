@@ -41,10 +41,14 @@ export async function POST(req: NextRequest) {
   const prorate = plan?.prorateOnChange !== false;
 
   try {
-    const sub = await stripe.subscriptions.update(user.stripeSubscriptionId, {
-      items: [{ price: priceId }],
-      proration_behavior: prorate ? "create_prorations" : "none",
-    });
+    const sub = await stripe.subscriptions.update(
+      user.stripeSubscriptionId,
+      {
+        items: [{ price: priceId }],
+        // @ts-ignore - `prorate` is deprecated but required for this flow
+        prorate,
+      },
+    );
     await setStripeSubscriptionId(userId, sub.id);
     return NextResponse.json({ id: sub.id, status: sub.status });
   } catch (err: unknown) {

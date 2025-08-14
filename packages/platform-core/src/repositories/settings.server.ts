@@ -67,6 +67,10 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
           ...(parsed.data.returnService ?? {}),
         },
         premierDelivery: parsed.data.premierDelivery,
+        luxuryFeatures: {
+          requireStrongCustomerAuth: false,
+          ...(parsed.data.luxuryFeatures ?? {}),
+        },
         seo: {
           ...(parsed.data.seo ?? {}),
           aiCatalog: {
@@ -97,6 +101,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     depositService: { enabled: false, intervalMinutes: 60 },
     returnService: { upsEnabled: false },
     premierDelivery: undefined,
+    luxuryFeatures: { requireStrongCustomerAuth: false },
     updatedAt: "",
     updatedBy: "",
   };

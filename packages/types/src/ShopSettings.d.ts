@@ -119,6 +119,16 @@ export declare const shopSettingsSchema: z.ZodObject<{
         regions: string[];
         windows: string[];
     }>>;
+    luxuryFeatures: z.ZodOptional<z.ZodObject<{
+        fraudReviewThreshold: z.ZodOptional<z.ZodNumber>;
+        requireStrongCustomerAuth: z.ZodOptional<z.ZodBoolean>;
+    }, "strip", z.ZodTypeAny, {
+        fraudReviewThreshold?: number | undefined;
+        requireStrongCustomerAuth?: boolean | undefined;
+    }, {
+        fraudReviewThreshold?: number | undefined;
+        requireStrongCustomerAuth?: boolean | undefined;
+    }>>;
     trackingProviders: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     updatedAt: z.ZodString;
     updatedBy: z.ZodString;
@@ -164,6 +174,10 @@ export declare const shopSettingsSchema: z.ZodObject<{
         regions: string[];
         windows: string[];
     } | undefined;
+    luxuryFeatures?: {
+        fraudReviewThreshold?: number | undefined;
+        requireStrongCustomerAuth?: boolean | undefined;
+    } | undefined;
     trackingProviders?: string[] | undefined;
 }, {
     seo: Partial<Record<"en" | "de" | "it", {
@@ -207,7 +221,11 @@ export declare const shopSettingsSchema: z.ZodObject<{
         regions: string[];
         windows: string[];
     } | undefined;
+    luxuryFeatures?: {
+        fraudReviewThreshold?: number | undefined;
+        requireStrongCustomerAuth?: boolean | undefined;
+    } | undefined;
     trackingProviders?: string[] | undefined;
-}>;
+}>; 
 export type ShopSettings = z.infer<typeof shopSettingsSchema>;
 //# sourceMappingURL=ShopSettings.d.ts.map

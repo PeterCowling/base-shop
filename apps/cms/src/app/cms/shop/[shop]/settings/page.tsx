@@ -73,6 +73,14 @@ export default async function SettingsPage({
           Premier delivery settings
         </Link>
       </p>
+      <p className="mb-4 text-sm">
+        <Link
+          href={`/cms/shop/${shop}/settings/luxury-features`}
+          className="text-primary underline"
+        >
+          Luxury features settings
+        </Link>
+      </p>
       <h3 className="mt-4 font-medium">Languages</h3>
       <ul className="mt-2 list-disc pl-5 text-sm">
         {settings.languages.map((l: Locale) => (

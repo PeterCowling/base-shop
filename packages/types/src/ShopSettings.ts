@@ -62,6 +62,13 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    luxuryFeatures: z
+      .object({
+        fraudReviewThreshold: z.number().int().nonnegative().optional(),
+        requireStrongCustomerAuth: z.boolean().optional(),
+      })
+      .strict()
+      .optional(),
     editorialBlog: z
       .object({
         enabled: z.boolean(),

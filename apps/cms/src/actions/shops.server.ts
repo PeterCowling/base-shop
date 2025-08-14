@@ -285,6 +285,41 @@ export async function updateCurrencyAndTax(
   return { settings: updated };
 }
 
+const luxuryFeaturesSchema = z
+  .object({
+    fraudReviewThreshold: z.coerce.number().int().nonnegative(),
+    requireStrongCustomerAuth: z.preprocess(
+      (v) => v === "on",
+      z.boolean(),
+    ),
+  })
+  .strict();
+
+export async function updateLuxuryFeatures(
+  shop: string,
+  formData: FormData,
+): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
+  await ensureAuthorized();
+  const parsed = luxuryFeaturesSchema.safeParse(
+    Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>,
+    ),
+  );
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+  const current = await getShopSettings(shop);
+  const updated: ShopSettings = {
+    ...current,
+    luxuryFeatures: {
+      fraudReviewThreshold: parsed.data.fraudReviewThreshold,
+      requireStrongCustomerAuth: parsed.data.requireStrongCustomerAuth,
+    },
+  };
+  await saveShopSettings(shop, updated);
+  return { settings: updated };
+}
+
 const depositSchema = z
   .object({
     enabled: z.preprocess((v) => v === "on", z.boolean()),

@@ -4,16 +4,29 @@ import type Stripe from "stripe";
 const addOrder = jest.fn();
 const markRefunded = jest.fn();
 const updateRisk = jest.fn();
+const reviewsCreate = jest.fn();
+const paymentIntentUpdate = jest.fn();
+const getShopSettings = jest.fn().mockResolvedValue({ luxuryFeatures: {} });
 
 jest.mock("../src/orders", () => ({
   addOrder,
   markRefunded,
   updateRisk,
 }));
+jest.mock("@acme/stripe", () => ({
+  stripe: {
+    radar: { reviews: { create: reviewsCreate } },
+    paymentIntents: { update: paymentIntentUpdate },
+  },
+}));
+jest.mock("../src/repositories/settings.server", () => ({
+  getShopSettings,
+}));
 
 describe("handleStripeWebhook", () => {
   afterEach(() => {
     jest.clearAllMocks();
+    getShopSettings.mockResolvedValue({ luxuryFeatures: {} });
   });
 
   test("charge.succeeded persists risk details", async () => {
@@ -85,5 +98,30 @@ describe("handleStripeWebhook", () => {
       10,
       false
     );
+  });
+
+  test("charge above threshold triggers review and 3DS", async () => {
+    getShopSettings.mockResolvedValue({
+      luxuryFeatures: {
+        fraudReviewThreshold: 100,
+        requireStrongCustomerAuth: true,
+      },
+    });
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const event: Stripe.Event = {
+      type: "charge.succeeded",
+      data: {
+        object: {
+          id: "ch_5",
+          amount_captured: 20000,
+          payment_intent: "pi_5",
+        },
+      },
+    } as any;
+    await handleStripeWebhook("test", event);
+    expect(reviewsCreate).toHaveBeenCalledWith({ charge: "ch_5" });
+    expect(paymentIntentUpdate).toHaveBeenCalledWith("pi_5", {
+      payment_method_options: { card: { request_three_d_secure: "any" } },
+    });
   });
 });

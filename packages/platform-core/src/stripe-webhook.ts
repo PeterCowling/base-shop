@@ -1,6 +1,8 @@
 // packages/platform-core/src/stripe-webhook.ts
 import type Stripe from "stripe";
+import { stripe } from "@acme/stripe";
 import { addOrder, markRefunded, updateRisk } from "./orders";
+import { getShopSettings } from "./repositories/settings.server";
 
 function extractSessionIdFromCharge(charge: Stripe.Charge): string | undefined {
   if (charge.invoice) return charge.invoice as string;
@@ -55,6 +57,24 @@ export async function handleStripeWebhook(
     }
     case "charge.succeeded": {
       const charge = data.object as Stripe.Charge;
+      const settings = await getShopSettings(shop);
+      const threshold = settings.luxuryFeatures?.fraudReviewThreshold;
+      const requireSCA = settings.luxuryFeatures?.requireStrongCustomerAuth;
+      const amount = (charge.amount_captured ?? charge.amount) / 100;
+      if (typeof threshold === "number" && amount > threshold) {
+        await stripe.radar.reviews.create({ charge: charge.id });
+        const piId =
+          typeof charge.payment_intent === "string"
+            ? charge.payment_intent
+            : charge.payment_intent?.id;
+        if (requireSCA && piId) {
+          await stripe.paymentIntents.update(piId, {
+            payment_method_options: {
+              card: { request_three_d_secure: "any" },
+            },
+          });
+        }
+      }
       await persistRiskFromCharge(shop, charge);
       break;
     }

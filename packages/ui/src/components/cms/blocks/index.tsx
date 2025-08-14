@@ -2,6 +2,7 @@ import BlogListing from "./BlogListing";
 import ContactForm from "./ContactForm";
 import ContactFormWithMap from "./ContactFormWithMap";
 import Gallery from "./Gallery";
+import Lookbook from "./Lookbook";
 import HeroBanner from "./HeroBanner";
 import ProductCarousel from "./ProductCarousel";
 import ProductGrid from "./ProductGrid.client";
@@ -43,6 +44,7 @@ export {
   ContactForm,
   ContactFormWithMap,
   Gallery,
+  Lookbook,
   HeroBanner,
   ProductCarousel,
   ProductGrid,

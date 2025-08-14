@@ -66,6 +66,7 @@ const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
     left: "0",
     width: "100%",
   },
+  Lookbook: { minItems: 0, maxItems: 10 },
   MultiColumn: { columns: 2, gap: "1rem" },
   Divider: { width: "100%", height: "1px" },
   Spacer: { width: "100%", height: "1rem" },

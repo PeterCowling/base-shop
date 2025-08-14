@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { localeSchema, type Translated } from "./Product";
+import { localeSchema, type Translated } from "../Product";
 
 export type PageStatus = "draft" | "published";
 

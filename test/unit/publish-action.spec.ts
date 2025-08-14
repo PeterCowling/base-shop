@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import type { Page } from "../../packages/types/src/Page";
+import type { Page } from "../../packages/types/src/page";
 
 function mockAuth() {
   jest.doMock("next-auth", () => ({

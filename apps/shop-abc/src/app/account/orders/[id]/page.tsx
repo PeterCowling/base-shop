@@ -7,19 +7,6 @@ import shop from "../../../../../shop.json";
 
 export const metadata = { title: "Order details" };
 
-async function getTracking(id: string): Promise<OrderStep[] | null> {
-  try {
-    const res = await fetch(`/api/orders/${id}/tracking`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return null;
-    const data = (await res.json()) as { steps?: OrderStep[] };
-    return data.steps ?? null;
-  } catch {
-    return null;
-  }
-}
-
 export default async function Page({
   params,
 }: {
@@ -36,12 +23,29 @@ export default async function Page({
   const orders = await getOrdersForCustomer(shop.id, session.customerId);
   const order = orders.find((o) => o.id === params.id);
   if (!order) return <p className="p-6">Order not found.</p>;
-  const steps = await getTracking(order.id);
+  const returnSteps: OrderStep[] = [
+    { label: "Placed", date: order.startedAt, complete: true },
+  ];
+  if (order.returnedAt) {
+    returnSteps.push({ label: "Returned", date: order.returnedAt, complete: true });
+  } else {
+    returnSteps.push({ label: "Return pending", complete: false });
+  }
+  if (order.refundedAt) {
+    returnSteps.push({ label: "Refunded", date: order.refundedAt, complete: true });
+  }
+  const shippingSteps: OrderStep[] = shop.orderTrackingEnabled
+    ? ((order.trackingEvents as OrderStep[] | undefined) ?? [])
+    : [];
   return (
     <div className="space-y-4 p-6">
       <h1 className="text-xl">Order {order.id}</h1>
-      {steps && steps.length > 0 && (
-        <OrderTrackingTimeline steps={steps} className="mt-2" />
+      {shop.orderTrackingEnabled && (
+        <OrderTrackingTimeline
+          shippingSteps={shippingSteps}
+          returnSteps={returnSteps}
+          className="mt-2"
+        />
       )}
     </div>
   );

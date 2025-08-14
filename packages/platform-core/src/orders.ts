@@ -130,3 +130,42 @@ export async function setReturnTracking(
     return null;
   }
 }
+
+export interface TrackingEvent {
+  label: string;
+  date?: string;
+  complete?: boolean;
+}
+
+export async function setTrackingEvents(
+  shop: string,
+  orderId: string,
+  events: TrackingEvent[],
+): Promise<Order | null> {
+  const existing = await prisma.rentalOrder.findUnique({
+    where: { id: orderId },
+    select: { shop: true },
+  });
+  if (!existing || existing.shop !== shop) {
+    return null;
+  }
+  const updated = await prisma.rentalOrder.update({
+    where: { id: orderId },
+    data: { trackingEvents: events },
+  });
+  return updated as Order;
+}
+
+export async function getTrackingEvents(
+  shop: string,
+  orderId: string,
+): Promise<TrackingEvent[] | null> {
+  const order = await prisma.rentalOrder.findUnique({
+    where: { id: orderId },
+    select: { shop: true, trackingEvents: true },
+  });
+  if (!order || order.shop !== shop) {
+    return null;
+  }
+  return (order.trackingEvents as TrackingEvent[] | null) ?? null;
+}

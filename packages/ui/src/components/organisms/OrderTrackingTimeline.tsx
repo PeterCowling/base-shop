@@ -10,7 +10,15 @@ export interface OrderStep {
 
 export interface OrderTrackingTimelineProps
   extends React.HTMLAttributes<HTMLOListElement> {
-  steps: OrderStep[];
+  /**
+   * Pre-combined steps if already merged.
+   * Deprecated: use `shippingSteps` and `returnSteps` instead.
+   */
+  steps?: OrderStep[];
+  /** Shipping-related tracking events */
+  shippingSteps?: OrderStep[];
+  /** Return-related tracking events */
+  returnSteps?: OrderStep[];
   /** Tailwind vertical spacing utility like `space-y-6` */
   itemSpacing?: string;
 }
@@ -19,18 +27,27 @@ export interface OrderTrackingTimelineProps
  * Vertical timeline showing progress of an order.
  */
 export function OrderTrackingTimeline({
-  steps,
+  steps = [],
+  shippingSteps = [],
+  returnSteps = [],
   itemSpacing = "space-y-6",
   className,
   ...props
 }: OrderTrackingTimelineProps) {
+  const merged = React.useMemo(() => {
+    return [...steps, ...shippingSteps, ...returnSteps].sort((a, b) => {
+      const aTime = a.date ? Date.parse(a.date) : 0;
+      const bTime = b.date ? Date.parse(b.date) : 0;
+      return aTime - bTime;
+    });
+  }, [steps, shippingSteps, returnSteps]);
+
   return (
     <ol
       className={cn("relative border-l pl-4", itemSpacing, className)}
       {...props}
     >
-      {" "}
-      {steps.map((step, idx) => (
+      {merged.map((step, idx) => (
         <li key={idx} className="ml-6">
           <span
             className={cn(

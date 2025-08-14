@@ -38,6 +38,7 @@ model RentalOrder {
   flaggedForReview   Boolean? @default(false)
   trackingNumber     String?
   labelUrl           String?
+  trackingEvents     Json?
 
   @@unique([shop, sessionId])
   @@index([customerId])

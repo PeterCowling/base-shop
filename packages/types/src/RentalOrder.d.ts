@@ -16,6 +16,19 @@ export declare const rentalOrderSchema: z.ZodObject<{
     flaggedForReview: z.ZodOptional<z.ZodBoolean>;
     trackingNumber: z.ZodOptional<z.ZodString>;
     labelUrl: z.ZodOptional<z.ZodString>;
+    trackingEvents: z.ZodOptional<z.ZodArray<z.ZodObject<{
+        label: z.ZodString;
+        date: z.ZodOptional<z.ZodString>;
+        complete: z.ZodOptional<z.ZodBoolean>;
+    }, "strict", z.ZodTypeAny, {
+        label: string;
+        date?: string | undefined;
+        complete?: boolean | undefined;
+    }, {
+        label: string;
+        date?: string | undefined;
+        complete?: boolean | undefined;
+    }>, "many">>;
 }, "strip", z.ZodTypeAny, {
     id: string;
     deposit: number;
@@ -32,6 +45,11 @@ export declare const rentalOrderSchema: z.ZodObject<{
     flaggedForReview?: boolean | undefined;
     trackingNumber?: string | undefined;
     labelUrl?: string | undefined;
+    trackingEvents?: {
+        label: string;
+        date?: string | undefined;
+        complete?: boolean | undefined;
+    }[] | undefined;
 }, {
     id: string;
     deposit: number;
@@ -48,6 +66,11 @@ export declare const rentalOrderSchema: z.ZodObject<{
     flaggedForReview?: boolean | undefined;
     trackingNumber?: string | undefined;
     labelUrl?: string | undefined;
-}>;
+    trackingEvents?: {
+        label: string;
+        date?: string | undefined;
+        complete?: boolean | undefined;
+    }[] | undefined;
+}>; 
 export type RentalOrder = z.infer<typeof rentalOrderSchema>;
 //# sourceMappingURL=RentalOrder.d.ts.map

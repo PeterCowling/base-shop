@@ -6,14 +6,18 @@ import { OrderTrackingTimeline } from "../organisms/OrderTrackingTimeline";
 export interface OrderTrackingTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
   orderId: string;
-  steps: OrderStep[];
+  /** Shipping-related tracking events */
+  shippingSteps?: OrderStep[];
+  /** Return-related tracking events */
+  returnSteps?: OrderStep[];
   /** Optional shipping address to display */
   address?: string;
 }
 
 export function OrderTrackingTemplate({
   orderId,
-  steps,
+  shippingSteps = [],
+  returnSteps = [],
   address,
   className,
   ...props
@@ -27,7 +31,10 @@ export function OrderTrackingTemplate({
       {address && (
         <p className="text-muted-foreground text-sm">Shipping to {address}</p>
       )}
-      <OrderTrackingTimeline steps={steps} />
+      <OrderTrackingTimeline
+        shippingSteps={shippingSteps}
+        returnSteps={returnSteps}
+      />
     </div>
   );
 }

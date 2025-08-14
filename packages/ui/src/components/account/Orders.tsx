@@ -17,6 +17,8 @@ export interface OrdersPageProps {
   returnsEnabled?: boolean;
   /** Optional return policy link */
   returnPolicyUrl?: string;
+  /** Whether order tracking is enabled */
+  orderTrackingEnabled?: boolean;
 }
 
 export const metadata = { title: "Orders" };
@@ -27,6 +29,7 @@ export default async function OrdersPage({
   callbackUrl = "/account/orders",
   returnsEnabled,
   returnPolicyUrl,
+  orderTrackingEnabled,
 }: OrdersPageProps) {
   const session = await getCustomerSession();
   if (!session) {
@@ -39,40 +42,33 @@ export default async function OrdersPage({
   const orders = await getOrdersForCustomer(shopId, session.customerId);
   if (!orders.length) return <p className="p-6">No orders yet.</p>;
 
-  async function fetchStatus(tracking: string) {
-    try {
-      const res = await fetch(
-        `https://www.ups.com/track/api/Track/GetStatus?loc=en_US&tracknum=${tracking}`,
-      );
-      const data = await res.json();
-      return data?.trackDetails?.[0]?.packageStatus?.statusType ?? null;
-    } catch {
-      return null;
-    }
-  }
-
   const items = await Promise.all(
     orders.map(async (o) => {
-      const steps: OrderStep[] = [
+      const returnSteps: OrderStep[] = [
         { label: "Placed", date: o.startedAt, complete: true },
       ];
       if (o.returnedAt) {
-        steps.push({ label: "Returned", date: o.returnedAt, complete: true });
+        returnSteps.push({ label: "Returned", date: o.returnedAt, complete: true });
       } else {
-        steps.push({ label: "Return pending", complete: false });
+        returnSteps.push({ label: "Return pending", complete: false });
       }
       if (o.refundedAt) {
-        steps.push({ label: "Refunded", date: o.refundedAt, complete: true });
+        returnSteps.push({ label: "Refunded", date: o.refundedAt, complete: true });
       }
-      const status = o.trackingNumber
-        ? await fetchStatus(o.trackingNumber)
-        : null;
+      const shippingSteps: OrderStep[] = orderTrackingEnabled
+        ? (o.trackingEvents as OrderStep[] | undefined) ?? []
+        : [];
       return (
         <li key={o.id} className="rounded border p-4">
           <div>Order: {o.id}</div>
           {o.expectedReturnDate && <div>Return: {o.expectedReturnDate}</div>}
-          <OrderTrackingTimeline steps={steps} className="mt-2" />
-          {status && <p className="mt-2 text-sm">Status: {status}</p>}
+          {orderTrackingEnabled && (
+            <OrderTrackingTimeline
+              shippingSteps={shippingSteps}
+              returnSteps={returnSteps}
+              className="mt-2"
+            />
+          )}
           {returnsEnabled && !o.returnedAt && (
             <StartReturnButton sessionId={o.sessionId} />
           )}

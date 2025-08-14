@@ -18,6 +18,17 @@ export const rentalOrderSchema = z
     flaggedForReview: z.boolean().optional(),
     trackingNumber: z.string().optional(),
     labelUrl: z.string().url().optional(),
+    trackingEvents: z
+      .array(
+        z
+          .object({
+            label: z.string(),
+            date: z.string().optional(),
+            complete: z.boolean().optional(),
+          })
+          .strict()
+      )
+      .optional(),
   })
   .strict();
 

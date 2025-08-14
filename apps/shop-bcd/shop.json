@@ -13,6 +13,7 @@
   "priceOverrides": {},
   "localeOverrides": {},
   "analyticsEnabled": false,
+  "orderTrackingEnabled": true,
   "plugins": {
     "paypal": {
       "clientId": "bcd-client",

@@ -1,6 +1,11 @@
 // apps/shop-abc/src/app/api/orders/[id]/tracking/route.ts
 import { NextResponse } from "next/server";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
+import {
+  getTrackingEvents,
+  setTrackingEvents,
+  type TrackingEvent,
+} from "@platform-core/orders";
 import type { OrderStep } from "@ui/components/organisms/OrderTrackingTimeline";
 import shop from "../../../../../../shop.json";
 
@@ -19,16 +24,25 @@ export async function GET(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
+  if (!shop.orderTrackingEnabled) {
+    return NextResponse.json({ steps: [] }, { status: 404 });
+  }
+  const existing = await getTrackingEvents(shop.id, params.id);
+  if (existing && existing.length) {
+    return NextResponse.json({ steps: existing });
+  }
   const settings = await getShopSettings(shop.id);
   const providers = settings.trackingProviders ?? [];
   if (providers.length === 0) {
     return NextResponse.json({ steps: [] }, { status: 404 });
   }
-  const steps = providers.flatMap((p) => providerEvents[p.toLowerCase()] ?? []);
+  const steps: TrackingEvent[] = providers.flatMap(
+    (p) => providerEvents[p.toLowerCase()] ?? [],
+  );
   if (!steps.length) {
     return NextResponse.json({ steps: [] }, { status: 404 });
   }
-  // In a real implementation the order id would be used to query providers.
+  await setTrackingEvents(shop.id, params.id, steps);
   return NextResponse.json({ steps });
 }
 

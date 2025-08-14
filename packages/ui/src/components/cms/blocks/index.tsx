@@ -36,6 +36,7 @@ import GiftCardBlock from "./GiftCardBlock";
 import FormBuilderBlock from "./FormBuilderBlock";
 import PopupModal from "./PopupModal";
 import ProductBundle from "./ProductBundle";
+import ProductFilter from "./ProductFilter";
 
 export {
   BlogListing,
@@ -76,6 +77,7 @@ export {
   FormBuilderBlock,
   ProductBundle,
   PopupModal,
+  ProductFilter,
 };
 
 export * from "./atoms";

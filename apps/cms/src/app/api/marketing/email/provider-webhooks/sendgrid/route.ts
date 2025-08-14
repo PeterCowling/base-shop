@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { EventWebhook } from "@sendgrid/eventwebhook";
 import { trackEvent } from "@platform-core/analytics";
-import { mapSendGridEvent } from "@acme/email/analytics";
+import {
+  mapSendGridEvent,
+  type SendGridWebhookEvent,
+} from "@acme/email/analytics";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
@@ -23,10 +26,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (!valid) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
-  let events: any[];
+  let events: SendGridWebhookEvent[];
   try {
-    events = JSON.parse(body);
-    if (!Array.isArray(events)) events = [events];
+    const parsed = JSON.parse(body) as SendGridWebhookEvent | SendGridWebhookEvent[];
+    events = Array.isArray(parsed) ? parsed : [parsed];
   } catch {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }

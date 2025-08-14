@@ -3,7 +3,11 @@ import { coreEnv } from "@acme/config/env/core";
 import type { CampaignOptions } from "../send";
 import { ProviderError } from "./types";
 import type { CampaignProvider } from "./types";
-import { mapResendStats, type CampaignStats } from "../analytics";
+import {
+  mapResendStats,
+  type CampaignStats,
+  type ResendStatsResponse,
+} from "../analytics";
 import { getDefaultSender } from "../config";
 
 interface ProviderOptions {
@@ -80,7 +84,9 @@ export class ResendProvider implements CampaignProvider {
           Authorization: `Bearer ${coreEnv.RESEND_API_KEY || ""}`,
         },
       });
-      const json = await res.json().catch(() => ({}));
+      const json: ResendStatsResponse = await res
+        .json()
+        .catch(() => ({} as ResendStatsResponse));
       return mapResendStats(json);
     } catch {
       return mapResendStats({});

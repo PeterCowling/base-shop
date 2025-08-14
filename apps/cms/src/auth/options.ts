@@ -52,12 +52,20 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
 
           /* -------------------------------------------------------------- */
           /*  Password check                                                */
-          /*  - user.id === "1": plain‑text (dev fixture)                   */
-          /*  - everyone else : argon2                                     */
+          /*  - dev fixture allowed only in development                     */
+          /*  - otherwise require argon2 hashed passwords                   */
           /* -------------------------------------------------------------- */
+          const isDevFixture =
+            process.env.NODE_ENV === "development" && user?.id === "1";
+
+          if (user && !isDevFixture && !user.password.startsWith("$argon2")) {
+            console.log("[auth] user password is not hashed", { id: user.id });
+            throw new Error("Invalid email or password");
+          }
+
           const ok =
             user &&
-            (user.id === "1"
+            (isDevFixture
               ? credentials.password === user.password
               : await argonVerify(user.password, credentials.password));
 

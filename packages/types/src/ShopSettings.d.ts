@@ -112,6 +112,16 @@ export declare const shopSettingsSchema: z.ZodObject<{
         enabled: boolean;
         intervalMinutes: number;
     }>>;
+    lateFeeService: z.ZodOptional<z.ZodObject<{
+        enabled: z.ZodBoolean;
+        intervalMinutes: z.ZodNumber;
+    }, "strip", z.ZodTypeAny, {
+        enabled: boolean;
+        intervalMinutes: number;
+    }, {
+        enabled: boolean;
+        intervalMinutes: number;
+    }>>;
     returnService: z.ZodOptional<z.ZodObject<{
         upsEnabled: z.ZodBoolean;
         bagEnabled: z.ZodOptional<z.ZodBoolean>;
@@ -177,6 +187,10 @@ export declare const shopSettingsSchema: z.ZodObject<{
         enabled: boolean;
         intervalMinutes: number;
     } | undefined;
+    lateFeeService?: {
+        enabled: boolean;
+        intervalMinutes: number;
+    } | undefined;
     returnService?: {
         upsEnabled: boolean;
         bagEnabled?: boolean | undefined;
@@ -223,6 +237,10 @@ export declare const shopSettingsSchema: z.ZodObject<{
         intervalMinutes: number;
     } | undefined;
     reverseLogisticsService?: {
+        enabled: boolean;
+        intervalMinutes: number;
+    } | undefined;
+    lateFeeService?: {
         enabled: boolean;
         intervalMinutes: number;
     } | undefined;

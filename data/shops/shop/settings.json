@@ -11,7 +11,7 @@
     "intervalMinutes": 30
   },
   "lateFeeService": {
-    "enabled": true,
+    "enabled": false,
     "intervalMinutes": 60
   },
   "returnService": { "upsEnabled": false, "bagEnabled": false, "homePickupEnabled": false },

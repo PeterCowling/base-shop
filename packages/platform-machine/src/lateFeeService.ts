@@ -141,6 +141,14 @@ export async function startLateFeeService(
       const cfg = await resolveConfig(shop, dataRoot, configs[shop]);
       if (!cfg.enabled) return;
 
+      try {
+        const raw = await readFile(join(dataRoot, shop, "shop.json"), "utf8");
+        const json = JSON.parse(raw);
+        if (json.type === "sale" || !json.lateFeePolicy) return;
+      } catch {
+        return;
+      }
+
       async function run() {
         try {
           await chargeLateFeesOnce(shop, dataRoot);

@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import type { Series, MultiSeries } from "@cms/lib/analytics";
 
 ChartJS.register(
   CategoryScale,
@@ -21,16 +22,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
-interface Series {
-  labels: string[];
-  data: number[];
-}
-
-interface MultiSeries {
-  labels: string[];
-  datasets: { label: string; data: number[] }[];
-}
 
 interface ChartsProps {
   traffic: Series;

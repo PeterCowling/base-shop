@@ -13,6 +13,7 @@ import {
   updateUpsReturns as serviceUpdateUpsReturns,
   updatePremierDelivery as serviceUpdatePremierDelivery,
   updateAiCatalog as serviceUpdateAiCatalog,
+  updateStockAlert as serviceUpdateStockAlert,
   resetThemeOverride as serviceResetThemeOverride,
   type Shop,
   type ShopSettings,
@@ -77,6 +78,11 @@ export async function updateReverseLogistics(shop: string, formData: FormData) {
 export async function updateUpsReturns(shop: string, formData: FormData) {
   "use server";
   return serviceUpdateUpsReturns(shop, formData);
+}
+
+export async function updateStockAlert(shop: string, formData: FormData) {
+  "use server";
+  return serviceUpdateStockAlert(shop, formData);
 }
 
 export async function updatePremierDelivery(

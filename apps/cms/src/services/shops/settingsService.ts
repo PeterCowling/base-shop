@@ -7,6 +7,7 @@ import {
   parseUpsReturnsForm,
   parsePremierDeliveryForm,
   parseAiCatalogForm,
+  parseStockAlertForm,
 } from "./validation";
 
 export function getSettings(shop: string) {
@@ -95,6 +96,24 @@ export async function updateUpsReturns(
   const updated: ShopSettings = {
     ...current,
     returnService: { upsEnabled: data.enabled },
+  };
+  await persistSettings(shop, updated);
+  return { settings: updated };
+}
+
+export async function updateStockAlert(
+  shop: string,
+  formData: FormData,
+): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
+  await authorize();
+  const { data, errors } = parseStockAlertForm(formData);
+  if (!data) {
+    return { errors };
+  }
+  const current = await fetchSettings(shop);
+  const updated: ShopSettings = {
+    ...current,
+    stockAlert: data,
   };
   await persistSettings(shop, updated);
   return { settings: updated };

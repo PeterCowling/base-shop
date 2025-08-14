@@ -72,6 +72,10 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
           ...(parsed.data.returnService ?? {}),
         },
         premierDelivery: parsed.data.premierDelivery,
+        stockAlert: {
+          recipients: [],
+          ...(parsed.data.stockAlert ?? {}),
+        },
         seo: {
           ...(parsed.data.seo ?? {}),
           aiCatalog: {
@@ -103,6 +107,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     reverseLogisticsService: { enabled: false, intervalMinutes: 60 },
     returnService: { upsEnabled: false },
     premierDelivery: undefined,
+    stockAlert: { recipients: [] },
     luxuryFeatures: {
       contentMerchandising: false,
       raTicketing: false,

@@ -8,6 +8,7 @@ import * as path from "node:path";
 import type { InventoryItem } from "@acme/types";
 import { z } from "zod";
 import { variantKey } from "../repositories/inventory.server";
+import { getShopSettings } from "../repositories/settings.server";
 
 const LOG_FILE = "stock-alert-log.json";
 const SUPPRESS_HOURS = 24; // suppress repeat alerts for a day
@@ -34,14 +35,20 @@ export async function checkAndAlert(
   shop: string,
   items: InventoryItem[],
 ): Promise<void> {
-  const recipientRaw =
+  const settings = await getShopSettings(shop);
+  const envRecipients =
     coreEnv.STOCK_ALERT_RECIPIENTS ?? coreEnv.STOCK_ALERT_RECIPIENT;
-  const webhook = coreEnv.STOCK_ALERT_WEBHOOK;
-  if (!recipientRaw && !webhook) return;
+  const recipients = settings.stockAlert?.recipients?.length
+    ? settings.stockAlert.recipients
+    : envRecipients
+        ?.split(",")
+        .map((r) => r.trim())
+        .filter(Boolean) ?? [];
+  const webhook = settings.stockAlert?.webhook ?? coreEnv.STOCK_ALERT_WEBHOOK;
+  const defaultThreshold =
+    settings.stockAlert?.threshold ?? coreEnv.STOCK_ALERT_DEFAULT_THRESHOLD;
 
-  const recipients = recipientRaw
-    ? recipientRaw.split(",").map((r) => r.trim()).filter(Boolean)
-    : [];
+  if (recipients.length === 0 && !webhook) return;
 
   const log = await readLog(shop);
   const now = Date.now();
@@ -52,7 +59,7 @@ export async function checkAndAlert(
       const threshold =
         typeof i.lowStockThreshold === "number"
           ? i.lowStockThreshold
-          : coreEnv.STOCK_ALERT_DEFAULT_THRESHOLD;
+          : defaultThreshold;
       return typeof threshold === "number" && i.quantity <= threshold;
     })
     .filter((i) => {
@@ -68,8 +75,7 @@ export async function checkAndAlert(
       .map(([k, v]) => `${k}: ${v}`)
       .join(", ");
     const variant = attrs ? ` (${attrs})` : "";
-    const threshold =
-      i.lowStockThreshold ?? coreEnv.STOCK_ALERT_DEFAULT_THRESHOLD;
+    const threshold = i.lowStockThreshold ?? defaultThreshold;
     return `${i.sku}${variant} – qty ${i.quantity} (threshold ${threshold})`;
   });
   const body = `The following items in shop ${shop} are low on stock:\n${lines.join("\n")}`;

@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 import { setReturnTracking } from "@platform-core/orders";
+import { getReturnLogistics } from "@platform-core/returnLogistics";
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";
@@ -41,6 +42,13 @@ export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { sessionId } = parsed.data;
+  const cfg = await getReturnLogistics();
+  if (!cfg.returnCarrier.map((c) => c.toLowerCase()).includes("ups")) {
+    return NextResponse.json(
+      { ok: false, error: "unsupported carrier" },
+      { status: 400 },
+    );
+  }
   const { trackingNumber, labelUrl } = await createUpsLabel(sessionId);
   return NextResponse.json({ ok: true, trackingNumber, labelUrl });
 }
@@ -49,6 +57,13 @@ export async function GET(req: NextRequest) {
   const tracking = req.nextUrl.searchParams.get("tracking");
   if (!tracking) {
     return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 });
+  }
+  const cfg = await getReturnLogistics();
+  if (!cfg.returnCarrier.map((c) => c.toLowerCase()).includes("ups")) {
+    return NextResponse.json(
+      { ok: false, error: "unsupported carrier" },
+      { status: 400 },
+    );
   }
   const status = await getUpsStatus(tracking);
   return NextResponse.json({ ok: true, status });

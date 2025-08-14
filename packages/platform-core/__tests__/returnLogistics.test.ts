@@ -40,7 +40,13 @@ async function withConfig(
 
 describe("return logistics config", () => {
   it("parses file once and caches result", async () => {
-    const cfg = { labelService: "MockLabelCo", inStore: true };
+    const cfg = {
+      labelService: "MockLabelCo",
+      inStore: true,
+      bagType: "reusable",
+      returnCarrier: ["UPS"],
+      homePickupZipCodes: [],
+    };
     await withConfig(cfg, async ({ getReturnLogistics }) => {
       const first = await getReturnLogistics();
       const second = await getReturnLogistics();
@@ -50,7 +56,13 @@ describe("return logistics config", () => {
   });
 
   it("rejects when file missing and does not cache failure", async () => {
-    const cfg = { labelService: "MockLabelCo", inStore: true };
+    const cfg = {
+      labelService: "MockLabelCo",
+      inStore: true,
+      bagType: "reusable",
+      returnCarrier: ["UPS"],
+      homePickupZipCodes: [],
+    };
     await withTempDir(async ({ getReturnLogistics }, dir) => {
       const readFile = jest
         .spyOn(fs, "readFile")
@@ -68,8 +80,20 @@ describe("return logistics config", () => {
   });
 
   it("rejects invalid JSON and does not cache failure", async () => {
-    const valid = { labelService: "MockLabelCo", inStore: true };
-    const invalid = { labelService: 123 } as any;
+    const valid = {
+      labelService: "MockLabelCo",
+      inStore: true,
+      bagType: "reusable",
+      returnCarrier: ["UPS"],
+      homePickupZipCodes: [],
+    };
+    const invalid = {
+      labelService: 123,
+      inStore: true,
+      bagType: "reusable",
+      returnCarrier: ["UPS"],
+      homePickupZipCodes: [],
+    } as any;
     await withTempDir(async ({ getReturnLogistics }, dir) => {
       const readFile = jest
         .spyOn(fs, "readFile")

@@ -2,5 +2,8 @@
   "labelService": "MockLabelCo",
   "inStore": true,
   "dropOffProvider": "UPS",
-  "tracking": true
+  "tracking": true,
+  "bagType": "reusable",
+  "returnCarrier": ["UPS"],
+  "homePickupZipCodes": ["94105", "94107"]
 }

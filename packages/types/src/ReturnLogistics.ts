@@ -7,6 +7,9 @@ import { z } from "zod";
  * - `inStore` toggles whether items can be dropped off in store.
  * - `dropOffProvider` names the third-party drop-off service, if any.
  * - `tracking` indicates whether return shipments include tracking numbers.
+ * - `bagType` describes the packaging customers should reuse when returning items.
+ * - `returnCarrier` lists supported carriers for return shipments.
+ * - `homePickupZipCodes` enumerates ZIP codes eligible for carrier pickup.
  */
 export const returnLogisticsSchema = z
   .object({
@@ -14,6 +17,9 @@ export const returnLogisticsSchema = z
     inStore: z.boolean(),
     dropOffProvider: z.string().optional(),
     tracking: z.boolean().optional(),
+    bagType: z.string(),
+    returnCarrier: z.array(z.string()),
+    homePickupZipCodes: z.array(z.string()),
   })
   .strict();
 

@@ -22,5 +22,21 @@
     "raTicketing": false,
     "fraudReview": false,
     "strictReturnConditions": false
-  }
+  },
+  "rentalSubscriptions": [
+    {
+      "id": "basic",
+      "price": 3000,
+      "itemsIncluded": 3,
+      "swapLimit": 1,
+      "shipmentCount": 1
+    },
+    {
+      "id": "premium",
+      "price": 5000,
+      "itemsIncluded": 5,
+      "swapLimit": 2,
+      "shipmentCount": 2
+    }
+  ]
 }

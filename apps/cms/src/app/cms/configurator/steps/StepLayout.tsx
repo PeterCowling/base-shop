@@ -7,7 +7,8 @@ import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
 import { apiRequest } from "../lib/api";
 import { ReactNode, useState } from "react";
-import { Toast } from "@/components/atoms";
+import { Toast, Spinner } from "@/components/atoms";
+import { CheckIcon } from "@radix-ui/react-icons";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
@@ -43,8 +44,10 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
   const router = useRouter();
   const [headerSaving, setHeaderSaving] = useState(false);
   const [headerError, setHeaderError] = useState<string | null>(null);
+  const [headerSaved, setHeaderSaved] = useState(false);
   const [footerSaving, setFooterSaving] = useState(false);
   const [footerError, setFooterError] = useState<string | null>(null);
+  const [footerSaved, setFooterSaved] = useState(false);
 
   return (
     <fieldset className="space-y-4">
@@ -76,6 +79,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
           onSave={async (fd) => {
             setHeaderSaving(true);
             setHeaderError(null);
+            setHeaderSaved(false);
             const { data, error } = await apiRequest<{ id: string }>(
               `/cms/api/page-draft/${shopId}`,
               { method: "POST", body: fd },
@@ -83,6 +87,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
             setHeaderSaving(false);
             if (data) {
               setHeaderPageId(data.id);
+              setHeaderSaved(true);
               setToast({ open: true, message: "Header saved" });
             } else if (error) {
               setHeaderError(error);
@@ -90,10 +95,20 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
           }}
           onPublish={async () => {}}
           saving={headerSaving}
-          saveError={headerError}
           onChange={setHeaderComponents}
           style={themeStyle}
         />
+        <div className="flex items-center gap-2 h-5">
+          {headerSaving && <Spinner className="h-4 w-4" />}
+          {!headerSaving && headerSaved && (
+            <p className="flex items-center gap-1 text-sm text-green-600">
+              <CheckIcon className="h-4 w-4" /> Saved
+            </p>
+          )}
+          {!headerSaving && headerError && (
+            <p className="text-sm text-red-500">{headerError}</p>
+          )}
+        </div>
       </div>
 
       {/* Footer builder -------------------------------------------------- */}
@@ -122,6 +137,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
           onSave={async (fd) => {
             setFooterSaving(true);
             setFooterError(null);
+            setFooterSaved(false);
             const { data, error } = await apiRequest<{ id: string }>(
               `/cms/api/page-draft/${shopId}`,
               { method: "POST", body: fd },
@@ -129,6 +145,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
             setFooterSaving(false);
             if (data) {
               setFooterPageId(data.id);
+              setFooterSaved(true);
               setToast({ open: true, message: "Footer saved" });
             } else if (error) {
               setFooterError(error);
@@ -136,10 +153,20 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
           }}
           onPublish={async () => {}}
           saving={footerSaving}
-          saveError={footerError}
           onChange={setFooterComponents}
           style={themeStyle}
         />
+        <div className="flex items-center gap-2 h-5">
+          {footerSaving && <Spinner className="h-4 w-4" />}
+          {!footerSaving && footerSaved && (
+            <p className="flex items-center gap-1 text-sm text-green-600">
+              <CheckIcon className="h-4 w-4" /> Saved
+            </p>
+          )}
+          {!footerSaving && footerError && (
+            <p className="text-sm text-red-500">{footerError}</p>
+          )}
+        </div>
       </div>
 
       {/* Additional step-specific UI ------------------------------------ */}
@@ -152,7 +179,11 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
             markComplete(true);
             router.push("/cms/configurator");
           }}
+          disabled={headerSaving || footerSaving}
         >
+          {headerSaving || footerSaving && (
+            <Spinner className="mr-2 h-4 w-4" />
+          )}
           Save & return
         </Button>
       </div>

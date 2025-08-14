@@ -9,3 +9,4 @@ export { RangeInput } from "./RangeInput";
 export { default as StyleEditor } from "./StyleEditor";
 export { default as PageBuilder } from "./page-builder/PageBuilder";
 export * from "./page-builder";
+export { default as DeviceSelector } from "./DeviceSelector";

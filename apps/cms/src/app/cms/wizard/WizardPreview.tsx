@@ -2,7 +2,7 @@
 
 "use client";
 
-import { Button, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/atoms";
+import { Button } from "@/components/atoms";
 import { blockRegistry } from "@/components/cms/blocks";
 import { Footer, Header, SideNav } from "@/components/organisms";
 import { AppShell } from "@/components/templates/AppShell";
@@ -16,6 +16,7 @@ import {
   PREVIEW_TOKENS_EVENT,
 } from "./previewTokens";
 import { devicePresets, getLegacyPreset, type DevicePreset } from "@ui/utils/devicePresets";
+import DeviceSelector from "@ui/components/cms/DeviceSelector";
 
 interface Props {
   style: React.CSSProperties;
@@ -38,10 +39,22 @@ export default function WizardPreview({
   device: deviceProp,
 }: Props): React.JSX.Element {
   const [deviceId, setDeviceId] = useState(devicePresets[0].id);
+  const [orientation, setOrientation] = useState<"portrait" | "landscape">(
+    "portrait"
+  );
   const device = useMemo<DevicePreset>(() => {
     if (deviceProp) return deviceProp;
-    return devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
-  }, [deviceId, deviceProp]);
+    const preset =
+      devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
+    return orientation === "portrait"
+      ? { ...preset, orientation }
+      : {
+          ...preset,
+          width: preset.height,
+          height: preset.width,
+          orientation,
+        };
+  }, [deviceId, orientation, deviceProp]);
   const viewport: "desktop" | "tablet" | "mobile" = device.type;
   const [components, setComponents] = useState<PageComponent[]>([]);
   const [themeStyle, setThemeStyle] = useState<React.CSSProperties>(() => ({
@@ -219,24 +232,28 @@ export default function WizardPreview({
               <Button
                 key={t}
                 variant={deviceId === preset.id ? "default" : "outline"}
-                onClick={() => setDeviceId(preset.id)}
+                onClick={() => {
+                  setDeviceId(preset.id);
+                  setOrientation("portrait");
+                }}
               >
                 {t.charAt(0).toUpperCase() + t.slice(1)}
               </Button>
             );
           })}
-          <Select value={deviceId} onValueChange={setDeviceId}>
-            <SelectTrigger aria-label="Device" className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {devicePresets.map((p) => (
-                <SelectItem key={p.id} value={p.id}>
-                  {p.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <DeviceSelector
+            deviceId={deviceId}
+            orientation={orientation}
+            setDeviceId={(id) => {
+              setDeviceId(id);
+              setOrientation("portrait");
+            }}
+            toggleOrientation={() =>
+              setOrientation((o) =>
+                o === "portrait" ? "landscape" : "portrait"
+              )
+            }
+          />
         </div>
       )}
 

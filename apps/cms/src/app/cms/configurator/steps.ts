@@ -15,8 +15,10 @@ import StepImportData from "./steps/StepImportData";
 import StepSeedData from "./steps/StepSeedData";
 import StepHosting from "./steps/StepHosting";
 import { CheckIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import type { StepStatus } from "../wizard/schema";
 import { cn } from "@ui/utils/style";
+import { Tooltip } from "@/components/atoms";
 
 export interface ConfiguratorStep {
   id: string;
@@ -119,31 +121,60 @@ export function ConfiguratorProgress({
   const currentIdx = stepIndex[currentStepId] ?? 0;
   return (
     <ol className="flex items-center gap-4 text-sm">
-      {list.map((s, idx) => (
-        <li key={s.id} className="flex flex-1 items-center gap-2">
-          <span
-            className={cn(
-              "grid size-6 place-content-center rounded-full border",
-              completed[s.id] === "complete" &&
-                "bg-primary border-primary text-primary-fg",
-              idx === currentIdx && "border-primary",
-              idx > currentIdx && "text-muted-foreground border-muted"
+      {list.map((s, idx) => {
+        const status = completed[s.id] ?? "pending";
+        const statusText =
+          status === "complete"
+            ? "Done"
+            : status === "skipped"
+              ? "Skipped"
+              : "Pending";
+        const isDisabled = idx > currentIdx;
+        return (
+          <li key={s.id} className="flex flex-1 items-center gap-2">
+            <Tooltip text={statusText}>
+              <Link
+                href={`/cms/configurator/${s.id}`}
+                aria-disabled={isDisabled}
+                tabIndex={isDisabled ? -1 : undefined}
+                className={cn(
+                  "flex items-center gap-2",
+                  isDisabled
+                    ? "pointer-events-none cursor-default"
+                    : "hover:underline"
+                )}
+              >
+                <span
+                  className={cn(
+                    "grid size-6 place-content-center rounded-full border",
+                    completed[s.id] === "complete" &&
+                      "bg-primary border-primary text-primary-fg",
+                    idx === currentIdx && "border-primary",
+                    idx > currentIdx && "text-muted-foreground border-muted"
+                  )}
+                >
+                  {completed[s.id] === "complete" ? (
+                    <CheckIcon className="h-4 w-4" />
+                  ) : (
+                    idx + 1
+                  )}
+                </span>
+                <span
+                  className={cn(
+                    idx === currentIdx && "font-medium",
+                    isDisabled && "text-muted-foreground"
+                  )}
+                >
+                  {s.label}
+                </span>
+              </Link>
+            </Tooltip>
+            {idx < list.length - 1 && (
+              <span className="border-muted ml-2 flex-1 border-t" />
             )}
-          >
-            {completed[s.id] === "complete" ? (
-              <CheckIcon className="h-4 w-4" />
-            ) : (
-              idx + 1
-            )}
-          </span>
-          <span className={cn(idx === currentIdx && "font-medium")}>{
-            s.label
-          }</span>
-          {idx < list.length - 1 && (
-            <span className="border-muted ml-2 flex-1 border-t" />
-          )}
-        </li>
-      ))}
+          </li>
+        );
+      })}
     </ol>
   );
 }

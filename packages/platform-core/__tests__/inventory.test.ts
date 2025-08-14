@@ -8,6 +8,7 @@ async function withRepo(
     shop: string,
     dir: string,
   ) => Promise<void>,
+  backend: "json" | "sqlite" = "json",
 ): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "inv-"));
   const shopDir = path.join(dir, "data", "shops", "test");
@@ -19,13 +20,84 @@ async function withRepo(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
   process.env.NEXTAUTH_SECRET = "test";
   process.env.SESSION_SECRET = "test";
+  const origBackend = process.env.INVENTORY_BACKEND;
+  if (backend === "sqlite") process.env.INVENTORY_BACKEND = "sqlite";
+  else delete process.env.INVENTORY_BACKEND;
   jest.resetModules();
+  if (backend === "sqlite") {
+    jest.doMock(
+      "better-sqlite3",
+      () => {
+        class Statement {
+          constructor(private fn: (...args: any[]) => any) {}
+          run(...args: any[]) {
+            return this.fn(...args);
+          }
+          get(...args: any[]) {
+            return this.fn(...args);
+          }
+          all(...args: any[]) {
+            return this.fn(...args);
+          }
+        }
+        const stores = new Map<
+          string,
+          Map<string, { sku: string; variantAttributes: string; quantity: number }>
+        >();
+        class MockDB {
+          rows: Map<string, { sku: string; variantAttributes: string; quantity: number }>;
+          constructor(file: string) {
+            this.rows = stores.get(file) ?? new Map();
+            stores.set(file, this.rows);
+          }
+          exec() {}
+          prepare(sql: string) {
+            if (sql.startsWith("SELECT sku, variantAttributes, quantity FROM inventory WHERE")) {
+              return new Statement((sku: string, attrs: string) => {
+                return this.rows.get(`${sku}|${attrs}`);
+              });
+            }
+            if (sql.startsWith("SELECT sku, variantAttributes, quantity FROM inventory")) {
+              return new Statement(() => Array.from(this.rows.values()));
+            }
+            if (sql.startsWith("REPLACE INTO inventory")) {
+              return new Statement((sku: string, attrs: string, qty: number) => {
+                this.rows.set(`${sku}|${attrs}`, {
+                  sku,
+                  variantAttributes: attrs,
+                  quantity: qty,
+                });
+              });
+            }
+            if (sql.startsWith("DELETE FROM inventory WHERE")) {
+              return new Statement((sku: string, attrs: string) => {
+                this.rows.delete(`${sku}|${attrs}`);
+              });
+            }
+            if (sql.startsWith("DELETE FROM inventory")) {
+              return new Statement(() => {
+                this.rows.clear();
+              });
+            }
+            throw new Error("Unsupported SQL in mock: " + sql);
+          }
+          transaction(fn: Function) {
+            return (...args: any[]) => fn(...args);
+          }
+        }
+        return MockDB;
+      },
+      { virtual: true },
+    );
+  }
 
   const repo = await import("../src/repositories/inventory.server");
   try {
     await cb(repo, "test", dir);
   } finally {
     process.chdir(cwd);
+    if (origBackend === undefined) delete process.env.INVENTORY_BACKEND;
+    else process.env.INVENTORY_BACKEND = origBackend;
   }
 }
 
@@ -186,5 +258,41 @@ describe("inventory repository", () => {
         map[repo.variantKey("sku-1", { size: "l", color: "red" })].quantity,
       ).toBe(3);
     });
+  });
+
+  it("updates items via sqlite backend", async () => {
+    await withRepo(
+      async (repo, shop) => {
+        await repo.writeInventory(shop, [
+          {
+            sku: "sku-1",
+            productId: "p1",
+            quantity: 1,
+            variantAttributes: {},
+          },
+        ]);
+        const updated = await repo.updateInventoryItem(
+          shop,
+          "sku-1",
+          {},
+          (current) => ({
+            sku: "sku-1",
+            productId: "p1",
+            quantity: (current?.quantity ?? 0) + 2,
+            variantAttributes: {},
+          }),
+        );
+        expect(updated).toEqual({
+          sku: "sku-1",
+          productId: "p1",
+          quantity: 3,
+          variantAttributes: {},
+        });
+        await expect(repo.readInventory(shop)).resolves.toEqual([
+          { sku: "sku-1", quantity: 3, variantAttributes: {} },
+        ]);
+      },
+      "sqlite",
+    );
   });
 });

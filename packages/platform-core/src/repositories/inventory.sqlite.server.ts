@@ -62,3 +62,59 @@ export async function writeInventory(
   });
   tx(normalized);
 }
+
+export async function updateInventoryItem(
+  shop: string,
+  sku: string,
+  variantAttributes: Record<string, string>,
+  mutate: (
+    current: InventoryItem | undefined,
+  ) => InventoryItem | undefined,
+): Promise<InventoryItem | undefined> {
+  const db = await getDb(shop);
+  const tx = db.transaction(() => {
+    const keyAttrs = JSON.stringify(variantAttributes || {});
+    const row = db
+      .prepare(
+        "SELECT sku, variantAttributes, quantity FROM inventory WHERE sku = ? AND variantAttributes = ?",
+      )
+      .get(sku, keyAttrs);
+
+    const current: InventoryItem | undefined = row
+      ? {
+          sku: row.sku,
+          quantity: row.quantity,
+          variantAttributes: JSON.parse(row.variantAttributes || "{}"),
+        }
+      : undefined;
+
+    const updated = mutate(current);
+    if (updated === undefined) {
+      if (row) {
+        db.prepare(
+          "DELETE FROM inventory WHERE sku = ? AND variantAttributes = ?",
+        ).run(sku, keyAttrs);
+      }
+      return undefined;
+    }
+
+    const nextItem = inventoryItemSchema.parse({
+      ...current,
+      ...updated,
+      sku,
+      variantAttributes,
+    });
+
+    db.prepare(
+      "REPLACE INTO inventory (sku, variantAttributes, quantity) VALUES (?, ?, ?)",
+    ).run(
+      sku,
+      JSON.stringify(nextItem.variantAttributes || {}),
+      nextItem.quantity,
+    );
+
+    return nextItem;
+  });
+
+  return tx();
+}

@@ -2,11 +2,20 @@
 import "server-only";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
-import type { RentalOrder } from "@acme/types";
+import type { RentalOrder, Shop } from "@acme/types";
 import { trackOrder } from "./analytics";
 import { prisma } from "./db";
 
 type Order = RentalOrder;
+
+export interface TrackingEvent {
+  status: string;
+  timestamp: string;
+  type?: "shipping" | "return";
+  trackingNumber?: string;
+}
+
+const trackingEvents: Record<string, TrackingEvent[]> = {};
 
 export async function listOrders(shop: string): Promise<Order[]> {
   return prisma.rentalOrder.findMany({ where: { shop } });
@@ -112,4 +121,27 @@ export async function getOrdersForCustomer(
   return prisma.rentalOrder.findMany({
     where: { shop, customerId },
   });
+}
+
+export async function addTrackingEvent(
+  shop: Shop,
+  orderId: string,
+  event: TrackingEvent
+): Promise<TrackingEvent[]> {
+  if (!shop.orderTrackingEnabled) {
+    return [];
+  }
+  trackingEvents[orderId] ??= [];
+  trackingEvents[orderId].push(event);
+  return trackingEvents[orderId];
+}
+
+export async function getTrackingEvents(
+  shop: Shop,
+  orderId: string
+): Promise<TrackingEvent[]> {
+  if (!shop.orderTrackingEnabled) {
+    return [];
+  }
+  return trackingEvents[orderId] ?? [];
 }

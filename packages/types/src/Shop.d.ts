@@ -169,6 +169,7 @@ export declare const shopSchema: z.ZodObject<{
         certificateStatus?: string | undefined;
     }>>;
     analyticsEnabled: z.ZodOptional<z.ZodBoolean>;
+    orderTrackingEnabled: z.ZodOptional<z.ZodBoolean>;
     lastUpgrade: z.ZodOptional<z.ZodString>;
     componentVersions: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodString>>;
 }, "strict", z.ZodTypeAny, {
@@ -206,6 +207,7 @@ export declare const shopSchema: z.ZodObject<{
         certificateStatus?: string | undefined;
     } | undefined;
     analyticsEnabled?: boolean | undefined;
+    orderTrackingEnabled?: boolean | undefined;
     lastUpgrade?: string | undefined;
     componentVersions: Record<string, string>;
 }, {
@@ -243,6 +245,7 @@ export declare const shopSchema: z.ZodObject<{
         certificateStatus?: string | undefined;
     } | undefined;
     analyticsEnabled?: boolean | undefined;
+    orderTrackingEnabled?: boolean | undefined;
     lastUpgrade?: string | undefined;
     componentVersions?: Record<string, string> | undefined;
 }>;

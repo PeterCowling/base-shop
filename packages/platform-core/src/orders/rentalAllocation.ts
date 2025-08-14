@@ -12,7 +12,7 @@ import { updateInventoryItem } from "../repositories/inventory.server";
  */
 export async function reserveRentalInventory(
   shop: string,
-  items: Array<InventoryItem & { wearCount?: number }>,
+  items: InventoryItem[],
   sku: SKU,
   from: string,
   to: string,

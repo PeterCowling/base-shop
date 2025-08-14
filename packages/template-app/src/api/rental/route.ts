@@ -1,4 +1,5 @@
 import { stripe } from "@acme/stripe";
+import type { InventoryItem, SKU } from "@acme/types";
 import { readShop } from "@platform-core/repositories/shops.server";
 import {
   addOrder,
@@ -27,21 +28,16 @@ export async function POST(req: NextRequest) {
   const orderItems: Array<{ sku: string; from: string; to: string }> =
     session.metadata?.items ? JSON.parse(session.metadata.items) : [];
   if (shop.rentalInventoryAllocation && orderItems.length) {
-    const [inventory, products] = await Promise.all([
-      readInventory(SHOP_ID),
-      readProducts(SHOP_ID),
-    ]);
+    const [inventory, products]: [InventoryItem[], SKU[]] =
+      await Promise.all([
+        readInventory(SHOP_ID),
+        readProducts<SKU>(SHOP_ID),
+      ]);
     for (const { sku, from, to } of orderItems) {
       const skuInfo = products.find((p) => p.sku === sku);
       if (!skuInfo) continue;
       const items = inventory.filter((i) => i.sku === sku);
-      await reserveRentalInventory(
-        SHOP_ID,
-        items as any,
-        skuInfo as any,
-        from,
-        to,
-      );
+      await reserveRentalInventory(SHOP_ID, items, skuInfo, from, to);
     }
   }
   await addOrder(SHOP_ID, sessionId, deposit, expected);

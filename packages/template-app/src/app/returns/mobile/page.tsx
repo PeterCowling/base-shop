@@ -1,4 +1,6 @@
 import { getReturnLogistics } from "@platform-core/returnLogistics";
+import CleaningInfo from "../../../components/CleaningInfo";
+import shop from "../../../../shop.json";
 import { useEffect, useRef, useState } from "react";
 
 export const metadata = { title: "Mobile Returns" };
@@ -75,6 +77,7 @@ function Scanner() {
       <video ref={videoRef} className="w-full max-w-md" />
       {result && <p>Scanned: {result}</p>}
       {error && <p className="text-red-600">{error}</p>}
+      {shop.showCleaningTransparency && <CleaningInfo />}
     </div>
   );
 }

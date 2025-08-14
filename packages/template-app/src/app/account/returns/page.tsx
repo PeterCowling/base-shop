@@ -2,6 +2,8 @@ import {
   getReturnLogistics,
   getReturnBagAndLabel,
 } from "@platform-core/returnLogistics";
+import CleaningInfo from "../../../components/CleaningInfo";
+import shop from "../../../../shop.json";
 import React, { useEffect, useRef, useState } from "react";
 
 export const metadata = { title: "Mobile Returns" };
@@ -128,6 +130,7 @@ function ReturnForm({ bagType, tracking: trackingEnabled }: ReturnFormProps) {
         </p>
       )}
       {error && <p className="text-red-600">{error}</p>}
+      {shop.showCleaningTransparency && <CleaningInfo />}
     </div>
   );
 }

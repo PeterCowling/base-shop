@@ -240,4 +240,7 @@ export { useFileUpload as useMediaUpload };
 export default useFileUpload;
 
 // legacy type aliases
-export type { UseFileUploadOptions as UseMediaUploadOptions };
+export type {
+  UseFileUploadOptions as UseMediaUploadOptions,
+  UseFileUploadResult as UseMediaUploadResult,
+};

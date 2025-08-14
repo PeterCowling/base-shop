@@ -1,6 +1,10 @@
 import "server-only";
 
-import { inventoryItemSchema, type InventoryItem } from "@acme/types";
+import {
+  inventoryItemSchema,
+  type InventoryItem,
+  type SerializedInventoryItem,
+} from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { validateShopName } from "../shops";
@@ -27,16 +31,18 @@ async function read(shop: string): Promise<InventoryItem[]> {
   const db = await getDb(shop);
   const rows = db
     .prepare("SELECT sku, variantAttributes, quantity FROM inventory")
-    .all();
-  return rows.map((r: any) => ({
+    .all() as { sku: string; variantAttributes: string | null; quantity: number }[];
+  const raw: SerializedInventoryItem[] = rows.map((r) => ({
     sku: r.sku,
+    productId: r.sku,
     quantity: r.quantity,
     variantAttributes: JSON.parse(r.variantAttributes || "{}"),
   }));
+  return inventoryItemSchema.array().parse(raw);
 }
 
 async function write(shop: string, items: InventoryItem[]): Promise<void> {
-  const normalized = inventoryItemSchema
+  const normalized: SerializedInventoryItem[] = inventoryItemSchema
     .array()
     .parse(
       items.map((i) => ({
@@ -48,7 +54,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
   const insert = db.prepare(
     "REPLACE INTO inventory (sku, variantAttributes, quantity) VALUES (?, ?, ?)",
   );
-  const tx = db.transaction((records: InventoryItem[]) => {
+  const tx = db.transaction((records: SerializedInventoryItem[]) => {
     db.prepare("DELETE FROM inventory").run();
     for (const item of records) {
       insert.run(
@@ -75,13 +81,16 @@ export async function updateInventoryItem(
         .prepare(
           "SELECT sku, variantAttributes, quantity FROM inventory WHERE sku = ? AND variantAttributes = ?",
         )
-        .get(sku, key);
+        .get(sku, key) as
+        | { sku: string; variantAttributes: string | null; quantity: number }
+        | undefined;
       const current: InventoryItem | undefined = row
-        ? {
+        ? inventoryItemSchema.parse({
             sku: row.sku,
+            productId: row.sku,
             quantity: row.quantity,
             variantAttributes: JSON.parse(row.variantAttributes || "{}"),
-          }
+          })
         : undefined;
       const updated = mutate(current);
       if (updated === undefined) {

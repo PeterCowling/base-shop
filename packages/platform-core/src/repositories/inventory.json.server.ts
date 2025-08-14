@@ -1,6 +1,10 @@
 import "server-only";
 
-import { inventoryItemSchema, type InventoryItem } from "@acme/types";
+import {
+  inventoryItemSchema,
+  type InventoryItem,
+  type SerializedInventoryItem,
+} from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { validateShopName } from "../shops";
@@ -31,11 +35,11 @@ async function ensureDir(shop: string): Promise<void> {
 async function read(shop: string): Promise<InventoryItem[]> {
   try {
     const buf = await fs.readFile(inventoryPath(shop), "utf8");
-    const raw = JSON.parse(buf);
+    const raw: SerializedInventoryItem[] = JSON.parse(buf);
     return inventoryItemSchema
       .array()
       .parse(
-        raw.map((i: any) => ({
+        raw.map((i) => ({
           variantAttributes: {},
           ...i,
         })),
@@ -47,7 +51,7 @@ async function read(shop: string): Promise<InventoryItem[]> {
 }
 
 async function write(shop: string, items: InventoryItem[]): Promise<void> {
-  const normalized = inventoryItemSchema
+  const normalized: SerializedInventoryItem[] = inventoryItemSchema
     .array()
     .parse(
       items.map((i) => ({
@@ -83,18 +87,18 @@ async function update(
   mutate: InventoryMutateFn,
 ): Promise<InventoryItem | undefined> {
   const lockFile = `${inventoryPath(shop)}.lock`;
-  let normalized: InventoryItem[] = [];
+  let normalized: SerializedInventoryItem[] = [];
   const handle = await acquireLock(lockFile);
   let updated: InventoryItem | undefined;
   try {
     let items: InventoryItem[] = [];
     try {
       const buf = await fs.readFile(inventoryPath(shop), "utf8");
-      const raw = JSON.parse(buf);
+      const raw: SerializedInventoryItem[] = JSON.parse(buf);
       items = inventoryItemSchema
         .array()
         .parse(
-          raw.map((i: any) => ({
+          raw.map((i) => ({
             variantAttributes: {},
             ...i,
           })),

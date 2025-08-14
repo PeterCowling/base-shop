@@ -3,6 +3,17 @@ import { z } from "zod";
 // Flexible map of variant attributes (e.g. size, color)
 export const variantAttributesSchema = z.record(z.string());
 
+export interface SerializedInventoryItem {
+  sku: string;
+  productId: string;
+  quantity: number;
+  variantAttributes?: Record<string, string>;
+  lowStockThreshold?: number;
+  wearCount?: number;
+  wearAndTearLimit?: number;
+  maintenanceCycle?: number;
+}
+
 export const inventoryItemSchema = z
   .object({
     sku: z.string(),

@@ -128,7 +128,7 @@ export const shopSchema = z
     rentalSubscriptions: z
       .array(subscriptionPlanSchema)
       .default([]),
-    subscriptionsEnabled: z.boolean().optional(),
+    subscriptionsEnabled: z.boolean().default(false),
     lateFeePolicy: z
       .object({
         gracePeriodDays: z.number().int().nonnegative(),

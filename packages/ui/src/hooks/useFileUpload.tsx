@@ -161,7 +161,7 @@ export function useFileUpload(
         }
       }}
       className={`rounded border-2 border-dashed p-4 text-center${
-        dragActive ? " highlighted" : ""
+        dragActive ? "highlighted" : ""
       }`}
     >
       {/* hidden file input */}
@@ -177,14 +177,16 @@ export function useFileUpload(
       <button
         type="button"
         onClick={openFileDialog}
-        className="bg-primary rounded px-3 py-1 text-primary-fg"
+        className="bg-primary text-primary-fg rounded px-3 py-1"
       >
         Browse…
       </button>
 
       <div id={feedbackId} role="status" aria-live="polite">
         {pendingFile && (
-          <p className="mt-2 text-sm text-muted-foreground">{pendingFile.name}</p>
+          <p className="text-muted-foreground mt-2 text-sm">
+            {pendingFile.name}
+          </p>
         )}
 
         {progress && (
@@ -193,9 +195,13 @@ export function useFileUpload(
           </p>
         )}
 
-        {error && (<p className="mt-2 text-sm text-danger" data-token="--color-danger">{error}</p>)}
+        {error && (
+          <p className="text-danger mt-2 text-sm" data-token="--color-danger">
+            {error}
+          </p>
+        )}
         {isValid === false && !isVideo && (
-          <p className="mt-2 text-sm text-warning">
+          <p className="text-warning mt-2 text-sm">
             Wrong orientation (needs {requiredOrientation})
           </p>
         )}
@@ -234,7 +240,4 @@ export { useFileUpload as useMediaUpload };
 export default useFileUpload;
 
 // legacy type aliases
-export type {
-  UseFileUploadOptions as UseMediaUploadOptions,
-  UseFileUploadResult as UseMediaUploadResult,
-};
+export type { UseFileUploadOptions as UseMediaUploadOptions };

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import type { UseFileUploadOptions, UseFileUploadResult } from "./useFileUpload";
+import type {
+  UseFileUploadOptions,
+  UseFileUploadResult,
+} from "./useFileUpload";
 import { useFileUpload } from "./useFileUpload";
 
 export interface UseMediaUploadResult extends UseFileUploadResult {
@@ -71,8 +74,5 @@ export function useMediaUpload(
   return { ...base, thumbnail };
 }
 
-export type {
-  UseFileUploadOptions as UseMediaUploadOptions,
-  UseMediaUploadResult,
-};
+export type { UseFileUploadOptions as UseMediaUploadOptions };
 export default useMediaUpload;

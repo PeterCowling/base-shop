@@ -2,7 +2,6 @@
 import { encodeCartCookie } from "../../platform-core/src/cartCookie";
 import { PRODUCTS } from "../../platform-core/src/products";
 import { calculateRentalDays } from "@acme/date-utils";
-import { POST } from "../src/api/checkout-session/route";
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -22,6 +21,9 @@ jest.mock("../../platform-core/src/pricing", () => ({
 
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 jest.mock("@platform-core/src/analytics", () => ({ trackEvent: jest.fn() }));
+jest.mock("@platform-core/src/repositories/shops.server", () => ({
+  readShop: jest.fn(async () => ({ coverageIncluded: true })),
+}));
 let mockCart: any;
 jest.mock("@platform-core/src/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
@@ -29,6 +31,8 @@ jest.mock("@platform-core/src/cartStore", () => ({
 
 import { stripe } from "@acme/stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
+
+import { POST } from "../src/api/checkout-session/route";
 
 function createRequest(
   body: any,

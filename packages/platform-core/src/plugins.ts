@@ -6,25 +6,40 @@ import type { z } from "zod";
 import { logger } from "./utils/logger";
 import { PluginManager } from "./plugins/PluginManager";
 
+export interface PaymentPayload {
+  [key: string]: unknown;
+}
+
+export interface ShippingRequest {
+  [key: string]: unknown;
+}
+
+export interface WidgetProps {
+  [key: string]: unknown;
+}
+
 /** Interface for payment providers */
-export interface PaymentProvider {
-  processPayment(...args: any[]): Promise<unknown> | unknown;
+export interface PaymentProvider<Payload = PaymentPayload> {
+  processPayment(payload: Payload): Promise<unknown> | unknown;
 }
 
 /** Interface for shipping providers */
-export interface ShippingProvider {
-  calculateShipping(...args: any[]): Promise<unknown> | unknown;
+export interface ShippingProvider<Request = ShippingRequest> {
+  calculateShipping(request: Request): Promise<unknown> | unknown;
 }
 
 /** Interface for widget components */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface WidgetComponent<P = any> {
+export interface WidgetComponent<P = WidgetProps> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (props: P): any;
 }
 
 /** Registry for payment providers */
-export interface PaymentRegistry<T extends PaymentProvider = PaymentProvider> {
+export interface PaymentRegistry<
+  Payload = PaymentPayload,
+  T extends PaymentProvider<Payload> = PaymentProvider<Payload>,
+> {
   add(id: string, provider: T): void;
   get(id: string): T | undefined;
   list(): { id: string; value: T }[];
@@ -32,7 +47,8 @@ export interface PaymentRegistry<T extends PaymentProvider = PaymentProvider> {
 
 /** Registry for shipping providers */
 export interface ShippingRegistry<
-  T extends ShippingProvider = ShippingProvider,
+  Request = ShippingRequest,
+  T extends ShippingProvider<Request> = ShippingProvider<Request>,
 > {
   add(id: string, provider: T): void;
   get(id: string): T | undefined;
@@ -40,7 +56,10 @@ export interface ShippingRegistry<
 }
 
 /** Registry for widget components */
-export interface WidgetRegistry<T extends WidgetComponent = WidgetComponent> {
+export interface WidgetRegistry<
+  Props = WidgetProps,
+  T extends WidgetComponent<Props> = WidgetComponent<Props>,
+> {
   add(id: string, component: T): void;
   get(id: string): T | undefined;
   list(): { id: string; value: T }[];
@@ -64,22 +83,25 @@ export interface PluginOptions<Config = Record<string, unknown>> {
 }
 
 export interface Plugin<
-  P extends PaymentProvider = PaymentProvider,
-  S extends ShippingProvider = ShippingProvider,
-  W extends WidgetComponent = WidgetComponent,
+  PPay = PaymentPayload,
+  SReq = ShippingRequest,
+  WProp = WidgetProps,
+  P extends PaymentProvider<PPay> = PaymentProvider<PPay>,
+  S extends ShippingProvider<SReq> = ShippingProvider<SReq>,
+  W extends WidgetComponent<WProp> = WidgetComponent<WProp>,
   Config = Record<string, unknown>,
 > extends PluginOptions<Config> {
   id: string;
   registerPayments?(
-    registry: PaymentRegistry<P>,
+    registry: PaymentRegistry<PPay, P>,
     config: Config,
   ): void;
   registerShipping?(
-    registry: ShippingRegistry<S>,
+    registry: ShippingRegistry<SReq, S>,
     config: Config,
   ): void;
   registerWidgets?(
-    registry: WidgetRegistry<W>,
+    registry: WidgetRegistry<WProp, W>,
     config: Config,
   ): void;
   /** optional async initialization hook */
@@ -185,9 +207,12 @@ export interface InitPluginsOptions extends LoadPluginsOptions {
 
 /** Load plugins and call their registration hooks */
 export async function initPlugins<
-  P extends PaymentProvider = PaymentProvider,
-  S extends ShippingProvider = ShippingProvider,
-  W extends WidgetComponent = WidgetComponent,
+  PPay = PaymentPayload,
+  SReq = ShippingRequest,
+  WProp = WidgetProps,
+  P extends PaymentProvider<PPay> = PaymentProvider<PPay>,
+  S extends ShippingProvider<SReq> = ShippingProvider<SReq>,
+  W extends WidgetComponent<WProp> = WidgetComponent<WProp>,
 >(
   options: InitPluginsOptions = {},
 ): Promise<PluginManager<P, S, W>> {

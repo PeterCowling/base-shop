@@ -73,7 +73,7 @@ export async function slugExists(
   return Boolean(res?._id);
 }
 
-const sanityPlugin: Plugin<any, any, any, SanityConfig> = {
+const sanityPlugin: Plugin<any, any, any, any, any, any, SanityConfig> = {
   id: "sanity",
   name: "Sanity",
   description: "Sanity CMS integration",

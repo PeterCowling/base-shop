@@ -104,12 +104,15 @@ function updateComponent(
     "tabletItems",
     "mobileItems",
   ] as const;
-  const normalized: Partial<PageComponent> = { ...patch };
+  type NumericField = (typeof numericFields)[number];
+  const normalized: Partial<PageComponent> & Record<NumericField, number | undefined> = {
+    ...patch,
+  } as Partial<PageComponent> & Record<NumericField, number | undefined>;
   for (const key of numericFields) {
-    const val = normalized[key];
+    const val = (patch as Record<NumericField, unknown>)[key];
     if (typeof val === "string") {
       const num = Number(val);
-      normalized[key] = Number.isNaN(num) ? undefined : (num as any);
+      normalized[key] = Number.isNaN(num) ? undefined : (num as number);
     }
   }
   return list.map((c) => {

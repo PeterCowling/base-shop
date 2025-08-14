@@ -1,6 +1,16 @@
-import { cpSync, existsSync, mkdirSync, readdirSync, unlinkSync, renameSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  unlinkSync,
+  renameSync,
+  readFileSync,
+  writeFileSync,
+} from "node:fs";
 import * as path from "node:path";
 import { randomBytes } from "node:crypto";
+import { getComponentNameMap } from "./component-names";
 
 const args = process.argv.slice(2);
 const rollback = args.includes("--rollback");
@@ -49,6 +59,18 @@ if (existsSync(shopJsonPath)) {
     : {};
   writeFileSync(shopJsonPath, JSON.stringify(data, null, 2));
 }
+
+// generate upgrade-changes.json with component name mappings
+const componentsDir = path.join(rootDir, "packages", "ui", "src", "components");
+const componentMap = getComponentNameMap(componentsDir);
+const components = Object.entries(componentMap).map(([file, componentName]) => ({
+  file,
+  componentName,
+}));
+writeFileSync(
+  path.join(appDir, "upgrade-changes.json"),
+  JSON.stringify({ components }, null, 2),
+);
 
 const envPath = path.join(appDir, ".env");
 if (existsSync(envPath)) {

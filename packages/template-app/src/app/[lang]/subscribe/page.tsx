@@ -1,10 +1,13 @@
 // packages/template-app/src/app/[lang]/subscribe/page.tsx
+import { coreEnv } from "@acme/config/env/core";
+import { stripe } from "@acme/stripe";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { readShop } from "@platform-core/src/repositories/shops.server";
 import { getCustomerSession } from "@auth";
 import {
   setUserPlan,
 } from "@platform-core/src/repositories/subscriptionUsage.server";
+import { setStripeSubscriptionId } from "@platform-core/repositories/users";
 
 export default async function SubscribePage({
   params,
@@ -13,7 +16,8 @@ export default async function SubscribePage({
 }) {
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
-  const shop = await readShop("shop");
+  const shopId = coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop";
+  const shop = await readShop(shopId);
 
   async function selectPlan(formData: FormData) {
     "use server";
@@ -21,7 +25,16 @@ export default async function SubscribePage({
     if (!planId) return;
     const session = await getCustomerSession();
     if (!session?.customerId) return;
-    await setUserPlan("shop", session.customerId, planId);
+    const shop = await readShop(shopId);
+    const plan = shop.rentalSubscriptions.find((p) => p.id === planId);
+    if (!plan) return;
+    const sub = await stripe.subscriptions.create({
+      customer: session.customerId,
+      items: [{ price: plan.id }],
+      metadata: { userId: session.customerId, shop: shopId },
+    });
+    await setStripeSubscriptionId(session.customerId, sub.id);
+    await setUserPlan(shopId, session.customerId, planId);
   }
 
   return (

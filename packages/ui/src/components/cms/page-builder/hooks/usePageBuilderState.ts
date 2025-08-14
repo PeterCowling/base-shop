@@ -6,9 +6,19 @@ interface Params {
   page: Page;
   history?: HistoryState;
   onChange?: (components: PageComponent[]) => void;
+  onSaveShortcut?: () => void;
+  onTogglePreview?: () => void;
+  onRotateDevice?: (direction: "left" | "right") => void;
 }
 
-export function usePageBuilderState({ page, history, onChange }: Params) {
+export function usePageBuilderState({
+  page,
+  history,
+  onChange,
+  onSaveShortcut,
+  onTogglePreview,
+  onRotateDevice,
+}: Params) {
   const storageKey = `page-builder-history-${page.id}`;
 
   const migrate = useCallback(
@@ -82,6 +92,15 @@ export function usePageBuilderState({ page, history, onChange }: Params) {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLElement &&
+        (e.target.tagName === "INPUT" ||
+          e.target.tagName === "TEXTAREA" ||
+          e.target.tagName === "SELECT" ||
+          e.target.isContentEditable)
+      ) {
+        return;
+      }
       if (!(e.ctrlKey || e.metaKey)) return;
       const k = e.key.toLowerCase();
       if (k === "z") {
@@ -90,11 +109,23 @@ export function usePageBuilderState({ page, history, onChange }: Params) {
       } else if (k === "y") {
         e.preventDefault();
         dispatch({ type: "redo" });
+      } else if (k === "s") {
+        e.preventDefault();
+        onSaveShortcut?.();
+      } else if (k === "p") {
+        e.preventDefault();
+        onTogglePreview?.();
+      } else if (k === "[" && e.shiftKey) {
+        e.preventDefault();
+        onRotateDevice?.("left");
+      } else if (k === "]" && e.shiftKey) {
+        e.preventDefault();
+        onRotateDevice?.("right");
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [dispatch]);
+  }, [dispatch, onSaveShortcut, onTogglePreview, onRotateDevice]);
 
   const setGridCols = useCallback(
     (n: number) => {

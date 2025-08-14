@@ -1,7 +1,14 @@
 import type { Locale } from "@/i18n/locales";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
-import { Button, Input } from "../../atoms/shadcn";
+import {
+  Button,
+  Input,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "../../atoms/shadcn";
 import { getLegacyPreset } from "@ui/utils/devicePresets";
 import DeviceSelector from "@ui/components/common/DeviceSelector";
 
@@ -89,6 +96,47 @@ const PageToolbar = ({
             className={orientation === "landscape" ? "rotate-90" : ""}
           />
         </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" aria-label="Keyboard shortcuts">
+              ?
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="space-y-2">
+            <DialogTitle>Keyboard shortcuts</DialogTitle>
+            <ul className="space-y-1 text-sm">
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>S</kbd> Save
+              </li>
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>P</kbd> Toggle preview
+              </li>
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>[</kbd> Rotate
+                device left
+              </li>
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>]</kbd> Rotate
+                device right
+              </li>
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Z</kbd> Undo
+              </li>
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Y</kbd> Redo
+              </li>
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>1</kbd> Desktop view
+              </li>
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>2</kbd> Tablet view
+              </li>
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>3</kbd> Mobile view
+              </li>
+            </ul>
+          </DialogContent>
+        </Dialog>
       </div>
       <div className="flex items-center justify-end gap-2">
         <Button

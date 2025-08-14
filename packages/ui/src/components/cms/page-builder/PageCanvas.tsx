@@ -1,6 +1,6 @@
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import type { CSSProperties, DragEvent } from "react";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import type { PageComponent } from "@acme/types";
 import CanvasItem from "./CanvasItem";
 import type { Locale } from "@/i18n/locales";
@@ -46,69 +46,108 @@ const PageCanvas = ({
   viewport,
   snapPosition,
   device,
-}: Props) => (
-  <SortableContext
-    items={components.map((c) => c.id)}
-    strategy={rectSortingStrategy}
-  >
-    <div
-      id="canvas"
-      ref={canvasRef}
-      style={containerStyle}
-      role="list"
-      aria-dropeffect="move"
-      onDrop={onFileDrop}
-      onDragOver={(e) => {
-        e.preventDefault();
-        setDragOver(true);
-      }}
-      onDragLeave={() => setDragOver(false)}
-      onDragEnd={() => setDragOver(false)}
-      className={cn(
-        "relative mx-auto flex flex-col gap-4 rounded border",
-        dragOver && "ring-2 ring-primary"
-      )}
+}: Props) => {
+  const [dropRect, setDropRect] = useState<
+    { left: number; top: number; width: number; height: number } | null
+  >(null);
+
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragOver(true);
+    const target = (e.target as HTMLElement).closest(
+      '[role="listitem"], #canvas'
+    );
+    if (target instanceof HTMLElement && canvasRef.current) {
+      const canvasBounds = canvasRef.current.getBoundingClientRect();
+      const rect = target.getBoundingClientRect();
+      setDropRect({
+        left: rect.left - canvasBounds.left,
+        top: rect.top - canvasBounds.top,
+        width: rect.width,
+        height: rect.height,
+      });
+    } else {
+      setDropRect(null);
+    }
+  };
+
+  const clearHighlight = () => {
+    setDragOver(false);
+    setDropRect(null);
+  };
+
+  return (
+    <SortableContext
+      items={components.map((c) => c.id)}
+      strategy={rectSortingStrategy}
     >
-      {showGrid && <GridOverlay gridCols={gridCols} />}
-      <SnapLine position={snapPosition} />
-      {components.map((c, i) => (
-        <Fragment key={c.id}>
-          {insertIndex === i && (
-            <div
-              data-placeholder
-              className={cn(
-                "h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10",
-                snapPosition !== null && "ring-2 ring-primary"
-              )}
-            />
-          )}
-          <CanvasItem
-            component={c}
-            index={i}
-            parentId={undefined}
-            selectedId={selectedId}
-            onSelectId={onSelectId}
-            onRemove={() => dispatch({ type: "remove", id: c.id })}
-            dispatch={dispatch}
-            locale={locale}
-            gridEnabled={showGrid}
-            gridCols={gridCols}
-            viewport={viewport}
-            device={device}
+      <div
+        id="canvas"
+        ref={canvasRef}
+        style={containerStyle}
+        role="list"
+        aria-dropeffect="move"
+        onDrop={onFileDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={clearHighlight}
+        onDragEnd={clearHighlight}
+        className={cn(
+          "relative mx-auto flex flex-col gap-4 rounded border",
+          dragOver && "ring-2 ring-primary"
+        )}
+      >
+        {dropRect && (
+          <div
+            className="pointer-events-none absolute z-50 rounded border-2 border-primary/50 bg-primary/10"
+            style={{
+              left: dropRect.left,
+              top: dropRect.top,
+              width: dropRect.width,
+              height: dropRect.height,
+            }}
           />
-        </Fragment>
-      ))}
-      {insertIndex === components.length && (
-        <div
-          data-placeholder
-          className={cn(
-            "h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10",
-            snapPosition !== null && "ring-2 ring-primary"
-          )}
-        />
-      )}
-    </div>
-  </SortableContext>
-);
+        )}
+        {showGrid && <GridOverlay gridCols={gridCols} />}
+        <SnapLine position={snapPosition} />
+        {components.map((c, i) => (
+          <Fragment key={c.id}>
+            {insertIndex === i && (
+              <div
+                data-placeholder
+                className={cn(
+                  "h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10",
+                  snapPosition !== null && "ring-2 ring-primary"
+                )}
+              />
+            )}
+            <CanvasItem
+              component={c}
+              index={i}
+              parentId={undefined}
+              selectedId={selectedId}
+              onSelectId={onSelectId}
+              onRemove={() => dispatch({ type: "remove", id: c.id })}
+              dispatch={dispatch}
+              locale={locale}
+              gridEnabled={showGrid}
+              gridCols={gridCols}
+              viewport={viewport}
+              device={device}
+            />
+          </Fragment>
+        ))}
+        {insertIndex === components.length && (
+          <div
+            data-placeholder
+            className={cn(
+              "h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10",
+              snapPosition !== null && "ring-2 ring-primary"
+            )}
+          />
+        )}
+      </div>
+    </SortableContext>
+  );
+};
 
 export default PageCanvas;

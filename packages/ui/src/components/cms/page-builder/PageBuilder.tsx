@@ -243,22 +243,38 @@ const PageBuilder = memo(function PageBuilder({
     [handleDragEnd]
   );
 
-  const widthMap = useMemo(
-    () => ({ desktop: "100%", tablet: "768px", mobile: "375px" }) as const,
+  const viewportWidths = useMemo(
+    () => ({ desktop: 1280, tablet: 768, mobile: 375 }) as const,
     []
   );
-  const containerStyle = useMemo(
-    () => ({ width: widthMap[viewport] }),
-    [viewport, widthMap]
+  const scale = viewportWidths[viewport] / viewportWidths.desktop;
+  const frameStyle = useMemo(
+    () => ({
+      width: viewportWidths.desktop,
+      transform: `scale(${scale})`,
+      transformOrigin: "top center",
+      transition: "transform 300ms ease-in-out",
+    }),
+    [scale, viewportWidths.desktop]
+  );
+  const containerStyle = useMemo(() => ({ width: "100%" }), []);
+  const frameClass = useMemo(
+    () =>
+      ({
+        desktop: "mx-auto rounded-md border p-2",
+        tablet: "mx-auto rounded-xl border-2 p-4",
+        mobile: "mx-auto rounded-[2rem] border-4 p-4",
+      } as const),
+    []
   );
 
   useEffect(() => {
     if (showGrid && canvasRef.current) {
-      setGridSize(canvasRef.current.offsetWidth / gridCols);
+      setGridSize((canvasRef.current.offsetWidth * scale) / gridCols);
     } else {
       setGridSize(1);
     }
-  }, [showGrid, viewport, gridCols]);
+  }, [showGrid, gridCols, scale]);
 
   useEffect(() => {
     onChange?.(components);
@@ -344,23 +360,25 @@ const PageBuilder = memo(function PageBuilder({
           onDragMove={handleDragMove}
           onDragEnd={handleDragEndWrapper}
         >
-          <PageCanvas
-            components={components}
-            selectedId={selectedId}
-            onSelectId={setSelectedId}
-            canvasRef={canvasRef}
-            dragOver={dragOver}
-            setDragOver={setDragOver}
-            onFileDrop={handleFileDrop}
-            insertIndex={insertIndex}
-            dispatch={dispatch}
-            locale={locale}
-            containerStyle={containerStyle}
-            showGrid={showGrid}
-            gridCols={gridCols}
-            viewport={viewport}
-            snapPosition={snapPosition}
-          />
+          <div className={frameClass[viewport]} style={frameStyle}>
+            <PageCanvas
+              components={components}
+              selectedId={selectedId}
+              onSelectId={setSelectedId}
+              canvasRef={canvasRef}
+              dragOver={dragOver}
+              setDragOver={setDragOver}
+              onFileDrop={handleFileDrop}
+              insertIndex={insertIndex}
+              dispatch={dispatch}
+              locale={locale}
+              containerStyle={containerStyle}
+              showGrid={showGrid}
+              gridCols={gridCols}
+              viewport={viewport}
+              snapPosition={snapPosition}
+            />
+          </div>
           <DragOverlay>
             {activeType && (
               <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">

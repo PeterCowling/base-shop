@@ -1,5 +1,6 @@
 import type { Locale } from "@/i18n/locales";
 import { Button, Input } from "../../atoms/shadcn";
+import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 
 interface Props {
   viewport: "desktop" | "tablet" | "mobile";
@@ -14,6 +15,12 @@ interface Props {
   gridCols: number;
   setGridCols: (n: number) => void;
 }
+
+const icons = {
+  desktop: DesktopIcon,
+  tablet: LaptopIcon,
+  mobile: MobileIcon,
+} as const;
 
 const PageToolbar = ({
   viewport,
@@ -30,15 +37,20 @@ const PageToolbar = ({
 }: Props) => (
   <div className="flex flex-col gap-4">
     <div className="flex justify-end gap-2">
-      {(["desktop", "tablet", "mobile"] as const).map((v) => (
-        <Button
-          key={v}
-          variant={viewport === v ? "default" : "outline"}
-          onClick={() => setViewport(v)}
-        >
-          {v.charAt(0).toUpperCase() + v.slice(1)}
-        </Button>
-      ))}
+      {(["desktop", "tablet", "mobile"] as const).map((v) => {
+        const Icon = icons[v];
+        return (
+          <Button
+            key={v}
+            variant={viewport === v ? "default" : "outline"}
+            onClick={() => setViewport(v)}
+            aria-label={v}
+            className="p-2"
+          >
+            <Icon className="h-4 w-4" />
+          </Button>
+        );
+      })}
     </div>
     <div className="flex items-center justify-end gap-2">
       <Button

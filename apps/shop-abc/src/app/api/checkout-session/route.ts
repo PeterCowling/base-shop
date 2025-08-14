@@ -202,7 +202,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } = parsed.data;
   const couponDef = await findCoupon(shop.id, coupon);
   if (couponDef) {
-    await trackEvent(shop.id, { type: "discount_redeemed", code: couponDef.code });
+    await trackEvent(shop.id, {
+      type: "discount_redeemed",
+      code: couponDef.code,
+    });
   }
   const discountRate = couponDef ? couponDef.discountPercent / 100 : 0;
   let rentalDays: number;
@@ -249,56 +252,65 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   /* 5️⃣ Create Checkout Session -------------------------------------------- */
   const customer = customerId ?? session.customerId;
-  const clientIp =
-    req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
+  const clientIp = req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
 
-  const paymentIntentData: Stripe.Checkout.SessionCreateParams.PaymentIntentData = {
-    ...(shipping ? { shipping } : {}),
-    payment_method_options: {
-      card: { request_three_d_secure: "automatic" },
-    },
-    metadata: buildCheckoutMetadata({
-      subtotal,
-      depositTotal,
-      returnDate,
-      rentalDays,
-      customerId: customer,
-      discount,
-      coupon: couponDef?.code,
-      currency,
-      taxRate,
-      taxAmount,
-      clientIp,
-    }),
-  } as any;
+  const paymentIntentData: Stripe.Checkout.SessionCreateParams.PaymentIntentData =
+    {
+      ...(shipping ? { shipping } : {}),
+      payment_method_options: {
+        card: { request_three_d_secure: "automatic" },
+      },
+      metadata: buildCheckoutMetadata({
+        subtotal,
+        depositTotal,
+        returnDate,
+        rentalDays,
+        customerId: customer,
+        discount,
+        coupon: couponDef?.code,
+        currency,
+        taxRate,
+        taxAmount,
+        clientIp,
+      }),
+    } as any;
 
   if (billing_details) {
     (paymentIntentData as any).billing_details = billing_details;
   }
 
-  const stripeSession = await stripe.checkout.sessions.create({
-    mode: "payment",
-    customer,
-    line_items,
-    success_url: `${req.nextUrl.origin}/success`,
-    cancel_url: `${req.nextUrl.origin}/cancelled`,
-    payment_intent_data: paymentIntentData,
-    metadata: buildCheckoutMetadata({
-      subtotal,
-      depositTotal,
-      returnDate,
-      rentalDays,
-      sizes: sizesMeta,
-      customerId: customer,
-      discount,
-      coupon: couponDef?.code,
-      currency,
-      taxRate,
-      taxAmount,
-      clientIp,
-    }),
-    expand: ["payment_intent"],
-  });
+  let stripeSession: Stripe.Checkout.Session;
+  try {
+    stripeSession = await stripe.checkout.sessions.create({
+      mode: "payment",
+      customer,
+      line_items,
+      success_url: `${req.nextUrl.origin}/success`,
+      cancel_url: `${req.nextUrl.origin}/cancelled`,
+      payment_intent_data: paymentIntentData,
+      metadata: buildCheckoutMetadata({
+        subtotal,
+        depositTotal,
+        returnDate,
+        rentalDays,
+        sizes: sizesMeta,
+        customerId: customer,
+        discount,
+        coupon: couponDef?.code,
+        currency,
+        taxRate,
+        taxAmount,
+        clientIp,
+      }),
+      expand: ["payment_intent"],
+    });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json(
+      { error: "Checkout session failed" },
+      { status: 502 }
+    );
+  }
 
   /* 6️⃣ Return client credentials ------------------------------------------ */
   const clientSecret =

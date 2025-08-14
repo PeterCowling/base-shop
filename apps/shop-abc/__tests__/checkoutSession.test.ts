@@ -28,7 +28,9 @@ jest.mock("@platform-core/tax", () => ({ getTaxRate: jest.fn() }));
 
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
-jest.mock("@auth", () => ({ requirePermission: jest.fn(async () => ({ customerId: "c1" })) }));
+jest.mock("@auth", () => ({
+  requirePermission: jest.fn(async () => ({ customerId: "c1" })),
+}));
 let mockCart: any;
 jest.mock("@platform-core/src/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
@@ -155,7 +157,10 @@ test("applies coupon discount and sets metadata", async () => {
   const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
   mockCart = cart;
   const cookie = encodeCartCookie("test");
-  const req = createRequest({ returnDate: "2025-01-02", coupon: "SAVE10" }, cookie);
+  const req = createRequest(
+    { returnDate: "2025-01-02", coupon: "SAVE10" },
+    cookie
+  );
 
   await POST(req);
   const args = stripeCreate.mock.calls[0][0];
@@ -185,7 +190,7 @@ test("adds tax line item and metadata", async () => {
   const cookie = encodeCartCookie("test");
   const req = createRequest(
     { returnDate: "2025-01-02", taxRegion: "EU" },
-    cookie,
+    cookie
   );
 
   await POST(req);
@@ -207,7 +212,7 @@ test("returns 400 for unsupported currency", async () => {
   const cookie = encodeCartCookie("test");
   const req = createRequest(
     { returnDate: "2025-01-02", currency: "JPY" },
-    cookie,
+    cookie
   );
   const res = await POST(req);
   expect(res.status).toBe(400);
@@ -223,10 +228,32 @@ test("returns 400 for unsupported tax region", async () => {
   const cookie = encodeCartCookie("test");
   const req = createRequest(
     { returnDate: "2025-01-02", taxRegion: "DE" },
-    cookie,
+    cookie
   );
   const res = await POST(req);
   expect(res.status).toBe(400);
   const body = await res.json();
   expect(body.taxRegion[0]).toMatch(/invalid/i);
+});
+
+test("returns 502 when Stripe session creation fails", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockReset();
+  findCouponMock.mockReset();
+  getTaxRateMock.mockReset();
+  stripeCreate.mockRejectedValue(new Error("stripe failed"));
+  findCouponMock.mockResolvedValue(null);
+  getTaxRateMock.mockResolvedValue(0);
+
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest({ returnDate: "2025-01-02" }, cookie);
+
+  const res = await POST(req);
+  expect(res.status).toBe(502);
+  const body = await res.json();
+  expect(body.error).toBe("Checkout session failed");
 });

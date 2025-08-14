@@ -9,29 +9,41 @@ import {
   SelectValue,
 } from "../../atoms/shadcn";
 
+type FormField = {
+  type: string;
+  name?: string;
+  label?: string;
+  options?: { label: string; value: string }[];
+};
+
+type FormBuilderComponent = PageComponent & {
+  type: "FormBuilderBlock";
+  fields?: FormField[];
+};
+
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: FormBuilderComponent;
+  onChange: (patch: Partial<FormBuilderComponent>) => void;
 }
 
 export default function FormBuilderEditor({ component, onChange }: Props) {
-  const fields = ((component as any).fields ?? []) as any[];
+  const fields = component.fields ?? [];
 
-  const updateField = (idx: number, key: string, value: any) => {
+  const updateField = (idx: number, key: keyof FormField, value: any) => {
     const next = [...fields];
     next[idx] = { ...next[idx], [key]: value };
-    onChange({ fields: next } as Partial<PageComponent>);
+    onChange({ fields: next });
   };
 
   const addField = () => {
     onChange({
       fields: [...fields, { type: "text", name: "", label: "" }],
-    } as Partial<PageComponent>);
+    });
   };
 
   const removeField = (idx: number) => {
     const next = fields.filter((_, i) => i !== idx);
-    onChange({ fields: next } as Partial<PageComponent>);
+    onChange({ fields: next });
   };
 
   return (

@@ -55,9 +55,10 @@ function removeComponent(list: PageComponent[], id: string): PageComponent[] {
 }
 
 function cloneWithNewIds(component: PageComponent): PageComponent {
-  const copy: PageComponent = { ...component, id: ulid() } as PageComponent;
-  if ("children" in component && Array.isArray((component as any).children)) {
-    (copy as any).children = (component as any).children.map((child: PageComponent) =>
+  const copy: PageComponent = { ...component, id: ulid() };
+  const childList = (component as { children?: PageComponent[] }).children;
+  if (Array.isArray(childList)) {
+    (copy as { children?: PageComponent[] }).children = childList.map((child) =>
       cloneWithNewIds(child),
     );
   }
@@ -74,12 +75,15 @@ function duplicateComponent(list: PageComponent[], id: string): PageComponent[] 
       duplicated = true;
       continue;
     }
-    if (!duplicated && "children" in c && Array.isArray((c as any).children)) {
-      const children = duplicateComponent((c as any).children, id);
-      if (children !== (c as any).children) {
-        result.push({ ...(c as any), children } as PageComponent);
-        duplicated = true;
-        continue;
+    if (!duplicated) {
+      const childList = (c as { children?: PageComponent[] }).children;
+      if (Array.isArray(childList)) {
+        const children = duplicateComponent(childList, id);
+        if (children !== childList) {
+          result.push({ ...c, children } as PageComponent);
+          duplicated = true;
+          continue;
+        }
       }
     }
     result.push(c);
@@ -102,10 +106,10 @@ function updateComponent(
   ] as const;
   const normalized: Partial<PageComponent> = { ...patch };
   for (const key of numericFields) {
-    const val = (normalized as any)[key];
+    const val = normalized[key];
     if (typeof val === "string") {
       const num = Number(val);
-      (normalized as any)[key] = Number.isNaN(num) ? undefined : num;
+      normalized[key] = Number.isNaN(num) ? undefined : (num as any);
     }
   }
   return list.map((c) => {

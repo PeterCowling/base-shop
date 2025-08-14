@@ -1,9 +1,16 @@
 import type { PageComponent } from "@acme/types";
 import { Input, Textarea } from "../../atoms/shadcn";
 
+type ProductBundleComponent = PageComponent & {
+  type: "ProductBundle";
+  skus?: string[];
+  discount?: number;
+  quantity?: number;
+};
+
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: ProductBundleComponent;
+  onChange: (patch: Partial<ProductBundleComponent>) => void;
 }
 
 export default function ProductBundleEditor({ component, onChange }: Props) {
@@ -12,7 +19,7 @@ export default function ProductBundleEditor({ component, onChange }: Props) {
       .split(/[\s,]+/)
       .map((s) => s.trim())
       .filter(Boolean);
-    onChange({ skus: items } as Partial<PageComponent>);
+    onChange({ skus: items });
   };
 
   return (
@@ -20,26 +27,22 @@ export default function ProductBundleEditor({ component, onChange }: Props) {
       <Textarea
         label="SKUs"
         placeholder="skus"
-        value={((component as any).skus ?? []).join(",")}
+        value={(component.skus ?? []).join(",")}
         onChange={(e) => handleSkus(e.target.value)}
       />
       <Input
         label="Discount (%)"
         placeholder="discount"
         type="number"
-        value={(component as any).discount ?? ""}
-        onChange={(e) =>
-          onChange({ discount: Number(e.target.value) } as Partial<PageComponent>)
-        }
+        value={component.discount ?? ""}
+        onChange={(e) => onChange({ discount: Number(e.target.value) })}
       />
       <Input
         label="Quantity"
         placeholder="quantity"
         type="number"
-        value={(component as any).quantity ?? ""}
-        onChange={(e) =>
-          onChange({ quantity: Number(e.target.value) } as Partial<PageComponent>)
-        }
+        value={component.quantity ?? ""}
+        onChange={(e) => onChange({ quantity: Number(e.target.value) })}
       />
     </div>
   );

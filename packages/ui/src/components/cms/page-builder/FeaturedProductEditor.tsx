@@ -1,9 +1,15 @@
 import type { PageComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 
+type FeaturedProductComponent = PageComponent & {
+  type: "FeaturedProduct";
+  sku?: string;
+  collectionId?: string;
+};
+
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: FeaturedProductComponent;
+  onChange: (patch: Partial<FeaturedProductComponent>) => void;
 }
 
 export default function FeaturedProductEditor({ component, onChange }: Props) {
@@ -12,16 +18,14 @@ export default function FeaturedProductEditor({ component, onChange }: Props) {
       <Input
         label="SKU"
         placeholder="sku"
-        value={(component as any).sku ?? ""}
-        onChange={(e) => onChange({ sku: e.target.value } as Partial<PageComponent>)}
+        value={component.sku ?? ""}
+        onChange={(e) => onChange({ sku: e.target.value })}
       />
       <Input
         label="Collection ID"
         placeholder="collectionId"
-        value={(component as any).collectionId ?? ""}
-        onChange={(e) =>
-          onChange({ collectionId: e.target.value } as Partial<PageComponent>)
-        }
+        value={component.collectionId ?? ""}
+        onChange={(e) => onChange({ collectionId: e.target.value })}
       />
     </div>
   );

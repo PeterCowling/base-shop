@@ -45,10 +45,15 @@ export async function POST(req: NextRequest) {
   }
 
   const shop = await readShop("bcd");
+  let coverageCodes =
+    session.metadata?.coverage?.split(",").filter(Boolean) ?? [];
+  if (shop.coverageIncluded && typeof damage === "string") {
+    coverageCodes = Array.from(new Set([...coverageCodes, damage]));
+  }
   const damageFee = await computeDamageFee(
     damage,
     deposit,
-    [],
+    coverageCodes,
     shop.coverageIncluded,
   );
   if (damageFee) {

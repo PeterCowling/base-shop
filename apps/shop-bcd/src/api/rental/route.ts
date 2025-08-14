@@ -36,18 +36,23 @@ export async function PATCH(req: NextRequest) {
   }
 
   const shop = await readShop("bcd");
+  const session = await stripe.checkout.sessions.retrieve(sessionId, {
+    expand: ["payment_intent"],
+  });
+  let coverageCodes =
+    session.metadata?.coverage?.split(",").filter(Boolean) ?? [];
+  if (shop.coverageIncluded && typeof damage === "string") {
+    coverageCodes = Array.from(new Set([...coverageCodes, damage]));
+  }
   const damageFee = await computeDamageFee(
     damage,
     order.deposit,
-    [],
+    coverageCodes,
     shop.coverageIncluded,
   );
   if (damageFee) {
     await markReturned("bcd", sessionId, damageFee);
   }
-  const session = await stripe.checkout.sessions.retrieve(sessionId, {
-    expand: ["payment_intent"],
-  });
   const pi =
     typeof session.payment_intent === "string"
       ? session.payment_intent

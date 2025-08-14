@@ -7,6 +7,7 @@ import { z } from "zod";
  * - `inStore` toggles whether items can be dropped off in store.
  * - `dropOffProvider` names the third-party drop-off service, if any.
  * - `tracking` indicates whether return shipments include tracking numbers.
+ * - `mobileApp` toggles availability of the mobile returns app.
  */
 export const returnLogisticsSchema = z
   .object({
@@ -14,6 +15,7 @@ export const returnLogisticsSchema = z
     inStore: z.boolean(),
     dropOffProvider: z.string().optional(),
     tracking: z.boolean().optional(),
+    mobileApp: z.boolean().optional(),
   })
   .strict();
 

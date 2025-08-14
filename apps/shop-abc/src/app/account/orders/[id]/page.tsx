@@ -1,8 +1,11 @@
 // apps/shop-abc/src/app/account/orders/[id]/page.tsx
 import { getCustomerSession, hasPermission } from "@auth";
 import { getOrdersForCustomer } from "@platform-core/orders";
+import { getReturnLogistics } from "@platform-core/returnLogistics";
 import { OrderTrackingTimeline, type OrderStep } from "@ui/components/organisms/OrderTrackingTimeline";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import QRCode from "qrcode";
 import { useState } from "react";
 import shop from "../../../../../shop.json";
 
@@ -38,11 +41,28 @@ export default async function Page({
   const order = orders.find((o) => o.id === params.id);
   if (!order) return <p className="p-6">Order not found.</p>;
   const steps = await getTracking(order.id);
+  const cfg = await getReturnLogistics();
+  let mobileQr: string | null = null;
+  if (cfg.mobileApp) {
+    const h = headers();
+    const host = h.get("host");
+    const proto = h.get("x-forwarded-proto") ?? "https";
+    const url = `${proto}://${host}/returns/mobile`;
+    mobileQr = await QRCode.toDataURL(url);
+  }
   return (
     <div className="space-y-4 p-6">
       <h1 className="text-xl">Order {order.id}</h1>
       {steps && steps.length > 0 && (
         <OrderTrackingTimeline steps={steps} className="mt-2" />
+      )}
+      {cfg.mobileApp && mobileQr && (
+        <div className="space-y-2">
+          <a href="/returns/mobile" className="text-blue-600 underline">
+            Return items with mobile app
+          </a>
+          <img src={mobileQr} alt="Mobile return QR" className="h-40 w-40" />
+        </div>
       )}
       <StartReturn orderId={order.id} />
     </div>

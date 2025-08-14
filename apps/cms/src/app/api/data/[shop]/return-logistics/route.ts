@@ -21,12 +21,14 @@ export async function POST(
         { status: 400 }
       );
     }
-    const { labelService, inStore, dropOffProvider, tracking } = parsed.data;
+    const { labelService, inStore, dropOffProvider, tracking, mobileApp } =
+      parsed.data;
     await writeReturnLogistics({
       labelService,
       inStore,
       dropOffProvider,
       tracking,
+      mobileApp,
     });
     return NextResponse.json({ success: true });
   } catch (err) {

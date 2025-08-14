@@ -15,7 +15,8 @@
     "@acme/stripe": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/sanity": "workspace:*",
-    "@acme/config": "workspace:*"
+    "@acme/config": "workspace:*",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "next": "^15.3.4"

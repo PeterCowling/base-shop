@@ -51,6 +51,15 @@ export default function Sidebar({ role }: { role?: string }) {
       label: "Media",
       icon: "🖼️",
     },
+    ...(shop
+      ? [
+          {
+            href: `/shop/${shop}/edit-preview`,
+            label: "Edit Preview",
+            icon: "🧪",
+          },
+        ]
+      : []),
     ...(shop && role && ["admin", "ShopAdmin", "ThemeEditor"].includes(role)
       ? [
           {

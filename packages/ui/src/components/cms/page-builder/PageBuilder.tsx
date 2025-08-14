@@ -15,6 +15,7 @@ import { ulid } from "ulid";
 import type { Page, PageComponent, HistoryState, MediaItem } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
 import { Toast, Spinner } from "../../atoms";
+import { CheckIcon } from "@radix-ui/react-icons";
 import Palette from "./Palette";
 import {
   atomRegistry,
@@ -182,6 +183,11 @@ const PageBuilder = memo(function PageBuilder({
   const [gridSize, setGridSize] = useState(1);
   const [snapPosition, setSnapPosition] = useState<number | null>(null);
   const [activeType, setActiveType] = useState<ComponentType | null>(null);
+  const [autoSaveState, setAutoSaveState] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >("idle");
+  const latestFormDataRef = useRef<FormData | null>(null);
+  const firstChangeRef = useRef(true);
 
   const {
     onDrop,
@@ -308,6 +314,42 @@ const PageBuilder = memo(function PageBuilder({
     return fd;
   }, [page, components, state]);
 
+  const savePage = useCallback(
+    (fd: FormData) => {
+      setAutoSaveState("saving");
+      latestFormDataRef.current = fd;
+      return onSave(fd)
+        .then(() => {
+          setAutoSaveState("saved");
+          setTimeout(() => setAutoSaveState("idle"), 2000);
+        })
+        .catch((err) => {
+          console.error(err);
+          setAutoSaveState("error");
+          setToast({ open: true, message: "Failed to save changes" });
+        });
+    },
+    [onSave, setToast]
+  );
+
+  const retrySave = useCallback(() => {
+    if (latestFormDataRef.current) {
+      setToast((t) => ({ ...t, open: false }));
+      void savePage(latestFormDataRef.current);
+    }
+  }, [savePage]);
+
+  useEffect(() => {
+    if (firstChangeRef.current) {
+      firstChangeRef.current = false;
+      return;
+    }
+    const t = setTimeout(() => {
+      void savePage(formData);
+    }, 1000);
+    return () => clearTimeout(t);
+  }, [formData, savePage]);
+
   const handlePublish = useCallback(() => {
     return onPublish(formData).then(() => setPublishCount((c) => c + 1));
   }, [onPublish, formData]);
@@ -318,22 +360,47 @@ const PageBuilder = memo(function PageBuilder({
         <Palette />
       </aside>
       <div className="flex flex-1 flex-col gap-4">
-        <PageToolbar
-          viewport={viewport}
-          setViewport={setViewport}
-          locale={locale}
-          setLocale={setLocale}
-          locales={locales}
-        progress={progress}
-        isValid={isValid}
-        showGrid={showGrid}
-        toggleGrid={() => setShowGrid((g) => !g)}
-        gridCols={gridCols}
-        setGridCols={(n) => {
-          setGridCols(n);
-          dispatch({ type: "set-grid-cols", gridCols: n });
-        }}
-      />
+        <div className="flex items-start justify-between">
+          <PageToolbar
+            viewport={viewport}
+            setViewport={setViewport}
+            locale={locale}
+            setLocale={setLocale}
+            locales={locales}
+            progress={progress}
+            isValid={isValid}
+            showGrid={showGrid}
+            toggleGrid={() => setShowGrid((g) => !g)}
+            gridCols={gridCols}
+            setGridCols={(n) => {
+              setGridCols(n);
+              dispatch({ type: "set-grid-cols", gridCols: n });
+            }}
+          />
+          <div className="flex h-5 items-center gap-1 text-sm text-muted-foreground">
+            {autoSaveState === "saving" && (
+              <>
+                <Spinner className="h-4 w-4" />
+                Saving…
+              </>
+            )}
+            {autoSaveState === "saved" && (
+              <>
+                <CheckIcon className="h-4 w-4 text-green-500" />
+                Saved
+              </>
+            )}
+            {autoSaveState === "error" && (
+              <Button
+                variant="link"
+                onClick={retrySave}
+                className="h-auto p-0 text-red-500"
+              >
+                Retry
+              </Button>
+            )}
+          </div>
+        </div>
         <div aria-live="polite" role="status" className="sr-only">
           {liveMessage}
         </div>
@@ -377,7 +444,7 @@ const PageBuilder = memo(function PageBuilder({
             Redo
           </Button>
           <div className="flex flex-col gap-1">
-            <Button onClick={() => onSave(formData)} disabled={saving}>
+            <Button onClick={() => savePage(formData)} disabled={saving}>
               {saving ? <Spinner className="h-4 w-4" /> : "Save"}
             </Button>
             {saveError && (

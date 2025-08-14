@@ -121,10 +121,14 @@ export default function ThemeEditor({
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
+    const defaults = tokensByThemeState[next];
     setTheme(next);
     setOverrides({});
-    setThemeDefaults(tokensByThemeState[next]);
-    schedulePreviewUpdate(tokensByThemeState[next]);
+    setThemeDefaults(defaults);
+    const merged = { ...defaults };
+    savePreviewTokens(merged);
+    window.dispatchEvent(new Event("theme:change"));
+    schedulePreviewUpdate(merged);
     setContrastWarnings({});
   };
 
@@ -307,8 +311,15 @@ export default function ThemeEditor({
               {tokens
                 .filter(([, v]) => isHex(v) || isHsl(v))
                 .map(([k, defaultValue]) => {
-                  const current = overrides[k] || defaultValue;
-                  const colorValue = isHsl(defaultValue)
+                  const hasOverride = Object.prototype.hasOwnProperty.call(
+                    overrides,
+                    k,
+                  );
+                  const current = hasOverride ? overrides[k] : defaultValue;
+                  const defaultHex = isHsl(defaultValue)
+                    ? hslToHex(defaultValue)
+                    : defaultValue;
+                  const currentHex = isHsl(defaultValue)
                     ? isHex(current)
                       ? current
                       : hslToHex(current)
@@ -319,10 +330,29 @@ export default function ThemeEditor({
                       type="button"
                       aria-label={k}
                       title={k}
-                      className="h-6 w-6 rounded border"
-                      style={{ background: colorValue }}
+                      className="h-6 w-6 overflow-hidden rounded border p-0"
                       onClick={() => handleTokenSelect(k)}
-                    />
+                    >
+                      {hasOverride ? (
+                        <span className="flex h-full w-full">
+                          <span
+                            className="h-full w-1/2"
+                            style={{ background: defaultHex }}
+                            title="Default"
+                          />
+                          <span
+                            className="h-full w-1/2"
+                            style={{ background: currentHex }}
+                            title="Custom"
+                          />
+                        </span>
+                      ) : (
+                        <span
+                          className="block h-full w-full"
+                          style={{ background: defaultHex }}
+                        />
+                      )}
+                    </button>
                   );
                 })}
             </div>

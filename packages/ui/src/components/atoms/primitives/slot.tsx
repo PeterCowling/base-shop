@@ -8,11 +8,11 @@ export const Slot = React.forwardRef<HTMLElement, SlotProps>(
   ({ children, ...props }, ref) => {
     if (React.isValidElement(children)) {
       return React.cloneElement(
-        children as React.ReactElement<any>,
+        children as React.ReactElement<React.HTMLAttributes<HTMLElement>>,
         {
           ...props,
           ref,
-        } as any
+        } as React.HTMLAttributes<HTMLElement> & { ref: React.Ref<HTMLElement> }
       );
     }
     return null;

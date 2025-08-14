@@ -6,4 +6,5 @@ export * from "./organisms";
 export * from "./templates";
 export { default as DynamicRenderer } from "./DynamicRenderer";
 export { default as ThemeToggle } from "./ThemeToggle";
+export { default as DeviceSelector } from "./common/DeviceSelector";
 export * from "./overlays";

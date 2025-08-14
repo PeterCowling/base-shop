@@ -2,7 +2,6 @@
 
 "use client";
 
-import { Button, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/atoms";
 import { blockRegistry } from "@/components/cms/blocks";
 import { Footer, Header, SideNav } from "@/components/organisms";
 import { AppShell } from "@/components/templates/AppShell";
@@ -15,7 +14,8 @@ import {
   loadPreviewTokens,
   PREVIEW_TOKENS_EVENT,
 } from "./previewTokens";
-import { devicePresets, getLegacyPreset, type DevicePreset } from "@ui/utils/devicePresets";
+import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+import DeviceSelector from "@ui/components/common/DeviceSelector";
 
 interface Props {
   style: React.CSSProperties;
@@ -208,32 +208,7 @@ export default function WizardPreview({
   return (
     <div className="space-y-2">
       {/* viewport switcher */}
-      <div className="flex justify-end gap-2">
-        {(["desktop", "tablet", "mobile"] as const).map((t) => {
-          const preset = getLegacyPreset(t);
-          return (
-            <Button
-              key={t}
-              variant={deviceId === preset.id ? "default" : "outline"}
-              onClick={() => setDeviceId(preset.id)}
-            >
-              {t.charAt(0).toUpperCase() + t.slice(1)}
-            </Button>
-          );
-        })}
-        <Select value={deviceId} onValueChange={setDeviceId}>
-          <SelectTrigger aria-label="Device" className="w-40">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {devicePresets.map((p) => (
-              <SelectItem key={p.id} value={p.id}>
-                {p.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <DeviceSelector deviceId={deviceId} onChange={setDeviceId} />
 
       {/* live preview */}
       <div

@@ -7,11 +7,18 @@ import { validateShopName } from "./shops";
 import { getShopSettings, readShop } from "./repositories/shops.server";
 import { coreEnv } from "@acme/config/env/core";
 
-export interface AnalyticsEvent {
-  type: string;
-  timestamp?: string;
-  [key: string]: unknown;
-}
+export type AnalyticsEvent =
+  | {
+      type: "discount_redeemed";
+      code: string;
+      timestamp?: string;
+      [key: string]: unknown;
+    }
+  | {
+    type: string;
+    timestamp?: string;
+    [key: string]: unknown;
+  };
 
 export interface AnalyticsProvider {
   track(event: AnalyticsEvent): Promise<void> | void;
@@ -172,7 +179,7 @@ async function updateAggregates(
     entry.amount += amount;
     agg.order[day] = entry;
   } else if (event.type === "discount_redeemed") {
-    const code = typeof (event as any).code === "string" ? (event as any).code : "";
+    const code = event.code;
     if (code) {
       const entry = agg.discount_redeemed[day] || {};
       entry[code] = (entry[code] || 0) + 1;

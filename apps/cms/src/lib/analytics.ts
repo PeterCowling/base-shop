@@ -35,8 +35,8 @@ export function buildMetrics(
       campaignSalesByDay[day] = (campaignSalesByDay[day] || 0) + amount;
       campaignSalesCountByDay[day] =
         (campaignSalesCountByDay[day] || 0) + 1;
-    } else if (e.type === "discount_redeemed" && typeof (e as any).code === "string") {
-      const code = (e as any).code as string;
+    } else if (e.type === "discount_redeemed") {
+      const code = e.code;
       const entry = discountByCodeByDay[day] || {};
       entry[code] = (entry[code] || 0) + 1;
       discountByCodeByDay[day] = entry;

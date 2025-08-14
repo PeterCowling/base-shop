@@ -13,6 +13,7 @@ import { getProductById } from "@platform-core/src/products";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/src/repositories/settings.server";
 import { readShop } from "@platform-core/src/repositories/shops.server";
+import { useState } from "react";
 
 export const metadata = {
   title: "Checkout · Base-Shop",
@@ -69,10 +70,38 @@ export default async function CheckoutPage({
           cart={validatedCart}
           totals={{ subtotal, deposit, total }}
         />
-        <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
+        <CheckoutSection locale={lang} taxRegion={settings.taxRegion} />
       </div>
     );
   }
 
   return <p className="p-8 text-center">Rental checkout not implemented.</p>;
+}
+
+function CheckoutSection({
+  locale,
+  taxRegion,
+}: {
+  locale: Locale;
+  taxRegion: string;
+}) {
+  "use client";
+  const [coverage, setCoverage] = useState(false);
+  return (
+    <div className="space-y-4">
+      <label className="flex items-center gap-2 text-sm">
+        <input
+          type="checkbox"
+          checked={coverage}
+          onChange={(e) => setCoverage(e.target.checked)}
+        />
+        Add coverage
+      </label>
+      <CheckoutForm
+        locale={locale}
+        taxRegion={taxRegion}
+        coverage={coverage ? ["scuff", "tear"] : []}
+      />
+    </div>
+  );
 }

@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { PageComponent } from "@acme/types";
 import type { Locale } from "@i18n/locales";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import DeviceSelector from "@ui/components/DeviceSelector";
 import { devicePresets } from "@ui/utils/devicePresets";
+import { usePreviewDevice } from "@ui/hooks";
 
 interface PreviewClientProps {
   components: PageComponent[];
@@ -18,7 +19,7 @@ export default function PreviewClient({
   locale,
   initialDeviceId,
 }: PreviewClientProps) {
-  const [deviceId, setDeviceId] = useState(initialDeviceId);
+  const [deviceId, setDeviceId] = usePreviewDevice(initialDeviceId);
   const device = useMemo(
     () => devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0],
     [deviceId],

@@ -39,11 +39,12 @@ const products: SKU[] = [
 
 describe("RecommendationCarousel responsive counts", () => {
   beforeEach(() => {
-    // @ts-expect-error mock fetch
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: async () => products,
-    });
+    global.fetch = jest
+      .fn()
+      .mockResolvedValue({
+        ok: true,
+        json: async () => products,
+      }) as unknown as typeof fetch;
   });
 
   function setWidth(width: number) {

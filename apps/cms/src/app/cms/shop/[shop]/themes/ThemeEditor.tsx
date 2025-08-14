@@ -12,15 +12,10 @@ import {
   useEffect,
   type CSSProperties,
 } from "react";
-import {
-  hslToHex,
-  isHex,
-  isHsl,
-} from "@ui/utils/colorUtils";
 import { useThemePresets } from "./useThemePresets";
-import ColorInput from "./ColorInput";
-import InlineColorPicker from "./InlineColorPicker";
-import WizardPreview from "../../../wizard/WizardPreview";
+import ThemePreview from "./ThemePreview";
+import PalettePicker from "./PalettePicker";
+import TypographySettings from "./TypographySettings";
 import { savePreviewTokens } from "../../../wizard/previewTokens";
 
 interface Props {
@@ -192,6 +187,12 @@ export default function ThemeEditor({
     }
   };
 
+  const handlePickerClose = () => {
+    setPicker(null);
+    const merged = { ...tokensByThemeState[theme], ...overrides };
+    schedulePreviewUpdate(merged);
+  };
+
   useEffect(() => {
     return () => {
       if (debounceRef.current) {
@@ -224,21 +225,6 @@ export default function ThemeEditor({
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <Input type="hidden" name="id" value={shop} />
-      {picker && (
-        <InlineColorPicker
-          token={picker.token}
-          defaultValue={picker.defaultValue}
-          value={overrides[picker.token] || picker.defaultValue}
-          x={picker.x}
-          y={picker.y}
-          onChange={handleOverrideChange(picker.token, picker.defaultValue)}
-          onClose={() => {
-            setPicker(null);
-            const merged = { ...tokensByThemeState[theme], ...overrides };
-            schedulePreviewUpdate(merged);
-          }}
-        />
-      )}
       <input
         type="hidden"
         name="themeOverrides"
@@ -294,65 +280,25 @@ export default function ThemeEditor({
           </ul>
         </div>
       )}
-      <WizardPreview
+      <ThemePreview
         style={previewTokens as CSSProperties}
-        inspectMode
         onTokenSelect={handleTokenSelect}
       />
-      <div className="space-y-6">
-        {Object.entries(groupedTokens).map(([groupName, tokens]) => (
-          <fieldset key={groupName} className="space-y-2">
-            <legend className="font-semibold">{groupName}</legend>
-            <div className="mb-2 flex flex-wrap gap-2">
-              {tokens
-                .filter(([, v]) => isHex(v) || isHsl(v))
-                .map(([k, defaultValue]) => {
-                  const current = overrides[k] || defaultValue;
-                  const colorValue = isHsl(defaultValue)
-                    ? isHex(current)
-                      ? current
-                      : hslToHex(current)
-                    : current;
-                  return (
-                    <button
-                      key={k}
-                      type="button"
-                      aria-label={k}
-                      title={k}
-                      className="h-6 w-6 rounded border"
-                      style={{ background: colorValue }}
-                      onClick={() => handleTokenSelect(k)}
-                    />
-                  );
-                })}
-            </div>
-            <div className="grid gap-2 md:grid-cols-2">
-              {tokens.map(([k, defaultValue]) => {
-                const hasOverride = Object.prototype.hasOwnProperty.call(
-                  overrides,
-                  k,
-                );
-                const overrideValue = hasOverride ? overrides[k] : "";
-                return (
-                  <ColorInput
-                    key={k}
-                    name={k}
-                    defaultValue={defaultValue}
-                    value={overrideValue}
-                    onChange={handleOverrideChange(k, defaultValue)}
-                    onReset={handleReset(k)}
-                    inputRef={(el) => (overrideRefs.current[k] = el)}
-                    tokens={mergedTokens}
-                    textTokens={textTokenKeys}
-                    bgTokens={bgTokenKeys}
-                    onWarningChange={handleWarningChange}
-                  />
-                );
-              })}
-            </div>
-          </fieldset>
-        ))}
-      </div>
+      <PalettePicker
+        groupedTokens={groupedTokens}
+        overrides={overrides}
+        mergedTokens={mergedTokens}
+        handleOverrideChange={handleOverrideChange}
+        handleReset={handleReset}
+        overrideRefs={overrideRefs}
+        textTokenKeys={textTokenKeys}
+        bgTokenKeys={bgTokenKeys}
+        handleWarningChange={handleWarningChange}
+        handleTokenSelect={handleTokenSelect}
+        picker={picker}
+        handlePickerClose={handlePickerClose}
+      />
+      <TypographySettings />
       <Button className="bg-primary text-white" disabled={saving} type="submit">
         {saving ? "Saving…" : "Save"}
       </Button>

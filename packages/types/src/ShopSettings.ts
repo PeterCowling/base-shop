@@ -24,6 +24,14 @@ export const seoSettingsSchema = z
   })
   .catchall(shopSeoFieldsSchema);
 
+export const stockAlertConfigSchema = z
+  .object({
+    recipients: z.array(z.string().email()),
+    webhook: z.string().url().optional(),
+    threshold: z.number().int().positive().optional(),
+  })
+  .strict();
+
 export const shopSettingsSchema = z
   .object({
     languages: z.array(localeSchema).readonly(),
@@ -69,6 +77,7 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    stockAlert: stockAlertConfigSchema.optional(),
     editorialBlog: z
       .object({
         enabled: z.boolean(),
@@ -102,3 +111,4 @@ export const shopSettingsSchema = z
 export type ShopSettings = z.infer<typeof shopSettingsSchema>;
 export type AiCatalogConfig = z.infer<typeof aiCatalogConfigSchema>;
 export type AiCatalogField = z.infer<typeof aiCatalogFieldSchema>;
+export type StockAlertConfig = z.infer<typeof stockAlertConfigSchema>;

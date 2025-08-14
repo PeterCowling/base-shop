@@ -7,24 +7,29 @@ export type ParseJsonResult<T> =
   | { success: true; data: T }
   | { success: false; response: NextResponse };
 
+function hasErrorType(err: unknown): err is { type: string } {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    typeof (err as { type?: unknown }).type === "string"
+  );
+}
+
 export async function parseJsonBody<T>(
-  req: Request,
+  req: Request & { body: ReadableStream<Uint8Array> | null },
   schema: z.ZodSchema<T>,
   limit: string | number,
 ): Promise<ParseJsonResult<T>> {
   let text: string;
   try {
     if (!req.body) throw new Error("No body");
-    const stream = Readable.fromWeb(req.body as any);
+    const stream = Readable.fromWeb(req.body);
     text = await getRawBody(stream, {
       limit,
       encoding: "utf8",
     });
   } catch (err: unknown) {
-    if (
-      err instanceof Error &&
-      (err as { type?: string }).type === "entity.too.large"
-    ) {
+    if (hasErrorType(err) && err.type === "entity.too.large") {
       return {
         success: false,
         response: NextResponse.json(

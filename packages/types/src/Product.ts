@@ -76,7 +76,12 @@ export interface ProductCore {
   availability?: { from: string; to: string }[];
 }
 
-export type PublicationStatus = "draft" | "active" | "archived";
+export type PublicationStatus =
+  | "draft"
+  | "review"
+  | "scheduled"
+  | "active"
+  | "archived";
 
 export interface ProductPublication extends ProductCore {
   shop: string; // e.g. "abc"

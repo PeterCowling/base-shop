@@ -5,7 +5,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import { getPages } from "@platform-core/repositories/pages/index.server";
+import { readRepo } from "@platform-core/repositories/json.server";
 import { LOCALES } from "@acme/i18n";
+import { draftMode } from "next/headers";
+import type { ProductPublication } from "@platform-core/src/products";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 import { trackPageView } from "@platform-core/analytics";
@@ -29,11 +32,17 @@ export async function generateStaticParams() {
 
 export const revalidate = 60;
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
-}): Metadata {
+}): Promise<Metadata> {
+  const dm = await draftMode();
+  const repo = await readRepo<ProductPublication>(shop.id);
+  const entry = repo.find((p) => p.id === params.slug);
+  if (!dm.isEnabled && (!entry || entry.status !== "active")) {
+    return { title: "Product not found" };
+  }
   const product = getProductBySlug(params.slug);
   return {
     title: product ? `${product.title} · Base-Shop` : "Product not found",
@@ -45,6 +54,13 @@ export default async function ProductDetailPage({
 }: {
   params: { slug: string; lang: string };
 }) {
+  const dm = await draftMode();
+  const repo = await readRepo<ProductPublication>(shop.id);
+  const entry = repo.find((p) => p.id === params.slug);
+  if (!dm.isEnabled && (!entry || entry.status !== "active")) {
+    return notFound();
+  }
+
   const product = getProductBySlug(params.slug);
   if (!product) return notFound();
 

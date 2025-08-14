@@ -135,6 +135,38 @@ export async function updateProduct(
 }
 
 /* -------------------------------------------------------------------------- */
+/*  Approval queue                                                            */
+/* -------------------------------------------------------------------------- */
+export async function promoteProduct(
+  shop: string,
+  id: string
+): Promise<ProductPublication> {
+  "use server";
+  await ensureAuthorized();
+
+  const current = await getProductById(shop, id);
+  if (!current) throw new Error(`Product ${id} not found in ${shop}`);
+
+  const nextStatus =
+    current.status === "draft"
+      ? "review"
+      : current.status === "review"
+        ? "active"
+        : current.status;
+
+  if (nextStatus === current.status) return current;
+
+  const updated: ProductPublication = {
+    ...current,
+    status: nextStatus,
+    row_version: current.row_version + 1,
+    updated_at: nowIso(),
+  };
+
+  return updateProductInRepo<ProductPublication>(shop, updated);
+}
+
+/* -------------------------------------------------------------------------- */
 /*  Duplicate product                                                          */
 /* -------------------------------------------------------------------------- */
 export async function duplicateProduct(

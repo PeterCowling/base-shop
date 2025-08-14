@@ -13,6 +13,7 @@ interface Props {
   textTokens: string[];
   bgTokens: string[];
   onWarningChange: (token: string, warning: string | null) => void;
+  isSelected?: boolean;
 }
 
 export default function OverrideField({
@@ -26,20 +27,23 @@ export default function OverrideField({
   textTokens,
   bgTokens,
   onWarningChange,
+  isSelected = false,
 }: Props) {
   return (
-    <ColorInput
-      key={name}
-      name={name}
-      defaultValue={defaultValue}
-      value={value}
-      onChange={onChange}
-      onReset={onReset}
-      inputRef={inputRef}
-      tokens={tokens}
-      textTokens={textTokens}
-      bgTokens={bgTokens}
-      onWarningChange={onWarningChange}
-    />
+    <div className={isSelected ? "ring-2 ring-blue-500 rounded p-1" : ""}>
+      <ColorInput
+        key={name}
+        name={name}
+        defaultValue={defaultValue}
+        value={value}
+        onChange={onChange}
+        onReset={onReset}
+        inputRef={inputRef}
+        tokens={tokens}
+        textTokens={textTokens}
+        bgTokens={bgTokens}
+        onWarningChange={onWarningChange}
+      />
+    </div>
   );
 }

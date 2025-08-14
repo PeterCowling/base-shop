@@ -7,7 +7,7 @@ import {
   markReceived,
   markRepair,
 } from "@platform-core/repositories/rentalOrders.server";
-import { recordEvent } from "@platform-core/repositories/reverseLogisticsEvents.server";
+import { reverseLogisticsEvents } from "@platform-core/repositories/reverseLogisticsEvents.server";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { logger } from "@platform-core/utils";
 import { mkdir, readdir, readFile, unlink, writeFile } from "node:fs/promises";
@@ -25,7 +25,7 @@ export async function writeReverseLogisticsEvent(
   shop: string,
   sessionId: string,
   status: ReverseLogisticsEvent["status"],
-  dataRoot: string = DATA_ROOT,
+  dataRoot: string = DATA_ROOT
 ): Promise<void> {
   const dir = join(dataRoot, shop, "reverse-logistics");
   await mkdir(dir, { recursive: true });
@@ -35,7 +35,7 @@ export async function writeReverseLogisticsEvent(
 
 export async function processReverseLogisticsEventsOnce(
   shopId?: string,
-  dataRoot: string = DATA_ROOT,
+  dataRoot: string = DATA_ROOT
 ): Promise<void> {
   const shops = shopId ? [shopId] : await readdir(dataRoot);
   for (const shop of shops) {
@@ -54,22 +54,23 @@ export async function processReverseLogisticsEventsOnce(
         switch (evt.status) {
           case "received":
             await markReceived(shop, evt.sessionId);
-            await recordEvent(shop, evt.sessionId, "received");
+            await reverseLogisticsEvents.received(shop, evt.sessionId);
             break;
           case "cleaning":
             await markCleaning(shop, evt.sessionId);
-            await recordEvent(shop, evt.sessionId, "cleaned");
+            await reverseLogisticsEvents.cleaning(shop, evt.sessionId);
             break;
           case "repair":
             await markRepair(shop, evt.sessionId);
+            await reverseLogisticsEvents.repair(shop, evt.sessionId);
             break;
           case "qa":
             await markQa(shop, evt.sessionId);
-            await recordEvent(shop, evt.sessionId, "qaPassed");
+            await reverseLogisticsEvents.qa(shop, evt.sessionId);
             break;
           case "available":
             await markAvailable(shop, evt.sessionId);
-            await recordEvent(shop, evt.sessionId, "available");
+            await reverseLogisticsEvents.available(shop, evt.sessionId);
             break;
         }
       } catch (err) {
@@ -105,7 +106,7 @@ function envKey(shop: string, key: string): string {
 async function resolveConfig(
   shop: string,
   dataRoot: string,
-  override: Partial<ReverseLogisticsConfig> = {},
+  override: Partial<ReverseLogisticsConfig> = {}
 ): Promise<ReverseLogisticsConfig> {
   let config: ReverseLogisticsConfig = { ...DEFAULT_CONFIG };
 
@@ -133,7 +134,7 @@ async function resolveConfig(
     if (!Number.isNaN(num)) config.intervalMinutes = Math.round(num / 60000);
   } else if (coreEnv.REVERSE_LOGISTICS_INTERVAL_MS !== undefined) {
     config.intervalMinutes = Math.round(
-      coreEnv.REVERSE_LOGISTICS_INTERVAL_MS / 60000,
+      coreEnv.REVERSE_LOGISTICS_INTERVAL_MS / 60000
     );
   }
 
@@ -146,7 +147,7 @@ async function resolveConfig(
 
 export async function startReverseLogisticsService(
   configs: Record<string, Partial<ReverseLogisticsConfig>> = {},
-  dataRoot: string = DATA_ROOT,
+  dataRoot: string = DATA_ROOT
 ): Promise<() => void> {
   const shops = await readdir(dataRoot);
   const timers: NodeJS.Timeout[] = [];
@@ -169,7 +170,7 @@ export async function startReverseLogisticsService(
 
       await run();
       timers.push(setInterval(run, cfg.intervalMinutes * 60 * 1000));
-    }),
+    })
   );
 
   return () => timers.forEach((t) => clearInterval(t));
@@ -177,6 +178,6 @@ export async function startReverseLogisticsService(
 
 if (process.env.NODE_ENV !== "test") {
   startReverseLogisticsService().catch((err) =>
-    logger.error("failed to start reverse logistics service", { err }),
+    logger.error("failed to start reverse logistics service", { err })
   );
 }

@@ -40,11 +40,19 @@ export default function ColorInput({
   const defaultIsHex = isHex(defaultValue);
   const isColor = defaultIsHsl || defaultIsHex;
   const current = hasOverride ? value : defaultValue;
+  const defaultHex = defaultIsHsl ? hslToHex(defaultValue) : defaultValue;
   const colorValue = defaultIsHsl
     ? isHex(current)
       ? current
       : hslToHex(current)
     : current;
+  const overrideHex = hasOverride
+    ? defaultIsHsl
+      ? isHex(value)
+        ? value
+        : hslToHex(value)
+      : value
+    : defaultHex;
 
   const [warning, setWarning] = useState<string | null>(null);
 
@@ -111,7 +119,18 @@ export default function ColorInput({
               ref={inputRef}
               className={isOverridden ? "bg-amber-100" : ""}
             />
-            <span className="h-6 w-6 rounded border" style={{ background: colorValue }} />
+            <div className="flex items-center gap-1">
+              <span
+                className="h-6 w-6 rounded border"
+                title="Default"
+                style={{ background: defaultHex }}
+              />
+              <span
+                className="h-6 w-6 rounded border"
+                title={hasOverride ? "Custom" : "Default"}
+                style={{ background: overrideHex }}
+              />
+            </div>
           </>
         ) : (
           <Input

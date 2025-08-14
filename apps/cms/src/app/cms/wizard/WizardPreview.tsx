@@ -83,9 +83,11 @@ export default function WizardPreview({
     handle();
     window.addEventListener("storage", handle);
     window.addEventListener(PREVIEW_TOKENS_EVENT, handle);
+    window.addEventListener("theme:change", handle);
     return () => {
       window.removeEventListener("storage", handle);
       window.removeEventListener(PREVIEW_TOKENS_EVENT, handle);
+      window.removeEventListener("theme:change", handle);
     };
   }, []);
 

@@ -8,6 +8,11 @@ import {
   act,
 } from "./ThemeEditor.test-utils";
 
+jest.mock("../src/app/cms/wizard/previewTokens", () => ({
+  savePreviewTokens: jest.fn(),
+}));
+import { savePreviewTokens as mockSavePreviewTokens } from "../src/app/cms/wizard/previewTokens";
+
 describe("ThemeEditor - presets", () => {
   beforeEach(() => {
     mockSavePreset.mockClear();
@@ -61,5 +66,26 @@ describe("ThemeEditor - presets", () => {
       expect(screen.getByLabelText(/theme/i)).toHaveValue("base")
     );
     expect(screen.queryByRole("button", { name: /delete preset/i })).toBeNull();
+  });
+
+  it("updates preview tokens when switching themes", async () => {
+    const tokensByTheme = {
+      light: { "--color-bg": "#ffffff" },
+      dark: { "--color-bg": "#000000" },
+    };
+    renderThemeEditor({
+      tokensByTheme,
+      themes: ["light", "dark"],
+      initialTheme: "light",
+    });
+
+    const select = screen.getByLabelText(/theme/i);
+    (mockSavePreviewTokens as jest.Mock).mockClear();
+    fireEvent.change(select, { target: { value: "dark" } });
+    await waitFor(() =>
+      expect(mockSavePreviewTokens).toHaveBeenCalledWith({
+        "--color-bg": "#000000",
+      })
+    );
   });
 });

@@ -16,3 +16,4 @@ export * from "./Shop";
 export * from "./ShopSettings";
 export * from "./Coupon";
 export * from "./SubscriptionPlan";
+export * from "./Coverage";

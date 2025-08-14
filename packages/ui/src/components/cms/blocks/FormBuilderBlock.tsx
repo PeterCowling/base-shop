@@ -55,9 +55,12 @@ export default function FormBuilderBlock({
       })}
       <button
         type="submit"
-        className="rounded bg-primary px-4 py-2 text-primary-fg"
+        className="rounded bg-primary px-4 py-2"
+        data-token="--color-primary"
       >
-        {submitLabel}
+        <span className="text-primary-fg" data-token="--color-primary-fg">
+          {submitLabel}
+        </span>
       </button>
     </form>
   );

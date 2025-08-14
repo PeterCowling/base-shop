@@ -40,7 +40,12 @@ export function OrderConfirmationTemplate({
               <td className="py-2">
                 {l.sku.title}
                 {l.size && (
-                  <span className="ml-1 text-xs text-muted">({l.size})</span>
+                  <span
+                    className="ml-1 text-xs text-muted"
+                    data-token="--color-muted"
+                  >
+                    ({l.size})
+                  </span>
                 )}
               </td>
               <td>{l.qty}</td>

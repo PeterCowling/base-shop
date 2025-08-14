@@ -10,11 +10,21 @@ describe("SearchBar block", () => {
     // @ts-expect-error
     global.fetch = jest.fn().mockResolvedValue({ json: () => Promise.resolve(results) });
 
-    render(<SearchBar placeholder="Search products…" />);
+    const { container } = render(<SearchBar placeholder="Search products…" />);
     const input = screen.getByPlaceholderText("Search products…");
     fireEvent.change(input, { target: { value: "a" } });
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
-    expect(await screen.findByText("Alpha")).toBeInTheDocument();
+    const result = await screen.findByText("Alpha");
+    expect(result).toBeInTheDocument();
+    expect(container.querySelector("svg")).toHaveAttribute(
+      "data-token",
+      "--color-muted-fg"
+    );
+    expect(result.parentElement?.parentElement).toHaveAttribute(
+      "data-token",
+      "--color-bg"
+    );
+    expect(result.parentElement).toHaveAttribute("data-token", "--color-fg");
   });
 });

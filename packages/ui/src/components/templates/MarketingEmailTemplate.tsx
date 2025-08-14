@@ -32,7 +32,7 @@ export function MarketingEmailTemplate({
       {...props}
     >
       {logoSrc && (
-        <div className="bg-muted p-6 text-center">
+        <div className="bg-muted p-6 text-center" data-token="--color-muted">
           <Image
             src={logoSrc}
             alt="logo"
@@ -49,15 +49,21 @@ export function MarketingEmailTemplate({
           <div className="text-center">
             <a
               href={ctaHref}
-              className="bg-primary text-primary-foreground inline-block rounded-md px-4 py-2 font-medium"
+              className="bg-primary inline-block rounded-md px-4 py-2 font-medium"
+              data-token="--color-primary"
             >
-              {ctaLabel}
+              <span className="text-primary-foreground" data-token="--color-primary-fg">
+                {ctaLabel}
+              </span>
             </a>
           </div>
         )}
       </div>
       {footer && (
-        <div className="bg-muted border-t p-4 text-center text-xs text-muted">
+        <div
+          className="bg-muted border-t p-4 text-center text-xs text-muted"
+          data-token="--color-muted"
+        >
           {footer}
         </div>
       )}

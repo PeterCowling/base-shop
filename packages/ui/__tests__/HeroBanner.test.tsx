@@ -32,10 +32,18 @@ describe("HeroBanner", () => {
       "hero.cta": "Shop now",
     });
 
-    render(<HeroBanner />);
+    const { container } = render(<HeroBanner />);
     expect(screen.getByText("Slide One")).toBeInTheDocument();
     const link = screen.getByRole("link", { name: "Shop now" });
     expect(link).toHaveAttribute("href", "/en/shop");
+    expect(link).toHaveAttribute("data-token", "--color-fg");
+    expect(link.querySelector("span")).toHaveAttribute(
+      "data-token",
+      "--color-bg"
+    );
+    expect(
+      container.querySelector('button[aria-label="Previous slide"]')
+    ).toHaveAttribute("data-token", "--color-fg");
 
     act(() => {
       jest.advanceTimersByTime(6000);

@@ -37,9 +37,15 @@ export async function POST(req: NextRequest) {
       { status: 403 }
     );
   }
-  const { sessionId } = (await req.json()) as { sessionId?: string };
+  const { sessionId, zip } = (await req.json()) as {
+    sessionId?: string;
+    zip?: string;
+  };
   if (!sessionId) {
     return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
+  }
+  if (zip && !cfg.homePickupZipCodes.includes(zip)) {
+    return NextResponse.json({ error: "ZIP not eligible" }, { status: 400 });
   }
   const order = await markReturned(SHOP_ID, sessionId);
   if (!order) {

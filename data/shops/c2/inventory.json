@@ -2,8 +2,12 @@
   {
     "sku": "123",
     "productId": "123",
-    "variant": { "size": "s" },
+    "variant": {
+      "size": "s"
+    },
     "quantity": 3,
-    "lowStockThreshold": 1
+    "lowStockThreshold": 1,
+    "wearAndTearLimit": 10,
+    "maintenanceCycle": 5
   }
 ]

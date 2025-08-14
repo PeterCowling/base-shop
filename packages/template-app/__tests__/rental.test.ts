@@ -12,13 +12,26 @@ describe("/api/rental", () => {
   test("POST creates order with deposit and return date", async () => {
     const retrieve = jest
       .fn<
-        Promise<{ metadata: { depositTotal: string; returnDate: string } }>,
+        Promise<{ metadata: { depositTotal: string; returnDate: string; items: string } }>,
         [string]
       >()
       .mockResolvedValue({
-        metadata: { depositTotal: "50", returnDate: "2030-01-02" },
+        metadata: {
+          depositTotal: "50",
+          returnDate: "2030-01-02",
+          items: JSON.stringify([
+            { sku: "sku1", from: "2025-01-01", to: "2025-01-05" },
+          ]),
+        },
       });
     const addOrder = jest.fn();
+    const reserveRentalInventory = jest.fn();
+    const readInventory = jest
+      .fn()
+      .mockResolvedValue([{ sku: "sku1", quantity: 1, variantAttributes: {} }]);
+    const readProducts = jest
+      .fn()
+      .mockResolvedValue([{ sku: "sku1" }]);
 
     jest.doMock(
       "@acme/stripe",
@@ -37,12 +50,31 @@ describe("/api/rental", () => {
       markReturned: jest.fn(),
       markRefunded: jest.fn(),
     }));
+    jest.doMock("@platform-core/orders/rentalAllocation", () => ({
+      __esModule: true,
+      reserveRentalInventory,
+    }));
+    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+      __esModule: true,
+      readInventory,
+    }));
+    jest.doMock("@platform-core/repositories/products.server", () => ({
+      __esModule: true,
+      readRepo: readProducts,
+    }));
 
     const { POST } = await import("../src/api/rental/route");
     const res = await POST({
       json: async () => ({ sessionId: "sess" }),
     } as any);
     expect(retrieve).toHaveBeenCalledWith("sess");
+    expect(reserveRentalInventory).toHaveBeenCalledWith(
+      "bcd",
+      [{ sku: "sku1", quantity: 1, variantAttributes: {} }],
+      { sku: "sku1" },
+      "2025-01-01",
+      "2025-01-05",
+    );
     expect(addOrder).toHaveBeenCalledWith("bcd", "sess", 50, "2030-01-02");
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });

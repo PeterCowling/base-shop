@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Button, Input, ImagePicker } from "@ui";
+import { Button, Input, ImagePicker, Price } from "@ui";
 import {
   EditorProvider,
   PortableTextEditable,
@@ -142,7 +142,7 @@ function ProductSearch({
                   />
                 )}
                 <span className="flex-1 text-left">{p.title}</span>
-                <span className="text-sm">{(p.price / 100).toFixed(2)}</span>
+                <Price amount={p.price / 100} className="text-sm" />
               </Button>
             </li>
           ))}

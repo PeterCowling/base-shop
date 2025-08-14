@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { SKU } from "@acme/types";
+import { formatCurrency } from "@acme/shared-utils";
 
 interface Props {
   slug: string;
@@ -55,7 +56,7 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
       )}
       <div className="space-y-1">
         <div className="font-semibold">{product.title}</div>
-        <div>{(product.price / 100).toFixed(2)}</div>
+        <div>{formatCurrency(product.price)}</div>
         <div className="text-sm">
           {available ? "In stock" : "Out of stock"}
         </div>

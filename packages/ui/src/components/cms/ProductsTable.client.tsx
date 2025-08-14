@@ -6,6 +6,7 @@ import { ProductPublication } from "@platform-core/src/products";
 import { useProductFilters } from "@ui/hooks/useProductFilters";
 import Link from "next/link";
 import { memo, ReactElement, ReactNode, useCallback, useMemo } from "react";
+import { Price } from "../atoms/Price";
 import DataTable from "./DataTable";
 import { ProductFilters, ProductRowActions } from "./products";
 
@@ -94,7 +95,7 @@ function ProductsTableBase({
       },
       {
         header: "Price",
-        render: (p) => `${(p.price / 100).toFixed(2)} ${p.currency}`,
+        render: (p) => <Price amount={p.price / 100} currency={p.currency} />, 
       },
       {
         header: "Status",

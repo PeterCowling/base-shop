@@ -4,6 +4,7 @@ import {
 } from "@platform-core/repositories/analytics.server";
 import { readShop } from "@platform-core/repositories/shops.server";
 import { Progress } from "@acme/ui";
+import { formatCurrency } from "@acme/shared-utils";
 import { CampaignFilter } from "./components/CampaignFilter.client";
 import { Charts } from "./components/Charts.client";
 import { buildMetrics } from "@cms/lib/analytics";
@@ -135,7 +136,7 @@ export default async function ShopDashboard({
             <div key={c} className="mb-8">
               <h3 className="text-lg font-semibold">Campaign: {c}</h3>
               <p className="mb-2 text-sm">
-                Traffic: {totalTraffic} • Revenue: {totalRevenue.toFixed(2)} •
+                Traffic: {totalTraffic} • Revenue: {formatCurrency(Math.round(totalRevenue * 100))} •
                 Conversion: {conversionRate.toFixed(2)}%
               </p>
               <Charts

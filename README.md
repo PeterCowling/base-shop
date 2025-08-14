@@ -170,7 +170,7 @@ rearrange and publish blocks.
 The CMS theme editor lets admins customize design tokens per shop. Tokens are
 grouped by purpose (Background, Text, Accent) and each color token displays a
 preview swatch. Clicking a swatch focuses its corresponding field, where a color
-picker enables quick overrides. Save the form to persist any changes.
+picker enables quick overrides. Save the form to persist any changes. For a deeper look at base themes, overrides, persistence and live preview, see [docs/theming-advanced.md](docs/theming-advanced.md).
 
 ## Shop maintenance
 

@@ -21,7 +21,13 @@ export async function POST(
         { status: 400 }
       );
     }
-    await writeReturnLogistics(parsed.data);
+    const { labelService, inStore, dropOffProvider, tracking } = parsed.data;
+    await writeReturnLogistics({
+      labelService,
+      inStore,
+      dropOffProvider,
+      tracking,
+    });
     return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json(

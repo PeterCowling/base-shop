@@ -1,6 +1,10 @@
 import "server-only";
 
-import { inventoryItemSchema, type InventoryItem } from "@acme/types";
+import {
+  inventoryItemSchema,
+  type InventoryItem,
+  type SerializedInventoryItem,
+} from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { validateShopName } from "../shops";
@@ -31,11 +35,11 @@ async function ensureDir(shop: string): Promise<void> {
 async function read(shop: string): Promise<InventoryItem[]> {
   try {
     const buf = await fs.readFile(inventoryPath(shop), "utf8");
-    const raw = JSON.parse(buf);
+    const raw: SerializedInventoryItem[] = JSON.parse(buf);
     return inventoryItemSchema
       .array()
       .parse(
-        raw.map((i: any) => ({
+        raw.map((i: SerializedInventoryItem) => ({
           variantAttributes: {},
           ...i,
         })),
@@ -55,12 +59,15 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
         variantAttributes: { ...i.variantAttributes },
       })),
     );
+  const serialized: SerializedInventoryItem[] = normalized.map((i) => ({
+    ...i,
+  }));
   await ensureDir(shop);
   const lockFile = `${inventoryPath(shop)}.lock`;
   const handle = await acquireLock(lockFile);
   try {
     const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
-    await fs.writeFile(tmp, JSON.stringify(normalized, null, 2), "utf8");
+    await fs.writeFile(tmp, JSON.stringify(serialized, null, 2), "utf8");
     await fs.rename(tmp, inventoryPath(shop));
   } finally {
     await handle.close();
@@ -90,11 +97,11 @@ async function update(
     let items: InventoryItem[] = [];
     try {
       const buf = await fs.readFile(inventoryPath(shop), "utf8");
-      const raw = JSON.parse(buf);
+      const raw: SerializedInventoryItem[] = JSON.parse(buf);
       items = inventoryItemSchema
         .array()
         .parse(
-          raw.map((i: any) => ({
+          raw.map((i: SerializedInventoryItem) => ({
             variantAttributes: {},
             ...i,
           })),
@@ -130,10 +137,13 @@ async function update(
           variantAttributes: { ...i.variantAttributes },
         })),
       );
+    const serialized: SerializedInventoryItem[] = normalized.map((i) => ({
+      ...i,
+    }));
 
     const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
     await ensureDir(shop);
-    await fs.writeFile(tmp, JSON.stringify(normalized, null, 2), "utf8");
+    await fs.writeFile(tmp, JSON.stringify(serialized, null, 2), "utf8");
     await fs.rename(tmp, inventoryPath(shop));
   } finally {
     await handle.close();

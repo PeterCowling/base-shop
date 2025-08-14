@@ -1,28 +1,36 @@
 import React from "react";
 import { render, waitFor, act } from "@testing-library/react";
 import { RecommendationCarousel } from "../src/components/organisms/RecommendationCarousel";
-import type { Product } from "../src/components/organisms/ProductCard";
+import type { SKU } from "@acme/types";
 
 jest.mock("../src/components/organisms/ProductCard", () => ({
-  ProductCard: ({ product }: { product: Product }) => (
+  ProductCard: ({ product }: { product: SKU }) => (
     <div data-testid={`product-${product.id}`} />
   ),
 }));
 
-const products: Product[] = Array.from({ length: 3 }).map((_, i) => ({
+const products: SKU[] = Array.from({ length: 3 }).map((_, i) => ({
   id: String(i + 1),
+  slug: `product-${i + 1}`,
   title: `Product ${i + 1}`,
-  media: [{ url: "", type: "image" }],
   price: (i + 1) * 10,
+  deposit: 0,
+  stock: 0,
+  forSale: true,
+  forRental: false,
+  media: [{ url: "", type: "image" }],
+  sizes: [],
+  description: "",
 }));
 
 describe("RecommendationCarousel", () => {
   beforeEach(() => {
-    // @ts-expect-error mock fetch
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: async () => products,
-    });
+    global.fetch = jest
+      .fn()
+      .mockResolvedValue({
+        ok: true,
+        json: async () => products,
+      }) as unknown as typeof fetch;
   });
 
   it("clamps item count between min and max based on screen width", async () => {

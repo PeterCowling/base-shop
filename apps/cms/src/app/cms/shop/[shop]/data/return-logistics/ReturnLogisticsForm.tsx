@@ -82,6 +82,24 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
         />
         <span>Enable tracking numbers</span>
       </label>
+      <label className="flex items-center gap-2">
+        <Checkbox
+          checked={Boolean(form.requireTags)}
+          onCheckedChange={(v) =>
+            setForm((f) => ({ ...f, requireTags: Boolean(v) }))
+          }
+        />
+        <span>Require original tags</span>
+      </label>
+      <label className="flex items-center gap-2">
+        <Checkbox
+          checked={form.allowWear !== false}
+          onCheckedChange={(v) =>
+            setForm((f) => ({ ...f, allowWear: Boolean(v) }))
+          }
+        />
+        <span>Allow items with wear</span>
+      </label>
       {status === "saved" && (
         <p className="text-sm text-green-600">Saved!</p>
       )}

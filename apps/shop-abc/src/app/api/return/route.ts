@@ -10,7 +10,13 @@ import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";
 
-const ReturnSchema = z.object({ sessionId: z.string() }).strict();
+const ReturnSchema = z
+  .object({
+    sessionId: z.string(),
+    hasTags: z.boolean().optional(),
+    worn: z.boolean().optional(),
+  })
+  .strict();
 
 async function createUpsLabel(sessionId: string) {
   const trackingNumber = `1Z${Math.random().toString().slice(2, 12)}`;
@@ -41,9 +47,24 @@ async function getUpsStatus(tracking: string) {
 export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;
-  const { sessionId } = parsed.data;
+  const { sessionId, hasTags, worn } = parsed.data;
 
   const cfg = await getReturnLogistics();
+  if (shop.luxuryFeatures?.strictReturnConditions) {
+    if (cfg.requireTags && !hasTags) {
+      return NextResponse.json(
+        { error: "Tags must be attached" },
+        { status: 400 }
+      );
+    }
+    if (cfg.allowWear === false && worn) {
+      return NextResponse.json(
+        { error: "Worn items cannot be returned" },
+        { status: 400 }
+      );
+    }
+  }
+
   let tracking: { number: string; labelUrl: string } | null = null;
 
   if (cfg.dropOffProvider?.toLowerCase() === "ups") {

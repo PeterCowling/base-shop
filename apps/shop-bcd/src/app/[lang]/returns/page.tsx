@@ -14,6 +14,20 @@ export default async function ReturnPolicyPage() {
       {typeof cfg.tracking !== "undefined" && (
         <p>Tracking {cfg.tracking ? "enabled" : "disabled"}.</p>
       )}
+      {typeof cfg.requireTags !== "undefined" && (
+        <p>
+          {cfg.requireTags
+            ? "Original tags must be attached for returns."
+            : "Tags are not required for returns."}
+        </p>
+      )}
+      {typeof cfg.allowWear !== "undefined" && (
+        <p>
+          {cfg.allowWear
+            ? "Items showing normal wear are accepted."
+            : "Items must be returned unworn."}
+        </p>
+      )}
     </div>
   );
 }

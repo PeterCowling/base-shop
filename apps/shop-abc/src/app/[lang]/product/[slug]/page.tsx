@@ -9,6 +9,7 @@ import { LOCALES } from "@acme/i18n";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 import { trackPageView } from "@platform-core/analytics";
+import { getReturnLogistics } from "@platform-core/returnLogistics";
 
 async function loadComponents(slug: string): Promise<PageComponent[] | null> {
   const pages = await getPages(shop.id);
@@ -50,15 +51,37 @@ export default async function ProductDetailPage({
 
   const components = await loadComponents(params.slug);
   await trackPageView(shop.id, `product/${params.slug}`);
+  const cfg = await getReturnLogistics();
   if (components && components.length) {
     return (
-      <DynamicRenderer
-        components={components}
-        locale={params.lang}
-        runtimeData={{ ProductDetailTemplate: { product } }}
-      />
+      <>
+        <DynamicRenderer
+          components={components}
+          locale={params.lang}
+          runtimeData={{ ProductDetailTemplate: { product } }}
+        />
+        <ReturnConditions cfg={cfg} />
+      </>
     );
   }
-  return <PdpClient product={product} />;
+  return (
+    <>
+      <PdpClient product={product} />
+      <ReturnConditions cfg={cfg} />
+    </>
+  );
+}
+
+function ReturnConditions({
+  cfg,
+}: {
+  cfg: Awaited<ReturnType<typeof getReturnLogistics>>;
+}) {
+  return (
+    <div className="p-6 text-sm text-gray-700 space-y-1">
+      {cfg.requireTags && <p>Original tags must be attached for returns.</p>}
+      {cfg.allowWear === false && <p>Items must be returned unworn.</p>}
+    </div>
+  );
 }
 

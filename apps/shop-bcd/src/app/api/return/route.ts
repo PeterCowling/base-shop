@@ -5,11 +5,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 import { setReturnTracking } from "@platform-core/orders";
+import { getReturnLogistics } from "@platform-core/returnLogistics";
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";
 
-const ReturnSchema = z.object({ sessionId: z.string() }).strict();
+const ReturnSchema = z
+  .object({
+    sessionId: z.string(),
+    hasTags: z.boolean().optional(),
+    worn: z.boolean().optional(),
+  })
+  .strict();
 
 async function createUpsLabel(sessionId: string) {
   const trackingNumber = `1Z${Math.random().toString().slice(2, 12)}`;
@@ -40,7 +47,22 @@ async function getUpsStatus(tracking: string) {
 export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;
-  const { sessionId } = parsed.data;
+  const { sessionId, hasTags, worn } = parsed.data;
+  const cfg = await getReturnLogistics();
+  if (shop.luxuryFeatures?.strictReturnConditions) {
+    if (cfg.requireTags && !hasTags) {
+      return NextResponse.json(
+        { error: "Tags must be attached" },
+        { status: 400 }
+      );
+    }
+    if (cfg.allowWear === false && worn) {
+      return NextResponse.json(
+        { error: "Worn items cannot be returned" },
+        { status: 400 }
+      );
+    }
+  }
   const { trackingNumber, labelUrl } = await createUpsLabel(sessionId);
   return NextResponse.json({ ok: true, trackingNumber, labelUrl });
 }

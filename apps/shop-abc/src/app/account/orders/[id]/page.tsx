@@ -53,6 +53,9 @@ function StartReturn({ orderId }: { orderId: string }) {
   "use client";
   const [result, setResult] = useState<{ labelUrl?: string; trackingNumber?: string } | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [hasTags, setHasTags] = useState(true);
+  const [worn, setWorn] = useState(false);
+  const strict = Boolean(shop.luxuryFeatures?.strictReturnConditions);
 
   const start = async () => {
     setError(null);
@@ -60,7 +63,7 @@ function StartReturn({ orderId }: { orderId: string }) {
       const res = await fetch("/api/return", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId: orderId }),
+        body: JSON.stringify({ sessionId: orderId, hasTags, worn }),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
@@ -82,6 +85,26 @@ function StartReturn({ orderId }: { orderId: string }) {
 
   return (
     <div className="space-y-2">
+      {strict && (
+        <div className="space-y-1 text-sm">
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={hasTags}
+              onChange={(e) => setHasTags(e.target.checked)}
+            />
+            Original tags attached
+          </label>
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={worn}
+              onChange={(e) => setWorn(e.target.checked)}
+            />
+            Item has been worn
+          </label>
+        </div>
+      )}
       <button
         type="button"
         onClick={start}

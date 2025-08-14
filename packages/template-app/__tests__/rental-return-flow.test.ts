@@ -37,10 +37,23 @@ async function withShop(
 describe("rental order lifecycle", () => {
   test("order is returned and refunded", async () => {
     await withShop(async (repo) => {
+      const reserveRentalInventory = jest.fn();
+      const readInventory = jest
+        .fn()
+        .mockResolvedValue([{ sku: "sku1", quantity: 1, variantAttributes: {} }]);
+      const readProducts = jest
+        .fn()
+        .mockResolvedValue([{ sku: "sku1" }]);
       const retrieve = jest
         .fn<Promise<any>, any[]>()
         .mockResolvedValueOnce({
-          metadata: { depositTotal: "50", returnDate: "2030-01-02" },
+          metadata: {
+            depositTotal: "50",
+            returnDate: "2030-01-02",
+            items: JSON.stringify([
+              { sku: "sku1", from: "2025-01-01", to: "2025-01-05" },
+            ]),
+          },
         })
         .mockResolvedValueOnce({
           metadata: { depositTotal: "50" },
@@ -58,6 +71,18 @@ describe("rental order lifecycle", () => {
         }),
         { virtual: true }
       );
+      jest.doMock("@platform-core/orders/rentalAllocation", () => ({
+        __esModule: true,
+        reserveRentalInventory,
+      }));
+      jest.doMock("@platform-core/repositories/inventory.server", () => ({
+        __esModule: true,
+        readInventory,
+      }));
+      jest.doMock("@platform-core/repositories/products.server", () => ({
+        __esModule: true,
+        readRepo: readProducts,
+      }));
 
       const { POST: rentalPost } = await import("../src/api/rental/route");
       const { POST: returnPost } = await import("../src/api/return/route");
@@ -73,6 +98,7 @@ describe("rental order lifecycle", () => {
       expect(orders[0].returnedAt).toBeDefined();
       expect(orders[0].refundedAt).toBeDefined();
       expect(refundCreate).toHaveBeenCalled();
+      expect(reserveRentalInventory).toHaveBeenCalled();
     });
   });
 });

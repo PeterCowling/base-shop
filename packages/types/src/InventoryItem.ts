@@ -11,6 +11,9 @@ export const inventoryItemSchema = z
     // Each variant attribute is a free-form key/value string pair
     variantAttributes: variantAttributesSchema,
     lowStockThreshold: z.number().int().min(0).optional(),
+    wearCount: z.number().int().min(0).optional(),
+    wearAndTearLimit: z.number().int().min(0).optional(),
+    maintenanceCycle: z.number().int().min(0).optional(),
   })
   .strict();
 

@@ -6,16 +6,26 @@
   "themeOverrides": {},
   "filterMappings": {},
   "showCleaningTransparency": true,
-  "shippingProviders": ["ups", "premier-shipping"],
-  "taxProviders": ["taxjar"],
+  "shippingProviders": [
+    "ups",
+    "premier-shipping"
+  ],
+  "taxProviders": [
+    "taxjar"
+  ],
   "coverageIncluded": true,
   "premierDelivery": {
-    "regions": ["us-east"],
-    "windows": ["10-11", "11-12"]
+    "regions": [
+      "us-east"
+    ],
+    "windows": [
+      "10-11",
+      "11-12"
+    ]
   },
   "priceOverrides": {},
   "localeOverrides": {},
-  "rentalInventoryAllocation": false,
+  "rentalInventoryAllocation": true,
   "componentVersions": {},
   "lastUpgrade": "1970-01-01T00:00:00.000Z",
   "sanityBlog": {
@@ -23,7 +33,9 @@
     "dataset": "production",
     "token": "token"
   },
-  "editorialBlog": { "enabled": false },
+  "editorialBlog": {
+    "enabled": false
+  },
   "luxuryFeatures": {
     "contentMerchandising": false,
     "raTicketing": false,
@@ -49,5 +61,8 @@
       "prorateOnChange": true
     }
   ],
-  "lateFeePolicy": { "gracePeriodDays": 3, "feeAmount": 25 }
+  "lateFeePolicy": {
+    "gracePeriodDays": 3,
+    "feeAmount": 25
+  }
 }

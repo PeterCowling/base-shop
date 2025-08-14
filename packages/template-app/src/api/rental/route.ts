@@ -3,6 +3,9 @@ import {
   addOrder,
   markReturned,
 } from "@platform-core/repositories/rentalOrders.server";
+import { readInventory } from "@platform-core/repositories/inventory.server";
+import { readRepo as readProducts } from "@platform-core/repositories/products.server";
+import { reserveRentalInventory } from "@platform-core/orders/rentalAllocation";
 import { computeDamageFee } from "@platform-core/src/pricing";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,6 +19,21 @@ export async function POST(req: NextRequest) {
   const session = await stripe.checkout.sessions.retrieve(sessionId);
   const deposit = Number(session.metadata?.depositTotal ?? 0);
   const expected = session.metadata?.returnDate || undefined;
+
+  const orderItems: Array<{ sku: string; from: string; to: string }> =
+    session.metadata?.items ? JSON.parse(session.metadata.items) : [];
+  if (orderItems.length) {
+    const [inventory, products] = await Promise.all([
+      readInventory("bcd"),
+      readProducts("bcd"),
+    ]);
+    for (const { sku, from, to } of orderItems) {
+      const skuInfo = products.find((p) => p.sku === sku);
+      if (!skuInfo) continue;
+      const items = inventory.filter((i) => i.sku === sku);
+      await reserveRentalInventory("bcd", items as any, skuInfo as any, from, to);
+    }
+  }
   await addOrder("bcd", sessionId, deposit, expected);
   return NextResponse.json({ ok: true });
 }

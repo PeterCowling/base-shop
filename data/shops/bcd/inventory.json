@@ -2,14 +2,23 @@
   {
     "sku": "123",
     "productId": "123",
-    "variant": { "size": "l" },
-    "quantity": 5
+    "variant": {
+      "size": "l"
+    },
+    "quantity": 5,
+    "wearAndTearLimit": 10,
+    "maintenanceCycle": 5
   },
   {
     "sku": "black-sneaker-43",
     "productId": "black-sneaker",
-    "variant": { "size": "43", "color": "black" },
+    "variant": {
+      "size": "43",
+      "color": "black"
+    },
     "quantity": 1,
-    "lowStockThreshold": 1
+    "lowStockThreshold": 1,
+    "wearAndTearLimit": 10,
+    "maintenanceCycle": 5
   }
 ]

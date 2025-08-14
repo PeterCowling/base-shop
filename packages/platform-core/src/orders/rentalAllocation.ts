@@ -1,4 +1,5 @@
 import type { InventoryItem, SKU } from "@acme/types";
+import { updateInventoryItem } from "../repositories/inventory.server";
 
 /**
  * Reserve a rental inventory item if available and within wear limits.
@@ -9,12 +10,13 @@ import type { InventoryItem, SKU } from "@acme/types";
  * @param to - desired rental end ISO date
  * @returns the reserved item or null if none available
  */
-export function reserveRentalInventory(
+export async function reserveRentalInventory(
+  shop: string,
   items: Array<InventoryItem & { wearCount?: number }>,
   sku: SKU,
   from: string,
   to: string,
-): (InventoryItem & { wearCount: number }) | null {
+): Promise<(InventoryItem & { wearCount: number }) | null> {
   // verify availability window
   if (
     sku.availability &&
@@ -37,5 +39,13 @@ export function reserveRentalInventory(
 
   selected.quantity -= 1;
   selected.wearCount = (selected.wearCount ?? 0) + 1;
+
+  await updateInventoryItem(
+    shop,
+    selected.sku,
+    selected.variantAttributes,
+    () => selected,
+  );
+
   return selected as InventoryItem & { wearCount: number };
 }

@@ -96,9 +96,14 @@ export default function ThemeEditor({
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
     setTheme(next);
-    setOverrides({});
-    setThemeDefaults(tokensByThemeState[next]);
-    schedulePreviewUpdate(tokensByThemeState[next]);
+    const empty: Record<string, string> = {};
+    setOverrides(empty);
+    const defaults = tokensByThemeState[next];
+    setThemeDefaults(defaults);
+    const merged = { ...defaults, ...empty };
+    savePreviewTokens(merged);
+    window.dispatchEvent(new Event("theme:change"));
+    schedulePreviewUpdate(merged);
   };
 
   const schedulePreviewUpdate = (tokens: Record<string, string>) => {

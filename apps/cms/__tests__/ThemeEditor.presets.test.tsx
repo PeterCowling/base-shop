@@ -7,11 +7,13 @@ import {
   mockDeletePreset,
   act,
 } from "./ThemeEditor.test-utils";
+import { PREVIEW_TOKENS_KEY } from "../src/app/cms/wizard/previewTokens";
 
 describe("ThemeEditor - presets", () => {
   beforeEach(() => {
     mockSavePreset.mockClear();
     mockDeletePreset.mockClear();
+    localStorage.clear();
   });
 
   it("saves a new preset and switches theme", async () => {
@@ -61,5 +63,33 @@ describe("ThemeEditor - presets", () => {
       expect(screen.getByLabelText(/theme/i)).toHaveValue("base")
     );
     expect(screen.queryByRole("button", { name: /delete preset/i })).toBeNull();
+  });
+
+  it("updates preview tokens when switching themes", async () => {
+    const tokensByTheme = {
+      base: { "--color-bg": "#ffffff" },
+      dark: { "--color-bg": "#222222" },
+    };
+    renderThemeEditor({ tokensByTheme, themes: ["base", "dark"] });
+
+    await waitFor(() =>
+      expect(
+        JSON.parse(localStorage.getItem(PREVIEW_TOKENS_KEY) || "{}")[
+          "--color-bg"
+        ],
+      ).toBe("#ffffff"),
+    );
+
+    fireEvent.change(screen.getByLabelText(/theme/i), {
+      target: { value: "dark" },
+    });
+
+    await waitFor(() =>
+      expect(
+        JSON.parse(localStorage.getItem(PREVIEW_TOKENS_KEY) || "{}")[
+          "--color-bg"
+        ],
+      ).toBe("#222222"),
+    );
   });
 });

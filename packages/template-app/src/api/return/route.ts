@@ -7,6 +7,9 @@ import { computeDamageFee } from "@platform-core/src/pricing";
 
 import { NextRequest, NextResponse } from "next/server";
 import { getReturnLogistics } from "@platform-core/returnLogistics";
+import { readShop } from "@platform-core/repositories/shops.server";
+
+const SHOP_ID = "bcd";
 
 export const runtime = "edge";
 
@@ -36,8 +39,16 @@ export async function POST(req: NextRequest) {
     time?: string;
   };
 
+  const shop = await readShop(SHOP_ID);
+  if (!shop.returnsEnabled) {
+    return NextResponse.json(
+      { error: "Returns disabled" },
+      { status: 403 },
+    );
+  }
+
   if (sessionId) {
-    const order = await markReturned("bcd", sessionId);
+    const order = await markReturned(SHOP_ID, sessionId);
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
@@ -57,12 +68,12 @@ export async function POST(req: NextRequest) {
 
     const damageFee = await computeDamageFee(damage, deposit);
     if (damageFee) {
-      await markReturned("bcd", sessionId, damageFee);
+      await markReturned(SHOP_ID, sessionId, damageFee);
     }
     const refund = Math.max(deposit - damageFee, 0);
     if (refund > 0) {
       await stripe.refunds.create({ payment_intent: pi, amount: refund * 100 });
-      await markRefunded("bcd", sessionId);
+      await markRefunded(SHOP_ID, sessionId);
     }
 
     return NextResponse.json({ ok: true });

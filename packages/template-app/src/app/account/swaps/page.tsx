@@ -12,6 +12,7 @@ import { getProductById } from "@platform-core/src/products";
 import { cookies } from "next/headers";
 import { getCustomerSession } from "@auth";
 import { readShop } from "@platform-core/src/repositories/shops.server";
+import { notFound } from "next/navigation";
 import {
   getUserPlan,
   getRemainingSwaps,
@@ -24,6 +25,7 @@ export default async function SwapPage() {
   const cart = cartId ? await getCart(cartId) : {};
   const session = await getCustomerSession();
   const shop = await readShop("shop");
+  if (!shop.subscriptionsEnabled) return notFound();
   const planId = session?.customerId
     ? await getUserPlan("shop", session.customerId)
     : undefined;
@@ -46,6 +48,7 @@ export default async function SwapPage() {
     const session = await getCustomerSession();
     if (!cartId || !session?.customerId) return;
     const shop = await readShop("shop");
+    if (!shop.subscriptionsEnabled) return;
     const planId = await getUserPlan("shop", session.customerId);
     const plan = planId
       ? shop.rentalSubscriptions.find((p) => p.id === planId)

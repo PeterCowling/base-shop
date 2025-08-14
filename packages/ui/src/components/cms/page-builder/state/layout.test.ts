@@ -1,30 +1,8 @@
+import { add, move, remove, duplicate, update, resize, set, setGridCols } from "./layout";
 import { historyStateSchema } from "./schema";
-import {
-  add,
-  move,
-  remove,
-  duplicate,
-  update,
-  resize,
-  set,
-  undo,
-  redo,
-  setGridCols,
-} from "./reducer";
 import type { PageComponent, HistoryState } from "@acme/types";
 
-describe("historyStateSchema", () => {
-  it("applies defaults when input is undefined", () => {
-    expect(historyStateSchema.parse(undefined)).toEqual({
-      past: [],
-      present: [],
-      future: [],
-      gridCols: 12,
-    });
-  });
-});
-
-describe("action handlers", () => {
+describe("layout actions", () => {
   const a = { id: "a", type: "Text" } as PageComponent;
   const b = { id: "b", type: "Image" } as PageComponent;
   const init: HistoryState = { past: [], present: [], future: [], gridCols: 12 };
@@ -109,16 +87,19 @@ describe("action handlers", () => {
     expect(state.past).toEqual([[]]);
   });
 
-  it("undo and redo", () => {
-    const added = add(init, { type: "add", component: a });
-    const undone = undo(added);
-    expect(undone.present).toEqual([]);
-    const redone = redo(undone);
-    expect(redone.present).toEqual([a]);
-  });
-
   it("sets grid columns", () => {
     const state = setGridCols(init, { type: "set-grid-cols", gridCols: 16 });
     expect(state.gridCols).toBe(16);
+  });
+});
+
+describe("historyStateSchema", () => {
+  it("applies defaults when input is undefined", () => {
+    expect(historyStateSchema.parse(undefined)).toEqual({
+      past: [],
+      present: [],
+      future: [],
+      gridCols: 12,
+    });
   });
 });

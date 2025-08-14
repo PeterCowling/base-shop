@@ -1,17 +1,7 @@
 import type { HistoryState } from "@acme/types";
 import type { Action } from "./actions";
-import {
-  add,
-  move,
-  remove,
-  duplicate,
-  update,
-  resize,
-  set,
-  undo,
-  redo,
-  setGridCols,
-} from "./reducer";
+import { add, move, remove, duplicate, update, resize, set, setGridCols } from "./layout";
+import { undo, redo } from "./history";
 
 export type { Action } from "./actions";
 export { historyStateSchema } from "./schema";

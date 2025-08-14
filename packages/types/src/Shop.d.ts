@@ -251,8 +251,9 @@ export declare const shopSchema: z.ZodObject<{
     returnPolicyUrl?: string | undefined;
     returnsEnabled?: boolean | undefined;
     analyticsEnabled?: boolean | undefined;
+    coverageIncluded?: boolean | undefined;
     lastUpgrade?: string | undefined;
     componentVersions?: Record<string, string> | undefined;
-}>;
+}>; 
 export type Shop = z.infer<typeof shopSchema>;
 //# sourceMappingURL=Shop.d.ts.map

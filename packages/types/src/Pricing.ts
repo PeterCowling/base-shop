@@ -6,6 +6,7 @@ import { z } from "zod";
  * - `baseDailyRate` provides the fallback daily price used when a SKU lacks a specific rate.
  * - `durationDiscounts` contains rate multipliers applied when `minDays` is met.
  * - `damageFees` maps damage codes to a fixed amount or the string `"deposit"`.
+ * - `coverage` maps mishap types to a fee and deposit waiver amount.
  */
 export const pricingSchema = z
   .object({
@@ -19,6 +20,12 @@ export const pricingSchema = z
         .strict()
     ),
     damageFees: z.record(z.union([z.number(), z.literal("deposit")])),
+    coverage: z.record(
+      z.object({
+        fee: z.number(),
+        waiver: z.union([z.number(), z.literal("deposit")]),
+      })
+    ),
   })
   .strict();
 

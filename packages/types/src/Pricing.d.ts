@@ -5,6 +5,7 @@ import { z } from "zod";
  * - `baseDailyRate` provides the fallback daily price used when a SKU lacks a specific rate.
  * - `durationDiscounts` contains rate multipliers applied when `minDays` is met.
  * - `damageFees` maps damage codes to a fixed amount or the string `"deposit"`.
+ * - `coverage` maps mishap types to a fee and deposit waiver amount.
  */
 export declare const pricingSchema: z.ZodObject<{
     baseDailyRate: z.ZodNumber;
@@ -19,6 +20,16 @@ export declare const pricingSchema: z.ZodObject<{
         rate: number;
     }>, "many">;
     damageFees: z.ZodRecord<z.ZodString, z.ZodUnion<[z.ZodNumber, z.ZodLiteral<"deposit">]>>;
+    coverage: z.ZodRecord<z.ZodString, z.ZodObject<{
+        fee: z.ZodNumber;
+        waiver: z.ZodUnion<[z.ZodNumber, z.ZodLiteral<"deposit">]>;
+    }, "strip", z.ZodTypeAny, {
+        fee: number;
+        waiver: number | "deposit";
+    }, {
+        fee: number;
+        waiver: number | "deposit";
+    }>>;
 }, "strip", z.ZodTypeAny, {
     baseDailyRate: number;
     durationDiscounts: {
@@ -26,6 +37,10 @@ export declare const pricingSchema: z.ZodObject<{
         rate: number;
     }[];
     damageFees: Record<string, number | "deposit">;
+    coverage: Record<string, {
+        fee: number;
+        waiver: number | "deposit";
+    }>;
 }, {
     baseDailyRate: number;
     durationDiscounts: {
@@ -33,6 +48,10 @@ export declare const pricingSchema: z.ZodObject<{
         rate: number;
     }[];
     damageFees: Record<string, number | "deposit">;
+    coverage: Record<string, {
+        fee: number;
+        waiver: number | "deposit";
+    }>;
 }>;
 export type PricingMatrix = z.infer<typeof pricingSchema>;
 //# sourceMappingURL=Pricing.d.ts.map

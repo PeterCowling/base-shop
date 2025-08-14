@@ -8,12 +8,17 @@ import {
   type CartState,
 } from "@platform-core/src/cartCookie";
 import { getCart } from "@platform-core/src/cartStore";
-import { priceForDays, convertCurrency } from "@platform-core/src/pricing";
+import {
+  priceForDays,
+  convertCurrency,
+  getPricing,
+} from "@platform-core/src/pricing";
 import { getProductById } from "@platform-core/src/products";
 import { findCoupon } from "@platform-core/src/coupons";
 import { trackEvent } from "@platform-core/src/analytics";
 import { coreEnv } from "@acme/config/env/core";
 import { getTaxRate } from "@platform-core/src/tax";
+import { readShop } from "@platform-core/repositories/shops.server";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 
@@ -71,7 +76,8 @@ async function computeTotals(
   cart: CartState,
   rentalDays: number,
   discountRate: number,
-  currency: string
+  currency: string,
+  coverage: boolean
 ) {
   const lineTotals = await Promise.all(
     Object.values(cart).map(async (item) => {
@@ -88,7 +94,7 @@ async function computeTotals(
   const subtotalBase = lineTotals.reduce((s, n) => s + n.discounted, 0);
   const originalBase = lineTotals.reduce((s, n) => s + n.base, 0);
   const discountBase = originalBase - subtotalBase;
-  const depositBase = Object.values(cart).reduce((s, item) => {
+  let depositBase = Object.values(cart).reduce((s, item) => {
     const deposit = getProductById(item.sku.id)?.deposit;
     if (deposit === undefined) {
       console.warn(`Deposit lookup failed for SKU ${item.sku.id}`);
@@ -97,10 +103,25 @@ async function computeTotals(
     return s + deposit * item.qty;
   }, 0);
 
+  let coverageFeeBase = 0;
+  if (coverage) {
+    const pricing = await getPricing();
+    const waived = Object.values(pricing.coverage).reduce((s, rule) => {
+      if (rule.waiver === "deposit") return depositBase;
+      return s + rule.waiver;
+    }, 0);
+    depositBase = Math.max(depositBase - waived, 0);
+    coverageFeeBase = Object.values(pricing.coverage).reduce(
+      (s, rule) => s + rule.fee,
+      0
+    );
+  }
+
   return {
     subtotal: await convertCurrency(subtotalBase, currency),
     depositTotal: await convertCurrency(depositBase, currency),
     discount: await convertCurrency(discountBase, currency),
+    coverage: await convertCurrency(coverageFeeBase, currency),
   };
 }
 
@@ -128,6 +149,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     customer,
     shipping,
     billing_details,
+    coverage = false,
   } = (await req.json().catch(() => ({}))) as {
     returnDate?: string;
     coupon?: string;
@@ -136,13 +158,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     customer?: string;
     shipping?: Stripe.Checkout.SessionCreateParams.ShippingAddress;
     billing_details?: Record<string, any>;
+    coverage?: boolean;
   };
   const shop = coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop";
+  const shopData = await readShop(shop);
   const couponDef = await findCoupon(shop, coupon);
   if (couponDef) {
     await trackEvent(shop, { type: "discount_redeemed", code: couponDef.code });
   }
   const discountRate = couponDef ? couponDef.discountPercent / 100 : 0;
+  const coverageEnabled = coverage && !shopData.coverageIncluded;
   let rentalDays: number;
   try {
     rentalDays = calculateRentalDays(returnDate);
@@ -159,12 +184,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const line_items = nested.flat();
 
   /* 4  Totals / metadata ------------------------------------------- */
-  const { subtotal, depositTotal, discount } = await computeTotals(
-    cart,
-    rentalDays,
-    discountRate,
-    currency
-  );
+  const { subtotal, depositTotal, discount, coverage: coverageCharge } =
+    await computeTotals(
+      cart,
+      rentalDays,
+      discountRate,
+      currency,
+      coverageEnabled
+    );
 
   const taxRate = await getTaxRate(taxRegion);
   const taxAmount = Math.round(subtotal * taxRate);
@@ -174,6 +201,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         currency: currency.toLowerCase(),
         unit_amount: taxAmount * 100,
         product_data: { name: "Tax" },
+      },
+      quantity: 1,
+    });
+  }
+
+  if (coverageCharge > 0) {
+    line_items.push({
+      price_data: {
+        currency: currency.toLowerCase(),
+        unit_amount: coverageCharge * 100,
+        product_data: { name: "Coverage" },
       },
       quantity: 1,
     });
@@ -204,6 +242,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       currency,
       taxRate: String(taxRate),
       taxAmount: String(taxAmount),
+      coverage: String(coverageCharge),
     },
   } as any;
 
@@ -232,6 +271,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           currency,
           taxRate: String(taxRate),
           taxAmount: String(taxAmount),
+          coverage: String(coverageCharge),
         },
         expand: ["payment_intent"],
       },

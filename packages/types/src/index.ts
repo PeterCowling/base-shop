@@ -15,3 +15,4 @@ export * from "./ReturnAuthorization";
 export * from "./Shop";
 export * from "./ShopSettings";
 export * from "./Coupon";
+export * from "./Coverage";

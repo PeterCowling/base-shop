@@ -13,6 +13,7 @@
   "priceOverrides": {},
   "localeOverrides": {},
   "analyticsEnabled": true,
+  "coverageIncluded": false,
   "plugins": {
     "paypal": {
       "clientId": "abc-client",

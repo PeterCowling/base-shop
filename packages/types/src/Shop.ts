@@ -98,6 +98,7 @@ export const shopSchema = z
     returnPolicyUrl: z.string().url().optional(),
     returnsEnabled: z.boolean().optional(),
     analyticsEnabled: z.boolean().optional(),
+    coverageIncluded: z.boolean().optional(),
     luxuryFeatures: z
       .object({
         contentMerchandising: z.boolean().default(false),

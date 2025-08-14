@@ -11,4 +11,5 @@ export * from "./RentalOrder";
 export * from "./ReturnLogistics";
 export * from "./Shop";
 export * from "./ShopSettings";
+export * from "./Coverage";
 //# sourceMappingURL=index.d.ts.map

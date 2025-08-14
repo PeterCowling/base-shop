@@ -10,6 +10,7 @@ import {
 } from "@/components/atoms/shadcn";
 import StyleEditor from "@/components/cms/StyleEditor";
 import { useCallback, useEffect, useState } from "react";
+import type { TokenMap } from "@ui/hooks/useTokenEditor";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
@@ -94,6 +95,19 @@ export default function StepTheme({
     [themeDefaults, setThemeOverrides]
   );
 
+  const handleTokenChange = useCallback(
+    (tokens: TokenMap) => {
+      setThemeOverrides(
+        Object.fromEntries(
+          Object.entries(tokens).filter(
+            ([k, v]) => themeDefaults[k] !== v
+          )
+        )
+      );
+    },
+    [setThemeOverrides, themeDefaults]
+  );
+
   useEffect(() => {
     applyPalette(palette);
   }, [palette, applyPalette]);
@@ -143,7 +157,7 @@ export default function StepTheme({
         </SelectContent>
       </Select>
 
-      {/* Palette picker – buttons, no additional combobox */}
+      {/* Palette picker – swatch buttons */}
       <div className="space-y-2">
         <h3 className="font-medium">Color Palette</h3>
         <div className="flex flex-wrap gap-2">
@@ -152,21 +166,29 @@ export default function StepTheme({
               key={p.name}
               variant={p.name === palette ? "default" : "outline"}
               onClick={() => setPalette(p.name)}
+              className="h-10 w-10 p-0"
+              aria-label={p.name}
             >
-              {p.name}
+              <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
+                {Object.values(p.colors).map((c, i) => (
+                  <span
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={i}
+                    className="h-1/2 w-1/2"
+                    style={{ backgroundColor: `hsl(${c})` }}
+                  />
+                ))}
+              </div>
             </Button>
           ))}
         </div>
       </div>
 
-      {/* Style editor is purely presentational at this step */}
-      <div aria-hidden="true">
-        <StyleEditor
-          tokens={themeOverrides}
-          baseTokens={themeDefaults}
-          onChange={setThemeOverrides}
-        />
-      </div>
+      <StyleEditor
+        tokens={themeOverrides}
+        baseTokens={themeDefaults}
+        onChange={handleTokenChange}
+      />
 
       <WizardPreview style={themeStyle} />
 

@@ -19,3 +19,13 @@ export const inventoryItemSchema = z
 
 export type VariantAttributes = z.infer<typeof variantAttributesSchema>;
 export type InventoryItem = z.infer<typeof inventoryItemSchema>;
+
+// Shape used when persisting inventory data to external stores (e.g. JSON, SQL).
+// Contains only the primitive fields required to reconstruct an InventoryItem,
+// while allowing additional properties to round-trip without using `any`.
+export interface SerializedInventoryItem {
+  sku: string;
+  quantity: number;
+  variantAttributes?: VariantAttributes;
+  [key: string]: unknown;
+}

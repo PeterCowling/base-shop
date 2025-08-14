@@ -1,6 +1,10 @@
 import "server-only";
 
-import { inventoryItemSchema, type InventoryItem } from "@acme/types";
+import {
+  inventoryItemSchema,
+  type InventoryItem,
+  type SerializedInventoryItem,
+} from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import type Database from "better-sqlite3";
@@ -52,12 +56,17 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
         ...i,
         variantAttributes: { ...i.variantAttributes },
       })),
-    );
+    )
+    .map((i) => ({
+      sku: i.sku,
+      quantity: i.quantity,
+      variantAttributes: i.variantAttributes,
+    })) as SerializedInventoryItem[];
   const db: Database = await getDb(shop);
   const insert = db.prepare(
     "REPLACE INTO inventory (sku, variantAttributes, quantity) VALUES (?, ?, ?)",
   );
-  const tx = db.transaction((records: InventoryItem[]) => {
+  const tx = db.transaction((records: SerializedInventoryItem[]) => {
     db.prepare("DELETE FROM inventory").run();
     for (const item of records) {
       insert.run(

@@ -3,6 +3,7 @@ import os from "node:os";
 import path from "node:path";
 
 async function withRepo(
+  backend: "json" | "sqlite",
   cb: (
     repo: typeof import("../src/repositories/inventory.server"),
     shop: string,
@@ -19,6 +20,7 @@ async function withRepo(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
   process.env.NEXTAUTH_SECRET = "test";
   process.env.SESSION_SECRET = "test";
+  process.env.INVENTORY_BACKEND = backend;
   jest.resetModules();
 
   const repo = await import("../src/repositories/inventory.server");
@@ -26,12 +28,13 @@ async function withRepo(
     await cb(repo, "test", dir);
   } finally {
     process.chdir(cwd);
+    delete process.env.INVENTORY_BACKEND;
   }
 }
 
 describe("inventory repository", () => {
   it("readInventory throws when file missing or invalid", async () => {
-    await withRepo(async (repo, shop, dir) => {
+    await withRepo("json", async (repo, shop, dir) => {
       await expect(repo.readInventory(shop)).rejects.toThrow();
 
       await fs.writeFile(
@@ -53,7 +56,7 @@ describe("inventory repository", () => {
   });
 
   it("writes inventory records with variant attributes", async () => {
-    await withRepo(async (repo, shop, dir) => {
+    await withRepo("json", async (repo, shop, dir) => {
       const items = [
         {
           sku: "sku-1",
@@ -80,7 +83,7 @@ describe("inventory repository", () => {
   });
 
   it("normalizes missing variantAttributes when reading", async () => {
-    await withRepo(async (repo, shop, dir) => {
+    await withRepo("json", async (repo, shop, dir) => {
       const file = path.join(dir, "data", "shops", shop, "inventory.json");
       await fs.writeFile(
         file,
@@ -101,7 +104,7 @@ describe("inventory repository", () => {
   });
 
   it("invokes checkAndAlert after writing", async () => {
-    await withRepo(async (repo, shop) => {
+    await withRepo("json", async (repo, shop) => {
       const items = [
         {
           sku: "sku-1",
@@ -119,7 +122,7 @@ describe("inventory repository", () => {
   });
 
   it("writeInventory throws on invalid items", async () => {
-    await withRepo(async (repo, shop) => {
+    await withRepo("json", async (repo, shop) => {
       const bad = [
         {
           sku: "sku-1",
@@ -134,7 +137,7 @@ describe("inventory repository", () => {
   });
 
   it("writeInventory rejects negative quantity or lowStockThreshold", async () => {
-    await withRepo(async (repo, shop) => {
+    await withRepo("json", async (repo, shop) => {
       jest.doMock("../src/services/stockAlert.server", () => ({
         checkAndAlert: jest.fn(),
       }));
@@ -162,7 +165,7 @@ describe("inventory repository", () => {
   });
 
   it("indexes inventory by sku and variant attributes", async () => {
-    await withRepo(async (repo, shop) => {
+    await withRepo("json", async (repo, shop) => {
       const items = [
         {
           sku: "sku-1",
@@ -185,6 +188,42 @@ describe("inventory repository", () => {
       expect(
         map[repo.variantKey("sku-1", { size: "l", color: "red" })].quantity,
       ).toBe(3);
+    });
+  });
+});
+
+describe("inventory repository (sqlite)", () => {
+  it("updates and returns inventory items", async () => {
+    await withRepo("sqlite", async (repo, shop) => {
+      const first = await repo.updateInventoryItem(shop, "sku-1", {}, () => ({
+        sku: "sku-1",
+        productId: "p1",
+        quantity: 1,
+        variantAttributes: {},
+      }));
+      expect(first).toEqual({
+        sku: "sku-1",
+        productId: "p1",
+        quantity: 1,
+        variantAttributes: {},
+      });
+
+      const second = await repo.updateInventoryItem(shop, "sku-1", {}, (current) => ({
+        ...current!,
+        productId: "p1",
+        quantity: current!.quantity + 1,
+      }));
+      expect(second).toEqual({
+        sku: "sku-1",
+        productId: "p1",
+        quantity: 2,
+        variantAttributes: {},
+      });
+
+      const items = await repo.readInventory(shop);
+      expect(items).toEqual([
+        { sku: "sku-1", quantity: 2, variantAttributes: {} },
+      ]);
     });
   });
 });

@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getShopSettings } from "@platform-core/src/repositories/settings.server";
 import { readRepo } from "@platform-core/src/repositories/products.server";
 import { coreEnv } from "@acme/config/env/core";
+import type { ProductPublication } from "@acme/types";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = coreEnv.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -10,7 +11,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const [settings, products] = await Promise.all([
     getShopSettings(shop),
-    readRepo<Record<string, unknown>>(shop),
+    readRepo<ProductPublication>(shop),
   ]);
   const languages = settings.languages ?? ["en"];
 
@@ -31,11 +32,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   for (const product of products) {
-    const slug = (product as any).slug || (product as any).id;
-    if (!slug) continue;
+    const slug = product.slug || product.id;
     entries.push({
       url: `${base}/${languages[0]}/product/${slug}`,
-      lastModified: (product as any).updated_at || now,
+      lastModified: product.updated_at,
       alternates: buildAlternates(`/product/${slug}`),
     });
   }

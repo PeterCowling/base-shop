@@ -8,8 +8,8 @@
     "intervalMinutes": 60
   },
   "reverseLogisticsService": {
-    "enabled": false,
-    "intervalMinutes": 60
+    "enabled": true,
+    "intervalMinutes": 30
   },
   "returnService": { "upsEnabled": false },
   "seo": {

@@ -10,14 +10,27 @@ import {
 import { recordEvent } from "@platform-core/repositories/reverseLogisticsEvents.server";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { logger } from "@platform-core/utils";
-import { readdir, readFile, unlink } from "node:fs/promises";
+import { mkdir, readdir, readFile, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { randomUUID } from "node:crypto";
 
 const DATA_ROOT = resolveDataRoot();
 
 interface ReverseLogisticsEvent {
   sessionId: string;
   status: NonNullable<RentalOrder["status"]>;
+}
+
+export async function writeReverseLogisticsEvent(
+  shop: string,
+  sessionId: string,
+  status: ReverseLogisticsEvent["status"],
+  dataRoot: string = DATA_ROOT,
+): Promise<void> {
+  const dir = join(dataRoot, shop, "reverse-logistics");
+  await mkdir(dir, { recursive: true });
+  const file = join(dir, `${randomUUID()}.json`);
+  await writeFile(file, JSON.stringify({ sessionId, status }));
 }
 
 export async function processReverseLogisticsEventsOnce(
@@ -160,4 +173,10 @@ export async function startReverseLogisticsService(
   );
 
   return () => timers.forEach((t) => clearInterval(t));
+}
+
+if (process.env.NODE_ENV !== "test") {
+  startReverseLogisticsService().catch((err) =>
+    logger.error("failed to start reverse logistics service", { err }),
+  );
 }

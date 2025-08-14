@@ -15,7 +15,7 @@
     "enabled": true,
     "intervalMinutes": 60
   },
-  "returnService": { "upsEnabled": false },
+  "returnService": { "upsEnabled": false, "bagEnabled": false, "homePickupEnabled": false },
   "seo": {
     "aiCatalog": {
       "enabled": false,

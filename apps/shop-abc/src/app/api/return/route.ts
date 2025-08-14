@@ -5,7 +5,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 import { setReturnTracking } from "@platform-core/orders";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import {
+  getReturnLogistics,
+  getReturnBagAndLabel,
+} from "@platform-core/returnLogistics";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";
@@ -43,10 +47,17 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) return parsed.response;
   const { sessionId } = parsed.data;
 
-  const cfg = await getReturnLogistics();
+  const [cfg, info, settings] = await Promise.all([
+    getReturnLogistics(),
+    getReturnBagAndLabel(),
+    getShopSettings(shop.id),
+  ]);
   let tracking: { number: string; labelUrl: string } | null = null;
 
-  if (cfg.returnCarrier.map((c) => c.toLowerCase()).includes("ups")) {
+  if (
+    settings.returnService?.upsEnabled &&
+    info.returnCarrier.includes("ups")
+  ) {
     const { trackingNumber, labelUrl } = await createUpsLabel(sessionId);
     tracking = { number: trackingNumber, labelUrl };
   }
@@ -54,7 +65,11 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({
     ok: true,
     dropOffProvider: cfg.dropOffProvider ?? null,
-    returnCarrier: cfg.returnCarrier,
+    returnCarrier: info.returnCarrier,
+    bagType: settings.returnService?.bagEnabled ? info.bagType : null,
+    homePickupZipCodes: settings.returnService?.homePickupEnabled
+      ? info.homePickupZipCodes
+      : [],
     tracking,
   });
 }
@@ -64,8 +79,11 @@ export async function GET(req: NextRequest) {
   if (!tracking) {
     return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 });
   }
-  const cfg = await getReturnLogistics();
-  if (cfg.returnCarrier.map((c) => c.toLowerCase()).includes("ups")) {
+  const [info, settings] = await Promise.all([
+    getReturnBagAndLabel(),
+    getShopSettings(shop.id),
+  ]);
+  if (settings.returnService?.upsEnabled && info.returnCarrier.includes("ups")) {
     const status = await getUpsStatus(tracking);
     return NextResponse.json({ ok: true, status });
   }

@@ -69,6 +69,8 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
         },
         returnService: {
           upsEnabled: false,
+          bagEnabled: false,
+          homePickupEnabled: false,
           ...(parsed.data.returnService ?? {}),
         },
         premierDelivery: parsed.data.premierDelivery,
@@ -105,7 +107,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     taxRegion: "",
     depositService: { enabled: false, intervalMinutes: 60 },
     reverseLogisticsService: { enabled: false, intervalMinutes: 60 },
-    returnService: { upsEnabled: false },
+    returnService: { upsEnabled: false, bagEnabled: false, homePickupEnabled: false },
     premierDelivery: undefined,
     stockAlert: { recipients: [] },
     luxuryFeatures: {

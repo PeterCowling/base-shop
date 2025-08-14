@@ -1,8 +1,12 @@
 import { markReturned } from "@platform-core/repositories/rentalOrders.server";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import {
+  getReturnLogistics,
+  getReturnBagAndLabel,
+} from "@platform-core/returnLogistics";
 import { setReturnTracking } from "@platform-core/orders";
 import { NextRequest, NextResponse } from "next/server";
 import { readShop } from "@platform-core/repositories/shops.server";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 const SHOP_ID = "bcd";
 
@@ -30,7 +34,11 @@ export async function POST(req: NextRequest) {
       { status: 403 },
     );
   }
-  const cfg = await getReturnLogistics();
+  const [cfg, info, settings] = await Promise.all([
+    getReturnLogistics(),
+    getReturnBagAndLabel(),
+    getShopSettings(SHOP_ID),
+  ]);
   if (!cfg.mobileApp) {
     return NextResponse.json(
       { error: "Mobile returns disabled" },
@@ -44,8 +52,16 @@ export async function POST(req: NextRequest) {
   if (!sessionId) {
     return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
   }
-  if (zip && !cfg.homePickupZipCodes.includes(zip)) {
-    return NextResponse.json({ error: "ZIP not eligible" }, { status: 400 });
+  if (zip) {
+    if (!settings.returnService?.homePickupEnabled) {
+      return NextResponse.json(
+        { error: "Home pickup disabled" },
+        { status: 403 },
+      );
+    }
+    if (!info.homePickupZipCodes.includes(zip)) {
+      return NextResponse.json({ error: "ZIP not eligible" }, { status: 400 });
+    }
   }
   const order = await markReturned(SHOP_ID, sessionId);
   if (!order) {
@@ -54,8 +70,8 @@ export async function POST(req: NextRequest) {
   let labelUrl: string | null = null;
   let tracking: string | null = null;
   if (
-    cfg.labelService &&
-    cfg.returnCarrier.map((c) => c.toLowerCase()).includes("ups")
+    settings.returnService?.upsEnabled &&
+    info.returnCarrier.includes("ups")
   ) {
     const label = await createUpsLabel(sessionId);
     labelUrl = label.labelUrl;

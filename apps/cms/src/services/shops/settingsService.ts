@@ -95,7 +95,11 @@ export async function updateUpsReturns(
   const current = await fetchSettings(shop);
   const updated: ShopSettings = {
     ...current,
-    returnService: { upsEnabled: data.enabled },
+    returnService: {
+      upsEnabled: data.enabled,
+      bagEnabled: data.bagEnabled ?? false,
+      homePickupEnabled: data.homePickupEnabled ?? false,
+    },
   };
   await persistSettings(shop, updated);
   return { settings: updated };

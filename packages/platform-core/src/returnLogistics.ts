@@ -16,10 +16,11 @@ export async function getReturnLogistics(): Promise<ReturnLogistics> {
 
 export type ReturnBagAndLabel = Pick<
   ReturnLogistics,
-  "bagType" | "labelService" | "tracking"
+  "bagType" | "labelService" | "tracking" | "returnCarrier" | "homePickupZipCodes"
 >;
 
 export async function getReturnBagAndLabel(): Promise<ReturnBagAndLabel> {
-  const { bagType, labelService, tracking } = await getReturnLogistics();
-  return { bagType, labelService, tracking };
+  const { bagType, labelService, tracking, returnCarrier, homePickupZipCodes } =
+    await getReturnLogistics();
+  return { bagType, labelService, tracking, returnCarrier, homePickupZipCodes };
 }

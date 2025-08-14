@@ -70,28 +70,35 @@ export async function POST(req) {
     /* 4️⃣ Serialize sizes for metadata --------------------------------------- */
     const sizesMeta = JSON.stringify(Object.fromEntries(Object.values(cart).map((item) => [item.sku.id, item.size ?? ""])));
     /* 5️⃣ Create Checkout Session -------------------------------------------- */
-    const session = await stripe.checkout.sessions.create({
-        mode: "payment",
-        line_items,
-        success_url: `${req.nextUrl.origin}/success`,
-        cancel_url: `${req.nextUrl.origin}/cancelled`,
-        payment_intent_data: {
+    let session;
+    try {
+        session = await stripe.checkout.sessions.create({
+            mode: "payment",
+            line_items,
+            success_url: `${req.nextUrl.origin}/success`,
+            cancel_url: `${req.nextUrl.origin}/cancelled`,
+            payment_intent_data: {
+                metadata: {
+                    subtotal: subtotal.toString(),
+                    depositTotal: depositTotal.toString(),
+                    returnDate: returnDate ?? "",
+                    rentalDays: rentalDays.toString(),
+                },
+            },
             metadata: {
                 subtotal: subtotal.toString(),
                 depositTotal: depositTotal.toString(),
                 returnDate: returnDate ?? "",
                 rentalDays: rentalDays.toString(),
+                sizes: sizesMeta,
             },
-        },
-        metadata: {
-            subtotal: subtotal.toString(),
-            depositTotal: depositTotal.toString(),
-            returnDate: returnDate ?? "",
-            rentalDays: rentalDays.toString(),
-            sizes: sizesMeta,
-        },
-        expand: ["payment_intent"],
-    });
+            expand: ["payment_intent"],
+        });
+    }
+    catch (error) {
+        console.error("Failed to create Stripe checkout session", error);
+        return NextResponse.json({ error: "Checkout failed" }, { status: 502 });
+    }
     /* 6️⃣ Return client credentials ------------------------------------------ */
     const clientSecret = typeof session.payment_intent === "string"
         ? undefined

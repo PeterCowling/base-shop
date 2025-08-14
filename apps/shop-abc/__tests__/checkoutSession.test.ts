@@ -357,8 +357,13 @@ test("rounds unit amounts before sending to Stripe", async () => {
 });
 
 test("responds with 502 when Stripe session creation fails", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
   stripeCreate.mockReset();
+  findCouponMock.mockReset();
+  getTaxRateMock.mockReset();
   stripeCreate.mockRejectedValue(new Error("Stripe error"));
+  findCouponMock.mockResolvedValue(null);
+  getTaxRateMock.mockResolvedValue(0);
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
@@ -368,5 +373,5 @@ test("responds with 502 when Stripe session creation fails", async () => {
   const res = await POST(req);
   expect(res.status).toBe(502);
   const body = await res.json();
-  expect(body.error).toBe("Checkout session failed");
+  expect(body.error).toBe("Checkout failed");
 });

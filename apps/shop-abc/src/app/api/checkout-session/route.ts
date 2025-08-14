@@ -309,9 +309,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       expand: ["payment_intent"],
     });
   } catch (error) {
-    console.error(error);
+    console.error("Failed to create Stripe checkout session", error);
     return NextResponse.json(
-      { error: "Checkout session failed" },
+      { error: "Checkout failed" },
       { status: 502 }
     );
   }

@@ -108,6 +108,51 @@ const computeTotals = async (
   };
 };
 
+/**
+ * Build the shared metadata object for both the checkout session and
+ * payment intent.
+ */
+const buildCheckoutMetadata = ({
+  subtotal,
+  depositTotal,
+  returnDate,
+  rentalDays,
+  customerId,
+  discount,
+  coupon,
+  currency,
+  taxRate,
+  taxAmount,
+  clientIp,
+  sizes,
+}: {
+  subtotal: number;
+  depositTotal: number;
+  returnDate?: string;
+  rentalDays: number;
+  customerId?: string;
+  discount: number;
+  coupon?: string;
+  currency: string;
+  taxRate: number;
+  taxAmount: number;
+  clientIp?: string;
+  sizes?: string;
+}) => ({
+  subtotal: subtotal.toString(),
+  depositTotal: depositTotal.toString(),
+  returnDate: returnDate ?? "",
+  rentalDays: rentalDays.toString(),
+  ...(sizes ? { sizes } : {}),
+  customerId: customerId ?? "",
+  discount: discount.toString(),
+  coupon: coupon ?? "",
+  currency,
+  taxRate: taxRate.toString(),
+  taxAmount: taxAmount.toString(),
+  ...(clientIp ? { client_ip: clientIp } : {}),
+});
+
 /* ------------------------------------------------------------------ *
  *  Route handler
  * ------------------------------------------------------------------ */
@@ -212,57 +257,57 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     payment_method_options: {
       card: { request_three_d_secure: "automatic" },
     },
-    metadata: {
-      subtotal: subtotal.toString(),
-      depositTotal: depositTotal.toString(),
-      returnDate: returnDate ?? "",
-      rentalDays: rentalDays.toString(),
-      customerId: customer ?? "",
-      discount: discount.toString(),
-      coupon: couponDef?.code ?? "",
+    metadata: buildCheckoutMetadata({
+      subtotal,
+      depositTotal,
+      returnDate,
+      rentalDays,
+      customerId: customer,
+      discount,
+      coupon: couponDef?.code,
       currency,
-      taxRate: taxRate.toString(),
-      taxAmount: taxAmount.toString(),
-      ...(clientIp ? { client_ip: clientIp } : {}),
-    },
+      taxRate,
+      taxAmount,
+      clientIp,
+    }),
   } as any;
 
   if (billing_details) {
     (paymentIntentData as any).billing_details = billing_details;
   }
 
-    const stripeSession = await stripe.checkout.sessions.create({
+  const stripeSession = await stripe.checkout.sessions.create({
     mode: "payment",
     customer,
     line_items,
     success_url: `${req.nextUrl.origin}/success`,
     cancel_url: `${req.nextUrl.origin}/cancelled`,
     payment_intent_data: paymentIntentData,
-    metadata: {
-      subtotal: subtotal.toString(),
-      depositTotal: depositTotal.toString(),
-      returnDate: returnDate ?? "",
-      rentalDays: rentalDays.toString(),
+    metadata: buildCheckoutMetadata({
+      subtotal,
+      depositTotal,
+      returnDate,
+      rentalDays,
       sizes: sizesMeta,
-      customerId: customer ?? "",
-      discount: discount.toString(),
-      coupon: couponDef?.code ?? "",
+      customerId: customer,
+      discount,
+      coupon: couponDef?.code,
       currency,
-      taxRate: taxRate.toString(),
-      taxAmount: taxAmount.toString(),
-      ...(clientIp ? { client_ip: clientIp } : {}),
-    },
+      taxRate,
+      taxAmount,
+      clientIp,
+    }),
     expand: ["payment_intent"],
   });
 
   /* 6️⃣ Return client credentials ------------------------------------------ */
-    const clientSecret =
-      typeof stripeSession.payment_intent === "string"
-        ? undefined
-        : stripeSession.payment_intent?.client_secret;
+  const clientSecret =
+    typeof stripeSession.payment_intent === "string"
+      ? undefined
+      : stripeSession.payment_intent?.client_secret;
 
-    return NextResponse.json({
-      clientSecret,
-      sessionId: stripeSession.id,
-    });
+  return NextResponse.json({
+    clientSecret,
+    sessionId: stripeSession.id,
+  });
 }

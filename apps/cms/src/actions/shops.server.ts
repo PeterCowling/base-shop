@@ -35,10 +35,16 @@ export async function updateShop(
   const current = await getShopById<Shop>(shop);
   if (current.id !== id) throw new Error(`Shop ${id} not found in ${shop}`);
 
+  // Read theme data separately so we can persist defaults and overrides
+  const themeDefaultsRaw = formData.get("themeDefaults") as string | null;
+  const themeOverridesRaw = formData.get("themeOverrides") as string | null;
+
   const parsed = shopSchema.safeParse({
     ...Object.fromEntries(
       formData as unknown as Iterable<[string, FormDataEntryValue]>
     ),
+    themeDefaults: themeDefaultsRaw ?? "{}",
+    themeOverrides: themeOverridesRaw ?? "{}",
     trackingProviders: formData.getAll("trackingProviders"),
   });
   if (!parsed.success) {

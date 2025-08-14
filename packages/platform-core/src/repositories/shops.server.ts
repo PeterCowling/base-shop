@@ -9,6 +9,7 @@ import { defaultFilterMappings } from "../defaultFilterMappings";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "../dataRoot";
 import { baseTokens, loadThemeTokens } from "../themeTokens";
+import { updateShopInRepo } from "./shop.server";
 export {
   diffHistory,
   getShopSettings,
@@ -26,25 +27,30 @@ async function ensureDir(shop: string): Promise<void> {
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 
+async function applyThemeData(data: Shop): Promise<Shop> {
+  const defaults =
+    Object.keys(data.themeDefaults ?? {}).length > 0
+      ? data.themeDefaults!
+      : {
+          ...baseTokens,
+          ...(await loadThemeTokens(data.themeId)),
+        };
+  const overrides = data.themeOverrides ?? {};
+  return {
+    ...data,
+    themeDefaults: defaults,
+    themeOverrides: overrides,
+    themeTokens: { ...defaults, ...overrides },
+    navigation: data.navigation ?? [],
+  } as Shop;
+}
+
 export async function readShop(shop: string): Promise<Shop> {
   try {
     const rec = await prisma.shop.findUnique({ where: { id: shop } });
     if (rec) {
       const data = shopSchema.parse(rec.data);
-      const defaults =
-        Object.keys(data.themeDefaults ?? {}).length > 0
-          ? data.themeDefaults
-          : {
-              ...baseTokens,
-              ...(await loadThemeTokens(data.themeId)),
-            };
-      const overrides = data.themeOverrides ?? {};
-      // ensure callers always receive defaults, overrides, and merged tokens
-      data.themeDefaults = defaults;
-      data.themeOverrides = overrides;
-      data.themeTokens = { ...defaults, ...overrides };
-      if (!data.navigation) data.navigation = [];
-      return data as Shop;
+      return await applyThemeData(data as Shop);
     }
   } catch {
     // ignore DB errors and fall back to filesystem
@@ -53,43 +59,33 @@ export async function readShop(shop: string): Promise<Shop> {
     const buf = await fs.readFile(shopPath(shop), "utf8");
     const parsed = shopSchema.safeParse(JSON.parse(buf));
     if (parsed.success && parsed.data.id) {
-      const defaults =
-        Object.keys(parsed.data.themeDefaults ?? {}).length > 0
-          ? parsed.data.themeDefaults
-          : {
-              ...baseTokens,
-              ...(await loadThemeTokens(parsed.data.themeId)),
-            };
-      const overrides = parsed.data.themeOverrides ?? {};
-      // ensure callers always receive defaults, overrides, and merged tokens
-      parsed.data.themeDefaults = defaults;
-      parsed.data.themeOverrides = overrides;
-      parsed.data.themeTokens = { ...defaults, ...overrides };
-      if (!parsed.data.navigation) parsed.data.navigation = [];
-      return parsed.data as Shop;
+      return await applyThemeData(parsed.data as Shop);
     }
   } catch {
     // ignore
   }
   const themeId = "base";
-  const themeDefaults = {
-    ...baseTokens,
-    ...(await loadThemeTokens(themeId)),
-  };
-  const themeTokens = { ...themeDefaults };
-
-  return {
+  const empty: Shop = {
     id: shop,
     name: shop,
     catalogFilters: [],
     themeId,
-    themeDefaults,
+    themeDefaults: {},
     themeOverrides: {},
-    themeTokens,
+    themeTokens: {},
     filterMappings: { ...defaultFilterMappings },
     priceOverrides: {},
     localeOverrides: {},
     navigation: [],
     analyticsEnabled: false,
   };
+  return await applyThemeData(empty);
+}
+
+export async function writeShop(
+  shop: string,
+  patch: Partial<Shop> & { id: string }
+): Promise<Shop> {
+  const updated = await updateShopInRepo<Shop>(shop, patch);
+  return applyThemeData(updated);
 }

@@ -7,6 +7,7 @@ import {
   readSeoAudits,
   type SeoAuditEntry,
 } from "@platform-core/repositories/seoAudit.server";
+import { nowIso } from "@acme/date-utils";
 
 async function runLighthouse(url: string): Promise<SeoAuditEntry> {
   const chrome = await chromeLauncher.launch({ chromeFlags: ["--headless"] });
@@ -25,7 +26,7 @@ async function runLighthouse(url: string): Promise<SeoAuditEntry> {
         a.title,
       )
       .map((a) => a.title as string);
-    return { timestamp: new Date().toISOString(), score, recommendations };
+    return { timestamp: nowIso(), score, recommendations };
   } finally {
     await chrome.kill();
   }

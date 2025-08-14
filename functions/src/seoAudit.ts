@@ -5,12 +5,13 @@ import { runSeoAudit } from "../../scripts/seo-audit";
 import { trackEvent } from "@platform-core/analytics";
 import { sendCampaignEmail } from "@acme/email";
 import { coreEnv } from "@acme/config/env/core";
+import { nowIso } from "@acme/date-utils";
 
 async function auditShop(shop: string): Promise<void> {
   const url = `http://localhost:3000/${shop}`;
   const { score, recommendations } = await runSeoAudit(url);
   const record = {
-    timestamp: new Date().toISOString(),
+    timestamp: nowIso(),
     score,
     recommendations,
   };

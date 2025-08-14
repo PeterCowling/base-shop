@@ -1,6 +1,7 @@
 import { jest } from "@jest/globals";
 import type { Page } from "@acme/types";
 import { createHmac } from "node:crypto";
+import { nowIso } from "@acme/date-utils";
 
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "upgradesecret";
@@ -24,8 +25,8 @@ test("valid upgrade token returns page JSON", async () => {
     status: "draft",
     components: [],
     seo: { title: "Home" },
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: nowIso(),
+    updatedAt: nowIso(),
     createdBy: "tester",
   };
   const getPages = jest.fn(async () => [page]);

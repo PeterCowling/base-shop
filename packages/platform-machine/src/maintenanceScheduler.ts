@@ -23,7 +23,7 @@ export async function runMaintenanceScan(
     for (const item of inventory) {
       const product = productMap.get(item.sku);
       if (!product) continue;
-      const wear = (item as any).wearCount ?? 0;
+      const wear = item.wearCount ?? 0;
       const limit = product.wearAndTearLimit ?? Infinity;
       const cycle = product.maintenanceCycle ?? Infinity;
       if (wear >= limit) {

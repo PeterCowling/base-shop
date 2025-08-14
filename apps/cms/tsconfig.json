@@ -1,5 +1,5 @@
 {
-  "extends": "@acme/config/tsconfig.app.json",
+  "extends": "../../packages/config/tsconfig.app.json",
   "include": [
     "src/**/*",
     "../../src/lib/**/*",

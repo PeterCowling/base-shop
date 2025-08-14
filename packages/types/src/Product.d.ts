@@ -24,6 +24,10 @@ export declare const skuSchema: z.ZodObject<{
     weeklyRate: z.ZodOptional<z.ZodNumber>;
     /** monthly rental rate in minor currency units */
     monthlyRate: z.ZodOptional<z.ZodNumber>;
+    /** maximum number of rentals before retirement */
+    wearAndTearLimit: z.ZodOptional<z.ZodNumber>;
+    /** number of rentals between required maintenance */
+    maintenanceCycle: z.ZodOptional<z.ZodNumber>;
     /** availability windows as ISO timestamps */
     availability: z.ZodOptional<z.ZodArray<z.ZodObject<{
         from: z.ZodString;
@@ -73,6 +77,8 @@ export declare const skuSchema: z.ZodObject<{
     dailyRate?: number | undefined;
     weeklyRate?: number | undefined;
     monthlyRate?: number | undefined;
+    wearAndTearLimit?: number | undefined;
+    maintenanceCycle?: number | undefined;
     availability?: {
         from: string;
         to: string;
@@ -97,6 +103,8 @@ export declare const skuSchema: z.ZodObject<{
     dailyRate?: number | undefined;
     weeklyRate?: number | undefined;
     monthlyRate?: number | undefined;
+    wearAndTearLimit?: number | undefined;
+    maintenanceCycle?: number | undefined;
     availability?: {
         from: string;
         to: string;
@@ -124,6 +132,10 @@ export interface ProductCore {
     weeklyRate?: number;
     /** monthly rental rate in minor currency units */
     monthlyRate?: number;
+    /** maximum number of rentals before retirement */
+    wearAndTearLimit?: number;
+    /** number of rentals between required maintenance */
+    maintenanceCycle?: number;
     /** availability windows as ISO timestamps */
     availability?: {
         from: string;

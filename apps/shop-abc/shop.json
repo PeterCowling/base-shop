@@ -13,6 +13,7 @@
   "priceOverrides": {},
   "localeOverrides": {},
   "analyticsEnabled": true,
+  "rentalInventoryAllocation": false,
   "plugins": {
     "paypal": {
       "clientId": "abc-client",

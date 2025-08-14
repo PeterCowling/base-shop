@@ -9,6 +9,7 @@
   "billingProvider": "stripe",
   "priceOverrides": {},
   "localeOverrides": {},
+  "rentalInventoryAllocation": false,
   "analyticsEnabled": false,
   "plugins": {
     "paypal": {

@@ -67,6 +67,7 @@ export async function updateShop(
     name: data.name,
     themeId: data.themeId,
     catalogFilters: data.catalogFilters,
+    enableEditorial: data.enableEditorial,
     themeDefaults,
     themeOverrides: overrides,
     themeTokens,

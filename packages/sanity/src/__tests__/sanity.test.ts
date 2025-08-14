@@ -8,7 +8,12 @@ jest.mock('@platform-core/shops', () => ({
   getSanityConfig: jest.fn(),
 }));
 
-import { fetchPublishedPosts, fetchPostBySlug, getConfig } from '../index';
+import {
+  fetchPublishedPosts,
+  fetchPostBySlug,
+  getConfig,
+  publishQueuedPost,
+} from '../index';
 import { createClient } from '@sanity/client';
 import { getShopById } from '@platform-core/repositories/shop.server';
 import { getSanityConfig } from '@platform-core/shops';
@@ -51,5 +56,20 @@ describe('sanity.server', () => {
   it('getConfig throws when env vars are missing', async () => {
     getSanityConfigMock.mockReturnValue(undefined);
     await expect(getConfig('shop1')).rejects.toThrow('Missing Sanity credentials for shop shop1');
+  });
+
+  it('publishQueuedPost patches first unpublished post', async () => {
+    const commitMock = jest.fn();
+    const setMock = jest.fn().mockReturnValue({ commit: commitMock });
+    const patchMock = jest.fn().mockReturnValue({ set: setMock });
+    fetchMock.mockResolvedValue({ _id: 'p1' });
+    createClientMock.mockReturnValue({ fetch: fetchMock, patch: patchMock });
+
+    await publishQueuedPost('shop1');
+
+    expect(fetchMock).toHaveBeenCalled();
+    expect(patchMock).toHaveBeenCalledWith('p1');
+    expect(setMock).toHaveBeenCalled();
+    expect(commitMock).toHaveBeenCalled();
   });
 });

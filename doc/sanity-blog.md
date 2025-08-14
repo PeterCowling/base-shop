@@ -13,6 +13,14 @@ When setting up the connection the CMS seeds a minimal schema. Posts include a `
 3. The CMS uses the values to verify access via the `verifyCredentials` helper from the plugin.
 4. On success the connection is stored with the shop settings.
 
+## Enable or disable editorial content
+
+The blog can be toggled in **Settings → Shop** using the **Enable blog** checkbox. This sets the `enableEditorial` flag in the shop settings. When disabled the storefront hides blog routes and the daily publication job skips the shop.
+
+## Daily publication job
+
+A scheduled worker runs once per day and calls `@acme/sanity` to publish the next queued post for every shop. This keeps editorial content fresh without manual intervention. Shops that prefer not to use editorial content can simply leave the blog disabled; the worker will ignore them.
+
 ## Publish posts
 
 1. In **Blog → New Post** fill out the post details.

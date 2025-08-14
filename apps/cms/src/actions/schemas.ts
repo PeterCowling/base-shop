@@ -51,6 +51,10 @@ export const shopSchema = z
           .map((v) => v.trim())
           .filter(Boolean)
       ),
+    enableEditorial: z
+      .preprocess((v) => v === "on", z.boolean())
+      .optional()
+      .default(false),
     themeOverrides: jsonRecord,
     themeDefaults: jsonRecord,
     themeTokens: jsonRecord.optional(),

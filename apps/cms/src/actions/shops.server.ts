@@ -13,6 +13,8 @@ import {
   updateUpsReturns as serviceUpdateUpsReturns,
   updatePremierDelivery as serviceUpdatePremierDelivery,
   updateAiCatalog as serviceUpdateAiCatalog,
+  getStockAlertConfig as serviceGetStockAlertConfig,
+  updateStockAlerts as serviceUpdateStockAlerts,
   resetThemeOverride as serviceResetThemeOverride,
   type Shop,
   type ShopSettings,
@@ -90,6 +92,15 @@ export async function updatePremierDelivery(
 export async function updateAiCatalog(shop: string, formData: FormData) {
   "use server";
   return serviceUpdateAiCatalog(shop, formData);
+}
+
+export function getStockAlertConfig(shop: string) {
+  return serviceGetStockAlertConfig(shop);
+}
+
+export async function updateStockAlerts(shop: string, formData: FormData) {
+  "use server";
+  return serviceUpdateStockAlerts(shop, formData);
 }
 
 export async function resetThemeOverride(shop: string, token: string) {

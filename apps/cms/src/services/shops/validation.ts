@@ -160,6 +160,33 @@ export function parseUpsReturnsForm(formData: FormData): {
   return { data: parsed.data };
 }
 
+const stockAlertSchema = z
+  .object({
+    recipients: z.array(z.string().email()).default([]),
+    webhook: z.string().url().optional().or(z.literal("")),
+    threshold: z.coerce.number().int().nonnegative().optional(),
+  })
+  .strict();
+
+export function parseStockAlertForm(formData: FormData): {
+  data?: z.infer<typeof stockAlertSchema>;
+  errors?: Record<string, string[]>;
+} {
+  const recipients = String(formData.get("recipients") ?? "")
+    .split(/[,\n]+/)
+    .map((r) => r.trim())
+    .filter(Boolean);
+  const parsed = stockAlertSchema.safeParse({
+    recipients,
+    webhook: formData.get("webhook"),
+    threshold: formData.get("threshold"),
+  });
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+  return { data: parsed.data };
+}
+
 const premierDeliverySchema = z
   .object({
     regions: z.array(z.string().min(1)).default([]),
@@ -222,3 +249,4 @@ export type ReverseLogisticsForm = z.infer<typeof reverseLogisticsSchema>;
 export type UpsReturnsForm = z.infer<typeof returnsSchema>;
 export type PremierDeliveryForm = z.infer<typeof premierDeliverySchema>;
 export type AiCatalogForm = z.infer<typeof aiCatalogFormSchema>;
+export type StockAlertForm = z.infer<typeof stockAlertSchema>;

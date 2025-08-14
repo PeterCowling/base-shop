@@ -7,6 +7,11 @@ import {
   getShopById,
   updateShopInRepo,
 } from "@platform-core/src/repositories/shop.server";
+import {
+  getStockAlertConfig,
+  saveStockAlertConfig,
+  type StockAlertConfig,
+} from "@platform-core/src/repositories/stockAlerts.server";
 import type { Shop, ShopSettings } from "@acme/types";
 
 export function fetchShop(shop: string) {
@@ -30,4 +35,15 @@ export function persistSettings(shop: string, settings: ShopSettings) {
 
 export function fetchDiffHistory(shop: string) {
   return diffHistory(shop);
+}
+
+export function fetchStockAlertConfig(shop: string) {
+  return getStockAlertConfig(shop);
+}
+
+export function persistStockAlertConfig(
+  shop: string,
+  config: StockAlertConfig,
+) {
+  return saveStockAlertConfig(shop, config);
 }

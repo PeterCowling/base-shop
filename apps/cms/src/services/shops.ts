@@ -18,6 +18,7 @@ import {
   parseUpsReturnsForm,
   parsePremierDeliveryForm,
   parseAiCatalogForm,
+  parseStockAlertForm,
 } from "./shops/validation";
 import { buildThemeData, removeThemeToken, mergeThemePatch } from "./shops/theme";
 import {
@@ -26,7 +27,10 @@ import {
   fetchSettings,
   persistSettings,
   fetchDiffHistory,
+  fetchStockAlertConfig,
+  persistStockAlertConfig,
 } from "./shops/persistence";
+import type { StockAlertConfig } from "@platform-core/src/repositories/stockAlerts.server";
 
 export async function updateShop(
   shop: string,
@@ -306,6 +310,23 @@ export async function updateAiCatalog(
   const updated: ShopSettings = { ...current, seo };
   await persistSettings(shop, updated);
   return { settings: updated };
+}
+
+export function getStockAlertConfig(shop: string) {
+  return fetchStockAlertConfig(shop);
+}
+
+export async function updateStockAlerts(
+  shop: string,
+  formData: FormData,
+): Promise<{ config?: StockAlertConfig; errors?: Record<string, string[]> }> {
+  await authorize();
+  const { data, errors } = parseStockAlertForm(formData);
+  if (!data) {
+    return { errors };
+  }
+  await persistStockAlertConfig(shop, data);
+  return { config: data };
 }
 
 export async function patchTheme(

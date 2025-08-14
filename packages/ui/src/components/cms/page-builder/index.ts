@@ -40,6 +40,7 @@ export { default as PageToolbar } from "./PageToolbar";
 export { default as PageCanvas } from "./PageCanvas";
 export { default as PageSidebar } from "./PageSidebar";
 export { historyStateSchema, reducer } from "./state";
-export { default as usePageBuilderDrag } from "./usePageBuilderDrag";
+export { default as usePageBuilderState } from "./hooks/usePageBuilderState";
+export { default as usePageBuilderDnD } from "./hooks/usePageBuilderDnD";
 export { default as useCanvasDrag } from "./useCanvasDrag";
 export { default as useCanvasResize } from "./useCanvasResize";

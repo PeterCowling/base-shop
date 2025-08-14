@@ -3,7 +3,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { PageComponent } from "@acme/types";
-import { memo, useState } from "react";
+import { memo, useState, useCallback, useEffect } from "react";
 import {
   atomRegistry,
   moleculeRegistry,
@@ -50,19 +50,34 @@ const palette = {
   overlays: createPaletteItems(overlayRegistry),
 } as const;
 
+interface PaletteItemProps extends PaletteMeta {
+  onAdd: (type: PageComponent["type"], label: string) => void;
+}
+
 const PaletteItem = memo(function PaletteItem({
   type,
   label,
   icon,
   description,
   previewImage,
-}: PaletteMeta) {
+  onAdd,
+}: PaletteItemProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
       id: type,
       data: { from: "palette", type },
     });
   const [open, setOpen] = useState(false);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onAdd(type, label);
+      }
+    },
+    [onAdd, type, label],
+  );
 
   const content = (
     <div
@@ -77,6 +92,7 @@ const PaletteItem = memo(function PaletteItem({
       className="flex cursor-grab items-center gap-2 rounded border p-2 text-sm"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
+      onKeyDown={handleKeyDown}
     >
       <img
         src={icon}
@@ -108,8 +124,28 @@ const PaletteItem = memo(function PaletteItem({
     </Popover>
   );
 });
-const Palette = memo(function Palette() {
+
+interface PaletteProps {
+  onAdd: (type: PageComponent["type"]) => void;
+}
+
+const Palette = memo(function Palette({ onAdd }: PaletteProps) {
   const [search, setSearch] = useState("");
+  const [liveMessage, setLiveMessage] = useState("");
+
+  const handleAdd = useCallback(
+    (type: PageComponent["type"], label: string) => {
+      onAdd(type);
+      setLiveMessage(`${label} added`);
+    },
+    [onAdd],
+  );
+
+  useEffect(() => {
+    if (!liveMessage) return;
+    const t = setTimeout(() => setLiveMessage(""), 500);
+    return () => clearTimeout(t);
+  }, [liveMessage]);
 
   return (
     <div className="flex flex-col gap-4" data-tour="drag-component">
@@ -121,6 +157,9 @@ const Palette = memo(function Palette() {
         aria-label="Search components"
         className="rounded border p-2 text-sm"
       />
+      <div aria-live="polite" className="sr-only">
+        {liveMessage}
+      </div>
       {Object.entries(palette).map(([category, items]) => {
         const filtered = items.filter((p) =>
           p.label.toLowerCase().includes(search.toLowerCase()),
@@ -138,6 +177,7 @@ const Palette = memo(function Palette() {
                   icon={p.icon}
                   description={p.description}
                   previewImage={p.previewImage}
+                  onAdd={handleAdd}
                 />
               ))}
             </div>

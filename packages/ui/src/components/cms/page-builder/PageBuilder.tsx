@@ -15,6 +15,7 @@ import { Toast, Spinner } from "../../atoms";
 import { CheckIcon } from "@radix-ui/react-icons";
 import Palette from "./Palette";
 import { getShopFromPath } from "@platform-core/utils";
+import { ulid } from "ulid";
 import useFileDrop from "./hooks/useFileDrop";
 import usePageBuilderState from "./hooks/usePageBuilderState";
 import usePageBuilderDnD from "./hooks/usePageBuilderDnD";
@@ -128,6 +129,21 @@ const PageBuilder = memo(function PageBuilder({
     setSnapPosition,
   });
 
+  const handleAddFromPalette = useCallback(
+    (type: PageComponent["type"]) => {
+      const isContainer = CONTAINER_TYPES.includes(type);
+      const component = {
+        id: ulid(),
+        type,
+        ...(defaults[type] ?? {}),
+        ...(isContainer ? { children: [] } : {}),
+      } as PageComponent;
+      dispatch({ type: "add", component });
+      setSelectedId(component.id);
+    },
+    [dispatch, setSelectedId],
+  );
+
   const { viewportStyle, frameClass } = useViewport(device);
 
   useEffect(() => {
@@ -204,7 +220,7 @@ const PageBuilder = memo(function PageBuilder({
   return (
     <div className="flex gap-4" style={style}>
       <aside className="w-48 shrink-0">
-        <Palette />
+        <Palette onAdd={handleAddFromPalette} />
       </aside>
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex items-center justify-between">

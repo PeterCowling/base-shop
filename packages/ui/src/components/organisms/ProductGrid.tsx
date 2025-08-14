@@ -5,6 +5,8 @@ import { ProductQuickView } from "../overlays/ProductQuickView";
 import type { SKU } from "@acme/types";
 import { ProductCard } from "./ProductCard";
 
+export type Product = SKU;
+
 export interface ProductGridProps extends React.HTMLAttributes<HTMLDivElement> {
   products: SKU[];
   /**

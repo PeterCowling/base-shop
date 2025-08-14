@@ -4,7 +4,7 @@
 import type { MediaItem } from "@acme/types";
 import useFileUpload from "@ui/hooks/useFileUpload";
 import Image from "next/image";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState, type ChangeEvent } from "react";
 import {
   Button,
   Dialog,
@@ -13,6 +13,7 @@ import {
   DialogTrigger,
   Input,
 } from "../../atoms/shadcn";
+import { Loader } from "../../atoms";
 import useMediaLibrary from "./useMediaLibrary";
 
 interface Props {
@@ -22,7 +23,10 @@ interface Props {
 
 function ImagePicker({ onSelect, children }: Props) {
   const [open, setOpen] = useState(false);
-  const { media, setMedia, loadMedia, shop } = useMediaLibrary();
+  const [search, setSearch] = useState("");
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const { media, setMedia, loadMedia, shop, loading, error: mediaError } =
+    useMediaLibrary();
 
   const {
     pendingFile,
@@ -33,7 +37,8 @@ function ImagePicker({ onSelect, children }: Props) {
     inputRef,
     onFileChange,
     handleUpload,
-    error,
+    error: uploadError,
+    progress,
   } = useFileUpload({
     shop: shop ?? "",
     requiredOrientation: "landscape",
@@ -43,8 +48,26 @@ function ImagePicker({ onSelect, children }: Props) {
   });
 
   useEffect(() => {
-    if (open) void loadMedia();
+    if (pendingFile) {
+      const url = URL.createObjectURL(pendingFile);
+      setPreviewUrl(url);
+      return () => URL.revokeObjectURL(url);
+    }
+    setPreviewUrl(null);
+  }, [pendingFile]);
+
+  useEffect(() => {
+    if (open) {
+      setSearch("");
+      void loadMedia();
+    }
   }, [open, loadMedia]);
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const q = e.target.value;
+    setSearch(q);
+    void loadMedia(q);
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -65,6 +88,23 @@ function ImagePicker({ onSelect, children }: Props) {
             </Button>
           )}
         </div>
+        {previewUrl && (
+          <div className="relative h-32 w-full overflow-hidden rounded">
+            <img
+              src={previewUrl}
+              alt="preview"
+              className="h-full w-full object-cover"
+            />
+            {progress && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 text-white">
+                <Loader className="mb-2" />
+                <span className="text-xs">
+                  Uploading… {progress.done}/{progress.total}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
         {pendingFile && isValid && (
           <Input
             value={altText}
@@ -79,35 +119,58 @@ function ImagePicker({ onSelect, children }: Props) {
               : `Selected image is ${actual}; please upload a landscape image.`}
           </p>
         )}
-        {error && (
+        {uploadError && (
           <p className="text-sm text-danger" data-token="--color-danger">
-            {error}
+            {uploadError}
           </p>
         )}
+        <Input
+          value={search}
+          onChange={handleSearch}
+          placeholder="Search media..."
+        />
         <div className="grid max-h-64 grid-cols-3 gap-2 overflow-auto">
-          {media.filter((m) => m.type === "image").map((m) => (
-            <button
-              key={m.url}
-              type="button"
-              onClick={() => {
-                onSelect(m.url);
-                setOpen(false);
-              }}
-              className="relative aspect-square"
+          {loading && (
+            <div className="col-span-3 flex items-center justify-center">
+              <Loader />
+            </div>
+          )}
+          {!loading && mediaError && (
+            <p
+              className="text-danger col-span-3 text-sm"
+              data-token="--color-danger"
             >
-              <Image
-                src={m.url}
-                alt={m.altText || "media"}
-                fill
-                className="object-cover"
-              />
-            </button>
-          ))}
-          {media.filter((m) => m.type === "image").length === 0 && (
-            <p className="text-muted-foreground col-span-3 text-sm">
-              No media found.
+              {mediaError}
             </p>
           )}
+          {!loading && !mediaError &&
+            media
+              .filter((m) => m.type === "image")
+              .map((m) => (
+                <button
+                  key={m.url}
+                  type="button"
+                  onClick={() => {
+                    onSelect(m.url);
+                    setOpen(false);
+                  }}
+                  className="relative aspect-square"
+                >
+                  <Image
+                    src={m.url}
+                    alt={m.altText || "media"}
+                    fill
+                    className="object-cover"
+                  />
+                </button>
+              ))}
+          {!loading &&
+            !mediaError &&
+            media.filter((m) => m.type === "image").length === 0 && (
+              <p className="text-muted-foreground col-span-3 text-sm">
+                No media found.
+              </p>
+            )}
         </div>
       </DialogContent>
     </Dialog>

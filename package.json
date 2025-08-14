@@ -95,7 +95,7 @@
     "sharp": "^0.34.2",
     "stripe": "^18.2.1",
     "ulid": "^3.0.1",
-    "zod": "^3.25.67"
+    "zod": "^3.25.73"
   },
   "devDependencies": {
     "@acme/tailwind-config": "workspace:*",
@@ -160,7 +160,8 @@
   "pnpm": {
     "overrides": {
       "@shadcn/ui": "0.0.4",
-      "scheduler": "0.26.0"
+      "scheduler": "0.26.0",
+      "zod": "3.25.73"
     }
   }
 }

@@ -29,12 +29,16 @@ class PreviewErrorBoundary extends React.Component<{ children: React.ReactNode }
   }
 }
 
-export interface ComponentPreviewProps {
+export interface ComponentPreviewProps<
+  Props extends Record<string, unknown> = Record<string, unknown>,
+> {
   component: UpgradeComponent;
-  componentProps?: Record<string, any>;
+  componentProps?: Props;
 }
 
-export default function ComponentPreview({ component, componentProps = {} }: ComponentPreviewProps) {
+export default function ComponentPreview<
+  Props extends Record<string, unknown> = Record<string, unknown>,
+>({ component, componentProps = {} as Props }: ComponentPreviewProps<Props>) {
   const [NewComp, setNewComp] = useState<React.ComponentType | null>(null);
   const [OldComp, setOldComp] = useState<React.ComponentType | null>(null);
   const [showCompare, setShowCompare] = useState(false);
@@ -44,20 +48,23 @@ export default function ComponentPreview({ component, componentProps = {} }: Com
     const load = async (p: string) => {
       if (
         typeof globalThis !== "undefined" &&
-        (globalThis as any).__UPGRADE_MOCKS__?.[p]
+        globalThis.__UPGRADE_MOCKS__?.[p]
       ) {
-        return (globalThis as any).__UPGRADE_MOCKS__[p];
+        return globalThis.__UPGRADE_MOCKS__[p];
       }
-      return import(p);
+      const m = await import(p);
+      return (m as Record<string, React.ComponentType>)[
+        component.componentName
+      ] ?? m.default;
     };
 
     load(basePath)
-      .then((m) => setNewComp(() => (m[component.componentName] ?? m.default)))
+      .then((comp) => setNewComp(() => comp))
       .catch((err) =>
         console.error("Failed to load component", component.componentName, err)
       );
     load(`${basePath}.bak`)
-      .then((m) => setOldComp(() => (m[component.componentName] ?? m.default)))
+      .then((comp) => setOldComp(() => comp))
       .catch(() => {});
   }, [component]);
 

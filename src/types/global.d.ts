@@ -4,6 +4,8 @@
 export {};
 import type * as React from "react";
 
+export type UpgradeMocks = Record<string, React.ComponentType>;
+
 declare global {
   interface BarcodeDetector {
     detect(image: ImageBitmapSource): Promise<DetectedBarcode[]>;
@@ -19,6 +21,8 @@ declare global {
       new (options?: { formats?: string[] }): BarcodeDetector;
     };
   }
+
+  var __UPGRADE_MOCKS__: UpgradeMocks | undefined;
 }
 
 declare module "react" {

@@ -26,6 +26,14 @@ exports[`base theme tokens tokens snapshot 1`] = `
     "dark": "0 0% 93%",
     "light": "0 0% 10%",
   },
+  "--color-info": {
+    "dark": "210 90% 35%",
+    "light": "210 90% 96%",
+  },
+  "--color-info-fg": {
+    "dark": "210 90% 96%",
+    "light": "210 90% 35%",
+  },
   "--color-muted": {
     "dark": "0 0% 60%",
     "light": "0 0% 88%",
@@ -37,6 +45,22 @@ exports[`base theme tokens tokens snapshot 1`] = `
   "--color-primary-fg": {
     "dark": "0 0% 10%",
     "light": "0 0% 100%",
+  },
+  "--color-success": {
+    "dark": "142 72% 27%",
+    "light": "142 76% 97%",
+  },
+  "--color-success-fg": {
+    "dark": "142 70% 94%",
+    "light": "142 72% 30%",
+  },
+  "--color-warning": {
+    "dark": "35 90% 30%",
+    "light": "40 90% 96%",
+  },
+  "--color-warning-fg": {
+    "dark": "40 90% 96%",
+    "light": "25 85% 31%",
   },
   "--font-mono": {
     "light": ""Geist Mono", ui-monospace, monospace",

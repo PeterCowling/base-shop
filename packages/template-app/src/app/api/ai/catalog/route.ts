@@ -4,7 +4,7 @@ import { getProductById } from "@platform-core/src/products";
 import { readRepo } from "@platform-core/repositories/products.server";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { trackEvent } from "@platform-core/src/analytics";
-import type { ProductPublication } from "@acme/types";
+import type { ProductPublication, SKU } from "@acme/types";
 import { coreEnv } from "@acme/config/env/core";
 
 const DEFAULT_FIELDS = ["id", "title", "description", "price", "media"] as const;
@@ -54,17 +54,15 @@ export async function GET(req: NextRequest) {
   }
 
   const items = paged.map((p) => {
-    const sku = getProductById(p.sku) || {};
+    const sku: SKU | undefined = getProductById(p.sku);
     const item: Record<string, unknown> = {};
     if (fields.includes("id")) item.id = p.id;
     if (fields.includes("title")) item.title = p.title;
     if (fields.includes("description")) item.description = p.description;
     if (fields.includes("price"))
-      item.price = p.price ?? (sku as any).price ?? null;
+      item.price = p.price ?? sku?.price ?? null;
     if (fields.includes("media")) {
-      item.media = p.media?.length
-        ? p.media
-        : (sku as any).media ?? [];
+      item.media = p.media?.length ? p.media : sku?.media ?? [];
     }
     return item;
   });

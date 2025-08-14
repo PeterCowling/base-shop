@@ -50,7 +50,11 @@ export function Text<C extends React.ElementType = "p">({
 
   /* `tag as ValidComponent` erases any possible `undefined` and guarantees the
      argument fits the overload `(type: string | FunctionComponent | ComponentClass)` */
-  return createElement(tag as ValidComponent, rest as any, value);
+  return createElement(
+    tag as ValidComponent,
+    rest as ComponentPropsWithoutRef<C>,
+    value,
+  );
 }
 
 /* ──────────────────────────────────────────────────────────────────────────

@@ -2,7 +2,6 @@
 
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
-import StyleEditor from "@/components/cms/StyleEditor";
 import { updateShop } from "@cms/actions/shops.server";
 import ColorContrastChecker from "color-contrast-checker";
 import {
@@ -14,98 +13,15 @@ import {
   useEffect,
   type CSSProperties,
 } from "react";
-import WizardPreview from "../../../wizard/WizardPreview";
 import { type TokenMap } from "../../../wizard/tokenUtils";
-import { savePreset, deletePreset } from "./page";
-
-const HEX_RE = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
-const HSL_RE = /^\d+(?:\.\d+)?\s+\d+(?:\.\d+)?%\s+\d+(?:\.\d+)?%$/;
-
-function isHex(value: string) {
-  return HEX_RE.test(value);
-}
-
-function isHsl(value: string) {
-  return HSL_RE.test(value);
-}
-
-function hslToHex(hsl: string): string {
-  const [h, s, l] = hsl
-    .split(/\s+/)
-    .map((part, i) => (i === 0 ? parseFloat(part) : parseFloat(part) / 100));
-  const c = (1 - Math.abs(2 * l - 1)) * s;
-  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-  const m = l - c / 2;
-  let r = 0,
-    g = 0,
-    b = 0;
-  if (h < 60) {
-    r = c;
-    g = x;
-  } else if (h < 120) {
-    r = x;
-    g = c;
-  } else if (h < 180) {
-    g = c;
-    b = x;
-  } else if (h < 240) {
-    g = x;
-    b = c;
-  } else if (h < 300) {
-    r = x;
-    b = c;
-  } else {
-    r = c;
-    b = x;
-  }
-  return (
-    "#" +
-    [r, g, b]
-      .map((v) => Math.round((v + m) * 255).toString(16).padStart(2, "0"))
-      .join("")
-  );
-}
-
-function hexToHsl(hex: string): string {
-  let r = 0,
-    g = 0,
-    b = 0;
-  let cleaned = hex.replace("#", "");
-  if (cleaned.length === 3) {
-    r = parseInt(cleaned[0] + cleaned[0], 16);
-    g = parseInt(cleaned[1] + cleaned[1], 16);
-    b = parseInt(cleaned[2] + cleaned[2], 16);
-  } else {
-    r = parseInt(cleaned.slice(0, 2), 16);
-    g = parseInt(cleaned.slice(2, 4), 16);
-    b = parseInt(cleaned.slice(4, 6), 16);
-  }
-  r /= 255;
-  g /= 255;
-  b /= 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  let h = 0,
-    s = 0;
-  const l = (max + min) / 2;
-  if (max !== min) {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0);
-        break;
-      case g:
-        h = (b - r) / d + 2;
-        break;
-      case b:
-        h = (r - g) / d + 4;
-        break;
-    }
-    h *= 60;
-  }
-  return `${Math.round(h)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
-}
+import {
+  hslToHex,
+  isHex,
+  isHsl,
+} from "@ui/utils/colorUtils";
+import { useThemePresets } from "./useThemePresets";
+import ColorInput from "./ColorInput";
+import PreviewPane from "./PreviewPane";
 
 interface Props {
   shop: string;
@@ -130,17 +46,29 @@ export default function ThemeEditor({
   const [themeDefaults, setThemeDefaults] = useState<Record<string, string>>(
     tokensByTheme[initialTheme],
   );
-  const [availableThemes, setAvailableThemes] = useState(themes);
-  const [tokensByThemeState, setTokensByThemeState] =
-    useState<Record<string, Record<string, string>>>(tokensByTheme);
-  const [presetThemes, setPresetThemes] = useState(presets);
-  const [presetName, setPresetName] = useState("");
+  const {
+    availableThemes,
+    tokensByThemeState,
+    presetThemes,
+    presetName,
+    setPresetName,
+    handleSavePreset,
+    handleDeletePreset,
+  } = useThemePresets({
+    shop,
+    initialThemes: themes,
+    initialTokensByTheme: tokensByTheme,
+    presets,
+    theme,
+    overrides,
+    setTheme,
+    setOverrides,
+    setThemeDefaults,
+  });
   const [contrastWarnings, setContrastWarnings] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
-  const [selectedToken, setSelectedToken] = useState<string | null>(null);
-  const styleEditorRef = useRef<HTMLDivElement | null>(null);
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByThemeState[theme];
@@ -169,15 +97,13 @@ export default function ThemeEditor({
 
   const handleOverrideChange =
     (key: string, defaultValue: string) =>
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target;
-      const converted = isHsl(defaultValue) ? hexToHsl(value) : value;
+    (value: string) => {
       setOverrides((prev) => {
         const next = { ...prev };
-        if (!value || converted === defaultValue) {
+        if (!value || value === defaultValue) {
           delete next[key];
         } else {
-          next[key] = converted;
+          next[key] = value;
         }
         return next;
       });
@@ -195,25 +121,15 @@ export default function ThemeEditor({
     const baseTokens = tokensByThemeState[theme] as TokenMap;
     const overridesCopy: TokenMap = { ...next };
     for (const key of Object.keys(overridesCopy)) {
-      if (overridesCopy[key as keyof TokenMap] === baseTokens[key as keyof TokenMap]) {
+      if (
+        overridesCopy[key as keyof TokenMap] ===
+        baseTokens[key as keyof TokenMap]
+      ) {
         delete overridesCopy[key as keyof TokenMap];
       }
     }
     setOverrides(overridesCopy);
   };
-
-  const handleTokenSelect = (token: string) => {
-    setSelectedToken(token);
-  };
-
-  useEffect(() => {
-    if (selectedToken) {
-      styleEditorRef.current?.scrollIntoView?.({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  }, [selectedToken]);
 
   const previewStyle = useMemo(
     () => ({ ...tokensByThemeState[theme], ...overrides } as CSSProperties),
@@ -270,34 +186,6 @@ export default function ThemeEditor({
     setSaving(false);
   };
 
-  const handleSavePreset = async () => {
-    const name = presetName.trim();
-    if (!name) return;
-    const tokens = { ...tokensByThemeState[theme], ...overrides };
-    await savePreset(shop, name, tokens);
-    setTokensByThemeState((prev) => ({ ...prev, [name]: tokens }));
-    setAvailableThemes((prev) => [...prev, name]);
-    setPresetThemes((prev) => [...prev, name]);
-    setTheme(name);
-    setOverrides({});
-    setThemeDefaults(tokens);
-    setPresetName("");
-  };
-
-  const handleDeletePreset = async () => {
-    await deletePreset(shop, theme);
-    setTokensByThemeState((prev) => {
-      const next = { ...prev };
-      delete next[theme];
-      return next;
-    });
-    setAvailableThemes((prev) => prev.filter((t) => t !== theme));
-    setPresetThemes((prev) => prev.filter((t) => t !== theme));
-    const fallback = themes[0];
-    setTheme(fallback);
-    setOverrides({});
-    setThemeDefaults(tokensByThemeState[fallback]);
-  };
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
@@ -357,21 +245,12 @@ export default function ThemeEditor({
           </ul>
         </div>
       )}
-      <WizardPreview
+      <PreviewPane
         style={previewStyle}
-        inspectMode
-        onTokenSelect={handleTokenSelect}
+        tokens={overrides as TokenMap}
+        baseTokens={tokensByThemeState[theme] as TokenMap}
+        onChange={handleStyleChange}
       />
-      {selectedToken && (
-        <div ref={styleEditorRef}>
-          <StyleEditor
-            tokens={overrides as TokenMap}
-            baseTokens={tokensByThemeState[theme] as TokenMap}
-            onChange={handleStyleChange}
-            focusToken={selectedToken}
-          />
-        </div>
-      )}
       <div className="space-y-6">
         {Object.entries(groupedTokens).map(([groupName, tokens]) => (
           <fieldset key={groupName} className="space-y-2">
@@ -414,60 +293,19 @@ export default function ThemeEditor({
               {tokens.map(([k, defaultValue]) => {
                 const hasOverride = Object.prototype.hasOwnProperty.call(
                   overrides,
-                  k
+                  k,
                 );
                 const overrideValue = hasOverride ? overrides[k] : "";
-                const isOverridden =
-                  hasOverride && overrideValue !== defaultValue;
-                const defaultIsHsl = isHsl(defaultValue);
-                const defaultIsHex = isHex(defaultValue);
-                const isColor = defaultIsHsl || defaultIsHex;
-                const currentOriginal = hasOverride ? overrideValue : defaultValue;
-                const colorValue = defaultIsHsl
-                  ? isHex(currentOriginal)
-                    ? currentOriginal
-                    : hslToHex(currentOriginal)
-                  : currentOriginal;
                 return (
-                  <label
+                  <ColorInput
                     key={k}
-                    className={`flex flex-col gap-1 ${
-                      isOverridden ? "bg-amber-50" : ""
-                    }`}
-                  >
-                    <span>{k}</span>
-                    <div className="flex items-center gap-2">
-                      <Input value={defaultValue} disabled />
-                      {isColor ? (
-                        <>
-                          <input
-                            type="color"
-                            value={colorValue}
-                            onChange={handleOverrideChange(k, defaultValue)}
-                            ref={(el) => (overrideRefs.current[k] = el)}
-                            className={isOverridden ? "bg-amber-100" : ""}
-                          />
-                          <span
-                            className="h-6 w-6 rounded border"
-                            style={{ background: colorValue }}
-                          />
-                        </>
-                      ) : (
-                        <Input
-                          placeholder={defaultValue}
-                          value={overrideValue}
-                          onChange={handleOverrideChange(k, defaultValue)}
-                          ref={(el) => (overrideRefs.current[k] = el)}
-                          className={isOverridden ? "bg-amber-100" : ""}
-                        />
-                      )}
-                      {hasOverride && (
-                        <Button type="button" onClick={handleReset(k)}>
-                          Reset
-                        </Button>
-                      )}
-                    </div>
-                  </label>
+                    name={k}
+                    defaultValue={defaultValue}
+                    value={overrideValue}
+                    onChange={handleOverrideChange(k, defaultValue)}
+                    onReset={handleReset(k)}
+                    inputRef={(el) => (overrideRefs.current[k] = el)}
+                  />
                 );
               })}
             </div>

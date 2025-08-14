@@ -11,6 +11,8 @@ export default function Upgrade() {
   const { id } = router.query;
   const [groups, setGroups] = useState<ComponentGroups>({});
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     if (!id) return;
@@ -37,6 +39,25 @@ export default function Upgrade() {
       }
       return next;
     });
+  }
+
+  async function publish() {
+    if (!id) return;
+    setStatus("loading");
+    setMessage("");
+    try {
+      const res = await fetch(`/api/shop/${id}/publish-upgrade`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ components: Array.from(selected) }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      setStatus("success");
+      setMessage("Upgrade published successfully.");
+    } catch (err) {
+      setStatus("error");
+      setMessage(err instanceof Error ? err.message : "Publish failed");
+    }
   }
 
   return (
@@ -68,6 +89,19 @@ export default function Upgrade() {
               <li key={file}>{file}</li>
             ))}
           </ul>
+          <button
+            onClick={publish}
+            disabled={status === "loading"}
+            className="rounded bg-blue-600 px-3 py-1 text-white"
+          >
+            {status === "loading" ? "Publishing..." : "Publish upgrade"}
+          </button>
+          {status === "success" && (
+            <p className="text-green-600">{message}</p>
+          )}
+          {status === "error" && (
+            <p className="text-red-600">{message}</p>
+          )}
         </div>
       )}
     </div>

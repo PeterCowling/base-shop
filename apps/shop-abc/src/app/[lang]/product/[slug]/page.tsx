@@ -13,6 +13,7 @@ import { env } from "@acme/config";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 import { trackPageView } from "@platform-core/analytics";
+import { getReturnLogistics } from "@platform-core/returnLogistics";
 
 async function loadComponents(slug: string): Promise<PageComponent[] | null> {
   const pages = await getPages(shop.id);
@@ -123,10 +124,19 @@ export default async function ProductDetailPage({
       <PdpClient product={product} />
     );
 
+  const cfg = await getReturnLogistics();
   return (
     <>
       {latestPost && <BlogListing posts={[latestPost]} />}
       {content}
+      <div className="p-6 space-y-1 text-sm text-gray-600">
+        {cfg.requireTags && (
+          <p>Items must have all tags attached for return.</p>
+        )}
+        {!cfg.allowWear && (
+          <p>Items showing signs of wear may be rejected.</p>
+        )}
+      </div>
     </>
   );
 }

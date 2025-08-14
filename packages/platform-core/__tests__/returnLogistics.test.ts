@@ -46,6 +46,8 @@ describe("return logistics config", () => {
       bagType: "reusable",
       returnCarrier: ["UPS"],
       homePickupZipCodes: [],
+      requireTags: true,
+      allowWear: false,
     };
     await withConfig(cfg, async ({ getReturnLogistics }) => {
       const first = await getReturnLogistics();
@@ -62,6 +64,8 @@ describe("return logistics config", () => {
       bagType: "reusable",
       returnCarrier: ["UPS"],
       homePickupZipCodes: [],
+      requireTags: true,
+      allowWear: false,
     };
     await withTempDir(async ({ getReturnLogistics }, dir) => {
       const readFile = jest
@@ -86,6 +90,8 @@ describe("return logistics config", () => {
       bagType: "reusable",
       returnCarrier: ["UPS"],
       homePickupZipCodes: [],
+      requireTags: true,
+      allowWear: false,
     };
     const invalid = {
       labelService: 123,
@@ -93,6 +99,8 @@ describe("return logistics config", () => {
       bagType: "reusable",
       returnCarrier: ["UPS"],
       homePickupZipCodes: [],
+      requireTags: true,
+      allowWear: false,
     } as any;
     await withTempDir(async ({ getReturnLogistics }, dir) => {
       const readFile = jest

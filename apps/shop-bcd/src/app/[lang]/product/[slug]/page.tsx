@@ -11,6 +11,7 @@ import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 import { readRepo } from "@platform-core/repositories/json.server";
 import type { SKU, ProductPublication, Locale } from "@acme/types";
+import { getReturnLogistics } from "@platform-core/returnLogistics";
 
 async function getProduct(
   slug: string,
@@ -100,10 +101,19 @@ export default async function ProductDetailPage({
     /* ignore bad feature flags */
   }
 
+  const cfg = await getReturnLogistics();
   return (
     <>
       {latestPost && <BlogListing posts={[latestPost]} />}
       <PdpClient product={product} />
+      <div className="p-6 space-y-1 text-sm text-gray-600">
+        {cfg.requireTags && (
+          <p>Items must have all tags attached for return.</p>
+        )}
+        {!cfg.allowWear && (
+          <p>Items showing signs of wear may be rejected.</p>
+        )}
+      </div>
     </>
   );
 }

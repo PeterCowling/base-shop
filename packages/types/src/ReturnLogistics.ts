@@ -11,6 +11,8 @@ import { z } from "zod";
  * - `returnCarrier` lists supported carriers for return shipments.
  * - `homePickupZipCodes` enumerates ZIP codes eligible for carrier pickup.
  * - `mobileApp` toggles access to the mobile return application.
+ * - `requireTags` specifies if items must have all tags attached.
+ * - `allowWear` indicates whether signs of wear are acceptable.
  */
 export const returnLogisticsSchema = z
   .object({
@@ -22,6 +24,8 @@ export const returnLogisticsSchema = z
     returnCarrier: z.array(z.string()),
     homePickupZipCodes: z.array(z.string()),
     mobileApp: z.boolean().optional(),
+    requireTags: z.boolean(),
+    allowWear: z.boolean(),
   })
   .strict();
 

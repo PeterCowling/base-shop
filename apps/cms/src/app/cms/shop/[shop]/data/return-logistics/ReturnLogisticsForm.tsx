@@ -123,6 +123,24 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
       </label>
       <label className="flex items-center gap-2">
         <Checkbox
+          checked={form.requireTags}
+          onCheckedChange={(v) =>
+            setForm((f) => ({ ...f, requireTags: Boolean(v) }))
+          }
+        />
+        <span>Require tags for returns</span>
+      </label>
+      <label className="flex items-center gap-2">
+        <Checkbox
+          checked={form.allowWear}
+          onCheckedChange={(v) =>
+            setForm((f) => ({ ...f, allowWear: Boolean(v) }))
+          }
+        />
+        <span>Allow signs of wear</span>
+      </label>
+      <label className="flex items-center gap-2">
+        <Checkbox
           checked={Boolean(form.mobileApp)}
           onCheckedChange={(v) =>
             setForm((f) => ({ ...f, mobileApp: Boolean(v) }))

@@ -56,7 +56,7 @@ describe("PageBuilder interactions", () => {
     );
   });
 
-  it("resizes via sidebar inputs", () => {
+  it("resizes via sidebar inputs", async () => {
     function Wrapper() {
       const [state, dispatch] = React.useReducer(reducer, {
         past: [],
@@ -82,6 +82,7 @@ describe("PageBuilder interactions", () => {
     }
 
     render(<Wrapper />);
+    await screen.findByLabelText("Width (Desktop)");
     fireEvent.change(screen.getByLabelText("Width (Desktop)"), {
       target: { value: "200px" },
     });

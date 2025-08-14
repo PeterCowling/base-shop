@@ -15,6 +15,7 @@
     "taxjar"
   ],
   "coverageIncluded": true,
+  "billingProvider": "stripe",
   "premierDelivery": {
     "regions": [
       "us-east"

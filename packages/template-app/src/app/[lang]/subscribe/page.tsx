@@ -1,11 +1,14 @@
 // packages/template-app/src/app/[lang]/subscribe/page.tsx
 import { Locale, resolveLocale } from "@/i18n/locales";
+import { stripe } from "@acme/stripe";
+import { coreEnv } from "@acme/config/env/core";
 import { readShop } from "@platform-core/src/repositories/shops.server";
 import { getCustomerSession } from "@auth";
 import { notFound } from "next/navigation";
 import {
   setUserPlan,
 } from "@platform-core/src/repositories/subscriptionUsage.server";
+import { setStripeSubscriptionId } from "@platform-core/repositories/users";
 
 export default async function SubscribePage({
   params,
@@ -14,7 +17,8 @@ export default async function SubscribePage({
 }) {
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
-  const shop = await readShop("shop");
+  const shopId = coreEnv.NEXT_PUBLIC_SHOP_ID || "shop";
+  const shop = await readShop(shopId);
   if (!shop.subscriptionsEnabled) return notFound();
 
   async function selectPlan(formData: FormData) {
@@ -23,7 +27,16 @@ export default async function SubscribePage({
     if (!planId) return;
     const session = await getCustomerSession();
     if (!session?.customerId) return;
-    await setUserPlan("shop", session.customerId, planId);
+    const priceId = planId;
+    const sub = await stripe.subscriptions.create({
+      customer: session.customerId,
+      items: [{ price: priceId }],
+      // @ts-ignore - `prorate` is deprecated but required for this flow
+      prorate: true,
+      metadata: { userId: session.customerId, shop: shopId },
+    });
+    await setStripeSubscriptionId(session.customerId, sub.id);
+    await setUserPlan(shopId, session.customerId, planId);
   }
 
   return (

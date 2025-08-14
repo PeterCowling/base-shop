@@ -52,6 +52,7 @@ interface Options {
   name?: string;
   logo?: string;
   contactInfo?: string;
+  enableSubscriptions?: boolean;
 }
 
 function parseArgs(argv: string[]): [string, Options, boolean, boolean] {
@@ -76,6 +77,7 @@ function parseArgs(argv: string[]): [string, Options, boolean, boolean] {
     template: "template-app",
     payment: [],
     shipping: [],
+    enableSubscriptions: false,
   };
 
   let themeProvided = false;
@@ -106,6 +108,12 @@ function parseArgs(argv: string[]): [string, Options, boolean, boolean] {
         break;
       case "shipping":
         opts.shipping = val.split(",").filter(Boolean);
+        break;
+      case "subscriptions":
+        opts.enableSubscriptions = val === "" ? true : val !== "false";
+        break;
+      case "no-subscriptions":
+        opts.enableSubscriptions = false;
         break;
       case "name":
         opts.name = val || opts.name;
@@ -285,6 +293,23 @@ async function ensureShipping() {
   }
 }
 
+/** Prompt for subscription module toggle when not provided. */
+async function ensureSubscriptions() {
+  if (options.enableSubscriptions === undefined && process.stdin.isTTY) {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    await new Promise<void>((resolve) => {
+      rl.question("Enable subscriptions? [y/N]: ", (ans) => {
+        options.enableSubscriptions = ans.toLowerCase() === "y";
+        rl.close();
+        resolve();
+      });
+    });
+  }
+}
+
 await ensureTemplate();
 await ensureTheme();
 await ensureName();
@@ -292,4 +317,5 @@ await ensureLogo();
 await ensureContact();
 await ensurePayment();
 await ensureShipping();
+await ensureSubscriptions();
 await createShop(shopId, options, { deploy: true });

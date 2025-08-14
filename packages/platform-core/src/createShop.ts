@@ -51,6 +51,8 @@ export async function createShop(
     paymentProviders: prepared.payment,
     sanityBlog: prepared.sanityBlog,
     enableEditorial: prepared.enableEditorial,
+    subscriptionsEnabled: prepared.enableSubscriptions,
+    rentalSubscriptions: [],
   };
 
   await prisma.shop.create({ data: { id, data: shopData } });

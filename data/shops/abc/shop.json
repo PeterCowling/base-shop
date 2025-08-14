@@ -36,14 +36,16 @@
       "price": 3000,
       "itemsIncluded": 3,
       "swapLimit": 1,
-      "shipmentCount": 1
+      "shipmentsPerMonth": 1,
+      "prorateOnChange": true
     },
     {
       "id": "premium",
       "price": 5000,
       "itemsIncluded": 5,
       "swapLimit": 2,
-      "shipmentCount": 2
+      "shipmentsPerMonth": 2,
+      "prorateOnChange": true
     }
   ]
 }

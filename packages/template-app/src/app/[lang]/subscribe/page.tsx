@@ -27,7 +27,7 @@ export default async function SubscribePage({
           <label key={p.id} className="flex items-center gap-2">
             <input type="radio" name="plan" value={p.id} />
             <span>
-              {p.id} – {p.itemsIncluded} items, {p.swapLimit} swaps, {p.shipmentCount}
+              {p.id} – {p.itemsIncluded} items, {p.swapLimit} swaps, {p.shipmentsPerMonth}
               {" "}shipments
             </span>
           </label>

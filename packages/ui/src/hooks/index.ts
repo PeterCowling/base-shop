@@ -1,7 +1,6 @@
 export * from "./useCart";
 export * from "./useImageUpload";
 export * from "./useFileUpload";
-export * from "./useMediaUpload"; // backwards compatibility
 export * from "./useImageOrientationValidation";
 export * from "./useProductEditorFormState";
 export * from "./useProductFilters";

@@ -1,6 +1,7 @@
 import "server-only";
 
 import { query, mutate, slugExists, type SanityConfig } from "@acme/plugin-sanity";
+import type { SanityPostCreate, SanityPostUpdate } from "@acme/types";
 
 export interface SanityPost {
   _id: string;
@@ -30,12 +31,19 @@ export async function getPost(config: SanityConfig, id: string): Promise<SanityP
   return post ?? null;
 }
 
-export async function createPost(config: SanityConfig, doc: any): Promise<string | undefined> {
+export async function createPost(
+  config: SanityConfig,
+  doc: SanityPostCreate,
+): Promise<string | undefined> {
   const result = await mutate(config, { mutations: [{ create: doc }], returnIds: true });
   return (result as any)?.results?.[0]?.id as string | undefined;
 }
 
-export async function updatePost(config: SanityConfig, id: string, set: any): Promise<void> {
+export async function updatePost(
+  config: SanityConfig,
+  id: string,
+  set: SanityPostUpdate,
+): Promise<void> {
   await mutate(config, { mutations: [{ patch: { id, set } }] });
 }
 

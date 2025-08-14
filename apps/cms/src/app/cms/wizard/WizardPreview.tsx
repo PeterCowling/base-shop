@@ -2,7 +2,7 @@
 
 "use client";
 
-import { Button, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/atoms";
+import { DeviceSelector } from "@ui/components";
 import { blockRegistry } from "@/components/cms/blocks";
 import { Footer, Header, SideNav } from "@/components/organisms";
 import { AppShell } from "@/components/templates/AppShell";
@@ -15,7 +15,7 @@ import {
   loadPreviewTokens,
   PREVIEW_TOKENS_EVENT,
 } from "./previewTokens";
-import { devicePresets, getLegacyPreset, type DevicePreset } from "@ui/utils/devicePresets";
+import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 
 interface Props {
   style: React.CSSProperties;
@@ -36,9 +36,27 @@ export default function WizardPreview({
   onTokenSelect,
 }: Props): React.JSX.Element {
   const [deviceId, setDeviceId] = useState(devicePresets[0].id);
+  const preset = useMemo<DevicePreset>(
+    () => devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0],
+    [deviceId]
+  );
+  const [orientation, setOrientation] = useState<"portrait" | "landscape">(
+    preset.orientation
+  );
+  useEffect(() => {
+    setOrientation(preset.orientation);
+  }, [preset]);
   const device = useMemo<DevicePreset>(() => {
-    return devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
-  }, [deviceId]);
+    if (orientation === preset.orientation) {
+      return { ...preset };
+    }
+    return {
+      ...preset,
+      width: preset.height,
+      height: preset.width,
+      orientation,
+    };
+  }, [preset, orientation]);
   const viewport: "desktop" | "tablet" | "mobile" = device.type;
   const [components, setComponents] = useState<PageComponent[]>([]);
   const [themeStyle, setThemeStyle] = useState<React.CSSProperties>(() => ({
@@ -208,32 +226,13 @@ export default function WizardPreview({
   return (
     <div className="space-y-2">
       {/* viewport switcher */}
-      <div className="flex justify-end gap-2">
-        {(["desktop", "tablet", "mobile"] as const).map((t) => {
-          const preset = getLegacyPreset(t);
-          return (
-            <Button
-              key={t}
-              variant={deviceId === preset.id ? "default" : "outline"}
-              onClick={() => setDeviceId(preset.id)}
-            >
-              {t.charAt(0).toUpperCase() + t.slice(1)}
-            </Button>
-          );
-        })}
-        <Select value={deviceId} onValueChange={setDeviceId}>
-          <SelectTrigger aria-label="Device" className="w-40">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {devicePresets.map((p) => (
-              <SelectItem key={p.id} value={p.id}>
-                {p.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <DeviceSelector
+        deviceId={deviceId}
+        onDeviceChange={setDeviceId}
+        onRotate={() =>
+          setOrientation((o) => (o === "portrait" ? "landscape" : "portrait"))
+        }
+      />
 
       {/* live preview */}
       <div

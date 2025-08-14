@@ -10,13 +10,25 @@ interface Props {
 }
 
 export default function ReturnLogisticsForm({ shop, initial }: Props) {
-  const [form, setForm] = useState<ReturnLogistics>(initial);
+  const [form, setForm] = useState<ReturnLogistics>(() => ({
+    ...initial,
+    returnCarrier: initial.returnCarrier.length
+      ? initial.returnCarrier
+      : [""],
+    homePickupZipCodes: initial.homePickupZipCodes.length
+      ? initial.homePickupZipCodes
+      : [""],
+  }));
   const [status, setStatus] = useState<"idle" | "saved" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const parsed = returnLogisticsSchema.safeParse(form);
+    const parsed = returnLogisticsSchema.safeParse({
+      ...form,
+      returnCarrier: form.returnCarrier.filter(Boolean),
+      homePickupZipCodes: form.homePickupZipCodes.filter(Boolean),
+    });
     if (!parsed.success) {
       setStatus("error");
       setError(parsed.error.issues.map((i) => i.message).join(", "));
@@ -82,36 +94,90 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
           }
         />
       </label>
-      <label className="flex flex-col gap-1">
-        <span>Return Carriers (comma separated)</span>
-        <Input
-          value={form.returnCarrier.join(", ")}
-          onChange={(e) =>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="font-medium">Return Carriers</legend>
+        {form.returnCarrier.map((carrier, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <Input
+              value={carrier}
+              onChange={(e) =>
+                setForm((f) => {
+                  const next = [...f.returnCarrier];
+                  next[i] = e.target.value;
+                  return { ...f, returnCarrier: next };
+                })
+              }
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() =>
+                setForm((f) => ({
+                  ...f,
+                  returnCarrier: f.returnCarrier.filter((_, idx) => idx !== i),
+                }))
+              }
+            >
+              Remove
+            </Button>
+          </div>
+        ))}
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() =>
             setForm((f) => ({
               ...f,
-              returnCarrier: e.target.value
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean),
+              returnCarrier: [...f.returnCarrier, ""],
             }))
           }
-        />
-      </label>
-      <label className="flex flex-col gap-1">
-        <span>Home Pickup ZIPs (comma separated)</span>
-        <Input
-          value={form.homePickupZipCodes.join(", ")}
-          onChange={(e) =>
+        >
+          Add carrier
+        </Button>
+      </fieldset>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="font-medium">Home Pickup ZIPs</legend>
+        {form.homePickupZipCodes.map((zip, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <Input
+              value={zip}
+              onChange={(e) =>
+                setForm((f) => {
+                  const next = [...f.homePickupZipCodes];
+                  next[i] = e.target.value;
+                  return { ...f, homePickupZipCodes: next };
+                })
+              }
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() =>
+                setForm((f) => ({
+                  ...f,
+                  homePickupZipCodes: f.homePickupZipCodes.filter(
+                    (_, idx) => idx !== i
+                  ),
+                }))
+              }
+            >
+              Remove
+            </Button>
+          </div>
+        ))}
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() =>
             setForm((f) => ({
               ...f,
-              homePickupZipCodes: e.target.value
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean),
+              homePickupZipCodes: [...f.homePickupZipCodes, ""],
             }))
           }
-        />
-      </label>
+        >
+          Add ZIP
+        </Button>
+      </fieldset>
       <label className="flex items-center gap-2">
         <Checkbox
           checked={Boolean(form.tracking)}

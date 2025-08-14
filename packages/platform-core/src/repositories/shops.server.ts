@@ -78,6 +78,12 @@ export async function readShop(shop: string): Promise<Shop> {
     localeOverrides: {},
     navigation: [],
     analyticsEnabled: false,
+    luxuryFeatures: {
+      contentMerchandising: false,
+      raTicketing: false,
+      fraudReview: false,
+      strictReturnConditions: false,
+    },
   };
   return await applyThemeData(empty);
 }

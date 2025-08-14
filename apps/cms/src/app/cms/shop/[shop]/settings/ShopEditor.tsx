@@ -154,6 +154,75 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
           </span>
         )}
       </div>
+      <fieldset className="col-span-2 flex flex-col gap-1">
+        <legend className="text-sm font-medium">Luxury features</legend>
+        <div className="mt-2 grid gap-2">
+          <label className="flex items-center gap-2">
+            <Checkbox
+              name="contentMerchandising"
+              checked={info.luxuryFeatures.contentMerchandising}
+              onCheckedChange={(v) =>
+                setInfo((prev) => ({
+                  ...prev,
+                  luxuryFeatures: {
+                    ...prev.luxuryFeatures,
+                    contentMerchandising: Boolean(v),
+                  },
+                }))
+              }
+            />
+            <span>Content merchandising</span>
+          </label>
+          <label className="flex items-center gap-2">
+            <Checkbox
+              name="raTicketing"
+              checked={info.luxuryFeatures.raTicketing}
+              onCheckedChange={(v) =>
+                setInfo((prev) => ({
+                  ...prev,
+                  luxuryFeatures: {
+                    ...prev.luxuryFeatures,
+                    raTicketing: Boolean(v),
+                  },
+                }))
+              }
+            />
+            <span>RA ticketing</span>
+          </label>
+          <label className="flex items-center gap-2">
+            <Checkbox
+              name="fraudReview"
+              checked={info.luxuryFeatures.fraudReview}
+              onCheckedChange={(v) =>
+                setInfo((prev) => ({
+                  ...prev,
+                  luxuryFeatures: {
+                    ...prev.luxuryFeatures,
+                    fraudReview: Boolean(v),
+                  },
+                }))
+              }
+            />
+            <span>Fraud review</span>
+          </label>
+          <label className="flex items-center gap-2">
+            <Checkbox
+              name="strictReturnConditions"
+              checked={info.luxuryFeatures.strictReturnConditions}
+              onCheckedChange={(v) =>
+                setInfo((prev) => ({
+                  ...prev,
+                  luxuryFeatures: {
+                    ...prev.luxuryFeatures,
+                    strictReturnConditions: Boolean(v),
+                  },
+                }))
+              }
+            />
+            <span>Strict return conditions</span>
+          </label>
+        </div>
+      </fieldset>
       <label className="flex flex-col gap-1">
         <span>Catalog Filters (comma separated)</span>
         <Input

@@ -97,6 +97,20 @@ export const shopSchema = z
     returnPolicyUrl: z.string().url().optional(),
     returnsEnabled: z.boolean().optional(),
     analyticsEnabled: z.boolean().optional(),
+    luxuryFeatures: z
+      .object({
+        contentMerchandising: z.boolean().default(false),
+        raTicketing: z.boolean().default(false),
+        fraudReview: z.boolean().default(false),
+        strictReturnConditions: z.boolean().default(false),
+      })
+      .strict()
+      .default({
+        contentMerchandising: false,
+        raTicketing: false,
+        fraudReview: false,
+        strictReturnConditions: false,
+      }),
     lastUpgrade: z.string().datetime().optional(),
     componentVersions: z.record(z.string()).default({}),
   })

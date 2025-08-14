@@ -69,6 +69,20 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    luxuryFeatures: z
+      .object({
+        contentMerchandising: z.boolean().default(false),
+        raTicketing: z.boolean().default(false),
+        fraudReview: z.boolean().default(false),
+        strictReturnConditions: z.boolean().default(false),
+      })
+      .strict()
+      .default({
+        contentMerchandising: false,
+        raTicketing: false,
+        fraudReview: false,
+        strictReturnConditions: false,
+      }),
     /** Tracking providers enabled for shipment/return tracking */
     trackingProviders: z.array(z.string()).optional(),
     updatedAt: z.string(),

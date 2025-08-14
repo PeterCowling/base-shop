@@ -6,6 +6,7 @@ import CanvasItem from "./CanvasItem";
 import type { Locale } from "@/i18n/locales";
 import type { Action } from "./state";
 import { cn } from "../../../utils/style";
+import type { DevicePreset } from "@ui/utils/devicePresets";
 
 interface Props {
   components: PageComponent[];
@@ -23,6 +24,7 @@ interface Props {
   gridCols: number;
   viewport: "desktop" | "tablet" | "mobile";
   snapPosition: number | null;
+  device?: DevicePreset;
 }
 
 const PageCanvas = ({
@@ -41,6 +43,7 @@ const PageCanvas = ({
   gridCols,
   viewport,
   snapPosition,
+  device,
 }: Props) => (
   <SortableContext
     items={components.map((c) => c.id)}
@@ -106,6 +109,7 @@ const PageCanvas = ({
             gridEnabled={showGrid}
             gridCols={gridCols}
             viewport={viewport}
+            device={device}
           />
         </Fragment>
       ))}

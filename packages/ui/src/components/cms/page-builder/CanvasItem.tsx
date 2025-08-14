@@ -11,6 +11,7 @@ import TextBlock from "./TextBlock";
 import useSortableBlock from "./useSortableBlock";
 import useCanvasResize from "./useCanvasResize";
 import useCanvasDrag from "./useCanvasDrag";
+import type { DevicePreset } from "@ui/utils/devicePresets";
 
 const CanvasItem = memo(function CanvasItem({
   component,
@@ -24,6 +25,7 @@ const CanvasItem = memo(function CanvasItem({
   gridEnabled = false,
   gridCols,
   viewport,
+  device,
 }: {
   component: PageComponent;
   index: number;
@@ -36,6 +38,7 @@ const CanvasItem = memo(function CanvasItem({
   gridEnabled?: boolean;
   gridCols: number;
   viewport: "desktop" | "tablet" | "mobile";
+  device?: DevicePreset;
 }) {
   if (component.type === "Text") {
     return (
@@ -281,6 +284,7 @@ const CanvasItem = memo(function CanvasItem({
                   gridEnabled={gridEnabled}
                   gridCols={gridCols}
                   viewport={viewport}
+                  device={device}
                 />
               )
             )}

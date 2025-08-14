@@ -1,157 +1,26 @@
 // apps/shop-abc/src/app/api/checkout-session/route.ts
 import "@acme/lib/initZod";
 
-import {
-  CART_COOKIE,
-  decodeCartCookie,
-  type CartLine,
-  type CartState,
-} from "@platform-core/src/cartCookie";
+import { CART_COOKIE, decodeCartCookie, type CartState } from "@platform-core/src/cartCookie";
 import { getCart } from "@platform-core/src/cartStore";
 import { calculateRentalDays } from "@acme/date-utils";
 import { stripe } from "@acme/stripe";
 import { requirePermission } from "@auth";
-import { priceForDays, convertCurrency } from "@platform-core/pricing";
 import { findCoupon } from "@platform-core/coupons";
 import { trackEvent } from "@platform-core/analytics";
 import shop from "../../../../shop.json";
 import { getTaxRate } from "@platform-core/tax";
+import {
+  buildLineItemsForItem,
+  computeTotals,
+  buildCheckoutMetadata,
+} from "../../../services/checkout";
 
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { z } from "zod";
 import { shippingSchema, billingSchema } from "@platform-core/schemas/address";
 import { parseJsonBody } from "@shared-utils";
-
-/* ------------------------------------------------------------------ *
- *  Types
- * ------------------------------------------------------------------ */
-
-type CartItem = CartLine;
-type Cart = CartState;
-
-/* ------------------------------------------------------------------ *
- *  Helpers
- * ------------------------------------------------------------------ */
-
-/**
- * Produce the two Stripe line-items (rental + deposit) for a single cart item.
- */
-const buildLineItemsForItem = async (
-  item: CartItem,
-  rentalDays: number,
-  discountRate: number,
-  currency: string
-): Promise<Stripe.Checkout.SessionCreateParams.LineItem[]> => {
-  const unitPrice = await priceForDays(item.sku, rentalDays);
-  const discounted = Math.round(unitPrice * (1 - discountRate));
-  const unitConv = await convertCurrency(discounted, currency);
-  const depositConv = await convertCurrency(item.sku.deposit, currency);
-  const baseName = item.size
-    ? `${item.sku.title} (${item.size})`
-    : item.sku.title;
-
-  const lines: Stripe.Checkout.SessionCreateParams.LineItem[] = [
-    {
-      price_data: {
-        currency: currency.toLowerCase(),
-        unit_amount: Math.round(unitConv * 100),
-        product_data: { name: baseName },
-      },
-      quantity: item.qty,
-    },
-  ];
-
-  if (item.sku.deposit > 0) {
-    lines.push({
-      price_data: {
-        currency: currency.toLowerCase(),
-        unit_amount: Math.round(depositConv * 100),
-        product_data: { name: `${baseName} deposit` },
-      },
-      quantity: item.qty,
-    });
-  }
-
-  return lines;
-};
-
-/**
- * Aggregate rental and deposit totals for later bookkeeping.
- */
-const computeTotals = async (
-  cart: Cart,
-  rentalDays: number,
-  discountRate: number,
-  currency: string
-): Promise<{ subtotal: number; depositTotal: number; discount: number }> => {
-  const subtotals = await Promise.all(
-    Object.values(cart).map(async (item) => {
-      const unit = await priceForDays(item.sku, rentalDays);
-      const discounted = Math.round(unit * (1 - discountRate));
-      return { base: unit * item.qty, discounted: discounted * item.qty };
-    })
-  );
-
-  const subtotalBase = subtotals.reduce((sum, v) => sum + v.discounted, 0);
-  const originalBase = subtotals.reduce((sum, v) => sum + v.base, 0);
-  const discountBase = originalBase - subtotalBase;
-  const depositBase = Object.values(cart).reduce(
-    (sum, item) => sum + item.sku.deposit * item.qty,
-    0
-  );
-
-  return {
-    subtotal: await convertCurrency(subtotalBase, currency),
-    depositTotal: await convertCurrency(depositBase, currency),
-    discount: await convertCurrency(discountBase, currency),
-  };
-};
-
-/**
- * Build the shared metadata object for both the checkout session and
- * payment intent.
- */
-const buildCheckoutMetadata = ({
-  subtotal,
-  depositTotal,
-  returnDate,
-  rentalDays,
-  customerId,
-  discount,
-  coupon,
-  currency,
-  taxRate,
-  taxAmount,
-  clientIp,
-  sizes,
-}: {
-  subtotal: number;
-  depositTotal: number;
-  returnDate?: string;
-  rentalDays: number;
-  customerId?: string;
-  discount: number;
-  coupon?: string;
-  currency: string;
-  taxRate: number;
-  taxAmount: number;
-  clientIp?: string;
-  sizes?: string;
-}) => ({
-  subtotal: subtotal.toString(),
-  depositTotal: depositTotal.toString(),
-  returnDate: returnDate ?? "",
-  rentalDays: rentalDays.toString(),
-  ...(sizes ? { sizes } : {}),
-  customerId: customerId ?? "",
-  discount: discount.toString(),
-  coupon: coupon ?? "",
-  currency,
-  taxRate: taxRate.toString(),
-  taxAmount: taxAmount.toString(),
-  ...(clientIp ? { client_ip: clientIp } : {}),
-});
 
 /* ------------------------------------------------------------------ *
  *  Route handler

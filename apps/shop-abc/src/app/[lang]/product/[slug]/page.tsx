@@ -1,6 +1,6 @@
 // apps/shop-abc/src/app/[lang]/product/[slug]/page.tsx
-import { getProductBySlug } from "@/lib/products";
-import type { PageComponent } from "@acme/types";
+import { getProductBySlug, getProductById } from "@/lib/products";
+import type { PageComponent, SKU } from "@acme/types";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
@@ -9,6 +9,9 @@ import { LOCALES } from "@acme/i18n";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 import { trackPageView } from "@platform-core/analytics";
+import { fetchPostById } from "@acme/sanity";
+import EditorialBlock from "@ui/components/cms/blocks/EditorialBlock";
+import type { BlogPost } from "@ui/components/cms/blocks/BlogListing";
 
 async function loadComponents(slug: string): Promise<PageComponent[] | null> {
   const pages = await getPages(shop.id);
@@ -49,16 +52,42 @@ export default async function ProductDetailPage({
   if (!product) return notFound();
 
   const components = await loadComponents(params.slug);
+  const editorialBlocks: { post: BlogPost; products: SKU[] }[] = [];
+  if (shop.luxuryFeatures?.contentMerchandising) {
+    for (const cfg of shop.editorialMerchandising ?? []) {
+      if (cfg.productIds.includes(product.id)) {
+        const post = await fetchPostById(shop.id, cfg.postId);
+        if (post) {
+          const products = cfg.productIds
+            .map((id) => getProductById(id))
+            .filter(Boolean) as SKU[];
+          editorialBlocks.push({ post, products });
+        }
+      }
+    }
+  }
   await trackPageView(shop.id, `product/${params.slug}`);
   if (components && components.length) {
     return (
-      <DynamicRenderer
-        components={components}
-        locale={params.lang}
-        runtimeData={{ ProductDetailTemplate: { product } }}
-      />
+      <>
+        {editorialBlocks.map((b, i) => (
+          <EditorialBlock key={i} post={b.post} products={b.products} />
+        ))}
+        <DynamicRenderer
+          components={components}
+          locale={params.lang}
+          runtimeData={{ ProductDetailTemplate: { product } }}
+        />
+      </>
     );
   }
-  return <PdpClient product={product} />;
+  return (
+    <>
+      {editorialBlocks.map((b, i) => (
+        <EditorialBlock key={i} post={b.post} products={b.products} />
+      ))}
+      <PdpClient product={product} />
+    </>
+  );
 }
 

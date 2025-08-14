@@ -22,5 +22,7 @@
     "dataset": "production",
     "token": "token"
   },
-  "editorialBlog": { "enabled": false }
+  "editorialBlog": { "enabled": false },
+  "editorialMerchandising": [],
+  "luxuryFeatures": { "contentMerchandising": false }
 }

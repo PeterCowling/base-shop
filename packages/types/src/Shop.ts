@@ -92,6 +92,22 @@ export const shopSchema = z
       })
       .strict()
       .optional(),
+    editorialMerchandising: z
+      .array(
+        z
+          .object({
+            postId: z.string(),
+            productIds: z.array(z.string()),
+          })
+          .strict(),
+      )
+      .default([]),
+    luxuryFeatures: z
+      .object({
+        contentMerchandising: z.boolean().optional(),
+      })
+      .strict()
+      .optional(),
     enableEditorial: z.boolean().optional(),
     domain: shopDomainSchema.optional(),
     returnPolicyUrl: z.string().url().optional(),

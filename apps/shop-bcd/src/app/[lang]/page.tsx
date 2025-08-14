@@ -1,10 +1,11 @@
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, SKU } from "@acme/types";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import shop from "../../../shop.json";
 import Home from "./page.client";
-import { fetchPublishedPosts } from "@acme/sanity";
+import { fetchPublishedPosts, fetchPostById } from "@acme/sanity";
 import type { BlogPost } from "@ui/components/cms/blocks/BlogListing";
+import { getProductById } from "@/lib/products";
 
 async function loadComponents(): Promise<PageComponent[]> {
   try {
@@ -33,6 +34,7 @@ export default async function Page({
 }) {
   const components = await loadComponents();
   let latestPost: BlogPost | undefined;
+  const editorialBlocks: { post: BlogPost; products: SKU[] }[] = [];
   if (shop.editorialBlog?.enabled) {
     const posts = await fetchPublishedPosts(shop.id);
     const first = posts[0];
@@ -44,5 +46,23 @@ export default async function Page({
       };
     }
   }
-  return <Home components={components} locale={params.lang} latestPost={latestPost} />;
+  if (shop.luxuryFeatures?.contentMerchandising) {
+    for (const cfg of shop.editorialMerchandising ?? []) {
+      const post = await fetchPostById(shop.id, cfg.postId);
+      if (post) {
+        const products = cfg.productIds
+          .map((id: string) => getProductById(id))
+          .filter(Boolean) as SKU[];
+        editorialBlocks.push({ post, products });
+      }
+    }
+  }
+  return (
+    <Home
+      components={components}
+      locale={params.lang}
+      latestPost={latestPost}
+      editorialBlocks={editorialBlocks}
+    />
+  );
 }

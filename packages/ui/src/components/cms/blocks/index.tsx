@@ -38,6 +38,7 @@ import FormBuilderBlock from "./FormBuilderBlock";
 import PopupModal from "./PopupModal";
 import ProductBundle from "./ProductBundle";
 import ProductFilter from "./ProductFilter";
+import EditorialBlock from "./EditorialBlock";
 
 export {
   BlogListing,
@@ -80,6 +81,7 @@ export {
   ProductBundle,
   PopupModal,
   ProductFilter,
+  EditorialBlock,
 };
 
 export * from "./atoms";

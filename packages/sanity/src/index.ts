@@ -64,6 +64,20 @@ export async function fetchPostBySlug(
   }
 }
 
+export async function fetchPostById(
+  shopId: string,
+  id: string,
+): Promise<BlogPost | null> {
+  try {
+    const client = await getClient(shopId);
+    const query = `*[_type == "post" && _id == $id && published == true][0]{title, "slug": slug.current, excerpt, mainImage, author, categories}`;
+    const post = await client.fetch<BlogPost | null>(query, { id });
+    return post;
+  } catch {
+    return null;
+  }
+}
+
 export async function publishQueuedPost(shopId: string): Promise<void> {
   try {
     const client = await getClient(shopId);

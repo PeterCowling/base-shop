@@ -12,6 +12,7 @@ jest.mock("@platform-core/analytics", () => ({
 }));
 jest.mock("@acme/sanity", () => ({
   fetchPublishedPosts: jest.fn(),
+  fetchPostById: jest.fn(),
 }));
 jest.mock("../src/app/[lang]/page.client", () => ({
   __esModule: true,

@@ -2,15 +2,15 @@
 
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
-import { updateShop } from "@cms/actions/shops.server";
 import {
   useState,
   ChangeEvent,
-  FormEvent,
   useMemo,
   useRef,
   useEffect,
 } from "react";
+import { patchShopTheme } from "../../../wizard/services/patchTheme";
+import { tokenGroups } from "./tokenGroups";
 import { useThemePresets } from "./useThemePresets";
 import { savePreviewTokens } from "../../../wizard/previewTokens";
 import ThemePreview from "./ThemePreview";
@@ -65,14 +65,17 @@ export default function ThemeEditor({
   });
   const [contrastWarnings, setContrastWarnings] =
     useState<Record<string, string>>({});
-  const [saving, setSaving] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [previewTokens, setPreviewTokens] = useState<Record<string, string>>({
     ...tokensByThemeState[initialTheme],
     ...initialOverrides,
   });
   const debounceRef = useRef<number | null>(null);
+  const saveDebounceRef = useRef<number | null>(null);
+  const pendingPatchRef = useRef<{
+    overrides: Record<string, string>;
+    defaults: Record<string, string>;
+  }>({ overrides: {}, defaults: {} });
   const [picker, setPicker] = useState<
     | null
     | { token: string; x: number; y: number; defaultValue: string }
@@ -101,25 +104,30 @@ export default function ThemeEditor({
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByThemeState[theme];
-    const groups: Record<string, [string, string][]> = {
-      Background: [],
-      Text: [],
-      Accent: [],
-      Other: [],
-    };
-    Object.entries(tokens).forEach(([k, v]) => {
-      if (/bg|background/i.test(k)) groups.Background.push([k, v]);
-      else if (/text|foreground/i.test(k)) groups.Text.push([k, v]);
-      else if (/accent|primary|secondary|highlight/i.test(k))
-        groups.Accent.push([k, v]);
-      else groups.Other.push([k, v]);
+    const groups: Record<string, [string, string][]> = {};
+    const used = new Set<string>();
+    Object.entries(tokenGroups).forEach(([group, keys]) => {
+      const arr: [string, string][] = [];
+      keys.forEach((k) => {
+        if (k in tokens) {
+          arr.push([k, tokens[k]]);
+          used.add(k);
+        }
+      });
+      if (arr.length) groups[group] = arr;
     });
+    const others: [string, string][] = [];
+    Object.entries(tokens).forEach(([k, v]) => {
+      if (!used.has(k)) others.push([k, v]);
+    });
+    if (others.length) groups.Other = others;
     return groups;
   }, [theme, tokensByThemeState]);
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
     const defaults = tokensByThemeState[next];
+    const prevOverrides = overrides;
     setTheme(next);
     setOverrides({});
     setThemeDefaults(defaults);
@@ -128,6 +136,11 @@ export default function ThemeEditor({
     window.dispatchEvent(new Event("theme:change"));
     schedulePreviewUpdate(merged);
     setContrastWarnings({});
+    const resetPatch: Record<string, string> = {};
+    Object.keys(prevOverrides).forEach((k) => {
+      resetPatch[k] = defaults[k];
+    });
+    scheduleSave(resetPatch, defaults);
   };
 
   const schedulePreviewUpdate = (tokens: Record<string, string>) => {
@@ -137,6 +150,37 @@ export default function ThemeEditor({
     debounceRef.current = window.setTimeout(() => {
       setPreviewTokens(tokens);
     }, 100);
+  };
+
+  const scheduleSave = (
+    overridesPatch: Record<string, string>,
+    defaultsPatch: Record<string, string> = {},
+  ) => {
+    pendingPatchRef.current = {
+      overrides: {
+        ...pendingPatchRef.current.overrides,
+        ...overridesPatch,
+      },
+      defaults: {
+        ...pendingPatchRef.current.defaults,
+        ...defaultsPatch,
+      },
+    };
+    if (saveDebounceRef.current) {
+      clearTimeout(saveDebounceRef.current);
+    }
+    saveDebounceRef.current = window.setTimeout(async () => {
+      const payload = pendingPatchRef.current;
+      pendingPatchRef.current = { overrides: {}, defaults: {} };
+      try {
+        await patchShopTheme(shop, {
+          themeOverrides: payload.overrides,
+          themeDefaults: payload.defaults,
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }, 500);
   };
 
   const handleWarningChange = (token: string, warning: string | null) => {
@@ -153,13 +197,17 @@ export default function ThemeEditor({
     (value: string) => {
       setOverrides((prev) => {
         const next = { ...prev };
+        const patch: Record<string, string> = {};
         if (!value || value === defaultValue) {
           delete next[key];
+          patch[key] = defaultValue;
         } else {
           next[key] = value;
+          patch[key] = value;
         }
         const merged = { ...tokensByThemeState[theme], ...next };
         schedulePreviewUpdate(merged);
+        scheduleSave(patch);
         return next;
       });
     };
@@ -170,6 +218,22 @@ export default function ThemeEditor({
       delete next[key];
       const merged = { ...tokensByThemeState[theme], ...next };
       schedulePreviewUpdate(merged);
+      scheduleSave({ [key]: tokensByThemeState[theme][key] });
+      return next;
+    });
+  };
+
+  const handleGroupReset = (keys: string[]) => () => {
+    setOverrides((prev) => {
+      const next = { ...prev };
+      const patch: Record<string, string> = {};
+      keys.forEach((k) => {
+        delete next[k];
+        patch[k] = tokensByThemeState[theme][k];
+      });
+      const merged = { ...tokensByThemeState[theme], ...next };
+      schedulePreviewUpdate(merged);
+      scheduleSave(patch);
       return next;
     });
   };
@@ -205,6 +269,9 @@ export default function ThemeEditor({
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
+      if (saveDebounceRef.current) {
+        clearTimeout(saveDebounceRef.current);
+      }
     };
   }, []);
 
@@ -213,57 +280,22 @@ export default function ThemeEditor({
     savePreviewTokens(previewTokens);
   }, [previewTokens]);
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSaving(true);
-    const fd = new FormData(e.currentTarget);
-    fd.set("themeOverrides", JSON.stringify(overrides));
-    fd.set("themeDefaults", JSON.stringify(themeDefaults));
-    const result = await updateShop(shop, fd);
-    if (result.errors) {
-      setErrors(result.errors);
-    } else if (result.shop) {
-      setErrors({});
-    }
-    setSaving(false);
-  };
-
   const handleResetAll = async () => {
     if (!window.confirm("Are you sure you want to reset all overrides?")) {
       return;
     }
+    const patch: Record<string, string> = {};
+    Object.keys(overrides).forEach((k) => {
+      patch[k] = tokensByThemeState[theme][k];
+    });
     setOverrides({});
     const merged = { ...tokensByThemeState[theme] };
     schedulePreviewUpdate(merged);
     savePreviewTokens(merged);
-    setSaving(true);
-    const fd = new FormData();
-    fd.set("id", shop);
-    fd.set("themeOverrides", JSON.stringify({}));
-    fd.set("themeDefaults", JSON.stringify(themeDefaults));
-    const result = await updateShop(shop, fd);
-    if (result.errors) {
-      setErrors(result.errors);
-    } else if (result.shop) {
-      setErrors({});
-    }
-    setSaving(false);
+    scheduleSave(patch);
   };
-
-
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <Input type="hidden" name="id" value={shop} />
-      <input
-        type="hidden"
-        name="themeOverrides"
-        value={JSON.stringify(overrides)}
-      />
-      <input
-        type="hidden"
-        name="themeDefaults"
-        value={JSON.stringify(themeDefaults)}
-      />
+    <div className="space-y-4">
       <label className="flex flex-col gap-1">
         <span>Theme</span>
         <select
@@ -278,11 +310,6 @@ export default function ThemeEditor({
             </option>
           ))}
         </select>
-        {errors.themeId && (
-          <span className="text-sm text-red-600">
-            {errors.themeId.join("; ")}
-          </span>
-        )}
       </label>
       <div className="flex items-center gap-2">
         <Input
@@ -322,6 +349,7 @@ export default function ThemeEditor({
         overrides={overrides}
         handleOverrideChange={handleOverrideChange}
         handleReset={handleReset}
+        handleGroupReset={handleGroupReset}
         overrideRefs={overrideRefs}
         mergedTokens={mergedTokens}
         textTokenKeys={textTokenKeys}
@@ -337,13 +365,10 @@ export default function ThemeEditor({
         overrideRefs={overrideRefs}
       />
       <div className="flex gap-2">
-        <Button type="button" onClick={handleResetAll} disabled={saving}>
+        <Button type="button" onClick={handleResetAll}>
           Reset all overrides
         </Button>
-        <Button className="bg-primary text-white" disabled={saving} type="submit">
-          {saving ? "Saving…" : "Save"}
-        </Button>
       </div>
-    </form>
+    </div>
   );
 }

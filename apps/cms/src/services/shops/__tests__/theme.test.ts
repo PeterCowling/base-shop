@@ -1,4 +1,4 @@
-import { buildThemeData, removeThemeToken } from "../theme";
+import { buildThemeData, removeThemeToken, mergeThemePatch } from "../theme";
 
 jest.mock("@platform-core/src/createShop", () => ({
   syncTheme: jest.fn().mockResolvedValue({ a: "1" }),
@@ -25,5 +25,15 @@ describe("theme service", () => {
     const result = removeThemeToken(current, "a");
     expect(result.overrides).toEqual({ b: "2" });
     expect(result.themeTokens).toEqual({ a: "0", b: "2" });
+  });
+
+  it("merges partial theme updates", () => {
+    const current: any = {
+      themeOverrides: { a: "1", b: "2" },
+      themeDefaults: { a: "0", b: "0", c: "3" },
+    };
+    const patch = mergeThemePatch(current, { b: "4", c: "3" }, {});
+    expect(patch.overrides).toEqual({ a: "1", b: "4" });
+    expect(patch.themeTokens).toEqual({ a: "1", b: "4", c: "3" });
   });
 });

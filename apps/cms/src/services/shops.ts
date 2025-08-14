@@ -18,7 +18,7 @@ import {
   parsePremierDeliveryForm,
   parseAiCatalogForm,
 } from "./shops/validation";
-import { buildThemeData, removeThemeToken } from "./shops/theme";
+import { buildThemeData, removeThemeToken, mergeThemePatch } from "./shops/theme";
 import {
   fetchShop,
   persistShop,
@@ -284,6 +284,26 @@ export async function updateAiCatalog(
   const updated: ShopSettings = { ...current, seo };
   await persistSettings(shop, updated);
   return { settings: updated };
+}
+
+export async function patchTheme(
+  shop: string,
+  patch: { themeOverrides: Record<string, string>; themeDefaults: Record<string, string> },
+): Promise<{ shop: Shop }> {
+  await authorize();
+  const current = await fetchShop(shop);
+  const { themeDefaults, overrides, themeTokens } = mergeThemePatch(
+    current,
+    patch.themeOverrides,
+    patch.themeDefaults,
+  );
+  const saved = await persistShop(shop, {
+    id: current.id,
+    themeDefaults,
+    themeOverrides: overrides,
+    themeTokens,
+  });
+  return { shop: saved };
 }
 
 export async function resetThemeOverride(shop: string, token: string) {

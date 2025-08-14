@@ -3,6 +3,8 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { NextResponse } from "next/server";
 import { requirePermission } from "@auth";
+import { z } from "zod";
+import { upgradeComponentSchema } from "@acme/types/upgrade";
 
 export const runtime = "nodejs";
 
@@ -19,11 +21,12 @@ export async function GET() {
       "utf8"
     );
     const data = JSON.parse(raw);
-    const rawComponents = Array.isArray(data.components) ? data.components : [];
-    const components = rawComponents.filter(
-      (c: any) => c.oldChecksum !== c.newChecksum
-    );
-    const pages = Array.isArray(data.pages) ? data.pages : [];
+    const components = z
+      .array(upgradeComponentSchema)
+      .catch([])
+      .parse(data.components)
+      .filter((c) => c.oldChecksum !== c.newChecksum);
+    const pages = z.array(z.string()).catch([]).parse(data.pages);
     return NextResponse.json({ components, pages });
   } catch {
     return NextResponse.json({ components: [], pages: [] });

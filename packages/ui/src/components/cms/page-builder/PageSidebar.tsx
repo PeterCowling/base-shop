@@ -11,7 +11,15 @@ interface Props {
 }
 
 const PageSidebar = ({ components, selectedId, dispatch }: Props) => {
-  if (!selectedId) return null;
+  if (!selectedId) {
+    return (
+      <aside className="w-72 shrink-0 space-y-2" data-tour="sidebar">
+        <p className="text-sm text-muted-foreground">
+          Select a component to edit its properties.
+        </p>
+      </aside>
+    );
+  }
 
   const handleChange = useCallback(
     (patch: Partial<PageComponent>) =>
@@ -48,13 +56,13 @@ const PageSidebar = ({ components, selectedId, dispatch }: Props) => {
     dispatch({ type: "duplicate", id: selectedId });
   }, [dispatch, selectedId]);
 
-    return (
-      <aside className="w-72 shrink-0 space-y-2" data-tour="edit-properties">
-        <Button type="button" variant="outline" onClick={handleDuplicate}>
-          Duplicate
-        </Button>
-        <ComponentEditor
-          component={components.find((c) => c.id === selectedId)!}
+  return (
+    <aside className="w-72 shrink-0 space-y-2" data-tour="sidebar">
+      <Button type="button" variant="outline" onClick={handleDuplicate}>
+        Duplicate
+      </Button>
+      <ComponentEditor
+        component={components.find((c) => c.id === selectedId)!}
         onChange={handleChange}
         onResize={handleResize}
       />

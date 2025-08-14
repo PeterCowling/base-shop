@@ -26,6 +26,11 @@ import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES } from "./defaults";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import { usePreviewDevice } from "@ui/hooks";
+import Joyride, {
+  STATUS,
+  type CallBackProps,
+  type Step,
+} from "react-joyride";
 
 interface Props {
   page: Page;
@@ -130,6 +135,41 @@ const PageBuilder = memo(function PageBuilder({
   >("idle");
   const saveDebounceRef = useRef<number | null>(null);
   const initialRender = useRef(true);
+  const [runTour, setRunTour] = useState(false);
+  const steps = useMemo<Step[]>(
+    () => [
+      {
+        target: '[data-tour="palette"]',
+        content: "Drag components from the palette to the canvas.",
+      },
+      {
+        target: '[data-tour="canvas"]',
+        content: "Arrange components on the canvas.",
+      },
+      {
+        target: '[data-tour="sidebar"]',
+        content: "Select a component to edit its properties in the sidebar.",
+      },
+    ],
+    [],
+  );
+
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      !localStorage.getItem("pageBuilderTourSeen")
+    ) {
+      setRunTour(true);
+    }
+  }, []);
+
+  const handleTourCallback = useCallback((data: CallBackProps) => {
+    const { status } = data;
+    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
+      localStorage.setItem("pageBuilderTourSeen", "true");
+      setRunTour(false);
+    }
+  }, []);
 
   const {
     sensors,
@@ -238,11 +278,19 @@ const PageBuilder = memo(function PageBuilder({
   }, [onPublish, formData]);
 
   return (
-    <div className="flex gap-4" style={style}>
-      <aside className="w-48 shrink-0">
-        <Palette onAdd={handleAddFromPalette} />
-      </aside>
-      <div className="flex flex-1 flex-col gap-4">
+    <>
+      <Joyride
+        steps={steps}
+        run={runTour}
+        continuous
+        showSkipButton
+        callback={handleTourCallback}
+      />
+      <div className="flex gap-4" style={style}>
+        <aside className="w-48 shrink-0" data-tour="palette">
+          <Palette onAdd={handleAddFromPalette} />
+        </aside>
+        <div className="flex flex-1 flex-col gap-4">
         <div className="flex items-center justify-between">
           <PageToolbar
             viewport={viewport}
@@ -278,6 +326,13 @@ const PageBuilder = memo(function PageBuilder({
             >
               {showPreview ? "Hide preview" : "Show preview"}
             </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setRunTour(true)}
+            >
+              Tour
+            </Button>
           </div>
         </div>
         <div aria-live="polite" role="status" className="sr-only">
@@ -290,7 +345,11 @@ const PageBuilder = memo(function PageBuilder({
           onDragMove={handleDragMove}
           onDragEnd={handleDragEnd}
         >
-          <div className={frameClass[viewport]} style={viewportStyle}>
+          <div
+            className={frameClass[viewport]}
+            style={viewportStyle}
+            data-tour="canvas"
+          >
             <PageCanvas
               components={components}
               selectedId={selectedId}
@@ -394,19 +453,19 @@ const PageBuilder = memo(function PageBuilder({
             )}
           </div>
         </div>
+        <PageSidebar
+          components={components}
+          selectedId={selectedId}
+          dispatch={dispatch}
+        />
+        <Toast
+          open={toast.open}
+          onClose={() => setToast((t) => ({ ...t, open: false }))}
+          onClick={toast.retry}
+          message={toast.message}
+        />
       </div>
-      <PageSidebar
-        components={components}
-        selectedId={selectedId}
-        dispatch={dispatch}
-      />
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        onClick={toast.retry}
-        message={toast.message}
-      />
-    </div>
+    </>
   );
 });
 

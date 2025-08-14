@@ -1,4 +1,5 @@
 import { listEvents } from "@platform-core/repositories/analytics.server";
+import type { AnalyticsEvent } from "@platform-core/analytics";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { DATA_ROOT } from "@platform-core/dataRoot";
@@ -104,18 +105,18 @@ export async function resolveSegment(
     return [];
   }
 
-  const events = await listEvents(shop);
+  const events: AnalyticsEvent[] = await listEvents(shop);
   const emails = new Set<string>();
   for (const e of events) {
     let match = true;
     for (const f of def.filters) {
-      if ((e as any)[f.field] !== f.value) {
+      if (e[f.field] !== f.value) {
         match = false;
         break;
       }
     }
     if (match) {
-      const email = (e as any).email;
+      const email = e.email;
       if (typeof email === "string") emails.add(email);
     }
   }

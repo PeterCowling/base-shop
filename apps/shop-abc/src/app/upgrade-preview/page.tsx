@@ -2,13 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { exampleProps } from "./example-props";
-
-interface UpgradeComponent {
-  file: string;
-  componentName: string;
-  oldChecksum: string;
-  newChecksum: string;
-}
+import { z } from "zod";
+import {
+  type UpgradeComponent,
+  upgradeComponentSchema,
+} from "@acme/types/upgrade";
 
 class PreviewErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -106,12 +104,13 @@ export default function UpgradePreviewPage() {
     async function load() {
       try {
         const res = await fetch("/api/upgrade-changes");
-        const data = (await res.json()) as {
-          components: UpgradeComponent[];
-          pages?: string[];
-        };
+        const schema = z.object({
+          components: z.array(upgradeComponentSchema),
+          pages: z.array(z.string()).optional(),
+        });
+        const data = schema.parse(await res.json());
         setChanges(data.components);
-        if (Array.isArray(data.pages)) {
+        if (data.pages) {
           const pageLinks = (
             await Promise.all(
               data.pages.map(async (id) => {
@@ -120,14 +119,22 @@ export default function UpgradePreviewPage() {
                     `/api/preview-token?pageId=${encodeURIComponent(id)}`,
                   );
                   if (!r.ok) return null;
-                  const { token } = (await r.json()) as { token: string };
-                  return { id, url: `/preview/${id}?upgrade=${token}` };
+                  const tokenData = await r.json();
+                  if (
+                    typeof tokenData === "object" &&
+                    tokenData &&
+                    "token" in tokenData &&
+                    typeof (tokenData as { token?: unknown }).token === "string"
+                  ) {
+                    return { id, url: `/preview/${id}?upgrade=${tokenData.token}` };
+                  }
+                  return null;
                 } catch {
                   return null;
                 }
               }),
             )
-          ).filter(Boolean) as { id: string; url: string }[];
+          ).filter((l): l is { id: string; url: string } => Boolean(l));
           setLinks(pageLinks);
         }
       } catch (err) {
@@ -143,8 +150,17 @@ export default function UpgradePreviewPage() {
     try {
       const res = await fetch("/api/publish", { method: "POST" });
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error((data as any).error || "Publish failed");
+        const data: unknown = await res
+          .json()
+          .catch(() => ({} as unknown));
+        const message =
+          typeof data === "object" &&
+          data !== null &&
+          "error" in data &&
+          typeof (data as { error?: unknown }).error === "string"
+            ? (data as { error: string }).error
+            : "Publish failed";
+        throw new Error(message);
       }
     } catch (err) {
       console.error("Publish failed", err);

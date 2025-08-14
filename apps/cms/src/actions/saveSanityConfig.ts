@@ -27,6 +27,7 @@ export async function saveSanityConfig(
 
   if (createDataset) {
     const setup = await setupSanityBlog(
+      shopId,
       config,
       aclMode as "public" | "private",
     );

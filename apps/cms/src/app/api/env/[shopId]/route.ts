@@ -36,7 +36,7 @@ export async function POST(
       data.SANITY_DATASET &&
       data.SANITY_TOKEN
     ) {
-      await setupSanityBlog({
+      await setupSanityBlog(shopId, {
         projectId: data.SANITY_PROJECT_ID,
         dataset: data.SANITY_DATASET,
         token: data.SANITY_TOKEN,

@@ -1,6 +1,6 @@
 // apps/cms/src/actions/blog.server.ts
 
-import { getSanityConfig } from "@platform-core/src/shops";
+import { getSanityConfig, getEditorialBlog } from "@platform-core/src/shops";
 import { getShopById } from "@platform-core/src/repositories/shop.server";
 import { ensureAuthorized } from "./common/auth";
 import {
@@ -64,6 +64,10 @@ interface SanityPost {
 }
 async function getConfig(shopId: string): Promise<SanityConfig> {
   const shop = await getShopById(shopId);
+  const editorial = getEditorialBlog(shop);
+  if (!editorial?.enabled) {
+    throw new Error(`Editorial blog disabled for shop ${shopId}`);
+  }
   const sanity = getSanityConfig(shop);
   if (!sanity) {
     throw new Error(`Missing Sanity config for shop ${shopId}`);
@@ -243,6 +247,11 @@ export async function publishPost(
     await mutate(config, {
       mutations: [{ patch: { id, set: { published: true, publishedAt } } }],
     });
+    const shop = await getShopById(shopId);
+    const editorial = getEditorialBlog(shop);
+    if (editorial?.promoteSchedule) {
+      scheduleFrontPagePromotion(shopId, editorial.promoteSchedule);
+    }
     return { message: "Post published" };
   } catch (err) {
     console.error("Failed to publish post", err);
@@ -283,6 +292,20 @@ export async function deletePost(
   } catch (err) {
     console.error("Failed to delete post", err);
     return { error: "Failed to delete post" };
+  }
+}
+
+function scheduleFrontPagePromotion(shopId: string, at: string) {
+  const delay = new Date(at).getTime() - Date.now();
+  const trigger = () => {
+    fetch(`/api/shops/${shopId}/blog/promote`, { method: "POST" }).catch(
+      (err) => console.error("[promoteFrontPage]", err),
+    );
+  };
+  if (delay > 0) {
+    setTimeout(trigger, delay);
+  } else {
+    trigger();
   }
 }
 

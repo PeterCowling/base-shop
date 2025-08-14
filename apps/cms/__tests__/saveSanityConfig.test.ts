@@ -86,6 +86,7 @@ describe("saveSanityConfig", () => {
 
     expect(verifyCredentials).not.toHaveBeenCalled();
     expect(setupSanityBlog).toHaveBeenCalledWith(
+      "shop",
       {
         projectId: "p",
         dataset: "d",

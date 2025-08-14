@@ -1,4 +1,4 @@
-import type { Shop, SanityBlogConfig, ShopDomain } from "@acme/types";
+import type { Shop, SanityBlogConfig, ShopDomain, EditorialBlog } from "@acme/types";
 export { SHOP_NAME_RE, validateShopName } from "@acme/lib";
 
 export function getSanityConfig(shop: Shop): SanityBlogConfig | undefined {
@@ -18,6 +18,23 @@ export function setSanityConfig(
   return next;
 }
 
+export function getEditorialBlog(shop: Shop): EditorialBlog | undefined {
+  return (shop as Shop & { editorialBlog?: EditorialBlog }).editorialBlog;
+}
+
+export function setEditorialBlog(
+  shop: Shop,
+  editorial: EditorialBlog | undefined,
+): Shop {
+  const next = { ...shop } as Shop & { editorialBlog?: EditorialBlog };
+  if (editorial) {
+    next.editorialBlog = editorial;
+  } else {
+    delete next.editorialBlog;
+  }
+  return next;
+}
+
 export function getDomain(shop: Shop): ShopDomain | undefined {
   return (shop as Shop & { domain?: ShopDomain }).domain;
 }
@@ -33,4 +50,4 @@ export function setDomain(shop: Shop, domain: ShopDomain | undefined): Shop {
 }
 
 export type { SanityBlogConfig };
-export type { ShopDomain };
+export type { ShopDomain, EditorialBlog };

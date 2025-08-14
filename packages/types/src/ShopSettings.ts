@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { localeSchema } from "./Product";
-import { shopSeoFieldsSchema } from "./Shop";
+import { shopSeoFieldsSchema, editorialBlogSchema } from "./Shop";
 
 export const aiCatalogFieldSchema = z.enum([
   "id",
@@ -62,6 +62,7 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    editorialBlog: editorialBlogSchema.optional(),
     /** Tracking providers enabled for shipment/return tracking */
     trackingProviders: z.array(z.string()).optional(),
     updatedAt: z.string(),

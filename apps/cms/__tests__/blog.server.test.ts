@@ -15,6 +15,7 @@ jest.mock("@platform-core/src/shops", () => ({
     dataset: "d",
     token: "t",
   }),
+  getEditorialBlog: jest.fn().mockReturnValue({ enabled: true }),
 }));
 
 describe("blog post slug conflicts", () => {

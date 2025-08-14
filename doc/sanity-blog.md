@@ -13,6 +13,23 @@ When setting up the connection the CMS seeds a minimal schema. Posts include a `
 3. The CMS uses the values to verify access via the `verifyCredentials` helper from the plugin.
 4. On success the connection is stored with the shop settings.
 
+## Enable the editorial blog
+
+Shops can surface a scheduled “Daily Edit” on the storefront. Enable the
+feature by adding an `editorialBlog` section to the shop settings:
+
+```jsonc
+{
+  "editorialBlog": {
+    "enabled": true,
+    "promoteSchedule": "2024-05-01T09:00:00Z" // optional
+  }
+}
+```
+
+When `promoteSchedule` is provided the CMS schedules a front‑page promotion at
+the given time.
+
 ## Publish posts
 
 1. In **Blog → New Post** fill out the post details.

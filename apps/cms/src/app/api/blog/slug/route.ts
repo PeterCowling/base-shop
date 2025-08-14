@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { env } from "@acme/config";
 import { getShopById } from "@platform-core/src/repositories/shop.server";
-import { getSanityConfig } from "@platform-core/src/shops";
+import { getSanityConfig, getEditorialBlog } from "@platform-core/src/shops";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 
 const apiVersion = env.SANITY_API_VERSION || "2021-10-21";
@@ -27,6 +27,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Missing slug or shopId" }, { status: 400 });
   }
   const shop = await getShopById(shopId);
+  const editorial = getEditorialBlog(shop);
+  if (!editorial?.enabled) {
+    return NextResponse.json({ error: "Editorial blog disabled" }, { status: 400 });
+  }
   const sanity = getSanityConfig(shop);
   if (!sanity) {
     return NextResponse.json({ error: "Missing Sanity config" }, { status: 400 });

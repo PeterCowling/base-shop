@@ -6,6 +6,7 @@ jest.mock("@platform-core/src/repositories/shop.server", () => ({
 
 jest.mock("@platform-core/src/shops", () => ({
   getSanityConfig: jest.fn().mockReturnValue({ projectId: "p", dataset: "d", token: "t" }),
+  getEditorialBlog: jest.fn().mockReturnValue({ enabled: true }),
 }));
 
 jest.mock("../src/actions/common/auth", () => ({

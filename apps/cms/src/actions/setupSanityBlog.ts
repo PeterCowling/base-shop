@@ -1,6 +1,8 @@
 // apps/cms/src/actions/setupSanityBlog.ts
 import { env } from "@acme/config";
 import { ensureAuthorized } from "./common/auth";
+import { getShopById } from "@platform-core/src/repositories/shop.server";
+import { getEditorialBlog } from "@platform-core/src/shops";
 
 interface SanityCredentials {
   projectId: string;
@@ -25,14 +27,18 @@ interface Result {
  * documents so the blog can be used immediately.
  */
 export async function setupSanityBlog(
+  shopId: string,
   creds: SanityCredentials,
   aclMode: "public" | "private" = "public",
 ): Promise<Result> {
   "use server";
   await ensureAuthorized();
-
+  const shop = await getShopById(shopId);
+  const editorial = getEditorialBlog(shop);
+  if (!editorial?.enabled) {
+    return { success: false, error: "Editorial blog disabled" };
+  }
   const { projectId, dataset, token } = creds;
-
   try {
     // Check if dataset exists
     const listRes = await fetch(
@@ -176,6 +182,9 @@ export async function setupSanityBlog(
       };
     }
 
+    if (editorial.promoteSchedule) {
+      scheduleFrontPagePromotion(shopId, editorial.promoteSchedule);
+    }
     return { success: true };
   } catch (err) {
     console.error("[setupSanityBlog]", err);
@@ -184,6 +193,20 @@ export async function setupSanityBlog(
       error: (err as Error).message,
       code: "UNKNOWN_ERROR",
     };
+  }
+}
+
+function scheduleFrontPagePromotion(shopId: string, at: string) {
+  const runAt = new Date(at).getTime() - Date.now();
+  const trigger = () => {
+    fetch(`/api/shops/${shopId}/blog/promote`, {
+      method: "POST",
+    }).catch((err) => console.error("[promoteFrontPage]", err));
+  };
+  if (runAt > 0) {
+    setTimeout(trigger, runAt);
+  } else {
+    trigger();
   }
 }
 

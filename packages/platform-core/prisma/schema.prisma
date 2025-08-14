@@ -40,6 +40,10 @@ model RentalOrder {
   labelUrl           String?
   returnDueDate      String?
   returnReceivedAt   String?
+  cleanedAt         String?
+  repairedAt        String?
+  qaAt              String?
+  availableAt       String?
   lateFeeCharged     Int?
 
   @@unique([shop, sessionId])

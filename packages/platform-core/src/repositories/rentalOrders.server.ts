@@ -42,22 +42,26 @@ export const markReceived = (
 export const markCleaning = (
   shop: string,
   sessionId: string,
-): Promise<Order | null> => updateStatus(shop, sessionId, "cleaning");
+): Promise<Order | null> =>
+  updateStatus(shop, sessionId, "cleaning", { cleanedAt: nowIso() });
 
 export const markRepair = (
   shop: string,
   sessionId: string,
-): Promise<Order | null> => updateStatus(shop, sessionId, "repair");
+): Promise<Order | null> =>
+  updateStatus(shop, sessionId, "repair", { repairedAt: nowIso() });
 
 export const markQa = (
   shop: string,
   sessionId: string,
-): Promise<Order | null> => updateStatus(shop, sessionId, "qa");
+): Promise<Order | null> =>
+  updateStatus(shop, sessionId, "qa", { qaAt: nowIso() });
 
 export const markAvailable = (
   shop: string,
   sessionId: string,
-): Promise<Order | null> => updateStatus(shop, sessionId, "available");
+): Promise<Order | null> =>
+  updateStatus(shop, sessionId, "available", { availableAt: nowIso() });
 
 export async function markLateFeeCharged(
   shop: string,

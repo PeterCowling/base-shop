@@ -6,6 +6,7 @@
     "enabled": false,
     "intervalMinutes": 60
   },
+  "reverseLogisticsService": { "enabled": true, "intervalMinutes": 30 },
   "returnService": { "upsEnabled": false },
   "languages": [
     "en",

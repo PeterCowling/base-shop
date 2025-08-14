@@ -104,4 +104,55 @@ describe("chargeLateFeesOnce", () => {
     expect(markLateFeeCharged).toHaveBeenCalledTimes(1);
     expect(markLateFeeCharged).toHaveBeenCalledWith("test", "sess1", 25);
   });
+
+  it("does not charge orders within the grace period", async () => {
+    const stripeModule = await import("@acme/stripe");
+    const stripeRetrieve = jest.fn().mockResolvedValue({
+      customer: "cus_1",
+      payment_intent: { payment_method: "pm_1" },
+      currency: "usd",
+    });
+    const stripeCharge = jest.fn().mockResolvedValue({});
+    stripeModule.stripe.checkout.sessions.retrieve = stripeRetrieve as any;
+    stripeModule.stripe.paymentIntents.create = stripeCharge as any;
+
+    const orders: RentalOrder[] = [
+      {
+        id: "1",
+        sessionId: "sess1",
+        shop: "test",
+        returnDueDate: "2024-01-07",
+      },
+    ];
+
+    const readOrders = jest.fn().mockResolvedValue(orders);
+    const markLateFeeCharged = jest.fn().mockResolvedValue(null);
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+      __esModule: true,
+      readOrders,
+      markLateFeeCharged,
+    }));
+
+    const readFile = jest.fn().mockImplementation(async (path: string) => {
+      if (path.endsWith("shop.json")) {
+        return JSON.stringify({
+          lateFeePolicy: { gracePeriodDays: 3, feeAmount: 25 },
+        });
+      }
+      throw new Error("not found");
+    });
+    const readdir = jest.fn().mockResolvedValue(["test"]);
+    jest.doMock("node:fs/promises", () => ({
+      __esModule: true,
+      readFile,
+      readdir,
+    }));
+
+    const { chargeLateFeesOnce } = await import("../src/lateFeeService");
+    await chargeLateFeesOnce();
+
+    expect(stripeRetrieve).not.toHaveBeenCalled();
+    expect(stripeCharge).not.toHaveBeenCalled();
+    expect(markLateFeeCharged).not.toHaveBeenCalled();
+  });
 });

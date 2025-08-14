@@ -3,7 +3,7 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
-import { shopSchema } from "@cms/actions/schemas";
+import { parseShopForm } from "@cms/services/shops/validation";
 import type { Shop } from "@acme/types";
 import { ChangeEvent, FormEvent, useMemo, useState } from "react";
 import GeneralSettings from "./GeneralSettings";
@@ -22,10 +22,14 @@ interface Props {
   initialTrackingProviders: string[];
 }
 
-export default function ShopEditor({ shop, initial, initialTrackingProviders }: Props) {
+export default function ShopEditor({
+  shop,
+  initial,
+  initialTrackingProviders,
+}: Props) {
   const [info, setInfo] = useState<Shop>(initial);
   const [trackingProviders, setTrackingProviders] = useState<string[]>(
-    initialTrackingProviders,
+    initialTrackingProviders
   );
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
@@ -34,7 +38,7 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
     const defaults = info.themeDefaults ?? {};
     const overrides = info.themeOverrides ?? {};
     const tokens = Array.from(
-      new Set([...Object.keys(defaults), ...Object.keys(overrides)]),
+      new Set([...Object.keys(defaults), ...Object.keys(overrides)])
     );
     return tokens.map((token) => ({
       token,
@@ -53,13 +57,9 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
     e.preventDefault();
     setSaving(true);
     const fd = new FormData(e.currentTarget);
-    const data = Object.fromEntries(fd.entries()) as Record<string, string>;
-    const parsed = shopSchema.safeParse({
-      ...data,
-      trackingProviders: fd.getAll("trackingProviders"),
-    });
-    if (!parsed.success) {
-      setErrors(parsed.error.flatten().fieldErrors);
+    const { errors: validationErrors } = parseShopForm(fd);
+    if (validationErrors) {
+      setErrors(validationErrors);
       setSaving(false);
       return;
     }

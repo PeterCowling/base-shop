@@ -1,13 +1,10 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/SEOSettings.tsx
 "use client";
-import { Input, Textarea } from "@/components/atoms/shadcn";
+import { Input } from "@/components/atoms/shadcn";
 import type { Shop } from "@acme/types";
-import type {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-} from "react";
-import { jsonFieldHandler, ErrorSetter } from "../utils/formValidators";
+import type { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ErrorSetter } from "../utils/formValidators";
+import KeyValueEditor from "./KeyValueEditor";
 
 interface Props {
   info: Shop;
@@ -32,12 +29,6 @@ export default function SEOSettings({
       catalogFilters: e.target.value.split(/,\s*/),
     }));
   };
-
-  const handleMappings = jsonFieldHandler<Record<string, unknown>>(
-    "filterMappings",
-    (parsed) => setInfo((prev) => ({ ...prev, filterMappings: parsed })),
-    setErrors,
-  );
 
   const handleTracking = (e: ChangeEvent<HTMLSelectElement>) => {
     const selected = Array.from(e.target.selectedOptions).map((o) => o.value);
@@ -78,20 +69,21 @@ export default function SEOSettings({
           </span>
         )}
       </label>
-      <label className="flex flex-col gap-1">
-        <span>Filter Mappings (JSON)</span>
-        <Textarea
-          name="filterMappings"
-          defaultValue={JSON.stringify(info.filterMappings, null, 2)}
-          onChange={handleMappings}
-          rows={4}
-        />
-        {errors.filterMappings && (
-          <span className="text-sm text-red-600">
-            {errors.filterMappings.join("; ")}
-          </span>
-        )}
-      </label>
+      <KeyValueEditor
+        name="filterMappings"
+        label="Filter Mappings"
+        pairs={info.filterMappings ?? {}}
+        onChange={(pairs) =>
+          setInfo((prev) => ({
+            ...prev,
+            filterMappings: pairs as Record<string, string>,
+          }))
+        }
+        errors={errors}
+        setErrors={setErrors}
+        keyPlaceholder="filter key"
+        valuePlaceholder="catalog attribute"
+      />
     </>
   );
 }

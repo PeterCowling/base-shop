@@ -15,16 +15,102 @@ export function parseShopForm(formData: FormData): {
 } {
   const themeDefaultsRaw = formData.get("themeDefaults") as string | null;
   const themeOverridesRaw = formData.get("themeOverrides") as string | null;
+  const filterKeys = formData
+    .getAll("filterMappingsKey")
+    .map((v) => String(v).trim());
+  const filterVals = formData
+    .getAll("filterMappingsValue")
+    .map((v) => String(v).trim());
+  const filterMappings: Record<string, string> = {};
+  let filterError: string | null = null;
+  for (let i = 0; i < Math.max(filterKeys.length, filterVals.length); i++) {
+    const k = filterKeys[i];
+    const v = filterVals[i];
+    if (!k && !v) continue;
+    if (!k || !v) {
+      filterError = "All keys and values are required";
+      break;
+    }
+    filterMappings[k] = v;
+  }
+
+  const priceKeys = formData
+    .getAll("priceOverridesKey")
+    .map((v) => String(v).trim());
+  const priceVals = formData
+    .getAll("priceOverridesValue")
+    .map((v) => String(v).trim());
+  const priceOverrides: Record<string, number> = {};
+  let priceError: string | null = null;
+  for (let i = 0; i < Math.max(priceKeys.length, priceVals.length); i++) {
+    const k = priceKeys[i];
+    const v = priceVals[i];
+    if (!k && !v) continue;
+    if (!k || !v) {
+      priceError = "All locales and prices are required";
+      break;
+    }
+    const localeValid = localeSchema.safeParse(k).success;
+    const num = Number(v);
+    if (!localeValid || Number.isNaN(num) || num < 0) {
+      priceError = "Invalid price override";
+      break;
+    }
+    priceOverrides[k] = num;
+  }
+
+  const localeKeys = formData
+    .getAll("localeOverridesKey")
+    .map((v) => String(v).trim());
+  const localeVals = formData
+    .getAll("localeOverridesValue")
+    .map((v) => String(v).trim());
+  const localeOverrides: Record<string, Locale> = {};
+  let localeError: string | null = null;
+  for (let i = 0; i < Math.max(localeKeys.length, localeVals.length); i++) {
+    const k = localeKeys[i];
+    const v = localeVals[i];
+    if (!k && !v) continue;
+    if (!k || !v) {
+      localeError = "All paths and locales are required";
+      break;
+    }
+    const parsedLocale = localeSchema.safeParse(v);
+    if (!parsedLocale.success) {
+      localeError = "Invalid locale override";
+      break;
+    }
+    localeOverrides[k] = parsedLocale.data;
+  }
+
+  const entries = Array.from(
+    formData as unknown as Iterable<[string, FormDataEntryValue]>
+  ).filter(
+    ([key]) =>
+      ![
+        "filterMappingsKey",
+        "filterMappingsValue",
+        "priceOverridesKey",
+        "priceOverridesValue",
+        "localeOverridesKey",
+        "localeOverridesValue",
+      ].includes(key)
+  );
   const parsed = shopSchema.safeParse({
-    ...Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>
-    ),
+    ...Object.fromEntries(entries),
     themeDefaults: themeDefaultsRaw ?? "{}",
     themeOverrides: themeOverridesRaw ?? "{}",
     trackingProviders: formData.getAll("trackingProviders"),
+    filterMappings: JSON.stringify(filterMappings),
+    priceOverrides: JSON.stringify(priceOverrides),
+    localeOverrides: JSON.stringify(localeOverrides),
   });
-  if (!parsed.success) {
-    return { errors: parsed.error.flatten().fieldErrors };
+  const fieldErrors = parsed.success ? {} : parsed.error.flatten().fieldErrors;
+  if (filterError) fieldErrors.filterMappings = [filterError];
+  if (priceError) fieldErrors.priceOverrides = [priceError];
+  if (localeError) fieldErrors.localeOverrides = [localeError];
+  if (!parsed.success || filterError || priceError || localeError) {
+    return { errors: fieldErrors };
   }
   return { data: parsed.data };
 }
@@ -95,7 +181,9 @@ export function parseCurrencyTaxForm(formData: FormData): {
   errors?: Record<string, string[]>;
 } {
   const parsed = currencyTaxSchema.safeParse(
-    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+    Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>
+    )
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
@@ -115,7 +203,9 @@ export function parseDepositForm(formData: FormData): {
   errors?: Record<string, string[]>;
 } {
   const parsed = depositSchema.safeParse(
-    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+    Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>
+    )
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
@@ -132,7 +222,9 @@ export function parseUpsReturnsForm(formData: FormData): {
   errors?: Record<string, string[]>;
 } {
   const parsed = returnsSchema.safeParse(
-    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+    Object.fromEntries(
+      formData as unknown as Iterable<[string, FormDataEntryValue]>
+    )
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
@@ -194,7 +286,7 @@ export function parseAiCatalogForm(formData: FormData): {
   return { data: parsed.data };
 }
 
-export type SeoForm = z.infer<typeof seoSchema> & { locale: Locale; };
+export type SeoForm = z.infer<typeof seoSchema> & { locale: Locale };
 export type GenerateSeoForm = z.infer<typeof generateSchema>;
 export type CurrencyTaxForm = z.infer<typeof currencyTaxSchema>;
 export type DepositForm = z.infer<typeof depositSchema>;

@@ -22,6 +22,7 @@ jest.mock(
 
 jest.mock("@cms/actions/shops.server", () => ({
   updateShop: jest.fn(),
+  resetThemeOverride: jest.fn(),
 }));
 
 describe("ShopEditor", () => {

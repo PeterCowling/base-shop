@@ -1,6 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/ThemeTokens.tsx
 "use client";
 import { Button } from "@/components/atoms/shadcn";
+import { resetThemeOverride } from "@cms/actions/shops.server";
 import type { Shop } from "@acme/types";
 import Link from "next/link";
 
@@ -30,18 +31,47 @@ export default function ThemeTokens({ shop, tokenRows, info, errors }: Props) {
         <thead>
           <tr className="text-left">
             <th className="px-2 py-1">Token</th>
-            <th className="px-2 py-1">Default</th>
-            <th className="px-2 py-1">Override</th>
+            <th className="px-2 py-1">Values</th>
+            <th className="px-2 py-1">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {tokenRows.map(({ token, defaultValue, overrideValue }) => (
-            <tr key={token}>
-              <td className="border-t px-2 py-1 font-medium">{token}</td>
-              <td className="border-t px-2 py-1">{defaultValue}</td>
-              <td className="border-t px-2 py-1">{overrideValue ?? ""}</td>
-            </tr>
-          ))}
+          {tokenRows.map(({ token, defaultValue, overrideValue }) => {
+            const hasOverride = overrideValue !== undefined;
+            const changed = hasOverride && overrideValue !== defaultValue;
+            return (
+              <tr key={token} className={changed ? "bg-yellow-50" : undefined}>
+                <td className="border-t px-2 py-1 font-medium">{token}</td>
+                <td className="border-t px-2 py-1">
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-1">
+                      <span className="font-mono">{defaultValue}</span>
+                      <span className="text-xs text-muted-foreground">default</span>
+                    </div>
+                    {hasOverride && (
+                      <div className="flex items-center gap-1">
+                        <span className="font-mono">{overrideValue}</span>
+                        <span className="text-xs text-muted-foreground">override</span>
+                      </div>
+                    )}
+                  </div>
+                </td>
+                <td className="border-t px-2 py-1">
+                  {hasOverride && (
+                    <form action={resetThemeOverride.bind(null, shop, token)}>
+                      <Button
+                        type="submit"
+                        variant="link"
+                        className="h-auto p-0 text-primary"
+                      >
+                        Reset
+                      </Button>
+                    </form>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <input

@@ -8,6 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/atoms";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
@@ -61,6 +68,11 @@ export default function StepHomePage({
   const [isPublishing, setIsPublishing] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [publishError, setPublishError] = useState<string | null>(null);
+  const [selectOpen, setSelectOpen] = useState(false);
+  const [pendingTemplate, setPendingTemplate] =
+    useState<{ name: string; components: PageComponent[]; preview: string } | null>(
+      null,
+    );
 
   useEffect(() => {
     (async () => {
@@ -100,49 +112,119 @@ export default function StepHomePage({
       <h2 className="text-xl font-semibold">Home Page</h2>
       <Select
         value={homeLayout}
-        onValueChange={(val) => {
-          const layout = val === "blank" ? "" : val;
-          setHomeLayout(layout);
-          const tpl = pageTemplates.find((t) => t.name === layout);
-          const comps = tpl
-            ? tpl.components.map((c) => ({ ...c, id: ulid() }))
-            : [];
-          setComponents(comps);
-          if (typeof window !== "undefined") {
-            try {
-              const json = localStorage.getItem(STORAGE_KEY);
-              if (json) {
-                const data = JSON.parse(json);
-                data.homeLayout = layout;
-                data.components = comps;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-                window.dispatchEvent(new CustomEvent("configurator:update"));
-              }
-            } catch {
-              /* ignore */
-            }
-          }
-        }}
+        open={selectOpen}
+        onOpenChange={setSelectOpen}
+        onValueChange={() => {}}
       >
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select template" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="blank">Blank</SelectItem>
+          <SelectItem
+            value="blank"
+            asChild
+            onSelect={(e) => {
+              e.preventDefault();
+              setSelectOpen(false);
+              setPendingTemplate({ name: "blank", components: [], preview: "" });
+            }}
+          >
+            <button type="button" className="w-full text-left">
+              Blank
+            </button>
+          </SelectItem>
           {pageTemplates.map((t) => (
-            <SelectItem key={t.name} value={t.name}>
-              <div className="flex items-center gap-2">
-                <img
-                  src={t.preview}
-                  alt={`${t.name} preview`}
-                  className="h-8 w-8 rounded object-cover"
-                />
-                {t.name}
-              </div>
+            <SelectItem
+              key={t.name}
+              value={t.name}
+              asChild
+              onSelect={(e) => {
+                e.preventDefault();
+                setSelectOpen(false);
+                setPendingTemplate(t);
+              }}
+            >
+              <button type="button" className="w-full text-left">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={t.preview}
+                    alt={`${t.name} preview`}
+                    className="h-8 w-8 rounded object-cover"
+                  />
+                  {t.name}
+                </div>
+              </button>
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
+      <Dialog
+        open={!!pendingTemplate}
+        onOpenChange={(o) => {
+          if (!o) setPendingTemplate(null);
+        }}
+      >
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>
+              Use
+              {pendingTemplate?.name === "blank"
+                ? " Blank"
+                : ` ${pendingTemplate?.name}`}
+              {" "}template?
+            </DialogTitle>
+          </DialogHeader>
+          {pendingTemplate?.preview && (
+            <img
+              src={pendingTemplate.preview}
+              alt={`${pendingTemplate.name} preview`}
+              className="w-full rounded"
+            />
+          )}
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setPendingTemplate(null)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                if (!pendingTemplate) return;
+                const layout =
+                  pendingTemplate.name === "blank"
+                    ? ""
+                    : pendingTemplate.name;
+                const comps = pendingTemplate.components.map((c) => ({
+                  ...c,
+                  id: ulid(),
+                }));
+                setHomeLayout(layout);
+                setComponents(comps);
+                if (typeof window !== "undefined") {
+                  try {
+                    const json = localStorage.getItem(STORAGE_KEY);
+                    if (json) {
+                      const data = JSON.parse(json);
+                      data.homeLayout = layout;
+                      data.components = comps;
+                      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                      window.dispatchEvent(
+                        new CustomEvent("configurator:update"),
+                      );
+                    }
+                  } catch {
+                    /* ignore */
+                  }
+                }
+                setPendingTemplate(null);
+              }}
+            >
+              Confirm
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <PageBuilder
         page={
           {

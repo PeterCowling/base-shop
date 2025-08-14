@@ -23,17 +23,17 @@ describe("buildMetrics", () => {
         type: "discount_redeemed",
         timestamp: "2024-05-01T12:04:00Z",
         code: "ABC",
-      } as AnalyticsEvent,
+      },
       {
         type: "discount_redeemed",
         timestamp: "2024-05-02T12:04:00Z",
         code: "ABC",
-      } as AnalyticsEvent,
+      },
       {
         type: "discount_redeemed",
         timestamp: "2024-05-02T12:05:00Z",
         code: "XYZ",
-      } as AnalyticsEvent,
+      },
     ];
 
     const metrics = buildMetrics(events);

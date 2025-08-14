@@ -6,7 +6,7 @@ export const USERS = {
         name: "Admin",
         email: "admin@example.com",
         //password: "admin",
-        password: "admin", // NOTE: stored in plain text
+        password: "$2b$10$2cZYn4hpcuv7iNSOFYugsO4YrHjxd2rcWG8KrUOt4e6H1LuxE4ws6",
     },
     viewer: {
         id: "2",

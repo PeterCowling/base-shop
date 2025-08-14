@@ -52,14 +52,11 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
 
           /* -------------------------------------------------------------- */
           /*  Password check                                                */
-          /*  - user.id === "1": plain‑text (dev fixture)                   */
-          /*  - everyone else : bcrypt                                      */
+          /*  - all users must have bcrypt-hashed passwords                  */
           /* -------------------------------------------------------------- */
           const ok =
             user &&
-            (user.id === "1"
-              ? credentials.password === user.password
-              : await bcryptCompare(credentials.password, user.password));
+            (await bcryptCompare(credentials.password, user.password));
 
           if (ok && user) {
             /* Strip the password before returning */

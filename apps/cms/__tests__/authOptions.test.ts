@@ -13,7 +13,11 @@ const { ROLE_PERMISSIONS } = require("@auth/permissions");
 jest.doMock(rbacStorePath, () => ({
   readRbac: async () => ({
     users: {
-      "1": { id: "1", email: "admin@example.com", password: "admin" },
+      "1": {
+        id: "1",
+        email: "admin@example.com",
+        password: "$2b$10$2cZYn4hpcuv7iNSOFYugsO4YrHjxd2rcWG8KrUOt4e6H1LuxE4ws6",
+      },
     },
     roles: { "1": "admin" },
     permissions: ROLE_PERMISSIONS,

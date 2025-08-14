@@ -20,7 +20,7 @@ const DEFAULT_DB: RbacDB = {
       id: "1",
       name: "Admin",
       email: "admin@example.com",
-      password: "admin",
+      password: "$2b$10$2cZYn4hpcuv7iNSOFYugsO4YrHjxd2rcWG8KrUOt4e6H1LuxE4ws6",
     },
     "2": {
       id: "2",

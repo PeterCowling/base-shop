@@ -21,9 +21,7 @@ export const authOptions = {
                 const user = Object.values(users).find((u) => u.email === credentials.email);
                 console.log("[auth] found user", Boolean(user));
                 if (user &&
-                    (user.id === "1"
-                        ? credentials.password === user.password
-                        : await bcrypt.compare(credentials.password, user.password))) {
+                    (await bcrypt.compare(credentials.password, user.password))) {
                     /* Strip password before handing the user object to NextAuth */
                     const { password: _password, ...safeUser } = user;
                     void _password;

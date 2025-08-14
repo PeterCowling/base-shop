@@ -2,6 +2,43 @@
 import { env } from "@acme/config";
 import { ensureAuthorized } from "./common/auth";
 
+export async function scheduleEditorialPromotion(
+  schedule: string,
+  shopId?: string,
+) {
+  "use server";
+  await ensureAuthorized();
+  try {
+    await fetch(
+      shopId
+        ? `/api/shops/${shopId}/editorial/promote`
+        : `/api/editorial/promote`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ schedule }),
+      },
+    );
+  } catch (err) {
+    console.error("[setupSanityBlog] failed to schedule promotion", err);
+  }
+}
+
+export async function promoteEditorialNow(shopId?: string) {
+  "use server";
+  await ensureAuthorized();
+  try {
+    await fetch(
+      shopId
+        ? `/api/shops/${shopId}/editorial/promote`
+        : `/api/editorial/promote`,
+      { method: "POST" },
+    );
+  } catch (err) {
+    console.error("[setupSanityBlog] failed to promote", err);
+  }
+}
+
 interface SanityCredentials {
   projectId: string;
   dataset: string;
@@ -34,15 +71,7 @@ export async function setupSanityBlog(
   await ensureAuthorized();
   if (!editorial?.enabled) return { success: true };
   if (editorial.promoteSchedule) {
-    try {
-      await fetch(`/api/editorial/promote`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ schedule: editorial.promoteSchedule }),
-      });
-    } catch (err) {
-      console.error("[setupSanityBlog] failed to schedule promotion", err);
-    }
+    await scheduleEditorialPromotion(editorial.promoteSchedule);
   }
 
   const { projectId, dataset, token } = creds;

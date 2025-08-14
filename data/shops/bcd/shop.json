@@ -20,9 +20,9 @@
     "dataset": "production",
     "token": "token"
   },
-  "editorialBlog": { "enabled": false },
+  "editorialBlog": { "enabled": true },
   "luxuryFeatures": {
-    "contentMerchandising": false,
+    "contentMerchandising": true,
     "raTicketing": false,
     "fraudReviewThreshold": 0,
     "requireStrongCustomerAuth": false,

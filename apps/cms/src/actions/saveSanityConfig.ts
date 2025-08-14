@@ -8,7 +8,7 @@ import {
   setEditorialBlog,
 } from "@platform-core/src/shops";
 import { ensureAuthorized } from "./common/auth";
-import { setupSanityBlog } from "./setupSanityBlog";
+import { setupSanityBlog, scheduleEditorialPromotion } from "./setupSanityBlog";
 
 export async function saveSanityConfig(
   shopId: string,
@@ -66,11 +66,7 @@ export async function saveSanityConfig(
   (updated as any).enableEditorial = editorialEnabled;
   if (promoteSchedule) {
     try {
-      await fetch(`/api/shops/${shopId}/editorial/promote`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ schedule: promoteSchedule }),
-      });
+      await scheduleEditorialPromotion(promoteSchedule, shopId);
     } catch (err) {
       console.error("[saveSanityConfig] failed to schedule promotion", err);
     }

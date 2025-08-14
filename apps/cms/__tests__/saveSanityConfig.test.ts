@@ -1,6 +1,9 @@
 import { saveSanityConfig } from "../src/actions/saveSanityConfig";
 import { verifyCredentials } from "@acme/plugin-sanity";
-import { setupSanityBlog } from "../src/actions/setupSanityBlog";
+import {
+  setupSanityBlog,
+  scheduleEditorialPromotion,
+} from "../src/actions/setupSanityBlog";
 import { getShopById, updateShopInRepo } from "@platform-core/src/repositories/shop.server";
 import { setSanityConfig } from "@platform-core/src/shops";
 
@@ -14,6 +17,7 @@ jest.mock("@acme/plugin-sanity", () => ({
 
 jest.mock("../src/actions/setupSanityBlog", () => ({
   setupSanityBlog: jest.fn(),
+  scheduleEditorialPromotion: jest.fn(),
 }));
 
 jest.mock("@platform-core/src/repositories/shop.server", () => ({
@@ -189,9 +193,6 @@ describe("saveSanityConfig", () => {
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
     });
     (updateShopInRepo as jest.Mock).mockResolvedValue({ id: "shop" });
-    const fetchMock = jest
-      .spyOn(global, "fetch" as any)
-      .mockResolvedValue({ ok: true } as any);
 
     const fd = new FormData();
     fd.set("projectId", "p");
@@ -203,7 +204,10 @@ describe("saveSanityConfig", () => {
 
     await saveSanityConfig("shop", fd);
 
-    expect(fetchMock).toHaveBeenCalled();
+    expect(scheduleEditorialPromotion).toHaveBeenCalledWith(
+      "2025-01-01T00:00:00Z",
+      "shop",
+    );
     expect(updateShopInRepo).toHaveBeenCalledWith(
       "shop",
       expect.objectContaining({
@@ -213,6 +217,5 @@ describe("saveSanityConfig", () => {
         },
       }),
     );
-    fetchMock.mockRestore();
   });
 });

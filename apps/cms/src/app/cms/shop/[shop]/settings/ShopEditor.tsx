@@ -10,10 +10,14 @@ import { ChangeEvent, FormEvent, useState } from "react";
 interface Props {
   shop: string;
   initial: Shop;
+  initialTrackingProviders: string[];
 }
 
-export default function ShopEditor({ shop, initial }: Props) {
+export default function ShopEditor({ shop, initial, initialTrackingProviders }: Props) {
   const [info, setInfo] = useState<Shop>(initial);
+  const [trackingProviders, setTrackingProviders] = useState<string[]>(
+    initialTrackingProviders,
+  );
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
@@ -85,12 +89,20 @@ export default function ShopEditor({ shop, initial }: Props) {
     }
   };
 
+  const handleTracking = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selected = Array.from(e.target.selectedOptions).map((o) => o.value);
+    setTrackingProviders(selected);
+  };
+
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
     const fd = new FormData(e.currentTarget);
     const data = Object.fromEntries(fd.entries()) as Record<string, string>;
-    const parsed = shopSchema.safeParse(data);
+    const parsed = shopSchema.safeParse({
+      ...data,
+      trackingProviders: fd.getAll("trackingProviders"),
+    });
     if (!parsed.success) {
       setErrors(parsed.error.flatten().fieldErrors);
       setSaving(false);
@@ -101,6 +113,7 @@ export default function ShopEditor({ shop, initial }: Props) {
       setErrors(result.errors);
     } else if (result.shop) {
       setInfo(result.shop);
+      setTrackingProviders(fd.getAll("trackingProviders") as string[]);
       setErrors({});
     }
     setSaving(false);
@@ -149,6 +162,24 @@ export default function ShopEditor({ shop, initial }: Props) {
         {errors.catalogFilters && (
           <span className="text-sm text-red-600">
             {errors.catalogFilters.join("; ")}
+          </span>
+        )}
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Tracking Providers</span>
+        <select
+          multiple
+          name="trackingProviders"
+          value={trackingProviders}
+          onChange={handleTracking}
+          className="border p-2"
+        >
+          <option value="ups">UPS</option>
+          <option value="dhl">DHL</option>
+        </select>
+        {errors.trackingProviders && (
+          <span className="text-sm text-red-600">
+            {errors.trackingProviders.join("; ")}
           </span>
         )}
       </label>

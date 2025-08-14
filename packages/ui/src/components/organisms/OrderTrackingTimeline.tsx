@@ -17,6 +17,8 @@ export interface OrderTrackingTimelineProps
 
 /**
  * Vertical timeline showing progress of an order.
+ * Steps usually come from carrier APIs (UPS, DHL, etc.) and may differ per
+ * provider. Shops that disable tracking can omit this component entirely.
  */
 export function OrderTrackingTimeline({
   steps,

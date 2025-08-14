@@ -20,11 +20,14 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const settings = await getShopSettings(shop.id);
-  const providers = settings.trackingProviders ?? [];
+  // Rental or high-volume shops may disable tracking by leaving this empty.
+  const providers = (settings.trackingProviders ?? []).map((p) =>
+    p.toLowerCase(),
+  );
   if (providers.length === 0) {
     return NextResponse.json({ steps: [] }, { status: 404 });
   }
-  const steps = providers.flatMap((p) => providerEvents[p.toLowerCase()] ?? []);
+  const steps = providers.flatMap((p) => providerEvents[p] ?? []);
   if (!steps.length) {
     return NextResponse.json({ steps: [] }, { status: 404 });
   }

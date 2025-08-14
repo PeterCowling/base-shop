@@ -57,6 +57,7 @@ export const shopSchema = z
     filterMappings: jsonRecord,
     priceOverrides: jsonRecord,
     localeOverrides: jsonRecord,
+    trackingProviders: z.array(z.string()).optional().default([]),
   })
   .strict();
 

@@ -14,6 +14,10 @@ export default async function ReturnPolicyPage() {
       {typeof cfg.tracking !== "undefined" && (
         <p>Tracking {cfg.tracking ? "enabled" : "disabled"}.</p>
       )}
+      {cfg.requireTags && (
+        <p>Original tags must be attached for a return.</p>
+      )}
+      {!cfg.allowWear && <p>Worn items will not be accepted.</p>}
     </div>
   );
 }

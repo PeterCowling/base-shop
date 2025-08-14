@@ -23,6 +23,10 @@ export default async function ReturnPolicyPage() {
           {cfg.tracking && " and numbers provided with each label."}
         </p>
       )}
+      {cfg.requireTags && (
+        <p>Original tags must be attached for a return.</p>
+      )}
+      {!cfg.allowWear && <p>Worn items will not be accepted.</p>}
     </div>
   );
 }

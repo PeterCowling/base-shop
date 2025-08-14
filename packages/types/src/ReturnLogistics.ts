@@ -7,6 +7,8 @@ import { z } from "zod";
  * - `inStore` toggles whether items can be dropped off in store.
  * - `dropOffProvider` names the third-party drop-off service, if any.
  * - `tracking` indicates whether return shipments include tracking numbers.
+ * - `requireTags` marks whether original tags must remain attached.
+ * - `allowWear` toggles whether worn items may be returned.
  */
 export const returnLogisticsSchema = z
   .object({
@@ -14,6 +16,8 @@ export const returnLogisticsSchema = z
     inStore: z.boolean(),
     dropOffProvider: z.string().optional(),
     tracking: z.boolean().optional(),
+    requireTags: z.boolean().default(false),
+    allowWear: z.boolean().default(true),
   })
   .strict();
 

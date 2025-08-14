@@ -9,6 +9,7 @@ import { fetchPublishedPosts } from "@acme/sanity";
 import { env } from "@acme/config";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
+import { getReturnLogistics } from "@platform-core/returnLogistics";
 
 export async function generateStaticParams() {
   return LOCALES.flatMap((lang) =>
@@ -41,6 +42,7 @@ export default async function ProductDetailPage({
   if (!product) return notFound();
 
   let latestPost: BlogPost | undefined;
+  const returnCfg = await getReturnLogistics();
   try {
     const luxury = JSON.parse(env.NEXT_PUBLIC_LUXURY_FEATURES ?? "{}");
     if (luxury.contentMerchandising) {
@@ -62,6 +64,16 @@ export default async function ProductDetailPage({
     <>
       {latestPost && <BlogListing posts={[latestPost]} />}
       <PdpClient product={product} />
+      {(returnCfg.requireTags || !returnCfg.allowWear) && (
+        <div className="p-6 space-y-2">
+          {returnCfg.requireTags && (
+            <p>Original tags must be attached for a return.</p>
+          )}
+          {!returnCfg.allowWear && (
+            <p>Worn items will not be accepted.</p>
+          )}
+        </div>
+      )}
     </>
   );
 }

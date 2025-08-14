@@ -265,4 +265,35 @@ describe("ThemeEditor - colors", () => {
     expect(result.shop.themeDefaults["--color-bg"]).toBe("#222222");
     expect(result.shop.themeTokens["--color-bg"]).toBe("#000000");
   });
+
+  it("retains overrides when user chooses to keep them", () => {
+    const tokensByTheme = {
+      base: { "--color-bg": "#ffffff" },
+      dark: { "--color-bg": "#222222" },
+    };
+    const initialOverrides = { "--color-bg": "#ff0000" };
+    const confirmSpy = jest
+      .spyOn(window, "confirm")
+      .mockReturnValue(true);
+
+    renderThemeEditor({
+      tokensByTheme,
+      themes: ["base", "dark"],
+      initialOverrides,
+    });
+
+    fireEvent.change(screen.getByLabelText(/theme/i), {
+      target: { value: "dark" },
+    });
+
+    const bgLabel = screen.getByText("--color-bg").closest("label")!;
+    const defaultInput = within(bgLabel).getByRole("textbox");
+    expect(defaultInput).toHaveValue("#222222");
+    const overrideInput = within(bgLabel).getByLabelText("--color-bg", {
+      selector: 'input[type="color"]',
+    });
+    expect(overrideInput).toHaveValue("#ff0000");
+    expect(confirmSpy).toHaveBeenCalled();
+    confirmSpy.mockRestore();
+  });
 });

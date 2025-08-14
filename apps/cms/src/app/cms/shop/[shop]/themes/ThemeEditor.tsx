@@ -121,10 +121,17 @@ export default function ThemeEditor({
 
   const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const next = e.target.value;
+    const currentOverrides = overrides;
+    let keep = false;
+    if (Object.keys(currentOverrides).length > 0) {
+      keep = window.confirm("Keep current overrides?");
+    }
     setTheme(next);
-    setOverrides({});
-    setThemeDefaults(tokensByThemeState[next]);
-    schedulePreviewUpdate(tokensByThemeState[next]);
+    const defaults = tokensByThemeState[next];
+    setThemeDefaults(defaults);
+    const merged = keep ? { ...defaults, ...currentOverrides } : defaults;
+    setOverrides(keep ? { ...currentOverrides } : {});
+    schedulePreviewUpdate(merged);
     setContrastWarnings({});
   };
 

@@ -13,7 +13,7 @@ import {
   writeRepo,
 } from "@platform-core/repositories/json.server";
 import { fillLocales } from "@i18n/fillLocales";
-import type { ProductPublication } from "@platform-core/src/products";
+import type { ProductPublication, PublicationStatus } from "@platform-core/src/products";
 import * as Sentry from "@sentry/node";
 import type { Locale } from "@acme/types";
 import { ensureAuthorized } from "./common/auth";
@@ -157,4 +157,38 @@ export async function deleteProduct(shop: string, id: string): Promise<void> {
 
   await deleteProductFromRepo<ProductPublication>(shop, id);
   redirect(`/cms/shop/${shop}/products`);
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Approval queue                                                             */
+/* -------------------------------------------------------------------------- */
+
+const nextStatus: Record<PublicationStatus, PublicationStatus> = {
+  draft: "review",
+  review: "active",
+  scheduled: "active",
+  active: "active",
+  archived: "archived",
+};
+
+export async function promoteProduct(
+  shop: string,
+  id: string
+): Promise<ProductPublication> {
+  "use server";
+  await ensureAuthorized();
+
+  const current = await getProductById<ProductPublication>(shop, id);
+  if (!current) throw new Error(`Product ${id} not found in ${shop}`);
+
+  const status = nextStatus[current.status];
+  if (status === current.status) return current;
+
+  const updated: ProductPublication = {
+    ...current,
+    status,
+    updated_at: nowIso(),
+  };
+
+  return updateProductInRepo<ProductPublication>(shop, updated);
 }

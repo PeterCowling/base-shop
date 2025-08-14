@@ -1,7 +1,12 @@
 "use client";
 import Link from "next/link";
 
-export type BlogPost = { title: string; excerpt?: string; url?: string };
+export type BlogPost = {
+  title: string;
+  excerpt?: string;
+  url?: string;
+  shopUrl?: string;
+};
 
 export default function BlogListing({ posts = [] }: { posts?: BlogPost[] }) {
   if (!posts.length) return null;
@@ -19,6 +24,13 @@ export default function BlogListing({ posts = [] }: { posts?: BlogPost[] }) {
           {p.excerpt && (
             <p className="text-muted" data-token="--color-muted">
               {p.excerpt}
+            </p>
+          )}
+          {p.shopUrl && (
+            <p>
+              <Link href={p.shopUrl} className="text-primary underline">
+                Shop the story
+              </Link>
             </p>
           )}
         </article>

@@ -37,6 +37,7 @@ interface Props {
     mainImage?: string;
     author?: string;
     categories?: string[];
+    products?: string[];
   };
 }
 
@@ -137,6 +138,11 @@ function PostFormContent({ action, submitLabel, post }: Props) {
           name="categories"
           label="Categories (comma separated)"
           defaultValue={(post?.categories ?? []).join(", ")}
+        />
+        <Input
+          name="products"
+          label="Related products (comma separated IDs)"
+          defaultValue={(post?.products ?? []).join(", ")}
         />
         <Input
           type="datetime-local"

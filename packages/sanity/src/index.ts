@@ -18,6 +18,7 @@ export interface BlogPost {
   mainImage?: string;
   author?: string;
   categories?: string[];
+  products?: string[];
 }
 
 export async function getConfig(shopId: string): Promise<SanityBlogConfig> {
@@ -43,7 +44,7 @@ async function getClient(shopId: string) {
 export async function fetchPublishedPosts(shopId: string): Promise<BlogPost[]> {
   try {
     const client = await getClient(shopId);
-    const query = `*[_type == "post" && defined(slug.current) && published == true && !(_id in path('drafts.**'))]{title, "slug": slug.current, excerpt, mainImage, author, categories}`;
+    const query = `*[_type == "post" && defined(slug.current) && published == true && !(_id in path('drafts.**'))]{title, "slug": slug.current, excerpt, mainImage, author, categories, products}`;
     const posts = await client.fetch<BlogPost[]>(query);
     return posts;
   } catch {
@@ -57,7 +58,7 @@ export async function fetchPostBySlug(
 ): Promise<BlogPost | null> {
   try {
     const client = await getClient(shopId);
-    const query = `*[_type == "post" && slug.current == $slug && published == true][0]{title, "slug": slug.current, excerpt, mainImage, author, categories, body[]{..., _type == "productReference" => { _type, slug }}}`;
+    const query = `*[_type == "post" && slug.current == $slug && published == true][0]{title, "slug": slug.current, excerpt, mainImage, author, categories, products, body[]{..., _type == "productReference" => { _type, slug }}}`;
     const post = await client.fetch<BlogPost | null>(query, { slug });
     return post;
   } catch {

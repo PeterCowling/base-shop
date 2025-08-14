@@ -41,6 +41,9 @@ export default async function Page({
         title: first.title,
         excerpt: first.excerpt,
         url: `/${params.lang}/blog/${first.slug}`,
+        shopUrl: first.products?.[0]
+          ? `/${params.lang}/product/${first.products[0]}`
+          : undefined,
       };
     }
   }

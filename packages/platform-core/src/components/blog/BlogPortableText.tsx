@@ -1,18 +1,34 @@
 // src/components/blog/BlogPortableText.tsx
 import { PortableText } from "@portabletext/react";
+import Link from "next/link";
 import { getProductBySlug, getProductById } from "@/lib/products";
-import { ProductCard } from "@/components/shop/ProductCard";
+import { ProductCarousel } from "@ui";
 
 const components = {
   types: {
     productReference: ({ value }: any) => {
-      let sku;
-      if (typeof value?.slug === "string") {
-        sku = getProductBySlug(value.slug);
-      } else if (typeof value?.id === "string") {
-        sku = getProductById(value.id);
+      const ids: string[] = Array.isArray(value?.ids)
+        ? value.ids
+        : Array.isArray(value?.slugs)
+          ? value.slugs
+          : typeof value?.id === "string"
+            ? [value.id]
+            : typeof value?.slug === "string"
+              ? [value.slug]
+              : [];
+      const products = ids
+        .map((id) => getProductById(id) ?? getProductBySlug(id))
+        .filter(Boolean);
+      if (products.length === 0) return null;
+      if (products.length === 1) {
+        const p = products[0]!;
+        return (
+          <Link href={`../product/${p.slug}`} className="underline">
+            {p.title}
+          </Link>
+        );
       }
-      return sku ? <ProductCard sku={sku} /> : null;
+      return <ProductCarousel products={products} />;
     },
     embed: ({ value }: any) => (
       <div className="aspect-video">

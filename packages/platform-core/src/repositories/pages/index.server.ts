@@ -9,6 +9,7 @@ import { prisma } from "../../db";
 import { validateShopName } from "@platform-core/src/shops";
 import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
+import { z } from "zod";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
@@ -18,6 +19,11 @@ import { nowIso } from "@acme/date-utils";
 function pagesPath(shop: string): string {
   shop = validateShopName(shop);
   return path.join(DATA_ROOT, shop, "pages.json");
+}
+
+function historyPath(shop: string): string {
+  shop = validateShopName(shop);
+  return path.join(DATA_ROOT, shop, "pages.history.jsonl");
 }
 
 /** Ensure the `<DATA_ROOT>/<shop>` directory exists */
@@ -45,6 +51,29 @@ function mergeDefined<T extends object>(base: T, patch: Partial<T>): T {
   return { ...base, ...(Object.fromEntries(definedEntries) as Partial<T>) };
 }
 
+function diffPages(oldP: Page | undefined, newP: Page): Partial<Page> {
+  const patch: Partial<Page> = {};
+  for (const key of Object.keys(newP) as (keyof Page)[]) {
+    const a = oldP ? JSON.stringify(oldP[key]) : undefined;
+    const b = JSON.stringify(newP[key]);
+    if (a !== b) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (patch as any)[key] = newP[key];
+    }
+  }
+  return patch;
+}
+
+async function appendHistory(
+  shop: string,
+  diff: Partial<Page>
+): Promise<void> {
+  if (Object.keys(diff).length === 0) return;
+  await ensureDir(shop);
+  const entry = { timestamp: nowIso(), diff };
+  await fs.appendFile(historyPath(shop), JSON.stringify(entry) + "\n", "utf8");
+}
+
 /* -------------------------------------------------------------------------- */
 /*  Public API                                                                */
 /* -------------------------------------------------------------------------- */
@@ -69,22 +98,27 @@ export async function getPages(shop: string): Promise<Page[]> {
 }
 
 /** Create or overwrite an entire Page record */
-export async function savePage(shop: string, page: Page): Promise<Page> {
+export async function savePage(
+  shop: string,
+  page: Page,
+  previous?: Page
+): Promise<Page> {
+  const patch = diffPages(previous, page);
   try {
     await prisma.page.upsert({
       where: { id: page.id },
       update: { data: page, slug: page.slug },
       create: { id: page.id, shopId: shop, slug: page.slug, data: page },
     });
-    return page;
   } catch {
     // fallback to filesystem
+    const pages = await getPages(shop);
+    const idx = pages.findIndex((p) => p.id === page.id);
+    if (idx === -1) pages.push(page);
+    else pages[idx] = page;
+    await writePages(shop, pages);
   }
-  const pages = await getPages(shop);
-  const idx = pages.findIndex((p) => p.id === page.id);
-  if (idx === -1) pages.push(page);
-  else pages[idx] = page;
-  await writePages(shop, pages);
+  await appendHistory(shop, patch);
   return page;
 }
 
@@ -108,42 +142,66 @@ export async function deletePage(shop: string, id: string): Promise<void> {
 /** Patch a page. Only defined keys in `patch` are applied. */
 export async function updatePage(
   shop: string,
-  patch: Partial<Page> & { id: string; updatedAt: string }
+  patch: Partial<Page> & { id: string; updatedAt: string },
+  previous: Page
 ): Promise<Page> {
+  if (previous.updatedAt !== patch.updatedAt) {
+    throw new Error("Conflict: page has been modified");
+  }
+  const updated: Page = mergeDefined(previous, patch);
+  updated.updatedAt = nowIso();
+
   try {
-    const rec = await prisma.page.findUnique({ where: { id: patch.id } });
-    if (!rec || rec.shopId !== shop) {
-      throw new Error(`Page ${patch.id} not found in ${shop}`);
-    }
-    const current = pageSchema.parse(rec.data);
-    if (current.updatedAt !== patch.updatedAt) {
-      throw new Error("Conflict: page has been modified");
-    }
-    const updated: Page = mergeDefined(current, patch);
-    updated.updatedAt = nowIso();
     await prisma.page.update({
       where: { id: patch.id },
       data: { data: updated, slug: updated.slug },
     });
-    return updated;
   } catch {
     // fallback
+    const pages = await getPages(shop);
+    const idx = pages.findIndex((p) => p.id === patch.id);
+    if (idx === -1) {
+      throw new Error(`Page ${patch.id} not found in ${shop}`);
+    }
+    pages[idx] = updated;
+    await writePages(shop, pages);
   }
-  const pages = await getPages(shop);
-  const idx = pages.findIndex((p) => p.id === patch.id);
-  if (idx === -1) {
-    throw new Error(`Page ${patch.id} not found in ${shop}`);
-  }
-
-  const current = pages[idx];
-  if (current.updatedAt !== patch.updatedAt) {
-    throw new Error("Conflict: page has been modified");
-  }
-
-  const updated: Page = mergeDefined(current, patch);
-  updated.updatedAt = nowIso();
-
-  pages[idx] = updated;
-  await writePages(shop, pages);
+  const diff = diffPages(previous, updated);
+  await appendHistory(shop, diff);
   return updated;
+}
+
+export interface PageDiffEntry {
+  timestamp: string;
+  diff: Partial<Page>;
+}
+
+const entrySchema = z
+  .object({
+    timestamp: z.string().datetime(),
+    diff: pageSchema.partial(),
+  })
+  .strict();
+
+export async function diffHistory(shop: string): Promise<PageDiffEntry[]> {
+  try {
+    const buf = await fs.readFile(historyPath(shop), "utf8");
+    return buf
+      .trim()
+      .split(/\n+/)
+      .filter(Boolean)
+      .map((line) => {
+        try {
+          return JSON.parse(line);
+        } catch {
+          return undefined;
+        }
+      })
+      .filter((p): p is unknown => p !== undefined)
+      .map((p) => entrySchema.safeParse(p))
+      .filter((r) => r.success)
+      .map((r) => (r as z.SafeParseSuccess<PageDiffEntry>).data);
+  } catch {
+    return [];
+  }
 }

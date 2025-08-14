@@ -72,7 +72,7 @@ describe("page actions", () => {
         updatedAt: now,
         createdBy: "tester",
       } as any;
-      await repo.savePage("test", page);
+      await repo.savePage("test", page, undefined);
 
       const { updatePage } = await import("../src/actions/pages.server");
       const fd = new FormData();
@@ -111,7 +111,7 @@ describe("page actions", () => {
         updatedAt: now,
         createdBy: "tester",
       } as any;
-      await repo.savePage("test", page);
+      await repo.savePage("test", page, undefined);
 
       const { updatePage } = await import("../src/actions/pages.server");
       const history = {
@@ -155,7 +155,7 @@ describe("page actions", () => {
         updatedAt: now,
         createdBy: "tester",
       } as any;
-      await repo.savePage("test", page);
+      await repo.savePage("test", page, undefined);
 
       const { deletePage } = await import("../src/actions/pages.server");
       await deletePage("test", page.id);

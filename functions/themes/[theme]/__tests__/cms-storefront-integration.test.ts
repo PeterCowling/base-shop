@@ -65,12 +65,16 @@ describe("CMS → storefront flow", () => {
         updatedAt: now,
         createdBy: "tester",
       };
-      await repo.savePage("demo", page);
-      await repo.updatePage("demo", {
-        id: page.id,
-        updatedAt: page.updatedAt,
-        status: "published",
-      });
+      await repo.savePage("demo", page, undefined);
+      await repo.updatePage(
+        "demo",
+        {
+          id: page.id,
+          updatedAt: page.updatedAt,
+          status: "published",
+        } as any,
+        page as any
+      );
 
       const { onRequest } = await import("../src/routes/preview/[pageId].ts");
       const res = await onRequest({

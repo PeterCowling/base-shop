@@ -19,9 +19,9 @@ describe('pages repository with prisma', () => {
     const repo = await import('../src/repositories/pages/index.server');
     expect(await repo.getPages('shop1')).toEqual([]);
     const page = { id:'1', slug:'home', status:'draft', components:[], seo:{ title:'Home' }, createdAt:'now', updatedAt:'now', createdBy:'tester' } as any;
-    await repo.savePage('shop1', page);
+    await repo.savePage('shop1', page, undefined);
     expect(mockPages).toHaveLength(1);
-    await repo.updatePage('shop1', { id:'1', slug:'start', updatedAt:'now' } as any);
+    await repo.updatePage('shop1', { id:'1', slug:'start', updatedAt:'now' } as any, page);
     await repo.deletePage('shop1', '1');
     expect(mockPages).toHaveLength(0);
   });

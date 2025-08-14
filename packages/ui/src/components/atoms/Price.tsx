@@ -1,4 +1,5 @@
 import { useCurrency } from "@platform-core/src/contexts/CurrencyContext";
+import { formatPrice } from "@acme/shared-utils";
 import * as React from "react";
 import { cn } from "../../utils/style";
 
@@ -14,10 +15,7 @@ export const Price = React.forwardRef<HTMLSpanElement, PriceProps>(
   ({ amount, currency, className, ...props }, ref) => {
     const [ctxCurrency] = useCurrency();
     const cur = currency ?? ctxCurrency ?? "EUR";
-    const formatted = new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency: cur,
-    }).format(amount);
+    const formatted = formatPrice(amount, cur);
 
     return (
       <span ref={ref} className={cn(className)} {...props}>

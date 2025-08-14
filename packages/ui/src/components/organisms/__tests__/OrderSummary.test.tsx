@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import OrderSummary from "../OrderSummary";
+import { formatPrice } from "@acme/shared-utils";
 
 jest.mock("@ui/hooks/useCart", () => ({
   useCart: () => [{}, jest.fn()],
@@ -10,11 +11,7 @@ jest.mock("@platform-core/src/contexts/CurrencyContext", () => ({
 }));
 
 describe("OrderSummary", () => {
-  const format = (amount: number) =>
-    new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency: "EUR",
-    }).format(amount);
+  const format = (amount: number) => formatPrice(amount, "EUR");
 
   it("renders subtotal and deposit without tax or discount by default", () => {
     const cart = {

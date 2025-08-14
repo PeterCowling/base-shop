@@ -7,7 +7,7 @@ import { Progress } from "@acme/ui";
 import { CampaignFilter } from "./components/CampaignFilter.client";
 import { Charts } from "./components/Charts.client";
 import { buildMetrics } from "@cms/lib/analytics";
-import { formatCurrency } from "@acme/shared-utils";
+import { formatPrice } from "@acme/shared-utils";
 
 export default async function ShopDashboard({
   params,
@@ -141,7 +141,7 @@ export default async function ShopDashboard({
               <h3 className="text-lg font-semibold">Campaign: {c}</h3>
               <p className="mb-2 text-sm">
                 Traffic: {totalTraffic} • Revenue:{" "}
-                {formatCurrency(totalRevenue)} • Conversion:{" "}
+                {formatPrice(totalRevenue)} • Conversion:{" "}
                 {conversionRate.toFixed(2)}%
               </p>
               <Charts

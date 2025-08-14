@@ -68,4 +68,26 @@ describe("republish-shop", () => {
       join(componentsDir, "nested", "c.bak")
     );
   });
+
+  it("updates componentVersions in shop.json", async () => {
+    const pkg = join(appDir, "package.json");
+    fsMock.existsSync.mockImplementation((p: any) => p === pkg || p === shopJson);
+    fsMock.readFileSync.mockImplementation((p: any) => {
+      if (p === pkg) return JSON.stringify({ dependencies: { comp: "1.0.0" } });
+      if (p === shopJson) return "{}";
+      return "";
+    });
+
+    const { republishShop } = await import("../src/republish-shop");
+    republishShop(shopId, root);
+
+    expect(fsMock.writeFileSync).toHaveBeenCalledWith(
+      shopJson,
+      JSON.stringify(
+        { status: "published", componentVersions: { comp: "1.0.0" } },
+        null,
+        2
+      )
+    );
+  });
 });

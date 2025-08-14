@@ -48,6 +48,8 @@ export async function POST(
             ? { promoteSchedule: data.PROMOTE_SCHEDULE }
             : {}),
         },
+        "public",
+        shopId,
       ).catch((err) => {
         console.error("[env] failed to setup Sanity blog", err);
       });

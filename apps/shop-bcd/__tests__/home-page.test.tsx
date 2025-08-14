@@ -21,6 +21,7 @@ test("Home receives components from fs", async () => {
     { id: "c1", type: "HeroBanner" } as any,
   ];
   (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(components));
+  (fetchPublishedPosts as jest.Mock).mockResolvedValue([]);
 
   const element = await Page({ params: { lang: "en" } });
 
@@ -31,5 +32,5 @@ test("Home receives components from fs", async () => {
   expect(element.type).toBe(Home);
   expect(element.props.components).toEqual(components);
   expect(element.props.locale).toBe("en");
-  expect(fetchPublishedPosts).not.toHaveBeenCalled();
+  expect(fetchPublishedPosts).toHaveBeenCalled();
 });

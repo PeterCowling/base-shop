@@ -108,6 +108,7 @@ describe("saveSanityConfig", () => {
       },
       { enabled: true },
       "public",
+      "shop",
     );
     expect(setSanityConfig).toHaveBeenCalledWith({
       id: "shop",

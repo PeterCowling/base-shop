@@ -13,6 +13,7 @@ jest.mock("@platform-core/analytics", () => ({
 jest.mock("@acme/sanity", () => ({
   fetchPublishedPosts: jest.fn(),
 }));
+jest.mock("@acme/config", () => ({ env: { NEXT_PUBLIC_SHOP_ID: "abc" } }));
 jest.mock("../src/app/[lang]/page.client", () => ({
   __esModule: true,
   default: jest.fn(() => null),
@@ -34,13 +35,15 @@ test("Home receives components from pages repo", async () => {
   ]);
   (readShop as jest.Mock).mockResolvedValue({
     id: "abc",
-    editorialBlog: { enabled: false },
+    editorialBlog: { enabled: true },
+    luxuryFeatures: { contentMerchandising: true },
   });
+  (fetchPublishedPosts as jest.Mock).mockResolvedValue([]);
 
   const element = await Page({ params: { lang: "en" } });
 
   expect(getPages).toHaveBeenCalledWith("abc");
-  expect(fetchPublishedPosts).not.toHaveBeenCalled();
+  expect(fetchPublishedPosts).toHaveBeenCalledWith("abc");
   expect(element.type).toBe(Home);
   expect(element.props.components).toEqual(components);
   expect(element.props.locale).toBe("en");

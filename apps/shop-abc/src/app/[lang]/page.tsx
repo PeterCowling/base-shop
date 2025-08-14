@@ -20,7 +20,7 @@ export default async function Page({
   const shop = await readShop(env.NEXT_PUBLIC_SHOP_ID || "shop-abc");
   const components = await loadComponents(shop.id);
   let latestPost: BlogPost | undefined;
-  if (shop.editorialBlog?.enabled) {
+  if (shop.luxuryFeatures?.contentMerchandising) {
     const posts = await fetchPublishedPosts(shop.id);
     const first = posts[0];
     if (first) {

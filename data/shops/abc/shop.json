@@ -34,10 +34,10 @@
     "token": "token"
   },
   "editorialBlog": {
-    "enabled": false
+    "enabled": true
   },
   "luxuryFeatures": {
-    "contentMerchandising": false,
+    "contentMerchandising": true,
     "raTicketing": false,
     "fraudReviewThreshold": 0,
     "requireStrongCustomerAuth": false,

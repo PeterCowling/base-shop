@@ -29,13 +29,14 @@ export async function setupSanityBlog(
   creds: SanityCredentials,
   editorial?: { enabled: boolean; promoteSchedule?: string },
   aclMode: "public" | "private" = "public",
+  shopId?: string,
 ): Promise<Result> {
   "use server";
   await ensureAuthorized();
   if (!editorial?.enabled) return { success: true };
-  if (editorial.promoteSchedule) {
+  if (editorial.promoteSchedule && shopId) {
     try {
-      await fetch(`/api/editorial/promote`, {
+      await fetch(`/api/shops/${shopId}/editorial/promote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ schedule: editorial.promoteSchedule }),

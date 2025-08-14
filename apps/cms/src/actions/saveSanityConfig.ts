@@ -45,6 +45,7 @@ export async function saveSanityConfig(
       config,
       { enabled: editorialEnabled, ...(promoteSchedule ? { promoteSchedule } : {}) },
       aclMode as "public" | "private",
+      shopId,
     );
     if (!setup.success) {
       return {
@@ -64,7 +65,7 @@ export async function saveSanityConfig(
   });
   // maintain legacy flag
   (updated as any).enableEditorial = editorialEnabled;
-  if (promoteSchedule) {
+  if (promoteSchedule && !createDataset) {
     try {
       await fetch(`/api/shops/${shopId}/editorial/promote`, {
         method: "POST",

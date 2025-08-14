@@ -44,5 +44,6 @@
       "shipmentsPerMonth": 2,
       "prorateOnChange": true
     }
-  ]
+  ],
+  "lateFeePolicy": { "gracePeriodDays": 3, "feeAmount": 25 }
 }

@@ -7,6 +7,7 @@ import {
   markReceived,
   markRepair,
 } from "@platform-core/repositories/rentalOrders.server";
+import { recordEvent } from "@platform-core/repositories/reverseLogisticsEvents.server";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { logger } from "@platform-core/utils";
 import { readdir, readFile, unlink } from "node:fs/promises";
@@ -40,15 +41,18 @@ export async function processReverseLogisticsEventsOnce(
         switch (evt.status) {
           case "received":
             await markReceived(shop, evt.sessionId);
+            await recordEvent(shop, evt.sessionId, "received");
             break;
           case "cleaning":
             await markCleaning(shop, evt.sessionId);
+            await recordEvent(shop, evt.sessionId, "cleaned");
             break;
           case "repair":
             await markRepair(shop, evt.sessionId);
             break;
           case "qa":
             await markQa(shop, evt.sessionId);
+            await recordEvent(shop, evt.sessionId, "qaPassed");
             break;
           case "available":
             await markAvailable(shop, evt.sessionId);

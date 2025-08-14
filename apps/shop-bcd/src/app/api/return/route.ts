@@ -5,8 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 import { setReturnTracking } from "@platform-core/orders";
-import { getReturnBagAndLabel } from "@platform-core/returnLogistics";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { getReturnLogistics } from "@platform-core/returnLogistics";
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";
@@ -43,11 +42,9 @@ export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { sessionId } = parsed.data;
-  const [info, settings] = await Promise.all([
-    getReturnBagAndLabel(),
-    getShopSettings(shop.id),
-  ]);
-  if (!(settings.returnService?.upsEnabled && info.returnCarrier.includes("ups"))) {
+  const cfg = await getReturnLogistics();
+  const svc = shop.returnService ?? {};
+  if (!(cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups"))) {
     return NextResponse.json(
       { ok: false, error: "unsupported carrier" },
       { status: 400 },
@@ -56,12 +53,11 @@ export async function POST(req: NextRequest) {
   const { trackingNumber, labelUrl } = await createUpsLabel(sessionId);
   return NextResponse.json({
     ok: true,
-    trackingNumber,
-    labelUrl,
-    bagType: settings.returnService?.bagEnabled ? info.bagType : null,
-    homePickupZipCodes: settings.returnService?.homePickupEnabled
-      ? info.homePickupZipCodes
-      : [],
+    dropOffProvider: cfg.dropOffProvider ?? null,
+    returnCarrier: cfg.returnCarrier,
+    tracking: { number: trackingNumber, labelUrl },
+    bagType: svc.bagEnabled ? cfg.bagType : null,
+    homePickupZipCodes: svc.homePickupEnabled ? cfg.homePickupZipCodes : [],
   });
 }
 
@@ -70,11 +66,9 @@ export async function GET(req: NextRequest) {
   if (!tracking) {
     return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 });
   }
-  const [info, settings] = await Promise.all([
-    getReturnBagAndLabel(),
-    getShopSettings(shop.id),
-  ]);
-  if (!(settings.returnService?.upsEnabled && info.returnCarrier.includes("ups"))) {
+  const cfg = await getReturnLogistics();
+  const svc = shop.returnService ?? {};
+  if (!(cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups"))) {
     return NextResponse.json(
       { ok: false, error: "unsupported carrier" },
       { status: 400 },

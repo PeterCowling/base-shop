@@ -6,7 +6,8 @@ export const subscriptionPlanSchema = z
     price: z.number(),
     itemsIncluded: z.number(),
     swapLimit: z.number(),
-    shipmentCount: z.number(),
+    shipmentsPerMonth: z.number(),
+    prorateOnChange: z.boolean().default(true),
   })
   .strict();
 

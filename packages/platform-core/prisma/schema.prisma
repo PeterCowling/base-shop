@@ -43,6 +43,16 @@ model RentalOrder {
   @@index([customerId])
 }
 
+model SubscriptionUsage {
+  id         String @id @default(cuid())
+  shop       String
+  customerId String
+  month      String
+  shipments  Int    @default(0)
+
+  @@unique([shop, customerId, month])
+}
+
 model CustomerProfile {
   customerId String @id
   name       String

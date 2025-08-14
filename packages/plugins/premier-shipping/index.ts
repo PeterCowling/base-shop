@@ -13,32 +13,60 @@ interface PremierPickupState {
   date?: string;
   window?: string;
 }
+
+interface PremierShippingRequest extends ShippingRequest {
+  region: string;
+  window: string;
+}
+
+interface PremierShippingConfig {
+  regions: string[];
+  windows: string[];
+  /** Optional flat rate applied when calculating shipping */
+  rate?: number;
+}
+
 interface PremierShippingProvider {
-  calculateShipping(request: ShippingRequest): unknown;
+  calculateShipping(request: PremierShippingRequest): unknown;
   schedulePickup(region: string, date: string, hourWindow: string): void;
 }
 
 class PremierShipping implements PremierShippingProvider {
   private state: PremierPickupState = {};
 
-  calculateShipping(_request: ShippingRequest) {
-    // placeholder implementation
-    return { rate: 0 };
+  constructor(private cfg: PremierShippingConfig) {}
+
+  calculateShipping(request: PremierShippingRequest) {
+    const { region, window } = request;
+    if (!this.cfg.regions.includes(region)) {
+      throw new Error("Region not supported");
+    }
+    if (!this.cfg.windows.includes(window)) {
+      throw new Error("Invalid delivery window");
+    }
+    return { rate: this.cfg.rate ?? 0 };
   }
 
   schedulePickup(region: string, date: string, hourWindow: string) {
+    if (!this.cfg.regions.includes(region)) {
+      throw new Error("Region not supported");
+    }
+    if (!this.cfg.windows.includes(hourWindow)) {
+      throw new Error("Invalid delivery window");
+    }
     this.state = { region, date, window: hourWindow };
   }
 }
 
-const provider = new PremierShipping();
-
-const premierShippingPlugin: Plugin = {
+const premierShippingPlugin: Plugin<PremierShippingConfig, ShippingRequest, PremierShippingProvider> = {
   id: "premier-shipping",
   name: "Premier Shipping",
+  defaultConfig: { regions: [], windows: [], rate: 0 },
   registerShipping(
     registry: ShippingRegistry<ShippingRequest, PremierShippingProvider>,
+    cfg: PremierShippingConfig,
   ) {
+    const provider = new PremierShipping(cfg);
     registry.add("premier-shipping", provider);
   },
 };

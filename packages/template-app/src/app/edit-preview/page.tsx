@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import ComponentPreview from "@ui/src/components/ComponentPreview";
 
 interface UpgradeComponent {
   file: string;
@@ -69,9 +70,11 @@ export default function EditPreviewPage() {
 
   return (
     <div className="space-y-8">
-      <ul className="list-disc pl-4">
+      <ul className="space-y-4">
         {changes.map((c) => (
-          <li key={c.file}>{c.componentName}</li>
+          <li key={c.file}>
+            <ComponentPreview component={c} />
+          </li>
         ))}
       </ul>
       {links.length > 0 && (

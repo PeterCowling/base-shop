@@ -42,6 +42,8 @@ export default function ComponentPreview<
   const [NewComp, setNewComp] = useState<React.ComponentType | null>(null);
   const [OldComp, setOldComp] = useState<React.ComponentType | null>(null);
   const [showCompare, setShowCompare] = useState(false);
+  const [compareMode, setCompareMode] = useState<"side" | "toggle">("side");
+  const [showNew, setShowNew] = useState(true);
 
   useEffect(() => {
     const basePath = `@ui/components/${component.file.replace(/\.[jt]sx?$/, "")}`;
@@ -84,9 +86,48 @@ export default function ComponentPreview<
       </div>
       <PreviewErrorBoundary>
         {showCompare && OldComp ? (
-          <div className="grid grid-cols-2 gap-4">
-            <div>{NewComp ? <NewComp {...componentProps} /> : null}</div>
-            <div>{OldComp ? <OldComp {...componentProps} /> : null}</div>
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setCompareMode("side")}
+                className={`rounded border px-2 py-1 ${
+                  compareMode === "side" ? "bg-gray-100" : ""
+                }`}
+              >
+                Side by side
+              </button>
+              <button
+                type="button"
+                onClick={() => setCompareMode("toggle")}
+                className={`rounded border px-2 py-1 ${
+                  compareMode === "toggle" ? "bg-gray-100" : ""
+                }`}
+              >
+                Toggle
+              </button>
+            </div>
+            {compareMode === "side" ? (
+              <div className="grid grid-cols-2 gap-4">
+                <div>{NewComp ? <NewComp {...componentProps} /> : null}</div>
+                <div>{OldComp ? <OldComp {...componentProps} /> : null}</div>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <button
+                  type="button"
+                  className="rounded border px-2 py-1"
+                  onClick={() => setShowNew((s) => !s)}
+                >
+                  {showNew ? "Show old" : "Show new"}
+                </button>
+                <div>
+                  {showNew
+                    ? NewComp && <NewComp {...componentProps} />
+                    : OldComp && <OldComp {...componentProps} />}
+                </div>
+              </div>
+            )}
           </div>
         ) : NewComp ? (
           <NewComp {...componentProps} />

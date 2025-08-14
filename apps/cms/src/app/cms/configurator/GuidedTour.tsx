@@ -56,7 +56,12 @@ export default function GuidedTour({
   children: React.ReactNode;
 }): React.JSX.Element {
   const [stepIndex, setStepIndex] = useState<number | null>(null);
-  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const [coords, setCoords] = useState<{
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+  } | null>(null);
 
   const persist = useCallback((idx: number | null) => {
     if (typeof window !== "undefined") {
@@ -131,46 +136,102 @@ export default function GuidedTour({
       next();
       return;
     }
-    const rect = el.getBoundingClientRect();
-    setCoords({ top: rect.bottom + 8, left: rect.left });
+
+    const update = () => {
+      const rect = el.getBoundingClientRect();
+      setCoords({
+        top: rect.top,
+        left: rect.left,
+        width: rect.width,
+        height: rect.height,
+      });
+    };
+
+    update();
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, true);
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", update, true);
+    };
   }, [current, next]);
 
   return (
     <GuidedTourContext.Provider value={{ replay }}>
       {children}
       {current && coords && (
-        <div
-          className="fixed z-50 rounded bg-primary p-4 text-primary-foreground shadow"
-          style={{ top: coords.top, left: coords.left }}
-        >
-          <div className="flex items-center justify-between gap-4">
-            <div>{current.content}</div>
-            <div className="text-sm">
-              Step {stepIndex! + 1} of {steps.length}
+        <>
+          <div className="pointer-events-none fixed inset-0 z-40">
+            <div
+              className="absolute top-0 right-0 left-0 bg-black/50"
+              style={{ height: coords.top }}
+            />
+            <div
+              className="absolute left-0 bg-black/50"
+              style={{
+                top: coords.top,
+                width: coords.left,
+                height: coords.height,
+              }}
+            />
+            <div
+              className="absolute right-0 bg-black/50"
+              style={{
+                top: coords.top,
+                left: coords.left + coords.width,
+                height: coords.height,
+              }}
+            />
+            <div
+              className="absolute right-0 left-0 bg-black/50"
+              style={{ top: coords.top + coords.height, bottom: 0 }}
+            />
+          </div>
+          <div
+            className="pointer-events-none fixed z-50 rounded"
+            style={{
+              top: coords.top,
+              left: coords.left,
+              width: coords.width,
+              height: coords.height,
+              animation: "tour-pulse 2s infinite",
+              boxShadow: "0 0 0 3px rgba(59,130,246,0.9)",
+            }}
+          />
+          <div
+            className="bg-primary text-primary-foreground fixed z-50 rounded p-4 shadow"
+            style={{ top: coords.top + coords.height + 8, left: coords.left }}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div>{current.content}</div>
+              <div className="text-sm">
+                Step {stepIndex! + 1} of {steps.length}
+              </div>
+            </div>
+            <div className="mt-2 flex gap-2 text-sm">
+              <button
+                className="underline disabled:opacity-50"
+                onClick={back}
+                disabled={stepIndex === 0}
+              >
+                Back
+              </button>
+              <button className="underline" onClick={skip}>
+                Skip
+              </button>
+              {stepIndex === steps.length - 1 ? (
+                <button className="underline" onClick={finish}>
+                  Finish
+                </button>
+              ) : (
+                <button className="underline" onClick={next}>
+                  Next
+                </button>
+              )}
             </div>
           </div>
-          <div className="mt-2 flex gap-2 text-sm">
-            <button
-              className="underline disabled:opacity-50"
-              onClick={back}
-              disabled={stepIndex === 0}
-            >
-              Back
-            </button>
-            <button className="underline" onClick={skip}>
-              Skip
-            </button>
-            {stepIndex === steps.length - 1 ? (
-              <button className="underline" onClick={finish}>
-                Finish
-              </button>
-            ) : (
-              <button className="underline" onClick={next}>
-                Next
-              </button>
-            )}
-          </div>
-        </div>
+          <style>{`@keyframes tour-pulse{0%{box-shadow:0 0 0 0 rgba(59,130,246,0.9);}70%{box-shadow:0 0 0 8px rgba(59,130,246,0);}100%{box-shadow:0 0 0 0 rgba(59,130,246,0);}}`}</style>
+        </>
       )}
     </GuidedTourContext.Provider>
   );

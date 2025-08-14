@@ -25,6 +25,9 @@
 
   "checkout.pay": "Bezahlen",
   "checkout.processing": "Verarbeite …",
+  "checkout.loadError": "Fehler beim Laden des Zahlungsformulars.",
+  "checkout.loading": "Zahlungsformular wird geladen …",
+  "checkout.retry": "Erneut versuchen",
   "checkout.empty": "Dein Warenkorb ist leer.",
   "checkout.return": "Rückgabedatum",
   "checkout.deposit": "Kaution"

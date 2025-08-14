@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
 
-const Ctx = createContext<[string, (c: string) => void]>(["USD", () => {}]);
+const Ctx = createContext<[string, (c: string) => void]>(["EUR", () => {}]);
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
-  const state = useState("USD");
+  const state = useState("EUR");
   return <Ctx.Provider value={state}>{children}</Ctx.Provider>;
 }
 

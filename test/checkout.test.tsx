@@ -61,10 +61,10 @@ test("renders Elements once client secret is fetched", async () => {
     </CurrencyProvider>
   );
 
-  expect(screen.getByText("Loading payment form…")).toBeInTheDocument();
+  expect(screen.getByText(/checkout\.loading/i)).toBeInTheDocument();
 
   expect(await screen.findByTestId("payment-element")).toBeInTheDocument();
-  expect(screen.queryByText("Loading payment form…")).toBeNull();
+  expect(screen.queryByText(/checkout\.loading/i)).toBeNull();
 });
 
 test("successful payment redirects to success", async () => {
@@ -210,7 +210,7 @@ test("shows fallback when session request fails", async () => {
   );
 
   expect(
-    await screen.findByText("Failed to load payment form.", undefined, {
+    await screen.findByText(/checkout\.loaderror/i, undefined, {
       timeout: 3000,
     })
   ).toBeInTheDocument();

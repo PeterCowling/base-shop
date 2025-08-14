@@ -25,6 +25,9 @@
 
   "checkout.pay": "Paga",
   "checkout.processing": "Elaborazione…",
+  "checkout.loadError": "Impossibile caricare il modulo di pagamento.",
+  "checkout.loading": "Caricamento del modulo di pagamento in corso…",
+  "checkout.retry": "Riprova",
   "checkout.empty": "Il carrello è vuoto.",
   "checkout.return": "Data di restituzione",
   "checkout.deposit": "Deposito"

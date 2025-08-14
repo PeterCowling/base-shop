@@ -37,6 +37,11 @@ describe("/api/rental", () => {
       markReturned: jest.fn(),
       markRefunded: jest.fn(),
     }));
+    jest.doMock(
+      "@platform-core/src/repositories/shops.server",
+      () => ({ __esModule: true, readShop: jest.fn() }),
+      { virtual: true }
+    );
 
     const { POST } = await import("../src/api/rental/route");
     const res = await POST({
@@ -55,10 +60,11 @@ describe("/api/rental", () => {
         deposit: 100,
       });
     const retrieve = jest
-      .fn<Promise<{ payment_intent: string }>, [string, any]>()
-      .mockResolvedValue({ payment_intent: "pi_1" });
+      .fn<Promise<{ payment_intent: string; metadata: { coverage: string } }>, [string, any]>()
+      .mockResolvedValue({ payment_intent: "pi_1", metadata: { coverage: "scuff" } });
     const refundCreate = jest.fn();
     const computeDamageFee = jest.fn(async () => 30);
+    const readShop = jest.fn().mockResolvedValue({ coverageIncluded: true });
 
     jest.doMock(
       "@acme/stripe",
@@ -80,6 +86,14 @@ describe("/api/rental", () => {
     jest.doMock("@platform-core/pricing", () => ({
       computeDamageFee,
     }));
+    jest.doMock(
+      "@platform-core/src/repositories/shops.server",
+      () => ({
+        __esModule: true,
+        readShop,
+      }),
+      { virtual: true }
+    );
 
     const { PATCH } = await import("../src/api/rental/route");
     const res = await PATCH({
@@ -87,7 +101,12 @@ describe("/api/rental", () => {
     } as any);
     expect(markReturned).toHaveBeenCalledWith("bcd", "sess");
     expect(markReturned).toHaveBeenCalledWith("bcd", "sess", 30);
-    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 100);
+    expect(computeDamageFee).toHaveBeenCalledWith(
+      "scratch",
+      100,
+      ["scuff"],
+      true
+    );
     expect(retrieve).toHaveBeenCalledWith("sess", {
       expand: ["payment_intent"],
     });
@@ -122,6 +141,11 @@ describe("/api/rental", () => {
     jest.doMock("@platform-core/pricing", () => ({
       computeDamageFee: jest.fn(),
     }));
+    jest.doMock(
+      "@platform-core/src/repositories/shops.server",
+      () => ({ __esModule: true, readShop: jest.fn() }),
+      { virtual: true }
+    );
 
     const { PATCH } = await import("../src/api/rental/route");
     const res = await PATCH({
@@ -138,10 +162,11 @@ describe("/api/rental", () => {
         deposit: 20,
       });
     const retrieve = jest
-      .fn<Promise<{ payment_intent: string }>, [string, any]>()
-      .mockResolvedValue({ payment_intent: "pi" });
+      .fn<Promise<{ payment_intent: string; metadata: { coverage: string } }>, [string, any]>()
+      .mockResolvedValue({ payment_intent: "pi", metadata: { coverage: "" } });
     const refundCreate = jest.fn();
     const computeDamageFee = jest.fn(async () => 25);
+    const readShop = jest.fn().mockResolvedValue({ coverageIncluded: true });
 
     jest.doMock(
       "@acme/stripe",
@@ -163,6 +188,14 @@ describe("/api/rental", () => {
     jest.doMock("@platform-core/pricing", () => ({
       computeDamageFee,
     }));
+    jest.doMock(
+      "@platform-core/src/repositories/shops.server",
+      () => ({
+        __esModule: true,
+        readShop,
+      }),
+      { virtual: true }
+    );
 
     const { PATCH } = await import("../src/api/rental/route");
     const res = await PATCH({

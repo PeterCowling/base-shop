@@ -58,11 +58,16 @@ export async function priceForDays(sku: SKU, days: number): Promise<number> {
 
 export async function computeDamageFee(
   kind: string | number | undefined,
-  deposit: number
+  deposit: number,
+  coverage: string[] = [],
+  coverageIncluded = false
 ): Promise<number> {
   if (kind == null) return 0;
   const pricing = await getPricing();
   if (typeof kind === "number") return kind;
+  if (coverageIncluded || coverage.includes(kind)) {
+    if (pricing.coverage?.[kind]) return 0;
+  }
   const rule = pricing.damageFees[kind];
   if (rule === "deposit") return deposit;
   if (typeof rule === "number") return rule;

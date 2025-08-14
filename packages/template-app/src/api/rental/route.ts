@@ -4,6 +4,7 @@ import {
   markReturned,
 } from "@platform-core/repositories/rentalOrders.server";
 import { computeDamageFee } from "@platform-core/src/pricing";
+import { readShop } from "@platform-core/src/repositories/shops.server";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
@@ -32,13 +33,22 @@ export async function PATCH(req: NextRequest) {
   if (!order) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
-  const damageFee = await computeDamageFee(damage, order.deposit);
-  if (damageFee) {
-    await markReturned("bcd", sessionId, damageFee);
-  }
   const session = await stripe.checkout.sessions.retrieve(sessionId, {
     expand: ["payment_intent"],
   });
+  const coverageCodes = session.metadata?.coverage
+    ? session.metadata.coverage.split(",").filter(Boolean)
+    : [];
+  const shop = await readShop("bcd");
+  const damageFee = await computeDamageFee(
+    damage,
+    order.deposit,
+    coverageCodes,
+    shop.coverageIncluded
+  );
+  if (damageFee) {
+    await markReturned("bcd", sessionId, damageFee);
+  }
   const pi =
     typeof session.payment_intent === "string"
       ? session.payment_intent

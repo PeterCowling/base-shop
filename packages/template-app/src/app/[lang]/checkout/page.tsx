@@ -1,5 +1,6 @@
 // packages/template-app/src/app/[lang]/checkout/page.tsx
 import CheckoutForm from "@/components/checkout/CheckoutForm";
+import { useState } from "react";
 import OrderSummary from "@/components/organisms/OrderSummary";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import {
@@ -65,7 +66,35 @@ export default async function CheckoutPage({
         cart={validatedCart}
         totals={{ subtotal, deposit, total }}
       />
-      <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
+      <CoverageWrapper locale={lang} taxRegion={settings.taxRegion} />
+    </div>
+  );
+}
+
+function CoverageWrapper({
+  locale,
+  taxRegion,
+}: {
+  locale: Locale;
+  taxRegion: string;
+}) {
+  "use client";
+  const [addCoverage, setAddCoverage] = useState(false);
+  return (
+    <div className="space-y-4">
+      <label className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          checked={addCoverage}
+          onChange={(e) => setAddCoverage(e.target.checked)}
+        />
+        <span>Damage coverage</span>
+      </label>
+      <CheckoutForm
+        locale={locale}
+        taxRegion={taxRegion}
+        coverage={addCoverage ? ["scuff", "tear"] : []}
+      />
     </div>
   );
 }

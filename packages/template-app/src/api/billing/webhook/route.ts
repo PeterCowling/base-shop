@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
       const sub = event.data.object as Stripe.Subscription;
       const userId = sub.metadata?.userId;
       if (userId) {
-        await setStripeSubscriptionId(userId, null);
+        await setStripeSubscriptionId(userId, null, SHOP_ID);
       }
       break;
     }
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
       const sub = event.data.object as Stripe.Subscription;
       const userId = sub.metadata?.userId;
       if (userId) {
-        await setStripeSubscriptionId(userId, sub.id);
+        await setStripeSubscriptionId(userId, sub.id, SHOP_ID);
       }
       break;
     }

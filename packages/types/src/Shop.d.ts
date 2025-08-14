@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { subscriptionPlanSchema } from "./SubscriptionPlan";
 export declare const shopSeoFieldsSchema: z.ZodObject<{
     canonicalBase: z.ZodOptional<z.ZodString>;
     title: z.ZodOptional<z.ZodString>;
@@ -173,6 +174,7 @@ export declare const shopSchema: z.ZodObject<{
     analyticsEnabled: z.ZodOptional<z.ZodBoolean>;
     lastUpgrade: z.ZodOptional<z.ZodString>;
     componentVersions: z.ZodDefault<z.ZodRecord<z.ZodString, z.ZodString>>;
+    subscriptionPlans: z.ZodOptional<z.ZodArray<typeof subscriptionPlanSchema, "many">>;
 }, "strict", z.ZodTypeAny, {
     id: string;
     name: string;
@@ -213,6 +215,7 @@ export declare const shopSchema: z.ZodObject<{
     analyticsEnabled?: boolean | undefined;
     lastUpgrade?: string | undefined;
     componentVersions: Record<string, string>;
+    subscriptionPlans?: import("./SubscriptionPlan").SubscriptionPlan[] | undefined;
 }, {
     id: string;
     name: string;
@@ -252,7 +255,8 @@ export declare const shopSchema: z.ZodObject<{
     returnsEnabled?: boolean | undefined;
     analyticsEnabled?: boolean | undefined;
     lastUpgrade?: string | undefined;
+    subscriptionPlans?: import("./SubscriptionPlan").SubscriptionPlan[] | undefined;
     componentVersions?: Record<string, string> | undefined;
-}>;
+}>; 
 export type Shop = z.infer<typeof shopSchema>;
 //# sourceMappingURL=Shop.d.ts.map

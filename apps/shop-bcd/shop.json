@@ -15,6 +15,7 @@
       "secret": "bcd-secret"
     }
   },
+  "lateFeePolicy": { "gracePeriodDays": 3, "feeAmount": 15 },
   "componentVersions": {},
   "lastUpgrade": "1970-01-01T00:00:00.000Z",
   "sanityBlog": {

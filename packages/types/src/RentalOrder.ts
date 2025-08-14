@@ -10,6 +10,9 @@ export const rentalOrderSchema = z
     startedAt: z.string(),
     returnedAt: z.string().optional(),
     refundedAt: z.string().optional(),
+    returnDueDate: z.string().optional(),
+    returnReceivedAt: z.string().optional(),
+    lateFeeCharged: z.number().optional(),
     /** Optional damage fee deducted from the deposit */
     damageFee: z.number().optional(),
     customerId: z.string().optional(),

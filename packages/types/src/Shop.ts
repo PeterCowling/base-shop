@@ -96,6 +96,13 @@ export const shopSchema = z
     domain: shopDomainSchema.optional(),
     returnPolicyUrl: z.string().url().optional(),
     returnsEnabled: z.boolean().optional(),
+    lateFeePolicy: z
+      .object({
+        gracePeriodDays: z.number().int().nonnegative(),
+        feeAmount: z.number().int().nonnegative(),
+      })
+      .strict()
+      .optional(),
     analyticsEnabled: z.boolean().optional(),
     lastUpgrade: z.string().datetime().optional(),
     componentVersions: z.record(z.string()).default({}),

@@ -48,6 +48,15 @@
     "localeOverrides": {
       "type": "object",
       "additionalProperties": { "type": "string" }
+    },
+    "lateFeePolicy": {
+      "type": "object",
+      "properties": {
+        "gracePeriodDays": { "type": "number" },
+        "feeAmount": { "type": "number" }
+      },
+      "required": ["gracePeriodDays", "feeAmount"],
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

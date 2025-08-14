@@ -22,7 +22,8 @@ export async function addOrder(
   customerId?: string,
   riskLevel?: string,
   riskScore?: number,
-  flaggedForReview?: boolean
+  flaggedForReview?: boolean,
+  returnDueDate?: string,
 ): Promise<Order> {
   const order: Order = {
     id: ulid(),
@@ -30,6 +31,7 @@ export async function addOrder(
     shop,
     deposit,
     expectedReturnDate,
+    returnDueDate,
     startedAt: nowIso(),
     ...(customerId ? { customerId } : {}),
     ...(riskLevel ? { riskLevel } : {}),
@@ -76,6 +78,37 @@ export async function markRefunded(
         ...(typeof riskScore === "number" ? { riskScore } : {}),
         ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
       },
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
+}
+
+export async function markReturnReceived(
+  shop: string,
+  sessionId: string,
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: { returnReceivedAt: nowIso() },
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
+}
+
+export async function markLateFeeCharged(
+  shop: string,
+  sessionId: string,
+  amount: number,
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: { lateFeeCharged: amount },
     });
     return order as Order;
   } catch {

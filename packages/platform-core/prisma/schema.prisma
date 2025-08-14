@@ -31,6 +31,9 @@ model RentalOrder {
   startedAt          String
   returnedAt         String?
   refundedAt         String?
+  returnDueDate      String?
+  returnReceivedAt   String?
+  lateFeeCharged     Int?
   damageFee          Int?
   customerId         String?
   riskLevel          String?
@@ -41,6 +44,16 @@ model RentalOrder {
 
   @@unique([shop, sessionId])
   @@index([customerId])
+}
+
+model ReverseLogisticsEvent {
+  id        String @id
+  shop      String
+  sessionId String
+  event     String
+  at        String
+
+  @@index([shop, sessionId])
 }
 
 model CustomerProfile {

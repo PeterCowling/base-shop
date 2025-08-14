@@ -11,6 +11,7 @@ export * from "./Product";
 export * from "./PublishLocation";
 export * from "./RentalOrder";
 export * from "./ReturnLogistics";
+export * from "./ReverseLogisticsEvent";
 export * from "./Shop";
 export * from "./ShopSettings";
 export * from "./Coupon";

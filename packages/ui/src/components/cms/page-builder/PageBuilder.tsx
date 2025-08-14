@@ -81,6 +81,26 @@ const PageBuilder = memo(function PageBuilder({
   }, [deviceId, orientation]);
   const viewport: "desktop" | "tablet" | "mobile" = device.type;
   const [locale, setLocale] = useState<Locale>("en");
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewViewport, setPreviewViewport] =
+    useState<"desktop" | "tablet" | "mobile">("desktop");
+  const presetByType = useMemo(
+    () => ({
+      desktop: devicePresets.find((d) => d.type === "desktop")!,
+      tablet: devicePresets.find((d) => d.type === "tablet")!,
+      mobile: devicePresets.find((d) => d.type === "mobile")!,
+    }),
+    []
+  );
+  const previewDevice = useMemo<DevicePreset>(
+    () => presetByType[previewViewport],
+    [presetByType, previewViewport]
+  );
+  const previewRef = useRef<HTMLDivElement>(null);
+  const {
+    viewportStyle: previewViewportStyle,
+    frameClass: previewFrameClass,
+  } = useViewport(previewDevice);
   const [publishCount, setPublishCount] = useState(0);
   const prevId = useRef(page.id);
   const pathname = usePathname() ?? "";
@@ -224,16 +244,25 @@ const PageBuilder = memo(function PageBuilder({
             gridCols={gridCols}
             setGridCols={setGridCols}
           />
-          {autoSaveState === "saving" && (
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <Spinner className="h-4 w-4" /> Saving…
-            </div>
-          )}
-          {autoSaveState === "saved" && (
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <CheckIcon className="h-4 w-4 text-green-500" /> Saved
-            </div>
-          )}
+          <div className="flex items-center gap-2">
+            {autoSaveState === "saving" && (
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <Spinner className="h-4 w-4" /> Saving…
+              </div>
+            )}
+            {autoSaveState === "saved" && (
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <CheckIcon className="h-4 w-4 text-green-500" /> Saved
+              </div>
+            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowPreview((p) => !p)}
+            >
+              {showPreview ? "Hide preview" : "Show preview"}
+            </Button>
+          </div>
         </div>
         <div aria-live="polite" role="status" className="sr-only">
           {liveMessage}
@@ -273,6 +302,53 @@ const PageBuilder = memo(function PageBuilder({
             )}
           </DragOverlay>
         </DndContext>
+        {showPreview && (
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <Button
+                variant={
+                  previewViewport === "desktop" ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() => setPreviewViewport("desktop")}
+              >
+                Desktop
+              </Button>
+              <Button
+                variant={
+                  previewViewport === "tablet" ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() => setPreviewViewport("tablet")}
+              >
+                Tablet
+              </Button>
+              <Button
+                variant={
+                  previewViewport === "mobile" ? "default" : "outline"
+                }
+                size="sm"
+                onClick={() => setPreviewViewport("mobile")}
+              >
+                Mobile
+              </Button>
+            </div>
+            <div
+              className={previewFrameClass[previewViewport]}
+              style={previewViewportStyle}
+            >
+              <PageCanvas
+                preview
+                components={components}
+                locale={locale}
+                containerStyle={{ width: "100%" }}
+                viewport={previewViewport}
+                device={previewDevice}
+                canvasRef={previewRef}
+              />
+            </div>
+          </div>
+        )}
         <div className="flex gap-2">
           <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>
             Undo

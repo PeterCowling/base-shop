@@ -34,7 +34,7 @@
     "token": "token"
   },
   "editorialBlog": {
-    "enabled": false
+    "enabled": true
   },
   "luxuryFeatures": {
     "contentMerchandising": true,

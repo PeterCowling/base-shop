@@ -3,7 +3,7 @@ jest.mock("node:fs", () => ({
   promises: { readFile: jest.fn() },
 }));
 jest.mock("@acme/sanity", () => ({
-  fetchPublishedPosts: jest.fn(),
+  fetchPublishedPosts: jest.fn().mockResolvedValue([]),
 }));
 jest.mock("../src/app/[lang]/page.client", () => ({
   __esModule: true,
@@ -16,7 +16,7 @@ import Page from "../src/app/[lang]/page";
 import Home from "../src/app/[lang]/page.client";
 import { fetchPublishedPosts } from "@acme/sanity";
 
-test("Home receives components from fs", async () => {
+test("Home receives components from fs and fetches posts when merchandising enabled", async () => {
   const components: PageComponent[] = [
     { id: "c1", type: "HeroBanner" } as any,
   ];
@@ -31,5 +31,5 @@ test("Home receives components from fs", async () => {
   expect(element.type).toBe(Home);
   expect(element.props.components).toEqual(components);
   expect(element.props.locale).toBe("en");
-  expect(fetchPublishedPosts).not.toHaveBeenCalled();
+  expect(fetchPublishedPosts).toHaveBeenCalledWith("bcd");
 });

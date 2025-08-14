@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
 import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";
 import { fetchPublishedPosts } from "@acme/sanity";
-import { env } from "@acme/config";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 import { readRepo } from "@platform-core/repositories/json.server";
@@ -84,9 +83,8 @@ export default async function ProductDetailPage({
   if (!product) return notFound();
 
   let latestPost: BlogPost | undefined;
-  try {
-    const luxury = JSON.parse(env.NEXT_PUBLIC_LUXURY_FEATURES ?? "{}");
-    if (luxury.contentMerchandising) {
+  if (shop.luxuryFeatures.contentMerchandising) {
+    try {
       const posts = await fetchPublishedPosts(shop.id);
       const first = posts[0];
       if (first) {
@@ -96,9 +94,9 @@ export default async function ProductDetailPage({
           url: `/${params.lang}/blog/${first.slug}`,
         };
       }
+    } catch {
+      /* ignore failed blog fetch */
     }
-  } catch {
-    /* ignore bad feature flags */
   }
 
   const cfg = await getReturnLogistics();

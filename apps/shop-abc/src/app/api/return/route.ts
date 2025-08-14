@@ -4,6 +4,7 @@ import "@acme/lib/initZod";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
+import { getReturnLogistics } from "@platform-core/returnLogistics";
 
 export const runtime = "edge";
 
@@ -19,6 +20,12 @@ export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { sessionId } = parsed.data;
+  const cfg = await getReturnLogistics();
   const { trackingNumber, labelUrl } = createUpsLabel(sessionId);
-  return NextResponse.json({ ok: true, trackingNumber, labelUrl });
+  return NextResponse.json({
+    ok: true,
+    dropOffProvider: cfg.dropOffProvider,
+    labelUrl,
+    tracking: { number: trackingNumber, url: labelUrl },
+  });
 }

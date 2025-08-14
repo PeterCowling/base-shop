@@ -13,7 +13,13 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
-    const body = await req.json();
+    const raw = await req.json();
+    const body = {
+      ...raw,
+      dropOffProvider: raw.dropOffProvider || undefined,
+      tracking:
+        typeof raw.tracking === "boolean" ? raw.tracking : undefined,
+    };
     const parsed = returnLogisticsSchema.safeParse(body);
     if (!parsed.success) {
       return NextResponse.json(

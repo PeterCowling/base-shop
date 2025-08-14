@@ -61,6 +61,27 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
         />
         <span>Allow in-store returns</span>
       </label>
+      <label className="flex flex-col gap-1">
+        <span>Drop-off Provider</span>
+        <Input
+          value={form.dropOffProvider ?? ""}
+          onChange={(e) =>
+            setForm((f) => ({
+              ...f,
+              dropOffProvider: e.target.value || undefined,
+            }))
+          }
+        />
+      </label>
+      <label className="flex items-center gap-2">
+        <Checkbox
+          checked={form.tracking ?? false}
+          onCheckedChange={(v) =>
+            setForm((f) => ({ ...f, tracking: Boolean(v) }))
+          }
+        />
+        <span>Include tracking numbers</span>
+      </label>
       {status === "saved" && (
         <p className="text-sm text-green-600">Saved!</p>
       )}

@@ -5,8 +5,12 @@
   "themeId": "base",
   "themeOverrides": {},
   "filterMappings": {},
-  "shippingProviders": ["dhl"],
+  "shippingProviders": ["dhl", "premier-shipping"],
   "taxProviders": ["taxjar"],
+  "premierShipping": {
+    "regions": ["us-west"],
+    "windows": ["09-10", "10-11"]
+  },
   "priceOverrides": {},
   "localeOverrides": {},
   "componentVersions": {},

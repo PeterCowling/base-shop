@@ -12,7 +12,9 @@ describe("BlogListing", () => {
       />
     );
     expect(screen.getByText("A")).toBeInTheDocument();
-    expect(screen.getByText("first")).toBeInTheDocument();
+    const excerpt = screen.getByText("first");
+    expect(excerpt).toBeInTheDocument();
+    expect(excerpt).toHaveAttribute("data-token", "--color-muted");
     expect(screen.getByText("B")).toBeInTheDocument();
   });
 });

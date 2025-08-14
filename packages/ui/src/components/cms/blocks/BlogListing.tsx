@@ -16,7 +16,11 @@ export default function BlogListing({ posts = [] }: { posts?: BlogPost[] }) {
           ) : (
             <h3 className="text-lg font-semibold">{p.title}</h3>
           )}
-          {p.excerpt && <p className="text-muted">{p.excerpt}</p>}
+          {p.excerpt && (
+            <p className="text-muted" data-token="--color-muted">
+              {p.excerpt}
+            </p>
+          )}
         </article>
       ))}
     </section>

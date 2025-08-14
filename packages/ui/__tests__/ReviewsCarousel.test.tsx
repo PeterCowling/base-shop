@@ -25,8 +25,19 @@ describe("ReviewsCarousel", () => {
       "review.luca.name": "Luca",
     });
 
-    render(<ReviewsCarousel />);
-    expect(screen.getByText("Anna quote")).toBeInTheDocument();
+    const { container } = render(<ReviewsCarousel />);
+    expect(screen.getByText(/Anna quote/)).toBeInTheDocument();
+    expect(container.querySelector("section")).toHaveAttribute(
+      "data-token",
+      "--color-muted"
+    );
+    expect(
+      screen.getByText("Anna quote").closest("blockquote")
+    ).toHaveAttribute("data-token", "--color-fg");
+    expect(screen.getByText(/Anna/).parentElement).toHaveAttribute(
+      "data-token",
+      "--color-muted"
+    );
     act(() => {
       jest.advanceTimersByTime(8000);
     });
@@ -38,7 +49,7 @@ describe("ReviewsCarousel", () => {
     render(
       <ReviewsCarousel reviews={[{ quoteKey: "quote1", nameKey: "name1" }]} />
     );
-    expect(screen.getByText("Great")).toBeInTheDocument();
+    expect(screen.getByText(/Great/)).toBeInTheDocument();
     expect(screen.getByText(/Bob/)).toBeInTheDocument();
   });
 });

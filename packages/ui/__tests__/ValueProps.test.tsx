@@ -26,6 +26,10 @@ describe("ValueProps", () => {
     expect(screen.getByText("Eco")).toBeInTheDocument();
     expect(screen.getByText("Ship")).toBeInTheDocument();
     expect(screen.getByText("Return")).toBeInTheDocument();
+    expect(screen.getByText("Eco desc")).toHaveAttribute(
+      "data-token",
+      "--color-muted"
+    );
   });
 
   it("renders provided items", () => {

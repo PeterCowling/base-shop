@@ -62,14 +62,21 @@ export default function SearchBar({
         placeholder={placeholder}
         className="pr-8"
       />
-      <MagnifyingGlassIcon className="text-muted-foreground pointer-events-none absolute top-2 right-2 h-4 w-4" />
+      <MagnifyingGlassIcon
+        className="text-muted-foreground pointer-events-none absolute top-2 right-2 h-4 w-4"
+        data-token="--color-muted-fg"
+      />
       {results.length > 0 && (
-        <ul className="bg-background absolute z-10 mt-1 w-full rounded-md border shadow">
+        <ul
+          className="bg-background absolute z-10 mt-1 w-full rounded-md border shadow"
+          data-token="--color-bg"
+        >
           {results.map((r) => (
             <li
               key={r.slug}
               onMouseDown={() => handleSelect(r)}
               className="text-fg hover:bg-accent hover:text-accent-foreground cursor-pointer px-3 py-1"
+              data-token="--color-fg"
             >
               {r.title}
             </li>

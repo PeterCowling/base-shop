@@ -17,6 +17,7 @@ const Footer = memo(function Footer({
         height,
         padding
       )}
+      data-token="--color-muted"
     >
       {" "}
       <p className="space-x-4">

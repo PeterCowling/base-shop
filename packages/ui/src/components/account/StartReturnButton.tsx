@@ -54,9 +54,15 @@ export default function StartReturnButton({ sessionId }: Props) {
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className="rounded bg-primary px-3 py-1 text-primary-foreground"
+        className="rounded bg-primary px-3 py-1"
+        data-token="--color-primary"
       >
-        {loading ? "Processing…" : "Start return"}
+        <span
+          className="text-primary-foreground"
+          data-token="--color-primary-fg"
+        >
+          {loading ? "Processing…" : "Start return"}
+        </span>
       </button>
       {labelUrl && (
         <p className="mt-1 text-sm">

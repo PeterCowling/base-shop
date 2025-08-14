@@ -69,7 +69,7 @@ function Scanner({ allowedZips }: { allowedZips: string[] }) {
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
         }
-        const detector = new (window as any).BarcodeDetector({
+        const detector = new window.BarcodeDetector({
           formats: ["qr_code", "code_128", "ean_13", "upc_a"],
         });
         const scan = async () => {
@@ -105,14 +105,14 @@ function Scanner({ allowedZips }: { allowedZips: string[] }) {
 
   if (done) {
     return (
-      <div className="p-6 space-y-4">
+      <div className="space-y-4 p-6">
         <p>Return recorded.</p>
       </div>
     );
   }
 
   return (
-    <div className="p-6 space-y-4">
+    <div className="space-y-4 p-6">
       <h1 className="text-xl font-semibold">Scan to mark return</h1>
       {!result && <video ref={videoRef} className="w-full max-w-md" />}
       {result && allowedZips.length > 0 && (
@@ -134,7 +134,7 @@ function Scanner({ allowedZips }: { allowedZips: string[] }) {
             </select>
           </label>
           <button
-            className="px-4 py-2 bg-blue-600 text-white disabled:opacity-50"
+            className="bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
             disabled={!zip}
             onClick={() => result && finalize(result)}
           >
@@ -147,4 +147,3 @@ function Scanner({ allowedZips }: { allowedZips: string[] }) {
     </div>
   );
 }
-

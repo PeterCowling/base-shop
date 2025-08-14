@@ -101,6 +101,11 @@ const CanvasItem = memo(function CanvasItem({
     startResize,
     guides: resizeGuides,
     snapping: resizeSnapping,
+    width: resizeWidth,
+    height: resizeHeight,
+    left: resizeLeft,
+    top: resizeTop,
+    resizing,
   } = useCanvasResize({
     componentId: component.id,
     widthKey,
@@ -117,6 +122,11 @@ const CanvasItem = memo(function CanvasItem({
     startDrag,
     guides: dragGuides,
     snapping: dragSnapping,
+    width: dragWidth,
+    height: dragHeight,
+    left: dragLeft,
+    top: dragTop,
+    moving,
   } = useCanvasDrag({
     componentId: component.id,
     dispatch,
@@ -130,6 +140,12 @@ const CanvasItem = memo(function CanvasItem({
       ? resizeGuides
       : dragGuides;
   const snapping = resizeSnapping || dragSnapping;
+
+  const showOverlay = resizing || moving;
+  const overlayWidth = resizing ? resizeWidth : dragWidth;
+  const overlayHeight = resizing ? resizeHeight : dragHeight;
+  const overlayLeft = resizing ? resizeLeft : dragLeft;
+  const overlayTop = resizing ? resizeTop : dragTop;
 
   const hasChildren = Array.isArray((component as any).children);
   const childIds = hasChildren
@@ -195,6 +211,12 @@ const CanvasItem = memo(function CanvasItem({
         </div>
       )}
       <Block component={component} locale={locale} />
+      {showOverlay && (
+        <div className="pointer-events-none absolute -top-5 left-0 z-30 rounded bg-black/75 px-1 text-[10px] font-mono text-white shadow dark:bg-white/75 dark:text-black">
+          {Math.round(overlayWidth)}×{Math.round(overlayHeight)} | {Math.round(overlayLeft)},{" "}
+          {Math.round(overlayTop)}
+        </div>
+      )}
       {selected && (
         <>
           <div

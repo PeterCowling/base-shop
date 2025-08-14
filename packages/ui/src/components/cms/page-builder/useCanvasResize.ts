@@ -34,6 +34,12 @@ export default function useCanvasResize({
   const [resizing, setResizing] = useState(false);
   const [snapWidth, setSnapWidth] = useState(false);
   const [snapHeight, setSnapHeight] = useState(false);
+  const [current, setCurrent] = useState({
+    width: 0,
+    height: 0,
+    left: 0,
+    top: 0,
+  });
   const { guides, setGuides, siblingEdgesRef, computeSiblingEdges } = useGuides(
     containerRef
   );
@@ -83,6 +89,7 @@ export default function useCanvasResize({
         [widthKey]: snapW ? "100%" : `${newW}px`,
         [heightKey]: snapH ? "100%" : `${newH}px`,
       } as any);
+      setCurrent({ width: newW, height: newH, left, top });
       setSnapWidth(snapW || guideX !== null);
       setSnapHeight(snapH || guideY !== null);
       setGuides({
@@ -132,6 +139,12 @@ export default function useCanvasResize({
       w: startWidth,
       h: startHeight,
     };
+    setCurrent({
+      width: startWidth,
+      height: startHeight,
+      left: el.offsetLeft,
+      top: el.offsetTop,
+    });
     computeSiblingEdges();
     setResizing(true);
   };
@@ -139,5 +152,14 @@ export default function useCanvasResize({
   const snapping =
     snapWidth || snapHeight || guides.x !== null || guides.y !== null;
 
-  return { startResize, guides, snapping, resizing } as const;
+  return {
+    startResize,
+    guides,
+    snapping,
+    resizing,
+    width: current.width,
+    height: current.height,
+    left: current.left,
+    top: current.top,
+  } as const;
 }

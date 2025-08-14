@@ -24,6 +24,12 @@ export default function useCanvasDrag({
     null
   );
   const [moving, setMoving] = useState(false);
+  const [current, setCurrent] = useState({
+    left: 0,
+    top: 0,
+    width: 0,
+    height: 0,
+  });
   const { guides, setGuides, siblingEdgesRef, computeSiblingEdges } = useGuides(
     containerRef
   );
@@ -75,6 +81,7 @@ export default function useCanvasDrag({
         left: `${newL}px`,
         top: `${newT}px`,
       });
+      setCurrent({ left: newL, top: newT, width, height });
       setGuides({
         x: guideX !== null ? guideX - newL : null,
         y: guideY !== null ? guideY - newT : null,
@@ -102,11 +109,26 @@ export default function useCanvasDrag({
       l: el.offsetLeft,
       t: el.offsetTop,
     };
+    setCurrent({
+      left: el.offsetLeft,
+      top: el.offsetTop,
+      width: el.offsetWidth,
+      height: el.offsetHeight,
+    });
     computeSiblingEdges();
     setMoving(true);
   };
 
   const snapping = guides.x !== null || guides.y !== null;
 
-  return { startDrag, guides, snapping, moving } as const;
+  return {
+    startDrag,
+    guides,
+    snapping,
+    moving,
+    left: current.left,
+    top: current.top,
+    width: current.width,
+    height: current.height,
+  } as const;
 }

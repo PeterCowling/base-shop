@@ -73,6 +73,45 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
           }
         />
       </label>
+      <label className="flex flex-col gap-1">
+        <span>Bag Type</span>
+        <Input
+          value={form.bagType}
+          onChange={(e) =>
+            setForm((f) => ({ ...f, bagType: e.target.value }))
+          }
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Return Carriers (comma separated)</span>
+        <Input
+          value={form.returnCarrier.join(", ")}
+          onChange={(e) =>
+            setForm((f) => ({
+              ...f,
+              returnCarrier: e.target.value
+                .split(",")
+                .map((s) => s.trim())
+                .filter(Boolean),
+            }))
+          }
+        />
+      </label>
+      <label className="flex flex-col gap-1">
+        <span>Home Pickup ZIPs (comma separated)</span>
+        <Input
+          value={form.homePickupZipCodes.join(", ")}
+          onChange={(e) =>
+            setForm((f) => ({
+              ...f,
+              homePickupZipCodes: e.target.value
+                .split(",")
+                .map((s) => s.trim())
+                .filter(Boolean),
+            }))
+          }
+        />
+      </label>
       <label className="flex items-center gap-2">
         <Checkbox
           checked={Boolean(form.tracking)}

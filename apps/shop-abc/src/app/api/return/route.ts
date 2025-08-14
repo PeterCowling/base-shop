@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
   const cfg = await getReturnLogistics();
   let tracking: { number: string; labelUrl: string } | null = null;
 
-  if (cfg.dropOffProvider?.toLowerCase() === "ups") {
+  if (cfg.returnCarrier.map((c) => c.toLowerCase()).includes("ups")) {
     const { trackingNumber, labelUrl } = await createUpsLabel(sessionId);
     tracking = { number: trackingNumber, labelUrl };
   }
@@ -54,6 +54,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({
     ok: true,
     dropOffProvider: cfg.dropOffProvider ?? null,
+    returnCarrier: cfg.returnCarrier,
     tracking,
   });
 }
@@ -64,7 +65,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 });
   }
   const cfg = await getReturnLogistics();
-  if (cfg.dropOffProvider?.toLowerCase() === "ups") {
+  if (cfg.returnCarrier.map((c) => c.toLowerCase()).includes("ups")) {
     const status = await getUpsStatus(tracking);
     return NextResponse.json({ ok: true, status });
   }

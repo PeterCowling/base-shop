@@ -26,12 +26,17 @@ describe("/api/upgrade-changes", () => {
   });
 
   test("returns components for authorized requests", async () => {
-    await fs.writeFile(filePath, JSON.stringify({ components: ["Header"] }));
+    const payload = {
+      components: [
+        { file: "src/components/Header.tsx", componentName: "Header" },
+      ],
+    };
+    await fs.writeFile(filePath, JSON.stringify(payload));
     jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
     const { GET } = await import("../src/app/api/upgrade-changes/route");
     const res = await GET();
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ components: ["Header"] });
+    expect(await res.json()).toEqual(payload);
   });
 
   test("returns 401 for unauthorized", async () => {

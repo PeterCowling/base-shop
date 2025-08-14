@@ -21,6 +21,12 @@ export async function POST(req: NextRequest) {
   }
 
   const shop = await readShop(SHOP_ID);
+  if (!shop.subscriptionsEnabled) {
+    return NextResponse.json(
+      { error: "Subscriptions disabled" },
+      { status: 403 },
+    );
+  }
   if (shop.billingProvider !== "stripe") {
     return NextResponse.json({ error: "Billing not enabled" }, { status: 400 });
   }

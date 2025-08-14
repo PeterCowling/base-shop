@@ -12,6 +12,7 @@ import { getCart } from "@platform-core/src/cartStore";
 import { getProductById } from "@platform-core/src/products";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/src/repositories/settings.server";
+import { readShop } from "@platform-core/src/repositories/shops.server";
 
 export const metadata = {
   title: "Checkout · Base-Shop",
@@ -56,16 +57,22 @@ export default async function CheckoutPage({
   );
   const total = subtotal + deposit;
 
-  const settings = await getShopSettings("shop");
+  const [settings, shop] = await Promise.all([
+    getShopSettings("shop"),
+    readShop("shop"),
+  ]);
 
-  /* ---------- render ---------- */
-  return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
-      <OrderSummary
-        cart={validatedCart}
-        totals={{ subtotal, deposit, total }}
-      />
-      <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
-    </div>
-  );
+  if (shop.type !== "rental") {
+    return (
+      <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
+        <OrderSummary
+          cart={validatedCart}
+          totals={{ subtotal, deposit, total }}
+        />
+        <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
+      </div>
+    );
+  }
+
+  return <p className="p-8 text-center">Rental checkout not implemented.</p>;
 }

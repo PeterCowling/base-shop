@@ -2,6 +2,7 @@
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { readShop } from "@platform-core/src/repositories/shops.server";
 import { getCustomerSession } from "@auth";
+import { notFound } from "next/navigation";
 import {
   setUserPlan,
 } from "@platform-core/src/repositories/subscriptionUsage.server";
@@ -14,6 +15,7 @@ export default async function SubscribePage({
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
   const shop = await readShop("shop");
+  if (!shop.subscriptionsEnabled) return notFound();
 
   async function selectPlan(formData: FormData) {
     "use server";

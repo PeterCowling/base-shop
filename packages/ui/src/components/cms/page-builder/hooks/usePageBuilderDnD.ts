@@ -14,10 +14,16 @@ import type { PageComponent } from "@acme/types";
 import type { Action } from "../state";
 import { snapToGrid } from "../gridSnap";
 
+function isPointerEvent(
+  ev: Event | null | undefined
+): ev is PointerEvent {
+  return !!ev && "clientX" in ev && "clientY" in ev;
+}
+
 interface Params {
   components: PageComponent[];
   dispatch: (action: Action) => void;
-  defaults: Partial<Record<string, Partial<PageComponent>>>;
+  defaults: Record<string, Partial<PageComponent>>;
   containerTypes: string[];
   selectId: (id: string) => void;
   gridSize?: number;
@@ -45,12 +51,12 @@ export function usePageBuilderDnD({
 
   const handleDragMove = useCallback(
     (ev: DragMoveEvent) => {
-      const { over, delta } = ev;
-      if (!over) return;
+      const { over, delta, activatorEvent } = ev;
+      if (!over || !isPointerEvent(activatorEvent)) return;
       const overData = over.data.current as { index?: number };
-      const rawY = (ev.activatorEvent as any)?.clientY + delta.y;
+      const rawY = activatorEvent.clientY + delta.y;
       const pointerY = snapToGrid(rawY, gridSize);
-      const rawX = (ev.activatorEvent as any)?.clientX + delta.x;
+      const rawX = activatorEvent.clientX + delta.x;
       const canvasRect = canvasRef?.current?.getBoundingClientRect();
       const pointerX = rawX - (canvasRect?.left ?? 0);
       const snapX = snapToGrid(pointerX, gridSize);
@@ -110,7 +116,7 @@ export function usePageBuilderDnD({
         const component = {
           id: ulid(),
           type: a.type! as any,
-          ...(defaults[a.type! as any] ?? {}),
+          ...(defaults[a.type!] ?? {}),
           ...(isContainer ? { children: [] } : {}),
         } as PageComponent;
         dispatch({

@@ -119,7 +119,7 @@ const PageBuilder = memo(function PageBuilder({
   } = usePageBuilderDnD({
     components,
     dispatch,
-    defaults,
+    defaults: defaults as Record<string, Partial<PageComponent>>,
     containerTypes: CONTAINER_TYPES,
     selectId: setSelectedId,
     gridSize,

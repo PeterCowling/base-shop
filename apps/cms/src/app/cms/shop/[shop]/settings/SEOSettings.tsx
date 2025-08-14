@@ -1,13 +1,8 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/SEOSettings.tsx
 "use client";
-import { Input, Textarea } from "@/components/atoms/shadcn";
+import { Input } from "@/components/atoms/shadcn";
 import type { Shop } from "@acme/types";
-import type {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-} from "react";
-import { jsonFieldHandler, ErrorSetter } from "../utils/formValidators";
+import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 import type { Provider } from "@acme/configurator/providers";
 
 interface Props {
@@ -16,7 +11,6 @@ interface Props {
   trackingProviders: string[];
   setTrackingProviders: Dispatch<SetStateAction<string[]>>;
   errors: Record<string, string[]>;
-  setErrors: ErrorSetter;
   shippingProviders: Provider[];
 }
 
@@ -26,7 +20,6 @@ export default function SEOSettings({
   trackingProviders,
   setTrackingProviders,
   errors,
-  setErrors,
   shippingProviders,
 }: Props) {
   const handleFilters = (e: ChangeEvent<HTMLInputElement>) => {
@@ -35,12 +28,6 @@ export default function SEOSettings({
       catalogFilters: e.target.value.split(/,\s*/),
     }));
   };
-
-  const handleMappings = jsonFieldHandler<Record<string, unknown>>(
-    "filterMappings",
-    (parsed) => setInfo((prev) => ({ ...prev, filterMappings: parsed })),
-    setErrors,
-  );
 
   const handleTracking = (e: ChangeEvent<HTMLSelectElement>) => {
     const selected = Array.from(e.target.selectedOptions).map((o) => o.value);
@@ -81,20 +68,6 @@ export default function SEOSettings({
         {errors.trackingProviders && (
           <span className="text-sm text-red-600">
             {errors.trackingProviders.join("; ")}
-          </span>
-        )}
-      </label>
-      <label className="flex flex-col gap-1">
-        <span>Filter Mappings (JSON)</span>
-        <Textarea
-          name="filterMappings"
-          defaultValue={JSON.stringify(info.filterMappings, null, 2)}
-          onChange={handleMappings}
-          rows={4}
-        />
-        {errors.filterMappings && (
-          <span className="text-sm text-red-600">
-            {errors.filterMappings.join("; ")}
           </span>
         )}
       </label>

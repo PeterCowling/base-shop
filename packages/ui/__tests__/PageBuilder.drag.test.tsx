@@ -1,19 +1,18 @@
 import { render, fireEvent } from "@testing-library/react";
 import { renderHook, act } from "@testing-library/react";
 import React from "react";
-import usePageBuilderDrag from "../src/components/cms/page-builder/usePageBuilderDrag";
+import usePageBuilderDnD from "../src/components/cms/page-builder/hooks/usePageBuilderDnD";
 import { CanvasItem, renderCanvasItem, setRect } from "./helpers/pageBuilderSetup";
 
 describe("PageBuilder drag interactions", () => {
   it("adds component on drag from palette to canvas", () => {
     const dispatch = jest.fn();
     const { result } = renderHook(() =>
-      usePageBuilderDrag({
+      usePageBuilderDnD({
         components: [],
         dispatch,
         defaults: {},
         containerTypes: [],
-        setInsertIndex: jest.fn(),
         selectId: jest.fn(),
       })
     );
@@ -36,12 +35,11 @@ describe("PageBuilder drag interactions", () => {
   it("does not add component when dropped outside canvas", () => {
     const dispatch = jest.fn();
     const { result } = renderHook(() =>
-      usePageBuilderDrag({
+      usePageBuilderDnD({
         components: [],
         dispatch,
         defaults: {},
         containerTypes: [],
-        setInsertIndex: jest.fn(),
         selectId: jest.fn(),
       })
     );

@@ -2,14 +2,12 @@
 
 import { locales, type Locale } from "@/i18n/locales";
 import { usePathname } from "next/navigation";
-import { memo, useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, DragEvent } from "react";
 import {
   DndContext,
   DragOverlay,
   closestCenter,
-  type DragStartEvent,
-  type DragEndEvent,
 } from "@dnd-kit/core";
 import { ulid } from "ulid";
 import type { Page, PageComponent, HistoryState, MediaItem } from "@acme/types";
@@ -25,8 +23,8 @@ import {
 } from "../blocks";
 import { getShopFromPath } from "@platform-core/utils";
 import useFileUpload from "@ui/hooks/useFileUpload";
-import { historyStateSchema, reducer, type Action } from "./state";
-import usePageBuilderDrag from "./usePageBuilderDrag";
+import usePageBuilderState from "./hooks/usePageBuilderState";
+import usePageBuilderDnD from "./hooks/usePageBuilderDnD";
 import PageToolbar from "./PageToolbar";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
@@ -104,67 +102,18 @@ const PageBuilder = memo(function PageBuilder({
   onChange,
   style,
 }: Props) {
-  const storageKey = `page-builder-history-${page.id}`;
-  const migrate = useCallback(
-    (comps: PageComponent[]): PageComponent[] =>
-      comps.map((c) =>
-        c.type === "Section" || c.type === "MultiColumn"
-          ? { ...c, children: c.children ?? [] }
-          : c
-      ),
-    []
-  );
+  const {
+    state,
+    components,
+    dispatch,
+    selectedId,
+    setSelectedId,
+    gridCols,
+    setGridCols,
+    liveMessage,
+    clearHistory,
+  } = usePageBuilderState({ page, history: historyProp, onChange });
 
-  const [state, rawDispatch] = useReducer(reducer, undefined, (): HistoryState => {
-    const initial = migrate(page.components as PageComponent[]);
-    const fromServer = historyProp ?? page.history;
-    const parsedServer = fromServer
-      ? (() => {
-          try {
-            const valid = historyStateSchema.parse(fromServer);
-            return { ...valid, present: migrate(valid.present) };
-          } catch {
-            return { past: [], present: initial, future: [], gridCols: 12 };
-          }
-        })()
-      : { past: [], present: initial, future: [], gridCols: 12 };
-
-    if (typeof window === "undefined") {
-      return parsedServer;
-    }
-    try {
-      const stored = localStorage.getItem(storageKey);
-      if (!stored) throw new Error("no stored state");
-      const parsed = historyStateSchema.parse(JSON.parse(stored));
-      return { ...parsed, present: migrate(parsed.present) };
-    } catch (err) {
-      console.warn("Failed to parse stored page builder state", err);
-      return parsedServer;
-    }
-  });
-
-  const components = state.present;
-  const [gridCols, setGridCols] = useState(state.gridCols);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [liveMessage, setLiveMessage] = useState("");
-  const dispatch = useCallback(
-    (action: Action) => {
-      rawDispatch(action);
-      if (action.type === "add") {
-        setLiveMessage("Block added");
-      } else if (action.type === "move") {
-        setLiveMessage("Block moved");
-      } else if (action.type === "resize") {
-        setLiveMessage("Block resized");
-      }
-    },
-    [rawDispatch]
-  );
-  useEffect(() => {
-    if (!liveMessage) return;
-    const t = setTimeout(() => setLiveMessage(""), 500);
-    return () => clearTimeout(t);
-  }, [liveMessage]);
   const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [locale, setLocale] = useState<Locale>("en");
   const [publishCount, setPublishCount] = useState(0);
@@ -173,7 +122,6 @@ const PageBuilder = memo(function PageBuilder({
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
   const [dragOver, setDragOver] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
-  const [insertIndex, setInsertIndex] = useState<number | null>(null);
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
     message: "",
@@ -181,7 +129,6 @@ const PageBuilder = memo(function PageBuilder({
   const [showGrid, setShowGrid] = useState(false);
   const [gridSize, setGridSize] = useState(1);
   const [snapPosition, setSnapPosition] = useState<number | null>(null);
-  const [activeType, setActiveType] = useState<ComponentType | null>(null);
 
   const {
     onDrop,
@@ -218,30 +165,23 @@ const PageBuilder = memo(function PageBuilder({
     [onDrop]
   );
 
-  const { sensors, handleDragMove, handleDragEnd } = usePageBuilderDrag({
+  const {
+    sensors,
+    handleDragStart,
+    handleDragMove,
+    handleDragEnd,
+    insertIndex,
+    activeType,
+  } = usePageBuilderDnD({
     components,
     dispatch,
     defaults,
     containerTypes: CONTAINER_TYPES,
-    setInsertIndex,
     selectId: setSelectedId,
     gridSize,
     canvasRef,
     setSnapPosition,
   });
-
-  const handleDragStart = useCallback((ev: DragStartEvent) => {
-    const a = ev.active.data.current as { type?: ComponentType };
-    setActiveType((a?.type as ComponentType) ?? null);
-  }, []);
-
-  const handleDragEndWrapper = useCallback(
-    (ev: DragEndEvent) => {
-      setActiveType(null);
-      handleDragEnd(ev);
-    },
-    [handleDragEnd]
-  );
 
   const widthMap = useMemo(
     () => ({ desktop: "100%", tablet: "768px", mobile: "375px" }) as const,
@@ -261,39 +201,14 @@ const PageBuilder = memo(function PageBuilder({
   }, [showGrid, viewport, gridCols]);
 
   useEffect(() => {
-    onChange?.(components);
-    if (typeof window !== "undefined") {
-      localStorage.setItem(storageKey, JSON.stringify(state));
-    }
-  }, [components, onChange, state, storageKey]);
-
-  useEffect(() => {
     const idChanged = prevId.current !== page.id;
     if (publishCount > 0 || idChanged) {
-      if (typeof window !== "undefined") {
-        localStorage.removeItem(storageKey);
-      }
+      clearHistory();
     }
     if (idChanged) {
       prevId.current = page.id;
     }
-  }, [page.id, publishCount, storageKey]);
-
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (!(e.ctrlKey || e.metaKey)) return;
-      const k = e.key.toLowerCase();
-      if (k === "z") {
-        e.preventDefault();
-        dispatch({ type: "undo" });
-      } else if (k === "y") {
-        e.preventDefault();
-        dispatch({ type: "redo" });
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
+  }, [page.id, publishCount, clearHistory]);
 
   const formData = useMemo(() => {
     const fd = new FormData();
@@ -329,10 +244,7 @@ const PageBuilder = memo(function PageBuilder({
         showGrid={showGrid}
         toggleGrid={() => setShowGrid((g) => !g)}
         gridCols={gridCols}
-        setGridCols={(n) => {
-          setGridCols(n);
-          dispatch({ type: "set-grid-cols", gridCols: n });
-        }}
+        setGridCols={setGridCols}
       />
         <div aria-live="polite" role="status" className="sr-only">
           {liveMessage}
@@ -342,7 +254,7 @@ const PageBuilder = memo(function PageBuilder({
           collisionDetection={closestCenter}
           onDragStart={handleDragStart}
           onDragMove={handleDragMove}
-          onDragEnd={handleDragEndWrapper}
+          onDragEnd={handleDragEnd}
         >
           <PageCanvas
             components={components}

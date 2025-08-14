@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`upgrade preview page renders changes and publish CTA 1`] = `
+exports[`upgrade preview page renders changes, preview links and publish CTA 1`] = `
 <body>
   <div>
     <div
@@ -11,6 +11,17 @@ exports[`upgrade preview page renders changes and publish CTA 1`] = `
       >
         <li>
           Breadcrumbs
+        </li>
+      </ul>
+      <ul
+        class="list-disc pl-4"
+      >
+        <li>
+          <a
+            href="/preview/1?upgrade=tok"
+          >
+            Preview 1
+          </a>
         </li>
       </ul>
       <button

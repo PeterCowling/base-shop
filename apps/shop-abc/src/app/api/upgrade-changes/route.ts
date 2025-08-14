@@ -20,8 +20,9 @@ export async function GET() {
     );
     const data = JSON.parse(raw);
     const components = Array.isArray(data.components) ? data.components : [];
-    return NextResponse.json({ components });
+    const pages = Array.isArray(data.pages) ? data.pages : [];
+    return NextResponse.json({ components, pages });
   } catch {
-    return NextResponse.json({ components: [] });
+    return NextResponse.json({ components: [], pages: [] });
   }
 }

@@ -42,6 +42,7 @@ describe("/api/upgrade-changes", () => {
       components: [
         { file: "molecules/Breadcrumbs.tsx", componentName: "Breadcrumbs" },
       ],
+      pages: [],
     });
   });
 

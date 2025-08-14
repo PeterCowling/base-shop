@@ -1,26 +1,26 @@
-import type { PageComponent } from "@acme/types";
+import type { StoreLocatorBlockComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: StoreLocatorBlockComponent;
+  onChange: (patch: Partial<StoreLocatorBlockComponent>) => void;
 }
 
 export default function StoreLocatorBlockEditor({ component, onChange }: Props) {
-  const arrayEditor = useArrayEditor(onChange);
-  const handleNumber = (field: string, value: string) => {
+  const arrayEditor = useArrayEditor<StoreLocatorBlockComponent>(onChange);
+  const handleNumber = (field: keyof StoreLocatorBlockComponent & string, value: string) => {
     const num = value === "" ? undefined : Number(value);
-    onChange({ [field]: isNaN(num as number) ? undefined : num } as Partial<PageComponent>);
+    onChange({ [field]: isNaN(num as number) ? undefined : num } as Partial<StoreLocatorBlockComponent>);
   };
 
   return (
     <div className="space-y-2">
-      {arrayEditor("locations", (component as any).locations, ["lat", "lng", "label"])}
+      {arrayEditor("locations", component.locations, ["lat", "lng", "label"])}
       <Input
         label="Zoom"
         type="number"
-        value={(component as any).zoom ?? ""}
+        value={component.zoom ?? ""}
         onChange={(e) => handleNumber("zoom", e.target.value)}
       />
     </div>

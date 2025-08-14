@@ -1,22 +1,22 @@
-import type { PageComponent } from "@acme/types";
+import type { ImageComponent } from "@acme/types";
 import { Button, Input } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: ImageComponent;
+  onChange: (patch: Partial<ImageComponent>) => void;
 }
 
 export default function ImageBlockEditor({ component, onChange }: Props) {
-  const handleInput = (field: string, value: string) => {
-    onChange({ [field]: value } as Partial<PageComponent>);
+  const handleInput = (field: keyof ImageComponent & string, value: string) => {
+    onChange({ [field]: value } as Partial<ImageComponent>);
   };
 
   return (
     <div className="space-y-2">
       <div className="flex items-start gap-2">
         <Input
-          value={(component as any).src ?? ""}
+          value={component.src ?? ""}
           onChange={(e) => handleInput("src", e.target.value)}
           placeholder="src"
           className="flex-1"
@@ -28,7 +28,7 @@ export default function ImageBlockEditor({ component, onChange }: Props) {
         </ImagePicker>
       </div>
       <Input
-        value={(component as any).alt ?? ""}
+        value={component.alt ?? ""}
         onChange={(e) => handleInput("alt", e.target.value)}
         placeholder="alt"
       />

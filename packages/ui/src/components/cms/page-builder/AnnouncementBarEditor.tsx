@@ -1,25 +1,25 @@
-import type { PageComponent } from "@acme/types";
+import type { AnnouncementBarComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: AnnouncementBarComponent;
+  onChange: (patch: Partial<AnnouncementBarComponent>) => void;
 }
 
 export default function AnnouncementBarEditor({ component, onChange }: Props) {
-  const handleInput = (field: string, value: string) => {
-    onChange({ [field]: value } as Partial<PageComponent>);
+  const handleInput = (field: keyof AnnouncementBarComponent & string, value: string) => {
+    onChange({ [field]: value } as Partial<AnnouncementBarComponent>);
   };
 
   return (
     <div className="space-y-2">
       <Input
-        value={(component as any).text ?? ""}
+        value={component.text ?? ""}
         onChange={(e) => handleInput("text", e.target.value)}
         placeholder="text"
       />
       <Input
-        value={(component as any).link ?? ""}
+        value={component.link ?? ""}
         onChange={(e) => handleInput("link", e.target.value)}
         placeholder="link"
       />

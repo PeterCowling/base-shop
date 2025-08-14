@@ -1,40 +1,40 @@
-import type { PageComponent } from "@acme/types";
+import type { RecommendationCarouselComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: RecommendationCarouselComponent;
+  onChange: (patch: Partial<RecommendationCarouselComponent>) => void;
 }
 
 export default function RecommendationCarouselEditor({ component, onChange }: Props) {
-  const handleNum = (field: string, value: string) => {
+  const handleNum = (field: keyof RecommendationCarouselComponent & string, value: string) => {
     const num = value ? Number(value) : undefined;
-    onChange({ [field]: isNaN(num!) ? undefined : num } as Partial<PageComponent>);
+    onChange({ [field]: isNaN(num!) ? undefined : num } as Partial<RecommendationCarouselComponent>);
   };
 
   return (
     <div className="space-y-2">
       <Input
         label="Endpoint"
-        value={(component as any).endpoint ?? ""}
-        onChange={(e) => onChange({ endpoint: e.target.value } as Partial<PageComponent>)}
+        value={component.endpoint ?? ""}
+        onChange={(e) => onChange({ endpoint: e.target.value } as Partial<RecommendationCarouselComponent>)}
       />
       <Input
         label="Desktop Items"
         type="number"
-        value={(component as any).desktopItems ?? ""}
+        value={component.desktopItems ?? ""}
         onChange={(e) => handleNum("desktopItems", e.target.value)}
       />
       <Input
         label="Tablet Items"
         type="number"
-        value={(component as any).tabletItems ?? ""}
+        value={component.tabletItems ?? ""}
         onChange={(e) => handleNum("tabletItems", e.target.value)}
       />
       <Input
         label="Mobile Items"
         type="number"
-        value={(component as any).mobileItems ?? ""}
+        value={component.mobileItems ?? ""}
         onChange={(e) => handleNum("mobileItems", e.target.value)}
       />
     </div>

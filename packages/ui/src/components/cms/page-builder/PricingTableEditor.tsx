@@ -1,25 +1,25 @@
 import type { ChangeEvent } from "react";
-import type { PageComponent } from "@acme/types";
+import type { PricingTableComponent } from "@acme/types";
 import { Button, Input, Textarea } from "../../atoms/shadcn";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: PricingTableComponent;
+  onChange: (patch: Partial<PricingTableComponent>) => void;
 }
 
 export default function PricingTableEditor({ component, onChange }: Props) {
-  const plans = ((component as any).plans ?? []) as any[];
-  const min = (component as any).minItems ?? 0;
-  const max = (component as any).maxItems ?? Infinity;
+  const plans = (component.plans ?? []) as any[];
+  const min = component.minItems ?? 0;
+  const max = component.maxItems ?? Infinity;
 
   const update = (idx: number, field: string, value: unknown) => {
     const next = [...plans];
     next[idx] = { ...next[idx], [field]: value };
-    onChange({ plans: next } as Partial<PageComponent>);
+    onChange({ plans: next } as Partial<PricingTableComponent>);
   };
 
   const removePlan = (idx: number) => {
-    onChange({ plans: plans.filter((_, i) => i !== idx) } as Partial<PageComponent>);
+    onChange({ plans: plans.filter((_, i) => i !== idx) } as Partial<PricingTableComponent>);
   };
 
   const addPlan = () => {
@@ -28,7 +28,7 @@ export default function PricingTableEditor({ component, onChange }: Props) {
         ...plans,
         { title: "", price: "", features: [], ctaLabel: "", ctaHref: "" },
       ],
-    } as Partial<PageComponent>);
+    } as Partial<PricingTableComponent>);
   };
 
   return (

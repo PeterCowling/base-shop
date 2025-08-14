@@ -1,4 +1,4 @@
-import type { PageComponent } from "@acme/types";
+import type { PopupModalComponent } from "@acme/types";
 import {
   Input,
   Textarea,
@@ -10,29 +10,29 @@ import {
 } from "../../atoms/shadcn";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: PopupModalComponent;
+  onChange: (patch: Partial<PopupModalComponent>) => void;
 }
 
 export default function PopupModalEditor({ component, onChange }: Props) {
-  const handleInput = (field: string, value: unknown) => {
-    onChange({ [field]: value } as Partial<PageComponent>);
+  const handleInput = (field: keyof PopupModalComponent & string, value: unknown) => {
+    onChange({ [field]: value } as Partial<PopupModalComponent>);
   };
 
   return (
     <div className="space-y-2">
       <Input
-        value={(component as any).width ?? ""}
+        value={component.width ?? ""}
         onChange={(e) => handleInput("width", e.target.value)}
         placeholder="width"
       />
       <Input
-        value={(component as any).height ?? ""}
+        value={component.height ?? ""}
         onChange={(e) => handleInput("height", e.target.value)}
         placeholder="height"
       />
       <Select
-        value={(component as any).trigger ?? ""}
+        value={component.trigger ?? ""}
         onValueChange={(v) => handleInput("trigger", v)}
       >
         <SelectTrigger>
@@ -46,7 +46,7 @@ export default function PopupModalEditor({ component, onChange }: Props) {
       </Select>
       <Input
         type="number"
-        value={(component as any).delay ?? ""}
+        value={component.delay ?? ""}
         onChange={(e) =>
           handleInput(
             "delay",
@@ -56,7 +56,7 @@ export default function PopupModalEditor({ component, onChange }: Props) {
         placeholder="delay (ms)"
       />
       <Textarea
-        value={(component as any).content ?? ""}
+        value={component.content ?? ""}
         onChange={(e) => handleInput("content", e.target.value)}
         placeholder="content"
       />

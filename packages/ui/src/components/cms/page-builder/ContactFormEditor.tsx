@@ -1,25 +1,25 @@
-import type { PageComponent } from "@acme/types";
+import type { ContactFormComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: ContactFormComponent;
+  onChange: (patch: Partial<ContactFormComponent>) => void;
 }
 
 export default function ContactFormEditor({ component, onChange }: Props) {
   const handleInput = (field: string, value: string) => {
-    onChange({ [field]: value } as Partial<PageComponent>);
+    onChange({ [field]: value } as Partial<ContactFormComponent>);
   };
 
   return (
     <div className="space-y-2">
       <Input
-        value={(component as any).action ?? ""}
+        value={component.action ?? ""}
         onChange={(e) => handleInput("action", e.target.value)}
         placeholder="action"
       />
       <Input
-        value={(component as any).method ?? ""}
+        value={component.method ?? ""}
         onChange={(e) => handleInput("method", e.target.value)}
         placeholder="method"
       />

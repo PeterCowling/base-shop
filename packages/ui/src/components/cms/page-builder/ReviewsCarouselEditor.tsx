@@ -1,20 +1,15 @@
-import type { PageComponent } from "@acme/types";
+import type { ReviewsCarouselComponent } from "@acme/types";
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: ReviewsCarouselComponent;
+  onChange: (patch: Partial<ReviewsCarouselComponent>) => void;
 }
 
 export default function ReviewsCarouselEditor({ component, onChange }: Props) {
-  const arrayEditor = useArrayEditor(onChange);
-  return arrayEditor(
-    "reviews",
-    (component as any).reviews,
-    ["nameKey", "quoteKey"],
-    {
-      minItems: (component as any).minItems,
-      maxItems: (component as any).maxItems,
-    }
-  );
+  const arrayEditor = useArrayEditor<ReviewsCarouselComponent>(onChange);
+  return arrayEditor("reviews", component.reviews, ["nameKey", "quoteKey"], {
+    minItems: component.minItems,
+    maxItems: component.maxItems,
+  });
 }

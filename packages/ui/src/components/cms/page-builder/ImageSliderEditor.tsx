@@ -1,37 +1,37 @@
-import type { PageComponent } from "@acme/types";
+import type { ImageSliderComponent } from "@acme/types";
 import { Button, Input } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: ImageSliderComponent;
+  onChange: (patch: Partial<ImageSliderComponent>) => void;
 }
 
 export default function ImageSliderEditor({ component, onChange }: Props) {
-  const slides = ((component as any).slides ?? []) as any[];
-  const min = (component as any).minItems ?? 0;
-  const max = (component as any).maxItems ?? Infinity;
+  const slides = (component.slides ?? []) as any[];
+  const min = component.minItems ?? 0;
+  const max = component.maxItems ?? Infinity;
 
   const update = (idx: number, field: string, value: string) => {
     const next = [...slides];
     next[idx] = { ...next[idx], [field]: value };
-    onChange({ slides: next } as Partial<PageComponent>);
+    onChange({ slides: next } as Partial<ImageSliderComponent>);
   };
 
   const move = (from: number, to: number) => {
     const next = [...slides];
     const [item] = next.splice(from, 1);
     next.splice(to, 0, item);
-    onChange({ slides: next } as Partial<PageComponent>);
+    onChange({ slides: next } as Partial<ImageSliderComponent>);
   };
 
   const remove = (idx: number) => {
     const next = slides.filter((_: unknown, i: number) => i !== idx);
-    onChange({ slides: next } as Partial<PageComponent>);
+    onChange({ slides: next } as Partial<ImageSliderComponent>);
   };
 
   const add = () => {
-    onChange({ slides: [...slides, { src: "", alt: "", caption: "" }] } as Partial<PageComponent>);
+    onChange({ slides: [...slides, { src: "", alt: "", caption: "" }] } as Partial<ImageSliderComponent>);
   };
 
   return (

@@ -1,20 +1,15 @@
-import type { PageComponent } from "@acme/types";
+import type { ValuePropsComponent } from "@acme/types";
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: ValuePropsComponent;
+  onChange: (patch: Partial<ValuePropsComponent>) => void;
 }
 
 export default function ValuePropsEditor({ component, onChange }: Props) {
-  const arrayEditor = useArrayEditor(onChange);
-  return arrayEditor(
-    "items",
-    (component as any).items,
-    ["icon", "title", "desc"],
-    {
-      minItems: (component as any).minItems,
-      maxItems: (component as any).maxItems,
-    }
-  );
+  const arrayEditor = useArrayEditor<ValuePropsComponent>(onChange);
+  return arrayEditor("items", component.items, ["icon", "title", "desc"], {
+    minItems: component.minItems,
+    maxItems: component.maxItems,
+  });
 }

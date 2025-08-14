@@ -48,7 +48,23 @@ if (existsSync(shopConfigPath)) {
   }
 }
 
-const allEnv = { ...env, ...domainVars };
+const settingsPath = join("data", "shops", shopId, "settings.json");
+let workerVars: Record<string, string> = {};
+if (existsSync(settingsPath)) {
+  try {
+    const settings = JSON.parse(readFileSync(settingsPath, "utf8")) as {
+      reverseLogisticsService?: { enabled?: boolean };
+    };
+    if (typeof settings.reverseLogisticsService?.enabled === "boolean") {
+      workerVars.REVERSE_LOGISTICS_ENABLED = String(
+        settings.reverseLogisticsService.enabled,
+      );
+    }
+  } catch {
+    // ignore errors reading settings
+  }
+}
+const allEnv = { ...env, ...domainVars, ...workerVars };
 const envLines = Object.entries(allEnv)
   .map(([k, v]) => `      ${k}: ${v}`)
   .join("\n");

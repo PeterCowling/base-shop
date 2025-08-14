@@ -45,6 +45,20 @@ export const coreEnvBaseSchema = z.object({
     })
     .transform((v) => Number(v))
     .optional(),
+  REVERSE_LOGISTICS_ENABLED: z
+    .string()
+    .refine((v) => v === "true" || v === "false", {
+      message: "must be true or false",
+    })
+    .transform((v) => v === "true")
+    .optional(),
+  REVERSE_LOGISTICS_INTERVAL_MS: z
+    .string()
+    .refine((v) => !Number.isNaN(Number(v)), {
+      message: "must be a number",
+    })
+    .transform((v) => Number(v))
+    .optional(),
   OPENAI_API_KEY: z.string().optional(),
   SESSION_SECRET: z.string().min(1),
   COOKIE_DOMAIN: z.string().optional(),
@@ -65,8 +79,15 @@ export function depositReleaseEnvRefinement(
   ctx: z.RefinementCtx,
 ): void {
   for (const [key, value] of Object.entries(env)) {
-    if (!key.startsWith("DEPOSIT_RELEASE_")) continue;
-    if (key === "DEPOSIT_RELEASE_ENABLED" || key === "DEPOSIT_RELEASE_INTERVAL_MS")
+    const isDeposit = key.startsWith("DEPOSIT_RELEASE_");
+    const isReverse = key.startsWith("REVERSE_LOGISTICS_");
+    if (!isDeposit && !isReverse) continue;
+    if (
+      key === "DEPOSIT_RELEASE_ENABLED" ||
+      key === "DEPOSIT_RELEASE_INTERVAL_MS" ||
+      key === "REVERSE_LOGISTICS_ENABLED" ||
+      key === "REVERSE_LOGISTICS_INTERVAL_MS"
+    )
       continue;
     if (key.includes("ENABLED")) {
       if (value !== "true" && value !== "false") {

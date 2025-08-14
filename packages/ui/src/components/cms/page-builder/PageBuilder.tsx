@@ -13,6 +13,7 @@ import { ulid } from "ulid";
 import type { Page, PageComponent, HistoryState, MediaItem } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
 import { Toast, Spinner } from "../../atoms";
+import { CheckIcon } from "@radix-ui/react-icons";
 import Palette from "./Palette";
 import {
   atomRegistry,
@@ -122,13 +123,22 @@ const PageBuilder = memo(function PageBuilder({
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
   const [dragOver, setDragOver] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
-  const [toast, setToast] = useState<{ open: boolean; message: string }>({
+  const [toast, setToast] = useState<{
+    open: boolean;
+    message: string;
+    retry?: () => void;
+  }>({
     open: false,
     message: "",
   });
   const [showGrid, setShowGrid] = useState(false);
   const [gridSize, setGridSize] = useState(1);
   const [snapPosition, setSnapPosition] = useState<number | null>(null);
+  const [autoSaveState, setAutoSaveState] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >("idle");
+  const saveDebounceRef = useRef<number | null>(null);
+  const initialRender = useRef(true);
 
   const {
     onDrop,
@@ -223,6 +233,42 @@ const PageBuilder = memo(function PageBuilder({
     return fd;
   }, [page, components, state]);
 
+  const handleAutoSave = useCallback(() => {
+    setAutoSaveState("saving");
+    onSave(formData)
+      .then(() => {
+        setAutoSaveState("saved");
+        setTimeout(() => setAutoSaveState("idle"), 1000);
+      })
+      .catch(() => {
+        setAutoSaveState("error");
+        setToast({
+          open: true,
+          message: "Auto-save failed. Click to retry.",
+          retry: () => {
+            setToast((t) => ({ ...t, open: false }));
+            handleAutoSave();
+          },
+        });
+      });
+  }, [onSave, formData]);
+
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+    if (saveDebounceRef.current) {
+      clearTimeout(saveDebounceRef.current);
+    }
+    saveDebounceRef.current = window.setTimeout(handleAutoSave, 1000);
+    return () => {
+      if (saveDebounceRef.current) {
+        clearTimeout(saveDebounceRef.current);
+      }
+    };
+  }, [handleAutoSave, components, state]);
+
   const handlePublish = useCallback(() => {
     return onPublish(formData).then(() => setPublishCount((c) => c + 1));
   }, [onPublish, formData]);
@@ -233,19 +279,31 @@ const PageBuilder = memo(function PageBuilder({
         <Palette />
       </aside>
       <div className="flex flex-1 flex-col gap-4">
-        <PageToolbar
-          viewport={viewport}
-          setViewport={setViewport}
-          locale={locale}
-          setLocale={setLocale}
-          locales={locales}
-        progress={progress}
-        isValid={isValid}
-        showGrid={showGrid}
-        toggleGrid={() => setShowGrid((g) => !g)}
-        gridCols={gridCols}
-        setGridCols={setGridCols}
-      />
+        <div className="flex items-center justify-between">
+          <PageToolbar
+            viewport={viewport}
+            setViewport={setViewport}
+            locale={locale}
+            setLocale={setLocale}
+            locales={locales}
+            progress={progress}
+            isValid={isValid}
+            showGrid={showGrid}
+            toggleGrid={() => setShowGrid((g) => !g)}
+            gridCols={gridCols}
+            setGridCols={setGridCols}
+          />
+          {autoSaveState === "saving" && (
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <Spinner className="h-4 w-4" /> Saving…
+            </div>
+          )}
+          {autoSaveState === "saved" && (
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <CheckIcon className="h-4 w-4 text-green-500" /> Saved
+            </div>
+          )}
+        </div>
         <div aria-live="polite" role="status" className="sr-only">
           {liveMessage}
         </div>
@@ -319,6 +377,7 @@ const PageBuilder = memo(function PageBuilder({
       <Toast
         open={toast.open}
         onClose={() => setToast((t) => ({ ...t, open: false }))}
+        onClick={toast.retry}
         message={toast.message}
       />
     </div>

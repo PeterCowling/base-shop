@@ -11,9 +11,11 @@ export default function StartReturnButton({ sessionId }: Props) {
   const [tracking, setTracking] = useState<string | null>(null);
   const [labelUrl, setLabelUrl] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
+  const [dropOffProvider, setDropOffProvider] = useState<string | null>(null);
 
   useEffect(() => {
     if (!tracking) return;
+    let timer: ReturnType<typeof setInterval>;
     const fetchStatus = async () => {
       try {
         const res = await fetch(`/api/return?tracking=${tracking}`);
@@ -26,6 +28,8 @@ export default function StartReturnButton({ sessionId }: Props) {
       }
     };
     fetchStatus();
+    timer = setInterval(fetchStatus, 5000);
+    return () => clearInterval(timer);
   }, [tracking]);
 
   const handleClick = async () => {
@@ -37,9 +41,12 @@ export default function StartReturnButton({ sessionId }: Props) {
         body: JSON.stringify({ sessionId }),
       });
       const data = await res.json();
-      if (data.trackingNumber) {
-        setTracking(data.trackingNumber);
-        setLabelUrl(data.labelUrl ?? null);
+      if (data.tracking) {
+        setTracking(data.tracking.number);
+        setLabelUrl(data.tracking.labelUrl ?? null);
+      }
+      if (data.dropOffProvider) {
+        setDropOffProvider(data.dropOffProvider);
       }
     } catch {
       // ignore errors
@@ -75,6 +82,9 @@ export default function StartReturnButton({ sessionId }: Props) {
             Download label
           </a>
         </p>
+      )}
+      {dropOffProvider && (
+        <p className="mt-1 text-sm">Drop-off: {dropOffProvider}</p>
       )}
       {tracking && (
         <p className="mt-1 text-sm">Tracking: {tracking}</p>

@@ -31,7 +31,7 @@ export default async function OrdersPage({
   shopId,
   title = "Orders",
   callbackUrl = "/account/orders",
-  returnsEnabled,
+  returnsEnabled = false,
   returnPolicyUrl,
   trackingEnabled = true,
   trackingProviders = [],

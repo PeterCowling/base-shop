@@ -6,6 +6,9 @@
   "themeOverrides": {},
   "filterMappings": {},
   "shippingProviders": ["ups", "premier-shipping"],
+  "returnsEnabled": true,
+  "returnPolicyUrl": "https://example.com/returns",
+  "returnService": { "upsEnabled": true, "bagEnabled": false, "homePickupEnabled": false },
   "showCleaningTransparency": true,
   "coverageIncluded": true,
   "premierDelivery": {

@@ -123,6 +123,27 @@ export function parseDepositForm(formData: FormData): {
   return { data: parsed.data };
 }
 
+const stockAlertSchema = z
+  .object({
+    recipients: z.string().optional(),
+    webhook: z.string().url().optional().or(z.literal("")),
+    threshold: z.coerce.number().int().nonnegative().optional(),
+  })
+  .strict();
+
+export function parseStockAlertForm(formData: FormData): {
+  data?: z.infer<typeof stockAlertSchema>;
+  errors?: Record<string, string[]>;
+} {
+  const parsed = stockAlertSchema.safeParse(
+    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+  );
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+  return { data: parsed.data };
+}
+
 const returnsSchema = z
   .object({ enabled: z.preprocess((v) => v === "on", z.boolean()) })
   .strict();
@@ -198,6 +219,7 @@ export type SeoForm = z.infer<typeof seoSchema> & { locale: Locale; };
 export type GenerateSeoForm = z.infer<typeof generateSchema>;
 export type CurrencyTaxForm = z.infer<typeof currencyTaxSchema>;
 export type DepositForm = z.infer<typeof depositSchema>;
+export type StockAlertForm = z.infer<typeof stockAlertSchema>;
 export type UpsReturnsForm = z.infer<typeof returnsSchema>;
 export type PremierDeliveryForm = z.infer<typeof premierDeliverySchema>;
 export type AiCatalogForm = z.infer<typeof aiCatalogFormSchema>;

@@ -89,6 +89,14 @@ export default async function SettingsPage({
           Return service settings
         </Link>
       </p>
+      <p className="mb-4 text-sm">
+        <Link
+          href={`/cms/shop/${shop}/settings/stock-alerts`}
+          className="text-primary underline"
+        >
+          Stock alert settings
+        </Link>
+      </p>
       <h3 className="mt-4 font-medium">Languages</h3>
       <ul className="mt-2 list-disc pl-5 text-sm">
         {settings.languages.map((l: Locale) => (

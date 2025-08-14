@@ -55,6 +55,14 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    stockAlert: z
+      .object({
+        recipients: z.array(z.string()).default([]),
+        webhook: z.string().url().optional(),
+        threshold: z.number().int().nonnegative().default(0),
+      })
+      .strict()
+      .optional(),
     premierDelivery: z
       .object({
         regions: z.array(z.string()),

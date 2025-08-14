@@ -66,6 +66,11 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
           upsEnabled: false,
           ...(parsed.data.returnService ?? {}),
         },
+        stockAlert: {
+          recipients: [],
+          threshold: 0,
+          ...(parsed.data.stockAlert ?? {}),
+        },
         premierDelivery: parsed.data.premierDelivery,
         seo: {
           ...(parsed.data.seo ?? {}),
@@ -96,6 +101,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     taxRegion: "",
     depositService: { enabled: false, intervalMinutes: 60 },
     returnService: { upsEnabled: false },
+    stockAlert: { recipients: [], webhook: undefined, threshold: 0 },
     premierDelivery: undefined,
     luxuryFeatures: {
       contentMerchandising: false,

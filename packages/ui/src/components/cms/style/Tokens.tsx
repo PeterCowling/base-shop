@@ -80,6 +80,16 @@ export default function Tokens({
         pairKey = `--color-fg${k.slice("--color-bg".length)}`;
       } else if (k.startsWith("--color-fg")) {
         pairKey = `--color-bg${k.slice("--color-fg".length)}`;
+      } else if (k.endsWith("-fg")) {
+        pairKey = k.slice(0, -3);
+      } else {
+        const candidate = `${k}-fg`;
+        if (
+          tokens[candidate as keyof TokenMap] !== undefined ||
+          baseTokens[candidate as keyof TokenMap] !== undefined
+        ) {
+          pairKey = candidate;
+        }
       }
       const pairVal = pairKey
         ? tokens[pairKey as keyof TokenMap] ?? baseTokens[pairKey as keyof TokenMap]

@@ -42,7 +42,7 @@ export async function addOrder(
   await prisma.rentalOrder.create({ data: order });
   await trackOrder(shop, order.id, deposit);
   if (customerId) {
-    const month = new Date().toISOString().slice(0, 7);
+    const month = nowIso().slice(0, 7);
     const record = await prisma.shop.findUnique({
       select: { data: true },
       where: { id: shop },

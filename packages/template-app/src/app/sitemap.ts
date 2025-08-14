@@ -2,11 +2,12 @@ import type { MetadataRoute } from "next";
 import { getShopSettings } from "@platform-core/src/repositories/settings.server";
 import { readRepo } from "@platform-core/src/repositories/products.server";
 import { coreEnv } from "@acme/config/env/core";
+import { nowIso } from "@acme/date-utils";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = coreEnv.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "shop";
-  const now = new Date().toISOString();
+  const now = nowIso();
 
   const [settings, products] = await Promise.all([
     getShopSettings(shop),

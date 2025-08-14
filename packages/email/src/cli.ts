@@ -5,6 +5,7 @@ import * as fsSync from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { sendScheduledCampaigns } from "../../../functions/marketing-email-sender.ts";
+import { nowIso } from "@acme/date-utils";
 
 interface Campaign {
   id: string;
@@ -60,7 +61,7 @@ campaign
   .requiredOption("--body <html>", "HTML body")
   .option("--recipients <emails>", "Comma separated recipient emails")
   .option("--segment <segment>", "Recipient segment name")
-  .option("--send-at <date>", "ISO send time", () => new Date().toISOString())
+  .option("--send-at <date>", "ISO send time", () => nowIso())
   .action(async (shop, options) => {
     const campaigns = await readCampaigns(shop);
     const recipients = options.recipients

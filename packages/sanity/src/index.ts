@@ -3,6 +3,7 @@ import { createClient } from "@sanity/client";
 import { getSanityConfig } from "@platform-core/shops";
 import { getShopById } from "@platform-core/repositories/shop.server";
 import type { SanityBlogConfig } from "@acme/types";
+import { nowIso } from "@acme/date-utils";
 
 export interface ProductBlock {
   _type: "productReference";
@@ -73,7 +74,7 @@ export async function publishQueuedPost(shopId: string): Promise<void> {
     if (!next?._id) return;
     await client
       .patch(next._id)
-      .set({ published: true, publishedAt: new Date().toISOString() })
+      .set({ published: true, publishedAt: nowIso() })
       .commit();
   } catch {
     // swallow errors; scheduled job will handle logging

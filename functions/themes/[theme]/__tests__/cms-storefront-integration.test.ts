@@ -5,6 +5,7 @@ import os from "node:os";
 import path from "node:path";
 
 import type { Page } from "@acme/types";
+import { nowIso } from "@acme/date-utils";
 
 if (typeof (Response as any).json !== "function") {
   (Response as any).json = (data: unknown, init?: ResponseInit) =>
@@ -54,7 +55,7 @@ describe("CMS → storefront flow", () => {
 
   test("published page is returned via preview route", async () => {
     await withRepo(async (repo) => {
-      const now = new Date().toISOString();
+      const now = nowIso();
       const page: Page = {
         id: "p1",
         slug: "home",

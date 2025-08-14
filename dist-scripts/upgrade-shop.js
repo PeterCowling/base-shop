@@ -1,6 +1,7 @@
 import { cpSync, existsSync, mkdirSync, readdirSync, unlinkSync, renameSync, readFileSync, writeFileSync } from "node:fs";
 import * as path from "node:path";
 import { randomBytes } from "node:crypto";
+import { nowIso } from "@acme/date-utils";
 const args = process.argv.slice(2);
 const rollback = args.includes("--rollback");
 const slug = args.find((a) => !a.startsWith("--"));
@@ -33,7 +34,7 @@ copyTemplate(templateDir, appDir);
 if (existsSync(shopJsonPath)) {
     cpSync(shopJsonPath, shopJsonPath + ".bak");
     const data = JSON.parse(readFileSync(shopJsonPath, "utf8"));
-    data.lastUpgrade = new Date().toISOString();
+    data.lastUpgrade = nowIso();
     const pkgPath = path.join(appDir, "package.json");
     data.componentVersions = existsSync(pkgPath)
         ? JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {}

@@ -19,6 +19,7 @@ import {
   getRemainingSwaps,
   incrementSwapCount,
 } from "@platform-core/src/repositories/subscriptionUsage.server";
+import { nowIso } from "@acme/date-utils";
 
 export default async function SwapPage() {
   const cookieStore = await cookies();
@@ -34,7 +35,7 @@ export default async function SwapPage() {
   const selectedPlan = planId
     ? shop.rentalSubscriptions.find((p) => p.id === planId)
     : undefined;
-  const month = new Date().toISOString().slice(0, 7);
+  const month = nowIso().slice(0, 7);
   const remainingSwaps =
     session?.customerId && selectedPlan
       ? await getRemainingSwaps(
@@ -61,7 +62,7 @@ export default async function SwapPage() {
     const selectedPlan = planId
       ? shop.rentalSubscriptions.find((p) => p.id === planId)
       : undefined;
-    const month = new Date().toISOString().slice(0, 7);
+    const month = nowIso().slice(0, 7);
     if (!selectedPlan) return;
     const remaining = await getRemainingSwaps(
       shopId,

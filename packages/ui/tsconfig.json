@@ -35,7 +35,9 @@
   "include": ["src/**/*"], // ONLY stuff inside src/
   "exclude": [
     "dist", // freshly emitted output
-    "__tests__", // unit/integration tests
+    "**/__tests__/**", // unit/integration tests
+    "**/*.test.*", // test files
+    "**/*.spec.*", // spec files
     ".turbo", // turbo cache
     "node_modules" // package deps (if any local)
   ]

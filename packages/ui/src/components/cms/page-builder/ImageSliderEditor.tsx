@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function ImageSliderEditor({ component, onChange }: Props) {
-  const slides = (component.slides ?? []) as any[];
+  const slides: NonNullable<ImageSliderComponent["slides"]> = component.slides ?? [];
   const min = component.minItems ?? 0;
   const max = component.maxItems ?? Infinity;
 

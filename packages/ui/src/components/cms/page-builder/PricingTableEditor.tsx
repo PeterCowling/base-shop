@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function PricingTableEditor({ component, onChange }: Props) {
-  const plans = (component.plans ?? []) as any[];
+  const plans: NonNullable<PricingTableComponent["plans"]> = component.plans ?? [];
   const min = component.minItems ?? 0;
   const max = component.maxItems ?? Infinity;
 

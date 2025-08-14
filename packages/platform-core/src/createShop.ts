@@ -157,8 +157,9 @@ export type { CreateShopOptions, PreparedCreateShopOptions };
 export type { DeployStatusBase, DeployShopResult } from "./createShop/deployTypes";
 export {
   ensureTemplateExists,
-  writeFiles,
   copyTemplate,
+  readFile,
+  writeFile,
 } from "./createShop/fsUtils";
 export { loadTokens, loadBaseTokens } from "./createShop/themeUtils";
 export { syncTheme };

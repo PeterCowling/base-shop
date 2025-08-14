@@ -62,6 +62,12 @@ describe("/api/rental", () => {
       __esModule: true,
       readRepo: readProducts,
     }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest
+        .fn()
+        .mockResolvedValue({ rentalInventoryAllocation: true, coverageIncluded: true }),
+    }));
 
     const { POST } = await import("../src/api/rental/route");
     const res = await POST({
@@ -109,6 +115,12 @@ describe("/api/rental", () => {
       markReturned,
       markRefunded: jest.fn(),
     }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest
+        .fn()
+        .mockResolvedValue({ rentalInventoryAllocation: true, coverageIncluded: true }),
+    }));
     jest.doMock("@platform-core/pricing", () => ({
       computeDamageFee,
     }));
@@ -119,14 +131,9 @@ describe("/api/rental", () => {
     } as any);
     expect(markReturned).toHaveBeenCalledWith("bcd", "sess");
     expect(markReturned).toHaveBeenCalledWith("bcd", "sess", 30);
-    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 100);
-    expect(retrieve).toHaveBeenCalledWith("sess", {
-      expand: ["payment_intent"],
-    });
-    expect(refundCreate).toHaveBeenCalledWith({
-      payment_intent: "pi_1",
-      amount: 70 * 100,
-    });
+    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 100, []);
+    expect(retrieve).toHaveBeenCalledWith("sess");
+    expect(refundCreate).not.toHaveBeenCalled();
     expect(res.status).toBe(200);
   });
 
@@ -139,6 +146,12 @@ describe("/api/rental", () => {
       addOrder: jest.fn(),
       markReturned,
       markRefunded: jest.fn(),
+    }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest
+        .fn()
+        .mockResolvedValue({ rentalInventoryAllocation: true, coverageIncluded: true }),
     }));
     jest.doMock(
       "@acme/stripe",
@@ -174,6 +187,7 @@ describe("/api/rental", () => {
       .mockResolvedValue({ payment_intent: "pi" });
     const refundCreate = jest.fn();
     const computeDamageFee = jest.fn(async () => 25);
+    const paymentIntentCreate = jest.fn().mockResolvedValue({ client_secret: null });
 
     jest.doMock(
       "@acme/stripe",
@@ -182,6 +196,7 @@ describe("/api/rental", () => {
         stripe: {
           checkout: { sessions: { retrieve } },
           refunds: { create: refundCreate },
+          paymentIntents: { create: paymentIntentCreate },
         },
       }),
       { virtual: true }
@@ -200,6 +215,7 @@ describe("/api/rental", () => {
     const res = await PATCH({
       json: async () => ({ sessionId: "sess", damage: "mild" }),
     } as any);
+    expect(paymentIntentCreate).toHaveBeenCalled();
     expect(refundCreate).not.toHaveBeenCalled();
     expect(res.status).toBe(200);
   });

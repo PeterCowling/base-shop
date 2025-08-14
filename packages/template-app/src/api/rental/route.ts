@@ -69,7 +69,9 @@ export async function PATCH(req: NextRequest) {
   }
 
   const session = await stripe.checkout.sessions.retrieve(sessionId);
-  const coverageCodes = session.metadata?.coverage?.split(",").filter(Boolean) ?? [];
+  const coverageCodes = shop.coverageIncluded
+    ? session.metadata?.coverage?.split(",").filter(Boolean) ?? []
+    : [];
   const damageFee = await computeDamageFee(
     damage,
     order.deposit,

@@ -5,6 +5,7 @@ import {
   markRefunded,
   markReturned,
 } from "@platform-core/repositories/rentalOrders.server";
+import { readShop } from "@platform-core/repositories/shops.server";
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -30,6 +31,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
+  const shop = await readShop("bcd");
   const session = await stripe.checkout.sessions.retrieve(sessionId, {
     expand: ["payment_intent"],
   });
@@ -43,7 +45,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, message: "No deposit found" });
   }
 
-  const damageFee = await computeDamageFee(damage, deposit);
+  const coverageCodes = shop.coverageIncluded
+    ? session.metadata?.coverage?.split(",").filter(Boolean) ?? []
+    : [];
+  const damageFee = await computeDamageFee(damage, deposit, coverageCodes);
   if (damageFee) {
     await markReturned("bcd", sessionId, damageFee);
   }

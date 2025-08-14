@@ -66,7 +66,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, message: "No deposit found" });
     }
 
-    const damageFee = await computeDamageFee(damage, deposit);
+    const coverageCodes = shop.coverageIncluded
+      ? session.metadata?.coverage?.split(",").filter(Boolean) ?? []
+      : [];
+    const damageFee = await computeDamageFee(damage, deposit, coverageCodes);
     if (damageFee) {
       await markReturned(SHOP_ID, sessionId, damageFee);
     }

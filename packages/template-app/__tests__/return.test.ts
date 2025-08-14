@@ -47,6 +47,10 @@ describe("/api/return", () => {
       markRefunded: jest.fn(),
       addOrder: jest.fn(),
     }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest.fn().mockResolvedValue({ returnsEnabled: true, coverageIncluded: true }),
+    }));
     jest.doMock("@platform-core/pricing", () => ({
       computeDamageFee,
     }));
@@ -55,7 +59,7 @@ describe("/api/return", () => {
     const res = await POST({
       json: async () => ({ sessionId: "sess", damage: "scratch" }),
     } as unknown as NextRequest);
-    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 50);
+    expect(computeDamageFee).toHaveBeenCalledWith("scratch", 50, []);
     expect(refundCreate).toHaveBeenCalledWith({
       payment_intent: "pi_1",
       amount: 30 * 100,
@@ -87,6 +91,10 @@ describe("/api/return", () => {
         .mockResolvedValue({} as RentalOrder),
       markRefunded: jest.fn(),
       addOrder: jest.fn(),
+    }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest.fn().mockResolvedValue({ returnsEnabled: true, coverageIncluded: true }),
     }));
     jest.doMock("@platform-core/pricing", () => ({
       computeDamageFee: jest.fn(),

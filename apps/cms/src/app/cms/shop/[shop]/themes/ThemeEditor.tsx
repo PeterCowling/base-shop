@@ -13,7 +13,6 @@ import {
   useEffect,
   type CSSProperties,
 } from "react";
-import { type TokenMap } from "../../../wizard/tokenUtils";
 import {
   hslToHex,
   isHex,
@@ -21,7 +20,7 @@ import {
 } from "@ui/utils/colorUtils";
 import { useThemePresets } from "./useThemePresets";
 import ColorInput from "./ColorInput";
-import PreviewPane from "./PreviewPane";
+import WizardPreview from "../../../wizard/WizardPreview";
 
 interface Props {
   shop: string;
@@ -117,18 +116,15 @@ export default function ThemeEditor({
     });
   };
 
-  const handleStyleChange = (next: TokenMap) => {
-    const baseTokens = tokensByThemeState[theme] as TokenMap;
-    const overridesCopy: TokenMap = { ...next };
-    for (const key of Object.keys(overridesCopy)) {
-      if (
-        overridesCopy[key as keyof TokenMap] ===
-        baseTokens[key as keyof TokenMap]
-      ) {
-        delete overridesCopy[key as keyof TokenMap];
-      }
+  const handleTokenSelect = (token: string) => {
+    const input = overrideRefs.current[token];
+    if (!input) return;
+    input.scrollIntoView({ behavior: "smooth", block: "center" });
+    input.focus();
+    (input as any).showPicker?.();
+    if (!(input as any).showPicker) {
+      input.click();
     }
-    setOverrides(overridesCopy);
   };
 
   const previewStyle = useMemo(
@@ -245,11 +241,10 @@ export default function ThemeEditor({
           </ul>
         </div>
       )}
-      <PreviewPane
+      <WizardPreview
         style={previewStyle}
-        tokens={overrides as TokenMap}
-        baseTokens={tokensByThemeState[theme] as TokenMap}
-        onChange={handleStyleChange}
+        inspectMode
+        onTokenSelect={handleTokenSelect}
       />
       <div className="space-y-6">
         {Object.entries(groupedTokens).map(([groupName, tokens]) => (
@@ -273,18 +268,7 @@ export default function ThemeEditor({
                       title={k}
                       className="h-6 w-6 rounded border"
                       style={{ background: colorValue }}
-                      onClick={() => {
-                        const input = overrideRefs.current[k];
-                        input?.scrollIntoView?.({
-                          behavior: "smooth",
-                          block: "center",
-                        });
-                        input?.focus();
-                        (input as any)?.showPicker?.();
-                        if (!(input as any)?.showPicker) {
-                          input?.click?.();
-                        }
-                      }}
+                      onClick={() => handleTokenSelect(k)}
                     />
                   );
                 })}

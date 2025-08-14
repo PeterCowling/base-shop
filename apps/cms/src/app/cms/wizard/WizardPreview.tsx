@@ -113,6 +113,8 @@ export default function WizardPreview({
     e.preventDefault();
     e.stopPropagation();
     setHighlight(el as HTMLElement);
+    const token = el.getAttribute("data-token");
+    if (token) onTokenSelect?.(token);
     if (clickTimeoutRef.current) {
       clearTimeout(clickTimeoutRef.current);
     }
@@ -120,8 +122,6 @@ export default function WizardPreview({
       clickTimeoutRef.current = null;
       setHighlight(null);
     }, 1000);
-    const token = el.getAttribute("data-token");
-    if (token) onTokenSelect?.(token);
   };
 
   const handleLeave = () => {

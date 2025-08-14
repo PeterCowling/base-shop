@@ -158,9 +158,10 @@ const CanvasItem = memo(function CanvasItem({
         ...(component.left ? { left: component.left } : {}),
       }}
       className={
-        "relative rounded border" +
+        "relative rounded border hover:border-dashed hover:border-primary" +
         (selected ? " ring-2 ring-blue-500" : "") +
-        (snapping ? " border-primary" : "")
+        (snapping ? " border-primary" : "") +
+        ((isOver || isDragging) ? " border-dashed border-primary" : "")
       }
     >
       <div
@@ -239,8 +240,8 @@ const CanvasItem = memo(function CanvasItem({
           >
             {isOver && (
               <div
-                data-testid="drop-placeholder"
-                className="h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10"
+                data-placeholder
+                className="h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10 ring-2 ring-primary"
               />
             )}
             {(component as any).children.map(

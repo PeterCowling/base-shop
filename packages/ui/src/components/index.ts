@@ -7,3 +7,4 @@ export * from "./templates";
 export { default as DynamicRenderer } from "./DynamicRenderer";
 export { default as ThemeToggle } from "./ThemeToggle";
 export * from "./overlays";
+export { default as DeviceSelector } from "./DeviceSelector";

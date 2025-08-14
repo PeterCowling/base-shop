@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { exampleProps } from "./example-props";
 import { z } from "zod";
 import {
   type UpgradeComponent,
   upgradeComponentSchema,
 } from "@acme/types/upgrade";
+import DeviceSelector from "@ui/components/DeviceSelector";
+import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 
 class PreviewErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -41,6 +43,10 @@ function ComponentPreview({ component }: { component: UpgradeComponent }) {
   const [NewComp, setNewComp] = useState<React.ComponentType | null>(null);
   const [OldComp, setOldComp] = useState<React.ComponentType | null>(null);
   const [showCompare, setShowCompare] = useState(false);
+  const [deviceId, setDeviceId] = useState(devicePresets[0].id);
+  const device = useMemo<DevicePreset>(() => {
+    return devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
+  }, [deviceId]);
 
   useEffect(() => {
     const basePath = `@ui/components/${component.file.replace(/\.[jt]sx?$/, "")}`;
@@ -80,15 +86,22 @@ function ComponentPreview({ component }: { component: UpgradeComponent }) {
           </button>
         )}
       </div>
+      <DeviceSelector deviceId={deviceId} setDeviceId={setDeviceId} />
       <PreviewErrorBoundary>
         {showCompare && OldComp ? (
           <div className="grid grid-cols-2 gap-4">
-            <div>{NewComp ? <NewComp {...props} /> : null}</div>
-            <div>{OldComp ? <OldComp {...props} /> : null}</div>
+            <div style={{ width: device.width, height: device.height }}>
+              {NewComp ? <NewComp {...props} /> : null}
+            </div>
+            <div style={{ width: device.width, height: device.height }}>
+              {OldComp ? <OldComp {...props} /> : null}
+            </div>
           </div>
-        ) : NewComp ? (
-          <NewComp {...props} />
-        ) : null}
+        ) : (
+          <div style={{ width: device.width, height: device.height }}>
+            {NewComp ? <NewComp {...props} /> : null}
+          </div>
+        )}
       </PreviewErrorBoundary>
     </div>
   );

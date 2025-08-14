@@ -1,12 +1,112 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { exampleProps } from "./example-props";
+import DeviceSelector from "@ui/components/DeviceSelector";
+import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 
 interface UpgradeComponent {
   file: string;
   componentName: string;
   oldChecksum: string;
   newChecksum: string;
+}
+
+class PreviewErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.error("Component preview failed", error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="rounded border p-4 text-red-500">
+          Failed to render preview
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+function ComponentPreview({ component }: { component: UpgradeComponent }) {
+  const [NewComp, setNewComp] = useState<React.ComponentType | null>(null);
+  const [OldComp, setOldComp] = useState<React.ComponentType | null>(null);
+  const [showCompare, setShowCompare] = useState(false);
+  const [deviceId, setDeviceId] = useState(devicePresets[0].id);
+  const device = useMemo<DevicePreset>(() => {
+    return devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
+  }, [deviceId]);
+
+  useEffect(() => {
+    const basePath = `@ui/components/${component.file.replace(/\.[jt]sx?$/, "")}`;
+    const load = async (p: string) => {
+      if (
+        typeof globalThis !== "undefined" &&
+        (globalThis as any).__UPGRADE_MOCKS__?.[p]
+      ) {
+        return (globalThis as any).__UPGRADE_MOCKS__[p];
+      }
+      return import(p);
+    };
+
+    load(basePath)
+      .then((m) => setNewComp(() => (m[component.componentName] ?? m.default)))
+      .catch((err) =>
+        console.error("Failed to load component", component.componentName, err),
+      );
+    load(`${basePath}.bak`)
+      .then((m) => setOldComp(() => (m[component.componentName] ?? m.default)))
+      .catch(() => {});
+  }, [component]);
+
+  const props = exampleProps[component.componentName] ?? {};
+
+  return (
+    <div className="space-y-2 rounded border p-4">
+      <div className="flex items-center justify-between">
+        <h3>{component.componentName}</h3>
+        {OldComp && (
+          <button
+            type="button"
+            className="rounded border px-2 py-1"
+            onClick={() => setShowCompare((s) => !s)}
+          >
+            {showCompare ? "Hide comparison" : "Compare"}
+          </button>
+        )}
+      </div>
+      <DeviceSelector deviceId={deviceId} setDeviceId={setDeviceId} />
+      <PreviewErrorBoundary>
+        {showCompare && OldComp ? (
+          <div className="grid grid-cols-2 gap-4">
+            <div style={{ width: device.width, height: device.height }}>
+              {NewComp ? <NewComp {...props} /> : null}
+            </div>
+            <div style={{ width: device.width, height: device.height }}>
+              {OldComp ? <OldComp {...props} /> : null}
+            </div>
+          </div>
+        ) : (
+          <div style={{ width: device.width, height: device.height }}>
+            {NewComp ? <NewComp {...props} /> : null}
+          </div>
+        )}
+      </PreviewErrorBoundary>
+    </div>
+  );
 }
 
 export default function UpgradePreviewPage() {
@@ -69,9 +169,11 @@ export default function UpgradePreviewPage() {
 
   return (
     <div className="space-y-8">
-      <ul className="list-disc pl-4">
+      <ul className="space-y-4">
         {changes.map((c) => (
-          <li key={c.file}>{c.componentName}</li>
+          <li key={c.file}>
+            <ComponentPreview component={c} />
+          </li>
         ))}
       </ul>
       {links.length > 0 && (
@@ -98,3 +200,4 @@ export default function UpgradePreviewPage() {
     </div>
   );
 }
+

@@ -38,19 +38,13 @@ export async function POST(req: Request) {
     );
   }
 
-  const raId = `RA${Date.now().toString(36).toUpperCase()}`;
-  await createReturnAuthorization({
-    raId,
-    orderId,
-    status: "pending",
-    inspectionNotes: "",
-  });
+  const ra = await createReturnAuthorization({ orderId });
 
   await sendEmail(
     email,
-    `Return Authorization ${raId}`,
-    `Your return request for order ${orderId} has been received. Your RA number is ${raId}.`,
+    `Return Authorization ${ra.raId}`,
+    `Your return request for order ${orderId} has been received. Your RA number is ${ra.raId}.`,
   );
 
-  return NextResponse.json({ ok: true, raId });
+  return NextResponse.json({ ok: true, raId: ra.raId });
 }

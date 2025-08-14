@@ -82,7 +82,7 @@ export default function GeneralSettings({
           <label className="flex items-center gap-2">
             <Checkbox
               name="raTicketing"
-              checked={info.luxuryFeatures.raTicketing}
+              checked={info.luxuryFeatures.raTicketing ?? false}
               onCheckedChange={(v) =>
                 setInfo((prev) => ({
                   ...prev,

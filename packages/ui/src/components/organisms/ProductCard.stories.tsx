@@ -1,12 +1,20 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { ProductBadge } from "../atoms/ProductBadge";
-import { ProductCard, type Product } from "./ProductCard";
+import { ProductCard } from "./ProductCard";
+import type { SKU } from "@acme/types";
 
-const product: Product = {
+const product: SKU = {
   id: "1",
+  slug: "sample-product",
   title: "Sample Product",
-  image: "https://placehold.co/300x300",
   price: 29,
+  deposit: 0,
+  stock: 0,
+  forSale: true,
+  forRental: false,
+  media: [{ url: "https://placehold.co/300x300", type: "image" }],
+  sizes: [],
+  description: "",
 };
 
 const meta: Meta<typeof ProductCard> = {

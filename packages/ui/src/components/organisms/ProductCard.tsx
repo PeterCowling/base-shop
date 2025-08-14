@@ -1,21 +1,14 @@
 import Image from "next/image";
 import * as React from "react";
-import type { MediaItem } from "@acme/types";
+import type { SKU } from "@acme/types";
 import { boxProps } from "../../utils/style";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 
-export interface Product {
-  id: string;
-  title: string;
-  media: MediaItem[];
-  price: number;
-}
-
 export interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
-  product: Product;
-  onAddToCart?: (product: Product) => void;
+  product: SKU;
+  onAddToCart?: (product: SKU) => void;
   showImage?: boolean;
   showPrice?: boolean;
   ctaLabel?: string;

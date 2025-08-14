@@ -5,7 +5,6 @@ import {
 import { PRODUCTS } from "@platform-core/src/products";
 import type { SKU } from "@acme/types";
 import { useEffect, useState } from "react";
-import { Product } from "../../organisms/ProductCard";
 import { fetchCollection } from "./products/fetchCollection";
 
 export interface CmsProductCarouselProps
@@ -15,13 +14,7 @@ export interface CmsProductCarouselProps
 }
 
 export function getRuntimeProps() {
-  const products: Product[] = PRODUCTS.map(({ id, title, image, price }) => ({
-    id,
-    title,
-    image,
-    price,
-  }));
-  return { products };
+  return { products: PRODUCTS as SKU[] };
 }
 
 export default function CmsProductCarousel({
@@ -34,31 +27,16 @@ export default function CmsProductCarousel({
   mobileItems,
   ...rest
 }: CmsProductCarouselProps) {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<SKU[]>([]);
 
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
       if (collectionId) {
         const fetched = await fetchCollection(collectionId);
-        if (!cancelled)
-          setProducts(
-            fetched.map(({ id, title, image, price }) => ({
-              id,
-              title,
-              image,
-              price,
-            }))
-          );
+        if (!cancelled) setProducts(fetched);
       } else if (skus) {
-        setProducts(
-          skus.map(({ id, title, image, price }) => ({
-            id,
-            title,
-            image,
-            price,
-          }))
-        );
+        setProducts(skus);
       } else {
         setProducts([]);
       }

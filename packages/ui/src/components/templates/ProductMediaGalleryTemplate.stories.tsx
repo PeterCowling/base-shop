@@ -1,18 +1,26 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { ProductMediaGalleryTemplate } from "./ProductMediaGalleryTemplate";
+import type { SKU } from "@acme/types";
 
 const meta: Meta<typeof ProductMediaGalleryTemplate> = {
   component: ProductMediaGalleryTemplate,
   args: {
     product: {
       id: "1",
+      slug: "media-product",
       title: "Media Product",
       price: 49,
+      deposit: 0,
+      stock: 0,
+      forSale: true,
+      forRental: false,
       media: [
-        { type: "image", src: "/placeholder.svg" },
-        { type: "image", src: "/placeholder.svg" },
+        { type: "image", url: "/placeholder.svg" },
+        { type: "image", url: "/placeholder.svg" },
       ],
-    },
+      sizes: [],
+      description: "",
+    } as SKU,
     ctaLabel: "Add to cart",
   },
   argTypes: {

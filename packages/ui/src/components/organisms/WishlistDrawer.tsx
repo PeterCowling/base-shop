@@ -9,13 +9,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../atoms/shadcn";
-import { Product } from "./ProductCard";
+import type { SKU } from "@acme/types";
 
 export interface WishlistDrawerProps {
   /** Button or element that toggles the drawer */
   trigger: React.ReactNode;
   /** Products marked as favourites */
-  items: Product[];
+  items: SKU[];
   /**
    * Optional width for the drawer.
    * Can be a Tailwind width class or numeric pixel value.

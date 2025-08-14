@@ -1,20 +1,34 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import FilterBar from "@platform-core/src/components/shop/FilterBar";
-import type { Product } from "../organisms/ProductCard";
+import type { SKU } from "@acme/types";
 import { SearchResultsTemplate } from "./SearchResultsTemplate";
 
-const results: Product[] = [
+const results: SKU[] = [
   {
     id: "1",
+    slug: "product-1",
     title: "Product 1",
-    media: [{ url: "https://placehold.co/300", type: "image" }],
     price: 1000,
+    deposit: 0,
+    stock: 0,
+    forSale: true,
+    forRental: false,
+    media: [{ url: "https://placehold.co/300", type: "image" }],
+    sizes: [],
+    description: "",
   },
   {
     id: "2",
+    slug: "product-2",
     title: "Product 2",
-    media: [{ url: "https://placehold.co/300", type: "image" }],
     price: 1500,
+    deposit: 0,
+    stock: 0,
+    forSale: true,
+    forRental: false,
+    media: [{ url: "https://placehold.co/300", type: "image" }],
+    sizes: [],
+    description: "",
   },
 ];
 

@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { ProductCard, type Product } from "../ProductCard";
+import { ProductCard } from "../ProductCard";
+import type { SKU } from "@acme/types";
 import "../../../../../../test/resetNextMocks";
 
 jest.mock("@platform-core/src/contexts/CurrencyContext", () => ({
@@ -7,11 +8,18 @@ jest.mock("@platform-core/src/contexts/CurrencyContext", () => ({
 }));
 
 describe("ProductCard", () => {
-  const product: Product = {
+  const product: SKU = {
     id: "1",
+    slug: "test-product",
     title: "Test Product",
-    image: "/img.jpg",
     price: 9.99,
+    deposit: 0,
+    stock: 0,
+    forSale: true,
+    forRental: false,
+    media: [{ url: "/img.jpg", type: "image" }],
+    sizes: [],
+    description: "",
   };
 
   it("renders product info and handles add to cart", () => {

@@ -1,13 +1,20 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import * as React from "react";
-import type { Product } from "./ProductCard";
 import { StickyAddToCartBar } from "./StickyAddToCartBar";
+import type { SKU } from "@acme/types";
 
-const product: Product = {
+const product: SKU = {
   id: "1",
+  slug: "sample-product",
   title: "Sample Product",
-  image: "https://placehold.co/300x300",
   price: 30,
+  deposit: 0,
+  stock: 0,
+  forSale: true,
+  forRental: false,
+  media: [{ url: "https://placehold.co/300x300", type: "image" }],
+  sizes: [],
+  description: "",
 };
 
 function ScrollWrapper(args: React.ComponentProps<typeof StickyAddToCartBar>) {

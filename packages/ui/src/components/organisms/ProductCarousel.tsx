@@ -2,11 +2,12 @@ import * as React from "react";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { ProductQuickView } from "../overlays/ProductQuickView";
-import { Product, ProductCard } from "./ProductCard";
+import type { SKU } from "@acme/types";
+import { ProductCard } from "./ProductCard";
 
 export interface ProductCarouselProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  products: Product[];
+  products: SKU[];
   /** Minimum number of items to show at once */
   minItems?: number;
   /** Maximum number of items to show at once */
@@ -28,7 +29,7 @@ export interface ProductCarouselProps
   className?: string;
   /** Show quick view trigger for each item */
   enableQuickView?: boolean;
-  onAddToCart?: (product: Product) => void;
+  onAddToCart?: (product: SKU) => void;
 }
 
 /**
@@ -54,7 +55,7 @@ export function ProductCarousel({
   const [itemsPerSlide, setItemsPerSlide] = React.useState(
     desktopItems ?? minItems
   );
-  const [quickViewProduct, setQuickViewProduct] = React.useState<Product | null>(
+  const [quickViewProduct, setQuickViewProduct] = React.useState<SKU | null>(
     null
   );
 

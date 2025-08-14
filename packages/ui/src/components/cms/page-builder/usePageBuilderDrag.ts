@@ -9,6 +9,7 @@ import {
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { ulid } from "ulid";
 import { useCallback } from "react";
+import type React from "react";
 import type { PageComponent } from "@acme/types";
 import type { Action } from "./state";
 
@@ -20,6 +21,8 @@ interface Params {
   setInsertIndex: (i: number | null) => void;
   selectId: (id: string) => void;
   gridSize?: number;
+  canvasRef?: React.RefObject<HTMLDivElement>;
+  setSnapPosition?: (x: number | null) => void;
 }
 
 export const snapToGrid = (value: number, gridSize: number) =>
@@ -33,6 +36,8 @@ export function usePageBuilderDrag({
   setInsertIndex,
   selectId,
   gridSize = 1,
+  canvasRef,
+  setSnapPosition = () => {},
 }: Params) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -46,6 +51,11 @@ export function usePageBuilderDrag({
       const overData = over.data.current as { index?: number };
       const rawY = (ev.activatorEvent as any)?.clientY + delta.y;
       const pointerY = snapToGrid(rawY, gridSize);
+      const rawX = (ev.activatorEvent as any)?.clientX + delta.x;
+      const canvasRect = canvasRef.current?.getBoundingClientRect();
+      const pointerX = rawX - (canvasRect?.left ?? 0);
+      const snapX = snapToGrid(pointerX, gridSize);
+      setSnapPosition(snapX);
       if (over.id === "canvas") {
         setInsertIndex(components.length);
         return;
@@ -54,12 +64,13 @@ export function usePageBuilderDrag({
       const index = (overData?.index ?? components.length) + (isBelow ? 1 : 0);
       setInsertIndex(index);
     },
-    [components.length, setInsertIndex, gridSize]
+    [components.length, setInsertIndex, gridSize, canvasRef, setSnapPosition]
   );
 
   const handleDragEnd = useCallback(
     (ev: DragEndEvent) => {
       setInsertIndex(null);
+      setSnapPosition(null);
       const { active, over } = ev;
       if (!over) return;
       const a = active.data.current as {

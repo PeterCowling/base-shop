@@ -4,6 +4,13 @@ import { locales, type Locale } from "@/i18n/locales";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import type { CSSProperties, DragEvent } from "react";
+import {
+  DndContext,
+  DragOverlay,
+  closestCenter,
+  type DragStartEvent,
+  type DragEndEvent,
+} from "@dnd-kit/core";
 import { ulid } from "ulid";
 import type { Page, PageComponent, HistoryState, MediaItem } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
@@ -165,6 +172,8 @@ const PageBuilder = memo(function PageBuilder({
   });
   const [showGrid, setShowGrid] = useState(false);
   const [gridSize, setGridSize] = useState(1);
+  const [snapPosition, setSnapPosition] = useState<number | null>(null);
+  const [activeType, setActiveType] = useState<ComponentType | null>(null);
 
   const {
     onDrop,
@@ -209,7 +218,22 @@ const PageBuilder = memo(function PageBuilder({
     setInsertIndex,
     selectId: setSelectedId,
     gridSize,
+    canvasRef,
+    setSnapPosition,
   });
+
+  const handleDragStart = useCallback((ev: DragStartEvent) => {
+    const a = ev.active.data.current as { type?: ComponentType };
+    setActiveType((a?.type as ComponentType) ?? null);
+  }, []);
+
+  const handleDragEndWrapper = useCallback(
+    (ev: DragEndEvent) => {
+      setActiveType(null);
+      handleDragEnd(ev);
+    },
+    [handleDragEnd]
+  );
 
   const widthMap = useMemo(
     () => ({ desktop: "100%", tablet: "768px", mobile: "375px" }) as const,
@@ -305,25 +329,38 @@ const PageBuilder = memo(function PageBuilder({
         <div aria-live="polite" role="status" className="sr-only">
           {liveMessage}
         </div>
-        <PageCanvas
-          components={components}
-          selectedId={selectedId}
-          onSelectId={setSelectedId}
+        <DndContext
           sensors={sensors}
-          handleDragMove={handleDragMove}
-          handleDragEnd={handleDragEnd}
-          canvasRef={canvasRef}
-          dragOver={dragOver}
-          setDragOver={setDragOver}
-          onFileDrop={handleFileDrop}
-          insertIndex={insertIndex}
-          dispatch={dispatch}
-          locale={locale}
-          containerStyle={containerStyle}
-          showGrid={showGrid}
-          gridCols={gridCols}
-          viewport={viewport}
-        />
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragMove={handleDragMove}
+          onDragEnd={handleDragEndWrapper}
+        >
+          <PageCanvas
+            components={components}
+            selectedId={selectedId}
+            onSelectId={setSelectedId}
+            canvasRef={canvasRef}
+            dragOver={dragOver}
+            setDragOver={setDragOver}
+            onFileDrop={handleFileDrop}
+            insertIndex={insertIndex}
+            dispatch={dispatch}
+            locale={locale}
+            containerStyle={containerStyle}
+            showGrid={showGrid}
+            gridCols={gridCols}
+            viewport={viewport}
+            snapPosition={snapPosition}
+          />
+          <DragOverlay>
+            {activeType && (
+              <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">
+                {activeType}
+              </div>
+            )}
+          </DragOverlay>
+        </DndContext>
         <div className="flex gap-2">
           <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>
             Undo

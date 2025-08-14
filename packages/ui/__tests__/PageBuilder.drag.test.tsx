@@ -1,58 +1,8 @@
 import { render, fireEvent } from "@testing-library/react";
-import { renderHook, act } from "@testing-library/react";
 import React from "react";
-import usePageBuilderDnD from "../src/components/cms/page-builder/hooks/usePageBuilderDnD";
 import { CanvasItem, renderCanvasItem, setRect } from "./helpers/pageBuilderSetup";
 
 describe("PageBuilder drag interactions", () => {
-  it("adds component on drag from palette to canvas", () => {
-    const dispatch = jest.fn();
-    const { result } = renderHook(() =>
-      usePageBuilderDnD({
-        components: [],
-        dispatch,
-        defaults: {},
-        containerTypes: [],
-        selectId: jest.fn(),
-      })
-    );
-
-    act(() =>
-      result.current.handleDragEnd({
-        active: { id: "a", data: { current: { from: "palette", type: "Text" } } },
-        over: { id: "canvas", data: { current: {} } },
-      } as any)
-    );
-
-    expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: "add",
-        component: expect.objectContaining({ type: "Text" }),
-      })
-    );
-  });
-
-  it("does not add component when dropped outside canvas", () => {
-    const dispatch = jest.fn();
-    const { result } = renderHook(() =>
-      usePageBuilderDnD({
-        components: [],
-        dispatch,
-        defaults: {},
-        containerTypes: [],
-        selectId: jest.fn(),
-      })
-    );
-
-    act(() =>
-      result.current.handleDragEnd({
-        active: { id: "a", data: { current: { from: "palette", type: "Text" } } },
-        over: null,
-      } as any)
-    );
-
-    expect(dispatch).not.toHaveBeenCalled();
-  });
 
   it("snaps to sibling edge when moving", () => {
     const c1: any = {

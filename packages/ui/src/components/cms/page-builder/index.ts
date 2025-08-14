@@ -39,6 +39,7 @@ export { default as PageBuilder } from "./PageBuilder";
 export { default as PageToolbar } from "./PageToolbar";
 export { default as PageCanvas } from "./PageCanvas";
 export { default as PageSidebar } from "./PageSidebar";
+export { defaults, CONTAINER_TYPES } from "./defaults";
 export { historyStateSchema, reducer } from "./state";
 export { default as usePageBuilderState } from "./hooks/usePageBuilderState";
 export { default as usePageBuilderDnD } from "./hooks/usePageBuilderDnD";

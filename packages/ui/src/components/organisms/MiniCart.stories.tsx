@@ -12,9 +12,10 @@ const sku1: SKU = {
   title: "Item One",
   price: 20,
   deposit: 0,
+  stock: 0,
   forSale: true,
   forRental: false,
-  image: "https://placehold.co/64",
+  media: [{ url: "https://placehold.co/64", type: "image" }],
   sizes: [],
   description: "",
 };
@@ -24,9 +25,10 @@ const sku2: SKU = {
   title: "Item Two",
   price: 15,
   deposit: 0,
+  stock: 0,
   forSale: true,
   forRental: false,
-  image: "https://placehold.co/64",
+  media: [{ url: "https://placehold.co/64", type: "image" }],
   sizes: [],
   description: "",
 };

@@ -11,6 +11,7 @@ import {
 import * as path from "node:path";
 import { randomBytes, createHash } from "node:crypto";
 import { getComponentNameMap } from "./component-names";
+import type { PageRecord, ShopMetadata } from "./types";
 
 const args = process.argv.slice(2);
 const rollback = args.includes("--rollback");
@@ -39,9 +40,9 @@ if (rollback) {
   restoreBackups(appDir);
   restoreBackups(path.dirname(shopJsonPath));
   if (existsSync(shopJsonPath)) {
-    const data = JSON.parse(readFileSync(shopJsonPath, "utf8"));
-    delete (data as any).lastUpgrade;
-    delete (data as any).componentVersions;
+    const data = JSON.parse(readFileSync(shopJsonPath, "utf8")) as ShopMetadata;
+    delete data.lastUpgrade;
+    delete data.componentVersions;
     writeFileSync(shopJsonPath, JSON.stringify(data, null, 2));
   }
   console.log(`Rollback completed for ${shopId}`);
@@ -52,9 +53,9 @@ copyTemplate(templateDir, appDir);
 
 if (existsSync(shopJsonPath)) {
   cpSync(shopJsonPath, shopJsonPath + ".bak");
-  const data = JSON.parse(readFileSync(shopJsonPath, "utf8"));
-  (data as any).lastUpgrade = new Date().toISOString();
-  (data as any).componentVersions = existsSync(pkgPath)
+  const data = JSON.parse(readFileSync(shopJsonPath, "utf8")) as ShopMetadata;
+  data.lastUpgrade = new Date().toISOString();
+  data.componentVersions = existsSync(pkgPath)
     ? (JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {})
     : {};
   writeFileSync(shopJsonPath, JSON.stringify(data, null, 2));
@@ -81,30 +82,20 @@ const changedComponents = Object.entries(componentMap).flatMap(
   }
 );
 // determine pages that reference updated components
-const pagesJsonPath = path.join(
-  rootDir,
-  "data",
-  "shops",
-  shopId,
-  "pages.json"
-);
+const pagesJsonPath = path.join(rootDir, "data", "shops", shopId, "pages.json");
 const pageIds = new Set<string>();
 if (existsSync(pagesJsonPath)) {
   try {
-    const rawPages = JSON.parse(readFileSync(pagesJsonPath, "utf8"));
-    if (Array.isArray(rawPages)) {
-      const changedTypes = new Set(
-        changedComponents.map((c) => c.componentName)
+    const parsed = JSON.parse(readFileSync(pagesJsonPath, "utf8"));
+    const pages: PageRecord[] = Array.isArray(parsed) ? parsed : [];
+    const changedTypes = new Set(changedComponents.map((c) => c.componentName));
+    for (const page of pages) {
+      if (!Array.isArray(page.components)) continue;
+      const hasMatch = page.components.some((comp) =>
+        changedTypes.has(comp.type)
       );
-      for (const page of rawPages) {
-        if (!page || typeof page !== "object") continue;
-        if (!Array.isArray((page as any).components)) continue;
-        const hasMatch = (page as any).components.some((comp: any) =>
-          changedTypes.has(comp?.type as string)
-        );
-        if (hasMatch && typeof (page as any).id === "string") {
-          pageIds.add((page as any).id);
-        }
+      if (hasMatch) {
+        pageIds.add(page.id);
       }
     }
   } catch {
@@ -126,7 +117,7 @@ const upgradeMetaPath = path.join(
   "data",
   "shops",
   shopId,
-  "upgrade.json",
+  "upgrade.json"
 );
 const componentVersions = existsSync(pkgPath)
   ? (JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {})
@@ -140,8 +131,8 @@ writeFileSync(
       components: changedComponents,
     },
     null,
-    2,
-  ),
+    2
+  )
 );
 
 const envPath = path.join(appDir, ".env");

@@ -1,6 +1,7 @@
 export { ColorInput, getContrast, suggestContrastColor } from "./ColorInput";
 export { FontSelect } from "./FontSelect";
 export { default as NavigationEditor } from "./NavigationEditor";
+export { default as NavigationPreview } from "./NavigationPreview";
 export { default as PagesTable } from "./PagesTable";
 export { default as ProductPageBuilder } from "./ProductPageBuilder";
 export * from "./products";

@@ -47,6 +47,7 @@ export const createShopOptionsSchema = z
       })
       .optional(),
     sanityBlog: sanityBlogConfigSchema.optional(),
+    enableEditorial: z.boolean().optional(),
     navItems: z.array(navItemSchema).default([]),
     pages: z
       .array(
@@ -66,10 +67,14 @@ export const createShopOptionsSchema = z
 export type CreateShopOptions = z.infer<typeof createShopOptionsSchema>;
 
 export type PreparedCreateShopOptions = Required<
-  Omit<CreateShopOptions, "analytics" | "checkoutPage" | "sanityBlog">
+  Omit<
+    CreateShopOptions,
+    "analytics" | "checkoutPage" | "sanityBlog" | "enableEditorial"
+  >
 > & {
   analytics?: CreateShopOptions["analytics"];
   sanityBlog?: CreateShopOptions["sanityBlog"];
+  enableEditorial: boolean;
   checkoutPage: PageComponent[];
 };
 
@@ -120,5 +125,6 @@ export function prepareOptions(
     })),
     checkoutPage: parsed.checkoutPage,
     sanityBlog: parsed.sanityBlog,
+    enableEditorial: parsed.enableEditorial ?? false,
   };
 }

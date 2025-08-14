@@ -50,6 +50,7 @@ export async function createShop(
     taxProviders: [prepared.tax],
     paymentProviders: prepared.payment,
     sanityBlog: prepared.sanityBlog,
+    enableEditorial: prepared.enableEditorial,
   };
 
   await prisma.shop.create({ data: { id, data: shopData } });

@@ -1,6 +1,12 @@
 import { render } from "@testing-library/react";
 import { ProductCarousel, type Product } from "../ProductCarousel";
+import { CurrencyProvider } from "@platform-core/src/contexts/CurrencyContext";
 import "../../../../../../test/resetNextMocks";
+
+jest.mock(
+  "@platform-core/src/contexts/CurrencyContext",
+  () => require("../../../../../../test/__mocks__/currencyContextMock")
+);
 
 function mockResize(width: number) {
   (global as any).ResizeObserver = class {
@@ -18,20 +24,32 @@ function mockResize(width: number) {
 }
 
 const products: Product[] = [
-  { id: "1", title: "A", image: "/a.jpg", price: 1 },
-  { id: "2", title: "B", image: "/b.jpg", price: 2 },
+  {
+    id: "1",
+    title: "A",
+    media: [{ type: "image", url: "/a.jpg" }],
+    price: 1,
+  },
+  {
+    id: "2",
+    title: "B",
+    media: [{ type: "image", url: "/b.jpg" }],
+    price: 2,
+  },
 ];
 
 describe("ProductCarousel viewport counts", () => {
   it("uses desktopItems for wide containers", () => {
     mockResize(1200);
     const { container } = render(
-      <ProductCarousel
-        products={products}
-        desktopItems={4}
-        tabletItems={2}
-        mobileItems={1}
-      />
+      <CurrencyProvider>
+        <ProductCarousel
+          products={products}
+          desktopItems={4}
+          tabletItems={2}
+          mobileItems={1}
+        />
+      </CurrencyProvider>
     );
     const slide = container.querySelector(".snap-start") as HTMLElement;
     expect(slide.style.flex).toBe("0 0 25%");
@@ -40,12 +58,14 @@ describe("ProductCarousel viewport counts", () => {
   it("uses mobileItems for narrow containers", () => {
     mockResize(400);
     const { container } = render(
-      <ProductCarousel
-        products={products}
-        desktopItems={4}
-        tabletItems={2}
-        mobileItems={1}
-      />
+      <CurrencyProvider>
+        <ProductCarousel
+          products={products}
+          desktopItems={4}
+          tabletItems={2}
+          mobileItems={1}
+        />
+      </CurrencyProvider>
     );
     const slide = container.querySelector(".snap-start") as HTMLElement;
     expect(slide.style.flex).toBe("0 0 100%");

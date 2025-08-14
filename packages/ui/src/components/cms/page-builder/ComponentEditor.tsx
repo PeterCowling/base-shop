@@ -5,6 +5,7 @@ import type { PageComponent } from "@acme/types";
 import { memo, useCallback } from "react";
 import {
   Button,
+  Checkbox,
   Input,
   Textarea,
   Select,
@@ -368,6 +369,16 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
     case "ProductCarousel":
       specific = (
         <>
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="quickView"
+              checked={(component as any).quickView ?? false}
+              onCheckedChange={(v) => handleInput("quickView", v ? true : undefined)}
+            />
+            <label htmlFor="quickView" className="text-sm">
+              Enable Quick View
+            </label>
+          </div>
           <Select
             value={(component as any).mode ?? "collection"}
             onValueChange={(v) => handleInput("mode", v)}

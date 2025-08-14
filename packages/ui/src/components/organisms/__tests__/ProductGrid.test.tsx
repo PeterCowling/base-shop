@@ -18,8 +18,18 @@ function mockResize(width: number) {
 }
 
 const products: Product[] = [
-  { id: "1", title: "A", image: "/a.jpg", price: 1 },
-  { id: "2", title: "B", image: "/b.jpg", price: 2 },
+  {
+    id: "1",
+    title: "A",
+    media: [{ type: "image", url: "/a.jpg" }],
+    price: 1,
+  },
+  {
+    id: "2",
+    title: "B",
+    media: [{ type: "image", url: "/b.jpg" }],
+    price: 2,
+  },
 ];
 
 describe("ProductGrid viewport counts", () => {
@@ -31,6 +41,7 @@ describe("ProductGrid viewport counts", () => {
         desktopItems={4}
         tabletItems={2}
         mobileItems={1}
+        showPrice={false}
       />
     );
     const grid = container.firstChild as HTMLElement;
@@ -47,6 +58,7 @@ describe("ProductGrid viewport counts", () => {
         desktopItems={4}
         tabletItems={2}
         mobileItems={1}
+        showPrice={false}
       />
     );
     const grid = container.firstChild as HTMLElement;

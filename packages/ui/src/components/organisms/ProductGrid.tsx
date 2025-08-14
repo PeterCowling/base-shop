@@ -1,5 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/style";
+import { Button } from "../atoms/shadcn";
+import { ProductQuickView } from "../overlays/ProductQuickView";
 import { Product, ProductCard } from "./ProductCard";
 
 export interface ProductGridProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -24,6 +26,8 @@ export interface ProductGridProps extends React.HTMLAttributes<HTMLDivElement> {
   showPrice?: boolean;
   ctaLabel?: string;
   onAddToCart?: (product: Product) => void;
+  /** Show quick view trigger for each product */
+  enableQuickView?: boolean;
 }
 
 export function ProductGrid({
@@ -38,12 +42,16 @@ export function ProductGrid({
   showPrice = true,
   ctaLabel = "Add to cart",
   onAddToCart,
+  enableQuickView = false,
   className,
   ...props
 }: ProductGridProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [cols, setCols] = React.useState(
     columns ?? desktopItems ?? minItems
+  );
+  const [quickViewProduct, setQuickViewProduct] = React.useState<Product | null>(
+    null
   );
 
   React.useEffect(() => {
@@ -84,22 +92,45 @@ export function ProductGrid({
     gridTemplateColumns: `repeat(${columns ?? cols}, minmax(0, 1fr))`,
   } as React.CSSProperties;
   return (
-    <div
-      ref={containerRef}
-      className={cn("grid gap-6", className)}
-      style={style}
-      {...props}
-    >
-      {products.map((p) => (
-        <ProductCard
-          key={p.id}
-          product={p}
+    <>
+      <div
+        ref={containerRef}
+        className={cn("grid gap-6", className)}
+        style={style}
+        {...props}
+      >
+        {products.map((p) => (
+          <div key={p.id} className="relative">
+            <ProductCard
+              product={p}
+              onAddToCart={onAddToCart}
+              showImage={showImage}
+              showPrice={showPrice}
+              ctaLabel={ctaLabel}
+            />
+            {enableQuickView && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="absolute right-2 top-2"
+                aria-label={`Quick view ${p.title}`}
+                onClick={() => setQuickViewProduct(p)}
+              >
+                Quick View
+              </Button>
+            )}
+          </div>
+        ))}
+      </div>
+      {enableQuickView && quickViewProduct && (
+        <ProductQuickView
+          product={quickViewProduct}
+          open={!!quickViewProduct}
+          onOpenChange={(o) => !o && setQuickViewProduct(null)}
+          container={containerRef.current}
           onAddToCart={onAddToCart}
-          showImage={showImage}
-          showPrice={showPrice}
-          ctaLabel={ctaLabel}
         />
-      ))}
-    </div>
+      )}
+    </>
   );
 }

@@ -165,6 +165,8 @@ export interface ProductGridComponent extends PageComponentBase {
   skus?: string[];
   collectionId?: string;
   mode?: "collection" | "manual";
+  /** Enable product quick view modal */
+  quickView?: boolean;
 }
 
 /** Carousel of products; `minItems`/`maxItems` clamp visible products */
@@ -173,6 +175,8 @@ export interface ProductCarouselComponent extends PageComponentBase {
   skus?: string[];
   collectionId?: string;
   mode?: "collection" | "manual";
+  /** Enable product quick view modal */
+  quickView?: boolean;
 }
 
 /** Grid of collections; `minItems`/`maxItems` clamp visible collections */

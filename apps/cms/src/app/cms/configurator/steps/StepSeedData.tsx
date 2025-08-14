@@ -1,8 +1,8 @@
 "use client";
 
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Input } from "@/components/atoms/shadcn";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { StepControls } from "../steps";
 
 interface Props {
   setCsvFile: (f: File | null) => void;
@@ -11,6 +11,8 @@ interface Props {
   seedResult: string | null;
   seeding: boolean;
   seed: () => Promise<void> | void;
+  previousStepId?: string;
+  nextStepId?: string;
 }
 
 export default function StepSeedData({
@@ -20,9 +22,10 @@ export default function StepSeedData({
   seedResult,
   seeding,
   seed,
+  previousStepId,
+  nextStepId,
 }: Props): React.JSX.Element {
   const [, markComplete] = useStepCompletion("seed-data");
-  const router = useRouter();
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Seed Data</h2>
@@ -42,18 +45,15 @@ export default function StepSeedData({
         />
       </label>
       {seedResult && <p className="text-sm">{seedResult}</p>}
-      <div className="flex justify-end gap-2">
-        <Button
-          disabled={seeding}
-          onClick={async () => {
-            await seed();
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          {seeding ? "Saving…" : "Save & return"}
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={async () => {
+          await seed();
+          markComplete(true);
+        }}
+        nextDisabled={seeding}
+      />
     </div>
   );
 }

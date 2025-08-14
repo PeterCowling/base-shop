@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Button,
   Input,
   Select,
   SelectContent,
@@ -9,8 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { useRouter } from "next/navigation";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { StepControls } from "../steps";
 
 interface Props {
   shopId: string;
@@ -27,6 +26,8 @@ interface Props {
   setTemplate: (v: string) => void;
   templates: string[];
   errors?: Record<string, string[]>;
+  previousStepId?: string;
+  nextStepId?: string;
 }
 
 export default function StepShopDetails({
@@ -44,8 +45,9 @@ export default function StepShopDetails({
   setTemplate,
   templates,
   errors = {},
+  previousStepId,
+  nextStepId,
 }: Props): React.JSX.Element {
-  const router = useRouter();
   const [, markComplete] = useStepCompletion("shop-details");
   return (
     <div className="space-y-4">
@@ -124,17 +126,12 @@ export default function StepShopDetails({
           </SelectContent>
         </Select>
       </label>
-      <div className="flex justify-end">
-        <Button
-          disabled={!shopId}
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={() => markComplete(true)}
+        nextDisabled={!shopId}
+      />
     </div>
   );
 }

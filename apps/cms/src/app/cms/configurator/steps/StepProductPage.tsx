@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Button,
   Select,
   SelectContent,
   SelectItem,
@@ -17,7 +16,7 @@ import { ulid } from "ulid";
 import { useEffect, useState } from "react";
 import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { StepControls } from "../steps";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -29,6 +28,8 @@ interface Props {
   setProductPageId: (v: string | null) => void;
   shopId: string;
   themeStyle: React.CSSProperties;
+  previousStepId?: string;
+  nextStepId?: string;
 }
 
 export default function StepProductPage({
@@ -41,6 +42,8 @@ export default function StepProductPage({
   setProductPageId,
   shopId,
   themeStyle,
+  previousStepId,
+  nextStepId,
 }: Props): React.JSX.Element {
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
@@ -79,7 +82,6 @@ export default function StepProductPage({
     })();
   }, [shopId, productPageId, setProductComponents, setProductPageId]);
   const [, markComplete] = useStepCompletion("product-page");
-  const router = useRouter();
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Product Detail Page</h2>
@@ -164,16 +166,11 @@ export default function StepProductPage({
         onChange={setProductComponents}
         style={themeStyle}
       />
-      <div className="flex justify-end">
-        <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={() => markComplete(true)}
+      />
       <Toast
         open={toast.open}
         onClose={() => setToast((t) => ({ ...t, open: false }))}

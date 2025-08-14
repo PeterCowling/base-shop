@@ -15,7 +15,7 @@ import PageMetaForm from "./PageMetaForm";
 import useNewPageState from "./useNewPageState";
 import usePagesLoader from "./usePagesLoader";
 import useStepCompletion from "../../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { StepControls } from "../../steps";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -23,6 +23,8 @@ interface Props {
   setPages: (v: PageInfo[]) => void;
   shopId: string;
   themeStyle: React.CSSProperties;
+  previousStepId?: string;
+  nextStepId?: string;
 }
 
 export default function StepAdditionalPages({
@@ -31,6 +33,8 @@ export default function StepAdditionalPages({
   setPages,
   shopId,
   themeStyle,
+  previousStepId,
+  nextStepId,
 }: Props): React.JSX.Element {
   const languages = LOCALES as readonly Locale[];
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
@@ -58,7 +62,6 @@ export default function StepAdditionalPages({
     resetFields,
   } = useNewPageState(languages);
   const [, markComplete] = useStepCompletion("additional-pages");
-  const router = useRouter();
 
   usePagesLoader({
     shopId,
@@ -170,16 +173,11 @@ export default function StepAdditionalPages({
         </div>
       )}
       {!adding && <Button onClick={() => setAdding(true)}>Add Page</Button>}
-      <div className="flex justify-end">
-        <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={() => markComplete(true)}
+      />
       <Toast
         open={toast.open}
         onClose={() => setToast((t) => ({ ...t, open: false }))}

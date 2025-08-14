@@ -2,13 +2,13 @@
 
 "use client";
 
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Input } from "@/components/atoms/shadcn";
 import { LOCALES } from "@acme/i18n";
 import type { Locale } from "@acme/types";
 import React from "react";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { StepControls } from "../steps";
 
 interface Props {
   shopId: string;
@@ -32,6 +32,8 @@ interface Props {
   creating: boolean;
   submit: () => Promise<void> | void;
   errors?: Record<string, string[]>;
+  previousStepId?: string;
+  nextStepId?: string;
 }
 
 export default function StepSummary({
@@ -56,10 +58,11 @@ export default function StepSummary({
   creating,
   submit,
   errors = {},
+  previousStepId,
+  nextStepId,
 }: Props): React.JSX.Element {
   const languages = LOCALES as readonly Locale[];
   const [, markComplete] = useStepCompletion("summary");
-  const router = useRouter();
 
   return (
     <div className="space-y-4">
@@ -153,19 +156,15 @@ export default function StepSummary({
 
       <WizardPreview style={themeStyle} />
 
-      <div className="flex justify-end">
-        <Button
-          disabled={creating}
-          onClick={async () => {
-            await submit();
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-          className="ml-auto"
-        >
-          {creating ? "Saving…" : "Save & return"}
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={async () => {
+          await submit();
+          markComplete(true);
+        }}
+        nextDisabled={creating}
+      />
     </div>
   );
 }

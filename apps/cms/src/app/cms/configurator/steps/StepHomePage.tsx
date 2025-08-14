@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  Button,
   Select,
   SelectContent,
   SelectItem,
@@ -17,7 +16,7 @@ import { ulid } from "ulid";
 import { useEffect, useState } from "react";
 import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { StepControls } from "../steps";
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -29,6 +28,8 @@ interface Props {
   setHomePageId: (v: string | null) => void;
   shopId: string;
   themeStyle: React.CSSProperties;
+  previousStepId?: string;
+  nextStepId?: string;
 }
 
 export default function StepHomePage({
@@ -47,7 +48,6 @@ export default function StepHomePage({
     message: "",
   });
   const [, markComplete] = useStepCompletion("home-page");
-  const router = useRouter();
 
   useEffect(() => {
     (async () => {
@@ -162,16 +162,11 @@ export default function StepHomePage({
         onChange={setComponents}
         style={themeStyle}
       />
-      <div className="flex justify-end">
-        <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={() => markComplete(true)}
+      />
       <Toast
         open={toast.open}
         onClose={() => setToast((t) => ({ ...t, open: false }))}

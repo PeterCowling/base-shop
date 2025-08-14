@@ -1,19 +1,25 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
 import StyleEditor from "@/components/cms/StyleEditor";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { type TokenMap } from "../../wizard/tokenUtils";
 import { useConfigurator } from "../ConfiguratorContext";
 import { useThemeLoader } from "../hooks/useThemeLoader";
+import { StepControls } from "../steps";
 
-export default function StepTokens(): React.JSX.Element {
+interface Props {
+  previousStepId?: string;
+  nextStepId?: string;
+}
+
+export default function StepTokens({
+  previousStepId,
+  nextStepId,
+}: Props): React.JSX.Element {
   const themeStyle = useThemeLoader();
   const [, markComplete] = useStepCompletion("tokens");
-  const router = useRouter();
   const { themeDefaults, themeOverrides, setThemeOverrides } = useConfigurator();
   const tokens = { ...themeDefaults, ...themeOverrides } as TokenMap;
   const [selected, setSelected] = useState<string | null>(null);
@@ -46,16 +52,11 @@ export default function StepTokens(): React.JSX.Element {
           focusToken={selected}
         />
       )}
-      <div className="flex justify-end">
-        <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={() => markComplete(true)}
+      />
     </div>
   );
 }

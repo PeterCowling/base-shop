@@ -1,10 +1,9 @@
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
 import NavigationEditor from "@/components/cms/NavigationEditor";
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { StepControls } from "../steps";
 
 interface NavItem {
   id: string;
@@ -13,26 +12,28 @@ interface NavItem {
   children?: NavItem[];
 }
 
-export default function StepNavigation(): React.JSX.Element {
+interface Props {
+  previousStepId?: string;
+  nextStepId?: string;
+}
+
+export default function StepNavigation({
+  previousStepId,
+  nextStepId,
+}: Props): React.JSX.Element {
   const { state, update } = useConfigurator();
   const navItems = state.navItems;
   const setNavItems = (items: NavItem[]) => update("navItems", items);
   const [, markComplete] = useStepCompletion("navigation");
-  const router = useRouter();
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Navigation</h2>
       <NavigationEditor items={navItems} onChange={setNavItems} />
-      <div className="flex justify-end gap-2">
-        <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={() => markComplete(true)}
+      />
     </div>
   );
 }

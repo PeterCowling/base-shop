@@ -1,7 +1,6 @@
 // src/components/cms/StepLayout.tsx
 "use client";
 
-import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
@@ -9,18 +8,24 @@ import { fetchJson } from "@shared-utils";
 import { ReactNode, useState } from "react";
 import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import { useThemeLoader } from "../hooks/useThemeLoader";
+import { StepControls } from "../steps";
 
 interface Props {
   /** Optional inner content for the step */
   children?: ReactNode;
+  previousStepId?: string;
+  nextStepId?: string;
 }
 
 const emptyTranslated = () => fillLocales(undefined, "");
 
-export default function StepLayout({ children }: Props): React.JSX.Element {
+export default function StepLayout({
+  children,
+  previousStepId,
+  nextStepId,
+}: Props): React.JSX.Element {
   const { state, update } = useConfigurator();
   const {
     headerComponents,
@@ -40,7 +45,6 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
     message: "",
   });
   const [, markComplete] = useStepCompletion("layout");
-  const router = useRouter();
 
   return (
     <fieldset className="space-y-4">
@@ -138,16 +142,11 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
       {children}
 
       {/* Navigation ------------------------------------------------------ */}
-      <div className="flex justify-end">
-        <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={() => markComplete(true)}
+      />
       <Toast
         open={toast.open}
         onClose={() => setToast((t) => ({ ...t, open: false }))}

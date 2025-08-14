@@ -1,11 +1,8 @@
 "use client";
 
-import {
-  Button,
-  Input,
-} from "@/components/atoms/shadcn";
+import { Input } from "@/components/atoms/shadcn";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { StepControls } from "../steps";
 
   const ENV_KEYS = [
     "STRIPE_SECRET_KEY",
@@ -32,14 +29,17 @@ import { useRouter } from "next/navigation";
 interface Props {
   env: Record<string, string>;
   setEnv: (key: string, value: string) => void;
+  previousStepId?: string;
+  nextStepId?: string;
 }
 
 export default function StepEnvVars({
   env,
   setEnv,
+  previousStepId,
+  nextStepId,
 }: Props): React.JSX.Element {
   const [, markComplete] = useStepCompletion("env-vars");
-  const router = useRouter();
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Environment Variables</h2>
@@ -60,16 +60,11 @@ export default function StepEnvVars({
           />
         </label>
       ))}
-      <div className="flex justify-end">
-        <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={() => markComplete(true)}
+      />
     </div>
   );
 }

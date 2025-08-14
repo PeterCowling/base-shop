@@ -1,8 +1,8 @@
 "use client";
 
-import { Button, Input, Textarea } from "@/components/atoms/shadcn";
+import { Input, Textarea } from "@/components/atoms/shadcn";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { StepControls } from "../steps";
 
 interface Props {
   setCsvFile: (f: File | null) => void;
@@ -11,6 +11,8 @@ interface Props {
   importResult: string | null;
   importing: boolean;
   saveData: () => Promise<void> | void;
+  previousStepId?: string;
+  nextStepId?: string;
 }
 
 export default function StepImportData({
@@ -20,9 +22,10 @@ export default function StepImportData({
   importResult,
   importing,
   saveData,
+  previousStepId,
+  nextStepId,
 }: Props): React.JSX.Element {
   const [, markComplete] = useStepCompletion("import-data");
-  const router = useRouter();
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Import Data</h2>
@@ -41,18 +44,15 @@ export default function StepImportData({
         placeholder='["Shoes","Accessories"]'
       />
       {importResult && <p className="text-sm">{importResult}</p>}
-      <div className="flex justify-end gap-2">
-        <Button
-          disabled={importing}
-          onClick={async () => {
-            await saveData();
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          {importing ? "Saving…" : "Save & return"}
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={async () => {
+          await saveData();
+          markComplete(true);
+        }}
+        nextDisabled={importing}
+      />
     </div>
   );
 }

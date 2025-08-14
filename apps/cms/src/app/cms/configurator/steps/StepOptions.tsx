@@ -13,8 +13,17 @@ import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
+import { StepControls } from "../steps";
 
-export default function StepOptions(): React.JSX.Element {
+interface Props {
+  previousStepId?: string;
+  nextStepId?: string;
+}
+
+export default function StepOptions({
+  previousStepId,
+  nextStepId,
+}: Props): React.JSX.Element {
   const { state, update } = useConfigurator();
   const {
     shopId,
@@ -120,16 +129,11 @@ export default function StepOptions(): React.JSX.Element {
           />
         )}
       </div>
-      <div className="flex justify-end">
-        <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={() => markComplete(true)}
+      />
     </div>
   );
 }

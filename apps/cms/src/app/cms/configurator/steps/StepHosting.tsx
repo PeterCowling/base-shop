@@ -1,11 +1,11 @@
 "use client";
 
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Input } from "@/components/atoms/shadcn";
 import type { DeployStatusBase } from "@platform-core/createShop";
 import { useEffect } from "react";
 import { getDeployStatus, type DeployInfo } from "../services/deployShop";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
+import { StepControls } from "../steps";
 
 interface Props {
   shopId: string;
@@ -18,6 +18,8 @@ interface Props {
   ) => void;
   deploying: boolean;
   deploy: () => Promise<void> | void;
+  previousStepId?: string;
+  nextStepId?: string;
 }
 
 export default function StepHosting({
@@ -29,9 +31,10 @@ export default function StepHosting({
   setDeployInfo,
   deploying,
   deploy,
+  previousStepId,
+  nextStepId,
 }: Props): React.JSX.Element {
   const [, markComplete] = useStepCompletion("hosting");
-  const router = useRouter();
   useEffect(() => {
     if (!shopId || !deployInfo) return;
     if (
@@ -96,18 +99,15 @@ export default function StepHosting({
       {deployInfo?.status === "error" && deployInfo.error && (
         <p className="text-sm text-red-600">{deployInfo.error}</p>
       )}
-      <div className="flex justify-end">
-        <Button
-          disabled={deploying}
-          onClick={async () => {
-            await deploy();
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          {deploying ? "Deploying…" : "Save & return"}
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={async () => {
+          await deploy();
+          markComplete(true);
+        }}
+        nextDisabled={deploying}
+      />
     </div>
   );
 }

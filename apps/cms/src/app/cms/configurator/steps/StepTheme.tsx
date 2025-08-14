@@ -12,9 +12,9 @@ import StyleEditor from "@/components/cms/StyleEditor";
 import { useCallback, useEffect, useState } from "react";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useRouter } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import { useThemeLoader } from "../hooks/useThemeLoader";
+import { StepControls } from "../steps";
 
 const colorPalettes: Array<{
   name: string;
@@ -57,16 +57,21 @@ const colorPalettes: Array<{
 
 interface Props {
   themes: string[];
+  previousStepId?: string;
+  nextStepId?: string;
 }
 
-export default function StepTheme({ themes }: Props): React.JSX.Element {
+export default function StepTheme({
+  themes,
+  previousStepId,
+  nextStepId,
+}: Props): React.JSX.Element {
   const themeStyle = useThemeLoader();
   const { state, update, themeDefaults, setThemeOverrides } =
     useConfigurator();
   const { theme, themeOverrides } = state;
   const [palette, setPalette] = useState(colorPalettes[0].name);
   const [, markComplete] = useStepCompletion("theme");
-  const router = useRouter();
 
   const applyPalette = useCallback(
     (name: string) => {
@@ -142,16 +147,11 @@ export default function StepTheme({ themes }: Props): React.JSX.Element {
 
       <WizardPreview style={themeStyle} />
 
-      <div className="flex justify-end">
-        <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
-        >
-          Save & return
-        </Button>
-      </div>
+      <StepControls
+        prev={previousStepId}
+        next={nextStepId}
+        onNext={() => markComplete(true)}
+      />
     </div>
   );
 }

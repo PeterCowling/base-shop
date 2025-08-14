@@ -15,8 +15,9 @@ import {
   loadPreviewTokens,
   PREVIEW_TOKENS_EVENT,
 } from "./previewTokens";
-import { devicePresets, getLegacyPreset, type DevicePreset } from "@ui/utils/devicePresets";
-import DeviceSelector from "@ui/components/cms/DeviceSelector";
+import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+import DeviceSelector from "@ui/components/common/DeviceSelector";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 interface Props {
   style: React.CSSProperties;
@@ -226,34 +227,27 @@ export default function WizardPreview({
       {/* viewport switcher */}
       {!deviceProp && (
         <div className="flex justify-end gap-2">
-          {(["desktop", "tablet", "mobile"] as const).map((t) => {
-            const preset = getLegacyPreset(t);
-            return (
-              <Button
-                key={t}
-                variant={deviceId === preset.id ? "default" : "outline"}
-                onClick={() => {
-                  setDeviceId(preset.id);
-                  setOrientation("portrait");
-                }}
-              >
-                {t.charAt(0).toUpperCase() + t.slice(1)}
-              </Button>
-            );
-          })}
           <DeviceSelector
             deviceId={deviceId}
-            orientation={orientation}
-            setDeviceId={(id) => {
+            onChange={(id) => {
               setDeviceId(id);
               setOrientation("portrait");
             }}
-            toggleOrientation={() =>
+            showLegacyButtons
+          />
+          <Button
+            variant="outline"
+            onClick={() =>
               setOrientation((o) =>
                 o === "portrait" ? "landscape" : "portrait"
               )
             }
-          />
+            aria-label="Rotate"
+          >
+            <ReloadIcon
+              className={orientation === "landscape" ? "rotate-90" : ""}
+            />
+          </Button>
         </div>
       )}
 

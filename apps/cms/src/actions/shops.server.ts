@@ -56,6 +56,7 @@ export async function updateShop(
     filterMappings: data.filterMappings as Record<string, string>,
     priceOverrides: data.priceOverrides as Partial<Record<Locale, number>>,
     localeOverrides: data.localeOverrides as Record<string, Locale>,
+    luxuryFeatures: data.luxuryFeatures,
   };
 
   const saved = await persistShop(shop, patch);
@@ -64,6 +65,7 @@ export async function updateShop(
   const updatedSettings: ShopSettings = {
     ...settings,
     trackingProviders: data.trackingProviders,
+    luxuryFeatures: data.luxuryFeatures,
   };
   await persistSettings(shop, updatedSettings);
 

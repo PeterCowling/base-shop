@@ -31,5 +31,11 @@ describe("shop schema", () => {
     const parsed = shopSchema.parse(base);
     expect(parsed.componentVersions).toEqual({});
     expect(parsed.lastUpgrade).toBeUndefined();
+    expect(parsed.luxuryFeatures).toEqual({
+      contentMerchandising: false,
+      raTicketing: false,
+      fraudReview: false,
+      strictReturnConditions: false,
+    });
   });
 });

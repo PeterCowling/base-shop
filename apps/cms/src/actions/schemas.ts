@@ -55,6 +55,22 @@ export const shopSchema = z
       .preprocess((v) => v === "on", z.boolean())
       .optional()
       .default(false),
+    contentMerchandising: z
+      .preprocess((v) => v === "on", z.boolean())
+      .optional()
+      .default(false),
+    raTicketing: z
+      .preprocess((v) => v === "on", z.boolean())
+      .optional()
+      .default(false),
+    fraudReview: z
+      .preprocess((v) => v === "on", z.boolean())
+      .optional()
+      .default(false),
+    strictReturnConditions: z
+      .preprocess((v) => v === "on", z.boolean())
+      .optional()
+      .default(false),
     themeOverrides: jsonRecord,
     themeDefaults: jsonRecord,
     themeTokens: jsonRecord.optional(),
@@ -63,7 +79,24 @@ export const shopSchema = z
     localeOverrides: jsonRecord,
     trackingProviders: z.array(z.string()).optional().default([]),
   })
-  .strict();
+  .strict()
+  .transform(
+    ({
+      contentMerchandising,
+      raTicketing,
+      fraudReview,
+      strictReturnConditions,
+      ...rest
+    }) => ({
+      ...rest,
+      luxuryFeatures: {
+        contentMerchandising,
+        raTicketing,
+        fraudReview,
+        strictReturnConditions,
+      },
+    })
+  );
 
 export type ProductForm = z.infer<typeof productSchema>;
 export type ShopForm = z.infer<typeof shopSchema>;

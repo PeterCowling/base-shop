@@ -52,6 +52,12 @@ describe("zod schemas", () => {
 
     expect(parsed.catalogFilters).toEqual(["color", "size", "type"]);
     expect(parsed.enableEditorial).toBe(false);
+    expect(parsed.luxuryFeatures).toEqual({
+      contentMerchandising: false,
+      raTicketing: false,
+      fraudReview: false,
+      strictReturnConditions: false,
+    });
   });
 
   it("shopSchema requires name and themeId", () => {
@@ -80,5 +86,23 @@ describe("zod schemas", () => {
     });
 
     expect(parsed.enableEditorial).toBe(true);
+  });
+
+  it("shopSchema parses luxury feature checkboxes", () => {
+    const parsed = shopSchema.parse({
+      id: "s1",
+      name: "Shop",
+      themeId: "base",
+      catalogFilters: "",
+      contentMerchandising: "on",
+      raTicketing: "on",
+    });
+
+    expect(parsed.luxuryFeatures).toEqual({
+      contentMerchandising: true,
+      raTicketing: true,
+      fraudReview: false,
+      strictReturnConditions: false,
+    });
   });
 });

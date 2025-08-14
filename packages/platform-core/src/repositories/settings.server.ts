@@ -97,6 +97,12 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     depositService: { enabled: false, intervalMinutes: 60 },
     returnService: { upsEnabled: false },
     premierDelivery: undefined,
+    luxuryFeatures: {
+      contentMerchandising: false,
+      raTicketing: false,
+      fraudReview: false,
+      strictReturnConditions: false,
+    },
     updatedAt: "",
     updatedBy: "",
   };

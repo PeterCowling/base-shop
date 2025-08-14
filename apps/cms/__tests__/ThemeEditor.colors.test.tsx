@@ -50,6 +50,32 @@ describe("ThemeEditor - colors", () => {
     ).toBeNull();
   });
 
+  it("group reset clears overrides for all tokens in group", () => {
+    const tokensByTheme = {
+      base: {
+        "--color-bg": "white",
+        "--color-bg-dark": "black",
+        "--color-primary": "blue",
+      },
+    };
+    const initialOverrides = {
+      "--color-bg": "hotpink",
+      "--color-bg-dark": "lime",
+    };
+    renderThemeEditor({ tokensByTheme, initialOverrides });
+
+    const group = screen.getByRole("group", { name: "Background" });
+    const resetBtn = within(group).getByRole("button", {
+      name: /reset background/i,
+    });
+    fireEvent.click(resetBtn);
+
+    const bgLabel = screen.getByText("--color-bg").closest("label")!;
+    expect(within(bgLabel).queryByRole("button", { name: /reset/i })).toBeNull();
+    const bgDarkLabel = screen.getByText("--color-bg-dark").closest("label")!;
+    expect(within(bgDarkLabel).queryByRole("button", { name: /reset/i })).toBeNull();
+  });
+
   it("focuses field when swatch clicked", () => {
     const tokensByTheme = {
       base: { "--color-bg": "#ffffff", "--color-bg-dark": "#000000" },

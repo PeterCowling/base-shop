@@ -22,6 +22,7 @@ import { useThemePresets } from "./useThemePresets";
 import ColorInput from "./ColorInput";
 import WizardPreview from "../../../wizard/WizardPreview";
 import { savePreviewTokens } from "../../../wizard/previewTokens";
+import { tokenGroups } from "./tokenGroups";
 
 interface Props {
   shop: string;
@@ -77,19 +78,30 @@ export default function ThemeEditor({
 
   const groupedTokens = useMemo(() => {
     const tokens = tokensByThemeState[theme];
-    const groups: Record<string, [string, string][]> = {
-      Background: [],
-      Text: [],
-      Accent: [],
-      Other: [],
-    };
-    Object.entries(tokens).forEach(([k, v]) => {
-      if (/bg|background/i.test(k)) groups.Background.push([k, v]);
-      else if (/text|foreground/i.test(k)) groups.Text.push([k, v]);
-      else if (/accent|primary|secondary|highlight/i.test(k))
-        groups.Accent.push([k, v]);
-      else groups.Other.push([k, v]);
+    const groups: Record<string, [string, string][]> = {};
+
+    // Populate configured groups
+    Object.entries(tokenGroups).forEach(([groupName, tokenList]) => {
+      const entries = tokenList
+        .filter((t) => Object.prototype.hasOwnProperty.call(tokens, t))
+        .map((t) => [t, tokens[t]] as [string, string]);
+      if (entries.length) {
+        groups[groupName] = entries;
+      }
     });
+
+    // Collect tokens not assigned to a group
+    const assigned = new Set(Object.values(tokenGroups).flat());
+    const other: [string, string][] = [];
+    Object.entries(tokens).forEach(([k, v]) => {
+      if (!assigned.has(k)) {
+        other.push([k, v]);
+      }
+    });
+    if (other.length) {
+      groups.Other = other;
+    }
+
     return groups;
   }, [theme, tokensByThemeState]);
 
@@ -130,6 +142,23 @@ export default function ThemeEditor({
     setOverrides((prev) => {
       const next = { ...prev };
       delete next[key];
+      const merged = { ...tokensByThemeState[theme], ...next };
+      schedulePreviewUpdate(merged);
+      return next;
+    });
+  };
+
+  const handleGroupReset = (keys: string[]) => () => {
+    setOverrides((prev) => {
+      const next = { ...prev };
+      let changed = false;
+      keys.forEach((k) => {
+        if (k in next) {
+          delete next[k];
+          changed = true;
+        }
+      });
+      if (!changed) return prev;
       const merged = { ...tokensByThemeState[theme], ...next };
       schedulePreviewUpdate(merged);
       return next;
@@ -274,54 +303,67 @@ export default function ThemeEditor({
         onTokenSelect={handleTokenSelect}
       />
       <div className="space-y-6">
-        {Object.entries(groupedTokens).map(([groupName, tokens]) => (
-          <fieldset key={groupName} className="space-y-2">
-            <legend className="font-semibold">{groupName}</legend>
-            <div className="mb-2 flex flex-wrap gap-2">
-              {tokens
-                .filter(([, v]) => isHex(v) || isHsl(v))
-                .map(([k, defaultValue]) => {
-                  const current = overrides[k] || defaultValue;
-                  const colorValue = isHsl(defaultValue)
-                    ? isHex(current)
-                      ? current
-                      : hslToHex(current)
-                    : current;
+        {Object.entries(groupedTokens).map(([groupName, tokens]) => {
+          const keys = tokens.map(([k]) => k);
+          const groupHasOverride = keys.some((k) =>
+            Object.prototype.hasOwnProperty.call(overrides, k),
+          );
+          return (
+            <fieldset key={groupName} className="space-y-2" aria-label={groupName}>
+              <legend className="flex items-center gap-2 font-semibold">
+                {groupName}
+                {groupHasOverride && (
+                  <Button type="button" onClick={handleGroupReset(keys)}>
+                    Reset {groupName}
+                  </Button>
+                )}
+              </legend>
+              <div className="mb-2 flex flex-wrap gap-2">
+                {tokens
+                  .filter(([, v]) => isHex(v) || isHsl(v))
+                  .map(([k, defaultValue]) => {
+                    const current = overrides[k] || defaultValue;
+                    const colorValue = isHsl(defaultValue)
+                      ? isHex(current)
+                        ? current
+                        : hslToHex(current)
+                      : current;
+                    return (
+                      <button
+                        key={k}
+                        type="button"
+                        aria-label={k}
+                        title={k}
+                        className="h-6 w-6 rounded border"
+                        style={{ background: colorValue }}
+                        onClick={() => handleTokenSelect(k)}
+                      />
+                    );
+                  })}
+              </div>
+              <div className="grid gap-2 md:grid-cols-2">
+                {tokens.map(([k, defaultValue]) => {
+                  const hasOverride = Object.prototype.hasOwnProperty.call(
+                    overrides,
+                    k,
+                  );
+                  const overrideValue = hasOverride ? overrides[k] : "";
                   return (
-                    <button
+                    <ColorInput
                       key={k}
-                      type="button"
-                      aria-label={k}
-                      title={k}
-                      className="h-6 w-6 rounded border"
-                      style={{ background: colorValue }}
-                      onClick={() => handleTokenSelect(k)}
+                      name={k}
+                      defaultValue={defaultValue}
+                      value={overrideValue}
+                      onChange={handleOverrideChange(k, defaultValue)}
+                      onReset={handleReset(k)}
+                      inputRef={(el) => (overrideRefs.current[k] = el)}
                     />
                   );
                 })}
-            </div>
-            <div className="grid gap-2 md:grid-cols-2">
-              {tokens.map(([k, defaultValue]) => {
-                const hasOverride = Object.prototype.hasOwnProperty.call(
-                  overrides,
-                  k,
-                );
-                const overrideValue = hasOverride ? overrides[k] : "";
-                return (
-                  <ColorInput
-                    key={k}
-                    name={k}
-                    defaultValue={defaultValue}
-                    value={overrideValue}
-                    onChange={handleOverrideChange(k, defaultValue)}
-                    onReset={handleReset(k)}
-                    inputRef={(el) => (overrideRefs.current[k] = el)}
-                  />
-                );
-              })}
-            </div>
-          </fieldset>
-        ))}
+              </div>
+            </fieldset>
+          );
+        })}
       </div>
       <Button className="bg-primary text-white" disabled={saving} type="submit">
         {saving ? "Saving…" : "Save"}

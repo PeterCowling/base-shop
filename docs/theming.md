@@ -13,6 +13,7 @@ Base themes provide the starting set of design tokens for a shop. The **Theme Ed
 
 ## Resetting to defaults
 - Use the reset icon beside a color input to remove its override.
+- Use a group reset button to clear all overrides for a component at once.
 - To clear an override outside the editor, call `resetThemeOverride(shop, token)` from [`apps/cms/src/actions/shops.server.ts`](../apps/cms/src/actions/shops.server.ts).
 
 ## Implementation references

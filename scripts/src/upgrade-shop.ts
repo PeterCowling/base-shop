@@ -11,6 +11,7 @@ import {
 import * as path from "node:path";
 import { randomBytes, createHash } from "node:crypto";
 import { getComponentNameMap } from "./component-names";
+import { generateExampleProps } from "./generate-example-props";
 
 const args = process.argv.slice(2);
 const rollback = args.includes("--rollback");
@@ -81,13 +82,7 @@ const changedComponents = Object.entries(componentMap).flatMap(
   }
 );
 // determine pages that reference updated components
-const pagesJsonPath = path.join(
-  rootDir,
-  "data",
-  "shops",
-  shopId,
-  "pages.json"
-);
+const pagesJsonPath = path.join(rootDir, "data", "shops", shopId, "pages.json");
 const pageIds = new Set<string>();
 if (existsSync(pagesJsonPath)) {
   try {
@@ -126,7 +121,7 @@ const upgradeMetaPath = path.join(
   "data",
   "shops",
   shopId,
-  "upgrade.json",
+  "upgrade.json"
 );
 const componentVersions = existsSync(pkgPath)
   ? (JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {})
@@ -140,9 +135,11 @@ writeFileSync(
       components: changedComponents,
     },
     null,
-    2,
-  ),
+    2
+  )
 );
+
+generateExampleProps(shopId);
 
 const envPath = path.join(appDir, ".env");
 if (existsSync(envPath)) {

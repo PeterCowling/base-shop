@@ -28,6 +28,16 @@ pnpm ts-node scripts/src/republish-shop.ts <shop-id>
 
 The script requires a corresponding `data/shops/<id>/upgrade.json`, runs `pnpm --filter apps/<id> build` followed by `deploy`, marks the shop as `published` in `shop.json`, and removes the upgrade metadata file.
 
+### `generate-example-props`
+
+Creates `apps/<id>/src/app/upgrade-preview/example-props.ts` with example props for all exported components:
+
+```bash
+pnpm ts-node scripts/src/generate-example-props.ts <shop-id>
+```
+
+The `upgrade-shop` script invokes this automatically so previews render reliably.
+
 ## API endpoints
 
 - `GET /preview/:pageId?token=<hmac>` – returns page JSON for previews. Tokens are HMAC-SHA256 digests using `PREVIEW_TOKEN_SECRET`.

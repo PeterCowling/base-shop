@@ -35,7 +35,8 @@
 
       /* shared lib utilities */
       "@acme/lib": ["packages/lib/src/index.ts"],
-      "@acme/lib/*": ["packages/lib/src/*"]
+      "@acme/lib/*": ["packages/lib/src/*"],
+      "@date-utils": ["packages/date-utils/src/index.ts"]
     }
   },
 

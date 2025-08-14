@@ -1,5 +1,6 @@
 import { coreEnv } from "@acme/config/env/core";
 import { stripe } from "@acme/stripe";
+import { DAY_MS } from "@date-utils";
 import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import {
@@ -32,7 +33,7 @@ export async function chargeLateFeesOnce(
       if (!order.returnDueDate || order.returnReceivedAt || order.lateFeeCharged)
         continue;
       const due = new Date(order.returnDueDate).getTime();
-      const grace = (policy.gracePeriodDays ?? 0) * 86400000;
+      const grace = (policy.gracePeriodDays ?? 0) * DAY_MS;
       if (now <= due + grace) continue;
       try {
         const session = await stripe.checkout.sessions.retrieve(order.sessionId, {

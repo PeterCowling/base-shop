@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
           prorate: true,
         },
       );
-      await setStripeSubscriptionId(userId, sub.id);
+      await setStripeSubscriptionId(userId, sub.id, SHOP_ID);
       return NextResponse.json({ id: sub.id, status: sub.status });
     }
     const sub = await stripe.subscriptions.create({
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
       prorate: true,
       metadata: { userId, shop: SHOP_ID },
     });
-    await setStripeSubscriptionId(userId, sub.id);
+    await setStripeSubscriptionId(userId, sub.id, SHOP_ID);
     return NextResponse.json({ id: sub.id, status: sub.status });
   } catch (err: unknown) {
     if (err instanceof Error) {

@@ -41,16 +41,17 @@ export async function POST(req: NextRequest) {
   }
 
   const plan = shop.rentalSubscriptions.find((p) => p.id === planId);
-  const proration_behavior = plan?.prorateOnChange
-    ? "create_prorations"
-    : "none";
+  if (!plan) {
+    return NextResponse.json({ error: "Plan not found" }, { status: 404 });
+  }
 
   try {
     const sub = await stripe.subscriptions.update(user.stripeSubscriptionId, {
       items: [{ price: priceId }],
-      proration_behavior,
+      // @ts-ignore - `prorate` is deprecated but required for this flow
+      prorate: true,
     });
-    await setStripeSubscriptionId(userId, sub.id);
+    await setStripeSubscriptionId(userId, sub.id, shopId);
     return NextResponse.json({ id: sub.id, status: sub.status });
   } catch (err: unknown) {
     if (err instanceof Error) {

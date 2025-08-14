@@ -35,7 +35,7 @@ export default async function SubscribePage({
       prorate: true,
       metadata: { userId: session.customerId, shop: shopId },
     });
-    await setStripeSubscriptionId(session.customerId, sub.id);
+    await setStripeSubscriptionId(session.customerId, sub.id, shopId);
     await setUserPlan(shopId, session.customerId, planId);
   }
 

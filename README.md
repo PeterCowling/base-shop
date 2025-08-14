@@ -190,6 +190,7 @@ Switch between widths using the desktop/tablet/mobile buttons or the dropdown. T
 
 See [doc/upgrade-preview-republish.md](doc/upgrade-preview-republish.md) for guidance on upgrading a shop, previewing changes and republishing.
 See [doc/edit-preview-republish.md](doc/edit-preview-republish.md) for details on editing components, previewing those edits and republishing.
+See [docs/upgrade-flow.md](docs/upgrade-flow.md) for version tracking, the diff API, using previews and republishing or rolling back upgrades.
 
 ## Inventory Management
 

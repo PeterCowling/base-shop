@@ -119,6 +119,7 @@ export declare const shopSettingsSchema: z.ZodObject<{
         regions: string[];
         windows: string[];
     }>>;
+    trackingProviders: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
     updatedAt: z.ZodString;
     updatedBy: z.ZodString;
 }, "strip", z.ZodTypeAny, {
@@ -163,6 +164,7 @@ export declare const shopSettingsSchema: z.ZodObject<{
         regions: string[];
         windows: string[];
     } | undefined;
+    trackingProviders?: string[] | undefined;
 }, {
     seo: Partial<Record<"en" | "de" | "it", {
         title?: string | undefined;
@@ -205,6 +207,7 @@ export declare const shopSettingsSchema: z.ZodObject<{
         regions: string[];
         windows: string[];
     } | undefined;
-}>; 
+    trackingProviders?: string[] | undefined;
+}>;
 export type ShopSettings = z.infer<typeof shopSettingsSchema>;
 //# sourceMappingURL=ShopSettings.d.ts.map

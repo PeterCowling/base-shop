@@ -28,6 +28,7 @@ import { defaults, CONTAINER_TYPES } from "./defaults";
 import { devicePresets, getLegacyPreset, type DevicePreset } from "@ui/utils/devicePresets";
 import { usePreviewDevice } from "@ui/hooks";
 import DeviceSelector from "@ui/components/common/DeviceSelector";
+import DynamicRenderer from "../../DynamicRenderer";
 
 interface Props {
   page: Page;
@@ -109,7 +110,6 @@ const PageBuilder = memo(function PageBuilder({
     [previewDeviceId],
   );
   const previewViewport: "desktop" | "tablet" | "mobile" = previewDevice.type;
-  const previewRef = useRef<HTMLDivElement>(null);
   const {
     viewportStyle: previewViewportStyle,
     frameClass: previewFrameClass,
@@ -347,68 +347,62 @@ const PageBuilder = memo(function PageBuilder({
         <div aria-live="polite" role="status" className="sr-only">
           {liveMessage}
         </div>
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragStart={handleDragStart}
-          onDragMove={handleDragMove}
-          onDragEnd={handleDragEnd}
-        >
-          <div
-            className={frameClass[viewport]}
-            style={viewportStyle}
-            data-tour="canvas"
+        <div className="flex flex-1 gap-4">
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragStart={handleDragStart}
+            onDragMove={handleDragMove}
+            onDragEnd={handleDragEnd}
           >
-            <PageCanvas
-              components={components}
-              selectedId={selectedId}
-              onSelectId={setSelectedId}
-              canvasRef={canvasRef}
-              dragOver={dragOver}
-              setDragOver={setDragOver}
-              onFileDrop={handleFileDrop}
-              insertIndex={insertIndex}
-              dispatch={dispatch}
-              locale={locale}
-              containerStyle={{ width: "100%" }}
-              showGrid={showGrid}
-              gridCols={gridCols}
-              viewport={viewport}
-              device={device}
-              snapPosition={snapPosition}
-            />
-          </div>
-          <DragOverlay>
-            {activeType && (
-              <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">
-                {activeType}
-              </div>
-            )}
-          </DragOverlay>
-        </DndContext>
-        {showPreview && (
-          <div className="flex flex-col gap-2">
-            <DeviceSelector
-              deviceId={previewDeviceId}
-              onChange={setPreviewDeviceId}
-              showLegacyButtons
-            />
             <div
-              className={previewFrameClass[previewViewport]}
-              style={previewViewportStyle}
+              className={`${frameClass[viewport]} shrink-0`}
+              style={viewportStyle}
+              data-tour="canvas"
             >
               <PageCanvas
-                preview
                 components={components}
+                selectedId={selectedId}
+                onSelectId={setSelectedId}
+                canvasRef={canvasRef}
+                dragOver={dragOver}
+                setDragOver={setDragOver}
+                onFileDrop={handleFileDrop}
+                insertIndex={insertIndex}
+                dispatch={dispatch}
                 locale={locale}
                 containerStyle={{ width: "100%" }}
-                viewport={previewViewport}
-                device={previewDevice}
-                canvasRef={previewRef}
+                showGrid={showGrid}
+                gridCols={gridCols}
+                viewport={viewport}
+                device={device}
+                snapPosition={snapPosition}
               />
             </div>
-          </div>
-        )}
+            <DragOverlay>
+              {activeType && (
+                <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">
+                  {activeType}
+                </div>
+              )}
+            </DragOverlay>
+          </DndContext>
+          {showPreview && (
+            <div className="flex flex-col gap-2 shrink-0">
+              <DeviceSelector
+                deviceId={previewDeviceId}
+                onChange={setPreviewDeviceId}
+                showLegacyButtons
+              />
+              <div
+                className={`${previewFrameClass[previewViewport]} shrink-0`}
+                style={previewViewportStyle}
+              >
+                <DynamicRenderer components={components} locale={locale} />
+              </div>
+            </div>
+          )}
+        </div>
         <div className="flex gap-2">
           <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>
             Undo

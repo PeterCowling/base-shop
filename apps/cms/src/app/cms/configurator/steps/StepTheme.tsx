@@ -10,6 +10,7 @@ import {
 } from "@/components/atoms/shadcn";
 import StyleEditor from "@/components/cms/StyleEditor";
 import { useCallback, useEffect, useState } from "react";
+import { getContrast } from "@/components/cms";
 import type { TokenMap } from "@ui/hooks/useTokenEditor";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -57,6 +58,10 @@ const colorPalettes: Array<{
   },
 ];
 
+function checkContrast(fg: string, bg: string): number {
+  return getContrast(fg, bg);
+}
+
 interface Props {
   themes: string[];
   prevStepId?: string;
@@ -75,6 +80,24 @@ export default function StepTheme({
   const [palette, setPalette] = useState(colorPalettes[0].name);
   const [, markComplete] = useStepCompletion("theme");
   const router = useRouter();
+
+  const resetToDefaults = useCallback(() => {
+    setPalette(colorPalettes[0].name);
+    setThemeOverrides({});
+    if (typeof window !== "undefined") {
+      try {
+        const json = localStorage.getItem(STORAGE_KEY);
+        if (json) {
+          const data = JSON.parse(json);
+          data.themeOverrides = {};
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          window.dispatchEvent(new CustomEvent("configurator:update"));
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+  }, [setThemeOverrides]);
 
   const applyPalette = useCallback(
     (name: string) => {
@@ -159,28 +182,54 @@ export default function StepTheme({
 
       {/* Palette picker – swatch buttons */}
       <div className="space-y-2">
-        <h3 className="font-medium">Color Palette</h3>
+        <div className="flex items-center justify-between">
+          <h3 className="font-medium">Color Palette</h3>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={resetToDefaults}
+          >
+            Reset to defaults
+          </Button>
+        </div>
         <div className="flex flex-wrap gap-2">
-          {colorPalettes.map((p) => (
-            <Button
-              key={p.name}
-              variant={p.name === palette ? "default" : "outline"}
-              onClick={() => setPalette(p.name)}
-              className="h-10 w-10 p-0"
-              aria-label={p.name}
-            >
-              <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
-                {Object.values(p.colors).map((c, i) => (
+          {colorPalettes.map((p) => {
+            const fgBg = checkContrast(p.colors["--color-fg"], p.colors["--color-bg"]);
+            const prim = checkContrast(
+              p.colors["--color-primary-fg"],
+              p.colors["--color-primary"]
+            );
+            const hasLowContrast = fgBg < 4.5 || prim < 4.5;
+            return (
+              <div key={p.name} className="flex flex-col items-center gap-1">
+                <Button
+                  variant={p.name === palette ? "default" : "outline"}
+                  onClick={() => setPalette(p.name)}
+                  className="h-10 w-10 p-0"
+                  aria-label={p.name}
+                >
+                  <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
+                    {Object.values(p.colors).map((c, i) => (
+                      <span
+                        // eslint-disable-next-line react/no-array-index-key
+                        key={i}
+                        className="h-1/2 w-1/2"
+                        style={{ backgroundColor: `hsl(${c})` }}
+                      />
+                    ))}
+                  </div>
+                </Button>
+                {hasLowContrast && (
                   <span
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={i}
-                    className="h-1/2 w-1/2"
-                    style={{ backgroundColor: `hsl(${c})` }}
-                  />
-                ))}
+                    className="rounded border px-1 text-[10px] text-danger"
+                    data-token="--color-danger"
+                  >
+                    Low contrast
+                  </span>
+                )}
               </div>
-            </Button>
-          ))}
+            );
+          })}
         </div>
       </div>
 

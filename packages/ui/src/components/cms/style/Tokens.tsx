@@ -74,7 +74,7 @@ export default function Tokens({
     isOverridden,
   }: TokenInfo) => {
     if (k.startsWith("--color")) {
-      let warning: JSX.Element | null = null;
+      let warning = "";
       let pairKey = "";
       if (k.startsWith("--color-bg")) {
         pairKey = `--color-fg${k.slice("--color-bg".length)}`;
@@ -88,12 +88,7 @@ export default function Tokens({
         const contrast = getContrast(v, pairVal);
         if (contrast < 4.5) {
           const suggestion = suggestContrastColor(v, pairVal);
-          warning = (
-            <span className="text-xs text-danger" data-token="--color-danger">
-              Low contrast ({contrast.toFixed(2)}:1)
-              {suggestion ? ` – try ${suggestion}` : ""}
-            </span>
-          );
+          warning = `Low contrast (${contrast.toFixed(2)}:1${suggestion ? ` – try ${suggestion}` : ""})`;
         }
       }
       return (
@@ -117,13 +112,20 @@ export default function Tokens({
                 Reset
               </button>
             )}
+            {warning && (
+              <span
+                className="rounded border px-1 text-[10px] text-danger"
+                data-token="--color-danger"
+              >
+                {warning}
+              </span>
+            )}
           </span>
           {defaultValue && (
             <span className="text-xs text-muted-foreground">
               Default: {defaultValue}
             </span>
           )}
-          {warning}
         </label>
       );
     }

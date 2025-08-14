@@ -38,6 +38,9 @@ model RentalOrder {
   flaggedForReview   Boolean? @default(false)
   trackingNumber     String?
   labelUrl           String?
+  returnDueDate      String?
+  returnReceivedAt   String?
+  lateFeeCharged     Int?
 
   @@unique([shop, sessionId])
   @@index([customerId])
@@ -64,4 +67,14 @@ model User {
   resetTokenExpiresAt DateTime?
   emailVerified Boolean @default(false)
   stripeSubscriptionId String?
+}
+
+model ReverseLogisticsEvent {
+  id        String @id @default(cuid())
+  shop      String
+  sessionId String
+  event     String
+  createdAt String
+
+  @@index([shop])
 }

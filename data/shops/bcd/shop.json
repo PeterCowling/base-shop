@@ -40,5 +40,6 @@
       "swapLimit": 2,
       "shipmentCount": 2
     }
-  ]
+  ],
+  "lateFeePolicy": { "gracePeriodDays": 3, "feeAmount": 25 }
 }

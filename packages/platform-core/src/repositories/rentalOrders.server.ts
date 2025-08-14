@@ -2,6 +2,7 @@
 import "server-only";
 
 import type { RentalOrder } from "@acme/types";
+import { nowIso } from "@acme/date-utils";
 import { prisma } from "../db";
 
 export {
@@ -19,11 +20,12 @@ async function updateStatus(
   shop: string,
   sessionId: string,
   status: NonNullable<Order["status"]>,
+  extra: Record<string, unknown> = {},
 ): Promise<Order | null> {
   try {
     const order = await prisma.rentalOrder.update({
       where: { shop_sessionId: { shop, sessionId } },
-      data: { status } as any,
+      data: { status, ...extra } as any,
     });
     return order as Order;
   } catch {
@@ -34,7 +36,8 @@ async function updateStatus(
 export const markReceived = (
   shop: string,
   sessionId: string,
-): Promise<Order | null> => updateStatus(shop, sessionId, "received");
+): Promise<Order | null> =>
+  updateStatus(shop, sessionId, "received", { returnReceivedAt: nowIso() });
 
 export const markCleaning = (
   shop: string,
@@ -55,3 +58,19 @@ export const markAvailable = (
   shop: string,
   sessionId: string,
 ): Promise<Order | null> => updateStatus(shop, sessionId, "available");
+
+export async function markLateFeeCharged(
+  shop: string,
+  sessionId: string,
+  amount: number,
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: { lateFeeCharged: amount } as any,
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
+}

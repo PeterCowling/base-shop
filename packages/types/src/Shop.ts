@@ -119,6 +119,13 @@ export const shopSchema = z
       .array(subscriptionPlanSchema)
       .default([]),
     subscriptionsEnabled: z.boolean().default(false),
+    lateFeePolicy: z
+      .object({
+        gracePeriodDays: z.number().int().nonnegative(),
+        feeAmount: z.number().int().nonnegative(),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 

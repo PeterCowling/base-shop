@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { formatTimestamp } from "@acme/date-utils";
 import { marketingEmailTemplates } from "@acme/ui";
+import DOMPurify from "dompurify";
 
 interface Campaign {
   id: string;
@@ -25,8 +26,8 @@ export default function EmailMarketingPage() {
   const [templateId, setTemplateId] = useState(
     marketingEmailTemplates[0]?.id || ""
   );
-  const [status, setStatus] = useState<string | null>(null);
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+    const [status, setStatus] = useState<string | null>(null);
+    const [campaigns, setCampaigns] = useState<Campaign[]>([]);
 
   async function loadCampaigns(s: string) {
     if (!s) return;
@@ -53,7 +54,7 @@ export default function EmailMarketingPage() {
     }
   }
 
-  async function send(e: React.FormEvent) {
+    async function send(e: React.FormEvent) {
     e.preventDefault();
     setStatus(null);
     try {
@@ -85,10 +86,14 @@ export default function EmailMarketingPage() {
     } catch {
       setStatus("Failed");
     }
-  }
+    }
 
-  return (
-    <div className="space-y-4 p-4">
+    const sanitizedBody = DOMPurify.sanitize(
+      body || "<p>Preview content</p>"
+    );
+
+    return (
+      <div className="space-y-4 p-4">
       <form onSubmit={send} className="space-y-2">
         <input
           className="w-full border p-2"
@@ -190,20 +195,16 @@ export default function EmailMarketingPage() {
           </tbody>
         </table>
       )}
-      <div className="mt-4">
-        {marketingEmailTemplates
-          .find((t) => t.id === templateId)
-          ?.render({
-            headline: subject || "",
-            content: (
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: body || "<p>Preview content</p>",
-                }}
-              />
-            ),
-          })}
+        <div className="mt-4">
+          {marketingEmailTemplates
+            .find((t) => t.id === templateId)
+            ?.render({
+              headline: subject || "",
+              content: (
+                <div dangerouslySetInnerHTML={{ __html: sanitizedBody }} />
+              ),
+            })}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }

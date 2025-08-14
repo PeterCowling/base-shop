@@ -2,6 +2,7 @@ import BlogListing from "./BlogListing";
 import ContactForm from "./ContactForm";
 import ContactFormWithMap from "./ContactFormWithMap";
 import Gallery from "./Gallery";
+import Lookbook from "./Lookbook";
 import HeroBanner from "./HeroBanner";
 import ProductCarousel, {
   getRuntimeProps as getProductCarouselRuntimeProps,
@@ -67,6 +68,7 @@ export const organismRegistry = {
   ImageSlider: { component: ImageSlider },
   CollectionList: { component: CollectionList },
   Gallery: { component: Gallery },
+  Lookbook: { component: Lookbook },
   ContactForm: { component: ContactForm },
   ContactFormWithMap: { component: ContactFormWithMap },
   BlogListing: { component: BlogListing },

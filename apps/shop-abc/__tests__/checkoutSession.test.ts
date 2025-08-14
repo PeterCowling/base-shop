@@ -1,7 +1,8 @@
 // apps/shop-abc/__tests__/checkoutSession.test.ts
 import { encodeCartCookie } from "@platform-core/src/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
-import { calculateRentalDays } from "@acme/date-utils";
+import * as dateUtils from "@acme/date-utils";
+const { calculateRentalDays } = dateUtils;
 import { POST } from "../src/app/api/checkout-session/route";
 import { findCoupon } from "@platform-core/coupons";
 import { getTaxRate } from "@platform-core/tax";
@@ -138,6 +139,22 @@ test("responds with 400 on invalid returnDate", async () => {
   expect(res.status).toBe(400);
   const body = await res.json();
   expect(body.error).toMatch(/invalid/i);
+});
+
+test("responds with 400 on past or same-day returnDate", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const spy = jest.spyOn(dateUtils, "calculateRentalDays").mockReturnValue(0);
+  const req = createRequest({ returnDate: "2025-01-01" }, cookie);
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+  const body = await res.json();
+  expect(body.error).toMatch(/invalid/i);
+  spy.mockRestore();
 });
 
 test("applies coupon discount and sets metadata", async () => {

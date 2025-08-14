@@ -211,6 +211,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch {
     return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 });
   }
+  if (rentalDays <= 0) {
+    return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 });
+  }
 
   /* 3️⃣ Build Stripe line-items & totals ------------------------------------ */
   const lineItemsNested = await Promise.all(

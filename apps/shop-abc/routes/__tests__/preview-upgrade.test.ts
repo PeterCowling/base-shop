@@ -17,7 +17,7 @@ function tokenFor(id: string, secret: string): string {
   return createHmac("sha256", secret).update(id).digest("hex");
 }
 
-test("valid upgrade token returns page JSON", async () => {
+test("token from API grants access", async () => {
   const page: Page = {
     id: "1",
     slug: "home",
@@ -33,30 +33,52 @@ test("valid upgrade token returns page JSON", async () => {
     __esModule: true,
     getPages,
   }));
+  jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
+  jest.doMock("@acme/config", () => ({
+    __esModule: true,
+    env: {
+      PREVIEW_TOKEN_SECRET: process.env.PREVIEW_TOKEN_SECRET,
+      UPGRADE_PREVIEW_TOKEN_SECRET: process.env.UPGRADE_PREVIEW_TOKEN_SECRET,
+    },
+  }));
+
+  const { GET } = await import("../../src/app/api/preview-token/route");
+  const tokenRes = await GET(new Request("http://test?pageId=1"));
+  const { token } = (await tokenRes.json()) as { token: string };
 
   const { onRequest } = await import("../../src/routes/preview/[pageId].ts");
   const res = await onRequest({
     params: { pageId: "1" },
-    request: new Request(
-      `http://test?upgrade=${tokenFor("1", "upgradesecret")}`,
-    ),
+    request: new Request(`http://test?upgrade=${token}`),
   } as any);
 
   expect(res.status).toBe(200);
   expect(await res.json()).toEqual(page);
 });
 
-test("invalid upgrade token yields 401", async () => {
+test("token for different page yields 401", async () => {
   const getPages = jest.fn(async () => []);
   jest.doMock("@platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
     getPages,
   }));
+  jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
+  jest.doMock("@acme/config", () => ({
+    __esModule: true,
+    env: {
+      PREVIEW_TOKEN_SECRET: process.env.PREVIEW_TOKEN_SECRET,
+      UPGRADE_PREVIEW_TOKEN_SECRET: process.env.UPGRADE_PREVIEW_TOKEN_SECRET,
+    },
+  }));
+
+  const { GET } = await import("../../src/app/api/preview-token/route");
+  const tokenRes = await GET(new Request("http://test?pageId=2"));
+  const { token } = (await tokenRes.json()) as { token: string };
 
   const { onRequest } = await import("../../src/routes/preview/[pageId].ts");
   const res = await onRequest({
     params: { pageId: "1" },
-    request: new Request(`http://test?upgrade=bad`),
+    request: new Request(`http://test?upgrade=${token}`),
   } as any);
 
   expect(res.status).toBe(401);

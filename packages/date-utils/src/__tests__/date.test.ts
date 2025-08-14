@@ -1,5 +1,7 @@
 import {
-  parseIsoDate,
+  parseISO,
+  format,
+  addDays,
   calculateRentalDays,
   isoDateInNDays,
   formatTimestamp,
@@ -17,16 +19,22 @@ describe('nowIso', () => {
   });
 });
 
-describe('parseIsoDate', () => {
+describe('parseISO', () => {
   test('parses valid YYYY-MM-DD string', () => {
-    const d = parseIsoDate('2025-01-02');
+    const d = parseISO('2025-01-02');
     expect(d).toBeInstanceOf(Date);
-    expect(d?.toISOString().slice(0, 10)).toBe('2025-01-02');
+    expect(format(d, 'yyyy-MM-dd')).toBe('2025-01-02');
   });
 
-  test('returns null for invalid input', () => {
-    expect(parseIsoDate('not-a-date')).toBeNull();
-    expect(parseIsoDate('2025-99-99')).toBeNull();
+  test('returns Invalid Date for invalid input', () => {
+    expect(Number.isNaN(parseISO('2025-99-99').getTime())).toBe(true);
+  });
+});
+
+describe('exported helpers', () => {
+  test('addDays and format combine', () => {
+    const d = addDays(parseISO('2025-01-01'), 1);
+    expect(format(d, 'yyyy-MM-dd')).toBe('2025-01-02');
   });
 });
 

@@ -2,7 +2,11 @@
 //
 // Shops that do not offer luxury models can omit this plugin by removing
 // "premier-shipping" from their `shippingProviders` configuration.
-import type { Plugin, ShippingRegistry } from "@acme/platform-core/plugins";
+import type {
+  Plugin,
+  ShippingRegistry,
+  ShippingRequest,
+} from "@acme/platform-core/plugins";
 
 interface PremierPickupState {
   region?: string;
@@ -10,14 +14,14 @@ interface PremierPickupState {
   window?: string;
 }
 interface PremierShippingProvider {
-  calculateShipping(): unknown;
+  calculateShipping(request: ShippingRequest): unknown;
   schedulePickup(region: string, date: string, hourWindow: string): void;
 }
 
 class PremierShipping implements PremierShippingProvider {
   private state: PremierPickupState = {};
 
-  calculateShipping() {
+  calculateShipping(_request: ShippingRequest) {
     // placeholder implementation
     return { rate: 0 };
   }
@@ -29,7 +33,7 @@ class PremierShipping implements PremierShippingProvider {
 
 const provider = new PremierShipping();
 
-const premierShippingPlugin: Plugin<any, PremierShippingProvider> = {
+const premierShippingPlugin: Plugin<any, ShippingRequest, any, any, PremierShippingProvider> = {
   id: "premier-shipping",
   name: "Premier Shipping",
   registerShipping(registry: ShippingRegistry<PremierShippingProvider>) {

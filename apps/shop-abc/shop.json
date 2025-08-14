@@ -30,11 +30,11 @@
     "token": "token"
   },
   "luxuryFeatures": {
-    "contentMerchandising": false,
+    "contentMerchandising": true,
     "raTicketing": false,
     "fraudReviewThreshold": 0,
     "requireStrongCustomerAuth": false,
     "strictReturnConditions": true
   },
-  "editorialBlog": { "enabled": false }
+  "editorialBlog": { "enabled": true }
 }

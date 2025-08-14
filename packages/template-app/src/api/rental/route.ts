@@ -4,7 +4,10 @@ import {
   addOrder,
   markReturned,
 } from "@platform-core/repositories/rentalOrders.server";
-import { readInventory } from "@platform-core/repositories/inventory.server";
+import {
+  readInventory,
+  updateInventoryItem,
+} from "@platform-core/repositories/inventory.server";
 import { readRepo as readProducts } from "@platform-core/repositories/products.server";
 import { reserveRentalInventory } from "@platform-core/orders/rentalAllocation";
 import { computeDamageFee } from "@platform-core/src/pricing";
@@ -20,12 +23,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
   }
   const shop = await readShop(SHOP_ID);
-  if (!shop.rentalInventoryAllocation) {
-    return NextResponse.json(
-      { error: "Rental allocation disabled" },
-      { status: 403 },
-    );
-  }
   const session = await stripe.checkout.sessions.retrieve(sessionId);
   const deposit = Number(session.metadata?.depositTotal ?? 0);
   const expected = session.metadata?.returnDate || undefined;
@@ -37,11 +34,31 @@ export async function POST(req: NextRequest) {
       readInventory(SHOP_ID),
       readProducts(SHOP_ID),
     ]);
-    for (const { sku, from, to } of orderItems) {
-      const skuInfo = products.find((p) => p.sku === sku);
-      if (!skuInfo) continue;
-      const items = inventory.filter((i) => i.sku === sku);
-      await reserveRentalInventory(SHOP_ID, items as any, skuInfo as any, from, to);
+    if (shop.rentalInventoryAllocation) {
+      for (const { sku, from, to } of orderItems) {
+        const skuInfo = products.find((p) => p.sku === sku);
+        if (!skuInfo) continue;
+        const items = inventory.filter((i) => i.sku === sku);
+        await reserveRentalInventory(
+          SHOP_ID,
+          items as any,
+          skuInfo as any,
+          from,
+          to,
+        );
+      }
+    } else {
+      for (const { sku } of orderItems) {
+        const item = inventory.find((i) => i.sku === sku && i.quantity > 0);
+        if (!item) continue;
+        item.quantity -= 1;
+        await updateInventoryItem(
+          SHOP_ID,
+          item.sku,
+          item.variantAttributes,
+          () => item,
+        );
+      }
     }
   }
   await addOrder(SHOP_ID, sessionId, deposit, expected);
@@ -55,13 +72,6 @@ export async function PATCH(req: NextRequest) {
   };
   if (!sessionId) {
     return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
-  }
-  const shop = await readShop(SHOP_ID);
-  if (!shop.rentalInventoryAllocation) {
-    return NextResponse.json(
-      { error: "Rental allocation disabled" },
-      { status: 403 },
-    );
   }
   const order = await markReturned(SHOP_ID, sessionId);
   if (!order) {

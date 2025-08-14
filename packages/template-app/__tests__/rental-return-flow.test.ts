@@ -1,7 +1,4 @@
 import { jest } from "@jest/globals";
-import { promises as fs } from "node:fs";
-import os from "node:os";
-import path from "node:path";
 
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
@@ -14,24 +11,53 @@ if (typeof (Response as any).json !== "function") {
 async function withShop(
   cb: (
     repo: typeof import("../../platform-core/src/repositories/rentalOrders.server")
-  ) => Promise<void>
+  ) => Promise<void>,
 ) {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shop-"));
-  await fs.mkdir(path.join(dir, "data", "shops", "bcd"), { recursive: true });
-  await fs.mkdir(path.join(dir, "data", "rental"), { recursive: true });
-  await fs.copyFile(
-    path.join(__dirname, "../../..", "data", "rental", "pricing.json"),
-    path.join(dir, "data", "rental", "pricing.json")
-  );
-  const cwd = process.cwd();
-  process.chdir(dir);
+  const orders: any[] = [];
+  const repo = {
+    readOrders: async () => orders,
+    addOrder: async (
+      shop: string,
+      sessionId: string,
+      deposit: number,
+      expected?: string,
+    ) => {
+      orders.push({ shop, sessionId, deposit, expected } as any);
+    },
+    markReturned: async (
+      shop: string,
+      sessionId: string,
+      damageFee?: number,
+    ) => {
+      const order = orders.find((o) => o.sessionId === sessionId);
+      if (!order) return null;
+      order.returnedAt = new Date().toISOString();
+      if (damageFee !== undefined) order.damageFee = damageFee;
+      return order;
+    },
+    markRefunded: async (shop: string, sessionId: string) => {
+      const order = orders.find((o) => o.sessionId === sessionId);
+      if (!order) return null;
+      order.refundedAt = new Date().toISOString();
+      return order;
+    },
+  } as any;
   jest.resetModules();
-  const repo: typeof import("../../platform-core/src/repositories//rentalOrders.server") = require("@platform-core/repositories/rentalOrders.server");
-  try {
-    await cb(repo);
-  } finally {
-    process.chdir(cwd);
-  }
+  jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    __esModule: true,
+    addOrder: repo.addOrder,
+    markReturned: repo.markReturned,
+    markRefunded: repo.markRefunded,
+    readOrders: repo.readOrders,
+  }));
+  jest.doMock("@platform-core/repositories/shops.server", () => ({
+    __esModule: true,
+    readShop: async () => ({
+      rentalInventoryAllocation: true,
+      returnsEnabled: true,
+    }),
+  }));
+  await cb(repo);
 }
 
 describe("rental order lifecycle", () => {
@@ -41,9 +67,7 @@ describe("rental order lifecycle", () => {
       const readInventory = jest
         .fn()
         .mockResolvedValue([{ sku: "sku1", quantity: 1, variantAttributes: {} }]);
-      const readProducts = jest
-        .fn()
-        .mockResolvedValue([{ sku: "sku1" }]);
+      const readProducts = jest.fn().mockResolvedValue([{ sku: "sku1" }]);
       const retrieve = jest
         .fn<Promise<any>, any[]>()
         .mockResolvedValueOnce({
@@ -69,7 +93,7 @@ describe("rental order lifecycle", () => {
             refunds: { create: refundCreate },
           },
         }),
-        { virtual: true }
+        { virtual: true },
       );
       jest.doMock("@platform-core/orders/rentalAllocation", () => ({
         __esModule: true,
@@ -82,6 +106,9 @@ describe("rental order lifecycle", () => {
       jest.doMock("@platform-core/repositories/products.server", () => ({
         __esModule: true,
         readRepo: readProducts,
+      }));
+      jest.doMock("@platform-core/src/pricing", () => ({
+        computeDamageFee: jest.fn(async () => 20),
       }));
 
       const { POST: rentalPost } = await import("../src/api/rental/route");

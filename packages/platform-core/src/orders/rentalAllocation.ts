@@ -12,11 +12,11 @@ import { updateInventoryItem } from "../repositories/inventory.server";
  */
 export async function reserveRentalInventory(
   shop: string,
-  items: Array<InventoryItem & { wearCount?: number }>,
+  items: InventoryItem[],
   sku: SKU,
   from: string,
   to: string,
-): Promise<(InventoryItem & { wearCount: number }) | null> {
+): Promise<InventoryItem | null> {
   // verify availability window
   if (
     sku.availability &&
@@ -51,7 +51,5 @@ export async function reserveRentalInventory(
     },
   );
 
-  return updated
-    ? (updated as InventoryItem & { wearCount: number })
-    : null;
+  return updated ?? null;
 }

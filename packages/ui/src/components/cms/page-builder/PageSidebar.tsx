@@ -11,11 +11,9 @@ interface Props {
 }
 
 const PageSidebar = ({ components, selectedId, dispatch }: Props) => {
-  if (!selectedId) return null;
-
   const handleChange = useCallback(
     (patch: Partial<PageComponent>) =>
-      dispatch({ type: "update", id: selectedId, patch }),
+      selectedId && dispatch({ type: "update", id: selectedId, patch }),
     [dispatch, selectedId],
   );
 
@@ -40,21 +38,32 @@ const PageSidebar = ({ components, selectedId, dispatch }: Props) => {
         paddingMobile?: string;
       },
     ) =>
-      dispatch({ type: "resize", id: selectedId, ...size }),
+      selectedId && dispatch({ type: "resize", id: selectedId, ...size }),
     [dispatch, selectedId],
   );
 
   const handleDuplicate = useCallback(() => {
-    dispatch({ type: "duplicate", id: selectedId });
+    selectedId && dispatch({ type: "duplicate", id: selectedId });
   }, [dispatch, selectedId]);
 
+  if (!selectedId) {
     return (
-      <aside className="w-72 shrink-0 space-y-2" data-tour="edit-properties">
-        <Button type="button" variant="outline" onClick={handleDuplicate}>
-          Duplicate
-        </Button>
-        <ComponentEditor
-          component={components.find((c) => c.id === selectedId)!}
+      <aside
+        className="w-72 shrink-0 p-4 text-sm text-muted-foreground"
+        data-tour="sidebar"
+      >
+        Select a component to edit its properties.
+      </aside>
+    );
+  }
+
+  return (
+    <aside className="w-72 shrink-0 space-y-2" data-tour="sidebar">
+      <Button type="button" variant="outline" onClick={handleDuplicate}>
+        Duplicate
+      </Button>
+      <ComponentEditor
+        component={components.find((c) => c.id === selectedId)!}
         onChange={handleChange}
         onResize={handleResize}
       />

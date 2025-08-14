@@ -5,7 +5,8 @@ import { Button, Input, Textarea, Checkbox } from "@/components/atoms/shadcn";
 import { updateShop } from "@cms/actions/shops.server";
 import { shopSchema } from "@cms/actions/schemas";
 import type { Shop } from "@acme/types";
-import { ChangeEvent, FormEvent, useState } from "react";
+import Link from "next/link";
+import { ChangeEvent, FormEvent, useMemo, useState } from "react";
 
 interface Props {
   shop: string;
@@ -20,6 +21,20 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
   );
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+
+  const tokenRows = useMemo(() => {
+    const defaults = info.themeDefaults ?? {};
+    const overrides = info.themeOverrides ?? {};
+    const tokens = Array.from(
+      new Set([...Object.keys(defaults), ...Object.keys(overrides)]),
+    );
+    return tokens.map((token) => ({
+      token,
+      defaultValue: defaults[token],
+      overrideValue: overrides[token],
+    }));
+    // note: depends on info to update when tokens change
+  }, [info.themeDefaults, info.themeOverrides]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -255,34 +270,52 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
           </span>
         )}
       </label>
-      <label className="flex flex-col gap-1">
-        <span>Theme Defaults (JSON)</span>
-        <Textarea
+      <div className="col-span-2 flex flex-col gap-1">
+        <div className="flex items-center justify-between">
+          <span>Theme Tokens</span>
+          <Button asChild variant="link" className="h-auto p-0 text-primary">
+            <Link href={`/cms/shop/${shop}/themes`}>Edit Theme</Link>
+          </Button>
+        </div>
+        <table className="mt-2 w-full text-sm">
+          <thead>
+            <tr className="text-left">
+              <th className="px-2 py-1">Token</th>
+              <th className="px-2 py-1">Default</th>
+              <th className="px-2 py-1">Override</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tokenRows.map(({ token, defaultValue, overrideValue }) => (
+              <tr key={token}>
+                <td className="border-t px-2 py-1 font-medium">{token}</td>
+                <td className="border-t px-2 py-1">{defaultValue}</td>
+                <td className="border-t px-2 py-1">{overrideValue ?? ""}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <input
+          type="hidden"
           name="themeDefaults"
-          defaultValue={JSON.stringify(info.themeDefaults ?? {}, null, 2)}
-          readOnly
-          rows={4}
+          value={JSON.stringify(info.themeDefaults ?? {})}
+        />
+        <input
+          type="hidden"
+          name="themeOverrides"
+          value={JSON.stringify(info.themeOverrides ?? {})}
         />
         {errors.themeDefaults && (
           <span className="text-sm text-red-600">
             {errors.themeDefaults.join("; ")}
           </span>
         )}
-      </label>
-      <label className="flex flex-col gap-1">
-        <span>Theme Overrides (JSON)</span>
-        <Textarea
-          name="themeOverrides"
-          defaultValue={JSON.stringify(info.themeOverrides ?? {}, null, 2)}
-          readOnly
-          rows={4}
-        />
         {errors.themeOverrides && (
           <span className="text-sm text-red-600">
             {errors.themeOverrides.join("; ")}
           </span>
         )}
-      </label>
+      </div>
       <label className="flex flex-col gap-1">
         <span>Filter Mappings (JSON)</span>
         <Textarea

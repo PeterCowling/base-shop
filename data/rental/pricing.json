@@ -8,5 +8,10 @@
     "scuff": 20,
     "tear": 50,
     "lost": "deposit"
+  },
+  "coverage": {
+    "scuff": 5,
+    "tear": 10,
+    "lost": "deposit"
   }
 }

@@ -9,6 +9,7 @@
   "taxProviders": ["taxjar"],
   "priceOverrides": {},
   "localeOverrides": {},
+  "coverageIncluded": true,
   "componentVersions": {},
   "lastUpgrade": "1970-01-01T00:00:00.000Z",
   "sanityBlog": {

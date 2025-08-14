@@ -15,6 +15,7 @@
     "./stripe-webhook": "./src/stripe-webhook.ts"
   },
   "dependencies": {
+    "@acme/types": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/email": "workspace:*",
     "@acme/shared-utils": "workspace:*",

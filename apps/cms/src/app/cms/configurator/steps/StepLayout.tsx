@@ -6,7 +6,7 @@ import PageBuilder from "@/components/cms/PageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
 import { apiRequest } from "../lib/api";
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect, useCallback } from "react";
 import { Toast, Spinner } from "@/components/atoms";
 import { CheckIcon } from "@radix-ui/react-icons";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -31,11 +31,6 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
     shopId,
   } = state;
   const themeStyle = useThemeLoader();
-  const setHeaderComponents = (v: PageComponent[]) => update("headerComponents", v);
-  const setHeaderPageId = (v: string | null) => update("headerPageId", v);
-  const setFooterComponents = (v: PageComponent[]) => update("footerComponents", v);
-  const setFooterPageId = (v: string | null) => update("footerPageId", v);
-
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
     message: "",
@@ -44,10 +39,55 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
   const router = useRouter();
   const [headerSaving, setHeaderSaving] = useState(false);
   const [headerError, setHeaderError] = useState<string | null>(null);
-  const [headerSaved, setHeaderSaved] = useState(false);
+  const [headerSaved, setHeaderSaved] = useState(true);
   const [footerSaving, setFooterSaving] = useState(false);
   const [footerError, setFooterError] = useState<string | null>(null);
-  const [footerSaved, setFooterSaved] = useState(false);
+  const [footerSaved, setFooterSaved] = useState(true);
+
+  const setHeaderComponents = useCallback(
+    (v: PageComponent[]) => {
+      setHeaderSaved(false);
+      update("headerComponents", v);
+    },
+    [update],
+  );
+  const setHeaderPageId = (v: string | null) => update("headerPageId", v);
+  const setFooterComponents = useCallback(
+    (v: PageComponent[]) => {
+      setFooterSaved(false);
+      update("footerComponents", v);
+    },
+    [update],
+  );
+  const setFooterPageId = (v: string | null) => update("footerPageId", v);
+
+  const hasUnsavedChanges =
+    headerSaving ||
+    footerSaving ||
+    !headerSaved ||
+    !footerSaved;
+
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [hasUnsavedChanges]);
+
+  const handleReturn = useCallback(() => {
+    if (
+      hasUnsavedChanges &&
+      !window.confirm("You have unsaved changes. Continue?")
+    ) {
+      return;
+    }
+    markComplete(true);
+    router.push("/cms/configurator");
+  }, [hasUnsavedChanges, markComplete, router]);
 
   return (
     <fieldset className="space-y-4">
@@ -175,10 +215,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
       {/* Navigation ------------------------------------------------------ */}
       <div className="flex justify-end">
         <Button
-          onClick={() => {
-            markComplete(true);
-            router.push("/cms/configurator");
-          }}
+          onClick={handleReturn}
           disabled={headerSaving || footerSaving}
         >
           {headerSaving || footerSaving && (

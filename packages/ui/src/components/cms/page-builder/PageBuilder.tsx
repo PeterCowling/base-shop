@@ -274,7 +274,7 @@ const PageBuilder = memo(function PageBuilder({
     if (saveDebounceRef.current) {
       clearTimeout(saveDebounceRef.current);
     }
-    saveDebounceRef.current = window.setTimeout(handleAutoSave, 1000);
+    saveDebounceRef.current = window.setTimeout(handleAutoSave, 2000);
     return () => {
       if (saveDebounceRef.current) {
         clearTimeout(saveDebounceRef.current);
@@ -318,16 +318,6 @@ const PageBuilder = memo(function PageBuilder({
             setGridCols={setGridCols}
           />
           <div className="flex items-center gap-2">
-            {autoSaveState === "saving" && (
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Spinner className="h-4 w-4" /> Saving…
-              </div>
-            )}
-            {autoSaveState === "saved" && (
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <CheckIcon className="h-4 w-4 text-green-500" /> Saved
-              </div>
-            )}
             <Button
               variant="outline"
               size="sm"
@@ -411,9 +401,21 @@ const PageBuilder = memo(function PageBuilder({
             Redo
           </Button>
           <div className="flex flex-col gap-1">
-            <Button onClick={() => onSave(formData)} disabled={saving}>
-              {saving ? <Spinner className="h-4 w-4" /> : "Save"}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button onClick={() => onSave(formData)} disabled={saving}>
+                {saving ? <Spinner className="h-4 w-4" /> : "Save"}
+              </Button>
+              {autoSaveState === "saving" && (
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <Spinner className="h-4 w-4" /> Saving…
+                </div>
+              )}
+              {autoSaveState === "saved" && (
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <CheckIcon className="h-4 w-4 text-green-500" /> All changes saved
+                </div>
+              )}
+            </div>
             {saveError && (
               <p className="text-sm text-red-500">{saveError}</p>
             )}

@@ -60,7 +60,7 @@ const buildLineItemsForItem = async (
     {
       price_data: {
         currency: currency.toLowerCase(),
-        unit_amount: unitConv * 100,
+        unit_amount: Math.round(unitConv * 100),
         product_data: { name: baseName },
       },
       quantity: item.qty,
@@ -68,7 +68,7 @@ const buildLineItemsForItem = async (
     {
       price_data: {
         currency: currency.toLowerCase(),
-        unit_amount: depositConv * 100,
+        unit_amount: Math.round(depositConv * 100),
         product_data: { name: `${baseName} deposit` },
       },
       quantity: item.qty,

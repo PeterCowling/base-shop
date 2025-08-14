@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { exampleProps } from "./example-props";
 
 interface UpgradeComponent {
   file: string;
@@ -8,15 +9,6 @@ interface UpgradeComponent {
   oldChecksum: string;
   newChecksum: string;
 }
-
-const exampleProps: Record<string, any> = {
-  Breadcrumbs: {
-    items: [
-      { label: "Home", href: "/" },
-      { label: "Shop", href: "/shop" },
-    ],
-  },
-};
 
 class PreviewErrorBoundary extends React.Component<
   { children: React.ReactNode },

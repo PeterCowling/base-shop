@@ -7,15 +7,39 @@ import {
 import { paymentEnvSchema } from "./payments";
 import { shippingEnvSchema } from "./shipping";
 
-export const mergeEnvSchemas = (
-  ...schemas: z.ZodObject<any, any, any, any, any>[]
-) => schemas.reduce((acc, s) => acc.merge(s), z.object({}));
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I,
+) => void
+  ? I
+  : never;
 
-export const envSchema = mergeEnvSchemas(
+type MergedShape<T extends readonly z.ZodObject<any, any, any, any, any>[]> =
+  UnionToIntersection<
+    {
+      [K in keyof T]: T[K] extends z.ZodObject<infer S, any, any, any, any>
+        ? S
+        : never;
+    }[number]
+  >;
+
+export const mergeEnvSchemas = <
+  T extends readonly z.ZodObject<any, any, any, any, any>[]
+>(
+  ...schemas: T
+): z.ZodObject<MergedShape<T>> =>
+  schemas.reduce((acc, s) => acc.merge(s), z.object({})) as z.ZodObject<
+    MergedShape<T>
+  >;
+
+const mergedEnvSchema = mergeEnvSchemas(
   coreEnvBaseSchema,
   paymentEnvSchema,
   shippingEnvSchema,
-).superRefine(depositReleaseEnvRefinement);
+);
+
+export const envSchema = mergedEnvSchema.superRefine(
+  depositReleaseEnvRefinement,
+);
 
 const parsed = envSchema.safeParse(process.env);
 if (!parsed.success) {

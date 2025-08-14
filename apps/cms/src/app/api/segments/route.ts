@@ -1,21 +1,19 @@
+import "@acme/lib/initZod";
 import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
 import { promises as fs } from "node:fs";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
-
-interface SegmentDef {
-  id: string;
-  name: string;
-  filters: { field: string; value: string }[];
-}
+import { z } from "zod";
+import { parseJsonBody } from "@shared-utils";
+import { segmentSchema, type Segment } from "@acme/types";
 
 function segmentsPath(shop: string): string {
   shop = validateShopName(shop);
   return path.join(DATA_ROOT, shop, "segments.json");
 }
 
-async function readSegments(shop: string): Promise<SegmentDef[]> {
+async function readSegments(shop: string): Promise<Segment[]> {
   try {
     const buf = await fs.readFile(segmentsPath(shop), "utf8");
     const json = JSON.parse(buf);
@@ -25,34 +23,34 @@ async function readSegments(shop: string): Promise<SegmentDef[]> {
   }
 }
 
-async function writeSegments(shop: string, items: SegmentDef[]): Promise<void> {
+async function writeSegments(shop: string, items: Segment[]): Promise<void> {
   await fs.mkdir(path.dirname(segmentsPath(shop)), { recursive: true });
   await fs.writeFile(segmentsPath(shop), JSON.stringify(items, null, 2), "utf8");
 }
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  const shop = req.nextUrl.searchParams.get("shop");
-  if (!shop) {
+  const shopParam = req.nextUrl.searchParams.get("shop");
+  const parsed = z.string().min(1).safeParse(shopParam);
+  if (!parsed.success) {
     return NextResponse.json({ error: "Missing shop" }, { status: 400 });
   }
-  const segments = await readSegments(shop);
+  const segments = await readSegments(parsed.data);
   return NextResponse.json({ segments });
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  const { shop, id, name, filters } = (await req.json().catch(() => ({}))) as {
-    shop?: string;
-    id?: string;
-    name?: string;
-    filters?: { field: string; value: string }[];
-  };
-  if (!shop || !id || !Array.isArray(filters)) {
-    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
-  }
+  const parsed = await parseJsonBody(
+    req,
+    segmentSchema.extend({ shop: z.string() }),
+    "1mb",
+  );
+  if (!parsed.success) return parsed.response;
+  const { shop, id, name, filters } = parsed.data;
   const segments = await readSegments(shop);
-  const def: SegmentDef = { id, name: name || id, filters };
+  const def: Segment = { id, name: name ?? id, filters };
   const idx = segments.findIndex((s) => s.id === id);
-  if (idx >= 0) segments[idx] = def; else segments.push(def);
+  if (idx >= 0) segments[idx] = def;
+  else segments.push(def);
   await writeSegments(shop, segments);
   return NextResponse.json({ ok: true });
 }

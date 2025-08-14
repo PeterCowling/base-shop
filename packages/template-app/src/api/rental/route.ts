@@ -20,19 +20,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
   }
   const shop = await readShop(SHOP_ID);
-  if (!shop.rentalInventoryAllocation) {
-    return NextResponse.json(
-      { error: "Rental allocation disabled" },
-      { status: 403 },
-    );
-  }
   const session = await stripe.checkout.sessions.retrieve(sessionId);
   const deposit = Number(session.metadata?.depositTotal ?? 0);
   const expected = session.metadata?.returnDate || undefined;
 
   const orderItems: Array<{ sku: string; from: string; to: string }> =
     session.metadata?.items ? JSON.parse(session.metadata.items) : [];
-  if (orderItems.length) {
+  if (shop.rentalInventoryAllocation && orderItems.length) {
     const [inventory, products] = await Promise.all([
       readInventory(SHOP_ID),
       readProducts(SHOP_ID),
@@ -41,7 +35,13 @@ export async function POST(req: NextRequest) {
       const skuInfo = products.find((p) => p.sku === sku);
       if (!skuInfo) continue;
       const items = inventory.filter((i) => i.sku === sku);
-      await reserveRentalInventory(SHOP_ID, items as any, skuInfo as any, from, to);
+      await reserveRentalInventory(
+        SHOP_ID,
+        items as any,
+        skuInfo as any,
+        from,
+        to,
+      );
     }
   }
   await addOrder(SHOP_ID, sessionId, deposit, expected);
@@ -57,12 +57,6 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
   }
   const shop = await readShop(SHOP_ID);
-  if (!shop.rentalInventoryAllocation) {
-    return NextResponse.json(
-      { error: "Rental allocation disabled" },
-      { status: 403 },
-    );
-  }
   const order = await markReturned(SHOP_ID, sessionId);
   if (!order) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });

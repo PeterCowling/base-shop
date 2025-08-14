@@ -15,6 +15,7 @@ import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import { useThemeLoader } from "../hooks/useThemeLoader";
+import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 
 const colorPalettes: Array<{
   name: string;
@@ -107,6 +108,20 @@ export default function StepTheme({
         onValueChange={(v) => {
           update("theme", v);
           setThemeOverrides({});
+          if (typeof window !== "undefined") {
+            try {
+              const json = localStorage.getItem(STORAGE_KEY);
+              if (json) {
+                const data = JSON.parse(json);
+                data.theme = v;
+                data.themeOverrides = {};
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                window.dispatchEvent(new CustomEvent("configurator:update"));
+              }
+            } catch {
+              /* ignore */
+            }
+          }
         }}
       >
         <SelectTrigger className="w-full">
@@ -115,7 +130,14 @@ export default function StepTheme({
         <SelectContent>
           {themes.map((t) => (
             <SelectItem key={t} value={t}>
-              {t}
+              <div className="flex items-center gap-2">
+                <img
+                  src={`/themes/${t}.svg`}
+                  alt={`${t} preview`}
+                  className="h-6 w-6 rounded object-cover"
+                />
+                {t}
+              </div>
             </SelectItem>
           ))}
         </SelectContent>

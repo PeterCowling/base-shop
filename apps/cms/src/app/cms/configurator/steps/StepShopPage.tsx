@@ -17,9 +17,14 @@ import { useState } from "react";
 import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 
 interface Props {
-  pageTemplates: Array<{ name: string; components: PageComponent[] }>;
+  pageTemplates: Array<{
+    name: string;
+    components: PageComponent[];
+    preview: string;
+  }>;
   shopLayout: string;
   setShopLayout: (v: string) => void;
   shopComponents: PageComponent[];
@@ -65,12 +70,23 @@ export default function StepShopPage({
           const layout = val === "blank" ? "" : val;
           setShopLayout(layout);
           const tpl = pageTemplates.find((t) => t.name === layout);
-          if (tpl) {
-            setShopComponents(
-              tpl.components.map((c) => ({ ...c, id: ulid() }))
-            );
-          } else {
-            setShopComponents([]);
+          const comps = tpl
+            ? tpl.components.map((c) => ({ ...c, id: ulid() }))
+            : [];
+          setShopComponents(comps);
+          if (typeof window !== "undefined") {
+            try {
+              const json = localStorage.getItem(STORAGE_KEY);
+              if (json) {
+                const data = JSON.parse(json);
+                data.shopLayout = layout;
+                data.shopComponents = comps;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                window.dispatchEvent(new CustomEvent("configurator:update"));
+              }
+            } catch {
+              /* ignore */
+            }
           }
         }}
       >
@@ -81,7 +97,14 @@ export default function StepShopPage({
           <SelectItem value="blank">Blank</SelectItem>
           {pageTemplates.map((t) => (
             <SelectItem key={t.name} value={t.name}>
-              {t.name}
+              <div className="flex items-center gap-2">
+                <img
+                  src={t.preview}
+                  alt={`${t.name} preview`}
+                  className="h-8 w-8 rounded object-cover"
+                />
+                {t.name}
+              </div>
             </SelectItem>
           ))}
         </SelectContent>

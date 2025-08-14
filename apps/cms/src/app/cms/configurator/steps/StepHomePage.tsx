@@ -18,9 +18,14 @@ import { useEffect, useState } from "react";
 import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 
 interface Props {
-  pageTemplates: Array<{ name: string; components: PageComponent[] }>;
+  pageTemplates: Array<{
+    name: string;
+    components: PageComponent[];
+    preview: string;
+  }>;
   homeLayout: string;
   setHomeLayout: (v: string) => void;
   components: PageComponent[];
@@ -99,10 +104,23 @@ export default function StepHomePage({
           const layout = val === "blank" ? "" : val;
           setHomeLayout(layout);
           const tpl = pageTemplates.find((t) => t.name === layout);
-          if (tpl) {
-            setComponents(tpl.components.map((c) => ({ ...c, id: ulid() })));
-          } else {
-            setComponents([]);
+          const comps = tpl
+            ? tpl.components.map((c) => ({ ...c, id: ulid() }))
+            : [];
+          setComponents(comps);
+          if (typeof window !== "undefined") {
+            try {
+              const json = localStorage.getItem(STORAGE_KEY);
+              if (json) {
+                const data = JSON.parse(json);
+                data.homeLayout = layout;
+                data.components = comps;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                window.dispatchEvent(new CustomEvent("configurator:update"));
+              }
+            } catch {
+              /* ignore */
+            }
           }
         }}
       >
@@ -113,7 +131,14 @@ export default function StepHomePage({
           <SelectItem value="blank">Blank</SelectItem>
           {pageTemplates.map((t) => (
             <SelectItem key={t.name} value={t.name}>
-              {t.name}
+              <div className="flex items-center gap-2">
+                <img
+                  src={t.preview}
+                  alt={`${t.name} preview`}
+                  className="h-8 w-8 rounded object-cover"
+                />
+                {t.name}
+              </div>
             </SelectItem>
           ))}
         </SelectContent>

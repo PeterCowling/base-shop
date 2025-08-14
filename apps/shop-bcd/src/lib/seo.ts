@@ -4,8 +4,14 @@ import type { ShopSettings } from "@acme/types";
 import type { NextSeoProps } from "next-seo";
 import { env } from "@acme/config";
 
-interface ExtendedSeoProps extends Partial<NextSeoProps> {
+interface OpenGraphImageProps {
+  image?: string;
+}
+
+interface ExtendedSeoProps
+  extends Omit<Partial<NextSeoProps>, "openGraph"> {
   canonicalBase?: string;
+  openGraph?: OpenGraphImageProps & NextSeoProps["openGraph"];
 }
 
 const fallback: NextSeoProps = {
@@ -18,7 +24,7 @@ const fallback: NextSeoProps = {
 
 export async function getSeo(
   locale: Locale,
-  pageSeo: Partial<NextSeoProps> = {}
+  pageSeo: Partial<ExtendedSeoProps> = {}
 ): Promise<NextSeoProps> {
   const shop = env.NEXT_PUBLIC_SHOP_ID || "default";
   const settings: ShopSettings = await getShopSettings(shop);

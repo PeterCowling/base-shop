@@ -36,11 +36,19 @@ export async function POST(
       data.SANITY_DATASET &&
       data.SANITY_TOKEN
     ) {
-      await setupSanityBlog({
-        projectId: data.SANITY_PROJECT_ID,
-        dataset: data.SANITY_DATASET,
-        token: data.SANITY_TOKEN,
-      }, data.ENABLE_EDITORIAL === "true").catch((err) => {
+      await setupSanityBlog(
+        {
+          projectId: data.SANITY_PROJECT_ID,
+          dataset: data.SANITY_DATASET,
+          token: data.SANITY_TOKEN,
+        },
+        {
+          enabled: data.ENABLE_EDITORIAL === "true",
+          ...(data.PROMOTE_SCHEDULE
+            ? { promoteSchedule: data.PROMOTE_SCHEDULE }
+            : {}),
+        },
+      ).catch((err) => {
         console.error("[env] failed to setup Sanity blog", err);
       });
     }

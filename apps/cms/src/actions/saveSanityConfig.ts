@@ -3,7 +3,10 @@
 
 import { verifyCredentials } from "@acme/plugin-sanity";
 import { getShopById, updateShopInRepo } from "@platform-core/src/repositories/shop.server";
-import { setSanityConfig } from "@platform-core/src/shops";
+import {
+  setSanityConfig,
+  setEditorialBlog,
+} from "@platform-core/src/shops";
 import { ensureAuthorized } from "./common/auth";
 import { setupSanityBlog } from "./setupSanityBlog";
 
@@ -25,17 +28,22 @@ export async function saveSanityConfig(
   const aclMode = String(formData.get("aclMode") ?? "public");
   const createDataset = String(formData.get("createDataset") ?? "false") === "true";
   const enableEditorialRaw = formData.get("enableEditorial");
-  const enableEditorial =
+  const promoteScheduleRaw = formData.get("promoteSchedule");
+  const editorialEnabled =
     enableEditorialRaw == null
-      ? Boolean(shop.enableEditorial)
+      ? Boolean(shop.editorialBlog?.enabled)
       : enableEditorialRaw === "on" || enableEditorialRaw === "true";
+  const promoteSchedule =
+    promoteScheduleRaw == null || String(promoteScheduleRaw) === ""
+      ? undefined
+      : String(promoteScheduleRaw);
 
   const config = { projectId, dataset, token };
 
   if (createDataset) {
     const setup = await setupSanityBlog(
       config,
-      Boolean(shop.enableEditorial),
+      { enabled: editorialEnabled, ...(promoteSchedule ? { promoteSchedule } : {}) },
       aclMode as "public" | "private",
     );
     if (!setup.success) {
@@ -50,8 +58,23 @@ export async function saveSanityConfig(
       return { error: "Invalid Sanity credentials", errorCode: "INVALID_CREDENTIALS" };
     }
   }
-  const updated = setSanityConfig(shop, config);
-  updated.enableEditorial = enableEditorial;
+  const updated = setEditorialBlog(setSanityConfig(shop, config), {
+    enabled: editorialEnabled,
+    ...(promoteSchedule ? { promoteSchedule } : {}),
+  });
+  // maintain legacy flag
+  (updated as any).enableEditorial = editorialEnabled;
+  if (promoteSchedule) {
+    try {
+      await fetch(`/api/shops/${shopId}/editorial/promote`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ schedule: promoteSchedule }),
+      });
+    } catch (err) {
+      console.error("[saveSanityConfig] failed to schedule promotion", err);
+    }
+  }
   await updateShopInRepo(shopId, updated);
 
   return { message: "Sanity connected" };

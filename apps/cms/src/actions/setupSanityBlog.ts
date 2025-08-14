@@ -27,12 +27,23 @@ interface Result {
  */
 export async function setupSanityBlog(
   creds: SanityCredentials,
-  enableEditorial: boolean,
+  editorial?: { enabled: boolean; promoteSchedule?: string },
   aclMode: "public" | "private" = "public",
 ): Promise<Result> {
   "use server";
   await ensureAuthorized();
-  if (!enableEditorial) return { success: true };
+  if (!editorial?.enabled) return { success: true };
+  if (editorial.promoteSchedule) {
+    try {
+      await fetch(`/api/editorial/promote`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ schedule: editorial.promoteSchedule }),
+      });
+    } catch (err) {
+      console.error("[setupSanityBlog] failed to schedule promotion", err);
+    }
+  }
 
   const { projectId, dataset, token } = creds;
 

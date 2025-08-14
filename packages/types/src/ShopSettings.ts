@@ -62,6 +62,13 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    editorialBlog: z
+      .object({
+        enabled: z.boolean(),
+        promoteSchedule: z.string().optional(),
+      })
+      .strict()
+      .optional(),
     /** Tracking providers enabled for shipment/return tracking */
     trackingProviders: z.array(z.string()).optional(),
     updatedAt: z.string(),

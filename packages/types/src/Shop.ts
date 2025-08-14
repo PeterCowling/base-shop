@@ -85,6 +85,13 @@ export const shopSchema = z
       .array(z.object({ label: z.string(), url: z.string() }).strict())
       .optional(),
     sanityBlog: sanityBlogConfigSchema.optional(),
+    editorialBlog: z
+      .object({
+        enabled: z.boolean(),
+        promoteSchedule: z.string().optional(),
+      })
+      .strict()
+      .optional(),
     enableEditorial: z.boolean().optional(),
     domain: shopDomainSchema.optional(),
     returnPolicyUrl: z.string().url().optional(),

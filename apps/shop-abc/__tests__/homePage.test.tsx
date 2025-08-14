@@ -32,7 +32,10 @@ test("Home receives components from pages repo", async () => {
   (getPages as jest.Mock).mockResolvedValue([
     { slug: "home", components } as any,
   ]);
-  (readShop as jest.Mock).mockResolvedValue({ id: "abc", enableEditorial: false });
+  (readShop as jest.Mock).mockResolvedValue({
+    id: "abc",
+    editorialBlog: { enabled: false },
+  });
 
   const element = await Page({ params: { lang: "en" } });
 

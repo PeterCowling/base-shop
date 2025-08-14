@@ -6,6 +6,7 @@
   "themeOverrides": {},
   "filterMappings": {},
   "shippingProviders": ["ups", "premier-shipping"],
+  "showCleaningTransparency": true,
   "premierDelivery": {
     "regions": ["us-east"],
     "windows": ["10-11", "11-12"]

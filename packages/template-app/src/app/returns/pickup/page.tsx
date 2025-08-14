@@ -1,5 +1,6 @@
 import { getReturnLogistics } from "@platform-core/returnLogistics";
 import CleaningInfo from "../../../components/CleaningInfo";
+import shop from "../../../../shop.json";
 
 export const metadata = { title: "Schedule pickup" };
 
@@ -33,7 +34,7 @@ export default async function PickupPage({
           </button>
         </form>
       )}
-      <CleaningInfo />
+      {shop.showCleaningTransparency && <CleaningInfo />}
     </div>
   );
 }

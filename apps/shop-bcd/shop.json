@@ -6,6 +6,7 @@
   "themeOverrides": {},
   "filterMappings": {},
   "shippingProviders": ["dhl"],
+  "showCleaningTransparency": true,
   "billingProvider": "stripe",
   "priceOverrides": {},
   "localeOverrides": {},

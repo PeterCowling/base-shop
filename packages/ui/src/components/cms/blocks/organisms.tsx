@@ -43,6 +43,7 @@ import ProductBundle, {
   getRuntimeProps as getProductBundleRuntimeProps,
 } from "./ProductBundle";
 import ProductFilter from "./ProductFilter";
+import type { BlockRegistryEntry } from "./types";
 
 export const organismRegistry = {
   AnnouncementBar: { component: AnnouncementBar },
@@ -95,6 +96,6 @@ export const organismRegistry = {
     getRuntimeProps: getProductBundleRuntimeProps,
   },
   ProductFilter: { component: ProductFilter },
-} as const;
+} as const satisfies Record<string, BlockRegistryEntry<any>>;
 
 export type OrganismBlockType = keyof typeof organismRegistry;

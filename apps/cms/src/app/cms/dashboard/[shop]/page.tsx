@@ -7,6 +7,7 @@ import { Progress } from "@acme/ui";
 import { CampaignFilter } from "./components/CampaignFilter.client";
 import { Charts } from "./components/Charts.client";
 import { buildMetrics } from "@cms/lib/analytics";
+import { formatCurrency } from "@acme/shared-utils";
 
 export default async function ShopDashboard({
   params,
@@ -29,8 +30,8 @@ export default async function ShopDashboard({
     new Set(
       events
         .map((e) => (typeof e.campaign === "string" ? e.campaign : null))
-        .filter(Boolean) as string[],
-    ),
+        .filter(Boolean) as string[]
+    )
   );
 
   const selected = searchParams?.campaign;
@@ -85,7 +86,9 @@ export default async function ShopDashboard({
                     Email clicks
                   </span>
                   <Progress
-                    value={(metrics.totals.emailClicks / metrics.maxTotal) * 100}
+                    value={
+                      (metrics.totals.emailClicks / metrics.maxTotal) * 100
+                    }
                     label={String(metrics.totals.emailClicks)}
                   />
                 </div>
@@ -94,7 +97,9 @@ export default async function ShopDashboard({
                     Campaign sales
                   </span>
                   <Progress
-                    value={(metrics.totals.campaignSales / metrics.maxTotal) * 100}
+                    value={
+                      (metrics.totals.campaignSales / metrics.maxTotal) * 100
+                    }
                     label={String(metrics.totals.campaignSales)}
                   />
                 </div>
@@ -135,8 +140,9 @@ export default async function ShopDashboard({
             <div key={c} className="mb-8">
               <h3 className="text-lg font-semibold">Campaign: {c}</h3>
               <p className="mb-2 text-sm">
-                Traffic: {totalTraffic} • Revenue: {totalRevenue.toFixed(2)} •
-                Conversion: {conversionRate.toFixed(2)}%
+                Traffic: {totalTraffic} • Revenue:{" "}
+                {formatCurrency(totalRevenue)} • Conversion:{" "}
+                {conversionRate.toFixed(2)}%
               </p>
               <Charts
                 traffic={metrics.traffic}
@@ -166,4 +172,3 @@ export default async function ShopDashboard({
     </div>
   );
 }
-

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { SKU } from "@acme/types";
+import { formatCurrency } from "@acme/shared-utils";
 
 interface Props {
   slug: string;
@@ -16,7 +17,9 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
     async function load() {
       setLoading(true);
       try {
-        const res = await fetch(`/api/products?slug=${encodeURIComponent(slug)}`);
+        const res = await fetch(
+          `/api/products?slug=${encodeURIComponent(slug)}`
+        );
         if (!res.ok) throw new Error("Failed to load product");
         const data: SKU = await res.json();
         if (active) {
@@ -42,7 +45,9 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
 
   if (loading) return <div className="border p-2">Loading…</div>;
   if (error || !product)
-    return <div className="border p-2 text-red-500">{error ?? "Not found"}</div>;
+    return (
+      <div className="border p-2 text-red-500">{error ?? "Not found"}</div>
+    );
   const available = (product.stock ?? 0) > 0;
   return (
     <div className="flex gap-2 border p-2">
@@ -55,10 +60,8 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
       )}
       <div className="space-y-1">
         <div className="font-semibold">{product.title}</div>
-        <div>{(product.price / 100).toFixed(2)}</div>
-        <div className="text-sm">
-          {available ? "In stock" : "Out of stock"}
-        </div>
+        <div>{formatCurrency(product.price)}</div>
+        <div className="text-sm">{available ? "In stock" : "Out of stock"}</div>
       </div>
     </div>
   );

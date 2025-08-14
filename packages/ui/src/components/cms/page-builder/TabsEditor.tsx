@@ -1,14 +1,14 @@
-import type { PageComponent } from "@acme/types";
+import type { TabsComponent } from "@acme/types";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
 
 interface Props {
-  component: PageComponent;
-  onChange: (patch: Partial<PageComponent>) => void;
+  component: TabsComponent;
+  onChange: (patch: Partial<TabsComponent>) => void;
 }
 
 export default function TabsEditor({ component, onChange }: Props) {
-  const labels = (component as any).labels ?? [];
-  const active = (component as any).active ?? 0;
+  const labels = component.labels ?? [];
+  const active = component.active ?? 0;
   return (
     <>
       {labels.map((label: string, i: number) => (
@@ -27,7 +27,7 @@ export default function TabsEditor({ component, onChange }: Props) {
             variant="outline"
             onClick={() => {
               const copy = labels.filter((_: string, idx: number) => idx !== i);
-              const patch: Partial<PageComponent> = { labels: copy };
+              const patch: Partial<TabsComponent> = { labels: copy };
               if (active >= copy.length) patch.active = 0;
               onChange(patch);
             }}

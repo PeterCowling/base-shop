@@ -13,6 +13,11 @@ import useCanvasResize from "./useCanvasResize";
 import useCanvasDrag from "./useCanvasDrag";
 import type { Action } from "./state";
 
+type TextComponent = Extract<
+  PageComponent,
+  { type: "Text" }
+> & { text?: string | Record<string, string>; [key: string]: unknown };
+
 const TextBlock = memo(function TextBlock({
   component,
   index,
@@ -26,7 +31,7 @@ const TextBlock = memo(function TextBlock({
   gridCols,
   viewport,
 }: {
-  component: PageComponent;
+  component: TextComponent;
   index: number;
   parentId: string | undefined;
   selectedId: string | null;
@@ -62,8 +67,12 @@ const TextBlock = memo(function TextBlock({
       : viewport === "tablet"
       ? "heightTablet"
       : "heightMobile";
-  const widthVal = (component as any)[widthKey] ?? component.width;
-  const heightVal = (component as any)[heightKey] ?? component.height;
+  const widthVal =
+    (component[widthKey as keyof TextComponent] as string | undefined) ??
+    component.width;
+  const heightVal =
+    (component[heightKey as keyof TextComponent] as string | undefined) ??
+    component.height;
   const marginKey =
     viewport === "desktop"
       ? "marginDesktop"
@@ -76,8 +85,12 @@ const TextBlock = memo(function TextBlock({
       : viewport === "tablet"
       ? "paddingTablet"
       : "paddingMobile";
-  const marginVal = (component as any)[marginKey] ?? component.margin;
-  const paddingVal = (component as any)[paddingKey] ?? component.padding;
+  const marginVal =
+    (component[marginKey as keyof TextComponent] as string | undefined) ??
+    component.margin;
+  const paddingVal =
+    (component[paddingKey as keyof TextComponent] as string | undefined) ??
+    component.padding;
 
   const {
     startResize,
@@ -124,12 +137,10 @@ const TextBlock = memo(function TextBlock({
       id: component.id,
       patch: {
         text: {
-          ...(typeof (component as any).text === "object"
-            ? (component as any).text
-            : {}),
+          ...(typeof component.text === "object" ? component.text : {}),
           [locale]: editor.getHTML(),
         },
-      } as Partial<PageComponent>,
+      } as Partial<TextComponent>,
     });
     setEditing(false);
   }, [editor, dispatch, component.id, locale, component]);
@@ -213,9 +224,9 @@ const TextBlock = memo(function TextBlock({
           }}
           dangerouslySetInnerHTML={{
             __html: DOMPurify.sanitize(
-              typeof (component as any).text === "string"
-                ? (component as any).text
-                : (component as any).text?.[locale] ?? ""
+              typeof component.text === "string"
+                ? component.text
+                : component.text?.[locale] ?? ""
             ),
           }}
         />

@@ -83,8 +83,12 @@ const CanvasItem = memo(function CanvasItem({
       : viewport === "tablet"
       ? "heightTablet"
       : "heightMobile";
-  const widthVal = (component as any)[widthKey] ?? component.width;
-  const heightVal = (component as any)[heightKey] ?? component.height;
+  const widthVal =
+    (component[widthKey as keyof PageComponent] as string | undefined) ??
+    component.width;
+  const heightVal =
+    (component[heightKey as keyof PageComponent] as string | undefined) ??
+    component.height;
   const marginKey =
     viewport === "desktop"
       ? "marginDesktop"
@@ -97,8 +101,12 @@ const CanvasItem = memo(function CanvasItem({
       : viewport === "tablet"
       ? "paddingTablet"
       : "paddingMobile";
-  const marginVal = (component as any)[marginKey] ?? component.margin;
-  const paddingVal = (component as any)[paddingKey] ?? component.padding;
+  const marginVal =
+    (component[marginKey as keyof PageComponent] as string | undefined) ??
+    component.margin;
+  const paddingVal =
+    (component[paddingKey as keyof PageComponent] as string | undefined) ??
+    component.padding;
 
   const {
     startResize,
@@ -150,10 +158,9 @@ const CanvasItem = memo(function CanvasItem({
   const overlayLeft = resizing ? resizeLeft : dragLeft;
   const overlayTop = resizing ? resizeTop : dragTop;
 
-  const hasChildren = Array.isArray((component as any).children);
-  const childIds = hasChildren
-    ? ((component as any).children as PageComponent[]).map((c) => c.id)
-    : [];
+  const children = (component as { children?: PageComponent[] }).children;
+  const hasChildren = Array.isArray(children);
+  const childIds = hasChildren ? children!.map((c) => c.id) : [];
 
   return (
     <div
@@ -269,7 +276,7 @@ const CanvasItem = memo(function CanvasItem({
                 className="h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10 ring-2 ring-primary"
               />
             )}
-            {(component as any).children.map(
+            {children!.map(
               (child: PageComponent, i: number) => (
                 <CanvasItem
                   key={child.id}

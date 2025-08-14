@@ -22,8 +22,8 @@ export function usePageBuilderState({ page, history, onChange }: Params) {
   );
 
   const [state, rawDispatch] = useReducer(reducer, undefined, (): HistoryState => {
-    const initial = migrate(page.components as PageComponent[]);
-    const fromServer = history ?? (page as any).history;
+    const initial = migrate(page.components);
+    const fromServer = history ?? page.history;
     const parsedServer = fromServer
       ? (() => {
           try {

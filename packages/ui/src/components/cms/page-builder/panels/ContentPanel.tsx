@@ -18,6 +18,14 @@ export default function ContentPanel({
   handleInput,
 }: Props) {
   const Specific = editorRegistry[component.type];
+  const comp = component as PageComponent & {
+    minItems?: number;
+    maxItems?: number;
+    desktopItems?: number;
+    tabletItems?: number;
+    mobileItems?: number;
+    columns?: number;
+  };
   return (
     <div className="space-y-2">
       {("minItems" in component || "maxItems" in component) && (
@@ -26,7 +34,7 @@ export default function ContentPanel({
             label="Min Items"
             type="number"
             title="Minimum number of items"
-            value={(component as any).minItems ?? ""}
+            value={comp.minItems ?? ""}
             onChange={(e) => {
               const val =
                 e.target.value === "" ? undefined : Number(e.target.value);
@@ -34,7 +42,7 @@ export default function ContentPanel({
                 handleInput("minItems", undefined);
                 return;
               }
-              const max = (component as any).maxItems;
+              const max = comp.maxItems;
               const patch: Partial<PageComponent> = { minItems: val };
               if (max !== undefined && val > max) {
                 patch.maxItems = val;
@@ -42,13 +50,13 @@ export default function ContentPanel({
               onChange(patch);
             }}
             min={0}
-            max={(component as any).maxItems ?? undefined}
+            max={comp.maxItems ?? undefined}
           />
           <Input
             label="Max Items"
             type="number"
             title="Maximum number of items"
-            value={(component as any).maxItems ?? ""}
+            value={comp.maxItems ?? ""}
             onChange={(e) => {
               const val =
                 e.target.value === "" ? undefined : Number(e.target.value);
@@ -56,14 +64,14 @@ export default function ContentPanel({
                 handleInput("maxItems", undefined);
                 return;
               }
-              const min = (component as any).minItems;
+              const min = comp.minItems;
               const patch: Partial<PageComponent> = { maxItems: val };
               if (min !== undefined && val < min) {
                 patch.minItems = val;
               }
               onChange(patch);
             }}
-            min={(component as any).minItems ?? 0}
+            min={comp.minItems ?? 0}
           />
         </>
       )}
@@ -75,7 +83,7 @@ export default function ContentPanel({
             label="Desktop Items"
             type="number"
             title="Items shown on desktop"
-            value={(component as any).desktopItems ?? ""}
+            value={comp.desktopItems ?? ""}
             onChange={(e) =>
               handleInput(
                 "desktopItems",
@@ -88,7 +96,7 @@ export default function ContentPanel({
             label="Tablet Items"
             type="number"
             title="Items shown on tablet"
-            value={(component as any).tabletItems ?? ""}
+            value={comp.tabletItems ?? ""}
             onChange={(e) =>
               handleInput(
                 "tabletItems",
@@ -101,7 +109,7 @@ export default function ContentPanel({
             label="Mobile Items"
             type="number"
             title="Items shown on mobile"
-            value={(component as any).mobileItems ?? ""}
+            value={comp.mobileItems ?? ""}
             onChange={(e) =>
               handleInput(
                 "mobileItems",
@@ -117,15 +125,15 @@ export default function ContentPanel({
           label="Columns"
           type="number"
           title="Number of columns"
-          value={(component as any).columns ?? ""}
+          value={comp.columns ?? ""}
           onChange={(e) =>
             handleInput(
               "columns",
               e.target.value === "" ? undefined : Number(e.target.value)
             )
           }
-          min={(component as any).minItems}
-          max={(component as any).maxItems}
+          min={comp.minItems}
+          max={comp.maxItems}
         />
       )}
       <Suspense fallback={<p className="text-muted text-sm">Loading...</p>}>

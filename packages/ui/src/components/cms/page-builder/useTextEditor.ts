@@ -5,14 +5,19 @@ import type { Locale } from "@/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import { useEffect } from "react";
 
-function getContent(component: PageComponent, locale: Locale) {
-  return typeof (component as any).text === "string"
-    ? (component as any).text
-    : ( (component as any).text?.[locale] ?? "");
+type TextComponent = PageComponent & {
+  type: "Text";
+  text?: string | Record<string, string>;
+};
+
+function getContent(component: TextComponent, locale: Locale) {
+  return typeof component.text === "string"
+    ? component.text
+    : component.text?.[locale] ?? "";
 }
 
 export default function useTextEditor(
-  component: PageComponent,
+  component: TextComponent,
   locale: Locale,
   editing: boolean,
 ) {

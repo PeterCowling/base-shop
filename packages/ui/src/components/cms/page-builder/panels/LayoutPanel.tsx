@@ -34,7 +34,9 @@ export default function LayoutPanel({
               label={`Width (${vp})`}
               placeholder="e.g. 100px or 50%"
               title="CSS width value with units"
-              value={(component as any)[`width${vp}`] ?? ""}
+              value={
+                (component[`width${vp}` as keyof PageComponent] as string) ?? ""
+              }
               onChange={(e) => handleResize(`width${vp}`, e.target.value)}
             />
             <Button
@@ -50,7 +52,10 @@ export default function LayoutPanel({
               label={`Height (${vp})`}
               placeholder="e.g. 1px or 1rem"
               title="CSS height value with units"
-              value={(component as any)[`height${vp}`] ?? ""}
+              value={
+                (component[`height${vp}` as keyof PageComponent] as string) ??
+                ""
+              }
               onChange={(e) => handleResize(`height${vp}`, e.target.value)}
             />
             <Button
@@ -99,14 +104,20 @@ export default function LayoutPanel({
             label={`Margin (${vp})`}
             placeholder="e.g. 1rem"
             title="CSS margin value with units"
-            value={(component as any)[`margin${vp}`] ?? ""}
+            value={
+              (component[`margin${vp}` as keyof PageComponent] as string) ??
+              ""
+            }
             onChange={(e) => handleResize(`margin${vp}`, e.target.value)}
           />
           <Input
             label={`Padding (${vp})`}
             placeholder="e.g. 1rem"
             title="CSS padding value with units"
-            value={(component as any)[`padding${vp}`] ?? ""}
+            value={
+              (component[`padding${vp}` as keyof PageComponent] as string) ??
+              ""
+            }
             onChange={(e) => handleResize(`padding${vp}`, e.target.value)}
           />
         </div>
@@ -130,7 +141,9 @@ export default function LayoutPanel({
           label="Gap"
           placeholder="e.g. 1rem"
           title="Gap between items"
-          value={(component as any).gap ?? ""}
+          value={
+            (component as { gap?: string }).gap ?? ""
+          }
           onChange={(e) => handleInput("gap", e.target.value)}
         />
       )}

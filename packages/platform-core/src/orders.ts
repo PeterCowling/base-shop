@@ -2,7 +2,7 @@
 import "server-only";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
-import type { RentalOrder } from "@acme/types";
+import type { RentalOrder, Shop } from "@acme/types";
 import { trackOrder } from "./analytics";
 import { prisma } from "./db";
 import { incrementSubscriptionUsage } from "./subscriptionUsage";
@@ -43,7 +43,14 @@ export async function addOrder(
   await trackOrder(shop, order.id, deposit);
   if (customerId) {
     const month = new Date().toISOString().slice(0, 7);
-    await incrementSubscriptionUsage(shop, customerId, month);
+    const record = await prisma.shop.findUnique({
+      select: { data: true },
+      where: { id: shop },
+    });
+    const shopData = record?.data as Shop | undefined;
+    if (shopData?.subscriptionsEnabled) {
+      await incrementSubscriptionUsage(shop, customerId, month);
+    }
   }
   return order;
 }

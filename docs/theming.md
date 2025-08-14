@@ -3,7 +3,17 @@
 Base themes provide the starting set of design tokens for a shop. The **Theme Editor** lets you pick a base theme and layer token overrides on top. Overrides merge with the base tokens and are persisted with the shop so they can be shared across sessions.
 
 ## Device presets
-Both the Page Builder and live preview now support selecting from common device presets (iPhone models, iPads, Galaxy phones, desktops). Use the device menu to switch widths and breakpoints. The original Desktop/Tablet/Mobile buttons map to the closest preset for backward compatibility.
+Both the Page Builder and live preview provide a device menu with presets for common screens:
+
+- Desktop 1280
+- Desktop 1440
+- iPad
+- iPad Pro
+- iPhone SE
+- iPhone 12
+- Galaxy S8
+
+Use the desktop/tablet/mobile buttons or the dropdown to switch widths and breakpoints. Selections are kept only for the current session and reset to **Desktop 1280** on reload. The original Desktop/Tablet/Mobile buttons map to the closest preset for backward compatibility.
 
 ## Selecting elements and overriding colors
 1. Open the Theme Editor in the CMS.

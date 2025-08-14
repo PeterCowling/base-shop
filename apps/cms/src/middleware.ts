@@ -6,6 +6,7 @@ import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { authSecret } from "./auth/secret";
+import { logger } from "@acme/shared-utils/logger";
 
 /**
  * JWT payload shape for this CMS.
@@ -28,7 +29,7 @@ const ADMIN_PATH_REGEX =
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
-  console.log("[middleware] request", pathname);
+  logger.info("request", { path: pathname });
 
   /* Decode JWT */
   const token = (await getToken({
@@ -36,7 +37,7 @@ export async function middleware(req: NextRequest) {
     secret: authSecret,
   })) as CmsToken | null;
   const role: Role | null = token?.role ?? null;
-  console.log("[middleware] role", role);
+  logger.debug("role", { role });
 
   /* Skip static assets, auth endpoints, and login/signup pages */
   if (
@@ -46,7 +47,7 @@ export async function middleware(req: NextRequest) {
     pathname === "/signup" ||
     pathname === "/favicon.ico"
   ) {
-    console.log("[middleware] skip", pathname);
+    logger.debug("skip", { path: pathname });
     return NextResponse.next();
   }
 
@@ -55,7 +56,7 @@ export async function middleware(req: NextRequest) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("callbackUrl", pathname);
-    console.log("[middleware] redirect to login", url.toString());
+    logger.info("redirect to login", { path: url.pathname });
     return NextResponse.redirect(url);
   }
 
@@ -64,7 +65,10 @@ export async function middleware(req: NextRequest) {
     const matchShop = /\/cms\/([^/]+)/.exec(pathname);
     const url = new URL("/403", req.url);
     if (matchShop) url.searchParams.set("shop", matchShop[1]);
-    console.log("[middleware] forbidden", url.toString());
+    logger.info("forbidden", {
+      path: url.pathname,
+      shop: matchShop ? matchShop[1] : undefined,
+    });
     return NextResponse.rewrite(url, { status: 403 });
   }
 
@@ -73,11 +77,14 @@ export async function middleware(req: NextRequest) {
   if (!canWrite(role) && match) {
     const url = new URL("/403", req.url);
     url.searchParams.set("shop", match[1]);
-    console.log("[middleware] viewer blocked", url.toString());
+    logger.info("viewer blocked", {
+      path: url.pathname,
+      shop: match[1],
+    });
     return NextResponse.rewrite(url, { status: 403 });
   }
 
-  console.log("[middleware] allow", pathname);
+  logger.info("allow", { path: pathname });
   return NextResponse.next();
 }
 

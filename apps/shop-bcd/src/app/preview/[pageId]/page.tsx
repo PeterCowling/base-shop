@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { pageSchema } from "@acme/types";
 import type { Locale } from "@i18n/locales";
-import DynamicRenderer from "@ui/components/DynamicRenderer";
+import { devicePresets, getLegacyPreset } from "@ui/utils/devicePresets";
+import PreviewClient from "./PreviewClient";
 
 export default async function PreviewPage({
   params,
@@ -28,5 +29,23 @@ export default async function PreviewPage({
   }
   const page = pageSchema.parse(await res.json());
   const locale = (Object.keys(page.seo.title)[0] || "en") as Locale;
-  return <DynamicRenderer components={page.components} locale={locale} />;
+  const init = searchParams.device ?? searchParams.view;
+  const initialDeviceId = (() => {
+    if (typeof init === "string") {
+      if (["desktop", "tablet", "mobile"].includes(init)) {
+        return getLegacyPreset(init as "desktop" | "tablet" | "mobile").id;
+      }
+      const match = devicePresets.find((p) => p.id === init);
+      if (match) return match.id;
+    }
+    return devicePresets[0].id;
+  })();
+
+  return (
+    <PreviewClient
+      components={page.components}
+      locale={locale}
+      initialDeviceId={initialDeviceId}
+    />
+  );
 }

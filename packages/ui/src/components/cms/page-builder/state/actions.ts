@@ -40,6 +40,7 @@ export type ResizeAction = {
   paddingDesktop?: string;
   paddingTablet?: string;
   paddingMobile?: string;
+  [key: string]: string | undefined;
 };
 
 export type SetAction = { type: "set"; components: PageComponent[] };

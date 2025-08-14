@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import type { Action } from "./state";
+import type { ResizeAction } from "./state/actions";
 import useGuides from "./useGuides";
 import { snapToGrid } from "./gridSnap";
 
@@ -9,7 +9,7 @@ interface Options {
   heightKey: string;
   widthVal?: string;
   heightVal?: string;
-  dispatch: React.Dispatch<Action>;
+  dispatch: React.Dispatch<ResizeAction>;
   gridEnabled?: boolean;
   gridCols: number;
   containerRef: React.RefObject<HTMLDivElement>;
@@ -107,7 +107,7 @@ export default function useCanvasResize({
         id: componentId,
         [widthKey]: snapW ? "100%" : `${newW}px`,
         [heightKey]: snapH ? "100%" : `${newH}px`,
-      } as any);
+      });
       setCurrent({ width: newW, height: newH, left, top });
       setSnapWidth(snapW || guideX !== null);
       setSnapHeight(snapH || guideY !== null);

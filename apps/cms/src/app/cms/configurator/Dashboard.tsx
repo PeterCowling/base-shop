@@ -60,7 +60,7 @@ export default function ConfiguratorDashboard() {
     window.addEventListener("configurator:update", handler);
     return () => window.removeEventListener("configurator:update", handler);
   }, [fetchState]);
-  const markStepComplete = useConfiguratorPersistence(state, setState);
+  const [markStepComplete] = useConfiguratorPersistence(state, setState);
   const stepList = useMemo(() => getSteps(), []);
   const missingRequired = getRequiredSteps().filter(
     (s) => state?.completed?.[s.id] !== "complete"

@@ -17,6 +17,10 @@ export interface SanityPost {
   products?: string[];
 }
 
+interface SanityMutateResponse {
+  results?: { id?: string }[];
+}
+
 const POST_FIELDS = '_id,title,body,published,publishedAt,"slug":slug.current,excerpt,mainImage,author,categories,products';
 
 export async function listPosts(config: SanityConfig): Promise<SanityPost[]> {
@@ -36,8 +40,12 @@ export async function createPost(
   config: SanityConfig,
   doc: SanityPostCreate,
 ): Promise<string | undefined> {
-  const result = await mutate(config, { mutations: [{ create: doc }], returnIds: true });
-  return (result as any)?.results?.[0]?.id as string | undefined;
+  const result =
+    (await mutate(config, {
+      mutations: [{ create: doc }],
+      returnIds: true,
+    })) as SanityMutateResponse;
+  return result?.results?.[0]?.id;
 }
 
 export async function updatePost(

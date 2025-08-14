@@ -38,9 +38,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const raId = `RA${Date.now().toString(36).toUpperCase()}`;
-  await createReturnAuthorization({
-    raId,
+  const ra = await createReturnAuthorization({
     orderId,
     status: "pending",
     inspectionNotes: "",
@@ -48,9 +46,9 @@ export async function POST(req: Request) {
 
   await sendEmail(
     email,
-    `Return Authorization ${raId}`,
-    `Your return request for order ${orderId} has been received. Your RA number is ${raId}.`,
+    `Return Authorization ${ra.raId}`,
+    `Your return request for order ${orderId} has been received. Your RA number is ${ra.raId}.`,
   );
 
-  return NextResponse.json({ ok: true, raId });
+  return NextResponse.json({ ok: true, raId: ra.raId });
 }

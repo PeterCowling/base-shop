@@ -2,6 +2,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { createHeadersObject } from "next-secure-headers";
+import helmet from "helmet";
 
 export function middleware(request: NextRequest) {
   const headers = createHeadersObject({
@@ -24,8 +25,20 @@ export function middleware(request: NextRequest) {
     noopen: "noopen",
   });
 
+  const helmetHeaders: Record<string, string> = {};
+  const helmetRes = {
+    setHeader(key: string, value: unknown) {
+      helmetHeaders[key] = Array.isArray(value) ? value.join("; ") : String(value);
+    },
+  };
+
+  helmet.crossOriginOpenerPolicy()(undefined as any, helmetRes as any, () => {});
+  helmet.crossOriginEmbedderPolicy()(undefined as any, helmetRes as any, () => {});
+  helmetHeaders["Permissions-Policy"] =
+    "camera=(), microphone=(), geolocation=()";
+
   const response = NextResponse.next();
-  for (const [key, value] of Object.entries(headers)) {
+  for (const [key, value] of Object.entries({ ...headers, ...helmetHeaders })) {
     response.headers.set(key, value);
   }
 

@@ -76,6 +76,9 @@ importers:
       fast-csv:
         specifier: ^5.0.5
         version: 5.0.5
+      helmet:
+        specifier: ^8.1.0
+        version: 8.1.0
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
@@ -6822,6 +6825,10 @@ packages:
 
   headers-polyfill@3.2.5:
     resolution: {integrity: sha512-tUCGvt191vNSQgttSyJoibR+VO+I6+iCHIUdhzEMJKE+EAL8BwCN7fUOZlY4ofOelNHsK+gEjxB/B+9N3EWtdA==}
+
+  helmet@8.1.0:
+    resolution: {integrity: sha512-jOiHyAZsmnr8LqoPGmCjYAaiuWwjAPLgY8ZX2XrmHawt99/u1y6RgrZMTeoPfpUbV96HOalYgz1qzkRbw54Pmg==}
+    engines: {node: '>=18.0.0'}
 
   hmac-drbg@1.0.1:
     resolution: {integrity: sha512-Tti3gMqLdZfhOQY1Mzf/AanLiqh1WTiJgEj26ZuYQ9fbkLomzGchCws4FyrSd4VkpBfiNhaE1On+lOz894jvXg==}
@@ -17616,6 +17623,8 @@ snapshots:
       tslib: 2.8.1
 
   headers-polyfill@3.2.5: {}
+
+  helmet@8.1.0: {}
 
   hmac-drbg@1.0.1:
     dependencies:

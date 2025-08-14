@@ -10,6 +10,18 @@ Use the CMS or theme editor to modify component properties such as text, images 
 
 Navigate to `/edit-preview` in the running shop to see the edits rendered. The route loads the staged component data and lets owners validate changes in context before they go live.
 
+Use the device menu to preview common screen sizes:
+
+- Desktop 1280
+- Desktop 1440
+- iPad
+- iPad Pro
+- iPhone SE
+- iPhone 12
+- Galaxy S8
+
+Switch via the desktop/tablet/mobile buttons or the dropdown. The selection is not persisted and resets to **Desktop 1280** on reload.
+
 ## Republish the shop
 
 After verifying the preview, rebuild and deploy the shop so the edits appear on the live site:

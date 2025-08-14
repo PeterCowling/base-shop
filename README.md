@@ -172,6 +172,20 @@ grouped by purpose (Background, Text, Accent) and each color token displays a
 preview swatch. Clicking a swatch focuses its corresponding field, where a color
 picker enables quick overrides. Save the form to persist any changes. For a deeper look at base themes, overrides, persistence and live preview, see [docs/theming-advanced.md](docs/theming-advanced.md).
 
+### Device presets
+
+The Page Builder and `/edit-preview` route include a device menu with presets for:
+
+- Desktop 1280
+- Desktop 1440
+- iPad
+- iPad Pro
+- iPhone SE
+- iPhone 12
+- Galaxy S8
+
+Switch between widths using the desktop/tablet/mobile buttons or the dropdown. The chosen preset resets to **Desktop 1280** when the page reloads.
+
 ## Shop maintenance
 
 See [doc/upgrade-preview-republish.md](doc/upgrade-preview-republish.md) for guidance on upgrading a shop, previewing changes and republishing.

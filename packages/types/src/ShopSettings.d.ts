@@ -114,10 +114,16 @@ export declare const shopSettingsSchema: z.ZodObject<{
     }>>;
     returnService: z.ZodOptional<z.ZodObject<{
         upsEnabled: z.ZodBoolean;
+        bagAndLabelEnabled: z.ZodOptional<z.ZodBoolean>;
+        homePickupEnabled: z.ZodOptional<z.ZodBoolean>;
     }, "strip", z.ZodTypeAny, {
         upsEnabled: boolean;
+        bagAndLabelEnabled?: boolean | undefined;
+        homePickupEnabled?: boolean | undefined;
     }, {
         upsEnabled: boolean;
+        bagAndLabelEnabled?: boolean | undefined;
+        homePickupEnabled?: boolean | undefined;
     }>>;
     premierDelivery: z.ZodOptional<z.ZodObject<{
         regions: z.ZodArray<z.ZodString, "many">;
@@ -173,6 +179,8 @@ export declare const shopSettingsSchema: z.ZodObject<{
     } | undefined;
     returnService?: {
         upsEnabled: boolean;
+        bagAndLabelEnabled?: boolean | undefined;
+        homePickupEnabled?: boolean | undefined;
     } | undefined;
     premierDelivery?: {
         regions: string[];
@@ -220,6 +228,8 @@ export declare const shopSettingsSchema: z.ZodObject<{
     } | undefined;
     returnService?: {
         upsEnabled: boolean;
+        bagAndLabelEnabled?: boolean | undefined;
+        homePickupEnabled?: boolean | undefined;
     } | undefined;
     premierDelivery?: {
         regions: string[];

@@ -1,6 +1,7 @@
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import { getReturnBagAndLabel } from "@platform-core/returnLogistics";
 import CleaningInfo from "../../../components/CleaningInfo";
 import shop from "../../../../shop.json";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 export const metadata = { title: "Schedule pickup" };
 
@@ -9,7 +10,15 @@ export default async function PickupPage({
 }: {
   searchParams?: { zip?: string };
 }) {
-  const cfg = await getReturnLogistics();
+  const settings = await getShopSettings(shop.id);
+  if (!settings.returnService?.homePickupEnabled) {
+    return (
+      <div className="p-6">
+        <p>Home pickup is currently unavailable.</p>
+      </div>
+    );
+  }
+  const cfg = await getReturnBagAndLabel();
   const allowed = cfg.homePickupZipCodes;
   const zip = searchParams?.zip || "";
   const isAllowed = zip ? allowed.includes(zip) : false;

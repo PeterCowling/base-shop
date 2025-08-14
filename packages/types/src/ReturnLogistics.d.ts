@@ -13,38 +13,45 @@ import { z } from "zod";
  * - `requireTags` specifies if items must have all tags attached.
  * - `allowWear` indicates whether signs of wear are acceptable.
  */
+export declare const returnLabelServiceSchema: z.ZodEnum<["ups"]>;
+export declare const returnCarrierSchema: z.ZodEnum<["ups"]>;
+export declare const returnBagTypeSchema: z.ZodEnum<["reusable", "single-use"]>;
 export declare const returnLogisticsSchema: z.ZodObject<{
-    labelService: z.ZodString;
+    labelService: z.ZodEnum<["ups"]>;
     inStore: z.ZodBoolean;
     dropOffProvider: z.ZodOptional<z.ZodString>;
     tracking: z.ZodOptional<z.ZodBoolean>;
-    bagType: z.ZodString;
-    returnCarrier: z.ZodArray<z.ZodString, "many">;
+    bagType: z.ZodEnum<["reusable", "single-use"]>;
+    returnCarrier: z.ZodArray<z.ZodEnum<["ups"]>, "many">;
     homePickupZipCodes: z.ZodArray<z.ZodString, "many">;
     mobileApp: z.ZodOptional<z.ZodBoolean>;
     requireTags: z.ZodBoolean;
     allowWear: z.ZodBoolean;
 }, "strip", z.ZodTypeAny, {
-    labelService: string;
+    labelService: "ups";
     inStore: boolean;
     dropOffProvider?: string | undefined;
     tracking?: boolean | undefined;
-    bagType: string;
-    returnCarrier: string[];
+    bagType: "reusable" | "single-use";
+    returnCarrier: ("ups")[];
     homePickupZipCodes: string[];
     mobileApp?: boolean | undefined;
     requireTags: boolean;
     allowWear: boolean;
 }, {
-    labelService: string;
+    labelService: "ups";
     inStore: boolean;
     dropOffProvider?: string | undefined;
     tracking?: boolean | undefined;
-    bagType: string;
-    returnCarrier: string[];
+    bagType: "reusable" | "single-use";
+    returnCarrier: ("ups")[];
     homePickupZipCodes: string[];
     mobileApp?: boolean | undefined;
     requireTags: boolean;
     allowWear: boolean;
 }>;
 export type ReturnLogistics = z.infer<typeof returnLogisticsSchema>;
+export type ReturnLabelService = z.infer<typeof returnLabelServiceSchema>;
+export type ReturnCarrier = z.infer<typeof returnCarrierSchema>;
+export type ReturnBagType = z.infer<typeof returnBagTypeSchema>;
+

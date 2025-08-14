@@ -5,7 +5,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 import { setReturnTracking } from "@platform-core/orders";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import {
+  getReturnBagAndLabel,
+  getReturnLogistics,
+} from "@platform-core/returnLogistics";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";
@@ -43,18 +47,27 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) return parsed.response;
   const { sessionId } = parsed.data;
 
-  const cfg = await getReturnLogistics();
+  const settings = await getShopSettings(shop.id);
+  if (!settings.returnService?.bagAndLabelEnabled) {
+    return NextResponse.json(
+      { ok: false, error: "returns disabled" },
+      { status: 403 },
+    );
+  }
+
+  const bag = await getReturnBagAndLabel();
   let tracking: { number: string; labelUrl: string } | null = null;
 
-  if (cfg.returnCarrier.map((c) => c.toLowerCase()).includes("ups")) {
+  if (bag.returnCarrier.map((c) => c.toLowerCase()).includes("ups")) {
     const { trackingNumber, labelUrl } = await createUpsLabel(sessionId);
     tracking = { number: trackingNumber, labelUrl };
   }
 
+  const cfg = await getReturnLogistics();
   return NextResponse.json({
     ok: true,
     dropOffProvider: cfg.dropOffProvider ?? null,
-    returnCarrier: cfg.returnCarrier,
+    returnCarrier: bag.returnCarrier,
     tracking,
   });
 }
@@ -64,8 +77,8 @@ export async function GET(req: NextRequest) {
   if (!tracking) {
     return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 });
   }
-  const cfg = await getReturnLogistics();
-  if (cfg.returnCarrier.map((c) => c.toLowerCase()).includes("ups")) {
+  const bag = await getReturnBagAndLabel();
+  if (bag.returnCarrier.map((c) => c.toLowerCase()).includes("ups")) {
     const status = await getUpsStatus(tracking);
     return NextResponse.json({ ok: true, status });
   }

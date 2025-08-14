@@ -1,8 +1,12 @@
 import { markReturned } from "@platform-core/repositories/rentalOrders.server";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import {
+  getReturnLogistics,
+  getReturnBagAndLabel,
+} from "@platform-core/returnLogistics";
 import { setReturnTracking } from "@platform-core/orders";
 import { NextRequest, NextResponse } from "next/server";
 import { readShop } from "@platform-core/repositories/shops.server";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 const SHOP_ID = "bcd";
 
@@ -37,6 +41,13 @@ export async function POST(req: NextRequest) {
       { status: 403 }
     );
   }
+  const settings = await getShopSettings(SHOP_ID);
+  if (!settings.returnService?.bagAndLabelEnabled) {
+    return NextResponse.json(
+      { error: "Return labels disabled" },
+      { status: 403 },
+    );
+  }
   const { sessionId } = (await req.json()) as { sessionId?: string };
   if (!sessionId) {
     return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
@@ -47,10 +58,8 @@ export async function POST(req: NextRequest) {
   }
   let labelUrl: string | null = null;
   let tracking: string | null = null;
-  if (
-    cfg.labelService &&
-    cfg.returnCarrier.map((c) => c.toLowerCase()).includes("ups")
-  ) {
+  const bag = await getReturnBagAndLabel();
+  if (bag.returnCarrier.map((c) => c.toLowerCase()).includes("ups")) {
     const label = await createUpsLabel(sessionId);
     labelUrl = label.labelUrl;
     tracking = label.trackingNumber;

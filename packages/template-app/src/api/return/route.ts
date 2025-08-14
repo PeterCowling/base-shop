@@ -6,8 +6,9 @@ import {
 import { computeDamageFee } from "@platform-core/src/pricing";
 
 import { NextRequest, NextResponse } from "next/server";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import { getReturnBagAndLabel } from "@platform-core/returnLogistics";
 import { readShop } from "@platform-core/repositories/shops.server";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 const SHOP_ID = "bcd";
 
@@ -80,7 +81,14 @@ export async function POST(req: NextRequest) {
   }
 
   if (zip && date && time) {
-    const cfg = await getReturnLogistics();
+    const settings = await getShopSettings(SHOP_ID);
+    if (!settings.returnService?.homePickupEnabled) {
+      return NextResponse.json(
+        { error: "Home pickup disabled" },
+        { status: 403 },
+      );
+    }
+    const cfg = await getReturnBagAndLabel();
     if (!cfg.homePickupZipCodes.includes(zip)) {
       return NextResponse.json(
         { error: "ZIP not eligible" },

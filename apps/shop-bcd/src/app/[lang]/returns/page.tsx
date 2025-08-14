@@ -1,14 +1,18 @@
 // apps/shop-bcd/src/app/[lang]/returns/page.tsx
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import {
+  getReturnLogistics,
+  getReturnBagAndLabel,
+} from "@platform-core/returnLogistics";
 
 export const metadata = { title: "Return policy" };
 
 export default async function ReturnPolicyPage() {
   const cfg = await getReturnLogistics();
+  const bag = await getReturnBagAndLabel();
   return (
     <div className="p-6 space-y-4">
       <h1 className="text-xl font-semibold">Return policy</h1>
-      <p>Return labels provided by {cfg.labelService}.</p>
+      <p>Return labels provided by {bag.labelService}.</p>
       {cfg.dropOffProvider && <p>Drop-off: {cfg.dropOffProvider}</p>}
       <p>In-store returns {cfg.inStore ? "available" : "unavailable"}.</p>
       {typeof cfg.tracking !== "undefined" && (

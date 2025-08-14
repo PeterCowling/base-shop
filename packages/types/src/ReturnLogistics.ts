@@ -14,14 +14,20 @@ import { z } from "zod";
  * - `requireTags` specifies if items must have all tags attached.
  * - `allowWear` indicates whether signs of wear are acceptable.
  */
+export const returnLabelServiceSchema = z.enum(["ups"]);
+
+export const returnCarrierSchema = z.enum(["ups"]);
+
+export const returnBagTypeSchema = z.enum(["reusable", "single-use"]);
+
 export const returnLogisticsSchema = z
   .object({
-    labelService: z.string(),
+    labelService: returnLabelServiceSchema,
     inStore: z.boolean(),
     dropOffProvider: z.string().optional(),
     tracking: z.boolean().optional(),
-    bagType: z.string(),
-    returnCarrier: z.array(z.string()),
+    bagType: returnBagTypeSchema,
+    returnCarrier: z.array(returnCarrierSchema),
     homePickupZipCodes: z.array(z.string()),
     mobileApp: z.boolean().optional(),
     requireTags: z.boolean(),
@@ -30,3 +36,6 @@ export const returnLogisticsSchema = z
   .strict();
 
 export type ReturnLogistics = z.infer<typeof returnLogisticsSchema>;
+export type ReturnLabelService = z.infer<typeof returnLabelServiceSchema>;
+export type ReturnCarrier = z.infer<typeof returnCarrierSchema>;
+export type ReturnBagType = z.infer<typeof returnBagTypeSchema>;

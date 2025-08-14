@@ -67,6 +67,8 @@ export const shopSettingsSchema = z
     returnService: z
       .object({
         upsEnabled: z.boolean(),
+        bagAndLabelEnabled: z.boolean().optional(),
+        homePickupEnabled: z.boolean().optional(),
       })
       .strict()
       .optional(),

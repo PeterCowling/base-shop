@@ -1,21 +1,11 @@
 "use client";
 
-interface FieldOption {
-  label: string;
-  value: string;
-}
-
-interface FieldConfig {
-  type: "text" | "email" | "select";
-  name: string;
-  label?: string;
-  options?: FieldOption[];
-}
+import type { FormField } from "@acme/types";
 
 interface Props {
   action?: string;
   method?: string;
-  fields?: FieldConfig[];
+  fields?: FormField[];
   submitLabel?: string;
 }
 

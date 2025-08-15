@@ -1,4 +1,4 @@
-import type { PageComponent } from "@acme/types";
+import type { FormField, FormFieldOption, PageComponent } from "@acme/types";
 import {
   Button,
   Input,
@@ -8,13 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../atoms/shadcn";
-
-type FormField = {
-  type: string;
-  name?: string;
-  label?: string;
-  options?: { label: string; value: string }[];
-};
 
 type FormBuilderComponent = PageComponent & {
   type: "FormBuilderBlock";
@@ -29,7 +22,11 @@ interface Props {
 export default function FormBuilderEditor({ component, onChange }: Props) {
   const fields = component.fields ?? [];
 
-  const updateField = (idx: number, key: keyof FormField, value: any) => {
+  const updateField = <K extends keyof FormField>(
+    idx: number,
+    key: K,
+    value: FormField[K]
+  ) => {
     const next = [...fields];
     next[idx] = { ...next[idx], [key]: value };
     onChange({ fields: next });
@@ -75,7 +72,9 @@ export default function FormBuilderEditor({ component, onChange }: Props) {
           />
           {field.type === "select" && (
             <Input
-              value={(field.options ?? []).map((o: any) => o.label).join(",")}
+              value={(field.options ?? [])
+                .map((o: FormFieldOption) => o.label)
+                .join(",")}
               onChange={(e) =>
                 updateField(
                   idx,

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { SKU } from "@acme/types";
 import { formatCurrency } from "@acme/shared-utils";
 
-interface Props {
+export interface Props {
   slug: string;
   onValidChange?: (valid: boolean) => void;
 }

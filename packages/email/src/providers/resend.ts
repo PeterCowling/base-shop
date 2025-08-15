@@ -55,7 +55,7 @@ export class ResendProvider implements CampaignProvider {
         to: options.to,
         subject: options.subject,
         html: options.html,
-        text: options.text,
+        text: options.text ?? "",
       });
     } catch (error: unknown) {
       if (error && typeof error === "object" && "message" in error) {

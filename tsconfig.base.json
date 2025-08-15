@@ -57,6 +57,11 @@
       "@/components/shop/*": ["packages/platform-core/src/components/shop/*"],
       "@/components/blog/*": ["packages/platform-core/src/components/blog/*"],
 
+      "@/components/atoms": ["packages/ui/src/components/atoms/index.ts"],
+      "@/components/atoms/*": ["packages/ui/src/components/atoms/*"],
+      "@/components/cms": ["packages/ui/src/components/cms/index.ts"],
+      "@/components/cms/*": ["packages/ui/src/components/cms/*"],
+
       /* ─── lib helpers (products, cookies, …) ────────────── */
       "@lib/*": ["packages/platform-core/src/*"],
 
@@ -98,6 +103,9 @@
       "@date-utils": ["packages/date-utils/src/index.ts"],
       "@acme/shared-utils": ["packages/shared-utils/src/index.ts"],
       "@acme/shared-utils/*": ["packages/shared-utils/src/*"],
+
+      "@acme/configurator": ["packages/configurator/src/index.ts"],
+      "@acme/configurator/*": ["packages/configurator/src/*"],
 
       /* ─── shared runtime types ──────────────────────────────────── */
       "@acme/types": ["packages/types/src/index.ts"],

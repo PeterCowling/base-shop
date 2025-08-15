@@ -4,8 +4,12 @@ import { createPage } from "@cms/actions/pages.server";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page } from "@acme/types";
 import dynamic from "next/dynamic";
+import type PageBuilderComponent from "@ui/components/cms/PageBuilder";
 
-const PageBuilder = dynamic(() => import("@ui/components/cms/PageBuilder"));
+type PageBuilderProps = React.ComponentProps<typeof PageBuilderComponent>;
+const PageBuilder = dynamic<PageBuilderProps>(
+  () => import("@ui/components/cms/PageBuilder"),
+);
 void PageBuilder;
 
 export const revalidate = 0;

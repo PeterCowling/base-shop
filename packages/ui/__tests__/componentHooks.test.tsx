@@ -4,8 +4,10 @@ import useComponentResize from "../src/components/cms/page-builder/useComponentR
 
 describe("component hooks", () => {
   it("useComponentInputs forwards field changes", () => {
-    const onChange = jest.fn();
-    const { result } = renderHook(() => useComponentInputs(onChange));
+    const onChange = jest.fn<(patch: Partial<Record<string, string>>) => void>();
+    const { result } = renderHook(() =>
+      useComponentInputs<Record<string, string>>(onChange),
+    );
     act(() => result.current.handleInput("foo", "bar"));
     expect(onChange).toHaveBeenCalledWith({ foo: "bar" });
   });

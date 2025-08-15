@@ -25,7 +25,7 @@ test("updates width via handleResize", () => {
   render(
     <LayoutPanel
       component={component}
-      handleInput={() => {}}
+      handleInput={(() => {}) as any}
       handleResize={handleResize}
       handleFullSize={() => {}}
     />

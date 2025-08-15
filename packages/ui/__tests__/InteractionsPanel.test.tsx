@@ -32,14 +32,13 @@ import type { PageComponent } from "@acme/types";
 
 function Wrapper({ component }: { component: PageComponent }) {
   const [comp, setComp] = useState(component);
-  return (
-    <InteractionsPanel
-      component={comp}
-      handleInput={(field, value) =>
-        setComp((prev) => ({ ...prev, [field]: value }))
-      }
-    />
-  );
+  const handleInput = <K extends keyof PageComponent>(
+    field: K,
+    value: PageComponent[K],
+  ) => {
+    setComp((prev) => ({ ...prev, [field]: value }));
+  };
+  return <InteractionsPanel component={comp} handleInput={handleInput} />;
 }
 
 test("updates interaction fields", () => {

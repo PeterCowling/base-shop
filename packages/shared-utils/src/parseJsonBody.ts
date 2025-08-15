@@ -24,7 +24,9 @@ export async function parseJsonBody<T>(
   let text: string;
   try {
     if (!req.body) throw new Error("No body");
-    const stream = Readable.fromWeb(req.body);
+    const stream = Readable.fromWeb(
+      req.body as unknown as NodeReadableStream<Uint8Array>,
+    );
     text = await getRawBody(stream, {
       limit,
       encoding: "utf8",

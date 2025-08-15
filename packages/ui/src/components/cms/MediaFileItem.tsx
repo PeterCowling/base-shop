@@ -1,6 +1,6 @@
 // packages/ui/components/cms/MediaFileItem.tsx
 "use client";
-import type { MediaItem } from "@acme/types";
+import type { ApiError, MediaItem } from "@acme/types";
 import Image from "next/image";
 import { useState } from "react";
 import { Input } from "@ui/components/atoms/shadcn";
@@ -38,8 +38,8 @@ export default function MediaFileItem({ item, shop, onDelete, onReplace }: Props
         method: "POST",
         body: fd,
       });
-      const data = (await uploadRes.json()) as MediaItem;
-      if (!uploadRes.ok) throw new Error((data as any).error || uploadRes.statusText);
+      const data = (await uploadRes.json()) as MediaItem | ApiError;
+      if ("error" in data) throw new Error(data.error);
       await onDelete(item.url);
       onReplace(item.url, data);
       setEditing(false);

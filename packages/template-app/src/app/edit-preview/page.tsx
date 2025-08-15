@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ApiError } from "@acme/types";
 import ComponentPreview from "@ui/src/components/ComponentPreview";
 
 interface UpgradeComponent {
@@ -20,10 +21,10 @@ export default function EditPreviewPage() {
     async function load() {
       try {
         const res = await fetch("/api/edit-changes");
-        const data = (await res.json()) as {
-          components: UpgradeComponent[];
-          pages?: string[];
-        };
+        const data = (await res.json()) as
+          | { components: UpgradeComponent[]; pages?: string[] }
+          | ApiError;
+        if ("error" in data) throw new Error(data.error);
         setChanges(data.components);
         if (Array.isArray(data.pages)) {
           const pageLinks = (
@@ -33,9 +34,11 @@ export default function EditPreviewPage() {
                   const r = await fetch(
                     `/api/preview-token?pageId=${encodeURIComponent(id)}`,
                   );
-                  if (!r.ok) return null;
-                  const { token } = (await r.json()) as { token: string };
-                  return { id, url: `/preview/${id}?upgrade=${token}` };
+                  const tokenData = (await r.json()) as
+                    | { token: string }
+                    | ApiError;
+                  if ("error" in tokenData) return null;
+                  return { id, url: `/preview/${id}?upgrade=${tokenData.token}` };
                 } catch {
                   return null;
                 }
@@ -56,10 +59,8 @@ export default function EditPreviewPage() {
     setError(null);
     try {
       const res = await fetch("/api/publish", { method: "POST" });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error((data as any).error || "Publish failed");
-      }
+      const data = (await res.json().catch(() => ({}))) as ApiError;
+      if ("error" in data) throw new Error(data.error);
     } catch (err) {
       console.error("Publish failed", err);
       setError(err instanceof Error ? err.message : "Publish failed");

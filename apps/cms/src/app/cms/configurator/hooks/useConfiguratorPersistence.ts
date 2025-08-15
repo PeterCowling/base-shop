@@ -1,7 +1,12 @@
 // apps/cms/src/app/cms/configurator/hooks/useConfiguratorPersistence.ts
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import {
   wizardStateSchema,
   type WizardState,
@@ -33,7 +38,7 @@ export async function resetConfiguratorProgress(): Promise<void> {
  */
 export function useConfiguratorPersistence(
   state: WizardState,
-  setState: (s: WizardState) => void,
+  setState: Dispatch<SetStateAction<WizardState>>,
   onInvalid?: () => void,
   onSave?: () => void
 ): [

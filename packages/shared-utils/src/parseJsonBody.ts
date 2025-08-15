@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import getRawBody from "raw-body";
 import { Readable } from "node:stream";
+import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 
 export type ParseJsonResult<T> =
   | { success: true; data: T }
@@ -16,7 +17,7 @@ function hasErrorType(err: unknown): err is { type: string } {
 }
 
 export async function parseJsonBody<T>(
-  req: Request & { body: ReadableStream<Uint8Array> | null },
+  req: Request & { body: NodeReadableStream<Uint8Array> | null },
   schema: z.ZodSchema<T>,
   limit: string | number,
 ): Promise<ParseJsonResult<T>> {

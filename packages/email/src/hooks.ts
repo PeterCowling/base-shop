@@ -1,3 +1,4 @@
+import type { AnalyticsEvent } from "@acme/types";
 export type HookPayload = { campaign: string };
 
 export type HookHandler = (
@@ -33,7 +34,7 @@ export async function emitClick(shop: string, payload: HookPayload): Promise<voi
   await Promise.all(clickListeners.map((fn) => fn(shop, payload)));
 }
 
-async function track(shop: string, data: any): Promise<void> {
+async function track(shop: string, data: AnalyticsEvent): Promise<void> {
   const { trackEvent } = await import("@platform-core/analytics");
   await trackEvent(shop, data);
 }

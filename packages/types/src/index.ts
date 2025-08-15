@@ -1,4 +1,5 @@
 export * from "./ApiError";
+export * from "./AnalyticsEvent";
 export * from "./Blog";
 export * from "./Cart";
 export * from "./CmsUser";

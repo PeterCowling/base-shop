@@ -8,7 +8,8 @@
     "./validateShopName": "./src/validateShopName.ts",
     "./checkShopExists.server": "./src/checkShopExists.server.ts",
     "./zodErrorMap": "./src/zodErrorMap.ts",
-    "./initZod": "./src/initZod.ts"
+    "./initZod": "./src/initZod.ts",
+    "./generateMeta": "./src/generateMeta.ts"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",

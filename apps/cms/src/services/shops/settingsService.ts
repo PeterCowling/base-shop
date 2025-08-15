@@ -117,7 +117,11 @@ export async function updateStockAlert(
   const current = await fetchSettings(shop);
   const updated: ShopSettings = {
     ...current,
-    stockAlert: data,
+    stockAlert: {
+      recipients: data.recipients,
+      webhook: data.webhook,
+      threshold: data.threshold,
+    },
   };
   await persistSettings(shop, updated);
   return { settings: updated };
@@ -135,7 +139,10 @@ export async function updatePremierDelivery(
   const current = await fetchSettings(shop);
   const updated: ShopSettings = {
     ...current,
-    premierDelivery: data,
+    premierDelivery: {
+      regions: data.regions,
+      windows: data.windows,
+    },
   };
   await persistSettings(shop, updated);
   return { settings: updated };

@@ -1,8 +1,11 @@
 import { buildThemeData, removeThemeToken, mergeThemePatch } from "../theme";
 
-jest.mock("@platform-core/src/createShop", () => ({
+jest.mock("@platform-core/createShop", () => ({
   syncTheme: jest.fn().mockResolvedValue({ a: "1" }),
-  loadTokens: jest.fn().mockResolvedValue({ a: "0" }),
+}));
+jest.mock("@platform-core/themeTokens", () => ({
+  baseTokens: {},
+  loadThemeTokens: jest.fn().mockResolvedValue({ a: "0" }),
 }));
 
 describe("theme service", () => {

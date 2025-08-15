@@ -6,11 +6,12 @@
     "../../packages/i18n/src/**/*.json",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["dist", "node_modules", "../../apps-script"],
+  "exclude": ["dist", "node_modules", "../../apps-script", "**/__tests__/**"],
   "references": [
     { "path": "../../packages/auth" },
     { "path": "../../packages/types" },
     { "path": "../../packages/config" },
+    { "path": "../../packages/email" },
     { "path": "../../packages/i18n" },
     { "path": "../../packages/ui" },
     { "path": "../../packages/themes/base" },

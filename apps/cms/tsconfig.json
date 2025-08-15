@@ -4,6 +4,7 @@
     "src/**/*",
     "../../src/lib/**/*",
     "../../packages/i18n/src/**/*.json",
+    "../../scripts/src/**/*",
     ".next/types/**/*.ts"
   ],
   "exclude": ["dist", "node_modules", "../../apps-script", "**/__tests__/**"],

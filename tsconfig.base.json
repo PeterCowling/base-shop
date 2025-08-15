@@ -56,6 +56,7 @@
       "@/components/pdp/*": ["packages/platform-core/src/components/pdp/*"],
       "@/components/shop/*": ["packages/platform-core/src/components/shop/*"],
       "@/components/blog/*": ["packages/platform-core/src/components/blog/*"],
+      "@/components/*": ["packages/ui/src/components/*"],
 
       /* ─── lib helpers (products, cookies, …) ────────────── */
       "@lib/*": ["packages/platform-core/src/*"],
@@ -96,6 +97,8 @@
       "@acme/sanity": ["packages/sanity/src/index.ts"],
       "@acme/date-utils": ["packages/date-utils/src/index.ts"],
       "@date-utils": ["packages/date-utils/src/index.ts"],
+      "@acme/configurator": ["packages/configurator/src/index.ts"],
+      "@acme/configurator/*": ["packages/configurator/src/*"],
       "@acme/shared-utils": ["packages/shared-utils/src/index.ts"],
       "@acme/shared-utils/*": ["packages/shared-utils/src/*"],
 

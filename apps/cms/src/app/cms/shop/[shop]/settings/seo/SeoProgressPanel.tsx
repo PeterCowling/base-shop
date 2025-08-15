@@ -57,7 +57,9 @@ export default async function SeoProgressPanel({ shop }: Props) {
                   <td className="pr-2">
                     {formatTimestamp(e.timestamp as string)}
                   </td>
-                  <td className="pr-2">{e.score ?? "–"}</td>
+                  <td className="pr-2">
+                    {typeof e.score === "number" ? e.score : "–"}
+                  </td>
                   <td>{e.success === false ? "failed" : "ok"}</td>
                 </tr>
               ))}

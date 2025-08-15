@@ -6,7 +6,7 @@ import { Slot } from "./slot";
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
 /* -------------------------------------------------------------------------- */
-type ButtonVariant = "default" | "outline" | "ghost";
+type ButtonVariant = "default" | "outline" | "ghost" | "destructive";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -28,6 +28,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       outline:
         "border border-input hover:bg-accent hover:text-accent-foreground",
       ghost: "hover:bg-accent hover:text-accent-foreground",
+      destructive:
+        "bg-destructive text-destructive-foreground hover:bg-destructive/90",
     };
 
     const Comp = asChild ? Slot : "button";
@@ -35,6 +37,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       default: "--color-primary",
       outline: "--color-accent",
       ghost: "--color-accent",
+      destructive: "--color-danger",
     };
 
     return (

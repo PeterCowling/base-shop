@@ -9,7 +9,7 @@ jest.mock("@platform-core/src/repositories/shop.server", () => ({
   getShopById: (...args: any[]) => getShopById(...args),
   updateShopInRepo: (...args: any[]) => updateShopInRepo(...args),
 }));
-jest.mock("@platform-core/createShop", () => ({
+jest.mock("@platform-core/src/createShop", () => ({
   syncTheme: jest.fn(),
 }));
 jest.mock("@platform-core/themeTokens", () => ({

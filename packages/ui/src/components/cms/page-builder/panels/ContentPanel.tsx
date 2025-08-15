@@ -10,7 +10,10 @@ import editorRegistry from "../editorRegistry";
 interface Props {
   component: PageComponent;
   onChange: (patch: Partial<PageComponent>) => void;
-  handleInput: (field: string, value: any) => void;
+  handleInput: <K extends keyof PageComponent>(
+    field: K,
+    value: PageComponent[K],
+  ) => void;
 }
 
 export default function ContentPanel({

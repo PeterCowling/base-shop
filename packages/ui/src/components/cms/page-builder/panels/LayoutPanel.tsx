@@ -15,7 +15,10 @@ import { Tooltip } from "../../../atoms";
 
 interface Props {
   component: PageComponent;
-  handleInput: (field: string, value: any) => void;
+  handleInput: <K extends keyof PageComponent>(
+    field: K,
+    value: PageComponent[K],
+  ) => void;
   handleResize: (field: string, value: string) => void;
   handleFullSize: (field: string) => void;
 }

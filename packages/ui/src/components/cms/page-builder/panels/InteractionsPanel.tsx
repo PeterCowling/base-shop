@@ -13,7 +13,10 @@ import {
 
 interface Props {
   component: PageComponent;
-  handleInput: (field: string, value: any) => void;
+  handleInput: <K extends keyof PageComponent>(
+    field: K,
+    value: PageComponent[K],
+  ) => void;
 }
 
 export default function InteractionsPanel({

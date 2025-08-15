@@ -17,7 +17,11 @@ test("updates min items", () => {
   const component: PageComponent = { id: "1", type: "ProductCarousel", minItems: 1, maxItems: 5 } as any;
   const onChange = jest.fn();
   render(
-    <ContentPanel component={component} onChange={onChange} handleInput={() => {}} />
+    <ContentPanel
+      component={component}
+      onChange={onChange}
+      handleInput={(() => {}) as any}
+    />
   );
   fireEvent.change(screen.getByLabelText("Min Items"), { target: { value: "2" } });
   expect(onChange).toHaveBeenCalledWith({ minItems: 2 });

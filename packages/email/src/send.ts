@@ -6,6 +6,7 @@ import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
 import { ProviderError } from "./providers/types";
+import { hasProviderErrorFields } from "./providers/error";
 import { renderTemplate } from "./templates";
 
 export interface CampaignOptions {
@@ -163,7 +164,9 @@ async function sendWithRetry(
       const retryable =
         err instanceof ProviderError
           ? err.retryable
-          : ((err as any)?.retryable ?? true);
+          : hasProviderErrorFields(err)
+          ? err.retryable ?? true
+          : true;
       if (!retryable || attempt >= maxRetries) {
         throw err;
       }

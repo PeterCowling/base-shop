@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./env/index.ts",
-    "./env": "./env/index.ts",
-    "./env/core": "./env/core.ts",
-    "./env/payments": "./env/payments.ts",
-    "./env/shipping": "./env/shipping.ts",
+    ".": "./src/env/index.ts",
+    "./env": "./src/env/index.ts",
+    "./env/core": "./src/env/core.ts",
+    "./env/payments": "./src/env/payments.ts",
+    "./env/shipping": "./src/env/shipping.ts",
     "./tsconfig.app.json": "./tsconfig.app.json",
     "./jest.preset.cjs": "./jest.preset.cjs"
   }

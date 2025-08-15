@@ -6,7 +6,16 @@
     "../../packages/i18n/src/**/*.json",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["dist", "node_modules", "../../apps-script", "**/__tests__/**"],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "../../apps-script",
+    "**/__tests__/**",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.test.ts",
+    "**/*.test.tsx"
+  ],
   "references": [
     { "path": "../../packages/auth" },
     { "path": "../../packages/types" },

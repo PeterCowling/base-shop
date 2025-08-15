@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import StyleEditor from "@/components/cms/StyleEditor";
+import StyleEditor from "@ui/components/cms/StyleEditor";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import type { TokenMap } from "@ui/hooks/useTokenEditor";
 import { getContrast } from "@ui/components/cms";

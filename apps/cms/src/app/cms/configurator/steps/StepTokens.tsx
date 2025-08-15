@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/atoms/shadcn";
-import StyleEditor from "@/components/cms/StyleEditor";
+import StyleEditor from "@ui/components/cms/StyleEditor";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";

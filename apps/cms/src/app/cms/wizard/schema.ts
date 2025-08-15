@@ -35,14 +35,16 @@ export interface NavItem {
   children?: NavItem[];
 }
 
-export const navItemSchema: z.ZodType<NavItem> = z
-  .object({
-    id: z.string(),
-    label: z.string(),
-    url: z.string().url(),
-    children: z.array(z.lazy(() => navItemSchema)).optional(),
-  })
-  .strict();
+export const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
+  z
+    .object({
+      id: z.string(),
+      label: z.string(),
+      url: z.string().url(),
+      children: z.array(navItemSchema).optional(),
+    })
+    .strict()
+);
 
 /* -------------------------------------------------------------------------- */
 /*  Page‑info schema                                                          */

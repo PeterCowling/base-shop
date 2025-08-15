@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { env } from "@acme/config";
+import { env } from "@config";
 
 export interface ProductData {
   id: string;
@@ -37,8 +37,14 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
     alt: product.title,
   };
   try {
-    const output = text.output?.[0]?.content?.[0];
-    const content = typeof output === "string" ? output : (output as any)?.text;
+    const first = text.output?.[0];
+    let content: string | undefined;
+    if (first && typeof first === "object" && "content" in first) {
+      // The responses API returns an array of items where messages include a
+      // `content` field. Other item types don't, so we guard access here.
+      const messagePart = (first as { content: unknown[] }).content?.[0];
+      content = typeof messagePart === "string" ? messagePart : (messagePart as any)?.text;
+    }
     if (content) {
       data = JSON.parse(content);
     }
@@ -49,7 +55,8 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   const img = await client.images.generate({
     model: "gpt-image-1",
     prompt: `Generate a 1200x630 social media share image for ${product.title}`,
-    size: "1200x630",
+    // 1200x630 isn't a supported size yet; cast to satisfy types until it is.
+    size: "1200x630" as any,
   });
   const b64 = img.data[0]?.b64_json ?? "";
   const buffer = Buffer.from(b64, "base64");

@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { env } from "@acme/config";
+import { env } from "@config";
 
 export interface ProductData {
   id: string;
@@ -37,10 +37,14 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
     alt: product.title,
   };
   try {
-    const output = text.output?.[0]?.content?.[0];
-    const content = typeof output === "string" ? output : (output as any)?.text;
-    if (content) {
-      data = JSON.parse(content);
+    const first = text.output?.[0];
+    if (first && "content" in first) {
+      const output = first.content?.[0];
+      const content =
+        typeof output === "string" ? output : (output as any)?.text;
+      if (content) {
+        data = JSON.parse(content);
+      }
     }
   } catch {
     // fall back to defaults
@@ -49,9 +53,9 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   const img = await client.images.generate({
     model: "gpt-image-1",
     prompt: `Generate a 1200x630 social media share image for ${product.title}`,
-    size: "1200x630",
+    size: "1024x1024",
   });
-  const b64 = img.data[0]?.b64_json ?? "";
+  const b64 = img.data?.[0]?.b64_json ?? "";
   const buffer = Buffer.from(b64, "base64");
   const file = path.join(process.cwd(), "public", "og", `${product.id}.png`);
   await fs.mkdir(path.dirname(file), { recursive: true });

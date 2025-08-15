@@ -11,11 +11,11 @@
     { "path": "../../packages/auth" },
     { "path": "../../packages/types" },
     { "path": "../../packages/config" },
+    { "path": "../../packages/date-utils" },
     { "path": "../../packages/email" },
     { "path": "../../packages/i18n" },
     { "path": "../../packages/ui" },
     { "path": "../../packages/themes/base" },
-    { "path": "../../packages/email" },
     { "path": "../../packages/shared-utils" }
   ]
 }

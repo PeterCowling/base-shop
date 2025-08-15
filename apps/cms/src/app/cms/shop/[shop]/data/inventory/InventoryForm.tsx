@@ -52,7 +52,6 @@ export default function InventoryForm({ shop, initial }: Props) {
         item.productId = value;
       } else {
         // other top-level fields
-        // @ts-expect-error
         item[field] = value;
       }
       next[index] = item;

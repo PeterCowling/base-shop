@@ -4,7 +4,7 @@ import {
   EditorProvider,
   PortableTextEditable,
   PortableTextEditor,
-  useEditor,
+  usePortableTextEditor,
 } from "@portabletext/editor";
 import { EventListenerPlugin } from "@portabletext/editor/plugins";
 import type { PortableTextBlock } from "./schema";
@@ -13,22 +13,22 @@ import type { SKU } from "@acme/types";
 import { formatCurrency } from "@acme/shared-utils";
 
 function Toolbar() {
-  const editor = useEditor();
+  const editor = usePortableTextEditor();
   const addLink = () => {
     const href = prompt("URL");
     if (!href) return;
     if (PortableTextEditor.isAnnotationActive(editor, "link")) {
-      PortableTextEditor.removeAnnotation(editor, "link");
+      PortableTextEditor.removeAnnotation(editor, { name: "link" });
     }
-    PortableTextEditor.addAnnotation(editor, "link", { href });
+    PortableTextEditor.addAnnotation(editor, { name: "link" }, { href });
   };
   const addEmbed = () => {
     const url = prompt("Embed URL");
-    if (url) PortableTextEditor.insertBlock(editor, "embed", { url });
+    if (url) PortableTextEditor.insertBlock(editor, { name: "embed" }, { url });
   };
   const addImage = useCallback(
     (url: string) => {
-      PortableTextEditor.insertBlock(editor, "image", { url });
+      PortableTextEditor.insertBlock(editor, { name: "image" }, { url });
     },
     [editor]
   );
@@ -84,7 +84,7 @@ function ProductSearch({
   query: string;
   setQuery: (v: string) => void;
 }) {
-  const editor = useEditor();
+  const editor = usePortableTextEditor();
   const [matches, setMatches] = useState<SKU[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -123,30 +123,37 @@ function ProductSearch({
       {error && <div className="text-red-500">{error}</div>}
       {query && !loading && !error && (
         <ul className="space-y-1">
-          {matches.map((p) => (
-            <li key={p.slug}>
-              <Button
-                type="button"
-                variant="outline"
-                className="flex items-center gap-2"
-                onClick={() =>
-                  PortableTextEditor.insertBlock(editor, "productReference", {
-                    slug: p.slug,
-                  })
-                }
-              >
-                {p.image && (
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    className="h-8 w-8 object-cover"
-                  />
-                )}
-                <span className="flex-1 text-left">{p.title}</span>
-                <span className="text-sm">{formatCurrency(p.price)}</span>
-              </Button>
-            </li>
-          ))}
+          {matches.map((p) => {
+            const imageUrl = p.media.find((m) => m.type === "image")?.url;
+            return (
+              <li key={p.slug}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="flex items-center gap-2"
+                  onClick={() =>
+                    PortableTextEditor.insertBlock(
+                      editor,
+                      { name: "productReference" },
+                      {
+                        slug: p.slug,
+                      }
+                    )
+                  }
+                >
+                  {imageUrl && (
+                    <img
+                      src={imageUrl}
+                      alt={p.title}
+                      className="h-8 w-8 object-cover"
+                    />
+                  )}
+                  <span className="flex-1 text-left">{p.title}</span>
+                  <span className="text-sm">{formatCurrency(p.price)}</span>
+                </Button>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

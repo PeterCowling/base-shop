@@ -58,7 +58,7 @@ export async function generateSeo(
 
   const { id, locale, title, description } = data;
   const { generateMeta } = await import(
-    /* @vite-ignore */ "../../../../scripts/generate-meta.ts"
+    /* @vite-ignore */ "../../../../../scripts/generate-meta.ts"
   );
 
   const result = await generateMeta({ id, title, description });
@@ -86,8 +86,15 @@ export async function revertSeo(shop: string, timestamp: string) {
   const idx = sorted.findIndex((e: any) => e.timestamp === timestamp);
   if (idx === -1) throw new Error("Version not found");
   let state: ShopSettings = {
-    languages: [],
+    languages: [] as Locale[],
     seo: {},
+    luxuryFeatures: {
+      contentMerchandising: false,
+      raTicketing: false,
+      fraudReviewThreshold: 0,
+      requireStrongCustomerAuth: false,
+      strictReturnConditions: false,
+    },
     freezeTranslations: false,
     updatedAt: "",
     updatedBy: "",

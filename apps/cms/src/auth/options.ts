@@ -7,7 +7,7 @@ import { readRbac as defaultReadRbac } from "../lib/rbacStore";
 
 import { logger } from "@acme/shared-utils/logger";
 
-import type { Role } from "./roles";
+import type { Role } from "@acme/types";
 import { authSecret } from "./secret";
 
 /* -------------------------------------------------------------------------- */
@@ -74,7 +74,7 @@ export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { password: _pw, ...safeUser } = user;
             const r = roles[user.id];
-            const role = Array.isArray(r) ? r[0] : (r as Role);
+            const role = Array.isArray(r) ? (r[0] as Role) : (r as Role);
 
             logger.info("[auth] login success", { userId: user.id, role });
 

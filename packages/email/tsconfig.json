@@ -11,6 +11,13 @@
     "moduleResolution": "node",
     "allowImportingTsExtensions": false
   },
+  "references": [
+    { "path": "../config" },
+    { "path": "../ui" },
+    { "path": "../lib" },
+    { "path": "../platform-core" },
+    { "path": "../types" }
+  ],
   "include": ["src/**/*"],
   "exclude": ["dist", ".turbo", "node_modules"]
 }

@@ -4,13 +4,17 @@ import { Button, Input, Checkbox } from "@/components/atoms/shadcn";
 import { returnLogisticsSchema, type ReturnLogistics } from "@acme/types";
 import { FormEvent, useState } from "react";
 
+type FormState = Omit<ReturnLogistics, "returnCarrier"> & {
+  returnCarrier: string[];
+};
+
 interface Props {
   shop: string;
   initial: ReturnLogistics;
 }
 
 export default function ReturnLogisticsForm({ shop, initial }: Props) {
-  const [form, setForm] = useState<ReturnLogistics>(() => ({
+  const [form, setForm] = useState<FormState>(() => ({
     ...initial,
     returnCarrier: initial.returnCarrier.length
       ? initial.returnCarrier

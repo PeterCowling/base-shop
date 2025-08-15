@@ -58,7 +58,7 @@ export class SendgridProvider implements CampaignProvider {
         from: getDefaultSender(),
         subject: options.subject,
         html: options.html,
-        text: options.text,
+        text: options.text ?? "",
       });
     } catch (error: unknown) {
       if (error instanceof Error) {

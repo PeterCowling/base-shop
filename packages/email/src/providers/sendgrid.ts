@@ -3,6 +3,7 @@ import { coreEnv } from "@acme/config/env/core";
 import type { CampaignOptions } from "../send";
 import { ProviderError } from "./types";
 import type { CampaignProvider } from "./types";
+import { hasProviderErrorFields } from "./error";
 import {
   mapSendGridStats,
   type CampaignStats,
@@ -67,10 +68,9 @@ export class SendgridProvider implements CampaignProvider {
           campaignId: options.campaignId,
           error,
         });
-        const status =
-          (error as any)?.code ??
-          (error as any)?.response?.statusCode ??
-          (error as any)?.statusCode;
+        const status = hasProviderErrorFields(error)
+          ? error.code ?? error.response?.statusCode ?? error.statusCode
+          : undefined;
         const retryable = typeof status !== "number" || status >= 500;
         throw new ProviderError(error.message, retryable);
       }

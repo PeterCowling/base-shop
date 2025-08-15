@@ -8,7 +8,7 @@
     "rootDir": "src",
     "outDir": "dist",
     "types": ["node"],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": false
   },
   "references": [

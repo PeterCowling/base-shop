@@ -60,9 +60,10 @@ describe("shop actions", () => {
       }));
 
       jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "secret" } }));
-      jest.doMock("@platform-core/src/createShop", () => ({
-        syncTheme: jest.fn(),
-        loadTokens: jest.fn().mockReturnValue({}),
+      jest.doMock("@platform-core/createShop", () => ({ syncTheme: jest.fn() }));
+      jest.doMock("@platform-core/themeTokens", () => ({
+        baseTokens: {},
+        loadThemeTokens: jest.fn().mockResolvedValue({}),
       }));
 
       /* ----------------------------------------------------------------
@@ -133,11 +134,10 @@ describe("shop actions", () => {
         accent: "blue",
         "accent-dark": "navy",
       };
-      jest.doMock("@platform-core/src/createShop", () => ({
-        syncTheme: jest.fn(),
-        loadTokens: jest.fn().mockReturnValue(defaultTokens),
+      jest.doMock("@platform-core/createShop", () => ({
+        syncTheme: jest.fn().mockResolvedValue(defaultTokens),
       }));
-      jest.doMock("@platform-core/src/themeTokens", () => ({
+      jest.doMock("@platform-core/themeTokens", () => ({
         baseTokens: {},
         loadThemeTokens: jest.fn().mockResolvedValue(defaultTokens),
       }));

@@ -1,4 +1,5 @@
-import { syncTheme, loadTokens } from "@platform-core/src/createShop";
+import { syncTheme } from "@platform-core/createShop";
+import { baseTokens, loadThemeTokens } from "@platform-core/themeTokens";
 import type { Shop } from "@acme/types";
 import type { ShopForm } from "./validation";
 
@@ -17,7 +18,7 @@ export async function buildThemeData(
     themeDefaults =
       current.themeId !== form.themeId
         ? await syncTheme(shop, form.themeId)
-        : await loadTokens(form.themeId);
+        : { ...baseTokens, ...(await loadThemeTokens(form.themeId)) };
   }
   const themeTokens = { ...themeDefaults, ...overrides };
   return { themeDefaults, overrides, themeTokens };

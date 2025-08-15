@@ -1,5 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/page.tsx
-import { listThemes, loadTokens } from "@platform-core/src/createShop";
+import { listThemes } from "@platform-core/createShop";
+import { baseTokens, loadThemeTokens } from "@platform-core/themeTokens";
 import { readShop } from "@platform-core/src/repositories/shops.server";
 import {
   getThemePresets,
@@ -33,7 +34,11 @@ export default async function ShopThemePage({
   const presets = await getThemePresets(shop);
   const themes = [...builtInThemes, ...Object.keys(presets)];
   const tokensByTheme = {
-    ...Object.fromEntries(builtInThemes.map((t) => [t, loadTokens(t)])),
+    ...Object.fromEntries(
+      await Promise.all(
+        builtInThemes.map(async (t) => [t, { ...baseTokens, ...(await loadThemeTokens(t)) }])
+      )
+    ),
     ...presets,
   } as Record<string, Record<string, string>>;
 

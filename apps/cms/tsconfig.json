@@ -17,6 +17,7 @@
     { "path": "../../packages/themes/base" },
     { "path": "../../packages/email" },
     { "path": "../../packages/shared-utils" },
-    { "path": "../../packages/lib" }
+    { "path": "../../packages/lib" },
+    { "path": "../../packages/date-utils" }
   ]
 }

@@ -19,9 +19,7 @@ export async function POST(req: NextRequest) {
 
   const shop = validateShopName(body.shop);
 
-  const { generateMeta } = await import(
-    /* @vite-ignore */ "../../../../../../../scripts/generate-meta.ts"
-  );
+  const { generateMeta } = await import("@acme/lib/generateMeta");
 
   const result = await generateMeta({
     id: body.id,

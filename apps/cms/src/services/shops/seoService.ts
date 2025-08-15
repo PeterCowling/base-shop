@@ -57,9 +57,7 @@ export async function generateSeo(
   }
 
   const { id, locale, title, description } = data;
-  const { generateMeta } = await import(
-    /* @vite-ignore */ "../../../../../scripts/generate-meta.ts"
-  );
+  const { generateMeta } = await import("@acme/lib/generateMeta");
 
   const result = await generateMeta({ id, title, description });
   const current = await fetchSettings(shop);

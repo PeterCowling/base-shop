@@ -15,7 +15,10 @@ import { Tooltip } from "../../../atoms";
 
 interface Props {
   component: PageComponent;
-  handleInput: (field: string, value: any) => void;
+  handleInput: <K extends keyof PageComponent>(
+    field: K,
+    value: PageComponent[K]
+  ) => void;
   handleResize: (field: string, value: string) => void;
   handleFullSize: (field: string) => void;
 }
@@ -30,9 +33,30 @@ export default function LayoutPanel({
     value && !globalThis.CSS?.supports(prop, value)
       ? `Invalid ${prop} value`
       : undefined;
+  const viewports = ["Desktop", "Tablet", "Mobile"] as const;
+  const widthKeys = {
+    Desktop: "widthDesktop",
+    Tablet: "widthTablet",
+    Mobile: "widthMobile",
+  } as const;
+  const heightKeys = {
+    Desktop: "heightDesktop",
+    Tablet: "heightTablet",
+    Mobile: "heightMobile",
+  } as const;
+  const marginKeys = {
+    Desktop: "marginDesktop",
+    Tablet: "marginTablet",
+    Mobile: "marginMobile",
+  } as const;
+  const paddingKeys = {
+    Desktop: "paddingDesktop",
+    Tablet: "paddingTablet",
+    Mobile: "paddingMobile",
+  } as const;
   return (
     <div className="space-y-2">
-      {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
+      {viewports.map((vp) => (
         <div key={vp} className="space-y-2">
           <div className="flex items-end gap-2">
             <Input
@@ -43,19 +67,14 @@ export default function LayoutPanel({
                 </span>
               }
               placeholder="e.g. 100px or 50%"
-              value={
-                (component[`width${vp}` as keyof PageComponent] as string) ?? ""
-              }
-              error={cssError(
-                "width",
-                component[`width${vp}` as keyof PageComponent] as string
-              )}
-              onChange={(e) => handleResize(`width${vp}`, e.target.value)}
+              value={component[widthKeys[vp]] ?? ""}
+              error={cssError("width", component[widthKeys[vp]])}
+              onChange={(e) => handleResize(widthKeys[vp], e.target.value)}
             />
             <Button
               type="button"
               variant="outline"
-              onClick={() => handleFullSize(`width${vp}`)}
+              onClick={() => handleFullSize(widthKeys[vp])}
             >
               Full width
             </Button>
@@ -69,20 +88,14 @@ export default function LayoutPanel({
                 </span>
               }
               placeholder="e.g. 1px or 1rem"
-              value={
-                (component[`height${vp}` as keyof PageComponent] as string) ??
-                ""
-              }
-              error={cssError(
-                "height",
-                component[`height${vp}` as keyof PageComponent] as string
-              )}
-              onChange={(e) => handleResize(`height${vp}`, e.target.value)}
+              value={component[heightKeys[vp]] ?? ""}
+              error={cssError("height", component[heightKeys[vp]])}
+              onChange={(e) => handleResize(heightKeys[vp], e.target.value)}
             />
             <Button
               type="button"
               variant="outline"
-              onClick={() => handleFullSize(`height${vp}`)}
+              onClick={() => handleFullSize(heightKeys[vp])}
             >
               Full height
             </Button>
@@ -131,7 +144,7 @@ export default function LayoutPanel({
           />
         </>
       )}
-      {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
+      {viewports.map((vp) => (
         <div key={`spacing-${vp}`} className="space-y-2">
           <Input
             label={
@@ -141,15 +154,9 @@ export default function LayoutPanel({
               </span>
             }
             placeholder="e.g. 1rem"
-            value={
-              (component[`margin${vp}` as keyof PageComponent] as string) ??
-              ""
-            }
-            error={cssError(
-              "margin",
-              component[`margin${vp}` as keyof PageComponent] as string
-            )}
-            onChange={(e) => handleResize(`margin${vp}`, e.target.value)}
+            value={component[marginKeys[vp]] ?? ""}
+            error={cssError("margin", component[marginKeys[vp]])}
+            onChange={(e) => handleResize(marginKeys[vp], e.target.value)}
           />
           <Input
             label={
@@ -159,15 +166,9 @@ export default function LayoutPanel({
               </span>
             }
             placeholder="e.g. 1rem"
-            value={
-              (component[`padding${vp}` as keyof PageComponent] as string) ??
-              ""
-            }
-            error={cssError(
-              "padding",
-              component[`padding${vp}` as keyof PageComponent] as string
-            )}
-            onChange={(e) => handleResize(`padding${vp}`, e.target.value)}
+            value={component[paddingKeys[vp]] ?? ""}
+            error={cssError("padding", component[paddingKeys[vp]])}
+            onChange={(e) => handleResize(paddingKeys[vp], e.target.value)}
           />
         </div>
       ))}
@@ -204,12 +205,11 @@ export default function LayoutPanel({
             </span>
           }
           placeholder="e.g. 1rem"
-          value={(component as { gap?: string }).gap ?? ""}
-          error={cssError("gap", (component as { gap?: string }).gap)}
+          value={component.gap ?? ""}
+          error={cssError("gap", component.gap)}
           onChange={(e) => handleInput("gap", e.target.value)}
         />
       )}
     </div>
   );
 }
-

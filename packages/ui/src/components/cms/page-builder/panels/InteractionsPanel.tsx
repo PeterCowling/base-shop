@@ -13,15 +13,15 @@ import {
 
 interface Props {
   component: PageComponent;
-  handleInput: (field: string, value: any) => void;
+  handleInput: <K extends keyof PageComponent>(
+    field: K,
+    value: PageComponent[K]
+  ) => void;
 }
 
-export default function InteractionsPanel({
-  component,
-  handleInput,
-}: Props) {
-  const clickAction = (component as any).clickAction ?? "none";
-  const animation = (component as any).animation ?? "none";
+export default function InteractionsPanel({ component, handleInput }: Props) {
+  const clickAction = component.clickAction ?? "none";
+  const animation = component.animation ?? "none";
   return (
     <div className="space-y-2">
       <Select
@@ -43,7 +43,7 @@ export default function InteractionsPanel({
         <Input
           label="Target"
           placeholder="https://example.com"
-          value={(component as any).href ?? ""}
+          value={component.href ?? ""}
           onChange={(e) => handleInput("href", e.target.value)}
         />
       )}
@@ -65,4 +65,3 @@ export default function InteractionsPanel({
     </div>
   );
 }
-

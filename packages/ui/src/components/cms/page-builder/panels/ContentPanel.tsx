@@ -10,7 +10,10 @@ import editorRegistry from "../editorRegistry";
 interface Props {
   component: PageComponent;
   onChange: (patch: Partial<PageComponent>) => void;
-  handleInput: (field: string, value: any) => void;
+  handleInput: <K extends keyof PageComponent>(
+    field: K,
+    value: PageComponent[K]
+  ) => void;
 }
 
 export default function ContentPanel({
@@ -19,37 +22,32 @@ export default function ContentPanel({
   handleInput,
 }: Props) {
   const Specific = editorRegistry[component.type];
-  const comp = component as PageComponent & {
-    minItems?: number;
-    maxItems?: number;
-    desktopItems?: number;
-    tabletItems?: number;
-    mobileItems?: number;
-    columns?: number;
-  };
-  const nonNegative = (v?: number) => (v !== undefined && v < 0 ? "Must be ≥ 0" : undefined);
+  const nonNegative = (v?: number) =>
+    v !== undefined && v < 0 ? "Must be ≥ 0" : undefined;
   const minItemsError =
-    nonNegative(comp.minItems) ||
-    (comp.minItems !== undefined &&
-    comp.maxItems !== undefined &&
-    comp.minItems > comp.maxItems
+    nonNegative(component.minItems) ||
+    (component.minItems !== undefined &&
+    component.maxItems !== undefined &&
+    component.minItems > component.maxItems
       ? "Min Items cannot exceed Max Items"
       : undefined);
   const maxItemsError =
-    nonNegative(comp.maxItems) ||
-    (comp.minItems !== undefined &&
-    comp.maxItems !== undefined &&
-    comp.maxItems < comp.minItems
+    nonNegative(component.maxItems) ||
+    (component.minItems !== undefined &&
+    component.maxItems !== undefined &&
+    component.maxItems < component.minItems
       ? "Max Items cannot be less than Min Items"
       : undefined);
-  const desktopItemsError = nonNegative(comp.desktopItems);
-  const tabletItemsError = nonNegative(comp.tabletItems);
-  const mobileItemsError = nonNegative(comp.mobileItems);
+  const desktopItemsError = nonNegative(component.desktopItems);
+  const tabletItemsError = nonNegative(component.tabletItems);
+  const mobileItemsError = nonNegative(component.mobileItems);
   const columnsError =
-    nonNegative(comp.columns) ||
-    (comp.columns !== undefined &&
-    ((comp.minItems !== undefined && comp.columns < comp.minItems) ||
-      (comp.maxItems !== undefined && comp.columns > comp.maxItems))
+    nonNegative(component.columns) ||
+    (component.columns !== undefined &&
+    ((component.minItems !== undefined &&
+      component.columns < component.minItems) ||
+      (component.maxItems !== undefined &&
+        component.columns > component.maxItems))
       ? "Columns must be between min and max items"
       : undefined);
   return (
@@ -64,7 +62,7 @@ export default function ContentPanel({
               </span>
             }
             type="number"
-            value={comp.minItems ?? ""}
+            value={component.minItems ?? ""}
             onChange={(e) => {
               const val =
                 e.target.value === "" ? undefined : Number(e.target.value);
@@ -72,7 +70,7 @@ export default function ContentPanel({
                 handleInput("minItems", undefined);
                 return;
               }
-              const max = comp.maxItems;
+              const max = component.maxItems;
               const patch: Partial<PageComponent> = { minItems: val };
               if (max !== undefined && val > max) {
                 patch.maxItems = val;
@@ -80,7 +78,7 @@ export default function ContentPanel({
               onChange(patch);
             }}
             min={0}
-            max={comp.maxItems ?? undefined}
+            max={component.maxItems ?? undefined}
             error={minItemsError}
           />
           <Input
@@ -91,7 +89,7 @@ export default function ContentPanel({
               </span>
             }
             type="number"
-            value={comp.maxItems ?? ""}
+            value={component.maxItems ?? ""}
             onChange={(e) => {
               const val =
                 e.target.value === "" ? undefined : Number(e.target.value);
@@ -99,14 +97,14 @@ export default function ContentPanel({
                 handleInput("maxItems", undefined);
                 return;
               }
-              const min = comp.minItems;
+              const min = component.minItems;
               const patch: Partial<PageComponent> = { maxItems: val };
               if (min !== undefined && val < min) {
                 patch.minItems = val;
               }
               onChange(patch);
             }}
-            min={comp.minItems ?? 0}
+            min={component.minItems ?? 0}
             error={maxItemsError}
           />
         </>
@@ -123,7 +121,7 @@ export default function ContentPanel({
               </span>
             }
             type="number"
-            value={comp.desktopItems ?? ""}
+            value={component.desktopItems ?? ""}
             onChange={(e) =>
               handleInput(
                 "desktopItems",
@@ -141,7 +139,7 @@ export default function ContentPanel({
               </span>
             }
             type="number"
-            value={comp.tabletItems ?? ""}
+            value={component.tabletItems ?? ""}
             onChange={(e) =>
               handleInput(
                 "tabletItems",
@@ -159,7 +157,7 @@ export default function ContentPanel({
               </span>
             }
             type="number"
-            value={comp.mobileItems ?? ""}
+            value={component.mobileItems ?? ""}
             onChange={(e) =>
               handleInput(
                 "mobileItems",
@@ -180,15 +178,15 @@ export default function ContentPanel({
             </span>
           }
           type="number"
-          value={comp.columns ?? ""}
+          value={component.columns ?? ""}
           onChange={(e) =>
             handleInput(
               "columns",
               e.target.value === "" ? undefined : Number(e.target.value)
             )
           }
-          min={comp.minItems}
-          max={comp.maxItems}
+          min={component.minItems}
+          max={component.maxItems}
           error={columnsError}
         />
       )}
@@ -202,4 +200,3 @@ export default function ContentPanel({
     </div>
   );
 }
-

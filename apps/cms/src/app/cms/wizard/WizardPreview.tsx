@@ -368,7 +368,7 @@ export default function WizardPreview({
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs">{selected.token}</span>
               <Button
-                size="sm"
+                className="px-2 py-1 text-xs"
                 onClick={() =>
                   onTokenSelect?.(selected.token, popoverPos)
                 }

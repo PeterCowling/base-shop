@@ -6,7 +6,6 @@ import {
   type DeployStatusBase,
 } from "@platform-core/createShop";
 import { validateShopName } from "@platform-core/src/shops";
-import { loadThemeTokens } from "../tokenUtils";
 import type { WizardState } from "../schema";
 
 export interface SubmitResult {
@@ -48,7 +47,7 @@ export async function submitShop(
     type,
     template,
     theme,
-    themeVars,
+    themeOverrides,
     payment,
     shipping,
     pageTitle,
@@ -61,11 +60,6 @@ export async function submitShop(
     analyticsId,
     env,
   } = state;
-
-  const defaults = await loadThemeTokens(theme);
-  const themeOverrides = Object.fromEntries(
-    Object.entries(themeVars ?? {}).filter(([k, v]) => defaults[k] !== v)
-  );
 
   const options = {
     name: storeName || undefined,

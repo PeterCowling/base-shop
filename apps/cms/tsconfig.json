@@ -13,6 +13,8 @@
     { "path": "../../packages/config" },
     { "path": "../../packages/i18n" },
     { "path": "../../packages/ui" },
-    { "path": "../../packages/themes/base" }
+    { "path": "../../packages/themes/base" },
+    { "path": "../../packages/email" },
+    { "path": "../../packages/shared-utils" }
   ]
 }

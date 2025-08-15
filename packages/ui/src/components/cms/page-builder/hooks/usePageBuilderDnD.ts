@@ -20,6 +20,12 @@ function isPointerEvent(
   return !!ev && "clientX" in ev && "clientY" in ev;
 }
 
+function hasChildren(
+  c: PageComponent
+): c is PageComponent & { children: PageComponent[] } {
+  return Array.isArray((c as { children?: unknown }).children);
+}
+
 interface Params {
   components: PageComponent[];
   dispatch: (action: Action) => void;
@@ -94,8 +100,9 @@ export function usePageBuilderDnD({
       ): PageComponent | null => {
         for (const c of list) {
           if (c.id === id) return c;
-          if ((c as any).children) {
-            const found = findById((c as any).children, id);
+          const children = hasChildren(c) ? c.children : undefined;
+          if (children) {
+            const found = findById(children, id);
             if (found) return found;
           }
         }
@@ -109,7 +116,7 @@ export function usePageBuilderDnD({
       } else if (parentId === undefined) {
         parentId = over.id.toString().replace(/^container-/, "");
         const parent = findById(components, parentId);
-        index = ((parent as any)?.children?.length ?? 0) as number;
+        index = parent ? (hasChildren(parent) ? parent.children.length : 0) : 0;
       }
       if (a?.from === "palette") {
         const isContainer = containerTypes.includes(a.type!);

@@ -85,7 +85,7 @@ ${envLines}
       - run: pnpm --filter @apps/shop-${shopId} build
       - run: npx @cloudflare/next-on-pages deploy \\
                --project-name=shop-${shopId} \\
-               --branch=\\${{ github.ref_name }}
+               --branch=\${{ github.ref_name }}
 `;
 
 writeFileSync(wfPath, workflow);

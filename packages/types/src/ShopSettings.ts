@@ -7,7 +7,7 @@ export const aiCatalogFieldSchema = z.enum([
   "title",
   "description",
   "price",
-  "images",
+  "media",
 ]);
 
 export const aiCatalogConfigSchema = z

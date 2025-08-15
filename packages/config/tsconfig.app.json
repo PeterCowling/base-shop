@@ -19,7 +19,7 @@
     "target": "ES2017",
     "strict": false,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "types": ["node", "react", "react-dom"],
     "skipLibCheck": true
   },

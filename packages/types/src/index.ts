@@ -22,3 +22,4 @@ export * from "./upgrade";
 export * from "./ExampleProps";
 export * from "./Segment";
 export * from "./plugins";
+export * from "./AnalyticsEvent";

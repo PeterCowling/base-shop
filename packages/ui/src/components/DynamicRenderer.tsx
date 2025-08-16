@@ -30,7 +30,6 @@ export default function DynamicRenderer({
     const {
       id,
       type: _type,
-      children,
       width,
       height,
       margin,
@@ -79,10 +78,20 @@ export default function DynamicRenderer({
       };
     }
 
+    const childBlocks = (block as Block & {
+      children?: PageComponent[];
+    }).children;
+
     return (
       <div key={id} style={style}>
-        <Comp {...props} {...extraProps} locale={locale}>
-          {children?.map((child) => renderBlock(child))}
+        <Comp
+          {...(props as BlockProps)}
+          {...extraProps}
+          id={id}
+          type={_type}
+          locale={locale}
+        >
+          {childBlocks?.map((child: PageComponent) => renderBlock(child))}
         </Comp>
       </div>
     );

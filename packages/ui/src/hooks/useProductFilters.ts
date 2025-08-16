@@ -2,11 +2,11 @@ import { useMemo, useState } from "react";
 
 export type ProductStatus = "all" | "active" | "draft" | "archived";
 
-export interface UseProductFiltersResult<T> {
+export interface UseProductFiltersResult<T, S extends string = ProductStatus> {
   search: string;
-  status: ProductStatus;
+  status: S | "all";
   setSearch: (v: string) => void;
-  setStatus: (v: ProductStatus) => void;
+  setStatus: (v: S | "all") => void;
   filteredRows: T[];
 }
 
@@ -14,11 +14,12 @@ export function useProductFilters<
   T extends {
     title: string | Record<string, string>;
     sku?: string;
-    status?: ProductStatus;
-  }
->(rows: readonly T[]): UseProductFiltersResult<T> {
+    status?: S;
+  },
+  S extends string = ProductStatus
+>(rows: readonly T[]): UseProductFiltersResult<T, S> {
   const [search, setSearch] = useState<string>("");
-  const [status, setStatus] = useState<ProductStatus>("all");
+  const [status, setStatus] = useState<S | "all">("all");
 
   const availableLocales = useMemo(() => {
     const set = new Set<string>();

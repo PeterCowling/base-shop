@@ -1,5 +1,6 @@
 "use client";
 
+import DOMPurify from "dompurify";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -21,6 +22,7 @@ export default function PopupModal({
   content = "",
 }: Props) {
   const [open, setOpen] = useState(trigger === "load" && delay === 0);
+  const sanitized = DOMPurify.sanitize(content);
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -67,7 +69,7 @@ export default function PopupModal({
         onClick={(e) => e.stopPropagation()}
       >
         {content && (
-          <div dangerouslySetInnerHTML={{ __html: content }} />
+          <div dangerouslySetInnerHTML={{ __html: sanitized }} />
         )}
         <button
           type="button"

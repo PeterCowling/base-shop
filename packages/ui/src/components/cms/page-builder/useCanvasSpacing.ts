@@ -8,7 +8,7 @@ interface Options {
   marginVal?: string;
   paddingVal?: string;
   dispatch: React.Dispatch<ResizeAction>;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 type SpacingType = "margin" | "padding";

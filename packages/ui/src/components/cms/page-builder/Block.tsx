@@ -2,6 +2,7 @@ import type { Locale } from "@/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import DOMPurify from "dompurify";
 import { memo } from "react";
+import type { ComponentType } from "react";
 import "./animations.css";
 import { blockRegistry } from "../blocks";
 
@@ -18,7 +19,7 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
   }
   const entry = blockRegistry[component.type];
   if (!entry) return null;
-  const Comp = entry.component;
+  const Comp = entry.component as ComponentType<any>;
 
   const {
     id,

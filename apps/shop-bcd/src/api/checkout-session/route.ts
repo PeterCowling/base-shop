@@ -55,7 +55,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     customer: customerId,
     shipping,
     billing_details,
-  } = parsed.data;
+  } = parsed.data as {
+    returnDate?: string;
+    coupon?: string;
+    currency?: string;
+    taxRegion?: string;
+    customer?: string;
+    shipping?: z.infer<typeof shippingSchema>;
+    billing_details?: z.infer<typeof billingSchema>;
+  };
 
   const customerSession = await getCustomerSession();
   const customer = customerId ?? customerSession?.customerId;

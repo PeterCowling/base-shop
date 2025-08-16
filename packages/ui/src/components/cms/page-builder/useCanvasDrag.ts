@@ -8,7 +8,7 @@ interface Options {
   dispatch: React.Dispatch<Action>;
   gridEnabled?: boolean;
   gridCols: number;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   disabled?: boolean;
 }
 

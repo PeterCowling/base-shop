@@ -436,6 +436,9 @@ importers:
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
+      qrcode:
+        specifier: ^1.5.4
+        version: 1.5.4
     devDependencies:
       next:
         specifier: ^15.3.4

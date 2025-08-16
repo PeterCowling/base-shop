@@ -4,7 +4,7 @@ import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
-import shop from "../../../../shop.json";
+import shop from "../../../../../shop.json";
 
 export const runtime = "edge";
 

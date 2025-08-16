@@ -4,7 +4,7 @@ import { execSync } from "node:child_process";
 import { parseArgs } from "./createShop/parse";
 import { gatherOptions } from "./createShop/prompts";
 import { writeShop } from "./createShop/write";
-import { ensureTemplateExists } from "../../packages/platform-core/src/createShop";
+import { ensureTemplateExists } from "../../packages/platform-core/src/createShop/fsUtils";
 
 function ensureRuntime() {
   const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);

@@ -17,6 +17,7 @@ export interface EmailAnalyticsEvent {
   campaign?: string;
   messageId?: string;
   recipient?: string;
+  [key: string]: unknown;
 }
 
 export interface CampaignStats {

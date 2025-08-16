@@ -17,7 +17,7 @@ function hasErrorType(err: unknown): err is { type: string } {
 }
 
 export async function parseJsonBody<T>(
-  req: Request & { body: NodeReadableStream<Uint8Array> | null },
+  req: Request,
   schema: z.ZodSchema<T>,
   limit: string | number,
 ): Promise<ParseJsonResult<T>> {

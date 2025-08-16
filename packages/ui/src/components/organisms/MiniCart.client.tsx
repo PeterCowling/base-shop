@@ -3,7 +3,7 @@
 import { useCart } from "@platform-core/src/contexts/CartContext";
 import * as React from "react";
 import { cn } from "../../utils/style";
-import { drawerWidthProps } from "../../utils/style";
+import { drawerWidthProps } from "../../utils/style/drawerWidth";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { Toast } from "../atoms/Toast";

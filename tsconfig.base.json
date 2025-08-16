@@ -89,6 +89,8 @@
       "@config": ["packages/config/src/env/index.ts"],
       "@config/*": ["packages/config/src/env/*"],
       "@config/src/*": ["packages/config/src/env/*"],
+      "@acme/config": ["packages/config/src/env/index.ts"],
+      "@acme/config/*": ["packages/config/src/env/*"],
 
       /* ─── shared utilities ──────────────────────────────────────── */
       "@shared-utils": ["packages/shared-utils/src/index.ts"],

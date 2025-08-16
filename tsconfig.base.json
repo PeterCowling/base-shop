@@ -116,5 +116,6 @@
   },
 
   /* project-wide ambient declarations */
-  "files": ["./src/types/global.d.ts"]
+  "files": ["./src/types/global.d.ts"],
+  "exclude": ["**/__mocks__/**"]
 }

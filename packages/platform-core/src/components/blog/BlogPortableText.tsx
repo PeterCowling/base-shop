@@ -2,7 +2,7 @@
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import { getProductBySlug, getProductById } from "@/lib/products";
-import { ProductCarousel } from "@ui";
+import { ProductCard } from "../shop/ProductCard";
 
 const components = {
   types: {
@@ -28,7 +28,13 @@ const components = {
           </Link>
         );
       }
-      return <ProductCarousel products={products} />;
+      return (
+        <div className="flex gap-4 overflow-x-auto py-4">
+          {products.map((p) => (
+            <ProductCard key={p.id} sku={p} />
+          ))}
+        </div>
+      );
     },
     embed: ({ value }: any) => (
       <div className="aspect-video">

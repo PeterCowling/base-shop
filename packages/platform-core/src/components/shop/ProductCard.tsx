@@ -2,9 +2,21 @@
 import type { SKU } from "@acme/types";
 import Image from "next/image";
 import Link from "next/link";
-import { Price } from "@ui/components/atoms/Price";
+import { useCurrency } from "@/contexts/CurrencyContext";
+import { formatPrice } from "@acme/shared-utils";
 import { memo } from "react";
 import AddToCartButton from "./AddToCartButton.client";
+
+interface PriceProps {
+  amount: number;
+  currency?: string;
+}
+
+function Price({ amount, currency }: PriceProps) {
+  const [ctxCurrency] = useCurrency();
+  const cur = currency ?? ctxCurrency ?? "EUR";
+  return <span>{formatPrice(amount, cur)}</span>;
+}
 
 function ProductCardInner({ sku }: { sku: SKU }) {
   return (

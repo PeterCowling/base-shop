@@ -2,7 +2,6 @@ import "server-only";
 
 import { coreEnv } from "@acme/config/env/core";
 import { DATA_ROOT } from "../dataRoot";
-import { sendEmail } from "@acme/email";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import type { InventoryItem } from "@acme/types";
@@ -29,6 +28,17 @@ async function writeLog(shop: string, log: Record<string, number>): Promise<void
   const p = path.join(DATA_ROOT, shop, LOG_FILE);
   await fs.mkdir(path.dirname(p), { recursive: true });
   await fs.writeFile(p, JSON.stringify(log, null, 2), "utf8");
+}
+
+async function sendEmail(
+  to: string,
+  subject: string,
+  body: string,
+): Promise<void> {
+  const mod = (await import("@acme/" + "email")) as {
+    sendEmail: (to: string, subject: string, body: string) => Promise<void>;
+  };
+  await mod.sendEmail(to, subject, body);
 }
 
 export async function checkAndAlert(

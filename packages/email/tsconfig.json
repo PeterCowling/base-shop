@@ -15,7 +15,6 @@
     { "path": "../config" },
     { "path": "../ui" },
     { "path": "../lib" },
-    { "path": "../platform-core" },
     { "path": "../types" },
     { "path": "../date-utils" }
   ],

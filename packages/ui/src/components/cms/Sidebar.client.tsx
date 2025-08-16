@@ -3,7 +3,7 @@
 import { getShopFromPath } from "@platform-core/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { coreEnv } from "@acme/config/env/core";
+import { coreEnv } from "@config/core";
 import { luxuryFeatures } from "@platform-core/luxuryFeatures";
 
 if (coreEnv.NODE_ENV === "development") {

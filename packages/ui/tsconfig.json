@@ -32,7 +32,7 @@
   ],
 
   /* ---------- file globs ------------------------------------------ { "path": "../../apps/cms" } */
-  "include": ["src/**/*"], // ONLY stuff inside src/
+  "include": ["src/**/*", "src/**/*.json"], // ONLY stuff inside src/
   "exclude": [
     "dist", // freshly emitted output
     "**/__tests__/**", // unit/integration tests

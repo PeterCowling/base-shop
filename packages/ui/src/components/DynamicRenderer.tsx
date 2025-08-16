@@ -24,8 +24,7 @@ export default function DynamicRenderer({
       return null;
     }
 
-    type Block = Extract<PageComponent, { type: typeof block.type }>;
-    const { component: Comp, getRuntimeProps } = entry as BlockRegistryEntry<Block>;
+    const { component: Comp, getRuntimeProps } = entry as BlockRegistryEntry<any>;
 
     const {
       id,
@@ -37,8 +36,9 @@ export default function DynamicRenderer({
       position,
       top,
       left,
+      children: childBlocks,
       ...rest
-    } = block as Block;
+    } = block as PageComponent & { children?: PageComponent[] };
 
     const style: CSSProperties = {
       width,
@@ -50,42 +50,23 @@ export default function DynamicRenderer({
       left,
     };
 
-    type BlockProps = Omit<
-      Block,
-      | "id"
-      | "type"
-      | "children"
-      | "width"
-      | "height"
-      | "margin"
-      | "padding"
-      | "position"
-      | "top"
-      | "left"
-    >;
-    const props = rest as BlockProps;
-
-    let extraProps: Partial<BlockProps> = {};
+    let extraProps: Record<string, unknown> = {};
     if (getRuntimeProps) {
       const runtime = getRuntimeProps(block, locale);
-      extraProps = { ...extraProps, ...(runtime as Partial<BlockProps>) };
+      extraProps = { ...extraProps, ...(runtime as Record<string, unknown>) };
     }
 
     if (runtimeData && runtimeData[block.type]) {
       extraProps = {
         ...extraProps,
-        ...(runtimeData[block.type] as Partial<BlockProps>),
+        ...runtimeData[block.type],
       };
     }
-
-    const childBlocks = (block as Block & {
-      children?: PageComponent[];
-    }).children;
 
     return (
       <div key={id} style={style}>
         <Comp
-          {...(props as BlockProps)}
+          {...rest}
           {...extraProps}
           id={id}
           type={_type}

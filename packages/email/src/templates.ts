@@ -4,7 +4,7 @@ import { marketingEmailTemplates } from "@acme/ui";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 
-const window = new JSDOM("").window as unknown as Window;
+const { window } = new JSDOM("");
 const DOMPurify = createDOMPurify(window);
 
 const templates: Record<string, string> = {};

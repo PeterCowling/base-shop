@@ -9,7 +9,15 @@ export interface ShippingRateRequest {
   weight: number;
   region?: string;
   window?: string;
-  premierDelivery?: { regions: string[]; windows: string[] };
+  carrier?: string;
+  premierDelivery?: {
+    regions: string[];
+    windows: string[];
+    carriers?: string[];
+    surcharge?: number;
+    serviceLabel?: string;
+    enabled?: boolean;
+  };
 }
 
 /**
@@ -23,10 +31,11 @@ export async function getShippingRate({
   weight,
   region,
   window,
+  carrier,
   premierDelivery,
 }: ShippingRateRequest): Promise<unknown> {
   if (provider === "premier-shipping") {
-    if (!premierDelivery) {
+    if (!premierDelivery || premierDelivery.enabled === false) {
       throw new Error("Premier delivery not configured");
     }
     if (!region || !premierDelivery.regions.includes(region)) {
@@ -35,11 +44,22 @@ export async function getShippingRate({
     if (!window || !premierDelivery.windows.includes(window)) {
       throw new Error("Invalid delivery window");
     }
-    return { rate: 0 };
+    if (
+      premierDelivery.carriers &&
+      (!carrier || !premierDelivery.carriers.includes(carrier))
+    ) {
+      throw new Error("Carrier not eligible for premier delivery");
+    }
+    const surcharge = premierDelivery.surcharge ?? 0;
+    return {
+      rate: surcharge,
+      surcharge,
+      serviceLabel: premierDelivery.serviceLabel ?? "Premier Delivery",
+    };
   }
 
-  if (region || window) {
-    if (!premierDelivery) {
+  if (region || window || carrier) {
+    if (!premierDelivery || premierDelivery.enabled === false) {
       throw new Error("Premier delivery not configured");
     }
     if (!region || !premierDelivery.regions.includes(region)) {
@@ -47,6 +67,12 @@ export async function getShippingRate({
     }
     if (!window || !premierDelivery.windows.includes(window)) {
       throw new Error("Invalid delivery window");
+    }
+    if (
+      premierDelivery.carriers &&
+      (!carrier || !premierDelivery.carriers.includes(carrier))
+    ) {
+      throw new Error("Carrier not eligible for premier delivery");
     }
   }
   const apiKey = (shippingEnv as Record<string, string | undefined>)[

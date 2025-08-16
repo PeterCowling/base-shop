@@ -2,6 +2,7 @@
 import "@acme/lib/initZod";
 import { getShippingRate } from "@acme/platform-core/shipping";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { luxuryFeatures } from "@platform-core/luxuryFeatures";
 import shop from "../../../../shop.json";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -18,6 +19,7 @@ const schema = z
     weight: z.number(),
     region: z.string().optional(),
     window: z.string().optional(),
+    carrier: z.string().optional(),
   })
   .superRefine((val, ctx) => {
     if (val.provider === "premier-shipping") {
@@ -26,6 +28,9 @@ const schema = z
       }
       if (!val.window) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["window"], message: "Required" });
+      }
+      if (!val.carrier) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["carrier"], message: "Required" });
       }
     }
   });
@@ -39,6 +44,11 @@ export async function POST(req: NextRequest) {
   if (body.provider === "premier-shipping") {
     const settings = await getShopSettings(shop.id);
     premierDelivery = settings.premierDelivery;
+    if (!luxuryFeatures.premierDelivery || !premierDelivery) {
+      body.provider = "ups";
+    } else {
+      premierDelivery = { ...premierDelivery, enabled: true } as any;
+    }
   }
 
   try {

@@ -104,6 +104,7 @@ describe("handleStripeWebhook", () => {
       luxuryFeatures: {
         fraudReviewThreshold: 100,
         requireStrongCustomerAuth: true,
+        premierDelivery: false,
       },
     });
     const { handleStripeWebhook } = await import("../src/stripe-webhook");

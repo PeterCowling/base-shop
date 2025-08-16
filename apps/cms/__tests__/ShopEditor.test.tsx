@@ -43,6 +43,7 @@ describe("ShopEditor", () => {
         fraudReviewThreshold: 0,
         requireStrongCustomerAuth: false,
         strictReturnConditions: false,
+        premierDelivery: false,
       },
     };
 

@@ -123,6 +123,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
       fraudReviewThreshold: 0,
       requireStrongCustomerAuth: false,
       strictReturnConditions: false,
+      premierDelivery: false,
     },
     updatedAt: "",
     updatedBy: "",

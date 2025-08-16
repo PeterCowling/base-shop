@@ -138,12 +138,21 @@ export declare const shopSettingsSchema: z.ZodObject<{
     premierDelivery: z.ZodOptional<z.ZodObject<{
         regions: z.ZodArray<z.ZodString, "many">;
         windows: z.ZodArray<z.ZodString, "many">;
+        carriers: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;
+        surcharge: z.ZodOptional<z.ZodNumber>;
+        serviceLabel: z.ZodOptional<z.ZodString>;
     }, "strip", z.ZodTypeAny, {
         regions: string[];
         windows: string[];
+        carriers?: string[] | undefined;
+        surcharge?: number | undefined;
+        serviceLabel?: string | undefined;
     }, {
         regions: string[];
         windows: string[];
+        carriers?: string[] | undefined;
+        surcharge?: number | undefined;
+        serviceLabel?: string | undefined;
     }>>;
     trackingEnabled: z.ZodOptional<z.ZodBoolean>;
     trackingProviders: z.ZodOptional<z.ZodArray<z.ZodString, "many">>;

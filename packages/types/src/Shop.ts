@@ -124,6 +124,7 @@ export const shopSchema = z
         fraudReviewThreshold: z.number().nonnegative().default(0),
         requireStrongCustomerAuth: z.boolean().default(false),
         strictReturnConditions: z.boolean().default(false),
+        premierDelivery: z.boolean().default(false),
       })
       .strict()
       .default({
@@ -132,6 +133,7 @@ export const shopSchema = z
         fraudReviewThreshold: 0,
         requireStrongCustomerAuth: false,
         strictReturnConditions: false,
+        premierDelivery: false,
       }),
     lastUpgrade: z.string().datetime().optional(),
     componentVersions: z.record(z.string()).default({}),

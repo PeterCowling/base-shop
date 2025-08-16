@@ -17,43 +17,85 @@ interface PremierPickupState {
 interface PremierShippingRequest extends ShippingRequest {
   region: string;
   window: string;
+  carrier: string;
 }
 
 interface PremierShippingConfig {
   regions: string[];
   windows: string[];
+  carriers?: string[];
   /** Optional flat rate applied when calculating shipping */
   rate?: number;
+  /** Optional surcharge applied to premier delivery */
+  surcharge?: number;
+  /** Optional label describing the service */
+  serviceLabel?: string;
 }
 
 interface PremierShippingProvider {
   calculateShipping(request: PremierShippingRequest): unknown;
-  schedulePickup(region: string, date: string, hourWindow: string): void;
+  availableSlots(region: string, date: string): string[];
+  schedulePickup(
+    region: string,
+    date: string,
+    hourWindow: string,
+    carrier: string,
+  ): void;
 }
 
 class PremierShipping implements PremierShippingProvider {
+  private reservations = new Map<string, Set<string>>();
   private state: PremierPickupState = {};
 
   constructor(private cfg: PremierShippingConfig) {}
 
-  calculateShipping(request: PremierShippingRequest) {
-    const { region, window } = request;
+  private assertSupported(region: string, window: string, carrier: string) {
     if (!this.cfg.regions.includes(region)) {
       throw new Error("Region not supported");
     }
     if (!this.cfg.windows.includes(window)) {
       throw new Error("Invalid delivery window");
     }
-    return { rate: this.cfg.rate ?? 0 };
+    if (this.cfg.carriers && !this.cfg.carriers.includes(carrier)) {
+      throw new Error("Carrier not supported");
+    }
   }
 
-  schedulePickup(region: string, date: string, hourWindow: string) {
+  availableSlots(region: string, date: string) {
     if (!this.cfg.regions.includes(region)) {
       throw new Error("Region not supported");
     }
-    if (!this.cfg.windows.includes(hourWindow)) {
-      throw new Error("Invalid delivery window");
+    const key = `${region}:${date}`;
+    const reserved = this.reservations.get(key) ?? new Set();
+    return this.cfg.windows.filter((w) => !reserved.has(w));
+  }
+
+  calculateShipping(request: PremierShippingRequest) {
+    const { region, window, carrier } = request;
+    this.assertSupported(region, window, carrier);
+    const base = this.cfg.rate ?? 0;
+    const surcharge = this.cfg.surcharge ?? 0;
+    return {
+      rate: base + surcharge,
+      surcharge,
+      serviceLabel: this.cfg.serviceLabel ?? "Premier Delivery",
+    };
+  }
+
+  schedulePickup(
+    region: string,
+    date: string,
+    hourWindow: string,
+    carrier: string,
+  ) {
+    this.assertSupported(region, hourWindow, carrier);
+    const key = `${region}:${date}`;
+    const reserved = this.reservations.get(key) ?? new Set();
+    if (reserved.has(hourWindow)) {
+      throw new Error("Slot not available");
     }
+    reserved.add(hourWindow);
+    this.reservations.set(key, reserved);
     this.state = { region, date, window: hourWindow };
   }
 }
@@ -61,7 +103,14 @@ class PremierShipping implements PremierShippingProvider {
 const premierShippingPlugin: Plugin<PremierShippingConfig, ShippingRequest, PremierShippingProvider> = {
   id: "premier-shipping",
   name: "Premier Shipping",
-  defaultConfig: { regions: [], windows: [], rate: 0 },
+  defaultConfig: {
+    regions: [],
+    windows: [],
+    carriers: [],
+    rate: 0,
+    surcharge: 0,
+    serviceLabel: "Premier Delivery",
+  },
   registerShipping(
     registry: ShippingRegistry<ShippingRequest, PremierShippingProvider>,
     cfg: PremierShippingConfig,

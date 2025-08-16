@@ -36,6 +36,7 @@ export const coreEnvBaseSchema = z.object({
   LUXURY_FEATURES_REQUIRE_STRONG_CUSTOMER_AUTH: z.coerce
     .boolean()
     .optional(),
+  LUXURY_FEATURES_PREMIER_DELIVERY: z.coerce.boolean().optional(),
   DEPOSIT_RELEASE_ENABLED: z
     .string()
     .refine((v) => v === "true" || v === "false", {

@@ -15,12 +15,14 @@
     "@acme/email": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
-    "@acme/shared-utils": "workspace:*",
     "@acme/plugin-sanity": "workspace:*",
+    "@acme/shared-utils": "workspace:*",
     "@sendgrid/eventwebhook": "^7.2.7",
     "@themes/base": "workspace:*",
+    "@types/jsonwebtoken": "^9.0.10",
     "color-contrast-checker": "^2.1.0",
-    "dompurify": "^3.2.6"
+    "dompurify": "^3.2.6",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "next": "^15.3.4"

@@ -14,9 +14,11 @@ interface Discount extends Coupon {
 
 function getShop(req: NextRequest): string {
   const { searchParams } = new URL(req.url);
-  return (
-    searchParams.get("shop") || env.NEXT_PUBLIC_DEFAULT_SHOP || "abc"
-  );
+  const fromQuery = searchParams.get("shop");
+  if (fromQuery) return fromQuery;
+  return typeof env.NEXT_PUBLIC_DEFAULT_SHOP === "string"
+    ? env.NEXT_PUBLIC_DEFAULT_SHOP
+    : "abc";
 }
 
 function filePath(shop: string): string {

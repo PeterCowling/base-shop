@@ -78,9 +78,9 @@ describe("campaign integration", () => {
       "utf8"
     );
 
-    const { sendScheduledCampaigns } = await import("../../../../functions/marketing-email-sender");
+    const { sendDueCampaigns } = await import("../scheduler");
     const sgMail = require("@sendgrid/mail").default;
-    await sendScheduledCampaigns();
+    await sendDueCampaigns();
 
     expect(sgMail.send).toHaveBeenCalledTimes(2);
     expect(sgMail.send).toHaveBeenCalledWith(
@@ -125,8 +125,8 @@ describe("campaign integration", () => {
       "utf8"
     );
 
-    const { sendScheduledCampaigns } = await import("../../../../functions/marketing-email-sender");
-    await sendScheduledCampaigns();
+    const { sendDueCampaigns } = await import("../scheduler");
+    await sendDueCampaigns();
 
     expect(resendSendMock).toHaveBeenCalledWith(
       expect.objectContaining({ to: "manual@example.com", subject: "Man" })

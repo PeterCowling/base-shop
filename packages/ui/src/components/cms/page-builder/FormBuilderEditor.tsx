@@ -49,7 +49,7 @@ export default function FormBuilderEditor({ component, onChange }: Props) {
         <div key={idx} className="space-y-1 rounded border p-2">
           <Select
             value={field.type}
-            onValueChange={(v) => updateField(idx, "type", v)}
+            onValueChange={(v) => updateField(idx, "type", v as FormField["type"])}
           >
             <SelectTrigger>
               <SelectValue placeholder="type" />

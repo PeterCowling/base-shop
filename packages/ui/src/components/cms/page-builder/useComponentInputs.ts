@@ -7,7 +7,7 @@ export default function useComponentInputs<T>(
 } {
   const handleInput = useCallback(
     <K extends keyof T>(field: K, value: T[K]) => {
-      onChange({ [field]: value } as Partial<T>);
+      onChange({ [field]: value } as unknown as Partial<T>);
     },
     [onChange],
   );

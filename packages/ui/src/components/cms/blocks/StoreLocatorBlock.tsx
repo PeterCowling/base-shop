@@ -18,15 +18,14 @@ interface Props {
 
 /** CMS wrapper for the StoreLocatorMap organism supporting multiple locations */
 export default function StoreLocatorBlock({ locations = [], zoom }: Props) {
-  const valid: Location[] = locations
-    .map((loc) => ({
-      lat: typeof loc.lat === "string" ? Number(loc.lat) : loc.lat,
-      lng: typeof loc.lng === "string" ? Number(loc.lng) : loc.lng,
-      label: loc.label,
-    }))
-    .filter(
-      (l): l is Location => typeof l.lat === "number" && !isNaN(l.lat) && typeof l.lng === "number" && !isNaN(l.lng)
-    );
+  const valid: Location[] = locations.flatMap((loc) => {
+    const lat = typeof loc.lat === "string" ? Number(loc.lat) : loc.lat;
+    const lng = typeof loc.lng === "string" ? Number(loc.lng) : loc.lng;
+    if (typeof lat === "number" && !isNaN(lat) && typeof lng === "number" && !isNaN(lng)) {
+      return [{ lat, lng, label: loc.label }];
+    }
+    return [];
+  });
 
   if (valid.length === 0) return null;
 

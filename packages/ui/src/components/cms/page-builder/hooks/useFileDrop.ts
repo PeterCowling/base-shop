@@ -34,9 +34,11 @@ const useFileDrop = ({ shop, dispatch }: Options) => {
   const handleFileDrop = useCallback(
     (ev: DragEvent<HTMLDivElement>) => {
       setDragOver(false);
-      onDrop(ev.dataTransfer).catch((err: unknown) => {
+      try {
+        onDrop(ev);
+      } catch (err) {
         console.error(err);
-      });
+      }
     },
     [onDrop]
   );

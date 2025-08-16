@@ -30,7 +30,9 @@ export default function ButtonEditor({ component, onChange }: Props) {
       />
       <Select
         value={component.variant ?? ""}
-        onValueChange={(v) => handleInput("variant", v || undefined)}
+        onValueChange={(v) =>
+          handleInput("variant", (v || undefined) as ButtonComponent["variant"])
+        }
       >
         <SelectTrigger>
           <SelectValue placeholder="Variant" />

@@ -3,4 +3,5 @@ import { env } from "@acme/config";
 if (!env.NEXTAUTH_SECRET) {
     throw new Error("NEXTAUTH_SECRET is not set");
 }
-export const authSecret = env.NEXTAUTH_SECRET;
+// Ensure the secret is treated as a string at runtime
+export const authSecret = String(env.NEXTAUTH_SECRET);

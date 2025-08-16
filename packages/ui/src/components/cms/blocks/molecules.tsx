@@ -106,12 +106,13 @@ const moleculeEntries = {
   NewsletterForm: { component: NewsletterForm },
   PromoBanner: { component: PromoBanner },
   CategoryList: { component: CategoryList },
-} as const;
+} satisfies Record<string, BlockRegistryEntry<any>>;
+
 export const moleculeRegistry = Object.fromEntries(
   Object.entries(moleculeEntries).map(([k, v]) => [
     k,
     { previewImage: defaultPreview, ...v },
   ]),
-) as typeof moleculeEntries satisfies Record<string, BlockRegistryEntry<any>>;
+) as unknown as typeof moleculeEntries;
 
 export type MoleculeBlockType = keyof typeof moleculeEntries;

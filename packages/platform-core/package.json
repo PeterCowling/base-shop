@@ -3,19 +3,19 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./shipping": "./src/shipping/index.ts",
-    "./tax": "./src/tax/index.ts",
-    "./orders": "./src/orders/index.ts",
-    "./customerProfiles": "./src/customerProfiles/index.ts",
-    "./plugins": "./src/plugins/index.ts",
-    "./configurator": "./src/configurator.ts",
-    "./users": "./src/users.ts",
-    "./stripe-webhook": "./src/stripe-webhook.ts",
-    "./tracking": "./src/tracking/index.ts",
-    "./features": "./src/features.ts",
-    "./createShop": "./src/createShop/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./createShop": {
+      "types": "./dist/createShop/index.d.ts",
+      "import": "./dist/createShop/index.js",
+      "require": "./dist/createShop/index.cjs"
+    }
   },
   "dependencies": {
     "@acme/types": "workspace:*",

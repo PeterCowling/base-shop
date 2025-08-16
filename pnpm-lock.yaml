@@ -67,6 +67,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.81.4
         version: 5.81.5(react@19.1.0)
+      '@upstash/redis':
+        specifier: ^1.35.3
+        version: 1.35.3
       argon2:
         specifier: ^0.44.0
         version: 0.44.0

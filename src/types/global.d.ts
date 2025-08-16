@@ -45,5 +45,4 @@ declare module "better-sqlite3";
 
 declare module "@acme/plugin-sanity" {
   export * from "../../packages/plugins/sanity/index.ts";
-  export { default } from "../../packages/plugins/sanity/index.ts";
 }

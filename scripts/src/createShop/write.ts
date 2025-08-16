@@ -1,4 +1,4 @@
-import { createShop } from "../../../packages/platform-core/src/createShop.ts";
+import { createShop } from "../../../packages/platform-core/src/createShop";
 import type { Options } from "./parse";
 
 /**

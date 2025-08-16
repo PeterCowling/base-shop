@@ -1,6 +1,6 @@
 // packages/plugins/sanity/index.ts
 import type { Plugin } from "@acme/types";
-import { createClient, type SanityClient } from "@sanity/client";
+import { createClient, type SanityClient, type Mutation } from "@sanity/client";
 import { z } from "zod";
 
 export const configSchema = z
@@ -32,8 +32,8 @@ function getClient(config: SanityConfig): SanityClient {
 export async function verifyCredentials(config: SanityConfig): Promise<boolean> {
   const client = getClient(config);
   try {
-    await client.datasets.get(config.dataset);
-    return true;
+    const datasets = await client.datasets.list();
+    return datasets.some((d) => d.name === config.dataset);
   } catch {
     return false;
   }
@@ -53,14 +53,17 @@ export async function query<T>(config: SanityConfig, q: string): Promise<T> {
 }
 
 interface MutateBody {
-  mutations: unknown[];
+  mutations: Mutation<Record<string, any>>[];
   returnIds?: boolean;
 }
 
 export async function mutate(config: SanityConfig, body: MutateBody) {
   const client = getClient(config);
   const { mutations, returnIds } = body;
-  return client.mutate(mutations, returnIds ? { returnIds } : {});
+  return client.mutate(
+    mutations,
+    returnIds ? { returnDocuments: false } : {}
+  );
 }
 
 export async function slugExists(

@@ -2,7 +2,10 @@ import { checkShopExists } from "@acme/lib";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { requirePermission } from "@auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { UpgradeComponent } from "@acme/types/upgrade";
+import ComponentPreview from "@ui/src/components/ComponentPreview";
+import { z } from "zod";
 
 export const metadata: Metadata = {
   title: "Upgrade Preview · Base-Shop",
@@ -21,53 +24,44 @@ export default async function UpgradePreview({
 
 function UpgradePreviewClient({ shop }: { shop: string }) {
   "use client";
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [changes, setChanges] = useState<UpgradeComponent[]>([]);
 
-  async function handleClick() {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch("/api/upgrade-shop", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ shop }),
-      });
-      if (!res.ok) {
-        const data: unknown = await res.json().catch(() => ({}));
-        const message =
-          typeof data === "object" &&
-          data !== null &&
-          "error" in data &&
-          typeof (data as { error?: unknown }).error === "string"
-            ? (data as { error: string }).error
-            : "Upgrade failed";
-        throw new Error(message);
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch(`/${shop}/api/upgrade-changes`);
+        const schema = z.object({
+          components: z
+            .array(
+              z.object({
+                file: z.string(),
+                componentName: z.string(),
+                oldChecksum: z.string().optional(),
+                newChecksum: z.string().optional(),
+              }),
+            )
+            .catch([]),
+        });
+        const data = schema.parse(await res.json());
+        setChanges(data.components as UpgradeComponent[]);
+      } catch (err) {
+        console.error("Failed to load upgrade changes", err);
       }
-      window.location.href = `/${shop}/upgrade-preview`;
-    } catch (err) {
-      console.error("Upgrade failed", err);
-      setError(err instanceof Error ? err.message : "Upgrade failed");
-    } finally {
-      setLoading(false);
     }
-  }
+    void load();
+  }, [shop]);
 
   return (
-    <div className="space-y-4">
-      <button
-        type="button"
-        onClick={handleClick}
-        className="rounded border px-4 py-2"
-        disabled={loading}
-      >
-        {loading ? "Upgrading..." : "Upgrade & preview"}
-      </button>
-      {error && (
-        <p role="alert" className="text-red-600">
-          {error}
-        </p>
-      )}
+    <div className="space-y-8">
+      <ul className="space-y-4">
+        {changes.map((c) => (
+          <li key={c.file}>
+            <ComponentPreview component={c} />
+          </li>
+        ))}
+        {changes.length === 0 && <li>No changes to preview.</li>}
+      </ul>
     </div>
   );
 }
+

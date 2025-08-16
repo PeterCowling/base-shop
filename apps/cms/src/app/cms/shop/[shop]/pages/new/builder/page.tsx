@@ -25,7 +25,7 @@ export default async function NewPageBuilderRoute({
 }) {
   const { shop } = await params;
 
-  const blank: Page = {
+  const blank = {
     id: "",
     slug: "",
     status: "draft",
@@ -41,7 +41,7 @@ export default async function NewPageBuilderRoute({
     createdAt: "",
     updatedAt: "",
     createdBy: "",
-  };
+  } as Page;
 
   async function save(formData: FormData) {
     "use server";

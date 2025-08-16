@@ -1,5 +1,5 @@
 import "@acme/lib/initZod";
-import { envSchema } from "@config/src/env";
+import { envSchema } from "@config";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ZodError } from "zod";

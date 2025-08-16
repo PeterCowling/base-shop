@@ -1,4 +1,4 @@
-import { envSchema } from "@config/src/env";
+import { envSchema } from "@config";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 

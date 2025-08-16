@@ -31,6 +31,8 @@
     { "path": "../../packages/email" },
     { "path": "../../packages/shared-utils" },
     { "path": "../../packages/lib" },
-    { "path": "../../packages/date-utils" }
+    { "path": "../../packages/date-utils" },
+    { "path": "../../packages/platform-machine" },
+    { "path": "../../packages/stripe" }
   ]
 }

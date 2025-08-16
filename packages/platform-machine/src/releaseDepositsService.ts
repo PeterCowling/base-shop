@@ -1,4 +1,4 @@
-import { coreEnv } from "@acme/config/env/core";
+import { coreEnv } from "@config/core";
 import { stripe } from "@acme/stripe";
 import {
   markRefunded,

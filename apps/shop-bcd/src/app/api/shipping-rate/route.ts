@@ -36,7 +36,9 @@ const schema = z
 
 export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody(req, schema, "1mb");
-  if (!parsed.success) return parsed.response;
+  if (!parsed.success) {
+    return parsed.response;
+  }
 
   const body = parsed.data;
   let premierDelivery;

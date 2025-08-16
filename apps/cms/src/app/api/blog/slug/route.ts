@@ -4,10 +4,8 @@ import { getShopById } from "@platform-core/src/repositories/shop.server";
 import { getSanityConfig } from "@platform-core/src/shops";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 
-const apiVersion: string =
-  typeof env.SANITY_API_VERSION === "string"
-    ? env.SANITY_API_VERSION
-    : "2021-10-21";
+const apiVersion =
+  (env.SANITY_API_VERSION as string | undefined) ?? "2021-10-21";
 
 interface Config {
   projectId: string;

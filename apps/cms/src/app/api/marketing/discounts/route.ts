@@ -16,9 +16,9 @@ function getShop(req: NextRequest): string {
   const { searchParams } = new URL(req.url);
   const fromQuery = searchParams.get("shop");
   if (fromQuery) return fromQuery;
-  return typeof env.NEXT_PUBLIC_DEFAULT_SHOP === "string"
-    ? env.NEXT_PUBLIC_DEFAULT_SHOP
-    : "abc";
+  return (
+    (env.NEXT_PUBLIC_DEFAULT_SHOP as string | undefined) ?? "abc"
+  );
 }
 
 function filePath(shop: string): string {

@@ -55,6 +55,10 @@ export const shopSchema = z
       .preprocess((v) => v === "on", z.boolean())
       .optional()
       .default(false),
+    blog: z
+      .preprocess((v) => v === "on", z.boolean())
+      .optional()
+      .default(false),
     contentMerchandising: z
       .preprocess((v) => v === "on", z.boolean())
       .optional()
@@ -86,6 +90,7 @@ export const shopSchema = z
   .strict()
   .transform(
     ({
+      blog,
       contentMerchandising,
       raTicketing,
       fraudReviewThreshold,
@@ -95,6 +100,7 @@ export const shopSchema = z
     }) => ({
       ...rest,
       luxuryFeatures: {
+        blog,
         contentMerchandising,
         raTicketing,
         fraudReviewThreshold,

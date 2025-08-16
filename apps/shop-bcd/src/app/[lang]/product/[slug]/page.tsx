@@ -83,7 +83,7 @@ export default async function ProductDetailPage({
   if (!product) return notFound();
 
   let latestPost: BlogPost | undefined;
-  if (shop.luxuryFeatures.contentMerchandising) {
+  if (shop.luxuryFeatures.blog) {
     try {
       const posts = await fetchPublishedPosts(shop.id);
       const first = posts[0];

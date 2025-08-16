@@ -3,11 +3,11 @@ import type { SKU } from "@acme/types";
 import { formatCurrency } from "@acme/shared-utils";
 
 export interface Props {
-  slug: string;
+  sku: string;
   onValidChange?: (valid: boolean) => void;
 }
 
-export default function ProductPreview({ slug, onValidChange }: Props) {
+export default function ProductPreview({ sku, onValidChange }: Props) {
   const [product, setProduct] = useState<SKU | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +18,7 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
       setLoading(true);
       try {
         const res = await fetch(
-          `/api/products?slug=${encodeURIComponent(slug)}`
+          `/api/products?sku=${encodeURIComponent(sku)}`
         );
         if (!res.ok) throw new Error("Failed to load product");
         const data: SKU = await res.json();
@@ -41,7 +41,7 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
       active = false;
       onValidChange?.(true);
     };
-  }, [slug, onValidChange]);
+  }, [sku, onValidChange]);
 
   if (loading) return <div className="border p-2">Loading…</div>;
   if (error || !product)

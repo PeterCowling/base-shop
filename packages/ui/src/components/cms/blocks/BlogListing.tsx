@@ -29,7 +29,7 @@ export default function BlogListing({ posts = [] }: { posts?: BlogPost[] }) {
           {p.shopUrl && (
             <p>
               <Link href={p.shopUrl} className="text-primary underline">
-                Shop the story
+                Shop the Look
               </Link>
             </p>
           )}

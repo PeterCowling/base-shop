@@ -7,7 +7,7 @@ import { nowIso } from "@date-utils";
 
 export interface ProductBlock {
   _type: "productReference";
-  slug: string;
+  sku: string;
 }
 
 export interface BlogPost {
@@ -58,8 +58,8 @@ export async function fetchPostBySlug(
 ): Promise<BlogPost | null> {
   try {
     const client = await getClient(shopId);
-    const query = `*[_type == "post" && slug.current == $slug && published == true][0]{title, "slug": slug.current, excerpt, mainImage, author, categories, products, body[]{..., _type == "productReference" => { _type, slug }}}`;
-    const post = await client.fetch<BlogPost | null>(query, { slug });
+  const query = `*[_type == "post" && slug.current == $slug && published == true][0]{title, "slug": slug.current, excerpt, mainImage, author, categories, products, body[]{..., _type == "productReference" => { _type, sku }}}`;
+  const post = await client.fetch<BlogPost | null>(query, { slug });
     return post;
   } catch {
     return null;

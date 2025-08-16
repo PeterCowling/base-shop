@@ -12,7 +12,7 @@ describe("ProductPreview", () => {
       json: async () => ({ title: "Test", price: 100 }),
     });
     const onValid = jest.fn();
-    render(<ProductPreview slug="t" onValidChange={onValid} />);
+    render(<ProductPreview sku="t" onValidChange={onValid} />);
     await screen.findByText("Test");
     expect(onValid).toHaveBeenCalledWith(true);
   });
@@ -20,7 +20,7 @@ describe("ProductPreview", () => {
   it("handles error", async () => {
     (global as any).fetch.mockRejectedValueOnce(new Error("fail"));
     const onValid = jest.fn();
-    render(<ProductPreview slug="t" onValidChange={onValid} />);
+    render(<ProductPreview sku="t" onValidChange={onValid} />);
     await waitFor(() => expect(onValid).toHaveBeenCalledWith(false));
   });
 });

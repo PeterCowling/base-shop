@@ -12,7 +12,7 @@ import type {
 const searchSchema = z
   .object({
     q: z.string().optional(),
-    slug: z.string().optional(),
+    sku: z.string().optional(),
     shop: z.string().default("abc"),
   })
   .strict();
@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Invalid search parameters" }, { status: 400 });
   }
 
-  const { q, slug, shop } = parsed.data;
+  const { q, sku, shop } = parsed.data;
   const query = q?.toLowerCase() ?? "";
 
   const [catalogue, inventory] = await Promise.all([
@@ -52,9 +52,9 @@ export async function GET(req: NextRequest) {
     availability: p.availability ?? [],
   });
 
-  if (slug) {
+  if (sku) {
     const product = catalogue.find(
-      (p) => p.sku === slug || p.id === slug,
+      (p) => p.sku === sku || p.id === sku,
     );
     if (!product)
       return NextResponse.json({ error: "Not found" }, { status: 404 });

@@ -9,6 +9,6 @@ describe("schema", () => {
       (b) => b.name === "productReference",
     );
     expect(block).toBeTruthy();
-    expect(block.fields).toEqual([{ name: "slug", type: "string" }]);
+    expect(block.fields).toEqual([{ name: "sku", type: "string" }]);
   });
 });

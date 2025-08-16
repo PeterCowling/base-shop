@@ -2,20 +2,20 @@ import { createContext, useCallback, useContext, useState, type ReactNode } from
 
 interface InvalidProductContextValue {
   invalidProducts: Record<string, string>;
-  markValidity: (key: string, valid: boolean, slug: string) => void;
+  markValidity: (key: string, valid: boolean, sku: string) => void;
 }
 
 export const InvalidProductContext = createContext<InvalidProductContextValue | null>(null);
 
 export function InvalidProductProvider({ children }: { children: ReactNode }) {
   const [invalidProducts, setInvalidProducts] = useState<Record<string, string>>({});
-  const markValidity = useCallback((key: string, valid: boolean, slug: string) => {
+  const markValidity = useCallback((key: string, valid: boolean, sku: string) => {
     setInvalidProducts((prev) => {
       const next = { ...prev };
       if (valid) {
         delete next[key];
       } else {
-        next[key] = slug;
+        next[key] = sku;
       }
       return next;
     });

@@ -135,7 +135,7 @@ export async function setupSanityBlog(
                         name: "productReference",
                         title: "Product",
                         fields: [
-                          { name: "slug", type: "string", title: "Product Slug" },
+                          { name: "sku", type: "string", title: "Product SKU" },
                         ],
                       },
                     ],

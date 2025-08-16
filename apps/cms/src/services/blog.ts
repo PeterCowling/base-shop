@@ -15,8 +15,8 @@ import {
 import { ensureAuthorized } from "../actions/common/auth";
 import { nowIso } from "@date-utils";
 
-function collectProductSlugs(content: unknown): string[] {
-  const slugs = new Set<string>();
+function collectProductSkus(content: unknown): string[] {
+  const skus = new Set<string>();
   const walk = (node: any) => {
     if (!node) return;
     if (Array.isArray(node)) {
@@ -24,8 +24,8 @@ function collectProductSlugs(content: unknown): string[] {
       return;
     }
     if (typeof node === "object") {
-      if (node._type === "productReference" && typeof node.slug === "string") {
-        slugs.add(node.slug);
+      if (node._type === "productReference" && typeof node.sku === "string") {
+        skus.add(node.sku);
       }
       for (const value of Object.values(node)) {
         walk(value);
@@ -33,16 +33,16 @@ function collectProductSlugs(content: unknown): string[] {
     }
   };
   walk(content);
-  return Array.from(slugs);
+  return Array.from(skus);
 }
 
-async function filterExistingProductSlugs(shopId: string, slugs: string[]): Promise<string[]> {
-  if (slugs.length === 0) return [];
+async function filterExistingProductSkus(shopId: string, skus: string[]): Promise<string[]> {
+  if (skus.length === 0) return [];
   try {
-    const res = await fetch(`/api/products/${shopId}/slugs`, {
+    const res = await fetch(`/api/products/${shopId}/skus`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ slugs }),
+      body: JSON.stringify({ skus }),
     });
     if (!res.ok) return [];
     const existing = await res.json();
@@ -85,7 +85,7 @@ export async function createPost(
   let products: string[] = [];
   try {
     body = JSON.parse(content);
-    products = collectProductSlugs(body);
+    products = collectProductSkus(body);
   } catch {
     body = [];
     products = [];
@@ -95,11 +95,11 @@ export async function createPost(
     .split(",")
     .map((p) => p.trim())
     .filter(Boolean);
-  const existingSlugs = await filterExistingProductSlugs(shopId, [
+  const existingSkus = await filterExistingProductSkus(shopId, [
     ...products,
     ...manualProducts,
   ]);
-  products = existingSlugs;
+  products = existingSkus;
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   const mainImage = String(formData.get("mainImage") ?? "");
@@ -150,7 +150,7 @@ export async function updatePost(
   let products: string[] = [];
   try {
     body = JSON.parse(content);
-    products = collectProductSlugs(body);
+    products = collectProductSkus(body);
   } catch {
     body = [];
     products = [];
@@ -160,11 +160,11 @@ export async function updatePost(
     .split(",")
     .map((p) => p.trim())
     .filter(Boolean);
-  const existingSlugs = await filterExistingProductSlugs(shopId, [
+  const existingSkus = await filterExistingProductSkus(shopId, [
     ...products,
     ...manualProducts,
   ]);
-  products = existingSlugs;
+  products = existingSkus;
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   const mainImage = String(formData.get("mainImage") ?? "");

@@ -32,6 +32,7 @@ describe("shop schema", () => {
     expect(parsed.componentVersions).toEqual({});
     expect(parsed.lastUpgrade).toBeUndefined();
     expect(parsed.luxuryFeatures).toEqual({
+      blog: false,
       contentMerchandising: false,
       raTicketing: false,
       fraudReviewThreshold: 0,

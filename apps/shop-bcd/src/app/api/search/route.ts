@@ -19,7 +19,7 @@ export async function GET(req: Request) {
   }));
 
   let posts: { type: "post"; title: string; slug: string }[] = [];
-  if (shop.luxuryFeatures?.contentMerchandising) {
+  if (shop.luxuryFeatures?.blog) {
     try {
       const fetched = await fetchPublishedPosts(shop.id);
       posts = fetched

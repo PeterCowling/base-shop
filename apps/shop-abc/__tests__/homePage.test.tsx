@@ -38,7 +38,7 @@ test("Home receives components from pages repo when editorial disabled", async (
   (readShop as jest.Mock).mockResolvedValue({
     id: "abc",
     editorialBlog: { enabled: false },
-    luxuryFeatures: { contentMerchandising: true },
+    luxuryFeatures: { blog: true },
   });
 
   const element = await Page({ params: { lang: "en" } });
@@ -59,7 +59,7 @@ test("Home fetches latest post when merchandising enabled", async () => {
   (readShop as jest.Mock).mockResolvedValue({
     id: "abc",
     editorialBlog: { enabled: true },
-    luxuryFeatures: { contentMerchandising: true },
+    luxuryFeatures: { blog: true },
   });
   (fetchPublishedPosts as jest.Mock).mockResolvedValue([
     { title: "Hello", excerpt: "World", slug: "hello" },

@@ -9,12 +9,12 @@ const components = {
     productReference: ({ value }: any) => {
       const ids: string[] = Array.isArray(value?.ids)
         ? value.ids
-        : Array.isArray(value?.slugs)
-          ? value.slugs
+        : Array.isArray(value?.skus)
+          ? value.skus
           : typeof value?.id === "string"
             ? [value.id]
-            : typeof value?.slug === "string"
-              ? [value.slug]
+            : typeof value?.sku === "string"
+              ? [value.sku]
               : [];
       const products = ids
         .map((id) => getProductById(id) ?? getProductBySlug(id))

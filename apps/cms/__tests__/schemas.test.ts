@@ -53,6 +53,7 @@ describe("zod schemas", () => {
     expect(parsed.catalogFilters).toEqual(["color", "size", "type"]);
     expect(parsed.enableEditorial).toBe(false);
     expect(parsed.luxuryFeatures).toEqual({
+      blog: false,
       contentMerchandising: false,
       raTicketing: false,
       fraudReviewThreshold: 0,
@@ -102,6 +103,7 @@ describe("zod schemas", () => {
     });
 
     expect(parsed.luxuryFeatures).toEqual({
+      blog: false,
       contentMerchandising: true,
       raTicketing: true,
       fraudReviewThreshold: 150,

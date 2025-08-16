@@ -45,7 +45,7 @@ describe("blog actions", () => {
     );
   });
 
-  test("createPost collects product slugs", async () => {
+  test("createPost collects product skus", async () => {
     global.fetch = jest
       .fn()
       .mockResolvedValueOnce({ ok: true })
@@ -56,7 +56,7 @@ describe("blog actions", () => {
     fd.set("title", "T");
     fd.set(
       "content",
-      JSON.stringify([{ _type: "productReference", slug: "foo" }]),
+      JSON.stringify([{ _type: "productReference", sku: "foo" }]),
     );
     fd.set("slug", "t");
     fd.set("excerpt", "");
@@ -65,7 +65,7 @@ describe("blog actions", () => {
     expect(body.mutations[0].create.products).toEqual(["foo"]);
   });
 
-  test("updatePost collects product slugs", async () => {
+  test("updatePost collects product skus", async () => {
     global.fetch = jest
       .fn()
       .mockResolvedValueOnce({ ok: true })
@@ -79,8 +79,8 @@ describe("blog actions", () => {
     fd.set(
       "content",
       JSON.stringify([
-        { _type: "productReference", slug: "foo" },
-        { _type: "productReference", slug: "bar" },
+        { _type: "productReference", sku: "foo" },
+        { _type: "productReference", sku: "bar" },
       ]),
     );
     fd.set("slug", "t");
@@ -90,7 +90,7 @@ describe("blog actions", () => {
     expect(body.mutations[0].patch.set.products).toEqual(["foo", "bar"]);
   });
 
-  test("createPost filters invalid product slugs", async () => {
+  test("createPost filters invalid product skus", async () => {
     global.fetch = jest
       .fn()
       .mockResolvedValueOnce({ ok: false })
@@ -101,7 +101,7 @@ describe("blog actions", () => {
     fd.set("title", "T");
     fd.set(
       "content",
-      JSON.stringify([{ _type: "productReference", slug: "foo" }]),
+      JSON.stringify([{ _type: "productReference", sku: "foo" }]),
     );
     fd.set("slug", "t");
     fd.set("excerpt", "");
@@ -128,7 +128,7 @@ describe("blog actions", () => {
     expect(body.mutations[0].create.products).toEqual(["foo", "bar"]);
   });
 
-  test("updatePost filters invalid product slugs", async () => {
+  test("updatePost filters invalid product skus", async () => {
     global.fetch = jest
       .fn()
       .mockResolvedValueOnce({ ok: false })
@@ -140,7 +140,7 @@ describe("blog actions", () => {
     fd.set("title", "T");
     fd.set(
       "content",
-      JSON.stringify([{ _type: "productReference", slug: "foo" }]),
+      JSON.stringify([{ _type: "productReference", sku: "foo" }]),
     );
     fd.set("slug", "t");
     fd.set("excerpt", "");

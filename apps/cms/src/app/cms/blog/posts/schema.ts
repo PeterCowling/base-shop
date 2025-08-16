@@ -32,7 +32,7 @@ export const schema = defineSchema({
     {
       name: "productReference",
       type: "object",
-      fields: [{ name: "slug", type: "string" }],
+      fields: [{ name: "sku", type: "string" }],
     },
     {
       name: "embed",
@@ -53,7 +53,7 @@ export const schema = defineSchema({
 function ProductReferenceBlock(props: BlockRenderProps) {
   const editor = useEditor();
   const ctx = useContext(InvalidProductContext);
-  const slug = (props.value as any).slug as string;
+  const sku = (props.value as any).sku as string;
   const isInvalid = Boolean(ctx?.invalidProducts[props.value._key as string]);
   const remove = () => {
     const sel = {
@@ -67,7 +67,7 @@ function ProductReferenceBlock(props: BlockRenderProps) {
     );
   };
   const edit = () => {
-    const next = prompt("Product slug", slug);
+    const next = prompt("Product SKU", sku);
     if (!next) return;
     const sel = {
       anchor: { path: props.path, offset: 0 },
@@ -81,7 +81,7 @@ function ProductReferenceBlock(props: BlockRenderProps) {
     PortableTextEditor.insertBlock(
       editor as unknown as PortableTextEditor,
       { name: "productReference" },
-      { slug: next },
+      { sku: next },
     );
   };
   const className = `space-y-2 ${isInvalid ? "rounded border border-red-500 p-2" : ""}`;
@@ -89,9 +89,9 @@ function ProductReferenceBlock(props: BlockRenderProps) {
     "div",
     { className },
     React.createElement(ProductPreview, {
-      slug,
+      sku,
       onValidChange: (valid: boolean) =>
-        ctx?.markValidity(props.value._key as string, valid, slug),
+        ctx?.markValidity(props.value._key as string, valid, sku),
     }),
     React.createElement(
       "div",
@@ -137,7 +137,7 @@ export const renderBlock: RenderBlockFunction = (props) => {
 export const previewComponents = {
   types: {
     productReference: ({ value }: any) =>
-      React.createElement(ProductPreview, { slug: value.slug }),
+      React.createElement(ProductPreview, { sku: value.sku }),
     embed: ({ value }: any) =>
       React.createElement(
         "div",

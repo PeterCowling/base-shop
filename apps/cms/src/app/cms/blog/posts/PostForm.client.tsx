@@ -141,7 +141,7 @@ function PostFormContent({ action, submitLabel, post }: Props) {
         />
         <Input
           name="products"
-          label="Related products (comma separated IDs)"
+          label="Related products (comma separated SKUs)"
           defaultValue={(post?.products ?? []).join(", ")}
         />
         <Input

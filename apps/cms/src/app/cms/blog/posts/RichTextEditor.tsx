@@ -136,7 +136,7 @@ function ProductSearch({
                       editor,
                       { name: "productReference" },
                       {
-                        slug: p.slug,
+                        sku: p.slug,
                       }
                     )
                   }

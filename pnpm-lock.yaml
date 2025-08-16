@@ -402,6 +402,9 @@ importers:
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
+      '@upstash/redis':
+        specifier: ^1.35.3
+        version: 1.35.3
     devDependencies:
       next:
         specifier: ^15.3.4

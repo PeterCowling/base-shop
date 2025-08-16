@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import type { Shop } from "@acme/types";
 import shopJson from "../../../../shop.json";
 
-const shop = shopJson as Shop;
+type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog">;
+const shop: BlogShop = shopJson;
 
 export default async function BlogPage({ params }: { params: { lang: string } }) {
   if (!shop.luxuryFeatures.blog) {

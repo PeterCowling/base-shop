@@ -4,7 +4,7 @@ import { promises as fs } from "node:fs";
 import * as fsSync from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
-import { sendScheduledCampaigns } from "../../../functions/marketing-email-sender.ts";
+import { sendDueCampaigns } from "./scheduler";
 import { nowIso } from "@date-utils";
 
 interface Campaign {
@@ -95,7 +95,7 @@ campaign
   .command("send")
   .description("Send due campaigns")
   .action(async () => {
-    await sendScheduledCampaigns();
+    await sendDueCampaigns();
     console.log("Sent due campaigns");
   });
 

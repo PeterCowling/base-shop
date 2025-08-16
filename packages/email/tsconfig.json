@@ -16,7 +16,8 @@
     { "path": "../ui" },
     { "path": "../lib" },
     { "path": "../platform-core" },
-    { "path": "../types" }
+    { "path": "../types" },
+    { "path": "../date-utils" }
   ],
   "include": ["src/**/*"],
   "exclude": ["dist", ".turbo", "node_modules"]

@@ -80,6 +80,7 @@
     "fast-csv": "^5.0.5",
     "helmet": "^8.1.0",
     "identity-obj-proxy": "^3.0.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.3.5",
     "next-auth": "4.24.11",
     "next-intl": "^3.5.0",

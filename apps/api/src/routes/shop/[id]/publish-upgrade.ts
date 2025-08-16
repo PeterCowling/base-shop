@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { spawn } from "node:child_process";
+import jwt from "jsonwebtoken";
 
 function run(cmd: string, args: string[], cwd: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -12,12 +13,43 @@ function run(cmd: string, args: string[], cwd: string): Promise<void> {
   });
 }
 
-export const onRequestPost = async ({ params, request }: {
+export const onRequestPost = async ({
+  params,
+  request,
+}: {
   params: Record<string, string>;
   request: Request;
 }) => {
   try {
     const id = params.id;
+    if (!/^[a-z0-9_-]+$/.test(id)) {
+      console.warn("invalid shop id", { id });
+      return new Response(JSON.stringify({ error: "Invalid shop id" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const authHeader = request.headers.get("authorization") || "";
+    if (!authHeader.startsWith("Bearer ")) {
+      console.warn("missing bearer token", { id });
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const token = authHeader.slice("Bearer ".length);
+    try {
+      jwt.verify(token, process.env.UPGRADE_PREVIEW_TOKEN_SECRET ?? "");
+    } catch {
+      console.warn("invalid token", { id });
+      return new Response(JSON.stringify({ error: "Forbidden" }), {
+        status: 403,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     const root = path.resolve(__dirname, "../../../../../..");
     const appDir = path.join(root, "apps", `shop-${id}`);
     const shopFile = path.join(root, "data", "shops", id, "shop.json");

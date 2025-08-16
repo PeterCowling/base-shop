@@ -63,7 +63,7 @@ export async function POST(req: Request) {
   await updateCustomerProfile(customerId, { name: "", email });
 
   const secret = env.SESSION_SECRET;
-  if (!secret) {
+  if (typeof secret !== "string") {
     throw new Error("SESSION_SECRET is not set");
   }
   const signature = crypto

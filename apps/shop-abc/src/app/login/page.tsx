@@ -29,7 +29,10 @@ export default function LoginPage() {
       },
       body: JSON.stringify(body),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = (await res.json().catch(() => ({}))) as {
+      mfaRequired?: boolean;
+      error?: string;
+    };
     if (res.ok) {
       if (data.mfaRequired) {
         setMfaUser(body.customerId);

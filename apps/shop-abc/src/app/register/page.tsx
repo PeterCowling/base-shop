@@ -29,7 +29,9 @@ export default function RegisterPage() {
       },
       body: JSON.stringify(body),
     });
-    const data = await res.json().catch(() => ({}));
+    const data = (await res.json().catch(() => ({}))) as {
+      error?: string;
+    };
     setMsg(res.ok ? "Account created" : data.error || "Error");
   }
   return (

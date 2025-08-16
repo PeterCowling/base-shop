@@ -37,7 +37,9 @@ async function validateCredentials(
 
 export async function POST(req: Request) {
   const parsed = await parseJsonBody<LoginInput>(req, LoginSchema, "1mb");
-  if (!parsed.success) return parsed.response;
+  if (!parsed.success) {
+    return parsed.response;
+  }
 
   const csrfToken = req.headers.get("x-csrf-token");
   if (!csrfToken || !(await validateCsrfToken(csrfToken))) {

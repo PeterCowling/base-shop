@@ -9,7 +9,12 @@ export default async function PreviewPage({
   searchParams,
 }: {
   params: { pageId: string };
-  searchParams: { token?: string; upgrade?: string };
+  searchParams: {
+    token?: string;
+    upgrade?: string;
+    device?: string;
+    view?: string;
+  };
 }) {
   const { pageId } = params;
   const query = new URLSearchParams();

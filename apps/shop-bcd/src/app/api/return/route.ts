@@ -39,8 +39,8 @@ async function getUpsStatus(tracking: string) {
 }
 
 export async function POST(req: NextRequest) {
-  const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
-  if (!parsed.success) {
+  const parsed = await parseJsonBody<z.infer<typeof ReturnSchema>>(req, ReturnSchema, "1mb");
+  if (parsed.success === false) {
     return parsed.response;
   }
   const { sessionId } = parsed.data;

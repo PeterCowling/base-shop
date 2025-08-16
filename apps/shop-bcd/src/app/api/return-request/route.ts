@@ -22,8 +22,8 @@ const RequestSchema = z
   .strict();
 
 export async function POST(req: Request) {
-  const parsed = await parseJsonBody(req, RequestSchema, "1mb");
-  if (!parsed.success) {
+  const parsed = await parseJsonBody<z.infer<typeof RequestSchema>>(req, RequestSchema, "1mb");
+  if (parsed.success === false) {
     return parsed.response;
   }
   const { orderId, email, hasTags = true, isWorn = false } = parsed.data;

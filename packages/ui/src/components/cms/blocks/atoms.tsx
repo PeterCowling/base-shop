@@ -98,11 +98,15 @@ type AtomRegistry = {
   [K in keyof typeof atomEntries]: BlockRegistryEntry<any>;
 };
 
-export const atomRegistry = Object.fromEntries(
-  Object.entries(atomEntries).map(([k, v]) => [
-    k,
-    { previewImage: defaultPreview, ...v },
-  ]),
-) as AtomRegistry;
+export const atomRegistry: AtomRegistry = Object.entries(atomEntries).reduce(
+  (acc, [k, v]) => {
+    acc[k as keyof typeof atomEntries] = {
+      previewImage: defaultPreview,
+      ...v,
+    };
+    return acc;
+  },
+  {} as AtomRegistry,
+);
 
 export type AtomBlockType = keyof typeof atomEntries;

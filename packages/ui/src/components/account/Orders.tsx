@@ -51,7 +51,7 @@ export default async function OrdersPage({
     orders.map(async (o) => {
       let shippingSteps: OrderStep[] = [];
       let returnSteps: OrderStep[] = [];
-      let status: string | null = null;
+      let status: string | null = o.returnStatus ?? null;
       if (trackingEnabled && trackingProviders.length > 0 && o.trackingNumber) {
         const provider = trackingProviders[0] as "ups" | "dhl";
         const ship = await getShippingTrackingStatus({

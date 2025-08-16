@@ -16,6 +16,7 @@ export declare const rentalOrderSchema: z.ZodObject<{
     flaggedForReview: z.ZodOptional<z.ZodBoolean>;
     trackingNumber: z.ZodOptional<z.ZodString>;
     labelUrl: z.ZodOptional<z.ZodString>;
+    returnStatus: z.ZodOptional<z.ZodString>;
     status: z.ZodOptional<z.ZodEnum<["received", "cleaning", "repair", "qa", "available"]>>;
 }, "strip", z.ZodTypeAny, {
     id: string;
@@ -33,6 +34,7 @@ export declare const rentalOrderSchema: z.ZodObject<{
     flaggedForReview?: boolean | undefined;
     trackingNumber?: string | undefined;
     labelUrl?: string | undefined;
+    returnStatus?: string | undefined;
     status?: "received" | "cleaning" | "repair" | "qa" | "available" | undefined;
 }, {
     id: string;
@@ -50,6 +52,7 @@ export declare const rentalOrderSchema: z.ZodObject<{
     flaggedForReview?: boolean | undefined;
     trackingNumber?: string | undefined;
     labelUrl?: string | undefined;
+    returnStatus?: string | undefined;
     status?: "received" | "cleaning" | "repair" | "qa" | "available" | undefined;
 }>;
 export type RentalOrder = z.infer<typeof rentalOrderSchema>;

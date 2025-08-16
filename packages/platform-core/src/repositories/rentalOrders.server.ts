@@ -13,6 +13,7 @@ export {
   markRefunded,
   updateRisk,
   setReturnTracking,
+  setReturnStatus,
 } from "../orders";
 
 type Order = RentalOrder;

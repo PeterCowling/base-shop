@@ -44,7 +44,8 @@
     "fraudReviewThreshold": 0,
     "requireStrongCustomerAuth": false,
     "strictReturnConditions": true,
-    "trackingDashboard": true
+    "trackingDashboard": true,
+    "returns": true
   },
   "rentalSubscriptions": [
     {

@@ -4,7 +4,7 @@ import "@acme/lib/initZod";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
-import { setReturnTracking } from "@platform-core/orders";
+import { setReturnTracking, setReturnStatus } from "@platform-core/orders";
 import { getReturnLogistics } from "@platform-core/returnLogistics";
 import shop from "../../../../shop.json";
 
@@ -39,6 +39,12 @@ async function getUpsStatus(tracking: string) {
 }
 
 export async function POST(req: NextRequest) {
+  if (!shop.luxuryFeatures?.returns) {
+    return NextResponse.json(
+      { ok: false, error: "returns disabled" },
+      { status: 403 },
+    );
+  }
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { sessionId } = parsed.data;
@@ -54,6 +60,8 @@ export async function POST(req: NextRequest) {
   ) {
     const { trackingNumber, labelUrl } = await createUpsLabel(sessionId);
     tracking = { number: trackingNumber, labelUrl };
+  } else if (cfg.returnCarrier.length > 0) {
+    // Placeholder for additional carrier integrations
   }
 
   return NextResponse.json({
@@ -67,9 +75,19 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
+  if (!shop.luxuryFeatures?.returns) {
+    return NextResponse.json(
+      { ok: false, error: "returns disabled" },
+      { status: 403 },
+    );
+  }
   const tracking = req.nextUrl.searchParams.get("tracking");
+  const sessionId = req.nextUrl.searchParams.get("sessionId");
   if (!tracking) {
-    return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 });
+    return NextResponse.json(
+      { ok: false, error: "missing tracking" },
+      { status: 400 },
+    );
   }
   const cfg = await getReturnLogistics();
   const svc = shop.returnService ?? {};
@@ -79,7 +97,12 @@ export async function GET(req: NextRequest) {
     cfg.returnCarrier.includes("ups")
   ) {
     const status = await getUpsStatus(tracking);
+    if (status && sessionId) {
+      await setReturnStatus(shop.id, sessionId, status);
+    }
     return NextResponse.json({ ok: true, status });
+  } else if (cfg.returnCarrier.length > 0) {
+    // Placeholder for additional carrier integrations
   }
   return NextResponse.json(
     { ok: false, error: "unsupported provider" },

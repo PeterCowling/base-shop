@@ -50,7 +50,7 @@ export default async function Page({
       {steps && steps.length > 0 && (
         <OrderTrackingTimeline steps={steps} className="mt-2" />
       )}
-      <StartReturn orderId={order.id} />
+      {shop.luxuryFeatures?.returns && <StartReturn orderId={order.id} />}
       {cfg.mobileApp && <MobileReturnLink />}
     </div>
   );

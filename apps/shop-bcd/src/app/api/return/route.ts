@@ -4,7 +4,7 @@ import "@acme/lib/initZod";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
-import { setReturnTracking } from "@platform-core/orders";
+import { setReturnTracking, setReturnStatus } from "@platform-core/orders";
 import { getReturnLogistics } from "@platform-core/returnLogistics";
 import shop from "../../../../shop.json";
 
@@ -39,41 +39,62 @@ async function getUpsStatus(tracking: string) {
 }
 
 export async function POST(req: NextRequest) {
+  if (!shop.luxuryFeatures?.returns) {
+    return NextResponse.json(
+      { ok: false, error: "returns disabled" },
+      { status: 403 },
+    );
+  }
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { sessionId } = parsed.data;
   const cfg = await getReturnLogistics();
   const svc = shop.returnService ?? {};
-  if (!(cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups"))) {
-    return NextResponse.json(
-      { ok: false, error: "unsupported carrier" },
-      { status: 400 },
-    );
+  if (cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups")) {
+    const { trackingNumber, labelUrl } = await createUpsLabel(sessionId);
+    return NextResponse.json({
+      ok: true,
+      dropOffProvider: cfg.dropOffProvider ?? null,
+      returnCarrier: cfg.returnCarrier,
+      tracking: { number: trackingNumber, labelUrl },
+      bagType: svc.bagEnabled ? cfg.bagType : null,
+      homePickupZipCodes: svc.homePickupEnabled ? cfg.homePickupZipCodes : [],
+    });
   }
-  const { trackingNumber, labelUrl } = await createUpsLabel(sessionId);
-  return NextResponse.json({
-    ok: true,
-    dropOffProvider: cfg.dropOffProvider ?? null,
-    returnCarrier: cfg.returnCarrier,
-    tracking: { number: trackingNumber, labelUrl },
-    bagType: svc.bagEnabled ? cfg.bagType : null,
-    homePickupZipCodes: svc.homePickupEnabled ? cfg.homePickupZipCodes : [],
-  });
+  // Placeholder for additional carrier integrations
+  return NextResponse.json(
+    { ok: false, error: "unsupported carrier" },
+    { status: 400 },
+  );
 }
 
 export async function GET(req: NextRequest) {
-  const tracking = req.nextUrl.searchParams.get("tracking");
-  if (!tracking) {
-    return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 });
-  }
-  const cfg = await getReturnLogistics();
-  const svc = shop.returnService ?? {};
-  if (!(cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups"))) {
+  if (!shop.luxuryFeatures?.returns) {
     return NextResponse.json(
-      { ok: false, error: "unsupported carrier" },
+      { ok: false, error: "returns disabled" },
+      { status: 403 },
+    );
+  }
+  const tracking = req.nextUrl.searchParams.get("tracking");
+  const sessionId = req.nextUrl.searchParams.get("sessionId");
+  if (!tracking) {
+    return NextResponse.json(
+      { ok: false, error: "missing tracking" },
       { status: 400 },
     );
   }
-  const status = await getUpsStatus(tracking);
-  return NextResponse.json({ ok: true, status });
+  const cfg = await getReturnLogistics();
+  const svc = shop.returnService ?? {};
+  if (cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups")) {
+    const status = await getUpsStatus(tracking);
+    if (status && sessionId) {
+      await setReturnStatus(shop.id, sessionId, status);
+    }
+    return NextResponse.json({ ok: true, status });
+  }
+  // Placeholder for additional carrier integrations
+  return NextResponse.json(
+    { ok: false, error: "unsupported carrier" },
+    { status: 400 },
+  );
 }

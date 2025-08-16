@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
   };
 
   const shop = await readShop(SHOP_ID);
-  if (!shop.returnsEnabled) {
+  if (!shop.returnsEnabled || !shop.luxuryFeatures?.returns) {
     return NextResponse.json(
       { error: "Returns disabled" },
       { status: 403 },

@@ -15,6 +15,7 @@ and the shop operates normally without them. Enable features in a shop's
 | `requireStrongCustomerAuth` | Set `luxuryFeatures.requireStrongCustomerAuth` to `true`. | Forces 3‑D Secure on qualifying Stripe checkouts. Irrelevant when using other payment providers. |
 | `strictReturnConditions` | Set `luxuryFeatures.strictReturnConditions` to `true`. | The return request API rejects worn or tagless items. Not needed for buy‑only shops. |
 | `trackingDashboard` | Set `luxuryFeatures.trackingDashboard` to `true` **and** enable the environment flag `LUXURY_FEATURES_TRACKING_DASHBOARD`. | Provides shipment and return tracking dashboards. Disable for businesses without shipment tracking. |
+| `returns` | Set `luxuryFeatures.returns` to `true`. | Enables customer return requests, label generation, and tracking. |
 
 ## Compatibility
 

@@ -26,6 +26,13 @@ export async function POST(req: Request) {
   if (!parsed.success) return parsed.response;
   const { orderId, email, hasTags = true, isWorn = false } = parsed.data;
 
+  if (!shop.luxuryFeatures?.returns) {
+    return NextResponse.json(
+      { ok: false, error: "returns disabled" },
+      { status: 403 },
+    );
+  }
+
   const cfg = await getReturnLogistics();
   const settings = await getShopSettings(shop.id);
   if (

@@ -23,19 +23,20 @@ async function withShop(
     path.join(__dirname, "../../..", "data", "rental", "pricing.json"),
     path.join(dir, "data", "rental", "pricing.json")
   );
-  await fs.writeFile(
-    path.join(dir, "data", "shops", "bcd", "shop.json"),
-    JSON.stringify({
-      id: "bcd",
-      name: "bcd",
-      catalogFilters: [],
-      themeId: "base",
-      filterMappings: {},
-      rentalInventoryAllocation: true,
-      returnsEnabled: true,
-      coverageIncluded: true,
-    }),
-  );
+      await fs.writeFile(
+        path.join(dir, "data", "shops", "bcd", "shop.json"),
+        JSON.stringify({
+          id: "bcd",
+          name: "bcd",
+          catalogFilters: [],
+          themeId: "base",
+          filterMappings: {},
+          rentalInventoryAllocation: true,
+          returnsEnabled: true,
+          coverageIncluded: true,
+          luxuryFeatures: { returns: true },
+        }),
+      );
   const cwd = process.cwd();
   process.chdir(dir);
   jest.resetModules();

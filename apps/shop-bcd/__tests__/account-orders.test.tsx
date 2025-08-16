@@ -15,7 +15,7 @@ describe("/account/orders page", () => {
     expect(element.type).toBe(Orders);
     expect(element.props).toEqual({
       shopId: shop.id,
-      returnsEnabled: shop.returnsEnabled,
+      returnsEnabled: shop.luxuryFeatures?.returns,
       returnPolicyUrl: shop.returnPolicyUrl,
       trackingEnabled: shop.trackingEnabled,
       trackingProviders: shop.trackingProviders,

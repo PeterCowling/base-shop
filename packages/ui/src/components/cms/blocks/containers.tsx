@@ -9,11 +9,15 @@ const containerEntries = {
   MultiColumn: { component: MultiColumn },
 } as const;
 
+type ContainerRegistry = {
+  [K in keyof typeof containerEntries]: BlockRegistryEntry<any>;
+};
+
 export const containerRegistry = Object.fromEntries(
   Object.entries(containerEntries).map(([k, v]) => [
     k,
     { previewImage: defaultPreview, ...v },
   ]),
-) as typeof containerEntries satisfies Record<string, BlockRegistryEntry<any>>;
+) as ContainerRegistry;
 
 export type ContainerBlockType = keyof typeof containerEntries;

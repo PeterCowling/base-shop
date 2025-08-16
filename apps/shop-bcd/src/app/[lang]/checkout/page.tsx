@@ -1,7 +1,7 @@
 // apps/shop-bcd/src/app/[lang]/checkout/page.tsx
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";
-import DeliveryScheduler from "@ui/components/organisms/DeliveryScheduler";
+import { DeliveryScheduler } from "@ui/components/organisms";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { cookies } from "next/headers";

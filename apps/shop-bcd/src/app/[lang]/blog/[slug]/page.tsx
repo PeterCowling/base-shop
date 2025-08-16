@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 import { fetchPostBySlug } from "@acme/sanity";
 import { BlogPortableText } from "@/components/blog/BlogPortableText";
-import shop from "../../../../../shop.json";
+import type { Shop } from "@acme/types";
+import shopJson from "../../../../../shop.json";
+
+const shop = shopJson as Shop;
 
 export default async function BlogPostPage({
   params,

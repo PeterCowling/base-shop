@@ -4,6 +4,7 @@
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import type { PageComponent } from "@acme/types";
 import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";
+import type { Locale } from "@/i18n/locales";
 
 export default function Home({
   components,
@@ -11,7 +12,7 @@ export default function Home({
   latestPost,
 }: {
   components: PageComponent[];
-  locale: string;
+  locale: Locale;
   latestPost?: BlogPost;
 }) {
   return (

@@ -34,7 +34,8 @@ export async function middleware(req: NextRequest) {
   /* Decode JWT */
   const token = (await getToken({
     req,
-    secret: authSecret,
+    // Ensure the secret is treated as a string for JWT decoding
+    secret: authSecret as string,
   })) as CmsToken | null;
   const role: Role | null = token?.role ?? null;
   logger.debug("role", { role });

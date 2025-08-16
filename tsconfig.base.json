@@ -97,8 +97,7 @@
       "@shared-utils/*": ["packages/shared-utils/src/*"],
 
       /* ─── dedicated utility packages ───────────────────────────── */
-      "@acme/email": ["packages/email/src/index.ts"],
-      "@acme/email/analytics": ["packages/email/src/analytics.ts"],
+      "@acme/email": ["packages/email"],
       "@acme/stripe": ["packages/stripe/src/index.ts"],
       "@acme/sanity": ["packages/sanity/src/index.ts"],
       "@acme/plugin-sanity": ["packages/plugins/sanity/index.ts"],

@@ -16,6 +16,14 @@ const examples: ExampleProps = {
   Accordion: {
     items: [{ title: "Item 1", content: "Content" }],
   },
+  Icon: { name: "star" },
+  Price: { amount: 19.99, currency: "USD" },
+  RatingStars: { rating: 4 },
+  SearchBar: {
+    label: "Search",
+    suggestions: ["Apple", "Banana", "Cherry"],
+  },
+  StockStatus: { inStock: true },
 };
 
 export function generateExampleProps(
@@ -46,11 +54,7 @@ export function generateExampleProps(
 
 import type { ExampleProps } from "@acme/types";
 
-export const exampleProps: ExampleProps = ${JSON.stringify(
-    map,
-    null,
-    2
-  )};
+export const exampleProps: ExampleProps = ${JSON.stringify(map, null, 2)};
 
 export default exampleProps;
 `;
@@ -68,4 +72,3 @@ if (process.argv[1]?.includes("generate-example-props.ts")) {
   const shopId = slug.startsWith("shop-") ? slug : `shop-${slug}`;
   generateExampleProps(shopId);
 }
-

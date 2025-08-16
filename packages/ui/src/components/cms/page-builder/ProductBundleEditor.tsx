@@ -1,7 +1,7 @@
-import type { PageComponent } from "@acme/types";
+import type { PageComponentBase } from "@acme/types";
 import { Input, Textarea } from "../../atoms/shadcn";
 
-type ProductBundleComponent = PageComponent & {
+type ProductBundleComponent = PageComponentBase & {
   type: "ProductBundle";
   skus?: string[];
   discount?: number;

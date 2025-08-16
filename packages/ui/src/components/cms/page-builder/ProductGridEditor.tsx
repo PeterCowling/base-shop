@@ -23,7 +23,9 @@ export default function ProductGridEditor({ component, onChange }: Props) {
       </div>
       <Select
         value={component.mode ?? "collection"}
-        onValueChange={(v) => handleInput("mode", v)}
+        onValueChange={(v: "manual" | "collection") =>
+          handleInput("mode", v)
+        }
       >
         <SelectTrigger>
           <SelectValue placeholder="Source" />

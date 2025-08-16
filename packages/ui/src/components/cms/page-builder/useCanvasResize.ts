@@ -12,7 +12,7 @@ interface Options {
   dispatch: React.Dispatch<ResizeAction>;
   gridEnabled?: boolean;
   gridCols: number;
-  containerRef: React.RefObject<HTMLDivElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
   disabled?: boolean;
 }
 

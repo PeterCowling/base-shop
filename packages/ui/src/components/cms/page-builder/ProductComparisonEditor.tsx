@@ -1,7 +1,7 @@
-import type { PageComponent } from "@acme/types";
+import type { PageComponentBase } from "@acme/types";
 import { Textarea } from "../../atoms/shadcn";
 
-type ProductComparisonComponent = PageComponent & {
+type ProductComparisonComponent = PageComponentBase & {
   type: "ProductComparison";
   skus?: string[];
   attributes?: string[];

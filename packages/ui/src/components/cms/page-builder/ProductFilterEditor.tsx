@@ -1,7 +1,7 @@
-import type { PageComponent } from "@acme/types";
+import type { PageComponentBase } from "@acme/types";
 import useComponentInputs from "./useComponentInputs";
 
-type ProductFilterComponent = PageComponent & {
+type ProductFilterComponent = PageComponentBase & {
   type: "ProductFilter";
   showSize?: boolean;
   showColor?: boolean;

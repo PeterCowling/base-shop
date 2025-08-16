@@ -1,8 +1,6 @@
 import { z } from "zod";
 import { pageComponentSchema } from "@acme/types";
-import type { HistoryState } from "@acme/types";
-
-export const historyStateSchema: z.ZodType<HistoryState> = z
+export const historyStateSchema = z
   .object({
     past: z.array(z.array(pageComponentSchema)),
     present: z.array(pageComponentSchema),

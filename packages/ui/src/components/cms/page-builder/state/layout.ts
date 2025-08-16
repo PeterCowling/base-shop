@@ -27,17 +27,26 @@ function addComponent(
   }
   return list.map((c) => {
     if (c.id === parentId && "children" in c) {
+      const childList = (c as { children?: PageComponent[] }).children ?? [];
       const children = addAt(
-        (c.children ?? []) as PageComponent[],
-        index ?? (c.children?.length ?? 0),
+        childList,
+        index ?? childList.length,
         component,
       );
       return { ...c, children } as PageComponent;
     }
-    if ("children" in c && Array.isArray(c.children)) {
+    if (
+      "children" in c &&
+      Array.isArray((c as { children?: PageComponent[] }).children)
+    ) {
       return {
         ...c,
-        children: addComponent(c.children, parentId, index, component),
+        children: addComponent(
+          (c as { children: PageComponent[] }).children,
+          parentId,
+          index,
+          component,
+        ),
       } as PageComponent;
     }
     return c;

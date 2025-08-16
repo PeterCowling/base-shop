@@ -1,4 +1,4 @@
-import { createShop } from "../../packages/platform-core/src/createShop";
+import { createShop } from "../../packages/platform-core/src/createShop.ts";
 import { validateShopName } from "../../packages/platform-core/src/shops";
 import { spawnSync, execSync } from "node:child_process";
 import { readdirSync } from "node:fs";

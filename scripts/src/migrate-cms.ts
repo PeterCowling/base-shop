@@ -1,11 +1,12 @@
 import "@acme/lib/initZod";
-import { env, envSchema } from "@acme/config";
+import { env, envSchema } from "@config";
 import fetch from "cross-fetch";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { z } from "zod";
 
-const cliEnvSchema = envSchema.extend({
+const baseEnvSchema = (envSchema as any)._def.schema as z.ZodObject<any>;
+const cliEnvSchema = baseEnvSchema.extend({
   CMS_SPACE_URL: z.string().min(1),
   CMS_ACCESS_TOKEN: z.string().min(1),
 });

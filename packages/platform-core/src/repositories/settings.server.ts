@@ -124,6 +124,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
       requireStrongCustomerAuth: false,
       strictReturnConditions: false,
       trackingDashboard: false,
+      premierDelivery: false,
     },
     updatedAt: "",
     updatedBy: "",

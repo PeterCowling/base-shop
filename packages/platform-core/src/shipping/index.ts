@@ -9,7 +9,14 @@ export interface ShippingRateRequest {
   weight: number;
   region?: string;
   window?: string;
-  premierDelivery?: { regions: string[]; windows: string[] };
+  carrier?: string;
+  premierDelivery?: {
+    regions: string[];
+    windows: string[];
+    carriers?: string[];
+    surcharge?: number;
+    serviceLabel?: string;
+  };
 }
 
 /**
@@ -23,6 +30,7 @@ export async function getShippingRate({
   weight,
   region,
   window,
+  carrier,
   premierDelivery,
 }: ShippingRateRequest): Promise<unknown> {
   if (provider === "premier-shipping") {
@@ -35,10 +43,17 @@ export async function getShippingRate({
     if (!window || !premierDelivery.windows.includes(window)) {
       throw new Error("Invalid delivery window");
     }
-    return { rate: 0 };
+    if (carrier && premierDelivery.carriers && !premierDelivery.carriers.includes(carrier)) {
+      throw new Error("Carrier not supported");
+    }
+    return {
+      rate: 0,
+      surcharge: premierDelivery.surcharge ?? 0,
+      serviceLabel: premierDelivery.serviceLabel ?? "Premier Delivery",
+    };
   }
 
-  if (region || window) {
+  if (region || window || carrier) {
     if (!premierDelivery) {
       throw new Error("Premier delivery not configured");
     }
@@ -47,6 +62,9 @@ export async function getShippingRate({
     }
     if (!window || !premierDelivery.windows.includes(window)) {
       throw new Error("Invalid delivery window");
+    }
+    if (carrier && premierDelivery.carriers && !premierDelivery.carriers.includes(carrier)) {
+      throw new Error("Carrier not supported");
     }
   }
   const apiKey = (shippingEnv as Record<string, string | undefined>)[

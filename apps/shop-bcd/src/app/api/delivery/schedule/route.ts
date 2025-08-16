@@ -12,6 +12,7 @@ const schema = z
   .object({
     region: z.string(),
     window: z.string(),
+    carrier: z.string().optional(),
   })
   .strict();
 
@@ -21,14 +22,19 @@ export async function POST(req: NextRequest) {
 
   const settings = await getShopSettings(shop.id);
   const pd = settings.premierDelivery;
-  if (!pd) {
+  if (
+    !settings.luxuryFeatures?.premierDelivery ||
+    !pd ||
+    !pd.regions.includes(parsed.data.region) ||
+    !pd.windows.includes(parsed.data.window)
+  ) {
     return NextResponse.json({ error: "Premier delivery not available" }, { status: 400 });
   }
-  const { region, window } = parsed.data;
-  if (!pd.regions.includes(region) || !pd.windows.includes(window)) {
-    return NextResponse.json({ error: "Invalid selection" }, { status: 400 });
-  }
   const res = NextResponse.json({ ok: true });
-  res.cookies.set("delivery", JSON.stringify({ region, window }), { path: "/" });
+  res.cookies.set(
+    "delivery",
+    JSON.stringify({ region: parsed.data.region, window: parsed.data.window, carrier: parsed.data.carrier }),
+    { path: "/" },
+  );
   return res;
 }

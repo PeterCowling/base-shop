@@ -18,6 +18,7 @@ const schema = z
     weight: z.number(),
     region: z.string().optional(),
     window: z.string().optional(),
+    carrier: z.string().optional(),
   })
   .superRefine((val, ctx) => {
     if (val.provider === "premier-shipping") {
@@ -26,6 +27,9 @@ const schema = z
       }
       if (!val.window) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["window"], message: "Required" });
+      }
+      if (!val.carrier) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["carrier"], message: "Required" });
       }
     }
   });
@@ -36,13 +40,27 @@ export async function POST(req: NextRequest) {
 
   const body = parsed.data;
   let premierDelivery;
+  let provider = body.provider;
   if (body.provider === "premier-shipping") {
     const settings = await getShopSettings(shop.id);
-    premierDelivery = settings.premierDelivery;
+    if (
+      settings.luxuryFeatures?.premierDelivery &&
+      settings.premierDelivery &&
+      body.region &&
+      settings.premierDelivery.regions.includes(body.region)
+    ) {
+      premierDelivery = settings.premierDelivery;
+    } else {
+      provider = "ups";
+    }
   }
 
   try {
-    const rate = await getShippingRate({ ...body, premierDelivery });
+    const rate = await getShippingRate({
+      ...body,
+      provider,
+      premierDelivery,
+    });
     return NextResponse.json({ rate });
   } catch (err) {
     return NextResponse.json(

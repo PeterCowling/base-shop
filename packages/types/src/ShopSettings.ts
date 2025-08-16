@@ -77,6 +77,9 @@ export const shopSettingsSchema = z
       .object({
         regions: z.array(z.string()),
         windows: z.array(z.string()),
+        carriers: z.array(z.string()).default([]),
+        surcharge: z.number().int().nonnegative().optional(),
+        serviceLabel: z.string().optional(),
       })
       .strict()
       .optional(),
@@ -96,6 +99,7 @@ export const shopSettingsSchema = z
         requireStrongCustomerAuth: z.boolean().default(false),
         strictReturnConditions: z.boolean().default(false),
         trackingDashboard: z.boolean().default(false),
+        premierDelivery: z.boolean().default(false),
       })
       .strict()
       .default({
@@ -105,6 +109,7 @@ export const shopSettingsSchema = z
         requireStrongCustomerAuth: false,
         strictReturnConditions: false,
         trackingDashboard: false,
+        premierDelivery: false,
       }),
     /** Feature flag to enable or disable all tracking */
     trackingEnabled: z.boolean().default(true).optional(),

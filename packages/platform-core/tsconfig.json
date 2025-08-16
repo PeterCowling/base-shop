@@ -35,7 +35,7 @@
   "include": ["src/**/*"],
   "exclude": [
     "dist", // freshly emitted output
-    "__tests__", // unit/integration tests
+    "**/__tests__/**", // unit/integration tests
     ".turbo", // turbo cache
     "node_modules" // package deps (if any local)
   ],
@@ -46,6 +46,6 @@
   "references": [
     { "path": "../lib" },
     { "path": "../types" },
-    { "path": "../ui" }
+    { "path": "../themes/base" }
   ]
 }

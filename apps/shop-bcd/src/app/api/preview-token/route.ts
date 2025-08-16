@@ -23,7 +23,9 @@ export async function GET(req: Request) {
       { status: 500 },
     );
   }
-  const token = createHmac("sha256", secret).update(pageId).digest("hex");
+  const token = createHmac("sha256", secret as string)
+    .update(pageId)
+    .digest("hex");
   return NextResponse.json({ token });
 }
 

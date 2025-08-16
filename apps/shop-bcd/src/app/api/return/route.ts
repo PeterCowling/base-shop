@@ -40,10 +40,16 @@ async function getUpsStatus(tracking: string) {
 
 export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
-  if (!parsed.success) return parsed.response;
+  if (!parsed.success) {
+    return parsed.response;
+  }
   const { sessionId } = parsed.data;
   const cfg = await getReturnLogistics();
-  const svc = shop.returnService ?? {};
+  const svc = (shop.returnService ?? {}) as {
+    upsEnabled?: boolean;
+    bagEnabled?: boolean;
+    homePickupEnabled?: boolean;
+  };
   if (!(cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups"))) {
     return NextResponse.json(
       { ok: false, error: "unsupported carrier" },
@@ -67,7 +73,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 });
   }
   const cfg = await getReturnLogistics();
-  const svc = shop.returnService ?? {};
+  const svc = (shop.returnService ?? {}) as {
+    upsEnabled?: boolean;
+    bagEnabled?: boolean;
+    homePickupEnabled?: boolean;
+  };
   if (!(cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups"))) {
     return NextResponse.json(
       { ok: false, error: "unsupported carrier" },

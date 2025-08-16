@@ -40,7 +40,9 @@ export async function PUT(req: NextRequest) {
   }
 
   const parsed = await parseJsonBody(req, schema, "1mb");
-  if (!parsed.success) return parsed.response;
+  if (!parsed.success) {
+    return parsed.response;
+  }
 
   await updateCustomerProfile(session.customerId, parsed.data);
   const profile = await getCustomerProfile(session.customerId);

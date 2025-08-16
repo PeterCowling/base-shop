@@ -4,7 +4,7 @@ import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
-import shop from "../../../../shop.json";
+import shop from "../../../../../shop.json";
 
 export const runtime = "edge";
 
@@ -18,7 +18,9 @@ const schema = z
 
 export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody(req, schema, "1mb");
-  if (!parsed.success) return parsed.response;
+  if (!parsed.success) {
+    return parsed.response;
+  }
 
   const settings = await getShopSettings(shop.id);
   const pd = settings.premierDelivery;

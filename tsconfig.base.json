@@ -92,6 +92,8 @@
       "@date-utils/*": ["packages/date-utils/*"],
       "@acme/configurator": ["packages/configurator"],
       "@acme/configurator/*": ["packages/configurator/*"],
+      "@acme/next-config": ["packages/next-config"],
+      "@acme/next-config/*": ["packages/next-config/*"],
 
       /* ─── shared runtime types ──────────────────────────────────── */
       "@acme/types": ["packages/types"],

@@ -2,7 +2,6 @@
 "use client";
 
 import { useTranslations } from "@/i18n/Translations";
-import { paymentEnv } from "@acme/config/env/payments";
 import {
   Elements,
   PaymentElement,
@@ -18,7 +17,7 @@ import { isoDateInNDays } from "@acme/date-utils";
 import { useCurrency } from "@platform-core/src/contexts/CurrencyContext";
 
 const stripePromise = loadStripe(
-  paymentEnv.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string,
 );
 
 type Props = {

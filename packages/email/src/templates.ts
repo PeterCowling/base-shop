@@ -1,6 +1,11 @@
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { marketingEmailTemplates } from "@acme/ui";
+import createDOMPurify from "dompurify";
+import { JSDOM } from "jsdom";
+
+const window = new JSDOM("").window as unknown as Window;
+const DOMPurify = createDOMPurify(window);
 
 const templates: Record<string, string> = {};
 
@@ -41,7 +46,9 @@ export function renderTemplate(
       variant.render({
         headline: params.headline ?? params.subject ?? "",
         content: React.createElement("div", {
-          dangerouslySetInnerHTML: { __html: params.body ?? params.content ?? "" },
+          dangerouslySetInnerHTML: {
+            __html: DOMPurify.sanitize(params.body ?? params.content ?? ""),
+          },
         }),
         footer: React.createElement(
           "p",

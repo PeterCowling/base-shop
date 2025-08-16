@@ -95,6 +95,8 @@
       "@acme/email/analytics": ["packages/email/src/analytics.ts"],
       "@acme/stripe": ["packages/stripe/src/index.ts"],
       "@acme/sanity": ["packages/sanity/src/index.ts"],
+      "@acme/plugin-sanity": ["packages/plugins/sanity/index.ts"],
+      "@acme/plugin-sanity/*": ["packages/plugins/sanity/*"],
       "@acme/date-utils": ["packages/date-utils/src/index.ts"],
       "@date-utils": ["packages/date-utils/src/index.ts"],
       "@acme/configurator": ["packages/configurator/src/index.ts"],

@@ -18,7 +18,13 @@ export async function createNewShop(
 
   let result: DeployStatusBase;
   try {
-    result = await createShop(id, options, { deploy: false });
+    result = await (
+      createShop as unknown as (
+        id: string,
+        opts: CreateShopOptions,
+        opts2: { deploy?: boolean }
+      ) => Promise<DeployStatusBase>
+    )(id, options, { deploy: false });
   } catch (err) {
     console.error("createShop failed", err);
     throw err;

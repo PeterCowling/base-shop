@@ -13,7 +13,6 @@ const handler = NextAuth(authOptions);
 const rateLimited = async (req: NextRequest, ctx: any) => {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.ip ||
     "unknown";
 
   try {

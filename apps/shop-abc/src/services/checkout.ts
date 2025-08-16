@@ -119,8 +119,8 @@ export interface CreateCheckoutSessionOptions {
   currency: string;
   taxRegion: string;
   customerId?: string;
-  shipping?: Stripe.Checkout.SessionCreateParams.ShippingAddress;
-  billing_details?: Stripe.Checkout.SessionCreateParams.PaymentIntentData.BillingDetails;
+  shipping?: Stripe.Checkout.SessionCreateParams.PaymentIntentData.Shipping;
+  billing_details?: Stripe.PaymentIntentCreateParams.PaymentMethodData.BillingDetails;
   successUrl: string;
   cancelUrl: string;
   clientIp?: string;

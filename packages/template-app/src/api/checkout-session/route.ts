@@ -41,8 +41,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     currency?: string;
     taxRegion?: string;
     customer?: string;
-    shipping?: Stripe.Checkout.SessionCreateParams.ShippingAddress;
-    billing_details?: Stripe.Checkout.SessionCreateParams.PaymentIntentData.BillingDetails;
+    shipping?: Stripe.Checkout.SessionCreateParams.PaymentIntentData.Shipping;
+    billing_details?: Stripe.PaymentIntentCreateParams.PaymentMethodData.BillingDetails;
     coverage?: string[];
   };
 

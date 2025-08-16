@@ -144,3 +144,19 @@ export async function setReturnTracking(
     return null;
   }
 }
+
+export async function setReturnStatus(
+  shop: string,
+  trackingNumber: string,
+  returnStatus: string,
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_trackingNumber: { shop, trackingNumber } },
+      data: { returnStatus },
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
+}

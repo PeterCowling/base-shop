@@ -12,6 +12,8 @@ export const features = {
     coreEnv.LUXURY_FEATURES_REQUIRE_STRONG_CUSTOMER_AUTH ?? false,
   /** dashboards for shipment and return tracking */
   trackingDashboard: coreEnv.LUXURY_FEATURES_TRACKING_DASHBOARD ?? false,
+  /** enable return requests and label generation */
+  returns: coreEnv.LUXURY_FEATURES_RETURNS ?? false,
 };
 
 export type Features = typeof features;

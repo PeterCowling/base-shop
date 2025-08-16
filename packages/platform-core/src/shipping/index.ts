@@ -141,3 +141,5 @@ export async function getTrackingStatus({
     return { status: null, steps: [] };
   }
 }
+
+export { createReturnLabel as createUpsReturnLabel, getStatus as getUpsStatus } from "./ups";

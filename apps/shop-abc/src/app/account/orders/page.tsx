@@ -8,7 +8,7 @@ export default function Page() {
   return (
     <Orders
       shopId={shop.id}
-      returnsEnabled={shop.returnsEnabled}
+      returnsEnabled={shop.returnsEnabled && shop.luxuryFeatures?.returns}
       returnPolicyUrl={shop.returnPolicyUrl}
       trackingEnabled={shop.trackingEnabled}
       trackingProviders={shop.trackingProviders}

@@ -1,4 +1,7 @@
-import { createShop } from "../../packages/platform-core/src/createShop";
+import {
+  createShop,
+  type CreateShopOptions,
+} from "../../packages/platform-core/src/createShop";
 import { validateShopName } from "../../packages/platform-core/src/shops";
 import { spawnSync, execSync } from "node:child_process";
 import { readdirSync } from "node:fs";
@@ -131,7 +134,8 @@ async function main() {
   const logo = await promptUrl("Logo URL (optional): ");
   const contact = await promptEmail("Contact email (optional): ");
   const typeAns = await prompt("Shop type (sale or rental) [sale]: ", "sale");
-  const type = typeAns.toLowerCase() === "rental" ? "rental" : "sale";
+  const type: "sale" | "rental" =
+    typeAns.toLowerCase() === "rental" ? "rental" : "sale";
   const themes = listDirNames(new URL("../../packages/themes", import.meta.url));
   const theme = await selectOption(
     "theme",
@@ -152,7 +156,7 @@ async function main() {
   const shipping = await selectProviders("shipping providers", shippingProviders);
   const ciAns = await prompt("Setup CI workflow? (y/N): ");
 
-  const options = {
+  const options: CreateShopOptions = {
     ...(name && { name }),
     ...(logo && { logo }),
     ...(contact && { contactInfo: contact }),

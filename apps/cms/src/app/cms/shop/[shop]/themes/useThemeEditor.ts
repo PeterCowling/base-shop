@@ -1,12 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/useThemeEditor.ts
 "use client";
-import {
-  useState,
-  useMemo,
-  useRef,
-  useEffect,
-  ChangeEvent,
-} from "react";
+import { useState, useMemo, useRef, useEffect, ChangeEvent } from "react";
 import { patchShopTheme } from "../../../wizard/services/patchTheme";
 import { tokenGroups } from "./tokenGroups";
 import { useThemePresets } from "./useThemePresets";
@@ -30,9 +24,10 @@ export function useThemeEditor({
   presets,
 }: Options) {
   const [theme, setTheme] = useState(initialTheme);
-  const [overrides, setOverrides] = useState<Record<string, string>>(initialOverrides);
+  const [overrides, setOverrides] =
+    useState<Record<string, string>>(initialOverrides);
   const [, setThemeDefaults] = useState<Record<string, string>>(
-    tokensByTheme[initialTheme],
+    tokensByTheme[initialTheme]
   );
   const {
     availableThemes,
@@ -53,7 +48,9 @@ export function useThemeEditor({
     setOverrides,
     setThemeDefaults,
   });
-  const [contrastWarnings, setContrastWarnings] = useState<Record<string, string>>({});
+  const [contrastWarnings, setContrastWarnings] = useState<
+    Record<string, string>
+  >({});
   const overrideRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [previewTokens, setPreviewTokens] = useState<Record<string, string>>({
     ...tokensByThemeState[initialTheme],
@@ -68,23 +65,23 @@ export function useThemeEditor({
 
   const mergedTokens = useMemo(
     () => ({ ...tokensByThemeState[theme], ...overrides }),
-    [theme, tokensByThemeState, overrides],
+    [theme, tokensByThemeState, overrides]
   );
 
   const textTokenKeys = useMemo(
     () =>
       Object.keys(tokensByThemeState[theme]).filter((k) =>
-        /text|foreground/i.test(k),
+        /text|foreground/i.test(k)
       ),
-    [theme, tokensByThemeState],
+    [theme, tokensByThemeState]
   );
 
   const bgTokenKeys = useMemo(
     () =>
       Object.keys(tokensByThemeState[theme]).filter((k) =>
-        /bg|background/i.test(k),
+        /bg|background/i.test(k)
       ),
-    [theme, tokensByThemeState],
+    [theme, tokensByThemeState]
   );
 
   const groupedTokens = useMemo(() => {
@@ -121,7 +118,7 @@ export function useThemeEditor({
 
   const scheduleSave = (
     overridesPatch: Record<string, string>,
-    defaultsPatch: Record<string, string> = {},
+    defaultsPatch: Record<string, string> = {}
   ) => {
     pendingPatchRef.current = {
       overrides: {
@@ -150,6 +147,11 @@ export function useThemeEditor({
     }, 500);
   };
 
+  // Persist merged tokens and broadcast to preview whenever they change
+  useEffect(() => {
+    schedulePreviewUpdate(mergedTokens);
+  }, [mergedTokens]);
+
   const handleWarningChange = (token: string, warning: string | null) => {
     setContrastWarnings((prev) => {
       const next = { ...prev };
@@ -160,8 +162,7 @@ export function useThemeEditor({
   };
 
   const handleOverrideChange =
-    (key: string, defaultValue: string) =>
-    (value: string) => {
+    (key: string, defaultValue: string) => (value: string) => {
       setOverrides((prev) => {
         const next = { ...prev };
         const patch: Record<string, string> = {};
@@ -172,8 +173,6 @@ export function useThemeEditor({
           next[key] = value;
           patch[key] = value;
         }
-        const merged = { ...tokensByThemeState[theme], ...next };
-        schedulePreviewUpdate(merged);
         scheduleSave(patch);
         return next;
       });
@@ -183,8 +182,6 @@ export function useThemeEditor({
     setOverrides((prev) => {
       const next = { ...prev };
       delete next[key];
-      const merged = { ...tokensByThemeState[theme], ...next };
-      schedulePreviewUpdate(merged);
       scheduleSave({ [key]: tokensByThemeState[theme][key] });
       return next;
     });
@@ -198,8 +195,6 @@ export function useThemeEditor({
         delete next[k];
         patch[k] = tokensByThemeState[theme][k];
       });
-      const merged = { ...tokensByThemeState[theme], ...next };
-      schedulePreviewUpdate(merged);
       scheduleSave(patch);
       return next;
     });
@@ -234,15 +229,11 @@ export function useThemeEditor({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleThemeChange = async (
-    e: ChangeEvent<HTMLSelectElement>,
-  ) => {
+  const handleThemeChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const newTheme = e.target.value;
     setTheme(newTheme);
     setOverrides({});
     setThemeDefaults(tokensByThemeState[newTheme]);
-    const merged = { ...tokensByThemeState[newTheme] };
-    schedulePreviewUpdate(merged);
   };
 
   const handleResetAll = async () => {
@@ -254,8 +245,6 @@ export function useThemeEditor({
       patch[k] = tokensByThemeState[theme][k];
     });
     setOverrides({});
-    const merged = { ...tokensByThemeState[theme] };
-    schedulePreviewUpdate(merged);
     scheduleSave(patch);
   };
 

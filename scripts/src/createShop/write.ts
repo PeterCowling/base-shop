@@ -8,5 +8,5 @@ export async function writeShop(
   shopId: string,
   options: Options
 ): Promise<void> {
-  await createShop(shopId, options, { deploy: true });
+  await createShop(shopId, options);
 }

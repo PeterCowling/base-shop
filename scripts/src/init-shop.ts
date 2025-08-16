@@ -165,7 +165,7 @@ async function main() {
 
   const prefixedId = `shop-${shopId}`;
   try {
-    await createShop(prefixedId, options, { deploy: true });
+    await createShop(prefixedId, options);
   } catch (err) {
     console.error("Failed to create shop:", (err as Error).message);
     process.exit(1);

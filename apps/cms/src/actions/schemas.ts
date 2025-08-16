@@ -76,9 +76,9 @@ export const shopSchema = z
       .optional()
       .default(false),
     trackingDashboard: z
-      .preprocess((v) => v !== "off", z.boolean())
+      .preprocess((v) => v === "on", z.boolean())
       .optional()
-      .default(true),
+      .default(false),
     themeOverrides: jsonRecord,
     themeDefaults: jsonRecord,
     themeTokens: jsonRecord.optional(),

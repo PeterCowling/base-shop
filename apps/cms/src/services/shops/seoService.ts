@@ -92,7 +92,7 @@ export async function revertSeo(shop: string, timestamp: string) {
       fraudReviewThreshold: 0,
       requireStrongCustomerAuth: false,
       strictReturnConditions: false,
-      trackingDashboard: true,
+      trackingDashboard: false,
     },
     freezeTranslations: false,
     updatedAt: "",

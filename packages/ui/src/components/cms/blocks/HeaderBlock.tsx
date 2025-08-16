@@ -1,5 +1,5 @@
 import type { Locale } from "@/i18n/locales";
-import Header, { type NavSection } from "../../organisms/Header";
+import { Header, type NavSection } from "../../organisms/Header";
 
 interface Props {
   nav?: NavSection[];

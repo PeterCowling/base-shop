@@ -1,5 +1,5 @@
 import type { Locale } from "@/i18n/locales";
-import Footer, { type FooterLink } from "../../organisms/Footer";
+import { Footer, type FooterLink } from "../../organisms/Footer";
 
 interface Props {
   links?: FooterLink[];

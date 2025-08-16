@@ -9,11 +9,15 @@ const layoutEntries = {
   Footer: { component: Footer },
 } as const;
 
+type LayoutRegistry = {
+  [K in keyof typeof layoutEntries]: BlockRegistryEntry<any>;
+};
+
 export const layoutRegistry = Object.fromEntries(
   Object.entries(layoutEntries).map(([k, v]) => [
     k,
     { previewImage: defaultPreview, ...v },
   ]),
-) as typeof layoutEntries satisfies Record<string, BlockRegistryEntry<any>>;
+) as LayoutRegistry;
 
 export type LayoutBlockType = keyof typeof layoutEntries;

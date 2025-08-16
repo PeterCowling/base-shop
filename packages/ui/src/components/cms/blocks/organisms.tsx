@@ -100,11 +100,15 @@ const organismEntries = {
   ProductFilter: { component: ProductFilter },
 } as const;
 
+type OrganismRegistry = {
+  [K in keyof typeof organismEntries]: BlockRegistryEntry<any>;
+};
+
 export const organismRegistry = Object.fromEntries(
   Object.entries(organismEntries).map(([k, v]) => [
     k,
     { previewImage: defaultPreview, ...v },
   ]),
-) as typeof organismEntries satisfies Record<string, BlockRegistryEntry<any>>;
+) as OrganismRegistry;
 
 export type OrganismBlockType = keyof typeof organismEntries;

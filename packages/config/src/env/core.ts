@@ -64,6 +64,20 @@ export const coreEnvBaseSchema = z.object({
     })
     .transform((v) => Number(v))
     .optional(),
+  LATE_FEE_ENABLED: z
+    .string()
+    .refine((v) => v === "true" || v === "false", {
+      message: "must be true or false",
+    })
+    .transform((v) => v === "true")
+    .optional(),
+  LATE_FEE_INTERVAL_MS: z
+    .string()
+    .refine((v) => !Number.isNaN(Number(v)), {
+      message: "must be a number",
+    })
+    .transform((v) => Number(v))
+    .optional(),
   OPENAI_API_KEY: z.string().optional(),
   SESSION_SECRET: z.string().min(1),
   COOKIE_DOMAIN: z.string().optional(),
@@ -86,12 +100,15 @@ export function depositReleaseEnvRefinement(
   for (const [key, value] of Object.entries(env)) {
     const isDeposit = key.startsWith("DEPOSIT_RELEASE_");
     const isReverse = key.startsWith("REVERSE_LOGISTICS_");
-    if (!isDeposit && !isReverse) continue;
+    const isLateFee = key.startsWith("LATE_FEE_");
+    if (!isDeposit && !isReverse && !isLateFee) continue;
     if (
       key === "DEPOSIT_RELEASE_ENABLED" ||
       key === "DEPOSIT_RELEASE_INTERVAL_MS" ||
       key === "REVERSE_LOGISTICS_ENABLED" ||
-      key === "REVERSE_LOGISTICS_INTERVAL_MS"
+      key === "REVERSE_LOGISTICS_INTERVAL_MS" ||
+      key === "LATE_FEE_ENABLED" ||
+      key === "LATE_FEE_INTERVAL_MS"
     )
       continue;
     if (key.includes("ENABLED")) {

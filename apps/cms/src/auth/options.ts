@@ -14,7 +14,8 @@ import { authSecret } from "./secret";
 /*  Secret handling                                                           */
 /* -------------------------------------------------------------------------- */
 
-const secret = authSecret;
+// Explicitly type the secret so NextAuth receives a string
+const secret: string = authSecret as string;
 
 /* -------------------------------------------------------------------------- */
 /*  AuthOptions factory (dependency‑injectable for tests)                     */

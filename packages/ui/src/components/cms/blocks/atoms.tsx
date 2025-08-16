@@ -94,11 +94,15 @@ const atomEntries = {
   Button: { component: ButtonBlock },
 } as const;
 
+type AtomRegistry = {
+  [K in keyof typeof atomEntries]: BlockRegistryEntry<any>;
+};
+
 export const atomRegistry = Object.fromEntries(
   Object.entries(atomEntries).map(([k, v]) => [
     k,
     { previewImage: defaultPreview, ...v },
   ]),
-) as typeof atomEntries satisfies Record<string, BlockRegistryEntry<any>>;
+) as AtomRegistry;
 
 export type AtomBlockType = keyof typeof atomEntries;

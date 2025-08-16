@@ -38,6 +38,7 @@
 packages/ui/src/**/*.js
 packages/ui/src/**/*.d.ts
 packages/ui/src/**/*.d.ts.map
+!packages/ui/src/types/qrcode.d.ts
 
 # ---------------------------
 # Misc

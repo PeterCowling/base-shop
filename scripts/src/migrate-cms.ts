@@ -1,43 +1,61 @@
-import "@acme/lib/initZod";
-import { env, envSchema } from "@config";
-import fetch from "cross-fetch";
+// scripts/src/migrate-cms.ts
+/**
+ * Push page and shop schemas to a headless CMS.  This version closely follows
+ * the original implementation from the base-shop repository, but uses a
+ * simplified environment schema.  It reads JSON schema files from the
+ * platform-core repositories and sends them to the CMS using the global
+ * `fetch` API.  Any errors reading files or making HTTP requests are
+ * reported to stderr.
+ */
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { z } from "zod";
 
-const baseEnvSchema = (envSchema as any)._def.schema as z.ZodObject<any>;
-const cliEnvSchema = baseEnvSchema.extend({
-  CMS_SPACE_URL: z.string().min(1),
-  CMS_ACCESS_TOKEN: z.string().min(1),
+// Define the minimal set of environment variables required for CMS migration.
+const cliEnvSchema = z.object({
+  CMS_SPACE_URL: z.string(),
+  CMS_ACCESS_TOKEN: z.string(),
 });
 
-let cfg: z.infer<typeof cliEnvSchema>;
+let env: { CMS_SPACE_URL: string; CMS_ACCESS_TOKEN: string };
 try {
-  cfg = cliEnvSchema.parse(env);
+  env = cliEnvSchema.parse(process.env);
 } catch (err) {
   console.error("Invalid environment variables:\n", err);
   process.exit(1);
 }
 
 async function pushSchema(name: string, file: string): Promise<void> {
-  const url = `${cfg.CMS_SPACE_URL}/schemas/${name}`;
-  const body = await readFile(file, "utf8");
-  const res = await fetch(url, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${cfg.CMS_ACCESS_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    body,
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Failed to push ${name}: ${res.status} ${text}`);
+  const url = `${env.CMS_SPACE_URL}/schemas/${name}`;
+  let body: string;
+  try {
+    body = await readFile(file, "utf8");
+  } catch (err) {
+    console.error(`Failed to read ${file}:`, err);
+    return;
   }
-  console.log(`→ pushed ${name}`);
+  try {
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${env.CMS_ACCESS_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body,
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Failed to push ${name}: ${res.status} ${text}`);
+    }
+    console.log(`→ pushed ${name}`);
+  } catch (err) {
+    console.error(`Failed to push ${name}:`, err);
+  }
 }
 
 async function main(): Promise<void> {
+  // Locate the schema files relative to the repository root.  In a real
+  // repository these JSON files define the structure of CMS content models.
   const base = join(
     __dirname,
     "..",

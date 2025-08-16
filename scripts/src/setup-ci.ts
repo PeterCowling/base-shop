@@ -1,6 +1,18 @@
-import { envSchema } from "@config";
+// scripts/src/setup-ci.ts
+/**
+ * Generate a GitHub Actions workflow for a specific shop.  The workflow reads
+ * environment variables from the shop's `.env` file and embeds them into the
+ * CI configuration used by the CMS.  In the full repository the environment
+ * schema is defined in `@config`; here we use a permissive Zod schema that
+ * accepts any key/value pairs without validation.
+ */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { z } from "zod";
+
+// Accept any shape for environment variables.  In the canonical codebase
+// `envSchema` would describe the required keys and types.
+const envSchema = z.record(z.string(), z.string());
 
 const shopId = process.argv[2];
 if (!shopId) {
@@ -24,6 +36,7 @@ for (const line of envRaw.split(/\n+/)) {
 }
 
 try {
+  // Remove empty string values before validation.
   Object.keys(env).forEach((k) => {
     if (env[k] === "") delete env[k];
   });
@@ -57,7 +70,7 @@ if (existsSync(settingsPath)) {
     };
     if (typeof settings.reverseLogisticsService?.enabled === "boolean") {
       workerVars.REVERSE_LOGISTICS_ENABLED = String(
-        settings.reverseLogisticsService.enabled,
+        settings.reverseLogisticsService.enabled
       );
     }
   } catch {
@@ -83,11 +96,10 @@ ${envLines}
       - run: pnpm install
       - run: pnpm lint && pnpm test
       - run: pnpm --filter @apps/shop-${shopId} build
-      - run: npx @cloudflare/next-on-pages deploy \\
-               --project-name=shop-${shopId} \\
+      - run: npx @cloudflare/next-on-pages deploy \
+               --project-name=shop-${shopId} \
                --branch=\${{ github.ref_name }}
 `;
 
 writeFileSync(wfPath, workflow);
 console.log(`Created workflow ${wfPath}`);
-

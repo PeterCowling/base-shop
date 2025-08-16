@@ -1,4 +1,4 @@
-import { createShop } from "../../../packages/platform-core/src/createShop";
+import { createShop } from "@platform-core/createShop";
 import type { Options } from "./parse";
 
 /**

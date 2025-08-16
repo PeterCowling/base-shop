@@ -45,6 +45,8 @@
       "@ui/*": ["packages/ui/src/*"],
       "@ui/src": ["packages/ui/src/index.ts"],
       "@ui/src/*": ["packages/ui/src/*"],
+      "@acme/ui": ["packages/ui/src/index.ts"],
+      "@acme/ui/*": ["packages/ui/src/*"],
 
       /* ─── CMS front-end (Next app) ─────────────────────────────── */
       "@cms/*": ["apps/cms/src/*"],

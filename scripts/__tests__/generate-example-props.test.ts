@@ -18,6 +18,11 @@ describe("generate-example-props", () => {
       getComponentNameMap: () => ({
         "atoms/Button.tsx": "Button",
         "molecules/Breadcrumbs.tsx": "Breadcrumbs",
+        "atoms/Icon.tsx": "Icon",
+        "atoms/Price.tsx": "Price",
+        "atoms/RatingStars.tsx": "RatingStars",
+        "atoms/StockStatus.tsx": "StockStatus",
+        "molecules/SearchBar.tsx": "SearchBar",
         "atoms/Foo.tsx": "Foo",
       }),
     }));
@@ -44,7 +49,16 @@ describe("generate-example-props", () => {
     expect(content).toContain('"Button": {');
     expect(content).toContain('"children": "Button"');
     expect(content).toContain('"Breadcrumbs": {');
+    expect(content).toContain('"Icon": {');
+    expect(content).toContain('"name": "star"');
+    expect(content).toContain('"Price": {');
+    expect(content).toContain('"amount": 19.99');
+    expect(content).toContain('"RatingStars": {');
+    expect(content).toContain('"rating": 4');
+    expect(content).toContain('"StockStatus": {');
+    expect(content).toContain('"inStock": true');
+    expect(content).toContain('"SearchBar": {');
+    expect(content).toContain('"suggestions": [');
     expect(content).toContain('"Foo": {}');
   });
 });
-

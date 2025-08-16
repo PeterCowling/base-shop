@@ -75,11 +75,12 @@ async function writeDb(db: DB): Promise<void> {
 
 export async function GET(): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
-  if (!session || !session.user?.id) {
+  const userId = (session?.user as { id?: string })?.id;
+  if (!session || !userId) {
     return NextResponse.json({}, { status: 401 });
   }
   const db = await readDb();
-  const entry = db[session.user.id];
+  const entry = db[userId];
   if (entry && typeof entry === "object" && "state" in entry) {
     return NextResponse.json(entry as UserRecord);
   }
@@ -88,7 +89,8 @@ export async function GET(): Promise<NextResponse> {
 
 export async function PUT(req: Request): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
-  if (!session || !session.user?.id) {
+  const userId = (session?.user as { id?: string })?.id;
+  if (!session || !userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
@@ -100,7 +102,7 @@ export async function PUT(req: Request): Promise<NextResponse> {
     const { stepId, data, completed } = parsed.data;
     const db = await readDb();
     let record: UserRecord = { state: {}, completed: {} };
-    const existing = db[session.user.id];
+    const existing = db[userId];
     if (existing && typeof existing === "object" && "state" in existing) {
       record = existing as UserRecord;
     } else if (existing) {
@@ -117,7 +119,7 @@ export async function PUT(req: Request): Promise<NextResponse> {
     if (completed && typeof completed === "object" && !stepId) {
       record.completed = completed;
     }
-    db[session.user.id] = record;
+    db[userId] = record;
     await writeDb(db);
     return NextResponse.json({ success: true });
   } catch (err) {
@@ -130,7 +132,8 @@ export async function PUT(req: Request): Promise<NextResponse> {
 
 export async function PATCH(req: Request): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
-  if (!session || !session.user?.id) {
+  const userId = (session?.user as { id?: string })?.id;
+  if (!session || !userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
@@ -142,14 +145,14 @@ export async function PATCH(req: Request): Promise<NextResponse> {
     const { stepId, completed } = parsed.data;
     const db = await readDb();
     let record: UserRecord = { state: {}, completed: {} };
-    const existing = db[session.user.id];
+    const existing = db[userId];
     if (existing && typeof existing === "object" && "state" in existing) {
       record = existing as UserRecord;
     } else if (existing) {
       record.state = existing;
     }
     record.completed[stepId] = completed;
-    db[session.user.id] = record;
+    db[userId] = record;
     await writeDb(db);
     return NextResponse.json({ success: true });
   } catch (err) {

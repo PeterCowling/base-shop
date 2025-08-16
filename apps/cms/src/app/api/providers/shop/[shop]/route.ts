@@ -24,8 +24,8 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
-    const parsed = await parseJsonBody(req, schema, "1mb");
-    if (!parsed.success) return parsed.response;
+    const parsed = await parseJsonBody(req as any, schema, "1mb");
+    if (parsed.success === false) return parsed.response;
     const { shop } = await context.params;
     const dir = path.join(resolveDataRoot(), shop);
     await fs.mkdir(dir, { recursive: true });

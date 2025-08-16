@@ -1,5 +1,4 @@
 import { verifyCredentials } from "@acme/plugin-sanity";
-import { createClient } from "@sanity/client";
 
 interface VerifyRequest {
   projectId: string;
@@ -18,16 +17,15 @@ export async function POST(req: Request) {
   }
 
   try {
-    const client = createClient({
-      projectId,
-      dataset: dataset || "production",
-      token,
-      apiVersion: "2023-01-01",
-      useCdn: false,
-    });
-
-    const list = await client.datasets.list();
-    const datasets = list.map((d) => d.name);
+    const resp = await fetch(
+      `https://${projectId}.api.sanity.io/v2023-01-01/datasets`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    if (!resp.ok) throw new Error("Failed to list datasets");
+    const list = (await resp.json()) as { datasets?: { name: string }[] };
+    const datasets = list.datasets?.map((d) => d.name) ?? [];
 
     if (dataset) {
       const valid = await verifyCredentials({ projectId, dataset, token });

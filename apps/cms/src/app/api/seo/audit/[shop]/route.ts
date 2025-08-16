@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateShopName } from "@acme/lib";
 import lighthouse from "lighthouse";
-import chromeLauncher from "chrome-launcher";
 import {
   appendSeoAudit,
   readSeoAudits,
@@ -10,26 +9,22 @@ import {
 import { nowIso } from "@date-utils";
 
 async function runLighthouse(url: string): Promise<SeoAuditEntry> {
-  const chrome = await chromeLauncher.launch({ chromeFlags: ["--headless"] });
-  try {
-    const result = await lighthouse(url, {
-      port: chrome.port,
+  const result = await lighthouse(
+    url,
+    {
       onlyCategories: ["seo"],
+      chromeFlags: ["--headless"],
       preset: "desktop",
-    });
-    const lhr = result.lhr;
-    const score = Math.round((lhr.categories?.seo?.score ?? 0) * 100);
-    const recommendations = Object.values(lhr.audits)
-      .filter((a) =>
-        a.score !== 1 &&
-        a.scoreDisplayMode !== "notApplicable" &&
-        a.title,
-      )
-      .map((a) => a.title as string);
-    return { timestamp: nowIso(), score, recommendations };
-  } finally {
-    await chrome.kill();
-  }
+    } as any,
+  );
+  const lhr = result.lhr;
+  const score = Math.round((lhr.categories?.seo?.score ?? 0) * 100);
+  const recommendations = Object.values(lhr.audits)
+    .filter(
+      (a) => a.score !== 1 && a.scoreDisplayMode !== "notApplicable" && a.title,
+    )
+    .map((a) => a.title as string);
+  return { timestamp: nowIso(), score, recommendations };
 }
 
 export async function GET(

@@ -40,11 +40,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const parsed = await parseJsonBody(
-    req,
+    req as any,
     segmentSchema.extend({ shop: z.string() }),
     "1mb",
   );
-  if (!parsed.success) return parsed.response;
+  if (parsed.success === false) return parsed.response;
   const { shop, id, name, filters } = parsed.data;
   const segments = await readSegments(shop);
   const def: Segment = { id, name: name ?? id, filters };

@@ -21,7 +21,7 @@ export const shippingSchema = z
   .strict();
 
 export const billingSchema: z.ZodType<
-  Stripe.Checkout.SessionCreateParams.PaymentIntentData.BillingDetails
+  Stripe.PaymentIntentCreateParams.PaymentMethodData.BillingDetails
 > = z
   .object({
     name: z.string(),
@@ -34,5 +34,5 @@ export const billingSchema: z.ZodType<
 export type Address = z.infer<typeof addressSchema>;
 export type Shipping = z.infer<typeof shippingSchema>;
 export type Billing =
-  Stripe.Checkout.SessionCreateParams.PaymentIntentData.BillingDetails;
+  Stripe.PaymentIntentCreateParams.PaymentMethodData.BillingDetails;
 

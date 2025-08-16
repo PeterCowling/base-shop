@@ -14,6 +14,6 @@ export const containerRegistry = Object.fromEntries(
     k,
     { previewImage: defaultPreview, ...v },
   ]),
-) as typeof containerEntries satisfies Record<string, BlockRegistryEntry<any>>;
+) as unknown as typeof containerEntries satisfies Record<string, BlockRegistryEntry<any>>;
 
 export type ContainerBlockType = keyof typeof containerEntries;

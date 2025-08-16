@@ -99,6 +99,6 @@ export const atomRegistry = Object.fromEntries(
     k,
     { previewImage: defaultPreview, ...v },
   ]),
-) as typeof atomEntries satisfies Record<string, BlockRegistryEntry<any>>;
+) as unknown as typeof atomEntries satisfies Record<string, BlockRegistryEntry<any>>;
 
 export type AtomBlockType = keyof typeof atomEntries;

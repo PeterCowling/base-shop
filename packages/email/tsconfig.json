@@ -20,5 +20,10 @@
     { "path": "../date-utils" }
   ],
   "include": ["src/**/*"],
-  "exclude": ["dist", ".turbo", "node_modules"]
+  "exclude": [
+    "dist",
+    ".turbo",
+    "node_modules",
+    "**/__mocks__/**"
+  ]
 }

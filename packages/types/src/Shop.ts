@@ -119,6 +119,7 @@ export const shopSchema = z
     rentalInventoryAllocation: z.boolean().optional(),
     luxuryFeatures: z
       .object({
+        blog: z.boolean().default(false),
         contentMerchandising: z.boolean().default(false),
         raTicketing: z.boolean().default(false),
         fraudReviewThreshold: z.number().nonnegative().default(0),
@@ -129,6 +130,7 @@ export const shopSchema = z
       })
       .strict()
       .default({
+        blog: false,
         contentMerchandising: false,
         raTicketing: false,
         fraudReviewThreshold: 0,

@@ -42,6 +42,7 @@
     "enabled": true
   },
   "luxuryFeatures": {
+    "blog": true,
     "contentMerchandising": true,
     "raTicketing": true,
     "fraudReviewThreshold": 0,

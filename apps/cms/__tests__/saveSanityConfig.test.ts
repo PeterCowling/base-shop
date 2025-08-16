@@ -39,10 +39,12 @@ describe("saveSanityConfig", () => {
     (getShopById as jest.Mock).mockResolvedValue({
       id: "shop",
       editorialBlog: { enabled: false },
+      luxuryFeatures: { blog: false },
     });
     (setSanityConfig as jest.Mock).mockReturnValue({
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
+      luxuryFeatures: { blog: false },
     });
     (updateShopInRepo as jest.Mock).mockResolvedValue({ id: "shop" });
 
@@ -64,6 +66,7 @@ describe("saveSanityConfig", () => {
     expect(setSanityConfig).toHaveBeenCalledWith({
       id: "shop",
       editorialBlog: { enabled: false },
+      luxuryFeatures: { blog: false },
     }, {
       projectId: "p",
       dataset: "d",
@@ -73,6 +76,7 @@ describe("saveSanityConfig", () => {
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
       editorialBlog: { enabled: false },
+      luxuryFeatures: { blog: false },
       enableEditorial: false,
     });
     expect(res).toEqual({ message: "Sanity connected" });
@@ -83,10 +87,12 @@ describe("saveSanityConfig", () => {
     (getShopById as jest.Mock).mockResolvedValue({
       id: "shop",
       editorialBlog: { enabled: true },
+      luxuryFeatures: { blog: true },
     });
     (setSanityConfig as jest.Mock).mockReturnValue({
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
+      luxuryFeatures: { blog: true },
     });
     (updateShopInRepo as jest.Mock).mockResolvedValue({ id: "shop" });
 
@@ -112,6 +118,7 @@ describe("saveSanityConfig", () => {
     expect(setSanityConfig).toHaveBeenCalledWith({
       id: "shop",
       editorialBlog: { enabled: true },
+      luxuryFeatures: { blog: true },
     }, {
       projectId: "p",
       dataset: "d",
@@ -121,6 +128,7 @@ describe("saveSanityConfig", () => {
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
       editorialBlog: { enabled: true },
+      luxuryFeatures: { blog: true },
       enableEditorial: true,
     });
     expect(res).toEqual({ message: "Sanity connected" });
@@ -131,10 +139,12 @@ describe("saveSanityConfig", () => {
     (getShopById as jest.Mock).mockResolvedValue({
       id: "shop",
       editorialBlog: { enabled: false },
+      luxuryFeatures: { blog: false },
     });
     (setSanityConfig as jest.Mock).mockReturnValue({
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
+      luxuryFeatures: { blog: false },
     });
     (updateShopInRepo as jest.Mock).mockResolvedValue({ id: "shop" });
 
@@ -152,6 +162,7 @@ describe("saveSanityConfig", () => {
       id: "shop",
       sanityBlog: { projectId: "p", dataset: "d", token: "t" },
       editorialBlog: { enabled: true },
+      luxuryFeatures: { blog: true },
       enableEditorial: true,
     });
   });
@@ -165,6 +176,7 @@ describe("saveSanityConfig", () => {
     (getShopById as jest.Mock).mockResolvedValue({
       id: "shop",
       editorialBlog: { enabled: true },
+      luxuryFeatures: { blog: true },
     });
 
     const fd = new FormData();
@@ -183,6 +195,7 @@ describe("saveSanityConfig", () => {
     (getShopById as jest.Mock).mockResolvedValue({
       id: "shop",
       editorialBlog: { enabled: false },
+      luxuryFeatures: { blog: false },
     });
     (setSanityConfig as jest.Mock).mockReturnValue({
       id: "shop",

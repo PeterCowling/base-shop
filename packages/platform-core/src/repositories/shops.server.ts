@@ -79,6 +79,7 @@ export async function readShop(shop: string): Promise<Shop> {
     navigation: [],
     analyticsEnabled: false,
     luxuryFeatures: {
+      blog: false,
       contentMerchandising: false,
       raTicketing: false,
       fraudReviewThreshold: 0,

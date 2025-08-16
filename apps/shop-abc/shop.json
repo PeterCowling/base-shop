@@ -38,6 +38,7 @@
     "token": "token"
   },
   "luxuryFeatures": {
+    "blog": true,
     "contentMerchandising": true,
     "raTicketing": false,
     "fraudReviewThreshold": 0,

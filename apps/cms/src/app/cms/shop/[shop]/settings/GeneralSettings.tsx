@@ -43,26 +43,25 @@ export default function GeneralSettings({
           <span className="text-sm text-red-600">{errors.themeId.join("; ")}</span>
         )}
       </label>
-      <div className="flex flex-col gap-1">
-        <label className="flex items-center gap-2">
-          <Checkbox
-            name="enableEditorial"
-            checked={info.enableEditorial ?? false}
-            onCheckedChange={(v) =>
-              setInfo((prev) => ({ ...prev, enableEditorial: Boolean(v) }))
-            }
-          />
-          <span>Enable blog</span>
-        </label>
-        {errors.enableEditorial && (
-          <span className="text-sm text-red-600">
-            {errors.enableEditorial.join("; ")}
-          </span>
-        )}
-      </div>
       <fieldset className="col-span-2 flex flex-col gap-1">
         <legend className="text-sm font-medium">Luxury features</legend>
         <div className="mt-2 grid gap-2">
+          <label className="flex items-center gap-2">
+            <Checkbox
+              name="blog"
+              checked={info.luxuryFeatures.blog ?? false}
+              onCheckedChange={(v) =>
+                setInfo((prev) => ({
+                  ...prev,
+                  luxuryFeatures: {
+                    ...prev.luxuryFeatures,
+                    blog: Boolean(v),
+                  },
+                }))
+              }
+            />
+            <span>Enable blog</span>
+          </label>
           <label className="flex items-center gap-2">
             <Checkbox
               name="contentMerchandising"

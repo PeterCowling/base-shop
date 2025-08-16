@@ -33,7 +33,10 @@ export default async function Page({
 }) {
   const components = await loadComponents();
   let latestPost: BlogPost | undefined;
-  if (shop.luxuryFeatures?.contentMerchandising && shop.editorialBlog?.enabled) {
+  if (
+    shop.luxuryFeatures?.contentMerchandising &&
+    shop.luxuryFeatures?.blog
+  ) {
     const posts = await fetchPublishedPosts(shop.id);
     const first = posts[0];
     if (first) {

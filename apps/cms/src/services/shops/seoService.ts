@@ -87,6 +87,7 @@ export async function revertSeo(shop: string, timestamp: string) {
     languages: [] as Locale[],
     seo: {},
     luxuryFeatures: {
+      blog: false,
       contentMerchandising: false,
       raTicketing: false,
       fraudReviewThreshold: 0,

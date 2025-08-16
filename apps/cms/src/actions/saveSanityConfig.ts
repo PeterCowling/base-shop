@@ -7,6 +7,7 @@ import {
   setSanityConfig,
   setEditorialBlog,
 } from "@platform-core/src/shops";
+import type { Shop } from "@acme/types";
 import { ensureAuthorized } from "./common/auth";
 import { setupSanityBlog } from "./setupSanityBlog";
 
@@ -31,7 +32,7 @@ export async function saveSanityConfig(
   const promoteScheduleRaw = formData.get("promoteSchedule");
   const editorialEnabled =
     enableEditorialRaw == null
-      ? Boolean(shop.editorialBlog?.enabled)
+      ? Boolean(shop.luxuryFeatures?.blog)
       : enableEditorialRaw === "on" || enableEditorialRaw === "true";
   const promoteSchedule =
     promoteScheduleRaw == null || String(promoteScheduleRaw) === ""
@@ -62,6 +63,10 @@ export async function saveSanityConfig(
     enabled: editorialEnabled,
     ...(promoteSchedule ? { promoteSchedule } : {}),
   });
+  updated.luxuryFeatures = {
+    ...(updated.luxuryFeatures ?? {}),
+    blog: editorialEnabled,
+  } as Shop["luxuryFeatures"];
   // maintain legacy flag
   (updated as any).enableEditorial = editorialEnabled;
   if (promoteSchedule) {

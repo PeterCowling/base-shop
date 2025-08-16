@@ -35,14 +35,31 @@
 
       /* shared lib utilities */
       "@acme/lib": ["packages/lib/src/index.ts"],
-      "@acme/lib/*": ["packages/lib/src/*"]
+      "@acme/lib/*": ["packages/lib/src/*"],
+
+      /* runtime config helper */
+      "@config": ["packages/config/src/env/index.ts"],
+      "@config/*": ["packages/config/src/env/*"],
+
+      /* date utilities */
+      "@date-utils": ["packages/date-utils/src/index.ts"],
+
+      /* shared runtime types */
+      "@acme/types": ["packages/types/src/index.ts"],
+      "@acme/types/*": ["packages/types/src/*"]
     }
   },
 
   /* ------------------------------------------------------------------
    *  Project references
    * ------------------------------------------------------------------ */
-  "references": [{ "path": "../platform-core" }, { "path": "../lib" }],
+  "references": [
+    { "path": "../platform-core" },
+    { "path": "../lib" },
+    { "path": "../config" },
+    { "path": "../date-utils" },
+    { "path": "../types" }
+  ],
 
   /* ------------------------------------------------------------------
    *  Source globs

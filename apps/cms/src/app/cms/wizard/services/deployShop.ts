@@ -2,20 +2,22 @@
 "use client";
 
 import { validateShopName } from "@platform-core/src/shops";
-import type { DeployShopResult } from "@platform-core/createShop";
 
-export interface DeployInfo
-  extends Partial<DeployShopResult> {
+interface DeployStatusBase {
+  status: "pending" | "success" | "error";
+  previewUrl?: string;
+  instructions?: string;
+  error?: string;
+}
+
+export interface DeployInfo extends DeployStatusBase {
   domainStatus?: string;
   certificateStatus?: string;
-  error?: string;
 }
 
 export interface DeployResult {
   ok: boolean;
-  info?:
-    | DeployInfo
-    | { status: "pending"; error?: string; domainStatus?: string; certificateStatus?: string };
+  info?: DeployInfo;
   error?: string;
 }
 
@@ -38,13 +40,13 @@ export async function deployShop(
     body: JSON.stringify({ id: shopId, domain }),
   });
 
-  const json = (await res.json()) as DeployInfo | { status: "pending"; error?: string };
+  const json = (await res.json()) as DeployInfo;
 
   if (!res.ok) {
-    return { ok: false, error: (json as any).error ?? "Deployment failed" };
+    return { ok: false, error: json.error ?? "Deployment failed" };
   }
 
-  let info: DeployInfo = json as DeployInfo;
+  let info: DeployInfo = json;
 
   if (domain) {
     try {
@@ -62,8 +64,8 @@ export async function deployShop(
         throw new Error(cfJson.error ?? "Failed to provision domain");
       }
       info = {
-        ...(json as DeployInfo),
-        domainStatus: cfJson.status ?? (json as DeployInfo).domainStatus,
+        ...json,
+        domainStatus: cfJson.status ?? json.domainStatus,
         certificateStatus: cfJson.certificateStatus,
       };
 
@@ -88,14 +90,7 @@ export async function deployShop(
   return { ok: true, info };
 }
 
-export async function getDeployStatus(
-  shopId: string
-): Promise<
-  | DeployInfo
-  | { status: "pending"; error?: string; domainStatus?: string; certificateStatus?: string }
-> {
+export async function getDeployStatus(shopId: string): Promise<DeployInfo> {
   const res = await fetch(`/cms/api/configurator/deploy-shop?id=${shopId}`);
-  return (await res.json()) as
-    | DeployInfo
-    | { status: "pending"; error?: string; domainStatus?: string; certificateStatus?: string };
+  return (await res.json()) as DeployInfo;
 }

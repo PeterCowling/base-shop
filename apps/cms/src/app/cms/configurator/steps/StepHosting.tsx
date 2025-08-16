@@ -1,7 +1,6 @@
 "use client";
 
 import { Button, Input } from "@/components/atoms/shadcn";
-import type { DeployStatusBase } from "@platform-core/createShop";
 import { useEffect } from "react";
 import { getDeployStatus, type DeployInfo } from "../../wizard/services/deployShop";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -12,10 +11,8 @@ interface Props {
   domain: string;
   setDomain: (v: string) => void;
   deployResult: string | null;
-  deployInfo: (DeployStatusBase & { domainStatus?: string }) | null;
-  setDeployInfo: (
-    info: (DeployStatusBase & { domainStatus?: string }) | null
-  ) => void;
+  deployInfo: DeployInfo | null;
+  setDeployInfo: (info: DeployInfo | null) => void;
   deploying: boolean;
   deploy: () => Promise<void> | void;
 }
@@ -44,10 +41,10 @@ export default function StepHosting({
     const poll = async () => {
       try {
         const status = await getDeployStatus(shopId);
-        setDeployInfo(status as DeployInfo);
+        setDeployInfo(status);
         if (
           status.status === "pending" ||
-          (status as DeployInfo).domainStatus === "pending"
+          status.domainStatus === "pending"
         ) {
           timer = setTimeout(poll, 5000);
         }

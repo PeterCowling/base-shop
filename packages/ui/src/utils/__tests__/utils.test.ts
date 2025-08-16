@@ -1,4 +1,5 @@
-import { boxProps, cn, drawerWidthProps } from "../style";
+import { boxProps, cn } from "../style";
+import { drawerWidthProps } from "../style/drawerWidth";
 
 describe("cn", () => {
   it("filters out falsey values", () => {

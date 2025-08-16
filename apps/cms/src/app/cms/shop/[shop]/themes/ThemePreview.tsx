@@ -33,11 +33,23 @@ export default function ThemePreview({
 
   const handleTokenClick = (
     token: string,
-    coords: { x: number; y: number },
+    coords: { x: number; y: number } | DOMRect,
   ) => {
     const defaultValue = themeDefaults[token];
     if (!defaultValue) return;
-    setPicker({ token, x: coords.x, y: coords.y, defaultValue });
+
+    let x: number;
+    let y: number;
+
+    if ("width" in coords) {
+      x = coords.left + coords.width / 2;
+      y = coords.top + coords.height;
+    } else {
+      x = coords.x;
+      y = coords.y;
+    }
+
+    setPicker({ token, x, y, defaultValue });
     onTokenSelect?.(token);
   };
 

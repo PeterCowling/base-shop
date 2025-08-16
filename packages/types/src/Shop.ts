@@ -125,6 +125,7 @@ export const shopSchema = z
         requireStrongCustomerAuth: z.boolean().default(false),
         strictReturnConditions: z.boolean().default(false),
         trackingDashboard: z.boolean().default(true),
+        returns: z.boolean().default(false),
       })
       .strict()
       .default({
@@ -134,6 +135,7 @@ export const shopSchema = z
         requireStrongCustomerAuth: false,
         strictReturnConditions: false,
         trackingDashboard: true,
+        returns: false,
       }),
     lastUpgrade: z.string().datetime().optional(),
     componentVersions: z.record(z.string()).default({}),

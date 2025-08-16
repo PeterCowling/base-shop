@@ -22,6 +22,9 @@ const RequestSchema = z
   .strict();
 
 export async function POST(req: Request) {
+  if (!shop.luxuryFeatures?.returns) {
+    return NextResponse.json({ ok: false, error: "returns disabled" }, { status: 404 });
+  }
   const parsed = await parseJsonBody(req, RequestSchema, "1mb");
   if (!parsed.success) return parsed.response;
   const { orderId, email, hasTags = true, isWorn = false } = parsed.data;

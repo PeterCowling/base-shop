@@ -8,7 +8,8 @@ export type ReverseLogisticsEventName =
   | "cleaning"
   | "repair"
   | "qa"
-  | "available";
+  | "available"
+  | `status:${string}`;
 
 export type ReverseLogisticsEvent = {
   id: string;
@@ -27,6 +28,26 @@ export async function recordEvent(
   await prisma.reverseLogisticsEvent.create({
     data: { shop, sessionId, event, createdAt },
   });
+}
+
+export async function recordStatus(
+  shop: string,
+  sessionId: string,
+  status: string,
+  createdAt: string = nowIso(),
+): Promise<void> {
+  await recordEvent(shop, sessionId, `status:${status}`, createdAt);
+}
+
+export async function getLatestStatus(
+  shop: string,
+  sessionId: string,
+): Promise<string | null> {
+  const event = await prisma.reverseLogisticsEvent.findFirst({
+    where: { shop, sessionId, event: { startsWith: "status:" } },
+    orderBy: { createdAt: "desc" },
+  });
+  return event ? event.event.slice(7) : null;
 }
 
 export async function listEvents(

@@ -37,6 +37,7 @@ export const coreEnvBaseSchema = z.object({
     .boolean()
     .optional(),
   LUXURY_FEATURES_TRACKING_DASHBOARD: z.coerce.boolean().optional(),
+  LUXURY_FEATURES_RETURNS: z.coerce.boolean().optional(),
   DEPOSIT_RELEASE_ENABLED: z
     .string()
     .refine((v) => v === "true" || v === "false", {

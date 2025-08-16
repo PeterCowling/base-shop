@@ -8,4 +8,5 @@ export const luxuryFeatures = {
   requireStrongCustomerAuth:
     coreEnv.LUXURY_FEATURES_REQUIRE_STRONG_CUSTOMER_AUTH ?? false,
   trackingDashboard: coreEnv.LUXURY_FEATURES_TRACKING_DASHBOARD ?? true,
+  returns: coreEnv.LUXURY_FEATURES_RETURNS ?? false,
 };

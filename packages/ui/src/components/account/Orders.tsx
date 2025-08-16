@@ -3,6 +3,7 @@ import { getCustomerSession, hasPermission } from "@auth";
 import { getOrdersForCustomer } from "@platform-core/orders";
 import { getTrackingStatus as getShippingTrackingStatus } from "@platform-core/shipping";
 import { getTrackingStatus as getReturnTrackingStatus } from "@platform-core/returnAuthorization";
+import { getLatestStatus } from "@platform-core/repositories/reverseLogisticsEvents.server";
 import { redirect } from "next/navigation";
 import StartReturnButton from "./StartReturnButton";
 import type { OrderStep } from "../organisms/OrderTrackingTimeline";
@@ -51,7 +52,8 @@ export default async function OrdersPage({
     orders.map(async (o) => {
       let shippingSteps: OrderStep[] = [];
       let returnSteps: OrderStep[] = [];
-      let status: string | null = null;
+      let shippingStatus: string | null = null;
+      let returnStatus: string | null = null;
       if (trackingEnabled && trackingProviders.length > 0 && o.trackingNumber) {
         const provider = trackingProviders[0] as "ups" | "dhl";
         const ship = await getShippingTrackingStatus({
@@ -59,12 +61,15 @@ export default async function OrdersPage({
           trackingNumber: o.trackingNumber,
         });
         shippingSteps = ship.steps as OrderStep[];
-        status = ship.status;
+        shippingStatus = ship.status;
         const ret = await getReturnTrackingStatus({
           provider,
           trackingNumber: o.trackingNumber,
         });
         returnSteps = ret.steps as OrderStep[];
+      }
+      if (returnsEnabled) {
+        returnStatus = await getLatestStatus(shopId, o.sessionId);
       }
       return (
         <li key={o.id} className="rounded border p-4">
@@ -76,7 +81,12 @@ export default async function OrdersPage({
             trackingEnabled={trackingEnabled}
             className="mt-2"
           />
-          {status && <p className="mt-2 text-sm">Status: {status}</p>}
+          {shippingStatus && (
+            <p className="mt-2 text-sm">Status: {shippingStatus}</p>
+          )}
+          {returnStatus && (
+            <p className="mt-2 text-sm">Return: {returnStatus}</p>
+          )}
           {returnsEnabled && !o.returnedAt && (
             <StartReturnButton sessionId={o.sessionId} />
           )}

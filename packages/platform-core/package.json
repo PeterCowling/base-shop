@@ -13,7 +13,8 @@
     "./configurator": "./src/configurator.ts",
     "./users": "./src/users.ts",
     "./stripe-webhook": "./src/stripe-webhook.ts",
-    "./tracking": "./src/tracking/index.ts"
+    "./tracking": "./src/tracking/index.ts",
+    "./repositories/reverseLogisticsEvents.server": "./src/repositories/reverseLogisticsEvents.server.ts"
   },
   "dependencies": {
     "@acme/types": "workspace:*",

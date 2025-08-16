@@ -96,6 +96,7 @@ export const shopSettingsSchema = z
         requireStrongCustomerAuth: z.boolean().default(false),
         strictReturnConditions: z.boolean().default(false),
         trackingDashboard: z.boolean().default(true),
+        returns: z.boolean().default(false),
       })
       .strict()
       .default({
@@ -105,6 +106,7 @@ export const shopSettingsSchema = z
         requireStrongCustomerAuth: false,
         strictReturnConditions: false,
         trackingDashboard: true,
+        returns: false,
       }),
     /** Feature flag to enable or disable all tracking */
     trackingEnabled: z.boolean().default(true).optional(),

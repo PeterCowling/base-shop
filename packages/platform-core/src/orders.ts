@@ -128,6 +128,16 @@ export async function getOrdersForCustomer(
   });
 }
 
+export async function getOrderByTracking(
+  shop: string,
+  trackingNumber: string,
+): Promise<Order | null> {
+  const order = await prisma.rentalOrder.findFirst({
+    where: { shop, trackingNumber },
+  });
+  return order as Order | null;
+}
+
 export async function setReturnTracking(
   shop: string,
   sessionId: string,

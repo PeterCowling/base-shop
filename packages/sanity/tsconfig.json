@@ -10,9 +10,15 @@
     "allowImportingTsExtensions": false
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", ".turbo", "node_modules"],
+  "exclude": [
+    "dist",
+    ".turbo",
+    "node_modules",
+    "**/__tests__/**"
+  ],
   "references": [
     { "path": "../types" },
-    { "path": "../platform-core" }
+    { "path": "../platform-core" },
+    { "path": "../date-utils" }
   ]
 }

@@ -17,9 +17,6 @@
     "allowImportingTsExtensions": false
   },
 
-  /* build dependency graph ------------------------------------------ */
-  "references": [{ "path": "../config" }],
-
   /* source globs ---------------------------------------------------- */
   "include": ["src/**/*"],
   "exclude": [

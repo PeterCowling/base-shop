@@ -13,7 +13,7 @@ jest.mock("@sanity/client", () => ({
 
 describe("sanity plugin", () => {
   const mockClient = {
-    datasets: { get: jest.fn() },
+    datasets: { list: jest.fn() },
     create: jest.fn(),
     fetch: jest.fn(),
     mutate: jest.fn(),
@@ -28,14 +28,14 @@ describe("sanity plugin", () => {
   });
 
   test("verifyCredentials returns true on success", async () => {
-    mockClient.datasets.get.mockResolvedValue({});
+    mockClient.datasets.list.mockResolvedValue([{ name: "d" }]);
     const ok = await verifyCredentials({ projectId: "p", dataset: "d", token: "t" });
     expect(ok).toBe(true);
-    expect(mockClient.datasets.get).toHaveBeenCalledWith("d");
+    expect(mockClient.datasets.list).toHaveBeenCalled();
   });
 
   test("verifyCredentials returns false on failure", async () => {
-    mockClient.datasets.get.mockRejectedValue(new Error("bad"));
+    mockClient.datasets.list.mockRejectedValue(new Error("bad"));
     const ok = await verifyCredentials({ projectId: "p", dataset: "d", token: "t" });
     expect(ok).toBe(false);
   });
@@ -69,7 +69,7 @@ describe("sanity plugin", () => {
     );
     expect(mockClient.mutate).toHaveBeenCalledWith(
       [{ create: { _type: "post" } }],
-      { returnIds: true },
+      { returnDocuments: false },
     );
   });
 

@@ -173,7 +173,7 @@ const ENV_VARS: EnvVar[] = [
   },
 ];
 
-const ENV_KEYS = ENV_VARS.map((v) => v.key) as const;
+const ENV_KEYS = [...ENV_VARS.map((v) => v.key)] as const;
 
 interface Props {
   env: Record<string, string>;

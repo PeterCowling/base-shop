@@ -24,6 +24,7 @@
     "dist",
     ".turbo",
     "node_modules",
+    "**/__tests__/**",
     "**/__mocks__/**"
   ]
 }

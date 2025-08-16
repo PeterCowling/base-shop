@@ -58,6 +58,7 @@ describe("zod schemas", () => {
       fraudReviewThreshold: 0,
       requireStrongCustomerAuth: false,
       strictReturnConditions: false,
+      trackingDashboard: true,
     });
   });
 
@@ -107,6 +108,7 @@ describe("zod schemas", () => {
       fraudReviewThreshold: 150,
       requireStrongCustomerAuth: true,
       strictReturnConditions: false,
+      trackingDashboard: true,
     });
   });
 });

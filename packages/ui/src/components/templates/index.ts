@@ -25,3 +25,4 @@ export { ProductMediaGalleryTemplate } from "./ProductMediaGalleryTemplate";
 export { SearchResultsTemplate } from "./SearchResultsTemplate";
 export { StoreLocatorTemplate } from "./StoreLocatorTemplate";
 export { WishlistTemplate } from "./WishlistTemplate";
+export { TrackingDashboardTemplate } from "./TrackingDashboardTemplate";

@@ -75,6 +75,10 @@ export const shopSchema = z
       .preprocess((v) => v === "on", z.boolean())
       .optional()
       .default(false),
+    trackingDashboard: z
+      .preprocess((v) => v !== "off", z.boolean())
+      .optional()
+      .default(true),
     themeOverrides: jsonRecord,
     themeDefaults: jsonRecord,
     themeTokens: jsonRecord.optional(),
@@ -91,6 +95,7 @@ export const shopSchema = z
       fraudReviewThreshold,
       requireStrongCustomerAuth,
       strictReturnConditions,
+      trackingDashboard,
       ...rest
     }) => ({
       ...rest,
@@ -100,6 +105,7 @@ export const shopSchema = z
         fraudReviewThreshold,
         requireStrongCustomerAuth,
         strictReturnConditions,
+        trackingDashboard,
       },
     })
   );

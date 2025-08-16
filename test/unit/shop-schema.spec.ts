@@ -37,6 +37,7 @@ describe("shop schema", () => {
       fraudReviewThreshold: 0,
       requireStrongCustomerAuth: false,
       strictReturnConditions: false,
+      trackingDashboard: true,
     });
   });
 });

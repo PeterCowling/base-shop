@@ -95,6 +95,7 @@ export const shopSettingsSchema = z
         fraudReviewThreshold: z.number().nonnegative().default(0),
         requireStrongCustomerAuth: z.boolean().default(false),
         strictReturnConditions: z.boolean().default(false),
+        trackingDashboard: z.boolean().default(true),
       })
       .strict()
       .default({
@@ -103,6 +104,7 @@ export const shopSettingsSchema = z
         fraudReviewThreshold: 0,
         requireStrongCustomerAuth: false,
         strictReturnConditions: false,
+        trackingDashboard: true,
       }),
     /** Feature flag to enable or disable all tracking */
     trackingEnabled: z.boolean().default(true).optional(),

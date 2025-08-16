@@ -12,7 +12,8 @@
     "./plugins": "./src/plugins/index.ts",
     "./configurator": "./src/configurator.ts",
     "./users": "./src/users.ts",
-    "./stripe-webhook": "./src/stripe-webhook.ts"
+    "./stripe-webhook": "./src/stripe-webhook.ts",
+    "./tracking": "./src/tracking/index.ts"
   },
   "dependencies": {
     "@acme/types": "workspace:*",

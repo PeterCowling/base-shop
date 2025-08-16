@@ -144,6 +144,22 @@ export default function GeneralSettings({
             />
             <span>Strict return conditions</span>
           </label>
+          <label className="flex items-center gap-2">
+            <Checkbox
+              name="trackingDashboard"
+              checked={info.luxuryFeatures.trackingDashboard}
+              onCheckedChange={(v) =>
+                setInfo((prev) => ({
+                  ...prev,
+                  luxuryFeatures: {
+                    ...prev.luxuryFeatures,
+                    trackingDashboard: Boolean(v),
+                  },
+                }))
+              }
+            />
+            <span>Tracking dashboard</span>
+          </label>
         </div>
       </fieldset>
     </>

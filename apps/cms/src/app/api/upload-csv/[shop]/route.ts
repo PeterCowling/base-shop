@@ -1,11 +1,12 @@
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { promises as fs } from "node:fs";
+import fs from "node:fs";
+import { mkdir, unlink } from "node:fs/promises";
 import path from "node:path";
 import { Readable } from "node:stream";
 import Busboy from "busboy";
-import { fileTypeFromBuffer } from "file-type";
+import { fileTypeFromBuffer } from "file-type/core";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { validateShopName } from "@platform-core/src/shops";
 
@@ -24,7 +25,7 @@ export async function POST(
     const { shop: rawShop } = await context.params;
     const shop = validateShopName(rawShop);
     const dir = path.join(resolveDataRoot(), shop);
-    await fs.mkdir(dir, { recursive: true });
+    await mkdir(dir, { recursive: true });
     const filePath = path.join(dir, "products.csv");
 
     const busboy = Busboy({
@@ -50,7 +51,7 @@ export async function POST(
           if (resolved) return;
           resolved = true;
           writeStream.destroy();
-          void fs.unlink(filePath).catch(() => {});
+          void unlink(filePath).catch(() => {});
           resolve(
             NextResponse.json({ error: "File too large" }, { status: 413 })
           );
@@ -72,7 +73,7 @@ export async function POST(
                 (type && type.mime === "text/csv") ||
                 (!type && mimeType === "text/csv");
               if (!isCsv) {
-                void fs.unlink(filePath).catch(() => {});
+                void unlink(filePath).catch(() => {});
                 resolved = true;
                 resolve(
                   NextResponse.json(

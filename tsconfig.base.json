@@ -31,8 +31,6 @@
     /* ───────── monorepo path aliases ───────── */
     "paths": {
       /* ─── platform-core ─────────────────────────────────────────── */
-      "@platform-core": ["packages/platform-core"],
-      "@platform-core/*": ["packages/platform-core/*"],
       "@acme/platform-core": ["packages/platform-core"],
       "@acme/platform-core/*": ["packages/platform-core/*"],
 
@@ -41,8 +39,6 @@
       "@acme/platform-machine/*": ["packages/platform-machine/*"],
 
       /* ─── design-system UI ──────────────────────────────────────── */
-      "@ui": ["packages/ui"],
-      "@ui/*": ["packages/ui/*"],
       "@acme/ui": ["packages/ui"],
       "@acme/ui/*": ["packages/ui/*"],
 
@@ -66,14 +62,10 @@
       "@auth/*": ["packages/auth/*"],
 
       /* ─── runtime config helper ─────────────────────────────────── */
-      "@config": ["packages/config"],
-      "@config/*": ["packages/config/*"],
       "@acme/config": ["packages/config"],
       "@acme/config/*": ["packages/config/*"],
 
       /* ─── shared utilities ──────────────────────────────────────── */
-      "@shared-utils": ["packages/shared-utils"],
-      "@shared-utils/*": ["packages/shared-utils/*"],
       "@acme/shared-utils": ["packages/shared-utils"],
       "@acme/shared-utils/*": ["packages/shared-utils/*"],
 
@@ -88,8 +80,6 @@
       "@acme/plugin-sanity/*": ["packages/plugins/sanity/*"],
       "@acme/date-utils": ["packages/date-utils"],
       "@acme/date-utils/*": ["packages/date-utils/*"],
-      "@date-utils": ["packages/date-utils"],
-      "@date-utils/*": ["packages/date-utils/*"],
       "@acme/configurator": ["packages/configurator"],
       "@acme/configurator/*": ["packages/configurator/*"],
       "@acme/next-config": ["packages/next-config"],

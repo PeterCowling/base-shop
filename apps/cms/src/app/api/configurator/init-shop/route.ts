@@ -53,7 +53,9 @@ export async function POST(req: Request) {
       schema,
       "1mb",
     );
-    if (!parsed.success) return parsed.response;
+    if ("response" in parsed) {
+      return parsed.response;
+    }
 
     const { id, csv, categories } = parsed.data;
     const dir = path.join(resolveDataRoot(), id);

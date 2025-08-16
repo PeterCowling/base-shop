@@ -80,7 +80,7 @@ function ProductReferenceBlock(props: BlockRenderProps) {
     );
     PortableTextEditor.insertBlock(
       editor as unknown as PortableTextEditor,
-      "productReference",
+      { name: "productReference" },
       { slug: next },
     );
   };

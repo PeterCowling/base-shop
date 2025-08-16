@@ -22,7 +22,9 @@ export async function POST(
   }
   try {
     const parsed = await parseJsonBody(req, schema, "1mb");
-    if (!parsed.success) return parsed.response;
+    if ("response" in parsed) {
+      return parsed.response;
+    }
     const data = parsed.data;
     const { shopId } = await context.params;
     const dir = path.join(resolveDataRoot(), shopId);

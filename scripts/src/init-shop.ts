@@ -3,25 +3,17 @@
 // path because the `@acme/*` aliases are not available in this pared‑down
 // environment.  Importing from the compiled package entry point is not
 // necessary here since TypeScript will resolve the .ts file directly.
-import { execSync, spawnSync } from "node:child_process";
-import { readdirSync } from "node:fs";
 import {
   createShop,
   type CreateShopOptions,
 } from "../../packages/platform-core/src/createShop";
 
-// Define a minimal shop name validator locally instead of importing from
-// `@acme/lib`.  The original implementation trims the input and ensures
-// only alphanumeric, underscore, or hyphen characters are present.  A
-// descriptive error is thrown when the name is invalid.
-const SHOP_NAME_RE = /^[a-z0-9_-]+$/i;
-function validateShopName(shop: string): string {
-  const normalized = shop.trim();
-  if (!SHOP_NAME_RE.test(normalized)) {
-    throw new Error(`Invalid shop name: ${shop}`);
-  }
-  return normalized;
-}
+// Pull in the shop name validator from the platform core package.  We avoid
+// using @acme/* aliases because they are not available in this environment.
+import { validateShopName } from "../../packages/platform-core/src/shops";
+
+import { execSync, spawnSync } from "node:child_process";
+import { readdirSync } from "node:fs";
 // Pull in the environment validator from the platform core source directly.  A
 // relative import is used here because the `@acme/*` path aliases are not
 // available in this environment.  The imported function validates the
@@ -84,13 +76,17 @@ async function prompt(question: string, def = ""): Promise<string> {
 
 /**
  * Present a list of available providers to the user and return the selected providers.
+ * This helper is generic so the returned array preserves the literal types of the
+ * provided options.  For example, if `providers` is typed as `("stripe" | "paypal")[]`
+ * then the result will be inferred as the same union rather than `string[]`.
+ *
  * @param label Label describing the provider category.
  * @param providers Array of provider identifiers.
  */
-async function selectProviders(
+async function selectProviders<T extends string>(
   label: string,
-  providers: readonly string[]
-): Promise<string[]> {
+  providers: readonly T[]
+): Promise<T[]> {
   console.log(`Available ${label}:`);
   providers.forEach((p, i) => console.log(`  ${i + 1}) ${p}`));
   const ans = await prompt(
@@ -100,7 +96,7 @@ async function selectProviders(
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
-  const result = new Set<string>();
+  const result = new Set<T>();
   for (const sel of selections) {
     const idx = Number(sel) - 1;
     if (!Number.isNaN(idx) && providers[idx]) {
@@ -218,10 +214,24 @@ async function main(): Promise<void> {
     templates,
     Math.max(templates.indexOf("template-app"), 0)
   );
-  const paymentProviders = await listProviders("payment");
-  const payment = await selectProviders("payment providers", paymentProviders);
-  const shippingProviders = await listProviders("shipping");
-  const shipping = await selectProviders(
+  // Narrow the provider lists to the literal union types expected by the shop schema.  Casting here
+  // preserves the specific string literals (e.g. "stripe", "paypal") rather than widening them to
+  // plain strings.  This allows TypeScript to satisfy the CreateShopOptions constraints without
+  // type errors.
+  const paymentProviders = (await listProviders("payment")) as (
+    | "stripe"
+    | "paypal"
+  )[];
+  const payment = await selectProviders<"stripe" | "paypal">(
+    "payment providers",
+    paymentProviders
+  );
+  const shippingProviders = (await listProviders("shipping")) as (
+    | "dhl"
+    | "ups"
+    | "premier-shipping"
+  )[];
+  const shipping = await selectProviders<"dhl" | "ups" | "premier-shipping">(
     "shipping providers",
     shippingProviders
   );

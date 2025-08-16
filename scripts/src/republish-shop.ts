@@ -80,7 +80,7 @@ export function republishShop(id: string, root = process.cwd()): void {
   if (existsSync(upgradeChanges)) {
     unlinkSync(upgradeChanges);
   }
-  removeBakFiles(join(appDir, "src", "components"));
+  removeBakFiles(appDir);
 }
 
 function main(): void {

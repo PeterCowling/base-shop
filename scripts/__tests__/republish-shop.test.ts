@@ -34,14 +34,32 @@ describe("republish-shop", () => {
       (p: any) =>
         p === upgradeFile ||
         p === upgradeChanges ||
+        p === appDir ||
+        p === join(appDir, "src") ||
         p === componentsDir ||
-        p === join(componentsDir, "nested")
+        p === join(componentsDir, "nested") ||
+        p === shopJson
     );
     fsMock.readFileSync.mockImplementation((p: any) => {
       if (p === upgradeFile || p === shopJson) return "{}";
       return "";
     });
     fsMock.readdirSync.mockImplementation((p: any) => {
+      if (p === appDir) {
+        return [
+          {
+            name: "upgrade-changes.json",
+            isDirectory: () => false,
+            isFile: () => true,
+          },
+          { name: "src", isDirectory: () => true, isFile: () => false },
+        ];
+      }
+      if (p === join(appDir, "src")) {
+        return [
+          { name: "components", isDirectory: () => true, isFile: () => false },
+        ];
+      }
       if (p === componentsDir) {
         return [
           { name: "a.bak", isDirectory: () => false, isFile: () => true },
@@ -66,6 +84,40 @@ describe("republish-shop", () => {
     );
     expect(fsMock.unlinkSync).toHaveBeenCalledWith(
       join(componentsDir, "nested", "c.bak")
+    );
+  });
+
+  it("removes .bak files in arbitrary subdirectories", async () => {
+    const otherDir = join(appDir, "other");
+    fsMock.existsSync.mockImplementation(
+      (p: any) =>
+        p === upgradeFile ||
+        p === upgradeChanges ||
+        p === appDir ||
+        p === otherDir ||
+        p === shopJson
+    );
+    fsMock.readFileSync.mockImplementation((p: any) => {
+      if (p === upgradeFile || p === shopJson) return "{}";
+      return "";
+    });
+    fsMock.readdirSync.mockImplementation((p: any) => {
+      if (p === appDir) {
+        return [{ name: "other", isDirectory: () => true, isFile: () => false }];
+      }
+      if (p === otherDir) {
+        return [
+          { name: "file.bak", isDirectory: () => false, isFile: () => true },
+        ];
+      }
+      return [];
+    });
+
+    const { republishShop } = await import("../src/republish-shop");
+    republishShop(shopId, root);
+
+    expect(fsMock.unlinkSync).toHaveBeenCalledWith(
+      join(otherDir, "file.bak")
     );
   });
 

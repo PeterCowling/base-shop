@@ -144,7 +144,7 @@ const PageBuilder = memo(function PageBuilder({
     [],
   );
   const handleTourCallback = useCallback((data: CallBackProps) => {
-    if ([STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)) {
+    if (data.status === STATUS.FINISHED || data.status === STATUS.SKIPPED) {
       setRunTour(false);
       if (typeof window !== "undefined") {
         localStorage.setItem("page-builder-tour", "done");
@@ -320,14 +320,12 @@ const PageBuilder = memo(function PageBuilder({
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
-              size="sm"
               onClick={() => setRunTour(true)}
             >
               Tour
             </Button>
             <Button
               variant="outline"
-              size="sm"
               onClick={() => setShowPreview((p) => !p)}
             >
               {showPreview ? "Hide preview" : "Show preview"}

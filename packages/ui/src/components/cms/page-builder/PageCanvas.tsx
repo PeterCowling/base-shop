@@ -15,7 +15,7 @@ interface Props {
   components: PageComponent[];
   selectedId?: string | null;
   onSelectId?: (id: string | null) => void;
-  canvasRef?: React.RefObject<HTMLDivElement>;
+  canvasRef?: React.RefObject<HTMLDivElement | null>;
   dragOver?: boolean;
   setDragOver?: (v: boolean) => void;
   onFileDrop?: (e: DragEvent<HTMLDivElement>) => void;

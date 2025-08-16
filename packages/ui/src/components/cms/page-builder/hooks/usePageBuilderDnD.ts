@@ -33,7 +33,7 @@ interface Params {
   containerTypes: string[];
   selectId: (id: string) => void;
   gridSize?: number;
-  canvasRef?: React.RefObject<HTMLDivElement>;
+  canvasRef?: React.RefObject<HTMLDivElement | null>;
   setSnapPosition?: (x: number | null) => void;
 }
 

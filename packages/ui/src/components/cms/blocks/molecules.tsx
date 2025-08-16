@@ -112,6 +112,8 @@ export const moleculeRegistry = Object.fromEntries(
     k,
     { previewImage: defaultPreview, ...v },
   ]),
-) as typeof moleculeEntries satisfies Record<string, BlockRegistryEntry<any>>;
+) as unknown as {
+  [K in keyof typeof moleculeEntries]: BlockRegistryEntry<any>;
+};
 
 export type MoleculeBlockType = keyof typeof moleculeEntries;

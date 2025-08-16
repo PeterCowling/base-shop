@@ -30,7 +30,8 @@
     { "path": "../auth" },
     { "path": "../lib" },
     { "path": "../shared-utils" },
-    { "path": "../date-utils" }
+    { "path": "../date-utils" },
+    { "path": "../themes/base" }
   ],
 
   /* ---------- file globs ------------------------------------------ { "path": "../../apps/cms" } */

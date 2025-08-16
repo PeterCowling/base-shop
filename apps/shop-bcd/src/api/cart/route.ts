@@ -6,6 +6,7 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
+  type CartState,
 } from "@/lib/cartCookie";
 import { getProductById, PRODUCTS } from "@/lib/products";
 import type { NextRequest } from "next/server";
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Size required" }, { status: 400 });
   }
   const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookie);
+  const cart: CartState = JSON.parse(decodeCartCookie(cookie) ?? "{}");
   const id = size ? `${sku.id}:${size}` : sku.id;
   const line = cart[id];
   const newQty = (line?.qty ?? 0) + qty;
@@ -56,7 +57,10 @@ export async function POST(req: NextRequest) {
   cart[id] = { sku, size, qty: newQty };
 
   const res = NextResponse.json({ ok: true, cart });
-  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  res.headers.set(
+    "Set-Cookie",
+    asSetCookieHeader(encodeCartCookie(JSON.stringify(cart)))
+  );
   return res;
 }
 
@@ -71,7 +75,7 @@ export async function PATCH(req: NextRequest) {
 
   const { id, qty } = parsed.data;
   const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookie);
+  const cart: CartState = JSON.parse(decodeCartCookie(cookie) ?? "{}");
   const line = cart[id];
 
   if (!line) {
@@ -85,7 +89,10 @@ export async function PATCH(req: NextRequest) {
   }
 
   const res = NextResponse.json({ ok: true, cart });
-  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  res.headers.set(
+    "Set-Cookie",
+    asSetCookieHeader(encodeCartCookie(JSON.stringify(cart)))
+  );
   return res;
 }
 
@@ -101,7 +108,7 @@ export async function DELETE(req: NextRequest) {
 
   const { id } = parsed.data;
   const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookie);
+  const cart: CartState = JSON.parse(decodeCartCookie(cookie) ?? "{}");
 
   if (!cart[id]) {
     return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
@@ -110,12 +117,15 @@ export async function DELETE(req: NextRequest) {
   delete cart[id];
 
   const res = NextResponse.json({ ok: true, cart });
-  res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cart)));
+  res.headers.set(
+    "Set-Cookie",
+    asSetCookieHeader(encodeCartCookie(JSON.stringify(cart)))
+  );
   return res;
 }
 
 export async function GET(req: NextRequest) {
   const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(cookie);
+  const cart: CartState = JSON.parse(decodeCartCookie(cookie) ?? "{}");
   return NextResponse.json({ ok: true, cart });
 }

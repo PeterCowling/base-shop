@@ -2,7 +2,8 @@
 "use client";
 
 import type { TokenMap } from "@ui/hooks/useTokenEditor";
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement } from "react";
+import presetData from "./presets.json";
 
 interface PresetsProps {
   tokens: TokenMap;
@@ -16,29 +17,12 @@ interface PresetOption {
   tokens: TokenMap;
 }
 
+const presetList = presetData as unknown as PresetOption[];
+
 export default function Presets({
   tokens,
   onChange,
 }: PresetsProps): ReactElement {
-  const [presetList, setPresetList] = useState<PresetOption[] | null>(null);
-
-  useEffect(() => {
-    let active = true;
-    import("./presets.json")
-      .then((mod) => {
-        if (active) {
-          setPresetList(mod.default as PresetOption[]);
-        }
-      })
-      .catch(() => {
-        if (active) {
-          setPresetList([]);
-        }
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
 
   const applyPreset = (id: string) => {
     const preset = presetList?.find((p) => p.id === id);
@@ -51,14 +35,6 @@ export default function Presets({
     // Revert to defaults by clearing overrides
     onChange({});
   };
-
-  if (presetList === null) {
-    return (
-      <p className="text-sm text-muted" data-testid="presets-placeholder">
-        Loading presets...
-      </p>
-    );
-  }
 
   if (presetList.length === 0) {
     return (

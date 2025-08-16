@@ -20,6 +20,7 @@ import {
   useState,
   useMemo,
   ReactElement,
+  type JSX,
 } from "react";
 
 interface TokensProps {

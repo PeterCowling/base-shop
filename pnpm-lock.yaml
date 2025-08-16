@@ -694,6 +694,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../config
       '@acme/date-utils':
         specifier: workspace:*
         version: link:../date-utils

@@ -52,6 +52,7 @@ export default async function OrdersPage({
       let shippingSteps: OrderStep[] = [];
       let returnSteps: OrderStep[] = [];
       let status: string | null = null;
+      const returnStatus = o.returnStatus ?? null;
       if (trackingEnabled && trackingProviders.length > 0 && o.trackingNumber) {
         const provider = trackingProviders[0] as "ups" | "dhl";
         const ship = await getShippingTrackingStatus({
@@ -77,6 +78,9 @@ export default async function OrdersPage({
             className="mt-2"
           />
           {status && <p className="mt-2 text-sm">Status: {status}</p>}
+          {returnStatus && (
+            <p className="mt-2 text-sm">Return: {returnStatus}</p>
+          )}
           {returnsEnabled && !o.returnedAt && (
             <StartReturnButton sessionId={o.sessionId} />
           )}

@@ -44,6 +44,7 @@
     "requireStrongCustomerAuth": false,
     "strictReturnConditions": true,
     "trackingDashboard": true,
+    "returns": true,
     "premierDelivery": true
   },
   "editorialBlog": { "enabled": true }

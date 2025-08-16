@@ -38,11 +38,13 @@ model RentalOrder {
   flaggedForReview   Boolean? @default(false)
   trackingNumber     String?
   labelUrl           String?
+  returnStatus       String?
   returnDueDate      String?
   returnReceivedAt   String?
   lateFeeCharged     Int?
 
   @@unique([shop, sessionId])
+  @@unique([shop, trackingNumber])
   @@index([customerId])
 }
 

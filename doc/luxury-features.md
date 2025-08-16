@@ -14,6 +14,7 @@ and the shop operates normally without them. Enable features in a shop's
 | `fraudReviewThreshold` | Provide a number greater than `0` for `luxuryFeatures.fraudReviewThreshold`. | Used in the Stripe webhook to trigger manual review; ignored for non‑Stripe flows. |
 | `requireStrongCustomerAuth` | Set `luxuryFeatures.requireStrongCustomerAuth` to `true`. | Forces 3‑D Secure on qualifying Stripe checkouts. Irrelevant when using other payment providers. |
 | `strictReturnConditions` | Set `luxuryFeatures.strictReturnConditions` to `true`. | The return request API rejects worn or tagless items. Not needed for buy‑only shops. |
+| `returns` | Set `luxuryFeatures.returns` to `true` **and** enable the environment flag `LUXURY_FEATURES_RETURNS`. | Allows shoppers to request returns and generate carrier labels. |
 | `trackingDashboard` | Set `luxuryFeatures.trackingDashboard` to `true` **and** enable the environment flag `LUXURY_FEATURES_TRACKING_DASHBOARD`. | Provides shipment and return tracking dashboards. Disable for businesses without shipment tracking. |
 
 ## Compatibility

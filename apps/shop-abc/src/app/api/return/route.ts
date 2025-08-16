@@ -4,39 +4,20 @@ import "@acme/lib/initZod";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
-import { setReturnTracking } from "@platform-core/orders";
+import {
+  setReturnTracking,
+  setReturnStatus,
+} from "@platform-core/orders";
 import { getReturnLogistics } from "@platform-core/returnLogistics";
+import {
+  createUpsReturnLabel,
+  getUpsStatus,
+} from "@platform-core/shipping";
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";
 
 const ReturnSchema = z.object({ sessionId: z.string() }).strict();
-
-async function createUpsLabel(sessionId: string) {
-  const trackingNumber = `1Z${Math.random().toString().slice(2, 12)}`;
-  const labelUrl = `https://www.ups.com/track?loc=en_US&tracknum=${trackingNumber}`;
-  try {
-    await fetch(
-      `https://www.ups.com/track/api/Track/GetStatus?loc=en_US&tracknum=${trackingNumber}`,
-    );
-  } catch {
-    // ignore UPS API errors
-  }
-  await setReturnTracking(shop.id, sessionId, trackingNumber, labelUrl);
-  return { trackingNumber, labelUrl };
-}
-
-async function getUpsStatus(tracking: string) {
-  try {
-    const res = await fetch(
-      `https://www.ups.com/track/api/Track/GetStatus?loc=en_US&tracknum=${tracking}`,
-    );
-    const data = await res.json();
-    return data?.trackDetails?.[0]?.packageStatus?.statusType ?? null;
-  } catch {
-    return null;
-  }
-}
 
 export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
@@ -52,7 +33,8 @@ export async function POST(req: NextRequest) {
     svc.upsEnabled &&
     cfg.returnCarrier.includes("ups")
   ) {
-    const { trackingNumber, labelUrl } = await createUpsLabel(sessionId);
+    const { trackingNumber, labelUrl } = await createUpsReturnLabel(sessionId);
+    await setReturnTracking(shop.id, sessionId, trackingNumber, labelUrl);
     tracking = { number: trackingNumber, labelUrl };
   }
 
@@ -79,6 +61,9 @@ export async function GET(req: NextRequest) {
     cfg.returnCarrier.includes("ups")
   ) {
     const status = await getUpsStatus(tracking);
+    if (status) {
+      await setReturnStatus(shop.id, tracking, status);
+    }
     return NextResponse.json({ ok: true, status });
   }
   return NextResponse.json(

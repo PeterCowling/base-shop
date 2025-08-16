@@ -1,112 +1,78 @@
-// Jest globals are available automatically – no import needed
-import type Stripe from "stripe";
+// apps/shop-abc/__tests__/returnApi.test.ts
+import type { NextRequest } from "next/server";
 
-process.env.STRIPE_SECRET_KEY = "sk_test";
-process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
-
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
-
-afterEach(() => jest.resetModules());
+afterEach(() => {
+  jest.resetModules();
+  jest.clearAllMocks();
+});
 
 describe("/api/return", () => {
-  test("refunds deposit minus damage fee", async () => {
-    const retrieve = jest
-      .fn<Promise<Stripe.Checkout.Session>, [string, { expand: string[] }]>()
-      .mockResolvedValue({
-        metadata: { depositTotal: "50" },
-        payment_intent: { id: "pi_123" },
-      } as unknown as Stripe.Checkout.Session);
-    const refundCreate = jest.fn<
-      Promise<unknown>,
-      [Stripe.RefundCreateParams]
-    >();
+  test("creates label and stores tracking", async () => {
+    global.fetch = jest
+      .fn()
+      .mockResolvedValue({ ok: true, json: async () => ({}) } as any);
 
-    jest.doMock(
-      "@acme/stripe",
-      () => ({
-        __esModule: true,
-        stripe: {
-          checkout: { sessions: { retrieve } },
-          refunds: { create: refundCreate },
-        },
-      }),
-      { virtual: true }
-    );
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@platform-core/shipping", () => ({
       __esModule: true,
-      markReturned: jest
-        .fn<Promise<unknown>, [string, string, number?]>()
-        .mockResolvedValue({}),
-      markRefunded: jest.fn(),
-      addOrder: jest.fn(),
+      createUpsReturnLabel: jest
+        .fn()
+        .mockResolvedValue({ trackingNumber: "1ZTEST", labelUrl: "url" }),
+      getUpsStatus: jest.fn(),
     }));
-    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
-    const { POST } = await import("../src/app/api/return/route");
-    const res = await POST({
-      json: async () => ({ sessionId: "sess", damageFee: 20 }),
-    } as any);
-
-    expect(retrieve).toHaveBeenCalledWith("sess", {
-      expand: ["payment_intent"],
-    });
-    expect(refundCreate).toHaveBeenCalledWith({
-      payment_intent: "pi_123",
-      amount: 30 * 100,
-    });
-    expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ ok: true });
-  });
-
-  test("returns message when no deposit found", async () => {
-    const retrieve = jest
-      .fn<Promise<Stripe.Checkout.Session>, [string, { expand: string[] }]>()
-      .mockResolvedValue({
-        metadata: {},
-        payment_intent: null,
-      } as unknown as Stripe.Checkout.Session);
-    const refundCreate = jest.fn<
-      Promise<unknown>,
-      [Stripe.RefundCreateParams]
-    >();
-
-    jest.doMock(
-      "@acme/stripe",
-      () => ({
-        __esModule: true,
-        stripe: {
-          checkout: { sessions: { retrieve } },
-          refunds: { create: refundCreate },
-        },
+    jest.doMock("@platform-core/orders", () => ({
+      __esModule: true,
+      setReturnTracking: jest.fn(),
+      setReturnStatus: jest.fn(),
+    }));
+    jest.doMock("@platform-core/returnLogistics", () => ({
+      __esModule: true,
+      getReturnLogistics: jest.fn().mockResolvedValue({
+        labelService: "ups",
+        returnCarrier: ["ups"],
       }),
-      { virtual: true }
-    );
-    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
+    }));
+    jest.doMock("@shared-utils", () => ({
+      __esModule: true,
+      parseJsonBody: jest
+        .fn()
+        .mockResolvedValue({ success: true, data: { sessionId: "sess" } }),
+    }));
     const { POST } = await import("../src/app/api/return/route");
-    const res = await POST({
-      json: async () => ({ sessionId: "sess" }),
-    } as any);
+    const res = await POST({} as NextRequest);
+    const data = await res.json();
+    expect(data.ok).toBe(true);
+    expect(data.tracking.number).toBe("1ZTEST");
+  });
 
-    expect(refundCreate).not.toHaveBeenCalled();
+  test("returns status", async () => {
+    jest.doMock("@platform-core/shipping", () => ({
+      __esModule: true,
+      createUpsReturnLabel: jest.fn(),
+      getUpsStatus: jest.fn().mockResolvedValue("IN_TRANSIT"),
+    }));
+    jest.doMock("@platform-core/orders", () => ({
+      __esModule: true,
+      setReturnTracking: jest.fn(),
+      setReturnStatus: jest.fn(),
+    }));
+    jest.doMock("@platform-core/returnLogistics", () => ({
+      __esModule: true,
+      getReturnLogistics: jest.fn().mockResolvedValue({
+        labelService: "ups",
+        returnCarrier: ["ups"],
+      }),
+    }));
+    jest.doMock("@shared-utils", () => ({
+      __esModule: true,
+      parseJsonBody: jest.fn().mockResolvedValue({ success: true, data: {} }),
+    }));
+    const { GET } = await import("../src/app/api/return/route");
+    const req = {
+      nextUrl: new URL("http://test?tracking=1ZTEST"),
+    } as unknown as NextRequest;
+    const res = await GET(req);
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({
-      ok: false,
-      message: "No deposit found",
-    });
-  });
-
-  test("returns 400 for missing sessionId", async () => {
-    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
-    const { POST } = await import("../src/app/api/return/route");
-    const res = await POST({ json: async () => ({}) } as any);
-    expect(res.status).toBe(400);
-  });
-
-  test("returns 400 for invalid request body", async () => {
-    jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
-    const { POST } = await import("../src/app/api/return/route");
-    await expect(POST({ json: async () => null } as any)).rejects.toThrow();
+    const body = await res.json();
+    expect(body.status).toBe("IN_TRANSIT");
   });
 });

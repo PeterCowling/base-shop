@@ -8,13 +8,21 @@
   "type": "rental",
   "showCleaningTransparency": true,
   "shippingProviders": [
-    "dhl"
+    "dhl",
+    "premier-shipping"
   ],
   "taxProviders": [
     "taxjar"
   ],
   "coverageIncluded": true,
   "billingProvider": "stripe",
+  "premierDelivery": {
+    "regions": ["us-west"],
+    "windows": ["09-10", "10-11"],
+    "carriers": ["lux-express"],
+    "surcharge": 20,
+    "serviceLabel": "Premier Delivery"
+  },
   "priceOverrides": {},
   "localeOverrides": {},
   "rentalInventoryAllocation": true,
@@ -34,7 +42,8 @@
     "fraudReviewThreshold": 0,
     "requireStrongCustomerAuth": false,
     "strictReturnConditions": true,
-    "trackingDashboard": true
+    "trackingDashboard": true,
+    "premierDelivery": true
   },
   "rentalSubscriptions": [
     {

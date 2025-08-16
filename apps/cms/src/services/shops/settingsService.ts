@@ -142,6 +142,9 @@ export async function updatePremierDelivery(
     premierDelivery: {
       regions: data.regions,
       windows: data.windows,
+      carriers: data.carriers,
+      ...(data.surcharge !== undefined ? { surcharge: data.surcharge } : {}),
+      ...(data.serviceLabel ? { serviceLabel: data.serviceLabel } : {}),
     },
   };
   await persistSettings(shop, updated);

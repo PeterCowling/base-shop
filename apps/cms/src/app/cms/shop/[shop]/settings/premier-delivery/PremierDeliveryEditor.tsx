@@ -6,7 +6,13 @@ import { FormEvent, useState } from "react";
 
 interface Props {
   shop: string;
-  initial: { regions: string[]; windows: string[] };
+  initial: {
+    regions: string[];
+    windows: string[];
+    carriers: string[];
+    surcharge?: number;
+    serviceLabel?: string;
+  };
 }
 
 export default function PremierDeliveryEditor({ shop, initial }: Props) {
@@ -18,6 +24,13 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
   const [windows, setWindows] = useState<string[]>(
     initial.windows.length ? initial.windows : [""]
   );
+  const [carriers, setCarriers] = useState<string[]>(
+    initial.carriers.length ? initial.carriers : [""]
+  );
+  const [surcharge, setSurcharge] = useState(
+    initial.surcharge ? String(initial.surcharge) : ""
+  );
+  const [serviceLabel, setServiceLabel] = useState(initial.serviceLabel ?? "");
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,6 +68,16 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
   const addWindow = () => setWindows((prev) => [...prev, ""]);
   const removeWindow = (index: number) =>
     setWindows((prev) => prev.filter((_, i) => i !== index));
+  const updateCarrier = (index: number, value: string) => {
+    setCarriers((prev) => {
+      const next = [...prev];
+      next[index] = value;
+      return next;
+    });
+  };
+  const addCarrier = () => setCarriers((prev) => [...prev, ""]);
+  const removeCarrier = (index: number) =>
+    setCarriers((prev) => prev.filter((_, i) => i !== index));
 
   return (
     <form onSubmit={onSubmit} className="grid max-w-md gap-4">
@@ -108,6 +131,53 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
           <span className="text-sm text-red-600">{errors.windows.join("; ")}</span>
         )}
       </fieldset>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="font-medium">Carriers</legend>
+        {carriers.map((carrier, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <Input
+              name="carriers"
+              value={carrier}
+              onChange={(e) => updateCarrier(i, e.target.value)}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => removeCarrier(i)}
+            >
+              Remove
+            </Button>
+          </div>
+        ))}
+        <Button type="button" variant="ghost" onClick={addCarrier}>
+          Add carrier
+        </Button>
+        {errors.carriers && (
+          <span className="text-sm text-red-600">{errors.carriers.join("; ")}</span>
+        )}
+      </fieldset>
+      <label className="flex flex-col gap-2">
+        Surcharge
+        <Input
+          name="surcharge"
+          value={surcharge}
+          onChange={(e) => setSurcharge(e.target.value)}
+        />
+        {errors.surcharge && (
+          <span className="text-sm text-red-600">{errors.surcharge.join("; ")}</span>
+        )}
+      </label>
+      <label className="flex flex-col gap-2">
+        Service Label
+        <Input
+          name="serviceLabel"
+          value={serviceLabel}
+          onChange={(e) => setServiceLabel(e.target.value)}
+        />
+        {errors.serviceLabel && (
+          <span className="text-sm text-red-600">{errors.serviceLabel.join("; ")}</span>
+        )}
+      </label>
       <Button className="bg-primary text-white" disabled={saving} type="submit">
         {saving ? "Saving…" : "Save"}
       </Button>

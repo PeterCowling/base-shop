@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 import { initPlugins } from "@acme/platform-core/plugins";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -24,6 +25,7 @@ const pluginsReady = initPlugins({
 const schema = z
   .object({
     region: z.string(),
+    carrier: z.string(),
     date: z.string(),
     window: z.string(),
   })
@@ -40,9 +42,24 @@ export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody(req, schema, "1mb");
   if (!parsed.success) return parsed.response;
 
+  const settings = await getShopSettings(shop.id);
+  if (!settings.luxuryFeatures?.premierDelivery) {
+    return NextResponse.json(
+      { error: "Premier shipping not available" },
+      { status: 400 },
+    );
+  }
+
   const manager = await pluginsReady;
   const provider = manager.shipping.get("premier-shipping") as
-    | { schedulePickup: (region: string, date: string, hourWindow: string) => void }
+    | {
+        schedulePickup: (
+          region: string,
+          carrier: string,
+          date: string,
+          hourWindow: string,
+        ) => void;
+      }
     | undefined;
 
   if (!provider) {
@@ -53,8 +70,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { region, date, window } = parsed.data;
-    provider.schedulePickup(region, date, window);
+    const { region, carrier, date, window } = parsed.data;
+    provider.schedulePickup(region, carrier, date, window);
     return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json(

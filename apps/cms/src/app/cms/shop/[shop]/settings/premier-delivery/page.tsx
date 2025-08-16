@@ -18,7 +18,14 @@ export default async function PremierDeliverySettingsPage({
 }) {
   const { shop } = await params;
   const settings = await getSettings(shop);
-  const premierDelivery = settings.premierDelivery ?? { regions: [], windows: [] };
+  const premierDelivery =
+    settings.premierDelivery ?? {
+      regions: [],
+      windows: [],
+      carriers: [],
+      surcharge: 0,
+      serviceLabel: "",
+    };
 
   return (
     <div>

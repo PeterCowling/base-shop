@@ -38,6 +38,7 @@ describe("shop schema", () => {
       requireStrongCustomerAuth: false,
       strictReturnConditions: false,
       trackingDashboard: true,
+      premierDelivery: false,
     });
   });
 });

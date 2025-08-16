@@ -9,7 +9,14 @@ export interface ShippingRateRequest {
   weight: number;
   region?: string;
   window?: string;
-  premierDelivery?: { regions: string[]; windows: string[] };
+  carrier?: string;
+  premierDelivery?: {
+    regions: string[];
+    windows: string[];
+    carriers: string[];
+    surcharge?: number;
+    serviceLabel?: string;
+  };
 }
 
 /**
@@ -23,6 +30,7 @@ export async function getShippingRate({
   weight,
   region,
   window,
+  carrier,
   premierDelivery,
 }: ShippingRateRequest): Promise<unknown> {
   if (provider === "premier-shipping") {
@@ -32,18 +40,29 @@ export async function getShippingRate({
     if (!region || !premierDelivery.regions.includes(region)) {
       throw new Error("Region not eligible for premier delivery");
     }
+    if (!carrier || !premierDelivery.carriers.includes(carrier)) {
+      throw new Error("Carrier not eligible for premier delivery");
+    }
     if (!window || !premierDelivery.windows.includes(window)) {
       throw new Error("Invalid delivery window");
     }
-    return { rate: 0 };
+    const surcharge = premierDelivery.surcharge ?? 0;
+    return {
+      rate: surcharge,
+      surcharge,
+      serviceLabel: premierDelivery.serviceLabel ?? "Premier Delivery",
+    };
   }
 
-  if (region || window) {
+  if (region || window || carrier) {
     if (!premierDelivery) {
       throw new Error("Premier delivery not configured");
     }
     if (!region || !premierDelivery.regions.includes(region)) {
       throw new Error("Region not eligible for premier delivery");
+    }
+    if (!carrier || !premierDelivery.carriers.includes(carrier)) {
+      throw new Error("Carrier not eligible for premier delivery");
     }
     if (!window || !premierDelivery.windows.includes(window)) {
       throw new Error("Invalid delivery window");

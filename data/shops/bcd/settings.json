@@ -18,7 +18,10 @@
   "returnService": { "upsEnabled": false, "bagEnabled": false, "homePickupEnabled": false },
   "premierDelivery": {
     "regions": ["us-west"],
-    "windows": ["09-10", "10-11"]
+    "windows": ["09-10", "10-11"],
+    "carriers": ["lux-express"],
+    "surcharge": 20,
+    "serviceLabel": "Premier Delivery"
   },
   "seo": {
     "aiCatalog": {
@@ -33,7 +36,8 @@
     "fraudReviewThreshold": 0,
     "requireStrongCustomerAuth": false,
     "strictReturnConditions": true,
-    "trackingDashboard": true
+    "trackingDashboard": true,
+    "premierDelivery": true
   },
   "updatedAt": "",
   "updatedBy": ""

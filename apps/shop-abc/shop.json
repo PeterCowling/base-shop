@@ -13,7 +13,10 @@
   "coverageIncluded": true,
   "premierDelivery": {
     "regions": ["us-east"],
-    "windows": ["10-11", "11-12"]
+    "windows": ["10-11", "11-12"],
+    "carriers": ["lux-express"],
+    "surcharge": 20,
+    "serviceLabel": "Premier Delivery"
   },
   "priceOverrides": {},
   "localeOverrides": {},
@@ -40,7 +43,8 @@
     "fraudReviewThreshold": 0,
     "requireStrongCustomerAuth": false,
     "strictReturnConditions": true,
-    "trackingDashboard": true
+    "trackingDashboard": true,
+    "premierDelivery": true
   },
   "editorialBlog": { "enabled": true }
 }

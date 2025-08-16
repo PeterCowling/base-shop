@@ -41,13 +41,18 @@ export default async function CheckoutPage({
   );
 
   /* ---------- render ---------- */
+  const showPremier =
+    hasPremierShipping &&
+    premierDelivery &&
+    settings.luxuryFeatures?.premierDelivery;
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
       <OrderSummary />
-      {hasPremierShipping && premierDelivery && (
+      {showPremier && (
         <PremierDeliveryPicker
           windows={premierDelivery.windows}
           regions={premierDelivery.regions}
+          carriers={premierDelivery.carriers}
         />
       )}
       <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
@@ -58,21 +63,24 @@ export default async function CheckoutPage({
 function PremierDeliveryPicker({
   windows,
   regions,
+  carriers,
 }: {
   windows: string[];
   regions: string[];
+  carriers: string[];
 }) {
   "use client";
   return (
     <DeliveryScheduler
       windows={windows}
       regions={regions}
-      onChange={({ region, window, date }) => {
-        if (!region || !window || !date) return;
-        fetch("/api/delivery", {
+      carriers={carriers}
+      onChange={({ region, carrier, window }) => {
+        if (!region || !carrier || !window) return;
+        fetch("/api/delivery/schedule", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ region, date, window }),
+          body: JSON.stringify({ region, carrier, window }),
         }).catch(() => {});
       }}
     />

@@ -117,6 +117,16 @@ export const shopSchema = z
     coverageIncluded: z.boolean().default(true),
     showCleaningTransparency: z.boolean().optional(),
     rentalInventoryAllocation: z.boolean().optional(),
+    premierDelivery: z
+      .object({
+        regions: z.array(z.string()),
+        windows: z.array(z.string()),
+        carriers: z.array(z.string()),
+        surcharge: z.number().optional(),
+        serviceLabel: z.string().optional(),
+      })
+      .strict()
+      .optional(),
     luxuryFeatures: z
       .object({
         contentMerchandising: z.boolean().default(false),
@@ -125,6 +135,7 @@ export const shopSchema = z
         requireStrongCustomerAuth: z.boolean().default(false),
         strictReturnConditions: z.boolean().default(false),
         trackingDashboard: z.boolean().default(true),
+        premierDelivery: z.boolean().default(false),
       })
       .strict()
       .default({
@@ -134,6 +145,7 @@ export const shopSchema = z
         requireStrongCustomerAuth: false,
         strictReturnConditions: false,
         trackingDashboard: true,
+        premierDelivery: false,
       }),
     lastUpgrade: z.string().datetime().optional(),
     componentVersions: z.record(z.string()).default({}),

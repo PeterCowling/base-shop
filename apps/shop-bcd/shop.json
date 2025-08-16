@@ -5,13 +5,20 @@
   "themeId": "base",
   "themeOverrides": {},
   "filterMappings": {},
-  "shippingProviders": ["dhl"],
+  "shippingProviders": ["dhl", "premier-shipping"],
   "returnsEnabled": true,
   "returnPolicyUrl": "https://example.com/returns",
   "returnService": { "upsEnabled": true, "bagEnabled": false, "homePickupEnabled": false },
   "showCleaningTransparency": true,
   "coverageIncluded": true,
   "billingProvider": "stripe",
+  "premierDelivery": {
+    "regions": ["us-west"],
+    "windows": ["09-10", "10-11"],
+    "carriers": ["lux-express"],
+    "surcharge": 20,
+    "serviceLabel": "Premier Delivery"
+  },
   "priceOverrides": {},
   "localeOverrides": {},
   "rentalInventoryAllocation": false,
@@ -37,7 +44,8 @@
     "fraudReviewThreshold": 0,
     "requireStrongCustomerAuth": false,
     "strictReturnConditions": true,
-    "trackingDashboard": true
+    "trackingDashboard": true,
+    "premierDelivery": true
   },
   "editorialBlog": { "enabled": true }
 }

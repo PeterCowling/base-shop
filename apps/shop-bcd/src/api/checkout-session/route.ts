@@ -29,7 +29,15 @@ const schema = z
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart = decodeCartCookie(rawCookie) as CartState;
+  const cookieValue = decodeCartCookie(rawCookie);
+  let cart: CartState = {};
+  if (cookieValue) {
+    try {
+      cart = JSON.parse(cookieValue) as CartState;
+    } catch {
+      cart = {};
+    }
+  }
 
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });

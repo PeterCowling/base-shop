@@ -1,6 +1,7 @@
 import "@acme/lib/initZod";
 import { z } from "zod";
 import { handleStripeWebhook } from "@platform-core/stripe-webhook";
+import type Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
@@ -17,6 +18,7 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json({ errors: parsed.error.format() }, { status: 400 });
   }
-  await handleStripeWebhook("bcd", parsed.data);
+  const event = parsed.data as unknown as Stripe.Event;
+  await handleStripeWebhook("bcd", event);
   return NextResponse.json({ received: true });
 }

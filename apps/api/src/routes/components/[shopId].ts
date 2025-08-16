@@ -3,6 +3,8 @@
 
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
+import jwt from "jsonwebtoken";
+import { validateShopName } from "@acme/lib";
 
 interface ComponentChange {
   name: string;
@@ -105,7 +107,37 @@ export const onRequest = async ({
   params: Record<string, string>;
   request: Request;
 }) => {
-  const shopId = params.shopId;
+  let shopId: string;
+  try {
+    shopId = validateShopName(params.shopId);
+  } catch {
+    console.warn("invalid shop id", { id: params.shopId });
+    return new Response(JSON.stringify({ error: "Invalid shop id" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const authHeader = request.headers.get("authorization") || "";
+  if (!authHeader.startsWith("Bearer ")) {
+    console.warn("missing bearer token", { shopId });
+    return new Response(JSON.stringify({ error: "Forbidden" }), {
+      status: 403,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const token = authHeader.slice("Bearer ".length);
+  try {
+    jwt.verify(token, process.env.UPGRADE_PREVIEW_TOKEN_SECRET ?? "");
+  } catch {
+    console.warn("invalid token", { shopId });
+    return new Response(JSON.stringify({ error: "Forbidden" }), {
+      status: 403,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   const root = path.resolve(__dirname, "../../../../../..");
   const components = gatherChanges(shopId, root);
 

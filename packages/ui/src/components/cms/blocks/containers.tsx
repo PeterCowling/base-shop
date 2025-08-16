@@ -13,11 +13,17 @@ type ContainerRegistry = {
   [K in keyof typeof containerEntries]: BlockRegistryEntry<any>;
 };
 
-export const containerRegistry = Object.fromEntries(
-  Object.entries(containerEntries).map(([k, v]) => [
-    k,
-    { previewImage: defaultPreview, ...v },
-  ]),
-) as ContainerRegistry;
+export const containerRegistry: ContainerRegistry = Object.entries(
+  containerEntries,
+).reduce(
+  (acc, [k, v]) => {
+    acc[k as keyof typeof containerEntries] = {
+      previewImage: defaultPreview,
+      ...v,
+    };
+    return acc;
+  },
+  {} as ContainerRegistry,
+);
 
 export type ContainerBlockType = keyof typeof containerEntries;

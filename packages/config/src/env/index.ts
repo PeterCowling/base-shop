@@ -13,23 +13,31 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
   ? I
   : never;
 
-type MergedShape<T extends readonly z.ZodObject<any, any, any, any, any>[]> =
+type AnyZodObject = z.ZodObject<z.ZodRawShape, any, any, any, any>;
+
+type MergedShape<T extends readonly AnyZodObject[]> =
   UnionToIntersection<
     {
-      [K in keyof T]: T[K] extends z.ZodObject<infer S, any, any, any, any>
+      [K in keyof T]: T[K] extends z.ZodObject<
+        infer S extends z.ZodRawShape,
+        any,
+        any,
+        any,
+        any
+      >
         ? S
         : never;
     }[number]
-  >;
+  > &
+  z.ZodRawShape;
 
-export const mergeEnvSchemas = <
-  T extends readonly z.ZodObject<any, any, any, any, any>[]
->(
+export const mergeEnvSchemas = <T extends readonly AnyZodObject[]>(
   ...schemas: T
 ): z.ZodObject<MergedShape<T>> =>
-  schemas.reduce((acc, s) => acc.merge(s), z.object({})) as z.ZodObject<
-    MergedShape<T>
-  >;
+  schemas.reduce(
+    (acc, s) => acc.merge(s),
+    z.object({})
+  ) as z.ZodObject<MergedShape<T>>;
 
 const mergedEnvSchema = mergeEnvSchemas(
   coreEnvBaseSchema,

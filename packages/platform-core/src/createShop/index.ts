@@ -1,20 +1,20 @@
-// packages/platform-core/createShop.ts
+// packages/platform-core/src/createShop/index.ts
 import { readdirSync, existsSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
-import { prisma } from "./db";
-import { validateShopName } from "./shops";
+import { prisma } from "../db";
+import { validateShopName } from "../shops";
 import {
   prepareOptions,
   createShopOptionsSchema as baseCreateShopOptionsSchema,
   type CreateShopOptions,
   type PreparedCreateShopOptions,
-} from "./createShop/schema";
-import { loadTokens } from "./createShop/themeUtils";
-import type { DeployStatusBase, DeployShopResult } from "./createShop/deployTypes";
+} from "./schema";
+import { loadTokens } from "./themeUtils";
+import type { DeployStatusBase, DeployShopResult } from "./deployTypes";
 import {
   defaultDeploymentAdapter,
   type ShopDeploymentAdapter,
-} from "./createShop/deploymentAdapter";
+} from "./deploymentAdapter";
 /**
  * Create a new shop app and seed data.
  * Paths are resolved relative to the repository root.
@@ -154,17 +154,17 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
 export const createShopOptionsSchema = baseCreateShopOptionsSchema.strict();
 export { prepareOptions };
 export type { CreateShopOptions, PreparedCreateShopOptions };
-export type { DeployStatusBase, DeployShopResult } from "./createShop/deployTypes";
+export type { DeployStatusBase, DeployShopResult } from "./deployTypes";
 export {
   ensureTemplateExists,
   copyTemplate,
   readFile,
   writeFile,
-} from "./createShop/fsUtils";
-export { loadTokens, loadBaseTokens } from "./createShop/themeUtils";
+} from "./fsUtils";
+export { loadTokens, loadBaseTokens } from "./themeUtils";
 export { syncTheme };
 export {
   type ShopDeploymentAdapter,
   CloudflareDeploymentAdapter,
   defaultDeploymentAdapter,
-} from "./createShop/deploymentAdapter";
+} from "./deploymentAdapter";

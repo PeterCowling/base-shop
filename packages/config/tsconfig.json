@@ -23,6 +23,8 @@
     ".turbo", // turbo cache
     "node_modules" // package deps (if any local)
   ]
+,
 
-  /* no project-references needed; the file is self-contained */
+  /* build dependency graph ------------------------------------------ */
+  "references": [{ "path": "../lib" }]
 }

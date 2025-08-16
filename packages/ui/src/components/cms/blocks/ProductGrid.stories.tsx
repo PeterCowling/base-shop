@@ -4,7 +4,7 @@ import { PRODUCTS } from "@platform-core/src/products";
 
 const meta: Meta<typeof ProductGrid> = {
   component: ProductGrid,
-  args: { skus: PRODUCTS },
+  args: { skus: [...PRODUCTS] },
 };
 export default meta;
 

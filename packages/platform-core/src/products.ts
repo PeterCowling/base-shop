@@ -74,6 +74,7 @@ export type {
   ProductCore,
   ProductPublication,
   PublicationStatus,
+  SKU,
 } from "@acme/types";
 
 /* -------------------------------------------------------------------------- */

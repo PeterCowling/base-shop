@@ -19,7 +19,7 @@ export default function ProductFilter({
 
   const sizes = useMemo(() => {
     const s = new Set<string>();
-    filteredRows.forEach((p) => p.sizes?.forEach((sz) => s.add(sz)));
+    filteredRows.forEach((p) => p.sizes?.forEach((sz: string) => s.add(sz)));
     return Array.from(s).sort();
   }, [filteredRows]);
 

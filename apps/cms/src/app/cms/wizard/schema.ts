@@ -28,14 +28,7 @@ const localeRecordSchema = z.record(localeSchema, z.string());
 /*  Nav‑item schema (recursive)                                               */
 /* -------------------------------------------------------------------------- */
 
-export interface NavItem {
-  id: string;
-  label: string;
-  url: string;
-  children?: NavItem[];
-}
-
-export const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
+export const navItemSchema = z.lazy(() =>
   z
     .object({
       id: z.string(),
@@ -45,6 +38,8 @@ export const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
     })
     .strict()
 );
+
+export type NavItem = z.infer<typeof navItemSchema>;
 
 /* -------------------------------------------------------------------------- */
 /*  Page‑info schema                                                          */

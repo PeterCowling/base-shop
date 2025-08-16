@@ -6,7 +6,7 @@ export interface Guides {
 }
 
 export default function useGuides(
-  containerRef: React.RefObject<HTMLElement>
+  containerRef: React.RefObject<HTMLElement | null>
 ) {
   const siblingEdgesRef = useRef<{ vertical: number[]; horizontal: number[] }>(
     { vertical: [], horizontal: [] }

@@ -88,7 +88,7 @@ const PageToolbar = ({
         <Button
           variant="outline"
           onClick={() =>
-            setOrientation((o) => (o === "portrait" ? "landscape" : "portrait"))
+            setOrientation(orientation === "portrait" ? "landscape" : "portrait")
           }
           aria-label="Rotate"
         >

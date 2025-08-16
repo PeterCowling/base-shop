@@ -4,10 +4,11 @@ import { ulid } from "ulid";
 import type { PageComponent, MediaItem } from "@acme/types";
 import useFileUpload from "@ui/hooks/useFileUpload";
 import { defaults } from "../defaults";
+import type { Action } from "../state/actions";
 
 interface Options {
   shop: string;
-  dispatch: (action: { type: string; component: PageComponent }) => void;
+  dispatch: (action: Action) => void;
 }
 
 const useFileDrop = ({ shop, dispatch }: Options) => {

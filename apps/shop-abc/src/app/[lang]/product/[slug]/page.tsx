@@ -95,7 +95,7 @@ export default async function ProductDetailPage({
   const components = await loadComponents(params.slug);
   await trackPageView(shop.id, `product/${params.slug}`);
   let latestPost: BlogPost | undefined;
-  if (shop.luxuryFeatures.contentMerchandising) {
+  if (shop.luxuryFeatures.contentMerchandising && shop.luxuryFeatures.blog) {
     try {
       const posts = await fetchPublishedPosts(shop.id);
       const first = posts[0];

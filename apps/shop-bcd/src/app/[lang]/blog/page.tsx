@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import shop from "../../../../shop.json";
 
 export default async function BlogPage({ params }: { params: { lang: string } }) {
-  if (!shop.editorialBlog?.enabled) {
+  if (!shop.luxuryFeatures.blog) {
     notFound();
   }
   const posts = await fetchPublishedPosts(shop.id);

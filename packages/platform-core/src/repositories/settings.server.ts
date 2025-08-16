@@ -118,6 +118,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     premierDelivery: undefined,
     stockAlert: { recipients: [] },
     luxuryFeatures: {
+      blog: false,
       contentMerchandising: false,
       raTicketing: false,
       fraudReviewThreshold: 0,

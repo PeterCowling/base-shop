@@ -28,6 +28,7 @@
     }
   },
   "luxuryFeatures": {
+    "blog": true,
     "contentMerchandising": false,
     "raTicketing": false,
     "fraudReviewThreshold": 0,

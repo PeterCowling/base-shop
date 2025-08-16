@@ -9,7 +9,8 @@ and the shop operates normally without them. Enable features in a shop's
 
 | Feature | How to Enable | Notes |
 | ------- | ------------- | ----- |
-| `contentMerchandising` | Set `luxuryFeatures.contentMerchandising` to `true` in shop settings. | Requires the Editorial Blog to be enabled. Has no effect for shops that do not publish content. |
+| `blog` | Set `luxuryFeatures.blog` to `true` in shop settings. | Enables the editorial blog and related CMS endpoints. |
+| `contentMerchandising` | Set `luxuryFeatures.contentMerchandising` to `true` in shop settings. | Requires the blog to be enabled. Has no effect for shops that do not publish content. |
 | `raTicketing` | Set `luxuryFeatures.raTicketing` to `true` **and** enable the `raTicketing` flag in `@platform-core/features` (env `LUXURY_FEATURES_RA_TICKETING`). | Adds Return Authorization dashboard in the CMS. Shops that do not process returns should keep this disabled. |
 | `fraudReviewThreshold` | Provide a number greater than `0` for `luxuryFeatures.fraudReviewThreshold`. | Used in the Stripe webhook to trigger manual review; ignored for non‑Stripe flows. |
 | `requireStrongCustomerAuth` | Set `luxuryFeatures.requireStrongCustomerAuth` to `true`. | Forces 3‑D Secure on qualifying Stripe checkouts. Irrelevant when using other payment providers. |

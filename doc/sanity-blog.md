@@ -15,7 +15,7 @@ When setting up the connection the CMS seeds a minimal schema. Posts include a `
 
 ## Enable or disable editorial content
 
-The blog can be toggled in **Settings → Shop** using the **Enable blog** checkbox. This sets the `editorialBlog.enabled` flag in the shop settings. When disabled the storefront hides blog routes and the daily publication job skips the shop.
+The blog can be toggled in **Settings → Shop** using the **Enable blog** checkbox. This sets the `luxuryFeatures.blog` flag in the shop settings. When disabled the storefront hides blog routes and the daily publication job skips the shop.
 
 To automatically surface the "Daily Edit" on the storefront home page, provide a `promoteSchedule` ISO timestamp. When set the CMS schedules a front‑page promotion at the chosen time.
 

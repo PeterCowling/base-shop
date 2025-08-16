@@ -51,7 +51,7 @@ export const shopSchema = z
           .map((v) => v.trim())
           .filter(Boolean)
       ),
-    enableEditorial: z
+    blog: z
       .preprocess((v) => v === "on", z.boolean())
       .optional()
       .default(false),
@@ -90,6 +90,7 @@ export const shopSchema = z
   .strict()
   .transform(
     ({
+      blog,
       contentMerchandising,
       raTicketing,
       fraudReviewThreshold,
@@ -100,6 +101,7 @@ export const shopSchema = z
     }) => ({
       ...rest,
       luxuryFeatures: {
+        blog,
         contentMerchandising,
         raTicketing,
         fraudReviewThreshold,

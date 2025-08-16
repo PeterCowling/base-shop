@@ -18,8 +18,8 @@ const schema = z
   .strict();
 
 export async function POST(req: NextRequest) {
-  const parsed = await parseJsonBody(req, schema, "1mb");
-  if (!parsed.success) {
+  const parsed = await parseJsonBody<z.infer<typeof schema>>(req, schema, "1mb");
+  if (parsed.success === false) {
     return parsed.response;
   }
 

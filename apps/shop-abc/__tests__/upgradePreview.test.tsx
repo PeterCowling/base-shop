@@ -25,6 +25,8 @@ describe("upgrade preview page", () => {
           {
             file: "molecules/Breadcrumbs.tsx",
             componentName: "Breadcrumbs",
+            oldChecksum: "old1",
+            newChecksum: "new1",
           },
         ],
       }),

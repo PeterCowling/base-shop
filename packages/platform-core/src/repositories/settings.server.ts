@@ -122,6 +122,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
       raTicketing: false,
       fraudReviewThreshold: 0,
       requireStrongCustomerAuth: false,
+      returns: false,
       strictReturnConditions: false,
     },
     updatedAt: "",

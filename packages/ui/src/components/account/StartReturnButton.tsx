@@ -18,7 +18,9 @@ export default function StartReturnButton({ sessionId }: Props) {
     let timer: ReturnType<typeof setInterval>;
     const fetchStatus = async () => {
       try {
-        const res = await fetch(`/api/return?tracking=${tracking}`);
+        const res = await fetch(
+          `/api/return?tracking=${tracking}&sessionId=${sessionId}`,
+        );
         const data = await res.json();
         if (data.status) {
           setStatus(data.status);

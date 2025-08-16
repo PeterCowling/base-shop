@@ -94,6 +94,7 @@ export const shopSettingsSchema = z
         raTicketing: z.boolean().default(false),
         fraudReviewThreshold: z.number().nonnegative().default(0),
         requireStrongCustomerAuth: z.boolean().default(false),
+        returns: z.boolean().default(false),
         strictReturnConditions: z.boolean().default(false),
       })
       .strict()
@@ -102,6 +103,7 @@ export const shopSettingsSchema = z
         raTicketing: false,
         fraudReviewThreshold: 0,
         requireStrongCustomerAuth: false,
+        returns: false,
         strictReturnConditions: false,
       }),
     /** Feature flag to enable or disable all tracking */

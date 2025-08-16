@@ -83,6 +83,7 @@ export async function readShop(shop: string): Promise<Shop> {
       raTicketing: false,
       fraudReviewThreshold: 0,
       requireStrongCustomerAuth: false,
+      returns: false,
       strictReturnConditions: false,
     },
   };

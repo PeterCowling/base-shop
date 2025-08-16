@@ -57,6 +57,7 @@ describe("zod schemas", () => {
       raTicketing: false,
       fraudReviewThreshold: 0,
       requireStrongCustomerAuth: false,
+      returns: false,
       strictReturnConditions: false,
     });
   });
@@ -106,6 +107,7 @@ describe("zod schemas", () => {
       raTicketing: true,
       fraudReviewThreshold: 150,
       requireStrongCustomerAuth: true,
+      returns: false,
       strictReturnConditions: false,
     });
   });

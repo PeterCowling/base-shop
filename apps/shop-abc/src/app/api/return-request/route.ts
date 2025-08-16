@@ -28,6 +28,12 @@ export async function POST(req: Request) {
 
   const cfg = await getReturnLogistics();
   const settings = await getShopSettings(shop.id);
+  if (!settings.luxuryFeatures.returns) {
+    return NextResponse.json(
+      { ok: false, error: "returns disabled" },
+      { status: 403 },
+    );
+  }
   if (
     settings.luxuryFeatures.strictReturnConditions &&
     ((cfg.requireTags && !hasTags) || (!cfg.allowWear && isWorn))

@@ -123,6 +123,7 @@ export const shopSchema = z
         raTicketing: z.boolean().default(false),
         fraudReviewThreshold: z.number().nonnegative().default(0),
         requireStrongCustomerAuth: z.boolean().default(false),
+        returns: z.boolean().default(false),
         strictReturnConditions: z.boolean().default(false),
       })
       .strict()
@@ -131,6 +132,7 @@ export const shopSchema = z
         raTicketing: false,
         fraudReviewThreshold: 0,
         requireStrongCustomerAuth: false,
+        returns: false,
         strictReturnConditions: false,
       }),
     lastUpgrade: z.string().datetime().optional(),

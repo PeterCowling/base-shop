@@ -65,6 +65,22 @@ export default function GeneralSettings({
         <div className="mt-2 grid gap-2">
           <label className="flex items-center gap-2">
             <Checkbox
+              name="returns"
+              checked={info.luxuryFeatures.returns ?? false}
+              onCheckedChange={(v) =>
+                setInfo((prev) => ({
+                  ...prev,
+                  luxuryFeatures: {
+                    ...prev.luxuryFeatures,
+                    returns: Boolean(v),
+                  },
+                }))
+              }
+            />
+            <span>Returns</span>
+          </label>
+          <label className="flex items-center gap-2">
+            <Checkbox
               name="contentMerchandising"
               checked={info.luxuryFeatures.contentMerchandising ?? false}
               onCheckedChange={(v) =>

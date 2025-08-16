@@ -43,7 +43,9 @@ export default async function Page({
         {steps && steps.length > 0 && (
           <OrderTrackingTimeline steps={steps} className="mt-2" />
         )}
-        {cfg.mobileApp && <MobileReturnLink />}
+        {cfg.mobileApp && shop.returnsEnabled && shop.luxuryFeatures.returns && (
+          <MobileReturnLink />
+        )}
       </div>
     );
   } catch (err) {

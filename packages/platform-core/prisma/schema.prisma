@@ -38,6 +38,7 @@ model RentalOrder {
   flaggedForReview   Boolean? @default(false)
   trackingNumber     String?
   labelUrl           String?
+  returnStatus       String?
   returnDueDate      String?
   returnReceivedAt   String?
   lateFeeCharged     Int?

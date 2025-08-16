@@ -7,4 +7,5 @@ export const luxuryFeatures = {
   ),
   requireStrongCustomerAuth:
     coreEnv.LUXURY_FEATURES_REQUIRE_STRONG_CUSTOMER_AUTH ?? false,
+  returns: coreEnv.LUXURY_FEATURES_RETURNS ?? false,
 };

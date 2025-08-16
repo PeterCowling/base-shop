@@ -39,6 +39,7 @@
     "raTicketing": false,
     "fraudReviewThreshold": 0,
     "requireStrongCustomerAuth": false,
+    "returns": true,
     "strictReturnConditions": true
   },
   "editorialBlog": { "enabled": true }

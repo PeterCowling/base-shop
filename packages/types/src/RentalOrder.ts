@@ -21,6 +21,8 @@ export const rentalOrderSchema = z
     flaggedForReview: z.boolean().optional(),
     trackingNumber: z.string().optional(),
     labelUrl: z.string().url().optional(),
+    /** Latest status from the return carrier */
+    returnStatus: z.string().optional(),
     status: z
       .enum(["received", "cleaning", "repair", "qa", "available"])
       .optional(),

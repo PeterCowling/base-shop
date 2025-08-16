@@ -3,10 +3,10 @@ import { readShop } from "@platform-core/repositories/json.server";
 import {
   CART_COOKIE,
   decodeCartCookie,
+  type CartState,
 } from "@platform-core/src/cartCookie";
-import { getCart } from "@platform-core/src/cartStore";
+import { createCartStore } from "@platform-core/src/cartStore";
 import { cookies } from "next/headers";
-import { coreEnv } from "@acme/config/env/core";
 import HeaderClient from "./HeaderClient.client";
 
 /**
@@ -24,9 +24,10 @@ export default async function Header({
 }) {
   const cookieStore = await cookies();
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
-  const cart = cartId ? await getCart(cartId) : {};
+  const cartStore = createCartStore();
+  const cart: CartState = cartId ? await cartStore.getCart(cartId) : {};
   const initialQty = Object.values(cart).reduce((s, line) => s + line.qty, 0);
-  const shopId = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
+  const shopId = process.env.NEXT_PUBLIC_SHOP_ID || "default";
   const shop = await readShop(shopId);
   const nav = shop.navigation ?? [];
 

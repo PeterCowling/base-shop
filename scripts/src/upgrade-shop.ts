@@ -10,10 +10,13 @@ import {
 } from "node:fs";
 import * as path from "node:path";
 import { randomBytes, createHash } from "node:crypto";
-import { nowIso } from "@date-utils";
 import { getComponentNameMap } from "./component-names";
 import { generateExampleProps } from "./generate-example-props";
 import type { Page, ShopMetadata } from "@acme/types";
+
+function nowIso(): string {
+  return new Date().toISOString();
+}
 
 const args = process.argv.slice(2);
 const rollback = args.includes("--rollback");
@@ -68,28 +71,34 @@ if (existsSync(shopJsonPath)) {
 // generate upgrade-changes.json with metadata for changed components only
 const componentsDir = path.join(rootDir, "packages", "ui", "src", "components");
 const componentMap = getComponentNameMap(componentsDir);
-const changedComponents = Object.entries(componentMap).flatMap(
-  ([file, componentName]) => {
-    const destPath = path.join(appDir, "src", "components", file);
-    const bakPath = destPath + ".bak";
-    if (!existsSync(destPath)) return [];
-    const newHash = createHash("sha256")
-      .update(readFileSync(destPath))
+
+interface ChangedComponent {
+  file: string;
+  componentName: string;
+  oldChecksum: string | null;
+  newChecksum: string;
+}
+
+const changedComponents: ChangedComponent[] = Object.entries(
+  componentMap
+).flatMap(([file, componentName]) => {
+  const destPath = path.join(appDir, "src", "components", file);
+  const bakPath = destPath + ".bak";
+  if (!existsSync(destPath)) return [];
+  const newHash = createHash("sha256")
+    .update(readFileSync(destPath))
+    .digest("hex");
+  if (existsSync(bakPath)) {
+    const oldHash = createHash("sha256")
+      .update(readFileSync(bakPath))
       .digest("hex");
-    if (existsSync(bakPath)) {
-      const oldHash = createHash("sha256")
-        .update(readFileSync(bakPath))
-        .digest("hex");
-      if (newHash === oldHash) return [];
-      return [
-        { file, componentName, oldChecksum: oldHash, newChecksum: newHash },
-      ];
-    }
+    if (newHash === oldHash) return [];
     return [
-      { file, componentName, oldChecksum: null, newChecksum: newHash },
+      { file, componentName, oldChecksum: oldHash, newChecksum: newHash },
     ];
   }
-);
+  return [{ file, componentName, oldChecksum: null, newChecksum: newHash }];
+});
 // determine pages that reference updated components
 const pagesJsonPath = path.join(rootDir, "data", "shops", shopId, "pages.json");
 const pageIds = new Set<string>();
@@ -100,7 +109,7 @@ if (existsSync(pagesJsonPath)) {
     const changedTypes = new Set(changedComponents.map((c) => c.componentName));
     for (const page of pages) {
       if (!Array.isArray(page.components)) continue;
-      const hasMatch = page.components.some((comp) =>
+      const hasMatch = page.components.some((comp: { type: string }) =>
         changedTypes.has(comp.type)
       );
       if (hasMatch) {

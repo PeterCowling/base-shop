@@ -53,5 +53,29 @@ describe("renderTemplate", () => {
     expect(html).toContain("<p>Test</p>");
     expect(html).toContain("%%UNSUBSCRIBE%%");
   });
+
+  it("sanitizes body HTML", async () => {
+    jest.doMock(
+      "@acme/ui",
+      () => ({
+        __esModule: true,
+        marketingEmailTemplates: [
+          {
+            id: "basic",
+            render: ({ content }: any) => React.createElement("div", null, content),
+          },
+        ],
+      }),
+      { virtual: true },
+    );
+
+    const { renderTemplate } = await import("../templates");
+    const html = renderTemplate("basic", {
+      body: '<img src="x" onerror="alert(1)"><script>alert(1)</script>',
+    });
+    expect(html).toContain('<img src="x"');
+    expect(html).not.toContain("onerror");
+    expect(html).not.toContain("<script>");
+  });
 });
 

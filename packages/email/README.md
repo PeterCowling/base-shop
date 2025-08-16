@@ -52,3 +52,11 @@ await provider.ready; // throws if credentials are rejected
 If the credentials are invalid, the promise rejects with a descriptive error
 containing the HTTP status code.  Consumers that do not wish to perform this
 startup validation can omit the option.
+
+## Template sanitization
+
+HTML passed via template parameters such as `body` or `content` is sanitized
+with [DOMPurify](https://github.com/cure53/DOMPurify) before being inserted into
+email markup. This protects against email-borne cross-site scripting (XSS)
+attacks. Avoid injecting unsanitized user content into templates and sanitize
+any custom parameters before rendering.

@@ -3,7 +3,7 @@
 import { Button, Input } from "@/components/atoms/shadcn";
 import type { DeployStatusBase } from "@platform-core/createShop";
 import { useEffect } from "react";
-import { getDeployStatus, type DeployInfo } from "../services/deployShop";
+import { getDeployStatus, type DeployInfo } from "../../wizard/services/deployShop";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 

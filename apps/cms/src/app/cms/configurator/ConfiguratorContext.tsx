@@ -19,7 +19,9 @@ export interface ConfiguratorContextValue {
   markStepComplete: (stepId: string, status: StepStatus) => void;
   themeDefaults: Record<string, string>;
   themeOverrides: Record<string, string>;
-  setThemeOverrides: (v: Record<string, string>) => void;
+  setThemeOverrides: React.Dispatch<
+    React.SetStateAction<Record<string, string>>
+  >;
   dirty: boolean;
   resetDirty: () => void;
   saving: boolean;
@@ -41,7 +43,7 @@ export function ConfiguratorProvider({
   // Persist state to localStorage
   const [markStepComplete, saving] = useConfiguratorPersistence(
     state,
-    (s) => setState(() => s),
+    setState,
     undefined,
     resetDirty
   );
@@ -54,8 +56,14 @@ export function ConfiguratorProvider({
     setDirty(true);
   };
 
-  const setThemeOverrides = (v: Record<string, string>) => {
-    setState((prev) => ({ ...prev, themeOverrides: v }));
+  const setThemeOverrides = (
+    v: React.SetStateAction<Record<string, string>>
+  ) => {
+    setState((prev) => ({
+      ...prev,
+      themeOverrides:
+        typeof v === "function" ? v(prev.themeOverrides) : v,
+    }));
     setDirty(true);
   };
 

@@ -31,6 +31,8 @@
     /* ───────── monorepo path aliases ───────── */
     "paths": {
       /* ─── platform-core ─────────────────────────────────────────── */
+      "@platform-core": ["packages/platform-core/src/index.ts"],
+      "@platform-core/*": ["packages/platform-core/src/*"],
       "@platform-core/src": ["packages/platform-core/src/index.ts"],
       "@platform-core/src/*": ["packages/platform-core/src/*"],
       "@acme/platform-core": ["packages/platform-core/src/index.ts"],

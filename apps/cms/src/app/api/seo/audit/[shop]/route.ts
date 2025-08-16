@@ -7,6 +7,11 @@ import {
   type SeoAuditEntry,
 } from "@platform-core/repositories/seoAudit.server";
 import { nowIso } from "@date-utils";
+import validator from "validator";
+
+const TRUSTED_HOSTS = (process.env.LIGHTHOUSE_TRUSTED_HOSTS || "localhost").split(
+  /[,\s]+/,
+);
 
 async function runLighthouse(url: string): Promise<SeoAuditEntry> {
   const result = await lighthouse(
@@ -43,9 +48,18 @@ export async function POST(
 ) {
   const { shop } = await context.params;
   const safeShop = validateShopName(shop);
-  const body = await req.json().catch(() => ({} as { url?: string }));
+  const body = (await req.json().catch(() => ({}))) as { url?: string };
   const url = body.url || `http://localhost:3000/${safeShop}`;
+  if (!validator.isURL(url, { require_tld: false })) {
+    return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
+  }
+  const hostname = new URL(url).hostname;
+  if (!TRUSTED_HOSTS.includes(hostname)) {
+    return NextResponse.json({ error: "Host not allowed" }, { status: 400 });
+  }
   const record = await runLighthouse(url);
   await appendSeoAudit(safeShop, record);
   return NextResponse.json(record);
 }
+
+// For additional protection, consider running Lighthouse in a sandbox or via a safelist proxy.

@@ -42,3 +42,7 @@ pnpm run seo:audit http://localhost:3000
 
 The optional first argument is the URL to audit (defaults to `http://localhost:3000`).
 An HTML report is written to `seo-report.html` in the current working directory.
+
+The CMS API validates audit URLs and only accepts hosts on an allow‑list to avoid
+server‑side request forgery. For additional protection, consider running
+Lighthouse in a sandbox or routing requests through a safelist proxy.

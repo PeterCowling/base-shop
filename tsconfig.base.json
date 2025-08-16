@@ -78,7 +78,9 @@
       "@acme/lib/*": ["packages/lib/src/*"],
 
       /* ─── i18n ──────────────────────────────────────────────────── */
+      "@i18n": ["packages/i18n/src/index.ts"],
       "@i18n/*": ["packages/i18n/src/*"],
+      "@/i18n": ["packages/i18n/src/index.ts"],
       "@/i18n/*": ["packages/i18n/src/*"],
 
       /* ─── auth ──────────────────────────────────────────────────── */
@@ -98,12 +100,17 @@
 
       /* ─── dedicated utility packages ───────────────────────────── */
       "@acme/email": ["packages/email"],
+      "@acme/email/*": ["packages/email/*"],
       "@acme/stripe": ["packages/stripe/src/index.ts"],
+      "@acme/stripe/*": ["packages/stripe/src/*"],
       "@acme/sanity": ["packages/sanity/src/index.ts"],
+      "@acme/sanity/*": ["packages/sanity/src/*"],
       "@acme/plugin-sanity": ["packages/plugins/sanity/index.ts"],
       "@acme/plugin-sanity/*": ["packages/plugins/sanity/*"],
       "@acme/date-utils": ["packages/date-utils/src/index.ts"],
+      "@acme/date-utils/*": ["packages/date-utils/src/*"],
       "@date-utils": ["packages/date-utils/src/index.ts"],
+      "@date-utils/*": ["packages/date-utils/src/*"],
       "@acme/configurator": ["packages/configurator/src/index.ts"],
       "@acme/configurator/*": ["packages/configurator/src/*"],
       "@acme/shared-utils": ["packages/shared-utils/src/index.ts"],
@@ -116,7 +123,8 @@
       "@acme/types/root/*": ["src/types/*"],
 
       /* ─── Tailwind preset ───────────────────────────────────────── */
-      "@acme/tailwind-config": ["packages/tailwind-config/src/index.ts"]
+      "@acme/tailwind-config": ["packages/tailwind-config/src/index.ts"],
+      "@acme/tailwind-config/*": ["packages/tailwind-config/src/*"]
     }
   },
 

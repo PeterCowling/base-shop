@@ -35,6 +35,8 @@
       "@platform-core/*": ["packages/platform-core/src/*"],
       "@platform-core/src": ["packages/platform-core/src/index.ts"],
       "@platform-core/src/*": ["packages/platform-core/src/*"],
+      "@acme/platform-core": ["packages/platform-core/src/index.ts"],
+      "@acme/platform-core/*": ["packages/platform-core/src/*"],
 
       /* ─── platform-machine ──────────────────────────────────────── */
       "@acme/platform-machine": ["packages/platform-machine/src/index.ts"],
@@ -45,6 +47,8 @@
       "@ui/*": ["packages/ui/src/*"],
       "@ui/src": ["packages/ui/src/index.ts"],
       "@ui/src/*": ["packages/ui/src/*"],
+      "@acme/ui": ["packages/ui/src/index.ts"],
+      "@acme/ui/*": ["packages/ui/src/*"],
 
       /* ─── CMS front-end (Next app) ─────────────────────────────── */
       "@cms/*": ["apps/cms/src/*"],

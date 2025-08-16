@@ -64,7 +64,10 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
         <Input
           value={form.labelService}
           onChange={(e) =>
-            setForm((f) => ({ ...f, labelService: e.target.value }))
+            setForm((f) => ({
+              ...f,
+              labelService: e.target.value as FormState["labelService"],
+            }))
           }
         />
       </label>
@@ -94,7 +97,10 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
         <Input
           value={form.bagType}
           onChange={(e) =>
-            setForm((f) => ({ ...f, bagType: e.target.value }))
+            setForm((f) => ({
+              ...f,
+              bagType: e.target.value as FormState["bagType"],
+            }))
           }
         />
       </label>

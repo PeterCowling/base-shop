@@ -33,7 +33,9 @@ interface Props {
   /** Called with normalized layout name and components when confirmed */
   onConfirm: (layout: string, components: PageComponent[]) => void;
   /** Optional props for the SelectTrigger */
-  triggerProps?: React.ComponentProps<typeof SelectTrigger>;
+  triggerProps?: React.ComponentProps<typeof SelectTrigger> & {
+    [key: `data-${string}`]: unknown;
+  };
 }
 
 /**

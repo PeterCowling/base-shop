@@ -1,6 +1,6 @@
 {
   "extends": "@acme/config/tsconfig.app.json",
-  "include": ["src/**/*", ".next/types/**/*.ts"],
+  "include": ["src/**/*", ".next/types/**/*.ts", "shop.json"],
   "exclude": [
     "dist",
     "node_modules",
@@ -14,6 +14,7 @@
     { "path": "../../packages/i18n" },
     { "path": "../../packages/ui" },
     { "path": "../../packages/lib" },
-    { "path": "../../packages/email" }
+    { "path": "../../packages/email" },
+    { "path": "../../packages/sanity" }
   ]
 }

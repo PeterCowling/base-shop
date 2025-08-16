@@ -74,7 +74,7 @@ export default async function ProductDetailPage({
 }: {
   params: { slug: string; lang: string };
 }) {
-  const { isEnabled } = draftMode();
+  const { isEnabled } = await draftMode();
   const product = await getProduct(
     params.slug,
     params.lang as Locale,

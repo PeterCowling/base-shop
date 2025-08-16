@@ -4,7 +4,7 @@ import {
   getReturnBagAndLabel,
 } from "@platform-core/returnLogistics";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
-import shop from "../../../shop.json";
+import shop from "../../../../shop.json";
 
 export const metadata = { title: "Return policy" };
 

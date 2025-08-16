@@ -16,7 +16,8 @@
     "@acme/date-utils": "workspace:*",
     "@acme/sanity": "workspace:*",
     "@acme/config": "workspace:*",
-    "@acme/email": "workspace:*"
+    "@acme/email": "workspace:*",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "next": "^15.3.4"

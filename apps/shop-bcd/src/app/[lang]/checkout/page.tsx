@@ -6,7 +6,7 @@ import { Locale, resolveLocale } from "@/i18n/locales";
 import { CART_COOKIE, decodeCartCookie } from "@/lib/cartCookie";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
-import shop from "../../../shop.json";
+import shop from "../../../../shop.json";
 
 export const metadata = {
   title: "Checkout · Base-Shop",

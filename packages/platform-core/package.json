@@ -14,7 +14,8 @@
     "./users": "./src/users.ts",
     "./stripe-webhook": "./src/stripe-webhook.ts",
     "./tracking": "./src/tracking/index.ts",
-    "./features": "./src/features.ts"
+    "./features": "./src/features.ts",
+    "./createShop": "./src/createShop/index.ts"
   },
   "dependencies": {
     "@acme/types": "workspace:*",

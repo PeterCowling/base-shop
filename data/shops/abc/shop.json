@@ -43,7 +43,8 @@
     "raTicketing": true,
     "fraudReviewThreshold": 0,
     "requireStrongCustomerAuth": false,
-    "strictReturnConditions": true
+    "strictReturnConditions": true,
+    "trackingDashboard": true
   },
   "rentalSubscriptions": [
     {

@@ -81,7 +81,7 @@ interface ChangedComponent {
 
 const changedComponents: ChangedComponent[] = Object.entries(
   componentMap
-).flatMap(([file, componentName]) => {
+).flatMap(([file, componentName]): ChangedComponent[] => {
   const destPath = path.join(appDir, "src", "components", file);
   const bakPath = destPath + ".bak";
   if (!existsSync(destPath)) return [];
@@ -94,10 +94,22 @@ const changedComponents: ChangedComponent[] = Object.entries(
       .digest("hex");
     if (newHash === oldHash) return [];
     return [
-      { file, componentName, oldChecksum: oldHash, newChecksum: newHash },
+      {
+        file,
+        componentName,
+        oldChecksum: oldHash,
+        newChecksum: newHash,
+      },
     ];
   }
-  return [{ file, componentName, oldChecksum: null, newChecksum: newHash }];
+  return [
+    {
+      file,
+      componentName,
+      oldChecksum: null,
+      newChecksum: newHash,
+    },
+  ];
 });
 // determine pages that reference updated components
 const pagesJsonPath = path.join(rootDir, "data", "shops", shopId, "pages.json");

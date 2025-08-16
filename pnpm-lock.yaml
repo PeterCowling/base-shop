@@ -412,6 +412,9 @@ importers:
       '@acme/date-utils':
         specifier: workspace:*
         version: link:../../packages/date-utils
+      '@acme/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@acme/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n

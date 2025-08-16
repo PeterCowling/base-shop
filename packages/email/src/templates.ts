@@ -1,6 +1,22 @@
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { marketingEmailTemplates } from "@acme/ui";
+
+export interface MarketingEmailTemplateVariant {
+  id: string;
+  render: (props: {
+    headline: string;
+    content: React.ReactNode;
+    footer: React.ReactNode;
+  }) => React.ReactElement;
+}
+
+let marketingEmailTemplates: MarketingEmailTemplateVariant[] = [];
+
+export function setMarketingEmailTemplates(
+  templates: MarketingEmailTemplateVariant[],
+): void {
+  marketingEmailTemplates = templates;
+}
 
 const templates: Record<string, string> = {};
 

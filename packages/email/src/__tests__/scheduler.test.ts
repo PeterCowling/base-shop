@@ -24,18 +24,13 @@ jest.mock("@platform-core/repositories/analytics.server", () => ({
   __esModule: true,
   listEvents: jest.fn().mockResolvedValue([]),
 }));
-jest.mock(
-  "@acme/ui",
-  () => ({
-    __esModule: true,
-    marketingEmailTemplates: [],
-  }),
-  { virtual: true },
-);
 const { sendCampaignEmail } = require("../send");
 const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
 const { listEvents } = require("@platform-core/repositories/analytics.server");
 const listEventsMock = listEvents as jest.Mock;
+
+const { setMarketingEmailTemplates } = require("../templates");
+setMarketingEmailTemplates([]);
 
 describe("scheduler", () => {
   const shop = "schedulertest";

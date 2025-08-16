@@ -3,7 +3,7 @@
 import "server-only";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import { shippingEnv } from "@acme/config/env/shipping";
+import { shippingEnv } from "@acme/config/shipping";
 import { resolveDataRoot } from "../dataRoot";
 
 export interface TaxCalculationRequest {

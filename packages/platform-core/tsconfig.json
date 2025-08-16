@@ -35,7 +35,7 @@
   "include": ["src/**/*"],
   "exclude": [
     "dist", // freshly emitted output
-    "__tests__", // unit/integration tests
+    "**/__tests__/**", // unit/integration tests
     ".turbo", // turbo cache
     "node_modules" // package deps (if any local)
   ],
@@ -43,5 +43,15 @@
   /* ------------------------------------------------------------------
    *  Build order
    * ------------------------------------------------------------------ */
-  "references": [{ "path": "../lib" }, { "path": "../types" }]
+  "references": [
+    { "path": "../lib" },
+    { "path": "../types" },
+    { "path": "../config" },
+    { "path": "../date-utils" },
+    { "path": "../stripe" },
+    { "path": "../shared-utils" },
+    { "path": "../email" },
+    { "path": "../plugins/sanity" },
+    { "path": "../themes/base" }
+  ]
 }

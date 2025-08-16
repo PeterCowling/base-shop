@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
+    "rootDir": ".",
+    "outDir": "dist",
+    "allowImportingTsExtensions": false
+  },
+  "include": ["index.ts"],
+  "exclude": ["dist", "node_modules", "**/__tests__/**"]
+}

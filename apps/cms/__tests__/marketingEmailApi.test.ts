@@ -3,25 +3,20 @@ import type { NextRequest } from "next/server";
 import path from "node:path";
 import { promises as fs } from "node:fs";
 import { DATA_ROOT } from "@platform-core/dataRoot";
+import { setMarketingEmailTemplates } from "@acme/email";
 
 jest.doMock("@platform-core/analytics", () => ({
   __esModule: true,
   trackEvent: jest.fn(),
 }));
-jest.doMock(
-  "@acme/ui",
-  () => ({
-    __esModule: true,
-    marketingEmailTemplates: [],
-  }),
-  { virtual: true }
-);
 
 process.env.CART_COOKIE_SECRET = "secret";
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
 process.env.STRIPE_WEBHOOK_SECRET = "whsec";
 process.env.RESEND_API_KEY = "re_test";
+
+setMarketingEmailTemplates([]);
 
 const ResponseWithJson = Response as unknown as typeof Response & {
   json?: (data: unknown, init?: ResponseInit) => Response;

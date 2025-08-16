@@ -1,6 +1,9 @@
 // apps/shop-bcd/src/app/api/shipping-rate/route.ts
 import "@acme/lib/initZod";
-import { getShippingRate } from "@acme/platform-core/shipping";
+import {
+  getShippingRate,
+  type ShippingRateRequest,
+} from "@acme/platform-core/shipping";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";
 import type { NextRequest } from "next/server";
@@ -41,7 +44,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = parsed.data;
-  let premierDelivery;
+  let premierDelivery: ShippingRateRequest["premierDelivery"];
   let provider = body.provider;
   if (body.provider === "premier-shipping") {
     const settings = await getShopSettings(shop.id);
@@ -58,7 +61,16 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const rate = await getShippingRate({ ...body, provider, premierDelivery });
+    const rate = await getShippingRate({
+      provider,
+      fromPostalCode: body.fromPostalCode,
+      toPostalCode: body.toPostalCode,
+      weight: body.weight,
+      region: body.region,
+      window: body.window,
+      carrier: body.carrier,
+      premierDelivery,
+    });
     return NextResponse.json({ rate });
   } catch (err) {
     return NextResponse.json(

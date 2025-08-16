@@ -1,6 +1,9 @@
 // apps/shop-bcd/src/app/api/tax/route.ts
 import "@acme/lib/initZod";
-import { calculateTax } from "@acme/platform-core/tax";
+import {
+  calculateTax,
+  type TaxCalculationRequest,
+} from "@acme/platform-core/tax";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -24,7 +27,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const tax = await calculateTax(parsed.data);
+    const body: TaxCalculationRequest = parsed.data;
+    const tax = await calculateTax(body);
     return NextResponse.json({ tax });
   } catch (err) {
     return NextResponse.json(

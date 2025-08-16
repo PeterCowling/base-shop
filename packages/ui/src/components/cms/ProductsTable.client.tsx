@@ -2,7 +2,10 @@
 
 "use client";
 
-import { ProductPublication } from "@platform-core/src/products";
+import {
+  ProductPublication,
+  PublicationStatus,
+} from "@platform-core/src/products";
 import { useProductFilters } from "@ui/hooks/useProductFilters";
 import { formatCurrency } from "@acme/shared-utils";
 import Link from "next/link";
@@ -51,7 +54,7 @@ function ProductsTableBase({
   /*  Filters                                                               */
   /* ---------------------------------------------------------------------- */
   const { search, status, setSearch, setStatus, filteredRows } =
-    useProductFilters(rows);
+    useProductFilters<ProductPublication, PublicationStatus>(rows);
 
   /* ---------------------------------------------------------------------- */
   /*  Stable action handlers                                                */

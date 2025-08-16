@@ -26,7 +26,10 @@ export async function getSeo(
   locale: Locale,
   pageSeo: Partial<ExtendedSeoProps> = {}
 ): Promise<NextSeoProps> {
-  const shop = env.NEXT_PUBLIC_SHOP_ID || "default";
+  const shop =
+    typeof env.NEXT_PUBLIC_SHOP_ID === "string"
+      ? env.NEXT_PUBLIC_SHOP_ID
+      : "default";
   const settings: ShopSettings = await getShopSettings(shop);
   const shopSeo = (settings.seo ?? {}) as Record<string, ExtendedSeoProps>;
   const base: ExtendedSeoProps = shopSeo[locale] ?? {};

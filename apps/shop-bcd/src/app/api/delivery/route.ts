@@ -26,6 +26,7 @@ const schema = z
     region: z.string(),
     date: z.string(),
     window: z.string(),
+    carrier: z.string().optional(),
   })
   .strict();
 
@@ -42,7 +43,14 @@ export async function POST(req: NextRequest) {
 
   const manager = await pluginsReady;
   const provider = manager.shipping.get("premier-shipping") as
-    | { schedulePickup: (region: string, date: string, hourWindow: string) => void }
+    | {
+        schedulePickup: (
+          region: string,
+          date: string,
+          hourWindow: string,
+          carrier?: string,
+        ) => void;
+      }
     | undefined;
 
   if (!provider) {
@@ -53,8 +61,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { region, date, window } = parsed.data;
-    provider.schedulePickup(region, date, window);
+    const { region, date, window, carrier } = parsed.data;
+    provider.schedulePickup(region, date, window, carrier);
     return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json(

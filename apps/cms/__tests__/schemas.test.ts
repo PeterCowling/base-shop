@@ -59,6 +59,7 @@ describe("zod schemas", () => {
       requireStrongCustomerAuth: false,
       strictReturnConditions: false,
       trackingDashboard: false,
+      premierDelivery: false,
     });
   });
 
@@ -109,6 +110,7 @@ describe("zod schemas", () => {
       requireStrongCustomerAuth: true,
       strictReturnConditions: false,
       trackingDashboard: false,
+      premierDelivery: false,
     });
   });
 });

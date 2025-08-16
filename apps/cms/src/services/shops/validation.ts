@@ -215,6 +215,9 @@ const premierDeliverySchema = z
   .object({
     regions: z.array(z.string().min(1)).default([]),
     windows: z.array(z.string().regex(/^\d{2}-\d{2}$/)).default([]),
+    carriers: z.array(z.string().min(1)).default([]),
+    surcharge: z.coerce.number().int().nonnegative().optional(),
+    serviceLabel: z.string().optional(),
   })
   .strict();
 
@@ -233,6 +236,13 @@ export function parsePremierDeliveryForm(formData: FormData): {
       .map(String)
       .map((v) => v.trim())
       .filter(Boolean),
+    carriers: formData
+      .getAll("carriers")
+      .map(String)
+      .map((v) => v.trim())
+      .filter(Boolean),
+    surcharge: formData.get("surcharge"),
+    serviceLabel: formData.get("serviceLabel")?.toString().trim() || undefined,
   };
   const parsed = premierDeliverySchema.safeParse(data);
   if (!parsed.success) {

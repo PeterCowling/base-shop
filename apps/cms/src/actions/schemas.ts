@@ -79,6 +79,10 @@ export const shopSchema = z
       .preprocess((v) => v === "on", z.boolean())
       .optional()
       .default(false),
+    premierDelivery: z
+      .preprocess((v) => v === "on", z.boolean())
+      .optional()
+      .default(false),
     themeOverrides: jsonRecord,
     themeDefaults: jsonRecord,
     themeTokens: jsonRecord.optional(),
@@ -96,6 +100,7 @@ export const shopSchema = z
       requireStrongCustomerAuth,
       strictReturnConditions,
       trackingDashboard,
+      premierDelivery,
       ...rest
     }) => ({
       ...rest,
@@ -106,6 +111,7 @@ export const shopSchema = z
         requireStrongCustomerAuth,
         strictReturnConditions,
         trackingDashboard,
+        premierDelivery,
       },
     })
   );

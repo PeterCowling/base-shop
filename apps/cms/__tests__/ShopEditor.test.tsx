@@ -44,6 +44,7 @@ describe("ShopEditor", () => {
         requireStrongCustomerAuth: false,
         strictReturnConditions: false,
         trackingDashboard: false,
+        premierDelivery: false,
       },
     };
 

@@ -3,12 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./analytics": "./src/analytics.ts"
+    ".": "./dist/index.js",
+    "./analytics": "./dist/analytics.js"
   },
   "bin": {
-    "email": "./src/cli.ts"
+    "email": "./dist/cli.js"
   },
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"

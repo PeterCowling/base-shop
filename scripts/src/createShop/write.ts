@@ -1,4 +1,4 @@
-import { createShop } from "@platform-core/createShop";
+import { createShop } from "@acme/platform-core/createShop";
 import type { Options } from "./parse";
 
 /**

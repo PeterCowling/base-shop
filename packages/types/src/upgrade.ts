@@ -4,7 +4,7 @@ export const upgradeComponentSchema = z
   .object({
     file: z.string(),
     componentName: z.string(),
-    oldChecksum: z.string(),
+    oldChecksum: z.string().nullish(),
     newChecksum: z.string(),
   })
   .strict();

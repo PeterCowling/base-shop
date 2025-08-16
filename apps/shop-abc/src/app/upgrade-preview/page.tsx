@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import { exampleProps } from "./example-props";
 import { z } from "zod";
-import { type UpgradeComponent } from "@acme/types/upgrade";
+import {
+  type UpgradeComponent,
+  upgradeComponentSchema,
+} from "@acme/types/upgrade";
 import ComponentPreview from "@ui/src/components/ComponentPreview";
 
 export default function UpgradePreviewPage() {
@@ -17,14 +20,7 @@ export default function UpgradePreviewPage() {
       try {
         const res = await fetch("/api/upgrade-changes");
         const schema = z.object({
-          components: z.array(
-            z.object({
-              file: z.string(),
-              componentName: z.string(),
-              oldChecksum: z.string().optional(),
-              newChecksum: z.string().optional(),
-            }),
-          ),
+          components: z.array(upgradeComponentSchema),
           pages: z.array(z.string()).optional(),
         });
         const data = schema.parse(await res.json());
@@ -98,6 +94,9 @@ export default function UpgradePreviewPage() {
               component={c}
               componentProps={exampleProps[c.componentName] ?? {}}
             />
+            {!c.oldChecksum && (
+              <p className="text-sm text-gray-600">New component</p>
+            )}
           </li>
         ))}
       </ul>

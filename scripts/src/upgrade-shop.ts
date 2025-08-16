@@ -72,16 +72,21 @@ const changedComponents = Object.entries(componentMap).flatMap(
   ([file, componentName]) => {
     const destPath = path.join(appDir, "src", "components", file);
     const bakPath = destPath + ".bak";
-    if (!existsSync(destPath) || !existsSync(bakPath)) return [];
+    if (!existsSync(destPath)) return [];
     const newHash = createHash("sha256")
       .update(readFileSync(destPath))
       .digest("hex");
-    const oldHash = createHash("sha256")
-      .update(readFileSync(bakPath))
-      .digest("hex");
-    if (newHash === oldHash) return [];
+    if (existsSync(bakPath)) {
+      const oldHash = createHash("sha256")
+        .update(readFileSync(bakPath))
+        .digest("hex");
+      if (newHash === oldHash) return [];
+      return [
+        { file, componentName, oldChecksum: oldHash, newChecksum: newHash },
+      ];
+    }
     return [
-      { file, componentName, oldChecksum: oldHash, newChecksum: newHash },
+      { file, componentName, oldChecksum: null, newChecksum: newHash },
     ];
   }
 );

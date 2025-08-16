@@ -25,7 +25,7 @@ export async function GET() {
       .array(upgradeComponentSchema)
       .catch([])
       .parse(data.components)
-      .filter((c) => c.oldChecksum !== c.newChecksum);
+      .filter((c) => c.oldChecksum == null || c.oldChecksum !== c.newChecksum);
     const pages = z.array(z.string()).catch([]).parse(data.pages);
     return NextResponse.json({ components, pages });
   } catch {

@@ -53,14 +53,18 @@ export const schema = defineSchema({
 function ProductReferenceBlock(props: BlockRenderProps) {
   const editor = useEditor();
   const ctx = useContext(InvalidProductContext);
-  const slug = props.value.slug as string;
+  const slug = (props.value as any).slug as string;
   const isInvalid = Boolean(ctx?.invalidProducts[props.value._key as string]);
   const remove = () => {
     const sel = {
       anchor: { path: props.path, offset: 0 },
       focus: { path: props.path, offset: 0 },
     };
-    PortableTextEditor.delete(editor, sel, { mode: "blocks" });
+    PortableTextEditor.delete(
+      editor as unknown as PortableTextEditor,
+      sel,
+      { mode: "blocks" },
+    );
   };
   const edit = () => {
     const next = prompt("Product slug", slug);
@@ -69,8 +73,16 @@ function ProductReferenceBlock(props: BlockRenderProps) {
       anchor: { path: props.path, offset: 0 },
       focus: { path: props.path, offset: 0 },
     };
-    PortableTextEditor.delete(editor, sel, { mode: "blocks" });
-    PortableTextEditor.insertBlock(editor, "productReference", { slug: next });
+    PortableTextEditor.delete(
+      editor as unknown as PortableTextEditor,
+      sel,
+      { mode: "blocks" },
+    );
+    PortableTextEditor.insertBlock(
+      editor as unknown as PortableTextEditor,
+      "productReference",
+      { slug: next },
+    );
   };
   const className = `space-y-2 ${isInvalid ? "rounded border border-red-500 p-2" : ""}`;
   return React.createElement(

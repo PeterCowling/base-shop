@@ -329,6 +329,9 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/plugin-sanity':
+        specifier: workspace:*
+        version: link:../../packages/plugins/sanity
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../../packages/shared-utils

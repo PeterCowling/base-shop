@@ -38,6 +38,7 @@ describe("ShopEditor", () => {
       priceOverrides: {},
       localeOverrides: {},
       luxuryFeatures: {
+        blog: false,
         contentMerchandising: false,
         raTicketing: false,
         fraudReviewThreshold: 0,

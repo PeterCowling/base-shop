@@ -6,7 +6,7 @@ import { draftMode } from "next/headers";
 import { readRepo } from "@platform-core/repositories/json.server";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";
-import { fetchPublishedPosts } from "@acme/sanity";
+import { getPublishedPosts } from "@acme/blog";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { LOCALES } from "@acme/i18n";
 import shop from "../../../../../shop.json";
@@ -95,17 +95,17 @@ export default async function ProductDetailPage({
   const components = await loadComponents(params.slug);
   await trackPageView(shop.id, `product/${params.slug}`);
   let latestPost: BlogPost | undefined;
-  if (shop.luxuryFeatures.contentMerchandising) {
+  if (shop.luxuryFeatures.blog) {
     try {
-      const posts = await fetchPublishedPosts(shop.id);
+      const posts = getPublishedPosts();
       const first = posts[0];
       if (first) {
         latestPost = {
           title: first.title,
           excerpt: first.excerpt,
           url: `/${params.lang}/blog/${first.slug}`,
-          shopUrl: first.products?.[0]
-            ? `/${params.lang}/product/${first.products[0]}`
+          shopUrl: first.skus?.[0]
+            ? `/${params.lang}/product/${first.skus[0]}`
             : undefined,
         };
       }

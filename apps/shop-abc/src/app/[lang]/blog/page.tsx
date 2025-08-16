@@ -1,19 +1,19 @@
 import BlogListing from "@ui/components/cms/blocks/BlogListing";
-import { fetchPublishedPosts } from "@acme/sanity";
+import { getPublishedPosts } from "@acme/blog";
 import { notFound } from "next/navigation";
 import shop from "../../../../shop.json";
 
 export default async function BlogPage({ params }: { params: { lang: string } }) {
-  if (!shop.editorialBlog?.enabled) {
+  if (!shop.editorialBlog?.enabled || !shop.luxuryFeatures.blog) {
     notFound();
   }
-  const posts = await fetchPublishedPosts(shop.id);
+  const posts = getPublishedPosts();
   const items = posts.map((p) => ({
     title: p.title,
     excerpt: p.excerpt,
     url: `/${params.lang}/blog/${p.slug}`,
-    shopUrl: p.products?.[0]
-      ? `/${params.lang}/product/${p.products[0]}`
+    shopUrl: p.skus?.[0]
+      ? `/${params.lang}/product/${p.skus[0]}`
       : undefined,
   }));
   return (

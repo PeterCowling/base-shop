@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "title": "Sneaker Styling Tips",
+    "slug": "sneaker-styling-tips",
+    "excerpt": "Top ways to style your sneakers.",
+    "content": "Full content here.",
+    "skus": ["black-sneaker"],
+    "publishedAt": "2023-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "title": "Summer Looks Preview",
+    "slug": "summer-looks-preview",
+    "excerpt": "A look ahead at summer styles.",
+    "content": "Preview content.",
+    "skus": ["green-sneaker"],
+    "scheduledAt": "2099-01-01T00:00:00.000Z"
+  }
+]

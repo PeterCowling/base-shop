@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { fetchPostBySlug } from "@acme/sanity";
+import { getPostBySlug } from "@acme/blog";
 import { BlogPortableText } from "@/components/blog/BlogPortableText";
 import shop from "../../../../../shop.json";
 
@@ -8,10 +8,10 @@ export default async function BlogPostPage({
 }: {
   params: { lang: string; slug: string };
 }) {
-  if (!shop.editorialBlog?.enabled) {
+  if (!shop.editorialBlog?.enabled || !shop.luxuryFeatures.blog) {
     notFound();
   }
-  const post = await fetchPostBySlug(shop.id, params.slug);
+  const post = getPostBySlug(params.slug);
   if (!post) notFound();
   return (
     <article className="space-y-4">

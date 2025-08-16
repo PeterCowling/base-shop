@@ -1,7 +1,7 @@
 // apps/shop-abc/src/app/api/search/route.ts
 import { NextResponse } from "next/server";
 import { PRODUCTS } from "@/lib/products";
-import { fetchPublishedPosts } from "@acme/sanity";
+import { getPublishedPosts } from "@acme/blog";
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";
@@ -19,9 +19,9 @@ export async function GET(req: Request) {
   }));
 
   let posts: { type: "post"; title: string; slug: string }[] = [];
-  if (shop.luxuryFeatures?.contentMerchandising) {
+  if (shop.luxuryFeatures?.blog) {
     try {
-      const fetched = await fetchPublishedPosts(shop.id);
+      const fetched = getPublishedPosts();
       posts = fetched
         .filter((p) => p.title.toLowerCase().includes(q))
         .map((p) => ({ type: "post" as const, title: p.title, slug: p.slug }));

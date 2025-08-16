@@ -105,6 +105,8 @@
       "@acme/plugin-sanity/*": ["packages/plugins/sanity/*"],
       "@acme/date-utils": ["packages/date-utils/src/index.ts"],
       "@date-utils": ["packages/date-utils/src/index.ts"],
+      "@acme/blog": ["packages/blog/src/index.ts"],
+      "@acme/blog/*": ["packages/blog/src/*"],
       "@acme/configurator": ["packages/configurator/src/index.ts"],
       "@acme/configurator/*": ["packages/configurator/src/*"],
       "@acme/shared-utils": ["packages/shared-utils/src/index.ts"],

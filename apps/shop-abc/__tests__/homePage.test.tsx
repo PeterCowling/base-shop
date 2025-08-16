@@ -10,8 +10,8 @@ jest.mock("@platform-core/repositories/shops.server", () => ({
 jest.mock("@platform-core/analytics", () => ({
   trackPageView: jest.fn(),
 }));
-jest.mock("@acme/sanity", () => ({
-  fetchPublishedPosts: jest.fn().mockResolvedValue([]),
+jest.mock("@acme/blog", () => ({
+  getPublishedPosts: jest.fn().mockReturnValue([]),
 }));
 jest.mock("@acme/config", () => ({
   env: {},
@@ -26,7 +26,7 @@ import Page from "../src/app/[lang]/page";
 import Home from "../src/app/[lang]/page.client";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { readShop } from "@platform-core/repositories/shops.server";
-import { fetchPublishedPosts } from "@acme/sanity";
+import { getPublishedPosts } from "@acme/blog";
 
 test("Home receives components from pages repo when editorial disabled", async () => {
   const components: PageComponent[] = [
@@ -38,13 +38,13 @@ test("Home receives components from pages repo when editorial disabled", async (
   (readShop as jest.Mock).mockResolvedValue({
     id: "abc",
     editorialBlog: { enabled: false },
-    luxuryFeatures: { contentMerchandising: true },
+    luxuryFeatures: { blog: true, contentMerchandising: true },
   });
 
   const element = await Page({ params: { lang: "en" } });
 
   expect(getPages).toHaveBeenCalledWith("abc");
-  expect(fetchPublishedPosts).not.toHaveBeenCalled();
+  expect(getPublishedPosts).not.toHaveBeenCalled();
   expect(element.type).toBe(Home);
   expect(element.props.components).toEqual(components);
   expect(element.props.locale).toBe("en");
@@ -59,15 +59,15 @@ test("Home fetches latest post when merchandising enabled", async () => {
   (readShop as jest.Mock).mockResolvedValue({
     id: "abc",
     editorialBlog: { enabled: true },
-    luxuryFeatures: { contentMerchandising: true },
+    luxuryFeatures: { blog: true, contentMerchandising: true },
   });
-  (fetchPublishedPosts as jest.Mock).mockResolvedValue([
-    { title: "Hello", excerpt: "World", slug: "hello" },
+  (getPublishedPosts as jest.Mock).mockReturnValue([
+    { title: "Hello", excerpt: "World", slug: "hello", skus: [] },
   ]);
 
   const element = await Page({ params: { lang: "en" } });
 
-  expect(fetchPublishedPosts).toHaveBeenCalledWith("abc");
+  expect(getPublishedPosts).toHaveBeenCalled();
   expect(element.props.latestPost).toEqual({
     title: "Hello",
     excerpt: "World",

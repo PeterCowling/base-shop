@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
 import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";
-import { fetchPublishedPosts } from "@acme/sanity";
+import { getPublishedPosts } from "@acme/blog";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 import { readRepo } from "@platform-core/repositories/json.server";
@@ -83,17 +83,17 @@ export default async function ProductDetailPage({
   if (!product) return notFound();
 
   let latestPost: BlogPost | undefined;
-  if (shop.luxuryFeatures.contentMerchandising) {
+  if (shop.luxuryFeatures.blog) {
     try {
-      const posts = await fetchPublishedPosts(shop.id);
+      const posts = getPublishedPosts();
       const first = posts[0];
       if (first) {
         latestPost = {
           title: first.title,
           excerpt: first.excerpt,
           url: `/${params.lang}/blog/${first.slug}`,
-          shopUrl: first.products?.[0]
-            ? `/${params.lang}/product/${first.products[0]}`
+          shopUrl: first.skus?.[0]
+            ? `/${params.lang}/product/${first.skus[0]}`
             : undefined,
         };
       }

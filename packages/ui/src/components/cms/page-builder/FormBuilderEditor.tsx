@@ -1,4 +1,4 @@
-import type { FormField, FormFieldOption, PageComponent } from "@acme/types";
+import type { FormField, FormFieldOption } from "@acme/types";
 import {
   Button,
   Input,
@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "../../atoms/shadcn";
 
-type FormBuilderComponent = PageComponent & {
+type FormBuilderComponent = {
   type: "FormBuilderBlock";
   fields?: FormField[];
 };

@@ -1,7 +1,6 @@
-import type { PageComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 
-type FeaturedProductComponent = PageComponent & {
+type FeaturedProductComponent = {
   type: "FeaturedProduct";
   sku?: string;
   collectionId?: string;

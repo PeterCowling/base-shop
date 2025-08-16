@@ -30,7 +30,10 @@ export default function InteractionsPanel({
       <Select
         value={clickAction}
         onValueChange={(v) => {
-          handleInput("clickAction", v === "none" ? undefined : v);
+          handleInput(
+            "clickAction",
+            (v === "none" ? undefined : v) as PageComponent["clickAction"],
+          );
           if (v !== "navigate") handleInput("href", undefined);
         }}
       >
@@ -53,7 +56,10 @@ export default function InteractionsPanel({
       <Select
         value={animation}
         onValueChange={(v) =>
-          handleInput("animation", v === "none" ? undefined : v)
+          handleInput(
+            "animation",
+            (v === "none" ? undefined : v) as PageComponent["animation"],
+          )
         }
       >
         <SelectTrigger aria-label="Animation">

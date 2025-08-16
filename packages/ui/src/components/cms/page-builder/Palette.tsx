@@ -12,6 +12,7 @@ import {
   layoutRegistry,
   overlayRegistry,
 } from "../blocks";
+import type { BlockRegistryEntry } from "../blocks/types";
 import {
   Popover,
   PopoverContent,
@@ -29,7 +30,7 @@ interface PaletteMeta {
 }
 
 const createPaletteItems = (
-  registry: Record<string, { description?: string; previewImage?: string }>,
+  registry: Record<string, BlockRegistryEntry<any> & { description?: string }>,
 ): PaletteMeta[] =>
   (Object.keys(registry) as PageComponent["type"][])
     .sort()

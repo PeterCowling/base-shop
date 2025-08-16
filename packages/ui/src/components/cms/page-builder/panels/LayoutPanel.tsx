@@ -94,7 +94,12 @@ export default function LayoutPanel({
       ))}
       <Select
         value={component.position ?? ""}
-        onValueChange={(v) => handleInput("position", v || undefined)}
+        onValueChange={(v) =>
+          handleInput(
+            "position",
+            (v || undefined) as PageComponent["position"],
+          )
+        }
       >
         <Tooltip text="CSS position property" className="block">
           <SelectTrigger>

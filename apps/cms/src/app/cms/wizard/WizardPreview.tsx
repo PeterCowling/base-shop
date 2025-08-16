@@ -17,10 +17,7 @@ import type { PageComponent } from "@acme/types";
 import DOMPurify from "dompurify";
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { STORAGE_KEY } from "../configurator/hooks/useConfiguratorPersistence";
-import {
-  loadPreviewTokens,
-  PREVIEW_TOKENS_EVENT,
-} from "./previewTokens";
+import { loadPreviewTokens, PREVIEW_TOKENS_EVENT } from "./previewTokens";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import DeviceSelector from "@ui/components/common/DeviceSelector";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -119,11 +116,9 @@ export default function WizardPreview({
     handle();
     window.addEventListener("storage", handle);
     window.addEventListener(PREVIEW_TOKENS_EVENT, handle);
-    window.addEventListener("theme:change", handle);
     return () => {
       window.removeEventListener("storage", handle);
       window.removeEventListener(PREVIEW_TOKENS_EVENT, handle);
-      window.removeEventListener("theme:change", handle);
     };
   }, []);
 
@@ -186,17 +181,17 @@ export default function WizardPreview({
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!inspectMode || popoverOpen) return;
-    const el = (e.target as HTMLElement).closest("[data-token]") as
-      | HTMLElement
-      | null;
+    const el = (e.target as HTMLElement).closest(
+      "[data-token]"
+    ) as HTMLElement | null;
     setHoverEl(el);
   };
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!inspectMode) return;
-    const el = (e.target as HTMLElement).closest("[data-token]") as
-      | HTMLElement
-      | null;
+    const el = (e.target as HTMLElement).closest(
+      "[data-token]"
+    ) as HTMLElement | null;
     if (!el) return;
     e.preventDefault();
     e.stopPropagation();
@@ -369,9 +364,7 @@ export default function WizardPreview({
               <span className="font-mono text-xs">{selected.token}</span>
               <Button
                 className="px-2 py-1 text-xs"
-                onClick={() =>
-                  onTokenSelect?.(selected.token, popoverPos)
-                }
+                onClick={() => onTokenSelect?.(selected.token, popoverPos)}
               >
                 Jump to editor
               </Button>

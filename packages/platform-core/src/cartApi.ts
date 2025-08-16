@@ -10,7 +10,7 @@ import { createCartStore } from "@platform-core/src/cartStore";
 import { getProductById, PRODUCTS } from "@platform-core/src/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { postSchema, patchSchema, putSchema } from "@platform-core/schemas/cart";
+import { postSchema, patchSchema, putSchema } from "@acme/platform-core/schemas/cart";
 import { z } from "zod";
 
 export const runtime = "edge";

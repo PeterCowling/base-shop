@@ -1,11 +1,11 @@
-import { createShop, type CreateShopOptions } from "@platform-core/createShop";
-import { validateShopName } from "@platform-core/shops";
+import { createShop, type CreateShopOptions } from "@acme/platform-core/createShop";
+import { validateShopName } from "@acme/platform-core/shops";
 import { spawnSync, execSync } from "node:child_process";
 import { readdirSync } from "node:fs";
-import { validateShopEnv } from "@platform-core/configurator";
+import { validateShopEnv } from "@acme/platform-core/configurator";
 import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
-import { listProviders } from "@platform-core/createShop/listProviders";
+import { listProviders } from "@acme/platform-core/createShop/listProviders";
 
 function ensureRuntime() {
   const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);

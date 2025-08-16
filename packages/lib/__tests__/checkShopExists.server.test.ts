@@ -1,6 +1,6 @@
 import { promises as fs } from 'node:fs';
 
-jest.mock('@platform-core/dataRoot', () => ({
+jest.mock('@acme/platform-core/dataRoot', () => ({
   resolveDataRoot: jest.fn(() => '/data/root'),
 }));
 

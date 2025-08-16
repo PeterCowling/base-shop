@@ -43,7 +43,8 @@ export async function handleStripeWebhook(
       const settings = await getShopSettings(shop);
       const threshold = settings.luxuryFeatures.fraudReviewThreshold;
       const requireSCA = settings.luxuryFeatures.requireStrongCustomerAuth;
-      if (deposit > threshold) {
+      // Only engage manual review when a positive threshold is configured.
+      if (threshold > 0 && deposit > threshold) {
         const piId =
           typeof session.payment_intent === "string"
             ? session.payment_intent

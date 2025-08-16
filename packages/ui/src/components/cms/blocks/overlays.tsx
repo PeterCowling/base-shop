@@ -7,12 +7,16 @@ const overlayEntries = {
   PopupModal: { component: PopupModal },
 } as const;
 
+type OverlayRegistry = {
+  [K in keyof typeof overlayEntries]: BlockRegistryEntry<any>;
+};
+
 export const overlayRegistry = Object.fromEntries(
   Object.entries(overlayEntries).map(([k, v]) => [
     k,
     { previewImage: defaultPreview, ...v },
   ]),
-) as typeof overlayEntries satisfies Record<string, BlockRegistryEntry<any>>;
+) as OverlayRegistry;
 
 export type OverlayBlockType = keyof typeof overlayEntries;
 

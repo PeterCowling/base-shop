@@ -108,11 +108,15 @@ const moleculeEntries = {
   CategoryList: { component: CategoryList },
 } as const;
 
+type MoleculeRegistry = {
+  [K in keyof typeof moleculeEntries]: BlockRegistryEntry<any>;
+};
+
 export const moleculeRegistry = Object.fromEntries(
   Object.entries(moleculeEntries).map(([k, v]) => [
     k,
     { previewImage: defaultPreview, ...v },
   ]),
-) as typeof moleculeEntries satisfies Record<string, BlockRegistryEntry<any>>;
+) as MoleculeRegistry;
 
 export type MoleculeBlockType = keyof typeof moleculeEntries;

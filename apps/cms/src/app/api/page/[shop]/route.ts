@@ -33,12 +33,16 @@ export async function POST(
       }
     }
 
-    await updatePageInRepo(shop, {
-      id: existing.id,
-      updatedAt: existing.updatedAt,
-      status: "published",
-      components,
-    });
+    await updatePageInRepo(
+      shop,
+      {
+        id: existing.id,
+        updatedAt: existing.updatedAt,
+        status: "published",
+        components,
+      },
+      existing,
+    );
 
     return NextResponse.json({ id: existing.id });
   } catch (err) {

@@ -21,12 +21,13 @@ export async function POST(
   try {
     const form = await req.formData();
     const file = form.get("file") as unknown;
-    if (!file || typeof (file as any).text !== "function") {
+    if (!file || typeof (file as Blob).text !== "function") {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
-    const text = await (file as any).text();
+    const text = await (file as Blob).text();
     let raw: unknown;
-    if (file.type === "application/json" || file.name.endsWith(".json")) {
+    const f = file as File;
+    if (f.type === "application/json" || f.name.endsWith(".json")) {
       const data = JSON.parse(text);
       raw = Array.isArray(data)
         ? data.map((row: RawInventoryItem) => expandInventoryItem(row))

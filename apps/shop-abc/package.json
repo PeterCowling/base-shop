@@ -16,7 +16,8 @@
     "@acme/stripe": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/sanity": "workspace:*",
-    "@acme/config": "workspace:*"
+    "@acme/config": "workspace:*",
+    "@upstash/redis": "^1.35.3"
   },
   "devDependencies": {
     "next": "^15.3.4"

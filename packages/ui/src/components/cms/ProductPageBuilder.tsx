@@ -1,4 +1,4 @@
-import PageBuilder from "./PageBuilder";
+import PageBuilder from "./page-builder/PageBuilder";
 
 export type ProductPageBuilderProps = React.ComponentProps<typeof PageBuilder>;
 

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import type { Page } from "@acme/types";
-import PageBuilder from "./PageBuilder";
+import PageBuilder from "./page-builder/PageBuilder";
 
 const samplePage: Page = {
   id: "1",

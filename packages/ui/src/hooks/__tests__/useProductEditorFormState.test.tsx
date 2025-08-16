@@ -19,7 +19,7 @@ jest.mock("../useFileUpload", () => ({
   }),
 }));
 
-jest.mock("../usePublishLocations", () => ({
+jest.mock("@platform-core/hooks/usePublishLocations", () => ({
   usePublishLocations: () => ({ locations: [], reload: jest.fn() }),
 }));
 

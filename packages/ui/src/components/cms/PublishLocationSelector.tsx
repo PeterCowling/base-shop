@@ -3,7 +3,7 @@
 
 import { Button, Input } from "@ui/components/atoms/shadcn";
 import type { PublishLocation } from "@acme/types";
-import { usePublishLocations } from "@ui/hooks/usePublishLocations";
+import { usePublishLocations } from "@platform-core/hooks/usePublishLocations";
 import { toggleItem } from "@shared-utils";
 import { memo, useCallback } from "react";
 

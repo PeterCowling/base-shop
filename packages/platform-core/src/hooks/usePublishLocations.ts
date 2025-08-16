@@ -1,4 +1,4 @@
-// packages/ui/hooks/usePublishLocations.ts
+// packages/platform-core/hooks/usePublishLocations.ts
 
 import type { PublishLocation } from "@acme/types";
 import { fetchJson } from "@shared-utils";

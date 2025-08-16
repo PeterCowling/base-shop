@@ -13,6 +13,7 @@
     { "path": "../../packages/platform-core" },
     { "path": "../../packages/i18n" },
     { "path": "../../packages/ui" },
-    { "path": "../../packages/lib" }
+    { "path": "../../packages/lib" },
+    { "path": "../../packages/email" }
   ]
 }

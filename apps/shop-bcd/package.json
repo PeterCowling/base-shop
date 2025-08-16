@@ -15,7 +15,8 @@
     "@acme/stripe": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/sanity": "workspace:*",
-    "@acme/config": "workspace:*"
+    "@acme/config": "workspace:*",
+    "@acme/email": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.4"

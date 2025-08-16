@@ -23,7 +23,11 @@ export default function ThemeTokens({ shop, tokenRows, info, errors }: Props) {
     <div className="col-span-2 flex flex-col gap-1">
       <div className="flex items-center justify-between">
         <span>Theme Tokens</span>
-        <Button asChild variant="link" className="h-auto p-0 text-primary">
+        <Button
+          asChild
+          variant="ghost"
+          className="h-auto p-0 text-primary hover:bg-transparent"
+        >
           <Link href={`/cms/shop/${shop}/themes`}>Edit Theme</Link>
         </Button>
       </div>
@@ -61,8 +65,8 @@ export default function ThemeTokens({ shop, tokenRows, info, errors }: Props) {
                     <form action={resetThemeOverride.bind(null, shop, token)}>
                       <Button
                         type="submit"
-                        variant="link"
-                        className="h-auto p-0 text-primary"
+                        variant="ghost"
+                        className="h-auto p-0 text-primary hover:bg-transparent"
                       >
                         Reset
                       </Button>

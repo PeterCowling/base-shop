@@ -76,7 +76,7 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
             </Button>
           </div>
         ))}
-        <Button type="button" variant="secondary" onClick={addRegion}>
+        <Button type="button" variant="ghost" onClick={addRegion}>
           Add region
         </Button>
         {errors.regions && (
@@ -101,7 +101,7 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
             </Button>
           </div>
         ))}
-        <Button type="button" variant="secondary" onClick={addWindow}>
+        <Button type="button" variant="ghost" onClick={addWindow}>
           Add window
         </Button>
         {errors.windows && (

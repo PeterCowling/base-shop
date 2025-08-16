@@ -44,7 +44,9 @@ export default function TypographySettings({
                 onChange={(e) =>
                   handleOverrideChange(k, defaultValue)(e.target.value)
                 }
-                ref={(el) => (overrideRefs.current[k] = el)}
+                ref={(el) => {
+                  overrideRefs.current[k] = el;
+                }}
               />
               {hasOverride && (
                 <button

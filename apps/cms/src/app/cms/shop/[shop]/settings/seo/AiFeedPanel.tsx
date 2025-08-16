@@ -22,7 +22,7 @@ export default async function AiFeedPanel({ shop }: { shop: string }) {
     <ul className="space-y-1">
       {events.map((e, idx) => (
         <li key={idx}>
-          {formatTimestamp(e.timestamp as string)} – {e.status}
+          {formatTimestamp(e.timestamp as string)} – {String(e.status)}
         </li>
       ))}
     </ul>

@@ -128,7 +128,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
         ))}
         <Button
           type="button"
-          variant="secondary"
+          variant="ghost"
           onClick={() =>
             setForm((f) => ({
               ...f,
@@ -171,7 +171,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
         ))}
         <Button
           type="button"
-          variant="secondary"
+          variant="ghost"
           onClick={() =>
             setForm((f) => ({
               ...f,

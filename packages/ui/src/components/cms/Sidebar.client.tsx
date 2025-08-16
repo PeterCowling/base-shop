@@ -4,7 +4,7 @@ import { getShopFromPath } from "@platform-core/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { coreEnv } from "@config/core";
-import { luxuryFeatures } from "@platform-core/luxuryFeatures";
+import { features } from "@platform-core/features";
 
 if (coreEnv.NODE_ENV === "development") {
   console.log("sidebar rendered on client");
@@ -88,7 +88,7 @@ export default function Sidebar({ role }: { role?: string }) {
           },
         ]
       : []),
-    ...(luxuryFeatures.raTicketing
+    ...(features.raTicketing
       ? [{ href: "/ra", label: "RA", icon: "↩️" }]
       : []),
     { href: "/live", label: "Live", icon: "🌐" },

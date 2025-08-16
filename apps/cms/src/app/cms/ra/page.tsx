@@ -1,12 +1,12 @@
 // apps/cms/src/app/cms/ra/page.tsx
 import { listReturnAuthorizations } from "@platform-core/returnAuthorization";
-import { luxuryFeatures } from "@platform-core/luxuryFeatures";
+import { features } from "@platform-core/features";
 import { notFound } from "next/navigation";
 
 export const revalidate = 0;
 
 export default async function RaDashboardPage() {
-  if (!luxuryFeatures.raTicketing) notFound();
+  if (!features.raTicketing) notFound();
   const ras = await listReturnAuthorizations();
   return (
     <div>

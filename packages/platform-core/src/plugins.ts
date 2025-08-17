@@ -117,9 +117,9 @@ export interface InitPluginsOptions extends LoadPluginsOptions {
 
 /** Load plugins and call their registration hooks */
 export async function initPlugins<
-  PPay = PaymentPayload,
-  SReq = ShippingRequest,
-  WProp = WidgetProps,
+  PPay extends PaymentPayload = PaymentPayload,
+  SReq extends ShippingRequest = ShippingRequest,
+  WProp extends WidgetProps = WidgetProps,
   P extends PaymentProvider<PPay> = PaymentProvider<PPay>,
   S extends ShippingProvider<SReq> = ShippingProvider<SReq>,
   W extends WidgetComponent<WProp> = WidgetComponent<WProp>,
@@ -127,7 +127,7 @@ export async function initPlugins<
   options: InitPluginsOptions = {},
 ): Promise<PluginManager<PPay, SReq, WProp, P, S, W>> {
   const manager = new PluginManager<PPay, SReq, WProp, P, S, W>();
-  const loaded = (await loadPlugins(options)) as Plugin<
+  const loaded = (await loadPlugins(options)) as unknown as Plugin<
     Record<string, unknown>,
     PPay,
     SReq,

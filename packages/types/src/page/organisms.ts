@@ -233,7 +233,6 @@ export const popupModalComponentSchema = baseComponentSchema.extend({
   content: z.string().optional(),
 });
 
-// Interface without corresponding schema
 export interface CollectionListComponent extends PageComponentBase {
   type: "CollectionList";
   collections?: { id: string; title: string; image: string }[];
@@ -241,4 +240,20 @@ export interface CollectionListComponent extends PageComponentBase {
   tabletItems?: number;
   mobileItems?: number;
 }
+
+export const collectionListComponentSchema = baseComponentSchema.extend({
+  type: z.literal("CollectionList"),
+  collections: z
+    .array(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        image: z.string(),
+      })
+    )
+    .optional(),
+  desktopItems: z.number().optional(),
+  tabletItems: z.number().optional(),
+  mobileItems: z.number().optional(),
+});
 

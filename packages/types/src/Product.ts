@@ -2,8 +2,6 @@ import { LOCALES, type Locale } from "@acme/i18n";
 import { z } from "zod";
 import type { MediaItem } from "./MediaItem";
 
-export type { Locale } from "@acme/i18n";
-
 export const localeSchema = z.enum(LOCALES);
 
 /** Runtime validator + compile-time source of truth */

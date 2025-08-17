@@ -4,18 +4,25 @@ import { stripe } from "@acme/stripe";
 import { addOrder, markRefunded, updateRisk } from "./orders";
 import { getShopSettings } from "./repositories/settings.server";
 
-function extractSessionIdFromCharge(charge: Stripe.Charge): string | undefined {
+type ChargeWithInvoice = Stripe.Charge & {
+  invoice?: string | Stripe.Invoice | null;
+};
+
+function extractSessionIdFromCharge(charge: ChargeWithInvoice): string | undefined {
   if (charge.invoice) return charge.invoice as string;
   if (typeof charge.payment_intent !== "string" && charge.payment_intent) {
     const pi = charge.payment_intent as Stripe.PaymentIntent & {
-      charges?: { data?: Array<{ invoice?: string | null }> };
+      latest_charge?: string | ChargeWithInvoice | null;
     };
-    return pi.charges?.data?.[0]?.invoice || undefined;
+    const latest = pi.latest_charge;
+    if (latest && typeof latest !== "string") {
+      return typeof latest.invoice === "string" ? latest.invoice : undefined;
+    }
   }
   return undefined;
 }
 
-async function persistRiskFromCharge(shop: string, charge: Stripe.Charge) {
+async function persistRiskFromCharge(shop: string, charge: ChargeWithInvoice) {
   const sessionId = extractSessionIdFromCharge(charge) || charge.id;
   const riskLevel = charge.outcome?.risk_level;
   const riskScore = charge.outcome?.risk_score;
@@ -63,21 +70,25 @@ export async function handleStripeWebhook(
       break;
     }
     case "charge.refunded": {
-      const charge = data.object as Stripe.Charge;
+      const charge = data.object as ChargeWithInvoice;
       const sessionId = extractSessionIdFromCharge(charge) || charge.id;
       await markRefunded(shop, sessionId);
       break;
     }
     case "payment_intent.succeeded": {
       const pi = data.object as Stripe.PaymentIntent;
-      const charge = pi.charges?.data?.[0];
+      const latest = pi.latest_charge;
+      const charge =
+        latest && typeof latest !== "string"
+          ? (latest as ChargeWithInvoice)
+          : undefined;
       if (charge) {
         await persistRiskFromCharge(shop, charge);
       }
       break;
     }
     case "charge.succeeded": {
-      const charge = data.object as Stripe.Charge;
+      const charge = data.object as ChargeWithInvoice;
       await persistRiskFromCharge(shop, charge);
       break;
     }
@@ -111,11 +122,15 @@ export async function handleStripeWebhook(
     default: {
       if (type.startsWith("radar.early_fraud_warning.")) {
         const warning = data.object as Stripe.Radar.EarlyFraudWarning;
-        const charge = warning.charge;
-        const chargeId = typeof charge === "string" ? charge : charge?.id;
+        const chargeRef = warning.charge;
+        const chargeId = typeof chargeRef === "string" ? chargeRef : chargeRef?.id;
         if (chargeId) {
-          const riskLevel = warning.risk_level;
-          const riskScore = warning.risk_score;
+          const charge =
+            typeof chargeRef === "string"
+              ? await stripe.charges.retrieve(chargeId)
+              : chargeRef;
+          const riskLevel = charge.outcome?.risk_level;
+          const riskScore = charge.outcome?.risk_score;
           await updateRisk(
             shop,
             chargeId,

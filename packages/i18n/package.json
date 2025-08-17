@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
+    "./Translations": "./src/Translations.tsx",
     "./*": "./src/*.ts",
     "./*.json": "./*.json"
   },

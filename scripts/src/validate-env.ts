@@ -2,7 +2,7 @@
 /**
  * Validate environment variables for a given shop.  The original script
  * depends on a schema from the `@config` package and sets up friendly error
- * messages via `@acme/lib/initZod`.  This lightweight version uses a
+ * messages via `@acme/zod-utils/initZod`.  This lightweight version uses a
  * permissive Zod schema that accepts any string values and reports errors
  * when the `.env` file is missing or cannot be read.
  */

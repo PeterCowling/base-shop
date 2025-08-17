@@ -17,6 +17,7 @@
     "@acme/sanity": "workspace:*",
     "@acme/config": "workspace:*",
     "@acme/email": "workspace:*",
+    "@acme/zod-utils": "workspace:^",
     "qrcode": "^1.5.4"
   },
   "devDependencies": {

@@ -15,13 +15,9 @@
       "types": "./dist/env/*.d.ts",
       "import": "./dist/env/*.js",
       "default": "./dist/env/*.js"
-    },
-    "./tsconfig.app.json": "./tsconfig.app.json",
-    "./jest.preset.cjs": "./jest.preset.cjs"
+    }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -29,6 +25,6 @@
     "clean": "rimraf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@acme/lib": "workspace:^"
+    "@acme/zod-utils": "workspace:^"
   }
 }

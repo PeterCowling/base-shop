@@ -1,3 +1,1 @@
-import { applyFriendlyZodMessages } from "./zodErrorMap";
-
-applyFriendlyZodMessages();
+export * from "@acme/zod-utils/initZod";

@@ -51,7 +51,7 @@ exports.GET = GET;
 exports.PUT = PUT;
 exports.PATCH = PATCH;
 // apps/cms/src/app/api/wizard-progress/route.ts
-require("@acme/lib/initZod");
+require("@acme/zod-utils/initZod");
 var options_1 = require("@cms/auth/options");
 var next_auth_1 = require("next-auth");
 var server_1 = require("next/server");

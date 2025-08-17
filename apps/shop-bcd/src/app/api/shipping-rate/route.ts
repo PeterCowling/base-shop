@@ -1,5 +1,5 @@
 // apps/shop-bcd/src/app/api/shipping-rate/route.ts
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import {
   getShippingRate,
   type ShippingRateRequest,

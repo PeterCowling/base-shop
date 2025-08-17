@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/account/reset/request/route.ts
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import crypto from "crypto";

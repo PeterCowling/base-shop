@@ -1,4 +1,4 @@
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { z } from "zod";
 import { coreEnvBaseSchema, depositReleaseEnvRefinement, } from "./core";
 import { paymentEnvSchema } from "./payments";

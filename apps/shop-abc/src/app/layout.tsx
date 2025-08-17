@@ -2,7 +2,7 @@
 import "./globals.css";
 import { CartProvider } from "@/contexts/CartContext";
 import { initTheme } from "@platform-core/utils";
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { initPlugins } from "@platform-core/plugins";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";

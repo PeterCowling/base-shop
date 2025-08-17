@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GET = GET;
 // apps/cms/src/app/api/products/[shop]/[id]/route.ts
-require("@acme/lib/initZod");
+require("@acme/zod-utils/initZod");
 var json_server_1 = require("@platform-core/repositories/json.server");
 var server_1 = require("next/server");
 var zod_1 = require("zod");

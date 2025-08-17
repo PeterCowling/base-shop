@@ -13,12 +13,6 @@ importers:
 
   .:
     dependencies:
-      '@acme/config':
-        specifier: workspace:^
-        version: link:packages/config
-      '@acme/lib':
-        specifier: workspace:^
-        version: link:packages/lib
       '@cloudflare/next-on-pages':
         specifier: ^1.13.12
         version: 1.13.12(@cloudflare/workers-types@4.20250704.0)(vercel@44.2.11(@swc/core@1.12.9)(rollup@4.44.1))(wrangler@4.23.0(@cloudflare/workers-types@4.20250704.0))
@@ -347,6 +341,9 @@ importers:
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../../packages/shared-utils
+      '@acme/zod-utils':
+        specifier: workspace:^
+        version: link:../../packages/zod-utils
       '@sendgrid/eventwebhook':
         specifier: ^7.2.7
         version: 7.7.0
@@ -405,6 +402,9 @@ importers:
       '@acme/template-app':
         specifier: workspace:*
         version: link:../../packages/template-app
+      '@acme/zod-utils':
+        specifier: workspace:^
+        version: link:../../packages/zod-utils
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
@@ -445,6 +445,9 @@ importers:
       '@acme/template-app':
         specifier: workspace:*
         version: link:../../packages/template-app
+      '@acme/zod-utils':
+        specifier: workspace:^
+        version: link:../../packages/zod-utils
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
@@ -480,9 +483,9 @@ importers:
 
   packages/config:
     dependencies:
-      '@acme/lib':
+      '@acme/zod-utils':
         specifier: workspace:^
-        version: link:../lib
+        version: link:../zod-utils
 
   packages/configurator:
     devDependencies:
@@ -567,6 +570,9 @@ importers:
       '@acme/config':
         specifier: workspace:^
         version: link:../config
+      '@acme/zod-utils':
+        specifier: workspace:^
+        version: link:../zod-utils
       '@platform-core':
         specifier: workspace:*
         version: link:../platform-core
@@ -780,6 +786,12 @@ importers:
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+
+  packages/zod-utils:
+    dependencies:
+      zod:
+        specifier: 3.25.73
+        version: 3.25.73
 
 packages:
 

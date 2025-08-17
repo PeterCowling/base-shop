@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { env } from "@config";
+import { env } from "@acme/config";
 
 export interface ProductData {
   id: string;

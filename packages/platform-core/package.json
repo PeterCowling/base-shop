@@ -34,6 +34,11 @@
       "import": "./dist/analytics/index.js",
       "default": "./dist/analytics/index.js"
     },
+    "./dataRoot": {
+      "types": "./src/dataRoot.d.ts",
+      "import": "./src/dataRoot.js",
+      "default": "./src/dataRoot.js"
+    },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js",

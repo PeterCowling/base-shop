@@ -18,5 +18,8 @@
   "devDependencies": {
     "next": "^15.3.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@platform-core": "workspace:*",
+    "@acme/config": "workspace:*"
+  }
 }

@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/cart/route.ts
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { asSetCookieHeader, CART_COOKIE, decodeCartCookie, encodeCartCookie, } from "@/lib/cartCookie";
 import { getProductById } from "@/lib/products";
 import { NextResponse } from "next/server";

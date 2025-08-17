@@ -49,7 +49,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.POST = POST;
 // apps/cms/src/app/api/env/[shopId]/route.ts
-require("@acme/lib/initZod");
+require("@acme/zod-utils/initZod");
 var options_1 = require("@cms/auth/options");
 var next_auth_1 = require("next-auth");
 var server_1 = require("next/server");

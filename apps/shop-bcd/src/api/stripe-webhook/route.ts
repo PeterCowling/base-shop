@@ -1,4 +1,4 @@
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { z } from "zod";
 import { handleStripeWebhook } from "@platform-core/stripe-webhook";
 import type Stripe from "stripe";

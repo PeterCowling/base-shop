@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/rental/route.ts
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 
 import { stripe } from "@acme/stripe";
 import { requirePermission } from "@auth";

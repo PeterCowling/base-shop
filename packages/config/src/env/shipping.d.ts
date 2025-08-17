@@ -1,4 +1,4 @@
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { z } from "zod";
 export declare const shippingEnvSchema: z.ZodObject<{
     TAXJAR_KEY: z.ZodOptional<z.ZodString>;

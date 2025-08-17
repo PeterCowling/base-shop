@@ -59,7 +59,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.POST = POST;
-require("@acme/lib/initZod");
+require("@acme/zod-utils/initZod");
 var createShop_server_1 = require("@cms/actions/createShop.server");
 var createShop_1 = require("@platform-core/createShop");
 var configurator_1 = require("@platform-core/configurator");

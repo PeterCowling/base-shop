@@ -1,5 +1,5 @@
 // apps/shop-bcd/src/app/login/route.ts
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { NextResponse } from "next/server";
 import { createCustomerSession, validateCsrfToken } from "@auth";
 import type { Role } from "@auth/types/roles";

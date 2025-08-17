@@ -17,6 +17,7 @@
     "@acme/date-utils": "workspace:*",
     "@acme/sanity": "workspace:*",
     "@acme/config": "workspace:*",
+    "@acme/zod-utils": "workspace:^",
     "@upstash/redis": "^1.35.3"
   },
   "devDependencies": {

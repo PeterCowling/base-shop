@@ -1,5 +1,5 @@
 // apps/shop-bcd/src/app/api/tax/route.ts
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import {
   calculateTax,
   type TaxCalculationRequest,

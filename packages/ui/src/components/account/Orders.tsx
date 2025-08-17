@@ -3,6 +3,7 @@ import { getCustomerSession, hasPermission } from "@auth";
 import { getOrdersForCustomer } from "@platform-core/orders";
 import { getTrackingStatus as getShippingTrackingStatus } from "@platform-core/shipping";
 import { getTrackingStatus as getReturnTrackingStatus } from "@platform-core/returnAuthorization";
+import type { RentalOrder } from "@acme/types";
 import { redirect } from "next/navigation";
 import StartReturnButton from "./StartReturnButton";
 import type { OrderStep } from "../organisms/OrderTrackingTimeline";
@@ -44,7 +45,10 @@ export default async function OrdersPage({
   if (!hasPermission(session.role, "view_orders")) {
     return <p className="p-6">Not authorized.</p>;
   }
-  const orders = await getOrdersForCustomer(shopId, session.customerId);
+  const orders: RentalOrder[] = await getOrdersForCustomer(
+    shopId,
+    session.customerId,
+  );
   if (!orders.length) return <p className="p-6">No orders yet.</p>;
 
   const items = await Promise.all(

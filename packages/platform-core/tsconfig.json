@@ -1,49 +1,41 @@
-// packages/platform-core/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
-  /* ------------------------------------------------------------------
-   *  Compiler options
-   * ------------------------------------------------------------------ */
   "compilerOptions": {
+    /* Build as a referenced project and emit JS + .d.ts into dist */
     "composite": true,
+    "noEmit": false,
     "emitDeclarationOnly": false,
-    "noEmit": false, // ← must allow emit
 
-    /* ───── output location ───── */
+    /* Declarations + maps, mirroring src/ -> dist/ */
     "declaration": true,
-    "declarationDir": "dist",
     "declarationMap": true,
+    "declarationDir": "dist",
     "rootDir": "src",
     "outDir": "dist",
 
-    /* React components ------------------------------------------------ */
+    /* Modern ESM settings for predictable resolution */
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+
+    /* React components */
     "jsx": "react-jsx",
 
-    /* node_modules chatter ------------------------------------------- */
+    /* Typing + performance */
+    "strict": true,
     "skipLibCheck": true,
 
-    /* local imports stay package-relative ----------------------------- */
+    /* Keep local imports package-relative */
     "allowImportingTsExtensions": false,
 
-    /* Next, React globals only --------------------------------------- */
+    /* Ambient types available in this package */
     "types": ["react", "react-dom", "next"]
   },
 
-  /* ------------------------------------------------------------------
-   *  File globs
-   * ------------------------------------------------------------------ */
   "include": ["src/**/*"],
-  "exclude": [
-    "dist", // freshly emitted output
-    "**/__tests__/**", // unit/integration tests
-    ".turbo", // turbo cache
-    "node_modules" // package deps (if any local)
-  ],
+  "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"],
 
-  /* ------------------------------------------------------------------
-   *  Build order
-   * ------------------------------------------------------------------ */
   "references": [
     { "path": "../lib" },
     { "path": "../types" },

@@ -46,7 +46,7 @@
     }
   },
   "include": ["next-env.d.ts", "src/**/*"],
-  "exclude": [".next", "node_modules", "dist"],
+  "exclude": [".next", "node_modules", "dist", "**/__tests__/**"],
   "references": [
     { "path": "../../packages/platform-core" },
     { "path": "../../packages/ui" },

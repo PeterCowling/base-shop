@@ -7,7 +7,11 @@ import {
   SelectContent,
   SelectItem,
 } from "../atoms/shadcn";
-import { devicePresets, getLegacyPreset } from "@ui/utils/devicePresets";
+import {
+  devicePresets,
+  getLegacyPreset,
+  type DevicePreset,
+} from "@ui/utils/devicePresets";
 
 interface Props {
   deviceId: string;
@@ -46,7 +50,7 @@ export default function DeviceSelector({
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          {devicePresets.map((p) => (
+          {devicePresets.map((p: DevicePreset) => (
             <SelectItem key={p.id} value={p.id}>
               {p.label}
             </SelectItem>

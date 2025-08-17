@@ -52,9 +52,11 @@ export class RedisCartStore implements CartStore {
   }
 
   async getCart(id: string): Promise<CartState> {
-    const qty = await this.exec(() => this.client.hgetall<number>(id));
+    const qty = await this.exec(() =>
+      this.client.hgetall<Record<string, number>>(id)
+    );
     const lines = await this.exec(() =>
-      this.client.hgetall<string>(this.skuKey(id))
+      this.client.hgetall<Record<string, string>>(this.skuKey(id))
     );
     if (!qty || !lines) {
       return this.fallback.getCart(id);

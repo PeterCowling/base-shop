@@ -21,6 +21,7 @@ import {
   useMemo,
   ReactElement,
   type JSX,
+  type ChangeEvent,
 } from "react";
 
 interface TokensProps {
@@ -238,7 +239,7 @@ export default function Tokens({
               }}
             >
               <option value="">Google Fonts</option>
-              {googleFonts.map((f) => (
+              {googleFonts.map((f: string) => (
                 <option key={f} value={f} style={{ fontFamily: f }}>
                   {f}
                 </option>
@@ -294,7 +295,12 @@ export default function Tokens({
         data-token={isOverridden ? "--color-info" : undefined}
       >
         <span className="w-40 flex-shrink-0">{k}</span>
-        <Input value={v} onChange={(e) => setToken(k, e.target.value)} />
+        <Input
+          value={v}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setToken(k, e.target.value)
+          }
+        />
         {isOverridden && (
           <button
             type="button"
@@ -334,7 +340,9 @@ export default function Tokens({
       <Input
         placeholder="Search tokens"
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setSearch(e.target.value)
+        }
         className="mb-2"
       />
       {Object.entries(filteredGroups).map(([prefix, list]) => (
@@ -355,7 +363,9 @@ export default function Tokens({
                   <Input
                     placeholder="Add font stack"
                     value={newFont}
-                    onChange={(e) => setNewFont(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setNewFont(e.target.value)
+                    }
                   />
                   <button
                     type="button"

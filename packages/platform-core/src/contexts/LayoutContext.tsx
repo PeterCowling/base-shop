@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
 export interface ConfiguratorProgress {
   completedRequired: number;

@@ -1,7 +1,7 @@
 // packages/i18n/src/Translations.tsx
 "use client";
 
-import React, { createContext, ReactNode, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 
 /**
  * Key–value map of translation messages.

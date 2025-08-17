@@ -57,7 +57,7 @@ export async function createShop(
   };
 
   await prisma.shop.create({
-    data: { id, data: shopData as Prisma.InputJsonValue },
+    data: { id, data: shopData as unknown as Prisma.InputJsonValue },
   });
 
   if (prepared.pages.length) {

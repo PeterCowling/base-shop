@@ -25,7 +25,8 @@ export default function ProductFilters({
         placeholder="Search titles or SKU…"
         className="w-64"
         value={search}
-        onChange={(e) => onSearchChange(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          onSearchChange(e.target.value)}
       />
       <select
         className="rounded-md border px-3 py-2 text-sm"

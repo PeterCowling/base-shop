@@ -1,7 +1,30 @@
 // packages/ui/hooks/useProductEditorFormState.tsx
-import type { Locale, ProductPublication } from "@platform-core/products";
-import { useFileUpload } from "@ui/hooks/useFileUpload";
-import { usePublishLocations } from "@platform-core/hooks/usePublishLocations";
+import { useFileUpload } from "./useFileUpload";
+import { usePublishLocations } from "../../../platform-core/src/hooks/usePublishLocations";
+
+// Minimal shared types used within this hook
+type Locale = string;
+
+interface MediaItem {
+  url: string;
+  title?: string;
+  altText?: string;
+  type: "image" | "video";
+}
+
+interface ProductPublication {
+  id: string;
+  shop: string;
+  title: Record<Locale, string>;
+  description: Record<Locale, string>;
+  price: number;
+  media: MediaItem[];
+}
+
+interface PublishLocation {
+  id: string;
+  requiredOrientation: string;
+}
 import { parseMultilingualInput } from "@i18n/parseMultilingualInput";
 import {
   useCallback,
@@ -15,9 +38,9 @@ import {
 /* ------------------------------------------------------------------ */
 /* Hook return type                                                   */
 /* ------------------------------------------------------------------ */
-export interface ProductWithVariants extends ProductPublication {
+export type ProductWithVariants = ProductPublication & {
   variants: Record<string, string[]>;
-}
+};
 
 export interface ProductSaveResult {
   product?: ProductPublication & { variants?: Record<string, string[]> };
@@ -61,14 +84,18 @@ export function useProductEditorFormState(
   /* ---------- helpers ---------------------------------------------- */
   const { locations } = usePublishLocations();
   const requiredOrientation =
-    locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
-    "landscape";
+    locations.find(
+      (l: PublishLocation) => l.id === publishTargets[0]
+    )?.requiredOrientation ?? "landscape";
 
   const { uploader } = useFileUpload({
     shop: init.shop,
     requiredOrientation,
-    onUploaded: (item) =>
-      setProduct((prev) => ({ ...prev, media: [...prev.media, item] })),
+    onUploaded: (item: MediaItem) =>
+      setProduct((prev: ProductWithVariants) => ({
+        ...prev,
+        media: [...prev.media, item],
+      })),
   });
 
   /* ---------- input change handler --------------------------------- */
@@ -77,7 +104,7 @@ export function useProductEditorFormState(
       const { name, value } = e.target;
       const parsed = parseMultilingualInput(name, locales);
 
-      setProduct((prev) => {
+      setProduct((prev: ProductWithVariants) => {
         /* multilanguage <input name="title_en"> etc. */
         if (parsed) {
           const { field, locale } = parsed;
@@ -85,9 +112,9 @@ export function useProductEditorFormState(
 
           // previous translations, guaranteed object or default to {}
           const translations =
-            (prev as ProductWithVariants)[
-              realField as "title" | "description"
-            ] ?? ({} as Record<Locale, string>);
+            (prev[
+              realField as keyof Pick<ProductWithVariants, "title" | "description">
+            ] ?? {}) as Record<Locale, string>;
 
           const updatedTranslations: Record<Locale, string> = {
             ...translations,
@@ -130,7 +157,7 @@ export function useProductEditorFormState(
     const fd = new FormData();
     fd.append("id", product.id);
 
-    locales.forEach((l) => {
+    locales.forEach((l: Locale) => {
       fd.append(`title_${l}`, product.title[l]);
       fd.append(`desc_${l}`, product.description[l]);
     });
@@ -141,7 +168,10 @@ export function useProductEditorFormState(
     fd.append("publish", publishTargets.join(","));
 
     Object.entries(product.variants).forEach(([k, vals]) => {
-      fd.append(`variant_${k}`, vals.filter(Boolean).join(","));
+      fd.append(
+        `variant_${k}`,
+        (vals as string[]).filter(Boolean).join(",")
+      );
     });
     return fd;
   }, [product, publishTargets, locales]);
@@ -170,14 +200,14 @@ export function useProductEditorFormState(
 
   /* ---------- media helpers --------------------------------------- */
   const removeMedia = useCallback((index: number) => {
-    setProduct((prev) => ({
+    setProduct((prev: ProductWithVariants) => ({
       ...prev,
-      media: prev.media.filter((_, i) => i !== index),
+      media: prev.media.filter((_: MediaItem, i: number) => i !== index),
     }));
   }, []);
 
   const moveMedia = useCallback((from: number, to: number) => {
-    setProduct((prev) => {
+    setProduct((prev: ProductWithVariants) => {
       const gallery = [...prev.media];
       const [moved] = gallery.splice(from, 1);
       gallery.splice(to, 0, moved);
@@ -186,7 +216,7 @@ export function useProductEditorFormState(
   }, []);
 
   const addVariantValue = useCallback((attr: string) => {
-    setProduct((prev) => ({
+    setProduct((prev: ProductWithVariants) => ({
       ...prev,
       variants: {
         ...prev.variants,
@@ -196,13 +226,13 @@ export function useProductEditorFormState(
   }, []);
 
   const removeVariantValue = useCallback((attr: string, index: number) => {
-    setProduct((prev) => {
+    setProduct((prev: ProductWithVariants) => {
       const values = prev.variants[attr] ?? [];
       return {
         ...prev,
         variants: {
           ...prev.variants,
-          [attr]: values.filter((_, i) => i !== index),
+          [attr]: values.filter((_: string, i: number) => i !== index),
         },
       };
     });

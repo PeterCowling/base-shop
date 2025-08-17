@@ -1,5 +1,5 @@
 // packages/ui/src/components/account/Sessions.tsx
-import { revokeSession } from "@auth";
+import { revokeSession, type SessionRecord } from "@auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import RevokeSessionButton from "./RevokeSessionButton";
@@ -21,7 +21,7 @@ export async function revoke(id: string) {
     if (!session || !hasPermission(session.role, "manage_sessions")) {
       return { success: false, error: "Failed to revoke session." };
     }
-    const sessions = await listSessions(session.customerId);
+    const sessions: SessionRecord[] = await listSessions(session.customerId);
     if (!sessions.some((s) => s.sessionId === id)) {
       return { success: false, error: "Session does not belong to the user." };
     }
@@ -46,7 +46,7 @@ export default async function SessionsPage({
   if (!hasPermission(session.role, "manage_sessions")) {
     return <p className="p-6">Not authorized.</p>;
   }
-  const sessions = await listSessions(session.customerId);
+  const sessions: SessionRecord[] = await listSessions(session.customerId);
   if (!sessions.length) return <p className="p-6">No active sessions.</p>;
   return (
     <>

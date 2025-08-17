@@ -102,11 +102,15 @@ export function buildMetrics(
 
   const discountRedemptions: Series = {
     labels: days,
-    data: days.map((d) => {
-      const byCode = aggregates
+    data: days.map((d): number => {
+      const byCode: Record<string, number> | undefined = aggregates
         ? aggregates.discount_redeemed[d]
         : discountByCodeByDay[d];
-      return byCode ? Object.values(byCode).reduce((a, b) => a + b, 0) : 0;
+      if (!byCode) return 0;
+      return Object.values(byCode).reduce(
+        (a: number, b: number) => a + b,
+        0,
+      );
     }),
   };
 

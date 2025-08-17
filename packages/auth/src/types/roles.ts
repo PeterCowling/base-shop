@@ -19,7 +19,7 @@ export type Role = (typeof allRolesFromConfig)[number];
 export const WRITE_ROLES: Role[] = [...config.write];
 export const READ_ROLES: Role[] = [...allRolesFromConfig];
 
-let RoleSchema = z.enum(allRolesFromConfig);
+let RoleSchema = z.enum(READ_ROLES as [Role, ...Role[]]);
 
 export function isRole(role: unknown): role is Role {
   return RoleSchema.safeParse(role).success;

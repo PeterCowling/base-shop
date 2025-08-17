@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@ui/components/atoms/shadcn";
 import type { MediaItem } from "@acme/types";
-import { ReactElement, useMemo, useState } from "react";
+import { ChangeEvent, ReactElement, useMemo, useState } from "react";
 import MediaFileList from "../MediaFileList";
 
 interface LibraryProps {
@@ -49,7 +49,7 @@ export default function Library({
           type="search"
           placeholder="Search media..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
           className="flex-1"
         />
         {allTags.length > 0 && (

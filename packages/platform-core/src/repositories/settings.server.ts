@@ -47,7 +47,7 @@ function diffSettings(
     const a = JSON.stringify(oldS[key]);
     const b = JSON.stringify(newS[key]);
     if (a !== b) {
-      setPatchValue<ShopSettings>(patch, key, newS[key]);
+      setPatchValue(patch, key, newS[key]);
     }
   }
   return patch;

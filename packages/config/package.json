@@ -19,11 +19,16 @@
     "./tsconfig.app.json": "./tsconfig.app.json",
     "./jest.preset.cjs": "./jest.preset.cjs"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsc -p tsconfig.json -w",
     "clean": "rimraf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@acme/lib": "workspace:^"
   }
 }

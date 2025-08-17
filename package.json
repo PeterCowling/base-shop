@@ -57,6 +57,8 @@
     "test:cms": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs"
   },
   "dependencies": {
+    "@acme/config": "workspace:^",
+    "@acme/lib": "workspace:^",
     "@cloudflare/next-on-pages": "^1.13.12",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",

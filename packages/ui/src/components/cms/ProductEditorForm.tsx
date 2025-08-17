@@ -3,6 +3,7 @@
 
 import { Button, Card, CardContent, Input } from "@ui/components/atoms/shadcn";
 import type { Locale, ProductPublication } from "@platform-core/products";
+import type { MediaItem } from "@acme/types";
 import { useProductEditorFormState } from "@ui/hooks/useProductEditorFormState";
 import type {
   ProductWithVariants,
@@ -55,7 +56,7 @@ export default function ProductEditorForm({
         <form onSubmit={handleSubmit} className="@container grid gap-6">
           {Object.keys(errors).length > 0 && (
             <div className="text-sm text-danger" data-token="--color-danger">
-              {Object.entries(errors).map(([k, v]) => (
+              {Object.entries(errors).map(([k, v]: [string, string[]]) => (
                 <p key={k}>{v.join("; ")}</p>
               ))}
             </div>
@@ -75,10 +76,10 @@ export default function ProductEditorForm({
           </label>
 
           {/* Variant attributes -------------------------------------- */}
-          {Object.entries(product.variants).map(([attr, values]) => (
+          {Object.entries(product.variants).map(([attr, values]: [string, string[]]) => (
             <div key={attr} className="flex flex-col gap-2">
               <span>{`Variant ${attr}`}</span>
-              {values.map((v, i) => (
+              {values.map((v: string, i: number) => (
                 <div
                   key={i}
                   className="flex max-w-xs items-center gap-2"
@@ -119,7 +120,7 @@ export default function ProductEditorForm({
 
           {product.media.length > 0 && (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {product.media.map((img, idx) => (
+              {product.media.map((img: MediaItem, idx: number) => (
                 <div
                   key={img.url}
                   className="relative h-32 w-full overflow-hidden rounded-md border"

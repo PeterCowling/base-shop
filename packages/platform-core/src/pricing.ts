@@ -1,10 +1,9 @@
 import "server-only";
 
 import type { PricingMatrix, SKU } from "@acme/types";
-import { pricingSchema } from "@acme/types";
+import { coverageCodeSchema, pricingSchema } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import Dinero from "dinero.js";
 import { resolveDataRoot } from "./dataRoot";
 
 let cached: PricingMatrix | null = null;
@@ -35,8 +34,12 @@ export async function convertCurrency(
   if (to === base) return amount;
   const rate = rates[to];
   if (!rate) throw new Error(`Missing exchange rate for ${to}`);
-  const dineroAmount = Dinero({ amount });
-  return dineroAmount.multiply(rate, "HALF_EVEN").getAmount();
+  const raw = amount * rate;
+  const floor = Math.floor(raw);
+  const fraction = raw - floor;
+  if (fraction > 0.5) return Math.ceil(raw);
+  if (fraction < 0.5) return floor;
+  return floor % 2 === 0 ? floor : floor + 1;
 }
 
 export function applyDurationDiscount(
@@ -79,9 +82,12 @@ export async function computeDamageFee(
   if (pricing.coverage) {
     const hasCoverage = coverageIncluded || coverageCodes.includes(kind);
     if (hasCoverage) {
-      const coverage = pricing.coverage[kind];
-      if (coverage) {
-        fee = Math.max(0, fee - coverage.waiver);
+      const parsed = coverageCodeSchema.safeParse(kind);
+      if (parsed.success) {
+        const coverage = pricing.coverage[parsed.data];
+        if (coverage) {
+          fee = Math.max(0, fee - coverage.waiver);
+        }
       }
     }
   }

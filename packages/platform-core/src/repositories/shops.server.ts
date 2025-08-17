@@ -78,6 +78,10 @@ export async function readShop(shop: string): Promise<Shop> {
     localeOverrides: {},
     navigation: [],
     analyticsEnabled: false,
+    coverageIncluded: true,
+    componentVersions: {},
+    rentalSubscriptions: [],
+    subscriptionsEnabled: false,
     luxuryFeatures: {
       blog: false,
       contentMerchandising: false,

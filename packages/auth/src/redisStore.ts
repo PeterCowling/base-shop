@@ -33,9 +33,11 @@ export class RedisSessionStore implements SessionStore {
   }
 
   async list(customerId: string): Promise<SessionRecord[]> {
-    const ids = await this.client.smembers<string>(this.customerKey(customerId));
+    const ids = await this.client.smembers<string[]>(
+      this.customerKey(customerId)
+    );
     if (!ids || ids.length === 0) return [];
-    const records = await this.client.mget<SessionRecord>(
+    const records = await this.client.mget<(SessionRecord | null)[]>(
       ...ids.map((id) => this.key(id))
     );
     return records

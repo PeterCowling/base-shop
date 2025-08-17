@@ -14,7 +14,7 @@
   },
 
   /* only the auth source tree is compiled in this project ------------- */
-  "include": ["src/**/*"],
+  "include": ["src/**/*.ts", "src/**/*.json"],
   "exclude": [
     "dist", // freshly emitted output
     "__tests__", // unit/integration tests

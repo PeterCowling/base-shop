@@ -555,7 +555,7 @@ importers:
   packages/lib:
     dependencies:
       '@acme/config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../config
       '@platform-core':
         specifier: workspace:*
@@ -568,11 +568,14 @@ importers:
   packages/next-config:
     dependencies:
       '@acme/config':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../config
 
   packages/platform-core:
     dependencies:
+      '@acme/config':
+        specifier: workspace:^
+        version: link:../config
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0

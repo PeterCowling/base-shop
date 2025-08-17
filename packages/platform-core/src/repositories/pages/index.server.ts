@@ -66,7 +66,7 @@ function diffPages(oldP: Page | undefined, newP: Page): Partial<Page> {
     const a = oldP ? JSON.stringify(oldP[key]) : undefined;
     const b = JSON.stringify(newP[key]);
     if (a !== b) {
-      setPatchValue<Page>(patch, key, newP[key]);
+      setPatchValue(patch, key, newP[key]);
     }
   }
   return patch;
@@ -90,7 +90,8 @@ async function appendHistory(
 export async function getPages(shop: string): Promise<Page[]> {
   try {
     const rows = await prisma.page.findMany({ where: { shopId: shop } });
-    if (rows.length) return rows.map((r) => pageSchema.parse(r.data));
+    if (rows.length)
+      return rows.map((r: { data: unknown }) => pageSchema.parse(r.data));
     return [];
   } catch {
     // fall back to filesystem
@@ -193,10 +194,10 @@ export interface PageDiffEntry {
 }
 
 const entrySchema = z
-  .object({
-    timestamp: z.string().datetime(),
-    diff: pageSchema.partial(),
-  })
+    .object({
+      timestamp: z.string().datetime(),
+      diff: (pageSchema as z.ZodObject<any>).partial(),
+    })
   .strict();
 
 export async function diffHistory(shop: string): Promise<PageDiffEntry[]> {

@@ -7,45 +7,66 @@ import {
 } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import type Database from "better-sqlite3";
 import { validateShopName } from "../shops";
 import { DATA_ROOT } from "../dataRoot";
 import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
 
 interface SqliteInventoryRow {
   sku: string;
+  productId: string;
   variantAttributes: string | null;
   quantity: number;
+  lowStockThreshold: number | null;
+  wearCount: number | null;
+  wearAndTearLimit: number | null;
+  maintenanceCycle: number | null;
 }
 
-let DatabaseConstructor: typeof Database;
+let DatabaseConstructor: any;
 
-async function getDb(shop: string): Promise<Database> {
+async function getDb(shop: string) {
   if (!DatabaseConstructor) {
     ({ default: DatabaseConstructor } = await import("better-sqlite3"));
   }
   shop = validateShopName(shop);
   const dir = path.join(DATA_ROOT, shop);
   await fs.mkdir(dir, { recursive: true });
-  const db: Database = new DatabaseConstructor(path.join(dir, "inventory.sqlite"));
+  const db = new DatabaseConstructor(path.join(dir, "inventory.sqlite"));
   db.exec(
-    "CREATE TABLE IF NOT EXISTS inventory (sku TEXT, variantAttributes TEXT, quantity INTEGER, PRIMARY KEY (sku, variantAttributes))",
+    "CREATE TABLE IF NOT EXISTS inventory (sku TEXT, productId TEXT, variantAttributes TEXT, quantity INTEGER, lowStockThreshold INTEGER, wearCount INTEGER, wearAndTearLimit INTEGER, maintenanceCycle INTEGER, PRIMARY KEY (sku, variantAttributes))",
   );
-  return db;
+  return db as any;
 }
 
 async function read(shop: string): Promise<InventoryItem[]> {
-  const db: Database = await getDb(shop);
+  const db = await getDb(shop);
   const rows = db
-    .prepare<[], SqliteInventoryRow>(
-      "SELECT sku, variantAttributes, quantity FROM inventory",
+    .prepare(
+      "SELECT sku, productId, variantAttributes, quantity, lowStockThreshold, wearCount, wearAndTearLimit, maintenanceCycle FROM inventory",
     )
-    .all();
-  return rows.map((r) => ({
-    sku: r.sku,
-    quantity: r.quantity,
-    variantAttributes: JSON.parse(r.variantAttributes ?? "{}"),
-  }));
+    .all() as SqliteInventoryRow[];
+  return rows.map(
+    (r: SqliteInventoryRow) =>
+      ({
+        sku: r.sku,
+        productId: r.productId,
+        quantity: r.quantity,
+        variantAttributes: JSON.parse(r.variantAttributes ?? "{}") as Record<
+          string,
+          string
+        >,
+        ...(r.lowStockThreshold !== null && {
+          lowStockThreshold: r.lowStockThreshold,
+        }),
+        ...(r.wearCount !== null && { wearCount: r.wearCount }),
+        ...(r.wearAndTearLimit !== null && {
+          wearAndTearLimit: r.wearAndTearLimit,
+        }),
+        ...(r.maintenanceCycle !== null && {
+          maintenanceCycle: r.maintenanceCycle,
+        }),
+      } as InventoryItem),
+  );
 }
 
 async function write(shop: string, items: InventoryItem[]): Promise<void> {
@@ -59,20 +80,30 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
     )
     .map((i) => ({
       sku: i.sku,
+      productId: i.productId,
       quantity: i.quantity,
       variantAttributes: i.variantAttributes,
+      lowStockThreshold: i.lowStockThreshold,
+      wearCount: i.wearCount,
+      wearAndTearLimit: i.wearAndTearLimit,
+      maintenanceCycle: i.maintenanceCycle,
     })) as SerializedInventoryItem[];
-  const db: Database = await getDb(shop);
+  const db = await getDb(shop);
   const insert = db.prepare(
-    "REPLACE INTO inventory (sku, variantAttributes, quantity) VALUES (?, ?, ?)",
+    "REPLACE INTO inventory (sku, productId, variantAttributes, quantity, lowStockThreshold, wearCount, wearAndTearLimit, maintenanceCycle) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
   );
   const tx = db.transaction((records: SerializedInventoryItem[]) => {
     db.prepare("DELETE FROM inventory").run();
     for (const item of records) {
       insert.run(
         item.sku,
+        item.productId,
         JSON.stringify(item.variantAttributes || {}),
         item.quantity,
+        item.lowStockThreshold ?? null,
+        item.wearCount ?? null,
+        item.wearAndTearLimit ?? null,
+        item.maintenanceCycle ?? null,
       );
     }
   });
@@ -85,21 +116,32 @@ export async function updateInventoryItem(
   variantAttributes: Record<string, string>,
   mutate: InventoryMutateFn,
 ): Promise<InventoryItem | undefined> {
-  const db: Database = await getDb(shop);
+  const db = await getDb(shop);
   const key = JSON.stringify(variantAttributes || {});
   const tx = db
     .transaction(() => {
       const row = db
-        .prepare<[string, string], SqliteInventoryRow>(
-          "SELECT sku, variantAttributes, quantity FROM inventory WHERE sku = ? AND variantAttributes = ?",
+        .prepare(
+          "SELECT sku, productId, variantAttributes, quantity, lowStockThreshold, wearCount, wearAndTearLimit, maintenanceCycle FROM inventory WHERE sku = ? AND variantAttributes = ?",
         )
-        .get(sku, key);
-      const current: InventoryItem | undefined = row
-        ? {
+        .get(sku, key) as SqliteInventoryRow | undefined;
+      const current = row
+        ? ({
             sku: row.sku,
+            productId: row.productId,
             quantity: row.quantity,
             variantAttributes: JSON.parse(row.variantAttributes ?? "{}"),
-          }
+            ...(row.lowStockThreshold !== null && {
+              lowStockThreshold: row.lowStockThreshold,
+            }),
+            ...(row.wearCount !== null && { wearCount: row.wearCount }),
+            ...(row.wearAndTearLimit !== null && {
+              wearAndTearLimit: row.wearAndTearLimit,
+            }),
+            ...(row.maintenanceCycle !== null && {
+              maintenanceCycle: row.maintenanceCycle,
+            }),
+          } as InventoryItem)
         : undefined;
       const updated = mutate(current);
       if (updated === undefined) {
@@ -115,8 +157,17 @@ export async function updateInventoryItem(
         variantAttributes,
       });
       db.prepare(
-        "REPLACE INTO inventory (sku, variantAttributes, quantity) VALUES (?, ?, ?)",
-      ).run(sku, key, nextItem.quantity);
+        "REPLACE INTO inventory (sku, productId, variantAttributes, quantity, lowStockThreshold, wearCount, wearAndTearLimit, maintenanceCycle) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      ).run(
+        sku,
+        nextItem.productId,
+        key,
+        nextItem.quantity,
+        nextItem.lowStockThreshold ?? null,
+        nextItem.wearCount ?? null,
+        nextItem.wearAndTearLimit ?? null,
+        nextItem.maintenanceCycle ?? null,
+      );
       return nextItem;
     })
     .immediate;

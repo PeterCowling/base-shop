@@ -8,7 +8,7 @@ import { z } from "zod";
 import argon2 from "argon2";
 import { parseJsonBody } from "@shared-utils";
 import { checkLoginRateLimit, clearLoginAttempts } from "../../middleware";
-import { getUserById } from "@acme/platform-core/users";
+import { getUserById } from "@platform-core/users";
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 

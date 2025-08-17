@@ -1,5 +1,5 @@
 // packages/ui/hooks/useProductEditorFormState.tsx
-import type { Locale, ProductPublication } from "@platform-core/src/products";
+import type { Locale, ProductPublication } from "@platform-core/products";
 import { useFileUpload } from "@ui/hooks/useFileUpload";
 import { usePublishLocations } from "@platform-core/hooks/usePublishLocations";
 import { parseMultilingualInput } from "@i18n/parseMultilingualInput";

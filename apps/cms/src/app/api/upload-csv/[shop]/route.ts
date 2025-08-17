@@ -8,7 +8,7 @@ import { Readable } from "node:stream";
 import Busboy from "busboy";
 import { fileTypeFromBuffer } from "file-type/core";
 import { resolveDataRoot } from "@platform-core/dataRoot";
-import { validateShopName } from "@platform-core/src/shops";
+import { validateShopName } from "@platform-core/shops";
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 

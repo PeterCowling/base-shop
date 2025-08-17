@@ -3,7 +3,7 @@
 import {
   Currency,
   useCurrency,
-} from "@platform-core/src/contexts/CurrencyContext";
+} from "@platform-core/contexts/CurrencyContext";
 import {
   Select,
   SelectContent,

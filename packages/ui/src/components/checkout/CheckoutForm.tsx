@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { isoDateInNDays } from "@acme/date-utils";
-import { useCurrency } from "@platform-core/src/contexts/CurrencyContext";
+import { useCurrency } from "@platform-core/contexts/CurrencyContext";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string,

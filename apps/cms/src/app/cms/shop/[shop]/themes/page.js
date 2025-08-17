@@ -60,9 +60,9 @@ exports.savePreset = savePreset;
 exports.deletePreset = deletePreset;
 exports.default = ShopThemePage;
 // apps/cms/src/app/cms/shop/[shop]/themes/page.tsx
-var createShop_1 = require("@platform-core/src/createShop");
-var shops_server_1 = require("@platform-core/src/repositories/shops.server");
-var themePresets_server_1 = require("@platform-core/src/repositories/themePresets.server");
+var createShop_1 = require("@platform-core/createShop");
+var shops_server_1 = require("@platform-core/repositories/shops.server");
+var themePresets_server_1 = require("@platform-core/repositories/themePresets.server");
 var ThemeEditor_1 = require("./ThemeEditor");
 function savePreset(shop, name, tokens) {
     return __awaiter(this, void 0, void 0, function () {

@@ -3,9 +3,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = PdpClient;
-var ImageGallery_1 = require("@platform-core/src/components/pdp/ImageGallery");
-var SizeSelector_1 = require("@platform-core/src/components/pdp/SizeSelector");
-var AddToCartButton_client_1 = require("@platform-core/src/components/shop/AddToCartButton.client");
+var ImageGallery_1 = require("@platform-core/components/pdp/ImageGallery");
+var SizeSelector_1 = require("@platform-core/components/pdp/SizeSelector");
+var AddToCartButton_client_1 = require("@platform-core/components/shop/AddToCartButton.client");
 var Price_1 = require("@ui/components/atoms/Price");
 var react_1 = require("react");
 function PdpClient(_a) {

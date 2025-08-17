@@ -37,11 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var persistence_1 = require("../persistence");
-jest.mock("@platform-core/src/repositories/shop.server", function () { return ({
+jest.mock("@platform-core/repositories/shop.server", function () { return ({
     getShopById: jest.fn().mockResolvedValue({ id: "1" }),
     updateShopInRepo: jest.fn().mockResolvedValue({ id: "1" }),
 }); });
-jest.mock("@platform-core/src/repositories/settings.server", function () { return ({
+jest.mock("@platform-core/repositories/settings.server", function () { return ({
     getShopSettings: jest.fn().mockResolvedValue({ foo: "bar" }),
     saveShopSettings: jest.fn().mockResolvedValue(undefined),
     diffHistory: jest.fn().mockResolvedValue([]),
@@ -90,7 +90,7 @@ describe("persistence service", function () {
                 case 0: return [4 /*yield*/, (0, persistence_1.persistSettings)("s1", { foo: "bar" })];
                 case 1:
                     _a.sent();
-                    return [4 /*yield*/, Promise.resolve().then(function () { return require("@platform-core/src/repositories/settings.server"); })];
+                    return [4 /*yield*/, Promise.resolve().then(function () { return require("@platform-core/repositories/settings.server"); })];
                 case 2:
                     saveShopSettings = (_a.sent()).saveShopSettings;
                     expect(saveShopSettings).toHaveBeenCalled();

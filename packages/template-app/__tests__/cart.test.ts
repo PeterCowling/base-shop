@@ -1,12 +1,12 @@
 // packages/template-app/__tests__/cart.test.ts
-import { decodeCartCookie, encodeCartCookie } from "@platform-core/src/cartCookie";
+import { decodeCartCookie, encodeCartCookie } from "@platform-core/cartCookie";
 import {
   createCart,
   getCart,
   setCart,
   incrementQty,
-} from "@platform-core/src/cartStore";
-import { PRODUCTS } from "@platform-core/src/products";
+} from "@platform-core/cartStore";
+import { PRODUCTS } from "@platform-core/products";
 import { DELETE, GET, PATCH, POST, PUT } from "../src/api/cart/route";
 
 const TEST_SKU = PRODUCTS[0];

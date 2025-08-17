@@ -44,7 +44,7 @@ var server_1 = require("next/server");
 var node_fs_1 = require("node:fs");
 var node_path_1 = require("node:path");
 var dataRoot_1 = require("@platform-core/dataRoot");
-var shops_1 = require("@platform-core/src/shops");
+var shops_1 = require("@platform-core/shops");
 var zod_1 = require("zod");
 var _shared_utils_1 = require("@shared-utils");
 /**

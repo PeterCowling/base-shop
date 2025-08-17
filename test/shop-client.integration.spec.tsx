@@ -17,7 +17,7 @@ jest.mock("next/navigation", () => ({
 // Lightweight mock of the FilterBar component to avoid React version
 // mismatches in tests. It implements a minimal controlled select/number API
 // sufficient for our integration scenario.
-jest.mock("@platform-core/src/components/shop/FilterBar", () => {
+jest.mock("@platform-core/components/shop/FilterBar", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -61,7 +61,7 @@ jest.mock("@platform-core/src/components/shop/FilterBar", () => {
   };
 });
 
-jest.mock("@platform-core/src/components/shop/ProductGrid", () => {
+jest.mock("@platform-core/components/shop/ProductGrid", () => {
   const React = require("react");
   return {
     __esModule: true,

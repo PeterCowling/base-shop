@@ -1,6 +1,6 @@
 import { buildThemeData, removeThemeToken, mergeThemePatch } from "../theme";
 
-jest.mock("@platform-core/src/createShop", () => ({
+jest.mock("@platform-core/createShop", () => ({
   syncTheme: jest.fn().mockResolvedValue({ a: "1" }),
 }));
 jest.mock("@platform-core/themeTokens", () => ({

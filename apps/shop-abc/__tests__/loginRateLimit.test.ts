@@ -11,7 +11,7 @@ jest.mock("@auth/mfa", () => ({
   isMfaEnabled: jest.fn().mockResolvedValue(false),
 }));
 
-jest.mock("@acme/platform-core/users", () => ({
+jest.mock("@platform-core/users", () => ({
   getUserById: jest.fn(async (id: string) =>
     id === "cust1"
       ? { passwordHash: "correctpass", role: "customer", emailVerified: true }

@@ -1,5 +1,5 @@
-import { getSanityConfig } from "@platform-core/src/shops";
-import { getShopById } from "@platform-core/src/repositories/shop.server";
+import { getSanityConfig } from "@platform-core/shops";
+import { getShopById } from "@platform-core/repositories/shop.server";
 import {
   listPosts,
   getPost as repoGetPost,
@@ -11,7 +11,7 @@ import {
   slugExists,
   type SanityPost,
   type SanityConfig,
-} from "@platform-core/src/repositories/blog.server";
+} from "@platform-core/repositories/blog.server";
 import { ensureAuthorized } from "../actions/common/auth";
 import { nowIso } from "@date-utils";
 

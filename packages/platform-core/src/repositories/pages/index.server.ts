@@ -6,7 +6,7 @@ import { pageSchema, type Page } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { prisma } from "../../db";
-import { validateShopName } from "@platform-core/src/shops";
+import { validateShopName } from "@platform-core/shops";
 import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
 import { z } from "zod";

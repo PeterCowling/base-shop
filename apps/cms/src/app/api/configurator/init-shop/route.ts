@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
-import { validateShopName } from "@platform-core/src/shops";
+import { validateShopName } from "@platform-core/shops";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 

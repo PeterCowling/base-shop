@@ -1,4 +1,4 @@
-import { CartProvider, useCart } from "@platform-core/src/contexts/CartContext";
+import { CartProvider, useCart } from "@platform-core/contexts/CartContext";
 import { type Meta, type StoryObj } from "@storybook/react";
 import type { CartState } from "@/lib/cartCookie";
 import type { SKU } from "@acme/types";

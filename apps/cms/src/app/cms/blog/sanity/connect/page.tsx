@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/blog/sanity/connect/page.tsx
 import ConnectForm from "./ConnectForm.client";
-import { getShopById } from "@platform-core/src/repositories/shop.server";
-import { getSanityConfig } from "@platform-core/src/shops";
+import { getShopById } from "@platform-core/repositories/shop.server";
+import { getSanityConfig } from "@platform-core/shops";
 
 export const revalidate = 0;
 

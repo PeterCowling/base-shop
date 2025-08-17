@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@ui/components/atoms/shadcn";
-import { ProductPublication } from "@platform-core/src/products";
+import { ProductPublication } from "@platform-core/products";
 import Link from "next/link";
 
 interface Props {

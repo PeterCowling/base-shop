@@ -2,7 +2,7 @@ import {
   RecommendationCarousel as BaseCarousel,
   type RecommendationCarouselProps,
 } from "../../organisms/RecommendationCarousel";
-import { PRODUCTS } from "@platform-core/src/products";
+import { PRODUCTS } from "@platform-core/products";
 import type { SKU } from "@acme/types";
 
 export default function CmsRecommendationCarousel({

@@ -1,7 +1,7 @@
 "use client";
 
-import { ProductGrid as BaseGrid } from "@platform-core/src/components/shop/ProductGrid";
-import { PRODUCTS } from "@platform-core/src/products";
+import { ProductGrid as BaseGrid } from "@platform-core/components/shop/ProductGrid";
+import { PRODUCTS } from "@platform-core/products";
 import type { SKU } from "@acme/types";
 import { useEffect, useState } from "react";
 import { fetchCollection } from "./products/fetchCollection";

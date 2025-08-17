@@ -50,7 +50,7 @@ describe("shop actions", () => {
         )
       );
 
-      jest.doMock("@platform-core/src/db", () => ({
+      jest.doMock("@platform-core/db", () => ({
         prisma: {
           shop: {
             findUnique: jest.fn().mockResolvedValue(null),
@@ -60,7 +60,7 @@ describe("shop actions", () => {
       }));
 
       jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "secret" } }));
-      jest.doMock("@platform-core/src/createShop", () => ({ syncTheme: jest.fn() }));
+      jest.doMock("@platform-core/createShop", () => ({ syncTheme: jest.fn() }));
       jest.doMock("@platform-core/themeTokens", () => ({
         baseTokens: {},
         loadThemeTokens: jest.fn().mockResolvedValue({}),
@@ -112,7 +112,7 @@ describe("shop actions", () => {
         ),
       );
 
-      jest.doMock("@platform-core/src/db", () => ({
+      jest.doMock("@platform-core/db", () => ({
       prisma: {
         shop: {
           findUnique: jest.fn().mockResolvedValue(null),
@@ -134,7 +134,7 @@ describe("shop actions", () => {
         accent: "blue",
         "accent-dark": "navy",
       };
-      jest.doMock("@platform-core/src/createShop", () => ({
+      jest.doMock("@platform-core/createShop", () => ({
         syncTheme: jest.fn().mockResolvedValue(defaultTokens),
       }));
       jest.doMock("@platform-core/themeTokens", () => ({
@@ -160,7 +160,7 @@ describe("shop actions", () => {
       expect(result.shop?.themeTokens).toEqual({ ...defaultTokens, ...overrides });
 
       const { readShop } = await import(
-        "@platform-core/src/repositories/shops.server"
+        "@platform-core/repositories/shops.server"
       );
       const reloaded = await readShop("test");
       expect(reloaded.themeDefaults).toEqual(defaultTokens);

@@ -9,10 +9,10 @@ import {
 } from "./ThemeEditor.test-utils";
 
 const mockReadShop = jest.fn();
-jest.mock("@platform-core/src/repositories/shops.server", () => ({
+jest.mock("@platform-core/repositories/shops.server", () => ({
   readShop: (...args: any[]) => mockReadShop(...args),
 }));
-import { readShop } from "@platform-core/src/repositories/shops.server";
+import { readShop } from "@platform-core/repositories/shops.server";
 
 describe("ThemeEditor reload", () => {
   it("returns overrides after reloading the page", async () => {

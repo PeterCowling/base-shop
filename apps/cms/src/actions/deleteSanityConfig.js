@@ -39,8 +39,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteSanityConfig = deleteSanityConfig;
-var shop_server_1 = require("@platform-core/src/repositories/shop.server");
-var shops_1 = require("@platform-core/src/shops");
+var shop_server_1 = require("@platform-core/repositories/shop.server");
+var shops_1 = require("@platform-core/shops");
 var auth_1 = require("./common/auth");
 function deleteSanityConfig(shopId) {
     return __awaiter(this, void 0, void 0, function () {

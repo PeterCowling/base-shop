@@ -2,7 +2,7 @@
 "use client";
 
 import { Input, Textarea } from "@ui/components/atoms/shadcn";
-import type { Locale, ProductPublication } from "@platform-core/src/products";
+import type { Locale, ProductPublication } from "@platform-core/products";
 import { memo } from "react";
 
 interface Props {

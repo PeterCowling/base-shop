@@ -2,11 +2,11 @@
 "use server";
 
 import { verifyCredentials } from "@acme/plugin-sanity";
-import { getShopById, updateShopInRepo } from "@platform-core/src/repositories/shop.server";
+import { getShopById, updateShopInRepo } from "@platform-core/repositories/shop.server";
 import {
   setSanityConfig,
   setEditorialBlog,
-} from "@platform-core/src/shops";
+} from "@platform-core/shops";
 import type { Shop } from "@acme/types";
 import { ensureAuthorized } from "./common/auth";
 import { setupSanityBlog } from "./setupSanityBlog";

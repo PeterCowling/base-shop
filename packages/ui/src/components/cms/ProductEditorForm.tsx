@@ -2,7 +2,7 @@
 "use client";
 
 import { Button, Card, CardContent, Input } from "@ui/components/atoms/shadcn";
-import type { Locale, ProductPublication } from "@platform-core/src/products";
+import type { Locale, ProductPublication } from "@platform-core/products";
 import { useProductEditorFormState } from "@ui/hooks/useProductEditorFormState";
 import type {
   ProductWithVariants,

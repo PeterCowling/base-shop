@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "@sanity/client": "^6.15.0",
-    "@acme/platform-core": "workspace:*"
+    "@platform-core": "workspace:*"
   }
 }

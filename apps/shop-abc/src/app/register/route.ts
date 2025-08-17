@@ -8,10 +8,10 @@ import {
   createUser,
   getUserById,
   getUserByEmail,
-} from "@acme/platform-core/users";
+} from "@platform-core/users";
 import { checkRegistrationRateLimit } from "../../middleware";
 import { validateCsrfToken } from "@auth";
-import { updateCustomerProfile } from "@acme/platform-core/customerProfiles";
+import { updateCustomerProfile } from "@platform-core/customerProfiles";
 import { sendEmail } from "@acme/email";
 import { env } from "@acme/config";
 

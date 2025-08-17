@@ -9,8 +9,8 @@ import { useTranslations } from "@/i18n/useTranslations";
 import {
   CART_COOKIE,
   decodeCartCookie,
-} from "@platform-core/src/cartCookie";
-import { getCart } from "@platform-core/src/cartStore";
+} from "@platform-core/cartCookie";
+import { getCart } from "@platform-core/cartStore";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import type { PageComponent } from "@acme/types";
 import { cookies } from "next/headers";

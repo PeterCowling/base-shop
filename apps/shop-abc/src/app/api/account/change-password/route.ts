@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import argon2 from "argon2";
 import { requirePermission, validateCsrfToken } from "@auth";
-import { getUserById, updatePassword } from "@acme/platform-core/users";
+import { getUserById, updatePassword } from "@platform-core/users";
 
 const ChangePasswordSchema = z
   .object({

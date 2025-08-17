@@ -2,8 +2,8 @@
 import {
   decodeCartCookie,
   encodeCartCookie,
-} from "@platform-core/src/cartCookie";
-import { createCart, getCart, setCart } from "@platform-core/src/cartStore";
+} from "@platform-core/cartCookie";
+import { createCart, getCart, setCart } from "@platform-core/cartStore";
 import { PRODUCTS } from "@platform-core/products";
 import { DELETE, GET, PATCH, POST, PUT } from "../src/app/api/cart/route";
 import * as productLib from "@/lib/products";

@@ -3,7 +3,7 @@ import { describe, expect, it } from "@jest/globals";
 import { render, screen, waitFor } from "@testing-library/react";
 import { useEffect } from "react";
 
-import type { ProductPublication } from "@platform-core/src/products";
+import type { ProductPublication } from "@platform-core/products";
 import { useProductFilters, type ProductStatus } from "../useProductFilters";
 
 /* ------------------------------------------------------------------

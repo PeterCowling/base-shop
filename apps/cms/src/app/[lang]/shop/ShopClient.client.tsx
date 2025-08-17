@@ -4,8 +4,8 @@
 import FilterBar, {
   type Filters,
   type FilterDefinition,
-} from "@platform-core/src/components/shop/FilterBar";
-import { ProductGrid } from "@platform-core/src/components/shop/ProductGrid";
+} from "@platform-core/components/shop/FilterBar";
+import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
 import type { SKU } from "@acme/types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

@@ -1,50 +1,66 @@
 {
-  "name": "@acme/platform-core",
+  "name": "@platform-core",
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "default": "./dist/index.js"
     },
     "./createShop": {
       "types": "./dist/createShop/index.d.ts",
       "import": "./dist/createShop/index.js",
-      "require": "./dist/createShop/index.cjs"
+      "default": "./dist/createShop/index.js"
+    },
+    "./themeTokens": {
+      "types": "./dist/themeTokens/index.d.ts",
+      "import": "./dist/themeTokens/index.js",
+      "default": "./dist/themeTokens/index.js"
+    },
+    "./products": {
+      "types": "./dist/products/index.d.ts",
+      "import": "./dist/products/index.js",
+      "default": "./dist/products/index.js"
+    },
+    "./analytics": {
+      "types": "./dist/analytics/index.d.ts",
+      "import": "./dist/analytics/index.js",
+      "default": "./dist/analytics/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js",
+      "default": "./dist/utils/index.js"
+    },
+    "./shops": {
+      "types": "./dist/shops/index.d.ts",
+      "import": "./dist/shops/index.js",
+      "default": "./dist/shops/index.js"
+    },
+    "./repositories/*": {
+      "types": "./dist/repositories/*.d.ts",
+      "import": "./dist/repositories/*.js",
+      "default": "./dist/repositories/*.js"
     }
   },
-  "dependencies": {
-    "@acme/types": "workspace:*",
-    "@acme/date-utils": "workspace:*",
-    "@acme/email": "workspace:*",
-    "@acme/shared-utils": "workspace:*",
-    "@prisma/client": "^5.15.1",
-    "@upstash/redis": "^1.35.3",
-    "better-sqlite3": "^12.2.0",
-    "dinero.js": "^1.9.1",
-    "pino": "^9.9.0",
-    "zod": "^3.25.73"
-  },
-  "peerDependencies": {
-    "next": "^15.0.0",
-    "react": "^18",
-    "react-dom": "^18"
-  },
-  "devDependencies": {
-    "@types/better-sqlite3": "^7.6.13",
-    "next": "^15.3.4",
-    "prisma": "^5.15.1"
-  },
+
+  "files": ["dist"],
+  "sideEffects": false,
+
   "scripts": {
-    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
-    "prisma:migrate": "prisma migrate deploy",
-    "prisma:seed": "prisma db seed"
+    "build": "tsc -b",
+    "clean": "rimraf dist *.tsbuildinfo"
   },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   }
 }

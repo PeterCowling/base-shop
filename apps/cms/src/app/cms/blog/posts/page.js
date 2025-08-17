@@ -41,8 +41,8 @@ exports.default = BlogPostsPage;
 var link_1 = require("next/link");
 var _ui_1 = require("@ui");
 var blog_server_1 = require("@cms/actions/blog.server");
-var shops_1 = require("@platform-core/src/shops");
-var shop_server_1 = require("@platform-core/src/repositories/shop.server");
+var shops_1 = require("@platform-core/shops");
+var shop_server_1 = require("@platform-core/repositories/shop.server");
 function BlogPostsPage(_a) {
     return __awaiter(this, arguments, void 0, function (_b) {
         var shopId, shop, sanity, posts;

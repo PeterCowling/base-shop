@@ -31,7 +31,7 @@ export const baseConfig = {
   //     or other code that must run in the browser.
   transpilePackages: [
     "@acme/ui",
-    "@acme/platform-core",
+    "@platform-core",
     "@acme/i18n",
     "@acme/template-app",
   ],

@@ -5,7 +5,7 @@ import { SearchResultsTemplate } from "../SearchResultsTemplate";
 import type { SKU } from "@acme/types";
 import "../../../../../../test/resetNextMocks";
 
-jest.mock("@platform-core/src/contexts/CurrencyContext", () => ({
+jest.mock("@platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],
 }));
 

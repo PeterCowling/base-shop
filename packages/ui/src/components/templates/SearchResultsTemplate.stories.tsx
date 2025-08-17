@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react";
-import FilterBar from "@platform-core/src/components/shop/FilterBar";
+import FilterBar from "@platform-core/components/shop/FilterBar";
 import type { SKU } from "@acme/types";
 import { SearchResultsTemplate } from "./SearchResultsTemplate";
 

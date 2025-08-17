@@ -4,11 +4,11 @@ jest.mock("@cms/actions/blog.server", () => ({
   getPosts: jest.fn(),
 }));
 
-jest.mock("@platform-core/src/shops", () => ({
+jest.mock("@platform-core/shops", () => ({
   getSanityConfig: jest.fn().mockReturnValue({}),
 }));
 
-jest.mock("@platform-core/src/repositories/shop.server", () => ({
+jest.mock("@platform-core/repositories/shop.server", () => ({
   getShopById: jest.fn().mockResolvedValue({}),
 }));
 

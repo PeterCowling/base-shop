@@ -2,12 +2,12 @@
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { stripe } from "@acme/stripe";
 import { coreEnv } from "@acme/config/env/core";
-import { readShop } from "@platform-core/src/repositories/shops.server";
+import { readShop } from "@platform-core/repositories/shops.server";
 import { getCustomerSession } from "@auth";
 import { notFound } from "next/navigation";
 import {
   setUserPlan,
-} from "@platform-core/src/repositories/subscriptionUsage.server";
+} from "@platform-core/repositories/subscriptionUsage.server";
 import { setStripeSubscriptionId } from "@platform-core/repositories/users";
 
 export default async function SubscribePage({

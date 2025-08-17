@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/wizard/services/deployShop.ts
 "use client";
 
-import { validateShopName } from "@platform-core/src/shops";
+import { validateShopName } from "@platform-core/shops";
 
 interface DeployStatusBase {
   status: "pending" | "success" | "error";

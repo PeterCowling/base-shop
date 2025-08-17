@@ -14,13 +14,13 @@ jest.mock("@auth", () => ({
   validateCsrfToken: jest.fn(),
 }));
 
-jest.mock("@acme/platform-core/users", () => ({
+jest.mock("@platform-core/users", () => ({
   getUserById: jest.fn(),
   updatePassword: jest.fn(),
 }));
 
 import { requirePermission, validateCsrfToken } from "@auth";
-import { getUserById, updatePassword } from "@acme/platform-core/users";
+import { getUserById, updatePassword } from "@platform-core/users";
 
 function createRequest(body: any, token = "tok"): Parameters<typeof POST>[0] {
   return {

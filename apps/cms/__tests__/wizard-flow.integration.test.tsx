@@ -2,7 +2,7 @@
 /* eslint-env jest */
 
 /** Stubs to simplify rendering Wizard in JSDOM */
-jest.mock("@platform-core/src/contexts/ThemeContext", () => {
+jest.mock("@platform-core/contexts/ThemeContext", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -12,7 +12,7 @@ jest.mock("@platform-core/src/contexts/ThemeContext", () => {
   };
 });
 
-jest.mock("@platform-core/src", () => {
+jest.mock("@platform-core", () => {
   const React = require("react");
   return {
     __esModule: true,

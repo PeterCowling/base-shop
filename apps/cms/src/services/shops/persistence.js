@@ -5,8 +5,8 @@ exports.persistShop = persistShop;
 exports.fetchSettings = fetchSettings;
 exports.persistSettings = persistSettings;
 exports.fetchDiffHistory = fetchDiffHistory;
-var settings_server_1 = require("@platform-core/src/repositories/settings.server");
-var shop_server_1 = require("@platform-core/src/repositories/shop.server");
+var settings_server_1 = require("@platform-core/repositories/settings.server");
+var shop_server_1 = require("@platform-core/repositories/shop.server");
 function fetchShop(shop) {
     return (0, shop_server_1.getShopById)(shop);
 }

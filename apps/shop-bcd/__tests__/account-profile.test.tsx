@@ -4,7 +4,7 @@ jest.mock("@auth", () => ({
   getCustomerSession: jest.fn(),
 }));
 
-jest.mock("@acme/platform-core", () => ({
+jest.mock("@platform-core", () => ({
   __esModule: true,
   getCustomerProfile: jest.fn(),
 }));
@@ -15,7 +15,7 @@ jest.mock("next/navigation", () => ({
 }));
 
 import { getCustomerSession } from "@auth";
-import { getCustomerProfile } from "@acme/platform-core";
+import { getCustomerProfile } from "@platform-core";
 import ProfilePage from "@ui/src/components/account/Profile";
 import ProfileForm from "@ui/src/components/account/ProfileForm";
 import { redirect } from "next/navigation";

@@ -8,7 +8,7 @@ jest.mock("@ui/hooks/useCart", () => ({
   useCart: () => [{}, jest.fn()],
 }));
 
-jest.mock("@platform-core/src/contexts/CurrencyContext", () => ({
+jest.mock("@platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["EUR", jest.fn()],
 }));
 

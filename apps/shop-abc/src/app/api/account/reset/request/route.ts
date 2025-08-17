@@ -3,7 +3,7 @@ import "@acme/lib/initZod";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import crypto from "crypto";
-import { getUserByEmail, setResetToken } from "@acme/platform-core/users";
+import { getUserByEmail, setResetToken } from "@platform-core/users";
 import { sendEmail } from "@acme/email";
 import { checkLoginRateLimit } from "../../../../../middleware";
 import { validateCsrfToken } from "@auth";

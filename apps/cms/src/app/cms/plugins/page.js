@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = PluginsPage;
 // apps/cms/src/app/cms/plugins/page.tsx
 var node_path_1 = require("node:path");
-var plugins_1 = require("@acme/platform-core/plugins");
+var plugins_1 = require("@platform-core/plugins");
 var link_1 = require("next/link");
 var PluginList_client_1 = require("./PluginList.client");
 function PluginsPage() {

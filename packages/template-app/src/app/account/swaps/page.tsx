@@ -2,16 +2,16 @@
 import {
   CART_COOKIE,
   decodeCartCookie,
-} from "@platform-core/src/cartCookie";
+} from "@platform-core/cartCookie";
 import {
   getCart,
   removeItem,
   incrementQty,
-} from "@platform-core/src/cartStore";
-import { getProductById } from "@platform-core/src/products";
+} from "@platform-core/cartStore";
+import { getProductById } from "@platform-core/products";
 import { cookies } from "next/headers";
 import { getCustomerSession } from "@auth";
-import { readShop } from "@platform-core/src/repositories/shops.server";
+import { readShop } from "@platform-core/repositories/shops.server";
 import { notFound } from "next/navigation";
 import { coreEnv } from "@acme/config/env/core";
 import { nowIso } from "@date-utils";
@@ -19,7 +19,7 @@ import {
   getUserPlan,
   getRemainingSwaps,
   incrementSwapCount,
-} from "@platform-core/src/repositories/subscriptionUsage.server";
+} from "@platform-core/repositories/subscriptionUsage.server";
 
 export default async function SwapPage() {
   const cookieStore = await cookies();

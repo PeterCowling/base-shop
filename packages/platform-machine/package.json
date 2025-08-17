@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@acme/stripe": "workspace:*",
-    "@acme/platform-core": "workspace:*",
+    "@platform-core": "workspace:*",
     "react": "^19.0.0"
   },
   "devDependencies": {

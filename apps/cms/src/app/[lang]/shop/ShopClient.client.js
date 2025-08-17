@@ -3,8 +3,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = ShopClient;
-var FilterBar_1 = require("@platform-core/src/components/shop/FilterBar");
-var ProductGrid_1 = require("@platform-core/src/components/shop/ProductGrid");
+var FilterBar_1 = require("@platform-core/components/shop/FilterBar");
+var ProductGrid_1 = require("@platform-core/components/shop/ProductGrid");
 var react_1 = require("react");
 var navigation_1 = require("next/navigation");
 function ShopClient(_a) {

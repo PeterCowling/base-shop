@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { SKU } from "@acme/types";
-import AddToCartButton from "@platform-core/src/components/shop/AddToCartButton.client";
+import AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
 import { Price } from "../../atoms/Price";
 
 interface Props {

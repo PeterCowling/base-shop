@@ -49,7 +49,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildThemeData = buildThemeData;
 exports.removeThemeToken = removeThemeToken;
-var createShop_1 = require("@platform-core/src/createShop");
+var createShop_1 = require("@platform-core/createShop");
 function buildThemeData(shop, form, current) {
     return __awaiter(this, void 0, void 0, function () {
         var overrides, themeDefaults, _a, themeTokens;

@@ -138,7 +138,7 @@ describe("submitShop error handling", () => {
       __esModule: true,
       createShopOptionsSchema: { safeParse: () => ({ success: true, data: {} }) },
     }));
-    jest.doMock("@platform-core/src/shops", () => ({
+    jest.doMock("@platform-core/shops", () => ({
       validateShopName: jest.fn(),
     }));
 
@@ -165,7 +165,7 @@ describe("submitShop error handling", () => {
       __esModule: true,
       createShopOptionsSchema: { safeParse: () => ({ success: true, data: {} }) },
     }));
-    jest.doMock("@platform-core/src/shops", () => ({
+    jest.doMock("@platform-core/shops", () => ({
       validateShopName: jest.fn(),
     }));
 

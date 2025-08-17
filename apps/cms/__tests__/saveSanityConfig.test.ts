@@ -1,8 +1,8 @@
 import { saveSanityConfig } from "../src/actions/saveSanityConfig";
 import { verifyCredentials } from "@acme/plugin-sanity";
 import { setupSanityBlog } from "../src/actions/setupSanityBlog";
-import { getShopById, updateShopInRepo } from "@platform-core/src/repositories/shop.server";
-import { setSanityConfig } from "@platform-core/src/shops";
+import { getShopById, updateShopInRepo } from "@platform-core/repositories/shop.server";
+import { setSanityConfig } from "@platform-core/shops";
 
 jest.mock("../src/actions/common/auth", () => ({
   ensureAuthorized: jest.fn(),
@@ -16,12 +16,12 @@ jest.mock("../src/actions/setupSanityBlog", () => ({
   setupSanityBlog: jest.fn(),
 }));
 
-jest.mock("@platform-core/src/repositories/shop.server", () => ({
+jest.mock("@platform-core/repositories/shop.server", () => ({
   getShopById: jest.fn(),
   updateShopInRepo: jest.fn(),
 }));
 
-jest.mock("@platform-core/src/shops", () => ({
+jest.mock("@platform-core/shops", () => ({
   setSanityConfig: jest.fn(),
   setEditorialBlog: jest.fn((shop, editorial) => ({
     ...shop,

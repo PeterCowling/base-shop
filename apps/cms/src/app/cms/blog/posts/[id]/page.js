@@ -45,8 +45,8 @@ var PublishButton_client_1 = require("../PublishButton.client");
 var UnpublishButton_client_1 = require("../UnpublishButton.client");
 var DeleteButton_client_1 = require("../DeleteButton.client");
 var blog_server_1 = require("@cms/actions/blog.server");
-var shops_1 = require("@platform-core/src/shops");
-var shop_server_1 = require("@platform-core/src/repositories/shop.server");
+var shops_1 = require("@platform-core/shops");
+var shop_server_1 = require("@platform-core/repositories/shop.server");
 function EditPostPage(_a) {
     return __awaiter(this, arguments, void 0, function (_b) {
         var shopId, shop, sanity, post, status;

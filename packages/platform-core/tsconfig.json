@@ -22,7 +22,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@platform-core/*": ["./src/*"]
+      "@platform-core/*": ["./src/*"],
+      "@acme/types": ["../types/src/index.ts"],
+      "@acme/types/*": ["../types/src/*"]
     },
     "types": ["react", "react-dom", "next"]
   },

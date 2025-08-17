@@ -129,7 +129,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     },
     updatedAt: "",
     updatedBy: "",
-  };
+  } as ShopSettings;
 }
 
 export async function saveShopSettings(

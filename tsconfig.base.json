@@ -92,5 +92,5 @@
 
   /* project-wide ambient declarations */
   "files": ["./src/types/global.d.ts"],
-  "exclude": ["**/__mocks__/**"]
+  "exclude": ["**/__mocks__/**", "**/__tests__/**"]
 }

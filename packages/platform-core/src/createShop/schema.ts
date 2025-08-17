@@ -8,7 +8,7 @@ import { defaultPaymentProviders } from "./defaultPaymentProviders";
 import { defaultShippingProviders } from "./defaultShippingProviders";
 import { defaultTaxProviders } from "./defaultTaxProviders";
 
-interface NavItem {
+export interface NavItem {
   label: string;
   url: string;
   children?: NavItem[];

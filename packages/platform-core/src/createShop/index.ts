@@ -1,6 +1,7 @@
 // packages/platform-core/src/createShop/index.ts
 import { readdirSync, existsSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { Prisma } from "@prisma/client";
 import { prisma } from "../db";
 import { validateShopName } from "../shops";
 import {
@@ -21,7 +22,7 @@ import {
  */
 export async function createShop(
   id: string,
-  opts: CreateShopOptions = {},
+  opts: CreateShopOptions = {} as CreateShopOptions,
   options?: { deploy?: boolean },
   adapter: ShopDeploymentAdapter = defaultDeploymentAdapter
 ): Promise<DeployStatusBase> {
@@ -55,7 +56,9 @@ export async function createShop(
     rentalSubscriptions: [],
   };
 
-  await prisma.shop.create({ data: { id, data: shopData } });
+  await prisma.shop.create({
+    data: { id, data: shopData as Prisma.InputJsonValue },
+  });
 
   if (prepared.pages.length) {
     await prisma.page.createMany({
@@ -153,7 +156,7 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
 
 export const createShopOptionsSchema = baseCreateShopOptionsSchema.strict();
 export { prepareOptions };
-export type { CreateShopOptions, PreparedCreateShopOptions };
+export type { CreateShopOptions, PreparedCreateShopOptions, NavItem } from "./schema";
 export type { DeployStatusBase, DeployShopResult } from "./deployTypes";
 export {
   ensureTemplateExists,
@@ -162,7 +165,6 @@ export {
   writeFile,
 } from "./fsUtils";
 export { loadTokens, loadBaseTokens } from "./themeUtils";
-export { syncTheme };
 export {
   type ShopDeploymentAdapter,
   CloudflareDeploymentAdapter,

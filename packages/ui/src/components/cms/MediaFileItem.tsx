@@ -12,7 +12,12 @@ interface Props {
   onReplace: (oldUrl: string, item: MediaItem) => void;
 }
 
-export default function MediaFileItem({ item, shop, onDelete, onReplace }: Props) {
+export default function MediaFileItem({
+  item,
+  shop,
+  onDelete,
+  onReplace,
+}: Props) {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(item.altText ?? "");
   const [tagText, setTagText] = useState(item.tags?.join(", ") ?? "");
@@ -55,13 +60,13 @@ export default function MediaFileItem({ item, shop, onDelete, onReplace }: Props
       <div className="absolute top-1 right-1 flex gap-1">
         <button
           onClick={() => setEditing((e) => !e)}
-          className="rounded bg-fg/50 px-1.5 text-xs text-bg"
+          className="bg-fg/50 text-bg rounded px-1.5 text-xs"
         >
           {editing ? "Cancel" : "Edit"}
         </button>
         <button
           onClick={() => onDelete(item.url)}
-          className="rounded bg-fg/50 px-1.5 text-xs text-bg"
+          className="bg-fg/50 text-bg rounded px-1.5 text-xs"
         >
           Delete
         </button>
@@ -74,36 +79,36 @@ export default function MediaFileItem({ item, shop, onDelete, onReplace }: Props
           className="object-cover"
         />
       ) : (
-        <video
-          src={item.url}
-          controls
-          className="h-full w-full object-cover"
-        />
+        <video src={item.url} controls className="h-full w-full object-cover" />
       )}
       {editing ? (
-        <div className="absolute bottom-1 left-1 right-1 flex flex-col gap-1 bg-fg/50 p-1 text-bg">
+        <div className="bg-fg/50 text-bg absolute right-1 bottom-1 left-1 flex flex-col gap-1 p-1">
           <Input
             value={text}
-            onChange={(e) => setText(e.target.value)}
-            className="h-6 rounded bg-bg text-xs"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setText(e.target.value)
+            }
+            className="bg-bg h-6 rounded text-xs"
             placeholder={item.type === "image" ? "Alt text" : "Title"}
           />
           <Input
             value={tagText}
-            onChange={(e) => setTagText(e.target.value)}
-            className="h-6 rounded bg-bg text-xs"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setTagText(e.target.value)
+            }
+            className="bg-bg h-6 rounded text-xs"
             placeholder="Tags (comma separated)"
           />
           <button
             onClick={handleSave}
             disabled={saving}
-            className="rounded bg-primary px-1 text-xs text-primary-fg"
+            className="bg-primary text-primary-fg rounded px-1 text-xs"
           >
             Save
           </button>
         </div>
-      ) : (item.altText || (item.tags && item.tags.length > 0)) ? (
-        <div className="absolute bottom-1 left-1 right-1 bg-fg/50 px-1 text-xs text-bg">
+      ) : item.altText || (item.tags && item.tags.length > 0) ? (
+        <div className="bg-fg/50 text-bg absolute right-1 bottom-1 left-1 px-1 text-xs">
           {item.altText && item.type === "image" && <p>{item.altText}</p>}
           {item.tags && item.tags.length > 0 && <p>{item.tags.join(", ")}</p>}
         </div>

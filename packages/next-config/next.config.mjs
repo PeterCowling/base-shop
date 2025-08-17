@@ -1,5 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+// Load runtime environment from compiled config output
 import { coreEnv } from "@acme/config/env/core";
 import { baseConfig, withShopCode } from "./index.mjs";
 

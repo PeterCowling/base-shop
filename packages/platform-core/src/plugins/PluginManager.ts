@@ -48,7 +48,10 @@ export class PluginManager<
   readonly payments = new MapRegistry<P>();
   readonly shipping = new MapRegistry<S>();
   readonly widgets = new MapRegistry<W>();
-  private plugins = new Map<string, PluginMetadata<Plugin<unknown, PPay, SReq, WProp, P, S, W>>>();
+  private plugins = new Map<
+    string,
+    PluginMetadata<Plugin<Record<string, unknown>, PPay, SReq, WProp, P, S, W>>
+  >();
 
   addPlugin<C>(plugin: Plugin<C, PPay, SReq, WProp, P, S, W>): void {
     this.plugins.set(plugin.id, {
@@ -61,11 +64,17 @@ export class PluginManager<
 
   getPlugin(
     id: string,
-  ): PluginMetadata<Plugin<unknown, PPay, SReq, WProp, P, S, W>> | undefined {
+  ):
+    | PluginMetadata<
+        Plugin<Record<string, unknown>, PPay, SReq, WProp, P, S, W>
+      >
+    | undefined {
     return this.plugins.get(id);
   }
 
-  listPlugins(): PluginMetadata<Plugin<unknown, PPay, SReq, WProp, P, S, W>>[] {
+  listPlugins(): PluginMetadata<
+    Plugin<Record<string, unknown>, PPay, SReq, WProp, P, S, W>
+  >[] {
     return Array.from(this.plugins.values());
   }
 }

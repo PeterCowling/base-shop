@@ -6,7 +6,7 @@ import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { authSecret } from "./auth/secret";
-import { logger } from "@acme/shared-utils/logger";
+import { logger } from "@acme/shared-utils";
 
 /**
  * JWT payload shape for this CMS.

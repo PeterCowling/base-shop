@@ -1,5 +1,5 @@
 // apps/cms/src/app/api/env/[shopId]/route.ts
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";

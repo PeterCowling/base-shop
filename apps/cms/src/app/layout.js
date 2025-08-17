@@ -5,7 +5,7 @@ exports.default = RootLayout;
 // apps/cms/src/app/layout.tsx
 var CartContext_1 = require("@/contexts/CartContext");
 var utils_1 = require("@platform-core/utils");
-require("@acme/lib/initZod");
+require("@acme/zod-utils/initZod");
 var google_1 = require("next/font/google");
 require("./globals.css");
 var geistSans = (0, google_1.Geist)({

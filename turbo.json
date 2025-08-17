@@ -7,7 +7,7 @@
     },
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".vercel/**", "dist/**", ".next/**"]
+      "outputs": ["dist/**", ".next/**"]
     },
     "lint": {},
     "test": {

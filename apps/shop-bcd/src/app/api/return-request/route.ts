@@ -1,5 +1,5 @@
 // apps/shop-bcd/src/app/api/return-request/route.ts
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 
 import { NextResponse } from "next/server";
 import { z } from "zod";

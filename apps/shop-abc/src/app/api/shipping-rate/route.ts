@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/shipping-rate/route.ts
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { getShippingRate } from "@platform-core/shipping";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";

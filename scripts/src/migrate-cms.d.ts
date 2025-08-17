@@ -1,1 +1,1 @@
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";

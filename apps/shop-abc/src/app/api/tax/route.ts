@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/tax/route.ts
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { calculateTax } from "@platform-core/tax";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";

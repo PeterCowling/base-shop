@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/api/delivery/route.ts
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";

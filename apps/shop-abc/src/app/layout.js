@@ -2,7 +2,7 @@ import { jsx as _jsx } from "react/jsx-runtime";
 // src/app/layout.tsx
 import "./globals.css";
 import { CartProvider } from "@/contexts/CartContext";
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { Geist, Geist_Mono } from "next/font/google";
 const geistSans = Geist({
     subsets: ["latin"],

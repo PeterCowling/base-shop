@@ -1,4 +1,4 @@
-import "@acme/lib/initZod";
+import "@acme/zod-utils/initZod";
 import { z } from "zod";
 export const coreEnvBaseSchema = z.object({
     NEXTAUTH_SECRET: z.string().min(1),

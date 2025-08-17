@@ -35,7 +35,7 @@ export function DataTable<T>({
   const toggle = (idx: number) => {
     const next = toggleItem(selected, idx);
     setSelected(next);
-    onSelectionChange?.(next.map((i) => rows[i]));
+    onSelectionChange?.(next.map((i: number) => rows[i]));
   };
 
   return (

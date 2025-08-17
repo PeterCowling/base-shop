@@ -1,13 +1,10 @@
 import { createRequire } from "node:module";
 import preset from "../packages/tailwind-config/src/index.ts";
 
-let moduleUrl = "";
-try {
-  moduleUrl = (0, eval)("import.meta.url");
-} catch {
-  moduleUrl = __filename;
-}
-const nodeRequire = createRequire(moduleUrl);
+// Node's `createRequire` expects a file URL when using ESM. Using
+// `import.meta.url` avoids relying on CommonJS globals like `__filename`
+// which are not available in this module scope.
+const nodeRequire = createRequire(import.meta.url);
 
 let resolvedPresetPath = "<unresolved>";
 try {

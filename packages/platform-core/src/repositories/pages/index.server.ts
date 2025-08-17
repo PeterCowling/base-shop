@@ -6,6 +6,7 @@ import { pageSchema, type Page } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { prisma } from "../../db";
+import type { Prisma } from "@prisma/client";
 import { validateShopName } from "@platform-core/shops";
 import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
@@ -114,8 +115,13 @@ export async function savePage(
   try {
     await prisma.page.upsert({
       where: { id: page.id },
-      update: { data: page, slug: page.slug },
-      create: { id: page.id, shopId: shop, slug: page.slug, data: page },
+      update: { data: page as Prisma.InputJsonValue, slug: page.slug },
+      create: {
+        id: page.id,
+        shopId: shop,
+        slug: page.slug,
+        data: page as Prisma.InputJsonValue,
+      },
     });
   } catch {
     // fallback to filesystem
@@ -161,7 +167,10 @@ export async function updatePage(
   try {
     await prisma.page.update({
       where: { id: patch.id },
-      data: { data: updated, slug: updated.slug },
+      data: {
+        data: updated as Prisma.InputJsonValue,
+        slug: updated.slug,
+      },
     });
   } catch {
     // fallback

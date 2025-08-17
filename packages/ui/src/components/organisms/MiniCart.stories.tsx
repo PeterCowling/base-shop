@@ -1,6 +1,6 @@
 import { CartProvider, useCart } from "@platform-core/contexts/CartContext";
 import { type Meta, type StoryObj } from "@storybook/react";
-import type { CartState } from "@/lib/cartCookie";
+import type { CartLine, CartState } from "@/lib/cartCookie";
 import type { SKU } from "@acme/types";
 import * as React from "react";
 import { Button } from "../atoms/shadcn";
@@ -40,7 +40,7 @@ interface WrapperProps {
 function CartInitializer({ items }: WrapperProps) {
   const [, dispatch] = useCart();
   React.useEffect(() => {
-    Object.entries(items).forEach(([id, line]) => {
+    Object.entries<CartLine>(items).forEach(([id, line]) => {
       dispatch({ type: "add", sku: line.sku, size: line.size });
       if (line.qty > 1) {
         dispatch({ type: "setQty", id, qty: line.qty });

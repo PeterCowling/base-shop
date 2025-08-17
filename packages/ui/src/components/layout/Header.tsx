@@ -4,6 +4,7 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   type CartState,
+  type CartLine,
 } from "@platform-core/cartCookie";
 import { createCartStore } from "@platform-core/cartStore";
 import { cookies } from "next/headers";
@@ -26,7 +27,10 @@ export default async function Header({
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
   const cartStore = createCartStore();
   const cart: CartState = cartId ? await cartStore.getCart(cartId) : {};
-  const initialQty = Object.values(cart).reduce((s, line) => s + line.qty, 0);
+  const initialQty = Object.values<CartLine>(cart).reduce(
+    (s, line) => s + line.qty,
+    0,
+  );
   const shopId = process.env.NEXT_PUBLIC_SHOP_ID || "default";
   const shop = await readShop(shopId);
   const nav = shop.navigation ?? [];

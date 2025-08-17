@@ -1,7 +1,7 @@
 // src/components/blog/BlogPortableText.tsx
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
-import { getProductBySlug, getProductById } from "@/lib/products";
+import { getProductBySlug, getProductById, type SKU } from "@/products";
 import { ProductCard } from "../shop/ProductCard";
 
 const components = {
@@ -16,9 +16,9 @@ const components = {
             : typeof value?.slug === "string"
               ? [value.slug]
               : [];
-      const products = ids
+      const products: SKU[] = ids
         .map((id) => getProductById(id) ?? getProductBySlug(id))
-        .filter(Boolean);
+        .filter((p): p is SKU => Boolean(p));
       if (products.length === 0) return null;
       if (products.length === 1) {
         const p = products[0]!;

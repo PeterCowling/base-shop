@@ -3,7 +3,7 @@ import ReviewsCarousel from "../src/components/home/ReviewsCarousel";
 
 const translations: Record<string, string> = {};
 
-jest.mock("@acme/i18n/Translations", () => ({
+jest.mock("@acme/i18n", () => ({
   useTranslations: () => (key: string) => translations[key] || key,
 }));
 

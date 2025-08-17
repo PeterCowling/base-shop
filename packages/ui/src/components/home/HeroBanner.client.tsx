@@ -1,7 +1,7 @@
 // src/components/home/HeroBanner.tsx
 "use client";
 
-import { useTranslations } from "@acme/i18n/Translations";
+import { useTranslations } from "@acme/i18n";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

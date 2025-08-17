@@ -1,7 +1,7 @@
 // src/components/checkout/CheckoutForm.tsx
 "use client";
 
-import { useTranslations } from "@acme/i18n/Translations";
+import { useTranslations } from "@acme/i18n";
 import {
   Elements,
   PaymentElement,

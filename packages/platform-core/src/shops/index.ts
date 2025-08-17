@@ -145,5 +145,3 @@ export function setDomain(shop: Shop, domain: ShopDomain | undefined): Shop {
   return next;
 }
 
-// Re-export relevant types so callers do not need to import @acme/types directly.
-export type { SanityBlogConfig, Shop, ShopDomain };

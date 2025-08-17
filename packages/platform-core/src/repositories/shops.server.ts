@@ -86,6 +86,7 @@ export async function readShop(shop: string): Promise<Shop> {
       requireStrongCustomerAuth: false,
       strictReturnConditions: false,
       trackingDashboard: false,
+      premierDelivery: false,
     },
   };
   return await applyThemeData(empty);

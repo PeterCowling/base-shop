@@ -9,17 +9,11 @@
  */
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { z } from "zod";
+import { CliEnv, CliEnvSchema } from "./types/env";
 
-// Define the minimal set of environment variables required for CMS migration.
-const cliEnvSchema = z.object({
-  CMS_SPACE_URL: z.string(),
-  CMS_ACCESS_TOKEN: z.string(),
-});
-
-let env: { CMS_SPACE_URL: string; CMS_ACCESS_TOKEN: string };
+let env: CliEnv;
 try {
-  env = cliEnvSchema.parse(process.env);
+  env = CliEnvSchema.parse(process.env);
 } catch (err) {
   console.error("Invalid environment variables:\n", err);
   process.exit(1);

@@ -21,6 +21,7 @@
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
+      "@/*": ["./src/*"],
       "@platform-core/*": ["./src/*"]
     },
     "types": ["react", "react-dom", "next"]

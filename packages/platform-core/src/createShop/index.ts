@@ -62,11 +62,13 @@ export async function createShop(
 
   if (prepared.pages.length) {
     await prisma.page.createMany({
-      data: prepared.pages.map((p) => ({
-        shopId: id,
-        slug: p.slug,
-        data: p,
-      })),
+      data: (
+        prepared.pages.map((p) => ({
+          shopId: id,
+          slug: p.slug,
+          data: p as unknown as Prisma.InputJsonValue,
+        })) as Prisma.PageCreateManyInput[]
+      ),
     });
   }
 
@@ -154,7 +156,8 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
   return loadTokens(theme);
 }
 
-export const createShopOptionsSchema = baseCreateShopOptionsSchema.strict();
+export const createShopOptionsSchema: typeof baseCreateShopOptionsSchema =
+  baseCreateShopOptionsSchema.strict();
 export { prepareOptions };
 export type { CreateShopOptions, PreparedCreateShopOptions, NavItem } from "./schema";
 export type { DeployStatusBase, DeployShopResult } from "./deployTypes";

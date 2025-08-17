@@ -2,11 +2,11 @@
 
 import {
   createContext,
-  ReactNode,
   useContext,
   useEffect,
   useLayoutEffect,
   useState,
+  type ReactNode,
 } from "react";
 
 export type Theme = "base" | "dark" | "brandx" | "system";

@@ -1,1 +1,5 @@
-export { getProductBySlug, getProductById } from "../repositories/products.server";
+export {
+  PRODUCTS,
+  getProductBySlug,
+  getProductById,
+} from "../products";

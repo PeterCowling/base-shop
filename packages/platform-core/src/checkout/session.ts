@@ -261,12 +261,15 @@ export async function createCheckoutSession(
     payment_intent_data: paymentIntentData,
     metadata,
     expand: ["payment_intent"],
-  }, clientIp ? { headers: { "Stripe-Client-IP": clientIp } } : undefined);
+  },
+  clientIp
+    ? ({ headers: { "Stripe-Client-IP": clientIp } } as Stripe.RequestOptions)
+    : undefined);
 
   const clientSecret =
     typeof session.payment_intent === "string"
       ? undefined
-      : session.payment_intent?.client_secret;
+      : session.payment_intent?.client_secret ?? undefined;
 
   return { clientSecret, sessionId: session.id };
 }

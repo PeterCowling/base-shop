@@ -3,14 +3,24 @@ import "server-only";
 import { ulid } from "ulid";
 import { nowIso } from "@date-utils";
 import type { RentalOrder, Shop } from "@acme/types";
+import type { RentalOrder as DbRentalOrder } from "@prisma/client";
 import { trackOrder } from "./analytics";
 import { prisma } from "./db";
 import { incrementSubscriptionUsage } from "./subscriptionUsage";
 
 type Order = RentalOrder;
 
+function normalize(order: DbRentalOrder): Order {
+  const o: any = { ...order };
+  Object.keys(o).forEach((k) => {
+    if (o[k] === null) o[k] = undefined;
+  });
+  return o as Order;
+}
+
 export async function listOrders(shop: string): Promise<Order[]> {
-  return prisma.rentalOrder.findMany({ where: { shop } });
+  const orders = await prisma.rentalOrder.findMany({ where: { shop } });
+  return orders.map(normalize);
 }
 
 export const readOrders = listOrders;
@@ -123,9 +133,10 @@ export async function getOrdersForCustomer(
   shop: string,
   customerId: string
 ): Promise<Order[]> {
-  return prisma.rentalOrder.findMany({
+  const orders = await prisma.rentalOrder.findMany({
     where: { shop, customerId },
   });
+  return orders.map(normalize);
 }
 
 export async function setReturnTracking(

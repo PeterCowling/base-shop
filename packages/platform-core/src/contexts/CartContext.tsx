@@ -153,7 +153,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useCart() {
+export function useCart(): [CartState, Dispatch] {
   const ctx = useContext(CartContext);
   if (!ctx) throw new Error("useCart must be inside CartProvider");
   return ctx;

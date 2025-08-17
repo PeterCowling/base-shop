@@ -2,9 +2,9 @@ import "server-only";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { nowIso } from "@acme/date-utils";
-import { DATA_ROOT } from "./dataRoot";
-import { validateShopName } from "./shops";
-import { getShopSettings, readShop } from "./repositories/shops.server";
+import { DATA_ROOT } from "../dataRoot";
+import { validateShopName } from "../shops";
+import { getShopSettings, readShop } from "../repositories/shops.server";
 import { coreEnv } from "@acme/config/env/core";
 import type { AnalyticsEvent } from "@acme/types";
 

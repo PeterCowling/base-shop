@@ -3,7 +3,7 @@ import "server-only";
 
 import type { RentalOrder } from "@acme/types";
 import type { Prisma } from "@prisma/client";
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 import { prisma } from "../db";
 
 export {

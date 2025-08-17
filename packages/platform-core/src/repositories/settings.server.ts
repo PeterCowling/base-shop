@@ -1,7 +1,7 @@
 // packages/platform-core/repositories/settings.server.ts
 import "server-only";
 
-import { LOCALES } from "@i18n/locales";
+import { LOCALES } from "@acme/i18n/locales";
 import {
   shopSettingsSchema,
   type Locale,

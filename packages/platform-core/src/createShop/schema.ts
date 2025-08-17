@@ -1,9 +1,9 @@
 import type { PageComponent } from "@acme/types";
 import { localeSchema, sanityBlogConfigSchema } from "@acme/types";
-import { pageComponentSchema } from "@acme/types/page";
+import { pageComponentSchema } from "@acme/types";
 import { z } from "zod";
-import { slugify } from "@shared-utils";
-import { fillLocales } from "@i18n/fillLocales";
+import { slugify } from "@acme/shared-utils";
+import { fillLocales } from "@acme/i18n/fillLocales";
 import { defaultPaymentProviders } from "./defaultPaymentProviders";
 import { defaultShippingProviders } from "./defaultShippingProviders";
 import { defaultTaxProviders } from "./defaultTaxProviders";

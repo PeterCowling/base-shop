@@ -2,7 +2,7 @@
 import type { SKU } from "@acme/types";
 import Image from "next/image";
 import Link from "next/link";
-import { useCurrency } from "@/contexts/CurrencyContext";
+import { useCurrency } from "../../contexts/CurrencyContext";
 import { formatPrice } from "@acme/shared-utils";
 import { memo } from "react";
 import AddToCartButton from "./AddToCartButton.client";

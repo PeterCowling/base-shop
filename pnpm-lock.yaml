@@ -37,6 +37,9 @@ importers:
       '@acme/types':
         specifier: workspace:^
         version: link:packages/types
+      '@acme/zod-utils':
+        specifier: workspace:^
+        version: link:packages/zod-utils
       '@cloudflare/next-on-pages':
         specifier: ^1.13.12
         version: 1.13.12(@cloudflare/workers-types@4.20250704.0)(vercel@44.2.11(@swc/core@1.12.9)(rollup@4.44.1))(wrangler@4.23.0(@cloudflare/workers-types@4.20250704.0))

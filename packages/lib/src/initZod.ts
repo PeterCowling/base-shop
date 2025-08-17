@@ -1,1 +1,2 @@
-export * from "@acme/zod-utils/initZod";
+// packages/lib/src/initZod.ts
+export * from "@acme/zod-utils";

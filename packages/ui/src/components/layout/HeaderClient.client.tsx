@@ -25,7 +25,12 @@ export default function HeaderClient({
 
   // keep qty in sync after hydration
   useEffect(() => {
-    setQty(Object.values(cart).reduce((s, line) => s + line.qty, 0));
+    setQty(
+      (Object.values(cart) as Array<{ qty: number }>).reduce(
+        (s, line) => s + line.qty,
+        0,
+      ),
+    );
   }, [cart]);
 
   return (

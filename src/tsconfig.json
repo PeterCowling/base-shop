@@ -15,7 +15,6 @@
     "declarationDir": "dist",
 
     /* forbid `import './file.ts'` in source (must override the base flag) */
-    "allowImportingTsExtensions": false
   },
 
   /* only the ambient/global .ts files that live in src/types/ */

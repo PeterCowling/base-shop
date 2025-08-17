@@ -16,7 +16,6 @@
     /* ───── safety / ergonomics flags ───── */
     "strict": true,
     "moduleSuffixes": [".server", ".client", ""],
-    "allowImportingTsExtensions": false
   },
 
   "include": ["src/**/*"],

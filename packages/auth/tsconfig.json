@@ -11,7 +11,6 @@
     "outDir": "dist",
 
     /* let TypeScript infer the effective rootDir instead of forcing it */
-    "allowImportingTsExtensions": false
   },
 
   /* only the auth source tree is compiled in this project ------------- */

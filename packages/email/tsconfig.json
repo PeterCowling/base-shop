@@ -9,7 +9,6 @@
     "outDir": "dist",
     "types": ["node"],
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false
   },
   "references": [
     { "path": "../config" },

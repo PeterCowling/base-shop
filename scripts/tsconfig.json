@@ -22,7 +22,6 @@
     "types": ["node"],
 
     /* ───── keep imports extension-less ───── */
-    "allowImportingTsExtensions": false
   },
 
   /* ───── project references ───── */

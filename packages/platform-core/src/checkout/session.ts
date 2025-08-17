@@ -1,4 +1,4 @@
-import { priceForDays, convertCurrency } from "../pricing.ts";
+import { priceForDays, convertCurrency } from "../pricing";
 import { findCoupon } from "../coupons";
 import { trackEvent } from "../analytics";
 import { getTaxRate } from "../tax";

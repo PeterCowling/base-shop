@@ -20,7 +20,6 @@
     "jsx": "react-jsx",
 
     /* forbid `import './foo.ts'` ------------------------------------- */
-    "allowImportingTsExtensions": false
   },
 
   "include": ["src/**/*"],

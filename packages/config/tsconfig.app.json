@@ -7,7 +7,6 @@
     "noEmit": false,
     "outDir": "dist",
     "declarationDir": "dist",
-    "allowImportingTsExtensions": false,
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "incremental": true,

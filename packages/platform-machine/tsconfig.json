@@ -18,7 +18,6 @@
     "types": ["node", "react"],
 
     /* Keep imports package-relative --------------------------------- */
-    "allowImportingTsExtensions": false,
 
     /* ----------------------------------------------------------------
      *  Path aliases — this block *overrides* the one from

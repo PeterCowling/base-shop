@@ -14,7 +14,6 @@
     /* Node-only helpers --------------------------------------------- */
     "types": ["node"],
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false
   },
 
   /* source globs ---------------------------------------------------- */

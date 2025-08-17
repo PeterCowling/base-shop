@@ -1,9 +1,8 @@
-// packages/i18n/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* library emits JS + d.ts --------------------------------------- */
+    /* Emit JS + d.ts --------------------------------------------------------- */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
@@ -11,27 +10,26 @@
     "rootDir": "src",
     "outDir": "dist",
 
-    /* React translations components --------------------------------- */
+    /* TS 5 bundler-style resolution (Next/Vite friendly) --------------------- */
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+
+    /* React translations components ----------------------------------------- */
     "jsx": "react-jsx",
 
-    /* globals -------------------------------------------------------- */
-    "types": ["react", "react-dom"],
+    /* App/library ergonomics ------------------------------------------------- */
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
 
-    /* keep import paths extension-less ------------------------------ */
-    "allowImportingTsExtensions": false
+    /* Ambient types ---------------------------------------------------------- */
+    "types": ["react", "react-dom"]
   },
 
-  /* -----------------------------------------------------------------
-     project references – this is the crucial line
-     ----------------------------------------------------------------- */
-  "references": [{ "path": "../types" } /* ✅ build the types package first */],
+  /* Build types first if needed --------------------------------------------- */
+  "references": [{ "path": "../types" }],
 
-  /* source globs ----------------------------------------------------- */
   "include": ["src/**/*"],
-  "exclude": [
-    "dist", // freshly emitted output
-    "__tests__", // unit/integration tests
-    ".turbo", // turbo cache
-    "node_modules" // package deps (if any local)
-  ]
+  "exclude": ["dist", "__tests__", ".turbo", "node_modules"]
 }

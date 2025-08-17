@@ -1,4 +1,5 @@
-import { z, ZodErrorMap, ZodIssueCode } from "zod";
+// packages/zod-utils/src/zodErrorMap.ts
+import { z, type ZodErrorMap, ZodIssueCode } from "zod";
 
 export const friendlyErrorMap: ZodErrorMap = (issue, ctx) => {
   switch (issue.code) {
@@ -7,8 +8,10 @@ export const friendlyErrorMap: ZodErrorMap = (issue, ctx) => {
         return { message: "Required" };
       }
       return { message: `Expected ${issue.expected}` };
+
     case ZodIssueCode.invalid_enum_value:
-      return { message: `Invalid value` };
+      return { message: "Invalid value" };
+
     case ZodIssueCode.too_small:
       if (issue.type === "string") {
         return { message: `Must be at least ${issue.minimum} characters` };
@@ -17,6 +20,7 @@ export const friendlyErrorMap: ZodErrorMap = (issue, ctx) => {
         return { message: `Must have at least ${issue.minimum} items` };
       }
       return { message: ctx.defaultError };
+
     case ZodIssueCode.too_big:
       if (issue.type === "string") {
         return { message: `Must be at most ${issue.maximum} characters` };
@@ -25,6 +29,7 @@ export const friendlyErrorMap: ZodErrorMap = (issue, ctx) => {
         return { message: `Must have at most ${issue.maximum} items` };
       }
       return { message: ctx.defaultError };
+
     default:
       return { message: issue.message ?? ctx.defaultError };
   }

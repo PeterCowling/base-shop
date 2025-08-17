@@ -13,6 +13,30 @@ importers:
 
   .:
     dependencies:
+      '@acme/config':
+        specifier: workspace:^
+        version: link:packages/config
+      '@acme/date-utils':
+        specifier: workspace:^
+        version: link:packages/date-utils
+      '@acme/i18n':
+        specifier: workspace:^
+        version: link:packages/i18n
+      '@acme/lib':
+        specifier: workspace:^
+        version: link:packages/lib
+      '@acme/plugin-sanity':
+        specifier: workspace:^
+        version: link:packages/plugins/sanity
+      '@acme/shared-utils':
+        specifier: workspace:^
+        version: link:packages/shared-utils
+      '@acme/stripe':
+        specifier: workspace:^
+        version: link:packages/stripe
+      '@acme/types':
+        specifier: workspace:^
+        version: link:packages/types
       '@cloudflare/next-on-pages':
         specifier: ^1.13.12
         version: 1.13.12(@cloudflare/workers-types@4.20250704.0)(vercel@44.2.11(@swc/core@1.12.9)(rollup@4.44.1))(wrangler@4.23.0(@cloudflare/workers-types@4.20250704.0))
@@ -31,6 +55,9 @@ importers:
       '@portabletext/react':
         specifier: ^3.2.1
         version: 3.2.1(react@19.1.0)
+      '@prisma/client':
+        specifier: ^6.14.0
+        version: 6.14.0(typescript@5.8.3)
       '@radix-ui/react-checkbox':
         specifier: ^1.3.2
         version: 1.3.2(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -67,6 +94,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.81.4
         version: 5.81.5(react@19.1.0)
+      '@themes/base':
+        specifier: workspace:^
+        version: link:packages/themes/base
       '@upstash/redis':
         specifier: ^1.35.3
         version: 1.35.3
@@ -210,7 +240,7 @@ importers:
         specifier: ^29.5.14
         version: 29.5.14
       '@types/node':
-        specifier: ^20.11.19
+        specifier: ^20.19.4
         version: 20.19.4
       '@types/react':
         specifier: ^19.1.8
@@ -592,6 +622,36 @@ importers:
       '@acme/config':
         specifier: workspace:^
         version: link:../config
+      '@acme/date-utils':
+        specifier: workspace:^
+        version: link:../date-utils
+      '@acme/i18n':
+        specifier: workspace:^
+        version: link:../i18n
+      '@acme/plugin-sanity':
+        specifier: workspace:^
+        version: link:../plugins/sanity
+      '@acme/shared-utils':
+        specifier: workspace:^
+        version: link:../shared-utils
+      '@acme/stripe':
+        specifier: workspace:^
+        version: link:../stripe
+      '@acme/types':
+        specifier: workspace:^
+        version: link:../types
+      '@prisma/client':
+        specifier: ^6.14.0
+        version: 6.14.0(typescript@5.8.3)
+      '@themes/base':
+        specifier: workspace:^
+        version: link:../themes/base
+      '@types/node':
+        specifier: ^20.19.4
+        version: 20.19.4
+      next:
+        specifier: ^15.3.5
+        version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react:
         specifier: ^18.0.0 || ^19.0.0
         version: 19.1.0
@@ -2797,6 +2857,18 @@ packages:
   '@portabletext/types@2.0.13':
     resolution: {integrity: sha512-5xk5MSyQU9CrDho3Rsguj38jhijhD36Mk8S6mZo3huv6PM+t4M/5kJN2KFIxgvt4ONpvOEs1pVIZAV0cL0Vi+Q==}
     engines: {node: ^14.13.1 || >=16.0.0 || >=18.0.0}
+
+  '@prisma/client@6.14.0':
+    resolution: {integrity: sha512-8E/Nk3eL5g7RQIg/LUj1ICyDmhD053STjxrPxUtCRybs2s/2sOEcx9NpITuAOPn07HEpWBfhAVe1T/HYWXUPOw==}
+    engines: {node: '>=18.18'}
+    peerDependencies:
+      prisma: '*'
+      typescript: '>=5.1.0'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+      typescript:
+        optional: true
 
   '@prisma/instrumentation@6.10.1':
     resolution: {integrity: sha512-JC8qzgEDuFKjuBsqrZvXHINUb12psnE6Qy3q5p2MBhalC1KW1MBBUwuonx6iS5TCfCdtNslHft8uc2r+EdLWWg==}
@@ -13074,6 +13146,10 @@ snapshots:
 
   '@portabletext/types@2.0.13': {}
 
+  '@prisma/client@6.14.0(typescript@5.8.3)':
+    optionalDependencies:
+      typescript: 5.8.3
+
   '@prisma/instrumentation@6.10.1(@opentelemetry/api@1.9.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
@@ -14320,7 +14396,7 @@ snapshots:
 
   '@types/amphtml-validator@1.0.4':
     dependencies:
-      '@types/node': 20.19.4
+      '@types/node': 24.0.10
 
   '@types/aria-query@5.0.4': {}
 
@@ -18476,7 +18552,7 @@ snapshots:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
       '@types/jsdom': 20.0.1
-      '@types/node': 20.19.4
+      '@types/node': 24.0.10
       jest-mock: 29.7.0
       jest-util: 29.7.0
       jsdom: 20.0.3

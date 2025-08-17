@@ -8,7 +8,6 @@
     "noEmit": false,
     "outDir": "dist",
 
-    "allowImportingTsExtensions": false,
 
     "types": ["node"]
   },

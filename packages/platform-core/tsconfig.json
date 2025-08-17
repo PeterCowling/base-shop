@@ -1,35 +1,28 @@
+// packages/platform-core/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* Build as a referenced project and emit JS + .d.ts into dist */
     "composite": true,
     "noEmit": false,
     "emitDeclarationOnly": false,
-
-    /* Declarations + maps, mirroring src/ -> dist/ */
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "dist",
     "rootDir": "src",
     "outDir": "dist",
-
-    /* Modern ESM settings for predictable resolution */
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "target": "ES2022",
-
-    /* React components */
+    "lib": ["ES2022", "DOM"],
     "jsx": "react-jsx",
-
-    /* Typing + performance */
     "strict": true,
     "skipLibCheck": true,
-
-    /* Keep local imports package-relative */
-    "allowImportingTsExtensions": false,
-
-    /* Ambient types available in this package */
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
+    "baseUrl": ".",
+    "paths": {
+      "@platform-core/*": ["./src/*"]
+    },
     "types": ["react", "react-dom", "next"]
   },
 

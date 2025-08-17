@@ -18,7 +18,6 @@
     "jsx": "react-jsx",
 
     /* ---------- misc ---------------------------------------------- */
-    "allowImportingTsExtensions": false,
     "types": ["react", "react-dom", "jest", "@testing-library/jest-dom"]
   },
 

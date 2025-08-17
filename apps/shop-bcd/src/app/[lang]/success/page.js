@@ -1,4 +1,9 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-export default function Success() {
-    return (_jsxs("div", { className: "mx-auto max-w-lg py-20 text-center", children: [_jsx("h1", { className: "mb-4 text-3xl font-semibold", children: "Thanks for your order!" }), _jsx("p", { children: "Your payment was received. Check your e-mail for the receipt." })] }));
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = Success;
+function Success() {
+    return (<div className="mx-auto max-w-lg py-20 text-center">
+      <h1 className="mb-4 text-3xl font-semibold">Thanks for your order!</h1>
+      <p>Your payment was received. Check your e-mail for the receipt.</p>
+    </div>);
 }

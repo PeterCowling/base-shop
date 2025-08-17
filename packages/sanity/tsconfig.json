@@ -7,7 +7,6 @@
     "noEmit": false,
     "rootDir": "src",
     "outDir": "dist",
-    "allowImportingTsExtensions": false
   },
   "include": ["src/**/*"],
   "exclude": [

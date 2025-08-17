@@ -9,7 +9,6 @@
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
     "moduleSuffixes": [".server", ".client", ""],
-    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "noEmit": true,

@@ -1,5 +1,5 @@
 // src/components/home/ValueProps.tsx
-import { useTranslations } from "@/i18n/Translations";
+import { useTranslations } from "@acme/i18n/Translations";
 import { memo } from "react";
 
 export type ValuePropItem = { icon: string; title: string; desc: string };

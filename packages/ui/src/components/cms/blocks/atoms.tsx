@@ -1,5 +1,5 @@
 // src/atoms/index.tsx
-import type { Locale } from "@/i18n/locales";
+import type { Locale } from "@acme/i18n/locales";
 import React, {
   createElement,
   memo,

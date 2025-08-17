@@ -3,7 +3,7 @@ import ValueProps from "../src/components/home/ValueProps";
 
 const translations: Record<string, string> = {};
 
-jest.mock("@/i18n/Translations", () => ({
+jest.mock("@acme/i18n/Translations", () => ({
   useTranslations: () => (key: string) => translations[key] || key,
 }));
 

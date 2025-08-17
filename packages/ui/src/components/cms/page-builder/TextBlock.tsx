@@ -1,6 +1,6 @@
 "use client";
 
-import type { Locale } from "@/i18n/locales";
+import type { Locale } from "@acme/i18n/locales";
 import { CSS } from "@dnd-kit/utilities";
 import { EditorContent } from "@tiptap/react";
 import type { PageComponent } from "@acme/types";

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import LanguageSwitcher from "../LanguageSwitcher";
-import { locales } from "@/i18n/locales";
+import { locales } from "@acme/i18n/locales";
 import "../../../../../../test/resetNextMocks";
 
 describe("LanguageSwitcher", () => {

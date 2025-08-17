@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import type { Locale } from "@/i18n/locales";
+import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import useTextEditor from "../useTextEditor";
 

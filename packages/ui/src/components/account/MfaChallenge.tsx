@@ -2,7 +2,7 @@
 
 // packages/ui/src/components/account/MfaChallenge.tsx
 import { useState } from "react";
-import { getCsrfToken } from "@shared-utils";
+import { getCsrfToken } from "@acme/shared-utils";
 
 export interface MfaChallengeProps {
   onSuccess?: () => void;

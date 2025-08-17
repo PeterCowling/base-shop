@@ -1,7 +1,7 @@
 // src/molecules/index.tsx
 "use client";
 
-import type { Locale } from "@/i18n/locales";
+import type { Locale } from "@acme/i18n/locales";
 import { memo } from "react";
 import type { BlockRegistryEntry } from "./types";
 import type { CategoryCollectionTemplateProps } from "../../templates/CategoryCollectionTemplate";

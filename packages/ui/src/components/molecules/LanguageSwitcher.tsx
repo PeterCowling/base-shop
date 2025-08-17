@@ -1,7 +1,7 @@
 // packages/ui/components/organisms/LanguageSwitcher.tsx
 "use client";
 
-import { Locale, locales } from "@/i18n/locales";
+import { Locale, locales } from "@acme/i18n/locales";
 import Link from "next/link";
 
 export default function LanguageSwitcher({ current }: { current: Locale }) {

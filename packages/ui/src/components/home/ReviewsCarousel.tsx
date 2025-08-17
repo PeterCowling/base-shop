@@ -1,7 +1,7 @@
 // src/components/home/ReviewsCarousel.tsx
 "use client";
 
-import { useTranslations } from "@/i18n/Translations";
+import { useTranslations } from "@acme/i18n/Translations";
 import { useCallback, useEffect, useState } from "react";
 
 export type Review = { nameKey: string; quoteKey: string };

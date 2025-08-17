@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import type { UpgradeComponent } from "@acme/types/upgrade";
+import type { UpgradeComponent } from "@acme/types";
 
 class PreviewErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
   constructor(props: { children: React.ReactNode }) {

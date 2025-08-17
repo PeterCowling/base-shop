@@ -1,7 +1,7 @@
 // src/components/checkout/CheckoutForm.tsx
 "use client";
 
-import { useTranslations } from "@/i18n/Translations";
+import { useTranslations } from "@acme/i18n/Translations";
 import {
   Elements,
   PaymentElement,
@@ -9,7 +9,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe, StripeElementLocale } from "@stripe/stripe-js";
-import { fetchJson } from "@shared-utils";
+import { fetchJson } from "@acme/shared-utils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";

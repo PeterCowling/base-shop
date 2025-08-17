@@ -3,7 +3,7 @@
 // packages/ui/src/components/account/MfaSetup.tsx
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
-import { getCsrfToken } from "@shared-utils";
+import { getCsrfToken } from "@acme/shared-utils";
 
 export default function MfaSetup() {
   const [secret, setSecret] = useState<string | null>(null);

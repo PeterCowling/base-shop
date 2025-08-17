@@ -1,6 +1,6 @@
 "use client";
 
-import { locales, type Locale } from "@/i18n/locales";
+import { locales, type Locale } from "@acme/i18n/locales";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";

@@ -2,7 +2,7 @@
 
 // packages/ui/src/components/account/ProfileForm.tsx
 import { useState } from "react";
-import { getCsrfToken } from "@shared-utils";
+import { getCsrfToken } from "@acme/shared-utils";
 
 export interface ProfileFormProps {
   /** Pre-filled name value; may be undefined if profile data is missing */

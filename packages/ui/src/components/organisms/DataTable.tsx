@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import { toggleItem } from "@shared-utils";
+import { toggleItem } from "@acme/shared-utils";
 import {
   Table,
   TableBody,

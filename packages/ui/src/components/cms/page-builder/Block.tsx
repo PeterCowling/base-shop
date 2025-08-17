@@ -1,4 +1,4 @@
-import type { Locale } from "@/i18n/locales";
+import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import DOMPurify from "dompurify";
 import { memo } from "react";

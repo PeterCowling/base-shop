@@ -3,7 +3,7 @@ import type { CSSProperties, DragEvent } from "react";
 import { Fragment, useState } from "react";
 import type { PageComponent } from "@acme/types";
 import CanvasItem from "./CanvasItem";
-import type { Locale } from "@/i18n/locales";
+import type { Locale } from "@acme/i18n/locales";
 import type { Action } from "./state";
 import { cn } from "../../../utils/style";
 import type { DevicePreset } from "@ui/utils/devicePresets";

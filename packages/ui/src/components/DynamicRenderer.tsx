@@ -4,7 +4,7 @@
 
 import { blockRegistry } from "@ui/components/cms/blocks";
 import type { BlockRegistryEntry } from "@ui/components/cms/blocks/types";
-import type { Locale } from "@/i18n/locales";
+import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import type { CSSProperties, ReactNode } from "react";
 

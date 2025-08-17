@@ -3,7 +3,7 @@ import HeroBanner, { type Slide } from "../src/components/home/HeroBanner";
 
 const translations: Record<string, string> = {};
 
-jest.mock("@/i18n/Translations", () => ({
+jest.mock("@acme/i18n/Translations", () => ({
   useTranslations: () => (key: string) => translations[key] || key,
 }));
 

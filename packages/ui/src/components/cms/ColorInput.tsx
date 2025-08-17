@@ -18,7 +18,9 @@ function hexToRgb(hex: string): [number, number, number] {
 function hslToRgb(hsl: string): [number, number, number] {
   const [h, s, l] = hsl
     .split(" ")
-    .map((p, i) => (i === 0 ? parseFloat(p) : parseFloat(p) / 100));
+    .map((p: string, i: number) =>
+      i === 0 ? parseFloat(p) : parseFloat(p) / 100
+    );
   const c = (1 - Math.abs(2 * l - 1)) * s;
   const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
   const m = l - c / 2;
@@ -80,7 +82,7 @@ export function suggestContrastColor(
 ): string | null {
   const isHex = color.startsWith("#");
   const hsl = isHex ? hexToHsl(color) : color;
-  const [h, s, l] = hsl.split(" ").map((p, i) =>
+  const [h, s, l] = hsl.split(" ").map((p: string, i: number) =>
     i === 0 ? parseFloat(p) : parseFloat(p) / 100
   );
   const refLum = luminance(colorToRgb(reference));

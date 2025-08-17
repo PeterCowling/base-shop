@@ -87,7 +87,8 @@ const PageBuilder = memo(function PageBuilder({
   );
   const device = useMemo<DevicePreset>(() => {
     const preset =
-      devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
+      devicePresets.find((d: DevicePreset) => d.id === deviceId) ??
+      devicePresets[0];
     return orientation === "portrait"
       ? { ...preset, orientation }
       : {
@@ -106,7 +107,8 @@ const PageBuilder = memo(function PageBuilder({
   const [runTour, setRunTour] = useState(false);
   const previewDevice = useMemo<DevicePreset>(
     () =>
-      devicePresets.find((d) => d.id === previewDeviceId) ?? devicePresets[0],
+      devicePresets.find((d: DevicePreset) => d.id === previewDeviceId) ??
+      devicePresets[0],
     [previewDeviceId],
   );
   const previewViewport: "desktop" | "tablet" | "mobile" = previewDevice.type;

@@ -5,7 +5,7 @@ import type { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import { readRbac as defaultReadRbac } from "../lib/rbacStore";
 
-import { logger } from "@acme/shared-utils/logger";
+import { logger } from "@acme/shared-utils";
 
 import type { Role } from "@acme/types";
 import { authSecret } from "./secret";

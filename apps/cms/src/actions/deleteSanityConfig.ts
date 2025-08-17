@@ -1,8 +1,8 @@
 // apps/cms/src/actions/deleteSanityConfig.ts
 "use server";
 
-import { getShopById, updateShopInRepo } from "@platform-core/src/repositories/shop.server";
-import { setSanityConfig } from "@platform-core/src/shops";
+import { getShopById, updateShopInRepo } from "@platform-core/repositories/shop.server";
+import { setSanityConfig } from "@platform-core/shops";
 import { ensureAuthorized } from "./common/auth";
 
 export async function deleteSanityConfig(

@@ -39,7 +39,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.seedShop = seedShop;
-var shops_1 = require("@platform-core/src/shops");
+var shops_1 = require("@platform-core/shops");
 function seedShop(shopId, csvFile, categoriesText) {
     return __awaiter(this, void 0, void 0, function () {
         var fd, res, json, cats, res, json, err_1;

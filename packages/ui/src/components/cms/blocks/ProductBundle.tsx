@@ -1,5 +1,5 @@
 import type { SKU } from "@acme/types";
-import { PRODUCTS } from "@platform-core/src/products";
+import { PRODUCTS } from "@platform-core/products";
 import { Price } from "../../atoms/Price";
 
 export interface ProductBundleProps {

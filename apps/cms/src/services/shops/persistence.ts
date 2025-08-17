@@ -2,11 +2,11 @@ import {
   getShopSettings,
   saveShopSettings,
   diffHistory,
-} from "@platform-core/src/repositories/settings.server";
+} from "@platform-core/repositories/settings.server";
 import {
   getShopById,
   updateShopInRepo,
-} from "@platform-core/src/repositories/shop.server";
+} from "@platform-core/repositories/shop.server";
 import type { Shop, ShopSettings } from "@acme/types";
 
 export function fetchShop(shop: string) {

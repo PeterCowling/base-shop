@@ -7,7 +7,7 @@ import {
   PATCH as corePATCH,
   POST as corePOST,
   PUT as corePUT,
-} from "@platform-core/src/cartApi";
+} from "@platform-core/cartApi";
 import { NextResponse, type NextRequest } from "next/server";
 
 async function guard(

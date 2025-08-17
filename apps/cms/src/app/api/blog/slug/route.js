@@ -50,8 +50,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GET = GET;
 var server_1 = require("next/server");
 var config_1 = require("@acme/config");
-var shop_server_1 = require("@platform-core/src/repositories/shop.server");
-var shops_1 = require("@platform-core/src/shops");
+var shop_server_1 = require("@platform-core/repositories/shop.server");
+var shops_1 = require("@platform-core/shops");
 var auth_1 = require("@cms/actions/common/auth");
 var apiVersion = config_1.env.SANITY_API_VERSION || "2021-10-21";
 function queryUrl(config, query) {

@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var theme_1 = require("../theme");
-jest.mock("@platform-core/src/createShop", function () { return ({
+jest.mock("@platform-core/createShop", function () { return ({
     syncTheme: jest.fn().mockResolvedValue({ a: "1" }),
     loadTokens: jest.fn().mockResolvedValue({ a: "0" }),
 }); });

@@ -1,7 +1,7 @@
 // packages/ui/components/cms/Breadcrumbs.tsx
 "use client";
 
-import type { ProductPublication } from "@platform-core/src/products";
+import type { ProductPublication } from "@platform-core/products";
 import { getShopFromPath } from "@platform-core/utils";
 import type { Page } from "@acme/types";
 import { usePathname } from "next/navigation";

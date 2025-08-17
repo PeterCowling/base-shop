@@ -5,7 +5,7 @@ const prismaMock = {
   page: { createMany: jest.fn(async () => ({})) },
 };
 
-jest.mock("@platform-core/src/db", () => ({ prisma: prismaMock }));
+jest.mock("@platform-core/db", () => ({ prisma: prismaMock }));
 jest.mock("@platform-core/createShop/themeUtils", () => ({ loadTokens: () => ({}) }));
 
 let wizardStateSchema: any;

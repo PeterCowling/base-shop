@@ -1,10 +1,4 @@
-// packages/platform-core/index.ts
-
-export * from "./contexts/CurrencyContext";
-export * from "./contexts/LayoutContext";
-export * from "./contexts/ThemeContext";
-export * from "./defaultFilterMappings";
-export * from "./themeTokens";
-export * from "./dataRoot";
-export * from "./utils";
-export * from "./customerProfiles";
+// /packages/platform-core/src/index.ts
+// Root kept intentionally minimal; prefer subpath imports like
+// `@platform-core/createShop` or `@platform-core/repositories/*`.
+export {};

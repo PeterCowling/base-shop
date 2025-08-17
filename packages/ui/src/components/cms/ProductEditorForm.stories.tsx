@@ -1,4 +1,4 @@
-import type { Locale, ProductPublication } from "@platform-core/src/products";
+import type { Locale, ProductPublication } from "@platform-core/products";
 import type { Meta, StoryObj } from "@storybook/react";
 import ProductEditorForm from "./ProductEditorForm";
 

@@ -41,8 +41,8 @@ exports.default = NewPostPage;
 var link_1 = require("next/link");
 var PostForm_client_1 = require("../PostForm.client");
 var blog_server_1 = require("@cms/actions/blog.server");
-var shops_1 = require("@platform-core/src/shops");
-var shop_server_1 = require("@platform-core/src/repositories/shop.server");
+var shops_1 = require("@platform-core/shops");
+var shop_server_1 = require("@platform-core/repositories/shop.server");
 function NewPostPage(_a) {
     return __awaiter(this, arguments, void 0, function (_b) {
         var shopId, shop, sanity;

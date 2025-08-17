@@ -4,8 +4,8 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   type CartState,
-} from "@platform-core/src/cartCookie";
-import { createCartStore } from "@platform-core/src/cartStore";
+} from "@platform-core/cartCookie";
+import { createCartStore } from "@platform-core/cartStore";
 import { cookies } from "next/headers";
 import HeaderClient from "./HeaderClient.client";
 

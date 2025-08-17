@@ -20,12 +20,12 @@ jest.mock("../../platform-core/src/pricing", () => ({
 }));
 
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
-jest.mock("@platform-core/src/analytics", () => ({ trackEvent: jest.fn() }));
-jest.mock("@platform-core/src/repositories/shops.server", () => ({
+jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
+jest.mock("@platform-core/repositories/shops.server", () => ({
   readShop: jest.fn(async () => ({ coverageIncluded: true })),
 }));
 let mockCart: any;
-jest.mock("@platform-core/src/cartStore", () => ({
+jest.mock("@platform-core/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
 }));
 

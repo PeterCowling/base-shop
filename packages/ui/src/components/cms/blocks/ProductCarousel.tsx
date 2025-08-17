@@ -2,7 +2,7 @@ import {
   ProductCarousel as BaseCarousel,
   type ProductCarouselProps as BaseProps,
 } from "../../organisms/ProductCarousel";
-import { PRODUCTS } from "@platform-core/src/products";
+import { PRODUCTS } from "@platform-core/products";
 import type { SKU } from "@acme/types";
 import { useEffect, useState } from "react";
 import { fetchCollection } from "./products/fetchCollection";

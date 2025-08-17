@@ -39,7 +39,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.initShop = initShop;
 var buffer_1 = require("buffer");
-var shops_1 = require("@platform-core/src/shops");
+var shops_1 = require("@platform-core/shops");
 function initShop(shopId, csvFile, categoriesText) {
     return __awaiter(this, void 0, void 0, function () {
         var csv, buf, _a, _b, categories, res, json, err_1;

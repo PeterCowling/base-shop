@@ -7,7 +7,7 @@ import {
   type CartState,
 } from "@/lib/cartCookie";
 import { getCustomerSession } from "@auth";
-import { createCheckoutSession } from "@platform-core/src/checkout/session";
+import { createCheckoutSession } from "@platform-core/checkout/session";
 import shop from "../../../shop.json";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";

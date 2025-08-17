@@ -1,5 +1,5 @@
 // apps/shop-abc/__tests__/checkoutPermission.test.ts
-import { encodeCartCookie } from "@platform-core/src/cartCookie";
+import { encodeCartCookie } from "@platform-core/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { POST } from "../src/app/api/checkout-session/route";
 import { ReadableStream } from "node:stream/web";
@@ -23,7 +23,7 @@ jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 jest.mock("@platform-core/coupons", () => ({ findCoupon: jest.fn(async () => null) }));
 let mockCart: any;
-jest.mock("@platform-core/src/cartStore", () => ({
+jest.mock("@platform-core/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
 }));
 

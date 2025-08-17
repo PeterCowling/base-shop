@@ -4,8 +4,8 @@ import Link from "next/link";
 import { formatTimestamp } from "@acme/date-utils";
 import { Button } from "@ui";
 import { getPosts } from "@cms/actions/blog.server";
-import { getSanityConfig } from "@platform-core/src/shops";
-import { getShopById } from "@platform-core/src/repositories/shop.server";
+import { getSanityConfig } from "@platform-core/shops";
+import { getShopById } from "@platform-core/repositories/shop.server";
 
 export default async function BlogPostsPage({
   searchParams,

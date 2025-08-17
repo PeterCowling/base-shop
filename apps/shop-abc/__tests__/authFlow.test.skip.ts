@@ -20,7 +20,7 @@ jest.mock("@acme/email", () => ({
   sendEmail: jest.fn(),
 }));
 
-jest.mock("@acme/platform-core/customerProfiles", () => ({
+jest.mock("@platform-core/customerProfiles", () => ({
   updateCustomerProfile: jest.fn(),
 }));
 
@@ -28,7 +28,7 @@ const store: Record<string, any> = {};
 
 let sendEmail: jest.Mock;
 
-jest.mock("@acme/platform-core/users", () => ({
+jest.mock("@platform-core/users", () => ({
   getUserById: jest.fn(async (id: string) => store[id] ?? null),
   getUserByEmail: jest.fn(
     async (email: string) =>

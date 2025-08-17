@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getProductById } from "@platform-core/src/products";
+import { getProductById } from "@platform-core/products";
 import { readRepo } from "@platform-core/repositories/products.server";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
-import { trackEvent } from "@platform-core/src/analytics";
+import { trackEvent } from "@platform-core/analytics";
 import type { ProductPublication, SKU } from "@acme/types";
 import { coreEnv } from "@acme/config/env/core";
 

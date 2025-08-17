@@ -1,40 +1,55 @@
 {
-  "extends": "../../packages/config/tsconfig.app.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "../.."
+    "composite": true,
+    "noEmit": true,
+
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+
+    "strict": true,
+    "skipLibCheck": true,
+
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "rootDir": "src",
+
+    "resolveJsonModule": true,
+    "allowJs": false,
+    "types": ["node", "react", "react-dom", "next"],
+
+    "paths": {
+      /* App-local aliases */
+      "@/*": ["./src/*"],
+      "@cms/*": ["./src/*"],
+      "@i18n/*": ["./src/i18n/*"],
+
+      /* Workspace aliases — adjust paths to your actual package dirs */
+      "@ui/*": ["../../packages/ui/src/*"],
+      "@ui": ["../../packages/ui/src/index.ts"],
+      "@auth": ["../../packages/auth/src/index.ts"],
+      "@auth/*": ["../../packages/auth/src/*"],
+      "@acme/lib": ["../../packages/lib/src/index.ts"],
+      "@acme/shared-utils": ["../../packages/shared-utils/src/index.ts"],
+      "@acme/shared-utils/*": ["../../packages/shared-utils/src/*"],
+      "@acme/types/*": ["../../packages/types/src/*"],
+      "@shared-utils": ["../../packages/shared-utils/src/index.ts"],
+      "@shared-utils/*": ["../../packages/shared-utils/src/*"],
+      "@date-utils": ["../../packages/date-utils/src/index.ts"],
+      "@date-utils/*": ["../../packages/date-utils/src/*"]
+    }
   },
-  "include": [
-    "src/**/*",
-    "../../src/lib/**/*",
-    "../../packages/i18n/src/**/*.json",
-    "../../scripts/src/**/*",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules",
-    "../../apps-script",
-    "**/__tests__/**",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/*.test.ts",
-    "**/*.test.tsx"
-  ],
+  "include": ["next-env.d.ts", "src/**/*"],
+  "exclude": [".next", "node_modules", "dist"],
   "references": [
-    { "path": "../../packages/auth" },
-    { "path": "../../packages/types" },
-    { "path": "../../packages/config" },
-    { "path": "../../packages/email" },
-    { "path": "../../packages/i18n" },
-    { "path": "../../packages/ui" },
-    { "path": "../../packages/themes/base" },
-    { "path": "../../packages/email" },
-    { "path": "../../packages/shared-utils" },
-    { "path": "../../packages/lib" },
-    { "path": "../../packages/date-utils" },
     { "path": "../../packages/platform-core" },
-    { "path": "../../packages/platform-machine" },
-    { "path": "../../packages/stripe" },
-    { "path": "../../packages/configurator" }
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/auth" },
+    { "path": "../../packages/lib" },
+    { "path": "../../packages/shared-utils" },
+    { "path": "../../packages/types" },
+    { "path": "../../packages/date-utils" }
   ]
 }

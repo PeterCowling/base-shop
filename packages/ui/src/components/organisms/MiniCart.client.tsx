@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "@platform-core/src/contexts/CartContext";
+import { useCart } from "@platform-core/contexts/CartContext";
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { drawerWidthProps } from "../../utils/style/drawerWidth";

@@ -1,12 +1,12 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/page.tsx
 import { listThemes } from "@platform-core/createShop";
 import { baseTokens, loadThemeTokens } from "@platform-core/themeTokens";
-import { readShop } from "@platform-core/src/repositories/shops.server";
+import { readShop } from "@platform-core/repositories/shops.server";
 import {
   getThemePresets,
   saveThemePreset,
   deleteThemePreset,
-} from "@platform-core/src/repositories/themePresets.server";
+} from "@platform-core/repositories/themePresets.server";
 import ThemeEditor from "./ThemeEditor";
 
 export async function savePreset(

@@ -51,7 +51,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deployShop = deployShop;
 exports.getDeployStatus = getDeployStatus;
-var shops_1 = require("@platform-core/src/shops");
+var shops_1 = require("@platform-core/shops");
 function deployShop(shopId, domain) {
     return __awaiter(this, void 0, void 0, function () {
         var res, json, info, cfRes, cfJson, err_1;

@@ -2,7 +2,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { readRepo } from "@platform-core/repositories/json.server";
-import type { ProductPublication } from "@platform-core/src/products";
+import type { ProductPublication } from "@platform-core/products";
 
 export async function POST(
   req: NextRequest,

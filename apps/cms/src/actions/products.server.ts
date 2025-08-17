@@ -13,7 +13,7 @@ import {
   writeRepo,
 } from "@platform-core/repositories/json.server";
 import { fillLocales } from "@i18n/fillLocales";
-import type { ProductPublication, PublicationStatus } from "@platform-core/src/products";
+import type { ProductPublication, PublicationStatus } from "@platform-core/products";
 import * as Sentry from "@sentry/node";
 import type { Locale, MediaItem } from "@acme/types";
 import { ensureAuthorized } from "./common/auth";

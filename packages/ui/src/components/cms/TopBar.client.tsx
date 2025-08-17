@@ -1,7 +1,7 @@
 // packages/ui/components/cms/TopBar.tsx
 "use client";
 
-import { useLayout } from "@platform-core/src/contexts/LayoutContext";
+import { useLayout } from "@platform-core/contexts/LayoutContext";
 import { getShopFromPath } from "@platform-core/utils";
 import { signOut } from "next-auth/react";
 import Link from "next/link";

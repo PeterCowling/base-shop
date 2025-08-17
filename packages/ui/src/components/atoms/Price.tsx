@@ -1,4 +1,4 @@
-import { useCurrency } from "@platform-core/src/contexts/CurrencyContext";
+import { useCurrency } from "@platform-core/contexts/CurrencyContext";
 import { formatPrice } from "@acme/shared-utils";
 import * as React from "react";
 import { cn } from "../../utils/style";

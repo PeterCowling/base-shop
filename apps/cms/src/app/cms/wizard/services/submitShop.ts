@@ -5,7 +5,7 @@ import {
   createShopOptionsSchema,
   type DeployStatusBase,
 } from "@platform-core/createShop";
-import { validateShopName } from "@platform-core/src/shops";
+import { validateShopName } from "@platform-core/shops";
 import type { WizardState } from "../schema";
 
 export interface SubmitResult {

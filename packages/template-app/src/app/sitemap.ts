@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { getShopSettings } from "@platform-core/src/repositories/settings.server";
-import { readRepo } from "@platform-core/src/repositories/products.server";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { readRepo } from "@platform-core/repositories/products.server";
 import { coreEnv } from "@acme/config/env/core";
 import type { ProductPublication } from "@acme/types";
 import { nowIso } from "@date-utils";

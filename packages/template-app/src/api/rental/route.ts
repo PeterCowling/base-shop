@@ -8,7 +8,7 @@ import {
 import { readInventory } from "@platform-core/repositories/inventory.server";
 import { readRepo as readProducts } from "@platform-core/repositories/products.server";
 import { reserveRentalInventory } from "@platform-core/orders/rentalAllocation";
-import { computeDamageFee } from "@platform-core/src/pricing";
+import { computeDamageFee } from "@platform-core/pricing";
 import { NextRequest, NextResponse } from "next/server";
 
 const SHOP_ID = "bcd";

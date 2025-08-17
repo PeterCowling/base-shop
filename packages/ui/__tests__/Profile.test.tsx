@@ -5,13 +5,13 @@ jest.mock("@auth", () => ({
   hasPermission: jest.fn(),
 }));
 
-jest.mock("@acme/platform-core", () => ({
+jest.mock("@platform-core", () => ({
   __esModule: true,
   getCustomerProfile: jest.fn(),
 }));
 
 import { getCustomerSession, hasPermission } from "@auth";
-import { getCustomerProfile } from "@acme/platform-core";
+import { getCustomerProfile } from "@platform-core";
 import ProfilePage from "../src/components/account/Profile";
 
 describe("ProfilePage permissions", () => {

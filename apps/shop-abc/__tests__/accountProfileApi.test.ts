@@ -5,7 +5,7 @@ jest.mock("@auth", () => ({
   validateCsrfToken: jest.fn(),
 }));
 
-jest.mock("@acme/platform-core/customerProfiles", () => ({
+jest.mock("@platform-core/customerProfiles", () => ({
   __esModule: true,
   getCustomerProfile: jest.fn(),
   updateCustomerProfile: jest.fn(),
@@ -22,7 +22,7 @@ import { requirePermission, validateCsrfToken } from "@auth";
 import {
   getCustomerProfile,
   updateCustomerProfile,
-} from "@acme/platform-core/customerProfiles";
+} from "@platform-core/customerProfiles";
 import { GET, PUT } from "../src/app/api/account/profile/route";
 
 describe("/api/account/profile GET", () => {

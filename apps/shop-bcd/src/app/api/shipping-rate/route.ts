@@ -3,7 +3,7 @@ import "@acme/lib/initZod";
 import {
   getShippingRate,
   type ShippingRateRequest,
-} from "@acme/platform-core/shipping";
+} from "@platform-core/shipping";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";
 import type { NextRequest } from "next/server";

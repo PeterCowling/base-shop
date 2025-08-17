@@ -40,8 +40,8 @@ exports.revalidate = void 0;
 exports.default = SanityConnectPage;
 // apps/cms/src/app/cms/blog/sanity/connect/page.tsx
 var ConnectForm_client_1 = require("./ConnectForm.client");
-var shop_server_1 = require("@platform-core/src/repositories/shop.server");
-var shops_1 = require("@platform-core/src/shops");
+var shop_server_1 = require("@platform-core/repositories/shop.server");
+var shops_1 = require("@platform-core/shops");
 exports.revalidate = 0;
 function SanityConnectPage(_a) {
     return __awaiter(this, arguments, void 0, function (_b) {

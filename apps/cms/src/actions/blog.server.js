@@ -55,8 +55,8 @@ exports.updatePost = updatePost;
 exports.publishPost = publishPost;
 exports.unpublishPost = unpublishPost;
 exports.deletePost = deletePost;
-var shops_1 = require("@platform-core/src/shops");
-var shop_server_1 = require("@platform-core/src/repositories/shop.server");
+var shops_1 = require("@platform-core/shops");
+var shop_server_1 = require("@platform-core/repositories/shop.server");
 var auth_1 = require("./common/auth");
 var plugin_sanity_1 = require("@acme/plugin-sanity");
 function collectProductSlugs(content) {

@@ -7,12 +7,12 @@ import {
   decodeCartCookie,
   type CartLine,
   type CartState,
-} from "@platform-core/src/cartCookie";
-import { getCart } from "@platform-core/src/cartStore";
-import { getProductById } from "@platform-core/src/products";
+} from "@platform-core/cartCookie";
+import { getCart } from "@platform-core/cartStore";
+import { getProductById } from "@platform-core/products";
 import { cookies } from "next/headers";
-import { getShopSettings } from "@platform-core/src/repositories/settings.server";
-import { readShop } from "@platform-core/src/repositories/shops.server";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { readShop } from "@platform-core/repositories/shops.server";
 import { useState } from "react";
 
 export const metadata = {

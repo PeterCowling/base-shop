@@ -59,7 +59,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createShop = createShop;
 var createShop_1 = require("@platform-core/createShop");
-var shops_1 = require("@platform-core/src/shops");
+var shops_1 = require("@platform-core/shops");
 function serializeNavItems(items) {
     return items.map(function (_a) {
         var label = _a.label, url = _a.url, children = _a.children;

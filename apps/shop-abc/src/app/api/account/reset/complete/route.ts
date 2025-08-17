@@ -8,7 +8,7 @@ import {
   getUserByResetToken,
   updatePassword,
   setResetToken,
-} from "@acme/platform-core/users";
+} from "@platform-core/users";
 import { validateCsrfToken } from "@auth";
 import { parseJsonBody } from "@shared-utils";
 

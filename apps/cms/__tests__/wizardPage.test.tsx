@@ -16,9 +16,9 @@ jest.mock("next-auth", () => ({
 jest.mock("next/navigation", () => ({ redirect: jest.fn() }));
 
 /* -------------------------------------------------------------------------- */
-/*  Stub `@platform-core/src` so AppShell can import without crashing         */
+/*  Stub `@platform-core` so AppShell can import without crashing         */
 /* -------------------------------------------------------------------------- */
-jest.mock("@platform-core/src", () => {
+jest.mock("@platform-core", () => {
   const React = require("react");
   return {
     __esModule: true,

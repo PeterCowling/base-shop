@@ -1,8 +1,8 @@
 // packages/platform-core/__tests__/addToCartButton.test.tsx
 
 import { CartProvider, useCart } from "@/contexts/CartContext";
-import AddToCartButton from "@platform-core/src/components/shop/AddToCartButton.client";
-import { PRODUCTS } from "@acme/platform-core/products";
+import AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
+import { PRODUCTS } from "@platform-core/products";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 jest.mock("react", () => jest.requireActual("react"));
 jest.mock("react-dom", () => jest.requireActual("react-dom"));

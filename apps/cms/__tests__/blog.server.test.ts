@@ -5,11 +5,11 @@ jest.mock("../src/actions/common/auth", () => ({
   ensureAuthorized: jest.fn(),
 }));
 
-jest.mock("@platform-core/src/repositories/shop.server", () => ({
+jest.mock("@platform-core/repositories/shop.server", () => ({
   getShopById: jest.fn().mockResolvedValue({ id: "shop" }),
 }));
 
-jest.mock("@platform-core/src/shops", () => ({
+jest.mock("@platform-core/shops", () => ({
   getSanityConfig: jest.fn().mockReturnValue({
     projectId: "p",
     dataset: "d",
@@ -17,7 +17,7 @@ jest.mock("@platform-core/src/shops", () => ({
   }),
 }));
 
-jest.mock("@platform-core/src/repositories/blog.server", () => ({
+jest.mock("@platform-core/repositories/blog.server", () => ({
   slugExists: jest.fn(),
 }));
 
@@ -27,7 +27,7 @@ describe("blog post slug conflicts", () => {
   });
 
   it("returns error when slug already exists on create", async () => {
-    const { slugExists } = require("@platform-core/src/repositories/blog.server");
+    const { slugExists } = require("@platform-core/repositories/blog.server");
     (slugExists as jest.Mock).mockResolvedValue(true);
 
     const fd = new FormData();
@@ -41,7 +41,7 @@ describe("blog post slug conflicts", () => {
   });
 
   it("returns error when slug already exists on update", async () => {
-    const { slugExists } = require("@platform-core/src/repositories/blog.server");
+    const { slugExists } = require("@platform-core/repositories/blog.server");
     (slugExists as jest.Mock).mockResolvedValue(true);
 
     const fd = new FormData();

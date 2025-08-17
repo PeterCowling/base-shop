@@ -2,7 +2,7 @@
 const USER_STORE: Record<string, any> = {};
 const PROFILE_STORE: Record<string, any> = {};
 
-jest.mock("@acme/platform-core/users", () => ({
+jest.mock("@platform-core/users", () => ({
   __esModule: true,
   createUser: jest.fn(async ({ id, email, passwordHash, emailVerified = false }) => {
     USER_STORE[id] = { id, email, passwordHash, emailVerified };
@@ -28,7 +28,7 @@ jest.mock("../src/middleware", () => ({
   checkRegistrationRateLimit: jest.fn().mockResolvedValue(null),
 }));
 
-jest.mock("@acme/platform-core/customerProfiles", () => ({
+jest.mock("@platform-core/customerProfiles", () => ({
   __esModule: true,
   updateCustomerProfile: jest.fn(async (id: string, data: any) => {
     PROFILE_STORE[id] = { customerId: id, ...data };
@@ -48,7 +48,7 @@ jest.mock("next/server", () => ({
   },
 }));
 
-import { updateCustomerProfile } from "@acme/platform-core/customerProfiles";
+import { updateCustomerProfile } from "@platform-core/customerProfiles";
 
 let POST: typeof import("../src/app/register/route").POST;
 let profileGET: typeof import("../src/app/api/account/profile/route").GET;

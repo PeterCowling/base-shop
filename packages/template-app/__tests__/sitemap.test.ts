@@ -5,11 +5,11 @@ const readRepoMock = jest.fn().mockResolvedValue([
   { id: "p1", slug: "shoe", updated_at: "2024-01-01T00:00:00Z" },
 ]);
 
-jest.mock("@platform-core/src/repositories/settings.server", () => ({
+jest.mock("@platform-core/repositories/settings.server", () => ({
   getShopSettings: getShopSettingsMock,
 }));
 
-jest.mock("@platform-core/src/repositories/products.server", () => ({
+jest.mock("@platform-core/repositories/products.server", () => ({
   readRepo: readRepoMock,
 }));
 

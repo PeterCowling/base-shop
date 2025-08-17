@@ -1,4 +1,4 @@
-import { encodeCartCookie } from "@platform-core/src/cartCookie";
+import { encodeCartCookie } from "@platform-core/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import * as dateUtils from "@acme/date-utils";
 const { calculateRentalDays } = dateUtils;
@@ -35,7 +35,7 @@ jest.mock("@auth", () => ({
 }));
 
 let mockCart: any;
-jest.mock("@platform-core/src/cartStore", () => ({
+jest.mock("@platform-core/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
 }));
 

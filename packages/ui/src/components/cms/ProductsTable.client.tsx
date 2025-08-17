@@ -5,7 +5,7 @@
 import {
   ProductPublication,
   PublicationStatus,
-} from "@platform-core/src/products";
+} from "@platform-core/products";
 import { useProductFilters } from "@ui/hooks/useProductFilters";
 import { formatCurrency } from "@acme/shared-utils";
 import Link from "next/link";

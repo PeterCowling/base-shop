@@ -41,7 +41,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.listMedia = listMedia;
 exports.uploadMedia = uploadMedia;
 exports.deleteMedia = deleteMedia;
-var shops_1 = require("@platform-core/src/shops");
+var shops_1 = require("@platform-core/shops");
 var node_fs_1 = require("node:fs");
 var path = require("node:path");
 var sharp_1 = require("sharp");

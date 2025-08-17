@@ -11,7 +11,7 @@ jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 jest.mock("@prisma/client", () => ({ PrismaClient: class {} }));
 jest.mock("@platform-core/analytics", () => ({ trackPageView: jest.fn() }));
 const cartDb: Record<string, any> = {};
-jest.mock("@platform-core/src/cartStore", () => ({
+jest.mock("@platform-core/cartStore", () => ({
   __esModule: true,
   createCart: jest.fn(async () => "test-cart"),
   setCart: jest.fn(async (id, cart) => {
@@ -19,7 +19,7 @@ jest.mock("@platform-core/src/cartStore", () => ({
   }),
   getCart: jest.fn(async (id) => cartDb[id] ?? {}),
 }));
-jest.mock("@platform-core/src/cartCookie", () => ({
+jest.mock("@platform-core/cartCookie", () => ({
   __esModule: true,
   CART_COOKIE: "cookie",
   decodeCartCookie: (v: string) => v,

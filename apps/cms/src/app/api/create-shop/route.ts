@@ -1,7 +1,7 @@
 // apps/cms/src/app/api/create-shop/route.ts
 import "@acme/lib/initZod";
 import { createNewShop } from "@cms/actions/createShop.server";
-import { createShopOptionsSchema } from "@platform-core/src/createShop";
+import { createShopOptionsSchema } from "@platform-core/createShop";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 

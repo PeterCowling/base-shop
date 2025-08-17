@@ -13,7 +13,7 @@ process.env.NEXTAUTH_SECRET = "test-secret";
 /* ------------------------------------------------------------------ */
 
 /** Replace hook-using providers with inert fragments for SSR tests */
-jest.mock("@platform-core/src", () => {
+jest.mock("@platform-core", () => {
   const React = require("react");
   return {
     __esModule: true,

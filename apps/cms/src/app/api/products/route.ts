@@ -7,7 +7,7 @@ import {
 } from "@platform-core/repositories/json.server";
 import type {
   ProductPublication,
-} from "@platform-core/src/products";
+} from "@platform-core/products";
 
 const searchSchema = z
   .object({

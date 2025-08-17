@@ -1,6 +1,6 @@
 // apps/shop-abc/src/services/checkout.ts
 import { priceForDays, convertCurrency } from "@platform-core/pricing";
-import type { CartLine, CartState } from "@platform-core/src/cartCookie";
+import type { CartLine, CartState } from "@platform-core/cartCookie";
 import type Stripe from "stripe";
 
 export async function buildLineItemsForItem(
@@ -135,7 +135,7 @@ export async function createCheckoutSession(
   cart: CartState,
   options: CreateCheckoutSessionOptions,
 ): Promise<{ sessionId: string; clientSecret?: string }> {
-  const mod = await import("@platform-core/src/checkout/session");
+  const mod = await import("@platform-core/checkout/session");
   return mod.createCheckoutSession(cart, options);
 }
 

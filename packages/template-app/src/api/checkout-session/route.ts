@@ -3,15 +3,15 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   type CartState,
-} from "@platform-core/src/cartCookie";
-import { getCart } from "@platform-core/src/cartStore";
+} from "@platform-core/cartCookie";
+import { getCart } from "@platform-core/cartStore";
 import {
   convertCurrency,
   getPricing,
-} from "@platform-core/src/pricing";
-import { createCheckoutSession } from "@platform-core/src/checkout/session";
+} from "@platform-core/pricing";
+import { createCheckoutSession } from "@platform-core/checkout/session";
 import { coreEnv } from "@acme/config/env/core";
-import { readShop } from "@platform-core/src/repositories/shops.server";
+import { readShop } from "@platform-core/repositories/shops.server";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
 

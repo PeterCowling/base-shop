@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import FeaturedProductBlock from "./FeaturedProductBlock";
-import { PRODUCTS } from "@platform-core/src/products";
+import { PRODUCTS } from "@platform-core/products";
 
 const meta: Meta<typeof FeaturedProductBlock> = {
   component: FeaturedProductBlock,

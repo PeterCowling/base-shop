@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 import shop from "../../../../shop.json";
-import { initPlugins } from "@acme/platform-core/plugins";
+import { initPlugins } from "@platform-core/plugins";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 

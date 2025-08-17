@@ -1,7 +1,7 @@
 // apps/cms/src/actions/media.server.ts
 "use server";
 
-import { validateShopName } from "@platform-core/src/shops";
+import { validateShopName } from "@platform-core/shops";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";

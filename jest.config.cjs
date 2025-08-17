@@ -76,11 +76,11 @@ module.exports = {
     "^.+\\.d\\.ts$": "<rootDir>/test/emptyModule.js",
 
     // explicit barrels (no trailing segment)
-    "^@platform-core/src$": "<rootDir>/packages/platform-core/src/index.ts",
+    "^@platform-core$": "<rootDir>/packages/platform-core/src/index.ts",
     "^@ui/src$": "<rootDir>/packages/ui/src/index.ts",
 
     // specific rules that must override tsconfig-derived ones
-    "^@platform-core/src/(.*)$": "<rootDir>/packages/platform-core/src/$1",
+    "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/src/$1",
     "^@ui/src/(.*)$": "<rootDir>/packages/ui/src/$1",
       "^@platform-core/repositories/shopSettings$":
         "<rootDir>/packages/platform-core/src/repositories/settings.server.ts",
@@ -90,9 +90,9 @@ module.exports = {
     "^@acme/config/(.*)$": "<rootDir>/packages/config/src/$1",
 
     // context mocks
-    "^@platform-core/src/contexts/ThemeContext$":
+    "^@platform-core/contexts/ThemeContext$":
       "<rootDir>/test/__mocks__/themeContextMock.tsx",
-    "^@platform-core/src/contexts/CurrencyContext$":
+    "^@platform-core/contexts/CurrencyContext$":
       "<rootDir>/test/__mocks__/currencyContextMock.tsx",
 
     // email provider client mocks

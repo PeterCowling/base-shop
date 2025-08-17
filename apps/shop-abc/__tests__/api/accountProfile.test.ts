@@ -21,7 +21,7 @@ jest.mock("@auth", () => ({
   requirePermission,
   validateCsrfToken,
 }));
-jest.mock("@acme/platform-core/customerProfiles", () => ({
+jest.mock("@platform-core/customerProfiles", () => ({
   __esModule: true,
   getCustomerProfile,
   updateCustomerProfile,

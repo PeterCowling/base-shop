@@ -5,11 +5,11 @@ import { promises as fs } from "node:fs";
 
 let tmpDir = "";
 
-jest.mock("@platform-core/src/dataRoot", () => ({
+jest.mock("@platform-core/dataRoot", () => ({
   resolveDataRoot: () => tmpDir,
 }));
 
-import { saveCoupons, findCoupon, type StoredCoupon } from "@platform-core/src/coupons";
+import { saveCoupons, findCoupon, type StoredCoupon } from "@platform-core/coupons";
 
 const shop = "test";
 const sample: StoredCoupon[] = [

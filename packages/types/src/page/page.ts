@@ -1,131 +1,55 @@
 import { z } from "zod";
 import { localeSchema } from "../Product";
+import type { Locale } from "../constants";
 import {
-  ImageComponent,
   imageComponentSchema,
-  TextComponent,
   textComponentSchema,
-  CustomHtmlComponent,
   customHtmlComponentSchema,
-  ButtonComponent,
   buttonComponentSchema,
 } from "./atoms";
 import {
-  AnnouncementBarComponent,
   announcementBarComponentSchema,
-  ValuePropsComponent,
   valuePropsComponentSchema,
-  ReviewsCarouselComponent,
   reviewsCarouselComponentSchema,
-  ContactFormComponent,
   contactFormComponentSchema,
-  NewsletterSignupComponent,
   newsletterSignupComponentSchema,
-  SearchBarComponent,
   searchBarComponentSchema,
-  MapBlockComponent,
   mapBlockComponentSchema,
-  VideoBlockComponent,
   videoBlockComponentSchema,
-  FAQBlockComponent,
   faqBlockComponentSchema,
-  CountdownTimerComponent,
   countdownTimerComponentSchema,
-  SocialLinksComponent,
   socialLinksComponentSchema,
-  SocialFeedComponent,
   socialFeedComponentSchema,
-  SocialProofComponent,
   socialProofComponentSchema,
 } from "./molecules";
 import {
-  HeroBannerComponent,
   heroBannerComponentSchema,
-  ProductGridComponent,
   productGridComponentSchema,
-  ProductCarouselComponent,
   productCarouselComponentSchema,
-  RecommendationCarouselComponent,
   recommendationCarouselComponentSchema,
-  GalleryComponent,
   galleryComponentSchema,
-  LookbookComponent,
   lookbookComponentSchema,
-  ImageSliderComponent,
   imageSliderComponentSchema,
-  ContactFormWithMapComponent,
   contactFormWithMapComponentSchema,
-  StoreLocatorBlockComponent,
   storeLocatorBlockComponentSchema,
-  BlogListingComponent,
   blogListingComponentSchema,
-  TestimonialsComponent,
   testimonialsComponentSchema,
-  PricingTableComponent,
   pricingTableComponentSchema,
-  TestimonialSliderComponent,
   testimonialSliderComponentSchema,
-  GiftCardBlockComponent,
   giftCardBlockComponentSchema,
-  PopupModalComponent,
   popupModalComponentSchema,
-  CollectionListComponent,
+  collectionListComponentSchema,
 } from "./organisms";
 import {
-  HeaderComponent,
   headerComponentSchema,
-  FooterComponent,
   footerComponentSchema,
-  SectionComponent,
   sectionComponentSchema,
-  MultiColumnComponent,
   multiColumnComponentSchema,
-  TabsComponent,
   tabsComponentSchema,
   bindPageComponentSchema,
 } from "./layouts";
 
-export type PageComponent =
-  | AnnouncementBarComponent
-  | HeroBannerComponent
-  | ValuePropsComponent
-  | ReviewsCarouselComponent
-  | ProductGridComponent
-  | ProductCarouselComponent
-  | RecommendationCarouselComponent
-  | GalleryComponent
-  | LookbookComponent
-  | ImageSliderComponent
-  | ContactFormComponent
-  | NewsletterSignupComponent
-  | SearchBarComponent
-  | ContactFormWithMapComponent
-  | MapBlockComponent
-  | StoreLocatorBlockComponent
-  | VideoBlockComponent
-  | FAQBlockComponent
-  | CountdownTimerComponent
-  | BlogListingComponent
-  | TestimonialsComponent
-  | PricingTableComponent
-  | TestimonialSliderComponent
-  | GiftCardBlockComponent
-  | PopupModalComponent
-  | ImageComponent
-  | TextComponent
-  | CustomHtmlComponent
-  | ButtonComponent
-  | HeaderComponent
-  | FooterComponent
-  | SocialLinksComponent
-  | SocialFeedComponent
-  | SocialProofComponent
-  | SectionComponent
-  | MultiColumnComponent
-  | TabsComponent
-  | CollectionListComponent;
-
-export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
+export const pageComponentSchema = z.lazy(() =>
   z.discriminatedUnion("type", [
     announcementBarComponentSchema,
     heroBannerComponentSchema,
@@ -164,19 +88,15 @@ export const pageComponentSchema: z.ZodType<PageComponent> = z.lazy(() =>
     sectionComponentSchema,
     multiColumnComponentSchema,
     tabsComponentSchema,
+    collectionListComponentSchema,
   ])
 );
 
+export type PageComponent = z.infer<typeof pageComponentSchema>;
+
 bindPageComponentSchema(pageComponentSchema);
 
-export interface HistoryState {
-  past: PageComponent[][];
-  present: PageComponent[];
-  future: PageComponent[][];
-  gridCols: number;
-}
-
-export const historyStateSchema: z.ZodType<HistoryState> = z
+export const historyStateSchema = z
   .object({
     past: z.array(z.array(pageComponentSchema)),
     present: z.array(pageComponentSchema),
@@ -185,6 +105,24 @@ export const historyStateSchema: z.ZodType<HistoryState> = z
   })
   .strict()
   .default({ past: [], present: [], future: [], gridCols: 12 });
+
+export type HistoryState = z.infer<typeof historyStateSchema>;
+
+export interface Page {
+  id: string;
+  slug: string;
+  status: "draft" | "published";
+  components: PageComponent[];
+  seo: {
+    title: Partial<Record<Locale, string>>;
+    description?: Partial<Record<Locale, string>>;
+    image?: Partial<Record<Locale, string>>;
+  };
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
+  history?: HistoryState;
+}
 
 export const pageSchema = z
   .object({
@@ -202,7 +140,5 @@ export const pageSchema = z
     createdBy: z.string(),
     history: historyStateSchema.optional(),
   })
-  .strict();
-
-export type Page = z.infer<typeof pageSchema>;
+  .strict() as z.ZodSchema<Page>;
 

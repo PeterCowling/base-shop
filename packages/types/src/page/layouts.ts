@@ -36,11 +36,10 @@ export interface SectionComponent extends PageComponentBase {
   children?: PageComponent[];
 }
 
-export const sectionComponentSchema: z.ZodType<SectionComponent> =
-  baseComponentSchema.extend({
-    type: z.literal("Section"),
-    children: z.array(z.lazy(() => pageComponentSchemaRef)).default([]),
-  });
+export const sectionComponentSchema = baseComponentSchema.extend({
+  type: z.literal("Section"),
+  children: z.array(z.lazy(() => pageComponentSchemaRef)).default([]),
+});
 
 export interface MultiColumnComponent extends PageComponentBase {
   type: "MultiColumn";
@@ -49,13 +48,12 @@ export interface MultiColumnComponent extends PageComponentBase {
   children?: PageComponent[];
 }
 
-export const multiColumnComponentSchema: z.ZodType<MultiColumnComponent> =
-  baseComponentSchema.extend({
-    type: z.literal("MultiColumn"),
-    columns: z.number().optional(),
-    gap: z.string().optional(),
-    children: z.array(z.lazy(() => pageComponentSchemaRef)).default([]),
-  });
+export const multiColumnComponentSchema = baseComponentSchema.extend({
+  type: z.literal("MultiColumn"),
+  columns: z.number().optional(),
+  gap: z.string().optional(),
+  children: z.array(z.lazy(() => pageComponentSchemaRef)).default([]),
+});
 
 export interface TabsComponent extends PageComponentBase {
   type: "Tabs";
@@ -64,11 +62,10 @@ export interface TabsComponent extends PageComponentBase {
   children?: PageComponent[];
 }
 
-export const tabsComponentSchema: z.ZodType<TabsComponent> =
-  baseComponentSchema.extend({
-    type: z.literal("Tabs"),
-    labels: z.array(z.string()).default([]),
-    active: z.number().optional(),
-    children: z.array(z.lazy(() => pageComponentSchemaRef)).default([]),
-  });
+export const tabsComponentSchema = baseComponentSchema.extend({
+  type: z.literal("Tabs"),
+  labels: z.array(z.string()).default([]),
+  active: z.number().optional(),
+  children: z.array(z.lazy(() => pageComponentSchemaRef)).default([]),
+});
 

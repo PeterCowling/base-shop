@@ -30,7 +30,9 @@ class MapRegistry<T> {
   }
 }
 
-export interface PluginMetadata<T extends Plugin = Plugin> {
+export interface PluginMetadata<
+  T extends Plugin<any, any, any, any, any, any, any> = Plugin,
+> {
   id: string;
   name?: string;
   description?: string;
@@ -38,9 +40,9 @@ export interface PluginMetadata<T extends Plugin = Plugin> {
 }
 
 export class PluginManager<
-  PPay = PaymentPayload,
-  SReq = ShippingRequest,
-  WProp = WidgetProps,
+  PPay extends PaymentPayload = PaymentPayload,
+  SReq extends ShippingRequest = ShippingRequest,
+  WProp extends WidgetProps = WidgetProps,
   P extends PaymentProvider<PPay> = PaymentProvider<PPay>,
   S extends ShippingProvider<SReq> = ShippingProvider<SReq>,
   W extends WidgetComponent<WProp> = WidgetComponent<WProp>,
@@ -53,12 +55,22 @@ export class PluginManager<
     PluginMetadata<Plugin<Record<string, unknown>, PPay, SReq, WProp, P, S, W>>
   >();
 
-  addPlugin<C>(plugin: Plugin<C, PPay, SReq, WProp, P, S, W>): void {
+  addPlugin<C extends Record<string, unknown>>(
+    plugin: Plugin<C, PPay, SReq, WProp, P, S, W>,
+  ): void {
     this.plugins.set(plugin.id, {
       id: plugin.id,
       name: plugin.name,
       description: plugin.description,
-      plugin,
+      plugin: plugin as unknown as Plugin<
+        Record<string, unknown>,
+        PPay,
+        SReq,
+        WProp,
+        P,
+        S,
+        W
+      >,
     });
   }
 

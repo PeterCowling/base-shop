@@ -116,12 +116,12 @@ export async function savePage(
   try {
     await prisma.page.upsert({
       where: { id: page.id },
-      update: { data: page as Prisma.InputJsonValue, slug: page.slug },
+      update: { data: page as unknown as Prisma.InputJsonValue, slug: page.slug },
       create: {
         id: page.id,
         shopId: shop,
         slug: page.slug,
-        data: page as Prisma.InputJsonValue,
+        data: page as unknown as Prisma.InputJsonValue,
       },
     });
   } catch {
@@ -169,7 +169,7 @@ export async function updatePage(
     await prisma.page.update({
       where: { id: patch.id },
       data: {
-        data: updated as Prisma.InputJsonValue,
+        data: updated as unknown as Prisma.InputJsonValue,
         slug: updated.slug,
       },
     });
@@ -196,7 +196,7 @@ export interface PageDiffEntry {
 const entrySchema = z
     .object({
       timestamp: z.string().datetime(),
-      diff: (pageSchema as z.ZodObject<any>).partial(),
+      diff: (pageSchema as unknown as z.ZodObject<any>).partial(),
     })
   .strict();
 

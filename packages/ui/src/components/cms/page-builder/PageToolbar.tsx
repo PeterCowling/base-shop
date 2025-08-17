@@ -79,7 +79,7 @@ const PageToolbar = ({
       <div className="flex justify-end gap-2">
         <DeviceSelector
           deviceId={deviceId}
-          onChange={(id) => {
+          onChange={(id: string) => {
             setDeviceId(id);
             setOrientation("portrait");
           }}

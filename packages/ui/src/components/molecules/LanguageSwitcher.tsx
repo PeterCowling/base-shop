@@ -7,17 +7,17 @@ import Link from "next/link";
 export default function LanguageSwitcher({ current }: { current: Locale }) {
   return (
     <div className="flex gap-2 text-sm">
-      {locales.map((l) => (
+      {locales.map((locale: Locale) => (
         <Link
-          href={`/${l}`}
-          key={l}
+          href={`/${locale}`}
+          key={locale}
           className={
-            l === current
+            locale === current
               ? "font-semibold underline"
               : "text-muted hover:underline"
           }
         >
-          {l.toUpperCase()}
+          {locale.toUpperCase()}
         </Link>
       ))}
     </div>

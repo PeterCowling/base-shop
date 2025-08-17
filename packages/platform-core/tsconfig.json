@@ -31,8 +31,11 @@
   "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"],
 
   "references": [
-    { "path": "../lib" },
+    { "path": "../shared-utils" },
     { "path": "../types" },
+    { "path": "../date-utils" },
+    { "path": "../i18n" },
+    { "path": "../lib" },
     { "path": "../themes/base" }
   ]
 }

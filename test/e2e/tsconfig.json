@@ -3,18 +3,27 @@
   "extends": "../../tsconfig.base.json",
 
   "compilerOptions": {
-    /* -----------------------------------------------------------------
-       test-only settings
-       ----------------------------------------------------------------- */
-    "noEmit": true, // ✔ type-check only
-    "allowImportingTsExtensions": true, // keep `.ts` in test imports
+    /* -------------------------------------------------------------
+     * test-only settings (type-check only, no output)
+     * ----------------------------------------------------------- */
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
 
-    /* make Cypress & Node globals available ------------------------- */
+    /* TS 5 bundler-style resolution required for the flag above */
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+
+    /* QoL flags */
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "skipLibCheck": true,
+
+    /* Cypress & Node globals */
     "types": ["node", "cypress"]
   },
 
-  /* -----------------------------------------------------------------
-     test files
-     ----------------------------------------------------------------- */
   "include": ["**/*.ts", "**/*.tsx"]
 }

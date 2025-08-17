@@ -6,7 +6,8 @@
       "dependsOn": ["^dev"]
     },
     "build": {
-      "outputs": [".vercel/**", "dist/**"]
+      "dependsOn": ["^build"],
+      "outputs": [".vercel/**", "dist/**", ".next/**"]
     },
     "lint": {},
     "test": {

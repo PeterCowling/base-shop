@@ -3,16 +3,27 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/env/index.ts",
-    "./env": "./src/env/index.ts",
-    "./env/core": "./dist/env/core.js",
-    "./env/payments": "./src/env/payments.ts",
-    "./env/shipping": "./src/env/shipping.ts",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./env/*": {
+      "types": "./dist/env/*.d.ts",
+      "import": "./dist/env/*.js",
+      "default": "./dist/env/*.js"
+    },
     "./tsconfig.app.json": "./tsconfig.app.json",
     "./jest.preset.cjs": "./jest.preset.cjs"
   },
+  "files": ["dist"],
+  "sideEffects": false,
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json -w",
+    "clean": "rimraf dist *.tsbuildinfo"
   }
 }

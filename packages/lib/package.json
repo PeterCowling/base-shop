@@ -20,6 +20,6 @@
   },
   "dependencies": {
     "@platform-core": "workspace:*",
-    "@acme/config": "workspace:*"
+    "@acme/config": "workspace:^"
   }
 }

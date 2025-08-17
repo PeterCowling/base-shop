@@ -4,7 +4,7 @@
 import { Input } from "@ui/components/atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
-import { ReactElement, useState } from "react";
+import { ChangeEvent, ReactElement, useState } from "react";
 
 interface UploadPanelProps {
   shop: string;
@@ -110,14 +110,18 @@ export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): Rea
                 <Input
                   type="text"
                   value={altText}
-                  onChange={(e) => setAltText(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setAltText(e.target.value)
+                  }
                   placeholder={isVideo ? "Title" : "Alt text"}
                   className="flex-1"
                 />
                 <Input
                   type="text"
                   value={uploadTags}
-                  onChange={(e) => setUploadTags(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setUploadTags(e.target.value)
+                  }
                   placeholder="Tags (comma separated)"
                   className="flex-1"
                 />

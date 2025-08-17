@@ -1,4 +1,4 @@
-import type { CartState } from "@/lib/cartCookie";
+import type { CartLine, CartState } from "@/lib/cartCookie";
 import Image from "next/image";
 import * as React from "react";
 import { cn } from "../../utils/style";
@@ -19,7 +19,9 @@ export function CartTemplate({
   className,
   ...props
 }: CartTemplateProps) {
-  const lines = Object.entries(cart).map(([id, line]) => ({ id, ...line }));
+  const lines: (CartLine & { id: string })[] = Object.entries(cart).map(
+    ([id, line]) => ({ id, ...line })
+  );
   const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
   const deposit = lines.reduce((s, l) => s + (l.sku.deposit ?? 0) * l.qty, 0);
 

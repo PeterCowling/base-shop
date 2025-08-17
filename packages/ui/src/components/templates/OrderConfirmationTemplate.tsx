@@ -15,7 +15,9 @@ export function OrderConfirmationTemplate({
   className,
   ...props
 }: OrderConfirmationTemplateProps) {
-  const lines = Object.entries(cart).map(([id, line]) => ({ id, ...line }));
+  const lines = (Object.entries(cart) as [string, CartState[string]][]).map(
+    ([id, line]) => ({ id, ...line })
+  );
   const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
   const deposit = lines.reduce((s, l) => s + (l.sku.deposit ?? 0) * l.qty, 0);
 

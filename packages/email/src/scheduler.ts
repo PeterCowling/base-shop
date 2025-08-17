@@ -50,11 +50,13 @@ async function filterUnsubscribed(
   shop: string,
   recipients: string[],
 ): Promise<string[]> {
-  const events = await listEvents(shop).catch(() => []);
+  const events: AnalyticsEvent[] = await listEvents(shop).catch(
+    (): AnalyticsEvent[] => [],
+  );
   const unsub = new Set(
     events
       .filter(
-        (e): e is AnalyticsEvent & { email: string } =>
+        (e: AnalyticsEvent): e is AnalyticsEvent & { email: string } =>
           e.type === "email_unsubscribe" && typeof e.email === "string",
       )
       .map((e) => e.email),

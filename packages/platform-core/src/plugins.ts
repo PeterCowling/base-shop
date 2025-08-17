@@ -127,7 +127,15 @@ export async function initPlugins<
   options: InitPluginsOptions = {},
 ): Promise<PluginManager<PPay, SReq, WProp, P, S, W>> {
   const manager = new PluginManager<PPay, SReq, WProp, P, S, W>();
-  const loaded = await loadPlugins(options);
+  const loaded = (await loadPlugins(options)) as Plugin<
+    Record<string, unknown>,
+    PPay,
+    SReq,
+    WProp,
+    P,
+    S,
+    W
+  >[];
   for (const plugin of loaded) {
     const raw = {
       ...(plugin.defaultConfig ?? {}),

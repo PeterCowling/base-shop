@@ -1,6 +1,6 @@
 import type { PageComponent } from "@acme/types";
 import { localeSchema, sanityBlogConfigSchema } from "@acme/types";
-import { pageComponentSchema } from "@acme/types";
+import { upgradeComponentSchema as pageComponentSchema } from "@acme/types";
 import { z } from "zod";
 import { slugify } from "@acme/shared-utils";
 import { fillLocales } from "@acme/i18n/fillLocales";
@@ -125,7 +125,7 @@ export function prepareOptions(
       image: p.image,
       components: p.components ?? [],
     })),
-    checkoutPage: parsed.checkoutPage,
+    checkoutPage: parsed.checkoutPage as unknown as PageComponent[],
     sanityBlog: parsed.sanityBlog,
     enableEditorial: parsed.enableEditorial ?? false,
     enableSubscriptions: parsed.enableSubscriptions ?? false,

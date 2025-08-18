@@ -1,4 +1,4 @@
-import type { ContactFormComponent } from "@acme/types/src/page/molecules";
+import type { ContactFormComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 
 interface Props {

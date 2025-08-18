@@ -1,5 +1,5 @@
 import type { Locale } from "@acme/i18n/locales";
-import type { PageComponent } from "@acme/types/src/page/page";
+import type { PageComponent } from "@acme/types";
 import DOMPurify from "dompurify";
 import { memo } from "react";
 import type { ComponentType } from "react";
@@ -17,7 +17,7 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
     const sanitized = DOMPurify.sanitize(value);
     return <div dangerouslySetInnerHTML={{ __html: sanitized }} />;
   }
-  const entry = blockRegistry[component.type];
+  const entry = blockRegistry[(component as any).type as keyof typeof blockRegistry];
   if (!entry) return null;
   const Comp = entry.component as ComponentType<any>;
 

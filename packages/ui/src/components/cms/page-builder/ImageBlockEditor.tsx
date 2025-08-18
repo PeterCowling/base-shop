@@ -1,4 +1,4 @@
-import type { ImageComponent } from "@acme/types/src/page/atoms";
+import type { ImageComponent } from "@acme/types";
 import { Button, Input } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
 

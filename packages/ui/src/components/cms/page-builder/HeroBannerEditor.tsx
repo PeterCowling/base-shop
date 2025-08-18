@@ -1,4 +1,4 @@
-import type { HeroBannerComponent } from "@acme/types/src/page/organisms";
+import type { HeroBannerComponent } from "@acme/types";
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {

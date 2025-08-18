@@ -132,5 +132,15 @@
     "@themes/base": "workspace:^",
     "@types/node": "^20.19.4",
     "next": "^15.3.5"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/*"
+      ],
+      "": [
+        "dist/index.d.ts"
+      ]
+    }
   }
 }

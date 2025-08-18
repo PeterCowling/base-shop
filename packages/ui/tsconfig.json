@@ -15,7 +15,10 @@
       "jest",
       "@testing-library/jest-dom"
     ],
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "target": "ES2022"
   },
   "references": [
     {
@@ -50,8 +53,9 @@
   ],
   "exclude": [
     "dist",
-    "**/__tests__/**",
-    ".turbo",
-    "node_modules"
+    "**/__tests__*.stories.*",
+    "src__tests__/**",
+    "src/**/*.stories.*",
+    "src/**/__tests__/**"
   ]
 }

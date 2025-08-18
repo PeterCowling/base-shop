@@ -1,4 +1,4 @@
-import type { GalleryComponent } from "@acme/types/src/page/organisms";
+import type { GalleryComponent } from "@acme/types";
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {

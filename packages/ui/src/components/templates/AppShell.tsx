@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutProvider, ThemeProvider, useLayout } from "@platform-core";
+import { LayoutProvider, ThemeProvider, useLayout } from "@acme/platform-core";
 import * as React from "react";
 
 import { cn } from "../../utils/style";

@@ -1,5 +1,18 @@
 {
-  "extends": "@acme/config/tsconfig.app.json",
+  "extends": "../config/tsconfig.app.json",
+  "compilerOptions": {
+    "paths": {
+      "@ui": ["../ui/src/index.ts"],
+      "@ui/*": ["../ui/src/*"],
+      "@auth": ["../auth/src/index.ts"],
+      "@auth/*": ["../auth/src/*"],
+      "@platform-core": ["../platform-core/src/index.ts"],
+      "@platform-core/*": ["../platform-core/src/*"],
+      "@date-utils": ["../date-utils/src/index.ts"],
+      "@date-utils/*": ["../date-utils/src/*"],
+      "@/*": ["./src/*"]
+    }
+  },
   "include": ["src/**/*", ".next/types/**/*.ts"],
   "exclude": ["dist", "__tests__", ".turbo", "node_modules"],
   "references": [

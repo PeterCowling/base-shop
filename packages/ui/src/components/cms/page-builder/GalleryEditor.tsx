@@ -1,4 +1,6 @@
-import type { GalleryComponent } from "@acme/types";
+import type { PageComponent } from "@acme/types";
+
+type GalleryComponent = Extract<PageComponent, { type: "Gallery" }>;
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {

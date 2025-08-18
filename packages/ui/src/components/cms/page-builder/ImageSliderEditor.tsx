@@ -1,6 +1,9 @@
-import type { ImageSliderComponent } from "@acme/types";
+import type { PageComponent } from "@acme/types";
 import { Button, Input } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
+
+type ImageSliderComponent = Extract<PageComponent, { type: "ImageSlider" }>;
+type Slide = { src: string; alt?: string; caption?: string };
 
 interface Props {
   component: ImageSliderComponent;
@@ -8,7 +11,7 @@ interface Props {
 }
 
 export default function ImageSliderEditor({ component, onChange }: Props) {
-  const slides: NonNullable<ImageSliderComponent["slides"]> = component.slides ?? [];
+  const slides: Slide[] = component.slides ?? [];
   const min = component.minItems ?? 0;
   const max = component.maxItems ?? Infinity;
 
@@ -36,7 +39,7 @@ export default function ImageSliderEditor({ component, onChange }: Props) {
 
   return (
     <div className="space-y-2">
-      {slides.map((s, idx) => (
+      {slides.map((s: Slide, idx: number) => (
         <div key={idx} className="space-y-1 rounded border p-2">
           <div className="flex items-start gap-2">
             <Input

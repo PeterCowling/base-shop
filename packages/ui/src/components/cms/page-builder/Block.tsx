@@ -4,7 +4,7 @@ import DOMPurify from "dompurify";
 import { memo } from "react";
 import type { ComponentType } from "react";
 import "./animations.css";
-import { blockRegistry } from "../blocks";
+import { blockRegistry, type BlockType } from "../blocks";
 
 function Block({ component, locale }: { component: PageComponent; locale: Locale }) {
   if (component.type === "Text") {
@@ -17,7 +17,7 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
     const sanitized = DOMPurify.sanitize(value);
     return <div dangerouslySetInnerHTML={{ __html: sanitized }} />;
   }
-  const entry = blockRegistry[component.type];
+  const entry = blockRegistry[component.type as BlockType];
   if (!entry) return null;
   const Comp = entry.component as ComponentType<any>;
 

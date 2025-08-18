@@ -1,4 +1,6 @@
-import type { ContactFormComponent } from "@acme/types";
+import type { PageComponent } from "@acme/types";
+
+type ContactFormComponent = Extract<PageComponent, { type: "ContactForm" }>;
 import { Input } from "../../atoms/shadcn";
 
 interface Props {

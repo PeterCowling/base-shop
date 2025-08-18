@@ -1,4 +1,6 @@
-import type { TestimonialsComponent } from "@acme/types";
+import type { PageComponent } from "@acme/types";
+
+type TestimonialsComponent = Extract<PageComponent, { type: "Testimonials" }>;
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {

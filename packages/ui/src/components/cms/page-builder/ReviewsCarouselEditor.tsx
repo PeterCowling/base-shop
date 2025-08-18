@@ -1,4 +1,6 @@
-import type { ReviewsCarouselComponent } from "@acme/types";
+import type { PageComponent } from "@acme/types";
+
+type ReviewsCarouselComponent = Extract<PageComponent, { type: "ReviewsCarousel" }>;
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {

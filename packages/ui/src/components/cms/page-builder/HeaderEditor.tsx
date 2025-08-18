@@ -1,4 +1,6 @@
-import type { HeaderComponent } from "@acme/types";
+import type { PageComponent } from "@acme/types";
+
+type HeaderComponent = Extract<PageComponent, { type: "Header" }>;
 import { Input } from "../../atoms/shadcn";
 import { useArrayEditor } from "./useArrayEditor";
 

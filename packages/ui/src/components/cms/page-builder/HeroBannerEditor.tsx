@@ -1,4 +1,6 @@
-import type { HeroBannerComponent } from "@acme/types";
+import type { PageComponent } from "@acme/types";
+
+type HeroBannerComponent = Extract<PageComponent, { type: "HeroBanner" }>;
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {

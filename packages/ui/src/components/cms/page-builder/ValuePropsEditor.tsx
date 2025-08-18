@@ -1,4 +1,6 @@
-import type { ValuePropsComponent } from "@acme/types";
+import type { PageComponent } from "@acme/types";
+
+type ValuePropsComponent = Extract<PageComponent, { type: "ValueProps" }>;
 import { useArrayEditor } from "./useArrayEditor";
 
 interface Props {

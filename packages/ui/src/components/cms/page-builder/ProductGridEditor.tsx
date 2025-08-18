@@ -1,4 +1,6 @@
-import type { ProductGridComponent } from "@acme/types";
+import type { PageComponent } from "@acme/types";
+
+type ProductGridComponent = Extract<PageComponent, { type: "ProductGrid" }>;
 import { Checkbox, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "../../atoms/shadcn";
 import useComponentInputs from "./useComponentInputs";
 

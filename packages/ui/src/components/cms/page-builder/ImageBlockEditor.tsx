@@ -1,4 +1,6 @@
-import type { ImageComponent } from "@acme/types";
+import type { PageComponent } from "@acme/types";
+
+type ImageComponent = Extract<PageComponent, { type: "Image" }>;
 import { Button, Input } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
 

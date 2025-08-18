@@ -7,6 +7,12 @@
     "noEmit": false,
     "rootDir": "src",
     "outDir": "dist",
+    "paths": {
+      "@platform-core": ["packages/platform-core/src/index.ts"],
+      "@platform-core/*": ["packages/platform-core/src/*"],
+      "@date-utils": ["packages/date-utils/src/index.ts"],
+      "@date-utils/*": ["packages/date-utils/src/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": [

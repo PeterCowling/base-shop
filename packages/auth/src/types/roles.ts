@@ -1,6 +1,6 @@
 // packages/auth/src/types/roles.ts
 
-import rolesConfig from "../roles.json";
+import rolesConfig from "../roles.json" assert { type: "json" };
 import { z } from "zod";
 
 type RolesConfig = {

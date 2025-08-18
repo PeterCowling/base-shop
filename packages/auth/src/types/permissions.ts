@@ -1,6 +1,6 @@
 // packages/auth/src/types/permissions.ts
 
-import permissionsConfig from "../permissions.json";
+import permissionsConfig from "../permissions.json" assert { type: "json" };
 import { z } from "zod";
 
 // Permissions configuration maps roles to their permissions

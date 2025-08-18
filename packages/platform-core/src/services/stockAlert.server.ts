@@ -1,7 +1,7 @@
 import "server-only";
 
 import { coreEnv } from "@acme/config/env/core";
-import { DATA_ROOT } from "../dataRoot";
+import { DATA_ROOT } from "../dataRoot.js";
 import { sendEmail } from "@acme/email";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";

@@ -24,7 +24,7 @@ import useViewport from "./hooks/useViewport";
 import PageToolbar from "./PageToolbar";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
-import { defaults, CONTAINER_TYPES } from "./defaults";
+import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
 import { devicePresets, getLegacyPreset, type DevicePreset } from "../../../utils/devicePresets";
 import { usePreviewDevice } from "../../../hooks";
 import DeviceSelector from "../../common/DeviceSelector";
@@ -198,7 +198,7 @@ const PageBuilder = memo(function PageBuilder({
   });
 
   const handleAddFromPalette = useCallback(
-    (type: PageComponent["type"]) => {
+    (type: ComponentType) => {
       const isContainer = CONTAINER_TYPES.includes(type);
       const component = {
         id: ulid(),

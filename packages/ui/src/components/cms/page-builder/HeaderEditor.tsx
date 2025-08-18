@@ -1,4 +1,4 @@
-import type { HeaderComponent } from "@acme/types";
+import type { HeaderComponent } from "@acme/types/src/page/layouts";
 import { Input } from "../../atoms/shadcn";
 import { useArrayEditor } from "./useArrayEditor";
 

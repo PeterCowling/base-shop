@@ -7,9 +7,9 @@ import {
 } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import { validateShopName } from "../shops";
-import { DATA_ROOT } from "../dataRoot";
-import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
+import { validateShopName } from "../shops/index.js";
+import { DATA_ROOT } from "../dataRoot.js";
+import type { InventoryRepository, InventoryMutateFn } from "./inventory.types.js";
 
 interface SqliteInventoryRow {
   sku: string;

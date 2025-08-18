@@ -3,9 +3,9 @@ import "server-only";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { ulid } from "ulid";
-import type { ProductPublication } from "../products";
-import { validateShopName } from "../shops";
-import { DATA_ROOT } from "../dataRoot";
+import type { ProductPublication } from "../products/index.js";
+import { validateShopName } from "../shops/index.js";
+import { DATA_ROOT } from "../dataRoot.js";
 import { nowIso } from "@acme/date-utils";
 
 function filePath(shop: string): string {

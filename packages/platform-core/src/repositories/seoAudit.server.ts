@@ -2,8 +2,8 @@ import "server-only";
 
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import { validateShopName } from "../shops";
-import { DATA_ROOT } from "../dataRoot";
+import { validateShopName } from "../shops/index.js";
+import { DATA_ROOT } from "../dataRoot.js";
 
 export interface SeoAuditEntry {
   timestamp: string;

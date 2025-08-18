@@ -4,7 +4,7 @@ import "server-only";
 import type { RentalOrder } from "@acme/types";
 import type { Prisma } from "@prisma/client";
 import { nowIso } from "@acme/date-utils";
-import { prisma } from "../db";
+import { prisma } from "../db.js";
 
 export {
   listOrders as readOrders,
@@ -13,7 +13,7 @@ export {
   markRefunded,
   updateRisk,
   setReturnTracking,
-} from "../orders";
+} from "../orders.js";
 
 type Order = RentalOrder;
 

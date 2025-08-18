@@ -4,18 +4,18 @@ import "server-only";
 import { shopSchema, type Shop } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import { prisma } from "../db";
-import { defaultFilterMappings } from "../defaultFilterMappings";
-import { validateShopName } from "../shops";
-import { DATA_ROOT } from "../dataRoot";
-import { baseTokens, loadThemeTokens } from "../themeTokens";
-import { updateShopInRepo } from "./shop.server";
+import { prisma } from "../db.js";
+import { defaultFilterMappings } from "../defaultFilterMappings.js";
+import { validateShopName } from "../shops/index.js";
+import { DATA_ROOT } from "../dataRoot.js";
+import { baseTokens, loadThemeTokens } from "../themeTokens/index.js";
+import { updateShopInRepo } from "./shop.server.js";
 export {
   diffHistory,
   getShopSettings,
   saveShopSettings,
   type SettingsDiffEntry,
-} from "./settings.server";
+} from "./settings.server.js";
 
 function shopPath(shop: string): string {
   shop = validateShopName(shop);

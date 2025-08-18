@@ -1,8 +1,8 @@
-import { requirePermission } from "../src/requirePermission";
-import { getCustomerSession } from "../src/session";
-import type { Role } from "../src/types";
+import { requirePermission } from "../src/requirePermission.js";
+import { getCustomerSession } from "../src/session.js";
+import type { Role } from "../src/types/index.js";
 
-jest.mock("../src/session", () => ({
+jest.mock("../src/session.js", () => ({
   getCustomerSession: jest.fn(),
 }));
 

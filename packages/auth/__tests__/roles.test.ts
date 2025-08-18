@@ -1,5 +1,5 @@
 import { z } from "zod";
-import * as roles from "../src/types/roles";
+import * as roles from "../src/types/roles.js";
 
 const { isRole, extendRoles, READ_ROLES, WRITE_ROLES } = roles;
 

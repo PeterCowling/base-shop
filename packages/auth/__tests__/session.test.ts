@@ -4,8 +4,8 @@ import {
   destroyCustomerSession,
   CUSTOMER_SESSION_COOKIE,
   CSRF_TOKEN_COOKIE,
-} from "../src/session";
-import type { Role } from "../src/types";
+} from "../src/session.js";
+import type { Role } from "../src/types/index.js";
 
 const mockCookies = jest.fn();
 const mockHeaders = jest.fn(() => ({ get: () => null }));

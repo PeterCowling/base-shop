@@ -26,7 +26,7 @@ New applications should also inherit the shared TypeScript and Jest presets from
 ```jsonc
 // tsconfig.json
 {
-  "extends": "@acme/config/tsconfig.app.json",
+  "extends": "../config/tsconfig.app.json",
   "include": ["src/**/*", ".next/types/**/*.ts"]
 }
 ```

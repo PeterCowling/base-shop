@@ -23,3 +23,4 @@ export * from "./ExampleProps";
 export * from "./Segment";
 export * from "./plugins";
 export * from "./AnalyticsEvent";
+export type { TestimonialsComponent } from "./page/organisms";

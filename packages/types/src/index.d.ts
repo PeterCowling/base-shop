@@ -4,6 +4,7 @@ export * from "./ImageOrientation";
 export * from "./InventoryItem";
 export * from "./MediaItem";
 export * from "./page";
+export type { TestimonialsComponent } from "./page/organisms";
 export * from "./Pricing";
 export * from "./Product";
 export * from "./PublishLocation";

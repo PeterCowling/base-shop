@@ -1,9 +1,7 @@
 // packages/ui/hooks/useProductEditorFormState.tsx
 import { useFileUpload } from "./useFileUpload";
 import { usePublishLocations } from "../../../platform-core/src/hooks/usePublishLocations";
-
-// Minimal shared types used within this hook
-type Locale = string;
+import type { Locale } from "@acme/i18n";
 
 interface MediaItem {
   url: string;

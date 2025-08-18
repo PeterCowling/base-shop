@@ -1,10 +1,17 @@
 {
-  "extends": "@acme/config/tsconfig.app.json",
+  "extends": "../config/tsconfig.app.json",
+  "compilerOptions": {
+    "paths": {
+      "@platform-core": ["packages/platform-core/src/index.ts"],
+      "@platform-core/*": ["packages/platform-core/src/*"]
+    }
+  },
   "include": ["src/**/*", ".next/types/**/*.ts"],
   "exclude": ["dist", "__tests__", ".turbo", "node_modules"],
   "references": [
     { "path": "../types" },
     { "path": "../ui" },
-    { "path": "../i18n" }
+    { "path": "../i18n" },
+    { "path": "../platform-core" }
   ]
 }

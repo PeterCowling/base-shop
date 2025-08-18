@@ -6,7 +6,6 @@ import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";
-import shop from "../../../../shop.json";
 import { useEffect, useRef, useState } from "react";
 
 export const metadata = { title: "Mobile Returns" };
@@ -26,7 +25,7 @@ export default async function MobileReturnPage() {
   return (
     <>
       <Scanner allowedZips={allowed} />
-      {shop.showCleaningTransparency && <CleaningInfo />}
+      {settings.showCleaningTransparency && <CleaningInfo />}
     </>
   );
 }
@@ -69,7 +68,7 @@ function Scanner({ allowedZips }: { allowedZips: string[] }) {
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
         }
-        const detector = new window.BarcodeDetector({
+        const detector = new (window as any).BarcodeDetector({
           formats: ["qr_code", "code_128", "ean_13", "upc_a"],
         });
         const scan = async () => {

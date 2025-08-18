@@ -15,7 +15,8 @@
       "types": "./dist/env/*.d.ts",
       "import": "./dist/env/*.js",
       "default": "./dist/env/*.js"
-    }
+    },
+    "./tsconfig.app.json": "./tsconfig.app.json"
   },
   "files": ["dist"],
   "sideEffects": false,

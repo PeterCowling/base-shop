@@ -1,4 +1,4 @@
-import { LOCALES, type Locale } from "@i18n/locales";
+import { LOCALES, type Locale } from "../../../i18n/src/locales";
 import type { ShopSettings } from "@acme/types";
 import type { NextSeoProps } from "next-seo";
 import { coreEnv } from "@acme/config/env/core";
@@ -11,6 +11,7 @@ interface ExtendedSeoProps
   extends Omit<Partial<NextSeoProps>, "openGraph"> {
   canonicalBase?: string;
   openGraph?: OpenGraphImageProps & NextSeoProps["openGraph"];
+  image?: string;
 }
 
 const fallback: NextSeoProps = {
@@ -27,7 +28,7 @@ export async function getSeo(
 ): Promise<NextSeoProps> {
   const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
   const { getShopSettings } = await import(
-    "@platform-core/repositories/shops.server"
+    "../../../platform-core/src/repositories/shops.server"
   );
   const settings: ShopSettings = await getShopSettings(shop);
   const shopSeo = (settings.seo ?? {}) as Record<string, ExtendedSeoProps>;

@@ -2,22 +2,22 @@
 ("use client");
 
 import NextImage, { ImageProps } from "next/image";
-import React from "react";
+import * as React from "react";
 
-import HeroBanner from "@/components/cms/blocks/HeroBanner";
-import ReviewsCarousel from "@/components/home/ReviewsCarousel";
-import { ValueProps } from "@/components/home/ValueProps";
-import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
+import HeroBanner from "@acme/ui/src/components/cms/blocks/HeroBanner";
+import ReviewsCarousel from "@acme/ui/src/components/home/ReviewsCarousel";
+import { ValueProps } from "@acme/ui/src/components/home/ValueProps";
+import { ProductGrid } from "../../../platform-core/src/components/shop/ProductGrid";
 
-import BlogListing from "@/components/cms/blocks/BlogListing";
-import ContactForm from "@/components/cms/blocks/ContactForm";
-import ContactFormWithMap from "@/components/cms/blocks/ContactFormWithMap";
-import Gallery from "@/components/cms/blocks/Gallery";
-import Testimonials from "@/components/cms/blocks/Testimonials";
-import TestimonialSlider from "@/components/cms/blocks/TestimonialSlider";
-import { Textarea as TextBlock } from "@/components/atoms/primitives/textarea";
+import BlogListing from "@acme/ui/src/components/cms/blocks/BlogListing";
+import ContactForm from "@acme/ui/src/components/cms/blocks/ContactForm";
+import ContactFormWithMap from "@acme/ui/src/components/cms/blocks/ContactFormWithMap";
+import Gallery from "@acme/ui/src/components/cms/blocks/Gallery";
+import Testimonials from "@acme/ui/src/components/cms/blocks/Testimonials";
+import TestimonialSlider from "@acme/ui/src/components/cms/blocks/TestimonialSlider";
+import { Textarea as TextBlock } from "@acme/ui/src/components/atoms/primitives/textarea";
 
-import { PRODUCTS } from "@platform-core/products";
+import { PRODUCTS } from "../../../platform-core/src/products";
 import type { PageComponent, SKU } from "@acme/types";
 
 /* ------------------------------------------------------------------
@@ -43,10 +43,10 @@ const CmsImage = React.memo(
 /* ------------------------------------------------------------------
  * Registry: block type → React component
  * ------------------------------------------------------------------ */
-const registry: Record<
+const registry: Partial<Record<
   PageComponent["type"],
   React.ComponentType<Record<string, unknown>>
-> = {
+>> = {
   HeroBanner,
   ValueProps,
   ReviewsCarousel,

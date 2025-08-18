@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { canRead, canWrite, READ_ROLES, WRITE_ROLES } from "../src/rbac";
-import { extendRoles } from "../src/types/roles";
-import * as roles from "../src/types/roles";
+import { canRead, canWrite, READ_ROLES, WRITE_ROLES } from "../src/rbac.js";
+import { extendRoles } from "../src/types/roles.js";
+import * as roles from "../src/types/roles.js";
 
 const originalRead = [...READ_ROLES];
 const originalWrite = [...WRITE_ROLES];

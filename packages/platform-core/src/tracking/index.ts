@@ -1,6 +1,9 @@
 // packages/platform-core/src/tracking/index.ts
 
-import { getTrackingStatus, type TrackingStatus } from "../shipping";
+import {
+  getTrackingStatus,
+  type TrackingStatus,
+} from "../shipping/index.js";
 import { sendEmail } from "@acme/email";
 
 export interface TrackingItem {

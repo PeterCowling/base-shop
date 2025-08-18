@@ -1,6 +1,6 @@
 // packages/platform-core/src/subscriptionUsage.ts
 import "server-only";
-import { prisma } from "./db";
+import { prisma } from "./db.js";
 
 export interface SubscriptionUsage {
   id: string;

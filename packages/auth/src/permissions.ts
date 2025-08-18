@@ -1,8 +1,8 @@
 // packages/auth/src/permissions.ts
 
 import permissionsConfig from "./permissions.json";
-import type { Role } from "./types/roles";
-import type { Permission } from "./types/permissions";
+import type { Role } from "./types/roles.js";
+import type { Permission } from "./types/permissions.js";
 
 // Role to permission mapping loaded from configuration.
 // Includes granular permissions such as view_orders and manage_sessions.

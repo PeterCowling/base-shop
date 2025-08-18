@@ -1,6 +1,6 @@
 // packages/platform-core/src/users.ts
 import "server-only";
-import { prisma } from "./db";
+import { prisma } from "./db.js";
 
 export interface User {
   id: string;

@@ -1,8 +1,8 @@
 // packages/platform-core/src/stripe-webhook.ts
 import type Stripe from "stripe";
 import { stripe } from "@acme/stripe";
-import { addOrder, markRefunded, updateRisk } from "./orders";
-import { getShopSettings } from "./repositories/settings.server";
+import { addOrder, markRefunded, updateRisk } from "./orders.js";
+import { getShopSettings } from "./repositories/settings.server.js";
 
 type ChargeWithInvoice = Stripe.Charge & {
   invoice?: string | Stripe.Invoice | null;

@@ -1,10 +1,10 @@
-export { getShopFromPath } from "./getShopFromPath";
-export { replaceShopInPath } from "./replaceShopInPath";
-export { initTheme } from "./initTheme";
-export { logger } from "./logger";
-export type { LogMeta } from "./logger";
+export { getShopFromPath } from "./getShopFromPath.js";
+export { replaceShopInPath } from "./replaceShopInPath.js";
+export { initTheme } from "./initTheme.js";
+export { logger } from "./logger.js";
+export type { LogMeta } from "./logger.js";
 export {
   flattenInventoryItem,
   expandInventoryItem,
-} from "./inventory";
-export type { RawInventoryItem, FlattenedInventoryItem } from "./inventory";
+} from "./inventory.js";
+export type { RawInventoryItem, FlattenedInventoryItem } from "./inventory.js";

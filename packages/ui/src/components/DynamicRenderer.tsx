@@ -2,7 +2,7 @@
 
 "use client";
 
-import { blockRegistry } from "./cms/blocks";
+import { blockRegistry, type BlockType } from "./cms/blocks";
 import type { BlockRegistryEntry } from "./cms/blocks/types";
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
@@ -15,10 +15,10 @@ export default function DynamicRenderer({
 }: {
   components: PageComponent[];
   locale: Locale;
-  runtimeData?: Record<string, Record<string, unknown>>;
+  runtimeData?: Partial<Record<BlockType, Record<string, unknown>>>;
 }) {
   const renderBlock = (block: PageComponent): ReactNode => {
-    const entry = blockRegistry[block.type];
+    const entry = blockRegistry[block.type as BlockType];
     if (!entry) {
       console.warn(`Unknown component type: ${block.type}`);
       return null;
@@ -56,10 +56,10 @@ export default function DynamicRenderer({
       extraProps = { ...extraProps, ...(runtime as Record<string, unknown>) };
     }
 
-    if (runtimeData && runtimeData[block.type]) {
+    if (runtimeData && runtimeData[block.type as BlockType]) {
       extraProps = {
         ...extraProps,
-        ...runtimeData[block.type],
+        ...runtimeData[block.type as BlockType],
       };
     }
 

@@ -3,13 +3,13 @@ import {
   addReturnAuthorization,
   readReturnAuthorizations,
   getReturnAuthorization,
-} from "./repositories/returnAuthorization.server";
+} from "./repositories/returnAuthorization.server.js";
 export {
   getTrackingStatus,
   type TrackingStatusRequest,
   type TrackingStatus,
   type TrackingStep,
-} from "./shipping";
+} from "./shipping/index.js";
 
 export { getReturnAuthorization };
 

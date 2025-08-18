@@ -7,6 +7,7 @@ export * from "./ImageOrientation";
 export * from "./InventoryItem";
 export * from "./MediaItem";
 export * from "./page";
+export { pageComponentSchema, type PageComponent } from "./page/page";
 export * from "./Pricing";
 export * from "./Product";
 export * from "./PublishLocation";

@@ -3,7 +3,7 @@ import type { SKU } from "@acme/types";
 interface Props {
   skus?: SKU[];
   /** Attributes to display from each SKU (e.g. price, stock) */
-  attributes: Array<keyof SKU>;
+  attributes: Array<Extract<keyof SKU, string>>;
 }
 
 /**

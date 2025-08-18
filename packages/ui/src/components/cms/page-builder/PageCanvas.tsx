@@ -6,7 +6,7 @@ import CanvasItem from "./CanvasItem";
 import type { Locale } from "@acme/i18n/locales";
 import type { Action } from "./state";
 import { cn } from "../../../utils/style";
-import type { DevicePreset } from "@ui/utils/devicePresets";
+import type { DevicePreset } from "../../../utils/devicePresets";
 import GridOverlay from "./GridOverlay";
 import SnapLine from "./SnapLine";
 import Block from "./Block";

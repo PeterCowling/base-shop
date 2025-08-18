@@ -7,7 +7,7 @@ import {
   SelectContent,
   SelectItem,
 } from "../atoms/shadcn";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+import { devicePresets, type DevicePreset } from "../../utils/devicePresets";
 
 interface Props {
   deviceId: string;

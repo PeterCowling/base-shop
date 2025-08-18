@@ -1,14 +1,14 @@
 /* packages/ui/components/cms/ProductEditorForm.tsx */
 "use client";
 
-import { Button, Card, CardContent, Input } from "@ui/components/atoms/shadcn";
-import type { Locale, ProductPublication } from "@platform-core/products";
+import { Button, Card, CardContent, Input } from "../atoms/shadcn";
+import type { Locale, ProductPublication } from "@acme/platform-core/products";
 import type { MediaItem } from "@acme/types";
-import { useProductEditorFormState } from "@ui/hooks/useProductEditorFormState";
+import { useProductEditorFormState } from "../../hooks/useProductEditorFormState";
 import type {
   ProductWithVariants,
   ProductSaveResult,
-} from "@ui/hooks/useProductEditorFormState";
+} from "../../hooks/useProductEditorFormState";
 import MultilingualFields from "./MultilingualFields";
 import PublishLocationSelector from "./PublishLocationSelector";
 

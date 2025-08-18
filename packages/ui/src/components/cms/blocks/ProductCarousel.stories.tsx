@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ProductCarousel from "./ProductCarousel";
-import { PRODUCTS } from "@platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products";
 
 const meta: Meta<typeof ProductCarousel> = {
   component: ProductCarousel,

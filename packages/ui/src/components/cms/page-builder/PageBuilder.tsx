@@ -15,7 +15,7 @@ import { Button } from "../../atoms/shadcn";
 import { Toast, Spinner } from "../../atoms";
 import { CheckIcon } from "@radix-ui/react-icons";
 import Palette from "./Palette";
-import { getShopFromPath } from "@platform-core/utils";
+import { getShopFromPath } from "@acme/platform-core/utils";
 import { ulid } from "ulid";
 import useFileDrop from "./hooks/useFileDrop";
 import usePageBuilderState from "./hooks/usePageBuilderState";
@@ -25,9 +25,9 @@ import PageToolbar from "./PageToolbar";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES } from "./defaults";
-import { devicePresets, getLegacyPreset, type DevicePreset } from "@ui/utils/devicePresets";
-import { usePreviewDevice } from "@ui/hooks";
-import DeviceSelector from "@ui/components/common/DeviceSelector";
+import { devicePresets, getLegacyPreset, type DevicePreset } from "../../../utils/devicePresets";
+import { usePreviewDevice } from "../../../hooks";
+import DeviceSelector from "../../common/DeviceSelector";
 import DynamicRenderer from "../../DynamicRenderer";
 
 interface Props {

@@ -1,7 +1,7 @@
 // packages/ui/src/components/cms/style/Presets.tsx
 "use client";
 
-import type { TokenMap } from "@ui/hooks/useTokenEditor";
+import type { TokenMap } from "../../../hooks/useTokenEditor";
 import { ReactElement } from "react";
 import presetData from "./presets.json";
 

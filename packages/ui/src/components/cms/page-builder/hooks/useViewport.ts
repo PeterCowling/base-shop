@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { DevicePreset } from "@ui/utils/devicePresets";
+import type { DevicePreset } from "../../../../utils/devicePresets";
 
 const useViewport = (device: DevicePreset) => {
   const [canvasWidth, setCanvasWidth] = useState(device.width);

@@ -4,14 +4,31 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js",
+      "default": "./dist/*.js"
+    }
   },
   "scripts": {
-    "test": "jest --ci --runInBand --detectOpenHandles --config ../../../jest.config.cjs"
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../../jest.config.cjs",
+    "build": "tsc -b",
+    "clean": "rimraf dist *.tsbuildinfo"
   },
   "dependencies": {
     "@acme/types": "workspace:*",
     "@sanity/client": "^6.15.0",
     "zod": "^3.25.73"
-  }
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts"
 }

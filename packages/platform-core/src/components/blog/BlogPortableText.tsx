@@ -1,7 +1,7 @@
 // src/components/blog/BlogPortableText.tsx
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
-import { getProductBySlug, getProductById, type SKU } from "@/products";
+import { getProductBySlug, getProductById, type SKU } from "../../products";
 import { ProductCard } from "../shop/ProductCard";
 
 const components = {

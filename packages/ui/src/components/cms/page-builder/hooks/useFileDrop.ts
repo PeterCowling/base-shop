@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import type { DragEvent } from "react";
 import { ulid } from "ulid";
 import type { PageComponent, MediaItem } from "@acme/types";
-import useFileUpload from "@ui/hooks/useFileUpload";
+import useFileUpload from "../../../../hooks/useFileUpload";
 import { defaults } from "../defaults";
 import type { Action } from "../state/actions";
 

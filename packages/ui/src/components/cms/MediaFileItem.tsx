@@ -3,7 +3,7 @@
 import type { ApiError, MediaItem } from "@acme/types";
 import Image from "next/image";
 import { useState } from "react";
-import { Input } from "@ui/components/atoms/shadcn";
+import { Input } from "../atoms/shadcn";
 
 interface Props {
   item: MediaItem;

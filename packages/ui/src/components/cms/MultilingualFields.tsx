@@ -1,8 +1,8 @@
 // packages/ui/components/cms/MultilingualFields.tsx
 "use client";
 
-import { Input, Textarea } from "@ui/components/atoms/shadcn";
-import type { Locale, ProductPublication } from "@platform-core/products";
+import { Input, Textarea } from "../atoms/shadcn";
+import type { Locale, ProductPublication } from "@acme/platform-core/products";
 import { memo } from "react";
 
 interface Props {

@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { SKU } from "@acme/types";
-import AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
-import { PRODUCTS } from "@platform-core/products";
+import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
+import { PRODUCTS } from "@acme/platform-core/products";
 import { fetchCollection } from "./products/fetchCollection";
 import { Price } from "../../atoms/Price";
 import { ProductVariantSelector } from "../../organisms/ProductVariantSelector";

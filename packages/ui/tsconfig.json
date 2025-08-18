@@ -1,43 +1,57 @@
-// packages/ui/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
-
   "compilerOptions": {
-    /* ---------- build settings ------------------------------------ */
     "composite": true,
-    "noEmit": false, // we *do* emit
+    "noEmit": false,
     "emitDeclarationOnly": false,
-
-    /* ---------- output locations ---------------------------------- */
-    "rootDir": "./", // allow imports from workspace packages
-    "outDir": "./dist", // <- JS + d.ts land here
+    "rootDir": "./",
+    "outDir": "./dist",
     "declarationDir": "./dist",
     "declarationMap": true,
-
-    /* ---------- React / JSX --------------------------------------- */
     "jsx": "react-jsx",
-
-    /* ---------- misc ---------------------------------------------- */
-    "types": ["react", "react-dom", "jest", "@testing-library/jest-dom"]
+    "types": [
+      "react",
+      "react-dom",
+      "jest",
+      "@testing-library/jest-dom"
+    ],
+    "resolveJsonModule": true
   },
-
-  /* ---------- project references (build order) -------------------- */
   "references": [
-    { "path": "../platform-core" },
-    { "path": "../i18n" },
-    { "path": "../config" },
-    { "path": "../auth" },
-    { "path": "../lib" },
-    { "path": "../shared-utils" },
-    { "path": "../date-utils" }
+    {
+      "path": "../platform-core"
+    },
+    {
+      "path": "../i18n"
+    },
+    {
+      "path": "../config"
+    },
+    {
+      "path": "../auth"
+    },
+    {
+      "path": "../lib"
+    },
+    {
+      "path": "../shared-utils"
+    },
+    {
+      "path": "../date-utils"
+    }
   ],
-
-  /* ---------- file globs ------------------------------------------ { "path": "../../apps/cms" } */
-  "include": ["src/**/*", "src/**/*.json"], // ONLY stuff inside src/
+  "include": [
+    "src*",
+    "src*.json",
+    "types-compat*.d.ts",
+    "src/**/*",
+    "src/**/*.json",
+    "types-compat/**/*.d.ts"
+  ],
   "exclude": [
-    "dist", // freshly emitted output
-    "**/__tests__/**", // unit/integration tests
-    ".turbo", // turbo cache
-    "node_modules" // package deps (if any local)
+    "dist",
+    "**/__tests__/**",
+    ".turbo",
+    "node_modules"
   ]
 }

@@ -12,7 +12,7 @@ import useSortableBlock from "./useSortableBlock";
 import useCanvasResize from "./useCanvasResize";
 import useCanvasDrag from "./useCanvasDrag";
 import useCanvasSpacing from "./useCanvasSpacing";
-import type { DevicePreset } from "@ui/utils/devicePresets";
+import type { DevicePreset } from "../../../utils/devicePresets";
 
 const CanvasItem = memo(function CanvasItem({
   component,

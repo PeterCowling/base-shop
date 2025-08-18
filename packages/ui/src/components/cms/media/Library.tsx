@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ui/components/atoms/shadcn";
+} from "../../atoms/shadcn";
 import type { MediaItem } from "@acme/types";
 import { ChangeEvent, ReactElement, useMemo, useState } from "react";
 import MediaFileList from "../MediaFileList";

@@ -1,7 +1,7 @@
 // src/hooks/useImageUpload.tsx
 
 import type { ImageOrientation } from "@acme/types";
-import ImageUploaderWithOrientationCheck from "@ui/components/cms/ImageUploaderWithOrientationCheck";
+import ImageUploaderWithOrientationCheck from "../components/cms/ImageUploaderWithOrientationCheck";
 import type { ReactElement } from "react";
 import { useMemo, useState } from "react";
 

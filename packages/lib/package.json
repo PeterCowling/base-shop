@@ -17,7 +17,9 @@
       "default": "./dist/*.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -27,8 +29,8 @@
     "next": "^15.3.4"
   },
   "dependencies": {
-    "@platform-core": "workspace:*",
     "@acme/config": "workspace:^",
-    "@acme/zod-utils": "workspace:^"
+    "@acme/zod-utils": "workspace:^",
+    "@acme/platform-core": "workspace:^"
   }
 }

@@ -4,16 +4,31 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
     "./Translations": "./src/Translations.tsx",
-    "./*": "./src/*.ts",
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js",
+      "default": "./dist/*.js"
+    },
     "./*.json": "./*.json"
   },
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
   "scripts": {
-    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
+    "build": "tsc -b",
+    "clean": "rimraf dist *.tsbuildinfo"
   },
   "devDependencies": {
     "next": "^15.3.4"
-  }
+  },
+  "files": [
+    "dist"
+  ],
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts"
 }

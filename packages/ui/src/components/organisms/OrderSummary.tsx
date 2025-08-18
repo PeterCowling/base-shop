@@ -1,8 +1,8 @@
 // packages/ui/components/organisms/OrderSummary.tsx
 "use client";
 
-import { useCart } from "@ui/hooks/useCart";
-import type { CartLine } from "@/lib/cartCookie";
+import { useCart } from "../../hooks/useCart";
+import type { CartLine } from "@acme/platform-core/cartCookie";
 import { Price } from "../atoms/Price";
 import React, { useMemo } from "react";
 

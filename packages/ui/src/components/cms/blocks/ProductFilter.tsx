@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useProductFilters } from "@ui/hooks/useProductFilters";
-import { PRODUCTS, type SKU } from "@platform-core/products";
+import { useProductFilters } from "../../../hooks/useProductFilters";
+import { PRODUCTS, type SKU } from "@acme/platform-core/products";
 
 export interface ProductFilterProps {
   showSize?: boolean;

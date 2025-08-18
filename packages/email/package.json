@@ -27,7 +27,8 @@
     "resend": "^3.5.0",
     "sanitize-html": "^2.12.1",
     "dompurify": "^3.2.6",
-    "jsdom": "^26.1.0"
+    "jsdom": "^26.1.0",
+    "@acme/platform-core": "workspace:^"
   },
   "devDependencies": {
     "@types/sanitize-html": "^2.16.0",

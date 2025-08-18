@@ -3,7 +3,7 @@
 import {
   Currency,
   useCurrency,
-} from "@platform-core/contexts/CurrencyContext";
+} from "@acme/platform-core/contexts/CurrencyContext";
 import {
   Select,
   SelectContent,

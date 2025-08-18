@@ -1,4 +1,4 @@
-import { getShopFromPath } from "@platform-core/utils";
+import { getShopFromPath } from "@acme/platform-core/utils";
 import type { MediaItem } from "@acme/types";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";

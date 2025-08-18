@@ -1,12 +1,12 @@
 // packages/ui/src/components/cms/style/Tokens.tsx
 "use client";
 
-import { Input } from "@ui/components/atoms/shadcn";
+import { Input } from "../../atoms/shadcn";
 import {
   useTokenEditor,
   type TokenMap,
   type TokenInfo,
-} from "@ui/hooks/useTokenEditor";
+} from "../../../hooks/useTokenEditor";
 import {
   ColorInput,
   FontSelect,

@@ -5,8 +5,8 @@
 import {
   ProductPublication,
   PublicationStatus,
-} from "@platform-core/products";
-import { useProductFilters } from "@ui/hooks/useProductFilters";
+} from "@acme/platform-core/products";
+import { useProductFilters } from "../../hooks/useProductFilters";
 import { formatCurrency } from "@acme/shared-utils";
 import Link from "next/link";
 import { memo, ReactElement, ReactNode, useCallback, useMemo } from "react";

@@ -1,6 +1,6 @@
-import type { PageComponent } from "@acme/types/page";
+import type { PageComponent } from "@acme/types";
 import { localeSchema, sanityBlogConfigSchema } from "@acme/types";
-import { pageComponentSchema } from "@acme/types/page";
+import { pageComponentSchema } from "@acme/types";
 import { z } from "zod";
 import { slugify } from "@acme/shared-utils";
 import { fillLocales } from "@acme/i18n/fillLocales";

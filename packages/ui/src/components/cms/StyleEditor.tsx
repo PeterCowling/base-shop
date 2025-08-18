@@ -1,7 +1,7 @@
 // packages/ui/components/cms/StyleEditor.tsx
 "use client";
 
-import type { TokenMap } from "@ui/hooks/useTokenEditor";
+import type { TokenMap } from "../../hooks/useTokenEditor";
 import Presets from "./style/Presets";
 import Tokens from "./style/Tokens";
 

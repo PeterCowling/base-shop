@@ -1,6 +1,6 @@
-import { CartProvider, useCart } from "@platform-core/contexts/CartContext";
+import { CartProvider, useCart } from "@acme/platform-core/contexts/CartContext";
 import { type Meta, type StoryObj } from "@storybook/react";
-import type { CartLine, CartState } from "@/lib/cartCookie";
+import type { CartLine, CartState } from "@acme/platform-core/cartCookie";
 import type { SKU } from "@acme/types";
 import * as React from "react";
 import { Button } from "../atoms/shadcn";

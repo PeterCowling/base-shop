@@ -9,8 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../atoms/shadcn";
-import { getLegacyPreset } from "@ui/utils/devicePresets";
-import DeviceSelector from "@ui/components/common/DeviceSelector";
+import { getLegacyPreset } from "../../../utils/devicePresets";
+import DeviceSelector from "../../common/DeviceSelector";
 
 interface Props {
   viewport: "desktop" | "tablet" | "mobile";

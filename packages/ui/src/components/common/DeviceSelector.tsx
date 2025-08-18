@@ -11,7 +11,7 @@ import {
   devicePresets,
   getLegacyPreset,
   type DevicePreset,
-} from "@ui/utils/devicePresets";
+} from "../../utils/devicePresets";
 
 interface Props {
   deviceId: string;

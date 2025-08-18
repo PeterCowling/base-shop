@@ -1,5 +1,5 @@
 {
-  "name": "@platform-core",
+  "name": "@acme/platform-core",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -12,10 +12,50 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./createShop": {
-      "types": "./dist/createShop/index.d.ts",
-      "import": "./dist/createShop/index.js",
-      "default": "./dist/createShop/index.js"
+    "./db": {
+      "types": "./dist/db.d.ts",
+      "import": "./dist/db.js",
+      "default": "./dist/db.js"
+    },
+    "./dataRoot": {
+      "types": "./dist/dataRoot.d.ts",
+      "import": "./dist/dataRoot.js",
+      "default": "./dist/dataRoot.js"
+    },
+    "./features": {
+      "types": "./dist/features.d.ts",
+      "import": "./dist/features.js",
+      "default": "./dist/features.js"
+    },
+    "./cartCookie": {
+      "types": "./dist/cartCookie.d.ts",
+      "import": "./dist/cartCookie.js",
+      "default": "./dist/cartCookie.js"
+    },
+    "./cartStore": {
+      "types": "./dist/cartStore.d.ts",
+      "import": "./dist/cartStore.js",
+      "default": "./dist/cartStore.js"
+    },
+    "./returnAuthorization": {
+      "types": "./dist/returnAuthorization.d.ts",
+      "import": "./dist/returnAuthorization.js",
+      "default": "./dist/returnAuthorization.js"
+    },
+    "./analytics": {
+      "types": "./dist/analytics/index.d.ts",
+      "import": "./dist/analytics/index.js",
+      "default": "./dist/analytics/index.js"
+    },
+    "./orders": {
+      "types": "./dist/orders/index.d.ts",
+      "import": "./dist/orders/index.js",
+      "default": "./dist/orders/index.js"
+    },
+    "./shipping": {
+      "types": "./dist/shipping/index.d.ts",
+      "import": "./dist/shipping/index.js",
+      "default": "./dist/shipping/index.js"
     },
     "./themeTokens": {
       "types": "./dist/themeTokens/index.d.ts",
@@ -27,30 +67,45 @@
       "import": "./dist/products/index.js",
       "default": "./dist/products/index.js"
     },
-    "./analytics": {
-      "types": "./dist/analytics/index.d.ts",
-      "import": "./dist/analytics/index.js",
-      "default": "./dist/analytics/index.js"
-    },
-    "./dataRoot": {
-      "types": "./src/dataRoot.d.ts",
-      "import": "./src/dataRoot.js",
-      "default": "./src/dataRoot.js"
+    "./shops": {
+      "types": "./dist/shops/index.d.ts",
+      "import": "./dist/shops/index.js",
+      "default": "./dist/shops/index.js"
     },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js",
       "default": "./dist/utils/index.js"
     },
-    "./shops": {
-      "types": "./dist/shops/index.d.ts",
-      "import": "./dist/shops/index.js",
-      "default": "./dist/shops/index.js"
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "import": "./dist/components/*.js",
+      "default": "./dist/components/*.js"
+    },
+    "./contexts/*": {
+      "types": "./dist/contexts/*.d.ts",
+      "import": "./dist/contexts/*.js",
+      "default": "./dist/contexts/*.js"
+    },
+    "./hooks/*": {
+      "types": "./dist/hooks/*.d.ts",
+      "import": "./dist/hooks/*.js",
+      "default": "./dist/hooks/*.js"
     },
     "./repositories/*": {
       "types": "./dist/repositories/*.d.ts",
       "import": "./dist/repositories/*.js",
       "default": "./dist/repositories/*.js"
+    },
+    "./createShop": {
+      "types": "./dist/createShop/index.d.ts",
+      "import": "./dist/createShop/index.js",
+      "default": "./dist/createShop/index.js"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "import": "./dist/*.js",
+      "default": "./dist/*.js"
     }
   },
   "files": [

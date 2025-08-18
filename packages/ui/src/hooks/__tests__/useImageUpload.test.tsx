@@ -1,5 +1,5 @@
 import { act, render, renderHook } from "@testing-library/react";
-import ImageUploaderWithOrientationCheck from "@ui/components/cms/ImageUploaderWithOrientationCheck";
+import ImageUploaderWithOrientationCheck from "../../components/cms/ImageUploaderWithOrientationCheck";
 import { useImageUpload as useLocalImageUpload } from "../useImageUpload";
 import useImageUpload from "../useFileUpload";
 

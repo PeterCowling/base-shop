@@ -1,29 +1,23 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "noEmit": false,
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "target": "ES2022",
-    "jsx": "react-jsx",
-    "strict": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "verbatimModuleSyntax": true
+    "strict": true
   },
   "include": [
-    "src*",
+    "index.ts",
     "src/**/*",
     "src/**/*.json"
   ],
-  "references": [
-    {
-      "path": "../types"
-    }
+  "exclude": [
+    "dist"
   ]
 }

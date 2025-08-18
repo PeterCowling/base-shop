@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react";
 import { ProductCarousel, type Product } from "../ProductCarousel";
-import { CurrencyProvider } from "@platform-core/contexts/CurrencyContext";
+import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 import "../../../../../../test/resetNextMocks";
 
 jest.mock(

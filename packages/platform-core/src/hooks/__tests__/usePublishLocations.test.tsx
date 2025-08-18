@@ -1,6 +1,6 @@
 // packages/platform-core/hooks/__tests__/usePublishLocations.test.tsx
 import { render, screen, waitFor } from "@testing-library/react";
-import { usePublishLocations } from "@platform-core/hooks/usePublishLocations";
+import { usePublishLocations } from "../usePublishLocations";
 
 describe("usePublishLocations", () => {
   it("fetches locations from API", async () => {

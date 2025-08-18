@@ -1,96 +1,133 @@
 {
   "compilerOptions": {
-    /* ───────── fundamentals ───────── */
     "baseUrl": ".",
-
-    /* ───────── language / emit ────── */
     "target": "ES2022",
     "module": "esnext",
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
-    "moduleSuffixes": [".server", ".client", ""],
+    "moduleSuffixes": [
+      ".server",
+      ".client",
+      ""
+    ],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "noEmit": true,
-
-    /* ───────── type-safety flags ──── */
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-
-    /* ───────── emitted d.ts output ── */
     "outDir": "dist-types",
-
-    /* ───────── standard libs ──────── */
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-
-    /* ───────── ambient globals ────── */
-    "types": ["node", "react", "react-dom"],
-
-    /* ───────── monorepo path aliases ───────── */
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "types": [
+      "node",
+      "react",
+      "react-dom"
+    ],
     "paths": {
-      /* ─── platform-machine ──────────────────────────────────────── */
-      "@acme/platform-machine": ["packages/platform-machine"],
-      "@acme/platform-machine/*": ["packages/platform-machine/*"],
-
-      /* ─── design-system UI ──────────────────────────────────────── */
-      "@acme/ui": ["packages/ui"],
-      "@acme/ui/*": ["packages/ui/*"],
-
-      /* ─── CMS front-end (Next app) ─────────────────────────────── */
-      "@cms": ["apps/cms"],
-      "@cms/*": ["apps/cms/*"],
-
-      /* ─── themes (each theme has a /src folder) ─────────────────── */
-      "@themes/*": ["packages/themes/*"],
-
-      /* ─── shared lib package ─────────────────────────────────────── */
-      "@acme/lib": ["packages/lib"],
-      "@acme/lib/*": ["packages/lib/*"],
-
-      /* ─── i18n ──────────────────────────────────────────────────── */
-      "@i18n": ["packages/i18n"],
-      "@i18n/*": ["packages/i18n/*"],
-
-      /* ─── auth ──────────────────────────────────────────────────── */
-      "@auth": ["packages/auth"],
-      "@auth/*": ["packages/auth/*"],
-
-      /* ─── runtime config helper ─────────────────────────────────── */
-      "@acme/config": ["packages/config"],
-      "@acme/config/*": ["packages/config/*"],
-
-      /* ─── shared utilities ──────────────────────────────────────── */
-      "@acme/shared-utils": ["packages/shared-utils"],
-      "@acme/shared-utils/*": ["packages/shared-utils/*"],
-
-      /* ─── dedicated utility packages ───────────────────────────── */
-      "@acme/email": ["packages/email"],
-      "@acme/email/*": ["packages/email/*"],
-      "@acme/stripe": ["packages/stripe"],
-      "@acme/stripe/*": ["packages/stripe/*"],
-      "@acme/sanity": ["packages/sanity"],
-      "@acme/sanity/*": ["packages/sanity/*"],
-      "@acme/plugin-sanity": ["packages/plugins/sanity"],
-      "@acme/plugin-sanity/*": ["packages/plugins/sanity/*"],
-      "@acme/date-utils": ["packages/date-utils"],
-      "@acme/date-utils/*": ["packages/date-utils/*"],
-      "@acme/configurator": ["packages/configurator"],
-      "@acme/configurator/*": ["packages/configurator/*"],
-      "@acme/next-config": ["packages/next-config"],
-      "@acme/next-config/*": ["packages/next-config/*"],
-
-      /* ─── shared runtime types ──────────────────────────────────── */
-      "@acme/types": ["packages/types"],
-      "@acme/types/*": ["packages/types/*"],
-
-      /* ─── Tailwind preset ───────────────────────────────────────── */
-      "@acme/tailwind-config": ["packages/tailwind-config"],
-      "@acme/tailwind-config/*": ["packages/tailwind-config/*"]
+      "@acme/platform-machine": [
+        "packages/platform-machine"
+      ],
+      "@acme/platform-machine/*": [
+        "packages/platform-machine/*"
+      ],
+      "@acme/ui": [
+        "packages/ui"
+      ],
+      "@acme/ui/*": [
+        "packages/ui/*"
+      ],
+      "@cms": [
+        "apps/cms"
+      ],
+      "@cms/*": [
+        "apps/cms/*"
+      ],
+      "@themes/*": [
+        "packages/themes/*"
+      ],
+      "@acme/lib": [
+        "packages/lib"
+      ],
+      "@acme/lib/*": [
+        "packages/lib/*"
+      ],
+      "@i18n": [
+        "packages/i18n"
+      ],
+      "@i18n/*": [
+        "packages/i18n/*"
+      ],
+      "@auth": [
+        "packages/auth"
+      ],
+      "@auth/*": [
+        "packages/auth/*"
+      ],
+      "@acme/config": [
+        "packages/config"
+      ],
+      "@acme/config/*": [
+        "packages/config/*"
+      ],
+      "@acme/shared-utils": [
+        "packages/shared-utils"
+      ],
+      "@acme/shared-utils/*": [
+        "packages/shared-utils/*"
+      ],
+      "@acme/email": [
+        "packages/email"
+      ],
+      "@acme/email/*": [
+        "packages/email/*"
+      ],
+      "@acme/stripe": [
+        "packages/stripe"
+      ],
+      "@acme/stripe/*": [
+        "packages/stripe/*"
+      ],
+      "@acme/sanity": [
+        "packages/sanity"
+      ],
+      "@acme/sanity/*": [
+        "packages/sanity/*"
+      ],
+      "@acme/date-utils": [
+        "packages/date-utils"
+      ],
+      "@acme/date-utils/*": [
+        "packages/date-utils/*"
+      ],
+      "@acme/configurator": [
+        "packages/configurator"
+      ],
+      "@acme/configurator/*": [
+        "packages/configurator/*"
+      ],
+      "@acme/next-config": [
+        "packages/next-config"
+      ],
+      "@acme/next-config/*": [
+        "packages/next-config/*"
+      ],
+      "@acme/tailwind-config": [
+        "packages/tailwind-config"
+      ],
+      "@acme/tailwind-config/*": [
+        "packages/tailwind-config/*"
+      ]
     }
   },
-
-  /* project-wide ambient declarations */
-  "files": ["./src/types/global.d.ts"],
-  "exclude": ["**/__mocks__/**", "**/__tests__/**"]
+  "files": [
+    "./src/types/global.d.ts"
+  ],
+  "exclude": [
+    "**/__mocks__/**",
+    "**/__tests__/**"
+  ]
 }

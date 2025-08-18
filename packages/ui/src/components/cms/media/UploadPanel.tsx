@@ -1,9 +1,9 @@
 // packages/ui/src/components/cms/media/UploadPanel.tsx
 "use client";
 
-import { Input } from "@ui/components/atoms/shadcn";
+import { Input } from "../../atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
-import { useMediaUpload } from "@ui/hooks/useMediaUpload";
+import { useMediaUpload } from "../../../hooks/useMediaUpload";
 import { ChangeEvent, ReactElement, useState } from "react";
 
 interface UploadPanelProps {

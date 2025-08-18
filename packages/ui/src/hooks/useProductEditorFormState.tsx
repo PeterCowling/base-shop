@@ -25,7 +25,7 @@ interface PublishLocation {
   id: string;
   requiredOrientation: string;
 }
-import { parseMultilingualInput } from "@i18n/parseMultilingualInput";
+import { parseMultilingualInput } from "@acme/i18n/parseMultilingualInput";
 import {
   useCallback,
   useMemo,

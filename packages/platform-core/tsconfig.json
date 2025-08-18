@@ -1,43 +1,24 @@
-// packages/platform-core/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
-
   "compilerOptions": {
     "composite": true,
-    "noEmit": false,
-    "emitDeclarationOnly": false,
     "declaration": true,
     "declarationMap": true,
+    "noEmit": false,
     "rootDir": "src",
     "outDir": "dist",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
     "jsx": "react-jsx",
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "verbatimModuleSyntax": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@platform-core/*": ["./src/*"],
-      "@acme/types": ["../types/src/index.ts"],
-      "@acme/types/*": ["../types/src/*"]
-    },
-    "types": ["react", "react-dom", "next"]
+    "verbatimModuleSyntax": true
   },
-
-  "include": ["src/**/*"],
-  "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"],
-
-  "references": [
-    { "path": "../shared-utils" },
-    { "path": "../types" },
-    { "path": "../date-utils" },
-    { "path": "../i18n" },
-    { "path": "../lib" },
-    { "path": "../themes/base" }
+  "include": [
+    "src*",
+    "src/**/*",
+    "src/**/*.json"
   ]
 }

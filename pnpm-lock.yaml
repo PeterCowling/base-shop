@@ -497,8 +497,8 @@ importers:
       '@acme/config':
         specifier: workspace:*
         version: link:../config
-      '@platform-core':
-        specifier: workspace:*
+      '@acme/platform-core':
+        specifier: workspace:^
         version: link:../platform-core
       '@upstash/redis':
         specifier: ^1.35.3
@@ -551,6 +551,9 @@ importers:
       '@acme/config':
         specifier: workspace:*
         version: link:../config
+      '@acme/platform-core':
+        specifier: workspace:^
+        version: link:../platform-core
       '@acme/ui':
         specifier: workspace:*
         version: link:../ui
@@ -603,12 +606,12 @@ importers:
       '@acme/config':
         specifier: workspace:^
         version: link:../config
+      '@acme/platform-core':
+        specifier: workspace:^
+        version: link:../platform-core
       '@acme/zod-utils':
         specifier: workspace:^
         version: link:../zod-utils
-      '@platform-core':
-        specifier: workspace:*
-        version: link:../platform-core
     devDependencies:
       next:
         specifier: ^15.3.4
@@ -664,12 +667,12 @@ importers:
 
   packages/platform-machine:
     dependencies:
+      '@acme/platform-core':
+        specifier: workspace:^
+        version: link:../platform-core
       '@acme/stripe':
         specifier: workspace:*
         version: link:../stripe
-      '@platform-core':
-        specifier: workspace:*
-        version: link:../platform-core
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -701,8 +704,8 @@ importers:
 
   packages/sanity:
     dependencies:
-      '@platform-core':
-        specifier: workspace:*
+      '@acme/platform-core':
+        specifier: workspace:^
         version: link:../platform-core
       '@sanity/client':
         specifier: ^6.15.0
@@ -782,6 +785,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@acme/auth':
+        specifier: workspace:^
+        version: link:../auth
       '@acme/config':
         specifier: workspace:*
         version: link:../config
@@ -791,6 +797,9 @@ importers:
       '@acme/i18n':
         specifier: workspace:*
         version: link:../i18n
+      '@acme/platform-core':
+        specifier: workspace:^
+        version: link:../platform-core
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../shared-utils

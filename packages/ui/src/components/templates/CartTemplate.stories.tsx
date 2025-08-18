@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react";
-import type { CartState } from "@/lib/cartCookie";
+import type { CartState } from "@acme/platform-core/cartCookie";
 import { CartTemplate } from "./CartTemplate";
 
 const cart: CartState = {

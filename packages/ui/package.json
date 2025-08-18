@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -b",
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {
@@ -28,7 +28,9 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-joyride": "^2.9.3",
-    "shadcn-ui": "^0.9.5"
+    "shadcn-ui": "^0.9.5",
+    "@acme/platform-core": "workspace:^",
+    "@acme/auth": "workspace:^"
   },
   "peerDependencies": {
     "tailwindcss": "^4"

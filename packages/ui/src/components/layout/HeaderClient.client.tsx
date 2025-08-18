@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "@platform-core/contexts/CartContext";
+import { useCart } from "@acme/platform-core/contexts/CartContext";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { cn } from "../../utils/style";

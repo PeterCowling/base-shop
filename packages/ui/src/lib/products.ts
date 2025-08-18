@@ -2,4 +2,4 @@
 export {
   getProductById,
   getProductBySlug,
-} from "@platform-core/repositories/products.server";
+} from "@acme/platform-core/repositories/products.server";

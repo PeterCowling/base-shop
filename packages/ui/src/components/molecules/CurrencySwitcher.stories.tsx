@@ -1,4 +1,4 @@
-import { CurrencyProvider } from "@platform-core/contexts/CurrencyContext";
+import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 import type { Meta, StoryObj } from "@storybook/react";
 import CurrencySwitcher from "./CurrencySwitcher.client";
 

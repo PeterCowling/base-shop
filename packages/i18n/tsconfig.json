@@ -1,35 +1,29 @@
 {
   "extends": "../../tsconfig.base.json",
-
   "compilerOptions": {
-    /* Emit JS + d.ts --------------------------------------------------------- */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
     "rootDir": "src",
     "outDir": "dist",
-
-    /* TS 5 bundler-style resolution (Next/Vite friendly) --------------------- */
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
-
-    /* React translations components ----------------------------------------- */
     "jsx": "react-jsx",
-
-    /* App/library ergonomics ------------------------------------------------- */
+    "strict": true,
+    "skipLibCheck": true,
     "resolveJsonModule": true,
-    "verbatimModuleSyntax": true,
-
-    /* Ambient types ---------------------------------------------------------- */
-    "types": ["react", "react-dom"]
+    "verbatimModuleSyntax": true
   },
-
-  /* Build types first if needed --------------------------------------------- */
-  "references": [{ "path": "../types" }],
-
-  "include": ["src/**/*"],
-  "exclude": ["dist", "__tests__", ".turbo", "node_modules"]
+  "include": [
+    "src*",
+    "src/**/*",
+    "src/**/*.json"
+  ],
+  "references": [
+    {
+      "path": "../types"
+    }
+  ]
 }

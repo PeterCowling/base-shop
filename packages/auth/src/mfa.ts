@@ -1,6 +1,6 @@
 // packages/auth/src/mfa.ts
 import { authenticator } from "otplib";
-import { prisma } from "@platform-core/db";
+import { prisma } from "@acme/platform-core/db";
 
 export interface MfaEnrollment {
   secret: string;

@@ -1,7 +1,7 @@
 // packages/platform-core/components/shop/AddToCartButton.tsx
 "use client";
 
-import { useCart } from "@platform-core/contexts/CartContext";
+import { useCart } from "../../contexts/CartContext";
 import type { SKU } from "@acme/types";
 import { useState } from "react";
 

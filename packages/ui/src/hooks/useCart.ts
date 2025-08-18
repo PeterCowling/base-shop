@@ -1,1 +1,1 @@
-export { useCart } from "@platform-core/contexts/CartContext";
+export { useCart } from "@acme/platform-core/contexts/CartContext";

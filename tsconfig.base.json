@@ -70,6 +70,9 @@
       "@acme/config": [
         "packages/config"
       ],
+      "@acme/config/env/*": [
+        "packages/config/src/env/*"
+      ],
       "@acme/config/*": [
         "packages/config/*"
       ],

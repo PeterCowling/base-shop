@@ -23,11 +23,13 @@ export function ProductMediaGalleryTemplate({
   className,
   ...props
 }: ProductMediaGalleryTemplateProps) {
-  const galleryMedia: GalleryMediaItem[] = product.media.map((m) => ({
-    type: m.type as GalleryMediaItem["type"],
-    src: m.url,
-    alt: m.altText,
-  }));
+  const galleryMedia: GalleryMediaItem[] = product.media.map(
+    (m: SKU["media"][number]) => ({
+      type: m.type as GalleryMediaItem["type"],
+      src: m.url,
+      alt: m.altText,
+    })
+  );
   return (
     <div className={cn("grid gap-6 md:grid-cols-2", className)} {...props}>
       <ProductGallery media={galleryMedia} />
@@ -35,9 +37,14 @@ export function ProductMediaGalleryTemplate({
         <h2 className="text-2xl font-semibold">{product.title}</h2>
         {product.badges && (
           <div className="flex gap-2">
-            {product.badges.map((b, idx) => (
-              <ProductBadge key={idx} label={b.label} variant={b.variant} />
-            ))}
+            {product.badges.map(
+              (
+                b: { label: string; variant?: "default" | "sale" | "new" },
+                idx: number
+              ) => (
+                <ProductBadge key={idx} label={b.label} variant={b.variant} />
+              )
+            )}
           </div>
         )}
         <Price amount={product.price} className="text-xl font-bold" />

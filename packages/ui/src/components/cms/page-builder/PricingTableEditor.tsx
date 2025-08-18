@@ -8,7 +8,8 @@ interface Props {
 }
 
 export default function PricingTableEditor({ component, onChange }: Props) {
-  const plans: NonNullable<PricingTableComponent["plans"]> = component.plans ?? [];
+  type Plan = NonNullable<PricingTableComponent["plans"]>[number];
+  const plans: Plan[] = component.plans ?? [];
   const min = component.minItems ?? 0;
   const max = component.maxItems ?? Infinity;
 
@@ -19,7 +20,9 @@ export default function PricingTableEditor({ component, onChange }: Props) {
   };
 
   const removePlan = (idx: number) => {
-    onChange({ plans: plans.filter((_, i) => i !== idx) } as Partial<PricingTableComponent>);
+    onChange({
+      plans: plans.filter((_plan: Plan, i: number) => i !== idx),
+    } as Partial<PricingTableComponent>);
   };
 
   const addPlan = () => {
@@ -33,7 +36,7 @@ export default function PricingTableEditor({ component, onChange }: Props) {
 
   return (
     <div className="space-y-2">
-      {plans.map((plan, i) => (
+      {plans.map((plan: Plan, i: number) => (
         <div key={i} className="space-y-1 rounded border p-2">
           <Input
             value={plan.title ?? ""}

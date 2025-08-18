@@ -2,7 +2,6 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { PageComponent } from "@acme/types";
 import { memo, useState, useCallback, useEffect } from "react";
 import {
   atomRegistry,
@@ -18,11 +17,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../atoms";
+import type { ComponentType } from "./defaults";
 
 const defaultIcon = "/window.svg";
 
 interface PaletteMeta {
-  type: PageComponent["type"];
+  type: ComponentType;
   label: string;
   icon: string;
   description?: string;
@@ -32,7 +32,7 @@ interface PaletteMeta {
 const createPaletteItems = (
   registry: Record<string, BlockRegistryEntry<any> & { description?: string }>,
 ): PaletteMeta[] =>
-  (Object.keys(registry) as PageComponent["type"][])
+  (Object.keys(registry) as ComponentType[])
     .sort()
     .map((t) => ({
       type: t,
@@ -52,7 +52,7 @@ const palette = {
 } as const;
 
 interface PaletteItemProps extends PaletteMeta {
-  onAdd: (type: PageComponent["type"], label: string) => void;
+  onAdd: (type: ComponentType, label: string) => void;
 }
 
 const PaletteItem = memo(function PaletteItem({
@@ -125,7 +125,7 @@ const PaletteItem = memo(function PaletteItem({
 });
 
 interface PaletteProps {
-  onAdd: (type: PageComponent["type"]) => void;
+  onAdd: (type: ComponentType) => void;
 }
 
 const Palette = memo(function Palette({ onAdd }: PaletteProps) {
@@ -133,7 +133,7 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
   const [liveMessage, setLiveMessage] = useState("");
 
   const handleAdd = useCallback(
-    (type: PageComponent["type"], label: string) => {
+    (type: ComponentType, label: string) => {
       onAdd(type);
       setLiveMessage(`${label} added`);
     },

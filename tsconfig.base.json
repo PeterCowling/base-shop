@@ -68,10 +68,10 @@
         "packages/auth/*"
       ],
       "@acme/config": [
-        "packages/config"
+        "packages/config/src/index.ts"
       ],
       "@acme/config/*": [
-        "packages/config/*"
+        "packages/config/src/*"
       ],
       "@acme/shared-utils": [
         "packages/shared-utils"
@@ -108,6 +108,18 @@
       ],
       "@acme/configurator/*": [
         "packages/configurator/*"
+      ],
+      "@platform-core": [
+        "packages/platform-core/src/index.ts"
+      ],
+      "@platform-core/*": [
+        "packages/platform-core/src/*"
+      ],
+      "@date-utils": [
+        "packages/date-utils/src/index.ts"
+      ],
+      "@date-utils/*": [
+        "packages/date-utils/src/*"
       ],
       "@acme/next-config": [
         "packages/next-config"

@@ -36,7 +36,7 @@ export default function MediaFileItem({
       if (text) fd.append("altText", text);
       const tags = tagText
         .split(",")
-        .map((t) => t.trim())
+        .map((t: string) => t.trim())
         .filter(Boolean);
       if (tags.length) fd.append("tags", JSON.stringify(tags));
       const uploadRes = await fetch(`/cms/api/media?shop=${shop}`, {

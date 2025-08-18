@@ -36,7 +36,7 @@ export default function ImageSliderEditor({ component, onChange }: Props) {
 
   return (
     <div className="space-y-2">
-      {slides.map((s, idx) => (
+      {slides.map((s: NonNullable<ImageSliderComponent["slides"]>[number], idx: number) => (
         <div key={idx} className="space-y-1 rounded border p-2">
           <div className="flex items-start gap-2">
             <Input

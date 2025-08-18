@@ -29,6 +29,7 @@ declare module "@acme/types" {
   export type SocialLinksComponent = any;
   export type SocialProofComponent = any;
   export type StoreLocatorBlockComponent = any;
+  export type TestimonialsComponent = any;
   export type TabsComponent = any;
   export type VideoBlockComponent = any;
 }

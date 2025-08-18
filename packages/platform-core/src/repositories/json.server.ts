@@ -10,20 +10,20 @@
  * • products.server  – catalogue helpers (read/write/update/delete/…)
  */
 
-export { readShop } from "./shops.server";
+export { readShop } from "./shops.server.js";
 
 // Alias getShopSettings → readSettings so existing callers keep working.
-export { getShopSettings as readSettings } from "./settings.server";
+export { getShopSettings as readSettings } from "./settings.server.js";
 
-export * from "./products.server";
-export * from "./inventory.server";
-export * from "./pricing.server";
-export * from "./returnLogistics.server";
+export * from "./products.server.js";
+export * from "./inventory.server.js";
+export * from "./pricing.server.js";
+export * from "./returnLogistics.server.js";
 
 export {
   diffHistory,
   getShopSettings,
   saveShopSettings,
-} from "./settings.server";
-export type { SettingsDiffEntry } from "./settings.server";
-export { getShopById, updateShopInRepo } from "./shop.server";
+} from "./settings.server.js";
+export type { SettingsDiffEntry } from "./settings.server.js";
+export { getShopById, updateShopInRepo } from "./shop.server.js";

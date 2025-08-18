@@ -3,7 +3,7 @@ import "server-only";
 import { returnAuthorizationSchema, type ReturnAuthorization } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import { resolveDataRoot } from "../dataRoot";
+import { resolveDataRoot } from "../dataRoot.js";
 import { z } from "zod";
 
 function raPath(): string {

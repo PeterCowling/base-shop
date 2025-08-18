@@ -2,7 +2,7 @@
 import "server-only";
 
 // Re-export shipment usage helpers
-export * from "../subscriptionUsage";
+export * from "../subscriptionUsage.js";
 
 // In-memory stores for demo purposes. In a production system these values
 // would be persisted to the database.

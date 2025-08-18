@@ -3,9 +3,9 @@ import "server-only";
 import { inventoryItemSchema, type InventoryItem } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
-import { validateShopName } from "../shops";
-import { DATA_ROOT } from "../dataRoot";
-import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
+import { validateShopName } from "../shops/index.js";
+import { DATA_ROOT } from "../dataRoot.js";
+import type { InventoryRepository, InventoryMutateFn } from "./inventory.types.js";
 
 interface RawInventoryItem {
   sku: string;
@@ -84,7 +84,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
   }
   try {
     if (process.env.SKIP_STOCK_ALERT !== "1") {
-      const { checkAndAlert } = await import("../services/stockAlert.server");
+      const { checkAndAlert } = await import("../services/stockAlert.server.js");
       await checkAndAlert(shop, normalized);
     }
   } catch (err) {
@@ -162,7 +162,7 @@ async function update(
 
   try {
     if (process.env.SKIP_STOCK_ALERT !== "1") {
-      const { checkAndAlert } = await import("../services/stockAlert.server");
+      const { checkAndAlert } = await import("../services/stockAlert.server.js");
       await checkAndAlert(shop, normalized);
     }
   } catch (err) {

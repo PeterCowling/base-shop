@@ -4,10 +4,10 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 
 import { shopSchema, type Shop } from "@acme/types";
-import { prisma } from "../db";
-import { validateShopName } from "../shops";
+import { prisma } from "../db.js";
+import { validateShopName } from "../shops/index.js";
 
-import { DATA_ROOT } from "../dataRoot";
+import { DATA_ROOT } from "../dataRoot.js";
 
 function shopPath(shop: string): string {
   shop = validateShopName(shop);

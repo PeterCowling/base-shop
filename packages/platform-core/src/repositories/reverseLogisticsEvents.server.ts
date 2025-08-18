@@ -1,7 +1,7 @@
 import "server-only";
 
 import { nowIso } from "@acme/date-utils";
-import { prisma } from "../db";
+import { prisma } from "../db.js";
 
 export type ReverseLogisticsEventName =
   | "received"

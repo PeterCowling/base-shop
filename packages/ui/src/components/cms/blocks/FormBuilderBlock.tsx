@@ -1,6 +1,6 @@
 "use client";
 
-import type { FormField } from "@acme/types";
+import type { FormField, FormFieldOption } from "@acme/types";
 
 interface Props {
   action?: string;
@@ -25,7 +25,7 @@ export default function FormBuilderBlock({
               name={field.name}
               className="w-full rounded border p-2"
             >
-              {field.options?.map((opt) => (
+              {field.options?.map((opt: FormFieldOption) => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
                 </option>

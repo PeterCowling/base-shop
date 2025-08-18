@@ -48,9 +48,14 @@ export function ProductDetailTemplate({
         <h2 className="text-2xl font-semibold">{product.title}</h2>
         {product.badges && (
           <div className="flex gap-2">
-            {product.badges.map((b, idx) => (
-              <ProductBadge key={idx} label={b.label} variant={b.variant} />
-            ))}
+            {product.badges.map(
+              (
+                b: { label: string; variant?: "default" | "sale" | "new" },
+                idx: number
+              ) => (
+                <ProductBadge key={idx} label={b.label} variant={b.variant} />
+              )
+            )}
           </div>
         )}
         <Price amount={product.price} className="text-xl font-bold" />

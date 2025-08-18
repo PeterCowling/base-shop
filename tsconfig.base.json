@@ -73,6 +73,12 @@
       "@acme/config/*": [
         "packages/config/*"
       ],
+      "@platform-core": [
+        "packages/platform-core/src/index.ts"
+      ],
+      "@platform-core/*": [
+        "packages/platform-core/src/*"
+      ],
       "@acme/shared-utils": [
         "packages/shared-utils"
       ],

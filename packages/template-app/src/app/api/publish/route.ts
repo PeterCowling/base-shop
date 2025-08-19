@@ -2,7 +2,7 @@ import { promises as fs } from "node:fs";
 import { join } from "node:path";
 import { NextResponse } from "next/server";
 import { requirePermission } from "@auth";
-import { republishShop } from "../../../../../../scripts/src/republish-shop";
+import { spawnSync } from "node:child_process";
 
 export const runtime = "nodejs";
 
@@ -17,12 +17,13 @@ export async function POST() {
     const raw = await fs.readFile(join(process.cwd(), "shop.json"), "utf8");
     const { id } = JSON.parse(raw) as { id: string };
     const root = join(process.cwd(), "..", "..");
-    const cwd = process.cwd();
-    try {
-      process.chdir(root);
-      republishShop(id, root);
-    } finally {
-      process.chdir(cwd);
+    const res = spawnSync(
+      "pnpm",
+      ["ts-node", "scripts/src/republish-shop.ts", id],
+      { cwd: root, stdio: "inherit" },
+    );
+    if (res.status !== 0) {
+      throw new Error("republish failed");
     }
     return NextResponse.json({ status: "ok" });
   } catch (err) {

@@ -2,6 +2,7 @@
 import {
   CART_COOKIE,
   decodeCartCookie,
+  type CartState,
 } from "@platform-core/cartCookie";
 import {
   getCart,
@@ -24,7 +25,7 @@ import {
 export default async function SwapPage() {
   const cookieStore = await cookies();
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
-  const cart = cartId ? await getCart(cartId) : {};
+  const cart: CartState = cartId ? await getCart(cartId) : {};
   const session = await getCustomerSession();
   const shopId = coreEnv.NEXT_PUBLIC_SHOP_ID || "shop";
   const shop = await readShop(shopId);

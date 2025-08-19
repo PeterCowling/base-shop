@@ -65,3 +65,25 @@ export function createCartStore(options: CartStoreOptions = {}): CartStore {
   return createMemoryCartStore(ttl);
 }
 
+/* ------------------------------------------------------------------
+ * Convenience wrappers around a default store instance
+ * ------------------------------------------------------------------ */
+
+const defaultStore = createCartStore();
+
+export const createCart = () => defaultStore.createCart();
+export const getCart = (id: string) => defaultStore.getCart(id);
+export const setCart = (id: string, cart: CartState) =>
+  defaultStore.setCart(id, cart);
+export const deleteCart = (id: string) => defaultStore.deleteCart(id);
+export const incrementQty = (
+  id: string,
+  sku: SKU,
+  qty: number,
+  size?: string,
+) => defaultStore.incrementQty(id, sku, qty, size);
+export const setQty = (id: string, skuId: string, qty: number) =>
+  defaultStore.setQty(id, skuId, qty);
+export const removeItem = (id: string, skuId: string) =>
+  defaultStore.removeItem(id, skuId);
+

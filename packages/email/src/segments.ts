@@ -105,7 +105,7 @@ export async function resolveSegment(
     return [];
   }
 
-  const events: AnalyticsEvent[] = await listEvents(shop);
+  const events: AnalyticsEvent[] = await listEvents();
   const emails = new Set<string>();
   for (const e of events) {
     let match = true;

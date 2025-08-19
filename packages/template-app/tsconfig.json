@@ -11,7 +11,13 @@
       "@ui/src/*": ["../ui/src/*"],
       "@i18n/*": ["../i18n/src/*"],
       "@platform-core": ["../platform-core/src/index"],
-      "@platform-core/*": ["../platform-core/src/*"]
+      "@platform-core/*": ["../platform-core/src/*"],
+      "@acme/platform-core": ["../platform-core/src/index"],
+      "@acme/platform-core/*": ["../platform-core/src/*"],
+      "@auth": ["../auth/src/index", "../auth/src"],
+      "@auth/*": ["../auth/src/*"],
+      "@date-utils": ["../date-utils/src/index", "../date-utils/src"],
+      "@date-utils/*": ["../date-utils/src/*"]
     }
   },
   "include": ["next-env.d.ts", "src/**/*", "src/**/*.json", ".next/types/**/*.ts"],

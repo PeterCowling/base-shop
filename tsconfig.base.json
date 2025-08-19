@@ -79,6 +79,12 @@
       "@platform-core/*": [
         "packages/platform-core/*"
       ],
+      "@acme/platform-core": [
+        "packages/platform-core"
+      ],
+      "@acme/platform-core/*": [
+        "packages/platform-core/*"
+      ],
       "@acme/shared-utils": [
         "packages/shared-utils"
       ],

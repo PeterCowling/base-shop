@@ -1,16 +1,19 @@
 import Link from "next/link";
 import { listShops } from "../listShops";
 import { listEvents } from "@platform-core/repositories/analytics.server";
+import type { AnalyticsEvent } from "@platform-core/analytics";
 
 export default async function MarketingPage() {
   const shops = await listShops();
   const campaignsByShop: Record<string, string[]> = {};
   for (const shop of shops) {
-    const events = await listEvents(shop);
+    const events: AnalyticsEvent[] = await listEvents(shop);
     const campaigns = Array.from(
       new Set(
         events
-          .map((e) => (typeof e.campaign === "string" ? e.campaign : null))
+          .map((e: AnalyticsEvent) =>
+            typeof e.campaign === "string" ? e.campaign : null,
+          )
           .filter(Boolean) as string[],
       ),
     );

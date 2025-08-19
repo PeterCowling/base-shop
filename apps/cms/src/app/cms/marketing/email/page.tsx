@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { formatTimestamp } from "@acme/date-utils";
-import { marketingEmailTemplates } from "@acme/ui";
+import {
+  marketingEmailTemplates,
+  type MarketingEmailTemplateVariant,
+} from "@acme/ui";
 import DOMPurify from "dompurify";
 
 interface Campaign {
@@ -136,7 +139,7 @@ export default function EmailMarketingPage() {
           value={templateId}
           onChange={(e) => setTemplateId(e.target.value)}
         >
-          {marketingEmailTemplates.map((t) => (
+          {marketingEmailTemplates.map((t: MarketingEmailTemplateVariant) => (
             <option key={t.id} value={t.id}>
               {t.name}
             </option>
@@ -197,7 +200,7 @@ export default function EmailMarketingPage() {
       )}
         <div className="mt-4">
           {marketingEmailTemplates
-            .find((t) => t.id === templateId)
+            .find((t: MarketingEmailTemplateVariant) => t.id === templateId)
             ?.render({
               headline: subject || "",
               content: (

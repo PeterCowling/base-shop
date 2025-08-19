@@ -11,7 +11,7 @@ import {
 } from "@/components/atoms/shadcn";
 import type { MediaItem } from "@acme/types";
 import MediaManager from "@ui/components/cms/MediaManager";
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactElement } from "react";
 
 /**
  * Upload-and-manage media files inside a modal dialog.

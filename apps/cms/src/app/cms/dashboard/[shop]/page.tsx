@@ -8,6 +8,8 @@ import { CampaignFilter } from "./components/CampaignFilter.client";
 import { Charts } from "./components/Charts.client";
 import { buildMetrics } from "@cms/lib/analytics";
 import { formatPrice } from "@acme/shared-utils";
+import type { AnalyticsEvent, AnalyticsAggregates } from "@platform-core/analytics";
+import type { Shop } from "@acme/types";
 
 export default async function ShopDashboard({
   params,
@@ -17,11 +19,11 @@ export default async function ShopDashboard({
   searchParams: { campaign?: string | string[] };
 }) {
   const shop = params.shop;
-  const [events, aggregates, shopData] = await Promise.all([
+  const [events, aggregates, shopData] = (await Promise.all([
     listEvents(shop),
     readAggregates(shop),
     readShop(shop),
-  ]);
+  ])) as [AnalyticsEvent[], AnalyticsAggregates, Shop];
 
   const domain = shopData.domain?.name;
   const domainStatus = shopData.domain?.status;
@@ -29,7 +31,9 @@ export default async function ShopDashboard({
   const campaigns = Array.from(
     new Set(
       events
-        .map((e) => (typeof e.campaign === "string" ? e.campaign : null))
+        .map((e: AnalyticsEvent) =>
+          typeof e.campaign === "string" ? e.campaign : null
+        )
         .filter(Boolean) as string[]
     )
   );
@@ -129,7 +133,9 @@ export default async function ShopDashboard({
           );
         })()
       : selectedCampaigns.map((c) => {
-          const metrics = buildMetrics(events.filter((e) => e.campaign === c));
+          const metrics = buildMetrics(
+            events.filter((e: AnalyticsEvent) => e.campaign === c)
+          );
           const totalTraffic = metrics.totals.emailClicks;
           const totalRevenue = metrics.totals.campaignSales;
           const conversionRate =

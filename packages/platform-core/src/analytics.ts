@@ -1,2 +1,3 @@
-export type AnalyticsEvent = any;
-export async function trackEvent(_evt?: AnalyticsEvent) { /* no-op */ }
+export type { AnalyticsEvent } from "./analytics/index";
+export { trackEvent, trackPageView, trackOrder } from "./analytics/index";
+

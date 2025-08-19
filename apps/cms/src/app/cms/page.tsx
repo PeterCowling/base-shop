@@ -4,7 +4,7 @@ import { approveAccount, listPendingUsers } from "@cms/actions/accounts.server";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
 import { readRbac } from "@cms/lib/rbacStore";
-import type { StatItem } from "@ui/components/organisms/StatsGrid";
+import type { ReactNode } from "react";
 import { DashboardTemplate } from "@ui/components/templates";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
@@ -23,6 +23,11 @@ type Stats = {
   users: number;
   shops: number;
   products: number;
+};
+
+type StatItem = {
+  label: string;
+  value: ReactNode;
 };
 
 async function collectStats(): Promise<Stats> {

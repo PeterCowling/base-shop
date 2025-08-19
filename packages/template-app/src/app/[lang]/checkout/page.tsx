@@ -8,7 +8,7 @@ import {
   type CartLine,
   type CartState,
 } from "@platform-core/cartCookie";
-import { getCart } from "@platform-core/cartStore";
+import { createCartStore } from "@platform-core/cartStore";
 import { getProductById } from "@platform-core/products";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
@@ -35,7 +35,8 @@ export default async function CheckoutPage({
   /* ---------- read cart from cookie ---------- */
   const cookieStore = await cookies(); // ← await here
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
-  const cart = cartId ? await getCart(cartId) : {};
+  const cartStore = createCartStore();
+  const cart: CartState = cartId ? await cartStore.getCart(cartId) : {};
 
   /* ---------- empty cart guard ---------- */
   if (!Object.keys(cart).length) {

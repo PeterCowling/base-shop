@@ -2,7 +2,10 @@ import {
   getReturnLogistics,
   getReturnBagAndLabel,
 } from "@platform-core/returnLogistics";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import {
+  getShopSettings,
+  readShop,
+} from "@platform-core/repositories/shops.server";
 
 const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";
@@ -11,10 +14,11 @@ import { useEffect, useRef, useState } from "react";
 export const metadata = { title: "Mobile Returns" };
 
 export default async function MobileReturnPage() {
-  const [cfg, info, settings] = await Promise.all([
+  const [cfg, info, settings, shop] = await Promise.all([
     getReturnLogistics(),
     getReturnBagAndLabel(),
     getShopSettings(SHOP_ID),
+    readShop(SHOP_ID),
   ]);
   if (!cfg.mobileApp) {
     return <p className="p-6">Mobile returns are not enabled.</p>;
@@ -25,7 +29,7 @@ export default async function MobileReturnPage() {
   return (
     <>
       <Scanner allowedZips={allowed} />
-      {settings.showCleaningTransparency && <CleaningInfo />}
+      {shop.showCleaningTransparency && <CleaningInfo />}
     </>
   );
 }

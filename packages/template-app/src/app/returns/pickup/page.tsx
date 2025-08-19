@@ -1,5 +1,8 @@
 import { getReturnBagAndLabel } from "@platform-core/returnLogistics";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import {
+  getShopSettings,
+  readShop,
+} from "@platform-core/repositories/shops.server";
 
 const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";
@@ -11,9 +14,10 @@ export default async function PickupPage({
 }: {
   searchParams?: { zip?: string };
 }) {
-  const [info, settings] = await Promise.all([
+  const [info, settings, shop] = await Promise.all([
     getReturnBagAndLabel(),
     getShopSettings(SHOP_ID),
+    readShop(SHOP_ID),
   ]);
   const allowed = settings.returnService?.homePickupEnabled
     ? info.homePickupZipCodes
@@ -41,7 +45,7 @@ export default async function PickupPage({
           </button>
         </form>
       )}
-      {settings.showCleaningTransparency && <CleaningInfo />}
+      {shop.showCleaningTransparency && <CleaningInfo />}
     </div>
   );
 }

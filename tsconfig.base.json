@@ -74,10 +74,10 @@
         "packages/config/*"
       ],
       "@platform-core": [
-        "packages/platform-core/src/index.ts"
+        "packages/platform-core"
       ],
       "@platform-core/*": [
-        "packages/platform-core/src/*"
+        "packages/platform-core/*"
       ],
       "@acme/shared-utils": [
         "packages/shared-utils"

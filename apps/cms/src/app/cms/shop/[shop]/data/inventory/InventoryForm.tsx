@@ -50,9 +50,14 @@ export default function InventoryForm({ shop, initial }: Props) {
       } else if (field === "sku") {
         item.sku = value;
         item.productId = value;
-      } else {
-        // other top-level fields
-        item[field] = value;
+      } else if (field === "productId") {
+        item.productId = value;
+      } else if (field === "wearCount") {
+        item.wearCount = value === "" ? undefined : Number(value);
+      } else if (field === "wearAndTearLimit") {
+        item.wearAndTearLimit = value === "" ? undefined : Number(value);
+      } else if (field === "maintenanceCycle") {
+        item.maintenanceCycle = value === "" ? undefined : Number(value);
       }
       next[index] = item;
       return next;

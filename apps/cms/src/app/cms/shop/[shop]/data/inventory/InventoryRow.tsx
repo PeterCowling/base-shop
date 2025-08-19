@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/atoms/shadcn";
 import type { InventoryItem } from "@acme/types";
+import type { ChangeEvent } from "react";
 
 interface Props {
   item: InventoryItem;
@@ -33,14 +34,16 @@ export default function InventoryRow({
       <TableCell>
         <Input
           value={item.sku}
-          onChange={(e) => updateItem(index, "sku", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            updateItem(index, "sku", e.target.value)
+          }
         />
       </TableCell>
       {attributes.map((attr) => (
         <TableCell key={attr}>
           <Input
             value={item.variantAttributes[attr] ?? ""}
-            onChange={(e) =>
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
               updateItem(index, `variantAttributes.${attr}`, e.target.value)
             }
           />
@@ -51,7 +54,9 @@ export default function InventoryRow({
           type="number"
           min={0}
           value={item.quantity}
-          onChange={(e) => updateItem(index, "quantity", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            updateItem(index, "quantity", e.target.value)
+          }
         />
       </TableCell>
       <TableCell>
@@ -59,7 +64,9 @@ export default function InventoryRow({
           type="number"
           min={0}
           value={item.lowStockThreshold ?? ""}
-          onChange={(e) => updateItem(index, "lowStockThreshold", e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            updateItem(index, "lowStockThreshold", e.target.value)
+          }
         />
       </TableCell>
       <TableCell>

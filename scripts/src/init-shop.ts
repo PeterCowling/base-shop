@@ -1,31 +1,22 @@
 // scripts/src/init-shop.ts
-// Import createShop directly from the workspace source.  We use a relative
-// path because the `@acme/*` aliases are not available in this pared‑down
-// environment.  Importing from the compiled package entry point is not
-// necessary here since TypeScript will resolve the .ts file directly.
-import {
-  createShop,
-  type CreateShopOptions,
-} from "../../packages/platform-core/src/createShop";
+// Import platform helpers from the published package to avoid relying on
+// TypeScript path aliases when executing via ts-node.
+import { createShop, type CreateShopOptions } from "@acme/platform-core/createShop";
 
-// Pull in the shop name validator from the platform core package.  We avoid
-// using @acme/* aliases because they are not available in this environment.
-import { validateShopName } from "../../packages/platform-core/src/shops";
+// Pull in the shop name validator from the platform core package.
+import { validateShopName } from "@acme/platform-core/shops";
 
 import { execSync, spawnSync } from "node:child_process";
 import { readdirSync } from "node:fs";
-// Pull in the environment validator from the platform core source directly.  A
-// relative import is used here because the `@acme/*` path aliases are not
-// available in this environment.  The imported function validates the
-// generated `.env` file for the newly created shop and will throw if any
+// Validate the generated environment file for the new shop and throw if any
 // required variables are missing or invalid.
 import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
-import { validateShopEnv } from "../../packages/platform-core/src/configurator";
+import { validateShopEnv } from "@acme/platform-core/configurator";
 // Import the provider listing utility via the defined subpath export.  This
 // module aggregates built‑in payment and shipping providers as well as any
 // plugins under packages/plugins.
-import { listProviders } from "../../packages/platform-core/src/createShop/listProviders";
+import { listProviders } from "@acme/platform-core/createShop/listProviders";
 
 /**
  * Ensure that the runtime meets the minimum supported versions for Node.js and pnpm.

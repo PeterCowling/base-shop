@@ -1,17 +1,8 @@
-import { validateShopName } from "../../../packages/platform-core/src/shops";
+import { validateShopName } from "@acme/platform-core/shops";
+import type { CreateShopOptions } from "@acme/platform-core/createShop";
 
 /** Command line options for creating a shop. */
-export interface Options {
-  type: "sale" | "rental";
-  theme: string;
-  template: string;
-  payment: string[];
-  shipping: string[];
-  name?: string;
-  logo?: string;
-  contactInfo?: string;
-  enableSubscriptions?: boolean;
-}
+export type Options = CreateShopOptions;
 
 /**
  * Parse command line arguments for the create-shop script.

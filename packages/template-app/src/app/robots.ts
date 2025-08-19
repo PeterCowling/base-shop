@@ -9,7 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "GPTBot", allow: "/" },
       { userAgent: "ClaudeBot", allow: "/" },
     ],
-    sitemap: `${base}/sitemap.xml`,
-    additionalSitemaps: [`${base}/ai-sitemap.xml`],
+    sitemap: [`${base}/sitemap.xml`, `${base}/ai-sitemap.xml`],
   };
 }

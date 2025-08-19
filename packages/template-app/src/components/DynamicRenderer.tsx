@@ -19,6 +19,7 @@ import { Textarea as TextBlock } from "@ui/components/atoms/primitives/textarea"
 
 import { PRODUCTS } from "@platform-core/products";
 import type { PageComponent, SKU } from "@acme/types";
+import type { Locale } from "@i18n/locales";
 
 /* ------------------------------------------------------------------
  * next/image wrapper usable in CMS blocks
@@ -63,7 +64,13 @@ const registry: Partial<
 /* ------------------------------------------------------------------
  * DynamicRenderer
  * ------------------------------------------------------------------ */
-function DynamicRenderer({ components }: { components: PageComponent[] }) {
+function DynamicRenderer({
+  components,
+  locale,
+}: {
+  components: PageComponent[];
+  locale: Locale;
+}) {
   return (
     <>
       {components.map((block) => {
@@ -79,11 +86,16 @@ function DynamicRenderer({ components }: { components: PageComponent[] }) {
 
         if (block.type === "ProductGrid") {
           return (
-            <Comp key={id} {...props} skus={PRODUCTS as SKU[]} />
+            <Comp
+              key={id}
+              {...props}
+              skus={PRODUCTS as SKU[]}
+              locale={locale}
+            />
           );
         }
 
-        return <Comp key={id} {...props} />;
+        return <Comp key={id} {...props} locale={locale} />;
       })}
     </>
   );

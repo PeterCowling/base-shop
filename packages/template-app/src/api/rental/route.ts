@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
         readProducts<SKU>(SHOP_ID),
       ]);
     for (const { sku, from, to } of orderItems) {
-      const skuInfo = products.find((p) => p.sku === sku);
+      const skuInfo = products.find((p) => p.id === sku);
       if (!skuInfo) continue;
       const items = inventory.filter((i) => i.sku === sku);
       await reserveRentalInventory(SHOP_ID, items, skuInfo, from, to);

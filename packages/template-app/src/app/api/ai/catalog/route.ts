@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
     const imsDate = new Date(ims);
     if (!Number.isNaN(imsDate.getTime()) && lastModified <= imsDate) {
       status = 304;
-      await trackEvent(shop, { type: "ai_crawl", page, status });
+      await trackEvent(shop, { type: "ai_crawl", page: String(page), status });
       return new NextResponse(null, {
         status,
         headers: { "Last-Modified": lastModified.toUTCString() },
@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
 
   await trackEvent(shop, {
     type: "ai_crawl",
-    page,
+    page: String(page),
     status,
     items: items.length,
   });

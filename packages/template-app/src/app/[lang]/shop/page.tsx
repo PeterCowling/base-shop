@@ -9,15 +9,16 @@ export const metadata: Metadata = {
   title: "Shop · Base-Shop",
 };
 
-export default function ShopIndexPage({
+export default async function ShopIndexPage({
   params,
 }: {
-  params: { lang: string };
+  params: Promise<{ lang: string }>;
 }) {
+  const { lang } = await params;
   const jsonLd = getStructuredData({
     type: "WebPage",
     name: "Shop",
-    url: `/${params.lang}/shop`,
+    url: `/${lang}/shop`,
   });
   // ⬇️ Purely server-side: just pass static data to the client component
   return (

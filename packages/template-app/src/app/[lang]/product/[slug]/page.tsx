@@ -20,29 +20,31 @@ export async function generateStaticParams() {
 
 export const revalidate = 60;
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}): Metadata {
-  const product = getProductBySlug(params.slug);
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
   return {
     title: product ? `${product.title} · Base-Shop` : "Product not found",
   };
 }
 
-export default function ProductDetailPage({
+export default async function ProductDetailPage({
   params,
 }: {
-  params: { lang: string; slug: string };
+  params: Promise<{ lang: string; slug: string }>;
 }) {
-  const product = getProductBySlug(params.slug);
+  const { lang, slug } = await params;
+  const product = getProductBySlug(slug);
   if (!product) return notFound();
   const jsonLd = getStructuredData({
     type: "Product",
     name: product.title,
     description: product.description,
-    url: `/${params.lang}/product/${params.slug}`,
+    url: `/${lang}/product/${slug}`,
     image: product.media[0]?.url,
     offers: { price: product.price, priceCurrency: "USD" },
   });

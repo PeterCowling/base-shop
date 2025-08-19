@@ -1,12 +1,8 @@
-import {
-  getReturnLogistics,
-  getReturnBagAndLabel,
-} from "@platform-core/returnLogistics";
+import { getReturnBagAndLabel } from "@platform-core/returnLogistics";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";
-import shop from "../../../../shop.json";
 
 export const metadata = { title: "Schedule pickup" };
 
@@ -45,7 +41,7 @@ export default async function PickupPage({
           </button>
         </form>
       )}
-      {shop.showCleaningTransparency && <CleaningInfo />}
+      {settings.showCleaningTransparency && <CleaningInfo />}
     </div>
   );
 }

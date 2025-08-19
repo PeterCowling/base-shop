@@ -65,3 +65,44 @@ export function createCartStore(options: CartStoreOptions = {}): CartStore {
   return createMemoryCartStore(ttl);
 }
 
+/**
+ * Legacy convenience wrappers using a singleton cart store. These helpers
+ * preserve the previous API so existing imports like `getCart` continue to
+ * function. New code should prefer `createCartStore()` and call methods on the
+ * returned store instance directly.
+ */
+const defaultStore = createCartStore();
+
+export function createCart() {
+  return defaultStore.createCart();
+}
+
+export function getCart(id: string) {
+  return defaultStore.getCart(id);
+}
+
+export function setCart(id: string, cart: CartState) {
+  return defaultStore.setCart(id, cart);
+}
+
+export function deleteCart(id: string) {
+  return defaultStore.deleteCart(id);
+}
+
+export function incrementQty(
+  id: string,
+  sku: SKU,
+  qty: number,
+  size?: string,
+) {
+  return defaultStore.incrementQty(id, sku, qty, size);
+}
+
+export function setQty(id: string, skuId: string, qty: number) {
+  return defaultStore.setQty(id, skuId, qty);
+}
+
+export function removeItem(id: string, skuId: string) {
+  return defaultStore.removeItem(id, skuId);
+}
+

@@ -1,6 +1,7 @@
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import type { InventoryItem } from "@acme/types";
 
 async function withRepo(
   backend: "json" | "sqlite",
@@ -57,7 +58,7 @@ describe("inventory repository", () => {
 
   it("writes inventory records with variant attributes", async () => {
     await withRepo("json", async (repo, shop, dir) => {
-      const items = [
+      const items: InventoryItem[] = [
         {
           sku: "sku-1",
           productId: "prod-1",

@@ -12,13 +12,28 @@
         "../i18n/src/*"
       ],
       "@ui/*": [
-        "../ui/*"
+        "../ui/src/*"
+      ],
+      "@i18n/*": [
+        "../i18n/src/*"
+      ],
+      "@platform-core": [
+        "../platform-core/src/index"
+      ],
+      "@platform-core/*": [
+        "../platform-core/src/*"
       ],
       "@acme/platform-core": [
         "../platform-core/src/index"
       ],
       "@acme/platform-core/*": [
         "../platform-core/src/*"
+      ],
+      "@auth": [
+        "./types-compat/auth"
+      ],
+      "@date-utils": [
+        "./types-compat/date-utils"
       ]
     }
   },

@@ -6,44 +6,14 @@
     "jsx": "react-jsx",
     "resolveJsonModule": true,
     "paths": {
-      "@/*": [
-        "./src/*",
-        "../ui/src/*",
-        "../i18n/src/*"
-      ],
-      "@ui/*": [
-        "../ui/src/*"
-      ],
-      "@i18n/*": [
-        "../i18n/src/*"
-      ],
-      "@platform-core": [
-        "../platform-core/src/index"
-      ],
-      "@platform-core/*": [
-        "../platform-core/src/*"
-      ],
-      "@acme/platform-core": [
-        "../platform-core/src/index"
-      ],
-      "@acme/platform-core/*": [
-        "../platform-core/src/*"
-      ],
-      "@auth": [
-        "./types-compat/auth"
-      ],
-      "@date-utils": [
-        "./types-compat/date-utils"
-      ]
+      "@/*": ["./src/*", "../ui/src/*", "../i18n/src/*"],
+      "@ui/*": ["../ui/src/*"],
+      "@ui/src/*": ["../ui/src/*"],
+      "@i18n/*": ["../i18n/src/*"],
+      "@platform-core": ["../platform-core/src/index"],
+      "@platform-core/*": ["../platform-core/src/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "src/**/*",
-    "src/**/*.json",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "src/**/*", "src/**/*.json", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

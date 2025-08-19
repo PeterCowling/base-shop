@@ -1,29 +1,21 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "noEmit": false,
-    "rootDir": "src",
-    "outDir": "dist",
-    "types": ["node"],
-    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@platform-core": [
+        "../platform-core/src/index"
+      ],
+      "@platform-core/*": [
+        "../platform-core/src/*"
+      ],
+      "@date-utils": [
+        "types-compat/date-utils"
+      ]
+    }
   },
-  "references": [
-    { "path": "../config" },
-    { "path": "../ui" },
-    { "path": "../lib" },
-    { "path": "../platform-core" },
-    { "path": "../types" },
-    { "path": "../date-utils" }
-  ],
-  "include": ["src/**/*"],
-  "exclude": [
-    "dist",
-    ".turbo",
-    "node_modules",
-    "**/__tests__/**",
-    "**/__mocks__/**"
+  "include": [
+    "src",
+    "types-compat/**/*.d.ts"
   ]
 }

@@ -27,7 +27,7 @@ export async function getConfig(shopId: string): Promise<SanityBlogConfig> {
   if (!config) {
     throw new Error(`Missing Sanity credentials for shop ${shopId}`);
   }
-  return config;
+  return config as any;
 }
 
 async function getClient(shopId: string) {

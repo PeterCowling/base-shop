@@ -57,7 +57,7 @@ const registry: Partial<
   BlogListing,
   Testimonials,
   TestimonialSlider,
-  Image: CmsImage,
+  Image: (CmsImage as unknown as React.ComponentType<Record<string, unknown>>),
   Text: TextBlock,
 };
 

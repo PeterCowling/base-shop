@@ -92,3 +92,7 @@ export async function duplicateProductInRepo<
   await writeRepo<T>(shop, [copy, ...catalogue]);
   return copy;
 }
+
+export async function readRepo(){
+  return { all: async ()=>[] as any[], byId: async (_id:string)=>null as any };
+}

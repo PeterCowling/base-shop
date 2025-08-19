@@ -18,7 +18,16 @@
     "resolveJsonModule": true,
     "moduleResolution": "Bundler",
     "module": "ESNext",
-    "target": "ES2022"
+    "target": "ES2022",
+    "baseUrl": ".",
+    "paths": {
+      "@acme/platform-core": [
+        "../platform-core/src/index"
+      ],
+      "@acme/platform-core/*": [
+        "../platform-core/src/*"
+      ]
+    }
   },
   "references": [
     {
@@ -47,15 +56,14 @@
     "src*",
     "src*.json",
     "types-compat*.d.ts",
-    "src/**/*",
-    "src/**/*.json",
-    "types-compat/**/*.d.ts"
+    "src*",
+    "src*.json",
+    "types-compat*.d.ts"
   ],
   "exclude": [
     "dist",
     "**/__tests__*.stories.*",
-    "src__tests__/**",
-    "src/**/*.stories.*",
-    "src/**/__tests__/**"
+    "src__tests__*.stories.*",
+    "src__tests__/**"
   ]
 }

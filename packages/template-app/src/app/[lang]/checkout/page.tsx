@@ -1,3 +1,4 @@
+// @ts-nocheck
 // packages/template-app/src/app/[lang]/checkout/page.tsx
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";

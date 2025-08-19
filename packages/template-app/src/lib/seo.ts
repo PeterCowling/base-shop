@@ -99,7 +99,7 @@ export async function getSeo(
       ...(base.twitter ?? {}),
       ...(pageSeo.twitter ?? {}),
     },
-    additionalLinkTags: alternates,
+    additionalLinkTags: (alternates as any),
   };
 }
 

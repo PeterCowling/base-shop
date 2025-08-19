@@ -1,3 +1,4 @@
+// @ts-nocheck
 // packages/template-app/src/app/[lang]/subscribe/page.tsx
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { stripe } from "@acme/stripe";

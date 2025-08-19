@@ -85,7 +85,7 @@ export default async function SwapPage() {
       <p className="mb-4">Swaps remaining this month: {remainingSwaps}</p>
       {Object.entries(cart).map(([id, line]) => (
         <form key={id} action={swap} className="mb-3 flex gap-2">
-          <span className="flex-1">{line.sku.name}</span>
+          <span className="flex-1">{line.sku.title}</span>
           <input type="hidden" name="old" value={id} />
           <input
             type="text"

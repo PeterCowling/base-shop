@@ -1,10 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "noEmit": false,
+    "noEmit": true,
 
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -16,9 +13,6 @@
 
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "rootDir": "src",
-    "outDir": "dist",
-    "declarationDir": "dist",
 
     "resolveJsonModule": true,
     "allowJs": false,

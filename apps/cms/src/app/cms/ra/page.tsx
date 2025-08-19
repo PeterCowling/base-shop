@@ -2,12 +2,13 @@
 import { listReturnAuthorizations } from "@platform-core/returnAuthorization";
 import { features } from "@platform-core/features";
 import { notFound } from "next/navigation";
+import type { ReturnAuthorization } from "@acme/types";
 
 export const revalidate = 0;
 
 export default async function RaDashboardPage() {
   if (!features.raTicketing) notFound();
-  const ras = await listReturnAuthorizations();
+  const ras: ReturnAuthorization[] = await listReturnAuthorizations();
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Return Authorizations</h2>

@@ -1,6 +1,7 @@
 {
   "extends": "../config/tsconfig.app.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
       "@ui": ["../ui/src/index.ts"],
       "@ui/*": ["../ui/src/*"],
@@ -8,6 +9,10 @@
       "@auth/*": ["../auth/src/*"],
       "@platform-core": ["../platform-core/src/index.ts"],
       "@platform-core/*": ["../platform-core/src/*"],
+      "@i18n": ["../i18n/src/index.ts"],
+      "@i18n/*": ["../i18n/src/*"],
+      "@acme/config": ["../config/src/index.ts"],
+      "@acme/config/*": ["../config/src/*"],
       "@date-utils": ["../date-utils/src/index.ts"],
       "@date-utils/*": ["../date-utils/src/*"],
       "@/*": ["./src/*"]

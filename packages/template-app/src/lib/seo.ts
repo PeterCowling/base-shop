@@ -10,6 +10,7 @@ interface OpenGraphImageProps {
 interface ExtendedSeoProps
   extends Omit<Partial<NextSeoProps>, "openGraph"> {
   canonicalBase?: string;
+  image?: string;
   openGraph?: OpenGraphImageProps & NextSeoProps["openGraph"];
 }
 

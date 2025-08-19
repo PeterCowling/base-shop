@@ -45,7 +45,7 @@ const CmsImage = React.memo(
  * Registry: block type → React component
  * ------------------------------------------------------------------ */
 const registry: Partial<
-  Record<PageComponent["type"], React.ComponentType<Record<string, unknown>>>
+  Record<PageComponent["type"], React.ComponentType<any>>
 > = {
   HeroBanner,
   ValueProps,

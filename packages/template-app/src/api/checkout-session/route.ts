@@ -61,7 +61,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     let coverageFee = 0;
     let coverageWaiver = 0;
     for (const code of coverageCodes) {
-      const rule = pricing.coverage?.[code];
+      const rule = pricing.coverage?.[
+        code as keyof NonNullable<typeof pricing.coverage>
+      ];
       if (rule) {
         coverageFee += rule.fee;
         coverageWaiver += rule.waiver;

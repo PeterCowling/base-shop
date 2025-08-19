@@ -163,7 +163,7 @@ export default function StepTheme({
       {/* single accessible combobox (theme) */}
       <Select
         value={theme}
-        onValueChange={(v) => {
+        onValueChange={(v: string) => {
           update("theme", v);
           setThemeOverrides({});
           if (typeof window !== "undefined") {

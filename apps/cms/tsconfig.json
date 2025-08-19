@@ -6,8 +6,8 @@
     "emitDeclarationOnly": true,
     "noEmit": false,
 
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "target": "ES2022",
     "lib": ["ES2022", "DOM"],
 
@@ -16,7 +16,7 @@
 
     "jsx": "react-jsx",
     "baseUrl": ".",
-    "rootDir": "src",
+    "rootDir": "../..",
     "outDir": "dist",
     "declarationDir": "dist",
 

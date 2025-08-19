@@ -50,7 +50,7 @@ async function filterUnsubscribed(
   shop: string,
   recipients: string[],
 ): Promise<string[]> {
-  const events: AnalyticsEvent[] = await listEvents(shop).catch(
+  const events: AnalyticsEvent[] = await listEvents().catch(
     (): AnalyticsEvent[] => [],
   );
   const unsub = new Set(

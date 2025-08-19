@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { pageSchema, type Page } from "@acme/types";
+import { pageSchema, type Page, type PageComponent } from "@acme/types";
 import type { Locale } from "@i18n/locales";
 import { devicePresets, getLegacyPreset } from "@ui/utils/devicePresets";
 import PreviewClient from "./PreviewClient";
@@ -28,6 +28,7 @@ export default async function PreviewPage({
     throw new Error("Failed to load preview");
   }
   const page: Page = pageSchema.parse(await res.json());
+  const components = page.components as PageComponent[];
   const locale = (Object.keys(page.seo.title)[0] || "en") as Locale;
   const init = searchParams.device ?? searchParams.view;
   const initialDeviceId = (() => {
@@ -43,7 +44,7 @@ export default async function PreviewPage({
 
   return (
     <PreviewClient
-      components={page.components}
+      components={components}
       locale={locale}
       initialDeviceId={initialDeviceId}
     />

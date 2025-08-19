@@ -1,7 +1,7 @@
 import { readdirSync } from "fs";
 import readline from "node:readline";
 import { join } from "path";
-import { listProviders } from "../../../packages/platform-core/src/createShop/listProviders";
+import { listProviders } from "@acme/platform-core/createShop/listProviders";
 import type { Options } from "./parse";
 
 /**

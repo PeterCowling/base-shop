@@ -5,11 +5,10 @@ import { runInNewContext } from "vm";
 
 function loadParseArgs() {
   const src = readFileSync(
-    join(__dirname, "../../scripts/src/create-shop.ts"),
+    join(__dirname, "../../scripts/src/createShop/parse.ts"),
     "utf8"
   );
-  const cut = src.split("const [shopId")[0];
-  const transpiled = ts.transpileModule(cut, {
+  const transpiled = ts.transpileModule(src, {
     compilerOptions: { module: ts.ModuleKind.CommonJS },
   }).outputText;
   const sandbox: any = {
@@ -17,11 +16,22 @@ function loadParseArgs() {
     module: { exports: {} },
     process: { version: 'v20.0.0', exit: jest.fn() },
     console: { error: jest.fn() },
-    require,
+    require: (p: string) => {
+      if (p.includes('@acme/platform-core/shops')) {
+        return {
+          validateShopName: (id: string) => {
+            if (id.includes('/')) throw new Error('invalid');
+            return id;
+          },
+        };
+      }
+      return require(p);
+    },
   };
+  sandbox.exports = sandbox.module.exports;
   runInNewContext(transpiled, sandbox);
   return {
-    parseArgs: sandbox.parseArgs as (argv: string[]) => [string, any, boolean],
+    parseArgs: sandbox.exports.parseArgs as (argv: string[]) => [string, any, boolean],
     sandbox,
   };
 }
@@ -29,7 +39,7 @@ function loadParseArgs() {
 describe("parseArgs", () => {
   it("returns defaults when no options", () => {
     const { parseArgs } = loadParseArgs();
-    const [id, opts] = parseArgs(["shop"]);
+    const { shopId: id, options: opts } = parseArgs(["shop"]);
     expect(id).toBe("shop");
     expect(opts).toEqual({
       type: "sale",
@@ -37,12 +47,13 @@ describe("parseArgs", () => {
       template: "template-app",
       payment: [],
       shipping: [],
+      enableSubscriptions: false,
     });
   });
 
   it("parses provided options", () => {
     const { parseArgs } = loadParseArgs();
-    const [id, opts, themeProvided] = parseArgs([
+    const { shopId: id, options: opts, themeProvided } = parseArgs([
       "s1",
       "--type=rental",
       "--theme=dark",
@@ -58,6 +69,7 @@ describe("parseArgs", () => {
       template: "tpl",
       payment: ["p1", "p2"],
       shipping: ["s1"],
+      enableSubscriptions: false,
     });
   });
 
@@ -87,7 +99,7 @@ function runCli(args: string[]) {
     join(__dirname, "../../scripts/src/create-shop.ts"),
     "utf8"
   );
-  const cut = src.split("async function ensureTheme")[0];
+  const cut = src.split("await gatherOptions")[0];
   const transpiled = ts.transpileModule(cut, {
     compilerOptions: { module: ts.ModuleKind.CommonJS },
   }).outputText;
@@ -98,7 +110,32 @@ function runCli(args: string[]) {
     process: { argv: ["node", "script", ...args], version: 'v20.0.0', exit: jest.fn() },
     console: { error: jest.fn() },
     require: (p: string) => {
-      if (p.includes("packages/platform-core/src/createShop")) {
+      if (p === "./createShop/parse") {
+        const ps = readFileSync(
+          join(__dirname, "../../scripts/src/createShop/parse.ts"),
+          "utf8"
+        );
+        const pt = ts.transpileModule(ps, {
+          compilerOptions: { module: ts.ModuleKind.CommonJS },
+        }).outputText;
+        const modSandbox: any = {
+          exports: {},
+          module: { exports: {} },
+          console: sandbox.console,
+          process: sandbox.process,
+          require: sandbox.require,
+        };
+        modSandbox.exports = modSandbox.module.exports;
+        runInNewContext(pt, modSandbox);
+        return modSandbox.module.exports;
+      }
+      if (p === "./createShop/prompts") {
+        return { gatherOptions: jest.fn().mockResolvedValue(undefined) };
+      }
+      if (p === "./createShop/write") {
+        return { writeShop: jest.fn().mockResolvedValue(undefined) };
+      }
+      if (p.includes("@acme/platform-core/createShop")) {
         if (p.endsWith("listProviders")) {
           return {
             listProviders: jest.fn((kind: string) =>
@@ -108,11 +145,25 @@ function runCli(args: string[]) {
             ),
           };
         }
-        return { createShop: jest.fn() };
+        return {
+          createShop: jest.fn(),
+          ensureTemplateExists: (theme: string) => {
+            if (theme === "missing") throw new Error("missing");
+          },
+        };
+      }
+      if (p.includes("@acme/platform-core/shops")) {
+        return {
+          validateShopName: (id: string) => {
+            if (id.includes('/')) throw new Error('invalid');
+            return id;
+          },
+        };
       }
       return originalRequire(p);
     },
   };
+  sandbox.exports = sandbox.module.exports;
   runInNewContext(transpiled, sandbox);
   return sandbox;
 }

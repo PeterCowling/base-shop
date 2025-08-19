@@ -68,7 +68,7 @@ describe('init-shop wizard', () => {
         if (p.includes('@config/src/env')) {
           return { envSchema: { parse: envParse } };
         }
-        if (p.includes('../../packages/platform-core/src/createShop/listProviders')) {
+        if (p.includes('@acme/platform-core/createShop/listProviders')) {
           return {
             listProviders: jest.fn((kind: string) =>
               Promise.resolve(
@@ -79,10 +79,10 @@ describe('init-shop wizard', () => {
             ),
           };
         }
-        if (p.includes('../../packages/platform-core/src/createShop')) {
+        if (p.includes('@acme/platform-core/createShop')) {
           return { createShop };
         }
-        if (p.includes('../../packages/platform-core/src/configurator')) {
+        if (p.includes('@acme/platform-core/configurator')) {
           return { validateShopEnv };
         }
         return require(p);

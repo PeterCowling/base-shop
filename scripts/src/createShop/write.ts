@@ -7,10 +7,7 @@
  * environment.  The `Options` type is aliased from `CreateShopOptions` to
  * match the original script’s signature.
  */
-import {
-  createShop,
-  type CreateShopOptions,
-} from "../../../packages/platform-core/src/createShop";
+import { createShop, type CreateShopOptions } from "@acme/platform-core/createShop";
 
 export type Options = CreateShopOptions;
 

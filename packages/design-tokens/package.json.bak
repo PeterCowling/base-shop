@@ -4,9 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": {
-      "default": "./index.ts"
-    }
+    ".": "./index.ts"
   },
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"

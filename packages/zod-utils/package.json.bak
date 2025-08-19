@@ -11,15 +11,13 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./*": {
+    "/*": {
       "types": "./dist/*.d.ts",
       "import": "./dist/*.js",
       "default": "./dist/*.js"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -28,6 +26,5 @@
   },
   "dependencies": {
     "zod": "^3.23.8"
-  },
-  "module": "./dist/index.js"
+  }
 }

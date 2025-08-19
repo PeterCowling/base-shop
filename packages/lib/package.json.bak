@@ -1,8 +1,8 @@
 {
-  "name": "@acme/zod-utils",
-  "version": "0.0.0",
+  "name": "@acme/lib",
   "private": true,
   "type": "module",
+  "version": "0.0.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -11,7 +11,7 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./*": {
+    "/*": {
       "types": "./dist/*.d.ts",
       "import": "./dist/*.js",
       "default": "./dist/*.js"
@@ -23,11 +23,14 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "tsc -p tsconfig.json -w",
-    "clean": "rimraf dist *.tsbuildinfo"
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "devDependencies": {
+    "next": "^15.3.4"
   },
   "dependencies": {
-    "zod": "^3.23.8"
-  },
-  "module": "./dist/index.js"
+    "@acme/config": "workspace:^",
+    "@acme/zod-utils": "workspace:^",
+    "@acme/platform-core": "workspace:^"
+  }
 }

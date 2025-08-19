@@ -3,9 +3,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": {
-      "default": "./index.mjs"
-    },
+    ".": "./index.mjs",
     "./next.config.mjs": "./next.config.mjs"
   },
   "scripts": {

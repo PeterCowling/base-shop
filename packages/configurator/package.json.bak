@@ -7,9 +7,7 @@
     "configurator": "./dist/index.js"
   },
   "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    },
+    ".": "./src/index.ts",
     "./providers": "./src/providers.ts"
   },
   "devDependencies": {

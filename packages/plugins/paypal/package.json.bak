@@ -4,9 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": {
-      "default": "./index.ts"
-    }
+    ".": "./index.ts"
   },
   "dependencies": {
     "@acme/types": "workspace:*",

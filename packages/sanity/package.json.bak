@@ -1,14 +1,16 @@
 {
-  "name": "@acme/design-tokens",
+  "name": "@acme/sanity",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "exports": {
-    ".": {
-      "default": "./index.ts"
-    }
+    ".": "./src/index.ts"
   },
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "@sanity/client": "^6.15.0",
+    "@acme/platform-core": "workspace:^"
   }
 }

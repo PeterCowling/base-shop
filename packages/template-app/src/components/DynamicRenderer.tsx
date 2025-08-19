@@ -2,20 +2,20 @@
 ("use client");
 
 import NextImage, { ImageProps } from "next/image";
-import React from "react";
+import * as React from "react";
 
-import HeroBanner from "@/components/cms/blocks/HeroBanner";
-import ReviewsCarousel from "@/components/home/ReviewsCarousel";
-import { ValueProps } from "@/components/home/ValueProps";
+import HeroBanner from "@ui/components/cms/blocks/HeroBanner";
+import ReviewsCarousel from "@ui/components/home/ReviewsCarousel";
+import { ValueProps } from "@ui/components/home/ValueProps";
 import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
 
-import BlogListing from "@/components/cms/blocks/BlogListing";
-import ContactForm from "@/components/cms/blocks/ContactForm";
-import ContactFormWithMap from "@/components/cms/blocks/ContactFormWithMap";
-import Gallery from "@/components/cms/blocks/Gallery";
-import Testimonials from "@/components/cms/blocks/Testimonials";
-import TestimonialSlider from "@/components/cms/blocks/TestimonialSlider";
-import { Textarea as TextBlock } from "@/components/atoms/primitives/textarea";
+import BlogListing from "@ui/components/cms/blocks/BlogListing";
+import ContactForm from "@ui/components/cms/blocks/ContactForm";
+import ContactFormWithMap from "@ui/components/cms/blocks/ContactFormWithMap";
+import Gallery from "@ui/components/cms/blocks/Gallery";
+import Testimonials from "@ui/components/cms/blocks/Testimonials";
+import TestimonialSlider from "@ui/components/cms/blocks/TestimonialSlider";
+import { Textarea as TextBlock } from "@ui/components/atoms/primitives/textarea";
 
 import { PRODUCTS } from "@platform-core/products";
 import type { PageComponent, SKU } from "@acme/types";
@@ -43,9 +43,8 @@ const CmsImage = React.memo(
 /* ------------------------------------------------------------------
  * Registry: block type → React component
  * ------------------------------------------------------------------ */
-const registry: Record<
-  PageComponent["type"],
-  React.ComponentType<Record<string, unknown>>
+const registry: Partial<
+  Record<PageComponent["type"], React.ComponentType<Record<string, unknown>>>
 > = {
   HeroBanner,
   ValueProps,

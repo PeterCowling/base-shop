@@ -20,9 +20,9 @@ export default function StepTokens(): React.JSX.Element {
 
   const handleChange = (next: TokenMap) => {
     const overrides: TokenMap = { ...next };
-    for (const key of Object.keys(overrides)) {
-      if (overrides[key as keyof TokenMap] === themeDefaults[key as keyof TokenMap]) {
-        delete overrides[key as keyof TokenMap];
+    for (const key of Object.keys(overrides) as Array<keyof TokenMap & string>) {
+      if (overrides[key] === themeDefaults[key]) {
+        delete overrides[key];
       }
     }
     setThemeOverrides(overrides);

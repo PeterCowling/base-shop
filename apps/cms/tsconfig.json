@@ -3,8 +3,6 @@
   "compilerOptions": {
     "noEmit": true,
 
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
     "target": "ES2022",
     "lib": ["ES2022", "DOM"],
 
@@ -33,24 +31,27 @@
       "@acme/lib/*": ["../../packages/lib/src/*"],
       "@acme/shared-utils": ["../../packages/shared-utils/src/index.ts"],
       "@acme/shared-utils/*": ["../../packages/shared-utils/src/*"],
+      "@acme/types": ["../../packages/types/src/index.ts"],
       "@acme/types/*": ["../../packages/types/src/*"],
       "@shared-utils": ["../../packages/shared-utils/src/index.ts"],
       "@shared-utils/*": ["../../packages/shared-utils/src/*"],
       "@date-utils": ["../../packages/date-utils/src/index.ts"],
       "@date-utils/*": ["../../packages/date-utils/src/*"],
       "@platform-core": ["../../packages/platform-core/src/index.ts"],
-      "@platform-core/*": ["../../packages/platform-core/src/*"]
+      "@platform-core/*": ["../../packages/platform-core/src/*"],
+      "@acme/platform-core": ["../../packages/platform-core/src/index.ts"],
+      "@acme/platform-core/*": ["../../packages/platform-core/src/*"],
+      "@acme/email": ["../../packages/email/src/index.ts"],
+      "@acme/email/*": ["../../packages/email/src/*"],
+      "@acme/config": ["../../packages/config/src/index.ts"],
+      "@acme/config/*": ["../../packages/config/src/*"],
+      "@acme/i18n": ["../../packages/i18n/src/index.ts"],
+      "@acme/i18n/*": ["../../packages/i18n/src/*"],
+      "@acme/configurator": ["../../packages/configurator/src/index.ts"],
+      "@acme/configurator/*": ["../../packages/configurator/src/*"]
     }
   },
   "include": ["next-env.d.ts", "src/**/*"],
   "exclude": [".next", "node_modules", "dist", "**/__tests__/**"],
-  "references": [
-    { "path": "../../packages/platform-core" },
-    { "path": "../../packages/ui" },
-    { "path": "../../packages/auth" },
-    { "path": "../../packages/lib" },
-    { "path": "../../packages/shared-utils" },
-    { "path": "../../packages/types" },
-    { "path": "../../packages/date-utils" }
-  ]
+  "references": []
 }

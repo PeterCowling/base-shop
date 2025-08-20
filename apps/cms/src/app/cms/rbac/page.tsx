@@ -1,5 +1,5 @@
 // apps/cms/src/app/cms/rbac/page.tsx
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Button, Input } from "@ui/components/atoms/shadcn";
 import {
   inviteUser,
   listUsers,
@@ -19,7 +19,7 @@ export default async function RbacPage() {
     redirect("/cms");
   }
 
-  const users = await listUsers();
+  const users: Awaited<ReturnType<typeof listUsers>> = await listUsers();
 
   async function save(formData: FormData) {
     "use server";

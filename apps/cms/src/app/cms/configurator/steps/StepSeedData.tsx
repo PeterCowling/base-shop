@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Button, Input } from "@ui/components/atoms/shadcn";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 
@@ -30,14 +30,18 @@ export default function StepSeedData({
         <span>Product CSV</span>
         <Input
           type="file"
-          onChange={(e) => setCsvFile(e.target.files?.[0] ?? null)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setCsvFile(e.target.files?.[0] ?? null)
+          }
         />
       </label>
       <label className="flex flex-col gap-1">
         <span>Categories (comma or newline separated)</span>
         <Input
           value={categoriesText}
-          onChange={(e) => setCategoriesText(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setCategoriesText(e.target.value)
+          }
           placeholder="Shoes, Shirts, Accessories"
         />
       </label>

@@ -66,7 +66,7 @@ export default async function ShopDashboard({
                 <div className="mt-4">
                   <h3 className="mb-2 font-semibold">Top discount codes</h3>
                   <ul className="list-inside list-disc">
-                    {metrics.topDiscountCodes.map(([code, count]) => (
+                    {metrics.topDiscountCodes.map(([code, count]: [string, number]) => (
                       <li key={code}>
                         {code}: {count}
                       </li>

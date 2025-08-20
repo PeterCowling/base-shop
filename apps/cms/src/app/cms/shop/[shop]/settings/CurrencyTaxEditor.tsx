@@ -1,7 +1,8 @@
 "use client";
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Button, Input } from "@ui/components/atoms/shadcn";
 import { updateCurrencyAndTax } from "@cms/actions/shops.server";
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 
 interface Props {
   shop: string;

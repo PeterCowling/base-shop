@@ -45,7 +45,9 @@ export function parseShopForm(formData: FormData): {
     ),
   );
 
-  const entries = Array.from(formData.entries()).filter(
+  const entries = Array.from(
+    formData as unknown as Iterable<[string, FormDataEntryValue]>
+  ).filter(
     ([k]) =>
       ![
         "filterMappingsKey",
@@ -54,8 +56,8 @@ export function parseShopForm(formData: FormData): {
         "priceOverridesValue",
         "localeOverridesKey",
         "localeOverridesValue",
-      ].includes(k),
-  );
+      ].includes(k)
+  ) as [string, FormDataEntryValue][];
 
   const parsed = shopSchema.safeParse({
     ...Object.fromEntries(entries),

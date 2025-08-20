@@ -37,9 +37,11 @@ export function buildMetrics(
         (campaignSalesCountByDay[day] || 0) + 1;
     } else if (e.type === "discount_redeemed") {
       const code = e.code;
-      const entry = discountByCodeByDay[day] || {};
-      entry[code] = (entry[code] || 0) + 1;
-      discountByCodeByDay[day] = entry;
+      if (code) {
+        const entry = discountByCodeByDay[day] || {};
+        entry[code] = (entry[code] || 0) + 1;
+        discountByCodeByDay[day] = entry;
+      }
     }
   }
 

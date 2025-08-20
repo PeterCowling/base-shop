@@ -3,7 +3,7 @@ import "server-only";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
 import type { RentalOrder, Shop } from "@acme/types";
-import type { RentalOrder as DbRentalOrder } from "@prisma/client";
+import type { Prisma, RentalOrder as DbRentalOrder } from "@prisma/client";
 import { trackOrder } from "./analytics";
 import { prisma } from "./db";
 import { incrementSubscriptionUsage } from "./subscriptionUsage";
@@ -41,15 +41,17 @@ export async function addOrder(
     sessionId,
     shop,
     deposit,
-    expectedReturnDate,
-    returnDueDate,
     startedAt: nowIso(),
+    ...(expectedReturnDate ? { expectedReturnDate } : {}),
+    ...(returnDueDate ? { returnDueDate } : {}),
     ...(customerId ? { customerId } : {}),
     ...(riskLevel ? { riskLevel } : {}),
     ...(typeof riskScore === "number" ? { riskScore } : {}),
     ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
   };
-  await prisma.rentalOrder.create({ data: order });
+  await prisma.rentalOrder.create({
+    data: order as Prisma.RentalOrderCreateInput,
+  });
   await trackOrder(shop, order.id, deposit);
   if (customerId) {
     const month = nowIso().slice(0, 7);

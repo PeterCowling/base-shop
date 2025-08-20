@@ -45,7 +45,7 @@ export async function convertCurrency(
 export function applyDurationDiscount(
   baseRate: number,
   days: number,
-  discounts: { minDays: number; rate: number }[]
+  discounts: PricingMatrix["durationDiscounts"]
 ): number {
   const sorted = [...discounts].sort((a, b) => b.minDays - a.minDays);
   for (const d of sorted) {

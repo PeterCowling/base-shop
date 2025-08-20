@@ -2,7 +2,7 @@
 
 "use client";
 
-import {
+import type {
   ProductPublication,
   PublicationStatus,
 } from "@acme/platform-core/products";

@@ -72,7 +72,7 @@ export default function ShopSelector() {
     );
 
   return (
-    <Select value={selected} onValueChange={changeShop}>
+    <Select value={selected ?? undefined} onValueChange={changeShop}>
       <SelectTrigger className="w-36">
         <SelectValue placeholder="Select shop" />
       </SelectTrigger>

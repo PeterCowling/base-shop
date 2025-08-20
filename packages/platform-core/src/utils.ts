@@ -6,6 +6,12 @@ export function replaceShopInPath(pathname: string, nextShop: string): string {
   return pathname.includes("/shops/") ? pathname.replace(/\/shops\/[^/]+/, `/shops/${nextShop}`) : pathname;
 }
 
+// Re-export the client theme initialiser used by various apps.  In the
+// real project this lives in `src/utils/initTheme.ts`, but this file acts as
+// the public entry point for `@platform-core/utils`, so we surface it here as
+// well.
+export { initTheme } from "./utils/initTheme";
+
 
 export const logger = {
   info: (...a: any[]) => console.log(...a),

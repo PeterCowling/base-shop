@@ -34,7 +34,7 @@ export default function SearchBar({
         const url = new URL("/api/products", origin);
         url.searchParams.set("q", query);
         const shop = getShopFromPath(
-          typeof window !== "undefined" ? window.location.pathname : undefined
+          typeof window !== "undefined" ? window.location.pathname : ""
         );
         if (shop) url.searchParams.set("shop", shop);
         const res = await fetch(url.toString(), { signal: controller.signal });

@@ -54,7 +54,7 @@ async function filterExistingProductSlugs(shopId: string, slugs: string[]): Prom
 
 async function getConfig(shopId: string): Promise<SanityConfig> {
   const shop = await getShopById(shopId);
-  const sanity = getSanityConfig(shop);
+  const sanity = getSanityConfig(shop) as SanityConfig | undefined;
   if (!sanity) {
     throw new Error(`Missing Sanity config for shop ${shopId}`);
   }

@@ -3,7 +3,7 @@ import ReviewsCarousel from "@ui/components/home/ReviewsCarousel";
 import { ValueProps } from "@ui/components/home/ValueProps";
 import { Footer, Header, SideNav } from "@ui/components/organisms";
 import { AppShell } from "@ui/components/templates/AppShell";
-import { resolveLocale } from "@i18n/locales";
+import { resolveLocale, type Locale } from "@i18n/locales";
 import TranslationsProvider from "@i18n/Translations";
 import {
   tokens as baseTokensSrc,
@@ -46,7 +46,9 @@ export default async function PreviewView({
   }
   const theme = typeof sp.theme === "string" ? sp.theme : "base";
 
-  const lang = resolveLocale(typeof sp.lang === "string" ? sp.lang : "en");
+  const lang: Locale = resolveLocale(
+    typeof sp.lang === "string" ? sp.lang : "en",
+  );
 
   const tokens = await loadThemeTokens(theme);
   const style = Object.fromEntries(Object.entries(tokens)) as CSSProperties;

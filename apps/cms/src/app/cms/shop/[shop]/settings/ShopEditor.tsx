@@ -158,16 +158,17 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
         .filter(([k, v]) => k && v),
     );
 
-    const entries = Array.from(fd.entries()).filter(
-      ([k]) =>
-        ![
-          "filterMappingsKey",
-          "filterMappingsValue",
-          "priceOverridesKey",
-          "priceOverridesValue",
-          "localeOverridesKey",
-          "localeOverridesValue",
-        ].includes(k),
+    const entries = Array.from(
+      (fd as unknown as Iterable<[string, string]>),
+    ).filter(([k]) =>
+      ![
+        "filterMappingsKey",
+        "filterMappingsValue",
+        "priceOverridesKey",
+        "priceOverridesValue",
+        "localeOverridesKey",
+        "localeOverridesValue",
+      ].includes(k),
     );
     const data = Object.fromEntries(entries) as Record<string, string>;
     const parsed = shopSchema.safeParse({
@@ -245,13 +246,17 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
               name="filterMappingsKey"
               value={row.key}
               placeholder="Filter"
-              onChange={(e) => updateFilterMapping(idx, "key", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                updateFilterMapping(idx, "key", e.target.value)
+              }
             />
             <Input
               name="filterMappingsValue"
               value={row.value}
               placeholder="Mapping"
-              onChange={(e) => updateFilterMapping(idx, "value", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                updateFilterMapping(idx, "value", e.target.value)
+              }
             />
             <Button type="button" onClick={() => removeFilterMapping(idx)}>
               Remove
@@ -275,14 +280,18 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
               name="priceOverridesKey"
               value={row.key}
               placeholder="Locale"
-              onChange={(e) => updatePriceOverride(idx, "key", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                updatePriceOverride(idx, "key", e.target.value)
+              }
             />
             <Input
               type="number"
               name="priceOverridesValue"
               value={row.value}
               placeholder="Price"
-              onChange={(e) => updatePriceOverride(idx, "value", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                updatePriceOverride(idx, "value", e.target.value)
+              }
             />
             <Button type="button" onClick={() => removePriceOverride(idx)}>
               Remove
@@ -306,12 +315,16 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
               name="localeOverridesKey"
               value={row.key}
               placeholder="Field"
-              onChange={(e) => updateLocaleOverride(idx, "key", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                updateLocaleOverride(idx, "key", e.target.value)
+              }
             />
             <select
               name="localeOverridesValue"
               value={row.value}
-              onChange={(e) => updateLocaleOverride(idx, "value", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                updateLocaleOverride(idx, "value", e.target.value)
+              }
               className="border p-2"
             >
               <option value="">Select locale</option>

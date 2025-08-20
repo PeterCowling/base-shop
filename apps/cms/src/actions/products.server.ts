@@ -13,7 +13,8 @@ import {
   writeRepo,
 } from "@platform-core/repositories/json.server";
 import { fillLocales } from "@i18n/fillLocales";
-import type { ProductPublication, PublicationStatus } from "@platform-core/products";
+import type { ProductPublication } from "@platform-core/products";
+import type { PublicationStatus } from "@acme/types";
 import * as Sentry from "@sentry/node";
 import type { Locale, MediaItem } from "@acme/types";
 import { ensureAuthorized } from "./common/auth";
@@ -85,7 +86,9 @@ export async function updateProduct(
   "use server";
   await ensureAuthorized();
 
-  const formEntries = Object.fromEntries(formData.entries());
+  // Node's FormData type doesn't declare `entries`, but the object itself is
+  // iterable. Casting to `any` lets us collect key/value pairs safely.
+  const formEntries = Object.fromEntries(formData as any);
   const locales = await getLocales(shop);
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;

@@ -80,7 +80,7 @@ export async function saveSanityConfig(
       console.error("[saveSanityConfig] failed to schedule promotion", err);
     }
   }
-  await updateShopInRepo(shopId, updated);
+  await updateShopInRepo(shopId, { ...updated, id: shopId });
 
   return { message: "Sanity connected" };
 }

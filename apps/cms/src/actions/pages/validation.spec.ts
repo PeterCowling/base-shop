@@ -5,6 +5,7 @@ import {
   emptyTranslated,
   componentsField,
 } from "./validation";
+import { describe, expect, it } from "@jest/globals";
 
 describe("pages validation", () => {
   it("creates empty translated object for all locales", () => {

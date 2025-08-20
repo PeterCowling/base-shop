@@ -1,5 +1,5 @@
 import { prisma } from "../src/db";
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 
 async function main() {
   await prisma.rentalOrder.createMany({

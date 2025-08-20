@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, ChangeEvent } from "react";
+import { useEffect, useRef, type ChangeEvent } from "react";
 import { hslToHex, hexToHsl, isHsl, isHex } from "@ui/utils/colorUtils";
 
 interface Props {

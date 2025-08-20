@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { hslToHex, hexToHsl, isHex, isHsl } from "@ui/utils/colorUtils";
 import ColorContrastChecker from "color-contrast-checker";
@@ -136,7 +136,9 @@ export default function ColorInput({
           <Input
             placeholder={defaultValue}
             value={value}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              onChange(e.target.value)
+            }
             ref={inputRef}
             className={isOverridden ? "bg-amber-100" : ""}
           />

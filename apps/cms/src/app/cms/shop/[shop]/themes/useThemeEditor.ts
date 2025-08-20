@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/useThemeEditor.ts
 "use client";
-import { useState, useMemo, useRef, useEffect, ChangeEvent } from "react";
+import { useState, useMemo, useRef, useEffect, type ChangeEvent } from "react";
 import { patchShopTheme } from "../../../wizard/services/patchTheme";
 import { tokenGroups } from "./tokenGroups";
 import { useThemePresets } from "./useThemePresets";

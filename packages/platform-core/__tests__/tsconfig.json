@@ -10,6 +10,8 @@
     "../../../test/mswServer.ts",
     "../../../apps/cms/src/**/*.ts",
     "../../../apps/cms/src/**/*.tsx",
-    "../../../src/**/*"
+    "../../../src/**/*",
+    "../../types/src/**/*.ts",
+    "../../../scripts/src/**/*.ts"
   ]
 }

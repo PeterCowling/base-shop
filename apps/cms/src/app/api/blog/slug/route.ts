@@ -28,8 +28,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Missing slug or shopId" }, { status: 400 });
   }
   const shop = await getShopById(shopId);
-  const sanity = getSanityConfig(shop);
-  if (!sanity) {
+  const sanity = getSanityConfig(shop) as
+    | { projectId: string; dataset: string; token?: string }
+    | undefined;
+  if (!sanity || !sanity.projectId || !sanity.dataset) {
     return NextResponse.json({ error: "Missing Sanity config" }, { status: 400 });
   }
   const config: Config = { ...sanity, apiVersion };

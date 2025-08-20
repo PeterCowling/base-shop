@@ -24,7 +24,7 @@ export default function PageLayoutSelector({
   return (
     <Select
       value={newPageLayout}
-      onValueChange={(val) => {
+      onValueChange={(val: string) => {
         const layout = val === "blank" ? "" : val;
         setNewPageLayout(layout);
         const tpl = pageTemplates.find((t) => t.name === layout);

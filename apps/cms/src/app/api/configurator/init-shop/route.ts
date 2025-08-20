@@ -29,7 +29,7 @@ export async function POST(req: Request) {
         csv: z
           .string()
           .optional()
-          .transform((s) => s.replace(/\s+/g, ""))
+          .transform((s) => (s ? s.replace(/\s+/g, "") : s))
           .refine(
             (val) => {
               if (!val) return true;

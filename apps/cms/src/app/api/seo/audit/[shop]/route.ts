@@ -17,14 +17,17 @@ const TRUSTED_HOSTS = new Set(
 );
 
 async function runLighthouse(url: string): Promise<SeoAuditEntry> {
-  const result = await lighthouse(
+  const result = (await lighthouse(
     url,
     {
       onlyCategories: ["seo"],
       chromeFlags: ["--headless"],
       preset: "desktop",
     } as any,
-  );
+  )) as { lhr: any } | undefined;
+  if (!result) {
+    throw new Error("Failed to run Lighthouse");
+  }
   const lhr = result.lhr;
   const score = Math.round((lhr.categories?.seo?.score ?? 0) * 100);
   const recommendations = Object.values(lhr.audits)

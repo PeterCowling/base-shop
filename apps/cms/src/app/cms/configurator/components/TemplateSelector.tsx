@@ -18,6 +18,7 @@ import {
 import type { PageComponent } from "@acme/types";
 import { ulid } from "ulid";
 import { useState } from "react";
+import type React from "react";
 
 interface Template {
   name: string;
@@ -66,7 +67,7 @@ export default function TemplateSelector({
           <SelectItem
             value="blank"
             asChild
-            onSelect={(e) => {
+            onSelect={(e: React.SyntheticEvent) => {
               e.preventDefault();
               setSelectOpen(false);
               setPendingTemplate({ name: "blank", components: [], preview: "" });
@@ -81,7 +82,7 @@ export default function TemplateSelector({
               key={t.name}
               value={t.name}
               asChild
-              onSelect={(e) => {
+              onSelect={(e: React.SyntheticEvent) => {
                 e.preventDefault();
                 setSelectOpen(false);
                 setPendingTemplate(t);
@@ -101,7 +102,10 @@ export default function TemplateSelector({
           ))}
         </SelectContent>
       </Select>
-      <Dialog open={!!pendingTemplate} onOpenChange={(o) => !o && setPendingTemplate(null)}>
+      <Dialog
+        open={!!pendingTemplate}
+        onOpenChange={(open: boolean) => !open && setPendingTemplate(null)}
+      >
         <DialogContent className="max-w-3xl">
           <DialogHeader>
             <DialogTitle>

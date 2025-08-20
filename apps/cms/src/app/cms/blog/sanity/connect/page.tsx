@@ -13,7 +13,9 @@ export default async function SanityConnectPage({
   const shopId = searchParams?.shopId;
   if (!shopId) return <p>No shop selected.</p>;
   const shop = await getShopById(shopId);
-  const sanity = getSanityConfig(shop);
+  const sanity = getSanityConfig(shop) as
+    | { projectId: string; dataset: string; token?: string }
+    | undefined;
   return (
     <div className="space-y-6">
       <h2 className="text-xl font-semibold">Connect Sanity</h2>

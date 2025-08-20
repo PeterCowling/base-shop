@@ -118,7 +118,7 @@ export default function StepProductPage({
           <SelectItem
             value="blank"
             asChild
-            onSelect={(e: Event) => {
+            onSelect={(e) => {
               e.preventDefault();
               setSelectOpen(false);
               setPendingTemplate({ name: "blank", components: [], preview: "" });
@@ -133,7 +133,7 @@ export default function StepProductPage({
               key={t.name}
               value={t.name}
               asChild
-              onSelect={(e: Event) => {
+              onSelect={(e) => {
                 e.preventDefault();
                 setSelectOpen(false);
                 setPendingTemplate(t);

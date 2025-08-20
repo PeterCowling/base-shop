@@ -28,7 +28,12 @@ export default function PageMetaForm({
     <>
       <label className="flex flex-col gap-1">
         <span>Slug</span>
-        <Input value={slug} onChange={(e) => setSlug(e.target.value)} />
+        <Input
+          value={slug}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSlug(e.target.value)
+          }
+        />
       </label>
       {languages.map((l) => (
         <div key={l} className="space-y-2">
@@ -36,21 +41,27 @@ export default function PageMetaForm({
             <span>Title ({l})</span>
             <Input
               value={title[l]}
-              onChange={(e) => setTitle({ ...title, [l]: e.target.value })}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setTitle({ ...title, [l]: e.target.value })
+              }
             />
           </label>
           <label className="flex flex-col gap-1">
             <span>Description ({l})</span>
             <Input
               value={desc[l]}
-              onChange={(e) => setDesc({ ...desc, [l]: e.target.value })}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setDesc({ ...desc, [l]: e.target.value })
+              }
             />
           </label>
           <label className="flex flex-col gap-1">
             <span>Image URL ({l})</span>
             <Input
               value={image[l]}
-              onChange={(e) => setImage({ ...image, [l]: e.target.value })}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setImage({ ...image, [l]: e.target.value })
+              }
             />
           </label>
         </div>

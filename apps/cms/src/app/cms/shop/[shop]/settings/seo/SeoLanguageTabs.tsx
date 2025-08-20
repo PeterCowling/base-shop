@@ -4,6 +4,7 @@ import { Tooltip } from "@/components/atoms";
 import { Input, Textarea } from "@/components/atoms/shadcn";
 import type { Locale } from "@acme/types";
 import { cn } from "@ui/utils/style";
+import type { ChangeEvent } from "react";
 import type { SeoRecord } from "./useSeoForm";
 
 interface Props {
@@ -68,7 +69,9 @@ export default function SeoLanguageTabs({
             </span>
             <Input
               value={current.title}
-              onChange={(e) => onFieldChange("title", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                onFieldChange("title", e.target.value)
+              }
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -82,7 +85,9 @@ export default function SeoLanguageTabs({
             <Textarea
               rows={3}
               value={current.description}
-              onChange={(e) => onFieldChange("description", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                onFieldChange("description", e.target.value)
+              }
             />
           </label>
         </section>
@@ -94,7 +99,9 @@ export default function SeoLanguageTabs({
             <span>Title</span>
             <Input
               value={current.title}
-              onChange={(e) => onFieldChange("title", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                onFieldChange("title", e.target.value)
+              }
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -102,14 +109,18 @@ export default function SeoLanguageTabs({
             <Textarea
               rows={3}
               value={current.description}
-              onChange={(e) => onFieldChange("description", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                onFieldChange("description", e.target.value)
+              }
             />
           </label>
           <label className="flex flex-col gap-1">
             <span>Image URL</span>
             <Input
               value={current.image}
-              onChange={(e) => onFieldChange("image", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                onFieldChange("image", e.target.value)
+              }
             />
           </label>
         </section>
@@ -121,7 +132,9 @@ export default function SeoLanguageTabs({
             <span>Title</span>
             <Input
               value={current.title}
-              onChange={(e) => onFieldChange("title", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                onFieldChange("title", e.target.value)
+              }
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -129,14 +142,18 @@ export default function SeoLanguageTabs({
             <Textarea
               rows={3}
               value={current.description}
-              onChange={(e) => onFieldChange("description", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                onFieldChange("description", e.target.value)
+              }
             />
           </label>
           <label className="flex flex-col gap-1">
             <span>Image URL</span>
             <Input
               value={current.image}
-              onChange={(e) => onFieldChange("image", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                onFieldChange("image", e.target.value)
+              }
             />
           </label>
         </section>
@@ -148,7 +165,9 @@ export default function SeoLanguageTabs({
             <span>Brand</span>
             <Input
               value={current.brand}
-              onChange={(e) => onFieldChange("brand", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                onFieldChange("brand", e.target.value)
+              }
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -156,7 +175,9 @@ export default function SeoLanguageTabs({
             <Textarea
               rows={3}
               value={current.offers}
-              onChange={(e) => onFieldChange("offers", e.target.value)}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                onFieldChange("offers", e.target.value)
+              }
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -164,7 +185,7 @@ export default function SeoLanguageTabs({
             <Textarea
               rows={3}
               value={current.aggregateRating}
-              onChange={(e) =>
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 onFieldChange("aggregateRating", e.target.value)
               }
             />

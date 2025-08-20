@@ -17,8 +17,7 @@ import {
 } from "@ui/components/atoms";
 import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
-import type { Page, PageComponent } from "@acme/types";
-import { historyStateSchema } from "@acme/types";
+import { type Page, type PageComponent, historyStateSchema } from "@acme/types";
 import { apiRequest } from "../lib/api";
 import { ulid } from "ulid";
 import { useEffect, useState } from "react";
@@ -75,7 +74,7 @@ export default function StepProductPage({
         `/cms/api/pages/${shopId}`,
       );
       if (data) {
-        const existing = productPageId
+        const existing: Page | undefined = productPageId
           ? data.find((p) => p.id === productPageId)
           : data.find((p) => p.slug === "product");
         if (existing) {

@@ -31,7 +31,8 @@ export default function StepNavigation(): React.JSX.Element {
   );
   const device = useMemo<DevicePreset>(() => {
     const preset =
-      devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
+      devicePresets.find((d: DevicePreset) => d.id === deviceId) ??
+      devicePresets[0];
     return orientation === "portrait"
       ? { ...preset, orientation }
       : {

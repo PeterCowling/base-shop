@@ -4,8 +4,11 @@ import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import TemplateSelector from "../components/TemplateSelector";
 import { fillLocales } from "@i18n/fillLocales";
-import type { Page, PageComponent } from "@acme/types";
-import { historyStateSchema } from "@acme/types";
+import {
+  type Page,
+  type PageComponent,
+  historyStateSchema,
+} from "@acme/types";
 import { apiRequest } from "../lib/api";
 import { useEffect, useState } from "react";
 import { Toast } from "@/components/atoms";
@@ -62,12 +65,12 @@ export default function StepHomePage({
         `/cms/api/pages/${shopId}`,
       );
       if (data) {
-        const existing = homePageId
+        const existing: Page | undefined = homePageId
           ? data.find((p) => p.id === homePageId)
           : data.find((p) => p.slug === "");
         if (existing) {
           setHomePageId(existing.id);
-          setComponents(existing.components);
+          setComponents(existing.components as PageComponent[]);
           if (typeof window !== "undefined") {
             localStorage.setItem(
               `page-builder-history-${existing.id}`,
@@ -75,7 +78,7 @@ export default function StepHomePage({
                 historyStateSchema.parse(
                   existing.history ?? {
                     past: [],
-                    present: existing.components,
+                    present: existing.components as PageComponent[],
                     future: [],
                   }
                 )
@@ -134,7 +137,7 @@ export default function StepHomePage({
             createdBy: "",
           } as Page
         }
-        onSave={async (fd) => {
+        onSave={async (fd: FormData) => {
           setIsSaving(true);
           setSaveError(null);
           const { data, error } = await apiRequest<{ id: string }>(
@@ -149,7 +152,7 @@ export default function StepHomePage({
             setSaveError(error);
           }
         }}
-        onPublish={async (fd) => {
+        onPublish={async (fd: FormData) => {
           setIsPublishing(true);
           setPublishError(null);
           fd.set("status", "published");

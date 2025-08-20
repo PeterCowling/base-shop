@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import {
   Button,
   Input,
@@ -216,7 +216,8 @@ export default function StepEnvVars({
               <Input
                 type={v.isPublic ? "text" : "password"}
                 value={env[v.key] ?? ""}
-                onChange={(e) => setEnv(v.key, e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setEnv(v.key, e.target.value)}
                 placeholder={v.key}
               />
               <span className="text-xs text-muted-foreground">

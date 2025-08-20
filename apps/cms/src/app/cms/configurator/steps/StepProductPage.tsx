@@ -225,7 +225,7 @@ export default function StepProductPage({
             createdBy: "",
           } as Page
         }
-        onSave={async (fd) => {
+        onSave={async (fd: FormData) => {
           setIsSaving(true);
           setSaveError(null);
           const { data, error } = await apiRequest<{ id: string }>(
@@ -240,7 +240,7 @@ export default function StepProductPage({
             setSaveError(error);
           }
         }}
-        onPublish={async (fd) => {
+        onPublish={async (fd: FormData) => {
           setIsPublishing(true);
           setPublishError(null);
           fd.set("status", "published");

@@ -9,20 +9,15 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@platform-core": ["../platform-core/dist/index"],
-      "@platform-core/*": ["../platform-core/dist/*"],
-      "@acme/config": ["../config/dist/index"],
-      "@acme/config/*": ["../config/dist/*"],
-      "@acme/lib": ["../lib/dist/index"],
-      "@acme/lib/*": ["../lib/dist/*"],
-      "@acme/types": ["../types/dist/index"],
-      "@acme/types/*": ["../types/dist/*"],
       "@date-utils": ["types-compat/date-utils"],
       "@acme/ui": ["types-compat/ui"]
     }
   },
-  "include": [
-    "src",
-    "types-compat/**/*.d.ts"
+  "include": ["src", "types-compat/**/*.d.ts"],
+  "references": [
+    { "path": "../platform-core" },
+    { "path": "../config" },
+    { "path": "../lib" },
+    { "path": "../types" }
   ]
 }

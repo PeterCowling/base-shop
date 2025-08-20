@@ -1,5 +1,5 @@
 // apps/shop-bcd/src/app/[lang]/shop/page.tsx
-import { PRODUCTS } from "@/lib/products";
+import { PRODUCTS } from "@platform-core/products";
 import type { SKU } from "@acme/types";
 import type { Metadata } from "next";
 import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";

@@ -1,5 +1,5 @@
 // apps/shop-bcd/__tests__/cartApi.test.ts
-import { encodeCartCookie } from "@/lib/cartCookie";
+import { encodeCartCookie } from "@platform-core/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { PATCH, POST } from "../src/api/cart/route";
 

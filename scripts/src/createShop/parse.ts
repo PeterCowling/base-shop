@@ -1,8 +1,15 @@
 import { validateShopName } from "@acme/platform-core/shops";
 import type { CreateShopOptions } from "@acme/platform-core/createShop";
 
-/** Command line options for creating a shop. */
-export type Options = CreateShopOptions;
+/** Command line options for creating a shop.
+ *
+ * The CLI only collects a subset of the full `CreateShopOptions` defined by
+ * the platform. Many properties have sensible defaults applied by the core
+ * `createShop` helper, so our local representation marks every field optional.
+ * This allows callers to omit rarely used fields while still benefiting from
+ * type safety on the properties we do support.
+ */
+export type Options = Partial<CreateShopOptions>;
 
 /**
  * Parse command line arguments for the create-shop script.

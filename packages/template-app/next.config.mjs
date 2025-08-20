@@ -3,4 +3,4 @@
 export { default } from "@acme/next-config/next.config.mjs";
 
 
-module.exports = { transpilePackages: ["@acme/ui","@acme/platform-core"] };
+export default { transpilePackages: ["@acme/ui","@acme/platform-core"] };

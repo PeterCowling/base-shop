@@ -1,19 +1,47 @@
 {
   "extends": "@acme/config/tsconfig.app.json",
-  "include": ["src/**/*", ".next/types/**/*.ts"],
+  "include": [
+    "src/**/*",
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    "src/**/*.json"
+  ],
   "exclude": [
     "dist",
     "node_modules",
     "../../apps-script",
     "src/routes/preview/[pageId].ts",
-    ".next"
+    ".next",
+    "**/*.test.*",
+    "**/__tests__/**",
+    "**/*.stories.*"
   ],
   "references": [
-    { "path": "../../packages/types" },
-    { "path": "../../packages/platform-core" },
-    { "path": "../../packages/i18n" },
-    { "path": "../../packages/ui" },
-    { "path": "../../packages/lib" },
-    { "path": "../../packages/email" }
-  ]
+    {
+      "path": "../../packages/types"
+    },
+    {
+      "path": "../../packages/platform-core"
+    },
+    {
+      "path": "../../packages/i18n"
+    },
+    {
+      "path": "../../packages/ui"
+    },
+    {
+      "path": "../../packages/lib"
+    },
+    {
+      "path": "../../packages/email"
+    }
+  ],
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {}
+  }
 }

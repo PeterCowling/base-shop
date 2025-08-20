@@ -6,44 +6,71 @@
     "rootDir": "../..",
     "paths": {
       "@/*": [
-        "./src/*",
-        "../../packages/ui/src/*",
-        "../../packages/i18n/src/*"
+        "./dist/*",
+        "../../packages/ui/dist/*",
+        "../../packages/i18n/dist/*"
       ],
-      "@ui/*": ["../../packages/ui/src/*"],
-      "@ui/src/*": ["../../packages/ui/src/*"],
-      "@i18n/*": ["../../packages/i18n/src/*"],
-      "@platform-core": ["../../packages/platform-core/src/index"],
-      "@platform-core/*": ["../../packages/platform-core/src/*"],
-      "@acme/platform-core": ["../../packages/platform-core/src/index"],
-      "@acme/platform-core/*": ["../../packages/platform-core/src/*"],
+      "@ui/*": [
+        "../../packages/ui/dist/*"
+      ],
+      "@ui/src/*": [
+        "../../packages/ui/dist/*"
+      ],
+      "@i18n/*": [
+        "../../packages/i18n/dist/*"
+      ],
+      "@platform-core": [
+        "../../packages/platform-core/dist/index"
+      ],
+      "@platform-core/*": [
+        "../../packages/platform-core/dist/*"
+      ],
+      "@acme/platform-core": [
+        "../../packages/platform-core/dist/index"
+      ],
+      "@acme/platform-core/*": [
+        "../../packages/platform-core/dist/*"
+      ],
       "@auth": [
-        "../../packages/auth/src/index",
-        "../../packages/auth/src"
+        "../../packages/auth/dist/index",
+        "../../packages/auth/dist"
       ],
-      "@auth/*": ["../../packages/auth/src/*"],
+      "@auth/*": [
+        "../../packages/auth/dist/*"
+      ],
       "@date-utils": [
-        "../../packages/date-utils/src/index",
-        "../../packages/date-utils/src"
+        "../../packages/date-utils/dist/index",
+        "../../packages/date-utils/dist"
       ],
-      "@date-utils/*": ["../../packages/date-utils/src/*"],
+      "@date-utils/*": [
+        "../../packages/date-utils/dist/*"
+      ],
       "@shared-utils": [
-        "../../packages/shared-utils/src/index",
-        "../../packages/shared-utils/src"
+        "../../packages/shared-utils/dist/index",
+        "../../packages/shared-utils/dist"
       ],
-      "@shared-utils/*": ["../../packages/shared-utils/src/*"],
+      "@shared-utils/*": [
+        "../../packages/shared-utils/dist/*"
+      ],
       "@acme/types": [
-        "../../packages/types/src/index",
-        "../../packages/types/src"
+        "../../packages/types/dist/index",
+        "../../packages/types/dist"
       ],
-      "@acme/types/*": ["../../packages/types/src/*"]
-    }
+      "@acme/types/*": [
+        "../../packages/types/dist/*"
+      ]
+    },
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*",
-    "../../packages/ui/src/**/*",
     ".next/types/**/*.ts",
-    "shop.json"
+    "shop.json",
+    "next-env.d.ts",
+    "src/**/*.json"
   ],
   "exclude": [
     "dist",
@@ -52,6 +79,9 @@
     "src/routes/preview/[pageId].ts",
     ".next",
     "../../packages/**/__tests__/**",
-    "../../test"
+    "../../test",
+    "**/*.test.*",
+    "**/__tests__/**",
+    "**/*.stories.*"
   ]
 }

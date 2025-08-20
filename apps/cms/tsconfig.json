@@ -2,56 +2,127 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true,
-
     "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
-
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
     "strict": true,
     "skipLibCheck": true,
-
     "jsx": "react-jsx",
     "baseUrl": ".",
-
     "resolveJsonModule": true,
     "allowJs": false,
-    "types": ["node", "react", "react-dom", "next"],
-
+    "types": [
+      "node",
+      "react",
+      "react-dom",
+      "next"
+    ],
     "paths": {
-      /* App-local aliases */
-      "@/*": ["./src/*"],
-      "@cms/*": ["./src/*"],
-      "@i18n/*": ["./src/i18n/*"],
-
-      /* Workspace aliases — adjust paths to your actual package dirs */
-      "@ui/*": ["../../packages/ui/src/*"],
-      "@ui": ["../../packages/ui/src/index.ts"],
-      "@auth": ["../../packages/auth/src/index.ts"],
-      "@auth/*": ["../../packages/auth/src/*"],
-      "@acme/lib": ["../../packages/lib/src/index.ts"],
-      "@acme/lib/*": ["../../packages/lib/src/*"],
-      "@acme/shared-utils": ["../../packages/shared-utils/src/index.ts"],
-      "@acme/shared-utils/*": ["../../packages/shared-utils/src/*"],
-      "@acme/types": ["../../packages/types/src/index.ts"],
-      "@acme/types/*": ["../../packages/types/src/*"],
-      "@shared-utils": ["../../packages/shared-utils/src/index.ts"],
-      "@shared-utils/*": ["../../packages/shared-utils/src/*"],
-      "@date-utils": ["../../packages/date-utils/src/index.ts"],
-      "@date-utils/*": ["../../packages/date-utils/src/*"],
-      "@platform-core": ["../../packages/platform-core/src/index.ts"],
-      "@platform-core/*": ["../../packages/platform-core/src/*"],
-      "@acme/platform-core": ["../../packages/platform-core/src/index.ts"],
-      "@acme/platform-core/*": ["../../packages/platform-core/src/*"],
-      "@acme/email": ["../../packages/email/src/index.ts"],
-      "@acme/email/*": ["../../packages/email/src/*"],
-      "@acme/config": ["../../packages/config/src/index.ts"],
-      "@acme/config/*": ["../../packages/config/src/*"],
-      "@acme/i18n": ["../../packages/i18n/src/index.ts"],
-      "@acme/i18n/*": ["../../packages/i18n/src/*"],
-      "@acme/configurator": ["../../packages/configurator/src/index.ts"],
-      "@acme/configurator/*": ["../../packages/configurator/src/*"]
-    }
+      "@/*": [
+        "./dist/*"
+      ],
+      "@cms/*": [
+        "./dist/*"
+      ],
+      "@i18n/*": [
+        "./src/i18n/*"
+      ],
+      "@ui/*": [
+        "../../packages/ui/dist/*"
+      ],
+      "@ui": [
+        "../../packages/ui/src/index.ts"
+      ],
+      "@auth": [
+        "../../packages/auth/src/index.ts"
+      ],
+      "@auth/*": [
+        "../../packages/auth/dist/*"
+      ],
+      "@acme/lib": [
+        "../../packages/lib/src/index.ts"
+      ],
+      "@acme/lib/*": [
+        "../../packages/lib/dist/*"
+      ],
+      "@acme/shared-utils": [
+        "../../packages/shared-utils/src/index.ts"
+      ],
+      "@acme/shared-utils/*": [
+        "../../packages/shared-utils/dist/*"
+      ],
+      "@acme/types": [
+        "../../packages/types/src/index.ts"
+      ],
+      "@acme/types/*": [
+        "../../packages/types/dist/*"
+      ],
+      "@shared-utils": [
+        "../../packages/shared-utils/src/index.ts"
+      ],
+      "@shared-utils/*": [
+        "../../packages/shared-utils/dist/*"
+      ],
+      "@date-utils": [
+        "../../packages/date-utils/src/index.ts"
+      ],
+      "@date-utils/*": [
+        "../../packages/date-utils/dist/*"
+      ],
+      "@platform-core": [
+        "../../packages/platform-core/src/index.ts"
+      ],
+      "@platform-core/*": [
+        "../../packages/platform-core/dist/*"
+      ],
+      "@acme/platform-core": [
+        "../../packages/platform-core/src/index.ts"
+      ],
+      "@acme/platform-core/*": [
+        "../../packages/platform-core/dist/*"
+      ],
+      "@acme/email": [
+        "../../packages/email/src/index.ts"
+      ],
+      "@acme/email/*": [
+        "../../packages/email/dist/*"
+      ],
+      "@acme/config": [
+        "../../packages/config/src/index.ts"
+      ],
+      "@acme/config/*": [
+        "../../packages/config/dist/*"
+      ],
+      "@acme/i18n": [
+        "../../packages/i18n/src/index.ts"
+      ],
+      "@acme/i18n/*": [
+        "../../packages/i18n/dist/*"
+      ],
+      "@acme/configurator": [
+        "../../packages/configurator/src/index.ts"
+      ],
+      "@acme/configurator/*": [
+        "../../packages/configurator/dist/*"
+      ]
+    },
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
   },
-  "include": ["next-env.d.ts", "src/**/*"],
-  "exclude": [".next", "node_modules", "dist", "**/__tests__/**"],
+  "include": [
+    "next-env.d.ts",
+    "src/**/*",
+    "src/**/*.json"
+  ],
+  "exclude": [
+    ".next",
+    "node_modules",
+    "dist",
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.stories.*"
+  ],
   "references": []
 }

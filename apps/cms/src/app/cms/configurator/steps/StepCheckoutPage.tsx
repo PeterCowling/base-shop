@@ -55,7 +55,7 @@ export default function StepCheckoutPage({
       <h2 className="text-xl font-semibold">Checkout Page</h2>
       <Select
         value={checkoutLayout}
-        onValueChange={(val) => {
+        onValueChange={(val: string) => {
           const layout = val === "blank" ? "" : val;
           setCheckoutLayout(layout);
           const tpl = pageTemplates.find((t) => t.name === layout);
@@ -100,7 +100,7 @@ export default function StepCheckoutPage({
             createdBy: "",
           } as Page
         }
-        onSave={async (fd) => {
+        onSave={async (fd: FormData) => {
           setIsSaving(true);
           setSaveError(null);
           const { data, error } = await apiRequest<{ id: string }>(

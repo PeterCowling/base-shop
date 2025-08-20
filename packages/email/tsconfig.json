@@ -9,18 +9,16 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@platform-core": [
-        "../platform-core/dist/index"
-      ],
-      "@platform-core/*": [
-        "../platform-core/dist/*"
-      ],
-      "@date-utils": [
-        "types-compat/date-utils"
-      ],
-      "@acme/ui": [
-        "types-compat/ui"
-      ]
+      "@platform-core": ["../platform-core/dist/index"],
+      "@platform-core/*": ["../platform-core/dist/*"],
+      "@acme/config": ["../config/dist/index"],
+      "@acme/config/*": ["../config/dist/*"],
+      "@acme/lib": ["../lib/dist/index"],
+      "@acme/lib/*": ["../lib/dist/*"],
+      "@acme/types": ["../types/dist/index"],
+      "@acme/types/*": ["../types/dist/*"],
+      "@date-utils": ["types-compat/date-utils"],
+      "@acme/ui": ["types-compat/ui"]
     }
   },
   "include": [

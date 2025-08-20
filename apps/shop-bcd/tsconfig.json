@@ -3,6 +3,7 @@
   "compilerOptions": {
     "allowJs": false,
     "baseUrl": ".",
+    "rootDir": "../..",
     "paths": {
       "@/*": [
         "./src/*",
@@ -30,26 +31,25 @@
         "../../packages/shared-utils/src/index",
         "../../packages/shared-utils/src"
       ],
-      "@shared-utils/*": ["../../packages/shared-utils/src/*"]
+      "@shared-utils/*": ["../../packages/shared-utils/src/*"],
+      "@acme/types": [
+        "../../packages/types/src/index",
+        "../../packages/types/src"
+      ],
+      "@acme/types/*": ["../../packages/types/src/*"]
     }
   },
-  "include": ["src/**/*", ".next/types/**/*.ts", "shop.json"],
+  "include": [
+    "src/**/*",
+    "../../packages/ui/src/**/*",
+    ".next/types/**/*.ts",
+    "shop.json"
+  ],
   "exclude": [
     "dist",
     "node_modules",
     "../../apps-script",
     "src/routes/preview/[pageId].ts",
     ".next"
-  ],
-  "references": [
-    { "path": "../../packages/types" },
-    { "path": "../../packages/platform-core" },
-    { "path": "../../packages/i18n" },
-    { "path": "../../packages/ui" },
-    { "path": "../../packages/lib" },
-    { "path": "../../packages/email" },
-    { "path": "../../packages/sanity" },
-    { "path": "../../packages/shared-utils" },
-    { "path": "../../packages/stripe" }
   ]
 }

@@ -1,6 +1,16 @@
 import { validateShopName } from "@acme/platform-core/shops";
 import type { CreateShopOptions } from "@acme/platform-core/createShop";
 
+const PAYMENT_PROVIDERS = ["stripe", "paypal"] as const;
+const SHIPPING_PROVIDERS = ["dhl", "ups", "premier-shipping"] as const;
+
+function parseList<T extends readonly string[]>(val: string, allowed: T): T[number][] {
+  return val
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s): s is T[number] => (allowed as readonly string[]).includes(s));
+}
+
 /** Command line options for creating a shop.
  *
  * The CLI only collects a subset of the full `CreateShopOptions` defined by
@@ -69,10 +79,10 @@ export function parseArgs(argv: string[]): {
         templateProvided = true;
         break;
       case "payment":
-        opts.payment = val.split(",").filter(Boolean);
+        opts.payment = parseList(val, PAYMENT_PROVIDERS);
         break;
       case "shipping":
-        opts.shipping = val.split(",").filter(Boolean);
+        opts.shipping = parseList(val, SHIPPING_PROVIDERS);
         break;
       case "subscriptions":
         opts.enableSubscriptions = val === "" ? true : val !== "false";

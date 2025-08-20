@@ -26,7 +26,7 @@ export default async function SeoSettingsPage({
   const { shop } = await params;
   const [settings, events] = await Promise.all([
     getSettings(shop),
-    listEvents(shop),
+    listEvents(),
   ]);
   const languages = settings.languages;
   const seo = settings.seo ?? {};
@@ -37,7 +37,8 @@ export default async function SeoSettingsPage({
     pageSize: 50,
   };
   const lastCrawl = events
-    .filter((e) => e.type === "ai_crawl")
+    .filter((e: any) => e.shop === shop)
+    .filter((e: any) => e.type === "ai_crawl")
     .map((e) => e.timestamp as string)
     .filter(Boolean)
     .sort()

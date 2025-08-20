@@ -2,8 +2,9 @@ import { formatTimestamp } from "@acme/date-utils";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 
 export default async function AiFeedPanel({ shop }: { shop: string }) {
-  const events = (await listEvents(shop))
-    .filter((e) => e.type === "ai_crawl")
+  const events = (await listEvents())
+    .filter((e: any) => e.shop === shop)
+    .filter((e: any) => e.type === "ai_crawl")
     .slice(-5)
     .reverse();
 

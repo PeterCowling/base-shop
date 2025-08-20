@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type FormEvent, type ChangeEvent } from "react";
 import { Button, Checkbox, Input } from "@/components/atoms/shadcn";
 import { updateAiCatalog } from "@cms/actions/shops.server";
 import { formatTimestamp } from "@acme/date-utils";
@@ -58,7 +58,9 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
         <Checkbox
           name="enabled"
           checked={state.enabled}
-          onCheckedChange={(v) => setState((s) => ({ ...s, enabled: Boolean(v) }))}
+          onCheckedChange={(v: boolean) =>
+            setState((s) => ({ ...s, enabled: Boolean(v) }))
+          }
         />
         <span>Enable AI catalog feed</span>
       </label>
@@ -85,7 +87,7 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
           type="number"
           name="pageSize"
           value={state.pageSize}
-          onChange={(e) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setState((s) => ({ ...s, pageSize: Number(e.target.value) }))
           }
         />

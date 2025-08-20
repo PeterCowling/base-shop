@@ -38,7 +38,7 @@ export default function ReturnsEditor({ shop, initial }: Props) {
         <Checkbox
           name="enabled"
           checked={enabled}
-          onCheckedChange={(v) => setEnabled(Boolean(v))}
+          onCheckedChange={(v: boolean) => setEnabled(Boolean(v))}
         />
         <span>Enable UPS returns</span>
       </label>
@@ -49,7 +49,7 @@ export default function ReturnsEditor({ shop, initial }: Props) {
         <Checkbox
           name="bagEnabled"
           checked={bagEnabled}
-          onCheckedChange={(v) => setBagEnabled(Boolean(v))}
+          onCheckedChange={(v: boolean) => setBagEnabled(Boolean(v))}
         />
         <span>Provide return bags</span>
       </label>
@@ -57,7 +57,7 @@ export default function ReturnsEditor({ shop, initial }: Props) {
         <Checkbox
           name="homePickupEnabled"
           checked={pickupEnabled}
-          onCheckedChange={(v) => setPickupEnabled(Boolean(v))}
+          onCheckedChange={(v: boolean) => setPickupEnabled(Boolean(v))}
         />
         <span>Enable home pickup</span>
       </label>

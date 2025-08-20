@@ -2,10 +2,7 @@
 
 "use client";
 
-import type {
-  ProductPublication,
-  PublicationStatus,
-} from "@acme/platform-core/products";
+import type { ProductPublication, PublicationStatus } from "@acme/types";
 import { useProductFilters } from "../../hooks/useProductFilters";
 import { formatCurrency } from "@acme/shared-utils";
 import Link from "next/link";

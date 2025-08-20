@@ -10,9 +10,11 @@
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {
-    "@acme/date-utils": "workspace:*",
+    "@acme/auth": "workspace:^",
     "@acme/config": "workspace:*",
+    "@acme/date-utils": "workspace:*",
     "@acme/i18n": "workspace:*",
+    "@acme/platform-core": "workspace:^",
     "@acme/shared-utils": "workspace:*",
     "@radix-ui/react-checkbox": "^1.3.2",
     "@radix-ui/react-dialog": "^1.1.14",
@@ -28,14 +30,13 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-joyride": "^2.9.3",
-    "shadcn-ui": "^0.9.5",
-    "@acme/platform-core": "workspace:^",
-    "@acme/auth": "workspace:^"
+    "shadcn-ui": "^0.9.5"
   },
   "peerDependencies": {
     "tailwindcss": "^4"
   },
   "devDependencies": {
+    "@types/qrcode": "^1.5.5",
     "next": "^15.3.4",
     "typescript": "^5.8.3"
   }

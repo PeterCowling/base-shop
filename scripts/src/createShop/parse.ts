@@ -1,17 +1,8 @@
 import { validateShopName } from "../../../packages/platform-core/src/shops";
+import type { CreateShopOptions } from "../../../packages/platform-core/src/createShop";
 
 /** Command line options for creating a shop. */
-export interface Options {
-  type: "sale" | "rental";
-  theme: string;
-  template: string;
-  payment: string[];
-  shipping: string[];
-  name?: string;
-  logo?: string;
-  contactInfo?: string;
-  enableSubscriptions?: boolean;
-}
+export type Options = CreateShopOptions;
 
 /**
  * Parse command line arguments for the create-shop script.
@@ -46,6 +37,11 @@ export function parseArgs(argv: string[]): {
     payment: [],
     shipping: [],
     enableSubscriptions: false,
+    pages: [],
+    themeOverrides: {},
+    tax: "taxjar",
+    navItems: [],
+    checkoutPage: [],
   };
 
   let themeProvided = false;
@@ -71,10 +67,10 @@ export function parseArgs(argv: string[]): {
         templateProvided = true;
         break;
       case "payment":
-        opts.payment = val.split(",").filter(Boolean);
+        opts.payment = val.split(",").filter(Boolean) as Options["payment"];
         break;
       case "shipping":
-        opts.shipping = val.split(",").filter(Boolean);
+        opts.shipping = val.split(",").filter(Boolean) as Options["shipping"];
         break;
       case "subscriptions":
         opts.enableSubscriptions = val === "" ? true : val !== "false";

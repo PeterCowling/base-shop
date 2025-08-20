@@ -2,52 +2,152 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "noEmit": true,
-
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
-
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
     "strict": true,
     "skipLibCheck": true,
-
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "baseUrl": ".",
-
     "resolveJsonModule": true,
     "allowJs": false,
-    "types": ["node", "react", "react-dom", "next"],
-
+    "types": [
+      "node",
+      "react",
+      "react-dom",
+      "next"
+    ],
     "paths": {
       /* App-local aliases */
-      "@/*": ["./src/*"],
-      "@cms/*": ["./src/*"],
-      "@i18n/*": ["./src/i18n/*"],
-
+      "@/*": [
+        "./src/*"
+      ],
+      "@cms/*": [
+        "./src/*"
+      ],
+      "@i18n/*": [
+        "./src/i18n/*"
+      ],
       /* Workspace aliases — adjust paths to your actual package dirs */
-      "@ui/*": ["../../packages/ui/src/*"],
-      "@ui": ["../../packages/ui/src/index.ts"],
-      "@auth": ["../../packages/auth/src/index.ts"],
-      "@auth/*": ["../../packages/auth/src/*"],
-      "@acme/lib": ["../../packages/lib/src/index.ts"],
-      "@acme/shared-utils": ["../../packages/shared-utils/src/index.ts"],
-      "@acme/shared-utils/*": ["../../packages/shared-utils/src/*"],
-      "@acme/types/*": ["../../packages/types/src/*"],
-      "@shared-utils": ["../../packages/shared-utils/src/index.ts"],
-      "@shared-utils/*": ["../../packages/shared-utils/src/*"],
-      "@date-utils": ["../../packages/date-utils/src/index.ts"],
-      "@date-utils/*": ["../../packages/date-utils/src/*"]
-    }
+      "@ui": [
+        "../../packages/ui/src/index.ts"
+      ],
+      "@ui/*": [
+        "../../packages/ui/src/*"
+      ],
+      "@auth": [
+        "../../packages/auth/src/index.ts"
+      ],
+      "@auth/*": [
+        "../../packages/auth/src/*"
+      ],
+      "@acme/lib": [
+        "../../packages/lib/src/index.ts"
+      ],
+      "@acme/lib/*": [
+        "../../packages/lib/src/*"
+      ],
+      "@acme/config": [
+        "../../packages/config/src/index.ts"
+      ],
+      "@acme/config/*": [
+        "../../packages/config/src/*"
+      ],
+      "@acme/email": [
+        "../../packages/email/src/index.ts"
+      ],
+      "@acme/email/*": [
+        "../../packages/email/src/*"
+      ],
+      "@acme/stripe": [
+        "../../packages/stripe/src/index.ts"
+      ],
+      "@acme/stripe/*": [
+        "../../packages/stripe/src/*"
+      ],
+      "@acme/sanity": [
+        "../../packages/sanity/src/index.ts"
+      ],
+      "@acme/sanity/*": [
+        "../../packages/sanity/src/*"
+      ],
+      "@acme/date-utils": [
+        "../../packages/date-utils/src/index.ts"
+      ],
+      "@acme/date-utils/*": [
+        "../../packages/date-utils/src/*"
+      ],
+      "@acme/shared-utils": [
+        "../../packages/shared-utils/src/index.ts"
+      ],
+      "@acme/shared-utils/*": [
+        "../../packages/shared-utils/src/*"
+      ],
+      "@acme/configurator": [
+        "../../packages/configurator/src/index.ts"
+      ],
+      "@acme/configurator/*": [
+        "../../packages/configurator/src/*"
+      ],
+      "@acme/types": [
+        "../../packages/types/src/index.ts"
+      ],
+      "@acme/types/*": [
+        "../../packages/types/src/*"
+      ],
+      "@acme/i18n": [
+        "../../packages/i18n/src/index.ts"
+      ],
+      "@acme/i18n/*": [
+        "../../packages/i18n/src/*"
+      ],
+      "@platform-core": [
+        "../../packages/platform-core/src/index.ts"
+      ],
+      "@platform-core/*": [
+        "../../packages/platform-core/src/*"
+      ],
+      "@acme/platform-core": [
+        "../../packages/platform-core/src/index.ts"
+      ],
+      "@acme/platform-core/*": [
+        "../../packages/platform-core/src/*"
+      ],
+      "@shared-utils": [
+        "../../packages/shared-utils/src/index.ts"
+      ],
+      "@shared-utils/*": [
+        "../../packages/shared-utils/src/*"
+      ],
+      "@date-utils": [
+        "../../packages/date-utils/src/index.ts"
+      ],
+      "@date-utils/*": [
+        "../../packages/date-utils/src/*"
+      ]
+    },
+    "incremental": true,
+    "isolatedModules": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "src/**/*"],
-  "exclude": [".next", "node_modules", "dist", "**/__tests__/**"],
-  "references": [
-    { "path": "../../packages/platform-core" },
-    { "path": "../../packages/ui" },
-    { "path": "../../packages/auth" },
-    { "path": "../../packages/lib" },
-    { "path": "../../packages/shared-utils" },
-    { "path": "../../packages/types" },
-    { "path": "../../packages/date-utils" }
-  ]
+  "include": [
+    "next-env.d.ts",
+    "src/**/*",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    ".next",
+    "node_modules",
+    "dist",
+    "**/__tests__/**"
+  ],
+  "references": []
 }

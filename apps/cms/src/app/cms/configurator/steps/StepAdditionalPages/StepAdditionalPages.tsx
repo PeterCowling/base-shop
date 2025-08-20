@@ -120,7 +120,7 @@ export default function StepAdditionalPages({
                 createdBy: "",
               } as Page
             }
-            onSave={async (fd) => {
+            onSave={async (fd: FormData) => {
               setIsSaving(true);
               setSaveError(null);
               const { data, error } = await apiRequest<{ id: string }>(

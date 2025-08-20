@@ -31,13 +31,17 @@ export default function StepImportData({
         <Input
           type="file"
           accept=".csv"
-          onChange={(e) => setCsvFile(e.target.files?.[0] ?? null)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setCsvFile(e.target.files?.[0] ?? null)
+          }
         />
       </label>
       <Textarea
         label="Categories JSON"
         value={categoriesText}
-        onChange={(e) => setCategoriesText(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          setCategoriesText(e.target.value)
+        }
         placeholder='["Shoes","Accessories"]'
       />
       {importResult && <p className="text-sm">{importResult}</p>}

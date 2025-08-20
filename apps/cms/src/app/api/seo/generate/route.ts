@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { DATA_ROOT } from "@platform-core";
+import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
 import fs from "node:fs/promises";
 import path from "node:path";

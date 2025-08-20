@@ -12,7 +12,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   if (!shop)
     return NextResponse.json({ error: "Missing shop" }, { status: 400 });
   const campaigns: Campaign[] = await listCampaigns(shop);
-  const events = await listEvents(shop);
+  const events = await listEvents();
   const withMetrics = campaigns.map((c) => {
     const metrics = { sent: 0, opened: 0, clicked: 0 };
     for (const e of events) {

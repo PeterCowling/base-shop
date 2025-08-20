@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
   const shop = getShop(req);
   const [discounts, events] = await Promise.all([
     readDiscounts(shop),
-    listEvents(shop),
+    listEvents(),
   ]);
   const counts: Record<string, number> = {};
   for (const e of events) {

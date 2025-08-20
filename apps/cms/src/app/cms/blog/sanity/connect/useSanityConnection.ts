@@ -19,7 +19,11 @@ export function useSanityConnection(
   initial?: { projectId: string; dataset: string; token?: string },
 ) {
   const saveAction = saveSanityConfig.bind(null, shopId);
-  const [state, formAction] = useFormState<FormState>(saveAction, initialState);
+  const [state, formAction] = useFormState<FormState, FormData>(
+    async (_prevState: FormState, formData: FormData) =>
+      saveAction(formData),
+    initialState,
+  );
 
   const [projectId, setProjectId] = useState(initial?.projectId ?? "");
   const [dataset, setDataset] = useState(initial?.dataset ?? defaultDataset);

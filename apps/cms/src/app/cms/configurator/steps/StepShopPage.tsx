@@ -89,7 +89,7 @@ export default function StepShopPage({
           <SelectItem
             value="blank"
             asChild
-            onSelect={(e: Event) => {
+            onSelect={(e) => {
               e.preventDefault();
               setSelectOpen(false);
               setPendingTemplate({ name: "blank", components: [], preview: "" });
@@ -104,7 +104,7 @@ export default function StepShopPage({
               key={t.name}
               value={t.name}
               asChild
-              onSelect={(e: Event) => {
+              onSelect={(e) => {
                 e.preventDefault();
                 setSelectOpen(false);
                 setPendingTemplate(t);

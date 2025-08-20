@@ -29,10 +29,10 @@ export default function CurrencyTaxEditor({ shop, initial }: Props) {
     if (result.errors) {
       setErrors(result.errors);
     } else if (result.settings) {
-      setState({
-        currency: result.settings.currency,
-        taxRegion: result.settings.taxRegion,
-      });
+      setState((s) => ({
+        currency: result.settings.currency ?? s.currency,
+        taxRegion: result.settings.taxRegion ?? s.taxRegion,
+      }));
       setErrors({});
     }
     setSaving(false);

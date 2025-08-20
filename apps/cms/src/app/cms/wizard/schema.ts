@@ -4,7 +4,7 @@ import { fillLocales } from "@i18n/fillLocales";
 import { pageComponentSchema } from "@acme/types/page";
 import { localeSchema, type Locale } from "@acme/types";
 import { ulid } from "ulid";
-import { z } from "zod";
+import { z, type ZodType } from "zod";
 import { baseTokens } from "./tokenUtils";
 
 /* -------------------------------------------------------------------------- */
@@ -28,15 +28,24 @@ const localeRecordSchema = z.record(localeSchema, z.string());
 /*  Nav‑item schema (recursive)                                               */
 /* -------------------------------------------------------------------------- */
 
-export const navItemSchema = z.lazy(() =>
-  z
-    .object({
-      id: z.string(),
-      label: z.string(),
-      url: z.string().url(),
-      children: z.array(navItemSchema).optional(),
-    })
-    .strict()
+/** Recursively defined navigation item used in the wizard. */
+type NavItemInternal = {
+  id: string;
+  label: string;
+  url: string;
+  children?: NavItemInternal[];
+};
+
+export const navItemSchema: ZodType<NavItemInternal> = z.lazy(
+  (): ZodType<NavItemInternal> =>
+    z
+      .object({
+        id: z.string(),
+        label: z.string(),
+        url: z.string().url(),
+        children: z.array(navItemSchema).optional(),
+      })
+      .strict(),
 );
 
 export type NavItem = z.infer<typeof navItemSchema>;

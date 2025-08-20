@@ -2,17 +2,24 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
+    "declaration": true,
+    "declarationMap": true,
     "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist",
     "baseUrl": ".",
     "paths": {
       "@platform-core": [
-        "../platform-core/src/index"
+        "../platform-core/dist/index"
       ],
       "@platform-core/*": [
-        "../platform-core/src/*"
+        "../platform-core/dist/*"
       ],
       "@date-utils": [
         "types-compat/date-utils"
+      ],
+      "@acme/ui": [
+        "types-compat/ui"
       ]
     }
   },

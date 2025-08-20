@@ -13,12 +13,14 @@ export async function buildThemeData(
   themeTokens: Record<string, string>;
 }> {
   const overrides = form.themeOverrides as Record<string, string>;
-  let themeDefaults = form.themeDefaults as Record<string, string> | undefined;
-  if (!themeDefaults || Object.keys(themeDefaults).length === 0) {
+  let themeDefaults: Record<string, string>;
+  if (!form.themeDefaults || Object.keys(form.themeDefaults).length === 0) {
     themeDefaults =
       current.themeId !== form.themeId
         ? await syncTheme(shop, form.themeId)
         : { ...baseTokens, ...(await loadThemeTokens(form.themeId)) };
+  } else {
+    themeDefaults = form.themeDefaults as Record<string, string>;
   }
   const themeTokens = { ...themeDefaults, ...overrides };
   return { themeDefaults, overrides, themeTokens };

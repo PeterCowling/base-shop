@@ -57,7 +57,7 @@ export async function generateSeo(
   }
 
   const { id, locale, title, description } = data;
-  const { generateMeta } = await import("@acme/lib/generateMeta");
+  const { generateMeta } = await import("@acme/lib");
 
   const result = await generateMeta({ id, title, description });
   const current = await fetchSettings(shop);
@@ -87,6 +87,7 @@ export async function revertSeo(shop: string, timestamp: string) {
     languages: [] as Locale[],
     seo: {},
     luxuryFeatures: {
+      premierDelivery: false,
       blog: false,
       contentMerchandising: false,
       raTicketing: false,

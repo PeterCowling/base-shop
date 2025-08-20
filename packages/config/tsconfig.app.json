@@ -22,5 +22,12 @@
     "types": ["node", "react", "react-dom"],
     "skipLibCheck": true
   },
-  "exclude": ["dist", "node_modules", "../../apps-script"]
+  "exclude": [
+    "dist",
+    "node_modules",
+    "../../apps-script",
+    "**/__mocks__/**",
+    "**/__tests__/**",
+    "../../test"
+  ]
 }

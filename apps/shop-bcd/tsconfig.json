@@ -50,6 +50,8 @@
     "node_modules",
     "../../apps-script",
     "src/routes/preview/[pageId].ts",
-    ".next"
+    ".next",
+    "../../packages/**/__tests__/**",
+    "../../test"
   ]
 }

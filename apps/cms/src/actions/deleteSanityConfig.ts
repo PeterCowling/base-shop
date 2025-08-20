@@ -12,7 +12,7 @@ export async function deleteSanityConfig(
   try {
     const shop = await getShopById(shopId);
     const updated = setSanityConfig(shop, undefined);
-    await updateShopInRepo(shopId, updated);
+    await updateShopInRepo(shopId, { ...updated, id: shopId });
     return { message: "Sanity disconnected" };
   } catch (err) {
     console.error("Failed to disconnect Sanity", err);

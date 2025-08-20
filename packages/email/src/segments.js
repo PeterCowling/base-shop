@@ -1,7 +1,7 @@
-import { listEvents } from "@platform-core/repositories/analytics.server";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
 import { coreEnv } from "@acme/config/env/core";
 import { SendgridProvider } from "./providers/sendgrid";

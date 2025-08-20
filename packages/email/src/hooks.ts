@@ -36,7 +36,7 @@ export async function emitClick(shop: string, payload: HookPayload): Promise<voi
 }
 
 async function track(shop: string, data: AnalyticsEvent): Promise<void> {
-  const { trackEvent } = await import("@platform-core/analytics");
+  const { trackEvent } = await import("@acme/platform-core/analytics");
   await trackEvent(shop, data);
 }
 

@@ -15,6 +15,12 @@
       "@platform-core/*": [
         "../platform-core/dist/*"
       ],
+      "@acme/platform-core": [
+        "../platform-core/dist/index"
+      ],
+      "@acme/platform-core/*": [
+        "../platform-core/dist/*"
+      ],
       "@date-utils": [
         "types-compat/date-utils"
       ],

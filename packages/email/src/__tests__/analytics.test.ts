@@ -6,7 +6,7 @@ describe("analytics mapping", () => {
   it("normalizes SendGrid webhook events", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";
-    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("@acme/platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
     jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
     jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
     const { mapSendGridEvent } = await import("../analytics");
@@ -27,7 +27,7 @@ describe("analytics mapping", () => {
   it("normalizes Resend webhook events", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";
-    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("@acme/platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
     jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
     jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
     const { mapResendEvent } = await import("../analytics");
@@ -50,7 +50,7 @@ describe("analytics mapping", () => {
   it("maps SendGrid stats", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";
-    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("@acme/platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
     jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
     jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
     const { mapSendGridStats } = await import("../analytics");
@@ -73,7 +73,7 @@ describe("analytics mapping", () => {
   it("maps Resend stats", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";
-    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("@acme/platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
     jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
     jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
     const { mapResendStats } = await import("../analytics");
@@ -101,7 +101,7 @@ describe("syncCampaignAnalytics", () => {
     process.env.EMAIL_PROVIDER = "sendgrid";
 
     const trackEvent = jest.fn().mockResolvedValue(undefined);
-    jest.doMock("@platform-core/analytics", () => ({
+    jest.doMock("@acme/platform-core/analytics", () => ({
       __esModule: true,
       trackEvent,
     }));

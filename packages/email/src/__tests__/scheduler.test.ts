@@ -1,6 +1,6 @@
 import path from "node:path";
 import { promises as fs } from "node:fs";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { setCampaignStore, fsCampaignStore } from "../storage";
 import type { CampaignStore, Campaign } from "../storage";
 
@@ -16,11 +16,11 @@ jest.mock("../segments", () => ({
   resolveSegment: jest.fn(),
 }));
 
-jest.mock("@platform-core/analytics", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({
   __esModule: true,
   trackEvent: jest.fn().mockResolvedValue(undefined),
 }));
-jest.mock("@platform-core/repositories/analytics.server", () => ({
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
   __esModule: true,
   listEvents: jest.fn().mockResolvedValue([]),
 }));
@@ -34,7 +34,7 @@ jest.mock(
 );
 const { sendCampaignEmail } = require("../send");
 const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
-const { listEvents } = require("@platform-core/repositories/analytics.server");
+const { listEvents } = require("@acme/platform-core/repositories/analytics.server");
 const listEventsMock = listEvents as jest.Mock;
 
 describe("scheduler", () => {

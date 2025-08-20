@@ -19,7 +19,11 @@ export default async function ShopIndexPage({
 }) {
   let latestPost: BlogPost | undefined;
   try {
-    const luxury = JSON.parse(env.NEXT_PUBLIC_LUXURY_FEATURES ?? "{}");
+    const luxury = JSON.parse(
+      typeof env.NEXT_PUBLIC_LUXURY_FEATURES === "string"
+        ? env.NEXT_PUBLIC_LUXURY_FEATURES
+        : "{}",
+    );
     if (luxury.contentMerchandising && luxury.blog) {
       const posts = await fetchPublishedPosts(shop.id);
       const first = posts[0];

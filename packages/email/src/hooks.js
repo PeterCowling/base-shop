@@ -20,7 +20,7 @@ export async function emitClick(shop, payload) {
     await Promise.all(clickListeners.map((fn) => fn(shop, payload)));
 }
 async function track(shop, data) {
-    const { trackEvent } = await import("@platform-core/analytics");
+    const { trackEvent } = await import("@acme/platform-core/analytics");
     await trackEvent(shop, data);
 }
 // default analytics listeners

@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { sendCampaignEmail } from "./send";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 const DEFAULT_DELAY_MS = 1000 * 60 * 60 * 24;
 function envKey(shop) {
     return `ABANDONED_CART_DELAY_MS_${shop

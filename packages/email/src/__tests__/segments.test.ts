@@ -2,7 +2,7 @@ const listEventsMock = jest.fn();
 const statMock = jest.fn();
 const readFileMock = jest.fn();
 
-jest.mock("@platform-core/repositories/analytics.server", () => ({
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
   listEvents: (...args: unknown[]) => listEventsMock(...args),
 }));
 

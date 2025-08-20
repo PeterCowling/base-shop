@@ -2,7 +2,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import type { Campaign } from "../types";
 import type { CampaignStore } from "./types";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
 
 function campaignsPath(shop: string): string {

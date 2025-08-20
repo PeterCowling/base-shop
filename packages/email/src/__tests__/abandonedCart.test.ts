@@ -5,7 +5,7 @@ import {
   resolveAbandonedCartDelay,
 } from "../abandonedCart";
 import type { AbandonedCart } from "../abandonedCart";
-import { DATA_ROOT } from "@platform-core/dataRoot";
+import { DATA_ROOT } from "@acme/platform-core/dataRoot";
 import { sendCampaignEmail } from "../send";
 
 jest.mock("../send", () => ({

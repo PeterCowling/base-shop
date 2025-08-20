@@ -26,7 +26,7 @@ jest.mock("../providers/resend", () => ({
 }));
 
 jest.mock("../scheduler", () => ({}));
-jest.mock("@platform-core/analytics", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 

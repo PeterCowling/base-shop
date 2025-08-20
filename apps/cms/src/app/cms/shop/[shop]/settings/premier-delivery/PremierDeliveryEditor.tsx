@@ -2,7 +2,7 @@
 
 import { Button, Input } from "@/components/atoms/shadcn";
 import { updatePremierDelivery } from "@cms/actions/shops.server";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, type ChangeEvent } from "react";
 
 interface Props {
   shop: string;
@@ -65,7 +65,9 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
             <Input
               name="regions"
               value={region}
-              onChange={(e) => updateRegion(i, e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                updateRegion(i, e.target.value)
+              }
             />
             <Button
               type="button"
@@ -90,7 +92,9 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
             <Input
               name="windows"
               value={window}
-              onChange={(e) => updateWindow(i, e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                updateWindow(i, e.target.value)
+              }
             />
             <Button
               type="button"

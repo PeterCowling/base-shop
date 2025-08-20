@@ -207,7 +207,10 @@ export default async function SettingsPage({
           <div className="mt-6">
             <CurrencyTaxEditor
               shop={shop}
-              initial={{ currency: settings.currency, taxRegion: settings.taxRegion }}
+              initial={{
+                currency: settings.currency ?? "",
+                taxRegion: settings.taxRegion ?? "",
+              }}
             />
           </div>
         </div>

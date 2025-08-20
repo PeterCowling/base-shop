@@ -50,7 +50,7 @@ export default function GeneralSettings({
             <Checkbox
               name="blog"
               checked={info.luxuryFeatures.blog ?? false}
-              onCheckedChange={(v) =>
+              onCheckedChange={(v: boolean) =>
                 setInfo((prev) => ({
                   ...prev,
                   luxuryFeatures: {
@@ -66,7 +66,7 @@ export default function GeneralSettings({
             <Checkbox
               name="contentMerchandising"
               checked={info.luxuryFeatures.contentMerchandising ?? false}
-              onCheckedChange={(v) =>
+              onCheckedChange={(v: boolean) =>
                 setInfo((prev) => ({
                   ...prev,
                   luxuryFeatures: {
@@ -82,7 +82,7 @@ export default function GeneralSettings({
             <Checkbox
               name="raTicketing"
               checked={info.luxuryFeatures.raTicketing ?? false}
-              onCheckedChange={(v) =>
+              onCheckedChange={(v: boolean) =>
                 setInfo((prev) => ({
                   ...prev,
                   luxuryFeatures: {
@@ -100,7 +100,7 @@ export default function GeneralSettings({
               type="number"
               name="fraudReviewThreshold"
               value={info.luxuryFeatures.fraudReviewThreshold}
-              onChange={(e) =>
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setInfo((prev) => ({
                   ...prev,
                   luxuryFeatures: {
@@ -115,7 +115,7 @@ export default function GeneralSettings({
             <Checkbox
               name="requireStrongCustomerAuth"
               checked={info.luxuryFeatures.requireStrongCustomerAuth}
-              onCheckedChange={(v) =>
+              onCheckedChange={(v: boolean) =>
                 setInfo((prev) => ({
                   ...prev,
                   luxuryFeatures: {
@@ -131,7 +131,7 @@ export default function GeneralSettings({
             <Checkbox
               name="strictReturnConditions"
               checked={info.luxuryFeatures.strictReturnConditions}
-              onCheckedChange={(v) =>
+              onCheckedChange={(v: boolean) =>
                 setInfo((prev) => ({
                   ...prev,
                   luxuryFeatures: {
@@ -147,7 +147,7 @@ export default function GeneralSettings({
             <Checkbox
               name="trackingDashboard"
               checked={info.luxuryFeatures.trackingDashboard}
-              onCheckedChange={(v) =>
+              onCheckedChange={(v: boolean) =>
                 setInfo((prev) => ({
                   ...prev,
                   luxuryFeatures: {

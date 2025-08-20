@@ -39,7 +39,7 @@ export default function ReverseLogisticsEditor({ shop, initial }: Props) {
         <Checkbox
           name="enabled"
           checked={state.enabled}
-          onCheckedChange={(v) =>
+          onCheckedChange={(v: boolean) =>
             setState((s) => ({ ...s, enabled: Boolean(v) }))
           }
         />

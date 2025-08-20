@@ -29,7 +29,7 @@ export async function POST(
     const filePath = path.join(dir, "products.csv");
 
     const busboy = Busboy({
-      headers: Object.fromEntries(req.headers.entries()),
+      headers: Object.fromEntries(req.headers as any),
       limits: { fileSize: MAX_SIZE, files: 1 },
     });
 

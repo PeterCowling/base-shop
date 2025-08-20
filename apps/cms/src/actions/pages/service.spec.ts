@@ -3,21 +3,24 @@ import type { Page } from "@acme/types";
 import { describe, expect, it, jest } from "@jest/globals";
 
 jest.mock("@platform-core/repositories/pages/index.server", () => ({
-  getPages: jest.fn().mockResolvedValue([]),
-  savePage: jest
-    .fn()
-    .mockImplementation((_s: string, p: Page) => Promise.resolve(p)),
-  updatePage: jest
-    .fn()
-    .mockImplementation((_s: string, p: Page) =>
-      Promise.resolve({ ...(p as Page) })
-    ),
-  deletePage: jest.fn().mockResolvedValue(undefined),
+  getPages: jest.fn((_s: string) => Promise.resolve([] as Page[])),
+  savePage: jest.fn(
+    (_s: string, p: Page, _prev?: Page) => Promise.resolve(p),
+  ),
+  updatePage: jest.fn(
+    (_s: string, p: Page, _prev: Page) => Promise.resolve({ ...(p as Page) }),
+  ),
+  deletePage: jest.fn((_s: string, _id: string) => Promise.resolve()),
 }));
 
 const repo = jest.requireMock(
   "@platform-core/repositories/pages/index.server",
-);
+) as {
+  getPages: jest.Mock;
+  savePage: jest.Mock;
+  updatePage: jest.Mock;
+  deletePage: jest.Mock;
+};
 
 describe("pages service", () => {
   it("calls repository getPages", async () => {

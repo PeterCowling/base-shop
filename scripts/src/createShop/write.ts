@@ -9,7 +9,15 @@
  */
 import { createShop, type CreateShopOptions } from "@acme/platform-core/createShop";
 
-export type Options = CreateShopOptions;
+/**
+ * Options accepted by the `writeShop` wrapper.
+ *
+ * The underlying `createShop` helper accepts a complex configuration object
+ * with many properties that default to sensible values. When invoking the
+ * CLI we only need to provide whichever fields the user specifies, so this
+ * type mirrors `CreateShopOptions` but marks every property optional.
+ */
+export type Options = Partial<CreateShopOptions>;
 
 /**
  * Create the shop and write required files.
@@ -21,5 +29,7 @@ export async function writeShop(
   shopId: string,
   options: Options
 ): Promise<void> {
-  await createShop(shopId, options);
+  // `createShop` will apply defaults for any missing fields, so we can cast
+  // the partial options to the full `CreateShopOptions` type when calling it.
+  await createShop(shopId, options as CreateShopOptions);
 }

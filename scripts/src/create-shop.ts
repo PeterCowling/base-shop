@@ -3,7 +3,7 @@
 import { execSync } from "node:child_process";
 import { parseArgs } from "./createShop/parse";
 import { gatherOptions } from "./createShop/prompts";
-import { writeShop } from "./createShop/write";
+import { writeShop, type Options as WriteOptions } from "./createShop/write";
 import { ensureTemplateExists } from "@acme/platform-core/createShop";
 
 function ensureRuntime() {
@@ -47,4 +47,4 @@ if (themeProvided || templateProvided) {
 }
 
 await gatherOptions(shopId, options, themeProvided, templateProvided);
-await writeShop(shopId, options);
+await writeShop(shopId, options as WriteOptions);

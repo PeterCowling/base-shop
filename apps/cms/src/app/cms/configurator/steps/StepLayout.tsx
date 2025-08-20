@@ -6,7 +6,7 @@ import PageBuilder from "@/components/cms/PageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
 import { apiRequest } from "../lib/api";
-import { ReactNode, useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, type ReactNode } from "react";
 import { Toast, Spinner } from "@/components/atoms";
 import { CheckIcon } from "@radix-ui/react-icons";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -116,7 +116,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
               createdBy: "",
             } as Page
           }
-          onSave={async (fd) => {
+          onSave={async (fd: FormData) => {
             setHeaderSaving(true);
             setHeaderError(null);
             setHeaderSaved(false);
@@ -174,7 +174,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
               createdBy: "",
             } as Page
           }
-          onSave={async (fd) => {
+          onSave={async (fd: FormData) => {
             setFooterSaving(true);
             setFooterError(null);
             setFooterSaved(false);

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input } from "@/components/atoms/shadcn";
-import { useEffect } from "react";
+import { useEffect, type ChangeEvent } from "react";
 import { getDeployStatus, type DeployInfo } from "../../wizard/services/deployShop";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
@@ -63,7 +63,9 @@ export default function StepHosting({
         <span>Custom Domain</span>
         <Input
           value={domain}
-          onChange={(e) => setDomain(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setDomain(e.target.value)
+          }
           placeholder="myshop.example.com"
         />
       </label>

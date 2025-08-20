@@ -9,11 +9,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { useEffect } from "react";
+import { useEffect, type ChangeEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { providersByType } from "@acme/configurator/providers";
+import { providersByType, type Provider } from "@acme/configurator/providers";
 
 export default function StepOptions(): React.JSX.Element {
   const { state, update } = useConfigurator();
@@ -33,11 +33,11 @@ export default function StepOptions(): React.JSX.Element {
   const searchParams = useSearchParams();
   const [, markComplete] = useStepCompletion("options");
 
-  const paymentProviders = providersByType("payment");
-  const paymentIds = paymentProviders.map((p) => p.id);
-  const shippingProviders = providersByType("shipping");
-  const shippingIds = shippingProviders.map((p) => p.id);
-  const analyticsProviders = providersByType("analytics");
+  const paymentProviders: Provider[] = providersByType("payment");
+  const paymentIds = paymentProviders.map((p: Provider) => p.id);
+  const shippingProviders: Provider[] = providersByType("shipping");
+  const shippingIds = shippingProviders.map((p: Provider) => p.id);
+  const analyticsProviders: Provider[] = providersByType("analytics");
 
   useEffect(() => {
     const provider = searchParams.get("connected");
@@ -68,7 +68,7 @@ export default function StepOptions(): React.JSX.Element {
       </p>
       <div>
         <p className="font-medium">Payment Providers</p>
-        {paymentProviders.map((p) => (
+        {paymentProviders.map((p: Provider) => (
           <div key={p.id} className="flex items-center gap-2 text-sm">
             {p.name}
             {payment.includes(p.id) ? (
@@ -81,7 +81,7 @@ export default function StepOptions(): React.JSX.Element {
       </div>
       <div>
         <p className="font-medium">Shipping Providers</p>
-        {shippingProviders.map((p) => (
+        {shippingProviders.map((p: Provider) => (
           <div key={p.id} className="flex items-center gap-2 text-sm">
             {p.name}
             {shipping.includes(p.id) ? (
@@ -96,14 +96,16 @@ export default function StepOptions(): React.JSX.Element {
         <p className="font-medium">Analytics</p>
         <Select
           value={analyticsProvider}
-          onValueChange={(v) => setAnalyticsProvider(v === "none" ? "" : v)}
+          onValueChange={(v: string) =>
+            setAnalyticsProvider(v === "none" ? "" : v)
+          }
         >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select provider" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="none">None</SelectItem>
-            {analyticsProviders.map((p) => (
+            {analyticsProviders.map((p: Provider) => (
               <SelectItem key={p.id} value={p.id}>
                 {p.name}
               </SelectItem>
@@ -114,7 +116,9 @@ export default function StepOptions(): React.JSX.Element {
           <Input
             className="mt-2"
             value={analyticsId}
-            onChange={(e) => setAnalyticsId(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setAnalyticsId(e.target.value)
+            }
             placeholder="Measurement ID"
           />
         )}

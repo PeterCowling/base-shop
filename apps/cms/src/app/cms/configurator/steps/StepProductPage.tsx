@@ -17,8 +17,7 @@ import {
 } from "@/components/atoms";
 import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
-import type { Page, PageComponent } from "@acme/types";
-import { historyStateSchema } from "@acme/types";
+import { type Page, type PageComponent, historyStateSchema } from "@acme/types";
 import { apiRequest } from "../lib/api";
 import { ulid } from "ulid";
 import { useEffect, useState } from "react";
@@ -75,12 +74,12 @@ export default function StepProductPage({
         `/cms/api/pages/${shopId}`,
       );
       if (data) {
-        const existing = productPageId
+        const existing: Page | undefined = productPageId
           ? data.find((p) => p.id === productPageId)
           : data.find((p) => p.slug === "product");
         if (existing) {
           setProductPageId(existing.id);
-          setProductComponents(existing.components);
+          setProductComponents(existing.components as PageComponent[]);
           if (typeof window !== "undefined") {
             localStorage.setItem(
               `page-builder-history-${existing.id}`,
@@ -88,7 +87,7 @@ export default function StepProductPage({
                 historyStateSchema.parse(
                   existing.history ?? {
                     past: [],
-                    present: existing.components,
+                    present: existing.components as PageComponent[],
                     future: [],
                   }
                 )
@@ -225,7 +224,7 @@ export default function StepProductPage({
             createdBy: "",
           } as Page
         }
-        onSave={async (fd) => {
+        onSave={async (fd: FormData) => {
           setIsSaving(true);
           setSaveError(null);
           const { data, error } = await apiRequest<{ id: string }>(
@@ -240,7 +239,7 @@ export default function StepProductPage({
             setSaveError(error);
           }
         }}
-        onPublish={async (fd) => {
+        onPublish={async (fd: FormData) => {
           setIsPublishing(true);
           setPublishError(null);
           fd.set("status", "published");

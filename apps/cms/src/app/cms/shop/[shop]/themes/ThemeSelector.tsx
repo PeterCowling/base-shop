@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/ThemeSelector.tsx
 "use client";
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 
 interface Props {
   themes: string[];

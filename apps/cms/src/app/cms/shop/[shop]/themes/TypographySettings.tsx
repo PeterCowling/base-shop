@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/TypographySettings.tsx
 "use client";
 import { Input } from "@/components/atoms/shadcn";
-import type { MutableRefObject } from "react";
+import type { MutableRefObject, ChangeEvent } from "react";
 
 interface Props {
   tokens: Record<string, string>;
@@ -41,10 +41,10 @@ export default function TypographySettings({
                 name={k}
                 defaultValue={defaultValue}
                 value={overrideValue}
-                onChange={(e) =>
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   handleOverrideChange(k, defaultValue)(e.target.value)
                 }
-                ref={(el) => {
+                ref={(el: HTMLInputElement | null) => {
                   overrideRefs.current[k] = el;
                 }}
               />

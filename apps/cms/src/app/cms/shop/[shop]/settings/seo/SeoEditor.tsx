@@ -143,7 +143,9 @@ export default function SeoEditor({
         <Input
           className="border p-2"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setTitle(e.target.value)
+          }
         />
       </label>
       <label className="flex flex-col gap-1">
@@ -151,7 +153,9 @@ export default function SeoEditor({
         <Textarea
           rows={3}
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+            setDescription(e.target.value)
+          }
         />
       </label>
       <label className="flex flex-col gap-1">
@@ -159,7 +163,9 @@ export default function SeoEditor({
         <Input
           className="border p-2"
           value={image}
-          onChange={(e) => setImage(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setImage(e.target.value)
+          }
         />
       </label>
       <label className="flex flex-col gap-1">
@@ -167,7 +173,9 @@ export default function SeoEditor({
         <Input
           className="border p-2"
           value={alt}
-          onChange={(e) => setAlt(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setAlt(e.target.value)
+          }
         />
       </label>
       <label className="flex flex-col gap-1">
@@ -175,7 +183,9 @@ export default function SeoEditor({
         <Input
           className="border p-2"
           value={canonicalBase}
-          onChange={(e) => setCanonicalBase(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setCanonicalBase(e.target.value)
+          }
         />
       </label>
       <label className="flex flex-col gap-1">
@@ -183,7 +193,9 @@ export default function SeoEditor({
         <Input
           className="border p-2"
           value={ogUrl}
-          onChange={(e) => setOgUrl(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setOgUrl(e.target.value)
+          }
         />
       </label>
       <label className="flex flex-col gap-1">
@@ -191,7 +203,9 @@ export default function SeoEditor({
         <Input
           className="border p-2"
           value={twitterCard}
-          onChange={(e) => setTwitterCard(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setTwitterCard(e.target.value)
+          }
         />
       </label>
       {Object.keys(errors).length > 0 && (

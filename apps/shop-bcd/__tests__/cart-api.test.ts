@@ -3,7 +3,7 @@ import {
   asSetCookieHeader,
   decodeCartCookie,
   encodeCartCookie,
-} from "@/lib/cartCookie";
+} from "@platform-core/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { DELETE, GET, PATCH, POST } from "../src/api/cart/route";
 

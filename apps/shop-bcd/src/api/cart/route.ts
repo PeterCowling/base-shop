@@ -7,8 +7,8 @@ import {
   decodeCartCookie,
   encodeCartCookie,
   type CartState,
-} from "@/lib/cartCookie";
-import { getProductById, PRODUCTS } from "@/lib/products";
+} from "@platform-core/cartCookie";
+import { getProductById, PRODUCTS } from "@platform-core/products";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { postSchema, patchSchema } from "@platform-core/schemas/cart";

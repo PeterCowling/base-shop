@@ -5,7 +5,7 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   type CartState,
-} from "@/lib/cartCookie";
+} from "@platform-core/cartCookie";
 import { getCustomerSession } from "@auth";
 import { createCheckoutSession } from "@platform-core/checkout/session";
 import shop from "../../../shop.json";

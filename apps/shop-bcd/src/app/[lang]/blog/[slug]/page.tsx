@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { fetchPostBySlug } from "@acme/sanity";
-import { BlogPortableText } from "@/components/blog/BlogPortableText";
+import { BlogPortableText } from "@platform-core/components/blog/BlogPortableText";
 import type { Shop } from "@acme/types";
 import shopJson from "../../../../../shop.json";
 

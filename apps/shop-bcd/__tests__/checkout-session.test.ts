@@ -1,5 +1,5 @@
 // apps/shop-bcd/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "@/lib/cartCookie";
+import { encodeCartCookie } from "@platform-core/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@acme/date-utils";
 import { POST } from "../src/api/checkout-session/route";
@@ -28,7 +28,7 @@ const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
 jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
 jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
-jest.mock("@/lib/cartCookie", () => ({
+jest.mock("@platform-core/cartCookie", () => ({
   CART_COOKIE: "__Host-CART_ID",
   encodeCartCookie: (cart: any) => JSON.stringify(cart),
   decodeCartCookie: (raw: string) => (raw ? JSON.parse(raw) : {}),

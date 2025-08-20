@@ -5,11 +5,11 @@ export declare function POST(req: NextRequest): Promise<NextResponse<{
     error: string;
 }> | NextResponse<{
     ok: boolean;
-    cart: import("@/lib/cartCookie").CartState;
+    cart: import("@platform-core/cartCookie").CartState;
 }>>;
 export declare function PATCH(req: NextRequest): Promise<NextResponse<{
     error: string;
 }> | NextResponse<{
     ok: boolean;
-    cart: import("@/lib/cartCookie").CartState;
+    cart: import("@platform-core/cartCookie").CartState;
 }>>;

@@ -1,7 +1,7 @@
 // apps/shop-bcd/src/app/[lang]/layout.tsx
 
-import Footer from "@/components/layout/Footer";
-import Header from "@/components/layout/Header";
+import Footer from "@ui/components/layout/Footer";
+import Header from "@ui/components/layout/Header";
 import TranslationsProvider from "@i18n/Translations";
 import { Locale, resolveLocale } from "@i18n/locales";
 import { DefaultSeo } from "next-seo";

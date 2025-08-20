@@ -64,7 +64,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
     }))
   );
   const serialized: RawInventoryItem[] = normalized.map(
-    ({ variantAttributes, ...rest }) => ({
+    ({ variantAttributes, ...rest }): RawInventoryItem => ({
       ...rest,
       ...(Object.keys(variantAttributes).length
         ? { variant: variantAttributes }
@@ -143,7 +143,7 @@ async function update(
       }))
     );
     const serialized: RawInventoryItem[] = normalized.map(
-      ({ variantAttributes, ...rest }) => ({
+      ({ variantAttributes, ...rest }): RawInventoryItem => ({
         ...rest,
         ...(Object.keys(variantAttributes).length
           ? { variant: variantAttributes }

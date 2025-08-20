@@ -184,7 +184,10 @@ export async function promoteProduct(
   "use server";
   await ensureAuthorized();
 
-  const current = await getProductById<ProductPublication>(shop, id);
+  const current = (await getProductById<ProductPublication>(
+    shop,
+    id,
+  )) as ProductPublication | null;
   if (!current) throw new Error(`Product ${id} not found in ${shop}`);
 
   const status = nextStatus[current.status];

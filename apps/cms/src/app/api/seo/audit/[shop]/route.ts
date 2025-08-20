@@ -30,7 +30,12 @@ async function runLighthouse(url: string): Promise<SeoAuditEntry> {
   }
   const lhr = result.lhr;
   const score = Math.round((lhr.categories?.seo?.score ?? 0) * 100);
-  const recommendations = Object.values(lhr.audits)
+  type Audit = {
+    score?: number;
+    scoreDisplayMode?: string;
+    title?: string;
+  };
+  const recommendations = Object.values(lhr.audits as Record<string, Audit>)
     .filter(
       (a) => a.score !== 1 && a.scoreDisplayMode !== "notApplicable" && a.title,
     )

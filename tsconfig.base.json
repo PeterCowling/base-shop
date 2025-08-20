@@ -28,111 +28,48 @@
       "react-dom"
     ],
     "paths": {
-      "@acme/platform-machine": [
-        "packages/platform-machine"
-      ],
-      "@acme/platform-machine/*": [
-        "packages/platform-machine/*"
-      ],
-      "@acme/ui": [
-        "packages/ui"
-      ],
-      "@acme/ui/*": [
-        "packages/ui/*"
-      ],
-      "@cms": [
-        "apps/cms"
-      ],
-      "@cms/*": [
-        "apps/cms/*"
-      ],
-      "@themes/*": [
-        "packages/themes/*"
-      ],
-      "@acme/lib": [
-        "packages/lib"
-      ],
-      "@acme/lib/*": [
-        "packages/lib/*"
-      ],
-      "@i18n": [
-        "packages/i18n"
-      ],
-      "@i18n/*": [
-        "packages/i18n/*"
-      ],
-      "@auth": [
-        "packages/auth"
-      ],
-      "@auth/*": [
-        "packages/auth/*"
-      ],
-      "@acme/config": [
-        "packages/config"
-      ],
-      "@acme/config/*": [
-        "packages/config/*"
-      ],
-      "@platform-core": [
-        "packages/platform-core"
-      ],
-      "@platform-core/*": [
-        "packages/platform-core/*"
-      ],
-      "@acme/platform-core": [
-        "packages/platform-core"
-      ],
-      "@acme/platform-core/*": [
-        "packages/platform-core/*"
-      ],
-      "@acme/shared-utils": [
-        "packages/shared-utils"
-      ],
-      "@acme/shared-utils/*": [
-        "packages/shared-utils/*"
-      ],
-      "@acme/email": [
-        "packages/email"
-      ],
-      "@acme/email/*": [
-        "packages/email/*"
-      ],
-      "@acme/stripe": [
-        "packages/stripe"
-      ],
-      "@acme/stripe/*": [
-        "packages/stripe/*"
-      ],
-      "@acme/sanity": [
-        "packages/sanity"
-      ],
-      "@acme/sanity/*": [
-        "packages/sanity/*"
-      ],
-      "@acme/date-utils": [
-        "packages/date-utils"
-      ],
-      "@acme/date-utils/*": [
-        "packages/date-utils/*"
-      ],
-      "@acme/configurator": [
-        "packages/configurator"
-      ],
-      "@acme/configurator/*": [
-        "packages/configurator/*"
-      ],
-      "@acme/next-config": [
-        "packages/next-config"
-      ],
-      "@acme/next-config/*": [
-        "packages/next-config/*"
-      ],
-      "@acme/tailwind-config": [
-        "packages/tailwind-config"
-      ],
-      "@acme/tailwind-config/*": [
-        "packages/tailwind-config/*"
-      ]
+      "@acme/platform-machine": ["packages/platform-machine/src"],
+      "@acme/platform-machine/*": ["packages/platform-machine/src/*"],
+      "@acme/ui": ["packages/ui/src"],
+      "@acme/ui/*": ["packages/ui/src/*"],
+      "@ui": ["packages/ui/src"],
+      "@ui/*": ["packages/ui/src/*"],
+      "@/*": ["packages/ui/src/*"],
+      "@cms": ["apps/cms/src"],
+      "@cms/*": ["apps/cms/src/*"],
+      "@themes/*": ["packages/themes/*"],
+      "@acme/lib": ["packages/lib/src"],
+      "@acme/lib/*": ["packages/lib/src/*"],
+      "@lib": ["packages/lib/src"],
+      "@lib/*": ["packages/lib/src/*"],
+      "@i18n": ["packages/i18n/src"],
+      "@i18n/*": ["packages/i18n/src/*"],
+      "@auth": ["packages/auth/src"],
+      "@auth/*": ["packages/auth/src/*"],
+      "@acme/config": ["packages/config/src"],
+      "@acme/config/*": ["packages/config/src/*"],
+      "@platform-core": ["packages/platform-core/src"],
+      "@platform-core/*": ["packages/platform-core/src/*"],
+      "@acme/platform-core": ["packages/platform-core/src"],
+      "@acme/platform-core/*": ["packages/platform-core/src/*"],
+      "@acme/shared-utils": ["packages/shared-utils/src"],
+      "@acme/shared-utils/*": ["packages/shared-utils/src/*"],
+      "@shared-utils": ["packages/shared-utils/src"],
+      "@shared-utils/*": ["packages/shared-utils/src/*"],
+      "@acme/email": ["packages/email/src"],
+      "@acme/email/*": ["packages/email/src/*"],
+      "@acme/stripe": ["packages/stripe/src"],
+      "@acme/stripe/*": ["packages/stripe/src/*"],
+      "@acme/sanity": ["packages/sanity/src"],
+      "@acme/sanity/*": ["packages/sanity/src/*"],
+      "@acme/date-utils": ["packages/date-utils/src"],
+      "@acme/date-utils/*": ["packages/date-utils/src/*"],
+      "@acme/configurator": ["packages/configurator/src"],
+      "@acme/configurator/*": ["packages/configurator/src/*"],
+      "@acme/next-config": ["packages/next-config/src"],
+      "@acme/next-config/*": ["packages/next-config/src/*"],
+      "@acme/tailwind-config": ["packages/tailwind-config/src"],
+      "@acme/tailwind-config/*": ["packages/tailwind-config/src/*"]
     }
   },
   "files": [

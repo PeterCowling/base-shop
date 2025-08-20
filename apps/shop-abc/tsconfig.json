@@ -1,6 +1,6 @@
 {
   "extends": "@acme/config/tsconfig.app.json",
-  "include": ["src/**/*", ".next/types/**/*.ts"],
+  "include": ["src/**/*", ".next/types/**/*.ts", "shop.json"],
   "exclude": [
     "dist",
     "node_modules",

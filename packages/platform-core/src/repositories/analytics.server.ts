@@ -1,1 +1,3 @@
-export async function listEvents() { return [] as any[]; }
+export async function listEvents(_shop?: string) {
+  return [] as any[];
+}

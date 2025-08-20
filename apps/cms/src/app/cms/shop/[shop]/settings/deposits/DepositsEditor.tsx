@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Checkbox, Input } from "@/components/atoms/shadcn";
+import { Button, Checkbox, Input } from "@ui/components/atoms/shadcn";
 import { updateDeposit } from "@cms/actions/shops.server";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 
@@ -39,7 +39,7 @@ export default function DepositsEditor({ shop, initial }: Props) {
         <Checkbox
           name="enabled"
           checked={state.enabled}
-          onCheckedChange={(v) =>
+          onCheckedChange={(v: boolean) =>
             setState((s) => ({ ...s, enabled: Boolean(v) }))
           }
         />

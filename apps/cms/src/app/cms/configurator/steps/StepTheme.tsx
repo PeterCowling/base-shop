@@ -7,7 +7,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/atoms/shadcn";
+} from "@ui/components/atoms/shadcn";
 import StyleEditor from "@ui/components/cms/StyleEditor";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import type { TokenMap } from "@ui/hooks/useTokenEditor";
@@ -91,7 +91,8 @@ export default function StepTheme({
   );
   const device = useMemo<DevicePreset>(() => {
     const preset =
-      devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
+      devicePresets.find((d: DevicePreset) => d.id === deviceId) ??
+      devicePresets[0];
     return orientation === "portrait"
       ? { ...preset, orientation }
       : {
@@ -125,10 +126,8 @@ export default function StepTheme({
     (tokens: TokenMap) => {
       setThemeOverrides(
         Object.fromEntries(
-          Object.entries(tokens).filter(
-            ([k, v]) => themeDefaults[k] !== v
-          )
-        )
+          Object.entries(tokens).filter(([k, v]) => themeDefaults[k] !== v)
+        ) as Record<string, string>
       );
     },
     [setThemeOverrides, themeDefaults]
@@ -163,7 +162,7 @@ export default function StepTheme({
       {/* single accessible combobox (theme) */}
       <Select
         value={theme}
-        onValueChange={(v) => {
+        onValueChange={(v: string) => {
           update("theme", v);
           setThemeOverrides({});
           if (typeof window !== "undefined") {
@@ -257,7 +256,7 @@ export default function StepTheme({
         <DeviceSelector
           deviceId={deviceId}
           orientation={orientation}
-          setDeviceId={(id) => {
+          setDeviceId={(id: string) => {
             setDeviceId(id);
             setOrientation("portrait");
           }}

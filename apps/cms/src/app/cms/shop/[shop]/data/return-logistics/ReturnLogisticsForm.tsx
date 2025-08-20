@@ -1,8 +1,9 @@
 "use client";
 
-import { Button, Input, Checkbox } from "@/components/atoms/shadcn";
+import { Button, Input, Checkbox } from "@ui/components/atoms/shadcn";
 import { returnLogisticsSchema, type ReturnLogistics } from "@acme/types";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import type { FormEvent, ChangeEvent } from "react";
 
 type FormState = Omit<ReturnLogistics, "returnCarrier"> & {
   returnCarrier: string[];
@@ -63,7 +64,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
         <span>Label Service</span>
         <Input
           value={form.labelService}
-          onChange={(e) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setForm((f) => ({
               ...f,
               labelService: e.target.value as FormState["labelService"],
@@ -74,7 +75,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
       <label className="flex items-center gap-2">
         <Checkbox
           checked={form.inStore}
-          onCheckedChange={(v) =>
+          onCheckedChange={(v: boolean) =>
             setForm((f) => ({ ...f, inStore: Boolean(v) }))
           }
         />
@@ -84,7 +85,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
         <span>Drop-off Provider</span>
         <Input
           value={form.dropOffProvider ?? ""}
-          onChange={(e) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setForm((f) => ({
               ...f,
               dropOffProvider: e.target.value || undefined,
@@ -96,7 +97,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
         <span>Bag Type</span>
         <Input
           value={form.bagType}
-          onChange={(e) =>
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setForm((f) => ({
               ...f,
               bagType: e.target.value as FormState["bagType"],
@@ -110,7 +111,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
           <div key={i} className="flex items-center gap-2">
             <Input
               value={carrier}
-              onChange={(e) =>
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setForm((f) => {
                   const next = [...f.returnCarrier];
                   next[i] = e.target.value;
@@ -151,7 +152,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
           <div key={i} className="flex items-center gap-2">
             <Input
               value={zip}
-              onChange={(e) =>
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
                 setForm((f) => {
                   const next = [...f.homePickupZipCodes];
                   next[i] = e.target.value;
@@ -191,7 +192,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
       <label className="flex items-center gap-2">
         <Checkbox
           checked={Boolean(form.tracking)}
-          onCheckedChange={(v) =>
+          onCheckedChange={(v: boolean) =>
             setForm((f) => ({ ...f, tracking: Boolean(v) }))
           }
         />
@@ -200,7 +201,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
       <label className="flex items-center gap-2">
         <Checkbox
           checked={form.requireTags}
-          onCheckedChange={(v) =>
+          onCheckedChange={(v: boolean) =>
             setForm((f) => ({ ...f, requireTags: Boolean(v) }))
           }
         />
@@ -209,7 +210,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
       <label className="flex items-center gap-2">
         <Checkbox
           checked={form.allowWear}
-          onCheckedChange={(v) =>
+          onCheckedChange={(v: boolean) =>
             setForm((f) => ({ ...f, allowWear: Boolean(v) }))
           }
         />
@@ -218,7 +219,7 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
       <label className="flex items-center gap-2">
         <Checkbox
           checked={Boolean(form.mobileApp)}
-          onCheckedChange={(v) =>
+          onCheckedChange={(v: boolean) =>
             setForm((f) => ({ ...f, mobileApp: Boolean(v) }))
           }
         />

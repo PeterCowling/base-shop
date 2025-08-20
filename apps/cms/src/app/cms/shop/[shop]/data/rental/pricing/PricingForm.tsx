@@ -1,8 +1,9 @@
 "use client";
 
-import { Button, Textarea } from "@/components/atoms/shadcn";
+import { Button, Textarea } from "@ui/components/atoms/shadcn";
 import { pricingSchema, type PricingMatrix } from "@acme/types";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import type { FormEvent, ChangeEvent } from "react";
 
 interface Props {
   shop: string;
@@ -48,7 +49,7 @@ export default function PricingForm({ shop, initial }: Props) {
     <form onSubmit={onSubmit} className="space-y-4">
       <Textarea
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value)}
         rows={10}
       />
       {status === "saved" && (

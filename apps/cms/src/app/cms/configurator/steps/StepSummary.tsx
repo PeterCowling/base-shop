@@ -2,7 +2,7 @@
 
 "use client";
 
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Button, Input } from "@ui/components/atoms/shadcn";
 import { LOCALES } from "@acme/i18n";
 import type { Locale } from "@acme/types";
 import React from "react";
@@ -104,7 +104,7 @@ export default function StepSummary({
             <span>Home page title ({l})</span>
             <Input
               value={pageTitle[l]}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setPageTitle({ ...pageTitle, [l]: e.target.value })
               }
               placeholder="Home"
@@ -120,7 +120,7 @@ export default function StepSummary({
             <span>Description ({l})</span>
             <Input
               value={pageDescription[l]}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setPageDescription({
                   ...pageDescription,
                   [l]: e.target.value,
@@ -141,7 +141,9 @@ export default function StepSummary({
         <span>Social image URL</span>
         <Input
           value={socialImage}
-          onChange={(e) => setSocialImage(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSocialImage(e.target.value)
+          }
           placeholder="https://example.com/og.png"
         />
         {errors.socialImage && (

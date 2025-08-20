@@ -7,21 +7,21 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/atoms/shadcn";
+} from "@ui/components/atoms/shadcn";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/atoms";
+} from "@ui/components/atoms";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
 import { apiRequest } from "../lib/api";
 import { ulid } from "ulid";
 import { useState } from "react";
-import { Toast } from "@/components/atoms";
+import { Toast } from "@ui/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
@@ -89,7 +89,7 @@ export default function StepShopPage({
           <SelectItem
             value="blank"
             asChild
-            onSelect={(e) => {
+            onSelect={(e: Event) => {
               e.preventDefault();
               setSelectOpen(false);
               setPendingTemplate({ name: "blank", components: [], preview: "" });
@@ -104,7 +104,7 @@ export default function StepShopPage({
               key={t.name}
               value={t.name}
               asChild
-              onSelect={(e) => {
+              onSelect={(e: Event) => {
                 e.preventDefault();
                 setSelectOpen(false);
                 setPendingTemplate(t);
@@ -126,7 +126,7 @@ export default function StepShopPage({
       </Select>
       <Dialog
         open={!!pendingTemplate}
-        onOpenChange={(o) => {
+        onOpenChange={(o: boolean) => {
           if (!o) setPendingTemplate(null);
         }}
       >
@@ -211,7 +211,7 @@ export default function StepShopPage({
             createdBy: "",
           } as Page
         }
-        onSave={async (fd) => {
+        onSave={async (fd: FormData) => {
           setIsSaving(true);
           setSaveError(null);
           const { data, error } = await apiRequest<{ id: string }>(
@@ -226,7 +226,7 @@ export default function StepShopPage({
             setSaveError(error);
           }
         }}
-        onPublish={async (fd) => {
+        onPublish={async (fd: FormData) => {
           setIsPublishing(true);
           setPublishError(null);
           fd.set("status", "published");

@@ -7,14 +7,14 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/atoms/shadcn";
+} from "@ui/components/atoms/shadcn";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/atoms";
+} from "@ui/components/atoms";
 import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
@@ -22,7 +22,7 @@ import { historyStateSchema } from "@acme/types";
 import { apiRequest } from "../lib/api";
 import { ulid } from "ulid";
 import { useEffect, useState } from "react";
-import { Toast } from "@/components/atoms";
+import { Toast } from "@ui/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 
@@ -80,15 +80,15 @@ export default function StepProductPage({
           : data.find((p) => p.slug === "product");
         if (existing) {
           setProductPageId(existing.id);
-          setProductComponents(existing.components);
+          setProductComponents(existing.components as PageComponent[]);
           if (typeof window !== "undefined") {
             localStorage.setItem(
               `page-builder-history-${existing.id}`,
               JSON.stringify(
                 historyStateSchema.parse(
-                  existing.history ?? {
+                  (existing as any).history ?? {
                     past: [],
-                    present: existing.components,
+                    present: existing.components as PageComponent[],
                     future: [],
                   }
                 )
@@ -119,7 +119,7 @@ export default function StepProductPage({
           <SelectItem
             value="blank"
             asChild
-            onSelect={(e) => {
+            onSelect={(e: Event) => {
               e.preventDefault();
               setSelectOpen(false);
               setPendingTemplate({ name: "blank", components: [], preview: "" });
@@ -134,7 +134,7 @@ export default function StepProductPage({
               key={t.name}
               value={t.name}
               asChild
-              onSelect={(e) => {
+              onSelect={(e: Event) => {
                 e.preventDefault();
                 setSelectOpen(false);
                 setPendingTemplate(t);
@@ -156,7 +156,7 @@ export default function StepProductPage({
       </Select>
       <Dialog
         open={!!pendingTemplate}
-        onOpenChange={(o) => {
+        onOpenChange={(o: boolean) => {
           if (!o) setPendingTemplate(null);
         }}
       >
@@ -225,7 +225,7 @@ export default function StepProductPage({
             createdBy: "",
           } as Page
         }
-        onSave={async (fd) => {
+        onSave={async (fd: FormData) => {
           setIsSaving(true);
           setSaveError(null);
           const { data, error } = await apiRequest<{ id: string }>(
@@ -240,7 +240,7 @@ export default function StepProductPage({
             setSaveError(error);
           }
         }}
-        onPublish={async (fd) => {
+        onPublish={async (fd: FormData) => {
           setIsPublishing(true);
           setPublishError(null);
           fd.set("status", "published");

@@ -167,11 +167,13 @@ export function Charts({
         <Line
           data={{
             labels: discountRedemptionsByCode.labels,
-            datasets: discountRedemptionsByCode.datasets.map((d, i) => ({
-              label: d.label,
-              data: d.data,
-              borderColor: colors[i % colors.length],
-            })),
+            datasets: discountRedemptionsByCode.datasets.map(
+              (d: { label: string; data: number[] }, i: number) => ({
+                label: d.label,
+                data: d.data,
+                borderColor: colors[i % colors.length],
+              })
+            ),
           }}
         />
       </div>

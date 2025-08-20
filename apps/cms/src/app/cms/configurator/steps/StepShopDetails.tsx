@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/atoms/shadcn";
+} from "@ui/components/atoms/shadcn";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { z } from "zod";
@@ -107,7 +107,7 @@ export default function StepShopDetails({
         <span>Shop ID</span>
         <Input
           value={shopId}
-          onChange={(e) => setShopId(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setShopId(e.target.value)}
           placeholder="my-shop"
         />
         {getError("id") && (
@@ -118,7 +118,7 @@ export default function StepShopDetails({
         <span>Store Name</span>
         <Input
           value={storeName}
-          onChange={(e) => setStoreName(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStoreName(e.target.value)}
           placeholder="My Store"
         />
         {getError("name") && (
@@ -129,7 +129,7 @@ export default function StepShopDetails({
         <span>Logo URL</span>
         <Input
           value={logo}
-          onChange={(e) => setLogo(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLogo(e.target.value)}
           placeholder="https://example.com/logo.png"
         />
         {getError("logo") && (
@@ -140,7 +140,7 @@ export default function StepShopDetails({
         <span>Contact Info</span>
         <Input
           value={contactInfo}
-          onChange={(e) => setContactInfo(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactInfo(e.target.value)}
           placeholder="Email or phone"
         />
         {getError("contactInfo") && (

@@ -127,7 +127,7 @@ export async function gatherOptions(
             options.payment = ans
               .split(",")
               .map((s) => s.trim())
-              .filter((p) => providers.includes(p));
+              .filter((p) => providers.includes(p)) as Options["payment"];
             rl.close();
             resolve();
           }
@@ -151,7 +151,7 @@ export async function gatherOptions(
             options.shipping = ans
               .split(",")
               .map((s) => s.trim())
-              .filter((p) => providers.includes(p));
+              .filter((p) => providers.includes(p)) as Options["shipping"];
             rl.close();
             resolve();
           }

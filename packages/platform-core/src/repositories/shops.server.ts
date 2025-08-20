@@ -115,6 +115,7 @@ export async function writeShop(
   const themeTokens = { ...themeDefaults, ...themeOverrides } as Record<string, string>;
   const updated = await updateShopInRepo<Shop>(shop, {
     ...patch,
+    id: patch.id,
     themeDefaults,
     themeOverrides,
     themeTokens,

@@ -3,7 +3,7 @@
 import type { Locale } from "@acme/i18n/locales";
 import { CSS } from "@dnd-kit/utilities";
 import { EditorContent } from "@tiptap/react";
-import type { PageComponent } from "@acme/types";
+import type { TextComponent as BaseTextComponent } from "@acme/types";
 import { memo, useCallback, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 import MenuBar from "./MenuBar";
@@ -13,10 +13,10 @@ import useCanvasResize from "./useCanvasResize";
 import useCanvasDrag from "./useCanvasDrag";
 import type { Action } from "./state";
 
-type TextComponent = Extract<
-  PageComponent,
-  { type: "Text" }
-> & { text?: string | Record<string, string>; [key: string]: unknown };
+type TextComponent = BaseTextComponent & {
+  text?: string | Record<string, string>;
+  [key: string]: unknown;
+};
 
 const TextBlock = memo(function TextBlock({
   component,

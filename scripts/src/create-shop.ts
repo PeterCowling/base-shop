@@ -39,7 +39,7 @@ const { shopId, options, themeProvided, templateProvided } = parseArgs(
 );
 if (themeProvided || templateProvided) {
   try {
-    ensureTemplateExists(options.theme, options.template);
+    ensureTemplateExists(options.theme as string, options.template as string);
   } catch (err) {
     console.error((err as Error).message);
     process.exit(1);

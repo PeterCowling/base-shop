@@ -21,6 +21,12 @@
     /* ───── Node typings only ───── */
     "types": ["node"],
 
+    /* ───── workspace package resolution ───── */
+    "paths": {
+      "@acme/platform-core": ["./packages/platform-core/src/index"],
+      "@acme/platform-core/*": ["./packages/platform-core/src/*"]
+    },
+
     /* ───── keep imports extension-less ───── */
   },
 
@@ -28,7 +34,8 @@
   "references": [
     { "path": "../packages/platform-core" },
     { "path": "../packages/lib" },
-    { "path": "../packages/config" }
+    { "path": "../packages/config" },
+    { "path": "../packages/types" }
   ],
 
   /* ───── source globs ───── */

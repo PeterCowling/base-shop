@@ -114,7 +114,7 @@ export async function gatherOptions(
 
   /** Prompt for payment providers when none are provided on the command line. */
   async function ensurePayment() {
-    if (options.payment.length === 0 && process.stdin.isTTY) {
+    if ((options.payment as string[]).length === 0 && process.stdin.isTTY) {
       const providers = await listProviders("payment");
       const rl = readline.createInterface({
         input: process.stdin,
@@ -138,7 +138,7 @@ export async function gatherOptions(
 
   /** Prompt for shipping providers when none are provided on the command line. */
   async function ensureShipping() {
-    if (options.shipping.length === 0 && process.stdin.isTTY) {
+    if ((options.shipping as string[]).length === 0 && process.stdin.isTTY) {
       const providers = await listProviders("shipping");
       const rl = readline.createInterface({
         input: process.stdin,

@@ -19,10 +19,6 @@ interface ProductPublication {
   media: MediaItem[];
 }
 
-interface PublishLocation {
-  id: string;
-  requiredOrientation: string;
-}
 import { parseMultilingualInput } from "@acme/i18n/parseMultilingualInput";
 import {
   useCallback,
@@ -82,9 +78,8 @@ export function useProductEditorFormState(
   /* ---------- helpers ---------------------------------------------- */
   const { locations } = usePublishLocations();
   const requiredOrientation =
-    locations.find(
-      (l: PublishLocation) => l.id === publishTargets[0]
-    )?.requiredOrientation ?? "landscape";
+    locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
+    "landscape";
 
   const { uploader } = useFileUpload({
     shop: init.shop,

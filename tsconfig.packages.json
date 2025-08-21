@@ -21,6 +21,7 @@
     { "path": "packages/email" },
     { "path": "packages/ui" },
     { "path": "packages/auth" },
+    { "path": "packages/design-tokens" },
     { "path": "packages/configurator" },
     { "path": "src" }
   ]

@@ -26,13 +26,15 @@ export default [
   /* ▸ Next.js presets (bring in @typescript-eslint plugin once) */
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 
+
   /* ▸ Your repo-wide TypeScript rules (NO plugins key!) */
   {
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: ["./tsconfig.json"],
+        projectService: true,
+        tsconfigRootDir: __dirname,
         sourceType: "module",
         ecmaVersion: "latest",
       },

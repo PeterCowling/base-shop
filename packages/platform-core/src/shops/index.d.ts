@@ -45,7 +45,12 @@ export interface Shop {
  * required by the CMS, but here it is left as an object with
  * arbitrary keys.
  */
-export type SanityBlogConfig = Record<string, unknown>;
+export interface SanityBlogConfig {
+    projectId: string;
+    dataset: string;
+    token: string;
+    [key: string]: unknown;
+}
 /**
  * Placeholder type describing a shop domain.  The domain must include a
  * `name` and may include any other properties relevant to the domain

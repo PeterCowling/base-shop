@@ -1,4 +1,4 @@
-import type { CartState } from "@acme/platform-core/cartCookie";
+import type { CartLine, CartState } from "@acme/platform-core/cartCookie";
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { Price } from "../atoms/Price";
@@ -15,9 +15,9 @@ export function OrderConfirmationTemplate({
   className,
   ...props
 }: OrderConfirmationTemplateProps) {
-  const lines = (Object.entries(cart) as [string, CartState[string]][]).map(
-    ([id, line]) => ({ id, ...line })
-  );
+  const lines: (CartLine & { id: string })[] = (
+    Object.entries(cart) as [string, CartLine][]
+  ).map(([id, line]) => ({ id, ...line }));
   const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
   const deposit = lines.reduce((s, l) => s + (l.sku.deposit ?? 0) * l.qty, 0);
 

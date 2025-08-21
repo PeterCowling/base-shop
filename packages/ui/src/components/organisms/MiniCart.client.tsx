@@ -33,9 +33,9 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
   const [toast, setToast] = React.useState<{ open: boolean; message: string }>(
     { open: false, message: "" }
   );
-  const lines = (Object.entries(cart) as [string, CartLine][]).map(
-    ([id, line]) => ({ id, ...line })
-  );
+  const lines: (CartLine & { id: string })[] = (
+    Object.entries(cart) as [string, CartLine][]
+  ).map(([id, line]) => ({ id, ...line }));
   const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
   const { widthClass, style } = drawerWidthProps(width);
 

@@ -33,14 +33,18 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
   /* ------------------------------------------------------------------
    * Cart context (used as a fallback when server data isn't provided)
    * ------------------------------------------------------------------ */
-  const [cartCtx] = useCart() as [Record<string, CartLine>, unknown];
+  const [cartCtx] = useCart();
   const cart = cartProp ?? cartCtx;
 
   /* ------------------------------------------------------------------
    * Derived values
    * ------------------------------------------------------------------ */
   const lines = useMemo<(CartLine & { id: string })[]>(
-    () => Object.entries(cart).map(([id, line]) => ({ id, ...line })),
+    () =>
+      (Object.entries(cart) as [string, CartLine][]).map(([id, line]) => ({
+        id,
+        ...line,
+      })),
     [cart]
   );
 

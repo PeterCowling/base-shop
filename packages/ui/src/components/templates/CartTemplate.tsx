@@ -19,9 +19,9 @@ export function CartTemplate({
   className,
   ...props
 }: CartTemplateProps) {
-  const lines: (CartLine & { id: string })[] = Object.entries(cart).map(
-    ([id, line]) => ({ id, ...(line as any) })
-  );
+  const lines: (CartLine & { id: string })[] = (
+    Object.entries(cart) as [string, CartLine][]
+  ).map(([id, line]) => ({ id, ...line }));
   const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
   const deposit = lines.reduce((s, l) => s + (l.sku.deposit ?? 0) * l.qty, 0);
 

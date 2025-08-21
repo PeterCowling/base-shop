@@ -41,24 +41,7 @@ const CanvasItem = memo(function CanvasItem({
   viewport: "desktop" | "tablet" | "mobile";
   device?: DevicePreset;
 }) {
-  if (component.type === "Text") {
-    return (
-      <TextBlock
-        component={component as TextComponent}
-        index={index}
-        parentId={parentId}
-        selectedId={selectedId}
-        onSelectId={onSelectId}
-        onRemove={onRemove}
-        dispatch={dispatch}
-        locale={locale}
-        gridEnabled={gridEnabled}
-        gridCols={gridCols}
-        viewport={viewport}
-      />
-    );
-  }
-
+  const isText = component.type === "Text";
   const selected = selectedId === component.id;
   const {
     attributes,
@@ -129,6 +112,7 @@ const CanvasItem = memo(function CanvasItem({
     gridEnabled,
     gridCols,
     containerRef,
+    disabled: isText,
   });
 
   const {
@@ -147,6 +131,7 @@ const CanvasItem = memo(function CanvasItem({
     gridEnabled,
     gridCols,
     containerRef,
+    disabled: isText,
   });
 
   const { startSpacing, overlay: spacingOverlay } = useCanvasSpacing({
@@ -174,6 +159,23 @@ const CanvasItem = memo(function CanvasItem({
   const overlayHeight = resizing ? resizeHeight : dragHeight;
   const overlayLeft = resizing ? resizeLeft : dragLeft;
   const overlayTop = resizing ? resizeTop : dragTop;
+  if (isText) {
+    return (
+      <TextBlock
+        component={component as TextComponent}
+        index={index}
+        parentId={parentId}
+        selectedId={selectedId}
+        onSelectId={onSelectId}
+        onRemove={onRemove}
+        dispatch={dispatch}
+        locale={locale}
+        gridEnabled={gridEnabled}
+        gridCols={gridCols}
+        viewport={viewport}
+      />
+    );
+  }
 
   const children = (component as { children?: PageComponent[] }).children;
   const hasChildren = Array.isArray(children);
@@ -346,25 +348,23 @@ const CanvasItem = memo(function CanvasItem({
                 className="h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10 ring-2 ring-primary"
               />
             )}
-            {children!.map(
-              (child: PageComponent, i: number) => (
-                <CanvasItem
-                  key={child.id}
-                  component={child}
-                  index={i}
-                  parentId={component.id}
-                  selectedId={selectedId}
-                  onSelectId={onSelectId}
-                  onRemove={() => dispatch({ type: "remove", id: child.id })}
-                  dispatch={dispatch}
-                  locale={locale}
-                  gridEnabled={gridEnabled}
-                  gridCols={gridCols}
-                  viewport={viewport}
-                  device={device}
-                />
-              )
-            )}
+            {children!.map((child: PageComponent, i: number) => (
+              <CanvasItem
+                key={child.id}
+                component={child}
+                index={i}
+                parentId={component.id}
+                selectedId={selectedId}
+                onSelectId={onSelectId}
+                onRemove={() => dispatch({ type: "remove", id: child.id })}
+                dispatch={dispatch}
+                locale={locale}
+                gridEnabled={gridEnabled}
+                gridCols={gridCols}
+                viewport={viewport}
+                device={device}
+              />
+            ))}
           </div>
         </SortableContext>
       )}

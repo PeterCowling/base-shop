@@ -14,6 +14,8 @@ import type { PageComponent } from "@acme/types";
 import type { Action } from "../state";
 import { snapToGrid } from "../gridSnap";
 
+const noop = () => {};
+
 function isPointerEvent(
   ev: Event | null | undefined
 ): ev is PointerEvent {
@@ -45,7 +47,7 @@ export function usePageBuilderDnD({
   selectId,
   gridSize = 1,
   canvasRef,
-  setSnapPosition = () => {},
+  setSnapPosition = noop,
 }: Params) {
   const sensors = useSensors(
     useSensor(PointerSensor),

@@ -41,12 +41,12 @@ function addComponent(
     ) {
       return {
         ...c,
-        children: addComponent(
-          (c as { children: PageComponent[] }).children,
-          parentId,
-          index,
-          component,
-        ),
+          children: addComponent(
+            (c as PageComponent & { children: PageComponent[] }).children,
+            parentId,
+            index,
+            component,
+          ),
       } as PageComponent;
     }
     return c;

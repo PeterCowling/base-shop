@@ -3,7 +3,7 @@
 import type { Locale } from "@acme/i18n/locales";
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, TextComponent } from "@acme/types";
 import { memo, useRef } from "react";
 import type { Action } from "./state";
 import Block from "./Block";
@@ -44,7 +44,7 @@ const CanvasItem = memo(function CanvasItem({
   if (component.type === "Text") {
     return (
       <TextBlock
-        component={component}
+        component={component as TextComponent}
         index={index}
         parentId={parentId}
         selectedId={selectedId}

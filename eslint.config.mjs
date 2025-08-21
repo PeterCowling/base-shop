@@ -12,15 +12,20 @@ const __dirname = dirname(__filename);
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
 export default [
-  /* ▸ Global ignores ─ JS/JSX are skipped entirely */
+  /* ▸ Global setup */
   {
     ignores: [
       "**/dist/**",
       "**/.next/**",
       "**/index.js",
-      "**/*.js",
-      "**/*.jsx",
     ],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+      },
+    },
   },
 
   /* ▸ Next.js presets (bring in @typescript-eslint plugin once) */
@@ -37,6 +42,7 @@ export default [
         allowDefaultProject: true,
         sourceType: "module",
         ecmaVersion: "latest",
+        ecmaFeatures: { jsx: true },
       },
     },
     rules: {
@@ -76,7 +82,6 @@ export default [
   /* ▸ Enforce UI component layering */
   {
     files: ["packages/ui/**/*.{ts,tsx}"],
-    plugins: { import: fixupPluginRules(importPlugin) },
     rules: {
       "import/no-restricted-paths": [
         "error",

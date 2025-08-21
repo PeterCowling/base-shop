@@ -48,5 +48,5 @@
     "returns": true,
     "premierDelivery": true
   },
-  "editorialBlog": { "enabled": true }
+  "editorialBlog": { "enabled": true, "promoteSchedule": "2025-01-01T00:00:00Z" }
 }

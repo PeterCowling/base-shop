@@ -20,7 +20,8 @@ export default function ProductBundle({
 }: ProductBundleProps) {
   if (!skus.length) return null;
 
-  const subtotal = skus.reduce((sum, sku) => sum + sku.price, 0) * quantity;
+  const subtotal =
+    skus.reduce((sum, sku) => sum + (sku.price ?? 0), 0) * quantity;
   const finalPrice = discount ? subtotal * (1 - discount / 100) : subtotal;
 
   return (
@@ -29,7 +30,7 @@ export default function ProductBundle({
         {skus.map((sku) => (
           <li key={sku.id} className="flex items-center justify-between">
             <span>{sku.title}</span>
-            <Price amount={sku.price} />
+            <Price amount={sku.price ?? 0} />
           </li>
         ))}
       </ul>

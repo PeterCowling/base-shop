@@ -44,21 +44,23 @@ export default function FeaturedProductBlock({
 
   if (!product) return null;
 
+  const media = product.media?.[0];
+
   return (
     <div className="flex flex-col gap-4">
-      {product.media[0] && (
+      {media?.url && (
         <div className="relative aspect-square w-full">
-          {product.media[0].type === "image" ? (
+          {media.type === "image" ? (
             <Image
-              src={product.media[0].url}
-              alt={product.title}
+              src={media.url}
+              alt={media.alt ?? product.title ?? ""}
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
               className="rounded-md object-cover"
             />
           ) : (
             <video
-              src={product.media[0].url}
+              src={media.url}
               className="h-full w-full rounded-md object-cover"
               muted
               playsInline
@@ -67,7 +69,7 @@ export default function FeaturedProductBlock({
         </div>
       )}
       <h3 className="text-xl font-semibold">{product.title}</h3>
-      <Price amount={product.price} className="text-lg font-medium" />
+      <Price amount={product.price ?? 0} className="text-lg font-medium" />
       <ProductVariantSelector
         sizes={product.sizes}
         selectedSize={size}

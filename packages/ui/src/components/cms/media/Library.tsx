@@ -35,7 +35,7 @@ export default function Library({
   );
 
   const filteredFiles = files.filter((f) => {
-    const name = f.url.split("/").pop()?.toLowerCase() ?? "";
+    const name = (f.url ?? "").split("/").pop()?.toLowerCase() ?? "";
     const q = query.toLowerCase();
     const matchesQuery = !q || name.includes(q);
     const matchesTag = !tag || (f.tags ?? []).includes(tag);

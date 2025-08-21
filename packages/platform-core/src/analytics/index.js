@@ -7,12 +7,11 @@ import { validateShopName } from "../shops";
 import { getShopSettings, readShop } from "../repositories/shops.server";
 import { coreEnv } from "@acme/config/env/core";
 class NoopProvider {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async track(_event) { }
 }
 class ConsoleProvider {
     async track(event) {
-        // eslint-disable-next-line no-console
+         
         console.log("analytics", event);
     }
 }

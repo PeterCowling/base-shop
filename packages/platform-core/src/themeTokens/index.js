@@ -26,7 +26,6 @@ export function loadThemeTokensNode(theme) {
     if (!theme || theme === "base")
         return {};
     // obtain a `require` function in both CJS and ESM environments
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const requireFn = typeof require !== "undefined" ? require : createRequire(import.meta.url);
     try {
         // attempt to load compiled module

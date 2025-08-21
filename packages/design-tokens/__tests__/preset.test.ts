@@ -1,9 +1,9 @@
 import { jest } from "@jest/globals";
 
 describe("design tokens preset", () => {
-  it("exports preset configuration", () => {
+  it("exports preset configuration", async () => {
     jest.resetModules();
-    const preset = require("../src/index.ts").default;
+    const preset = (await import("../src/index.ts")).default;
 
     // ensure color tokens exist
     expect(preset.theme?.extend?.colors?.bg).toBe("hsl(var(--color-bg))");

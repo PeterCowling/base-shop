@@ -94,6 +94,9 @@
       "@date-utils/*": [
         "../../packages/date-utils/src/*"
       ],
+      "@themes/*": [
+        "../../packages/themes/*/src"
+      ],
       "@platform-core": [
         "../../packages/platform-core/src/index.ts"
       ],
@@ -129,6 +132,12 @@
       ],
       "@acme/configurator/*": [
         "../../packages/configurator/src/*"
+      ],
+      "@acme/zod-utils": [
+        "../../packages/zod-utils/src/index.ts"
+      ],
+      "@acme/zod-utils/*": [
+        "../../packages/zod-utils/src/*"
       ]
     },
     "module": "ESNext",

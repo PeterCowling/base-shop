@@ -2,7 +2,7 @@
 "use client";
 
 import { useCart } from "../../hooks/useCart";
-import type { CartLine } from "@acme/platform-core/cartCookie";
+import type { CartLine } from "@acme/types/Cart";
 import { Price } from "../atoms/Price";
 import React, { useMemo } from "react";
 

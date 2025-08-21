@@ -57,7 +57,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
             {media.type === "image" ? (
               <Image
                 src={media.url ?? ""}
-                alt={media.alt ?? product.title ?? ""}
+                alt={media.altText ?? product.title ?? ""}
                 fill
                 sizes="(min-width: 640px) 25vw, 50vw"
                 className="rounded-md object-cover"

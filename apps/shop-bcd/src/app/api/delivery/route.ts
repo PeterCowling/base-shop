@@ -13,11 +13,15 @@ export const runtime = "edge";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const pluginsDir = path.resolve(__dirname, "../../../../../../packages/plugins");
 
+const shopConfig = shop as unknown as {
+  plugins?: Record<string, unknown>;
+  premierDelivery?: unknown;
+};
 const pluginsReady = initPlugins({
   directories: [pluginsDir],
   config: {
-    ...(shop as any).plugins,
-    "premier-shipping": (shop as any).premierDelivery,
+    ...(shopConfig.plugins ?? {}),
+    "premier-shipping": shopConfig.premierDelivery,
   },
 });
 

@@ -53,6 +53,10 @@ export default [
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_" },
+      ],
       // add more TS-only rules here
     },
   },
@@ -82,6 +86,15 @@ export default [
         },
       ],
       "@next/next/no-html-link-for-pages": "off",
+    },
+  },
+
+  /* ▸ Test files relaxations */
+  {
+    files: ["**/__tests__/**/*.{ts,tsx,js,jsx}", "**/*.test.{ts,tsx,js,jsx}"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
     },
   },
 

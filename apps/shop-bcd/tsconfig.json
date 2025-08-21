@@ -70,18 +70,18 @@
     ".next/types/**/*.ts",
     "shop.json",
     "next-env.d.ts",
-    "src/**/*.json"
+    "src/**/*.json",
+    "__tests__/**/*",
+    "routes/**/*",
+    "middleware.ts"
   ],
   "exclude": [
     "dist",
     "node_modules",
     "../../apps-script",
-    "src/routes/preview/[pageId].ts",
     ".next",
     "../../packages/**/__tests__/**",
     "../../test",
-    "**/*.test.*",
-    "**/__tests__/**",
     "**/*.stories.*"
   ]
 }

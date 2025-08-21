@@ -17,7 +17,7 @@
     /* ───── language / module target ───── */
     "module": "esnext",
     "target": "ES2017",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
 
     /* ───── Node typings only ───── */
     "types": ["node"],

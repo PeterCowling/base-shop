@@ -59,11 +59,13 @@ export interface Shop {
 export type SanityBlogConfig = Record<string, unknown>;
 
 /**
- * Placeholder type describing a shop domain.  The domain may include
- * a name and any other properties relevant to the domain configuration.
+ * Placeholder type describing a shop domain.  The domain must include a
+ * `name` field and may include any other properties relevant to the domain
+ * configuration.
  */
 export interface ShopDomain {
-  name?: string;
+  /** Fully qualified domain name associated with the shop. */
+  name: string;
   [key: string]: any;
 }
 

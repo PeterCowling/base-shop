@@ -24,15 +24,15 @@
 
     /* ───── workspace package resolution ───── */
     "paths": {
-      "@acme/platform-core": ["./packages/platform-core/src/index"],
+      "@acme/platform-core": ["packages/platform-core/src/index"],
       "@acme/platform-core/*": [
-        "./packages/platform-core/src/*",
-        "./packages/platform-core/src/*/index"
+        "packages/platform-core/src/*",
+        "packages/platform-core/src/*/index.ts"
       ],
-      "@acme/types": ["./packages/types/src/index"],
+      "@acme/types": ["packages/types/src/index"],
       "@acme/types/*": [
-        "./packages/types/src/*",
-        "./packages/types/src/*/index"
+        "packages/types/src/*",
+        "packages/types/src/*/index.ts"
       ]
     },
 

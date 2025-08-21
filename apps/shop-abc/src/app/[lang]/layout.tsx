@@ -1,7 +1,7 @@
 // apps/shop-abc/src/app/[[...lang]]/layout.tsx
 
-import { Footer, Header, SideNav } from "@/components/organisms";
-import { AppShell } from "@/components/templates/AppShell";
+import { Footer, Header, SideNav } from "@ui/components/organisms";
+import { AppShell } from "@ui/components/templates/AppShell";
 import TranslationsProvider from "@i18n/Translations";
 import { Locale, resolveLocale } from "@i18n/locales";
 import { DefaultSeo } from "next-seo";

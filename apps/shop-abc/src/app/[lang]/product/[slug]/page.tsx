@@ -13,6 +13,7 @@ import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 import { trackPageView } from "@platform-core/analytics";
 import { getReturnLogistics } from "@platform-core/returnLogistics";
+import { resolveLocale } from "@/i18n/locales";
 
 async function loadComponents(slug: string): Promise<PageComponent[] | null> {
   const pages = await getPages(shop.id);
@@ -73,7 +74,8 @@ export async function generateMetadata({
 }: {
   params: { slug: string; lang: string };
 }): Promise<Metadata> {
-  const product = await getProduct(params.slug, params.lang as Locale, false);
+  const lang = resolveLocale(params.lang);
+  const product = await getProduct(params.slug, lang, false);
   return {
     title: product ? `${product.title} · Base-Shop` : "Product not found",
   };
@@ -87,11 +89,8 @@ export default async function ProductDetailPage({
   // draftMode in Next.js may be asynchronous, returning a promise that resolves to
   // the current draft state. Await it so we can safely read `isEnabled`.
   const { isEnabled } = await draftMode();
-  const product = await getProduct(
-    params.slug,
-    params.lang as Locale,
-    isEnabled
-  );
+  const lang = resolveLocale(params.lang);
+  const product = await getProduct(params.slug, lang, isEnabled);
   if (!product) return notFound();
 
   const components = await loadComponents(params.slug);
@@ -120,8 +119,8 @@ export default async function ProductDetailPage({
     components && components.length ? (
       <DynamicRenderer
         components={components}
-        locale={params.lang}
-        runtimeData={{ ProductDetailTemplate: { product } }}
+        locale={lang}
+        runtimeData={{ ProductDetailTemplate: { product } } as any}
       />
     ) : (
       <PdpClient product={product} />

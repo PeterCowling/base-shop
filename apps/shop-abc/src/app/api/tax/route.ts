@@ -19,10 +19,10 @@ const schema = z
 
 export async function POST(req: NextRequest) {
   const parsed = await parseJsonBody(req, schema, "1mb");
-  if (!parsed.success) return parsed.response;
+  if ("response" in parsed) return parsed.response;
 
   try {
-    const tax = await calculateTax(parsed.data);
+    const tax = await calculateTax(parsed.data as any);
     return NextResponse.json({ tax });
   } catch (err) {
     return NextResponse.json(

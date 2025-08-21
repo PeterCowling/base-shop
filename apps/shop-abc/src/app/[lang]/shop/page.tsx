@@ -1,5 +1,5 @@
 // apps/shop-abc/src/app/[lang]/shop/page.tsx
-import { PRODUCTS } from "@/lib/products";
+import { PRODUCTS } from "@ui/lib/products";
 import type { SKU, PageComponent } from "@acme/types";
 import type { Metadata } from "next";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
@@ -10,6 +10,7 @@ import { env } from "@acme/config";
 import shop from "../../../../shop.json";
 import ShopClient from "./ShopClient.client";
 import { trackPageView } from "@platform-core/analytics";
+import { resolveLocale, type Locale } from "@/i18n/locales";
 
 async function loadComponents(): Promise<PageComponent[] | null> {
   const pages = await getPages(shop.id);
@@ -56,9 +57,10 @@ export default async function ShopIndexPage({
     /* ignore bad feature flags */
   }
 
+  const lang: Locale = resolveLocale(params.lang);
   const content =
     components && components.length ? (
-      <DynamicRenderer components={components} locale={params.lang} />
+      <DynamicRenderer components={components} locale={lang} />
     ) : (
       <ShopClient skus={PRODUCTS as SKU[]} />
     );

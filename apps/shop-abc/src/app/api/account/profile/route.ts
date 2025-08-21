@@ -52,9 +52,12 @@ export async function PUT(req: NextRequest) {
   }
 
   const parsed = await parseJsonBody(req, schema, "1mb");
-  if (!parsed.success) return parsed.response;
+  if ("response" in parsed) return parsed.response;
   try {
-    await updateCustomerProfile(session.customerId, parsed.data);
+    await updateCustomerProfile(
+      session.customerId,
+      parsed.data as { name: string; email: string },
+    );
   } catch (err) {
     if (err instanceof Error && err.message.startsWith("Conflict:")) {
       return NextResponse.json(

@@ -23,7 +23,7 @@ const RequestSchema = z
 
 export async function POST(req: Request) {
   const parsed = await parseJsonBody(req, RequestSchema, "1mb");
-  if (!parsed.success) return parsed.response;
+  if ("response" in parsed) return parsed.response;
   const { orderId, email, hasTags = true, isWorn = false } = parsed.data;
 
   const cfg = await getReturnLogistics();

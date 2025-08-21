@@ -2,6 +2,7 @@
   "extends": "@acme/config/tsconfig.app.json",
   "include": [
     "src/**/*",
+    "shop.json",
     ".next/types/**/*.ts",
     "next-env.d.ts",
     "src/**/*.json"

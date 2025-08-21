@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   const parsed = await parseJsonBody(req, RentalSchema, "1mb");
-  if (!parsed.success) return parsed.response;
+  if ("response" in parsed) return parsed.response;
   const { sessionId } = parsed.data;
   const session = await stripe.checkout.sessions.retrieve(sessionId);
   const deposit = Number(session.metadata?.depositTotal ?? 0);
@@ -41,7 +41,7 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
-  if (!parsed.success) return parsed.response;
+  if ("response" in parsed) return parsed.response;
   const { sessionId, damageFee } = parsed.data;
   const order = await markReturned("abc", sessionId, damageFee);
   if (!order) {

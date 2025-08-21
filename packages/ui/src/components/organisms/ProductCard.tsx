@@ -40,6 +40,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
     ref
   ) => {
     const { classes, style } = boxProps({ width, height, padding, margin });
+    const media = product.media?.[0];
     return (
       <div
         ref={ref}
@@ -51,19 +52,19 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         )}
         {...props}
       >
-        {showImage && product.media[0] && (
+        {showImage && media && (
           <div className="relative aspect-square">
-            {product.media[0].type === "image" ? (
+            {media.type === "image" ? (
               <Image
-                src={product.media[0].url}
-                alt={product.title}
+                src={media.url ?? ""}
+                alt={media.alt ?? product.title ?? ""}
                 fill
                 sizes="(min-width: 640px) 25vw, 50vw"
                 className="rounded-md object-cover"
               />
             ) : (
               <video
-                src={product.media[0].url}
+                src={media.url ?? ""}
                 className="h-full w-full rounded-md object-cover"
                 muted
                 playsInline
@@ -71,8 +72,8 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
             )}
           </div>
         )}
-        <h3 className="font-medium">{product.title}</h3>
-        {showPrice && (
+        <h3 className="font-medium">{product.title ?? ""}</h3>
+        {showPrice && product.price != null && (
           <Price amount={product.price} className="font-semibold" />
         )}
         {onAddToCart && (

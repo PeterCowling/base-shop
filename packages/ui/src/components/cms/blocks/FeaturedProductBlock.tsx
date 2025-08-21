@@ -53,7 +53,7 @@ export default function FeaturedProductBlock({
           {media.type === "image" ? (
             <Image
               src={media.url}
-              alt={media.alt ?? product.title ?? ""}
+              alt={media.altText ?? product.title ?? ""}
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
               className="rounded-md object-cover"

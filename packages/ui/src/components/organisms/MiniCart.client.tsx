@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@acme/platform-core/contexts/CartContext";
-import type { CartLine } from "@acme/platform-core/cartCookie";
+import type { CartLine } from "@acme/types/Cart";
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { drawerWidthProps } from "../../utils/style/drawerWidth";

@@ -27,6 +27,12 @@
       "@acme/platform-core/*": [
         "../platform-core/src/*"
       ],
+      "@acme/types": [
+        "../types/src/index"
+      ],
+      "@acme/types/*": [
+        "../types/src/*"
+      ],
       "@auth": [
         "types-compat/auth"
       ]
@@ -53,6 +59,9 @@
     },
     {
       "path": "../date-utils"
+    },
+    {
+      "path": "../types"
     }
   ],
   "include": [

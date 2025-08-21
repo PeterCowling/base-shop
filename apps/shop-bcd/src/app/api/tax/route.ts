@@ -18,13 +18,11 @@ const schema = z
   .strict();
 
 export async function POST(req: NextRequest) {
-  const parsed = await parseJsonBody<z.infer<typeof schema>>(req, schema, "1mb");
-  if (parsed.success === false) {
-    return parsed.response;
-  }
+  const parsed = await parseJsonBody(req, schema, "1mb");
+  if (!parsed.success) return parsed.response;
 
   try {
-    const tax = await calculateTax({ provider: "taxjar", ...parsed.data });
+    const tax = await calculateTax(parsed.data);
     return NextResponse.json({ tax });
   } catch (err) {
     return NextResponse.json(

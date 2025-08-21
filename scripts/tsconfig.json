@@ -17,6 +17,7 @@
     /* ───── language / module target ───── */
     "module": "esnext",
     "target": "ES2017",
+    "moduleResolution": "node",
 
     /* ───── Node typings only ───── */
     "types": ["node"],
@@ -24,7 +25,15 @@
     /* ───── workspace package resolution ───── */
     "paths": {
       "@acme/platform-core": ["./packages/platform-core/src/index"],
-      "@acme/platform-core/*": ["./packages/platform-core/src/*"]
+      "@acme/platform-core/*": [
+        "./packages/platform-core/src/*",
+        "./packages/platform-core/src/*/index"
+      ],
+      "@acme/types": ["./packages/types/src/index"],
+      "@acme/types/*": [
+        "./packages/types/src/*",
+        "./packages/types/src/*/index"
+      ]
     },
 
     /* ───── keep imports extension-less ───── */

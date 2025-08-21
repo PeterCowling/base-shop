@@ -1,6 +1,6 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { ExampleProps } from "@acme/types";
+import type { ExampleProps } from "@acme/types";
 import { getComponentNameMap } from "./component-names";
 
 const examples: ExampleProps = {

@@ -4,6 +4,11 @@ import reactHooks from "eslint-plugin-react-hooks";
 
 export default [
   {
+    ignores: [
+      "**/dist/**",
+      "**/.next/**",
+      "**/index.js",
+    ],
     plugins: {
       "react-hooks": fixupPluginRules(reactHooks),
     },

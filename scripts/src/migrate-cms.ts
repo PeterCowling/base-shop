@@ -9,7 +9,8 @@
  */
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { CliEnvSchema, type CliEnv } from "./types/env";
+import { CliEnvSchema } from "./types/env";
+import type { CliEnv } from "./types/env";
 
 let env: CliEnv;
 try {

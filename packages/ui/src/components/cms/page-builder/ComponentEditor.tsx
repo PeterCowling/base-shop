@@ -34,10 +34,10 @@ interface Props {
 }
 
 function ComponentEditor({ component, onChange, onResize }: Props) {
-  if (!component) return null;
-
   const { handleInput } = useComponentInputs(onChange);
   const { handleResize, handleFullSize } = useComponentResize(onResize);
+
+  if (!component) return null;
 
   return (
     <Accordion

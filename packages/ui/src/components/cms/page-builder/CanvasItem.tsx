@@ -14,20 +14,7 @@ import useCanvasDrag from "./useCanvasDrag";
 import useCanvasSpacing from "./useCanvasSpacing";
 import type { DevicePreset } from "../../../utils/devicePresets";
 
-const CanvasItem = memo(function CanvasItem({
-  component,
-  index,
-  parentId,
-  selectedId,
-  onSelectId,
-  onRemove,
-  dispatch,
-  locale,
-  gridEnabled = false,
-  gridCols,
-  viewport,
-  device,
-}: {
+type CanvasItemProps = {
   component: PageComponent;
   index: number;
   parentId: string | undefined;
@@ -40,24 +27,44 @@ const CanvasItem = memo(function CanvasItem({
   gridCols: number;
   viewport: "desktop" | "tablet" | "mobile";
   device?: DevicePreset;
-}) {
-  if (component.type === "Text") {
+};
+
+const CanvasItem = memo(function CanvasItem(props: CanvasItemProps) {
+  if (props.component.type === "Text") {
     return (
       <TextBlock
-        component={component as TextComponent}
-        index={index}
-        parentId={parentId}
-        selectedId={selectedId}
-        onSelectId={onSelectId}
-        onRemove={onRemove}
-        dispatch={dispatch}
-        locale={locale}
-        gridEnabled={gridEnabled}
-        gridCols={gridCols}
-        viewport={viewport}
+        component={props.component as TextComponent}
+        index={props.index}
+        parentId={props.parentId}
+        selectedId={props.selectedId}
+        onSelectId={props.onSelectId}
+        onRemove={props.onRemove}
+        dispatch={props.dispatch}
+        locale={props.locale}
+        gridEnabled={props.gridEnabled}
+        gridCols={props.gridCols}
+        viewport={props.viewport}
       />
     );
   }
+
+  return <CanvasItemImpl {...props} />;
+});
+
+const CanvasItemImpl = memo(function CanvasItemImpl({
+  component,
+  index,
+  parentId,
+  selectedId,
+  onSelectId,
+  onRemove,
+  dispatch,
+  locale,
+  gridEnabled = false,
+  gridCols,
+  viewport,
+  device,
+}: CanvasItemProps) {
 
   const selected = selectedId === component.id;
   const {

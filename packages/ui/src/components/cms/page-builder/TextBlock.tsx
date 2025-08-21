@@ -129,21 +129,22 @@ const TextBlock = memo(function TextBlock({
   const snapping = resizeSnapping || dragSnapping;
 
   const editor = useTextEditor(component, locale, editing);
+  const { id: componentId, text: componentText } = component;
 
   const finishEdit = useCallback(() => {
     if (!editor) return;
     dispatch({
       type: "update",
-      id: component.id,
+      id: componentId,
       patch: {
         text: {
-          ...(typeof component.text === "object" ? component.text : {}),
+          ...(typeof componentText === "object" ? componentText : {}),
           [locale]: editor.getHTML(),
         },
       } as Partial<TextComponent>,
     });
     setEditing(false);
-  }, [editor, dispatch, component.id, locale, component]);
+  }, [editor, dispatch, componentId, locale, componentText]);
 
   return (
     <div

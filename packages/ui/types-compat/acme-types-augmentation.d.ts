@@ -1,57 +1,91 @@
-/* Augment @acme/types with names @acme/ui expects but which aren't exported yet.
-   These are intentionally wide to unblock builds. Tighten them as real types land. */
 declare module "@acme/types" {
-  // Core page builder
-  export type HistoryState = any;
-  export type Page = any;
-  export type PageComponent = any;
-  export type PageComponentBase = any;
-  export const pageComponentSchema: any; // runtime schema placeholder
-  export type UpgradeComponent = any;
+  /** Core product-ish types expected by UI */
+  export interface MediaItem {
+    id?: string;
+    type?: "image" | "video" | string;
+    url?: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+    [k: string]: any;
+  }
+  export type ImageOrientation = "landscape" | "portrait" | "square" | string;
 
-  // Commerce types
-  export type SKU = any;
-  export type RentalOrder = any;
-  export type PublishLocation = any;
+  export interface SKU {
+    id?: string;
+    title?: string;
+    price?: number;
+    deposit?: number;
+    media?: MediaItem[];
+    [k: string]: any;
+  }
+
+  export interface PublishLocation {
+    id?: string;
+    slug?: string;
+    title?: string;
+    [k: string]: any;
+  }
+
+  export interface RentalOrder {
+    id?: string;
+    items?: any[];
+    [k: string]: any;
+  }
+
   export type ApiError = any;
-  export type WishlistItem = any;
 
-  // Media
-  export type ImageOrientation = any;
-  export type MediaItem = any;
+  /** Page & PageBuilder family used across the CMS/editor */
+  export interface Page { id?: string; slug?: string; title?: string; components?: PageComponent[]; [k: string]: any; }
+  export interface PageComponentBase { id?: string; type?: string; [k: string]: any; }
+  export type PageComponent = PageComponentBase & Record<string, any>;
 
-  // Components used around the UI
-  export type AnnouncementBarComponent = any;
-  export type ButtonComponent = any;
-  export type CollectionListComponent = any;
-  export type ContactFormComponent = any;
-  export type CountdownTimerComponent = any;
-  export type CustomHtmlComponent = any;
-  export type FAQBlockComponent = any;
-  export type FooterComponent = any;
-  export type GalleryComponent = any;
-  export type GiftCardBlockComponent = any;
-  export type HeaderComponent = any;
-  export type HeroBannerComponent = any;
-  export type ImageComponent = any;
-  export type ImageSliderComponent = any;
-  export type LookbookComponent = any;
-  export type MapBlockComponent = any;
-  export type NewsletterSignupComponent = any;
-  export type PopupModalComponent = any;
-  export type PricingTableComponent = any;
-  export type ProductGridComponent = any;
-  export type RecommendationCarouselComponent = any;
-  export type ReviewsCarouselComponent = any;
-  export type SearchBarComponent = any;
-  export type SocialFeedComponent = any;
-  export type SocialLinksComponent = any;
-  export type SocialProofComponent = any;
-  export type StoreLocatorBlockComponent = any;
-  export type TabsComponent = any;
-  export type ValuePropsComponent = any;
-  export type VideoBlockComponent = any;
+  // Components (keep them loose but present)
+  export interface TextComponent extends PageComponentBase { text?: string; }
+
+  export type AnnouncementBarComponent = PageComponentBase;
+  export type ButtonComponent = PageComponentBase;
+  export type CollectionListComponent = PageComponentBase;
+  export type ContactFormComponent = PageComponentBase;
+  export type CountdownTimerComponent = PageComponentBase;
+  export type CustomHtmlComponent = PageComponentBase;
+  export type FAQBlockComponent = PageComponentBase;
+  export type FooterComponent = PageComponentBase;
+  export type GalleryComponent = PageComponentBase;
+  export type GiftCardBlockComponent = PageComponentBase;
+  export type HeaderComponent = PageComponentBase;
+  export type HeroBannerComponent = PageComponentBase;
+  export type ImageComponent = PageComponentBase;
+  export type ImageSliderComponent = PageComponentBase;
+  export type LookbookComponent = PageComponentBase;
+  export type MapBlockComponent = PageComponentBase;
+  export type NewsletterSignupComponent = PageComponentBase;
+  export type PricingTableComponent = PageComponentBase;
+  export type ProductGridComponent = PageComponentBase;
+  export type RecommendationCarouselComponent = PageComponentBase;
+  export type ReviewsCarouselComponent = PageComponentBase;
+  export type SearchBarComponent = PageComponentBase;
+  export type SocialFeedComponent = PageComponentBase;
+  export type SocialLinksComponent = PageComponentBase;
+  export type SocialProofComponent = PageComponentBase;
+  export type StoreLocatorBlockComponent = PageComponentBase;
+  export type TabsComponent = PageComponentBase;
+  export type TestimonialsComponent = PageComponentBase;
+  export type ValuePropsComponent = PageComponentBase;
+  export type VideoBlockComponent = PageComponentBase;
+  export type UpgradeComponent = PageComponentBase;
+
+  /** Forms */
   export type FormField = any;
   export type FormFieldOption = any;
-  export type TestimonialsComponent = any;
+
+  /** Publications / workflow */
+  export type ProductPublication = any;
+  export type PublicationStatus = string;
+
+  /** PageBuilder state */
+  export type HistoryState = any;
+
+  /** Schema value used by the editor (ok to be 'any' at type-time) */
+  export const pageComponentSchema: any;
 }

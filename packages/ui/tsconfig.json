@@ -26,6 +26,9 @@
       ],
       "@acme/platform-core/*": [
         "../platform-core/src/*"
+      ],
+      "@auth": [
+        "types-compat/auth"
       ]
     }
   },

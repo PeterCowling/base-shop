@@ -29,7 +29,7 @@ type Props = {
   device?: DevicePreset;
 };
 
-const CanvasItemInner = memo(function CanvasItemInner({
+function CanvasItemInner({
   component,
   index,
   parentId,
@@ -358,7 +358,9 @@ const CanvasItemInner = memo(function CanvasItemInner({
       )}
     </div>
   );
-});
+}
+
+const MemoCanvasItemInner = memo(CanvasItemInner);
 
 const CanvasItem = memo(function CanvasItem({
   component,
@@ -393,7 +395,7 @@ const CanvasItem = memo(function CanvasItem({
   }
 
   return (
-    <CanvasItemInner
+    <MemoCanvasItemInner
       component={component}
       index={index}
       parentId={parentId}

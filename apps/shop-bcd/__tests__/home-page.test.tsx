@@ -22,7 +22,7 @@ test("Home receives components from fs and fetches posts when merchandising enab
   ];
   (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(components));
 
-  const element = await Page({ params: { lang: "en" } });
+  const element = await Page({ params: { lang: "en" } } as any);
 
   expect(fs.readFile).toHaveBeenCalledWith(
     expect.stringContaining("data/shops/bcd/pages/home.json"),

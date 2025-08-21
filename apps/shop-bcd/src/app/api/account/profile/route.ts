@@ -39,8 +39,10 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const parsed = await parseJsonBody(req, schema, "1mb");
-  if (!parsed.success) return parsed.response;
+  const parsed = await parseJsonBody<z.infer<typeof schema>>(req, schema, "1mb");
+  if ("response" in parsed) {
+    return parsed.response;
+  }
 
   await updateCustomerProfile(session.customerId, parsed.data);
   const profile = await getCustomerProfile(session.customerId);

@@ -46,8 +46,10 @@ export async function computeTotals(
   discountRate: number,
   currency: string,
 ): Promise<{ subtotal: number; depositTotal: number; discount: number }> {
+  const items: CartLine[] = Object.values(cart);
+
   const subtotals = await Promise.all(
-    Object.values(cart).map(async (item) => {
+    items.map(async (item) => {
       const unit = await priceForDays(item.sku, rentalDays);
       const discounted = Math.round(unit * (1 - discountRate));
       return { base: unit * item.qty, discounted: discounted * item.qty };
@@ -57,10 +59,7 @@ export async function computeTotals(
   const subtotalBase = subtotals.reduce((sum, v) => sum + v.discounted, 0);
   const originalBase = subtotals.reduce((sum, v) => sum + v.base, 0);
   const discountBase = originalBase - subtotalBase;
-  const depositBase = Object.values(cart).reduce(
-    (sum, item) => sum + item.sku.deposit * item.qty,
-    0,
-  );
+  const depositBase = items.reduce((sum, item) => sum + item.sku.deposit * item.qty, 0);
 
   return {
     subtotal: await convertCurrency(subtotalBase, currency),

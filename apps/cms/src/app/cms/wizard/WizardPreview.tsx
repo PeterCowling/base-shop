@@ -50,7 +50,8 @@ export default function WizardPreview({
   const device = useMemo<DevicePreset>(() => {
     if (deviceProp) return deviceProp;
     const preset =
-      devicePresets.find((d) => d.id === deviceId) ?? devicePresets[0];
+      devicePresets.find((d: DevicePreset) => d.id === deviceId) ??
+      devicePresets[0];
     return orientation === "portrait"
       ? { ...preset, orientation }
       : {
@@ -295,7 +296,7 @@ export default function WizardPreview({
         <div className="flex justify-end gap-2">
           <DeviceSelector
             deviceId={deviceId}
-            onChange={(id) => {
+            onChange={(id: string) => {
               setDeviceId(id);
               setOrientation("portrait");
             }}
@@ -342,7 +343,7 @@ export default function WizardPreview({
       {selected && popoverPos && (
         <Popover
           open={popoverOpen}
-          onOpenChange={(o) => {
+          onOpenChange={(o: boolean) => {
             setPopoverOpen(o);
             if (!o) {
               setSelected(null);

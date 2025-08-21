@@ -143,7 +143,7 @@ const TextBlock = memo(function TextBlock({
       } as Partial<TextComponent>,
     });
     setEditing(false);
-  }, [editor, dispatch, component.id, locale, component]);
+  }, [editor, dispatch, locale, component]);
 
   return (
     <div

@@ -145,7 +145,7 @@ export function usePageBuilderDnD({
         });
       }
     },
-    [dispatch, components, containerTypes, defaults, selectId]
+    [dispatch, components, containerTypes, defaults, selectId, setSnapPosition]
   );
 
   const handleDragStart = useCallback((ev: DragStartEvent) => {

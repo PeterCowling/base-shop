@@ -36,7 +36,7 @@ export default async function ShopThemePage({
   const tokensByTheme = {
     ...Object.fromEntries(
       await Promise.all(
-        builtInThemes.map(async (t) => [t, { ...baseTokens, ...(await loadThemeTokens(t)) }])
+        builtInThemes.map(async (t: string) => [t, { ...baseTokens, ...(await loadThemeTokens(t)) }])
       )
     ),
     ...presets,

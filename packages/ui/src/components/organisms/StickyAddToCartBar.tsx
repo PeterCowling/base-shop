@@ -35,8 +35,10 @@ export function StickyAddToCartBar({
       {...props}
     >
       <div className="flex flex-col">
-        <span className="text-sm">{product.title}</span>
-        <Price amount={product.price} className="font-semibold" />
+        <span className="text-sm">{product.title ?? ""}</span>
+        {product.price != null && (
+          <Price amount={product.price} className="font-semibold" />
+        )}
       </div>
       {onAddToCart && (
         <Button onClick={() => onAddToCart(product)}>{ctaLabel}</Button>

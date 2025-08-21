@@ -130,20 +130,22 @@ const TextBlock = memo(function TextBlock({
 
   const editor = useTextEditor(component, locale, editing);
 
+  const { id: componentId, text: componentText } = component;
+
   const finishEdit = useCallback(() => {
     if (!editor) return;
     dispatch({
       type: "update",
-      id: component.id,
+      id: componentId,
       patch: {
         text: {
-          ...(typeof component.text === "object" ? component.text : {}),
+          ...(typeof componentText === "object" ? componentText : {}),
           [locale]: editor.getHTML(),
         },
       } as Partial<TextComponent>,
     });
     setEditing(false);
-  }, [editor, dispatch, locale, component]);
+  }, [editor, dispatch, locale, componentId, componentText]);
 
   return (
     <div

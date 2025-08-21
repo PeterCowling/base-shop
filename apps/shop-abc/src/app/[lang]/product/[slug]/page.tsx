@@ -84,7 +84,9 @@ export default async function ProductDetailPage({
 }: {
   params: { slug: string; lang: string };
 }) {
-  const { isEnabled } = draftMode();
+  // draftMode in Next.js may be asynchronous, returning a promise that resolves to
+  // the current draft state. Await it so we can safely read `isEnabled`.
+  const { isEnabled } = await draftMode();
   const product = await getProduct(
     params.slug,
     params.lang as Locale,

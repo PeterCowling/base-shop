@@ -21,5 +21,10 @@
     "src*.json",
     "src/**/*",
     "src/**/*.json"
+  ],
+  "references": [
+    {
+      "path": "../date-utils"
+    }
   ]
 }

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { requirePermission } from "@auth";
 import { useEffect, useState } from "react";
 import type { UpgradeComponent } from "@acme/types/upgrade";
-import ComponentPreview from "@ui/src/components/ComponentPreview";
+import ComponentPreview from "@ui/components/ComponentPreview";
 import { z } from "zod";
 
 export const metadata: Metadata = {

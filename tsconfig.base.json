@@ -74,16 +74,16 @@
         "packages/config/*"
       ],
       "@platform-core": [
-        "packages/platform-core"
+        "packages/platform-core/src/index.ts"
       ],
       "@platform-core/*": [
-        "packages/platform-core/*"
+        "packages/platform-core/src/*"
       ],
       "@acme/platform-core": [
-        "packages/platform-core"
+        "packages/platform-core/src/index.ts"
       ],
       "@acme/platform-core/*": [
-        "packages/platform-core/*"
+        "packages/platform-core/src/*"
       ],
       "@acme/shared-utils": [
         "packages/shared-utils"
@@ -110,10 +110,16 @@
         "packages/sanity/*"
       ],
       "@acme/date-utils": [
-        "packages/date-utils"
+        "packages/date-utils/src/index.ts"
       ],
       "@acme/date-utils/*": [
-        "packages/date-utils/*"
+        "packages/date-utils/src/*"
+      ],
+      "@date-utils": [
+        "packages/date-utils/src/index.ts"
+      ],
+      "@date-utils/*": [
+        "packages/date-utils/src/*"
       ],
       "@acme/configurator": [
         "packages/configurator"

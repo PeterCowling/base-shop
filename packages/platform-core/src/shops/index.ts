@@ -51,12 +51,18 @@ export interface Shop {
 }
 
 /**
- * Placeholder type describing the configuration of a Sanity blog.
- * In the full codebase this would include the specific fields
- * required by the CMS, but here it is left as an object with
- * arbitrary keys.
+ * Configuration required to connect a shop to a Sanity project.
+ * These fields mirror the shape used in the real application while
+ * still allowing additional properties.  Using an explicit interface
+ * keeps type‑checking in sync with the `@acme/types` package which
+ * expects these keys to exist.
  */
-export type SanityBlogConfig = Record<string, unknown>;
+export interface SanityBlogConfig {
+  projectId: string;
+  dataset: string;
+  token: string;
+  [key: string]: unknown;
+}
 
 /**
  * Placeholder type describing a shop domain.  The domain must include a

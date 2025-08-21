@@ -39,6 +39,8 @@
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "noEmit": true,
+    "emitDeclarationOnly": false,
     "jsx": "react-jsx",
     "resolveJsonModule": true,
     "baseUrl": ".",

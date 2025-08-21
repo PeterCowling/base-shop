@@ -18,6 +18,12 @@ export default [
       "**/dist/**",
       "**/.next/**",
       "**/index.js",
+      "packages/ui/src/**/*.js",
+      "packages/ui/src/**/*.d.ts",
+      "packages/ui/src/**/*.d.ts.map",
+      "apps/*/src/**/*.js",
+      "apps/*/src/**/*.d.ts",
+      "apps/*/src/**/*.js.map",
     ],
     languageOptions: {
       ecmaVersion: "latest",

@@ -24,7 +24,7 @@ test("valid upgrade token returns page JSON", async () => {
     slug: "home",
     status: "draft",
     components: [],
-    seo: { title: "Home" },
+    seo: { title: { en: "Home" } },
     createdAt: nowIso(),
     updatedAt: nowIso(),
     createdBy: "tester",
@@ -48,7 +48,7 @@ test("valid upgrade token returns page JSON", async () => {
   );
   const { token } = await tokenRes.json();
 
-  const { onRequest } = await import("../../src/routes/preview/[pageId].ts");
+  const { onRequest } = await import("../../src/routes/preview/[pageId]");
   const res = await onRequest({
     params: { pageId: "1" },
     request: new Request(`http://test?upgrade=${token}`),
@@ -65,7 +65,7 @@ test("invalid upgrade token yields 401", async () => {
     getPages,
   }));
 
-  const { onRequest } = await import("../../src/routes/preview/[pageId].ts");
+  const { onRequest } = await import("../../src/routes/preview/[pageId]");
   const res = await onRequest({
     params: { pageId: "1" },
     request: new Request(`http://test?upgrade=bad`),
@@ -81,7 +81,7 @@ test("standard token not accepted as upgrade token", async () => {
     getPages,
   }));
 
-  const { onRequest } = await import("../../src/routes/preview/[pageId].ts");
+  const { onRequest } = await import("../../src/routes/preview/[pageId]");
   const res = await onRequest({
     params: { pageId: "1" },
     request: new Request(

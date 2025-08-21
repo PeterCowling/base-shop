@@ -21,7 +21,7 @@ const pluginsReady = initPlugins({
   directories: [pluginsDir],
   config: {
     ...(shopConfig.plugins ?? {}),
-    "premier-shipping": shopConfig.premierDelivery,
+    "premier-shipping": shopConfig.premierDelivery as Record<string, unknown>,
   },
 });
 

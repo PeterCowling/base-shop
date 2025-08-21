@@ -60,7 +60,7 @@ test("builds Stripe session with correct items and metadata", async () => {
   const sku = PRODUCTS[0];
   const size = "40";
   const cart = { [`${sku.id}:${size}`]: { sku, qty: 2, size } };
-  const cookie = encodeCartCookie(cart);
+  const cookie = encodeCartCookie(cart as any);
   const returnDate = "2025-01-02";
   const expectedDays = calculateRentalDays(returnDate);
   const shipping = {
@@ -110,7 +110,7 @@ test("responds with 400 on invalid returnDate", async () => {
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
-  const cookie = encodeCartCookie(cart);
+  const cookie = encodeCartCookie(cart as any);
   const req = createRequest({ returnDate: "not-a-date", currency: "EUR", taxRegion: "EU" }, cookie);
   const res = await POST(req);
   expect(res.status).toBe(400);

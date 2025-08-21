@@ -13,10 +13,12 @@ import shop from "../../shop.json";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const pluginsDir = path.resolve(__dirname, "../../../../packages/plugins");
 
-const shopConfig = shop as unknown as { plugins?: Record<string, unknown> };
+const shopConfig = shop as unknown as {
+  plugins?: Record<string, Record<string, unknown>>;
+};
 const pluginsReady = initPlugins({
   directories: [pluginsDir],
-  config: shopConfig.plugins ?? {},
+  config: (shopConfig.plugins ?? {}) as Record<string, Record<string, unknown>>,
 });
 
 const geistSans = Geist({

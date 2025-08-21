@@ -44,7 +44,7 @@ test("PATCH rejects negative or non-integer quantity", async () => {
   const size = sku.sizes[0];
   const id = `${sku.id}:${size}`;
   const cart = { [id]: { sku, qty: 1, size } };
-  const cookie = encodeCartCookie(cart);
+  const cookie = encodeCartCookie(JSON.stringify(cart));
   let res = await PATCH(createRequest({ id, qty: -2 }, cookie));
   expect(res.status).toBe(400);
   res = await PATCH(createRequest({ id, qty: 1.5 }, cookie));

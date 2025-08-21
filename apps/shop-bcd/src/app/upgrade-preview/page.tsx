@@ -78,7 +78,9 @@ export default function UpgradePreviewPage() {
           <li key={c.file}>
             <ComponentPreview
               component={c}
-              componentProps={exampleProps[c.componentName] ?? {}}
+              componentProps={
+                (exampleProps[c.componentName] ?? {}) as Record<string, unknown>
+              }
             />
           </li>
         ))}

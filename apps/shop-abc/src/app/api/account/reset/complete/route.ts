@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     ResetCompleteSchema,
     "1mb"
   );
-  if (!parsed.success) return parsed.response;
+  if ("response" in parsed) return parsed.response;
 
   const csrfToken = req.headers.get("x-csrf-token");
   if (!csrfToken || !(await validateCsrfToken(csrfToken))) {

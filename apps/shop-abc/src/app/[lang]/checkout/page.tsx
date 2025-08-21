@@ -1,9 +1,9 @@
 // apps/shop-abc/src/app/[lang]/checkout/page.tsx
 
-import CheckoutForm from "@/components/checkout/CheckoutForm";
-import OrderSummary from "@/components/organisms/OrderSummary";
+import CheckoutForm from "@ui/components/checkout/CheckoutForm";
+import OrderSummary from "@ui/components/organisms/OrderSummary";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
-import DeliveryScheduler from "@ui/components/organisms/DeliveryScheduler";
+import { DeliveryScheduler } from "@ui/components/organisms/DeliveryScheduler";
 import { Locale, resolveLocale } from "@/i18n/locales";
 import { useTranslations } from "@/i18n/useTranslations";
 import {
@@ -59,7 +59,7 @@ export default async function CheckoutPage({
       <DynamicRenderer
         components={components}
         locale={lang}
-        runtimeData={{ OrderSummary: { cart } }}
+        runtimeData={{ OrderSummary: { cart } } as any}
       />
     );
   }

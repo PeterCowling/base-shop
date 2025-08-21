@@ -45,7 +45,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   const parsed = await parseJsonBody(req, schema, "1mb");
-  if (!parsed.success) return parsed.response;
+  if ("response" in parsed) return parsed.response;
 
   const {
     returnDate,

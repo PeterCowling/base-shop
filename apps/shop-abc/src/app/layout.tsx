@@ -1,6 +1,6 @@
 // src/app/layout.tsx
 import "./globals.css";
-import { CartProvider } from "@/contexts/CartContext";
+import { CartProvider } from "@platform-core/contexts/CartContext";
 import { initTheme } from "@platform-core/utils";
 import "@acme/zod-utils/initZod";
 import { initPlugins } from "@platform-core/plugins";

@@ -6,6 +6,7 @@ import { trackPageView } from "@platform-core/analytics";
 import { env } from "@acme/config";
 import { fetchPublishedPosts } from "@acme/sanity";
 import type { BlogPost } from "@ui/components/cms/blocks/BlogListing";
+import { resolveLocale, type Locale } from "@/i18n/locales";
 
 async function loadComponents(shopId: string): Promise<PageComponent[]> {
   const pages = await getPages(shopId);
@@ -38,5 +39,6 @@ export default async function Page({
     }
   }
   await trackPageView(shop.id, "home");
-  return <Home components={components} locale={params.lang} latestPost={latestPost} />;
+  const lang: Locale = resolveLocale(params.lang);
+  return <Home components={components} locale={lang} latestPost={latestPost} />;
 }

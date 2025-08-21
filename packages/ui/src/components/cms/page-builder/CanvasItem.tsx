@@ -29,7 +29,7 @@ type Props = {
   device?: DevicePreset;
 };
 
-const CanvasItemInner = memo(function CanvasItemInner({
+const CanvasItem = memo(function CanvasItemComponent({
   component,
   index,
   parentId,
@@ -162,6 +162,24 @@ const CanvasItemInner = memo(function CanvasItemInner({
   const children = (component as { children?: PageComponent[] }).children;
   const hasChildren = Array.isArray(children);
   const childIds = hasChildren ? children!.map((c) => c.id) : [];
+
+  if (component.type === "Text") {
+    return (
+      <TextBlock
+        component={component as TextComponent}
+        index={index}
+        parentId={parentId}
+        selectedId={selectedId}
+        onSelectId={onSelectId}
+        onRemove={onRemove}
+        dispatch={dispatch}
+        locale={locale}
+        gridEnabled={gridEnabled}
+        gridCols={gridCols}
+        viewport={viewport}
+      />
+    );
+  }
 
   return (
     <div
@@ -357,56 +375,6 @@ const CanvasItemInner = memo(function CanvasItemInner({
         </SortableContext>
       )}
     </div>
-  );
-});
-
-const CanvasItem = memo(function CanvasItem({
-  component,
-  index,
-  parentId,
-  selectedId,
-  onSelectId,
-  onRemove,
-  dispatch,
-  locale,
-  gridEnabled = false,
-  gridCols,
-  viewport,
-  device,
-}: Props) {
-  if (component.type === "Text") {
-    return (
-      <TextBlock
-        component={component as TextComponent}
-        index={index}
-        parentId={parentId}
-        selectedId={selectedId}
-        onSelectId={onSelectId}
-        onRemove={onRemove}
-        dispatch={dispatch}
-        locale={locale}
-        gridEnabled={gridEnabled}
-        gridCols={gridCols}
-        viewport={viewport}
-      />
-    );
-  }
-
-  return (
-    <CanvasItemInner
-      component={component}
-      index={index}
-      parentId={parentId}
-      selectedId={selectedId}
-      onSelectId={onSelectId}
-      onRemove={onRemove}
-      dispatch={dispatch}
-      locale={locale}
-      gridEnabled={gridEnabled}
-      gridCols={gridCols}
-      viewport={viewport}
-      device={device}
-    />
   );
 });
 

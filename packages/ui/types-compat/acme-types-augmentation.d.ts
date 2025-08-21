@@ -3,7 +3,7 @@ declare module "@acme/types" {
   export interface MediaItem {
     id?: string;
     type?: "image" | "video" | string;
-    url?: string;
+    url: string;
     alt?: string;
     width?: number;
     height?: number;
@@ -21,7 +21,7 @@ declare module "@acme/types" {
   }
 
   export interface PublishLocation {
-    id?: string;
+    id: string;
     slug?: string;
     title?: string;
     [k: string]: any;
@@ -36,12 +36,25 @@ declare module "@acme/types" {
   export type ApiError = any;
 
   /** Page & PageBuilder family used across the CMS/editor */
-  export interface Page { id?: string; slug?: string; title?: string; components?: PageComponent[]; [k: string]: any; }
-  export interface PageComponentBase { id?: string; type?: string; [k: string]: any; }
+  export interface Page {
+    id: string;
+    slug: string;
+    title?: string;
+    components: PageComponent[];
+    [k: string]: any;
+  }
+  export interface PageComponentBase {
+    id: string;
+    type: string;
+    [k: string]: any;
+  }
   export type PageComponent = PageComponentBase & Record<string, any>;
 
   // Components (keep them loose but present)
-  export interface TextComponent extends PageComponentBase { text?: string; }
+  export interface TextComponent extends PageComponentBase {
+    type: "Text";
+    text?: string;
+  }
 
   export type AnnouncementBarComponent = PageComponentBase;
   export type ButtonComponent = PageComponentBase;
@@ -74,6 +87,7 @@ declare module "@acme/types" {
   export type ValuePropsComponent = PageComponentBase;
   export type VideoBlockComponent = PageComponentBase;
   export type UpgradeComponent = PageComponentBase;
+  export type PopupModalComponent = PageComponentBase;
 
   /** Forms */
   export type FormField = any;

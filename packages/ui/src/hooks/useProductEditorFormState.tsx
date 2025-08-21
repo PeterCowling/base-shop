@@ -2,13 +2,7 @@
 import { useFileUpload } from "./useFileUpload";
 import { usePublishLocations } from "../../../platform-core/src/hooks/usePublishLocations";
 import type { Locale } from "@acme/i18n";
-
-interface MediaItem {
-  url: string;
-  title?: string;
-  altText?: string;
-  type: "image" | "video";
-}
+import type { MediaItem } from "@acme/types";
 
 interface ProductPublication {
   id: string;

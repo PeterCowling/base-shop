@@ -23,13 +23,16 @@ export function ProductMediaGalleryTemplate({
   className,
   ...props
 }: ProductMediaGalleryTemplateProps) {
-  const galleryMedia: GalleryMediaItem[] = product.media.map(
-    (m: SKU["media"][number]) => ({
+  const galleryMedia: GalleryMediaItem[] = (product.media ?? [])
+    .filter(
+      (m): m is NonNullable<SKU["media"]>[number] & { url: string } =>
+        !!m?.url
+    )
+    .map((m) => ({
       type: m.type as GalleryMediaItem["type"],
       src: m.url,
       alt: m.altText,
-    })
-  );
+    }));
   return (
     <div className={cn("grid gap-6 md:grid-cols-2", className)} {...props}>
       <ProductGallery media={galleryMedia} />
@@ -47,7 +50,9 @@ export function ProductMediaGalleryTemplate({
             )}
           </div>
         )}
-        <Price amount={product.price} className="text-xl font-bold" />
+        {typeof product.price === "number" && (
+          <Price amount={product.price} className="text-xl font-bold" />
+        )}
         {product.description && <p>{product.description}</p>}
         {onAddToCart && (
           <Button onClick={() => onAddToCart(product)}>{ctaLabel}</Button>

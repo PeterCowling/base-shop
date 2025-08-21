@@ -1,6 +1,7 @@
 // .eslintrc.cjs  ── root of the monorepo
 module.exports = {
   /* …your existing config… */
+  plugins: ["@typescript-eslint"],
   ignorePatterns: [
     "**/dist/**", // compiled packages
     "**/.next/**", // Next.js build output

@@ -70,7 +70,7 @@ function StartReturn({ orderId }: { orderId: string }) {
         body: JSON.stringify({ sessionId: orderId }),
       });
       if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
+        const body = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(body.error || "Failed to create return");
       }
       const data = (await res.json()) as {

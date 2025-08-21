@@ -17,7 +17,7 @@ const providerEvents: Record<string, OrderStep[]> = {
 
 export async function GET(
   _req: Request,
-  { params }: { params: { id: string } }
+  { params: _params }: { params: { id: string } }
 ) {
   const settings = await getShopSettings(shop.id);
   // Rental or high-volume shops may disable tracking by leaving this empty.

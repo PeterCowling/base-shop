@@ -58,8 +58,10 @@ export default function UpgradePreviewPage() {
     try {
       const res = await fetch("/api/publish", { method: "POST" });
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error((data as any).error || "Publish failed");
+        const data = (await res.json().catch(() => ({}))) as {
+          error?: string;
+        };
+        throw new Error(data.error || "Publish failed");
       }
     } catch (err) {
       console.error("Publish failed", err);

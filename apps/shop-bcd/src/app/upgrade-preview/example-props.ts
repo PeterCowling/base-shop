@@ -1,7 +1,7 @@
 // apps/shop-bcd/src/app/upgrade-preview/example-props.ts
 // Map of example props for all UI components so upgrade previews can render reliably
 
-export const exampleProps: Record<string, any> = {
+export const exampleProps: Record<string, unknown> = {
   ProfileForm: {},
   MfaSetup: {},
   MfaChallenge: {},

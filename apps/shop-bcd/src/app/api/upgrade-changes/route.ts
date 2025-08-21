@@ -21,7 +21,8 @@ export async function GET() {
     const data = JSON.parse(raw);
     const rawComponents = Array.isArray(data.components) ? data.components : [];
     const components = rawComponents.filter(
-      (c: any) => c.oldChecksum !== c.newChecksum
+      (c: { oldChecksum: string; newChecksum: string }) =>
+        c.oldChecksum !== c.newChecksum,
     );
     const pages = Array.isArray(data.pages) ? data.pages : [];
     return NextResponse.json({ components, pages });

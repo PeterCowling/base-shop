@@ -121,7 +121,7 @@ if (process.argv[1] && process.argv[1].endsWith("generate-meta.ts")) {
                     return [4 /*yield*/, generateMeta(product)];
                 case 2:
                     result = _a.sent();
-                    // eslint-disable-next-line no-console
+                     
                     console.log(JSON.stringify(result, null, 2));
                     return [2 /*return*/];
             }

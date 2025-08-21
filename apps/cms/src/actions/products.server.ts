@@ -13,10 +13,13 @@ import {
   writeRepo,
 } from "@platform-core/repositories/json.server";
 import { fillLocales } from "@i18n/fillLocales";
-import type { ProductPublication } from "@platform-core/products";
-import type { PublicationStatus } from "@acme/types";
 import * as Sentry from "@sentry/node";
-import type { Locale, MediaItem } from "@acme/types";
+import type {
+  Locale,
+  MediaItem,
+  ProductPublication,
+  PublicationStatus,
+} from "@acme/types";
 import { ensureAuthorized } from "./common/auth";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
@@ -184,10 +187,7 @@ export async function promoteProduct(
   "use server";
   await ensureAuthorized();
 
-  const current = (await getProductById<ProductPublication>(
-    shop,
-    id,
-  )) as ProductPublication | null;
+  const current = await getProductById<ProductPublication>(shop, id);
   if (!current) throw new Error(`Product ${id} not found in ${shop}`);
 
   const status = nextStatus[current.status];

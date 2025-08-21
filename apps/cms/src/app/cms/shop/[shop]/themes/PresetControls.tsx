@@ -1,6 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/PresetControls.tsx
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
+import type { ChangeEvent } from "react";
 
 interface Props {
   presetName: string;
@@ -22,7 +23,7 @@ export default function PresetControls({
       <Input
         placeholder="Preset name"
         value={presetName}
-        onChange={(e) => setPresetName(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setPresetName(e.target.value)}
       />
       <Button type="button" onClick={handleSavePreset} disabled={!presetName.trim()}>
         Save Preset

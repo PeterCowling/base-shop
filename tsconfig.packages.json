@@ -4,7 +4,7 @@
 
   "compilerOptions": {
     "composite": true,
-    "noEmit": false, // referenced projects must not disable emit
+    "noEmit": false // referenced projects must not disable emit
   },
 
   "files": [],
@@ -19,6 +19,7 @@
     { "path": "packages/themes/bcd" },
     { "path": "packages/config" },
     { "path": "packages/email" },
+    { "path": "packages/design-tokens" },
     { "path": "packages/ui" },
     { "path": "packages/auth" },
     { "path": "packages/configurator" },

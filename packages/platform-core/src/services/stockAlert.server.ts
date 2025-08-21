@@ -37,13 +37,10 @@ export async function checkAndAlert(
 ): Promise<void> {
   const settings = await getShopSettings(shop);
   const envRecipients =
-    coreEnv.STOCK_ALERT_RECIPIENTS ?? coreEnv.STOCK_ALERT_RECIPIENT;
+    coreEnv.STOCK_ALERT_RECIPIENTS ?? coreEnv.STOCK_ALERT_RECIPIENT ?? "";
   const recipients = settings.stockAlert?.recipients?.length
     ? settings.stockAlert.recipients
-    : envRecipients
-        ?.split(",")
-        .map((r) => r.trim())
-        .filter(Boolean) ?? [];
+    : envRecipients.split(",").map((r) => r.trim()).filter(Boolean);
   const webhook = settings.stockAlert?.webhook ?? coreEnv.STOCK_ALERT_WEBHOOK;
   const defaultThreshold =
     settings.stockAlert?.threshold ?? coreEnv.STOCK_ALERT_DEFAULT_THRESHOLD;

@@ -110,16 +110,16 @@
         "packages/sanity/*"
       ],
       "@acme/date-utils": [
-        "packages/date-utils/src/index.ts"
+        "packages/date-utils"
       ],
       "@acme/date-utils/*": [
-        "packages/date-utils/src/*"
+        "packages/date-utils/*"
       ],
       "@date-utils": [
-        "packages/date-utils/src/index.ts"
+        "packages/date-utils"
       ],
       "@date-utils/*": [
-        "packages/date-utils/src/*"
+        "packages/date-utils/*"
       ],
       "@acme/configurator": [
         "packages/configurator"

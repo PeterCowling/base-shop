@@ -31,52 +31,55 @@ export function WishlistTemplate({
     <div className={cn("space-y-6", className)} {...props}>
       <h2 className="text-xl font-semibold">Wishlist</h2>
       <div className="space-y-4">
-        {items.map((item) => (
-          <div
-            key={item.id}
-            className="flex items-center gap-4 border-b pb-4 last:border-b-0"
-          >
-            {item.media[0] && (
-              <div className="relative h-16 w-16 shrink-0">
-                {item.media[0].type === "image" ? (
-                  <Image
-                    src={item.media[0].url}
-                    alt={item.title}
-                    fill
-                    sizes="64px"
-                    className="rounded object-cover"
-                  />
-                ) : (
-                  <video
-                    src={item.media[0].url}
-                    className="h-full w-full rounded object-cover"
-                    muted
-                    playsInline
-                  />
+        {items.map((item) => {
+          const firstMedia = item.media?.[0];
+          return (
+            <div
+              key={item.id}
+              className="flex items-center gap-4 border-b pb-4 last:border-b-0"
+            >
+              {firstMedia?.url && (
+                <div className="relative h-16 w-16 shrink-0">
+                  {firstMedia.type === "image" ? (
+                    <Image
+                      src={firstMedia.url}
+                      alt={item.title ?? ""}
+                      fill
+                      sizes="64px"
+                      className="rounded object-cover"
+                    />
+                  ) : (
+                    <video
+                      src={firstMedia.url}
+                      className="h-full w-full rounded object-cover"
+                      muted
+                      playsInline
+                    />
+                  )}
+                </div>
+              )}
+              <div className="flex-1">
+                <h3 className="font-medium">{item.title}</h3>
+                <div className="text-muted-foreground flex items-center gap-2 text-sm">
+                  {typeof item.price === "number" && <Price amount={item.price} />}
+                  {item.quantity !== undefined && <span>x{item.quantity}</span>}
+                </div>
+              </div>
+              <div className="flex gap-2">
+                {onAddToCart && (
+                  <Button onClick={() => onAddToCart(item)}>
+                    {ctaAddToCartLabel}
+                  </Button>
+                )}
+                {onRemove && (
+                  <Button variant="destructive" onClick={() => onRemove(item)}>
+                    {ctaRemoveLabel}
+                  </Button>
                 )}
               </div>
-            )}
-            <div className="flex-1">
-              <h3 className="font-medium">{item.title}</h3>
-              <div className="text-muted-foreground flex items-center gap-2 text-sm">
-                <Price amount={item.price} />
-                {item.quantity !== undefined && <span>x{item.quantity}</span>}
-              </div>
             </div>
-            <div className="flex gap-2">
-              {onAddToCart && (
-                <Button onClick={() => onAddToCart(item)}>
-                  {ctaAddToCartLabel}
-                </Button>
-              )}
-              {onRemove && (
-                <Button variant="destructive" onClick={() => onRemove(item)}>
-                  {ctaRemoveLabel}
-                </Button>
-              )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

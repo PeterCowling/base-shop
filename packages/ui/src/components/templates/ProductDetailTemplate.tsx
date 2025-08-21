@@ -22,21 +22,22 @@ export function ProductDetailTemplate({
   className,
   ...props
 }: ProductDetailTemplateProps) {
+  const firstMedia = product.media?.[0];
   return (
     <div className={cn("grid gap-6 md:grid-cols-2", className)} {...props}>
-      {product.media[0] && (
+      {firstMedia?.url && (
         <div className="relative aspect-square w-full">
-          {product.media[0].type === "image" ? (
+          {firstMedia.type === "image" ? (
             <Image
-              src={product.media[0].url}
-              alt={product.title}
+              src={firstMedia.url}
+              alt={product.title ?? ""}
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
               className="rounded-md object-cover"
             />
           ) : (
             <video
-              src={product.media[0].url}
+              src={firstMedia.url}
               className="h-full w-full rounded-md object-cover"
               muted
               playsInline
@@ -58,7 +59,9 @@ export function ProductDetailTemplate({
             )}
           </div>
         )}
-        <Price amount={product.price} className="text-xl font-bold" />
+        {typeof product.price === "number" && (
+          <Price amount={product.price} className="text-xl font-bold" />
+        )}
         {product.description && <p>{product.description}</p>}
         {onAddToCart && (
           <Button onClick={() => onAddToCart(product)}>{ctaLabel}</Button>

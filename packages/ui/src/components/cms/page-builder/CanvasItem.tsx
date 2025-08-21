@@ -43,6 +43,24 @@ const CanvasItem = memo(function CanvasItemComponent({
   viewport,
   device,
 }: Props) {
+  if (component.type === "Text") {
+    return (
+      <TextBlock
+        component={component as TextComponent}
+        index={index}
+        parentId={parentId}
+        selectedId={selectedId}
+        onSelectId={onSelectId}
+        onRemove={onRemove}
+        dispatch={dispatch}
+        locale={locale}
+        gridEnabled={gridEnabled}
+        gridCols={gridCols}
+        viewport={viewport}
+      />
+    );
+  }
+
   const selected = selectedId === component.id;
   const {
     attributes,
@@ -162,24 +180,6 @@ const CanvasItem = memo(function CanvasItemComponent({
   const children = (component as { children?: PageComponent[] }).children;
   const hasChildren = Array.isArray(children);
   const childIds = hasChildren ? children!.map((c) => c.id) : [];
-
-  if (component.type === "Text") {
-    return (
-      <TextBlock
-        component={component as TextComponent}
-        index={index}
-        parentId={parentId}
-        selectedId={selectedId}
-        onSelectId={onSelectId}
-        onRemove={onRemove}
-        dispatch={dispatch}
-        locale={locale}
-        gridEnabled={gridEnabled}
-        gridCols={gridCols}
-        viewport={viewport}
-      />
-    );
-  }
 
   return (
     <div

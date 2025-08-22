@@ -6,3 +6,4 @@ export declare const prisma: PrismaClient<{
         };
     };
 }, never, import("@prisma/client/runtime/library").DefaultArgs>;
+//# sourceMappingURL=db.d.ts.map

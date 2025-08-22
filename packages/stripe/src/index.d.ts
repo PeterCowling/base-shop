@@ -12,3 +12,4 @@ import Stripe from "stripe";
  * you bump the SDK.
  */
 export declare const stripe: Stripe;
+//# sourceMappingURL=index.d.ts.map

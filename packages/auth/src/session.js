@@ -3,7 +3,7 @@ import { cookies, headers } from "next/headers";
 import { sealData, unsealData } from "iron-session";
 import { randomUUID } from "node:crypto";
 import { coreEnv } from "@acme/config/env/core";
-import { createSessionStore, SESSION_TTL_S } from "./store";
+import { createSessionStore, SESSION_TTL_S } from "./store.js";
 export const CUSTOMER_SESSION_COOKIE = "customer_session";
 export const CSRF_TOKEN_COOKIE = "csrf_token";
 const sessionStorePromise = createSessionStore();
@@ -62,7 +62,7 @@ export async function getCustomerSession() {
         const csrf = randomUUID();
         store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions());
     }
-    const ua = headers().get("user-agent") ?? "unknown";
+    const ua = (await headers()).get("user-agent") ?? "unknown";
     await sessionStore.set({
         sessionId: session.sessionId,
         customerId: session.customerId,
@@ -90,7 +90,7 @@ export async function createCustomerSession(sessionData) {
     store.set(CUSTOMER_SESSION_COOKIE, token, cookieOptions());
     const csrf = randomUUID();
     store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions());
-    const ua = headers().get("user-agent") ?? "unknown";
+    const ua = (await headers()).get("user-agent") ?? "unknown";
     const sessionStore = await sessionStorePromise;
     await sessionStore.set({
         sessionId: session.sessionId,
@@ -116,11 +116,13 @@ export async function destroyCustomerSession() {
             catch { }
         }
     }
-    store.delete(CUSTOMER_SESSION_COOKIE, {
+    store.delete({
+        name: CUSTOMER_SESSION_COOKIE,
         path: "/",
         domain: coreEnv.COOKIE_DOMAIN,
     });
-    store.delete(CSRF_TOKEN_COOKIE, {
+    store.delete({
+        name: CSRF_TOKEN_COOKIE,
         path: "/",
         domain: coreEnv.COOKIE_DOMAIN,
     });

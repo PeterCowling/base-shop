@@ -11,3 +11,4 @@ export declare function clearTemplates(): void;
  * use the Handlebars-like syntax `{{variable}}`.
  */
 export declare function renderTemplate(id: string, params: Record<string, string>): string;
+//# sourceMappingURL=templates.d.ts.map

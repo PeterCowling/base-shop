@@ -24,3 +24,4 @@ export interface CampaignOptions {
  * retryable.
  */
 export declare function sendCampaignEmail(options: CampaignOptions): Promise<void>;
+//# sourceMappingURL=send.d.ts.map

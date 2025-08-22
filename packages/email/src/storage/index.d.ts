@@ -5,3 +5,4 @@ export declare function setCampaignStore(newStore: CampaignStore): void;
 export declare function getCampaignStore(): CampaignStore;
 export { fsCampaignStore };
 export type { CampaignStore, Campaign };
+//# sourceMappingURL=index.d.ts.map

@@ -1,5 +1,5 @@
-import type { Role } from "./types";
-import type { SessionRecord } from "./store";
+import type { Role } from "./types/index.js";
+import type { SessionRecord } from "./store.js";
 export declare const CUSTOMER_SESSION_COOKIE = "customer_session";
 export declare const CSRF_TOKEN_COOKIE = "csrf_token";
 export interface CustomerSession {

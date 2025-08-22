@@ -23,7 +23,7 @@ function unsubscribeUrl(shop, campaign, recipient) {
     return `${base}/api/marketing/email/unsubscribe?shop=${encodeURIComponent(shop)}&campaign=${encodeURIComponent(campaign)}&email=${encodeURIComponent(recipient)}`;
 }
 async function filterUnsubscribed(shop, recipients) {
-    const events = await listEvents(shop).catch(() => []);
+    const events = await listEvents().catch(() => []);
     const unsub = new Set(events
         .filter((e) => e.type === "email_unsubscribe" && typeof e.email === "string")
         .map((e) => e.email));

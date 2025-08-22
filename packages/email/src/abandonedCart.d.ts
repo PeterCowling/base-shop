@@ -16,3 +16,4 @@ export interface AbandonedCart {
  * record's `reminded` flag is set to true.
  */
 export declare function recoverAbandonedCarts(carts: AbandonedCart[], now?: number, delayMs?: number): Promise<void>;
+//# sourceMappingURL=abandonedCart.d.ts.map

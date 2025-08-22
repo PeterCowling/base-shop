@@ -76,3 +76,4 @@ export declare function normalizeProviderStats(provider: string, stats: SendGrid
  * platform analytics system. Intended to run on a periodic schedule.
  */
 export declare function syncCampaignAnalytics(): Promise<void>;
+//# sourceMappingURL=analytics.d.ts.map

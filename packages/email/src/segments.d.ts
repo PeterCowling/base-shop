@@ -9,3 +9,4 @@ export declare function listSegments(): Promise<{
  * stored segment definitions.
  */
 export declare function resolveSegment(shop: string, id: string): Promise<string[]>;
+//# sourceMappingURL=segments.d.ts.map

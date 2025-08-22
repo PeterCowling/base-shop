@@ -7,3 +7,4 @@ export interface ProviderErrorFields {
     };
 }
 export declare function hasProviderErrorFields(err: unknown): err is ProviderErrorFields;
+//# sourceMappingURL=error.d.ts.map

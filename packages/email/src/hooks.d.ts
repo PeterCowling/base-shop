@@ -8,3 +8,4 @@ export declare function onClick(listener: HookHandler): void;
 export declare function emitSend(shop: string, payload: HookPayload): Promise<void>;
 export declare function emitOpen(shop: string, payload: HookPayload): Promise<void>;
 export declare function emitClick(shop: string, payload: HookPayload): Promise<void>;
+//# sourceMappingURL=hooks.d.ts.map

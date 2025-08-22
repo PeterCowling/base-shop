@@ -8,3 +8,4 @@ export interface Campaign {
     sentAt?: string;
     templateId?: string | null;
 }
+//# sourceMappingURL=types.d.ts.map

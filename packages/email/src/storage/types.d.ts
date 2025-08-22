@@ -13,3 +13,4 @@ export interface CampaignStore {
      */
     listShops(): Promise<string[]>;
 }
+//# sourceMappingURL=types.d.ts.map

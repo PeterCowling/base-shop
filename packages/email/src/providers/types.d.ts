@@ -44,3 +44,4 @@ export interface ResendSegment {
     id: string;
     name: string;
 }
+//# sourceMappingURL=types.d.ts.map

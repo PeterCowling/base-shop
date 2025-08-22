@@ -1,5 +1,5 @@
 // packages/auth/src/types/roles.ts
-import rolesConfig from "../roles.json";
+import rolesConfig from "../roles.json" assert { type: "json" };
 import { z } from "zod";
 const config = rolesConfig;
 const allRolesFromConfig = [
@@ -7,7 +7,7 @@ const allRolesFromConfig = [
 ];
 export const WRITE_ROLES = [...config.write];
 export const READ_ROLES = [...allRolesFromConfig];
-let RoleSchema = z.enum(allRolesFromConfig);
+let RoleSchema = z.enum(READ_ROLES);
 export function isRole(role) {
     return RoleSchema.safeParse(role).success;
 }

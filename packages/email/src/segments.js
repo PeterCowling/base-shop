@@ -74,7 +74,7 @@ export async function resolveSegment(shop, id) {
         segmentCache.delete(key);
         return [];
     }
-    const events = await listEvents(shop);
+    const events = await listEvents();
     const emails = new Set();
     for (const e of events) {
         let match = true;

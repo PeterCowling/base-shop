@@ -24,3 +24,4 @@ export declare class ResendProvider implements CampaignProvider {
     }[]>;
 }
 export {};
+//# sourceMappingURL=resend.d.ts.map

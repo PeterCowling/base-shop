@@ -28,3 +28,4 @@ export declare class SendgridProvider implements CampaignProvider {
     }[]>;
 }
 export {};
+//# sourceMappingURL=sendgrid.d.ts.map

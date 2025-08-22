@@ -54,6 +54,7 @@
     "shadcn:diff": "ts-node scripts/diff-shadcn.ts",
     "tailwind:check": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest test/unit/tailwind-build.spec.ts test/unit/postcss-config.spec.ts test/unit/tailwind-postcss.spec.ts",
     "chromatic": "npx chromatic --project-token=$CHROMATIC_PROJECT_TOKEN",
+    "clean": "pnpm -r exec rimraf dist build lib *.tsbuildinfo",
     "test:cms": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs"
   },
   "dependencies": {
@@ -165,6 +166,7 @@
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.13",
     "react-server-dom-webpack": "^19.1.0",
+    "rimraf": "^6.0.1",
     "storybook": "^9.0.13",
     "superstruct": "^2.0.2",
     "tailwindcss": "^4.1.11",

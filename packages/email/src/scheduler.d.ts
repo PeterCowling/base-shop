@@ -18,3 +18,4 @@ export declare function sendDueCampaigns(): Promise<void>;
  * Periodically sync campaign analytics for all shops.
  */
 export declare function syncCampaignAnalytics(): Promise<void>;
+//# sourceMappingURL=scheduler.d.ts.map

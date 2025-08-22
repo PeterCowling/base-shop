@@ -1,3 +1,3 @@
-export type { Role } from "./roles";
-export type { Permission } from "./permissions";
+export type { Role } from "./roles.js";
+export type { Permission } from "./permissions.js";
 //# sourceMappingURL=index.d.ts.map

@@ -15,13 +15,13 @@ export async function createSessionStore() {
             coreEnv.UPSTASH_REDIS_REST_URL &&
             coreEnv.UPSTASH_REDIS_REST_TOKEN)) {
         const { Redis } = await import("@upstash/redis");
-        const { RedisSessionStore } = await import("./redisStore");
+        const { RedisSessionStore } = await import("./redisStore.js");
         const client = new Redis({
             url: coreEnv.UPSTASH_REDIS_REST_URL,
             token: coreEnv.UPSTASH_REDIS_REST_TOKEN,
         });
         return new RedisSessionStore(client, SESSION_TTL_S);
     }
-    const { MemorySessionStore } = await import("./memoryStore");
+    const { MemorySessionStore } = await import("./memoryStore.js");
     return new MemorySessionStore(SESSION_TTL_S);
 }

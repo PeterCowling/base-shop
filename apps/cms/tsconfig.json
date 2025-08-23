@@ -139,10 +139,10 @@
         "../../packages/configurator/src/*"
       ],
       "@acme/zod-utils": [
-        "../../packages/zod-utils/src/index.ts"
+        "../../packages/zod-utils/dist/index.d.ts"
       ],
       "@acme/zod-utils/*": [
-        "../../packages/zod-utils/src/*"
+        "../../packages/zod-utils/dist/*"
       ]
     },
     "module": "ESNext",
@@ -162,5 +162,16 @@
     "**/*.spec.*",
     "**/*.stories.*"
   ],
-  "references": []
+  "references": [
+    { "path": "../../packages/config" },
+    { "path": "../../packages/configurator" },
+    { "path": "../../packages/date-utils" },
+    { "path": "../../packages/email" },
+    { "path": "../../packages/i18n" },
+    { "path": "../../packages/shared-utils" },
+    { "path": "../../packages/themes/base" },
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/zod-utils" },
+    { "path": "../../scripts" }
+  ]
 }

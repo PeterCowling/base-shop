@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import crypto from "node:crypto";
+import crypto from "crypto";
 
 process.env.CART_COOKIE_SECRET = "secret";
 

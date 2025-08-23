@@ -1,10 +1,11 @@
 import { jest } from "@jest/globals";
+import type { TrackingStatus } from "../src/shipping";
 
 jest.mock("@acme/email", () => ({ sendEmail: jest.fn() }));
 jest.mock("../src/shipping", () => ({
   getTrackingStatus: jest.fn(async () => ({
     status: "Delivered",
-    steps: [],
+    steps: [] as any[],
   })),
 }));
 
@@ -28,8 +29,8 @@ describe("tracking dashboard", () => {
 
   test("supports custom provider", async () => {
     const custom = jest
-      .fn()
-      .mockResolvedValue({ status: "In Transit", steps: [] });
+      .fn<Promise<TrackingStatus>, [string]>()
+      .mockResolvedValue({ status: "In Transit", steps: [] } as TrackingStatus);
     const { getTrackingDashboard } = await import("../src/tracking");
     const result = await getTrackingDashboard(
       [
@@ -49,8 +50,8 @@ describe("tracking dashboard", () => {
   test("notifies on status change", async () => {
     const sendEmail = (await import("@acme/email")).sendEmail as jest.Mock;
     global.fetch = jest
-      .fn()
-      .mockResolvedValue({ ok: true, json: async () => ({}) }) as any;
+      .fn<Promise<any>, any>()
+      .mockResolvedValue({ ok: true, json: async () => ({}) } as any) as any;
     process.env.TWILIO_SID = "sid";
     process.env.TWILIO_TOKEN = "tok";
     process.env.TWILIO_FROM = "+111";

@@ -6,7 +6,9 @@ const markRefunded = jest.fn();
 const updateRisk = jest.fn();
 const reviewsCreate = jest.fn();
 const piUpdate = jest.fn();
-const getShopSettings = jest.fn();
+const chargesRetrieve = jest.fn<Promise<any>, [string]>();
+// getShopSettings normally resolves to shop configuration; type it broadly for tests
+const getShopSettings = jest.fn<Promise<any>, [string]>();
 
 jest.mock("../src/orders", () => ({
   addOrder,
@@ -20,6 +22,7 @@ jest.mock("@acme/stripe", () => ({
   stripe: {
     reviews: { create: reviewsCreate },
     paymentIntents: { update: piUpdate },
+    charges: { retrieve: chargesRetrieve },
   },
 }));
 
@@ -45,6 +48,9 @@ describe("handleStripeWebhook", () => {
 
   test("early fraud warning cancels high risk", async () => {
     const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    chargesRetrieve.mockResolvedValue({
+      outcome: { risk_level: "highest", risk_score: 90 },
+    } as any);
     const event: Stripe.Event = {
       type: "radar.early_fraud_warning.created",
       data: {
@@ -105,7 +111,7 @@ describe("handleStripeWebhook", () => {
         fraudReviewThreshold: 100,
         requireStrongCustomerAuth: true,
       },
-    });
+    } as any);
     const { handleStripeWebhook } = await import("../src/stripe-webhook");
     const event: Stripe.Event = {
       type: "checkout.session.completed",

@@ -55,4 +55,16 @@ const preset: Partial<Config> = {
   },
 };
 
+// Additional diagnostics
+// eslint-disable-next-line no-console
+console.log("[@acme/tailwind-config] preset keys", Object.keys(preset));
+// eslint-disable-next-line no-console
+console.log(
+  "[@acme/tailwind-config] has nested",
+  {
+    plugins: Array.isArray((preset as any).plugins),
+    presets: Array.isArray((preset as any).presets),
+  }
+);
+
 export default preset;

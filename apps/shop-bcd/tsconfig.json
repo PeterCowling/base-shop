@@ -10,30 +10,55 @@
         "../../packages/ui/dist/*",
         "../../packages/i18n/dist/*"
       ],
-      "@ui/*": ["../../packages/ui/dist/*"],
-      "@ui/src/*": ["../../packages/ui/dist/*"],
-      "@i18n/*": ["../../packages/i18n/dist/*"],
-      "@platform-core": ["../../packages/platform-core/dist/index"],
-      "@platform-core/*": ["../../packages/platform-core/dist/*"],
-      "@acme/platform-core": ["../../packages/platform-core/dist/index"],
-      "@acme/platform-core/*": ["../../packages/platform-core/dist/*"],
-      "@auth": ["../../packages/auth/dist/index", "../../packages/auth/dist"],
-      "@auth/*": ["../../packages/auth/dist/*"],
+      "@ui/*": [
+        "../../packages/ui/dist/*"
+      ],
+      "@ui/src/*": [
+        "../../packages/ui/dist/*"
+      ],
+      "@i18n/*": [
+        "../../packages/i18n/dist/*"
+      ],
+      "@platform-core": [
+        "../../packages/platform-core/dist/index"
+      ],
+      "@platform-core/*": [
+        "../../packages/platform-core/dist/*"
+      ],
+      "@acme/platform-core": [
+        "../../packages/platform-core/dist/index"
+      ],
+      "@acme/platform-core/*": [
+        "../../packages/platform-core/dist/*"
+      ],
+      "@auth": [
+        "../../packages/auth/dist/index",
+        "../../packages/auth/dist"
+      ],
+      "@auth/*": [
+        "../../packages/auth/dist/*"
+      ],
       "@date-utils": [
         "../../packages/date-utils/dist/index",
         "../../packages/date-utils/dist"
       ],
-      "@date-utils/*": ["../../packages/date-utils/dist/*"],
+      "@date-utils/*": [
+        "../../packages/date-utils/dist/*"
+      ],
       "@shared-utils": [
         "../../packages/shared-utils/dist/index",
         "../../packages/shared-utils/dist"
       ],
-      "@shared-utils/*": ["../../packages/shared-utils/dist/*"],
+      "@shared-utils/*": [
+        "../../packages/shared-utils/dist/*"
+      ],
       "@acme/types": [
         "../../packages/types/dist/index",
         "../../packages/types/dist"
       ],
-      "@acme/types/*": ["../../packages/types/dist/*"]
+      "@acme/types/*": [
+        "../../packages/types/dist/*"
+      ]
     },
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -56,7 +81,9 @@
     ".next",
     "../../packages/**/__tests__/**",
     "../../test",
-    "__tests__/**/*",
+    "**/__tests__/**",
+    "**/__mocks__/**",
+    "**/*.spec.*",
     "**/*.stories.*"
   ]
 }

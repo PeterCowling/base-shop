@@ -4,8 +4,8 @@
 // so we define a permissive schema locally using zod.  This schema
 // accepts arbitrary string-to-string mappings, deferring strict
 // validation to higher-level modules.
-import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
 import { z } from "zod";
 
 // Accept any string key/value pairs. In the full codebase envSchema would

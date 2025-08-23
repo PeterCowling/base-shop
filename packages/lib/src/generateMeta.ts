@@ -1,6 +1,6 @@
 import OpenAI from "openai";
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import { promises as fs } from "fs";
+import path from "path";
 import { env } from "@acme/config";
 
 export interface ProductData {

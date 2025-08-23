@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/listShops.ts
 
-import fs from "node:fs/promises";
+import fs from "fs/promises";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 
 export async function listShops(): Promise<string[]> {

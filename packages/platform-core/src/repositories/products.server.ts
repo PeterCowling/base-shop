@@ -1,7 +1,7 @@
 import "server-only";
 
-import { promises as fs } from "node:fs";
-import * as path from "node:path";
+import { promises as fs } from "fs";
+import * as path from "path";
 import { ulid } from "ulid";
 import type { ProductPublication } from "../products/index.js";
 import { validateShopName } from "../shops/index.js";

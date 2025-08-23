@@ -9,8 +9,8 @@ import { DashboardTemplate } from "@ui/components/templates";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import fs from "node:fs/promises";
-import path from "node:path";
+import fs from "fs/promises";
+import path from "path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 
 export const metadata: Metadata = {

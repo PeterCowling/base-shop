@@ -1,8 +1,8 @@
 // packages/lib/checkShopExists.server.ts
 import "server-only";
 
-import { promises as fs } from "node:fs";
-import * as path from "node:path";
+import { promises as fs } from "fs";
+import * as path from "path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { validateShopName } from "./validateShopName";
 

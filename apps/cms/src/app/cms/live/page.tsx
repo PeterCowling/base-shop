@@ -1,9 +1,9 @@
 // apps/cms/src/app/cms/live/page.tsx
 
 import { Button } from "@/components/atoms/shadcn";
-import fsSync from "node:fs";
-import fs from "node:fs/promises";
-import path from "node:path";
+import fsSync from "fs";
+import fs from "fs/promises";
+import path from "path";
 import { listShops } from "../listShops";
 
 export const metadata = {

@@ -1,5 +1,5 @@
 // apps/cms/src/app/cms/plugins/page.tsx
-import path from "node:path";
+import path from "path";
 import { loadPlugins } from "@platform-core/plugins";
 import Link from "next/link";
 import PluginList from "./PluginList.client";

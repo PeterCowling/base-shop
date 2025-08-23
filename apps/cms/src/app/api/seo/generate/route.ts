@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
-import fs from "node:fs/promises";
-import path from "node:path";
+import fs from "fs/promises";
+import path from "path";
 
 interface Body {
   shop: string;

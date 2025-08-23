@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { spawnSync } from "node:child_process";
-import { join } from "node:path";
+import { spawnSync } from "child_process";
+import { join } from "path";
 import { requirePermission } from "@auth";
 
 export const runtime = "nodejs";

@@ -1,6 +1,6 @@
-import { readdir } from "node:fs/promises";
-import path from "node:path";
-import { pathToFileURL } from "node:url";
+import { readdir } from "fs/promises";
+import path from "path";
+import { pathToFileURL } from "url";
 
 import { defaultPaymentProviders } from "./defaultPaymentProviders";
 import { defaultShippingProviders } from "./defaultShippingProviders";

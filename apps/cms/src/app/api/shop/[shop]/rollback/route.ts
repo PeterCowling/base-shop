@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { join } from "node:path";
+import { join } from "path";
 import { requirePermission } from "@auth";
 import { rollbackShop } from "../../../../../../../../scripts/src/rollback-shop";
 

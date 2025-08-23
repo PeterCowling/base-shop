@@ -1,6 +1,6 @@
 // packages/platform-core/src/coupons.ts
-import { promises as fs } from "node:fs";
-import * as path from "node:path";
+import { promises as fs } from "fs";
+import * as path from "path";
 import type { Coupon } from "@acme/types";
 import { resolveDataRoot } from "./dataRoot";
 import { validateShopName } from "./shops";

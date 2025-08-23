@@ -1,4 +1,10 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ChangeEvent,
+} from "react";
 
 export type TokenMap = Record<`--${string}`, string>;
 

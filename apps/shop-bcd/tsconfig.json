@@ -7,14 +7,14 @@
     "paths": {
       "@/*": [
         "./dist/*",
-        "../../packages/ui/dist/*",
+        "../../packages/ui/dist/src/*",
         "../../packages/i18n/dist/*"
       ],
       "@ui/*": [
-        "../../packages/ui/dist/*"
+        "../../packages/ui/dist/src/*"
       ],
       "@ui/src/*": [
-        "../../packages/ui/dist/*"
+        "../../packages/ui/dist/src/*"
       ],
       "@i18n/*": [
         "../../packages/i18n/dist/*"
@@ -85,5 +85,15 @@
     "**/__mocks__/**",
     "**/*.spec.*",
     "**/*.stories.*"
+  ],
+  "references": [
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/i18n" },
+    { "path": "../../packages/platform-core" },
+    { "path": "../../packages/auth" },
+    { "path": "../../packages/date-utils" },
+    { "path": "../../packages/shared-utils" },
+    { "path": "../../packages/types" },
+    { "path": "../../packages/zod-utils" }
   ]
 }

@@ -3,8 +3,8 @@
 
 import { validateShopName } from "@platform-core/shops";
 import type { ImageOrientation, MediaItem } from "@acme/types";
-import { promises as fs } from "node:fs";
-import * as path from "node:path";
+import { promises as fs } from "fs";
+import * as path from "path";
 import sharp from "sharp";
 import { ulid } from "ulid";
 import { ensureAuthorized } from "./common/auth";

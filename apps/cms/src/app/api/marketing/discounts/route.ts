@@ -1,8 +1,8 @@
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import { promises as fs } from "fs";
+import path from "path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { env } from "@acme/config";

@@ -1,6 +1,6 @@
 import "server-only";
-import { promises as fs } from "node:fs";
-import * as path from "node:path";
+import { promises as fs } from "fs";
+import * as path from "path";
 import { nowIso } from "@acme/date-utils";
 import { DATA_ROOT } from "../dataRoot";
 import { validateShopName } from "../shops";

@@ -3,8 +3,8 @@
 
 import { deployShop, type DeployShopResult } from "@platform-core/createShop";
 import { resolveDataRoot } from "@platform-core/dataRoot";
-import fs from "node:fs/promises";
-import path from "node:path";
+import fs from "fs/promises";
+import path from "path";
 import { ensureAuthorized } from "./common/auth";
 
 export async function deployShopHosting(

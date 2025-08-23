@@ -1,7 +1,7 @@
 // packages/platform-core/src/plugins.ts
-import { readdir, readFile } from "node:fs/promises";
-import type { Dirent } from "node:fs";
-import path from "node:path";
+import { readdir, readFile } from "fs/promises";
+import type { Dirent } from "fs";
+import path from "path";
 import { logger } from "./utils";
 import { PluginManager } from "./plugins/PluginManager";
 import type {

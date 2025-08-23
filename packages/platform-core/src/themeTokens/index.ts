@@ -1,6 +1,6 @@
-import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
-import { runInNewContext } from "node:vm";
+import { existsSync, readFileSync } from "fs";
+import { join } from "path";
+import { runInNewContext } from "vm";
 import { createRequire } from "module";
 import ts from "typescript";
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env tsx
 import { Command } from "commander";
-import { promises as fs } from "node:fs";
-import * as fsSync from "node:fs";
-import path from "node:path";
-import { randomUUID } from "node:crypto";
+import { promises as fs } from "fs";
+import * as fsSync from "fs";
+import path from "path";
+import { randomUUID } from "crypto";
 import { sendDueCampaigns } from "./scheduler";
 import { nowIso } from "@date-utils";
 

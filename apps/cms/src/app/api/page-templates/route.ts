@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import fsSync, { promises as fs } from "node:fs";
-import path from "node:path";
+import fsSync, { promises as fs } from "fs";
+import path from "path";
 
 function resolveTemplatesRoot(): string {
   let dir = process.cwd();

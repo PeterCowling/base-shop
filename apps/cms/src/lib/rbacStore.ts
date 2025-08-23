@@ -3,9 +3,9 @@
 import type { CmsUser } from "@acme/types";
 import type { Permission } from "@auth";
 import { ROLE_PERMISSIONS } from "@auth/permissions";
-import * as fsSync from "node:fs";
-import { promises as fs } from "node:fs";
-import * as path from "node:path";
+import * as fsSync from "fs";
+import { promises as fs } from "fs";
+import * as path from "path";
 import type { Role } from "../auth/roles";
 
 export interface RbacDB {

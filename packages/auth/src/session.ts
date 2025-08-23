@@ -1,7 +1,7 @@
 // packages/auth/src/session.ts
 import { cookies, headers } from "next/headers";
 import { sealData, unsealData } from "iron-session";
-import { randomUUID } from "node:crypto";
+import { randomUUID } from "crypto";
 import { coreEnv } from "@acme/config/env/core";
 import type { Role } from "./types/index.js";
 import type { SessionRecord } from "./store.js";

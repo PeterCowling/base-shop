@@ -27,8 +27,6 @@ const nextConfig = {
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
       "@": path.resolve(__dirname, "src"),
-      // Allow imports using the `node:` protocol for built-in modules
-      "node:crypto": "crypto",
     };
     return config;
   }

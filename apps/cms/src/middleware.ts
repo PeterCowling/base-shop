@@ -1,7 +1,7 @@
 // apps/cms/src/middleware.ts
 
-import type { Role } from "@auth";
-import { canRead, canWrite } from "@auth";
+import type { Role } from "@auth/types";
+import { canRead, canWrite } from "@auth/rbac";
 import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";

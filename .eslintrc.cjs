@@ -4,8 +4,10 @@ module.exports = {
   plugins: ["@typescript-eslint"],
   ignorePatterns: [
     "**/dist/**", // compiled packages
+    "packages/auth/dist/",
     "**/.next/**", // Next.js build output
     "**/index.js",
+    "**/*.d.ts",
   ],
   overrides: [
     {

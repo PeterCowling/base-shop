@@ -16,6 +16,7 @@ export default [
   {
     ignores: [
       "**/dist/**",
+      "packages/auth/dist/",
       "**/.next/**",
       "**/index.js",
       "packages/ui/src/**/*.js",
@@ -24,6 +25,7 @@ export default [
       "apps/*/src/**/*.js",
       "apps/*/src/**/*.d.ts",
       "apps/*/src/**/*.js.map",
+      "**/*.d.ts",
     ],
     languageOptions: {
       ecmaVersion: "latest",

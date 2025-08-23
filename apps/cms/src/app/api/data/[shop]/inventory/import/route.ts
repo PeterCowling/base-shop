@@ -8,7 +8,7 @@ import {
   type RawInventoryItem,
 } from "@platform-core/utils/inventory";
 import { parse } from "fast-csv";
-import { Readable } from "node:stream";
+import { Readable } from "stream";
 
 export async function POST(
   req: NextRequest,

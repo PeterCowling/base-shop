@@ -14,8 +14,8 @@ interface ComponentChange {
   changelog?: string;
 }
 
-function readJson(file: string): any {
-  return JSON.parse(readFileSync(file, "utf8"));
+function readJson<T = unknown>(file: string): T {
+  return JSON.parse(readFileSync(file, "utf8")) as T;
 }
 
 function extractSummary(log: string): string {
@@ -32,10 +32,10 @@ function gatherChanges(shopId: string, root: string): ComponentChange[] {
   let stored: Record<string, string> = {};
   if (existsSync(shopJson)) {
     try {
-      stored = (readJson(shopJson).componentVersions ?? {}) as Record<
-        string,
-        string
-      >;
+      const shopData = readJson<{
+        componentVersions?: Record<string, string>;
+      }>(shopJson);
+      stored = shopData.componentVersions ?? {};
     } catch {
       stored = {};
     }
@@ -46,8 +46,8 @@ function gatherChanges(shopId: string, root: string): ComponentChange[] {
     const dir = path.join(packagesDir, pkgName.replace(/^@[^/]+\//, ""));
     const pkgJson = path.join(dir, "package.json");
     if (!existsSync(pkgJson)) continue;
-    const pkg = readJson(pkgJson);
-    const latest = pkg.version as string | undefined;
+    const pkg = readJson<{ name?: string; version?: string }>(pkgJson);
+    const latest = pkg.version;
     if (!latest || latest === oldVersion) continue;
     const changelogPath = path.join(dir, "CHANGELOG.md");
     let summary = "";

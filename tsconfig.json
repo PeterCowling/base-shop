@@ -5,7 +5,6 @@
     { "path": "./packages/types" },
     { "path": "./tsconfig.packages.json" },
     { "path": "./apps/cms" },
-    { "path": "./apps/shop-abc" },
     { "path": "./apps/shop-bcd" },
     { "path": "./apps/api" },
     { "path": "packages/platform-core" },

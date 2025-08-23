@@ -50,6 +50,8 @@ const preset = {
             },
         },
     },
+    plugins: [],
+    presets: [],
 };
 // Additional diagnostics
 // eslint-disable-next-line no-console

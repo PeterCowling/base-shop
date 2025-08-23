@@ -1,6 +1,6 @@
 // apps/shop-bcd/src/app/api/edit-changes/route.ts
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import { promises as fs } from "fs";
+import path from "path";
 import { NextResponse } from "next/server";
 import { requirePermission } from "@auth";
 

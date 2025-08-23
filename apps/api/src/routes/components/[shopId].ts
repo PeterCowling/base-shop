@@ -1,8 +1,8 @@
 /// <reference types="@cloudflare/workers-types" />
 // apps/api/src/routes/components/[shopId].ts
 
-import { existsSync, readFileSync, readdirSync } from "node:fs";
-import path from "node:path";
+import { existsSync, readFileSync, readdirSync } from "fs";
+import path from "path";
 import jwt from "jsonwebtoken";
 import { validateShopName } from "@acme/lib";
 

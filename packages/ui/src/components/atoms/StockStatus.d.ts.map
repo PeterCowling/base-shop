@@ -1,0 +1,1 @@
+{"version":3,"file":"StockStatus.d.ts","sourceRoot":"","sources":["StockStatus.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAG/B,MAAM,WAAW,gBACf,SAAQ,KAAK,CAAC,cAAc,CAAC,eAAe,CAAC;IAC7C,OAAO,EAAE,OAAO,CAAC;IACjB,YAAY,CAAC,EAAE,MAAM,CAAC;IACtB,eAAe,CAAC,EAAE,MAAM,CAAC;CAC1B;AAED,eAAO,MAAM,WAAW,0FAwBvB,CAAC"}

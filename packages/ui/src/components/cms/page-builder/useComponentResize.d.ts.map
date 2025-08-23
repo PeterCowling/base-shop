@@ -1,0 +1,1 @@
+{"version":3,"file":"useComponentResize.d.ts","sourceRoot":"","sources":["useComponentResize.ts"],"names":[],"mappings":"AAEA,KAAK,WAAW,GAAG,MAAM,CAAC,MAAM,EAAE,MAAM,GAAG,SAAS,CAAC,CAAC;AAEtD,MAAM,CAAC,OAAO,UAAU,kBAAkB,CACxC,QAAQ,EAAE,CAAC,KAAK,EAAE,WAAW,KAAK,IAAI;0BAG5B,MAAM,SAAS,MAAM;4BAQrB,MAAM;EAOjB"}

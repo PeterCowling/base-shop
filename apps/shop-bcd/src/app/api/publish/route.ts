@@ -1,6 +1,6 @@
-import { promises as fs } from "node:fs";
-import { join } from "node:path";
-import { spawnSync } from "node:child_process";
+import { promises as fs } from "fs";
+import { join } from "path";
+import { spawnSync } from "child_process";
 import { NextResponse } from "next/server";
 import { requirePermission } from "@auth";
 

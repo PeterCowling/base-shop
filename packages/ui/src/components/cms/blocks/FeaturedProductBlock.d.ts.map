@@ -1,0 +1,1 @@
+{"version":3,"file":"FeaturedProductBlock.d.ts","sourceRoot":"","sources":["FeaturedProductBlock.tsx"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAE,GAAG,EAAE,MAAM,aAAa,CAAC;AAOvC,MAAM,WAAW,yBAAyB;IACxC,GAAG,CAAC,EAAE,GAAG,CAAC;IACV,YAAY,CAAC,EAAE,MAAM,CAAC;CACvB;AAED,wBAAgB,eAAe;SACA,GAAG;EACjC;AAED,MAAM,CAAC,OAAO,UAAU,oBAAoB,CAAC,EAC3C,GAAG,EACH,YAAY,GACb,EAAE,yBAAyB,kDAgE3B"}

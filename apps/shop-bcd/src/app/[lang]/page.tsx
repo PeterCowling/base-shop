@@ -1,6 +1,6 @@
 import type { PageComponent } from "@acme/types";
-import { promises as fs } from "node:fs";
-import path from "node:path";
+import { promises as fs } from "fs";
+import path from "path";
 import shop from "../../../shop.json";
 import Home from "./page.client";
 import { fetchPublishedPosts } from "@acme/sanity";

@@ -1,6 +1,6 @@
-import { readFileSync, writeFileSync } from "node:fs";
-import path from "node:path";
-import { spawn } from "node:child_process";
+import { readFileSync, writeFileSync } from "fs";
+import path from "path";
+import { spawn } from "child_process";
 import jwt from "jsonwebtoken";
 
 function run(cmd: string, args: string[], cwd: string): Promise<void> {

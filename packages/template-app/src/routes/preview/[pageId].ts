@@ -2,7 +2,7 @@
 
 import type { EventContext } from "@cloudflare/workers-types";
 import { getPages } from "@platform-core/repositories/pages/index.server";
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "crypto";
 import { coreEnv } from "@acme/config/env/core";
 
 const secret = coreEnv.PREVIEW_TOKEN_SECRET;

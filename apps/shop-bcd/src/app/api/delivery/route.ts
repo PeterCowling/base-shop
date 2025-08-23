@@ -5,8 +5,8 @@ import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 import { initPlugins } from "@platform-core/plugins";
 import shop from "../../../../shop.json";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import path from "path";
+import { fileURLToPath } from "url";
 
 export const runtime = "edge";
 

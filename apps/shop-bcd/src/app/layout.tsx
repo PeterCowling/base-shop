@@ -6,8 +6,8 @@ import "@acme/zod-utils/initZod";
 import { initPlugins } from "@platform-core/plugins";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import path from "path";
+import { fileURLToPath } from "url";
 import shop from "../../shop.json";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

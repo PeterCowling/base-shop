@@ -42,6 +42,8 @@ declare const preset: {
             };
         };
     };
+    readonly plugins: readonly [];
+    readonly presets: readonly [];
 };
 export default preset;
 //# sourceMappingURL=index.d.ts.map

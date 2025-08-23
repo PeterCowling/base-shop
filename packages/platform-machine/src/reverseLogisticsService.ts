@@ -10,9 +10,9 @@ import {
 import { reverseLogisticsEvents } from "@platform-core/repositories/reverseLogisticsEvents.server";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { logger } from "@platform-core/utils";
-import { mkdir, readdir, readFile, unlink, writeFile } from "node:fs/promises";
-import { join } from "node:path";
-import { randomUUID } from "node:crypto";
+import { mkdir, readdir, readFile, unlink, writeFile } from "fs/promises";
+import { join } from "path";
+import { randomUUID } from "crypto";
 
 const DATA_ROOT = resolveDataRoot();
 

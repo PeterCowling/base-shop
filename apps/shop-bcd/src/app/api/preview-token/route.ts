@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createHmac } from "node:crypto";
+import { createHmac } from "crypto";
 import { requirePermission } from "@auth";
 import { env } from "@acme/config";
 

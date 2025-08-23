@@ -1,4 +1,4 @@
-import { readdir } from "node:fs/promises";
+import { readdir } from "fs/promises";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { readInventory } from "@platform-core/repositories/inventory.server";
 import { readRepo as readProducts } from "@platform-core/repositories/products.server";

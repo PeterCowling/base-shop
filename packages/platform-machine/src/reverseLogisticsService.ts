@@ -1,4 +1,4 @@
-import { coreEnv } from "@config/core";
+import { coreEnv } from "@acme/config/env/core";
 import type { RentalOrder } from "@acme/types";
 import {
   markAvailable,

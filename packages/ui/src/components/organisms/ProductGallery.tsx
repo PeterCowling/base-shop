@@ -7,7 +7,7 @@ import { ARViewer } from "../atoms/ARViewer";
 import { VideoPlayer } from "../atoms/VideoPlayer";
 import { ZoomImage } from "../atoms/ZoomImage";
 import { Image360Viewer } from "../molecules/Image360Viewer";
-import { MediaItem, MediaSelector } from "../molecules/MediaSelector";
+import { MediaSelector, type MediaItem } from "../molecules/MediaSelector";
 
 /* ------------------------------------------------------------------ *
  *  Props

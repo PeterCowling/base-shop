@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/style";
-import { Category, CategoryCard } from "../organisms/CategoryCard";
+import { CategoryCard, type Category } from "../organisms/CategoryCard";
 
 export interface CategoryCollectionTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {

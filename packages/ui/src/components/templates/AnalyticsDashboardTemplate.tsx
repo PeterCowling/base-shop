@@ -1,7 +1,7 @@
 import type { ChartData, ChartOptions } from "chart.js";
 import { LineChart } from "../atoms/LineChart";
-import { Column, DataTable } from "../organisms/DataTable";
-import { StatItem, StatsGrid } from "../organisms/StatsGrid";
+import { DataTable, type Column } from "../organisms/DataTable";
+import { StatsGrid, type StatItem } from "../organisms/StatsGrid";
 
 export interface AnalyticsDashboardProps<T> {
   stats: StatItem[];

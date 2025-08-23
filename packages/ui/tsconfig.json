@@ -9,33 +9,18 @@
     "declarationDir": "./dist",
     "declarationMap": true,
     "jsx": "react-jsx",
-    "types": [
-      "react",
-      "react-dom",
-      "jest",
-      "@testing-library/jest-dom"
-    ],
+    "types": ["react", "react-dom", "jest", "@testing-library/jest-dom"],
     "resolveJsonModule": true,
     "moduleResolution": "Bundler",
     "module": "ESNext",
     "target": "ES2022",
     "baseUrl": ".",
     "paths": {
-      "@acme/platform-core": [
-        "../platform-core/src/index"
-      ],
-      "@acme/platform-core/*": [
-        "../platform-core/src/*"
-      ],
-      "@acme/types": [
-        "../types/src/index"
-      ],
-      "@acme/types/*": [
-        "../types/src/*"
-      ],
-      "@auth": [
-        "types-compat/auth"
-      ]
+      "@acme/platform-core": ["../platform-core/src/index"],
+      "@acme/platform-core/*": ["../platform-core/src/*"],
+      "@acme/types": ["../types/src/index"],
+      "@acme/types/*": ["../types/src/*"],
+      "@auth": ["types-compat/auth"]
     }
   },
   "references": [
@@ -72,13 +57,5 @@
     "src/**/*.json",
     "types-compat/**/*.d.ts"
   ],
-  "exclude": [
-    "dist",
-    "**/__tests__*.stories.*",
-    "src__tests__*.stories.*",
-    "src__tests__/**",
-    "src/**/*.stories.*",
-    "src/**/__tests__/**",
-    "src/**/*.test.*"
-  ]
+  "exclude": ["__tests__", "**/__tests__/**", "**/*.test.*", "**/*.spec.*"]
 }

@@ -31,6 +31,7 @@
 /build
 /dist
 **/dist/
+apps/cms/dist/
 /.turbo/
 **/.turbo/
 

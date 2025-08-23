@@ -18,6 +18,7 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "allowJs": false,
+    "rootDir": "../..",
     "types": [
       "node",
       "react",
@@ -151,7 +152,9 @@
   "include": [
     "next-env.d.ts",
     "src/**/*",
-    "src/**/*.json"
+    "src/**/*.json",
+    "../../packages/**/*.ts",
+    "../../packages/**/*.tsx"
   ],
   "exclude": [
     ".next",

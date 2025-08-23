@@ -4,5 +4,6 @@
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "noEmit": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["__tests__", "**/__tests__/**", "**/*.test.*", "**/*.spec.*"]
 }

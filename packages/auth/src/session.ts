@@ -1,6 +1,7 @@
 // packages/auth/src/session.ts
 import { cookies, headers } from "next/headers";
 import { sealData, unsealData } from "iron-session";
+import { randomUUID } from "crypto";
 import { coreEnv } from "@acme/config/env/core";
 import type { Role } from "./types/index.js";
 import type { SessionRecord } from "./store.js";
@@ -64,14 +65,14 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
   }
   // rotate on activity
   const oldId = session.sessionId;
-  session.sessionId = crypto.randomUUID();
+  session.sessionId = randomUUID();
   const newToken = await sealData(session, {
     password: secret,
     ttl: SESSION_TTL_S,
   });
   store.set(CUSTOMER_SESSION_COOKIE, newToken, cookieOptions());
   if (!store.get(CSRF_TOKEN_COOKIE)) {
-    const csrf = crypto.randomUUID();
+    const csrf = randomUUID();
     store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions());
   }
   const ua = (await headers()).get("user-agent") ?? "unknown";
@@ -94,14 +95,14 @@ export async function createCustomerSession(sessionData: CustomerSession): Promi
   const store = await cookies();
   const session: InternalSession = {
     ...sessionData,
-    sessionId: crypto.randomUUID(),
+    sessionId: randomUUID(),
   };
   const token = await sealData(session, {
     password: secret,
     ttl: SESSION_TTL_S,
   });
   store.set(CUSTOMER_SESSION_COOKIE, token, cookieOptions());
-  const csrf = crypto.randomUUID();
+  const csrf = randomUUID();
   store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions());
   const ua = (await headers()).get("user-agent") ?? "unknown";
   const sessionStore = await sessionStorePromise;

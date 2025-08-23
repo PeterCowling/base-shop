@@ -1,8 +1,5 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import getRawBody from "raw-body";
-import { Readable } from "node:stream";
-import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 
 export type ParseJsonResult<T> =
   | { success: true; data: T }
@@ -16,6 +13,21 @@ function hasErrorType(err: unknown): err is { type: string } {
   );
 }
 
+function parseLimit(limit: string | number): number {
+  if (typeof limit === "number") return limit;
+  const match = /^([0-9]+)(b|kb|mb|gb)$/i.exec(limit);
+  if (!match) throw new Error("Invalid limit");
+  const value = Number(match[1]);
+  const unit = match[2].toLowerCase();
+  const multipliers = {
+    b: 1,
+    kb: 1024,
+    mb: 1024 * 1024,
+    gb: 1024 * 1024 * 1024,
+  } as const;
+  return value * multipliers[unit as keyof typeof multipliers];
+}
+
 export async function parseJsonBody<T>(
   req: Request,
   schema: z.ZodSchema<T>,
@@ -24,13 +36,14 @@ export async function parseJsonBody<T>(
   let text: string;
   try {
     if (!req.body) throw new Error("No body");
-    const stream = Readable.fromWeb(
-      req.body as unknown as NodeReadableStream<Uint8Array>,
-    );
-    text = await getRawBody(stream, {
-      limit,
-      encoding: "utf8",
-    });
+    const buf = Buffer.from(await req.arrayBuffer());
+    const max = parseLimit(limit);
+    if (buf.length > max) {
+      throw Object.assign(new Error("entity.too.large"), {
+        type: "entity.too.large",
+      });
+    }
+    text = buf.toString("utf8");
   } catch (err: unknown) {
     if (hasErrorType(err) && err.type === "entity.too.large") {
       return {

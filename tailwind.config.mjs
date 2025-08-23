@@ -1,6 +1,6 @@
 // /tailwind.config.mjs
 // Use workspace source paths to avoid requiring built packages
-import tokens from "./packages/design-tokens/index.ts";
+import tokens from "./packages/design-tokens/src/index.ts";
 import preset from "./packages/tailwind-config/src/index.ts";
 
 // ------------------------------------------------------------

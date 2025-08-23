@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import getRawBody from "raw-body";
-import { Readable } from "node:stream";
+import { Readable } from "stream";
 function hasErrorType(err) {
     return (typeof err === "object" &&
         err !== null &&
@@ -44,7 +44,9 @@ export async function parseJsonBody(req, schema, limit) {
     if (!parsed.success) {
         return {
             success: false,
-            response: NextResponse.json(parsed.error.flatten().fieldErrors, { status: 400 }),
+            response: NextResponse.json(parsed.error.flatten().fieldErrors, {
+                status: 400,
+            }),
         };
     }
     return { success: true, data: parsed.data };

@@ -1,4 +1,4 @@
-import { LOCALES, type Locale } from "@acme/i18n";
+import { LOCALES, type Locale } from "./constants";
 import { z } from "zod";
 import type { MediaItem } from "./MediaItem";
 

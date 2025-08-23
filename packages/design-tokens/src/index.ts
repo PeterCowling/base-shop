@@ -1,6 +1,9 @@
 // packages/design-tokens/src/index.ts
 import type { Config } from "tailwindcss";
 
+// eslint-disable-next-line no-console
+console.log("[@acme/design-tokens] preset loaded");
+
 /**
  * Tailwind preset shared across all workspace packages.
  * Since this package does not emit CSS directly, the `content`

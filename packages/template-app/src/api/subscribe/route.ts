@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
   if (!shop.subscriptionsEnabled) {
     return NextResponse.json(
       { error: "Subscriptions disabled" },
-      { status: 403 },
+      { status: 403 }
     );
   }
   if (shop.billingProvider !== "stripe") {
@@ -38,22 +38,19 @@ export async function POST(req: NextRequest) {
 
   try {
     if (user.stripeSubscriptionId) {
-      const sub = await stripe.subscriptions.update(
-        user.stripeSubscriptionId,
-        {
-          items: [{ price: priceId }],
-          // `prorate` is deprecated but required for this flow
-          prorate: true,
-        },
-      );
+      const sub = await stripe.subscriptions.update(user.stripeSubscriptionId, {
+        items: [{ price: priceId }],
+        // Ensure prorations are created when updating the subscription
+        proration_behavior: "create_prorations",
+      });
       await setStripeSubscriptionId(userId, sub.id, SHOP_ID);
       return NextResponse.json({ id: sub.id, status: sub.status });
     }
     const sub = await stripe.subscriptions.create({
       customer: userId,
       items: [{ price: priceId }],
-      // `prorate` is deprecated but required for this flow
-      prorate: true,
+      // Ensure prorations are created when starting the subscription
+      proration_behavior: "create_prorations",
       metadata: { userId, shop: SHOP_ID },
     });
     await setStripeSubscriptionId(userId, sub.id, SHOP_ID);

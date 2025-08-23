@@ -9,6 +9,12 @@
 
   "files": [],
 
+  "exclude": [
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.spec.*"
+  ],
+
   "references": [
     { "path": "packages/types" },
     { "path": "packages/platform-core" },

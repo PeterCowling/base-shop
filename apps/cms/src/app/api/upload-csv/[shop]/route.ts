@@ -1,10 +1,10 @@
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import fs from "node:fs";
-import { mkdir, unlink } from "node:fs/promises";
-import path from "node:path";
-import { Readable } from "node:stream";
+import fs from "fs";
+import { mkdir, unlink } from "fs/promises";
+import path from "path";
+import { Readable } from "stream";
 import Busboy from "busboy";
 import { fileTypeFromBuffer } from "file-type/core";
 import { resolveDataRoot } from "@platform-core/dataRoot";

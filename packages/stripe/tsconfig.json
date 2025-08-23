@@ -9,5 +9,6 @@
     "outDir": "dist",
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"]
+  "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"],
+  "references": [{ "path": "../config" }]
 }

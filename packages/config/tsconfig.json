@@ -21,5 +21,6 @@
     "__tests__", // unit/integration tests
     ".turbo", // turbo cache
     "node_modules" // package deps (if any local)
-  ]
+  ],
+  "references": [{ "path": "../zod-utils" }]
 }

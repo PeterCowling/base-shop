@@ -22,12 +22,17 @@
     "src/**/*",
     "src/**/*.json"
   ],
+  "files": [],
   "references": [
-    {
-      "path": "../date-utils"
-    },
-    {
-      "path": "../zod-utils"
-    }
+    { "path": "../config" },
+    { "path": "../date-utils" },
+    { "path": "../email" },
+    { "path": "../i18n" },
+    { "path": "../lib" },
+    { "path": "../shared-utils" },
+    { "path": "../stripe" },
+    { "path": "../themes/base" },
+    { "path": "../types" },
+    { "path": "../zod-utils" }
   ]
 }

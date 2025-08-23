@@ -72,8 +72,8 @@ export const Empty: StoryObj<typeof MiniCartWrapper> = {};
 export const Filled: StoryObj<typeof MiniCartWrapper> = {
   args: {
     items: {
-      [sku1.id]: { sku: sku1, qty: 2 },
-      [sku2.id]: { sku: sku2, qty: 1 },
-    },
+      [sku1.id as string]: { sku: sku1, qty: 2 },
+      [sku2.id as string]: { sku: sku2, qty: 1 },
+    } as CartState,
   },
 };

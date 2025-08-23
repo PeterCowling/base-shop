@@ -162,5 +162,21 @@
     "**/*.spec.*",
     "**/*.stories.*"
   ],
-  "references": []
+  "references": [
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/platform-core" },
+    { "path": "../../packages/auth" },
+    { "path": "../../packages/lib" },
+    { "path": "../../packages/shared-utils" },
+    { "path": "../../packages/types" },
+    { "path": "../../packages/date-utils" },
+    { "path": "../../packages/themes/base" },
+    { "path": "../../packages/themes/abc" },
+    { "path": "../../packages/themes/bcd" },
+    { "path": "../../packages/email" },
+    { "path": "../../packages/config" },
+    { "path": "../../packages/i18n" },
+    { "path": "../../packages/configurator" },
+    { "path": "../../packages/zod-utils" }
+  ]
 }

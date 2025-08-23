@@ -23,11 +23,37 @@ const nextConfig = {
     "@date-utils"
   ],
   webpack: (config) => {
+    const nodeBuiltins = [
+      "assert",
+      "buffer",
+      "child_process",
+      "crypto",
+      "fs",
+      "http",
+      "https",
+      "path",
+      "stream",
+      "string_decoder",
+      "timers",
+      "url",
+      "util",
+      "vm",
+      "zlib",
+    ];
+
+    config.resolve ??= {};
+    config.resolve.alias ??= {};
+
     // App-local alias for "@/..."
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
       "@": path.resolve(__dirname, "src"),
     };
+
+    for (const mod of nodeBuiltins) {
+      config.resolve.alias[`node:${mod}`] = mod;
+    }
+
     return config;
   }
 };

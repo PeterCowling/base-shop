@@ -21,13 +21,34 @@ export default withShopCode(coreEnv.SHOP_CODE, {
     }
 
     /* 3️⃣ – extra aliases -------------------------------------------------- */
+    const nodeBuiltins = [
+      "assert",
+      "buffer",
+      "child_process",
+      "crypto",
+      "fs",
+      "http",
+      "https",
+      "path",
+      "stream",
+      "string_decoder",
+      "timers",
+      "url",
+      "util",
+      "vm",
+      "zlib",
+    ];
+
+    config.resolve ??= {};
+    config.resolve.alias ??= {};
     config.resolve.alias = {
       ...config.resolve.alias,
       "@": path.resolve(__dirname, "../template-app/src"),
       "@i18n": path.resolve(__dirname, "../i18n"),
-      "node:fs": "fs",
-      "node:path": "path",
     };
+    for (const mod of nodeBuiltins) {
+      config.resolve.alias[`node:${mod}`] = mod;
+    }
 
     return config;
   },

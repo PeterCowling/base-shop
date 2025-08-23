@@ -13,7 +13,7 @@
 
     /* Node runtime (Tailwind loads it with require) ------------------ */
     "module": "commonjs",
-    "moduleResolution": "node", // ← override the “bundler” default
+    "moduleResolution": "node", // Node runtime
     "types": ["node"],
 
     /* JSX allowed for any helper-scripts ----------------------------- */

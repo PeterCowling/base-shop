@@ -14,9 +14,13 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "paths": {
+      "@acme/email": ["./types-compat/email"]
+    }
   },
   "include": [
+    "types-compat/**/*.d.ts",
     "src*",
     "src*.json",
     "src/**/*",

@@ -15,6 +15,36 @@ const nextConfig = {
     if (isServer && !dev) {
       config.devtool = "source-map";
     }
+
+    // Map Node.js builtin modules imported with the `node:` scheme to their
+    // standard specifiers so that Webpack can resolve them correctly. Without
+    // this aliases, imports like `import { Readable } from "node:stream"` or
+    // `import crypto from "node:crypto"` trigger `UnhandledSchemeError` during
+    // the build.
+    const nodeBuiltins = [
+      "assert",
+      "buffer",
+      "child_process",
+      "crypto",
+      "fs",
+      "http",
+      "https",
+      "path",
+      "stream",
+      "string_decoder",
+      "timers",
+      "url",
+      "util",
+      "vm",
+      "zlib",
+    ];
+
+    config.resolve ??= {};
+    config.resolve.alias ??= {};
+    for (const mod of nodeBuiltins) {
+      config.resolve.alias[`node:${mod}`] = mod;
+    }
+
     return config;
   },
 };

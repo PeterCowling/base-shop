@@ -34,10 +34,10 @@
 /.turbo/
 **/.turbo/
 
-# Ignore generated files from UI package source directory
-packages/ui/src/**/*.js
-packages/ui/src/**/*.d.ts
-packages/ui/src/**/*.d.ts.map
+# Ignore generated files from package source directories
+packages/*/src/**/*.js
+packages/*/src/**/*.d.ts
+packages/*/src/**/*.d.ts.map
 !packages/ui/src/types/qrcode.d.ts
 
 # Ignore generated files from app source directories

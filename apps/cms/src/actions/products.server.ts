@@ -14,12 +14,7 @@ import {
 } from "@platform-core/repositories/json.server";
 import { fillLocales } from "@i18n/fillLocales";
 import * as Sentry from "@sentry/node";
-import type {
-  Locale,
-  MediaItem,
-  ProductPublication,
-  PublicationStatus,
-} from "@acme/types";
+import type { Locale, ProductPublication, PublicationStatus } from "@acme/types";
 import { ensureAuthorized } from "./common/auth";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
@@ -123,9 +118,7 @@ export async function updateProduct(
 
   const data: ProductForm = parsed.data;
   const { id, price, media: nextMedia } = data;
-  const mediaItems: MediaItem[] = nextMedia.filter(
-    (m): m is MediaItem => Boolean(m.url) && Boolean(m.type)
-  );
+  const mediaItems = nextMedia.filter((m) => Boolean(m.url) && Boolean(m.type));
   const current = await getProductById(shop, id);
   if (!current) throw new Error(`Product ${id} not found in ${shop}`);
 

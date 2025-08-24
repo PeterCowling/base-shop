@@ -1,5 +1,5 @@
 import type { CampaignOptions } from "../send";
-import type { CampaignStats } from "../analytics";
+import type { CampaignStats } from "../stats";
 
 export interface CampaignProvider {
   send(options: CampaignOptions): Promise<void>;

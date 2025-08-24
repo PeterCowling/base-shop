@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 export function useImageOrientationValidation(file, required) {
     const [actual, setActual] = useState(null);

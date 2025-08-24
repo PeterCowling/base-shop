@@ -1,3 +1,4 @@
+"use client";
 import { jsx as _jsx } from "react/jsx-runtime";
 import ImageUploaderWithOrientationCheck from "../components/cms/ImageUploaderWithOrientationCheck";
 import { useMemo, useState } from "react";

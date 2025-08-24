@@ -1,3 +1,4 @@
+"use client";
 // packages/ui/hooks/usePublishLocations.ts
 import { fetchJson } from "@shared-utils";
 import { useCallback, useEffect, useMemo, useState } from "react";

@@ -1,3 +1,4 @@
+"use client";
 import type { ImageOrientation } from "@acme/types";
 import { useEffect, useState } from "react";
 

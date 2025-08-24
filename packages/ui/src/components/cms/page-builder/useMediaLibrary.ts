@@ -1,3 +1,4 @@
+"use client";
 import { getShopFromPath } from "@acme/platform-core/utils";
 import type { MediaItem } from "@acme/types";
 import { usePathname, useSearchParams } from "next/navigation";

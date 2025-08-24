@@ -1,3 +1,4 @@
+"use client";
 // apps/shop-bcd/src/app/account/orders/[id]/page.tsx
 import { getCustomerSession } from "@auth";
 import { getOrdersForCustomer } from "@platform-core/orders";

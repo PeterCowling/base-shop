@@ -1,3 +1,4 @@
+"use client";
 import { jsx as _jsx } from "react/jsx-runtime";
 import Image, {} from "next/image";
 import * as React from "react";

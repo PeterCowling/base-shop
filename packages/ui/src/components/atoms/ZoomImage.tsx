@@ -1,3 +1,4 @@
+"use client";
 import Image, { type ImageProps } from "next/image";
 import * as React from "react";
 import { cn } from "../../utils/style";

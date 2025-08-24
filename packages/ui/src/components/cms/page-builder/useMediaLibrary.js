@@ -1,3 +1,4 @@
+"use client";
 import { getShopFromPath } from "@acme/platform-core/utils";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";

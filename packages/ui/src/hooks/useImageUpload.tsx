@@ -1,3 +1,4 @@
+"use client";
 // src/hooks/useImageUpload.tsx
 
 import type { ImageOrientation } from "@acme/types";

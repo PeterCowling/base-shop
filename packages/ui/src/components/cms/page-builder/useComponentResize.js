@@ -1,3 +1,4 @@
+"use client";
 import { useCallback } from "react";
 export default function useComponentResize(onResize) {
     const handleResize = useCallback((field, value) => {

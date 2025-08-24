@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { historyStateSchema, reducer } from "../state";
 export function usePageBuilderState({ page, history, onChange, onSaveShortcut, onTogglePreview, onRotateDevice, }) {

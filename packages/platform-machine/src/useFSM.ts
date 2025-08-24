@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useRef, useState } from "react";
 import { createFSM, Transition } from "./fsm";
 

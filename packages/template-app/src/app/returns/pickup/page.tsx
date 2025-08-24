@@ -12,8 +12,9 @@ export const metadata = { title: "Schedule pickup" };
 export default async function PickupPage({
   searchParams,
 }: {
-  searchParams?: { zip?: string };
+  searchParams: Promise<{ zip?: string }>;
 }) {
+  const { zip = "" } = await searchParams;
   const [info, settings, shop] = await Promise.all([
     getReturnBagAndLabel(),
     getShopSettings(SHOP_ID),
@@ -22,7 +23,6 @@ export default async function PickupPage({
   const allowed = settings.returnService?.homePickupEnabled
     ? info.homePickupZipCodes
     : [];
-  const zip = searchParams?.zip || "";
   const isAllowed = zip ? allowed.includes(zip) : false;
   return (
     <div className="p-6 space-y-4">

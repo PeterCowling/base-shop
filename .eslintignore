@@ -1,7 +1,0 @@
-node_modules/
-**/dist/**
-**/build/**
-**/.next/**
-**/coverage/**
-**/*.d.ts
-scripts/**/*.js

@@ -1,3 +1,5 @@
+"use client";
+
 import { jsx as _jsx } from "react/jsx-runtime";
 import { ProductCarousel as BaseCarousel, } from "../../organisms/ProductCarousel";
 import { PRODUCTS } from "@acme/platform-core/products";

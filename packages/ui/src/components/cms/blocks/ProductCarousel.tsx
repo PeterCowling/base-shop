@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ProductCarousel as BaseCarousel,
   type ProductCarouselProps as BaseProps,

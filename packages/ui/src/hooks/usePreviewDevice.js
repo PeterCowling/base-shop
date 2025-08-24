@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 const STORAGE_KEY = "preview-device";
 export function usePreviewDevice(initialId) {

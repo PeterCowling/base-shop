@@ -1,3 +1,4 @@
+"use client";
 // packages/ui/hooks/useProductEditorFormState.tsx
 import { useFileUpload } from "./useFileUpload";
 import { usePublishLocations } from "../../../platform-core/src/hooks/usePublishLocations";

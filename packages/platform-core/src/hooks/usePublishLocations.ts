@@ -1,3 +1,4 @@
+"use client";
 // packages/platform-core/hooks/usePublishLocations.ts
 
 import type { PublishLocation } from "@acme/types";

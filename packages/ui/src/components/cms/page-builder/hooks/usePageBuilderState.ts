@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import { historyStateSchema, reducer, type Action } from "../state";

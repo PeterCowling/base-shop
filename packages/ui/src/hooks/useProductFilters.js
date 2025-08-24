@@ -1,3 +1,4 @@
+"use client";
 import { useMemo, useState } from "react";
 export function useProductFilters(rows) {
     const [search, setSearch] = useState("");

@@ -1,3 +1,4 @@
+"use client";
 import { useCallback, useEffect, useMemo, useState, } from "react";
 const defaultSansFonts = [
     '"Geist Sans", system-ui, sans-serif',

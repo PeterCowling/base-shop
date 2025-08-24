@@ -1,3 +1,4 @@
+"use client";
 import { useCallback } from "react";
 
 type ResizePatch = Record<string, string | undefined>;

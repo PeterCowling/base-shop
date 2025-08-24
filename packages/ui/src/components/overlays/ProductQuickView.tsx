@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import { Dialog, DialogContent } from "../atoms/shadcn";
 import type { SKU } from "@acme/types";

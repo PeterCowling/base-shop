@@ -1,3 +1,4 @@
+"use client";
 import { DragEndEvent, DragMoveEvent, DragStartEvent, KeyboardSensor, PointerSensor, useSensor, useSensors, } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { ulid } from "ulid";

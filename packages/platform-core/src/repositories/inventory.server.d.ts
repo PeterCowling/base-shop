@@ -1,6 +1,6 @@
 import "server-only";
 import type { InventoryItem } from "@acme/types";
-import type { InventoryRepository, InventoryMutateFn } from "./inventory.types.js";
+import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
 export declare const inventoryRepository: InventoryRepository;
 export declare function variantKey(sku: string, attrs: Record<string, string>): string;
 export declare function readInventoryMap(shop: string): Promise<Record<string, InventoryItem>>;

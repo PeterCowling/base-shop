@@ -1,5 +1,5 @@
 import "server-only";
-import type { ProductPublication } from "../products/index.js";
+import type { ProductPublication } from "../products/index";
 export declare function readRepo<T = ProductPublication>(shop: string): Promise<T[]>;
 export declare function writeRepo<T = ProductPublication>(shop: string, catalogue: T[]): Promise<void>;
 export declare function getProductById<T extends {

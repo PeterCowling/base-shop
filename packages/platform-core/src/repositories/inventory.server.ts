@@ -4,7 +4,7 @@ import type { InventoryItem } from "@acme/types";
 import type {
   InventoryRepository,
   InventoryMutateFn,
-} from "./inventory.types.js";
+} from "./inventory.types";
 
 let repoPromise: Promise<InventoryRepository> | undefined;
 
@@ -12,10 +12,10 @@ async function getRepo(): Promise<InventoryRepository> {
   if (!repoPromise) {
     repoPromise = (async () => {
       if (process.env.INVENTORY_BACKEND === "sqlite") {
-        const mod = await import("./inventory.sqlite.server.js");
+        const mod = await import("./inventory.sqlite.server");
         return mod.sqliteInventoryRepository;
       }
-      const mod = await import("./inventory.json.server.js");
+      const mod = await import("./inventory.json.server");
       return mod.jsonInventoryRepository;
     })();
   }

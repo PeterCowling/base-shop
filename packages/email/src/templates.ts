@@ -1,4 +1,3 @@
-"use server";
 import "server-only";
 import * as React from "react";
 import { marketingEmailTemplates } from "@acme/ui";

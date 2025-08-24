@@ -13,7 +13,7 @@ if (!parsed.success) {
     "❌ Invalid shipping environment variables:",
     parsed.error.format(),
   );
-  process.exit(1);
+  throw new Error("Invalid shipping environment variables");
 }
 
 export const shippingEnv = parsed.data;

@@ -13,7 +13,7 @@ if (!parsed.success) {
     "❌ Invalid payment environment variables:",
     parsed.error.format(),
   );
-  process.exit(1);
+  throw new Error("Invalid payment environment variables");
 }
 
 export const paymentEnv = parsed.data;

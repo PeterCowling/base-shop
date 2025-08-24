@@ -8,6 +8,6 @@ export const paymentEnvSchema = z.object({
 const parsed = paymentEnvSchema.safeParse(process.env);
 if (!parsed.success) {
     console.error("❌ Invalid payment environment variables:", parsed.error.format());
-    process.exit(1);
+    throw new Error("Invalid payment environment variables");
 }
 export const paymentEnv = parsed.data;

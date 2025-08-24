@@ -10,8 +10,8 @@ import {
 import { promises as fs } from "fs";
 import * as path from "path";
 import { z } from "zod";
-import { validateShopName } from "../shops/index.js";
-import { DATA_ROOT } from "../dataRoot.js";
+import { validateShopName } from "../shops/index";
+import { DATA_ROOT } from "../dataRoot";
 import { nowIso } from "@acme/date-utils";
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
 

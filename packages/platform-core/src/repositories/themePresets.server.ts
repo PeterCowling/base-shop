@@ -2,8 +2,8 @@ import "server-only";
 
 import { promises as fs } from "fs";
 import * as path from "path";
-import { validateShopName } from "../shops/index.js";
-import { DATA_ROOT } from "../dataRoot.js";
+import { validateShopName } from "../shops/index";
+import { DATA_ROOT } from "../dataRoot";
 
 function presetsPath(shop: string) {
   shop = validateShopName(shop);

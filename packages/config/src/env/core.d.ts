@@ -20,7 +20,7 @@ export declare const coreEnvBaseSchema: z.ZodObject<{
     GA_API_SECRET: z.ZodOptional<z.ZodString>;
     SMTP_URL: z.ZodOptional<z.ZodString>;
     CAMPAIGN_FROM: z.ZodOptional<z.ZodString>;
-    EMAIL_PROVIDER: z.ZodOptional<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
+    EMAIL_PROVIDER: z.ZodDefault<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
     SENDGRID_API_KEY: z.ZodOptional<z.ZodString>;
     SENDGRID_MARKETING_KEY: z.ZodOptional<z.ZodString>;
     RESEND_API_KEY: z.ZodOptional<z.ZodString>;
@@ -74,7 +74,7 @@ export declare const coreEnvBaseSchema: z.ZodObject<{
     GA_API_SECRET: z.ZodOptional<z.ZodString>;
     SMTP_URL: z.ZodOptional<z.ZodString>;
     CAMPAIGN_FROM: z.ZodOptional<z.ZodString>;
-    EMAIL_PROVIDER: z.ZodOptional<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
+    EMAIL_PROVIDER: z.ZodDefault<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
     SENDGRID_API_KEY: z.ZodOptional<z.ZodString>;
     SENDGRID_MARKETING_KEY: z.ZodOptional<z.ZodString>;
     RESEND_API_KEY: z.ZodOptional<z.ZodString>;
@@ -128,7 +128,7 @@ export declare const coreEnvBaseSchema: z.ZodObject<{
     GA_API_SECRET: z.ZodOptional<z.ZodString>;
     SMTP_URL: z.ZodOptional<z.ZodString>;
     CAMPAIGN_FROM: z.ZodOptional<z.ZodString>;
-    EMAIL_PROVIDER: z.ZodOptional<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
+    EMAIL_PROVIDER: z.ZodDefault<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
     SENDGRID_API_KEY: z.ZodOptional<z.ZodString>;
     SENDGRID_MARKETING_KEY: z.ZodOptional<z.ZodString>;
     RESEND_API_KEY: z.ZodOptional<z.ZodString>;
@@ -184,7 +184,7 @@ export declare const coreEnvSchema: z.ZodEffects<z.ZodObject<{
     GA_API_SECRET: z.ZodOptional<z.ZodString>;
     SMTP_URL: z.ZodOptional<z.ZodString>;
     CAMPAIGN_FROM: z.ZodOptional<z.ZodString>;
-    EMAIL_PROVIDER: z.ZodOptional<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
+    EMAIL_PROVIDER: z.ZodDefault<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
     SENDGRID_API_KEY: z.ZodOptional<z.ZodString>;
     SENDGRID_MARKETING_KEY: z.ZodOptional<z.ZodString>;
     RESEND_API_KEY: z.ZodOptional<z.ZodString>;
@@ -238,7 +238,7 @@ export declare const coreEnvSchema: z.ZodEffects<z.ZodObject<{
     GA_API_SECRET: z.ZodOptional<z.ZodString>;
     SMTP_URL: z.ZodOptional<z.ZodString>;
     CAMPAIGN_FROM: z.ZodOptional<z.ZodString>;
-    EMAIL_PROVIDER: z.ZodOptional<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
+    EMAIL_PROVIDER: z.ZodDefault<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
     SENDGRID_API_KEY: z.ZodOptional<z.ZodString>;
     SENDGRID_MARKETING_KEY: z.ZodOptional<z.ZodString>;
     RESEND_API_KEY: z.ZodOptional<z.ZodString>;
@@ -292,7 +292,7 @@ export declare const coreEnvSchema: z.ZodEffects<z.ZodObject<{
     GA_API_SECRET: z.ZodOptional<z.ZodString>;
     SMTP_URL: z.ZodOptional<z.ZodString>;
     CAMPAIGN_FROM: z.ZodOptional<z.ZodString>;
-    EMAIL_PROVIDER: z.ZodOptional<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
+    EMAIL_PROVIDER: z.ZodDefault<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
     SENDGRID_API_KEY: z.ZodOptional<z.ZodString>;
     SENDGRID_MARKETING_KEY: z.ZodOptional<z.ZodString>;
     RESEND_API_KEY: z.ZodOptional<z.ZodString>;
@@ -346,7 +346,7 @@ export declare const coreEnvSchema: z.ZodEffects<z.ZodObject<{
     GA_API_SECRET: z.ZodOptional<z.ZodString>;
     SMTP_URL: z.ZodOptional<z.ZodString>;
     CAMPAIGN_FROM: z.ZodOptional<z.ZodString>;
-    EMAIL_PROVIDER: z.ZodOptional<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
+    EMAIL_PROVIDER: z.ZodDefault<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
     SENDGRID_API_KEY: z.ZodOptional<z.ZodString>;
     SENDGRID_MARKETING_KEY: z.ZodOptional<z.ZodString>;
     RESEND_API_KEY: z.ZodOptional<z.ZodString>;
@@ -400,7 +400,7 @@ export declare const coreEnvSchema: z.ZodEffects<z.ZodObject<{
     GA_API_SECRET: z.ZodOptional<z.ZodString>;
     SMTP_URL: z.ZodOptional<z.ZodString>;
     CAMPAIGN_FROM: z.ZodOptional<z.ZodString>;
-    EMAIL_PROVIDER: z.ZodOptional<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
+    EMAIL_PROVIDER: z.ZodDefault<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
     SENDGRID_API_KEY: z.ZodOptional<z.ZodString>;
     SENDGRID_MARKETING_KEY: z.ZodOptional<z.ZodString>;
     RESEND_API_KEY: z.ZodOptional<z.ZodString>;
@@ -455,7 +455,7 @@ export declare const coreEnv: z.objectOutputType<{
     GA_API_SECRET: z.ZodOptional<z.ZodString>;
     SMTP_URL: z.ZodOptional<z.ZodString>;
     CAMPAIGN_FROM: z.ZodOptional<z.ZodString>;
-    EMAIL_PROVIDER: z.ZodOptional<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
+    EMAIL_PROVIDER: z.ZodDefault<z.ZodEnum<["sendgrid", "resend", "smtp"]>>;
     SENDGRID_API_KEY: z.ZodOptional<z.ZodString>;
     SENDGRID_MARKETING_KEY: z.ZodOptional<z.ZodString>;
     RESEND_API_KEY: z.ZodOptional<z.ZodString>;

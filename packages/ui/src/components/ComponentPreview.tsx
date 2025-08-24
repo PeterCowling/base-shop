@@ -54,7 +54,10 @@ export default function ComponentPreview<
       ) {
         return globalThis.__UPGRADE_MOCKS__[p];
       }
-      const m = await import(p);
+      const m = await import(
+        /* webpackIgnore: true */
+        p
+      );
       return (m as Record<string, React.ComponentType>)[
         component.componentName
       ] ?? m.default;

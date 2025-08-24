@@ -58,13 +58,10 @@ const providers: Record<string, CampaignProvider> = {
 
 const availableProviders = [...Object.keys(providers), "smtp"];
 
-if (!coreEnv.EMAIL_PROVIDER) {
-  console.error(
-    `EMAIL_PROVIDER is not set. Available providers: ${availableProviders.join(", ")}`
-  );
-} else if (!availableProviders.includes(coreEnv.EMAIL_PROVIDER)) {
+const providerName = coreEnv.EMAIL_PROVIDER ?? "smtp";
+if (!availableProviders.includes(providerName)) {
   throw new Error(
-    `Unsupported EMAIL_PROVIDER "${coreEnv.EMAIL_PROVIDER}". Available providers: ${availableProviders.join(", ")}`
+    `Unsupported EMAIL_PROVIDER "${providerName}". Available providers: ${availableProviders.join(", ")}`
   );
 }
 
@@ -114,7 +111,7 @@ export async function sendCampaignEmail(
     });
   }
   const optsWithText = ensureText(opts);
-  const primary = coreEnv.EMAIL_PROVIDER ?? "";
+  const primary = providerName;
   const provider = providers[primary];
 
   // No configured provider – use Nodemailer directly

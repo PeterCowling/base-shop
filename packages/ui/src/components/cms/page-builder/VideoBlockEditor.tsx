@@ -1,3 +1,5 @@
+"use client";
+
 import type { VideoBlockComponent } from "@acme/types";
 import { Button, Checkbox, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
 import { useEffect, useState } from "react";

@@ -1,3 +1,5 @@
+"use client";
+
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import type { CSSProperties, DragEvent } from "react";
 import { Fragment, useState } from "react";

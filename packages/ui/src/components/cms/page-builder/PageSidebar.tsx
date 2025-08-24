@@ -1,3 +1,5 @@
+"use client";
+
 import ComponentEditor from "./ComponentEditor";
 import type { PageComponent } from "@acme/types";
 import type { Action } from "./state";

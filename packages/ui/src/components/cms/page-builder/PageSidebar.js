@@ -1,3 +1,4 @@
+"use client";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import ComponentEditor from "./ComponentEditor";
 import { useCallback } from "react";

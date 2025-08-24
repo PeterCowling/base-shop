@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import type { Page, PageComponent } from "@acme/types";
 import { historyStateSchema } from "@acme/types";

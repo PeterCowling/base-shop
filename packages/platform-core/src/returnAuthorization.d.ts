@@ -1,5 +1,5 @@
 import type { ReturnAuthorization } from "@acme/types";
-import { getReturnAuthorization } from "./repositories/returnAuthorization.server.js";
+import { getReturnAuthorization } from "./repositories/returnAuthorization.server";
 export { getTrackingStatus, type TrackingStatusRequest, type TrackingStatus, type TrackingStep, } from "./shipping/index.js";
 export { getReturnAuthorization };
 export declare function listReturnAuthorizations(): Promise<ReturnAuthorization[]>;

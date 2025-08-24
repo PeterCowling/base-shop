@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import type { SKU } from "@acme/types";
 import { formatCurrency } from "@acme/shared-utils";

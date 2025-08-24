@@ -1,3 +1,5 @@
+"use client";
+
 import type { Locale } from "@acme/i18n/locales";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";

@@ -3,7 +3,7 @@ import "server-only";
 import { returnLogisticsSchema, type ReturnLogistics } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { resolveDataRoot } from "../dataRoot.js";
+import { resolveDataRoot } from "../dataRoot";
 
 function logisticsPath(): string {
   return path.join(resolveDataRoot(), "..", "return-logistics.json");

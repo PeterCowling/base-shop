@@ -3,7 +3,7 @@ import {
   getReturnBagAndLabel,
 } from "@platform-core/returnLogistics";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
-import React, { useEffect, useRef, useState } from "react";
+import * as React from "react";
 
 const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";
@@ -38,13 +38,13 @@ interface ReturnFormProps {
 function ReturnForm({ bagType, tracking: trackingEnabled }: ReturnFormProps) {
   "use client";
 
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [sessionId, setSessionId] = useState("");
-  const [labelUrl, setLabelUrl] = useState<string | null>(null);
-  const [trackingNumber, setTrackingNumber] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [sessionId, setSessionId] = React.useState("");
+  const [labelUrl, setLabelUrl] = React.useState<string | null>(null);
+  const [trackingNumber, setTrackingNumber] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     let stream: MediaStream | null = null;
     let active = true;
     async function init() {

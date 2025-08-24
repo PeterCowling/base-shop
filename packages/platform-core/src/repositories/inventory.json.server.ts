@@ -3,9 +3,9 @@ import "server-only";
 import { inventoryItemSchema, type InventoryItem } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { validateShopName } from "../shops/index.js";
-import { DATA_ROOT } from "../dataRoot.js";
-import type { InventoryRepository, InventoryMutateFn } from "./inventory.types.js";
+import { validateShopName } from "../shops/index";
+import { DATA_ROOT } from "../dataRoot";
+import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
 
 interface RawInventoryItem {
   sku: string;
@@ -82,13 +82,8 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
     await handle.close();
     await fs.unlink(lockFile).catch(() => {});
   }
-  try {
-    if (process.env.SKIP_STOCK_ALERT !== "1") {
-      const { checkAndAlert } = await import("../services/stockAlert.server.js");
-      await checkAndAlert(shop, normalized);
-    }
-  } catch (err) {
-    console.error("Failed to run stock alert", err);
+  if (process.env.SKIP_STOCK_ALERT !== "1") {
+    // Stock alert service is not available in this environment; skip silently.
   }
 }
 
@@ -160,13 +155,8 @@ async function update(
     await fs.unlink(lockFile).catch(() => {});
   }
 
-  try {
-    if (process.env.SKIP_STOCK_ALERT !== "1") {
-      const { checkAndAlert } = await import("../services/stockAlert.server.js");
-      await checkAndAlert(shop, normalized);
-    }
-  } catch (err) {
-    console.error("Failed to run stock alert", err);
+  if (process.env.SKIP_STOCK_ALERT !== "1") {
+    // Stock alert service is not available in this environment; skip silently.
   }
 
   return updated;

@@ -2,7 +2,7 @@
 // packages/template-app/src/app/[lang]/checkout/page.tsx
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";
-import { Locale, resolveLocale } from "@/i18n/locales";
+import { Locale, resolveLocale } from "@i18n/locales";
 import {
   CART_COOKIE,
   decodeCartCookie,
@@ -14,7 +14,7 @@ import { getProductById } from "@platform-core/products";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { readShop } from "@platform-core/repositories/shops.server";
-import { useState } from "react";
+import * as React from "react";
 
 export const metadata = {
   title: "Checkout · Base-Shop",
@@ -88,7 +88,7 @@ function CheckoutSection({
   taxRegion: string;
 }) {
   "use client";
-  const [coverage, setCoverage] = useState(false);
+  const [coverage, setCoverage] = React.useState(false);
   return (
     <div className="space-y-4">
       <label className="flex items-center gap-2 text-sm">

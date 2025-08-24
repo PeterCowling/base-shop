@@ -16,6 +16,7 @@ export default [
   /* ▸ Global setup */
   {
     ignores: [
+      "node_modules/",
       "**/dist/**",
       "packages/auth/dist/",
       "**/.next/**",

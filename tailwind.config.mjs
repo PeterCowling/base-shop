@@ -1,5 +1,5 @@
-import tokens from "./packages/design-tokens/dist/index.js";
-import preset from "./packages/tailwind-config/dist/index.js";
+import tokens from "@acme/design-tokens";
+import preset from "@acme/tailwind-config";
 
 /** @type {import('tailwindcss').Config} */
 const config = {

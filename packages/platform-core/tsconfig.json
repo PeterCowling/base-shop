@@ -1,40 +1,13 @@
 {
-  "extends": "../../tsconfig.bundler.json",
   "compilerOptions": {
-    "composite": true,
+    "target": "es2018",
+    "module": "commonjs",
     "declaration": true,
-    "declarationMap": true,
-    "noEmit": false,
-    "rootDir": "src",
     "outDir": "dist",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "target": "ES2022",
-    "jsx": "react-jsx",
+    "rootDir": "src",
     "strict": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "verbatimModuleSyntax": true,
-    "paths": {
-      "@acme/email": ["./types-compat/email"]
-    }
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
-  "include": [
-    "types-compat/**/*.d.ts",
-    "src*",
-    "src*.json",
-    "src/**/*",
-    "src/**/*.json"
-  ],
-  "files": [],
-  "references": [
-    { "path": "../config" },
-    { "path": "../date-utils" },
-    { "path": "../i18n" },
-    { "path": "../shared-utils" },
-    { "path": "../stripe" },
-    { "path": "../themes/base" },
-    { "path": "../types" },
-    { "path": "../zod-utils" }
-  ]
+  "include": ["src"]
 }

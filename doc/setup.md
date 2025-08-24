@@ -79,6 +79,7 @@ The wizard scaffolds placeholders for common variables:
 - `CART_COOKIE_SECRET` – secret for signing cart cookies (required)
 - `CART_TTL` – cart expiration in seconds (default 30 days)
 - `NEXTAUTH_SECRET` – session encryption secret used by NextAuth
+- `SESSION_SECRET` – secret used to sign server-side sessions
 - `PREVIEW_TOKEN_SECRET` – token used for preview URLs
 - `CMS_SPACE_URL` / `CMS_ACCESS_TOKEN` – headless CMS credentials
 - `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_TOKEN` – Sanity blog configuration

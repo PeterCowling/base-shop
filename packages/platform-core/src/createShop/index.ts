@@ -1,6 +1,7 @@
 // packages/platform-core/src/createShop/index.ts
 import { readdirSync, existsSync, readFileSync, writeFileSync } from "fs";
 import { join } from "path";
+import { genSecret } from "@acme/shared-utils";
 import { Prisma } from "@prisma/client";
 import { prisma } from "../db";
 import { validateShopName } from "../shops";
@@ -90,6 +91,20 @@ export function deployShop(
 
   try {
     adapter.scaffold(newApp);
+    const envFile = join(newApp, ".env");
+    if (existsSync(envFile)) {
+      let env = readFileSync(envFile, "utf8");
+      if (/^SESSION_SECRET=/m.test(env)) {
+        env = env.replace(
+          /^SESSION_SECRET=.*$/m,
+          `SESSION_SECRET=${genSecret(32)}`
+        );
+      } else {
+        env += (env.endsWith("\n") ? "" : "\n") +
+          `SESSION_SECRET=${genSecret(32)}\n`;
+      }
+      writeFileSync(envFile, env);
+    }
   } catch (err) {
     status = "error";
     error = (err as Error).message;

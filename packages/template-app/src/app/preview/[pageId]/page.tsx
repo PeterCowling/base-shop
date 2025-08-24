@@ -8,10 +8,10 @@ export default async function PreviewPage({
   params,
   searchParams,
 }: {
-  params: { pageId: string };
+  params: Promise<{ pageId: string }>;
   searchParams: { token?: string; upgrade?: string; device?: string; view?: string };
 }) {
-  const { pageId } = params;
+  const { pageId } = await params;
   const query = new URLSearchParams();
   if (searchParams.token) query.set("token", searchParams.token);
   if (searchParams.upgrade) query.set("upgrade", searchParams.upgrade);

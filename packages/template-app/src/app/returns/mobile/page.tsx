@@ -9,7 +9,7 @@ import {
 
 const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";
-import { useEffect, useRef, useState } from "react";
+import * as React from "react";
 
 export const metadata = { title: "Mobile Returns" };
 
@@ -36,11 +36,11 @@ export default async function MobileReturnPage() {
 
 function Scanner({ allowedZips }: { allowedZips: string[] }) {
   "use client";
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [result, setResult] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [zip, setZip] = useState("");
-  const [done, setDone] = useState(false);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [result, setResult] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string | null>(null);
+  const [zip, setZip] = React.useState("");
+  const [done, setDone] = React.useState(false);
 
   async function finalize(sessionId: string) {
     try {
@@ -56,7 +56,7 @@ function Scanner({ allowedZips }: { allowedZips: string[] }) {
     }
   }
 
-  useEffect(() => {
+  React.useEffect(() => {
     let stream: MediaStream | null = null;
     let active = true;
     async function init() {

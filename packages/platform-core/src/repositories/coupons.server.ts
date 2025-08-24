@@ -3,8 +3,8 @@ import "server-only";
 import { couponSchema, type Coupon } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { validateShopName } from "../shops/index.js";
-import { DATA_ROOT } from "../dataRoot.js";
+import { validateShopName } from "../shops/index";
+import { DATA_ROOT } from "../dataRoot";
 
 function filePath(shop: string): string {
   shop = validateShopName(shop);

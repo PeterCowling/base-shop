@@ -7,7 +7,7 @@ import ts from "typescript";
 import {
   tokens as baseTokensSrc,
   type TokenMap as ThemeTokenMap,
-} from "@themes/base";
+} from "../../../themes/base/src";
 
 function typedEntries<T extends object>(obj: T): [keyof T, T[keyof T]][] {
   return Object.entries(obj) as [keyof T, T[keyof T]][];

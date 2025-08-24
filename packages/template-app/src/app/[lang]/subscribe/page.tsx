@@ -1,6 +1,6 @@
 // @ts-nocheck
 // packages/template-app/src/app/[lang]/subscribe/page.tsx
-import { Locale, resolveLocale } from "@/i18n/locales";
+import { Locale, resolveLocale } from "@i18n/locales";
 import { stripe } from "@acme/stripe";
 import { coreEnv } from "@acme/config/env/core";
 import { readShop } from "@platform-core/repositories/shops.server";

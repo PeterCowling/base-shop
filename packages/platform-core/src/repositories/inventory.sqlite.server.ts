@@ -7,9 +7,9 @@ import {
 } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { validateShopName } from "../shops/index.js";
-import { DATA_ROOT } from "../dataRoot.js";
-import type { InventoryRepository, InventoryMutateFn } from "./inventory.types.js";
+import { validateShopName } from "../shops/index";
+import { DATA_ROOT } from "../dataRoot";
+import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
 
 interface SqliteInventoryRow {
   sku: string;
@@ -26,7 +26,9 @@ let DatabaseConstructor: any;
 
 async function getDb(shop: string) {
   if (!DatabaseConstructor) {
-    ({ default: DatabaseConstructor } = await import("better-sqlite3"));
+    ({ default: DatabaseConstructor } = await import(
+      /* webpackIgnore: true */ "better-sqlite3"
+    ));
   }
   shop = validateShopName(shop);
   const dir = path.join(DATA_ROOT, shop);

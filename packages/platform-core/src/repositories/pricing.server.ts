@@ -3,7 +3,7 @@ import "server-only";
 import { pricingSchema, type PricingMatrix } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { resolveDataRoot } from "../dataRoot.js";
+import { resolveDataRoot } from "../dataRoot";
 
 function pricingPath(): string {
   return path.join(resolveDataRoot(), "..", "rental", "pricing.json");

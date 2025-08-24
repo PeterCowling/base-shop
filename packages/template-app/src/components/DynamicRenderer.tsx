@@ -1,5 +1,5 @@
 // packages/template-app/src/components/DynamicRenderer.tsx
-("use client");
+"use client";
 
 import NextImage, { ImageProps } from "next/image";
 import * as React from "react";

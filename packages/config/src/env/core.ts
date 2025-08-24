@@ -21,7 +21,7 @@ export const coreEnvBaseSchema = z.object({
   GA_API_SECRET: z.string().optional(),
   SMTP_URL: z.string().url().optional(),
   CAMPAIGN_FROM: z.string().optional(),
-  EMAIL_PROVIDER: z.enum(["sendgrid", "resend", "smtp"]).optional(),
+  EMAIL_PROVIDER: z.enum(["sendgrid", "resend", "smtp"]).default("smtp"),
   SENDGRID_API_KEY: z.string().optional(),
   SENDGRID_MARKETING_KEY: z.string().optional(),
   RESEND_API_KEY: z.string().optional(),

@@ -44,20 +44,18 @@ export function loadThemeTokensNode(theme: string): TokenMap {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const requireFn: NodeRequire =
     typeof require !== "undefined" ? require : createRequire(import.meta.url);
-  try {
-    // attempt to load compiled module
-    const mod = requireFn(
-      /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$)/ */
-      `@themes/${theme}/tailwind-tokens`
-    ) as { tokens: TokenMap };
-    return mod.tokens;
-  } catch {
-    const modPath = join("packages", "themes", theme, "tailwind-tokens.ts");
-    const srcPath = join("packages", "themes", theme, "src", "tailwind-tokens.ts");
-    if (existsSync(modPath)) return transpileTokens(modPath, requireFn);
-    if (existsSync(srcPath)) return transpileTokens(srcPath, requireFn);
-    return {};
+  const baseDir = join("packages", "themes", theme);
+  const candidates = [
+    join(baseDir, "tailwind-tokens.js"),
+    join(baseDir, "tailwind-tokens.ts"),
+    join(baseDir, "src", "tailwind-tokens.ts"),
+  ];
+  for (const file of candidates) {
+    if (existsSync(file)) {
+      return transpileTokens(file, requireFn);
+    }
   }
+  return {};
 }
 
 export async function loadThemeTokensBrowser(theme: string): Promise<TokenMap> {

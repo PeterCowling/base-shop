@@ -13,12 +13,10 @@ describe("EMAIL_PROVIDER validation", () => {
     delete process.env.EMAIL_PROVIDER;
   });
 
-  it("logs error when EMAIL_PROVIDER is unset", async () => {
+  it("does not log when EMAIL_PROVIDER is unset", async () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await import("../send");
-    expect(errorSpy).toHaveBeenCalledWith(
-      expect.stringContaining("EMAIL_PROVIDER is not set")
-    );
+    expect(errorSpy).not.toHaveBeenCalled();
   });
 
   it("throws when EMAIL_PROVIDER is unsupported", async () => {

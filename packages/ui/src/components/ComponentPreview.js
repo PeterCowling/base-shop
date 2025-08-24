@@ -32,7 +32,10 @@ export default function ComponentPreview({ component, componentProps = {} }) {
                 globalThis.__UPGRADE_MOCKS__?.[p]) {
                 return globalThis.__UPGRADE_MOCKS__[p];
             }
-            const m = await import(p);
+            const m = await import(
+            /* webpackIgnore: true */
+            p
+            );
             return m[component.componentName] ?? m.default;
         };
         load(basePath)

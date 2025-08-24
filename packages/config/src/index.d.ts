@@ -18,7 +18,7 @@ export declare const env: import("zod").objectOutputType<{
     GA_API_SECRET: import("zod").ZodOptional<import("zod").ZodString>;
     SMTP_URL: import("zod").ZodOptional<import("zod").ZodString>;
     CAMPAIGN_FROM: import("zod").ZodOptional<import("zod").ZodString>;
-    EMAIL_PROVIDER: import("zod").ZodOptional<import("zod").ZodEnum<["sendgrid", "resend", "smtp"]>>;
+    EMAIL_PROVIDER: import("zod").ZodDefault<import("zod").ZodEnum<["sendgrid", "resend", "smtp"]>>;
     SENDGRID_API_KEY: import("zod").ZodOptional<import("zod").ZodString>;
     SENDGRID_MARKETING_KEY: import("zod").ZodOptional<import("zod").ZodString>;
     RESEND_API_KEY: import("zod").ZodOptional<import("zod").ZodString>;

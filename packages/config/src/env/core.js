@@ -131,6 +131,6 @@ export const coreEnvSchema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefi
 const parsed = coreEnvSchema.safeParse(process.env);
 if (!parsed.success) {
     console.error("❌ Invalid core environment variables:", parsed.error.format());
-    process.exit(1);
+    throw new Error("Invalid core environment variables");
 }
 export const coreEnv = parsed.data;

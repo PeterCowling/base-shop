@@ -8,6 +8,6 @@ export const shippingEnvSchema = z.object({
 const parsed = shippingEnvSchema.safeParse(process.env);
 if (!parsed.success) {
     console.error("❌ Invalid shipping environment variables:", parsed.error.format());
-    process.exit(1);
+    throw new Error("Invalid shipping environment variables");
 }
 export const shippingEnv = parsed.data;

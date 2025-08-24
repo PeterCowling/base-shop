@@ -1,9 +1,15 @@
+"use server";
 import "server-only";
 import * as React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { marketingEmailTemplates } from "@acme/ui";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
+import { createRequire } from "module";
+
+const nodeRequire =
+  typeof require !== "undefined"
+    ? require
+    : createRequire(eval("import.meta.url"));
 const { window } = new JSDOM("");
 const DOMPurify = createDOMPurify(window);
 const templates = {};
@@ -26,6 +32,7 @@ export function clearTemplates() {
  * use the Handlebars-like syntax `{{variable}}`.
  */
 export function renderTemplate(id, params) {
+    const { renderToStaticMarkup } = nodeRequire("react-dom/server");
     const source = templates[id];
     if (source) {
         return source.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => {

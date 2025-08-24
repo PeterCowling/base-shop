@@ -1,3 +1,6 @@
+"use server";
+import "server-only";
+
 export { sendCampaignEmail } from "./send";
 export { registerTemplate, renderTemplate, clearTemplates } from "./templates";
 export { recoverAbandonedCarts, resolveAbandonedCartDelay } from "./abandonedCart";

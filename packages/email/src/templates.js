@@ -1,8 +1,10 @@
+"use server";
+import "server-only";
 import * as React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import { marketingEmailTemplates } from "@acme/ui";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
+const { renderToStaticMarkup } = await import("react-dom/server");
 const { window } = new JSDOM("");
 const DOMPurify = createDOMPurify(window);
 const templates = {};

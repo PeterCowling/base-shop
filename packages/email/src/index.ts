@@ -1,3 +1,6 @@
+"use server";
+import "server-only";
+
 export type { CampaignOptions } from "./send";
 export { sendCampaignEmail } from "./send";
 export { registerTemplate, renderTemplate, clearTemplates } from "./templates";

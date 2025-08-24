@@ -24,31 +24,38 @@ interface ProviderOptions {
 }
 
 export class ResendProvider implements CampaignProvider {
-  private client: Resend;
+  private client?: Resend;
   /** Promise resolving when optional credential checks finish. */
   readonly ready: Promise<void>;
 
   constructor(options: ProviderOptions = {}) {
-    this.client = new Resend(coreEnv.RESEND_API_KEY || "");
+    if (coreEnv.RESEND_API_KEY) {
+      this.client = new Resend(coreEnv.RESEND_API_KEY);
 
-    if (options.sanityCheck && coreEnv.RESEND_API_KEY) {
-      this.ready = fetch("https://api.resend.com/domains", {
-        headers: {
-          Authorization: `Bearer ${coreEnv.RESEND_API_KEY}`,
-        },
-      }).then((res) => {
-        if (!res.ok) {
-          throw new Error(
-            `Resend credentials rejected with status ${res.status}`
-          );
-        }
-      });
+      if (options.sanityCheck) {
+        this.ready = fetch("https://api.resend.com/domains", {
+          headers: {
+            Authorization: `Bearer ${coreEnv.RESEND_API_KEY}`,
+          },
+        }).then((res) => {
+          if (!res.ok) {
+            throw new Error(
+              `Resend credentials rejected with status ${res.status}`
+            );
+          }
+        });
+      } else {
+        this.ready = Promise.resolve();
+      }
     } else {
       this.ready = Promise.resolve();
     }
   }
 
   async send(options: CampaignOptions): Promise<void> {
+    if (!this.client) {
+      throw new ProviderError("Resend API key is not configured", false);
+    }
     try {
       await this.client.emails.send({
         from: getDefaultSender(),
@@ -81,10 +88,11 @@ export class ResendProvider implements CampaignProvider {
   }
 
   async getCampaignStats(id: string): Promise<CampaignStats> {
+    if (!coreEnv.RESEND_API_KEY) return mapResendStats({});
     try {
       const res = await fetch(`https://api.resend.com/campaigns/${id}/stats`, {
         headers: {
-          Authorization: `Bearer ${coreEnv.RESEND_API_KEY || ""}`,
+          Authorization: `Bearer ${coreEnv.RESEND_API_KEY}`,
         },
       });
       const json: ResendStatsResponse = await res
@@ -97,11 +105,12 @@ export class ResendProvider implements CampaignProvider {
   }
 
   async createContact(email: string): Promise<string> {
+    if (!coreEnv.RESEND_API_KEY) return "";
     try {
       const res = await fetch("https://api.resend.com/contacts", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${coreEnv.RESEND_API_KEY || ""}`,
+          Authorization: `Bearer ${coreEnv.RESEND_API_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email }),
@@ -114,10 +123,11 @@ export class ResendProvider implements CampaignProvider {
   }
 
   async addToList(contactId: string, listId: string): Promise<void> {
+    if (!coreEnv.RESEND_API_KEY) return;
     await fetch(`https://api.resend.com/segments/${listId}/contacts`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${coreEnv.RESEND_API_KEY || ""}`,
+        Authorization: `Bearer ${coreEnv.RESEND_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ contact_id: contactId }),
@@ -125,9 +135,10 @@ export class ResendProvider implements CampaignProvider {
   }
 
   async listSegments(): Promise<{ id: string; name?: string }[]> {
+    if (!coreEnv.RESEND_API_KEY) return [];
     try {
       const res = await fetch("https://api.resend.com/segments", {
-        headers: { Authorization: `Bearer ${coreEnv.RESEND_API_KEY || ""}` },
+        headers: { Authorization: `Bearer ${coreEnv.RESEND_API_KEY}` },
       });
       const json: {
         data?: ResendSegment[];

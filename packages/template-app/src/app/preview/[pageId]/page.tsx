@@ -9,12 +9,18 @@ export default async function PreviewPage({
   searchParams,
 }: {
   params: Promise<{ pageId: string }>;
-  searchParams: { token?: string; upgrade?: string; device?: string; view?: string };
+  searchParams: Promise<{
+    token?: string;
+    upgrade?: string;
+    device?: string;
+    view?: string;
+  }>;
 }) {
   const { pageId } = await params;
+  const { token, upgrade, device, view } = await searchParams;
   const query = new URLSearchParams();
-  if (searchParams.token) query.set("token", searchParams.token);
-  if (searchParams.upgrade) query.set("upgrade", searchParams.upgrade);
+  if (token) query.set("token", token);
+  if (upgrade) query.set("upgrade", upgrade);
   const res = await fetch(`/preview/${pageId}?${query.toString()}`, {
     cache: "no-store",
   });
@@ -30,7 +36,7 @@ export default async function PreviewPage({
   const page: Page = pageSchema.parse(await res.json());
   const components = page.components as PageComponent[];
   const locale = (Object.keys(page.seo.title)[0] || "en") as Locale;
-  const init = searchParams.device ?? searchParams.view;
+  const init = device ?? view;
   const initialDeviceId = (() => {
     if (typeof init === "string") {
       if (["desktop", "tablet", "mobile"].includes(init)) {

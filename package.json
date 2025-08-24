@@ -114,6 +114,7 @@
     "zod": "^3.25.73"
   },
   "devDependencies": {
+    "@acme/design-tokens": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@cloudflare/workers-types": "^4.20250704.0",
     "@eslint/compat": "^1.3.1",

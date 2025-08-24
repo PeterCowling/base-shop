@@ -176,6 +176,9 @@ importers:
         specifier: 3.25.73
         version: 3.25.73
     devDependencies:
+      '@acme/design-tokens':
+        specifier: workspace:*
+        version: link:packages/design-tokens
       '@acme/tailwind-config':
         specifier: workspace:*
         version: link:packages/tailwind-config
@@ -417,49 +420,6 @@ importers:
       '@types/busboy':
         specifier: ^1.5.4
         version: 1.5.4
-      next:
-        specifier: ^15.3.4
-        version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-
-  apps/shop-abc:
-    dependencies:
-      '@acme/config':
-        specifier: workspace:*
-        version: link:../../packages/config
-      '@acme/date-utils':
-        specifier: workspace:*
-        version: link:../../packages/date-utils
-      '@acme/email':
-        specifier: workspace:*
-        version: link:../../packages/email
-      '@acme/i18n':
-        specifier: workspace:*
-        version: link:../../packages/i18n
-      '@acme/next-config':
-        specifier: workspace:*
-        version: link:../../packages/next-config
-      '@acme/sanity':
-        specifier: workspace:*
-        version: link:../../packages/sanity
-      '@acme/stripe':
-        specifier: workspace:*
-        version: link:../../packages/stripe
-      '@acme/tailwind-config':
-        specifier: workspace:*
-        version: link:../../packages/tailwind-config
-      '@acme/template-app':
-        specifier: workspace:*
-        version: link:../../packages/template-app
-      '@acme/zod-utils':
-        specifier: workspace:^
-        version: link:../../packages/zod-utils
-      '@themes/base':
-        specifier: workspace:*
-        version: link:../../packages/themes/base
-      '@upstash/redis':
-        specifier: ^1.35.3
-        version: 1.35.3
-    devDependencies:
       next:
         specifier: ^15.3.4
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)

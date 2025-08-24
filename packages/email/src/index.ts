@@ -1,3 +1,4 @@
+"use server";
 import "server-only";
 
 export type { CampaignOptions } from "./send";

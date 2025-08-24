@@ -1,19 +1,28 @@
-import { coreEnv } from "@acme/config/env/core";
+const env = process.env;
 
 export const features = {
   /** enable RA ticketing module */
-  raTicketing: coreEnv.LUXURY_FEATURES_RA_TICKETING ?? false,
+  raTicketing:
+    (env.NEXT_PUBLIC_LUXURY_FEATURES_RA_TICKETING ??
+      env.LUXURY_FEATURES_RA_TICKETING) === "true",
   /** minimum fraud score before manual review */
   fraudReviewThreshold: Number(
-    coreEnv.LUXURY_FEATURES_FRAUD_REVIEW_THRESHOLD ?? 0,
+    env.NEXT_PUBLIC_LUXURY_FEATURES_FRAUD_REVIEW_THRESHOLD ??
+      env.LUXURY_FEATURES_FRAUD_REVIEW_THRESHOLD ??
+      0,
   ),
   /** require SCA for high value orders */
   requireStrongCustomerAuth:
-    coreEnv.LUXURY_FEATURES_REQUIRE_STRONG_CUSTOMER_AUTH ?? false,
+    (env.NEXT_PUBLIC_LUXURY_FEATURES_REQUIRE_STRONG_CUSTOMER_AUTH ??
+      env.LUXURY_FEATURES_REQUIRE_STRONG_CUSTOMER_AUTH) === "true",
   /** dashboards for shipment and return tracking */
-  trackingDashboard: coreEnv.LUXURY_FEATURES_TRACKING_DASHBOARD ?? false,
+  trackingDashboard:
+    (env.NEXT_PUBLIC_LUXURY_FEATURES_TRACKING_DASHBOARD ??
+      env.LUXURY_FEATURES_TRACKING_DASHBOARD) === "true",
   /** enable return requests and label generation */
-  returns: coreEnv.LUXURY_FEATURES_RETURNS ?? false,
+  returns:
+    (env.NEXT_PUBLIC_LUXURY_FEATURES_RETURNS ??
+      env.LUXURY_FEATURES_RETURNS) === "true",
 };
 
 export type Features = typeof features;

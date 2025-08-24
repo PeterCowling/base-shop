@@ -1,10 +1,11 @@
 // eslint.config.mjs
 import { FlatCompat } from "@eslint/eslintrc";
 import tsParser from "@typescript-eslint/parser"; // still needed for parser
+import tsPlugin from "@typescript-eslint/eslint-plugin";
 import boundaries from "eslint-plugin-boundaries";
 import importPlugin from "eslint-plugin-import";
 import { fixupPluginRules } from "@eslint/compat";
-import { dirname } from "path";
+import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,6 +19,8 @@ export default [
       "**/dist/**",
       "packages/auth/dist/",
       "**/.next/**",
+      "**/build/**",
+      "**/coverage/**",
       "**/index.js",
       "packages/ui/src/**/*.js",
       "packages/ui/src/**/*.d.ts",
@@ -25,6 +28,7 @@ export default [
       "apps/*/src/**/*.js",
       "apps/*/src/**/*.d.ts",
       "apps/*/src/**/*.js.map",
+      "scripts/**/*.js",
       "**/*.d.ts",
     ],
     languageOptions: {
@@ -61,6 +65,20 @@ export default [
       ],
       // add more TS-only rules here
     },
+  },
+
+  /* ▸ Scripts directory override */
+  {
+    files: ["scripts/**/*.{ts,tsx,js,jsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: [path.join(__dirname, "scripts/tsconfig.eslint.json")],
+        tsconfigRootDir: __dirname,
+      },
+    },
+    plugins: { "@typescript-eslint": tsPlugin },
+    rules: {},
   },
 
   /* ▸ Boundaries rules (unchanged) */

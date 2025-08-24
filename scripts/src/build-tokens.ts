@@ -1,5 +1,5 @@
 // /scripts/src/build-tokens.ts
-/* eslint-disable no-console */
+ 
 
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
@@ -163,8 +163,8 @@ if (process.argv[1] === __filename) {
       }).outputText;
 
       const sandbox: {
-        module: { exports: any };
-        exports: any;
+        module: { exports: Record<string, unknown> };
+        exports: Record<string, unknown>;
         require: NodeRequire;
       } = {
         module: { exports: {} },

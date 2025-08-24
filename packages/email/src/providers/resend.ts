@@ -11,7 +11,7 @@ import {
   mapResendStats,
   type CampaignStats,
   type ResendStatsResponse,
-} from "../analytics";
+} from "../stats";
 import { getDefaultSender } from "../config";
 
 interface ProviderOptions {

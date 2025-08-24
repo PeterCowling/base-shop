@@ -1,3 +1,4 @@
+import "server-only";
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { marketingEmailTemplates } from "@acme/ui";

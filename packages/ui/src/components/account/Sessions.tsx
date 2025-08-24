@@ -1,8 +1,8 @@
 // packages/ui/src/components/account/Sessions.tsx
-import { revokeSession, type SessionRecord } from "@auth";
-import { revalidatePath } from "next/cache";
+import { type SessionRecord } from "@auth";
 import { redirect } from "next/navigation";
 import RevokeSessionButton from "./RevokeSessionButton";
+import { revoke } from "../../actions/revokeSession";
 
 export interface SessionsPageProps {
   /** Optional heading override */
@@ -12,26 +12,6 @@ export interface SessionsPageProps {
 }
 
 export const metadata = { title: "Sessions" };
-
-export async function revoke(id: string) {
-  "use server";
-  const { getCustomerSession, listSessions, hasPermission } = await import("@auth");
-  try {
-    const session = await getCustomerSession();
-    if (!session || !hasPermission(session.role, "manage_sessions")) {
-      return { success: false, error: "Failed to revoke session." };
-    }
-    const sessions: SessionRecord[] = await listSessions(session.customerId);
-    if (!sessions.some((s) => s.sessionId === id)) {
-      return { success: false, error: "Session does not belong to the user." };
-    }
-    await revokeSession(id);
-    revalidatePath("/account/sessions");
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: "Failed to revoke session." };
-  }
-}
 
 export default async function SessionsPage({
   title = "Sessions",
@@ -60,7 +40,7 @@ export default async function SessionsPage({
                 {s.createdAt.toISOString()}
               </div>
             </div>
-            <RevokeSessionButton sessionId={s.sessionId} />
+            <RevokeSessionButton revoke={revoke} sessionId={s.sessionId} />
           </li>
         ))}
       </ul>

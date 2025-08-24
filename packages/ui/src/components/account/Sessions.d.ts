@@ -7,12 +7,5 @@ export interface SessionsPageProps {
 export declare const metadata: {
     title: string;
 };
-export declare function revoke(id: string): Promise<{
-    success: boolean;
-    error: string;
-} | {
-    success: boolean;
-    error?: undefined;
-}>;
 export default function SessionsPage({ title, callbackUrl, }?: SessionsPageProps): Promise<import("react/jsx-runtime").JSX.Element>;
 //# sourceMappingURL=Sessions.d.ts.map

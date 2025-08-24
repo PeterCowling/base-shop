@@ -3,8 +3,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 // packages/ui/src/components/account/RevokeSessionButton.tsx
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { revoke } from "./Sessions";
-export default function RevokeSessionButton({ sessionId }) {
+export default function RevokeSessionButton({ sessionId, revoke }) {
     const router = useRouter();
     const [error, setError] = useState(null);
     const [isPending, startTransition] = useTransition();

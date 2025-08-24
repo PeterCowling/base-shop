@@ -3,13 +3,16 @@
 // packages/ui/src/components/account/RevokeSessionButton.tsx
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { revoke } from "./Sessions";
 
 export interface RevokeSessionButtonProps {
   sessionId: string;
+  revoke: (id: string) => Promise<{ success: boolean; error?: string }>;
 }
 
-export default function RevokeSessionButton({ sessionId }: RevokeSessionButtonProps) {
+export default function RevokeSessionButton({
+  sessionId,
+  revoke,
+}: RevokeSessionButtonProps) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();

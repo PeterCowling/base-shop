@@ -9,7 +9,38 @@ import {
   DragOverlay,
   closestCenter,
 } from "@dnd-kit/core";
-import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
+interface Step {
+  target: string;
+  content: string;
+}
+
+const STATUS = {
+  FINISHED: "finished",
+  SKIPPED: "skipped",
+} as const;
+
+interface CallBackProps {
+  status: (typeof STATUS)[keyof typeof STATUS];
+}
+
+function Joyride({
+  run,
+  callback,
+}: {
+  steps: Step[];
+  run?: boolean;
+  continuous?: boolean;
+  showSkipButton?: boolean;
+  callback?: (data: CallBackProps) => void;
+  styles?: { options?: { zIndex?: number } };
+}) {
+  useEffect(() => {
+    if (run) {
+      callback?.({ status: STATUS.FINISHED });
+    }
+  }, [run, callback]);
+  return null;
+}
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
 import { Toast, Spinner } from "../../atoms";

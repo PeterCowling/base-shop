@@ -4,7 +4,15 @@ import { locales } from "@acme/i18n/locales";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DndContext, DragOverlay, closestCenter, } from "@dnd-kit/core";
-import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
+const STATUS = { FINISHED: "finished", SKIPPED: "skipped" };
+function Joyride({ run, callback }) {
+    useEffect(() => {
+        if (run) {
+            callback?.({ status: STATUS.FINISHED });
+        }
+    }, [run, callback]);
+    return null;
+}
 import { Button } from "../../atoms/shadcn";
 import { Toast, Spinner } from "../../atoms";
 import { CheckIcon } from "@radix-ui/react-icons";

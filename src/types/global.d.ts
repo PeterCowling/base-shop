@@ -43,10 +43,6 @@ declare module "react" {
 
 declare module "better-sqlite3";
 
-declare module "@acme/plugin-sanity" {
-  export * from "../../packages/plugins/sanity/index.ts";
-}
-
 declare module "validator/lib/isURL" {
   export default function isURL(
     str: string,

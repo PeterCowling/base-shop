@@ -40,10 +40,8 @@ function transpileTokens(filePath: string, requireFn: NodeRequire): TokenMap {
 
 export function loadThemeTokensNode(theme: string): TokenMap {
   if (!theme || theme === "base") return {};
-  // obtain a `require` function in both CJS and ESM environments
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const requireFn: NodeRequire =
-    typeof require !== "undefined" ? require : createRequire(import.meta.url);
+  // obtain a Node "require" function in ESM environments
+  const requireFn = createRequire(import.meta.url);
   const baseDir = join("packages", "themes", theme);
   const candidates = [
     join(baseDir, "tailwind-tokens.js"),

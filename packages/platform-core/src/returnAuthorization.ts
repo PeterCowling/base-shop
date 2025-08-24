@@ -9,7 +9,7 @@ export {
   type TrackingStatusRequest,
   type TrackingStatus,
   type TrackingStep,
-} from "./shipping/index.js";
+} from "./shipping/index";
 
 export { getReturnAuthorization };
 

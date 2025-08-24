@@ -73,7 +73,7 @@ pnpm validate-env <id>
 `validate-env` parses the `.env` file and exits with an error if any required variable is missing or malformed.
 Lines that have no value after the equals sign (e.g. `MY_VAR=`) are treated as placeholders and ignored during validation, so you can leave optional variables empty until you have real credentials.
 
-The wizard scaffolds placeholders for common variables:
+The wizard scaffolds placeholders for common variables (and generates random values for `NEXTAUTH_SECRET`, `SESSION_SECRET` and `PREVIEW_TOKEN_SECRET`):
 
 - `STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` / `STRIPE_WEBHOOK_SECRET` – Stripe API keys and webhook signature secret
 - `CART_COOKIE_SECRET` – secret for signing cart cookies (required)

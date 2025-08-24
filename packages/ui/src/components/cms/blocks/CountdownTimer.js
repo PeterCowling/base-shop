@@ -1,3 +1,5 @@
+"use client";
+
 import { jsx as _jsx } from "react/jsx-runtime";
 import { useEffect, useMemo, useState } from "react";
 import { parseTargetDate, getTimeRemaining, formatDuration, } from "@acme/date-utils";

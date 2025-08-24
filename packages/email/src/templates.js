@@ -4,7 +4,9 @@ import * as React from "react";
 import { marketingEmailTemplates } from "@acme/ui";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
-const { renderToStaticMarkup } = await import("react-dom/server");
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
 const { window } = new JSDOM("");
 const DOMPurify = createDOMPurify(window);
 const templates = {};
@@ -27,6 +29,7 @@ export function clearTemplates() {
  * use the Handlebars-like syntax `{{variable}}`.
  */
 export function renderTemplate(id, params) {
+    const { renderToStaticMarkup } = require("react-dom/server");
     const source = templates[id];
     if (source) {
         return source.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => {

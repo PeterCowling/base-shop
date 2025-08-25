@@ -3,7 +3,8 @@
 // and starts the dev server in one step.
 
 import { execSync, spawnSync } from "node:child_process";
-import { readdirSync } from "node:fs";
+import { readdirSync, existsSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
 import {
@@ -11,7 +12,7 @@ import {
   type CreateShopOptions,
 } from "@acme/platform-core/createShop";
 import { validateShopName } from "@acme/platform-core/shops";
-import { validateShopEnv } from "@acme/platform-core/configurator";
+import { validateShopEnv, readEnvFile } from "@acme/platform-core/configurator";
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
 import { seedShop } from "./seedShop";
 
@@ -109,6 +110,7 @@ interface Flags {
   payment?: string[];
   shipping?: string[];
   seed?: boolean;
+  autoEnv?: boolean;
 }
 
 function parseArgs(argv: string[]): Flags {
@@ -119,6 +121,10 @@ function parseArgs(argv: string[]): Flags {
       const [key, value] = arg.slice(2).split("=");
       if (key === "seed") {
         flags.seed = true;
+        continue;
+      }
+      if (key === "auto-env") {
+        flags.autoEnv = true;
         continue;
       }
       const val = value ?? argv[++i];
@@ -188,22 +194,34 @@ async function main(): Promise<void> {
     );
   }
 
+  const paymentProviders = await listProviders("payment");
   let payment = args.payment;
   if (!payment || payment.length === 0) {
-    const paymentProviders = await listProviders("payment");
     payment = await selectProviders(
       "payment providers",
       paymentProviders.map((p) => p.id)
     );
   }
 
+  const shippingProviders = await listProviders("shipping");
   let shipping = args.shipping;
   if (!shipping || shipping.length === 0) {
-    const shippingProviders = await listProviders("shipping");
     shipping = await selectProviders(
       "shipping providers",
       shippingProviders.map((p) => p.id)
     );
+  }
+
+  const envVarSet = new Set<string>();
+  for (const id of payment) {
+    paymentProviders
+      .find((p) => p.id === id)
+      ?.envVars.forEach((v) => envVarSet.add(v));
+  }
+  for (const id of shipping) {
+    shippingProviders
+      .find((p) => p.id === id)
+      ?.envVars.forEach((v) => envVarSet.add(v));
   }
 
   const options = {
@@ -226,11 +244,36 @@ async function main(): Promise<void> {
     seedShop(prefixedId);
   }
 
+  if (args.autoEnv) {
+    const envPath = join("apps", prefixedId, ".env");
+    let existing: Record<string, string> = {};
+    if (existsSync(envPath)) {
+      existing = readEnvFile(envPath);
+    }
+    for (const key of envVarSet) {
+      if (!existing[key]) {
+        existing[key] = `TODO_${key}`;
+      }
+    }
+    writeFileSync(
+      envPath,
+      Object.entries(existing)
+        .map(([k, v]) => `${k}=${v}`)
+        .join("\n") + "\n",
+    );
+  }
+
   try {
     validateShopEnv(prefixedId);
     console.log("Environment variables look valid.\n");
   } catch (err) {
     console.error("\nEnvironment validation failed:\n", err);
+  }
+
+  if (args.autoEnv) {
+    console.warn(
+      `\nWARNING: placeholder environment variables were written to apps/${prefixedId}/.env. Replace any TODO_* values with real secrets before deployment.`,
+    );
   }
 
   spawnSync("pnpm", ["--filter", `@apps/${prefixedId}`, "dev"], {

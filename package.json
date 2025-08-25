@@ -49,6 +49,7 @@
     "lh:checkout": "lighthouse http://localhost:3000/en/checkout --chrome-flags=\"--headless\" --only-categories=performance,accessibility,best-practices,seo --preset=desktop",
     "seo:audit": "tsx scripts/seo-audit.ts",
     "validate-env": "ts-node scripts/src/validate-env.ts",
+    "inventory": "ts-node scripts/src/inventory.ts",
     "quickstart-shop": "ts-node scripts/src/quickstart-shop.ts",
     "check:locales": "ts-node scripts/src/check-locales.ts",
     "add-locale": "tsx scripts/src/add-locale.ts",

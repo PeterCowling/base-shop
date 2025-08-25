@@ -1,5 +1,5 @@
 "use client";
-import { DragEndEvent, DragMoveEvent, DragStartEvent, KeyboardSensor, PointerSensor, useSensor, useSensors, } from "@dnd-kit/core";
+import { DragEndEvent, DragMoveEvent, DragStartEvent, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors, } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { ulid } from "ulid";
 import { useCallback, useState } from "react";
@@ -103,6 +103,13 @@ export function usePageBuilderDnD({ components, dispatch, defaults, containerTyp
         setActiveType(null);
         handleDragEndInternal(ev);
     }, [handleDragEndInternal]);
-    return { sensors, handleDragStart, handleDragMove, handleDragEnd, insertIndex, activeType };
+    const dndContext = {
+        sensors,
+        collisionDetection: closestCenter,
+        onDragStart: handleDragStart,
+        onDragMove: handleDragMove,
+        onDragEnd: handleDragEnd,
+    };
+    return { sensors, handleDragStart, handleDragMove, handleDragEnd, insertIndex, activeType, dndContext };
 }
 export default usePageBuilderDnD;

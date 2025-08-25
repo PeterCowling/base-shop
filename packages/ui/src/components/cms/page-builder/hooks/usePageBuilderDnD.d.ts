@@ -18,6 +18,13 @@ export declare function usePageBuilderDnD({ components, dispatch, defaults, cont
     handleDragEnd: (ev: DragEndEvent) => void;
     insertIndex: number | null;
     activeType: string | null;
+    dndContext: {
+        sensors: import("@dnd-kit/core").SensorDescriptor<import("@dnd-kit/core").SensorOptions>[];
+        collisionDetection: import("@dnd-kit/core").CollisionDetection;
+        onDragStart: (ev: DragStartEvent) => void;
+        onDragMove: (ev: DragMoveEvent) => void;
+        onDragEnd: (ev: DragEndEvent) => void;
+    };
 };
 export default usePageBuilderDnD;
 //# sourceMappingURL=usePageBuilderDnD.d.ts.map

@@ -4,43 +4,12 @@ import { locales, type Locale } from "@acme/i18n/locales";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
-import {
-  DndContext,
-  DragOverlay,
-  closestCenter,
-} from "@dnd-kit/core";
-interface Step {
-  target: string;
-  content: string;
-}
-
-const STATUS = {
-  FINISHED: "finished",
-  SKIPPED: "skipped",
-} as const;
-
-interface CallBackProps {
-  status: (typeof STATUS)[keyof typeof STATUS];
-}
-
-function Joyride({
-  run,
-  callback,
-}: {
-  steps: Step[];
-  run?: boolean;
-  continuous?: boolean;
-  showSkipButton?: boolean;
-  callback?: (data: CallBackProps) => void;
-  styles?: { options?: { zIndex?: number } };
-}) {
-  useEffect(() => {
-    if (run) {
-      callback?.({ status: STATUS.FINISHED });
-    }
-  }, [run, callback]);
-  return null;
-}
+import { DndContext, DragOverlay } from "@dnd-kit/core";
+import PageBuilderTour, {
+  Step,
+  CallBackProps,
+  STATUS,
+} from "./PageBuilderTour";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
 import { Toast, Spinner } from "../../atoms";
@@ -210,14 +179,7 @@ const PageBuilder = memo(function PageBuilder({
   const saveDebounceRef = useRef<number | null>(null);
   const initialRender = useRef(true);
 
-  const {
-    sensors,
-    handleDragStart,
-    handleDragMove,
-    handleDragEnd,
-    insertIndex,
-    activeType,
-  } = usePageBuilderDnD({
+  const { dndContext, insertIndex, activeType } = usePageBuilderDnD({
     components,
     dispatch,
     defaults: defaults as Record<string, Partial<PageComponent>>,
@@ -321,13 +283,10 @@ const PageBuilder = memo(function PageBuilder({
 
   return (
     <div className="flex gap-4" style={style}>
-      <Joyride
+      <PageBuilderTour
         steps={tourSteps}
         run={runTour}
-        continuous
-        showSkipButton
         callback={handleTourCallback}
-        styles={{ options: { zIndex: 10000 } }}
       />
       <aside className="w-48 shrink-0" data-tour="palette">
         <Palette onAdd={handleAddFromPalette} />
@@ -369,13 +328,7 @@ const PageBuilder = memo(function PageBuilder({
           {liveMessage}
         </div>
         <div className="flex flex-1 gap-4">
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragStart={handleDragStart}
-            onDragMove={handleDragMove}
-            onDragEnd={handleDragEnd}
-          >
+          <DndContext {...dndContext}>
             <div
               className={`${frameClass[viewport]} shrink-0`}
               style={viewportStyle}

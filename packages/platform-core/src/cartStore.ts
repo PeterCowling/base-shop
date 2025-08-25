@@ -1,4 +1,4 @@
-import { Redis } from "@upstash/redis";
+import type { Redis } from "@upstash/redis";
 import { coreEnv } from "@acme/config/env/core";
 import type { CartState } from "./cart";
 import type { SKU } from "@acme/types";
@@ -27,6 +27,14 @@ export interface CartStoreOptions {
   redis?: Redis;
 }
 
+function loadRedis(): typeof import("@upstash/redis").Redis | undefined {
+  try {
+    return (eval("require")("@upstash/redis") as { Redis: typeof import("@upstash/redis").Redis }).Redis;
+  } catch {
+    return undefined;
+  }
+}
+
 const DEFAULT_TTL = 60 * 60 * 24 * 30; // 30 days in seconds
 
 export function createMemoryCartStore(ttl: number): CartStore {
@@ -50,9 +58,10 @@ export function createCartStore(options: CartStoreOptions = {}): CartStore {
       : "memory");
 
   if (backend === "redis") {
+    const Redis = loadRedis();
     const client =
       options.redis ??
-      (coreEnv.UPSTASH_REDIS_REST_URL && coreEnv.UPSTASH_REDIS_REST_TOKEN
+      (Redis && coreEnv.UPSTASH_REDIS_REST_URL && coreEnv.UPSTASH_REDIS_REST_TOKEN
         ? new Redis({
             url: coreEnv.UPSTASH_REDIS_REST_URL,
             token: coreEnv.UPSTASH_REDIS_REST_TOKEN,

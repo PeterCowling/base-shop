@@ -192,8 +192,8 @@ export async function DELETE(req: NextRequest) {
  * return an empty object. Always attaches a signed cart cookie to
  * the response.
  */
-export async function GET(req: NextRequest) {
-  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
+export async function GET(req?: NextRequest) {
+  let cartId = decodeCartCookie(req?.cookies.get(CART_COOKIE)?.value);
   if (!cartId) {
     cartId = await cartStore.createCart();
   }

@@ -20,6 +20,9 @@ pnpm init-shop
 - shop type (`sale` or `rental`)
 - theme and template
 - payment and shipping providers (selected from a guided list of available providers)
+- navigation links (label + URL pairs)
+- basic pages (slug and title) to scaffold
+- theme token overrides (`token=value` pairs)
 
 After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
 
@@ -59,6 +62,16 @@ Available shipping providers:
   1) dhl
   2) ups
 Select shipping providers by number (comma-separated, empty for none): 2
+Nav label (leave empty to finish): Home
+Nav URL: /
+Nav label (leave empty to finish): Shop
+Nav URL: /shop
+Nav label (leave empty to finish):
+Page slug (leave empty to finish): about
+Page title: About Us
+Page slug (leave empty to finish):
+Theme token override (key=value, blank to finish): color.primary=#ff0000
+Theme token override (key=value, blank to finish):
 Scaffolded apps/shop-demo
 ```
 

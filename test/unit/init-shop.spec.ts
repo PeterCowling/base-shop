@@ -12,10 +12,20 @@ describe('init-shop wizard', () => {
       'https://example.com/logo.png',
       'contact@example.com',
       '',
-      'base',
-      'template-app',
+      '1',
+      '1',
       '1,2',
       '1',
+      'Home',
+      '/',
+      'Shop',
+      '/shop',
+      '',
+      'about',
+      'About Us',
+      '',
+      'color.primary=#fff',
+      '',
       'n',
     ];
     const createShop = jest.fn();
@@ -46,8 +56,12 @@ describe('init-shop wizard', () => {
         if (p === 'node:fs') {
           return {
             existsSync: () => true,
-              readFileSync: () =>
-                'STRIPE_SECRET_KEY=\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\nSTRIPE_WEBHOOK_SECRET=\n',
+            readFileSync: () =>
+              'STRIPE_SECRET_KEY=\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\nSTRIPE_WEBHOOK_SECRET=\n',
+            readdirSync: () => [
+              { name: 'base', isDirectory: () => true },
+              { name: 'template-app', isDirectory: () => true },
+            ],
           };
         }
         if (p === 'node:path') return require('node:path');
@@ -106,10 +120,20 @@ describe('init-shop wizard', () => {
       'Logo URL (optional): ',
       'Contact email (optional): ',
       'Shop type (sale or rental) [sale]: ',
-      'Theme [base]: ',
-      'Template [template-app]: ',
+      'Select theme by number [1]: ',
+      'Select template by number [1]: ',
       'Select payment providers by number (comma-separated, empty for none): ',
       'Select shipping providers by number (comma-separated, empty for none): ',
+      'Nav label (leave empty to finish): ',
+      'Nav URL: ',
+      'Nav label (leave empty to finish): ',
+      'Nav URL: ',
+      'Nav label (leave empty to finish): ',
+      'Page slug (leave empty to finish): ',
+      'Page title: ',
+      'Page slug (leave empty to finish): ',
+      'Theme token override (key=value, blank to finish): ',
+      'Theme token override (key=value, blank to finish): ',
       'Setup CI workflow? (y/N): ',
     ]);
 
@@ -124,6 +148,18 @@ describe('init-shop wizard', () => {
         template: 'template-app',
         payment: ['stripe', 'paypal'],
         shipping: ['dhl'],
+        navItems: [
+          { label: 'Home', url: '/' },
+          { label: 'Shop', url: '/shop' },
+        ],
+        pages: [
+          {
+            slug: 'about',
+            title: { en: 'About Us' },
+            components: [],
+          },
+        ],
+        themeOverrides: { 'color.primary': '#fff' },
       },
       { deploy: true }
     );

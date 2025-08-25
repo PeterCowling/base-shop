@@ -170,6 +170,58 @@ async function promptEmail(question: string): Promise<string | undefined> {
 }
 
 /**
+ * Collect a simple flat list of navigation items from the user.
+ * Prompts for a label and URL until a blank label is entered.
+ */
+async function promptNavItems(): Promise<CreateShopOptions["navItems"]> {
+  const items: CreateShopOptions["navItems"] = [];
+  while (true) {
+    const label = await prompt("Nav label (leave empty to finish): ");
+    if (!label) break;
+    const url = await prompt("Nav URL: ");
+    items.push({ label, url });
+  }
+  return items;
+}
+
+/**
+ * Gather basic page entries from the user. Each page requires a slug and
+ * title. Components are left empty so the CMS page builder can populate
+ * them later.
+ */
+async function promptPages(): Promise<CreateShopOptions["pages"]> {
+  const pages: CreateShopOptions["pages"] = [];
+  while (true) {
+    const slug = await prompt("Page slug (leave empty to finish): ");
+    if (!slug) break;
+    const title = await prompt("Page title: ");
+    pages.push({ slug, title: { en: title }, components: [] });
+  }
+  return pages;
+}
+
+/**
+ * Prompt for theme token overrides in key=value form. Input a blank line to
+ * finish. Invalid entries are skipped.
+ */
+async function promptThemeOverrides(): Promise<Record<string, string>> {
+  const overrides: Record<string, string> = {};
+  while (true) {
+    const entry = await prompt(
+      "Theme token override (key=value, blank to finish): "
+    );
+    if (!entry) break;
+    const [key, value] = entry.split("=").map((s) => s.trim());
+    if (key && value) {
+      overrides[key] = value;
+    } else {
+      console.error("Invalid token override format.");
+    }
+  }
+  return overrides;
+}
+
+/**
  * Main entry point for the init-shop CLI. Collects shop configuration
  * through prompts and calls createShop to scaffold a new shop. Validates
  * the resulting environment file and optionally sets up CI.
@@ -226,6 +278,9 @@ async function main(): Promise<void> {
     "shipping providers",
     shippingProviders
   );
+  const navItems = await promptNavItems();
+  const pages = await promptPages();
+  const themeOverrides = await promptThemeOverrides();
   const ciAns = await prompt("Setup CI workflow? (y/N): ");
 
   // Assemble the options object using the collected values.  The CreateShopOptions
@@ -244,6 +299,9 @@ async function main(): Promise<void> {
     template,
     payment,
     shipping,
+    ...(navItems.length && { navItems }),
+    ...(pages.length && { pages }),
+    ...(Object.keys(themeOverrides).length && { themeOverrides }),
   };
   const options = rawOptions as unknown as CreateShopOptions;
 

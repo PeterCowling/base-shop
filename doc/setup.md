@@ -8,8 +8,10 @@
 For a one-liner that scaffolds a shop, validates the environment, and starts the dev server:
 
 ```bash
-pnpm quickstart-shop --id demo --theme base --template template-app --payment stripe --shipping ups
+pnpm quickstart-shop --id demo --theme base --template template-app --payment stripe --shipping ups --seed
 ```
+
+Add `--seed` to copy sample products and inventory so the shop is immediately populated.
 
 ## 1. Create a shop
 
@@ -29,7 +31,7 @@ pnpm init-shop
 - navigation links (label + URL pairs)
 - basic pages (slug and title) to scaffold
 - theme token overrides (`token=value` pairs)
- - environment variables like Stripe keys and CMS credentials
+- environment variables like Stripe keys and CMS credentials
 
 After answering the prompts the wizard scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
 

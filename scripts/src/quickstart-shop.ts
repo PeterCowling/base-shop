@@ -13,6 +13,7 @@ import {
 import { validateShopName } from "@acme/platform-core/shops";
 import { validateShopEnv } from "@acme/platform-core/configurator";
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
+import { seedShop } from "./seedShop";
 
 /** Ensure Node.js and pnpm meet minimum requirements. */
 function ensureRuntime(): void {
@@ -28,7 +29,9 @@ function ensureRuntime(): void {
   try {
     pnpmVersion = execSync("pnpm --version", { encoding: "utf8" }).trim();
   } catch {
-    console.error("Failed to determine pnpm version. pnpm v10 or later is required.");
+    console.error(
+      "Failed to determine pnpm version. pnpm v10 or later is required."
+    );
     process.exit(1);
   }
 
@@ -105,6 +108,7 @@ interface Flags {
   template?: string;
   payment?: string[];
   shipping?: string[];
+  seed?: boolean;
 }
 
 function parseArgs(argv: string[]): Flags {
@@ -113,6 +117,10 @@ function parseArgs(argv: string[]): Flags {
     const arg = argv[i];
     if (arg.startsWith("--")) {
       const [key, value] = arg.slice(2).split("=");
+      if (key === "seed") {
+        flags.seed = true;
+        continue;
+      }
       const val = value ?? argv[++i];
       switch (key) {
         case "id":
@@ -156,7 +164,9 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const themes = listDirNames(new URL("../../packages/themes", import.meta.url));
+  const themes = listDirNames(
+    new URL("../../packages/themes", import.meta.url)
+  );
   let theme = args.theme;
   if (!theme) {
     theme = await selectOption(
@@ -166,9 +176,9 @@ async function main(): Promise<void> {
     );
   }
 
-  const templates = listDirNames(new URL("../../packages", import.meta.url)).filter(
-    (n) => n.startsWith("template-")
-  );
+  const templates = listDirNames(
+    new URL("../../packages", import.meta.url)
+  ).filter((n) => n.startsWith("template-"));
   let template = args.template;
   if (!template) {
     template = await selectOption(
@@ -183,7 +193,7 @@ async function main(): Promise<void> {
     const paymentProviders = await listProviders("payment");
     payment = await selectProviders(
       "payment providers",
-      paymentProviders.map((p) => p.id),
+      paymentProviders.map((p) => p.id)
     );
   }
 
@@ -192,7 +202,7 @@ async function main(): Promise<void> {
     const shippingProviders = await listProviders("shipping");
     shipping = await selectProviders(
       "shipping providers",
-      shippingProviders.map((p) => p.id),
+      shippingProviders.map((p) => p.id)
     );
   }
 
@@ -212,6 +222,10 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  if (args.seed) {
+    seedShop(prefixedId);
+  }
+
   try {
     validateShopEnv(prefixedId);
     console.log("Environment variables look valid.\n");
@@ -228,4 +242,3 @@ main().catch((err) => {
   console.error(err);
   process.exit(1);
 });
-

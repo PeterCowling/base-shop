@@ -7,19 +7,27 @@ import type { MediaItem } from "@acme/types";
 
 export default function ImageGallery({ items }: { items: MediaItem[] }) {
   const [index, setIndex] = useState(0);
+  const [zoom, setZoom] = useState(false);
   const item = items[index];
   if (!item) return null;
 
   return (
     <div className="space-y-2">
-      <figure className="relative w-full aspect-square">
+      <figure
+        className={`relative w-full aspect-square overflow-hidden ${
+          zoom ? "cursor-zoom-out" : "cursor-zoom-in"
+        }`}
+        onClick={() => setZoom((z) => !z)}
+      >
         {item.type === "image" ? (
           <Image
             src={item.url}
             alt={item.altText ?? ""}
             fill
             sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover rounded-lg"
+            className={`object-cover rounded-lg transition-transform ${
+              zoom ? "scale-125" : ""
+            }`}
             priority
           />
         ) : (
@@ -36,7 +44,10 @@ export default function ImageGallery({ items }: { items: MediaItem[] }) {
             <button
               key={m.url}
               type="button"
-              onClick={() => setIndex(i)}
+              onClick={() => {
+                setIndex(i);
+                setZoom(false);
+              }}
               className={`relative h-16 w-16 overflow-hidden rounded border${
                 i === index ? " ring-2 ring-black" : ""
               }`}

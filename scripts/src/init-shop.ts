@@ -66,6 +66,7 @@ ensureRuntime();
 
 const seed = process.argv.includes("--seed");
 const useDefaults = process.argv.includes("--defaults");
+const autoEnv = process.argv.includes("--auto-env");
 
 /**
  * Prompt the user for input. If the user does not provide an answer, return the default value.
@@ -421,7 +422,11 @@ async function main(): Promise<void> {
   for (const id of selectedPlugins) {
     const vars = pluginMap.get(id)?.envVars ?? [];
     for (const key of vars) {
-      envVars[key] = await prompt(`${key}: `, envVars[key] ?? "");
+      if (autoEnv) {
+        envVars[key] = envVars[key] ?? `TODO_${key}`;
+      } else {
+        envVars[key] = await prompt(`${key}: `, envVars[key] ?? "");
+      }
     }
   }
   const templateDefaults = loadTemplateDefaults(rootDir, template);
@@ -510,6 +515,12 @@ async function main(): Promise<void> {
     console.error("\nEnvironment validation failed:\n", validationError);
   } else {
     console.log("\nEnvironment variables look valid.");
+  }
+
+  if (autoEnv) {
+    console.warn(
+      `\nWARNING: placeholder environment variables were written to apps/${prefixedId}/.env. Replace any TODO_* values with real secrets before deployment.`,
+    );
   }
 
   console.log(

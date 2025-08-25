@@ -50,6 +50,9 @@ pnpm init-shop --brand "#663399" --tokens ./my-tokens.json
 To populate the new shop with sample data, run `pnpm init-shop --seed`.
 Use `pnpm init-shop --defaults` to apply preset nav links and pages from the
 selected template without prompting for them.
+Add `--auto-env` to skip prompts for provider environment variables. The wizard writes
+`TODO_*` placeholders to the new shop's `.env` file; replace them with real
+secrets before deploying.
 
 Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.
 
@@ -126,6 +129,9 @@ Scaffolded apps/shop-demo
 ## 2. Review environment variables
 
 The wizard captures common environment variables and writes them to `apps/shop-<id>/.env`.
+
+If you used `--auto-env`, this file contains placeholder values like `TODO_API_KEY`.
+These placeholders must be replaced with real credentials before deployment.
 
 ```bash
 pnpm validate-env <id>

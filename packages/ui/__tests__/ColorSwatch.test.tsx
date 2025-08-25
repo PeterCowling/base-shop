@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { ColorSwatch } from "../components/atoms/ColorSwatch";
+import { ColorSwatch } from "../src/components/atoms/ColorSwatch";
 
 describe("ColorSwatch", () => {
   it("applies background color", () => {

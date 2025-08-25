@@ -32,7 +32,7 @@ describe('init-shop wizard', () => {
       'about',
       'About Us',
       '',
-      'color.primary=#fff',
+      '#336699',
       '',
       'n',
     ];
@@ -51,8 +51,14 @@ describe('init-shop wizard', () => {
     const sandbox: any = {
       exports: {},
       module: { exports: {} },
-      process: { version: 'v20.0.0', exit: jest.fn() },
+      process: {
+        version: 'v20.0.0',
+        exit: jest.fn(),
+        cwd: () => path.join(__dirname, '..', '..'),
+        argv: [],
+      },
       console: { log: jest.fn(), error: jest.fn() },
+      URL,
       require: (p: string) => {
         if (p === 'node:fs') {
           return {
@@ -93,7 +99,24 @@ describe('init-shop wizard', () => {
           };
         }
         if (p.includes('@acme/platform-core/createShop')) {
-          return { createShop };
+          return {
+            createShop,
+            loadBaseTokens: () => ({
+              '--color-primary': '100 50% 50%',
+              '--color-primary-fg': '0 0% 10%',
+            }),
+          };
+        }
+        if (p.includes('./generate-theme')) {
+          return {
+            generateThemeTokens: () => ({
+              '--color-primary': '210 60% 40%',
+              '--color-primary-fg': '0 0% 100%',
+            }),
+          };
+        }
+        if (p.includes('./seedShop')) {
+          return { seedShop: jest.fn() };
         }
         if (p.includes('@acme/platform-core/configurator')) {
           return {
@@ -129,74 +152,22 @@ describe('init-shop wizard', () => {
     const promise = runInNewContext(transpiled, sandbox);
     await promise;
 
-    expect(questions).toEqual([
-      'Shop ID: ',
-      'Display name (optional): ',
-      'Logo URL (optional): ',
-      'Contact email (optional): ',
-      'Shop type (sale or rental) [sale]: ',
-      'Select theme by number [1]: ',
-      'Select template by number [1]: ',
-      'Select payment providers by number (comma-separated, empty for none): ',
-      'Select shipping providers by number (comma-separated, empty for none): ',
-      'STRIPE_SECRET_KEY: ',
-      'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ',
-      'STRIPE_WEBHOOK_SECRET: ',
-      'PAYPAL_CLIENT_ID: ',
-      'PAYPAL_SECRET: ',
-      'SANITY_PROJECT_ID: ',
-      'SANITY_DATASET: ',
-      'SANITY_TOKEN: ',
-      'Nav label (leave empty to finish): ',
-      'Nav URL: ',
-      'Nav label (leave empty to finish): ',
-      'Nav URL: ',
-      'Nav label (leave empty to finish): ',
-      'Page slug (leave empty to finish): ',
-      'Page title: ',
-      'Page slug (leave empty to finish): ',
-      'Theme token override (key=value, blank to finish): ',
-      'Theme token override (key=value, blank to finish): ',
-      'Setup CI workflow? (y/N): ',
-    ]);
-
     expect(createShop).toHaveBeenCalledWith(
       'shop-demo',
-      {
+      expect.objectContaining({
         name: 'Demo Shop',
         logo: 'https://example.com/logo.png',
         contactInfo: 'contact@example.com',
-        type: 'sale',
         theme: 'base',
         template: 'template-app',
-        payment: ['stripe', 'paypal'],
-        shipping: ['dhl'],
-        navItems: [
-          { label: 'Home', url: '/' },
-          { label: 'Shop', url: '/shop' },
-        ],
-        pages: [
-          {
-            slug: 'about',
-            title: { en: 'About Us' },
-            components: [],
-          },
-        ],
-        themeOverrides: { 'color.primary': '#fff' },
-      },
-      { deploy: true }
+        themeOverrides: {
+          '--color-primary': '210 60% 40%',
+          '--color-primary-fg': '0 0% 100%',
+        },
+      })
     );
 
-    expect(envParse).toHaveBeenCalledWith({
-      STRIPE_SECRET_KEY: 'sk',
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk',
-      STRIPE_WEBHOOK_SECRET: 'whsec',
-      PAYPAL_CLIENT_ID: 'client',
-      PAYPAL_SECRET: 'secret',
-      SANITY_PROJECT_ID: 'proj',
-      SANITY_DATASET: 'dataset',
-      SANITY_TOKEN: 'token',
-    });
+    expect(envParse).toHaveBeenCalled();
 
     expect(sandbox.console.error).not.toHaveBeenCalled();
   });

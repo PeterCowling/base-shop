@@ -1,5 +1,11 @@
 // packages/platform-core/src/createShop/index.ts
-import { readdirSync, existsSync, readFileSync, writeFileSync } from "fs";
+import {
+  readdirSync,
+  existsSync,
+  readFileSync,
+  writeFileSync,
+  mkdirSync,
+} from "fs";
 import { join } from "path";
 import { genSecret } from "@acme/shared-utils";
 import { Prisma } from "@prisma/client";
@@ -60,6 +66,14 @@ export async function createShop(
   await prisma.shop.create({
     data: { id, data: shopData as unknown as Prisma.InputJsonValue },
   });
+
+  try {
+    const dir = join("data", "shops", id);
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, "shop.json"), JSON.stringify(shopData, null, 2));
+  } catch {
+    // ignore filesystem write errors
+  }
 
   if (prepared.pages.length) {
     await prisma.page.createMany({

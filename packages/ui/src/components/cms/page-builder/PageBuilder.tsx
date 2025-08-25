@@ -1,34 +1,27 @@
 "use client";
 
-import { locales, type Locale } from "@acme/i18n/locales";
+import { locales } from "@acme/i18n/locales";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { DndContext, DragOverlay } from "@dnd-kit/core";
-import PageBuilderTour, {
-  Step,
-  CallBackProps,
-  STATUS,
-} from "./PageBuilderTour";
+import PageBuilderTour from "./PageBuilderTour";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
-import { Toast, Spinner } from "../../atoms";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { Toast } from "../../atoms";
 import Palette from "./Palette";
 import { getShopFromPath } from "@acme/platform-core/utils";
 import { ulid } from "ulid";
 import useFileDrop from "./hooks/useFileDrop";
 import usePageBuilderState from "./hooks/usePageBuilderState";
 import usePageBuilderDnD from "./hooks/usePageBuilderDnD";
-import useViewport from "./hooks/useViewport";
 import PageToolbar from "./PageToolbar";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
-import { devicePresets, getLegacyPreset, type DevicePreset } from "../../../utils/devicePresets";
-import { usePreviewDevice } from "../../../hooks";
-import DeviceSelector from "../../common/DeviceSelector";
-import DynamicRenderer from "../../DynamicRenderer";
+import usePageBuilderControls from "./hooks/usePageBuilderControls";
+import PreviewPane from "./PreviewPane";
+import HistoryControls from "./HistoryControls";
 
 interface Props {
   page: Page;
@@ -76,46 +69,32 @@ const PageBuilder = memo(function PageBuilder({
     history: historyProp,
     onChange,
     onSaveShortcut: handleSaveShortcut,
-    onTogglePreview: () => setShowPreview((p) => !p),
-    onRotateDevice: () =>
-      setOrientation((o) => (o === "portrait" ? "landscape" : "portrait")),
+    onTogglePreview: togglePreview,
+    onRotateDevice: rotateDevice,
   });
-
-  const [deviceId, setDeviceId] = usePreviewDevice(devicePresets[0].id);
-  const [orientation, setOrientation] = useState<"portrait" | "landscape">(
-    "portrait"
-  );
-  const device = useMemo<DevicePreset>(() => {
-    const preset =
-      devicePresets.find((d: DevicePreset) => d.id === deviceId) ??
-      devicePresets[0];
-    return orientation === "portrait"
-      ? { ...preset, orientation }
-      : {
-          ...preset,
-          width: preset.height,
-          height: preset.width,
-          orientation,
-        };
-  }, [deviceId, orientation]);
-  const viewport: "desktop" | "tablet" | "mobile" = device.type;
-  const [locale, setLocale] = useState<Locale>("en");
-  const [showPreview, setShowPreview] = useState(false);
-  const [previewDeviceId, setPreviewDeviceId] = useState(
-    getLegacyPreset("desktop").id,
-  );
-  const [runTour, setRunTour] = useState(false);
-  const previewDevice = useMemo<DevicePreset>(
-    () =>
-      devicePresets.find((d: DevicePreset) => d.id === previewDeviceId) ??
-      devicePresets[0],
-    [previewDeviceId],
-  );
-  const previewViewport: "desktop" | "tablet" | "mobile" = previewDevice.type;
   const {
-    viewportStyle: previewViewportStyle,
-    frameClass: previewFrameClass,
-  } = useViewport(previewDevice);
+    deviceId,
+    setDeviceId,
+    orientation,
+    setOrientation,
+    rotateDevice,
+    device,
+    viewport,
+    viewportStyle,
+    frameClass,
+    locale,
+    setLocale,
+    showPreview,
+    togglePreview,
+    previewDeviceId,
+    setPreviewDeviceId,
+    runTour,
+    startTour,
+    tourSteps,
+    handleTourCallback,
+    showGrid,
+    toggleGrid,
+  } = usePageBuilderControls();
   const [publishCount, setPublishCount] = useState(0);
   const prevId = useRef(page.id);
   const pathname = usePathname() ?? "";
@@ -128,40 +107,6 @@ const PageBuilder = memo(function PageBuilder({
     isValid,
   } = useFileDrop({ shop: shop ?? "", dispatch });
   const canvasRef = useRef<HTMLDivElement>(null);
-  const tourSteps = useMemo<Step[]>(
-    () => [
-      {
-        target: "[data-tour='palette']",
-        content: "Drag components from the palette onto the canvas.",
-      },
-      {
-        target: "[data-tour='canvas']",
-        content: "Arrange and edit components on the canvas.",
-      },
-      {
-        target: "[data-tour='sidebar']",
-        content: "Edit the selected component's settings in this sidebar.",
-      },
-    ],
-    [],
-  );
-  const handleTourCallback = useCallback((data: CallBackProps) => {
-    if (data.status === STATUS.FINISHED || data.status === STATUS.SKIPPED) {
-      setRunTour(false);
-      if (typeof window !== "undefined") {
-        localStorage.setItem("page-builder-tour", "done");
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      !localStorage.getItem("page-builder-tour")
-    ) {
-      setRunTour(true);
-    }
-  }, []);
   const [toast, setToast] = useState<{
     open: boolean;
     message: string;
@@ -170,7 +115,6 @@ const PageBuilder = memo(function PageBuilder({
     open: false,
     message: "",
   });
-  const [showGrid, setShowGrid] = useState(false);
   const [gridSize, setGridSize] = useState(1);
   const [snapPosition, setSnapPosition] = useState<number | null>(null);
   const [autoSaveState, setAutoSaveState] = useState<
@@ -204,8 +148,6 @@ const PageBuilder = memo(function PageBuilder({
     },
     [dispatch, setSelectedId],
   );
-
-  const { viewportStyle, frameClass } = useViewport(device);
 
   useEffect(() => {
     if (showGrid && canvasRef.current) {
@@ -305,20 +247,20 @@ const PageBuilder = memo(function PageBuilder({
             progress={progress}
             isValid={isValid}
             showGrid={showGrid}
-            toggleGrid={() => setShowGrid((g) => !g)}
+            toggleGrid={toggleGrid}
             gridCols={gridCols}
             setGridCols={setGridCols}
           />
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
-              onClick={() => setRunTour(true)}
+              onClick={startTour}
             >
               Tour
             </Button>
             <Button
               variant="outline"
-              onClick={() => setShowPreview((p) => !p)}
+              onClick={togglePreview}
             >
               {showPreview ? "Hide preview" : "Show preview"}
             </Button>
@@ -362,62 +304,27 @@ const PageBuilder = memo(function PageBuilder({
             </DragOverlay>
           </DndContext>
           {showPreview && (
-            <div className="flex flex-col gap-2 shrink-0">
-              <DeviceSelector
-                deviceId={previewDeviceId}
-                onChange={setPreviewDeviceId}
-                showLegacyButtons
-              />
-              <div
-                className={`${previewFrameClass[previewViewport]} shrink-0`}
-                style={previewViewportStyle}
-              >
-                <DynamicRenderer components={components} locale={locale} />
-              </div>
-            </div>
+            <PreviewPane
+              components={components}
+              locale={locale}
+              deviceId={previewDeviceId}
+              onChange={setPreviewDeviceId}
+            />
           )}
         </div>
-        <div className="flex gap-2">
-          <Button onClick={() => dispatch({ type: "undo" })} disabled={!state.past.length}>
-            Undo
-          </Button>
-          <Button onClick={() => dispatch({ type: "redo" })} disabled={!state.future.length}>
-            Redo
-          </Button>
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <Button onClick={() => onSave(formData)} disabled={saving}>
-                {saving ? <Spinner className="h-4 w-4" /> : "Save"}
-              </Button>
-              {autoSaveState === "saving" && (
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Spinner className="h-4 w-4" /> Saving…
-                </div>
-              )}
-              {autoSaveState === "saved" && (
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <CheckIcon className="h-4 w-4 text-green-500" /> All changes saved
-                </div>
-              )}
-            </div>
-            {saveError && (
-              <p className="text-sm text-red-500">{saveError}</p>
-            )}
-          </div>
-          <div className="flex flex-col gap-1">
-            <Button
-              variant="outline"
-              onClick={handlePublish}
-              disabled={publishing}
-              data-tour="publish"
-            >
-              {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
-            </Button>
-            {publishError && (
-              <p className="text-sm text-red-500">{publishError}</p>
-            )}
-          </div>
-        </div>
+        <HistoryControls
+          canUndo={!!state.past.length}
+          canRedo={!!state.future.length}
+          onUndo={() => dispatch({ type: "undo" })}
+          onRedo={() => dispatch({ type: "redo" })}
+          onSave={() => onSave(formData)}
+          onPublish={handlePublish}
+          saving={saving}
+          publishing={publishing}
+          saveError={saveError}
+          publishError={publishError}
+          autoSaveState={autoSaveState}
+        />
       </div>
       <PageSidebar
         components={components}

@@ -2,8 +2,18 @@ import { readdir } from "fs/promises";
 import path from "path";
 import { pathToFileURL } from "url";
 
+import { pluginEnvVars } from "../configurator";
 import { defaultPaymentProviders } from "./defaultPaymentProviders";
 import { defaultShippingProviders } from "./defaultShippingProviders";
+
+/**
+ * Information about an available provider.
+ */
+export interface ProviderInfo {
+  id: string;
+  name: string;
+  envVars: readonly string[];
+}
 
 /**
  * List available providers for a given category by combining built-in
@@ -11,12 +21,13 @@ import { defaultShippingProviders } from "./defaultShippingProviders";
  * respective registration hook.
  */
 export async function listProviders(
-  kind: "payment" | "shipping"
-): Promise<string[]> {
-  const builtIns: string[] =
+  kind: "payment" | "shipping",
+): Promise<ProviderInfo[]> {
+  const builtIns: ProviderInfo[] = (
     kind === "payment"
       ? [...defaultPaymentProviders]
-      : [...defaultShippingProviders];
+      : [...defaultShippingProviders]
+  ).map((id) => ({ id, name: id, envVars: pluginEnvVars[id] ?? [] }));
 
   const pluginsDir = path.resolve(__dirname, "../../../plugins");
   try {
@@ -29,17 +40,23 @@ export async function listProviders(
         ).href;
         const mod = await import(modPath);
         const plugin = mod.default;
+        const id = plugin?.id ?? entry.name;
+        const info: ProviderInfo = {
+          id,
+          name: plugin?.name ?? id,
+          envVars: pluginEnvVars[id] ?? [],
+        };
         if (
           kind === "payment" &&
           typeof plugin?.registerPayments === "function"
         ) {
-          builtIns.push(plugin.id ?? entry.name);
+          builtIns.push(info);
         }
         if (
           kind === "shipping" &&
           typeof plugin?.registerShipping === "function"
         ) {
-          builtIns.push(plugin.id ?? entry.name);
+          builtIns.push(info);
         }
       } catch {
         // ignore plugins that fail to load
@@ -48,7 +65,14 @@ export async function listProviders(
   } catch {
     // ignore if plugins directory is missing
   }
-  return Array.from(new Set(builtIns));
+  const map = new Map<string, ProviderInfo>();
+  for (const p of builtIns) {
+    if (!map.has(p.id)) {
+      map.set(p.id, p);
+    }
+  }
+  return Array.from(map.values());
 }
 
 export default listProviders;
+

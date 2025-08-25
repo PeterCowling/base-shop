@@ -116,18 +116,19 @@ export async function gatherOptions(
   async function ensurePayment() {
     if ((options.payment as string[]).length === 0 && process.stdin.isTTY) {
       const providers = await listProviders("payment");
+      const ids = providers.map((p) => p.id);
       const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
       });
       await new Promise<void>((resolve) => {
         rl.question(
-          `Select payment providers (comma-separated) [${providers.join(", ")}]: `,
+          `Select payment providers (comma-separated) [${ids.join(", ")}]: `,
           (ans) => {
             options.payment = ans
               .split(",")
               .map((s) => s.trim())
-              .filter((p) => providers.includes(p)) as Options["payment"];
+              .filter((p) => ids.includes(p)) as Options["payment"];
             rl.close();
             resolve();
           }
@@ -140,18 +141,19 @@ export async function gatherOptions(
   async function ensureShipping() {
     if ((options.shipping as string[]).length === 0 && process.stdin.isTTY) {
       const providers = await listProviders("shipping");
+      const ids = providers.map((p) => p.id);
       const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
       });
       await new Promise<void>((resolve) => {
         rl.question(
-          `Select shipping providers (comma-separated) [${providers.join(", ")}]: `,
+          `Select shipping providers (comma-separated) [${ids.join(", ")}]: `,
           (ans) => {
             options.shipping = ans
               .split(",")
               .map((s) => s.trim())
-              .filter((p) => providers.includes(p)) as Options["shipping"];
+              .filter((p) => ids.includes(p)) as Options["shipping"];
             rl.close();
             resolve();
           }

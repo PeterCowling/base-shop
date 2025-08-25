@@ -119,11 +119,11 @@ This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs
 
 Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. The platform automatically loads any plugin found under `packages/plugins/*`.
 
-To install a plugin, add it to the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS you can enable and configure the plugin under **CMS → Plugins**.
+During `init-shop` you will be presented with a list of detected plugins. Selected plugins are added to the new shop's `package.json` and the wizard prompts for any required environment variables.
 
-Some plugins require additional environment variables (for example Stripe API
-keys). Add these to the shop's `.env` file and rerun `pnpm validate-env <id>`
-before using the plugin.
+To add a plugin manually, place it in the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS you can enable and configure the plugin under **CMS → Plugins**.
+
+Some plugins require additional environment variables (for example Stripe API keys). Add these to the shop's `.env` file and rerun `pnpm validate-env <id>` before using the plugin.
 
 ## 6. Analytics and event tracking
 

@@ -16,6 +16,7 @@ describe('init-shop wizard', () => {
       '1',
       '1,2',
       '1',
+      '1',
       'sk',
       'pk',
       'whsec',
@@ -39,6 +40,7 @@ describe('init-shop wizard', () => {
     const createShop = jest.fn();
     const envParse = jest.fn((env: Record<string, string>) => env);
     let envContent = '';
+    let pkgContent = '{"dependencies":{}}';
     const validateShopEnv = jest.fn(() => {
       const env: Record<string, string> = {};
       for (const line of envContent.split(/\n+/)) {
@@ -63,12 +65,29 @@ describe('init-shop wizard', () => {
         if (p === 'node:fs') {
           return {
             existsSync: () => true,
-            readdirSync: () => [
-              { name: 'base', isDirectory: () => true },
-              { name: 'template-app', isDirectory: () => true },
-            ],
-            writeFileSync: (_p: string, c: string) => {
-              envContent = c;
+            readdirSync: (dir: string) => {
+              if (dir.includes('packages/plugins')) {
+                return [
+                  { name: 'paypal', isDirectory: () => true },
+                  { name: 'sanity', isDirectory: () => true },
+                ];
+              }
+              return [
+                { name: 'base', isDirectory: () => true },
+                { name: 'template-app', isDirectory: () => true },
+              ];
+            },
+            readFileSync: (fp: string) => {
+              if (fp.endsWith('apps/shop-demo/package.json')) return pkgContent;
+              if (fp.includes('packages/plugins/paypal/package.json'))
+                return '{"name":"@acme/plugin-paypal"}';
+              if (fp.includes('packages/plugins/sanity/package.json'))
+                return '{"name":"@acme/plugin-sanity"}';
+              return '';
+            },
+            writeFileSync: (fp: string, c: string) => {
+              if (fp.endsWith('.env')) envContent = c;
+              else if (fp.endsWith('package.json')) pkgContent = c;
             },
           };
         }
@@ -92,8 +111,26 @@ describe('init-shop wizard', () => {
             listProviders: jest.fn((kind: string) =>
               Promise.resolve(
                 kind === 'payment'
-                  ? ['stripe', 'paypal']
-                  : ['dhl', 'ups']
+                  ? [
+                      {
+                        id: 'stripe',
+                        name: 'stripe',
+                        envVars: [
+                          'STRIPE_SECRET_KEY',
+                          'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
+                          'STRIPE_WEBHOOK_SECRET',
+                        ],
+                      },
+                      {
+                        id: 'paypal',
+                        name: 'paypal',
+                        envVars: ['PAYPAL_CLIENT_ID', 'PAYPAL_SECRET'],
+                      },
+                    ]
+                  : [
+                      { id: 'dhl', name: 'dhl', envVars: [] },
+                      { id: 'ups', name: 'ups', envVars: [] },
+                    ]
               )
             ),
           };

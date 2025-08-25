@@ -11,7 +11,7 @@ import {
 import { validateShopName } from "@acme/platform-core/shops";
 
 import { execSync, spawnSync } from "node:child_process";
-import { readdirSync, writeFileSync, existsSync } from "node:fs";
+import { readdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 // Validate the generated environment file for the new shop and throw if any
 // required variables are missing or invalid.
@@ -118,6 +118,37 @@ function listDirNames(path: string): string[] {
   return readdirSync(path, { withFileTypes: true })
     .filter((d) => d.isDirectory())
     .map((d) => d.name);
+}
+
+interface PluginMeta {
+  id: string;
+  packageName?: string;
+  envVars: readonly string[];
+}
+
+function listPlugins(root: string): PluginMeta[] {
+  const pluginsDir = join(root, "packages", "plugins");
+  try {
+    return readdirSync(pluginsDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => {
+        let packageName: string | undefined;
+        try {
+          const pkgRaw = readFileSync(
+            join(pluginsDir, d.name, "package.json"),
+            "utf8",
+          );
+          packageName = JSON.parse(pkgRaw).name;
+        } catch {}
+        return {
+          id: d.name,
+          packageName,
+          envVars: pluginEnvVars[d.name] ?? [],
+        };
+      });
+  } catch {
+    return [];
+  }
 }
 
 /**
@@ -288,28 +319,48 @@ async function main(): Promise<void> {
   // preserves the specific string literals (e.g. "stripe", "paypal") rather than widening them to
   // plain strings.  This allows TypeScript to satisfy the CreateShopOptions constraints without
   // type errors.
-  const paymentProviders = (await listProviders("payment")) as (
-    | "stripe"
-    | "paypal"
+  const paymentMeta = (await listProviders("payment")) as (
+    | { id: "stripe"; name: string; envVars: readonly string[] }
+    | { id: "paypal"; name: string; envVars: readonly string[] }
   )[];
   const payment = await selectProviders<"stripe" | "paypal">(
     "payment providers",
-    paymentProviders
+    paymentMeta.map((p) => p.id) as ("stripe" | "paypal")[],
   );
-  const shippingProviders = (await listProviders("shipping")) as (
-    | "dhl"
-    | "ups"
-    | "premier-shipping"
+  const shippingMeta = (await listProviders("shipping")) as (
+    | { id: "dhl"; name: string; envVars: readonly string[] }
+    | { id: "ups"; name: string; envVars: readonly string[] }
+    | { id: "premier-shipping"; name: string; envVars: readonly string[] }
   )[];
   const shipping = await selectProviders<"dhl" | "ups" | "premier-shipping">(
     "shipping providers",
-    shippingProviders
+    shippingMeta.map((p) => p.id) as (
+      | "dhl"
+      | "ups"
+      | "premier-shipping"
+    )[],
   );
-  const selectedPlugins = new Set<string>([...payment, ...shipping, "sanity"]);
+  const allPluginMeta = listPlugins(rootDir);
+  const pluginMap = new Map<
+    string,
+    { packageName?: string; envVars: readonly string[] }
+  >();
+  for (const m of [...paymentMeta, ...shippingMeta, ...allPluginMeta]) {
+    pluginMap.set(m.id, { packageName: (m as any).packageName, envVars: m.envVars });
+  }
+  const selectedPlugins = new Set<string>([...payment, ...shipping]);
+  const optionalPlugins = allPluginMeta.filter((p) => !selectedPlugins.has(p.id));
+  let extra: string[] = [];
+  if (optionalPlugins.length) {
+    extra = await selectProviders(
+      "plugins",
+      optionalPlugins.map((p) => p.id),
+    );
+    extra.forEach((id) => selectedPlugins.add(id));
+  }
   const envVars: Record<string, string> = {};
   for (const id of selectedPlugins) {
-    const vars = pluginEnvVars[id];
-    if (!vars) continue;
+    const vars = pluginMap.get(id)?.envVars ?? [];
     for (const key of vars) {
       envVars[key] = await prompt(`${key}: `, envVars[key] ?? "");
     }
@@ -346,6 +397,18 @@ async function main(): Promise<void> {
     if (seed) {
       seedShop(prefixedId);
     }
+    try {
+      const pkgPath = join("apps", prefixedId, "package.json");
+      const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
+      pkg.dependencies = pkg.dependencies ?? {};
+      for (const id of selectedPlugins) {
+        const pkgName = pluginMap.get(id)?.packageName;
+        if (pkgName) {
+          pkg.dependencies[pkgName] = "workspace:*";
+        }
+      }
+      writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+    } catch {}
   } catch (err) {
     console.error("Failed to create shop:", (err as Error).message);
     process.exit(1);

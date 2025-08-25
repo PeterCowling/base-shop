@@ -180,14 +180,20 @@ async function main(): Promise<void> {
 
   let payment = args.payment;
   if (!payment || payment.length === 0) {
-    const paymentProviders = (await listProviders("payment")) as string[];
-    payment = await selectProviders("payment providers", paymentProviders);
+    const paymentProviders = await listProviders("payment");
+    payment = await selectProviders(
+      "payment providers",
+      paymentProviders.map((p) => p.id),
+    );
   }
 
   let shipping = args.shipping;
   if (!shipping || shipping.length === 0) {
-    const shippingProviders = (await listProviders("shipping")) as string[];
-    shipping = await selectProviders("shipping providers", shippingProviders);
+    const shippingProviders = await listProviders("shipping");
+    shipping = await selectProviders(
+      "shipping providers",
+      shippingProviders.map((p) => p.id),
+    );
   }
 
   const options = {

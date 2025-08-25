@@ -39,7 +39,7 @@ export async function createSessionStore(): Promise<SessionStore> {
       coreEnv.UPSTASH_REDIS_REST_TOKEN)
   ) {
     const { Redis } = await import("@upstash/redis");
-    const { RedisSessionStore } = await import("./redisStore.js");
+    const { RedisSessionStore } = await import("./redisStore.ts");
     const client = new Redis({
       url: coreEnv.UPSTASH_REDIS_REST_URL!,
       token: coreEnv.UPSTASH_REDIS_REST_TOKEN!,
@@ -47,6 +47,6 @@ export async function createSessionStore(): Promise<SessionStore> {
     return new RedisSessionStore(client, SESSION_TTL_S);
   }
 
-  const { MemorySessionStore } = await import("./memoryStore.js");
+  const { MemorySessionStore } = await import("./memoryStore.ts");
   return new MemorySessionStore(SESSION_TTL_S);
 }

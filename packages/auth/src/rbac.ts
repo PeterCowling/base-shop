@@ -5,7 +5,7 @@ import {
   WRITE_ROLES,
   isRole,
   type Role,
-} from "./types/roles.js";
+} from "./types/roles.ts";
 
 export { READ_ROLES, WRITE_ROLES };
 

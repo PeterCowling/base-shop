@@ -1,4 +1,4 @@
 // packages/auth/src/types/index.ts
 
-export type { Role } from "./roles.js";
-export type { Permission } from "./permissions.js";
+export type { Role } from "./roles.ts";
+export type { Permission } from "./permissions.ts";

@@ -1,5 +1,5 @@
 import type { Redis } from "@upstash/redis";
-import type { SessionRecord, SessionStore } from "./store.js";
+import type { SessionRecord, SessionStore } from "./store.ts";
 
 export class RedisSessionStore implements SessionStore {
   constructor(private client: Redis, private ttl: number) {}

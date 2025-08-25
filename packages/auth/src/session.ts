@@ -3,9 +3,9 @@ import { cookies, headers } from "next/headers";
 import { sealData, unsealData } from "iron-session";
 import { randomUUID } from "crypto";
 import { coreEnv } from "@acme/config/env/core";
-import type { Role } from "./types/index.js";
-import type { SessionRecord } from "./store.js";
-import { createSessionStore, SESSION_TTL_S } from "./store.js";
+import type { Role } from "./types/index.ts";
+import type { SessionRecord } from "./store.ts";
+import { createSessionStore, SESSION_TTL_S } from "./store.ts";
 
 export const CUSTOMER_SESSION_COOKIE = "customer_session";
 export const CSRF_TOKEN_COOKIE = "csrf_token";

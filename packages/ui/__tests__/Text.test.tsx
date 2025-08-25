@@ -1,5 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { Text } from "../src/components/cms/blocks/atoms";
+// Text is exported from the block registry's barrel file, so we can import it
+// directly from the `blocks` entry point rather than reaching into the file
+// system. This mirrors how consumers would access the component and avoids
+// brittle relative paths that omit the `src` directory.
+import { Text } from "../src/components/cms/blocks";
 
 describe("Text atom", () => {
   it("renders provided text", () => {

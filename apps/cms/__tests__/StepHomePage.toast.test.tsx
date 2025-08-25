@@ -1,5 +1,4 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
-import StepHomePage from "../src/app/cms/configurator/steps/StepHomePage";
 import { fetchJson } from "@shared-utils";
 
 jest.mock("@/components/atoms/shadcn", () => {
@@ -25,9 +24,10 @@ jest.mock("@/components/atoms/shadcn", () => {
 
 jest.mock("@/components/cms/PageBuilder", () => {
   const React = require("react");
-  return function PageBuilder({ onSave, onPublish }: any) {
+  return function PageBuilder({ onSave, onPublish, publishError }: any) {
     return (
       <div>
+        {publishError && <div>{publishError}</div>}
         <button onClick={() => onSave(new FormData())}>save</button>
         <button onClick={() => onPublish(new FormData())}>publish</button>
       </div>
@@ -36,6 +36,16 @@ jest.mock("@/components/cms/PageBuilder", () => {
 });
 
 jest.mock("@shared-utils");
+jest.mock("../src/app/cms/configurator/hooks/useStepCompletion", () => ({
+  __esModule: true,
+  default: () => [false, jest.fn()],
+}));
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: jest.fn() }),
+}));
+
+const StepHomePage =
+  require("../src/app/cms/configurator/steps/StepHomePage").default;
 
 const defaultProps = {
   pageTemplates: [],
@@ -68,7 +78,9 @@ describe("StepHomePage notifications", () => {
 
   it("shows error toast on publish failure", async () => {
     (fetchJson as jest.Mock).mockResolvedValueOnce([]); // initial load
-    (fetchJson as jest.Mock).mockRejectedValueOnce(new Error("err"));
+    (fetchJson as jest.Mock).mockRejectedValueOnce(
+      new Error("failed to publish page"),
+    );
     render(<StepHomePage {...defaultProps} />);
     await act(async () => {
       fireEvent.click(screen.getByText("publish"));

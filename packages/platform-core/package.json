@@ -37,6 +37,11 @@
       "import": "./dist/cartStore.js",
       "default": "./dist/cartStore.js"
     },
+    "./cart": {
+      "types": "./dist/cart/index.d.ts",
+      "import": "./dist/cart/index.js",
+      "default": "./dist/cart/index.js"
+    },
     "./returnAuthorization": {
       "types": "./dist/returnAuthorization.d.ts",
       "import": "./dist/returnAuthorization.js",

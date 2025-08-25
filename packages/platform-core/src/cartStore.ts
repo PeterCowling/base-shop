@@ -1,6 +1,6 @@
 import { Redis } from "@upstash/redis";
 import { coreEnv } from "@acme/config/env/core";
-import type { CartState } from "./cartCookie";
+import type { CartState } from "./cart";
 import type { SKU } from "@acme/types";
 import { MemoryCartStore } from "./cartStore/memoryStore";
 import { RedisCartStore } from "./cartStore/redisStore";

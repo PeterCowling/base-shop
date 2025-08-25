@@ -4,8 +4,8 @@ import {
   CART_COOKIE,
   decodeCartCookie,
   encodeCartCookie,
-  type CartState,
 } from "./cartCookie";
+import type { CartState } from "./cart";
 import { createCartStore } from "./cartStore";
 import { getProductById, PRODUCTS } from "./products";
 import type { NextRequest } from "next/server";

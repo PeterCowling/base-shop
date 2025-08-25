@@ -4,7 +4,7 @@ import { trackEvent } from "../analytics";
 import { getTaxRate } from "../tax";
 import { calculateRentalDays } from "@acme/date-utils";
 import { stripe } from "@acme/stripe";
-import type { CartLine, CartState } from "../cartCookie";
+import type { CartLine, CartState } from "../cart";
 import type Stripe from "stripe";
 
 /** Build the two Stripe line-items (rental + deposit) for a single cart item. */

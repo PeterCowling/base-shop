@@ -1,4 +1,4 @@
-import type { ResizeAction } from "./state/actions";
+import type { ResizeAction } from "./state/layout";
 interface Options {
     componentId: string;
     marginKey: string;

@@ -1,4 +1,4 @@
-export type { Action } from "./actions";
+export type { Action } from "./layout";
 export { componentMetadataSchema } from "./component.schema";
 export { layoutSchema } from "./layout.schema";
 export { historyStateSchema } from "./history.schema";

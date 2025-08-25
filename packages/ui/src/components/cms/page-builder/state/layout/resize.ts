@@ -1,7 +1,7 @@
 import type { HistoryState } from "@acme/types";
 import type { ResizeAction } from "./types";
 import { commit } from "../history";
-import { resizeComponent } from "./helpers";
+import { resizeComponent } from "./utils";
 
 export function resize(state: HistoryState, action: ResizeAction): HistoryState {
   const normalize = (v?: string) => {

@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import type { ResizeAction } from "./state/actions";
+import type { ResizeAction } from "./state/layout";
 
 interface Options {
   componentId: string;

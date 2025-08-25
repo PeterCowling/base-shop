@@ -1,5 +1,5 @@
 import type { Redis } from "@upstash/redis";
-import type { CartState } from "../cartCookie";
+import type { CartState } from "../cart";
 import type { SKU } from "@acme/types";
 import type { CartStore } from "../cartStore";
 /** Redis-backed implementation of CartStore */

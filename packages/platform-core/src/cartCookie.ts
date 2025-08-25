@@ -5,6 +5,8 @@ import { z } from "zod";
 import { coreEnv } from "@acme/config/env/core";
 import { skuSchema } from "@acme/types";
 
+export type { CartLine, CartState } from "./cart";
+
 /* ------------------------------------------------------------------
  * Cookie constants
  * ------------------------------------------------------------------ */
@@ -38,9 +40,6 @@ export const cartLineSchema = z
  * Schema for the full cart, keyed by `${sku.id}` or `${sku.id}:${size}`.
  */
 export const cartStateSchema = z.record(z.string(), cartLineSchema);
-
-export type CartLine = z.infer<typeof cartLineSchema>;
-export type CartState = z.infer<typeof cartStateSchema>;
 
 /* ------------------------------------------------------------------
  * Helper functions

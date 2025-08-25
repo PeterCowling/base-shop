@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-import type { CartState } from "../cartCookie";
+import type { CartState } from "../cart";
 import type { SKU } from "@acme/types";
 import type { CartStore } from "../cartStore";
 

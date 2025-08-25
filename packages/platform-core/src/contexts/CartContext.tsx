@@ -1,7 +1,7 @@
 // packages/platform-core/src/contexts/CartContext.tsx
 "use client";
 
-import { type CartState } from "../cartCookie";
+import { type CartState } from "../cart";
 
 import type { SKU } from "@acme/types";
 import {

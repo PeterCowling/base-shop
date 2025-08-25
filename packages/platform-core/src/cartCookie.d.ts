@@ -1,4 +1,5 @@
 import { z } from "zod";
+export type { CartLine, CartState } from "./cart";
 export declare const CART_COOKIE = "__Host-CART_ID";
 /**
  * Schema for one cart line.  We keep the schema definition simple and
@@ -327,8 +328,6 @@ export declare const cartStateSchema: z.ZodRecord<z.ZodString, z.ZodObject<{
     qty: number;
     size?: string | undefined;
 }>>;
-export type CartLine = z.infer<typeof cartLineSchema>;
-export type CartState = z.infer<typeof cartStateSchema>;
 /**
  * Serialize a cart ID into a signed cookie value.
  */

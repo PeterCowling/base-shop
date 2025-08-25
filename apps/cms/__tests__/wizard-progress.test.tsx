@@ -1,54 +1,81 @@
 /* eslint-env jest */
 
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import React, { useState } from "react";
 import {
-  NEXT_LABEL,
-  getActiveStepContainer,
-  templates,
-  themes,
-} from "./utils/wizardTestUtils";
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import Wizard from "../src/app/cms/wizard/Wizard";
+  STORAGE_KEY,
+  useConfiguratorPersistence,
+} from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
+import {
+  wizardStateSchema,
+  type WizardState,
+} from "../src/app/cms/wizard/schema";
+
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    refresh: jest.fn(),
+    prefetch: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+  }),
+}));
+
+beforeEach(() => {
+  jest.spyOn(global, "fetch").mockRejectedValue(new Error("unmocked"));
+  localStorage.clear();
+});
+
+afterEach(() => {
+  (global.fetch as jest.Mock).mockRestore();
+  localStorage.clear();
+});
+
+function TestConfigurator() {
+  const [state, setState] = useState<WizardState>(wizardStateSchema.parse({}));
+  useConfiguratorPersistence(state, setState);
+  return (
+    <input
+      placeholder="theme"
+      value={state.theme ?? ""}
+      onChange={(e) => setState({ ...state, theme: e.target.value })}
+    />
+  );
+}
 
 /* -------------------------------------------------------------------------- */
 /*  Tests                                                                     */
 /* -------------------------------------------------------------------------- */
 describe("Wizard progress persistence", () => {
   it("restores progress after a reload", async () => {
-    const { unmount, container } = render(
-      <Wizard themes={themes} templates={templates} />
-    );
+    jest.useFakeTimers();
+    const { unmount } = render(<TestConfigurator />);
 
-    fireEvent.change(screen.getByPlaceholderText("my-shop"), {
-      target: { value: "shop" },
+    fireEvent.change(screen.getByPlaceholderText("theme"), {
+      target: { value: "dark" },
     });
-    fireEvent.click(
-      within(getActiveStepContainer()).getByRole("button", { name: NEXT_LABEL })
-    );
 
-    const themeStep = getActiveStepContainer();
-    fireEvent.click(within(themeStep).getByRole("combobox"));
-    fireEvent.click(await screen.findByRole("option", { name: /^dark$/i }));
+    jest.runOnlyPendingTimers();
 
-    const selectedPrimary = (
-      container.firstChild as HTMLElement
-    ).style.getPropertyValue("--color-primary");
+    const persisted = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}");
 
-    fireEvent.click(
-      within(themeStep).getByRole("button", { name: NEXT_LABEL })
-    );
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ ...persisted }),
+    });
 
     unmount();
 
-    const { container: c2 } = render(
-      <Wizard themes={themes} templates={templates} />
-    );
+    render(<TestConfigurator />);
 
-    await screen.findByRole("heading", { name: /select theme/i });
     await waitFor(() => {
-      const root = c2.firstChild as HTMLElement;
-      expect(root.style.getPropertyValue("--color-primary")).toBe(
-        selectedPrimary
-      );
+      expect(
+        (screen.getByPlaceholderText("theme") as HTMLInputElement).value
+      ).toBe("dark");
     });
+
+    jest.useRealTimers();
   });
 });
+

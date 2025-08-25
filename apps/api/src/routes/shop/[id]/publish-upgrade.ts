@@ -55,8 +55,12 @@ export const onRequestPost = async ({
     const shopFile = path.join(root, "data", "shops", id, "shop.json");
     const pkgFile = path.join(appDir, "package.json");
 
-    const body = await request.json().catch(() => ({}));
-    const selected: string[] = Array.isArray(body.components) ? body.components : [];
+    const body = (await request.json().catch(() => ({}))) as {
+      components?: unknown;
+    };
+    const selected: string[] = Array.isArray(body.components)
+      ? (body.components as string[])
+      : [];
 
     const deps = JSON.parse(readFileSync(pkgFile, "utf8")).dependencies ?? {};
     const shop = JSON.parse(readFileSync(shopFile, "utf8"));

@@ -4,7 +4,19 @@
     "composite": true,
     "noEmit": false,
     "outDir": "dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "paths": {
+      "@acme/lib": ["../../packages/lib/dist/index.d.ts"],
+      "@acme/lib/*": ["../../packages/lib/dist/*"],
+      "@acme/config": ["../../packages/config/dist/index.d.ts"],
+      "@acme/config/*": ["../../packages/config/dist/*"],
+      "@acme/zod-utils": ["../../packages/zod-utils/dist/index.d.ts"],
+      "@acme/zod-utils/*": ["../../packages/zod-utils/dist/*"],
+      "@platform-core": ["../../packages/platform-core/dist/index.d.ts"],
+      "@platform-core/*": ["../../packages/platform-core/dist/*"],
+      "@acme/platform-core": ["../../packages/platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["../../packages/platform-core/dist/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["dist", "node_modules"]

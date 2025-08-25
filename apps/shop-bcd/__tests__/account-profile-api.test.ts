@@ -1,4 +1,5 @@
 // apps/shop-bcd/__tests__/account-profile-api.test.ts
+jest.mock("@acme/zod-utils/initZod", () => ({}));
 jest.mock("@auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),

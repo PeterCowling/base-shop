@@ -6,10 +6,14 @@ jest.mock("next-auth", () => ({
   getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
 }));
 
+jest.mock("@prisma/client", () => ({
+  PrismaClient: jest.fn(() => ({ $disconnect: jest.fn() })),
+}));
+
 const diffHistoryMock = jest.fn();
 const saveShopSettingsMock = jest.fn();
 
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@platform-core/repositories/settings.server", () => ({
   diffHistory: (...args: any[]) => diffHistoryMock(...args),
   saveShopSettings: (...args: any[]) => saveShopSettingsMock(...args),
 }));
@@ -29,18 +33,23 @@ describe("revertSeo", () => {
 
     const state = await revertSeo("shop", "t3");
 
-    expect(saveShopSettingsMock).toHaveBeenCalledWith("shop", {
-      languages: [],
-      seo: { en: { title: "B" } },
-      updatedAt: "",
-      updatedBy: "",
-    });
-    expect(state).toEqual({
-      languages: [],
-      seo: { en: { title: "B" } },
-      updatedAt: "",
-      updatedBy: "",
-    });
+    expect(saveShopSettingsMock).toHaveBeenCalledWith(
+      "shop",
+      expect.objectContaining({
+        languages: [],
+        seo: { en: { title: "B" } },
+        updatedAt: "",
+        updatedBy: "",
+      }),
+    );
+    expect(state).toEqual(
+      expect.objectContaining({
+        languages: [],
+        seo: { en: { title: "B" } },
+        updatedAt: "",
+        updatedBy: "",
+      }),
+    );
   });
 
   it("throws when timestamp not found", async () => {

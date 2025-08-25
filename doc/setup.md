@@ -8,10 +8,10 @@
 For a one-liner that scaffolds a shop, validates the environment, and starts the dev server:
 
 ```bash
-pnpm quickstart-shop --id demo --theme base --template template-app --payment stripe --shipping ups --seed
+pnpm quickstart-shop --id demo --theme base --template template-app --payment stripe --shipping ups --seed-full
 ```
 
-Add `--seed` to copy sample products and inventory so the shop is immediately populated.
+Add `--seed` to copy sample products and inventory so the shop is immediately populated. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and `settings.json`.
 
 ## 1. Create a shop
 
@@ -47,7 +47,7 @@ pnpm init-shop --brand "#663399" --tokens ./my-tokens.json
 
 `--brand` sets the primary brand color and `--tokens` merges additional token overrides from a JSON file.
 
-To populate the new shop with sample data, run `pnpm init-shop --seed`.
+To populate the new shop with sample data, run `pnpm init-shop --seed`. Use `pnpm init-shop --seed-full` to copy `shop.json`, navigation defaults, page templates, and `settings.json` in addition to products and inventory.
 Use `pnpm init-shop --defaults` to apply preset nav links and pages from the
 selected template without prompting for them.
 Add `--auto-env` to skip prompts for provider environment variables. The wizard writes
@@ -59,7 +59,7 @@ Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) 
 For automated scripts you can still call `pnpm create-shop <id>` with flags:
 
 ```bash
-pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--payment=p1,p2] [--shipping=s1,s2] [--name=value] [--logo=url] [--contact=email] [--seed] [--config=path]
+pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--payment=p1,p2] [--shipping=s1,s2] [--name=value] [--logo=url] [--contact=email] [--seed] [--seed-full] [--config=path]
 ```
 
 - `--type` – choose between a standard sales shop or a rental shop (default `sale`).
@@ -70,6 +70,7 @@ pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--p
 - `--name` – display name for the shop.
 - `--logo` – URL of the shop logo.
 - `--seed` – copy sample `products.json` and `inventory.json` into the new shop.
+- `--seed-full` – copy `shop.json`, navigation defaults, page templates, and `settings.json` in addition to the files from `--seed`.
 - `--contact` – contact email for the shop.
 - `--config` – path to a JSON or TS file exporting options. Values from the file prefill the wizard and skip prompts.
 

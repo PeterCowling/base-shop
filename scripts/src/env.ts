@@ -21,6 +21,7 @@ import {
 import { promptThemeOverrides } from "./utils/theme";
 
 const seed = process.argv.includes("--seed");
+const seedFull = process.argv.includes("--seed-full");
 const useDefaults = process.argv.includes("--defaults");
 const autoEnv = process.argv.includes("--auto-env");
 
@@ -224,8 +225,8 @@ export async function initShop(): Promise<void> {
 
   try {
     await createShop(prefixedId, options);
-    if (seed) {
-      seedShop(prefixedId);
+    if (seed || seedFull) {
+      seedShop(prefixedId, undefined, seedFull);
     }
     try {
       const pkgPath = join("apps", prefixedId, "package.json");

@@ -12,12 +12,12 @@ jest.mock("@prisma/client", () => ({
 
 import "../../apps/cms/src/types/next-auth.d.ts";
 
-const getShopSettingsMock = jest.fn();
-const saveShopSettingsMock = jest.fn();
+const mockGetShopSettings = jest.fn();
+const mockSaveShopSettings = jest.fn();
 
 jest.mock("@platform-core/repositories/shops.server", () => ({
-  getShopSettings: (...args: any[]) => getShopSettingsMock(...args),
-  saveShopSettings: (...args: any[]) => saveShopSettingsMock(...args),
+  getShopSettings: (...args: any[]) => mockGetShopSettings(...args),
+  saveShopSettings: (...args: any[]) => mockSaveShopSettings(...args),
 }));
 jest.mock("@platform-core/repositories/json.server", () => ({}));
 
@@ -26,8 +26,8 @@ import { getSeo } from "../../packages/template-app/src/lib/seo";
 
 beforeEach(() => {
   jest.clearAllMocks();
-  getShopSettingsMock.mockResolvedValue({ languages: ["en"] });
-  saveShopSettingsMock.mockResolvedValue(undefined);
+  mockGetShopSettings.mockResolvedValue({ languages: ["en"] });
+  mockSaveShopSettings.mockResolvedValue(undefined);
 });
 
 describe("updateSeo validation", () => {
@@ -69,7 +69,7 @@ describe("updateSeo validation", () => {
 
 describe("canonical merge", () => {
   beforeEach(() => {
-    getShopSettingsMock.mockResolvedValue({
+    mockGetShopSettings.mockResolvedValue({
       languages: ["en"],
       seo: { en: { canonicalBase: "https://base.com" } },
     });
@@ -88,7 +88,7 @@ describe("canonical merge", () => {
 
 describe("hreflang generation", () => {
   beforeEach(() => {
-    getShopSettingsMock.mockResolvedValue({
+    mockGetShopSettings.mockResolvedValue({
       languages: ["en", "de"],
       seo: {
         en: { canonicalBase: "https://site.com" },

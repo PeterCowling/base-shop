@@ -5,8 +5,10 @@
 import { Button, Input } from "@ui/components/atoms/shadcn";
 import { LOCALES } from "@acme/i18n";
 import type { Locale } from "@acme/types";
-import React from "react";
+import React, { useState } from "react";
 import WizardPreview from "../../wizard/WizardPreview";
+import PreviewDeviceSelector from "../../wizard/PreviewDeviceSelector";
+import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 
@@ -60,6 +62,7 @@ export default function StepSummary({
   const languages = LOCALES as readonly Locale[];
   const [, markComplete] = useStepCompletion("summary");
   const router = useRouter();
+  const [device, setDevice] = useState<DevicePreset>(devicePresets[0]);
 
   return (
     <div className="space-y-4">
@@ -153,7 +156,8 @@ export default function StepSummary({
 
       {result && <p className="text-sm">{result}</p>}
 
-      <WizardPreview style={themeStyle} />
+      <PreviewDeviceSelector onChange={setDevice} />
+      <WizardPreview style={themeStyle} device={device} />
 
       <div className="flex justify-end">
         <Button

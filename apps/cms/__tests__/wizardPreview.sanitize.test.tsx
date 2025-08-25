@@ -30,15 +30,6 @@ jest.mock(
   () => ({ devicePresets: [{ id: "d", type: "desktop", width: 100, height: 100 }] }),
   { virtual: true }
 );
-jest.mock("@ui/components/common/DeviceSelector", () => ({ __esModule: true, default: () => null }), {
-  virtual: true,
-});
-jest.mock("@radix-ui/react-icons", () => ({ ReloadIcon: () => null }), {
-  virtual: true,
-});
-jest.mock("@ui/hooks", () => ({ usePreviewDevice: () => ["d", jest.fn()] }), {
-  virtual: true,
-});
 jest.mock("@platform-core/themeTokens", () => ({
   baseTokens: {},
   loadThemeTokensBrowser: () => ({}),

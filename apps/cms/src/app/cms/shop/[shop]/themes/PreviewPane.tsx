@@ -3,6 +3,9 @@
 import { useState, useRef, useEffect, type CSSProperties } from "react";
 import StyleEditor from "@/components/cms/StyleEditor";
 import WizardPreview from "../../../wizard/WizardPreview";
+import TokenInspector from "../../../wizard/TokenInspector";
+import PreviewDeviceSelector from "../../../wizard/PreviewDeviceSelector";
+import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import { type TokenMap } from "../../../wizard/tokenUtils";
 
 interface Props {
@@ -20,6 +23,7 @@ export default function PreviewPane({
 }: Props) {
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
   const styleEditorRef = useRef<HTMLDivElement | null>(null);
+  const [device, setDevice] = useState<DevicePreset>(devicePresets[0]);
 
   useEffect(() => {
     if (selectedToken) {
@@ -32,11 +36,10 @@ export default function PreviewPane({
 
   return (
     <>
-      <WizardPreview
-        style={style}
-        inspectMode
-        onTokenSelect={(t) => setSelectedToken(t)}
-      />
+      <PreviewDeviceSelector onChange={setDevice} />
+      <TokenInspector inspectMode onTokenSelect={(t) => setSelectedToken(t)}>
+        <WizardPreview style={style} device={device} />
+      </TokenInspector>
       {selectedToken && (
         <div ref={styleEditorRef}>
           <StyleEditor

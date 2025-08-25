@@ -12,6 +12,18 @@ import { z } from "zod";
 // include constraints for required environment variables.
 const envSchema = z.record(z.string(), z.string());
 
+// Map of plugin identifiers to the environment variables they require.
+// These correspond to the credentials collected by the init-shop wizard.
+export const pluginEnvVars: Record<string, readonly string[]> = {
+  stripe: [
+    "STRIPE_SECRET_KEY",
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+    "STRIPE_WEBHOOK_SECRET",
+  ],
+  paypal: ["PAYPAL_CLIENT_ID", "PAYPAL_SECRET"],
+  sanity: ["SANITY_PROJECT_ID", "SANITY_DATASET", "SANITY_TOKEN"],
+};
+
 /**
  * Read the contents of an environment file into a key/value map.
  * Empty values and comments are ignored.
@@ -52,4 +64,33 @@ export function validateEnvFile(file: string): void {
 export function validateShopEnv(shop: string): void {
   const envPath = join("apps", shop, ".env");
   validateEnvFile(envPath);
+
+  const env = readEnvFile(envPath);
+
+  try {
+    const shopCfgPath = join("data", "shops", shop, "shop.json");
+    const cfgRaw = readFileSync(shopCfgPath, "utf8");
+    const cfg = JSON.parse(cfgRaw) as {
+      paymentProviders?: string[];
+      shippingProviders?: string[];
+      billingProvider?: string;
+      sanityBlog?: unknown;
+    };
+    const plugins = new Set<string>();
+    cfg.paymentProviders?.forEach((p) => plugins.add(p));
+    cfg.shippingProviders?.forEach((p) => plugins.add(p));
+    if (cfg.billingProvider) plugins.add(cfg.billingProvider);
+    if (cfg.sanityBlog) plugins.add("sanity");
+    for (const id of plugins) {
+      const vars = pluginEnvVars[id];
+      if (!vars) continue;
+      for (const key of vars) {
+        if (!env[key]) {
+          throw new Error(`Missing ${key}`);
+        }
+      }
+    }
+  } catch {
+    // ignore errors when shop configuration cannot be read
+  }
 }

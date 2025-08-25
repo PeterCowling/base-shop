@@ -16,6 +16,14 @@ describe('init-shop wizard', () => {
       '1',
       '1,2',
       '1',
+      'sk',
+      'pk',
+      'whsec',
+      'client',
+      'secret',
+      'proj',
+      'dataset',
+      'token',
       'Home',
       '/',
       'Shop',
@@ -29,23 +37,16 @@ describe('init-shop wizard', () => {
       'n',
     ];
     const createShop = jest.fn();
-      const envParse = jest.fn((env: Record<string, string>) => {
-        if (
-          !env.STRIPE_SECRET_KEY ||
-          !env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ||
-          !env.STRIPE_WEBHOOK_SECRET
-        ) {
-          throw new Error('invalid env');
-        }
-        return env;
-      });
-      const validateShopEnv = jest.fn(() =>
-        envParse({
-          STRIPE_SECRET_KEY: '',
-          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: '',
-          STRIPE_WEBHOOK_SECRET: '',
-        })
-      );
+    const envParse = jest.fn((env: Record<string, string>) => env);
+    let envContent = '';
+    const validateShopEnv = jest.fn(() => {
+      const env: Record<string, string> = {};
+      for (const line of envContent.split(/\n+/)) {
+        const [k, ...r] = line.split('=');
+        if (k) env[k] = r.join('=');
+      }
+      envParse(env);
+    });
 
     const sandbox: any = {
       exports: {},
@@ -56,12 +57,13 @@ describe('init-shop wizard', () => {
         if (p === 'node:fs') {
           return {
             existsSync: () => true,
-            readFileSync: () =>
-              'STRIPE_SECRET_KEY=\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\nSTRIPE_WEBHOOK_SECRET=\n',
             readdirSync: () => [
               { name: 'base', isDirectory: () => true },
               { name: 'template-app', isDirectory: () => true },
             ],
+            writeFileSync: (_p: string, c: string) => {
+              envContent = c;
+            },
           };
         }
         if (p === 'node:path') return require('node:path');
@@ -79,9 +81,6 @@ describe('init-shop wizard', () => {
             }),
           };
         }
-        if (p.includes('@config/src/env')) {
-          return { envSchema: { parse: envParse } };
-        }
         if (p.includes('@acme/platform-core/createShop/listProviders')) {
           return {
             listProviders: jest.fn((kind: string) =>
@@ -97,7 +96,23 @@ describe('init-shop wizard', () => {
           return { createShop };
         }
         if (p.includes('@acme/platform-core/configurator')) {
-          return { validateShopEnv };
+          return {
+            validateShopEnv,
+            readEnvFile: () => ({
+              STRIPE_SECRET_KEY: '',
+              NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: '',
+              STRIPE_WEBHOOK_SECRET: '',
+            }),
+            pluginEnvVars: {
+              stripe: [
+                'STRIPE_SECRET_KEY',
+                'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
+                'STRIPE_WEBHOOK_SECRET',
+              ],
+              paypal: ['PAYPAL_CLIENT_ID', 'PAYPAL_SECRET'],
+              sanity: ['SANITY_PROJECT_ID', 'SANITY_DATASET', 'SANITY_TOKEN'],
+            },
+          };
         }
         return require(p);
       },
@@ -124,6 +139,14 @@ describe('init-shop wizard', () => {
       'Select template by number [1]: ',
       'Select payment providers by number (comma-separated, empty for none): ',
       'Select shipping providers by number (comma-separated, empty for none): ',
+      'STRIPE_SECRET_KEY: ',
+      'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ',
+      'STRIPE_WEBHOOK_SECRET: ',
+      'PAYPAL_CLIENT_ID: ',
+      'PAYPAL_SECRET: ',
+      'SANITY_PROJECT_ID: ',
+      'SANITY_DATASET: ',
+      'SANITY_TOKEN: ',
       'Nav label (leave empty to finish): ',
       'Nav URL: ',
       'Nav label (leave empty to finish): ',
@@ -164,16 +187,18 @@ describe('init-shop wizard', () => {
       { deploy: true }
     );
 
-      expect(envParse).toHaveBeenCalledWith({
-        STRIPE_SECRET_KEY: '',
-        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: '',
-        STRIPE_WEBHOOK_SECRET: '',
-      });
+    expect(envParse).toHaveBeenCalledWith({
+      STRIPE_SECRET_KEY: 'sk',
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk',
+      STRIPE_WEBHOOK_SECRET: 'whsec',
+      PAYPAL_CLIENT_ID: 'client',
+      PAYPAL_SECRET: 'secret',
+      SANITY_PROJECT_ID: 'proj',
+      SANITY_DATASET: 'dataset',
+      SANITY_TOKEN: 'token',
+    });
 
-    expect(sandbox.console.error).toHaveBeenCalled();
-    expect(sandbox.console.error.mock.calls[0][0]).toContain(
-      'Environment validation failed'
-    );
+    expect(sandbox.console.error).not.toHaveBeenCalled();
   });
 });
 

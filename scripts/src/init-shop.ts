@@ -7,12 +7,17 @@ import { createShop, type CreateShopOptions } from "@acme/platform-core/createSh
 import { validateShopName } from "@acme/platform-core/shops";
 
 import { execSync, spawnSync } from "node:child_process";
-import { readdirSync } from "node:fs";
+import { readdirSync, writeFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
 // Validate the generated environment file for the new shop and throw if any
 // required variables are missing or invalid.
 import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
-import { validateShopEnv } from "@acme/platform-core/configurator";
+import {
+  validateShopEnv,
+  readEnvFile,
+  pluginEnvVars,
+} from "@acme/platform-core/configurator";
 import { seedShop } from "./seedShop";
 // Import the provider listing utility via the defined subpath export.  This
 // module aggregates built‑in payment and shipping providers as well as any
@@ -238,6 +243,7 @@ async function main(): Promise<void> {
     console.error((err as Error).message);
     process.exit(1);
   }
+  const prefixedId = `shop-${shopId}`;
   const name = await prompt("Display name (optional): ");
   const logo = await promptUrl("Logo URL (optional): ");
   const contact = await promptEmail("Contact email (optional): ");
@@ -281,6 +287,15 @@ async function main(): Promise<void> {
     "shipping providers",
     shippingProviders
   );
+  const selectedPlugins = new Set<string>([...payment, ...shipping, "sanity"]);
+  const envVars: Record<string, string> = {};
+  for (const id of selectedPlugins) {
+    const vars = pluginEnvVars[id];
+    if (!vars) continue;
+    for (const key of vars) {
+      envVars[key] = await prompt(`${key}: `, envVars[key] ?? "");
+    }
+  }
   const navItems = await promptNavItems();
   const pages = await promptPages();
   const themeOverrides = await promptThemeOverrides();
@@ -308,7 +323,6 @@ async function main(): Promise<void> {
   };
   const options = rawOptions as unknown as CreateShopOptions;
 
-  const prefixedId = `shop-${shopId}`;
   try {
     await createShop(prefixedId, options);
     if (seed) {
@@ -318,6 +332,19 @@ async function main(): Promise<void> {
     console.error("Failed to create shop:", (err as Error).message);
     process.exit(1);
   }
+
+  const envPath = join("apps", prefixedId, ".env");
+  let existingEnv: Record<string, string> = {};
+  if (existsSync(envPath)) {
+    existingEnv = readEnvFile(envPath);
+  }
+  const finalEnv = { ...existingEnv, ...envVars };
+  writeFileSync(
+    envPath,
+    Object.entries(finalEnv)
+      .map(([k, v]) => `${k}=${v}`)
+      .join("\n") + "\n"
+  );
 
   let validationError: unknown;
   try {

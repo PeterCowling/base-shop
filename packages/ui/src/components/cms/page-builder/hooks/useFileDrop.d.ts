@@ -1,5 +1,5 @@
 import type { DragEvent } from "react";
-import type { Action } from "../state/actions";
+import type { Action } from "../state/layout";
 interface Options {
     shop: string;
     dispatch: (action: Action) => void;

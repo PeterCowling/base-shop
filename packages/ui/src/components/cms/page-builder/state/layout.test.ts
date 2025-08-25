@@ -7,7 +7,7 @@ import {
   resize,
   set,
   setGridCols,
-} from "./actions";
+} from "./layout";
 import { historyStateSchema } from ".";
 import type { PageComponent, HistoryState } from "@acme/types";
 

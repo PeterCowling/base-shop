@@ -5,7 +5,7 @@ import { ulid } from "ulid";
 import type { PageComponent, MediaItem } from "@acme/types";
 import useFileUpload from "../../../../hooks/useFileUpload";
 import { defaults } from "../defaults";
-import type { Action } from "../state/actions";
+import type { Action } from "../state/layout";
 
 interface Options {
   shop: string;

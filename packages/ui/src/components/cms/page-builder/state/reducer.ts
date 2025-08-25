@@ -1,5 +1,5 @@
 import type { HistoryState } from "@acme/types";
-import type { Action } from "./actions";
+import type { Action } from "./layout";
 import {
   add,
   move,
@@ -9,7 +9,7 @@ import {
   resize,
   set,
   setGridCols,
-} from "./actions";
+} from "./layout";
 import { undo, redo } from "./history";
 
 export function reducer(state: HistoryState, action: Action): HistoryState {

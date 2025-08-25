@@ -1,4 +1,4 @@
-import { add, move, remove, duplicate, update, resize, set, setGridCols } from "./actions";
+import { add, move, remove, duplicate, update, resize, set, setGridCols } from "./layout";
 import { undo, redo } from "./history";
 export function reducer(state, action) {
   switch (action.type) {

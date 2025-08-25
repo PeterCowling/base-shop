@@ -1,0 +1,25 @@
+{
+  "id": "template",
+  "name": "Template Shop",
+  "type": "sale",
+  "catalogFilters": [],
+  "themeId": "base",
+  "themeDefaults": {},
+  "themeOverrides": {},
+  "themeTokens": {},
+  "filterMappings": {},
+  "priceOverrides": {},
+  "localeOverrides": {},
+  "navigation": [
+    { "label": "Home", "href": "/" },
+    { "label": "Shop", "href": "/shop" }
+  ],
+  "analyticsEnabled": false,
+  "shippingProviders": ["ups"],
+  "taxProviders": ["taxjar"],
+  "paymentProviders": ["stripe"],
+  "sanityBlog": null,
+  "enableEditorial": false,
+  "subscriptionsEnabled": false,
+  "rentalSubscriptions": []
+}

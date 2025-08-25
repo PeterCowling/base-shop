@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import BlogListing from "../components/cms/blocks/BlogListing";
+import BlogListing from "../src/components/cms/blocks/BlogListing";
 
 describe("BlogListing", () => {
   it("renders post titles and excerpts", () => {

@@ -1,5 +1,5 @@
 // packages/platform-core/__tests__/replaceShopInPath.test.ts
-import { replaceShopInPath } from "../utils/replaceShopInPath";
+import { replaceShopInPath } from "../src/utils/replaceShopInPath";
 
 describe("replaceShopInPath", () => {
   it("replaces the existing shop segment", () => {

@@ -18,13 +18,15 @@ export interface SubmitResult {
 function serializeNavItems(
   items: WizardState["navItems"]
 ): { label: string; url: string; children?: any[] }[] {
-  return items.map(({ label, url, children }) => ({
-    label,
-    url,
-    ...(children && children.length
-      ? { children: serializeNavItems(children) }
-      : {}),
-  }));
+  return items.map(
+    ({ label, url, children }: WizardState["navItems"][number]) => ({
+      label,
+      url,
+      ...(children && children.length
+        ? { children: serializeNavItems(children) }
+        : {}),
+    })
+  );
 }
 
 export async function submitShop(
@@ -78,7 +80,7 @@ export async function submitShop(
     pageDescription,
     socialImage: socialImage || undefined,
     navItems: serializeNavItems(navItems),
-    pages: pages.map((p) => ({
+    pages: pages.map((p: WizardState["pages"][number]) => ({
       slug: p.slug,
       title: p.title,
       description: p.description,

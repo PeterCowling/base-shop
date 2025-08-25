@@ -112,12 +112,12 @@ export async function PUT(req: Request): Promise<NextResponse> {
       record = { state: {}, completed: {} };
     } else {
       record.state = { ...(record.state as object), ...(data ?? {}) };
-      if (typeof completed === "string") {
+      if (typeof completed === "string" && stepId) {
         record.completed[stepId] = completed;
       }
     }
     if (completed && typeof completed === "object" && !stepId) {
-      record.completed = completed;
+      record.completed = completed as Record<string, StepStatus>;
     }
     db[userId] = record;
     await writeDb(db);

@@ -137,12 +137,13 @@ export default function TokenInspector({
     return () => window.removeEventListener("keydown", keyHandler);
   }, [inspectMode, selectedIndex]);
 
+  const child = children as React.ReactElement<any>;
   return (
     <>
-      {React.cloneElement(children, {
+      {React.cloneElement(child, {
         ref: (node: HTMLDivElement) => {
           previewRef.current = node;
-          const { ref } = children as any;
+          const { ref } = child as any;
           if (typeof ref === "function") ref(node);
           else if (ref)
             (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
@@ -150,7 +151,7 @@ export default function TokenInspector({
         onPointerMove: handlePointerMove,
         onClickCapture: handleClick,
         onPointerLeave: handleLeave,
-        className: `${children.props.className ?? ""} ${inspectMode ? "cursor-crosshair" : ""}`,
+        className: `${child.props.className ?? ""} ${inspectMode ? "cursor-crosshair" : ""}`,
       })}
       {selected && popoverPos && (
         <Popover

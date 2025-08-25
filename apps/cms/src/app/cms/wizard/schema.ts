@@ -85,7 +85,7 @@ export type PageInfo = z.infer<typeof pageInfoSchema>; // <- slug & components *
 export const stepStatusSchema = z.enum(["pending", "complete", "skipped"]);
 export type StepStatus = z.infer<typeof stepStatusSchema>;
 
-export const wizardStateSchema = z
+const wizardStateSchemaBase: z.AnyZodObject = z
   .object({
     /* ------------ Wizard progress & identity ------------ */
     shopId: z.string().optional().default(""),
@@ -155,4 +155,5 @@ export const wizardStateSchema = z
   })
   .strict();
 
-export type WizardState = z.infer<typeof wizardStateSchema>;
+export type WizardState = z.infer<typeof wizardStateSchemaBase>;
+export const wizardStateSchema: z.AnyZodObject = wizardStateSchemaBase;

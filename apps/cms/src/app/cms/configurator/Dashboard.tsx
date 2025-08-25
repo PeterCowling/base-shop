@@ -49,7 +49,11 @@ export default function ConfiguratorDashboard() {
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         if (!json) return;
-        setState((prev) => ({ ...prev, ...(json.state ?? json), completed: json.completed ?? {} }));
+        setState((prev: WizardState) => ({
+          ...prev,
+          ...(json.state ?? json),
+          completed: json.completed ?? {},
+        }));
       })
       .catch(() => setState(wizardStateSchema.parse({})));
   }, []);
@@ -142,7 +146,12 @@ export default function ConfiguratorDashboard() {
         if (!line.startsWith("data:")) continue;
         const data = JSON.parse(line.slice(5));
         if (data.step && data.status) {
-          setLaunchStatus((prev) => ({ ...(prev || {}), [data.step]: data.status }));
+          setLaunchStatus(
+            (prev: Record<string, StepStatus> | null) => ({
+              ...(prev || {}),
+              [data.step]: data.status,
+            })
+          );
           if (data.status === "failure") {
             setLaunchError(data.error || "Launch failed");
             setFailedStep(data.step);

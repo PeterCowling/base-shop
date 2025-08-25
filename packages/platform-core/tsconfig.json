@@ -20,7 +20,8 @@
       "@acme/ui": ["types-compat/ui"],
       "@acme/ui/*": ["types-compat/ui"],
       "@acme/email": ["types-compat/email"],
-      "@acme/email/*": ["types-compat/email"]
+      "@acme/email/*": ["types-compat/email"],
+      "better-sqlite3": ["src/types/better-sqlite3"]
     }
   },
   "include": [

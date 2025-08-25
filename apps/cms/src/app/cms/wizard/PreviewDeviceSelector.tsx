@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Button } from "@ui/components/atoms";
 import DeviceSelector from "@ui/components/common/DeviceSelector";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import { usePreviewDevice } from "@ui/src/hooks/usePreviewDevice";
+import { usePreviewDevice } from "@ui/hooks";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 
 interface Props {

@@ -106,7 +106,7 @@ export function useConfiguratorPersistence(
   /* Expose completion helper */
   const markStepComplete = (stepId: string, status: StepStatus) => {
     let updated: WizardState | null = null;
-    setState((prev) => {
+    setState((prev: WizardState) => {
       updated = {
         ...prev,
         completed: { ...prev.completed, [stepId]: status },

@@ -98,6 +98,10 @@ module.exports = {
     // email provider client mocks
     "^resend$": "<rootDir>/packages/email/src/providers/__mocks__/resend.ts",
     "^@sendgrid/mail$": "<rootDir>/packages/email/src/providers/__mocks__/@sendgrid/mail.ts",
+    // database client mock – avoid pulling Prisma in unit tests
+    "^@prisma/client$": "<rootDir>/test/__mocks__/prismaClient.ts",
+    // app-level @/* aliases not present in base tsconfig
+    "^@/i18n/(.*)$": "<rootDir>/packages/i18n/src/$1",
 
     // component stubs – structure isn’t under test
     "^@ui/components/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",

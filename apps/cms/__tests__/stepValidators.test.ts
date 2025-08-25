@@ -1,6 +1,15 @@
-import { validators } from "../src/app/cms/configurator/hooks/useStepCompletion";
-import { wizardStateSchema } from "../src/app/cms/wizard/schema";
-import { fillLocales } from "@i18n/fillLocales";
+jest.mock("../src/app/cms/configurator/ConfiguratorContext", () => ({
+  useConfigurator: () => ({
+    state: { completed: {} },
+    markStepComplete: jest.fn(),
+    resetDirty: jest.fn(),
+  }),
+}));
+
+// Use require to ensure mocks are applied before module evaluation
+const { validators } = require("../src/app/cms/configurator/hooks/useStepCompletion");
+const { wizardStateSchema } = require("../src/app/cms/wizard/schema");
+const { fillLocales } = require("@i18n/fillLocales");
 
 describe("step validators", () => {
   const base = wizardStateSchema.parse({});

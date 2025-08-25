@@ -48,7 +48,7 @@ Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) 
 For automated scripts you can still call `pnpm create-shop <id>` with flags:
 
 ```bash
-pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--payment=p1,p2] [--shipping=s1,s2] [--name=value] [--logo=url] [--contact=email] [--seed]
+pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--payment=p1,p2] [--shipping=s1,s2] [--name=value] [--logo=url] [--contact=email] [--seed] [--config=path]
 ```
 
 - `--type` – choose between a standard sales shop or a rental shop (default `sale`).
@@ -60,6 +60,28 @@ pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--p
 - `--logo` – URL of the shop logo.
 - `--seed` – copy sample `products.json` and `inventory.json` into the new shop.
 - `--contact` – contact email for the shop.
+- `--config` – path to a JSON or TS file exporting options. Values from the file prefill the wizard and skip prompts.
+
+Example configuration file:
+
+```json
+{
+  "type": "sale",
+  "theme": "base",
+  "template": "template-app",
+  "payment": ["stripe"],
+  "shipping": ["ups"],
+  "name": "Demo Shop",
+  "logo": "https://example.com/logo.png",
+  "contactInfo": "demo@example.com"
+}
+```
+
+Run with:
+
+```bash
+pnpm create-shop demo --config ./shop.config.json
+```
 
 ### Example wizard run
 

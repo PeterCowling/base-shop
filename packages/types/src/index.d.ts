@@ -25,3 +25,6 @@ export * from "./Segment";
 export * from "./plugins";
 export * from "./AnalyticsEvent";
 export * from "./settings";
+export * from "./shop-seo";
+export * from "./shop-locale";
+export * from "./shop-theme";

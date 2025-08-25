@@ -139,6 +139,37 @@ function loadTemplateDefaults(
   }
 }
 
+/** Load navigation and page presets from data/templates/default if present. */
+function loadPresetDefaults(): {
+  navItems?: CreateShopOptions["navItems"];
+  pages?: CreateShopOptions["pages"];
+} {
+  try {
+    const base = new URL("../../data/templates/default/", import.meta.url);
+    const result: {
+      navItems?: CreateShopOptions["navItems"];
+      pages?: CreateShopOptions["pages"];
+    } = {};
+    try {
+      const navRaw = readFileSync(new URL("navigation.json", base), "utf8");
+      const nav = JSON.parse(navRaw);
+      if (Array.isArray(nav)) result.navItems = nav;
+    } catch {
+      /* ignore */
+    }
+    try {
+      const pagesRaw = readFileSync(new URL("pages.json", base), "utf8");
+      const pg = JSON.parse(pagesRaw);
+      if (Array.isArray(pg)) result.pages = pg;
+    } catch {
+      /* ignore */
+    }
+    return result;
+  } catch {
+    return {};
+  }
+}
+
 interface Flags {
   id?: string;
   theme?: string;
@@ -152,6 +183,8 @@ interface Flags {
   autoEnv?: boolean;
   config?: string;
   pagesTemplate?: string;
+  presets?: boolean;
+  autoPlugins?: boolean;
 }
 
 function parseArgs(argv: string[]): Flags {
@@ -170,6 +203,14 @@ function parseArgs(argv: string[]): Flags {
       }
       if (key === "auto-env") {
         flags.autoEnv = true;
+        continue;
+      }
+      if (key === "presets") {
+        flags.presets = true;
+        continue;
+      }
+      if (key === "auto-plugins") {
+        flags.autoPlugins = true;
         continue;
       }
       const val = value ?? argv[++i];
@@ -262,31 +303,43 @@ async function main(): Promise<void> {
   }
 
   const templateDefaults = loadTemplateDefaults(template);
-  const navItems = (config.navItems as CreateShopOptions["navItems"] | undefined) ??
-    templateDefaults.navItems;
-  const pages = (config.pages as CreateShopOptions["pages"] | undefined) ??
-    templateDefaults.pages;
+  const presetDefaults = args.presets ? loadPresetDefaults() : {};
+  const navItems =
+    (config.navItems as CreateShopOptions["navItems"] | undefined) ??
+    templateDefaults.navItems ??
+    presetDefaults.navItems;
+  const pages =
+    (config.pages as CreateShopOptions["pages"] | undefined) ??
+    templateDefaults.pages ??
+    presetDefaults.pages;
 
   const paymentProviders = await listProviders("payment");
   let payment =
     args.payment ??
     (Array.isArray(config.payment) ? (config.payment as string[]) : undefined);
-  if (!payment || payment.length === 0) {
-    payment = await selectProviders(
-      "payment providers",
-      paymentProviders.map((p) => p.id)
-    );
-  }
 
   const shippingProviders = await listProviders("shipping");
   let shipping =
     args.shipping ??
     (Array.isArray(config.shipping) ? (config.shipping as string[]) : undefined);
-  if (!shipping || shipping.length === 0) {
-    shipping = await selectProviders(
-      "shipping providers",
-      shippingProviders.map((p) => p.id)
-    );
+
+  if (args.autoPlugins) {
+    payment = paymentProviders.map((p) => p.id);
+    shipping = shippingProviders.map((p) => p.id);
+  } else {
+    if (!payment || payment.length === 0) {
+      payment = await selectProviders(
+        "payment providers",
+        paymentProviders.map((p) => p.id)
+      );
+    }
+
+    if (!shipping || shipping.length === 0) {
+      shipping = await selectProviders(
+        "shipping providers",
+        shippingProviders.map((p) => p.id)
+      );
+    }
   }
 
   const {
@@ -359,8 +412,9 @@ async function main(): Promise<void> {
     seedShop(prefixedId);
   }
 
-  if (args.pagesTemplate) {
-    await applyPageTemplate(prefixedId, args.pagesTemplate);
+  const pageTemplate = args.pagesTemplate ?? (args.presets ? "default" : undefined);
+  if (pageTemplate) {
+    await applyPageTemplate(prefixedId, pageTemplate);
   }
 
   if (args.autoEnv) {
@@ -395,6 +449,12 @@ async function main(): Promise<void> {
     console.log("Environment variables look valid.\n");
   } catch (err) {
     console.error("\nEnvironment validation failed:\n", err);
+  }
+
+  if (args.presets) {
+    spawnSync("pnpm", ["ts-node", "scripts/setup-ci.ts", shopId], {
+      stdio: "inherit",
+    });
   }
 
   spawnSync("pnpm", ["--filter", `@apps/${prefixedId}`, "dev"], {

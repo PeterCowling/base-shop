@@ -8,8 +8,10 @@
 For a one-liner that scaffolds a shop, validates the environment, and starts the dev server:
 
 ```bash
-pnpm quickstart-shop --id demo --theme base --template template-app --payment stripe --shipping ups --seed-full
+pnpm quickstart-shop --id demo --theme base --template template-app --auto-plugins --auto-env --presets --seed-full
 ```
+
+`--auto-plugins` selects any detected provider plugins, `--auto-env` populates required environment variables with placeholders, and `--presets` applies default navigation, pages, and a GitHub Actions workflow.
 
 Add `--seed` to copy sample products and inventory. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and settings so the shop is immediately populated. Pass `--pages-template <name>` to apply predefined page layouts (`hero`, `product-grid`, `contact`). The script also accepts `--config <file>` to prefill options and skip prompts:
 

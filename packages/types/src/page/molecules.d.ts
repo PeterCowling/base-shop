@@ -8,25 +8,6 @@ export interface AnnouncementBarComponent extends PageComponentBase {
 }
 export declare const announcementBarComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -35,6 +16,28 @@ export declare const announcementBarComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"AnnouncementBar">;
     text: z.ZodOptional<z.ZodString>;
@@ -42,25 +45,6 @@ export declare const announcementBarComponentSchema: z.ZodObject<{
     closable: z.ZodOptional<z.ZodBoolean>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -70,12 +54,6 @@ export declare const announcementBarComponentSchema: z.ZodObject<{
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
 } & {
-    type: z.ZodLiteral<"AnnouncementBar">;
-    text: z.ZodOptional<z.ZodString>;
-    link: z.ZodOptional<z.ZodString>;
-    closable: z.ZodOptional<z.ZodBoolean>;
-}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-    id: z.ZodString;
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
     widthTablet: z.ZodOptional<z.ZodString>;
@@ -84,9 +62,11 @@ export declare const announcementBarComponentSchema: z.ZodObject<{
     heightDesktop: z.ZodOptional<z.ZodString>;
     heightTablet: z.ZodOptional<z.ZodString>;
     heightMobile: z.ZodOptional<z.ZodString>;
+} & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
     top: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+} & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
     marginTablet: z.ZodOptional<z.ZodString>;
@@ -95,6 +75,13 @@ export declare const announcementBarComponentSchema: z.ZodObject<{
     paddingDesktop: z.ZodOptional<z.ZodString>;
     paddingTablet: z.ZodOptional<z.ZodString>;
     paddingMobile: z.ZodOptional<z.ZodString>;
+} & {
+    type: z.ZodLiteral<"AnnouncementBar">;
+    text: z.ZodOptional<z.ZodString>;
+    link: z.ZodOptional<z.ZodString>;
+    closable: z.ZodOptional<z.ZodBoolean>;
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    id: z.ZodString;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -103,6 +90,28 @@ export declare const announcementBarComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"AnnouncementBar">;
     text: z.ZodOptional<z.ZodString>;
@@ -119,25 +128,6 @@ export interface ValuePropsComponent extends PageComponentBase {
 }
 export declare const valuePropsComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -146,6 +136,28 @@ export declare const valuePropsComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"ValueProps">;
     items: z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -163,25 +175,6 @@ export declare const valuePropsComponentSchema: z.ZodObject<{
     }>, "many">>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -190,6 +183,28 @@ export declare const valuePropsComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"ValueProps">;
     items: z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -207,25 +222,6 @@ export declare const valuePropsComponentSchema: z.ZodObject<{
     }>, "many">>;
 }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -234,6 +230,28 @@ export declare const valuePropsComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"ValueProps">;
     items: z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -259,25 +277,6 @@ export interface ReviewsCarouselComponent extends PageComponentBase {
 }
 export declare const reviewsCarouselComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -286,6 +285,28 @@ export declare const reviewsCarouselComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"ReviewsCarousel">;
     reviews: z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -300,25 +321,6 @@ export declare const reviewsCarouselComponentSchema: z.ZodObject<{
     }>, "many">>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -327,6 +329,28 @@ export declare const reviewsCarouselComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"ReviewsCarousel">;
     reviews: z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -341,25 +365,6 @@ export declare const reviewsCarouselComponentSchema: z.ZodObject<{
     }>, "many">>;
 }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -368,6 +373,28 @@ export declare const reviewsCarouselComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"ReviewsCarousel">;
     reviews: z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -388,25 +415,6 @@ export interface ContactFormComponent extends PageComponentBase {
 }
 export declare const contactFormComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -415,31 +423,34 @@ export declare const contactFormComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"ContactForm">;
     action: z.ZodOptional<z.ZodString>;
     method: z.ZodOptional<z.ZodString>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -449,11 +460,6 @@ export declare const contactFormComponentSchema: z.ZodObject<{
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
 } & {
-    type: z.ZodLiteral<"ContactForm">;
-    action: z.ZodOptional<z.ZodString>;
-    method: z.ZodOptional<z.ZodString>;
-}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-    id: z.ZodString;
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
     widthTablet: z.ZodOptional<z.ZodString>;
@@ -462,9 +468,11 @@ export declare const contactFormComponentSchema: z.ZodObject<{
     heightDesktop: z.ZodOptional<z.ZodString>;
     heightTablet: z.ZodOptional<z.ZodString>;
     heightMobile: z.ZodOptional<z.ZodString>;
+} & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
     top: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+} & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
     marginTablet: z.ZodOptional<z.ZodString>;
@@ -473,6 +481,12 @@ export declare const contactFormComponentSchema: z.ZodObject<{
     paddingDesktop: z.ZodOptional<z.ZodString>;
     paddingTablet: z.ZodOptional<z.ZodString>;
     paddingMobile: z.ZodOptional<z.ZodString>;
+} & {
+    type: z.ZodLiteral<"ContactForm">;
+    action: z.ZodOptional<z.ZodString>;
+    method: z.ZodOptional<z.ZodString>;
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    id: z.ZodString;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -481,6 +495,28 @@ export declare const contactFormComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"ContactForm">;
     action: z.ZodOptional<z.ZodString>;
@@ -495,25 +531,6 @@ export interface NewsletterSignupComponent extends PageComponentBase {
 }
 export declare const newsletterSignupComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -522,6 +539,28 @@ export declare const newsletterSignupComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"NewsletterSignup">;
     text: z.ZodOptional<z.ZodString>;
@@ -530,25 +569,6 @@ export declare const newsletterSignupComponentSchema: z.ZodObject<{
     submitLabel: z.ZodOptional<z.ZodString>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -558,13 +578,6 @@ export declare const newsletterSignupComponentSchema: z.ZodObject<{
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
 } & {
-    type: z.ZodLiteral<"NewsletterSignup">;
-    text: z.ZodOptional<z.ZodString>;
-    action: z.ZodOptional<z.ZodString>;
-    placeholder: z.ZodOptional<z.ZodString>;
-    submitLabel: z.ZodOptional<z.ZodString>;
-}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-    id: z.ZodString;
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
     widthTablet: z.ZodOptional<z.ZodString>;
@@ -573,9 +586,11 @@ export declare const newsletterSignupComponentSchema: z.ZodObject<{
     heightDesktop: z.ZodOptional<z.ZodString>;
     heightTablet: z.ZodOptional<z.ZodString>;
     heightMobile: z.ZodOptional<z.ZodString>;
+} & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
     top: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+} & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
     marginTablet: z.ZodOptional<z.ZodString>;
@@ -584,6 +599,14 @@ export declare const newsletterSignupComponentSchema: z.ZodObject<{
     paddingDesktop: z.ZodOptional<z.ZodString>;
     paddingTablet: z.ZodOptional<z.ZodString>;
     paddingMobile: z.ZodOptional<z.ZodString>;
+} & {
+    type: z.ZodLiteral<"NewsletterSignup">;
+    text: z.ZodOptional<z.ZodString>;
+    action: z.ZodOptional<z.ZodString>;
+    placeholder: z.ZodOptional<z.ZodString>;
+    submitLabel: z.ZodOptional<z.ZodString>;
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    id: z.ZodString;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -592,6 +615,28 @@ export declare const newsletterSignupComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"NewsletterSignup">;
     text: z.ZodOptional<z.ZodString>;
@@ -606,25 +651,6 @@ export interface SearchBarComponent extends PageComponentBase {
 }
 export declare const searchBarComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -633,31 +659,34 @@ export declare const searchBarComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"SearchBar">;
     placeholder: z.ZodOptional<z.ZodString>;
     limit: z.ZodOptional<z.ZodNumber>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -667,11 +696,6 @@ export declare const searchBarComponentSchema: z.ZodObject<{
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
 } & {
-    type: z.ZodLiteral<"SearchBar">;
-    placeholder: z.ZodOptional<z.ZodString>;
-    limit: z.ZodOptional<z.ZodNumber>;
-}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-    id: z.ZodString;
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
     widthTablet: z.ZodOptional<z.ZodString>;
@@ -680,9 +704,11 @@ export declare const searchBarComponentSchema: z.ZodObject<{
     heightDesktop: z.ZodOptional<z.ZodString>;
     heightTablet: z.ZodOptional<z.ZodString>;
     heightMobile: z.ZodOptional<z.ZodString>;
+} & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
     top: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+} & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
     marginTablet: z.ZodOptional<z.ZodString>;
@@ -691,6 +717,12 @@ export declare const searchBarComponentSchema: z.ZodObject<{
     paddingDesktop: z.ZodOptional<z.ZodString>;
     paddingTablet: z.ZodOptional<z.ZodString>;
     paddingMobile: z.ZodOptional<z.ZodString>;
+} & {
+    type: z.ZodLiteral<"SearchBar">;
+    placeholder: z.ZodOptional<z.ZodString>;
+    limit: z.ZodOptional<z.ZodNumber>;
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    id: z.ZodString;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -699,6 +731,28 @@ export declare const searchBarComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"SearchBar">;
     placeholder: z.ZodOptional<z.ZodString>;
@@ -712,25 +766,6 @@ export interface MapBlockComponent extends PageComponentBase {
 }
 export declare const mapBlockComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -739,6 +774,28 @@ export declare const mapBlockComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"MapBlock">;
     lat: z.ZodOptional<z.ZodNumber>;
@@ -746,25 +803,6 @@ export declare const mapBlockComponentSchema: z.ZodObject<{
     zoom: z.ZodOptional<z.ZodNumber>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -774,12 +812,6 @@ export declare const mapBlockComponentSchema: z.ZodObject<{
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
 } & {
-    type: z.ZodLiteral<"MapBlock">;
-    lat: z.ZodOptional<z.ZodNumber>;
-    lng: z.ZodOptional<z.ZodNumber>;
-    zoom: z.ZodOptional<z.ZodNumber>;
-}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-    id: z.ZodString;
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
     widthTablet: z.ZodOptional<z.ZodString>;
@@ -788,9 +820,11 @@ export declare const mapBlockComponentSchema: z.ZodObject<{
     heightDesktop: z.ZodOptional<z.ZodString>;
     heightTablet: z.ZodOptional<z.ZodString>;
     heightMobile: z.ZodOptional<z.ZodString>;
+} & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
     top: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+} & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
     marginTablet: z.ZodOptional<z.ZodString>;
@@ -799,6 +833,13 @@ export declare const mapBlockComponentSchema: z.ZodObject<{
     paddingDesktop: z.ZodOptional<z.ZodString>;
     paddingTablet: z.ZodOptional<z.ZodString>;
     paddingMobile: z.ZodOptional<z.ZodString>;
+} & {
+    type: z.ZodLiteral<"MapBlock">;
+    lat: z.ZodOptional<z.ZodNumber>;
+    lng: z.ZodOptional<z.ZodNumber>;
+    zoom: z.ZodOptional<z.ZodNumber>;
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    id: z.ZodString;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -807,6 +848,28 @@ export declare const mapBlockComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"MapBlock">;
     lat: z.ZodOptional<z.ZodNumber>;
@@ -820,25 +883,6 @@ export interface VideoBlockComponent extends PageComponentBase {
 }
 export declare const videoBlockComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -847,31 +891,34 @@ export declare const videoBlockComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"VideoBlock">;
     src: z.ZodOptional<z.ZodString>;
     autoplay: z.ZodOptional<z.ZodBoolean>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -881,11 +928,6 @@ export declare const videoBlockComponentSchema: z.ZodObject<{
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
 } & {
-    type: z.ZodLiteral<"VideoBlock">;
-    src: z.ZodOptional<z.ZodString>;
-    autoplay: z.ZodOptional<z.ZodBoolean>;
-}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-    id: z.ZodString;
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
     widthTablet: z.ZodOptional<z.ZodString>;
@@ -894,9 +936,11 @@ export declare const videoBlockComponentSchema: z.ZodObject<{
     heightDesktop: z.ZodOptional<z.ZodString>;
     heightTablet: z.ZodOptional<z.ZodString>;
     heightMobile: z.ZodOptional<z.ZodString>;
+} & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
     top: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+} & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
     marginTablet: z.ZodOptional<z.ZodString>;
@@ -905,6 +949,12 @@ export declare const videoBlockComponentSchema: z.ZodObject<{
     paddingDesktop: z.ZodOptional<z.ZodString>;
     paddingTablet: z.ZodOptional<z.ZodString>;
     paddingMobile: z.ZodOptional<z.ZodString>;
+} & {
+    type: z.ZodLiteral<"VideoBlock">;
+    src: z.ZodOptional<z.ZodString>;
+    autoplay: z.ZodOptional<z.ZodBoolean>;
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    id: z.ZodString;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -913,6 +963,28 @@ export declare const videoBlockComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"VideoBlock">;
     src: z.ZodOptional<z.ZodString>;
@@ -927,25 +999,6 @@ export interface FAQBlockComponent extends PageComponentBase {
 }
 export declare const faqBlockComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -954,6 +1007,28 @@ export declare const faqBlockComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"FAQBlock">;
     items: z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -968,25 +1043,6 @@ export declare const faqBlockComponentSchema: z.ZodObject<{
     }>, "many">>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -995,6 +1051,28 @@ export declare const faqBlockComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"FAQBlock">;
     items: z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -1009,25 +1087,6 @@ export declare const faqBlockComponentSchema: z.ZodObject<{
     }>, "many">>;
 }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1036,6 +1095,28 @@ export declare const faqBlockComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"FAQBlock">;
     items: z.ZodOptional<z.ZodArray<z.ZodObject<{
@@ -1058,25 +1139,6 @@ export interface CountdownTimerComponent extends PageComponentBase {
 }
 export declare const countdownTimerComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1085,6 +1147,28 @@ export declare const countdownTimerComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"CountdownTimer">;
     targetDate: z.ZodOptional<z.ZodString>;
@@ -1093,25 +1177,6 @@ export declare const countdownTimerComponentSchema: z.ZodObject<{
     styles: z.ZodOptional<z.ZodString>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1121,13 +1186,6 @@ export declare const countdownTimerComponentSchema: z.ZodObject<{
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
 } & {
-    type: z.ZodLiteral<"CountdownTimer">;
-    targetDate: z.ZodOptional<z.ZodString>;
-    timezone: z.ZodOptional<z.ZodString>;
-    completionText: z.ZodOptional<z.ZodString>;
-    styles: z.ZodOptional<z.ZodString>;
-}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-    id: z.ZodString;
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
     widthTablet: z.ZodOptional<z.ZodString>;
@@ -1136,9 +1194,11 @@ export declare const countdownTimerComponentSchema: z.ZodObject<{
     heightDesktop: z.ZodOptional<z.ZodString>;
     heightTablet: z.ZodOptional<z.ZodString>;
     heightMobile: z.ZodOptional<z.ZodString>;
+} & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
     top: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+} & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
     marginTablet: z.ZodOptional<z.ZodString>;
@@ -1147,6 +1207,14 @@ export declare const countdownTimerComponentSchema: z.ZodObject<{
     paddingDesktop: z.ZodOptional<z.ZodString>;
     paddingTablet: z.ZodOptional<z.ZodString>;
     paddingMobile: z.ZodOptional<z.ZodString>;
+} & {
+    type: z.ZodLiteral<"CountdownTimer">;
+    targetDate: z.ZodOptional<z.ZodString>;
+    timezone: z.ZodOptional<z.ZodString>;
+    completionText: z.ZodOptional<z.ZodString>;
+    styles: z.ZodOptional<z.ZodString>;
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    id: z.ZodString;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1155,6 +1223,28 @@ export declare const countdownTimerComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"CountdownTimer">;
     targetDate: z.ZodOptional<z.ZodString>;
@@ -1172,25 +1262,6 @@ export interface SocialLinksComponent extends PageComponentBase {
 }
 export declare const socialLinksComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1199,6 +1270,28 @@ export declare const socialLinksComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"SocialLinks">;
     facebook: z.ZodOptional<z.ZodString>;
@@ -1208,25 +1301,6 @@ export declare const socialLinksComponentSchema: z.ZodObject<{
     linkedin: z.ZodOptional<z.ZodString>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1236,14 +1310,6 @@ export declare const socialLinksComponentSchema: z.ZodObject<{
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
 } & {
-    type: z.ZodLiteral<"SocialLinks">;
-    facebook: z.ZodOptional<z.ZodString>;
-    instagram: z.ZodOptional<z.ZodString>;
-    x: z.ZodOptional<z.ZodString>;
-    youtube: z.ZodOptional<z.ZodString>;
-    linkedin: z.ZodOptional<z.ZodString>;
-}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-    id: z.ZodString;
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
     widthTablet: z.ZodOptional<z.ZodString>;
@@ -1252,9 +1318,11 @@ export declare const socialLinksComponentSchema: z.ZodObject<{
     heightDesktop: z.ZodOptional<z.ZodString>;
     heightTablet: z.ZodOptional<z.ZodString>;
     heightMobile: z.ZodOptional<z.ZodString>;
+} & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
     top: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+} & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
     marginTablet: z.ZodOptional<z.ZodString>;
@@ -1263,6 +1331,15 @@ export declare const socialLinksComponentSchema: z.ZodObject<{
     paddingDesktop: z.ZodOptional<z.ZodString>;
     paddingTablet: z.ZodOptional<z.ZodString>;
     paddingMobile: z.ZodOptional<z.ZodString>;
+} & {
+    type: z.ZodLiteral<"SocialLinks">;
+    facebook: z.ZodOptional<z.ZodString>;
+    instagram: z.ZodOptional<z.ZodString>;
+    x: z.ZodOptional<z.ZodString>;
+    youtube: z.ZodOptional<z.ZodString>;
+    linkedin: z.ZodOptional<z.ZodString>;
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    id: z.ZodString;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1271,6 +1348,28 @@ export declare const socialLinksComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"SocialLinks">;
     facebook: z.ZodOptional<z.ZodString>;
@@ -1287,25 +1386,6 @@ export interface SocialFeedComponent extends PageComponentBase {
 }
 export declare const socialFeedComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1314,6 +1394,28 @@ export declare const socialFeedComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"SocialFeed">;
     platform: z.ZodOptional<z.ZodEnum<["twitter", "instagram"]>>;
@@ -1321,25 +1423,6 @@ export declare const socialFeedComponentSchema: z.ZodObject<{
     hashtag: z.ZodOptional<z.ZodString>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1349,12 +1432,6 @@ export declare const socialFeedComponentSchema: z.ZodObject<{
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
 } & {
-    type: z.ZodLiteral<"SocialFeed">;
-    platform: z.ZodOptional<z.ZodEnum<["twitter", "instagram"]>>;
-    account: z.ZodOptional<z.ZodString>;
-    hashtag: z.ZodOptional<z.ZodString>;
-}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
-    id: z.ZodString;
     width: z.ZodOptional<z.ZodString>;
     widthDesktop: z.ZodOptional<z.ZodString>;
     widthTablet: z.ZodOptional<z.ZodString>;
@@ -1363,9 +1440,11 @@ export declare const socialFeedComponentSchema: z.ZodObject<{
     heightDesktop: z.ZodOptional<z.ZodString>;
     heightTablet: z.ZodOptional<z.ZodString>;
     heightMobile: z.ZodOptional<z.ZodString>;
+} & {
     position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
     top: z.ZodOptional<z.ZodString>;
     left: z.ZodOptional<z.ZodString>;
+} & {
     margin: z.ZodOptional<z.ZodString>;
     marginDesktop: z.ZodOptional<z.ZodString>;
     marginTablet: z.ZodOptional<z.ZodString>;
@@ -1374,6 +1453,13 @@ export declare const socialFeedComponentSchema: z.ZodObject<{
     paddingDesktop: z.ZodOptional<z.ZodString>;
     paddingTablet: z.ZodOptional<z.ZodString>;
     paddingMobile: z.ZodOptional<z.ZodString>;
+} & {
+    type: z.ZodLiteral<"SocialFeed">;
+    platform: z.ZodOptional<z.ZodEnum<["twitter", "instagram"]>>;
+    account: z.ZodOptional<z.ZodString>;
+    hashtag: z.ZodOptional<z.ZodString>;
+}, z.ZodTypeAny, "passthrough">, z.objectInputType<{
+    id: z.ZodString;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1382,6 +1468,28 @@ export declare const socialFeedComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"SocialFeed">;
     platform: z.ZodOptional<z.ZodEnum<["twitter", "instagram"]>>;
@@ -1395,25 +1503,6 @@ export interface SocialProofComponent extends PageComponentBase {
 }
 export declare const socialProofComponentSchema: z.ZodObject<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1422,31 +1511,34 @@ export declare const socialProofComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"SocialProof">;
     source: z.ZodOptional<z.ZodString>;
     frequency: z.ZodOptional<z.ZodNumber>;
 }, "passthrough", z.ZodTypeAny, z.objectOutputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1455,31 +1547,34 @@ export declare const socialProofComponentSchema: z.ZodObject<{
     clickAction: z.ZodOptional<z.ZodEnum<["none", "navigate"]>>;
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
+} & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
 } & {
     type: z.ZodLiteral<"SocialProof">;
     source: z.ZodOptional<z.ZodString>;
     frequency: z.ZodOptional<z.ZodNumber>;
 }, z.ZodTypeAny, "passthrough">, z.objectInputType<{
     id: z.ZodString;
-    width: z.ZodOptional<z.ZodString>;
-    widthDesktop: z.ZodOptional<z.ZodString>;
-    widthTablet: z.ZodOptional<z.ZodString>;
-    widthMobile: z.ZodOptional<z.ZodString>;
-    height: z.ZodOptional<z.ZodString>;
-    heightDesktop: z.ZodOptional<z.ZodString>;
-    heightTablet: z.ZodOptional<z.ZodString>;
-    heightMobile: z.ZodOptional<z.ZodString>;
-    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
-    top: z.ZodOptional<z.ZodString>;
-    left: z.ZodOptional<z.ZodString>;
-    margin: z.ZodOptional<z.ZodString>;
-    marginDesktop: z.ZodOptional<z.ZodString>;
-    marginTablet: z.ZodOptional<z.ZodString>;
-    marginMobile: z.ZodOptional<z.ZodString>;
-    padding: z.ZodOptional<z.ZodString>;
-    paddingDesktop: z.ZodOptional<z.ZodString>;
-    paddingTablet: z.ZodOptional<z.ZodString>;
-    paddingMobile: z.ZodOptional<z.ZodString>;
     minItems: z.ZodOptional<z.ZodNumber>;
     maxItems: z.ZodOptional<z.ZodNumber>;
     desktopItems: z.ZodOptional<z.ZodNumber>;
@@ -1489,7 +1584,30 @@ export declare const socialProofComponentSchema: z.ZodObject<{
     href: z.ZodOptional<z.ZodString>;
     animation: z.ZodOptional<z.ZodEnum<["none", "fade", "slide"]>>;
 } & {
+    width: z.ZodOptional<z.ZodString>;
+    widthDesktop: z.ZodOptional<z.ZodString>;
+    widthTablet: z.ZodOptional<z.ZodString>;
+    widthMobile: z.ZodOptional<z.ZodString>;
+    height: z.ZodOptional<z.ZodString>;
+    heightDesktop: z.ZodOptional<z.ZodString>;
+    heightTablet: z.ZodOptional<z.ZodString>;
+    heightMobile: z.ZodOptional<z.ZodString>;
+} & {
+    position: z.ZodOptional<z.ZodEnum<["relative", "absolute"]>>;
+    top: z.ZodOptional<z.ZodString>;
+    left: z.ZodOptional<z.ZodString>;
+} & {
+    margin: z.ZodOptional<z.ZodString>;
+    marginDesktop: z.ZodOptional<z.ZodString>;
+    marginTablet: z.ZodOptional<z.ZodString>;
+    marginMobile: z.ZodOptional<z.ZodString>;
+    padding: z.ZodOptional<z.ZodString>;
+    paddingDesktop: z.ZodOptional<z.ZodString>;
+    paddingTablet: z.ZodOptional<z.ZodString>;
+    paddingMobile: z.ZodOptional<z.ZodString>;
+} & {
     type: z.ZodLiteral<"SocialProof">;
     source: z.ZodOptional<z.ZodString>;
     frequency: z.ZodOptional<z.ZodNumber>;
 }, z.ZodTypeAny, "passthrough">>;
+//# sourceMappingURL=molecules.d.ts.map

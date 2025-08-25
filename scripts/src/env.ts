@@ -32,6 +32,31 @@ import { generateThemeTokens } from "./generate-theme";
 const seed = process.argv.includes("--seed");
 const useDefaults = process.argv.includes("--defaults");
 const autoEnv = process.argv.includes("--auto-env");
+const configIndex = process.argv.indexOf("--config");
+const configPath = configIndex !== -1 ? process.argv[configIndex + 1] : undefined;
+
+interface InitConfig extends Partial<CreateShopOptions> {
+  id?: string;
+  name?: string;
+  logo?: string;
+  contact?: string;
+  type?: "sale" | "rental";
+  payment?: ("stripe" | "paypal")[];
+  shipping?: ("dhl" | "ups" | "premier-shipping")[];
+  plugins?: string[];
+  env?: Record<string, string>;
+}
+
+let config: InitConfig = {};
+if (configPath) {
+  try {
+    const raw = readFileSync(configPath, "utf8");
+    config = JSON.parse(raw) as InitConfig;
+  } catch {
+    console.error("Failed to load config file.");
+    process.exit(1);
+  }
+}
 
 /**
  * Prompt the user for input. If the user does not provide an answer, return the default value.
@@ -310,7 +335,7 @@ function loadTemplateDefaults(
  * the resulting environment file and optionally sets up CI.
  */
 export async function initShop(): Promise<void> {
-  const rawId = await prompt("Shop ID: ");
+  const rawId = config.id ?? (await prompt("Shop ID: "));
   let shopId: string;
   try {
     shopId = validateShopName(rawId);
@@ -319,27 +344,35 @@ export async function initShop(): Promise<void> {
     process.exit(1);
   }
   const prefixedId = `shop-${shopId}`;
-  const name = await prompt("Display name (optional): ");
-  const logo = await promptUrl("Logo URL (optional): ");
-  const contact = await promptEmail("Contact email (optional): ");
-  const typeAns = await prompt("Shop type (sale or rental) [sale]: ", "sale");
+  const name = config.name ?? (await prompt("Display name (optional): "));
+  const logo = config.logo ?? (await promptUrl("Logo URL (optional): "));
+  const contact =
+    config.contact ?? (await promptEmail("Contact email (optional): "));
+  const typeAns =
+    config.type ?? (await prompt("Shop type (sale or rental) [sale]: ", "sale"));
   const type: "sale" | "rental" =
-    typeAns.toLowerCase() === "rental" ? "rental" : "sale";
+    String(typeAns).toLowerCase() === "rental" ? "rental" : "sale";
   const rootDir = process.cwd();
   const themes = listDirNames(join(rootDir, "packages", "themes"));
-  const theme = await selectOption(
-    "theme",
-    themes,
-    Math.max(themes.indexOf("base"), 0)
-  );
+  const theme =
+    config.theme && themes.includes(config.theme)
+      ? config.theme
+      : await selectOption(
+          "theme",
+          themes,
+          Math.max(themes.indexOf("base"), 0)
+        );
   const templates = listDirNames(join(rootDir, "packages")).filter((n) =>
     n.startsWith("template-")
   );
-  const template = await selectOption(
-    "template",
-    templates,
-    Math.max(templates.indexOf("template-app"), 0)
-  );
+  const template =
+    config.template && templates.includes(config.template)
+      ? config.template
+      : await selectOption(
+          "template",
+          templates,
+          Math.max(templates.indexOf("template-app"), 0)
+        );
   // Narrow the provider lists to the literal union types expected by the shop schema.  Casting here
   // preserves the specific string literals (e.g. "stripe", "paypal") rather than widening them to
   // plain strings.  This allows TypeScript to satisfy the CreateShopOptions constraints without
@@ -348,62 +381,80 @@ export async function initShop(): Promise<void> {
     | { id: "stripe"; name: string; envVars: readonly string[] }
     | { id: "paypal"; name: string; envVars: readonly string[] }
   )[];
-  const payment = await selectProviders<"stripe" | "paypal">(
-    "payment providers",
-    paymentMeta.map((p) => p.id) as ("stripe" | "paypal")[],
-  );
+  const payment =
+    Array.isArray(config.payment) &&
+    config.payment.every((p) => paymentMeta.map((m) => m.id).includes(p))
+      ? (config.payment as ("stripe" | "paypal")[])
+      : await selectProviders<"stripe" | "paypal">(
+          "payment providers",
+          paymentMeta.map((p) => p.id) as ("stripe" | "paypal")[],
+        );
   const shippingMeta = (await listProviders("shipping")) as (
     | { id: "dhl"; name: string; envVars: readonly string[] }
     | { id: "ups"; name: string; envVars: readonly string[] }
     | { id: "premier-shipping"; name: string; envVars: readonly string[] }
   )[];
-  const shipping = await selectProviders<"dhl" | "ups" | "premier-shipping">(
-    "shipping providers",
-    shippingMeta.map((p) => p.id) as (
-      | "dhl"
-      | "ups"
-      | "premier-shipping"
-    )[],
-  );
+  const shipping =
+    Array.isArray(config.shipping) &&
+    config.shipping.every((s) => shippingMeta.map((m) => m.id).includes(s))
+      ? (config.shipping as ("dhl" | "ups" | "premier-shipping")[])
+      : await selectProviders<"dhl" | "ups" | "premier-shipping">(
+          "shipping providers",
+          shippingMeta.map((p) => p.id) as (
+            | "dhl"
+            | "ups"
+            | "premier-shipping"
+          )[],
+        );
   const allPluginMeta = listPlugins(rootDir);
   const pluginMap = new Map<
     string,
     { packageName?: string; envVars: readonly string[] }
   >();
   for (const m of [...paymentMeta, ...shippingMeta, ...allPluginMeta]) {
-    pluginMap.set(m.id, { packageName: (m as any).packageName, envVars: m.envVars });
+    pluginMap.set(m.id, {
+      packageName: "packageName" in m ? m.packageName : undefined,
+      envVars: m.envVars,
+    });
   }
   const selectedPlugins = new Set<string>([...payment, ...shipping]);
   const optionalPlugins = allPluginMeta.filter((p) => !selectedPlugins.has(p.id));
   let extra: string[] = [];
-  if (optionalPlugins.length) {
+  if (config.plugins) {
+    extra = config.plugins;
+    extra.forEach((id) => selectedPlugins.add(id));
+  } else if (optionalPlugins.length) {
     extra = await selectProviders(
       "plugins",
       optionalPlugins.map((p) => p.id),
     );
     extra.forEach((id) => selectedPlugins.add(id));
   }
-  const envVars: Record<string, string> = {};
+  const envVars: Record<string, string> = { ...(config.env ?? {}) };
   for (const id of selectedPlugins) {
     const vars = pluginMap.get(id)?.envVars ?? [];
     for (const key of vars) {
+      if (envVars[key] !== undefined) continue;
       if (autoEnv) {
-        envVars[key] = envVars[key] ?? `TODO_${key}`;
+        envVars[key] = `TODO_${key}`;
       } else {
-        envVars[key] = await prompt(`${key}: `, envVars[key] ?? "");
+        envVars[key] = await prompt(`${key}: `, "");
       }
     }
   }
   const templateDefaults = loadTemplateDefaults(rootDir, template);
   const navItems =
-    useDefaults && templateDefaults.navItems
+    config.navItems ??
+    (useDefaults && templateDefaults.navItems
       ? templateDefaults.navItems
-      : await promptNavItems();
+      : await promptNavItems());
   const pages =
-    useDefaults && templateDefaults.pages
+    config.pages ??
+    (useDefaults && templateDefaults.pages
       ? templateDefaults.pages
-      : await promptPages();
-  const themeOverrides = await promptThemeOverrides();
+      : await promptPages());
+  const themeOverrides =
+    config.themeOverrides ?? (await promptThemeOverrides());
   const ciAns = await prompt("Setup CI workflow? (y/N): ");
 
   // Assemble the options object using the collected values.  The CreateShopOptions

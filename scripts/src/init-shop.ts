@@ -1,7 +1,11 @@
 // scripts/src/init-shop.ts
 // Import platform helpers from the published package to avoid relying on
 // TypeScript path aliases when executing via ts-node.
-import { createShop, type CreateShopOptions } from "@acme/platform-core/createShop";
+import {
+  createShop,
+  loadBaseTokens,
+  type CreateShopOptions,
+} from "@acme/platform-core/createShop";
 
 // Pull in the shop name validator from the platform core package.
 import { validateShopName } from "@acme/platform-core/shops";
@@ -23,6 +27,7 @@ import { seedShop } from "./seedShop";
 // module aggregates built‑in payment and shipping providers as well as any
 // plugins under packages/plugins.
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
+import { generateThemeTokens } from "./generate-theme";
 
 /**
  * Ensure that the runtime meets the minimum supported versions for Node.js and pnpm.
@@ -109,7 +114,7 @@ async function selectProviders<T extends string>(
  * Return a list of immediate child directory names within the given directory.
  * @param path Directory URL to list.
  */
-function listDirNames(path: URL): string[] {
+function listDirNames(path: string): string[] {
   return readdirSync(path, { withFileTypes: true })
     .filter((d) => d.isDirectory())
     .map((d) => d.name);
@@ -214,6 +219,20 @@ async function promptPages(): Promise<CreateShopOptions["pages"]> {
  */
 async function promptThemeOverrides(): Promise<Record<string, string>> {
   const overrides: Record<string, string> = {};
+  const brand = await prompt(
+    "Primary brand color (hex, blank to skip): "
+  );
+  if (brand) {
+    try {
+      const base = loadBaseTokens();
+      const tokens = generateThemeTokens(brand);
+      for (const [k, v] of Object.entries(tokens)) {
+        if (base[k] !== v) overrides[k] = v;
+      }
+    } catch {
+      console.error("Invalid color format.");
+    }
+  }
   while (true) {
     const entry = await prompt(
       "Theme token override (key=value, blank to finish): "
@@ -250,17 +269,16 @@ async function main(): Promise<void> {
   const typeAns = await prompt("Shop type (sale or rental) [sale]: ", "sale");
   const type: "sale" | "rental" =
     typeAns.toLowerCase() === "rental" ? "rental" : "sale";
-  const themes = listDirNames(
-    new URL("../../packages/themes", import.meta.url)
-  );
+  const rootDir = process.cwd();
+  const themes = listDirNames(join(rootDir, "packages", "themes"));
   const theme = await selectOption(
     "theme",
     themes,
     Math.max(themes.indexOf("base"), 0)
   );
-  const templates = listDirNames(
-    new URL("../../packages", import.meta.url)
-  ).filter((n) => n.startsWith("template-"));
+  const templates = listDirNames(join(rootDir, "packages")).filter((n) =>
+    n.startsWith("template-")
+  );
   const template = await selectOption(
     "template",
     templates,

@@ -12,3 +12,16 @@ The base and dark themes share a minimal colour system built around WCAG AA cont
 | `--color-info` / `--color-info-fg` | `210 90% 96%` / `210 90% 35%` | `210 90% 35%` / `210 90% 96%` | 6.31, 6.31 |
 
 All contrast ratios were measured using the relative luminance method and meet WCAG AA for normal text.
+
+## Theme generator
+
+Use the `generate-theme` helper to build a token map based on a brand color. The
+script extends the base theme tokens and prints the full map as JSON:
+
+```bash
+pnpm ts-node scripts/src/generate-theme.ts '#336699'
+```
+
+During `init-shop` scaffolding you can provide a primary color when prompted.
+Any generated tokens are stored in `data/shops/<id>/shop.json` under
+`themeOverrides`.

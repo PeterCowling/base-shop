@@ -43,7 +43,10 @@ Example `shop.config.json`:
    contact email, shop type (`sale` or `rental`), and which theme and template to use. Payment and
    shipping providers are chosen from guided lists of available providers. It then
    scaffolds `apps/shop-<id>` and prompts for environment variables like Stripe keys and CMS
-   credentials, writing them directly to `apps/shop-<id>/.env`. For scripted setups you can still
+   credentials, writing them directly to `apps/shop-<id>/.env` and generating a matching
+   `.env.template` with the required keys. The wizard validates the environment immediately and
+   can fetch secrets from an external vault by providing `--vault-cmd <cmd>` (the command is invoked
+   with each variable name). For scripted setups you can still
    call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and `--contact` to skip those
    prompts. Both `init-shop` and `create-shop` accept a `--seed` flag to copy sample
    `products.json` and `inventory.json` from `data/templates/default` into the new shop.
@@ -59,12 +62,13 @@ Example `shop.config.json`:
 2. **Run the app**
 
    ```bash
-   pnpm validate-env <id>
    cd apps/shop-<id>
    pnpm dev
    ```
 
-   Open http://localhost:3000 to view the site. Pages hot-reload on save.
+   The wizard already validated your environment variables. Rerun `pnpm validate-env <id>` after
+   editing `.env` if you need to re-check. Open http://localhost:3000 to view the site. Pages
+   hot-reload on save.
 
 3. _(Optional)_ Each Next.js app must provide its own `postcss.config.cjs` that forwards to the repo root configuration so Tailwind resolves correctly. After updating Tailwind or any CSS utilities, run `pnpm tailwind:check` to verify the build.
 

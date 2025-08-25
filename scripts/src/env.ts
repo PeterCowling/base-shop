@@ -3,7 +3,7 @@ import {
   type CreateShopOptions,
 } from "@acme/platform-core/createShop";
 import { validateShopName } from "@acme/platform-core/shops";
-import { spawnSync } from "node:child_process";
+import { spawnSync, execSync } from "node:child_process";
 import { readdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { validateShopEnv, readEnvFile } from "@acme/platform-core/configurator";
@@ -28,6 +28,9 @@ const autoEnv = process.argv.includes("--auto-env");
 const pagesTemplateIndex = process.argv.indexOf("--pages-template");
 const pagesTemplate =
   pagesTemplateIndex !== -1 ? process.argv[pagesTemplateIndex + 1] : undefined;
+const vaultCmdIndex = process.argv.indexOf("--vault-cmd");
+const vaultCmd =
+  vaultCmdIndex !== -1 ? process.argv[vaultCmdIndex + 1] : undefined;
 const skipPrompts = process.argv.includes("--skip-prompts");
 
 function listDirNames(path: string): string[] {
@@ -244,6 +247,15 @@ export async function initShop(): Promise<void> {
         usedEnvFileKeys.add(key);
         continue;
       }
+      if (vaultCmd) {
+        try {
+          const val = execSync(`${vaultCmd} ${key}`, { encoding: "utf8" }).trim();
+          if (val) {
+            envVars[key] = val;
+            continue;
+          }
+        } catch {}
+      }
       if (autoEnv || skipPrompts) {
         envVars[key] = `TODO_${key}`;
       } else {
@@ -345,6 +357,11 @@ export async function initShop(): Promise<void> {
     Object.entries(finalEnv)
       .map(([k, v]) => `${k}=${v}`)
       .join("\n") + "\n"
+  );
+  const templatePath = join("apps", prefixedId, ".env.template");
+  writeFileSync(
+    templatePath,
+    [...requiredEnvKeys].map((k) => `${k}=`).join("\n") + "\n"
   );
 
   const missingEnvKeys = [...requiredEnvKeys].filter(

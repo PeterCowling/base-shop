@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync, unlinkSync } from "fs";
 import { join } from "path";
 import ts from "typescript";
 import { runInNewContext } from "vm";
@@ -14,7 +14,7 @@ function loadParseArgs() {
   const sandbox: any = {
     exports: {},
     module: { exports: {} },
-    process: { version: 'v20.0.0', exit: jest.fn() },
+    process: { version: 'v20.0.0', exit: jest.fn(), cwd: () => '/' },
     console: { error: jest.fn() },
     require: (p: string) => {
       if (p.includes('@acme/platform-core/shops')) {
@@ -88,6 +88,23 @@ describe("parseArgs", () => {
     expect(seed).toBe(true);
   });
 
+  it("loads options from --config", () => {
+    const { parseArgs } = loadParseArgs();
+    const cfgPath = join(__dirname, "test-config.json");
+    writeFileSync(
+      cfgPath,
+      JSON.stringify({ theme: "dark", template: "tpl", name: "Shop" })
+    );
+    const { options: opts, themeProvided, templateProvided } = parseArgs([
+      "shop",
+      `--config=${cfgPath}`,
+    ]);
+    expect(themeProvided).toBe(true);
+    expect(templateProvided).toBe(true);
+    expect(opts.name).toBe("Shop");
+    unlinkSync(cfgPath);
+  });
+
   it("exits on unknown option", () => {
     const { parseArgs, sandbox } = loadParseArgs();
     parseArgs(["s", "--unknown"]);
@@ -122,7 +139,7 @@ function runCli(args: string[]) {
   const sandbox: any = {
     exports: {},
     module: { exports: {} },
-    process: { argv: ["node", "script", ...args], version: 'v20.0.0', exit: jest.fn() },
+    process: { argv: ["node", "script", ...args], version: 'v20.0.0', exit: jest.fn(), cwd: () => '/' },
     console: { error: jest.fn() },
     require: (p: string) => {
       if (p === "./createShop/parse") {

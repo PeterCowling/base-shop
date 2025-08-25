@@ -1,5 +1,8 @@
 import { validateShopName } from "@acme/platform-core/shops";
 import type { CreateShopOptions } from "@acme/platform-core/createShop";
+import { createRequire } from "module";
+import { resolve, extname } from "path";
+import { readFileSync } from "fs";
 
 const PAYMENT_PROVIDERS = ["stripe", "paypal"] as const;
 const SHIPPING_PROVIDERS = ["dhl", "ups", "premier-shipping"] as const;
@@ -36,7 +39,7 @@ export function parseArgs(argv: string[]): {
   let id = argv[0];
   if (!id) {
     console.error(
-      "Usage: pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--payment=p1,p2] [--shipping=s1,s2] [--template=name] [--name=value] [--logo=url] [--contact=info] [--seed]"
+      "Usage: pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--payment=p1,p2] [--shipping=s1,s2] [--template=name] [--name=value] [--logo=url] [--contact=info] [--seed] [--config=file]"
     );
     process.exit(1);
   }
@@ -61,10 +64,40 @@ export function parseArgs(argv: string[]): {
   let templateProvided = false;
   let seed = false;
 
-  argv.slice(1).forEach((arg) => {
-    if (!arg.startsWith("--")) return;
-    const [key, val = ""] = arg.slice(2).split("=");
+  const require = createRequire(process.cwd() + "/");
+
+  for (let i = 1; i < argv.length; i++) {
+    const arg = argv[i];
+    if (!arg.startsWith("--")) continue;
+
+    let key: string;
+    let val = "";
+
+    if (arg.includes("=")) {
+      [key, val] = arg.slice(2).split("=");
+    } else {
+      key = arg.slice(2);
+      if (key !== "seed") {
+        val = argv[i + 1] || "";
+        if (val.startsWith("--")) val = ""; else i++;
+      }
+    }
+
     switch (key) {
+      case "config": {
+        const cfgPath = resolve(val);
+        let cfg: any;
+        if (extname(cfgPath) === ".json") {
+          cfg = JSON.parse(readFileSync(cfgPath, "utf8"));
+        } else {
+          const mod = require(cfgPath);
+          cfg = mod.default ?? mod;
+        }
+        Object.assign(opts, cfg);
+        if (cfg.theme !== undefined) themeProvided = true;
+        if (cfg.template !== undefined) templateProvided = true;
+        break;
+      }
       case "type":
         if (val === "sale" || val === "rental") opts.type = val;
         else {
@@ -108,7 +141,7 @@ export function parseArgs(argv: string[]): {
         console.error(`Unknown option ${key}`);
         process.exit(1);
     }
-  });
+  }
 
   return { shopId: id, options: opts, themeProvided, templateProvided, seed };
 }

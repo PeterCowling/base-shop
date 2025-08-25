@@ -13,6 +13,19 @@ export async function gatherOptions(
   themeProvided: boolean,
   templateProvided: boolean
 ): Promise<void> {
+  const prefilled =
+    themeProvided &&
+    templateProvided &&
+    options.name !== undefined &&
+    options.logo !== undefined &&
+    options.contactInfo !== undefined &&
+    (options.payment as string[]).length > 0 &&
+    (options.shipping as string[]).length > 0 &&
+    options.enableSubscriptions !== undefined;
+
+  if (prefilled) {
+    return;
+  }
   /** Prompt for theme when none is provided on the command line. */
   async function ensureTheme() {
     if (!themeProvided && process.stdin.isTTY) {

@@ -55,24 +55,6 @@ const PageBuilder = memo(function PageBuilder({
     }
   }, [onSave]);
   const {
-    state,
-    components,
-    dispatch,
-    selectedId,
-    setSelectedId,
-    gridCols,
-    setGridCols,
-    liveMessage,
-    clearHistory,
-  } = usePageBuilderState({
-    page,
-    history: historyProp,
-    onChange,
-    onSaveShortcut: handleSaveShortcut,
-    onTogglePreview: togglePreview,
-    onRotateDevice: rotateDevice,
-  });
-  const {
     deviceId,
     setDeviceId,
     orientation,
@@ -95,6 +77,24 @@ const PageBuilder = memo(function PageBuilder({
     showGrid,
     toggleGrid,
   } = usePageBuilderControls();
+  const {
+    state,
+    components,
+    dispatch,
+    selectedId,
+    setSelectedId,
+    gridCols,
+    setGridCols,
+    liveMessage,
+    clearHistory,
+  } = usePageBuilderState({
+    page,
+    history: historyProp,
+    onChange,
+    onSaveShortcut: handleSaveShortcut,
+    onTogglePreview: togglePreview,
+    onRotateDevice: rotateDevice,
+  });
   const [publishCount, setPublishCount] = useState(0);
   const prevId = useRef(page.id);
   const pathname = usePathname() ?? "";

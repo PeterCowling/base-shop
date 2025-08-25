@@ -45,3 +45,5 @@ export { default as usePageBuilderState } from "./hooks/usePageBuilderState";
 export { default as usePageBuilderDnD } from "./hooks/usePageBuilderDnD";
 export { default as useCanvasDrag } from "./useCanvasDrag";
 export { default as useCanvasResize } from "./useCanvasResize";
+export { default as useBlockDimensions } from "./useBlockDimensions";
+export { default as useBlockDnD } from "./useBlockDnD";

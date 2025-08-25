@@ -1,17 +1,18 @@
 "use client";
 
 import type { Locale } from "@acme/i18n/locales";
-import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { PageComponent } from "@acme/types";
-import { memo, useRef } from "react";
+import { memo } from "react";
 import type { Action } from "./state";
 import Block from "./Block";
-import useSortableBlock from "./useSortableBlock";
 import useCanvasResize from "./useCanvasResize";
 import useCanvasDrag from "./useCanvasDrag";
 import useCanvasSpacing from "./useCanvasSpacing";
-import CanvasItem from "./CanvasItem";
+import useBlockDimensions from "./useBlockDimensions";
+import useBlockDnD from "./useBlockDnD";
+import BlockResizer from "./BlockResizer";
+import BlockChildren from "./BlockChildren";
 import type { DevicePreset } from "../../../utils/devicePresets";
 
 type Props = {
@@ -52,46 +53,19 @@ const BlockItem = memo(function BlockItemComponent({
     isDragging,
     setDropRef,
     isOver,
-  } = useSortableBlock(component.id, index, parentId);
+    containerRef,
+  } = useBlockDnD(component.id, index, parentId);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const widthKey =
-    viewport === "desktop"
-      ? "widthDesktop"
-      : viewport === "tablet"
-        ? "widthTablet"
-        : "widthMobile";
-  const heightKey =
-    viewport === "desktop"
-      ? "heightDesktop"
-      : viewport === "tablet"
-        ? "heightTablet"
-        : "heightMobile";
-  const widthVal =
-    (component[widthKey as keyof PageComponent] as string | undefined) ??
-    component.width;
-  const heightVal =
-    (component[heightKey as keyof PageComponent] as string | undefined) ??
-    component.height;
-  const marginKey =
-    viewport === "desktop"
-      ? "marginDesktop"
-      : viewport === "tablet"
-        ? "marginTablet"
-        : "marginMobile";
-  const paddingKey =
-    viewport === "desktop"
-      ? "paddingDesktop"
-      : viewport === "tablet"
-        ? "paddingTablet"
-        : "paddingMobile";
-  const marginVal =
-    (component[marginKey as keyof PageComponent] as string | undefined) ??
-    component.margin;
-  const paddingVal =
-    (component[paddingKey as keyof PageComponent] as string | undefined) ??
-    component.padding;
+  const {
+    widthKey,
+    heightKey,
+    widthVal,
+    heightVal,
+    marginKey,
+    paddingKey,
+    marginVal,
+    paddingVal,
+  } = useBlockDimensions({ component, viewport });
 
   const {
     startResize,
@@ -158,17 +132,11 @@ const BlockItem = memo(function BlockItemComponent({
   const overlayHeight = resizing ? resizeHeight : dragHeight;
   const overlayLeft = resizing ? resizeLeft : dragLeft;
   const overlayTop = resizing ? resizeTop : dragTop;
-
-  const children = (component as { children?: PageComponent[] }).children;
-  const hasChildren = Array.isArray(children);
-  const childIds = hasChildren ? children!.map((c) => c.id) : [];
+  const childComponents = (component as { children?: PageComponent[] }).children;
 
   return (
     <div
-      ref={(node) => {
-        setNodeRef(node);
-        containerRef.current = node;
-      }}
+      ref={setNodeRef}
       onClick={() => onSelectId(component.id)}
       role="listitem"
       aria-grabbed={isDragging}
@@ -255,58 +223,11 @@ const BlockItem = memo(function BlockItemComponent({
           {Math.round(overlayLeft)}, {Math.round(overlayTop)}
         </div>
       )}
-      {selected && (
-        <>
-          <div
-            onPointerDown={startResize}
-            className="bg-primary absolute -top-1 -left-1 h-2 w-2 cursor-nwse-resize"
-          />
-          <div
-            onPointerDown={startResize}
-            className="bg-primary absolute -top-1 -right-1 h-2 w-2 cursor-nesw-resize"
-          />
-          <div
-            onPointerDown={startResize}
-            className="bg-primary absolute -bottom-1 -left-1 h-2 w-2 cursor-nesw-resize"
-          />
-          <div
-            onPointerDown={startResize}
-            className="bg-primary absolute -right-1 -bottom-1 h-2 w-2 cursor-nwse-resize"
-          />
-          <div
-            onPointerDown={(e) => startSpacing(e, "margin", "top")}
-            className="bg-primary absolute -top-2 left-1/2 h-1 w-4 -translate-x-1/2 cursor-n-resize"
-          />
-          <div
-            onPointerDown={(e) => startSpacing(e, "margin", "bottom")}
-            className="bg-primary absolute -bottom-2 left-1/2 h-1 w-4 -translate-x-1/2 cursor-s-resize"
-          />
-          <div
-            onPointerDown={(e) => startSpacing(e, "margin", "left")}
-            className="bg-primary absolute top-1/2 -left-2 h-4 w-1 -translate-y-1/2 cursor-w-resize"
-          />
-          <div
-            onPointerDown={(e) => startSpacing(e, "margin", "right")}
-            className="bg-primary absolute top-1/2 -right-2 h-4 w-1 -translate-y-1/2 cursor-e-resize"
-          />
-          <div
-            onPointerDown={(e) => startSpacing(e, "padding", "top")}
-            className="bg-primary absolute top-0 left-1/2 h-1 w-4 -translate-x-1/2 cursor-n-resize"
-          />
-          <div
-            onPointerDown={(e) => startSpacing(e, "padding", "bottom")}
-            className="bg-primary absolute bottom-0 left-1/2 h-1 w-4 -translate-x-1/2 cursor-s-resize"
-          />
-          <div
-            onPointerDown={(e) => startSpacing(e, "padding", "left")}
-            className="bg-primary absolute top-1/2 left-0 h-4 w-1 -translate-y-1/2 cursor-w-resize"
-          />
-          <div
-            onPointerDown={(e) => startSpacing(e, "padding", "right")}
-            className="bg-primary absolute top-1/2 right-0 h-4 w-1 -translate-y-1/2 cursor-e-resize"
-          />
-        </>
-      )}
+      <BlockResizer
+        selected={selected}
+        startResize={startResize}
+        startSpacing={startSpacing}
+      />
       <button
         type="button"
         onClick={onRemove}
@@ -317,45 +238,20 @@ const BlockItem = memo(function BlockItemComponent({
           ×
         </span>
       </button>
-      {hasChildren && (
-        <SortableContext
-          id={`context-${component.id}`}
-          items={childIds}
-          strategy={rectSortingStrategy}
-        >
-          <div
-            ref={setDropRef}
-            id={`container-${component.id}`}
-            role="list"
-            aria-dropeffect="move"
-            className="border-muted m-2 flex flex-col gap-4 border border-dashed p-2"
-          >
-            {isOver && (
-              <div
-                data-placeholder
-                className="border-primary bg-primary/10 ring-primary h-4 w-full rounded border-2 border-dashed ring-2"
-              />
-            )}
-            {children!.map((child: PageComponent, i: number) => (
-              <CanvasItem
-                key={child.id}
-                component={child}
-                index={i}
-                parentId={component.id}
-                selectedId={selectedId}
-                onSelectId={onSelectId}
-                onRemove={() => dispatch({ type: "remove", id: child.id })}
-                dispatch={dispatch}
-                locale={locale}
-                gridEnabled={gridEnabled}
-                gridCols={gridCols}
-                viewport={viewport}
-                device={device}
-              />
-            ))}
-          </div>
-        </SortableContext>
-      )}
+      <BlockChildren
+        component={component}
+        childComponents={childComponents}
+        selectedId={selectedId}
+        onSelectId={onSelectId}
+        dispatch={dispatch}
+        locale={locale}
+        gridEnabled={gridEnabled}
+        gridCols={gridCols}
+        viewport={viewport}
+        device={device}
+        isOver={isOver}
+        setDropRef={setDropRef}
+      />
     </div>
   );
 });

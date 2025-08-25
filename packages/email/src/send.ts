@@ -76,7 +76,7 @@ export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
   const { sanitize = true, ...rest } = options;
-  let opts = { ...rest } as CampaignOptions;
+  const opts = { ...rest } as CampaignOptions;
   if (opts.templateId) {
     opts.html = renderTemplate(opts.templateId, opts.variables ?? {});
   }
@@ -151,7 +151,6 @@ async function sendWithRetry(
   maxRetries = 3
 ): Promise<void> {
   let attempt = 0;
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
       await provider.send(options);

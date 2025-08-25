@@ -29,6 +29,9 @@ export default [
       "apps/*/src/**/*.js",
       "apps/*/src/**/*.d.ts",
       "apps/*/src/**/*.js.map",
+      "packages/email/src/**/*.js",
+      "packages/email/src/**/*.d.ts",
+      "packages/email/src/**/*.d.ts.map",
       "scripts/**/*.js",
       "**/*.d.ts",
     ],
@@ -50,7 +53,7 @@ export default [
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: ["./tsconfig.json"],
+        project: ["./tsconfig.json", "./packages/email/tsconfig.eslint.json"],
         projectService: true,
         allowDefaultProject: true,
         sourceType: "module",

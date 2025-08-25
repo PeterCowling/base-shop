@@ -144,8 +144,10 @@ export class SendgridProvider implements CampaignProvider {
         headers: { Authorization: `Bearer ${key}` },
       });
       const json = await res.json().catch(() => ({}));
-      const segments = Array.isArray(json?.result) ? json.result : [];
-      return segments.map((s: any) => ({ id: s.id, name: s.name }));
+      const segments: { id: string; name?: string }[] = Array.isArray(json?.result)
+        ? json.result
+        : [];
+      return segments.map((s) => ({ id: s.id, name: s.name }));
     } catch {
       return [];
     }

@@ -3,6 +3,9 @@
 import { Button } from "@/components/atoms/shadcn";
 import StyleEditor from "@ui/components/cms/StyleEditor";
 import WizardPreview from "../../wizard/WizardPreview";
+import TokenInspector from "../../wizard/TokenInspector";
+import PreviewDeviceSelector from "../../wizard/PreviewDeviceSelector";
+import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -17,6 +20,7 @@ export default function StepTokens(): React.JSX.Element {
   const { themeDefaults, themeOverrides, setThemeOverrides } = useConfigurator();
   const tokens = { ...themeDefaults, ...themeOverrides } as TokenMap;
   const [selected, setSelected] = useState<string | null>(null);
+  const [device, setDevice] = useState<DevicePreset>(devicePresets[0]);
 
   const handleChange = (next: TokenMap) => {
     const overrides: TokenMap = { ...next };
@@ -33,11 +37,10 @@ export default function StepTokens(): React.JSX.Element {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Customize Tokens</h2>
-      <WizardPreview
-        style={previewStyle}
-        inspectMode
-        onTokenSelect={(t) => setSelected(t)}
-      />
+      <PreviewDeviceSelector onChange={setDevice} />
+      <TokenInspector inspectMode onTokenSelect={(t) => setSelected(t)}>
+        <WizardPreview style={previewStyle} device={device} />
+      </TokenInspector>
       {selected && (
         <StyleEditor
           tokens={themeOverrides}

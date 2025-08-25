@@ -3,6 +3,9 @@
 import { useState } from "react";
 import InlineColorPicker from "./InlineColorPicker";
 import WizardPreview from "../../../wizard/WizardPreview";
+import TokenInspector from "../../../wizard/TokenInspector";
+import PreviewDeviceSelector from "../../../wizard/PreviewDeviceSelector";
+import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import type { CSSProperties } from "react";
 
 interface Picker {
@@ -30,6 +33,7 @@ export default function ThemePreview({
   onTokenSelect,
 }: Props) {
   const [picker, setPicker] = useState<Picker | null>(null);
+  const [device, setDevice] = useState<DevicePreset>(devicePresets[0]);
 
   const handleTokenClick = (
     token: string,
@@ -68,11 +72,13 @@ export default function ThemePreview({
           onClose={handlePickerClose}
         />
       )}
-      <WizardPreview
-        style={previewTokens as CSSProperties}
-        inspectMode
-        onTokenSelect={handleTokenClick}
-      />
+      <PreviewDeviceSelector onChange={setDevice} />
+      <TokenInspector inspectMode onTokenSelect={handleTokenClick}>
+        <WizardPreview
+          style={previewTokens as CSSProperties}
+          device={device}
+        />
+      </TokenInspector>
     </>
   );
 }

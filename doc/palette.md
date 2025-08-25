@@ -12,3 +12,32 @@ The base and dark themes share a minimal colour system built around WCAG AA cont
 | `--color-info` / `--color-info-fg` | `210 90% 96%` / `210 90% 35%` | `210 90% 35%` / `210 90% 96%` | 6.31, 6.31 |
 
 All contrast ratios were measured using the relative luminance method and meet WCAG AA for normal text.
+
+## Theme generator
+
+A helper script can create a token map from a single brand colour. The
+primary value may be supplied in hex or HSL format:
+
+```sh
+pnpm ts-node scripts/src/generate-theme.ts "#1e40af"
+```
+
+The output includes the base theme tokens with the primary colour and its
+dark variant adjusted.
+
+### Using during shop setup
+
+Running `pnpm run init-shop` now prompts for an optional brand colour. When
+provided, the generated overrides are written to
+`data/shops/<id>/shop.json` under `themeOverrides`:
+
+```json
+{
+  "themeOverrides": {
+    "--color-primary": "220 90% 56%",
+    "--color-primary-dark": "220 90% 66%"
+  }
+}
+```
+
+These overrides are merged with the base palette at runtime.

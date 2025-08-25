@@ -3,7 +3,10 @@
   "name": "abc",
   "catalogFilters": [],
   "themeId": "base",
-  "themeOverrides": {},
+  "themeOverrides": {
+    "--color-primary": "340 80% 50%",
+    "--color-primary-dark": "340 80% 60%"
+  },
   "filterMappings": {},
   "type": "rental",
   "showCleaningTransparency": true,

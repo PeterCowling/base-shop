@@ -17,6 +17,7 @@ import { validateShopEnv } from "@acme/platform-core/configurator";
 // module aggregates built‑in payment and shipping providers as well as any
 // plugins under packages/plugins.
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
+import { generateTheme, baseTokens } from "./generate-theme";
 
 /**
  * Ensure that the runtime meets the minimum supported versions for Node.js and pnpm.
@@ -197,6 +198,19 @@ async function main(): Promise<void> {
     themes,
     Math.max(themes.indexOf("base"), 0)
   );
+  let themeOverrides: Record<string, string> | undefined;
+  if (theme === "base") {
+    const primary = await prompt(
+      "Primary brand colour (hex or HSL, optional): "
+    );
+    if (primary) {
+      const tokens = generateTheme(primary);
+      themeOverrides = {};
+      for (const [k, v] of Object.entries(tokens)) {
+        if (baseTokens[k] !== v) themeOverrides[k] = v;
+      }
+    }
+  }
   const templates = listDirNames(
     new URL("../../packages", import.meta.url)
   ).filter((n) => n.startsWith("template-"));
@@ -244,6 +258,7 @@ async function main(): Promise<void> {
     template,
     payment,
     shipping,
+    ...(themeOverrides && { themeOverrides }),
   };
   const options = rawOptions as unknown as CreateShopOptions;
 

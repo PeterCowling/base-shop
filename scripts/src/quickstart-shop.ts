@@ -3,7 +3,7 @@
 // and starts the dev server in one step.
 
 import { execSync, spawnSync } from "node:child_process";
-import { readdirSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
 import {
@@ -102,6 +102,31 @@ function listDirNames(path: URL): string[] {
     .map((d) => d.name);
 }
 
+/** Load default navItems and pages from the template's shop.json if available. */
+function loadTemplateDefaults(
+  template: string,
+): {
+  navItems?: CreateShopOptions["navItems"];
+  pages?: CreateShopOptions["pages"];
+} {
+  try {
+    const raw = readFileSync(
+      new URL(`../../packages/${template}/shop.json`, import.meta.url),
+      "utf8",
+    );
+    const data = JSON.parse(raw);
+    const defaults: {
+      navItems?: CreateShopOptions["navItems"];
+      pages?: CreateShopOptions["pages"];
+    } = {};
+    if (Array.isArray(data.navItems)) defaults.navItems = data.navItems;
+    if (Array.isArray(data.pages)) defaults.pages = data.pages;
+    return defaults;
+  } catch {
+    return {};
+  }
+}
+
 interface Flags {
   id?: string;
   theme?: string;
@@ -188,6 +213,8 @@ async function main(): Promise<void> {
     );
   }
 
+  const { navItems, pages } = loadTemplateDefaults(template);
+
   let payment = args.payment;
   if (!payment || payment.length === 0) {
     const paymentProviders = await listProviders("payment");
@@ -212,6 +239,8 @@ async function main(): Promise<void> {
     template,
     payment,
     shipping,
+    ...(navItems && { navItems }),
+    ...(pages && { pages }),
   } as unknown as CreateShopOptions;
 
   const prefixedId = `shop-${shopId}`;

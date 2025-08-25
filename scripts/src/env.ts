@@ -53,7 +53,30 @@ function loadTemplateDefaults(
 }
 
 export async function initShop(): Promise<void> {
-  const rawId = await prompt("Shop ID: ");
+  const argv = process.argv.slice(2);
+  const configIndex = argv.indexOf("--config");
+  let config: Partial<CreateShopOptions> & {
+    id?: string;
+    contact?: string;
+    plugins?: string[];
+    setupCI?: boolean;
+  } = {};
+  if (configIndex !== -1) {
+    const configPath = argv[configIndex + 1];
+    if (!configPath) {
+      console.error("--config flag requires a path");
+      process.exit(1);
+    }
+    try {
+      const raw = readFileSync(configPath, "utf8");
+      config = JSON.parse(raw);
+    } catch (err) {
+      console.error("Failed to load config file:", (err as Error).message);
+      process.exit(1);
+    }
+  }
+
+  const rawId = (config.id as string | undefined) ?? (await prompt("Shop ID: "));
   let shopId: string;
   try {
     shopId = validateShopName(rawId);
@@ -62,66 +85,90 @@ export async function initShop(): Promise<void> {
     process.exit(1);
   }
   const prefixedId = `shop-${shopId}`;
-  const name = await prompt("Display name (optional): ");
-  const logo = await promptUrl("Logo URL (optional): ");
-  const contact = await promptEmail("Contact email (optional): ");
-  const typeAns = await prompt("Shop type (sale or rental) [sale]: ", "sale");
+  const name =
+    (config.name as string | undefined) ??
+    (await prompt("Display name (optional): "));
+  const logo =
+    (config.logo as string | undefined) ??
+    (await promptUrl("Logo URL (optional): "));
+  const contact =
+    (config.contactInfo as string | undefined) ??
+    (config.contact as string | undefined) ??
+    (await promptEmail("Contact email (optional): "));
+  const typeAns =
+    (config.type as string | undefined) ??
+    (await prompt("Shop type (sale or rental) [sale]: ", "sale"));
   const type: "sale" | "rental" =
-    typeAns.toLowerCase() === "rental" ? "rental" : "sale";
+    String(typeAns).toLowerCase() === "rental" ? "rental" : "sale";
   const rootDir = process.cwd();
   const themes = listDirNames(join(rootDir, "packages", "themes"));
-  const theme = await selectOption(
-    "theme",
-    themes,
-    Math.max(themes.indexOf("base"), 0),
-  );
+  const theme =
+    config.theme && themes.includes(config.theme)
+      ? config.theme
+      : await selectOption(
+          "theme",
+          themes,
+          Math.max(themes.indexOf("base"), 0),
+        );
   const templates = listDirNames(join(rootDir, "packages")).filter((n) =>
     n.startsWith("template-"),
   );
-  const template = await selectOption(
-    "template",
-    templates,
-    Math.max(templates.indexOf("template-app"), 0),
-  );
+  const template =
+    config.template && templates.includes(config.template)
+      ? config.template
+      : await selectOption(
+          "template",
+          templates,
+          Math.max(templates.indexOf("template-app"), 0),
+        );
   const paymentMeta = (await listProviders("payment")) as (
     | { id: "stripe"; name: string; envVars: readonly string[] }
     | { id: "paypal"; name: string; envVars: readonly string[] }
   )[];
-  const payment = await selectProviders<"stripe" | "paypal">(
-    "payment providers",
-    paymentMeta.map((p) => p.id) as ("stripe" | "paypal")[],
-  );
+  const payment = Array.isArray(config.payment)
+    ? (config.payment as ("stripe" | "paypal")[])
+    : await selectProviders<"stripe" | "paypal">(
+        "payment providers",
+        paymentMeta.map((p) => p.id) as ("stripe" | "paypal")[],
+      );
   const shippingMeta = (await listProviders("shipping")) as (
     | { id: "dhl"; name: string; envVars: readonly string[] }
     | { id: "ups"; name: string; envVars: readonly string[] }
     | { id: "premier-shipping"; name: string; envVars: readonly string[] }
   )[];
-  const shipping = await selectProviders<"dhl" | "ups" | "premier-shipping">(
-    "shipping providers",
-    shippingMeta.map((p) => p.id) as (
-      | "dhl"
-      | "ups"
-      | "premier-shipping"
-    )[],
-  );
+  const shipping = Array.isArray(config.shipping)
+    ? (config.shipping as ("dhl" | "ups" | "premier-shipping")[])
+    : await selectProviders<"dhl" | "ups" | "premier-shipping">(
+        "shipping providers",
+        shippingMeta.map((p) => p.id) as (
+          | "dhl"
+          | "ups"
+          | "premier-shipping"
+        )[],
+      );
   const allPluginMeta = listPlugins(rootDir);
+  type ProviderMeta = {
+    id: string;
+    envVars: readonly string[];
+    packageName?: string;
+  };
   const pluginMap = new Map<
     string,
     { packageName?: string; envVars: readonly string[] }
   >();
-  for (const m of [...paymentMeta, ...shippingMeta, ...allPluginMeta]) {
-    pluginMap.set(m.id, { packageName: (m as any).packageName, envVars: m.envVars });
+  for (const m of [...paymentMeta, ...shippingMeta, ...allPluginMeta] as ProviderMeta[]) {
+    pluginMap.set(m.id, { packageName: m.packageName, envVars: m.envVars });
   }
   const selectedPlugins = new Set<string>([...payment, ...shipping]);
   const optionalPlugins = allPluginMeta.filter((p) => !selectedPlugins.has(p.id));
-  let extra: string[] = [];
-  if (optionalPlugins.length) {
+  let extra: string[] = Array.isArray(config.plugins) ? config.plugins : [];
+  if (!extra.length && optionalPlugins.length) {
     extra = await selectProviders(
       "plugins",
       optionalPlugins.map((p) => p.id),
     );
-    extra.forEach((id) => selectedPlugins.add(id));
   }
+  extra.forEach((id) => selectedPlugins.add(id));
   const envVars: Record<string, string> = {};
   for (const id of selectedPlugins) {
     const vars = pluginMap.get(id)?.envVars ?? [];
@@ -134,18 +181,33 @@ export async function initShop(): Promise<void> {
     }
   }
   const templateDefaults = loadTemplateDefaults(rootDir, template);
-  const navItems =
-    useDefaults && templateDefaults.navItems
+  const navItems = Array.isArray(config.navItems)
+    ? config.navItems
+    : useDefaults && templateDefaults.navItems
       ? templateDefaults.navItems
       : await promptNavItems();
-  const pages =
-    useDefaults && templateDefaults.pages
+  const pages = Array.isArray(config.pages)
+    ? config.pages
+    : useDefaults && templateDefaults.pages
       ? templateDefaults.pages
       : await promptPages();
-  const themeOverrides = await promptThemeOverrides();
-  const ciAns = await prompt("Setup CI workflow? (y/N): ");
+  const themeOverrides =
+    (config.themeOverrides as Record<string, string> | undefined) ??
+    (await promptThemeOverrides());
+  const ciAns =
+    typeof config.setupCI === "boolean"
+      ? config.setupCI
+        ? "y"
+        : "n"
+      : await prompt("Setup CI workflow? (y/N): ");
 
+  const { id: _id, plugins: _plugins, setupCI: _setupCI, ...restConfig } =
+    config as Record<string, unknown>;
+  void _id;
+  void _plugins;
+  void _setupCI;
   const rawOptions = {
+    ...restConfig,
     ...(name && { name }),
     ...(logo && { logo }),
     ...(contact && { contactInfo: contact }),

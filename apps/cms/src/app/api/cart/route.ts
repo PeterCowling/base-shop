@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-export const runtime = "edge";
+// Use the Node.js runtime to avoid long edge compilation in development
+export const runtime = "nodejs";
 
 function empty() {
   return NextResponse.json({ ok: true, cart: {} });

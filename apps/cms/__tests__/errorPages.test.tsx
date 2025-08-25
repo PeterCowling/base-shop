@@ -1,10 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 
-import AccessDenied from "../src/app/403/page";
-import { middleware } from "../src/middleware";
-import NotFound from "../src/not-found";
-
 jest.mock("next-auth/jwt", () => ({
   __esModule: true,
   getToken: jest.fn(),
@@ -13,6 +9,16 @@ jest.mock("next-auth/jwt", () => ({
 jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(),
 }));
+
+// Stub Zod initializer to avoid top-level await in CommonJS tests
+jest.mock("@acme/zod-utils/initZod", () => ({}));
+
+// Import modules after mocks so Next.js internals aren't executed
+import { middleware } from "../src/middleware";
+import NotFound from "../src/app/not-found";
+// Require instead of ESM import to avoid hoisting issues with jest.mock
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const AccessDenied = require("../src/app/403/page").default;
 
 import { getToken as mockedGetToken } from "next-auth/jwt";
 import type { ReadonlyURLSearchParams } from "next/navigation";

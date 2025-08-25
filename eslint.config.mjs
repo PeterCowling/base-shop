@@ -81,6 +81,19 @@ export default [
     },
   },
 
+  /* ▸ i18n package linting without TS project */
+  {
+    files: ["packages/i18n/**/*.{ts,tsx,js,jsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+  },
+
   /* ▸ Scripts directory override */
   {
     files: ["scripts/**/*.{ts,tsx,js,jsx}"],

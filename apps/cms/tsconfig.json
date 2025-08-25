@@ -157,8 +157,6 @@
     ]
   },
   "include": [
-    "../../packages/**/*.ts",
-    "../../packages/**/*.tsx",
     "next-env.d.ts",
     "src/**/*",
     "src/**/*.json",
@@ -168,7 +166,10 @@
     ".next",
     "node_modules",
     "dist",
+    "../../packages/**/__tests__/**",
+    "../../test",
     "**/__tests__/**",
+    "**/__mocks__/**",
     "**/*.test.*",
     "**/*.spec.*",
     "**/*.stories.*"

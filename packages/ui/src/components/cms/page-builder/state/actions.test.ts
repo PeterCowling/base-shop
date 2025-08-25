@@ -1,8 +1,17 @@
-import { add, move, remove, duplicate, update, resize, set, setGridCols } from "./layout";
+import {
+  add,
+  move,
+  remove,
+  duplicate,
+  update,
+  resize,
+  set,
+  setGridCols,
+} from "./actions";
 import { historyStateSchema } from "./schema";
 import type { PageComponent, HistoryState } from "@acme/types";
 
-describe("layout actions", () => {
+describe("actions", () => {
   const a = { id: "a", type: "Text" } as PageComponent;
   const b = { id: "b", type: "Image" } as PageComponent;
   const init: HistoryState = { past: [], present: [], future: [], gridCols: 12 };

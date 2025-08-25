@@ -1,22 +1,11 @@
 import { ulid } from "ulid";
-import type { PageComponent, HistoryState } from "@acme/types";
-import type {
-  AddAction,
-  MoveAction,
-  RemoveAction,
-  DuplicateAction,
-  UpdateAction,
-  ResizeAction,
-  SetAction,
-  SetGridColsAction,
-} from "./actions";
-import { commit } from "./history";
+import type { PageComponent } from "@acme/types";
 
 function addAt(list: PageComponent[], index: number, item: PageComponent) {
   return [...list.slice(0, index), item, ...list.slice(index)];
 }
 
-function addComponent(
+export function addComponent(
   list: PageComponent[],
   parentId: string | undefined,
   index: number | undefined,
@@ -28,11 +17,7 @@ function addComponent(
   return list.map((c) => {
     if (c.id === parentId && "children" in c) {
       const childList = (c as { children?: PageComponent[] }).children ?? [];
-      const children = addAt(
-        childList,
-        index ?? childList.length,
-        component,
-      );
+      const children = addAt(childList, index ?? childList.length, component);
       return { ...c, children } as PageComponent;
     }
     if (
@@ -41,19 +26,19 @@ function addComponent(
     ) {
       return {
         ...c,
-          children: addComponent(
-            (c as PageComponent & { children: PageComponent[] }).children,
-            parentId,
-            index,
-            component,
-          ),
+        children: addComponent(
+          (c as PageComponent & { children: PageComponent[] }).children,
+          parentId,
+          index,
+          component,
+        ),
       } as PageComponent;
     }
     return c;
   });
 }
 
-function removeComponent(list: PageComponent[], id: string): PageComponent[] {
+export function removeComponent(list: PageComponent[], id: string): PageComponent[] {
   return list
     .map((c) =>
       "children" in c && Array.isArray(c.children)
@@ -74,7 +59,7 @@ function cloneWithNewIds(component: PageComponent): PageComponent {
   return copy;
 }
 
-function duplicateComponent(list: PageComponent[], id: string): PageComponent[] {
+export function duplicateComponent(list: PageComponent[], id: string): PageComponent[] {
   let duplicated = false;
   const result: PageComponent[] = [];
   for (const c of list) {
@@ -100,7 +85,7 @@ function duplicateComponent(list: PageComponent[], id: string): PageComponent[] 
   return duplicated ? result : list;
 }
 
-function updateComponent(
+export function updateComponent(
   list: PageComponent[],
   id: string,
   patch: Partial<PageComponent>,
@@ -133,7 +118,7 @@ function updateComponent(
   });
 }
 
-function resizeComponent(
+export function resizeComponent(
   list: PageComponent[],
   id: string,
   patch: {
@@ -196,7 +181,7 @@ function extractComponent(
   return [removed, newList];
 }
 
-function moveComponent(
+export function moveComponent(
   list: PageComponent[],
   from: { parentId?: string; index: number },
   to: { parentId?: string; index: number },
@@ -206,99 +191,3 @@ function moveComponent(
   return addComponent(without, to.parentId, to.index, item);
 }
 
-export function add(state: HistoryState, action: AddAction): HistoryState {
-  return commit(
-    state,
-    addComponent(state.present, action.parentId, action.index, action.component),
-  );
-}
-
-export function move(state: HistoryState, action: MoveAction): HistoryState {
-  return commit(state, moveComponent(state.present, action.from, action.to));
-}
-
-export function remove(state: HistoryState, action: RemoveAction): HistoryState {
-  return commit(state, removeComponent(state.present, action.id));
-}
-
-export function duplicate(
-  state: HistoryState,
-  action: DuplicateAction,
-): HistoryState {
-  return commit(state, duplicateComponent(state.present, action.id));
-}
-
-export function update(state: HistoryState, action: UpdateAction): HistoryState {
-  return commit(state, updateComponent(state.present, action.id, action.patch));
-}
-
-export function resize(state: HistoryState, action: ResizeAction): HistoryState {
-  const normalize = (v?: string) => {
-    if (v === undefined) return undefined;
-    const trimmed = v.trim();
-    if (trimmed === "") return undefined;
-    return /^-?\d+(\.\d+)?$/.test(trimmed) ? `${trimmed}px` : trimmed;
-  };
-  const patch: {
-    width?: string;
-    height?: string;
-    left?: string;
-    top?: string;
-    widthDesktop?: string;
-    widthTablet?: string;
-    widthMobile?: string;
-    heightDesktop?: string;
-    heightTablet?: string;
-    heightMobile?: string;
-    marginDesktop?: string;
-    marginTablet?: string;
-    marginMobile?: string;
-    paddingDesktop?: string;
-    paddingTablet?: string;
-    paddingMobile?: string;
-  } = {};
-  const width = normalize(action.width);
-  const height = normalize(action.height);
-  const left = normalize(action.left);
-  const top = normalize(action.top);
-  const widthDesktop = normalize(action.widthDesktop);
-  const widthTablet = normalize(action.widthTablet);
-  const widthMobile = normalize(action.widthMobile);
-  const heightDesktop = normalize(action.heightDesktop);
-  const heightTablet = normalize(action.heightTablet);
-  const heightMobile = normalize(action.heightMobile);
-  const marginDesktop = normalize(action.marginDesktop);
-  const marginTablet = normalize(action.marginTablet);
-  const marginMobile = normalize(action.marginMobile);
-  const paddingDesktop = normalize(action.paddingDesktop);
-  const paddingTablet = normalize(action.paddingTablet);
-  const paddingMobile = normalize(action.paddingMobile);
-  if (width !== undefined) patch.width = width;
-  if (height !== undefined) patch.height = height;
-  if (left !== undefined) patch.left = left;
-  if (top !== undefined) patch.top = top;
-  if (widthDesktop !== undefined) patch.widthDesktop = widthDesktop;
-  if (widthTablet !== undefined) patch.widthTablet = widthTablet;
-  if (widthMobile !== undefined) patch.widthMobile = widthMobile;
-  if (heightDesktop !== undefined) patch.heightDesktop = heightDesktop;
-  if (heightTablet !== undefined) patch.heightTablet = heightTablet;
-  if (heightMobile !== undefined) patch.heightMobile = heightMobile;
-  if (marginDesktop !== undefined) patch.marginDesktop = marginDesktop;
-  if (marginTablet !== undefined) patch.marginTablet = marginTablet;
-  if (marginMobile !== undefined) patch.marginMobile = marginMobile;
-  if (paddingDesktop !== undefined) patch.paddingDesktop = paddingDesktop;
-  if (paddingTablet !== undefined) patch.paddingTablet = paddingTablet;
-  if (paddingMobile !== undefined) patch.paddingMobile = paddingMobile;
-  return commit(state, resizeComponent(state.present, action.id, patch));
-}
-
-export function set(state: HistoryState, action: SetAction): HistoryState {
-  return commit(state, action.components);
-}
-
-export function setGridCols(
-  state: HistoryState,
-  action: SetGridColsAction,
-): HistoryState {
-  return { ...state, gridCols: action.gridCols };
-}

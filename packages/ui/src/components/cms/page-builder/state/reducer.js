@@ -1,18 +1,6 @@
-import type { HistoryState } from "@acme/types";
-import type { Action } from "./actions";
-import {
-  add,
-  move,
-  remove,
-  duplicate,
-  update,
-  resize,
-  set,
-  setGridCols,
-} from "./actions";
+import { add, move, remove, duplicate, update, resize, set, setGridCols } from "./actions";
 import { undo, redo } from "./history";
-
-export function reducer(state: HistoryState, action: Action): HistoryState {
+export function reducer(state, action) {
   switch (action.type) {
     case "undo":
       return undo(state);
@@ -38,5 +26,4 @@ export function reducer(state: HistoryState, action: Action): HistoryState {
       return state;
   }
 }
-
 export default reducer;

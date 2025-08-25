@@ -1,7 +1,7 @@
 // packages/ui/src/components/cms/blocks/SocialFeed.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   /** Social platform to embed */
@@ -15,6 +15,15 @@ interface Props {
 /** Embed a social media feed from Twitter or Instagram */
 export default function SocialFeed({ platform, account, hashtag }: Props) {
   const [failed, setFailed] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+    const handleError = () => setFailed(true);
+    iframe.addEventListener("error", handleError);
+    return () => iframe.removeEventListener("error", handleError);
+  }, []);
 
   if (!account && !hashtag) return null;
 
@@ -31,10 +40,10 @@ export default function SocialFeed({ platform, account, hashtag }: Props) {
 
   return (
     <iframe
+      ref={iframeRef}
       title="social-feed"
       src={src}
       className="w-full"
-      onError={() => setFailed(true)}
     />
   );
 }

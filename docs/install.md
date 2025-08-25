@@ -11,7 +11,25 @@ To scaffold a shop and immediately start the dev server in one step:
 pnpm quickstart-shop --id demo --theme base --template template-app --payment stripe --shipping ups
 ```
 
-This wraps the `init-shop` wizard, validates the generated `.env`, and runs `pnpm dev` for the new shop.
+This wraps the `init-shop` wizard, validates the generated `.env`, and runs `pnpm dev` for the new shop. You can also provide a configuration file and skip the flags:
+
+```bash
+pnpm quickstart-shop --config ./shop.config.json
+```
+
+Example `shop.config.json`:
+
+```json
+{
+  "id": "demo",
+  "theme": "base",
+  "template": "template-app",
+  "payment": ["stripe"],
+  "shipping": ["ups"],
+  "navItems": [{ "label": "Home", "href": "/" }],
+  "pages": [{ "slug": "about", "title": "About Us" }]
+}
+```
 
 1. **Initialize a shop**
 

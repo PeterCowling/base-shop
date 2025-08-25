@@ -103,6 +103,12 @@
       "@acme/shared-utils/*": [
         "packages/shared-utils/src/*"
       ],
+      "@shared-utils": [
+        "packages/shared-utils/src/index.ts"
+      ],
+      "@shared-utils/*": [
+        "packages/shared-utils/src/*"
+      ],
       "@acme/email": [
         "packages/email/src/index.ts"
       ],

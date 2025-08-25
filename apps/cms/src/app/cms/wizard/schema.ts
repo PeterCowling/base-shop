@@ -1,7 +1,16 @@
 // apps/cms/src/app/cms/wizard/schema.ts
 import { LOCALES } from "@acme/i18n";
 import { fillLocales } from "@i18n/fillLocales";
-import { pageComponentSchema, localeSchema, type Locale } from "@acme/types";
+import {
+  pageComponentSchema,
+  localeSchema,
+  type Locale,
+} from "@acme/types";
+import {
+  environmentSettingsSchema,
+  providerSettingsSchema,
+  themeSettingsSchema,
+} from "@acme/types/settings";
 import { ulid } from "ulid";
 import { z, type ZodType } from "zod";
 import { baseTokens } from "./tokenUtils";
@@ -76,76 +85,74 @@ export type PageInfo = z.infer<typeof pageInfoSchema>; // <- slug & components *
 export const stepStatusSchema = z.enum(["pending", "complete", "skipped"]);
 export type StepStatus = z.infer<typeof stepStatusSchema>;
 
-export const wizardStateSchema = z.object({
-  /* ------------ Wizard progress & identity ------------ */
-  shopId: z.string().optional().default(""),
-  storeName: z.string().optional().default(""),
-  logo: z.string().optional().default(""),
-  contactInfo: z.string().optional().default(""),
-  type: z.enum(["sale", "rental"]).optional().default("sale"),
-  completed: z.record(stepStatusSchema).optional().default({}),
+export const wizardStateSchema = z
+  .object({
+    /* ------------ Wizard progress & identity ------------ */
+    shopId: z.string().optional().default(""),
+    storeName: z.string().optional().default(""),
+    logo: z.string().optional().default(""),
+    contactInfo: z.string().optional().default(""),
+    type: z.enum(["sale", "rental"]).optional().default("sale"),
+    completed: z.record(stepStatusSchema).optional().default({}),
 
-  /* ---------------- Template / theme ------------------ */
-  template: z.string().optional().default(""),
-  theme: z.string().optional().default(""),
-  themeDefaults: z.record(z.string()).optional().default(baseTokens),
-  themeOverrides: z.record(z.string()).optional().default({}),
+    /* ------------------- SEO fields --------------------- */
+    pageTitle: localeRecordSchema
+      .optional()
+      .default(() => defaultLocaleRecord("Home")),
+    pageDescription: localeRecordSchema
+      .optional()
+      .default(() => defaultLocaleRecord("")),
+    socialImage: z.string().optional().default(""),
 
-  /* -------------- Commerce settings ------------------- */
-  payment: z.array(z.string()).default([]),
-  shipping: z.array(z.string()).default([]),
+    /* ------------- Global component pools --------------- */
+    components: z.array(pageComponentSchema).default([]),
 
-  /* ------------------- SEO fields --------------------- */
-  pageTitle: localeRecordSchema
-    .optional()
-    .default(() => defaultLocaleRecord("Home")),
-  pageDescription: localeRecordSchema
-    .optional()
-    .default(() => defaultLocaleRecord("")),
-  socialImage: z.string().optional().default(""),
+    headerComponents: z.array(pageComponentSchema).default([]),
+    headerPageId: z.string().nullable().optional().default(null),
 
-  /* ------------- Global component pools --------------- */
-  components: z.array(pageComponentSchema).default([]),
+    footerComponents: z.array(pageComponentSchema).default([]),
+    footerPageId: z.string().nullable().optional().default(null),
 
-  headerComponents: z.array(pageComponentSchema).default([]),
-  headerPageId: z.string().nullable().optional().default(null),
+    homePageId: z.string().nullable().optional().default(null),
+    homeLayout: z.string().optional().default(""),
 
-  footerComponents: z.array(pageComponentSchema).default([]),
-  footerPageId: z.string().nullable().optional().default(null),
+    shopComponents: z.array(pageComponentSchema).default([]),
+    shopPageId: z.string().nullable().optional().default(null),
+    shopLayout: z.string().optional().default(""),
 
-  homePageId: z.string().nullable().optional().default(null),
-  homeLayout: z.string().optional().default(""),
+    productComponents: z.array(pageComponentSchema).default([]),
+    productPageId: z.string().nullable().optional().default(null),
+    productLayout: z.string().optional().default(""),
 
-  shopComponents: z.array(pageComponentSchema).default([]),
-  shopPageId: z.string().nullable().optional().default(null),
-  shopLayout: z.string().optional().default(""),
+    checkoutComponents: z.array(pageComponentSchema).default([]),
+    checkoutPageId: z.string().nullable().optional().default(null),
+    checkoutLayout: z.string().optional().default(""),
 
-  productComponents: z.array(pageComponentSchema).default([]),
-  productPageId: z.string().nullable().optional().default(null),
-  productLayout: z.string().optional().default(""),
+    /* ------------------- Analytics ---------------------- */
+    analyticsProvider: z.string().optional().default(""),
+    analyticsId: z.string().optional().default(""),
 
-  checkoutComponents: z.array(pageComponentSchema).default([]),
-  checkoutPageId: z.string().nullable().optional().default(null),
-  checkoutLayout: z.string().optional().default(""),
+    /* ------------------- Navigation --------------------- */
+    navItems: z
+      .array(navItemSchema)
+      .default(() => [{ id: ulid(), label: "Shop", url: "https://example.com/shop" }]),
 
-  /* ------------------- Analytics ---------------------- */
-  analyticsProvider: z.string().optional().default(""),
-  analyticsId: z.string().optional().default(""),
+    /* ------------------- Dynamic pages ------------------ */
+    pages: z.array(pageInfoSchema).default([]),
 
-  /* ------------------- Navigation --------------------- */
-  navItems: z
-    .array(navItemSchema)
-    .default(() => [{ id: ulid(), label: "Shop", url: "https://example.com/shop" }]),
-
-  /* ------------------- Dynamic pages ------------------ */
-  pages: z.array(pageInfoSchema).default([]),
-
-  /* ---------------- Environment vars ------------------ */
-  env: z.record(z.string()).optional().default({}),
-
-  /* ---------------- Miscellaneous --------------------- */
-  domain: z.string().optional().default(""),
-  categoriesText: z.string().optional().default(""),
-}).strict();
+    /* ---------------- Miscellaneous --------------------- */
+    domain: z.string().optional().default(""),
+    categoriesText: z.string().optional().default(""),
+  })
+  .merge(
+    themeSettingsSchema.extend({
+      themeDefaults: z.record(z.string()).optional().default(baseTokens),
+    })
+  )
+  .merge(providerSettingsSchema)
+  .extend({
+    env: environmentSettingsSchema.optional().default({}),
+  })
+  .strict();
 
 export type WizardState = z.infer<typeof wizardStateSchema>;

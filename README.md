@@ -78,21 +78,23 @@ STOCK_ALERT_RECIPIENT=alerts@example.com
 
 ### Import / export
 
-Inventory can be round-tripped as JSON or CSV through the CMS API.
+Inventory can be round-tripped as JSON or CSV using the `inventory` CLI, which wraps the CMS API.
 
 Export inventory:
 
 ```bash
-curl "http://localhost:3000/cms/api/data/demo/inventory/export?format=csv" -o inventory.csv
-curl "http://localhost:3000/cms/api/data/demo/inventory/export" -o inventory.json
+pnpm inventory export demo --file inventory.csv
+pnpm inventory export demo --file inventory.json
 ```
 
 Import inventory:
 
 ```bash
-curl -X POST -F "file=@inventory.csv;type=text/csv" http://localhost:3000/cms/api/data/demo/inventory/import
-curl -X POST -F "file=@inventory.json;type=application/json" http://localhost:3000/cms/api/data/demo/inventory/import
+pnpm inventory import demo --file inventory.csv
+pnpm inventory import demo --file inventory.json
 ```
+
+The underlying API endpoints remain available if you prefer using `curl`.
 
 CSV files use headers to define variant attributes:
 

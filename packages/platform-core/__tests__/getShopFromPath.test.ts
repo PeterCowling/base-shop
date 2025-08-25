@@ -1,5 +1,5 @@
 // packages/platform-core/__tests__/getShopFromPath.test.ts
-import { getShopFromPath } from "../utils/getShopFromPath";
+import { getShopFromPath } from "../src/utils/getShopFromPath";
 
 describe("getShopFromPath", () => {
   it("extracts shop slug from typical cms paths", () => {

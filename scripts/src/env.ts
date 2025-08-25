@@ -9,6 +9,7 @@ import { join } from "node:path";
 import { validateShopEnv, readEnvFile } from "@acme/platform-core/configurator";
 import { seedShop } from "./seedShop";
 import { listProviders, listPlugins } from "./utils/providers";
+import { applyPageTemplate } from "./apply-page-template";
 import {
   prompt,
   selectProviders,
@@ -24,6 +25,9 @@ const seed = process.argv.includes("--seed");
 const seedFull = process.argv.includes("--seed-full");
 const useDefaults = process.argv.includes("--defaults");
 const autoEnv = process.argv.includes("--auto-env");
+const pagesTemplateIndex = process.argv.indexOf("--pages-template");
+const pagesTemplate =
+  pagesTemplateIndex !== -1 ? process.argv[pagesTemplateIndex + 1] : undefined;
 
 function listDirNames(path: string): string[] {
   return readdirSync(path, { withFileTypes: true })
@@ -272,6 +276,10 @@ export async function initShop(): Promise<void> {
   } catch (err) {
     console.error("Failed to create shop:", (err as Error).message);
     process.exit(1);
+  }
+
+  if (pagesTemplate) {
+    await applyPageTemplate(prefixedId, pagesTemplate);
   }
 
   const envPath = join("apps", prefixedId, ".env");

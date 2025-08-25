@@ -1,0 +1,20 @@
+{
+  "id": "home",
+  "slug": "",
+  "title": "Home",
+  "components": [
+    {
+      "id": "hero",
+      "type": "HeroBanner",
+      "slides": [
+        {
+          "src": "/hero/slide-1.jpg",
+          "headlineKey": "hero.slide1.headline",
+          "ctaKey": "hero.cta"
+        }
+      ]
+    }
+  ],
+  "status": "draft",
+  "updatedAt": "1970-01-01T00:00:00.000Z"
+}

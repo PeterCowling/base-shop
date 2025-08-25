@@ -25,6 +25,7 @@ import {
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
 import { seedShop } from "./seedShop";
 import { generateThemeTokens } from "./generate-theme";
+import { applyPageTemplate } from "./apply-page-template";
 
 /** Ensure Node.js and pnpm meet minimum requirements. */
 function ensureRuntime(): void {
@@ -150,6 +151,7 @@ interface Flags {
   tokens?: string;
   autoEnv?: boolean;
   config?: string;
+  pagesTemplate?: string;
 }
 
 function parseArgs(argv: string[]): Flags {
@@ -181,6 +183,9 @@ function parseArgs(argv: string[]): Flags {
           break;
         case "template":
           flags.template = val;
+          break;
+        case "pages-template":
+          flags.pagesTemplate = val;
           break;
         case "payment":
           flags.payment = val ? val.split(",").map((s) => s.trim()) : [];
@@ -352,6 +357,10 @@ async function main(): Promise<void> {
     seedShop(prefixedId, undefined, true);
   } else if (args.seed) {
     seedShop(prefixedId);
+  }
+
+  if (args.pagesTemplate) {
+    await applyPageTemplate(prefixedId, args.pagesTemplate);
   }
 
   if (args.autoEnv) {

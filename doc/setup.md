@@ -11,7 +11,25 @@ For a one-liner that scaffolds a shop, validates the environment, and starts the
 pnpm quickstart-shop --id demo --theme base --template template-app --payment stripe --shipping ups --seed
 ```
 
-Add `--seed` to copy sample products and inventory so the shop is immediately populated.
+Add `--seed` to copy sample products and inventory so the shop is immediately populated. The script also accepts `--config <file>` to prefill options and skip prompts:
+
+```bash
+pnpm quickstart-shop --config ./shop.config.json --seed
+```
+
+Example `shop.config.json`:
+
+```json
+{
+  "id": "demo",
+  "theme": "base",
+  "template": "template-app",
+  "payment": ["stripe"],
+  "shipping": ["ups"],
+  "navItems": [{ "label": "Home", "href": "/" }],
+  "pages": [{ "slug": "about", "title": "About Us" }]
+}
+```
 
 ## 1. Create a shop
 

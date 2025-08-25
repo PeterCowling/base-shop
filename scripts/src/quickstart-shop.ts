@@ -148,6 +148,7 @@ interface Flags {
   brand?: string;
   tokens?: string;
   autoEnv?: boolean;
+  config?: string;
 }
 
 function parseArgs(argv: string[]): Flags {
@@ -188,6 +189,9 @@ function parseArgs(argv: string[]): Flags {
         case "tokens":
           flags.tokens = val;
           break;
+        case "config":
+          flags.config = val;
+          break;
         default:
           console.error(`Unknown option --${key}`);
           process.exit(1);
@@ -201,8 +205,18 @@ function parseArgs(argv: string[]): Flags {
 
 async function main(): Promise<void> {
   const args = parseArgs(process.argv.slice(2));
+  let config: Partial<CreateShopOptions> & { id?: string } = {};
+  if (args.config) {
+    try {
+      const raw = readFileSync(args.config, "utf8");
+      config = JSON.parse(raw);
+    } catch (err) {
+      console.error("Failed to load config file:", (err as Error).message);
+      process.exit(1);
+    }
+  }
 
-  let shopId = args.id;
+  let shopId = args.id ?? (config.id as string | undefined);
   if (!shopId) {
     shopId = await prompt("Shop ID: ");
   }
@@ -216,7 +230,7 @@ async function main(): Promise<void> {
   const themes = listDirNames(
     new URL("../../packages/themes", import.meta.url)
   );
-  let theme = args.theme;
+  let theme = args.theme ?? (config.theme as string | undefined);
   if (!theme) {
     theme = await selectOption(
       "theme",
@@ -228,7 +242,7 @@ async function main(): Promise<void> {
   const templates = listDirNames(
     new URL("../../packages", import.meta.url)
   ).filter((n) => n.startsWith("template-"));
-  let template = args.template;
+  let template = args.template ?? (config.template as string | undefined);
   if (!template) {
     template = await selectOption(
       "template",
@@ -237,10 +251,16 @@ async function main(): Promise<void> {
     );
   }
 
-  const { navItems, pages } = loadTemplateDefaults(template);
+  const templateDefaults = loadTemplateDefaults(template);
+  const navItems = (config.navItems as CreateShopOptions["navItems"] | undefined) ??
+    templateDefaults.navItems;
+  const pages = (config.pages as CreateShopOptions["pages"] | undefined) ??
+    templateDefaults.pages;
 
   const paymentProviders = await listProviders("payment");
-  let payment = args.payment;
+  let payment =
+    args.payment ??
+    (Array.isArray(config.payment) ? (config.payment as string[]) : undefined);
   if (!payment || payment.length === 0) {
     payment = await selectProviders(
       "payment providers",
@@ -249,7 +269,9 @@ async function main(): Promise<void> {
   }
 
   const shippingProviders = await listProviders("shipping");
-  let shipping = args.shipping;
+  let shipping =
+    args.shipping ??
+    (Array.isArray(config.shipping) ? (config.shipping as string[]) : undefined);
   if (!shipping || shipping.length === 0) {
     shipping = await selectProviders(
       "shipping providers",
@@ -257,7 +279,29 @@ async function main(): Promise<void> {
     );
   }
 
-  const themeOverrides: Record<string, string> = {};
+  const {
+    themeOverrides: configOverrides,
+    type: configType,
+    id: _id,
+    theme: _t,
+    template: _tp,
+    payment: _p,
+    shipping: _s,
+    navItems: _n,
+    pages: _pg,
+    ...restConfig
+  } = config as Record<string, unknown>;
+  void _id;
+  void _t;
+  void _tp;
+  void _p;
+  void _s;
+  void _n;
+  void _pg;
+
+  const themeOverrides: Record<string, string> =
+    (configOverrides as Record<string, string> | undefined) ? { ...(configOverrides as Record<string, string>) } : {};
+
   if (args.brand) {
     try {
       const base = loadBaseTokens();
@@ -280,18 +324,16 @@ async function main(): Promise<void> {
   }
 
   const options = {
-    type: "sale",
+    ...restConfig,
+    type: (configType as string | undefined) ?? "sale",
     theme,
     template,
     payment,
     shipping,
     ...(navItems && { navItems }),
     ...(pages && { pages }),
+    ...(Object.keys(themeOverrides).length > 0 && { themeOverrides }),
   } as unknown as CreateShopOptions;
-
-  if (Object.keys(themeOverrides).length > 0) {
-    options.themeOverrides = themeOverrides;
-  }
 
   const prefixedId = `shop-${shopId}`;
   try {

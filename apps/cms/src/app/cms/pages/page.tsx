@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/pages/page.tsx
 
 import Link from "next/link";
-import { listShops } from "../listShops";
+import { listShops } from "../../../lib/listShops";
 
 export default async function PagesIndexPage() {
   const shops = await listShops();

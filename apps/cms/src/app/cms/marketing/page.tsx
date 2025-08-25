@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { listShops } from "../listShops";
+import { listShops } from "../../../lib/listShops";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import type { AnalyticsEvent } from "@platform-core/analytics";
 

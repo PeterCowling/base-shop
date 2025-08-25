@@ -14,7 +14,7 @@ describe("shops API", () => {
   it("returns list from listShops", async () => {
     const prev = process.env.NODE_ENV;
     (process.env as Record<string, string>).NODE_ENV = "development";
-    jest.doMock("../src/app/cms/listShops", () => ({
+    jest.doMock("../src/lib/listShops", () => ({
       __esModule: true,
       listShops: jest
         .fn<Promise<string[]>, []>()

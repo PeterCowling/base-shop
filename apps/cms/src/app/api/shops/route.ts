@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { listShops } from "../../cms/listShops";
+import { listShops } from "../../../lib/listShops";
 
 export const runtime = "nodejs";
 

@@ -1,4 +1,4 @@
-// apps/cms/src/app/cms/listShops.ts
+// apps/cms/src/lib/listShops.ts
 
 import fs from "fs/promises";
 import { resolveDataRoot } from "@platform-core/dataRoot";

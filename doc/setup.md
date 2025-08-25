@@ -11,7 +11,7 @@ For a one-liner that scaffolds a shop, validates the environment, and starts the
 pnpm quickstart-shop --id demo --theme base --template template-app --payment stripe --shipping ups --seed-full
 ```
 
-Add `--seed` to copy sample products and inventory. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and settings so the shop is immediately populated. The script also accepts `--config <file>` to prefill options and skip prompts:
+Add `--seed` to copy sample products and inventory. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and settings so the shop is immediately populated. Pass `--pages-template <name>` to apply predefined page layouts (`hero`, `product-grid`, `contact`). The script also accepts `--config <file>` to prefill options and skip prompts:
 
 ```bash
 pnpm quickstart-shop --config ./shop.config.json --seed-full
@@ -65,7 +65,7 @@ pnpm init-shop --brand "#663399" --tokens ./my-tokens.json
 
 `--brand` sets the primary brand color and `--tokens` merges additional token overrides from a JSON file.
 
-To populate the new shop with sample data, run `pnpm init-shop --seed`. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and settings. Use `pnpm init-shop --defaults` to apply preset nav links and pages from the
+To populate the new shop with sample data, run `pnpm init-shop --seed`. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and settings. Provide `--pages-template <name>` to copy predefined page layouts (`hero`, `product-grid`, `contact`). Use `pnpm init-shop --defaults` to apply preset nav links and pages from the
 selected template without prompting for them.
 Add `--auto-env` to skip prompts for provider environment variables. The wizard writes
 `TODO_*` placeholders to the new shop's `.env` file; replace them with real

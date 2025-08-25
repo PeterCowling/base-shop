@@ -10,6 +10,12 @@ const path = require("path");
 const { pathsToModuleNameMapper } = require("ts-jest");
 const ts = require("typescript");
 
+// Ensure Browserslist doesn't try to resolve config files from
+// temporary directories created during Jest transforms. This prevents
+// ENOENT errors when packages like `@babel/core` invoke Browserslist
+// while handling files compiled in non-existent temp paths.
+process.env.BROWSERSLIST = process.env.BROWSERSLIST || "defaults";
+
 /* ──────────────────────────────────────────────────────────────────────
  * 1️⃣  Resolve TS path aliases once so we don't hand-maintain 30+ maps
  * ──────────────────────────────────────────────────────────────────── */

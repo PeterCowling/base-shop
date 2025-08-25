@@ -7,7 +7,13 @@ import { createShop, type CreateShopOptions } from "@acme/platform-core/createSh
 import { validateShopName } from "@acme/platform-core/shops";
 
 import { execSync, spawnSync } from "node:child_process";
-import { readdirSync } from "node:fs";
+import {
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+  existsSync,
+} from "node:fs";
+import { join } from "node:path";
 // Validate the generated environment file for the new shop and throw if any
 // required variables are missing or invalid.
 import { stdin as input, stdout as output } from "node:process";
@@ -16,7 +22,10 @@ import { validateShopEnv } from "@acme/platform-core/configurator";
 // Import the provider listing utility via the defined subpath export.  This
 // module aggregates built‑in payment and shipping providers as well as any
 // plugins under packages/plugins.
-import { listProviders } from "@acme/platform-core/createShop/listProviders";
+import {
+  listProviders,
+  type ProviderMeta,
+} from "@acme/platform-core/createShop/listProviders";
 
 /**
  * Ensure that the runtime meets the minimum supported versions for Node.js and pnpm.
@@ -95,6 +104,35 @@ async function selectProviders<T extends string>(
     }
   }
   return Array.from(result);
+}
+
+interface PluginChoice extends ProviderMeta {
+  packageName: string;
+}
+
+async function selectPlugins(
+  plugins: PluginChoice[],
+): Promise<PluginChoice[]> {
+  if (!plugins.length) return [];
+  console.log("Available plugins:");
+  plugins.forEach((p, i) =>
+    console.log(`  ${i + 1}) [ ] ${p.name}`)
+  );
+  const ans = await prompt(
+    "Select plugins by number (comma-separated, empty for none): "
+  );
+  const selections = ans
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const chosen: PluginChoice[] = [];
+  for (const sel of selections) {
+    const idx = Number(sel) - 1;
+    if (!Number.isNaN(idx) && plugins[idx]) {
+      chosen.push(plugins[idx]);
+    }
+  }
+  return chosen;
 }
 
 /**
@@ -209,7 +247,8 @@ async function main(): Promise<void> {
   // preserves the specific string literals (e.g. "stripe", "paypal") rather than widening them to
   // plain strings.  This allows TypeScript to satisfy the CreateShopOptions constraints without
   // type errors.
-  const paymentProviders = (await listProviders("payment")) as (
+  const paymentProviderMetas = await listProviders("payment");
+  const paymentProviders = paymentProviderMetas.map((p) => p.id) as (
     | "stripe"
     | "paypal"
   )[];
@@ -217,7 +256,8 @@ async function main(): Promise<void> {
     "payment providers",
     paymentProviders
   );
-  const shippingProviders = (await listProviders("shipping")) as (
+  const shippingProviderMetas = await listProviders("shipping");
+  const shippingProviders = shippingProviderMetas.map((p) => p.id) as (
     | "dhl"
     | "ups"
     | "premier-shipping"
@@ -226,6 +266,48 @@ async function main(): Promise<void> {
     "shipping providers",
     shippingProviders
   );
+
+  // Detect plugins
+  const pluginDirs = listDirNames(
+    new URL("../../packages/plugins", import.meta.url)
+  );
+  const pluginChoices: PluginChoice[] = [];
+  for (const dir of pluginDirs) {
+    try {
+      const mod = await import(`../../packages/plugins/${dir}/index.ts`);
+      const plugin = mod.default ?? {};
+      const pkg = JSON.parse(
+        readFileSync(
+          new URL(`../../packages/plugins/${dir}/package.json`, import.meta.url),
+          "utf8",
+        ),
+      ) as { name: string };
+      const prefix = String(plugin.id ?? dir)
+        .replace(/-/g, "_")
+        .toUpperCase();
+      const env = plugin.defaultConfig
+        ? Object.keys(plugin.defaultConfig).map((k: string) =>
+            `${prefix}_${k.replace(/([A-Z])/g, "_$1").toUpperCase()}`,
+          )
+        : [];
+      pluginChoices.push({
+        id: plugin.id ?? dir,
+        name: plugin.name ?? dir,
+        env,
+        packageName: pkg.name,
+      });
+    } catch {
+      // ignore invalid plugins
+    }
+  }
+  const selectedPlugins = await selectPlugins(pluginChoices);
+  const pluginEnv: Record<string, string> = {};
+  for (const p of selectedPlugins) {
+    for (const env of p.env) {
+      pluginEnv[env] = await prompt(`${p.name} - ${env}: `);
+    }
+  }
+
   const ciAns = await prompt("Setup CI workflow? (y/N): ");
 
   // Assemble the options object using the collected values.  The CreateShopOptions
@@ -253,6 +335,33 @@ async function main(): Promise<void> {
   } catch (err) {
     console.error("Failed to create shop:", (err as Error).message);
     process.exit(1);
+  }
+
+  // Inject selected plugins into package.json and .env
+  const appDir = join("apps", prefixedId);
+  try {
+    const pkgPath = join(appDir, "package.json");
+    const pkg = JSON.parse(readFileSync(pkgPath, "utf8")) as {
+      dependencies?: Record<string, string>;
+    };
+    pkg.dependencies ??= {};
+    for (const p of selectedPlugins) {
+      pkg.dependencies[p.packageName] = "workspace:*";
+    }
+    writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+  } catch {
+    // ignore package.json errors
+  }
+
+  try {
+    const envPath = join(appDir, ".env");
+    let env = existsSync(envPath) ? readFileSync(envPath, "utf8") : "";
+    for (const [k, v] of Object.entries(pluginEnv)) {
+      env += `${k}=${v}\n`;
+    }
+    writeFileSync(envPath, env);
+  } catch {
+    // ignore env file errors
   }
 
   let validationError: unknown;

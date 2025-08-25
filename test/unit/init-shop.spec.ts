@@ -16,6 +16,9 @@ describe('init-shop wizard', () => {
       'template-app',
       '1,2',
       '1',
+      '1',
+      'id',
+      'secret',
       'n',
     ];
     const createShop = jest.fn();
@@ -46,9 +49,29 @@ describe('init-shop wizard', () => {
         if (p === 'node:fs') {
           return {
             existsSync: () => true,
-              readFileSync: () =>
-                'STRIPE_SECRET_KEY=\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\nSTRIPE_WEBHOOK_SECRET=\n',
-          };
+            readFileSync: (f: string) => {
+              if (f.includes('plugins/paypal/package.json')) {
+                return '{"name":"@acme/plugin-paypal"}';
+              }
+              if (f.includes('apps/shop-demo/package.json')) {
+                return '{}';
+              }
+              return 'STRIPE_SECRET_KEY=\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\nSTRIPE_WEBHOOK_SECRET=\n';
+            },
+            readdirSync: (dir: string, opts: any) => {
+              if (dir.includes('packages/plugins')) {
+                return [{ name: 'paypal', isDirectory: () => true }];
+              }
+              if (dir.includes('packages/themes')) {
+                return [{ name: 'base', isDirectory: () => true }];
+              }
+              if (dir.match(/\bpackages$/)) {
+                return [{ name: 'template-app', isDirectory: () => true }];
+              }
+              return [];
+            },
+            writeFileSync: () => undefined,
+          } as any;
         }
         if (p === 'node:path') return require('node:path');
         if (p === 'node:child_process') {
@@ -73,10 +96,25 @@ describe('init-shop wizard', () => {
             listProviders: jest.fn((kind: string) =>
               Promise.resolve(
                 kind === 'payment'
-                  ? ['stripe', 'paypal']
-                  : ['dhl', 'ups']
+                  ? [
+                      { id: 'stripe', name: 'Stripe', env: [] },
+                      { id: 'paypal', name: 'PayPal', env: [] },
+                    ]
+                  : [
+                      { id: 'dhl', name: 'DHL', env: [] },
+                      { id: 'ups', name: 'UPS', env: [] },
+                    ]
               )
             ),
+          };
+        }
+        if (p.endsWith('packages/plugins/paypal/index.ts')) {
+          return {
+            default: {
+              id: 'paypal',
+              name: 'PayPal',
+              defaultConfig: { clientId: '', secret: '' },
+            },
           };
         }
         if (p.includes('@acme/platform-core/createShop')) {
@@ -110,6 +148,9 @@ describe('init-shop wizard', () => {
       'Template [template-app]: ',
       'Select payment providers by number (comma-separated, empty for none): ',
       'Select shipping providers by number (comma-separated, empty for none): ',
+      'Select plugins by number (comma-separated, empty for none): ',
+      'PayPal - PAYPAL_CLIENT_ID: ',
+      'PayPal - PAYPAL_SECRET: ',
       'Setup CI workflow? (y/N): ',
     ]);
 

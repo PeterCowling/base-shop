@@ -140,7 +140,15 @@ function runCli(args: string[]) {
           return {
             listProviders: jest.fn((kind: string) =>
               Promise.resolve(
-                kind === "payment" ? ["stripe", "paypal"] : ["dhl", "ups"]
+                kind === "payment"
+                  ? [
+                      { id: "stripe", name: "stripe", env: [] },
+                      { id: "paypal", name: "paypal", env: [] },
+                    ]
+                  : [
+                      { id: "dhl", name: "dhl", env: [] },
+                      { id: "ups", name: "ups", env: [] },
+                    ]
               )
             ),
           };

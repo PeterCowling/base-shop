@@ -20,6 +20,7 @@ pnpm init-shop
 - shop type (`sale` or `rental`)
 - theme and template
 - payment and shipping providers (selected from a guided list of available providers)
+- plugins to install (detected automatically under `packages/plugins` and prompting for any required environment variables)
 
 After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
 
@@ -59,6 +60,11 @@ Available shipping providers:
   1) dhl
   2) ups
 Select shipping providers by number (comma-separated, empty for none): 2
+Available plugins:
+  1) [ ] PayPal
+Select plugins by number (comma-separated, empty for none): 1
+PayPal - PAYPAL_CLIENT_ID: ****
+PayPal - PAYPAL_SECRET: ****
 Scaffolded apps/shop-demo
 ```
 
@@ -111,13 +117,11 @@ This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs
 
 ## 5. Install plugins
 
-Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. The platform automatically loads any plugin found under `packages/plugins/*`.
+Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. Any packages under `packages/plugins/*` are detected automatically.
 
-To install a plugin, add it to the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS you can enable and configure the plugin under **CMS → Plugins**.
+During `pnpm init-shop` the wizard lists available plugins and, when selected, prompts for any required environment variables. Chosen plugins are added as dependencies to the new shop.
 
-Some plugins require additional environment variables (for example Stripe API
-keys). Add these to the shop's `.env` file and rerun `pnpm validate-env <id>`
-before using the plugin.
+You can still add plugins later by dropping them into the `packages/plugins` directory and updating the shop manually. Add any required environment variables to the shop's `.env` file and rerun `pnpm validate-env <id>` before using the plugin.
 
 ## 6. Analytics and event tracking
 

@@ -10,6 +10,7 @@ import { useThemeLoader } from "../hooks/useThemeLoader";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import { useState, useMemo } from "react";
 import DeviceSelector from "@ui/components/cms/DeviceSelector";
+import NavTemplateSelector from "../components/NavTemplateSelector";
 
 interface NavItem {
   id: string;
@@ -17,6 +18,34 @@ interface NavItem {
   url: string;
   children?: NavItem[];
 }
+
+const navTemplates = [
+  {
+    name: "Basic Shop",
+    items: [
+      { label: "Home", url: "/" },
+      { label: "Shop", url: "/shop" },
+      { label: "Contact", url: "/contact" },
+    ],
+  },
+  {
+    name: "Mega Menu",
+    items: [
+      { label: "Home", url: "/" },
+      {
+        label: "Shop",
+        url: "/shop",
+        children: [
+          { label: "Men", url: "/shop/men" },
+          { label: "Women", url: "/shop/women" },
+          { label: "Accessories", url: "/shop/accessories" },
+        ],
+      },
+      { label: "About", url: "/about" },
+      { label: "Contact", url: "/contact" },
+    ],
+  },
+];
 
 export default function StepNavigation(): React.JSX.Element {
   const { state, update } = useConfigurator();
@@ -45,6 +74,7 @@ export default function StepNavigation(): React.JSX.Element {
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Navigation</h2>
+      <NavTemplateSelector templates={navTemplates} onSelect={setNavItems} />
       <div className="flex flex-col gap-6 md:flex-row">
         <div className="flex-1">
           <NavigationEditor items={navItems} onChange={setNavItems} />

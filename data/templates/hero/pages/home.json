@@ -1,0 +1,5 @@
+{
+  "slug": "home",
+  "components": [{ "id": "hero-1", "type": "HeroBanner" }],
+  "seo": { "title": { "en": "Home" } }
+}

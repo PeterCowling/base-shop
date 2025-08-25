@@ -3,12 +3,7 @@
 // and starts the dev server in one step.
 
 import { execSync, spawnSync } from "node:child_process";
-import {
-  readdirSync,
-  readFileSync,
-  writeFileSync,
-  existsSync,
-} from "node:fs";
+import { readdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
@@ -18,12 +13,10 @@ import {
   type CreateShopOptions,
 } from "@acme/platform-core/createShop";
 import { validateShopName } from "@acme/platform-core/shops";
-import {
-  validateShopEnv,
-  readEnvFile,
-} from "@acme/platform-core/configurator";
+import { validateShopEnv, readEnvFile } from "@acme/platform-core/configurator";
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
 import { seedShop } from "./seedShop";
+import { applyPageTemplate } from "./apply-page-template";
 import { generateThemeTokens } from "./generate-theme";
 
 /** Ensure Node.js and pnpm meet minimum requirements. */
@@ -114,16 +107,14 @@ function listDirNames(path: URL): string[] {
 }
 
 /** Load default navItems and pages from the template's shop.json if available. */
-function loadTemplateDefaults(
-  template: string,
-): {
+function loadTemplateDefaults(template: string): {
   navItems?: CreateShopOptions["navItems"];
   pages?: CreateShopOptions["pages"];
 } {
   try {
     const raw = readFileSync(
       new URL(`../../packages/${template}/shop.json`, import.meta.url),
-      "utf8",
+      "utf8"
     );
     const data = JSON.parse(raw);
     const defaults: {
@@ -149,6 +140,7 @@ interface Flags {
   tokens?: string;
   autoEnv?: boolean;
   config?: string;
+  pagesTemplate?: string;
 }
 
 function parseArgs(argv: string[]): Flags {
@@ -191,6 +183,9 @@ function parseArgs(argv: string[]): Flags {
           break;
         case "config":
           flags.config = val;
+          break;
+        case "pages-template":
+          flags.pagesTemplate = val;
           break;
         default:
           console.error(`Unknown option --${key}`);
@@ -252,9 +247,11 @@ async function main(): Promise<void> {
   }
 
   const templateDefaults = loadTemplateDefaults(template);
-  const navItems = (config.navItems as CreateShopOptions["navItems"] | undefined) ??
+  const navItems =
+    (config.navItems as CreateShopOptions["navItems"] | undefined) ??
     templateDefaults.navItems;
-  const pages = (config.pages as CreateShopOptions["pages"] | undefined) ??
+  const pages =
+    (config.pages as CreateShopOptions["pages"] | undefined) ??
     templateDefaults.pages;
 
   const paymentProviders = await listProviders("payment");
@@ -271,7 +268,9 @@ async function main(): Promise<void> {
   const shippingProviders = await listProviders("shipping");
   let shipping =
     args.shipping ??
-    (Array.isArray(config.shipping) ? (config.shipping as string[]) : undefined);
+    (Array.isArray(config.shipping)
+      ? (config.shipping as string[])
+      : undefined);
   if (!shipping || shipping.length === 0) {
     shipping = await selectProviders(
       "shipping providers",
@@ -299,8 +298,11 @@ async function main(): Promise<void> {
   void _n;
   void _pg;
 
-  const themeOverrides: Record<string, string> =
-    (configOverrides as Record<string, string> | undefined) ? { ...(configOverrides as Record<string, string>) } : {};
+  const themeOverrides: Record<string, string> = (configOverrides as
+    | Record<string, string>
+    | undefined)
+    ? { ...(configOverrides as Record<string, string>) }
+    : {};
 
   if (args.brand) {
     try {
@@ -346,6 +348,9 @@ async function main(): Promise<void> {
   if (args.seed) {
     seedShop(prefixedId);
   }
+  if (args.pagesTemplate) {
+    await applyPageTemplate(prefixedId, args.pagesTemplate);
+  }
 
   if (args.autoEnv) {
     const envVars = new Set<string>();
@@ -370,7 +375,7 @@ async function main(): Promise<void> {
       envPath,
       Object.entries(existing)
         .map(([k, v]) => `${k}=${v}`)
-        .join("\n") + "\n",
+        .join("\n") + "\n"
     );
   }
 

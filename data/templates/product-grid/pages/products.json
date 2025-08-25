@@ -1,0 +1,5 @@
+{
+  "slug": "products",
+  "components": [{ "id": "grid-1", "type": "ProductGrid" }],
+  "seo": { "title": { "en": "Products" } }
+}

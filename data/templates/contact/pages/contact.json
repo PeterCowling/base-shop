@@ -1,0 +1,5 @@
+{
+  "slug": "contact",
+  "components": [{ "id": "contact-1", "type": "ContactForm" }],
+  "seo": { "title": { "en": "Contact" } }
+}

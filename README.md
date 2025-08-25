@@ -43,10 +43,11 @@ The root middleware applies [next-secure-headers](https://www.npmjs.com/package/
    `init-shop` launches an interactive wizard that asks for the shop ID, display name, logo URL,
    contact email, shop type (`sale` or `rental`), and which theme and template to use. Payment and
    shipping providers are chosen from guided lists of available providers. It then
-   scaffolds `apps/shop-<id>` and writes an `.env` file inside the new app. Edit the `.env` file to
-   provide real secrets (see [Environment Variables](#environment-variables)). For scripted
-   setups you can still call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and
-   `--contact` to skip those prompts.
+  scaffolds `apps/shop-<id>` and writes an `.env` file inside the new app. Edit the `.env` file to
+  provide real secrets (see [Environment Variables](#environment-variables)). For scripted
+  setups you can still call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and
+  `--contact` to skip those prompts. Both `init-shop` and `create-shop` accept a `--seed` flag to
+  copy sample `products.json` and `inventory.json` from `data/templates/default` into the new shop.
 
    ```bash
    pnpm create-shop <id> --name="Demo Shop" --logo=https://example.com/logo.png \

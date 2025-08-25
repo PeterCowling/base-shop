@@ -20,4 +20,5 @@ export declare function parseArgs(argv: string[]): {
     options: Options;
     themeProvided: boolean;
     templateProvided: boolean;
+    seed: boolean;
 };

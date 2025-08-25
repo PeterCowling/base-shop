@@ -5,6 +5,7 @@ import { parseArgs } from "./createShop/parse";
 import { gatherOptions } from "./createShop/prompts";
 import { writeShop, type Options as WriteOptions } from "./createShop/write";
 import { ensureTemplateExists } from "@acme/platform-core/createShop";
+import { seedShop } from "./seedShop";
 
 function ensureRuntime() {
   const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);
@@ -34,9 +35,13 @@ function ensureRuntime() {
 
 ensureRuntime();
 
-const { shopId, options, themeProvided, templateProvided } = parseArgs(
-  process.argv.slice(2)
-);
+const {
+  shopId,
+  options,
+  themeProvided,
+  templateProvided,
+  seed,
+} = parseArgs(process.argv.slice(2));
 if (themeProvided || templateProvided) {
   try {
     ensureTemplateExists(options.theme as string, options.template as string);
@@ -48,3 +53,6 @@ if (themeProvided || templateProvided) {
 
 await gatherOptions(shopId, options, themeProvided, templateProvided);
 await writeShop(shopId, options as WriteOptions);
+if (seed) {
+  seedShop(shopId);
+}

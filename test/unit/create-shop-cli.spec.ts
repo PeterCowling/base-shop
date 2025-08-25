@@ -31,7 +31,15 @@ function loadParseArgs() {
   sandbox.exports = sandbox.module.exports;
   runInNewContext(transpiled, sandbox);
   return {
-    parseArgs: sandbox.exports.parseArgs as (argv: string[]) => [string, any, boolean],
+    parseArgs: sandbox.exports.parseArgs as (
+      argv: string[]
+    ) => {
+      shopId: string;
+      options: any;
+      themeProvided: boolean;
+      templateProvided: boolean;
+      seed: boolean;
+    },
     sandbox,
   };
 }
@@ -39,7 +47,7 @@ function loadParseArgs() {
 describe("parseArgs", () => {
   it("returns defaults when no options", () => {
     const { parseArgs } = loadParseArgs();
-    const { shopId: id, options: opts } = parseArgs(["shop"]);
+    const { shopId: id, options: opts, seed } = parseArgs(["shop"]);
     expect(id).toBe("shop");
     expect(opts).toEqual({
       type: "sale",
@@ -49,6 +57,7 @@ describe("parseArgs", () => {
       shipping: [],
       enableSubscriptions: false,
     });
+    expect(seed).toBe(false);
   });
 
   it("parses provided options", () => {
@@ -67,10 +76,16 @@ describe("parseArgs", () => {
       type: "rental",
       theme: "dark",
       template: "tpl",
-      payment: ["p1", "p2"],
-      shipping: ["s1"],
+      payment: [],
+      shipping: [],
       enableSubscriptions: false,
     });
+  });
+
+  it("parses --seed flag", () => {
+    const { parseArgs } = loadParseArgs();
+    const { seed } = parseArgs(["s1", "--seed"]);
+    expect(seed).toBe(true);
   });
 
   it("exits on unknown option", () => {

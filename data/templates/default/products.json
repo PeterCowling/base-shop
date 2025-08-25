@@ -1,0 +1,9 @@
+[
+  {
+    "id": "prod-1",
+    "title": { "en": "Sample Product" },
+    "price": 1000,
+    "media": [],
+    "row_version": 0
+  }
+]

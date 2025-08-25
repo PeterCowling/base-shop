@@ -31,11 +31,12 @@ export function parseArgs(argv: string[]): {
   options: Options;
   themeProvided: boolean;
   templateProvided: boolean;
+  seed: boolean;
 } {
   let id = argv[0];
   if (!id) {
     console.error(
-      "Usage: pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--payment=p1,p2] [--shipping=s1,s2] [--template=name] [--name=value] [--logo=url] [--contact=info]"
+      "Usage: pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--payment=p1,p2] [--shipping=s1,s2] [--template=name] [--name=value] [--logo=url] [--contact=info] [--seed]"
     );
     process.exit(1);
   }
@@ -58,6 +59,7 @@ export function parseArgs(argv: string[]): {
 
   let themeProvided = false;
   let templateProvided = false;
+  let seed = false;
 
   argv.slice(1).forEach((arg) => {
     if (!arg.startsWith("--")) return;
@@ -99,11 +101,14 @@ export function parseArgs(argv: string[]): {
       case "contact":
         opts.contactInfo = val;
         break;
+      case "seed":
+        seed = true;
+        break;
       default:
         console.error(`Unknown option ${key}`);
         process.exit(1);
     }
   });
 
-  return { shopId: id, options: opts, themeProvided, templateProvided };
+  return { shopId: id, options: opts, themeProvided, templateProvided, seed };
 }

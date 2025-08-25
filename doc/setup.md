@@ -23,12 +23,14 @@ pnpm init-shop
 
 After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
 
+To populate the new shop with sample data, run `pnpm init-shop --seed`.
+
 Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.
 
 For automated scripts you can still call `pnpm create-shop <id>` with flags:
 
 ```bash
-pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--payment=p1,p2] [--shipping=s1,s2] [--name=value] [--logo=url] [--contact=email]
+pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--payment=p1,p2] [--shipping=s1,s2] [--name=value] [--logo=url] [--contact=email] [--seed]
 ```
 
 - `--type` – choose between a standard sales shop or a rental shop (default `sale`).
@@ -38,6 +40,7 @@ pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--p
 - `--shipping` – comma‑separated shipping providers to configure.
 - `--name` – display name for the shop.
 - `--logo` – URL of the shop logo.
+- `--seed` – copy sample `products.json` and `inventory.json` into the new shop.
 - `--contact` – contact email for the shop.
 
 ### Example wizard run

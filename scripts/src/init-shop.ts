@@ -13,6 +13,7 @@ import { readdirSync } from "node:fs";
 import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
 import { validateShopEnv } from "@acme/platform-core/configurator";
+import { seedShop } from "./seedShop";
 // Import the provider listing utility via the defined subpath export.  This
 // module aggregates built‑in payment and shipping providers as well as any
 // plugins under packages/plugins.
@@ -52,6 +53,8 @@ function ensureRuntime(): void {
 
 // Validate the runtime immediately when this script loads.
 ensureRuntime();
+
+const seed = process.argv.includes("--seed");
 
 /**
  * Prompt the user for input. If the user does not provide an answer, return the default value.
@@ -250,6 +253,9 @@ async function main(): Promise<void> {
   const prefixedId = `shop-${shopId}`;
   try {
     await createShop(prefixedId, options);
+    if (seed) {
+      seedShop(prefixedId);
+    }
   } catch (err) {
     console.error("Failed to create shop:", (err as Error).message);
     process.exit(1);

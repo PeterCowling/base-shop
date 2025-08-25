@@ -42,11 +42,14 @@ Example `shop.config.json`:
    `init-shop` launches an interactive wizard that asks for the shop ID, display name, logo URL,
    contact email, shop type (`sale` or `rental`), and which theme and template to use. Payment and
    shipping providers are chosen from guided lists of available providers. It then
-  scaffolds `apps/shop-<id>` and prompts for environment variables like Stripe keys and CMS
-  credentials, writing them directly to `apps/shop-<id>/.env`. For scripted setups you can still
-  call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and `--contact` to skip those
-  prompts. Both `init-shop` and `create-shop` accept a `--seed` flag to copy sample
-  `products.json` and `inventory.json` from `data/templates/default` into the new shop.
+   scaffolds `apps/shop-<id>` and prompts for environment variables like Stripe keys and CMS
+   credentials, writing them directly to `apps/shop-<id>/.env`. For scripted setups you can still
+   call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and `--contact` to skip those
+   prompts. Both `init-shop` and `create-shop` accept a `--seed` flag to copy sample
+   `products.json` and `inventory.json` from `data/templates/default` into the new shop.
+   To reuse answers, place a JSON profile in `profiles/<name>.json` and run
+   `pnpm init-shop --profile <name>`. Combine with `--skip-prompts` to accept
+   defaults for any remaining questions and run non-interactively.
 
    ```bash
    pnpm create-shop <id> --name="Demo Shop" --logo=https://example.com/logo.png \
@@ -185,4 +188,3 @@ The Page Builder and `/edit-preview` route include a device menu with presets fo
 - Galaxy S8
 
 Switch between widths using the desktop/tablet/mobile buttons or the dropdown. The chosen preset resets to **Desktop 1280** when the page reloads.
-

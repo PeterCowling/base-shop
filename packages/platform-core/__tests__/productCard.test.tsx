@@ -5,7 +5,17 @@ import { CurrencyProvider } from "../src/contexts/CurrencyContext";
 import { PRODUCTS } from "../src/products/index";
 
 describe("ProductCard", () => {
-  it("renders image with sizes attribute", () => {
+  const originalFetch = global.fetch;
+
+  afterEach(() => {
+    global.fetch = originalFetch;
+  });
+
+  it("renders image with sizes attribute", async () => {
+    global.fetch = jest
+      .fn()
+      .mockResolvedValue({ ok: true, json: async () => ({ cart: {} }) });
+
     render(
       <CurrencyProvider>
         <CartProvider>
@@ -13,7 +23,8 @@ describe("ProductCard", () => {
         </CartProvider>
       </CurrencyProvider>
     );
-    const img = screen.getByAltText(PRODUCTS[0].title);
+
+    const img = await screen.findByAltText(PRODUCTS[0].title);
     expect(img).toHaveAttribute("sizes", "(min-width: 640px) 25vw, 50vw");
   });
 });

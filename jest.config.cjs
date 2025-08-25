@@ -114,6 +114,7 @@ module.exports = {
       "<rootDir>/packages/platform-core/src/repositories/$1",
     "^../packages/ui/components/(.*)$":
       "<rootDir>/packages/ui/src/components/$1",
+    "^\\.\\./components/(.*)$": "<rootDir>/packages/ui/src/components/$1",
 
     // fixture JSON moved during the Turbo-repo migration
     "^functions/data/rental/(.*)$":

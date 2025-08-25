@@ -145,6 +145,7 @@ interface Flags {
   payment?: string[];
   shipping?: string[];
   seed?: boolean;
+  seedFull?: boolean;
   brand?: string;
   tokens?: string;
   autoEnv?: boolean;
@@ -159,6 +160,10 @@ function parseArgs(argv: string[]): Flags {
       const [key, value] = arg.slice(2).split("=");
       if (key === "seed") {
         flags.seed = true;
+        continue;
+      }
+      if (key === "seed-full") {
+        flags.seedFull = true;
         continue;
       }
       if (key === "auto-env") {
@@ -343,7 +348,9 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  if (args.seed) {
+  if (args.seedFull) {
+    seedShop(prefixedId, undefined, true);
+  } else if (args.seed) {
     seedShop(prefixedId);
   }
 

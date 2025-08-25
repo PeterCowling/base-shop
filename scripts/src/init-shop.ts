@@ -65,6 +65,7 @@ function ensureRuntime(): void {
 ensureRuntime();
 
 const seed = process.argv.includes("--seed");
+const useDefaults = process.argv.includes("--defaults");
 
 /**
  * Prompt the user for input. If the user does not provide an answer, return the default value.
@@ -311,6 +312,33 @@ async function promptThemeOverrides(): Promise<Record<string, string>> {
 }
 
 /**
+ * Load default navItems and pages from a template's shop.json if present.
+ * @param root Repository root directory.
+ * @param template Selected template name.
+ */
+function loadTemplateDefaults(
+  root: string,
+  template: string,
+): {
+  navItems?: CreateShopOptions["navItems"];
+  pages?: CreateShopOptions["pages"];
+} {
+  try {
+    const raw = readFileSync(join(root, "packages", template, "shop.json"), "utf8");
+    const data = JSON.parse(raw);
+    const defaults: {
+      navItems?: CreateShopOptions["navItems"];
+      pages?: CreateShopOptions["pages"];
+    } = {};
+    if (Array.isArray(data.navItems)) defaults.navItems = data.navItems;
+    if (Array.isArray(data.pages)) defaults.pages = data.pages;
+    return defaults;
+  } catch {
+    return {};
+  }
+}
+
+/**
  * Main entry point for the init-shop CLI. Collects shop configuration
  * through prompts and calls createShop to scaffold a new shop. Validates
  * the resulting environment file and optionally sets up CI.
@@ -396,8 +424,15 @@ async function main(): Promise<void> {
       envVars[key] = await prompt(`${key}: `, envVars[key] ?? "");
     }
   }
-  const navItems = await promptNavItems();
-  const pages = await promptPages();
+  const templateDefaults = loadTemplateDefaults(rootDir, template);
+  const navItems =
+    useDefaults && templateDefaults.navItems
+      ? templateDefaults.navItems
+      : await promptNavItems();
+  const pages =
+    useDefaults && templateDefaults.pages
+      ? templateDefaults.pages
+      : await promptPages();
   const themeOverrides = await promptThemeOverrides();
   const ciAns = await prompt("Setup CI workflow? (y/N): ");
 

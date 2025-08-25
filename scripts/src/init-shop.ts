@@ -65,6 +65,7 @@ function ensureRuntime(): void {
 ensureRuntime();
 
 const seed = process.argv.includes("--seed");
+const autoEnv = process.argv.includes("--auto-env");
 
 /**
  * Prompt the user for input. If the user does not provide an answer, return the default value.
@@ -136,7 +137,7 @@ function listPlugins(root: string): PluginMeta[] {
         try {
           const pkgRaw = readFileSync(
             join(pluginsDir, d.name, "package.json"),
-            "utf8",
+            "utf8"
           );
           packageName = JSON.parse(pkgRaw).name;
         } catch {}
@@ -250,9 +251,7 @@ async function promptPages(): Promise<CreateShopOptions["pages"]> {
  */
 async function promptThemeOverrides(): Promise<Record<string, string>> {
   const overrides: Record<string, string> = {};
-  const brand = await prompt(
-    "Primary brand color (hex, blank to skip): "
-  );
+  const brand = await prompt("Primary brand color (hex, blank to skip): ");
   if (brand) {
     try {
       const base = loadBaseTokens();
@@ -325,7 +324,7 @@ async function main(): Promise<void> {
   )[];
   const payment = await selectProviders<"stripe" | "paypal">(
     "payment providers",
-    paymentMeta.map((p) => p.id) as ("stripe" | "paypal")[],
+    paymentMeta.map((p) => p.id) as ("stripe" | "paypal")[]
   );
   const shippingMeta = (await listProviders("shipping")) as (
     | { id: "dhl"; name: string; envVars: readonly string[] }
@@ -334,11 +333,7 @@ async function main(): Promise<void> {
   )[];
   const shipping = await selectProviders<"dhl" | "ups" | "premier-shipping">(
     "shipping providers",
-    shippingMeta.map((p) => p.id) as (
-      | "dhl"
-      | "ups"
-      | "premier-shipping"
-    )[],
+    shippingMeta.map((p) => p.id) as ("dhl" | "ups" | "premier-shipping")[]
   );
   const allPluginMeta = listPlugins(rootDir);
   const pluginMap = new Map<
@@ -346,15 +341,20 @@ async function main(): Promise<void> {
     { packageName?: string; envVars: readonly string[] }
   >();
   for (const m of [...paymentMeta, ...shippingMeta, ...allPluginMeta]) {
-    pluginMap.set(m.id, { packageName: (m as any).packageName, envVars: m.envVars });
+    pluginMap.set(m.id, {
+      packageName: (m as any).packageName,
+      envVars: m.envVars,
+    });
   }
   const selectedPlugins = new Set<string>([...payment, ...shipping]);
-  const optionalPlugins = allPluginMeta.filter((p) => !selectedPlugins.has(p.id));
+  const optionalPlugins = allPluginMeta.filter(
+    (p) => !selectedPlugins.has(p.id)
+  );
   let extra: string[] = [];
   if (optionalPlugins.length) {
     extra = await selectProviders(
       "plugins",
-      optionalPlugins.map((p) => p.id),
+      optionalPlugins.map((p) => p.id)
     );
     extra.forEach((id) => selectedPlugins.add(id));
   }
@@ -362,7 +362,9 @@ async function main(): Promise<void> {
   for (const id of selectedPlugins) {
     const vars = pluginMap.get(id)?.envVars ?? [];
     for (const key of vars) {
-      envVars[key] = await prompt(`${key}: `, envVars[key] ?? "");
+      envVars[key] = autoEnv
+        ? `TODO_${key}`
+        : await prompt(`${key}: `, envVars[key] ?? "");
     }
   }
   const navItems = await promptNavItems();
@@ -444,6 +446,12 @@ async function main(): Promise<void> {
     console.error("\nEnvironment validation failed:\n", validationError);
   } else {
     console.log("\nEnvironment variables look valid.");
+  }
+
+  if (autoEnv) {
+    console.warn(
+      "\nWARNING: Placeholder environment variable values were used. Replace TODO_* entries with real secrets before deployment."
+    );
   }
 
   console.log(

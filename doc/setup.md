@@ -29,11 +29,16 @@ pnpm init-shop
 - navigation links (label + URL pairs)
 - basic pages (slug and title) to scaffold
 - theme token overrides (`token=value` pairs)
- - environment variables like Stripe keys and CMS credentials
+- environment variables like Stripe keys and CMS credentials
 
 After answering the prompts the wizard scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
 
 To populate the new shop with sample data, run `pnpm init-shop --seed`.
+
+To skip prompts for environment variables, run `pnpm init-shop --auto-env`. The wizard
+fills required keys with placeholders like `TODO_STRIPE_SECRET` in
+`apps/shop-<id>/.env`. **Replace all `TODO_*` entries with real secrets before
+deploying.**
 
 Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.
 
@@ -120,6 +125,7 @@ This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs
 Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. The platform automatically loads any plugin found under `packages/plugins/*`.
 
 During `init-shop` you will be presented with a list of detected plugins. Selected plugins are added to the new shop's `package.json` and the wizard prompts for any required environment variables.
+When `--auto-env` is used, these prompts are skipped and placeholder values are written instead.
 
 To add a plugin manually, place it in the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS you can enable and configure the plugin under **CMS → Plugins**.
 

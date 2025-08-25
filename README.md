@@ -2,7 +2,7 @@
 
 # Base-Shop
 
-Requires **Node.js >=20** and **pnpm 10.12.1**.  
+Requires **Node.js >=20** and **pnpm 10.12.1**.
 See [docs/install.md](docs/install.md) for installation instructions and [doc/setup.md](doc/setup.md) for full setup and CI guidance.
 
 Key points:
@@ -17,6 +17,8 @@ Key points:
 - Product and recommendation carousels adapt their visible item count to the screen width, clamped between caller-provided `minItems` and `maxItems` values.
   A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **React 19**.
   The full technical roadmap is documented in [./IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md).
+
+Run `pnpm init-shop` to scaffold a new shop. The wizard lists available plugins and, when invoked with `--auto-env`, writes `TODO_*` placeholders for any required environment variables so teams can fill them in later.
 
 ## Security Headers
 

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { ZoomImage } from "../components/atoms/ZoomImage";
+import { ZoomImage } from "../src/components/atoms/ZoomImage";
 
 describe("ZoomImage", () => {
   it("toggles zoomed state on click", () => {

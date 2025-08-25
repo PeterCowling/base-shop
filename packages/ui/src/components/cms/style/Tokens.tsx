@@ -7,20 +7,16 @@ import {
   type TokenMap,
   type TokenInfo,
 } from "../../../hooks/useTokenEditor";
-import {
-  ColorInput,
-  FontSelect,
-  RangeInput,
-  getContrast,
-  suggestContrastColor,
-} from "../index";
+import { ColorToken } from "./ColorToken";
+import { FontToken } from "./FontToken";
+import { RangeToken } from "./RangeToken";
+import { TextToken } from "./TextToken";
 import {
   useEffect,
   useRef,
   useState,
   useMemo,
   ReactElement,
-  type JSX,
   type ChangeEvent,
 } from "react";
 
@@ -129,194 +125,39 @@ export default function Tokens({
     setOpenGroups((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const renderInput = ({
-    key: k,
-    value: v,
-    defaultValue,
-    isOverridden,
-  }: TokenInfo) => {
-    if (k.startsWith("--color")) {
-      let warning: JSX.Element | null = null;
-      let pairKey = "";
-      if (k.startsWith("--color-bg")) {
-        pairKey = `--color-fg${k.slice("--color-bg".length)}`;
-      } else if (k.startsWith("--color-fg")) {
-        pairKey = `--color-bg${k.slice("--color-fg".length)}`;
-      } else if (k.endsWith("-fg")) {
-        pairKey = k.slice(0, -3);
-      } else {
-        const candidate = `${k}-fg`;
-        if (
-          tokens[candidate as keyof TokenMap] !== undefined ||
-          baseTokens[candidate as keyof TokenMap] !== undefined
-        ) {
-          pairKey = candidate;
-        }
-      }
-      const pairVal = pairKey
-        ? tokens[pairKey as keyof TokenMap] ?? baseTokens[pairKey as keyof TokenMap]
-        : undefined;
-      if (pairVal) {
-        const contrast = getContrast(v, pairVal);
-        if (contrast < 4.5) {
-          const suggestion = suggestContrastColor(v, pairVal);
-          warning = (
-            <span className="text-xs text-danger" data-token="--color-danger">
-              Low contrast ({contrast.toFixed(2)}:1)
-              {suggestion ? ` – try ${suggestion}` : ""}
-            </span>
-          );
-        }
-      }
+  const renderInput = (info: TokenInfo) => {
+    if (info.key.startsWith("--color")) {
       return (
-        <label
-          key={k}
-          data-token-key={k}
-          className={`flex flex-col gap-1 text-sm ${
-            isOverridden ? "border-l-2 border-l-info pl-2" : ""
-          }`}
-          data-token={isOverridden ? "--color-info" : undefined}
-        >
-          <span className="flex items-center gap-2">
-            <span className="w-40 flex-shrink-0">{k}</span>
-            <ColorInput value={v} onChange={(val) => setToken(k, val)} />
-            {isOverridden && (
-              <button
-                type="button"
-                className="rounded border px-2 py-1 text-xs"
-                onClick={() => setToken(k, defaultValue ?? "")}
-              >
-                Reset
-              </button>
-            )}
-          </span>
-          {defaultValue && (
-            <span className="text-xs text-muted-foreground">
-              Default: {defaultValue}
-            </span>
-          )}
-          {warning}
-        </label>
-      );
-    }
-
-    if (k.startsWith("--font")) {
-      const options = k.includes("mono") ? monoFonts : sansFonts;
-      const type: "mono" | "sans" = k.includes("mono") ? "mono" : "sans";
-      return (
-        <label
-          key={k}
-          data-token-key={k}
-          className={`flex flex-col gap-1 text-sm ${
-            isOverridden ? "border-l-2 border-l-info pl-2" : ""
-          }`}
-          data-token={isOverridden ? "--color-info" : undefined}
-        >
-          <span className="flex items-center gap-2">
-            <span className="w-40 flex-shrink-0">{k}</span>
-            <FontSelect
-              value={v}
-              options={options}
-              onChange={(val) => setToken(k, val)}
-              onUpload={(e) => handleUpload(type, e)}
-            />
-            {isOverridden && (
-              <button
-                type="button"
-                className="rounded border px-2 py-1 text-xs"
-                onClick={() => setToken(k, defaultValue ?? "")}
-              >
-                Reset
-              </button>
-            )}
-            <select
-              className="rounded border p-1"
-              onChange={(e) => {
-                if (e.target.value) {
-                  setGoogleFont(type, e.target.value);
-                  e.target.value = "";
-                }
-              }}
-            >
-              <option value="">Google Fonts</option>
-              {googleFonts.map((f: string) => (
-                <option key={f} value={f} style={{ fontFamily: f }}>
-                  {f}
-                </option>
-              ))}
-            </select>
-          </span>
-          {defaultValue && (
-            <span className="text-xs text-muted-foreground">
-              Default: {defaultValue}
-            </span>
-          )}
-        </label>
-      );
-    }
-
-    if (/px$/.test(v)) {
-      return (
-        <label
-          key={k}
-          data-token-key={k}
-          className={`flex items-center gap-2 text-sm ${
-            isOverridden ? "border-l-2 border-l-info pl-2" : ""
-          }`}
-          data-token={isOverridden ? "--color-info" : undefined}
-        >
-          <span className="w-40 flex-shrink-0">{k}</span>
-          <RangeInput value={v} onChange={(val) => setToken(k, val)} />
-          {isOverridden && (
-            <button
-              type="button"
-              className="rounded border px-2 py-1 text-xs"
-              onClick={() => setToken(k, defaultValue ?? "")}
-            >
-              Reset
-            </button>
-          )}
-          {defaultValue && (
-            <span className="text-xs text-muted-foreground">
-              Default: {defaultValue}
-            </span>
-          )}
-        </label>
-      );
-    }
-
-    return (
-      <label
-        key={k}
-        data-token-key={k}
-        className={`flex items-center gap-2 text-sm ${
-          isOverridden ? "border-l-2 border-l-info pl-2" : ""
-        }`}
-        data-token={isOverridden ? "--color-info" : undefined}
-      >
-        <span className="w-40 flex-shrink-0">{k}</span>
-        <Input
-          value={v}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setToken(k, e.target.value)
-          }
+        <ColorToken
+          {...info}
+          tokens={tokens}
+          baseTokens={baseTokens}
+          setToken={setToken}
         />
-        {isOverridden && (
-          <button
-            type="button"
-            className="rounded border px-2 py-1 text-xs"
-            onClick={() => setToken(k, defaultValue ?? "")}
-          >
-            Reset
-          </button>
-        )}
-        {defaultValue && (
-          <span className="text-xs text-muted-foreground">
-            Default: {defaultValue}
-          </span>
-        )}
-      </label>
-    );
+      );
+    }
+
+    if (info.key.startsWith("--font")) {
+      const options = info.key.includes("mono") ? monoFonts : sansFonts;
+      const type: "mono" | "sans" = info.key.includes("mono") ? "mono" : "sans";
+      return (
+        <FontToken
+          {...info}
+          options={options}
+          type={type}
+          googleFonts={googleFonts}
+          setToken={setToken}
+          handleUpload={handleUpload}
+          setGoogleFont={setGoogleFont}
+        />
+      );
+    }
+
+    if (/px$/.test(info.value)) {
+      return <RangeToken {...info} setToken={setToken} />;
+    }
+
+    return <TextToken {...info} setToken={setToken} />;
   };
   const filteredGroups = useMemo(() => {
     const lower = search.toLowerCase();

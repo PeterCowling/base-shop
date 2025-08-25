@@ -26,6 +26,7 @@ pnpm init-shop
 - shop type (`sale` or `rental`)
 - theme and template
 - payment and shipping providers (selected from a guided list of available providers)
+- optional plugins (detected under `packages/plugins/*`)
 - navigation links (label + URL pairs)
 - basic pages (slug and title) to scaffold
 - theme token overrides (`token=value` pairs)
@@ -71,6 +72,11 @@ Available shipping providers:
   1) dhl
   2) ups
 Select shipping providers by number (comma-separated, empty for none): 2
+Available plugins:
+  1) paypal
+  2) premier-shipping
+  3) sanity
+Select plugins by number (comma-separated, empty for none):
 Nav label (leave empty to finish): Home
 Nav URL: /
 Nav label (leave empty to finish): Shop
@@ -133,13 +139,9 @@ This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs
 
 ## 5. Install plugins
 
-Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. The platform automatically loads any plugin found under `packages/plugins/*`.
+Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. When running `pnpm init-shop` the wizard scans `packages/plugins/*`, lets you select which plugins to enable and adds the corresponding dependencies to the new shop’s `package.json`.
 
-To install a plugin, add it to the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS you can enable and configure the plugin under **CMS → Plugins**.
-
-Some plugins require additional environment variables (for example Stripe API
-keys). Add these to the shop's `.env` file and rerun `pnpm validate-env <id>`
-before using the plugin.
+If a selected plugin defines required configuration, the wizard prompts for the necessary environment variables and appends them to the shop’s `.env` file. Rerun `pnpm validate-env <id>` after providing real credentials.
 
 ## 6. Analytics and event tracking
 

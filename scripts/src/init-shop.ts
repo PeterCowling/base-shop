@@ -7,7 +7,13 @@ import { createShop, type CreateShopOptions } from "@acme/platform-core/createSh
 import { validateShopName } from "@acme/platform-core/shops";
 
 import { execSync, spawnSync } from "node:child_process";
-import { readdirSync } from "node:fs";
+import {
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+  existsSync,
+} from "node:fs";
+import { join } from "node:path";
 // Validate the generated environment file for the new shop and throw if any
 // required variables are missing or invalid.
 import { stdin as input, stdout as output } from "node:process";
@@ -264,15 +270,16 @@ async function main(): Promise<void> {
   // preserves the specific string literals (e.g. "stripe", "paypal") rather than widening them to
   // plain strings.  This allows TypeScript to satisfy the CreateShopOptions constraints without
   // type errors.
-  const paymentProviders = (await listProviders("payment")) as (
-    | "stripe"
-    | "paypal"
-  )[];
+  const paymentProviders = (
+    await listProviders("payment")
+  ).map((p) => p.id) as ("stripe" | "paypal")[];
   const payment = await selectProviders<"stripe" | "paypal">(
     "payment providers",
     paymentProviders
   );
-  const shippingProviders = (await listProviders("shipping")) as (
+  const shippingProviders = (
+    await listProviders("shipping")
+  ).map((p) => p.id) as (
     | "dhl"
     | "ups"
     | "premier-shipping"
@@ -281,6 +288,32 @@ async function main(): Promise<void> {
     "shipping providers",
     shippingProviders
   );
+  const allPlugins = await listProviders();
+  const selectedPlugins: Awaited<ReturnType<typeof listProviders>> = [];
+  if (allPlugins.length) {
+    console.log("Available plugins:");
+    allPlugins.forEach((p, i) => console.log(`  ${i + 1}) ${p.name}`));
+    const ans = await prompt(
+      "Select plugins by number (comma-separated, empty for none): "
+    );
+    const selections = ans
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    for (const sel of selections) {
+      const idx = Number(sel) - 1;
+      if (!Number.isNaN(idx) && allPlugins[idx]) {
+        selectedPlugins.push(allPlugins[idx]);
+      }
+    }
+  }
+  const pluginEnv: Record<string, string> = {};
+  for (const plugin of selectedPlugins) {
+    for (const env of plugin.env) {
+      const val = await prompt(`${env}: `);
+      pluginEnv[env] = val;
+    }
+  }
   const navItems = await promptNavItems();
   const pages = await promptPages();
   const themeOverrides = await promptThemeOverrides();
@@ -317,6 +350,40 @@ async function main(): Promise<void> {
   } catch (err) {
     console.error("Failed to create shop:", (err as Error).message);
     process.exit(1);
+  }
+
+  if (selectedPlugins.length) {
+    const appDir = join("apps", prefixedId);
+    const pkgPath = join(appDir, "package.json");
+    try {
+      if (existsSync(pkgPath)) {
+        const pkg = JSON.parse(readFileSync(pkgPath, "utf8")) as {
+          dependencies?: Record<string, string>;
+        };
+        pkg.dependencies ??= {};
+        for (const p of selectedPlugins) {
+          if (p.packageName) {
+            pkg.dependencies[p.packageName] = "workspace:*";
+          }
+        }
+        writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+      }
+    } catch {
+      // ignore package update errors
+    }
+
+    const envPath = join(appDir, ".env");
+    try {
+      let env = existsSync(envPath) ? readFileSync(envPath, "utf8") : "";
+      for (const [key, val] of Object.entries(pluginEnv)) {
+        if (!new RegExp(`^${key}=`, "m").test(env)) {
+          env += `${key}=${val}\n`;
+        }
+      }
+      writeFileSync(envPath, env);
+    } catch {
+      // ignore env file errors
+    }
   }
 
   let validationError: unknown;

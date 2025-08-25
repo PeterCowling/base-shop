@@ -153,9 +153,17 @@ function runCli(args: string[]) {
       if (p.includes("@acme/platform-core/createShop")) {
         if (p.endsWith("listProviders")) {
           return {
-            listProviders: jest.fn((kind: string) =>
+            listProviders: jest.fn((kind?: string) =>
               Promise.resolve(
-                kind === "payment" ? ["stripe", "paypal"] : ["dhl", "ups"]
+                kind === "payment"
+                  ? [
+                      { id: "stripe", name: "stripe", env: [], packageName: "" },
+                      { id: "paypal", name: "paypal", env: [], packageName: "" },
+                    ]
+                  : [
+                      { id: "dhl", name: "dhl", env: [], packageName: "" },
+                      { id: "ups", name: "ups", env: [], packageName: "" },
+                    ]
               )
             ),
           };

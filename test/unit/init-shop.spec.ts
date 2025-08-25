@@ -16,6 +16,7 @@ describe('init-shop wizard', () => {
       '1',
       '1,2',
       '1',
+      '',
       'Home',
       '/',
       'Shop',
@@ -58,6 +59,7 @@ describe('init-shop wizard', () => {
             existsSync: () => true,
             readFileSync: () =>
               'STRIPE_SECRET_KEY=\nNEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=\nSTRIPE_WEBHOOK_SECRET=\n',
+            writeFileSync: jest.fn(),
             readdirSync: () => [
               { name: 'base', isDirectory: () => true },
               { name: 'template-app', isDirectory: () => true },
@@ -84,11 +86,26 @@ describe('init-shop wizard', () => {
         }
         if (p.includes('@acme/platform-core/createShop/listProviders')) {
           return {
-            listProviders: jest.fn((kind: string) =>
+            listProviders: jest.fn((kind?: string) =>
               Promise.resolve(
                 kind === 'payment'
-                  ? ['stripe', 'paypal']
-                  : ['dhl', 'ups']
+                  ? [
+                      { id: 'stripe', name: 'stripe', env: [], packageName: '' },
+                      { id: 'paypal', name: 'paypal', env: [], packageName: '' },
+                    ]
+                  : kind === 'shipping'
+                  ? [
+                      { id: 'dhl', name: 'dhl', env: [], packageName: '' },
+                      { id: 'ups', name: 'ups', env: [], packageName: '' },
+                    ]
+                  : [
+                      {
+                        id: 'sanity',
+                        name: 'Sanity',
+                        env: ['SANITY_PROJECT_ID'],
+                        packageName: '',
+                      },
+                    ]
               )
             ),
           };
@@ -124,6 +141,7 @@ describe('init-shop wizard', () => {
       'Select template by number [1]: ',
       'Select payment providers by number (comma-separated, empty for none): ',
       'Select shipping providers by number (comma-separated, empty for none): ',
+      'Select plugins by number (comma-separated, empty for none): ',
       'Nav label (leave empty to finish): ',
       'Nav URL: ',
       'Nav label (leave empty to finish): ',

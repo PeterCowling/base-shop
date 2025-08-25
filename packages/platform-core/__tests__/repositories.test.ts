@@ -2,7 +2,7 @@
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { ProductPublication } from "../products";
+import type { ProductPublication } from "../src/products/index";
 import { nowIso } from "@date-utils";
 
 /** The shape of the JSON-repository module we import dynamically */

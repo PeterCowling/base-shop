@@ -1,5 +1,5 @@
 // packages/platform-core/__tests__/checkout-session.test.ts
-import { PRODUCTS } from "../src/products";
+import { PRODUCTS } from "../src/products/index";
 import { createCheckoutSession } from "../src/checkout/session";
 import { calculateRentalDays } from "@acme/date-utils";
 

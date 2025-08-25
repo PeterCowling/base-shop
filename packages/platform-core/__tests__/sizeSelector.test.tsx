@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import SizeSelector from "../components/pdp/SizeSelector";
+import SizeSelector from "../src/components/pdp/SizeSelector";
 
 describe("SizeSelector", () => {
   it("calls onSelect with chosen size", () => {

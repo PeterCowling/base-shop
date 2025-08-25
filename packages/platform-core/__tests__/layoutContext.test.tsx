@@ -1,6 +1,6 @@
 // packages/platform-core/__tests__/layoutContext.test.tsx
 import { fireEvent, render, screen } from "@testing-library/react";
-import { LayoutProvider, useLayout } from "../contexts/LayoutContext";
+import { LayoutProvider, useLayout } from "../src/contexts/LayoutContext";
 
 jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),

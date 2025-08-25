@@ -21,7 +21,9 @@ pnpm init-shop
 - theme and template
 - payment and shipping providers (selected from a guided list of available providers)
 
-After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
+The wizard also captures essential environment variables like Stripe keys, CMS credentials and plugin‑specific settings, writing them to `apps/shop-<id>/.env`.
+
+After answering the prompts the wizard scaffolds `apps/shop-<id>` with the populated `.env` file.
 
 Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.
 
@@ -59,12 +61,18 @@ Available shipping providers:
   1) dhl
   2) ups
 Select shipping providers by number (comma-separated, empty for none): 2
+Stripe secret key … sk_test
+Stripe publishable key … pk_test
+Stripe webhook secret … whsec_test
+UPS API key … ups_key
+CMS space URL … https://cms.example.com
+CMS access token … token
 Scaffolded apps/shop-demo
 ```
 
-## 2. Configure environment variables
+## 2. Validate environment variables
 
-Edit `apps/shop-<id>/.env` to replace placeholder secrets.
+The wizard writes the collected values to `apps/shop-<id>/.env`. Edit the file if needed and run the validator to ensure everything is set correctly.
 
 ```bash
 pnpm validate-env <id>

@@ -40,13 +40,14 @@ The root middleware applies [next-secure-headers](https://www.npmjs.com/package/
    pnpm setup-ci <id>
    ```
 
-   `init-shop` launches an interactive wizard that asks for the shop ID, display name, logo URL,
-   contact email, shop type (`sale` or `rental`), and which theme and template to use. Payment and
-   shipping providers are chosen from guided lists of available providers. It then
-   scaffolds `apps/shop-<id>` and writes an `.env` file inside the new app. Edit the `.env` file to
-   provide real secrets (see [Environment Variables](#environment-variables)). For scripted
-   setups you can still call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and
-   `--contact` to skip those prompts.
+  `init-shop` launches an interactive wizard that asks for the shop ID, display name, logo URL,
+  contact email, shop type (`sale` or `rental`), and which theme and template to use. Payment and
+  shipping providers are chosen from guided lists of available providers. The wizard also collects
+  essential environment variables—such as Stripe keys, CMS credentials and any plugin‑specific
+  settings—and writes them directly to `apps/shop-<id>/.env`.
+  You can review or adjust the file afterwards (see [Environment Variables](#environment-variables)).
+  For scripted setups you can still call `pnpm create-shop <id>` and pass flags like `--name`,
+  `--logo` and `--contact` to skip those prompts.
 
    ```bash
    pnpm create-shop <id> --name="Demo Shop" --logo=https://example.com/logo.png \
@@ -84,6 +85,12 @@ Available shipping providers:
   1) dhl
   2) ups
 Select shipping providers by number (comma-separated, empty for none): 2
+Stripe secret key … sk_test
+Stripe publishable key … pk_test
+Stripe webhook secret … whsec_test
+UPS API key … ups_key
+CMS space URL … https://cms.example.com
+CMS access token … token
 Scaffolded apps/shop-demo
 
 pnpm setup-ci demo  # optional

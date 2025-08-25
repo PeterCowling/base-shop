@@ -52,4 +52,36 @@ export function validateEnvFile(file: string): void {
 export function validateShopEnv(shop: string): void {
   const envPath = join("apps", shop, ".env");
   validateEnvFile(envPath);
+  const env = readEnvFile(envPath);
+  const missing: string[] = [];
+  if (!env.CMS_SPACE_URL) missing.push("CMS_SPACE_URL");
+  if (!env.CMS_ACCESS_TOKEN) missing.push("CMS_ACCESS_TOKEN");
+  try {
+    const data = JSON.parse(
+      readFileSync(join("data", "shops", shop, "shop.json"), "utf8")
+    ) as { paymentProviders?: string[]; shippingProviders?: string[] };
+    const pluginVars: Record<string, string[]> = {
+      stripe: [
+        "STRIPE_SECRET_KEY",
+        "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+        "STRIPE_WEBHOOK_SECRET",
+      ],
+      paypal: ["PAYPAL_CLIENT_ID", "PAYPAL_SECRET"],
+      ups: ["UPS_KEY"],
+      dhl: ["DHL_KEY"],
+    };
+    for (const id of [
+      ...(data.paymentProviders ?? []),
+      ...(data.shippingProviders ?? []),
+    ]) {
+      for (const key of pluginVars[id] ?? []) {
+        if (!env[key]) missing.push(key);
+      }
+    }
+  } catch {
+    // ignore missing shop.json
+  }
+  if (missing.length) {
+    throw new Error(`Missing environment variables: ${missing.join(", ")}`);
+  }
 }

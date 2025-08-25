@@ -7,12 +7,16 @@ import { createShop, type CreateShopOptions } from "@acme/platform-core/createSh
 import { validateShopName } from "@acme/platform-core/shops";
 
 import { execSync, spawnSync } from "node:child_process";
-import { readdirSync } from "node:fs";
+import { readdirSync, existsSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 // Validate the generated environment file for the new shop and throw if any
 // required variables are missing or invalid.
 import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
-import { validateShopEnv } from "@acme/platform-core/configurator";
+import {
+  validateShopEnv,
+  readEnvFile,
+} from "@acme/platform-core/configurator";
 // Import the provider listing utility via the defined subpath export.  This
 // module aggregates built‑in payment and shipping providers as well as any
 // plugins under packages/plugins.
@@ -254,6 +258,43 @@ async function main(): Promise<void> {
     console.error("Failed to create shop:", (err as Error).message);
     process.exit(1);
   }
+
+  // Prompt for environment variables, including plugin-specific ones.
+  const envVars: Record<string, string> = {};
+  const pluginQuestions: Record<string, { key: string; prompt: string }[]> = {
+    stripe: [
+      { key: "STRIPE_SECRET_KEY", prompt: "Stripe secret key: " },
+      { key: "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY", prompt: "Stripe publishable key: " },
+      { key: "STRIPE_WEBHOOK_SECRET", prompt: "Stripe webhook secret: " },
+    ],
+    paypal: [
+      { key: "PAYPAL_CLIENT_ID", prompt: "PayPal client ID: " },
+      { key: "PAYPAL_SECRET", prompt: "PayPal secret: " },
+    ],
+    ups: [{ key: "UPS_KEY", prompt: "UPS API key: " }],
+    dhl: [{ key: "DHL_KEY", prompt: "DHL API key: " }],
+  };
+
+  for (const id of payment) {
+    for (const q of pluginQuestions[id] ?? []) {
+      envVars[q.key] = await prompt(q.prompt);
+    }
+  }
+  for (const id of shipping) {
+    for (const q of pluginQuestions[id] ?? []) {
+      envVars[q.key] = await prompt(q.prompt);
+    }
+  }
+  envVars.CMS_SPACE_URL = await prompt("CMS space URL (optional): ");
+  envVars.CMS_ACCESS_TOKEN = await prompt("CMS access token (optional): ");
+
+  const envPath = join("apps", prefixedId, ".env");
+  const existing = existsSync(envPath) ? readEnvFile(envPath) : {};
+  const merged = { ...existing, ...envVars };
+  const content = Object.entries(merged)
+    .map(([k, v]) => `${k}=${v}`)
+    .join("\n");
+  writeFileSync(envPath, content + "\n");
 
   let validationError: unknown;
   try {

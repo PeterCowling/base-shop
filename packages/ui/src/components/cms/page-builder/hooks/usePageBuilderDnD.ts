@@ -5,6 +5,7 @@ import {
   DragStartEvent,
   KeyboardSensor,
   PointerSensor,
+  closestCenter,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -164,7 +165,23 @@ export function usePageBuilderDnD({
     [handleDragEndInternal]
   );
 
-  return { sensors, handleDragStart, handleDragMove, handleDragEnd, insertIndex, activeType };
+  const dndContext = {
+    sensors,
+    collisionDetection: closestCenter,
+    onDragStart: handleDragStart,
+    onDragMove: handleDragMove,
+    onDragEnd: handleDragEnd,
+  } as const;
+
+  return {
+    sensors,
+    handleDragStart,
+    handleDragMove,
+    handleDragEnd,
+    insertIndex,
+    activeType,
+    dndContext,
+  };
 }
 
 export default usePageBuilderDnD;

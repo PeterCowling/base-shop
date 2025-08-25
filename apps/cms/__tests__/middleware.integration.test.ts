@@ -5,6 +5,23 @@ import type { JWT } from "next-auth/jwt";
 import { middleware } from "../src/middleware";
 
 /* -------------------------------------------------------------------------- */
+/* Mock RBAC helpers so importing middleware doesn't pull in JSON modules.   */
+/* -------------------------------------------------------------------------- */
+jest.mock("@auth/rbac", () => ({
+  __esModule: true,
+  canRead: jest.fn(() => true),
+  canWrite: jest.fn(() => true),
+}));
+
+/* -------------------------------------------------------------------------- */
+/* Provide minimal env config to satisfy auth secret lookup.                  */
+/* -------------------------------------------------------------------------- */
+jest.mock("@acme/config", () => ({
+  __esModule: true,
+  env: { NEXTAUTH_SECRET: "test" },
+}));
+
+/* -------------------------------------------------------------------------- */
 /* Mock `next-auth/jwt` *completely* so the ESM-only `jose` bundle never      */
 /* reaches Jest.  We expose only the symbol(s) our middleware touches.        */
 /* -------------------------------------------------------------------------- */

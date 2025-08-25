@@ -73,7 +73,7 @@ export default async function CheckoutPage({
           cart={validatedCart}
           totals={{ subtotal, deposit, total }}
         />
-        <CheckoutSection locale={lang} taxRegion={settings.taxRegion} />
+        <CheckoutSection locale={lang} taxRegion={settings.taxRegion ?? ""} />
       </div>
     );
   }

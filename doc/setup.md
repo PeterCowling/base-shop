@@ -74,6 +74,10 @@ To prefill answers from an existing file, supply `--env-file <path>`.
 Keys in the file are merged before prompting—any variables already present are
 written directly to the generated `.env` and prompts for them are skipped. After
 validation the wizard warns about unused entries or missing required variables.
+To reuse answers across runs, create `profiles/<name>.json` and run
+`pnpm init-shop --profile <name>`. Profile values prefill the wizard. Combine
+with `--skip-prompts` to accept defaults for remaining questions and run
+non-interactively.
 
 Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.
 

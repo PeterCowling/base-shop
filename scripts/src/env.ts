@@ -4,7 +4,13 @@ import {
 } from "@acme/platform-core/createShop";
 import { validateShopName } from "@acme/platform-core/shops";
 import { spawnSync } from "node:child_process";
-import { readdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
+import {
+  readdirSync,
+  writeFileSync,
+  existsSync,
+  readFileSync,
+  mkdirSync,
+} from "node:fs";
 import { join } from "node:path";
 import { validateShopEnv, readEnvFile } from "@acme/platform-core/configurator";
 import { seedShop } from "./seedShop";
@@ -190,6 +196,22 @@ export async function initShop(): Promise<void> {
     );
   }
   extra.forEach((id) => selectedPlugins.add(id));
+
+  function fetchVaultSecret(key: string): string | undefined {
+    const spec = process.env[`VAULT_${key}`];
+    if (!spec) return undefined;
+    const [path, field] = spec.split("#");
+    try {
+      const result = spawnSync("vault", ["kv", "get", `-field=${field}`, path], {
+        encoding: "utf8",
+      });
+      if (result.status === 0) return result.stdout.trim();
+    } catch {
+      // ignore vault errors and fall back to prompting
+    }
+    return undefined;
+  }
+
   const envVars: Record<string, string> = {};
   const requiredEnvKeys = new Set<string>();
   const usedEnvFileKeys = new Set<string>();
@@ -200,6 +222,15 @@ export async function initShop(): Promise<void> {
       if (envFileVars[key] !== undefined) {
         envVars[key] = envFileVars[key];
         usedEnvFileKeys.add(key);
+        continue;
+      }
+      if (process.env[key]) {
+        envVars[key] = process.env[key] as string;
+        continue;
+      }
+      const vaultVal = fetchVaultSecret(key);
+      if (vaultVal !== undefined) {
+        envVars[key] = vaultVal;
         continue;
       }
       if (autoEnv) {
@@ -294,6 +325,15 @@ export async function initShop(): Promise<void> {
       .map(([k, v]) => `${k}=${v}`)
       .join("\n") + "\n",
   );
+
+  const tmplDir = join("apps", prefixedId, "env-templates");
+  mkdirSync(tmplDir, { recursive: true });
+  for (const id of selectedPlugins) {
+    const vars = pluginMap.get(id)?.envVars ?? [];
+    if (!vars.length) continue;
+    const content = vars.map((k) => `${k}=`).join("\n") + "\n";
+    writeFileSync(join(tmplDir, `${id}.env`), content);
+  }
 
   const missingEnvKeys = [...requiredEnvKeys].filter(
     (k) => !finalEnv[k] || finalEnv[k] === "",

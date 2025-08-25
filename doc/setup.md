@@ -55,7 +55,7 @@ Passing `--defaults` tells the wizard to prefill navigation links and pages
 from the selected template's `shop.json` when those fields exist. Any missing
 entries fall back to interactive prompts.
 
-After answering the prompts the wizard scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
+After answering the prompts the wizard scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.  It also generates provider-specific templates in `apps/shop-<id>/env-templates/` listing the required keys for each selected integration.
 
 To skip the theme prompts, provide overrides via flags:
 
@@ -69,11 +69,13 @@ To populate the new shop with sample data, run `pnpm init-shop --seed`. Use `--s
 selected template without prompting for them.
 Add `--auto-env` to skip prompts for provider environment variables. The wizard writes
 `TODO_*` placeholders to the new shop's `.env` file; replace them with real
-secrets before deploying.
-To prefill answers from an existing file, supply `--env-file <path>`.
+secrets before deploying. To prefill answers from an existing file, supply `--env-file <path>`.
 Keys in the file are merged before prompting—any variables already present are
-written directly to the generated `.env` and prompts for them are skipped. After
-validation the wizard warns about unused entries or missing required variables.
+written directly to the generated `.env` and prompts for them are skipped.
+If your secrets live in HashiCorp Vault, set environment variables like
+`VAULT_STRIPE_SECRET_KEY="secret/data/stripe#key"` before running the wizard and it will
+fetch the values automatically. After validation the wizard warns about unused
+entries or missing required variables.
 
 Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.
 
@@ -150,19 +152,17 @@ Scaffolded apps/shop-demo
 
 ## 2. Review environment variables
 
-The wizard captures common environment variables and writes them to `apps/shop-<id>/.env`.
+The wizard captures common environment variables, writes them to `apps/shop-<id>/.env`, and validates the result immediately. Missing values and unused entries are reported before the script exits.
 
-If you used `--auto-env`, this file contains placeholder values like `TODO_API_KEY`.
-If you passed `--env-file`, any matching keys from that file are copied directly
-and unused entries are reported during validation. Placeholders and missing
-variables must be replaced with real credentials before deployment.
+Provider templates under `apps/shop-<id>/env-templates/` enumerate the secrets required for each integration. Replace any `TODO_*` values in `.env` with real credentials before deployment.
+
+You can re-run validation at any time with:
 
 ```bash
 pnpm validate-env <id>
 ```
 
 `validate-env` parses the `.env` file and exits with an error if any required variable is missing or malformed.
-You can edit the file later and rerun `pnpm validate-env <id>` to confirm everything is set up.
 
 ## 3. Run the shop
 
@@ -187,7 +187,7 @@ This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs
 
 Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. The platform automatically loads any plugin found under `packages/plugins/*`.
 
-During `init-shop` you will be presented with a list of detected plugins. Selected plugins are added to the new shop's `package.json` and the wizard prompts for any required environment variables.
+During `init-shop` you will be presented with a list of detected plugins. Selected plugins are added to the new shop's `package.json` and the wizard prompts for any required environment variables or resolves them from your env file, current shell environment, or Vault.
 
 To add a plugin manually, place it in the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS you can enable and configure the plugin under **CMS → Plugins**.
 

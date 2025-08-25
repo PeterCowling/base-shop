@@ -85,3 +85,13 @@ useEffect(() => {
   };
 }, []);
 ```
+
+## CLI overrides
+
+Theme tokens can also be supplied when creating a shop:
+
+```bash
+pnpm init-shop --brand "#663399" --tokens ./tokens.json
+```
+
+`--brand` generates tokens for the primary color while `--tokens` loads additional overrides from a JSON file.

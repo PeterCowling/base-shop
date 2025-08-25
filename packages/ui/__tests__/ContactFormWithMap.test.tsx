@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import ContactFormWithMap from "../components/cms/blocks/ContactFormWithMap";
+import ContactFormWithMap from "../src/components/cms/blocks/ContactFormWithMap";
 
 describe("ContactFormWithMap", () => {
   it("renders form and iframe", () => {

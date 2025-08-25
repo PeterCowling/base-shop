@@ -1,7 +1,6 @@
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { runInNewContext } from "vm";
-import { createRequire } from "module";
 import ts from "typescript";
 
 import {
@@ -19,7 +18,7 @@ export const baseTokens: TokenMap = Object.fromEntries(
   typedEntries(baseTokensSrc).map(([k, v]) => [k, v.light])
 ) as TokenMap;
 
-function transpileTokens(filePath: string, requireFn: NodeRequire): TokenMap {
+function transpileTokens(filePath: string): TokenMap {
   const source = readFileSync(filePath, "utf8");
   const transpiled = ts.transpileModule(source, {
     compilerOptions: { module: ts.ModuleKind.CommonJS },
@@ -27,11 +26,9 @@ function transpileTokens(filePath: string, requireFn: NodeRequire): TokenMap {
   const sandbox: {
     module: { exports: Record<string, unknown> };
     exports: Record<string, unknown>;
-    require: NodeRequire;
   } = {
     module: { exports: {} },
     exports: {},
-    require: requireFn,
   };
   sandbox.exports = sandbox.module.exports;
   runInNewContext(transpiled, sandbox);
@@ -40,8 +37,6 @@ function transpileTokens(filePath: string, requireFn: NodeRequire): TokenMap {
 
 export function loadThemeTokensNode(theme: string): TokenMap {
   if (!theme || theme === "base") return {};
-  // obtain a Node "require" function in ESM environments
-  const requireFn = createRequire(import.meta.url);
   const baseDir = join("packages", "themes", theme);
   const candidates = [
     join(baseDir, "tailwind-tokens.js"),
@@ -50,7 +45,7 @@ export function loadThemeTokensNode(theme: string): TokenMap {
   ];
   for (const file of candidates) {
     if (existsSync(file)) {
-      return transpileTokens(file, requireFn);
+      return transpileTokens(file);
     }
   }
   return {};

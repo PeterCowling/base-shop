@@ -1,9 +1,13 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
+const isProd = process.env.NODE_ENV === "production";
+
 export const coreEnvBaseSchema = z
   .object({
-    NEXTAUTH_SECRET: z.string().min(1),
+    NEXTAUTH_SECRET: isProd
+      ? z.string().min(1)
+      : z.string().min(1).default("dev-nextauth-secret"),
     PREVIEW_TOKEN_SECRET: z.string().optional(),
     UPGRADE_PREVIEW_TOKEN_SECRET: z.string().optional(),
     NODE_ENV: z.enum(["development", "test", "production"]).optional(),
@@ -12,7 +16,9 @@ export const coreEnvBaseSchema = z
     NEXT_PUBLIC_DEFAULT_SHOP: z.string().optional(),
     NEXT_PUBLIC_SHOP_ID: z.string().optional(),
     SHOP_CODE: z.string().optional(),
-    CART_COOKIE_SECRET: z.string().min(1),
+    CART_COOKIE_SECRET: isProd
+      ? z.string().min(1)
+      : z.string().min(1).default("dev-cart-secret"),
     CART_TTL: z.coerce.number().optional(),
     CMS_SPACE_URL: z.string().url().optional(),
     CMS_ACCESS_TOKEN: z.string().optional(),
@@ -80,7 +86,9 @@ export const coreEnvBaseSchema = z
       .transform((v) => Number(v))
       .optional(),
     OPENAI_API_KEY: z.string().optional(),
-    SESSION_SECRET: z.string().min(1),
+    SESSION_SECRET: isProd
+      ? z.string().min(1)
+      : z.string().min(1).default("dev-session-secret"),
     COOKIE_DOMAIN: z.string().optional(),
     LOGIN_RATE_LIMIT_REDIS_URL: z.string().url().optional(),
     LOGIN_RATE_LIMIT_REDIS_TOKEN: z.string().optional(),

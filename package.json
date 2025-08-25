@@ -51,6 +51,7 @@
     "validate-env": "ts-node scripts/src/validate-env.ts",
     "quickstart-shop": "ts-node scripts/src/quickstart-shop.ts",
     "check:locales": "ts-node scripts/src/check-locales.ts",
+    "add-locale": "tsx scripts/src/add-locale.ts",
     "check:tailwind-preset": "tsx scripts/check-tailwind-preset.ts",
     "shadcn:diff": "ts-node scripts/diff-shadcn.ts",
     "tailwind:check": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest test/unit/tailwind-build.spec.ts test/unit/postcss-config.spec.ts test/unit/tailwind-postcss.spec.ts",

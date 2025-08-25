@@ -1,0 +1,46 @@
+"use client";
+
+import { useMemo } from "react";
+import type { Locale } from "@acme/i18n/locales";
+import type { PageComponent } from "@acme/types";
+import { devicePresets, type DevicePreset } from "../../../utils/devicePresets";
+import useViewport from "./hooks/useViewport";
+import DeviceSelector from "../../common/DeviceSelector";
+import DynamicRenderer from "../../DynamicRenderer";
+
+interface Props {
+  components: PageComponent[];
+  locale: Locale;
+  deviceId: string;
+  onChange: (id: string) => void;
+}
+
+const PreviewPane = ({ components, locale, deviceId, onChange }: Props) => {
+  const previewDevice = useMemo<DevicePreset>(
+    () =>
+      devicePresets.find((d: DevicePreset) => d.id === deviceId) ??
+      devicePresets[0],
+    [deviceId]
+  );
+  const previewViewport: "desktop" | "tablet" | "mobile" = previewDevice.type;
+  const { viewportStyle, frameClass } = useViewport(previewDevice);
+
+  return (
+    <div className="flex flex-col gap-2 shrink-0">
+      <DeviceSelector
+        deviceId={deviceId}
+        onChange={onChange}
+        showLegacyButtons
+      />
+      <div
+        className={`${frameClass[previewViewport]} shrink-0`}
+        style={viewportStyle}
+      >
+        <DynamicRenderer components={components} locale={locale} />
+      </div>
+    </div>
+  );
+};
+
+export default PreviewPane;
+

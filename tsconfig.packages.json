@@ -29,6 +29,7 @@
     { "path": "packages/ui" },
     { "path": "packages/auth" },
     { "path": "packages/configurator" },
+    { "path": "packages/i18n" },
     { "path": "src" }
   ]
 }

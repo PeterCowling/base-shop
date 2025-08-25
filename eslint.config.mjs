@@ -47,12 +47,16 @@ export default [
   /* ▸ Your repo-wide TypeScript rules (NO plugins key!) */
   {
     files: ["**/*.{ts,tsx}"],
+    ignores: ["**/*.d.ts"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: ["./tsconfig.json"],
-        projectService: true,
+        project: [
+          "./tsconfig.json",
+          "./packages/i18n/tsconfig.json"
+        ],
         allowDefaultProject: true,
+        tsconfigRootDir: __dirname,
         sourceType: "module",
         ecmaVersion: "latest",
         ecmaFeatures: { jsx: true },
@@ -113,6 +117,17 @@ export default [
   /* ▸ Test files relaxations */
   {
     files: ["**/__tests__/**/*.{ts,tsx,js,jsx}", "**/*.test.{ts,tsx,js,jsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: [
+          "./tsconfig.test.json",
+          "./packages/i18n/tsconfig.test.json"
+        ],
+        allowDefaultProject: true,
+        tsconfigRootDir: __dirname,
+      },
+    },
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": "off",

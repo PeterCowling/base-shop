@@ -1,7 +1,7 @@
 /* apps/cms/__tests__/dashboardSkip.integration.test.tsx */
 /* eslint-env jest */
 
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within, waitFor } from "@testing-library/react";
 
 jest.mock(
   "@/components/atoms",
@@ -29,6 +29,16 @@ jest.mock(
   },
   { virtual: true }
 );
+
+jest.mock("@platform-core/contexts/LayoutContext", () => ({
+  __esModule: true,
+  useLayout: () => ({
+    isMobileNavOpen: false,
+    breadcrumbs: [],
+    toggleNav: jest.fn(),
+    setConfiguratorProgress: jest.fn(),
+  }),
+}));
 
 jest.mock("../src/app/cms/configurator/steps", () => {
   const steps = [
@@ -107,13 +117,17 @@ test("skipped optional steps do not block Launch Shop", async () => {
 
   stepLabel = await screen.findByText(optional.label);
   const resetBtn = within(stepLabel.closest("li")!).getByRole("button", { name: /reset/i });
-  const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-  expect(stored.completed?.[optional.id]).toBe("skipped");
+  await waitFor(() => {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    expect(stored.completed?.[optional.id]).toBe("skipped");
+  });
   expect(launchBtn).toBeEnabled();
 
   fireEvent.click(resetBtn);
   await screen.findByRole("button", { name: /skip/i });
-  const stored2 = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-  expect(stored2.completed?.[optional.id]).toBe("pending");
+  await waitFor(() => {
+    const stored2 = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    expect(stored2.completed?.[optional.id]).toBe("pending");
+  });
   expect(launchBtn).toBeEnabled();
 });

@@ -33,6 +33,14 @@ pnpm init-shop
 
 After answering the prompts the wizard scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
 
+To skip the theme prompts, provide overrides via flags:
+
+```bash
+pnpm init-shop --brand "#663399" --tokens ./my-tokens.json
+```
+
+`--brand` sets the primary brand color and `--tokens` merges additional token overrides from a JSON file.
+
 To populate the new shop with sample data, run `pnpm init-shop --seed`.
 
 Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.

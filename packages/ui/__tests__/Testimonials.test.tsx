@@ -12,8 +12,8 @@ describe("Testimonials", () => {
         maxItems={1}
       />
     );
-    expect(screen.getByText("A")).toBeInTheDocument();
-    expect(screen.queryByText("B")).not.toBeInTheDocument();
+    expect(screen.getByText(/A/, { selector: "footer" })).toBeInTheDocument();
+    expect(screen.queryByText(/B/)).not.toBeInTheDocument();
   });
 
   it("returns null when below minItems", () => {

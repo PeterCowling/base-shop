@@ -5,6 +5,12 @@
 - **Node.js** v20 or newer
 - **pnpm** v10 (repo uses pnpm@10.12.1)
 
+For a one-liner that scaffolds a shop, validates the environment, and starts the dev server:
+
+```bash
+pnpm quickstart-shop --id demo --theme base --template template-app --payment stripe --shipping ups
+```
+
 ## 1. Create a shop
 
 ```bash

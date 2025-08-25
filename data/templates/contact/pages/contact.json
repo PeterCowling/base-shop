@@ -1,0 +1,10 @@
+{
+  "slug": "contact",
+  "title": { "en": "Contact" },
+  "components": [
+    {
+      "type": "ContactFormWithMap",
+      "mapSrc": "https://maps.example.com"
+    }
+  ]
+}

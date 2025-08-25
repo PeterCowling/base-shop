@@ -3,12 +3,7 @@
 // and starts the dev server in one step.
 
 import { execSync, spawnSync } from "node:child_process";
-import {
-  readdirSync,
-  readFileSync,
-  writeFileSync,
-  existsSync,
-} from "node:fs";
+import { readdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
@@ -18,12 +13,10 @@ import {
   type CreateShopOptions,
 } from "@acme/platform-core/createShop";
 import { validateShopName } from "@acme/platform-core/shops";
-import {
-  validateShopEnv,
-  readEnvFile,
-} from "@acme/platform-core/configurator";
+import { validateShopEnv, readEnvFile } from "@acme/platform-core/configurator";
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
 import { seedShop } from "./seedShop";
+import { applyPageTemplate } from "./apply-page-template";
 import { generateThemeTokens } from "./generate-theme";
 
 /** Ensure Node.js and pnpm meet minimum requirements. */
@@ -114,16 +107,14 @@ function listDirNames(path: URL): string[] {
 }
 
 /** Load default navItems and pages from the template's shop.json if available. */
-function loadTemplateDefaults(
-  template: string,
-): {
+function loadTemplateDefaults(template: string): {
   navItems?: CreateShopOptions["navItems"];
   pages?: CreateShopOptions["pages"];
 } {
   try {
     const raw = readFileSync(
       new URL(`../../packages/${template}/shop.json`, import.meta.url),
-      "utf8",
+      "utf8"
     );
     const data = JSON.parse(raw);
     const defaults: {
@@ -148,6 +139,7 @@ interface Flags {
   brand?: string;
   tokens?: string;
   autoEnv?: boolean;
+  pagesTemplate?: string;
 }
 
 function parseArgs(argv: string[]): Flags {
@@ -187,6 +179,9 @@ function parseArgs(argv: string[]): Flags {
           break;
         case "tokens":
           flags.tokens = val;
+          break;
+        case "pages-template":
+          flags.pagesTemplate = val;
           break;
         default:
           console.error(`Unknown option --${key}`);
@@ -305,6 +300,16 @@ async function main(): Promise<void> {
     seedShop(prefixedId);
   }
 
+  if (args.pagesTemplate) {
+    const templates = args.pagesTemplate
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+    for (const t of templates) {
+      await applyPageTemplate(prefixedId, t);
+    }
+  }
+
   if (args.autoEnv) {
     const envVars = new Set<string>();
     const providerMap = new Map<string, readonly string[]>();
@@ -328,7 +333,7 @@ async function main(): Promise<void> {
       envPath,
       Object.entries(existing)
         .map(([k, v]) => `${k}=${v}`)
-        .join("\n") + "\n",
+        .join("\n") + "\n"
     );
   }
 

@@ -1,0 +1,16 @@
+{
+  "slug": "home",
+  "title": { "en": "Home" },
+  "components": [
+    {
+      "type": "HeroBanner",
+      "slides": [
+        {
+          "src": "/hero/slide-1.jpg",
+          "headlineKey": "hero.slide1.headline",
+          "ctaKey": "hero.cta"
+        }
+      ]
+    }
+  ]
+}

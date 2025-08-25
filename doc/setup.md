@@ -12,6 +12,7 @@ pnpm quickstart-shop --id demo --theme base --template template-app --payment st
 ```
 
 Add `--seed` to copy sample products and inventory so the shop is immediately populated.
+Use `--pages-template <name>` to scaffold preset page layouts and push them to the CMS. Built-in templates include `hero`, `product-grid` and `contact`.
 
 ## 1. Create a shop
 
@@ -50,6 +51,7 @@ pnpm init-shop --brand "#663399" --tokens ./my-tokens.json
 To populate the new shop with sample data, run `pnpm init-shop --seed`.
 Use `pnpm init-shop --defaults` to apply preset nav links and pages from the
 selected template without prompting for them.
+To scaffold predefined page layouts, pass `--pages-template <name>` (e.g. `hero`, `product-grid`, `contact`).
 Add `--auto-env` to skip prompts for provider environment variables. The wizard writes
 `TODO_*` placeholders to the new shop's `.env` file; replace them with real
 secrets before deploying.
@@ -70,6 +72,7 @@ pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--p
 - `--name` – display name for the shop.
 - `--logo` – URL of the shop logo.
 - `--seed` – copy sample `products.json` and `inventory.json` into the new shop.
+- `--pages-template` – copy predefined page layouts from `data/templates/<name>/pages` and persist them via the CMS (templates: `hero`, `product-grid`, `contact`).
 - `--contact` – contact email for the shop.
 - `--config` – path to a JSON or TS file exporting options. Values from the file prefill the wizard and skip prompts.
 

@@ -1,0 +1,11 @@
+{
+  "slug": "products",
+  "title": { "en": "Products" },
+  "components": [
+    {
+      "type": "ProductGrid",
+      "mode": "collection",
+      "quickView": true
+    }
+  ]
+}

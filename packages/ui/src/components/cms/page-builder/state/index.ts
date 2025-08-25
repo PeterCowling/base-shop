@@ -4,7 +4,9 @@ import { add, move, remove, duplicate, update, resize, set, setGridCols } from "
 import { undo, redo } from "./history";
 
 export type { Action } from "./actions";
-export { historyStateSchema } from "./schema";
+export { componentMetadataSchema } from "./component.schema";
+export { layoutSchema } from "./layout.schema";
+export { historyStateSchema } from "./history.schema";
 
 export function reducer(state: HistoryState, action: Action): HistoryState {
   switch (action.type) {

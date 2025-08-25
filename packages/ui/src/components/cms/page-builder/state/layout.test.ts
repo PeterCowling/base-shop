@@ -1,5 +1,5 @@
 import { add, move, remove, duplicate, update, resize, set, setGridCols } from "./layout";
-import { historyStateSchema } from "./schema";
+import { historyStateSchema } from ".";
 import type { PageComponent, HistoryState } from "@acme/types";
 
 describe("layout actions", () => {

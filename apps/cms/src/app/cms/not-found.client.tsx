@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 export default function CmsNotFound() {
   const pathname = usePathname();
-  const segments = pathname.split("/").filter(Boolean);
+  const segments = pathname?.split("/").filter(Boolean) ?? [];
   const shopIndex = segments.indexOf("shop");
   const shop = shopIndex >= 0 ? segments[shopIndex + 1] : null;
   const href = shop ? `/cms/shop/${shop}` : "/cms";

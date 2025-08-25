@@ -26,10 +26,9 @@ process.env.CART_COOKIE_SECRET = "test";
 /* 2.  Imports                                                                */
 /* -------------------------------------------------------------------------- */
 
-import type { Account, Profile, Session, User } from "next-auth";
+import type { Account, Profile, Session, User, NextAuthOptions } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import type { CredentialsConfig } from "next-auth/providers/credentials";
-import { authOptions } from "../src/auth/options";
 
 /* -------------------------------------------------------------------------- */
 /* 3.  Helpers                                                                */
@@ -47,19 +46,22 @@ function isCredentialsProvider(p: unknown): p is CredentialsConfig {
   );
 }
 
-const provider = authOptions.providers.find(isCredentialsProvider);
-if (!provider) {
-  throw new Error("Credentials provider not found in authOptions");
-}
+let authOptions: NextAuthOptions;
+let authorize: (credentials: unknown, req: Record<string, never>) => unknown;
 
-/**
- * `NextAuth` nests provider-specific callbacks under `options`.
- * We bind its `this` value to the provider to mimic production.
- */
-// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-const authorize = (
-  provider as unknown as { options: { authorize: Function } }
-).options.authorize.bind(provider);
+beforeAll(async () => {
+  (process.env as Record<string, string>).NODE_ENV = "development";
+  const mod = await import("../src/auth/options");
+  authOptions = mod.authOptions;
+  const provider = authOptions.providers.find(isCredentialsProvider);
+  if (!provider) {
+    throw new Error("Credentials provider not found in authOptions");
+  }
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  authorize = (
+    provider as unknown as { options: { authorize: Function } }
+  ).options.authorize.bind(provider);
+});
 
 /* -------------------------------------------------------------------------- */
 /* 4.  Tests                                                                  */

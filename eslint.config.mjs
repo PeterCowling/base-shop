@@ -53,9 +53,6 @@ export default [
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: ["./tsconfig.json", "./packages/email/tsconfig.eslint.json"],
-        projectService: true,
-        allowDefaultProject: true,
         sourceType: "module",
         ecmaVersion: "latest",
         ecmaFeatures: { jsx: true },

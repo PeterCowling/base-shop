@@ -59,141 +59,129 @@ export default function ContentPanel({
     <div className="space-y-2">
       {("minItems" in component || "maxItems" in component) && (
         <>
-          <Input
-            label={
-              <span className="flex items-center gap-1">
-                Min Items
-                <Tooltip text="Minimum number of items">?</Tooltip>
-              </span>
-            }
-            type="number"
-            value={comp.minItems ?? ""}
-            onChange={(e) => {
-              const val =
-                e.target.value === "" ? undefined : Number(e.target.value);
-              if (val === undefined) {
-                handleInput("minItems", undefined);
-                return;
-              }
-              const max = comp.maxItems;
-              const patch: Partial<PageComponent> = { minItems: val };
-              if (max !== undefined && val > max) {
-                patch.maxItems = val;
-              }
-              onChange(patch);
-            }}
-            min={0}
-            max={comp.maxItems ?? undefined}
-            error={minItemsError}
-          />
-          <Input
-            label={
-              <span className="flex items-center gap-1">
-                Max Items
-                <Tooltip text="Maximum number of items">?</Tooltip>
-              </span>
-            }
-            type="number"
-            value={comp.maxItems ?? ""}
-            onChange={(e) => {
-              const val =
-                e.target.value === "" ? undefined : Number(e.target.value);
-              if (val === undefined) {
-                handleInput("maxItems", undefined);
-                return;
-              }
-              const min = comp.minItems;
-              const patch: Partial<PageComponent> = { maxItems: val };
-              if (min !== undefined && val < min) {
-                patch.minItems = val;
-              }
-              onChange(patch);
-            }}
-            min={comp.minItems ?? 0}
-            error={maxItemsError}
-          />
+          <div className="flex items-center gap-1">
+            <Input
+              label="Min Items"
+              type="number"
+              value={comp.minItems ?? ""}
+              onChange={(e) => {
+                const val =
+                  e.target.value === "" ? undefined : Number(e.target.value);
+                if (val === undefined) {
+                  handleInput("minItems", undefined);
+                  return;
+                }
+                const max = comp.maxItems;
+                const patch: Partial<PageComponent> = { minItems: val };
+                if (max !== undefined && val > max) {
+                  patch.maxItems = val;
+                }
+                onChange(patch);
+              }}
+              min={0}
+              max={comp.maxItems ?? undefined}
+              error={minItemsError}
+            />
+            <Tooltip text="Minimum number of items">?</Tooltip>
+          </div>
+          <div className="flex items-center gap-1">
+            <Input
+              label="Max Items"
+              type="number"
+              value={comp.maxItems ?? ""}
+              onChange={(e) => {
+                const val =
+                  e.target.value === "" ? undefined : Number(e.target.value);
+                if (val === undefined) {
+                  handleInput("maxItems", undefined);
+                  return;
+                }
+                const min = comp.minItems;
+                const patch: Partial<PageComponent> = { maxItems: val };
+                if (min !== undefined && val < min) {
+                  patch.minItems = val;
+                }
+                onChange(patch);
+              }}
+              min={comp.minItems ?? 0}
+              error={maxItemsError}
+            />
+            <Tooltip text="Maximum number of items">?</Tooltip>
+          </div>
         </>
       )}
       {("desktopItems" in component ||
         "tabletItems" in component ||
         "mobileItems" in component) && (
         <>
-          <Input
-            label={
-              <span className="flex items-center gap-1">
-                Desktop Items
-                <Tooltip text="Items shown on desktop">?</Tooltip>
-              </span>
-            }
-            type="number"
-            value={comp.desktopItems ?? ""}
-            onChange={(e) =>
-              handleInput(
-                "desktopItems",
-                e.target.value === "" ? undefined : Number(e.target.value)
-              )
-            }
-            min={0}
-            error={desktopItemsError}
-          />
-          <Input
-            label={
-              <span className="flex items-center gap-1">
-                Tablet Items
-                <Tooltip text="Items shown on tablet">?</Tooltip>
-              </span>
-            }
-            type="number"
-            value={comp.tabletItems ?? ""}
-            onChange={(e) =>
-              handleInput(
-                "tabletItems",
-                e.target.value === "" ? undefined : Number(e.target.value)
-              )
-            }
-            min={0}
-            error={tabletItemsError}
-          />
-          <Input
-            label={
-              <span className="flex items-center gap-1">
-                Mobile Items
-                <Tooltip text="Items shown on mobile">?</Tooltip>
-              </span>
-            }
-            type="number"
-            value={comp.mobileItems ?? ""}
-            onChange={(e) =>
-              handleInput(
-                "mobileItems",
-                e.target.value === "" ? undefined : Number(e.target.value)
-              )
-            }
-            min={0}
-            error={mobileItemsError}
-          />
+          <div className="flex items-center gap-1">
+            <Input
+              label="Desktop Items"
+              type="number"
+              value={comp.desktopItems ?? ""}
+              onChange={(e) =>
+                handleInput(
+                  "desktopItems",
+                  e.target.value === "" ? undefined : Number(e.target.value)
+                )
+              }
+              min={0}
+              error={desktopItemsError}
+            />
+            <Tooltip text="Items shown on desktop">?</Tooltip>
+          </div>
+          <div className="flex items-center gap-1">
+            <Input
+              label="Tablet Items"
+              type="number"
+              value={comp.tabletItems ?? ""}
+              onChange={(e) =>
+                handleInput(
+                  "tabletItems",
+                  e.target.value === "" ? undefined : Number(e.target.value)
+                )
+              }
+              min={0}
+              error={tabletItemsError}
+            />
+            <Tooltip text="Items shown on tablet">?</Tooltip>
+          </div>
+          <div className="flex items-center gap-1">
+            <Input
+              label="Mobile Items"
+              type="number"
+              value={comp.mobileItems ?? ""}
+              onChange={(e) =>
+                handleInput(
+                  "mobileItems",
+                  e.target.value === "" ? undefined : Number(e.target.value)
+                )
+              }
+              min={0}
+              error={mobileItemsError}
+            />
+            <Tooltip text="Items shown on mobile">?</Tooltip>
+          </div>
         </>
       )}
       {"columns" in component && (
-        <Input
-          label={
-            <span className="flex items-center gap-1">
-              Columns
-              <Tooltip text="Number of columns">?</Tooltip>
-            </span>
-          }
-          type="number"
-          value={comp.columns ?? ""}
-          onChange={(e) =>
-            handleInput(
-              "columns",
-              e.target.value === "" ? undefined : Number(e.target.value)
-            )
-          }
-          min={comp.minItems}
-          max={comp.maxItems}
-          error={columnsError}
-        />
+        <div className="flex items-center gap-1">
+          <Input
+            label="Columns"
+            type="number"
+            value={comp.columns ?? ""}
+            onChange={(e) =>
+              handleInput(
+                "columns",
+                e.target.value === "" ? undefined : Number(e.target.value)
+              )
+            }
+            min={comp.minItems}
+            max={comp.maxItems}
+            error={columnsError}
+          />
+          <Tooltip text="Number of columns">?</Tooltip>
+        </div>
       )}
       <Suspense fallback={<p className="text-muted text-sm">Loading...</p>}>
         {Specific ? (

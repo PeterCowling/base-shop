@@ -1,13 +1,11 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
+import { authEnvSchema } from "./auth";
+import { cmsEnvSchema } from "./cms";
+import { emailEnvSchema } from "./email";
 const isProd = process.env.NODE_ENV === "production";
-export const coreEnvBaseSchema = z
-  .object({
-    NEXTAUTH_SECRET: isProd
-      ? z.string().min(1)
-      : z.string().min(1).default("dev-nextauth-secret"),
-    PREVIEW_TOKEN_SECRET: z.string().optional(),
-    UPGRADE_PREVIEW_TOKEN_SECRET: z.string().optional(),
+const baseEnvSchema = z
+    .object({
     NODE_ENV: z.enum(["development", "test", "production"]).optional(),
     OUTPUT_EXPORT: z.coerce.boolean().optional(),
     NEXT_PUBLIC_PHASE: z.string().optional(),
@@ -15,25 +13,12 @@ export const coreEnvBaseSchema = z
     NEXT_PUBLIC_SHOP_ID: z.string().optional(),
     SHOP_CODE: z.string().optional(),
     CART_COOKIE_SECRET: isProd
-      ? z.string().min(1)
-      : z.string().min(1).default("dev-cart-secret"),
+        ? z.string().min(1)
+        : z.string().min(1).default("dev-cart-secret"),
     CART_TTL: z.coerce.number().optional(),
-    CMS_SPACE_URL: z.string().url().optional(),
-    CMS_ACCESS_TOKEN: z.string().optional(),
     CHROMATIC_PROJECT_TOKEN: z.string().optional(),
-    GMAIL_USER: z.string().optional(),
-    GMAIL_PASS: z.string().optional(),
     GA_API_SECRET: z.string().optional(),
-    SMTP_URL: z.string().url().optional(),
-    CAMPAIGN_FROM: z.string().optional(),
-    EMAIL_PROVIDER: z.enum(["sendgrid", "resend", "smtp"]).default("smtp"),
-    SENDGRID_API_KEY: z.string().optional(),
-    SENDGRID_MARKETING_KEY: z.string().optional(),
-    RESEND_API_KEY: z.string().optional(),
-    EMAIL_BATCH_SIZE: z.coerce.number().optional(),
-    EMAIL_BATCH_DELAY_MS: z.coerce.number().optional(),
     DATABASE_URL: z.string().optional(),
-    SANITY_API_VERSION: z.string().optional(),
     CLOUDFLARE_ACCOUNT_ID: z.string().optional(),
     CLOUDFLARE_API_TOKEN: z.string().optional(),
     LUXURY_FEATURES_RA_TICKETING: z.coerce.boolean().optional(),
@@ -42,101 +27,94 @@ export const coreEnvBaseSchema = z
     LUXURY_FEATURES_TRACKING_DASHBOARD: z.coerce.boolean().optional(),
     LUXURY_FEATURES_RETURNS: z.coerce.boolean().optional(),
     DEPOSIT_RELEASE_ENABLED: z
-      .string()
-      .refine((v) => v === "true" || v === "false", {
+        .string()
+        .refine((v) => v === "true" || v === "false", {
         message: "must be true or false",
-      })
-      .transform((v) => v === "true")
-      .optional(),
+    })
+        .transform((v) => v === "true")
+        .optional(),
     DEPOSIT_RELEASE_INTERVAL_MS: z
-      .string()
-      .refine((v) => !Number.isNaN(Number(v)), {
+        .string()
+        .refine((v) => !Number.isNaN(Number(v)), {
         message: "must be a number",
-      })
-      .transform((v) => Number(v))
-      .optional(),
+    })
+        .transform((v) => Number(v))
+        .optional(),
     REVERSE_LOGISTICS_ENABLED: z
-      .string()
-      .refine((v) => v === "true" || v === "false", {
+        .string()
+        .refine((v) => v === "true" || v === "false", {
         message: "must be true or false",
-      })
-      .transform((v) => v === "true")
-      .optional(),
+    })
+        .transform((v) => v === "true")
+        .optional(),
     REVERSE_LOGISTICS_INTERVAL_MS: z
-      .string()
-      .refine((v) => !Number.isNaN(Number(v)), {
+        .string()
+        .refine((v) => !Number.isNaN(Number(v)), {
         message: "must be a number",
-      })
-      .transform((v) => Number(v))
-      .optional(),
+    })
+        .transform((v) => Number(v))
+        .optional(),
     LATE_FEE_ENABLED: z
-      .string()
-      .refine((v) => v === "true" || v === "false", {
+        .string()
+        .refine((v) => v === "true" || v === "false", {
         message: "must be true or false",
-      })
-      .transform((v) => v === "true")
-      .optional(),
+    })
+        .transform((v) => v === "true")
+        .optional(),
     LATE_FEE_INTERVAL_MS: z
-      .string()
-      .refine((v) => !Number.isNaN(Number(v)), {
+        .string()
+        .refine((v) => !Number.isNaN(Number(v)), {
         message: "must be a number",
-      })
-      .transform((v) => Number(v))
-      .optional(),
+    })
+        .transform((v) => Number(v))
+        .optional(),
     OPENAI_API_KEY: z.string().optional(),
-    SESSION_SECRET: isProd
-      ? z.string().min(1)
-      : z.string().min(1).default("dev-session-secret"),
-    COOKIE_DOMAIN: z.string().optional(),
-    LOGIN_RATE_LIMIT_REDIS_URL: z.string().url().optional(),
-    LOGIN_RATE_LIMIT_REDIS_TOKEN: z.string().optional(),
     NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
     STOCK_ALERT_RECIPIENTS: z.string().optional(),
     STOCK_ALERT_WEBHOOK: z.string().url().optional(),
     STOCK_ALERT_DEFAULT_THRESHOLD: z.coerce.number().optional(),
     STOCK_ALERT_RECIPIENT: z.string().email().optional(),
-    SESSION_STORE: z.enum(["memory", "redis"]).optional(),
-    UPSTASH_REDIS_REST_URL: z.string().url().optional(),
-    UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
-  })
-  .passthrough();
+})
+    .passthrough();
+export const coreEnvBaseSchema = authEnvSchema
+    .merge(cmsEnvSchema)
+    .merge(emailEnvSchema)
+    .merge(baseEnvSchema);
 export function depositReleaseEnvRefinement(env, ctx) {
-  for (const [key, value] of Object.entries(env)) {
-    const isDeposit = key.startsWith("DEPOSIT_RELEASE_");
-    const isReverse = key.startsWith("REVERSE_LOGISTICS_");
-    const isLateFee = key.startsWith("LATE_FEE_");
-    if (!isDeposit && !isReverse && !isLateFee) continue;
-    if (
-      key === "DEPOSIT_RELEASE_ENABLED" ||
-      key === "DEPOSIT_RELEASE_INTERVAL_MS" ||
-      key === "REVERSE_LOGISTICS_ENABLED" ||
-      key === "REVERSE_LOGISTICS_INTERVAL_MS" ||
-      key === "LATE_FEE_ENABLED" ||
-      key === "LATE_FEE_INTERVAL_MS"
-    )
-      continue;
-    if (key.includes("ENABLED")) {
-      if (value !== "true" && value !== "false") {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: [key],
-          message: "must be true or false",
-        });
-      }
-    } else if (key.includes("INTERVAL_MS")) {
-      if (Number.isNaN(Number(value))) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: [key],
-          message: "must be a number",
-        });
-      }
+    for (const [key, value] of Object.entries(env)) {
+        const isDeposit = key.startsWith("DEPOSIT_RELEASE_");
+        const isReverse = key.startsWith("REVERSE_LOGISTICS_");
+        const isLateFee = key.startsWith("LATE_FEE_");
+        if (!isDeposit && !isReverse && !isLateFee)
+            continue;
+        if (key === "DEPOSIT_RELEASE_ENABLED" ||
+            key === "DEPOSIT_RELEASE_INTERVAL_MS" ||
+            key === "REVERSE_LOGISTICS_ENABLED" ||
+            key === "REVERSE_LOGISTICS_INTERVAL_MS" ||
+            key === "LATE_FEE_ENABLED" ||
+            key === "LATE_FEE_INTERVAL_MS")
+            continue;
+        if (key.includes("ENABLED")) {
+            if (value !== "true" && value !== "false") {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    path: [key],
+                    message: "must be true or false",
+                });
+            }
+        }
+        else if (key.includes("INTERVAL_MS")) {
+            if (Number.isNaN(Number(value))) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    path: [key],
+                    message: "must be a number",
+                });
+            }
+        }
     }
-  }
 }
-export const coreEnvSchema = coreEnvBaseSchema.superRefine(
-  depositReleaseEnvRefinement
-);
+export const coreEnvSchema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
 const parsed = coreEnvSchema.safeParse(process.env);
 // When validation fails, provide a detailed, human-readable report of each
 // invalid variable.  The default `ZodError.format()` returns a nested object
@@ -145,14 +123,13 @@ const parsed = coreEnvSchema.safeParse(process.env);
 // path and message for every issue.  The "(root)" label is used when no
 // specific path is provided.
 if (!parsed.success) {
-  console.error("❌ Invalid core environment variables:");
-  parsed.error.issues.forEach((issue) => {
-    const path =
-      issue.path && issue.path.length > 0 ? issue.path.join(".") : "(root)";
-    console.error(`  • ${path}: ${issue.message}`);
-  });
-  // Uncomment the next line to log the full formatted error object for debugging:
-  // console.error(JSON.stringify(parsed.error.format(), null, 2));
-  throw new Error("Invalid core environment variables");
+    console.error("❌ Invalid core environment variables:");
+    parsed.error.issues.forEach((issue) => {
+        const path = issue.path && issue.path.length > 0 ? issue.path.join(".") : "(root)";
+        console.error(`  • ${path}: ${issue.message}`);
+    });
+    // Uncomment the next line to log the full formatted error object for debugging:
+    // console.error(JSON.stringify(parsed.error.format(), null, 2));
+    throw new Error("Invalid core environment variables");
 }
 export const coreEnv = parsed.data;

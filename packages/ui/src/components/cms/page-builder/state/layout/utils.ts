@@ -1,5 +1,5 @@
 import type { PageComponent } from "@acme/types";
-import { ulid } from "ulid";
+import { ulid as generateId } from "ulid";
 
 export function addAt(list: PageComponent[], index: number, item: PageComponent) {
   return [...list.slice(0, index), item, ...list.slice(index)];
@@ -49,7 +49,7 @@ export function removeComponent(list: PageComponent[], id: string): PageComponen
 }
 
 export function cloneWithNewIds(component: PageComponent): PageComponent {
-  const copy: PageComponent = { ...component, id: ulid() };
+  const copy: PageComponent = { ...component, id: generateId() };
   const childList = (component as { children?: PageComponent[] }).children;
   if (Array.isArray(childList)) {
     (copy as { children?: PageComponent[] }).children = childList.map((child) =>

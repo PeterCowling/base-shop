@@ -15,3 +15,4 @@ export declare function validateEnvFile(file: string): void;
  * @param shop Identifier of the shop whose environment should be validated.
  */
 export declare function validateShopEnv(shop: string): void;
+export declare const pluginEnvVars: Record<string, readonly string[]>;

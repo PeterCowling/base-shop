@@ -29,8 +29,9 @@ pnpm init-shop
 - navigation links (label + URL pairs)
 - basic pages (slug and title) to scaffold
 - theme token overrides (`token=value` pairs)
+ - environment variables like Stripe keys and CMS credentials
 
-After answering the prompts the wizard scaffolds `apps/shop-<id>` and generates an `.env` file inside the new app.
+After answering the prompts the wizard scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
 
 To populate the new shop with sample data, run `pnpm init-shop --seed`.
 
@@ -84,33 +85,16 @@ Theme token override (key=value, blank to finish):
 Scaffolded apps/shop-demo
 ```
 
-## 2. Configure environment variables
+## 2. Review environment variables
 
-Edit `apps/shop-<id>/.env` to replace placeholder secrets.
+The wizard captures common environment variables and writes them to `apps/shop-<id>/.env`.
 
 ```bash
 pnpm validate-env <id>
 ```
 
 `validate-env` parses the `.env` file and exits with an error if any required variable is missing or malformed.
-Lines that have no value after the equals sign (e.g. `MY_VAR=`) are treated as placeholders and ignored during validation, so you can leave optional variables empty until you have real credentials.
-
-The wizard scaffolds placeholders for common variables (and generates random values for `NEXTAUTH_SECRET`, `SESSION_SECRET` and `PREVIEW_TOKEN_SECRET`):
-
-- `STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` / `STRIPE_WEBHOOK_SECRET` – Stripe API keys and webhook signature secret
-- `CART_COOKIE_SECRET` – secret for signing cart cookies (required)
-- `CART_TTL` – cart expiration in seconds (default 30 days)
-- `NEXTAUTH_SECRET` – session encryption secret used by NextAuth
-- `SESSION_SECRET` – secret used to sign server-side sessions
-- `PREVIEW_TOKEN_SECRET` – token used for preview URLs
-- `CMS_SPACE_URL` / `CMS_ACCESS_TOKEN` – headless CMS credentials
-- `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_TOKEN` – Sanity blog configuration
-- `GMAIL_USER`, `GMAIL_PASS` – credentials for email sending
-- `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` – Cloudflare credentials for provisioning custom domains (server-side only)
-- `DEPOSIT_RELEASE_ENABLED`, `DEPOSIT_RELEASE_INTERVAL_MS` – control automated deposit refunds (`true`/`false` to enable, interval in milliseconds; default disabled, 60 minutes)
-
-Leave any value blank if the integration isn't needed. You can update the `.env`
-file later and rerun `pnpm validate-env <id>` to confirm everything is set up.
+You can edit the file later and rerun `pnpm validate-env <id>` to confirm everything is set up.
 
 ## 3. Run the shop
 

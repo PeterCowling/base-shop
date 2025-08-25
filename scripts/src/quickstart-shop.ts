@@ -3,17 +3,19 @@
 // and starts the dev server in one step.
 
 import { execSync, spawnSync } from "node:child_process";
-import { readdirSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
 import {
   createShop,
+  loadBaseTokens,
   type CreateShopOptions,
 } from "@acme/platform-core/createShop";
 import { validateShopName } from "@acme/platform-core/shops";
 import { validateShopEnv } from "@acme/platform-core/configurator";
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
 import { seedShop } from "./seedShop";
+import { generateThemeTokens } from "./generate-theme";
 
 /** Ensure Node.js and pnpm meet minimum requirements. */
 function ensureRuntime(): void {
@@ -109,6 +111,8 @@ interface Flags {
   payment?: string[];
   shipping?: string[];
   seed?: boolean;
+  brand?: string;
+  tokens?: string;
 }
 
 function parseArgs(argv: string[]): Flags {
@@ -138,6 +142,12 @@ function parseArgs(argv: string[]): Flags {
           break;
         case "shipping":
           flags.shipping = val ? val.split(",").map((s) => s.trim()) : [];
+          break;
+        case "brand":
+          flags.brand = val;
+          break;
+        case "tokens":
+          flags.tokens = val;
           break;
         default:
           console.error(`Unknown option --${key}`);
@@ -206,6 +216,28 @@ async function main(): Promise<void> {
     );
   }
 
+  const themeOverrides: Record<string, string> = {};
+  if (args.brand) {
+    try {
+      const base = loadBaseTokens();
+      const tokens = generateThemeTokens(args.brand);
+      for (const [k, v] of Object.entries(tokens)) {
+        if (base[k] !== v) themeOverrides[k] = v;
+      }
+    } catch {
+      console.error("Invalid color format.");
+    }
+  }
+  if (args.tokens) {
+    try {
+      const content = readFileSync(args.tokens, "utf8");
+      const json = JSON.parse(content) as Record<string, string>;
+      Object.assign(themeOverrides, json);
+    } catch {
+      console.error("Failed to load token overrides from file.");
+    }
+  }
+
   const options = {
     type: "sale",
     theme,
@@ -213,6 +245,10 @@ async function main(): Promise<void> {
     payment,
     shipping,
   } as unknown as CreateShopOptions;
+
+  if (Object.keys(themeOverrides).length > 0) {
+    options.themeOverrides = themeOverrides;
+  }
 
   const prefixedId = `shop-${shopId}`;
   try {

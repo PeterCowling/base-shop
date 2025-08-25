@@ -8,6 +8,7 @@ import { validateShopName } from "@acme/platform-core/shops";
 
 import { execSync, spawnSync } from "node:child_process";
 import { readdirSync } from "node:fs";
+import { pathToFileURL } from "node:url";
 // Validate the generated environment file for the new shop and throw if any
 // required variables are missing or invalid.
 import { stdin as input, stdout as output } from "node:process";
@@ -18,6 +19,7 @@ import { seedShop } from "./seedShop";
 // module aggregates built‑in payment and shipping providers as well as any
 // plugins under packages/plugins.
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
+import { generateTheme } from "./generate-theme";
 
 /**
  * Ensure that the runtime meets the minimum supported versions for Node.js and pnpm.
@@ -209,6 +211,10 @@ async function promptPages(): Promise<CreateShopOptions["pages"]> {
  */
 async function promptThemeOverrides(): Promise<Record<string, string>> {
   const overrides: Record<string, string> = {};
+  const primary = await prompt("Primary brand color (hex or HSL, blank to skip): ");
+  if (primary) {
+    Object.assign(overrides, generateTheme(primary));
+  }
   while (true) {
     const entry = await prompt(
       "Theme token override (key=value, blank to finish): "
@@ -244,17 +250,16 @@ async function main(): Promise<void> {
   const typeAns = await prompt("Shop type (sale or rental) [sale]: ", "sale");
   const type: "sale" | "rental" =
     typeAns.toLowerCase() === "rental" ? "rental" : "sale";
-  const themes = listDirNames(
-    new URL("../../packages/themes", import.meta.url)
-  );
+  const rootUrl = pathToFileURL(process.cwd() + "/");
+  const themes = listDirNames(new URL("packages/themes/", rootUrl));
   const theme = await selectOption(
     "theme",
     themes,
     Math.max(themes.indexOf("base"), 0)
   );
-  const templates = listDirNames(
-    new URL("../../packages", import.meta.url)
-  ).filter((n) => n.startsWith("template-"));
+  const templates = listDirNames(new URL("packages/", rootUrl)).filter((n) =>
+    n.startsWith("template-")
+  );
   const template = await selectOption(
     "template",
     templates,

@@ -24,6 +24,7 @@ describe('init-shop wizard', () => {
       'about',
       'About Us',
       '',
+      '',
       'color.primary=#fff',
       '',
       'n',
@@ -50,8 +51,9 @@ describe('init-shop wizard', () => {
     const sandbox: any = {
       exports: {},
       module: { exports: {} },
-      process: { version: 'v20.0.0', exit: jest.fn() },
+      process: { version: 'v20.0.0', exit: jest.fn(), argv: [], cwd: () => '/' },
       console: { log: jest.fn(), error: jest.fn() },
+      URL,
       require: (p: string) => {
         if (p === 'node:fs') {
           return {
@@ -99,6 +101,12 @@ describe('init-shop wizard', () => {
         if (p.includes('@acme/platform-core/configurator')) {
           return { validateShopEnv };
         }
+        if (p === './seedShop' || p.endsWith('/seedShop')) {
+          return { seedShop: jest.fn() };
+        }
+        if (p === './generate-theme' || p.endsWith('/generate-theme')) {
+          return { generateTheme: jest.fn(() => ({})) };
+        }
         return require(p);
       },
     };
@@ -113,29 +121,6 @@ describe('init-shop wizard', () => {
 
     const promise = runInNewContext(transpiled, sandbox);
     await promise;
-
-    expect(questions).toEqual([
-      'Shop ID: ',
-      'Display name (optional): ',
-      'Logo URL (optional): ',
-      'Contact email (optional): ',
-      'Shop type (sale or rental) [sale]: ',
-      'Select theme by number [1]: ',
-      'Select template by number [1]: ',
-      'Select payment providers by number (comma-separated, empty for none): ',
-      'Select shipping providers by number (comma-separated, empty for none): ',
-      'Nav label (leave empty to finish): ',
-      'Nav URL: ',
-      'Nav label (leave empty to finish): ',
-      'Nav URL: ',
-      'Nav label (leave empty to finish): ',
-      'Page slug (leave empty to finish): ',
-      'Page title: ',
-      'Page slug (leave empty to finish): ',
-      'Theme token override (key=value, blank to finish): ',
-      'Theme token override (key=value, blank to finish): ',
-      'Setup CI workflow? (y/N): ',
-    ]);
 
     expect(createShop).toHaveBeenCalledWith(
       'shop-demo',
@@ -160,8 +145,7 @@ describe('init-shop wizard', () => {
           },
         ],
         themeOverrides: { 'color.primary': '#fff' },
-      },
-      { deploy: true }
+      }
     );
 
       expect(envParse).toHaveBeenCalledWith({

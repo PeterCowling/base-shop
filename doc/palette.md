@@ -12,3 +12,13 @@ The base and dark themes share a minimal colour system built around WCAG AA cont
 | `--color-info` / `--color-info-fg` | `210 90% 96%` / `210 90% 35%` | `210 90% 35%` / `210 90% 96%` | 6.31, 6.31 |
 
 All contrast ratios were measured using the relative luminance method and meet WCAG AA for normal text.
+
+## Theme generator
+
+Use the `generate-theme` script to derive token overrides from a brand color:
+
+```bash
+pnpm exec tsx scripts/src/generate-theme.ts "#ff5733"
+```
+
+Integrating with `init-shop` allows providing the color during scaffolding. The resulting overrides are stored in `data/shops/<id>/shop.json` under `themeOverrides`.

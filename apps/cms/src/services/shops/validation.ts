@@ -6,6 +6,11 @@ import {
   aiCatalogFieldSchema,
 } from "@acme/types";
 import { shopSchema, type ShopForm } from "../../actions/schemas";
+import {
+  parseFilterMappings,
+  parsePriceOverrides,
+  parseLocaleOverrides,
+} from "./formData";
 
 export type { ShopForm };
 
@@ -15,35 +20,6 @@ export function parseShopForm(formData: FormData): {
 } {
   const themeDefaultsRaw = formData.get("themeDefaults") as string | null;
   const themeOverridesRaw = formData.get("themeOverrides") as string | null;
-  const filterKeys = formData.getAll("filterMappingsKey").map(String);
-  const filterValues = formData.getAll("filterMappingsValue").map(String);
-  const filterMappings = JSON.stringify(
-    Object.fromEntries(
-      filterKeys
-        .map((k, i) => [k.trim(), filterValues[i]?.trim() ?? ""])
-        .filter(([k, v]) => k && v),
-    ),
-  );
-  const priceKeys = formData.getAll("priceOverridesKey").map(String);
-  const priceValues = formData
-    .getAll("priceOverridesValue")
-    .map((v) => Number(v));
-  const priceOverrides = JSON.stringify(
-    Object.fromEntries(
-      priceKeys
-        .map((k, i) => [k.trim(), priceValues[i]])
-        .filter(([k, v]) => k && !Number.isNaN(v)),
-    ),
-  );
-  const localeKeys = formData.getAll("localeOverridesKey").map(String);
-  const localeValues = formData.getAll("localeOverridesValue").map(String);
-  const localeOverrides = JSON.stringify(
-    Object.fromEntries(
-      localeKeys
-        .map((k, i) => [k.trim(), localeValues[i]?.trim() ?? ""])
-        .filter(([k, v]) => k && v),
-    ),
-  );
 
   const entries = Array.from(
     formData as unknown as Iterable<[string, FormDataEntryValue]>
@@ -64,9 +40,9 @@ export function parseShopForm(formData: FormData): {
     themeDefaults: themeDefaultsRaw ?? "{}",
     themeOverrides: themeOverridesRaw ?? "{}",
     trackingProviders: formData.getAll("trackingProviders"),
-    filterMappings,
-    priceOverrides,
-    localeOverrides,
+    filterMappings: parseFilterMappings(formData),
+    priceOverrides: parsePriceOverrides(formData),
+    localeOverrides: parseLocaleOverrides(formData),
   });
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };

@@ -19,6 +19,16 @@
     "clean": "rimraf dist *.tsbuildinfo"
   },
   "exports": {
+    "./settings": {
+      "types": "./src/settings/index.ts",
+      "import": "./src/settings/index.ts",
+      "default": "./src/settings/index.ts"
+    },
+    "./settings/*": {
+      "types": "./src/settings/*.ts",
+      "import": "./src/settings/*.ts",
+      "default": "./src/settings/*.ts"
+    },
     "./*": {
       "types": "./src/*.ts",
       "import": "./src/*.ts",

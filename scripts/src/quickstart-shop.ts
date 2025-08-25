@@ -3,7 +3,13 @@
 // and starts the dev server in one step.
 
 import { execSync, spawnSync } from "node:child_process";
-import { readdirSync, readFileSync } from "node:fs";
+import {
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+  existsSync,
+} from "node:fs";
+import { join } from "node:path";
 import { stdin as input, stdout as output } from "node:process";
 import readline from "node:readline/promises";
 import {
@@ -12,7 +18,10 @@ import {
   type CreateShopOptions,
 } from "@acme/platform-core/createShop";
 import { validateShopName } from "@acme/platform-core/shops";
-import { validateShopEnv } from "@acme/platform-core/configurator";
+import {
+  validateShopEnv,
+  readEnvFile,
+} from "@acme/platform-core/configurator";
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
 import { seedShop } from "./seedShop";
 import { generateThemeTokens } from "./generate-theme";
@@ -138,6 +147,7 @@ interface Flags {
   seed?: boolean;
   brand?: string;
   tokens?: string;
+  autoEnv?: boolean;
 }
 
 function parseArgs(argv: string[]): Flags {
@@ -148,6 +158,10 @@ function parseArgs(argv: string[]): Flags {
       const [key, value] = arg.slice(2).split("=");
       if (key === "seed") {
         flags.seed = true;
+        continue;
+      }
+      if (key === "auto-env") {
+        flags.autoEnv = true;
         continue;
       }
       const val = value ?? argv[++i];
@@ -225,18 +239,18 @@ async function main(): Promise<void> {
 
   const { navItems, pages } = loadTemplateDefaults(template);
 
+  const paymentProviders = await listProviders("payment");
   let payment = args.payment;
   if (!payment || payment.length === 0) {
-    const paymentProviders = await listProviders("payment");
     payment = await selectProviders(
       "payment providers",
       paymentProviders.map((p) => p.id)
     );
   }
 
+  const shippingProviders = await listProviders("shipping");
   let shipping = args.shipping;
   if (!shipping || shipping.length === 0) {
-    const shippingProviders = await listProviders("shipping");
     shipping = await selectProviders(
       "shipping providers",
       shippingProviders.map((p) => p.id)
@@ -289,6 +303,33 @@ async function main(): Promise<void> {
 
   if (args.seed) {
     seedShop(prefixedId);
+  }
+
+  if (args.autoEnv) {
+    const envVars = new Set<string>();
+    const providerMap = new Map<string, readonly string[]>();
+    paymentProviders.forEach((p) => providerMap.set(p.id, p.envVars));
+    shippingProviders.forEach((p) => providerMap.set(p.id, p.envVars));
+    for (const id of [...payment, ...shipping]) {
+      const vars = providerMap.get(id) ?? [];
+      vars.forEach((v) => envVars.add(v));
+    }
+    const envPath = join("apps", prefixedId, ".env");
+    let existing: Record<string, string> = {};
+    if (existsSync(envPath)) {
+      existing = readEnvFile(envPath);
+    }
+    for (const key of envVars) {
+      if (!existing[key]) {
+        existing[key] = process.env[key] ?? `TODO_${key}`;
+      }
+    }
+    writeFileSync(
+      envPath,
+      Object.entries(existing)
+        .map(([k, v]) => `${k}=${v}`)
+        .join("\n") + "\n",
+    );
   }
 
   try {

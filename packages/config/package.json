@@ -21,6 +21,7 @@
       "import": "./dist/env/*.js",
       "default": "./dist/env/*.js"
     },
+    "./jest.preset.cjs": "./jest.preset.cjs",
     "./tsconfig.app.json": "./tsconfig.app.json"
   },
   "files": ["dist"],

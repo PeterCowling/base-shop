@@ -42,6 +42,9 @@ module.exports = {
         tsconfig: "<rootDir>/tsconfig.test.json",
         useESM: true,
         diagnostics: false,
+        babelConfig: {
+          presets: [["@babel/preset-env", { targets: { node: "current" } }]],
+        },
       },
     ],
   },

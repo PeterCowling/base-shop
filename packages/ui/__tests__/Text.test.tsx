@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { Text } from "../components/cms/blocks/atoms";
+import { Text } from "../src/components/cms/blocks/atoms";
 
 describe("Text atom", () => {
   it("renders provided text", () => {

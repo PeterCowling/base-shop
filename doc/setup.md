@@ -31,9 +31,15 @@ pnpm init-shop
 - theme token overrides (`token=value` pairs)
  - environment variables like Stripe keys and CMS credentials
 
+Passing `--defaults` tells the wizard to prefill navigation links and pages
+from the selected template's `shop.json` when those fields exist. Any missing
+entries fall back to interactive prompts.
+
 After answering the prompts the wizard scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
 
 To populate the new shop with sample data, run `pnpm init-shop --seed`.
+Use `pnpm init-shop --defaults` to apply preset nav links and pages from the
+selected template without prompting for them.
 
 Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.
 

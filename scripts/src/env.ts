@@ -8,7 +8,7 @@ import { readdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { validateShopEnv, readEnvFile } from "@acme/platform-core/configurator";
 import { seedShop } from "./seedShop";
-import { listProviders, listPlugins } from "./utils/providers";
+import { listProviders, listPlugins, pluginBundles } from "./utils/providers";
 import { applyPageTemplate } from "./apply-page-template";
 import {
   prompt,
@@ -20,14 +20,6 @@ import {
   promptPages,
 } from "./utils/prompt";
 import { promptThemeOverrides } from "./utils/theme";
-
-const seed = process.argv.includes("--seed");
-const seedFull = process.argv.includes("--seed-full");
-const useDefaults = process.argv.includes("--defaults");
-const autoEnv = process.argv.includes("--auto-env");
-const pagesTemplateIndex = process.argv.indexOf("--pages-template");
-const pagesTemplate =
-  pagesTemplateIndex !== -1 ? process.argv[pagesTemplateIndex + 1] : undefined;
 
 function listDirNames(path: string): string[] {
   return readdirSync(path, { withFileTypes: true })
@@ -59,6 +51,26 @@ function loadTemplateDefaults(
 
 export async function initShop(): Promise<void> {
   const argv = process.argv.slice(2);
+  const seed = argv.includes("--seed");
+  const seedFull = argv.includes("--seed-full");
+  const useDefaults = argv.includes("--defaults");
+  const pagesTemplateIndex = argv.indexOf("--pages-template");
+  const pagesTemplate =
+    pagesTemplateIndex !== -1 ? argv[pagesTemplateIndex + 1] : undefined;
+  const bundleIndex = argv.indexOf("--plugin-bundle");
+  let bundles: string[] = [];
+  if (bundleIndex !== -1) {
+    const bundleArg = argv[bundleIndex + 1];
+    if (!bundleArg) {
+      console.error("--plugin-bundle flag requires a list of bundles");
+      process.exit(1);
+    }
+    bundles = bundleArg
+      .split(",")
+      .map((b) => b.trim())
+      .filter(Boolean);
+  }
+  const autoEnv = argv.includes("--auto-env") || bundles.length > 0;
   const configIndex = argv.indexOf("--config");
   const envFileIndex = argv.indexOf("--env-file");
   let envFileVars: Record<string, string> = {};
@@ -181,6 +193,14 @@ export async function initShop(): Promise<void> {
     pluginMap.set(m.id, { packageName: m.packageName, envVars: m.envVars });
   }
   const selectedPlugins = new Set<string>([...payment, ...shipping]);
+  for (const b of bundles) {
+    const ids = pluginBundles[b];
+    if (!ids) {
+      console.warn(`Unknown plugin bundle: ${b}`);
+      continue;
+    }
+    ids.forEach((id) => selectedPlugins.add(id));
+  }
   const optionalPlugins = allPluginMeta.filter((p) => !selectedPlugins.has(p.id));
   let extra: string[] = Array.isArray(config.plugins) ? config.plugins : [];
   if (!extra.length && optionalPlugins.length) {

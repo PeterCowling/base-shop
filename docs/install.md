@@ -48,6 +48,8 @@ Example `shop.config.json`:
   prompts. Both `init-shop` and `create-shop` accept a `--seed` flag to copy sample
   `products.json` and `inventory.json` from `data/templates/default` into the new shop.
 
+   Use `--plugin-bundle payments` or `--plugin-bundle shipping` to automatically include common integrations. Pair with `--auto-env` to scaffold required environment variables with `TODO_` placeholders for easy follow-up.
+
    ```bash
    pnpm create-shop <id> --name="Demo Shop" --logo=https://example.com/logo.png \
      --contact=demo@example.com

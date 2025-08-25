@@ -34,4 +34,13 @@ export function listPlugins(root: string): PluginMeta[] {
   }
 }
 
+/**
+ * Predefined bundles of plugins that can be enabled together.
+ * These help streamline common payment or shipping setups.
+ */
+export const pluginBundles: Record<string, readonly string[]> = {
+  payments: ["stripe", "paypal"],
+  shipping: ["dhl", "ups"],
+};
+
 export { listProviders };

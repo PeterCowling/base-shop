@@ -187,7 +187,7 @@ This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs
 
 Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. The platform automatically loads any plugin found under `packages/plugins/*`.
 
-During `init-shop` you will be presented with a list of detected plugins. Selected plugins are added to the new shop's `package.json` and the wizard prompts for any required environment variables.
+During `init-shop` you will be presented with a list of detected plugins. Selected plugins are added to the new shop's `package.json` and the wizard prompts for any required environment variables.  To streamline common setups you can pass `--plugin-bundle` (for example `payments` or `shipping`) which preselects popular integrations.  Bundled plugins automatically scaffold `.env` entries with `TODO_` placeholders when used with `--auto-env`.
 
 To add a plugin manually, place it in the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS you can enable and configure the plugin under **CMS → Plugins**.
 

@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Breadcrumbs from "../components/molecules/Breadcrumbs";
+import Breadcrumbs from "../src/components/molecules/Breadcrumbs";
 
 describe("Breadcrumbs", () => {
   it("renders anchors and separators", () => {

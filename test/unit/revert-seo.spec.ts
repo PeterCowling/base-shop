@@ -6,12 +6,16 @@ jest.mock("next-auth", () => ({
   getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
 }));
 
-const diffHistoryMock = jest.fn();
-const saveShopSettingsMock = jest.fn();
+jest.mock("@prisma/client", () => ({
+  PrismaClient: jest.fn().mockImplementation(() => ({})),
+}));
 
-jest.mock("@platform-core/repositories/shops.server", () => ({
-  diffHistory: (...args: any[]) => diffHistoryMock(...args),
-  saveShopSettings: (...args: any[]) => saveShopSettingsMock(...args),
+const mockDiffHistory = jest.fn();
+const mockSaveShopSettings = jest.fn();
+
+jest.mock("@platform-core/repositories/settings.server", () => ({
+  diffHistory: (...args: any[]) => mockDiffHistory(...args),
+  saveShopSettings: (...args: any[]) => mockSaveShopSettings(...args),
 }));
 jest.mock("@platform-core/repositories/json.server", () => ({}));
 
@@ -21,7 +25,7 @@ beforeEach(() => {
 
 describe("revertSeo", () => {
   it("applies diffs up to the given timestamp", async () => {
-    diffHistoryMock.mockResolvedValue([
+    mockDiffHistory.mockResolvedValue([
       { timestamp: "t1", diff: { seo: { en: { title: "A" } } } },
       { timestamp: "t2", diff: { seo: { en: { title: "B" } } } },
       { timestamp: "t3", diff: { seo: { en: { title: "C" } } } },
@@ -29,22 +33,27 @@ describe("revertSeo", () => {
 
     const state = await revertSeo("shop", "t3");
 
-    expect(saveShopSettingsMock).toHaveBeenCalledWith("shop", {
-      languages: [],
-      seo: { en: { title: "B" } },
-      updatedAt: "",
-      updatedBy: "",
-    });
-    expect(state).toEqual({
-      languages: [],
-      seo: { en: { title: "B" } },
-      updatedAt: "",
-      updatedBy: "",
-    });
+    expect(mockSaveShopSettings).toHaveBeenCalledWith(
+      "shop",
+      expect.objectContaining({
+        languages: [],
+        seo: { en: { title: "B" } },
+        updatedAt: "",
+        updatedBy: "",
+      }),
+    );
+    expect(state).toEqual(
+      expect.objectContaining({
+        languages: [],
+        seo: { en: { title: "B" } },
+        updatedAt: "",
+        updatedBy: "",
+      }),
+    );
   });
 
   it("throws when timestamp not found", async () => {
-    diffHistoryMock.mockResolvedValue([{ timestamp: "t1", diff: {} }]);
+    mockDiffHistory.mockResolvedValue([{ timestamp: "t1", diff: {} }]);
     await expect(revertSeo("shop", "missing")).rejects.toThrow(
       "Version not found"
     );

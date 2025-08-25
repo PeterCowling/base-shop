@@ -55,6 +55,22 @@ function loadTemplateDefaults(
 export async function initShop(): Promise<void> {
   const argv = process.argv.slice(2);
   const configIndex = argv.indexOf("--config");
+  const envFileIndex = argv.indexOf("--env-file");
+  let envFileVars: Record<string, string> = {};
+  let envFilePath: string | undefined;
+  if (envFileIndex !== -1) {
+    envFilePath = argv[envFileIndex + 1];
+    if (!envFilePath) {
+      console.error("--env-file flag requires a path");
+      process.exit(1);
+    }
+    try {
+      envFileVars = readEnvFile(envFilePath);
+    } catch (err) {
+      console.error("Failed to load env file:", (err as Error).message);
+      process.exit(1);
+    }
+  }
   let config: Partial<CreateShopOptions> & {
     id?: string;
     contact?: string;
@@ -170,16 +186,27 @@ export async function initShop(): Promise<void> {
   }
   extra.forEach((id) => selectedPlugins.add(id));
   const envVars: Record<string, string> = {};
+  const requiredEnvKeys = new Set<string>();
+  const usedEnvFileKeys = new Set<string>();
   for (const id of selectedPlugins) {
     const vars = pluginMap.get(id)?.envVars ?? [];
     for (const key of vars) {
+      requiredEnvKeys.add(key);
+      if (envFileVars[key] !== undefined) {
+        envVars[key] = envFileVars[key];
+        usedEnvFileKeys.add(key);
+        continue;
+      }
       if (autoEnv) {
-        envVars[key] = envVars[key] ?? `TODO_${key}`;
+        envVars[key] = `TODO_${key}`;
       } else {
-        envVars[key] = await prompt(`${key}: `, envVars[key] ?? "");
+        envVars[key] = await prompt(`${key}: `, "");
       }
     }
   }
+  const unusedEnvFileKeys = Object.keys(envFileVars).filter(
+    (k) => !usedEnvFileKeys.has(k),
+  );
   const templateDefaults = loadTemplateDefaults(rootDir, template);
   const navItems = Array.isArray(config.navItems)
     ? config.navItems
@@ -257,6 +284,10 @@ export async function initShop(): Promise<void> {
       .join("\n") + "\n",
   );
 
+  const missingEnvKeys = [...requiredEnvKeys].filter(
+    (k) => !finalEnv[k] || finalEnv[k] === "",
+  );
+
   let validationError: unknown;
   try {
     validateShopEnv(prefixedId);
@@ -270,9 +301,17 @@ export async function initShop(): Promise<void> {
     });
   }
 
+  if (unusedEnvFileKeys.length) {
+    console.warn(
+      `Unused variables in ${envFilePath ?? "env file"}: ${unusedEnvFileKeys.join(", ")}`,
+    );
+  }
+  if (missingEnvKeys.length) {
+    console.error(`Missing environment variables: ${missingEnvKeys.join(", ")}`);
+  }
   if (validationError) {
     console.error("\nEnvironment validation failed:\n", validationError);
-  } else {
+  } else if (!missingEnvKeys.length) {
     console.log("\nEnvironment variables look valid.");
   }
 

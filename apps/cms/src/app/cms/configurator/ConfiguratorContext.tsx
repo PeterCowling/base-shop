@@ -52,14 +52,14 @@ export function ConfiguratorProvider({
     key: K,
     value: WizardState[K]
   ) => {
-    setState((prev) => ({ ...prev, [key]: value }));
+    setState((prev: WizardState) => ({ ...prev, [key]: value }));
     setDirty(true);
   };
 
   const setThemeOverrides = (
     v: React.SetStateAction<Record<string, string>>
   ) => {
-    setState((prev) => ({
+    setState((prev: WizardState) => ({
       ...prev,
       themeOverrides:
         typeof v === "function" ? v(prev.themeOverrides) : v,

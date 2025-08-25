@@ -1,5 +1,5 @@
 import { useConfigurator } from "../ConfiguratorContext";
-import type { WizardState } from "../../wizard/schema";
+import type { WizardState, PageInfo } from "../../wizard/schema";
 
 type Validator = (state: WizardState) => boolean;
 
@@ -15,7 +15,8 @@ export const validators: Record<string, Validator> = {
   "checkout-page": (s) => Boolean(s.checkoutPageId),
   "shop-page": (s) => Boolean(s.shopPageId),
   "product-page": (s) => Boolean(s.productPageId),
-  "additional-pages": (s) => s.pages.every((p) => Boolean(p.slug)),
+  "additional-pages": (s) =>
+    s.pages.every((p: PageInfo) => Boolean(p.slug)),
   "env-vars": (s) => Object.values(s.env).some(Boolean),
   summary: (s) =>
     Object.values(s.pageTitle).some(Boolean) &&

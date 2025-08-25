@@ -150,6 +150,9 @@
       ],
       "@acme/zod-utils/*": [
         "packages/zod-utils/src/*"
+      ],
+      "better-sqlite3": [
+        "packages/platform-core/src/types/better-sqlite3"
       ]
     }
   },

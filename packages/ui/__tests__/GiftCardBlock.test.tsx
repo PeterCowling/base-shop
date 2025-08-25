@@ -1,6 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import GiftCardBlock from "../src/components/cms/blocks/GiftCardBlock";
 
+jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => ({
+  __esModule: true,
+  default: () => <button>Purchase</button>,
+}));
+
+jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
+  useCurrency: () => ["EUR", jest.fn()],
+}));
+
 describe("GiftCardBlock", () => {
   it("exposes data-token attributes", () => {
     render(<GiftCardBlock denominations={[25, 50]} />);

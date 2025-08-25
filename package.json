@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "turbo run dev --parallel",
     "dev:trace": "cross-env NODE_OPTIONS=\"--trace-uncaught --enable-source-maps\" pnpm --filter cms dev",
-      "build": "pnpm -r run clean && pnpm run build:tokens && pnpm run check:tailwind-preset && turbo run build",
+    "build": "pnpm -r run clean && pnpm run build:tokens && pnpm run check:tailwind-preset && turbo run build",
     "build:tokens": "tsx ./scripts/src/build-tokens.ts",
     "build:trace": "cross-env NODE_OPTIONS=\"--trace-uncaught --enable-source-maps\" pnpm --filter cms exec next build --debug",
     "start": "turbo run start --parallel",
@@ -141,6 +141,7 @@
     "@types/amphtml-validator": "^1.0.4",
     "@types/jest": "^29.5.14",
     "@types/jsdom": "^21.1.7",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20.19.4",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^19.1.8",

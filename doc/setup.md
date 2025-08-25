@@ -33,6 +33,14 @@ pnpm init-shop
 
 After answering the prompts the wizard scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
 
+To skip secret prompts and prefill `.env` with placeholders, pass `--auto-env`:
+
+```bash
+pnpm init-shop --auto-env
+```
+
+Each required environment variable is written as `TODO_<KEY>`. These values satisfy `validate-env` but are not usable secrets, so replace them with real credentials before deploying.
+
 To skip the theme prompts, provide overrides via flags:
 
 ```bash

@@ -65,6 +65,7 @@ function ensureRuntime(): void {
 ensureRuntime();
 
 const seed = process.argv.includes("--seed");
+const autoEnv = process.argv.includes("--auto-env");
 
 /**
  * Prompt the user for input. If the user does not provide an answer, return the default value.
@@ -377,7 +378,10 @@ async function main(): Promise<void> {
     { packageName?: string; envVars: readonly string[] }
   >();
   for (const m of [...paymentMeta, ...shippingMeta, ...allPluginMeta]) {
-    pluginMap.set(m.id, { packageName: (m as any).packageName, envVars: m.envVars });
+    pluginMap.set(m.id, {
+      packageName: "packageName" in m ? m.packageName : undefined,
+      envVars: m.envVars,
+    });
   }
   const selectedPlugins = new Set<string>([...payment, ...shipping]);
   const optionalPlugins = allPluginMeta.filter((p) => !selectedPlugins.has(p.id));
@@ -393,7 +397,11 @@ async function main(): Promise<void> {
   for (const id of selectedPlugins) {
     const vars = pluginMap.get(id)?.envVars ?? [];
     for (const key of vars) {
-      envVars[key] = await prompt(`${key}: `, envVars[key] ?? "");
+      if (autoEnv) {
+        envVars[key] = envVars[key] ?? `TODO_${key}`;
+      } else {
+        envVars[key] = await prompt(`${key}: `, envVars[key] ?? "");
+      }
     }
   }
   const navItems = await promptNavItems();
@@ -475,6 +483,12 @@ async function main(): Promise<void> {
     console.error("\nEnvironment validation failed:\n", validationError);
   } else {
     console.log("\nEnvironment variables look valid.");
+  }
+
+  if (autoEnv) {
+    console.warn(
+      "\nPlaceholder values written to .env. Replace entries beginning with 'TODO_' before deploying."
+    );
   }
 
   console.log(

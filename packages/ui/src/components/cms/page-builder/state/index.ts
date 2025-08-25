@@ -1,9 +1,9 @@
 import type { HistoryState } from "@acme/types";
-import type { Action } from "./actions";
+import type { Action } from "../hooks/actions";
 import { add, move, remove, duplicate, update, resize, set, setGridCols } from "./layout";
 import { undo, redo } from "./history";
 
-export type { Action } from "./actions";
+export type { Action } from "../hooks/actions";
 export { historyStateSchema } from "./schema";
 
 export function reducer(state: HistoryState, action: Action): HistoryState {

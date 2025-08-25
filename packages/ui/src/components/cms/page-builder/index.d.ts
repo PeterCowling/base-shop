@@ -45,4 +45,15 @@ export { default as usePageBuilderState } from "./hooks/usePageBuilderState";
 export { default as usePageBuilderDnD } from "./hooks/usePageBuilderDnD";
 export { default as useCanvasDrag } from "./useCanvasDrag";
 export { default as useCanvasResize } from "./useCanvasResize";
+export { default as useCanvasSpacing } from "./useCanvasSpacing";
+export { default as useFileDrop } from "./hooks/useFileDrop";
+export { default as useViewport } from "./hooks/useViewport";
+export type { Action } from "./hooks/actions";
+export type {
+  UseFileDropResult,
+  UsePageBuilderDnDResult,
+  UsePageBuilderStateResult,
+  UseViewportResult,
+} from "./hooks/types";
+export type { ComponentsSelector, GridColsSelector } from "./hooks/selectors";
 //# sourceMappingURL=index.d.ts.map

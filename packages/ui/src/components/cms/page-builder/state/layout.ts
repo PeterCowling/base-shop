@@ -9,7 +9,7 @@ import type {
   ResizeAction,
   SetAction,
   SetGridColsAction,
-} from "./actions";
+} from "../hooks/actions";
 import { commit } from "./history";
 
 function addAt(list: PageComponent[], index: number, item: PageComponent) {

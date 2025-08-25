@@ -5,14 +5,15 @@ import { ulid } from "ulid";
 import type { PageComponent, MediaItem } from "@acme/types";
 import useFileUpload from "../../../../hooks/useFileUpload";
 import { defaults } from "../defaults";
-import type { Action } from "../state/actions";
+import type { Action } from "./actions";
+import type { UseFileDropResult } from "./types";
 
 interface Options {
   shop: string;
   dispatch: (action: Action) => void;
 }
 
-const useFileDrop = ({ shop, dispatch }: Options) => {
+const useFileDrop = ({ shop, dispatch }: Options): UseFileDropResult => {
   const [dragOver, setDragOver] = useState(false);
 
   const { onDrop, progress, isValid } = useFileUpload({

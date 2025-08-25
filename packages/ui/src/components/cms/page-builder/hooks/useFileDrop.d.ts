@@ -1,15 +1,10 @@
 import type { DragEvent } from "react";
-import type { Action } from "../state/actions";
+import type { Action } from "./actions";
+import type { UseFileDropResult } from "./types";
 interface Options {
     shop: string;
     dispatch: (action: Action) => void;
 }
-declare const useFileDrop: ({ shop, dispatch }: Options) => {
-    dragOver: boolean;
-    setDragOver: import("react").Dispatch<import("react").SetStateAction<boolean>>;
-    handleFileDrop: (ev: DragEvent<HTMLDivElement>) => void;
-    progress: import("../../../..").UploadProgress | null;
-    isValid: boolean | null;
-};
+declare const useFileDrop: ({ shop, dispatch }: Options) => UseFileDropResult;
 export default useFileDrop;
 //# sourceMappingURL=useFileDrop.d.ts.map

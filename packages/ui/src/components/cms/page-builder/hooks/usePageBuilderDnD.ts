@@ -12,7 +12,8 @@ import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { ulid } from "ulid";
 import { useCallback, useState } from "react";
 import type { PageComponent } from "@acme/types";
-import type { Action } from "../state";
+import type { Action } from "./actions";
+import type { UsePageBuilderDnDResult } from "./types";
 import { snapToGrid } from "../gridSnap";
 
 const noop = () => {};
@@ -49,7 +50,7 @@ export function usePageBuilderDnD({
   gridSize = 1,
   canvasRef,
   setSnapPosition = noop,
-}: Params) {
+}: Params): UsePageBuilderDnDResult {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })

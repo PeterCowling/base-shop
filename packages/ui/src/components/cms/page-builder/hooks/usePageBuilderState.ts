@@ -1,7 +1,13 @@
 "use client";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
-import { historyStateSchema, reducer, type Action } from "../state";
+import { historyStateSchema, reducer } from "../state";
+import type { Action } from "./actions";
+import type {
+  ComponentsSelector,
+  GridColsSelector,
+  UsePageBuilderStateResult,
+} from "./types";
 
 interface Params {
   page: Page;
@@ -19,7 +25,7 @@ export function usePageBuilderState({
   onSaveShortcut,
   onTogglePreview,
   onRotateDevice,
-}: Params) {
+}: Params): UsePageBuilderStateResult {
   const storageKey = `page-builder-history-${page.id}`;
 
   const migrate = useCallback(
@@ -59,8 +65,11 @@ export function usePageBuilderState({
     }
   });
 
-  const components = state.present;
-  const [gridCols, setGridColsState] = useState(state.gridCols);
+  const selectComponents: ComponentsSelector = (s) => s.present;
+  const selectGridCols: GridColsSelector = (s) => s.gridCols;
+
+  const components = selectComponents(state);
+  const [gridCols, setGridColsState] = useState(selectGridCols(state));
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [liveMessage, setLiveMessage] = useState("");
 

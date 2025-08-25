@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { DevicePreset } from "../../../../utils/devicePresets";
+import type { UseViewportResult } from "./types";
 
-const useViewport = (device: DevicePreset) => {
+const useViewport = (device: DevicePreset): UseViewportResult => {
   const [canvasWidth, setCanvasWidth] = useState(device.width);
   const [canvasHeight, setCanvasHeight] = useState(device.height);
   const [scale, setScale] = useState(1);

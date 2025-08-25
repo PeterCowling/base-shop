@@ -1,5 +1,5 @@
 import type { HistoryState } from "@acme/types";
-import type { AddAction, MoveAction, RemoveAction, DuplicateAction, UpdateAction, ResizeAction, SetAction, SetGridColsAction } from "./actions";
+import type { AddAction, MoveAction, RemoveAction, DuplicateAction, UpdateAction, ResizeAction, SetAction, SetGridColsAction } from "../hooks/actions";
 export declare function add(state: HistoryState, action: AddAction): HistoryState;
 export declare function move(state: HistoryState, action: MoveAction): HistoryState;
 export declare function remove(state: HistoryState, action: RemoveAction): HistoryState;

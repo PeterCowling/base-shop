@@ -22,7 +22,10 @@ export function CartTemplate({
   const lines = (Object.entries(cart) as [string, CartLine][]).map(
     ([id, line]) => ({ id, ...line })
   );
-  const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
+  const subtotal = lines.reduce(
+    (s, l) => s + (l.sku.price ?? 0) * l.qty,
+    0,
+  );
   const deposit = lines.reduce((s, l) => s + (l.sku.deposit ?? 0) * l.qty, 0);
 
   if (!lines.length) {
@@ -48,19 +51,19 @@ export function CartTemplate({
             <tr key={line.id} className="border-b last:border-0">
               <td className="py-2">
                 <div className="flex items-center gap-4">
-                  {line.sku.media[0] && (
+                  {line.sku.media?.[0] && (
                     <div className="relative hidden h-12 w-12 sm:block">
-                      {line.sku.media[0].type === "image" ? (
+                      {line.sku.media?.[0].type === "image" ? (
                         <Image
-                          src={line.sku.media[0].url}
-                          alt={line.sku.title}
+                          src={line.sku.media?.[0].url ?? ""}
+                          alt={line.sku.title ?? ""}
                           fill
                           sizes="3rem"
                           className="rounded-md object-cover"
                         />
                       ) : (
                         <video
-                          src={line.sku.media[0].url}
+                          src={line.sku.media?.[0].url ?? ""}
                           className="h-full w-full rounded-md object-cover"
                           muted
                           playsInline
@@ -84,7 +87,7 @@ export function CartTemplate({
                 />
               </td>
               <td className="text-right">
-                <Price amount={line.sku.price * line.qty} />
+                <Price amount={(line.sku.price ?? 0) * line.qty} />
               </td>
               {onRemove && (
                 <td className="text-right">

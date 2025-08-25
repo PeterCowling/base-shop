@@ -18,7 +18,10 @@ export function OrderConfirmationTemplate({
   const lines = (Object.entries(cart) as [string, CartLine][]).map(
     ([id, line]) => ({ id, ...line })
   );
-  const subtotal = lines.reduce((s, l) => s + l.sku.price * l.qty, 0);
+  const subtotal = lines.reduce(
+    (s, l) => s + (l.sku.price ?? 0) * l.qty,
+    0,
+  );
   const deposit = lines.reduce((s, l) => s + (l.sku.deposit ?? 0) * l.qty, 0);
 
   return (
@@ -52,7 +55,7 @@ export function OrderConfirmationTemplate({
               </td>
               <td>{l.qty}</td>
               <td className="text-right">
-                <Price amount={l.sku.price * l.qty} />
+                <Price amount={(l.sku.price ?? 0) * l.qty} />
               </td>
             </tr>
           ))}

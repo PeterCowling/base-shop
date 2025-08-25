@@ -190,6 +190,3 @@ export function moveComponent(
   if (!item) return list;
   return addComponent(without, to.parentId, to.index, item);
 }
-
-// ulid import for cloneWithNewIds
-import { ulid } from "ulid";

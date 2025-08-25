@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/orders/page.tsx
 import Link from "next/link";
-import { listShops } from "../listShops";
+import { listShops } from "../../../lib/listShops";
 
 export default async function OrdersIndexPage() {
   const shops = await listShops();

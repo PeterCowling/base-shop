@@ -4,7 +4,7 @@ import { Button } from "@/components/atoms/shadcn";
 import fsSync from "fs";
 import fs from "fs/promises";
 import path from "path";
-import { listShops } from "../listShops";
+import { listShops } from "../../../lib/listShops";
 
 export const metadata = {
   title: "Live shops · Base-Shop",

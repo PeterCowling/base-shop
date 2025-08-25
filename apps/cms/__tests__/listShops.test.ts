@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
-import { listShops } from "../src/app/cms/listShops";
+import { listShops } from "../src/lib/listShops";
 
 describe("listShops", () => {
   it("returns empty list when no shops", async () => {

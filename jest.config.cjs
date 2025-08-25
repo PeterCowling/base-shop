@@ -92,6 +92,11 @@ module.exports = {
     "^@acme/config$": "<rootDir>/packages/config/src/env/index.ts",
     "^@acme/config/(.*)$": "<rootDir>/packages/config/src/$1",
 
+    // CMS application aliases
+    "^@/components/atoms/shadcn$":
+      "<rootDir>/test/__mocks__/shadcnDialogStub.tsx",
+    "^@/(.*)$": "<rootDir>/apps/cms/src/$1",
+
     // context mocks
     "^@platform-core/contexts/ThemeContext$":
       "<rootDir>/test/__mocks__/themeContextMock.tsx",

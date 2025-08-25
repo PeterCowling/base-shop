@@ -1,0 +1,7 @@
+{
+  "name": "About",
+  "components": [
+    { "type": "HeroBanner" },
+    { "type": "TextBlock" }
+  ]
+}

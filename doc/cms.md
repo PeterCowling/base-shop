@@ -42,7 +42,7 @@ Admins can scaffold and launch a shop directly from the CMS at `/cms/wizard`. Th
 1. **Shop details** – provide the shop ID, display name, logo URL, contact email and choose whether it's for sales or rentals.
 2. **Options** – select the starter template and theme.
 3. **Theme tokens** – tweak design tokens to match your brand. See [advanced theming](../docs/theming-advanced.md) for details.
-4. **Navigation** – build the header navigation tree.
+4. **Navigation** – build the header navigation tree or start from prebuilt presets.
 5. **Page layouts** – configure home, shop, product and checkout pages and any optional additional pages.
 6. **Environment** – supply required environment variables.
 7. **Seed/Import data** – seed example products or import existing data.

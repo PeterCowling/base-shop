@@ -12,10 +12,13 @@ class ManagedMessageChannel extends NodeMessageChannel {
 // Replace global MessageChannel with managed version
 global.MessageChannel = ManagedMessageChannel;
 
-afterEach(() => {
+function closeOpenPorts() {
   for (const port of openPorts.splice(0)) {
     try {
       port.close();
     } catch {}
   }
-});
+}
+
+afterEach(closeOpenPorts);
+afterAll(closeOpenPorts);

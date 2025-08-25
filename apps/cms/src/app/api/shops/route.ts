@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { listShops } from "../../cms/listShops";
 
+export const runtime = "nodejs";
+
 export async function GET() {
   try {
     const shops = await listShops();

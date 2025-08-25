@@ -55,7 +55,9 @@ Passing `--defaults` tells the wizard to prefill navigation links and pages
 from the selected template's `shop.json` when those fields exist. Any missing
 entries fall back to interactive prompts.
 
-After answering the prompts the wizard scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
+After answering the prompts the wizard scaffolds `apps/shop-<id>`, writes your
+answers to `apps/shop-<id>/.env`, generates `apps/shop-<id>/.env.template`, and
+validates the result.
 
 To skip the theme prompts, provide overrides via flags:
 
@@ -68,12 +70,15 @@ pnpm init-shop --brand "#663399" --tokens ./my-tokens.json
 To populate the new shop with sample data, run `pnpm init-shop --seed`. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and settings. Provide `--pages-template <name>` to copy predefined page layouts (`hero`, `product-grid`, `contact`). Use `pnpm init-shop --defaults` to apply preset nav links and pages from the
 selected template without prompting for them.
 Add `--auto-env` to skip prompts for provider environment variables. The wizard writes
-`TODO_*` placeholders to the new shop's `.env` file; replace them with real
-secrets before deploying.
+`TODO_*` placeholders to the new shop's `.env` file and generates a companion
+`apps/shop-<id>/.env.template` grouping required keys by provider. Replace any
+placeholders with real secrets before deploying.
 To prefill answers from an existing file, supply `--env-file <path>`.
 Keys in the file are merged before prompting—any variables already present are
-written directly to the generated `.env` and prompts for them are skipped. After
-validation the wizard warns about unused entries or missing required variables.
+written directly to the generated `.env` and prompts for them are skipped. To
+pull secrets from an external vault export, pass `--vault-file <path>` pointing
+to a JSON file of key/value pairs. After validation the wizard reports unused
+entries or missing required variables.
 
 Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.
 
@@ -150,19 +155,15 @@ Scaffolded apps/shop-demo
 
 ## 2. Review environment variables
 
-The wizard captures common environment variables and writes them to `apps/shop-<id>/.env`.
+The wizard captures common environment variables, writes them to
+`apps/shop-<id>/.env`, and generates `apps/shop-<id>/.env.template` with the
+required keys grouped by provider.
 
-If you used `--auto-env`, this file contains placeholder values like `TODO_API_KEY`.
-If you passed `--env-file`, any matching keys from that file are copied directly
-and unused entries are reported during validation. Placeholders and missing
-variables must be replaced with real credentials before deployment.
-
-```bash
-pnpm validate-env <id>
-```
-
-`validate-env` parses the `.env` file and exits with an error if any required variable is missing or malformed.
-You can edit the file later and rerun `pnpm validate-env <id>` to confirm everything is set up.
+If you used `--auto-env`, `.env` contains placeholder values like
+`TODO_API_KEY`. Keys supplied via `--env-file` or `--vault-file` are copied
+directly and unused entries are reported. The wizard validates the file
+automatically, but you can rerun `pnpm validate-env <id>` after editing to
+double‑check your changes.
 
 ## 3. Run the shop
 

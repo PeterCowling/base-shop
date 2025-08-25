@@ -11,7 +11,7 @@ To scaffold a shop and immediately start the dev server in one step:
 pnpm quickstart-shop --id demo --theme base --template template-app --payment stripe --shipping ups
 ```
 
-This wraps the `init-shop` wizard, validates the generated `.env`, and runs `pnpm dev` for the new shop. You can also provide a configuration file and skip the flags:
+This wraps the `init-shop` wizard, validates the generated `.env`, writes `.env.template`, and runs `pnpm dev` for the new shop. You can also provide a configuration file and skip the flags:
 
 ```bash
 pnpm quickstart-shop --config ./shop.config.json
@@ -42,11 +42,15 @@ Example `shop.config.json`:
    `init-shop` launches an interactive wizard that asks for the shop ID, display name, logo URL,
    contact email, shop type (`sale` or `rental`), and which theme and template to use. Payment and
    shipping providers are chosen from guided lists of available providers. It then
-  scaffolds `apps/shop-<id>` and prompts for environment variables like Stripe keys and CMS
-  credentials, writing them directly to `apps/shop-<id>/.env`. For scripted setups you can still
-  call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and `--contact` to skip those
-  prompts. Both `init-shop` and `create-shop` accept a `--seed` flag to copy sample
-  `products.json` and `inventory.json` from `data/templates/default` into the new shop.
+   scaffolds `apps/shop-<id>` and prompts for environment variables like Stripe keys and CMS
+   credentials, writing them directly to `apps/shop-<id>/.env` and generating an
+   accompanying `.env.template` grouped by provider. Provide `--env-file <path>` or
+   `--vault-file <path>` to prefill values from a plain `.env` file or a JSON
+   export from your secret vault. For scripted setups you can still call
+   `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and `--contact`
+   to skip those prompts. Both `init-shop` and `create-shop` accept a `--seed`
+   flag to copy sample `products.json` and `inventory.json` from
+   `data/templates/default` into the new shop.
 
    ```bash
    pnpm create-shop <id> --name="Demo Shop" --logo=https://example.com/logo.png \
@@ -56,12 +60,13 @@ Example `shop.config.json`:
 2. **Run the app**
 
    ```bash
-   pnpm validate-env <id>
    cd apps/shop-<id>
    pnpm dev
    ```
 
-   Open http://localhost:3000 to view the site. Pages hot-reload on save.
+   The wizard validates `.env` during scaffolding. To re-run validation after
+   editing the file, use `pnpm validate-env <id>`. Open http://localhost:3000 to
+   view the site. Pages hot-reload on save.
 
 3. _(Optional)_ Each Next.js app must provide its own `postcss.config.cjs` that forwards to the repo root configuration so Tailwind resolves correctly. After updating Tailwind or any CSS utilities, run `pnpm tailwind:check` to verify the build.
 
@@ -87,7 +92,6 @@ Select shipping providers by number (comma-separated, empty for none): 2
 Scaffolded apps/shop-demo
 
 pnpm setup-ci demo  # optional
-pnpm validate-env demo
 cd apps/shop-demo
 pnpm dev
 ```
@@ -185,4 +189,3 @@ The Page Builder and `/edit-preview` route include a device menu with presets fo
 - Galaxy S8
 
 Switch between widths using the desktop/tablet/mobile buttons or the dropdown. The chosen preset resets to **Desktop 1280** when the page reloads.
-

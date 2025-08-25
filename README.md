@@ -28,7 +28,6 @@ The root middleware applies [next-secure-headers](https://www.npmjs.com/package/
 - **Referrer-Policy** – `no-referrer`.
 - **X-Content-Type-Options** and **X-Download-Options** – `nosniff` and `noopen`.
 
-
 ## Installation
 
 See [docs/install.md](docs/install.md) for setup and quickstart instructions.
@@ -116,7 +115,10 @@ Configuration and usage examples for both are documented in [doc/machine.md](doc
 
 # Environment Variables
 
-After running `pnpm create-shop <id>`, configure `apps/shop-<id>/.env` with:
+Running `pnpm init-shop` or `pnpm create-shop` writes `apps/shop-<id>/.env` and
+a companion `apps/shop-<id>/.env.template` listing required keys. Populate any
+placeholders or prefill values via `--env-file` or `--vault-file`.
+Configure the environment with:
 
 - `STRIPE_SECRET_KEY` – secret key used by the Stripe server SDK
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` – public key for the Stripe client SDK

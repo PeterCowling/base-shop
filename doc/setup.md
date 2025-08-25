@@ -158,17 +158,20 @@ Scaffolded apps/shop-demo
 
 The wizard captures common environment variables and writes them to `apps/shop-<id>/.env`.
 
-If you used `--auto-env`, this file contains placeholder values like `TODO_API_KEY`.
-If you passed `--env-file`, any matching keys from that file are copied directly
-and unused entries are reported during validation. Placeholders and missing
-variables must be replaced with real credentials before deployment.
+After scaffolding, the wizard writes both `.env` and `.env.template` to `apps/shop-<id>/`.
+The template lists all variables required by your chosen providers. If you used `--auto-env`,
+`.env` contains placeholder values like `TODO_API_KEY`. Supplying `--env-file` copies matching keys
+from that file, and `--vault-cmd <cmd>` invokes the given command with each variable name to retrieve
+secrets from an external vault. Placeholders and missing variables must be replaced with real
+credentials before deployment.
+
+The wizard validates the environment immediately. Rerun the check manually any time after editing:
 
 ```bash
 pnpm validate-env <id>
 ```
 
-`validate-env` parses the `.env` file and exits with an error if any required variable is missing or malformed.
-You can edit the file later and rerun `pnpm validate-env <id>` to confirm everything is set up.
+`validate-env` parses the `.env` file and exits with an error if a required variable is missing or malformed.
 
 ## 3. Run the shop
 

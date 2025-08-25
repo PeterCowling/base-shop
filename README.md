@@ -32,6 +32,14 @@ The root middleware applies [next-secure-headers](https://www.npmjs.com/package/
 
 ## Getting Started
 
+To scaffold a shop and immediately start the dev server in one step:
+
+```bash
+pnpm quickstart-shop --id demo --theme base --template template-app --payment stripe --shipping ups
+```
+
+This wraps the `init-shop` wizard, validates the generated `.env`, and runs `pnpm dev` for the new shop.
+
 1. **Initialize a shop**
 
    ```bash

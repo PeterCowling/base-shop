@@ -1,7 +1,7 @@
 import { render, screen, act } from "@testing-library/react";
 import { ProductGrid } from "../src/components/shop/ProductGrid";
 import { CartProvider } from "../src/contexts/CartContext";
-import { PRODUCTS } from "../src/products";
+import { PRODUCTS } from "../src/products/index";
 
 let resizeCb: ResizeObserverCallback;
 

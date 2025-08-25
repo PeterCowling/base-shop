@@ -1,6 +1,6 @@
 // packages/platform-core/__tests__/products.test.ts
 
-import { getProductBySlug, PRODUCTS } from "../products";
+import { getProductBySlug, PRODUCTS } from "../src/products/index";
 
 describe("getProductBySlug", () => {
   it("returns the matching product", () => {

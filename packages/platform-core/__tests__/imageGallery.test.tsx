@@ -1,9 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import ImageGallery from "../components/pdp/ImageGallery";
+import ImageGallery from "../src/components/pdp/ImageGallery";
 
 describe("ImageGallery", () => {
   it("toggles zoom on click", () => {
-    render(<ImageGallery src="/img.jpg" alt="img" />);
+    const items = [{ url: "/img.jpg", type: "image" as const, altText: "img" }];
+    render(<ImageGallery items={items} />);
     const img = screen.getByAltText("img");
     const figure = img.closest("figure")!;
     expect(img.className).not.toContain("scale-125");

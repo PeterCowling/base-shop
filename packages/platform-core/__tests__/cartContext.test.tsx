@@ -1,7 +1,7 @@
 // packages/platform-core/__tests__/cartContext.test.tsx
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { CartProvider, useCart } from "../contexts/CartContext";
-import { PRODUCTS } from "../products";
+import { CartProvider, useCart } from "../src/contexts/CartContext";
+import { PRODUCTS } from "../src/products/index";
 
 function TestComponent() {
   const [state, dispatch] = useCart();

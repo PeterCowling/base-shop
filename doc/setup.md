@@ -65,6 +65,8 @@ pnpm init-shop --brand "#663399" --tokens ./my-tokens.json
 
 `--brand` sets the primary brand color and `--tokens` merges additional token overrides from a JSON file.
 
+For more extensive customization you could import design tokens from common sources like Figma or Style Dictionary, or start with theme presets tailored to a specific vertical to avoid editing each value by hand.
+
 To populate the new shop with sample data, run `pnpm init-shop --seed`. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and settings. Provide `--pages-template <name>` to copy predefined page layouts (`hero`, `product-grid`, `contact`). Use `pnpm init-shop --defaults` to apply preset nav links and pages from the
 selected template without prompting for them.
 Add `--auto-env` to skip prompts for provider environment variables. The wizard writes

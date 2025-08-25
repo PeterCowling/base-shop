@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { Button } from "../components/atoms/shadcn";
+import { Button } from "../src/components/atoms/shadcn";
 
 describe("Button", () => {
   it("handles click events", () => {

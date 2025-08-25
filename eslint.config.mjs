@@ -68,6 +68,19 @@ export default [
     },
   },
 
+  /* ▸ design-tokens uses generated dist files; lint without TS project */
+  {
+    files: ["packages/design-tokens/**/*.{ts,tsx,js,jsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+  },
+
   /* ▸ Scripts directory override */
   {
     files: ["scripts/**/*.{ts,tsx,js,jsx}"],

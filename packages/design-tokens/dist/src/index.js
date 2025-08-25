@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-console
 console.log("[@acme/design-tokens] preset loaded");
 /**
  * Tailwind preset shared across all workspace packages.

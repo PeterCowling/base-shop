@@ -1,7 +1,6 @@
 // packages/design-tokens/src/index.ts
 import type { Config } from "tailwindcss";
 
-// eslint-disable-next-line no-console
 console.log("[@acme/design-tokens] preset loaded");
 
 /**

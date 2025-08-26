@@ -1,4 +1,5 @@
-import "@acme/zod-utils/initZod";
+import { initZod } from "@acme/zod-utils/initZod";
+initZod();
 import { z } from "zod";
 import { authEnvSchema } from "./auth";
 import { cmsEnvSchema } from "./cms";

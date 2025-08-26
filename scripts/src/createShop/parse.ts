@@ -1,6 +1,6 @@
 import { validateShopName } from "@acme/platform-core/shops";
 import type { CreateShopOptions } from "@acme/platform-core/createShop";
-import { createRequire } from "module";
+import { createRequire } from "node:module";
 import { resolve, extname } from "path";
 import { readFileSync } from "fs";
 

@@ -1,5 +1,5 @@
 import "server-only";
-import { createRequire } from "module";
+import { createRequire } from "node:module";
 import type { ReactElement, ReactNode } from "react";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";

@@ -1,8 +1,6 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import tokens from "@acme/design-tokens";
-import preset from "@acme/tailwind-config";
 import forms from "@tailwindcss/forms";
 import containerQueries from "@tailwindcss/container-queries";
 
@@ -12,7 +10,6 @@ const rootDir = path.resolve(__dirname, "..", "..");
 
 /** @type {import('tailwindcss').Config} */
 const config = {
-  presets: [tokens, preset],
   darkMode: ["class", ".theme-dark"],
   content: [
     path.join(rootDir, "apps/**/*.{ts,tsx,mdx}"),

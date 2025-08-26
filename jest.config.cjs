@@ -49,7 +49,15 @@ module.exports = {
         useESM: true,
         diagnostics: false,
         babelConfig: {
-          presets: [["@babel/preset-env", { targets: { node: "current" } }]],
+        presets: [
+          [
+            "@babel/preset-env",
+            {
+              targets: { node: "current" },
+              ignoreBrowserslistConfig: true,
+            },
+          ],
+        ],
         },
       },
     ],

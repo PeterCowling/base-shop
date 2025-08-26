@@ -31,6 +31,7 @@ const nextConfig = {
       "fs",
       "http",
       "https",
+      "module",
       "path",
       "stream",
       "string_decoder",

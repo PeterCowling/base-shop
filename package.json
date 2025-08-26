@@ -24,6 +24,7 @@
     "lint": "turbo run lint",
     "lint:apps": "eslint \"apps/**/*.{ts,tsx}\" --ignore-pattern \"**/dist/**\"",
     "lint:all": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\"",
+    "lint:auth": "pnpm exec eslint \"packages/auth/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/*.d.ts\" --ignore-pattern \"packages/auth/dist/**\"",
     "typecheck": "tsc -b --pretty",
     "test": "CI=true turbo run test",
     "test:coverage": "CI=true turbo run test -- --coverage",

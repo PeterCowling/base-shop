@@ -127,9 +127,12 @@ export default function Tokens({
 
   const renderInput = (info: TokenInfo) => {
     if (info.key.startsWith("--color")) {
+      const { key: tokenKey, ...rest } = info;
       return (
         <ColorToken
-          {...info}
+          key={tokenKey}
+          tokenKey={tokenKey}
+          {...rest}
           tokens={tokens}
           baseTokens={baseTokens}
           setToken={setToken}

@@ -8,21 +8,21 @@ export interface ContrastWarning {
 }
 
 export function useTokenColors(
-  key: string,
+  tokenKey: string,
   value: string,
   tokens: TokenMap,
   baseTokens: TokenMap
 ): ContrastWarning | null {
   return useMemo(() => {
     let pairKey = "";
-    if (key.startsWith("--color-bg")) {
-      pairKey = `--color-fg${key.slice("--color-bg".length)}`;
-    } else if (key.startsWith("--color-fg")) {
-      pairKey = `--color-bg${key.slice("--color-fg".length)}`;
-    } else if (key.endsWith("-fg")) {
-      pairKey = key.slice(0, -3);
+    if (tokenKey.startsWith("--color-bg")) {
+      pairKey = `--color-fg${tokenKey.slice("--color-bg".length)}`;
+    } else if (tokenKey.startsWith("--color-fg")) {
+      pairKey = `--color-bg${tokenKey.slice("--color-fg".length)}`;
+    } else if (tokenKey.endsWith("-fg")) {
+      pairKey = tokenKey.slice(0, -3);
     } else {
-      const candidate = `${key}-fg`;
+      const candidate = `${tokenKey}-fg`;
       if (
         tokens[candidate as keyof TokenMap] !== undefined ||
         baseTokens[candidate as keyof TokenMap] !== undefined
@@ -42,5 +42,5 @@ export function useTokenColors(
       }
     }
     return null;
-  }, [key, value, tokens, baseTokens]);
+  }, [tokenKey, value, tokens, baseTokens]);
 }

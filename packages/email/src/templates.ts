@@ -1,6 +1,5 @@
 import "server-only";
-import * as React from "react";
-import { marketingEmailTemplates } from "@acme/ui";
+import type * as React from "react";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 import { createRequire } from "module";
@@ -9,6 +8,20 @@ const nodeRequire =
   typeof require !== "undefined"
     ? require
     : createRequire(eval("import.meta.url"));
+
+const React = nodeRequire("react") as typeof import("react");
+
+let marketingEmailTemplates: Array<{
+  id: string;
+  render: (props: any) => React.ReactElement;
+}> = [];
+try {
+  marketingEmailTemplates =
+    nodeRequire("@acme/ui").marketingEmailTemplates ?? [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} catch {
+  // Ignore if @acme/ui is unavailable
+}
 
 const { window } = new JSDOM("");
 const DOMPurify = createDOMPurify(window);
@@ -39,7 +52,6 @@ export function renderTemplate(
   id: string,
   params: Record<string, string>,
 ): string {
-  const { renderToStaticMarkup } = nodeRequire("react-dom/server");
   const source = templates[id];
   if (source) {
     return source.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => {
@@ -47,6 +59,7 @@ export function renderTemplate(
     });
   }
 
+  const { renderToStaticMarkup } = nodeRequire("react-dom/server");
   const variant = marketingEmailTemplates.find((t) => t.id === id);
   if (variant) {
     return renderToStaticMarkup(

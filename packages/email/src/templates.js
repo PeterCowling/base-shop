@@ -1,6 +1,4 @@
 import "server-only";
-import * as React from "react";
-import { marketingEmailTemplates } from "@acme/ui";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 import { createRequire } from "module";
@@ -9,6 +7,15 @@ const nodeRequire =
   typeof require !== "undefined"
     ? require
     : createRequire(eval("import.meta.url"));
+const React = nodeRequire("react");
+let marketingEmailTemplates = [];
+try {
+  marketingEmailTemplates =
+    (nodeRequire("@acme/ui").marketingEmailTemplates ?? []);
+}
+catch {
+  // Ignore if @acme/ui is unavailable
+}
 const { window } = new JSDOM("");
 const DOMPurify = createDOMPurify(window);
 const templates = {};
@@ -31,13 +38,13 @@ export function clearTemplates() {
  * use the Handlebars-like syntax `{{variable}}`.
  */
 export function renderTemplate(id, params) {
-    const { renderToStaticMarkup } = nodeRequire("react-dom/server");
     const source = templates[id];
     if (source) {
         return source.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => {
             return params[key] ?? "";
         });
     }
+    const { renderToStaticMarkup } = nodeRequire("react-dom/server");
     const variant = marketingEmailTemplates.find((t) => t.id === id);
     if (variant) {
         return renderToStaticMarkup(variant.render({

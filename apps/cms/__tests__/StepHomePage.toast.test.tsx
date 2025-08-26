@@ -1,38 +1,35 @@
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { fetchJson } from "@shared-utils";
 
-jest.mock("@/components/atoms/shadcn", () => {
+
+jest.mock("../src/app/cms/configurator/components/TemplateSelector", () => {
   const React = require("react");
   return {
     __esModule: true,
-    Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-    Select: ({ value, onValueChange, children }: any) => (
-      <select value={value} onChange={(e) => onValueChange(e.target.value)}>
-        {children}
-      </select>
-    ),
-    SelectContent: ({ children }: any) => <>{children}</>,
-    SelectItem: ({ value, children }: any) => <option value={value}>{children}</option>,
-    SelectTrigger: ({ children }: any) => <>{children}</>,
-    SelectValue: ({ placeholder }: any) => (
-      <option disabled value="">
-        {placeholder}
-      </option>
-    ),
+    default: function TemplateSelector() {
+      return <div />;
+    },
   };
 });
 
-jest.mock("@/components/cms/PageBuilder", () => {
+jest.mock("../../../test/__mocks__/componentStub.js", () => {
   const React = require("react");
-  return function PageBuilder({ onSave, onPublish, publishError }: any) {
-    return (
-      <div>
-        {publishError && <div>{publishError}</div>}
-        <button onClick={() => onSave(new FormData())}>save</button>
-        <button onClick={() => onPublish(new FormData())}>publish</button>
-      </div>
-    );
-  };
+  const Empty = () => null;
+  const PageBuilder = ({ onSave, onPublish, publishError }: any) => (
+    <div>
+      {publishError && <div>{publishError}</div>}
+      <button onClick={() => onSave(new FormData())}>save</button>
+      <button onClick={() => onPublish(new FormData())}>publish</button>
+    </div>
+  );
+  const Toast = ({ open, message }: any) => (open ? <div>{message}</div> : null);
+  return new Proxy(
+    {},
+    {
+      get: (_target, prop) =>
+        prop === "default" ? PageBuilder : prop === "Toast" ? Toast : Empty,
+    },
+  );
 });
 
 jest.mock("@shared-utils");

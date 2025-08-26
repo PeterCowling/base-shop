@@ -1,5 +1,7 @@
 // /packages/tailwind-config/src/index.ts
 
+import type { Config } from "tailwindcss";
+
 /* ------------------------------------------------------------
  *  Runtime diagnostics — confirm the preset really loads
  * ------------------------------------------------------------ */
@@ -8,7 +10,7 @@ console.log(
   `[@acme/tailwind-config] ✅  preset imported (cwd: ${process.cwd()})`
 );
 
-const preset = {
+const preset: Config = {
   // This preset only provides design tokens, so no files need to be scanned
   content: [],
   theme: {
@@ -55,8 +57,7 @@ const preset = {
     },
   },
   plugins: [],
-  presets: [],
-} as const;
+};
 
 // Additional diagnostics
 // eslint-disable-next-line no-console

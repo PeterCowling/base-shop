@@ -23,13 +23,14 @@ describe("useFileDrop", () => {
       useFileDrop({ shop: "shop", dispatch })
     );
 
+    const event = { dataTransfer: "data" } as any;
     await act(async () => {
       result.current.setDragOver(true);
-      await result.current.handleFileDrop({ dataTransfer: "data" } as any);
+      await result.current.handleFileDrop(event);
     });
 
     expect(result.current.dragOver).toBe(false);
-    expect(onDropMock).toHaveBeenCalledWith("data");
+    expect(onDropMock).toHaveBeenCalledWith(event);
   });
 
   it("dispatches add action on upload", () => {

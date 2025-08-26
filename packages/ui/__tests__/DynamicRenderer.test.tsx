@@ -125,7 +125,8 @@ describe("DynamicRenderer", () => {
 
     expect(screen.getByText("bar")).toBeInTheDocument();
     expect(spy).toHaveBeenCalledWith(
-      expect.objectContaining({ foo: "bar" })
+      expect.objectContaining({ foo: "bar" }),
+      undefined
     );
 
     spy.mockRestore();

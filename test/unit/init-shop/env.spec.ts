@@ -50,7 +50,33 @@ describe('init-shop wizard - env', () => {
       envParse(env);
     });
 
-    const sandbox: any = {
+    const sandbox: any = {};
+    const loadModule = (modulePath: string): any => {
+      const src = fs.readFileSync(modulePath, 'utf8');
+      const dir = path.dirname(modulePath);
+      const mod = { exports: {} };
+      const localRequire = (r: string) => {
+        if (r.startsWith('./')) {
+          return loadModule(
+            path.join(dir, r.endsWith('.ts') ? r : `${r}.ts`)
+          );
+        }
+        return sandbox.require(r);
+      };
+      const transpiled = ts.transpileModule(src, {
+        compilerOptions: { module: ts.ModuleKind.CommonJS, esModuleInterop: true },
+      }).outputText;
+      runInNewContext(transpiled, {
+        ...sandbox,
+        require: localRequire,
+        module: mod,
+        exports: mod.exports,
+        __dirname: dir,
+        __filename: modulePath,
+      });
+      return mod.exports;
+    };
+    Object.assign(sandbox, {
       exports: {},
       module: { exports: {} },
       process: {
@@ -144,6 +170,9 @@ describe('init-shop wizard - env', () => {
             }),
           };
         }
+        if (p.includes('@acme/platform-core/repositories/pages')) {
+          return {};
+        }
         if (p.includes('./generate-theme')) {
           return {
             generateThemeTokens: () => ({
@@ -154,6 +183,9 @@ describe('init-shop wizard - env', () => {
         }
         if (p.includes('./seedShop')) {
           return { seedShop: jest.fn() };
+        }
+        if (p.includes('./apply-page-template')) {
+          return { applyPageTemplate: jest.fn() };
         }
         if (p.includes('@acme/platform-core/configurator')) {
           return {
@@ -174,9 +206,21 @@ describe('init-shop wizard - env', () => {
             },
           };
         }
+        if (p.includes('./runtime')) {
+          return { ensureRuntime: jest.fn() };
+        }
+        if (p.startsWith('./')) {
+          return loadModule(
+            path.join(
+              __dirname,
+              '../../../scripts/src',
+              p.endsWith('.ts') ? p : `${p}.ts`
+            )
+          );
+        }
         return require(p);
       },
-    };
+    });
 
     const src = fs.readFileSync(
       path.join(__dirname, '../../../scripts/src/init-shop.ts'),

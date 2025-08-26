@@ -1,7 +1,10 @@
 // packages/i18n/__tests__/hydration.test.tsx
 import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
-import { act } from "react-dom/test-utils";
+// React 18 deprecates `act` from `react-dom/test-utils` in favour of the
+// version exported from `react` itself. Importing from `react` avoids the
+// console warning that was causing this test to fail.
+import { act } from "react";
 import { TranslationsProvider, useTranslations } from "../src/Translations";
 
 describe("TranslationsProvider hydration", () => {

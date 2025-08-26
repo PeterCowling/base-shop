@@ -77,7 +77,10 @@ describe("chargeLateFeesOnce", () => {
       throw new Error("not found");
     });
     const readdir = jest.fn().mockResolvedValue(["test"]);
-    jest.doMock("node:fs/promises", () => ({
+    // Mock filesystem helpers used by the service. The implementation
+    // imports from "fs/promises" (without the "node:" prefix), so the
+    // mock must match that specifier exactly.
+    jest.doMock("fs/promises", () => ({
       __esModule: true,
       readFile,
       readdir,
@@ -142,7 +145,8 @@ describe("chargeLateFeesOnce", () => {
       throw new Error("not found");
     });
     const readdir = jest.fn().mockResolvedValue(["test"]);
-    jest.doMock("node:fs/promises", () => ({
+    // Ensure the second test also mocks the correct module specifier.
+    jest.doMock("fs/promises", () => ({
       __esModule: true,
       readFile,
       readdir,

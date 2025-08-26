@@ -51,6 +51,12 @@ export async function releaseDepositsOnce(
             `failed to release deposit for ${shop} ${order.sessionId}`,
             { err },
           );
+          // Also log via console.error so tests and simple environments can
+          // detect failures without pino parsing.
+          console.error(
+            `failed to release deposit for ${shop} ${order.sessionId}`,
+            err,
+          );
         }
       }
     }

@@ -9,7 +9,7 @@ jest.mock("../src/components/cms/page-builder/PageCanvas.tsx", () => ({
 }));
 jest.mock("../src/components/cms/page-builder/Palette", () => () => <div />);
 jest.mock("../src/components/cms/page-builder/PageSidebar", () => () => <div />);
-import PageBuilder from "@ui/components/cms/PageBuilder";
+import PageBuilder from "../src/components/cms/PageBuilder";
 import { devicePresets, getLegacyPreset } from "../src/utils/devicePresets";
 
 describe("PageBuilder drag interactions", () => {

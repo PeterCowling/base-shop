@@ -30,14 +30,15 @@ describe("PageBuilder resize interactions", () => {
     }
 
     render(<Wrapper />);
-    await screen.findByLabelText("Width (Desktop)");
-    fireEvent.change(screen.getByLabelText("Width (Desktop)"), {
+    fireEvent.click(screen.getByText("Layout"));
+    await screen.findByLabelText(/Width \(Desktop\)/);
+    fireEvent.change(screen.getByLabelText(/Width \(Desktop\)/), {
       target: { value: "200px" },
     });
     expect(screen.getByTestId("target")).toHaveStyle({ width: "200px" });
     fireEvent.click(screen.getAllByText("Full width")[0]);
     expect(screen.getByTestId("target")).toHaveStyle({ width: "100%" });
-    fireEvent.change(screen.getByLabelText("Height (Desktop)"), {
+    fireEvent.change(screen.getByLabelText(/Height \(Desktop\)/), {
       target: { value: "300px" },
     });
     expect(screen.getByTestId("target")).toHaveStyle({ height: "300px" });

@@ -1,4 +1,10 @@
-// packages/zod-utils/src/index.ts
-// Re-export public API from relative paths.
-export { initZod } from "./initZod";
-export { applyFriendlyZodMessages, friendlyErrorMap } from "./zodErrorMap";
+import { applyFriendlyZodMessages, friendlyErrorMap } from "./zodErrorMap";
+
+export function initZod(): void {
+  applyFriendlyZodMessages();
+}
+
+// Initialize immediately when this module is imported.
+initZod();
+
+export { applyFriendlyZodMessages, friendlyErrorMap };

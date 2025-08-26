@@ -1,16 +1,16 @@
-const listEventsMock = jest.fn();
-const statMock = jest.fn();
-const readFileMock = jest.fn();
+const mockListEvents = jest.fn();
+const mockStat = jest.fn();
+const mockReadFile = jest.fn();
 
 jest.mock("@platform-core/repositories/analytics.server", () => ({
-  listEvents: (...args: unknown[]) => listEventsMock(...args),
+  listEvents: (...args: unknown[]) => mockListEvents(...args),
 }));
 
-jest.mock("node:fs", () => ({
+jest.mock("fs", () => ({
   ...jest.requireActual("node:fs"),
   promises: {
-    readFile: (...args: unknown[]) => readFileMock(...args),
-    stat: (...args: unknown[]) => statMock(...args),
+    readFile: (...args: unknown[]) => mockReadFile(...args),
+    stat: (...args: unknown[]) => mockStat(...args),
   },
 }));
 
@@ -30,11 +30,11 @@ describe("resolveSegment caching", () => {
 
   it("returns cached result on repeated calls", async () => {
     process.env.SEGMENT_CACHE_TTL = "1000";
-    readFileMock.mockResolvedValue(
+    mockReadFile.mockResolvedValue(
       JSON.stringify([{ id: "vips", filters: [] }])
     );
-    statMock.mockResolvedValue({ mtimeMs: 1 });
-    listEventsMock.mockResolvedValue([{ email: "a@example.com" }]);
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents.mockResolvedValue([{ email: "a@example.com" }]);
     const { resolveSegment } = await import("../segments");
 
     const r1 = await resolveSegment("shop1", "vips");
@@ -42,18 +42,18 @@ describe("resolveSegment caching", () => {
 
     expect(r1).toEqual(["a@example.com"]);
     expect(r2).toEqual(["a@example.com"]);
-    expect(listEventsMock).toHaveBeenCalledTimes(1);
+    expect(mockListEvents).toHaveBeenCalledTimes(1);
   });
 
   it("invalidates cache when analytics events change", async () => {
     process.env.SEGMENT_CACHE_TTL = "1000";
-    readFileMock.mockResolvedValue(
+    mockReadFile.mockResolvedValue(
       JSON.stringify([{ id: "vips", filters: [] }])
     );
-    statMock
+    mockStat
       .mockResolvedValueOnce({ mtimeMs: 1 })
       .mockResolvedValueOnce({ mtimeMs: 2 });
-    listEventsMock
+    mockListEvents
       .mockResolvedValueOnce([{ email: "a@example.com" }])
       .mockResolvedValueOnce([{ email: "b@example.com" }]);
 
@@ -64,7 +64,7 @@ describe("resolveSegment caching", () => {
 
     expect(r1).toEqual(["a@example.com"]);
     expect(r2).toEqual(["b@example.com"]);
-    expect(listEventsMock).toHaveBeenCalledTimes(2);
+    expect(mockListEvents).toHaveBeenCalledTimes(2);
   });
 });
 

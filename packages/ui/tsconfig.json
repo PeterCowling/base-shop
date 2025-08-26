@@ -18,6 +18,10 @@
     "paths": {
       "@acme/platform-core": ["../platform-core/src/index"],
       "@acme/platform-core/*": ["../platform-core/src/*"],
+      "@platform-core": ["../platform-core/src/index"],
+      "@platform-core/*": ["../platform-core/src/*"],
+      "@ui": ["./src/index"],
+      "@ui/*": ["./src/*"],
       "@acme/types": ["../types/src/index"],
       "@acme/types/*": ["../types/src/*"],
       "@auth": ["types-compat/auth"]

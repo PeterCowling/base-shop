@@ -1,3 +1,5 @@
+/** @jest-environment node */
+
 jest.mock("../src/analytics", () => ({ trackOrder: jest.fn() }));
 import * as repo from "../src/repositories/rentalOrders.server";
 import { getOrdersForCustomer } from "../src/orders";

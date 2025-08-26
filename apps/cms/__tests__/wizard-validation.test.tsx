@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import { templates, themes } from "./utils/wizardTestUtils";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { baseTokens } from "../src/app/cms/wizard/tokenUtils";
 import { rest } from "msw";
 import { server } from "../../../test/msw/server";
@@ -37,6 +37,7 @@ describe("Wizard validation", () => {
       <Wizard themes={themes} templates={templates} />
     );
 
+    fireEvent.click(screen.getByRole("button", { name: /next/i }));
     await screen.findByRole("heading", { name: /select theme/i });
     await waitFor(() => {
       const root = container.firstChild as HTMLElement;

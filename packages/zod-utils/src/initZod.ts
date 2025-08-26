@@ -6,7 +6,7 @@
 // async `import` helpers that rely on top-level `await`. Using
 // `createRequire` keeps the generated code synchronous and works in
 // both ESM and CJS test runs.
-import { createRequire } from "node:module";
+import { createRequire } from "module";
 const { applyFriendlyZodMessages } = createRequire(import.meta.url)(
   "./zodErrorMap"
 );

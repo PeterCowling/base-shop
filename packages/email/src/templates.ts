@@ -1,6 +1,5 @@
 import "server-only";
-import * as React from "react";
-import { marketingEmailTemplates } from "@acme/ui";
+import type * as React from "react";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 function renderToStaticMarkup(node: React.ReactNode): string {
@@ -29,6 +28,20 @@ function renderToStaticMarkup(node: React.ReactNode): string {
     inner = React.Children.map(children as any, renderToStaticMarkup).join("");
   }
   return `<${type}${attrs}>${inner}</${type}>`;
+}
+
+const React = nodeRequire("react") as typeof import("react");
+
+let marketingEmailTemplates: Array<{
+  id: string;
+  render: (props: any) => React.ReactElement;
+}> = [];
+try {
+  marketingEmailTemplates =
+    nodeRequire("@acme/ui").marketingEmailTemplates ?? [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} catch {
+  // Ignore if @acme/ui is unavailable
 }
 
 const { window } = new JSDOM("");
@@ -67,6 +80,7 @@ export function renderTemplate(
     });
   }
 
+  const { renderToStaticMarkup } = nodeRequire("react-dom/server");
   const variant = marketingEmailTemplates.find((t) => t.id === id);
   if (variant) {
     return renderToStaticMarkup(

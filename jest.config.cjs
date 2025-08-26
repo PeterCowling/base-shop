@@ -151,6 +151,7 @@ module.exports = {
     // map React to ensure hooks use the same instance during tests
     "^react$": reactPath,
     "^react-dom$": reactDomPath,
+    "^react/jsx-runtime$": path.join(reactPath, "jsx-runtime.js"),
     ...tsPaths,
   },
 

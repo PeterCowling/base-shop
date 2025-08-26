@@ -2,10 +2,17 @@
 "use client";
 
 import type { SKU } from "@acme/types";
-import { memo, useMemo, useRef, useState, useEffect } from "react";
+import {
+  memo,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+  type HTMLAttributes,
+} from "react";
 import { ProductCard } from "./ProductCard";
 
-type Props = {
+type Props = HTMLAttributes<HTMLElement> & {
   skus: SKU[];
   columns?: number;
   /** Minimum number of products to display */
@@ -18,7 +25,6 @@ type Props = {
   tabletItems?: number;
   /** Items shown on mobile viewports */
   mobileItems?: number;
-  className?: string;
 };
 
 function ProductGridInner({
@@ -30,6 +36,7 @@ function ProductGridInner({
   tabletItems,
   mobileItems,
   className,
+  ...rest
 }: Props) {
   // simple alphabetic sort for deterministic order (SSR/CSR match)
   const sorted = useMemo(
@@ -75,11 +82,12 @@ function ProductGridInner({
   ]);
 
   return (
-    <section
-      ref={containerRef}
-      className={`grid gap-6 ${className ?? ""}`}
-      style={{ gridTemplateColumns: `repeat(${columns ?? cols}, minmax(0, 1fr))` }}
-    >
+      <section
+        ref={containerRef}
+        className={`grid gap-6 ${className ?? ""}`}
+        style={{ gridTemplateColumns: `repeat(${columns ?? cols}, minmax(0, 1fr))` }}
+        {...rest}
+      >
       {sorted.map((sku) => (
         <ProductCard key={sku.id} sku={sku} />
       ))}

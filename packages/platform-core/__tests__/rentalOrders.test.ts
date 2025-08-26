@@ -1,4 +1,39 @@
 jest.mock("../src/analytics", () => ({ trackOrder: jest.fn() }));
+jest.mock("../src/db", () => {
+  const orders: any[] = [];
+  return {
+    prisma: {
+      rentalOrder: {
+        findMany: ({ where }: any) =>
+          Promise.resolve(
+            orders.filter((o) => {
+              if (where.shop && o.shop !== where.shop) return false;
+              if (where.customerId && o.customerId !== where.customerId)
+                return false;
+              return true;
+            }),
+          ),
+        create: ({ data }: any) => {
+          orders.push({ ...data });
+          return Promise.resolve(data);
+        },
+        update: ({ where, data }: any) => {
+          const idx = orders.findIndex(
+            (o) =>
+              o.shop === where.shop_sessionId.shop &&
+              o.sessionId === where.shop_sessionId.sessionId,
+          );
+          if (idx === -1) return Promise.reject(new Error("not found"));
+          orders[idx] = { ...orders[idx], ...data };
+          return Promise.resolve(orders[idx]);
+        },
+      },
+      shop: {
+        findUnique: () => Promise.resolve(null),
+      },
+    },
+  };
+});
 import * as repo from "../src/repositories/rentalOrders.server";
 import { getOrdersForCustomer } from "../src/orders";
 
@@ -35,9 +70,9 @@ describe("rental order repository", () => {
 
   it("returns only orders for matching customer", async () => {
     const shop = "customer-test";
-    await repo.addOrder(shop, "s1", 10, undefined, "cust1");
-    await repo.addOrder(shop, "s2", 20, undefined, "cust2");
-    await repo.addOrder(shop, "s3", 30, undefined, "cust1");
+    await repo.addOrder(shop, "s1", 10, undefined, undefined, "cust1");
+    await repo.addOrder(shop, "s2", 20, undefined, undefined, "cust2");
+    await repo.addOrder(shop, "s3", 30, undefined, undefined, "cust1");
 
     const cust1Orders = await getOrdersForCustomer(shop, "cust1");
     expect(cust1Orders).toHaveLength(2);

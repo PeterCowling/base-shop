@@ -1,11 +1,6 @@
-import {
-  createCustomerSession,
-  getCustomerSession,
-  destroyCustomerSession,
-  CUSTOMER_SESSION_COOKIE,
-  CSRF_TOKEN_COOKIE,
-} from "../src/session.js";
-import type { Role } from "../src/types/index.js";
+jest.mock("@acme/zod-utils/initZod", () => ({ initZod: jest.fn() }));
+
+import type { Role } from "../src/types/index";
 
 const mockCookies = jest.fn();
 const mockHeaders = jest.fn(() => ({ get: () => null }));
@@ -13,6 +8,12 @@ jest.mock("next/headers", () => ({
   cookies: () => mockCookies(),
   headers: () => mockHeaders(),
 }));
+
+let createCustomerSession: typeof import("../src/session").createCustomerSession;
+let getCustomerSession: typeof import("../src/session").getCustomerSession;
+let destroyCustomerSession: typeof import("../src/session").destroyCustomerSession;
+let CUSTOMER_SESSION_COOKIE: typeof import("../src/session").CUSTOMER_SESSION_COOKIE;
+let CSRF_TOKEN_COOKIE: typeof import("../src/session").CSRF_TOKEN_COOKIE;
 
 function createStore() {
   const jar = new Map<string, string>();
@@ -32,10 +33,19 @@ function createStore() {
 
 describe("customer session", () => {
   const originalSecret = process.env.SESSION_SECRET;
-  beforeEach(() => {
+  beforeEach(async () => {
     process.env.SESSION_SECRET =
       "0123456789abcdefghijklmnopqrstuvwxyz012345"; // 40 chars
     mockCookies.mockReset();
+    jest.resetModules();
+    const mod = await import("../src/session");
+    ({
+      createCustomerSession,
+      getCustomerSession,
+      destroyCustomerSession,
+      CUSTOMER_SESSION_COOKIE,
+      CSRF_TOKEN_COOKIE,
+    } = mod);
   });
   afterAll(() => {
     if (originalSecret !== undefined) {

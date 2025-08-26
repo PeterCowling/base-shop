@@ -1,7 +1,7 @@
 // packages/auth/src/requirePermission.ts
-import { getCustomerSession } from "./session.js";
-import { hasPermission } from "./permissions.js";
-import type { Permission } from "./types/index.js";
+import { getCustomerSession } from "./session";
+import { hasPermission } from "./permissions";
+import type { Permission } from "./types/index";
 
 export async function requirePermission(perm: Permission) {
   const session = await getCustomerSession();

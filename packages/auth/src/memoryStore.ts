@@ -1,4 +1,4 @@
-import type { SessionRecord, SessionStore } from "./store.js";
+import type { SessionRecord, SessionStore } from "./store";
 
 export class MemorySessionStore implements SessionStore {
   private sessions = new Map<string, { record: SessionRecord; expires: number }>();

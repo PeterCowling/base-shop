@@ -1,10 +1,10 @@
 // packages/auth/src/index.ts
 
-export { canRead, canWrite, READ_ROLES, WRITE_ROLES } from "./rbac.js";
-export { extendRoles, isRole } from "./types/roles.js";
-export { hasPermission } from "./permissions.js";
-export { requirePermission } from "./requirePermission.js";
-export type { Role, Permission } from "./types/index.js";
+export { canRead, canWrite, READ_ROLES, WRITE_ROLES } from "./rbac";
+export { extendRoles, isRole } from "./types/roles";
+export { hasPermission } from "./permissions";
+export { requirePermission } from "./requirePermission";
+export type { Role, Permission } from "./types/index";
 export {
   CUSTOMER_SESSION_COOKIE,
   CSRF_TOKEN_COOKIE,
@@ -14,13 +14,13 @@ export {
   listSessions,
   revokeSession,
   validateCsrfToken,
-} from "./session.js";
-export type { CustomerSession } from "./session.js";
-export type { SessionStore, SessionRecord } from "./store.js";
-export { setSessionStoreFactory } from "./store.js";
+} from "./session";
+export type { CustomerSession } from "./session";
+export type { SessionStore, SessionRecord } from "./store";
+export { setSessionStoreFactory } from "./store";
 
 export {
   enrollMfa,
   verifyMfa,
   isMfaEnabled,
-} from "./mfa.js";
+} from "./mfa";

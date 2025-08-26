@@ -64,6 +64,15 @@ async function loadProvider(name: string): Promise<CampaignProvider | undefined>
 
 const availableProviders = ["sendgrid", "resend", "smtp"];
 
+const configuredProvider =
+  process.env.EMAIL_PROVIDER || coreEnv.EMAIL_PROVIDER || undefined;
+
+if (configuredProvider && !availableProviders.includes(configuredProvider)) {
+  throw new Error(
+    `Unsupported EMAIL_PROVIDER "${configuredProvider}". Available providers: ${availableProviders.join(", ")}`
+  );
+}
+
 // Read provider preference directly from `process.env` first so tests or
 // runtime code that mutate environment variables after the config module has
 // loaded can still influence the chosen provider. Fall back to the value
@@ -80,7 +89,7 @@ export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
   const { sanitize = true, ...rest } = options;
-  let opts = { ...rest } as CampaignOptions;
+  const opts = { ...rest } as CampaignOptions;
   if (opts.templateId) {
     const { renderTemplate } = await import("./templates");
     opts.html = renderTemplate(opts.templateId, opts.variables ?? {});
@@ -150,9 +159,8 @@ async function sendWithRetry(
   options: CampaignOptions,
   maxRetries = 3
 ): Promise<void> {
-  let attempt = 0;
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
+    let attempt = 0;
+    while (true) {
     try {
       await provider.send(options);
       return;

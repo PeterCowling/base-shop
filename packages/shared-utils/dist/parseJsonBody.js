@@ -11,7 +11,20 @@ export async function parseJsonBody(req, schema, limit) {
     try {
         if (!req.body)
             throw new Error("No body");
-        const stream = Readable.fromWeb(req.body);
+        const body = req.body;
+        let stream;
+        if (Buffer.isBuffer(body)) {
+            // cross-fetch Request bodies are Buffers
+            stream = Readable.from([body]);
+        }
+        else if (typeof body.pipe === "function") {
+            // already a Node.js readable stream
+            stream = body;
+        }
+        else {
+            // fall back to web streams
+            stream = Readable.fromWeb(body);
+        }
         text = await getRawBody(stream, {
             limit,
             encoding: "utf8",

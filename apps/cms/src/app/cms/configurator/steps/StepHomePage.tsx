@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
-import TemplateSelector from "../components/TemplateSelector";
+import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";
 import { fillLocales } from "@i18n/fillLocales";
 import {
   type Page,

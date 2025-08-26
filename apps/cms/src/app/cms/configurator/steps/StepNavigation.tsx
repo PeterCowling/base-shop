@@ -10,7 +10,7 @@ import { useThemeLoader } from "../hooks/useThemeLoader";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import { useState, useMemo } from "react";
 import DeviceSelector from "@ui/components/cms/DeviceSelector";
-import NavTemplateSelector from "../components/NavTemplateSelector";
+import NavTemplateSelector from "@/app/cms/configurator/components/NavTemplateSelector";
 
 interface NavItem {
   id: string;

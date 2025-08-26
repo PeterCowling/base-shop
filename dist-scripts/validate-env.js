@@ -1,7 +1,9 @@
-import { envSchema } from "@config/src/env";
-import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
-import { ZodError } from "zod";
+// CommonJS build to ensure compatibility with Jest's runtime.
+const { envSchema } = require("@config/src/env");
+const { existsSync, readFileSync } = require("node:fs");
+const { join } = require("node:path");
+const { ZodError } = require("zod");
+
 const shopId = process.argv[2];
 if (!shopId) {
     console.error("Usage: pnpm validate-env <shopId>");

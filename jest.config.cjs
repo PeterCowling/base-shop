@@ -120,6 +120,7 @@ module.exports = {
     // CMS application aliases
     "^@/components/atoms/shadcn$":
       "<rootDir>/test/__mocks__/shadcnDialogStub.tsx",
+    "^@/components/(.*)$": "<rootDir>/packages/ui/src/components/$1",
     "^@/(.*)$": "<rootDir>/apps/cms/src/$1",
 
     // context mocks
@@ -151,8 +152,6 @@ module.exports = {
     "^../../../packages/platform-core/repositories/(.*)$":
       "<rootDir>/packages/platform-core/src/repositories/$1",
     "^../packages/ui/components/(.*)$":
-      "<rootDir>/packages/ui/src/components/$1",
-    "^../components/(.*)$":
       "<rootDir>/packages/ui/src/components/$1",
 
     // fixture JSON moved during the Turbo-repo migration

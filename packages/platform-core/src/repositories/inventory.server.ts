@@ -29,7 +29,11 @@ export const inventoryRepository: InventoryRepository = {
   },
   async write(shop: string, items: InventoryItem[]) {
     const repo = await getRepo();
-    return repo.write(shop, items);
+    await repo.write(shop, items);
+    if (process.env.SKIP_STOCK_ALERT !== "1") {
+      const { checkAndAlert } = await import("../services/stockAlert.server");
+      await checkAndAlert(shop, items);
+    }
   },
   async update(
     shop: string,

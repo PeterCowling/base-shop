@@ -6,6 +6,10 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
+// Account action tests spin up temporary repos and hash passwords; give them
+// extra time in CI environments where startup can be slow.
+jest.setTimeout(120_000);
+
 /* --------------------------------------------------------------------
  *  Ensure the stripe env vars that `@config/env` insists on are present
  * ------------------------------------------------------------------ */

@@ -24,9 +24,14 @@ export default async function Header({
   padding?: string;
 }) {
   const cookieStore = await cookies();
-  const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
+  const decodedId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
+  const cartId = typeof decodedId === "string" ? decodedId : undefined;
   const cartStore = createCartStore();
-  const cart: CartState = cartId ? await cartStore.getCart(cartId) : {};
+  let cart: CartState = {};
+
+  if (cartId) {
+    cart = await cartStore.getCart(cartId);
+  }
   const initialQty = Object.values<CartLine>(cart).reduce(
     (s, line) => s + line.qty,
     0,

@@ -4,7 +4,7 @@ import {
   decodeCartCookie,
   type CartState,
 } from "@platform-core/cartCookie";
-import { createCartStore } from "@platform-core/cartStore";
+import { getCart } from "@platform-core/cartStore";
 import {
   convertCurrency,
   getPricing,
@@ -20,8 +20,7 @@ export const runtime = "edge";
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
   const cartId = decodeCartCookie(rawCookie);
-  const cartStore = createCartStore();
-  const cart = cartId ? ((await cartStore.getCart(cartId)) as CartState) : {};
+  const cart = cartId ? ((await getCart(cartId)) as CartState) : {};
 
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });

@@ -6,7 +6,7 @@ import {
 } from "@platform-core/repositories/rentalOrders.server";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { logger } from "@platform-core/utils";
-import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile } from "fs/promises";
 import { join } from "path";
 
 const DATA_ROOT = resolveDataRoot();

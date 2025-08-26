@@ -1,10 +1,12 @@
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync } from 'fs';
 import { tmpdir } from 'os';
 import { join } from 'path';
-import { seedShop } from '../../scripts/src/seedShop';
 
 describe('seedShop', () => {
-  it('copies template data into shop directory', () => {
+  it('copies template data into shop directory', async () => {
+    process.env.BROWSERSLIST ??= 'defaults';
+    const { seedShop } = await import('../../scripts/src/seedShop');
+
     const root = mkdtempSync(join(tmpdir(), 'seed-shop-'));
     // Create template files
     const templateDir = join(root, 'data', 'templates', 'default');

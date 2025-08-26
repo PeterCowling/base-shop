@@ -1,0 +1,18 @@
+[
+  {
+    "id": "k4ujaio0",
+    "recipients": [
+      "r1@example.com",
+      "r2@example.com",
+      "r3@example.com",
+      "r4@example.com",
+      "r5@example.com"
+    ],
+    "subject": "Hi",
+    "body": "<p>Hi</p>",
+    "segment": null,
+    "sendAt": "2019-12-31T23:59:59.000Z",
+    "templateId": null,
+    "sentAt": "2020-01-01T00:00:00.000Z"
+  }
+]

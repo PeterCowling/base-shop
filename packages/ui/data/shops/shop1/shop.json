@@ -1,0 +1,22 @@
+{
+  "id": "shop1",
+  "name": "shop1",
+  "catalogFilters": [],
+  "themeId": "base",
+  "themeDefaults": {},
+  "themeOverrides": {},
+  "themeTokens": {},
+  "filterMappings": {},
+  "priceOverrides": {},
+  "localeOverrides": {},
+  "navigation": [],
+  "analyticsEnabled": false,
+  "shippingProviders": [],
+  "taxProviders": [
+    "taxjar"
+  ],
+  "paymentProviders": [],
+  "enableEditorial": false,
+  "subscriptionsEnabled": false,
+  "rentalSubscriptions": []
+}

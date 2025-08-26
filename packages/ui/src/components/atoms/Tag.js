@@ -26,6 +26,6 @@ export const Tag = React.forwardRef(({ className, variant = "default", children,
         warning: "--color-warning-fg",
         destructive: "--color-danger-fg",
     };
-    return (_jsx("span", { ref: ref, "data-token": bgTokens[variant], className: cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", bgClasses[variant], className), ...props, children: _jsx("span", { className: textClasses[variant], "data-token": textTokens[variant], children: children }) }));
+    return (_jsx("span", { ref: ref, "data-token": bgTokens[variant], "data-token-fg": textTokens[variant], className: cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", bgClasses[variant], textClasses[variant], className), ...props, children: children }));
 });
 Tag.displayName = "Tag";

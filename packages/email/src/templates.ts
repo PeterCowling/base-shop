@@ -69,21 +69,22 @@ export function renderTemplate(
 
   const variant = marketingEmailTemplates.find((t) => t.id === id);
   if (variant) {
-    return renderToStaticMarkup(
-      variant.render({
-        headline: params.headline ?? params.subject ?? "",
-        content: React.createElement("div", {
-          dangerouslySetInnerHTML: {
-            __html: DOMPurify.sanitize(params.body ?? params.content ?? ""),
-          },
-        }),
-        footer: React.createElement(
-          "p",
-          null,
-          params.footer ?? "%%UNSUBSCRIBE%%",
-        ),
+    const rendered = variant.render({
+      headline: params.headline ?? params.subject ?? "",
+      content: React.createElement("div", {
+        dangerouslySetInnerHTML: {
+          __html: DOMPurify.sanitize(params.body ?? params.content ?? ""),
+        },
       }),
-    );
+      footer: React.createElement(
+        "p",
+        null,
+        params.footer ?? "%%UNSUBSCRIBE%%",
+      ),
+    });
+    if (typeof rendered === "string") return rendered;
+    const { renderToStaticMarkup } = nodeRequire("react-dom/server");
+    return renderToStaticMarkup(rendered);
   }
 
   throw new Error(`Unknown template: ${id}`);

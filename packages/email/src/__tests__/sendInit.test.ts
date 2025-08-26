@@ -6,6 +6,8 @@ jest.mock("../providers/resend", () => ({
   ResendProvider: jest.fn().mockImplementation(() => ({ send: jest.fn() })),
 }));
 
+jest.mock("@acme/ui", () => ({ marketingEmailTemplates: [] }));
+
 describe("EMAIL_PROVIDER validation", () => {
   afterEach(() => {
     jest.resetModules();

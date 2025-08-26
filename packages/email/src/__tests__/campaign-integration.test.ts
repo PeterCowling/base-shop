@@ -24,6 +24,8 @@ jest.mock("resend", () => ({
   })),
 }));
 
+jest.mock("@acme/ui", () => ({ marketingEmailTemplates: [] }));
+
 let trackEvent: jest.Mock;
 
 const shop = "intshop";

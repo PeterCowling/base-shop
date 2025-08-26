@@ -2,18 +2,22 @@ interface Props {
   gridCols: number;
 }
 
-const GridOverlay = ({ gridCols }: Props) => (
-  <div
-    className="pointer-events-none absolute inset-0 z-10 grid"
-    style={{ gridTemplateColumns: `repeat(${gridCols}, 1fr)` }}
-  >
-    {Array.from({ length: gridCols }).map((_, i) => (
-      <div
-        key={i}
-        className="border-l border-dashed border-muted-foreground/40"
-      />
-    ))}
-  </div>
-);
+const GridOverlay = ({ gridCols }: Props) => {
+  const cols =
+    Number.isFinite(gridCols) && gridCols > 0 ? Math.floor(gridCols) : 1;
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 z-10 grid"
+      style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
+    >
+      {Array.from({ length: cols }).map((_, i) => (
+        <div
+          key={i}
+          className="border-muted-foreground/40 border-l border-dashed"
+        />
+      ))}
+    </div>
+  );
+};
 
 export default GridOverlay;

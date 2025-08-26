@@ -41,6 +41,9 @@ export function SearchResultsTemplate({
   className,
   ...props
 }: SearchResultsTemplateProps) {
+  const rawCount = maxItems ?? minItems ?? 1;
+  const columnCount =
+    Number.isFinite(rawCount) && rawCount > 0 ? Math.floor(rawCount) : 1;
   return (
     <div className={cn("space-y-6", className)} {...props}>
       <SearchBar
@@ -57,15 +60,19 @@ export function SearchResultsTemplate({
           data-testid="search-results-loading"
           className="grid gap-6"
           style={{
-            gridTemplateColumns: `repeat(${maxItems ?? minItems ?? 1}, minmax(0, 1fr))`,
+            gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
           }}
         >
-          {Array.from({ length: maxItems ?? minItems ?? 1 }).map((_, i) => (
+          {Array.from({ length: columnCount }).map((_, i) => (
             <Skeleton key={i} className="h-48 w-full" />
           ))}
         </div>
       ) : results.length > 0 ? (
-        <ProductGrid products={results} minItems={minItems} maxItems={maxItems} />
+        <ProductGrid
+          products={results}
+          minItems={minItems}
+          maxItems={maxItems}
+        />
       ) : (
         <p>No results found.</p>
       )}

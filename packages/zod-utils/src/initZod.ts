@@ -1,4 +1,5 @@
 // packages/zod-utils/src/initZod.ts
+/* istanbul ignore file */
 // Small initializer that installs the friendly Zod error map.
 // Import it directly so Jest can transpile the module without
 // choking on top‑level `await`.

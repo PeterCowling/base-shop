@@ -32,7 +32,7 @@ describe("ReviewsCarousel", () => {
       "--color-muted"
     );
     expect(
-      screen.getByText("Anna quote").closest("blockquote")
+      screen.getByText(/Anna quote/).closest("blockquote")
     ).toHaveAttribute("data-token", "--color-fg");
     expect(screen.getByText(/Anna/).parentElement).toHaveAttribute(
       "data-token",

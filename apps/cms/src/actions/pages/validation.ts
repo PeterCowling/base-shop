@@ -17,7 +17,7 @@ export const componentsField = z
     } catch {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Invalid JSON",
+        message: "Invalid components",
       });
       return [];
     }

@@ -6,6 +6,34 @@ if (!globalThis.fetch) {
   Object.assign(globalThis, { fetch, Headers, Request, Response });
 }
 
+// Node's test environment may lack FormData, so provide a minimal polyfill
+if (!("FormData" in globalThis)) {
+  class SimpleFormData {
+    private map = new Map<string, string[]>();
+
+    append(name: string, value: any) {
+      const arr = this.map.get(name) || [];
+      arr.push(String(value));
+      this.map.set(name, arr);
+    }
+
+    set(name: string, value: any) {
+      this.map.set(name, [String(value)]);
+    }
+
+    get(name: string): string | null {
+      const arr = this.map.get(name);
+      return arr ? arr[0] : null;
+    }
+
+    getAll(name: string): string[] {
+      return this.map.get(name) ?? [];
+    }
+  }
+
+  (globalThis as any).FormData = SimpleFormData;
+}
+
 if (!("getAll" in Headers.prototype)) {
   (Headers.prototype as any).getAll = function (
     this: Headers,

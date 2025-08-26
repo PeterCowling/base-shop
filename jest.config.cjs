@@ -112,6 +112,8 @@ module.exports = {
       "^@config/src/(.*)$": "<rootDir>/packages/config/src/$1",
     "^@acme/config$": "<rootDir>/packages/config/src/env/index.ts",
     "^@acme/config/(.*)$": "<rootDir>/packages/config/src/$1",
+    "^@acme/plugin-sanity$": "<rootDir>/test/__mocks__/pluginSanityStub.ts",
+    "^@acme/plugin-sanity/(.*)$": "<rootDir>/test/__mocks__/pluginSanityStub.ts",
     "^@acme/zod-utils/initZod$": "<rootDir>/test/emptyModule.js",
 
     // CMS application aliases

@@ -43,6 +43,7 @@ export function getComponentNameMap(componentsDir: string): Record<string, strin
       const file = resolveFile(dir, rel);
       if (!file) continue;
       for (const spec of specifiers) {
+        if (spec.startsWith("type ")) continue;
         let name = spec;
         if (spec.startsWith("default as ")) {
           name = spec.slice("default as ".length).trim();

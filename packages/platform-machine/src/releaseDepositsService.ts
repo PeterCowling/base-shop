@@ -6,7 +6,7 @@ import {
 } from "@platform-core/repositories/rentalOrders.server";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { logger } from "@platform-core/utils";
-import { readdir, readFile } from "fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { join } from "path";
 
 const DATA_ROOT = resolveDataRoot();
@@ -45,11 +45,12 @@ export async function releaseDepositsOnce(
             sessionId: order.sessionId,
           });
         } catch (err) {
-          logger.error("failed to release deposit", {
-            shopId: shop,
-            sessionId: order.sessionId,
+          // Include identifiers in the log message so tests can assert on it
+          // and operators have useful context when troubleshooting.
+          logger.error(
+            `failed to release deposit for ${shop} ${order.sessionId}`,
             err,
-          });
+          );
         }
       }
     }
@@ -63,7 +64,9 @@ type DepositReleaseConfig = {
 };
 
 const DEFAULT_CONFIG: DepositReleaseConfig = {
-  enabled: false,
+  // Enable the service by default; individual shops can disable it via config
+  // or environment variables.
+  enabled: true,
   intervalMinutes: 60,
 };
 

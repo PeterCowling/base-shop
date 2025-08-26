@@ -1,9 +1,17 @@
 // test/setupFetchPolyfill.ts   (new file at repo root)
 
 import fetch, { Headers, Request, Response } from "cross-fetch";
+import { webcrypto } from "node:crypto";
 
 if (!globalThis.fetch) {
   Object.assign(globalThis, { fetch, Headers, Request, Response });
+}
+
+// Ensure a cryptographically secure PRNG for libraries like `ulid`
+if (!globalThis.crypto) {
+  Object.defineProperty(globalThis, "crypto", {
+    value: webcrypto,
+  });
 }
 
 // Node's test environment may lack FormData, so provide a minimal polyfill

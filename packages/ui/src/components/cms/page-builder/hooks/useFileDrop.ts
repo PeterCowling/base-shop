@@ -4,7 +4,6 @@ import type { DragEvent } from "react";
 import { ulid } from "ulid";
 import type { PageComponent, MediaItem } from "@acme/types";
 import useFileUpload from "../../../../hooks/useFileUpload";
-import { defaults } from "../defaults";
 import type { Action } from "../state/layout";
 
 interface Options {
@@ -26,7 +25,6 @@ const useFileDrop = ({ shop, dispatch }: Options) => {
           type: "Image",
           src: item.url,
           alt: item.altText,
-          ...(defaults.Image ?? {}),
         } as PageComponent,
       });
     },

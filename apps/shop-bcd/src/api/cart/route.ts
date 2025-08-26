@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Size required" }, { status: 400 });
   }
   const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart: CartState = JSON.parse(decodeCartCookie(cookie) ?? "{}");
+  const cart: CartState = (decodeCartCookie(cookie) ?? {}) as CartState;
   const id = size ? `${sku.id}:${size}` : sku.id;
   const line = cart[id];
   const newQty = (line?.qty ?? 0) + qty;
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Insufficient stock" }, { status: 409 });
   }
 
-  cart[id] = { sku, size, qty: newQty };
+  cart[id] = { sku, qty: newQty, size };
 
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set(
@@ -75,7 +75,7 @@ export async function PATCH(req: NextRequest) {
 
   const { id, qty } = parsed.data;
   const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart: CartState = JSON.parse(decodeCartCookie(cookie) ?? "{}");
+  const cart: CartState = (decodeCartCookie(cookie) ?? {}) as CartState;
   const line = cart[id];
 
   if (!line) {
@@ -85,7 +85,7 @@ export async function PATCH(req: NextRequest) {
   if (qty === 0) {
     delete cart[id];
   } else {
-    cart[id] = { ...line, qty };
+    cart[id] = { sku: line.sku, qty, size: line.size };
   }
 
   const res = NextResponse.json({ ok: true, cart });
@@ -108,7 +108,7 @@ export async function DELETE(req: NextRequest) {
 
   const { id } = parsed.data;
   const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart: CartState = JSON.parse(decodeCartCookie(cookie) ?? "{}");
+  const cart: CartState = (decodeCartCookie(cookie) ?? {}) as CartState;
 
   if (!cart[id]) {
     return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
@@ -126,6 +126,6 @@ export async function DELETE(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   const cookie = req.cookies.get(CART_COOKIE)?.value;
-  const cart: CartState = JSON.parse(decodeCartCookie(cookie) ?? "{}");
+  const cart: CartState = (decodeCartCookie(cookie) ?? {}) as CartState;
   return NextResponse.json({ ok: true, cart });
 }

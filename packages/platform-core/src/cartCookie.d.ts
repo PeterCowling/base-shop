@@ -331,11 +331,12 @@ export declare const cartStateSchema: z.ZodRecord<z.ZodString, z.ZodObject<{
 /**
  * Serialize a cart ID into a signed cookie value.
  */
-export declare function encodeCartCookie(id: string): string;
+export declare function encodeCartCookie(value: string): string;
 /**
- * Verify and extract the cart ID from a signed cookie value.
- * Returns `null` when the cookie is missing or invalid.
+ * Verify and extract the payload from a signed cookie value. JSON payloads are
+ * parsed and returned as objects, otherwise the raw string is returned. Returns
+ * `null` when the cookie is missing or invalid.
  */
-export declare function decodeCartCookie(raw?: string | null): string | null;
+export declare function decodeCartCookie(raw?: string | null): unknown;
 /** Build the Set-Cookie header value for HTTP responses. */
 export declare function asSetCookieHeader(value: string): string;

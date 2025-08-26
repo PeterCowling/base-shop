@@ -3,7 +3,7 @@ import CheckoutForm from "@ui/components/checkout/CheckoutForm";
 import OrderSummary from "@ui/components/organisms/OrderSummary";
 import { DeliveryScheduler } from "@ui/components/organisms";
 import { Locale, resolveLocale } from "@i18n/locales";
-import { CART_COOKIE, decodeCartCookie } from "@platform-core/cartCookie";
+import { CART_COOKIE, decodeCartCookie, type CartState } from "@platform-core/cartCookie";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";
@@ -27,7 +27,7 @@ export default async function CheckoutPage({
 
   /* ---------- read cart from cookie ---------- */
   const cookieStore = await cookies(); // ← await here
-  const cart = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
+  const cart = (decodeCartCookie(cookieStore.get(CART_COOKIE)?.value) ?? {}) as CartState;
 
   /* ---------- empty cart guard ---------- */
   if (!Object.keys(cart).length) {

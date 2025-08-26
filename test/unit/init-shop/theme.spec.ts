@@ -181,6 +181,9 @@ describe('init-shop wizard - theme', () => {
             },
           };
         }
+        if (p.includes('./runtime')) {
+          return { ensureRuntime: jest.fn() };
+        }
         return require(p);
       },
     };

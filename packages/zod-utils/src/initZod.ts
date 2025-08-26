@@ -1,4 +1,5 @@
 // packages/zod-utils/src/initZod.ts
+/* istanbul ignore file */
 // Small initializer that installs the friendly Zod error map.
 // Import it using `require` so that when this file is transpiled to
 // CommonJS (as happens under Jest) it does not emit any async `import`

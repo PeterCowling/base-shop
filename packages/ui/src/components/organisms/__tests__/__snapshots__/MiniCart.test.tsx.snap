@@ -49,6 +49,12 @@ exports[`MiniCart shows cart items and handles quantity changes and removal 1`] 
     >
       Your Cart
     </h2>
+    <p
+      class="text-muted-foreground text-sm sr-only"
+      id="radix-«r5»"
+    >
+      Review items in your cart
+    </p>
     <div
       class="flex h-full flex-col gap-4"
     >

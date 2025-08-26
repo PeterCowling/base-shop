@@ -47,4 +47,3 @@ export declare const authEnv: {
     UPSTASH_REDIS_REST_TOKEN?: string | undefined;
 };
 export type AuthEnv = z.infer<typeof authEnvSchema>;
-//# sourceMappingURL=auth.d.ts.map

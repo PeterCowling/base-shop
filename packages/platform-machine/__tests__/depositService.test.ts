@@ -1,6 +1,12 @@
 // packages/platform-machine/__tests__/depositService.test.ts
 import type { RentalOrder } from "@acme/types";
 
+// The Stripe SDK transitively pulls in zod utilities which use top-level
+// `await` in their published ESM build.  Jest runs tests in CommonJS and
+// would choke on that syntax, so we stub the initializer before any modules
+// are imported.
+jest.mock("@acme/zod-utils/initZod", () => ({}));
+
 describe("releaseDepositsOnce", () => {
   const OLD_ENV = process.env;
 
@@ -71,9 +77,11 @@ describe("releaseDepositsOnce", () => {
     }));
 
     const readdir = jest.fn().mockResolvedValue(["test"]);
-    jest.doMock("node:fs/promises", () => ({ __esModule: true, readdir }));
+    jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
 
-    const { releaseDepositsOnce } = await import("@acme/platform-machine");
+    const { releaseDepositsOnce } = await import(
+      "@acme/platform-machine/releaseDepositsService"
+    );
     await releaseDepositsOnce();
 
     expect(stripeRetrieve).toHaveBeenCalledTimes(1);

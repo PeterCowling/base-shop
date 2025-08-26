@@ -1,7 +1,13 @@
 import "server-only";
+import { createRequire } from "module";
 import type * as React from "react";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
+
+// Use Node's createRequire with the current file path so this works when the
+// code is executed in a CommonJS context (e.g. ts-jest).
+// eslint-disable-next-line n/no-deprecated-api
+const nodeRequire = createRequire(__filename);
 function renderToStaticMarkup(node: React.ReactNode): string {
   if (node === null || node === undefined || typeof node === "boolean") {
     return "";

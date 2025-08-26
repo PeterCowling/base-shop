@@ -26,7 +26,8 @@ export default async function CheckoutPage({
 
   /* ---------- read cart from cookie ---------- */
   const cookieStore = await cookies(); // ← await here
-  const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
+  const rawCartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
+  const cartId = typeof rawCartId === "string" ? rawCartId : null;
   const store = createCartStore();
   const cart = cartId ? await store.getCart(cartId) : {};
 

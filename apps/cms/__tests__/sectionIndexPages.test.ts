@@ -4,6 +4,11 @@ import path from "node:path";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
+// Some pages pull in heavy server-only modules which can slow down
+// the initial dynamic import. Increase the Jest timeout so the test has
+// enough time to complete without failing.
+jest.setTimeout(20_000);
+
 jest.mock("next/link", () => ({
   __esModule: true,
   default: (props: any) =>

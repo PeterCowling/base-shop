@@ -33,6 +33,8 @@ const tsPaths = tsconfig?.compilerOptions?.paths
 // Ensure a single React instance across the monorepo tests
 const reactPath = path.resolve(__dirname, "node_modules/react");
 const reactDomPath = path.resolve(__dirname, "node_modules/react-dom");
+const reactJsxRuntimePath = path.resolve(reactPath, "jsx-runtime.js");
+const reactJsxDevRuntimePath = path.resolve(reactPath, "jsx-dev-runtime.js");
 
 /* ──────────────────────────────────────────────────────────────────────
  * 2️⃣  Jest configuration proper
@@ -116,6 +118,10 @@ module.exports = {
       "<rootDir>/test/__mocks__/themeContextMock.tsx",
     "^@platform-core/contexts/CurrencyContext$":
       "<rootDir>/test/__mocks__/currencyContextMock.tsx",
+    "^@acme/platform-core/contexts/ThemeContext$":
+      "<rootDir>/test/__mocks__/themeContextMock.tsx",
+    "^@acme/platform-core/contexts/CurrencyContext$":
+      "<rootDir>/test/__mocks__/currencyContextMock.tsx",
 
     // email provider client mocks
     "^resend$": "<rootDir>/packages/email/src/providers/__mocks__/resend.ts",
@@ -151,6 +157,8 @@ module.exports = {
     // map React to ensure hooks use the same instance during tests
     "^react$": reactPath,
     "^react-dom$": reactDomPath,
+    "^react/jsx-runtime$": reactJsxRuntimePath,
+    "^react/jsx-dev-runtime$": reactJsxDevRuntimePath,
     ...tsPaths,
   },
 

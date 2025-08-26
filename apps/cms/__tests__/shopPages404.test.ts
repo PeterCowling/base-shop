@@ -49,6 +49,19 @@ describe("CMS shop pages", () => {
         deleteMedia: jest.fn(),
       }));
 
+      // products page imports heavy server-only actions; mock them as well
+      jest.doMock("@cms/actions/products.server", () => ({
+        createDraft: jest.fn(),
+        deleteProduct: jest.fn(),
+        duplicateProduct: jest.fn(),
+      }));
+
+      // settings page imports auth options and shop actions; keep them light
+      jest.doMock("@cms/auth/options", () => ({}));
+      jest.doMock("@cms/actions/shops.server", () => ({
+        resetThemeOverride: jest.fn(),
+      }));
+
       // dynamic import of the page under test
       const mod = await import(route);
       const Page = mod.default as (args: {

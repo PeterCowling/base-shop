@@ -96,10 +96,14 @@ module.exports = {
     "^@ui/src$": "<rootDir>/packages/ui/src/index.ts",
 
     // specific rules that must override tsconfig-derived ones
-    "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/src/$1",
-    "^@ui/src/(.*)$": "<rootDir>/packages/ui/src/$1",
       "^@platform-core/repositories/shopSettings$":
         "<rootDir>/packages/platform-core/src/repositories/settings.server.ts",
+      "^@platform-core/repositories/rentalOrders$":
+        "<rootDir>/packages/platform-core/src/repositories/rentalOrders.server.ts",
+      "^@platform-core/repositories/pages$":
+        "<rootDir>/packages/platform-core/src/repositories/pages/index.server.ts",
+    "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/src/$1",
+    "^@ui/src/(.*)$": "<rootDir>/packages/ui/src/$1",
       "^@config/src/env$": "<rootDir>/packages/config/src/env/index.ts",
       "^@config/src/(.*)$": "<rootDir>/packages/config/src/$1",
     "^@acme/config$": "<rootDir>/packages/config/src/env/index.ts",

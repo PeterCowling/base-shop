@@ -26,9 +26,59 @@ async function withShop(
   const cwd = process.cwd();
   process.chdir(dir);
   jest.resetModules();
-  const repo = await import("@platform-core/repositories/rentalOrders");
+  const orders: any[] = [];
+  const repo = {
+    async readOrders(shop: string) {
+      return orders.filter((o) => o.shop === shop);
+    },
+    async addOrder(
+      shop: string,
+      sessionId: string,
+      deposit: number,
+      expected?: string,
+    ) {
+      orders.push({ shop, sessionId, deposit, expected });
+    },
+    async markReturned(shop: string, sessionId: string, damage?: number) {
+      const order = orders.find(
+        (o) => o.shop === shop && o.sessionId === sessionId,
+      );
+      if (!order) return null;
+      order.status = "returned";
+      if (damage) order.damageFee = damage;
+      return order;
+    },
+    async markRefunded(shop: string, sessionId: string) {
+      const order = orders.find(
+        (o) => o.shop === shop && o.sessionId === sessionId,
+      );
+      if (!order) return null;
+      order.refundedAt = new Date().toISOString();
+      return order;
+    },
+  };
+  jest.doMock(
+    "@platform-core/repositories/rentalOrders.server",
+    () => ({ __esModule: true, ...repo }),
+    { virtual: true },
+  );
+  jest.doMock(
+    "@platform-core/repositories/rentalOrders",
+    () => ({ __esModule: true, ...repo }),
+    { virtual: true },
+  );
+  jest.doMock(
+    "@platform-core/repositories/shops.server",
+    () => ({ __esModule: true, readShop: async () => ({ coverageIncluded: false }) }),
+    { virtual: true },
+  );
+  jest.doMock(
+    "@acme/zod-utils/initZod",
+    () => ({ initZod: () => {} }),
+    { virtual: true },
+  );
   try {
-    await cb(repo);
+    await cb(repo as any);
   } finally {
     process.chdir(cwd);
   }
@@ -59,16 +109,24 @@ test("rental order is returned and refunded", async () => {
     );
 
     const { POST: rentalPost } = await import(
-      "../../../../apps/shop-abc/src/app/api/return/route"
+      "../../../../apps/shop-bcd/src/api/rental/route"
     );
     const { POST: returnPost } = await import(
-      "../../../../apps/shop-abc/src/app/api/return/route"
+      "../../../../apps/shop-bcd/src/api/return/route"
     );
 
-    await rentalPost({ json: async () => ({ sessionId: "sess" }) } as any);
-    await returnPost({
-      json: async () => ({ sessionId: "sess", damage: "scuff" }),
-    } as any);
+    await rentalPost(
+      new Request("http://test", {
+        method: "POST",
+        body: JSON.stringify({ sessionId: "sess" }),
+      }) as any,
+    );
+    await returnPost(
+      new Request("http://test", {
+        method: "POST",
+        body: JSON.stringify({ sessionId: "sess", damage: "scuff" }),
+      }) as any,
+    );
 
     const orders = await repo.readOrders("bcd");
     expect(orders).toHaveLength(1);

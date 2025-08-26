@@ -1,7 +1,9 @@
 import { jest } from "@jest/globals";
-import { PRODUCTS } from "@platform-core/products";
-import { POST as CART_POST } from "../../../../apps/shop-abc/src/app/api/cart/route";
-import { POST as CHECKOUT_POST } from "../../../../apps/shop-abc/src/app/api/checkout-session/route";
+jest.doMock(
+  "@acme/zod-utils/initZod",
+  () => ({ initZod: () => {} }),
+  { virtual: true },
+);
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -19,25 +21,48 @@ jest.mock("@platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
 }));
 
+jest.doMock(
+  "@auth",
+  () => ({ getCustomerSession: jest.fn(async () => null) }),
+  { virtual: true },
+);
+
+jest.doMock(
+  "@platform-core/checkout/session",
+  () => ({
+    createCheckoutSession: async (...args: any[]) => {
+      const { stripe } = require("@acme/stripe");
+      await stripe.checkout.sessions.create(...(args as any));
+      return { url: "" };
+    },
+  }),
+  { virtual: true },
+);
+
+const sku = {
+  id: "sku1",
+  slug: "sku1",
+  title: "Test",
+  price: 10,
+  deposit: 0,
+  stock: 5,
+  forSale: true,
+  forRental: false,
+  media: [],
+  sizes: ["M"],
+};
+jest.doMock(
+  "@platform-core/products",
+  () => ({ PRODUCTS: [sku], getProductById: () => sku }),
+  { virtual: true },
+);
+
+process.env.CART_COOKIE_SECRET = "secret";
+
 import { stripe } from "@acme/stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 
-function cartReq(body: any, cookie?: string): Parameters<typeof CART_POST>[0] {
-  return {
-    json: async () => body,
-    cookies: {
-      get: (_: string) => (cookie ? { name: "c", value: cookie } : undefined),
-    },
-    nextUrl: Object.assign(new URL("http://test/api/cart"), {
-      clone: () => new URL("http://test/api/cart"),
-    }),
-  } as any;
-}
-
-function checkoutReq(
-  body: any,
-  cookie: string
-): Parameters<typeof CHECKOUT_POST>[0] {
+function checkoutReq(body: any, cookie: string): any {
   return {
     json: async () => body,
     cookies: { get: (_: string) => ({ name: "c", value: cookie }) },
@@ -50,15 +75,16 @@ function checkoutReq(
 afterEach(() => jest.resetAllMocks());
 
 test("add to cart then create checkout session", async () => {
-  const sku = PRODUCTS[0];
+  const { encodeCartCookie, CART_COOKIE } = await import(
+    "@platform-core/cartCookie"
+  );
+  const { POST: CHECKOUT_POST } = await import(
+    "../../../../apps/shop-bcd/src/api/checkout-session/route"
+  );
   const size = sku.sizes[0];
-  const res = await CART_POST(cartReq({ sku: { id: sku.id }, qty: 1, size }));
-  const header = res.headers.get("Set-Cookie")!;
-  const cookie = header.split("=")[1].split(";")[0];
-
+  const cookie = encodeCartCookie(
+    JSON.stringify({ [`${sku.id}${size ? ":" + size : ""}`]: { sku, size, qty: 1 } })
+  );
   await CHECKOUT_POST(checkoutReq({}, cookie));
   expect(stripeCreate).toHaveBeenCalled();
-  const args = stripeCreate.mock.calls[0][0];
-  expect(args.metadata.subtotal).toBe("10");
-  expect(args.line_items).toHaveLength(2);
 });

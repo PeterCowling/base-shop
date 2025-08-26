@@ -85,8 +85,6 @@ export function renderTemplate(
       return params[key] ?? "";
     });
   }
-
-  const { renderToStaticMarkup } = nodeRequire("react-dom/server");
   const variant = marketingEmailTemplates.find((t) => t.id === id);
   if (variant) {
     return renderToStaticMarkup(

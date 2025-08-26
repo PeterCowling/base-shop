@@ -79,7 +79,7 @@ export function useFileUpload(
   const feedbackId = "uploader-feedback";
 
   /* ---------- orientation check ----------------------------------- */
-  const isVideo = pendingFile?.type.startsWith("video/") ?? false;
+  const isVideo = pendingFile?.type?.startsWith("video/") ?? false;
   const { actual, isValid: orientationValid } = useImageOrientationValidation(
     isVideo ? null : pendingFile,
     requiredOrientation

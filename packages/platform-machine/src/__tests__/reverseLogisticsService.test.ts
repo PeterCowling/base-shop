@@ -1,7 +1,7 @@
 import path from "node:path";
-import { readdir, readFile, unlink } from "node:fs/promises";
+import { readdir, readFile, unlink } from "fs/promises";
 
-jest.mock("node:fs/promises", () => ({
+jest.mock("fs/promises", () => ({
   mkdir: jest.fn(),
   readdir: jest.fn(),
   readFile: jest.fn(),

@@ -3,12 +3,33 @@ import * as React from "react";
 import { marketingEmailTemplates } from "@acme/ui";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
-import { createRequire } from "module";
-
-const nodeRequire =
-  typeof require !== "undefined"
-    ? require
-    : createRequire(eval("import.meta.url"));
+function renderToStaticMarkup(node: React.ReactNode): string {
+  if (node === null || node === undefined || typeof node === "boolean") {
+    return "";
+  }
+  if (typeof node === "string" || typeof node === "number") {
+    return String(node);
+  }
+  if (Array.isArray(node)) {
+    return node.map(renderToStaticMarkup).join("");
+  }
+  if (!React.isValidElement(node)) {
+    return "";
+  }
+  const { type, props } = node as React.ReactElement;
+  const children = props.children;
+  const attrs = Object.entries(props)
+    .filter(([key]) => key !== "children" && key !== "dangerouslySetInnerHTML")
+    .map(([key, value]) => ` ${key}="${String(value)}"`)
+    .join("");
+  let inner = "";
+  if (props.dangerouslySetInnerHTML?.__html) {
+    inner = props.dangerouslySetInnerHTML.__html;
+  } else if (children) {
+    inner = React.Children.map(children as any, renderToStaticMarkup).join("");
+  }
+  return `<${type}${attrs}>${inner}</${type}>`;
+}
 
 const { window } = new JSDOM("");
 const DOMPurify = createDOMPurify(window);
@@ -39,7 +60,6 @@ export function renderTemplate(
   id: string,
   params: Record<string, string>,
 ): string {
-  const { renderToStaticMarkup } = nodeRequire("react-dom/server");
   const source = templates[id];
   if (source) {
     return source.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => {

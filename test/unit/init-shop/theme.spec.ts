@@ -66,7 +66,12 @@ describe('init-shop wizard - theme', () => {
       },
       console: { log: jest.fn(), error: jest.fn() },
       URL,
-      require: (p: string) => {
+    };
+
+    sandbox.require = makeRequire(path.join(__dirname, '../../../scripts/src'));
+
+    function makeRequire(currentDir: string) {
+      return (p: string) => {
         if (p === 'node:fs') {
           return {
             existsSync: () => true,
@@ -184,9 +189,30 @@ describe('init-shop wizard - theme', () => {
         if (p.includes('./runtime')) {
           return { ensureRuntime: jest.fn() };
         }
+        if (p.includes('@acme/platform-core/repositories/pages')) {
+          return {};
+        }
+        if (p === '@prisma/client') {
+          return { PrismaClient: jest.fn().mockImplementation(() => ({})) };
+        }
+        if (p.startsWith('./') || p.startsWith('../')) {
+          const filePath = path.join(currentDir, `${p}.ts`);
+          const code = fs.readFileSync(filePath, 'utf8');
+          const compiled = ts.transpileModule(code, {
+            compilerOptions: {
+              module: ts.ModuleKind.CommonJS,
+              esModuleInterop: true,
+            },
+          }).outputText;
+          const childSandbox = { ...sandbox, module: { exports: {} } };
+          childSandbox.exports = childSandbox.module.exports;
+          childSandbox.require = makeRequire(path.dirname(filePath));
+          runInNewContext(compiled, childSandbox);
+          return childSandbox.module.exports;
+        }
         return require(p);
-      },
-    };
+      };
+    }
 
     const src = fs.readFileSync(
       path.join(__dirname, '../../../scripts/src/init-shop.ts'),

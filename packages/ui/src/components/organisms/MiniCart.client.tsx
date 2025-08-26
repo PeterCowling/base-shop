@@ -11,6 +11,7 @@ import { Toast } from "../atoms/Toast";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "../atoms/primitives/dialog";
@@ -71,6 +72,9 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
           )}
         >
           <DialogTitle className="mb-4">Your Cart</DialogTitle>
+          <DialogDescription className="sr-only">
+            Review items in your cart
+          </DialogDescription>
           {lines.length === 0 ? (
             <p className="text-muted-foreground text-sm">Cart is empty.</p>
           ) : (

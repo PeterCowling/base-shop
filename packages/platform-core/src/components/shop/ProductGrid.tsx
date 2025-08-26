@@ -2,7 +2,14 @@
 "use client";
 
 import type { SKU } from "@acme/types";
-import { memo, useMemo, useRef, useState, useEffect } from "react";
+import {
+  memo,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+  type HTMLAttributes,
+} from "react";
 import { ProductCard } from "./ProductCard";
 
 type Props = {
@@ -19,7 +26,7 @@ type Props = {
   /** Items shown on mobile viewports */
   mobileItems?: number;
   className?: string;
-};
+} & HTMLAttributes<HTMLElement>;
 
 function ProductGridInner({
   skus,
@@ -30,6 +37,7 @@ function ProductGridInner({
   tabletItems,
   mobileItems,
   className,
+  ...rest
 }: Props) {
   // simple alphabetic sort for deterministic order (SSR/CSR match)
   const sorted = useMemo(
@@ -77,6 +85,7 @@ function ProductGridInner({
   return (
     <section
       ref={containerRef}
+      {...rest}
       className={`grid gap-6 ${className ?? ""}`}
       style={{ gridTemplateColumns: `repeat(${columns ?? cols}, minmax(0, 1fr))` }}
     >

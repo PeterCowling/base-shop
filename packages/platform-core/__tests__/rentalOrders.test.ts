@@ -35,9 +35,9 @@ describe("rental order repository", () => {
 
   it("returns only orders for matching customer", async () => {
     const shop = "customer-test";
-    await repo.addOrder(shop, "s1", 10, undefined, "cust1");
-    await repo.addOrder(shop, "s2", 20, undefined, "cust2");
-    await repo.addOrder(shop, "s3", 30, undefined, "cust1");
+    await repo.addOrder(shop, "s1", 10, undefined, undefined, "cust1");
+    await repo.addOrder(shop, "s2", 20, undefined, undefined, "cust2");
+    await repo.addOrder(shop, "s3", 30, undefined, undefined, "cust1");
 
     const cust1Orders = await getOrdersForCustomer(shop, "cust1");
     expect(cust1Orders).toHaveLength(2);

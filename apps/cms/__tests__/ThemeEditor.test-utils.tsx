@@ -16,7 +16,12 @@ jest.mock(
   "@/components/cms/StyleEditor",
   () => {
     const React = require("react");
-    function MockStyleEditor({ tokens, baseTokens, onChange, focusToken }: any) {
+    function MockStyleEditor({
+      tokens = {},
+      baseTokens = {},
+      onChange,
+      focusToken,
+    }: any) {
       const ref = React.useRef<HTMLDivElement | null>(null);
       React.useEffect(() => {
         if (!focusToken) return;
@@ -30,7 +35,7 @@ jest.mock(
       return (
         <div ref={ref}>
           {Object.entries(baseTokens).map(([k, defaultValue]: any) => {
-            const val = tokens[k] || defaultValue;
+            const val = (tokens as Record<string, string>)[k] || defaultValue;
             return (
               <label key={k} data-token-key={k}>
                 <input
@@ -38,7 +43,7 @@ jest.mock(
                   type="color"
                   value={val}
                   onChange={(e) =>
-                    onChange({ ...tokens, [k]: e.target.value })
+                    onChange({ ...(tokens as any), [k]: e.target.value })
                   }
                 />
               </label>
@@ -59,28 +64,24 @@ jest.mock(
   }),
   { virtual: true }
 );
+jest.mock("../src/app/cms/wizard/PreviewDeviceSelector", () => ({
+  __esModule: true,
+  default: () => <div />,
+}));
+jest.mock("../src/app/cms/wizard/TokenInspector", () => ({
+  __esModule: true,
+  default: ({ children, onTokenSelect }: any) => (
+    <div onClick={(e: any) => onTokenSelect?.(e.target.getAttribute("data-token"), { x: 0, y: 0 })}>
+      {children}
+    </div>
+  ),
+}));
 jest.mock("../src/app/cms/wizard/WizardPreview", () => ({
   __esModule: true,
-  default: ({ onTokenSelect }: any) => (
+  default: () => (
     <div>
-      <div
-        data-token="--color-primary"
-        onClick={(e: any) =>
-          onTokenSelect(e.currentTarget.getAttribute("data-token"), {
-            x: 0,
-            y: 0,
-          })
-        }
-      />
-      <div
-        data-token="--color-bg"
-        onClick={(e: any) =>
-          onTokenSelect(e.currentTarget.getAttribute("data-token"), {
-            x: 0,
-            y: 0,
-          })
-        }
-      />
+      <div data-token="--color-primary" />
+      <div data-token="--color-bg" />
     </div>
   ),
 }));

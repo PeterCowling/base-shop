@@ -98,8 +98,11 @@ export async function getPages(shop: string): Promise<Page[]> {
   }
   try {
     const buf = await fs.readFile(pagesPath(shop), "utf8");
-    const parsed = pageSchema.array().safeParse(JSON.parse(buf));
+    const json = JSON.parse(buf);
+    const parsed = pageSchema.array().safeParse(json);
     if (parsed.success) return parsed.data;
+    // If the JSON doesn't conform to the schema, fall back to returning it raw
+    return json as Page[];
   } catch {
     // missing file or invalid JSON – treat as no pages
   }

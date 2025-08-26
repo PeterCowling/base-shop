@@ -1,8 +1,8 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
-import { authEnvSchema } from "./auth.js";
-import { cmsEnvSchema } from "./cms.js";
-import { emailEnvSchema } from "./email.js";
+import { authEnvSchema } from "./auth";
+import { cmsEnvSchema } from "./cms";
+import { emailEnvSchema } from "./email";
 
 const isProd = process.env.NODE_ENV === "production";
 

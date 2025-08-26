@@ -24,7 +24,6 @@ export const runtime = "edge";
 
 const deleteSchema = z.object({ id: z.string() }).strict();
 
-
 /* ------------------------------------------------------------------
  * PUT – replace cart with provided lines
  * ------------------------------------------------------------------ */
@@ -38,7 +37,9 @@ export async function PUT(req: NextRequest) {
     });
   }
 
-  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
+  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as
+    | string
+    | null;
   if (!cartId) {
     cartId = await createCart();
   }
@@ -92,7 +93,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Size required" }, { status: 400 });
   }
 
-  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
+  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as
+    | string
+    | null;
   if (!cartId) {
     cartId = await createCart();
   }
@@ -124,7 +127,9 @@ export async function PATCH(req: NextRequest) {
 
   const { id, qty } = parsed.data;
 
-  const cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
+  const cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as
+    | string
+    | null;
   if (!cartId) {
     return NextResponse.json({ error: "Cart not found" }, { status: 404 });
   }
@@ -152,7 +157,9 @@ export async function DELETE(req: NextRequest) {
 
   const { id } = parsed.data;
 
-  const cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
+  const cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as
+    | string
+    | null;
   if (!cartId) {
     return NextResponse.json({ error: "Cart not found" }, { status: 404 });
   }
@@ -169,7 +176,9 @@ export async function DELETE(req: NextRequest) {
  * GET – fetch the current cart
  * ------------------------------------------------------------------ */
 export async function GET(req: NextRequest) {
-  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
+  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as
+    | string
+    | null;
   if (!cartId) {
     cartId = await createCart();
   }
@@ -178,4 +187,3 @@ export async function GET(req: NextRequest) {
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;
 }
-

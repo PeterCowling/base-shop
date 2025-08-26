@@ -1,7 +1,13 @@
 // /scripts/build-tokens.ts
  
 
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+  realpathSync,
+} from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -27,6 +33,10 @@ const tokensPath = path.resolve(
   "tokens.js"
 );
 const { tokens } = require(tokensPath) as { tokens: TokenMap };
+
+const isDirectRun =
+  process.argv[1] &&
+  realpathSync(process.argv[1]) === realpathSync(__filename);
 
 /* -------------------------------------------------------------------------- */
 /*  Base theme                                                                */
@@ -90,7 +100,7 @@ export function generateDynamicCss(map: TokenMap): string {
   return css;
 }
 
-if (process.argv[1] === __filename) {
+if (isDirectRun) {
   const baseDir = path.resolve(
     __dirname,
   "..",
@@ -145,7 +155,7 @@ export function generateThemeCss(map: Record<string, string>): string {
   return css;
 }
 
-if (process.argv[1] === __filename) {
+if (isDirectRun) {
   async function buildThemeCss(): Promise<void> {
     const themesDir = path.resolve(__dirname, "..", "packages", "themes");
     const themes = readdirSync(themesDir, { withFileTypes: true })

@@ -36,6 +36,7 @@ describe("envSchema", () => {
         STRIPE_WEBHOOK_SECRET: "whsec",
         NEXTAUTH_SECRET: "nextauth",
         SESSION_SECRET: "session",
+        EMAIL_PROVIDER: "smtp",
       });
   });
 

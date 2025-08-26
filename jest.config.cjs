@@ -116,6 +116,10 @@ module.exports = {
       "<rootDir>/test/__mocks__/themeContextMock.tsx",
     "^@platform-core/contexts/CurrencyContext$":
       "<rootDir>/test/__mocks__/currencyContextMock.tsx",
+    "^@acme/platform-core/contexts/ThemeContext$":
+      "<rootDir>/test/__mocks__/themeContextMock.tsx",
+    "^@acme/platform-core/contexts/CurrencyContext$":
+      "<rootDir>/test/__mocks__/currencyContextMock.tsx",
 
     // email provider client mocks
     "^resend$": "<rootDir>/packages/email/src/providers/__mocks__/resend.ts",

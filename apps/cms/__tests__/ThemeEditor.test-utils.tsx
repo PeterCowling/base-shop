@@ -16,7 +16,7 @@ jest.mock(
   "@/components/cms/StyleEditor",
   () => {
     const React = require("react");
-    function MockStyleEditor({ tokens, baseTokens, onChange, focusToken }: any) {
+    function MockStyleEditor({ tokens = {}, baseTokens = {}, onChange, focusToken }: any) {
       const ref = React.useRef<HTMLDivElement | null>(null);
       React.useEffect(() => {
         if (!focusToken) return;
@@ -59,6 +59,10 @@ jest.mock(
   }),
   { virtual: true }
 );
+jest.mock("../src/app/cms/wizard/PreviewDeviceSelector", () => ({
+  __esModule: true,
+  default: () => <div />,
+}));
 jest.mock("../src/app/cms/wizard/WizardPreview", () => ({
   __esModule: true,
   default: ({ onTokenSelect }: any) => (

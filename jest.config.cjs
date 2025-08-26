@@ -120,6 +120,8 @@ module.exports = {
     // CMS application aliases
     "^@/components/atoms/shadcn$":
       "<rootDir>/test/__mocks__/shadcnDialogStub.tsx",
+    "^@/components/cms/StyleEditor$":
+      "<rootDir>/test/__mocks__/componentStub.js",
     "^@/(.*)$": "<rootDir>/apps/cms/src/$1",
 
     // context mocks

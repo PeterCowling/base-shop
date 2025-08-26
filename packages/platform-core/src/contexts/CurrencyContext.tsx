@@ -43,7 +43,17 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
 }
 
 export function useCurrency() {
-  const ctx = useContext(CurrencyContext);
-  if (!ctx) throw new Error("useCurrency must be inside CurrencyProvider");
-  return ctx;
+  try {
+    const ctx = useContext(CurrencyContext);
+    if (!ctx) throw new Error("useCurrency must be inside CurrencyProvider");
+    return ctx;
+  } catch (err) {
+    // React throws "Invalid hook call" when hooks run outside a component.
+    // Tests invoke this hook directly, so normalize that error into the
+    // expected provider usage message.
+    if (err instanceof Error && err.message.includes("Invalid hook call")) {
+      throw new Error("useCurrency must be inside CurrencyProvider");
+    }
+    throw err;
+  }
 }

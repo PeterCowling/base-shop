@@ -13,7 +13,7 @@ import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
 
 interface SqliteInventoryRow {
   sku: string;
-  productId: string;
+  productId?: string;
   variantAttributes: string | null;
   quantity: number;
   lowStockThreshold: number | null;
@@ -51,12 +51,12 @@ async function read(shop: string): Promise<InventoryItem[]> {
     (r: SqliteInventoryRow) =>
       ({
         sku: r.sku,
-        productId: r.productId,
         quantity: r.quantity,
         variantAttributes: JSON.parse(r.variantAttributes ?? "{}") as Record<
           string,
           string
         >,
+        ...(r.productId !== undefined && { productId: r.productId }),
         ...(r.lowStockThreshold !== null && {
           lowStockThreshold: r.lowStockThreshold,
         }),

@@ -50,7 +50,12 @@ export default [
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: ["./tsconfig.json", "./tsconfig.test.json"],
+        project: [
+          "./tsconfig.json",
+          "./tsconfig.test.json",
+          "./packages/*/tsconfig.json",
+          "./packages/*/tsconfig.test.json",
+        ],
         projectService: true,
         allowDefaultProject: true,
         sourceType: "module",

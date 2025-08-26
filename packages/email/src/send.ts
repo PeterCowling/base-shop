@@ -1,13 +1,8 @@
-import nodemailer from "nodemailer";
-import sanitizeHtml from "sanitize-html";
-import { coreEnv } from "@acme/config/env/core";
-import { getDefaultSender } from "./config";
-import { SendgridProvider } from "./providers/sendgrid";
-import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
 import { ProviderError } from "./providers/types";
 import { hasProviderErrorFields } from "./providers/error";
-import { renderTemplate } from "./templates";
+import { coreEnv } from "@acme/config/env/core";
+import { getDefaultSender } from "./config";
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -51,24 +46,28 @@ function ensureText(options: CampaignOptions): CampaignOptions {
   return { ...options, text: deriveText(options.html) };
 }
 
-const providers: Record<string, CampaignProvider> = {
-  sendgrid: new SendgridProvider(),
-  resend: new ResendProvider(),
-};
+const providerCache: Record<string, CampaignProvider | undefined> = {};
 
-const availableProviders = [...Object.keys(providers), "smtp"];
+async function loadProvider(name: string): Promise<CampaignProvider | undefined> {
+  if (providerCache[name]) return providerCache[name];
+  if (name === "sendgrid") {
+    const { SendgridProvider } = await import("./providers/sendgrid");
+    providerCache[name] = new SendgridProvider();
+  } else if (name === "resend") {
+    const { ResendProvider } = await import("./providers/resend");
+    providerCache[name] = new ResendProvider();
+  } else {
+    providerCache[name] = undefined;
+  }
+  return providerCache[name];
+}
+
+const availableProviders = ["sendgrid", "resend", "smtp"];
 
 // Read provider preference directly from `process.env` first so tests or
 // runtime code that mutate environment variables after the config module has
 // loaded can still influence the chosen provider. Fall back to the value
 // parsed in `coreEnv` for normal runtime behaviour.
-const providerName =
-  process.env.EMAIL_PROVIDER || coreEnv.EMAIL_PROVIDER || "smtp";
-if (!availableProviders.includes(providerName)) {
-  throw new Error(
-    `Unsupported EMAIL_PROVIDER "${providerName}". Available providers: ${availableProviders.join(", ")}`
-  );
-}
 
 /**
  * Send a campaign email using the configured provider.
@@ -83,9 +82,11 @@ export async function sendCampaignEmail(
   const { sanitize = true, ...rest } = options;
   let opts = { ...rest } as CampaignOptions;
   if (opts.templateId) {
+    const { renderTemplate } = await import("./templates");
     opts.html = renderTemplate(opts.templateId, opts.variables ?? {});
   }
   if (sanitize && opts.html) {
+    const sanitizeHtml = (await import("sanitize-html")).default;
     opts.html = sanitizeHtml(opts.html, {
       allowedTags: sanitizeHtml.defaults.allowedTags.concat([
         "img",
@@ -116,22 +117,16 @@ export async function sendCampaignEmail(
     });
   }
   const optsWithText = ensureText(opts);
-  const primary = providerName;
-  const provider = providers[primary];
-
-  // No configured provider – use Nodemailer directly
-  if (!provider) {
-    await sendWithNodemailer(optsWithText);
-    return;
+  const primary =
+    process.env.EMAIL_PROVIDER || coreEnv.EMAIL_PROVIDER || "smtp";
+  if (!availableProviders.includes(primary)) {
+    throw new Error(
+      `Unsupported EMAIL_PROVIDER "${primary}". Available providers: ${availableProviders.join(", ")}`
+    );
   }
-
-  const providerOrder = [
-    primary,
-    ...Object.keys(providers).filter((p) => p !== primary),
-  ];
-
+  const providerOrder = [primary, ...availableProviders.filter((p) => p !== primary)];
   for (const name of providerOrder) {
-    const current = providers[name];
+    const current = await loadProvider(name);
     if (!current) continue;
     try {
       await sendWithRetry(current, optsWithText);
@@ -179,6 +174,7 @@ async function sendWithRetry(
 }
 
 async function sendWithNodemailer(options: CampaignOptions): Promise<void> {
+  const nodemailer = (await import("nodemailer")).default;
   const transport = nodemailer.createTransport({
     url: coreEnv.SMTP_URL,
   });

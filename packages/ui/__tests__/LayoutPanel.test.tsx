@@ -30,7 +30,7 @@ test("updates width via handleResize", () => {
       handleFullSize={() => {}}
     />
   );
-  fireEvent.change(screen.getByLabelText("Width (Desktop)"), {
+  fireEvent.change(screen.getByLabelText(/Width \(Desktop\)/), {
     target: { value: "200" },
   });
   expect(handleResize).toHaveBeenCalledWith("widthDesktop", "200");

@@ -6,7 +6,7 @@ import {
 } from "@platform-core/repositories/rentalOrders.server";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { logger } from "@platform-core/utils";
-import { readdir, readFile } from "fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { join } from "path";
 
 const DATA_ROOT = resolveDataRoot();
@@ -101,7 +101,10 @@ async function resolveConfig(
   const envEnabled = process.env[envKey(shop, "ENABLED")];
   if (envEnabled !== undefined) {
     config.enabled = envEnabled !== "false";
-  } else if (coreEnv.DEPOSIT_RELEASE_ENABLED !== undefined) {
+  } else if (
+    coreEnv.DEPOSIT_RELEASE_ENABLED !== undefined &&
+    config.enabled === DEFAULT_CONFIG.enabled
+  ) {
     config.enabled = coreEnv.DEPOSIT_RELEASE_ENABLED;
   }
 
@@ -109,8 +112,13 @@ async function resolveConfig(
   if (envInterval !== undefined) {
     const num = Number(envInterval);
     if (!Number.isNaN(num)) config.intervalMinutes = Math.round(num / 60000);
-  } else if (coreEnv.DEPOSIT_RELEASE_INTERVAL_MS !== undefined) {
-    config.intervalMinutes = Math.round(coreEnv.DEPOSIT_RELEASE_INTERVAL_MS / 60000);
+  } else if (
+    coreEnv.DEPOSIT_RELEASE_INTERVAL_MS !== undefined &&
+    config.intervalMinutes === DEFAULT_CONFIG.intervalMinutes
+  ) {
+    config.intervalMinutes = Math.round(
+      coreEnv.DEPOSIT_RELEASE_INTERVAL_MS / 60000,
+    );
   }
 
   if (override.enabled !== undefined) config.enabled = override.enabled;

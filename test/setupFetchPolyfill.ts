@@ -37,6 +37,18 @@ if (!("FormData" in globalThis)) {
     getAll(name: string): string[] {
       return this.map.get(name) ?? [];
     }
+
+    *entries(): IterableIterator<[string, string]> {
+      for (const [key, values] of this.map.entries()) {
+        for (const value of values) {
+          yield [key, value];
+        }
+      }
+    }
+
+    [Symbol.iterator](): IterableIterator<[string, string]> {
+      return this.entries();
+    }
   }
 
   (globalThis as any).FormData = SimpleFormData;

@@ -109,9 +109,13 @@ describe("sendCampaignEmail fallback and retry", () => {
       html: "<p>HTML</p>",
     });
 
-    await Promise.resolve();
+    // Await the next macrotask to allow dynamic imports in the email module
+    // to resolve before assertions run.
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(mockSendgridSend).toHaveBeenCalledTimes(1);
-    expect(timeoutSpy).toHaveBeenCalledWith(expect.any(Function), 100);
+    expect(
+      timeoutSpy.mock.calls.some(([_, ms]) => ms === 100)
+    ).toBe(true);
 
     await promise;
 

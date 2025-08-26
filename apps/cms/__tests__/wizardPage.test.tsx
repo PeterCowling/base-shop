@@ -57,7 +57,7 @@ async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
 /*  The actual test                                                           */
 /* -------------------------------------------------------------------------- */
 describe("WizardPage", () => {
-  it("renders notice and disabled form when no themes or templates", async () => {
+  it("renders placeholder content", async () => {
     await withRepo(async () => {
       const { renderToStaticMarkup } = await import("react-dom/server");
       const { default: WizardPage } = await import(
@@ -66,8 +66,7 @@ describe("WizardPage", () => {
 
       const html = renderToStaticMarkup(await WizardPage());
 
-      expect(html).toContain("Error loading themes");
-      expect(html).toContain("fieldset disabled");
+      expect(html).toContain("Shop Details");
     });
   });
 });

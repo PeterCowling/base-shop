@@ -121,13 +121,13 @@ export async function savePageDraft(
   const id = (formData.get("id") as string) || ulid();
   const compStr = formData.get("components");
   let components: PageComponents;
-  try {
-    components = componentsField.parse(
-      typeof compStr === "string" ? compStr : undefined
-    );
-  } catch {
+  const parsedComponents = componentsField.safeParse(
+    typeof compStr === "string" ? compStr : undefined
+  );
+  if (!parsedComponents.success) {
     return { errors: { components: ["Invalid components"] } };
   }
+  components = parsedComponents.data;
 
   let history = undefined;
   const historyStr = formData.get("history");

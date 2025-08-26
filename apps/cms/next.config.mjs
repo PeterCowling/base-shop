@@ -20,7 +20,9 @@ const nextConfig = {
     "@acme/shared-utils",
     "@acme/types",
     "@shared-utils",
-    "@date-utils"
+    "@date-utils",
+    "@acme/tailwind-config",
+    "@acme/design-tokens"
   ],
   webpack: (config) => {
     const nodeBuiltins = [

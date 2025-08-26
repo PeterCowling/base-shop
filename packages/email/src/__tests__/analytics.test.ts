@@ -1,4 +1,7 @@
 import { nowIso } from "@date-utils";
+// Stub the Zod initializer so tests don't attempt to execute the real module
+// during import, which can cause transform issues in Jest.
+jest.mock("@acme/zod-utils/initZod", () => ({}));
 
 process.env.CART_COOKIE_SECRET = "secret";
 

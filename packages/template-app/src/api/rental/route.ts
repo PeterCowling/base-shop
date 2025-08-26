@@ -4,6 +4,7 @@ import { readShop } from "@platform-core/repositories/shops.server";
 import {
   addOrder,
   markReturned,
+  markRefunded,
 } from "@platform-core/repositories/rentalOrders.server";
 import { readInventory } from "@platform-core/repositories/inventory.server";
 import { readRepo as readProducts } from "@platform-core/repositories/products.server";
@@ -34,7 +35,9 @@ export async function POST(req: NextRequest) {
         readProducts<SKU>(SHOP_ID),
       ]);
     for (const { sku, from, to } of orderItems) {
-      const skuInfo = products.find((p) => p.id === sku);
+      const skuInfo = products.find(
+        (p) => (p as { id?: string; sku?: string }).id === sku || p.sku === sku
+      );
       if (!skuInfo) continue;
       const items = inventory.filter((i) => i.sku === sku);
       await reserveRentalInventory(SHOP_ID, items, skuInfo, from, to);
@@ -58,12 +61,11 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
-  const session = await stripe.checkout.sessions.retrieve(sessionId);
-  let coverageCodes =
+  const session = await stripe.checkout.sessions.retrieve(sessionId, {
+    expand: ["payment_intent"],
+  });
+  const coverageCodes =
     session.metadata?.coverage?.split(",").filter(Boolean) ?? [];
-  if (shop.coverageIncluded && typeof damage === "string") {
-    coverageCodes = Array.from(new Set([...coverageCodes, damage]));
-  }
   const damageFee = await computeDamageFee(
     damage,
     order.deposit,
@@ -74,8 +76,18 @@ export async function PATCH(req: NextRequest) {
     await markReturned(SHOP_ID, sessionId, damageFee);
   }
 
+  const pi =
+    typeof session.payment_intent === "string"
+      ? session.payment_intent
+      : session.payment_intent?.id;
+  const refund = Math.max(order.deposit - damageFee, 0);
+  if (refund > 0 && stripe.refunds?.create) {
+    await stripe.refunds.create({ payment_intent: pi, amount: refund * 100 });
+    await markRefunded(SHOP_ID, sessionId);
+  }
+
   let clientSecret: string | undefined;
-  if (damageFee > order.deposit) {
+  if (damageFee > order.deposit && stripe.paymentIntents?.create) {
     const remaining = damageFee - order.deposit;
     const intent = await stripe.paymentIntents.create({
       amount: remaining * 100,

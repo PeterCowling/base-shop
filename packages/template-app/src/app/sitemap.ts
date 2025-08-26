@@ -33,11 +33,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   for (const product of products) {
-    const id = product.id;
+    const slug = (product as { id: string; slug?: string }).slug ?? product.id;
     entries.push({
-      url: `${base}/${languages[0]}/product/${id}`,
+      url: `${base}/${languages[0]}/product/${slug}`,
       lastModified: product.updated_at,
-      alternates: buildAlternates(`/product/${id}`),
+      alternates: buildAlternates(`/product/${slug}`),
     });
   }
 

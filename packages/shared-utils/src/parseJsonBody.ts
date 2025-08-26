@@ -24,7 +24,21 @@ export async function parseJsonBody<T>(
   let text: string;
   try {
     if (!req.body) throw new Error("No body");
-    const stream = Readable.fromWeb(req.body as unknown as NodeReadableStream);
+
+    const body = req.body as unknown;
+    let stream: Readable;
+
+    if (Buffer.isBuffer(body)) {
+      // cross-fetch Request bodies are Buffers
+      stream = Readable.from([body]);
+    } else if (typeof (body as NodeJS.ReadableStream).pipe === "function") {
+      // already a Node.js readable stream
+      stream = body as NodeJS.ReadableStream as Readable;
+    } else {
+      // fall back to web streams
+      stream = Readable.fromWeb(body as NodeReadableStream);
+    }
+
     text = await getRawBody(stream, {
       limit,
       encoding: "utf8",

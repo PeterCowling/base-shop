@@ -121,16 +121,34 @@ export function useProductEditorFormState(
         }
 
         if (name.startsWith("variant_")) {
-          const match = name.match(/^variant_(.+)_(\d+)$/);
-          if (!match) return prev;
-          const [, key, idxStr] = match;
-          const idx = Number(idxStr);
-          const existing = prev.variants[key] ?? [];
-          const next = [...existing];
-          next[idx] = value;
+          /*
+           * Variant fields can be provided either as multiple inputs with
+           * indices (e.g. `variant_size_0`) or as a single comma separated
+           * field (e.g. `variant_size`).
+           */
+          const indexed = name.match(/^variant_(.+)_(\d+)$/);
+
+          // handle indexed variant input (variant_size_0)
+          if (indexed) {
+            const [, key, idxStr] = indexed;
+            const idx = Number(idxStr);
+            const existing = prev.variants[key] ?? [];
+            const next = [...existing];
+            next[idx] = value;
+            return {
+              ...prev,
+              variants: { ...prev.variants, [key]: next },
+            };
+          }
+
+          // handle aggregated variant input (variant_size)
+          const key = name.replace(/^variant_/, "");
           return {
             ...prev,
-            variants: { ...prev.variants, [key]: next },
+            variants: {
+              ...prev.variants,
+              [key]: value ? value.split(",").map((v) => v.trim()) : [""],
+            },
           };
         }
 

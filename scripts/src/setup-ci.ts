@@ -2,17 +2,13 @@
 /**
  * Generate a GitHub Actions workflow for a specific shop.  The workflow reads
  * environment variables from the shop's `.env` file and embeds them into the
- * CI configuration used by the CMS.  In the full repository the environment
- * schema is defined in `@config`; here we use a permissive Zod schema that
- * accepts any key/value pairs without validation.
- */
+ * CI configuration used by the CMS.  Environment variables are validated
+ * using the shared schema from `@config`.
+*/
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { z } from "zod";
-
-// Accept any shape for environment variables.  In the canonical codebase
-// `envSchema` would describe the required keys and types.
-const envSchema = z.record(z.string(), z.string());
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { envSchema } = require("@config/src/env");
 
 const shopId = process.argv[2];
 if (!shopId) {

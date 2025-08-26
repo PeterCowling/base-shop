@@ -62,6 +62,10 @@ describe("/api/rental", () => {
       __esModule: true,
       readRepo: readProducts,
     }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest.fn().mockResolvedValue({ rentalInventoryAllocation: true }),
+    }));
 
     const { POST } = await import("../src/api/rental/route");
     const res = await POST({
@@ -112,6 +116,10 @@ describe("/api/rental", () => {
     jest.doMock("@platform-core/pricing", () => ({
       computeDamageFee,
     }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest.fn().mockResolvedValue({ coverageIncluded: true }),
+    }));
 
     const { PATCH } = await import("../src/api/rental/route");
     const res = await PATCH({
@@ -154,6 +162,10 @@ describe("/api/rental", () => {
     jest.doMock("@platform-core/pricing", () => ({
       computeDamageFee: jest.fn(),
     }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest.fn().mockResolvedValue({ coverageIncluded: true }),
+    }));
 
     const { PATCH } = await import("../src/api/rental/route");
     const res = await PATCH({
@@ -194,6 +206,10 @@ describe("/api/rental", () => {
     }));
     jest.doMock("@platform-core/pricing", () => ({
       computeDamageFee,
+    }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: jest.fn().mockResolvedValue({ coverageIncluded: true }),
     }));
 
     const { PATCH } = await import("../src/api/rental/route");

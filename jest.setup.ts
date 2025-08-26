@@ -33,6 +33,10 @@ import { TextDecoder, TextEncoder } from "node:util";
 /** Node’s `util` encoders/decoders are required by React-DOM’s server renderer */
 (globalThis as any).TextEncoder ||= TextEncoder;
 (globalThis as any).TextDecoder ||= TextDecoder;
+const { Blob, File, FormData } = require("undici");
+(globalThis as any).Blob ||= Blob;
+(globalThis as any).File ||= File;
+(globalThis as any).FormData ||= FormData;
 
 /**
  * React 19+ uses `MessageChannel` internally for suspense & streaming.

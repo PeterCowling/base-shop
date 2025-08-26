@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { rest, server } from "./mswServer";
+import { rest } from "msw";
+import { server } from "./msw/server";
 
 const pushMock = jest.fn();
 
 jest.mock("next/navigation", () => ({
-  usePathname: () => "/cms/shop/demo/products",
+  usePathname: () => "/cms/shop/demo",
   useRouter: () => ({ push: pushMock }),
 }));
 

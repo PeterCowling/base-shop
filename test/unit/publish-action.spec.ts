@@ -64,6 +64,6 @@ describe("publish page action", () => {
     fd.append("components", "not-json");
 
     const result = await createPage("test", fd);
-    expect(result.errors?.components[0]).toBe("Invalid components");
+    expect(result.errors?.components[0]).toBe("Invalid JSON");
   });
 });

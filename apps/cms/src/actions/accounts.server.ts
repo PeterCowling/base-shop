@@ -22,7 +22,11 @@ export async function requestAccount(formData: FormData): Promise<void> {
   const name = String(formData.get("name") ?? "");
   const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
-  const hashed = await argon2.hash(password);
+  const hashOpts =
+    process.env.NODE_ENV === "test"
+      ? { timeCost: 1, memoryCost: 2 ** 8, parallelism: 1 }
+      : undefined;
+  const hashed = await argon2.hash(password, hashOpts);
   const id = ulid();
   PENDING_USERS[id] = { id, name, email, password: hashed };
 }

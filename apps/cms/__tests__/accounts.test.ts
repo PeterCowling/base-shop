@@ -44,6 +44,8 @@ afterEach(() => jest.resetAllMocks());
 describe("account actions", () => {
   it("requestAccount hashes passwords and stores pending user", async () => {
     await withRepo(async () => {
+      jest.spyOn(argon2, "hash").mockResolvedValue("$argon2dummy");
+      jest.spyOn(argon2, "verify").mockResolvedValue(true);
       const actions = await import("../src/actions/accounts.server");
 
       await actions.requestAccount(

@@ -135,8 +135,11 @@ describe("releaseDepositsOnce", () => {
     expect(markRefunded).toHaveBeenCalledTimes(1);
     expect(markRefunded).toHaveBeenCalledWith("shop1", "s2");
     expect(errorSpy).toHaveBeenCalledTimes(1);
-    expect(errorSpy.mock.calls[0][0]).toContain("s1");
-    expect(errorSpy.mock.calls[0][0]).toContain("shop1");
+    expect(errorSpy.mock.calls[0][0]).toContain("failed to release deposit");
+    expect(errorSpy.mock.calls[0][1]).toMatchObject({
+      shopId: "shop1",
+      sessionId: "s1",
+    });
 
     errorSpy.mockRestore();
   });
@@ -202,7 +205,10 @@ describe("startDepositReleaseService", () => {
       .spyOn(global, "clearInterval")
       .mockImplementation(() => undefined as any);
 
-    const startPromise = service.startDepositReleaseService();
+    const startPromise = service.startDepositReleaseService({
+      shop1: { enabled: true },
+      shop2: { enabled: true },
+    });
 
     const flush = () => new Promise((r) => setTimeout(r, 0));
 

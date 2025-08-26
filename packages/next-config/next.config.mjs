@@ -29,6 +29,7 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "fs",
       "http",
       "https",
+      "module",
       "path",
       "stream",
       "string_decoder",

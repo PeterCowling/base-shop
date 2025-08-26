@@ -22,16 +22,16 @@ export interface FilterBarProps {
 
 export default function FilterBar({
   definitions,
-  values: externalValues = {},
+  values: externalValues,
   onChange,
 }: FilterBarProps) {
-  const [values, setValues] = useState<Filters>(externalValues);
+  const [values, setValues] = useState<Filters>(externalValues ?? {});
   const deferred = useDeferredValue(values);
 
   // Keep internal state in sync when parent updates its values (e.g. after a
   // reload where values are read from the URL).
   useEffect(() => {
-    setValues(externalValues);
+    setValues(externalValues ?? {});
   }, [externalValues]);
 
   useEffect(() => {

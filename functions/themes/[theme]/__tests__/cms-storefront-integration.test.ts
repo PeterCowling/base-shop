@@ -1,8 +1,5 @@
 import { jest } from "@jest/globals";
 import { createHmac } from "node:crypto";
-import { promises as fs } from "node:fs";
-import os from "node:os";
-import path from "node:path";
 import { nowIso } from "@date-utils";
 
 import type { Page } from "@acme/types";
@@ -17,30 +14,47 @@ async function withRepo(
     repo: typeof import("@platform-core/repositories/pages")
   ) => Promise<void>
 ) {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "pages-"));
-  await fs.mkdir(path.join(dir, "data", "shops", "demo"), { recursive: true });
-  const cwd = process.cwd();
-  process.chdir(dir);
   jest.resetModules();
-  const repoPath = path.join(
-    __dirname,
-    "../../..",
-    "packages",
-    "platform-core",
-    "repositories",
-    "pages",
-    "index.server"
+  const pages: Page[] = [];
+  const repo = {
+    async getPages(_: string) {
+      return pages;
+    },
+    async savePage(_: string, page: Page) {
+      pages.push(page);
+      return page;
+    },
+    async updatePage(
+      _: string,
+      patch: Partial<Page> & { id: string; updatedAt: string },
+      previous: Page,
+    ) {
+      const idx = pages.findIndex((p) => p.id === patch.id);
+      if (idx === -1) throw new Error(`Page ${patch.id} not found`);
+      pages[idx] = {
+        ...previous,
+        ...patch,
+        updatedAt: nowIso(),
+      } as Page;
+      return pages[idx];
+    },
+  };
+  jest.doMock(
+    "@platform-core/repositories/pages",
+    () => ({ __esModule: true, ...repo }),
+    { virtual: true },
   );
-  const repo = await import(repoPath);
-  jest.doMock("@platform-core/repositories/pages", () => ({
-    __esModule: true,
-    ...repo,
-  }));
-  try {
-    await cb(repo);
-  } finally {
-    process.chdir(cwd);
-  }
+  jest.doMock(
+    "@platform-core/repositories/pages/index.server",
+    () => ({ __esModule: true, ...repo }),
+    { virtual: true },
+  );
+  jest.doMock(
+    "@acme/zod-utils/initZod",
+    () => ({ initZod: () => {} }),
+    { virtual: true },
+  );
+  await cb(repo as any);
 }
 
 function tokenFor(id: string): string {
@@ -77,7 +91,9 @@ describe("CMS → storefront flow", () => {
         page as any
       );
 
-      const { onRequest } = await import("../src/routes/preview/[pageId].ts");
+      const { onRequest } = await import(
+        "../../../../apps/shop-bcd/src/routes/preview/[pageId].ts"
+      );
       const res = await onRequest({
         params: { pageId: "p1" },
         request: new Request(`http://test?token=${tokenFor("p1")}`),

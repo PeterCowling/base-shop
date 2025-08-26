@@ -5,14 +5,15 @@ import type { TokenInfo, TokenMap } from "../../../hooks/useTokenEditor";
 import { useTokenColors } from "../../../hooks/useTokenColors";
 import { ReactElement } from "react";
 
-interface ColorTokenProps extends TokenInfo {
+interface ColorTokenProps extends Omit<TokenInfo, "key"> {
+  tokenKey: string;
   tokens: TokenMap;
   baseTokens: TokenMap;
   setToken: (key: string, value: string) => void;
 }
 
 export function ColorToken({
-  key: tokenKey,
+  tokenKey,
   value,
   defaultValue,
   isOverridden,
@@ -24,7 +25,6 @@ export function ColorToken({
 
   return (
     <label
-      key={tokenKey}
       data-token-key={tokenKey}
       className={`flex flex-col gap-1 text-sm ${
         isOverridden ? "border-l-2 border-l-info pl-2" : ""

@@ -11,6 +11,10 @@ import {
 } from "../stats";
 import { getDefaultSender } from "../config";
 
+const apiKey = process.env.SENDGRID_API_KEY || coreEnv.SENDGRID_API_KEY;
+const marketingKey =
+  process.env.SENDGRID_MARKETING_KEY || coreEnv.SENDGRID_MARKETING_KEY;
+
 interface ProviderOptions {
   /**
    * When true, the constructor will make a lightweight API request to verify
@@ -30,14 +34,14 @@ export class SendgridProvider implements CampaignProvider {
   readonly ready: Promise<void>;
 
   constructor(options: ProviderOptions = {}) {
-    if (coreEnv.SENDGRID_API_KEY) {
-      sgMail.setApiKey(coreEnv.SENDGRID_API_KEY);
+    if (apiKey) {
+      sgMail.setApiKey(apiKey);
     }
 
-    if (options.sanityCheck && coreEnv.SENDGRID_API_KEY) {
+    if (options.sanityCheck && apiKey) {
       this.ready = fetch("https://api.sendgrid.com/v3/user/profile", {
         headers: {
-          Authorization: `Bearer ${coreEnv.SENDGRID_API_KEY}`,
+          Authorization: `Bearer ${apiKey}`,
         },
       }).then((res) => {
         if (!res.ok) {
@@ -84,13 +88,13 @@ export class SendgridProvider implements CampaignProvider {
   }
 
   async getCampaignStats(id: string): Promise<CampaignStats> {
-    if (!coreEnv.SENDGRID_API_KEY) return mapSendGridStats({});
+    if (!apiKey) return mapSendGridStats({});
     try {
       const res = await fetch(
         `https://api.sendgrid.com/v3/campaigns/${id}/stats`,
         {
           headers: {
-            Authorization: `Bearer ${coreEnv.SENDGRID_API_KEY}`,
+            Authorization: `Bearer ${apiKey}`,
           },
         }
       );
@@ -104,7 +108,7 @@ export class SendgridProvider implements CampaignProvider {
   }
 
   async createContact(email: string): Promise<string> {
-    const key = coreEnv.SENDGRID_MARKETING_KEY || coreEnv.SENDGRID_API_KEY;
+    const key = marketingKey || apiKey;
     if (!key) return "";
     try {
       const res = await fetch("https://api.sendgrid.com/v3/marketing/contacts", {
@@ -124,7 +128,7 @@ export class SendgridProvider implements CampaignProvider {
   }
 
   async addToList(contactId: string, listId: string): Promise<void> {
-    const key = coreEnv.SENDGRID_MARKETING_KEY || coreEnv.SENDGRID_API_KEY;
+    const key = marketingKey || apiKey;
     if (!key) return;
     await fetch(`https://api.sendgrid.com/v3/marketing/lists/${listId}/contacts`, {
       method: "PUT",
@@ -137,7 +141,7 @@ export class SendgridProvider implements CampaignProvider {
   }
 
   async listSegments(): Promise<{ id: string; name?: string }[]> {
-    const key = coreEnv.SENDGRID_MARKETING_KEY || coreEnv.SENDGRID_API_KEY;
+    const key = marketingKey || apiKey;
     if (!key) return [];
     try {
       const res = await fetch("https://api.sendgrid.com/v3/marketing/segments", {

@@ -58,7 +58,12 @@ const providers: Record<string, CampaignProvider> = {
 
 const availableProviders = [...Object.keys(providers), "smtp"];
 
-const providerName = coreEnv.EMAIL_PROVIDER ?? "smtp";
+// Read provider preference directly from `process.env` first so tests or
+// runtime code that mutate environment variables after the config module has
+// loaded can still influence the chosen provider. Fall back to the value
+// parsed in `coreEnv` for normal runtime behaviour.
+const providerName =
+  process.env.EMAIL_PROVIDER || coreEnv.EMAIL_PROVIDER || "smtp";
 if (!availableProviders.includes(providerName)) {
   throw new Error(
     `Unsupported EMAIL_PROVIDER "${providerName}". Available providers: ${availableProviders.join(", ")}`

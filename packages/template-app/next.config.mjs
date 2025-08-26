@@ -18,7 +18,12 @@ const config = {
   // Override or extend any fields here.  In this case we need to
   // transpile additional internal packages so that Next.js can import
   // their untranspiled source code from `node_modules`.
-  transpilePackages: ["@acme/ui", "@acme/platform-core"],
+  transpilePackages: [
+    "@acme/ui",
+    "@acme/platform-core",
+    "@acme/config",
+    "@acme/zod-utils", // needed by @acme/config/env/auth.ts
+  ],
 };
 
 export default config;

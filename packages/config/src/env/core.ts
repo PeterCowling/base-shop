@@ -1,8 +1,8 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
-import { authEnvSchema } from "./auth";
-import { cmsEnvSchema } from "./cms";
-import { emailEnvSchema } from "./email";
+import { authEnvSchema } from "./auth.js";
+import { cmsEnvSchema } from "./cms.js";
+import { emailEnvSchema } from "./email.js";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -135,7 +135,7 @@ const parsed = coreEnvSchema.safeParse(process.env);
 // specific path is provided.
 if (!parsed.success) {
   console.error("❌ Invalid core environment variables:");
-  parsed.error.issues.forEach((issue) => {
+  parsed.error.issues.forEach((issue: z.ZodIssue) => {
     const path =
       issue.path && issue.path.length > 0 ? issue.path.join(".") : "(root)";
     console.error(`  • ${path}: ${issue.message}`);

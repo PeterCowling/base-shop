@@ -50,15 +50,27 @@ const providerCache: Record<string, CampaignProvider | undefined> = {};
 
 async function loadProvider(name: string): Promise<CampaignProvider | undefined> {
   if (providerCache[name]) return providerCache[name];
+
   if (name === "sendgrid") {
+    const apiKey = process.env.SENDGRID_API_KEY || coreEnv.SENDGRID_API_KEY;
+    if (!apiKey) {
+      providerCache[name] = undefined;
+      return undefined;
+    }
     const { SendgridProvider } = await import("./providers/sendgrid");
     providerCache[name] = new SendgridProvider();
   } else if (name === "resend") {
+    const apiKey = process.env.RESEND_API_KEY || coreEnv.RESEND_API_KEY;
+    if (!apiKey) {
+      providerCache[name] = undefined;
+      return undefined;
+    }
     const { ResendProvider } = await import("./providers/resend");
     providerCache[name] = new ResendProvider();
   } else {
     providerCache[name] = undefined;
   }
+
   return providerCache[name];
 }
 

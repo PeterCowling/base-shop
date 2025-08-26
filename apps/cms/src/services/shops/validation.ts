@@ -11,6 +11,7 @@ import {
   parsePriceOverrides,
   parseLocaleOverrides,
 } from "./formData";
+import { formDataEntries, formDataToObject } from "../../utils/formData";
 
 export type { ShopForm };
 
@@ -21,7 +22,7 @@ export function parseShopForm(formData: FormData): {
   const themeDefaultsRaw = formData.get("themeDefaults") as string | null;
   const themeOverridesRaw = formData.get("themeOverrides") as string | null;
 
-  const entries = Array.from(formData.entries()).filter(
+  const entries = Array.from(formDataEntries(formData)).filter(
     ([k]) =>
       ![
         "filterMappingsKey",
@@ -67,9 +68,7 @@ export function parseSeoForm(formData: FormData): {
   data?: z.infer<typeof seoSchema>;
   errors?: Record<string, string[]>;
 } {
-  const parsed = seoSchema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
+  const parsed = seoSchema.safeParse(formDataToObject(formData));
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }
@@ -89,9 +88,7 @@ export function parseGenerateSeoForm(formData: FormData): {
   data?: z.infer<typeof generateSchema>;
   errors?: Record<string, string[]>;
 } {
-  const parsed = generateSchema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
+  const parsed = generateSchema.safeParse(formDataToObject(formData));
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }
@@ -109,9 +106,7 @@ export function parseCurrencyTaxForm(formData: FormData): {
   data?: z.infer<typeof currencyTaxSchema>;
   errors?: Record<string, string[]>;
 } {
-  const parsed = currencyTaxSchema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
+  const parsed = currencyTaxSchema.safeParse(formDataToObject(formData));
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }
@@ -129,9 +124,7 @@ export function parseDepositForm(formData: FormData): {
   data?: z.infer<typeof depositSchema>;
   errors?: Record<string, string[]>;
 } {
-  const parsed = depositSchema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
+  const parsed = depositSchema.safeParse(formDataToObject(formData));
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }
@@ -149,9 +142,7 @@ export function parseReverseLogisticsForm(formData: FormData): {
   data?: z.infer<typeof reverseLogisticsSchema>;
   errors?: Record<string, string[]>;
 } {
-  const parsed = reverseLogisticsSchema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
+  const parsed = reverseLogisticsSchema.safeParse(formDataToObject(formData));
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }
@@ -174,9 +165,7 @@ export function parseUpsReturnsForm(formData: FormData): {
   data?: z.infer<typeof returnsSchema>;
   errors?: Record<string, string[]>;
 } {
-  const parsed = returnsSchema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
+  const parsed = returnsSchema.safeParse(formDataToObject(formData));
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
   }

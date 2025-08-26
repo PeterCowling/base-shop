@@ -49,7 +49,7 @@ export async function releaseDepositsOnce(
           // and operators have useful context when troubleshooting.
           logger.error(
             `failed to release deposit for ${shop} ${order.sessionId}`,
-            err,
+            { err },
           );
         }
       }

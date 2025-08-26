@@ -67,8 +67,8 @@ export async function PUT(req: NextRequest) {
       status: 400,
     });
   }
-  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
-  if (!cartId) {
+  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as string | null;
+  if (typeof cartId !== "string") {
     cartId = await cartStore.createCart();
   }
   const cart: CartState = {};
@@ -118,8 +118,8 @@ export async function POST(req: NextRequest) {
   if (sku.sizes.length && !size) {
     return NextResponse.json({ error: "Size required" }, { status: 400 });
   }
-  let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
-  if (!cartId) {
+    let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as string | null;
+  if (typeof cartId !== "string") {
     cartId = await cartStore.createCart();
   }
   const cart = await cartStore.getCart(cartId);
@@ -148,8 +148,8 @@ export async function PATCH(req: NextRequest) {
     });
   }
   const { id, qty } = parsed.data;
-  const cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
-  if (!cartId) {
+    const cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as string | null;
+  if (typeof cartId !== "string") {
     return NextResponse.json({ error: "Cart not found" }, { status: 404 });
   }
   const cart = await cartStore.setQty(cartId, id, qty);
@@ -174,8 +174,8 @@ export async function DELETE(req: NextRequest) {
     });
   }
   const { id } = parsed.data;
-  const cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value);
-  if (!cartId) {
+    const cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as string | null;
+  if (typeof cartId !== "string") {
     return NextResponse.json({ error: "Cart not found" }, { status: 404 });
   }
   const cart = await cartStore.removeItem(cartId, id);
@@ -193,8 +193,8 @@ export async function DELETE(req: NextRequest) {
  * the response.
  */
 export async function GET(req?: NextRequest) {
-  let cartId = decodeCartCookie(req?.cookies.get(CART_COOKIE)?.value);
-  if (!cartId) {
+    let cartId = decodeCartCookie(req?.cookies.get(CART_COOKIE)?.value) as string | null;
+  if (typeof cartId !== "string") {
     cartId = await cartStore.createCart();
   }
   const cart = await cartStore.getCart(cartId);

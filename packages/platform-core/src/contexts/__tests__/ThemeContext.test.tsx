@@ -1,5 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { createRoot } from "react-dom/client";
+import { act } from "react";
 import { ThemeProvider, useTheme } from "../ThemeContext";
+
+// React 19 requires this flag for `act` to suppress environment warnings
+// when not using a test renderer.
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
 function ThemeDisplay() {
   const { theme } = useTheme();
@@ -34,13 +39,23 @@ describe("ThemeProvider fallback", () => {
       value: undefined,
     });
 
-    render(
-      <ThemeProvider>
-        <ThemeDisplay />
-      </ThemeProvider>
-    );
+    const container = document.createElement("div");
+    document.body.appendChild(container);
 
-    expect(screen.getByTestId("theme").textContent).toBe("system");
+    const root = createRoot(container);
+    act(() => {
+      root.render(
+        <ThemeProvider>
+          <ThemeDisplay />
+        </ThemeProvider>
+      );
+    });
+
+    expect(container.querySelector("[data-testid='theme']")?.textContent).toBe(
+      "system"
+    );
     expect(document.documentElement.style.colorScheme).toBe("light");
+
+    act(() => root.unmount());
   });
 });

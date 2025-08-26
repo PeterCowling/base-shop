@@ -10,16 +10,19 @@ export interface UsePublishLocationsResult {
   reload: () => void;
 }
 
+export async function loadPublishLocations(): Promise<PublishLocation[]> {
+  try {
+    return await fetchJson<PublishLocation[]>("/api/publish-locations");
+  } catch {
+    return [];
+  }
+}
+
 export function usePublishLocations(): UsePublishLocationsResult {
   const [locations, setLocations] = useState<PublishLocation[]>([]);
 
   const fetchLocations = useCallback(async () => {
-    try {
-      const data = await fetchJson<PublishLocation[]>("/api/publish-locations");
-      setLocations(data);
-    } catch {
-      setLocations([]);
-    }
+    setLocations(await loadPublishLocations());
   }, []);
 
   useEffect(() => {

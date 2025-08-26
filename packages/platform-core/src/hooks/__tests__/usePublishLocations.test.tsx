@@ -1,14 +1,23 @@
 // packages/platform-core/hooks/__tests__/usePublishLocations.test.tsx
-import { render, screen, waitFor } from "@testing-library/react";
-import { usePublishLocations } from "../usePublishLocations";
+import { loadPublishLocations } from "../usePublishLocations";
 
 describe("usePublishLocations", () => {
   it("fetches locations from API", async () => {
-    /* --------------- mock fetch ----------------- */
     const originalFetch = global.fetch;
     global.fetch = jest.fn(() =>
       Promise.resolve({
         ok: true,
+        text: () =>
+          Promise.resolve(
+            JSON.stringify([
+              {
+                id: "a",
+                name: "A",
+                path: "a",
+                requiredOrientation: "landscape",
+              },
+            ]),
+          ),
         json: () =>
           Promise.resolve([
             {
@@ -18,22 +27,13 @@ describe("usePublishLocations", () => {
               requiredOrientation: "landscape",
             },
           ]),
-      })
+      }),
     ) as unknown as typeof fetch;
 
-    /* --------------- test component ------------- */
-    function Test() {
-      const { locations } = usePublishLocations();
-      return <span data-testid="count">{locations.length}</span>;
-    }
+    const locations = await loadPublishLocations();
+    expect(locations).toHaveLength(1);
 
-    render(<Test />);
-
-    await waitFor(() =>
-      expect(Number(screen.getByTestId("count").textContent)).toBe(1)
-    );
-
-    /* --------------- restore fetch -------------- */
     global.fetch = originalFetch;
   });
 });
+

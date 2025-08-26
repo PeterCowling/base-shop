@@ -1,12 +1,16 @@
 // packages/zod-utils/src/initZod.ts
 /* istanbul ignore file */
 // Small initializer that installs the friendly Zod error map.
-// Import it using `require` so that when this file is transpiled to
-// CommonJS (as happens under Jest) it does not emit any async `import`
-// helpers that rely on top-level `await`.  Using `require` keeps the
-// generated code synchronous and works in both ESM and CJS test runs.
+// Import it using Node's `createRequire` so that when this file is
+// transpiled to CommonJS (as happens under Jest) it does not emit any
+// async `import` helpers that rely on top-level `await`. Using
+// `createRequire` keeps the generated code synchronous and works in
+// both ESM and CJS test runs.
+import { createRequire } from "module";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { applyFriendlyZodMessages } = require("./zodErrorMap");
+const { applyFriendlyZodMessages } = createRequire(import.meta.url)(
+  "./zodErrorMap"
+);
 
 export function initZod(): void {
   applyFriendlyZodMessages();

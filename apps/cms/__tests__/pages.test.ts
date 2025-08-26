@@ -118,6 +118,7 @@ describe("page actions", () => {
         past: [],
         present: [{ id: "c1", type: "HeroBanner" }],
         future: [],
+        gridCols: 12,
       };
       const fd = new FormData();
       fd.append("id", page.id);

@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import GiftCardBlock from "../GiftCardBlock";
 
-jest.mock("@platform-core/components/shop/AddToCartButton.client", () => ({
+jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => ({
   __esModule: true,
   default: () => <button>Purchase</button>,
 }));
-jest.mock("@platform-core/contexts/CurrencyContext", () => ({
+jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],
 }));
 

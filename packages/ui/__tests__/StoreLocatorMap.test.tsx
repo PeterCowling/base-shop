@@ -3,11 +3,11 @@ import { readFileSync } from "fs";
 import { join } from "path";
 import ts from "typescript";
 import { runInNewContext } from "vm";
-import { StoreLocatorMap } from "../components/organisms/StoreLocatorMap";
+import { StoreLocatorMap } from "../src/components/organisms/StoreLocatorMap";
 
-function loadLoadLeaflet() {
+function loadLoadLeaflet(env: Record<string, any> = {}) {
   const src = readFileSync(
-    join(__dirname, "../components/organisms/StoreLocatorMap.tsx"),
+    join(__dirname, "../src/components/organisms/StoreLocatorMap.tsx"),
     "utf8"
   );
   const start = src.indexOf("function loadLeaflet");
@@ -22,6 +22,7 @@ function loadLoadLeaflet() {
     require,
     window: undefined,
     document: undefined,
+    ...env,
   };
   runInNewContext(transpiled, sandbox);
   return sandbox.loadLeaflet as () => Promise<any>;
@@ -34,21 +35,20 @@ describe("loadLeaflet", () => {
   });
 
   it("injects script when needed", async () => {
-    const loadLeaflet = loadLoadLeaflet();
-    (global as any).window = {};
-    (global as any).document = {
-      head: document.head,
-      body: document.body,
-      createElement: document.createElement.bind(document),
+    const appended: any[] = [];
+    const mockDocument = {
+      head: { appendChild: jest.fn() },
+      body: { appendChild: jest.fn((el: any) => appended.push(el)) },
+      createElement: jest.fn(() => ({ onload: null })),
     };
+    const mockWindow: any = {};
+    const loadLeaflet = loadLoadLeaflet({ window: mockWindow, document: mockDocument });
     const p = loadLeaflet();
-    const script = document.querySelector(
-      'script[src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"]'
-    ) as HTMLScriptElement;
-    expect(script).toBeTruthy();
-    (window as any).L = {};
-    script.onload!(new Event("load"));
-    await expect(p).resolves.toBe(window.L);
+    expect(mockDocument.head.appendChild).toHaveBeenCalled();
+    expect(mockDocument.body.appendChild).toHaveBeenCalled();
+    mockWindow.L = {};
+    appended[0].onload(new Event("load"));
+    await expect(p).resolves.toBe(mockWindow.L);
   });
 });
 

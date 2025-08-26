@@ -78,7 +78,11 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 max-w-md"
+      noValidate
+    >
       <div className="flex flex-col">
         <label htmlFor="name" className="mb-1">Name</label>
         <input

@@ -11,6 +11,9 @@
     "rootDir": "src",
     "outDir": "dist",
 
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
     /* let TS infer rootDir (same as package folder) */
     "types": ["node"]
   },

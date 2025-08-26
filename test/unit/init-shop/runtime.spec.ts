@@ -20,6 +20,23 @@ describe('init-shop wizard - runtime checks', () => {
         if (p === 'node:child_process') {
           return { execSync: () => '10.0.0' };
         }
+        if (p.includes('./runtime')) {
+          const runtimeSrc = fs.readFileSync(
+            path.join(__dirname, '../../../scripts/src/runtime.ts'),
+            'utf8'
+          );
+          const transpiledRuntime = ts.transpileModule(runtimeSrc, {
+            compilerOptions: {
+              module: ts.ModuleKind.CommonJS,
+              esModuleInterop: true,
+            },
+          }).outputText;
+          const runtimeSandbox: any = { ...sandbox };
+          runtimeSandbox.module = { exports: {} };
+          runtimeSandbox.exports = runtimeSandbox.module.exports;
+          runInNewContext(transpiledRuntime, runtimeSandbox);
+          return runtimeSandbox.module.exports;
+        }
         return {};
       },
     };
@@ -53,6 +70,23 @@ describe('init-shop wizard - runtime checks', () => {
       require: (p: string) => {
         if (p === 'node:child_process') {
           return { execSync: () => '9.0.0' };
+        }
+        if (p.includes('./runtime')) {
+          const runtimeSrc = fs.readFileSync(
+            path.join(__dirname, '../../../scripts/src/runtime.ts'),
+            'utf8'
+          );
+          const transpiledRuntime = ts.transpileModule(runtimeSrc, {
+            compilerOptions: {
+              module: ts.ModuleKind.CommonJS,
+              esModuleInterop: true,
+            },
+          }).outputText;
+          const runtimeSandbox: any = { ...sandbox };
+          runtimeSandbox.module = { exports: {} };
+          runtimeSandbox.exports = runtimeSandbox.module.exports;
+          runInNewContext(transpiledRuntime, runtimeSandbox);
+          return runtimeSandbox.module.exports;
         }
         return {};
       },

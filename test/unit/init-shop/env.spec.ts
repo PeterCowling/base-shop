@@ -144,7 +144,7 @@ describe('init-shop wizard - env', () => {
             }),
           };
         }
-        if (p.includes('./generate-theme')) {
+        if (p.includes('generate-theme')) {
           return {
             generateThemeTokens: () => ({
               '--color-primary': '210 60% 40%',
@@ -173,6 +173,103 @@ describe('init-shop wizard - env', () => {
               sanity: ['SANITY_PROJECT_ID', 'SANITY_DATASET', 'SANITY_TOKEN'],
             },
           };
+        }
+        if (p.includes('./utils/providers')) {
+          return {
+            listProviders: jest.fn((kind: string) =>
+              Promise.resolve(
+                kind === 'payment'
+                  ? [
+                      {
+                        id: 'stripe',
+                        name: 'stripe',
+                        envVars: [
+                          'STRIPE_SECRET_KEY',
+                          'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY',
+                          'STRIPE_WEBHOOK_SECRET',
+                        ],
+                      },
+                      {
+                        id: 'paypal',
+                        name: 'paypal',
+                        envVars: ['PAYPAL_CLIENT_ID', 'PAYPAL_SECRET'],
+                      },
+                    ]
+                  : [
+                      { id: 'dhl', name: 'dhl', envVars: [] },
+                      { id: 'ups', name: 'ups', envVars: [] },
+                    ]
+              )
+            ),
+            listPlugins: jest.fn(() => [
+              {
+                id: 'sanity',
+                packageName: '@acme/plugin-sanity',
+                envVars: [
+                  'SANITY_PROJECT_ID',
+                  'SANITY_DATASET',
+                  'SANITY_TOKEN',
+                ],
+              },
+            ]),
+          };
+        }
+        if (p.includes('./apply-page-template')) {
+          return { applyPageTemplate: jest.fn() };
+        }
+        if (p.includes('./utils/prompt') || p.endsWith('/prompt')) {
+          const promptSrc = fs.readFileSync(
+            path.join(__dirname, '../../../scripts/src/utils/prompt.ts'),
+            'utf8'
+          );
+          const transpiledPrompt = ts.transpileModule(promptSrc, {
+            compilerOptions: {
+              module: ts.ModuleKind.CommonJS,
+              esModuleInterop: true,
+            },
+          }).outputText;
+          const promptSandbox: any = { ...sandbox };
+          promptSandbox.module = { exports: {} };
+          promptSandbox.exports = promptSandbox.module.exports;
+          runInNewContext(transpiledPrompt, promptSandbox);
+          return promptSandbox.module.exports;
+        }
+        if (p.includes('./utils/theme')) {
+          const themeSrc = fs.readFileSync(
+            path.join(__dirname, '../../../scripts/src/utils/theme.ts'),
+            'utf8'
+          );
+          const transpiledTheme = ts.transpileModule(themeSrc, {
+            compilerOptions: {
+              module: ts.ModuleKind.CommonJS,
+              esModuleInterop: true,
+            },
+          }).outputText;
+          const themeSandbox: any = { ...sandbox };
+          themeSandbox.module = { exports: {} };
+          themeSandbox.exports = themeSandbox.module.exports;
+          runInNewContext(transpiledTheme, themeSandbox);
+          return themeSandbox.module.exports;
+        }
+        if (p.includes('./runtime')) {
+          return { ensureRuntime: jest.fn() };
+        }
+        if (p.includes('./env')) {
+          const envSrc = fs.readFileSync(
+            path.join(__dirname, '../../../scripts/src/env.ts'),
+            'utf8'
+          );
+          const transpiledEnv = ts.transpileModule(envSrc, {
+            compilerOptions: {
+              module: ts.ModuleKind.CommonJS,
+              esModuleInterop: true,
+            },
+          }).outputText;
+          const envSandbox: any = { ...sandbox };
+          envSandbox.module = { exports: {} };
+          envSandbox.exports = envSandbox.module.exports;
+          runInNewContext(transpiledEnv, envSandbox);
+          return envSandbox.module.exports;
         }
         return require(p);
       },

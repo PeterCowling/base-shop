@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import PageBuilder from "@ui/components/cms/PageBuilder";
+import PageBuilder from "../src/components/cms/PageBuilder";
 
 describe("PageBuilder history persistence", () => {
   const basePage = {
@@ -16,6 +16,7 @@ describe("PageBuilder history persistence", () => {
       past: [[{ id: "p", type: "Text" }]],
       present: [{ id: "c", type: "Text" }],
       future: [],
+      gridCols: 12,
     };
     localStorage.setItem(
       `page-builder-history-${basePage.id}`,
@@ -43,6 +44,7 @@ describe("PageBuilder history persistence", () => {
       past: [],
       present: [{ id: "c1", type: "Text" }],
       future: [],
+      gridCols: 12,
     };
     const page = { ...basePage, history };
     const onSave = jest.fn().mockResolvedValue(undefined);

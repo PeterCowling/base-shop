@@ -4,6 +4,11 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
+// Some pages pull in heavy server-only modules which can slow down
+// the initial dynamic import. Increase the Jest timeout so each
+// route test has enough time to complete without failing.
+jest.setTimeout(20_000);
+
 /** Spin up an isolated repo in /tmp, run the callback, then restore CWD. */
 async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "repo-"));

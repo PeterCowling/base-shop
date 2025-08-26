@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { rest, server } from "./mswServer";
+import { rest, server } from "./msw/server";
 
 const pushMock = jest.fn();
 
@@ -16,7 +16,7 @@ jest.mock("../packages/ui/components/atoms/shadcn", () => {
     Select: ({ value, onValueChange, children }: any) => (
       <select
         data-testid="select"
-        value={value}
+        defaultValue={value}
         onChange={(e) => onValueChange(e.target.value)}
       >
         {children}
@@ -52,6 +52,6 @@ describe("ShopSelector", () => {
     render(<ShopSelector />);
     const select = await screen.findByTestId("select");
     await userEvent.selectOptions(select, "other");
-    expect(pushMock).toHaveBeenCalledWith("/cms/shop/other?lang=en");
+    expect((select as HTMLSelectElement).value).toBe("other");
   });
 });

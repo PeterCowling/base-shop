@@ -62,6 +62,13 @@ describe("/api/rental", () => {
       __esModule: true,
       readRepo: readProducts,
     }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: async () => ({
+        rentalInventoryAllocation: true,
+        coverageIncluded: true,
+      }),
+    }));
 
     const { POST } = await import("../src/api/rental/route");
     const res = await POST({

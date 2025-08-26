@@ -1,6 +1,9 @@
 import "server-only";
 import * as React from "react";
-import { marketingEmailTemplates } from "@acme/ui";
+// Import the marketing email templates directly to avoid loading unrelated
+// components that depend on ESM-only modules (like @acme/auth) which Jest
+// cannot process in its CommonJS environment.
+import { marketingEmailTemplates } from "@acme/ui/components/templates";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 import { createRequire } from "module";

@@ -6,7 +6,6 @@ import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import { ProviderError } from "./providers/types";
 import { hasProviderErrorFields } from "./providers/error";
-import { renderTemplate } from "./templates";
 function deriveText(html) {
     return html
         .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, "")
@@ -49,6 +48,7 @@ export async function sendCampaignEmail(options) {
     const { sanitize = true, ...rest } = options;
     let opts = { ...rest };
     if (opts.templateId) {
+        const { renderTemplate } = await import("./templates");
         opts.html = renderTemplate(opts.templateId, opts.variables ?? {});
     }
     if (sanitize && opts.html) {

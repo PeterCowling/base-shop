@@ -1,6 +1,9 @@
 import "server-only";
 import * as React from "react";
-import { marketingEmailTemplates } from "@acme/ui";
+// Import only the email templates to avoid loading the entire UI library,
+// which pulls in components that rely on ESM-only modules and break under
+// Jest's CommonJS environment.
+import { marketingEmailTemplates } from "@acme/ui/components/templates";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 function renderToStaticMarkup(node: React.ReactNode): string {

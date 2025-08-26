@@ -7,7 +7,6 @@ import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
 import { ProviderError } from "./providers/types";
 import { hasProviderErrorFields } from "./providers/error";
-import { renderTemplate } from "./templates";
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -78,6 +77,7 @@ export async function sendCampaignEmail(
   const { sanitize = true, ...rest } = options;
   let opts = { ...rest } as CampaignOptions;
   if (opts.templateId) {
+    const { renderTemplate } = await import("./templates");
     opts.html = renderTemplate(opts.templateId, opts.variables ?? {});
   }
   if (sanitize && opts.html) {

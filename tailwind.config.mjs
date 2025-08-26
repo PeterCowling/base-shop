@@ -3,7 +3,7 @@ import preset from "@acme/tailwind-config";
 
 /** @type {import('tailwindcss').Config} */
 const config = {
-  presets: [tokens, preset],
+  presets: [preset],
   darkMode: ["class", ".theme-dark"],
   content: [
     "./apps/**/*.{ts,tsx,mdx}",
@@ -14,6 +14,7 @@ const config = {
     "!**/.next",
   ],
   plugins: [
+    tokens,
     require("@tailwindcss/forms"),
     require("@tailwindcss/container-queries"),
   ],

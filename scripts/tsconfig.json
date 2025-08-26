@@ -33,7 +33,9 @@
       "@acme/types/*": [
         "packages/types/src/*",
         "packages/types/src/*/index.ts"
-      ]
+      ],
+      "@config/src/env": ["packages/config/src/env/index.ts"],
+      "@config/src/*": ["packages/config/src/*"]
     },
 
     /* ───── keep imports extension-less ───── */

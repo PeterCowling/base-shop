@@ -3,7 +3,11 @@ import ImageUploaderWithOrientationCheck from "../../components/cms/ImageUploade
 import { useImageUpload as useLocalImageUpload } from "../useImageUpload";
 import useImageUpload from "../useFileUpload";
 
-jest.mock("@ui/components/cms/ImageUploaderWithOrientationCheck", () => {
+// The component import above uses a relative path, so the mock must mirror it
+// to ensure Jest intercepts the module correctly. Using the `@ui` alias here
+// would create a separate module entry and the import would not be mocked,
+// causing the test to receive a React component instead of a Jest mock.
+jest.mock("../../components/cms/ImageUploaderWithOrientationCheck", () => {
   return {
     __esModule: true,
     default: jest.fn(({ file }: { file: File | null }) => (

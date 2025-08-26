@@ -29,15 +29,8 @@ describe("renderTemplate", () => {
         marketingEmailTemplates: [
           {
             id: "basic",
-            render: ({ headline, content, footer }: any) => (
-              React.createElement(
-                "div",
-                null,
-                React.createElement("h1", null, headline),
-                content,
-                footer,
-              )
-            ),
+            render: ({ headline, content, footer }: any) =>
+              `<h1>${headline}</h1>${content.props.dangerouslySetInnerHTML.__html}${footer.props.children}`,
           },
         ],
       }),
@@ -62,7 +55,7 @@ describe("renderTemplate", () => {
         marketingEmailTemplates: [
           {
             id: "basic",
-            render: ({ content }: any) => React.createElement("div", null, content),
+            render: ({ content }: any) => `<div>${content.props.dangerouslySetInnerHTML.__html}</div>`,
           },
         ],
       }),

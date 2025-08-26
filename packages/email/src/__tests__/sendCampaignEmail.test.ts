@@ -16,6 +16,8 @@ jest.mock("resend", () => ({
   send: jest.fn(),
 }));
 
+jest.mock("@acme/ui", () => ({ marketingEmailTemplates: [] }));
+
 describe("sendCampaignEmail", () => {
   afterEach(async () => {
     jest.resetAllMocks();

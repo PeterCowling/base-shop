@@ -53,8 +53,8 @@ describe("HeroBanner", () => {
 
   it("uses navigation buttons with provided slides", () => {
     const slides: Slide[] = [
-      { src: "a.jpg", alt: "a", headlineKey: "a.head", ctaKey: "a.cta" },
-      { src: "b.jpg", alt: "b", headlineKey: "b.head", ctaKey: "b.cta" },
+      { src: "/a.jpg", alt: "a", headlineKey: "a.head", ctaKey: "a.cta" },
+      { src: "/b.jpg", alt: "b", headlineKey: "b.head", ctaKey: "b.cta" },
     ];
     Object.assign(translations, {
       "a.head": "Alpha",

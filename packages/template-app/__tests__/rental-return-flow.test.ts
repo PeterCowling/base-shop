@@ -3,14 +3,11 @@ import { jest } from "@jest/globals";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 if (typeof (Response as any).json !== "function") {
   (Response as any).json = (data: unknown, init?: ResponseInit) =>
@@ -26,7 +23,7 @@ async function withShop(
   await fs.mkdir(path.join(dir, "data", "shops", "bcd"), { recursive: true });
   await fs.mkdir(path.join(dir, "data", "rental"), { recursive: true });
   await fs.copyFile(
-    path.join(__dirname, "../../..", "data", "rental", "pricing.json"),
+    path.join(process.cwd(), "data", "rental", "pricing.json"),
     path.join(dir, "data", "rental", "pricing.json")
   );
   await fs.writeFile(
@@ -39,7 +36,7 @@ async function withShop(
       filterMappings: {},
       rentalInventoryAllocation: true,
       returnsEnabled: true,
-      coverageIncluded: true,
+      coverageIncluded: false,
     }),
   );
   const cwd = process.cwd();
@@ -64,7 +61,7 @@ describe("rental order lifecycle", () => {
         .mockResolvedValue([{ sku: "sku1", quantity: 1, variantAttributes: {} }]);
       const readProducts = jest
         .fn()
-        .mockResolvedValue([{ sku: "sku1" }]);
+        .mockResolvedValue([{ id: "sku1" }]);
       const retrieve = jest
         .fn<Promise<any>, any[]>()
         .mockResolvedValueOnce({

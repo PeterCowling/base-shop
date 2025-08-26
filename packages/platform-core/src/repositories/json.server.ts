@@ -8,9 +8,19 @@
  * • saveShopSettings – write settings.json atomically
  * • diffHistory      – return patch history for settings.json
  * • products.server  – catalogue helpers (read/write/update/delete/…)
+ *
+ * The `readShop` helper pulls in a large dependency tree (including the
+ * Prisma client) so we lazily import it.  This keeps simple JSON repo
+ * consumers – such as unit tests that only touch product helpers – fast and
+ * self-contained.
  */
 
-export { readShop } from "./shops.server";
+import type { Shop } from "@acme/types";
+
+export async function readShop(shop: string): Promise<Shop> {
+  const mod = await import("./shops.server");
+  return mod.readShop(shop);
+}
 
 // Alias getShopSettings → readSettings so existing callers keep working.
 export { getShopSettings as readSettings } from "./settings.server";

@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 const base = require("@acme/config/jest.preset.cjs");
+const {
+  "^@/(.*)$": _unused,
+  "^../components/(.*)$": _unused2,
+  ...baseModuleNameMapper
+} = base.moduleNameMapper;
 
 /** @type {import('jest').Config} */
 module.exports = {
@@ -8,9 +13,9 @@ module.exports = {
   roots: ["<rootDir>/apps/cms/src", "<rootDir>/apps/cms/__tests__"],
   setupFilesAfterEnv: ["<rootDir>/apps/cms/jest.setup.tsx"],
   moduleNameMapper: {
-    ...base.moduleNameMapper,
-    "^../components/(.*)$": "<rootDir>/apps/cms/src/app/cms/configurator/components/$1",
+    ...baseModuleNameMapper,
     "^@/components/(.*)$": "<rootDir>/packages/ui/src/components/$1",
+    "^@/i18n/Translations$": "<rootDir>/test/emptyModule.js",
     "^@/(.*)$": "<rootDir>/apps/cms/src/$1",
   },
   globals: {

@@ -13,7 +13,10 @@ jest.mock("@ui/hooks/useFileUpload", () => () => ({
   error: "",
 }));
 
-jest.mock("next/navigation", () => ({ usePathname: () => "/shop" }));
+jest.mock("next/navigation", () => ({
+  usePathname: () => "/cms/shop/abc",
+  useSearchParams: () => new URLSearchParams(),
+}));
 jest.mock("next/image", () => (props: any) => <img {...props} />);
 
 describe("ImagePicker", () => {

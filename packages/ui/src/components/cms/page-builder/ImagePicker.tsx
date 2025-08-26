@@ -2,7 +2,7 @@
 "use client";
 
 import type { MediaItem } from "@acme/types";
-import useFileUpload from "../../../hooks/useFileUpload";
+import useFileUpload from "@ui/hooks/useFileUpload";
 import Image from "next/image";
 import { memo, useEffect, useState, type ChangeEvent } from "react";
 import {
@@ -13,7 +13,7 @@ import {
   DialogTrigger,
   Input,
 } from "../../atoms/shadcn";
-import { Loader } from "../../atoms";
+import { Loader } from "../../atoms/Loader";
 import useMediaLibrary from "./useMediaLibrary";
 
 interface Props {

@@ -1,0 +1,12 @@
+{
+  "baseDailyRate": 100,
+  "durationDiscounts": [
+    { "minDays": 7, "rate": 0.9 },
+    { "minDays": 30, "rate": 0.8 }
+  ],
+  "damageFees": {
+    "scuff": 5,
+    "default": "deposit"
+  },
+  "coverage": {}
+}

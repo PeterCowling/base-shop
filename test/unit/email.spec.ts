@@ -1,3 +1,5 @@
+jest.mock("@acme/zod-utils/initZod", () => ({}));
+
 describe("sendEmail", () => {
   const OLD_ENV = process.env;
 
@@ -22,7 +24,7 @@ describe("sendEmail", () => {
       createTransport: () => ({ sendMail }),
     }));
 
-    const { sendEmail } = await import("@acme/email");
+    const { sendEmail } = await import("../../packages/email/src/sendEmail");
     await sendEmail("a@b.com", "Hello", "World");
     expect(sendMail).toHaveBeenCalledWith({
       from: "test@example.com",
@@ -50,7 +52,7 @@ describe("sendEmail", () => {
     }));
 
     const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    const { sendEmail } = await import("@acme/email");
+    const { sendEmail } = await import("../../packages/email/src/sendEmail");
     await expect(
       sendEmail("a@b.com", "Hello", "World")
     ).rejects.toThrow("failure");
@@ -64,16 +66,16 @@ describe("sendEmail", () => {
       STRIPE_SECRET_KEY: "sk",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
     } as NodeJS.ProcessEnv;
-    const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const info = jest.fn();
     jest.doMock("nodemailer", () => ({
       __esModule: true,
       default: { createTransport: jest.fn() },
       createTransport: jest.fn(),
     }));
+    jest.doMock("pino", () => () => ({ info }));
 
-    const { sendEmail } = await import("@acme/email");
+    const { sendEmail } = await import("../../packages/email/src/sendEmail");
     await sendEmail("a@b.com", "Hi", "There");
-    expect(consoleSpy).toHaveBeenCalled();
-    consoleSpy.mockRestore();
+    expect(info).toHaveBeenCalled();
   });
 });

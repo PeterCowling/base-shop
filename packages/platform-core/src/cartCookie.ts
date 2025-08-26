@@ -46,28 +46,38 @@ export const cartStateSchema = z.record(z.string(), cartLineSchema);
  * ------------------------------------------------------------------ */
 
 /**
- * Serialize a cart ID into a signed cookie value.
+ * Serialize arbitrary data into a signed cookie value. The payload is
+ * base64url encoded to ensure it only contains characters allowed in HTTP
+ * headers.
  */
-export function encodeCartCookie(id: string): string {
-  const sig = crypto.createHmac("sha256", SECRET).update(id).digest("hex");
-  return `${id}.${sig}`;
+export function encodeCartCookie(value: string): string {
+  const encoded = Buffer.from(value, "utf8").toString("base64url");
+  const sig = crypto.createHmac("sha256", SECRET).update(encoded).digest("hex");
+  return `${encoded}.${sig}`;
 }
 
 /**
- * Verify and extract the cart ID from a signed cookie value.
- * Returns `null` when the cookie is missing or invalid.
+ * Verify and extract the payload from a signed cookie value. When the
+ * payload contains JSON it is parsed and returned as an object.  For
+ * non‑JSON payloads the raw string is returned. Returns `null` when the
+ * cookie is missing or invalid.
  */
-export function decodeCartCookie(raw?: string | null): string | null {
+export function decodeCartCookie(raw?: string | null): unknown {
   if (!raw) return null;
-  const [id, sig] = raw.split(".");
-  if (!id || !sig) return null;
+  const [encoded, sig] = raw.split(".");
+  if (!encoded || !sig) return null;
   const expected = crypto
     .createHmac("sha256", SECRET)
-    .update(id)
+    .update(encoded)
     .digest("hex");
   try {
     if (crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) {
-      return id;
+      const decoded = Buffer.from(encoded, "base64url").toString("utf8");
+      try {
+        return JSON.parse(decoded);
+      } catch {
+        return decoded;
+      }
     }
   } catch {
     /* fall through */

@@ -1,3 +1,3 @@
-export { initZod } from "./initZod";
-export { applyFriendlyZodMessages, friendlyErrorMap } from "./zodErrorMap";
+export { initZod } from "./initZod.js";
+export { applyFriendlyZodMessages, friendlyErrorMap } from "./zodErrorMap.js";
 //# sourceMappingURL=index.d.ts.map

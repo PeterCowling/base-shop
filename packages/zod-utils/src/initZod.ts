@@ -3,7 +3,7 @@
 // Import it directly so Jest can transpile the module without
 // choking on top‑level `await`.
 // Import the TypeScript source so ts-jest can transpile it during tests.
-import { applyFriendlyZodMessages } from "./zodErrorMap";
+import { applyFriendlyZodMessages } from "./zodErrorMap.js";
 
 export function initZod(): void {
   applyFriendlyZodMessages();

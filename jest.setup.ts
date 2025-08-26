@@ -33,6 +33,9 @@ import { TextDecoder, TextEncoder } from "node:util";
 /** Node’s `util` encoders/decoders are required by React-DOM’s server renderer */
 (globalThis as any).TextEncoder ||= TextEncoder;
 (globalThis as any).TextDecoder ||= TextDecoder;
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { FormData: UndiciFormData } = require("undici");
+(globalThis as any).FormData ||= UndiciFormData;
 
 /**
  * React 19+ uses `MessageChannel` internally for suspense & streaming.

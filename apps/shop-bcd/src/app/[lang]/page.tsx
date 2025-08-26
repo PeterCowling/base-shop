@@ -1,5 +1,5 @@
 import type { PageComponent } from "@acme/types";
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
 import path from "path";
 import shop from "../../../shop.json";
 import Home from "./page.client";
@@ -11,8 +11,6 @@ async function loadComponents(): Promise<PageComponent[]> {
   try {
     const file = path.join(
       process.cwd(),
-      "..",
-      "..",
       "data",
       "shops",
       shop.id,
@@ -21,23 +19,18 @@ async function loadComponents(): Promise<PageComponent[]> {
     );
     const json = await fs.readFile(file, "utf8");
     const data = JSON.parse(json);
-    return Array.isArray(data) ? (data as PageComponent[]) : (data.components ?? []);
+    return Array.isArray(data)
+      ? (data as PageComponent[])
+      : (data.components ?? []);
   } catch {
     return [];
   }
 }
 
-export default async function Page({
-  params,
-}: {
-  params: { lang: string };
-}) {
+export default async function Page({ params }: { params: { lang: string } }) {
   const components = await loadComponents();
   let latestPost: BlogPost | undefined;
-  if (
-    shop.luxuryFeatures?.contentMerchandising &&
-    shop.luxuryFeatures?.blog
-  ) {
+  if (shop.luxuryFeatures?.contentMerchandising && shop.luxuryFeatures?.blog) {
     const posts = await fetchPublishedPosts(shop.id);
     const first = posts[0];
     if (first) {

@@ -10,14 +10,11 @@ export async function listShops(): Promise<string[]> {
     const entries = await fs.readdir(shopsDir, { withFileTypes: true });
     return entries.filter((e) => e.isDirectory()).map((e) => e.name);
   } catch (err: unknown) {
-    // Surface configuration errors clearly: the absence of the `data/shops`
-    // directory means we cannot determine available shops.  Upstream code and
-    // tests expect this to be treated as an exceptional situation rather than
-    // silently returning an empty list.
+    // If the shops directory hasn't been created yet, treat it as having
+    // no shops rather than throwing. This allows callers to handle the empty
+    // state gracefully.
     if ((err as NodeJS.ErrnoException).code === "ENOENT") {
-      const message = `Shops directory not found at ${shopsDir}`;
-      console.error(message);
-      throw new Error(message);
+      return [];
     }
     console.error(`Failed to list shops at ${shopsDir}:`, err);
     throw err;

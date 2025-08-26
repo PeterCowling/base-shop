@@ -1,11 +1,11 @@
-import { useLayout } from "@platform-core";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { AppShell } from "../components/templates/AppShell";
 
 jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
 
+import { useLayout } from "@platform-core";
+import { AppShell } from "../components/templates/AppShell";
 import { usePathname } from "next/navigation";
 
 function LayoutInfo() {

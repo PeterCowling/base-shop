@@ -30,6 +30,10 @@ const tsPaths = tsconfig?.compilerOptions?.paths
     })
   : {};
 
+// Ensure a single React instance across the monorepo tests
+const reactPath = path.resolve(__dirname, "node_modules/react");
+const reactDomPath = path.resolve(__dirname, "node_modules/react-dom");
+
 /* ──────────────────────────────────────────────────────────────────────
  * 2️⃣  Jest configuration proper
  * ──────────────────────────────────────────────────────────────────── */
@@ -149,6 +153,9 @@ module.exports = {
     "^server-only$": "<rootDir>/test/server-only-stub.ts",
 
     // finally, fall back to tsconfig-derived aliases
+    // map React to ensure hooks use the same instance during tests
+    "^react$": reactPath,
+    "^react-dom$": reactDomPath,
     ...tsPaths,
   },
 

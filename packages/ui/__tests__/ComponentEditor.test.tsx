@@ -9,30 +9,31 @@ describe("ComponentEditor", () => {
       type: "Image",
     } as PageComponent;
     const onResize = jest.fn();
-    const { getByLabelText, getAllByText } = render(
+    const { getByLabelText, getAllByText, getByText } = render(
       <ComponentEditor
         component={component}
         onChange={() => {}}
         onResize={onResize}
       />
     );
-    fireEvent.change(getByLabelText("Width (Desktop)"), {
+    fireEvent.click(getByText("Layout"));
+    fireEvent.change(getByLabelText("Width (Desktop)", { exact: false }), {
       target: { value: "200" },
     });
     expect(onResize).toHaveBeenCalledWith({ widthDesktop: "200" });
     fireEvent.click(getAllByText("Full width")[0]);
     expect(onResize).toHaveBeenCalledWith({ widthDesktop: "100%" });
-    fireEvent.change(getByLabelText("Height (Desktop)"), {
+    fireEvent.change(getByLabelText("Height (Desktop)", { exact: false }), {
       target: { value: "300" },
     });
     expect(onResize).toHaveBeenCalledWith({ heightDesktop: "300" });
     fireEvent.click(getAllByText("Full height")[0]);
     expect(onResize).toHaveBeenCalledWith({ heightDesktop: "100%" });
-    fireEvent.change(getByLabelText("Margin (Desktop)"), {
+    fireEvent.change(getByLabelText("Margin (Desktop)", { exact: false }), {
       target: { value: "10px" },
     });
     expect(onResize).toHaveBeenCalledWith({ marginDesktop: "10px" });
-    fireEvent.change(getByLabelText("Padding (Desktop)"), {
+    fireEvent.change(getByLabelText("Padding (Desktop)", { exact: false }), {
       target: { value: "5px" },
     });
     expect(onResize).toHaveBeenCalledWith({ paddingDesktop: "5px" });
@@ -46,11 +47,16 @@ describe("ComponentEditor", () => {
       maxItems: 5,
     } as PageComponent;
     const onChange = jest.fn();
-    const { getByLabelText } = render(
+    const { getByLabelText, getByText } = render(
       <ComponentEditor component={component} onChange={onChange} onResize={() => {}} />
     );
-    fireEvent.change(getByLabelText("Min Items"), { target: { value: "2" } });
-    fireEvent.change(getByLabelText("Max Items"), { target: { value: "6" } });
+    fireEvent.click(getByText("Content"));
+    fireEvent.change(getByLabelText("Min Items", { exact: false }), {
+      target: { value: "2" },
+    });
+    fireEvent.change(getByLabelText("Max Items", { exact: false }), {
+      target: { value: "6" },
+    });
     expect(onChange).toHaveBeenCalledWith({ minItems: 2 });
     expect(onChange).toHaveBeenCalledWith({ maxItems: 6 });
   });
@@ -63,12 +69,17 @@ describe("ComponentEditor", () => {
       maxItems: 5,
     } as PageComponent;
     const onChange = jest.fn();
-    const { getByLabelText } = render(
+    const { getByLabelText, getByText } = render(
       <ComponentEditor component={component} onChange={onChange} onResize={() => {}} />
     );
-    fireEvent.change(getByLabelText("Min Items"), { target: { value: "6" } });
+    fireEvent.click(getByText("Content"));
+    fireEvent.change(getByLabelText("Min Items", { exact: false }), {
+      target: { value: "6" },
+    });
     expect(onChange).toHaveBeenNthCalledWith(1, { minItems: 6, maxItems: 6 });
-    fireEvent.change(getByLabelText("Max Items"), { target: { value: "0" } });
+    fireEvent.change(getByLabelText("Max Items", { exact: false }), {
+      target: { value: "0" },
+    });
     expect(onChange).toHaveBeenNthCalledWith(2, { maxItems: 0, minItems: 0 });
   });
 
@@ -77,15 +88,14 @@ describe("ComponentEditor", () => {
       id: "1",
       type: "Image",
     } as PageComponent;
-    const { findByPlaceholderText } = render(
+    const { findByPlaceholderText, getByText } = render(
       <ComponentEditor
         component={component}
         onChange={() => {}}
         onResize={() => {}}
       />
     );
-    await act(async () => {
-      expect(await findByPlaceholderText("src")).toBeInTheDocument();
-    });
+    fireEvent.click(getByText("Content"));
+    expect(await findByPlaceholderText("src")).toBeInTheDocument();
   });
 });

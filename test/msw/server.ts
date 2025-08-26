@@ -37,3 +37,5 @@ export const handlers = [
 ];
 
 export const server = setupServer(...handlers);
+
+export { rest };

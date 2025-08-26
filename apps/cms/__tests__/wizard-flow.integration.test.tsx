@@ -1,4 +1,3 @@
-/* apps/cms/__tests__/wizard-flow.integration.test.tsx */
 /* eslint-env jest */
 
 /** Stubs to simplify rendering Wizard in JSDOM */
@@ -26,12 +25,39 @@ jest.mock("@platform-core", () => {
 
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import Wizard from "../src/app/cms/wizard/Wizard";
-import { getSteps } from "../src/app/cms/configurator/steps";
-
-const steps = getSteps();
 
 const themes = ["base", "dark"];
 const templates = ["template-app"];
+
+let serverState: any = { state: {}, completed: {} };
+
+beforeEach(() => {
+  serverState = { state: {}, completed: {} };
+  (global.fetch as any) = jest.fn((url: string, init?: any) => {
+    if (url === "/cms/api/wizard-progress") {
+      if (init && init.method === "PUT") {
+        const body = JSON.parse(init.body as string);
+        serverState.state = { ...serverState.state, ...(body.data || {}) };
+        return Promise.resolve({ ok: true, json: async () => ({}) });
+      }
+      if (init && init.method === "PATCH") {
+        const body = JSON.parse(init.body as string);
+        serverState.completed = {
+          ...serverState.completed,
+          [body.stepId]: body.completed,
+        };
+        return Promise.resolve({ ok: true, json: async () => ({}) });
+      }
+      return Promise.resolve({ ok: true, json: async () => serverState });
+    }
+    return Promise.resolve({ ok: true, json: async () => ({}) });
+  });
+  Element.prototype.scrollIntoView = jest.fn();
+});
+
+afterEach(() => {
+  (global.fetch as jest.Mock).mockReset();
+});
 
 async function goTo(heading: string): Promise<HTMLElement> {
   const el = await screen.findByRole("heading", { name: heading });
@@ -41,82 +67,39 @@ async function goTo(heading: string): Promise<HTMLElement> {
   );
 }
 
-async function nextFrom(container: HTMLElement): Promise<void> {
-  fireEvent.click(
-    within(container).getAllByRole("button", {
-      name: /next|save & continue/i,
-    })[0]
-  );
-}
-
-  let serverState: any = { state: {}, completed: {} };
-
-beforeEach(() => {
-    serverState = { state: {}, completed: {} };
-    (global.fetch as any) = jest.fn((url: string, init?: any) => {
-      if (url === "/cms/api/wizard-progress") {
-        if (init && init.method === "PUT") {
-          const body = JSON.parse(init.body as string);
-          serverState.state = { ...serverState.state, ...(body.data ?? {}) };
-          return Promise.resolve({ ok: true, json: async () => ({}) });
-        }
-        if (init && init.method === "PATCH") {
-          const body = JSON.parse(init.body as string);
-          serverState.completed = {
-            ...serverState.completed,
-            [body.stepId]: body.completed,
-          };
-          return Promise.resolve({ ok: true, json: async () => ({}) });
-        }
-        return Promise.resolve({ ok: true, json: async () => serverState });
-      }
-      return Promise.resolve({ ok: true, json: async () => ({}) });
-    });
-  Element.prototype.scrollIntoView = jest.fn();
-});
-
-afterEach(() => {
-  (global.fetch as jest.Mock).mockReset();
-});
-
-/* -------------------------------------------------------------------------- */
-/*  Test                                                                      */
-/* -------------------------------------------------------------------------- */
-
 describe("Wizard locale flow", () => {
   it("preserves locale fields across navigation and reload", async () => {
-      const summaryIndex = steps.findIndex((s) => s.id === "summary");
-      serverState = {
-        state: { shopId: "shop" },
-        completed: Object.fromEntries(
-          steps.slice(0, summaryIndex).map((s) => [s.id, "complete"])
-        ),
-      };
+    serverState = {
+      state: { shopId: "shop" },
+      completed: { "shop-details": "complete", theme: "complete" },
+    };
+
     const { unmount } = render(
       <Wizard themes={themes} templates={templates} />
     );
 
-    let step = await goTo("Summary");
-    fireEvent.change(within(step).getByLabelText(/home page title \(en\)/i), {
+    const summary = await goTo("Summary");
+    fireEvent.change(within(summary).getByLabelText(/home page title \(en\)/i), {
       target: { value: "Hello" },
     });
-    fireEvent.change(within(step).getByLabelText(/home page title \(de\)/i), {
+    fireEvent.change(within(summary).getByLabelText(/home page title \(de\)/i), {
       target: { value: "Hallo" },
     });
-    await nextFrom(step);
+
+    fireEvent.click(within(summary).getByRole("button", { name: /next/i }));
 
     const importStep = await goTo("Import Data");
     fireEvent.click(within(importStep).getByRole("button", { name: /back/i }));
 
-    const summary = await goTo("Summary");
+    const summary2 = await goTo("Summary");
     expect(
-      within(summary).getByLabelText(/home page title \(en\)/i)
+      within(summary2).getByLabelText(/home page title \(en\)/i)
     ).toHaveValue("Hello");
     expect(
-      within(summary).getByLabelText(/home page title \(de\)/i)
+      within(summary2).getByLabelText(/home page title \(de\)/i)
     ).toHaveValue("Hallo");
 
-    fireEvent.click(within(summary).getByRole("button", { name: /next/i }));
+    fireEvent.click(within(summary2).getByRole("button", { name: /next/i }));
 
     const originalReload = window.location.reload;
     Object.defineProperty(window, "location", {
@@ -134,12 +117,12 @@ describe("Wizard locale flow", () => {
     const importStep2 = await goTo("Import Data");
     fireEvent.click(within(importStep2).getByRole("button", { name: /back/i }));
 
-    const summary2 = await goTo("Summary");
+    const summary3 = await goTo("Summary");
     expect(
-      within(summary2).getByLabelText(/home page title \(en\)/i)
+      within(summary3).getByLabelText(/home page title \(en\)/i)
     ).toHaveValue("Hello");
     expect(
-      within(summary2).getByLabelText(/home page title \(de\)/i)
+      within(summary3).getByLabelText(/home page title \(de\)/i)
     ).toHaveValue("Hallo");
   });
 });
@@ -158,3 +141,4 @@ jest.mock("@/components/atoms/shadcn", () => ({}), { virtual: true });
 jest.mock("@/components/cms/PageBuilder", () => () => null, {
   virtual: true,
 });
+

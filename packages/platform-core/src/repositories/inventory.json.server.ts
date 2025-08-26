@@ -11,7 +11,13 @@ interface RawInventoryItem {
   sku: string;
   productId: string;
   quantity: number;
+  /**
+   * Historically inventory records used the `variant` field when persisted. The
+   * current shape uses `variantAttributes`. Include both here so we can read
+   * legacy data while always writing the new format.
+   */
   variant?: Record<string, string>;
+  variantAttributes?: Record<string, string>;
   lowStockThreshold?: number;
   wearCount?: number;
   wearAndTearLimit?: number;
@@ -44,10 +50,10 @@ async function read(shop: string): Promise<InventoryItem[]> {
   try {
     const buf = await fs.readFile(inventoryPath(shop), "utf8");
     const raw: RawInventoryItem[] = JSON.parse(buf);
-    return raw.map(({ variant, ...rest }) =>
+    return raw.map(({ variant, variantAttributes, ...rest }) =>
       inventoryItemSchema.parse({
         ...rest,
-        variantAttributes: variant ?? {},
+        variantAttributes: variantAttributes ?? variant ?? {},
       })
     );
   } catch (err) {
@@ -67,7 +73,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
     ({ variantAttributes, ...rest }): RawInventoryItem => ({
       ...rest,
       ...(Object.keys(variantAttributes).length
-        ? { variant: variantAttributes }
+        ? { variantAttributes }
         : {}),
     })
   );
@@ -102,10 +108,10 @@ async function update(
     try {
       const buf = await fs.readFile(inventoryPath(shop), "utf8");
       const raw: RawInventoryItem[] = JSON.parse(buf);
-      items = raw.map(({ variant, ...rest }) =>
+      items = raw.map(({ variant, variantAttributes, ...rest }) =>
         inventoryItemSchema.parse({
           ...rest,
-          variantAttributes: variant ?? {},
+          variantAttributes: variantAttributes ?? variant ?? {},
         })
       );
     } catch (err) {
@@ -141,7 +147,7 @@ async function update(
       ({ variantAttributes, ...rest }): RawInventoryItem => ({
         ...rest,
         ...(Object.keys(variantAttributes).length
-          ? { variant: variantAttributes }
+          ? { variantAttributes }
           : {}),
       })
     );

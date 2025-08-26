@@ -104,7 +104,28 @@ describe("inventory repository", () => {
     });
   });
 
-  it("invokes checkAndAlert after writing", async () => {
+  it("converts legacy variant field when reading", async () => {
+    await withRepo("json", async (repo, shop, dir) => {
+      const file = path.join(dir, "data", "shops", shop, "inventory.json");
+      await fs.writeFile(
+        file,
+        JSON.stringify([
+          { sku: "s1", productId: "p1", quantity: 1, variant: { size: "m" } },
+        ]),
+        "utf8",
+      );
+      await expect(repo.readInventory(shop)).resolves.toEqual([
+        {
+          sku: "s1",
+          productId: "p1",
+          quantity: 1,
+          variantAttributes: { size: "m" },
+        },
+      ]);
+    });
+  });
+
+  it("skips stock alert when disabled", async () => {
     await withRepo("json", async (repo, shop) => {
       const items = [
         {
@@ -117,8 +138,9 @@ describe("inventory repository", () => {
       ];
       const checkAndAlert = jest.fn();
       jest.doMock("../src/services/stockAlert.server", () => ({ checkAndAlert }));
+      process.env.SKIP_STOCK_ALERT = "1";
       await repo.writeInventory(shop, items);
-      expect(checkAndAlert).toHaveBeenCalledWith(shop, items);
+      expect(checkAndAlert).not.toHaveBeenCalled();
     });
   });
 

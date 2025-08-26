@@ -18,6 +18,7 @@ export async function POST() {
     const { id } = JSON.parse(raw) as { id: string };
     const root = join(process.cwd(), "..", "..");
     republishShop(id, root);
+    await fs.rm(join(root, "data", "shops", id, "upgrade.json"), { force: true });
     return NextResponse.json({ status: "ok" });
   } catch (err) {
     console.error("Publish failed", err);

@@ -4,8 +4,43 @@ import { DATA_ROOT } from "../dataRoot";
 import { validateShopName } from "../shops";
 import type { AnalyticsAggregates } from "../analytics";
 
-export async function listEvents(_shop?: string) {
-  return [] as any[];
+/**
+ * Read analytics events for a shop.  When no shop is provided events for all
+ * shops are returned.
+ */
+export async function listEvents(shop?: string) {
+  const shops: string[] = [];
+  if (shop) {
+    shops.push(validateShopName(shop));
+  } else {
+    try {
+      const entries = await fs.readdir(DATA_ROOT, { withFileTypes: true });
+      for (const entry of entries) {
+        if (entry.isDirectory()) shops.push(entry.name);
+      }
+    } catch {
+      return [] as any[];
+    }
+  }
+
+  const events: any[] = [];
+  for (const s of shops) {
+    const file = path.join(DATA_ROOT, validateShopName(s), "analytics.jsonl");
+    try {
+      const buf = await fs.readFile(file, "utf8");
+      for (const line of buf.split(/\r?\n/)) {
+        if (!line.trim()) continue;
+        try {
+          events.push(JSON.parse(line));
+        } catch {
+          // ignore malformed lines
+        }
+      }
+    } catch {
+      // ignore missing files
+    }
+  }
+  return events;
 }
 
 export async function readAggregates(

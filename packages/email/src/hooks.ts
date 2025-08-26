@@ -35,8 +35,12 @@ export async function emitClick(shop: string, payload: HookPayload): Promise<voi
   await Promise.all(clickListeners.map((fn) => fn(shop, payload)));
 }
 
+let analyticsMod: Promise<typeof import("@platform-core/analytics")> | null = null;
 async function track(shop: string, data: AnalyticsEvent): Promise<void> {
-  const { trackEvent } = await import("@platform-core/analytics");
+  if (!analyticsMod) {
+    analyticsMod = import("@platform-core/analytics");
+  }
+  const { trackEvent } = await analyticsMod;
   await trackEvent(shop, data);
 }
 

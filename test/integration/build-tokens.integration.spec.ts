@@ -9,6 +9,7 @@ import {
 } from "fs";
 import { tmpdir } from "os";
 import { join } from "path";
+import { pathToFileURL } from "url";
 import ts from "typescript";
 
 describe("build-tokens script", () => {
@@ -27,7 +28,7 @@ describe("build-tokens script", () => {
         join(themeDir, "tokens.js")
       );
 
-      // transpile the repository script to CommonJS and execute with node
+      // transpile the repository script to ESM and execute with node
       const source = readFileSync(
         join(__dirname, "../../scripts/build-tokens.ts"),
         "utf8"
@@ -35,17 +36,17 @@ describe("build-tokens script", () => {
       const js = ts
         .transpileModule(source, {
           compilerOptions: {
-            module: ts.ModuleKind.CommonJS,
+            module: ts.ModuleKind.ESNext,
             target: ts.ScriptTarget.ES2019,
           },
         })
         .outputText.replace(
-          'require("typescript")',
-          `require("${require.resolve("typescript")}")`
+          'from "typescript"',
+          `from "${pathToFileURL(require.resolve("typescript")).href}"`
         );
-      writeFileSync(join(scriptsDir, "build-tokens.js"), js);
+      writeFileSync(join(scriptsDir, "build-tokens.mjs"), js);
 
-      execFileSync(process.execPath, [join(scriptsDir, "build-tokens.js")], {
+      execFileSync(process.execPath, [join(scriptsDir, "build-tokens.mjs")], {
         cwd: join(__dirname, "../.."),
         env: {
           ...process.env,

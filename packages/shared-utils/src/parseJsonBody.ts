@@ -21,28 +21,34 @@ export async function parseJsonBody<T>(
   schema: ZodSchema<T>,
   limit: string | number,
 ): Promise<ParseJsonResult<T>> {
-  let text: string;
+  let json: unknown;
   try {
-    if (!req.body) throw new Error("No body");
+    if (req.body) {
+      const body = req.body as unknown;
+      let stream: Readable;
 
-    const body = req.body as unknown;
-    let stream: Readable;
+      if (Buffer.isBuffer(body)) {
+        // cross-fetch Request bodies are Buffers
+        stream = Readable.from([body]);
+      } else if (typeof (body as NodeJS.ReadableStream).pipe === "function") {
+        // already a Node.js readable stream
+        stream = body as NodeJS.ReadableStream as Readable;
+      } else {
+        // fall back to web streams
+        stream = Readable.fromWeb(body as NodeReadableStream);
+      }
 
-    if (Buffer.isBuffer(body)) {
-      // cross-fetch Request bodies are Buffers
-      stream = Readable.from([body]);
-    } else if (typeof (body as NodeJS.ReadableStream).pipe === "function") {
-      // already a Node.js readable stream
-      stream = body as NodeJS.ReadableStream as Readable;
+      const text = await getRawBody(stream, {
+        limit,
+        encoding: "utf8",
+      });
+
+      json = JSON.parse(text);
+    } else if (typeof (req as any).json === "function") {
+      json = await (req as any).json();
     } else {
-      // fall back to web streams
-      stream = Readable.fromWeb(body as NodeReadableStream);
+      throw new Error("No body");
     }
-
-    text = await getRawBody(stream, {
-      limit,
-      encoding: "utf8",
-    });
   } catch (err: unknown) {
     if (hasErrorType(err) && err.type === "entity.too.large") {
       return {
@@ -60,16 +66,6 @@ export async function parseJsonBody<T>(
         { error: "Invalid JSON" },
         { status: 400 },
       ),
-    };
-  }
-
-  let json: unknown;
-  try {
-    json = JSON.parse(text);
-  } catch {
-    return {
-      success: false,
-      response: NextResponse.json({ error: "Invalid JSON" }, { status: 400 }),
     };
   }
 

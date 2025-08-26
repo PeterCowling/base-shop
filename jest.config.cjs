@@ -52,17 +52,12 @@ module.exports = {
         tsconfig: "<rootDir>/tsconfig.test.json",
         useESM: true,
         diagnostics: false,
-        babelConfig: {
-        presets: [
-          [
-            "@babel/preset-env",
-            {
-              targets: { node: "current" },
-              ignoreBrowserslistConfig: true,
-            },
-          ],
-        ],
-        },
+        // Disable automatic Babel transpilation; ts-jest handles TypeScript
+        // compilation itself and Node 20 supports the necessary syntax.
+        // This prevents ts-jest from attempting to load `babel-jest`, which
+        // previously caused "createTransformer is not a function" errors when
+        // the module was missing or incompatible.
+        babelConfig: false,
       },
     ],
   },

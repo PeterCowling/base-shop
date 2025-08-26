@@ -65,14 +65,16 @@ function saveHistory(root: string, id: string): void {
 
 export function republishShop(id: string, root = process.cwd()): void {
   const upgradeFile = join(root, "data", "shops", id, "upgrade.json");
-  if (existsSync(upgradeFile)) {
+  const hadUpgradeFile = existsSync(upgradeFile);
+  if (hadUpgradeFile) {
     readUpgradeMeta(root, id);
+    unlinkSync(upgradeFile);
   }
   saveHistory(root, id);
   run("pnpm", ["--filter", `apps/${id}`, "build"]);
   run("pnpm", ["--filter", `apps/${id}`, "deploy"]);
   updateStatus(root, id);
-  if (existsSync(upgradeFile)) {
+  if (hadUpgradeFile && existsSync(upgradeFile)) {
     unlinkSync(upgradeFile);
   }
   const appDir = join(root, "apps", id);

@@ -61,14 +61,16 @@ function saveHistory(root, id) {
 function republishShop(id, root) {
     if (root === void 0) { root = process.cwd(); }
     var upgradeFile = (0, node_path_1.join)(root, "data", "shops", id, "upgrade.json");
-    if ((0, node_fs_1.existsSync)(upgradeFile)) {
+    var hadUpgradeFile = (0, node_fs_1.existsSync)(upgradeFile);
+    if (hadUpgradeFile) {
         readUpgradeMeta(root, id);
+        (0, node_fs_1.unlinkSync)(upgradeFile);
     }
     saveHistory(root, id);
     run("pnpm", ["--filter", "apps/".concat(id), "build"]);
     run("pnpm", ["--filter", "apps/".concat(id), "deploy"]);
     updateStatus(root, id);
-    if ((0, node_fs_1.existsSync)(upgradeFile)) {
+    if (hadUpgradeFile && (0, node_fs_1.existsSync)(upgradeFile)) {
         (0, node_fs_1.unlinkSync)(upgradeFile);
     }
     var appDir = (0, node_path_1.join)(root, "apps", id);

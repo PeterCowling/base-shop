@@ -104,7 +104,7 @@ module.exports = {
       "^@config/src/(.*)$": "<rootDir>/packages/config/src/$1",
     "^@acme/config$": "<rootDir>/packages/config/src/env/index.ts",
     "^@acme/config/(.*)$": "<rootDir>/packages/config/src/$1",
-    "^@acme/zod-utils/initZod$": "<rootDir>/test/emptyModule.js",
+    "^@acme/zod-utils/initZod$": "<rootDir>/test/initZodStub.js",
 
     // CMS application aliases
     "^@/components/atoms/shadcn$":

@@ -4,16 +4,18 @@ export type SKU = any;
 export type Locale = any;
 export type ProductPublication = any;
 
+// Pull in the real product dataset and helpers. This keeps existing imports
+// like `@platform-core/products` working while ensuring the in-memory list
+// actually contains catalogue data.
+import * as base from "./products/index";
+
 /** Simple in-memory list for legacy/sync call sites (stories, demos, cart sync path). */
-export const PRODUCTS: any[] = [];
+export const PRODUCTS: any[] = [...base.PRODUCTS];
 
 /** Quick slug lookup for demos. */
 export function getProductBySlug(slug: string): any | null {
-  return PRODUCTS.find((p) => p?.slug === slug) ?? null;
+  return base.getProductBySlug(slug) ?? null;
 }
-
-// Pull in server helpers if present (do not re-export conflicting names).
-import * as server from "./products";
 
 /** Overloads:
  *  - getProductById(id)            -> sync (legacy) from PRODUCTS
@@ -24,12 +26,10 @@ export function getProductById(shop: string, id: string): Promise<any | null>;
 export function getProductById(a: string, b?: string): any {
   if (typeof b === "undefined") {
     // Legacy sync path: look up in local PRODUCTS
-    return PRODUCTS.find((p) => p?.id === a) ?? null;
+    return base.getProductById(a) ?? null;
   }
-  // Async server path if available
-  const fn = (server as any)?.getProductById;
-  if (typeof fn === "function") return fn(a, b);
-  return Promise.resolve(null);
+  // Async server path is not implemented; fall back to local lookup
+  return Promise.resolve(base.getProductById(b) ?? null);
 }
 
 // Non-conflicting re-exports are safe:
@@ -37,13 +37,9 @@ export function getProductById(a: string, b?: string): any {
 
 export { assertLocale } from "./products/index";
 
-export async function getProducts(...args: any[]): Promise<any[]> {
-  const fn = (server as any)?.getProducts;
-  if (typeof fn === "function") return fn(...args);
-  return [];
+export async function getProducts(..._args: any[]): Promise<any[]> {
+  return [...base.PRODUCTS];
 }
-export async function searchProducts(...args: any[]): Promise<any[]> {
-  const fn = (server as any)?.searchProducts;
-  if (typeof fn === "function") return fn(...args);
+export async function searchProducts(..._args: any[]): Promise<any[]> {
   return [];
 }

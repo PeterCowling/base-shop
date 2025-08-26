@@ -4,7 +4,7 @@ import type { PricingMatrix, SKU } from "@acme/types";
 import { coverageCodeSchema, pricingSchema } from "@acme/types";
 import { promises as fs } from "node:fs";
 import * as path from "path";
-import { resolveDataRoot } from "./dataRoot";
+import { resolveDataRoot } from "../dataRoot";
 
 let cached: PricingMatrix | null = null;
 let rateCache: { base: string; rates: Record<string, number> } | null = null;

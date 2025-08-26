@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getProductById } from "@platform-core/products";
+import { getProductById, PRODUCTS } from "@platform-core/products";
 import { readRepo } from "@platform-core/repositories/products.server";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { trackEvent } from "@platform-core/analytics";
@@ -26,7 +26,22 @@ export async function GET(req: NextRequest) {
     return new NextResponse(null, { status: 404 });
   }
   const fields = (ai.fields?.length ? ai.fields : DEFAULT_FIELDS) as Field[];
-  const all = await readRepo<ProductPublication>(shop);
+  const publications = await readRepo<ProductPublication>(shop);
+  const all =
+    publications.length > 0
+      ? publications
+      : PRODUCTS.map(
+          (p) =>
+            ({
+              id: p.id,
+              sku: p.id,
+              title: p.title,
+              description: p.description,
+              price: p.price,
+              media: p.media,
+              updated_at: new Date(0).toISOString(),
+            }) as ProductPublication
+        );
 
   const lastModifiedDate = all.reduce((max, p) => {
     const d = p.updated_at ? new Date(p.updated_at) : new Date(0);

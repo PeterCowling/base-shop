@@ -88,7 +88,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
         seo: {
           ...(parsed.data.seo ?? {}),
           aiCatalog: {
-            enabled: false,
+            enabled: true,
             fields: ["id", "title", "description", "price", "media"],
             pageSize: 50,
             ...((parsed.data.seo ?? {}).aiCatalog ?? {}),
@@ -103,7 +103,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     languages: DEFAULT_LANGUAGES,
     seo: {
       aiCatalog: {
-        enabled: false,
+        enabled: true,
         fields: ["id", "title", "description", "price", "media"],
         pageSize: 50,
       },

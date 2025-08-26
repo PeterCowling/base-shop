@@ -1,6 +1,7 @@
 // packages/stripe/src/__tests__/stripe.test.ts
-import nock from "nock";
 import type Stripe from "stripe";
+import { rest } from "msw";
+import { server } from "../../../../test/msw/server";
 
 /**
  * Our Stripe singleton is fully typed, but the test needs access to an
@@ -26,7 +27,6 @@ describe("stripe client", () => {
 
   afterEach(() => {
     process.env = OLD_ENV;
-    nock.cleanAll();
   });
 
   it("uses expected API version and fetch client", async () => {
@@ -44,12 +44,22 @@ describe("stripe client", () => {
     const { stripe } = await import("../index");
     const stripeInternal = stripe as StripeInternal;
 
-    const scope = nock("https://api.stripe.com")
-      .post("/v1/customers")
-      .reply(200, { id: "cus_test", object: "customer" });
+    let called = false;
+    server.use(
+      rest.post(
+        "https://api.stripe.com/v1/customers",
+        (_req, res, ctx) => {
+          called = true;
+          return res(
+            ctx.status(200),
+            ctx.json({ id: "cus_test", object: "customer" })
+          );
+        }
+      )
+    );
 
     const customer = await stripeInternal.customers.create();
     expect(customer.id).toBe("cus_test");
-    expect(scope.isDone()).toBe(true);
+    expect(called).toBe(true);
   });
 });

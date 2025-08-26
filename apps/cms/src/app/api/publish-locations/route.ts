@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
 import { join } from "path";
 
 export async function GET() {

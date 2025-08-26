@@ -31,7 +31,12 @@ jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
 jest.mock("@platform-core/cartCookie", () => ({
   CART_COOKIE: "__Host-CART_ID",
   encodeCartCookie: (cart: any) => JSON.stringify(cart),
-  decodeCartCookie: (raw: string) => (raw ? JSON.parse(raw) : {}),
+  // The real decodeCartCookie returns the raw string value of the cookie
+  // (after signature verification). Our tests only need to simulate a
+  // valid cookie, so the mocked implementation simply echoes back the
+  // provided raw string. This ensures the route under test performs the
+  // JSON.parse call itself and doesn't mistakenly see an empty cart.
+  decodeCartCookie: (raw: string | null) => raw ?? null,
 }));
 
 function createRequest(

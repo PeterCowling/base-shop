@@ -13,5 +13,5 @@ export default function TestimonialSlider({ testimonials = [], minItems, maxItem
     if (!list.length || list.length < (minItems ?? 0))
         return null;
     const t = list[i % list.length];
-    return (_jsxs("section", { className: "space-y-2 text-center", children: [_jsxs("blockquote", { className: "italic", children: ["\u201C", t.quote, "\u201D"] }), t.name && _jsxs("footer", { className: "text-sm text-muted", children: ["\u2014 ", t.name] })] }));
+    return (_jsxs("section", { className: "space-y-2 text-center", children: [_jsxs("blockquote", { className: "italic", children: [t.quote] }), t.name && _jsxs("footer", { className: "text-sm text-muted", children: ["\u2014 ", t.name] })] }));
 }

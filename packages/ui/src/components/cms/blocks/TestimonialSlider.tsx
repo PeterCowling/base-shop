@@ -27,7 +27,7 @@ export default function TestimonialSlider({
   const t = list[i % list.length];
   return (
     <section className="space-y-2 text-center">
-      <blockquote className="italic">“{t.quote}”</blockquote>
+      <blockquote className="italic">{t.quote}</blockquote>
       {t.name && <footer className="text-sm text-muted">— {t.name}</footer>}
     </section>
   );

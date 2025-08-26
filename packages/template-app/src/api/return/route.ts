@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
   };
 
   const shop = await readShop(SHOP_ID);
-  if (!shop.returnsEnabled) {
+  if (shop.returnsEnabled === false) {
     return NextResponse.json(
       { error: "Returns disabled" },
       { status: 403 },
@@ -67,11 +67,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, message: "No deposit found" });
     }
 
-    let coverageCodes =
+    const coverageCodes =
       session.metadata?.coverage?.split(",").filter(Boolean) ?? [];
-    if (shop.coverageIncluded && typeof damage === "string") {
-      coverageCodes = Array.from(new Set([...coverageCodes, damage]));
-    }
 
     const damageFee = await computeDamageFee(
       damage,

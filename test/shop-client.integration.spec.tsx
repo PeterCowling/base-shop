@@ -4,76 +4,76 @@ import ShopClient from "../apps/cms/src/app/[lang]/shop/ShopClient.client";
 import type { SKU } from "@acme/types";
 
 // Mock next/navigation hooks used by ShopClient
-const pushMock = jest.fn((url: string) => {
+const mockPush = jest.fn((url: string) => {
   window.history.pushState({}, "", url);
 });
 
 jest.mock("next/navigation", () => ({
   usePathname: () => "/shop",
-  useRouter: () => ({ push: pushMock }),
-  useSearchParams: () => new URLSearchParams(window.location.search),
+  useRouter: () => ({ push: mockPush }),
+  useSearchParams: () => new URLSearchParams(globalThis.location.search),
 }));
 
-// Lightweight mock of the FilterBar component to avoid React version
-// mismatches in tests. It implements a minimal controlled select/number API
-// sufficient for our integration scenario.
-jest.mock("@platform-core/components/shop/FilterBar", () => {
-  const React = require("react");
-  return {
-    __esModule: true,
-    default: ({ definitions, values, onChange }: any) => (
-      <form>
-        {definitions.map((def: any) =>
-          def.type === "select" ? (
-            <label key={def.name}>
-              {def.label}:
-              <select
-                value={values[def.name] ?? ""}
-                onChange={(e) =>
-                  onChange({ ...values, [def.name]: e.target.value || undefined })
-                }
-              >
-                <option value="">All</option>
-                {def.options.map((opt: string) => (
-                  <option key={opt}>{opt}</option>
-                ))}
-              </select>
-            </label>
-          ) : (
-            <label key={def.name}>
-              {def.label}:
-              <input
-                type="number"
-                value={values[def.name] ?? ""}
-                onChange={(e) =>
-                  onChange({
-                    ...values,
-                    [def.name]:
-                      e.target.value === "" ? undefined : Number(e.target.value),
-                  })
-                }
-              />
-            </label>
-          )
-        )}
-      </form>
-    ),
-  };
-});
+// Lightweight mock components used by ShopClient
+function mockFilterBar({ definitions, values, onChange }: any) {
+  return (
+    <form>
+      {definitions.map((def: any) =>
+        def.type === "select" ? (
+          <label key={def.name}>
+            {def.label}:
+            <select
+              value={values[def.name] ?? ""}
+              onChange={(e) =>
+                onChange({ ...values, [def.name]: e.target.value || undefined })
+              }
+            >
+              <option value="">All</option>
+              {def.options.map((opt: string) => (
+                <option key={opt}>{opt}</option>
+              ))}
+            </select>
+          </label>
+        ) : (
+          <label key={def.name}>
+            {def.label}:
+            <input
+              type="number"
+              value={values[def.name] ?? ""}
+              onChange={(e) =>
+                onChange({
+                  ...values,
+                  [def.name]:
+                    e.target.value === "" ? undefined : Number(e.target.value),
+                })
+              }
+            />
+          </label>
+        )
+      )}
+    </form>
+  );
+}
 
-jest.mock("@platform-core/components/shop/ProductGrid", () => {
-  const React = require("react");
-  return {
-    __esModule: true,
-    ProductGrid: ({ skus }: any) => (
-      <ul>
-        {skus.map((s: any) => (
-          <li key={s.id}>{s.title}</li>
-        ))}
-      </ul>
-    ),
-  };
-});
+function mockProductGrid({ skus }: any) {
+  return (
+    <ul>
+      {skus.map((s: any) => (
+        <li key={s.id}>{s.title}</li>
+      ))}
+    </ul>
+  );
+}
+
+jest.mock("@platform-core/components/shop/FilterBar", () => ({
+  __esModule: true,
+  default: mockFilterBar,
+}));
+
+jest.mock("@platform-core/components/shop/ProductGrid", () => ({
+  __esModule: true,
+  ProductGrid: mockProductGrid,
+}));
 
 const skus: SKU[] = [
   {
@@ -106,7 +106,7 @@ const skus: SKU[] = [
 
 describe("ShopClient URL state", () => {
   beforeEach(() => {
-    pushMock.mockClear();
+    mockPush.mockClear();
     window.history.replaceState({}, "", "/shop");
   });
 

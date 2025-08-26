@@ -1,6 +1,3 @@
-import { sendCampaignEmail } from "./send";
-import { resolveSegment } from "./segments";
-import { emitSend } from "./hooks";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import type { AnalyticsEvent } from "@platform-core/analytics";
 import { coreEnv } from "@acme/config/env/core";
@@ -8,7 +5,6 @@ import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";
 import type { Campaign } from "./types";
 import { syncCampaignAnalytics as fetchCampaignAnalytics } from "./analytics";
-import { renderTemplate } from "./templates";
 
 export interface Clock {
   now(): Date;
@@ -50,7 +46,7 @@ async function filterUnsubscribed(
   shop: string,
   recipients: string[],
 ): Promise<string[]> {
-  const events: AnalyticsEvent[] = await listEvents().catch(
+  const events: AnalyticsEvent[] = await listEvents(shop).catch(
     (): AnalyticsEvent[] => [],
   );
   const unsub = new Set(
@@ -68,6 +64,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   shop = validateShopName(shop);
   let rendered = c.body;
   if (c.templateId) {
+    const { renderTemplate } = await import("./templates");
     rendered = renderTemplate(c.templateId, {
       subject: c.subject,
       body: c.body,
@@ -76,6 +73,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   const baseHtml = trackedBody(shop, c.id, rendered);
   let recipients = c.recipients;
   if (c.segment) {
+    const { resolveSegment } = await import("./segments");
     recipients = await resolveSegment(shop, c.segment);
     c.recipients = recipients;
   }
@@ -96,11 +94,13 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
       } else {
         html = `${baseHtml}<p><a href="${url}">Unsubscribe</a></p>`;
       }
+      const { sendCampaignEmail } = await import("./send");
       await sendCampaignEmail({
         to: r,
         subject: c.subject,
         html,
       });
+      const { emitSend } = await import("./hooks");
       await emitSend(shop, { campaign: c.id });
     }
     if (i + batchSize < recipients.length && batchDelay > 0) {
@@ -134,6 +134,7 @@ export async function createCampaign(opts: {
   } = opts;
   shop = validateShopName(shop);
   if (recipients.length === 0 && segment) {
+    const { resolveSegment } = await import("./segments");
     recipients = await resolveSegment(shop, segment);
   }
   if (!shop || !subject || !body || recipients.length === 0) {

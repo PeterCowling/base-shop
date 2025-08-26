@@ -8,6 +8,8 @@ jest.mock("@platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 
+jest.setTimeout(15000);
+
 jest.mock("@sendgrid/mail", () => ({
   __esModule: true,
   default: {

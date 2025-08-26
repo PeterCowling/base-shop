@@ -100,26 +100,37 @@ export async function resolveSegment(
 
   const segments = await readSegments(shop);
   const def = segments.find((s) => s.id === id);
-  if (!def) {
-    segmentCache.delete(key);
-    return [];
-  }
 
-  const events: AnalyticsEvent[] = await listEvents();
+  const events: AnalyticsEvent[] = await listEvents(shop);
   const emails = new Set<string>();
-  for (const e of events) {
-    let match = true;
-    for (const f of def.filters) {
-      if (e[f.field] !== f.value) {
-        match = false;
-        break;
+
+  if (def) {
+    for (const e of events) {
+      let match = true;
+      for (const f of def.filters) {
+        if (e[f.field] !== f.value) {
+          match = false;
+          break;
+        }
+      }
+      if (match) {
+        const email = e.email;
+        if (typeof email === "string") emails.add(email);
       }
     }
-    if (match) {
+  } else {
+    for (const e of events) {
       const email = e.email;
-      if (typeof email === "string") emails.add(email);
+      if (
+        (e.type === `segment:${id}` ||
+          (e.type === "segment" && (e as any).segment === id)) &&
+        typeof email === "string"
+      ) {
+        emails.add(email);
+      }
     }
   }
+
   const resolved = Array.from(emails);
   segmentCache.set(key, {
     emails: resolved,

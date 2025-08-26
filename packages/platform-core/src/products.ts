@@ -35,6 +35,8 @@ export function getProductById(a: string, b?: string): any {
 // Non-conflicting re-exports are safe:
 
 
+export { assertLocale } from "./products/index";
+
 export async function getProducts(...args: any[]): Promise<any[]> {
   const fn = (server as any)?.getProducts;
   if (typeof fn === "function") return fn(...args);

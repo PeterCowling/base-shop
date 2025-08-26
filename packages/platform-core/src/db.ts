@@ -1,6 +1,7 @@
 import { coreEnv } from "@acme/config/env/core";
+import type { PrismaClient } from "@prisma/client";
 
-let prisma: unknown;
+let prisma: PrismaClient;
 try {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { PrismaClient } = require("@prisma/client") as typeof import("@prisma/client");
@@ -45,7 +46,7 @@ try {
     shop: {
       findUnique: async () => ({ data: {} }),
     },
-  } as unknown;
+  } as unknown as PrismaClient;
 }
 
 export { prisma };

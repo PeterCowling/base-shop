@@ -118,13 +118,13 @@ module.exports = {
     "^@/(.*)$": "<rootDir>/apps/cms/src/$1",
 
     // context mocks
-    "^@platform-core/contexts/ThemeContext$":
+    "^@platform-core/contexts/ThemeContext(?:\\.js)?$":
       "<rootDir>/test/__mocks__/themeContextMock.tsx",
-    "^@platform-core/contexts/CurrencyContext$":
+    "^@platform-core/contexts/CurrencyContext(?:\\.js)?$":
       "<rootDir>/test/__mocks__/currencyContextMock.tsx",
-    "^@acme/platform-core/contexts/ThemeContext$":
+    "^@acme/platform-core/contexts/ThemeContext(?:\\.js)?$":
       "<rootDir>/test/__mocks__/themeContextMock.tsx",
-    "^@acme/platform-core/contexts/CurrencyContext$":
+    "^@acme/platform-core/contexts/CurrencyContext(?:\\.js)?$":
       "<rootDir>/test/__mocks__/currencyContextMock.tsx",
 
     // email provider client mocks

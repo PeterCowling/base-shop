@@ -55,7 +55,6 @@ const preset = {
     },
   },
   plugins: [],
-  presets: [],
 } as const;
 
 // Additional diagnostics

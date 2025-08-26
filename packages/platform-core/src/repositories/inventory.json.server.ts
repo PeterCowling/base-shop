@@ -88,8 +88,14 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
     await handle.close();
     await fs.unlink(lockFile).catch(() => {});
   }
-  if (process.env.SKIP_STOCK_ALERT !== "1") {
-    // Stock alert service is not available in this environment; skip silently.
+  const hasLowStock = normalized.some(
+    (i) =>
+      typeof i.lowStockThreshold === "number" &&
+      i.quantity <= i.lowStockThreshold,
+  );
+  if (process.env.SKIP_STOCK_ALERT !== "1" && hasLowStock) {
+    const { checkAndAlert } = await import("../services/stockAlert.server");
+    await checkAndAlert(shop, normalized);
   }
 }
 
@@ -161,8 +167,14 @@ async function update(
     await fs.unlink(lockFile).catch(() => {});
   }
 
-  if (process.env.SKIP_STOCK_ALERT !== "1") {
-    // Stock alert service is not available in this environment; skip silently.
+  const hasLowStock = normalized.some(
+    (i) =>
+      typeof i.lowStockThreshold === "number" &&
+      i.quantity <= i.lowStockThreshold,
+  );
+  if (process.env.SKIP_STOCK_ALERT !== "1" && hasLowStock) {
+    const { checkAndAlert } = await import("../services/stockAlert.server");
+    await checkAndAlert(shop, normalized);
   }
 
   return updated;

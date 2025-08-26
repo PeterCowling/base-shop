@@ -6,6 +6,7 @@ import type { Locale, Page, HistoryState } from "@acme/types";
 import { historyStateSchema } from "@acme/types";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
+import { formDataToObject } from "../utils/formData";
 
 import { env } from "@acme/config";
 import { ensureAuthorized } from "./common/auth";
@@ -42,9 +43,7 @@ export async function createPage(
       ? idField.trim()
       : ulid();
 
-  const parsed = createSchema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
+  const parsed = createSchema.safeParse(formDataToObject(formData));
   if (!parsed.success) {
     const context = { shop, id };
     if (env.NODE_ENV === "development") {
@@ -183,9 +182,7 @@ export async function updatePage(
 ): Promise<{ page?: Page; errors?: Record<string, string[]> }> {
   await ensureAuthorized();
 
-  const parsed = updateSchema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
+  const parsed = updateSchema.safeParse(formDataToObject(formData));
   if (!parsed.success) {
     const context = { shop, id: formData.get("id") || undefined };
     if (env.NODE_ENV === "development") {

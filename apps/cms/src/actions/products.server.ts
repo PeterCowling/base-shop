@@ -19,6 +19,7 @@ import { ensureAuthorized } from "./common/auth";
 import { redirect } from "next/navigation";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
+import { formDataToObject } from "../utils/formData";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                    */
@@ -84,9 +85,9 @@ export async function updateProduct(
   "use server";
   await ensureAuthorized();
 
-  // Collect key/value pairs from the incoming form data. Node's FormData
-  // provides an `entries()` iterator for this purpose.
-  const formEntries = Object.fromEntries(formData.entries());
+  // Collect key/value pairs from the incoming form data. Use a helper that
+  // supports environments where `FormData.entries()` may be unavailable.
+  const formEntries = formDataToObject(formData);
   const locales = await getLocales(shop);
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;

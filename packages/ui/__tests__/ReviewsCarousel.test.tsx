@@ -34,14 +34,14 @@ describe("ReviewsCarousel", () => {
     expect(
       screen.getByText(/Anna quote/).closest("blockquote")
     ).toHaveAttribute("data-token", "--color-fg");
-    expect(screen.getByText(/Anna/).parentElement).toHaveAttribute(
+    expect(screen.getByText(/—\s*Anna/)).toHaveAttribute(
       "data-token",
       "--color-muted"
     );
     act(() => {
       jest.advanceTimersByTime(8000);
     });
-    expect(screen.getByText("Luca quote")).toBeInTheDocument();
+    expect(screen.getByText(/Luca quote/)).toBeInTheDocument();
   });
 
   it("renders provided reviews", () => {

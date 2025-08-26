@@ -3,14 +3,15 @@
  * Push page and shop schemas to a headless CMS.  This version closely follows
  * the original implementation from the base-shop repository, but uses a
  * simplified environment schema.  It reads JSON schema files from the
- * platform-core repositories and sends them to the CMS using the global
- * `fetch` API.  Any errors reading files or making HTTP requests are
+ * platform-core repositories and sends them to the CMS using the
+ * `cross-fetch` package.  Any errors reading files or making HTTP requests are
  * reported to stderr.
  */
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { CliEnvSchema } from "./types/env";
 import type { CliEnv } from "./types/env";
+import fetch from "cross-fetch";
 
 let env: CliEnv;
 try {

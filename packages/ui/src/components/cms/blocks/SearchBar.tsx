@@ -69,6 +69,7 @@ export default function SearchBar({
       {results.length > 0 && (
         <ul
           className="bg-background absolute z-10 mt-1 w-full rounded-md border shadow"
+          data-token="--color-bg"
         >
           {results.map((r) => (
             <li
@@ -77,7 +78,7 @@ export default function SearchBar({
               className="text-fg hover:bg-accent hover:text-accent-foreground cursor-pointer px-3 py-1"
               data-token="--color-fg"
             >
-              {r.title}
+              <span>{r.title}</span>
             </li>
           ))}
         </ul>

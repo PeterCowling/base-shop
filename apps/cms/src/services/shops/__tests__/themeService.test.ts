@@ -17,6 +17,14 @@ jest.mock("../theme", () => ({
 }));
 
 describe("theme service", () => {
+  beforeAll(() => {
+    jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterAll(() => {
+    (console.error as jest.Mock).mockRestore();
+  });
+
   it("returns validation errors", async () => {
     const fd = new FormData();
     fd.append("id", "test");

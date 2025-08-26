@@ -33,6 +33,7 @@ const tsPaths = tsconfig?.compilerOptions?.paths
 // Ensure a single React instance across the monorepo tests
 const reactPath = path.resolve(__dirname, "node_modules/react");
 const reactDomPath = path.resolve(__dirname, "node_modules/react-dom");
+const reactDomClientPath = path.resolve(reactDomPath, "client.js");
 const reactJsxRuntimePath = path.resolve(reactPath, "jsx-runtime.js");
 const reactJsxDevRuntimePath = path.resolve(reactPath, "jsx-dev-runtime.js");
 
@@ -165,6 +166,7 @@ module.exports = {
     // finally, fall back to tsconfig-derived aliases
     // map React to ensure hooks use the same instance during tests
     "^react$": reactPath,
+    "^react-dom/client$": reactDomClientPath,
     "^react-dom$": reactDomPath,
     "^react/jsx-runtime$": reactJsxRuntimePath,
     "^react/jsx-dev-runtime$": reactJsxDevRuntimePath,

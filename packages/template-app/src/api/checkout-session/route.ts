@@ -20,7 +20,8 @@ export const runtime = "edge";
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
   const cartId = decodeCartCookie(rawCookie);
-  const cart = cartId ? ((await getCart(cartId)) as CartState) : {};
+  const cart: CartState =
+    typeof cartId === "string" ? await getCart(cartId) : {};
 
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });

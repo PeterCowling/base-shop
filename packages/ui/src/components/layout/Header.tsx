@@ -26,7 +26,8 @@ export default async function Header({
   const cookieStore = await cookies();
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
   const cartStore = createCartStore();
-  const cart: CartState = cartId ? await cartStore.getCart(cartId) : {};
+  const cart: CartState =
+    typeof cartId === "string" ? await cartStore.getCart(cartId) : {};
   const initialQty = Object.values<CartLine>(cart).reduce(
     (s, line) => s + line.qty,
     0,

@@ -25,7 +25,8 @@ import {
 export default async function SwapPage() {
   const cookieStore = await cookies();
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
-  const cart: CartState = cartId ? await getCart(cartId) : {};
+  const cart: CartState =
+    typeof cartId === "string" ? await getCart(cartId) : {};
   const session = await getCustomerSession();
   const shopId = coreEnv.NEXT_PUBLIC_SHOP_ID || "shop";
   const shop = await readShop(shopId);
@@ -55,7 +56,7 @@ export default async function SwapPage() {
     const cookieStore = await cookies();
     const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
     const session = await getCustomerSession();
-    if (!cartId || !session?.customerId) return;
+    if (typeof cartId !== "string" || !session?.customerId) return;
     const shopId = coreEnv.NEXT_PUBLIC_SHOP_ID || "shop";
     const shop = await readShop(shopId);
     if (!shop.subscriptionsEnabled) return;

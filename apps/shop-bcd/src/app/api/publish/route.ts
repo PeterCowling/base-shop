@@ -1,8 +1,8 @@
 import { promises as fs } from "fs";
 import { join } from "path";
-import { spawnSync } from "child_process";
 import { NextResponse } from "next/server";
 import { requirePermission } from "@auth";
+import { republishShop } from "../../../../../../scripts/src/republish-shop";
 
 export const runtime = "nodejs";
 
@@ -17,17 +17,7 @@ export async function POST() {
     const raw = await fs.readFile(join(process.cwd(), "shop.json"), "utf8");
     const { id } = JSON.parse(raw) as { id: string };
     const root = join(process.cwd(), "..", "..");
-    const res = spawnSync(
-      "pnpm",
-      ["ts-node", "scripts/src/republish-shop.ts", id],
-      {
-        cwd: root,
-        stdio: "inherit",
-      },
-    );
-    if (res.status !== 0) {
-      throw new Error("Republish failed");
-    }
+    republishShop(id, root);
     return NextResponse.json({ status: "ok" });
   } catch (err) {
     console.error("Publish failed", err);

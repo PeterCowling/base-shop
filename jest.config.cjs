@@ -1,5 +1,5 @@
 // /jest.config.cjs   ← keep this exact filename
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-require-imports */
 
 /**
  * Monorepo-wide Jest config (CommonJS so Node can load it without
@@ -132,6 +132,7 @@ module.exports = {
     "^@sendgrid/mail$": "<rootDir>/packages/email/src/providers/__mocks__/@sendgrid/mail.ts",
 
     // component stubs – structure isn’t under test
+    "^@ui/components/cms/MediaManager$": "<rootDir>/packages/ui/src/components/cms/MediaManager.tsx",
     "^@ui/components/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
     "^@ui/atoms/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
     "^@ui/molecules/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",

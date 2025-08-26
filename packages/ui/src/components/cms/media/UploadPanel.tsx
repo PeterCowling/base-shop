@@ -3,7 +3,7 @@
 
 import { Input } from "../../atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
-import { useMediaUpload } from "../../../hooks/useMediaUpload";
+import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import { ChangeEvent, ReactElement, useState } from "react";
 
 interface UploadPanelProps {
@@ -37,7 +37,7 @@ export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): Rea
     requiredOrientation: REQUIRED_ORIENTATION,
     onUploaded,
   });
-  const isVideo = pendingFile?.type.startsWith("video/") ?? false;
+  const isVideo = pendingFile?.type?.startsWith("video/") ?? false;
 
   return (
     <div className="space-y-2">

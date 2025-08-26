@@ -1,10 +1,16 @@
+/** @jest-environment node */
 import { jest } from "@jest/globals";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
+
+jest.setTimeout(10000);
 
 if (typeof (Response as any).json !== "function") {
   (Response as any).json = (data: unknown, init?: ResponseInit) =>
@@ -39,7 +45,9 @@ async function withShop(
   const cwd = process.cwd();
   process.chdir(dir);
   jest.resetModules();
-  const repo: typeof import("../../platform-core/src/repositories//rentalOrders.server") = require("@platform-core/repositories/rentalOrders.server");
+  const repo: typeof import("../../platform-core/src/repositories//rentalOrders.server") = await import(
+    "@platform-core/repositories/rentalOrders.server"
+  );
   try {
     await cb(repo);
   } finally {

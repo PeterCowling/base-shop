@@ -1,6 +1,10 @@
 import { render } from "@testing-library/react";
 import React from "react";
 
+jest.mock("next/navigation", () => ({
+  usePathname: () => "/shop",
+}));
+
 // stub complex subcomponents used by CanvasItem
 jest.mock("../../src/components/cms/page-builder/Block", () => () => <div />);
 jest.mock("../../src/components/cms/page-builder/MenuBar", () => () => <div />);
@@ -20,6 +24,12 @@ jest.mock("../../src/components/cms/page-builder/useSortableBlock", () =>
 // jsdom may not define PointerEvent
 if (typeof window !== "undefined" && !(window as any).PointerEvent) {
   (window as any).PointerEvent = MouseEvent as any;
+}
+
+if (typeof (globalThis as any).CSS === "undefined") {
+  (globalThis as any).CSS = { supports: () => true } as any;
+} else if (typeof (globalThis as any).CSS.supports !== "function") {
+  (globalThis as any).CSS.supports = () => true;
 }
 
 import CanvasItem from "../../src/components/cms/page-builder/CanvasItem";

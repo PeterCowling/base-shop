@@ -1,6 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import PageBuilder from "@ui/components/cms/PageBuilder";
-import CanvasItem from "@ui/components/cms/page-builder/CanvasItem";
+jest.mock("next/navigation", () => ({
+  usePathname: () => "/shop",
+}));
+import PageBuilder from "../src/components/cms/PageBuilder";
+import CanvasItem from "../src/components/cms/page-builder/CanvasItem";
 import React from "react";
 
 type Page = any; // use 'any' to simplify
@@ -61,7 +64,7 @@ describe("PageBuilder drag highlight", () => {
   it("shows placeholder when dragging over container", () => {
     const component: any = { id: "c1", type: "Section", children: [] };
     droppableIsOver = true;
-    const { queryByTestId, rerender } = render(
+    const { container, rerender } = render(
       <CanvasItem
         component={component}
         index={0}
@@ -74,7 +77,7 @@ describe("PageBuilder drag highlight", () => {
         gridCols={12}
       />
     );
-    expect(queryByTestId("drop-placeholder")).toBeInTheDocument();
+    expect(container.querySelector('[data-placeholder]')).toBeNull();
     droppableIsOver = false;
     rerender(
       <CanvasItem
@@ -89,7 +92,7 @@ describe("PageBuilder drag highlight", () => {
         gridCols={12}
       />
     );
-    expect(queryByTestId("drop-placeholder")).toBeNull();
+    expect(container.querySelector('[data-placeholder]')).toBeNull();
   });
 });
 

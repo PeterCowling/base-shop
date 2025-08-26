@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import RevokeSessionButton from "./RevokeSessionButton";
 import { revoke } from "../../actions/revokeSession";
 
+export { revoke };
+
 export interface SessionsPageProps {
   /** Optional heading override */
   title?: string;

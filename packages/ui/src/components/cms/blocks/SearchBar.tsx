@@ -54,7 +54,7 @@ export default function SearchBar({
   };
 
   return (
-    <div className="relative w-full max-w-sm">
+    <div className="relative w-full max-w-sm" data-token="--color-bg">
       <Input
         type="search"
         value={query}
@@ -69,7 +69,6 @@ export default function SearchBar({
       {results.length > 0 && (
         <ul
           className="bg-background absolute z-10 mt-1 w-full rounded-md border shadow"
-          data-token="--color-bg"
         >
           {results.map((r) => (
             <li

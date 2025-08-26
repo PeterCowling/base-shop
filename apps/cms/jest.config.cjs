@@ -17,10 +17,17 @@ module.exports = {
     "ts-jest": {
       tsconfig: path.resolve(__dirname, "tsconfig.test.json"),
       useESM: false,
+      // Disable Babel transpilation to avoid ts-jest attempting to load
+      // `babel-jest`, which can cause "createTransformer is not a function"
+      // errors when the module is missing or incompatible.
+      babelConfig: false,
     },
   },
   transform: {
-    "^.+\\.[tj]sx?$": ["ts-jest", { useESM: false }],
+    "^.+\\.[tj]sx?$": [
+      "ts-jest",
+      { useESM: false, babelConfig: false },
+    ],
   },
   transformIgnorePatterns: ["/node_modules/(?!(?:@?jose)/)"],
 };

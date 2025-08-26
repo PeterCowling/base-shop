@@ -9,6 +9,8 @@ console.log(
 );
 
 const preset = {
+  // This preset only provides design tokens, so no files need to be scanned
+  content: [],
   theme: {
     extend: {
       colors: {

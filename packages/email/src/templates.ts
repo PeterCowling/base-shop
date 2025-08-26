@@ -1,6 +1,6 @@
 import "server-only";
 import { createRequire } from "module";
-import type * as React from "react";
+import type { ReactElement, ReactNode } from "react";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 
@@ -8,7 +8,7 @@ import { JSDOM } from "jsdom";
 // code is executed in a CommonJS context (e.g. ts-jest).
 // eslint-disable-next-line n/no-deprecated-api
 const nodeRequire = createRequire(__filename);
-function renderToStaticMarkup(node: React.ReactNode): string {
+function renderToStaticMarkup(node: ReactNode): string {
   if (node === null || node === undefined || typeof node === "boolean") {
     return "";
   }
@@ -21,7 +21,9 @@ function renderToStaticMarkup(node: React.ReactNode): string {
   if (!React.isValidElement(node)) {
     return "";
   }
-  const { type, props } = node as React.ReactElement;
+  const element = node as ReactElement;
+  const type = element.type as string;
+  const props = element.props as Record<string, any>;
   const children = props.children;
   const attrs = Object.entries(props)
     .filter(([key]) => key !== "children" && key !== "dangerouslySetInnerHTML")
@@ -31,7 +33,8 @@ function renderToStaticMarkup(node: React.ReactNode): string {
   if (props.dangerouslySetInnerHTML?.__html) {
     inner = props.dangerouslySetInnerHTML.__html;
   } else if (children) {
-    inner = React.Children.map(children as any, renderToStaticMarkup).join("");
+    const mapped = React.Children.map(children as any, renderToStaticMarkup);
+    inner = mapped ? mapped.join("") : "";
   }
   return `<${type}${attrs}>${inner}</${type}>`;
 }
@@ -40,7 +43,7 @@ const React = nodeRequire("react") as typeof import("react");
 
 let marketingEmailTemplates: Array<{
   id: string;
-  render: (props: any) => React.ReactElement;
+  render: (props: any) => ReactElement;
 }> = [];
 try {
   marketingEmailTemplates =
@@ -77,7 +80,7 @@ export function clearTemplates(): void {
  */
 export function renderTemplate(
   id: string,
-  params: Record<string, string>,
+  params: Record<string, string>
 ): string {
   const source = templates[id];
   if (source) {
@@ -98,9 +101,9 @@ export function renderTemplate(
         footer: React.createElement(
           "p",
           null,
-          params.footer ?? "%%UNSUBSCRIBE%%",
+          params.footer ?? "%%UNSUBSCRIBE%%"
         ),
-      }),
+      })
     );
   }
 

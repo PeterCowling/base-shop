@@ -20,6 +20,7 @@ jest.mock("@portabletext/editor", () => ({
     isAnnotationActive: jest.fn(),
   },
   useEditor: () => ({}),
+  usePortableTextEditor: () => ({}),
 }));
 
 let captured: any;

@@ -9,7 +9,11 @@ export async function listShops(): Promise<string[]> {
   try {
     const entries = await fs.readdir(shopsDir, { withFileTypes: true });
     return entries.filter((e) => e.isDirectory()).map((e) => e.name);
-  } catch (err) {
+  } catch (err: unknown) {
+    // If the shops directory doesn't exist yet, treat it as having no shops
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+      return [];
+    }
     console.error(`Failed to list shops at ${shopsDir}:`, err);
     throw err;
   }

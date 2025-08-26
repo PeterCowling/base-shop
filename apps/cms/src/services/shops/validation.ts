@@ -21,9 +21,7 @@ export function parseShopForm(formData: FormData): {
   const themeDefaultsRaw = formData.get("themeDefaults") as string | null;
   const themeOverridesRaw = formData.get("themeOverrides") as string | null;
 
-  const entries = Array.from(
-    formData as unknown as Iterable<[string, FormDataEntryValue]>
-  ).filter(
+  const entries = Array.from(formData.entries()).filter(
     ([k]) =>
       ![
         "filterMappingsKey",
@@ -70,9 +68,7 @@ export function parseSeoForm(formData: FormData): {
   errors?: Record<string, string[]>;
 } {
   const parsed = seoSchema.safeParse(
-    Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>
-    )
+    Object.fromEntries(formData.entries())
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
@@ -94,9 +90,7 @@ export function parseGenerateSeoForm(formData: FormData): {
   errors?: Record<string, string[]>;
 } {
   const parsed = generateSchema.safeParse(
-    Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>
-    )
+    Object.fromEntries(formData.entries())
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
@@ -116,7 +110,7 @@ export function parseCurrencyTaxForm(formData: FormData): {
   errors?: Record<string, string[]>;
 } {
   const parsed = currencyTaxSchema.safeParse(
-    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+    Object.fromEntries(formData.entries())
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
@@ -136,7 +130,7 @@ export function parseDepositForm(formData: FormData): {
   errors?: Record<string, string[]>;
 } {
   const parsed = depositSchema.safeParse(
-    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+    Object.fromEntries(formData.entries())
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
@@ -156,7 +150,7 @@ export function parseReverseLogisticsForm(formData: FormData): {
   errors?: Record<string, string[]>;
 } {
   const parsed = reverseLogisticsSchema.safeParse(
-    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+    Object.fromEntries(formData.entries())
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };
@@ -181,7 +175,7 @@ export function parseUpsReturnsForm(formData: FormData): {
   errors?: Record<string, string[]>;
 } {
   const parsed = returnsSchema.safeParse(
-    Object.fromEntries(formData as unknown as Iterable<[string, FormDataEntryValue]>)
+    Object.fromEntries(formData.entries())
   );
   if (!parsed.success) {
     return { errors: parsed.error.flatten().fieldErrors };

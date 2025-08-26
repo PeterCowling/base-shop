@@ -43,9 +43,7 @@ export async function createPage(
       : ulid();
 
   const parsed = createSchema.safeParse(
-    Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>
-    )
+    Object.fromEntries(formData.entries())
   );
   if (!parsed.success) {
     const context = { shop, id };
@@ -186,9 +184,7 @@ export async function updatePage(
   await ensureAuthorized();
 
   const parsed = updateSchema.safeParse(
-    Object.fromEntries(
-      formData as unknown as Iterable<[string, FormDataEntryValue]>
-    )
+    Object.fromEntries(formData.entries())
   );
   if (!parsed.success) {
     const context = { shop, id: formData.get("id") || undefined };

@@ -84,9 +84,9 @@ export async function updateProduct(
   "use server";
   await ensureAuthorized();
 
-  // Node's FormData type doesn't declare `entries`, but the object itself is
-  // iterable. Casting to `any` lets us collect key/value pairs safely.
-  const formEntries = Object.fromEntries(formData as any);
+  // Collect key/value pairs from the incoming form data. Node's FormData
+  // provides an `entries()` iterator for this purpose.
+  const formEntries = Object.fromEntries(formData.entries());
   const locales = await getLocales(shop);
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;

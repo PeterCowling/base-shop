@@ -23,16 +23,19 @@ function renderToStaticMarkup(node: ReactNode): string {
   const element = node as ReactElement;
   const type = element.type as string;
   const props = element.props as Record<string, unknown>;
-  const children = props.children;
+  const children = props.children as ReactNode | undefined;
   const attrs = Object.entries(props)
     .filter(([key]) => key !== "children" && key !== "dangerouslySetInnerHTML")
     .map(([key, value]) => ` ${key}="${String(value)}"`)
     .join("");
   let inner = "";
-  if (props.dangerouslySetInnerHTML?.__html) {
-    inner = props.dangerouslySetInnerHTML.__html;
+  const dsi = props.dangerouslySetInnerHTML as
+    | { __html?: string }
+    | undefined;
+  if (dsi?.__html) {
+    inner = dsi.__html;
   } else if (children) {
-    const mapped = React.Children.map(children as unknown, renderToStaticMarkup);
+    const mapped = React.Children.map(children as ReactNode, renderToStaticMarkup);
     inner = mapped ? mapped.join("") : "";
   }
   return `<${type}${attrs}>${inner}</${type}>`;

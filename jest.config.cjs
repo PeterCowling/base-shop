@@ -43,10 +43,9 @@ module.exports = {
   /* Runner & transform                                                 */
   /* ------------------------------------------------------------------ */
   preset: "ts-jest/presets/default-esm",
-  extensionsToTreatAsEsm: [".ts", ".tsx"],
   testEnvironment: "jsdom",
   transform: {
-    "^.+\\.[jt]sx?$": [
+    "^.+\\.(ts|tsx)$": [
       "ts-jest",
       {
         tsconfig: "<rootDir>/tsconfig.test.json",
@@ -90,6 +89,9 @@ module.exports = {
   moduleNameMapper: {
     // stub type-only imports such as  `import "./next-auth.d.ts"`
     "^.+\\.d\\.ts$": "<rootDir>/test/emptyModule.js",
+
+    // use TypeScript implementation for data root helper during tests
+    "^\\./dataRoot\\.js$": "<rootDir>/packages/platform-core/src/dataRoot.ts",
 
     // explicit barrels (no trailing segment)
     "^@platform-core$": "<rootDir>/packages/platform-core/src/index.ts",

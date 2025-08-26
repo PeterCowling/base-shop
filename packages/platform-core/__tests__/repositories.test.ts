@@ -5,6 +5,11 @@ import path from "node:path";
 import type { ProductPublication } from "../src/products/index";
 import { nowIso } from "@date-utils";
 
+// These integration-style tests touch the filesystem and can occasionally be
+// slow on CI machines, so allow a more generous timeout than Jest's default
+// 5 seconds.
+jest.setTimeout(20_000);
+
 /** The shape of the JSON-repository module we import dynamically */
 type JsonRepo = typeof import("../repositories/json.server");
 
@@ -22,6 +27,13 @@ async function withRepo(
   const cwd = process.cwd();
   process.chdir(dir);
   jest.resetModules();
+  // Mock out PrismaClient so importing the repositories does not try to
+  // resolve the real `@prisma/client` package which requires native
+  // bindings and a generated client.  The JSON repository tests do not hit
+  // the database layer, so a lightweight mock suffices.
+  jest.doMock("@prisma/client", () => ({
+    PrismaClient: jest.fn().mockImplementation(() => ({})),
+  }));
 
   const repo: JsonRepo = await import("../repositories/json.server");
   try {

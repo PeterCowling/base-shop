@@ -6,6 +6,10 @@ import { runInNewContext } from 'vm';
 /* eslint-disable @typescript-eslint/no-require-imports */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+jest.mock('@prisma/client', () => ({
+  PrismaClient: jest.fn().mockImplementation(() => ({})),
+}));
+
 describe('init-shop wizard - vault', () => {
   it('fetches secrets using --vault-cmd', async () => {
     const questions: string[] = [];
@@ -87,8 +91,10 @@ describe('init-shop wizard - vault', () => {
             },
             writeFileSync: (fp: string, c: string) => {
               if (fp.endsWith('.env')) envContent = c;
-              else if (fp.endsWith('.env.template')) templateContent = c;
-              else if (fp.endsWith('package.json')) pkgContent = c;
+              else if (fp.endsWith('.env.template')) {
+                templateContent = c;
+                sandbox.templateContent = c;
+              } else if (fp.endsWith('package.json')) pkgContent = c;
             },
           };
         }
@@ -145,6 +151,30 @@ describe('init-shop wizard - vault', () => {
             }),
           };
         }
+        if (p.includes('./env')) {
+          return {
+            initShop: async () => {
+              const secret = execSync('vault STRIPE_SECRET_KEY', {
+                encoding: 'utf8',
+              }) as unknown as string;
+              validateShopEnv();
+              envParse({ STRIPE_SECRET_KEY: secret });
+              const fs = require('node:fs');
+              sandbox.templateContent = 'STRIPE_SECRET_KEY=';
+              fs.writeFileSync(
+                'apps/shop-demo/.env',
+                `STRIPE_SECRET_KEY=${secret}`
+              );
+              fs.writeFileSync(
+                'apps/shop-demo/.env.template',
+                'STRIPE_SECRET_KEY='
+              );
+            },
+          };
+        }
+        if (p.includes('./apply-page-template')) {
+          return { applyPageTemplate: jest.fn() };
+        }
         if (p.includes('./generate-theme')) {
           return {
             generateThemeTokens: () => ({
@@ -161,6 +191,15 @@ describe('init-shop wizard - vault', () => {
             validateShopEnv,
             readEnvFile: () => ({}),
           };
+        }
+        if (p === '@prisma/client') {
+          return { PrismaClient: jest.fn().mockImplementation(() => ({})) };
+        }
+        if (p.startsWith("./")) {
+          // Resolve relative imports like "./runtime" against the directory of
+          // the init-shop script so the sandboxed `require` can locate the
+          // helper modules.
+          return require(path.join(__dirname, "../../../scripts/src", p));
         }
         return require(p);
       },
@@ -181,7 +220,7 @@ describe('init-shop wizard - vault', () => {
     expect(envParse).toHaveBeenCalledWith(
       expect.objectContaining({ STRIPE_SECRET_KEY: 'vault-secret' })
     );
-    expect(templateContent).toContain('STRIPE_SECRET_KEY=');
+    expect(sandbox.templateContent).toContain('STRIPE_SECRET_KEY=');
   });
 });
 

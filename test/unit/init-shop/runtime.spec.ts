@@ -10,15 +10,38 @@ describe('init-shop wizard - runtime checks', () => {
       module: { exports: {} },
       process: {
         version: 'v18.0.0',
-        exit: jest.fn(() => {
+        exit: () => {
           throw new Error('exit');
-        }),
+        },
       },
       console: { log: jest.fn(), error: jest.fn() },
       URL,
       require: (p: string) => {
         if (p === 'node:child_process') {
           return { execSync: () => '10.0.0' };
+        }
+        if (p.includes('./env')) {
+          return { initShop: jest.fn().mockResolvedValue(undefined) };
+        }
+        if (p.startsWith('./')) {
+          // Load modules from the scripts directory in the sandbox context
+          const filePath = path.join(
+            __dirname,
+            '../../../scripts/src',
+            `${p}.ts`
+          );
+          const code = fs.readFileSync(filePath, 'utf8');
+          const compiled = ts.transpileModule(code, {
+            compilerOptions: {
+              module: ts.ModuleKind.CommonJS,
+              esModuleInterop: true,
+            },
+          }).outputText;
+          const modSandbox = { ...sandbox, module: { exports: {} } };
+          modSandbox.exports = modSandbox.module.exports;
+          modSandbox.require = sandbox.require;
+          runInNewContext(compiled, modSandbox);
+          return modSandbox.module.exports;
         }
         return {};
       },
@@ -44,15 +67,38 @@ describe('init-shop wizard - runtime checks', () => {
       module: { exports: {} },
       process: {
         version: 'v20.0.0',
-        exit: jest.fn(() => {
+        exit: () => {
           throw new Error('exit');
-        }),
+        },
       },
       console: { log: jest.fn(), error: jest.fn() },
       URL,
       require: (p: string) => {
         if (p === 'node:child_process') {
           return { execSync: () => '9.0.0' };
+        }
+        if (p.includes('./env')) {
+          return { initShop: jest.fn().mockResolvedValue(undefined) };
+        }
+        if (p.startsWith('./')) {
+          // Load modules from the scripts directory in the sandbox context
+          const filePath = path.join(
+            __dirname,
+            '../../../scripts/src',
+            `${p}.ts`
+          );
+          const code = fs.readFileSync(filePath, 'utf8');
+          const compiled = ts.transpileModule(code, {
+            compilerOptions: {
+              module: ts.ModuleKind.CommonJS,
+              esModuleInterop: true,
+            },
+          }).outputText;
+          const modSandbox = { ...sandbox, module: { exports: {} } };
+          modSandbox.exports = modSandbox.module.exports;
+          modSandbox.require = sandbox.require;
+          runInNewContext(compiled, modSandbox);
+          return modSandbox.module.exports;
         }
         return {};
       },

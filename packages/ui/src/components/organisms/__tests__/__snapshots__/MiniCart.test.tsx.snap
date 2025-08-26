@@ -118,7 +118,7 @@ exports[`MiniCart shows cart items and handles quantity changes and removal 1`] 
           <span
             class=""
           >
-            $10.00
+            €10.00
           </span>
         </div>
       </div>

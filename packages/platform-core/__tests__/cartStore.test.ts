@@ -126,7 +126,7 @@ describe("createCart backend selection", () => {
 
   it("uses redis backend when Redis env vars are provided", async () => {
     process.env.CART_TTL = "1";
-    process.env.UPSTASH_REDIS_REST_URL = "url";
+    process.env.UPSTASH_REDIS_REST_URL = "http://localhost";
     process.env.UPSTASH_REDIS_REST_TOKEN = "token";
     const { createCart } = await import("../src/cartStore");
     await createCart();

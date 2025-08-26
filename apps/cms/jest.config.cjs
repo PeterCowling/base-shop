@@ -14,7 +14,7 @@ module.exports = {
   setupFilesAfterEnv: ["<rootDir>/apps/cms/jest.setup.tsx"],
   moduleNameMapper: {
     ...baseModuleNameMapper,
-    "^@/components/(.*)$": "<rootDir>/packages/ui/src/components/$1",
+    "^@/components/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
     "^@/i18n/Translations$": "<rootDir>/test/emptyModule.js",
     "^@/(.*)$": "<rootDir>/apps/cms/src/$1",
   },

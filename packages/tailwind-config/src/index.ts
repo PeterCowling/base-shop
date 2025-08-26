@@ -1,6 +1,8 @@
 // /packages/tailwind-config/src/index.ts
 
-import type { Config } from "tailwindcss";
+// Avoid direct dependency on Tailwind's ESM-only type declarations
+// to keep this package CommonJS compatible.
+type Config = Record<string, unknown>;
 
 /* ------------------------------------------------------------
  *  Runtime diagnostics — confirm the preset really loads

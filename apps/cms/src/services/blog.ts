@@ -36,7 +36,10 @@ function collectProductSlugs(content: unknown): string[] {
   return Array.from(slugs);
 }
 
-async function filterExistingProductSlugs(shopId: string, slugs: string[]): Promise<string[]> {
+async function filterExistingProductSlugs(
+  shopId: string,
+  slugs: string[],
+): Promise<string[] | null> {
   if (slugs.length === 0) return [];
   try {
     const res = await fetch(`/api/products/${shopId}/slugs`, {
@@ -45,10 +48,14 @@ async function filterExistingProductSlugs(shopId: string, slugs: string[]): Prom
       body: JSON.stringify({ slugs }),
     });
     if (!res.ok) return [];
-    const existing = await res.json();
-    return Array.isArray(existing) ? existing : [];
+    try {
+      const existing = await res.json();
+      return Array.isArray(existing) ? existing : slugs;
+    } catch {
+      return slugs;
+    }
   } catch {
-    return [];
+    return null;
   }
 }
 
@@ -99,7 +106,9 @@ export async function createPost(
     ...products,
     ...manualProducts,
   ]);
-  products = existingSlugs;
+  if (existingSlugs) {
+    products = existingSlugs;
+  }
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   const mainImage = String(formData.get("mainImage") ?? "");
@@ -164,7 +173,9 @@ export async function updatePost(
     ...products,
     ...manualProducts,
   ]);
-  products = existingSlugs;
+  if (existingSlugs) {
+    products = existingSlugs;
+  }
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   const mainImage = String(formData.get("mainImage") ?? "");

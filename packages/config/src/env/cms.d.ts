@@ -19,4 +19,3 @@ export declare const cmsEnv: {
     SANITY_API_VERSION?: string | undefined;
 };
 export type CmsEnv = z.infer<typeof cmsEnvSchema>;
-//# sourceMappingURL=cms.d.ts.map

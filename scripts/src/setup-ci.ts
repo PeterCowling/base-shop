@@ -47,7 +47,7 @@ try {
 }
 
 const shopConfigPath = join("data", "shops", shopId, "shop.json");
-let domainVars: Record<string, string> = {};
+const domainVars: Record<string, string> = {};
 if (existsSync(shopConfigPath)) {
   try {
     const shop = JSON.parse(readFileSync(shopConfigPath, "utf8")) as {
@@ -62,7 +62,7 @@ if (existsSync(shopConfigPath)) {
 }
 
 const settingsPath = join("data", "shops", shopId, "settings.json");
-let workerVars: Record<string, string> = {};
+const workerVars: Record<string, string> = {};
 if (existsSync(settingsPath)) {
   try {
     const settings = JSON.parse(readFileSync(settingsPath, "utf8")) as {

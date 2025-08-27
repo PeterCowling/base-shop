@@ -1,13 +1,12 @@
 import { createRequire } from "node:module";
-import { fileURLToPath } from "node:url";
 import preset from "../packages/tailwind-config/src/index.ts";
 
 // Build a `require` function that works in both ESM and CJS environments.
-// `__filename` is available in CommonJS, while `import.meta.url` works in ESM.
+// `__filename` is available in CommonJS. When unavailable (e.g. ESM execution
+// without transpilation), fall back to the current working directory which
+// still allows Node's resolver to locate packages in this monorepo.
 const nodeRequire = createRequire(
-  typeof __filename !== "undefined"
-    ? __filename
-    : fileURLToPath(import.meta.url)
+  typeof __filename !== "undefined" ? __filename : process.cwd() + "/"
 );
 
 let resolvedPresetPath = "<unresolved>";

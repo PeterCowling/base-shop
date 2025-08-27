@@ -132,6 +132,7 @@
     "@acme/plugin-sanity": "workspace:^",
     "@acme/shared-utils": "workspace:^",
     "@acme/stripe": "workspace:^",
+    "@acme/email": "workspace:^",
     "@acme/types": "workspace:^",
     "@prisma/client": "^6.14.0",
     "@themes/base": "workspace:^",

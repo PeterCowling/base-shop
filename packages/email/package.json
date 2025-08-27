@@ -15,6 +15,7 @@
     "email": "./dist/cli.js"
   },
   "scripts": {
+    "build": "tsc -b",
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {

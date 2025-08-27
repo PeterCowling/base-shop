@@ -10,7 +10,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 
-export const runtime = "edge";
+// This route uses @auth which relies on Node.js APIs like `crypto`.
+// The Edge runtime does not provide these modules, so we must opt into
+// the Node.js runtime to ensure the build succeeds.
+export const runtime = "nodejs";
 
 const schema = z
   .object({

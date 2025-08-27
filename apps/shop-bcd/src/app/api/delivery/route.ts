@@ -8,7 +8,9 @@ import shop from "../../../../shop.json";
 import path from "path";
 import { fileURLToPath } from "url";
 
-export const runtime = "edge";
+// This handler relies on Node.js path utilities, which are unavailable in the
+// Edge runtime. Opt into the Node.js runtime so these modules are supported.
+export const runtime = "nodejs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const pluginsDir = path.resolve(__dirname, "../../../../../../packages/plugins");

@@ -6,7 +6,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 
-export const runtime = "edge";
+// Tax calculations rely on platform-core functions that read from the
+// filesystem, which requires Node.js APIs. Use the Node.js runtime so these
+// modules are available.
+export const runtime = "nodejs";
 
 const schema = z
   .object({

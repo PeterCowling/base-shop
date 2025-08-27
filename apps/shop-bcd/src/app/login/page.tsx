@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { getCsrfToken } from "@shared-utils";
-import type { LoginInput } from "./route";
+import type { LoginInput } from "../api/login/route";
 
 export default function LoginPage() {
   const [msg, setMsg] = useState("");
@@ -15,7 +15,7 @@ export default function LoginPage() {
       password: (form.elements.namedItem("password") as HTMLInputElement).value,
     };
     const csrfToken = getCsrfToken();
-    const res = await fetch("/login", {
+    const res = await fetch("/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -8,7 +8,10 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 
-export const runtime = "edge";
+// Accessing shop settings requires filesystem access via Node's `fs` module.
+// Switch to the Node.js runtime so these APIs are available during build and
+// execution.
+export const runtime = "nodejs";
 
 const schema = z
   .object({

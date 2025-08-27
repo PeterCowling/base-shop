@@ -1,7 +1,9 @@
 "use client";
 // packages/ui/hooks/useProductEditorFormState.tsx
 import { useFileUpload } from "./useFileUpload";
-import { usePublishLocations } from "../../../platform-core/src/hooks/usePublishLocations";
+// Use the published platform-core hook instead of reaching into source files
+// so builds consume the compiled output.
+import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
 import type { Locale } from "@acme/i18n";
 import type { MediaItem } from "@acme/types";
 

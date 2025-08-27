@@ -6,6 +6,10 @@ export async function prompt(question: string, def = ""): Promise<string> {
   const rl = readline.createInterface({ input, output });
   const answer = (await rl.question(question)).trim();
   rl.close();
+  // Ensure stdin/stdout don't keep the event loop alive in tests
+  // or after the prompt completes.
+  typeof (input as any).unref === "function" && (input as any).unref();
+  typeof (output as any).unref === "function" && (output as any).unref();
   return answer || def;
 }
 

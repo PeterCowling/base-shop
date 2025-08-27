@@ -1,4 +1,4 @@
-import type { CartState } from "@acme/types";
+import type { CartState } from "@acme/platform-core/cart";
 import * as React from "react";
 export interface OrderConfirmationTemplateProps extends React.HTMLAttributes<HTMLDivElement> {
     orderId: string;

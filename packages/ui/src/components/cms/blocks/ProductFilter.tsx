@@ -5,6 +5,8 @@ import { useProductFilters } from "../../../hooks/useProductFilters";
 import { PRODUCTS } from "@acme/platform-core/products";
 import type { SKU } from "@acme/types";
 
+type FilterSku = SKU & { id: string; title: string };
+
 export interface ProductFilterProps {
   showSize?: boolean;
   showColor?: boolean;
@@ -16,17 +18,19 @@ export default function ProductFilter({
   showColor = true,
   showPrice = true,
 }: ProductFilterProps) {
-  const { filteredRows } = useProductFilters<SKU>(PRODUCTS);
+  const { filteredRows } = useProductFilters<FilterSku>(
+    PRODUCTS as FilterSku[],
+  );
 
   const sizes = useMemo(() => {
     const s = new Set<string>();
-    filteredRows.forEach((p: SKU) => p.sizes?.forEach((sz: string) => s.add(sz)));
+    filteredRows.forEach((p) => p.sizes?.forEach((sz: string) => s.add(sz)));
     return Array.from(s).sort();
   }, [filteredRows]);
 
   const colors = useMemo(() => {
     const s = new Set<string>();
-    filteredRows.forEach((p: SKU) => {
+    filteredRows.forEach((p) => {
       const c = p.id.split("-")[0];
       if (c) s.add(c);
     });
@@ -34,7 +38,7 @@ export default function ProductFilter({
   }, [filteredRows]);
 
   const priceBounds = useMemo(() => {
-    const prices = filteredRows.map((p: SKU) => p.price ?? 0);
+    const prices = filteredRows.map((p) => p.price ?? 0);
     const min = prices.length ? Math.min(...prices) : 0;
     const max = prices.length ? Math.max(...prices) : 0;
     return [min, max];
@@ -46,7 +50,7 @@ export default function ProductFilter({
   const [maxPrice, setMaxPrice] = useState(priceBounds[1]);
 
   const results = useMemo(() => {
-    return filteredRows.filter((p: SKU) => {
+    return filteredRows.filter((p) => {
       const sizeMatch = !size || p.sizes?.includes(size);
       const colorMatch = !color || p.id.includes(color);
       const price = p.price ?? 0;

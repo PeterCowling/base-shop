@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react";
-import type { CartState } from "@acme/types";
+import type { CartState } from "@acme/platform-core/cart";
 import { OrderConfirmationTemplate } from "./OrderConfirmationTemplate";
 
 const cart: CartState = {

@@ -49,4 +49,16 @@ describe("extendRoles", () => {
     expect(isRole("author")).toBe(true);
     expect(isRole("reader")).toBe(true);
   });
+
+  it("adds write roles to both write and read lists", () => {
+    extendRoles({ write: ["editor"] });
+    expect(WRITE_ROLES).toContain("editor");
+    expect(READ_ROLES).toContain("editor");
+  });
+
+  it("adds read roles only to the read list", () => {
+    extendRoles({ read: ["guest"] });
+    expect(READ_ROLES).toContain("guest");
+    expect(WRITE_ROLES).not.toContain("guest");
+  });
 });

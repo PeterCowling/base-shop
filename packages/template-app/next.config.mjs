@@ -15,6 +15,10 @@ import baseConfig from "@acme/next-config/next.config.mjs";
 const config = {
   // Spread the settings from the shared config to preserve its behaviour.
   ...baseConfig,
+  typescript: {
+    ...(baseConfig.typescript ?? {}),
+    tsconfigPath: "./tsconfig.json",
+  },
   // Override or extend any fields here.  In this case we need to
   // transpile additional internal packages so that Next.js can import
   // their untranspiled source code from `node_modules`.

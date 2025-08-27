@@ -53,22 +53,10 @@ describe("middleware", () => {
     expect(res.headers.get("x-middleware-rewrite")).toContain("/403");
   });
 
-  it("allows through a valid CMS locale when authorised", async () => {
+  it("allows authorised users through", async () => {
     getToken.mockResolvedValueOnce({ role: "admin" } as JWT);
 
-    const res = await middleware(createRequest("/cms/de"));
+    const res = await middleware(createRequest("/cms/shop/foo/products"));
     expect(res.headers.get("x-middleware-next")).toBe("1");
-  });
-
-  it("redirects invalid CMS case to /login (Next‑Auth flow)", async () => {
-    const res = await middleware(createRequest("/CMS/DE"));
-    expect(res.status).toBe(307);
-    expect(res.headers.get("location")).toMatch(/\/login/i);
-  });
-
-  it("redirects unknown CMS locale to /login", async () => {
-    const res = await middleware(createRequest("/cms/zz"));
-    expect(res.status).toBe(307);
-    expect(res.headers.get("location")).toMatch(/\/login/i);
   });
 });

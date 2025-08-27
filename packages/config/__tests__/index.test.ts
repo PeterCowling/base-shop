@@ -19,6 +19,9 @@ describe("config package entry", () => {
       STRIPE_WEBHOOK_SECRET: "whsec",
       NEXTAUTH_SECRET: "nextauth",
       SESSION_SECRET: "session",
+      CMS_SPACE_URL: "https://example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2023-01-01",
     } as NodeJS.ProcessEnv;
 
     const { env } = await import("../src/index");

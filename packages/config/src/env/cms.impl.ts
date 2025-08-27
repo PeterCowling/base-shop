@@ -2,9 +2,9 @@ import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
 export const cmsEnvSchema = z.object({
-  CMS_SPACE_URL: z.string().url().optional(),
-  CMS_ACCESS_TOKEN: z.string().optional(),
-  SANITY_API_VERSION: z.string().optional(),
+  CMS_SPACE_URL: z.string().url(),
+  CMS_ACCESS_TOKEN: z.string(),
+  SANITY_API_VERSION: z.string(),
 });
 
 const parsed = cmsEnvSchema.safeParse(process.env);

@@ -163,6 +163,10 @@ before running.
 Apps Script code lives under `apps-script/` and compiles with its own `tsconfig.json`.
 Next.js projects exclude this folder to avoid type conflicts with DOM typings.
 
+## Troubleshooting
+
+- If `pnpm run dev` fails with an `array.length` error, run the appropriate Codex command to retrieve detailed failure information.
+
 ## Notes
 
 See [docs/lighthouse.md](docs/lighthouse.md) for running Lighthouse audits.

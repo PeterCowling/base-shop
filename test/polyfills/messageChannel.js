@@ -1,11 +1,16 @@
 // Polyfill MessageChannel with a minimal implementation that doesn't keep
 // Node's event loop alive.  React's scheduler only relies on the asynchronous
-// message delivery semantics, so we simulate that with setImmediate and stub
+// message delivery semantics, so we simulate that with setTimeout and stub
 // out the port methods.
 class ManagedMessageChannel {
   constructor() {
-    this.port2 = {
+    this.port1 = {
       onmessage: null,
+      postMessage: (data) => {
+        setTimeout(() => {
+          this.port2.onmessage?.({ data });
+        }, 0);
+      },
       addEventListener(type, handler) {
         if (type === "message") {
           this.onmessage = handler;
@@ -15,13 +20,18 @@ class ManagedMessageChannel {
       close() {},
       unref() {},
     };
-    this.port1 = {
+    this.port2 = {
+      onmessage: null,
       postMessage: (data) => {
-        setImmediate(() => {
-          this.port2.onmessage?.({ data });
-        });
+        setTimeout(() => {
+          this.port1.onmessage?.({ data });
+        }, 0);
       },
-      addEventListener() {},
+      addEventListener(type, handler) {
+        if (type === "message") {
+          this.onmessage = handler;
+        }
+      },
       removeEventListener() {},
       close() {},
       unref() {},

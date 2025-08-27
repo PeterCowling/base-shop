@@ -1,0 +1,33 @@
+{
+  "id": "shop2",
+  "name": "shop2",
+  "catalogFilters": [],
+  "themeId": "base",
+  "themeDefaults": {},
+  "themeOverrides": {},
+  "themeTokens": {},
+  "filterMappings": {},
+  "priceOverrides": {},
+  "localeOverrides": {},
+  "navigation": [
+    {
+      "label": "Parent",
+      "url": "/parent",
+      "children": [
+        {
+          "label": "Child",
+          "url": "/child"
+        }
+      ]
+    }
+  ],
+  "analyticsEnabled": false,
+  "shippingProviders": [],
+  "taxProviders": [
+    "taxjar"
+  ],
+  "paymentProviders": [],
+  "enableEditorial": false,
+  "subscriptionsEnabled": false,
+  "rentalSubscriptions": []
+}

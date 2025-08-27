@@ -62,7 +62,7 @@
     },
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "resolveJsonModule": true
   },
   "include": [
@@ -87,13 +87,29 @@
     "**/*.stories.*"
   ],
   "references": [
-    { "path": "../../packages/ui" },
-    { "path": "../../packages/i18n" },
-    { "path": "../../packages/platform-core" },
-    { "path": "../../packages/auth" },
-    { "path": "../../packages/date-utils" },
-    { "path": "../../packages/shared-utils" },
-    { "path": "../../packages/types" },
-    { "path": "../../packages/zod-utils" }
+    {
+      "path": "../../packages/ui"
+    },
+    {
+      "path": "../../packages/i18n"
+    },
+    {
+      "path": "../../packages/platform-core"
+    },
+    {
+      "path": "../../packages/auth"
+    },
+    {
+      "path": "../../packages/date-utils"
+    },
+    {
+      "path": "../../packages/shared-utils"
+    },
+    {
+      "path": "../../packages/types"
+    },
+    {
+      "path": "../../packages/zod-utils"
+    }
   ]
 }

@@ -1,6 +1,6 @@
 export * from "./ApiError";
 export * from "./Blog";
-export * from "./Cart";
+export type { CartLine, CartState } from "./Cart";
 export * from "./CmsUser";
 export * from "./constants";
 export * from "./ImageOrientation";

@@ -1,6 +1,7 @@
 import { CartProvider, useCart } from "@acme/platform-core/contexts/CartContext";
 import { type Meta, type StoryObj } from "@storybook/react";
-import type { CartLine, CartState, SKU } from "@acme/types";
+import type { CartLine, CartState } from "@acme/platform-core/cart";
+import type { SKU } from "@acme/types";
 import * as React from "react";
 import { Button } from "../atoms/shadcn";
 import { MiniCart } from "./MiniCart.client";

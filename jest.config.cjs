@@ -96,6 +96,14 @@ module.exports = {
     // use TypeScript implementation for data root helper during tests
     "^\\./dataRoot\\.js$": "<rootDir>/packages/platform-core/src/dataRoot.ts",
 
+    // map config package relative ESM imports to TypeScript sources
+    "^\\./auth\\.js$": "<rootDir>/packages/config/src/env/auth.ts",
+    "^\\./cms\\.js$": "<rootDir>/packages/config/src/env/cms.ts",
+    "^\\./email\\.js$": "<rootDir>/packages/config/src/env/email.ts",
+    "^\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
+    "^\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
+    "^\\./shipping\\.js$": "<rootDir>/packages/config/src/env/shipping.ts",
+
     // explicit barrels (no trailing segment)
     "^@platform-core$": "<rootDir>/packages/platform-core/src/index.ts",
     "^@ui/src$": "<rootDir>/packages/ui/src/index.ts",

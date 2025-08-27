@@ -9,4 +9,6 @@ export { formatCurrency } from "./formatCurrency";
 export { formatPrice } from "./formatPrice";
 export { logger } from "./logger";
 export type { LogMeta } from "./logger";
+export { getShopFromPath } from "./getShopFromPath";
+export { replaceShopInPath } from "./replaceShopInPath";
 //# sourceMappingURL=index.d.ts.map

@@ -3,7 +3,7 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { Input } from "../../atoms/shadcn";
-import { getShopFromPath } from "@acme/platform-core/utils";
+import { getShopFromPath } from "@acme/shared-utils";
 
 interface Result {
   slug: string;

@@ -2,7 +2,7 @@
 "use client";
 
 import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
-import { getShopFromPath } from "@acme/platform-core/utils";
+import { getShopFromPath } from "@acme/shared-utils";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";

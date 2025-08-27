@@ -1,4 +1,4 @@
-import type { CartState } from "@acme/platform-core/cartCookie";
+import type { CartState } from "@acme/types";
 import * as React from "react";
 export interface CartTemplateProps extends React.HTMLAttributes<HTMLDivElement> {
     cart: CartState;

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import OrderSummary from "../OrderSummary";
-import type { CartLine } from "@acme/platform-core/cartCookie";
+import type { CartLine } from "@acme/types";
 import { formatPrice } from "@acme/shared-utils";
 
 jest.mock("@ui/hooks/useCart", () => ({

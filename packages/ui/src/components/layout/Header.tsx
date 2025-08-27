@@ -1,11 +1,7 @@
 // server component
 import { readShop } from "@acme/platform-core/repositories/json.server";
-import {
-  CART_COOKIE,
-  decodeCartCookie,
-  type CartState,
-  type CartLine,
-} from "@acme/platform-core/cartCookie";
+import { CART_COOKIE, decodeCartCookie } from "@acme/platform-core/cartCookie";
+import type { CartState, CartLine } from "@acme/types";
 import { createCartStore } from "@acme/platform-core/cartStore";
 import { cookies } from "next/headers";
 import HeaderClient from "./HeaderClient.client";

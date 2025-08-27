@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { useProductFilters } from "../../../hooks/useProductFilters";
-import { PRODUCTS, type SKU } from "@acme/platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products";
+import type { SKU } from "@acme/types";
 
 export interface ProductFilterProps {
   showSize?: boolean;

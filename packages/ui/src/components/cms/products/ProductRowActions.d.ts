@@ -1,4 +1,4 @@
-import { ProductPublication } from "@acme/platform-core/products";
+import type { ProductPublication } from "@acme/types";
 interface Props {
     shop: string;
     product: ProductPublication;

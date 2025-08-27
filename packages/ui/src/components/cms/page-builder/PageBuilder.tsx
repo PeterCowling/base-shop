@@ -10,7 +10,7 @@ import type { Page, PageComponent, HistoryState } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
 import { Toast } from "../../atoms";
 import Palette from "./Palette";
-import { getShopFromPath } from "@acme/platform-core/utils";
+import { getShopFromPath } from "@acme/shared-utils";
 import { ulid } from "ulid";
 import useFileDrop from "./hooks/useFileDrop";
 import usePageBuilderState from "./hooks/usePageBuilderState";

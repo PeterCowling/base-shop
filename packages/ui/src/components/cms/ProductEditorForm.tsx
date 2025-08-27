@@ -2,8 +2,8 @@
 "use client";
 
 import { Button, Card, CardContent, Input } from "../atoms/shadcn";
-import type { Locale, ProductPublication } from "@acme/platform-core/products";
-import type { MediaItem } from "@acme/types";
+import type { ProductPublication, MediaItem } from "@acme/types";
+import type { Locale } from "@acme/i18n";
 import { useProductEditorFormState } from "../../hooks/useProductEditorFormState";
 import type {
   ProductWithVariants,

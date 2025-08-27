@@ -1,6 +1,6 @@
 // packages/ui/components/cms/Sidebar.tsx
 "use client";
-import { getShopFromPath } from "@acme/platform-core/utils";
+import { getShopFromPath } from "@acme/shared-utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { features } from "@acme/platform-core/features";

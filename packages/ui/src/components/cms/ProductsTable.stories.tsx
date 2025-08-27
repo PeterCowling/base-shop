@@ -1,4 +1,4 @@
-import type { ProductPublication } from "@acme/platform-core/products";
+import type { ProductPublication } from "@acme/types";
 import type { Meta, StoryObj } from "@storybook/react";
 import ProductsTable from "./ProductsTable";
 

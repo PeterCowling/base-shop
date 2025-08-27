@@ -141,4 +141,26 @@ describe("middleware integration", () => {
       "http://localhost/403?shop=foo"
     );
   });
+
+  it("allows viewers with read access to /cms", async () => {
+    getToken.mockResolvedValueOnce({ role: "viewer" } as JWT);
+    canRead.mockReturnValueOnce(true);
+
+    const req = createRequest("/cms");
+    const res = await middleware(req);
+
+    expect(next).toHaveBeenCalled();
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+  });
+
+  it("bypasses auth for Next.js static assets", async () => {
+    getToken.mockResolvedValueOnce(null);
+
+    const req = createRequest("/_next/static/chunk.js");
+    const res = await middleware(req);
+
+    expect(next).toHaveBeenCalled();
+    expect(redirect).not.toHaveBeenCalled();
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+  });
 });

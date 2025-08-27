@@ -52,14 +52,19 @@ describe("middleware", () => {
     expect(canReadMock).not.toHaveBeenCalled();
   });
 
-  it("returns NextResponse.next for static asset paths", async () => {
-    getTokenMock.mockResolvedValue(null);
+  it.each(["/_next/static/chunk.js", "/_next"])(
+    "returns NextResponse.next for static asset path %s",
+    async (path) => {
+      getTokenMock.mockResolvedValue(null);
 
-    const req = new NextRequest("http://example.com/_next/static/chunk.js");
-    const res = await middleware(req);
+      const req = new NextRequest(`http://example.com${path}`);
+      const res = await middleware(req);
 
-    expect(res.headers.get("x-middleware-next")).toBe("1");
-  });
+      expect(res.headers.get("x-middleware-next")).toBe("1");
+      expect(canReadMock).not.toHaveBeenCalled();
+      expect(canWriteMock).not.toHaveBeenCalled();
+    },
+  );
 
   it("rewrites roles without read access to /403", async () => {
     getTokenMock.mockResolvedValue({ role: "viewer" } as any);
@@ -86,6 +91,34 @@ describe("middleware", () => {
     expect(res.headers.get("x-middleware-rewrite")).toBe(
       "http://example.com/403?shop=test-shop",
     );
+  });
+
+  it("allows viewer roles with read access on CMS routes", async () => {
+    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+    canReadMock.mockReturnValue(true);
+    canWriteMock.mockReturnValue(false);
+
+    const req = new NextRequest("http://example.com/cms");
+    const res = await middleware(req);
+
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+    expect(canReadMock).toHaveBeenCalledWith("viewer");
+    expect(canWriteMock).toHaveBeenCalledWith("viewer");
+  });
+
+  it("allows admin roles on write routes", async () => {
+    getTokenMock.mockResolvedValue({ role: "admin" } as any);
+    canReadMock.mockReturnValue(true);
+    canWriteMock.mockReturnValue(true);
+
+    const req = new NextRequest(
+      "http://example.com/cms/shop/test-shop/products/1/edit",
+    );
+    const res = await middleware(req);
+
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+    expect(canReadMock).toHaveBeenCalledWith("admin");
+    expect(canWriteMock).toHaveBeenCalledWith("admin");
   });
 });
 

@@ -30,6 +30,7 @@ export const baseConfig = {
   //     Add every package that contains "use client" components
   //     or other code that must run in the browser.
   transpilePackages: [
+    "@acme/config",
     "@acme/ui",
     "@platform-core",
     "@acme/i18n",

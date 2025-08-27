@@ -1,4 +1,5 @@
 import { expect } from "@jest/globals";
+import { coreEnvBaseSchema } from "../src/env/core.impl";
 
 describe("envSchema", () => {
   const OLD_ENV = process.env;
@@ -71,5 +72,32 @@ describe("envSchema", () => {
     } as Record<string, string>;
 
     expect(() => envSchema.parse(invalid)).toThrow();
+  });
+});
+
+describe("coreEnvBaseSchema", () => {
+  it("parses valid CMS variables", () => {
+    const parsed = coreEnvBaseSchema.parse({
+      CMS_SPACE_URL: "https://cms.example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "v1",
+    });
+
+    expect(parsed).toEqual(
+      expect.objectContaining({
+        CMS_SPACE_URL: "https://cms.example.com",
+        CMS_ACCESS_TOKEN: "token",
+        SANITY_API_VERSION: "v1",
+      }),
+    );
+  });
+
+  it("fails to parse invalid CMS variables", () => {
+    expect(() =>
+      coreEnvBaseSchema.parse({
+        CMS_SPACE_URL: "not-a-url",
+        CMS_ACCESS_TOKEN: "token",
+      }),
+    ).toThrow();
   });
 });

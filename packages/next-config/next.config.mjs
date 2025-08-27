@@ -45,7 +45,7 @@ export default withShopCode(coreEnv.SHOP_CODE, {
     config.resolve.alias = {
       ...config.resolve.alias,
       "@": path.resolve(__dirname, "../template-app/src"),
-      "@i18n": path.resolve(__dirname, "../i18n"),
+      "@i18n": path.resolve(__dirname, "../i18n/src"),
     };
     for (const mod of nodeBuiltins) {
       config.resolve.alias[`node:${mod}`] = mod;

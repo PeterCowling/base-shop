@@ -15,7 +15,7 @@
       "import": "./dist/*.js",
       "default": "./dist/*.js"
     },
-    "./*.json": "./*.json"
+    "./*.json": "./dist/*.json"
   },
   "main": "./dist/index.js",
   "scripts": {

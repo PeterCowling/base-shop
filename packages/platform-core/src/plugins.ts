@@ -1,7 +1,8 @@
 // packages/platform-core/src/plugins.ts
 import { readdir, readFile } from "fs/promises";
-import type { Dirent } from "fs";
+import { existsSync, type Dirent } from "fs";
 import path from "path";
+import { pathToFileURL } from "url";
 import { logger } from "./utils";
 import { PluginManager } from "./plugins/PluginManager";
 import type {
@@ -33,7 +34,18 @@ export async function loadPlugins({
   plugins = [],
   configFile,
 }: LoadPluginsOptions = {}): Promise<Plugin[]> {
-  const workspaceDir = path.join(process.cwd(), "packages", "plugins");
+  function findPluginsDir(start: string): string {
+    let dir = start;
+    // Walk up the directory tree until we find `packages/plugins`
+    while (true) {
+      const candidate = path.join(dir, "packages", "plugins");
+      if (existsSync(candidate)) return candidate;
+      const parent = path.dirname(dir);
+      if (parent === dir) return candidate;
+      dir = parent;
+    }
+  }
+  const workspaceDir = findPluginsDir(process.cwd());
 
   const envDirs = process.env.PLUGIN_DIRS
     ? process.env.PLUGIN_DIRS.split(path.delimiter).filter(Boolean)
@@ -100,7 +112,7 @@ export async function loadPlugins({
         logger.warn("No package.json found for plugin", { root });
         continue;
       }
-      const mod = await import(entry);
+      const mod = await import(pathToFileURL(entry).href);
       if (mod.default) {
         loaded.push(mod.default as Plugin);
       }

@@ -1,0 +1,154 @@
+// Polyfill Response.json if missing
+if (typeof (Response as any).json !== "function") {
+  (Response as any).json = (data: unknown, init?: ResponseInit) =>
+    new Response(JSON.stringify(data), {
+      ...init,
+      headers: { "content-type": "application/json", ...(init?.headers || {}) },
+    });
+}
+
+jest.mock("next-auth", () => ({
+  getServerSession: jest.fn(),
+}));
+
+jest.mock("@cms/actions/deployShop.server", () => ({
+  deployShopHosting: jest.fn(),
+  getDeployStatus: jest.fn(),
+  updateDeployStatus: jest.fn(),
+}));
+process.env.CMS_SPACE_URL = "https://cms.example";
+process.env.CMS_ACCESS_TOKEN = "token";
+process.env.SANITY_API_VERSION = "v1";
+process.env.STRIPE_WEBHOOK_SECRET = "whsec";
+
+describe("deploy-shop API route", () => {
+  let getServerSession: jest.Mock;
+  let actions: {
+    deployShopHosting: jest.Mock;
+    getDeployStatus: jest.Mock;
+    updateDeployStatus: jest.Mock;
+  };
+
+  beforeEach(() => {
+    jest.resetModules();
+    getServerSession = require("next-auth").getServerSession as jest.Mock;
+    actions = require("@cms/actions/deployShop.server");
+    getServerSession.mockReset();
+    actions.deployShopHosting.mockReset();
+    actions.getDeployStatus.mockReset();
+    actions.updateDeployStatus.mockReset();
+  });
+
+  describe("POST", () => {
+    it("deploys shop when authorized", async () => {
+      getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+      actions.deployShopHosting.mockResolvedValueOnce({ id: "123" });
+      const route = await import("../src/app/api/deploy-shop/route");
+      const req = new Request("http://localhost/api/deploy-shop", {
+        method: "POST",
+        body: JSON.stringify({ id: "123", domain: "example.com" }),
+      });
+      const res = await route.POST(req);
+      expect(res.status).toBe(200);
+      await expect(res.json()).resolves.toEqual({ id: "123" });
+      expect(actions.deployShopHosting).toHaveBeenCalledWith("123", "example.com");
+    });
+
+    it("returns 403 when unauthorized", async () => {
+      getServerSession.mockResolvedValueOnce(null);
+      const route = await import("../src/app/api/deploy-shop/route");
+      const req = new Request("http://localhost/api/deploy-shop", {
+        method: "POST",
+        body: JSON.stringify({ id: "123" }),
+      });
+      const res = await route.POST(req);
+      expect(res.status).toBe(403);
+      await expect(res.json()).resolves.toEqual({ error: "Forbidden" });
+    });
+
+    it("returns 400 when action throws", async () => {
+      getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+      actions.deployShopHosting.mockRejectedValueOnce(new Error("bad"));
+      const route = await import("../src/app/api/deploy-shop/route");
+      const req = new Request("http://localhost/api/deploy-shop", {
+        method: "POST",
+        body: JSON.stringify({ id: "123" }),
+      });
+      const res = await route.POST(req);
+      expect(res.status).toBe(400);
+      await expect(res.json()).resolves.toEqual({ error: "bad" });
+    });
+  });
+
+  describe("GET", () => {
+    it("returns deploy status when authorized", async () => {
+      getServerSession.mockResolvedValueOnce({ user: { role: "ShopAdmin" } });
+      actions.getDeployStatus.mockResolvedValueOnce({ status: "ok" });
+      const route = await import("../src/app/api/deploy-shop/route");
+      const req = new Request("http://localhost/api/deploy-shop?id=42");
+      const res = await route.GET(req);
+      expect(res.status).toBe(200);
+      await expect(res.json()).resolves.toEqual({ status: "ok" });
+      expect(actions.getDeployStatus).toHaveBeenCalledWith("42");
+    });
+
+    it("returns 403 when unauthorized", async () => {
+      getServerSession.mockResolvedValueOnce(null);
+      const route = await import("../src/app/api/deploy-shop/route");
+      const req = new Request("http://localhost/api/deploy-shop?id=42");
+      const res = await route.GET(req);
+      expect(res.status).toBe(403);
+      await expect(res.json()).resolves.toEqual({ error: "Forbidden" });
+    });
+
+    it("returns 400 when id missing", async () => {
+      getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+      const route = await import("../src/app/api/deploy-shop/route");
+      const req = new Request("http://localhost/api/deploy-shop");
+      const res = await route.GET(req);
+      expect(res.status).toBe(400);
+      await expect(res.json()).resolves.toEqual({ error: "Missing id" });
+    });
+  });
+
+  describe("PUT", () => {
+    it("updates status when authorized", async () => {
+      getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+      actions.updateDeployStatus.mockResolvedValueOnce(undefined);
+      const route = await import("../src/app/api/deploy-shop/route");
+      const req = new Request("http://localhost/api/deploy-shop", {
+        method: "PUT",
+        body: JSON.stringify({ id: "7", domainStatus: "ready" }),
+      });
+      const res = await route.PUT(req);
+      expect(res.status).toBe(200);
+      await expect(res.json()).resolves.toEqual({ ok: true });
+      expect(actions.updateDeployStatus).toHaveBeenCalledWith("7", { domainStatus: "ready" });
+    });
+
+    it("returns 403 when unauthorized", async () => {
+      getServerSession.mockResolvedValueOnce(null);
+      const route = await import("../src/app/api/deploy-shop/route");
+      const req = new Request("http://localhost/api/deploy-shop", {
+        method: "PUT",
+        body: JSON.stringify({ id: "7" }),
+      });
+      const res = await route.PUT(req);
+      expect(res.status).toBe(403);
+      await expect(res.json()).resolves.toEqual({ error: "Forbidden" });
+    });
+
+    it("returns 400 when id missing", async () => {
+      getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+      const route = await import("../src/app/api/deploy-shop/route");
+      const req = new Request("http://localhost/api/deploy-shop", {
+        method: "PUT",
+        body: JSON.stringify({ domainStatus: "ready" }),
+      });
+      const res = await route.PUT(req);
+      expect(res.status).toBe(400);
+      await expect(res.json()).resolves.toEqual({ error: "Missing id" });
+    });
+  });
+});
+

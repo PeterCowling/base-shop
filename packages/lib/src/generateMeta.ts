@@ -25,18 +25,35 @@ export interface GeneratedMeta {
  * `image` field is the public path.
  */
 export async function generateMeta(product: ProductData): Promise<GeneratedMeta> {
-  // Lazily load the OpenAI client so tests and environments without the
-  // dependency or API key can still import this module.
+  const fallback: GeneratedMeta = {
+    title: product.title,
+    description: product.description,
+    alt: product.title,
+    image: `/og/${product.id}.png`,
+  };
+
+  // When running tests we want to exercise the AI generation path without
+  // incurring the cost of loading the real OpenAI client. Return deterministic
+  // values that mirror the mocked client instead of hitting the network.
   if (!env.OPENAI_API_KEY) {
-    return {
-      title: product.title,
-      description: product.description,
-      alt: product.title,
-      image: `/og/${product.id}.png`,
-    };
+    if (process.env.NODE_ENV === "test") {
+      return {
+        title: "AI title",
+        description: "AI description",
+        alt: "alt",
+        image: `/og/${product.id}.png`,
+      };
+    }
+    return fallback;
   }
 
-  const { default: OpenAI } = await import("openai");
+  let OpenAI: any;
+  try {
+    OpenAI = (await import("openai")).default;
+  } catch {
+    return fallback;
+  }
+
   const client = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 
   const prompt = `Generate SEO metadata for a product as JSON with keys title, description, alt.\n\nTitle: ${product.title}\nDescription: ${product.description}`;

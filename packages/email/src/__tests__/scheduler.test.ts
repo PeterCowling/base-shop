@@ -32,8 +32,17 @@ jest.mock(
   }),
   { virtual: true },
 );
+var coreEnv: Record<string, any> = {};
+jest.mock("@acme/config", () => ({ __esModule: true, env: coreEnv }), {
+  virtual: true,
+});
+jest.mock("@acme/config/env/core", () => ({ __esModule: true, coreEnv }), {
+  virtual: true,
+});
 const { sendCampaignEmail } = require("../send");
 const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
+const { resolveSegment } = require("../segments");
+const resolveSegmentMock = resolveSegment as jest.Mock;
 const { listEvents } = require("@platform-core/repositories/analytics.server");
 const listEventsMock = listEvents as jest.Mock;
 
@@ -61,6 +70,75 @@ describe("scheduler", () => {
 
   afterEach(() => {
     jest.useRealTimers();
+  });
+
+  it("throws when recipients and segment are missing", async () => {
+    const { createCampaign } = await loadScheduler();
+    await expect(
+      createCampaign({
+        shop,
+        recipients: [],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+      }),
+    ).rejects.toThrow("Missing fields");
+  });
+
+  it("delivers immediately with segment and injects unsubscribe link", async () => {
+    resolveSegmentMock.mockResolvedValue(["user@example.com"]);
+    const { createCampaign } = await loadScheduler();
+    await createCampaign({
+      shop,
+      segment: "all",
+      subject: "Hi",
+      body: "<p>Hello %%UNSUBSCRIBE%%</p>",
+    });
+    expect(resolveSegmentMock).toHaveBeenCalledWith(shop, "all");
+    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
+    const call = sendCampaignEmailMock.mock.calls[0][0];
+    expect(call.to).toBe("user@example.com");
+    expect(call.html).toContain("Unsubscribe");
+    expect(call.html).not.toContain("%%UNSUBSCRIBE%%");
+    const stored = JSON.parse(
+      await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8"),
+    );
+    expect(stored[0].sentAt).toBeDefined();
+    expect(stored[0].recipients).toEqual(["user@example.com"]);
+  });
+
+  it("processes pending campaigns from store", async () => {
+    const past = new Date(now.getTime() - 1000).toISOString();
+    const memory: Record<string, Campaign[]> = {
+      [shop]: [
+        {
+          id: "c1",
+          recipients: ["user@example.com"],
+          subject: "Hi",
+          body: "<p>Hi</p>",
+          sendAt: past,
+        },
+      ],
+    };
+    const writeCampaigns = jest.fn(async (s: string, items: Campaign[]) => {
+      memory[s] = items;
+    });
+    const customStore: CampaignStore = {
+      async readCampaigns(s) {
+        return memory[s] || [];
+      },
+      async writeCampaigns(s, items) {
+        await writeCampaigns(s, items);
+      },
+      async listShops() {
+        return Object.keys(memory);
+      },
+    };
+    setCampaignStore(customStore);
+    const { sendDueCampaigns } = await loadScheduler();
+    await sendDueCampaigns();
+    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
+    expect(writeCampaigns).toHaveBeenCalled();
+    expect(memory[shop][0].sentAt).toBeDefined();
   });
 
   it("sends due campaigns and marks them as sent", async () => {
@@ -215,6 +293,8 @@ describe("scheduler", () => {
     jest.useRealTimers();
     process.env.EMAIL_BATCH_SIZE = "2";
     process.env.EMAIL_BATCH_DELAY_MS = "1";
+    coreEnv.EMAIL_BATCH_SIZE = 2;
+    coreEnv.EMAIL_BATCH_DELAY_MS = 1;
     jest.resetModules();
 
     const setTimeoutSpy = jest.spyOn(global, "setTimeout");

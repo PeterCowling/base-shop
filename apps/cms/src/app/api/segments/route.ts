@@ -54,3 +54,23 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   await writeSegments(shop, segments);
   return NextResponse.json({ ok: true });
 }
+
+export async function DELETE(req: NextRequest): Promise<NextResponse> {
+  const shopParam = req.nextUrl.searchParams.get("shop");
+  const idParam = req.nextUrl.searchParams.get("id");
+  const shopParsed = z.string().min(1).safeParse(shopParam);
+  if (!shopParsed.success) {
+    return NextResponse.json({ error: "Missing shop" }, { status: 400 });
+  }
+  const idParsed = z.string().min(1).safeParse(idParam);
+  if (!idParsed.success) {
+    return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  }
+  const segments = await readSegments(shopParsed.data);
+  const idx = segments.findIndex((s) => s.id === idParsed.data);
+  if (idx >= 0) {
+    segments.splice(idx, 1);
+    await writeSegments(shopParsed.data, segments);
+  }
+  return NextResponse.json({ ok: true });
+}

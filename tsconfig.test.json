@@ -48,7 +48,6 @@
     { "path": "./packages/types/tsconfig.test.json" },
     { "path": "./packages/ui/tsconfig.test.json" },
     { "path": "./packages/i18n/tsconfig.test.json" },
-    { "path": "./apps/cms/tsconfig.test.json" },
-    { "path": "./apps/shop-abc/tsconfig.test.json" }
+    { "path": "./apps/cms/tsconfig.test.json" }
   ]
 }

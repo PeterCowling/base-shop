@@ -2,10 +2,12 @@ import { promises as fs } from "fs";
 import { join } from "path";
 import { NextResponse } from "next/server";
 import { requirePermission } from "@auth";
+import { createRequire } from "module";
 // The republish utility lives in the top-level scripts directory and isn't
-// published as a package. Import it via a relative path so the build can
-// resolve it without relying on a workspace alias.
-import { republishShop } from "../../../../../../scripts/src/republish-shop";
+// published as a package. Load it via `createRequire` so the build can
+// resolve the CommonJS module without relying on a workspace alias.
+const require = createRequire(import.meta.url);
+const { republishShop } = require("../../../../../../scripts/src/republish-shop.js") as typeof import("../../../../../../scripts/src/republish-shop");
 
 export const runtime = "nodejs";
 

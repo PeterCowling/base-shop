@@ -103,6 +103,8 @@ module.exports = {
     "^\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
     "^\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
     "^\\./shipping\\.js$": "<rootDir>/packages/config/src/env/shipping.ts",
+    "^\\./foo\\.js$": "<rootDir>/packages/config/src/env/foo.impl.ts",
+    "^\\./foo\\.impl\\.ts$": "<rootDir>/packages/config/src/env/foo.impl.ts",
 
     // explicit barrels (no trailing segment)
     "^@platform-core$": "<rootDir>/packages/platform-core/src/index.ts",

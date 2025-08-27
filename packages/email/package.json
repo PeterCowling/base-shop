@@ -12,7 +12,7 @@
     "./analytics": "./dist/analytics.js"
   },
   "bin": {
-    "email": "./dist/cli.js"
+    "email": "./src/cli.ts"
   },
   "scripts": {
     "build": "tsc -b",

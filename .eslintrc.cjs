@@ -29,5 +29,14 @@ module.exports = {
         "@typescript-eslint/no-var-requires": "off",
       },
     },
+    {
+      files: ["packages/config/src/env/*.js"],
+      rules: {
+        "import/extensions": "off",
+        "no-restricted-exports": "off",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+      },
+    },
   ],
 };

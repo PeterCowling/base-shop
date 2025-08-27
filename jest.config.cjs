@@ -97,12 +97,12 @@ module.exports = {
     "^\\./dataRoot\\.js$": "<rootDir>/packages/platform-core/src/dataRoot.ts",
 
     // map config package relative ESM imports to TypeScript sources
-    "^\\./auth\\.js$": "<rootDir>/packages/config/src/env/auth.ts",
-    "^\\./cms\\.js$": "<rootDir>/packages/config/src/env/cms.ts",
-    "^\\./email\\.js$": "<rootDir>/packages/config/src/env/email.ts",
-    "^\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
-    "^\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
-    "^\\./shipping\\.js$": "<rootDir>/packages/config/src/env/shipping.ts",
+    "^\\./auth\\.js$": "<rootDir>/packages/config/src/env/auth.impl.ts",
+    "^\\./cms\\.js$": "<rootDir>/packages/config/src/env/cms.impl.ts",
+    "^\\./email\\.js$": "<rootDir>/packages/config/src/env/email.impl.ts",
+    "^\\./core\\.js$": "<rootDir>/packages/config/src/env/core.impl.ts",
+    "^\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.impl.ts",
+    "^\\./shipping\\.js$": "<rootDir>/packages/config/src/env/shipping.impl.ts",
 
     // explicit barrels (no trailing segment)
     "^@platform-core$": "<rootDir>/packages/platform-core/src/index.ts",
@@ -126,9 +126,9 @@ module.exports = {
     "^@acme/zod-utils/initZod$": "<rootDir>/test/emptyModule.js",
 
     // resolve relative .js imports within packages/config/env to their .ts sources
-    "^\\./env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.ts",
+    "^\\./env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.impl.ts",
     "^\\./(auth|cms|email|core|payments|shipping)\\.js$":
-      "<rootDir>/packages/config/src/env/$1.ts",
+      "<rootDir>/packages/config/src/env/$1.impl.ts",
 
     // CMS application aliases
     "^@/components/atoms/shadcn$":

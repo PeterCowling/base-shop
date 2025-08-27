@@ -56,4 +56,4 @@ export declare const env: import("zod").objectOutputType<{
     STOCK_ALERT_DEFAULT_THRESHOLD: import("zod").ZodOptional<import("zod").ZodNumber>;
     STOCK_ALERT_RECIPIENT: import("zod").ZodOptional<import("zod").ZodString>;
 }, import("zod").ZodTypeAny, "passthrough">;
-export type { CoreEnv as Env } from "./env/core";
+export type { CoreEnv as Env } from "./env/core.js";

@@ -21,7 +21,6 @@ describe("stock alerts", () => {
 
   it("sends an email when quantity is at or below threshold", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("@acme/email", () => ({ sendEmail }));
 
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
@@ -34,7 +33,7 @@ describe("stock alerts", () => {
         quantity: 1,
         lowStockThreshold: 2,
       },
-    ]);
+    ], { sendEmail });
 
     expect(sendEmail).toHaveBeenCalledTimes(1);
     const [to, subject, body] = sendEmail.mock.calls[0];
@@ -47,7 +46,6 @@ describe("stock alerts", () => {
 
   it("handles items with multiple variant attributes", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("@acme/email", () => ({ sendEmail }));
 
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
@@ -67,7 +65,7 @@ describe("stock alerts", () => {
         quantity: 5,
         lowStockThreshold: 2,
       },
-    ]);
+    ], { sendEmail });
 
     expect(sendEmail).toHaveBeenCalledTimes(1);
     expect(sendEmail).toHaveBeenCalledWith(
@@ -79,7 +77,6 @@ describe("stock alerts", () => {
 
   it("does not send when above threshold", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("@acme/email", () => ({ sendEmail }));
 
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
@@ -92,14 +89,13 @@ describe("stock alerts", () => {
         quantity: 3,
         lowStockThreshold: 2,
       },
-    ]);
+    ], { sendEmail });
 
     expect(sendEmail).not.toHaveBeenCalled();
   });
 
   it("does not send when recipient env var is missing", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("@acme/email", () => ({ sendEmail }));
     delete process.env.STOCK_ALERT_RECIPIENT;
 
     const { checkAndAlert } = await import(
@@ -113,14 +109,13 @@ describe("stock alerts", () => {
         quantity: 1,
         lowStockThreshold: 2,
       },
-    ]);
+    ], { sendEmail });
 
     expect(sendEmail).not.toHaveBeenCalled();
   });
 
   it("suppresses alerts only for the same variant", async () => {
     const sendEmail = jest.fn();
-    jest.doMock("@acme/email", () => ({ sendEmail }));
 
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
@@ -134,23 +129,22 @@ describe("stock alerts", () => {
       lowStockThreshold: 2,
     };
 
-    await checkAndAlert("shop", [item]);
+    await checkAndAlert("shop", [item], { sendEmail });
     expect(sendEmail).toHaveBeenCalledTimes(1);
     sendEmail.mockClear();
 
     // Same variant again should be suppressed
-    await checkAndAlert("shop", [item]);
+    await checkAndAlert("shop", [item], { sendEmail });
     expect(sendEmail).not.toHaveBeenCalled();
 
     // Different variant of same SKU should trigger
     const otherVariant = { ...item, variantAttributes: { size: "l" } };
-    await checkAndAlert("shop", [otherVariant]);
+    await checkAndAlert("shop", [otherVariant], { sendEmail });
     expect(sendEmail).toHaveBeenCalledTimes(1);
   });
 
   it("logs an error when sendEmail rejects", async () => {
     const sendEmail = jest.fn().mockRejectedValue(new Error("fail"));
-    jest.doMock("@acme/email", () => ({ sendEmail }));
     const consoleError = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
@@ -166,7 +160,7 @@ describe("stock alerts", () => {
         quantity: 1,
         lowStockThreshold: 2,
       },
-    ]);
+    ], { sendEmail });
 
     expect(sendEmail).toHaveBeenCalledTimes(1);
     expect(consoleError).toHaveBeenCalledWith(

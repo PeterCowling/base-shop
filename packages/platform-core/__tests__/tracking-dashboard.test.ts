@@ -1,7 +1,5 @@
 import { jest } from "@jest/globals";
 import type { TrackingStatus } from "../src/shipping";
-
-jest.mock("@acme/email", () => ({ sendEmail: jest.fn() }));
 jest.mock("../src/shipping", () => ({
   getTrackingStatus: jest.fn(async () => ({
     status: "Delivered",
@@ -48,7 +46,7 @@ describe("tracking dashboard", () => {
   });
 
   test("notifies on status change", async () => {
-    const sendEmail = (await import("@acme/email")).sendEmail as jest.Mock;
+    const sendEmail = jest.fn();
     global.fetch = jest
       .fn<Promise<any>, any>()
       .mockResolvedValue({ ok: true, json: async () => ({}) } as any) as any;
@@ -61,6 +59,7 @@ describe("tracking dashboard", () => {
       { id: "1", type: "shipment", provider: "ups", trackingNumber: "1" },
       "old",
       "new",
+      { sendEmail },
     );
     expect(sendEmail).toHaveBeenCalled();
     expect(fetch).toHaveBeenCalled();

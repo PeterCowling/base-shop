@@ -31,8 +31,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
   let cart: CartState = {};
   try {
-    const cartJson = decodeCartCookie(rawCookie);
-    cart = cartJson ? (JSON.parse(cartJson) as CartState) : {};
+    const cartCookie = decodeCartCookie(rawCookie);
+    cart =
+      cartCookie && typeof cartCookie === "object"
+        ? (cartCookie as CartState)
+        : {};
   } catch {
     cart = {};
   }

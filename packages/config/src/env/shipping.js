@@ -1,1 +1,1 @@
-export * from "./shipping.impl.ts";
+export * from "./shipping.impl.js";

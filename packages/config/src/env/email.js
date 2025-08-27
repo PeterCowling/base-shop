@@ -1,1 +1,1 @@
-export * from "./email.impl.ts";
+export * from "./email.impl.js";

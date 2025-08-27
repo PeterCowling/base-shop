@@ -10,14 +10,14 @@
     "baseUrl": ".",
     "paths": {
       "@date-utils": ["types-compat/date-utils"],
-      "@acme/email-templates": ["../email-templates/src"],
-      "@acme/email-templates/*": ["../email-templates/src/*"],
+      "@acme/email-templates": ["../email-templates/dist"],
       "@platform-core": ["../platform-core/src"],
       "@platform-core/*": ["../platform-core/src/*"]
     }
   },
   "include": ["src", "types-compat/**/*.d.ts"],
   "references": [
+    { "path": "../email-templates" },
     { "path": "../platform-core" },
     { "path": "../config" },
     { "path": "../lib" },

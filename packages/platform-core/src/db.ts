@@ -1,3 +1,4 @@
+/// <reference path="./prisma.d.ts" />
 import { coreEnv } from "@acme/config/env/core";
 import type { PrismaClient } from "@prisma/client";
 

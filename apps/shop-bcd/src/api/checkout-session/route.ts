@@ -32,10 +32,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   let cart: CartState = {};
   try {
     const cartCookie = decodeCartCookie(rawCookie);
-    cart =
-      cartCookie && typeof cartCookie === "object"
-        ? (cartCookie as CartState)
-        : {};
+    if (typeof cartCookie === "string") {
+      cart = JSON.parse(cartCookie) as CartState;
+    } else if (cartCookie && typeof cartCookie === "object") {
+      cart = cartCookie as CartState;
+    } else {
+      cart = {};
+    }
   } catch {
     cart = {};
   }

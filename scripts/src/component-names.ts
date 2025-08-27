@@ -9,12 +9,26 @@ export function getComponentNameMap(componentsDir: string): Record<string, strin
   const map = new Map<string, string>();
 
   function resolveFile(dir: string, rel: string): string | undefined {
+    // First see if the import already includes an extension.
+    const direct = path.join(dir, rel);
+    if (existsSync(direct)) return direct;
+
+    // Common file extensions we want to handle.
     const exts = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"];
     for (const ext of exts) {
       const full = path.join(dir, rel + ext);
       if (existsSync(full)) return full;
     }
-    const indexExts = ["/index.ts", "/index.tsx"];
+
+    // If the import points to a directory, look for index files.
+    const indexExts = [
+      "/index.ts",
+      "/index.tsx",
+      "/index.js",
+      "/index.jsx",
+      "/index.mjs",
+      "/index.cjs",
+    ];
     for (const ext of indexExts) {
       const full = path.join(dir, rel + ext);
       if (existsSync(full)) return full;
@@ -23,8 +37,19 @@ export function getComponentNameMap(componentsDir: string): Record<string, strin
   }
 
   function walk(dir: string) {
-    const indexFile = path.join(dir, "index.ts");
-    if (!existsSync(indexFile)) return;
+    // Choose the first existing index file from a set of supported extensions.
+    const indexCandidates = [
+      "index.ts",
+      "index.tsx",
+      "index.js",
+      "index.jsx",
+      "index.mjs",
+      "index.cjs",
+    ];
+    const indexFile = indexCandidates
+      .map((f) => path.join(dir, f))
+      .find((f) => existsSync(f));
+    if (!indexFile) return;
     const src = readFileSync(indexFile, "utf8");
 
     // Handle re-exporting entire directories

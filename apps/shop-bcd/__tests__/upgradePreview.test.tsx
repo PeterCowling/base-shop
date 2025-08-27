@@ -33,11 +33,11 @@ describe("upgrade preview page", () => {
     render(<UpgradePreviewPage />);
 
     await screen.findByText("Breadcrumbs");
-    expect(screen.getByTestId("new-comp")).toBeInTheDocument();
+    expect(await screen.findByTestId("new-comp")).toBeInTheDocument();
     expect(screen.queryByTestId("old-comp")).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: /compare/i }));
-    expect(screen.getByTestId("old-comp")).toBeInTheDocument();
+    expect(await screen.findByTestId("old-comp")).toBeInTheDocument();
 
     fetchMock.mockRestore();
   });

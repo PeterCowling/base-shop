@@ -3,9 +3,9 @@ import { z } from "zod";
 import {
   coreEnvBaseSchema,
   depositReleaseEnvRefinement,
-} from "./core";
-import { paymentEnvSchema } from "./payments";
-import { shippingEnvSchema } from "./shipping";
+} from "./core.js";
+import { paymentEnvSchema } from "./payments.js";
+import { shippingEnvSchema } from "./shipping.js";
 
 type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
   k: infer I,
@@ -58,9 +58,9 @@ if (!parsed.success) {
 export const env = parsed.data;
 export type Env = z.infer<typeof envSchema>;
 
-export * from "./auth";
-export * from "./cms";
-export * from "./email";
-export * from "./core";
-export * from "./payments";
-export * from "./shipping";
+export * from "./auth.js";
+export * from "./cms.js";
+export * from "./email.js";
+export * from "./core.js";
+export * from "./payments.js";
+export * from "./shipping.js";

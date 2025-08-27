@@ -4,10 +4,29 @@ import Footer from "@ui/components/layout/Footer";
 import Header from "@ui/components/layout/Header";
 import TranslationsProvider from "@i18n/Translations";
 import { Locale, resolveLocale } from "@i18n/locales";
-import { DefaultSeo } from "next-seo";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { getSeo } from "../../lib/seo";
 import "../globals.css";
+
+export async function generateMetadata({
+  params,
+}: {
+  /** `[lang]` is now an *optional catch-all*, so the param is `string[] | undefined` */
+  params: Promise<{ lang?: string[] }>;
+}): Promise<Metadata> {
+  const { lang: langParam } = await params;
+  const [raw] = langParam ?? [];
+  const lang: Locale = resolveLocale(raw);
+  const seo = await getSeo(lang);
+  return {
+    title: seo.title,
+    description: seo.description,
+    alternates: { canonical: seo.canonical || undefined },
+    openGraph: seo.openGraph as Metadata["openGraph"],
+    twitter: seo.twitter as Metadata["twitter"],
+  };
+}
 
 export default async function LocaleLayout({
   children,
@@ -29,11 +48,9 @@ export default async function LocaleLayout({
       `@i18n/${lang}.json`
     )
   ).default;
-  const seo = await getSeo(lang);
 
   return (
     <TranslationsProvider messages={messages}>
-      <DefaultSeo {...seo} />
       <Header lang={lang} />
       <main className="min-h-[calc(100vh-8rem)]">{children}</main>
       <Footer />

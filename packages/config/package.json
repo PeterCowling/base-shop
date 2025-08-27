@@ -30,7 +30,8 @@
     "prebuild": "pnpm --filter @acme/zod-utils run build",
     "build": "tsc -p tsconfig.json",
     "dev": "tsc -p tsconfig.json -w",
-    "clean": "rimraf dist *.tsbuildinfo"
+    "clean": "rimraf dist *.tsbuildinfo",
+    "test": "jest packages/config/__tests__ --passWithNoTests --runInBand --config jest.preset.cjs"
   },
   "dependencies": {
     "@acme/zod-utils": "workspace:^"

@@ -1,4 +1,5 @@
-import type { Locale, ProductPublication } from "@acme/platform-core/products";
+import type { ProductPublication } from "@acme/types";
+import type { Locale } from "@acme/i18n";
 interface Props {
     locales: readonly Locale[];
     product: ProductPublication;

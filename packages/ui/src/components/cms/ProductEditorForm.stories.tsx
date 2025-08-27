@@ -1,4 +1,5 @@
-import type { Locale, ProductPublication } from "@acme/platform-core/products";
+import type { ProductPublication } from "@acme/types";
+import type { Locale } from "@acme/i18n";
 import type { Meta, StoryObj } from "@storybook/react";
 import ProductEditorForm from "./ProductEditorForm";
 

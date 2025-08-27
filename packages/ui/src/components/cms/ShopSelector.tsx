@@ -1,6 +1,6 @@
 "use client";
 
-import { getShopFromPath, replaceShopInPath } from "@acme/platform-core/utils";
+import { getShopFromPath, replaceShopInPath } from "@acme/shared-utils";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {

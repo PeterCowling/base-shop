@@ -1,6 +1,7 @@
 // packages/ui/hooks/__tests__/useProductEditorFormState.test.tsx
 
-import type { Locale, ProductPublication } from "@acme/platform-core/products";
+import type { ProductPublication } from "@acme/types";
+import type { Locale } from "@acme/i18n";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import {
   useProductEditorFormState,

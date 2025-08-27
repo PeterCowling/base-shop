@@ -1,8 +1,8 @@
 // packages/ui/components/cms/Breadcrumbs.tsx
 "use client";
 
-import type { ProductPublication } from "@acme/platform-core/products";
-import { getShopFromPath } from "@acme/platform-core/utils";
+import type { ProductPublication } from "@acme/types";
+import { getShopFromPath } from "@acme/shared-utils";
 import type { Page } from "@acme/types";
 import { usePathname } from "next/navigation";
 import { memo, useEffect, useState } from "react";

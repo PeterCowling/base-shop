@@ -1,4 +1,4 @@
-import type { CartLine, CartState } from "@acme/platform-core/cartCookie";
+import type { CartLine, CartState } from "@acme/types";
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { Price } from "../atoms/Price";

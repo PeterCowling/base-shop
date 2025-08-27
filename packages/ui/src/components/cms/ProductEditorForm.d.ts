@@ -1,4 +1,4 @@
-import type { Locale } from "@acme/platform-core/products";
+import type { Locale } from "@acme/i18n";
 import type { ProductWithVariants, ProductSaveResult } from "../../hooks/useProductEditorFormState";
 interface BaseProps {
     /** Current product snapshot (all locales) */

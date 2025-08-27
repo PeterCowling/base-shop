@@ -1,4 +1,3 @@
-import OpenAI from "openai";
 import { promises as fs } from "fs";
 import path from "path";
 import { env } from "@acme/config";
@@ -17,11 +16,27 @@ export interface GeneratedMeta {
 }
 
 /**
- * Generate metadata for a product using an LLM and image model.
- * Requires OPENAI_API_KEY to be set. Generated images are written to
- * `public/og/<id>.png` and the returned `image` field is the public path.
+ * Generate metadata for a product using an LLM and image model. If the
+ * `OPENAI_API_KEY` environment variable is not set or the OpenAI client cannot
+ * be loaded, the function falls back to returning the provided product data
+ * without attempting any network calls.
+ *
+ * Generated images are written to `public/og/<id>.png` and the returned
+ * `image` field is the public path.
  */
 export async function generateMeta(product: ProductData): Promise<GeneratedMeta> {
+  // Lazily load the OpenAI client so tests and environments without the
+  // dependency or API key can still import this module.
+  if (!env.OPENAI_API_KEY) {
+    return {
+      title: product.title,
+      description: product.description,
+      alt: product.title,
+      image: `/og/${product.id}.png`,
+    };
+  }
+
+  const { default: OpenAI } = await import("openai");
   const client = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 
   const prompt = `Generate SEO metadata for a product as JSON with keys title, description, alt.\n\nTitle: ${product.title}\nDescription: ${product.description}`;

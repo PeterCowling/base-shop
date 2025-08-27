@@ -26,6 +26,9 @@ async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
   process.env.STRIPE_WEBHOOK_SECRET = "whsec_test";
   process.env.SKIP_STOCK_ALERT = "1";
+  process.env.CMS_SPACE_URL = "http://example.com";
+  process.env.CMS_ACCESS_TOKEN = "token";
+  process.env.SANITY_API_VERSION = "2024-01-01";
   jest.resetModules();
   try {
     await cb(dir);
@@ -145,6 +148,7 @@ describe("inventory import/export routes", () => {
           lowStockThreshold: 1,
         },
       ]);
+      expect(json.items).toHaveLength(2);
     });
   });
 
@@ -174,6 +178,39 @@ describe("inventory import/export routes", () => {
               variantAttributes: {},
             },
           ]),
+      };
+      const req = {
+        formData: async () => ({ get: () => file }),
+      } as any;
+      const res = await route.POST(req, {
+        params: Promise.resolve({ shop: "test" }),
+      });
+      expect(res.status).toBe(400);
+      const body = await res.json();
+      expect(body.error).toMatch(/greater than or equal to 0/);
+    });
+  });
+
+  it("rejects invalid csv content", async () => {
+    await withTempRepo(async () => {
+      jest.doMock("next-auth", () => ({
+        getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+      }));
+      jest.doMock("@acme/email", () => ({ sendEmail: jest.fn() }));
+      Object.assign(process.env, {
+        STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      });
+      const route = await import(
+        "../src/app/api/data/[shop]/inventory/import/route"
+      );
+      const csv =
+        "sku,productId,variant.size,variant.color,quantity,lowStockThreshold\n" +
+        "a,a,M,red,-1,1";
+      const file = {
+        name: "inv.csv",
+        type: "text/csv",
+        text: async () => csv,
       };
       const req = {
         formData: async () => ({ get: () => file }),
@@ -221,12 +258,40 @@ describe("inventory import/export routes", () => {
       const route = await import("../src/app/api/data/[shop]/inventory/export/route");
       const req = new Request("http://test?format=csv");
       const res = await route.GET(req as any, { params: Promise.resolve({ shop: "test" }) });
+      expect(res.status).toBe(200);
       expect(res.headers.get("content-type")).toContain("text/csv");
       const text = await res.text();
       expect(text).toContain(
         "sku,productId,variant.size,variant.color,quantity,lowStockThreshold"
       );
       expect(text).toContain("a,a,M,red,1,1");
+    });
+  });
+
+  it("exports empty inventory as csv", async () => {
+    await withTempRepo(async (dir) => {
+      await fs.writeFile(
+        path.join(dir, "data", "shops", "test", "inventory.json"),
+        "[]",
+        "utf8",
+      );
+      jest.doMock("next-auth", () => ({
+        getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
+      }));
+      jest.doMock("@acme/email", () => ({ sendEmail: jest.fn() }));
+      Object.assign(process.env, {
+        STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      });
+      const route = await import("../src/app/api/data/[shop]/inventory/export/route");
+      const req = new Request("http://test?format=csv");
+      const res = await route.GET(req as any, {
+        params: Promise.resolve({ shop: "test" }),
+      });
+      expect(res.headers.get("content-type")).toContain("text/csv");
+      expect(res.status).toBe(200);
+      const text = await res.text();
+      expect(text).toBe("");
     });
   });
 

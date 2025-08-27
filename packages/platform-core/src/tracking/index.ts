@@ -1,7 +1,7 @@
 // packages/platform-core/src/tracking/index.ts
 
 import { getTrackingStatus, type TrackingStatus } from "../shipping";
-import { sendEmail } from "@acme/email";
+import { type EmailService, getEmailService } from "../services/emailService";
 
 export interface TrackingItem {
   id: string;
@@ -61,11 +61,12 @@ export async function notifyStatusChange(
   item: TrackingItem,
   previous: string | null,
   current: string | null,
+  email: EmailService = getEmailService(),
 ): Promise<void> {
   if (previous === current) return;
   const message = `Tracking update for ${item.id}: ${current ?? "unknown"}`;
   if (contact.email) {
-    await sendEmail(contact.email, "Tracking update", message);
+    await email.sendEmail(contact.email, "Tracking update", message);
   }
   if (contact.phone) {
     await sendSms(contact.phone, message);

@@ -2,7 +2,7 @@ import "server-only";
 
 import { coreEnv } from "@acme/config/env/core";
 import { DATA_ROOT } from "../dataRoot";
-import { sendEmail } from "@acme/email";
+import { type EmailService, getEmailService } from "./emailService";
 import { promises as fs } from "fs";
 import * as path from "path";
 import type { InventoryItem } from "@acme/types";
@@ -34,6 +34,7 @@ async function writeLog(shop: string, log: Record<string, number>): Promise<void
 export async function checkAndAlert(
   shop: string,
   items: InventoryItem[],
+  email: EmailService = getEmailService(),
 ): Promise<void> {
   const settings = await getShopSettings(shop);
   const envRecipients =
@@ -80,7 +81,7 @@ export async function checkAndAlert(
 
   for (const r of recipients) {
     try {
-      await sendEmail(r, subject, body);
+      await email.sendEmail(r, subject, body);
     } catch (err) {
       console.error("Failed to send stock alert", err);
     }

@@ -1,11 +1,15 @@
 import "server-only";
+import { setEmailService } from "@acme/platform-core/services/emailService";
+import { sendEmail } from "./sendEmail";
+
+setEmailService({ sendEmail });
 
 export type { CampaignOptions } from "./send";
 export { sendCampaignEmail } from "./send";
 export { registerTemplate, renderTemplate, clearTemplates } from "./templates";
 export type { AbandonedCart } from "./abandonedCart";
 export { recoverAbandonedCarts, resolveAbandonedCartDelay } from "./abandonedCart";
-export { sendEmail } from "./sendEmail";
+export { sendEmail };
 export { resolveSegment, createContact, addToList, listSegments } from "./segments";
 export {
   createCampaign,

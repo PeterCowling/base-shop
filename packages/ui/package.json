@@ -10,7 +10,6 @@
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {
-    "@acme/auth": "workspace:^",
     "@acme/config": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/i18n": "workspace:*",

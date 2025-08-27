@@ -59,9 +59,6 @@ jest.doMock(
 
 process.env.CART_COOKIE_SECRET = "secret";
 
-import { stripe } from "@acme/stripe";
-const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
-
 function checkoutReq(body: any, cookie: string): any {
   return {
     json: async () => body,
@@ -86,5 +83,6 @@ test("add to cart then create checkout session", async () => {
     JSON.stringify({ [`${sku.id}${size ? ":" + size : ""}`]: { sku, size, qty: 1 } })
   );
   await CHECKOUT_POST(checkoutReq({}, cookie));
-  expect(stripeCreate).toHaveBeenCalled();
+  const { stripe } = await import("@acme/stripe");
+  expect(stripe.checkout.sessions.create).toHaveBeenCalled();
 });

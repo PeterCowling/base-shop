@@ -32,6 +32,13 @@
       "@acme/platform-core/*": [
         "../platform-core/src/*"
       ],
+      "@acme/config": [
+        "../config/dist/index"
+      ],
+      "@acme/config/*": [
+        "./src/env/*.impl.ts",
+        "../config/dist/*"
+      ],
       "@auth": [
         "../auth/src/index",
         "../auth/src"

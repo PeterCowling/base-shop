@@ -117,6 +117,11 @@ module.exports = {
     "^@acme/plugin-sanity/(.*)$": "<rootDir>/test/__mocks__/pluginSanityStub.ts",
     "^@acme/zod-utils/initZod$": "<rootDir>/test/emptyModule.js",
 
+    // resolve relative .js imports within packages/config/env to their .ts sources
+    "^\\./env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.ts",
+    "^\\./(auth|cms|email|core|payments|shipping)\\.js$":
+      "<rootDir>/packages/config/src/env/$1.ts",
+
     // CMS application aliases
     "^@/components/atoms/shadcn$":
       "<rootDir>/test/__mocks__/shadcnDialogStub.tsx",

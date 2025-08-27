@@ -6,7 +6,10 @@ import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 import shop from "../../../../../shop.json";
 
-export const runtime = "edge";
+// This route reads shop settings via `getShopSettings`, which touches the
+// filesystem through Node's `fs` module. To support these Node APIs, opt into
+// the Node.js runtime instead of the Edge runtime.
+export const runtime = "nodejs";
 
 const schema = z
   .object({

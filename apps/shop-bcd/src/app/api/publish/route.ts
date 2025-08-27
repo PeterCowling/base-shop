@@ -2,7 +2,10 @@ import { promises as fs } from "fs";
 import { join } from "path";
 import { NextResponse } from "next/server";
 import { requirePermission } from "@auth";
-import { republishShop } from "@scripts/republish-shop";
+// The republish utility lives in the top-level scripts directory and isn't
+// published as a package. Import it via a relative path so the build can
+// resolve it without relying on a workspace alias.
+import { republishShop } from "../../../../../../scripts/src/republish-shop";
 
 export const runtime = "nodejs";
 

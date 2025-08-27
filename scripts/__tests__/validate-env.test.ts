@@ -17,7 +17,7 @@ describe("validate-env script", () => {
 
     beforeEach(() => {
       jest.resetModules();
-      process.argv = ["node", "validate-env", "abc"];
+      process.argv = ["node", "validate-env", "bcd"];
       process.env.STRIPE_SECRET_KEY = "sk";
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
       process.env.CART_COOKIE_SECRET = "secret";
@@ -91,7 +91,7 @@ describe("validate-env script", () => {
     await import("../../dist-scripts/validate-env.js").catch(() => {});
 
     expect(exitSpy).toHaveBeenCalledWith(1);
-    expect(errorSpy).toHaveBeenCalledWith("Missing apps/shop-abc/.env");
+    expect(errorSpy).toHaveBeenCalledWith("Missing apps/shop-bcd/.env");
     expect(logSpy).not.toHaveBeenCalled();
   });
 

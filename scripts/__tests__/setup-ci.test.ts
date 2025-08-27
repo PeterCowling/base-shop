@@ -43,7 +43,7 @@ describe("setup-ci script", () => {
         throw new Error(`EXIT:${code}`);
       }) as never);
 
-    process.argv = ["node", "setup-ci", "abc"];
+    process.argv = ["node", "setup-ci", "bcd"];
 
     await import("../src/setup-ci");
 
@@ -51,8 +51,8 @@ describe("setup-ci script", () => {
     expect(readMock).toHaveBeenCalled();
     expect(writeMock).toHaveBeenCalledTimes(1);
     const [wfPath, content] = writeMock.mock.calls[0];
-    expect(wfPath).toBe(path.join(".github", "workflows", "shop-abc.yml"));
-      expect(content).toContain("shop-abc");
+    expect(wfPath).toBe(path.join(".github", "workflows", "shop-bcd.yml"));
+      expect(content).toContain("shop-bcd");
       expect(content).toContain("STRIPE_SECRET_KEY: sk");
       expect(content).toContain("STRIPE_WEBHOOK_SECRET: whsec");
       expect(exitMock).not.toHaveBeenCalled();
@@ -81,7 +81,7 @@ describe("setup-ci script", () => {
       .spyOn(fs, "writeFileSync")
       .mockImplementation(() => {});
 
-    process.argv = ["node", "setup-ci", "abc"];
+    process.argv = ["node", "setup-ci", "bcd"];
 
     await import("../src/setup-ci");
 
@@ -104,11 +104,11 @@ describe("setup-ci script", () => {
         throw new Error(`EXIT:${code}`);
       }) as never);
 
-    process.argv = ["node", "setup-ci", "abc"];
+    process.argv = ["node", "setup-ci", "bcd"];
 
     await expect(import("../src/setup-ci")).rejects.toThrow("EXIT:1");
     expect(errorSpy).toHaveBeenCalledWith(
-      `Missing ${path.join("apps", "shop-abc", ".env")}`
+      `Missing ${path.join("apps", "shop-bcd", ".env")}`
     );
     expect(writeMock).not.toHaveBeenCalled();
     expect(exitMock).toHaveBeenCalledWith(1);
@@ -132,7 +132,7 @@ describe("setup-ci script", () => {
         throw new Error(`EXIT:${code}`);
       }) as never);
 
-    process.argv = ["node", "setup-ci", "abc"];
+    process.argv = ["node", "setup-ci", "bcd"];
 
     await expect(import("../src/setup-ci")).rejects.toThrow("EXIT:1");
     expect(errorSpy).toHaveBeenCalled();

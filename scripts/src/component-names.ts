@@ -51,7 +51,9 @@ export function getComponentNameMap(componentsDir: string): Record<string, strin
           name = spec.split(/\s+as\s+/)[1];
         }
         const key = path.relative(componentsDir, file).replace(/\\/g, "/");
-        map.set(key, name);
+        if (!map.has(key)) {
+          map.set(key, name);
+        }
       }
     }
   }

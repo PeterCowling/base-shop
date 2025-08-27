@@ -18,8 +18,20 @@ let rulesCache: Record<string, number> | null = null;
 async function loadRules() {
   if (rulesCache) return rulesCache;
   const file = path.join(resolveDataRoot(), "..", "tax", "rules.json");
-  const buf = await fs.readFile(file, "utf8");
-  rulesCache = JSON.parse(buf) as Record<string, number>;
+  try {
+    const buf = await fs.readFile(file, "utf8");
+    rulesCache = JSON.parse(buf) as Record<string, number>;
+  } catch (err: any) {
+    // If the file is missing, fall back to an empty ruleset so tax
+    // calculations can proceed without configuration. This mirrors the
+    // behaviour in production where tax rules are optional for tests and
+    // local development environments.
+    if (err?.code === "ENOENT") {
+      rulesCache = {};
+    } else {
+      throw err;
+    }
+  }
   return rulesCache;
 }
 

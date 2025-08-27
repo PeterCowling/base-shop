@@ -77,7 +77,7 @@ describe("releaseDepositsOnce", () => {
     }));
 
     const readdir = jest.fn().mockResolvedValue(["test"]);
-    jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
+    jest.doMock("node:fs/promises", () => ({ __esModule: true, readdir }));
 
     const { releaseDepositsOnce } = await import(
       "@acme/platform-machine/releaseDepositsService"

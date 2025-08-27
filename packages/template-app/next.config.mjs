@@ -26,7 +26,7 @@ const config = {
     "@acme/ui",
     "@acme/platform-core",
     "@acme/config",
-    "@acme/zod-utils", // needed by @acme/config/env/auth.ts
+    "@acme/zod-utils", // needed by @acme/config/env/auth.impl.ts
   ],
 };
 

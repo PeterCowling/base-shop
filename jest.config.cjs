@@ -97,12 +97,12 @@ module.exports = {
     "^\\./dataRoot\\.js$": "<rootDir>/packages/platform-core/src/dataRoot.ts",
 
     // map config package relative ESM imports to TypeScript sources
-    "^\\./auth\\.js$": "<rootDir>/packages/config/src/env/auth.ts",
-    "^\\./cms\\.js$": "<rootDir>/packages/config/src/env/cms.ts",
-    "^\\./email\\.js$": "<rootDir>/packages/config/src/env/email.ts",
-    "^\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
-    "^\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
-    "^\\./shipping\\.js$": "<rootDir>/packages/config/src/env/shipping.ts",
+    "^\\./auth\\.js$": "<rootDir>/packages/config/src/env/auth.impl.ts",
+    "^\\./cms\\.js$": "<rootDir>/packages/config/src/env/cms.impl.ts",
+    "^\\./email\\.js$": "<rootDir>/packages/config/src/env/email.impl.ts",
+    "^\\./core\\.js$": "<rootDir>/packages/config/src/env/core.impl.ts",
+    "^\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.impl.ts",
+    "^\\./shipping\\.js$": "<rootDir>/packages/config/src/env/shipping.impl.ts",
     "^\\./foo\\.js$": "<rootDir>/packages/config/src/env/foo.impl.ts",
     "^\\./foo\\.impl\\.ts$": "<rootDir>/packages/config/src/env/foo.impl.ts",
 

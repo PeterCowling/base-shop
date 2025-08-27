@@ -8,7 +8,9 @@ implementation.
 ## Regenerating stubs
 
 Run `pnpm run build:stubs` whenever a `*.impl.ts` file changes to rebuild the
-JavaScript stubs.
+JavaScript stubs. This command runs `scripts/generate-env-stubs.mjs`, which
+scans `src/env/*.impl.ts` and writes matching `.js` files that re-export the
+compiled implementations.
 
 ## Tooling
 

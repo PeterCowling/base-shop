@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import { join } from "path";
 import { NextResponse } from "next/server";
 import { requirePermission } from "@auth";
-import { republishShop } from "../../../../../../scripts/src/republish-shop";
+import { republishShop } from "@scripts/republish-shop";
 
 export const runtime = "nodejs";
 

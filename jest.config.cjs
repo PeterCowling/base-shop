@@ -128,9 +128,9 @@ module.exports = {
     "^@acme/zod-utils/initZod$": "<rootDir>/test/emptyModule.js",
 
     // resolve relative .js imports within packages/config/env to their .ts sources
-    "^\\./env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.ts",
+    "^\\./env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.impl.ts",
     "^\\./(auth|cms|email|core|payments|shipping)\\.js$":
-      "<rootDir>/packages/config/src/env/$1.ts",
+      "<rootDir>/packages/config/src/env/$1.impl.ts",
 
     // CMS application aliases
     "^@/components/atoms/shadcn$":

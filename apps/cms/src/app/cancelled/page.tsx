@@ -2,9 +2,10 @@
 
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function Cancelled() {
+function CancelledContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
   return (
@@ -17,5 +18,13 @@ export default function Cancelled() {
         </p>
       )}
     </div>
+  );
+}
+
+export default function Cancelled() {
+  return (
+    <Suspense>
+      <CancelledContent />
+    </Suspense>
   );
 }

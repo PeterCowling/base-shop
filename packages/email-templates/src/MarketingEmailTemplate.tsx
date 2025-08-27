@@ -1,7 +1,4 @@
-import Image from "next/image";
-
 import * as React from "react";
-import { cn } from "../../utils/style";
 
 export interface MarketingEmailTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
@@ -25,20 +22,17 @@ export function MarketingEmailTemplate({
 }: MarketingEmailTemplateProps) {
   return (
     <div
-      className={cn(
-        "mx-auto w-full max-w-xl overflow-hidden rounded-md border text-sm",
-        className
-      )}
+      className={`mx-auto w-full max-w-xl overflow-hidden rounded-md border text-sm${className ? ` ${className}` : ""}`}
       {...props}
     >
       {logoSrc && (
         <div className="bg-muted p-6 text-center" data-token="--color-muted">
-          <Image
+          <img
             src={logoSrc}
             alt="logo"
             width={40}
             height={40}
-            className="mx-auto h-10 w-auto"
+            style={{ margin: "0 auto", height: "40px", width: "auto" }}
           />
         </div>
       )}

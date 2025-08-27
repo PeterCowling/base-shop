@@ -25,7 +25,7 @@ jest.mock("@platform-core/repositories/analytics.server", () => ({
   listEvents: jest.fn().mockResolvedValue([]),
 }));
 jest.mock(
-  "@acme/ui",
+  "@acme/email-templates",
   () => ({
     __esModule: true,
     marketingEmailTemplates: [],

@@ -389,6 +389,9 @@ importers:
       '@acme/email':
         specifier: workspace:*
         version: link:../../packages/email
+      '@acme/email-templates':
+        specifier: workspace:*
+        version: link:../../packages/email-templates
       '@acme/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
@@ -535,12 +538,12 @@ importers:
       '@acme/config':
         specifier: workspace:*
         version: link:../config
+      '@acme/email-templates':
+        specifier: workspace:*
+        version: link:../email-templates
       '@acme/platform-core':
         specifier: workspace:^
         version: link:../platform-core
-      '@acme/ui':
-        specifier: workspace:*
-        version: link:../ui
       '@sendgrid/mail':
         specifier: ^8.1.5
         version: 8.1.5
@@ -581,6 +584,12 @@ importers:
       '@types/sanitize-html':
         specifier: ^2.16.0
         version: 2.16.0
+
+  packages/email-templates:
+    dependencies:
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
 
   packages/i18n:
     devDependencies:

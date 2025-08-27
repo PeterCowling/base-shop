@@ -10,7 +10,8 @@
     "baseUrl": ".",
     "paths": {
       "@date-utils": ["types-compat/date-utils"],
-      "@acme/ui": ["types-compat/ui"],
+      "@acme/email-templates": ["../email-templates/src"],
+      "@acme/email-templates/*": ["../email-templates/src/*"],
       "@platform-core": ["../platform-core/src"],
       "@platform-core/*": ["../platform-core/src/*"]
     }

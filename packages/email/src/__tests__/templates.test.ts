@@ -8,7 +8,7 @@ describe("renderTemplate", () => {
 
   it("renders registered string templates with variables", async () => {
     jest.doMock(
-      "@acme/ui",
+      "@acme/email-templates",
       () => ({ __esModule: true, marketingEmailTemplates: [] }),
       { virtual: true },
     );
@@ -23,7 +23,7 @@ describe("renderTemplate", () => {
 
   it("renders marketing email template variants", async () => {
     jest.doMock(
-      "@acme/ui",
+      "@acme/email-templates",
       () => ({
         __esModule: true,
         marketingEmailTemplates: [
@@ -56,7 +56,7 @@ describe("renderTemplate", () => {
 
   it("sanitizes body HTML", async () => {
     jest.doMock(
-      "@acme/ui",
+      "@acme/email-templates",
       () => ({
         __esModule: true,
         marketingEmailTemplates: [

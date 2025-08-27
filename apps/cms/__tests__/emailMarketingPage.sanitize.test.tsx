@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import EmailMarketingPage from "../src/app/cms/marketing/email/page";
 
 jest.mock(
-  "@acme/ui",
+  "@acme/email-templates",
   () => ({
     marketingEmailTemplates: [
       {

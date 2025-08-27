@@ -5,7 +5,7 @@ import { formatTimestamp } from "@acme/date-utils";
 import {
   marketingEmailTemplates,
   type MarketingEmailTemplateVariant,
-} from "@acme/ui";
+} from "@acme/email-templates";
 import DOMPurify from "dompurify";
 
 interface Campaign {

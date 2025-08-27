@@ -115,6 +115,12 @@
       "@acme/email/*": [
         "packages/email/src/*"
       ],
+      "@acme/email-templates": [
+        "packages/email-templates/src/index.ts"
+      ],
+      "@acme/email-templates/*": [
+        "packages/email-templates/src/*"
+      ],
       "@acme/stripe": [
         "packages/stripe/src/index.ts"
       ],

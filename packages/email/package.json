@@ -21,7 +21,7 @@
   "dependencies": {
     "@acme/config": "workspace:*",
     "@acme/platform-core": "workspace:^",
-    "@acme/ui": "workspace:*",
+    "@acme/email-templates": "workspace:*",
     "@sendgrid/mail": "^8.1.5",
     "commander": "^11.1.0",
     "dompurify": "^3.2.6",

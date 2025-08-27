@@ -11,8 +11,6 @@ export { FeaturedProductTemplate } from "./FeaturedProductTemplate";
 export { HomepageTemplate } from "./HomepageTemplate";
 export { LiveShoppingEventTemplate } from "./LiveShoppingEventTemplate";
 export { LoyaltyHubTemplate } from "./LoyaltyHubTemplate";
-export { MarketingEmailTemplate } from "./MarketingEmailTemplate";
-export { marketingEmailTemplates, type MarketingEmailTemplateVariant, } from "./marketingEmailTemplates";
 export { OrderConfirmationTemplate } from "./OrderConfirmationTemplate";
 export { OrderTrackingTemplate } from "./OrderTrackingTemplate";
 export { ProductComparisonTemplate } from "./ProductComparisonTemplate";

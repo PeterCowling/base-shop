@@ -9,7 +9,7 @@ jest.doMock("@platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 jest.doMock(
-  "@acme/ui",
+  "@acme/email-templates",
   () => ({
     __esModule: true,
     marketingEmailTemplates: [],

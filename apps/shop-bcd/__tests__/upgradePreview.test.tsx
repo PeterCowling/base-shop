@@ -33,7 +33,8 @@ describe("upgrade preview page", () => {
     render(<UpgradePreviewPage />);
 
     await screen.findByText("Breadcrumbs");
-    expect(await screen.findByTestId("new-comp")).toBeInTheDocument();
+    const newComp = await screen.findByTestId("new-comp");
+    expect(newComp).toBeInTheDocument();
     expect(screen.queryByTestId("old-comp")).toBeNull();
 
     fireEvent.click(screen.getByRole("button", { name: /compare/i }));

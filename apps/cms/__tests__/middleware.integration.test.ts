@@ -3,6 +3,7 @@
 
 import type { JWT } from "next-auth/jwt";
 import { middleware } from "../src/middleware";
+import { canRead as mockedCanRead, canWrite as mockedCanWrite } from "@auth/rbac";
 
 /* -------------------------------------------------------------------------- */
 /* Mock RBAC helpers so importing middleware doesn't pull in JSON modules.   */
@@ -67,6 +68,13 @@ const getToken = mockedGetToken as jest.MockedFunction<
 >;
 const redirect = NextResponse.redirect as jest.Mock;
 const next = NextResponse.next as jest.Mock;
+const rewrite = NextResponse.rewrite as jest.Mock;
+const canRead = mockedCanRead as jest.MockedFunction<
+  typeof import("@auth/rbac").canRead
+>;
+const canWrite = mockedCanWrite as jest.MockedFunction<
+  typeof import("@auth/rbac").canWrite
+>;
 
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
@@ -106,5 +114,31 @@ describe("middleware integration", () => {
 
     expect(next).toHaveBeenCalled();
     expect(res.headers.get("x-middleware-next")).toBe("1");
+  });
+
+  it("rewrites to /403 when read access is denied", async () => {
+    getToken.mockResolvedValueOnce({ role: "viewer" } as JWT);
+    canRead.mockReturnValueOnce(false);
+
+    const req = createRequest("/cms");
+    const res = await middleware(req);
+
+    expect(rewrite).toHaveBeenCalled();
+    expect(res.status).toBe(403);
+    expect(res.headers.get("x-middleware-rewrite")).toBe("http://localhost/403");
+  });
+
+  it("rewrites admin paths to /403?shop=<slug> when write access is denied", async () => {
+    getToken.mockResolvedValueOnce({ role: "viewer" } as JWT);
+    canWrite.mockReturnValueOnce(false);
+
+    const req = createRequest("/cms/shop/foo/settings");
+    const res = await middleware(req);
+
+    expect(rewrite).toHaveBeenCalled();
+    expect(res.status).toBe(403);
+    expect(res.headers.get("x-middleware-rewrite")).toBe(
+      "http://localhost/403?shop=foo"
+    );
   });
 });

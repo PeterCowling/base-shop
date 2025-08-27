@@ -9,6 +9,12 @@ function mockAuth() {
   }));
 }
 
+function mockConfig() {
+  jest.doMock("@acme/config", () => ({
+    env: { NODE_ENV: "test", NEXTAUTH_SECRET: "secret" },
+  }));
+}
+
 describe("publish page action", () => {
   afterEach(() => {
     jest.resetModules();
@@ -32,6 +38,7 @@ describe("publish page action", () => {
       })
     );
     mockAuth();
+    mockConfig();
     const { createPage } = await import(
       "../../apps/cms/src/actions/pages.server"
     );
@@ -55,6 +62,7 @@ describe("publish page action", () => {
       })
     );
     mockAuth();
+    mockConfig();
     const { createPage } = await import(
       "../../apps/cms/src/actions/pages.server"
     );

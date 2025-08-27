@@ -25,6 +25,7 @@ async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   process.env.STRIPE_SECRET_KEY = "sk";
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
   process.env.STRIPE_WEBHOOK_SECRET = "whsec_test";
+  process.env.SKIP_STOCK_ALERT = "1";
   jest.resetModules();
   try {
     await cb(dir);

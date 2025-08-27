@@ -1,34 +1,34 @@
-// Polyfill MessageChannel so that React's scheduler ports don't keep Jest
-// alive or trigger "open handle" warnings.
-const { MessageChannel: NodeMessageChannel } = require("node:worker_threads");
+// Polyfill MessageChannel so React's scheduler doesn't keep Jest alive
+// or trigger "open handle" warnings. Instead of relying on Node's
+// `worker_threads` MessageChannel—which allocates real MessagePort handles
+// that Jest detects as open—emulate the minimal behaviour the scheduler
+// requires using `setImmediate`.
 
-// Track MessagePorts so we can close them once the test suite finishes.
-const openPorts = [];
+class ManagedMessageChannel {
+  constructor() {
+    const port1 = this._createPort(() => port2);
+    const port2 = this._createPort(() => port1);
+    this.port1 = port1;
+    this.port2 = port2;
+  }
 
-class ManagedMessageChannel extends NodeMessageChannel {
-  constructor(...args) {
-    super(...args);
-    openPorts.push(this.port1, this.port2);
-    // React never closes these ports, so unref both ends immediately to avoid
-    // keeping the Node.js event loop active.  Jest's open-handle detection
-    // still sees them as active until explicitly closed, so we collect them
-    // for cleanup after the tests complete.
-    this.port1.unref();
-    this.port2.unref();
+  _createPort(getTarget) {
+    return {
+      onmessage: null,
+      postMessage: (msg) => {
+        // Deliver the message asynchronously to mimic native semantics.
+        setImmediate(() => {
+          getTarget().onmessage?.({ data: msg });
+        });
+      },
+      close: () => {},
+      ref: () => {},
+      unref: () => {},
+      start: () => {},
+    };
   }
 }
 
-function closeOpenPorts() {
-  for (const port of openPorts.splice(0)) {
-    try {
-      port.close();
-    } catch {}
-  }
-}
-
-// Replace the global MessageChannel with the managed version.
+// Install the managed implementation globally.
 global.MessageChannel = ManagedMessageChannel;
 
-// Close any remaining ports after all tests and right before process exit.
-afterAll(closeOpenPorts);
-process.on("exit", closeOpenPorts);

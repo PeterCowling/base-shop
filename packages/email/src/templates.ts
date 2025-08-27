@@ -3,6 +3,7 @@ import { createRequire } from "module";
 import type { ReactElement, ReactNode } from "react";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
+import { marketingEmailTemplates } from "@acme/email-templates";
 
 // Use Node's createRequire with the current file path so this works when the
 // code is executed in a CommonJS context (e.g. ts-jest).
@@ -42,17 +43,6 @@ function renderToStaticMarkup(node: ReactNode): string {
 }
 
 const React = nodeRequire("react") as typeof import("react");
-
-let marketingEmailTemplates: Array<{
-  id: string;
-  render: (props: unknown) => ReactElement;
-}> = [];
-try {
-  marketingEmailTemplates =
-    nodeRequire("@acme/ui").marketingEmailTemplates ?? [];
-  } catch {
-    // Ignore if @acme/ui is unavailable
-  }
 
 const { window } = new JSDOM("");
 const DOMPurify = createDOMPurify(window);

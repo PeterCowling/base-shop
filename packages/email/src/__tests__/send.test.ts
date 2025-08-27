@@ -32,11 +32,10 @@ jest.mock("../scheduler", () => ({}));
 jest.mock("@platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
-// The templates module imports `@acme/ui`, which in turn pulls in many
-// dependencies (including JSON imports with `assert` attributes) that
-// Jest cannot parse in this test environment. Stub the module to avoid
-// loading the real UI package.
-jest.mock("@acme/ui", () => ({ marketingEmailTemplates: [] }));
+// The templates module imports `@acme/email-templates`. Stub the module to
+// avoid loading the real package and its dependencies in this test
+// environment.
+jest.mock("@acme/email-templates", () => ({ marketingEmailTemplates: [] }));
 
 describe("sendCampaignEmail fallback and retry", () => {
   const setupEnv = () => {

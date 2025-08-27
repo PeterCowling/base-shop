@@ -1,6 +1,6 @@
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { marketingEmailTemplates } from "@acme/ui";
+import { marketingEmailTemplates } from "@acme/email-templates";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
 const { window } = new JSDOM("");

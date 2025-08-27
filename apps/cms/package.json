@@ -13,6 +13,7 @@
     "@acme/config": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/email": "workspace:*",
+    "@acme/email-templates": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/plugin-sanity": "workspace:*",

@@ -28,6 +28,5 @@ Shared page-level layouts used across apps. Currently includes:
 - `LoyaltyHubTemplate` – dashboard for customer loyalty stats and history.
 - `Error404Template` – simple page not found layout.
 - `Error500Template` – generic server error page.
-- `MarketingEmailTemplate` – responsive layout for promotional emails.
 - `OrderTrackingTemplate` – progress tracker for shipping status.
 - `ProductMediaGalleryTemplate` – gallery view focused on media assets.

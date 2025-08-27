@@ -16,6 +16,42 @@ describe("middleware", () => {
     jest.resetAllMocks();
   });
 
+  it.each([
+    "/api/auth/test",
+    "/login",
+    "/signup",
+    "/favicon.ico",
+  ])("returns NextResponse.next for %s", async (path) => {
+    getTokenMock.mockResolvedValue(null);
+
+    const req = new NextRequest(`http://example.com${path}`);
+    const res = await middleware(req);
+
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+  });
+
+  it("redirects unauthenticated requests to /login with callbackUrl", async () => {
+    getTokenMock.mockResolvedValue(null);
+
+    const req = new NextRequest("http://example.com/cms");
+    const res = await middleware(req);
+
+    expect(res.status).toBe(307);
+    expect(res.headers.get("location")).toBe(
+      "http://example.com/login?callbackUrl=%2Fcms",
+    );
+  });
+
+  it("allows non-CMS paths without invoking canRead", async () => {
+    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+
+    const req = new NextRequest("http://example.com/other");
+    const res = await middleware(req);
+
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+    expect(canReadMock).not.toHaveBeenCalled();
+  });
+
   it("returns NextResponse.next for static asset paths", async () => {
     getTokenMock.mockResolvedValue(null);
 

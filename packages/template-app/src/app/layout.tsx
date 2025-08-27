@@ -1,5 +1,6 @@
 // src/app/layout.tsx
 import { CartProvider } from "@platform-core/contexts/CartContext";
+import { CurrencyProvider } from "@platform-core/contexts/CurrencyContext";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import AnalyticsScripts from "./AnalyticsScripts";
@@ -29,7 +30,9 @@ export default function RootLayout({
       <body className="antialiased">
         {/* Global providers go here */}
         <AnalyticsScripts />
-        <CartProvider>{children}</CartProvider>
+        <CurrencyProvider>
+          <CartProvider>{children}</CartProvider>
+        </CurrencyProvider>
       </body>
     </html>
   );

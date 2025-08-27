@@ -6,10 +6,10 @@ import {
   getShopSettings,
   readShop,
 } from "@platform-core/repositories/shops.server";
-
-const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";
 import * as React from "react";
+
+const SHOP_ID = "bcd";
 
 export const metadata = { title: "Mobile Returns" };
 

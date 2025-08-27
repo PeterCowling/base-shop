@@ -9,7 +9,18 @@
 // resulting configuration remains valid and avoids the "Duplicate export of
 // 'default'" syntax error that Next.js surfaces during the build.
 
-import baseConfig from "@acme/next-config/next.config.mjs";
+// Ensure required auth secrets exist so `@acme/config` can parse the
+// environment during Next.js's configuration phase. Provide development
+// defaults if they are missing.
+process.env.NEXTAUTH_SECRET ??= "dev-nextauth-secret";
+process.env.SESSION_SECRET ??= "dev-session-secret";
+process.env.CART_COOKIE_SECRET ??= "dev-cart-secret";
+
+// Use a dynamic import so the env defaults above apply before loading the
+// shared configuration.
+const { default: baseConfig } = await import(
+  "@acme/next-config/next.config.mjs",
+);
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -24,7 +35,6 @@ const config = {
   // their untranspiled source code from `node_modules`.
   transpilePackages: [
     "@acme/ui",
-    "@acme/platform-core",
     "@acme/config",
     "@acme/zod-utils", // needed by @acme/config/env/auth.impl.ts
   ],

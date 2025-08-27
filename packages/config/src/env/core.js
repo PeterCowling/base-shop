@@ -1,1 +1,1 @@
-export * from "./core.impl.ts";
+export * from "./core.impl.js";

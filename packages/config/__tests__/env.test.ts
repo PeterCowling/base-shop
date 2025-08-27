@@ -17,6 +17,9 @@ describe("envSchema", () => {
         STRIPE_WEBHOOK_SECRET: "whsec",
         NEXTAUTH_SECRET: "nextauth",
         SESSION_SECRET: "session",
+        CMS_SPACE_URL: "https://example.com",
+        CMS_ACCESS_TOKEN: "token",
+        SANITY_API_VERSION: "2023-01-01",
       } as NodeJS.ProcessEnv;
 
     const { envSchema } = await import("../src/env");
@@ -28,6 +31,9 @@ describe("envSchema", () => {
         STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET!,
         NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET!,
         SESSION_SECRET: process.env.SESSION_SECRET!,
+        CMS_SPACE_URL: process.env.CMS_SPACE_URL!,
+        CMS_ACCESS_TOKEN: process.env.CMS_ACCESS_TOKEN!,
+        SANITY_API_VERSION: process.env.SANITY_API_VERSION!,
       });
       expect(parsed).toEqual({
         STRIPE_SECRET_KEY: "sk",
@@ -36,6 +42,9 @@ describe("envSchema", () => {
         STRIPE_WEBHOOK_SECRET: "whsec",
         NEXTAUTH_SECRET: "nextauth",
         SESSION_SECRET: "session",
+        CMS_SPACE_URL: "https://example.com",
+        CMS_ACCESS_TOKEN: "token",
+        SANITY_API_VERSION: "2023-01-01",
         EMAIL_PROVIDER: "smtp",
       });
   });
@@ -49,6 +58,9 @@ describe("envSchema", () => {
       STRIPE_WEBHOOK_SECRET: "whsec",
       NEXTAUTH_SECRET: "nextauth",
       SESSION_SECRET: "session",
+      CMS_SPACE_URL: "https://example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2023-01-01",
     } as NodeJS.ProcessEnv;
 
     const { envSchema } = await import("../src/env");

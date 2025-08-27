@@ -79,12 +79,6 @@
       "@auth/*": [
         "packages/auth/src/*"
       ],
-      "@acme/config": [
-        "packages/config/src/index.ts"
-      ],
-      "@acme/config/*": [
-        "packages/config/src/*"
-      ],
       "@platform-core": [
         "packages/platform-core/src/index.ts"
       ],

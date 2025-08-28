@@ -1,6 +1,4 @@
 // apps/cms/src/app/cms/wizard/tokenUtils.ts
-/* eslint-disable import/consistent-type-specifier-style */
-
 import { tokens as baseTokensSrc, type TokenMap as ThemeTokenMap } from "@themes/base";
 
 function typedEntries<T extends object>(obj: T): [keyof T, T[keyof T]][] {

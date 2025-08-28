@@ -53,7 +53,10 @@ export default async function PreviewView({
   const tokens = await loadThemeTokens(theme);
   const style = Object.fromEntries(Object.entries(tokens)) as CSSProperties;
 
-  const messagesMap: Record<Locale, () => Promise<any>> = {
+  const messagesMap: Record<
+    Locale,
+    () => Promise<{ default: Record<string, string> }>
+  > = {
     en: () => import("@i18n/en.json"),
     de: () => import("@i18n/de.json"),
     it: () => import("@i18n/it.json"),

@@ -17,17 +17,21 @@ import { nowIso } from "@date-utils";
 
 function collectProductSlugs(content: unknown): string[] {
   const slugs = new Set<string>();
-  const walk = (node: any) => {
-    if (!node) return;
+  const walk = (node: unknown): void => {
+    if (node == null) return;
     if (Array.isArray(node)) {
       node.forEach(walk);
       return;
     }
     if (typeof node === "object") {
-      if (node._type === "productReference" && typeof node.slug === "string") {
-        slugs.add(node.slug);
+      const record = node as Record<string, unknown>;
+      if (
+        record._type === "productReference" &&
+        typeof record.slug === "string"
+      ) {
+        slugs.add(record.slug);
       }
-      for (const value of Object.values(node)) {
+      for (const value of Object.values(record)) {
         walk(value);
       }
     }

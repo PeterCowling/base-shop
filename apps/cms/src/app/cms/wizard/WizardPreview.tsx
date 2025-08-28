@@ -94,12 +94,13 @@ const WizardPreview = forwardRef<HTMLDivElement, Props>(function WizardPreview(
     if (!Comp) return null;
 
     /* Remove metadata fields before spreading props */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const {
       id: _id,
       type: _type,
       ...props
     } = component as Record<string, unknown>;
+    void _id;
+    void _type;
 
     return <Comp {...props} locale="en" />;
   }

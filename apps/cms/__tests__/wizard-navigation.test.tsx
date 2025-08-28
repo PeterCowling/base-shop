@@ -14,6 +14,12 @@ describe("Wizard navigation", () => {
     let capturedBody: unknown = null;
 
     server.use(
+      rest.get("/cms/api/wizard-progress", (_req, res, ctx) =>
+        res(ctx.status(200), ctx.json({ state: {}, completed: {} }))
+      ),
+      rest.put("/cms/api/wizard-progress", (_req, res, ctx) =>
+        res(ctx.status(200), ctx.json({}))
+      ),
       rest.post(
         "/cms/api/configurator",
         async (

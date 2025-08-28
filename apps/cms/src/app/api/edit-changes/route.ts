@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requirePermission } from "@auth";
-import { diffHistory } from "@platform-core/repositories/settings.server";
+import {
+  diffHistory,
+  type SettingsDiffEntry,
+} from "@platform-core/repositories/settings.server";
 
 export const runtime = "nodejs";
+
+type ComponentChange = string | { name?: string };
+type PageDiff = { components?: ComponentChange[] };
+type HistoryEntry = SettingsDiffEntry & {
+  diff?: SettingsDiffEntry["diff"] & {
+    pages?: Record<string, PageDiff>;
+  };
+};
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,13 +28,13 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const history = await diffHistory(shop);
+    const history = (await diffHistory(shop)) as HistoryEntry[];
     const map = new Map<string, Set<string>>();
-    for (const entry of history as Array<{ diff?: any }>) {
-      const pages = entry?.diff?.pages;
-      if (!pages || typeof pages !== "object") continue;
-      for (const [pageId, pageDiff] of Object.entries(pages as Record<string, any>)) {
-        const comps = (pageDiff as any)?.components;
+    for (const entry of history) {
+      const pages = entry.diff?.pages;
+      if (!pages) continue;
+      for (const [pageId, pageDiff] of Object.entries(pages)) {
+        const comps = pageDiff.components;
         if (!Array.isArray(comps)) continue;
         let set = map.get(pageId);
         if (!set) {
@@ -31,8 +42,8 @@ export async function GET(req: NextRequest) {
           map.set(pageId, set);
         }
         for (const comp of comps) {
-          const name = typeof comp === "string" ? comp : (comp as any)?.name;
-          if (name) set.add(name);
+          const name = typeof comp === "string" ? comp : comp.name;
+          if (typeof name === "string") set.add(name);
         }
       }
     }

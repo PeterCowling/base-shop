@@ -35,5 +35,7 @@
   "wizard.preview.title": "Preview",
   "wizard.confirm": "Create Page",
   "wizard.back": "Back",
-  "wizard.next": "Next"
+  "wizard.next": "Next",
+  "cms.style.title": "Style",
+  "cms.style.lowContrast": "Low contrast"
 }

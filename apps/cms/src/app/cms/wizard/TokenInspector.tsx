@@ -34,7 +34,7 @@ export default function TokenInspector({
   useEffect(() => {
     if (!hoverEl || selected?.el === hoverEl) return;
     const prev = hoverEl.style.outline;
-    hoverEl.style.outline = "2px solid #3b82f6";
+    hoverEl.style.outline = "2px solid hsl(var(--color-primary))";
     return () => {
       hoverEl.style.outline = prev;
     };
@@ -45,7 +45,7 @@ export default function TokenInspector({
     const el = selected.el;
     const prevOutline = el.style.outline;
     const prevAnimation = el.style.animation;
-    el.style.outline = "2px solid #3b82f6";
+    el.style.outline = "2px solid hsl(var(--color-primary))";
     el.style.animation = "wizard-outline 1s ease-in-out infinite";
     return () => {
       el.style.outline = prevOutline;
@@ -56,7 +56,7 @@ export default function TokenInspector({
   useEffect(() => {
     const styleEl = document.createElement("style");
     styleEl.textContent =
-      "@keyframes wizard-outline{0%,100%{outline-color:#3b82f6;}50%{outline-color:#93c5fd;}}";
+      "@keyframes wizard-outline{0%,100%{outline-color:hsl(var(--color-primary));}50%{outline-color:hsl(var(--color-primary-dark));}}";
     document.head.appendChild(styleEl);
     return () => {
       document.head.removeChild(styleEl);

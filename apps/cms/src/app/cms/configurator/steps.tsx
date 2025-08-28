@@ -19,76 +19,81 @@ import Link from "next/link";
 import type { StepStatus } from "../wizard/schema";
 import { cn } from "@ui/utils/style";
 import { Tooltip } from "@/components/atoms";
-
-export interface ConfiguratorStep {
-  id: string;
-  label: string;
-  component: React.ComponentType;
-  optional?: boolean;
-  /** IDs of steps that are recommended to complete before this step */
-  recommended?: string[];
-}
+import type { ConfiguratorStep } from "./types";
+import type { ConfiguratorStepProps } from "@/types/configurator";
 
 const stepList: ConfiguratorStep[] = [
   { id: "shop-details", label: "Shop Details", component: StepShopDetails },
   { id: "theme", label: "Theme", component: StepTheme },
   { id: "tokens", label: "Tokens", component: StepTokens },
   { id: "options", label: "Options", component: StepOptions },
-  { id: "navigation", label: "Navigation", component: StepNavigation },
+  {
+    id: "navigation",
+    label: "Navigation",
+    component: StepNavigation as unknown as React.ComponentType<ConfiguratorStepProps>,
+  },
   {
     id: "layout",
     label: "Layout",
-    component: StepLayout,
+    component: StepLayout as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["navigation"],
   },
   {
     id: "home-page",
     label: "Home Page",
-    component: StepHomePage,
+    component: StepHomePage as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["layout"],
   },
   {
     id: "checkout-page",
     label: "Checkout Page",
-    component: StepCheckoutPage,
+    component: StepCheckoutPage as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["layout"],
   },
   {
     id: "shop-page",
     label: "Shop Page",
-    component: StepShopPage,
+    component: StepShopPage as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["layout"],
   },
   {
     id: "product-page",
     label: "Product Page",
-    component: StepProductPage,
+    component: StepProductPage as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["shop-page"],
   },
   {
     id: "additional-pages",
     label: "Additional Pages",
-    component: StepAdditionalPages,
+    component: StepAdditionalPages as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["layout"],
   },
-  { id: "env-vars", label: "Environment Variables", component: StepEnvVars },
-  { id: "summary", label: "Summary", component: StepSummary },
+  {
+    id: "env-vars",
+    label: "Environment Variables",
+    component: StepEnvVars as unknown as React.ComponentType<ConfiguratorStepProps>,
+  },
+  {
+    id: "summary",
+    label: "Summary",
+    component: StepSummary as unknown as React.ComponentType<ConfiguratorStepProps>,
+  },
   {
     id: "import-data",
     label: "Import Data",
-    component: StepImportData,
+    component: StepImportData as unknown as React.ComponentType<ConfiguratorStepProps>,
     optional: true,
   },
   {
     id: "seed-data",
     label: "Seed Data",
-    component: StepSeedData,
+    component: StepSeedData as unknown as React.ComponentType<ConfiguratorStepProps>,
     optional: true,
   },
   {
     id: "hosting",
     label: "Hosting",
-    component: StepHosting,
+    component: StepHosting as unknown as React.ComponentType<ConfiguratorStepProps>,
     optional: true,
   },
 ];

@@ -12,8 +12,9 @@ import { useState } from "react";
 import { type TokenMap } from "../../wizard/tokenUtils";
 import { useConfigurator } from "../ConfiguratorContext";
 import { useThemeLoader } from "../hooks/useThemeLoader";
+import type { ConfiguratorStepProps } from "@/types/configurator";
 
-export default function StepTokens(): React.JSX.Element {
+export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element {
   const themeStyle = useThemeLoader();
   const [, markComplete] = useStepCompletion("tokens");
   const router = useRouter();

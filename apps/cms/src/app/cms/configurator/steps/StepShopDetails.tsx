@@ -13,23 +13,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import useStepCompletion from "../hooks/useStepCompletion";
-
-interface Props {
-  shopId: string;
-  setShopId: (v: string) => void;
-  storeName: string;
-  setStoreName: (v: string) => void;
-  logo: string;
-  setLogo: (v: string) => void;
-  contactInfo: string;
-  setContactInfo: (v: string) => void;
-  type: "sale" | "rental";
-  setType: (v: "sale" | "rental") => void;
-  template: string;
-  setTemplate: (v: string) => void;
-  templates: string[];
-  errors?: Record<string, string[]>;
-}
+import type { ConfiguratorStepProps } from "@/types/configurator";
 
 export default function StepShopDetails({
   shopId,
@@ -46,7 +30,7 @@ export default function StepShopDetails({
   setTemplate,
   templates,
   errors = {},
-}: Props): React.JSX.Element {
+}: ConfiguratorStepProps): React.JSX.Element {
   const router = useRouter();
   const [, markComplete] = useStepCompletion("shop-details");
   const [validationErrors, setValidationErrors] = useState<Record<string, string[]>>({});

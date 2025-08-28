@@ -1,0 +1,1 @@
+{"version":3,"file":"tokens-to-css-vars.d.ts","sourceRoot":"","sources":["tokens-to-css-vars.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,aAAa;IAC5B,QAAQ,EAAE,MAAM,CAAC;IACjB,QAAQ,EAAE,MAAM,EAAE,CAAC;CACpB;AAED,wBAAgB,eAAe,CAAC,EAAE,KAAK,EAAE,EAAE;IAAE,KAAK,EAAE,OAAO,CAAA;CAAE,GAAG,aAAa,CAK5E"}

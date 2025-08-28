@@ -1,4 +1,5 @@
 // apps/cms/src/auth/options.ts
+import "server-only";
 import argon2 from "argon2";
 import type { NextAuthOptions } from "next-auth";
 import type { JWT } from "next-auth/jwt";

@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useMemo, useState } from "react";
 
 import { baseTokens, loadThemeTokens, type TokenMap } from "./tokenUtils";
@@ -28,7 +29,6 @@ export default function Wizard({ themes }: WizardProps): React.JSX.Element {
   const [tokens, setTokens] = useState<TokenMap>(baseTokens);
   const [stepIdx, setStepIdx] = useState(0);
   const [message, setMessage] = useState<string | null>(null);
-
   const step: StepId = stepOrder[stepIdx];
 
   // --------------------------------------------------------------
@@ -53,9 +53,10 @@ export default function Wizard({ themes }: WizardProps): React.JSX.Element {
   // --------------------------------------------------------------
   useEffect(() => {
     let cancelled = false;
-    fetch("/cms/api/wizard-progress")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((json) => {
+    async function load() {
+      try {
+        const res = await fetch("/cms/api/wizard-progress");
+        const json = res.ok ? await res.json() : null;
         if (cancelled || !json) return;
         if (json.state?.shopId) setShopId(json.state.shopId);
         if (json.state?.theme) setTheme(json.state.theme);
@@ -65,10 +66,11 @@ export default function Wizard({ themes }: WizardProps): React.JSX.Element {
         const completed = json.completed || {};
         const idx = stepOrder.findIndex((s) => completed[s] !== "complete");
         setStepIdx(idx === -1 ? stepOrder.length - 1 : idx);
-      })
-      .catch(() => {
+      } catch {
         /* ignore */
-      });
+      }
+    }
+    void load();
     return () => {
       cancelled = true;
     };

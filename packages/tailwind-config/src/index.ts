@@ -7,7 +7,6 @@ type Config = Record<string, unknown>;
 /* ------------------------------------------------------------
  *  Runtime diagnostics — confirm the preset really loads
  * ------------------------------------------------------------ */
-// eslint-disable-next-line no-console
 console.log(
   `[@acme/tailwind-config] ✅  preset imported (cwd: ${process.cwd()})`
 );
@@ -62,14 +61,12 @@ const preset: Config = {
 };
 
 // Additional diagnostics
-// eslint-disable-next-line no-console
 console.log("[@acme/tailwind-config] preset keys", Object.keys(preset));
-// eslint-disable-next-line no-console
 console.log(
   "[@acme/tailwind-config] has nested",
   {
-    plugins: Array.isArray((preset as any).plugins),
-    presets: Array.isArray((preset as any).presets),
+    plugins: Array.isArray((preset as { plugins?: unknown[] }).plugins),
+    presets: Array.isArray((preset as { presets?: unknown[] }).presets),
   }
 );
 

@@ -10,6 +10,7 @@ import {
   deleteThemePreset,
 } from "@platform-core/repositories/themePresets.server";
 import ThemeEditor from "./ThemeEditor";
+import Link from "next/link";
 
 export async function savePreset(
   shop: string,
@@ -45,6 +46,11 @@ export default async function ShopThemePage({
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Theme</h2>
+      <p className="mb-4 text-sm">
+        <Link href="/cms/themes/library" className="text-primary underline">
+          Theme Library
+        </Link>
+      </p>
       <ThemeEditor
         shop={shop}
         themes={themes}

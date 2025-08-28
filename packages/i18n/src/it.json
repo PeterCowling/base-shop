@@ -49,4 +49,6 @@
   "cms.image.altWarning": "Fornisci un testo alternativo o segna come decorativa.",
   "cms.image.probing": "Verifica dell'immagine…",
   "cms.image.probeError": "L'URL deve puntare a un'immagine"
+  ,"cms.theme.library": "Libreria temi"
+  ,"cms.theme.saveToLibrary": "Salva nella libreria"
 }

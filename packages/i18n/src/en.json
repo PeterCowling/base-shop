@@ -45,4 +45,6 @@
   "cms.image.altWarning": "Provide alt text or mark as decorative.",
   "cms.image.probing": "Checking image…",
   "cms.image.probeError": "URL must point to an image"
+  ,"cms.theme.library": "Theme Library"
+  ,"cms.theme.saveToLibrary": "Save to Library"
 }

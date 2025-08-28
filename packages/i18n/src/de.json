@@ -49,4 +49,6 @@
   "cms.image.altWarning": "Alternativtext angeben oder als dekorativ markieren.",
   "cms.image.probing": "Bild wird geprüft…",
   "cms.image.probeError": "URL muss auf ein Bild verweisen"
+  ,"cms.theme.library": "Theme-Bibliothek"
+  ,"cms.theme.saveToLibrary": "In Bibliothek speichern"
 }

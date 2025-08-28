@@ -19,7 +19,12 @@ import type {
   Plugin,
 } from "@acme/types";
 
-const req = createRequire(import.meta.url);
+// Use __filename when available to support CommonJS environments like Jest.
+// When running as an ES module where __filename is undefined, fall back to
+// dynamically evaluating `import.meta.url` to avoid parse errors in CJS.
+const req = createRequire(
+  typeof __filename !== "undefined" ? __filename : eval("import.meta.url"),
+);
 let tsLoaderRegistered = false;
 async function ensureTsLoader() {
   if (!tsLoaderRegistered) {
@@ -29,26 +34,24 @@ async function ensureTsLoader() {
   }
 }
 
-const registry = {
-  paypal: async () => {
+/** Load a plugin module from the given directory path */
+async function loadPluginFromDir(dir: string): Promise<Plugin | undefined> {
+  try {
     await ensureTsLoader();
-    return req("../../plugins/paypal/index.ts");
-  },
-  "premier-shipping": async () => {
-    await ensureTsLoader();
-    return req("../../plugins/premier-shipping/index.ts");
-  },
-  sanity: async () => {
-    await ensureTsLoader();
-    return req("../../plugins/sanity/index.ts");
-  },
-} satisfies Record<string, () => Promise<{ default: Plugin }>>;
+    const pkgPath = path.join(dir, "package.json");
+    const pkg = JSON.parse(await readFile(pkgPath, "utf8"));
+    const main = pkg.main || "index.ts";
+    const mod = await req(path.join(dir, main));
+    return mod.default as Plugin;
+  } catch (err) {
+    logger.error("Failed to load plugin", { plugin: dir, err });
+    return undefined;
+  }
+}
 
-export async function loadPlugin(
-  id: keyof typeof registry,
-): Promise<Plugin | undefined> {
-  const mod = await registry[id]?.();
-  return mod?.default as Plugin | undefined;
+// Backwards-compatible export for loading a single plugin by path
+export async function loadPlugin(id: string): Promise<Plugin | undefined> {
+  return loadPluginFromDir(id);
 }
 
 export interface LoadPluginsOptions {
@@ -107,19 +110,17 @@ export async function loadPlugins({
   const searchDirs = Array.from(
     new Set([workspaceDir, ...envDirs, ...configDirs, ...directories]),
   );
-  const ids = new Set<keyof typeof registry>();
+  const pluginDirs = new Set<string>();
   const explicit = [...configPlugins, ...plugins];
   for (const item of explicit) {
-    const id = path.basename(item) as keyof typeof registry;
-    if (registry[id]) ids.add(id);
+    pluginDirs.add(path.resolve(item));
   }
   for (const dir of searchDirs) {
     try {
       const entries = await readdir(dir, { withFileTypes: true });
       for (const entry of entries) {
         if (entry.isDirectory()) {
-          const id = entry.name as keyof typeof registry;
-          if (registry[id]) ids.add(id);
+          pluginDirs.add(path.join(dir, entry.name));
         }
       }
     } catch (err) {
@@ -128,13 +129,9 @@ export async function loadPlugins({
   }
 
   const loaded: Plugin[] = [];
-  for (const id of ids) {
-    try {
-      const plugin = await loadPlugin(id);
-      if (plugin) loaded.push(plugin);
-    } catch (err) {
-      logger.error("Failed to load plugin", { plugin: id, err });
-    }
+  for (const dir of pluginDirs) {
+    const plugin = await loadPluginFromDir(dir);
+    if (plugin) loaded.push(plugin);
   }
   return loaded;
 }

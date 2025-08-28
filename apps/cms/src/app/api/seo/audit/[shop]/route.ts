@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateShopName } from "@acme/lib";
-import lighthouse from "lighthouse";
 import isURL from "validator/lib/isURL";
 import {
   appendSeoAudit,
@@ -17,6 +16,8 @@ const TRUSTED_HOSTS = new Set(
 );
 
 async function runLighthouse(url: string): Promise<SeoAuditEntry> {
+  const { default: lighthouse } = await import("lighthouse");
+
   type Audit = {
     score?: number;
     scoreDisplayMode?: string;

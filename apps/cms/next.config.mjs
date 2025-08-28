@@ -9,8 +9,9 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     // Allow importing/transpiling code from outside this app directory.
-    externalDir: true
+    externalDir: true,
   },
+  serverExternalPackages: ["lighthouse", "puppeteer", "yargs"],
   // Transpile linked workspace packages used by the CMS
   transpilePackages: [
     "@platform-core",

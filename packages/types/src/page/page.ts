@@ -142,3 +142,6 @@ export const pageSchema = z
   })
   .strict() as z.ZodSchema<Page>;
 
+
+export { scaffoldSpecSchema } from "./ScaffoldSpec";
+export type { ScaffoldSpec } from "./ScaffoldSpec";

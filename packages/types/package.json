@@ -29,6 +29,11 @@
       "import": "./src/settings/*.ts",
       "default": "./src/settings/*.ts"
     },
+    "./theme/*": {
+      "types": "./src/theme/*.ts",
+      "import": "./src/theme/*.ts",
+      "default": "./src/theme/*.ts"
+    },
     "./*": {
       "types": "./src/*.ts",
       "import": "./src/*.ts",

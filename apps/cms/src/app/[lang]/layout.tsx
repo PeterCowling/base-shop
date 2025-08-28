@@ -14,7 +14,11 @@ import de from "@i18n/de.json";
 import en from "@i18n/en.json";
 import it from "@i18n/it.json";
 
-const MESSAGES: Record<Locale, typeof en> = { en, de, it };
+const MESSAGES: Record<Locale, typeof en> = {
+  en,
+  de: de as typeof en,
+  it: it as typeof en,
+};
 
 /** Layout for every route under `/[lang]/*` */
 export default async function LocaleLayout({

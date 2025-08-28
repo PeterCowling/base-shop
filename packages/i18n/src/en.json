@@ -37,5 +37,6 @@
   "wizard.back": "Back",
   "wizard.next": "Next",
   "cms.style.title": "Style",
-  "cms.style.lowContrast": "Low contrast"
+  "cms.style.lowContrast": "Low contrast",
+  "cms.theme.library": "Theme Library"
 }

@@ -19,6 +19,7 @@
     "@acme/plugin-sanity": "workspace:*",
     "@acme/shared-utils": "workspace:*",
     "@acme/zod-utils": "workspace:^",
+    "@acme/theme": "workspace:*",
     "@sendgrid/eventwebhook": "^7.2.7",
     "@themes/base": "workspace:*",
     "busboy": "^1.6.0",

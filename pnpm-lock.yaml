@@ -404,6 +404,9 @@ importers:
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../../packages/shared-utils
+      '@acme/theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
       '@acme/zod-utils':
         specifier: workspace:^
         version: link:../../packages/zod-utils
@@ -755,6 +758,15 @@ importers:
       next:
         specifier: ^15.3.4
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+
+  packages/theme:
+    dependencies:
+      '@acme/types':
+        specifier: workspace:*
+        version: link:../types
+      zod:
+        specifier: 3.25.73
+        version: 3.25.73
 
   packages/themes/abc: {}
 

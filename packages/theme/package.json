@@ -1,0 +1,35 @@
+{
+  "name": "@acme/theme",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "files": ["src"],
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rimraf dist *.tsbuildinfo",
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "zod": "^3.25.73",
+    "@acme/types": "workspace:*"
+  },
+  "exports": {
+    "./io/*": {
+      "types": "./src/io/*.ts",
+      "import": "./src/io/*.ts",
+      "default": "./src/io/*.ts"
+    },
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  }
+}

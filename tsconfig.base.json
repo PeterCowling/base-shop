@@ -73,6 +73,18 @@
       "@acme/i18n/*": [
         "packages/i18n/src/*"
       ],
+      "@theme": [
+        "packages/theme/src/index.ts"
+      ],
+      "@theme/*": [
+        "packages/theme/src/*"
+      ],
+      "@acme/theme": [
+        "packages/theme/src/index.ts"
+      ],
+      "@acme/theme/*": [
+        "packages/theme/src/*"
+      ],
       "@auth": [
         "packages/auth/src/index.ts"
       ],

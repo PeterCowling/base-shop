@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/blog/sanity/connect/useSanityConnection.ts
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import { saveSanityConfig } from "@cms/actions/saveSanityConfig";
 import { defaultDataset } from "./constants";
@@ -39,7 +39,7 @@ export function useSanityConnection(
   const [verifyError, setVerifyError] = useState("");
   const creatingDatasetRef = useRef(false);
 
-  async function verify() {
+  const verify = useCallback(async () => {
     if (!projectId || !token || !dataset) {
       return;
     }
@@ -80,28 +80,20 @@ export function useSanityConnection(
       setVerifyError("Invalid Sanity credentials");
       setVerifyStatus("error");
     }
-  }
+  }, [projectId, token, dataset]);
 
   useEffect(() => {
     if (projectId && token) {
       void verify();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (projectId && token && dataset) {
-      void verify();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataset]);
+  }, [projectId, token, verify]);
 
   useEffect(() => {
     if (state.message && creatingDatasetRef.current) {
       void verify();
       creatingDatasetRef.current = false;
     }
-  }, [state.message]);
+  }, [state.message, verify]);
 
   function handleDatasetSubmit() {
     creatingDatasetRef.current =

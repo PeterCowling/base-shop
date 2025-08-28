@@ -19,7 +19,8 @@ export default function StepPage({ stepId }: Props) {
   const prev = list[idx - 1];
   const next = list[idx + 1];
 
-  const StepComponent = step.component as React.ComponentType<any>;
+  const StepComponent =
+    step.component as React.ComponentType<Record<string, unknown>>;
 
   return (
     <div className="space-y-4">

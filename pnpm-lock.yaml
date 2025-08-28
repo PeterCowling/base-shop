@@ -712,9 +712,6 @@ importers:
       pino:
         specifier: ^9.9.0
         version: 9.9.0
-      raw-body:
-        specifier: 2.4.1
-        version: 2.4.1
     devDependencies:
       next:
         specifier: ^15.3.4

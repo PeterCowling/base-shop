@@ -1,3 +1,4 @@
+"use client";
 import type { TabsComponent } from "@acme/types";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
 

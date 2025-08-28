@@ -1,10 +1,12 @@
 import { NextRequest } from "next/server";
 import { emitOpen } from "@acme/email";
 
+export const runtime = "edge";
+
 // 1x1 transparent gif
-const pixel = Buffer.from(
-  "R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==",
-  "base64"
+const pixel = Uint8Array.from(
+  atob("R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="),
+  (c) => c.charCodeAt(0)
 );
 
 export async function GET(req: NextRequest) {

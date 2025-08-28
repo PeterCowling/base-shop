@@ -1,3 +1,4 @@
+"use client";
 import { DesktopIcon, LaptopIcon, MobileIcon } from "@radix-ui/react-icons";
 import {
   Button,

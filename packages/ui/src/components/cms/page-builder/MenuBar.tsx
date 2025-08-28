@@ -1,3 +1,4 @@
+"use client";
 import type { Editor } from "@tiptap/react";
 import { Button } from "../../atoms/shadcn";
 

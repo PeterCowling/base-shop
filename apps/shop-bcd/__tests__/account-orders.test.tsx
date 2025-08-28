@@ -1,12 +1,12 @@
 // apps/shop-bcd/__tests__/account-orders.test.tsx
-jest.mock("@ui/components/account/Orders", () => ({
+jest.mock("@ui/account", () => ({
   __esModule: true,
-  default: jest.fn(() => null),
-  metadata: { title: "Orders" },
+  OrdersPage: jest.fn(() => null),
+  ordersMetadata: { title: "Orders" },
 }));
 
 import OrdersPage, { metadata } from "../src/app/account/orders/page";
-import Orders from "@ui/components/account/Orders";
+import { OrdersPage as Orders } from "@ui/account";
 import shop from "../shop.json";
 
 describe("/account/orders page", () => {

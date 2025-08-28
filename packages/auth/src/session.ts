@@ -1,4 +1,5 @@
 // packages/auth/src/session.ts
+import "server-only";
 import { cookies, headers } from "next/headers";
 import { sealData, unsealData } from "iron-session";
 import { randomUUID } from "crypto";

@@ -1,5 +1,8 @@
 // apps/shop-bcd/src/app/account/orders/page.tsx
-import Orders, { metadata } from "@ui/components/account/Orders";
+import {
+  OrdersPage as Orders,
+  ordersMetadata as metadata,
+} from "@ui/account";
 import shop from "../../../../shop.json";
 
 export { metadata };

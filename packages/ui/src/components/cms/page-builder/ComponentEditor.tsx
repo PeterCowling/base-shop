@@ -7,6 +7,7 @@ import { Accordion } from "../../atoms/shadcn";
 import LayoutPanel from "./panels/LayoutPanel";
 import ContentPanel from "./panels/ContentPanel";
 import InteractionsPanel from "./panels/InteractionsPanel";
+import StylePanel from "./StylePanel";
 import useComponentInputs from "./useComponentInputs";
 import useComponentResize from "./useComponentResize";
 
@@ -60,6 +61,15 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
               component={component}
               onChange={onChange}
               handleInput={handleInput}
+            />
+          ),
+        },
+        {
+          title: "Style",
+          content: (
+            <StylePanel
+              value={(component as any).style ?? {}}
+              onChange={(style) => onChange({ style } as any)}
             />
           ),
         },

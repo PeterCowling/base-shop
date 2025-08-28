@@ -26,5 +26,13 @@
   "checkout.retry": "Retry",
   "checkout.empty": "Your cart is empty.",
   "checkout.return": "Return date",
-  "checkout.deposit": "Deposit"
+  "checkout.deposit": "Deposit",
+  "cms.style.foreground": "Foreground",
+  "cms.style.background": "Background",
+  "cms.style.border": "Border",
+  "cms.style.fontFamily": "Font family",
+  "cms.style.fontSize": "Font size",
+  "cms.style.fontWeight": "Font weight",
+  "cms.style.lineHeight": "Line height",
+  "cms.style.lowContrast": "Low contrast"
 }

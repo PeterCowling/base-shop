@@ -111,6 +111,19 @@ export default [
     },
   },
 
+  /* ▸ tailwind-config package linting without TS project */
+  {
+    files: ["packages/tailwind-config/**/*.{ts,tsx,js,jsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+  },
+
   /* ▸ Scripts directory override */
   {
     files: ["scripts/**/*.{ts,tsx,js,jsx}"],

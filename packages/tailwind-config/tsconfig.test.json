@@ -4,8 +4,9 @@
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "noEmit": true,
     "module": "esnext",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "rootDir": "."
   },
-  "include": ["src/**/*"],
-  "exclude": ["__tests__"]
+  "include": ["src/**/*", "__tests__/**/*"],
+  "exclude": ["dist", ".turbo", "node_modules"]
 }

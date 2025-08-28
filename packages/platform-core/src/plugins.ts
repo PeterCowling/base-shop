@@ -22,6 +22,9 @@ import type {
 
 let tsLoaderRegistered = false;
 async function importPluginModule(entry: string) {
+  if (typeof window !== "undefined") {
+    throw new Error("Plugins can only be loaded on the server");
+  }
   const abs = path.resolve(entry);
   if (/\.[mc]?ts$/.test(abs)) {
     if (!tsLoaderRegistered) {
@@ -29,7 +32,7 @@ async function importPluginModule(entry: string) {
       tsNode.register({ transpileOnly: true });
       tsLoaderRegistered = true;
     }
-    const req = createRequire(abs);
+    const req = createRequire(import.meta.url);
     return req(abs);
   }
   return import(pathToFileURL(abs).href);

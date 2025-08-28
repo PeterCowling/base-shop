@@ -24,6 +24,7 @@ import { useState } from "react";
 import { Toast } from "@ui/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 
 interface Props {
@@ -112,9 +113,11 @@ export default function StepShopPage({
             >
               <button type="button" className="w-full text-left">
                 <div className="flex items-center gap-2">
-                  <img
+                  <Image
                     src={t.preview}
                     alt={`${t.name} preview`}
+                    width={32}
+                    height={32}
                     className="h-8 w-8 rounded object-cover"
                   />
                   {t.name}
@@ -141,9 +144,12 @@ export default function StepShopPage({
             </DialogTitle>
           </DialogHeader>
           {pendingTemplate?.preview && (
-            <img
+            <Image
               src={pendingTemplate.preview}
               alt={`${pendingTemplate.name} preview`}
+              width={800}
+              height={600}
+              sizes="100vw"
               className="w-full rounded"
             />
           )}

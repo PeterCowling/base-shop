@@ -1,5 +1,6 @@
 // apps/cms/src/app/cms/themes/library/page.tsx
 import Link from "next/link";
+import { track } from "@acme/telemetry";
 import type { ThemeLibraryEntry } from "@acme/types/theme/ThemeLibrary";
 
 async function fetchThemes(): Promise<ThemeLibraryEntry[]> {
@@ -9,6 +10,7 @@ async function fetchThemes(): Promise<ThemeLibraryEntry[]> {
 }
 
 export default async function ThemeLibraryPage() {
+  track("themes:library:view", {});
   const themes = await fetchThemes();
   return (
     <div>

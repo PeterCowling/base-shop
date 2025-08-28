@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useParams } from "next/navigation";
+import { track } from "@acme/telemetry";
 import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
 import SpecForm from "./components/SpecForm";
 import PreviewPane from "./components/PreviewPane";
@@ -16,6 +17,7 @@ export default function NewWizardPage() {
   const handleNext = useCallback(
     async (s: ScaffoldSpec) => {
       const draft = await createDraft(shop, s);
+      track("wizard:createDraft", { shop });
       setSpec(s);
       setDraftId(draft.id);
     },
@@ -23,7 +25,10 @@ export default function NewWizardPage() {
   );
 
   const handleBack = useCallback(() => setSpec(null), []);
-  const handleConfirm = useCallback(() => finalize(shop, draftId), [shop, draftId]);
+  const handleConfirm = useCallback(() => {
+    track("wizard:finalize", { shop });
+    return finalize(shop, draftId);
+  }, [shop, draftId]);
 
   if (!spec) {
     return <SpecForm onNext={handleNext} />;

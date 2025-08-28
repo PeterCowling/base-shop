@@ -407,6 +407,9 @@ importers:
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../../packages/shared-utils
+      '@acme/telemetry':
+        specifier: workspace:*
+        version: link:../../packages/telemetry
       '@acme/theme':
         specifier: workspace:*
         version: link:../../packages/theme
@@ -740,6 +743,8 @@ importers:
 
   packages/tailwind-config: {}
 
+  packages/telemetry: {}
+
   packages/template-app:
     dependencies:
       '@acme/config':
@@ -814,6 +819,9 @@ importers:
       '@acme/shared-utils':
         specifier: workspace:*
         version: link:../shared-utils
+      '@acme/telemetry':
+        specifier: workspace:*
+        version: link:../telemetry
       '@acme/types':
         specifier: workspace:*
         version: link:../types

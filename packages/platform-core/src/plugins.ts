@@ -1,8 +1,7 @@
 // packages/platform-core/src/plugins.ts
 import { readdir, readFile } from "fs/promises";
-import { existsSync, type Dirent } from "fs";
+import { existsSync } from "fs";
 import path from "path";
-import { pathToFileURL } from "url";
 import { createRequire } from "module";
 import { logger } from "./utils";
 import { PluginManager } from "./plugins/PluginManager";
@@ -20,22 +19,36 @@ import type {
   Plugin,
 } from "@acme/types";
 
+const req = createRequire(import.meta.url);
 let tsLoaderRegistered = false;
-async function importPluginModule(entry: string) {
-  if (typeof window !== "undefined") {
-    throw new Error("Plugins can only be loaded on the server");
+async function ensureTsLoader() {
+  if (!tsLoaderRegistered) {
+    const tsNode = await import("ts-node");
+    tsNode.register({ transpileOnly: true });
+    tsLoaderRegistered = true;
   }
-  const abs = path.resolve(entry);
-  if (/\.[mc]?ts$/.test(abs)) {
-    if (!tsLoaderRegistered) {
-      const tsNode = await import("ts-node");
-      tsNode.register({ transpileOnly: true });
-      tsLoaderRegistered = true;
-    }
-    const req = createRequire(import.meta.url);
-    return req(abs);
-  }
-  return import(pathToFileURL(abs).href);
+}
+
+const registry = {
+  paypal: async () => {
+    await ensureTsLoader();
+    return req("../../plugins/paypal/index.ts");
+  },
+  "premier-shipping": async () => {
+    await ensureTsLoader();
+    return req("../../plugins/premier-shipping/index.ts");
+  },
+  sanity: async () => {
+    await ensureTsLoader();
+    return req("../../plugins/sanity/index.ts");
+  },
+} satisfies Record<string, () => Promise<{ default: Plugin }>>;
+
+export async function loadPlugin(
+  id: keyof typeof registry,
+): Promise<Plugin | undefined> {
+  const mod = await registry[id]?.();
+  return mod?.default as Plugin | undefined;
 }
 
 export interface LoadPluginsOptions {
@@ -55,7 +68,6 @@ export async function loadPlugins({
 }: LoadPluginsOptions = {}): Promise<Plugin[]> {
   function findPluginsDir(start: string): string {
     let dir = start;
-    // Walk up the directory tree until we find `packages/plugins`
     while (true) {
       const candidate = path.join(dir, "packages", "plugins");
       if (existsSync(candidate)) return candidate;
@@ -86,7 +98,7 @@ export async function loadPlugins({
       if (Array.isArray(cfg.plugins)) {
         configPlugins.push(...cfg.plugins);
       }
-      break; // use first found config
+      break;
     } catch {
       // ignore missing/invalid config
     }
@@ -95,13 +107,19 @@ export async function loadPlugins({
   const searchDirs = Array.from(
     new Set([workspaceDir, ...envDirs, ...configDirs, ...directories]),
   );
-  const roots: string[] = [...configPlugins, ...plugins];
+  const ids = new Set<keyof typeof registry>();
+  const explicit = [...configPlugins, ...plugins];
+  for (const item of explicit) {
+    const id = path.basename(item) as keyof typeof registry;
+    if (registry[id]) ids.add(id);
+  }
   for (const dir of searchDirs) {
     try {
       const entries = await readdir(dir, { withFileTypes: true });
       for (const entry of entries) {
         if (entry.isDirectory()) {
-          roots.push(path.join(dir, entry.name));
+          const id = entry.name as keyof typeof registry;
+          if (registry[id]) ids.add(id);
         }
       }
     } catch (err) {
@@ -110,33 +128,12 @@ export async function loadPlugins({
   }
 
   const loaded: Plugin[] = [];
-  for (const root of roots) {
+  for (const id of ids) {
     try {
-      const pkgPath = path.join(root, "package.json");
-      let entry = root;
-      try {
-        const pkg = JSON.parse(await readFile(pkgPath, "utf8"));
-        let rel: string | undefined;
-        if (typeof pkg.exports === "string") {
-          rel = pkg.exports;
-        } else if (pkg.main) {
-          rel = pkg.main;
-        }
-        if (rel) {
-          entry = path.join(root, rel);
-        } else {
-          continue;
-        }
-      } catch {
-        logger.warn("No package.json found for plugin", { root });
-        continue;
-      }
-      const mod = await importPluginModule(entry);
-      if (mod.default) {
-        loaded.push(mod.default as Plugin);
-      }
+      const plugin = await loadPlugin(id);
+      if (plugin) loaded.push(plugin);
     } catch (err) {
-      logger.error("Failed to load plugin", { root, err });
+      logger.error("Failed to load plugin", { plugin: id, err });
     }
   }
   return loaded;

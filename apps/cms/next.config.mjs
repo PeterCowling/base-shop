@@ -24,7 +24,7 @@ const nextConfig = {
     "@acme/tailwind-config",
     "@acme/design-tokens"
   ],
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     const nodeBuiltins = [
       "assert",
       "buffer",
@@ -54,6 +54,11 @@ const nextConfig = {
       // Prevent optional Drizzle ORM dependency from being bundled
       "drizzle-orm": false,
     };
+
+    if (!isServer) {
+      config.resolve.alias["@sentry/node"] = false;
+      config.resolve.alias["@sentry/opentelemetry"] = false;
+    }
 
     for (const mod of nodeBuiltins) {
       config.resolve.alias[`node:${mod}`] = mod;

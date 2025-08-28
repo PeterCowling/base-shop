@@ -1,5 +1,6 @@
 import { PluginManager } from "./plugins/PluginManager";
 import type { PaymentPayload, ShippingRequest, WidgetProps, PaymentProvider, ShippingProvider, WidgetComponent, PaymentRegistry, ShippingRegistry, WidgetRegistry, PluginOptions, Plugin } from "@acme/types";
+export declare function loadPlugin(id: string): Promise<Plugin | undefined>;
 export interface LoadPluginsOptions {
     /** directories containing plugin packages */
     directories?: string[];

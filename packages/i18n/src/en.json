@@ -47,4 +47,5 @@
   "cms.image.probeError": "URL must point to an image"
   ,"cms.theme.library": "Theme Library"
   ,"cms.theme.saveToLibrary": "Save to Library"
+ ,"cms.theme.importDesignSystem": "Import Design System"
 }

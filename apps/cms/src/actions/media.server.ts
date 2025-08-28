@@ -81,8 +81,11 @@ export async function uploadMedia(
 ): Promise<MediaItem> {
   await ensureAuthorized();
 
-  const file = formData.get("file");
-  if (!(file instanceof File)) throw new Error("No file provided");
+  const fileEntry = formData.get("file");
+  if (!fileEntry || typeof fileEntry === "string") {
+    throw new Error("No file provided");
+  }
+  const file = fileEntry as File;
 
   const title = formData.get("title")?.toString();
   const altText = formData.get("altText")?.toString();

@@ -10,7 +10,10 @@ const limiter = new RateLimiterMemory({ points: 5, duration: 60 });
 
 const handler = NextAuth(authOptions);
 
-const rateLimited = async (req: NextRequest, ctx: any) => {
+const rateLimited = async (
+  req: NextRequest,
+  ctx: { params: { nextauth: string[] } }
+) => {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     "unknown";

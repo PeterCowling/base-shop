@@ -68,7 +68,7 @@ export async function saveSanityConfig(
     blog: editorialEnabled,
   } as Shop["luxuryFeatures"];
   // maintain legacy flag
-  (updated as any).enableEditorial = editorialEnabled;
+  (updated as Shop & { enableEditorial?: boolean }).enableEditorial = editorialEnabled;
   if (promoteSchedule) {
     try {
       await fetch(`/api/shops/${shopId}/editorial/promote`, {

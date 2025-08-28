@@ -16,7 +16,7 @@ if (typeof (Response as any).json !== "function") {
 
 async function withShop(
   cb: (
-    repo: typeof import("../../platform-core/src/repositories/rentalOrders.server")
+    repo: typeof import("@acme/platform-core/repositories/rentalOrders.server")
   ) => Promise<void>
 ) {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shop-"));
@@ -42,8 +42,8 @@ async function withShop(
   const cwd = process.cwd();
   process.chdir(dir);
   jest.resetModules();
-  const repo: typeof import("../../platform-core/src/repositories//rentalOrders.server") = await import(
-    "@platform-core/repositories/rentalOrders.server"
+  const repo: typeof import("@acme/platform-core/repositories/rentalOrders.server") = await import(
+    "@acme/platform-core/repositories/rentalOrders.server"
   );
   try {
     await cb(repo);
@@ -89,15 +89,15 @@ describe("rental order lifecycle", () => {
         }),
         { virtual: true }
       );
-      jest.doMock("@platform-core/orders/rentalAllocation", () => ({
+      jest.doMock("@acme/platform-core/orders/rentalAllocation", () => ({
         __esModule: true,
         reserveRentalInventory,
       }));
-      jest.doMock("@platform-core/repositories/inventory.server", () => ({
+      jest.doMock("@acme/platform-core/repositories/inventory.server", () => ({
         __esModule: true,
         readInventory,
       }));
-      jest.doMock("@platform-core/repositories/products.server", () => ({
+      jest.doMock("@acme/platform-core/repositories/products.server", () => ({
         __esModule: true,
         readRepo: readProducts,
       }));

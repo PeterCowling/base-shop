@@ -1,6 +1,6 @@
 // apps/cms/__tests__/products.test.ts
 
-import type { ProductPublication } from "../../../packages/platform-core/src/products";
+import type { ProductPublication } from "@acme/platform-core/products";
 
 // Ensure auth options do not throw on import
 process.env.NEXTAUTH_SECRET = "test-secret";
@@ -106,7 +106,7 @@ describe("product actions", () => {
       expect(result.errors?.price).toEqual(["Invalid price"]);
 
       const { readRepo } = await import(
-        "../../../packages/platform-core/src/repositories/json.server"
+        "@acme/platform-core/repositories/json.server"
       );
       const repo = (await readRepo("test")) as ProductPublication[];
       expect(repo[0].price).toBe(0);
@@ -130,7 +130,7 @@ describe("product actions", () => {
       await duplicateProduct("test", prod.id);
 
       const { readRepo } = await import(
-        "../../../packages/platform-core/src/repositories/json.server"
+        "@acme/platform-core/repositories/json.server"
       );
       const repo = (await readRepo("test")) as ProductPublication[];
 
@@ -157,7 +157,7 @@ describe("product actions", () => {
       await deleteProduct("test", prod.id);
 
       const { readRepo } = await import(
-        "../../../packages/platform-core/src/repositories/json.server"
+        "@acme/platform-core/repositories/json.server"
       );
       const repo = (await readRepo("test")) as ProductPublication[];
 

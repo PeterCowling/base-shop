@@ -1,5 +1,5 @@
 import Ajv from "ajv";
-import schema from "../../packages/platform-core/src/repositories/pages/schema.json";
+import schema from "@acme/platform-core/repositories/pages/schema.json";
 
 describe("page component discriminated union", () => {
   const ajv = new Ajv();

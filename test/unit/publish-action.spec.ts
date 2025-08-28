@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import type { Page } from "../../packages/types/src/page";
+import type { Page } from "@acme/types/page";
 
 function mockAuth() {
   jest.doMock("next-auth", () => ({
@@ -24,7 +24,7 @@ describe("publish page action", () => {
   it("saves page with published status", async () => {
     const pages: Page[] = [];
     jest.doMock(
-      "../../packages/platform-core/src/repositories/pages/index.server",
+      "@acme/platform-core/repositories/pages/index.server",
       () => ({
         getPages: jest.fn().mockResolvedValue(pages),
         savePage: jest
@@ -53,7 +53,7 @@ describe("publish page action", () => {
 
   it("rejects invalid payload", async () => {
     jest.doMock(
-      "../../packages/platform-core/src/repositories/pages/index.server",
+      "@acme/platform-core/repositories/pages/index.server",
       () => ({
         getPages: jest.fn().mockResolvedValue([]),
         savePage: jest.fn(),

@@ -45,7 +45,7 @@ describe("page actions", () => {
       expect(result.page?.slug).toBe("home");
 
       const { getPages } = await import(
-        "../../../packages/platform-core/src/repositories/pages/index.server"
+        "@acme/platform-core/repositories/pages/index.server"
       );
       const pages = await getPages("test");
       expect(pages).toHaveLength(1);
@@ -60,7 +60,7 @@ describe("page actions", () => {
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
       mockAuth();
       const repo = await import(
-        "../../../packages/platform-core/src/repositories/pages/index.server"
+        "@acme/platform-core/repositories/pages/index.server"
       );
       const page = {
         id: "1",
@@ -99,7 +99,7 @@ describe("page actions", () => {
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
       mockAuth();
       const repo = await import(
-        "../../../packages/platform-core/src/repositories/pages/index.server"
+        "@acme/platform-core/repositories/pages/index.server"
       );
       const page = {
         id: "1",
@@ -144,7 +144,7 @@ describe("page actions", () => {
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
       mockAuth();
       const repo = await import(
-        "../../../packages/platform-core/src/repositories/pages/index.server"
+        "@acme/platform-core/repositories/pages/index.server"
       );
       const page = {
         id: "1",

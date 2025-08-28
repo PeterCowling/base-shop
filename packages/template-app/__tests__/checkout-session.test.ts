@@ -1,6 +1,6 @@
 // packages/template-app/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "../../platform-core/src/cartCookie";
-import { PRODUCTS } from "../../platform-core/src/products";
+import { encodeCartCookie } from "@acme/platform-core/cartCookie";
+import { PRODUCTS } from "@acme/platform-core/products";
 import { calculateRentalDays } from "@acme/date-utils";
 
 jest.mock("next/server", () => ({
@@ -14,18 +14,18 @@ jest.mock("@acme/stripe", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
 
-jest.mock("../../platform-core/src/pricing", () => ({
+jest.mock("@acme/platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
   convertCurrency: jest.fn(async (v: number) => v),
 }));
 
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
-jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({ trackEvent: jest.fn() }));
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   readShop: jest.fn(async () => ({ coverageIncluded: true })),
 }));
 let mockCart: any;
-jest.mock("@platform-core/cartStore", () => ({
+jest.mock("@acme/platform-core/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
 }));
 

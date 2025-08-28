@@ -18,7 +18,7 @@ export default function NewWizardPage() {
 
   const handleNext = useCallback(
     async (s: ScaffoldSpec) => {
-      const draft = await createDraft(shop, s);
+      const draft = await createDraft({ shop, spec: s });
       track("wizard:createDraft", { shop });
       setSpec(s);
       setDraftId(draft.id);
@@ -29,7 +29,7 @@ export default function NewWizardPage() {
   const handleBack = useCallback(() => setSpec(null), []);
   const handleConfirm = useCallback(() => {
     track("wizard:finalize", { shop });
-    return finalize(shop, draftId);
+    return finalize({ shop, draftId });
   }, [shop, draftId]);
 
   if (!spec) {

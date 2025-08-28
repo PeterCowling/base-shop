@@ -86,7 +86,8 @@ export function useConfiguratorPersistence(
       } catch {
         /* ignore quota */
       }
-      const { completed, ...data } = state;
+      const { completed: _completed, ...data } = state;
+      void _completed;
       fetch("/cms/api/wizard-progress", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

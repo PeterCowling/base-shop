@@ -22,16 +22,17 @@ import type {
 
 let tsLoaderRegistered = false;
 async function importPluginModule(entry: string) {
-  if (/\.[mc]?ts$/.test(entry)) {
+  const abs = path.resolve(entry);
+  if (/\.[mc]?ts$/.test(abs)) {
     if (!tsLoaderRegistered) {
       const tsNode = await import("ts-node");
       tsNode.register({ transpileOnly: true });
       tsLoaderRegistered = true;
     }
-    const req = createRequire(pathToFileURL(entry).href);
-    return req(entry);
+    const req = createRequire(abs);
+    return req(abs);
   }
-  return import(pathToFileURL(entry).href);
+  return import(pathToFileURL(abs).href);
 }
 
 export interface LoadPluginsOptions {

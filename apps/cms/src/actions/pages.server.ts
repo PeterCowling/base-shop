@@ -1,7 +1,7 @@
 // apps/cms/src/actions/pages.server.ts
 
 import { LOCALES } from "@acme/i18n";
-import * as Sentry from "@sentry/node";
+import { captureException } from "@/utils/sentry.server";
 import type { Locale, Page, HistoryState } from "@acme/types";
 import { historyStateSchema } from "@acme/types";
 import { ulid } from "ulid";
@@ -52,7 +52,7 @@ export async function createPage(
       });
     }
     try {
-      Sentry.captureException(parsed.error, { extra: context });
+      await captureException(parsed.error, { extra: context });
     } catch {
       /* ignore sentry failure */
     }
@@ -89,7 +89,7 @@ export async function createPage(
     const saved = await savePageInService(shop, page, prev);
     return { page: saved };
   } catch (err) {
-    Sentry.captureException(err);
+    await captureException(err);
     throw err;
   }
 }
@@ -155,7 +155,7 @@ export async function savePageDraft(
     const saved = await savePageInService(shop, page, existing);
     return { page: saved };
   } catch (err) {
-    Sentry.captureException(err);
+    await captureException(err);
     throw err;
   }
 }
@@ -180,7 +180,7 @@ export async function updatePage(
       });
     }
     try {
-      Sentry.captureException(parsed.error, { extra: context });
+      await captureException(parsed.error, { extra: context });
     } catch {
       /* ignore sentry failure */
     }
@@ -227,7 +227,7 @@ export async function updatePage(
     const saved = await updatePageInService(shop, patch, previous);
     return { page: saved };
   } catch (err) {
-    Sentry.captureException(err);
+    await captureException(err);
     throw err;
   }
 }
@@ -241,7 +241,7 @@ export async function deletePage(shop: string, id: string): Promise<void> {
   try {
     await deletePageFromService(shop, id);
   } catch (err) {
-    Sentry.captureException(err);
+    await captureException(err);
     throw err;
   }
 }

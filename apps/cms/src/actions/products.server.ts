@@ -13,7 +13,7 @@ import {
   writeRepo,
 } from "@platform-core/repositories/json.server";
 import { fillLocales } from "@i18n/fillLocales";
-import * as Sentry from "@sentry/node";
+import { captureException } from "@/utils/sentry.server";
 import type { Locale, ProductPublication, PublicationStatus } from "@acme/types";
 import { ensureAuthorized } from "./common/auth";
 import { redirect } from "next/navigation";
@@ -113,7 +113,7 @@ export async function updateProduct(
   if (!parsed.success) {
     const { fieldErrors } = parsed.error.flatten();
     const productId = String(formData.get("id") ?? "");
-    Sentry.captureException(parsed.error, { extra: { productId } });
+    await captureException(parsed.error, { extra: { productId } });
     return { errors: fieldErrors as Record<string, string[]> };
   }
 

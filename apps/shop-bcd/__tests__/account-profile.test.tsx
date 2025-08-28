@@ -17,8 +17,7 @@ jest.mock("next/navigation", () => ({
 
 import { getCustomerSession } from "@auth";
 import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
-import ProfilePage from "@ui/src/components/account/Profile";
-import ProfileForm from "@ui/src/components/account/ProfileForm";
+import { ProfilePage, ProfileForm } from "@ui/account";
 import { redirect } from "next/navigation";
 
 describe("/account/profile", () => {

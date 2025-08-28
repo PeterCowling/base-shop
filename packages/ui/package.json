@@ -5,6 +5,16 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./account": {
+      "types": "./dist/account.d.ts",
+      "import": "./dist/account.js"
+    }
+  },
   "scripts": {
     "build": "tsc -b",
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"

@@ -40,6 +40,7 @@ describe("cmsEnv", () => {
   it("throws and logs when required variables are missing", async () => {
     process.env = {
       CMS_SPACE_URL: "https://example.com",
+      NODE_ENV: "production",
     } as NodeJS.ProcessEnv;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(import("../src/env/cms.impl")).rejects.toThrow(

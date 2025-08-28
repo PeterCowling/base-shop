@@ -1,28 +1,28 @@
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import type { ComponentProps } from "react";
+import { z } from "zod";
 
 jest.mock(
   "@/components/atoms/shadcn",
-  () => {
-    const React = require("react");
-    return {
-      __esModule: true,
-      Button: ({ children, ...props }: any) => (
-        <button {...props}>{children}</button>
-      ),
-      Input: ({ ...props }: any) => <input {...props} />,
-      Table: ({ children }: any) => <table>{children}</table>,
-      TableBody: ({ children }: any) => <tbody>{children}</tbody>,
-      TableCell: ({ children, ...props }: any) => <td {...props}>{children}</td>,
-      TableHead: ({ children }: any) => <th>{children}</th>,
-      TableHeader: ({ children }: any) => <thead>{children}</thead>,
-      TableRow: ({ children }: any) => <tr>{children}</tr>,
-    };
-  },
+  () => ({
+    __esModule: true,
+    Button: ({ children, ...props }: ComponentProps<"button">) => (
+      <button {...props}>{children}</button>
+    ),
+    Input: (props: ComponentProps<"input">) => <input {...props} />,
+    Table: ({ children }: ComponentProps<"table">) => <table>{children}</table>,
+    TableBody: ({ children }: ComponentProps<"tbody">) => <tbody>{children}</tbody>,
+    TableCell: ({ children, ...props }: ComponentProps<"td">) => (
+      <td {...props}>{children}</td>
+    ),
+    TableHead: ({ children }: ComponentProps<"th">) => <th>{children}</th>,
+    TableHeader: ({ children }: ComponentProps<"thead">) => <thead>{children}</thead>,
+    TableRow: ({ children }: ComponentProps<"tr">) => <tr>{children}</tr>,
+  }),
   { virtual: true }
 );
 
 jest.mock("@acme/types", () => {
-  const { z } = require("zod");
   const inventoryItemSchema = z
     .object({
       sku: z.string(),
@@ -49,9 +49,9 @@ describe("InventoryForm", () => {
   ];
 
   beforeEach(() => {
-    (global as any).fetch = jest
+    globalThis.fetch = jest
       .fn()
-      .mockResolvedValue({ ok: true, json: () => Promise.resolve({}) });
+      .mockResolvedValue({ ok: true, json: () => Promise.resolve({}) }) as unknown as typeof fetch;
   });
 
   it("adds and deletes rows", () => {
@@ -65,7 +65,7 @@ describe("InventoryForm", () => {
   });
 
   it("adds attribute columns and persists values", async () => {
-    (window as any).prompt = jest.fn().mockReturnValue("material");
+    window.prompt = jest.fn().mockReturnValue("material") as unknown as typeof window.prompt;
     render(<InventoryForm shop="test" initial={initial} />);
     fireEvent.click(screen.getByText("Add attribute"));
     expect(screen.getByText("material")).toBeInTheDocument();

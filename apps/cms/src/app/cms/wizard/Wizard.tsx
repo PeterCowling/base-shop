@@ -34,7 +34,7 @@ export default function Wizard({ themes }: WizardProps): React.JSX.Element {
   // --------------------------------------------------------------
   // Progress helpers
   // --------------------------------------------------------------
-  const persist = (data: any) =>
+  const persist = (data: Record<string, unknown>) =>
     fetch("/cms/api/wizard-progress", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -91,10 +91,10 @@ export default function Wizard({ themes }: WizardProps): React.JSX.Element {
     };
   }, [theme]);
 
-  const style = useMemo(() => {
-    const s: React.CSSProperties = {};
+  const style = useMemo<Record<string, string>>(() => {
+    const s: Record<string, string> = {};
     Object.entries(tokens).forEach(([k, v]) => {
-      (s as any)[k] = v;
+      s[k] = v;
     });
     return s;
   }, [tokens]);

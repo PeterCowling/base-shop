@@ -23,7 +23,7 @@ import { Tooltip } from "@/components/atoms";
 export interface ConfiguratorStep {
   id: string;
   label: string;
-  component: React.ComponentType<any>;
+  component: React.ComponentType;
   optional?: boolean;
   /** IDs of steps that are recommended to complete before this step */
   recommended?: string[];

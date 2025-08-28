@@ -93,7 +93,8 @@ export default function InventoryForm({ shop, initial }: Props) {
     setAttributes((prev) => prev.filter((a) => a !== attr));
     setItems((prev) =>
       prev.map((i) => {
-        const { [attr]: _, ...rest } = i.variantAttributes;
+        const rest = { ...i.variantAttributes };
+        delete rest[attr];
         return { ...i, variantAttributes: rest };
       })
     );

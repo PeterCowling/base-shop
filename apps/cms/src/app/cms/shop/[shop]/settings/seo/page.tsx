@@ -18,6 +18,12 @@ interface Params {
   shop: string;
 }
 
+interface EventRecord {
+  shop?: string;
+  type?: string;
+  timestamp?: string;
+}
+
 export default async function SeoSettingsPage({
   params,
 }: {
@@ -36,9 +42,9 @@ export default async function SeoSettingsPage({
     fields: ["id", "title", "description", "price", "media"],
     pageSize: 50,
   };
-  const lastCrawl = events
-    .filter((e: any) => e.shop === shop)
-    .filter((e: any) => e.type === "ai_crawl")
+  const lastCrawl = (events as EventRecord[])
+    .filter((e) => e.shop === shop)
+    .filter((e) => e.type === "ai_crawl")
     .map((e) => e.timestamp as string)
     .filter(Boolean)
     .sort()

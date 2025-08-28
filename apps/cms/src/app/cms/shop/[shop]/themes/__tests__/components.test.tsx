@@ -1,16 +1,17 @@
 import { render, fireEvent } from "@testing-library/react";
+import type { ComponentProps } from "react";
 
 jest.mock(
   "@/components/atoms/shadcn",
   () => ({
-    Button: (props: any) => <button {...props} />,
-    Input: (props: any) => <input {...props} />,
+    Button: (props: ComponentProps<"button">) => <button {...props} />,
+    Input: (props: ComponentProps<"input">) => <input {...props} />,
   }),
   { virtual: true },
 );
 
-const ThemeSelector = require("../ThemeSelector").default;
-const PresetControls = require("../PresetControls").default;
+import ThemeSelector from "../ThemeSelector";
+import PresetControls from "../PresetControls";
 
 describe("ThemeSelector", () => {
   it("calls onChange when value changes", () => {

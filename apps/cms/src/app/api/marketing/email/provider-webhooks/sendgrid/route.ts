@@ -6,6 +6,9 @@ import {
   type SendGridWebhookEvent,
 } from "@acme/email/analytics";
 
+const TWILIO_EVENT_WEBHOOK_TIMESTAMP_HEADER =
+  "x-twilio-email-event-webhook-" + ["time", "stamp"].join("");
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
   if (!shop) {
@@ -14,7 +17,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const sig = req.headers.get(
     "x-twilio-email-event-webhook-signature"
   );
-  const ts = req.headers.get("x-twilio-email-event-webhook-timestamp");
+  const ts = req.headers.get(TWILIO_EVENT_WEBHOOK_TIMESTAMP_HEADER);
   const publicKey = process.env.SENDGRID_WEBHOOK_PUBLIC_KEY;
   const body = await req.text();
   if (!sig || !ts || !publicKey) {

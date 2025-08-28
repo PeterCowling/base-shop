@@ -18,8 +18,8 @@ import {
   getRequiredSteps,
   getSteps,
   steps as configuratorSteps,
-  type ConfiguratorStep,
 } from "./steps";
+import type { ConfiguratorStep } from "./types";
 
 const stepLinks: Record<string, string> = {
   create: "summary",

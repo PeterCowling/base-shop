@@ -14,8 +14,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { providersByType, type Provider } from "@acme/configurator/providers";
+import type { ConfiguratorStepProps } from "@/types/configurator";
 
-export default function StepOptions(): React.JSX.Element {
+export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element {
   const { state, update } = useConfigurator();
   const {
     shopId,

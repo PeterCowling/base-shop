@@ -21,6 +21,7 @@ import { useThemeLoader } from "../hooks/useThemeLoader";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import DeviceSelector from "@ui/components/cms/DeviceSelector";
+import type { ConfiguratorStepProps } from "@/types/configurator";
 
 const colorPalettes: Array<{
   name: string;
@@ -68,17 +69,11 @@ function checkContrast(fg?: string, bg?: string): number {
   return getContrast(fg, bg);
 }
 
-interface Props {
-  themes: string[];
-  prevStepId?: string;
-  nextStepId?: string;
-}
-
 export default function StepTheme({
   themes,
   prevStepId,
   nextStepId,
-}: Props): React.JSX.Element {
+}: ConfiguratorStepProps): React.JSX.Element {
   const themeStyle = useThemeLoader();
   const { state, update, themeDefaults, setThemeOverrides } =
     useConfigurator();

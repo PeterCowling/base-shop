@@ -1,7 +1,6 @@
 import { NextRequest } from "next/server";
-import { emitOpen } from "@acme/email";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 // 1x1 transparent gif
 const pixel = Uint8Array.from(
@@ -15,6 +14,7 @@ export async function GET(req: NextRequest) {
   const shop = params.get("shop");
   const campaign = params.get("campaign");
   if (shop && campaign) {
+    const { emitOpen } = await import("@acme/email");
     await emitOpen(shop, { campaign });
   }
   return new Response(pixel, {

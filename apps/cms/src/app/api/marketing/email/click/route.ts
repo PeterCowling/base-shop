@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { emitClick } from "@acme/email";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
@@ -19,6 +18,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   if (shop && campaign) {
+    const { emitClick } = await import("@acme/email");
     await emitClick(shop, { campaign });
   }
 

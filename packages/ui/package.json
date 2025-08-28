@@ -23,7 +23,7 @@
     "@acme/config": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/i18n": "workspace:*",
-    "@acme/platform-core": "workspace:^",
+    "@acme/platform-core": "workspace:*",
     "@acme/shared-utils": "workspace:*",
     "@acme/types": "workspace:*",
     "@acme/telemetry": "workspace:*",

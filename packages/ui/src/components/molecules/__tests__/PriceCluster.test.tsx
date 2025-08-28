@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { PriceCluster } from "../PriceCluster";
 
-jest.mock("@platform-core/contexts/CurrencyContext", () => ({
+jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["EUR", jest.fn()],
 }));
 

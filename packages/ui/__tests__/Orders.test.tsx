@@ -5,7 +5,7 @@ jest.mock("@auth", () => ({
   hasPermission: jest.fn(),
 }));
 
-jest.mock("@platform-core/orders", () => ({
+jest.mock("@acme/platform-core/orders", () => ({
   __esModule: true,
   getOrdersForCustomer: jest.fn(),
 }));
@@ -16,7 +16,7 @@ jest.mock("next/navigation", () => ({
 }));
 
 import { getCustomerSession, hasPermission } from "@auth";
-import { getOrdersForCustomer } from "@platform-core/orders";
+import { getOrdersForCustomer } from "@acme/platform-core/orders";
 import OrdersPage from "../src/components/account/Orders";
 import { redirect } from "next/navigation";
 

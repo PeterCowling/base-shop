@@ -4,7 +4,7 @@ jest.mock("next/navigation", () => ({
   usePathname: jest.fn(),
 }));
 
-import { useLayout } from "@platform-core";
+import { useLayout } from "@acme/platform-core";
 import { AppShell } from "../components/templates/AppShell";
 import { usePathname } from "next/navigation";
 

@@ -4,7 +4,7 @@ import ThemeToggle from "../src/components/ThemeToggle";
 const setTheme = jest.fn();
 let mockTheme: string = "base";
 
-jest.mock("@platform-core/contexts/ThemeContext", () => ({
+jest.mock("@acme/platform-core/contexts/ThemeContext", () => ({
   useTheme: () => ({ theme: mockTheme, setTheme }),
 }));
 

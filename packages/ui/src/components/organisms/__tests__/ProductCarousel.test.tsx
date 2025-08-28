@@ -4,7 +4,7 @@ import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 import "../../../../../../test/resetNextMocks";
 
 jest.mock(
-  "@platform-core/contexts/CurrencyContext",
+  "@acme/platform-core/contexts/CurrencyContext",
   () => require("../../../../../../test/__mocks__/currencyContextMock")
 );
 

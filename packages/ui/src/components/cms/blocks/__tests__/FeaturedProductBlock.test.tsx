@@ -3,13 +3,13 @@ import userEvent from "@testing-library/user-event";
 import type { SKU } from "@acme/types";
 import FeaturedProductBlock from "../FeaturedProductBlock";
 
-jest.mock("@platform-core/components/shop/AddToCartButton.client", () => ({
+jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => ({
   __esModule: true,
   default: (props: any) => (
     <button disabled={props.disabled}>Add to cart</button>
   ),
 }));
-jest.mock("@platform-core/contexts/CurrencyContext", () => ({
+jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],
 }));
 

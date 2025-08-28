@@ -48,4 +48,5 @@
   ,"cms.theme.library": "Theme Library"
   ,"cms.theme.saveToLibrary": "Save to Library"
  ,"cms.theme.importDesignSystem": "Import Design System"
+ ,"cms.export.toCode": "Export to Code"
 }

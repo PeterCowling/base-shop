@@ -1,0 +1,20 @@
+{{#if client}}'use client';
+{{/if}}
+import { memo } from "react";
+
+interface PageProps {
+  children?: React.ReactNode;
+}
+
+function PageComponent({ children }: PageProps) {
+  return (
+    <>
+      {{#each blocks}}
+        {{this}}
+      {{/each}}
+      {children}
+    </>
+  );
+}
+
+export default memo(PageComponent);

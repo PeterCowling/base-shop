@@ -26,5 +26,14 @@
   "checkout.retry": "Retry",
   "checkout.empty": "Your cart is empty.",
   "checkout.return": "Return date",
-  "checkout.deposit": "Deposit"
+  "checkout.deposit": "Deposit",
+  "wizard.spec.title": "Page details",
+  "wizard.spec.layout": "Layout",
+  "wizard.spec.sections": "Sections",
+  "wizard.spec.hero": "Hero",
+  "wizard.spec.cta": "Call to action",
+  "wizard.preview.title": "Preview",
+  "wizard.confirm": "Create Page",
+  "wizard.back": "Back",
+  "wizard.next": "Next"
 }

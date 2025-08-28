@@ -21,6 +21,8 @@ jest.mock('sharp', () => ({
   default: sharpMock,
 }));
 
+import { File } from 'node:buffer';
+
 import { uploadMedia, deleteMedia } from '../media.server';
 
 describe('uploadMedia', () => {
@@ -36,7 +38,7 @@ describe('uploadMedia', () => {
 
     const file = new File(['dummy'], 'portrait.jpg', { type: 'image/jpeg' });
     const formData = new FormData();
-    formData.set('file', file);
+    formData.append('file', file);
 
     await expect(uploadMedia('shop', formData)).rejects.toThrow(
       'Image orientation must be landscape',
@@ -46,7 +48,7 @@ describe('uploadMedia', () => {
   it('throws for invalid file type', async () => {
     const file = new File(['dummy'], 'file.txt', { type: 'text/plain' });
     const formData = new FormData();
-    formData.set('file', file);
+    formData.append('file', file);
 
     await expect(uploadMedia('shop', formData)).rejects.toThrow(
       'Invalid file type',

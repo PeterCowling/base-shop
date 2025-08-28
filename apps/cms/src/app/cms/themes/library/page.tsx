@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { track } from "@acme/telemetry";
 import type { ThemeLibraryEntry } from "@acme/types/theme/ThemeLibrary";
-import { useTranslations } from "@i18n/useTranslations";
+import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
 
 async function fetchThemes(): Promise<ThemeLibraryEntry[]> {
   const res = await fetch("/cms/api/themes", { cache: "no-store" });
@@ -12,7 +12,7 @@ async function fetchThemes(): Promise<ThemeLibraryEntry[]> {
 
 export default async function ThemeLibraryPage() {
   track("themes:library:view", {});
-  const t = await useTranslations("en");
+  const t = await getTranslations("en");
   const themes = await fetchThemes();
   return (
     <div>

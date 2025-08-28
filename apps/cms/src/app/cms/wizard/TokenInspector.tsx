@@ -137,26 +137,30 @@ export default function TokenInspector({
     return () => window.removeEventListener("keydown", keyHandler);
   }, [inspectMode, selectedIndex]);
 
-  const child = children as React.ReactElement & {
-    ref?: React.Ref<HTMLDivElement>;
-  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const child = children as React.ReactElement<any>;
   return (
     <>
-      {React.cloneElement(child, {
-        ref: (node: HTMLDivElement) => {
-          previewRef.current = node;
-          const { ref } = child;
-          if (typeof ref === "function") {
-            ref(node);
-          } else if (ref && "current" in ref) {
-            (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
-          }
-        },
-        onPointerMove: handlePointerMove,
-        onClickCapture: handleClick,
-        onPointerLeave: handleLeave,
-        className: `${child.props.className ?? ""} ${inspectMode ? "cursor-crosshair" : ""}`,
-      })}
+      {React.cloneElement(
+        child,
+        {
+          ref: (node: HTMLDivElement) => {
+            previewRef.current = node;
+            const { ref } = child as unknown as {
+              ref?: React.Ref<HTMLDivElement>;
+            };
+            if (typeof ref === "function") {
+              ref(node);
+            } else if (ref && "current" in ref) {
+              (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+            }
+          },
+          onPointerMove: handlePointerMove,
+          onClickCapture: handleClick,
+          onPointerLeave: handleLeave,
+          className: `${child.props.className ?? ""} ${inspectMode ? "cursor-crosshair" : ""}`,
+        } as Record<string, unknown>
+      )}
       {selected && popoverPos && (
         <Popover
           open={popoverOpen}

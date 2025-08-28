@@ -16,7 +16,7 @@ interface Props {
 
 export default function StylePanel({ component, handleInput }: Props) {
   const overrides: StyleOverrides = component.styles
-    ? JSON.parse(component.styles)
+    ? JSON.parse(String(component.styles))
     : {};
   const color = overrides.color ?? {};
   const typography = overrides.typography ?? {};

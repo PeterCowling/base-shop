@@ -16,6 +16,7 @@
     "target": "ES2022",
     "baseUrl": ".",
     "paths": {
+      "@/*": ["src/*"],
       "@acme/platform-core": ["../platform-core/src/index"],
       "@acme/platform-core/*": ["../platform-core/src/*"],
       "@platform-core": ["../platform-core/src/index"],

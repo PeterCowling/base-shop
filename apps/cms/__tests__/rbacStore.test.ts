@@ -20,7 +20,7 @@ afterEach(() => jest.resetAllMocks());
 describe("rbacStore", () => {
   it("readRbac returns defaults when file missing", async () => {
     await withTempDir(async () => {
-      const { readRbac } = await import("../src/lib/rbacStore");
+      const { readRbac } = await import("../src/lib/server/rbacStore");
       const db = await readRbac();
       expect(db.users["1"].email).toBe("admin@example.com");
       expect(db.roles["1"]).toBe("admin");
@@ -30,7 +30,7 @@ describe("rbacStore", () => {
 
   it("writeRbac persists modified db", async () => {
     await withTempDir(async (dir) => {
-      const { readRbac, writeRbac } = await import("../src/lib/rbacStore");
+      const { readRbac, writeRbac } = await import("../src/lib/server/rbacStore");
       const db = await readRbac();
       db.users["6"] = {
         id: "6",
@@ -49,7 +49,7 @@ describe("rbacStore", () => {
 
   it("updates permissions for roles", async () => {
     await withTempDir(async (dir) => {
-      const { readRbac, writeRbac } = await import("../src/lib/rbacStore");
+      const { readRbac, writeRbac } = await import("../src/lib/server/rbacStore");
       const db = await readRbac();
       db.permissions.admin = [PERMISSIONS[0]];
       await writeRbac(db);

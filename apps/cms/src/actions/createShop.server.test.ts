@@ -11,7 +11,7 @@ jest.mock("@platform-core/db", () => ({
   },
 }));
 
-jest.mock("../lib/rbacStore", () => ({
+jest.mock("../lib/server/rbacStore", () => ({
   readRbac: jest.fn(),
   writeRbac: jest.fn(),
 }));
@@ -27,7 +27,7 @@ describe("createNewShop", () => {
 
   it("Successful shop creation with RBAC update for new user", async () => {
     const { createShop } = await import("@platform-core/createShop");
-    const { readRbac, writeRbac } = await import("../lib/rbacStore");
+    const { readRbac, writeRbac } = await import("../lib/server/rbacStore");
     const { ensureAuthorized } = await import("./common/auth");
 
     const deployResult = { status: "ok" } as any;
@@ -52,7 +52,7 @@ describe("createNewShop", () => {
     { current: "Viewer", expected: ["Viewer", "ShopAdmin"] },
   ])("Existing role array vs single role %#", async ({ current, expected }) => {
     const { createShop } = await import("@platform-core/createShop");
-    const { readRbac, writeRbac } = await import("../lib/rbacStore");
+    const { readRbac, writeRbac } = await import("../lib/server/rbacStore");
     const { ensureAuthorized } = await import("./common/auth");
 
     (createShop as jest.Mock).mockResolvedValue({});
@@ -71,7 +71,7 @@ describe("createNewShop", () => {
 
   it("Failure writing RBAC → verify rollback deletes created entities and throws", async () => {
     const { createShop } = await import("@platform-core/createShop");
-    const { readRbac, writeRbac } = await import("../lib/rbacStore");
+    const { readRbac, writeRbac } = await import("../lib/server/rbacStore");
     const { ensureAuthorized } = await import("./common/auth");
     const { prisma } = await import("@platform-core/db");
 
@@ -95,7 +95,7 @@ describe("createNewShop", () => {
 
   it("Ensure user without id skips RBAC update", async () => {
     const { createShop } = await import("@platform-core/createShop");
-    const { readRbac, writeRbac } = await import("../lib/rbacStore");
+    const { readRbac, writeRbac } = await import("../lib/server/rbacStore");
     const { ensureAuthorized } = await import("./common/auth");
 
     const deployResult = { status: "ok" } as any;

@@ -7,7 +7,7 @@ import {
   type DeployStatusBase,
 } from "@platform-core/createShop";
 import { prisma } from "@platform-core/db";
-import { readRbac, writeRbac } from "../lib/rbacStore";
+import { readRbac, writeRbac } from "../lib/server/rbacStore";
 import { ensureAuthorized } from "./common/auth";
 
 export async function createNewShop(

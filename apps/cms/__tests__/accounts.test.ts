@@ -94,7 +94,7 @@ describe("account actions", () => {
       }));
 
       const actions = await import("../src/actions/accounts.server");
-      const { readRbac } = await import("../src/lib/rbacStore");
+      const { readRbac } = await import("../src/lib/server/rbacStore");
 
       await actions.requestAccount(
         fd({ name: "C", email: "c@example.com", password: "pw" })

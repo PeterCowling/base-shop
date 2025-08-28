@@ -6,7 +6,7 @@ import type { CmsUser } from "@cms/auth/users";
 import type { Permission } from "@auth";
 import argon2 from "argon2";
 import { ulid } from "ulid";
-import { readRbac, writeRbac } from "../lib/rbacStore";
+import { readRbac, writeRbac } from "../lib/server/rbacStore";
 
 export interface UserWithRoles extends CmsUser {
   roles: Role | Role[];

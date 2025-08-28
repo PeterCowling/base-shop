@@ -5,7 +5,7 @@ import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
 import type { Permission } from "@auth";
 import { PERMISSIONS } from "@auth/types/permissions";
-import { readRbac } from "@cms/lib/rbacStore";
+import { readRbac } from "@cms/lib/server/rbacStore";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 

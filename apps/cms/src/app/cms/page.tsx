@@ -3,7 +3,7 @@ import { Button } from "@/components/atoms/shadcn";
 import { approveAccount, listPendingUsers } from "@cms/actions/accounts.server";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
-import { readRbac } from "@cms/lib/rbacStore";
+import { readRbac } from "@cms/lib/server/rbacStore";
 import type { ReactNode } from "react";
 import { DashboardTemplate } from "@ui/components/templates";
 import type { Metadata } from "next";

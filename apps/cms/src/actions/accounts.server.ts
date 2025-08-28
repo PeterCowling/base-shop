@@ -7,7 +7,7 @@ import type { CmsUser } from "@cms/auth/users";
 import argon2 from "argon2";
 import { ulid } from "ulid";
 import { sendEmail } from "@acme/email";
-import { readRbac, writeRbac } from "../lib/rbacStore";
+import { readRbac, writeRbac } from "../lib/server/rbacStore";
 
 export interface PendingUser {
   id: string;

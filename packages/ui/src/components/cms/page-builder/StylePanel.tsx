@@ -5,6 +5,7 @@ import type { PageComponent } from "@acme/types";
 import type { StyleOverrides } from "../../../../../types/src/style/StyleOverrides";
 import { Input } from "../../atoms/shadcn";
 import { track } from "@acme/telemetry";
+import { useTranslations } from "@acme/i18n";
 import useContrastWarnings from "../../../hooks/useContrastWarnings";
 
 interface Props {
@@ -22,6 +23,7 @@ export default function StylePanel({ component, handleInput }: Props) {
   const color = overrides.color ?? {};
   const typography = overrides.typography ?? {};
   const warning = color.fg && color.bg ? useContrastWarnings(color.fg, color.bg) : null;
+  const t = useTranslations();
 
   const update = (group: "color" | "typography", key: string, value: string) => {
     const next: StyleOverrides = {
@@ -40,46 +42,46 @@ export default function StylePanel({ component, handleInput }: Props) {
   return (
     <div className="space-y-2">
       <Input
-        label="Foreground"
+        label={t("cms.style.foreground")}
         value={color.fg ?? ""}
-        placeholder="token or #hex"
+        placeholder={t("cms.style.colorPlaceholder")}
         onChange={(e) => update("color", "fg", e.target.value)}
       />
       <Input
-        label="Background"
+        label={t("cms.style.background")}
         value={color.bg ?? ""}
-        placeholder="token or #hex"
+        placeholder={t("cms.style.colorPlaceholder")}
         onChange={(e) => update("color", "bg", e.target.value)}
       />
       <Input
-        label="Border"
+        label={t("cms.style.border")}
         value={color.border ?? ""}
-        placeholder="token or #hex"
+        placeholder={t("cms.style.colorPlaceholder")}
         onChange={(e) => update("color", "border", e.target.value)}
       />
       <Input
-        label="Font Family"
+        label={t("cms.style.fontFamily")}
         value={typography.fontFamily ?? ""}
         onChange={(e) => update("typography", "fontFamily", e.target.value)}
       />
       <Input
-        label="Font Size"
+        label={t("cms.style.fontSize")}
         value={typography.fontSize ?? ""}
         onChange={(e) => update("typography", "fontSize", e.target.value)}
       />
       <Input
-        label="Font Weight"
+        label={t("cms.style.fontWeight")}
         value={typography.fontWeight ?? ""}
         onChange={(e) => update("typography", "fontWeight", e.target.value)}
       />
       <Input
-        label="Line Height"
+        label={t("cms.style.lineHeight")}
         value={typography.lineHeight ?? ""}
         onChange={(e) => update("typography", "lineHeight", e.target.value)}
       />
       {warning && (
-        <p role="alert" aria-live="polite" className="text-danger text-sm">
-          Low contrast
+        <p role="status" aria-live="polite" className="text-danger text-sm">
+          {t("cms.style.lowContrast")}
         </p>
       )}
     </div>

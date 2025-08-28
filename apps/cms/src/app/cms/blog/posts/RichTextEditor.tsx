@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Button, Input, ImagePicker } from "@ui";
+import Image from "next/image";
 import {
   EditorProvider,
   PortableTextEditable,
@@ -144,9 +145,11 @@ function ProductSearch({
                   }
                 >
                   {imageUrl && (
-                    <img
+                    <Image
                       src={imageUrl}
                       alt={p.title}
+                      width={32}
+                      height={32}
                       className="h-8 w-8 object-cover"
                     />
                   )}

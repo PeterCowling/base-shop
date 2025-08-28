@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { SKU } from "@acme/types";
 import { formatCurrency } from "@acme/shared-utils";
+import Image from "next/image";
 
 export interface Props {
   slug: string;
@@ -56,9 +57,11 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
   return (
     <div className="flex gap-2 border p-2">
       {product.media?.[0] && (
-        <img
+        <Image
           src={product.media[0].url}
           alt={product.title}
+          width={64}
+          height={64}
           className="h-16 w-16 object-cover"
         />
       )}

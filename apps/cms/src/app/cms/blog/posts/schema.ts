@@ -55,7 +55,7 @@ export const schema = defineSchema({
 function ProductReferenceBlock(props: BlockRenderProps) {
   const editor = useEditor();
   const ctx = useContext(InvalidProductContext);
-  const { slug } = props.value as { slug: string; _key: string };
+    const { slug } = props.value as unknown as { slug: string; _key: string };
   const isInvalid = Boolean(ctx?.invalidProducts[props.value._key as string]);
   const remove = () => {
     const sel = {
@@ -116,8 +116,8 @@ export const renderBlock: RenderBlockFunction = (props) => {
   if (props.value._type === "productReference") {
     return React.createElement(ProductReferenceBlock, props);
   }
-  if (props.value._type === "embed") {
-    const { url } = props.value as { url: string };
+    if (props.value._type === "embed") {
+      const { url } = props.value as unknown as { url: string };
     return React.createElement(
       "div",
       { className: "aspect-video" },
@@ -127,8 +127,11 @@ export const renderBlock: RenderBlockFunction = (props) => {
       }),
     );
   }
-  if (props.value._type === "image") {
-    const { url, alt } = props.value as { url: string; alt?: string };
+    if (props.value._type === "image") {
+      const { url, alt } = props.value as unknown as {
+        url: string;
+        alt?: string;
+      };
     return React.createElement("img", {
       src: url,
       alt: alt ?? "",
@@ -155,33 +158,33 @@ export const previewComponents = {
         className: "max-w-full",
       }),
   },
-  marks: {
-    link: ({
-      children,
-      value,
-    }: {
-      children: React.ReactNode;
-      value: { href: string };
-    }) =>
-      React.createElement(
-        "a",
-        {
-          href: value.href,
-          className: "text-blue-600 underline",
-          target: "_blank",
-          rel: "noopener noreferrer",
-        },
+    marks: {
+      link: ({
         children,
-      ),
-  },
-  block: {
-    h1: ({ children }: { children: React.ReactNode }) =>
-      React.createElement("h1", null, children),
-    h2: ({ children }: { children: React.ReactNode }) =>
-      React.createElement("h2", null, children),
-    h3: ({ children }: { children: React.ReactNode }) =>
-      React.createElement("h3", null, children),
-  },
+        value,
+      }: {
+        children: React.ReactNode;
+        value?: { href: string };
+      }) =>
+        React.createElement(
+          "a",
+          {
+            href: value?.href ?? "#",
+            className: "text-blue-600 underline",
+            target: "_blank",
+            rel: "noopener noreferrer",
+          },
+          children,
+        ),
+    },
+    block: {
+      h1: ({ children }: { children?: React.ReactNode }) =>
+        React.createElement("h1", null, children),
+      h2: ({ children }: { children?: React.ReactNode }) =>
+        React.createElement("h2", null, children),
+      h3: ({ children }: { children?: React.ReactNode }) =>
+        React.createElement("h3", null, children),
+    },
 };
 
 export type { PortableTextBlock };

@@ -57,5 +57,5 @@ yarn-error.log*
 # ---------------------------
 .env*
 !.env.example
-!apps/shop-bcd/.env.local
-!apps/shop-bcd/.env.production
+!apps/*/.env.local
+!apps/*/.env.production

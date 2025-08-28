@@ -17,25 +17,28 @@ const TRUSTED_HOSTS = new Set(
 );
 
 async function runLighthouse(url: string): Promise<SeoAuditEntry> {
-  const result = (await lighthouse(
-    url,
-    {
-      onlyCategories: ["seo"],
-      chromeFlags: ["--headless"],
-      preset: "desktop",
-    } as any,
-  )) as { lhr: any } | undefined;
-  if (!result) {
-    throw new Error("Failed to run Lighthouse");
-  }
-  const lhr = result.lhr;
-  const score = Math.round((lhr.categories?.seo?.score ?? 0) * 100);
   type Audit = {
     score?: number;
     scoreDisplayMode?: string;
     title?: string;
   };
-  const recommendations = Object.values(lhr.audits as Record<string, Audit>)
+  const flags = {
+    onlyCategories: ["seo"],
+    chromeFlags: ["--headless"],
+    preset: "desktop",
+  };
+  const result: {
+    lhr: {
+      categories?: { seo?: { score?: number } };
+      audits?: Record<string, Audit>;
+    };
+  } | undefined = await lighthouse(url, flags);
+  if (!result) {
+    throw new Error("Failed to run Lighthouse");
+  }
+  const lhr = result.lhr;
+  const score = Math.round((lhr.categories?.seo?.score ?? 0) * 100);
+  const recommendations = Object.values(lhr.audits ?? {})
     .filter(
       (a) => a.score !== 1 && a.scoreDisplayMode !== "notApplicable" && a.title,
     )

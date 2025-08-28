@@ -40,7 +40,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const parsed = await parseJsonBody(
-    req as any,
+    req,
     segmentSchema.extend({ shop: z.string() }),
     "1mb",
   );

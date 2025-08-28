@@ -1,7 +1,7 @@
-import { createRequire } from "node:module";
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { join } from "path";
 import { tmpdir } from "os";
+import { createRequire } from "node:module";
 import ts from "typescript";
 
 describe("publish API", () => {
@@ -18,9 +18,13 @@ describe("publish API", () => {
         join(__dirname, "../../apps/shop-bcd/src/app/api/publish/route.ts"),
         "utf8"
       );
-      const routeJs = ts.transpileModule(routeSource, {
+      let routeJs = ts.transpileModule(routeSource, {
         compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2019 },
       }).outputText;
+      routeJs = routeJs.replace(
+        /const require = \(0, module_1\.createRequire\)\(import\.meta\.url\);\n/,
+        ""
+      );
       writeFileSync(join(routeDir, "route.js"), routeJs);
 
       const calls: string[] = [];

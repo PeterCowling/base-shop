@@ -21,6 +21,9 @@ mutableEnv.CART_COOKIE_SECRET ||= "test-cart-secret"; // cart cookie signing
 mutableEnv.STRIPE_WEBHOOK_SECRET ||= "whsec_test"; // dummy Stripe webhook secret
 mutableEnv.NEXTAUTH_SECRET ||= "test-nextauth-secret";
 mutableEnv.SESSION_SECRET ||= "test-session-secret";
+mutableEnv.CMS_SPACE_URL ||= "https://cms.example.com";
+mutableEnv.CMS_ACCESS_TOKEN ||= "cms-access-token";
+mutableEnv.SANITY_API_VERSION ||= "2023-01-01";
 
 /* -------------------------------------------------------------------------- */
 /* 2.  Polyfills missing from the JSDOM / Node test runtime                    */

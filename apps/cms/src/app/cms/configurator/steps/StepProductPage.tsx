@@ -85,7 +85,7 @@ export default function StepProductPage({
               `page-builder-history-${existing.id}`,
               JSON.stringify(
                 historyStateSchema.parse(
-                  (existing as any).history ?? {
+                  existing.history ?? {
                     past: [],
                     present: existing.components as PageComponent[],
                     future: [],

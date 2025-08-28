@@ -1,1 +1,1 @@
-export * from "./payments.impl.ts";
+export * from './payments.impl.ts';

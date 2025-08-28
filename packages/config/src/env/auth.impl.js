@@ -1,1 +1,1 @@
-export * from "./auth.impl.ts";
+export * from './auth.impl.ts';

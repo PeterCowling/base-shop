@@ -1,6 +1,16 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+// Ensure required auth secrets exist so `@acme/config` can parse the
+// environment during Next.js's configuration phase. Provide development
+// defaults if they are missing.
+process.env.NEXTAUTH_SECRET ??= "dev-nextauth-secret";
+process.env.SESSION_SECRET ??= "dev-session-secret";
+process.env.CART_COOKIE_SECRET ??= "dev-cart-secret";
+process.env.CMS_SPACE_URL ??= "https://cms.example.com";
+process.env.CMS_ACCESS_TOKEN ??= "placeholder-token";
+process.env.SANITY_API_VERSION ??= "2021-10-21";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 

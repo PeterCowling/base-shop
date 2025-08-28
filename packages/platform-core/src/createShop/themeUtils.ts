@@ -21,11 +21,9 @@ export function loadBaseTokens(): Record<string, string> {
   const sandbox: {
     module: { exports: Record<string, unknown> };
     exports: Record<string, unknown>;
-    require: NodeRequire;
   } = {
     module: { exports: {} },
     exports: {},
-    require,
   };
   sandbox.exports = sandbox.module.exports;
   runInNewContext(transpiled, sandbox);

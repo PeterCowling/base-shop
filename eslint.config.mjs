@@ -124,6 +124,19 @@ export default [
     },
   },
 
+  /* ▸ Allow generated declaration files without a TS project */
+  {
+    files: ["**/dist/**/*.d.ts"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+  },
+
   /* ▸ Scripts directory override */
   {
     files: ["scripts/**/*.{ts,tsx,js,jsx}"],

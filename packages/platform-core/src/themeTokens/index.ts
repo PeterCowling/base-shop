@@ -1,6 +1,6 @@
-import { existsSync, readFileSync } from "fs";
-import { join } from "path";
-import { runInNewContext } from "vm";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { runInNewContext } from "node:vm";
 import ts from "typescript";
 
 import {
@@ -55,7 +55,7 @@ export async function loadThemeTokensBrowser(theme: string): Promise<TokenMap> {
   if (!theme || theme === "base") return baseTokens;
   try {
     const mod = await import(
-      /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$)/ */
+      /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$|__tests__\/)/ */
       `@themes/${theme}`
     );
     if ("tokens" in mod) {

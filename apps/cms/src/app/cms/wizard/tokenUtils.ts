@@ -1,11 +1,41 @@
 // apps/cms/src/app/cms/wizard/tokenUtils.ts
 /* eslint-disable import/consistent-type-specifier-style */
 
-import {
-  baseTokens,
-  loadThemeTokensBrowser as loadThemeTokens,
-  type TokenMap,
-} from "@platform-core/themeTokens";
+import { tokens as baseTokensSrc, type TokenMap as ThemeTokenMap } from "@themes/base";
 
-export { baseTokens, loadThemeTokens };
-export type { TokenMap };
+function typedEntries<T extends object>(obj: T): [keyof T, T[keyof T]][] {
+  return Object.entries(obj) as [keyof T, T[keyof T]][];
+}
+
+export type TokenMap = Record<keyof ThemeTokenMap, string>;
+
+export const baseTokens: TokenMap = Object.fromEntries(
+  typedEntries(baseTokensSrc).map(([k, v]) => [k, v.light])
+) as TokenMap;
+
+export async function loadThemeTokens(theme: string): Promise<TokenMap> {
+  if (!theme || theme === "base") return baseTokens;
+  try {
+    const mod = await import(
+      /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$|__tests__\/)/ */
+      `@themes/${theme}`
+    );
+    if ("tokens" in mod) {
+      return Object.fromEntries(
+        typedEntries((mod as { tokens: ThemeTokenMap }).tokens).map(([k, v]) => [k, v.light])
+      ) as TokenMap;
+    }
+  } catch {
+    /* fall through to tailwind-tokens */
+  }
+  try {
+    const mod = await import(
+      /* webpackExclude: /(\.map$|\.d\.ts$|\.tsbuildinfo$|__tests__\/)/ */
+      `@themes/${theme}/tailwind-tokens`
+    );
+    return (mod as { tokens: TokenMap }).tokens;
+  } catch {
+    return baseTokens;
+  }
+}
+

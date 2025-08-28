@@ -28,7 +28,7 @@ export async function updateShop(
   return serviceUpdateShop(shop, formData);
 }
 
-export function getSettings(shop: string) {
+export async function getSettings(shop: string): Promise<ShopSettings> {
   return serviceGetSettings(shop);
 }
 

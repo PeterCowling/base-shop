@@ -1,6 +1,7 @@
 "use client";
 
-import { createShopOptionsSchema, type DeployStatusBase } from "@platform-core/createShop";
+import { createShopOptionsSchema } from "@platform-core/createShop/schema";
+import type { DeployStatusBase } from "@platform-core/createShop/deployTypes";
 import { validateShopName } from "@platform-core/shops";
 import type { WizardState } from "../schema";
 

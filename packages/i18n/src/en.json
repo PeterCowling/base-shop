@@ -32,22 +32,39 @@
   "wizard.spec.sections": "Sections",
   "wizard.spec.hero": "Hero",
   "wizard.spec.cta": "Call to action",
+  "wizard.spec.layout.default": "Default",
+  "wizard.spec.layout.sidebar": "Sidebar",
+  "wizard.spec.sections.placeholder": "intro,features",
+  "wizard.spec.hero.placeholder": "Welcome",
+  "wizard.spec.cta.placeholder": "Start",
   "wizard.preview.title": "Preview",
   "wizard.confirm": "Create Page",
   "wizard.back": "Back",
   "wizard.next": "Next",
   "cms.style.title": "Style",
   "cms.style.lowContrast": "Low contrast",
+  "cms.style.foreground": "Foreground",
+  "cms.style.background": "Background",
+  "cms.style.border": "Border",
+  "cms.style.fontFamily": "Font Family",
+  "cms.style.fontSize": "Font Size",
+  "cms.style.fontWeight": "Font Weight",
+  "cms.style.lineHeight": "Line Height",
+  "cms.style.tokenOrHex": "token or #hex",
   "cms.image.url": "Image URL",
   "cms.image.upload": "Upload",
   "cms.image.alt": "Alt text",
   "cms.image.decorative": "Mark as decorative",
   "cms.image.altWarning": "Provide alt text or mark as decorative.",
   "cms.image.probing": "Checking image…",
-  "cms.image.probeError": "URL must point to an image"
-  ,"cms.theme.library": "Theme Library"
-  ,"cms.theme.saveToLibrary": "Save to Library"
- ,"cms.theme.importDesignSystem": "Import Design System"
- ,"cms.migrations.title": "Migrations"
- ,"cms.export.title": "Export to Code"
+  "cms.image.probeError": "URL must point to an image",
+  "cms.theme.library": "Theme Library",
+  "cms.theme.saveToLibrary": "Save to Library",
+  "cms.theme.importDesignSystem": "Import Design System",
+  "cms.theme.importDesignSystem.description": "Paste design tokens JSON or enter npm package name.",
+  "cms.theme.importDesignSystem.packageGuide": "Package import guide",
+  "cms.theme.importDesignSystem.themeLibraryTips": "theme library tips",
+  "common.and": "and",
+  "cms.migrations.title": "Migrations",
+  "cms.export.title": "Export to Code"
 }

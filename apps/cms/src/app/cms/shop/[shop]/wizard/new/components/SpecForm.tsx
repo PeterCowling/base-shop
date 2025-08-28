@@ -5,9 +5,10 @@ import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
 
 interface Props {
   onNext: (spec: ScaffoldSpec) => void;
+  t: (key: string) => string;
 }
 
-export default function SpecForm({ onNext }: Props) {
+export default function SpecForm({ onNext, t }: Props) {
   const [layout, setLayout] = useState<"default" | "sidebar">("default");
   const [sections, setSections] = useState("");
   const [hero, setHero] = useState("");
@@ -58,29 +59,31 @@ export default function SpecForm({ onNext }: Props) {
   return (
     <form onSubmit={submit} className="flex flex-col gap-4">
       <label className="flex flex-col">
-        Layout
+        {t("wizard.spec.layout")}
         <select value={layout} onChange={handleLayout}>
-          <option value="default">Default</option>
-          <option value="sidebar">Sidebar</option>
+          <option value="default">{t("wizard.spec.layout.default")}</option>
+          <option value="sidebar">{t("wizard.spec.layout.sidebar")}</option>
         </select>
       </label>
       <label className="flex flex-col">
-        Sections
+        {t("wizard.spec.sections")}
         <input
           value={sections}
           onChange={handleSections}
-          placeholder="intro,features"
+          placeholder={t("wizard.spec.sections.placeholder")}
         />
       </label>
       <label className="flex flex-col">
-        Hero
-        <input value={hero} onChange={handleHero} placeholder="Welcome" />
+        {t("wizard.spec.hero")}
+        <input value={hero} onChange={handleHero} placeholder={t("wizard.spec.hero.placeholder")}
+        />
       </label>
       <label className="flex flex-col">
-        Call to action
-        <input value={cta} onChange={handleCta} placeholder="Start" />
+        {t("wizard.spec.cta")}
+        <input value={cta} onChange={handleCta} placeholder={t("wizard.spec.cta.placeholder")}
+        />
       </label>
-      <button type="submit">Next</button>
+      <button type="submit">{t("wizard.next")}</button>
     </form>
   );
 }

@@ -3,6 +3,7 @@
 import { useCallback, useState } from "react";
 import { useParams } from "next/navigation";
 import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
+import { useTranslations } from "@acme/i18n";
 import SpecForm from "./components/SpecForm";
 import PreviewPane from "./components/PreviewPane";
 import { createDraft, finalize } from "./actions";
@@ -12,6 +13,7 @@ export default function NewWizardPage() {
   const shop = params.shop;
   const [spec, setSpec] = useState<ScaffoldSpec | null>(null);
   const [draftId, setDraftId] = useState<string>("");
+  const t = useTranslations();
 
   const handleNext = useCallback(
     async (s: ScaffoldSpec) => {
@@ -26,8 +28,10 @@ export default function NewWizardPage() {
   const handleConfirm = useCallback(() => finalize(shop, draftId), [shop, draftId]);
 
   if (!spec) {
-    return <SpecForm onNext={handleNext} />;
+    return <SpecForm onNext={handleNext} t={t} />;
   }
 
-  return <PreviewPane spec={spec} onBack={handleBack} onConfirm={handleConfirm} />;
+  return (
+    <PreviewPane spec={spec} onBack={handleBack} onConfirm={handleConfirm} t={t} />
+  );
 }

@@ -9,9 +9,10 @@ interface Props {
   spec: ScaffoldSpec;
   onBack: () => void;
   onConfirm: () => void;
+  t: (key: string) => string;
 }
 
-export default function PreviewPane({ spec, onBack, onConfirm }: Props) {
+export default function PreviewPane({ spec, onBack, onConfirm, t }: Props) {
   const [deviceId, setDeviceId] = useState("desktop");
   const handleDevice = useCallback((id: string) => setDeviceId(id), []);
   const handleBack = useCallback(() => onBack(), [onBack]);
@@ -22,8 +23,8 @@ export default function PreviewPane({ spec, onBack, onConfirm }: Props) {
       <DeviceSelector deviceId={deviceId} onChange={handleDevice} />
       <PreviewRenderer spec={spec} deviceId={deviceId} />
       <div className="flex gap-2">
-        <button onClick={handleBack}>Back</button>
-        <button onClick={handleConfirm}>Create</button>
+        <button onClick={handleBack}>{t("wizard.back")}</button>
+        <button onClick={handleConfirm}>{t("wizard.confirm")}</button>
       </div>
     </div>
   );

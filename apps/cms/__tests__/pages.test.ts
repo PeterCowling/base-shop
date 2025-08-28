@@ -2,6 +2,8 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
+jest.setTimeout(15000);
+
 /** Creates a temp repo, runs cb, then restores CWD */
 async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "pages-"));

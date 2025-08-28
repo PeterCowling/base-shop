@@ -61,6 +61,22 @@ test("invalid token yields 401", async () => {
   expect(res.status).toBe(401);
 });
 
+test("missing token yields 401", async () => {
+  const getPages = jest.fn(async () => []);
+  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+    __esModule: true,
+    getPages,
+  }));
+
+  const { onRequest } = await import("../src/routes/preview/[pageId].ts");
+  const res = await onRequest({
+    params: { pageId: "1" },
+    request: new Request("http://test"),
+  } as any);
+
+  expect(res.status).toBe(401);
+});
+
 test("valid token with missing page yields 404", async () => {
   const getPages = jest.fn(async () => [] as Page[]);
   jest.doMock("@platform-core/repositories/pages/index.server", () => ({
@@ -75,6 +91,26 @@ test("valid token with missing page yields 404", async () => {
   } as any);
 
   expect(res.status).toBe(404);
+});
+
+test("falls back to default shop when NEXT_PUBLIC_SHOP_ID is unset", async () => {
+  const original = process.env.NEXT_PUBLIC_SHOP_ID;
+  delete process.env.NEXT_PUBLIC_SHOP_ID;
+  const getPages = jest.fn(async () => [] as Page[]);
+  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+    __esModule: true,
+    getPages,
+  }));
+
+  const { onRequest } = await import("../src/routes/preview/[pageId].ts");
+  const res = await onRequest({
+    params: { pageId: "1" },
+    request: new Request(`http://test?token=${tokenFor("1")}`),
+  } as any);
+
+  expect(res.status).toBe(404);
+  expect(getPages).toHaveBeenCalledWith("default");
+  process.env.NEXT_PUBLIC_SHOP_ID = original;
 });
 
 test("valid upgrade token returns page JSON", async () => {

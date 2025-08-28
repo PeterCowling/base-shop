@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateShopName } from "@acme/lib";
 import lighthouse from "lighthouse";
+import type { CliFlags, RunnerResult } from "lighthouse";
 import isURL from "validator/lib/isURL";
 import {
   appendSeoAudit,
@@ -17,14 +18,12 @@ const TRUSTED_HOSTS = new Set(
 );
 
 async function runLighthouse(url: string): Promise<SeoAuditEntry> {
-  const result = (await lighthouse(
-    url,
-    {
-      onlyCategories: ["seo"],
-      chromeFlags: ["--headless"],
-      preset: "desktop",
-    } as any,
-  )) as { lhr: any } | undefined;
+  const flags: CliFlags = {
+    onlyCategories: ["seo"],
+    chromeFlags: ["--headless"],
+    preset: "desktop",
+  };
+  const result: RunnerResult | undefined = await lighthouse(url, flags);
   if (!result) {
     throw new Error("Failed to run Lighthouse");
   }

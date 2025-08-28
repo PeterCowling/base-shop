@@ -5,6 +5,7 @@ import fs from "fs";
 import { mkdir, unlink } from "fs/promises";
 import path from "path";
 import { Readable } from "stream";
+import type { ReadableStream } from "stream/web";
 import Busboy from "busboy";
 import { fileTypeFromBuffer } from "file-type/core";
 import { resolveDataRoot } from "@platform-core/dataRoot";
@@ -29,7 +30,7 @@ export async function POST(
     const filePath = path.join(dir, "products.csv");
 
     const busboy = Busboy({
-      headers: Object.fromEntries(req.headers as any),
+      headers: Object.fromEntries(req.headers.entries()),
       limits: { fileSize: MAX_SIZE, files: 1 },
     });
 
@@ -115,7 +116,7 @@ export async function POST(
       });
 
       if (req.body) {
-        Readable.fromWeb(req.body as any).pipe(busboy);
+        Readable.fromWeb(req.body as ReadableStream).pipe(busboy);
       } else {
         resolved = true;
         resolve(NextResponse.json({ error: "No body" }, { status: 400 }));

@@ -3,8 +3,8 @@ const tokensMock = { tokensToCssVars: jest.fn(() => ({ coverage: 80, unmapped: [
 const inlineMock = { inlineStylesToTokens: jest.fn(() => ({ coverage: 60, unmapped: [] })) };
 const execMock = { execSync: jest.fn() };
 
-jest.mock("../codemods/tokens-to-css-vars", () => tokensMock);
-jest.mock("../codemods/inline-styles-to-tokens", () => inlineMock);
+jest.mock("../src/codemods/tokens-to-css-vars", () => tokensMock);
+jest.mock("../src/codemods/inline-styles-to-tokens", () => inlineMock);
 jest.mock("node:child_process", () => execMock);
 
 describe("migrate-shop", () => {

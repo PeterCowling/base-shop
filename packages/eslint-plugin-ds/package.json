@@ -1,0 +1,17 @@
+{
+  "name": "@acme/eslint-plugin-ds",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -b",
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs tests/no-raw-color.spec.ts",
+    "clean": "rimraf dist *.tsbuildinfo"
+  },
+  "peerDependencies": {
+    "eslint": "^9"
+  }
+}

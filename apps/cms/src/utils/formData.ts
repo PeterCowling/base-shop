@@ -1,15 +1,24 @@
+interface FormDataLike {
+  entries?: () => Iterable<[string, FormDataEntryValue]>;
+  [Symbol.iterator]?: () => IterableIterator<[string, FormDataEntryValue]>;
+  forEach?: (
+    callback: (value: FormDataEntryValue, key: string) => void,
+  ) => void;
+}
+
 export function formDataEntries(
   formData: FormData,
 ): Iterable<[string, FormDataEntryValue]> {
-  if (typeof (formData as any).entries === "function") {
-    return (formData as any).entries();
+  const fd = formData as unknown as FormDataLike;
+  if (typeof fd.entries === "function") {
+    return fd.entries();
   }
-  if (typeof (formData as any)[Symbol.iterator] === "function") {
-    return (formData as any)[Symbol.iterator]();
+  if (typeof fd[Symbol.iterator] === "function") {
+    return fd[Symbol.iterator]!();
   }
   const entries: [string, FormDataEntryValue][] = [];
-  if (typeof (formData as any).forEach === "function") {
-    (formData as any).forEach((value: FormDataEntryValue, key: string) => {
+  if (typeof fd.forEach === "function") {
+    fd.forEach((value: FormDataEntryValue, key: string) => {
       entries.push([key, value]);
     });
   }

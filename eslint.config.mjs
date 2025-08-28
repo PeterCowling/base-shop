@@ -53,6 +53,8 @@ export default [
         project: [
           "./tsconfig.json",
           "./tsconfig.test.json",
+          "./apps/*/tsconfig.json",
+          "./apps/*/tsconfig.test.json",
           "./packages/*/tsconfig.json",
           "./packages/*/tsconfig.test.json",
         ],

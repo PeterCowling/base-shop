@@ -1,10 +1,5 @@
 import { z } from "zod";
-import {
-  localeSchema,
-  type Locale,
-  type ShopSeoFields,
-  aiCatalogFieldSchema,
-} from "@acme/types";
+import { localeSchema, type Locale, aiCatalogFieldSchema } from "@acme/types";
 import { shopSchema, type ShopForm } from "../../actions/schemas";
 import {
   parseFilterMappings,

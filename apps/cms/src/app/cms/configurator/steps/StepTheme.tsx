@@ -15,6 +15,7 @@ import { getContrast } from "@ui/components/cms";
 import WizardPreview from "../../wizard/WizardPreview";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useConfigurator } from "../ConfiguratorContext";
 import { useThemeLoader } from "../hooks/useThemeLoader";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
@@ -188,9 +189,11 @@ export default function StepTheme({
           {themes.map((t) => (
             <SelectItem key={t} value={t}>
               <div className="flex items-center gap-2">
-                <img
+                <Image
                   src={`/themes/${t}.svg`}
                   alt={`${t} preview`}
+                  width={24}
+                  height={24}
                   className="h-6 w-6 rounded object-cover"
                 />
                 {t}

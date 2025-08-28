@@ -25,6 +25,9 @@ const nextConfig = {
     "@acme/tailwind-config",
     "@acme/design-tokens"
   ],
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "**" }],
+  },
   webpack: (config, { isServer }) => {
     const nodeBuiltins = [
       "assert",

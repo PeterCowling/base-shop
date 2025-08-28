@@ -18,6 +18,7 @@ import {
 import type { PageComponent } from "@acme/types";
 import { ulid } from "ulid";
 import { useState } from "react";
+import Image from "next/image";
 import type React from "react";
 
 interface Template {
@@ -90,9 +91,11 @@ export default function TemplateSelector({
             >
               <button type="button" className="w-full text-left">
                 <div className="flex items-center gap-2">
-                  <img
+                  <Image
                     src={t.preview}
                     alt={`${t.name} preview`}
+                    width={32}
+                    height={32}
                     className="h-8 w-8 rounded object-cover"
                   />
                   {t.name}
@@ -115,9 +118,12 @@ export default function TemplateSelector({
             </DialogTitle>
           </DialogHeader>
           {pendingTemplate?.preview && (
-            <img
+            <Image
               src={pendingTemplate.preview}
               alt={`${pendingTemplate.name} preview`}
+              width={800}
+              height={600}
+              sizes="100vw"
               className="w-full rounded"
             />
           )}

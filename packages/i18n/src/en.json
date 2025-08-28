@@ -26,5 +26,12 @@
   "checkout.retry": "Retry",
   "checkout.empty": "Your cart is empty.",
   "checkout.return": "Return date",
-  "checkout.deposit": "Deposit"
+  "checkout.deposit": "Deposit",
+  "builder.image.url": "Image URL",
+  "builder.image.upload": "Upload",
+  "builder.image.probing": "Checking image…",
+  "builder.image.invalid": "URL must point to an image",
+  "builder.image.alt": "Alt text",
+  "builder.image.decorative": "Decorative",
+  "builder.image.altWarning": "Provide alt text or mark image as decorative."
 }

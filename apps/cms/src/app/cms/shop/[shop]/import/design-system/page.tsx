@@ -1,4 +1,11 @@
+"use client";
+import { useEffect } from "react";
+import { track } from "@acme/telemetry";
+
 export default function DesignSystemImportPage() {
+  useEffect(() => {
+    track("designsystem:import:view", {});
+  }, []);
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Import Design System</h2>

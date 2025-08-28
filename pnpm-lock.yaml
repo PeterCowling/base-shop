@@ -182,6 +182,9 @@ importers:
       '@acme/design-tokens':
         specifier: workspace:*
         version: link:packages/design-tokens
+      '@acme/eslint-plugin-ds':
+        specifier: workspace:*
+        version: link:packages/eslint-plugin-ds
       '@acme/tailwind-config':
         specifier: workspace:*
         version: link:packages/tailwind-config
@@ -593,6 +596,12 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.3.1
+
+  packages/eslint-plugin-ds:
+    dependencies:
+      eslint:
+        specifier: ^9
+        version: 9.30.1(jiti@2.4.2)
 
   packages/i18n:
     devDependencies:

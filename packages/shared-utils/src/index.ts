@@ -11,3 +11,4 @@ export { logger } from "./logger";
 export type { LogMeta } from "./logger";
 export { getShopFromPath } from "./getShopFromPath";
 export { replaceShopInPath } from "./replaceShopInPath";
+export { buildResponse } from "./buildResponse";

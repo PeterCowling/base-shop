@@ -12,6 +12,7 @@ describe("envSchema", () => {
   it("parses when required variables are present", async () => {
       process.env = {
         ...OLD_ENV,
+        NODE_ENV: "production",
         STRIPE_SECRET_KEY: "sk",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
         CART_COOKIE_SECRET: "secret",
@@ -53,6 +54,7 @@ describe("envSchema", () => {
   it("throws when variables are missing", async () => {
     process.env = {
       ...OLD_ENV,
+      NODE_ENV: "production",
       STRIPE_SECRET_KEY: "sk",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
       CART_COOKIE_SECRET: "secret",

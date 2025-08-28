@@ -37,5 +37,12 @@
   "wizard.back": "Back",
   "wizard.next": "Next",
   "cms.style.title": "Style",
-  "cms.style.lowContrast": "Low contrast"
+  "cms.style.lowContrast": "Low contrast",
+  "cms.image.url": "Image URL",
+  "cms.image.upload": "Upload",
+  "cms.image.alt": "Alt text",
+  "cms.image.decorative": "Mark as decorative",
+  "cms.image.altWarning": "Provide alt text or mark as decorative.",
+  "cms.image.probing": "Checking image…",
+  "cms.image.probeError": "URL must point to an image"
 }

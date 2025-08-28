@@ -13,11 +13,11 @@ import {
   type SanityPost,
 } from "../services/blog";
 
-export function getPosts(shopId: string): Promise<SanityPost[]> {
+export async function getPosts(shopId: string): Promise<SanityPost[]> {
   return serviceGetPosts(shopId);
 }
 
-export function getPost(shopId: string, id: string): Promise<SanityPost | null> {
+export async function getPost(shopId: string, id: string): Promise<SanityPost | null> {
   return serviceGetPost(shopId, id);
 }
 

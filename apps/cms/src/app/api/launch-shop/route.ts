@@ -47,7 +47,7 @@ export async function POST(req: Request) {
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       const originalFetch = globalThis.fetch;
-      globalThis.fetch = ((input: any, init?: RequestInit) => {
+      globalThis.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
         if (typeof input === "string" && input.startsWith("/")) {
           input = base + input;
         } else if (input instanceof URL && input.pathname.startsWith("/")) {

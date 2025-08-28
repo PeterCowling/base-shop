@@ -39,6 +39,7 @@ export async function POST(req: Request) {
 
     return Response.json({ ok: true, datasets });
   } catch (err) {
+    console.error(err);
     return Response.json(
       { ok: false, error: "Failed to list datasets", errorCode: "DATASET_LIST_ERROR" },
       { status: 500 },

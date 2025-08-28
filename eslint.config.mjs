@@ -4,6 +4,7 @@ import tsParser from "@typescript-eslint/parser"; // still needed for parser
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import boundaries from "eslint-plugin-boundaries";
 import importPlugin from "eslint-plugin-import";
+import dsPlugin from "@acme/eslint-plugin-ds";
 import { fixupPluginRules } from "@eslint/compat";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -72,6 +73,15 @@ export default [
         { argsIgnorePattern: "^_" },
       ],
       // add more TS-only rules here
+    },
+  },
+
+  /* ▸ Design system token enforcement */
+  {
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-color": "error",
+      "ds/no-raw-font": "error",
     },
   },
 

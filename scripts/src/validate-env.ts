@@ -10,9 +10,39 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { z, ZodError } from "zod";
 
-// Accept any string key/value pairs.  In the full codebase, this schema would
-// include specific keys with constraints.
-const envSchema = z.record(z.string(), z.string());
+// Define the required environment variables with friendly error messages.
+const envSchema = z
+  .object({
+    STRIPE_SECRET_KEY: z.string({
+      required_error: "STRIPE_SECRET_KEY Required",
+    }),
+    STRIPE_WEBHOOK_SECRET: z.string({
+      required_error: "STRIPE_WEBHOOK_SECRET Required",
+    }),
+    CART_COOKIE_SECRET: z.string({
+      required_error: "CART_COOKIE_SECRET Required",
+    }),
+    CMS_SPACE_URL: z.string({ required_error: "CMS_SPACE_URL Required" }),
+    CMS_ACCESS_TOKEN: z.string({
+      required_error: "CMS_ACCESS_TOKEN Required",
+    }),
+    SANITY_API_VERSION: z.string({
+      required_error: "SANITY_API_VERSION Required",
+    }),
+    DEPOSIT_RELEASE_ENABLED: z
+      .string()
+      .optional()
+      .refine((v) => v === undefined || v === "true" || v === "false", {
+        message: "DEPOSIT_RELEASE_ENABLED must be true or false",
+      }),
+    DEPOSIT_RELEASE_INTERVAL_MS: z
+      .string()
+      .optional()
+      .refine((v) => v === undefined || !Number.isNaN(Number(v)), {
+        message: "DEPOSIT_RELEASE_INTERVAL_MS must be a number",
+      }),
+  })
+  .passthrough();
 
 const shopId = process.argv[2];
 
@@ -47,8 +77,7 @@ try {
 } catch (err) {
   if (err instanceof ZodError) {
     for (const issue of err.issues) {
-      const name = issue.path.join(".");
-      console.error(`${name} ${issue.message}`);
+      console.error(issue.message);
     }
   } else {
     console.error(err);

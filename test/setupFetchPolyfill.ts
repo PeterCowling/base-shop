@@ -17,28 +17,28 @@ if (!globalThis.crypto) {
 // Node's test environment may lack FormData, so provide a minimal polyfill
 if (!("FormData" in globalThis)) {
   class SimpleFormData {
-    private map = new Map<string, string[]>();
+    private map = new Map<string, any[]>();
 
     append(name: string, value: any) {
       const arr = this.map.get(name) || [];
-      arr.push(String(value));
+      arr.push(value);
       this.map.set(name, arr);
     }
 
     set(name: string, value: any) {
-      this.map.set(name, [String(value)]);
+      this.map.set(name, [value]);
     }
 
-    get(name: string): string | null {
+    get(name: string): any | null {
       const arr = this.map.get(name);
       return arr ? arr[0] : null;
     }
 
-    getAll(name: string): string[] {
+    getAll(name: string): any[] {
       return this.map.get(name) ?? [];
     }
 
-    *entries(): IterableIterator<[string, string]> {
+    *entries(): IterableIterator<[string, any]> {
       for (const [key, values] of this.map.entries()) {
         for (const value of values) {
           yield [key, value];
@@ -46,7 +46,7 @@ if (!("FormData" in globalThis)) {
       }
     }
 
-    [Symbol.iterator](): IterableIterator<[string, string]> {
+    [Symbol.iterator](): IterableIterator<[string, any]> {
       return this.entries();
     }
   }

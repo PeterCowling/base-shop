@@ -67,7 +67,7 @@ export default function TemplateSelector({
           <SelectItem
             value="blank"
             asChild
-            onSelect={(e: React.SyntheticEvent) => {
+            onSelect={(e: React.SyntheticEvent<unknown>) => {
               e.preventDefault();
               setSelectOpen(false);
               setPendingTemplate({ name: "blank", components: [], preview: "" });
@@ -82,7 +82,7 @@ export default function TemplateSelector({
               key={t.name}
               value={t.name}
               asChild
-              onSelect={(e: React.SyntheticEvent) => {
+              onSelect={(e: React.SyntheticEvent<unknown>) => {
                 e.preventDefault();
                 setSelectOpen(false);
                 setPendingTemplate(t);

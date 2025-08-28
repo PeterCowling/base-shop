@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@ui/components/atoms/shadcn";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import useStepCompletion from "../hooks/useStepCompletion";
 
@@ -51,21 +51,25 @@ export default function StepShopDetails({
   const [, markComplete] = useStepCompletion("shop-details");
   const [validationErrors, setValidationErrors] = useState<Record<string, string[]>>({});
 
-  const schema = z
-    .object({
-      id: z
-        .string()
-        .min(1, "Required")
-        .regex(/^[a-z0-9-]+$/, {
-          message: "Lowercase letters, numbers, and dashes only",
-        }),
-      name: z.string().min(1, "Required"),
-      logo: z.string().url("Invalid URL"),
-      contactInfo: z.string().min(1, "Required"),
-      type: z.enum(["sale", "rental"]),
-      template: z.string().min(1, "Required"),
-    })
-    .strict();
+  const schema = useMemo(
+    () =>
+      z
+        .object({
+          id: z
+            .string()
+            .min(1, "Required")
+            .regex(/^[a-z0-9-]+$/, {
+              message: "Lowercase letters, numbers, and dashes only",
+            }),
+          name: z.string().min(1, "Required"),
+          logo: z.string().url("Invalid URL"),
+          contactInfo: z.string().min(1, "Required"),
+          type: z.enum(["sale", "rental"]),
+          template: z.string().min(1, "Required"),
+        })
+        .strict(),
+    [],
+  );
 
   useEffect(() => {
     const parsed = schema.safeParse({
@@ -81,7 +85,7 @@ export default function StepShopDetails({
     } else {
       setValidationErrors({});
     }
-  }, [shopId, storeName, logo, contactInfo, type, template]);
+  }, [schema, shopId, storeName, logo, contactInfo, type, template]);
 
   const getError = (field: string) =>
     validationErrors[field]?.[0] || errors[field]?.[0];

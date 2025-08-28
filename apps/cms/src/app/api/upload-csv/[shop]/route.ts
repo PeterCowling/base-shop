@@ -29,7 +29,7 @@ export async function POST(
     const filePath = path.join(dir, "products.csv");
 
     const busboy = Busboy({
-      headers: Object.fromEntries(req.headers as any),
+      headers: Object.fromEntries(req.headers),
       limits: { fileSize: MAX_SIZE, files: 1 },
     });
 
@@ -115,7 +115,7 @@ export async function POST(
       });
 
       if (req.body) {
-        Readable.fromWeb(req.body as any).pipe(busboy);
+        Readable.fromWeb(req.body).pipe(busboy);
       } else {
         resolved = true;
         resolve(NextResponse.json({ error: "No body" }, { status: 400 }));

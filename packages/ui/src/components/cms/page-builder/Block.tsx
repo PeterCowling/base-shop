@@ -1,3 +1,4 @@
+"use client";
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import DOMPurify from "dompurify";

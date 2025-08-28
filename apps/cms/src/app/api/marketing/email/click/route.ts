@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { emitClick } from "@acme/email";
 
+export const runtime = "edge";
+
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
   const campaign = req.nextUrl.searchParams.get("campaign");

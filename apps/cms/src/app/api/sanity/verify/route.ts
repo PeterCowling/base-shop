@@ -1,5 +1,7 @@
 import { verifyCredentials } from "@acme/plugin-sanity";
 
+export const runtime = "edge";
+
 interface VerifyRequest {
   projectId: string;
   dataset?: string;

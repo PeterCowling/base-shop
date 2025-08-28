@@ -4,6 +4,8 @@ import { getShopById } from "@platform-core/repositories/shop.server";
 import { getSanityConfig } from "@platform-core/shops";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 
+export const runtime = "edge";
+
 const apiVersion =
   (env.SANITY_API_VERSION as string | undefined) ?? "2021-10-21";
 

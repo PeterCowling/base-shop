@@ -1,3 +1,4 @@
+"use client";
 import type { ImageSliderComponent } from "@acme/types";
 import { Button, Input } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";

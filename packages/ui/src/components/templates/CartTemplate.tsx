@@ -1,3 +1,4 @@
+"use client";
 import type { CartLine, CartState } from "@acme/platform-core/cart";
 import Image from "next/image";
 import * as React from "react";

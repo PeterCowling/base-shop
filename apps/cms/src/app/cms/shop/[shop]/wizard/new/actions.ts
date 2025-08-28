@@ -1,13 +1,25 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { scaffoldSpecSchema, type ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
+import { scaffoldSpecSchema } from "@acme/types/page/ScaffoldSpec";
+import { z } from "zod";
 
-export async function createDraft(shop: string, spec: ScaffoldSpec) {
-  const parsed = scaffoldSpecSchema.parse(spec);
-  return { id: `draft-${Date.now()}`, spec: parsed, shop };
+const createDraftSchema = z.object({
+  shop: z.string(),
+  spec: scaffoldSpecSchema,
+});
+
+export async function createDraft(input: z.infer<typeof createDraftSchema>) {
+  const { shop, spec } = createDraftSchema.parse(input);
+  return { id: `draft-${Date.now()}`, spec, shop };
 }
 
-export async function finalize(shop: string, draftId: string) {
+const finalizeSchema = z.object({
+  shop: z.string(),
+  draftId: z.string(),
+});
+
+export async function finalize(input: z.infer<typeof finalizeSchema>) {
+  const { shop, draftId } = finalizeSchema.parse(input);
   redirect(`/cms/shop/${shop}/pages/${draftId}/builder`);
 }

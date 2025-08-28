@@ -1,3 +1,4 @@
+"use client";
 import type { FormField, FormFieldOption } from "@acme/types";
 import {
   Button,

@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { Tag, TagProps } from "./Tag";

@@ -21,6 +21,7 @@ export default function MainImageField({ value, onChange }: Props) {
           alt="Main image"
           width={128}
           height={128}
+          unoptimized
           className="h-32 w-auto rounded object-cover"
         />
       )}

@@ -142,3 +142,46 @@ test("standard token not accepted as upgrade token", async () => {
 
   expect(res.status).toBe(401);
 });
+
+test("upgrade token route returns 401 when permission check fails", async () => {
+  jest.doMock("@auth", () => ({
+    __esModule: true,
+    requirePermission: jest
+      .fn()
+      .mockRejectedValue(new Error("no permission")),
+  }));
+
+  const { GET } = await import("../src/app/api/preview-token/route");
+  const res = await GET(new Request("http://test?pageId=1") as any);
+
+  expect(res.status).toBe(401);
+});
+
+test("upgrade token route without pageId yields 400", async () => {
+  jest.doMock("@auth", () => ({
+    __esModule: true,
+    requirePermission: jest.fn(),
+  }));
+
+  const { GET } = await import("../src/app/api/preview-token/route");
+  const res = await GET(new Request("http://test") as any);
+
+  expect(res.status).toBe(400);
+});
+
+test("missing upgrade token secret returns 500", async () => {
+  const original = process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
+  delete process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
+  jest.doMock("@auth", () => ({
+    __esModule: true,
+    requirePermission: jest.fn(),
+  }));
+
+  const { GET } = await import("../src/app/api/preview-token/route");
+  const res = await GET(new Request("http://test?pageId=1") as any);
+
+  expect(res.status).toBe(500);
+  expect(await res.json()).toEqual({ error: "Token secret not configured" });
+
+  process.env.UPGRADE_PREVIEW_TOKEN_SECRET = original;
+});

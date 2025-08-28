@@ -228,7 +228,6 @@ export default function StepTheme({
                   <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
                     {Object.values(p.colors).map((c, i) => (
                       <span
-                        // eslint-disable-next-line react/no-array-index-key
                         key={i}
                         className="h-1/2 w-1/2"
                         style={{ backgroundColor: `hsl(${c})` }}

@@ -1,4 +1,3 @@
-
 // Mock getServerSession, fs.promises, and resolveDataRoot
 
 const mkdirMock = jest.fn();
@@ -39,16 +38,20 @@ afterEach(() => {
 
 describe("init-shop route", () => {
   it("returns 403 for non-admin session", async () => {
-    const { getServerSession } = require("next-auth");
-    (getServerSession as jest.Mock).mockResolvedValue({ user: { role: "user" } });
+    const { getServerSession } = await import("next-auth");
+    (getServerSession as jest.Mock).mockResolvedValue({
+      user: { role: "user" },
+    });
     const { POST } = await import("./route");
     const res = await POST(new Request("http://localhost"));
     expect(res.status).toBe(403);
   });
 
   it("writes products.csv and categories.json on success", async () => {
-    const { getServerSession } = require("next-auth");
-    (getServerSession as jest.Mock).mockResolvedValue({ user: { role: "admin" } });
+    const { getServerSession } = await import("next-auth");
+    (getServerSession as jest.Mock).mockResolvedValue({
+      user: { role: "admin" },
+    });
     const csvContent = "sku,price\n1,10\n";
     const csv = Buffer.from(csvContent).toString("base64");
     const categories = ["a", "b"];
@@ -57,27 +60,43 @@ describe("init-shop route", () => {
 
     expect(res.status).toBe(200);
     await res.json(); // ensure body consumed
-    expect(mkdirMock).toHaveBeenCalledWith(path.join("/data-root", "shop1"), { recursive: true });
-    expect(writeFileMock).toHaveBeenNthCalledWith(1, path.join("/data-root", "shop1", "products.csv"), Buffer.from(csvContent));
-    expect(writeFileMock).toHaveBeenNthCalledWith(2, path.join("/data-root", "shop1", "categories.json"), JSON.stringify(categories, null, 2), "utf8");
+    expect(mkdirMock).toHaveBeenCalledWith(path.join("/data-root", "shop1"), {
+      recursive: true,
+    });
+    expect(writeFileMock).toHaveBeenNthCalledWith(
+      1,
+      path.join("/data-root", "shop1", "products.csv"),
+      Buffer.from(csvContent)
+    );
+    expect(writeFileMock).toHaveBeenNthCalledWith(
+      2,
+      path.join("/data-root", "shop1", "categories.json"),
+      JSON.stringify(categories, null, 2),
+      "utf8"
+    );
   });
 
   it("returns 400 for invalid base64 csv", async () => {
-    const { getServerSession } = require("next-auth");
-    (getServerSession as jest.Mock).mockResolvedValue({ user: { role: "admin" } });
+    const { getServerSession } = await import("next-auth");
+    (getServerSession as jest.Mock).mockResolvedValue({
+      user: { role: "admin" },
+    });
     const { POST } = await import("./route");
-    const res = await POST(buildRequest({ id: "shop1", csv: "!!!notbase64!!!" }));
+    const res = await POST(
+      buildRequest({ id: "shop1", csv: "!!!notbase64!!!" })
+    );
     expect(res.status).toBe(400);
     expect(writeFileMock).not.toHaveBeenCalled();
   });
 
   it("returns 400 for schema violations", async () => {
-    const { getServerSession } = require("next-auth");
-    (getServerSession as jest.Mock).mockResolvedValue({ user: { role: "admin" } });
+    const { getServerSession } = await import("next-auth");
+    (getServerSession as jest.Mock).mockResolvedValue({
+      user: { role: "admin" },
+    });
     const { POST } = await import("./route");
     const res = await POST(buildRequest({ csv: "" }));
     expect(res.status).toBe(400);
     expect(writeFileMock).not.toHaveBeenCalled();
   });
 });
-

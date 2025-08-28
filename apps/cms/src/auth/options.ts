@@ -3,7 +3,7 @@ import argon2 from "argon2";
 import type { NextAuthOptions } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
-import { readRbac as defaultReadRbac } from "../lib/rbacStore";
+import { readRbac as defaultReadRbac } from "../lib/server/rbacStore";
 
 import { logger } from "@acme/shared-utils";
 

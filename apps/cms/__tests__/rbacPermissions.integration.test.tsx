@@ -80,7 +80,7 @@ describe("PermissionsPage storefront roles", () => {
       const { updateRolePermissions } = await import(
         "../src/actions/rbac.server"
       );
-      const { readRbac } = await import("../src/lib/rbacStore");
+      const { readRbac } = await import("../src/lib/server/rbacStore");
 
       const form = new FormData();
       form.append("role", "customer");

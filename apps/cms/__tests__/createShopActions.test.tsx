@@ -193,7 +193,7 @@ describe("rbac actions persistence", () => {
       const { inviteUser } = await import(
         /* webpackIgnore: true */ "../src/actions/rbac.server.ts"
       );
-      const { readRbac } = await import("../src/lib/rbacStore");
+      const { readRbac } = await import("../src/lib/server/rbacStore");
 
       await inviteUser(
         fd({
@@ -224,7 +224,7 @@ describe("rbac actions persistence", () => {
       const { updateUserRoles } = await import(
         /* webpackIgnore: true */ "../src/actions/rbac.server.ts"
       );
-      const { readRbac } = await import("../src/lib/rbacStore");
+      const { readRbac } = await import("../src/lib/server/rbacStore");
 
       const form = fd({ id: "2", roles: ["admin", "viewer"] });
       await updateUserRoles(form);

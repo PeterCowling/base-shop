@@ -1,11 +1,11 @@
 /** @jest-environment node */
 
-jest.mock('../../lib/rbacStore', () => ({
+jest.mock('../../lib/server/rbacStore', () => ({
   readRbac: jest.fn(),
 }));
 
 import { listUsers } from '../rbac.server';
-import { readRbac } from '../../lib/rbacStore';
+import { readRbac } from '../../lib/server/rbacStore';
 
 describe('listUsers', () => {
   beforeEach(() => {

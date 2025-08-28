@@ -6,7 +6,7 @@
 /* -------------------------------------------------------------------------- */
 
 /* eslint-disable @typescript-eslint/no-var-requires */
-const rbacStorePath = require.resolve("../src/lib/rbacStore");
+const rbacStorePath = require.resolve("../src/lib/server/rbacStore");
 const { ROLE_PERMISSIONS } = require("@auth/permissions");
 /* eslint-enable @typescript-eslint/no-var-requires */
 

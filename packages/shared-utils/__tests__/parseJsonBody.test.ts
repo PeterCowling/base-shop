@@ -42,4 +42,11 @@ describe("parseJsonBody", () => {
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(413);
   });
+
+  it("parses requests with only a json method", async () => {
+    const schema = z.object({ x: z.string() }).strict();
+    const req = { json: async () => ({ x: "hi" }) } as unknown as Request;
+    const result = await parseJsonBody(req, schema, "1mb");
+    expect(result).toEqual({ success: true, data: { x: "hi" } });
+  });
 });

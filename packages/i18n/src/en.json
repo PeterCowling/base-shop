@@ -35,5 +35,10 @@
   "wizard.preview.title": "Preview",
   "wizard.confirm": "Create Page",
   "wizard.back": "Back",
-  "wizard.next": "Next"
+  "wizard.next": "Next",
+  "image.url": "Image URL",
+  "image.upload": "Upload",
+  "image.alt": "Alt text",
+  "image.decorative": "Decorative",
+  "image.altRequired": "Alt text is recommended unless decorative."
 }

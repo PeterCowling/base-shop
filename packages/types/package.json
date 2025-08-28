@@ -39,6 +39,16 @@
       "import": "./src/theme/*.ts",
       "default": "./src/theme/*.ts"
     },
+    "./ds": {
+      "types": "./src/ds/index.ts",
+      "import": "./src/ds/index.ts",
+      "default": "./src/ds/index.ts"
+    },
+    "./ds/*": {
+      "types": "./src/ds/*.ts",
+      "import": "./src/ds/*.ts",
+      "default": "./src/ds/*.ts"
+    },
     "./*": {
       "types": "./src/*.ts",
       "import": "./src/*.ts",

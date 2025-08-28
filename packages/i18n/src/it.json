@@ -51,4 +51,5 @@
   "cms.image.probeError": "L'URL deve puntare a un'immagine"
   ,"cms.theme.library": "Libreria temi"
   ,"cms.theme.saveToLibrary": "Salva nella libreria"
+ ,"cms.theme.importDesignSystem": "Import Design System"
 }

@@ -51,4 +51,5 @@
   "cms.image.probeError": "URL muss auf ein Bild verweisen"
   ,"cms.theme.library": "Theme-Bibliothek"
   ,"cms.theme.saveToLibrary": "In Bibliothek speichern"
+ ,"cms.theme.importDesignSystem": "Import Design System"
 }

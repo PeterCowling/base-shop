@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { useEffect, type ChangeEvent } from "react";
+import { useCallback, useEffect, type ChangeEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -24,10 +24,13 @@ export default function StepOptions(): React.JSX.Element {
     analyticsProvider,
     analyticsId,
   } = state;
-  const setPayment = (v: string[]) => update("payment", v);
-  const setShipping = (v: string[]) => update("shipping", v);
-  const setAnalyticsProvider = (v: string) => update("analyticsProvider", v);
-  const setAnalyticsId = (v: string) => update("analyticsId", v);
+  const setPayment = useCallback((v: string[]) => update("payment", v), [update]);
+  const setShipping = useCallback((v: string[]) => update("shipping", v), [update]);
+  const setAnalyticsProvider = useCallback(
+    (v: string) => update("analyticsProvider", v),
+    [update],
+  );
+  const setAnalyticsId = useCallback((v: string) => update("analyticsId", v), [update]);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -51,7 +54,16 @@ export default function StepOptions(): React.JSX.Element {
     }
 
     router.replace("/cms/configurator");
-  }, [searchParams, payment, shipping, router]);
+  }, [
+    searchParams,
+    paymentIds,
+    shippingIds,
+    payment,
+    shipping,
+    setPayment,
+    setShipping,
+    router,
+  ]);
 
   function connect(provider: string) {
     const url = `/cms/api/providers/${provider}?shop=${encodeURIComponent(shopId)}`;

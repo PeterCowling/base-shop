@@ -12,6 +12,6 @@
     "types": ["node"]
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", "__tests__", ".turbo", "node_modules"],
+  "exclude": ["dist", "__tests__", ".turbo", "node_modules", "**/*.test.ts"],
   "references": []
 }

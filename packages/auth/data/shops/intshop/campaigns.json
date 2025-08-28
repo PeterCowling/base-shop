@@ -1,0 +1,13 @@
+[
+  {
+    "id": "c2",
+    "recipients": [
+      "manual@example.com"
+    ],
+    "subject": "Man",
+    "body": "<p>Man</p>",
+    "segment": null,
+    "sendAt": "2025-08-28T12:22:40.000Z",
+    "sentAt": "2025-08-28T12:22:41.016Z"
+  }
+]

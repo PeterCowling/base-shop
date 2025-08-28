@@ -9,18 +9,7 @@
   "filterMappings": {},
   "priceOverrides": {},
   "localeOverrides": {},
-  "navigation": [
-    {
-      "label": "Parent",
-      "url": "https://example.com/parent",
-      "children": [
-        {
-          "label": "Child",
-          "url": "https://example.com/parent/child"
-        }
-      ]
-    }
-  ],
+  "navigation": [],
   "analyticsEnabled": false,
   "shippingProviders": [],
   "taxProviders": [

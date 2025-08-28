@@ -1,4 +1,5 @@
 import { Button, ImagePicker } from "@ui";
+import Image from "next/image";
 
 interface Props {
   value: string;
@@ -15,7 +16,13 @@ export default function MainImageField({ value, onChange }: Props) {
         </Button>
       </ImagePicker>
       {value && (
-        <img src={value} alt="Main image" className="h-32 w-auto rounded object-cover" />
+        <Image
+          src={value}
+          alt="Main image"
+          width={128}
+          height={128}
+          className="h-32 w-auto rounded object-cover"
+        />
       )}
     </div>
   );

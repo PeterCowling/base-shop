@@ -2,6 +2,10 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
+process.env.CMS_SPACE_URL = 'https://example.com';
+process.env.CMS_ACCESS_TOKEN = 'test-token';
+process.env.SANITY_API_VERSION = '2023-05-31';
+
 const moduleUrl = new URL('../index.mjs', import.meta.url);
 const freshImport = () => import(`${moduleUrl.href}?t=${Date.now()}&r=${Math.random()}`);
 

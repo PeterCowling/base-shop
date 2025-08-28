@@ -94,7 +94,7 @@ describe("/cms access", () => {
   });
 
   it("returns 403 for roles without read access", async () => {
-    const { canRead } = require("@auth/rbac") as {
+    const { canRead } = (await import("@auth/rbac")) as {
       canRead: jest.Mock;
       canWrite: jest.Mock;
     };

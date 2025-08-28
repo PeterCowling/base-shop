@@ -18,6 +18,11 @@ export async function provisionDomain(
     Authorization: `Bearer ${token}`,
   } as const;
 
+  type CloudflareError = { message?: string };
+  type AddDomainResponse = {
+    result?: { verification_data?: { cname_target?: string } };
+    errors?: CloudflareError[];
+  };
   const addRes = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${account}/pages/projects/${shopId}/domains`,
     {
@@ -26,7 +31,7 @@ export async function provisionDomain(
       body: JSON.stringify({ name: domain }),
     }
   );
-  const addJson = (await addRes.json()) as any;
+  const addJson = (await addRes.json()) as AddDomainResponse;
   if (!addRes.ok) {
     throw new Error(addJson.errors?.[0]?.message ?? "Failed to provision domain");
   }
@@ -35,10 +40,11 @@ export async function provisionDomain(
     addJson.result?.verification_data?.cname_target || `${shopId}.pages.dev`;
 
   const root = domain.split(".").slice(-2).join(".");
+  type ZoneResponse = { result?: { id?: string }[] };
   const zoneRes = await fetch(`https://api.cloudflare.com/client/v4/zones?name=${root}`, {
     headers,
   });
-  const zoneJson = (await zoneRes.json()) as any;
+  const zoneJson = (await zoneRes.json()) as ZoneResponse;
   const zoneId = zoneJson.result?.[0]?.id as string | undefined;
   if (zoneId) {
     await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/dns_records`, {
@@ -53,11 +59,15 @@ export async function provisionDomain(
     }).catch(() => {});
   }
 
+  type VerifyResponse = {
+    result?: { status?: string; certificate_status?: string };
+    errors?: CloudflareError[];
+  };
   const verifyRes = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${account}/pages/projects/${shopId}/domains/${domain}/verify`,
     { method: "POST", headers }
   );
-  const verifyJson = (await verifyRes.json()) as any;
+  const verifyJson = (await verifyRes.json()) as VerifyResponse;
   if (!verifyRes.ok) {
     throw new Error(
       verifyJson.errors?.[0]?.message ?? "Failed to issue certificate"

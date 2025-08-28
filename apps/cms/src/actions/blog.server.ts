@@ -1,3 +1,5 @@
+"use server";
+
 // apps/cms/src/actions/blog.server.ts
 
 import {
@@ -24,7 +26,6 @@ export async function createPost(
   _prev: unknown,
   formData: FormData,
 ): Promise<{ message?: string; error?: string; id?: string }> {
-  "use server";
   return serviceCreatePost(shopId, formData);
 }
 
@@ -33,7 +34,6 @@ export async function updatePost(
   _prev: unknown,
   formData: FormData,
 ): Promise<{ message?: string; error?: string }> {
-  "use server";
   return serviceUpdatePost(shopId, formData);
 }
 
@@ -43,7 +43,6 @@ export async function publishPost(
   _prev?: unknown,
   formData?: FormData,
 ): Promise<{ message?: string; error?: string }> {
-  "use server";
   return servicePublishPost(shopId, id, formData);
 }
 
@@ -53,7 +52,6 @@ export async function unpublishPost(
   _prev?: unknown,
   _formData?: FormData,
 ): Promise<{ message?: string; error?: string }> {
-  "use server";
   return serviceUnpublishPost(shopId, id);
 }
 
@@ -61,7 +59,6 @@ export async function deletePost(
   shopId: string,
   id: string,
 ): Promise<{ message?: string; error?: string }> {
-  "use server";
   return serviceDeletePost(shopId, id);
 }
 

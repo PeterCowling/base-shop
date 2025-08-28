@@ -1,3 +1,5 @@
+"use server";
+
 // apps/cms/src/actions/shops.server.ts
 
 import {
@@ -23,7 +25,6 @@ export async function updateShop(
   shop: string,
   formData: FormData,
 ): Promise<{ shop?: Shop; errors?: Record<string, string[]> }> {
-  "use server";
   return serviceUpdateShop(shop, formData);
 }
 
@@ -35,7 +36,6 @@ export async function updateSeo(
   shop: string,
   formData: FormData,
 ) {
-  "use server";
   return serviceUpdateSeo(shop, formData);
 }
 
@@ -43,17 +43,14 @@ export async function generateSeo(
   shop: string,
   formData: FormData,
 ) {
-  "use server";
   return serviceGenerateSeo(shop, formData);
 }
 
 export async function revertSeo(shop: string, timestamp: string) {
-  "use server";
   return serviceRevertSeo(shop, timestamp);
 }
 
 export async function setFreezeTranslations(shop: string, freeze: boolean) {
-  "use server";
   return serviceSetFreezeTranslations(shop, freeze);
 }
 
@@ -61,27 +58,22 @@ export async function updateCurrencyAndTax(
   shop: string,
   formData: FormData,
 ) {
-  "use server";
   return serviceUpdateCurrencyAndTax(shop, formData);
 }
 
 export async function updateDeposit(shop: string, formData: FormData) {
-  "use server";
   return serviceUpdateDeposit(shop, formData);
 }
 
 export async function updateReverseLogistics(shop: string, formData: FormData) {
-  "use server";
   return serviceUpdateReverseLogistics(shop, formData);
 }
 
 export async function updateUpsReturns(shop: string, formData: FormData) {
-  "use server";
   return serviceUpdateUpsReturns(shop, formData);
 }
 
 export async function updateStockAlert(shop: string, formData: FormData) {
-  "use server";
   return serviceUpdateStockAlert(shop, formData);
 }
 
@@ -89,17 +81,14 @@ export async function updatePremierDelivery(
   shop: string,
   formData: FormData,
 ) {
-  "use server";
   return serviceUpdatePremierDelivery(shop, formData);
 }
 
 export async function updateAiCatalog(shop: string, formData: FormData) {
-  "use server";
   return serviceUpdateAiCatalog(shop, formData);
 }
 
 export async function resetThemeOverride(shop: string, token: string) {
-  "use server";
   return serviceResetThemeOverride(shop, token);
 }
 

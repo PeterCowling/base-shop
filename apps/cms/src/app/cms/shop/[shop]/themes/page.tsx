@@ -1,3 +1,5 @@
+"use server";
+
 // apps/cms/src/app/cms/shop/[shop]/themes/page.tsx
 import { listThemes } from "@platform-core/createShop";
 import { baseTokens, loadThemeTokens } from "@platform-core/themeTokens";
@@ -14,12 +16,10 @@ export async function savePreset(
   name: string,
   tokens: Record<string, string>,
 ) {
-  "use server";
   await saveThemePreset(shop, name, tokens);
 }
 
 export async function deletePreset(shop: string, name: string) {
-  "use server";
   await deleteThemePreset(shop, name);
 }
 

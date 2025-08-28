@@ -3,6 +3,7 @@ import { readdir, readFile } from "fs/promises";
 import { existsSync, type Dirent } from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
+import { createRequire } from "module";
 import { logger } from "./utils";
 import { PluginManager } from "./plugins/PluginManager";
 import type {
@@ -18,6 +19,20 @@ import type {
   PluginOptions,
   Plugin,
 } from "@acme/types";
+
+let tsLoaderRegistered = false;
+async function importPluginModule(entry: string) {
+  if (/\.[mc]?ts$/.test(entry)) {
+    if (!tsLoaderRegistered) {
+      const tsNode = await import("ts-node");
+      tsNode.register({ transpileOnly: true });
+      tsLoaderRegistered = true;
+    }
+    const req = createRequire(pathToFileURL(entry).href);
+    return req(entry);
+  }
+  return import(pathToFileURL(entry).href);
+}
 
 export interface LoadPluginsOptions {
   /** directories containing plugin packages */
@@ -112,7 +127,7 @@ export async function loadPlugins({
         logger.warn("No package.json found for plugin", { root });
         continue;
       }
-      const mod = await import(pathToFileURL(entry).href);
+      const mod = await importPluginModule(entry);
       if (mod.default) {
         loaded.push(mod.default as Plugin);
       }

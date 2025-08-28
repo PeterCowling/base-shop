@@ -1,0 +1,26 @@
+{
+  "name": "@acme/theme",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "zod": "^3.25.73",
+    "ulid": "^3.0.1"
+  },
+  "devDependencies": {
+    "next": "^15.3.4"
+  }
+}

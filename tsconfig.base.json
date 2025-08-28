@@ -165,6 +165,12 @@
       ],
       "better-sqlite3": [
         "packages/platform-core/src/types/better-sqlite3"
+      ],
+      "@acme/theme": [
+        "packages/theme/src/index.ts"
+      ],
+      "@acme/theme/*": [
+        "packages/theme/src/*"
       ]
     }
   },

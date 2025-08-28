@@ -150,6 +150,12 @@
       ],
       "@acme/zod-utils/*": [
         "../../packages/zod-utils/src/*"
+      ],
+      "@acme/theme": [
+        "../../packages/theme/src/index.ts"
+      ],
+      "@acme/theme/*": [
+        "../../packages/theme/src/*"
       ]
     },
     "module": "ESNext",
@@ -225,6 +231,9 @@
     },
     {
       "path": "../../packages/zod-utils"
+    },
+    {
+      "path": "../../packages/theme"
     }
   ]
 }

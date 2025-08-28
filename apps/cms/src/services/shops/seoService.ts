@@ -75,13 +75,18 @@ export async function generateSeo(
   return { generated: result };
 }
 
+interface DiffEntry {
+  timestamp: string;
+  diff: Partial<ShopSettings>;
+}
+
 export async function revertSeo(shop: string, timestamp: string) {
   await authorize();
-  const history = await fetchDiffHistory(shop);
-  const sorted = history.sort((a: any, b: any) =>
+  const history = (await fetchDiffHistory(shop)) as DiffEntry[];
+  const sorted = history.sort((a, b) =>
     a.timestamp.localeCompare(b.timestamp),
   );
-  const idx = sorted.findIndex((e: any) => e.timestamp === timestamp);
+  const idx = sorted.findIndex((e) => e.timestamp === timestamp);
   if (idx === -1) throw new Error("Version not found");
   let state: ShopSettings = {
     languages: [] as Locale[],

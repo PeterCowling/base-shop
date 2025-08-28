@@ -8,6 +8,12 @@ import {
 import { validateShopName } from "@platform-core/shops";
 import type { WizardState } from "../schema";
 
+interface SerializedNavItem {
+  label: string;
+  url: string;
+  children?: SerializedNavItem[];
+}
+
 export interface SubmitResult {
   ok: boolean;
   deployment?: DeployStatusBase;
@@ -17,7 +23,7 @@ export interface SubmitResult {
 
 function serializeNavItems(
   items: WizardState["navItems"]
-): { label: string; url: string; children?: any[] }[] {
+): SerializedNavItem[] {
   return items.map(
     ({ label, url, children }: WizardState["navItems"][number]) => ({
       label,

@@ -5,6 +5,12 @@ import type { DeployStatusBase } from "@platform-core/createShop/deployTypes";
 import { validateShopName } from "@platform-core/shops";
 import type { WizardState } from "../schema";
 
+interface SerializedNavItem {
+  label: string;
+  url: string;
+  children?: SerializedNavItem[];
+}
+
 export interface CreateResult {
   ok: boolean;
   deployment?: DeployStatusBase;
@@ -14,7 +20,7 @@ export interface CreateResult {
 
 function serializeNavItems(
   items: WizardState["navItems"]
-): { label: string; url: string; children?: any[] }[] {
+): SerializedNavItem[] {
   return items.map(
     ({ label, url, children }: WizardState["navItems"][number]) => ({
       label,

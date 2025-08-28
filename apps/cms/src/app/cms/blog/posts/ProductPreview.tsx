@@ -18,6 +18,8 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
     let active = true;
     async function load() {
       setLoading(true);
+      setProduct(null);
+      onValidChange?.(false);
       try {
         const res = await fetch(
           `/api/products?slug=${encodeURIComponent(slug)}`
@@ -41,7 +43,7 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
     load();
     return () => {
       active = false;
-      onValidChange?.(true);
+      onValidChange?.(false);
     };
   }, [slug, onValidChange]);
 

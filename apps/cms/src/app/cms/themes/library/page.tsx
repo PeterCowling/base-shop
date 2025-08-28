@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { track } from "@acme/telemetry";
 import type { ThemeLibraryEntry } from "@acme/types/theme/ThemeLibrary";
+import { useTranslations } from "@i18n/useTranslations";
 
 async function fetchThemes(): Promise<ThemeLibraryEntry[]> {
   const res = await fetch("/cms/api/themes", { cache: "no-store" });
@@ -11,10 +12,11 @@ async function fetchThemes(): Promise<ThemeLibraryEntry[]> {
 
 export default async function ThemeLibraryPage() {
   track("themes:library:view", {});
+  const t = await useTranslations("en");
   const themes = await fetchThemes();
   return (
     <div>
-      <h2 className="mb-4 text-xl font-semibold">Theme Library</h2>
+      <h2 className="mb-4 text-xl font-semibold">{t("cms.theme.library")}</h2>
       <ul>
         {themes.map((t) => (
           <li key={t.id} className="mb-2">
@@ -23,7 +25,7 @@ export default async function ThemeLibraryPage() {
         ))}
       </ul>
       <p className="mt-4 text-sm">
-        <Link href="/cms">Back</Link>
+        <Link href="/cms">{t("cms.back")}</Link>
       </p>
     </div>
   );

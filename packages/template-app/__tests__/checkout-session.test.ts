@@ -1,6 +1,6 @@
 // packages/template-app/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "@acme/platform-core/cartCookie";
-import { PRODUCTS } from "@acme/platform-core/products";
+import { encodeCartCookie } from "@platform-core/cartCookie";
+import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@acme/date-utils";
 
 jest.mock("next/server", () => ({
@@ -14,23 +14,37 @@ jest.mock("@acme/stripe", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
 
-jest.mock("@acme/platform-core/pricing", () => ({
+jest.mock("@platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
   convertCurrency: jest.fn(async (v: number) => v),
+  getPricing: jest.fn(async () => ({})),
 }));
 
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
-jest.mock("@acme/platform-core/analytics", () => ({ trackEvent: jest.fn() }));
-jest.mock("@acme/platform-core/repositories/shops.server", () => ({
+jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
+jest.mock("@platform-core/repositories/shops.server", () => ({
   readShop: jest.fn(async () => ({ coverageIncluded: true })),
 }));
 let mockCart: any;
-jest.mock("@acme/platform-core/cartStore", () => ({
+jest.mock("@platform-core/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
 }));
 
+jest.mock("@platform-core/checkout/session", () => {
+  const actual = jest.requireActual("@platform-core/checkout/session");
+  return {
+    ...actual,
+    createCheckoutSession: jest.fn(actual.createCheckoutSession),
+  };
+});
+
 import { stripe } from "@acme/stripe";
+import { createCheckoutSession } from "@platform-core/checkout/session";
+import { convertCurrency, getPricing } from "@platform-core/pricing";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
+const createCheckoutSessionMock = createCheckoutSession as jest.Mock;
+const getPricingMock = getPricing as jest.Mock;
+const convertCurrencyMock = convertCurrency as jest.Mock;
 
 import { POST } from "../src/api/checkout-session/route";
 
@@ -121,4 +135,70 @@ test("returns 400 when returnDate is invalid", async () => {
   expect(res.status).toBe(400);
   const body = await res.json();
   expect(body.error).toMatch(/invalid/i);
+});
+
+test("returns 400 when cart is empty", async () => {
+  mockCart = {};
+  const cookie = encodeCartCookie("test");
+  const res = await POST(createRequest({}, cookie));
+  expect(res.status).toBe(400);
+  const body = await res.json();
+  expect(body.error).toBe("Cart is empty");
+});
+
+test("applies coverage fee and waiver", async () => {
+  createCheckoutSessionMock.mockClear();
+  stripeCreate.mockClear();
+  getPricingMock.mockClear();
+  convertCurrencyMock.mockClear();
+  getPricingMock.mockResolvedValue({
+    coverage: {
+      damage: { fee: 5, waiver: 2 },
+    },
+  });
+  convertCurrencyMock.mockImplementation(async (v: number) => v);
+
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  stripeCreate.mockResolvedValue({
+    id: "sess_cov",
+    payment_intent: { client_secret: "cs_cov" },
+  });
+  const cookie = encodeCartCookie("test");
+  const res = await POST(
+    createRequest({ returnDate: "2025-01-02", coverage: ["damage"] }, cookie),
+  );
+  await res.json();
+
+  expect(getPricingMock).toHaveBeenCalled();
+  expect(convertCurrencyMock).toHaveBeenCalledWith(5, "EUR");
+  expect(convertCurrencyMock).toHaveBeenCalledWith(2, "EUR");
+
+  const [stripeArgs] = stripeCreate.mock.calls[0];
+  const coverageItem = stripeArgs.line_items.find(
+    (li: any) => li.price_data?.product_data?.name === "Coverage",
+  );
+  expect(coverageItem.price_data.unit_amount).toBe(500);
+  expect(stripeArgs.payment_intent_data.metadata.coverage).toBe("damage");
+  expect(stripeArgs.payment_intent_data.metadata.coverageFee).toBe("5");
+  expect(stripeArgs.payment_intent_data.metadata.coverageWaiver).toBe("2");
+
+  const [, opts] = createCheckoutSessionMock.mock.calls[0];
+  expect(opts.subtotalExtra).toBe(5);
+  expect(opts.depositAdjustment).toBe(-2);
+});
+
+test("returns 502 when checkout session creation fails", async () => {
+  createCheckoutSessionMock.mockRejectedValueOnce(new Error("boom"));
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const res = await POST(createRequest({ returnDate: "2025-01-02" }, cookie));
+  expect(res.status).toBe(502);
+  const body = await res.json();
+  expect(body.error).toBe("Checkout failed");
 });

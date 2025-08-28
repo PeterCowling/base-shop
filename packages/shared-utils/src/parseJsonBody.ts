@@ -28,18 +28,35 @@ export async function parseJsonBody<T>(
 ): Promise<ParseJsonResult<T>> {
   let json: unknown;
   try {
-    const text = await req.text();
-    const byteLength = new TextEncoder().encode(text).length;
-    if (byteLength > parseLimit(limit)) {
-      return {
-        success: false,
-        response: NextResponse.json(
-          { error: "Payload Too Large" },
-          { status: 413 },
-        ),
-      };
+    if (typeof (req as any).text === "function") {
+      const text = await (req as any).text();
+      const byteLength = new TextEncoder().encode(text).length;
+      if (byteLength > parseLimit(limit)) {
+        return {
+          success: false,
+          response: NextResponse.json(
+            { error: "Payload Too Large" },
+            { status: 413 },
+          ),
+        };
+      }
+      json = JSON.parse(text);
+    } else if (typeof (req as any).json === "function") {
+      json = await (req as any).json();
+      const text = JSON.stringify(json);
+      const byteLength = new TextEncoder().encode(text).length;
+      if (byteLength > parseLimit(limit)) {
+        return {
+          success: false,
+          response: NextResponse.json(
+            { error: "Payload Too Large" },
+            { status: 413 },
+          ),
+        };
+      }
+    } else {
+      throw new Error("No body parser available");
     }
-    json = JSON.parse(text);
   } catch (err: unknown) {
     console.error(err instanceof Error ? err : "Unknown error");
     return {

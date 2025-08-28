@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { trackEvent } from "@platform-core/analytics";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");

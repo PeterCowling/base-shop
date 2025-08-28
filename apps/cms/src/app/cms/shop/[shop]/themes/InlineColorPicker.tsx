@@ -43,6 +43,7 @@ export default function InlineColorPicker({
   };
 
   const displayValue = isHsl(value) ? hslToHex(value) : value;
+  const defaultHex = isHsl(defaultValue) ? hslToHex(defaultValue) : defaultValue;
 
   return (
     <div className="fixed inset-0 z-50" onClick={handleClose}>
@@ -55,7 +56,7 @@ export default function InlineColorPicker({
           ref={inputRef}
           type="color"
           aria-label={token}
-          value={isHex(displayValue) ? displayValue : "#000000"}
+          value={isHex(displayValue) ? displayValue : defaultHex}
           onChange={handleChange}
           onBlur={handleClose}
         />

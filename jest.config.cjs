@@ -120,7 +120,12 @@ module.exports = {
     "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/src/$1",
     "^@ui/src/(.*)$": "<rootDir>/packages/ui/src/$1",
       "^@config/src/env$": "<rootDir>/packages/config/src/env/index.ts",
+      "^@config/src/env/(.*)$":
+        "<rootDir>/packages/config/src/env/$1.impl.ts",
       "^@config/src/(.*)$": "<rootDir>/packages/config/src/$1",
+    "^@acme/config/env$": "<rootDir>/packages/config/src/env/index.ts",
+    "^@acme/config/env/(.*)$":
+      "<rootDir>/packages/config/src/env/$1.impl.ts",
     "^@acme/config$": "<rootDir>/packages/config/src/env/index.ts",
     "^@acme/config/(.*)$": "<rootDir>/packages/config/src/$1",
     "^@acme/plugin-sanity$": "<rootDir>/test/__mocks__/pluginSanityStub.ts",

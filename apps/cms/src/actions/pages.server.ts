@@ -17,7 +17,6 @@ import {
   emptyTranslated,
   type PageCreateForm,
   type PageUpdateForm,
-  type PageComponents,
 } from "./pages/validation";
 import {
   getPages,
@@ -61,16 +60,6 @@ export async function createPage(
     return { errors: fieldErrors as Record<string, string[]> };
   }
   const data = parsed.data;
-
-  let history: HistoryState | undefined;
-  const historyStr = formData.get("history");
-  if (typeof historyStr === "string") {
-    try {
-      history = historyStateSchema.parse(JSON.parse(historyStr));
-    } catch {
-      /* ignore invalid history */
-    }
-  }
 
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;
@@ -117,14 +106,13 @@ export async function savePageDraft(
 
   const id = (formData.get("id") as string) || ulid();
   const compStr = formData.get("components");
-  let components: PageComponents;
   const parsedComponents = componentsField.safeParse(
     typeof compStr === "string" ? compStr : undefined
   );
   if (!parsedComponents.success) {
     return { errors: { components: ["Invalid components"] } };
   }
-  components = parsedComponents.data;
+  const components = parsedComponents.data;
 
   let history = undefined;
   const historyStr = formData.get("history");

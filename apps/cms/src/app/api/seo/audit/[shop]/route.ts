@@ -7,6 +7,8 @@ import {
   type SeoAuditEntry,
 } from "@platform-core/repositories/seoAudit.server";
 import { nowIso } from "@date-utils";
+import type { RunnerResult } from "lighthouse";
+import type { Result as AuditResult } from "lighthouse/types/lhr/audit-result.js";
 
 const TRUSTED_HOSTS = new Set(
   (process.env.LIGHTHOUSE_TRUSTED_HOSTS || "localhost")
@@ -18,32 +20,26 @@ const TRUSTED_HOSTS = new Set(
 async function runLighthouse(url: string): Promise<SeoAuditEntry> {
   const { default: lighthouse } = await import("lighthouse");
 
-  type Audit = {
-    score?: number;
-    scoreDisplayMode?: string;
-    title?: string;
-  };
   const flags = {
     onlyCategories: ["seo"],
     chromeFlags: ["--headless"],
     preset: "desktop",
   };
-  const result: {
-    lhr: {
-      categories?: { seo?: { score?: number } };
-      audits?: Record<string, Audit>;
-    };
-  } | undefined = await lighthouse(url, flags);
+  const result: RunnerResult | undefined = await lighthouse(url, flags);
   if (!result) {
     throw new Error("Failed to run Lighthouse");
   }
   const lhr = result.lhr;
   const score = Math.round((lhr.categories?.seo?.score ?? 0) * 100);
-  const recommendations = Object.values(lhr.audits ?? {})
+  const audits: AuditResult[] = Object.values(lhr.audits);
+  const recommendations = audits
     .filter(
-      (a) => a.score !== 1 && a.scoreDisplayMode !== "notApplicable" && a.title,
+      (a) =>
+        a.score !== 1 &&
+        a.scoreDisplayMode !== "notApplicable" &&
+        !!a.title,
     )
-    .map((a) => a.title as string);
+    .map((a) => a.title);
   return { timestamp: nowIso(), score, recommendations };
 }
 

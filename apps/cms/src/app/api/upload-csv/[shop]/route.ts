@@ -5,6 +5,7 @@ import fs from "fs";
 import { mkdir, unlink } from "fs/promises";
 import path from "path";
 import { Readable } from "stream";
+import type { ReadableStream as NodeReadableStream } from "stream/web";
 import Busboy, { type FileInfo } from "busboy";
 import { fileTypeFromBuffer } from "file-type/core";
 import { resolveDataRoot } from "@platform-core/dataRoot";
@@ -115,12 +116,12 @@ export async function POST(
         reject(err);
       });
 
-      if (req.body) {
-        const stream = Readable.fromWeb(
-          req.body as ReadableStream<Uint8Array>
-        );
-        stream.pipe(busboy);
-      } else {
+        if (req.body) {
+          const stream = Readable.fromWeb(
+            req.body as unknown as NodeReadableStream
+          );
+          stream.pipe(busboy);
+        } else {
         resolved = true;
         resolve(NextResponse.json({ error: "No body" }, { status: 400 }));
       }

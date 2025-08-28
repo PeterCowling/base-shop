@@ -46,6 +46,8 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       ...config.resolve.alias,
       "@": path.resolve(__dirname, "../template-app/src"),
       "@i18n": path.resolve(__dirname, "../i18n/src"),
+      // Prevent optional Drizzle ORM dependency from being bundled
+      "drizzle-orm": false,
     };
     for (const mod of nodeBuiltins) {
       config.resolve.alias[`node:${mod}`] = mod;

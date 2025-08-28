@@ -51,6 +51,8 @@ const nextConfig = {
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
       "@": path.resolve(__dirname, "src"),
+      // Prevent optional Drizzle ORM dependency from being bundled
+      "drizzle-orm": false,
     };
 
     for (const mod of nodeBuiltins) {

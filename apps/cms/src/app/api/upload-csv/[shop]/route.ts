@@ -5,7 +5,7 @@ import fs from "fs";
 import { mkdir, unlink } from "fs/promises";
 import path from "path";
 import { Readable } from "stream";
-import Busboy from "busboy";
+import Busboy, { type FileInfo } from "busboy";
 import { fileTypeFromBuffer } from "file-type/core";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { validateShopName } from "@platform-core/shops";
@@ -28,8 +28,9 @@ export async function POST(
     await mkdir(dir, { recursive: true });
     const filePath = path.join(dir, "products.csv");
 
+    const headers = Object.fromEntries<string>(req.headers.entries());
     const busboy = Busboy({
-      headers: Object.fromEntries(req.headers),
+      headers,
       limits: { fileSize: MAX_SIZE, files: 1 },
     });
 
@@ -37,7 +38,7 @@ export async function POST(
       let resolved = false;
       let fileFound = false;
 
-      busboy.on("file", (_name, file, info) => {
+      busboy.on("file", (_name, file: NodeJS.ReadableStream, info: FileInfo) => {
         fileFound = true;
         const { mimeType } = info;
         const writeStream = fs.createWriteStream(filePath);
@@ -115,7 +116,10 @@ export async function POST(
       });
 
       if (req.body) {
-        Readable.fromWeb(req.body).pipe(busboy);
+        const stream = Readable.fromWeb(
+          req.body as ReadableStream<Uint8Array>
+        );
+        stream.pipe(busboy);
       } else {
         resolved = true;
         resolve(NextResponse.json({ error: "No body" }, { status: 400 }));

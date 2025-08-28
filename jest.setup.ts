@@ -29,10 +29,12 @@ mutableEnv.SESSION_SECRET ||= "test-session-secret";
 import "@testing-library/jest-dom";
 import "cross-fetch/polyfill";
 import { TextDecoder, TextEncoder } from "node:util";
+import { File } from "node:buffer";
 
 /** Node’s `util` encoders/decoders are required by React-DOM’s server renderer */
 (globalThis as any).TextEncoder ||= TextEncoder;
 (globalThis as any).TextDecoder ||= TextDecoder;
+(globalThis as any).File ||= File;
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { FormData: UndiciFormData } = require("undici");
 (globalThis as any).FormData ||= UndiciFormData;

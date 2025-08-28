@@ -174,10 +174,7 @@
     "dist",
     "../../packages/**/__tests__/**",
     "../../test",
-    "**/__tests__/**",
     "**/__mocks__/**",
-    "**/*.test.*",
-    "**/*.spec.*",
     "**/*.stories.*"
   ],
   "references": [

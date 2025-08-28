@@ -165,8 +165,8 @@ export async function updateAiCatalog(
     return { errors };
   }
   const current = await fetchSettings(shop);
-  const seo = { ...(current.seo ?? {}) };
-  (seo as any).aiCatalog = {
+  const seo: ShopSettings["seo"] = { ...(current.seo ?? {}) };
+  seo.aiCatalog = {
     enabled: data.enabled,
     fields: data.fields,
     pageSize: data.pageSize,

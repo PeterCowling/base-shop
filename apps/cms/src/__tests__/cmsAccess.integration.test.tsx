@@ -44,6 +44,7 @@ jest.mock("next/server", () => ({
 import { getToken as mockedGetToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import { render, screen } from "@testing-library/react";
+import { canRead } from "@auth/rbac";
 
 const getToken = mockedGetToken as jest.MockedFunction<
   typeof import("next-auth/jwt").getToken
@@ -51,6 +52,7 @@ const getToken = mockedGetToken as jest.MockedFunction<
 const redirect = NextResponse.redirect as jest.Mock;
 const next = NextResponse.next as jest.Mock;
 const rewrite = NextResponse.rewrite as jest.Mock;
+const canReadMock = canRead as jest.Mock;
 
 function createRequest(path: string) {
   const url = new URL(`http://localhost${path}`) as URL & { clone(): URL };
@@ -94,11 +96,7 @@ describe("/cms access", () => {
   });
 
   it("returns 403 for roles without read access", async () => {
-    const { canRead } = require("@auth/rbac") as {
-      canRead: jest.Mock;
-      canWrite: jest.Mock;
-    };
-    canRead.mockReturnValueOnce(false);
+    canReadMock.mockReturnValueOnce(false);
     getToken.mockResolvedValueOnce({ role: "stranger" } as JWT);
 
     const res = await middleware(createRequest("/cms"));

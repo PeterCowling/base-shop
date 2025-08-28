@@ -4,6 +4,22 @@
 import { env } from "@acme/config";
 import { ensureAuthorized } from "./common/auth";
 
+interface CloudflareAPIResponse<T> {
+  result?: T;
+  errors?: { message?: string }[];
+}
+
+type AddDomainResult = {
+  verification_data?: { cname_target?: string };
+};
+
+type ZoneResult = { id: string }[];
+
+type VerifyResult = {
+  status?: string;
+  certificate_status?: string;
+};
+
 export async function provisionDomain(
   shopId: string,
   domain: string
@@ -26,7 +42,7 @@ export async function provisionDomain(
       body: JSON.stringify({ name: domain }),
     }
   );
-  const addJson = (await addRes.json()) as any;
+  const addJson: CloudflareAPIResponse<AddDomainResult> = await addRes.json();
   if (!addRes.ok) {
     throw new Error(addJson.errors?.[0]?.message ?? "Failed to provision domain");
   }
@@ -38,8 +54,8 @@ export async function provisionDomain(
   const zoneRes = await fetch(`https://api.cloudflare.com/client/v4/zones?name=${root}`, {
     headers,
   });
-  const zoneJson = (await zoneRes.json()) as any;
-  const zoneId = zoneJson.result?.[0]?.id as string | undefined;
+  const zoneJson: CloudflareAPIResponse<ZoneResult> = await zoneRes.json();
+  const zoneId = zoneJson.result?.[0]?.id;
   if (zoneId) {
     await fetch(`https://api.cloudflare.com/client/v4/zones/${zoneId}/dns_records`, {
       method: "POST",
@@ -57,7 +73,7 @@ export async function provisionDomain(
     `https://api.cloudflare.com/client/v4/accounts/${account}/pages/projects/${shopId}/domains/${domain}/verify`,
     { method: "POST", headers }
   );
-  const verifyJson = (await verifyRes.json()) as any;
+  const verifyJson: CloudflareAPIResponse<VerifyResult> = await verifyRes.json();
   if (!verifyRes.ok) {
     throw new Error(
       verifyJson.errors?.[0]?.message ?? "Failed to issue certificate"
@@ -65,7 +81,7 @@ export async function provisionDomain(
   }
 
   return {
-    status: verifyJson.result?.status as string | undefined,
-    certificateStatus: verifyJson.result?.certificate_status as string | undefined,
+    status: verifyJson.result?.status,
+    certificateStatus: verifyJson.result?.certificate_status,
   };
 }

@@ -10,11 +10,15 @@ import { Locale, resolveLocale } from "@i18n/locales";
 import type { ReactNode } from "react";
 
 /** Eager-import the three locale JSON files so webpack can statically analyse them. */
-import de from "@i18n/de.json";
 import en from "@i18n/en.json";
-import it from "@i18n/it.json";
+import de_ from "@i18n/de.json";
+import it_ from "@i18n/it.json";
+import type { Messages } from "@/types/i18n";
 
-const MESSAGES: Record<Locale, typeof en> = { en, de, it };
+const de = de_ satisfies Messages ? de_ : de_;
+const it = it_ satisfies Messages ? it_ : it_;
+
+const MESSAGES: Record<Locale, Messages> = { en, de, it };
 
 /** Layout for every route under `/[lang]/*` */
 export default async function LocaleLayout({

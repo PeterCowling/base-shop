@@ -48,8 +48,10 @@
   "cms.image.decorative": "Segna come decorativa",
   "cms.image.altWarning": "Fornisci un testo alternativo o segna come decorativa.",
   "cms.image.probing": "Verifica dell'immagine…",
-  "cms.image.probeError": "L'URL deve puntare a un'immagine"
-  ,"cms.theme.library": "Libreria temi"
-  ,"cms.theme.saveToLibrary": "Salva nella libreria"
- ,"cms.theme.importDesignSystem": "Import Design System"
+  "cms.image.probeError": "L'URL deve puntare a un'immagine",
+  "cms.theme.library": "Libreria temi",
+  "cms.theme.saveToLibrary": "Salva nella libreria",
+  "cms.theme.importDesignSystem": "Import Design System",
+  "cms.migrations.title": "Migrazioni",
+  "cms.export.title": "Esporta in codice"
 }

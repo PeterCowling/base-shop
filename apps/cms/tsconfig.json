@@ -175,7 +175,10 @@
     "../../packages/**/__tests__/**",
     "../../test",
     "**/__mocks__/**",
-    "**/*.stories.*"
+    "**/*.stories.*",
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.spec.*"
   ],
   "references": [
     {

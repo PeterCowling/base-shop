@@ -110,6 +110,8 @@ export type HistoryState = z.infer<typeof historyStateSchema>;
 
 export interface Page {
   id: string;
+  /** Stable ID used for deterministic code generation */
+  stableId?: string;
   slug: string;
   status: "draft" | "published";
   components: PageComponent[];
@@ -127,6 +129,7 @@ export interface Page {
 export const pageSchema = z
   .object({
     id: z.string(),
+    stableId: z.string().optional(),
     slug: z.string(),
     status: z.enum(["draft", "published"]),
     components: z.array(pageComponentSchema).default([]),

@@ -49,4 +49,5 @@
   ,"cms.theme.saveToLibrary": "Save to Library"
  ,"cms.theme.importDesignSystem": "Import Design System"
  ,"cms.migrations.title": "Migrations"
+ ,"cms.export.title": "Export to Code"
 }

@@ -1,14 +1,22 @@
 import { formatTimestamp } from "@acme/date-utils";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 
+interface EventRecord {
+  shop?: string;
+  type?: string;
+  timestamp?: string;
+  status?: unknown;
+}
+
 export default async function AiFeedPanel({ shop }: { shop: string }) {
-  const events = (await listEvents())
-    .filter((e: any) => e.shop === shop)
-    .filter((e: any) => e.type === "ai_crawl")
+  const events = (await listEvents()) as EventRecord[];
+  const filtered = events
+    .filter((e) => e.shop === shop)
+    .filter((e) => e.type === "ai_crawl")
     .slice(-5)
     .reverse();
 
-  if (events.length === 0) {
+  if (filtered.length === 0) {
     return (
       <div className="space-y-2 text-sm">
         <h4 className="font-medium">Recent AI Feed Requests</h4>
@@ -18,15 +26,15 @@ export default async function AiFeedPanel({ shop }: { shop: string }) {
   }
 
   return (
-  <div className="space-y-2 text-sm">
-    <h4 className="font-medium">Recent AI Feed Requests</h4>
-    <ul className="space-y-1">
-      {events.map((e, idx) => (
-        <li key={idx}>
-          {formatTimestamp(e.timestamp as string)} – {String(e.status)}
-        </li>
-      ))}
-    </ul>
-  </div>
+    <div className="space-y-2 text-sm">
+      <h4 className="font-medium">Recent AI Feed Requests</h4>
+      <ul className="space-y-1">
+        {filtered.map((e, idx) => (
+          <li key={idx}>
+            {formatTimestamp(e.timestamp as string)} – {String(e.status)}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

@@ -1,7 +1,8 @@
 import { validateInventoryItems } from "../useInventoryValidation";
+import { z } from "zod";
+import type { InventoryItem } from "@acme/types";
 
 jest.mock("@acme/types", () => {
-  const { z } = require("zod");
   const inventoryItemSchema = z
     .object({
       sku: z.string(),
@@ -36,7 +37,7 @@ describe("validateInventoryItems", () => {
         productId: "sku1",
         variantAttributes: {},
         quantity: -1,
-      } as any,
+      } as unknown as InventoryItem,
     ]);
     expect(res.success).toBe(false);
     expect(res.error).toMatch(/greater than or equal to 0/i);

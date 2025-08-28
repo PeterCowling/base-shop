@@ -1,5 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { useThemeEditor } from "../useThemeEditor";
+import { patchShopTheme } from "../../../../wizard/services/patchTheme";
 
 jest.mock("../../../../wizard/services/patchTheme", () => ({
   patchShopTheme: jest.fn().mockResolvedValue(undefined),
@@ -43,7 +44,6 @@ describe("useThemeEditor", () => {
     act(() => {
       jest.runAllTimers();
     });
-    const { patchShopTheme } = require("../../../../wizard/services/patchTheme");
     expect(patchShopTheme).toHaveBeenCalledWith("shop1", {
       themeOverrides: { color: "#000" },
       themeDefaults: {},

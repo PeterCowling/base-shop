@@ -200,13 +200,17 @@ export function useThemeEditor({
     });
   };
 
+  interface PickerInput extends HTMLInputElement {
+    showPicker?: () => void;
+  }
+
   const handleTokenSelect = (token: string) => {
-    const input = overrideRefs.current[token];
+    const input = overrideRefs.current[token] as PickerInput | null;
     if (input) {
       input.scrollIntoView?.({ behavior: "smooth", block: "center" });
       input.focus();
-      (input as any).showPicker?.();
-      if (!(input as any).showPicker) {
+      input.showPicker?.();
+      if (!input.showPicker) {
         input.click();
       }
     }

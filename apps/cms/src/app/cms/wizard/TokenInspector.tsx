@@ -137,16 +137,20 @@ export default function TokenInspector({
     return () => window.removeEventListener("keydown", keyHandler);
   }, [inspectMode, selectedIndex]);
 
-  const child = children as React.ReactElement<any>;
+  const child = children as React.ReactElement & {
+    ref?: React.Ref<HTMLDivElement>;
+  };
   return (
     <>
       {React.cloneElement(child, {
         ref: (node: HTMLDivElement) => {
           previewRef.current = node;
-          const { ref } = child as any;
-          if (typeof ref === "function") ref(node);
-          else if (ref)
+          const { ref } = child;
+          if (typeof ref === "function") {
+            ref(node);
+          } else if (ref && "current" in ref) {
             (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+          }
         },
         onPointerMove: handlePointerMove,
         onClickCapture: handleClick,

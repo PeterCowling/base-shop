@@ -55,7 +55,7 @@ export const schema = defineSchema({
 function ProductReferenceBlock(props: BlockRenderProps) {
   const editor = useEditor();
   const ctx = useContext(InvalidProductContext);
-  const slug = (props.value as any).slug as string;
+  const { slug } = props.value as { slug: string; _key: string };
   const isInvalid = Boolean(ctx?.invalidProducts[props.value._key as string]);
   const remove = () => {
     const sel = {
@@ -117,44 +117,52 @@ export const renderBlock: RenderBlockFunction = (props) => {
     return React.createElement(ProductReferenceBlock, props);
   }
   if (props.value._type === "embed") {
+    const { url } = props.value as { url: string };
     return React.createElement(
       "div",
       { className: "aspect-video" },
       React.createElement("iframe", {
-        src: (props as any).value.url,
+        src: url,
         className: "h-full w-full",
       }),
     );
   }
   if (props.value._type === "image") {
+    const { url, alt } = props.value as { url: string; alt?: string };
     return React.createElement("img", {
-      src: (props as any).value.url,
-      alt: (props as any).value.alt || "",
+      src: url,
+      alt: alt ?? "",
       className: "max-w-full",
     });
   }
-  return React.createElement("div", null, props.children as any);
+  return React.createElement("div", null, props.children as React.ReactNode);
 };
 
 export const previewComponents = {
   types: {
-    productReference: ({ value }: any) =>
+    productReference: ({ value }: { value: { slug: string } }) =>
       React.createElement(ProductPreview, { slug: value.slug }),
-    embed: ({ value }: any) =>
+    embed: ({ value }: { value: { url: string } }) =>
       React.createElement(
         "div",
         { className: "aspect-video" },
         React.createElement("iframe", { src: value.url, className: "h-full w-full" }),
       ),
-    image: ({ value }: any) =>
+    image: ({ value }: { value: { url: string; alt?: string } }) =>
       React.createElement("img", {
         src: value.url,
-        alt: value.alt || "",
+        alt: value.alt ?? "",
         className: "max-w-full",
       }),
   },
   marks: {
-    link: ({ children, value }: any) =>
+    link: ({
+      children,
+      value,
+    }: {
+      children: React.ReactNode;
+      value: { href: string };
+    }) =>
       React.createElement(
         "a",
         {
@@ -167,9 +175,12 @@ export const previewComponents = {
       ),
   },
   block: {
-    h1: ({ children }: any) => React.createElement("h1", null, children),
-    h2: ({ children }: any) => React.createElement("h2", null, children),
-    h3: ({ children }: any) => React.createElement("h3", null, children),
+    h1: ({ children }: { children: React.ReactNode }) =>
+      React.createElement("h1", null, children),
+    h2: ({ children }: { children: React.ReactNode }) =>
+      React.createElement("h2", null, children),
+    h3: ({ children }: { children: React.ReactNode }) =>
+      React.createElement("h3", null, children),
   },
 };
 

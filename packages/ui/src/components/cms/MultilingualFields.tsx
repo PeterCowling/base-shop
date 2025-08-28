@@ -8,7 +8,12 @@ import { memo } from "react";
 
 interface Props {
   locales: readonly Locale[];
-  product: ProductPublication;
+  /**
+   * Only the translated fields are required for this component, so accept a
+   * narrow subset of the product instead of the full `ProductPublication`
+   * which demands many unrelated properties (e.g. sku, status, etc.).
+   */
+  product: Pick<ProductPublication, "title" | "description">;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;

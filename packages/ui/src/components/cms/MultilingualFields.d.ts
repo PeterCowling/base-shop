@@ -2,7 +2,8 @@ import type { ProductPublication } from "@acme/types";
 import type { Locale } from "@acme/i18n";
 interface Props {
     locales: readonly Locale[];
-    product: ProductPublication;
+    /** Accept only the translated fields needed by this component */
+    product: Pick<ProductPublication, "title" | "description">;
     onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 declare function MultilingualFieldsInner({ locales, product, onChange }: Props): import("react/jsx-runtime").JSX.Element;

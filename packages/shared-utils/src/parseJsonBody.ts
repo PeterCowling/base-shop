@@ -1,19 +1,24 @@
 import { NextResponse } from "next/server";
-import { z, ZodSchema } from "zod";
-import getRawBody from "raw-body";
-import { Readable } from "stream";
-import type { ReadableStream as NodeReadableStream } from "stream/web";
+import { ZodSchema } from "zod";
 
 export type ParseJsonResult<T> =
   | { success: true; data: T }
   | { success: false; response: NextResponse };
 
-function hasErrorType(err: unknown): err is { type: string } {
-  return (
-    typeof err === "object" &&
-    err !== null &&
-    typeof (err as { type?: unknown }).type === "string"
-  );
+function parseLimit(limit: string | number): number {
+  if (typeof limit === "number") return limit;
+  const match = /^(\d+)(b|kb|mb|gb)$/i.exec(limit.trim());
+  if (!match) {
+    throw new Error("Invalid limit");
+  }
+  const [, num, unit] = match;
+  const sizes: Record<string, number> = {
+    b: 1,
+    kb: 1024,
+    mb: 1024 * 1024,
+    gb: 1024 * 1024 * 1024,
+  };
+  return Number(num) * sizes[unit.toLowerCase()];
 }
 
 export async function parseJsonBody<T>(
@@ -23,34 +28,9 @@ export async function parseJsonBody<T>(
 ): Promise<ParseJsonResult<T>> {
   let json: unknown;
   try {
-    if (req.body) {
-      const body = req.body as unknown;
-      let stream: Readable;
-
-      if (Buffer.isBuffer(body)) {
-        // cross-fetch Request bodies are Buffers
-        stream = Readable.from([body]);
-      } else if (typeof (body as NodeJS.ReadableStream).pipe === "function") {
-        // already a Node.js readable stream
-        stream = body as NodeJS.ReadableStream as Readable;
-      } else {
-        // fall back to web streams
-        stream = Readable.fromWeb(body as NodeReadableStream);
-      }
-
-      const text = await getRawBody(stream, {
-        limit,
-        encoding: "utf8",
-      });
-
-      json = JSON.parse(text);
-    } else if (typeof (req as any).json === "function") {
-      json = await (req as any).json();
-    } else {
-      throw new Error("No body");
-    }
-  } catch (err: unknown) {
-    if (hasErrorType(err) && err.type === "entity.too.large") {
+    const text = await req.text();
+    const byteLength = new TextEncoder().encode(text).length;
+    if (byteLength > parseLimit(limit)) {
       return {
         success: false,
         response: NextResponse.json(
@@ -59,6 +39,8 @@ export async function parseJsonBody<T>(
         ),
       };
     }
+    json = JSON.parse(text);
+  } catch (err: unknown) {
     console.error(err instanceof Error ? err : "Unknown error");
     return {
       success: false,

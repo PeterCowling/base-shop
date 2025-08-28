@@ -20,6 +20,7 @@
     { "path": "packages/platform-core" },
     { "path": "packages/platform-machine" },
     { "path": "packages/lib" },
+    { "path": "packages/theme" },
     { "path": "packages/themes/base" },
     { "path": "packages/themes/abc" },
     { "path": "packages/themes/bcd" },

@@ -26,5 +26,7 @@
   "checkout.retry": "Retry",
   "checkout.empty": "Your cart is empty.",
   "checkout.return": "Return date",
-  "checkout.deposit": "Deposit"
+  "checkout.deposit": "Deposit",
+  "cms.theme.library": "Theme Library",
+  "cms.theme.saveToLibrary": "Save to library"
 }

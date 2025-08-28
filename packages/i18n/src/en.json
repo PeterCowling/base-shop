@@ -38,15 +38,26 @@
   "wizard.next": "Next",
   "cms.style.title": "Style",
   "cms.style.lowContrast": "Low contrast",
+  "cms.style.foreground": "Foreground",
+  "cms.style.background": "Background",
+  "cms.style.border": "Border",
+  "cms.style.fontFamily": "Font Family",
+  "cms.style.fontSize": "Font Size",
+  "cms.style.fontWeight": "Font Weight",
+  "cms.style.lineHeight": "Line Height",
+  "cms.style.colorPlaceholder": "token or #hex",
   "cms.image.url": "Image URL",
   "cms.image.upload": "Upload",
   "cms.image.alt": "Alt text",
   "cms.image.decorative": "Mark as decorative",
   "cms.image.altWarning": "Provide alt text or mark as decorative.",
   "cms.image.probing": "Checking image…",
-  "cms.image.probeError": "URL must point to an image"
-  ,"cms.theme.library": "Theme Library"
-  ,"cms.theme.saveToLibrary": "Save to Library"
- ,"cms.theme.importDesignSystem": "Import Design System"
- ,"cms.migrations.title": "Migrations"
+  "cms.image.probeError": "URL must point to an image",
+  "cms.theme.library": "Theme Library",
+  "cms.theme.saveToLibrary": "Save to Library",
+  "cms.theme.importDesignSystem": "Import Design System",
+  "cms.theme.importDesignSystem.help": "Paste design tokens JSON or enter npm package name.",
+  "cms.migrations.title": "Migrations",
+  "wizard.status.previewReady": "Preview ready",
+  "wizard.status.editing": "Editing page details"
 }

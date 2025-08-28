@@ -19,7 +19,7 @@ export function useThemeLoader(): React.CSSProperties {
     if (!themeDefaults || Object.keys(themeDefaults).length === 0) {
       setState((prev: WizardState) => ({ ...prev, themeDefaults: baseTokens }));
     }
-  }, []);
+  }, [themeDefaults, setState]);
 
   /* Load tokens for selected theme */
   useEffect(() => {

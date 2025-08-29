@@ -24,28 +24,26 @@ import type { Locale } from "@i18n/locales";
 /* ------------------------------------------------------------------
  * next/image wrapper usable in CMS blocks
  * ------------------------------------------------------------------ */
-const CmsImage = React.memo(
-  ({
-    src,
-    alt = "",
-    width,
-    height,
-    ...rest
-  }: Omit<ImageProps, "src" | "alt"> & {
-    src: string;
-    alt?: string;
-    width?: number;
-    height?: number;
-  }) => (
-    <NextImage src={src} alt={alt} width={width} height={height} {...rest} />
-  )
-);
+const CmsImage = React.memo(function CmsImage({
+  src,
+  alt = "",
+  width,
+  height,
+  ...rest
+}: Omit<ImageProps, "src" | "alt"> & {
+  src: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+}) {
+  return <NextImage src={src} alt={alt} width={width} height={height} {...rest} />;
+});
 
 /* ------------------------------------------------------------------
  * Registry: block type → React component
  * ------------------------------------------------------------------ */
 const registry: Partial<
-  Record<PageComponent["type"], React.ComponentType<any>>
+  Record<PageComponent["type"], React.ComponentType<Record<string, unknown>>>
 > = {
   HeroBanner,
   ValueProps,

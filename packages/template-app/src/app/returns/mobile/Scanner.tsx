@@ -13,19 +13,22 @@ export default function Scanner({ allowedZips }: ScannerProps) {
   const [zip, setZip] = React.useState("");
   const [done, setDone] = React.useState(false);
 
-  async function finalize(sessionId: string) {
-    try {
-      await fetch("/api/returns/mobile", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(zip ? { sessionId, zip } : { sessionId }),
-      });
-      setDone(true);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to record return.");
-    }
-  }
+  const finalize = React.useCallback(
+    async (sessionId: string) => {
+      try {
+        await fetch("/api/returns/mobile", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(zip ? { sessionId, zip } : { sessionId }),
+        });
+        setDone(true);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to record return.");
+      }
+    },
+    [zip]
+  );
 
   React.useEffect(() => {
     let stream: MediaStream | null = null;
@@ -43,7 +46,13 @@ export default function Scanner({ allowedZips }: ScannerProps) {
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
         }
-        const detector = new (window as any).BarcodeDetector({
+        const detector = new (window as unknown as {
+          BarcodeDetector: new (config: { formats: string[] }) => {
+            detect: (
+              source: HTMLVideoElement
+            ) => Promise<Array<{ rawValue: string }>>;
+          };
+        }).BarcodeDetector({
           formats: ["qr_code", "code_128", "ean_13", "upc_a"],
         });
         const scan = async () => {
@@ -66,7 +75,7 @@ export default function Scanner({ allowedZips }: ScannerProps) {
           requestAnimationFrame(scan);
         };
         requestAnimationFrame(scan);
-      } catch (err) {
+      } catch {
         setError("Unable to access camera.");
       }
     }
@@ -75,7 +84,7 @@ export default function Scanner({ allowedZips }: ScannerProps) {
       active = false;
       stream?.getTracks().forEach((t) => t.stop());
     };
-  }, [allowedZips]);
+  }, [allowedZips, finalize]);
 
   if (done) {
     return (

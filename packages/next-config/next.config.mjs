@@ -1,7 +1,6 @@
+// packages/next-config/next.config.mjs
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-// Load runtime environment from compiled config output
-import { coreEnv } from "@acme/config/env/core";
 import { baseConfig, withShopCode } from "./index.mjs";
 
 /* ------------------------------------------------------------------ */
@@ -9,6 +8,14 @@ import { baseConfig, withShopCode } from "./index.mjs";
 /* ------------------------------------------------------------------ */
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+/**
+ * Read the minimal env directly; the template's dev-defaults.mjs
+ * runs before this file is imported, so values are set for local dev.
+ */
+const coreEnv = {
+  SHOP_CODE: process.env.SHOP_CODE,
+};
 
 export default withShopCode(coreEnv.SHOP_CODE, {
   /* 1️⃣ ‒ keep CI/production green even if ESLint finds issues */

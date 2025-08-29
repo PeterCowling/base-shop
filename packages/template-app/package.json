@@ -11,7 +11,9 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start -p 3000",
-    "test": "jest --ci --runInBand --detectOpenHandles --config jest.config.cjs"
+    "test": "jest --ci --runInBand --detectOpenHandles --config jest.config.cjs",
+    "fix:next-config": "node ./scripts/fix-template-next-config.mjs",
+    "verify:next-config": "node ./scripts/verify-template-next-config.mjs"
   },
   "dependencies": {
     "@themes/base": "workspace:*",

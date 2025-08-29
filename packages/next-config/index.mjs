@@ -2,9 +2,19 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { coreEnv } from "@acme/config/env/core";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/**
+ * Parse just the minimal core env needed by the shared Next config
+ * (no dependency on @acme/config at import time).
+ */
+const coreEnv = {
+  OUTPUT_EXPORT: process.env.OUTPUT_EXPORT,
+  NEXT_PUBLIC_PHASE: process.env.NEXT_PUBLIC_PHASE,
+  NEXT_PUBLIC_DEFAULT_SHOP: process.env.NEXT_PUBLIC_DEFAULT_SHOP,
+  SHOP_CODE: process.env.SHOP_CODE,
+};
 
 // ----------------------------------------------------------------------------
 // 1. Determine the first shop slug (same logic as the CMS app)

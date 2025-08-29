@@ -4,6 +4,7 @@
   "type": "module",
   "exports": {
     ".": {
+      "import": "./index.mjs",
       "default": "./index.mjs"
     },
     "./next.config.mjs": "./next.config.mjs"
@@ -15,5 +16,10 @@
     "@acme/config": "workspace:^",
     "@next/env": "15.3.5",
     "next": "^15.3.5"
-  }
+  },
+  "files": [
+    "index.mjs",
+    "next.config.mjs"
+  ],
+  "main": "./index.mjs"
 }

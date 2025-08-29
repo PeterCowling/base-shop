@@ -2,7 +2,7 @@
 
 // Merge the shared Next.js configuration with template-app overrides.
 //
-// We intentionally avoid `export { default } from "@acme/next-config"` in
+// We intentionally avoid `export { default } from "@acme/next-config/next.config.mjs"` in
 // combination with a second `export default` because ES modules permit only
 // one default export.  Instead we import the base configuration and merge in
 // any additional settings (like `transpilePackages`).  This ensures the

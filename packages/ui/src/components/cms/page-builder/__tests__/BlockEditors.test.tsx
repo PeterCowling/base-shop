@@ -32,7 +32,8 @@ describe("block editors", () => {
       "ImageBlockEditor",
       ImageBlockEditor,
       { type: "Image", src: "", alt: "" },
-      "alt",
+      // Image editor placeholders use translation keys
+      "cms.image.alt",
     ],
     [
       "GalleryEditor",

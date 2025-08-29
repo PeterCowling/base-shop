@@ -8,8 +8,8 @@ const data = {
     {
       label: "Sales",
       data: [12, 19, 3, 5, 2, 3, 7],
-      borderColor: "#3b82f6",
-      backgroundColor: "rgba(59,130,246,0.5)",
+      borderColor: "hsl(var(--color-primary))",
+      backgroundColor: "hsl(var(--color-primary) / 0.5)",
     },
   ],
 };

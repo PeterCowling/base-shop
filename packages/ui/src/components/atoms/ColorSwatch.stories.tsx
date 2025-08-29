@@ -9,7 +9,13 @@ const meta: Meta<typeof ColorSwatch> = {
 };
 export default meta;
 
-const palette = ["#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff"];
+const palette = [
+  "hsl(var(--color-primary))",
+  "hsl(var(--color-accent))",
+  "hsl(var(--color-success))",
+  "hsl(var(--color-warning))",
+  "hsl(var(--color-info))",
+];
 
 export const Palette: StoryObj<typeof ColorSwatch> = {
   render: (args) => (

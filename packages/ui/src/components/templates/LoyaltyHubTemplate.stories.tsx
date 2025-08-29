@@ -28,11 +28,11 @@ const historyRows: HistoryRow[] = [
   { date: "2023-01-02", action: "Spent", amount: -50 },
 ];
 
-const historyColumns: Column<HistoryRow>[] = [
-  { header: "Date", render: (row) => row.date },
-  { header: "Action", render: (row) => row.action },
-  { header: "Amount", render: (row) => row.amount },
-];
+const historyColumns = [
+  { header: "Date", render: (row: HistoryRow) => row.date },
+  { header: "Action", render: (row: HistoryRow) => row.action },
+  { header: "Amount", render: (row: HistoryRow) => row.amount },
+] satisfies Column<HistoryRow>[];
 
 /* ------------------------------------------------------------------ *
  *  Generic-aware wrapper

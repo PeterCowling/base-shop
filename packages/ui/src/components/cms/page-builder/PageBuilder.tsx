@@ -236,7 +236,6 @@ const PageBuilder = memo(function PageBuilder({
       <div className="flex flex-1 flex-col gap-4">
         <div className="flex items-center justify-between">
           <PageToolbar
-            viewport={viewport}
             deviceId={deviceId}
             setDeviceId={setDeviceId}
             orientation={orientation}

@@ -88,100 +88,103 @@ describe("sendCampaignEmail", () => {
     });
   });
 
-  it("sanitizes HTML when enabled", async () => {
-    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
-    mockResendSend = jest.fn();
-    mockSendMail = jest.fn();
-    mockSanitizeHtml = jest.fn(() => "<p>clean</p>");
+    it("sanitizes HTML and derives text", async () => {
+      mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+      mockResendSend = jest.fn();
+      mockSendMail = jest.fn();
+      mockSanitizeHtml = jest.fn((html: string) =>
+        html.replace(/<script[\s\S]*?<\/script>/gi, "")
+      );
 
-    setupEnv();
+      setupEnv();
 
-    const { sendCampaignEmail } = await import("../index");
-    await sendCampaignEmail({
-      to: "to@example.com",
-      subject: "Subject",
-      html: "<img src=x onerror=alert(1)>",
+      const { sendCampaignEmail } = await import("../index");
+      await sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>Hello</p><script>alert(1)</script>",
+      });
+
+      expect(mockSanitizeHtml).toHaveBeenCalled();
+      expect(mockSendgridSend).toHaveBeenCalledWith({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>Hello</p>",
+        text: "Hello",
+      });
     });
 
-    expect(mockSanitizeHtml).toHaveBeenCalled();
-    expect(mockSendgridSend).toHaveBeenCalledWith({
-      to: "to@example.com",
-      subject: "Subject",
-      html: "<p>clean</p>",
-      text: "clean",
-    });
-  });
+    it("falls back to alternate provider when primary fails", async () => {
+      const timeoutSpy = jest.spyOn(global, "setTimeout");
+      mockSendgridSend = jest
+        .fn()
+        .mockRejectedValue(new ProviderError("fail", false));
+      mockResendSend = jest.fn().mockResolvedValue(undefined);
+      mockSendMail = jest.fn();
+      mockSanitizeHtml = jest.fn((html: string) => html);
 
-  it("falls back to alternate provider when primary fails", async () => {
-    mockSendgridSend = jest
-      .fn()
-      .mockRejectedValue(new ProviderError("fail", false));
-    mockResendSend = jest.fn().mockResolvedValue(undefined);
-    mockSendMail = jest.fn();
-    mockSanitizeHtml = jest.fn((html: string) => html);
+      setupEnv();
 
-    setupEnv();
+      const { sendCampaignEmail } = await import("../index");
+      await sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+      });
 
-    const { sendCampaignEmail } = await import("../index");
-    await sendCampaignEmail({
-      to: "to@example.com",
-      subject: "Subject",
-      html: "<p>HTML</p>",
-    });
-
-    expect(mockSendgridSend).toHaveBeenCalledTimes(1);
-    expect(mockResendSend).toHaveBeenCalledTimes(1);
-    expect(mockSendMail).not.toHaveBeenCalled();
-    expect(mockSendgridSend).toHaveBeenCalledWith({
-      to: "to@example.com",
-      subject: "Subject",
-      html: "<p>HTML</p>",
-      text: "HTML",
-    });
-    expect(mockResendSend).toHaveBeenCalledWith({
-      to: "to@example.com",
-      subject: "Subject",
-      html: "<p>HTML</p>",
-      text: "HTML",
-    });
-  });
-
-  it("retries with exponential backoff on retryable error", async () => {
-    const timeoutSpy = jest.spyOn(global, "setTimeout");
-    mockSendgridSend = jest
-      .fn()
-      .mockRejectedValueOnce(new ProviderError("temporary", true))
-      .mockResolvedValueOnce(undefined);
-    mockResendSend = jest.fn();
-    mockSendMail = jest.fn();
-    mockSanitizeHtml = jest.fn((html: string) => html);
-
-    setupEnv();
-
-    const { sendCampaignEmail } = await import("../index");
-
-    const promise = sendCampaignEmail({
-      to: "to@example.com",
-      subject: "Subject",
-      html: "<p>HTML</p>",
+      expect(mockSendgridSend).toHaveBeenCalledTimes(1);
+      expect(mockResendSend).toHaveBeenCalledTimes(1);
+      expect(timeoutSpy).not.toHaveBeenCalled();
+      expect(mockSendMail).not.toHaveBeenCalled();
+      expect(mockSendgridSend).toHaveBeenCalledWith({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+        text: "HTML",
+      });
+      expect(mockResendSend).toHaveBeenCalledWith({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+        text: "HTML",
+      });
+      timeoutSpy.mockRestore();
     });
 
-    // Await the next macrotask to allow dynamic imports in the email module
-    // to resolve before assertions run.
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    expect(mockSendgridSend).toHaveBeenCalledTimes(1);
-    expect(
-      timeoutSpy.mock.calls.some(([_, ms]) => ms === 100)
-    ).toBe(true);
+    it("retries with exponential backoff on retryable error", async () => {
+      const timeoutSpy = jest.spyOn(global, "setTimeout");
+      mockSendgridSend = jest
+        .fn()
+        .mockRejectedValueOnce(new ProviderError("temporary", true))
+        .mockRejectedValueOnce(new ProviderError("temporary", true))
+        .mockResolvedValueOnce(undefined);
+      mockResendSend = jest.fn();
+      mockSendMail = jest.fn();
+      mockSanitizeHtml = jest.fn((html: string) => html);
 
-    await promise;
+      setupEnv();
 
-    expect(mockSendgridSend).toHaveBeenCalledTimes(2);
-    expect(mockSendgridSend.mock.calls[0][0].text).toBe("HTML");
-    expect(mockSendgridSend.mock.calls[1][0].text).toBe("HTML");
-    expect(mockResendSend).not.toHaveBeenCalled();
-    timeoutSpy.mockRestore();
-  });
+      const { sendCampaignEmail } = await import("../index");
+
+      const promise = sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+      });
+
+      // Await the next macrotask to allow dynamic imports in the email module
+      // to resolve before assertions run.
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      expect(mockSendgridSend).toHaveBeenCalledTimes(1);
+      expect(timeoutSpy).toHaveBeenCalledWith(expect.any(Function), 100);
+
+      await promise;
+
+      expect(mockSendgridSend).toHaveBeenCalledTimes(3);
+      expect(timeoutSpy).toHaveBeenCalledWith(expect.any(Function), 200);
+      expect(mockResendSend).not.toHaveBeenCalled();
+      timeoutSpy.mockRestore();
+    });
 
   it("falls back to Nodemailer when no providers are available", async () => {
     mockSendgridSend = jest.fn();

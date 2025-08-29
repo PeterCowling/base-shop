@@ -1,6 +1,7 @@
 // packages/ui/src/components/cms/media/UploadPanel.tsx
 "use client";
 
+import Image from "next/image";
 import { Input } from "../../atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
@@ -89,9 +90,11 @@ export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): Rea
         {pendingFile && (isVideo || isValid !== null) && (
           <div className="space-y-2">
             {thumbnail && (
-              <img
+              <Image
                 src={thumbnail}
                 alt="preview"
+                width={80}
+                height={80}
                 className="h-20 w-20 rounded object-cover"
               />
             )}

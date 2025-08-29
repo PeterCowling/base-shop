@@ -2,8 +2,7 @@
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import DOMPurify from "dompurify";
-import { memo } from "react";
-import type { ComponentType } from "react";
+import { memo, type ComponentType } from "react";
 import "./animations.css";
 import { blockRegistry } from "../blocks";
 
@@ -18,13 +17,13 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
     const sanitized = DOMPurify.sanitize(value);
     return <div dangerouslySetInnerHTML={{ __html: sanitized }} />;
   }
-  const entry = blockRegistry[(component as any).type as keyof typeof blockRegistry];
+  const entry = blockRegistry[component.type as keyof typeof blockRegistry];
   if (!entry) return null;
-  const Comp = entry.component as ComponentType<any>;
+  const Comp = entry.component as ComponentType<Record<string, unknown>>;
 
   const {
-    id,
-    type,
+    id: _id,
+    type: _type,
     clickAction,
     href,
     animation,
@@ -34,6 +33,8 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
     href?: string;
     animation?: "none" | "fade" | "slide";
   };
+  void _id;
+  void _type;
 
   const compProps: Record<string, unknown> = { ...(props as Record<string, unknown>) };
   if (clickAction === "navigate" && href) compProps.href = href;

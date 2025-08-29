@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
   try {
     const sub = await stripe.subscriptions.update(user.stripeSubscriptionId, {
       items: [{ price: priceId }],
-      // @ts-ignore - `prorate` is deprecated but required for this flow
+      // @ts-expect-error - `prorate` is deprecated but required for this flow
       prorate: true,
     });
     await setStripeSubscriptionId(userId, sub.id, shopId);

@@ -8,7 +8,9 @@ describe("Image atom", () => {
     );
     const img = container.querySelector("img");
     expect(img).toBeInTheDocument();
-    expect(img?.getAttribute("src")).toBe("/a.jpg");
+    // Next.js <Image> rewrites the src attribute; ensure original path is preserved
+    // within the generated URL
+    expect(img?.getAttribute("src")).toContain("url=%2Fa.jpg");
     expect(img?.getAttribute("alt")).toBe("a");
   });
 });

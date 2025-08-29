@@ -96,6 +96,9 @@ describe("ComponentEditor", () => {
       />
     );
     fireEvent.click(getByText("Content"));
-    expect(await findByPlaceholderText("src")).toBeInTheDocument();
+    // Image source field uses translation keys as placeholders
+    expect(
+      await findByPlaceholderText("cms.image.url")
+    ).toBeInTheDocument();
   });
 });

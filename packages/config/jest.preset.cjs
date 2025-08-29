@@ -9,5 +9,6 @@ module.exports = {
   moduleNameMapper: {
     ...base.moduleNameMapper,
     "^\\.\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
+    "^\\.\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
   },
 };

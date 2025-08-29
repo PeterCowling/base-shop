@@ -11,7 +11,7 @@
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
 
     /* Node + React targets ------------------------------------------- */
@@ -63,7 +63,7 @@
   /* ------------------------------------------------------------------
    *  Source globs
    * ------------------------------------------------------------------ */
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "releaseDepositsService.ts"],
   "exclude": [
     "dist", // freshly emitted output
     ".turbo", // turbo cache

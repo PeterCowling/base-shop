@@ -1,3 +1,3 @@
-import { File, Blob, FormData, fetch } from 'undici';
+import { TextDecoder, TextEncoder } from 'util';
 
-Object.assign(global, { File, Blob, FormData, fetch });
+Object.assign(global, { TextDecoder, TextEncoder });

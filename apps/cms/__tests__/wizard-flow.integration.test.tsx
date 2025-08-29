@@ -69,14 +69,20 @@ async function goTo(heading: string): Promise<HTMLElement> {
 
 describe("Wizard locale flow", () => {
   it("preserves locale fields across navigation and reload", async () => {
-    serverState = {
-      state: { shopId: "shop" },
-      completed: { "shop-details": "complete", theme: "complete" },
-    };
-
     const { unmount } = render(
       <Wizard themes={themes} templates={templates} />
     );
+
+    const shopDetails = await goTo("Shop Details");
+    fireEvent.change(within(shopDetails).getByLabelText(/shop id/i), {
+      target: { value: "shop" },
+    });
+    fireEvent.click(within(shopDetails).getByRole("button", { name: /next/i }));
+    serverState.completed["shop-details"] = "complete";
+
+    const themeStep = await goTo("Select Theme");
+    fireEvent.click(within(themeStep).getByRole("button", { name: /next/i }));
+    serverState.completed.theme = "complete";
 
     const summary = await goTo("Summary");
     fireEvent.change(within(summary).getByLabelText(/home page title \(en\)/i), {

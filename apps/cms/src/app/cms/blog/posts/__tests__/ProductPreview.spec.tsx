@@ -7,7 +7,7 @@ describe("ProductPreview", () => {
   });
 
   it("renders product info", async () => {
-    (global as any).fetch.mockResolvedValueOnce(
+    (global.fetch as jest.Mock).mockResolvedValueOnce(
       new Response(JSON.stringify({ title: "Test", price: 100 }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -19,7 +19,7 @@ describe("ProductPreview", () => {
   });
 
   it("handles error", async () => {
-    (global as any).fetch.mockRejectedValueOnce(new Error("fail"));
+    (global.fetch as jest.Mock).mockRejectedValueOnce(new Error("fail"));
     const onValid = jest.fn();
     render(<ProductPreview slug="t" onValidChange={onValid} />);
     await waitFor(() => expect(onValid).toHaveBeenCalledWith(false));

@@ -4,7 +4,6 @@
 /* eslint-disable no-underscore-dangle */
 
 import "@testing-library/jest-dom";
-import "cross-fetch/polyfill";
 import { TextDecoder, TextEncoder } from "node:util";
 
 /* -------------------------------------------------------------------------- */
@@ -101,6 +100,16 @@ jest.mock("next/router", () => ({
 
 import { server } from "../../test/msw/server";
 
-beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+beforeAll(() => {
+  server.listen({ onUnhandledRequest: "error" });
+  const orig = global.fetch;
+  (globalThis as any).fetch = (input: any, init?: any) => {
+    const url =
+      typeof input === "string" && input.startsWith("/")
+        ? `http://localhost${input}`
+        : input;
+    return orig(url, init);
+  };
+});
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());

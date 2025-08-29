@@ -16,7 +16,7 @@ describe("paymentEnv", () => {
 
     const spy = jest.spyOn(console, "warn").mockImplementation(() => {});
 
-    const { paymentEnv, paymentEnvSchema } = await import("../src/env/payments.impl");
+    const { paymentEnv, paymentEnvSchema } = await import("../src/env/payments");
 
     expect(spy).toHaveBeenCalledWith(
       "⚠️ Invalid payment environment variables:",

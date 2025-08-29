@@ -33,6 +33,6 @@ export default {
     ...sharedConfig.transpilePackages,
     "@acme/ui",
     "@acme/config",
-    "@acme/zod-utils", // needed by @acme/config/env/auth.impl.ts
+    "@acme/zod-utils", // needed by @acme/config/env/auth.ts
   ],
 };

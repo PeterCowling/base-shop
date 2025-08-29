@@ -97,13 +97,13 @@ module.exports = {
     "^\\./dataRoot\\.js$": "<rootDir>/packages/platform-core/src/dataRoot.ts",
 
     // map config package relative ESM imports to TypeScript sources
-    "^\\./auth\\.js$": "<rootDir>/packages/config/src/env/auth.impl.ts",
-    "^\\./cms\\.js$": "<rootDir>/packages/config/src/env/cms.impl.ts",
-    "^\\./email\\.js$": "<rootDir>/packages/config/src/env/email.impl.ts",
+    "^\\./auth\\.js$": "<rootDir>/packages/config/src/env/auth.ts",
+    "^\\./cms\\.js$": "<rootDir>/packages/config/src/env/cms.ts",
+    "^\\./email\\.js$": "<rootDir>/packages/config/src/env/email.ts",
     "^\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
     "^\\./env/core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
-    "^\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.impl.ts",
-    "^\\./shipping\\.js$": "<rootDir>/packages/config/src/env/shipping.impl.ts",
+    "^\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
+    "^\\./shipping\\.js$": "<rootDir>/packages/config/src/env/shipping.ts",
     "^\\./foo\\.js$": "<rootDir>/packages/config/src/env/foo.impl.ts",
     "^\\./foo\\.impl\\.ts$": "<rootDir>/packages/config/src/env/foo.impl.ts",
 
@@ -123,12 +123,12 @@ module.exports = {
       "^@config/src/env$": "<rootDir>/packages/config/src/env/index.ts",
       "^@config/src/env/core$": "<rootDir>/packages/config/src/env/core.ts",
       "^@config/src/env/(.*)$":
-        "<rootDir>/packages/config/src/env/$1.impl.ts",
+        "<rootDir>/packages/config/src/env/$1.ts",
       "^@config/src/(.*)$": "<rootDir>/packages/config/src/$1",
     "^@acme/config/env$": "<rootDir>/packages/config/src/env/index.ts",
     "^@acme/config/env/core$": "<rootDir>/packages/config/src/env/core.ts",
     "^@acme/config/env/(.*)$":
-      "<rootDir>/packages/config/src/env/$1.impl.ts",
+      "<rootDir>/packages/config/src/env/$1.ts",
     "^@acme/config$": "<rootDir>/packages/config/src/env/index.ts",
     "^@acme/config/(.*)$": "<rootDir>/packages/config/src/$1",
     "^@acme/plugin-sanity$": "<rootDir>/test/__mocks__/pluginSanityStub.ts",
@@ -136,9 +136,9 @@ module.exports = {
     "^@acme/zod-utils/initZod$": "<rootDir>/test/emptyModule.js",
 
     // resolve relative .js imports within packages/config/env to their .ts sources
-    "^\\./env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.impl.ts",
+    "^\\./env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.ts",
     "^\\./(auth|cms|email|core|payments|shipping)\\.js$":
-      "<rootDir>/packages/config/src/env/$1.impl.ts",
+      "<rootDir>/packages/config/src/env/$1.ts",
 
     // CMS application aliases
     "^@/components/atoms/shadcn$":

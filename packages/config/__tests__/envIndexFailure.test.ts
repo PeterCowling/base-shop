@@ -2,7 +2,7 @@ import { expect } from "@jest/globals";
 import { z } from "zod";
 
 // Mock env modules to expose schemas without validating process.env.
-jest.mock("../src/env/cms.impl", () => ({
+jest.mock("../src/env/cms", () => ({
   cmsEnvSchema: z.object({
     CMS_SPACE_URL: z.string().url(),
     CMS_ACCESS_TOKEN: z.string().min(1),
@@ -19,7 +19,7 @@ jest.mock("../src/env/core", () => ({
   depositReleaseEnvRefinement: () => {},
 }));
 
-jest.mock("../src/env/payments.impl", () => ({
+jest.mock("../src/env/payments", () => ({
   paymentEnvSchema: z.object({
     STRIPE_SECRET_KEY: z.string().min(1),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
@@ -27,7 +27,7 @@ jest.mock("../src/env/payments.impl", () => ({
   }),
 }));
 
-jest.mock("../src/env/shipping.impl", () => ({
+jest.mock("../src/env/shipping", () => ({
   shippingEnvSchema: z.object({
     TAXJAR_KEY: z.string(),
   }),

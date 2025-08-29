@@ -60,3 +60,9 @@ yarn-error.log*
 !apps/*/.env.local
 !apps/*/.env.test
 !apps/*/.env.production
+
+# Build outputs (monorepo)
+**/dist/
+**/.tsbuildinfo
+**/.next/
+**/coverage/

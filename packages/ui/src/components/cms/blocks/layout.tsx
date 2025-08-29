@@ -10,7 +10,7 @@ const layoutEntries = {
 } as const;
 
 type LayoutRegistry = {
-  [K in keyof typeof layoutEntries]: BlockRegistryEntry<any>;
+  [K in keyof typeof layoutEntries]: BlockRegistryEntry<unknown>;
 };
 
 export const layoutRegistry = Object.fromEntries(

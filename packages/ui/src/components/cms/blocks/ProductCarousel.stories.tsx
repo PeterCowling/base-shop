@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ProductCarousel from "./ProductCarousel";
 import { PRODUCTS } from "@acme/platform-core/products";
+import type { SKU } from "@acme/types";
 
 const meta: Meta<typeof ProductCarousel> = {
   component: ProductCarousel,
-  args: { skus: PRODUCTS as any },
+  args: { skus: PRODUCTS as SKU[] },
 };
 export default meta;
 

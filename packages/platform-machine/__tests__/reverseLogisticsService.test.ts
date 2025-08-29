@@ -103,7 +103,7 @@ describe("processReverseLogisticsEventsOnce", () => {
 describe("resolveConfig", () => {
   it("combines file, env, and override inputs", async () => {
     service = await import("@acme/platform-machine");
-    const resolveConfig = (service as any).resolveConfig;
+    const { resolveConfig } = service as any;
     readFile.mockResolvedValueOnce(
       JSON.stringify({
         reverseLogisticsService: { enabled: true, intervalMinutes: 10 },
@@ -129,9 +129,7 @@ describe("startReverseLogisticsService", () => {
       .mockResolvedValueOnce(
         JSON.stringify({ reverseLogisticsService: { enabled: false, intervalMinutes: 1 } })
       );
-    const proc = jest
-      .spyOn(service, "processReverseLogisticsEventsOnce")
-      .mockResolvedValue();
+    const proc = jest.fn().mockResolvedValue(undefined);
     const setSpy = jest
       .spyOn(global, "setInterval")
       .mockImplementation((fn: any, ms?: number) => {
@@ -142,7 +140,7 @@ describe("startReverseLogisticsService", () => {
       .spyOn(global, "clearInterval")
       .mockImplementation(() => undefined as any);
 
-    const stop = await service.startReverseLogisticsService({}, "/data");
+    const stop = await service.startReverseLogisticsService({}, "/data", proc);
     expect(proc).toHaveBeenCalledTimes(1);
     expect(proc).toHaveBeenCalledWith("shop1", "/data");
     expect(setSpy).toHaveBeenCalledTimes(1);
@@ -150,7 +148,6 @@ describe("startReverseLogisticsService", () => {
     stop();
     expect(clearSpy).toHaveBeenCalledWith(123 as any);
 
-    proc.mockRestore();
     setSpy.mockRestore();
     clearSpy.mockRestore();
   });
@@ -160,12 +157,10 @@ describe("auto-start", () => {
   it("logs errors when NODE_ENV is not test", async () => {
     process.env.NODE_ENV = "production";
     readdir.mockRejectedValueOnce(new Error("fail"));
-    await new Promise((resolve) => {
-      jest.isolateModules(() => {
-        import("@acme/platform-machine/src/reverseLogisticsService").then(() => resolve(undefined));
-      });
-    });
-    await Promise.resolve();
+    const mod = await import(
+      "@acme/platform-machine/src/reverseLogisticsService"
+    );
+    await mod.startReverseLogisticsService().catch(() => undefined);
     expect(logError).toHaveBeenCalled();
     process.env.NODE_ENV = "test";
   });

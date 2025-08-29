@@ -13,7 +13,8 @@ export function jsonFieldHandler<T>(
       const parsed = JSON.parse(value) as T;
       updater(parsed);
       setErrors((prev) => {
-        const { [field]: _omit, ...rest } = prev;
+        const rest = { ...prev };
+        delete rest[field];
         return rest;
       });
     } catch {

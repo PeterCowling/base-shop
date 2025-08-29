@@ -15,11 +15,15 @@ jest.mock("../hooks", () => ({
 jest.mock("../analytics", () => ({
   syncCampaignAnalytics: jest.fn().mockResolvedValue(undefined),
 }));
+jest.mock("../segments", () => ({
+  resolveSegment: jest.fn(),
+}));
 
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { sendCampaignEmail } from "../send";
 import { emitSend } from "../hooks";
 import { syncCampaignAnalytics as fetchCampaignAnalytics } from "../analytics";
+import { resolveSegment } from "../segments";
 
 const { setClock, createCampaign, sendDueCampaigns, syncCampaignAnalytics } = scheduler;
 
@@ -83,6 +87,30 @@ describe("scheduler", () => {
     expect(html).toContain("Unsubscribe");
     expect(html).toContain(encodeURIComponent("a@example.com"));
     expect(emitSend).toHaveBeenCalledWith(shop, { campaign: expect.any(String) });
+  });
+
+  test("createCampaign resolves recipients from segment", async () => {
+    (resolveSegment as jest.Mock).mockResolvedValue(["seg@example.com"]);
+    const id = await createCampaign({
+      shop,
+      recipients: [],
+      segment: "id",
+      subject: "Hi",
+      body: "<p>Hi</p>",
+    });
+    expect(resolveSegment).toHaveBeenCalledWith(shop, "id");
+    expect(typeof id).toBe("string");
+  });
+
+  test("createCampaign rejects when required fields are missing", async () => {
+    await expect(
+      createCampaign({
+        shop,
+        recipients: [],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+      }),
+    ).rejects.toThrow("Missing fields");
   });
 
   test("createCampaign sends immediately or schedules later", async () => {

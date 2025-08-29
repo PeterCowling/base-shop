@@ -47,7 +47,7 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
     return fallback;
   }
 
-  let OpenAI: any;
+  let OpenAI: typeof import("openai").default;
   try {
     OpenAI = (await import("openai")).default;
   } catch {
@@ -71,8 +71,18 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   try {
     const first = text.output?.[0];
     if (first && "content" in first) {
-      const output = first.content?.[0];
-      const content = typeof output === "string" ? output : (output as any)?.text;
+      const output: unknown = first.content?.[0];
+      let content: string | undefined;
+      if (typeof output === "string") {
+        content = output;
+      } else if (
+        typeof output === "object" &&
+        output !== null &&
+        "text" in output &&
+        typeof (output as { text?: unknown }).text === "string"
+      ) {
+        content = (output as { text: string }).text;
+      }
       if (content) {
         data = JSON.parse(content);
       }

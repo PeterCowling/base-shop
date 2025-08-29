@@ -12,4 +12,12 @@ describe("fillLocales", () => {
       }
     }
   });
+
+  it("uses fallback for undefined values", () => {
+    const result = fillLocales(undefined, "Hi");
+    expect(Object.keys(result)).toEqual([...LOCALES]);
+    for (const locale of LOCALES) {
+      expect(result[locale]).toBe("Hi");
+    }
+  });
 });

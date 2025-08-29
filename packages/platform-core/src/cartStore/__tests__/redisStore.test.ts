@@ -59,34 +59,58 @@ class MockRedis {
 describe("RedisCartStore", () => {
   const sku = { id: "sku1" } as unknown as SKU;
 
-  it("performs operations with successful Redis calls", async () => {
+  it("performs operations with successful Redis calls and refreshes TTL", async () => {
+    const ttl = 60;
     const redis = new MockRedis();
-    const fallback = new MemoryCartStore(60);
-    const store = new RedisCartStore(redis as any, 60, fallback);
+    const fallback = new MemoryCartStore(ttl);
+    const store = new RedisCartStore(redis as any, ttl, fallback);
 
     const id = await store.createCart();
     expect(typeof id).toBe("string");
+    expect(redis.expire).toHaveBeenCalledTimes(1);
+    expect(redis.expire).toHaveBeenLastCalledWith(id, ttl);
     expect(await store.getCart(id)).toEqual({});
 
     await store.incrementQty(id, sku, 2);
+    expect(redis.expire).toHaveBeenCalledTimes(3);
+    expect(redis.expire.mock.calls.slice(-2)).toEqual([
+      [id, ttl],
+      [`${id}:sku`, ttl],
+    ]);
     expect(await store.getCart(id)).toEqual({
       [sku.id]: { sku, qty: 2 },
     });
 
     await store.setQty(id, sku.id, 5);
+    expect(redis.expire).toHaveBeenCalledTimes(5);
+    expect(redis.expire.mock.calls.slice(-2)).toEqual([
+      [id, ttl],
+      [`${id}:sku`, ttl],
+    ]);
     expect(await store.getCart(id)).toEqual({
       [sku.id]: { sku, qty: 5 },
     });
 
     await store.removeItem(id, sku.id);
+    expect(redis.expire).toHaveBeenCalledTimes(7);
+    expect(redis.expire.mock.calls.slice(-2)).toEqual([
+      [id, ttl],
+      [`${id}:sku`, ttl],
+    ]);
     expect(await store.getCart(id)).toEqual({});
 
     await store.setCart(id, { [sku.id]: { sku, qty: 3 } });
+    expect(redis.expire).toHaveBeenCalledTimes(9);
+    expect(redis.expire.mock.calls.slice(-2)).toEqual([
+      [id, ttl],
+      [`${id}:sku`, ttl],
+    ]);
     expect(await store.getCart(id)).toEqual({
       [sku.id]: { sku, qty: 3 },
     });
 
     await store.deleteCart(id);
+    expect(redis.expire).toHaveBeenCalledTimes(9);
     expect(await store.getCart(id)).toEqual({});
   });
 

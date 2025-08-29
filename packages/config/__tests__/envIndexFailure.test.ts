@@ -20,7 +20,7 @@ jest.mock("../src/env/core", () => ({
 }));
 
 jest.mock("../src/env/payments", () => ({
-  paymentEnvSchema: z.object({
+  paymentsEnvSchema: z.object({
     STRIPE_SECRET_KEY: z.string().min(1),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
     STRIPE_WEBHOOK_SECRET: z.string().min(1),
@@ -50,7 +50,7 @@ describe("env index failure", () => {
       CMS_SPACE_URL: "not-a-url",
       CMS_ACCESS_TOKEN: "",
       SANITY_API_VERSION: "",
-      // payment
+      // payments
       STRIPE_SECRET_KEY: "",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "",
       STRIPE_WEBHOOK_SECRET: "",

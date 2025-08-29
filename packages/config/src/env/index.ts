@@ -4,7 +4,7 @@ import {
   coreEnvBaseSchema,
   depositReleaseEnvRefinement,
 } from "./core.js";
-import { paymentEnvSchema } from "./payments.js";
+import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
 
 type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
@@ -35,7 +35,7 @@ export const mergeEnvSchemas = <T extends readonly AnyZodObject[]>(
 
 const mergedEnvSchema = mergeEnvSchemas(
   coreEnvBaseSchema,
-  paymentEnvSchema,
+  paymentsEnvSchema,
   shippingEnvSchema,
 );
 

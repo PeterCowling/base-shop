@@ -1,6 +1,6 @@
 import { expect } from "@jest/globals";
 
-describe("paymentEnv", () => {
+describe("paymentsEnv", () => {
   const OLD_ENV = process.env;
 
   afterEach(() => {
@@ -16,12 +16,12 @@ describe("paymentEnv", () => {
 
     const spy = jest.spyOn(console, "warn").mockImplementation(() => {});
 
-    const { paymentEnv, paymentEnvSchema } = await import("../src/env/payments");
+    const { paymentsEnv, paymentsEnvSchema } = await import("../src/env/payments");
 
     expect(spy).toHaveBeenCalledWith(
-      "⚠️ Invalid payment environment variables:",
+      "⚠️ Invalid payments environment variables:",
       expect.anything(),
     );
-    expect(paymentEnv).toEqual(paymentEnvSchema.parse({}));
+    expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
   });
 });

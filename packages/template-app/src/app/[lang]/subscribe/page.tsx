@@ -1,6 +1,5 @@
-// @ts-nocheck
 // packages/template-app/src/app/[lang]/subscribe/page.tsx
-import { Locale, resolveLocale } from "@i18n/locales";
+import { resolveLocale } from "@i18n/locales";
 import { stripe } from "@acme/stripe";
 import { coreEnv } from "@acme/config/env/core";
 import { readShop } from "@platform-core/repositories/shops.server";
@@ -16,8 +15,8 @@ export default async function SubscribePage({
 }: {
   params: Promise<{ lang?: string }>;
 }) {
-  const { lang: rawLang } = await params;
-  const lang: Locale = resolveLocale(rawLang);
+  const { lang } = await params;
+  resolveLocale(lang);
   const shopId = coreEnv.NEXT_PUBLIC_SHOP_ID || "shop";
   const shop = await readShop(shopId);
   if (!shop.subscriptionsEnabled) return notFound();
@@ -32,7 +31,7 @@ export default async function SubscribePage({
     const sub = await stripe.subscriptions.create({
       customer: session.customerId,
       items: [{ price: priceId }],
-      // `prorate` is deprecated but required for this flow
+      // @ts-expect-error - `prorate` is deprecated but required for this flow
       prorate: true,
       metadata: { userId: session.customerId, shop: shopId },
     });

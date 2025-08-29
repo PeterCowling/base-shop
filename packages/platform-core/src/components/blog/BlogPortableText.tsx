@@ -1,12 +1,25 @@
 // src/components/blog/BlogPortableText.tsx
 import { PortableText } from "@portabletext/react";
+import type {
+  PortableTextComponents,
+  PortableTextMarkComponentProps,
+  PortableTextTypeComponentProps,
+  PortableTextComponentProps,
+} from "@portabletext/react";
 import Link from "next/link";
 import { getProductBySlug, getProductById, type SKU } from "../../products";
 import { ProductCard } from "../shop/ProductCard";
 
-const components = {
+const components: PortableTextComponents = {
   types: {
-    productReference: ({ value }: any) => {
+    productReference: ({
+      value,
+    }: PortableTextTypeComponentProps<{
+      ids?: string[];
+      slugs?: string[];
+      id?: string;
+      slug?: string;
+    }>) => {
       const ids: string[] = Array.isArray(value?.ids)
         ? value.ids
         : Array.isArray(value?.slugs)
@@ -36,32 +49,37 @@ const components = {
         </div>
       );
     },
-    embed: ({ value }: any) => (
+    embed: ({ value }: PortableTextTypeComponentProps<{ url: string }>) => (
       <div className="aspect-video">
         <iframe src={value.url} className="h-full w-full" />
       </div>
     ),
   },
   marks: {
-    link: ({ children, value }: any) => (
-      <a
-        href={value.href}
-        className="text-blue-600 underline"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {children}
-      </a>
-    ),
-    em: ({ children }: any) => <em>{children}</em>,
+    link: ({ children, value }: PortableTextMarkComponentProps) => {
+      const href = (value as { href?: string })?.href ?? "";
+      return (
+        <a
+          href={href}
+          className="text-blue-600 underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {children}
+        </a>
+      );
+    },
+    em: ({ children }: PortableTextMarkComponentProps) => <em>{children}</em>,
   },
   block: {
-    h1: ({ children }: any) => <h1>{children}</h1>,
-    h2: ({ children }: any) => <h2>{children}</h2>,
-    h3: ({ children }: any) => <h3>{children}</h3>,
+    h1: ({ children }: PortableTextComponentProps<unknown>) => <h1>{children}</h1>,
+    h2: ({ children }: PortableTextComponentProps<unknown>) => <h2>{children}</h2>,
+    h3: ({ children }: PortableTextComponentProps<unknown>) => <h3>{children}</h3>,
   },
 };
 
-export function BlogPortableText({ value }: { value: any[] }) {
+type PortableBlock = { _type: string; [key: string]: unknown };
+
+export function BlogPortableText({ value }: { value: PortableBlock[] }) {
   return <PortableText value={value} components={components} />;
 }

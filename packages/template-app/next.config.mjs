@@ -9,38 +9,30 @@
 // resulting configuration remains valid and avoids the "Duplicate export of
 // 'default'" syntax error that Next.js surfaces during the build.
 
-// Ensure required auth secrets exist so `@acme/config` can parse the
-// environment during Next.js's configuration phase. Provide development
-// defaults if they are missing.
-process.env.NEXTAUTH_SECRET ??= "dev-nextauth-secret";
-process.env.SESSION_SECRET ??= "dev-session-secret";
-process.env.CART_COOKIE_SECRET ??= "dev-cart-secret";
-process.env.CMS_SPACE_URL ??= "https://cms.example.com";
-process.env.CMS_ACCESS_TOKEN ??= "placeholder-token";
-process.env.SANITY_API_VERSION ??= "2021-10-21";
+// Load development defaults for required auth secrets before the shared
+// configuration validates the environment.  This module mutates `process.env`
+// and exports nothing.
+import "./dev-defaults.mjs";
 
-// Use a dynamic import so the env defaults above apply before loading the
-// shared configuration.
-const { default: baseConfig } = await import(
-  "@acme/next-config/next.config.mjs",
-);
+// Statically import the shared Next.js configuration so the file remains
+// synchronous.  This avoids the top-level `await` that Next.js cannot handle.
+import sharedConfig from "@acme/next-config/next.config.mjs";
 
 /** @type {import('next').NextConfig} */
-const config = {
+export default {
   // Spread the settings from the shared config to preserve its behaviour.
-  ...baseConfig,
+  ...sharedConfig,
   typescript: {
-    ...(baseConfig.typescript ?? {}),
+    ...(sharedConfig.typescript ?? {}),
     tsconfigPath: "./tsconfig.json",
   },
   // Override or extend any fields here.  In this case we need to
   // transpile additional internal packages so that Next.js can import
   // their untranspiled source code from `node_modules`.
   transpilePackages: [
+    ...sharedConfig.transpilePackages,
     "@acme/ui",
     "@acme/config",
     "@acme/zod-utils", // needed by @acme/config/env/auth.impl.ts
   ],
 };
-
-export default config;

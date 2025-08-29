@@ -52,6 +52,9 @@
       ],
       "@date-utils/*": [
         "../date-utils/src/*"
+      ],
+      "better-sqlite3": [
+        "../platform-core/src/types/better-sqlite3"
       ]
     },
     "allowJs": true,
@@ -72,5 +75,8 @@
   ],
   "exclude": [
     "node_modules"
+  ],
+  "files": [
+    "../platform-core/src/prisma.d.ts"
   ]
 }

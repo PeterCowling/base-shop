@@ -40,5 +40,5 @@
     { "path": "../themes/base" },
     { "path": "../zod-utils" }
   ],
-  "files": ["../../src/types/global.d.ts"]
+  "files": ["../../src/types/global.d.ts", "src/prisma.d.ts"]
 }

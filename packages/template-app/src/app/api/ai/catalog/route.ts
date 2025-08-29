@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
               price: p.price,
               media: p.media,
               updated_at: new Date(0).toISOString(),
-            }) as ProductPublication
+            }) as unknown as ProductPublication
         );
 
   const lastModifiedDate = all.reduce((max, p) => {
@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
   }
 
   const items = paged.map((p) => {
-    const sku: SKU | undefined = getProductById(p.sku);
+    const sku: SKU | null = getProductById(p.sku);
     const item: Record<string, unknown> = {};
     if (fields.includes("id")) item.id = p.id;
     if (fields.includes("title")) item.title = p.title;

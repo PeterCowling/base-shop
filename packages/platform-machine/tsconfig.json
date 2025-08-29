@@ -40,6 +40,9 @@
       "@config": ["packages/config/src/env/index.ts"],
       "@config/*": ["packages/config/src/env/*"],
 
+      "@acme/config": ["packages/config/src/index.ts"],
+      "@acme/config/*": ["packages/config/src/*"],
+
       /* date utilities */
       "@date-utils": ["packages/date-utils/src/index.ts"],
 

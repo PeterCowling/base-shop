@@ -31,12 +31,18 @@ class MapRegistry<T> {
 }
 
 export interface PluginMetadata<
-  T extends Plugin<any, any, any, any, any, any, any> = Plugin,
+  C extends Record<string, unknown> = Record<string, unknown>,
+  PPay extends PaymentPayload = PaymentPayload,
+  SReq extends ShippingRequest = ShippingRequest,
+  WProp extends WidgetProps = WidgetProps,
+  P extends PaymentProvider<PPay> = PaymentProvider<PPay>,
+  S extends ShippingProvider<SReq> = ShippingProvider<SReq>,
+  W extends WidgetComponent<WProp> = WidgetComponent<WProp>,
 > {
   id: string;
   name?: string;
   description?: string;
-  plugin: T;
+  plugin: Plugin<C, PPay, SReq, WProp, P, S, W>;
 }
 
 export class PluginManager<
@@ -52,7 +58,7 @@ export class PluginManager<
   readonly widgets = new MapRegistry<W>();
   private plugins = new Map<
     string,
-    PluginMetadata<Plugin<Record<string, unknown>, PPay, SReq, WProp, P, S, W>>
+    PluginMetadata<Record<string, unknown>, PPay, SReq, WProp, P, S, W>
   >();
 
   addPlugin<C extends Record<string, unknown>>(
@@ -62,30 +68,26 @@ export class PluginManager<
       id: plugin.id,
       name: plugin.name,
       description: plugin.description,
-      plugin: plugin as unknown as Plugin<
-        Record<string, unknown>,
-        PPay,
-        SReq,
-        WProp,
-        P,
-        S,
-        W
-      >,
+      plugin,
     });
   }
 
   getPlugin(
     id: string,
   ):
-    | PluginMetadata<
-        Plugin<Record<string, unknown>, PPay, SReq, WProp, P, S, W>
-      >
+    | PluginMetadata<Record<string, unknown>, PPay, SReq, WProp, P, S, W>
     | undefined {
     return this.plugins.get(id);
   }
 
   listPlugins(): PluginMetadata<
-    Plugin<Record<string, unknown>, PPay, SReq, WProp, P, S, W>
+    Record<string, unknown>,
+    PPay,
+    SReq,
+    WProp,
+    P,
+    S,
+    W
   >[] {
     return Array.from(this.plugins.values());
   }

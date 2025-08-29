@@ -1,19 +1,23 @@
 // Compat facade for product lookups used by both UI and server.
 /* Broad types on purpose; tighten when real models land. */
-export type SKU = any;
-export type Locale = any;
-export type ProductPublication = any;
+export type { Locale, ProductPublication } from "@acme/types";
 
 // Pull in the real product dataset and helpers. This keeps existing imports
 // like `@platform-core/products` working while ensuring the in-memory list
 // actually contains catalogue data.
+import type { SKU as BaseSKU } from "@acme/types";
 import * as base from "./products/index";
 
+/**
+ * Compatibility SKU type that allows optional `sku` field for legacy access.
+ */
+export type SKU = BaseSKU & { sku?: string };
+
 /** Simple in-memory list for legacy/sync call sites (stories, demos, cart sync path). */
-export const PRODUCTS: any[] = [...base.PRODUCTS];
+export const PRODUCTS: SKU[] = [...base.PRODUCTS];
 
 /** Quick slug lookup for demos. */
-export function getProductBySlug(slug: string): any | null {
+export function getProductBySlug(slug: string): SKU | null {
   return base.getProductBySlug(slug) ?? null;
 }
 
@@ -21,9 +25,12 @@ export function getProductBySlug(slug: string): any | null {
  *  - getProductById(id)            -> sync (legacy) from PRODUCTS
  *  - getProductById(shop, id)      -> async via server impl
  */
-export function getProductById(id: string): any | null;
-export function getProductById(shop: string, id: string): Promise<any | null>;
-export function getProductById(a: string, b?: string): any {
+export function getProductById(id: string): SKU | null;
+export function getProductById(shop: string, id: string): Promise<SKU | null>;
+export function getProductById(
+  a: string,
+  b?: string,
+): SKU | null | Promise<SKU | null> {
   if (typeof b === "undefined") {
     // Legacy sync path: look up in local PRODUCTS
     return base.getProductById(a) ?? null;
@@ -37,9 +44,9 @@ export function getProductById(a: string, b?: string): any {
 
 export { assertLocale } from "./products/index";
 
-export async function getProducts(..._args: any[]): Promise<any[]> {
+export async function getProducts(..._args: unknown[]): Promise<SKU[]> {
   return [...base.PRODUCTS];
 }
-export async function searchProducts(..._args: any[]): Promise<any[]> {
+export async function searchProducts(..._args: unknown[]): Promise<SKU[]> {
   return [];
 }

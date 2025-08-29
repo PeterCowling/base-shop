@@ -1,4 +1,4 @@
-const { parseTheme } = require("../theme-schema");
+import { parseTheme } from "../theme-schema";
 
 describe("themeLibrarySchema", () => {
   it("parses valid theme", () => {

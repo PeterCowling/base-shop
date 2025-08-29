@@ -1,4 +1,4 @@
-const { parseDsPackage } = require("../ds-package-schema");
+import { parseDsPackage } from "../ds-package-schema";
 
 describe("ds-package-schema", () => {
   it("parses tokens", () => {

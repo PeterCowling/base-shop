@@ -4,7 +4,7 @@ import { templates, themes } from "./utils/wizardTestUtils";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { baseTokens } from "../src/app/cms/wizard/tokenUtils";
 import { rest } from "msw";
-import { server } from "../../../test/msw/server";
+import { server } from "./msw/server";
 import Wizard from "../src/app/cms/wizard/Wizard";
 
 /* -------------------------------------------------------------------------- */

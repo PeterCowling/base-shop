@@ -100,10 +100,12 @@ const DEFAULT_CONFIG: ReverseLogisticsConfig = {
 };
 
 function envKey(shop: string, key: string): string {
-  return `REVERSE_LOGISTICS_${key}_${shop.toUpperCase().replace(/[^A-Z0-9]/g, "_")}`;
+  return `REVERSE_LOGISTICS_${key}_${shop
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "_")}`;
 }
 
-async function resolveConfig(
+export async function resolveConfig(
   shop: string,
   dataRoot: string,
   override: Partial<ReverseLogisticsConfig> = {}
@@ -147,33 +149,42 @@ async function resolveConfig(
 
 export async function startReverseLogisticsService(
   configs: Record<string, Partial<ReverseLogisticsConfig>> = {},
-  dataRoot: string = DATA_ROOT
+  dataRoot: string = DATA_ROOT,
+  processor: (
+    shopId: string,
+    dataRoot?: string
+  ) => Promise<void> = processReverseLogisticsEventsOnce,
 ): Promise<() => void> {
-  const shops = await readdir(dataRoot);
-  const timers: NodeJS.Timeout[] = [];
+  try {
+    const shops = await readdir(dataRoot);
+    const timers: NodeJS.Timeout[] = [];
 
-  await Promise.all(
-    shops.map(async (shop) => {
-      const cfg = await resolveConfig(shop, dataRoot, configs[shop]);
-      if (!cfg.enabled) return;
+    await Promise.all(
+      shops.map(async (shop) => {
+        const cfg = await resolveConfig(shop, dataRoot, configs[shop]);
+        if (!cfg.enabled) return;
 
-      async function run() {
-        try {
-          await processReverseLogisticsEventsOnce(shop, dataRoot);
-        } catch (err) {
-          logger.error("reverse logistics processing failed", {
-            shopId: shop,
-            err,
-          });
+        async function run() {
+          try {
+            await processor(shop, dataRoot);
+          } catch (err) {
+            logger.error("reverse logistics processing failed", {
+              shopId: shop,
+              err,
+            });
+          }
         }
-      }
 
-      await run();
-      timers.push(setInterval(run, cfg.intervalMinutes * 60 * 1000));
-    })
-  );
+        await run();
+        timers.push(setInterval(run, cfg.intervalMinutes * 60 * 1000));
+      })
+    );
 
-  return () => timers.forEach((t) => clearInterval(t));
+    return () => timers.forEach((t) => clearInterval(t));
+  } catch (err) {
+    logger.error("failed to start reverse logistics service", { err });
+    throw err;
+  }
 }
 
 if (process.env.NODE_ENV !== "test") {

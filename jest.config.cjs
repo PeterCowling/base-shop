@@ -131,6 +131,7 @@ module.exports = {
       "<rootDir>/packages/config/src/env/$1.ts",
     "^@acme/config$": "<rootDir>/packages/config/src/env/index.ts",
     "^@acme/config/(.*)$": "<rootDir>/packages/config/src/$1",
+    "^@acme/platform-machine/src/(.*)$": "<rootDir>/packages/platform-machine/src/$1",
     "^@acme/plugin-sanity$": "<rootDir>/test/__mocks__/pluginSanityStub.ts",
     "^@acme/plugin-sanity/(.*)$": "<rootDir>/test/__mocks__/pluginSanityStub.ts",
     "^@acme/zod-utils/initZod$": "<rootDir>/test/emptyModule.js",

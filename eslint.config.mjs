@@ -31,8 +31,11 @@ export default [
       "apps/*/src/**/*.d.ts",
       "apps/*/src/**/*.js.map",
       "scripts/**/*.js",
+      "**/__tests__/**",
       "**/*.d.ts",
     ],
+  },
+  {
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
@@ -182,7 +185,7 @@ export default [
 
   /* ▸ Test files relaxations */
   {
-    files: ["**/__tests__/**/*.{ts,tsx,js,jsx}", "**/*.test.{ts,tsx,js,jsx}"],
+    files: ["**/*.test.{ts,tsx,js,jsx}"],
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": "off",

@@ -1,6 +1,7 @@
 // apps/cms/src/actions/deleteSanityConfig.ts
 "use server";
 
+import type { Shop } from "@acme/types";
 import { getShopById, updateShopInRepo } from "@platform-core/repositories/shop.server";
 import { setSanityConfig } from "@platform-core/shops";
 import { ensureAuthorized } from "./common/auth";
@@ -11,7 +12,7 @@ export async function deleteSanityConfig(
   await ensureAuthorized();
   try {
     const shop = await getShopById(shopId);
-    const updated = setSanityConfig(shop, undefined);
+    const updated = setSanityConfig(shop, undefined) as Shop;
     await updateShopInRepo(shopId, { ...updated, id: shopId });
     return { message: "Sanity disconnected" };
   } catch (err) {

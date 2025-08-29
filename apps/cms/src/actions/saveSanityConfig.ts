@@ -62,7 +62,7 @@ export async function saveSanityConfig(
   const updated = setEditorialBlog(setSanityConfig(shop, config), {
     enabled: editorialEnabled,
     ...(promoteSchedule ? { promoteSchedule } : {}),
-  });
+  }) as Shop;
   updated.luxuryFeatures = {
     ...(updated.luxuryFeatures ?? {}),
     blog: editorialEnabled,

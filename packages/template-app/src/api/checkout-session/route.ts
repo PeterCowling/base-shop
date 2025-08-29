@@ -51,7 +51,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const shopInfo = await readShop(shop);
 
   const coverageCodes = Array.isArray(coverage) ? coverage : [];
-  let lineItemsExtra: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+  const lineItemsExtra: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
   let metadataExtra: Record<string, string> = {};
   let subtotalExtra = 0;
   let depositAdjustment = 0;

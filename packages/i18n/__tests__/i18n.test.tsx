@@ -10,6 +10,10 @@ describe("resolveLocale", () => {
     expect(resolveLocale("it")).toBe("it");
   });
 
+  it("returns 'en' for English locale", () => {
+    expect(resolveLocale("en")).toBe("en");
+  });
+
   it("falls back to 'en'", () => {
     expect(resolveLocale("fr")).toBe("en");
     expect(resolveLocale(undefined)).toBe("en");

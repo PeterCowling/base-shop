@@ -32,6 +32,8 @@ export default [
       "apps/*/src/**/*.js.map",
       "scripts/**/*.js",
       "**/__tests__/**",
+      "**/*.test.*",
+      "**/*.spec.*",
       "**/*.d.ts",
     ],
   },
@@ -184,13 +186,6 @@ export default [
   },
 
   /* ▸ Test files relaxations */
-  {
-    files: ["**/*.test.{ts,tsx,js,jsx}"],
-    rules: {
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-unused-vars": "off",
-    },
-  },
 
   /* ▸ Enforce UI component layering */
   {

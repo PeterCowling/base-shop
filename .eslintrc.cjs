@@ -8,6 +8,8 @@ module.exports = {
     "**/.next/**", // Next.js build output
     "**/index.js",
     "**/*.d.ts",
+    "**/*.test.*",
+    "**/*.spec.*",
   ],
   overrides: [
     {

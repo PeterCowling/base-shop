@@ -1,16 +1,14 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import { rest, server } from "../../../../../../../../test/msw/server";
 import ProductPreview from "@cms/app/cms/blog/posts/ProductPreview";
 
 describe("ProductPreview", () => {
-  beforeEach(() => {
-    (global as any).fetch = jest.fn();
-  });
-
   it("renders product info", async () => {
-    (global as any).fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ title: "Test", price: 100 }),
-    });
+    server.use(
+      rest.get("/api/products", (req, res, ctx) =>
+        res(ctx.status(200), ctx.json({ title: "Test", price: 100 }))
+      )
+    );
     const onValid = jest.fn();
     render(<ProductPreview slug="t" onValidChange={onValid} />);
     await screen.findByText("Test");
@@ -18,7 +16,11 @@ describe("ProductPreview", () => {
   });
 
   it("handles error", async () => {
-    (global as any).fetch.mockRejectedValueOnce(new Error("fail"));
+    server.use(
+      rest.get("/api/products", (_req, res, ctx) =>
+        res.networkError("fail")
+      )
+    );
     const onValid = jest.fn();
     render(<ProductPreview slug="t" onValidChange={onValid} />);
     await waitFor(() => expect(onValid).toHaveBeenCalledWith(false));

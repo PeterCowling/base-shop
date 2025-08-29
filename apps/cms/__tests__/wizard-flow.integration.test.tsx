@@ -69,14 +69,20 @@ async function goTo(heading: string): Promise<HTMLElement> {
 
 describe("Wizard locale flow", () => {
   it("preserves locale fields across navigation and reload", async () => {
-    serverState = {
-      state: { shopId: "shop" },
-      completed: { "shop-details": "complete", theme: "complete" },
-    };
+    serverState = { state: {}, completed: {} };
 
     const { unmount } = render(
       <Wizard themes={themes} templates={templates} />
     );
+
+    const details = await goTo("Shop Details");
+    fireEvent.change(within(details).getByLabelText(/Shop ID/i), {
+      target: { value: "shop" },
+    });
+    fireEvent.click(within(details).getByRole("button", { name: /next/i }));
+
+    const themeStep = await goTo("Select Theme");
+    fireEvent.click(within(themeStep).getByRole("button", { name: /next/i }));
 
     const summary = await goTo("Summary");
     fireEvent.change(within(summary).getByLabelText(/home page title \(en\)/i), {
@@ -114,8 +120,11 @@ describe("Wizard locale flow", () => {
 
     render(<Wizard themes={themes} templates={templates} />);
 
-    const importStep2 = await goTo("Import Data");
-    fireEvent.click(within(importStep2).getByRole("button", { name: /back/i }));
+    const details2 = await goTo("Shop Details");
+    fireEvent.click(within(details2).getByRole("button", { name: /next/i }));
+
+    const themeStep2 = await goTo("Select Theme");
+    fireEvent.click(within(themeStep2).getByRole("button", { name: /next/i }));
 
     const summary3 = await goTo("Summary");
     expect(

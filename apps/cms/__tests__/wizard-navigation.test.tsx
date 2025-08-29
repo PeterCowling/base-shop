@@ -28,7 +28,10 @@ describe("Wizard navigation", () => {
           ctx: RestContext
         ) => {
           capturedBody = await req.json();
-          return res(ctx.status(200), ctx.json({ success: true }));
+          return res(
+            ctx.status(200),
+            ctx.json({ success: true, id: "testshop" })
+          );
         }
       )
     );

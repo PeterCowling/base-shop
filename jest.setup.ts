@@ -40,8 +40,14 @@ import { File } from "node:buffer";
 (globalThis as any).File ||= File;
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { File: UndiciFile, FormData: UndiciFormData } = require("undici");
-(globalThis as any).FormData ||= UndiciFormData;
 (globalThis as any).File ||= UndiciFile;
+// Use JSDOM's FormData/File when available so form submissions work in tests
+if (typeof window !== "undefined") {
+  (globalThis as any).FormData = window.FormData;
+  (globalThis as any).File = window.File;
+} else {
+  (globalThis as any).FormData ||= UndiciFormData;
+}
 
 /**
  * React 19+ uses `MessageChannel` internally for suspense & streaming.

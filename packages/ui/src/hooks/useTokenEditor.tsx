@@ -17,14 +17,14 @@ export interface TokenInfo {
 }
 
 const defaultSansFonts = [
-  '"Geist Sans", system-ui, sans-serif',
-  "Arial, sans-serif",
-  "ui-sans-serif, system-ui",
+  '"Geist Sans", var(--font-sans)',
+  'Arial, var(--font-sans)',
+  'ui-sans-serif, var(--font-sans)',
 ];
 
 const defaultMonoFonts = [
-  '"Geist Mono", ui-monospace, monospace',
-  '"Courier New", monospace',
+  '"Geist Mono", var(--font-mono)',
+  '"Courier New", var(--font-mono)',
 ];
 
 const googleFontList = [
@@ -133,7 +133,8 @@ export function useTokenEditor(
   const setGoogleFont = useCallback(
     (type: "sans" | "mono", name: string) => {
       loadGoogleFont(name);
-      const stack = `"${name}", ${type === "mono" ? "monospace" : "sans-serif"}`;
+      const fallback = type === "mono" ? "mono" : "sans";
+      const stack = `"${name}", var(--font-${fallback})`;
       if (type === "mono") {
         setMonoFonts((f) => (f.includes(stack) ? f : [...f, stack]));
         setToken("--font-mono", stack);

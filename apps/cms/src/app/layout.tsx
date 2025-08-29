@@ -1,5 +1,6 @@
 // apps/cms/src/app/layout.tsx
 import { CartProvider } from "@/contexts/CartContext";
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { initTheme } from "@platform-core/utils";
 import "@acme/zod-utils/initZod";
 import type { Metadata } from "next";
@@ -38,7 +39,9 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         {/* Global providers go here */}
-        <CartProvider>{children}</CartProvider>
+        <CurrencyProvider>
+          <CartProvider>{children}</CartProvider>
+        </CurrencyProvider>
       </body>
     </html>
   );

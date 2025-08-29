@@ -11,7 +11,7 @@ import { incrementSubscriptionUsage } from "./subscriptionUsage";
 type Order = RentalOrder;
 
 function normalize(order: DbRentalOrder): Order {
-  const o: any = { ...order };
+  const o: Record<string, unknown> = { ...order };
   Object.keys(o).forEach((k) => {
     if (o[k] === null) o[k] = undefined;
   });

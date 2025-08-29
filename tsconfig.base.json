@@ -139,6 +139,12 @@
       "@date-utils/*": [
         "packages/date-utils/src/*"
       ],
+      "@acme/config": [
+        "packages/config/src/index.ts"
+      ],
+      "@acme/config/*": [
+        "packages/config/src/*"
+      ],
       "@acme/configurator": [
         "packages/configurator/src/index.ts"
       ],

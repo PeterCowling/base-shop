@@ -199,7 +199,7 @@ export interface PageDiffEntry {
 const entrySchema = z
     .object({
       timestamp: z.string().datetime(),
-      diff: (pageSchema as unknown as z.ZodObject<any>).partial(),
+      diff: (pageSchema as unknown as z.ZodObject<z.ZodRawShape>).partial(),
     })
   .strict();
 

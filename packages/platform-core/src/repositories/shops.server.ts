@@ -22,11 +22,6 @@ function shopPath(shop: string): string {
   return path.join(DATA_ROOT, shop, "shop.json");
 }
 
-async function ensureDir(shop: string): Promise<void> {
-  shop = validateShopName(shop);
-  await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
-}
-
 async function applyThemeData(data: Shop): Promise<Shop> {
   const defaults =
     Object.keys(data.themeDefaults ?? {}).length > 0

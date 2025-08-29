@@ -10,6 +10,7 @@ import * as path from "path";
 import { validateShopName } from "../shops/index";
 import { DATA_ROOT } from "../dataRoot";
 import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
+import type Database from "better-sqlite3";
 
 interface SqliteInventoryRow {
   sku: string;
@@ -22,22 +23,23 @@ interface SqliteInventoryRow {
   maintenanceCycle: number | null;
 }
 
-let DatabaseConstructor: any;
+let DatabaseConstructor: typeof Database | undefined;
 
-async function getDb(shop: string) {
+async function getDb(shop: string): Promise<Database> {
   if (!DatabaseConstructor) {
     ({ default: DatabaseConstructor } = await import(
       /* webpackIgnore: true */ "better-sqlite3"
     ));
   }
+  const ctor = DatabaseConstructor!;
   shop = validateShopName(shop);
   const dir = path.join(DATA_ROOT, shop);
   await fs.mkdir(dir, { recursive: true });
-  const db = new DatabaseConstructor(path.join(dir, "inventory.sqlite"));
+  const db = new ctor(path.join(dir, "inventory.sqlite"));
   db.exec(
     "CREATE TABLE IF NOT EXISTS inventory (sku TEXT, productId TEXT, variantAttributes TEXT, quantity INTEGER, lowStockThreshold INTEGER, wearCount INTEGER, wearAndTearLimit INTEGER, maintenanceCycle INTEGER, PRIMARY KEY (sku, variantAttributes))",
   );
-  return db as any;
+  return db;
 }
 
 async function read(shop: string): Promise<InventoryItem[]> {

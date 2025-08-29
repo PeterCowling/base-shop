@@ -190,12 +190,14 @@ export async function createCheckoutSession(
   let line_items = lineItemsNested.flat();
   if (lineItemsExtra.length) line_items = line_items.concat(lineItemsExtra);
 
-  let { subtotal, depositTotal, discount } = await computeTotals(
+  const totals = await computeTotals(
     cart,
     rentalDays,
     discountRate,
     currency
   );
+  let { subtotal, depositTotal } = totals;
+  const { discount } = totals;
   subtotal += subtotalExtra;
   depositTotal += depositAdjustment;
 

@@ -12,8 +12,8 @@
     "outDir": "dist",
     "allowJs": true,
 
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
 
     /* let TS infer rootDir (same as package folder) */
     "types": ["node"]

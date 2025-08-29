@@ -16,10 +16,35 @@
       "import": "./dist/env/index.js",
       "default": "./dist/env/index.js"
     },
-    "./env/*": {
-      "types": "./dist/env/*.d.ts",
-      "import": "./dist/env/*.js",
-      "default": "./dist/env/*.js"
+    "./env/core": {
+      "types": "./dist/env/core.d.ts",
+      "import": "./dist/env/core.js",
+      "default": "./dist/env/core.js"
+    },
+    "./env/auth": {
+      "types": "./dist/env/auth.d.ts",
+      "import": "./dist/env/auth.js",
+      "default": "./dist/env/auth.js"
+    },
+    "./env/cms": {
+      "types": "./dist/env/cms.d.ts",
+      "import": "./dist/env/cms.js",
+      "default": "./dist/env/cms.js"
+    },
+    "./env/email": {
+      "types": "./dist/env/email.d.ts",
+      "import": "./dist/env/email.js",
+      "default": "./dist/env/email.js"
+    },
+    "./env/payments": {
+      "types": "./dist/env/payments.d.ts",
+      "import": "./dist/env/payments.js",
+      "default": "./dist/env/payments.js"
+    },
+    "./env/shipping": {
+      "types": "./dist/env/shipping.d.ts",
+      "import": "./dist/env/shipping.js",
+      "default": "./dist/env/shipping.js"
     },
     "./jest.preset.cjs": "./jest.preset.cjs",
     "./tsconfig.app.json": "./tsconfig.app.json"

@@ -2,7 +2,7 @@ export type Carrier = "ups" | "dhl";
 
 export interface TrackingStatus {
   // keep this deliberately wide to satisfy all current callsites
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export async function getTrackingStatus(arg: { provider: Carrier; trackingNumber: string }): Promise<TrackingStatus> {

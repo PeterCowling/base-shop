@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { DATA_ROOT } from "../dataRoot";
 import { validateShopName } from "../shops";
-import type { AnalyticsAggregates } from "../analytics";
+import type { AnalyticsAggregates, AnalyticsEvent } from "../analytics";
 
 /**
  * Read analytics events from newline-delimited JSON files. When a shop is
@@ -10,7 +10,7 @@ import type { AnalyticsAggregates } from "../analytics";
  * concatenated. Missing files or invalid JSON lines are ignored so callers do
  * not need to handle errors.
  */
-export async function listEvents(_shop?: string) {
+export async function listEvents(_shop?: string): Promise<AnalyticsEvent[]> {
   const shops = _shop
     ? [validateShopName(_shop)]
     : await fs
@@ -20,7 +20,7 @@ export async function listEvents(_shop?: string) {
         )
         .catch(() => []);
 
-  const events: any[] = [];
+  const events: AnalyticsEvent[] = [];
   for (const shop of shops) {
     const file = path.join(DATA_ROOT, shop, "analytics.jsonl");
     let data = "";
@@ -34,7 +34,7 @@ export async function listEvents(_shop?: string) {
       if (!trimmed)
         continue;
       try {
-        events.push(JSON.parse(trimmed));
+        events.push(JSON.parse(trimmed) as AnalyticsEvent);
       } catch {
         // ignore malformed lines
       }

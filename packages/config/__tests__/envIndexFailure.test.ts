@@ -10,7 +10,7 @@ jest.mock("../src/env/cms.impl", () => ({
   }),
 }));
 
-jest.mock("../src/env/core.impl", () => ({
+jest.mock("../src/env/core", () => ({
   coreEnvBaseSchema: z.object({
     CMS_SPACE_URL: z.string().url(),
     CMS_ACCESS_TOKEN: z.string().min(1),

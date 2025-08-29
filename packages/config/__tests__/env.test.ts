@@ -1,5 +1,5 @@
 import { expect } from "@jest/globals";
-import { coreEnvBaseSchema } from "../src/env/core.impl";
+import { coreEnvBaseSchema } from "../src/env/core";
 
 describe("envSchema", () => {
   const OLD_ENV = process.env;

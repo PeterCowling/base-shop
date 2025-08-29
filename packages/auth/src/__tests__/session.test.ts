@@ -132,6 +132,26 @@ it("getCustomerSession returns null for invalid token", async () => {
   await expect(getCustomerSession()).resolves.toBeNull();
 });
 
+it("getCustomerSession returns null when SESSION_SECRET is undefined", async () => {
+  delete process.env.SESSION_SECRET;
+  const { getCustomerSession } = await import("../session");
+
+  mockCookies.get.mockReturnValue({ value: "token" });
+
+  await expect(getCustomerSession()).resolves.toBeNull();
+  expect(unsealData).not.toHaveBeenCalled();
+});
+
+it("getCustomerSession returns null for malformed token", async () => {
+  const { getCustomerSession } = await import("../session");
+
+  mockCookies.get.mockReturnValue({ value: "token" });
+  // missing required fields like sessionId
+  unsealData.mockResolvedValue({});
+
+  await expect(getCustomerSession()).resolves.toBeNull();
+});
+
 it("getCustomerSession rotates session id, updates store, and creates csrf when absent", async () => {
   const {
     getCustomerSession,
@@ -166,6 +186,10 @@ it("getCustomerSession rotates session id, updates store, and creates csrf when 
     CSRF_TOKEN_COOKIE,
     "new-csrf",
     expect.any(Object)
+  );
+  expect(sealData).toHaveBeenCalledWith(
+    { sessionId: "new-id", customerId: "cust", role: "customer" },
+    { password: "secret", ttl: 3600 }
   );
   expect(mockSessionStore.set).toHaveBeenCalledWith(
     expect.objectContaining({ sessionId: "new-id", customerId: "cust" })
@@ -225,5 +249,13 @@ it("validateCsrfToken compares token with cookie", async () => {
   await expect(validateCsrfToken("csrf")).resolves.toBe(true);
   await expect(validateCsrfToken("other")).resolves.toBe(false);
   await expect(validateCsrfToken(null)).resolves.toBe(false);
+});
+
+it("validateCsrfToken returns false when cookie is missing", async () => {
+  const { validateCsrfToken } = await import("../session");
+
+  mockCookies.get.mockReturnValue(undefined);
+
+  await expect(validateCsrfToken("csrf")).resolves.toBe(false);
 });
 

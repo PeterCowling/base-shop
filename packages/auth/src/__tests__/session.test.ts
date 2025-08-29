@@ -43,7 +43,7 @@ jest.mock("crypto", () => ({
 let mockSessionStore: any;
 const createSessionStore = jest.fn(async () => mockSessionStore);
 
-jest.mock("./store", () => ({
+jest.mock("../store", () => ({
   createSessionStore,
   SESSION_TTL_S: 3600,
 }));
@@ -84,7 +84,7 @@ it("createCustomerSession sets cookies and stores session", async () => {
     createCustomerSession,
     CUSTOMER_SESSION_COOKIE,
     CSRF_TOKEN_COOKIE,
-  } = await import("./session");
+  } = await import("../session");
 
   mockHeaders.get.mockReturnValue("agent");
   randomUUID.mockReturnValueOnce("session-id").mockReturnValueOnce("csrf-token");
@@ -116,7 +116,7 @@ it("createCustomerSession sets cookies and stores session", async () => {
 });
 
 it("getCustomerSession returns null for missing token", async () => {
-  const { getCustomerSession } = await import("./session");
+  const { getCustomerSession } = await import("../session");
 
   mockCookies.get.mockReturnValue(undefined);
 
@@ -124,7 +124,7 @@ it("getCustomerSession returns null for missing token", async () => {
 });
 
 it("getCustomerSession returns null for invalid token", async () => {
-  const { getCustomerSession } = await import("./session");
+  const { getCustomerSession } = await import("../session");
 
   mockCookies.get.mockReturnValue({ value: "bad" });
   unsealData.mockRejectedValue(new Error("bad"));
@@ -137,7 +137,7 @@ it("getCustomerSession rotates session id, updates store, and creates csrf when 
     getCustomerSession,
     CUSTOMER_SESSION_COOKIE,
     CSRF_TOKEN_COOKIE,
-  } = await import("./session");
+  } = await import("../session");
 
   mockCookies.get.mockImplementation((name: string) =>
     name === CUSTOMER_SESSION_COOKIE ? { value: "token" } : undefined
@@ -178,7 +178,7 @@ it("destroyCustomerSession removes cookies and deletes session", async () => {
     destroyCustomerSession,
     CUSTOMER_SESSION_COOKIE,
     CSRF_TOKEN_COOKIE,
-  } = await import("./session");
+  } = await import("../session");
 
   mockCookies.get.mockReturnValue({ value: "token" });
   unsealData.mockResolvedValue({ sessionId: "s1" });
@@ -198,8 +198,25 @@ it("destroyCustomerSession removes cookies and deletes session", async () => {
   expect(mockSessionStore.delete).toHaveBeenCalledWith("s1");
 });
 
+it("listSessions delegates to session store", async () => {
+  const { listSessions } = await import("../session");
+  const sessions = [{ sessionId: "a" }];
+  mockSessionStore.list.mockResolvedValue(sessions);
+
+  await expect(listSessions("cust")).resolves.toEqual(sessions);
+  expect(mockSessionStore.list).toHaveBeenCalledWith("cust");
+});
+
+it("revokeSession deletes from session store", async () => {
+  const { revokeSession } = await import("../session");
+
+  await revokeSession("sid");
+
+  expect(mockSessionStore.delete).toHaveBeenCalledWith("sid");
+});
+
 it("validateCsrfToken compares token with cookie", async () => {
-  const { validateCsrfToken, CSRF_TOKEN_COOKIE } = await import("./session");
+  const { validateCsrfToken, CSRF_TOKEN_COOKIE } = await import("../session");
 
   mockCookies.get.mockImplementation((name: string) =>
     name === CSRF_TOKEN_COOKIE ? { value: "csrf" } : undefined
@@ -207,5 +224,6 @@ it("validateCsrfToken compares token with cookie", async () => {
 
   await expect(validateCsrfToken("csrf")).resolves.toBe(true);
   await expect(validateCsrfToken("other")).resolves.toBe(false);
+  await expect(validateCsrfToken(null)).resolves.toBe(false);
 });
 

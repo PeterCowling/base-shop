@@ -103,7 +103,7 @@ function envKey(shop: string, key: string): string {
   return `REVERSE_LOGISTICS_${key}_${shop.toUpperCase().replace(/[^A-Z0-9]/g, "_")}`;
 }
 
-async function resolveConfig(
+export async function resolveConfig(
   shop: string,
   dataRoot: string,
   override: Partial<ReverseLogisticsConfig> = {}

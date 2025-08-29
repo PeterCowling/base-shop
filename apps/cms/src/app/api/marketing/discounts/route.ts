@@ -57,7 +57,7 @@ export async function GET(req: NextRequest) {
   ]);
   const counts: Record<string, number> = {};
   for (const e of events) {
-    if (e.type === "discount_redeemed") {
+    if (e.type === "discount_redeemed" && typeof e.code === "string") {
       const code = e.code;
       counts[code] = (counts[code] || 0) + 1;
     }

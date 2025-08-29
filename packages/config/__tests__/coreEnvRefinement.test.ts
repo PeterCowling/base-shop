@@ -9,7 +9,7 @@ afterEach(() => {
 
 describe("coreEnvSchema refinement", () => {
   it("reports invalid env variables", async () => {
-    const { coreEnvSchema } = await import("../src/env/core");
+    const { coreEnvSchema } = await import("../src/env/core.js");
     process.env = {
       ...OLD_ENV,
       DEPOSIT_RELEASE_ENABLED: "notbool",

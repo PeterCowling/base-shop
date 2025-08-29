@@ -14,7 +14,7 @@ describe("emailEnv", () => {
       SMTP_URL: "notaurl",
     } as NodeJS.ProcessEnv;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(import("../src/env/email")).rejects.toThrow(
+    await expect(import("../src/env/email.js")).rejects.toThrow(
       "Invalid email environment variables",
     );
     expect(spy).toHaveBeenCalled();

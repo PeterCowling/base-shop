@@ -139,6 +139,9 @@ module.exports = {
     "^\\./env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.ts",
     "^\\./(auth|cms|email|core|payments|shipping)\\.js$":
       "<rootDir>/packages/config/src/env/$1.ts",
+    "^\\.\\./(auth|cms|email|core|payments|shipping)\\.js$":
+      "<rootDir>/packages/config/src/env/$1.ts",
+    "^\.\./src/env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.ts",
 
     // CMS application aliases
     "^@/components/atoms/shadcn$":

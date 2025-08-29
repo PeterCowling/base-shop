@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
-import { coreEnvBaseSchema, depositReleaseEnvRefinement } from "../core";
+import { coreEnvBaseSchema, depositReleaseEnvRefinement } from "../core.js";
 
 const schema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
 

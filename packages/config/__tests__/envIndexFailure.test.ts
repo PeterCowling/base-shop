@@ -2,7 +2,7 @@ import { expect } from "@jest/globals";
 import { z } from "zod";
 
 // Mock env modules to expose schemas without validating process.env.
-jest.mock("../src/env/cms", () => ({
+jest.mock("../src/env/cms.js", () => ({
   cmsEnvSchema: z.object({
     CMS_SPACE_URL: z.string().url(),
     CMS_ACCESS_TOKEN: z.string().min(1),
@@ -10,7 +10,7 @@ jest.mock("../src/env/cms", () => ({
   }),
 }));
 
-jest.mock("../src/env/core", () => ({
+jest.mock("../src/env/core.js", () => ({
   coreEnvBaseSchema: z.object({
     CMS_SPACE_URL: z.string().url(),
     CMS_ACCESS_TOKEN: z.string().min(1),
@@ -19,15 +19,15 @@ jest.mock("../src/env/core", () => ({
   depositReleaseEnvRefinement: () => {},
 }));
 
-jest.mock("../src/env/payments", () => ({
-  paymentEnvSchema: z.object({
+jest.mock("../src/env/payments.js", () => ({
+  paymentsEnvSchema: z.object({
     STRIPE_SECRET_KEY: z.string().min(1),
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1),
     STRIPE_WEBHOOK_SECRET: z.string().min(1),
   }),
 }));
 
-jest.mock("../src/env/shipping", () => ({
+jest.mock("../src/env/shipping.js", () => ({
   shippingEnvSchema: z.object({
     TAXJAR_KEY: z.string(),
   }),
@@ -50,7 +50,7 @@ describe("env index failure", () => {
       CMS_SPACE_URL: "not-a-url",
       CMS_ACCESS_TOKEN: "",
       SANITY_API_VERSION: "",
-      // payment
+      // payments
       STRIPE_SECRET_KEY: "",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "",
       STRIPE_WEBHOOK_SECRET: "",
@@ -62,7 +62,7 @@ describe("env index failure", () => {
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
-    await expect(import("../src/env/index")).rejects.toThrow(
+    await expect(import("../src/env/index.js")).rejects.toThrow(
       "Invalid environment variables",
     );
     expect(errorSpy).toHaveBeenCalled();

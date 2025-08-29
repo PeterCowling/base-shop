@@ -16,7 +16,7 @@ describe("shippingEnv", () => {
       DHL_KEY: "dhl",
     } as NodeJS.ProcessEnv;
 
-    const { shippingEnv } = await import("../src/env/shipping");
+    const { shippingEnv } = await import("../src/env/shipping.js");
     expect(shippingEnv).toEqual({
       TAXJAR_KEY: "tax",
       UPS_KEY: "ups",
@@ -33,7 +33,7 @@ describe("shippingEnv", () => {
     } as unknown as NodeJS.ProcessEnv;
 
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(import("../src/env/shipping")).rejects.toThrow(
+    await expect(import("../src/env/shipping.js")).rejects.toThrow(
       "Invalid shipping environment variables",
     );
     expect(spy).toHaveBeenCalled();

@@ -1,5 +1,5 @@
 import { expect } from "@jest/globals";
-import { coreEnvBaseSchema } from "../src/env/core";
+import { coreEnvBaseSchema } from "../src/env/core.js";
 
 describe("envSchema", () => {
   const OLD_ENV = process.env;
@@ -24,7 +24,7 @@ describe("envSchema", () => {
         SANITY_API_VERSION: "2023-01-01",
       } as NodeJS.ProcessEnv;
 
-    const { envSchema } = await import("../src/env");
+    const { envSchema } = await import("../src/env/index.js");
       const parsed = envSchema.parse({
         STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
@@ -66,7 +66,7 @@ describe("envSchema", () => {
       SANITY_API_VERSION: "2023-01-01",
     } as NodeJS.ProcessEnv;
 
-    const { envSchema } = await import("../src/env");
+    const { envSchema } = await import("../src/env/index.js");
 
     const invalid = {
       STRIPE_SECRET_KEY: "sk",

@@ -106,7 +106,7 @@ const moleculeEntries = {
   NewsletterForm: { component: NewsletterForm },
   PromoBanner: { component: PromoBanner },
   CategoryList: { component: CategoryList },
-} satisfies Record<string, BlockRegistryEntry<unknown>>;
+} satisfies Record<string, BlockRegistryEntry<any>>;
 
 export const moleculeRegistry = Object.fromEntries(
   Object.entries(moleculeEntries).map(([k, v]) => [

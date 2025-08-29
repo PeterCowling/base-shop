@@ -20,9 +20,9 @@ const meta: Meta<typeof LoyaltyHubTemplate> = {
       { date: "2023-01-02", action: "Spent", amount: -50 },
     ],
     historyColumns: [
-      { header: "Date", render: (row: HistoryRow) => row.date },
-      { header: "Action", render: (row: HistoryRow) => row.action },
-      { header: "Amount", render: (row: HistoryRow) => row.amount },
+      { header: "Date", render: (row: unknown) => (row as HistoryRow).date },
+      { header: "Action", render: (row: unknown) => (row as HistoryRow).action },
+      { header: "Amount", render: (row: unknown) => (row as HistoryRow).amount },
     ],
   },
   argTypes: {

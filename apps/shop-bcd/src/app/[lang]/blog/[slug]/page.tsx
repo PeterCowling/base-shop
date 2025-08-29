@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation";
 import { fetchPostBySlug } from "@acme/sanity";
-import { BlogPortableText } from "@platform-core/components/blog/BlogPortableText";
+import {
+  BlogPortableText,
+  type PortableBlock,
+} from "@platform-core/components/blog/BlogPortableText";
 import type { Shop } from "@acme/types";
 import shopJson from "../../../../../shop.json";
 
@@ -28,7 +31,7 @@ export default async function BlogPostPage({
       {post.excerpt && <p className="text-muted">{post.excerpt}</p>}
       {Array.isArray(post.body) ? (
         <div className="space-y-4">
-          <BlogPortableText value={post.body} />
+          <BlogPortableText value={post.body as PortableBlock[]} />
         </div>
       ) : null}
     </article>

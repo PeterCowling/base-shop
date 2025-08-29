@@ -8,7 +8,6 @@ import {
 } from "fs";
 import { join } from "path";
 import { genSecret } from "@acme/shared-utils";
-import { Prisma } from "@prisma/client";
 import { prisma } from "../db";
 import { validateShopName } from "../shops";
 import {
@@ -63,7 +62,7 @@ export async function createShop(
   };
 
   await prisma.shop.create({
-    data: { id, data: shopData as unknown as Prisma.InputJsonValue },
+    data: { id, data: shopData as unknown },
   });
 
   try {
@@ -76,13 +75,11 @@ export async function createShop(
 
   if (prepared.pages.length) {
     await prisma.page.createMany({
-      data: (
-        prepared.pages.map((p) => ({
-          shopId: id,
-          slug: p.slug,
-          data: p as unknown as Prisma.InputJsonValue,
-        })) as Prisma.PageCreateManyInput[]
-      ),
+      data: prepared.pages.map((p) => ({
+        shopId: id,
+        slug: p.slug,
+        data: p as unknown,
+      })),
     });
   }
 

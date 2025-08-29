@@ -1,8 +1,12 @@
 // packages/ui/src/components/account/Orders.tsx
 import { getCustomerSession, hasPermission } from "@auth";
 import { getOrdersForCustomer } from "@acme/platform-core/orders";
-import { getTrackingStatus as getShippingTrackingStatus } from "@acme/platform-core/shipping";
-import { getTrackingStatus as getReturnTrackingStatus } from "@acme/platform-core/returnAuthorization";
+import {
+  getTrackingStatus as getShippingTrackingStatus,
+} from "@acme/platform-core/shipping";
+import {
+  getTrackingStatus as getReturnTrackingStatus,
+} from "@acme/platform-core/returnAuthorization";
 import type { RentalOrder } from "@acme/types";
 import { redirect } from "next/navigation";
 import StartReturnButton from "./StartReturnButton";
@@ -59,16 +63,17 @@ export default async function OrdersPage({
       const returnStatus = o.returnStatus ?? null;
       if (trackingEnabled && trackingProviders.length > 0 && o.trackingNumber) {
         const provider = trackingProviders[0] as "ups" | "dhl";
-        const ship = await getShippingTrackingStatus({
+        type TrackingInfo = { status: string | null; steps: unknown[] };
+        const ship = (await getShippingTrackingStatus({
           provider,
           trackingNumber: o.trackingNumber,
-        });
+        })) as TrackingInfo;
         shippingSteps = ship.steps as OrderStep[];
         status = ship.status;
-        const ret = await getReturnTrackingStatus({
+        const ret = (await getReturnTrackingStatus({
           provider,
           trackingNumber: o.trackingNumber,
-        });
+        })) as TrackingInfo;
         returnSteps = ret.steps as OrderStep[];
       }
       return (

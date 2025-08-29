@@ -106,13 +106,23 @@ const moleculeEntries = {
   NewsletterForm: { component: NewsletterForm },
   PromoBanner: { component: PromoBanner },
   CategoryList: { component: CategoryList },
-} satisfies Record<string, BlockRegistryEntry<unknown>>;
+} as const;
 
-export const moleculeRegistry = Object.fromEntries(
-  Object.entries(moleculeEntries).map(([k, v]) => [
-    k,
-    { previewImage: defaultPreview, ...v },
-  ]),
-) as unknown as typeof moleculeEntries;
+type MoleculeRegistry = {
+  -readonly [K in keyof typeof moleculeEntries]: BlockRegistryEntry<unknown>;
+};
+
+export const moleculeRegistry: MoleculeRegistry = Object.entries(
+  moleculeEntries,
+).reduce(
+  (acc, [k, v]) => {
+    acc[k as keyof typeof moleculeEntries] = {
+      previewImage: defaultPreview,
+      ...v,
+    } as BlockRegistryEntry<unknown>;
+    return acc;
+  },
+  {} as MoleculeRegistry,
+);
 
 export type MoleculeBlockType = keyof typeof moleculeEntries;

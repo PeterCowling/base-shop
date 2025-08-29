@@ -109,7 +109,7 @@ export const atomRegistry: AtomRegistry = Object.entries(atomEntries).reduce(
     acc[k as keyof typeof atomEntries] = {
       previewImage: defaultPreview,
       ...v,
-    };
+    } as BlockRegistryEntry<unknown>;
     return acc;
   },
   {} as AtomRegistry,

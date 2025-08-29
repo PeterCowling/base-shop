@@ -20,7 +20,7 @@ export const containerRegistry: ContainerRegistry = Object.entries(
     acc[k as keyof typeof containerEntries] = {
       previewImage: defaultPreview,
       ...v,
-    };
+    } as BlockRegistryEntry<unknown>;
     return acc;
   },
   {} as ContainerRegistry,

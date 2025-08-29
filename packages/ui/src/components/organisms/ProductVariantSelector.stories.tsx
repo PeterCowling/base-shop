@@ -4,7 +4,7 @@ import { ProductVariantSelector } from "./ProductVariantSelector";
 const meta: Meta<typeof ProductVariantSelector> = {
   component: ProductVariantSelector,
   args: {
-    colors: ["#f00", "#00f"],
+    colors: ["var(--color-primary)", "var(--color-accent)"],
     sizes: ["S", "M", "L"],
     quantity: 1,
   },

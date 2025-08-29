@@ -63,7 +63,7 @@ function loadLeaflet(): Promise<Leaflet | null> {
   document.head.appendChild(css);
 
   /* JS */
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const script = document.createElement("script");
     script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
     script.onload = () => resolve((window as { L: Leaflet }).L);

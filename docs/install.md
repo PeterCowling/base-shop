@@ -1,7 +1,7 @@
 # Installation
 
 Requires **Node.js >=20** and **pnpm 10.12.1**.
-See [doc/setup.md](../doc/setup.md) for full setup and CI guidance.
+See [setup guide](./setup.md) for full setup and CI guidance.
 
 ## Getting Started
 
@@ -164,14 +164,14 @@ pnpm build
 
 ## Storybook
 
-See [doc/storybook.md](doc/storybook.md) for details on running Storybook,
+See [storybook guide](./storybook.md) for details on running Storybook,
 executing accessibility tests and publishing Chromatic previews.
 
 ## CMS Guide
 
-See [doc/cms.md](doc/cms.md) for an overview of the CMS navigation,
+See [CMS guide](./cms.md) for an overview of the CMS navigation,
 switching shops and admin-only routes. Newcomers can follow the
-[Page Builder](doc/cms.md#page-builder) section to learn how to add,
+[Page Builder](./cms.md#page-builder) section to learn how to add,
 rearrange and publish blocks.
 
 ### Theme overrides

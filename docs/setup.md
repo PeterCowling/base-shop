@@ -231,7 +231,7 @@ The generated `.env` file also contains `DEPOSIT_RELEASE_ENABLED` and `DEPOSIT_R
 
 To keep it running on a schedule, import `startDepositReleaseService` from `@acme/platform-machine` and optionally pass a custom interval (defaults to one hour). The service scans every shop under `data/shops/*`, issues Stripe refunds and marks orders as refunded.
 
-See [doc/machine.md](./machine.md#deposit-release-service) for more details and configuration options.
+See [machine utilities](./machine.md#deposit-release-service) for more details and configuration options.
 
 ## 9. Troubleshooting
 

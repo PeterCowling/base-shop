@@ -113,4 +113,4 @@ based on available width.
 
 ## Rental deposits
 
-Returned rental orders have their deposits refunded automatically by a background process. Administrators can adjust the schedule or run the process manually; see [doc/machine.md](./machine.md#deposit-release-service) for details on configuration and usage.
+Returned rental orders have their deposits refunded automatically by a background process. Administrators can adjust the schedule or run the process manually; see [machine utilities](./machine.md#deposit-release-service) for details on configuration and usage.

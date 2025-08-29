@@ -18,3 +18,13 @@ Create branches from `main` and name them descriptively (e.g., `feat/login-form`
 
 Before submitting changes, run [`pnpm lint`](../package.json#L24) and [`pnpm test`](../package.json#L28) to ensure the codebase is formatted correctly and the test suite passes.
 
+## API documentation
+
+Generate API reference docs for all public packages by running:
+
+```bash
+pnpm doc:api
+```
+
+The output is written to `docs/api/`.
+

@@ -72,8 +72,8 @@ if (process.env.NODE_ENV === "test" || !coreEnv.DATABASE_URL) {
   prisma = createStubPrisma();
 } else {
   try {
-    const { PrismaClient } =
-      require("@prisma/client") as typeof import("@prisma/client");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { PrismaClient } = require("@prisma/client") as typeof import("@prisma/client");
 
     const databaseUrl = coreEnv.DATABASE_URL;
     prisma = new PrismaClient({

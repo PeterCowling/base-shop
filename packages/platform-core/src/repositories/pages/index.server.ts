@@ -6,7 +6,6 @@ import { pageSchema, type Page } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { prisma } from "../../db";
-import type { Prisma } from "@prisma/client";
 import { validateShopName } from "../../shops/index";
 import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
@@ -119,12 +118,12 @@ export async function savePage(
   try {
     await prisma.page.upsert({
       where: { id: page.id },
-      update: { data: page as unknown as Prisma.InputJsonValue, slug: page.slug },
+      update: { data: page as unknown as Record<string, unknown>, slug: page.slug },
       create: {
         id: page.id,
         shopId: shop,
         slug: page.slug,
-        data: page as unknown as Prisma.InputJsonValue,
+        data: page as unknown as Record<string, unknown>,
       },
     });
   } catch {
@@ -172,7 +171,7 @@ export async function updatePage(
     await prisma.page.update({
       where: { id: patch.id },
       data: {
-        data: updated as unknown as Prisma.InputJsonValue,
+        data: updated as unknown as Record<string, unknown>,
         slug: updated.slug,
       },
     });

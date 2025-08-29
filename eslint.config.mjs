@@ -36,7 +36,7 @@ export default [
       "**/*.test.*",
       "**/*.spec.*",
       "**/*.d.ts",
-      "**/jest.setup.{ts,tsx}",
+      "**/jest.setup*.{ts,tsx}",
       "**/*.test.{ts,tsx,js,jsx}",
       "**/*.spec.{ts,tsx,js,jsx}",
     ],

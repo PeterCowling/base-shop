@@ -13,6 +13,7 @@ module.exports = {
   roots: ["<rootDir>/apps/cms/src", "<rootDir>/apps/cms/__tests__"],
   setupFilesAfterEnv: [
     "<rootDir>/apps/cms/jest.setup.polyfills.ts",
+    "<rootDir>/apps/cms/__tests__/msw/server.ts",
     "<rootDir>/apps/cms/jest.setup.tsx",
   ],
   moduleNameMapper: {

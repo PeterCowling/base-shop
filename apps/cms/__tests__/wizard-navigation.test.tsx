@@ -3,7 +3,7 @@
 import { runWizard, templates, themes } from "./utils/wizardTestUtils";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { ResponseComposition, RestContext, RestRequest, rest } from "msw";
-import { server } from "../../../test/msw/server";
+import { server } from "./msw/server";
 import Wizard from "../src/app/cms/wizard/Wizard";
 
 /* -------------------------------------------------------------------------- */

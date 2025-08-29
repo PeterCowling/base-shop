@@ -99,7 +99,7 @@ jest.mock("next/router", () => ({
 /* 3 ·  MSW – Mock Service Worker                                             */
 /* -------------------------------------------------------------------------- */
 
-import { server } from "../../test/mswServer";
+import { server } from "../../test/msw/server";
 
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 afterEach(() => server.resetHandlers());

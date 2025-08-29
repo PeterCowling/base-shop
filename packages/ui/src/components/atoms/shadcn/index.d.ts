@@ -6,5 +6,4 @@ export { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSepa
 export { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "../primitives/table";
 export { Textarea, type TextareaProps } from "../primitives/textarea";
 export { Button, type ButtonProps } from "./Button";
-export { Accordion, type AccordionItem } from "../../molecules/Accordion";
 //# sourceMappingURL=index.d.ts.map

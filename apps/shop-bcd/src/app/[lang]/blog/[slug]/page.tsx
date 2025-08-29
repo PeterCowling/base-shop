@@ -26,7 +26,7 @@ export default async function BlogPostPage({
       )}
       <h1 className="text-2xl font-bold">{post.title}</h1>
       {post.excerpt && <p className="text-muted">{post.excerpt}</p>}
-      {Array.isArray(post.body) ? (
+      {post.body ? (
         <div className="space-y-4">
           <BlogPortableText value={post.body} />
         </div>

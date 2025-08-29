@@ -101,7 +101,7 @@ const atomEntries = {
 } as const;
 
 type AtomRegistry = {
-  -readonly [K in keyof typeof atomEntries]: BlockRegistryEntry<any>;
+  -readonly [K in keyof typeof atomEntries]: BlockRegistryEntry<Record<string, unknown>>;
 };
 
 export const atomRegistry: AtomRegistry = Object.entries(atomEntries).reduce(

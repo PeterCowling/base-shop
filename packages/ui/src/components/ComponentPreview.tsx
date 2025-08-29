@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import type { UpgradeComponent } from "@acme/types";
 
 declare global {
-  // eslint-disable-next-line no-var
   var __UPGRADE_MOCKS__: Record<string, React.ComponentType> | undefined;
 }
 

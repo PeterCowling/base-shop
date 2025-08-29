@@ -7,6 +7,12 @@ interface ReturnFormProps {
   tracking?: boolean;
 }
 
+interface BarcodeDetectorGlobal extends Window {
+  BarcodeDetector: new (options: { formats: string[] }) => {
+    detect(video: HTMLVideoElement): Promise<Array<{ rawValue: string }>>;
+  };
+}
+
 export default function ReturnForm({
   bagType,
   tracking: trackingEnabled,
@@ -30,7 +36,7 @@ export default function ReturnForm({
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
         }
-        const detector = new (window as any).BarcodeDetector({
+        const detector = new (window as BarcodeDetectorGlobal).BarcodeDetector({
           formats: ["qr_code"],
         });
         const scan = async () => {

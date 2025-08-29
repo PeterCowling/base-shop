@@ -1,5 +1,7 @@
 import * as React from "react";
 
+/* eslint-disable @next/next/no-img-element */
+
 export interface MarketingEmailTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
   logoSrc?: string;

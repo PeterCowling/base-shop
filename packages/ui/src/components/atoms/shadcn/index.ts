@@ -32,4 +32,3 @@ export {
 } from "../primitives/table";
 export { Textarea, type TextareaProps } from "../primitives/textarea";
 export { Button, type ButtonProps } from "./Button";
-export { Accordion, type AccordionItem } from "../../molecules/Accordion";

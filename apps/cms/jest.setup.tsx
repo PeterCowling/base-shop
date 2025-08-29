@@ -94,13 +94,3 @@ jest.mock("next/router", () => ({
     prefetch: jest.fn(),
   }),
 }));
-
-/* -------------------------------------------------------------------------- */
-/* 3 ·  MSW – Mock Service Worker                                             */
-/* -------------------------------------------------------------------------- */
-
-import { server } from "../../test/mswServer";
-
-beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());

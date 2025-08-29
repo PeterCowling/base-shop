@@ -11,7 +11,10 @@ const {
 module.exports = {
   ...base,
   roots: ["<rootDir>/apps/cms/src", "<rootDir>/apps/cms/__tests__"],
-  setupFilesAfterEnv: ["<rootDir>/apps/cms/jest.setup.tsx"],
+  setupFilesAfterEnv: [
+    "<rootDir>/apps/cms/jest.setup.tsx",
+    "<rootDir>/apps/cms/__tests__/msw/server.ts",
+  ],
   moduleNameMapper: {
     ...baseModuleNameMapper,
     "^@/components/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",

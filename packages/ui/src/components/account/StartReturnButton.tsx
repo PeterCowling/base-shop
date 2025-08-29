@@ -15,7 +15,6 @@ export default function StartReturnButton({ sessionId }: Props) {
 
   useEffect(() => {
     if (!tracking) return;
-    let timer: ReturnType<typeof setInterval>;
     const fetchStatus = async () => {
       try {
         const res = await fetch(`/api/return?tracking=${tracking}`);
@@ -28,7 +27,7 @@ export default function StartReturnButton({ sessionId }: Props) {
       }
     };
     fetchStatus();
-    timer = setInterval(fetchStatus, 5000);
+    const timer = setInterval(fetchStatus, 5000);
     return () => clearInterval(timer);
   }, [tracking]);
 

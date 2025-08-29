@@ -12,7 +12,7 @@ The sidebar inside the CMS provides quick access to different sections:
 - **Products** – Lists all products. If a shop is selected, also shows **New Product**.
 - **Pages** – Lists pages for the current shop with a **New Page** link when a shop is selected.
 - **Media** – Upload and manage media files.
-- **Theme** – Customize the shop's appearance. Visible to admins and shop owners. See [advanced theming](../docs/theming-advanced.md) for base themes, overrides, persistence and live preview.
+- **Theme** – Customize the shop's appearance. Visible to admins and shop owners. See [advanced theming](./theming-advanced.md) for base themes, overrides, persistence and live preview.
 - **Settings** – Shop settings. When a shop is active an additional **SEO** option appears.
 - **Live** – Opens a list of running shop instances.
 - **RBAC** – (Admin only) Manage user roles.
@@ -41,7 +41,7 @@ Admins can scaffold and launch a shop directly from the CMS at `/cms/wizard`. Th
 
 1. **Shop details** – provide the shop ID, display name, logo URL, contact email and choose whether it's for sales or rentals.
 2. **Options** – select the starter template and theme.
-3. **Theme tokens** – tweak design tokens to match your brand. See [advanced theming](../docs/theming-advanced.md) for details.
+3. **Theme tokens** – tweak design tokens to match your brand. See [advanced theming](./theming-advanced.md) for details.
 4. **Navigation** – build the header navigation tree or start from prebuilt presets.
 5. **Page layouts** – configure home, shop, product and checkout pages and any optional additional pages.
 6. **Environment** – supply required environment variables.
@@ -113,4 +113,4 @@ based on available width.
 
 ## Rental deposits
 
-Returned rental orders have their deposits refunded automatically by a background process. Administrators can adjust the schedule or run the process manually; see [doc/machine.md](./machine.md#deposit-release-service) for details on configuration and usage.
+Returned rental orders have their deposits refunded automatically by a background process. Administrators can adjust the schedule or run the process manually; see [machine](./machine.md#deposit-release-service) for details on configuration and usage.

@@ -36,6 +36,17 @@ export const handlers = [
       })
     )
   ),
+  rest.get("*/api/products", (_req, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json({
+        title: "Test",
+        price: 100,
+        stock: 1,
+        media: [{ url: "/image.png" }],
+      })
+    )
+  ),
   rest.post(
     "/cms/api/marketing/email/provider-webhooks/sendgrid",
     (_req, res, ctx) => res(ctx.status(200), ctx.json({ received: true }))

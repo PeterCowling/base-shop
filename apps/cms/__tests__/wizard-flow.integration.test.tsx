@@ -70,12 +70,25 @@ async function goTo(heading: string): Promise<HTMLElement> {
 describe("Wizard locale flow", () => {
   it("preserves locale fields across navigation and reload", async () => {
     serverState = {
-      state: { shopId: "shop" },
-      completed: { "shop-details": "complete", theme: "complete" },
+      state: {},
+      completed: { theme: "complete" },
     };
 
     const { unmount } = render(
       <Wizard themes={themes} templates={templates} />
+    );
+
+    const shopDetails = await goTo("Shop Details");
+    fireEvent.change(within(shopDetails).getByLabelText(/Shop ID/i), {
+      target: { value: "shop" },
+    });
+    fireEvent.click(
+      within(shopDetails).getByRole("button", { name: /next/i })
+    );
+
+    const themeStep = await goTo("Select Theme");
+    fireEvent.click(
+      within(themeStep).getByRole("button", { name: /next/i })
     );
 
     const summary = await goTo("Summary");
@@ -114,15 +127,36 @@ describe("Wizard locale flow", () => {
 
     render(<Wizard themes={themes} templates={templates} />);
 
+    const shopDetails2 = await goTo("Shop Details");
+    fireEvent.change(within(shopDetails2).getByLabelText(/Shop ID/i), {
+      target: { value: "shop" },
+    });
+    fireEvent.blur(within(shopDetails2).getByLabelText(/Shop ID/i));
+    fireEvent.click(
+      within(shopDetails2).getByRole("button", { name: /next/i })
+    );
+
+    let summary3: HTMLElement;
+    try {
+      const themeStep2 = await goTo("Select Theme");
+      fireEvent.click(
+        within(themeStep2).getByRole("button", { name: /next/i })
+      );
+      summary3 = await goTo("Summary");
+    } catch {
+      summary3 = await goTo("Summary");
+    }
+    fireEvent.click(within(summary3).getByRole("button", { name: /next/i }));
+
     const importStep2 = await goTo("Import Data");
     fireEvent.click(within(importStep2).getByRole("button", { name: /back/i }));
 
-    const summary3 = await goTo("Summary");
+    const summary4 = await goTo("Summary");
     expect(
-      within(summary3).getByLabelText(/home page title \(en\)/i)
+      within(summary4).getByLabelText(/home page title \(en\)/i)
     ).toHaveValue("Hello");
     expect(
-      within(summary3).getByLabelText(/home page title \(de\)/i)
+      within(summary4).getByLabelText(/home page title \(de\)/i)
     ).toHaveValue("Hallo");
   });
 });

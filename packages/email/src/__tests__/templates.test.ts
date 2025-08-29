@@ -77,5 +77,52 @@ describe("renderTemplate", () => {
     expect(html).not.toContain("onerror");
     expect(html).not.toContain("<script>");
   });
+
+  it("handles various node types", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({
+        __esModule: true,
+        marketingEmailTemplates: [
+          { id: "null", render: () => null },
+          {
+            id: "array",
+            render: () => [
+              React.createElement("p", null, "A"),
+              React.createElement("p", null, "B"),
+            ],
+          },
+          { id: "invalid", render: () => ({}) as any },
+          {
+            id: "attrs",
+            render: () =>
+              React.createElement("div", { id: "x", className: "y" }, "Hi"),
+          },
+        ],
+      }),
+      { virtual: true },
+    );
+
+    const { renderTemplate } = await import("../templates");
+    expect(renderTemplate("null", {})).toBe("");
+    expect(renderTemplate("array", {})).toBe("<p>A</p><p>B</p>");
+    expect(renderTemplate("invalid", {})).toBe("");
+    expect(renderTemplate("attrs", {})).toBe(
+      '<div id="x" className="y">Hi</div>',
+    );
+  });
+
+  it("throws for unknown templates", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({ __esModule: true, marketingEmailTemplates: [] }),
+      { virtual: true },
+    );
+
+    const { renderTemplate } = await import("../templates");
+    expect(() => renderTemplate("nonexistent", {})).toThrow(
+      "Unknown template",
+    );
+  });
 });
 

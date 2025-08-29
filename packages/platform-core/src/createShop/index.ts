@@ -15,7 +15,6 @@ import {
   prepareOptions,
   createShopOptionsSchema as baseCreateShopOptionsSchema,
   type CreateShopOptions,
-  type PreparedCreateShopOptions,
 } from "./schema";
 import { loadTokens } from "./themeUtils";
 import type { DeployStatusBase, DeployShopResult } from "./deployTypes";

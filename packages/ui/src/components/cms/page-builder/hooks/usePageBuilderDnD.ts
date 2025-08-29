@@ -126,7 +126,7 @@ export function usePageBuilderDnD({
         const isContainer = containerTypes.includes(a.type!);
         const component = {
           id: ulid(),
-          type: a.type! as any,
+          type: a.type! as PageComponent["type"],
           ...(defaults[a.type!] ?? {}),
           ...(isContainer ? { children: [] } : {}),
         } as PageComponent;

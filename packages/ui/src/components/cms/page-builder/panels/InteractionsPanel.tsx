@@ -23,8 +23,8 @@ export default function InteractionsPanel({
   component,
   handleInput,
 }: Props) {
-  const clickAction = (component as any).clickAction ?? "none";
-  const animation = (component as any).animation ?? "none";
+  const clickAction = component.clickAction ?? "none";
+  const animation = component.animation ?? "none";
   return (
     <div className="space-y-2">
       <Select
@@ -49,7 +49,7 @@ export default function InteractionsPanel({
         <Input
           label="Target"
           placeholder="https://example.com"
-          value={(component as any).href ?? ""}
+          value={component.href ?? ""}
           onChange={(e) => handleInput("href", e.target.value)}
         />
       )}

@@ -2,23 +2,24 @@
 
 # Base-Shop
 
-Requires **Node.js >=20** and **pnpm 10.12.1**.
-See [docs/install.md](docs/install.md) for installation instructions and [doc/setup.md](doc/setup.md) for full setup and CI guidance.
+A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **React 19**. The full technical roadmap is documented in [./IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md).
 
-Key points:
+## Getting Started
+
+Requires **Node.js >=20** and **pnpm 10.12.1**. See [docs/install.md](docs/install.md) for installation instructions and [doc/setup.md](doc/setup.md) for full setup and CI guidance.
+
+Run `pnpm init-shop` to scaffold a new shop. The wizard lists available plugins and, when invoked with `--auto-env`, writes `TODO_*` placeholders for any required environment variables so teams can fill them in later.
+
+## Key Features
 
 - Stripe handles deposits via escrow sessions.
 - Returned deposits can be refunded automatically by the deposit release service. See [doc/machine.md](doc/machine.md).
-- Inventory lives in JSON files under data/shops/\*/inventory.json.
+- Inventory lives in JSON files under data/shops/*/inventory.json.
 - Low-stock alerts email the configured recipient (`STOCK_ALERT_RECIPIENT`) when inventory falls below its threshold.
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
 - Return logistics options stored in data/return-logistics.json.
 - RBAC: ShopAdmin currently manages all shops. See [doc/permissions.md](doc/permissions.md) for default roles and permissions.
 - Product and recommendation carousels adapt their visible item count to the screen width, clamped between caller-provided `minItems` and `maxItems` values.
-  A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **React 19**.
-  The full technical roadmap is documented in [./IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md).
-
-Run `pnpm init-shop` to scaffold a new shop. The wizard lists available plugins and, when invoked with `--auto-env`, writes `TODO_*` placeholders for any required environment variables so teams can fill them in later.
 
 ## Security Headers
 
@@ -45,9 +46,7 @@ See [docs/contributing.md](docs/contributing.md) for contribution guidelines.
 
 ## Shop maintenance
 
-See [doc/upgrade-preview-republish.md](doc/upgrade-preview-republish.md) for guidance on upgrading a shop, previewing changes and republishing.
-See [doc/edit-preview-republish.md](doc/edit-preview-republish.md) for details on editing components, previewing those edits and republishing.
-See [docs/upgrade-flow.md](docs/upgrade-flow.md) for version tracking, the diff API, using previews and republishing or rolling back upgrades.
+See [doc/upgrade-preview-republish.md](doc/upgrade-preview-republish.md) for guidance on upgrading a shop, previewing changes and republishing. See [doc/edit-preview-republish.md](doc/edit-preview-republish.md) for details on editing components, previewing those edits and republishing. See [docs/upgrade-flow.md](docs/upgrade-flow.md) for version tracking, the diff API, using previews and republishing or rolling back upgrades.
 
 ## Inventory Management
 
@@ -65,14 +64,11 @@ Inventory items live in `data/shops/<shop>/inventory.json` and follow this struc
 }
 ```
 
-`variantAttributes` is a free-form map of strings (e.g. `size`, `color`) that differentiates
-variants under the same product. Only the keys present are written to CSV export.
+`variantAttributes` is a free-form map of strings (e.g. `size`, `color`) that differentiates variants under the same product. Only the keys present are written to CSV export.
 
 ### Stock alerts
 
-Set `STOCK_ALERT_RECIPIENT` in the shop's `.env`. When `writeInventory` persists items and
-an item's `quantity` is less than or equal to its `lowStockThreshold`, an email is sent to the
-configured recipient summarising the affected SKUs.
+Set `STOCK_ALERT_RECIPIENT` in the shop's `.env`. When `writeInventory` persists items and an item's `quantity` is less than or equal to its `lowStockThreshold`, an email is sent to the configured recipient summarising the affected SKUs.
 
 ```bash
 STOCK_ALERT_RECIPIENT=alerts@example.com
@@ -118,9 +114,7 @@ Configuration and usage examples for both are documented in [doc/machine.md](doc
 
 # Environment Variables
 
-After running `pnpm create-shop <id>`, the wizard generates `.env` and `.env.template` under
-`apps/shop-<id>/`, validates the variables, and can pull secrets from an external vault by passing
-`--vault-cmd <cmd>` (the command receives each variable name). Configure the resulting `.env` with:
+After running `pnpm create-shop <id>`, the wizard generates `.env` and `.env.template` under `apps/shop-<id>/`, validates the variables, and can pull secrets from an external vault by passing `--vault-cmd <cmd>` (the command receives each variable name). Configure the resulting `.env` with:
 
 - `STRIPE_SECRET_KEY` – secret key used by the Stripe server SDK
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` – public key for the Stripe client SDK
@@ -146,22 +140,17 @@ SendGrid and Resend can be configured to POST event webhooks to:
 - `/api/marketing/email/provider-webhooks/sendgrid?shop=<SHOP_ID>`
 - `/api/marketing/email/provider-webhooks/resend?shop=<SHOP_ID>`
 
-Both endpoints verify the signatures using the environment variables above and
-map delivered, open, click, unsubscribe and bounce events to internal analytics.
+Both endpoints verify the signatures using the environment variables above and map delivered, open, click, unsubscribe and bounce events to internal analytics.
 
 ## Marketing Automation
 
 See [packages/email/marketing-automation.md](packages/email/marketing-automation.md) for details on scheduling campaigns, building segments and retrieving analytics.
 
-The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET`
-and `PREVIEW_TOKEN_SECRET`. Replace all placeholders with real values or supply
-them via your CI's secret store. Missing variables will cause the CLI to exit
-before running.
+The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET` and `PREVIEW_TOKEN_SECRET`. Replace all placeholders with real values or supply them via your CI's secret store. Missing variables will cause the CLI to exit before running.
 
 ## Google Apps Script
 
-Apps Script code lives under `apps-script/` and compiles with its own `tsconfig.json`.
-Next.js projects exclude this folder to avoid type conflicts with DOM typings.
+Apps Script code lives under `apps-script/` and compiles with its own `tsconfig.json`. Next.js projects exclude this folder to avoid type conflicts with DOM typings.
 
 ## Troubleshooting
 

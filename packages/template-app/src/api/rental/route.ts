@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
       ]);
     for (const { sku, from, to } of orderItems) {
       const skuInfo = products.find(
-        (p: SKU) => p.id === sku || p.slug === sku || p.sku === sku,
+        (p: SKU) => p.id === sku || p.slug === sku,
       );
       if (!skuInfo) continue;
       const items = inventory.filter((i) => i.sku === sku);

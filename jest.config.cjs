@@ -71,7 +71,7 @@ module.exports = {
   /* ------------------------------------------------------------------ */
   /* Global setup & polyfills                                           */
   /* ------------------------------------------------------------------ */
-  setupFiles: ["<rootDir>/test/setupFetchPolyfill.ts"],
+  setupFiles: ["dotenv/config", "<rootDir>/test/setupFetchPolyfill.ts"],
   setupFilesAfterEnv: [
     "<rootDir>/jest.setup.ts",
     "<rootDir>/test/polyfills/messageChannel.js",

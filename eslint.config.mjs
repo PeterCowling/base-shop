@@ -32,6 +32,7 @@ export default [
       "apps/*/src/**/*.js.map",
       "scripts/**/*.js",
       "**/__tests__/**",
+      "**/__mocks__/**",
       "**/*.test.*",
       "**/*.spec.*",
       "**/*.d.ts",

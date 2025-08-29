@@ -1,5 +1,6 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { LoyaltyHubTemplate } from "./LoyaltyHubTemplate";
+import type { Column } from "../organisms/DataTable";
 
 interface HistoryRow {
   date: string;
@@ -7,7 +8,18 @@ interface HistoryRow {
   amount: number;
 }
 
-const meta: Meta<typeof LoyaltyHubTemplate> = {
+const historyRows: HistoryRow[] = [
+  { date: "2023-01-01", action: "Earned", amount: 100 },
+  { date: "2023-01-02", action: "Spent", amount: -50 },
+];
+
+const historyColumns: Column<HistoryRow>[] = [
+  { header: "Date", render: (row) => row.date },
+  { header: "Action", render: (row) => row.action },
+  { header: "Amount", render: (row) => row.amount },
+];
+
+const meta: Meta<typeof LoyaltyHubTemplate<HistoryRow>> = {
   component: LoyaltyHubTemplate,
   args: {
     stats: [
@@ -15,15 +27,8 @@ const meta: Meta<typeof LoyaltyHubTemplate> = {
       { label: "Tier", value: "Gold" },
     ],
     progress: { current: 600, goal: 1000, label: "Progress" },
-    historyRows: [
-      { date: "2023-01-01", action: "Earned", amount: 100 },
-      { date: "2023-01-02", action: "Spent", amount: -50 },
-    ],
-    historyColumns: [
-      { header: "Date", render: (row: HistoryRow) => row.date },
-      { header: "Action", render: (row: HistoryRow) => row.action },
-      { header: "Amount", render: (row: HistoryRow) => row.amount },
-    ],
+    historyRows,
+    historyColumns,
   },
   argTypes: {
     stats: { control: "object" },
@@ -34,4 +39,4 @@ const meta: Meta<typeof LoyaltyHubTemplate> = {
 };
 export default meta;
 
-export const Default: StoryObj<typeof LoyaltyHubTemplate> = {};
+export const Default: StoryObj<typeof LoyaltyHubTemplate<HistoryRow>> = {};

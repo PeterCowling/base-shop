@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
-import { coreEnvBaseSchema, depositReleaseEnvRefinement } from "../core";
+import { coreEnvBaseSchema, depositReleaseEnvRefinement } from "../core.js";
 
 const schema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
 
@@ -107,7 +107,7 @@ describe("core env module", () => {
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    expect(() => require("../core")).toThrow(
+    expect(() => require("../core.js")).toThrow(
       "Invalid core environment variables",
     );
     expect(errorSpy).toHaveBeenCalledWith(

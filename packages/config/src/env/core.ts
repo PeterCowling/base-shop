@@ -3,6 +3,8 @@ import { z } from "zod";
 import { authEnvSchema } from "./auth.js";
 import { cmsEnvSchema } from "./cms.js";
 import { emailEnvSchema } from "./email.js";
+import { paymentsEnvSchema } from "./payments.js";
+import { shippingEnvSchema } from "./shipping.js";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -82,6 +84,8 @@ const baseEnvSchema = z
 export const coreEnvBaseSchema = authEnvSchema
   .merge(cmsEnvSchema)
   .merge(emailEnvSchema)
+  .merge(paymentsEnvSchema)
+  .merge(shippingEnvSchema)
   .merge(baseEnvSchema);
 
 export function depositReleaseEnvRefinement(

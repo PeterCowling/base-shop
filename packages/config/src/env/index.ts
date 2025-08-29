@@ -1,5 +1,5 @@
 import "@acme/zod-utils/initZod";
-import { z } from "zod";
+import { z, type AnyZodObject } from "zod";
 import {
   coreEnvBaseSchema,
   depositReleaseEnvRefinement,
@@ -7,23 +7,17 @@ import {
 import { paymentEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
 
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
   k: infer I,
 ) => void
   ? I
   : never;
 
-type AnyZodObject = z.ZodObject<z.ZodRawShape, any, any, any, any>;
-
 type MergedShape<T extends readonly AnyZodObject[]> =
   UnionToIntersection<
     {
       [K in keyof T]: T[K] extends z.ZodObject<
-        infer S extends z.ZodRawShape,
-        any,
-        any,
-        any,
-        any
+        infer S extends z.ZodRawShape
       >
         ? S
         : never;

@@ -113,7 +113,6 @@ export function useShopEditorForm({
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
-    const fd = new FormData(e.currentTarget);
     const validationErrors: Record<string, string[]> = {};
     const allowedLocales = ["en", "de", "it"];
     if (filterMappings.some(({ key, value }) => !key.trim() || !value.trim())) {
@@ -144,6 +143,8 @@ export function useShopEditorForm({
       setSaving(false);
       return;
     }
+
+    const fd = new FormData(e.currentTarget);
 
     const filterMappingsObj = Object.fromEntries(
       filterMappings

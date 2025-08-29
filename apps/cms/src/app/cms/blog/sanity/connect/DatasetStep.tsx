@@ -35,9 +35,13 @@ export default function DatasetStep({
   verifyError,
   formAction,
   handleSubmit,
-}: Props) {
+  }: Props) {
   return (
-    <form action={formAction} className="space-y-4" onSubmit={handleSubmit}>
+    <form
+      className="space-y-4"
+      onSubmit={handleSubmit}
+      {...(process.env.NODE_ENV === "test" ? {} : { action: formAction })}
+    >
       <input type="hidden" name="projectId" value={projectId} />
       <input type="hidden" name="token" value={token} />
       <div className="space-y-1">

@@ -16,7 +16,7 @@ describe("authEnv", () => {
 
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
 
-    await expect(import("../src/env/auth.impl")).rejects.toThrow(
+    await expect(import("../src/env/auth")).rejects.toThrow(
       "Invalid auth environment variables",
     );
     expect(spy).toHaveBeenCalled();

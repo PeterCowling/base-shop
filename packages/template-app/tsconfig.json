@@ -36,7 +36,7 @@
         "../config/dist/index"
       ],
       "@acme/config/*": [
-        "./src/env/*.impl.ts",
+        "./src/env/*.ts",
         "../config/dist/*"
       ],
       "@auth": [

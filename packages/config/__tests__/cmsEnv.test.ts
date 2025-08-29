@@ -17,7 +17,7 @@ describe("cmsEnv", () => {
       SANITY_API_VERSION: "2023-01-01",
     } as NodeJS.ProcessEnv;
 
-    const { cmsEnv } = await import("../src/env/cms.impl");
+    const { cmsEnv } = await import("../src/env/cms");
     expect(cmsEnv).toEqual({
       CMS_SPACE_URL: "https://example.com",
       CMS_ACCESS_TOKEN: "token",
@@ -33,7 +33,7 @@ describe("cmsEnv", () => {
       SANITY_API_VERSION: "2023-01-01",
     } as NodeJS.ProcessEnv;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(import("../src/env/cms.impl")).rejects.toThrow(
+    await expect(import("../src/env/cms")).rejects.toThrow(
       "Invalid CMS environment variables",
     );
     expect(spy).toHaveBeenCalled();
@@ -46,7 +46,7 @@ describe("cmsEnv", () => {
       NODE_ENV: "production",
     } as NodeJS.ProcessEnv;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(import("../src/env/cms.impl")).rejects.toThrow(
+    await expect(import("../src/env/cms")).rejects.toThrow(
       "Invalid CMS environment variables",
     );
     expect(spy).toHaveBeenCalled();

@@ -96,9 +96,10 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
   const insert = db.prepare(
     "REPLACE INTO inventory (sku, productId, variantAttributes, quantity, lowStockThreshold, wearCount, wearAndTearLimit, maintenanceCycle) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
   );
-  const tx = db.transaction((records: SerializedInventoryItem[]) => {
+  const tx = db.transaction((...records: unknown[]) => {
+    const [items] = records as [SerializedInventoryItem[]];
     db.prepare("DELETE FROM inventory").run();
-    for (const item of records) {
+    for (const item of items) {
       insert.run(
         item.sku,
         item.productId,
@@ -110,7 +111,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
         item.maintenanceCycle ?? null,
       );
     }
-  });
+  }) as (records: SerializedInventoryItem[]) => void;
   tx(normalized);
 }
 

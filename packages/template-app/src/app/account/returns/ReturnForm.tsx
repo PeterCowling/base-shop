@@ -30,7 +30,7 @@ export default function ReturnForm({
           videoRef.current.srcObject = stream;
           await videoRef.current.play();
         }
-        const detector = new window.BarcodeDetector({
+        const detector = new (window as any).BarcodeDetector({
           formats: ["qr_code"],
         });
         const scan = async () => {

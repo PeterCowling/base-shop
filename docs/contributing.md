@@ -9,3 +9,13 @@ Contributions are welcome! Please open an issue or pull request with improvement
 - Follow existing code style and naming conventions.
 - Write clear commit messages and include tests when adding features.
 
+## API documentation
+
+Generate API reference docs for all public packages by running:
+
+```bash
+pnpm doc:api
+```
+
+The output is written to `docs/api/`.
+

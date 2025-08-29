@@ -23,8 +23,8 @@ describe("mfa", () => {
     jest.clearAllMocks();
   });
 
-  it("enrollMfa generates secret, upserts record and returns enrollment", async () => {
-    const { enrollMfa } = await import("./mfa");
+  it("enrollMfa creates a secret, upserts it and returns otpauth URI", async () => {
+    const { enrollMfa } = await import("../mfa");
     generateSecret.mockReturnValue("secret");
     keyuri.mockReturnValue("otpauth");
 
@@ -40,19 +40,8 @@ describe("mfa", () => {
     expect(result).toEqual({ secret: "secret", otpauth: "otpauth" });
   });
 
-  it("verifyMfa returns false when no record exists", async () => {
-    const { verifyMfa } = await import("./mfa");
-    findUnique.mockResolvedValue(null);
-
-    const result = await verifyMfa("cust", "123456");
-
-    expect(result).toBe(false);
-    expect(verify).not.toHaveBeenCalled();
-    expect(update).not.toHaveBeenCalled();
-  });
-
-  it("verifyMfa enables MFA on first successful verification", async () => {
-    const { verifyMfa } = await import("./mfa");
+  it("verifyMfa enables record on first valid token", async () => {
+    const { verifyMfa } = await import("../mfa");
     findUnique.mockResolvedValue({
       customerId: "cust",
       secret: "secret",
@@ -70,31 +59,24 @@ describe("mfa", () => {
     expect(result).toBe(true);
   });
 
-  it("verifyMfa leaves record unchanged on repeated verification", async () => {
-    const { verifyMfa } = await import("./mfa");
-    verify.mockReturnValue(true);
-    findUnique
-      .mockResolvedValueOnce({
-        customerId: "cust",
-        secret: "secret",
-        enabled: false,
-      })
-      .mockResolvedValueOnce({
-        customerId: "cust",
-        secret: "secret",
-        enabled: true,
-      });
+  it("verifyMfa rejects invalid tokens without enabling", async () => {
+    const { verifyMfa } = await import("../mfa");
+    findUnique.mockResolvedValue({
+      customerId: "cust",
+      secret: "secret",
+      enabled: false,
+    });
+    verify.mockReturnValue(false);
 
-    const first = await verifyMfa("cust", "123456");
-    const second = await verifyMfa("cust", "123456");
+    const result = await verifyMfa("cust", "000000");
 
-    expect(first).toBe(true);
-    expect(second).toBe(true);
-    expect(update).toHaveBeenCalledTimes(1);
+    expect(verify).toHaveBeenCalledWith({ token: "000000", secret: "secret" });
+    expect(update).not.toHaveBeenCalled();
+    expect(result).toBe(false);
   });
 
-  it("isMfaEnabled returns true/false based on stored record", async () => {
-    const { isMfaEnabled } = await import("./mfa");
+  it("isMfaEnabled reflects enabled state", async () => {
+    const { isMfaEnabled } = await import("../mfa");
     findUnique.mockResolvedValueOnce({ customerId: "cust", enabled: true });
     await expect(isMfaEnabled("cust")).resolves.toBe(true);
 

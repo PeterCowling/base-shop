@@ -16,34 +16,37 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let active = true;
-    async function load() {
-      setLoading(true);
-      setProduct(null);
-      onValidChange?.(false);
-      try {
-        const res = await fetch(
-          `/api/products?slug=${encodeURIComponent(slug)}`
-        );
+    const controller = new AbortController();
+    setLoading(true);
+    setProduct(null);
+    onValidChange?.(false);
+
+    fetch(`/api/products?slug=${encodeURIComponent(slug)}`, {
+      signal: controller.signal,
+    })
+      .then((res) => {
         if (!res.ok) throw new Error("Failed to load product");
-        const data: SKU = await res.json();
-        if (active) {
-          setProduct(data);
-          setError(null);
-          onValidChange?.(true);
-        }
-      } catch {
-        if (active) {
+        return res.json() as Promise<SKU>;
+      })
+      .then((data) => {
+        setProduct(data);
+        setError(null);
+        onValidChange?.(true);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) {
           setError("Failed to load product");
           onValidChange?.(false);
         }
-      } finally {
-        if (active) setLoading(false);
-      }
-    }
-    load();
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      });
+
     return () => {
-      active = false;
+      controller.abort();
       onValidChange?.(false);
     };
   }, [slug, onValidChange]);

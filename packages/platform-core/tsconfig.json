@@ -19,6 +19,8 @@
     "paths": {
       "@acme/ui": ["types-compat/ui"],
       "@acme/ui/*": ["types-compat/ui"],
+      "@acme/platform-core": ["src/index.ts"],
+      "@acme/platform-core/*": ["src/*"],
       "better-sqlite3": ["src/types/better-sqlite3"]
     }
   },

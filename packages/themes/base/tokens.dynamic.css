@@ -31,8 +31,8 @@
   --color-info-fg-dark: var(--token-color-info-fg-dark, 210 90% 96%);
   --color-muted: var(--token-color-muted, 0 0% 88%);
   --color-muted-dark: var(--token-color-muted-dark, 0 0% 60%);
-  --font-sans: var(--token-font-sans, "Geist Sans", system-ui, sans-serif);
-  --font-mono: var(--token-font-mono, "Geist Mono", ui-monospace, monospace);
+  --font-sans: var(--token-font-sans, var(--font-geist-sans));
+  --font-mono: var(--token-font-mono, var(--font-geist-mono));
   --space-1: var(--token-space-1, 4px);
   --space-2: var(--token-space-2, 8px);
   --space-3: var(--token-space-3, 12px);

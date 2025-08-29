@@ -31,8 +31,8 @@
   --color-info-fg-dark: 210 90% 96%;
   --color-muted: 0 0% 88%;
   --color-muted-dark: 0 0% 60%;
-  --font-sans: "Geist Sans", system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;

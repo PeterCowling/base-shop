@@ -2,7 +2,7 @@ import "server-only";
 import { createClient } from "@sanity/client";
 import { getSanityConfig } from "@platform-core/shops";
 import { getShopById } from "@platform-core/repositories/shop.server";
-import type { SanityBlogConfig } from "@acme/types";
+import { sanityBlogConfigSchema, type SanityBlogConfig } from "@acme/types";
 import { nowIso } from "@date-utils";
 
 export interface ProductBlock {
@@ -27,7 +27,7 @@ export async function getConfig(shopId: string): Promise<SanityBlogConfig> {
   if (!config) {
     throw new Error(`Missing Sanity credentials for shop ${shopId}`);
   }
-  return config as any;
+  return sanityBlogConfigSchema.parse(config);
 }
 
 async function getClient(shopId: string) {

@@ -96,7 +96,8 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
   const insert = db.prepare(
     "REPLACE INTO inventory (sku, productId, variantAttributes, quantity, lowStockThreshold, wearCount, wearAndTearLimit, maintenanceCycle) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
   );
-  const tx = db.transaction((records: SerializedInventoryItem[]) => {
+  const tx = db.transaction((...args: unknown[]) => {
+    const [records] = args as [SerializedInventoryItem[]];
     db.prepare("DELETE FROM inventory").run();
     for (const item of records) {
       insert.run(

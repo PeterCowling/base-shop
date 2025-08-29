@@ -10,7 +10,9 @@ import * as path from "path";
 import { validateShopName } from "../shops/index";
 import { DATA_ROOT } from "../dataRoot";
 import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
-import type Database from "better-sqlite3";
+// Avoid direct dependency on better-sqlite3 types to prevent build issues.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Database = any;
 
 interface SqliteInventoryRow {
   sku: string;
@@ -23,7 +25,8 @@ interface SqliteInventoryRow {
   maintenanceCycle: number | null;
 }
 
-let DatabaseConstructor: typeof Database | undefined;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let DatabaseConstructor: any;
 
 async function getDb(shop: string): Promise<Database> {
   if (!DatabaseConstructor) {

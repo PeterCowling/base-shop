@@ -3,12 +3,13 @@ import "server-only";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
 import type { RentalOrder, Shop } from "@acme/types";
-import type { Prisma, RentalOrder as DbRentalOrder } from "@prisma/client";
 import { trackOrder } from "./analytics";
 import { prisma } from "./db";
 import { incrementSubscriptionUsage } from "./subscriptionUsage";
 
 type Order = RentalOrder;
+
+type DbRentalOrder = Record<string, unknown>;
 
 function normalize(order: DbRentalOrder): Order {
   const o: Record<string, unknown> = { ...order };
@@ -50,7 +51,7 @@ export async function addOrder(
     ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
   };
   await prisma.rentalOrder.create({
-    data: order as Prisma.RentalOrderCreateInput,
+    data: order as Record<string, unknown>,
   });
   await trackOrder(shop, order.id, deposit);
   if (customerId) {

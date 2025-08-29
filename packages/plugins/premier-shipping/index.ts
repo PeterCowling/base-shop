@@ -4,8 +4,12 @@
 // "premier-shipping" from their `shippingProviders` configuration.
 import type {
   Plugin,
+  PaymentPayload,
+  PaymentProvider,
   ShippingRegistry,
   ShippingRequest,
+  ShippingProvider,
+  WidgetProps,
 } from "@acme/types";
 
 interface PremierPickupState {
@@ -33,7 +37,7 @@ interface PremierShippingConfig {
   serviceLabel?: string;
 }
 
-interface PremierShippingProvider {
+interface PremierShippingProvider extends ShippingProvider<PremierShippingRequest> {
   calculateShipping(request: PremierShippingRequest): unknown;
   getAvailableSlots(region: string): { windows: string[]; carriers: string[] };
   schedulePickup(
@@ -95,12 +99,19 @@ class PremierShipping implements PremierShippingProvider {
   }
 }
 
-const premierShippingPlugin: Plugin<PremierShippingConfig, ShippingRequest, PremierShippingProvider> = {
+const premierShippingPlugin: Plugin<
+  PremierShippingConfig,
+  PaymentPayload,
+  PremierShippingRequest,
+  WidgetProps,
+  PaymentProvider<PaymentPayload>,
+  PremierShippingProvider
+> = {
   id: "premier-shipping",
   name: "Premier Shipping",
   defaultConfig: { regions: [], windows: [], carriers: [], rate: 0, surcharge: 0 },
   registerShipping(
-    registry: ShippingRegistry<ShippingRequest, PremierShippingProvider>,
+    registry: ShippingRegistry<PremierShippingRequest, PremierShippingProvider>,
     cfg: PremierShippingConfig,
   ) {
     const provider = new PremierShipping(cfg);

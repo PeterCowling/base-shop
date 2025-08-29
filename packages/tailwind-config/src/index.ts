@@ -58,6 +58,10 @@ const preset: Config = {
     },
   },
   plugins: [],
+  // Tailwind’s loader expects `presets` to be an array. Without this property,
+  // it tries to read `.length` of `undefined` during `next build`, causing
+  // “Cannot read properties of undefined (reading 'length')”.
+  presets: [],
 };
 
 // Additional diagnostics

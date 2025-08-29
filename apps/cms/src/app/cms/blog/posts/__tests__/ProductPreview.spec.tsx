@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import ProductPreview from "@cms/app/cms/blog/posts/ProductPreview";
 
 describe("ProductPreview", () => {
@@ -15,13 +15,15 @@ describe("ProductPreview", () => {
     );
     const onValid = jest.fn();
     render(<ProductPreview slug="t" onValidChange={onValid} />);
-    await waitFor(() => expect(onValid).toHaveBeenCalledWith(true));
+    await screen.findByText("Test");
+    expect(onValid).toHaveBeenCalledWith(true);
   });
 
   it("handles error", async () => {
     (global as any).fetch.mockRejectedValueOnce(new Error("fail"));
     const onValid = jest.fn();
     render(<ProductPreview slug="t" onValidChange={onValid} />);
-    await waitFor(() => expect(onValid).toHaveBeenCalledWith(false));
+    await screen.findByText(/failed to load product/i);
+    expect(onValid).toHaveBeenCalledWith(false);
   });
 });

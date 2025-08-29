@@ -90,6 +90,7 @@ function ImagePicker({ onSelect, children }: Props) {
         </div>
         {previewUrl && (
           <div className="relative h-32 w-full overflow-hidden rounded">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={previewUrl}
               alt="preview"

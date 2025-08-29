@@ -24,7 +24,8 @@ export default function DynamicRenderer({
       return null;
     }
 
-    const { component: Comp, getRuntimeProps } = entry as BlockRegistryEntry<any>;
+    const { component: Comp, getRuntimeProps } =
+      entry as BlockRegistryEntry<Record<string, unknown>>;
 
     const {
       id,

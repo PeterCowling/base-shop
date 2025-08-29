@@ -45,7 +45,9 @@ const PageSidebar = ({ components, selectedId, dispatch }: Props) => {
   );
 
   const handleDuplicate = useCallback(() => {
-    selectedId && dispatch({ type: "duplicate", id: selectedId });
+    if (selectedId) {
+      dispatch({ type: "duplicate", id: selectedId });
+    }
   }, [dispatch, selectedId]);
 
   if (!selectedId) {

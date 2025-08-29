@@ -2,15 +2,14 @@
 "use client";
 
 import { Button, Card, CardContent, Input } from "../atoms/shadcn";
-import type { ProductPublication, MediaItem } from "@acme/types";
+import type { MediaItem } from "@acme/types";
 import type { Locale } from "@acme/i18n";
 import { useProductEditorFormState } from "../../hooks/useProductEditorFormState";
-import type {
-  ProductWithVariants,
-  ProductSaveResult,
-} from "../../hooks/useProductEditorFormState";
+import type { ProductWithVariants, ProductSaveResult } from "../../hooks/useProductEditorFormState";
 import MultilingualFields from "./MultilingualFields";
 import PublishLocationSelector from "./PublishLocationSelector";
+
+/* eslint-disable @next/next/no-img-element */
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */

@@ -10,7 +10,7 @@ const containerEntries = {
 } as const;
 
 type ContainerRegistry = {
-  -readonly [K in keyof typeof containerEntries]: BlockRegistryEntry<any>;
+  -readonly [K in keyof typeof containerEntries]: BlockRegistryEntry<Record<string, unknown>>;
 };
 
 export const containerRegistry: ContainerRegistry = Object.entries(

@@ -119,6 +119,7 @@
   },
   "devDependencies": {
     "@acme/design-tokens": "workspace:*",
+    "@acme/eslint-plugin-ds": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@cloudflare/workers-types": "^4.20250704.0",
     "@eslint/compat": "^1.3.1",
@@ -162,7 +163,6 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-testing-library": "^7.5.3",
-    "@acme/eslint-plugin-ds": "workspace:*",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "lighthouse": "^11.5.0",
@@ -191,6 +191,20 @@
       "@shadcn/ui": "0.0.4",
       "scheduler": "0.26.0",
       "zod": "3.25.73"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@swc/core",
+      "@tailwindcss/oxide",
+      "argon2",
+      "better-sqlite3",
+      "core-js-pure",
+      "cypress",
+      "esbuild",
+      "msw",
+      "sharp",
+      "unrs-resolver",
+      "workerd"
+    ]
   }
 }

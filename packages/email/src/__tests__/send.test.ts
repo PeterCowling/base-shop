@@ -103,11 +103,11 @@ describe("sendCampaignEmail", () => {
         to: "to@example.com",
         subject: "Subject",
         html: "<p>Hello</p><script>alert(1)</script>",
-      });
+    });
 
-      expect(mockSanitizeHtml).toHaveBeenCalled();
-      expect(mockSendgridSend).toHaveBeenCalledWith({
-        to: "to@example.com",
+    expect(mockSanitizeHtml).toHaveBeenCalled();
+    expect(mockSendgridSend).toHaveBeenCalledWith({
+      to: "to@example.com",
         subject: "Subject",
         html: "<p>Hello</p>",
         text: "Hello",
@@ -185,6 +185,23 @@ describe("sendCampaignEmail", () => {
       expect(mockResendSend).not.toHaveBeenCalled();
       timeoutSpy.mockRestore();
     });
+
+  it("throws when EMAIL_PROVIDER is invalid", async () => {
+    const originalProvider = process.env.EMAIL_PROVIDER;
+    const { sendCampaignEmail } = await import("../index");
+    process.env.EMAIL_PROVIDER = "invalid";
+    await expect(
+      sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+        sanitize: false,
+      })
+    ).rejects.toThrow(
+      'Unsupported EMAIL_PROVIDER "invalid". Available providers: sendgrid, resend, smtp'
+    );
+    process.env.EMAIL_PROVIDER = originalProvider;
+  });
 
   it("falls back to Nodemailer when no providers are available", async () => {
     mockSendgridSend = jest.fn();

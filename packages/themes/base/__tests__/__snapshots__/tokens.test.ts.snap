@@ -63,10 +63,10 @@ exports[`base theme tokens tokens snapshot 1`] = `
     "light": "25 85% 31%",
   },
   "--font-mono": {
-    "light": ""Geist Mono", ui-monospace, monospace",
+    "light": "var(--font-geist-mono)",
   },
   "--font-sans": {
-    "light": ""Geist Sans", system-ui, sans-serif",
+    "light": "var(--font-geist-sans)",
   },
   "--radius-lg": {
     "light": "12px",

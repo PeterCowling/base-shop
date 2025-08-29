@@ -27,6 +27,7 @@ describe("stripe client", () => {
 
   afterEach(() => {
     process.env = OLD_ENV;
+    jest.restoreAllMocks();
   });
 
   it("uses expected API version and fetch client", async () => {
@@ -61,5 +62,43 @@ describe("stripe client", () => {
     const customer = await stripeInternal.customers.create();
     expect(customer.id).toBe("cus_test");
     expect(called).toBe(true);
+  });
+
+  it("errors when STRIPE_SECRET_KEY is undefined", async () => {
+    delete (process.env as Record<string, string | undefined>).STRIPE_SECRET_KEY;
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.doMock("@acme/config/env/payments", () => ({
+      paymentsEnv: { STRIPE_SECRET_KEY: undefined },
+    }));
+
+    await expect(
+      import("../index").catch((err) => {
+        console.error((err as Error).message);
+        throw err;
+      }),
+    ).rejects.toThrow("Neither apiKey nor config.authenticator provided");
+
+    expect(spy).toHaveBeenCalledWith(
+      "Neither apiKey nor config.authenticator provided",
+    );
+  });
+
+  it("errors when STRIPE_SECRET_KEY is empty", async () => {
+    (process.env as Record<string, string>).STRIPE_SECRET_KEY = "";
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.doMock("@acme/config/env/payments", () => ({
+      paymentsEnv: { STRIPE_SECRET_KEY: "" },
+    }));
+
+    await expect(
+      import("../index").catch((err) => {
+        console.error((err as Error).message);
+        throw err;
+      }),
+    ).rejects.toThrow("Neither apiKey nor config.authenticator provided");
+
+    expect(spy).toHaveBeenCalledWith(
+      "Neither apiKey nor config.authenticator provided",
+    );
   });
 });

@@ -53,7 +53,7 @@ export async function query<T>(config: SanityConfig, q: string): Promise<T> {
 }
 
 interface MutateBody {
-  mutations: Mutation<Record<string, any>>[];
+  mutations: Mutation<Record<string, unknown>>[];
   returnIds?: boolean;
 }
 

@@ -32,6 +32,9 @@
     { "path": "packages/theme" },
     { "path": "packages/configurator" },
     { "path": "packages/telemetry" },
+    { "path": "packages/plugins/paypal" },
+    { "path": "packages/plugins/premier-shipping" },
+    { "path": "packages/plugins/sanity" },
     { "path": "src" }
   ]
 }

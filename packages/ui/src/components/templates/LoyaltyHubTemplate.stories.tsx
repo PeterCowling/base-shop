@@ -1,6 +1,12 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { LoyaltyHubTemplate } from "./LoyaltyHubTemplate";
 
+interface HistoryRow {
+  date: string;
+  action: string;
+  amount: number;
+}
+
 const meta: Meta<typeof LoyaltyHubTemplate> = {
   component: LoyaltyHubTemplate,
   args: {
@@ -14,9 +20,9 @@ const meta: Meta<typeof LoyaltyHubTemplate> = {
       { date: "2023-01-02", action: "Spent", amount: -50 },
     ],
     historyColumns: [
-      { header: "Date", render: (row: any) => row.date },
-      { header: "Action", render: (row: any) => row.action },
-      { header: "Amount", render: (row: any) => row.amount },
+      { header: "Date", render: (row: HistoryRow) => row.date },
+      { header: "Action", render: (row: HistoryRow) => row.action },
+      { header: "Amount", render: (row: HistoryRow) => row.amount },
     ],
   },
   argTypes: {

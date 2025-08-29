@@ -48,7 +48,7 @@ const registry: Partial<
   HeroBanner,
   ValueProps,
   ReviewsCarousel,
-  ProductGrid,
+  ProductGrid: (ProductGrid as unknown as React.ComponentType<Record<string, unknown>>),
   Gallery,
   ContactForm,
   ContactFormWithMap,

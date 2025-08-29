@@ -1,6 +1,13 @@
 import { LOCALES, type Locale } from "@i18n/locales";
 import type { ShopSettings } from "@acme/types";
-import type { LinkTag, NextSeoProps } from "next-seo";
+import type { NextSeoProps } from "next-seo";
+
+/** Minimal representation of a link tag for Next SEO */
+type LinkTag = {
+  rel: string;
+  href: string;
+  hrefLang?: string;
+};
 import { coreEnv } from "@acme/config/env/core";
 
 interface OpenGraphImageProps {

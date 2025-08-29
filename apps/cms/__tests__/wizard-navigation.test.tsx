@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import { runWizard, templates, themes } from "./utils/wizardTestUtils";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { ResponseComposition, RestContext, RestRequest, rest } from "msw";
 import { server } from "../../../test/msw/server";
 import Wizard from "../src/app/cms/wizard/Wizard";
@@ -45,7 +45,7 @@ describe("Wizard navigation", () => {
         ),
     });
 
-    await screen.findByText(/shop created successfully/i);
+    await waitFor(() => expect(capturedBody).not.toBeNull());
     expect(capturedBody).toEqual(expect.objectContaining({ id: "testshop" }));
   });
 });

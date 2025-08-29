@@ -6,19 +6,19 @@ A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **
 
 ## Getting Started
 
-Requires **Node.js >=20** and **pnpm 10.12.1**. See [docs/install.md](docs/install.md) for installation instructions and [doc/setup.md](doc/setup.md) for full setup and CI guidance.
+Requires **Node.js >=20** and **pnpm 10.12.1**. See [docs/install.md](docs/install.md) for installation instructions and [docs/setup.md](docs/setup.md) for full setup and CI guidance.
 
 Run `pnpm init-shop` to scaffold a new shop. The wizard lists available plugins and, when invoked with `--auto-env`, writes `TODO_*` placeholders for any required environment variables so teams can fill them in later.
 
 ## Key Features
 
 - Stripe handles deposits via escrow sessions.
-- Returned deposits can be refunded automatically by the deposit release service. See [doc/machine.md](doc/machine.md).
+- Returned deposits can be refunded automatically by the deposit release service. See [docs/machine.md](docs/machine.md).
 - Inventory lives in JSON files under data/shops/*/inventory.json.
 - Low-stock alerts email the configured recipient (`STOCK_ALERT_RECIPIENT`) when inventory falls below its threshold.
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
 - Return logistics options stored in data/return-logistics.json.
-- RBAC: ShopAdmin currently manages all shops. See [doc/permissions.md](doc/permissions.md) for default roles and permissions.
+- RBAC: ShopAdmin currently manages all shops. See [docs/permissions.md](docs/permissions.md) for default roles and permissions.
 - Product and recommendation carousels adapt their visible item count to the screen width, clamped between caller-provided `minItems` and `maxItems` values.
 
 ## Security Headers
@@ -46,7 +46,7 @@ See [docs/contributing.md](docs/contributing.md) for contribution guidelines.
 
 ## Shop maintenance
 
-See [doc/upgrade-preview-republish.md](doc/upgrade-preview-republish.md) for guidance on upgrading a shop, previewing changes and republishing. See [doc/edit-preview-republish.md](doc/edit-preview-republish.md) for details on editing components, previewing those edits and republishing. See [docs/upgrade-flow.md](docs/upgrade-flow.md) for version tracking, the diff API, using previews and republishing or rolling back upgrades.
+See [docs/upgrade-preview-republish.md](docs/upgrade-preview-republish.md) for guidance on upgrading a shop, previewing changes and republishing. See [docs/edit-preview-republish.md](docs/edit-preview-republish.md) for details on editing components, previewing those edits and republishing. See [docs/upgrade-flow.md](docs/upgrade-flow.md) for version tracking, the diff API, using previews and republishing or rolling back upgrades.
 
 ## Inventory Management
 
@@ -110,7 +110,7 @@ The `@acme/platform-machine` package bundles a small set of runtime helpers:
 - **Deposit release service** – scans rental orders and issues Stripe refunds for returned items on a schedule.
 - **Finite State Machine** – a minimal, type-safe state machine for UI or service workflows.
 
-Configuration and usage examples for both are documented in [doc/machine.md](doc/machine.md).
+Configuration and usage examples for both are documented in [docs/machine.md](docs/machine.md).
 
 # Environment Variables
 

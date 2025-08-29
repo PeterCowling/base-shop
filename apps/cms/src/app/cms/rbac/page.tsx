@@ -44,7 +44,7 @@ export default async function RbacPage() {
       <h2 className="mb-4 text-xl font-semibold">User Roles</h2>
       <p className="mb-4 text-sm">
         See the
-        <Link href="/doc/permissions.md" target="_blank" rel="noreferrer" className="underline">
+        <Link href="/docs/permissions.md" target="_blank" rel="noreferrer" className="underline">
           permission guide
         </Link>
         for default role mappings.

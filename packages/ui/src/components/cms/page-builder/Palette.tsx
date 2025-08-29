@@ -3,6 +3,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { memo, useState, useCallback, useEffect } from "react";
+import Image from "next/image";
 import {
   atomRegistry,
   moleculeRegistry,
@@ -29,9 +30,9 @@ interface PaletteMeta {
   previewImage: string;
 }
 
-const createPaletteItems = (
-  registry: Record<string, BlockRegistryEntry<any> & { description?: string }>,
-): PaletteMeta[] =>
+type PaletteRegistry = Record<string, BlockRegistryEntry<unknown> & { description?: string }>;
+
+const createPaletteItems = (registry: PaletteRegistry): PaletteMeta[] =>
   (Object.keys(registry) as ComponentType[])
     .sort()
     .map((t) => ({
@@ -43,12 +44,12 @@ const createPaletteItems = (
     }));
 
 const palette = {
-  layout: createPaletteItems(layoutRegistry),
-  containers: createPaletteItems(containerRegistry),
-  atoms: createPaletteItems(atomRegistry),
-  molecules: createPaletteItems(moleculeRegistry),
-  organisms: createPaletteItems(organismRegistry),
-  overlays: createPaletteItems(overlayRegistry),
+  layout: createPaletteItems(layoutRegistry as PaletteRegistry),
+  containers: createPaletteItems(containerRegistry as PaletteRegistry),
+  atoms: createPaletteItems(atomRegistry as PaletteRegistry),
+  molecules: createPaletteItems(moleculeRegistry as PaletteRegistry),
+  organisms: createPaletteItems(organismRegistry as PaletteRegistry),
+  overlays: createPaletteItems(overlayRegistry as PaletteRegistry),
 } as const;
 
 interface PaletteItemProps extends PaletteMeta {
@@ -97,11 +98,13 @@ const PaletteItem = memo(function PaletteItem({
       onBlur={() => setOpen(false)}
       onKeyDown={handleKeyDown}
     >
-      <img
+      <Image
         src={icon}
         alt=""
         aria-hidden="true"
         className="h-6 w-6 rounded"
+        width={24}
+        height={24}
         loading="lazy"
       />
       <span>{label}</span>
@@ -112,10 +115,12 @@ const PaletteItem = memo(function PaletteItem({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>{content}</PopoverTrigger>
       <PopoverContent className="w-64 space-y-2 text-sm">
-        <img
+        <Image
           src={previewImage}
           alt=""
           className="w-full rounded"
+          width={400}
+          height={225}
           loading="lazy"
         />
         {description && <p>{description}</p>}

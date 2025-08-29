@@ -15,7 +15,6 @@ import { getLegacyPreset } from "../../../utils/devicePresets";
 import DeviceSelector from "../../common/DeviceSelector";
 
 interface Props {
-  viewport: "desktop" | "tablet" | "mobile";
   deviceId: string;
   setDeviceId: (id: string) => void;
   orientation: "portrait" | "landscape";
@@ -32,7 +31,6 @@ interface Props {
 }
 
 const PageToolbar = ({
-  viewport,
   deviceId,
   setDeviceId,
   orientation,

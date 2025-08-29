@@ -45,6 +45,7 @@ export default function ImageSlider({
           className={i === index ? "block" : "hidden"}
           aria-hidden={i !== index}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={img.src} alt={img.alt ?? ""} className="w-full object-cover" />
           {img.caption && (
             <figcaption className="text-center text-sm" aria-live="polite">

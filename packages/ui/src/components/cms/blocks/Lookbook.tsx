@@ -60,7 +60,10 @@ export default function Lookbook({ src, alt = "", hotspots = [], onHotspotsChang
 
   return (
     <div ref={containerRef} className="relative h-full w-full">
-      {src && <img src={src} alt={alt} className="h-full w-full object-cover" />}
+      {src && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={src} alt={alt} className="h-full w-full object-cover" />
+      )}
       {points.map((p, idx) => (
         <div
           key={idx}

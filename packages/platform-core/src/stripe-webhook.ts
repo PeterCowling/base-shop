@@ -56,7 +56,10 @@ export async function handleStripeWebhook(
             ? session.payment_intent
             : session.payment_intent?.id;
         if (piId) {
-          await (stripe.reviews as any).create({ payment_intent: piId });
+          const reviews = stripe.reviews as unknown as {
+            create: (params: { payment_intent: string }) => Promise<unknown>;
+          };
+          await reviews.create({ payment_intent: piId });
           if (requireSCA) {
             await stripe.paymentIntents.update(piId, {
               payment_method_options: {

@@ -2,12 +2,12 @@
 // It implements only the subset of the API exercised by our
 // inventory repository (prepare, exec, transaction, etc.).
 
-type Row = Record<string, any>;
+type Row = Record<string, unknown>;
 
 class Statement {
   constructor(private db: Database, private type: string) {}
 
-  run(...args: any[]) {
+  run(...args: unknown[]) {
     switch (this.type) {
       case "replace": {
         const [
@@ -55,7 +55,7 @@ class Statement {
     }));
   }
 
-  get(...args: any[]) {
+  get(...args: unknown[]) {
     const [sku, variant] = args;
     return this.db.rows.get(`${sku}|${variant}`);
   }
@@ -96,10 +96,12 @@ class Database {
     throw new Error(`Unsupported SQL: ${sql}`);
   }
 
-  transaction(fn: (...args: any[]) => any) {
-    const wrapped = (...args: any[]) => fn(...args);
-    (wrapped as any).immediate = wrapped;
-    return wrapped as any;
+  transaction<T extends (...args: unknown[]) => unknown>(fn: T) {
+    const wrapped = (
+      ...args: Parameters<T>
+    ): ReturnType<T> => fn(...args) as ReturnType<T>;
+    (wrapped as typeof wrapped & { immediate: typeof wrapped }).immediate = wrapped;
+    return wrapped as typeof wrapped & { immediate: typeof wrapped };
   }
 }
 

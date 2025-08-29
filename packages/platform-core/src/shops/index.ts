@@ -39,7 +39,7 @@ export interface Shop {
   /**
    * Optional editorial blog configuration.
    */
-  editorialBlog?: any;
+  editorialBlog?: unknown;
   /**
    * Optional domain configuration associated with the shop.
    */
@@ -47,7 +47,7 @@ export interface Shop {
   /**
    * A catch‑all index signature to allow arbitrary additional properties.
    */
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -72,7 +72,7 @@ export interface SanityBlogConfig {
 export interface ShopDomain {
   /** Fully qualified domain name associated with the shop. */
   name: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**

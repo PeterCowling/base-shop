@@ -32,11 +32,12 @@ export function flattenInventoryItem(item: InventoryItem): FlattenedInventoryIte
 }
 
 function isInventoryItem(data: RawInventoryItem | InventoryItem): data is InventoryItem {
+  const obj = data as Record<string, unknown>;
   return (
-    typeof (data as any).sku === "string" &&
-    typeof (data as any).productId === "string" &&
-    typeof (data as any).quantity === "number" &&
-    typeof (data as any).variantAttributes === "object"
+    typeof obj.sku === "string" &&
+    typeof obj.productId === "string" &&
+    typeof obj.quantity === "number" &&
+    typeof obj.variantAttributes === "object"
   );
 }
 

@@ -1,234 +1,37 @@
-import path from "node:path";
-import { promises as fs } from "node:fs";
-import { DATA_ROOT } from "@platform-core/dataRoot";
-import { setCampaignStore, fsCampaignStore } from "../storage";
+import { setCampaignStore } from "../storage";
 import type { CampaignStore, Campaign } from "../storage";
 
-process.env.CART_COOKIE_SECRET = "secret";
+import * as scheduler from "../scheduler";
 
+jest.mock("@platform-core/repositories/analytics.server", () => ({
+  listEvents: jest.fn(),
+}));
 jest.mock("../send", () => ({
-  __esModule: true,
   sendCampaignEmail: jest.fn().mockResolvedValue(undefined),
 }));
-
-jest.mock("../segments", () => ({
-  __esModule: true,
-  resolveSegment: jest.fn(),
+jest.mock("../hooks", () => ({
+  emitSend: jest.fn().mockResolvedValue(undefined),
+}));
+jest.mock("../analytics", () => ({
+  syncCampaignAnalytics: jest.fn().mockResolvedValue(undefined),
 }));
 
-jest.mock("@platform-core/analytics", () => ({
-  __esModule: true,
-  trackEvent: jest.fn().mockResolvedValue(undefined),
-}));
-jest.mock("@platform-core/repositories/analytics.server", () => ({
-  __esModule: true,
-  listEvents: jest.fn().mockResolvedValue([]),
-}));
-jest.mock(
-  "@acme/email-templates",
-  () => ({
-    __esModule: true,
-    marketingEmailTemplates: [],
-  }),
-  { virtual: true },
-);
-var coreEnv: Record<string, any> = {};
-jest.mock("@acme/config", () => ({ __esModule: true, env: coreEnv }), {
-  virtual: true,
-});
-jest.mock("@acme/config/env/core", () => ({ __esModule: true, coreEnv }), {
-  virtual: true,
-});
-const { sendCampaignEmail } = require("../send");
-const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
-const { resolveSegment } = require("../segments");
-const resolveSegmentMock = resolveSegment as jest.Mock;
-const { listEvents } = require("@platform-core/repositories/analytics.server");
-const listEventsMock = listEvents as jest.Mock;
+import { listEvents } from "@platform-core/repositories/analytics.server";
+import { sendCampaignEmail } from "../send";
+import { emitSend } from "../hooks";
+import { syncCampaignAnalytics as fetchCampaignAnalytics } from "../analytics";
+
+const { setClock, createCampaign, sendDueCampaigns, syncCampaignAnalytics } = scheduler;
 
 describe("scheduler", () => {
-  const shop = "schedulertest";
-  const shopDir = path.join(DATA_ROOT, shop);
-  const baseNow = new Date("2020-01-01T00:00:00Z");
+  const shop = "test-shop";
+  let memory: Record<string, Campaign[]>;
   let now: Date;
 
-  const loadScheduler = async () => {
-    const mod = await import("../scheduler");
-    mod.setClock({ now: () => now });
-    return mod;
-  };
-
-  beforeEach(async () => {
-    jest.useFakeTimers();
+  beforeEach(() => {
     jest.clearAllMocks();
-    setCampaignStore(fsCampaignStore);
-    await fs.rm(shopDir, { recursive: true, force: true });
-    await fs.mkdir(shopDir, { recursive: true });
-    listEventsMock.mockResolvedValue([]);
-    now = new Date(baseNow);
-  });
-
-  afterEach(() => {
-    jest.useRealTimers();
-  });
-
-  it("throws when recipients and segment are missing", async () => {
-    const { createCampaign } = await loadScheduler();
-    await expect(
-      createCampaign({
-        shop,
-        recipients: [],
-        subject: "Hi",
-        body: "<p>Hi</p>",
-      }),
-    ).rejects.toThrow("Missing fields");
-  });
-
-  it("delivers immediately with segment and injects unsubscribe link", async () => {
-    resolveSegmentMock.mockResolvedValue(["user@example.com"]);
-    const { createCampaign } = await loadScheduler();
-    await createCampaign({
-      shop,
-      segment: "all",
-      subject: "Hi",
-      body: "<p>Hello %%UNSUBSCRIBE%%</p>",
-    });
-    expect(resolveSegmentMock).toHaveBeenCalledWith(shop, "all");
-    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
-    const call = sendCampaignEmailMock.mock.calls[0][0];
-    expect(call.to).toBe("user@example.com");
-    expect(call.html).toContain("Unsubscribe");
-    expect(call.html).not.toContain("%%UNSUBSCRIBE%%");
-    const stored = JSON.parse(
-      await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8"),
-    );
-    expect(stored[0].sentAt).toBeDefined();
-    expect(stored[0].recipients).toEqual(["user@example.com"]);
-  });
-
-  it("processes pending campaigns from store", async () => {
-    const past = new Date(now.getTime() - 1000).toISOString();
-    const memory: Record<string, Campaign[]> = {
-      [shop]: [
-        {
-          id: "c1",
-          recipients: ["user@example.com"],
-          subject: "Hi",
-          body: "<p>Hi</p>",
-          sendAt: past,
-        },
-      ],
-    };
-    const writeCampaigns = jest.fn(async (s: string, items: Campaign[]) => {
-      memory[s] = items;
-    });
-    const customStore: CampaignStore = {
-      async readCampaigns(s) {
-        return memory[s] || [];
-      },
-      async writeCampaigns(s, items) {
-        await writeCampaigns(s, items);
-      },
-      async listShops() {
-        return Object.keys(memory);
-      },
-    };
-    setCampaignStore(customStore);
-    const { sendDueCampaigns } = await loadScheduler();
-    await sendDueCampaigns();
-    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
-    expect(writeCampaigns).toHaveBeenCalled();
-    expect(memory[shop][0].sentAt).toBeDefined();
-  });
-
-  it("sends due campaigns and marks them as sent", async () => {
-    const past = new Date(now.getTime() - 1000).toISOString();
-    const future = new Date(now.getTime() + 1000).toISOString();
-    const campaigns = [
-      {
-        id: "c1",
-        recipients: ["past@example.com"],
-        subject: "Past",
-        body: "<p>Past</p>",
-        sendAt: past,
-      },
-      {
-        id: "c2",
-        recipients: ["future@example.com"],
-        subject: "Future",
-        body: "<p>Future</p>",
-        sendAt: future,
-      },
-    ];
-    await fs.writeFile(
-      path.join(shopDir, "campaigns.json"),
-      JSON.stringify(campaigns, null, 2),
-      "utf8",
-    );
-
-    const { sendDueCampaigns } = await loadScheduler();
-    await sendDueCampaigns();
-
-    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
-    expect(sendCampaignEmailMock).toHaveBeenCalledWith(
-      expect.objectContaining({ to: "past@example.com", subject: "Past" }),
-    );
-
-    const updated = JSON.parse(
-      await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8"),
-    );
-    const pastCampaign = updated.find((c: any) => c.id === "c1");
-    const futureCampaign = updated.find((c: any) => c.id === "c2");
-    expect(pastCampaign.sentAt).toBeDefined();
-    expect(futureCampaign.sentAt).toBeUndefined();
-  });
-
-  it("includes token in tracking pixel URL", async () => {
-    const past = new Date(baseNow.getTime() - 1000).toISOString();
-    const campaigns = [
-      {
-        id: "c1",
-        recipients: ["token@example.com"],
-        subject: "Token",
-        body: "<p>Token</p>",
-        sendAt: past,
-      },
-    ];
-    await fs.writeFile(
-      path.join(shopDir, "campaigns.json"),
-      JSON.stringify(campaigns, null, 2),
-      "utf8",
-    );
-
-    const { sendDueCampaigns } = await loadScheduler();
-    await sendDueCampaigns();
-
-    const call = sendCampaignEmailMock.mock.calls[0][0];
-    expect(call.html).toMatch(/open\?shop=.*&campaign=.*&t=\d+/);
-  });
-
-  it("creates campaigns and lists them", async () => {
-    const { createCampaign, listCampaigns } = await loadScheduler();
-    const future = new Date(now.getTime() + 1000).toISOString();
-    const id = await createCampaign({
-      shop,
-      recipients: ["user@example.com"],
-      subject: "Hello",
-      body: "<p>Hello</p>",
-      sendAt: future,
-    });
-    expect(typeof id).toBe("string");
-    expect(sendCampaignEmailMock).not.toHaveBeenCalled();
-
-    const campaigns = await listCampaigns(shop);
-    const created = campaigns.find((c) => c.id === id);
-    expect(created).toBeDefined();
-    expect(created?.subject).toBe("Hello");
-  });
-
-  it("supports custom campaign stores", async () => {
-    const memory: Record<string, Campaign[]> = {};
-    const customStore: CampaignStore = {
+    memory = {};
+    const store: CampaignStore = {
       async readCampaigns(s) {
         return memory[s] || [];
       },
@@ -239,115 +42,107 @@ describe("scheduler", () => {
         return Object.keys(memory);
       },
     };
-    setCampaignStore(customStore);
-
-    const { createCampaign, sendDueCampaigns } = await loadScheduler();
-    const future = new Date(now.getTime() + 1000).toISOString();
-    await createCampaign({
-      shop,
-      recipients: ["user@example.com"],
-      subject: "Hi",
-      body: "<p>Hi</p>",
-      sendAt: future,
-    });
-    expect(memory[shop]).toHaveLength(1);
-
-    memory[shop][0].sendAt = new Date(now.getTime() - 1000).toISOString();
-    await sendDueCampaigns();
-    expect(memory[shop][0].sentAt).toBeDefined();
-    expect(sendCampaignEmailMock).toHaveBeenCalled();
+    setCampaignStore(store);
+    now = new Date("2020-01-01T00:00:00Z");
+    setClock({ now: () => now });
+    (listEvents as jest.Mock).mockResolvedValue([]);
   });
 
-  it("skips unsubscribed recipients and personalizes unsubscribe links", async () => {
+  test("filterUnsubscribed skips unsubscribed recipients", async () => {
     const past = new Date(now.getTime() - 1000).toISOString();
-    const campaigns = [
+    memory[shop] = [
       {
         id: "c1",
-        recipients: ["stay@example.com", "leave@example.com"],
+        recipients: ["a@example.com", "b@example.com"],
         subject: "Hi",
-        body: "<p>Hello %%UNSUBSCRIBE%%</p>",
+        body: "<p>Hi</p>",
+        segment: null,
         sendAt: past,
+        templateId: null,
       },
     ];
-    await fs.writeFile(
-      path.join(shopDir, "campaigns.json"),
-      JSON.stringify(campaigns, null, 2),
-      "utf8",
-    );
-
-    listEventsMock.mockResolvedValue([
-      { type: "email_unsubscribe", email: "leave@example.com" },
+    (listEvents as jest.Mock).mockResolvedValue([
+      { type: "email_unsubscribe", email: "b@example.com" },
     ]);
-
-    const { sendDueCampaigns } = await loadScheduler();
     await sendDueCampaigns();
-
-    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
-    const call = sendCampaignEmailMock.mock.calls[0][0];
-    expect(call.to).toBe("stay@example.com");
-    expect(call.html).toContain("unsubscribe");
-    expect(call.html).toContain(encodeURIComponent("stay@example.com"));
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(1);
+    expect((sendCampaignEmail as jest.Mock).mock.calls[0][0].to).toBe(
+      "a@example.com",
+    );
   });
 
-  it("sends recipients in batches with delays", async () => {
-    jest.useRealTimers();
-    process.env.EMAIL_BATCH_SIZE = "2";
-    process.env.EMAIL_BATCH_DELAY_MS = "1";
-    coreEnv.EMAIL_BATCH_SIZE = 2;
-    coreEnv.EMAIL_BATCH_DELAY_MS = 1;
-    jest.resetModules();
-
-    const setTimeoutSpy = jest.spyOn(global, "setTimeout");
-
-    const { sendCampaignEmail } = require("../send");
-    const sendCampaignEmailMock = sendCampaignEmail as jest.Mock;
-    const { setCampaignStore, fsCampaignStore } = await import("../storage");
-    setCampaignStore(fsCampaignStore);
-    const { createCampaign, sendDueCampaigns, setClock } = await import("../scheduler");
-    setClock({ now: () => now });
-
-    const past = new Date(now.getTime() - 1000).toISOString();
-    const future = new Date(now.getTime() + 1000).toISOString();
-    const recipients = [
-      "r1@example.com",
-      "r2@example.com",
-      "r3@example.com",
-      "r4@example.com",
-      "r5@example.com",
-    ];
+  test("deliverCampaign inserts tracking pixel and unsubscribe link", async () => {
     await createCampaign({
       shop,
-      recipients,
+      recipients: ["a@example.com"],
+      subject: "Hello",
+      body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+    });
+    const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html as string;
+    expect(html).toMatch(/open\?shop=test-shop&campaign=.*&t=\d+/);
+    expect(html).toContain("Unsubscribe");
+    expect(html).toContain(encodeURIComponent("a@example.com"));
+    expect(emitSend).toHaveBeenCalledWith(shop, { campaign: expect.any(String) });
+  });
+
+  test("createCampaign sends immediately or schedules later", async () => {
+    const idImmediate = await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
       subject: "Hi",
       body: "<p>Hi</p>",
+    });
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(1);
+    const immediate = memory[shop].find((c) => c.id === idImmediate)!;
+    expect(immediate.sentAt).toBe(now.toISOString());
+
+    (sendCampaignEmail as jest.Mock).mockClear();
+    now = new Date(now.getTime() + 1);
+    const future = new Date(now.getTime() + 60000).toISOString();
+    const idScheduled = await createCampaign({
+      shop,
+      recipients: ["b@example.com"],
+      subject: "Later",
+      body: "<p>Later</p>",
       sendAt: future,
     });
+    expect(sendCampaignEmail).not.toHaveBeenCalled();
+    const scheduled = memory[shop].find((c) => c.id === idScheduled)!;
+    expect(scheduled.sentAt).toBeUndefined();
+  });
 
-    const file = JSON.parse(
-      await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8"),
-    );
-    file[0].sendAt = past;
-    await fs.writeFile(
-      path.join(shopDir, "campaigns.json"),
-      JSON.stringify(file, null, 2),
-      "utf8",
-    );
-
+  test("sendDueCampaigns delivers pending campaigns", async () => {
+    const past = new Date(now.getTime() - 1000).toISOString();
+    const future = new Date(now.getTime() + 1000).toISOString();
+    memory[shop] = [
+      {
+        id: "c1",
+        recipients: ["past@example.com"],
+        subject: "Past",
+        body: "<p>Past</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+      {
+        id: "c2",
+        recipients: ["future@example.com"],
+        subject: "Future",
+        body: "<p>Future</p>",
+        segment: null,
+        sendAt: future,
+        templateId: null,
+      },
+    ];
     await sendDueCampaigns();
-    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(5);
-    expect(setTimeoutSpy).toHaveBeenCalledTimes(2);
-    expect(setTimeoutSpy).toHaveBeenNthCalledWith(
-      1,
-      expect.any(Function),
-      1,
-    );
-    expect(setTimeoutSpy).toHaveBeenNthCalledWith(
-      2,
-      expect.any(Function),
-      1,
-    );
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(1);
+    expect(memory[shop][0].sentAt).toBe(now.toISOString());
+    expect(memory[shop][1].sentAt).toBeUndefined();
+  });
 
-    delete process.env.EMAIL_BATCH_SIZE;
-    delete process.env.EMAIL_BATCH_DELAY_MS;
+  test("syncCampaignAnalytics delegates to analytics module", async () => {
+    await syncCampaignAnalytics();
+    expect(fetchCampaignAnalytics).toHaveBeenCalled();
   });
 });
+

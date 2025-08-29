@@ -131,6 +131,22 @@ export default [
     },
   },
 
+  /* ▸ platform-core root files without TS project */
+  {
+    files: [
+      "packages/platform-core/defaultFilterMappings.ts",
+      "packages/platform-core/prisma/**/*.{ts,tsx,js,jsx}",
+    ],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+  },
+
   /* ▸ Allow generated declaration files without a TS project */
   {
     files: ["**/dist/**/*.d.ts"],

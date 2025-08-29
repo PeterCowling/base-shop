@@ -15,13 +15,11 @@ export interface AnalyticsProvider {
 }
 
 class NoopProvider implements AnalyticsProvider {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async track(_event: AnalyticsEvent): Promise<void> {}
 }
 
 class ConsoleProvider implements AnalyticsProvider {
   async track(event: AnalyticsEvent): Promise<void> {
-    // eslint-disable-next-line no-console
     console.log("analytics", event);
   }
 }
@@ -45,7 +43,8 @@ class GoogleAnalyticsProvider implements AnalyticsProvider {
   constructor(private measurementId: string, private apiSecret: string) {}
 
   async track(event: AnalyticsEvent): Promise<void> {
-    const { type, timestamp, ...params } = event;
+    const { type, ...params } = event;
+    delete (params as { timestamp?: string }).timestamp;
     const url =
       "https://www.google-analytics.com/mp/collect?measurement_id=" +
       encodeURIComponent(this.measurementId) +

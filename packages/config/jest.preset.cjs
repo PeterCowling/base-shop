@@ -6,4 +6,8 @@ const base = require("../../jest.config.cjs");
 module.exports = {
   ...base,
   rootDir: path.resolve(__dirname, "../.."),
+  moduleNameMapper: {
+    ...base.moduleNameMapper,
+    "^\\.\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
+  },
 };

@@ -1,6 +1,6 @@
 import { LOCALES, type Locale } from "@i18n/locales";
 import type { ShopSettings } from "@acme/types";
-import type { NextSeoProps } from "next-seo";
+import type { LinkTag, NextSeoProps } from "next-seo";
 import { coreEnv } from "@acme/config/env/core";
 
 interface OpenGraphImageProps {
@@ -55,11 +55,13 @@ export async function getSeo(
       perLocaleCanonical[l] = `${cBase}/${l}${canonicalPath}`;
     }
   }
-  const alternates = Object.entries(perLocaleCanonical).map(([l, href]) => ({
-    rel: "alternate" as const,
-    hrefLang: l,
-    href,
-  }));
+  const alternates: LinkTag[] = Object.entries(perLocaleCanonical).map(
+    ([l, href]) => ({
+      rel: "alternate",
+      hrefLang: l,
+      href,
+    })
+  );
 
   const imagePath =
     pageSeo.openGraph?.images?.[0]?.url ||
@@ -99,7 +101,7 @@ export async function getSeo(
       ...(base.twitter ?? {}),
       ...(pageSeo.twitter ?? {}),
     },
-    additionalLinkTags: (alternates as any),
+    additionalLinkTags: alternates,
   };
 }
 

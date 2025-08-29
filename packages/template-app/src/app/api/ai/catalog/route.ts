@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getProductById, PRODUCTS } from "@platform-core/products";

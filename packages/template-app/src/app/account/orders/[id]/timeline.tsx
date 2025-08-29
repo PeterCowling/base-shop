@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { formatTimestamp } from "@acme/date-utils";
 import { listEvents } from "@platform-core/repositories/reverseLogisticsEvents.server";
 import shop from "../../../../../shop.json";

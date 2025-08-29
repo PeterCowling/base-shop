@@ -62,4 +62,37 @@ describe("stripe client", () => {
     expect(customer.id).toBe("cus_test");
     expect(called).toBe(true);
   });
+
+  it("throws an error when the API responds with a 400", async () => {
+    const { stripe } = await import("../index");
+    const stripeInternal = stripe as StripeInternal;
+
+    let called = false;
+    server.use(
+      rest.post(
+        "https://api.stripe.com/v1/customers",
+        (_req, res, ctx) => {
+          called = true;
+          return res(
+            ctx.status(400),
+            ctx.json({
+              error: {
+                type: "invalid_request_error",
+                message: "Bad Request",
+              },
+            })
+          );
+        }
+      )
+    );
+
+    await expect(stripeInternal.customers.create()).rejects.toMatchObject({
+      statusCode: 400,
+      message: "Bad Request",
+    });
+
+    expect(called).toBe(true);
+    const httpClient = stripeInternal.getApiField("httpClient");
+    expect(httpClient).toHaveProperty("_fetchFn");
+  });
 });

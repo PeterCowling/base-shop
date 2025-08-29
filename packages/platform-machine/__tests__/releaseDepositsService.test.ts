@@ -1,5 +1,7 @@
 export {};
 
+import { logger } from "@platform-core/utils";
+
 let service: typeof import("@acme/platform-machine");
 
 process.env.STRIPE_SECRET_KEY = "sk";
@@ -122,10 +124,15 @@ describe("releaseDepositsOnce", () => {
     ]);
     retrieve.mockResolvedValue({ payment_intent: "pi_1" });
     createRefund
-      .mockRejectedValueOnce(new Error("fail"))
+      .mockImplementationOnce(() => {
+        throw new Error("fail");
+      })
       .mockResolvedValueOnce({});
-    const errorSpy = jest
+    const consoleSpy = jest
       .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+    const logSpy = jest
+      .spyOn(logger, "error")
       .mockImplementation(() => undefined);
 
     await service.releaseDepositsOnce();
@@ -134,11 +141,15 @@ describe("releaseDepositsOnce", () => {
     expect(createRefund).toHaveBeenCalledTimes(2);
     expect(markRefunded).toHaveBeenCalledTimes(1);
     expect(markRefunded).toHaveBeenCalledWith("shop1", "s2");
-    expect(errorSpy).toHaveBeenCalledTimes(1);
-    expect(errorSpy.mock.calls[0][0]).toContain("s1");
-    expect(errorSpy.mock.calls[0][0]).toContain("shop1");
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    expect(consoleSpy.mock.calls[0][0]).toContain("s1");
+    expect(consoleSpy.mock.calls[0][0]).toContain("shop1");
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy.mock.calls[0][0]).toContain("s1");
+    expect(logSpy.mock.calls[0][0]).toContain("shop1");
 
-    errorSpy.mockRestore();
+    consoleSpy.mockRestore();
+    logSpy.mockRestore();
   });
 });
 
@@ -223,5 +234,29 @@ describe("startDepositReleaseService", () => {
 
     setSpy.mockRestore();
     clearSpy.mockRestore();
+  });
+});
+
+describe("auto-start", () => {
+  it("auto-starts the service and logs failures", async () => {
+    jest.resetModules();
+    process.env.RUN_DEPOSIT_RELEASE_SERVICE = "true";
+    readdir.mockRejectedValueOnce(new Error("boom"));
+    const { logger: freshLogger } = await import("@platform-core/utils");
+    const errorSpy = jest
+      .spyOn(freshLogger, "error")
+      .mockImplementation(() => undefined);
+
+    await import("@acme/platform-machine/releaseDepositsService");
+    await Promise.resolve();
+
+    expect(readdir).toHaveBeenCalled();
+    expect(errorSpy).toHaveBeenCalledWith(
+      "failed to start deposit release service",
+      expect.objectContaining({ err: expect.any(Error) }),
+    );
+
+    errorSpy.mockRestore();
+    delete process.env.RUN_DEPOSIT_RELEASE_SERVICE;
   });
 });

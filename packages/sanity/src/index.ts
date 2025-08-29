@@ -5,7 +5,12 @@ import { getShopById } from "@platform-core/repositories/shop.server";
 import { sanityBlogConfigSchema, type SanityBlogConfig } from "@acme/types";
 import { nowIso } from "@date-utils";
 
-export interface ProductBlock {
+export interface PortableBlock {
+  _type: string;
+  [key: string]: unknown;
+}
+
+export interface ProductBlock extends PortableBlock {
   _type: "productReference";
   slug: string;
 }
@@ -14,7 +19,7 @@ export interface BlogPost {
   title: string;
   slug: string;
   excerpt?: string;
-  body?: (unknown | ProductBlock)[];
+  body?: PortableBlock[];
   mainImage?: string;
   author?: string;
   categories?: string[];

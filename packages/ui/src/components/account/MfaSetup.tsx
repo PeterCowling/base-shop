@@ -2,6 +2,7 @@
 
 // packages/ui/src/components/account/MfaSetup.tsx
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import QRCode from "qrcode";
 import { getCsrfToken } from "@acme/shared-utils";
 
@@ -62,7 +63,14 @@ export default function MfaSetup() {
       {secret && (
         <div>
           {qrCode && (
-            <img src={qrCode} alt="MFA QR Code" className="mb-2" />
+            <Image
+              src={qrCode}
+              alt="MFA QR Code"
+              className="mb-2"
+              width={256}
+              height={256}
+              unoptimized
+            />
           )}
           <p className="mb-2">Secret: {secret}</p>
           <form onSubmit={verify} className="space-y-2">

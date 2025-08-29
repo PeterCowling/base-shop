@@ -108,7 +108,7 @@ async function resolveConfig(
   dataRoot: string,
   override: Partial<ReverseLogisticsConfig> = {}
 ): Promise<ReverseLogisticsConfig> {
-  let config: ReverseLogisticsConfig = { ...DEFAULT_CONFIG };
+  const config: ReverseLogisticsConfig = { ...DEFAULT_CONFIG };
 
   try {
     const file = join(dataRoot, shop, "settings.json");

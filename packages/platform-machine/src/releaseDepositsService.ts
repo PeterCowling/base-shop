@@ -85,7 +85,7 @@ async function resolveConfig(
   dataRoot: string,
   override: Partial<DepositReleaseConfig> = {},
 ): Promise<DepositReleaseConfig> {
-  let config: DepositReleaseConfig = { ...DEFAULT_CONFIG };
+  const config: DepositReleaseConfig = { ...DEFAULT_CONFIG };
 
   try {
     const file = join(dataRoot, shop, "settings.json");

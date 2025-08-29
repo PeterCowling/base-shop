@@ -71,7 +71,12 @@ if (process.env.NODE_ENV === "test" || !coreEnv.DATABASE_URL) {
   prisma = createStubPrisma();
 } else {
   try {
+<<<<<<< Updated upstream
     const { PrismaClient: RealPrismaClient } = await import("@prisma/client");
+=======
+     
+    const { PrismaClient } = require("@prisma/client") as typeof import("@prisma/client");
+>>>>>>> Stashed changes
     const databaseUrl = coreEnv.DATABASE_URL;
     prisma = new RealPrismaClient({
       datasources: { db: { url: databaseUrl } },

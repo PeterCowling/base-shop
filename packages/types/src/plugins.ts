@@ -14,9 +14,9 @@ export interface WidgetProps {
   [key: string]: unknown;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 export interface WidgetComponent<P = WidgetProps> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   (props: P): React.ReactElement | null;
 }
 

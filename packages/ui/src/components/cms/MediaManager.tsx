@@ -34,7 +34,7 @@ function MediaManagerBase({
 
   const handleDelete = useCallback(
     async (src: string) => {
-      /* eslint-disable no-alert -- simple confirmation is fine */
+       
       if (!confirm("Delete this image?")) return;
       await onDelete(shop, src);
       setFiles((prev) => prev.filter((f) => f.url !== src));

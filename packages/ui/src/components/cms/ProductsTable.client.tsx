@@ -63,7 +63,7 @@ function ProductsTableBase({
 
   const handleDelete = useCallback(
     (id: string) => {
-      /* eslint-disable no-alert -- simple confirm dialog is fine here */
+       
       if (confirm("Delete this product?")) onDelete(shop, id);
     },
     [onDelete, shop]

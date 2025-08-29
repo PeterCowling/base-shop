@@ -96,7 +96,7 @@ async function resolveConfig(
   dataRoot: string,
   override: Partial<LateFeeConfig> = {},
 ): Promise<LateFeeConfig> {
-  let config: LateFeeConfig = { ...DEFAULT_CONFIG };
+  const config: LateFeeConfig = { ...DEFAULT_CONFIG };
   try {
     const file = join(dataRoot, shop, "settings.json");
     const json = JSON.parse(await readFile(file, "utf8"));

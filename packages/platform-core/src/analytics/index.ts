@@ -15,11 +15,19 @@ export interface AnalyticsProvider {
 }
 
 class NoopProvider implements AnalyticsProvider {
+<<<<<<< Updated upstream
+=======
+   
+>>>>>>> Stashed changes
   async track(_event: AnalyticsEvent): Promise<void> {}
 }
 
 class ConsoleProvider implements AnalyticsProvider {
   async track(event: AnalyticsEvent): Promise<void> {
+<<<<<<< Updated upstream
+=======
+     
+>>>>>>> Stashed changes
     console.log("analytics", event);
   }
 }

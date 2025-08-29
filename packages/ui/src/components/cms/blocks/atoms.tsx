@@ -98,10 +98,10 @@ const atomEntries = {
   Spacer: { component: Spacer },
   CustomHtml: { component: CustomHtml },
   Button: { component: ButtonBlock },
-} as const;
+} satisfies Record<string, BlockRegistryEntry<any>>;
 
 type AtomRegistry = {
-  -readonly [K in keyof typeof atomEntries]: BlockRegistryEntry<Record<string, unknown>>;
+  -readonly [K in keyof typeof atomEntries]: BlockRegistryEntry<any>;
 };
 
 export const atomRegistry: AtomRegistry = Object.entries(atomEntries).reduce(

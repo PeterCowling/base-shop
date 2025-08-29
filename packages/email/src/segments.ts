@@ -123,7 +123,7 @@ export async function resolveSegment(
       const email = e.email;
       if (
         (e.type === `segment:${id}` ||
-          (e.type === "segment" && (e as any).segment === id)) &&
+          (e.type === "segment" && (e as { segment?: string }).segment === id)) &&
         typeof email === "string"
       ) {
         emails.add(email);

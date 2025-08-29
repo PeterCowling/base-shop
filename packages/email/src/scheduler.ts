@@ -123,15 +123,8 @@ export async function createCampaign(opts: {
   sendAt?: string;
   templateId?: string | null;
 }): Promise<string> {
-  let {
-    shop,
-    recipients = [],
-    subject,
-    body,
-    segment,
-    sendAt,
-    templateId,
-  } = opts;
+  let { shop, recipients = [] } = opts;
+  const { subject, body, segment, sendAt, templateId } = opts;
   shop = validateShopName(shop);
   if (recipients.length === 0 && segment) {
     const { resolveSegment } = await import("./segments");

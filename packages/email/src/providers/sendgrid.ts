@@ -149,7 +149,10 @@ export class SendgridProvider implements CampaignProvider {
       });
       const json = await res.json().catch(() => ({}));
       const segments = Array.isArray(json?.result) ? json.result : [];
-      return segments.map((s: any) => ({ id: s.id, name: s.name }));
+      return segments.map((s: { id: string; name?: string }) => ({
+        id: s.id,
+        name: s.name,
+      }));
     } catch {
       return [];
     }

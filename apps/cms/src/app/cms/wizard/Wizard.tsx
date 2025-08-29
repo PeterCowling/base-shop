@@ -67,7 +67,7 @@ export default function Wizard({ themes }: WizardProps): React.JSX.Element {
         const completed = json.completed || {};
         const idx = stepOrder.findIndex((s) => completed[s] !== "complete");
         const next = idx === -1 ? stepOrder.length - 1 : idx;
-        flushSync(() => setStepIdx(next));
+        flushSync(() => setStepIdx((cur) => (cur === 0 ? next : cur)));
       } catch {
         /* ignore */
       }

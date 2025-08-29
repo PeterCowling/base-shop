@@ -28,8 +28,12 @@ export async function parseJsonBody<T>(
 ): Promise<ParseJsonResult<T>> {
   let json: unknown;
   try {
-    if (typeof (req as any).text === "function") {
-      const text = await (req as any).text();
+    const request = req as Request & {
+      text?: () => Promise<string>;
+      json?: () => Promise<unknown>;
+    };
+    if (typeof request.text === "function") {
+      const text = await request.text();
       const byteLength = new TextEncoder().encode(text).length;
       if (byteLength > parseLimit(limit)) {
         return {
@@ -41,8 +45,8 @@ export async function parseJsonBody<T>(
         };
       }
       json = JSON.parse(text);
-    } else if (typeof (req as any).json === "function") {
-      json = await (req as any).json();
+    } else if (typeof request.json === "function") {
+      json = await request.json();
       const text = JSON.stringify(json);
       const byteLength = new TextEncoder().encode(text).length;
       if (byteLength > parseLimit(limit)) {

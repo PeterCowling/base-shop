@@ -8,7 +8,7 @@ const overlayEntries = {
 } as const;
 
 type OverlayRegistry = {
-  [K in keyof typeof overlayEntries]: BlockRegistryEntry<any>;
+  [K in keyof typeof overlayEntries]: BlockRegistryEntry<unknown>;
 };
 
 export const overlayRegistry = Object.fromEntries(

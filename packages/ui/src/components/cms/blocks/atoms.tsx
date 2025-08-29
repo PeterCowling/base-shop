@@ -7,6 +7,7 @@ import React, {
   type JSXElementConstructor,
   type JSX as ReactJSX,
 } from "react";
+import NextImage, { type ImageProps as NextImageProps } from "next/image";
 import type { BlockRegistryEntry } from "./types";
 import Divider from "./Divider";
 import Spacer from "./Spacer";
@@ -23,7 +24,7 @@ const defaultPreview = "/window.svg";
 type IntrinsicTag = keyof ReactJSX.IntrinsicElements & string;
 
 /** Everything React can legally mount: intrinsic tag *or* React component. */
-export type ValidComponent = IntrinsicTag | JSXElementConstructor<any>;
+export type ValidComponent = IntrinsicTag | JSXElementConstructor<unknown>;
 
 /* ──────────────────────────────────────────────────────────────────────────
  * <Text>
@@ -61,10 +62,7 @@ export function Text<C extends React.ElementType = "p">({
  * <Image>
  * --------------------------------------------------------------------------*/
 export interface ImageProps
-  extends Omit<
-    React.ImgHTMLAttributes<HTMLImageElement>,
-    "src" | "alt" | "width" | "height"
-  > {
+  extends Omit<NextImageProps, "src" | "alt" | "width" | "height"> {
   src: string;
   alt?: string;
   width?: number;
@@ -79,7 +77,15 @@ export const Image = memo(function Image({
   ...rest
 }: ImageProps) {
   if (!src) return null;
-  return <img src={src} alt={alt} width={width} height={height} {...rest} />;
+  return (
+    <NextImage
+      src={src}
+      alt={alt}
+      width={width ?? 0}
+      height={height ?? 0}
+      {...rest}
+    />
+  );
 });
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -95,7 +101,7 @@ const atomEntries = {
 } as const;
 
 type AtomRegistry = {
-  -readonly [K in keyof typeof atomEntries]: BlockRegistryEntry<any>;
+  -readonly [K in keyof typeof atomEntries]: BlockRegistryEntry<unknown>;
 };
 
 export const atomRegistry: AtomRegistry = Object.entries(atomEntries).reduce(

@@ -113,6 +113,6 @@ export const blockRegistry = {
   ...moleculeRegistry,
   ...organismRegistry,
   ...overlayRegistry,
-} satisfies Record<string, BlockRegistryEntry<any>>;
+} satisfies Record<string, BlockRegistryEntry<unknown>>;
 
 export type BlockType = keyof typeof blockRegistry;

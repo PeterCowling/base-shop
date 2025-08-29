@@ -101,7 +101,7 @@ const organismEntries = {
 } as const;
 
 type OrganismRegistry = {
-  [K in keyof typeof organismEntries]: BlockRegistryEntry<any>;
+  [K in keyof typeof organismEntries]: BlockRegistryEntry<unknown>;
 };
 
 export const organismRegistry = Object.fromEntries(

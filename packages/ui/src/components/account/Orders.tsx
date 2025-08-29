@@ -65,7 +65,7 @@ export default async function OrdersPage({
         });
         shippingSteps = ship.steps as OrderStep[];
         if (typeof ship.status === "string") {
-          status = ship.status;
+          status = ship.status as string;
         }
         const ret = await getReturnTrackingStatus({
           provider,

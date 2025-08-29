@@ -1,12 +1,12 @@
-import "server-only";
+import { coreEnv } from "@acme/config/env/core";
+import { nowIso } from "@acme/date-utils";
+import type { AnalyticsEvent } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { nowIso } from "@acme/date-utils";
+import "server-only";
 import { DATA_ROOT } from "../dataRoot";
-import { validateShopName } from "../shops";
 import { getShopSettings, readShop } from "../repositories/shops.server";
-import { coreEnv } from "@acme/config/env/core";
-import type { AnalyticsEvent } from "@acme/types";
+import { validateShopName } from "../shops";
 
 export type { AnalyticsEvent };
 
@@ -15,19 +15,11 @@ export interface AnalyticsProvider {
 }
 
 class NoopProvider implements AnalyticsProvider {
-<<<<<<< Updated upstream
-=======
-   
->>>>>>> Stashed changes
   async track(_event: AnalyticsEvent): Promise<void> {}
 }
 
 class ConsoleProvider implements AnalyticsProvider {
   async track(event: AnalyticsEvent): Promise<void> {
-<<<<<<< Updated upstream
-=======
-     
->>>>>>> Stashed changes
     console.log("analytics", event);
   }
 }
@@ -48,7 +40,10 @@ class FileProvider implements AnalyticsProvider {
 }
 
 class GoogleAnalyticsProvider implements AnalyticsProvider {
-  constructor(private measurementId: string, private apiSecret: string) {}
+  constructor(
+    private measurementId: string,
+    private apiSecret: string
+  ) {}
 
   async track(event: AnalyticsEvent): Promise<void> {
     const { type, ...params } = event;
@@ -93,7 +88,11 @@ async function resolveProvider(shop: string): Promise<AnalyticsProvider> {
   }
   const settings = await getShopSettings(shop);
   const analytics = settings.analytics;
-  if (!analytics || analytics.enabled === false || analytics.provider === "none") {
+  if (
+    !analytics ||
+    analytics.enabled === false ||
+    analytics.provider === "none"
+  ) {
     const p = new NoopProvider();
     providerCache.set(shop, p);
     return p;
@@ -127,10 +126,7 @@ export async function trackEvent(
   await updateAggregates(shop, withTs);
 }
 
-export async function trackPageView(
-  shop: string,
-  page: string
-): Promise<void> {
+export async function trackPageView(shop: string, page: string): Promise<void> {
   await trackEvent(shop, { type: "page_view", page });
 }
 
@@ -153,7 +149,11 @@ async function updateAggregates(
   shop: string,
   event: AnalyticsEvent
 ): Promise<void> {
-  const fp = path.join(DATA_ROOT, validateShopName(shop), "analytics-aggregates.json");
+  const fp = path.join(
+    DATA_ROOT,
+    validateShopName(shop),
+    "analytics-aggregates.json"
+  );
   const day = (event.timestamp as string).slice(0, 10);
   let agg: Aggregates = {
     page_view: {},
@@ -190,4 +190,3 @@ async function updateAggregates(
 }
 
 export type AnalyticsAggregates = Aggregates;
-

@@ -1,6 +1,6 @@
-import "./prisma";
 import { coreEnv } from "@acme/config/env/core";
 import type { PrismaClient } from "@prisma/client";
+import "./prisma";
 
 type RentalOrderStub = {
   shop?: string;
@@ -33,7 +33,8 @@ function createStubPrisma(): PrismaClient {
       findMany: async ({ where }: FindManyArgs) =>
         rentalOrders.filter((o) => {
           if (where?.shop && o.shop !== where.shop) return false;
-          if (where?.customerId && o.customerId !== where.customerId) return false;
+          if (where?.customerId && o.customerId !== where.customerId)
+            return false;
           return true;
         }),
       create: async ({ data }: CreateArgs) => {
@@ -45,12 +46,12 @@ function createStubPrisma(): PrismaClient {
         if ("shop_sessionId" in where) {
           const { shop, sessionId } = where.shop_sessionId;
           order = rentalOrders.find(
-            (o) => o.shop === shop && o.sessionId === sessionId,
+            (o) => o.shop === shop && o.sessionId === sessionId
           );
         } else {
           const { shop, trackingNumber } = where.shop_trackingNumber;
           order = rentalOrders.find(
-            (o) => o.shop === shop && o.trackingNumber === trackingNumber,
+            (o) => o.shop === shop && o.trackingNumber === trackingNumber
           );
         }
         if (!order) throw new Error("Order not found");
@@ -71,14 +72,11 @@ if (process.env.NODE_ENV === "test" || !coreEnv.DATABASE_URL) {
   prisma = createStubPrisma();
 } else {
   try {
-<<<<<<< Updated upstream
-    const { PrismaClient: RealPrismaClient } = await import("@prisma/client");
-=======
-     
-    const { PrismaClient } = require("@prisma/client") as typeof import("@prisma/client");
->>>>>>> Stashed changes
+    const { PrismaClient } =
+      require("@prisma/client") as typeof import("@prisma/client");
+
     const databaseUrl = coreEnv.DATABASE_URL;
-    prisma = new RealPrismaClient({
+    prisma = new PrismaClient({
       datasources: { db: { url: databaseUrl } },
     });
   } catch {

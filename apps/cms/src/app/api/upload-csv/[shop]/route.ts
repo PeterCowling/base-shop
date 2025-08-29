@@ -29,7 +29,10 @@ export async function POST(
     await mkdir(dir, { recursive: true });
     const filePath = path.join(dir, "products.csv");
 
-    const headers = Object.fromEntries<string>(req.headers.entries());
+    const headers: Record<string, string> = {};
+    req.headers.forEach((value, key) => {
+      headers[key] = value;
+    });
     const busboy = Busboy({
       headers,
       limits: { fileSize: MAX_SIZE, files: 1 },

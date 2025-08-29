@@ -22,7 +22,7 @@ export default function StylePanel({ component, handleInput }: Props) {
     : {};
   const color = overrides.color ?? {};
   const typography = overrides.typography ?? {};
-  const warning = color.fg && color.bg ? useContrastWarnings(color.fg, color.bg) : null;
+  const warning = useContrastWarnings(color.fg ?? "", color.bg ?? "");
   const t = useTranslations();
 
   const update = (group: "color" | "typography", key: string, value: string) => {

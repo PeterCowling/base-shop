@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import type { LazyExoticComponent, ComponentType } from "react";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const editorRegistry: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   ContactForm: lazy(() => import("./ContactFormEditor")),
   Gallery: lazy(() => import("./GalleryEditor")),

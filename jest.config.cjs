@@ -215,6 +215,6 @@ module.exports = {
   ],
   collectCoverage: true,
   coverageDirectory: "<rootDir>/coverage",
-  coverageReporters: ["text", "lcov"],
+  coverageReporters: ["text", "text-summary", "lcov"],
   rootDir: ".", // each workspace already passes  --config ../../jest.config.cjs
 };

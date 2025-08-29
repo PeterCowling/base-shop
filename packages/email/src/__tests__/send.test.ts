@@ -5,6 +5,7 @@ import { ProviderError } from "../providers/types";
 let mockSendgridSend: jest.Mock;
 let mockResendSend: jest.Mock;
 let mockSendMail: jest.Mock;
+let mockSanitizeHtml: jest.Mock;
 
 jest.mock("nodemailer", () => ({
   __esModule: true,
@@ -28,6 +29,12 @@ jest.mock("../providers/resend", () => ({
   })),
 }));
 
+jest.mock("sanitize-html", () => {
+  const fn: any = (...args: any[]) => mockSanitizeHtml(...args);
+  fn.defaults = { allowedTags: [], allowedAttributes: {} };
+  return { __esModule: true, default: fn };
+});
+
 jest.mock("../scheduler", () => ({}));
 jest.mock("@platform-core/analytics", () => ({
   trackEvent: jest.fn(),
@@ -37,7 +44,7 @@ jest.mock("@platform-core/analytics", () => ({
 // environment.
 jest.mock("@acme/email-templates", () => ({ marketingEmailTemplates: [] }));
 
-describe("sendCampaignEmail fallback and retry", () => {
+describe("sendCampaignEmail", () => {
   const setupEnv = () => {
     process.env.EMAIL_PROVIDER = "sendgrid";
     process.env.SENDGRID_API_KEY = "sg";
@@ -56,12 +63,62 @@ describe("sendCampaignEmail fallback and retry", () => {
     delete process.env.CAMPAIGN_FROM;
   });
 
+  it("derives text from HTML when missing", async () => {
+    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+    mockSanitizeHtml = jest.fn((html: string) => html);
+
+    setupEnv();
+
+    const { sendCampaignEmail } = await import("../index");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>Hello <strong>world</strong></p>",
+      sanitize: false,
+    });
+
+    expect(mockSanitizeHtml).not.toHaveBeenCalled();
+    expect(mockSendgridSend).toHaveBeenCalledWith({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>Hello <strong>world</strong></p>",
+      text: "Hello world",
+    });
+  });
+
+  it("sanitizes HTML when enabled", async () => {
+    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+    mockSanitizeHtml = jest.fn(() => "<p>clean</p>");
+
+    setupEnv();
+
+    const { sendCampaignEmail } = await import("../index");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<img src=x onerror=alert(1)>",
+    });
+
+    expect(mockSanitizeHtml).toHaveBeenCalled();
+    expect(mockSendgridSend).toHaveBeenCalledWith({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>clean</p>",
+      text: "clean",
+    });
+  });
+
   it("falls back to alternate provider when primary fails", async () => {
     mockSendgridSend = jest
       .fn()
       .mockRejectedValue(new ProviderError("fail", false));
     mockResendSend = jest.fn().mockResolvedValue(undefined);
     mockSendMail = jest.fn();
+    mockSanitizeHtml = jest.fn((html: string) => html);
 
     setupEnv();
 
@@ -97,6 +154,7 @@ describe("sendCampaignEmail fallback and retry", () => {
       .mockResolvedValueOnce(undefined);
     mockResendSend = jest.fn();
     mockSendMail = jest.fn();
+    mockSanitizeHtml = jest.fn((html: string) => html);
 
     setupEnv();
 
@@ -125,12 +183,34 @@ describe("sendCampaignEmail fallback and retry", () => {
     timeoutSpy.mockRestore();
   });
 
+  it("falls back to Nodemailer when no providers are available", async () => {
+    mockSendgridSend = jest.fn();
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn().mockResolvedValue(undefined);
+    mockSanitizeHtml = jest.fn((html: string) => html);
+
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const { sendCampaignEmail } = await import("../index");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+    });
+
+    expect(mockSendgridSend).not.toHaveBeenCalled();
+    expect(mockResendSend).not.toHaveBeenCalled();
+    expect(mockSendMail).toHaveBeenCalledTimes(1);
+  });
+
   it("logs provider, campaign, and recipient on failure", async () => {
     mockSendgridSend = jest
       .fn()
       .mockRejectedValue(new ProviderError("fail", false));
     mockResendSend = jest.fn().mockResolvedValue(undefined);
     mockSendMail = jest.fn();
+    mockSanitizeHtml = jest.fn((html: string) => html);
 
     const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 

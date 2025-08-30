@@ -424,9 +424,6 @@ importers:
       '@acme/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
-      '@acme/lib':
-        specifier: workspace:*
-        version: link:../../packages/lib
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
@@ -442,9 +439,6 @@ importers:
       '@acme/theme':
         specifier: workspace:*
         version: link:../../packages/theme
-      '@acme/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       '@acme/zod-utils':
         specifier: workspace:^
         version: link:../../packages/zod-utils
@@ -466,21 +460,12 @@ importers:
       file-type:
         specifier: ^21.0.0
         version: 21.0.0
-      next:
-        specifier: 15.3.5
-        version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      next-auth:
-        specifier: 4.24.11
-        version: 4.24.11(next@15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(nodemailer@6.10.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react:
         specifier: 19.1.0
         version: 19.1.0
       react-dom:
         specifier: 19.1.0
         version: 19.1.0(react@19.1.0)
-      react-server-dom-webpack:
-        specifier: 19.1.0
-        version: 19.1.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.5))
       validator:
         specifier: ^13.15.15
         version: 13.15.15
@@ -488,6 +473,9 @@ importers:
       '@types/busboy':
         specifier: ^1.5.4
         version: 1.5.4
+      next:
+        specifier: 15.3.5
+        version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   apps/shop-bcd:
     dependencies:
@@ -529,7 +517,7 @@ importers:
         version: 1.5.4
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/auth:
@@ -551,7 +539,7 @@ importers:
         version: 12.0.1
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/config:
@@ -653,7 +641,7 @@ importers:
   packages/i18n:
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/lib:
@@ -669,7 +657,7 @@ importers:
         version: link:../zod-utils
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/next-config:
@@ -739,7 +727,7 @@ importers:
         version: 19.1.0
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/plugins/paypal:
@@ -779,7 +767,7 @@ importers:
         version: 9.9.0
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/stripe:
@@ -820,7 +808,7 @@ importers:
         version: link:../themes/base
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/theme:
@@ -849,7 +837,7 @@ importers:
         version: link:../i18n
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/ui:
@@ -923,9 +911,6 @@ importers:
       dompurify:
         specifier: ^3.2.6
         version: 3.2.6
-      next:
-        specifier: ^15
-        version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next-auth:
         specifier: ^4.24.11
         version: 4.24.11(next@15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(nodemailer@6.10.1)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -963,12 +948,9 @@ importers:
       '@types/qrcode':
         specifier: ^1.5.5
         version: 1.5.5
-      '@types/react':
-        specifier: ^19
-        version: 19.1.8
-      '@types/react-dom':
-        specifier: ^19
-        version: 19.1.6(@types/react@19.1.8)
+      next:
+        specifier: 15.3.5
+        version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3

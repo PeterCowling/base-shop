@@ -26,7 +26,7 @@
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "devDependencies": {
-    "next": "^15.3.4"
+    "next": "^15.3.5"
   },
   "dependencies": {
     "@acme/config": "workspace:^",

@@ -517,7 +517,7 @@ importers:
         version: 1.5.4
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/auth:
@@ -539,7 +539,7 @@ importers:
         version: 12.0.1
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/config:
@@ -641,7 +641,7 @@ importers:
   packages/i18n:
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/lib:
@@ -657,7 +657,7 @@ importers:
         version: link:../zod-utils
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/next-config:
@@ -727,7 +727,7 @@ importers:
         version: 19.1.0
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/plugins/paypal:
@@ -767,7 +767,7 @@ importers:
         version: 9.9.0
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/stripe:
@@ -808,7 +808,7 @@ importers:
         version: link:../themes/base
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/theme:
@@ -837,7 +837,7 @@ importers:
         version: link:../i18n
     devDependencies:
       next:
-        specifier: ^15.3.4
+        specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
 
   packages/ui:

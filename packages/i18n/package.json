@@ -24,7 +24,7 @@
     "clean": "rimraf dist *.tsbuildinfo"
   },
   "devDependencies": {
-    "next": "^15.3.4"
+    "next": "^15.3.5"
   },
   "files": [
     "dist"

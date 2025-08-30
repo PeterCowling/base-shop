@@ -30,4 +30,21 @@ describe("cart API", () => {
     const json = await res.json();
     expect(json).toEqual({ error: "Item not found" });
   });
+
+  it("handles SKU without sizes", async () => {
+    jest.doMock("@platform-core/products", () => ({
+      __esModule: true,
+      getProductById: () => ({ id: "foo", stock: 1 }),
+      PRODUCTS: [{ id: "foo", stock: 1 }],
+    }));
+
+    const { POST } = await import("../src/app/api/cart/route");
+    const res = await POST({
+      json: async () => ({ sku: { id: "foo" }, qty: 1 }),
+      cookies: { get: () => undefined },
+    } as unknown as Request);
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.ok).toBe(true);
+  });
 });

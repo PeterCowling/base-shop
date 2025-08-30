@@ -40,9 +40,7 @@ const baseEnvSchema = z
       .optional(),
     DEPOSIT_RELEASE_INTERVAL_MS: z
       .string()
-      .refine((v) => !Number.isNaN(Number(v)), {
-        message: "must be a number",
-      })
+      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" })
       .transform((v) => Number(v))
       .optional(),
     REVERSE_LOGISTICS_ENABLED: z
@@ -54,9 +52,7 @@ const baseEnvSchema = z
       .optional(),
     REVERSE_LOGISTICS_INTERVAL_MS: z
       .string()
-      .refine((v) => !Number.isNaN(Number(v)), {
-        message: "must be a number",
-      })
+      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" })
       .transform((v) => Number(v))
       .optional(),
     LATE_FEE_ENABLED: z
@@ -68,9 +64,7 @@ const baseEnvSchema = z
       .optional(),
     LATE_FEE_INTERVAL_MS: z
       .string()
-      .refine((v) => !Number.isNaN(Number(v)), {
-        message: "must be a number",
-      })
+      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" })
       .transform((v) => Number(v))
       .optional(),
     OPENAI_API_KEY: z.string().optional(),
@@ -130,15 +124,15 @@ export function depositReleaseEnvRefinement(
 export const coreEnvSchema = coreEnvBaseSchema.superRefine(
   depositReleaseEnvRefinement
 );
+export type CoreEnv = z.infer<typeof coreEnvSchema>;
 
-// ---------- loader (new) ----------
 export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
   const parsed = coreEnvSchema.safeParse(raw);
   if (!parsed.success) {
     console.error("❌ Invalid core environment variables:");
-    parsed.error.issues.forEach((issue: z.ZodIssue) => {
-      const path =
-        issue.path && issue.path.length > 0 ? issue.path.join(".") : "(root)";
+    parsed.error.issues.forEach((issue) => {
+      const pathArr = (issue.path ?? []) as Array<string | number>;
+      const path = pathArr.length ? pathArr.join(".") : "(root)";
       console.error(`  • ${path}: ${issue.message}`);
     });
     throw new Error("Invalid core environment variables");
@@ -146,17 +140,21 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
   return parsed.data;
 }
 
-// ---------- existing eager parse (kept for back-compat) ----------
-const parsed = coreEnvSchema.safeParse(process.env);
-if (!parsed.success) {
-  console.error("❌ Invalid core environment variables:");
-  parsed.error.issues.forEach((issue: z.ZodIssue) => {
-    const path =
-      issue.path && issue.path.length > 0 ? issue.path.join(".") : "(root)";
-    console.error(`  • ${path}: ${issue.message}`);
-  });
-  throw new Error("Invalid core environment variables");
-}
-export const coreEnv = parsed.data;
+// Lazy proxy; no import-time parse in dev.
+let __cachedCoreEnv: CoreEnv | null = null;
+export const coreEnv: CoreEnv = new Proxy({} as CoreEnv, {
+  get: (_t, prop: string) => {
+    if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();
+    return (__cachedCoreEnv as any)[prop];
+  },
+  has: (_t, prop: string) => {
+    if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();
+    return prop in (__cachedCoreEnv as any);
+  },
+}) as CoreEnv;
 
-export type CoreEnv = z.infer<typeof coreEnvSchema>;
+// Fail fast in prod only (forces a single parse early).
+if (isProd) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  coreEnv.NODE_ENV;
+}

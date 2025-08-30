@@ -195,9 +195,26 @@
   },
   "pnpm": {
     "overrides": {
-      "@shadcn/ui": "0.0.4",
+      "react": "19.1.0",
+      "react-dom": "19.1.0",
+      "react-server-dom-webpack": "19.1.0",
       "scheduler": "0.26.0",
-      "zod": "3.25.73"
+      "@shadcn/ui": "0.0.4",
+      "zod": "3.25.73",
+      "yallist": "4.0.0",
+      "dom-serializer": "2.0.0",
+      "htmlparser2": "8.0.2",
+      "domhandler": "5.0.3",
+      "domutils": "3.1.0",
+      "htmlparser2>entities": "4.5.0",
+      "dom-serializer>entities": "4.5.0",
+      "entities": "4.5.0"
+    },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "react": "19.1.0",
+        "react-dom": "19.1.0"
+      }
     },
     "onlyBuiltDependencies": [
       "@prisma/client",

@@ -1,16 +1,30 @@
 // packages/zod-utils/src/initZod.ts
 /* istanbul ignore file */
-// Small initializer that installs the friendly Zod error map.
-// Import the error map synchronously so it works in both ESM and CJS
-// environments without relying on Node-specific helpers such as
-// `createRequire`, which cannot be bundled for the browser.
-import { applyFriendlyZodMessages } from "./zodErrorMap.js";
+import { z } from "zod";
+import { friendlyErrorMap } from "./zodErrorMap.js";
+
+// Avoid double-install in HMR
+let __installed = false;
 
 export function initZod(): void {
-  applyFriendlyZodMessages();
+  if (__installed) return;
+
+  // Allow disabling the custom error map in dev to isolate issues
+  const off = process.env.ZOD_ERROR_MAP_OFF === "1";
+  if (!off) {
+    z.setErrorMap((issue, ctx) => {
+      try {
+        return friendlyErrorMap(issue, ctx);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error("[zod-utils] errorMap threw; falling back", e);
+        return { message: ctx.defaultError };
+      }
+    });
+  }
+
+  __installed = true;
 }
 
-// Initialize immediately when this module is imported. The export
-// remains so callers can re-run if needed.
+// Initialize immediately when this module is imported.
 initZod();
-

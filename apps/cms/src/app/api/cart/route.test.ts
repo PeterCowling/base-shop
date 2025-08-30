@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 
 const mockProduct = { id: "sku1", stock: 5, sizes: ["s"] };
 const productNoSize = { id: "sku2", stock: 5, sizes: [] };
+const productMissingSizes = { id: "sku3", stock: 5 };
 
 const carts: Record<string, any> = {};
 let cartCounter = 0;
@@ -46,9 +47,10 @@ jest.mock("@platform-core/cartStore", () => ({
 const getProductById = jest.fn((id: string) => {
   if (id === "sku1") return mockProduct;
   if (id === "sku2") return productNoSize;
+  if (id === "sku3") return productMissingSizes;
   return null;
 });
-const PRODUCTS = [mockProduct, productNoSize];
+const PRODUCTS = [mockProduct, productNoSize, productMissingSizes];
 
 jest.mock("@platform-core/products", () => ({
   getProductById: (id: string) => getProductById(id),
@@ -153,6 +155,20 @@ describe("POST", () => {
     expect(response.status).toBe(400);
     expect(body).toEqual({ error: "Size required" });
     expect(response.headers.get("Set-Cookie")).toBeNull();
+  });
+
+  it("adds item when product lacks sizes array", async () => {
+    carts.cart1 = {};
+    const response = await POST(
+      req("POST", { sku: { id: "sku3" }, qty: 1 }, "cart=enc-cart1"),
+    );
+    const body = await response.json();
+    expect(response.status).toBe(200);
+    expect(body).toEqual({
+      ok: true,
+      cart: { sku3: { sku: productMissingSizes, size: undefined, qty: 1 } },
+    });
+    expect(response.headers.get("Set-Cookie")).toBe("cart=enc-cart1");
   });
 
   it("returns 409 when stock insufficient", async () => {

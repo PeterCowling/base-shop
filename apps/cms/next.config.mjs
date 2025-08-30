@@ -14,16 +14,12 @@ process.env.SANITY_API_VERSION ??= "2021-10-21";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const workspaceRoot = path.resolve(__dirname, "../..");
 
-// Resolve exact file paths for React runtime entries so Webpack never
-// mis-resolves under pnpm's symlinked layout.
-const reactPkgDir = path.dirname(
-  require.resolve("react/package.json", { paths: [__dirname] })
-);
-const reactDomPkgDir = path.dirname(
-  require.resolve("react-dom/package.json", { paths: [__dirname] })
-);
+// Resolve concrete entry files once so every build target uses the same instance.
+const REACT_INDEX = require.resolve("react");
+const REACT_DOM_INDEX = require.resolve("react-dom");
+const REACT_DOM_CLIENT = require.resolve("react-dom/client");
+const REACT_DOM_SERVER = require.resolve("react-dom/server");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -32,7 +28,7 @@ const nextConfig = {
     externalDir: true,
   },
 
-  // Keep heavy/Node-only libs external on the server.
+  // Keep heavy Node-only libs external on the server bundle
   serverExternalPackages: [
     "lighthouse",
     "puppeteer",
@@ -42,7 +38,7 @@ const nextConfig = {
     "html-to-text",
   ],
 
-  // Transpile workspace packages that ship TS / modern syntax.
+  // Transpile workspace packages that ship TS/modern syntax
   transpilePackages: [
     "@themes/abc",
     "@themes/base",
@@ -64,38 +60,29 @@ const nextConfig = {
   },
 
   webpack: (config, { dev, isServer }) => {
-    // Use Node's crypto hasher (avoid wasm path).
-    config.output = config.output || {};
+    // Stable hashing (avoid wasm hasher path)
+    config.output ||= {};
     config.output.hashFunction = "sha256";
 
-    // Avoid stale pack cache in dev.
+    // In dev, keep it deterministic while we iron out config/build issues
     if (dev) {
       config.cache = false;
-      config.infrastructureLogging = { level: "log" };
     }
 
-    // Make sure both repo and app node_modules are searched.
-    config.resolve = config.resolve || {};
-    config.resolve.modules = [
-      path.join(__dirname, "node_modules"),
-      path.join(workspaceRoot, "node_modules"),
-      "node_modules",
-    ];
-
-    // Aliases (keep existing, then hard‑dedupe React to the exact files).
-    config.resolve.alias ??= {};
+    config.resolve ||= {};
+    config.resolve.symlinks = false; // pnpm friendliness
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
       "@": path.resolve(__dirname, "src"),
       "drizzle-orm": false,
 
-      // ---- React & JSX runtime: resolve to real files to avoid subpath/exports pitfalls
-      react: path.join(reactPkgDir, "index.js"),
-      "react/jsx-runtime": path.join(reactPkgDir, "jsx-runtime.js"),
-      "react/jsx-dev-runtime": path.join(reactPkgDir, "jsx-dev-runtime.js"),
-      "react-dom": path.join(reactDomPkgDir, "index.js"),
-      "react-dom/client": path.join(reactDomPkgDir, "client.js"),
-      "react-dom/server": path.join(reactDomPkgDir, "server.js"),
+      // 🔑 EXACT-MATCH ALIASES — do NOT shadow subpaths like `react/jsx-runtime`
+      react$: REACT_INDEX,
+      "react-dom$": REACT_DOM_INDEX,
+
+      // Useful concrete entries (do not use `$` here, these are explicit subpaths)
+      "react-dom/client": REACT_DOM_CLIENT,
+      "react-dom/server": REACT_DOM_SERVER,
     };
 
     if (!isServer) {
@@ -103,7 +90,7 @@ const nextConfig = {
       config.resolve.alias["@sentry/opentelemetry"] = false;
     }
 
-    // Map node: built-ins
+    // Map node: built-ins consistently
     for (const mod of [
       "assert",
       "buffer",

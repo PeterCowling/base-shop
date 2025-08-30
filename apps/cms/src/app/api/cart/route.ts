@@ -77,7 +77,7 @@ export async function PUT(req: NextRequest) {
     if (!sku) {
       return NextResponse.json({ error: "Item not found" }, { status: 404 });
     }
-    if (sku.sizes.length && !line.size) {
+    if ((sku.sizes?.length ?? 0) > 0 && !line.size) {
       return NextResponse.json({ error: "Size required" }, { status: 400 });
     }
     const key = line.size ? `${sku.id}:${line.size}` : sku.id;
@@ -115,7 +115,7 @@ export async function POST(req: NextRequest) {
     const error = exists ? "Out of stock" : "Item not found";
     return NextResponse.json({ error }, { status });
   }
-  if (sku.sizes.length && !size) {
+  if ((sku.sizes?.length ?? 0) > 0 && !size) {
     return NextResponse.json({ error: "Size required" }, { status: 400 });
   }
     let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as string | null;

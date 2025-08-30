@@ -1,3 +1,4 @@
+// apps/cms/src/app/api/shops/route.ts
 import { NextResponse } from "next/server";
 import { listShops } from "../../../lib/listShops";
 
@@ -8,7 +9,8 @@ export async function GET() {
     const shops = await listShops();
     return NextResponse.json(shops);
   } catch (err) {
-    console.error(err);
+    // eslint-disable-next-line no-console
+    console.error("[api/shops:GET] error", err);
     return NextResponse.json(
       { error: (err as Error).message },
       { status: 500 }

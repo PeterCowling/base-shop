@@ -1,3 +1,4 @@
+// packages/config/src/env/core.ts
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 import { authEnvSchema } from "./auth.js";
@@ -130,13 +131,23 @@ export const coreEnvSchema = coreEnvBaseSchema.superRefine(
   depositReleaseEnvRefinement
 );
 
+// ---------- loader (new) ----------
+export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
+  const parsed = coreEnvSchema.safeParse(raw);
+  if (!parsed.success) {
+    console.error("❌ Invalid core environment variables:");
+    parsed.error.issues.forEach((issue: z.ZodIssue) => {
+      const path =
+        issue.path && issue.path.length > 0 ? issue.path.join(".") : "(root)";
+      console.error(`  • ${path}: ${issue.message}`);
+    });
+    throw new Error("Invalid core environment variables");
+  }
+  return parsed.data;
+}
+
+// ---------- existing eager parse (kept for back-compat) ----------
 const parsed = coreEnvSchema.safeParse(process.env);
-// When validation fails, provide a detailed, human-readable report of each
-// invalid variable.  The default `ZodError.format()` returns a nested object
-// which logs as `[object Object]`, making it hard to identify the culprit.
-// To improve visibility, iterate over `parsed.error.issues` and output the
-// path and message for every issue.  The "(root)" label is used when no
-// specific path is provided.
 if (!parsed.success) {
   console.error("❌ Invalid core environment variables:");
   parsed.error.issues.forEach((issue: z.ZodIssue) => {
@@ -144,10 +155,8 @@ if (!parsed.success) {
       issue.path && issue.path.length > 0 ? issue.path.join(".") : "(root)";
     console.error(`  • ${path}: ${issue.message}`);
   });
-  // Uncomment the next line to log the full formatted error object for debugging:
-  // console.error(JSON.stringify(parsed.error.format(), null, 2));
   throw new Error("Invalid core environment variables");
 }
-
 export const coreEnv = parsed.data;
+
 export type CoreEnv = z.infer<typeof coreEnvSchema>;

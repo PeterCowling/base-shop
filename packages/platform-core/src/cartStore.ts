@@ -1,10 +1,12 @@
 import type { Redis } from "@upstash/redis";
-import { coreEnv } from "@acme/config/env/core";
+import { loadCoreEnv } from "@acme/config/env/core";
 import type { CartState } from "./cart";
 import type { SKU } from "@acme/types";
 import { MemoryCartStore } from "./cartStore/memoryStore";
 import { RedisCartStore } from "./cartStore/redisStore";
 
+
+const coreEnv = loadCoreEnv();
 /** Abstraction for cart storage backends */
 export interface CartStore {
   createCart(): Promise<string>;

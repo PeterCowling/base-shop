@@ -1,5 +1,7 @@
-import { coreEnv } from "@acme/config/env/core";
+import { loadCoreEnv } from "@acme/config/env/core";
 
+
+const coreEnv = loadCoreEnv();
 export const features = {
   /** enable RA ticketing module */
   raTicketing: coreEnv.LUXURY_FEATURES_RA_TICKETING ?? false,

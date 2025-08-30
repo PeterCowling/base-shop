@@ -1,4 +1,4 @@
-import { coreEnv } from "@acme/config/env/core";
+import { loadCoreEnv } from "@acme/config/env/core";
 import { nowIso } from "@acme/date-utils";
 import type { AnalyticsEvent } from "@acme/types";
 import { promises as fs } from "fs";
@@ -8,6 +8,8 @@ import { DATA_ROOT } from "../dataRoot";
 import { getShopSettings, readShop } from "../repositories/shops.server";
 import { validateShopName } from "../shops";
 
+
+const coreEnv = loadCoreEnv();
 export type { AnalyticsEvent };
 
 export interface AnalyticsProvider {

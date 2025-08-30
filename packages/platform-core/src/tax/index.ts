@@ -3,9 +3,11 @@
 import "server-only";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { shippingEnv } from "@acme/config/env/shipping";
+import { loadShippingEnv } from "@acme/config/env/shipping";
 import { resolveDataRoot } from "../dataRoot";
 
+
+const shippingEnv = loadShippingEnv();
 export interface TaxCalculationRequest {
   provider: "taxjar";
   amount: number;

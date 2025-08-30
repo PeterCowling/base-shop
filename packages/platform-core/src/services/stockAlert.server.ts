@@ -1,6 +1,6 @@
 import "server-only";
 
-import { coreEnv } from "@acme/config/env/core";
+import { loadCoreEnv } from "@acme/config/env/core";
 import { DATA_ROOT } from "../dataRoot";
 import { type EmailService, getEmailService } from "./emailService";
 import { promises as fs } from "fs";
@@ -10,6 +10,8 @@ import { z } from "zod";
 import { variantKey } from "../repositories/inventory.server";
 import { getShopSettings } from "../repositories/settings.server";
 
+
+const coreEnv = loadCoreEnv();
 const LOG_FILE = "stock-alert-log.json";
 const SUPPRESS_HOURS = 24; // suppress repeat alerts for a day
 const logSchema = z.record(z.string(), z.number());
@@ -41,7 +43,7 @@ export async function checkAndAlert(
     coreEnv.STOCK_ALERT_RECIPIENTS ?? coreEnv.STOCK_ALERT_RECIPIENT ?? "";
   const recipients = settings.stockAlert?.recipients?.length
     ? settings.stockAlert.recipients
-    : envRecipients.split(",").map((r) => r.trim()).filter(Boolean);
+    : envRecipients.split(",").map((r: string) => r.trim()).filter(Boolean);
   const webhook = settings.stockAlert?.webhook ?? coreEnv.STOCK_ALERT_WEBHOOK;
   const defaultThreshold =
     settings.stockAlert?.threshold ?? coreEnv.STOCK_ALERT_DEFAULT_THRESHOLD;

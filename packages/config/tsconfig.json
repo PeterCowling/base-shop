@@ -1,9 +1,6 @@
-// packages/config/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
-
   "compilerOptions": {
-    /* this tiny package emits JS + d.ts ------------------------------- */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
@@ -12,20 +9,24 @@
     "outDir": "dist",
     "allowJs": false,
     "verbatimModuleSyntax": true,
-
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-
-    /* let TS infer rootDir (same as package folder) */
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-
-  "include": ["src/**/*"], // ONLY stuff inside src/
-  "exclude": [
-    "dist", // freshly emitted output
-    "**/__tests__/**", // unit/integration tests
-    ".turbo", // turbo cache
-    "node_modules" // package deps (if any local)
+  "include": [
+    "src/**/*"
   ],
-  "references": [{ "path": "../zod-utils" }]
+  "exclude": [
+    "dist",
+    "**/__tests__/**",
+    ".turbo",
+    "node_modules"
+  ],
+  "references": [
+    {
+      "path": "../zod-utils"
+    }
+  ]
 }

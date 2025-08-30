@@ -17,13 +17,21 @@
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
-      "@acme/ui": ["types-compat/ui"],
-      "@acme/ui/*": ["types-compat/ui"],
-      "@acme/platform-core": ["src/index.ts"],
-      "@acme/platform-core/*": ["src/*"],
-      "@acme/config": ["../config/src/index.ts"],
-      "@acme/config/*": ["../config/src/*"],
-      "better-sqlite3": ["src/types/better-sqlite3"]
+      "@acme/ui": [
+        "types-compat/ui"
+      ],
+      "@acme/ui/*": [
+        "types-compat/ui"
+      ],
+      "@acme/platform-core": [
+        "src/index.ts"
+      ],
+      "@acme/platform-core/*": [
+        "src/*"
+      ],
+      "better-sqlite3": [
+        "src/types/better-sqlite3"
+      ]
     }
   },
   "include": [
@@ -33,14 +41,33 @@
     "src/**/*.json"
   ],
   "references": [
-    { "path": "../config" },
-    { "path": "../date-utils" },
-    { "path": "../i18n" },
-    { "path": "../shared-utils" },
-    { "path": "../stripe" },
-    { "path": "../types" },
-    { "path": "../themes/base" },
-    { "path": "../zod-utils" }
+    {
+      "path": "../config"
+    },
+    {
+      "path": "../date-utils"
+    },
+    {
+      "path": "../i18n"
+    },
+    {
+      "path": "../shared-utils"
+    },
+    {
+      "path": "../stripe"
+    },
+    {
+      "path": "../types"
+    },
+    {
+      "path": "../themes/base"
+    },
+    {
+      "path": "../zod-utils"
+    }
   ],
-  "files": ["../../src/types/global.d.ts", "src/prisma.d.ts"]
+  "files": [
+    "../../src/types/global.d.ts",
+    "src/prisma.d.ts"
+  ]
 }

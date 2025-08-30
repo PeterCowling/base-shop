@@ -2,9 +2,11 @@
 import crypto from "crypto";
 import { z } from "zod";
 
-import { coreEnv } from "@acme/config/env/core";
+import { loadCoreEnv } from "@acme/config/env/core";
 import { skuSchema } from "@acme/types";
 
+
+const coreEnv = loadCoreEnv();
 export type { CartLine, CartState } from "./cart";
 
 /* ------------------------------------------------------------------

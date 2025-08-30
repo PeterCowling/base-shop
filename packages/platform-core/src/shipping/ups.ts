@@ -1,5 +1,7 @@
-import { shippingEnv } from "@acme/config/env/shipping";
+import { loadShippingEnv } from "@acme/config/env/shipping";
 
+
+const shippingEnv = loadShippingEnv();
 export async function createReturnLabel(
   _sessionId: string,
 ): Promise<{ trackingNumber: string; labelUrl: string }> {

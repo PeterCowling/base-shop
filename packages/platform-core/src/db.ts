@@ -1,6 +1,8 @@
-import { coreEnv } from "@acme/config/env/core";
+import { loadCoreEnv } from "@acme/config/env/core";
 import type { PrismaClient } from "@prisma/client";
 
+
+const coreEnv = loadCoreEnv();
 type RentalOrderStub = {
   shop?: string;
   customerId?: string;

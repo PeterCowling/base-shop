@@ -2,9 +2,9 @@
   "name": "@apps/cms",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3006",
-    "build": "next build",
-    "start": "next start -p 3006",
+    "dev": "cross-env NEXT_USE_NODE_MODULES_FOR_REACT=1 next dev -p 3006",
+    "build": "cross-env NEXT_USE_NODE_MODULES_FOR_REACT=1 next build",
+    "start": "cross-env NEXT_USE_NODE_MODULES_FOR_REACT=1 next start -p 3006",
     "lint": "next lint",
     "test": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs",
     "dev:debug": "cross-env NODE_OPTIONS='--enable-source-maps --trace-uncaught --inspect' next dev -p 3006"
@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "@types/busboy": "^1.5.4",
+    "cross-env": "^7.0.3",
     "next": "15.3.5"
   }
 }

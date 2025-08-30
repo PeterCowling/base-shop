@@ -1,12 +1,11 @@
-import type { Redis } from "@upstash/redis";
+// packages/platform-core/src/cartStore.ts
 import { loadCoreEnv } from "@acme/config/env/core";
-import type { CartState } from "./cart";
 import type { SKU } from "@acme/types";
+import type { Redis } from "@upstash/redis";
+import type { CartState } from "./cart";
 import { MemoryCartStore } from "./cartStore/memoryStore";
 import { RedisCartStore } from "./cartStore/redisStore";
 
-
-const coreEnv = loadCoreEnv();
 /** Abstraction for cart storage backends */
 export interface CartStore {
   createCart(): Promise<string>;
@@ -29,33 +28,47 @@ export interface CartStoreOptions {
   redis?: Redis;
 }
 
+const DEFAULT_TTL = 60 * 60 * 24 * 30; // 30 days in seconds
+
+/** Lazy env accessor (prevents import-time throws) */
+type CoreEnv = ReturnType<typeof loadCoreEnv>;
+let _env: CoreEnv | null = null;
+const getCoreEnv = (): CoreEnv => {
+  if (_env) return _env;
+  _env = loadCoreEnv();
+  return _env;
+};
+
+/** Load @upstash/redis only if needed */
 function loadRedis(): typeof import("@upstash/redis").Redis | undefined {
   try {
-    return (eval("require")("@upstash/redis") as { Redis: typeof import("@upstash/redis").Redis }).Redis;
+    return (
+      eval("require")("@upstash/redis") as {
+        Redis: typeof import("@upstash/redis").Redis;
+      }
+    ).Redis;
   } catch {
     return undefined;
   }
 }
 
-const DEFAULT_TTL = 60 * 60 * 24 * 30; // 30 days in seconds
-
 export function createMemoryCartStore(ttl: number): CartStore {
   return new MemoryCartStore(ttl);
 }
 
-export function createRedisCartStore(
-  client: Redis,
-  ttl: number
-): CartStore {
+export function createRedisCartStore(client: Redis, ttl: number): CartStore {
   return new RedisCartStore(client, ttl, new MemoryCartStore(ttl));
 }
 
+/** Factory (pure, no side effects) */
 export function createCartStore(options: CartStoreOptions = {}): CartStore {
-  const ttl = options.ttlSeconds ?? Number(coreEnv.CART_TTL ?? DEFAULT_TTL);
+  const env = getCoreEnv();
+  const ttl = options.ttlSeconds ?? Number(env.CART_TTL ?? DEFAULT_TTL);
+
   const backend =
     options.backend ??
-    coreEnv.SESSION_STORE ??
-    (coreEnv.UPSTASH_REDIS_REST_URL && coreEnv.UPSTASH_REDIS_REST_TOKEN
+    env.SESSION_STORE ??
+    (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN
       ? "redis"
       : "memory");
 
@@ -63,10 +76,10 @@ export function createCartStore(options: CartStoreOptions = {}): CartStore {
     const Redis = loadRedis();
     const client =
       options.redis ??
-      (Redis && coreEnv.UPSTASH_REDIS_REST_URL && coreEnv.UPSTASH_REDIS_REST_TOKEN
+      (Redis && env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN
         ? new Redis({
-            url: coreEnv.UPSTASH_REDIS_REST_URL,
-            token: coreEnv.UPSTASH_REDIS_REST_TOKEN,
+            url: env.UPSTASH_REDIS_REST_URL,
+            token: env.UPSTASH_REDIS_REST_TOKEN,
           })
         : undefined);
     if (client) {
@@ -77,24 +90,28 @@ export function createCartStore(options: CartStoreOptions = {}): CartStore {
 }
 
 /* ------------------------------------------------------------------
- * Convenience wrappers around a default store instance
+ * Convenience wrappers around a lazily-created default store.
+ * (Still no side effects until the first call is made.)
  * ------------------------------------------------------------------ */
+let _defaultStore: CartStore | null = null;
+export const getDefaultCartStore = (): CartStore => {
+  if (_defaultStore) return _defaultStore;
+  _defaultStore = createCartStore();
+  return _defaultStore;
+};
 
-const defaultStore = createCartStore();
-
-export const createCart = () => defaultStore.createCart();
-export const getCart = (id: string) => defaultStore.getCart(id);
+export const createCart = () => getDefaultCartStore().createCart();
+export const getCart = (id: string) => getDefaultCartStore().getCart(id);
 export const setCart = (id: string, cart: CartState) =>
-  defaultStore.setCart(id, cart);
-export const deleteCart = (id: string) => defaultStore.deleteCart(id);
+  getDefaultCartStore().setCart(id, cart);
+export const deleteCart = (id: string) => getDefaultCartStore().deleteCart(id);
 export const incrementQty = (
   id: string,
   sku: SKU,
   qty: number,
-  size?: string,
-) => defaultStore.incrementQty(id, sku, qty, size);
+  size?: string
+) => getDefaultCartStore().incrementQty(id, sku, qty, size);
 export const setQty = (id: string, skuId: string, qty: number) =>
-  defaultStore.setQty(id, skuId, qty);
+  getDefaultCartStore().setQty(id, skuId, qty);
 export const removeItem = (id: string, skuId: string) =>
-  defaultStore.removeItem(id, skuId);
-
+  getDefaultCartStore().removeItem(id, skuId);

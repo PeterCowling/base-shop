@@ -26,7 +26,6 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     externalDir: true,
-    prebundledReact: false,
   },
 
   // Keep heavy Node-only libs external on the server bundle

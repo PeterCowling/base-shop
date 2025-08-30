@@ -19,8 +19,11 @@
   },
   "dependencies": {
     "@acme/stripe": "workspace:*",
-    "react": "^19.0.0",
     "@acme/platform-core": "workspace:^"
+  },
+  "peerDependencies": {
+    "react": ">=19 <20",
+    "react-dom": ">=19 <20"
   },
   "devDependencies": {
     "next": "^15.3.5"

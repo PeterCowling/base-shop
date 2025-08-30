@@ -64,6 +64,39 @@ describe("stripe client", () => {
     expect(called).toBe(true);
   });
 
+  it("throws when Stripe API responds with an error", async () => {
+    const { stripe } = await import("../index");
+    const stripeInternal = stripe as StripeInternal;
+
+    const httpClient = stripeInternal.getApiField("httpClient") as {
+      _fetchFn: typeof fetch;
+    };
+    expect(httpClient).toHaveProperty("_fetchFn");
+    const fetchSpy = jest.spyOn(httpClient, "_fetchFn");
+
+    let called = false;
+    server.use(
+      rest.post(
+        "https://api.stripe.com/v1/customers",
+        (_req, res, ctx) => {
+          called = true;
+          return res(
+            ctx.status(400),
+            ctx.json({ error: { message: "Invalid request" } })
+          );
+        }
+      )
+    );
+
+    await expect(stripeInternal.customers.create()).rejects.toMatchObject({
+      statusCode: 400,
+      message: "Invalid request",
+    });
+
+    expect(fetchSpy).toHaveBeenCalled();
+    expect(called).toBe(true);
+  });
+
   it("errors when STRIPE_SECRET_KEY is undefined", async () => {
     delete (process.env as Record<string, string | undefined>).STRIPE_SECRET_KEY;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});

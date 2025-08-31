@@ -145,6 +145,12 @@
       "@acme/config/*": [
         "packages/config/src/*"
       ],
+      "@acme/configurator": [
+        "packages/configurator/src/index.ts"
+      ],
+      "@acme/configurator/*": [
+        "packages/configurator/src/*"
+      ],
       "@acme/next-config": [
         "packages/next-config/src/index.ts"
       ],

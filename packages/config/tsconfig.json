@@ -4,6 +4,7 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "declarationDir": "dist",
     "noEmit": false,
     "rootDir": "src",
     "outDir": "dist",
@@ -11,22 +12,10 @@
     "verbatimModuleSyntax": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "types": [
-      "node"
-    ]
+    "types": ["node"],
+    "lib": ["es2022"]
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "dist",
-    "**/__tests__/**",
-    ".turbo",
-    "node_modules"
-  ],
-  "references": [
-    {
-      "path": "../zod-utils"
-    }
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"],
+  "references": [{ "path": "../zod-utils" }]
 }

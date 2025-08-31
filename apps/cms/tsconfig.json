@@ -1,4 +1,3 @@
-// apps/cms/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
@@ -56,12 +55,14 @@
       "@acme/email/*": ["../../packages/email/src/*"],
       "@acme/email-templates": ["../../packages/email-templates/src/index.ts"],
       "@acme/email-templates/*": ["../../packages/email-templates/src/*"],
+      "@acme/config": ["../../packages/config/src/index.ts"],
+      "@acme/config/*": ["../../packages/config/src/*"],
       "@acme/i18n": ["../../packages/i18n/src/index.ts"],
       "@acme/i18n/*": ["../../packages/i18n/src/*"],
-      "@acme/configurator": ["../../packages/configurator/src/index.ts"],
-      "@acme/configurator/*": ["../../packages/configurator/src/*"],
       "@acme/zod-utils": ["../../packages/zod-utils/src/index.ts"],
-      "@acme/zod-utils/*": ["../../packages/zod-utils/src/*"]
+      "@acme/zod-utils/*": ["../../packages/zod-utils/src/*"],
+      "@acme/configurator": ["../../packages/configurator/dist/index.d.ts"],
+      "@acme/configurator/*": ["../../packages/configurator/dist/*"]
     },
     "module": "ESNext",
     "moduleResolution": "Bundler",

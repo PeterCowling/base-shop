@@ -1,9 +1,5 @@
 // apps/cms/tsconfig.build.json
 {
   "files": [],
-  "references": [
-    { "path": "../../packages/config" },
-    { "path": "../../packages/configurator" },
-    { "path": "." }
-  ]
+  "references": [{ "path": "." }]
 }

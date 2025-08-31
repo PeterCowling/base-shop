@@ -1,10 +1,10 @@
+import "server-only";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import type { AnalyticsEvent } from "@platform-core/analytics";
 import { promises as fs } from "fs";
 import path from "path";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
-import { coreEnv } from "@acme/config/env/core";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
 import type { CampaignProvider } from "./providers/types";
@@ -26,7 +26,7 @@ const providers: Record<string, CampaignProvider> = {
 };
 
 function getProvider(): CampaignProvider | undefined {
-  const name = coreEnv.EMAIL_PROVIDER ?? "";
+  const name = process.env.EMAIL_PROVIDER ?? "";
   return providers[name];
 }
 

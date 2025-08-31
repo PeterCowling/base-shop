@@ -38,17 +38,6 @@ jest.mock("nodemailer", () => ({
   },
 }));
 
-const coreEnvMock = {
-  NEXT_PUBLIC_BASE_URL: "",
-  EMAIL_BATCH_SIZE: 100,
-  EMAIL_BATCH_DELAY_MS: 0,
-  EMAIL_PROVIDER: "sendgrid",
-  SENDGRID_API_KEY: "sg",
-  RESEND_API_KEY: undefined as string | undefined,
-  CAMPAIGN_FROM: "campaign@example.com",
-  SMTP_URL: "smtp://localhost",
-};
-jest.mock("@acme/config/env/core", () => ({ coreEnv: coreEnvMock }));
 
 describe("sendDueCampaigns retry logic", () => {
   const setupEnv = () => {
@@ -56,6 +45,9 @@ describe("sendDueCampaigns retry logic", () => {
     process.env.SENDGRID_API_KEY = "sg";
     delete process.env.RESEND_API_KEY;
     process.env.CAMPAIGN_FROM = "campaign@example.com";
+    process.env.EMAIL_BATCH_DELAY_MS = "0";
+    process.env.EMAIL_BATCH_SIZE = "100";
+    process.env.NEXT_PUBLIC_BASE_URL = "";
     mockSendMail = jest.fn();
   };
 
@@ -71,6 +63,9 @@ describe("sendDueCampaigns retry logic", () => {
     delete process.env.EMAIL_PROVIDER;
     delete process.env.SENDGRID_API_KEY;
     delete process.env.CAMPAIGN_FROM;
+    delete process.env.EMAIL_BATCH_DELAY_MS;
+    delete process.env.EMAIL_BATCH_SIZE;
+    delete process.env.NEXT_PUBLIC_BASE_URL;
   });
 
   function createCampaign(now: Date): Campaign {

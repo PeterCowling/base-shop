@@ -3,20 +3,23 @@ import { MarketingEmailTemplate, MarketingEmailTemplateProps } from "./Marketing
 
 export interface MarketingEmailTemplateVariant {
   id: string;
-  name: string;
-  render: (props: MarketingEmailTemplateProps) => React.ReactElement;
+  label: string;
+  buildSubject: (headline: string) => string;
+  make: (props: MarketingEmailTemplateProps) => React.ReactElement;
 }
 
 export const marketingEmailTemplates: MarketingEmailTemplateVariant[] = [
   {
     id: "basic",
-    name: "Basic",
-    render: (props) => <MarketingEmailTemplate {...props} />,
+    label: "Basic",
+    buildSubject: (headline) => headline,
+    make: (props) => <MarketingEmailTemplate {...props} />,
   },
   {
     id: "centered",
-    name: "Centered",
-    render: (props) => (
+    label: "Centered",
+    buildSubject: (headline) => headline,
+    make: (props) => (
       <MarketingEmailTemplate {...props} className="text-center" />
     ),
   },

@@ -1,7 +1,7 @@
+import "server-only";
 import type { CampaignProvider } from "./providers/types";
 import { ProviderError } from "./providers/types";
 import { hasProviderErrorFields } from "./providers/error";
-import { coreEnv } from "@acme/config/env/core";
 import { getDefaultSender } from "./config";
 
 export interface CampaignOptions {
@@ -52,7 +52,7 @@ async function loadProvider(name: string): Promise<CampaignProvider | undefined>
   if (providerCache[name]) return providerCache[name];
 
   if (name === "sendgrid") {
-    const apiKey = process.env.SENDGRID_API_KEY || coreEnv.SENDGRID_API_KEY;
+    const apiKey = process.env.SENDGRID_API_KEY;
     if (!apiKey) {
       providerCache[name] = undefined;
       return undefined;
@@ -60,7 +60,7 @@ async function loadProvider(name: string): Promise<CampaignProvider | undefined>
     const { SendgridProvider } = await import("./providers/sendgrid");
     providerCache[name] = new SendgridProvider();
   } else if (name === "resend") {
-    const apiKey = process.env.RESEND_API_KEY || coreEnv.RESEND_API_KEY;
+    const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       providerCache[name] = undefined;
       return undefined;
@@ -76,8 +76,7 @@ async function loadProvider(name: string): Promise<CampaignProvider | undefined>
 
 const availableProviders = ["sendgrid", "resend", "smtp"];
 
-const configuredProvider =
-  process.env.EMAIL_PROVIDER || coreEnv.EMAIL_PROVIDER || undefined;
+const configuredProvider = process.env.EMAIL_PROVIDER || undefined;
 
 if (configuredProvider && !availableProviders.includes(configuredProvider)) {
   throw new Error(
@@ -85,10 +84,9 @@ if (configuredProvider && !availableProviders.includes(configuredProvider)) {
   );
 }
 
-// Read provider preference directly from `process.env` first so tests or
-// runtime code that mutate environment variables after the config module has
-// loaded can still influence the chosen provider. Fall back to the value
-// parsed in `coreEnv` for normal runtime behaviour.
+// Read provider preference directly from `process.env` so tests or runtime code
+// that mutate environment variables after the configuration module has loaded
+// can still influence the chosen provider.
 
 /**
  * Send a campaign email using the configured provider.
@@ -138,8 +136,7 @@ export async function sendCampaignEmail(
     });
   }
   const optsWithText = ensureText(opts);
-  const primary =
-    process.env.EMAIL_PROVIDER || coreEnv.EMAIL_PROVIDER || "smtp";
+  const primary = process.env.EMAIL_PROVIDER || "smtp";
   if (!availableProviders.includes(primary)) {
     throw new Error(
       `Unsupported EMAIL_PROVIDER "${primary}". Available providers: ${availableProviders.join(", ")}`
@@ -196,7 +193,7 @@ async function sendWithRetry(
 async function sendWithNodemailer(options: CampaignOptions): Promise<void> {
   const nodemailer = (await import("nodemailer")).default;
   const transport = nodemailer.createTransport({
-    url: coreEnv.SMTP_URL,
+    url: process.env.SMTP_URL,
   });
 
   await transport.sendMail({

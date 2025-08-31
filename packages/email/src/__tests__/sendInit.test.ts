@@ -20,12 +20,7 @@ describe("EMAIL_PROVIDER validation", () => {
   });
 
   it("throws when EMAIL_PROVIDER is unsupported", async () => {
-    jest.doMock("@acme/config/env/core", () => ({
-      coreEnv: { EMAIL_PROVIDER: "mailchimp" },
-    }));
-
-    await expect(import("../send")).rejects.toThrow(
-      /Unsupported EMAIL_PROVIDER/
-    );
+    process.env.EMAIL_PROVIDER = "mailchimp";
+    await expect(import("../send")).rejects.toThrow(/Unsupported EMAIL_PROVIDER/);
   });
 });

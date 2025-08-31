@@ -3,12 +3,14 @@ import { MarketingEmailTemplate } from "./MarketingEmailTemplate";
 export const marketingEmailTemplates = [
     {
         id: "basic",
-        name: "Basic",
-        render: (props) => _jsx(MarketingEmailTemplate, { ...props }),
+        label: "Basic",
+        buildSubject: (headline) => headline,
+        make: (props) => _jsx(MarketingEmailTemplate, { ...props }),
     },
     {
         id: "centered",
-        name: "Centered",
-        render: (props) => (_jsx(MarketingEmailTemplate, { ...props, className: "text-center" })),
+        label: "Centered",
+        buildSubject: (headline) => headline,
+        make: (props) => (_jsx(MarketingEmailTemplate, { ...props, className: "text-center" })),
     },
 ];

@@ -1,6 +1,6 @@
+import "server-only";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import type { AnalyticsEvent } from "@platform-core/analytics";
-import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";
 import type { Campaign } from "./types";
@@ -17,7 +17,7 @@ export function setClock(c: Clock): void {
 }
 
 function trackedBody(shop: string, id: string, body: string): string {
-  const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";
+  const base = process.env.NEXT_PUBLIC_BASE_URL || "";
   const pixelUrl = `${base}/api/marketing/email/open?shop=${encodeURIComponent(
     shop,
   )}&campaign=${encodeURIComponent(id)}&t=${Date.now()}`;
@@ -34,7 +34,7 @@ function trackedBody(shop: string, id: string, body: string): string {
 }
 
 function unsubscribeUrl(shop: string, campaign: string, recipient: string): string {
-  const base = coreEnv.NEXT_PUBLIC_BASE_URL || "";
+  const base = process.env.NEXT_PUBLIC_BASE_URL || "";
   return `${base}/api/marketing/email/unsubscribe?shop=${encodeURIComponent(
     shop,
   )}&campaign=${encodeURIComponent(campaign)}&email=${encodeURIComponent(
@@ -79,8 +79,8 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   }
   recipients = await filterUnsubscribed(shop, recipients);
   const hasPlaceholder = baseHtml.includes("%%UNSUBSCRIBE%%");
-  const batchSize = coreEnv.EMAIL_BATCH_SIZE ?? 100;
-  const batchDelay = coreEnv.EMAIL_BATCH_DELAY_MS ?? 1000;
+  const batchSize = Number(process.env.EMAIL_BATCH_SIZE) || 100;
+  const batchDelay = Number(process.env.EMAIL_BATCH_DELAY_MS) || 1000;
   for (let i = 0; i < recipients.length; i += batchSize) {
     const batch = recipients.slice(i, i + batchSize);
     for (const r of batch) {

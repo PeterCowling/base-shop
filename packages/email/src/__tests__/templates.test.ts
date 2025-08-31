@@ -29,7 +29,9 @@ describe("renderTemplate", () => {
         marketingEmailTemplates: [
           {
             id: "basic",
-            render: ({ headline, content, footer }: any) => (
+            label: "Basic",
+            buildSubject: (h: string) => h,
+            make: ({ headline, content, footer }: any) => (
               React.createElement(
                 "div",
                 null,
@@ -62,7 +64,9 @@ describe("renderTemplate", () => {
         marketingEmailTemplates: [
           {
             id: "basic",
-            render: ({ content }: any) => React.createElement("div", null, content),
+            label: "Basic",
+            buildSubject: (h: string) => h,
+            make: ({ content }: any) => React.createElement("div", null, content),
           },
         ],
       }),
@@ -84,18 +88,22 @@ describe("renderTemplate", () => {
       () => ({
         __esModule: true,
         marketingEmailTemplates: [
-          { id: "null", render: () => null },
+          { id: "null", label: "Null", buildSubject: (h: string) => h, make: () => null },
           {
             id: "array",
-            render: () => [
+            label: "Array",
+            buildSubject: (h: string) => h,
+            make: () => [
               React.createElement("p", null, "A"),
               React.createElement("p", null, "B"),
             ],
           },
-          { id: "invalid", render: () => ({}) as any },
+          { id: "invalid", label: "Invalid", buildSubject: (h: string) => h, make: () => ({}) as any },
           {
             id: "attrs",
-            render: () =>
+            label: "Attrs",
+            buildSubject: (h: string) => h,
+            make: () =>
               React.createElement("div", { id: "x", className: "y" }, "Hi"),
           },
         ],

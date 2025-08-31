@@ -1,18 +1,20 @@
 // packages/email/src/sendEmail.ts
 
-import { coreEnv } from "@acme/config/env/core";
+import "server-only";
 import nodemailer from "nodemailer";
 import pino from "pino";
 import { getDefaultSender } from "./config";
 
-const hasCreds = coreEnv.GMAIL_USER && coreEnv.GMAIL_PASS;
+const user = process.env.GMAIL_USER;
+const pass = process.env.GMAIL_PASS;
+const hasCreds = user && pass;
 
 const transporter = hasCreds
   ? nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: coreEnv.GMAIL_USER,
-        pass: coreEnv.GMAIL_PASS,
+        user,
+        pass,
       },
     })
   : null;

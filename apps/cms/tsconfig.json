@@ -61,12 +61,7 @@
       "@acme/i18n": ["../../packages/i18n/src/index.ts"],
       "@acme/i18n/*": ["../../packages/i18n/src/*"],
       "@acme/zod-utils": ["../../packages/zod-utils/src/index.ts"],
-      "@acme/zod-utils/*": ["../../packages/zod-utils/src/*"],
-
-      /* Map the exact subpath to the source file that exists */
-      "@acme/configurator/providers": [
-        "../../packages/configurator/src/providers.ts"
-      ]
+      "@acme/zod-utils/*": ["../../packages/zod-utils/src/*"]
     },
     "module": "ESNext",
     "moduleResolution": "Bundler",

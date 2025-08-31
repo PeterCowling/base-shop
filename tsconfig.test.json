@@ -49,6 +49,17 @@
     { "path": "./packages/types/tsconfig.test.json" },
     { "path": "./packages/ui/tsconfig.test.json" },
     { "path": "./packages/i18n/tsconfig.test.json" },
+      { "path": "./packages/email/tsconfig.test.json" },
+      { "path": "./packages/eslint-plugin-ds/tsconfig.test.json" },
+      { "path": "./packages/next-config/tsconfig.test.json" },
+      { "path": "./packages/plugins/paypal/tsconfig.test.json" },
+      { "path": "./packages/plugins/premier-shipping/tsconfig.test.json" },
+      { "path": "./packages/plugins/sanity/tsconfig.test.json" },
+      { "path": "./packages/sanity/tsconfig.test.json" },
+      { "path": "./packages/stripe/tsconfig.test.json" },
+      { "path": "./packages/telemetry/tsconfig.test.json" },
+      { "path": "./packages/theme/tsconfig.test.json" },
+      { "path": "./packages/zod-utils/tsconfig.test.json" },
     { "path": "./apps/cms/tsconfig.test.json" },
     { "path": "./apps/dashboard/tsconfig.test.json" }
   ]

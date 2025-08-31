@@ -28,7 +28,8 @@
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "build": "tsc -b",
-    "clean": "rimraf dist *.tsbuildinfo"
+    "clean": "rimraf dist *.tsbuildinfo",
+    "lint": "eslint ."
   },
   "dependencies": {
     "iron-session": "^6.3.1",

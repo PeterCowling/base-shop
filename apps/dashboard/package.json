@@ -2,6 +2,7 @@
   "name": "@apps/dashboard",
   "private": true,
   "scripts": {
-    "test": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs"
+    "test": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs",
+    "lint": "eslint ."
   }
 }

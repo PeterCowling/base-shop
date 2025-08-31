@@ -17,7 +17,8 @@
   },
   "scripts": {
     "build": "tsc -b",
-    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@acme/config": "workspace:*",

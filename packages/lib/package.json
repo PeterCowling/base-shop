@@ -23,7 +23,8 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "next": "^15.3.5"

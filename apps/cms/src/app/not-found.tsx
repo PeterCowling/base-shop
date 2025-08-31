@@ -1,6 +1,8 @@
 import Link from "next/link";
+import type { ReactElement } from "react";
 
-export default function NotFound() {
+// This function must return a JSX element.
+export default function NotFound(): ReactElement {
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4">
       <h1 className="text-3xl font-bold">404 – Page not found</h1>

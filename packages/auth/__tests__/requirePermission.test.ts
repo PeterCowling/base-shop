@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import { requirePermission } from "../src/requirePermission";
 import { getCustomerSession } from "../src/session";
 import type { Role } from "../src/types/index";

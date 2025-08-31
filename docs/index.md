@@ -3,6 +3,7 @@
 ## Getting Started
 - [Install](./install.md)
 - [Setup](./setup.md)
+- [Package management](./package-management.md)
 - [CMS guide](./cms.md)
 - [Storybook](./storybook.md)
 - [Permissions](./permissions.md)

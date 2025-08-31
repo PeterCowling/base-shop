@@ -63,9 +63,9 @@
       "@acme/zod-utils": ["../../packages/zod-utils/src/index.ts"],
       "@acme/zod-utils/*": ["../../packages/zod-utils/src/*"],
 
-      /* Directly map the subpath export to the built declaration */
+      /* Map the exact subpath to the source file that exists */
       "@acme/configurator/providers": [
-        "../../packages/configurator/dist/providers.d.ts"
+        "../../packages/configurator/src/providers.ts"
       ]
     },
     "module": "ESNext",

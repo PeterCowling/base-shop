@@ -3,14 +3,27 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "bin": {
     "configurator": "./dist/index.js"
   },
   "exports": {
     ".": {
-      "default": "./src/index.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
-    "./providers": "./src/providers.ts"
+    "./providers": {
+      "types": "./dist/providers.d.ts",
+      "import": "./dist/providers.js",
+      "default": "./dist/providers.js"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rimraf dist *.tsbuildinfo"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250702.0",

@@ -4,9 +4,10 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "declarationDir": "dist",
     "noEmit": false,
     "rootDir": "src",
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "include": ["src/**/*"],
   "exclude": [

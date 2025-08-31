@@ -1,25 +1,16 @@
+// packages/stripe/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "declarationDir": "dist",
     "noEmit": false,
     "rootDir": "src",
     "outDir": "dist"
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "dist",
-    "**/__tests__/**",
-    ".turbo",
-    "node_modules"
-  ],
-  "references": [
-    {
-      "path": "../config"
-    }
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"],
+  "references": [{ "path": "../config" }]
 }

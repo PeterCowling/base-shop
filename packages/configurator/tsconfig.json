@@ -1,32 +1,23 @@
 // packages/configurator/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
-
   "compilerOptions": {
-    /* this package ships compiled JS and d.ts files ------------------- */
     "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "declarationDir": "dist",
     "noEmit": false,
     "rootDir": "src",
     "outDir": "dist",
-
-    /* let TypeScript infer the rootDir (package root) */
-
-    /* node runtime + ES2022 built-in libs */
     "types": ["node"],
-    "lib": ["es2022"]
+    "lib": ["es2022"],
+    "baseUrl": ".",
+    "paths": {
+      "@acme/config": ["../config/src/index.ts"],
+      "@acme/config/*": ["../config/src/*"]
+    }
   },
-
-  /* sources ----------------------------------------------------------- */
   "include": ["src/**/*"],
-  "exclude": [
-    "dist", // freshly emitted output
-    "__tests__", // unit/integration tests
-    ".turbo", // turbo cache
-    "node_modules" // package deps (if any local)
-  ],
-
-  /* project reference to the config package -------------------------- */
+  "exclude": ["dist", "__tests__", ".turbo", "node_modules"],
   "references": [{ "path": "../config" }]
 }

@@ -1,3 +1,4 @@
+// packages/platform-core/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
@@ -17,57 +18,31 @@
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
-      "@acme/ui": [
-        "types-compat/ui"
-      ],
-      "@acme/ui/*": [
-        "types-compat/ui"
-      ],
-      "@acme/platform-core": [
-        "src/index.ts"
-      ],
-      "@acme/platform-core/*": [
-        "src/*"
-      ],
-      "better-sqlite3": [
-        "src/types/better-sqlite3"
-      ]
+      "@acme/ui": ["types-compat/ui"],
+      "@acme/ui/*": ["types-compat/ui"],
+      "@acme/platform-core": ["src/index.ts"],
+      "@acme/platform-core/*": ["src/*"],
+
+      "@acme/shared-utils": ["../shared-utils/src/index.ts"],
+      "@acme/shared-utils/*": ["../shared-utils/src/*"],
+      "@acme/date-utils": ["../date-utils/src/index.ts"],
+      "@acme/date-utils/*": ["../date-utils/src/*"],
+      "@acme/stripe": ["../stripe/src/index.ts"],
+      "@acme/stripe/*": ["../stripe/src/*"],
+
+      "better-sqlite3": ["src/types/better-sqlite3"]
     }
   },
-  "include": [
-    "src*",
-    "src*.json",
-    "src/**/*",
-    "src/**/*.json"
-  ],
+  "include": ["src*", "src*.json", "src/**/*", "src/**/*.json"],
   "references": [
-    {
-      "path": "../config"
-    },
-    {
-      "path": "../date-utils"
-    },
-    {
-      "path": "../i18n"
-    },
-    {
-      "path": "../shared-utils"
-    },
-    {
-      "path": "../stripe"
-    },
-    {
-      "path": "../types"
-    },
-    {
-      "path": "../themes/base"
-    },
-    {
-      "path": "../zod-utils"
-    }
+    { "path": "../config" },
+    { "path": "../date-utils" },
+    { "path": "../i18n" },
+    { "path": "../shared-utils" },
+    { "path": "../stripe" },
+    { "path": "../types" },
+    { "path": "../themes/base" },
+    { "path": "../zod-utils" }
   ],
-  "files": [
-    "../../src/types/global.d.ts",
-    "src/prisma.d.ts"
-  ]
+  "files": ["../../src/types/global.d.ts", "src/prisma.d.ts"]
 }

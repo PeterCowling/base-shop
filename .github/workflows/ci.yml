@@ -8,6 +8,9 @@ jobs:
       - uses: pnpm/action-setup@v3
       - run: pnpm install
       - run: pnpm lint && pnpm test
+      - uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
       - run: pnpm build
       - run: pnpm e2e:dashboard
       - run: pnpm e2e:shop

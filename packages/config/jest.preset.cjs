@@ -11,4 +11,10 @@ module.exports = {
     "^\\.\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
     "^\\.\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
   },
+  coverageThreshold: {
+    global: {
+      lines: 60,
+      branches: 60,
+    },
+  },
 };

@@ -2,9 +2,9 @@
 {
   "extends": "./tsconfig.base.json",
 
-  /* ────────────────────────────────────────────────────────────────────
+  /* ------------------------------------------------------------------
    *  Compiler options tuned for running Jest + ts-jest in JSDOM
-   * ────────────────────────────────────────────────────────────────── */
+   * ------------------------------------------------------------------ */
   "compilerOptions": {
     /* execution environment ----------------------------------------- */
     "jsx": "react-jsx",
@@ -20,9 +20,9 @@
     "verbatimModuleSyntax": false
   },
 
-  /* ────────────────────────────────────────────────────────────────────
+  /* ------------------------------------------------------------------
    *  Which files constitute the *unit-test* compilation boundary
-   * ────────────────────────────────────────────────────────────────── */
+   * ------------------------------------------------------------------ */
   "include": ["jest.setup.ts", "test/**/*.ts", "test/**/*.tsx", "test/**/*.js"],
 
   /* Exclude e2e specs and any test-framework configs of their own ---- */
@@ -35,11 +35,24 @@
     { "path": "./packages/configurator/tsconfig.test.json" },
     { "path": "./packages/date-utils/tsconfig.test.json" },
     { "path": "./packages/design-tokens/tsconfig.test.json" },
+    { "path": "./packages/email/tsconfig.test.json" },
+    { "path": "./packages/email-templates/tsconfig.test.json" },
+    { "path": "./packages/eslint-plugin-ds/tsconfig.test.json" },
+    { "path": "./packages/i18n/tsconfig.test.json" },
     { "path": "./packages/lib/tsconfig.test.json" },
+    { "path": "./packages/next-config/tsconfig.test.json" },
     { "path": "./packages/platform-core/tsconfig.test.json" },
     { "path": "./packages/platform-machine/tsconfig.test.json" },
+    { "path": "./packages/plugins/paypal/tsconfig.test.json" },
+    { "path": "./packages/plugins/premier-shipping/tsconfig.test.json" },
+    { "path": "./packages/plugins/sanity/tsconfig.test.json" },
+    { "path": "./packages/sanity/tsconfig.test.json" },
+    { "path": "./packages/shared-utils/tsconfig.test.json" },
+    { "path": "./packages/stripe/tsconfig.test.json" },
     { "path": "./packages/tailwind-config/tsconfig.test.json" },
+    { "path": "./packages/telemetry/tsconfig.test.json" },
     { "path": "./packages/template-app/tsconfig.test.json" },
+    { "path": "./packages/theme/tsconfig.test.json" },
     { "path": "./packages/themes/abc/tsconfig.test.json" },
     { "path": "./packages/themes/base/tsconfig.test.json" },
     { "path": "./packages/themes/bcd/tsconfig.test.json" },
@@ -47,7 +60,7 @@
     { "path": "./packages/themes/dark/tsconfig.test.json" },
     { "path": "./packages/types/tsconfig.test.json" },
     { "path": "./packages/ui/tsconfig.test.json" },
-    { "path": "./packages/i18n/tsconfig.test.json" },
+    { "path": "./packages/zod-utils/tsconfig.test.json" },
     { "path": "./apps/cms/tsconfig.test.json" }
   ]
 }

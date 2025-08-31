@@ -2,7 +2,15 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
-    "noEmit": true
+    "noEmit": true,
+    "rootDir": "../.."
   },
-  "include": ["src/**/*", "__tests__/**/*"]
+  "include": ["src/**/*", "__tests__/**/*"],
+  "references": [
+    { "path": "../platform-core" },
+    { "path": "../lib" },
+    { "path": "../config" },
+    { "path": "../date-utils" },
+    { "path": "../types" }
+  ]
 }

@@ -9,6 +9,8 @@ jobs:
       - run: pnpm install
       - run: pnpm lint && pnpm test
       - run: pnpm build
+      - run: pnpm e2e:dashboard
+      - run: pnpm e2e:shop
       - run: npx @cloudflare/next-on-pages deploy \
                --project-name=base-shop \
                --branch=${{ github.ref_name }}

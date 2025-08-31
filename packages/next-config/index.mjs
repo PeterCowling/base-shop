@@ -42,7 +42,7 @@ export const baseConfig = {
   transpilePackages: [
     "@acme/config",
     "@acme/ui",
-    "@platform-core",
+    "@acme/platform-core",
     "@acme/i18n",
     "@acme/template-app",
   ],

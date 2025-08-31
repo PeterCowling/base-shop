@@ -15,7 +15,7 @@
       "default": "./src/index.ts"
     },
     "./providers": {
-      "types": "./src/providers.ts",
+      "types": "./src/providers.d.ts",
       "import": "./src/providers.ts",
       "default": "./src/providers.ts"
     }

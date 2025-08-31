@@ -17,6 +17,6 @@
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", "__tests__", ".turbo", "node_modules", "**/*.d.ts"],
+  "exclude": ["dist", "__tests__", ".turbo", "node_modules"],
   "references": [{ "path": "../config" }]
 }

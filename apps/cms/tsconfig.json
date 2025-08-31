@@ -63,9 +63,10 @@
       "@acme/zod-utils": ["../../packages/zod-utils/src/index.ts"],
       "@acme/zod-utils/*": ["../../packages/zod-utils/src/*"],
 
-      /* Key change: point configurator to SOURCE so subpath './providers' resolves to 'src/providers.ts' */
-      "@acme/configurator": ["../../packages/configurator/src/index.ts"],
-      "@acme/configurator/*": ["../../packages/configurator/src/*"]
+      /* Directly map the subpath export to the built declaration */
+      "@acme/configurator/providers": [
+        "../../packages/configurator/dist/providers.d.ts"
+      ]
     },
     "module": "ESNext",
     "moduleResolution": "Bundler",

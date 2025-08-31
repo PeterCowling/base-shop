@@ -1,3 +1,4 @@
+// apps/cms/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
@@ -61,8 +62,10 @@
       "@acme/i18n/*": ["../../packages/i18n/src/*"],
       "@acme/zod-utils": ["../../packages/zod-utils/src/index.ts"],
       "@acme/zod-utils/*": ["../../packages/zod-utils/src/*"],
-      "@acme/configurator": ["../../packages/configurator/dist/index.d.ts"],
-      "@acme/configurator/*": ["../../packages/configurator/dist/*"]
+
+      /* Key change: point configurator to SOURCE so subpath './providers' resolves to 'src/providers.ts' */
+      "@acme/configurator": ["../../packages/configurator/src/index.ts"],
+      "@acme/configurator/*": ["../../packages/configurator/src/*"]
     },
     "module": "ESNext",
     "moduleResolution": "Bundler",

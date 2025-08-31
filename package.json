@@ -108,9 +108,7 @@
     "nodemailer": "^6.10.1",
     "openai": "^4.104.0",
     "rate-limiter-flexible": "^7.2.0",
-    "react": "^19.0.0",
     "react-chartjs-2": "^5.3.0",
-    "react-dom": "^19.0.0",
     "react-hook-form": "^7.59.0",
     "rxjs": "^7.8.2",
     "shadcn-ui": "^0.9.5",
@@ -176,7 +174,6 @@
     "polished": "^4.3.1",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.13",
-    "react-server-dom-webpack": "^19.1.0",
     "rimraf": "^6.0.1",
     "start-server-and-test": "^2.0.13",
     "storybook": "^9.0.13",
@@ -195,10 +192,6 @@
   },
   "pnpm": {
     "overrides": {
-      "react": "19.1.0",
-      "react-dom": "19.1.0",
-      "react-server-dom-webpack": "19.1.0",
-      "scheduler": "0.26.0",
       "@shadcn/ui": "0.0.4",
       "zod": "3.25.73",
       "yallist": "4.0.0",
@@ -209,12 +202,6 @@
       "htmlparser2>entities": "4.5.0",
       "dom-serializer>entities": "4.5.0",
       "entities": "4.5.0"
-    },
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "react": "19.1.0",
-        "react-dom": "19.1.0"
-      }
     },
     "onlyBuiltDependencies": [
       "@prisma/client",

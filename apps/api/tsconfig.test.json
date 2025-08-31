@@ -1,0 +1,10 @@
+// apps/api/tsconfig.test.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["jest", "node"],
+    "noEmit": true,
+    "allowJs": true
+  },
+  "include": ["src/**/*", "__tests__/**/*"]
+}

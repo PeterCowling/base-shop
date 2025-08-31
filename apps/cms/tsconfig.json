@@ -56,9 +56,6 @@
       "@acme/email/*": ["../../packages/email/src/*"],
       "@acme/email-templates": ["../../packages/email-templates/src/index.ts"],
       "@acme/email-templates/*": ["../../packages/email-templates/src/*"],
-      /* KEY CHANGE: resolve @acme/config to source so TS builds it as a referenced project */
-      "@acme/config": ["../../packages/config/src/index.ts"],
-      "@acme/config/*": ["../../packages/config/src/*"],
       "@acme/i18n": ["../../packages/i18n/src/index.ts"],
       "@acme/i18n/*": ["../../packages/i18n/src/*"],
       "@acme/configurator": ["../../packages/configurator/src/index.ts"],

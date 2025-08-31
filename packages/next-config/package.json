@@ -10,7 +10,8 @@
     "./next.config.mjs": "./next.config.mjs"
   },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@acme/config": "workspace:^",

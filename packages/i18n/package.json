@@ -21,7 +21,8 @@
   "scripts": {
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "build": "tsc -b",
-    "clean": "rimraf dist *.tsbuildinfo"
+    "clean": "rimraf dist *.tsbuildinfo",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "next": "^15.3.5"

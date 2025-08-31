@@ -194,6 +194,8 @@
     "overrides": {
       "@shadcn/ui": "0.0.4",
       "zod": "3.25.73",
+      "react-dom": "19.2.0-canary-3fbfb9ba-20250409",
+      "react": "19.2.0-canary-3fbfb9ba-20250409",
       "yallist": "4.0.0",
       "dom-serializer": "2.0.0",
       "htmlparser2": "8.0.2",

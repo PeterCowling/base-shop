@@ -35,6 +35,7 @@
     { "path": "./packages/configurator/tsconfig.test.json" },
     { "path": "./packages/date-utils/tsconfig.test.json" },
     { "path": "./packages/design-tokens/tsconfig.test.json" },
+    { "path": "./packages/email-templates/tsconfig.test.json" },
     { "path": "./packages/lib/tsconfig.test.json" },
     { "path": "./packages/platform-core/tsconfig.test.json" },
     { "path": "./packages/platform-machine/tsconfig.test.json" },

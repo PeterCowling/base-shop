@@ -18,7 +18,8 @@
     }
   },
   "scripts": {
-    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
+    "lint": "eslint ."
   },
   "dependencies": {
     "pino": "^9.9.0"

@@ -5,6 +5,8 @@
 - **Node.js** v20 or newer
 - **pnpm** v10 (repo uses pnpm@10.12.1)
 
+See [Next.js configuration](./nextjs-config.md) for Cloudflare-specific framework options.
+
 For a one-liner that scaffolds a shop, validates the environment, and starts the dev server:
 
 ```bash

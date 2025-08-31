@@ -23,7 +23,8 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -b",
-    "clean": "rimraf dist *.tsbuildinfo"
+    "clean": "rimraf dist *.tsbuildinfo",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250702.0",

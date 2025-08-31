@@ -5,11 +5,14 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -b",
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs tests/no-raw-color.spec.ts",
-    "clean": "rimraf dist *.tsbuildinfo"
+    "clean": "rimraf dist *.tsbuildinfo",
+    "lint": "eslint ."
   },
   "peerDependencies": {
     "eslint": "^9"

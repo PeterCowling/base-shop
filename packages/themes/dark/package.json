@@ -23,5 +23,8 @@
     },
     "./tokens.css": "./src/tokens.css"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "scripts": {
+    "lint": "eslint ."
+  }
 }

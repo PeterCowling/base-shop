@@ -32,7 +32,6 @@ jest.mock("sanitize-html", () => {
   return { __esModule: true, default: fn };
 });
 
-jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
 
 afterEach(() => {
   jest.resetModules();

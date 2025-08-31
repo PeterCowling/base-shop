@@ -22,8 +22,6 @@ jest.mock("../providers/resend", () => ({
   ResendProvider: class {},
 }));
 
-const coreEnv: Record<string, any> = {};
-jest.mock("@acme/config/env/core", () => ({ coreEnv }));
 jest.mock("@acme/lib", () => ({ validateShopName: (s: string) => s }));
 
 describe("listSegments", () => {
@@ -33,10 +31,10 @@ describe("listSegments", () => {
   });
 
   it("returns empty list for unknown provider", async () => {
-    coreEnv.EMAIL_PROVIDER = "unknown";
+    process.env.EMAIL_PROVIDER = "unknown";
     const { listSegments } = await import("../segments");
     await expect(listSegments()).resolves.toEqual([]);
-    delete coreEnv.EMAIL_PROVIDER;
+    delete process.env.EMAIL_PROVIDER;
   });
 });
 

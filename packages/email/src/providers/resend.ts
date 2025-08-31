@@ -1,5 +1,5 @@
+import "server-only";
 import { Resend } from "resend";
-import { coreEnv } from "@acme/config/env/core";
 import type { CampaignOptions } from "../send";
 import { ProviderError } from "./types";
 import type {
@@ -14,7 +14,7 @@ import {
 } from "../stats";
 import { getDefaultSender } from "../config";
 
-const apiKey = process.env.RESEND_API_KEY || coreEnv.RESEND_API_KEY;
+const apiKey = process.env.RESEND_API_KEY;
 
 interface ProviderOptions {
   /**
@@ -56,7 +56,8 @@ export class ResendProvider implements CampaignProvider {
 
   async send(options: CampaignOptions): Promise<void> {
     if (!this.client) {
-      throw new ProviderError("Resend API key is not configured", false);
+      console.warn("Resend API key is not configured; skipping email send");
+      return;
     }
     try {
       await this.client.emails.send({

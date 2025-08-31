@@ -141,7 +141,7 @@ export default function EmailMarketingPage() {
         >
           {marketingEmailTemplates.map((t: MarketingEmailTemplateVariant) => (
             <option key={t.id} value={t.id}>
-              {t.name}
+              {t.label}
             </option>
           ))}
         </select>
@@ -201,7 +201,7 @@ export default function EmailMarketingPage() {
         <div className="mt-4">
           {marketingEmailTemplates
             .find((t: MarketingEmailTemplateVariant) => t.id === templateId)
-            ?.render({
+            ?.make({
               headline: subject || "",
               content: (
                 <div dangerouslySetInnerHTML={{ __html: sanitizedBody }} />

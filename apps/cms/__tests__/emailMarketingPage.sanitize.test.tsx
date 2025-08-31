@@ -8,8 +8,9 @@ jest.mock(
     marketingEmailTemplates: [
       {
         id: "basic",
-        name: "Basic",
-        render: ({ headline, content }: any) => (
+        label: "Basic",
+        buildSubject: (h: string) => h,
+        make: ({ headline, content }: any) => (
           <div>
             <h1>{headline}</h1>
             {content}

@@ -33,7 +33,7 @@ export function renderTemplate(id, params) {
     }
     const variant = marketingEmailTemplates.find((t) => t.id === id);
     if (variant) {
-        return renderToStaticMarkup(variant.render({
+        return renderToStaticMarkup(variant.make({
             headline: params.headline ?? params.subject ?? "",
             content: React.createElement("div", {
                 dangerouslySetInnerHTML: {

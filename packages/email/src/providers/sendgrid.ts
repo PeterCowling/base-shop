@@ -1,5 +1,5 @@
+import "server-only";
 import sgMail from "@sendgrid/mail";
-import { coreEnv } from "@acme/config/env/core";
 import type { CampaignOptions } from "../send";
 import { ProviderError } from "./types";
 import type { CampaignProvider } from "./types";
@@ -11,9 +11,8 @@ import {
 } from "../stats";
 import { getDefaultSender } from "../config";
 
-const apiKey = process.env.SENDGRID_API_KEY || coreEnv.SENDGRID_API_KEY;
-const marketingKey =
-  process.env.SENDGRID_MARKETING_KEY || coreEnv.SENDGRID_MARKETING_KEY;
+const apiKey = process.env.SENDGRID_API_KEY;
+const marketingKey = process.env.SENDGRID_MARKETING_KEY || apiKey;
 
 interface ProviderOptions {
   /**
@@ -56,6 +55,10 @@ export class SendgridProvider implements CampaignProvider {
   }
 
   async send(options: CampaignOptions): Promise<void> {
+    if (!apiKey) {
+      console.warn("Sendgrid API key is not configured; skipping email send");
+      return;
+    }
     try {
       await sgMail.send({
         to: options.to,

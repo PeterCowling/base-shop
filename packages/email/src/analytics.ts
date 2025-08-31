@@ -1,5 +1,5 @@
+import "server-only";
 import { trackEvent } from "@platform-core/analytics";
-import { coreEnv } from "@acme/config/env/core";
 import { getCampaignStore } from "./storage";
 import { SendgridProvider } from "./providers/sendgrid";
 import { ResendProvider } from "./providers/resend";
@@ -110,7 +110,7 @@ const providers: Record<string, CampaignProvider> = {
  * platform analytics system. Intended to run on a periodic schedule.
  */
 export async function syncCampaignAnalytics(): Promise<void> {
-  const providerName = coreEnv.EMAIL_PROVIDER ?? "";
+  const providerName = process.env.EMAIL_PROVIDER ?? "";
   const provider = providers[providerName];
   if (!provider) return;
 

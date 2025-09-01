@@ -24,17 +24,56 @@ jest.mock("../providers/resend", () => ({
 
 jest.mock("@acme/lib", () => ({ validateShopName: (s: string) => s }));
 
-describe("listSegments", () => {
+describe("provider functions", () => {
   afterEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
+    delete process.env.EMAIL_PROVIDER;
+  });
+
+  it("return safe defaults when EMAIL_PROVIDER is unset", async () => {
+    const { createContact, addToList, listSegments } = await import(
+      "../segments"
+    );
+    await expect(createContact("a@example.com")).resolves.toBe("");
+    await expect(addToList("c1", "l1")).resolves.toBeUndefined();
+    await expect(listSegments()).resolves.toEqual([]);
+  });
+
+  it("delegates to configured provider", async () => {
+    const createContactImpl = jest.fn().mockResolvedValue("contact-1");
+    const addToListImpl = jest.fn().mockResolvedValue(undefined);
+    const listSegmentsImpl = jest
+      .fn()
+      .mockResolvedValue([{ id: "s1", name: "All" }]);
+
+    jest.doMock("../providers/sendgrid", () => ({
+      SendgridProvider: class {
+        createContact = createContactImpl;
+        addToList = addToListImpl;
+        listSegments = listSegmentsImpl;
+      },
+    }));
+
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    const { createContact, addToList, listSegments } = await import(
+      "../segments"
+    );
+
+    const id = await createContact("user@example.com");
+    await addToList(id, "list1");
+    const segments = await listSegments();
+
+    expect(id).toBe("contact-1");
+    expect(createContactImpl).toHaveBeenCalledWith("user@example.com");
+    expect(addToListImpl).toHaveBeenCalledWith("contact-1", "list1");
+    expect(segments).toEqual([{ id: "s1", name: "All" }]);
   });
 
   it("returns empty list for unknown provider", async () => {
     process.env.EMAIL_PROVIDER = "unknown";
     const { listSegments } = await import("../segments");
     await expect(listSegments()).resolves.toEqual([]);
-    delete process.env.EMAIL_PROVIDER;
   });
 });
 
@@ -105,6 +144,46 @@ describe("resolveSegment caching", () => {
     expect(r1).toEqual(["a@example.com"]);
     expect(r2).toEqual(["b@example.com"]);
     expect(mockListEvents).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("resolveSegment events", () => {
+  beforeEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  it("resolves emails from segment events when no definition exists", async () => {
+    mockReadFile.mockResolvedValue("[]");
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents.mockResolvedValue([
+      { email: "a@example.com", type: "segment", segment: "vip" },
+      { email: "b@example.com", type: "segment:vip" },
+      { email: "c@example.com", type: "segment", segment: "other" },
+      { email: "d@example.com", type: "segment:other" },
+    ]);
+
+    const { resolveSegment } = await import("../segments");
+    const result = await resolveSegment("shop1", "vip");
+    expect(result.sort()).toEqual(["a@example.com", "b@example.com"].sort());
+  });
+
+  it("caches resolved emails for segment events", async () => {
+    process.env.SEGMENT_CACHE_TTL = "1000";
+    mockReadFile.mockResolvedValue("[]");
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents.mockResolvedValue([
+      { email: "a@example.com", type: "segment:vip" },
+    ]);
+
+    const { resolveSegment } = await import("../segments");
+    const r1 = await resolveSegment("shop1", "vip");
+    const r2 = await resolveSegment("shop1", "vip");
+
+    expect(r1).toEqual(["a@example.com"]);
+    expect(r2).toEqual(["a@example.com"]);
+    expect(mockListEvents).toHaveBeenCalledTimes(1);
+    delete process.env.SEGMENT_CACHE_TTL;
   });
 });
 

@@ -1,15 +1,10 @@
-import {
-  createShop,
-  type CreateShopOptions,
-} from "@acme/platform-core/createShop";
+import type { CreateShopOptions } from "@acme/platform-core/createShop";
 import { validateShopName } from "@acme/platform-core/shops";
 import { spawnSync, execSync } from "node:child_process";
 import { readdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { validateShopEnv, readEnvFile } from "@acme/platform-core/configurator";
-import { seedShop } from "./seedShop";
 import { listProviders, listPlugins } from "./utils/providers";
-import { applyPageTemplate } from "./apply-page-template";
 import {
   prompt,
   selectProviders,
@@ -18,20 +13,10 @@ import {
   promptEmail,
   promptNavItems,
   promptPages,
-} from "./utils/prompt";
+} from "./utils/prompts";
 import { promptThemeOverrides } from "./utils/theme";
-
-const seed = process.argv.includes("--seed");
-const seedFull = process.argv.includes("--seed-full");
-const useDefaults = process.argv.includes("--defaults");
-const autoEnv = process.argv.includes("--auto-env");
-const pagesTemplateIndex = process.argv.indexOf("--pages-template");
-const pagesTemplate =
-  pagesTemplateIndex !== -1 ? process.argv[pagesTemplateIndex + 1] : undefined;
-const vaultCmdIndex = process.argv.indexOf("--vault-cmd");
-const vaultCmd =
-  vaultCmdIndex !== -1 ? process.argv[vaultCmdIndex + 1] : undefined;
-const skipPrompts = process.argv.includes("--skip-prompts");
+import { parseArgs } from "./utils/args";
+import { initShop as createAndSeedShop } from "./shop/init";
 
 function listDirNames(path: string): string[] {
   return readdirSync(path, { withFileTypes: true })
@@ -65,65 +50,19 @@ function loadTemplateDefaults(
 }
 
 export async function initShop(): Promise<void> {
-  const argv = process.argv.slice(2);
-  const configIndex = argv.indexOf("--config");
-  const envFileIndex = argv.indexOf("--env-file");
-  const profileIndex = argv.indexOf("--profile");
   const rootDir = process.cwd();
-  let envFileVars: Record<string, string> = {};
-  let envFilePath: string | undefined;
-  if (envFileIndex !== -1) {
-    envFilePath = argv[envFileIndex + 1];
-    if (!envFilePath) {
-      console.error("--env-file flag requires a path");
-      process.exit(1);
-    }
-    try {
-      envFileVars = readEnvFile(envFilePath);
-    } catch (err) {
-      console.error("Failed to load env file:", (err as Error).message);
-      process.exit(1);
-    }
-  }
-  let config: Partial<CreateShopOptions> & {
-    id?: string;
-    contact?: string;
-    plugins?: string[];
-    setupCI?: boolean;
-  } = {};
-  if (profileIndex !== -1) {
-    const profileArg = argv[profileIndex + 1];
-    if (!profileArg) {
-      console.error("--profile flag requires a name or path");
-      process.exit(1);
-    }
-    const profilePath =
-      profileArg.includes("/") || profileArg.endsWith(".json")
-        ? profileArg
-        : join(rootDir, "profiles", `${profileArg}.json`);
-    try {
-      const raw = readFileSync(profilePath, "utf8");
-      config = JSON.parse(raw);
-    } catch (err) {
-      console.error("Failed to load profile file:", (err as Error).message);
-      process.exit(1);
-    }
-  }
-  if (configIndex !== -1) {
-    const configPath = argv[configIndex + 1];
-    if (!configPath) {
-      console.error("--config flag requires a path");
-      process.exit(1);
-    }
-    try {
-      const raw = readFileSync(configPath, "utf8");
-      const fileConfig = JSON.parse(raw);
-      config = { ...config, ...fileConfig };
-    } catch (err) {
-      console.error("Failed to load config file:", (err as Error).message);
-      process.exit(1);
-    }
-  }
+  const {
+    seed,
+    seedFull,
+    useDefaults,
+    autoEnv,
+    pagesTemplate,
+    vaultCmd,
+    skipPrompts,
+    envFilePath,
+    envFileVars,
+    config,
+  } = parseArgs(process.argv.slice(2), rootDir);
 
   const rawId =
     (config.id as string | undefined) ??
@@ -319,31 +258,18 @@ export async function initShop(): Promise<void> {
   const options = rawOptions as unknown as CreateShopOptions;
 
   try {
-    await createShop(prefixedId, options);
-    if (seedFull) {
-      seedShop(prefixedId, undefined, true);
-    } else if (seed) {
-      seedShop(prefixedId);
-    }
-    try {
-      const pkgPath = join("apps", prefixedId, "package.json");
-      const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
-      pkg.dependencies = pkg.dependencies ?? {};
-      for (const id of selectedPlugins) {
-        const pkgName = pluginMap.get(id)?.packageName;
-        if (pkgName) {
-          pkg.dependencies[pkgName] = "workspace:*";
-        }
-      }
-      writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-    } catch {}
+    await createAndSeedShop({
+      id: prefixedId,
+      options,
+      selectedPlugins: Array.from(selectedPlugins),
+      pluginMap,
+      seed,
+      seedFull,
+      pagesTemplate,
+    });
   } catch (err) {
     console.error("Failed to create shop:", (err as Error).message);
     process.exit(1);
-  }
-
-  if (pagesTemplate) {
-    await applyPageTemplate(prefixedId, pagesTemplate);
   }
 
   const envPath = join("apps", prefixedId, ".env");

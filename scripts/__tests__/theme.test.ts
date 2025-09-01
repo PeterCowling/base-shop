@@ -9,13 +9,13 @@ jest.mock("../src/generate-theme.ts", () => ({
   generateThemeTokens: jest.fn(),
 }));
 
-jest.mock("../src/utils/prompt.ts", () => ({
+jest.mock("../src/utils/prompts.ts", () => ({
   prompt: jest.fn(),
 }));
 
 const loadBaseTokens = require("@acme/platform-core/createShop").loadBaseTokens as jest.Mock;
 const generateThemeTokens = require("../src/generate-theme.ts").generateThemeTokens as jest.Mock;
-const prompt = require("../src/utils/prompt.ts").prompt as jest.Mock;
+const prompt = require("../src/utils/prompts.ts").prompt as jest.Mock;
 
 const ORIGINAL_ARGV = process.argv;
 

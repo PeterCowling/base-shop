@@ -1,16 +1,20 @@
-import { listPlugins } from "../src/utils/providers";
 import { pluginEnvVars } from "@acme/platform-core/configurator";
 
-const fsMock = {
+jest.mock("node:fs", () => ({
   readdirSync: jest.fn(),
   readFileSync: jest.fn(),
-};
+}));
 
-jest.mock("node:fs", () => fsMock);
+const fsMock = require("node:fs") as {
+  readdirSync: jest.Mock;
+  readFileSync: jest.Mock;
+};
+const { listPlugins } = require("../src/utils/providers");
 
 describe("listPlugins", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    fsMock.readdirSync.mockReset();
+    fsMock.readFileSync.mockReset();
   });
 
   it("returns plugin metadata with env vars even when package.json is missing", () => {
@@ -22,20 +26,10 @@ describe("listPlugins", () => {
       }
       throw Object.assign(new Error("ENOENT"), { code: "ENOENT" });
     });
-
     const plugins = listPlugins("/root");
-
     expect(plugins).toEqual([
-      {
-        id: "stripe",
-        packageName: "@acme/stripe-plugin",
-        envVars: pluginEnvVars.stripe,
-      },
-      {
-        id: "paypal",
-        packageName: undefined,
-        envVars: pluginEnvVars.paypal,
-      },
+      { id: "stripe", packageName: "@acme/stripe-plugin", envVars: pluginEnvVars.stripe },
+      { id: "paypal", packageName: undefined, envVars: pluginEnvVars.paypal },
     ]);
   });
 
@@ -43,7 +37,6 @@ describe("listPlugins", () => {
     fsMock.readdirSync.mockImplementation(() => {
       throw new Error("boom");
     });
-
     expect(listPlugins("/root")).toEqual([]);
   });
 });

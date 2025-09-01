@@ -1,5 +1,5 @@
 // apps/shop-bcd/src/pages/404.tsx
-export default function NotFoundPage(): JSX.Element {
+export default function NotFoundPage() {
   return (
     <main
       style={{

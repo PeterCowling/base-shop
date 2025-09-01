@@ -26,9 +26,11 @@ jest.mock("@platform-core/analytics", () => ({
 
 test("processes each shop and reports result", async () => {
   const shops = ["shop-a", "shop-b"];
-  (fs.readdir as jest.Mock).mockResolvedValue(
-    shops.map((name) => ({ name, isDirectory: () => true }))
-  );
+  const file = { name: "readme.txt", isDirectory: () => false };
+  (fs.readdir as jest.Mock).mockResolvedValue([
+    ...shops.map((name) => ({ name, isDirectory: () => true })),
+    file,
+  ]);
 
   (publishQueuedPost as jest.Mock).mockImplementation(async (shop: string) => {
     if (shop === "shop-b") throw new Error("boom");
@@ -41,7 +43,9 @@ test("processes each shop and reports result", async () => {
   expect(publishQueuedPost).toHaveBeenCalledTimes(2);
   expect(publishQueuedPost).toHaveBeenCalledWith("shop-a");
   expect(publishQueuedPost).toHaveBeenCalledWith("shop-b");
+  expect(publishQueuedPost).not.toHaveBeenCalledWith(file.name);
 
+  expect(trackEvent).toHaveBeenCalledTimes(2);
   expect(trackEvent).toHaveBeenCalledWith("shop-a", {
     type: "editorial_publish",
     success: true,
@@ -51,6 +55,7 @@ test("processes each shop and reports result", async () => {
     success: false,
     error: "boom",
   });
+  expect(trackEvent).not.toHaveBeenCalledWith(file.name, expect.anything());
 
   expect(errorSpy).toHaveBeenCalledWith(
     "editorial publish failed for shop-b",
@@ -59,4 +64,3 @@ test("processes each shop and reports result", async () => {
 
   errorSpy.mockRestore();
 });
-

@@ -24,6 +24,14 @@ describe("telemetry", () => {
     expect(mod.__buffer.length).toBe(0);
   });
 
+  test("disabled outside production", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "development";
+    const mod = await import("../index");
+    mod.track("event", { a: 1 });
+    expect(mod.__buffer.length).toBe(0);
+  });
+
   test("sampling limits events", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
     process.env.NODE_ENV = "production";
@@ -34,6 +42,61 @@ describe("telemetry", () => {
     expect(mod.__buffer.length).toBe(0);
     rand.mockReturnValue(0.4);
     mod.track("event2");
+    expect(mod.__buffer.length).toBe(1);
+  });
+
+  test("clamps sample rate above 1", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "production";
+    process.env.NEXT_PUBLIC_TELEMETRY_SAMPLE_RATE = "2";
+    const mod = await import("../index");
+    jest.spyOn(Math, "random").mockReturnValue(0.9);
+    mod.track("event");
+    expect(mod.__buffer.length).toBe(1);
+  });
+
+  test("clamps sample rate below 0", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "production";
+    process.env.NEXT_PUBLIC_TELEMETRY_SAMPLE_RATE = "-1";
+    const mod = await import("../index");
+    jest.spyOn(Math, "random").mockReturnValue(0.5);
+    mod.track("event");
+    expect(mod.__buffer.length).toBe(0);
+  });
+
+  test("flush no-ops when buffer empty", async () => {
+    const mod = await import("../index");
+    await mod.__flush();
+    expect(mod.__buffer.length).toBe(0);
+  });
+
+  test("does not schedule multiple timers", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "production";
+    jest.useFakeTimers();
+    const mod = await import("../index");
+    const spy = jest.spyOn(global, "setTimeout");
+    try {
+      mod.track("event1");
+      mod.track("event2");
+      expect(spy).toHaveBeenCalledTimes(1);
+    } finally {
+      spy.mockRestore();
+      jest.useRealTimers();
+    }
+  });
+
+  test("flush restores buffer after max retries", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "production";
+    const mod = await import("../index");
+    const fetchMock = jest.fn().mockRejectedValue(new Error("fail"));
+    // @ts-ignore
+    global.fetch = fetchMock;
+    mod.track("event");
+    await mod.__flush();
+    expect(fetchMock).toHaveBeenCalledTimes(3);
     expect(mod.__buffer.length).toBe(1);
   });
 

@@ -9,9 +9,12 @@ const BUFFER: TelemetryEvent[] = [];
 const FLUSH_INTERVAL = 5000; // 5 seconds
 const MAX_RETRIES = 3;
 
-const SAMPLE_RATE = Number(
+const rawRate = Number(
   process.env.NEXT_PUBLIC_TELEMETRY_SAMPLE_RATE ?? "1"
 );
+const SAMPLE_RATE = Number.isNaN(rawRate)
+  ? 1
+  : Math.min(1, Math.max(0, rawRate));
 const ENABLED =
   process.env.NEXT_PUBLIC_ENABLE_TELEMETRY === "true" &&
   (process.env.NODE_ENV === "production" || process.env.FORCE_TELEMETRY === "true");

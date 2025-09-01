@@ -45,6 +45,7 @@ export const baseConfig = {
     "@acme/platform-core",
     "@acme/i18n",
     "@acme/template-app",
+    "@acme/shared-utils",
   ],
   // (Optional) If you prefer the global switch instead, comment out the line
   // above and uncomment the one below.  Either approach fixes the issue.

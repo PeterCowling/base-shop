@@ -1,4 +1,3 @@
-// apps/cms/tsconfig.json
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {

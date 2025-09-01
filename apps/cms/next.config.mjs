@@ -53,6 +53,10 @@ const nextConfig = {
     "@acme/types",
     "@acme/tailwind-config",
     "@acme/design-tokens",
+    // Additional packages needing transpilation:
+    "@acme/configurator",
+    "@acme/telemetry",
+    "@acme/config",
   ],
 
   images: {
@@ -76,7 +80,7 @@ const nextConfig = {
       "@": path.resolve(__dirname, "src"),
       "drizzle-orm": false,
 
-      // 🔑 EXACT-MATCH ALIASES — do NOT shadow subpaths like `react/jsx-runtime`
+      //  EXACT-MATCH ALIASES — do NOT shadow subpaths like `react/jsx-runtime`
       react$: REACT_INDEX,
       "react-dom$": REACT_DOM_INDEX,
 

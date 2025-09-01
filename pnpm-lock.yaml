@@ -707,6 +707,9 @@ importers:
       '@acme/types':
         specifier: workspace:^
         version: link:../types
+      '@portabletext/react':
+        specifier: ^3.2.1
+        version: 3.2.1(react@19.2.0-canary-3fbfb9ba-20250409)
       '@prisma/client':
         specifier: ^6.14.0
         version: 6.14.0(typescript@5.8.3)
@@ -725,6 +728,9 @@ importers:
       react-dom:
         specifier: 19.2.0-canary-3fbfb9ba-20250409
         version: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
+      ulid:
+        specifier: ^3.0.1
+        version: 3.0.1
 
   packages/platform-machine:
     dependencies:

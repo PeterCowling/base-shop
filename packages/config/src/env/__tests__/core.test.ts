@@ -90,6 +90,41 @@ describe("core env defaults", () => {
   });
 });
 
+describe("core env optional variables", () => {
+  it("parses numeric CART_TTL when valid", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      CART_TTL: "123",
+    });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.CART_TTL).toBe(123);
+    }
+  });
+
+  it("allows missing optional CART_TTL", () => {
+    const parsed = schema.safeParse({ ...baseEnv });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.CART_TTL).toBeUndefined();
+    }
+  });
+
+  it("reports non-numeric CART_TTL", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      CART_TTL: "not-a-number",
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues[0]).toMatchObject({
+        path: ["CART_TTL"],
+        message: expect.stringContaining("Expected number"),
+      });
+    }
+  });
+});
+
 describe("core env module", () => {
   const ORIGINAL_ENV = process.env;
 
@@ -121,6 +156,27 @@ describe("core env module", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "  • LATE_FEE_INTERVAL_MS: must be a number",
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws when required CART_COOKIE_SECRET is missing in production", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "production",
+    } as NodeJS.ProcessEnv;
+    delete process.env.CART_COOKIE_SECRET;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    expect(() => {
+      require("../core.js");
+    }).toThrow("Invalid core environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • CART_COOKIE_SECRET: Required",
     );
     errorSpy.mockRestore();
   });

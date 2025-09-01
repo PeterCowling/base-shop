@@ -5,6 +5,10 @@ type ErrorCtx = {
   err?: { statusCode?: number };
 };
 
+/**
+ * Minimal Pages Router error page.
+ * Handles all server errors with simple markup.
+ */
 function ErrorPage({ statusCode }: { statusCode?: number }) {
   const code = statusCode ?? 500;
   return (

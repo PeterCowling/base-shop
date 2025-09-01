@@ -1,25 +1,28 @@
-// packages/template-app/src/app/[lang]/shop/ShopClient.tsx
+// packages/template-app/src/app/[lang]/shop/ShopClient.client.tsx
+
 "use client";
 
+import type { SKU } from "@acme/types";
 import FilterBar, {
-  type Filters,
   type FilterDefinition,
+  type Filters,
 } from "@platform-core/components/shop/FilterBar";
 import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
-import type { SKU } from "@acme/types";
-import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function ShopClient({ skus }: { skus: SKU[] }) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
+
+  // Guard against null searchParams with optional chaining and default strings
+  const [query, setQuery] = useState(() => searchParams?.get("q") ?? "");
   const [filters, setFilters] = useState<Filters>(() => {
     const init: Filters = {};
-    const size = searchParams.get("size");
-    const color = searchParams.get("color");
-    const maxPrice = searchParams.get("maxPrice");
+    const size = searchParams?.get("size");
+    const color = searchParams?.get("color");
+    const maxPrice = searchParams?.get("maxPrice");
     if (size) init.size = size;
     if (color) init.color = color;
     if (maxPrice) {
@@ -28,6 +31,7 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
     }
     return init;
   });
+
   const synced = useRef(false);
   const sizes = useMemo(
     () => Array.from(new Set(skus.flatMap((p) => p.sizes))).sort(),
@@ -48,8 +52,10 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
       if (query && !p.title.toLowerCase().includes(query.toLowerCase())) {
         return false;
       }
-      if (filters.size && !p.sizes.includes(filters.size as string)) return false;
-      if (filters.color && !p.slug.startsWith(filters.color as string)) return false;
+      if (filters.size && !p.sizes.includes(filters.size as string))
+        return false;
+      if (filters.color && !p.slug.startsWith(filters.color as string))
+        return false;
       if (typeof filters.maxPrice === "number" && p.price > filters.maxPrice) {
         return false;
       }
@@ -80,13 +86,9 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search products"
-        className="mb-4 w-full max-w-xs border rounded px-2 py-1"
+        className="mb-4 w-full max-w-xs rounded border px-2 py-1"
       />
-      <FilterBar
-        definitions={defs}
-        values={filters}
-        onChange={setFilters}
-      />
+      <FilterBar definitions={defs} values={filters} onChange={setFilters} />
       <ProductGrid skus={visible} />
     </div>
   );

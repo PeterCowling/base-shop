@@ -1,10 +1,10 @@
 // packages/template-app/src/app/not-found.tsx
 
 /**
- * Minimal App Router "not found" page for template-app.
+ * Minimal App Router not-found page for template-app.
  *
- * It returns simple DOM elements (no <html>/<body> tags) so that Next.js
- * can serialize it without injecting any React element objects.
+ * Returns simple markup without importing complex templates. This prevents
+ * "Objects are not valid as a React child" errors during /404 prerendering.
  */
 export default function NotFound() {
   return (

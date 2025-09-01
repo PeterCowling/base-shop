@@ -3,8 +3,7 @@
 /**
  * Minimal Pages Router 404 page for template-app.
  *
- * Next.js uses this when exporting /404.  Keep it simple to avoid
- * serialization errors.
+ * Used by Next.js during static export. Simple markup prevents serialization errors.
  */
 export default function NotFoundPage() {
   return (
@@ -28,7 +27,7 @@ export default function NotFoundPage() {
           404 — Page not found
         </h1>
         <p style={{ marginBottom: "1.5rem", opacity: 0.8 }}>
-          We couldn&rsquo;t find that page.
+          We couldn’t find that page.
         </p>
         <a
           href="/"

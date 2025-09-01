@@ -7,7 +7,7 @@ packages:
   - "packages/platform-machine"
   - "packages/*/"
   - "packages/plugins/*"
-  - "packages/themes/*" # NEW: include all theme packages (base, dark, etc.)
+  - "packages/themes/*" # Include theme packages so @themes/base, etc. resolve
 
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"

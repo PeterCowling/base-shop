@@ -47,7 +47,8 @@ describe("sendDueCampaigns retry logic", () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
     process.env.EMAIL_BATCH_DELAY_MS = "0";
     process.env.EMAIL_BATCH_SIZE = "100";
-    process.env.NEXT_PUBLIC_BASE_URL = "";
+    // Provide a valid URL to satisfy core environment validation
+    process.env.NEXT_PUBLIC_BASE_URL = "http://localhost:3000";
     mockSendMail = jest.fn();
   };
 

@@ -2,16 +2,9 @@
 // A convenience wrapper that scaffolds a shop, validates its environment,
 // and starts the dev server in one step.
 
-import { execSync, spawnSync } from "node:child_process";
-import {
-  readdirSync,
-  readFileSync,
-  writeFileSync,
-  existsSync,
-} from "node:fs";
+import { spawnSync } from "node:child_process";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { stdin as input, stdout as output } from "node:process";
-import readline from "node:readline/promises";
 import {
   createShop,
   loadBaseTokens,
@@ -26,147 +19,13 @@ import { listProviders } from "@acme/platform-core/createShop/listProviders";
 import { seedShop } from "./seedShop";
 import { generateThemeTokens } from "./generate-theme";
 import { applyPageTemplate } from "./apply-page-template";
-
-/** Ensure Node.js and pnpm meet minimum requirements. */
-export function ensureRuntime(): void {
-  const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);
-  if (nodeMajor < 20) {
-    console.error(
-      `Node.js v20 or later is required. Current version: ${process.version}`
-    );
-    process.exit(1);
-  }
-
-  let pnpmVersion: string;
-  try {
-    pnpmVersion = execSync("pnpm --version", { encoding: "utf8" }).trim();
-  } catch {
-    console.error(
-      "Failed to determine pnpm version. pnpm v10 or later is required."
-    );
-    process.exit(1);
-  }
-
-  const pnpmMajor = Number(pnpmVersion.split(".")[0]);
-  if (pnpmMajor < 10) {
-    console.error(
-      `pnpm v10 or later is required. Current version: ${pnpmVersion}`
-    );
-    process.exit(1);
-  }
-}
-
-/** Prompt helper returning the user's input or the default value. */
-async function prompt(question: string, def = ""): Promise<string> {
-  const rl = readline.createInterface({ input, output });
-  const answer = (await rl.question(question)).trim();
-  rl.close();
-  return answer || def;
-}
-
-/** Present a list of options and return the selected value. */
-async function selectOption(
-  label: string,
-  options: readonly string[],
-  defIndex = 0
-): Promise<string> {
-  console.log(`Available ${label}:`);
-  options.forEach((p, i) => console.log(`  ${i + 1}) ${p}`));
-  while (true) {
-    const ans = await prompt(
-      `Select ${label} by number [${defIndex + 1}]: `,
-      String(defIndex + 1)
-    );
-    const idx = Number(ans) - 1;
-    if (!Number.isNaN(idx) && options[idx]) return options[idx];
-    console.error(`Invalid ${label} selection.`);
-  }
-}
-
-/** Present a list of providers and return selected providers. */
-async function selectProviders(
-  label: string,
-  providers: readonly string[]
-): Promise<string[]> {
-  console.log(`Available ${label}:`);
-  providers.forEach((p, i) => console.log(`  ${i + 1}) ${p}`));
-  const ans = await prompt(
-    `Select ${label} by number (comma-separated, empty for none): `
-  );
-  const selections = ans
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  const result = new Set<string>();
-  for (const sel of selections) {
-    const idx = Number(sel) - 1;
-    if (!Number.isNaN(idx) && providers[idx]) result.add(providers[idx]);
-  }
-  return Array.from(result);
-}
-
-/** List immediate child directory names of a given path. */
-function listDirNames(path: string): string[] {
-  return readdirSync(path, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => d.name);
-}
-
-/** Load default navItems and pages from the template's shop.json if available. */
-function loadTemplateDefaults(
-  template: string,
-): {
-  navItems?: CreateShopOptions["navItems"];
-  pages?: CreateShopOptions["pages"];
-} {
-  try {
-    const raw = readFileSync(
-      join(process.cwd(), "packages", template, "shop.json"),
-      "utf8",
-    );
-    const data = JSON.parse(raw);
-    const defaults: {
-      navItems?: CreateShopOptions["navItems"];
-      pages?: CreateShopOptions["pages"];
-    } = {};
-    if (Array.isArray(data.navItems)) defaults.navItems = data.navItems;
-    if (Array.isArray(data.pages)) defaults.pages = data.pages;
-    return defaults;
-  } catch {
-    return {};
-  }
-}
-
-/** Load navigation and page presets from data/templates/default if present. */
-function loadPresetDefaults(): {
-  navItems?: CreateShopOptions["navItems"];
-  pages?: CreateShopOptions["pages"];
-} {
-  try {
-    const base = join(process.cwd(), "data", "templates", "default");
-    const result: {
-      navItems?: CreateShopOptions["navItems"];
-      pages?: CreateShopOptions["pages"];
-    } = {};
-    try {
-      const navRaw = readFileSync(join(base, "navigation.json"), "utf8");
-      const nav = JSON.parse(navRaw);
-      if (Array.isArray(nav)) result.navItems = nav;
-    } catch {
-      /* ignore */
-    }
-    try {
-      const pagesRaw = readFileSync(join(base, "pages.json"), "utf8");
-      const pg = JSON.parse(pagesRaw);
-      if (Array.isArray(pg)) result.pages = pg;
-    } catch {
-      /* ignore */
-    }
-    return result;
-  } catch {
-    return {};
-  }
-}
+import { ensureRuntime } from "./runtime";
+import { prompt, selectOption, selectProviders } from "./utils/prompts";
+import {
+  listDirNames,
+  loadTemplateDefaults,
+  loadPresetDefaults,
+} from "./utils/templates";
 
 interface Flags {
   id?: string;

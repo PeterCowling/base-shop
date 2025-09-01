@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { loadBaseTokens } from "@acme/platform-core/createShop";
 import { generateThemeTokens } from "../generate-theme";
-import { prompt } from "./prompt";
+import { prompt } from "./prompts";
 
 export async function promptThemeOverrides(): Promise<Record<string, string>> {
   const overrides: Record<string, string> = {};

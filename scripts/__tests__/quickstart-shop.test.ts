@@ -4,29 +4,6 @@ const execSync = jest.fn();
 
 jest.mock("node:child_process", () => ({
   execSync,
-  spawnSync: jest.fn(),
-}));
-
-jest.mock("@acme/platform-core/createShop", () => ({
-  createShop: jest.fn(),
-  loadBaseTokens: jest.fn(),
-}));
-jest.mock("@acme/platform-core/shops", () => ({
-  validateShopName: jest.fn(),
-}));
-jest.mock("@acme/platform-core/configurator", () => ({
-  validateShopEnv: jest.fn(),
-  readEnvFile: jest.fn(),
-}));
-jest.mock("@acme/platform-core/createShop/listProviders", () => ({
-  listProviders: jest.fn(),
-}));
-jest.mock("../src/seedShop", () => ({ seedShop: jest.fn() }));
-jest.mock("../src/generate-theme", () => ({
-  generateThemeTokens: jest.fn(),
-}));
-jest.mock("../src/apply-page-template", () => ({
-  applyPageTemplate: jest.fn(),
 }));
 
 describe("ensureRuntime", () => {
@@ -59,7 +36,7 @@ describe("ensureRuntime", () => {
       configurable: true,
     });
 
-    const { ensureRuntime } = await import("../src/quickstart-shop.ts");
+    const { ensureRuntime } = await import("../src/runtime.ts");
 
     expect(() => ensureRuntime()).toThrow("EXIT:1");
     expect(errorSpy).toHaveBeenCalledWith(
@@ -82,7 +59,7 @@ describe("ensureRuntime", () => {
       configurable: true,
     });
 
-    const { ensureRuntime } = await import("../src/quickstart-shop.ts");
+    const { ensureRuntime } = await import("../src/runtime.ts");
 
     expect(() => ensureRuntime()).toThrow("EXIT:1");
     expect(errorSpy).toHaveBeenCalledWith(
@@ -105,7 +82,7 @@ describe("ensureRuntime", () => {
       configurable: true,
     });
 
-    const { ensureRuntime } = await import("../src/quickstart-shop.ts");
+    const { ensureRuntime } = await import("../src/runtime.ts");
 
     expect(() => ensureRuntime()).not.toThrow();
     expect(errorSpy).not.toHaveBeenCalled();

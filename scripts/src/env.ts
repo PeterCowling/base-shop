@@ -4,7 +4,7 @@ import {
 } from "@acme/platform-core/createShop";
 import { validateShopName } from "@acme/platform-core/shops";
 import { spawnSync, execSync } from "node:child_process";
-import { readdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
+import { writeFileSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { validateShopEnv, readEnvFile } from "@acme/platform-core/configurator";
 import { seedShop } from "./seedShop";
@@ -18,7 +18,8 @@ import {
   promptEmail,
   promptNavItems,
   promptPages,
-} from "./utils/prompt";
+} from "./utils/prompts";
+import { listDirNames, loadTemplateDefaults } from "./utils/templates";
 import { promptThemeOverrides } from "./utils/theme";
 
 const seed = process.argv.includes("--seed");
@@ -32,37 +33,6 @@ const vaultCmdIndex = process.argv.indexOf("--vault-cmd");
 const vaultCmd =
   vaultCmdIndex !== -1 ? process.argv[vaultCmdIndex + 1] : undefined;
 const skipPrompts = process.argv.includes("--skip-prompts");
-
-function listDirNames(path: string): string[] {
-  return readdirSync(path, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => d.name);
-}
-
-function loadTemplateDefaults(
-  root: string,
-  template: string
-): {
-  navItems?: CreateShopOptions["navItems"];
-  pages?: CreateShopOptions["pages"];
-} {
-  try {
-    const raw = readFileSync(
-      join(root, "packages", template, "shop.json"),
-      "utf8"
-    );
-    const data = JSON.parse(raw);
-    const defaults: {
-      navItems?: CreateShopOptions["navItems"];
-      pages?: CreateShopOptions["pages"];
-    } = {};
-    if (Array.isArray(data.navItems)) defaults.navItems = data.navItems;
-    if (Array.isArray(data.pages)) defaults.pages = data.pages;
-    return defaults;
-  } catch {
-    return {};
-  }
-}
 
 export async function initShop(): Promise<void> {
   const argv = process.argv.slice(2);
@@ -266,7 +236,7 @@ export async function initShop(): Promise<void> {
   const unusedEnvFileKeys = Object.keys(envFileVars).filter(
     (k) => !usedEnvFileKeys.has(k)
   );
-  const templateDefaults = loadTemplateDefaults(rootDir, template);
+  const templateDefaults = loadTemplateDefaults(template, rootDir);
   const navItems = Array.isArray(config.navItems)
     ? config.navItems
     : useDefaults && templateDefaults.navItems

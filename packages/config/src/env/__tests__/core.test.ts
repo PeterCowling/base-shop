@@ -102,6 +102,7 @@ describe("core env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       ...baseEnv,
+      NODE_ENV: "production",
       DEPOSIT_RELEASE_ENABLED: "yes",
       LATE_FEE_INTERVAL_MS: "fast",
     } as NodeJS.ProcessEnv;

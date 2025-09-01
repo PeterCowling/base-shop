@@ -12,6 +12,15 @@ describe("components route", () => {
     expect(res.status).toBe(403);
   });
 
+  it("rejects requests with invalid token", async () => {
+    const token = jwt.sign({}, "wrongsecret");
+    const res = await request(createRequestHandler())
+      .get("/components/abc")
+      .set("Authorization", `Bearer ${token}`);
+    expect(res.status).toBe(403);
+    expect(res.body).toEqual({ error: "Forbidden" });
+  });
+
   it("returns components for valid token", async () => {
     const token = jwt.sign({}, "testsecret");
     const res = await request(createRequestHandler())

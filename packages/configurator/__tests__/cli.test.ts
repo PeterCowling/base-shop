@@ -42,6 +42,20 @@ describe("configurator CLI", () => {
     expect(exitSpy).not.toHaveBeenCalled();
   });
 
+  it("exits with command's status when run fails", async () => {
+    spawnSyncMock.mockReturnValue({ status: 2 });
+    await run("dev");
+    expect(exitSpy).toHaveBeenCalledWith(2);
+    expect(spawnSyncMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("defaults to exit code 1 when status is undefined", async () => {
+    spawnSyncMock.mockReturnValue({ status: undefined });
+    await run("dev");
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    expect(spawnSyncMock).toHaveBeenCalledTimes(1);
+  });
+
   it("prints usage for unknown command", async () => {
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
 
@@ -63,9 +77,7 @@ describe("configurator CLI", () => {
     delete process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
     delete process.env.CART_COOKIE_SECRET;
 
-    const errorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     exitSpy.mockImplementation(((code?: number) => {
       throw new Error(`exit ${code}`);
     }) as any);
@@ -80,7 +92,7 @@ describe("configurator CLI", () => {
     expect(spawnSyncMock).not.toHaveBeenCalled();
     expect(errorSpy).toHaveBeenCalledWith(
       "Invalid environment variables:\n",
-      expect.anything(),
+      expect.anything()
     );
     errorSpy.mockRestore();
     process.env.NODE_ENV = prevNodeEnv;

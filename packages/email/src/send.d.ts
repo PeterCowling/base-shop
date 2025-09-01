@@ -1,3 +1,4 @@
+import "server-only";
 export interface CampaignOptions {
     /** Recipient email address */
     to: string;

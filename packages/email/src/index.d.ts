@@ -1,9 +1,11 @@
+import "server-only";
+import { sendEmail } from "./sendEmail";
 export type { CampaignOptions } from "./send";
 export { sendCampaignEmail } from "./send";
 export { registerTemplate, renderTemplate, clearTemplates } from "./templates";
 export type { AbandonedCart } from "./abandonedCart";
 export { recoverAbandonedCarts, resolveAbandonedCartDelay } from "./abandonedCart";
-export { sendEmail } from "./sendEmail";
+export { sendEmail };
 export { resolveSegment, createContact, addToList, listSegments } from "./segments";
 export { createCampaign, listCampaigns, sendDueCampaigns, syncCampaignAnalytics, } from "./scheduler";
 export { setCampaignStore, fsCampaignStore } from "./storage";

@@ -1,7 +1,7 @@
 // apps/shop-bcd/src/pages/404.tsx
 
 import { type ReactElement } from "react";
-import NotFoundClient from "../app/not-found.client";
+import NotFoundContent from "../components/NotFoundContent";
 
 /**
  * Pages router 404 page wrapper.
@@ -12,5 +12,7 @@ import NotFoundClient from "../app/not-found.client";
  * directories to display the same content without duplicating markup.
  */
 export default function NotFoundPage(): ReactElement {
-  return <NotFoundClient />;
+  // Render the shared static not‑found content.  No client‑side hooks are
+  // used here, which allows the page to be prerendered at build time.
+  return <NotFoundContent />;
 }

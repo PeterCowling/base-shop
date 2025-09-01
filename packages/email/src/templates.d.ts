@@ -1,3 +1,4 @@
+import "server-only";
 /**
  * Register or replace a template by ID.
  */

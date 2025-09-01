@@ -1,6 +1,7 @@
+import "server-only";
 import type { CampaignOptions } from "../send";
 import type { CampaignProvider } from "./types";
-import { type CampaignStats } from "../analytics";
+import { type CampaignStats } from "../stats";
 interface ProviderOptions {
     /**
       * When true, perform a lightweight API request to verify credentials. The
@@ -10,7 +11,7 @@ interface ProviderOptions {
     sanityCheck?: boolean;
 }
 export declare class ResendProvider implements CampaignProvider {
-    private client;
+    private client?;
     /** Promise resolving when optional credential checks finish. */
     readonly ready: Promise<void>;
     constructor(options?: ProviderOptions);

@@ -30,5 +30,4 @@ function NotFoundContentInner(): ReactElement {
 }
 
 const NotFoundContent = memo(NotFoundContentInner);
-
 export default NotFoundContent;

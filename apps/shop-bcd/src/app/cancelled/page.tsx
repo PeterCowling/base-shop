@@ -6,8 +6,11 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 /**
- * Payment cancelled page (non-locale specific).
- * With strictNullChecks, useSearchParams() may be null, so guard it.
+ * Non-locale-specific payment-cancelled page.
+ *
+ * With strictNullChecks enabled, useSearchParams() may return null,
+ * so we guard it with optional chaining.  This prevents TypeScript
+ * from complaining about potential null values.
  */
 function CancelledContent() {
   const searchParams = useSearchParams();

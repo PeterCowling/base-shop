@@ -21,9 +21,11 @@ type ShippingProvider = {
   ) => void | Promise<void>;
 };
 
-let pluginsReady: Promise<{
+type ShippingPluginManager = {
   shipping: { get: (id: string) => ShippingProvider | undefined };
-}> | null = null;
+};
+
+let pluginsReady: Promise<ShippingPluginManager> | null = null;
 
 function resolvePluginsDir(currentModuleUrl: string): string {
   const __dirname = path.dirname(fileURLToPath(currentModuleUrl));
@@ -31,7 +33,7 @@ function resolvePluginsDir(currentModuleUrl: string): string {
   return path.resolve(__dirname, "../../../../../../packages/plugins");
 }
 
-function getPlugins() {
+async function getPlugins(): Promise<ShippingPluginManager> {
   if (!pluginsReady) {
     const pluginsDir = resolvePluginsDir(import.meta.url);
 
@@ -48,7 +50,7 @@ function getPlugins() {
         ...(shopConfig.plugins ?? {}),
         "premier-shipping": shopConfig.premierDelivery ?? {},
       },
-    });
+    }) as Promise<ShippingPluginManager>;
   }
   return pluginsReady;
 }
@@ -64,7 +66,10 @@ const schema = z
 
 export async function POST(req: NextRequest) {
   // Quick capability check from shop.json
-  if (!(shop as any).shippingProviders?.includes("premier-shipping")) {
+  const shippingProviders = (
+    shop as { shippingProviders?: string[] }
+  ).shippingProviders;
+  if (!shippingProviders?.includes("premier-shipping")) {
     return NextResponse.json(
       { error: "Premier shipping not available" },
       { status: 400 }

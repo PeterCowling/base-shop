@@ -1,6 +1,6 @@
 import plugin from "../index";
 
-test("calculateShipping includes surcharge and label", () => {
+const createProvider = () => {
   const registry = { add: jest.fn() } as any;
   plugin.registerShipping(registry, {
     regions: ["zone1"],
@@ -10,7 +10,11 @@ test("calculateShipping includes surcharge and label", () => {
     surcharge: 2,
     serviceLabel: "Premier",
   });
-  const provider = registry.add.mock.calls[0][1] as any;
+  return registry.add.mock.calls[0][1] as any;
+};
+
+test("calculateShipping includes surcharge and label", () => {
+  const provider = createProvider();
   const result = provider.calculateShipping({
     provider: "premier-shipping",
     region: "zone1",
@@ -22,4 +26,58 @@ test("calculateShipping includes surcharge and label", () => {
   expect(result.serviceLabel).toBe("Premier");
   const slots = provider.getAvailableSlots("zone1");
   expect(slots.carriers).toContain("fast");
+});
+
+test("calculateShipping validates region, window, and carrier", () => {
+  const provider = createProvider();
+  expect(() =>
+    provider.calculateShipping({
+      provider: "premier-shipping",
+      region: "zone2",
+      window: "10-11",
+    }),
+  ).toThrow("Region not supported");
+  expect(() =>
+    provider.calculateShipping({
+      provider: "premier-shipping",
+      region: "zone1",
+      window: "11-12",
+    }),
+  ).toThrow("Invalid delivery window");
+  expect(() =>
+    provider.calculateShipping({
+      provider: "premier-shipping",
+      region: "zone1",
+      window: "10-11",
+      carrier: "slow",
+    }),
+  ).toThrow("Carrier not supported");
+});
+
+test("getAvailableSlots validates region", () => {
+  const provider = createProvider();
+  expect(() => provider.getAvailableSlots("zone2")).toThrow("Region not supported");
+});
+
+test("schedulePickup validates inputs", () => {
+  const provider = createProvider();
+  expect(() =>
+    provider.schedulePickup("zone2", "2024-01-01", "10-11"),
+  ).toThrow("Region not supported");
+  expect(() =>
+    provider.schedulePickup("zone1", "2024-01-01", "11-12"),
+  ).toThrow("Invalid delivery window");
+  expect(() =>
+    provider.schedulePickup("zone1", "2024-01-01", "10-11", "slow"),
+  ).toThrow("Carrier not supported");
+});
+
+test("schedulePickup updates internal state", () => {
+  const provider = createProvider();
+  provider.schedulePickup("zone1", "2024-01-02", "10-11", "fast");
+  expect((provider as any).state).toEqual({
+    region: "zone1",
+    date: "2024-01-02",
+    window: "10-11",
+  });
 });

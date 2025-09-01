@@ -1,0 +1,89 @@
+import { promises as fs } from 'node:fs';
+import seoAudit from '../src/seoAudit';
+import { runSeoAudit } from '../../scripts/seo-audit';
+import { trackEvent } from '@platform-core/analytics';
+import { sendCampaignEmail } from '@acme/email';
+
+const mockFiles: Record<string, string> = {};
+const directories = new Set<string>();
+
+jest.mock('node:fs', () => {
+  const path = require('node:path');
+  return {
+    promises: {
+      mkdir: jest.fn(async (dir: string) => {
+        directories.add(dir);
+      }),
+      appendFile: jest.fn(async (file: string, data: string) => {
+        const dir = path.dirname(file);
+        directories.add(dir);
+        mockFiles[file] = (mockFiles[file] || '') + data;
+      }),
+      readdir: jest.fn(async (dir: string, opts: { withFileTypes?: boolean }) => {
+        const children = Array.from(directories).filter(d => path.dirname(d) === dir);
+        if (opts && opts.withFileTypes) {
+          return children.map(name => ({
+            name: path.basename(name),
+            isDirectory: () => true,
+            isFile: () => false,
+          }));
+        }
+        return children.map(name => path.basename(name));
+      }),
+      readFile: jest.fn(async (file: string) => mockFiles[file] ?? ''),
+    },
+  };
+});
+
+jest.mock('../../scripts/seo-audit', () => ({ runSeoAudit: jest.fn() }));
+jest.mock('@platform-core/analytics', () => ({ trackEvent: jest.fn() }));
+jest.mock('@acme/email', () => ({ sendCampaignEmail: jest.fn() }));
+jest.mock('@platform-core/dataRoot', () => ({ DATA_ROOT: '/data' }));
+jest.mock('@acme/config/env/core', () => ({ coreEnv: { STOCK_ALERT_RECIPIENT: 'alerts@example.com' } }));
+
+const runSeoAuditMock = jest.mocked(runSeoAudit);
+const trackEventMock = jest.mocked(trackEvent);
+const sendCampaignEmailMock = jest.mocked(sendCampaignEmail);
+
+beforeEach(() => {
+  trackEventMock.mockReset();
+  sendCampaignEmailMock.mockReset();
+  runSeoAuditMock.mockReset();
+  directories.clear();
+  for (const key in mockFiles) delete mockFiles[key];
+});
+
+describe('seoAudit scheduled', () => {
+  it('logs audit and no email for high score', async () => {
+    directories.add('/data/high-shop');
+    runSeoAuditMock.mockResolvedValueOnce({ score: 90, recommendations: [] });
+
+    await seoAudit.scheduled();
+
+    expect(trackEventMock).toHaveBeenCalledWith('high-shop', expect.objectContaining({ score: 90, success: true }));
+    expect(sendCampaignEmailMock).not.toHaveBeenCalled();
+
+    const content = await fs.readFile('/data/high-shop/seo-audits.jsonl', 'utf8');
+    const record = JSON.parse(content.trim());
+    expect(record.score).toBe(90);
+  });
+
+  it('sends alert email for low score', async () => {
+    directories.add('/data/low-shop');
+    runSeoAuditMock.mockResolvedValueOnce({ score: 70, recommendations: [] });
+
+    await seoAudit.scheduled();
+
+    expect(trackEventMock).toHaveBeenCalledWith('low-shop', expect.objectContaining({ score: 70, success: true }));
+    expect(sendCampaignEmailMock).toHaveBeenCalledWith({
+      to: 'alerts@example.com',
+      subject: 'Low SEO score for low-shop',
+      html: '<p>Latest SEO audit score: 70</p>',
+    });
+
+    const content = await fs.readFile('/data/low-shop/seo-audits.jsonl', 'utf8');
+    const record = JSON.parse(content.trim());
+    expect(record.score).toBe(70);
+  });
+});
+

@@ -28,7 +28,7 @@ import { generateThemeTokens } from "./generate-theme";
 import { applyPageTemplate } from "./apply-page-template";
 
 /** Ensure Node.js and pnpm meet minimum requirements. */
-function ensureRuntime(): void {
+export function ensureRuntime(): void {
   const nodeMajor = Number(process.version.replace(/^v/, "").split(".")[0]);
   if (nodeMajor < 20) {
     console.error(
@@ -55,8 +55,6 @@ function ensureRuntime(): void {
     process.exit(1);
   }
 }
-
-ensureRuntime();
 
 /** Prompt helper returning the user's input or the default value. */
 async function prompt(question: string, def = ""): Promise<string> {
@@ -108,7 +106,7 @@ async function selectProviders(
 }
 
 /** List immediate child directory names of a given path. */
-function listDirNames(path: URL): string[] {
+function listDirNames(path: string): string[] {
   return readdirSync(path, { withFileTypes: true })
     .filter((d) => d.isDirectory())
     .map((d) => d.name);
@@ -123,7 +121,7 @@ function loadTemplateDefaults(
 } {
   try {
     const raw = readFileSync(
-      new URL(`../../packages/${template}/shop.json`, import.meta.url),
+      join(process.cwd(), "packages", template, "shop.json"),
       "utf8",
     );
     const data = JSON.parse(raw);
@@ -145,20 +143,20 @@ function loadPresetDefaults(): {
   pages?: CreateShopOptions["pages"];
 } {
   try {
-    const base = new URL("../../data/templates/default/", import.meta.url);
+    const base = join(process.cwd(), "data", "templates", "default");
     const result: {
       navItems?: CreateShopOptions["navItems"];
       pages?: CreateShopOptions["pages"];
     } = {};
     try {
-      const navRaw = readFileSync(new URL("navigation.json", base), "utf8");
+      const navRaw = readFileSync(join(base, "navigation.json"), "utf8");
       const nav = JSON.parse(navRaw);
       if (Array.isArray(nav)) result.navItems = nav;
     } catch {
       /* ignore */
     }
     try {
-      const pagesRaw = readFileSync(new URL("pages.json", base), "utf8");
+      const pagesRaw = readFileSync(join(base, "pages.json"), "utf8");
       const pg = JSON.parse(pagesRaw);
       if (Array.isArray(pg)) result.pages = pg;
     } catch {
@@ -279,7 +277,7 @@ async function main(): Promise<void> {
   }
 
   const themes = listDirNames(
-    new URL("../../packages/themes", import.meta.url)
+    join(process.cwd(), "packages", "themes")
   );
   let theme = args.theme ?? (config.theme as string | undefined);
   if (!theme) {
@@ -291,7 +289,7 @@ async function main(): Promise<void> {
   }
 
   const templates = listDirNames(
-    new URL("../../packages", import.meta.url)
+    join(process.cwd(), "packages")
   ).filter((n) => n.startsWith("template-"));
   let template = args.template ?? (config.template as string | undefined);
   if (!template) {
@@ -457,12 +455,15 @@ async function main(): Promise<void> {
     });
   }
 
-  spawnSync("pnpm", ["--filter", `@apps/${prefixedId}`, "dev"], {
+spawnSync("pnpm", ["--filter", `@apps/${prefixedId}`, "dev"], {
     stdio: "inherit",
   });
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+if (process.argv[1]?.includes("quickstart-shop")) {
+  ensureRuntime();
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}

@@ -1,8 +1,12 @@
 import { promises as fs } from "fs";
 
 jest.mock("@acme/config", () => ({
-  env: { OPENAI_API_KEY: undefined },
+  env: { OPENAI_API_KEY: "test-key" },
 }));
+
+jest.mock("openai", () => {
+  throw new Error("Failed to load OpenAI");
+});
 
 jest.mock("fs", () => ({
   promises: {
@@ -22,7 +26,7 @@ describe("generateMeta", () => {
     mkdirMock.mockReset();
   });
 
-  it("returns deterministic metadata and image path when no API key", async () => {
+  it("returns fallback metadata when OpenAI import fails", async () => {
     const result = await generateMeta({
       id: "123",
       title: "Title",
@@ -30,9 +34,9 @@ describe("generateMeta", () => {
     });
 
     expect(result).toEqual({
-      title: "AI title",
-      description: "AI description",
-      alt: "alt",
+      title: "Title",
+      description: "Desc",
+      alt: "Title",
       image: "/og/123.png",
     });
 

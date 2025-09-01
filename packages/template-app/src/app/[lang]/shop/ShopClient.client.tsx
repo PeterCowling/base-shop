@@ -16,7 +16,7 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Guard against null searchParams with optional chaining and default strings
+  // Safe initial state reading
   const [query, setQuery] = useState(() => searchParams?.get("q") ?? "");
   const [filters, setFilters] = useState<Filters>(() => {
     const init: Filters = {};

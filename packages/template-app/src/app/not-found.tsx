@@ -2,9 +2,6 @@
 
 /**
  * Minimal App Router not-found page for template-app.
- *
- * Returns simple markup without importing complex templates. This prevents
- * "Objects are not valid as a React child" errors during /404 prerendering.
  */
 export default function NotFound() {
   return (
@@ -28,7 +25,7 @@ export default function NotFound() {
           Page not found
         </h1>
         <p style={{ marginBottom: "1.5rem", opacity: 0.8 }}>
-          The page you&rsquo;re looking for doesn&rsquo;t exist or has moved.
+          The page you’re looking for doesn’t exist or has moved.
         </p>
         <a
           href="/"

@@ -2,8 +2,6 @@
 
 /**
  * Minimal Pages Router 404 page for template-app.
- *
- * Used by Next.js during static export. Simple markup prevents serialization errors.
  */
 export default function NotFoundPage() {
   return (

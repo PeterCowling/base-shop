@@ -1,4 +1,5 @@
-// src/components/home/HeroBanner.tsx
+// packages/ui/src/components/home/HeroBanner.client.tsx
+
 "use client";
 
 import { useTranslations } from "@acme/i18n";
@@ -41,12 +42,12 @@ export default function HeroBanner({
   slides?: Slide[];
 }) {
   const t = useTranslations();
-  const pathname = usePathname(); // e.g. "/en" or "/en/shop"
-  const langPrefix = pathname.split("/")[1] || "en";
+  const rawPathname = usePathname(); // may be null
+  const safePath = rawPathname ?? "/";
+  const langPrefix = safePath.split("/")[1] || "en";
 
   const [index, setIndex] = useState(0);
 
-  // memoised handlers
   const slideData = slides.length ? slides : DEFAULT_SLIDES;
   const next = useCallback(
     () => setIndex((i) => (i + 1) % slideData.length),
@@ -57,7 +58,6 @@ export default function HeroBanner({
     [slideData.length]
   );
 
-  // auto-advance
   useEffect(() => {
     const id = setInterval(next, 6000);
     return () => clearInterval(id);
@@ -75,20 +75,19 @@ export default function HeroBanner({
         priority
         className="object-cover transition-opacity duration-700"
       />
-      <div className="absolute inset-0 bg-fg/40" data-token="--color-fg" />
+      <div className="bg-fg/40 absolute inset-0" data-token="--color-fg" />
 
       <div
-        className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-bg"
+        className="text-bg absolute inset-0 flex flex-col items-center justify-center px-4 text-center"
         data-token="--color-bg"
       >
-        {" "}
         <h2 className="mb-6 max-w-3xl text-4xl font-bold drop-shadow-md md:text-5xl">
           {t(slide.headlineKey)}
         </h2>
         {/* locale-aware route link */}
         <Link
           href={`/${langPrefix}/shop`}
-          className="inline-block rounded-full bg-fg px-[calc(var(--space-4)*2)] py-3 font-semibold shadow-lg transition-colors hover:bg-muted"
+          className="bg-fg hover:bg-muted inline-block rounded-full px-[calc(var(--space-4)*2)] py-3 font-semibold shadow-lg transition-colors"
           data-token="--color-fg"
         >
           <span className="text-bg" data-token="--color-bg">
@@ -101,7 +100,7 @@ export default function HeroBanner({
       <button
         aria-label="Previous slide"
         onClick={prev}
-        className="absolute top-1/2 left-[var(--space-4)] -translate-y-1/2 rounded-full bg-fg/50 p-1 hover:bg-fg/70"
+        className="bg-fg/50 hover:bg-fg/70 absolute top-1/2 left-[var(--space-4)] -translate-y-1/2 rounded-full p-1"
         data-token="--color-fg"
       >
         ‹
@@ -109,7 +108,7 @@ export default function HeroBanner({
       <button
         aria-label="Next slide"
         onClick={next}
-        className="absolute top-1/2 right-[var(--space-4)] -translate-y-1/2 rounded-full bg-fg/50 p-1 hover:bg-fg/70"
+        className="bg-fg/50 hover:bg-fg/70 absolute top-1/2 right-[var(--space-4)] -translate-y-1/2 rounded-full p-1"
         data-token="--color-fg"
       >
         ›

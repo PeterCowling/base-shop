@@ -5,7 +5,6 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 import {
   Button,
-  Input,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -24,10 +23,6 @@ interface Props {
   locales: readonly Locale[];
   progress: { done: number; total: number } | null;
   isValid: boolean | null;
-  showGrid: boolean;
-  toggleGrid: () => void;
-  gridCols: number;
-  setGridCols: (n: number) => void;
 }
 
 const PageToolbar = ({
@@ -40,10 +35,6 @@ const PageToolbar = ({
   locales,
   progress,
   isValid,
-  showGrid,
-  toggleGrid,
-  gridCols,
-  setGridCols,
 }: Props) => {
   useEffect(() => {
     const presets: Record<string, string> = {
@@ -137,22 +128,6 @@ const PageToolbar = ({
             </ul>
           </DialogContent>
         </Dialog>
-      </div>
-      <div className="flex items-center justify-end gap-2">
-        <Button
-          variant={showGrid ? "default" : "outline"}
-          onClick={toggleGrid}
-        >
-          {showGrid ? "Hide grid" : "Show grid"}
-        </Button>
-        <Input
-          type="number"
-          min={1}
-          max={24}
-          value={gridCols}
-          onChange={(e) => setGridCols(Number(e.target.value))}
-          className="w-16"
-        />
       </div>
       <div className="flex justify-end gap-2">
         {locales.map((l) => (

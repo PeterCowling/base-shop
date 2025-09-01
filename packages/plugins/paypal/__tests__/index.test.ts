@@ -1,5 +1,12 @@
+const mockProcessPaypalPayment = jest.fn();
+
+jest.mock("../paypalClient", () => ({
+  processPaypalPayment: mockProcessPaypalPayment,
+}));
+
 import plugin from "../index";
 import type { PaymentRegistry } from "@acme/types";
+import { processPaypalPayment } from "../paypalClient";
 
 describe("paypal plugin", () => {
   it("parses valid custom config", () => {
@@ -70,5 +77,39 @@ describe("paypal plugin", () => {
         processPayment: expect.any(Function),
       })
     );
+  });
+
+  describe("processPayment", () => {
+    const registry: PaymentRegistry = {
+      add: jest.fn(),
+      get: jest.fn(),
+      list: jest.fn(),
+    };
+
+    plugin.registerPayments!(registry, { clientId: "abc", secret: "xyz" });
+    const provider = (registry.add as jest.Mock).mock.calls[0][1];
+
+    afterEach(() => {
+      mockProcessPaypalPayment.mockReset();
+    });
+
+    it("returns success for valid payload", async () => {
+      mockProcessPaypalPayment.mockResolvedValueOnce({ success: true });
+
+      await expect(
+        provider.processPayment({ amount: 100 } as any),
+      ).resolves.toEqual({ success: true });
+
+      expect(processPaypalPayment).toHaveBeenCalledWith({ amount: 100 });
+    });
+
+    it("propagates errors for invalid payload", async () => {
+      const err = new Error("boom");
+      mockProcessPaypalPayment.mockRejectedValueOnce(err);
+
+      await expect(
+        provider.processPayment({} as any),
+      ).rejects.toThrow(err);
+    });
   });
 });

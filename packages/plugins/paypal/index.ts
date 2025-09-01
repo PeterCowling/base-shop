@@ -5,6 +5,7 @@ import type {
   Plugin,
 } from "@acme/types";
 import { z } from "zod";
+import { processPaypalPayment } from "./paypalClient";
 
 const configSchema = z
   .object({
@@ -23,9 +24,8 @@ const paypalPlugin: Plugin<PayPalConfig> = {
   configSchema,
   registerPayments(registry: PaymentRegistry, _cfg: PayPalConfig) {
     registry.add("paypal", {
-      async processPayment(_payload: PaymentPayload) {
-        // placeholder implementation
-        return { success: true };
+      async processPayment(payload: PaymentPayload) {
+        return processPaypalPayment(payload);
       },
     });
   },

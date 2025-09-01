@@ -1,13 +1,8 @@
-import {
-  createShop,
-  type CreateShopOptions,
-} from "@acme/platform-core/createShop";
 import { validateShopName } from "@acme/platform-core/shops";
 import { spawnSync, execSync } from "node:child_process";
 import { readdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { validateShopEnv, readEnvFile } from "@acme/platform-core/configurator";
-import { seedShop } from "./seedShop";
 import { listProviders, listPlugins } from "./utils/providers";
 import { applyPageTemplate } from "./apply-page-template";
 import {
@@ -18,20 +13,11 @@ import {
   promptEmail,
   promptNavItems,
   promptPages,
-} from "./utils/prompt";
+} from "./utils/prompts";
 import { promptThemeOverrides } from "./utils/theme";
-
-const seed = process.argv.includes("--seed");
-const seedFull = process.argv.includes("--seed-full");
-const useDefaults = process.argv.includes("--defaults");
-const autoEnv = process.argv.includes("--auto-env");
-const pagesTemplateIndex = process.argv.indexOf("--pages-template");
-const pagesTemplate =
-  pagesTemplateIndex !== -1 ? process.argv[pagesTemplateIndex + 1] : undefined;
-const vaultCmdIndex = process.argv.indexOf("--vault-cmd");
-const vaultCmd =
-  vaultCmdIndex !== -1 ? process.argv[vaultCmdIndex + 1] : undefined;
-const skipPrompts = process.argv.includes("--skip-prompts");
+import { parseArgs } from "./utils/args";
+import { createShopAndSeed } from "./shop/init";
+import type { CreateShopOptions } from "@acme/platform-core/createShop";
 
 function listDirNames(path: string): string[] {
   return readdirSync(path, { withFileTypes: true })
@@ -41,7 +27,7 @@ function listDirNames(path: string): string[] {
 
 function loadTemplateDefaults(
   root: string,
-  template: string
+  template: string,
 ): {
   navItems?: CreateShopOptions["navItems"];
   pages?: CreateShopOptions["pages"];
@@ -49,7 +35,7 @@ function loadTemplateDefaults(
   try {
     const raw = readFileSync(
       join(root, "packages", template, "shop.json"),
-      "utf8"
+      "utf8",
     );
     const data = JSON.parse(raw);
     const defaults: {
@@ -65,65 +51,20 @@ function loadTemplateDefaults(
 }
 
 export async function initShop(): Promise<void> {
-  const argv = process.argv.slice(2);
-  const configIndex = argv.indexOf("--config");
-  const envFileIndex = argv.indexOf("--env-file");
-  const profileIndex = argv.indexOf("--profile");
+  const {
+    seed,
+    seedFull,
+    useDefaults,
+    autoEnv,
+    skipPrompts,
+    pagesTemplate,
+    vaultCmd,
+    config,
+    envFileVars,
+    envFilePath,
+  } = parseArgs();
+
   const rootDir = process.cwd();
-  let envFileVars: Record<string, string> = {};
-  let envFilePath: string | undefined;
-  if (envFileIndex !== -1) {
-    envFilePath = argv[envFileIndex + 1];
-    if (!envFilePath) {
-      console.error("--env-file flag requires a path");
-      process.exit(1);
-    }
-    try {
-      envFileVars = readEnvFile(envFilePath);
-    } catch (err) {
-      console.error("Failed to load env file:", (err as Error).message);
-      process.exit(1);
-    }
-  }
-  let config: Partial<CreateShopOptions> & {
-    id?: string;
-    contact?: string;
-    plugins?: string[];
-    setupCI?: boolean;
-  } = {};
-  if (profileIndex !== -1) {
-    const profileArg = argv[profileIndex + 1];
-    if (!profileArg) {
-      console.error("--profile flag requires a name or path");
-      process.exit(1);
-    }
-    const profilePath =
-      profileArg.includes("/") || profileArg.endsWith(".json")
-        ? profileArg
-        : join(rootDir, "profiles", `${profileArg}.json`);
-    try {
-      const raw = readFileSync(profilePath, "utf8");
-      config = JSON.parse(raw);
-    } catch (err) {
-      console.error("Failed to load profile file:", (err as Error).message);
-      process.exit(1);
-    }
-  }
-  if (configIndex !== -1) {
-    const configPath = argv[configIndex + 1];
-    if (!configPath) {
-      console.error("--config flag requires a path");
-      process.exit(1);
-    }
-    try {
-      const raw = readFileSync(configPath, "utf8");
-      const fileConfig = JSON.parse(raw);
-      config = { ...config, ...fileConfig };
-    } catch (err) {
-      console.error("Failed to load config file:", (err as Error).message);
-      process.exit(1);
-    }
-  }
 
   const rawId =
     (config.id as string | undefined) ??
@@ -162,10 +103,10 @@ export async function initShop(): Promise<void> {
         : await selectOption(
             "theme",
             themes,
-            Math.max(themes.indexOf("base"), 0)
+            Math.max(themes.indexOf("base"), 0),
           );
   const templates = listDirNames(join(rootDir, "packages")).filter((n) =>
-    n.startsWith("template-")
+    n.startsWith("template-"),
   );
   const template =
     config.template && templates.includes(config.template)
@@ -175,7 +116,7 @@ export async function initShop(): Promise<void> {
         : await selectOption(
             "template",
             templates,
-            Math.max(templates.indexOf("template-app"), 0)
+            Math.max(templates.indexOf("template-app"), 0),
           );
   const paymentMeta = (await listProviders("payment")) as (
     | { id: "stripe"; name: string; envVars: readonly string[] }
@@ -185,10 +126,11 @@ export async function initShop(): Promise<void> {
     ? (config.payment as ("stripe" | "paypal")[])
     : skipPrompts
       ? []
-      : await selectProviders<"stripe" | "paypal">(
-          "payment providers",
-          paymentMeta.map((p) => p.id) as ("stripe" | "paypal")[]
-        );
+      : await selectProviders<"stripe" | "paypal">
+          (
+            "payment providers",
+            paymentMeta.map((p) => p.id) as ("stripe" | "paypal")[],
+          );
   const shippingMeta = (await listProviders("shipping")) as (
     | { id: "dhl"; name: string; envVars: readonly string[] }
     | { id: "ups"; name: string; envVars: readonly string[] }
@@ -198,14 +140,15 @@ export async function initShop(): Promise<void> {
     ? (config.shipping as ("dhl" | "ups" | "premier-shipping")[])
     : skipPrompts
       ? []
-      : await selectProviders<"dhl" | "ups" | "premier-shipping">(
-          "shipping providers",
-          shippingMeta.map((p) => p.id) as (
-            | "dhl"
-            | "ups"
-            | "premier-shipping"
-          )[]
-        );
+      : await selectProviders<"dhl" | "ups" | "premier-shipping">
+          (
+            "shipping providers",
+            shippingMeta.map((p) => p.id) as (
+              | "dhl"
+              | "ups"
+              | "premier-shipping"
+            )[],
+          );
   const allPluginMeta = listPlugins(rootDir);
   type ProviderMeta = {
     id: string;
@@ -225,13 +168,13 @@ export async function initShop(): Promise<void> {
   }
   const selectedPlugins = new Set<string>([...payment, ...shipping]);
   const optionalPlugins = allPluginMeta.filter(
-    (p) => !selectedPlugins.has(p.id)
+    (p) => !selectedPlugins.has(p.id),
   );
   let extra: string[] = Array.isArray(config.plugins) ? config.plugins : [];
   if (!extra.length && optionalPlugins.length && !skipPrompts) {
     extra = await selectProviders(
       "plugins",
-      optionalPlugins.map((p) => p.id)
+      optionalPlugins.map((p) => p.id),
     );
   }
   extra.forEach((id) => selectedPlugins.add(id));
@@ -264,7 +207,7 @@ export async function initShop(): Promise<void> {
     }
   }
   const unusedEnvFileKeys = Object.keys(envFileVars).filter(
-    (k) => !usedEnvFileKeys.has(k)
+    (k) => !usedEnvFileKeys.has(k),
   );
   const templateDefaults = loadTemplateDefaults(rootDir, template);
   const navItems = Array.isArray(config.navItems)
@@ -319,24 +262,10 @@ export async function initShop(): Promise<void> {
   const options = rawOptions as unknown as CreateShopOptions;
 
   try {
-    await createShop(prefixedId, options);
-    if (seedFull) {
-      seedShop(prefixedId, undefined, true);
-    } else if (seed) {
-      seedShop(prefixedId);
-    }
-    try {
-      const pkgPath = join("apps", prefixedId, "package.json");
-      const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
-      pkg.dependencies = pkg.dependencies ?? {};
-      for (const id of selectedPlugins) {
-        const pkgName = pluginMap.get(id)?.packageName;
-        if (pkgName) {
-          pkg.dependencies[pkgName] = "workspace:*";
-        }
-      }
-      writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-    } catch {}
+    await createShopAndSeed(prefixedId, options, selectedPlugins, pluginMap, {
+      seed,
+      seedFull,
+    });
   } catch (err) {
     console.error("Failed to create shop:", (err as Error).message);
     process.exit(1);
@@ -356,16 +285,16 @@ export async function initShop(): Promise<void> {
     envPath,
     Object.entries(finalEnv)
       .map(([k, v]) => `${k}=${v}`)
-      .join("\n") + "\n"
+      .join("\n") + "\n",
   );
   const templatePath = join("apps", prefixedId, ".env.template");
   writeFileSync(
     templatePath,
-    [...requiredEnvKeys].map((k) => `${k}=`).join("\n") + "\n"
+    [...requiredEnvKeys].map((k) => `${k}=`).join("\n") + "\n",
   );
 
   const missingEnvKeys = [...requiredEnvKeys].filter(
-    (k) => !finalEnv[k] || finalEnv[k] === ""
+    (k) => !finalEnv[k] || finalEnv[k] === "",
   );
 
   let validationError: unknown;
@@ -383,12 +312,12 @@ export async function initShop(): Promise<void> {
 
   if (unusedEnvFileKeys.length) {
     console.warn(
-      `Unused variables in ${envFilePath ?? "env file"}: ${unusedEnvFileKeys.join(", ")}`
+      `Unused variables in ${envFilePath ?? "env file"}: ${unusedEnvFileKeys.join(", ")}`,
     );
   }
   if (missingEnvKeys.length) {
     console.error(
-      `Missing environment variables: ${missingEnvKeys.join(", ")}`
+      `Missing environment variables: ${missingEnvKeys.join(", ")}`,
     );
   }
   if (validationError) {
@@ -399,12 +328,12 @@ export async function initShop(): Promise<void> {
 
   if (autoEnv || skipPrompts) {
     console.warn(
-      `\nWARNING: placeholder environment variables were written to apps/${prefixedId}/.env. Replace any TODO_* values with real secrets before deployment.`
+      `\nWARNING: placeholder environment variables were written to apps/${prefixedId}/.env. Replace any TODO_* values with real secrets before deployment.`,
     );
   }
 
   console.log(
-    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Review data/shops/${prefixedId}/shop.json\n  - Use the CMS Page Builder to lay out your pages\n  - Run: pnpm --filter @apps/${prefixedId} dev`
+    `\nNext steps:\n  - Review apps/${prefixedId}/.env\n  - Review data/shops/${prefixedId}/shop.json\n  - Use the CMS Page Builder to lay out your pages\n  - Run: pnpm --filter @apps/${prefixedId} dev`,
   );
 }
 

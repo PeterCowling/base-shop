@@ -3,15 +3,8 @@
 // and starts the dev server in one step.
 
 import { execSync, spawnSync } from "node:child_process";
-import {
-  readdirSync,
-  readFileSync,
-  writeFileSync,
-  existsSync,
-} from "node:fs";
+import { readdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { stdin as input, stdout as output } from "node:process";
-import readline from "node:readline/promises";
 import {
   createShop,
   loadBaseTokens,
@@ -26,6 +19,7 @@ import { listProviders } from "@acme/platform-core/createShop/listProviders";
 import { seedShop } from "./seedShop";
 import { generateThemeTokens } from "./generate-theme";
 import { applyPageTemplate } from "./apply-page-template";
+import { prompt, selectOption, selectProviders } from "./utils/prompts";
 
 /** Ensure Node.js and pnpm meet minimum requirements. */
 export function ensureRuntime(): void {
@@ -54,55 +48,6 @@ export function ensureRuntime(): void {
     );
     process.exit(1);
   }
-}
-
-/** Prompt helper returning the user's input or the default value. */
-async function prompt(question: string, def = ""): Promise<string> {
-  const rl = readline.createInterface({ input, output });
-  const answer = (await rl.question(question)).trim();
-  rl.close();
-  return answer || def;
-}
-
-/** Present a list of options and return the selected value. */
-async function selectOption(
-  label: string,
-  options: readonly string[],
-  defIndex = 0
-): Promise<string> {
-  console.log(`Available ${label}:`);
-  options.forEach((p, i) => console.log(`  ${i + 1}) ${p}`));
-  while (true) {
-    const ans = await prompt(
-      `Select ${label} by number [${defIndex + 1}]: `,
-      String(defIndex + 1)
-    );
-    const idx = Number(ans) - 1;
-    if (!Number.isNaN(idx) && options[idx]) return options[idx];
-    console.error(`Invalid ${label} selection.`);
-  }
-}
-
-/** Present a list of providers and return selected providers. */
-async function selectProviders(
-  label: string,
-  providers: readonly string[]
-): Promise<string[]> {
-  console.log(`Available ${label}:`);
-  providers.forEach((p, i) => console.log(`  ${i + 1}) ${p}`));
-  const ans = await prompt(
-    `Select ${label} by number (comma-separated, empty for none): `
-  );
-  const selections = ans
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  const result = new Set<string>();
-  for (const sel of selections) {
-    const idx = Number(sel) - 1;
-    if (!Number.isNaN(idx) && providers[idx]) result.add(providers[idx]);
-  }
-  return Array.from(result);
 }
 
 /** List immediate child directory names of a given path. */

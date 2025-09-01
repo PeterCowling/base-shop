@@ -26,7 +26,7 @@ async function loadPromptModule() {
   jest.resetModules();
   stdinMock = new PassThrough();
   stdoutMock = new MockWritable();
-  return await import("../src/utils/prompt.ts");
+  return await import("../src/utils/prompts.ts");
 }
 
 function feed(lines: string[]) {

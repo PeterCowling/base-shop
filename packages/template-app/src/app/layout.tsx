@@ -2,18 +2,8 @@
 import { CartProvider } from "@platform-core/contexts/CartContext";
 import { CurrencyProvider } from "@platform-core/contexts/CurrencyContext";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import AnalyticsScripts from "./AnalyticsScripts";
 import "./globals.css";
-
-const geistSans = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-});
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
-});
 
 export const metadata: Metadata = {
   title: "Base-Shop",
@@ -26,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en">
       <body className="antialiased">
         {/* Global providers go here */}
         <AnalyticsScripts />

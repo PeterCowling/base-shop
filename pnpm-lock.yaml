@@ -808,6 +808,12 @@ importers:
       '@themes/base':
         specifier: workspace:*
         version: link:../themes/base
+      react:
+        specifier: 19.2.0-canary-3fbfb9ba-20250409
+        version: 19.2.0-canary-3fbfb9ba-20250409
+      react-dom:
+        specifier: 19.2.0-canary-3fbfb9ba-20250409
+        version: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
     devDependencies:
       next:
         specifier: ^15.3.5

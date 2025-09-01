@@ -6,7 +6,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "bin": {
-    "configurator": "./dist/index.js"
+    "configurator": "bin/configurator.js"
   },
   "exports": {
     ".": {
@@ -24,8 +24,13 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepack": "pnpm run build"
   },
+  "files": [
+    "bin",
+    "dist"
+  ],
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250702.0",
     "@types/node": "^24.0.10",

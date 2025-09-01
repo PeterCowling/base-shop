@@ -1,9 +1,9 @@
 import { jest } from "@jest/globals";
 import type { Page } from "@acme/types";
+import { createHmac } from "node:crypto";
 import { nowIso } from "@date-utils";
 
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
-process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.NEXT_PUBLIC_SHOP_ID = "shop";
 
 if (typeof (Response as any).json !== "function") {
@@ -12,6 +12,10 @@ if (typeof (Response as any).json !== "function") {
 }
 
 afterEach(() => jest.resetModules());
+
+function tokenFor(id: string): string {
+  return createHmac("sha256", "testsecret").update(id).digest("hex");
+}
 
 test("valid token returns page JSON", async () => {
   const page: Page = {
@@ -29,27 +33,58 @@ test("valid token returns page JSON", async () => {
     __esModule: true,
     getPages,
   }));
-  jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
   jest.doMock("@acme/config", () => ({
     __esModule: true,
-    env: {
-      PREVIEW_TOKEN_SECRET: "testsecret",
-      UPGRADE_PREVIEW_TOKEN_SECRET: "testsecret",
-      NEXT_PUBLIC_SHOP_ID: "shop",
-    },
+    env: { PREVIEW_TOKEN_SECRET: "testsecret", NEXT_PUBLIC_SHOP_ID: "shop" },
   }));
-
-  const { GET: tokenGET } = await import("../../src/app/api/preview-token/route");
-  const tokenRes = await tokenGET(new Request("http://test?pageId=1") as any);
-  const { token } = (await tokenRes.json()) as { token: string };
 
   const { onRequest } = await import("../../src/routes/preview/[pageId]");
   const res = await onRequest({
     params: { pageId: "1" },
-    request: new Request(`http://test?token=${token}`),
+    request: new Request(`http://test?token=${tokenFor("1")}`),
   } as any);
 
   expect(res.status).toBe(200);
   expect(await res.json()).toEqual(page);
+});
+
+test("missing page yields 404", async () => {
+  const getPages = jest.fn(async () => []);
+  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+    __esModule: true,
+    getPages,
+  }));
+  jest.doMock("@acme/config", () => ({
+    __esModule: true,
+    env: { PREVIEW_TOKEN_SECRET: "testsecret", NEXT_PUBLIC_SHOP_ID: "shop" },
+  }));
+
+  const { onRequest } = await import("../../src/routes/preview/[pageId]");
+  const res = await onRequest({
+    params: { pageId: "1" },
+    request: new Request(`http://test?token=${tokenFor("1")}`),
+  } as any);
+
+  expect(res.status).toBe(404);
+});
+
+test("invalid token yields 401", async () => {
+  const getPages = jest.fn(async () => []);
+  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+    __esModule: true,
+    getPages,
+  }));
+  jest.doMock("@acme/config", () => ({
+    __esModule: true,
+    env: { PREVIEW_TOKEN_SECRET: "testsecret", NEXT_PUBLIC_SHOP_ID: "shop" },
+  }));
+
+  const { onRequest } = await import("../../src/routes/preview/[pageId]");
+  const res = await onRequest({
+    params: { pageId: "1" },
+    request: new Request(`http://test?token=bad`),
+  } as any);
+
+  expect(res.status).toBe(401);
 });
 

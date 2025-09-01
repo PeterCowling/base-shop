@@ -28,4 +28,16 @@ describe("components route", () => {
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ components: [] });
   });
+
+  it("returns config diff when requested", async () => {
+    const token = jwt.sign({}, "testsecret");
+    const res = await request(createRequestHandler())
+      .get("/components/abc?diff")
+      .set("Authorization", `Bearer ${token}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      components: [],
+      configDiff: { templates: [], translations: [] },
+    });
+  });
 });

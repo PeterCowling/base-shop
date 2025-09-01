@@ -12,6 +12,14 @@ describe("components route", () => {
     expect(res.status).toBe(403);
   });
 
+  it("returns 400 for invalid shop id", async () => {
+    const res = await request(createRequestHandler()).get(
+      "/components/INVALID_ID"
+    );
+    expect(res.status).toBe(400);
+    expect(res.body).toEqual({ error: "Invalid shop id" });
+  });
+
   it("returns components for valid token", async () => {
     const token = jwt.sign({}, "testsecret");
     const res = await request(createRequestHandler())

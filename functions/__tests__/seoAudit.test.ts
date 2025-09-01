@@ -85,5 +85,23 @@ describe('seoAudit scheduled', () => {
     const record = JSON.parse(content.trim());
     expect(record.score).toBe(70);
   });
+
+  it('tracks failure when audit rejects', async () => {
+    const error = new Error('network fail');
+    directories.add('/data/error-shop');
+    runSeoAuditMock.mockRejectedValueOnce(error);
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+    await seoAudit.scheduled();
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith('seo audit failed for error-shop', error);
+    expect(trackEventMock).toHaveBeenCalledWith('error-shop', {
+      type: 'audit_complete',
+      success: false,
+      error: error.message,
+    });
+
+    consoleErrorSpy.mockRestore();
+  });
 });
 

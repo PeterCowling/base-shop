@@ -1,14 +1,5 @@
 // apps/shop-bcd/src/app/not-found.tsx
-/**
- * Minimal App Router "not found" page.
- *
- * This is rendered when no route matches under the /app folder.  It must
- * avoid using <html>/<body> tags because those are provided by the
- * RootLayout.  It returns simple DOM elements so that Next.js can serialize
- * it without injecting any React element objects.
- */
-
-export default function NotFound() {
+export default function NotFound(): JSX.Element {
   return (
     <div
       style={{
@@ -30,7 +21,7 @@ export default function NotFound() {
           Page not found
         </h1>
         <p style={{ marginBottom: "1.5rem", opacity: 0.8 }}>
-          The page you're looking for doesn't exist or has moved.
+          The page you&apos;re looking for doesn&apos;t exist or has moved.
         </p>
         <a
           href="/"

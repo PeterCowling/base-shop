@@ -1,13 +1,5 @@
 // apps/shop-bcd/src/pages/404.tsx
-/**
- * Minimal Pages Router 404 page.
- *
- * Next.js uses this file when exporting a static 404 (and as a fallback
- * for App Router errors).  Keeping it simple and free of external
- * dependencies prevents the “Objects are not valid as a React child” error.
- */
-
-export default function NotFoundPage() {
+export default function NotFoundPage(): JSX.Element {
   return (
     <main
       style={{

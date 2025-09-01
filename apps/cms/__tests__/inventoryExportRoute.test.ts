@@ -1,0 +1,117 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+import { withTempRepo, mockSessionAndEmail } from "./helpers";
+
+describe("inventory export route", () => {
+  afterEach(() => {
+    jest.resetModules();
+    jest.resetAllMocks();
+  });
+
+  it("exports inventory as csv", async () => {
+    await withTempRepo(async (dir) => {
+      const items = [
+        {
+          sku: "a",
+          productId: "a",
+          variantAttributes: { size: "M", color: "red" },
+          quantity: 1,
+          lowStockThreshold: 1,
+        },
+        {
+          sku: "b",
+          productId: "b",
+          variantAttributes: { size: "L", color: "blue" },
+          quantity: 2,
+          lowStockThreshold: 1,
+        },
+      ];
+      await fs.writeFile(
+        path.join(dir, "data", "shops", "test", "inventory.json"),
+        JSON.stringify(items),
+        "utf8",
+      );
+      mockSessionAndEmail();
+      const route = await import("../src/app/api/data/[shop]/inventory/export/route");
+      const req = new Request("http://test?format=csv");
+      const res = await route.GET(req as any, { params: Promise.resolve({ shop: "test" }) });
+      expect(res.status).toBe(200);
+      expect(res.headers.get("content-type")).toContain("text/csv");
+      const text = await res.text();
+      expect(text).toContain(
+        "sku,productId,variant.size,variant.color,quantity,lowStockThreshold",
+      );
+      expect(text).toContain("a,a,M,red,1,1");
+    });
+  });
+
+  it("exports empty inventory as csv", async () => {
+    await withTempRepo(async (dir) => {
+      await fs.writeFile(
+        path.join(dir, "data", "shops", "test", "inventory.json"),
+        "[]",
+        "utf8",
+      );
+      mockSessionAndEmail();
+      const route = await import("../src/app/api/data/[shop]/inventory/export/route");
+      const req = new Request("http://test?format=csv");
+      const res = await route.GET(req as any, {
+        params: Promise.resolve({ shop: "test" }),
+      });
+      expect(res.headers.get("content-type")).toContain("text/csv");
+      expect(res.status).toBe(200);
+      const text = await res.text();
+      expect(text).toBe("");
+    });
+  });
+
+  it("exports inventory as json", async () => {
+    await withTempRepo(async (dir) => {
+      const items = [
+        {
+          sku: "a",
+          productId: "a",
+          variantAttributes: { size: "M", color: "red" },
+          quantity: 1,
+          lowStockThreshold: 1,
+        },
+        {
+          sku: "b",
+          productId: "b",
+          variantAttributes: { size: "L", color: "blue" },
+          quantity: 2,
+          lowStockThreshold: 1,
+        },
+      ];
+      await fs.writeFile(
+        path.join(dir, "data", "shops", "test", "inventory.json"),
+        JSON.stringify(items),
+        "utf8",
+      );
+      mockSessionAndEmail();
+      const route = await import("../src/app/api/data/[shop]/inventory/export/route");
+      const req = new Request("http://test?format=json");
+      const res = await route.GET(req as any, { params: Promise.resolve({ shop: "test" }) });
+      expect(res.headers.get("content-type")).toContain("application/json");
+      const json = await res.json();
+      expect(json).toEqual([
+        {
+          sku: "a",
+          productId: "a",
+          "variant.size": "M",
+          "variant.color": "red",
+          quantity: 1,
+          lowStockThreshold: 1,
+        },
+        {
+          sku: "b",
+          productId: "b",
+          "variant.size": "L",
+          "variant.color": "blue",
+          quantity: 2,
+          lowStockThreshold: 1,
+        },
+      ]);
+    });
+  });
+});

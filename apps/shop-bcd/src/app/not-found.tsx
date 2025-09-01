@@ -1,5 +1,5 @@
 // apps/shop-bcd/src/app/not-found.tsx
-export default function NotFound() {
+export default function NotFound(): JSX.Element {
   return (
     <div
       style={{

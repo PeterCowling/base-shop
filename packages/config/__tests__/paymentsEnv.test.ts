@@ -9,6 +9,25 @@ describe("paymentsEnv", () => {
     jest.restoreAllMocks();
   });
 
+  it("parses valid Stripe keys without warnings", async () => {
+    process.env = {
+      STRIPE_SECRET_KEY: "sk_test_123",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_456",
+      STRIPE_WEBHOOK_SECRET: "whsec_789",
+    } as NodeJS.ProcessEnv;
+
+    const spy = jest.spyOn(console, "warn").mockImplementation(() => {});
+
+    const { paymentsEnv } = await import("../src/env/payments");
+
+    expect(spy).not.toHaveBeenCalled();
+    expect(paymentsEnv).toEqual({
+      STRIPE_SECRET_KEY: "sk_test_123",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_456",
+      STRIPE_WEBHOOK_SECRET: "whsec_789",
+    });
+  });
+
   it("falls back to defaults and warns on invalid env", async () => {
     process.env = {
       STRIPE_SECRET_KEY: "",

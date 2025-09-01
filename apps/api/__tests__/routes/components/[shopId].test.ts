@@ -12,9 +12,18 @@ describe("components route", () => {
     expect(res.status).toBe(403);
   });
 
+  it("rejects requests with invalid token", async () => {
+    const token = jwt.sign({}, "wrongsecret");
+    const res = await request(createRequestHandler())
+      .get("/components/abc")
+      .set("Authorization", `Bearer ${token}`);
+    expect(res.status).toBe(403);
+    expect(res.body).toEqual({ error: "Forbidden" });
+  });
+
   it("returns 400 for invalid shop id", async () => {
     const res = await request(createRequestHandler()).get(
-      "/components/INVALID_ID"
+      "/components/INVALID$ID"
     );
     expect(res.status).toBe(400);
     expect(res.body).toEqual({ error: "Invalid shop id" });

@@ -80,6 +80,8 @@ const nextConfig = {
       ...(config.resolve.alias ?? {}),
       "@": path.resolve(__dirname, "src"),
       "drizzle-orm": false,
+      "entities/decode": "entities/lib/decode.js",
+      "entities/escape": "entities/lib/escape.js",
 
       // EXACT-MATCH ALIASES — do NOT shadow subpaths like `react/jsx-runtime`
       react$: REACT_INDEX,

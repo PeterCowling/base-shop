@@ -12,11 +12,7 @@ interface Props {
         total: number;
     } | null;
     isValid: boolean | null;
-    showGrid: boolean;
-    toggleGrid: () => void;
-    gridCols: number;
-    setGridCols: (n: number) => void;
 }
-declare const PageToolbar: ({ deviceId, setDeviceId, orientation, setOrientation, locale, setLocale, locales, progress, isValid, showGrid, toggleGrid, gridCols, setGridCols, }: Props) => import("react/jsx-runtime").JSX.Element;
+declare const PageToolbar: ({ deviceId, setDeviceId, orientation, setOrientation, locale, setLocale, locales, progress, isValid, }: Props) => import("react/jsx-runtime").JSX.Element;
 export default PageToolbar;
 //# sourceMappingURL=PageToolbar.d.ts.map

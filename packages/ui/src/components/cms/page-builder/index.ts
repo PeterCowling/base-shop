@@ -43,6 +43,8 @@ export { defaults, CONTAINER_TYPES } from "./defaults";
 export { componentMetadataSchema, layoutSchema, historyStateSchema, reducer } from "./state";
 export { default as usePageBuilderState } from "./hooks/usePageBuilderState";
 export { default as usePageBuilderDnD } from "./hooks/usePageBuilderDnD";
+export { default as usePageBuilderControls } from "./hooks/usePageBuilderControls";
+export { default as useAutoSave } from "./hooks/useAutoSave";
 export { default as useCanvasDrag } from "./useCanvasDrag";
 export { default as useCanvasResize } from "./useCanvasResize";
 export { default as useBlockDimensions } from "./useBlockDimensions";

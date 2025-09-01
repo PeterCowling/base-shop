@@ -20,8 +20,10 @@ import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
 import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
 import usePageBuilderControls from "./hooks/usePageBuilderControls";
+import useAutoSave from "./hooks/useAutoSave";
 import PreviewPane from "./PreviewPane";
 import HistoryControls from "./HistoryControls";
+import GridSettings from "./GridSettings";
 
 interface Props {
   page: Page;
@@ -117,11 +119,6 @@ const PageBuilder = memo(function PageBuilder({
   });
   const [gridSize, setGridSize] = useState(1);
   const [snapPosition, setSnapPosition] = useState<number | null>(null);
-  const [autoSaveState, setAutoSaveState] = useState<
-    "idle" | "saving" | "saved" | "error"
-  >("idle");
-  const saveDebounceRef = useRef<number | null>(null);
-  const initialRender = useRef(true);
 
   const { dndContext, insertIndex, activeType } = usePageBuilderDnD({
     components,
@@ -183,41 +180,21 @@ const PageBuilder = memo(function PageBuilder({
     formDataRef.current = formData;
   }, [formData]);
 
-  const handleAutoSave = useCallback(() => {
-    setAutoSaveState("saving");
-    onSave(formData)
-      .then(() => {
-        setAutoSaveState("saved");
-        setTimeout(() => setAutoSaveState("idle"), 1000);
-      })
-      .catch(() => {
-        setAutoSaveState("error");
-        setToast({
-          open: true,
-          message: "Auto-save failed. Click to retry.",
-          retry: () => {
-            setToast((t) => ({ ...t, open: false }));
-            handleAutoSave();
-          },
-        });
+  const { autoSaveState, handleAutoSave } = useAutoSave({
+    onSave,
+    formData,
+    deps: [components, state],
+    onError: (retry) => {
+      setToast({
+        open: true,
+        message: "Auto-save failed. Click to retry.",
+        retry: () => {
+          setToast((t) => ({ ...t, open: false }));
+          retry();
+        },
       });
-  }, [onSave, formData]);
-
-  useEffect(() => {
-    if (initialRender.current) {
-      initialRender.current = false;
-      return;
-    }
-    if (saveDebounceRef.current) {
-      clearTimeout(saveDebounceRef.current);
-    }
-    saveDebounceRef.current = window.setTimeout(handleAutoSave, 2000);
-    return () => {
-      if (saveDebounceRef.current) {
-        clearTimeout(saveDebounceRef.current);
-      }
-    };
-  }, [handleAutoSave, components, state]);
+    },
+  });
 
   const handlePublish = useCallback(() => {
     return onPublish(formData).then(() => setPublishCount((c) => c + 1));
@@ -245,22 +222,18 @@ const PageBuilder = memo(function PageBuilder({
             locales={locales}
             progress={progress}
             isValid={isValid}
-            showGrid={showGrid}
-            toggleGrid={toggleGrid}
-            gridCols={gridCols}
-            setGridCols={setGridCols}
           />
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              onClick={startTour}
-            >
+            <GridSettings
+              showGrid={showGrid}
+              toggleGrid={toggleGrid}
+              gridCols={gridCols}
+              setGridCols={setGridCols}
+            />
+            <Button variant="outline" onClick={startTour}>
               Tour
             </Button>
-            <Button
-              variant="outline"
-              onClick={togglePreview}
-            >
+            <Button variant="outline" onClick={togglePreview}>
               {showPreview ? "Hide preview" : "Show preview"}
             </Button>
           </div>

@@ -1,3 +1,4 @@
+import path from "path";
 import { promises as fs } from "fs";
 
 jest.mock("@acme/config", () => ({
@@ -5,7 +6,21 @@ jest.mock("@acme/config", () => ({
 }));
 
 jest.mock("openai", () => {
-  throw new Error("Failed to load OpenAI");
+  class OpenAI {
+    responses = {
+      create: jest.fn().mockResolvedValue({
+        output: [
+          { content: [{ text: '{"title":"T","description":"D","alt":"A"}' }] },
+        ],
+      }),
+    };
+    images = {
+      generate: jest.fn().mockResolvedValue({
+        data: [{ b64_json: Buffer.from("img").toString("base64") }],
+      }),
+    };
+  }
+  return { default: OpenAI };
 });
 
 jest.mock("fs", () => ({
@@ -26,7 +41,7 @@ describe("generateMeta", () => {
     mkdirMock.mockReset();
   });
 
-  it("returns fallback metadata when OpenAI import fails", async () => {
+  it("generates metadata using OpenAI and writes image", async () => {
     const result = await generateMeta({
       id: "123",
       title: "Title",
@@ -34,14 +49,17 @@ describe("generateMeta", () => {
     });
 
     expect(result).toEqual({
-      title: "Title",
-      description: "Desc",
-      alt: "Title",
+      title: "T",
+      description: "D",
+      alt: "A",
       image: "/og/123.png",
     });
 
-    expect(mkdirMock).not.toHaveBeenCalled();
-    expect(writeFileMock).not.toHaveBeenCalled();
+    const filePath = path.join(process.cwd(), "public", "og", "123.png");
+    expect(mkdirMock).toHaveBeenCalledWith(path.dirname(filePath), {
+      recursive: true,
+    });
+    expect(writeFileMock).toHaveBeenCalledWith(filePath, Buffer.from("img"));
   });
 });
 

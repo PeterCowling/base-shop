@@ -107,9 +107,12 @@ describe("core env module", () => {
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    expect(() => require("../core.js")).toThrow(
-      "Invalid core environment variables",
-    );
+    expect(() => {
+      const mod = require("../core.js");
+      // Access a property to trigger validation.
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      mod.coreEnv.CART_COOKIE_SECRET;
+    }).toThrow("Invalid core environment variables");
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid core environment variables:",
     );

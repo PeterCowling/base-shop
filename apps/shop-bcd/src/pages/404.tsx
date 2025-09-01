@@ -1,41 +1,16 @@
 // apps/shop-bcd/src/pages/404.tsx
-export default function NotFoundPage(): JSX.Element {
-  return (
-    <main
-      style={{
-        minHeight: "100dvh",
-        display: "grid",
-        placeItems: "center",
-        padding: "4rem 1rem",
-        textAlign: "center",
-      }}
-    >
-      <div>
-        <h1
-          style={{
-            fontSize: "2rem",
-            lineHeight: 1.2,
-            marginBottom: "0.75rem",
-          }}
-        >
-          404 — Page not found
-        </h1>
-        <p style={{ marginBottom: "1.5rem", opacity: 0.8 }}>
-          We couldn’t find that page.
-        </p>
-        <a
-          href="/"
-          style={{
-            display: "inline-block",
-            padding: "0.625rem 1rem",
-            border: "1px solid currentColor",
-            borderRadius: "0.5rem",
-            textDecoration: "none",
-          }}
-        >
-          Go to homepage
-        </a>
-      </div>
-    </main>
-  );
+
+import { type ReactElement } from "react";
+import NotFoundClient from "../app/not-found.client";
+
+/**
+ * Pages router 404 page wrapper.
+ *
+ * Even though the Pages router runs entirely on the client, we wrap
+ * the underlying presentational component to preserve a single source of
+ * truth for the 404 UI.  This allows both the `app/` and `pages/`
+ * directories to display the same content without duplicating markup.
+ */
+export default function NotFoundPage(): ReactElement {
+  return <NotFoundClient />;
 }

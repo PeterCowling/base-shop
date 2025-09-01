@@ -1,41 +1,17 @@
 // apps/shop-bcd/src/app/not-found.tsx
-export default function NotFound(): JSX.Element {
-  return (
-    <div
-      style={{
-        minHeight: "100dvh",
-        display: "grid",
-        placeItems: "center",
-        padding: "4rem 1rem",
-        textAlign: "center",
-      }}
-    >
-      <div>
-        <h1
-          style={{
-            fontSize: "2rem",
-            lineHeight: 1.2,
-            marginBottom: "0.75rem",
-          }}
-        >
-          Page not found
-        </h1>
-        <p style={{ marginBottom: "1.5rem", opacity: 0.8 }}>
-          The page you&apos;re looking for doesn&apos;t exist or has moved.
-        </p>
-        <a
-          href="/"
-          style={{
-            display: "inline-block",
-            padding: "0.625rem 1rem",
-            border: "1px solid currentColor",
-            borderRadius: "0.5rem",
-            textDecoration: "none",
-          }}
-        >
-          Go to homepage
-        </a>
-      </div>
-    </div>
-  );
+
+import { type ReactElement } from "react";
+import NotFoundClient from "./not-found.client";
+
+/**
+ * Server component wrapper for the application router’s not‑found page.
+ *
+ * Next.js requires not‑found pages under the `app/` directory to be
+ * server components.  However, any hooks or client‑side logic must be
+ * isolated to a client component.  By delegating rendering to
+ * {@link NotFoundClient}, this file satisfies that requirement while still
+ * returning a valid React element to Next.js.
+ */
+export default function NotFound(): ReactElement {
+  return <NotFoundClient />;
 }

@@ -1,6 +1,14 @@
 // apps/shop-bcd/src/app/api/delivery/route.ts
 import "@acme/zod-utils/initZod";
-import { initPlugins } from "@platform-core/plugins";
+import {
+  initPlugins,
+  type PaymentPayload,
+  type PaymentProvider,
+  type ShippingProvider as BaseShippingProvider,
+  type ShippingRequest,
+  type WidgetComponent,
+  type WidgetProps,
+} from "@platform-core/plugins";
 import { parseJsonBody } from "@shared-utils";
 import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
@@ -12,20 +20,30 @@ import shop from "../../../../shop.json";
 export const runtime = "nodejs";
 
 // Lazily initialize plugins to avoid side-effects at module import time.
-type ShippingProvider = {
+interface PremierShippingProvider
+  extends BaseShippingProvider<ShippingRequest> {
   schedulePickup: (
     region: string,
     date: string,
     hourWindow: string,
-    carrier?: string
+    carrier?: string,
   ) => void | Promise<void>;
-};
+}
 
-type ShippingPluginManager = {
-  shipping: { get: (id: string) => ShippingProvider | undefined };
-};
+type PremierPluginManager = Awaited<
+  ReturnType<
+    typeof initPlugins<
+      PaymentPayload,
+      ShippingRequest,
+      WidgetProps,
+      PaymentProvider<PaymentPayload>,
+      PremierShippingProvider,
+      WidgetComponent<WidgetProps>
+    >
+  >
+>;
 
-let pluginsReady: Promise<ShippingPluginManager> | null = null;
+let pluginsReady: Promise<PremierPluginManager> | null = null;
 
 function resolvePluginsDir(currentModuleUrl: string): string {
   const __dirname = path.dirname(fileURLToPath(currentModuleUrl));
@@ -33,7 +51,7 @@ function resolvePluginsDir(currentModuleUrl: string): string {
   return path.resolve(__dirname, "../../../../../../packages/plugins");
 }
 
-async function getPlugins(): Promise<ShippingPluginManager> {
+async function getPlugins(): Promise<PremierPluginManager> {
   if (!pluginsReady) {
     const pluginsDir = resolvePluginsDir(import.meta.url);
 
@@ -44,13 +62,20 @@ async function getPlugins(): Promise<ShippingPluginManager> {
       shippingProviders?: string[];
     };
 
-    pluginsReady = initPlugins({
+    pluginsReady = initPlugins<
+      PaymentPayload,
+      ShippingRequest,
+      WidgetProps,
+      PaymentProvider<PaymentPayload>,
+      PremierShippingProvider,
+      WidgetComponent<WidgetProps>
+    >({
       directories: [pluginsDir],
       config: {
         ...(shopConfig.plugins ?? {}),
         "premier-shipping": shopConfig.premierDelivery ?? {},
       },
-    }) as Promise<ShippingPluginManager>;
+    });
   }
   return pluginsReady;
 }

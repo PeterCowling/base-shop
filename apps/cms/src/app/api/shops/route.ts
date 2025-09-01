@@ -9,7 +9,6 @@ export async function GET() {
     const shops = await listShops();
     return NextResponse.json(shops);
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error("[api/shops:GET] error", err);
     return NextResponse.json(
       { error: (err as Error).message },

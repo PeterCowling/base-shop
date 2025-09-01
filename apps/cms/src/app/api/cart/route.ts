@@ -78,7 +78,6 @@ export async function PUT(req: NextRequest) {
     res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
     return res;
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error("[api/cart:PUT] error", err);
     return NextResponse.json(
       { ok: false, error: (err as Error).message },
@@ -136,7 +135,6 @@ export async function POST(req: NextRequest) {
     res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
     return res;
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error("[api/cart:POST] error", err);
     return NextResponse.json(
       { ok: false, error: (err as Error).message },
@@ -173,7 +171,6 @@ export async function PATCH(req: NextRequest) {
     res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
     return res;
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error("[api/cart:PATCH] error", err);
     return NextResponse.json(
       { ok: false, error: (err as Error).message },
@@ -210,7 +207,6 @@ export async function DELETE(req: NextRequest) {
     res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
     return res;
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error("[api/cart:DELETE] error", err);
     return NextResponse.json(
       { ok: false, error: (err as Error).message },
@@ -231,7 +227,6 @@ export async function GET(req: NextRequest) {
     res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
     return res;
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error("[api/cart:GET] error", err);
     return NextResponse.json(
       { ok: false, error: (err as Error).message },

@@ -1,18 +1,32 @@
 // apps/cms/instrumentation.ts
-export async function register() {
-  // Smoke signal so we know this is loaded.
-  // eslint-disable-next-line no-console
+
+/**
+ * Register instrumentation handlers for the CMS when running in a browser or
+ * application environment.  This module emits a simple log when loaded so
+ * developers know the instrumentation has been initialized.  It also
+ * attaches listeners for uncaught exceptions and unhandled promise
+ * rejections.  To satisfy strict lint rules, we avoid using `any` and
+ * instead normalise unknown errors into proper `Error` instances before
+ * logging them.
+ */
+export async function register(): Promise<void> {
+  // Smoke signal so we know this module has been loaded. We deliberately
+  // retain the use of `console.log` here; in a production environment you
+  // would likely replace this with a dedicated logger.
   console.log("[instrumentation] register() loaded");
 
+  // Handle uncaught exceptions.  Ensure unknown values are coerced into an
+  // `Error` so that stack traces are available and TypeScript does not
+  // complain about implicit `any` usage.
   process.on("uncaughtException", (err: unknown) => {
-    const e = err as Error;
-    // eslint-disable-next-line no-console
-    console.error("[instrumentation] uncaughtException\n", e?.stack ?? e);
+    const e: Error = err instanceof Error ? err : new Error(String(err));
+    console.error("[instrumentation] uncaughtException\n", e.stack ?? e);
   });
 
+  // Handle unhandled promise rejections in a similar manner.
   process.on("unhandledRejection", (reason: unknown) => {
-    const e = reason as any;
-    // eslint-disable-next-line no-console
-    console.error("[instrumentation] unhandledRejection\n", e?.stack ?? e);
+    const e: Error =
+      reason instanceof Error ? reason : new Error(String(reason));
+    console.error("[instrumentation] unhandledRejection\n", e.stack ?? e);
   });
 }

@@ -1,4 +1,5 @@
 // apps/cms/src/app/api/cart/route.ts
+
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -20,7 +21,11 @@ import { z } from "zod";
 
 export const runtime = "nodejs";
 
-/** Safe, memoized store creation so failures happen inside handlers, not at import time. */
+/**
+ * Safe, memoized store creation so failures happen inside handlers rather than at
+ * module import time.  By using `ReturnType` on the factory function we keep
+ * the store's type up‑to‑date with its implementation.
+ */
 type CartStore = ReturnType<typeof createCartStore>;
 let _store: CartStore | null = null;
 const ensureCartStore = (): CartStore => {
@@ -29,7 +34,11 @@ const ensureCartStore = (): CartStore => {
   return _store;
 };
 
-/** Never call decode on falsy/empty cookie values. */
+/**
+ * Decode the cart identifier from the request's cookie.  It returns `null`
+ * when the cookie is missing, empty or malformed.  Never call decode on
+ * falsy/empty cookie values.
+ */
 const getDecodedCartId = (req: NextRequest): string | null => {
   const raw = req.cookies.get(CART_COOKIE)?.value ?? null;
   if (!raw) return null;

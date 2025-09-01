@@ -1,3 +1,5 @@
+// scripts/check-tailwind-preset.ts
+
 import { createRequire } from "node:module";
 import preset from "../packages/tailwind-config/src/index.ts";
 
@@ -9,15 +11,13 @@ const nodeRequire = createRequire(
   typeof __filename !== "undefined" ? __filename : process.cwd() + "/"
 );
 
-let resolvedPresetPath = "<unresolved>";
+let resolvedPresetPath = " ";
 try {
   resolvedPresetPath = nodeRequire.resolve("@acme/tailwind-config");
-  // eslint-disable-next-line no-console
   console.log(
     `[tailwind.config] ✅  @acme/tailwind-config resolved → ${resolvedPresetPath}`
   );
 } catch (err) {
-  // eslint-disable-next-line no-console
   console.error(
     "[tailwind.config] ❌  @acme/tailwind-config could NOT be resolved.\n" +
       "Is the package in pnpm-workspace.yaml? Did you run `pnpm install`?",
@@ -25,7 +25,6 @@ try {
   );
 }
 
-// eslint-disable-next-line no-console
 console.log(
   "[tailwind.config] ℹ️  preset keys:",
   preset && typeof preset === "object" ? Object.keys(preset) : "not an object"

@@ -1,9 +1,10 @@
 // packages/zod-utils/src/initZod.ts
+
 /* istanbul ignore file */
 import { z } from "zod";
 import { friendlyErrorMap } from "./zodErrorMap.js";
 
-// Avoid double-install in HMR
+// Avoid double‑installation during hot module reloading
 let __installed = false;
 
 export function initZod(): void {
@@ -16,7 +17,6 @@ export function initZod(): void {
       try {
         return friendlyErrorMap(issue, ctx);
       } catch (e) {
-        // eslint-disable-next-line no-console
         console.error("[zod-utils] errorMap threw; falling back", e);
         return { message: ctx.defaultError };
       }

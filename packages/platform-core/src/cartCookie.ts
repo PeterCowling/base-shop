@@ -1,4 +1,5 @@
 // packages/platform-core/src/cartCookie.ts
+
 import { loadCoreEnv } from "@acme/config/env/core";
 import { skuSchema } from "@acme/types";
 import crypto from "crypto";
@@ -12,7 +13,7 @@ export type { CartLine, CartState } from "./cart";
 export const CART_COOKIE = "__Host-CART_ID";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
-/** Lazy secret accessor to avoid import-time throws */
+/** Lazy secret accessor to avoid import‑time throws */
 let _secret: string | null = null;
 function getSecret(): string {
   if (_secret) return _secret;
@@ -79,12 +80,11 @@ export function decodeCartCookie(raw?: string | null): unknown {
   } catch {
     /* fall through */
   }
-  // eslint-disable-next-line no-console
   console.warn("Invalid cart cookie");
   return null;
 }
 
-/** Build the Set-Cookie header value for HTTP responses. */
+/** Build the Set‑Cookie header value for HTTP responses. */
 export function asSetCookieHeader(value: string): string {
   return `${CART_COOKIE}=${value}; Path=/; Max-Age=${MAX_AGE}; SameSite=Strict; Secure; HttpOnly`;
 }

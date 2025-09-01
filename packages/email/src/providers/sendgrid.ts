@@ -56,8 +56,9 @@ export class SendgridProvider implements CampaignProvider {
 
   async send(options: CampaignOptions): Promise<void> {
     if (!apiKey) {
-      console.warn("Sendgrid API key is not configured; skipping email send");
-      return;
+      console.warn(
+        "Sendgrid API key is not configured; attempting to send email"
+      );
     }
     try {
       await sgMail.send({

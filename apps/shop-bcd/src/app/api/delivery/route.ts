@@ -1,6 +1,13 @@
 // apps/shop-bcd/src/app/api/delivery/route.ts
 import "@acme/zod-utils/initZod";
-import { initPlugins } from "@platform-core/plugins";
+import {
+  type PaymentPayload,
+  type PaymentProvider,
+  type ShippingProvider as BaseShippingProvider,
+  type ShippingRequest,
+  type WidgetProps,
+  initPlugins,
+} from "@platform-core/plugins";
 import { parseJsonBody } from "@shared-utils";
 import { NextRequest, NextResponse } from "next/server";
 import path from "node:path";
@@ -11,8 +18,14 @@ import shop from "../../../../shop.json";
 // Ensure Node runtime (we use node path/fs)
 export const runtime = "nodejs";
 
+const shopConfig = shop as unknown as {
+  plugins?: Record<string, unknown>;
+  premierDelivery?: Record<string, unknown>;
+  shippingProviders?: string[];
+};
+
 // Lazily initialize plugins to avoid side-effects at module import time.
-type ShippingProvider = {
+type PremierShippingProvider = BaseShippingProvider<ShippingRequest> & {
   schedulePickup: (
     region: string,
     date: string,
@@ -22,7 +35,7 @@ type ShippingProvider = {
 };
 
 let pluginsReady: Promise<{
-  shipping: { get: (id: string) => ShippingProvider | undefined };
+  shipping: { get: (id: string) => PremierShippingProvider | undefined };
 }> | null = null;
 
 function resolvePluginsDir(currentModuleUrl: string): string {
@@ -34,15 +47,13 @@ function resolvePluginsDir(currentModuleUrl: string): string {
 function getPlugins() {
   if (!pluginsReady) {
     const pluginsDir = resolvePluginsDir(import.meta.url);
-
-    // NOTE: Keep these entries pure data; avoid reading env or IO at top-level.
-    const shopConfig = shop as unknown as {
-      plugins?: Record<string, unknown>;
-      premierDelivery?: Record<string, unknown>;
-      shippingProviders?: string[];
-    };
-
-    pluginsReady = initPlugins({
+    pluginsReady = initPlugins<
+      PaymentPayload,
+      ShippingRequest,
+      WidgetProps,
+      PaymentProvider<PaymentPayload>,
+      PremierShippingProvider
+    >({
       directories: [pluginsDir],
       config: {
         ...(shopConfig.plugins ?? {}),
@@ -64,7 +75,7 @@ const schema = z
 
 export async function POST(req: NextRequest) {
   // Quick capability check from shop.json
-  if (!(shop as any).shippingProviders?.includes("premier-shipping")) {
+  if (!shopConfig.shippingProviders?.includes("premier-shipping")) {
     return NextResponse.json(
       { error: "Premier shipping not available" },
       { status: 400 }

@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals";
 
-class RedisClientMock {}
+const RedisClientMock = jest.fn();
 class RedisSessionStoreMock {}
 
 jest.mock("@upstash/redis", () => ({ Redis: RedisClientMock }));
@@ -25,6 +25,7 @@ const ORIGINAL_ENV = { ...process.env };
 beforeEach(() => {
   jest.resetModules();
   process.env = { ...ORIGINAL_ENV };
+  RedisClientMock.mockReset();
 });
 
 afterAll(() => {
@@ -60,6 +61,30 @@ describe("createSessionStore", () => {
 
     const store = await createSessionStore();
     expect(store).toBe(customStore);
+  });
+
+  it("falls back to MemorySessionStore and logs when Redis instantiation fails", async () => {
+    process.env.UPSTASH_REDIS_REST_URL = "https://example";
+    process.env.UPSTASH_REDIS_REST_TOKEN = "token";
+
+    const err = new Error("boom");
+    RedisClientMock.mockImplementation(() => {
+      throw err;
+    });
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    const { createSessionStore } = await import("../store");
+    const { MemorySessionStore } = await import("../memoryStore");
+
+    const store = await createSessionStore();
+
+    expect(store).toBeInstanceOf(MemorySessionStore);
+    expect(errorSpy).toHaveBeenCalledWith(
+      "Failed to initialize Redis session store",
+      err,
+    );
+
+    errorSpy.mockRestore();
   });
 });
 

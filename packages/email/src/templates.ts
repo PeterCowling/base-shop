@@ -42,7 +42,33 @@ function renderToStaticMarkup(node: ReactNode): string {
   return `<${type}${attrs}>${inner}</${type}>`;
 }
 
-const React = nodeRequire("react") as typeof import("react");
+let React: typeof import("react");
+try {
+  React = nodeRequire("react") as typeof import("react");
+} catch {
+  // Provide a minimal React fallback for environments where React isn't
+  // installed (e.g. during tests). This implements only the features used by
+  // this module: `createElement`, `isValidElement`, and `Children.map`.
+  type ReactFallbackElement = { type: unknown; props: Record<string, unknown> };
+
+  React = {
+    createElement(type: unknown, props: Record<string, unknown> | null, ...children: ReactNode[]): ReactFallbackElement {
+      return {
+        type,
+        props: { ...(props ?? {}), children: children.length > 1 ? children : children[0] },
+      } as ReactFallbackElement;
+    },
+    isValidElement(element: unknown): element is ReactFallbackElement {
+      return typeof element === "object" && element !== null && "type" in (element as any) && "props" in (element as any);
+    },
+    Children: {
+      map(children: ReactNode, fn: (child: ReactNode) => string): string[] {
+        if (children === undefined || children === null || typeof children === "boolean") return [];
+        return Array.isArray(children) ? (children as ReactNode[]).map(fn) : [fn(children)];
+      },
+    },
+  } as unknown as typeof import("react");
+}
 
 const { window } = new JSDOM("");
 const DOMPurify = createDOMPurify(window);

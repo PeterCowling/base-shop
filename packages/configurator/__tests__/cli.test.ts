@@ -54,4 +54,35 @@ describe("configurator CLI", () => {
     expect(exitSpy).toHaveBeenCalledWith(1);
     logSpy.mockRestore();
   });
+
+  it("exits when required env vars are missing", async () => {
+    const prevNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = "production";
+    await import("@acme/config/env");
+    delete process.env.STRIPE_SECRET_KEY;
+    delete process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+    delete process.env.CART_COOKIE_SECRET;
+
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    exitSpy.mockImplementation(((code?: number) => {
+      throw new Error(`exit ${code}`);
+    }) as any);
+
+    try {
+      await run("dev");
+    } catch {
+      // ignore mocked exit error
+    }
+
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    expect(spawnSyncMock).not.toHaveBeenCalled();
+    expect(errorSpy).toHaveBeenCalledWith(
+      "Invalid environment variables:\n",
+      expect.anything(),
+    );
+    errorSpy.mockRestore();
+    process.env.NODE_ENV = prevNodeEnv;
+  });
 });

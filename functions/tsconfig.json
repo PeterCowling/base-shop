@@ -1,4 +1,4 @@
-// functions/tsconfig.json  ★ revised
+// functions/tsconfig.json
 {
   "extends": "../tsconfig.base.json",
 
@@ -17,7 +17,24 @@
     "module": "esnext",
     "moduleResolution": "node",
     "outDir": "dist",
-    "declarationMap": true
+    "declarationMap": true,
+
+    /*
+     * Override path mappings for the email package.
+     *
+     * The default tsconfig.base.json maps `@acme/email` to the package's `src` folder.
+     * When compiling the Workers in the `functions` package, that mapping pulls
+     * TypeScript source files from outside this package's `rootDir`, which triggers
+     * the "File is not under 'rootDir'" error (TS6059). To avoid this,
+     * remap `@acme/email` to the package root. TypeScript will then resolve
+     * module imports using the package's `types` field (pointing at `dist/index.d.ts`)
+     * rather than the `.ts` sources. This keeps all compiled `.ts` inputs within
+     * the configured `rootDir` and sidesteps TS6059.
+     */
+    "baseUrl": ".",
+    "paths": {
+      "@acme/email": ["../packages/email"]
+    }
   },
 
   /* build these libraries first */
@@ -25,7 +42,8 @@
     { "path": "../packages/types" },
     { "path": "../packages/platform-core" },
     { "path": "../packages/lib" },
-    { "path": "../packages/config" }
+    { "path": "../packages/config" },
+    { "path": "../packages/email" }
   ],
 
   /* production Workers source only */

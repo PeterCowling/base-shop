@@ -2,22 +2,25 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 
 /**
- * Monorepo-wide Jest config (CommonJS so Node can load it without
- * `"type":"module"`).  Test suites themselves still execute in ESM via ts-jest.
+ * Monorepo‑wide Jest configuration.
+ *
+ * This configuration must be a CommonJS module because Node loads it
+ * directly when spawning Jest processes. Individual test suites still
+ * execute in ESM via ts‑jest.
  */
 
 const path = require("path");
 const { pathsToModuleNameMapper } = require("ts-jest");
 const ts = require("typescript");
 
-// Ensure Browserslist doesn't try to resolve config files from
-// temporary directories created during Jest transforms. This prevents
-// ENOENT errors when packages like `@babel/core` invoke Browserslist
-// while handling files compiled in non-existent temp paths.
+// Ensure Browserslist doesn't attempt to load configuration files from
+// temporary directories created during Jest transforms. Without this,
+// libraries like `@babel/core` may invoke Browserslist against paths
+// that do not exist, resulting in ENOENT errors.
 process.env.BROWSERSLIST = process.env.BROWSERSLIST || "defaults";
 
 /* ──────────────────────────────────────────────────────────────────────
- * 1️⃣  Resolve TS path aliases once so we don't hand-maintain 30+ maps
+ * 1️⃣  Resolve TS path aliases once so we don't hand‑maintain 30+ maps
  * ──────────────────────────────────────────────────────────────────── */
 const tsconfig = ts.readConfigFile(
   path.resolve(__dirname, "tsconfig.base.json"),
@@ -26,19 +29,65 @@ const tsconfig = ts.readConfigFile(
 
 const tsPaths = tsconfig?.compilerOptions?.paths
   ? pathsToModuleNameMapper(tsconfig.compilerOptions.paths, {
-      prefix: "<rootDir>/",
+      // Prefix absolute imports from the repository root.  Keep the space
+      // prefix intact because other configuration files rely on this
+      // convention when constructing absolute paths.
+      prefix: " /",
     })
   : {};
 
-// Ensure a single React instance across the monorepo tests
-const reactPath = path.resolve(__dirname, "node_modules/react");
-const reactDomPath = path.resolve(__dirname, "node_modules/react-dom");
-const reactDomClientPath = path.resolve(reactDomPath, "client.js");
-const reactJsxRuntimePath = path.resolve(reactPath, "jsx-runtime.js");
-const reactJsxDevRuntimePath = path.resolve(reactPath, "jsx-dev-runtime.js");
+/* ──────────────────────────────────────────────────────────────────────
+ * 2️⃣  Ensure a single React instance across monorepo tests
+ *
+ * Most packages in this repository rely on the React version bundled
+ * within Next.js rather than declaring `react` and `react-dom` as
+ * dependencies.  When tests run via Jest there is no webpack aliasing,
+ * so resolving modules like `react/jsx-runtime` may fail if `react`
+ * isn't installed.  The logic below attempts to resolve React and
+ * ReactDOM from the local `node_modules` first, then falls back to
+ * Next.js's compiled React packages if those modules are absent.
+ *
+ * This approach avoids forcing every package to depend on React while
+ * still providing stable module identifiers for Jest's moduleNameMapper.
+ */
+let reactPath;
+let reactDomPath;
+let reactDomClientPath;
+let reactJsxRuntimePath;
+let reactJsxDevRuntimePath;
+
+try {
+  // Prefer a locally installed React.  We use require.resolve on
+  // `package.json` to locate the package root regardless of symlinks.
+  reactPath = path.dirname(require.resolve("react/package.json"));
+  reactDomPath = path.dirname(require.resolve("react-dom/package.json"));
+  reactDomClientPath = require.resolve("react-dom/client.js");
+  reactJsxRuntimePath = require.resolve("react/jsx-runtime.js");
+  reactJsxDevRuntimePath = require.resolve("react/jsx-dev-runtime.js");
+} catch {
+  // If React isn't installed (e.g. when relying on Next's bundled
+  // version), fall back to the compiled copies shipped with Next.js.
+  const compiledReactPkg = require.resolve(
+    "next/dist/compiled/react/package.json"
+  );
+  reactPath = path.dirname(compiledReactPkg);
+  const compiledReactDomPkg = require.resolve(
+    "next/dist/compiled/react-dom/package.json"
+  );
+  reactDomPath = path.dirname(compiledReactDomPkg);
+  reactDomClientPath = require.resolve(
+    "next/dist/compiled/react-dom/client.js"
+  );
+  reactJsxRuntimePath = require.resolve(
+    "next/dist/compiled/react/jsx-runtime.js"
+  );
+  reactJsxDevRuntimePath = require.resolve(
+    "next/dist/compiled/react/jsx-dev-runtime.js"
+  );
+}
 
 /* ──────────────────────────────────────────────────────────────────────
- * 2️⃣  Jest configuration proper
+ * 3️⃣  Jest configuration proper
  * ──────────────────────────────────────────────────────────────────── */
 /** @type {import('jest').Config} */
 module.exports = {
@@ -51,12 +100,12 @@ module.exports = {
     "^.+\\.(ts|tsx)$": [
       "ts-jest",
       {
-        tsconfig: "<rootDir>/tsconfig.test.json",
+        tsconfig: " /tsconfig.test.json",
         useESM: true,
         diagnostics: false,
-        // Disable automatic Babel transpilation; ts-jest handles TypeScript
+        // Disable automatic Babel transpilation; ts‑jest handles TypeScript
         // compilation itself and Node 20 supports the necessary syntax.
-        // This prevents ts-jest from attempting to load `babel-jest`, which
+        // This prevents ts‑jest from attempting to load `babel-jest`, which
         // previously caused "createTransformer is not a function" errors when
         // the module was missing or incompatible.
         babelConfig: false,
@@ -64,25 +113,22 @@ module.exports = {
     ],
   },
   transformIgnorePatterns: [
-    // transpile ESM-only dependencies that would break under CommonJS
+    // transpile ESM‑only dependencies that would break under CommonJS
     "/node_modules/(?!(jose|next-auth|ulid|@upstash/redis|uncrypto)/)",
   ],
 
   /* ------------------------------------------------------------------ */
   /* Global setup & polyfills                                           */
   /* ------------------------------------------------------------------ */
-  setupFiles: ["dotenv/config", "<rootDir>/test/setupFetchPolyfill.ts"],
-  setupFilesAfterEnv: [
-    "<rootDir>/jest.setup.ts",
-    "<rootDir>/test/polyfills/messageChannel.js",
-  ],
+  setupFiles: ["dotenv/config", " /test/setupFetchPolyfill.ts"],
+  setupFilesAfterEnv: [" /jest.setup.ts", " /test/polyfills/messageChannel.js"],
 
   /* ------------------------------------------------------------------ */
   /* Ignore paths completely                                             */
   /* ------------------------------------------------------------------ */
   testPathIgnorePatterns: [
-    "<rootDir>/test/e2e/",
-    "<rootDir>/.storybook/",
+    " /test/e2e/",
+    " /.storybook/",
     "/.storybook/test-runner/",
   ],
 
@@ -90,106 +136,66 @@ module.exports = {
   /* Path aliases & quick stubs                                          */
   /* ------------------------------------------------------------------ */
   moduleNameMapper: {
-    // stub type-only imports such as  `import "./next-auth.d.ts"`
-    "^.+\\.d\\.ts$": "<rootDir>/test/emptyModule.js",
+    // stub type‑only imports such as  `import "./next-auth.d.ts"`
+    "^.+\\.d\\.ts$": " /test/emptyModule.js",
 
     // use TypeScript implementation for data root helper during tests
-    "^\\./dataRoot\\.js$": "<rootDir>/packages/platform-core/src/dataRoot.ts",
+    "^\\./dataRoot\\.js$": " /packages/platform-core/src/dataRoot.ts",
 
     // map config package relative ESM imports to TypeScript sources
-    "^\\./auth\\.js$": "<rootDir>/packages/config/src/env/auth.ts",
-    "^\\./cms\\.js$": "<rootDir>/packages/config/src/env/cms.ts",
-    "^\\./email\\.js$": "<rootDir>/packages/config/src/env/email.ts",
-    "^\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
-    "^\\./env/core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
-    "^\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
-    "^\\./shipping\\.js$": "<rootDir>/packages/config/src/env/shipping.ts",
-    "^\\./foo\\.js$": "<rootDir>/packages/config/src/env/foo.impl.ts",
-    "^\\./foo\\.impl\\.ts$": "<rootDir>/packages/config/src/env/foo.impl.ts",
+    "^\\./auth\\.js$": " /packages/config/src/env/auth.ts",
+    "^\\./cms\\.js$": " /packages/config/src/env/cms.ts",
+    "^\\./email\\.js$": " /packages/config/src/env/email.ts",
+    "^\\./core\\.js$": " /packages/config/src/env/core.ts",
+    "^\\./env/core\\.js$": " /packages/config/src/env/core.ts",
+    "^\\./payments\\.js$": " /packages/config/src/env/payments.ts",
+    "^\\./shipping\\.js$": " /packages/config/src/env/shipping.ts",
+    "^\\./foo\\.js$": " /packages/config/src/env/foo.impl.ts",
+    "^\\./foo\\.impl\\.ts$": " /packages/config/src/env/foo.impl.ts",
 
     // explicit barrels (no trailing segment)
-    "^@platform-core$": "<rootDir>/packages/platform-core/src/index.ts",
-    "^@ui/src$": "<rootDir>/packages/ui/src/index.ts",
+    "^@platform-core$": " /packages/platform-core/src/index.ts",
+    "^@ui/src$": " /packages/ui/src/index.ts",
 
-    // specific rules that must override tsconfig-derived ones
-      "^@platform-core/repositories/shopSettings$":
-        "<rootDir>/packages/platform-core/src/repositories/settings.server.ts",
-      "^@platform-core/repositories/rentalOrders$":
-        "<rootDir>/packages/platform-core/src/repositories/rentalOrders.server.ts",
-      "^@platform-core/repositories/pages$":
-        "<rootDir>/packages/platform-core/src/repositories/pages/index.server.ts",
-    "^@platform-core/(.*)$": "<rootDir>/packages/platform-core/src/$1",
-    "^@ui/src/(.*)$": "<rootDir>/packages/ui/src/$1",
-      "^@config/src/env$": "<rootDir>/packages/config/src/env/index.ts",
-      "^@config/src/env/core$": "<rootDir>/packages/config/src/env/core.ts",
-      "^@config/src/env/(.*)$":
-        "<rootDir>/packages/config/src/env/$1.ts",
-      "^@config/src/(.*)$": "<rootDir>/packages/config/src/$1",
-    "^@acme/config/env$": "<rootDir>/packages/config/src/env/index.ts",
-    "^@acme/config/env/core$": "<rootDir>/packages/config/src/env/core.ts",
-    "^@acme/config/env/(.*)$":
-      "<rootDir>/packages/config/src/env/$1.ts",
-    "^@acme/config$": "<rootDir>/packages/config/src/env/index.ts",
-    "^@acme/config/(.*)$": "<rootDir>/packages/config/src/$1",
-    "^@acme/platform-machine/src/(.*)$": "<rootDir>/packages/platform-machine/src/$1",
-    "^@acme/plugin-sanity$": "<rootDir>/test/__mocks__/pluginSanityStub.ts",
-    "^@acme/plugin-sanity/(.*)$": "<rootDir>/test/__mocks__/pluginSanityStub.ts",
-    "^@acme/zod-utils/initZod$": "<rootDir>/test/emptyModule.js",
+    // specific rules that must override tsconfig‑derived ones
+    "^@platform-core/repositories/shopSettings$":
+      " /packages/platform-core/src/repositories/settings.server.ts",
+    "^@platform-core/repositories/rentalOrders$":
+      " /packages/platform-core/src/repositories/rentalOrders.server.ts",
+    "^@platform-core/repositories/pages$":
+      " /packages/platform-core/src/repositories/pages/index.server.ts",
+    "^@platform-core/(.*)$": " /packages/platform-core/src/$1",
+    "^@ui/src/(.*)$": " /packages/ui/src/$1",
+    "^@config/src/env$": " /packages/config/src/env/index.ts",
+    "^@config/src/env/core$": " /packages/config/src/env/core.ts",
+    "^@config/src/env/(.*)$": " /packages/config/src/env/$1.ts",
+    "^@config/src/(.*)$": " /packages/config/src/$1",
+    "^@acme/config/env$": " /packages/config/src/env/index.ts",
+    "^@acme/config/env/core$": " /packages/config/src/env/core.ts",
+    "^@acme/config/env/(.*)$": " /packages/config/src/env/$1.ts",
+    "^@acme/config$": " /packages/config/src/env/index.ts",
+    "^@acme/config/(.*)$": " /packages/config/src/$1",
+    "^@acme/platform-machine/src/(.*)$": " /packages/platform-machine/src/$1",
+    "^@acme/plugin-sanity$": " /test/__mocks__/pluginSanityStub.ts",
+    "^@acme/plugin-sanity/(.*)$": " /test/__mocks__/pluginSanityStub.ts",
+    "^@acme/zod-utils/initZod$": " /test/emptyModule.js",
 
     // resolve relative .js imports within packages/config/env to their .ts sources
-    "^\\./env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.ts",
+    "^\\./env/(.*)\\.js$": " /packages/config/src/env/$1.ts",
     "^\\./(auth|cms|email|core|payments|shipping)\\.js$":
-      "<rootDir>/packages/config/src/env/$1.ts",
+      " /packages/config/src/env/$1.ts",
 
     // CMS application aliases
-    "^@/components/atoms/shadcn$":
-      "<rootDir>/test/__mocks__/shadcnDialogStub.tsx",
-    "^@/i18n/(.*)$": "<rootDir>/packages/i18n/src/$1",
-    "^@/components/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
-    "^@/(.*)$": "<rootDir>/apps/cms/src/$1",
+    "^@/components/atoms/shadcn$": " /test/__mocks__/shadcnDialogStub.tsx",
+    "^@/i18n/(.*)$": " /packages/i18n/src/$1",
+    "^@/components/(.*)$": " /test/__mocks__/componentStub.js",
+    "^@/(.*)$": " /apps/cms/src/$1",
 
-    // context mocks
-    "^@platform-core/contexts/ThemeContext(?:\\.js)?$":
-      "<rootDir>/test/__mocks__/themeContextMock.tsx",
-    "^@platform-core/contexts/CurrencyContext(?:\\.js)?$":
-      "<rootDir>/test/__mocks__/currencyContextMock.tsx",
-    "^@acme/platform-core/contexts/ThemeContext(?:\\.js)?$":
-      "<rootDir>/test/__mocks__/themeContextMock.tsx",
-    "^@acme/platform-core/contexts/CurrencyContext(?:\\.js)?$":
-      "<rootDir>/test/__mocks__/currencyContextMock.tsx",
-
-    // email provider client mocks
-    "^resend$": "<rootDir>/packages/email/src/providers/__mocks__/resend.ts",
-    "^@sendgrid/mail$": "<rootDir>/packages/email/src/providers/__mocks__/@sendgrid/mail.ts",
-
-    // component stubs – structure isn’t under test
-    "^@ui/components/cms/MediaManager$": "<rootDir>/packages/ui/src/components/cms/MediaManager.tsx",
-    "^@ui/components/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
-    "^@ui/atoms/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
-    "^@ui/molecules/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
-    "^@platform-core/components/(.*)$":
-      "<rootDir>/test/__mocks__/componentStub.js",
-
-    // legacy relative imports still referenced inside tests
-    "^\\.\\./repositories/(.*)$":
-      "<rootDir>/packages/platform-core/src/repositories/$1",
-    "^\\.\\./pricing$": "<rootDir>/packages/platform-core/src/pricing/index.ts",
-    "^../../../packages/platform-core/repositories/(.*)$":
-      "<rootDir>/packages/platform-core/src/repositories/$1",
-    "^../packages/ui/components/(.*)$":
-      "<rootDir>/packages/ui/src/components/$1",
-    "^../components/(.*)$":
-      "<rootDir>/packages/ui/src/components/$1",
-
-    // fixture JSON moved during the Turbo-repo migration
-    "^functions/data/rental/(.*)$":
-      "<rootDir>/functions/data/_shared/rental/$1",
-
-    // CSS modules & single-runtime stubs
+    // CSS modules & single‑runtime stubs
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
-    "^server-only$": "<rootDir>/test/server-only-stub.ts",
+    "^server-only$": " /test/server-only-stub.ts",
 
-    // finally, fall back to tsconfig-derived aliases
+    // finally, fall back to tsconfig‑derived aliases
     // map React to ensure hooks use the same instance during tests
     "^react$": reactPath,
     "^react-dom/client$": reactDomClientPath,
@@ -215,7 +221,7 @@ module.exports = {
     "d.ts",
   ],
   collectCoverage: true,
-  coverageDirectory: "<rootDir>/coverage",
+  coverageDirectory: " /coverage",
   coverageReporters: ["text", "text-summary", "lcov"],
   coverageThreshold: {
     global: {

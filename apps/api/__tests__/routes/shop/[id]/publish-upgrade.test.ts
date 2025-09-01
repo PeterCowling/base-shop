@@ -19,4 +19,12 @@ describe("publish-upgrade route", () => {
     );
     expect(res.status).toBe(401);
   });
+
+  it("rejects invalid bearer token", async () => {
+    const res = await request(createRequestHandler())
+      .post("/shop/abc/publish-upgrade")
+      .set("Authorization", "Bearer invalid");
+    expect(res.status).toBe(403);
+    expect(res.body).toEqual({ error: "Forbidden" });
+  });
 });

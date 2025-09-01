@@ -151,6 +151,14 @@ export const coreEnv: CoreEnv = new Proxy({} as CoreEnv, {
     if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();
     return prop in (__cachedCoreEnv as any);
   },
+  ownKeys: () => {
+    if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();
+    return Reflect.ownKeys(__cachedCoreEnv);
+  },
+  getOwnPropertyDescriptor: (_t, prop: string | symbol) => {
+    if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();
+    return Object.getOwnPropertyDescriptor(__cachedCoreEnv, prop);
+  },
 }) as CoreEnv;
 
 // Fail fast in prod only (forces a single parse early).

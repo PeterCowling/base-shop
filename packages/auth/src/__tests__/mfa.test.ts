@@ -59,6 +59,22 @@ describe("mfa", () => {
     expect(result).toBe(true);
   });
 
+  it("verifyMfa resolves true without updating when already enabled", async () => {
+    const { verifyMfa } = await import("../mfa");
+    findUnique.mockResolvedValue({
+      customerId: "cust",
+      secret: "secret",
+      enabled: true,
+    });
+    verify.mockReturnValue(true);
+
+    const result = await verifyMfa("cust", "123456");
+
+    expect(verify).toHaveBeenCalledWith({ token: "123456", secret: "secret" });
+    expect(update).not.toHaveBeenCalled();
+    expect(result).toBe(true);
+  });
+
   it("verifyMfa rejects invalid tokens without enabling", async () => {
     const { verifyMfa } = await import("../mfa");
     findUnique.mockResolvedValue({

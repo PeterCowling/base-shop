@@ -1,16 +1,15 @@
-// apps/shop-bcd/src/app/not-found.tsx
+// apps/shop-bcd/src/pages/404.tsx
 /**
- * Minimal App Router "not found" page.
+ * Minimal Pages Router 404 page.
  *
- * This is rendered when no route matches under the /app folder.  It must
- * avoid using <html>/<body> tags because those are provided by the
- * RootLayout.  It returns simple DOM elements so that Next.js can serialize
- * it without injecting any React element objects.
+ * Next.js uses this file when exporting a static 404 (and as a fallback
+ * for App Router errors).  Keeping it simple and free of external
+ * dependencies prevents the “Objects are not valid as a React child” error.
  */
 
-export default function NotFound() {
+export default function NotFoundPage() {
   return (
-    <div
+    <main
       style={{
         minHeight: "100dvh",
         display: "grid",
@@ -27,10 +26,10 @@ export default function NotFound() {
             marginBottom: "0.75rem",
           }}
         >
-          Page not found
+          404 — Page not found
         </h1>
         <p style={{ marginBottom: "1.5rem", opacity: 0.8 }}>
-          The page you're looking for doesn't exist or has moved.
+          We couldn’t find that page.
         </p>
         <a
           href="/"
@@ -45,6 +44,6 @@ export default function NotFound() {
           Go to homepage
         </a>
       </div>
-    </div>
+    </main>
   );
 }

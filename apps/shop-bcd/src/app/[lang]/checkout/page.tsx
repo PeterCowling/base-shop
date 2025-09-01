@@ -1,11 +1,16 @@
 // apps/shop-bcd/src/app/[lang]/checkout/page.tsx
-import CheckoutForm from "@ui/components/checkout/CheckoutForm";
-import OrderSummary from "@ui/components/organisms/OrderSummary";
-import { DeliveryScheduler } from "@ui/components/organisms";
+
 import { Locale, resolveLocale } from "@i18n/locales";
-import { CART_COOKIE, decodeCartCookie, type CartState } from "@platform-core/cartCookie";
-import { cookies } from "next/headers";
+import {
+  CART_COOKIE,
+  decodeCartCookie,
+  type CartState,
+} from "@platform-core/cartCookie";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
+import CheckoutForm from "@ui/components/checkout/CheckoutForm";
+import { DeliveryScheduler } from "@ui/components/organisms";
+import OrderSummary from "@ui/components/organisms/OrderSummary";
+import { cookies } from "next/headers";
 import shop from "../../../../shop.json";
 
 export const metadata = {
@@ -13,34 +18,34 @@ export const metadata = {
 };
 
 /**
- * Next 15 delivers `params` as a Promise, and `cookies()` is async in
- * the edge runtime.  Await both.
+ * Next 15 delivers `params` as a Promise, and `cookies()` is async in the edge runtime.
+ * Await both, then render the checkout page or an empty cart notice.
  */
 export default async function CheckoutPage({
   params,
 }: {
   params: Promise<{ lang?: string }>;
 }) {
-  /* ---------- await params ---------- */
+  /* ----- await params ----- */
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
 
-  /* ---------- read cart from cookie ---------- */
+  /* ----- read cart from cookie ----- */
   const cookieStore = await cookies(); // ← await here
-  const cart = (decodeCartCookie(cookieStore.get(CART_COOKIE)?.value) ?? {}) as CartState;
+  const cart = (decodeCartCookie(cookieStore.get(CART_COOKIE)?.value) ??
+    {}) as CartState;
 
-  /* ---------- empty cart guard ---------- */
+  /* ----- empty cart guard ----- */
   if (!Object.keys(cart).length) {
     return <p className="p-8 text-center">Your cart is empty.</p>;
   }
 
   const settings = await getShopSettings(shop.id);
   const premierDelivery = settings.premierDelivery;
-  const hasPremierShipping = shop.shippingProviders?.includes(
-    "premier-shipping",
-  );
+  const hasPremierShipping =
+    shop.shippingProviders?.includes("premier-shipping");
 
-  /* ---------- render ---------- */
+  /* ----- render ----- */
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
       <OrderSummary />
@@ -50,7 +55,8 @@ export default async function CheckoutPage({
           regions={premierDelivery.regions}
         />
       )}
-      <CheckoutForm locale={lang} taxRegion={settings.taxRegion} />
+      {/* taxRegion may be undefined; coerce to empty string for CheckoutForm */}
+      <CheckoutForm locale={lang} taxRegion={settings.taxRegion ?? ""} />
     </div>
   );
 }

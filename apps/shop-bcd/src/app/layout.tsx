@@ -1,25 +1,19 @@
-// src/app/layout.tsx
-import "./globals.css";
+// apps/shop-bcd/src/app/layout.tsx
 import { CartProvider } from "@platform-core/contexts/CartContext";
 import { initTheme } from "@platform-core/utils";
-import "@acme/zod-utils/initZod";
-import { initPlugins } from "@platform-core/plugins";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import path from "path";
-import { fileURLToPath } from "url";
-import shop from "../../shop.json";
+import "./globals.css";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const pluginsDir = path.resolve(__dirname, "../../../../packages/plugins");
-
-const shopConfig = shop as unknown as {
-  plugins?: Record<string, Record<string, unknown>>;
-};
-const pluginsReady = initPlugins({
-  directories: [pluginsDir],
-  config: (shopConfig.plugins ?? {}) as Record<string, Record<string, unknown>>,
-});
+/**
+ * Root layout for the Shop app.
+ *
+ * This version removes any asynchronous side-effects (e.g. plugin loading)
+ * so that Next.js can safely prerender error and not-found pages.  Plugin
+ * initialization is now handled within API routes or specific server
+ * components, not at the root.  Font variables and dark-mode theme are still
+ * applied via <html> classes and an inline script.
+ */
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -35,12 +29,11 @@ export const metadata: Metadata = {
   description: "Sustainable footwear built with Next.js 15",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  await pluginsReady;
   return (
     <html
       lang="en"
@@ -49,10 +42,10 @@ export default async function RootLayout({
     >
       <head>
         <meta name="color-scheme" content="light dark" />
+        {/* Apply persisted theme (light/dark/brandx) without blocking render */}
         <script dangerouslySetInnerHTML={{ __html: initTheme }} />
       </head>
       <body className="antialiased">
-        {/* Global providers go here */}
         <CartProvider>{children}</CartProvider>
       </body>
     </html>

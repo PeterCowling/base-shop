@@ -1,12 +1,13 @@
-# /pnpm-workspace.yaml   ← full file, copy-paste
+# /pnpm-workspace.yaml   ← full file
 
 packages:
-  # Every package or app — one pattern is enough
+  # Each top-level app or package
   - "apps-script"
   - "apps/**"
   - "packages/platform-machine"
-  - "packages/**"
-  - "packages/plugins/sanity"
+  - "packages/*/"
+  # Include every plugin under packages/plugins (paypal, premier-shipping, sanity, etc.)
+  - "packages/plugins/*"
 
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"

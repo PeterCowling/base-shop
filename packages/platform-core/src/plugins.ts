@@ -13,118 +13,180 @@ import type {
   WidgetRegistry,
 } from "@acme/types";
 import { existsSync } from "fs";
-import { readdir, readFile } from "fs/promises";
+import { readdir, readFile, stat } from "fs/promises";
 import { createRequire } from "module";
 import path from "path";
+import { pathToFileURL } from "url";
 import { PluginManager } from "./plugins/PluginManager";
 import { logger } from "./utils";
 
-/**
- * Use __filename when available to support CommonJS environments like Jest.
- * When running as an ES module where __filename is undefined, fall back to
- * dynamically evaluating import.meta.url to avoid parse errors in CJS.
- */
+// Use __filename if available (CommonJS), otherwise derive from import.meta.url
 const req = createRequire(
   typeof __filename !== "undefined" ? __filename : eval("import.meta.url")
 );
 
-/**
- * Flag indicating whether the TypeScript loader has been registered.
- * Ensures that ts-node registration occurs only once.
- */
-let tsLoaderRegistered = false;
+/* Helpers to resolve compiled plugin entry points -------------------------------- */
 
-/**
- * Ensure that ts-node is registered to allow importing TypeScript plugin modules.
- * Use `transpileOnly` for speed, `skipProject` to ignore tsconfig.json files
- * (avoiding incorrect extends lookups), and explicit compilerOptions to
- * compile ES modules for Node.js environments.
- */
-async function ensureTsLoader(): Promise<void> {
-  if (!tsLoaderRegistered) {
-    const tsNode = await import("ts-node");
-    tsNode.register({
-      transpileOnly: true,
-      skipProject: true,
-      compilerOptions: {
-        module: "ESNext",
-        moduleResolution: "NodeNext",
-        target: "ES2022",
-        skipLibCheck: true,
-        strict: true,
-      },
-    });
-    tsLoaderRegistered = true;
+function unique<T>(arr: T[]): T[] {
+  return Array.from(new Set(arr));
+}
+
+async function fileExists(p: string): Promise<boolean> {
+  try {
+    const s = await stat(p);
+    return s.isFile();
+  } catch {
+    return false;
   }
 }
 
-/**
- * Load a plugin module from the given directory. Plugins are expected to
- * contain a package.json that defines a "main" entry (default "index.ts").
- * This function dynamically registers ts-node as needed, then imports the
- * plugin’s default export. Errors are logged and undefined is returned on
- * failure.
- *
- * @param dir Absolute path to the plugin directory.
- * @returns The loaded plugin or undefined if loading fails.
- */
-async function loadPluginFromDir(dir: string): Promise<Plugin | undefined> {
+function exportsToCandidates(dir: string, exportsField: unknown): string[] {
+  const candidates: string[] = [];
+  if (!exportsField) return candidates;
+
   try {
-    await ensureTsLoader();
+    if (typeof exportsField === "string") {
+      candidates.push(path.resolve(dir, exportsField));
+      return candidates;
+    }
+    const root = (exportsField as Record<string, unknown>)["."] ?? exportsField;
+
+    if (typeof root === "string") {
+      candidates.push(path.resolve(dir, root));
+      return candidates;
+    }
+
+    if (root && typeof root === "object") {
+      const entryObj = root as Record<string, string>;
+      if (entryObj.import) candidates.push(path.resolve(dir, entryObj.import));
+      if (entryObj.default)
+        candidates.push(path.resolve(dir, entryObj.default));
+      if (entryObj.require)
+        candidates.push(path.resolve(dir, entryObj.require));
+    }
+  } catch {
+    // ignore malformed exports
+  }
+  return candidates;
+}
+
+async function resolvePluginEntry(dir: string): Promise<{
+  entryPath: string | null;
+  isModule: boolean;
+}> {
+  try {
     const pkgPath = path.join(dir, "package.json");
-    const pkg = JSON.parse(await readFile(pkgPath, "utf8"));
-    const main = pkg.main || "index.ts";
-    const mod = await req(path.join(dir, main));
-    return mod.default as Plugin;
+    const rawPkg = await readFile(pkgPath, "utf8");
+    const pkg = JSON.parse(rawPkg) as {
+      type?: string;
+      main?: string;
+      module?: string;
+      exports?: unknown;
+    };
+    const isModule = pkg.type === "module";
+
+    // Candidates (compiled JS only)
+    const candidates = unique(
+      [
+        ...(pkg.main ? [pkg.main] : []),
+        ...(pkg.module ? [pkg.module] : []),
+        ...exportsToCandidates(dir, pkg.exports),
+        "dist/index.mjs",
+        "dist/index.js",
+        "dist/index.cjs",
+        "index.mjs",
+        "index.js",
+        "index.cjs",
+      ].map((p) => path.resolve(dir, p))
+    );
+
+    for (const candidate of candidates) {
+      if (await fileExists(candidate)) {
+        return {
+          entryPath: candidate,
+          isModule: isModule || /\.mjs$/.test(candidate),
+        };
+      }
+    }
+    return { entryPath: null, isModule };
   } catch (err) {
-    logger.error("Failed to load plugin", { plugin: dir, err });
+    logger.error("Failed to read plugin package.json", { plugin: dir, err });
+    return { entryPath: null, isModule: false };
+  }
+}
+
+async function importByType(entryPath: string, isModule: boolean) {
+  if (isModule || /\.mjs$/.test(entryPath)) {
+    return import(pathToFileURL(entryPath).href);
+  }
+  return req(entryPath);
+}
+
+/* Plugin loader: loads only compiled JS from dist -------------------------------- */
+
+async function loadPluginFromDir(dir: string): Promise<Plugin | undefined> {
+  const { entryPath, isModule } = await resolvePluginEntry(dir);
+
+  if (!entryPath) {
+    logger.error(
+      "No compiled plugin entry found. Ensure plugin is built before runtime.",
+      { plugin: dir }
+    );
+    return undefined;
+  }
+
+  try {
+    const mod = await importByType(entryPath, isModule);
+    const plug: Plugin | undefined = (mod && (mod.default || mod.plugin)) as
+      | Plugin
+      | undefined;
+    if (!plug) {
+      logger.error("Plugin module did not export a default Plugin", {
+        plugin: dir,
+        entry: entryPath,
+        exportedKeys: Object.keys(mod ?? {}),
+      });
+      return undefined;
+    }
+    return plug;
+  } catch (err) {
+    logger.error("Failed to import plugin entry", {
+      plugin: dir,
+      entry: entryPath,
+      err,
+    });
     return undefined;
   }
 }
 
-/**
- * Backwards-compatible function for loading a single plugin by absolute path.
- * Delegates to loadPluginFromDir().
- *
- * @param id Absolute path to the plugin directory.
- */
+/* Public API ------------------------------------------------------------------- */
+
 export async function loadPlugin(id: string): Promise<Plugin | undefined> {
   return loadPluginFromDir(id);
 }
 
 export interface LoadPluginsOptions {
-  /** directories containing plugin packages */
   directories?: string[];
-  /** explicit plugin package paths */
   plugins?: string[];
-  /** optional path to JSON config listing directories/plugins */
   configFile?: string;
 }
 
-/**
- * Load plugins from provided directories or explicit paths. Plugins are loaded
- * by scanning each directory for subdirectories and importing the default
- * export of each. If configFile is provided (or PLUGIN_CONFIG env var),
- * directories/plugins can also be specified in JSON.
- *
- * @param options Configuration for discovering and loading plugins.
- * @returns An array of loaded plugins.
- */
+function findPluginsDir(start: string): string {
+  let dir = start;
+  while (true) {
+    const candidate = path.join(dir, "packages", "plugins");
+    if (existsSync(candidate)) return candidate;
+    const parent = path.dirname(dir);
+    if (parent === dir) return candidate;
+    dir = parent;
+  }
+}
+
 export async function loadPlugins({
   directories = [],
   plugins = [],
   configFile,
 }: LoadPluginsOptions = {}): Promise<Plugin[]> {
-  function findPluginsDir(start: string): string {
-    let dir = start;
-    while (true) {
-      const candidate = path.join(dir, "packages", "plugins");
-      if (existsSync(candidate)) return candidate;
-      const parent = path.dirname(dir);
-      if (parent === dir) return candidate;
-      dir = parent;
-    }
-  }
   const workspaceDir = findPluginsDir(process.cwd());
 
   const envDirs = process.env.PLUGIN_DIRS
@@ -138,29 +200,30 @@ export async function loadPlugins({
     process.env.PLUGIN_CONFIG,
     path.join(process.cwd(), "plugins.config.json"),
   ].filter(Boolean) as string[];
+
   for (const cfgPath of configPaths) {
     try {
       const cfg = JSON.parse(await readFile(cfgPath, "utf8"));
-      if (Array.isArray(cfg.directories)) {
-        configDirs.push(...cfg.directories);
-      }
-      if (Array.isArray(cfg.plugins)) {
-        configPlugins.push(...cfg.plugins);
-      }
+      if (Array.isArray(cfg.directories)) configDirs.push(...cfg.directories);
+      if (Array.isArray(cfg.plugins)) configPlugins.push(...cfg.plugins);
       break;
     } catch {
-      // ignore missing/invalid config
+      /* ignore invalid config */
     }
   }
 
-  const searchDirs = Array.from(
-    new Set([workspaceDir, ...envDirs, ...configDirs, ...directories])
-  );
+  const searchDirs = unique([
+    workspaceDir,
+    ...envDirs,
+    ...configDirs,
+    ...directories,
+  ]);
   const pluginDirs = new Set<string>();
-  const explicit = [...configPlugins, ...plugins];
-  for (const item of explicit) {
+
+  for (const item of [...configPlugins, ...plugins]) {
     pluginDirs.add(path.resolve(item));
   }
+
   for (const dir of searchDirs) {
     try {
       const entries = await readdir(dir, { withFileTypes: true });
@@ -170,10 +233,7 @@ export async function loadPlugins({
         }
       }
     } catch (err) {
-      logger.warn("Failed to read plugins directory", {
-        directory: dir,
-        err,
-      });
+      logger.warn("Failed to read plugins directory", { directory: dir, err });
     }
   }
 
@@ -189,14 +249,6 @@ export interface InitPluginsOptions extends LoadPluginsOptions {
   config?: Record<string, Record<string, unknown>>;
 }
 
-/**
- * Load plugins and invoke their registration hooks. This populates payment,
- * shipping and widget registries on a PluginManager instance with definitions
- * provided by each plugin.
- *
- * @param options Directories and config for loading plugins.
- * @returns A fully-initialized PluginManager.
- */
 export async function initPlugins<
   PPay extends PaymentPayload = PaymentPayload,
   SReq extends ShippingRequest = ShippingRequest,
@@ -226,6 +278,7 @@ export async function initPlugins<
     S,
     W
   >[];
+
   for (const plugin of loaded) {
     const raw = {
       ...(plugin.defaultConfig ?? {}),
@@ -252,7 +305,7 @@ export async function initPlugins<
   return manager;
 }
 
-// Re-export type definitions from @acme/types to avoid repeated imports.
+/* Re-export type definitions so downstream imports need only @acme/platform-core */
 export type {
   PaymentPayload,
   PaymentProvider,

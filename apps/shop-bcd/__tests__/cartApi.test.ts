@@ -51,3 +51,55 @@ test("PATCH rejects negative or non-integer quantity", async () => {
   expect(res.status).toBe(400);
 });
 
+test("POST adds item to cart and sets cookie", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const id = `${sku.id}:${size}`;
+  const res = await POST(
+    createRequest({ sku: { id: sku.id }, qty: 1, size })
+  );
+  expect(res.status).toBe(200);
+  const data = await res.json();
+  expect(data.cart[id]).toMatchObject({ qty: 1, size });
+  expect(res.headers.get("Set-Cookie")).toBeTruthy();
+});
+
+test("PATCH updates item quantity", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const id = `${sku.id}:${size}`;
+  const cart = { [id]: { sku, qty: 1, size } };
+  const cookie = encodeCartCookie(JSON.stringify(cart));
+  const res = await PATCH(createRequest({ id, qty: 2 }, cookie));
+  expect(res.status).toBe(200);
+  const data = await res.json();
+  expect(data.cart[id].qty).toBe(2);
+  expect(res.headers.get("Set-Cookie")).toBeTruthy();
+});
+
+test("POST rejects missing required fields", async () => {
+  const res = await POST(createRequest({ qty: 1 }));
+  expect(res.status).toBe(400);
+});
+
+test("PATCH rejects missing required fields", async () => {
+  const res = await PATCH(createRequest({ id: "foo" }));
+  expect(res.status).toBe(400);
+});
+
+test("POST rejects unknown SKU", async () => {
+  const res = await POST(
+    createRequest({ sku: { id: "does-not-exist" }, qty: 1 })
+  );
+  expect(res.status).toBe(404);
+});
+
+test("PATCH rejects unknown cart item", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const id = `${sku.id}:${size}`;
+  const cookie = encodeCartCookie(JSON.stringify({}));
+  const res = await PATCH(createRequest({ id, qty: 1 }, cookie));
+  expect(res.status).toBe(404);
+});
+

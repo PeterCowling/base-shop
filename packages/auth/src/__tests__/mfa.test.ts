@@ -75,6 +75,17 @@ describe("mfa", () => {
     expect(result).toBe(false);
   });
 
+  it("verifyMfa returns false when record is missing", async () => {
+    const { verifyMfa } = await import("../mfa");
+    findUnique.mockResolvedValue(null);
+
+    const result = await verifyMfa("cust", "123456");
+
+    expect(verify).not.toHaveBeenCalled();
+    expect(update).not.toHaveBeenCalled();
+    expect(result).toBe(false);
+  });
+
   it("isMfaEnabled reflects enabled state", async () => {
     const { isMfaEnabled } = await import("../mfa");
     findUnique.mockResolvedValueOnce({ customerId: "cust", enabled: true });

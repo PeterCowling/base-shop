@@ -38,4 +38,31 @@ describe("shippingEnv", () => {
     );
     expect(spy).toHaveBeenCalled();
   });
+
+  it("loadShippingEnv parses valid UPS_KEY", async () => {
+    const { loadShippingEnv } = await import("../src/env/shipping");
+    const env = loadShippingEnv({ UPS_KEY: "x" } as NodeJS.ProcessEnv);
+    expect(env).toEqual({ UPS_KEY: "x" });
+  });
+
+  it("loadShippingEnv throws and logs on invalid UPS_KEY", async () => {
+    const { loadShippingEnv } = await import("../src/env/shipping");
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadShippingEnv({ UPS_KEY: 123 as any } as NodeJS.ProcessEnv),
+    ).toThrow("Invalid shipping environment variables");
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it("legacy parse throws and logs on invalid UPS_KEY", async () => {
+    process.env = {
+      UPS_KEY: 123 as any,
+    } as unknown as NodeJS.ProcessEnv;
+
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../src/env/shipping")).rejects.toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(spy).toHaveBeenCalled();
+  });
 });

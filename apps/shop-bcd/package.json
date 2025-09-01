@@ -8,18 +8,20 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@themes/base": "workspace:*",
+    "@acme/config": "workspace:*",
+    "@acme/date-utils": "workspace:*",
+    "@acme/email": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
+    "@acme/sanity": "workspace:*",
+    "@acme/stripe": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",
-    "@acme/stripe": "workspace:*",
-    "@acme/date-utils": "workspace:*",
-    "@acme/sanity": "workspace:*",
-    "@acme/config": "workspace:*",
-    "@acme/email": "workspace:*",
     "@acme/zod-utils": "workspace:^",
-    "qrcode": "^1.5.4"
+    "@themes/base": "workspace:*",
+    "qrcode": "^1.5.4",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
     "next": "^15.3.5"

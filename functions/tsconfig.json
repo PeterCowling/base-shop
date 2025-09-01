@@ -10,26 +10,24 @@
 
     /* Cloudflare Workers runtime */
     "types": ["@cloudflare/workers-types", "node"],
-    "lib": ["es2022", "webworker"] /* avoid DOM duplication */,
-    "skipLibCheck": true /* suppress 3rd-party clang */,
+    "lib": ["es2022", "webworker"],
+    "skipLibCheck": true,
 
     /* module / output */
     "module": "esnext",
-    "moduleResolution": "node",
+    /*
+     * Use the same module resolution strategy as the base config. The
+     * monorepo relies on TS 5’s `bundler` resolution to correctly honor
+     * package `exports` and `types` fields (e.g. for `@acme/config/env/core`).
+     */
+    "moduleResolution": "bundler",
     "outDir": "dist",
     "declarationMap": true,
 
     /*
-     * Override path mappings for the email package.
-     *
-     * The default tsconfig.base.json maps `@acme/email` to the package's `src` folder.
-     * When compiling the Workers in the `functions` package, that mapping pulls
-     * TypeScript source files from outside this package's `rootDir`, which triggers
-     * the "File is not under 'rootDir'" error (TS6059). To avoid this,
-     * remap `@acme/email` to the package root. TypeScript will then resolve
-     * module imports using the package's `types` field (pointing at `dist/index.d.ts`)
-     * rather than the `.ts` sources. This keeps all compiled `.ts` inputs within
-     * the configured `rootDir` and sidesteps TS6059.
+     * Override path mapping for the email package to point at the package root
+     * so that TypeScript reads its compiled declarations instead of pulling
+     * in the source tree (which lives outside this package’s root).
      */
     "baseUrl": ".",
     "paths": {
@@ -43,7 +41,9 @@
     { "path": "../packages/platform-core" },
     { "path": "../packages/lib" },
     { "path": "../packages/config" },
-    { "path": "../packages/email" }
+    { "path": "../packages/email" },
+    { "path": "../packages/date-utils" },
+    { "path": "../packages/sanity" }
   ],
 
   /* production Workers source only */

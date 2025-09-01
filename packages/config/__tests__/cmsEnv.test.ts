@@ -25,6 +25,20 @@ describe("cmsEnv", () => {
     });
   });
 
+  it("uses fallback values in development", async () => {
+    process.env = {
+      NODE_ENV: "development",
+    } as NodeJS.ProcessEnv;
+
+    const { cmsEnv } = await import("../src/env/cms");
+
+    expect(cmsEnv).toEqual({
+      CMS_SPACE_URL: "https://cms.example.com",
+      CMS_ACCESS_TOKEN: "placeholder-token",
+      SANITY_API_VERSION: "2021-10-21",
+    });
+  });
+
   it("throws and logs when CMS_SPACE_URL is invalid", async () => {
     process.env = {
       NODE_ENV: "production",

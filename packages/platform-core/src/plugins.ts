@@ -12,117 +12,14 @@ import type {
   WidgetProps,
   WidgetRegistry,
 } from "@acme/types";
-import { existsSync } from "fs";
-import { readdir, readFile, stat } from "fs/promises";
-import { createRequire } from "module";
+import { readdir } from "fs/promises";
 import path from "path";
-import { pathToFileURL } from "url";
 import { PluginManager } from "./plugins/PluginManager";
 import { logger } from "./utils";
+import { resolvePluginEntry, importByType } from "./plugins/resolvers";
+import { resolvePluginEnvironment } from "./plugins/env";
 
-// Use __filename if available (CommonJS), otherwise derive from import.meta.url
-const req = createRequire(
-  typeof __filename !== "undefined" ? __filename : eval("import.meta.url")
-);
-
-/* Helpers to resolve compiled plugin entry points -------------------------------- */
-
-function unique<T>(arr: T[]): T[] {
-  return Array.from(new Set(arr));
-}
-
-async function fileExists(p: string): Promise<boolean> {
-  try {
-    const s = await stat(p);
-    return s.isFile();
-  } catch {
-    return false;
-  }
-}
-
-function exportsToCandidates(dir: string, exportsField: unknown): string[] {
-  const candidates: string[] = [];
-  if (!exportsField) return candidates;
-
-  try {
-    if (typeof exportsField === "string") {
-      candidates.push(path.resolve(dir, exportsField));
-      return candidates;
-    }
-    const root = (exportsField as Record<string, unknown>)["."] ?? exportsField;
-
-    if (typeof root === "string") {
-      candidates.push(path.resolve(dir, root));
-      return candidates;
-    }
-
-    if (root && typeof root === "object") {
-      const entryObj = root as Record<string, string>;
-      if (entryObj.import) candidates.push(path.resolve(dir, entryObj.import));
-      if (entryObj.default)
-        candidates.push(path.resolve(dir, entryObj.default));
-      if (entryObj.require)
-        candidates.push(path.resolve(dir, entryObj.require));
-    }
-  } catch {
-    // ignore malformed exports
-  }
-  return candidates;
-}
-
-async function resolvePluginEntry(dir: string): Promise<{
-  entryPath: string | null;
-  isModule: boolean;
-}> {
-  try {
-    const pkgPath = path.join(dir, "package.json");
-    const rawPkg = await readFile(pkgPath, "utf8");
-    const pkg = JSON.parse(rawPkg) as {
-      type?: string;
-      main?: string;
-      module?: string;
-      exports?: unknown;
-    };
-    const isModule = pkg.type === "module";
-
-    // Candidates (compiled JS only)
-    const candidates = unique(
-      [
-        ...(pkg.main ? [pkg.main] : []),
-        ...(pkg.module ? [pkg.module] : []),
-        ...exportsToCandidates(dir, pkg.exports),
-        "dist/index.mjs",
-        "dist/index.js",
-        "dist/index.cjs",
-        "index.mjs",
-        "index.js",
-        "index.cjs",
-      ].map((p) => path.resolve(dir, p))
-    );
-
-    for (const candidate of candidates) {
-      if (await fileExists(candidate)) {
-        return {
-          entryPath: candidate,
-          isModule: isModule || /\.mjs$/.test(candidate),
-        };
-      }
-    }
-    return { entryPath: null, isModule };
-  } catch (err) {
-    logger.error("Failed to read plugin package.json", { plugin: dir, err });
-    return { entryPath: null, isModule: false };
-  }
-}
-
-async function importByType(entryPath: string, isModule: boolean) {
-  if (isModule || /\.mjs$/.test(entryPath)) {
-    return import(pathToFileURL(entryPath).href);
-  }
-  return req(entryPath);
-}
-
-/* Plugin loader: loads only compiled JS from dist -------------------------------- */
+/* Plugin loader: loads only compiled JS from dist ------------------------------ */
 
 async function loadPluginFromDir(dir: string): Promise<Plugin | undefined> {
   const { entryPath, isModule } = await resolvePluginEntry(dir);
@@ -171,58 +68,15 @@ export interface LoadPluginsOptions {
   configFile?: string;
 }
 
-function findPluginsDir(start: string): string {
-  let dir = start;
-  while (true) {
-    const candidate = path.join(dir, "packages", "plugins");
-    if (existsSync(candidate)) return candidate;
-    const parent = path.dirname(dir);
-    if (parent === dir) return candidate;
-    dir = parent;
-  }
-}
-
 export async function loadPlugins({
-  directories = [],
-  plugins = [],
+  directories,
+  plugins,
   configFile,
 }: LoadPluginsOptions = {}): Promise<Plugin[]> {
-  const workspaceDir = findPluginsDir(process.cwd());
+  const { searchDirs, pluginDirs: initialPlugins } =
+    await resolvePluginEnvironment({ directories, plugins, configFile });
 
-  const envDirs = process.env.PLUGIN_DIRS
-    ? process.env.PLUGIN_DIRS.split(path.delimiter).filter(Boolean)
-    : [];
-
-  const configDirs: string[] = [];
-  const configPlugins: string[] = [];
-  const configPaths = [
-    configFile,
-    process.env.PLUGIN_CONFIG,
-    path.join(process.cwd(), "plugins.config.json"),
-  ].filter(Boolean) as string[];
-
-  for (const cfgPath of configPaths) {
-    try {
-      const cfg = JSON.parse(await readFile(cfgPath, "utf8"));
-      if (Array.isArray(cfg.directories)) configDirs.push(...cfg.directories);
-      if (Array.isArray(cfg.plugins)) configPlugins.push(...cfg.plugins);
-      break;
-    } catch {
-      /* ignore invalid config */
-    }
-  }
-
-  const searchDirs = unique([
-    workspaceDir,
-    ...envDirs,
-    ...configDirs,
-    ...directories,
-  ]);
-  const pluginDirs = new Set<string>();
-
-  for (const item of [...configPlugins, ...plugins]) {
-    pluginDirs.add(path.resolve(item));
-  }
+  const pluginDirs = new Set<string>(initialPlugins);
 
   for (const dir of searchDirs) {
     try {
@@ -319,3 +173,4 @@ export type {
   WidgetProps,
   WidgetRegistry,
 };
+

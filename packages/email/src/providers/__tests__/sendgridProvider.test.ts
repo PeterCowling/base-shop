@@ -17,6 +17,7 @@ describe("SendgridProvider additional cases", () => {
 
   it("wraps non-Error sgMail.send rejections", async () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
+    process.env.SENDGRID_API_KEY = "key";
     const sgMail = require("@sendgrid/mail").default;
     sgMail.send.mockRejectedValueOnce("boom");
     const { SendgridProvider } = await import("../sendgrid");

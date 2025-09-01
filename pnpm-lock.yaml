@@ -745,6 +745,15 @@ importers:
         specifier: 3.25.73
         version: 3.25.73
 
+  packages/plugins/premier-shipping:
+    dependencies:
+      '@acme/types':
+        specifier: workspace:*
+        version: link:../../types
+      zod:
+        specifier: 3.25.73
+        version: 3.25.73
+
   packages/plugins/sanity:
     dependencies:
       '@acme/types':

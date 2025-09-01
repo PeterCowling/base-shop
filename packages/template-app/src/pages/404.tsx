@@ -1,14 +1,14 @@
-// packages/template-app/src/app/not-found.tsx
+// packages/template-app/src/pages/404.tsx
 
 /**
- * Minimal App Router "not found" page for template-app.
+ * Minimal Pages Router 404 page for template-app.
  *
- * It returns simple DOM elements (no <html>/<body> tags) so that Next.js
- * can serialize it without injecting any React element objects.
+ * Next.js uses this when exporting /404.  Keep it simple to avoid
+ * serialization errors.
  */
-export default function NotFound() {
+export default function NotFoundPage() {
   return (
-    <div
+    <main
       style={{
         minHeight: "100dvh",
         display: "grid",
@@ -25,10 +25,10 @@ export default function NotFound() {
             marginBottom: "0.75rem",
           }}
         >
-          Page not found
+          404 — Page not found
         </h1>
         <p style={{ marginBottom: "1.5rem", opacity: 0.8 }}>
-          The page you&rsquo;re looking for doesn&rsquo;t exist or has moved.
+          We couldn&rsquo;t find that page.
         </p>
         <a
           href="/"
@@ -43,6 +43,6 @@ export default function NotFound() {
           Go to homepage
         </a>
       </div>
-    </div>
+    </main>
   );
 }

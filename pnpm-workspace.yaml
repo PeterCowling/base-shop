@@ -1,4 +1,4 @@
-# /pnpm-workspace.yaml   ← full file
+# /pnpm-workspace.yaml
 
 packages:
   # Each top-level app or package
@@ -6,8 +6,8 @@ packages:
   - "apps/**"
   - "packages/platform-machine"
   - "packages/*/"
-  # Include every plugin under packages/plugins (paypal, premier-shipping, sanity, etc.)
   - "packages/plugins/*"
+  - "packages/themes/*" # NEW: include all theme packages (base, dark, etc.)
 
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"

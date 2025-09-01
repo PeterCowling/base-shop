@@ -1,12 +1,8 @@
 import { promises as fs } from "fs";
 
 jest.mock("@acme/config", () => ({
-  env: { OPENAI_API_KEY: "test-key" },
+  env: { OPENAI_API_KEY: undefined },
 }));
-
-jest.mock("openai", () => {
-  throw new Error("Failed to load OpenAI");
-});
 
 jest.mock("fs", () => ({
   promises: {
@@ -26,22 +22,29 @@ describe("generateMeta", () => {
     mkdirMock.mockReset();
   });
 
-  it("returns fallback metadata when OpenAI import fails", async () => {
-    const result = await generateMeta({
-      id: "123",
-      title: "Title",
-      description: "Desc",
-    });
+  it("returns fallback metadata when no API key in production", async () => {
+    const originalEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = "production";
 
-    expect(result).toEqual({
-      title: "Title",
-      description: "Desc",
-      alt: "Title",
-      image: "/og/123.png",
-    });
+    try {
+      const result = await generateMeta({
+        id: "123",
+        title: "Title",
+        description: "Desc",
+      });
 
-    expect(mkdirMock).not.toHaveBeenCalled();
-    expect(writeFileMock).not.toHaveBeenCalled();
+      expect(result).toEqual({
+        title: "Title",
+        description: "Desc",
+        alt: "Title",
+        image: "/og/123.png",
+      });
+
+      expect(mkdirMock).not.toHaveBeenCalled();
+      expect(writeFileMock).not.toHaveBeenCalled();
+    } finally {
+      process.env.NODE_ENV = originalEnv;
+    }
   });
 });
 

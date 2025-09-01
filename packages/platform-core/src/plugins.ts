@@ -1,40 +1,73 @@
 // packages/platform-core/src/plugins.ts
-import { readdir, readFile } from "fs/promises";
-import { existsSync } from "fs";
-import path from "path";
-import { createRequire } from "module";
-import { logger } from "./utils";
-import { PluginManager } from "./plugins/PluginManager";
 import type {
   PaymentPayload,
-  ShippingRequest,
-  WidgetProps,
   PaymentProvider,
-  ShippingProvider,
-  WidgetComponent,
   PaymentRegistry,
-  ShippingRegistry,
-  WidgetRegistry,
-  PluginOptions,
   Plugin,
+  PluginOptions,
+  ShippingProvider,
+  ShippingRegistry,
+  ShippingRequest,
+  WidgetComponent,
+  WidgetProps,
+  WidgetRegistry,
 } from "@acme/types";
+import { existsSync } from "fs";
+import { readdir, readFile } from "fs/promises";
+import { createRequire } from "module";
+import path from "path";
+import { PluginManager } from "./plugins/PluginManager";
+import { logger } from "./utils";
 
-// Use __filename when available to support CommonJS environments like Jest.
-// When running as an ES module where __filename is undefined, fall back to
-// dynamically evaluating `import.meta.url` to avoid parse errors in CJS.
+/**
+ * Use __filename when available to support CommonJS environments like Jest.
+ * When running as an ES module where __filename is undefined, fall back to
+ * dynamically evaluating import.meta.url to avoid parse errors in CJS.
+ */
 const req = createRequire(
-  typeof __filename !== "undefined" ? __filename : eval("import.meta.url"),
+  typeof __filename !== "undefined" ? __filename : eval("import.meta.url")
 );
+
+/**
+ * Flag indicating whether the TypeScript loader has been registered.
+ * Ensures that ts-node registration occurs only once.
+ */
 let tsLoaderRegistered = false;
-async function ensureTsLoader() {
+
+/**
+ * Ensure that ts-node is registered to allow importing TypeScript plugin modules.
+ * Use `transpileOnly` for speed, `skipProject` to ignore tsconfig.json files
+ * (avoiding incorrect extends lookups), and explicit compilerOptions to
+ * compile ES modules for Node.js environments.
+ */
+async function ensureTsLoader(): Promise<void> {
   if (!tsLoaderRegistered) {
     const tsNode = await import("ts-node");
-    tsNode.register({ transpileOnly: true });
+    tsNode.register({
+      transpileOnly: true,
+      skipProject: true,
+      compilerOptions: {
+        module: "ESNext",
+        moduleResolution: "NodeNext",
+        target: "ES2022",
+        skipLibCheck: true,
+        strict: true,
+      },
+    });
     tsLoaderRegistered = true;
   }
 }
 
-/** Load a plugin module from the given directory path */
+/**
+ * Load a plugin module from the given directory. Plugins are expected to
+ * contain a package.json that defines a "main" entry (default "index.ts").
+ * This function dynamically registers ts-node as needed, then imports the
+ * plugin’s default export. Errors are logged and undefined is returned on
+ * failure.
+ *
+ * @param dir Absolute path to the plugin directory.
+ * @returns The loaded plugin or undefined if loading fails.
+ */
 async function loadPluginFromDir(dir: string): Promise<Plugin | undefined> {
   try {
     await ensureTsLoader();
@@ -49,7 +82,12 @@ async function loadPluginFromDir(dir: string): Promise<Plugin | undefined> {
   }
 }
 
-// Backwards-compatible export for loading a single plugin by path
+/**
+ * Backwards-compatible function for loading a single plugin by absolute path.
+ * Delegates to loadPluginFromDir().
+ *
+ * @param id Absolute path to the plugin directory.
+ */
 export async function loadPlugin(id: string): Promise<Plugin | undefined> {
   return loadPluginFromDir(id);
 }
@@ -63,7 +101,15 @@ export interface LoadPluginsOptions {
   configFile?: string;
 }
 
-/** Load plugins from provided directories or explicit paths */
+/**
+ * Load plugins from provided directories or explicit paths. Plugins are loaded
+ * by scanning each directory for subdirectories and importing the default
+ * export of each. If configFile is provided (or PLUGIN_CONFIG env var),
+ * directories/plugins can also be specified in JSON.
+ *
+ * @param options Configuration for discovering and loading plugins.
+ * @returns An array of loaded plugins.
+ */
 export async function loadPlugins({
   directories = [],
   plugins = [],
@@ -108,7 +154,7 @@ export async function loadPlugins({
   }
 
   const searchDirs = Array.from(
-    new Set([workspaceDir, ...envDirs, ...configDirs, ...directories]),
+    new Set([workspaceDir, ...envDirs, ...configDirs, ...directories])
   );
   const pluginDirs = new Set<string>();
   const explicit = [...configPlugins, ...plugins];
@@ -124,7 +170,10 @@ export async function loadPlugins({
         }
       }
     } catch (err) {
-      logger.warn("Failed to read plugins directory", { directory: dir, err });
+      logger.warn("Failed to read plugins directory", {
+        directory: dir,
+        err,
+      });
     }
   }
 
@@ -140,7 +189,14 @@ export interface InitPluginsOptions extends LoadPluginsOptions {
   config?: Record<string, Record<string, unknown>>;
 }
 
-/** Load plugins and call their registration hooks */
+/**
+ * Load plugins and invoke their registration hooks. This populates payment,
+ * shipping and widget registries on a PluginManager instance with definitions
+ * provided by each plugin.
+ *
+ * @param options Directories and config for loading plugins.
+ * @returns A fully-initialized PluginManager.
+ */
 export async function initPlugins<
   PPay extends PaymentPayload = PaymentPayload,
   SReq extends ShippingRequest = ShippingRequest,
@@ -148,11 +204,20 @@ export async function initPlugins<
   P extends PaymentProvider<PPay> = PaymentProvider<PPay>,
   S extends ShippingProvider<SReq> = ShippingProvider<SReq>,
   W extends WidgetComponent<WProp> = WidgetComponent<WProp>,
->(
-  options: InitPluginsOptions = {},
-): Promise<PluginManager<PPay, SReq, WProp, P, S, W>> {
+>({
+  directories,
+  plugins,
+  config,
+  configFile,
+}: InitPluginsOptions = {}): Promise<
+  PluginManager<PPay, SReq, WProp, P, S, W>
+> {
   const manager = new PluginManager<PPay, SReq, WProp, P, S, W>();
-  const loaded = (await loadPlugins(options)) as unknown as Plugin<
+  const loaded = (await loadPlugins({
+    directories,
+    plugins,
+    configFile,
+  })) as unknown as Plugin<
     Record<string, unknown>,
     PPay,
     SReq,
@@ -164,7 +229,7 @@ export async function initPlugins<
   for (const plugin of loaded) {
     const raw = {
       ...(plugin.defaultConfig ?? {}),
-      ...(options.config?.[plugin.id] ?? {}),
+      ...(config?.[plugin.id] ?? {}),
     } as Record<string, unknown>;
     let cfg: Record<string, unknown> = raw;
     if (plugin.configSchema) {
@@ -187,16 +252,17 @@ export async function initPlugins<
   return manager;
 }
 
+// Re-export type definitions from @acme/types to avoid repeated imports.
 export type {
   PaymentPayload,
-  ShippingRequest,
-  WidgetProps,
-  WidgetComponent,
   PaymentProvider,
-  ShippingProvider,
   PaymentRegistry,
-  ShippingRegistry,
-  WidgetRegistry,
-  PluginOptions,
   Plugin,
+  PluginOptions,
+  ShippingProvider,
+  ShippingRegistry,
+  ShippingRequest,
+  WidgetComponent,
+  WidgetProps,
+  WidgetRegistry,
 };

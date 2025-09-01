@@ -21,6 +21,25 @@ describe("renderTemplate", () => {
     clearTemplates();
   });
 
+  it("overwrites and clears registered templates", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({ __esModule: true, marketingEmailTemplates: [] }),
+      { virtual: true },
+    );
+    const { registerTemplate, renderTemplate, clearTemplates } = await import(
+      "../templates"
+    );
+    registerTemplate("welcome", "<p>Hi</p>");
+    expect(renderTemplate("welcome", {})).toBe("<p>Hi</p>");
+    registerTemplate("welcome", "<p>Bye</p>");
+    expect(renderTemplate("welcome", {})).toBe("<p>Bye</p>");
+    clearTemplates();
+    expect(() => renderTemplate("welcome", {})).toThrow(
+      "Unknown template: welcome",
+    );
+  });
+
   it("renders marketing email template variants", async () => {
     jest.doMock(
       "@acme/email-templates",
@@ -82,6 +101,30 @@ describe("renderTemplate", () => {
     expect(html).not.toContain("<script>");
   });
 
+  it("renders elements using dangerouslySetInnerHTML", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({
+        __esModule: true,
+        marketingEmailTemplates: [
+          {
+            id: "dsi",
+            label: "DSI",
+            buildSubject: (h: string) => h,
+            make: () =>
+              React.createElement("div", {
+                dangerouslySetInnerHTML: { __html: "<p>Hi</p>" },
+              }),
+          },
+        ],
+      }),
+      { virtual: true },
+    );
+
+    const { renderTemplate } = await import("../templates");
+    expect(renderTemplate("dsi", {})).toBe("<div><p>Hi</p></div>");
+  });
+
   it("handles various node types", async () => {
     jest.doMock(
       "@acme/email-templates",
@@ -89,13 +132,15 @@ describe("renderTemplate", () => {
         __esModule: true,
         marketingEmailTemplates: [
           { id: "null", label: "Null", buildSubject: (h: string) => h, make: () => null },
+          { id: "bool", label: "Bool", buildSubject: (h: string) => h, make: () => true },
+          { id: "num", label: "Num", buildSubject: (h: string) => h, make: () => 123 },
           {
             id: "array",
             label: "Array",
             buildSubject: (h: string) => h,
             make: () => [
               React.createElement("p", null, "A"),
-              React.createElement("p", null, "B"),
+              [React.createElement("p", null, "B")],
             ],
           },
           { id: "invalid", label: "Invalid", buildSubject: (h: string) => h, make: () => ({}) as any },
@@ -113,6 +158,8 @@ describe("renderTemplate", () => {
 
     const { renderTemplate } = await import("../templates");
     expect(renderTemplate("null", {})).toBe("");
+    expect(renderTemplate("bool", {})).toBe("");
+    expect(renderTemplate("num", {})).toBe("123");
     expect(renderTemplate("array", {})).toBe("<p>A</p><p>B</p>");
     expect(renderTemplate("invalid", {})).toBe("");
     expect(renderTemplate("attrs", {})).toBe(
@@ -129,7 +176,7 @@ describe("renderTemplate", () => {
 
     const { renderTemplate } = await import("../templates");
     expect(() => renderTemplate("nonexistent", {})).toThrow(
-      "Unknown template",
+      "Unknown template: nonexistent",
     );
   });
 });

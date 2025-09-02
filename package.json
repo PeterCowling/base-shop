@@ -194,7 +194,8 @@
     "typescript": "5.8.3",
     "vite": "^7.0.0",
     "wait-on": "^8.0.4",
-    "wrangler": "^4.20.4"
+    "wrangler": "^4.20.4",
+    "undici": "^5.29.0"
   },
   "pnpm": {
     "overrides": {

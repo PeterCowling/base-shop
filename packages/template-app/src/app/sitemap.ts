@@ -6,8 +6,11 @@ import type { ProductPublication } from "@acme/types";
 import { nowIso } from "@date-utils";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = coreEnv.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-  const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "shop";
+    const base =
+      (coreEnv.NEXT_PUBLIC_BASE_URL as string | undefined) ||
+      "http://localhost:3000";
+    const shop =
+      (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "shop";
   const now = nowIso();
 
   const [settings, products] = await Promise.all([

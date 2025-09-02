@@ -5,7 +5,7 @@ import {
 import { coreEnv } from "@acme/config/env/core";
 
 export default async function AnalyticsScripts() {
-  const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
+  const shop = (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "default";
   const [settings, shopData] = await Promise.all([
     getShopSettings(shop),
     readShop(shop),

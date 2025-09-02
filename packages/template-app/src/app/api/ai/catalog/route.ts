@@ -18,7 +18,7 @@ function parseIntOr(val: string | null, def: number): number {
 }
 
 export async function GET(req: NextRequest) {
-  const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
+    const shop = (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "default";
   const settings = await getShopSettings(shop);
   const ai = settings.seo?.aiCatalog;
   if (!ai?.enabled) {

@@ -105,9 +105,14 @@ async function resolveProvider(shop: string): Promise<AnalyticsProvider> {
   }
   if (analytics?.provider === "ga") {
     const measurementId = analytics.id;
-    const apiSecret = process.env.GA_API_SECRET || coreEnv.GA_API_SECRET;
+    const apiSecret = (
+      process.env.GA_API_SECRET ?? coreEnv.GA_API_SECRET
+    ) as string | undefined;
     if (measurementId && apiSecret) {
-      const p = new GoogleAnalyticsProvider(measurementId, apiSecret);
+      const p = new GoogleAnalyticsProvider(
+        measurementId,
+        apiSecret as string,
+      );
       providerCache.set(shop, p);
       return p;
     }

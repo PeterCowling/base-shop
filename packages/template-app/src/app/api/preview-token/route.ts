@@ -16,7 +16,7 @@ export async function GET(req: Request) {
   if (!pageId) {
     return NextResponse.json({ error: "Missing pageId" }, { status: 400 });
   }
-  const secret = coreEnv.UPGRADE_PREVIEW_TOKEN_SECRET;
+    const secret = coreEnv.UPGRADE_PREVIEW_TOKEN_SECRET as string | undefined;
   if (!secret) {
     return NextResponse.json(
       { error: "Token secret not configured" },

@@ -4,6 +4,7 @@ import {
   query,
   mutate,
   slugExists,
+  configSchema,
 } from "../index";
 import { createClient } from "@sanity/client";
 
@@ -27,6 +28,21 @@ describe("sanity plugin", () => {
     jest.clearAllMocks();
   });
 
+  test("configSchema requires projectId, dataset, and token", () => {
+    const result = configSchema.safeParse({ projectId: "p" } as any);
+    expect(result.success).toBe(false);
+  });
+
+  test("configSchema rejects unknown fields", () => {
+    const result = configSchema.safeParse({
+      projectId: "p",
+      dataset: "d",
+      token: "t",
+      extra: "nope",
+    } as any);
+    expect(result.success).toBe(false);
+  });
+
   test("verifyCredentials returns true on success", async () => {
     mockClient.datasets.list.mockResolvedValue([{ name: "d" }]);
     const ok = await verifyCredentials({ projectId: "p", dataset: "d", token: "t" });
@@ -36,6 +52,12 @@ describe("sanity plugin", () => {
 
   test("verifyCredentials returns false on failure", async () => {
     mockClient.datasets.list.mockRejectedValue(new Error("bad"));
+    const ok = await verifyCredentials({ projectId: "p", dataset: "d", token: "t" });
+    expect(ok).toBe(false);
+  });
+
+  test("verifyCredentials returns false when dataset missing", async () => {
+    mockClient.datasets.list.mockResolvedValue([{ name: "other" }]);
     const ok = await verifyCredentials({ projectId: "p", dataset: "d", token: "t" });
     expect(ok).toBe(false);
   });
@@ -51,6 +73,20 @@ describe("sanity plugin", () => {
     expect(res).toEqual({ _id: "1" });
   });
 
+  test("publishPost handles invalid credentials", async () => {
+    mockClient.create.mockRejectedValue(new Error("Unauthorized"));
+    await expect(
+      publishPost({ projectId: "p", dataset: "d", token: "t" }, { title: "Hi" }),
+    ).rejects.toThrow("Unauthorized");
+  });
+
+  test("publishPost handles network failures", async () => {
+    mockClient.create.mockRejectedValue(new Error("Network error"));
+    await expect(
+      publishPost({ projectId: "p", dataset: "d", token: "t" }, { title: "Hi" }),
+    ).rejects.toThrow("Network error");
+  });
+
   test("query forwards the query", async () => {
     mockClient.fetch.mockResolvedValue([{ _id: "1" }]);
     const res = await query<{ _id: string }[]>(
@@ -59,6 +95,13 @@ describe("sanity plugin", () => {
     );
     expect(mockClient.fetch).toHaveBeenCalledWith("*[]");
     expect(res).toEqual([{ _id: "1" }]);
+  });
+
+  test("query handles network failures", async () => {
+    mockClient.fetch.mockRejectedValue(new Error("Network error"));
+    await expect(
+      query({ projectId: "p", dataset: "d", token: "t" }, "*[]"),
+    ).rejects.toThrow("Network error");
   });
 
   test("mutate forwards mutations and options", async () => {
@@ -71,6 +114,16 @@ describe("sanity plugin", () => {
       [{ create: { _type: "post" } }],
       { returnDocuments: false },
     );
+  });
+
+  test("mutate handles network failures", async () => {
+    mockClient.mutate.mockRejectedValue(new Error("Network error"));
+    await expect(
+      mutate(
+        { projectId: "p", dataset: "d", token: "t" },
+        { mutations: [], returnIds: false },
+      ),
+    ).rejects.toThrow("Network error");
   });
 
   test("slugExists checks for existing slug", async () => {
@@ -86,5 +139,12 @@ describe("sanity plugin", () => {
       "foo",
     );
     expect(not).toBe(false);
+  });
+
+  test("slugExists handles network failures", async () => {
+    mockClient.fetch.mockRejectedValue(new Error("Network error"));
+    await expect(
+      slugExists({ projectId: "p", dataset: "d", token: "t" }, "foo"),
+    ).rejects.toThrow("Network error");
   });
 });

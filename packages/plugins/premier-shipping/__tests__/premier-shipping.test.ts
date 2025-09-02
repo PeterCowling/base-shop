@@ -81,3 +81,27 @@ test("schedulePickup updates internal state", () => {
     window: "10-11",
   });
 });
+
+test("schedulePickup surfaces network failures", () => {
+  const provider = createProvider();
+  const err = new Error("Network down");
+  jest.spyOn(provider, "schedulePickup").mockImplementation(() => {
+    throw err;
+  });
+
+  expect(() =>
+    provider.schedulePickup("zone1", "2024-01-03", "10-11", "fast"),
+  ).toThrow("Network down");
+});
+
+test("schedulePickup surfaces invalid credential errors", () => {
+  const provider = createProvider();
+  const err = new Error("Invalid credentials");
+  jest.spyOn(provider, "schedulePickup").mockImplementation(() => {
+    throw err;
+  });
+
+  expect(() =>
+    provider.schedulePickup("zone1", "2024-01-03", "10-11", "fast"),
+  ).toThrow("Invalid credentials");
+});

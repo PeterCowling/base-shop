@@ -24,6 +24,15 @@ describe("paypal plugin", () => {
     );
   });
 
+  it("rejects unknown config fields", () => {
+    const result = plugin.configSchema.safeParse({
+      clientId: "abc",
+      secret: "xyz",
+      extra: "nope",
+    } as any);
+    expect(result.success).toBe(false);
+  });
+
   it("registerPayments adds paypal handler using provided config", () => {
     const registry: PaymentRegistry = {
       add: jest.fn(),
@@ -110,6 +119,24 @@ describe("paypal plugin", () => {
       await expect(
         provider.processPayment({} as any),
       ).rejects.toThrow(err);
+    });
+
+    it("handles invalid credentials errors", async () => {
+      const err = new Error("Invalid credentials");
+      mockProcessPaypalPayment.mockRejectedValueOnce(err);
+
+      await expect(
+        provider.processPayment({ amount: 50 } as any),
+      ).rejects.toThrow("Invalid credentials");
+    });
+
+    it("handles network failures", async () => {
+      const err = new Error("Network error");
+      mockProcessPaypalPayment.mockRejectedValueOnce(err);
+
+      await expect(
+        provider.processPayment({ amount: 50 } as any),
+      ).rejects.toThrow("Network error");
     });
   });
 });

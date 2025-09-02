@@ -8,7 +8,32 @@ describe("email env module", () => {
     process.env = ORIGINAL_ENV;
   });
 
-  it("logs formatted errors and throws on invalid configuration", async () => {
+  it("parses valid configuration", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      EMAIL_PROVIDER: "sendgrid",
+      SENDGRID_API_KEY: "api-key",
+      SMTP_URL: "https://smtp.example.com",
+      EMAIL_BATCH_SIZE: "10",
+      EMAIL_BATCH_DELAY_MS: "20",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const { emailEnv } = await import("../email.ts");
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(emailEnv).toMatchObject({
+      EMAIL_PROVIDER: "sendgrid",
+      SENDGRID_API_KEY: "api-key",
+      SMTP_URL: "https://smtp.example.com",
+      EMAIL_BATCH_SIZE: 10,
+      EMAIL_BATCH_DELAY_MS: 20,
+    });
+    errorSpy.mockRestore();
+  });
+
+  it("throws and logs error for unsupported EMAIL_PROVIDER", async () => {
     process.env = {
       ...ORIGINAL_ENV,
       EMAIL_PROVIDER: "invalid" as unknown as NodeJS.ProcessEnv[string],
@@ -28,8 +53,8 @@ describe("email env module", () => {
     errorSpy.mockRestore();
   });
 
-  it("defaults EMAIL_PROVIDER to smtp when unset", async () => {
-    process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
+  it("defaults EMAIL_PROVIDER to smtp when unset in development", async () => {
+    process.env = { ...ORIGINAL_ENV, NODE_ENV: "development" } as NodeJS.ProcessEnv;
     jest.resetModules();
     const { emailEnv } = await import("../email.ts");
     expect(emailEnv.EMAIL_PROVIDER).toBe("smtp");

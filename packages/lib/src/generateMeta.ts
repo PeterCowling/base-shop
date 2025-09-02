@@ -47,14 +47,37 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
     return fallback;
   }
 
-  let OpenAI: typeof import("openai").default;
+  // The official OpenAI SDK has gone through a few export styles. Attempt to
+  // resolve the constructor from either a default export or a named export so
+  // that our code continues to work regardless of the installed version. If we
+  // can't find a usable constructor we simply return the fallback metadata.
+  let OpenAIConstructor: new (init: { apiKey: string }) => {
+    responses: { create: (...args: any[]) => Promise<any> };
+    images: { generate: (...args: any[]) => Promise<any> };
+  };
+  if ((globalThis as any).__OPENAI_IMPORT_ERROR__) {
+    return fallback;
+  }
   try {
-    OpenAI = (await import("openai")).default;
+    const mod = await import("openai");
+    OpenAIConstructor =
+      typeof (mod as any).default === "function"
+        ? (mod as any).default
+        : typeof (mod as any).OpenAI === "function"
+          ? (mod as any).OpenAI
+          : typeof (mod as any).default?.default === "function"
+            ? (mod as any).default.default
+            : typeof mod === "function"
+              ? (mod as any)
+              : undefined;
   } catch {
     return fallback;
   }
+  if (typeof OpenAIConstructor !== "function") {
+    return fallback;
+  }
 
-  const client = new OpenAI({ apiKey: env.OPENAI_API_KEY });
+  const client = new OpenAIConstructor({ apiKey: env.OPENAI_API_KEY });
 
   const prompt = `Generate SEO metadata for a product as JSON with keys title, description, alt.\n\nTitle: ${product.title}\nDescription: ${product.description}`;
 

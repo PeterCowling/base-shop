@@ -1,5 +1,5 @@
 import { exportedTokenMap } from "../src/exportedTokenMap.ts";
-import { tokens as sourceTokens } from "../../themes/base/src/tokens.ts";
+import { tokens } from "../../themes/base/src/tokens.ts";
 
 function mergeTokenMaps(
   ...maps: Array<Record<string, string>>
@@ -15,11 +15,17 @@ function mergeTokenMaps(
 describe("exportedTokenMap", () => {
   it("matches source token definitions", () => {
     const expected = Object.fromEntries(
-      Object.keys(sourceTokens)
+      Object.keys(tokens)
         .filter((k) => k in exportedTokenMap)
         .map((k) => [k, `var(${k})`])
     );
     expect(exportedTokenMap).toMatchObject(expected);
+  });
+
+  it("has no extra or missing keys", () => {
+    const exportedKeys = Object.keys(exportedTokenMap).sort();
+    const tokenKeys = Object.keys(tokens).sort();
+    expect(exportedKeys).toEqual(tokenKeys);
   });
 
   it("merges tokens with overrides", () => {

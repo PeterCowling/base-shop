@@ -1,13 +1,17 @@
 import path from "path";
 import { promises as fs } from "fs";
 
-const configEnv = { OPENAI_API_KEY: "key" } as { OPENAI_API_KEY: string | undefined };
+const configEnv = { OPENAI_API_KEY: "key" } as {
+  OPENAI_API_KEY: string | undefined;
+};
 jest.mock("@acme/config", () => ({
   env: configEnv,
 }));
 
 const responsesCreateMock = jest.fn().mockResolvedValue({
-  output: [{ content: [{ text: '{"title":"T","description":"D","alt":"A"}' }] }],
+  output: [
+    { content: [{ text: '{"title":"T","description":"D","alt":"A"}' }] },
+  ],
 });
 const imagesGenerateMock = jest.fn().mockResolvedValue({
   data: [{ b64_json: Buffer.from("img").toString("base64") }],
@@ -95,6 +99,25 @@ describe("generateMeta", () => {
 
     expect(mkdirMock).toHaveBeenCalledWith(dir, { recursive: true });
     expect(writeFileMock).toHaveBeenCalledWith(file, Buffer.from("img"));
+  });
+
+  it("falls back to defaults when OpenAI content is invalid JSON", async () => {
+    responsesCreateMock.mockResolvedValueOnce({
+      output: [{ content: ['{"title"'] }],
+    });
+
+    const result = await generateMeta({
+      id: "123",
+      title: "Title",
+      description: "Desc",
+    });
+
+    expect(result).toEqual({
+      title: "Title",
+      description: "Desc",
+      alt: "Title",
+      image: "/og/123.png",
+    });
   });
 
   it("returns fallback metadata when OpenAI import fails", async () => {
@@ -199,4 +222,3 @@ describe("generateMeta", () => {
     }
   });
 });
-

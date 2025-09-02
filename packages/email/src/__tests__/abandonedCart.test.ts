@@ -104,10 +104,25 @@ describe("resolveAbandonedCartDelay", () => {
     expect(delay).toBe(12345);
   });
 
-  it("uses per-shop env override", async () => {
+  it("uses global env override", async () => {
+    process.env.ABANDONED_CART_DELAY_MS = "22222";
+    const delay = await resolveAbandonedCartDelay(shop);
+    expect(delay).toBe(22222);
+  });
+
+  it("prefers shop-specific env over global", async () => {
     const key = `ABANDONED_CART_DELAY_MS_${shop.toUpperCase()}`;
+    process.env.ABANDONED_CART_DELAY_MS = "11111";
     process.env[key] = "54321";
     const delay = await resolveAbandonedCartDelay(shop);
     expect(delay).toBe(54321);
+  });
+
+  it("falls back to default for invalid env values", async () => {
+    const key = `ABANDONED_CART_DELAY_MS_${shop.toUpperCase()}`;
+    process.env.ABANDONED_CART_DELAY_MS = "not-a-number";
+    process.env[key] = "also-not-a-number";
+    const delay = await resolveAbandonedCartDelay(shop);
+    expect(delay).toBe(24 * 60 * 60 * 1000);
   });
 });

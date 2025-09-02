@@ -3,7 +3,10 @@ import { createRequire } from "module";
 import type { ReactElement, ReactNode } from "react";
 import createDOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
-import { marketingEmailTemplates } from "@acme/email-templates";
+import {
+  marketingEmailTemplates,
+  type MarketingEmailTemplateVariant,
+} from "@acme/email-templates";
 
 // Use Node's createRequire with the current file path so this works when the
 // code is executed in a CommonJS context (e.g. ts-jest).
@@ -105,7 +108,9 @@ export function renderTemplate(
       return params[key] ?? "";
     });
   }
-  const variant = marketingEmailTemplates.find((t) => t.id === id);
+  const variant = (marketingEmailTemplates as MarketingEmailTemplateVariant[]).find(
+    (t) => t.id === id
+  );
   if (variant) {
     return renderToStaticMarkup(
       variant.make({

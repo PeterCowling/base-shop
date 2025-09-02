@@ -197,6 +197,23 @@ describe("core env module", () => {
     process.env = ORIGINAL_ENV;
   });
 
+  it("uses default CART_COOKIE_SECRET in development when omitted", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "development",
+    } as NodeJS.ProcessEnv;
+    delete process.env.CART_COOKIE_SECRET;
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    jest.resetModules();
+    const { coreEnv } = require("../core.js");
+    expect(coreEnv.CART_COOKIE_SECRET).toBe("dev-cart-secret");
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
   it("caches parsed env and does not reparse", async () => {
     process.env = {
       ...ORIGINAL_ENV,
@@ -256,6 +273,21 @@ describe("core env module", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "  • CART_COOKIE_SECRET: Required",
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("fails fast on import in production when required vars are missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "production",
+    } as NodeJS.ProcessEnv;
+    delete process.env.CART_COOKIE_SECRET;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../core.js")).rejects.toThrow(
+      "Invalid core environment variables",
     );
     errorSpy.mockRestore();
   });

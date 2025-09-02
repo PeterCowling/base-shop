@@ -5,12 +5,21 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "dist",
     "noEmit": false,
     "rootDir": "src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "types": ["node"]
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"],
+  "exclude": [
+    "dist",
+    ".turbo",
+    "node_modules",
+    "**/__tests__/**",
+    "**/__mocks__/**",
+    "**/*.test.*",
+    "**/*.spec.*"
+  ],
   "references": [{ "path": "../config" }]
 }

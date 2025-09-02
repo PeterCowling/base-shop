@@ -89,6 +89,21 @@ describe("configurator CLI", () => {
     logSpy.mockRestore();
   });
 
+  it("prints usage when no command is provided", async () => {
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+
+    process.argv = ["node", "configurator"];
+    await import("../src/index");
+
+    expect(spawnSyncMock).not.toHaveBeenCalled();
+    expect(logSpy).toHaveBeenCalledWith(
+      "Usage: pnpm configurator <dev|build|deploy>"
+    );
+    expect(exitSpy).toHaveBeenCalledWith(1);
+
+    logSpy.mockRestore();
+  });
+
   it("exits when required env vars are missing", async () => {
     const prevNodeEnv = process.env.NODE_ENV;
     process.env.NODE_ENV = "production";

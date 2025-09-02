@@ -22,6 +22,18 @@ if (!parsed.success) {
   );
   throw new Error("Invalid email environment variables");
 }
+if (parsed.data.EMAIL_PROVIDER === "sendgrid") {
+  const sendgrid = z
+    .object({ SENDGRID_API_KEY: z.string() })
+    .safeParse(parsed.data);
+  if (!sendgrid.success) {
+    console.error(
+      "❌ Invalid email environment variables:",
+      sendgrid.error.format(),
+    );
+    throw new Error("Invalid email environment variables");
+  }
+}
 
 export const emailEnv = parsed.data;
 export type EmailEnv = z.infer<typeof emailEnvSchema>;

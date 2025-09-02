@@ -1,3 +1,6 @@
+import path from "node:path";
+import { DATA_ROOT } from "@platform-core/dataRoot";
+
 const mockListEvents = jest.fn();
 const mockStat = jest.fn();
 const mockReadFile = jest.fn();
@@ -184,6 +187,33 @@ describe("resolveSegment events", () => {
     expect(r2).toEqual(["a@example.com"]);
     expect(mockListEvents).toHaveBeenCalledTimes(1);
     delete process.env.SEGMENT_CACHE_TTL;
+  });
+});
+
+describe("analyticsMTime", () => {
+  beforeEach(() => {
+    jest.resetModules();
+    jest.unmock("fs");
+  });
+
+  it("returns 0 when analytics file is missing", async () => {
+    const { analyticsMTime } = await import("../segments");
+    await expect(analyticsMTime("missing-shop")).resolves.toBe(0);
+  });
+
+  it("returns file mtime when analytics file exists", async () => {
+    const shop = `test-shop-${Date.now()}`;
+    const { promises: fs } = await import("node:fs");
+    const dir = path.join(DATA_ROOT, shop);
+    await fs.mkdir(dir, { recursive: true });
+    const file = path.join(dir, "analytics.jsonl");
+    await fs.writeFile(file, "");
+    const stat = await fs.stat(file);
+
+    const { analyticsMTime } = await import("../segments");
+    await expect(analyticsMTime(shop)).resolves.toBe(stat.mtimeMs);
+
+    await fs.rm(dir, { recursive: true, force: true });
   });
 });
 

@@ -1,4 +1,5 @@
 import "server-only";
+export declare function analyticsMTime(shop: string): Promise<number>;
 export declare function createContact(email: string): Promise<string>;
 export declare function addToList(contactId: string, listId: string): Promise<void>;
 export declare function listSegments(): Promise<{

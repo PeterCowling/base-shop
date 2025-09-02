@@ -30,7 +30,7 @@ function cacheTtl() {
     const ttl = Number(process.env.SEGMENT_CACHE_TTL);
     return Number.isFinite(ttl) && ttl > 0 ? ttl : 60_000;
 }
-async function analyticsMTime(shop) {
+export async function analyticsMTime(shop) {
     const file = path.join(DATA_ROOT, validateShopName(shop), "analytics.jsonl");
     try {
         const stat = await fs.stat(file);

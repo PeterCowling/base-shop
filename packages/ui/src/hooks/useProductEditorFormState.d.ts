@@ -1,13 +1,5 @@
 import type { Locale } from "@acme/i18n";
-import type { MediaItem } from "@acme/types";
-interface ProductPublication {
-    id: string;
-    shop: string;
-    title: Record<Locale, string>;
-    description: Record<Locale, string>;
-    price: number;
-    media: MediaItem[];
-}
+import type { ProductPublication } from "@acme/types";
 import { type ChangeEvent, type FormEvent, type ReactElement } from "react";
 export type ProductWithVariants = ProductPublication & {
     variants: Record<string, string[]>;

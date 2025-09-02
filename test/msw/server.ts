@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 // tests/msw/server.ts
 //--------------------------------------------------
 // Shared Mock Service Worker server

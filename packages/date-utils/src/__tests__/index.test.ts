@@ -77,6 +77,17 @@ describe("parseTargetDate", () => {
   it("returns null for invalid input", () => {
     expect(parseTargetDate("invalid")).toBeNull();
   });
+  it("returns null when target date is missing", () => {
+    expect(parseTargetDate()).toBeNull();
+  });
+  it("returns null for invalid input with timezone", () => {
+    expect(parseTargetDate("bad", "America/New_York")).toBeNull();
+  });
+  it("parses ISO string with timezone offset", () => {
+    expect(parseTargetDate("2025-01-01T00:00:00-05:00")?.toISOString()).toBe(
+      "2025-01-01T05:00:00.000Z"
+    );
+  });
 });
 
 describe("getTimeRemaining and formatDuration", () => {
@@ -97,6 +108,9 @@ describe("getTimeRemaining and formatDuration", () => {
     const remaining = getTimeRemaining(target, base);
     expect(remaining).toBe(-5000);
   });
+  it("formats negative durations as zero", () => {
+    expect(formatDuration(-5000)).toBe("0s");
+  });
   it("handles hour duration", () => {
     const target = new Date("2025-01-01T03:00:00Z");
     const remaining = getTimeRemaining(target, base);
@@ -114,6 +128,9 @@ describe("getTimeRemaining and formatDuration", () => {
     const remaining = getTimeRemaining(target, base);
     expect(remaining).toBe(2 * 24 * 60 * 60 * 1000);
     expect(formatDuration(remaining)).toBe("2d 0h 0m 0s");
+  });
+  it("formats durations just under a day", () => {
+    expect(formatDuration(24 * 60 * 60 * 1000 - 1000)).toBe("23h 59m 59s");
   });
 });
 

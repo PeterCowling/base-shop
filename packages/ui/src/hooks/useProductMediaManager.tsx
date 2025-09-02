@@ -40,7 +40,7 @@ export function useProductMediaManager(
     (index: number) => {
       setProduct((prev: ProductWithVariants) => ({
         ...prev,
-        media: prev.media.filter((_, i) => i !== index),
+        media: prev.media.filter((_: MediaItem, i: number) => i !== index),
       }));
     },
     [setProduct]

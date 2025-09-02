@@ -1,6 +1,8 @@
 "use client";
 
 import { EditorContent, type Editor } from "@tiptap/react";
+import type { DraggableAttributes } from "@dnd-kit/core";
+import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import MenuBar from "./MenuBar";
 
 interface Guides {
@@ -10,8 +12,8 @@ interface Guides {
 
 interface Props {
   selected: boolean;
-  attributes: Record<string, unknown>;
-  listeners: Record<string, unknown>;
+  attributes: DraggableAttributes;
+  listeners?: SyntheticListenerMap;
   setNodeRef: (node: HTMLDivElement | null) => void;
   containerRef: React.RefObject<HTMLDivElement | null>;
   isDragging: boolean;
@@ -69,7 +71,7 @@ const TextBlockView = ({
       <div
         className="absolute left-0 top-0 z-10 h-3 w-3 cursor-move bg-muted"
         {...attributes}
-        {...listeners}
+        {...(listeners ?? {})}
         role="button"
         tabIndex={0}
         aria-grabbed={isDragging}

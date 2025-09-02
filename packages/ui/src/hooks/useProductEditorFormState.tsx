@@ -82,9 +82,10 @@ export function useProductEditorFormState(
       if (result.errors) {
         setErrors(result.errors);
       } else if (result.product) {
-        setProduct((prev) => ({
-          ...result.product!,
-          variants: result.product.variants ?? prev.variants,
+        const product = result.product;
+        setProduct((prev: ProductWithVariants) => ({
+          ...product,
+          variants: product.variants ?? prev.variants,
         }));
         setErrors({});
       }
@@ -110,3 +111,5 @@ export function useProductEditorFormState(
 }
 
 export default useProductEditorFormState;
+
+export type { ProductWithVariants } from "./useProductInputs";

@@ -8,14 +8,15 @@ jest.mock("@ui/components/layout/Footer", () => ({
   default: () => <div data-testid="footer" />,
 }));
 
-const HeaderMock = jest.fn(({ lang }: { lang: string }) => (
-  <div data-testid="header">{lang}</div>
-));
-
 jest.mock("@ui/components/layout/Header", () => ({
   __esModule: true,
-  default: HeaderMock,
+  default: jest.fn(({ lang }: { lang: string }) => (
+    <div data-testid="header">{lang}</div>
+  )),
 }));
+
+const HeaderMock =
+  jest.requireMock("@ui/components/layout/Header").default as jest.Mock;
 
 jest.mock("@i18n/Translations", () => ({
   __esModule: true,

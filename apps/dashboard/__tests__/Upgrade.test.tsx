@@ -7,8 +7,9 @@ jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
+const originalFetch = global.fetch;
+
 describe("Upgrade page", () => {
-  const originalFetch = global.fetch;
   beforeEach(() => {
     (useRouter as jest.Mock).mockReturnValue({ query: { id: "shop1" } });
     global.fetch = jest.fn();
@@ -19,7 +20,7 @@ describe("Upgrade page", () => {
     global.fetch = originalFetch;
   });
 
-  it("loads components, toggles selection, and publishes", async () => {
+  it("shows error message when publish fails", async () => {
     (global.fetch as jest.Mock)
       .mockResolvedValueOnce({
         ok: true,
@@ -30,7 +31,10 @@ describe("Upgrade page", () => {
           ],
         }),
       })
-      .mockResolvedValueOnce({ ok: true, text: async () => "" });
+      .mockResolvedValueOnce({
+        ok: false,
+        text: async () => "publish failed",
+      });
 
     render(<Upgrade />);
 
@@ -58,6 +62,10 @@ describe("Upgrade page", () => {
       )
     );
 
-    await screen.findByText("Upgrade published successfully.");
+    await screen.findByText("publish failed");
   });
+});
+
+it("restores global.fetch after tests", () => {
+  expect(global.fetch).toBe(originalFetch);
 });

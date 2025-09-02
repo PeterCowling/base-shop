@@ -76,14 +76,22 @@ const baseEnvSchema = z
   })
   .passthrough();
 
-export const coreEnvBaseSchema = (
-  authEnvSchema.innerType() as z.AnyZodObject
-)
-  .merge(cmsEnvSchema)
-  .merge(emailEnvSchema.innerType() as z.AnyZodObject)
-  .merge(paymentsEnvSchema)
-  .merge(shippingEnvSchema)
-  .merge(baseEnvSchema);
+// Combine shapes from all env schemas manually instead of using Zod's
+// `.merge()` helper. Jest's transpilation to CJS exposed a bug where the
+// lazily-evaluated `shape` functions created by `merge` resulted in
+// `merging._def.shape` being undefined at parse time. By constructing a
+// single object schema from the individual shapes we avoid that issue and
+// keep the resulting schema equivalent.
+export const coreEnvBaseSchema = z
+  .object({
+    ...authEnvSchema.innerType().shape,
+    ...cmsEnvSchema.shape,
+    ...emailEnvSchema.innerType().shape,
+    ...paymentsEnvSchema.shape,
+    ...shippingEnvSchema.shape,
+    ...baseEnvSchema.shape,
+  })
+  .passthrough();
 
 export function depositReleaseEnvRefinement(
   env: Record<string, unknown>,

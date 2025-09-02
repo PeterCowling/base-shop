@@ -151,6 +151,23 @@ describe("releaseDepositsOnce", () => {
     consoleSpy.mockRestore();
     logSpy.mockRestore();
   });
+
+  it("skips orders when no payment intent is returned", async () => {
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValue(["shop1"]);
+    readOrders.mockResolvedValue([
+      { sessionId: "s1", returnedAt: "now", deposit: 10 },
+      { sessionId: "s2", returnedAt: "now", deposit: 10 },
+    ]);
+    retrieve.mockResolvedValueOnce({}).mockResolvedValueOnce({ payment_intent: "pi_2" });
+
+    await service.releaseDepositsOnce();
+
+    expect(retrieve).toHaveBeenCalledTimes(2);
+    expect(createRefund).toHaveBeenCalledTimes(1);
+    expect(markRefunded).toHaveBeenCalledTimes(1);
+    expect(markRefunded).toHaveBeenCalledWith("shop1", "s2");
+  });
 });
 
 describe("startDepositReleaseService", () => {
@@ -234,6 +251,83 @@ describe("startDepositReleaseService", () => {
 
     setSpy.mockRestore();
     clearSpy.mockRestore();
+  });
+
+  it("uses core env interval when shop env is missing", async () => {
+    jest.resetModules();
+    process.env.DEPOSIT_RELEASE_INTERVAL_MS = "120000";
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValue(["shop1"]);
+    readOrders.mockResolvedValue([]);
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startDepositReleaseService();
+    expect(setSpy).toHaveBeenCalledWith(expect.any(Function), 120000);
+
+    stop();
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+    delete process.env.DEPOSIT_RELEASE_INTERVAL_MS;
+  });
+
+  it("prefers override intervalMinutes over env", async () => {
+    jest.resetModules();
+    process.env.DEPOSIT_RELEASE_INTERVAL_MS = "300000";
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValue(["shop1"]);
+    readOrders.mockResolvedValue([]);
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startDepositReleaseService({
+      shop1: { intervalMinutes: 7 },
+    });
+    expect(setSpy).toHaveBeenCalledWith(expect.any(Function), 7 * 60 * 1000);
+
+    stop();
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+    delete process.env.DEPOSIT_RELEASE_INTERVAL_MS;
+  });
+
+  it("logs an error when releaseDepositsOnce throws", async () => {
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValue(["shop1"]);
+    readOrders.mockResolvedValue([]);
+    const err = new Error("boom");
+    const releaseSpy = jest
+      .spyOn(service, "releaseDepositsOnce")
+      .mockRejectedValue(err);
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+    const logSpy = jest
+      .spyOn(logger, "error")
+      .mockImplementation(() => undefined);
+
+    const stop = await service.startDepositReleaseService();
+    expect(logSpy).toHaveBeenCalledWith("deposit release failed", {
+      shopId: "shop1",
+      err,
+    });
+
+    stop();
+    releaseSpy.mockRestore();
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+    logSpy.mockRestore();
   });
 });
 

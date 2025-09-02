@@ -23,6 +23,23 @@ describe("auth env module", () => {
     });
   });
 
+  it("defaults secrets in development", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "development",
+    } as NodeJS.ProcessEnv;
+    delete process.env.NEXTAUTH_SECRET;
+    delete process.env.SESSION_SECRET;
+    delete process.env.PREVIEW_TOKEN_SECRET;
+    jest.resetModules();
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv).toMatchObject({
+      NEXTAUTH_SECRET: "dev-nextauth-secret",
+      SESSION_SECRET: "dev-session-secret",
+    });
+    expect(authEnv.PREVIEW_TOKEN_SECRET).toBeUndefined();
+  });
+
   it("throws on missing or invalid configuration", async () => {
     process.env = {
       ...ORIGINAL_ENV,

@@ -57,6 +57,17 @@ export default {
       path.join(badDir, "package.json"),
       JSON.stringify({ name: "bad", main: "index.ts" })
     );
+    // plugin exporting wrong type
+    const wrongDir = path.join(base, "wrong");
+    await fs.mkdir(wrongDir, { recursive: true });
+    await fs.writeFile(
+      path.join(wrongDir, "index.ts"),
+      "export const notPlugin = {};"
+    );
+    await fs.writeFile(
+      path.join(wrongDir, "package.json"),
+      JSON.stringify({ name: "wrong", main: "index.ts" })
+    );
     // link root node_modules so imports resolve
     await fs.symlink(
       path.join(process.cwd(), "node_modules"),
@@ -76,9 +87,13 @@ describe("plugins", () => {
   it("returns empty array when plugins directory missing", async () => {
     const root = await createPluginsRoot(false);
     jest.spyOn(process, "cwd").mockReturnValue(root);
+    const { logger } = await import("../src/utils");
+    const warn = jest.spyOn(logger, "warn").mockImplementation(() => {});
     const { loadPlugins } = await import("../src/plugins");
     const plugins = await loadPlugins();
     expect(plugins).toEqual([]);
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
   });
 
   it("loads valid plugins and skips missing and failing ones", async () => {
@@ -118,12 +133,67 @@ describe("plugins", () => {
     const root = await createPluginsRoot(true);
     jest.spyOn(process, "cwd").mockReturnValue(root);
     const { initPlugins } = await import("../src/plugins");
+    const { logger } = await import("../src/utils");
+    const error = jest.spyOn(logger, "error").mockImplementation(() => {});
     const manager = await initPlugins({
       // enabled should be boolean
       config: { good: { enabled: "oops" as any } },
     });
     expect(manager.listPlugins()).toHaveLength(0);
     expect(manager.payments.list()).toHaveLength(0);
+    expect(error).toHaveBeenCalledWith(
+      "Invalid config for plugin",
+      expect.objectContaining({ plugin: "good" })
+    );
+    error.mockRestore();
+  });
+
+  it("logs when plugin entry not found", async () => {
+    const root = await createPluginsRoot(true);
+    jest.spyOn(process, "cwd").mockReturnValue(root);
+    const { loadPlugin } = await import("../src/plugins");
+    const { logger } = await import("../src/utils");
+    const error = jest.spyOn(logger, "error").mockImplementation(() => {});
+    const dir = path.join(root, "packages", "plugins", "missing");
+    const plugin = await loadPlugin(dir);
+    expect(plugin).toBeUndefined();
+    expect(error).toHaveBeenCalledWith(
+      "No compiled plugin entry found. Ensure plugin is built before runtime.",
+      expect.objectContaining({ plugin: dir })
+    );
+    error.mockRestore();
+  });
+
+  it("logs when plugin import fails", async () => {
+    const root = await createPluginsRoot(true);
+    jest.spyOn(process, "cwd").mockReturnValue(root);
+    const { loadPlugin } = await import("../src/plugins");
+    const { logger } = await import("../src/utils");
+    const error = jest.spyOn(logger, "error").mockImplementation(() => {});
+    const dir = path.join(root, "packages", "plugins", "bad");
+    const plugin = await loadPlugin(dir);
+    expect(plugin).toBeUndefined();
+    expect(error).toHaveBeenCalledWith(
+      "Failed to import plugin entry",
+      expect.objectContaining({ plugin: dir })
+    );
+    error.mockRestore();
+  });
+
+  it("logs when plugin module exports wrong type", async () => {
+    const root = await createPluginsRoot(true);
+    jest.spyOn(process, "cwd").mockReturnValue(root);
+    const { loadPlugin } = await import("../src/plugins");
+    const { logger } = await import("../src/utils");
+    const error = jest.spyOn(logger, "error").mockImplementation(() => {});
+    const dir = path.join(root, "packages", "plugins", "wrong");
+    const plugin = await loadPlugin(dir);
+    expect(plugin).toBeUndefined();
+    expect(error).toHaveBeenCalledWith(
+      "Plugin module did not export a default Plugin",
+      expect.objectContaining({ plugin: dir })
+    );
+    error.mockRestore();
   });
 });
 

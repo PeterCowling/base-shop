@@ -1,30 +1,36 @@
-const err = new Error("boom");
+const spawnSyncMock = jest.fn();
 
-jest.mock("../dist/index.js", () => {
-  throw err;
-}, { virtual: true });
+jest.mock("node:child_process", () => ({
+  spawnSync: (...args) => spawnSyncMock(...args),
+}));
 
 describe("configurator bin", () => {
-  afterEach(() => {
-    process.exitCode = undefined;
+  let exitSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    jest.resetModules();
+    spawnSyncMock.mockReset();
+    exitSpy = jest
+      .spyOn(process, "exit")
+      .mockImplementation(((code?: number) => {}) as any);
+
+    process.argv = ["node", "configurator", "dev"];
+    process.env.STRIPE_SECRET_KEY = "sk";
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
+    process.env.CART_COOKIE_SECRET = "secret";
   });
 
-  it("logs and sets exit code when dist import fails", async () => {
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    let p: Promise<unknown>;
+  afterEach(() => {
+    exitSpy.mockRestore();
+  });
 
-    jest.isolateModules(() => {
-      p = import("../bin/configurator.js");
+  it("runs the CLI", async () => {
+    await import("../bin/configurator.js");
+    expect(spawnSyncMock).toHaveBeenCalledWith("vite", ["dev"], {
+      stdio: "inherit",
+      shell: true,
     });
-
-    await p.catch(() => {});
-
-    expect(errorSpy).toHaveBeenCalledWith(
-      "Failed to load the compiled configurator module:",
-      expect.anything(),
-    );
-    expect(process.exitCode).toBe(1);
-
-    errorSpy.mockRestore();
+    expect(exitSpy).not.toHaveBeenCalled();
   });
 });
+

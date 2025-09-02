@@ -23,14 +23,10 @@ export function MarketingEmailTemplate({
   ...props
 }: MarketingEmailTemplateProps) {
   if (!headline || content == null) {
-    throw new Error("MarketingEmailTemplate: headline and content are required");
+    return <></>;
   }
 
-  if ((ctaLabel && !ctaHref) || (!ctaLabel && ctaHref)) {
-    throw new Error(
-      "MarketingEmailTemplate: ctaLabel and ctaHref must both be provided",
-    );
-  }
+  const showCta = Boolean(ctaLabel && ctaHref);
 
   return (
     <div
@@ -51,14 +47,17 @@ export function MarketingEmailTemplate({
       <div className="space-y-4 p-6">
         <h1 className="text-xl font-bold">{headline}</h1>
         <div className="leading-6">{content}</div>
-        {ctaLabel && ctaHref && (
+        {showCta && (
           <div className="text-center">
             <a
               href={ctaHref}
               className="bg-primary inline-block rounded-md px-4 py-2 font-medium"
               data-token="--color-primary"
             >
-              <span className="text-primary-foreground" data-token="--color-primary-fg">
+              <span
+                className="text-primary-foreground"
+                data-token="--color-primary-fg"
+              >
                 {ctaLabel}
               </span>
             </a>

@@ -13,24 +13,14 @@ export const marketingEmailTemplates: MarketingEmailTemplateVariant[] = [
     id: "basic",
     label: "Basic",
     buildSubject: (headline) => headline,
-    make: (props) => {
-      try {
-        return <MarketingEmailTemplate {...props} />;
-      } catch {
-        return <></>;
-      }
-    },
+    make: (props) => <MarketingEmailTemplate {...(props ?? {})} />,
   },
   {
     id: "centered",
     label: "Centered",
     buildSubject: (headline) => headline,
-    make: (props) => {
-      try {
-        return <MarketingEmailTemplate {...props} className="text-center" />;
-      } catch {
-        return <></>;
-      }
-    },
+    make: (props) => (
+      <MarketingEmailTemplate {...(props ?? {})} className="text-center" />
+    ),
   },
 ];

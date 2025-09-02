@@ -19,6 +19,26 @@ describe("sitemap generation", () => {
     process.env.NEXT_PUBLIC_SHOP_ID = "shop1";
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("falls back to English when no languages are configured", async () => {
+    getShopSettingsMock.mockResolvedValueOnce({});
+    const { default: sitemap } = await import("../src/app/sitemap");
+    const entries = (await sitemap()) as MetadataRoute.Sitemap;
+    expect(getShopSettingsMock).toHaveBeenCalledWith("shop1");
+    expect(readRepoMock).toHaveBeenCalledWith("shop1");
+    const home = entries.find((e) => e.url === "https://example.com/en");
+    expect(home?.alternates?.languages).toEqual({
+      en: "https://example.com/en",
+    });
+    const product = entries.find((e) => e.url.endsWith("/product/shoe"));
+    expect(product?.alternates?.languages).toEqual({
+      en: "https://example.com/en/product/shoe",
+    });
+  });
+
   it("builds URLs with hreflang alternates", async () => {
     const { default: sitemap } = await import("../src/app/sitemap");
     const entries = (await sitemap()) as MetadataRoute.Sitemap;

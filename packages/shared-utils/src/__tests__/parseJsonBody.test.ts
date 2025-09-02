@@ -54,6 +54,14 @@ describe('parseJsonBody', () => {
     await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
   });
 
+  it('returns 400 for empty body', async () => {
+    const req = { text: jest.fn().mockResolvedValue('') } as unknown as Request;
+    const result = await parseJsonBody(req, schema, 1024);
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+  });
+
   it('returns 400 when no body parser is available', async () => {
     const req = {} as Request;
     const result = await parseJsonBody(req, schema, 1024);

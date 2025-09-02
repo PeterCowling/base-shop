@@ -75,5 +75,41 @@ describe('onRequest route', () => {
       translations: ['en.json'],
     });
   });
+
+  it('returns components only for valid request without diff', async () => {
+    verify.mockImplementation(() => {});
+    const root = path.resolve(__dirname, '../../../../../../..');
+    vol.fromJSON({
+      [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+        componentVersions: { '@acme/button': '1.0.0' },
+      }),
+      [`${root}/packages/button/package.json`]: JSON.stringify({
+        name: '@acme/button',
+        version: '1.1.0',
+      }),
+      [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\n\nFixed bug\n',
+    });
+
+    const res = await onRequest({
+      params: { shopId: 'abc' },
+      request: new Request('http://localhost', {
+        headers: { authorization: 'Bearer good' },
+      }),
+    });
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body).toEqual({
+      components: [
+        {
+          name: '@acme/button',
+          from: '1.0.0',
+          to: '1.1.0',
+          summary: 'Fixed bug',
+          changelog: 'packages/button/CHANGELOG.md',
+        },
+      ],
+    });
+    expect(body.configDiff).toBeUndefined();
+  });
 });
 

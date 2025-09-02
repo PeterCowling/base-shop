@@ -342,6 +342,22 @@ describe("loadCoreEnv", () => {
     process.env = ORIGINAL_ENV;
   });
 
+  it("returns parsed env on success without logging", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const env = loadCoreEnv({
+      ...baseEnv,
+      NODE_ENV: "development",
+    } as unknown as NodeJS.ProcessEnv);
+    expect(env).toMatchObject({
+      CMS_SPACE_URL: "https://example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "v1",
+      CART_COOKIE_SECRET: "dev-cart-secret",
+    });
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
   it("throws and logs issues for invalid env values", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     expect(() =>

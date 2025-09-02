@@ -55,6 +55,29 @@ describe("email env module", () => {
     expect(emailEnv.EMAIL_BATCH_DELAY_MS).toBeUndefined();
   });
 
+  it("reports invalid SMTP_URL", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      SMTP_URL: "not-a-url",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../email.ts")).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid email environment variables:",
+      expect.objectContaining({
+        SMTP_URL: {
+          _errors: [expect.stringContaining("Invalid url")],
+        },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
   it("reports non-numeric EMAIL_BATCH_SIZE", async () => {
     process.env = {
       ...ORIGINAL_ENV,

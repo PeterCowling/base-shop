@@ -1,13 +1,20 @@
 "use client";
+
 // packages/ui/hooks/useProductEditorFormState.tsx
-import { useFileUpload } from "./useFileUpload";
-// Use the published platform-core hook instead of reaching into source files
-// so builds consume the compiled output.
-import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
+import { useProductInputs, type ProductWithVariants } from "./useProductInputs";
+import { useProductMediaManager } from "./useProductMediaManager";
+import { buildProductFormData } from "../utils/buildProductFormData";
 import type { Locale } from "@acme/i18n";
+
+import {
+  useCallback,
+  useMemo,
+  useState,
+  type FormEvent,
+} from "react";
 import type { MediaItem } from "@acme/types";
 
-interface ProductPublication {
+export interface ProductPublication {
   id: string;
   shop: string;
   title: Record<Locale, string>;
@@ -15,23 +22,6 @@ interface ProductPublication {
   price: number;
   media: MediaItem[];
 }
-
-import { parseMultilingualInput } from "@acme/i18n/parseMultilingualInput";
-import {
-  useCallback,
-  useMemo,
-  useState,
-  type ChangeEvent,
-  type FormEvent,
-  type ReactElement,
-} from "react";
-
-/* ------------------------------------------------------------------ */
-/* Hook return type                                                   */
-/* ------------------------------------------------------------------ */
-export type ProductWithVariants = ProductPublication & {
-  variants: Record<string, string[]>;
-};
 
 export interface ProductSaveResult {
   product?: ProductPublication & { variants?: Record<string, string[]> };
@@ -45,146 +35,44 @@ export interface UseProductEditorFormReturn {
   publishTargets: string[];
   setPublishTargets: (ids: string[]) => void;
   handleChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   handleSubmit: (e: FormEvent) => void;
-  uploader: ReactElement;
+  uploader: React.ReactElement;
   removeMedia: (index: number) => void;
   moveMedia: (from: number, to: number) => void;
   addVariantValue: (attr: string) => void;
   removeVariantValue: (attr: string, index: number) => void;
 }
 
-/* ------------------------------------------------------------------ */
-/* Main hook                                                          */
-/* ------------------------------------------------------------------ */
 export function useProductEditorFormState(
   init: ProductPublication & { variants?: Record<string, string[]> },
   locales: readonly Locale[],
   onSave: (fd: FormData) => Promise<ProductSaveResult>
 ): UseProductEditorFormReturn {
-  /* ---------- state ------------------------------------------------ */
-  const [product, setProduct] = useState<ProductWithVariants>({
-    ...init,
-    variants: init.variants ?? {},
-  });
+  const {
+    product,
+    setProduct,
+    handleChange,
+    addVariantValue,
+    removeVariantValue,
+  } = useProductInputs(init, locales);
+
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [publishTargets, setPublishTargets] = useState<string[]>([]);
 
-  /* ---------- helpers ---------------------------------------------- */
-  const { locations } = usePublishLocations();
-  const requiredOrientation =
-    locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
-    "landscape";
-
-  const { uploader } = useFileUpload({
-    shop: init.shop,
-    requiredOrientation,
-    onUploaded: (item: MediaItem) =>
-      setProduct((prev: ProductWithVariants) => ({
-        ...prev,
-        media: [...prev.media, item],
-      })),
-  });
-
-  /* ---------- input change handler --------------------------------- */
-  const handleChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const { name, value } = e.target;
-      const parsed = parseMultilingualInput(name, locales);
-
-      setProduct((prev: ProductWithVariants) => {
-        /* multilanguage <input name="title_en"> etc. */
-        if (parsed) {
-          const { field, locale } = parsed;
-          const realField = field === "desc" ? "description" : field; // 🎯 map alias
-
-          // previous translations, guaranteed object or default to {}
-          const translations =
-            (prev[
-              realField as keyof Pick<ProductWithVariants, "title" | "description">
-            ] ?? {}) as Record<Locale, string>;
-
-          const updatedTranslations: Record<Locale, string> = {
-            ...translations,
-            [locale]: value,
-          };
-
-          return {
-            ...prev,
-            [realField]: updatedTranslations,
-          } as ProductWithVariants;
-        }
-
-        /* single-field updates */
-        if (name === "price") {
-          return { ...prev, price: Number(value) };
-        }
-
-        if (name.startsWith("variant_")) {
-          /*
-           * Variant fields can be provided either as multiple inputs with
-           * indices (e.g. `variant_size_0`) or as a single comma separated
-           * field (e.g. `variant_size`).
-           */
-          const indexed = name.match(/^variant_(.+)_(\d+)$/);
-
-          // handle indexed variant input (variant_size_0)
-          if (indexed) {
-            const [, key, idxStr] = indexed;
-            const idx = Number(idxStr);
-            const existing = prev.variants[key] ?? [];
-            const next = [...existing];
-            next[idx] = value;
-            return {
-              ...prev,
-              variants: { ...prev.variants, [key]: next },
-            };
-          }
-
-          // handle aggregated variant input (variant_size)
-          const key = name.replace(/^variant_/, "");
-          return {
-            ...prev,
-            variants: {
-              ...prev.variants,
-              [key]: value ? value.split(",").map((v) => v.trim()) : [""],
-            },
-          };
-        }
-
-        return prev;
-      });
-    },
-    [locales]
+  const { uploader, removeMedia, moveMedia } = useProductMediaManager(
+    init.shop,
+    publishTargets,
+    setProduct
   );
 
-  /* ---------- assemble FormData ------------------------------------ */
-  const formData = useMemo(() => {
-    const fd = new FormData();
-    fd.append("id", product.id);
+  const formData = useMemo(
+    () => buildProductFormData(product, publishTargets, locales),
+    [product, publishTargets, locales]
+  );
 
-    locales.forEach((l: Locale) => {
-      fd.append(`title_${l}`, product.title[l]);
-      fd.append(`desc_${l}`, product.description[l]);
-    });
-
-    fd.append("price", String(product.price));
-    fd.append("media", JSON.stringify(product.media));
-
-    fd.append("publish", publishTargets.join(","));
-
-    Object.entries(product.variants).forEach(([k, vals]) => {
-      fd.append(
-        `variant_${k}`,
-        (vals as string[]).filter(Boolean).join(",")
-      );
-    });
-    return fd;
-  }, [product, publishTargets, locales]);
-
-  /* ---------- submit handler --------------------------------------- */
   const handleSubmit = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
@@ -194,59 +82,17 @@ export function useProductEditorFormState(
       if (result.errors) {
         setErrors(result.errors);
       } else if (result.product) {
-        const updated: ProductWithVariants = {
-          ...result.product,
-          variants: result.product.variants ?? product.variants,
-        };
-        setProduct(updated);
+        setProduct((prev) => ({
+          ...result.product!,
+          variants: result.product.variants ?? prev.variants,
+        }));
         setErrors({});
       }
       setSaving(false);
     },
-    [onSave, formData, product.variants]
+    [onSave, formData, setProduct]
   );
 
-  /* ---------- media helpers --------------------------------------- */
-  const removeMedia = useCallback((index: number) => {
-    setProduct((prev: ProductWithVariants) => ({
-      ...prev,
-      media: prev.media.filter((_: MediaItem, i: number) => i !== index),
-    }));
-  }, []);
-
-  const moveMedia = useCallback((from: number, to: number) => {
-    setProduct((prev: ProductWithVariants) => {
-      const gallery = [...prev.media];
-      const [moved] = gallery.splice(from, 1);
-      gallery.splice(to, 0, moved);
-      return { ...prev, media: gallery };
-    });
-  }, []);
-
-  const addVariantValue = useCallback((attr: string) => {
-    setProduct((prev: ProductWithVariants) => ({
-      ...prev,
-      variants: {
-        ...prev.variants,
-        [attr]: [...(prev.variants[attr] ?? []), ""],
-      },
-    }));
-  }, []);
-
-  const removeVariantValue = useCallback((attr: string, index: number) => {
-    setProduct((prev: ProductWithVariants) => {
-      const values = prev.variants[attr] ?? [];
-      return {
-        ...prev,
-        variants: {
-          ...prev.variants,
-          [attr]: values.filter((_: string, i: number) => i !== index),
-        },
-      };
-    });
-  }, []);
-
-  /* ---------- public API ------------------------------------------- */
   return {
     product,
     errors,
@@ -262,3 +108,5 @@ export function useProductEditorFormState(
     removeVariantValue,
   };
 }
+
+export default useProductEditorFormState;

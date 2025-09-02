@@ -101,6 +101,31 @@ describe("email env module", () => {
   );
 
   it(
+    "logs second error block when RESEND_API_KEY is missing for resend provider",
+    async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        EMAIL_PROVIDER: "resend",
+      } as NodeJS.ProcessEnv;
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      await expect(import("../email.ts")).rejects.toThrow(
+        "Invalid email environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid email environment variables:",
+        expect.objectContaining({
+          RESEND_API_KEY: {
+            _errors: [expect.stringContaining("Required")],
+          },
+        }),
+      );
+      errorSpy.mockRestore();
+    },
+  );
+
+  it(
     "reports multiple errors for invalid SMTP_URL and non-numeric EMAIL_BATCH_SIZE",
     async () => {
       process.env = {

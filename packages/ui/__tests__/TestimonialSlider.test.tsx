@@ -1,5 +1,5 @@
 import { render, screen, act } from "@testing-library/react";
-import TestimonialSlider from "../components/cms/blocks/TestimonialSlider";
+import TestimonialSlider from "../src/components/cms/blocks/TestimonialSlider";
 
 describe("TestimonialSlider", () => {
   beforeEach(() => {

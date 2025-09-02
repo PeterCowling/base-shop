@@ -94,7 +94,7 @@ describe("friendly zod error messages", () => {
     const schema = z.string().refine(() => false);
     const result = schema.safeParse("hello");
     expect(result.success).toBe(false);
-    expect(result.error.issues[0].message).toBe("Invalid value");
+    expect(result.error.issues[0].message).toBe("Invalid input");
   });
 });
 

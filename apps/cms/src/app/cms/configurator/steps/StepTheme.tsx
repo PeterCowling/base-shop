@@ -1,73 +1,16 @@
 "use client";
 
-import {
-  Button,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@ui/components/atoms/shadcn";
-import StyleEditor from "@ui/components/cms/StyleEditor";
-import { useCallback, useEffect, useState, useMemo } from "react";
-import type { TokenMap } from "@ui/hooks/useTokenEditor";
-import { getContrast } from "@ui/components/cms";
-import WizardPreview from "../../wizard/WizardPreview";
-import useStepCompletion from "../hooks/useStepCompletion";
+import { Button } from "@ui/components/atoms/shadcn";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { useConfigurator } from "../ConfiguratorContext";
+import useStepCompletion from "../hooks/useStepCompletion";
 import { useThemeLoader } from "../hooks/useThemeLoader";
+import { useConfigurator } from "../ConfiguratorContext";
+import ThemeEditorForm from "./ThemeEditorForm";
+import { useThemePalette } from "./hooks/useThemePalette";
+import { useThemePreviewDevice } from "./hooks/useThemePreviewDevice";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
-import DeviceSelector from "@ui/components/cms/DeviceSelector";
 import type { ConfiguratorStepProps } from "@/types/configurator";
-
-const colorPalettes: Array<{
-  name: string;
-  colors: Record<string, string>;
-}> = [
-  {
-    name: "Base",
-    colors: {
-      "--color-bg": "0 0% 100%",
-      "--color-fg": "0 0% 10%",
-      "--color-primary": "220 90% 56%",
-      "--color-primary-fg": "0 0% 100%",
-      "--color-accent": "260 83% 67%",
-      "--color-muted": "0 0% 88%",
-    },
-  },
-  {
-    name: "Dark",
-    colors: {
-      "--color-bg": "0 0% 4%",
-      "--color-fg": "0 0% 93%",
-      "--color-primary": "220 90% 66%",
-      "--color-primary-fg": "0 0% 100%",
-      "--color-accent": "260 83% 67%",
-      "--color-muted": "0 0% 60%",
-    },
-  },
-  {
-    name: "Forest",
-    colors: {
-      "--color-bg": "0 0% 100%",
-      "--color-fg": "0 0% 10%",
-      "--color-primary": "160 80% 40%",
-      "--color-primary-fg": "0 0% 100%",
-      "--color-accent": "200 90% 45%",
-      "--color-muted": "0 0% 88%",
-    },
-  },
-];
-
-const MIN_CONTRAST = 4.5;
-
-function checkContrast(fg?: string, bg?: string): number {
-  if (!fg || !bg) return MIN_CONTRAST;
-  return getContrast(fg, bg);
-}
+import { useCallback } from "react";
 
 export default function StepTheme({
   themes,
@@ -75,198 +18,66 @@ export default function StepTheme({
   nextStepId,
 }: ConfiguratorStepProps): React.JSX.Element {
   const themeStyle = useThemeLoader();
-  const { state, update, themeDefaults, setThemeOverrides } =
-    useConfigurator();
-  const { theme, themeOverrides } = state;
-  const [palette, setPalette] = useState(colorPalettes[0].name);
+  const { state, update } = useConfigurator();
+  const { theme } = state;
   const [, markComplete] = useStepCompletion("theme");
   const router = useRouter();
-  const [deviceId, setDeviceId] = useState(devicePresets[0].id);
-  const [orientation, setOrientation] = useState<"portrait" | "landscape">(
-    "portrait"
-  );
-  const device = useMemo<DevicePreset>(() => {
-    const preset =
-      devicePresets.find((d: DevicePreset) => d.id === deviceId) ??
-      devicePresets[0];
-    return orientation === "portrait"
-      ? { ...preset, orientation }
-      : {
-          ...preset,
-          width: preset.height,
-          height: preset.width,
-          orientation,
-        };
-  }, [deviceId, orientation]);
 
-  const applyPalette = useCallback(
-    (name: string) => {
-      const cp = colorPalettes.find((c) => c.name === name);
-      if (!cp) return;
-      setThemeOverrides((prev) => {
-        const next = { ...prev };
-        Object.entries(cp.colors).forEach(([k, v]) => {
-          if (themeDefaults[k] !== v) {
-            next[k] = v;
-          } else {
-            delete next[k];
+  const {
+    colorPalettes,
+    palette,
+    setPalette,
+    themeOverrides,
+    themeDefaults,
+    handleTokenChange,
+    handleReset,
+  } = useThemePalette();
+
+  const { device, deviceId, orientation, setDeviceId, toggleOrientation } =
+    useThemePreviewDevice();
+
+  const handleThemeChange = useCallback(
+    (v: string) => {
+      update("theme", v);
+      handleReset();
+      if (typeof window !== "undefined") {
+        try {
+          const json = localStorage.getItem(STORAGE_KEY);
+          if (json) {
+            const data = JSON.parse(json);
+            data.theme = v;
+            data.themeOverrides = {};
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            window.dispatchEvent(new CustomEvent("configurator:update"));
           }
-        });
-        return next;
-      });
-    },
-    [themeDefaults, setThemeOverrides]
-  );
-
-  const handleTokenChange = useCallback(
-    (tokens: TokenMap) => {
-      setThemeOverrides(
-        Object.fromEntries(
-          Object.entries(tokens).filter(([k, v]) => themeDefaults[k] !== v)
-        ) as Record<string, string>
-      );
-    },
-    [setThemeOverrides, themeDefaults]
-  );
-
-  const handleReset = useCallback(() => {
-    setPalette(colorPalettes[0].name);
-    setThemeOverrides({});
-    if (typeof window !== "undefined") {
-      try {
-        const json = localStorage.getItem(STORAGE_KEY);
-        if (json) {
-          const data = JSON.parse(json);
-          data.themeOverrides = {};
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-          window.dispatchEvent(new CustomEvent("configurator:update"));
+        } catch {
+          /* ignore */
         }
-      } catch {
-        /* ignore */
       }
-    }
-  }, [setThemeOverrides]);
-
-  useEffect(() => {
-    applyPalette(palette);
-  }, [palette, applyPalette]);
+    },
+    [update, handleReset]
+  );
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Select Theme</h2>
-
-      {/* single accessible combobox (theme) */}
-      <Select
-        value={theme}
-        onValueChange={(v: string) => {
-          update("theme", v);
-          setThemeOverrides({});
-          if (typeof window !== "undefined") {
-            try {
-              const json = localStorage.getItem(STORAGE_KEY);
-              if (json) {
-                const data = JSON.parse(json);
-                data.theme = v;
-                data.themeOverrides = {};
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-                window.dispatchEvent(new CustomEvent("configurator:update"));
-              }
-            } catch {
-              /* ignore */
-            }
-          }
-        }}
-      >
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select theme" />
-        </SelectTrigger>
-        <SelectContent>
-          {themes.map((t) => (
-            <SelectItem key={t} value={t}>
-              <div className="flex items-center gap-2">
-                <Image
-                  src={`/themes/${t}.svg`}
-                  alt={`${t} preview`}
-                  width={24}
-                  height={24}
-                  className="h-6 w-6 rounded object-cover"
-                />
-                {t}
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-
-      {/* Palette picker – swatch buttons */}
-      <div className="space-y-2">
-        <h3 className="font-medium">Color Palette</h3>
-        <div className="flex flex-wrap gap-2">
-          {colorPalettes.map((p) => {
-            const c1 = checkContrast(
-              p.colors["--color-fg"],
-              p.colors["--color-bg"]
-            );
-            const c2 = checkContrast(
-              p.colors["--color-primary-fg"],
-              p.colors["--color-primary"]
-            );
-            const warn = c1 < MIN_CONTRAST || c2 < MIN_CONTRAST;
-            return (
-              <div key={p.name} className="relative">
-                <Button
-                  variant={p.name === palette ? "default" : "outline"}
-                  onClick={() => setPalette(p.name)}
-                  className="h-10 w-10 p-0"
-                  aria-label={p.name}
-                >
-                  <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
-                    {Object.values(p.colors).map((c, i) => (
-                      <span
-                        key={i}
-                        className="h-1/2 w-1/2"
-                        style={{ backgroundColor: `hsl(${c})` }}
-                      />
-                    ))}
-                  </div>
-                </Button>
-                {warn && (
-                  <span className="absolute -top-1 -right-1 rounded bg-amber-100 px-1 text-xs text-amber-800">
-                    Low contrast
-                  </span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <StyleEditor
-        tokens={themeOverrides}
-        baseTokens={themeDefaults}
-        onChange={handleTokenChange}
+      <ThemeEditorForm
+        themes={themes}
+        theme={theme}
+        onThemeChange={handleThemeChange}
+        colorPalettes={colorPalettes}
+        palette={palette}
+        setPalette={setPalette}
+        themeOverrides={themeOverrides}
+        themeDefaults={themeDefaults}
+        onTokensChange={handleTokenChange}
+        onReset={handleReset}
+        deviceId={deviceId}
+        orientation={orientation}
+        setDeviceId={setDeviceId}
+        toggleOrientation={toggleOrientation}
+        device={device}
+        themeStyle={themeStyle}
       />
-      <div className="flex justify-between">
-        <Button variant="outline" onClick={handleReset}>
-          Reset to defaults
-        </Button>
-        <DeviceSelector
-          deviceId={deviceId}
-          orientation={orientation}
-          setDeviceId={(id: string) => {
-            setDeviceId(id);
-            setOrientation("portrait");
-          }}
-          toggleOrientation={() =>
-            setOrientation((o) =>
-              o === "portrait" ? "landscape" : "portrait"
-            )
-          }
-        />
-      </div>
-
-      <WizardPreview style={themeStyle} device={device} />
-
       <div className="flex justify-between">
         {prevStepId && (
           <Button
@@ -290,3 +101,4 @@ export default function StepTheme({
     </div>
   );
 }
+

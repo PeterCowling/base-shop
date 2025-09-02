@@ -98,6 +98,23 @@ describe("shipping env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("loadShippingEnv throws on non-string DHL_KEY", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    expect(() =>
+      loadShippingEnv({ DHL_KEY: 123 as unknown as string }),
+    ).toThrow("Invalid shipping environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        DHL_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
   it("throws on invalid configuration during eager parse", async () => {
     process.env = {
       ...ORIGINAL_ENV,

@@ -83,5 +83,139 @@ describe("onRequestPost", () => {
     expect(spawn).toHaveBeenNthCalledWith(1, "pnpm", ["--filter", `apps/shop-${id}`, "build"], { cwd: root, stdio: "inherit" });
     expect(spawn).toHaveBeenNthCalledWith(2, "pnpm", ["--filter", `apps/shop-${id}`, "deploy"], { cwd: root, stdio: "inherit" });
   });
+
+  it("handles package.json without dependencies", async () => {
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        return JSON.stringify({});
+      }
+      if (file.endsWith("shop.json")) {
+        return JSON.stringify({ componentVersions: {} });
+      }
+      return "";
+    });
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ components: ["compA"] }),
+      }),
+    });
+
+    expect(res.status).toBe(200);
+    const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
+    expect(written.componentVersions).toEqual({});
+    expect(spawn).toHaveBeenCalledTimes(2);
+  });
+
+  it("ignores non-array components", async () => {
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        return JSON.stringify({ dependencies: { compA: "1.0.0", compB: "2.0.0" } });
+      }
+      if (file.endsWith("shop.json")) {
+        return JSON.stringify({ componentVersions: {} });
+      }
+      return "";
+    });
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ components: "oops" }),
+      }),
+    });
+
+    expect(res.status).toBe(200);
+    const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
+    expect(written.componentVersions).toEqual({ compA: "1.0.0", compB: "2.0.0" });
+  });
+
+  it("handles invalid JSON body", async () => {
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        return JSON.stringify({ dependencies: { compA: "1.0.0" } });
+      }
+      if (file.endsWith("shop.json")) {
+        return JSON.stringify({ componentVersions: {} });
+      }
+      return "";
+    });
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: "not-json",
+      }),
+    });
+
+    expect(res.status).toBe(200);
+    const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
+    expect(written.componentVersions).toEqual({ compA: "1.0.0" });
+  });
+
+  it("locks all dependencies when components omitted", async () => {
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        return JSON.stringify({ dependencies: { compA: "1.0.0", compB: "2.0.0" } });
+      }
+      if (file.endsWith("shop.json")) {
+        return JSON.stringify({ componentVersions: {} });
+      }
+      return "";
+    });
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({}),
+      }),
+    });
+
+    expect(res.status).toBe(200);
+    const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
+    expect(written.componentVersions).toEqual({ compA: "1.0.0", compB: "2.0.0" });
+  });
+
+  it("returns 500 when build command fails", async () => {
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        return JSON.stringify({ dependencies: { compA: "1.0.0" } });
+      }
+      if (file.endsWith("shop.json")) {
+        return JSON.stringify({ componentVersions: {} });
+      }
+      return "";
+    });
+
+    spawn.mockImplementationOnce(() => ({
+      on: (_event: string, cb: (code: number) => void) => cb(1),
+    }));
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ components: ["compA"] }),
+      }),
+    });
+
+    expect(res.status).toBe(500);
+  });
 });
+
 

@@ -14,7 +14,7 @@ export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
   // Resolve the `launch` function from chrome-launcher lazily to support both
   // CommonJS and ESM versions of the library. This mirrors how generateMeta
   // resolves the OpenAI client above.
-  let lighthouseFn: typeof import("lighthouse").default;
+  let lighthouseFn: typeof import("lighthouse").default | undefined;
   try {
     const mod = await import("lighthouse");
     lighthouseFn =
@@ -28,7 +28,7 @@ export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
   } catch {
     // ignore; handled below
   }
-  let launch: typeof import("chrome-launcher").launch;
+  let launch: typeof import("chrome-launcher").launch | undefined;
   try {
     const mod = await import("chrome-launcher");
     launch =

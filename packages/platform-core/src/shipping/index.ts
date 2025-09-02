@@ -1,9 +1,6 @@
 // packages/platform-core/src/shipping/index.ts
 
-import { loadShippingEnv } from "@acme/config/env/shipping";
-
-
-const shippingEnv = loadShippingEnv();
+import { shippingEnv } from "@acme/config/env/shipping";
 export interface ShippingRateRequest {
   provider: "ups" | "dhl" | "premier-shipping";
   fromPostalCode: string;

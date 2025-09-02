@@ -23,6 +23,82 @@ describe('component helpers', () => {
       vol.fromJSON({ [`${root}/data/shops/abc/shop.json`]: '{"componentVersions"' });
       expect(gatherChanges('abc', root)).toEqual([]);
     });
+
+    it('skips stored components without a package.json', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+          componentVersions: { '@acme/foo': '1.0.0' },
+        }),
+      });
+      expect(gatherChanges('abc', root)).toEqual([]);
+    });
+
+    it('skips components when versions are unchanged', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+          componentVersions: { '@acme/foo': '1.0.0' },
+        }),
+        [`${root}/packages/foo/package.json`]: JSON.stringify({
+          name: '@acme/foo',
+          version: '1.0.0',
+        }),
+      });
+      expect(gatherChanges('abc', root)).toEqual([]);
+    });
+
+    it('skips components when version is undefined', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+          componentVersions: { '@acme/foo': '1.0.0' },
+        }),
+        [`${root}/packages/foo/package.json`]: JSON.stringify({
+          name: '@acme/foo',
+        }),
+      });
+      expect(gatherChanges('abc', root)).toEqual([]);
+    });
+
+    it('handles missing changelog files', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+          componentVersions: { '@acme/foo': '1.0.0' },
+        }),
+        [`${root}/packages/foo/package.json`]: JSON.stringify({
+          name: '@acme/foo',
+          version: '2.0.0',
+        }),
+      });
+      expect(gatherChanges('abc', root)).toEqual([
+        {
+          name: '@acme/foo',
+          from: '1.0.0',
+          to: '2.0.0',
+          summary: '',
+          changelog: '',
+        },
+      ]);
+    });
+
+    it('falls back to stored key and null when pkg.name and old version are missing', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+          componentVersions: { '@acme/foo': null },
+        }),
+        [`${root}/packages/foo/package.json`]: JSON.stringify({
+          version: '1.0.0',
+        }),
+        [`${root}/packages/foo/CHANGELOG.md`]: 'Initial release',
+      });
+      expect(gatherChanges('abc', root)).toEqual([
+        {
+          name: '@acme/foo',
+          from: null,
+          to: '1.0.0',
+          summary: 'Initial release',
+          changelog: 'packages/foo/CHANGELOG.md',
+        },
+      ]);
+    });
   });
 
   describe('listFiles', () => {

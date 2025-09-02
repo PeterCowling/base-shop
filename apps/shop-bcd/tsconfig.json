@@ -8,63 +8,99 @@
       "@/*": [
         "./dist/*",
         "../../packages/ui/dist/src/*",
-        "../../packages/i18n/dist/*"
+        "../../packages/i18n/dist/*",
+        "../../packages/ui/src/*",
+        "../../packages/i18n/src/*"
       ],
       "@ui/*": [
-        "../../packages/ui/dist/src/*"
+        "../../packages/ui/dist/src/*",
+        "../../packages/ui/src/*"
       ],
       "@ui/src/*": [
-        "../../packages/ui/dist/src/*"
+        "../../packages/ui/dist/src/*",
+        "../../packages/ui/src/*"
+      ],
+      "@i18n": [
+        "../../packages/i18n/dist/index",
+        "../../packages/i18n/src/index.ts"
       ],
       "@i18n/*": [
-        "../../packages/i18n/dist/*"
+        "../../packages/i18n/dist/*",
+        "../../packages/i18n/src/*"
+      ],
+      "@acme/i18n": [
+        "../../packages/i18n/dist/index",
+        "../../packages/i18n/src/index.ts"
+      ],
+      "@acme/i18n/*": [
+        "../../packages/i18n/dist/*",
+        "../../packages/i18n/src/*"
       ],
       "@platform-core": [
-        "../../packages/platform-core/dist/index"
+        "../../packages/platform-core/dist/index",
+        "../../packages/platform-core/src/index.ts"
       ],
       "@platform-core/*": [
-        "../../packages/platform-core/dist/*"
+        "../../packages/platform-core/dist/*",
+        "../../packages/platform-core/src/*"
       ],
       "@acme/platform-core": [
-        "../../packages/platform-core/dist/index"
+        "../../packages/platform-core/dist/index",
+        "../../packages/platform-core/src/index.ts"
       ],
       "@acme/platform-core/*": [
-        "../../packages/platform-core/dist/*"
+        "../../packages/platform-core/dist/*",
+        "../../packages/platform-core/src/*"
       ],
       "@auth": [
         "../../packages/auth/dist/index",
-        "../../packages/auth/dist"
+        "../../packages/auth/dist",
+        "../../packages/auth/src/index.ts",
+        "../../packages/auth/src"
       ],
       "@auth/*": [
-        "../../packages/auth/dist/*"
+        "../../packages/auth/dist/*",
+        "../../packages/auth/src/*"
       ],
       "@date-utils": [
         "../../packages/date-utils/dist/index",
-        "../../packages/date-utils/dist"
+        "../../packages/date-utils/dist",
+        "../../packages/date-utils/src/index.ts",
+        "../../packages/date-utils/src"
       ],
       "@date-utils/*": [
-        "../../packages/date-utils/dist/*"
+        "../../packages/date-utils/dist/*",
+        "../../packages/date-utils/src/*"
       ],
       "@shared-utils": [
         "../../packages/shared-utils/dist/index",
-        "../../packages/shared-utils/dist"
+        "../../packages/shared-utils/dist",
+        "../../packages/shared-utils/src/index.ts",
+        "../../packages/shared-utils/src"
       ],
       "@shared-utils/*": [
-        "../../packages/shared-utils/dist/*"
+        "../../packages/shared-utils/dist/*",
+        "../../packages/shared-utils/src/*"
       ],
       "@scripts": [
         "../../scripts/dist/index",
-        "../../scripts/dist"
+        "../../scripts/dist",
+        "../../scripts/src/index.ts",
+        "../../scripts/src"
       ],
       "@scripts/*": [
-        "../../scripts/dist/*"
+        "../../scripts/dist/*",
+        "../../scripts/src/*"
       ],
       "@acme/types": [
         "../../packages/types/dist/index",
-        "../../packages/types/dist"
+        "../../packages/types/dist",
+        "../../packages/types/src/index.ts",
+        "../../packages/types/src"
       ],
       "@acme/types/*": [
-        "../../packages/types/dist/*"
+        "../../packages/types/dist/*",
+        "../../packages/types/src/*"
       ]
     },
     "module": "ESNext",

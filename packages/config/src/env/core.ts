@@ -76,9 +76,13 @@ const baseEnvSchema = z
   })
   .passthrough();
 
-export const coreEnvBaseSchema = (
-  authEnvSchema.innerType() as z.AnyZodObject
-)
+// Begin with an empty object and merge each schema in sequence. Casting the
+// inner types ensures we only merge the raw object shapes and avoid carrying
+// over any Zod effects or refinements. This prevents runtime failures when
+// `merge` receives a schema without a `shape` definition.
+export const coreEnvBaseSchema = z
+  .object({})
+  .merge(authEnvSchema.innerType() as z.AnyZodObject)
   .merge(cmsEnvSchema)
   .merge(emailEnvSchema.innerType() as z.AnyZodObject)
   .merge(paymentsEnvSchema)

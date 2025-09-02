@@ -3,6 +3,7 @@ import "../globals.css";
 
 import Footer from "@ui/components/layout/Footer";
 import Header from "@ui/components/layout/Header";
+import { Suspense } from "react";
 
 import { TranslationsProvider } from "@i18n/Translations";
 import { Locale, resolveLocale } from "@i18n/locales";
@@ -34,7 +35,9 @@ export default async function LocaleLayout({
 
   return (
     <TranslationsProvider messages={messages}>
-      <Header lang={locale} />
+      <Suspense fallback={null}>
+        <Header lang={locale} />
+      </Suspense>
       <main className="min-h-[calc(100vh-8rem)]">{children}</main>
       <Footer />
     </TranslationsProvider>

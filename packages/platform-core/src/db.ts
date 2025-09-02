@@ -1,5 +1,5 @@
 import { loadCoreEnv } from "@acme/config/env/core";
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "./prisma-client";
 
 
 const coreEnv = loadCoreEnv();
@@ -73,8 +73,8 @@ if (process.env.NODE_ENV === "test" || !coreEnv.DATABASE_URL) {
   prisma = createStubPrisma();
 } else {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { PrismaClient } = require("@prisma/client") as typeof import("@prisma/client");
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { PrismaClient } = (eval("require") as any)("@prisma/client");
 
     const databaseUrl = coreEnv.DATABASE_URL;
     prisma = new PrismaClient({

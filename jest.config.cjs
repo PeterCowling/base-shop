@@ -189,7 +189,8 @@ const config = {
     '^server-only$': ' /test/server-only-stub.ts',
     // Use resolved React paths to ensure a single instance across tests
     '^react$': reactPath,
-    '^react-dom/client$': '<rootDir>/test/reactDomClientShim.ts',
+    '^react-dom/client$': reactDomClientPath,
+    '^react-dom/client\\.js$': reactDomClientPath,
     '^react-dom$': reactDomPath,
     '^react/jsx-runtime$': reactJsxRuntimePath,
     '^react/jsx-dev-runtime$': reactJsxDevRuntimePath,

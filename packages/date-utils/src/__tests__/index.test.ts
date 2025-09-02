@@ -25,6 +25,9 @@ describe("isoDateInNDays", () => {
   it("returns ISO date string N days ahead", () => {
     expect(isoDateInNDays(3)).toBe("2025-01-04");
   });
+  it("returns ISO date string N days behind", () => {
+    expect(isoDateInNDays(-3)).toBe("2024-12-29");
+  });
 });
 
 describe("calculateRentalDays", () => {
@@ -39,6 +42,9 @@ describe("calculateRentalDays", () => {
   });
   it("returns 1 for past return dates", () => {
     expect(calculateRentalDays("2024-12-31")).toBe(1);
+  });
+  it("defaults to 1 when return date missing", () => {
+    expect(calculateRentalDays()).toBe(1);
   });
   it("throws on invalid date", () => {
     expect(() => calculateRentalDays("not-a-date")).toThrow("Invalid returnDate");

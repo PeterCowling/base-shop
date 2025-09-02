@@ -3,7 +3,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
-    "noEmit": true
+    "noEmit": true,
+    "rootDir": "."
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": []

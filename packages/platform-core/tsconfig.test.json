@@ -6,7 +6,8 @@
     /* test environment types */
     "types": ["@testing-library/jest-dom", "jest", "node"],
     /* no JS output for tests */
-    "noEmit": true
+    "noEmit": true,
+    "rootDir": "."
   },
 
   "include": ["src/**/*.ts", "src/**/*.tsx", "__tests__/**/*"]

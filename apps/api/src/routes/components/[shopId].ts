@@ -165,5 +165,5 @@ export const onRequest = async ({
   });
 };
 
-export { extractSummary, gatherChanges, diffDirectories };
+export { extractSummary, gatherChanges, diffDirectories, listFiles };
 

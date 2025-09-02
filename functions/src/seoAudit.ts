@@ -1,6 +1,6 @@
 import { coreEnv } from "@acme/config/env/core";
 import { sendCampaignEmail } from "@acme/email";
-import { runSeoAudit } from '@acme/lib/seoAudit';
+import { runSeoAudit } from "@acme/lib/seoAudit";
 import { nowIso } from "@date-utils";
 import { trackEvent } from "@platform-core/analytics";
 import { DATA_ROOT } from "@platform-core/dataRoot";

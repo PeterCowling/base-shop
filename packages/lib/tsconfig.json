@@ -27,6 +27,7 @@
   "references": [
     { "path": "../platform-core" },
     { "path": "../config" },
-    { "path": "../zod-utils" }
+    { "path": "../zod-utils" },
+    { "path": "../i18n" }
   ]
 }

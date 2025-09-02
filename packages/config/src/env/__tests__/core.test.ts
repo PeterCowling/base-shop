@@ -192,6 +192,18 @@ describe("core env refinement", () => {
     );
     expect(ctx.addIssue).not.toHaveBeenCalled();
   });
+
+  it("ignores unrelated *_ENABLED and *_INTERVAL_MS variables", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      {
+        SOME_FEATURE_ENABLED: "nope",
+        OTHER_FEATURE_INTERVAL_MS: "later",
+      },
+      ctx,
+    );
+    expect(ctx.addIssue).not.toHaveBeenCalled();
+  });
 });
 
 describe("core env defaults", () => {
@@ -234,6 +246,81 @@ describe("core env optional variables", () => {
       expect(parsed.error.issues[0]).toMatchObject({
         path: ["CART_TTL"],
         message: expect.stringContaining("Expected number"),
+      });
+    }
+  });
+
+  it("parses optional GA_API_SECRET when string", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      GA_API_SECRET: "secret",
+    });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.GA_API_SECRET).toBe("secret");
+    }
+  });
+
+  it("reports non-string GA_API_SECRET", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      GA_API_SECRET: 123 as unknown as string,
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues[0]).toMatchObject({
+        path: ["GA_API_SECRET"],
+        message: expect.stringContaining("Expected string"),
+      });
+    }
+  });
+
+  it("parses optional DATABASE_URL when string", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      DATABASE_URL: "postgres://example",
+    });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.DATABASE_URL).toBe("postgres://example");
+    }
+  });
+
+  it("reports non-string DATABASE_URL", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      DATABASE_URL: 456 as unknown as string,
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues[0]).toMatchObject({
+        path: ["DATABASE_URL"],
+        message: expect.stringContaining("Expected string"),
+      });
+    }
+  });
+
+  it("parses optional CLOUDFLARE_ACCOUNT_ID when string", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      CLOUDFLARE_ACCOUNT_ID: "cf-account",
+    });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.CLOUDFLARE_ACCOUNT_ID).toBe("cf-account");
+    }
+  });
+
+  it("reports non-string CLOUDFLARE_ACCOUNT_ID", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      CLOUDFLARE_ACCOUNT_ID: 789 as unknown as string,
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues[0]).toMatchObject({
+        path: ["CLOUDFLARE_ACCOUNT_ID"],
+        message: expect.stringContaining("Expected string"),
       });
     }
   });
@@ -472,6 +559,28 @@ describe("core env module", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "  • CART_COOKIE_SECRET: Required",
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws on import in production for invalid deposit variables", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "production",
+      CART_COOKIE_SECRET: "secret",
+      DEPOSIT_RELEASE_ENABLED: "maybe",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    expect(() => require("../core.js")).toThrow(
+      "Invalid core environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
     );
     errorSpy.mockRestore();
   });

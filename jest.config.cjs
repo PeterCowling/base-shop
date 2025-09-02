@@ -58,17 +58,33 @@ const tsPaths = tsconfig?.compilerOptions?.paths
  * fall back to the React copies bundled within Next.js.
  * ──────────────────────────────────────────────────────────────────── */
 function resolveReact() {
+  // Attempt to locate React from any workspace's node_modules directory.
+  const searchPaths = [__dirname];
+  for (const workspaceDir of ['packages', 'apps']) {
+    const baseDir = path.join(__dirname, workspaceDir);
+    if (fs.existsSync(baseDir)) {
+      for (const entry of fs.readdirSync(baseDir, { withFileTypes: true })) {
+        if (entry.isDirectory()) {
+          const nm = path.join(baseDir, entry.name, 'node_modules');
+          if (fs.existsSync(nm)) searchPaths.push(nm);
+        }
+      }
+    }
+  }
+
   try {
     // Resolve the root of the locally installed react package.
-    const reactPkg = require.resolve('react/package.json');
+    const reactPkg = require.resolve('react/package.json', { paths: searchPaths });
     const reactBase = path.dirname(reactPkg);
-    const reactDomPkg = require.resolve('react-dom/package.json');
+    const reactDomPkg = require.resolve('react-dom/package.json', {
+      paths: searchPaths,
+    });
     const reactDomBase = path.dirname(reactDomPkg);
 
     // Build full paths to runtime files and verify they exist.
     const jsxRuntime = path.join(reactBase, 'jsx-runtime.js');
     const jsxDevRuntime = path.join(reactBase, 'jsx-dev-runtime.js');
-    const domClient = require.resolve('react-dom/client');
+    const domClient = require.resolve('react-dom/client', { paths: searchPaths });
 
     if (
       fs.existsSync(jsxRuntime) &&

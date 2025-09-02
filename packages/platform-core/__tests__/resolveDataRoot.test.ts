@@ -8,6 +8,7 @@ describe("resolveDataRoot", () => {
   afterEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
+    delete process.env.DATA_ROOT;
   });
 
   it("walks up directories to find an existing data/shops folder", async () => {
@@ -51,9 +52,20 @@ describe("resolveDataRoot", () => {
     existsMock.mockReturnValue(false);
 
     const { resolveDataRoot } = await import("../src/dataRoot");
+    existsMock.mockClear();
     const dir = resolveDataRoot();
 
+    const calls = existsMock.mock.calls.map(([p]) => p);
+    const expectedCalls: string[] = [];
+    let current = startDir;
+    while (true) {
+      expectedCalls.push(path.join(current, "data", "shops"));
+      const parent = path.dirname(current);
+      if (parent === current) break;
+      current = parent;
+    }
+
     expect(dir).toBe(expected);
-    expect(existsMock).toHaveBeenCalled();
+    expect(calls).toEqual(expectedCalls);
   });
 });

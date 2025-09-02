@@ -1,6 +1,9 @@
 import "server-only";
 
-import { promises as fs } from "node:fs";
+// Import from "fs" so test mocks can intercept the calls. Using the
+// "node:"-prefixed path bypasses Jest's module mocking which caused the tests
+// to hit the real filesystem and fail.
+import { promises as fs } from "fs";
 import * as path from "path";
 
 import { shopSchema, type Shop } from "@acme/types";
@@ -25,8 +28,9 @@ export async function getShopById<T extends Shop = Shop>(
   try {
     const rec = await prisma.shop.findUnique({ where: { id: shop } });
     if (rec) {
-      shopSchema.parse(rec.data);
-      return rec.data as T;
+      // Apply schema defaults when returning data from the database.
+      const parsed = shopSchema.parse(rec.data);
+      return parsed as T;
     }
   } catch {
     // ignore DB errors and fall back
@@ -34,8 +38,9 @@ export async function getShopById<T extends Shop = Shop>(
   try {
     const buf = await fs.readFile(shopPath(shop), "utf8");
     const data = JSON.parse(buf);
-    shopSchema.parse(data);
-    return data as T;
+    // Apply schema defaults when reading from the filesystem.
+    const parsed = shopSchema.parse(data);
+    return parsed as T;
   } catch {
     throw new Error(`Shop ${shop} not found`);
   }
@@ -49,9 +54,9 @@ export async function updateShopInRepo<T extends Shop = Shop>(
   if (current.id !== patch.id) {
     throw new Error(`Shop ${patch.id} not found in ${shop}`);
   }
-  const updated: T = { ...current, ...patch };
-  // Validate but avoid applying defaults by discarding parsed result
-  shopSchema.parse(updated);
+  // Merge the existing shop with the patch and apply schema defaults so that
+  // callers always receive a fully-populated object.
+  const updated = shopSchema.parse({ ...current, ...patch }) as T;
   try {
     await prisma.shop.upsert({
       where: { id: shop },

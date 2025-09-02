@@ -99,3 +99,28 @@ describe("Translations integration", () => {
     expect(screen.getByText("parentOnly")).toBeInTheDocument();
   });
 });
+
+describe("useTranslations hook", () => {
+  function Direct({ k }: { k: string }) {
+    const t = useTranslations();
+    return <span>{t(k)}</span>;
+  }
+
+  it("returns translation and falls back to key", () => {
+    render(
+      <TranslationsProvider messages={{ present: "Hallo" }}>
+        <>
+          <Direct k="present" />
+          <Direct k="missing" />
+        </>
+      </TranslationsProvider>
+    );
+    expect(screen.getByText("Hallo")).toBeInTheDocument();
+    expect(screen.getByText("missing")).toBeInTheDocument();
+  });
+
+  it("returns key outside of provider", () => {
+    render(<Direct k="absent" />);
+    expect(screen.getByText("absent")).toBeInTheDocument();
+  });
+});

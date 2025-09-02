@@ -76,16 +76,13 @@ const baseEnvSchema = z
   })
   .passthrough();
 
-export const coreEnvBaseSchema = z
-  .object({
-    ...((authEnvSchema.innerType() as z.AnyZodObject).shape as z.ZodRawShape),
-    ...(cmsEnvSchema.shape as z.ZodRawShape),
-    ...((emailEnvSchema.innerType() as z.AnyZodObject).shape as z.ZodRawShape),
-    ...(paymentsEnvSchema.shape as z.ZodRawShape),
-    ...(shippingEnvSchema.shape as z.ZodRawShape),
-    ...(baseEnvSchema.shape as z.ZodRawShape),
-  })
-  .passthrough();
+export const coreEnvBaseSchema = authEnvSchema
+  .innerType()
+  .merge(cmsEnvSchema)
+  .merge(emailEnvSchema.innerType())
+  .merge(paymentsEnvSchema)
+  .merge(shippingEnvSchema)
+  .merge(baseEnvSchema);
 
 export function depositReleaseEnvRefinement(
   env: Record<string, unknown>,

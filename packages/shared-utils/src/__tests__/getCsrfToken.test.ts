@@ -25,6 +25,16 @@ describe('getCsrfToken', () => {
     expect(getCsrfToken()).toBe('cookie-token');
   });
 
+  it('prioritizes meta token over cookie without altering cookie', () => {
+    document.head.innerHTML = '<meta name="csrf-token" content="meta-token">';
+    document.cookie = 'csrf_token=cookie-token';
+    const cookieSpy = jest.spyOn(document, 'cookie', 'set');
+    const token = getCsrfToken();
+    expect(token).toBe('meta-token');
+    expect(cookieSpy).not.toHaveBeenCalled();
+    expect(document.cookie).toBe('csrf_token=cookie-token');
+  });
+
   it.each(['http:', 'https:'])(
     'generates and stores token when missing (protocol %s)',
     (protocol) => {

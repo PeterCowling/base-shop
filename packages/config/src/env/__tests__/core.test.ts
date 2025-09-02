@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
-import { coreEnvBaseSchema, depositReleaseEnvRefinement } from "../core.js";
+import {
+  coreEnvBaseSchema,
+  depositReleaseEnvRefinement,
+  loadCoreEnv,
+} from "../core.js";
 
 const schema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
 
@@ -131,6 +135,27 @@ describe("core env module", () => {
   afterEach(() => {
     jest.resetModules();
     process.env = ORIGINAL_ENV;
+  });
+
+  it("loadCoreEnv logs detailed messages and throws on invalid configuration", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadCoreEnv({
+        ...baseEnv,
+        DEPOSIT_RELEASE_ENABLED: "yes",
+        LATE_FEE_INTERVAL_MS: "fast",
+      } as NodeJS.ProcessEnv),
+    ).toThrow("Invalid core environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • LATE_FEE_INTERVAL_MS: must be a number",
+    );
+    errorSpy.mockRestore();
   });
 
   it("logs detailed messages and throws on invalid configuration", () => {

@@ -2,7 +2,12 @@ jest.mock('fs', () => require('memfs').fs);
 
 import path from 'path';
 import { vol } from 'memfs';
-import { extractSummary, gatherChanges, listFiles } from '../[shopId]';
+import {
+  extractSummary,
+  gatherChanges,
+  listFiles,
+  diffDirectories,
+} from '../[shopId]';
 
 describe('component helpers', () => {
   beforeEach(() => {
@@ -114,6 +119,17 @@ describe('component helpers', () => {
         path.join('sub', 'file2.txt'),
         path.join('sub', 'deeper', 'file3.txt'),
       ].sort());
+    });
+
+    it('returns empty array when directory does not exist', () => {
+      expect(listFiles('/no-such-dir')).toEqual([]);
+    });
+  });
+
+  describe('diffDirectories', () => {
+    it('detects files present in only one directory', () => {
+      vol.fromJSON({ '/a/only.txt': 'hello' });
+      expect(diffDirectories('/a', '/b')).toEqual(['only.txt']);
     });
   });
 });

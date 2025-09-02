@@ -101,7 +101,7 @@ describe("email env module", () => {
   );
 
   it(
-    "reports multiple errors for invalid SMTP_URL and non-numeric EMAIL_BATCH_SIZE",
+    "throws and logs structured errors for invalid SMTP_URL and non-numeric EMAIL_BATCH_SIZE",
     async () => {
       process.env = {
         ...ORIGINAL_ENV,

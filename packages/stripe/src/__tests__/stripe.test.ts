@@ -101,6 +101,25 @@ describe("stripe client", () => {
     expect(called).toBe(true);
   });
 
+  it("rejects when network request fails", async () => {
+    const { stripe } = await import("../index.ts");
+    const stripeInternal = stripe as StripeInternal;
+
+    const httpClient = stripeInternal.getApiField("httpClient") as {
+      _fetchFn: typeof fetch;
+    };
+    expect(httpClient).toHaveProperty("_fetchFn");
+
+    const fetchSpy = jest
+      .spyOn(httpClient, "_fetchFn")
+      .mockRejectedValue(new Error("network down"));
+
+    await expect(stripeInternal.customers.create()).rejects.toThrow(
+      "An error occurred with our connection to Stripe",
+    );
+    expect(fetchSpy).toHaveBeenCalled();
+  });
+
   it("errors when STRIPE_SECRET_KEY is undefined", async () => {
     delete (process.env as Record<string, string | undefined>).STRIPE_SECRET_KEY;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});

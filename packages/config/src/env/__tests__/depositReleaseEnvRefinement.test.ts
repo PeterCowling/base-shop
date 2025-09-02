@@ -117,4 +117,10 @@ describe("depositReleaseEnvRefinement", () => {
     );
     expect(ctx.addIssue).not.toHaveBeenCalled();
   });
+
+  it("ignores DEPOSIT_RELEASE keys without a recognized suffix", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement({ DEPOSIT_RELEASE_MISC: "foo" }, ctx);
+    expect(ctx.addIssue).not.toHaveBeenCalled();
+  });
 });

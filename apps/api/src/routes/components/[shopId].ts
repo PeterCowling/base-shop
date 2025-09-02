@@ -143,7 +143,9 @@ export const onRequest = async ({
 
   const includeDiff = new URL(request.url).searchParams.has("diff");
   if (!includeDiff) {
-    return Response.json({ components });
+    return new Response(JSON.stringify({ components }), {
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   const appDir = path.join(root, "apps", `shop-${shopId}`);
@@ -158,7 +160,9 @@ export const onRequest = async ({
       path.join(templateDir, "src", "translations"),
     ),
   };
-  return Response.json({ components, configDiff });
+  return new Response(JSON.stringify({ components, configDiff }), {
+    headers: { "Content-Type": "application/json" },
+  });
 };
 
 export { extractSummary, gatherChanges, diffDirectories };

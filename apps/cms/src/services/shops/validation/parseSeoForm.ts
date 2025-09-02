@@ -1,0 +1,31 @@
+import { z } from "zod";
+import { localeSchema, type Locale } from "@acme/types";
+import { formDataToObject } from "../../../utils/formData";
+
+const seoSchema = z
+  .object({
+    locale: localeSchema,
+    title: z.string().min(1, "Required"),
+    description: z.string().optional().default(""),
+    image: z.string().url().optional(),
+    alt: z.string().optional(),
+    canonicalBase: z.string().url().optional(),
+    ogUrl: z.string().url().optional(),
+    twitterCard: z
+      .enum(["summary", "summary_large_image", "app", "player"])
+      .optional(),
+  })
+  .strict();
+
+export function parseSeoForm(formData: FormData): {
+  data?: z.infer<typeof seoSchema>;
+  errors?: Record<string, string[]>;
+} {
+  const parsed = seoSchema.safeParse(formDataToObject(formData));
+  if (!parsed.success) {
+    return { errors: parsed.error.flatten().fieldErrors };
+  }
+  return { data: parsed.data };
+}
+
+export type SeoForm = z.infer<typeof seoSchema> & { locale: Locale };

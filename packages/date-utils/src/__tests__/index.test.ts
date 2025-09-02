@@ -1,4 +1,5 @@
 import {
+  nowIso,
   isoDateInNDays,
   calculateRentalDays,
   formatTimestamp,
@@ -6,6 +7,13 @@ import {
   getTimeRemaining,
   formatDuration,
 } from "../index";
+
+describe("nowIso", () => {
+  it("returns a valid ISO string", () => {
+    const iso = nowIso();
+    expect(new Date(iso).toISOString()).toBe(iso);
+  });
+});
 
 describe("isoDateInNDays", () => {
   beforeEach(() => {
@@ -28,6 +36,9 @@ describe("calculateRentalDays", () => {
   });
   it("computes positive day difference", () => {
     expect(calculateRentalDays("2025-01-03")).toBe(2);
+  });
+  it("returns 1 for past return dates", () => {
+    expect(calculateRentalDays("2024-12-31")).toBe(1);
   });
   it("throws on invalid date", () => {
     expect(() => calculateRentalDays("not-a-date")).toThrow("Invalid returnDate");
@@ -74,6 +85,23 @@ describe("getTimeRemaining and formatDuration", () => {
     const remaining = getTimeRemaining(target, base);
     expect(remaining).toBe(5000);
     expect(formatDuration(remaining)).toBe("5s");
+  });
+  it("returns negative for past targets", () => {
+    const target = new Date("2024-12-31T23:59:55Z");
+    const remaining = getTimeRemaining(target, base);
+    expect(remaining).toBe(-5000);
+  });
+  it("handles hour duration", () => {
+    const target = new Date("2025-01-01T03:00:00Z");
+    const remaining = getTimeRemaining(target, base);
+    expect(remaining).toBe(3 * 60 * 60 * 1000);
+    expect(formatDuration(remaining)).toBe("3h 0m 0s");
+  });
+  it("handles minute duration", () => {
+    const target = new Date("2025-01-01T00:05:00Z");
+    const remaining = getTimeRemaining(target, base);
+    expect(remaining).toBe(5 * 60 * 1000);
+    expect(formatDuration(remaining)).toBe("5m 0s");
   });
   it("handles day duration", () => {
     const target = new Date("2025-01-03T00:00:00Z");

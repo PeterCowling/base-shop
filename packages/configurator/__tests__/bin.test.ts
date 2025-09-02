@@ -14,6 +14,7 @@ describe("configurator bin", () => {
       .spyOn(process, "exit")
       .mockImplementation(((code?: number) => {}) as any);
 
+    process.exitCode = undefined;
     process.argv = ["node", "configurator", "dev"];
     process.env.STRIPE_SECRET_KEY = "sk";
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
@@ -31,6 +32,20 @@ describe("configurator bin", () => {
       shell: true,
     });
     expect(exitSpy).not.toHaveBeenCalled();
+  });
+
+  it("exits cleanly when dist index resolves", async () => {
+    jest.mock("../dist/index.js", () => ({}), { virtual: true });
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    await import("../bin/configurator.js");
+
+    expect(process.exitCode).toBeUndefined();
+    expect(errorSpy).not.toHaveBeenCalled();
+
+    errorSpy.mockRestore();
   });
 });
 

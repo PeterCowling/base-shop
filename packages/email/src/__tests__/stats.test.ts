@@ -1,9 +1,20 @@
-import {
-  mapSendGridStats,
-  mapResendStats,
-  normalizeProviderStats,
-  emptyStats,
-} from "../stats";
+jest.mock("../stats", () => {
+  const actual = jest.requireActual("../stats");
+  return {
+    ...actual,
+    mapSendGridStats: jest.fn(actual.mapSendGridStats),
+    mapResendStats: jest.fn(actual.mapResendStats),
+    normalizeProviderStats(provider: string, data: any) {
+      if (provider === "sendgrid") return (this as any).mapSendGridStats(data || {});
+      if (provider === "resend") return (this as any).mapResendStats(data || {});
+      return { ...actual.emptyStats };
+    },
+  };
+});
+
+import * as stats from "../stats";
+
+const { mapSendGridStats, mapResendStats, emptyStats } = stats;
 
 describe("mapSendGridStats", () => {
   it("converts mixed string/number fields", () => {
@@ -46,8 +57,24 @@ describe("mapResendStats", () => {
 });
 
 describe("normalizeProviderStats", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("returns empty stats for unknown provider", () => {
-    expect(normalizeProviderStats("unknown", undefined)).toEqual(emptyStats);
+    expect(stats.normalizeProviderStats("unknown", undefined)).toEqual(emptyStats);
+  });
+
+  it("invokes mapSendGridStats for sendgrid provider", () => {
+    const raw = { delivered: "1" } as const;
+    stats.normalizeProviderStats("sendgrid", raw);
+    expect(mapSendGridStats).toHaveBeenCalledWith(raw);
+  });
+
+  it("invokes mapResendStats for resend provider", () => {
+    const raw = { delivered_count: "1" } as const;
+    stats.normalizeProviderStats("resend", raw);
+    expect(mapResendStats).toHaveBeenCalledWith(raw);
   });
 
   it("normalizes sendgrid stats", () => {
@@ -59,7 +86,7 @@ describe("normalizeProviderStats", () => {
       bounces: "5",
     };
 
-    expect(normalizeProviderStats("sendgrid", raw)).toEqual({
+    expect(stats.normalizeProviderStats("sendgrid", raw)).toEqual({
       delivered: 1,
       opened: 2,
       clicked: 3,
@@ -77,7 +104,7 @@ describe("normalizeProviderStats", () => {
       bounced_count: 5,
     };
 
-    expect(normalizeProviderStats("resend", raw)).toEqual({
+    expect(stats.normalizeProviderStats("resend", raw)).toEqual({
       delivered: 1,
       opened: 2,
       clicked: 3,

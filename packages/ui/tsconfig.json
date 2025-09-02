@@ -25,7 +25,9 @@
       "@acme/types/*": ["../types/src/*"],
       "@ui": ["./src/index"],
       "@ui/*": ["./src/*"],
-      "@auth": ["types-compat/auth"]
+      "@auth": ["types-compat/auth"],
+      "@acme/i18n": ["../i18n/src/index"],
+      "@acme/i18n/*": ["../i18n/src/*"]
     }
   },
   "references": [

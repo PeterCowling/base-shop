@@ -1,4 +1,4 @@
-import { assertLocales } from "@acme/i18n";
+import { assertLocales, resolveLocale } from "@acme/i18n";
 
 describe("assertLocales", () => {
   it("throws on non-array values", () => {
@@ -15,5 +15,13 @@ describe("assertLocales", () => {
 
   it("does not throw on non-empty arrays", () => {
     expect(() => assertLocales(["en"])).not.toThrow();
+  });
+});
+
+describe("resolveLocale", () => {
+  it("returns supported locales and falls back to 'en'", () => {
+    expect(resolveLocale("de")).toBe("de");
+    expect(resolveLocale("fr")).toBe("en");
+    expect(resolveLocale(undefined)).toBe("en");
   });
 });

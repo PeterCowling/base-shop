@@ -60,7 +60,6 @@ export function usePageBuilderState({
   });
 
   const components = state.present;
-  const [gridCols, setGridColsState] = useState(state.gridCols);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [liveMessage, setLiveMessage] = useState("");
 
@@ -128,14 +127,6 @@ export function usePageBuilderState({
     return () => window.removeEventListener("keydown", handler);
   }, [dispatch, onSaveShortcut, onTogglePreview, onRotateDevice]);
 
-  const setGridCols = useCallback(
-    (n: number) => {
-      setGridColsState(n);
-      dispatch({ type: "set-grid-cols", gridCols: n });
-    },
-    [dispatch]
-  );
-
   const clearHistory = useCallback(() => {
     if (typeof window !== "undefined") {
       localStorage.removeItem(storageKey);
@@ -148,8 +139,6 @@ export function usePageBuilderState({
     dispatch,
     selectedId,
     setSelectedId,
-    gridCols,
-    setGridCols,
     liveMessage,
     storageKey,
     clearHistory,

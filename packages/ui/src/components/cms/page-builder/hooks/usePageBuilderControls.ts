@@ -2,12 +2,19 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Locale } from "@acme/i18n/locales";
+import type { HistoryState } from "@acme/types";
+import type { Action } from "../state";
 import { devicePresets, getLegacyPreset, type DevicePreset } from "../../../../utils/devicePresets";
 import { usePreviewDevice } from "../../../../hooks";
 import useViewport from "./useViewport";
 import { Step, CallBackProps, STATUS } from "../PageBuilderTour";
 
-const usePageBuilderControls = () => {
+interface Params {
+  state: HistoryState;
+  dispatch: React.Dispatch<Action>;
+}
+
+const usePageBuilderControls = ({ state, dispatch }: Params) => {
   const [deviceId, setDeviceId] = usePreviewDevice(devicePresets[0].id);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">(
     "portrait"
@@ -87,6 +94,12 @@ const usePageBuilderControls = () => {
   const [showGrid, setShowGrid] = useState(false);
   const toggleGrid = useCallback(() => setShowGrid((g) => !g), []);
 
+  const gridCols = state.gridCols;
+  const setGridCols = useCallback(
+    (n: number) => dispatch({ type: "set-grid-cols", gridCols: n }),
+    [dispatch]
+  );
+
   return {
     deviceId,
     setDeviceId,
@@ -109,6 +122,8 @@ const usePageBuilderControls = () => {
     handleTourCallback,
     showGrid,
     toggleGrid,
+    gridCols,
+    setGridCols,
   };
 };
 

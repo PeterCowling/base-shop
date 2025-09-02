@@ -2,40 +2,23 @@
 
 import { locales } from "@acme/i18n/locales";
 import { usePathname } from "next/navigation";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
-import { DndContext, DragOverlay } from "@dnd-kit/core";
-import PageBuilderTour from "./PageBuilderTour";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
-import { Button } from "../../atoms/shadcn";
-import { Toast } from "../../atoms";
-import Palette from "./Palette";
 import { getShopFromPath } from "@acme/shared-utils";
 import { ulid } from "ulid";
 import useFileDrop from "./hooks/useFileDrop";
 import usePageBuilderState from "./hooks/usePageBuilderState";
 import usePageBuilderDnD from "./hooks/usePageBuilderDnD";
-import PageToolbar from "./PageToolbar";
-import PageCanvas from "./PageCanvas";
-import PageSidebar from "./PageSidebar";
-import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
 import usePageBuilderControls from "./hooks/usePageBuilderControls";
-import useAutoSave from "./hooks/useAutoSave";
-import PreviewPane from "./PreviewPane";
-import HistoryControls from "./HistoryControls";
-import GridSettings from "./GridSettings";
+import usePageBuilderSave from "./hooks/usePageBuilderSave";
+import PageBuilderLayout from "./PageBuilderLayout";
+import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
 
 interface Props {
-  page: Page;
-  history?: HistoryState;
-  onSave: (fd: FormData) => Promise<unknown>;
-  onPublish: (fd: FormData) => Promise<unknown>;
-  saving?: boolean;
-  publishing?: boolean;
-  saveError?: string | null;
-  publishError?: string | null;
-  onChange?: (components: PageComponent[]) => void;
-  style?: CSSProperties;
+  page: Page; history?: HistoryState; onSave:(fd:FormData)=>Promise<unknown>; onPublish:(fd:FormData)=>Promise<unknown>;
+  saving?: boolean; publishing?: boolean; saveError?: string | null; publishError?: string | null;
+  onChange?: (components: PageComponent[]) => void; style?: CSSProperties;
 }
 
 const PageBuilder = memo(function PageBuilder({
@@ -50,75 +33,30 @@ const PageBuilder = memo(function PageBuilder({
   onChange,
   style,
 }: Props) {
-  const formDataRef = useRef<FormData | null>(null);
-  const handleSaveShortcut = useCallback(() => {
-    if (formDataRef.current) {
-      void onSave(formDataRef.current);
-    }
-  }, [onSave]);
-  const {
-    deviceId,
-    setDeviceId,
-    orientation,
-    setOrientation,
-    rotateDevice,
-    device,
-    viewport,
-    viewportStyle,
-    frameClass,
-    locale,
-    setLocale,
-    showPreview,
-    togglePreview,
-    previewDeviceId,
-    setPreviewDeviceId,
-    runTour,
-    startTour,
-    tourSteps,
-    handleTourCallback,
-    showGrid,
-    toggleGrid,
-  } = usePageBuilderControls();
-  const {
-    state,
-    components,
-    dispatch,
-    selectedId,
-    setSelectedId,
-    gridCols,
-    setGridCols,
-    liveMessage,
-    clearHistory,
-  } = usePageBuilderState({
+  const pathname = usePathname() ?? "";
+  const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
+
+  const saveRef = useRef<() => void>(() => {}),
+    togglePreviewRef = useRef<() => void>(() => {}),
+    rotateDeviceRef = useRef<(dir: "left" | "right") => void>(() => {});
+  const { state, components, dispatch, selectedId, setSelectedId, liveMessage, clearHistory } = usePageBuilderState({
     page,
     history: historyProp,
     onChange,
-    onSaveShortcut: handleSaveShortcut,
-    onTogglePreview: togglePreview,
-    onRotateDevice: rotateDevice,
+    onSaveShortcut: () => saveRef.current(),
+    onTogglePreview: () => togglePreviewRef.current(),
+    onRotateDevice: (d) => rotateDeviceRef.current(d),
   });
-  const [publishCount, setPublishCount] = useState(0);
-  const prevId = useRef(page.id);
-  const pathname = usePathname() ?? "";
-  const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
-  const {
-    dragOver,
-    setDragOver,
-    handleFileDrop,
-    progress,
-    isValid,
-  } = useFileDrop({ shop: shop ?? "", dispatch });
-  const canvasRef = useRef<HTMLDivElement>(null);
-  const [toast, setToast] = useState<{
-    open: boolean;
-    message: string;
-    retry?: () => void;
-  }>({
-    open: false,
-    message: "",
-  });
-  const [gridSize, setGridSize] = useState(1);
-  const [snapPosition, setSnapPosition] = useState<number | null>(null);
+
+  const controls = usePageBuilderControls({ state, dispatch });
+  togglePreviewRef.current = controls.togglePreview;
+  rotateDeviceRef.current = controls.rotateDevice;
+
+  const { dragOver, setDragOver, handleFileDrop, progress, isValid } = useFileDrop({ shop: shop ?? "", dispatch });
+  const canvasRef = useRef<HTMLDivElement>(null),
+    [toast, setToast] = useState<{ open: boolean; message: string; retry?: () => void }>({ open: false, message: "" }),
+    [gridSize, setGridSize] = useState(1),
+    [snapPosition, setSnapPosition] = useState<number | null>(null);
 
   const { dndContext, insertIndex, activeType } = usePageBuilderDnD({
     components,
@@ -131,60 +69,34 @@ const PageBuilder = memo(function PageBuilder({
     setSnapPosition,
   });
 
-  const handleAddFromPalette = useCallback(
-    (type: ComponentType) => {
-      const isContainer = CONTAINER_TYPES.includes(type);
-      const component = {
-        id: ulid(),
-        type,
-        ...(defaults[type] ?? {}),
-        ...(isContainer ? { children: [] } : {}),
-      } as PageComponent;
-      dispatch({ type: "add", component });
-      setSelectedId(component.id);
-    },
-    [dispatch, setSelectedId],
-  );
+  const handleAddFromPalette = (type: ComponentType) => {
+    const isContainer = CONTAINER_TYPES.includes(type);
+    const component = {
+      id: ulid(),
+      type,
+      ...(defaults[type] ?? {}),
+      ...(isContainer ? { children: [] } : {}),
+    } as PageComponent;
+    dispatch({ type: "add", component });
+    setSelectedId(component.id);
+  };
 
   useEffect(() => {
-    if (showGrid && canvasRef.current) {
-      setGridSize(canvasRef.current.offsetWidth / gridCols);
+    if (controls.showGrid && canvasRef.current) {
+      setGridSize(canvasRef.current.offsetWidth / controls.gridCols);
     } else {
       setGridSize(1);
     }
-  }, [showGrid, device, gridCols]);
+  }, [controls.showGrid, controls.device, controls.gridCols]);
 
-  useEffect(() => {
-    const idChanged = prevId.current !== page.id;
-    if (publishCount > 0 || idChanged) {
-      clearHistory();
-    }
-    if (idChanged) {
-      prevId.current = page.id;
-    }
-  }, [page.id, publishCount, clearHistory]);
-
-  const formData = useMemo(() => {
-    const fd = new FormData();
-    fd.append("id", page.id);
-    fd.append("updatedAt", page.updatedAt);
-    fd.append("slug", page.slug);
-    fd.append("status", page.status);
-    fd.append("title", JSON.stringify(page.seo.title));
-    fd.append("description", JSON.stringify(page.seo.description ?? {}));
-    fd.append("components", JSON.stringify(components));
-    fd.append("history", JSON.stringify(state));
-    return fd;
-  }, [page, components, state]);
-  useEffect(() => {
-    formDataRef.current = formData;
-  }, [formData]);
-
-  const { autoSaveState, handleAutoSave } = useAutoSave({
+  const { formData: _formData, handlePublish, handleSave, autoSaveState } = usePageBuilderSave({
+    page,
+    components,
+    state,
     onSave,
-    formData,
-    deps: [components, state],
-    onError: (retry) => {
+    onPublish,
+    formDataDeps: [components, state],
+    onAutoSaveError: (retry) => {
       setToast({
         open: true,
         message: "Auto-save failed. Click to retry.",
@@ -194,122 +106,39 @@ const PageBuilder = memo(function PageBuilder({
         },
       });
     },
+    clearHistory,
   });
-
-  const handlePublish = useCallback(() => {
-    return onPublish(formData).then(() => setPublishCount((c) => c + 1));
-  }, [onPublish, formData]);
+  saveRef.current = handleSave;
+  const toolbarProps = {deviceId: controls.deviceId, setDeviceId: controls.setDeviceId, orientation: controls.orientation, setOrientation: controls.setOrientation, locale: controls.locale, setLocale: controls.setLocale, locales, progress, isValid};
+  const gridProps = {showGrid: controls.showGrid, toggleGrid: controls.toggleGrid, gridCols: controls.gridCols, setGridCols: controls.setGridCols};
+  const canvasProps = {components, selectedId, onSelectId: setSelectedId, canvasRef, dragOver, setDragOver, onFileDrop: handleFileDrop, insertIndex, dispatch, locale: controls.locale, containerStyle: { width: "100%" }, showGrid: controls.showGrid, gridCols: controls.gridCols, viewport: controls.viewport, device: controls.device, snapPosition};
+  const previewProps = {components, locale: controls.locale, deviceId: controls.previewDeviceId, onChange: controls.setPreviewDeviceId};
+  const historyProps = {canUndo: !!state.past.length, canRedo: !!state.future.length, onUndo: () => dispatch({ type: "undo" }), onRedo: () => dispatch({ type: "redo" }), onSave: handleSave, onPublish: handlePublish, saving, publishing, saveError, publishError, autoSaveState};
+  const toastProps = {open: toast.open, message: toast.message, retry: toast.retry, onClose: () => setToast((t) => ({ ...t, open: false }))};
+  const tourProps = {steps: controls.tourSteps, run: controls.runTour, callback: controls.handleTourCallback};
 
   return (
-    <div className="flex gap-4" style={style}>
-      <PageBuilderTour
-        steps={tourSteps}
-        run={runTour}
-        callback={handleTourCallback}
-      />
-      <aside className="w-48 shrink-0" data-tour="palette">
-        <Palette onAdd={handleAddFromPalette} />
-      </aside>
-      <div className="flex flex-1 flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <PageToolbar
-            deviceId={deviceId}
-            setDeviceId={setDeviceId}
-            orientation={orientation}
-            setOrientation={setOrientation}
-            locale={locale}
-            setLocale={setLocale}
-            locales={locales}
-            progress={progress}
-            isValid={isValid}
-          />
-          <div className="flex items-center gap-2">
-            <GridSettings
-              showGrid={showGrid}
-              toggleGrid={toggleGrid}
-              gridCols={gridCols}
-              setGridCols={setGridCols}
-            />
-            <Button variant="outline" onClick={startTour}>
-              Tour
-            </Button>
-            <Button variant="outline" onClick={togglePreview}>
-              {showPreview ? "Hide preview" : "Show preview"}
-            </Button>
-          </div>
-        </div>
-        <div aria-live="polite" role="status" className="sr-only">
-          {liveMessage}
-        </div>
-        <div className="flex flex-1 gap-4">
-          <DndContext {...dndContext}>
-            <div
-              className={`${frameClass[viewport]} shrink-0`}
-              style={viewportStyle}
-              data-tour="canvas"
-            >
-              <PageCanvas
-                components={components}
-                selectedId={selectedId}
-                onSelectId={setSelectedId}
-                canvasRef={canvasRef}
-                dragOver={dragOver}
-                setDragOver={setDragOver}
-                onFileDrop={handleFileDrop}
-                insertIndex={insertIndex}
-                dispatch={dispatch}
-                locale={locale}
-                containerStyle={{ width: "100%" }}
-                showGrid={showGrid}
-                gridCols={gridCols}
-                viewport={viewport}
-                device={device}
-                snapPosition={snapPosition}
-              />
-            </div>
-            <DragOverlay>
-              {activeType && (
-                <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">
-                  {activeType}
-                </div>
-              )}
-            </DragOverlay>
-          </DndContext>
-          {showPreview && (
-            <PreviewPane
-              components={components}
-              locale={locale}
-              deviceId={previewDeviceId}
-              onChange={setPreviewDeviceId}
-            />
-          )}
-        </div>
-        <HistoryControls
-          canUndo={!!state.past.length}
-          canRedo={!!state.future.length}
-          onUndo={() => dispatch({ type: "undo" })}
-          onRedo={() => dispatch({ type: "redo" })}
-          onSave={() => onSave(formData)}
-          onPublish={handlePublish}
-          saving={saving}
-          publishing={publishing}
-          saveError={saveError}
-          publishError={publishError}
-          autoSaveState={autoSaveState}
-        />
-      </div>
-      <PageSidebar
-        components={components}
-        selectedId={selectedId}
-        dispatch={dispatch}
-      />
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        onClick={toast.retry}
-        message={toast.message}
-      />
-    </div>
+    <PageBuilderLayout
+      style={style}
+      paletteOnAdd={handleAddFromPalette}
+      toolbarProps={toolbarProps}
+      gridProps={gridProps}
+      startTour={controls.startTour}
+      togglePreview={controls.togglePreview}
+      showPreview={controls.showPreview}
+      liveMessage={liveMessage}
+      dndContext={dndContext}
+      frameClass={controls.frameClass}
+      viewport={controls.viewport}
+      viewportStyle={controls.viewportStyle}
+      canvasProps={canvasProps}
+      activeType={activeType}
+      previewProps={previewProps}
+      historyProps={historyProps}
+      sidebarProps={{ components, selectedId, dispatch }}
+      toast={toastProps}
+      tourProps={tourProps}
+    />
   );
 });
 

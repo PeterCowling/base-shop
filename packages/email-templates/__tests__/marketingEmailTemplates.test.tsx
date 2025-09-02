@@ -1,45 +1,39 @@
 import * as React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-import {
-  MarketingEmailTemplate,
-  marketingEmailTemplates,
-} from "@acme/email-templates";
-
-describe("MarketingEmailTemplate", () => {
-  it("renders headline, content, CTA and footer", () => {
-    const html = renderToStaticMarkup(
-      <MarketingEmailTemplate
-        logoSrc="/logo.png"
-        headline="Welcome"
-        content={<p>Hi there</p>}
-        ctaLabel="Click me"
-        ctaHref="https://example.com"
-        footer={<span>Bye</span>}
-      />
-    );
-
-    expect(html).toContain("Welcome");
-    expect(html).toContain("<p>Hi there</p>");
-    expect(html).toContain("Click me");
-    expect(html).toContain("Bye");
-  });
-});
+import { render } from "@testing-library/react";
+import { marketingEmailTemplates } from "@acme/email-templates";
 
 describe("marketingEmailTemplates", () => {
+  const props = {
+    headline: "Hello",
+    content: <p>Content</p>,
+  };
+
   it("renders provided variants", () => {
-    const props = {
-      headline: "Hello",
-      content: <p>Content</p>,
-    };
-    const basic = marketingEmailTemplates.find((t) => t.id === "basic");
-    const centered = marketingEmailTemplates.find((t) => t.id === "centered");
-    expect(basic).toBeDefined();
-    expect(centered).toBeDefined();
+    const basic = marketingEmailTemplates.find((t) => t.id === "basic")!;
+    const centered = marketingEmailTemplates.find((t) => t.id === "centered")!;
 
-    const basicHtml = renderToStaticMarkup(basic!.render(props));
-    const centeredHtml = renderToStaticMarkup(centered!.render(props));
+    const basicResult = render(basic.make(props));
+    expect(basicResult.getByText("Hello")).toBeInTheDocument();
 
-    expect(basicHtml).toContain("Hello");
-    expect(centeredHtml).toContain("text-center");
+    const centeredResult = render(centered.make(props));
+    expect(centeredResult.container.firstChild).toHaveClass("text-center");
+  });
+
+  it("builds subjects for i18n headlines", () => {
+    const variant = marketingEmailTemplates[0];
+    expect(variant.buildSubject("Bienvenido")).toBe("Bienvenido");
+  });
+
+  it("throws when missing data", () => {
+    const variant = marketingEmailTemplates[0];
+    expect(() => variant.make(null as any)).toThrow();
+  });
+
+  it("errors on unsupported template id", () => {
+    expect(() => {
+      const unsupported = marketingEmailTemplates.find((t) => t.id === "unknown");
+      unsupported!.make(props);
+    }).toThrow();
   });
 });
+

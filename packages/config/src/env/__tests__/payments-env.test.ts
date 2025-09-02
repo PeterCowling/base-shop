@@ -94,6 +94,44 @@ describe("payments env defaults", () => {
     );
   });
 
+  it.each([
+    {
+      name: "malformed values",
+      env: {
+        STRIPE_SECRET_KEY: 123 as unknown as string,
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 456 as unknown as string,
+        STRIPE_WEBHOOK_SECRET: 789 as unknown as string,
+      },
+    },
+    {
+      name: "empty strings",
+      env: {
+        STRIPE_SECRET_KEY: "",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "",
+        STRIPE_WEBHOOK_SECRET: "",
+      },
+    },
+  ])(
+    "warns and falls back to defaults when variables are $name (ts import)",
+    async ({ env }) => {
+      process.env = env as unknown as NodeJS.ProcessEnv;
+      warnSpy = jest
+        .spyOn(console, "warn")
+        .mockImplementation(() => {});
+      jest.resetModules();
+      const { paymentsEnv } = await import("../payments.ts");
+      expect(paymentsEnv).toEqual({
+        STRIPE_SECRET_KEY: "sk_test",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
+        STRIPE_WEBHOOK_SECRET: "whsec_test",
+      });
+      expect(warnSpy).toHaveBeenCalledWith(
+        "⚠️ Invalid payments environment variables:",
+        expect.any(Object),
+      );
+    },
+  );
+
   it(
     "warns and falls back to defaults when STRIPE_SECRET_KEY is empty",
     async () => {

@@ -271,6 +271,59 @@ describe("core env module", () => {
     parseSpy.mockRestore();
   });
 
+  it("loads env once when using the in operator", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = require("../core.js");
+    const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
+    expect("CMS_SPACE_URL" in mod.coreEnv).toBe(true);
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    expect("CMS_ACCESS_TOKEN" in mod.coreEnv).toBe(true);
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    parseSpy.mockRestore();
+  });
+
+  it("loads env once when listing keys", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = require("../core.js");
+    const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
+    expect(Object.keys(mod.coreEnv)).toEqual(
+      expect.arrayContaining([
+        "CMS_SPACE_URL",
+        "CMS_ACCESS_TOKEN",
+        "SANITY_API_VERSION",
+      ]),
+    );
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    Object.keys(mod.coreEnv);
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    parseSpy.mockRestore();
+  });
+
+  it("loads env once when getting property descriptor", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = require("../core.js");
+    const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
+    expect(
+      Object.getOwnPropertyDescriptor(mod.coreEnv, "CMS_SPACE_URL")?.value,
+    ).toBe("https://example.com");
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    Object.getOwnPropertyDescriptor(mod.coreEnv, "CMS_ACCESS_TOKEN");
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    parseSpy.mockRestore();
+  });
+
   it("triggers proxy traps without reparsing in production", async () => {
     process.env = {
       ...ORIGINAL_ENV,

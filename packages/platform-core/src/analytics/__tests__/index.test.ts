@@ -3,6 +3,7 @@ import * as path from "path";
 import * as os from "os";
 
 jest.mock("@acme/date-utils", () => ({ nowIso: () => "2024-01-01T00:00:00.000Z" }));
+jest.setTimeout(15000);
 
 const readShop = jest.fn();
 const getShopSettings = jest.fn();

@@ -9,7 +9,11 @@ import { getShopSettings, readShop } from "../repositories/shops.server";
 import { validateShopName } from "../shops";
 
 
-const coreEnv = loadCoreEnv();
+let coreEnv: ReturnType<typeof loadCoreEnv> | undefined;
+function getCoreEnv() {
+  if (!coreEnv) coreEnv = loadCoreEnv();
+  return coreEnv;
+}
 export type { AnalyticsEvent };
 
 export interface AnalyticsProvider {
@@ -90,23 +94,19 @@ async function resolveProvider(shop: string): Promise<AnalyticsProvider> {
   }
   const settings = await getShopSettings(shop);
   const analytics = settings.analytics;
-  if (
-    !analytics ||
-    analytics.enabled === false ||
-    analytics.provider === "none"
-  ) {
+  if (analytics?.enabled === false || analytics?.provider === "none") {
     const p = new NoopProvider();
     providerCache.set(shop, p);
     return p;
   }
-  if (analytics.provider === "console") {
+  if (analytics?.provider === "console") {
     const p = new ConsoleProvider();
     providerCache.set(shop, p);
     return p;
   }
-  if (analytics.provider === "ga") {
+  if (analytics?.provider === "ga") {
     const measurementId = analytics.id;
-    const apiSecret = process.env.GA_API_SECRET || coreEnv.GA_API_SECRET;
+    const apiSecret = process.env.GA_API_SECRET || getCoreEnv().GA_API_SECRET;
     if (measurementId && apiSecret) {
       const p = new GoogleAnalyticsProvider(measurementId, apiSecret);
       providerCache.set(shop, p);
@@ -125,7 +125,9 @@ export async function trackEvent(
   const provider = await resolveProvider(shop);
   const withTs = { timestamp: nowIso(), ...event };
   await provider.track(withTs);
-  await updateAggregates(shop, withTs);
+  if (!(provider instanceof NoopProvider)) {
+    await updateAggregates(shop, withTs);
+  }
 }
 
 export async function trackPageView(shop: string, page: string): Promise<void> {

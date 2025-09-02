@@ -1,18 +1,7 @@
 /** @jest-environment node */
 
-import {
-  addOrder,
-  markReturned,
-  markRefunded,
-  updateRisk,
-  getOrdersForCustomer,
-  setReturnTracking,
-  setReturnStatus,
-} from "../src/orders";
-
-const trackOrder = jest.fn();
-const incrementSubscriptionUsage = jest.fn();
-
+jest.mock("../src/analytics", () => ({ trackOrder: jest.fn() }));
+jest.mock("../src/subscriptionUsage", () => ({ incrementSubscriptionUsage: jest.fn() }));
 const prismaMock = {
   rentalOrder: {
     findMany: jest.fn(),
@@ -23,10 +12,19 @@ const prismaMock = {
     findUnique: jest.fn(),
   },
 };
-
-jest.mock("../src/analytics", () => ({ trackOrder }));
-jest.mock("../src/subscriptionUsage", () => ({ incrementSubscriptionUsage }));
 jest.mock("../src/db", () => ({ prisma: prismaMock }));
+
+import { trackOrder } from "../src/analytics";
+import { incrementSubscriptionUsage } from "../src/subscriptionUsage";
+import {
+  addOrder,
+  markReturned,
+  markRefunded,
+  updateRisk,
+  getOrdersForCustomer,
+  setReturnTracking,
+  setReturnStatus,
+} from "../src/orders";
 
 describe("orders", () => {
   beforeEach(() => {

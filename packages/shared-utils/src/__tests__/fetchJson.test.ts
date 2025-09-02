@@ -33,6 +33,35 @@ describe('fetchJson', () => {
     await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
   });
 
+  it('returns undefined for empty response bodies', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(''),
+    });
+
+    await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
+  });
+
+  it('propagates network failures', async () => {
+    (global.fetch as jest.Mock).mockRejectedValue(new Error('Network down'));
+    await expect(fetchJson('https://example.com')).rejects.toThrow(
+      'Network down',
+    );
+  });
+
+  it('throws status text when error response contains invalid JSON', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      status: 502,
+      statusText: 'Bad Gateway',
+      text: jest.fn().mockResolvedValue('{invalid'),
+    });
+
+    await expect(fetchJson('https://example.com')).rejects.toThrow(
+      'Bad Gateway',
+    );
+  });
+
   it('throws error message from JSON error payload', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,

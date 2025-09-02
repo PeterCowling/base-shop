@@ -9,11 +9,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@ui/components/atoms/shadcn";
-import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { z } from "zod";
-import useStepCompletion from "../hooks/useStepCompletion";
 import type { ConfiguratorStepProps } from "@/types/configurator";
+import useConfiguratorStep from "./hooks/useConfiguratorStep";
+import ShopPreview from "./components/ShopPreview";
 
 export default function StepShopDetails({
   shopId,
@@ -31,10 +31,6 @@ export default function StepShopDetails({
   templates,
   errors = {},
 }: ConfiguratorStepProps): React.JSX.Element {
-  const router = useRouter();
-  const [, markComplete] = useStepCompletion("shop-details");
-  const [validationErrors, setValidationErrors] = useState<Record<string, string[]>>({});
-
   const schema = useMemo(
     () =>
       z
@@ -55,42 +51,26 @@ export default function StepShopDetails({
     [],
   );
 
-  useEffect(() => {
-    const parsed = schema.safeParse({
-      id: shopId,
-      name: storeName,
-      logo,
-      contactInfo,
-      type,
-      template,
+  const { router, markComplete, getError: internalError, isValid: hookValid } =
+    useConfiguratorStep({
+      stepId: "shop-details",
+      schema,
+      values: {
+        id: shopId,
+        name: storeName,
+        logo,
+        contactInfo,
+        type,
+        template,
+      },
     });
-    if (!parsed.success) {
-      setValidationErrors(parsed.error.flatten().fieldErrors);
-    } else {
-      setValidationErrors({});
-    }
-  }, [schema, shopId, storeName, logo, contactInfo, type, template]);
 
-  const getError = (field: string) =>
-    validationErrors[field]?.[0] || errors[field]?.[0];
-
-  const isValid = Object.keys(validationErrors).length === 0;
+  const getError = (field: string) => internalError(field) || errors[field]?.[0];
+  const isValid = hookValid && Object.keys(errors).length === 0;
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Shop Details</h2>
-      <div className="flex items-center gap-2 rounded border p-2">
-        {logo ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={logo}
-            alt="Logo preview"
-            className="h-8 w-8 object-contain"
-          />
-        ) : (
-          <div className="h-8 w-8 bg-gray-200" />
-        )}
-        <span>{storeName || "Store Name"}</span>
-      </div>
+      <ShopPreview logo={logo} storeName={storeName} />
       <label className="flex flex-col gap-1">
         <span>Shop ID</span>
         <Input

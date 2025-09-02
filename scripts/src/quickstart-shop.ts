@@ -132,7 +132,7 @@ async function main(): Promise<void> {
   }
 
   if (args.presets) {
-    spawnSync("pnpm", ["ts-node", "scripts/setup-ci.ts", shopId], {
+    spawnSync("pnpm", ["ts-node", "scripts/setup-ci.ts", shopId!], {
       stdio: "inherit",
     });
   }

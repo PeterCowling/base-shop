@@ -1,0 +1,43 @@
+import lighthouse from "lighthouse";
+import type { RunnerResult } from "lighthouse";
+import chromeLauncher from "chrome-launcher";
+import desktopConfig from "lighthouse/core/config/desktop-config.js";
+
+export interface SeoAuditResult {
+  score: number;
+  recommendations: string[];
+}
+
+/**
+ * Run a Lighthouse SEO audit for the given URL and return the score and
+ * recommendations for failing audits.
+ */
+export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
+  const chrome = await chromeLauncher.launch({ chromeFlags: ["--headless"] });
+  try {
+    const result: RunnerResult | undefined = await lighthouse(
+      url,
+      {
+        port: chrome.port,
+        onlyCategories: ["seo"],
+      },
+      desktopConfig,
+    );
+    if (!result) {
+      throw new Error("Lighthouse did not return a result");
+    }
+    const lhr = result.lhr;
+    const score = Math.round((lhr.categories?.seo?.score ?? 0) * 100);
+    const recommendations = Object.values(lhr.audits)
+      .filter(
+        (a) =>
+          a.score !== 1 &&
+          a.scoreDisplayMode !== "notApplicable" &&
+          a.title,
+      )
+      .map((a) => a.title as string);
+    return { score, recommendations };
+  } finally {
+    await chrome.kill();
+  }
+}

@@ -3,6 +3,7 @@ import {
   coreEnvBaseSchema,
   coreEnvSchema,
   depositReleaseEnvRefinement,
+  loadCoreEnv,
 } from "../core.js";
 
 const schema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
@@ -218,6 +219,29 @@ describe("core env module", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "  • CART_COOKIE_SECRET: Required",
+    );
+    errorSpy.mockRestore();
+  });
+});
+
+describe("loadCoreEnv", () => {
+  it("throws and logs issues for invalid env values", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadCoreEnv({
+        ...baseEnv,
+        DEPOSIT_RELEASE_ENABLED: "yes",
+        LATE_FEE_INTERVAL_MS: "fast",
+      } as unknown as NodeJS.ProcessEnv),
+    ).toThrow("Invalid core environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • LATE_FEE_INTERVAL_MS: must be a number",
     );
     errorSpy.mockRestore();
   });

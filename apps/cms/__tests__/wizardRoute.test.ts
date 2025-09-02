@@ -41,7 +41,7 @@ describe("wizard route", () => {
   it("renders wizard page for admin", async () => {
     jest.resetModules(); // ensure mocks are applied fresh
     await import("../../../test/resetNextMocks");
-
+    await import("react");
     const { renderToStaticMarkup } = await import("react-dom/server");
     const { default: WizardPage } = await import("../src/app/cms/wizard/page");
 

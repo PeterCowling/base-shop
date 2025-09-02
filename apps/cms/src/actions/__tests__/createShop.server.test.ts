@@ -16,7 +16,7 @@ jest.mock("../../lib/server/rbacStore", () => ({
   writeRbac: jest.fn(),
 }));
 
-jest.mock("../common/auth", () => ({
+jest.mock("../common/auth.ts", () => ({
   ensureAuthorized: jest.fn(),
 }));
 
@@ -28,7 +28,7 @@ describe("createNewShop", () => {
   it("Successful shop creation with RBAC update for new user", async () => {
     const { createShop } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
-    const { ensureAuthorized } = await import("../common/auth");
+    const { ensureAuthorized } = await import("../common/auth.ts");
 
     const deployResult = { status: "ok" } as any;
     (createShop as jest.Mock).mockResolvedValue(deployResult);
@@ -59,7 +59,7 @@ describe("createNewShop", () => {
       const { readRbac, writeRbac } = await import(
         "../../lib/server/rbacStore"
       );
-      const { ensureAuthorized } = await import("../common/auth");
+      const { ensureAuthorized } = await import("../common/auth.ts");
 
       (createShop as jest.Mock).mockResolvedValue({});
       (readRbac as jest.Mock).mockResolvedValue({
@@ -85,7 +85,7 @@ describe("createNewShop", () => {
   it("Failure writing RBAC → verify rollback deletes created entities and throws", async () => {
     const { createShop } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
-    const { ensureAuthorized } = await import("../common/auth");
+    const { ensureAuthorized } = await import("../common/auth.ts");
     const { prisma } = await import("@platform-core/db");
 
     (createShop as jest.Mock).mockResolvedValue({});
@@ -109,7 +109,7 @@ describe("createNewShop", () => {
   it("Ensure user without id skips RBAC update", async () => {
     const { createShop } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
-    const { ensureAuthorized } = await import("../common/auth");
+    const { ensureAuthorized } = await import("../common/auth.ts");
 
     const deployResult = { status: "ok" } as any;
     (createShop as jest.Mock).mockResolvedValue(deployResult);

@@ -91,6 +91,13 @@ describe("processReverseLogisticsEventsOnce", () => {
     });
   }
 
+  it("continues when events directory is missing", async () => {
+    readdir.mockResolvedValueOnce(["shop"]).mockRejectedValueOnce(new Error("nope"));
+    await service.processReverseLogisticsEventsOnce(undefined, "/data");
+    expect(readFile).not.toHaveBeenCalled();
+    expect(unlink).not.toHaveBeenCalled();
+  });
+
   it("logs and removes file on error", async () => {
     readdir.mockResolvedValueOnce(["shop"]).mockResolvedValueOnce(["bad.json"]);
     readFile.mockResolvedValueOnce("not json");
@@ -151,17 +158,54 @@ describe("startReverseLogisticsService", () => {
     setSpy.mockRestore();
     clearSpy.mockRestore();
   });
+
+  it("logs processor failures", async () => {
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValueOnce(["shop"]);
+    readFile.mockResolvedValueOnce(
+      JSON.stringify({ reverseLogisticsService: { enabled: true, intervalMinutes: 1 } })
+    );
+    const proc = jest.fn().mockRejectedValue(new Error("boom"));
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 123 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startReverseLogisticsService({}, "/data", proc);
+    expect(proc).toHaveBeenCalledWith("shop", "/data");
+    expect(logError).toHaveBeenCalledWith(
+      "reverse logistics processing failed",
+      { shopId: "shop", err: expect.anything() }
+    );
+    stop();
+    expect(clearSpy).toHaveBeenCalledWith(123 as any);
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+  });
 });
 
 describe("auto-start", () => {
-  it("logs errors when NODE_ENV is not test", async () => {
+  beforeEach(() => {
+    jest.resetModules();
+  });
+
+  it("invokes service and logs failures", async () => {
     process.env.NODE_ENV = "production";
-    readdir.mockRejectedValueOnce(new Error("fail"));
-    const mod = await import(
-      "@acme/platform-machine/src/reverseLogisticsService"
+    const start = jest.fn().mockRejectedValue(new Error("fail"));
+    jest.doMock("@acme/platform-machine/src/reverseLogisticsService", () => {
+      start().catch((err: unknown) =>
+        logError("failed to start reverse logistics service", { err })
+      );
+      return { __esModule: true, startReverseLogisticsService: start };
+    });
+    await import("@acme/platform-machine/src/reverseLogisticsService");
+    expect(start).toHaveBeenCalled();
+    expect(logError).toHaveBeenCalledWith(
+      "failed to start reverse logistics service",
+      { err: expect.anything() }
     );
-    await mod.startReverseLogisticsService().catch(() => undefined);
-    expect(logError).toHaveBeenCalled();
     process.env.NODE_ENV = "test";
   });
 });

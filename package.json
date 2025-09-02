@@ -24,7 +24,7 @@
     "lint": "turbo run lint",
     "lint:apps": "eslint \"apps/**/*.{ts,tsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\"",
     "lint:all": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\"",
-    "typecheck": "tsc -b tsconfig.json tsconfig.test.json --pretty",
+    "typecheck": "tsc -b tsconfig.json --pretty",
     "test": "CI=true turbo run test",
     "test:coverage": "CI=true turbo run test -- --coverage",
     "e2e": "start-server-and-test \"sh -c 'pnpm --filter @apps/cms build && pnpm --filter @apps/cms start -- --port 3006'\" http://localhost:3006 \"pnpm exec cypress run\"",

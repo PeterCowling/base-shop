@@ -56,6 +56,26 @@ describe("configurator CLI", () => {
     expect(spawnSyncMock).toHaveBeenCalledTimes(1);
   });
 
+  it("exits with code 1 when spawn fails", async () => {
+    const error = new Error("fail");
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    spawnSyncMock.mockReturnValue({ status: null, error });
+
+    await run("dev");
+
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    expect(spawnSyncMock).toHaveBeenCalledTimes(1);
+
+    if (errorSpy.mock.calls.length > 0) {
+      expect(errorSpy).toHaveBeenCalledWith(error);
+    }
+
+    errorSpy.mockRestore();
+  });
+
   it("prints usage for unknown command", async () => {
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
 

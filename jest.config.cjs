@@ -202,6 +202,16 @@ const config = {
   collectCoverage: true,
   coverageDirectory: ' /coverage',
   coverageReporters: ['text', 'text-summary', 'lcov'],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/test/msw/server.ts',
+    '<rootDir>/test/mswServer.ts',
+    '<rootDir>/test/resetNextMocks.ts',
+    '<rootDir>/test/setupFetchPolyfill.ts',
+    '<rootDir>/test/setupTests.ts',
+    '<rootDir>/test/reactDomClientShim.ts',
+    '<rootDir>/test/polyfills/',
+    '<rootDir>/test/__mocks__/',
+  ],
   coverageThreshold: {
     global: {
       lines: 80,

@@ -28,6 +28,28 @@ describe("env index module", () => {
     errorSpy.mockRestore();
   });
 
+  it("exports env with provided values on valid env", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "test",
+      CMS_SPACE_URL: "https://cms.example.test",
+      CMS_ACCESS_TOKEN: "test-token",
+      SANITY_API_VERSION: "2023-10-01",
+      CART_COOKIE_SECRET: "cart-secret",
+    } as NodeJS.ProcessEnv;
+    const modPromise = import("../index.ts");
+    await expect(modPromise).resolves.toBeDefined();
+    const { env } = await modPromise;
+    expect(env).toEqual(
+      expect.objectContaining({
+        CMS_SPACE_URL: "https://cms.example.test",
+        CMS_ACCESS_TOKEN: "test-token",
+        SANITY_API_VERSION: "2023-10-01",
+        CART_COOKIE_SECRET: "cart-secret",
+      }),
+    );
+  });
+
   it("mergeEnvSchemas combines shapes", async () => {
     const { mergeEnvSchemas } = await import("../index.ts");
     const schemaA = z.object({ FOO: z.string() });

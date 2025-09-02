@@ -128,6 +128,8 @@ describe("core env refinement", () => {
         DEPOSIT_RELEASE_FOO_ENABLED: "yes",
         REVERSE_LOGISTICS_BAR_INTERVAL_MS: "later",
         LATE_FEE_BAZ_ENABLED: "maybe",
+        SOME_FEATURE_ENABLED: "nope",
+        OTHER_FEATURE_INTERVAL_MS: "soon",
       },
       ctx,
     );
@@ -151,7 +153,10 @@ describe("core env refinement", () => {
   it("emits issue for invalid custom *_ENABLED variable", () => {
     const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
     depositReleaseEnvRefinement(
-      { DEPOSIT_RELEASE_TEST_ENABLED: "notbool" },
+      {
+        DEPOSIT_RELEASE_TEST_ENABLED: "notbool",
+        OTHER_FEATURE_INTERVAL_MS: "later",
+      },
       ctx,
     );
     expect(ctx.addIssue).toHaveBeenCalledWith({
@@ -164,7 +169,10 @@ describe("core env refinement", () => {
   it("emits issue for invalid custom *_INTERVAL_MS variable", () => {
     const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
     depositReleaseEnvRefinement(
-      { DEPOSIT_RELEASE_TEST_INTERVAL_MS: "soon" },
+      {
+        DEPOSIT_RELEASE_TEST_INTERVAL_MS: "soon",
+        SOME_FEATURE_ENABLED: "nope",
+      },
       ctx,
     );
     expect(ctx.addIssue).toHaveBeenCalledWith({
@@ -467,6 +475,22 @@ describe("core env module", () => {
     ).toBe("https://example.com");
     expect(parseSpy).toHaveBeenCalledTimes(1);
     Object.getOwnPropertyDescriptor(mod.coreEnv, "CMS_ACCESS_TOKEN");
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    parseSpy.mockRestore();
+  });
+
+  it("caches parse across different proxy operations", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = require("../core.js");
+    const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
+    expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+    expect("CMS_SPACE_URL" in mod.coreEnv).toBe(true);
+    Object.keys(mod.coreEnv);
+    Object.getOwnPropertyDescriptor(mod.coreEnv, "CMS_SPACE_URL");
     expect(parseSpy).toHaveBeenCalledTimes(1);
     parseSpy.mockRestore();
   });

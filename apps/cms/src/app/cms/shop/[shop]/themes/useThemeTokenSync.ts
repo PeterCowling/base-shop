@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
 import { patchShopTheme } from "../../../wizard/services/patchTheme";
 import { savePreviewTokens } from "../../../wizard/previewTokens";
 
@@ -9,7 +9,7 @@ interface Args {
   theme: string;
   overrides: Record<string, string>;
   tokensByThemeState: Record<string, Record<string, string>>;
-  setOverrides: (next: Record<string, string>) => void;
+  setOverrides: Dispatch<SetStateAction<Record<string, string>>>;
 }
 
 export function useThemeTokenSync({

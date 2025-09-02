@@ -25,8 +25,12 @@ export default function useConfiguratorStep<T>({
   useEffect(() => {
     if (schema && values) {
       const parsed = schema.safeParse(values);
-      const fieldErrors = parsed.error.flatten().fieldErrors;
-      setErrors(parsed.success ? {} : (fieldErrors as Record<string, string[]>));
+      if (parsed.success) {
+        setErrors({});
+      } else {
+        const fieldErrors = parsed.error.flatten().fieldErrors;
+        setErrors(fieldErrors as Record<string, string[]>);
+      }
     }
   }, [schema, values]);
 

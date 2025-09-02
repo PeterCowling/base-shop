@@ -6,6 +6,7 @@ import { cmsEnvSchema } from "./cms.js";
 import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
+import { mergeEnvSchemas } from "./mergeEnvSchemas.js";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -76,12 +77,14 @@ const baseEnvSchema = z
   })
   .passthrough();
 
-export const coreEnvBaseSchema = authEnvSchema
-  .merge(cmsEnvSchema)
-  .merge(emailEnvSchema)
-  .merge(paymentsEnvSchema)
-  .merge(shippingEnvSchema)
-  .merge(baseEnvSchema);
+export const coreEnvBaseSchema = mergeEnvSchemas(
+  authEnvSchema,
+  cmsEnvSchema,
+  emailEnvSchema,
+  paymentsEnvSchema,
+  shippingEnvSchema,
+  baseEnvSchema
+);
 
 export function depositReleaseEnvRefinement(
   env: Record<string, unknown>,

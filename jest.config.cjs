@@ -154,6 +154,7 @@ const config = {
     '^\\./env/core\\.js$': ' /packages/config/src/env/core.ts',
     '^\\./payments\\.js$': ' /packages/config/src/env/payments.ts',
     '^\\./shipping\\.js$': ' /packages/config/src/env/shipping.ts',
+    '^\\./mergeEnvSchemas\\.js$': ' /packages/config/src/env/mergeEnvSchemas.ts',
     '^\\./foo\\.js$': ' /packages/config/src/env/foo.impl.ts',
     '^\\./foo\\.impl\\.ts$': ' /packages/config/src/env/foo.impl.ts',
     '^@platform-core$': ' /packages/platform-core/src/index.ts',

@@ -64,11 +64,11 @@ export async function quickstartPrompts(
     templateDefaults.pages ??
     presetDefaults.pages;
 
-  const paymentProviders = await listProviders("payment");
+  const paymentProviders: ProviderInfo[] = await listProviders("payment");
   let payment =
     args.payment ??
     (Array.isArray(config.payment) ? (config.payment as string[]) : undefined);
-  const shippingProviders = await listProviders("shipping");
+  const shippingProviders: ProviderInfo[] = await listProviders("shipping");
   let shipping =
     args.shipping ??
     (Array.isArray(config.shipping) ? (config.shipping as string[]) : undefined);

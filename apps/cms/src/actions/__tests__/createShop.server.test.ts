@@ -28,7 +28,7 @@ describe("createNewShop", () => {
   it("Successful shop creation with RBAC update for new user", async () => {
     const { createShop } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
-    const { ensureAuthorized } = await import("./common/auth");
+    const { ensureAuthorized } = await import("../common/auth");
 
     const deployResult = { status: "ok" } as any;
     (createShop as jest.Mock).mockResolvedValue(deployResult);
@@ -48,31 +48,44 @@ describe("createNewShop", () => {
   });
 
   it.each([
-    { current: ["Viewer"], expected: ["Viewer", "ShopAdmin"] },
-    { current: "Viewer", expected: ["Viewer", "ShopAdmin"] },
-  ])("Existing role array vs single role %#", async ({ current, expected }) => {
-    const { createShop } = await import("@platform-core/createShop");
-    const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
-    const { ensureAuthorized } = await import("./common/auth");
+    { current: ["Viewer"], expected: ["Viewer", "ShopAdmin"], shouldWrite: true },
+    { current: "Viewer", expected: ["Viewer", "ShopAdmin"], shouldWrite: true },
+    { current: ["Viewer", "ShopAdmin"], expected: ["Viewer", "ShopAdmin"], shouldWrite: false },
+    { current: "ShopAdmin", expected: "ShopAdmin", shouldWrite: false },
+  ])(
+    "Existing role array vs single role %#",
+    async ({ current, expected, shouldWrite }) => {
+      const { createShop } = await import("@platform-core/createShop");
+      const { readRbac, writeRbac } = await import(
+        "../../lib/server/rbacStore"
+      );
+      const { ensureAuthorized } = await import("../common/auth");
 
-    (createShop as jest.Mock).mockResolvedValue({});
-    (readRbac as jest.Mock).mockResolvedValue({
-      users: {},
-      roles: { user1: current },
-      permissions: {},
-    });
-    (ensureAuthorized as jest.Mock).mockResolvedValue({ user: { id: "user1" } });
+      (createShop as jest.Mock).mockResolvedValue({});
+      (readRbac as jest.Mock).mockResolvedValue({
+        users: {},
+        roles: { user1: current },
+        permissions: {},
+      });
+      (ensureAuthorized as jest.Mock).mockResolvedValue({
+        user: { id: "user1" },
+      });
 
-    await createNewShop("shop1", {} as any);
-    expect(writeRbac).toHaveBeenCalledWith(
-      expect.objectContaining({ roles: { user1: expected } })
-    );
-  });
+      await createNewShop("shop1", {} as any);
+      if (shouldWrite) {
+        expect(writeRbac).toHaveBeenCalledWith(
+          expect.objectContaining({ roles: { user1: expected } })
+        );
+      } else {
+        expect(writeRbac).not.toHaveBeenCalled();
+      }
+    }
+  );
 
   it("Failure writing RBAC → verify rollback deletes created entities and throws", async () => {
     const { createShop } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
-    const { ensureAuthorized } = await import("./common/auth");
+    const { ensureAuthorized } = await import("../common/auth");
     const { prisma } = await import("@platform-core/db");
 
     (createShop as jest.Mock).mockResolvedValue({});
@@ -96,7 +109,7 @@ describe("createNewShop", () => {
   it("Ensure user without id skips RBAC update", async () => {
     const { createShop } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
-    const { ensureAuthorized } = await import("./common/auth");
+    const { ensureAuthorized } = await import("../common/auth");
 
     const deployResult = { status: "ok" } as any;
     (createShop as jest.Mock).mockResolvedValue(deployResult);

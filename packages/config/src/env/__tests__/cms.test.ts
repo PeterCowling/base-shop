@@ -25,12 +25,14 @@ describe("cms env module", () => {
     });
   });
 
-  it("throws on missing or invalid configuration", async () => {
+  it("throws on malformed configuration", async () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
       CMS_SPACE_URL: "not-a-url",
-    } as NodeJS.ProcessEnv;
+      CMS_ACCESS_TOKEN: "",
+      SANITY_API_VERSION: 123 as unknown as string,
+    } as unknown as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     await expect(import("../cms.ts")).rejects.toThrow(
@@ -40,6 +42,8 @@ describe("cms env module", () => {
       "❌ Invalid CMS environment variables:",
       expect.objectContaining({
         CMS_SPACE_URL: { _errors: [expect.any(String)] },
+        CMS_ACCESS_TOKEN: { _errors: [expect.any(String)] },
+        SANITY_API_VERSION: { _errors: [expect.any(String)] },
       }),
     );
     errorSpy.mockRestore();

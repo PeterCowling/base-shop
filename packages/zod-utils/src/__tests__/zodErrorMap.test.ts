@@ -69,6 +69,20 @@ describe("friendly zod error messages", () => {
     expect(result.error.issues[0].message).toBe("Must be at most 2 characters");
   });
 
+  test("too_small number", () => {
+    const schema = z.number().min(1);
+    const result = schema.safeParse(0);
+    expect(result.success).toBe(false);
+    expect(result.error.issues[0].message).toBe("Number must be greater than or equal to 1");
+  });
+
+  test("too_big number", () => {
+    const schema = z.number().max(1);
+    const result = schema.safeParse(2);
+    expect(result.success).toBe(false);
+    expect(result.error.issues[0].message).toBe("Number must be less than or equal to 1");
+  });
+
   test("too_small array", () => {
     const schema = z.array(z.string()).min(2);
     const result = schema.safeParse(["a"]);

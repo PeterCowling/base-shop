@@ -60,5 +60,17 @@ describe("env index module", () => {
     expect(merged.safeParse({ FOO: "hello", BAR: 1 }).success).toBe(true);
     expect(merged.safeParse({ FOO: "hello" }).success).toBe(false);
   });
+
+  it("mergeEnvSchemas unwraps Zod effects", async () => {
+    const { mergeEnvSchemas } = await import("../index.ts");
+    const withEffect = z.object({ FOO: z.string() }).superRefine(() => {});
+    const plain = z.object({ BAR: z.number() });
+    const merged = mergeEnvSchemas(
+      (withEffect as unknown) as z.AnyZodObject,
+      plain
+    );
+    expect(merged.shape).toHaveProperty("FOO");
+    expect(merged.shape).toHaveProperty("BAR");
+  });
 });
 

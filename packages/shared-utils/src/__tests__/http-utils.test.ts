@@ -53,6 +53,19 @@ describe('fetchJson', () => {
 
     await expect(fetchJson('https://example.com')).rejects.toThrow('Internal Server Error');
   });
+
+  it('falls back to status code when status text is empty', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      status: 418,
+      statusText: '',
+      text: jest.fn().mockResolvedValue(
+        JSON.stringify({ message: 'teapot' })
+      ),
+    });
+
+    await expect(fetchJson('https://example.com')).rejects.toThrow('HTTP 418');
+  });
 });
 
 describe('buildResponse', () => {

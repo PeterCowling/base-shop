@@ -384,6 +384,21 @@ describe("core env module", () => {
     parseSpy.mockRestore();
   });
 
+  it("parses env once during module load in production", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "production",
+      CART_COOKIE_SECRET: "secret",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = await import("../core.ts");
+    const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
+    expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+    expect(parseSpy).not.toHaveBeenCalled();
+    parseSpy.mockRestore();
+  });
+
   it("triggers proxy traps without reparsing in production", async () => {
     process.env = {
       ...ORIGINAL_ENV,

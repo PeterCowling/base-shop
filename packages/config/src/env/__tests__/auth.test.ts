@@ -40,6 +40,28 @@ describe("auth env module", () => {
     expect(authEnv.PREVIEW_TOKEN_SECRET).toBeUndefined();
   });
 
+  it("throws when secrets are empty in non-production", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "test",
+      NEXTAUTH_SECRET: "",
+      SESSION_SECRET: "",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
+        SESSION_SECRET: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
   it("throws on missing required configuration", async () => {
     process.env = {
       ...ORIGINAL_ENV,

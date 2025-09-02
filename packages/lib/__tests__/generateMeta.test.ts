@@ -17,6 +17,7 @@ const OpenAIConstructorMock = jest.fn().mockImplementation(() => ({
   images: { generate: imagesGenerateMock },
 }));
 jest.mock("openai", () => ({
+  __esModule: true,
   default: OpenAIConstructorMock,
 }));
 
@@ -27,7 +28,10 @@ jest.mock("fs", () => ({
   },
 }));
 
-import { generateMeta } from "../src/generateMeta";
+let generateMeta: typeof import("../src/generateMeta").generateMeta;
+beforeAll(async () => {
+  ({ generateMeta } = await import("../src/generateMeta"));
+});
 
 describe("generateMeta", () => {
   const writeFileMock = fs.writeFile as jest.Mock;
@@ -36,9 +40,9 @@ describe("generateMeta", () => {
   afterEach(() => {
     writeFileMock.mockReset();
     mkdirMock.mockReset();
-    responsesCreateMock.mockReset();
-    imagesGenerateMock.mockReset();
-    OpenAIConstructorMock.mockReset();
+    responsesCreateMock.mockClear();
+    imagesGenerateMock.mockClear();
+    OpenAIConstructorMock.mockClear();
   });
 
   it("generates metadata and image using OpenAI", async () => {
@@ -65,6 +69,62 @@ describe("generateMeta", () => {
       alt: "A",
       image: "/og/123.png",
     });
+  });
+
+  it("falls back to defaults when OpenAI returns malformed JSON", async () => {
+    responsesCreateMock.mockResolvedValueOnce({
+      output: [{ content: [{ text: "not json" }] }],
+    });
+
+    const result = await generateMeta({
+      id: "123",
+      title: "Title",
+      description: "Desc",
+    });
+
+    const dir = path.join(process.cwd(), "public", "og");
+    const file = path.join(dir, "123.png");
+
+    expect(result).toEqual({
+      title: "Title",
+      description: "Desc",
+      alt: "Title",
+      image: "/og/123.png",
+    });
+
+    expect(mkdirMock).toHaveBeenCalledWith(dir, { recursive: true });
+    expect(writeFileMock).toHaveBeenCalledWith(file, Buffer.from("img"));
+  });
+
+  it("returns fallback metadata when OpenAI import fails", async () => {
+    jest.resetModules();
+    jest.doMock("openai", () => {
+      throw new Error("fail");
+    });
+
+    const { generateMeta: gm } = await import("../src/generateMeta");
+    const { promises: fsDynamic } = await import("fs");
+    const writeMock = fsDynamic.writeFile as jest.Mock;
+    const mkdirMockDynamic = fsDynamic.mkdir as jest.Mock;
+    const result = await gm({
+      id: "123",
+      title: "Title",
+      description: "Desc",
+    });
+
+    expect(result).toEqual({
+      title: "Title",
+      description: "Desc",
+      alt: "Title",
+      image: "/og/123.png",
+    });
+
+    expect(responsesCreateMock).not.toHaveBeenCalled();
+    expect(imagesGenerateMock).not.toHaveBeenCalled();
+    expect(mkdirMockDynamic).not.toHaveBeenCalled();
+    expect(writeMock).not.toHaveBeenCalled();
+
+    jest.resetModules();
   });
 
   it("returns fallback metadata when no API key in production", async () => {

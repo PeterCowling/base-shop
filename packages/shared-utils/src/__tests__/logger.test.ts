@@ -53,6 +53,13 @@ describe('logger', () => {
     expect(pinoMock).toHaveBeenCalledWith({ level: 'info' });
   });
 
+  it('defaults to debug when LOG_LEVEL and NODE_ENV are undefined', async () => {
+    const { logger } = await import('../logger');
+    logger.debug('msg');
+
+    expect(pinoMock).toHaveBeenCalledWith({ level: 'debug' });
+  });
+
   it('defaults to debug when NODE_ENV is not production', async () => {
     process.env.NODE_ENV = 'development';
     const { logger } = await import('../logger');

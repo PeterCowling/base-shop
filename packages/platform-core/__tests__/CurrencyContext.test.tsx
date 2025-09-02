@@ -1,4 +1,4 @@
-// packages/platform-core/__tests__/currencyContext.test.tsx
+// packages/platform-core/__tests__/CurrencyContext.test.tsx
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { CurrencyProvider, useCurrency } from "../src/contexts/CurrencyContext";
@@ -28,10 +28,10 @@ describe("CurrencyContext", () => {
   });
 
   it("throws when used outside provider", () => {
-    // Suppress expected error output
     const orig = console.error;
     console.error = () => {};
     expect(() => useCurrency()).toThrow("inside CurrencyProvider");
     console.error = orig;
   });
 });
+

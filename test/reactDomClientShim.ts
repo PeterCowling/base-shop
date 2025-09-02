@@ -1,10 +1,17 @@
+import * as ReactDOMClient from 'react-dom/client.js';
 import * as ReactDOM from 'react-dom';
 
-// Provide a compatible `createRoot` API for React 19.
+// Provide a compatible `createRoot` API for both React 18 and 19.
 export function createRoot(container: Element) {
+  if (typeof (ReactDOMClient as any).createRoot === 'function') {
+    return (ReactDOMClient as any).createRoot(container);
+  }
+
+  // Fallback for React versions that only expose `render`/`unmountComponentAtNode`.
   return {
-    render: (children: React.ReactNode) => ReactDOM.render(children, container),
-    unmount: () => ReactDOM.unmountComponentAtNode(container),
+    render: (children: React.ReactNode) =>
+      (ReactDOM as any).render(children, container),
+    unmount: () => (ReactDOM as any).unmountComponentAtNode(container),
   };
 }
 

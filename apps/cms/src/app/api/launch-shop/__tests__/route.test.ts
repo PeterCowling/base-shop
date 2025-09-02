@@ -24,27 +24,27 @@ const deployShop = jest.fn();
 const seedShop = jest.fn();
 const getRequiredSteps = jest.fn();
 
-jest.mock('../../cms/wizard/services/createShop', () => ({
+jest.mock('../../../cms/wizard/services/createShop', () => ({
   __esModule: true,
   createShop: (...args: any[]) => createShop(...args),
 }));
 
-jest.mock('../../cms/wizard/services/initShop', () => ({
+jest.mock('../../../cms/wizard/services/initShop', () => ({
   __esModule: true,
   initShop: (...args: any[]) => initShop(...args),
 }));
 
-jest.mock('../../cms/wizard/services/deployShop', () => ({
+jest.mock('../../../cms/wizard/services/deployShop', () => ({
   __esModule: true,
   deployShop: (...args: any[]) => deployShop(...args),
 }));
 
-jest.mock('../../cms/wizard/services/seedShop', () => ({
+jest.mock('../../../cms/wizard/services/seedShop', () => ({
   __esModule: true,
   seedShop: (...args: any[]) => seedShop(...args),
 }));
 
-jest.mock('../../cms/configurator/steps', () => ({
+jest.mock('../../../cms/configurator/steps', () => ({
   __esModule: true,
   getRequiredSteps: (...args: any[]) => getRequiredSteps(...args),
 }));

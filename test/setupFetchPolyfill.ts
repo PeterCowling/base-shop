@@ -2,6 +2,7 @@
 
 import fetch, { Headers, Request, Response } from "cross-fetch";
 import { webcrypto } from "node:crypto";
+import React from "react";
 
 if (!globalThis.fetch) {
   Object.assign(globalThis, { fetch, Headers, Request, Response });
@@ -63,3 +64,32 @@ if (!("getAll" in Headers.prototype)) {
     return value ? [value] : [];
   };
 }
+
+// React 19 renamed some internal fields used by react-dom. Jest loads test
+// modules before `setupFilesAfterEnv`, so ensure both the old and new
+// properties exist on the React instance that `react-dom` will import.
+if (
+  (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE &&
+  !(React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+) {
+  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED =
+    (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+} else if (
+  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED &&
+  !(React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE
+) {
+  (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE =
+    (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+}
+
+// The experimental React builds used in this repo may not provide `act`.
+// Testing libraries rely on it, so polyfill a minimal thenable version.
+if (!(React as any).act) {
+  (React as any).act = (callback: () => void | Promise<void>) => {
+    const result = callback();
+    return result && typeof (result as any).then === "function"
+      ? result
+      : Promise.resolve(result);
+  };
+}
+

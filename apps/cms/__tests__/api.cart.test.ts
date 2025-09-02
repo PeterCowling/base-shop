@@ -13,7 +13,9 @@ afterEach(() => {
 describe("cart API", () => {
   it("returns empty cart", async () => {
     const { GET } = await import("../src/app/api/cart/route");
-    const res = await GET();
+    const res = await GET({
+      cookies: { get: () => undefined },
+    } as any);
     const json = await res.json();
     expect(json).toEqual({ ok: true, cart: {} });
   });

@@ -23,7 +23,11 @@ export function MarketingEmailTemplate({
   ...props
 }: MarketingEmailTemplateProps) {
   if (!headline || content == null) {
-    return <></>;
+    throw new Error("headline and content are required");
+  }
+
+  if ((ctaLabel && !ctaHref) || (!ctaLabel && ctaHref)) {
+    throw new Error("ctaLabel and ctaHref must both be provided");
   }
 
   const showCta = Boolean(ctaLabel && ctaHref);

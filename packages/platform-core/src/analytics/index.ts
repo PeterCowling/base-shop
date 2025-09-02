@@ -4,7 +4,7 @@ import type { AnalyticsEvent } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
 import "server-only";
-import { DATA_ROOT } from "../dataRoot";
+import { resolveDataRoot } from "../dataRoot";
 import { getShopSettings, readShop } from "../repositories/shops.server";
 import { validateShopName } from "../shops";
 
@@ -31,7 +31,7 @@ class FileProvider implements AnalyticsProvider {
 
   private filePath(): string {
     const shop = validateShopName(this.shop);
-    return path.join(DATA_ROOT, shop, "analytics.jsonl");
+    return path.join(resolveDataRoot(), shop, "analytics.jsonl");
   }
 
   async track(event: AnalyticsEvent): Promise<void> {
@@ -151,7 +151,7 @@ async function updateAggregates(
   event: AnalyticsEvent
 ): Promise<void> {
   const fp = path.join(
-    DATA_ROOT,
+    resolveDataRoot(),
     validateShopName(shop),
     "analytics-aggregates.json"
   );

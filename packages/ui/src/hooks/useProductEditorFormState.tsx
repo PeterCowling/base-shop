@@ -12,16 +12,7 @@ import {
   useState,
   type FormEvent,
 } from "react";
-import type { MediaItem } from "@acme/types";
-
-export interface ProductPublication {
-  id: string;
-  shop: string;
-  title: Record<Locale, string>;
-  description: Record<Locale, string>;
-  price: number;
-  media: MediaItem[];
-}
+import type { ProductPublication } from "@acme/types";
 
 export interface ProductSaveResult {
   product?: ProductPublication & { variants?: Record<string, string[]> };

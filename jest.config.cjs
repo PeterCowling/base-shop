@@ -58,33 +58,40 @@ const tsPaths = tsconfig?.compilerOptions?.paths
  * fall back to the React copies bundled within Next.js.
  * ──────────────────────────────────────────────────────────────────── */
 function resolveReact() {
-  try {
-    // Resolve the root of the locally installed react package.
-    const reactPkg = require.resolve('react/package.json');
-    const reactBase = path.dirname(reactPkg);
-    const reactDomPkg = require.resolve('react-dom/package.json');
-    const reactDomBase = path.dirname(reactDomPkg);
-
-    // Build full paths to runtime files and verify they exist.
-    const jsxRuntime = path.join(reactBase, 'jsx-runtime.js');
-    const jsxDevRuntime = path.join(reactBase, 'jsx-dev-runtime.js');
-    const domClient = require.resolve('react-dom/client');
-
-    if (
-      fs.existsSync(jsxRuntime) &&
-      fs.existsSync(jsxDevRuntime) &&
-      fs.existsSync(domClient)
-    ) {
-      return {
-        reactPath: reactBase,
-        reactDomPath: reactDomBase,
-        reactDomClientPath: domClient,
-        reactJsxRuntimePath: jsxRuntime,
-        reactJsxDevRuntimePath: jsxDevRuntime,
-      };
+  const searchDirs = [__dirname];
+  const packagesDir = path.join(__dirname, 'packages');
+  if (fs.existsSync(packagesDir)) {
+    for (const entry of fs.readdirSync(packagesDir)) {
+      searchDirs.push(path.join(packagesDir, entry));
     }
-  } catch {
-    // fall through to compiled React
+  }
+  for (const base of searchDirs) {
+    try {
+      const reactPkg = require.resolve('react/package.json', { paths: [base] });
+      const reactBase = path.dirname(reactPkg);
+      const reactDomPkg = require.resolve('react-dom/package.json', {
+        paths: [base],
+      });
+      const reactDomBase = path.dirname(reactDomPkg);
+      const jsxRuntime = path.join(reactBase, 'jsx-runtime.js');
+      const jsxDevRuntime = path.join(reactBase, 'jsx-dev-runtime.js');
+      const domClient = require.resolve('react-dom/client', { paths: [base] });
+      if (
+        fs.existsSync(jsxRuntime) &&
+        fs.existsSync(jsxDevRuntime) &&
+        fs.existsSync(domClient)
+      ) {
+        return {
+          reactPath: reactBase,
+          reactDomPath: reactDomBase,
+          reactDomClientPath: domClient,
+          reactJsxRuntimePath: jsxRuntime,
+          reactJsxDevRuntimePath: jsxDevRuntime,
+        };
+      }
+    } catch {
+      // try next directory
+    }
   }
   return null;
 }

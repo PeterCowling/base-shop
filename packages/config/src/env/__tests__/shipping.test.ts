@@ -256,5 +256,45 @@ describe("shipping env module", () => {
     );
     errorSpy.mockRestore();
   });
+
+  it("throws during eager parse when process.env mixes valid and invalid keys", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      TAXJAR_KEY: "tax",
+      UPS_KEY: 123 as unknown as string,
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../shipping.ts")).rejects.toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("loadShippingEnv reports all invalid keys when mixed with valid ones", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadShippingEnv({
+        TAXJAR_KEY: "tax",
+        UPS_KEY: 123 as unknown as string,
+        DHL_KEY: 456 as unknown as string,
+      }),
+    ).toThrow("Invalid shipping environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+        DHL_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
 });
 

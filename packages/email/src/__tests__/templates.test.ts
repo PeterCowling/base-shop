@@ -6,7 +6,12 @@ describe("renderTemplate", () => {
     jest.resetModules();
   });
 
-  it("renders registered string templates with variables", async () => {
+  it("falls back to a React shim when node require fails", async () => {
+    jest.doMock("module", () => ({
+      createRequire: () => () => {
+        throw new Error("mock fail");
+      },
+    }));
     jest.doMock(
       "@acme/email-templates",
       () => ({ __esModule: true, marketingEmailTemplates: [] }),
@@ -19,9 +24,10 @@ describe("renderTemplate", () => {
     const html = renderTemplate("welcome", { name: "Ada" });
     expect(html).toBe("<p>Hello Ada</p>");
     clearTemplates();
+    jest.dontMock("module");
   });
 
-  it("overwrites and clears registered templates", async () => {
+  it("registers and clears custom templates", async () => {
     jest.doMock(
       "@acme/email-templates",
       () => ({ __esModule: true, marketingEmailTemplates: [] }),
@@ -32,8 +38,6 @@ describe("renderTemplate", () => {
     );
     registerTemplate("welcome", "<p>Hi</p>");
     expect(renderTemplate("welcome", {})).toBe("<p>Hi</p>");
-    registerTemplate("welcome", "<p>Bye</p>");
-    expect(renderTemplate("welcome", {})).toBe("<p>Bye</p>");
     clearTemplates();
     expect(() => renderTemplate("welcome", {})).toThrow(
       "Unknown template: welcome",

@@ -126,13 +126,13 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
               </div>
             </div>
           )}
+          <Toast
+            open={toast.open}
+            onClose={() => setToast((t) => ({ ...t, open: false }))}
+            message={toast.message}
+          />
         </DialogContent>
       </Dialog>
-      <Toast
-        open={toast.open}
-        onClose={() => setToast((t) => ({ ...t, open: false }))}
-        message={toast.message}
-      />
     </>
   );
 }

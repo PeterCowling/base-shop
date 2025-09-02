@@ -201,6 +201,7 @@ const config = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'mjs', 'node', 'd.ts'],
   collectCoverage: true,
   coverageDirectory: ' /coverage',
+  coveragePathIgnorePatterns: [' /test/msw/'],
   coverageReporters: ['text', 'text-summary', 'lcov'],
   coverageThreshold: {
     global: {

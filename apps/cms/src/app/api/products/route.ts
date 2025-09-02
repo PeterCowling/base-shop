@@ -54,16 +54,16 @@ export async function GET(req: NextRequest) {
 
   if (slug) {
     const product = catalogue.find(
-      (p) => p.sku === slug || p.id === slug,
+      (p: ProductPublication) => p.sku === slug || p.id === slug,
     );
     if (!product)
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     return NextResponse.json(toSku(product));
   }
 
-  let matches = catalogue;
+  let matches: ProductPublication[] = catalogue;
   if (query) {
-    matches = matches.filter((p) => {
+    matches = matches.filter((p: ProductPublication) => {
       const title = p.title?.en ?? Object.values(p.title ?? {})[0] ?? "";
       return title.toLowerCase().includes(query);
     });

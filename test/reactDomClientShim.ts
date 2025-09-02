@@ -15,10 +15,14 @@ export function createRoot(container: Element) {
   };
 }
 
-// Re-export hydrate for existing tests
-export function hydrateRoot(...args: Parameters<typeof ReactDOM.hydrate>) {
-  // @ts-ignore – hydrate may be deprecated in React 19 but is still used by tests
-  return (ReactDOM.hydrate as any)(...args);
+// Re-export hydrateRoot for existing tests, supporting both React 18 and 19.
+export function hydrateRoot(container: Element | Document | DocumentFragment, children: React.ReactNode) {
+  if (typeof (ReactDOMClient as any).hydrateRoot === "function") {
+    return (ReactDOMClient as any).hydrateRoot(container, children);
+  }
+
+  // @ts-ignore – fallback for React versions that only expose `hydrate`
+  return (ReactDOM as any).hydrate(children, container);
 }
 
 export * from 'react-dom';

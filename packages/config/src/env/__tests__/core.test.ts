@@ -201,7 +201,7 @@ describe("loadCoreEnv", () => {
       loadCoreEnv({
         ...baseEnv,
         DEPOSIT_RELEASE_ENABLED: "yes",
-        LATE_FEE_INTERVAL_MS: "fast",
+        DEPOSIT_RELEASE_INTERVAL_MS: "fast",
       } as NodeJS.ProcessEnv),
     ).toThrow("Invalid core environment variables");
     expect(errorSpy).toHaveBeenCalledWith(
@@ -211,7 +211,7 @@ describe("loadCoreEnv", () => {
       "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
     );
     expect(errorSpy).toHaveBeenCalledWith(
-      "  • LATE_FEE_INTERVAL_MS: must be a number",
+      "  • DEPOSIT_RELEASE_INTERVAL_MS: must be a number",
     );
     errorSpy.mockRestore();
   });
@@ -364,7 +364,7 @@ describe("loadCoreEnv", () => {
       loadCoreEnv({
         ...baseEnv,
         DEPOSIT_RELEASE_ENABLED: "yes",
-        LATE_FEE_INTERVAL_MS: "fast",
+        DEPOSIT_RELEASE_INTERVAL_MS: "fast",
       } as unknown as NodeJS.ProcessEnv),
     ).toThrow("Invalid core environment variables");
     expect(errorSpy).toHaveBeenCalledWith(
@@ -374,7 +374,7 @@ describe("loadCoreEnv", () => {
       "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
     );
     expect(errorSpy).toHaveBeenCalledWith(
-      "  • LATE_FEE_INTERVAL_MS: must be a number",
+      "  • DEPOSIT_RELEASE_INTERVAL_MS: must be a number",
     );
     errorSpy.mockRestore();
   });

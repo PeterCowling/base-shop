@@ -12,6 +12,22 @@ afterEach(() => {
   jest.resetModules();
 });
 
+describe("payments env", () => {
+  it("returns provided values without warnings", () => {
+    const env = {
+      STRIPE_SECRET_KEY: "sk_live_123",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+      STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+    };
+    process.env = env as NodeJS.ProcessEnv;
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    jest.resetModules();
+    const { paymentsEnv } = require("../payments.js");
+    expect(paymentsEnv).toEqual(env);
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+});
+
 describe("payments env defaults", () => {
   it.each([
     {

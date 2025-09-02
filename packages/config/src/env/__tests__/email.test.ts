@@ -75,6 +75,39 @@ describe("email env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("throws on invalid config then missing SENDGRID_API_KEY", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      SMTP_URL: "not-a-url",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    await expect(import("../email.ts")).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalled();
+
+    errorSpy.mockClear();
+    jest.resetModules();
+    process.env = {
+      ...ORIGINAL_ENV,
+      EMAIL_PROVIDER: "sendgrid",
+    } as NodeJS.ProcessEnv;
+    await expect(import("../email.ts")).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid email environment variables:",
+      expect.objectContaining({
+        SENDGRID_API_KEY: {
+          _errors: [expect.stringContaining("Required")],
+        },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
   it("defaults EMAIL_PROVIDER to smtp when unset in development", async () => {
     process.env = { ...ORIGINAL_ENV, NODE_ENV: "development" } as NodeJS.ProcessEnv;
     jest.resetModules();

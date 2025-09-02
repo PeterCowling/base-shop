@@ -22,6 +22,16 @@ export function MarketingEmailTemplate({
   className,
   ...props
 }: MarketingEmailTemplateProps) {
+  if (!headline || content == null) {
+    throw new Error("MarketingEmailTemplate: headline and content are required");
+  }
+
+  if ((ctaLabel && !ctaHref) || (!ctaLabel && ctaHref)) {
+    throw new Error(
+      "MarketingEmailTemplate: ctaLabel and ctaHref must both be provided",
+    );
+  }
+
   return (
     <div
       className={`mx-auto w-full max-w-xl overflow-hidden rounded-md border text-sm${className ? ` ${className}` : ""}`}

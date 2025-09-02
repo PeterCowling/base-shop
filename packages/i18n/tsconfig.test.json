@@ -6,7 +6,8 @@
     "jsx": "react-jsx",
     "module": "esnext",
     "types": ["@testing-library/jest-dom", "jest", "node", "react"],
-    "noEmit": true
+    "noEmit": true,
+    "rootDir": "."
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.test.ts", "**/*.test.tsx"]
 }

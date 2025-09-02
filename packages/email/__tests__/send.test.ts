@@ -123,5 +123,79 @@ describe("sendCampaignEmail", () => {
     expect(mockResendSend).not.toHaveBeenCalled();
     timeoutSpy.mockRestore();
   });
+
+  it("rejects when html is missing", async () => {
+    mockSendgridSend = jest.fn();
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+
+    setupEnv();
+
+    const { sendCampaignEmail } = await import("../src/send");
+
+    await expect(
+      sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+      })
+    ).rejects.toThrow("Missing html content for campaign email");
+
+    expect(mockSendgridSend).not.toHaveBeenCalled();
+    expect(mockResendSend).not.toHaveBeenCalled();
+    expect(mockSendMail).not.toHaveBeenCalled();
+  });
+
+  it("sanitizes html by default", async () => {
+    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+
+    setupEnv();
+
+    const { sendCampaignEmail } = await import("../src/send");
+
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: '<p>Hello</p><script>alert("x")</script>',
+    });
+
+    const calledWith = mockSendgridSend.mock.calls[0][0];
+    expect(calledWith.html).toContain("<p>Hello</p>");
+    expect(calledWith.html).not.toContain("<script>");
+  });
+
+  it("throws on unsupported EMAIL_PROVIDER at runtime", async () => {
+    mockSendgridSend = jest.fn();
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+
+    setupEnv();
+
+    const { sendCampaignEmail } = await import("../src/send");
+    process.env.EMAIL_PROVIDER = "unknown";
+
+    await expect(
+      sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+        sanitize: false,
+      })
+    ).rejects.toThrow(
+      'Unsupported EMAIL_PROVIDER "unknown". Available providers: sendgrid, resend, smtp'
+    );
+
+    expect(mockSendgridSend).not.toHaveBeenCalled();
+    expect(mockResendSend).not.toHaveBeenCalled();
+    expect(mockSendMail).not.toHaveBeenCalled();
+  });
+
+  it("throws on unsupported EMAIL_PROVIDER at import", async () => {
+    process.env.EMAIL_PROVIDER = "invalid";
+    await expect(import("../src/send")).rejects.toThrow(
+      'Unsupported EMAIL_PROVIDER "invalid". Available providers: sendgrid, resend, smtp'
+    );
+  });
 });
 

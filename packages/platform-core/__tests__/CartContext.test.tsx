@@ -1,4 +1,4 @@
-// packages/platform-core/__tests__/cartContext.test.tsx
+// packages/platform-core/__tests__/CartContext.test.tsx
 import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { CartProvider, useCart } from "../src/contexts/CartContext";
@@ -14,19 +14,11 @@ function TestComponent() {
     <div>
       <span data-testid="qty">{line?.qty ?? 0}</span>
 
-      <button
-        onClick={() => dispatch({ type: "add", sku: PRODUCTS[0], size })}
-      >
+      <button onClick={() => dispatch({ type: "add", sku: PRODUCTS[0], size })}>
         add
       </button>
-      <button onClick={() => dispatch({ type: "remove", id })}>
-        remove
-      </button>
-      <button
-        onClick={() => dispatch({ type: "setQty", id, qty: 0 })}
-      >
-        set
-      </button>
+      <button onClick={() => dispatch({ type: "remove", id })}>remove</button>
+      <button onClick={() => dispatch({ type: "setQty", id, qty: 0 })}>set</button>
     </div>
   );
 }
@@ -78,4 +70,16 @@ describe("CartContext actions", () => {
     fireEvent.click(remove);
     await waitFor(() => expect(qty.textContent).toBe("0"));
   });
+
+  it("throws when used outside provider", () => {
+    function Naked() {
+      useCart();
+      return null;
+    }
+    const orig = console.error;
+    console.error = () => {};
+    expect(() => render(<Naked />)).toThrow("inside CartProvider");
+    console.error = orig;
+  });
 });
+

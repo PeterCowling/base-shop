@@ -18,6 +18,7 @@ import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { readRepo } from "@platform-core/repositories/products.server";
 import { trackEvent } from "@platform-core/analytics";
 import { PRODUCTS } from "@platform-core/products";
+import { coreEnv } from "@acme/config/env/core";
 
 const getShopSettingsMock = jest.mocked(getShopSettings);
 const readRepoMock = jest.mocked(readRepo);
@@ -71,6 +72,21 @@ describe("AI catalogue API", () => {
     });
   });
 
+  test("uses default shop when env ID missing", async () => {
+    const original = coreEnv.NEXT_PUBLIC_SHOP_ID;
+    (coreEnv as any).NEXT_PUBLIC_SHOP_ID = undefined;
+    const res = await GET(createRequest("http://localhost/api/ai/catalog"));
+    expect(res.status).toBe(200);
+    expect(getShopSettingsMock).toHaveBeenCalledWith("default");
+    expect(trackEventMock).toHaveBeenCalledWith("default", {
+      type: "ai_crawl",
+      page: "1",
+      status: 200,
+      items: 1,
+    });
+    (coreEnv as any).NEXT_PUBLIC_SHOP_ID = original;
+  });
+
   test("falls back to static products when repo empty", async () => {
     getShopSettingsMock.mockResolvedValueOnce({
       seo: { aiCatalog: { enabled: true, fields: ["id", "title"], pageSize: 50 } },
@@ -102,6 +118,50 @@ describe("AI catalogue API", () => {
       price: 123,
       media: ["img"],
     });
+  });
+
+  test("defaults fields and page size when unset", async () => {
+    getShopSettingsMock.mockResolvedValueOnce({
+      seo: { aiCatalog: { enabled: true } },
+    } as any);
+    readRepoMock.mockResolvedValueOnce(
+      Array.from({ length: 60 }, (_, i) => ({
+        id: `p${i}`,
+        sku: `p${i}`,
+        title: `Product ${i}`,
+        description: `desc${i}`,
+        price: i,
+        media: [`img${i}`],
+        updated_at: "2024-01-01T00:00:00Z",
+      })) as any
+    );
+    const res = await GET(createRequest("http://localhost/api/ai/catalog"));
+    const body = await res.json();
+    expect(body.items).toHaveLength(50);
+    expect(body.items[0]).toEqual({
+      id: "p0",
+      title: "Product 0",
+      description: "desc0",
+      price: 0,
+      media: ["img0"],
+    });
+  });
+
+  test("falls back to SKU data when repo metadata missing", async () => {
+    getShopSettingsMock.mockResolvedValueOnce({
+      seo: { aiCatalog: { enabled: true, fields: ["id", "price", "media"], pageSize: 50 } },
+    } as any);
+    readRepoMock.mockResolvedValueOnce([
+      { id: "green-sneaker", sku: "green-sneaker", title: "Green" },
+      { id: "p2", sku: "p2", title: "Other" },
+    ] as any);
+    const res = await GET(createRequest("http://localhost/api/ai/catalog"));
+    const body = await res.json();
+    expect(body.items).toEqual([
+      { id: "green-sneaker", price: PRODUCTS[0].price, media: PRODUCTS[0].media },
+      { id: "p2", price: null, media: [] },
+    ]);
+    expect(res.headers.get("Last-Modified")).toBe(new Date(0).toUTCString());
   });
 
   test("uses If-Modified-Since older than last modified and returns 200", async () => {

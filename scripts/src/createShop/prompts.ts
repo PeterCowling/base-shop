@@ -2,6 +2,7 @@ import { readdirSync } from "fs";
 import readline from "node:readline";
 import { join } from "path";
 import { listProviders } from "@acme/platform-core/createShop/listProviders";
+import type { ProviderInfo } from "@acme/platform-core/createShop/listProviders";
 import type { Options } from "./parse";
 
 /**
@@ -128,7 +129,7 @@ export async function gatherOptions(
   /** Prompt for payment providers when none are provided on the command line. */
   async function ensurePayment() {
     if ((options.payment as string[]).length === 0 && process.stdin.isTTY) {
-      const providers = await listProviders("payment");
+      const providers: ProviderInfo[] = await listProviders("payment");
       const ids = providers.map((p) => p.id);
       const rl = readline.createInterface({
         input: process.stdin,
@@ -153,7 +154,7 @@ export async function gatherOptions(
   /** Prompt for shipping providers when none are provided on the command line. */
   async function ensureShipping() {
     if ((options.shipping as string[]).length === 0 && process.stdin.isTTY) {
-      const providers = await listProviders("shipping");
+      const providers: ProviderInfo[] = await listProviders("shipping");
       const ids = providers.map((p) => p.id);
       const rl = readline.createInterface({
         input: process.stdin,

@@ -1,3 +1,4 @@
+/** @jest-environment node */
 // packages/stripe/src/__tests__/stripe.test.ts
 import type Stripe from "stripe";
 import { rest } from "msw";
@@ -18,6 +19,9 @@ describe("stripe client", () => {
 
   beforeEach(() => {
     jest.resetModules();
+    jest.doMock("@acme/config/env/payments", () => ({
+      paymentsEnv: { STRIPE_SECRET_KEY: "sk_test_123" },
+    }));
     process.env = {
       ...OLD_ENV,
       STRIPE_SECRET_KEY: "sk_test_123",
@@ -31,7 +35,7 @@ describe("stripe client", () => {
   });
 
   it("uses expected API version and fetch client", async () => {
-    const { stripe } = await import("../index");
+    const { stripe } = await import("../index.ts");
     const stripeInternal = stripe as StripeInternal;
 
     expect(stripeInternal.getApiField("version")).toBe("2025-06-30.basil");
@@ -42,7 +46,7 @@ describe("stripe client", () => {
   });
 
   it("performs requests successfully with mocked API", async () => {
-    const { stripe } = await import("../index");
+    const { stripe } = await import("../index.ts");
     const stripeInternal = stripe as StripeInternal;
 
     let called = false;
@@ -65,7 +69,7 @@ describe("stripe client", () => {
   });
 
   it("throws when Stripe API responds with an error", async () => {
-    const { stripe } = await import("../index");
+    const { stripe } = await import("../index.ts");
     const stripeInternal = stripe as StripeInternal;
 
     const httpClient = stripeInternal.getApiField("httpClient") as {
@@ -105,7 +109,7 @@ describe("stripe client", () => {
     }));
 
     await expect(
-      import("../index").catch((err) => {
+      import("../index.ts").catch((err) => {
         console.error((err as Error).message);
         throw err;
       }),
@@ -124,7 +128,7 @@ describe("stripe client", () => {
     }));
 
     await expect(
-      import("../index").catch((err) => {
+      import("../index.ts").catch((err) => {
         console.error((err as Error).message);
         throw err;
       }),
@@ -132,6 +136,83 @@ describe("stripe client", () => {
 
     expect(spy).toHaveBeenCalledWith(
       "Neither apiKey nor config.authenticator provided",
+    );
+  });
+
+  it("creates checkout session with expected payload", async () => {
+    const { stripe } = await import("../index.ts");
+    const stripeInternal = stripe as StripeInternal;
+
+    let capturedBody = "";
+    let capturedVersion = "";
+    server.use(
+      rest.post(
+        "https://api.stripe.com/v1/checkout/sessions",
+        async (req, res, ctx) => {
+          capturedBody = await req.text();
+          capturedVersion = req.headers.get("stripe-version") ?? "";
+          return res(
+            ctx.status(200),
+            ctx.json({ id: "cs_test", object: "checkout.session" })
+          );
+        }
+      )
+    );
+
+    const session = await stripeInternal.checkout.sessions.create({
+      mode: "payment",
+      success_url: "https://example.com/success",
+      cancel_url: "https://example.com/cancel",
+      line_items: [{ price: "price_123", quantity: 1 }],
+    });
+
+    expect(session.id).toBe("cs_test");
+    expect(capturedVersion).toBe("2025-06-30.basil");
+    const params = new URLSearchParams(capturedBody);
+    expect(params.get("mode")).toBe("payment");
+    expect(params.get("success_url")).toBe("https://example.com/success");
+    expect(params.get("line_items[0][price]")).toBe("price_123");
+    expect(params.get("line_items[0][quantity]")).toBe("1");
+  });
+
+  it("surfaces API errors when creating checkout session", async () => {
+    const { stripe } = await import("../index.ts");
+    const stripeInternal = stripe as StripeInternal;
+
+    server.use(
+      rest.post(
+        "https://api.stripe.com/v1/checkout/sessions",
+        (_req, res, ctx) =>
+          res(ctx.status(400), ctx.json({ error: { message: "Bad request" } }))
+      )
+    );
+
+    await expect(
+      stripeInternal.checkout.sessions.create({
+        mode: "payment",
+        success_url: "https://example.com/success",
+        cancel_url: "https://example.com/cancel",
+        line_items: [{ price: "price_123", quantity: 1 }],
+      })
+    ).rejects.toMatchObject({ message: "Bad request", statusCode: 400 });
+  });
+
+  it("constructs webhook events using Stripe helpers", async () => {
+    const { stripe } = await import("../index.ts");
+    const payload = JSON.stringify({
+      id: "evt_test",
+      object: "event",
+      type: "checkout.session.completed",
+      api_version: "2025-06-30.basil",
+    });
+    const secret = "whsec_test";
+    const header = stripe.webhooks.generateTestHeaderString({ payload, secret });
+    const event = stripe.webhooks.constructEvent(payload, header, secret);
+
+    expect(event.id).toBe("evt_test");
+    expect(event.type).toBe("checkout.session.completed");
+    expect((event as { api_version: string }).api_version).toBe(
+      "2025-06-30.basil"
     );
   });
 });

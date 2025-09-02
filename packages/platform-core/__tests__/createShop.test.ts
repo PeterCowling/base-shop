@@ -17,14 +17,17 @@ describe('createShop', () => {
   });
 
   it('creates records in the database', async () => {
+    const id = 'shop1';
     const { createShop } = await import('../src/createShop');
-    await createShop('shop1', { theme: 'base' }, { deploy: false });
+    await createShop(id, { theme: 'base' }, { deploy: false });
     expect(prismaMock.shop.create).toHaveBeenCalled();
+    fs.rmSync(path.join('data', 'shops', id), { recursive: true, force: true });
   });
 
   it('stores navigation structure', async () => {
+    const id = 'shop2';
     const { createShop } = await import('../src/createShop');
-    await createShop('shop2', {
+    await createShop(id, {
       theme: 'base',
       navItems: [{ label: 'Parent', url: '/parent', children: [{ label: 'Child', url: '/child' }] }]
     }, { deploy: false });
@@ -32,6 +35,28 @@ describe('createShop', () => {
     expect(nav).toEqual([
       { label: 'Parent', url: '/parent', children: [{ label: 'Child', url: '/child' }] }
     ]);
+    fs.rmSync(path.join('data', 'shops', id), { recursive: true, force: true });
+  });
+
+  it('returns pending when deploy is false', async () => {
+    const id = 'shop-pending';
+    const { createShop } = await import('../src/createShop');
+    const result = await createShop(id, { theme: 'base' }, { deploy: false });
+    expect(result).toEqual({ status: 'pending' });
+    fs.rmSync(path.join('data', 'shops', id), { recursive: true, force: true });
+  });
+
+  it('ignores fs write errors', async () => {
+    const id = 'shop-error';
+    const { createShop } = await import('../src/createShop');
+    const spy = jest
+      .spyOn(fs, 'writeFileSync')
+      .mockImplementation(() => { throw new Error('fail'); });
+    const result = await createShop(id, { theme: 'base' }, { deploy: false });
+    expect(result).toEqual({ status: 'pending' });
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+    fs.rmSync(path.join('data', 'shops', id), { recursive: true, force: true });
   });
 
   it('writes a session secret to the env file', async () => {

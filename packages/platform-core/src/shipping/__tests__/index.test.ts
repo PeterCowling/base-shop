@@ -63,6 +63,19 @@ describe('getShippingRate', () => {
     );
   });
 
+  it('throws when API call fails', async () => {
+    mockEnv.UPS_KEY = 'ups-key';
+    fetchMock.mockResolvedValue({ ok: false });
+    await expect(
+      getShippingRate({
+        provider: 'ups',
+        fromPostalCode: '11111',
+        toPostalCode: '22222',
+        weight: 5,
+      }),
+    ).rejects.toThrow('Failed to fetch rate from ups');
+  });
+
   it('throws when API key is missing', async () => {
     await expect(
       getShippingRate({
@@ -73,6 +86,30 @@ describe('getShippingRate', () => {
       }),
     ).rejects.toThrow('Missing UPS_KEY');
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('errors when premier delivery missing for premier provider', async () => {
+    await expect(
+      getShippingRate({
+        provider: 'premier-shipping',
+        fromPostalCode: '00000',
+        toPostalCode: '99999',
+        weight: 1,
+      }),
+    ).rejects.toThrow('Premier delivery not configured');
+  });
+
+  it('validates region/window for non-premier providers', async () => {
+    await expect(
+      getShippingRate({
+        provider: 'ups',
+        fromPostalCode: '11111',
+        toPostalCode: '22222',
+        weight: 5,
+        region: 'eligible',
+        window: 'morning',
+      }),
+    ).rejects.toThrow('Premier delivery not configured');
   });
 
   describe('premier delivery validation', () => {
@@ -170,6 +207,12 @@ describe('getTrackingStatus', () => {
   it('handles fetch failure', async () => {
     fetchMock.mockRejectedValue(new Error('network'));
     const result = await getTrackingStatus({ provider: 'dhl', trackingNumber: '123' });
+    expect(result).toEqual({ status: null, steps: [] });
+  });
+
+  it('handles non-ok responses', async () => {
+    fetchMock.mockResolvedValue({ ok: false });
+    const result = await getTrackingStatus({ provider: 'ups', trackingNumber: 'abc' });
     expect(result).toEqual({ status: null, steps: [] });
   });
 });

@@ -49,3 +49,5 @@ export { default as useCanvasDrag } from "./useCanvasDrag";
 export { default as useCanvasResize } from "./useCanvasResize";
 export { default as useBlockDimensions } from "./useBlockDimensions";
 export { default as useBlockDnD } from "./useBlockDnD";
+export { default as useBlockTransform } from "./useBlockTransform";
+export { default as useLocalizedTextEditor } from "./useLocalizedTextEditor";

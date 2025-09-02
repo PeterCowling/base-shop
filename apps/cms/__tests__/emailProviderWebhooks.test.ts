@@ -8,10 +8,14 @@ jest.mock("@platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 
-jest.mock("@acme/email/analytics", () => ({
-  __esModule: true,
-  mapResendEvent: jest.fn(),
-}));
+jest.mock("@acme/email/analytics", () => {
+  const actual = jest.requireActual("@acme/email/analytics");
+  return {
+    __esModule: true,
+    ...actual,
+    mapResendEvent: jest.fn(),
+  };
+});
 
 const ResponseWithJson = Response as unknown as typeof Response & {
   json?: (data: unknown, init?: ResponseInit) => Response;

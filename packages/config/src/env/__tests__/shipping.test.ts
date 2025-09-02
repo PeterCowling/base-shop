@@ -8,6 +8,25 @@ describe("shipping env module", () => {
     process.env = ORIGINAL_ENV;
   });
 
+  it("imports shipping.ts without error when env is valid", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      TAXJAR_KEY: "tax",
+      UPS_KEY: "ups",
+      DHL_KEY: "dhl",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    const { shippingEnv } = await import("../shipping.ts");
+    expect(shippingEnv).toEqual({
+      TAXJAR_KEY: "tax",
+      UPS_KEY: "ups",
+      DHL_KEY: "dhl",
+    });
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
   it("parses valid configuration", async () => {
     process.env = {
       ...ORIGINAL_ENV,

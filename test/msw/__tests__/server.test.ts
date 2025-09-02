@@ -1,11 +1,11 @@
-import { server, rest } from "../server";
+import { server } from "../server";
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe("msw server handlers", () => {
-  test("POST /cms/api/configurator", async () => {
+  test("POST /cms/api/configurator returns default message", async () => {
     const res = await fetch("http://localhost/cms/api/configurator", {
       method: "POST",
     });
@@ -14,7 +14,7 @@ describe("msw server handlers", () => {
     expect(json).toEqual({ success: true, message: "default handler: OK" });
   });
 
-  test("GET /cms/api/configurator/validate-env/:shop", async () => {
+  test("GET /cms/api/configurator/validate-env/:shop returns success", async () => {
     const res = await fetch(
       "http://localhost/cms/api/configurator/validate-env/my-shop"
     );
@@ -23,21 +23,21 @@ describe("msw server handlers", () => {
     expect(json).toEqual({ success: true });
   });
 
-  test("GET /cms/api/page-templates", async () => {
+  test("GET /cms/api/page-templates returns empty array", async () => {
     const res = await fetch("http://localhost/cms/api/page-templates");
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json).toEqual([]);
   });
 
-  test("GET /cms/api/wizard-progress", async () => {
+  test("GET /cms/api/wizard-progress returns default state", async () => {
     const res = await fetch("http://localhost/cms/api/wizard-progress");
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json).toEqual({ state: {}, completed: {} });
   });
 
-  test("PUT /cms/api/wizard-progress", async () => {
+  test("PUT /cms/api/wizard-progress returns empty object", async () => {
     const res = await fetch("http://localhost/cms/api/wizard-progress", {
       method: "PUT",
     });
@@ -46,7 +46,7 @@ describe("msw server handlers", () => {
     expect(json).toEqual({});
   });
 
-  test("PATCH /cms/api/wizard-progress", async () => {
+  test("PATCH /cms/api/wizard-progress returns empty object", async () => {
     const res = await fetch("http://localhost/cms/api/wizard-progress", {
       method: "PATCH",
     });

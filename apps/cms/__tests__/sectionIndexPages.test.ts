@@ -1,19 +1,20 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 
 // Some pages pull in heavy server-only modules which can slow down
 // the initial dynamic import. Increase the Jest timeout so the test has
 // enough time to complete without failing.
 jest.setTimeout(20_000);
 
-jest.mock("next/link", () => ({
-  __esModule: true,
-  default: (props: any) =>
-    React.createElement("a", { href: props.href }, props.children),
-}));
+jest.mock("next/link", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    default: (props: any) =>
+      React.createElement("a", { href: props.href }, props.children),
+  };
+});
 
 async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "sections-"));
@@ -33,6 +34,8 @@ async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
 describe("CMS section index pages", () => {
   it("lists shops with links", async () => {
     await withRepo(async () => {
+      await import("react");
+      const { renderToStaticMarkup } = await import("react-dom/server");
       const sections = [
         ["products", "products"],
         ["pages", "pages"],
@@ -59,6 +62,8 @@ describe("CMS section index pages", () => {
         recursive: true,
         force: true,
       });
+      await import("react");
+      const { renderToStaticMarkup } = await import("react-dom/server");
       const { default: Page } = await import("../src/app/cms/products/page");
       const html = renderToStaticMarkup(await Page());
       expect(html).toContain("No shops found.");

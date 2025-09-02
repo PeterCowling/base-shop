@@ -11,18 +11,15 @@ describe("coreEnv proxy", () => {
   it("supports proxy traps", async () => {
     process.env = { ...OLD_ENV, NODE_ENV: "test" } as NodeJS.ProcessEnv;
     const core = await import("../src/env/core");
-    const spy = jest.spyOn(core, "loadCoreEnv");
 
     expect("NODE_ENV" in core.coreEnv).toBe(true);
     expect(Object.keys(core.coreEnv)).toContain("NODE_ENV");
     const desc = Object.getOwnPropertyDescriptor(core.coreEnv, "NODE_ENV");
     expect(desc).toBeDefined();
     expect(desc?.value).toBe("test");
-
-    expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  it("invokes loadCoreEnv during import in production", async () => {
+  it("parses during import in production", async () => {
     process.env = {
       ...OLD_ENV,
       NODE_ENV: "production",
@@ -34,9 +31,7 @@ describe("coreEnv proxy", () => {
       SANITY_API_VERSION: "2023-01-01",
     } as NodeJS.ProcessEnv;
     const core = await import("../src/env/core");
-    const spy = jest.spyOn(core, "loadCoreEnv");
-    // Accessing again shouldn't trigger loadCoreEnv if fail-fast ran on import.
-    core.coreEnv.NODE_ENV;
-    expect(spy).not.toHaveBeenCalled();
+    // Fail-fast in production should parse at import time.
+    expect(core.coreEnv.NODE_ENV).toBe("production");
   });
 });

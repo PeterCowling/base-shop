@@ -1,11 +1,11 @@
+import { coreEnv } from "@acme/config/env/core";
+import { sendCampaignEmail } from "@acme/email";
+import { runSeoAudit } from '@acme/lib/seoAudit';
+import { nowIso } from "@date-utils";
+import { trackEvent } from "@platform-core/analytics";
+import { DATA_ROOT } from "@platform-core/dataRoot";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { DATA_ROOT } from "@platform-core/dataRoot";
-import { runSeoAudit } from "../../scripts/seo-audit";
-import { trackEvent } from "@platform-core/analytics";
-import { sendCampaignEmail } from "@acme/email";
-import { coreEnv } from "@acme/config/env/core";
-import { nowIso } from "@date-utils";
 
 async function auditShop(shop: string): Promise<void> {
   const url = `http://localhost:3000/${shop}`;

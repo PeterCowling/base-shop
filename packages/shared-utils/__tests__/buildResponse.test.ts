@@ -1,23 +1,42 @@
 import { buildResponse } from "../src/buildResponse";
 
 describe("buildResponse", () => {
-  it("decodes base64 body and preserves headers", async () => {
-    const text = "hello";
-    const body = Buffer.from(text).toString("base64");
+  it("returns a Response with status and decoded body on success", async () => {
+    const message = "all good";
+    const body = Buffer.from(message).toString("base64");
     const resp = buildResponse({
-      response: { status: 201, headers: { "x-test": "1" }, body },
+      response: {
+        status: 200,
+        headers: { "content-type": "text/plain" },
+        body,
+      },
     });
-    expect(resp.status).toBe(201);
-    expect(resp.headers.get("x-test")).toBe("1");
-    await expect(resp.text()).resolves.toBe(text);
+    expect(resp.status).toBe(200);
+    expect(resp.headers.get("content-type")).toBe("text/plain");
+    await expect(resp.text()).resolves.toBe(message);
   });
 
-  it("handles missing body", async () => {
+  it("returns a Response with error status and decoded message", async () => {
+    const message = "something went wrong";
+    const body = Buffer.from(message).toString("base64");
     const resp = buildResponse({
-      response: { status: 204, headers: { "x": "y" } },
+      response: {
+        status: 500,
+        headers: { "content-type": "text/plain" },
+        body,
+      },
+    });
+    expect(resp.status).toBe(500);
+    await expect(resp.text()).resolves.toBe(message);
+  });
+
+  it("uses defaults when body is omitted", async () => {
+    const resp = buildResponse({
+      response: { status: 204, headers: { "x-test": "1" } },
     });
     expect(resp.status).toBe(204);
-    const buf = await resp.arrayBuffer();
-    expect(buf.byteLength).toBe(0);
+    expect(resp.headers.get("x-test")).toBe("1");
+    await expect(resp.text()).resolves.toBe("");
   });
 });
+

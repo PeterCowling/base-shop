@@ -215,4 +215,26 @@ describe("stripe client", () => {
       "2025-06-30.basil"
     );
   });
+
+  it("throws when webhook signature doesn't match payload", async () => {
+    const { stripe } = await import("../index.ts");
+    const payload = JSON.stringify({
+      id: "evt_test",
+      object: "event",
+      type: "checkout.session.completed",
+      api_version: "2025-06-30.basil",
+    });
+    const secret = "whsec_test";
+    const header = stripe.webhooks.generateTestHeaderString({ payload, secret });
+    const tamperedPayload = JSON.stringify({
+      id: "evt_test_tampered",
+      object: "event",
+      type: "checkout.session.completed",
+      api_version: "2025-06-30.basil",
+    });
+
+    expect(() =>
+      stripe.webhooks.constructEvent(tamperedPayload, header, secret)
+    ).toThrow(stripe.errors.StripeSignatureVerificationError);
+  });
 });

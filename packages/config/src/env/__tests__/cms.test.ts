@@ -110,6 +110,31 @@ describe("cms env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("throws when CMS_SPACE_URL and CMS_ACCESS_TOKEN are missing in production", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      SANITY_API_VERSION: "2024-01-01",
+    } as NodeJS.ProcessEnv;
+    delete process.env.CMS_SPACE_URL;
+    delete process.env.CMS_ACCESS_TOKEN;
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../cms.ts")).rejects.toThrow(
+      "Invalid CMS environment variables"
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid CMS environment variables:",
+      expect.objectContaining({
+        CMS_SPACE_URL: { _errors: [expect.any(String)] },
+        CMS_ACCESS_TOKEN: { _errors: [expect.any(String)] },
+      })
+    );
+    errorSpy.mockRestore();
+  });
+
   it("throws when SANITY_API_VERSION is not a string in production", async () => {
     process.env = {
       ...ORIGINAL_ENV,

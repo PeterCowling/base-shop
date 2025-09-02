@@ -126,7 +126,7 @@ describe("email env module", () => {
   );
 
   it(
-    "reports multiple errors for invalid SMTP_URL and non-numeric EMAIL_BATCH_SIZE",
+    "throws and logs formatted error for invalid SMTP_URL and non-numeric EMAIL_BATCH_SIZE",
     async () => {
       process.env = {
         ...ORIGINAL_ENV,
@@ -140,6 +140,7 @@ describe("email env module", () => {
       await expect(import("../email.ts")).rejects.toThrow(
         "Invalid email environment variables",
       );
+      expect(errorSpy).toHaveBeenCalledTimes(1);
       expect(errorSpy).toHaveBeenCalledWith(
         "❌ Invalid email environment variables:",
         expect.objectContaining({

@@ -6,6 +6,7 @@ const launchMock = jest.fn();
 jest.mock(
   "lighthouse",
   () => ({
+    __esModule: true,
     default: lighthouseMock,
   }),
   { virtual: true },
@@ -14,6 +15,7 @@ jest.mock(
 jest.mock(
   "chrome-launcher",
   () => ({
+    __esModule: true,
     default: {
       launch: launchMock,
     },
@@ -36,8 +38,8 @@ describe("runSeoAudit", () => {
   });
 
   it("returns score and recommendations and closes chrome", async () => {
-    const killMock = jest.fn();
-    launchMock.mockResolvedValue({ port: 1234, kill: killMock });
+    const killSpy = jest.fn();
+    launchMock.mockResolvedValue({ port: 1234, kill: killSpy });
     lighthouseMock.mockResolvedValue({
       lhr: {
         categories: { seo: { score: 0.9 } },
@@ -52,16 +54,18 @@ describe("runSeoAudit", () => {
     const result = await runSeoAudit("https://example.com");
 
     expect(result).toEqual({ score: 90, recommendations: ["Bad"] });
-    expect(killMock).toHaveBeenCalled();
+    expect(killSpy).toHaveBeenCalled();
   });
 
-  it("closes chrome when lighthouse throws", async () => {
-    const killMock = jest.fn();
-    launchMock.mockResolvedValue({ port: 1234, kill: killMock });
-    lighthouseMock.mockRejectedValue(new Error("boom"));
+  it("throws when lighthouse returns no result and closes chrome", async () => {
+    const killSpy = jest.fn();
+    launchMock.mockResolvedValue({ port: 1234, kill: killSpy });
+    lighthouseMock.mockResolvedValue(undefined);
 
-    await expect(runSeoAudit("https://example.com")).rejects.toThrow("boom");
-    expect(killMock).toHaveBeenCalled();
+    await expect(runSeoAudit("https://example.com")).rejects.toThrow(
+      "Lighthouse did not return a result",
+    );
+    expect(killSpy).toHaveBeenCalled();
   });
 });
 

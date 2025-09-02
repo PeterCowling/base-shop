@@ -17,6 +17,7 @@ describe("logger", () => {
     Object.values(baseLogger).forEach((fn) => fn.mockClear());
     pinoMock.mockClear();
     delete process.env.LOG_LEVEL;
+    delete process.env.NODE_ENV;
   });
 
   it("forwards messages and metadata and respects LOG_LEVEL", async () => {
@@ -35,5 +36,19 @@ describe("logger", () => {
     expect(baseLogger.debug).toHaveBeenCalledWith(meta, "debug msg");
 
     expect(pinoMock).toHaveBeenCalledWith({ level: "warn" });
+  });
+
+  it("defaults to info level in production", async () => {
+    process.env.NODE_ENV = "production";
+    const { logger } = await import("../src/logger");
+    logger.info("hi");
+    expect(pinoMock).toHaveBeenCalledWith({ level: "info" });
+  });
+
+  it("defaults to debug level otherwise", async () => {
+    process.env.NODE_ENV = "test"; // non-production
+    const { logger } = await import("../src/logger");
+    logger.debug("hi");
+    expect(pinoMock).toHaveBeenCalledWith({ level: "debug" });
   });
 });

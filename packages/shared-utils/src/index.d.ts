@@ -3,7 +3,7 @@ export { default as slugify } from "./slugify";
 export { genSecret } from "./genSecret";
 export { toggleItem } from "./toggleItem";
 export { getCsrfToken } from "./getCsrfToken";
-export { parseJsonBody } from "./parseJsonBody";
+export { parseJsonBody, parseLimit } from "./parseJsonBody";
 export { jsonFieldHandler, type ErrorSetter } from "./jsonFieldHandler";
 export { formatCurrency } from "./formatCurrency";
 export { formatPrice } from "./formatPrice";

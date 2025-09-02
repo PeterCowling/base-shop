@@ -36,6 +36,15 @@ describe("parseJsonBody", () => {
     expect(await result.response.json()).toEqual({ error: "Invalid JSON" });
   });
 
+  it("returns 400 when request lacks body parsers", async () => {
+    const schema = z.object({ x: z.string() }).strict();
+    const req = {} as Request;
+    const result = await parseJsonBody(req, schema, "1mb");
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    expect(await result.response.json()).toEqual({ error: "Invalid JSON" });
+  });
+
   it("returns 413 when body exceeds limit", async () => {
     const schema = z.object({ x: z.string() }).strict();
     const result = await parseJsonBody(makeRequest({ x: "hi" }), schema, "5b");

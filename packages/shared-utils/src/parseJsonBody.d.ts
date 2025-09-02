@@ -7,5 +7,6 @@ export type ParseJsonResult<T> = {
     success: false;
     response: NextResponse;
 };
+export declare function parseLimit(limit: string | number): number;
 export declare function parseJsonBody<T>(req: Request, schema: z.ZodSchema<T>, limit: string | number): Promise<ParseJsonResult<T>>;
 //# sourceMappingURL=parseJsonBody.d.ts.map

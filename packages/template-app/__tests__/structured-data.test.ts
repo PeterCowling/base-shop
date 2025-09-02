@@ -1,5 +1,7 @@
 import { getStructuredData, serializeJsonLd } from "../src/lib/seo";
 
+jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
+
 describe("getStructuredData", () => {
   test("builds product schema", () => {
     const data = getStructuredData({
@@ -26,6 +28,14 @@ describe("getStructuredData", () => {
         reviewCount: 20,
       },
     });
+  });
+
+  test("builds product schema without optional fields", () => {
+    const data = getStructuredData({ type: "Product", name: "Simple" });
+    expect(data).toMatchObject({ "@type": "Product", name: "Simple" });
+    expect(data).not.toHaveProperty("brand");
+    expect(data).not.toHaveProperty("offers");
+    expect(data).not.toHaveProperty("aggregateRating");
   });
 
   test("builds webpage schema", () => {

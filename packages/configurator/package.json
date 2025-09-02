@@ -24,7 +24,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
-    "test": "jest",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "lint": "eslint .",
     "prepack": "pnpm run build"
   },

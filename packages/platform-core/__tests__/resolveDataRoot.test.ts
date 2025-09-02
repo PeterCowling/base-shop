@@ -42,6 +42,35 @@ describe("resolveDataRoot", () => {
     expect(existsMock).not.toHaveBeenCalled();
   });
 
+  it("resolves relative DATA_ROOT using path.resolve", async () => {
+    process.env.DATA_ROOT = "./relative/data";
+    const fs = await import("node:fs");
+    const existsMock = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>;
+    const { resolveDataRoot } = await import("../src/dataRoot");
+    const dir = resolveDataRoot();
+
+    expect(dir).toBe(path.resolve("./relative/data"));
+    expect(existsMock).not.toHaveBeenCalled();
+  });
+
+  it("falls back immediately when starting at filesystem root", async () => {
+    const startDir = "/";
+    const expected = path.resolve("/", "data", "shops");
+
+    jest.spyOn(process, "cwd").mockReturnValue(startDir);
+    const fs = await import("node:fs");
+    const existsMock = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>;
+    existsMock.mockReturnValue(false);
+
+    const { resolveDataRoot } = await import("../src/dataRoot");
+    existsMock.mockClear();
+    const dir = resolveDataRoot();
+
+    expect(dir).toBe(expected);
+    expect(existsMock).toHaveBeenCalledTimes(1);
+    expect(existsMock).toHaveBeenCalledWith(expected);
+  });
+
   it("falls back to <cwd>/data/shops when traversal fails", async () => {
     const startDir = path.join("/x", "y", "z");
     const expected = path.resolve(startDir, "data", "shops");

@@ -3,7 +3,7 @@ import { localeSchema, sanityBlogConfigSchema } from "@acme/types";
 import { upgradeComponentSchema as pageComponentSchema } from "@acme/types";
 import { z } from "zod";
 import { slugify } from "@acme/shared-utils";
-import { fillLocales } from "@acme/i18n/fillLocales";
+import { fillLocales } from "@acme/i18n";
 import { defaultPaymentProviders } from "./defaultPaymentProviders";
 import { defaultShippingProviders } from "./defaultShippingProviders";
 import { defaultTaxProviders } from "./defaultTaxProviders";

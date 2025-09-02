@@ -1,11 +1,17 @@
 // packages/ui/components/cms/Sidebar.tsx
 "use client";
 import { getShopFromPath } from "@acme/shared-utils";
-import type { NavigationLink } from "@acme/types";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { features } from "@acme/platform-core/features";
 import { memo, useEffect, useMemo } from "react";
+
+interface NavigationLink {
+  href: string;
+  label: string;
+  icon: string;
+  title?: string;
+}
 
 interface SidebarProps {
   role?: string;

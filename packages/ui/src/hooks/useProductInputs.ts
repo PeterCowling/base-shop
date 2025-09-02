@@ -99,12 +99,12 @@ export function useProductInputs(
 
   const removeVariantValue = useCallback((attr: string, index: number) => {
     setProduct((prev: ProductWithVariants) => {
-      const values = prev.variants[attr] ?? [];
+      const values: string[] = prev.variants[attr] ?? [];
       return {
         ...prev,
         variants: {
           ...prev.variants,
-          [attr]: values.filter((_, i) => i !== index),
+          [attr]: values.filter((_: string, i: number) => i !== index),
         },
       };
     });

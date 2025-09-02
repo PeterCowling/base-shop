@@ -15,6 +15,7 @@ import { useCallback, useState } from "react";
 import type { PageComponent } from "@acme/types";
 import type { Action } from "../state";
 import { snapToGrid } from "../gridSnap";
+import type { ComponentType } from "../defaults";
 
 const noop = () => {};
 
@@ -34,7 +35,7 @@ interface Params {
   components: PageComponent[];
   dispatch: (action: Action) => void;
   defaults: Record<string, Partial<PageComponent>>;
-  containerTypes: string[];
+  containerTypes: ComponentType[];
   selectId: (id: string) => void;
   gridSize?: number;
   canvasRef?: React.RefObject<HTMLDivElement | null>;
@@ -57,7 +58,7 @@ export function usePageBuilderDnD({
   );
 
   const [insertIndex, setInsertIndex] = useState<number | null>(null);
-  const [activeType, setActiveType] = useState<string | null>(null);
+  const [activeType, setActiveType] = useState<ComponentType | null>(null);
 
   const handleDragMove = useCallback(
     (ev: DragMoveEvent) => {
@@ -90,7 +91,7 @@ export function usePageBuilderDnD({
       if (!over) return;
       const a = active.data.current as {
         from: string;
-        type?: string;
+        type?: ComponentType;
         index?: number;
         parentId?: string;
       };
@@ -153,8 +154,8 @@ export function usePageBuilderDnD({
   );
 
   const handleDragStart = useCallback((ev: DragStartEvent) => {
-    const a = ev.active.data.current as { type?: string };
-    setActiveType(a?.type ?? null);
+      const a = ev.active.data.current as { type?: ComponentType };
+      setActiveType(a?.type ?? null);
   }, []);
 
   const handleDragEnd = useCallback(

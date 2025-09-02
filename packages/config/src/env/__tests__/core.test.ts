@@ -271,6 +271,34 @@ describe("core env module", () => {
     parseSpy.mockRestore();
   });
 
+  it("triggers proxy traps without reparsing in production", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "production",
+      CART_COOKIE_SECRET: "secret",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = await import("../core.ts");
+    const loadSpy = jest.spyOn(mod, "loadCoreEnv");
+    loadSpy.mockClear();
+
+    expect("CMS_SPACE_URL" in mod.coreEnv).toBe(true);
+    expect(Object.keys(mod.coreEnv)).toEqual(
+      expect.arrayContaining([
+        "CMS_SPACE_URL",
+        "CMS_ACCESS_TOKEN",
+        "SANITY_API_VERSION",
+        "CART_COOKIE_SECRET",
+      ]),
+    );
+    expect(
+      Object.getOwnPropertyDescriptor(mod.coreEnv, "CMS_SPACE_URL")?.value,
+    ).toBe("https://example.com");
+
+    expect(loadSpy).not.toHaveBeenCalled();
+  });
+
   it("logs detailed messages and throws on invalid configuration", () => {
     process.env = {
       ...ORIGINAL_ENV,

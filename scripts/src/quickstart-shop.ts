@@ -3,112 +3,19 @@
 // and starts the dev server in one step.
 
 import { spawnSync } from "node:child_process";
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
-import {
-  createShop,
-  loadBaseTokens,
-  type CreateShopOptions,
-} from "@acme/platform-core/createShop";
+import { readFileSync } from "node:fs";
+import { loadBaseTokens, type CreateShopOptions } from "@acme/platform-core/createShop";
 import { validateShopName } from "@acme/platform-core/shops";
-import {
-  validateShopEnv,
-  readEnvFile,
-} from "@acme/platform-core/configurator";
-import { listProviders } from "@acme/platform-core/createShop/listProviders";
-import { seedShop } from "./seedShop";
+import { validateShopEnv } from "@acme/platform-core/configurator";
+import { prompt } from "./utils/prompts";
 import { generateThemeTokens } from "./generate-theme";
-import { applyPageTemplate } from "./apply-page-template";
-import { prompt, selectOption, selectProviders } from "./utils/prompts";
-import { listDirNames, loadTemplateDefaults, loadPresetDefaults } from "./utils/templates";
 import { ensureRuntime } from "./runtime";
-
-interface Flags {
-  id?: string;
-  theme?: string;
-  template?: string;
-  payment?: string[];
-  shipping?: string[];
-  seed?: boolean;
-  seedFull?: boolean;
-  brand?: string;
-  tokens?: string;
-  autoEnv?: boolean;
-  config?: string;
-  pagesTemplate?: string;
-  presets?: boolean;
-  autoPlugins?: boolean;
-}
-
-function parseArgs(argv: string[]): Flags {
-  const flags: Flags = {};
-  for (let i = 0; i < argv.length; i++) {
-    const arg = argv[i];
-    if (arg.startsWith("--")) {
-      const [key, value] = arg.slice(2).split("=");
-      if (key === "seed") {
-        flags.seed = true;
-        continue;
-      }
-      if (key === "seed-full") {
-        flags.seedFull = true;
-        continue;
-      }
-      if (key === "auto-env") {
-        flags.autoEnv = true;
-        continue;
-      }
-      if (key === "presets") {
-        flags.presets = true;
-        continue;
-      }
-      if (key === "auto-plugins") {
-        flags.autoPlugins = true;
-        continue;
-      }
-      const val = value ?? argv[++i];
-      switch (key) {
-        case "id":
-        case "shop":
-          flags.id = val;
-          break;
-        case "theme":
-          flags.theme = val;
-          break;
-        case "template":
-          flags.template = val;
-          break;
-        case "pages-template":
-          flags.pagesTemplate = val;
-          break;
-        case "payment":
-          flags.payment = val ? val.split(",").map((s) => s.trim()) : [];
-          break;
-        case "shipping":
-          flags.shipping = val ? val.split(",").map((s) => s.trim()) : [];
-          break;
-        case "brand":
-          flags.brand = val;
-          break;
-        case "tokens":
-          flags.tokens = val;
-          break;
-        case "config":
-          flags.config = val;
-          break;
-        default:
-          console.error(`Unknown option --${key}`);
-          process.exit(1);
-      }
-    } else if (!flags.id) {
-      flags.id = arg;
-    }
-  }
-  return flags;
-}
+import { parseQuickstartArgs } from "./cli/parseQuickstartArgs";
+import { quickstartPrompts } from "./cli/quickstartPrompts";
+import { createShopAndSeed } from "./shop/createShopAndSeed";
 
 async function main(): Promise<void> {
-  const args = parseArgs(process.argv.slice(2));
+  const args = parseQuickstartArgs(process.argv.slice(2));
   let config: Partial<CreateShopOptions> & { id?: string } = {};
   if (args.config) {
     try {
@@ -131,69 +38,18 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const themes = listDirNames(
-    join(process.cwd(), "packages", "themes")
-  );
-  let theme = args.theme ?? (config.theme as string | undefined);
-  if (!theme) {
-    theme = await selectOption(
-      "theme",
-      themes,
-      Math.max(themes.indexOf("base"), 0)
-    );
-  }
-
-  const templates = listDirNames(
-    join(process.cwd(), "packages")
-  ).filter((n) => n.startsWith("template-"));
-  let template = args.template ?? (config.template as string | undefined);
-  if (!template) {
-    template = await selectOption(
-      "template",
-      templates,
-      Math.max(templates.indexOf("template-app"), 0)
-    );
-  }
-
-  const templateDefaults = loadTemplateDefaults(template);
-  const presetDefaults = args.presets ? loadPresetDefaults() : {};
-  const navItems =
-    (config.navItems as CreateShopOptions["navItems"] | undefined) ??
-    templateDefaults.navItems ??
-    presetDefaults.navItems;
-  const pages =
-    (config.pages as CreateShopOptions["pages"] | undefined) ??
-    templateDefaults.pages ??
-    presetDefaults.pages;
-
-  const paymentProviders = await listProviders("payment");
-  let payment =
-    args.payment ??
-    (Array.isArray(config.payment) ? (config.payment as string[]) : undefined);
-
-  const shippingProviders = await listProviders("shipping");
-  let shipping =
-    args.shipping ??
-    (Array.isArray(config.shipping) ? (config.shipping as string[]) : undefined);
-
-  if (args.autoPlugins) {
-    payment = paymentProviders.map((p) => p.id);
-    shipping = shippingProviders.map((p) => p.id);
-  } else {
-    if (!payment || payment.length === 0) {
-      payment = await selectProviders(
-        "payment providers",
-        paymentProviders.map((p) => p.id)
-      );
-    }
-
-    if (!shipping || shipping.length === 0) {
-      shipping = await selectProviders(
-        "shipping providers",
-        shippingProviders.map((p) => p.id)
-      );
-    }
-  }
+  const promptResult = await quickstartPrompts(args, config);
+  const {
+    theme,
+    template,
+    payment,
+    shipping,
+    navItems,
+    pages,
+    pageTemplate,
+    paymentProviders,
+    shippingProviders,
+  } = promptResult;
 
   const {
     themeOverrides: configOverrides,
@@ -216,7 +72,9 @@ async function main(): Promise<void> {
   void _pg;
 
   const themeOverrides: Record<string, string> =
-    (configOverrides as Record<string, string> | undefined) ? { ...(configOverrides as Record<string, string>) } : {};
+    (configOverrides as Record<string, string> | undefined)
+      ? { ...(configOverrides as Record<string, string>) }
+      : {};
 
   if (args.brand) {
     try {
@@ -253,48 +111,17 @@ async function main(): Promise<void> {
 
   const prefixedId = `shop-${shopId}`;
   try {
-    await createShop(prefixedId, options);
+    await createShopAndSeed(
+      prefixedId,
+      options,
+      args,
+      pageTemplate,
+      paymentProviders,
+      shippingProviders,
+    );
   } catch (err) {
     console.error("Failed to create shop:", (err as Error).message);
     process.exit(1);
-  }
-
-  if (args.seedFull) {
-    seedShop(prefixedId, undefined, true);
-  } else if (args.seed) {
-    seedShop(prefixedId);
-  }
-
-  const pageTemplate = args.pagesTemplate ?? (args.presets ? "default" : undefined);
-  if (pageTemplate) {
-    await applyPageTemplate(prefixedId, pageTemplate);
-  }
-
-  if (args.autoEnv) {
-    const envVars = new Set<string>();
-    const providerMap = new Map<string, readonly string[]>();
-    paymentProviders.forEach((p) => providerMap.set(p.id, p.envVars));
-    shippingProviders.forEach((p) => providerMap.set(p.id, p.envVars));
-    for (const id of [...payment, ...shipping]) {
-      const vars = providerMap.get(id) ?? [];
-      vars.forEach((v) => envVars.add(v));
-    }
-    const envPath = join("apps", prefixedId, ".env");
-    let existing: Record<string, string> = {};
-    if (existsSync(envPath)) {
-      existing = readEnvFile(envPath);
-    }
-    for (const key of envVars) {
-      if (!existing[key]) {
-        existing[key] = process.env[key] ?? `TODO_${key}`;
-      }
-    }
-    writeFileSync(
-      envPath,
-      Object.entries(existing)
-        .map(([k, v]) => `${k}=${v}`)
-        .join("\n") + "\n",
-    );
   }
 
   try {
@@ -310,7 +137,7 @@ async function main(): Promise<void> {
     });
   }
 
-spawnSync("pnpm", ["--filter", `@apps/${prefixedId}`, "dev"], {
+  spawnSync("pnpm", ["--filter", `@apps/${prefixedId}`, "dev"], {
     stdio: "inherit",
   });
 }

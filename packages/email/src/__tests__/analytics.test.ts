@@ -6,7 +6,7 @@ jest.mock("@acme/zod-utils/initZod", () => ({}));
 process.env.CART_COOKIE_SECRET = "secret";
 
 describe("analytics mapping", () => {
-  it("normalizes SendGrid webhook events", async () => {
+  it("normalizes SendGrid webhook events with array category", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";
     jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
@@ -27,7 +27,28 @@ describe("analytics mapping", () => {
     });
   });
 
-  it("normalizes Resend webhook events", async () => {
+  it("normalizes SendGrid webhook events with string category", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapSendGridEvent } = await import("../analytics");
+    const ev = {
+      event: "open",
+      sg_message_id: "msg-2",
+      email: "user@example.com",
+      category: "camp2",
+    };
+    expect(mapSendGridEvent(ev)).toEqual({
+      type: "email_open",
+      campaign: "camp2",
+      messageId: "msg-2",
+      recipient: "user@example.com",
+    });
+  });
+
+  it("normalizes Resend webhook events with campaign_id", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";
     jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
@@ -46,6 +67,29 @@ describe("analytics mapping", () => {
       type: "email_open",
       campaign: "camp1",
       messageId: "m2",
+      recipient: "user@example.com",
+    });
+  });
+
+  it("normalizes Resend webhook events with campaign", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapResendEvent } = await import("../analytics");
+    const ev = {
+      type: "email.opened",
+      data: {
+        message_id: "m4",
+        email: "user@example.com",
+        campaign: "camp2",
+      },
+    };
+    expect(mapResendEvent(ev)).toEqual({
+      type: "email_open",
+      campaign: "camp2",
+      messageId: "m4",
       recipient: "user@example.com",
     });
   });

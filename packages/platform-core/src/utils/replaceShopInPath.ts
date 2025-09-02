@@ -22,5 +22,8 @@ export function replaceShopInPath(
     }
     return "/" + segments.join("/");
   }
+  if (segments.length === 1 && segments[0] === "cms") {
+    return `/cms/shop/${shop}`;
+  }
   return pathname;
 }

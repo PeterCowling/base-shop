@@ -35,6 +35,18 @@ import React from "react";
 import { TextDecoder, TextEncoder } from "node:util";
 import { File } from "node:buffer";
 
+// React 19's experimental builds may not yet expose a built‑in `act` helper.
+// Testing libraries still expect `React.act` to exist, so provide a minimal
+// fallback that awaits the callback and returns a thenable.
+if (!(React as any).act) {
+  (React as any).act = (callback: () => void | Promise<void>) => {
+    const result = callback();
+    return result && typeof (result as any).then === "function"
+      ? result
+      : Promise.resolve(result);
+  };
+}
+
 // React 19 renamed its internal export used by react‑dom.  Depending on which
 // version of React/React‑DOM is installed, either the old `__SECRET_INTERNALS…`
 // or the new `__CLIENT_INTERNALS…` may be missing.  Alias whichever one is

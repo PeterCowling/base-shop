@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "tsc -b",
-    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "lint": "eslint ."
   },
   "dependencies": {

@@ -1,21 +1,5 @@
-import fs from 'fs';
-import path from 'path';
-import ts from 'typescript';
-import { parseJsonBody } from '../parseJsonBody';
+import { parseJsonBody, parseLimit } from '../parseJsonBody';
 import { z } from 'zod';
-
-// Helper to access internal parseLimit function
-function getParseLimit() {
-  const file = fs.readFileSync(path.join(__dirname, '../parseJsonBody.ts'), 'utf8');
-  const start = file.indexOf('function parseLimit');
-  const end = file.indexOf('export async function parseJsonBody');
-  const tsCode = file.slice(start, end);
-  const jsCode = ts.transpile(tsCode);
-  // eslint-disable-next-line no-new-func
-  return new Function(`${jsCode}; return parseLimit;`)() as (limit: string | number) => number;
-}
-
-const parseLimit = getParseLimit();
 
 describe('parseLimit', () => {
   it('returns numeric limits as-is', () => {
@@ -64,6 +48,14 @@ describe('parseJsonBody', () => {
 
   it('returns 400 for invalid JSON', async () => {
     const req = { text: jest.fn().mockResolvedValue('{invalid') } as unknown as Request;
+    const result = await parseJsonBody(req, schema, 1024);
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+  });
+
+  it('returns 400 when no body parser is available', async () => {
+    const req = {} as Request;
     const result = await parseJsonBody(req, schema, 1024);
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(400);

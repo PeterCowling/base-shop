@@ -5,7 +5,7 @@ export type ParseJsonResult<T> =
   | { success: true; data: T }
   | { success: false; response: NextResponse };
 
-function parseLimit(limit: string | number): number {
+export function parseLimit(limit: string | number): number {
   if (typeof limit === "number") return limit;
   const match = /^(\d+)(b|kb|mb|gb)$/i.exec(limit.trim());
   if (!match) {

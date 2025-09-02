@@ -20,10 +20,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
   }
 
-  const shopId =
-    req.nextUrl.searchParams.get("shop") ||
-    coreEnv.NEXT_PUBLIC_SHOP_ID ||
-    "shop";
+    const shopId =
+      req.nextUrl.searchParams.get("shop") ||
+      (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) ||
+      "shop";
   const shop = await readShop(shopId);
   if (!shop.subscriptionsEnabled) {
     return NextResponse.json(

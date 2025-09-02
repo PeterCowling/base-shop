@@ -27,8 +27,9 @@ export default async function SwapPage() {
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
   const cart: CartState =
     typeof cartId === "string" ? await getCart(cartId) : {};
-  const session = await getCustomerSession();
-  const shopId = coreEnv.NEXT_PUBLIC_SHOP_ID || "shop";
+    const session = await getCustomerSession();
+    const shopId =
+      (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "shop";
   const shop = await readShop(shopId);
   if (!shop.subscriptionsEnabled) return notFound();
   const planId = session?.customerId
@@ -57,7 +58,7 @@ export default async function SwapPage() {
     const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
     const session = await getCustomerSession();
     if (typeof cartId !== "string" || !session?.customerId) return;
-    const shopId = coreEnv.NEXT_PUBLIC_SHOP_ID || "shop";
+    const shopId = (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "shop";
     const shop = await readShop(shopId);
     if (!shop.subscriptionsEnabled) return;
     const planId = await getUserPlan(shopId, session.customerId);

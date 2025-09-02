@@ -77,7 +77,9 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
     return fallback;
   }
 
-  const client = new OpenAIConstructor({ apiKey: env.OPENAI_API_KEY });
+    const client = new OpenAIConstructor({
+      apiKey: env.OPENAI_API_KEY as string,
+    });
 
   const prompt = `Generate SEO metadata for a product as JSON with keys title, description, alt.\n\nTitle: ${product.title}\nDescription: ${product.description}`;
 

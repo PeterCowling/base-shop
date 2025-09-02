@@ -33,7 +33,7 @@ export async function getSeo(
   locale: Locale,
   pageSeo: Partial<ExtendedSeoProps> = {}
 ): Promise<NextSeoProps> {
-  const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
+    const shop = (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "default";
   const { getShopSettings } = await import(
     "@platform-core/repositories/shops.server"
   );

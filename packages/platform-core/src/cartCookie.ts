@@ -19,7 +19,7 @@ function getSecret(): string {
   if (_secret) return _secret;
   const { CART_COOKIE_SECRET: secret } = loadCoreEnv();
   if (!secret) throw new Error("env.CART_COOKIE_SECRET is required");
-  _secret = secret;
+  _secret = secret as string;
   return _secret!; // non‑null assertion to satisfy the string return type
 }
 

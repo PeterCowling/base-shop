@@ -17,7 +17,7 @@ export default async function SubscribePage({
 }) {
   const { lang } = await params;
   resolveLocale(lang);
-  const shopId = coreEnv.NEXT_PUBLIC_SHOP_ID || "shop";
+    const shopId = (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "shop";
   const shop = await readShop(shopId);
   if (!shop.subscriptionsEnabled) return notFound();
 

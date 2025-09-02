@@ -47,8 +47,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     coverage?: string[];
   };
 
-  const shop = coreEnv.NEXT_PUBLIC_DEFAULT_SHOP || "shop";
-  const shopInfo = await readShop(shop);
+    const shop = (coreEnv.NEXT_PUBLIC_DEFAULT_SHOP as string | undefined) || "shop";
+    const shopInfo = await readShop(shop);
 
   const coverageCodes = Array.isArray(coverage) ? coverage : [];
   const lineItemsExtra: Stripe.Checkout.SessionCreateParams.LineItem[] = [];

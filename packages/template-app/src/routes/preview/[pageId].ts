@@ -5,8 +5,8 @@ import { getPages } from "@platform-core/repositories/pages/index.server";
 import { createHmac, timingSafeEqual } from "crypto";
 import { coreEnv } from "@acme/config/env/core";
 
-const secret = coreEnv.PREVIEW_TOKEN_SECRET;
-const upgradeSecret = coreEnv.UPGRADE_PREVIEW_TOKEN_SECRET;
+const secret = coreEnv.PREVIEW_TOKEN_SECRET as string | undefined;
+const upgradeSecret = coreEnv.UPGRADE_PREVIEW_TOKEN_SECRET as string | undefined;
 
 function verify(
   id: string,
@@ -37,7 +37,7 @@ export const onRequest = async ({
   } else if (!verify(pageId, token, secret)) {
     return new Response("Unauthorized", { status: 401 });
   }
-  const shop = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
+  const shop = (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "default";
   const pages = await getPages(shop);
   const page = pages.find((p) => p.id === pageId);
   if (!page) return new Response("Not Found", { status: 404 });

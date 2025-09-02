@@ -20,12 +20,24 @@ type MergedShape<T extends readonly AnyZodObject[]> = UnionToIntersection<
 > &
   z.ZodRawShape;
 
+function unwrapEffects(schema: AnyZodObject): AnyZodObject {
+  // Zod's refinement helpers wrap objects in `ZodEffects`.  Rely on the
+  // presence of `innerType()` instead of `instanceof` so this works even if
+  // multiple Zod copies exist in the dependency graph.
+  let current: any = schema;
+  while (typeof current?.innerType === "function") {
+    current = current.innerType();
+  }
+  return current as AnyZodObject;
+}
+
 export const mergeEnvSchemas = <T extends readonly AnyZodObject[]>(
   ...schemas: T
 ): z.ZodObject<MergedShape<T>> =>
-  schemas.reduce((acc, s) => acc.merge(s), z.object({})) as z.ZodObject<
-    MergedShape<T>
-  >;
+  schemas.reduce<AnyZodObject>(
+    (acc, s) => acc.merge(unwrapEffects(s)),
+    z.object({})
+  ) as z.ZodObject<MergedShape<T>>;
 
 const mergedEnvSchema = mergeEnvSchemas(
   coreEnvBaseSchema,

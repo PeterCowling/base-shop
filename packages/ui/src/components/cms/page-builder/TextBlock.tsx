@@ -2,15 +2,14 @@
 
 import type { Locale } from "@acme/i18n/locales";
 import { CSS } from "@dnd-kit/utilities";
-import { EditorContent } from "@tiptap/react";
 import type { TextComponent as BaseTextComponent } from "@acme/types";
-import { memo, useCallback, useRef, useState } from "react";
+import { memo, useCallback, useRef } from "react";
 import DOMPurify from "dompurify";
-import MenuBar from "./MenuBar";
-import useTextEditor from "./useTextEditor";
 import useSortableBlock from "./useSortableBlock";
-import useCanvasResize from "./useCanvasResize";
-import useCanvasDrag from "./useCanvasDrag";
+import useBlockDimensions from "./useBlockDimensions";
+import useBlockTransform from "./useBlockTransform";
+import useLocalizedTextEditor from "./useLocalizedTextEditor";
+import TextBlockView from "./TextBlockView";
 import type { Action } from "./state";
 
 type TextComponent = BaseTextComponent & {
@@ -44,227 +43,92 @@ const TextBlock = memo(function TextBlock({
   viewport: "desktop" | "tablet" | "mobile";
 }) {
   const selected = selectedId === component.id;
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    isDragging,
-  } = useSortableBlock(component.id, index, parentId);
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useSortableBlock(component.id, index, parentId);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [editing, setEditing] = useState(false);
-
-  const widthKey =
-    viewport === "desktop"
-      ? "widthDesktop"
-      : viewport === "tablet"
-      ? "widthTablet"
-      : "widthMobile";
-  const heightKey =
-    viewport === "desktop"
-      ? "heightDesktop"
-      : viewport === "tablet"
-      ? "heightTablet"
-      : "heightMobile";
-  const widthVal =
-    (component[widthKey as keyof TextComponent] as string | undefined) ??
-    component.width;
-  const heightVal =
-    (component[heightKey as keyof TextComponent] as string | undefined) ??
-    component.height;
-  const marginKey =
-    viewport === "desktop"
-      ? "marginDesktop"
-      : viewport === "tablet"
-      ? "marginTablet"
-      : "marginMobile";
-  const paddingKey =
-    viewport === "desktop"
-      ? "paddingDesktop"
-      : viewport === "tablet"
-      ? "paddingTablet"
-      : "paddingMobile";
-  const marginVal =
-    (component[marginKey as keyof TextComponent] as string | undefined) ??
-    component.margin;
-  const paddingVal =
-    (component[paddingKey as keyof TextComponent] as string | undefined) ??
-    component.padding;
 
   const {
-    startResize,
-    guides: resizeGuides,
-    snapping: resizeSnapping,
-  } = useCanvasResize({
-    componentId: component.id,
     widthKey,
     heightKey,
     widthVal,
     heightVal,
-    dispatch,
-    gridEnabled,
-    gridCols,
-    containerRef,
-    disabled: editing,
-  });
+    marginVal,
+    paddingVal,
+  } = useBlockDimensions({ component, viewport });
 
-  const {
-    startDrag,
-    guides: dragGuides,
-    snapping: dragSnapping,
-  } = useCanvasDrag({
-    componentId: component.id,
-    dispatch,
-    gridEnabled,
-    gridCols,
-    containerRef,
-    disabled: editing,
-  });
+  const { editor, editing, startEditing, finishEditing } =
+    useLocalizedTextEditor(component, locale);
 
-  const guides =
-    resizeGuides.x !== null || resizeGuides.y !== null
-      ? resizeGuides
-      : dragGuides;
-  const snapping = resizeSnapping || dragSnapping;
+  const { startResize, startDrag, guides, snapping } = useBlockTransform(
+    component.id,
+    {
+      widthKey,
+      heightKey,
+      widthVal,
+      heightVal,
+      dispatch,
+      gridEnabled,
+      gridCols,
+      containerRef,
+      disabled: editing,
+    },
+  );
 
-  const editor = useTextEditor(component, locale, editing);
+  const handleFinishEditing = useCallback(() => {
+    const patch = finishEditing();
+    if (patch) {
+      dispatch({
+        type: "update",
+        id: component.id,
+        patch: patch as Partial<TextComponent>,
+      });
+    }
+  }, [finishEditing, dispatch, component.id]);
 
-  const { id: componentId, text: componentText } = component;
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    ...(widthVal ? { width: widthVal } : {}),
+    ...(heightVal ? { height: heightVal } : {}),
+    ...(marginVal ? { margin: marginVal } : {}),
+    ...(paddingVal ? { padding: paddingVal } : {}),
+    ...(component.position ? { position: component.position } : {}),
+    ...(component.top ? { top: component.top } : {}),
+    ...(component.left ? { left: component.left } : {}),
+  } as React.CSSProperties;
 
-  const finishEdit = useCallback(() => {
-    if (!editor) return;
-    dispatch({
-      type: "update",
-      id: componentId,
-      patch: {
-        text: {
-          ...(typeof componentText === "object" ? componentText : {}),
-          [locale]: editor.getHTML(),
-        },
-      } as Partial<TextComponent>,
-    });
-    setEditing(false);
-  }, [editor, dispatch, locale, componentId, componentText]);
+  const content = DOMPurify.sanitize(
+    typeof component.text === "string"
+      ? component.text
+      : component.text?.[locale] ?? "",
+  );
 
   return (
-    <div
-      ref={(node) => {
-        setNodeRef(node);
-        containerRef.current = node;
+    <TextBlockView
+      selected={selected}
+      attributes={attributes}
+      listeners={listeners}
+      setNodeRef={setNodeRef}
+      containerRef={containerRef}
+      isDragging={isDragging}
+      style={style}
+      guides={guides}
+      snapping={snapping}
+      editor={editor}
+      editing={editing}
+      onStartEditing={() => {
+        onSelectId(component.id);
+        startEditing();
       }}
-      onClick={() => onSelectId(component.id)}
-      role="listitem"
-      aria-grabbed={isDragging}
-      tabIndex={0}
-      style={{
-        transform: CSS.Transform.toString(transform),
-        ...(widthVal ? { width: widthVal } : {}),
-        ...(heightVal ? { height: heightVal } : {}),
-        ...(marginVal ? { margin: marginVal } : {}),
-        ...(paddingVal ? { padding: paddingVal } : {}),
-        ...(component.position ? { position: component.position } : {}),
-        ...(component.top ? { top: component.top } : {}),
-        ...(component.left ? { left: component.left } : {}),
-      }}
-      className={
-        "relative rounded border" +
-        (selected ? " ring-2 ring-blue-500" : "") +
-        (snapping ? " border-primary" : "")
-      }
-    >
-      <div
-        className="absolute left-0 top-0 z-10 h-3 w-3 cursor-move bg-muted"
-        {...attributes}
-        {...listeners}
-        role="button"
-        tabIndex={0}
-        aria-grabbed={isDragging}
-        title="Drag or press space/enter to move"
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          onSelectId(component.id);
-          startDrag(e);
-        }}
-      />
-      {(guides.x !== null || guides.y !== null) && (
-        <div className="pointer-events-none absolute inset-0 z-20">
-          {guides.x !== null && (
-            <div
-              className="absolute top-0 bottom-0 w-px bg-primary"
-              style={{ left: guides.x }}
-            />
-          )}
-          {guides.y !== null && (
-            <div
-              className="absolute left-0 right-0 h-px bg-primary"
-              style={{ top: guides.y }}
-            />
-          )}
-        </div>
-      )}
-      {editing ? (
-        <div onBlur={finishEdit} onClick={(e) => e.stopPropagation()}>
-          <MenuBar editor={editor} />
-          <EditorContent
-            editor={editor}
-            className="min-h-[1rem] outline-none"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                finishEdit();
-              }
-            }}
-          />
-        </div>
-      ) : (
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
-            setEditing(true);
-            onSelectId(component.id);
-          }}
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(
-              typeof component.text === "string"
-                ? component.text
-                : component.text?.[locale] ?? ""
-            ),
-          }}
-        />
-      )}
-      {selected && (
-        <>
-          <div
-            onPointerDown={startResize}
-            className="absolute -top-1 -left-1 h-2 w-2 cursor-nwse-resize bg-primary"
-          />
-          <div
-            onPointerDown={startResize}
-            className="absolute -top-1 -right-1 h-2 w-2 cursor-nesw-resize bg-primary"
-          />
-          <div
-            onPointerDown={startResize}
-            className="absolute -bottom-1 -left-1 h-2 w-2 cursor-nesw-resize bg-primary"
-          />
-          <div
-            onPointerDown={startResize}
-            className="absolute -right-1 -bottom-1 h-2 w-2 cursor-nwse-resize bg-primary"
-          />
-        </>
-      )}
-      <button
-        type="button"
-        onClick={onRemove}
-        className="absolute top-1 right-1 rounded bg-danger px-2 text-xs"
-        data-token="--color-danger"
-      >
-        <span className="text-danger-foreground" data-token="--color-danger-fg">
-          ×
-        </span>
-      </button>
-    </div>
+      onFinishEditing={handleFinishEditing}
+      startDrag={startDrag}
+      startResize={startResize}
+      onSelect={() => onSelectId(component.id)}
+      onRemove={onRemove}
+      content={content}
+    />
   );
 });
 
 export default TextBlock;
+

@@ -65,6 +65,47 @@ describe("depositReleaseEnvRefinement", () => {
     });
   });
 
+  it.each([
+    [
+      { DEPOSIT_RELEASE_OOPS_ENABLED: "nope" },
+      "DEPOSIT_RELEASE_OOPS_ENABLED",
+      "must be true or false",
+    ],
+    [
+      { DEPOSIT_RELEASE_OOPS_INTERVAL_MS: "soon" },
+      "DEPOSIT_RELEASE_OOPS_INTERVAL_MS",
+      "must be a number",
+    ],
+    [
+      { REVERSE_LOGISTICS_OOPS_ENABLED: "perhaps" },
+      "REVERSE_LOGISTICS_OOPS_ENABLED",
+      "must be true or false",
+    ],
+    [
+      { REVERSE_LOGISTICS_OOPS_INTERVAL_MS: "later" },
+      "REVERSE_LOGISTICS_OOPS_INTERVAL_MS",
+      "must be a number",
+    ],
+    [
+      { LATE_FEE_OOPS_ENABLED: "nah" },
+      "LATE_FEE_OOPS_ENABLED",
+      "must be true or false",
+    ],
+    [
+      { LATE_FEE_OOPS_INTERVAL_MS: "whenever" },
+      "LATE_FEE_OOPS_INTERVAL_MS",
+      "must be a number",
+    ],
+  ])("adds custom issue for malformed %s", (env, key, message) => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(env, ctx);
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: [key],
+      message,
+    });
+  });
+
   it("ignores unrelated environment keys", () => {
     const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
     depositReleaseEnvRefinement(

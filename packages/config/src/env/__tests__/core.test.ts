@@ -256,6 +256,21 @@ describe("core env module", () => {
     expect(coreEnv.CMS_ACCESS_TOKEN).toBe("token1");
   });
 
+  it("parses lazily on first access and caches result", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      CMS_ACCESS_TOKEN: "token1",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = require("../core.js");
+    // Update after import but before access to ensure lazy parsing.
+    process.env.CMS_ACCESS_TOKEN = "token2";
+    expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token2");
+    process.env.CMS_ACCESS_TOKEN = "token3";
+    expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token2");
+  });
+
   it("invokes loadCoreEnv only once when accessing multiple properties", () => {
     process.env = {
       ...ORIGINAL_ENV,
@@ -350,6 +365,21 @@ describe("core env module", () => {
     ).toBe("https://example.com");
 
     expect(loadSpy).not.toHaveBeenCalled();
+  });
+
+  it("parses immediately in production via NODE_ENV access", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "production",
+      CART_COOKIE_SECRET: "secret",
+      CMS_ACCESS_TOKEN: "token1",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = await import("../core.js");
+    // Mutate after import; value should remain cached from import-time parse.
+    process.env.CMS_ACCESS_TOKEN = "token2";
+    expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token1");
   });
 
   it("logs detailed messages and throws on invalid configuration", () => {
@@ -501,6 +531,27 @@ describe("loadCoreEnv", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "  • LATE_FEE_INTERVAL_MS: must be a number",
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("logs all issues for mixed invalid variables", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadCoreEnv({
+        ...baseEnv,
+        CMS_SPACE_URL: "not-a-url",
+        DEPOSIT_RELEASE_ENABLED: "nope",
+      } as unknown as NodeJS.ProcessEnv),
+    ).toThrow("Invalid core environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("CMS_SPACE_URL"),
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
     );
     errorSpy.mockRestore();
   });

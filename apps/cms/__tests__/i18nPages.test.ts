@@ -3,8 +3,8 @@
 // This test file is now a proper ESM / JSX module.
 // -------------------------------------------------------
 
-import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import React, { Children, isValidElement } from "react";
+import { TranslationsProvider } from "@i18n/Translations";
 
 // Static imports because Next 12-15 can handle literal “[lang]” folders.
 import { LOCALES } from "@acme/i18n";
@@ -23,14 +23,23 @@ describe("i18n helpers", () => {
   });
 
   it("layout wraps children with TranslationsProvider", async () => {
-    const html = renderToStaticMarkup(
-      await LocaleLayout({
-        children: React.createElement("div", { id: "c" }),
-        // Next 15 delivers a *Promise*, so emulate that here.
-        params: Promise.resolve({ lang: "de" }),
-      })
-    );
+    const tree = await LocaleLayout({
+      children: React.createElement("div", { id: "c" }),
+      // Next 15 delivers a *Promise*, so emulate that here.
+      params: Promise.resolve({ lang: "de" }),
+    });
 
-    expect(html).toContain('id="c"');
+    // Root element should be the translations provider
+    expect(isValidElement(tree)).toBe(true);
+    expect(tree.type).toBe(TranslationsProvider);
+
+    // Ensure our child is somewhere in the tree
+    const hasChild = (node: React.ReactNode): boolean =>
+      isValidElement(node)
+        ? node.props.id === "c" ||
+          Children.toArray(node.props.children).some(hasChild)
+        : false;
+
+    expect(hasChild(tree)).toBe(true);
   });
 });

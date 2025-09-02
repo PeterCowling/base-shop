@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
-import { flushSync } from "react-dom";
 
 import { baseTokens, loadThemeTokens, type TokenMap } from "./tokenUtils";
 
@@ -67,7 +66,7 @@ export default function Wizard({ themes }: WizardProps): React.JSX.Element {
         const completed = json.completed || {};
         const idx = stepOrder.findIndex((s) => completed[s] !== "complete");
         const next = idx === -1 ? stepOrder.length - 1 : idx;
-        flushSync(() => setStepIdx((cur) => (cur === 0 ? next : cur)));
+        setStepIdx((cur) => (cur === 0 ? next : cur));
       } catch {
         /* ignore */
       }

@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { renderToStaticMarkup } from "react-dom/server";
+import { render } from "@testing-library/react";
 
 process.env.STRIPE_SECRET_KEY = "sk_test_123";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
@@ -49,9 +49,9 @@ describe("PermissionsPage storefront roles", () => {
       const { default: PermissionsPage } = await import(
         "../src/app/cms/rbac/permissions/page"
       );
-      const html = renderToStaticMarkup(await PermissionsPage());
-      expect(html).toContain("customer");
-      expect(html).toContain("viewer");
+      const { container } = render(await PermissionsPage());
+      expect(container.innerHTML).toContain("customer");
+      expect(container.innerHTML).toContain("viewer");
     });
   });
 

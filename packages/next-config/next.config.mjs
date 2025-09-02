@@ -32,6 +32,8 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "@ui": path.resolve(__dirname, "../ui/src"),
       // Allow imports like "@platform-core/components/…" to resolve to packages/platform-core/src
       "@platform-core": path.resolve(__dirname, "../platform-core/src"),
+      // Allow imports like "@shared-utils" to resolve to packages/shared-utils/src
+      "@shared-utils": path.resolve(__dirname, "../shared-utils/src"),
     };
 
     // Map built-in node modules consistently (unchanged)

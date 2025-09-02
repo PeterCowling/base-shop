@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
-import { coreEnvBaseSchema, depositReleaseEnvRefinement } from "../core.js";
+import {
+  coreEnvBaseSchema,
+  coreEnvSchema,
+  depositReleaseEnvRefinement,
+} from "../core.js";
 
 const schema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
 
@@ -45,6 +49,42 @@ describe("core env refinement", () => {
           expect.objectContaining({
             path: ["LATE_FEE_BAD_ENABLED"],
             message: "must be true or false",
+          }),
+        ]),
+      );
+    }
+  });
+
+  it("reports custom issue for invalid ENABLED variable", () => {
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      DEPOSIT_RELEASE_FOO_ENABLED: "notbool",
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["DEPOSIT_RELEASE_FOO_ENABLED"],
+            message: "must be true or false",
+          }),
+        ]),
+      );
+    }
+  });
+
+  it("reports custom issue for invalid INTERVAL_MS variable", () => {
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      REVERSE_LOGISTICS_BAR_INTERVAL_MS: "soon",
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["REVERSE_LOGISTICS_BAR_INTERVAL_MS"],
+            message: "must be a number",
           }),
         ]),
       );

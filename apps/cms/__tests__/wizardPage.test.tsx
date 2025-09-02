@@ -59,6 +59,10 @@ async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
 describe("WizardPage", () => {
   it("renders placeholder content", async () => {
     await withRepo(async () => {
+      // Ensure React is loaded before invoking the server renderer.  In some
+      // environments Jest’s module cache can be cleared which leaves React
+      // undefined when `react-dom/server` evaluates.
+      await import("react");
       const { renderToStaticMarkup } = await import("react-dom/server");
       const { default: WizardPage } = await import(
         "../src/app/cms/wizard/page"

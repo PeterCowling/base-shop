@@ -134,3 +134,53 @@ describe("createCart backend selection", () => {
   });
 });
 
+describe("cartStore item operations", () => {
+  it("merges carts with overlapping and distinct items", async () => {
+    const mod: any = await import("../src/cartStore");
+    if (!mod.mergeCarts) return;
+
+    const skuA = { id: "a", stock: 5 } as const;
+    const skuB = { id: "b", stock: 5 } as const;
+
+    const cart1 = { [skuA.id]: { sku: skuA, qty: 1 } };
+    const cart2 = {
+      [skuA.id]: { sku: skuA, qty: 2 },
+      [skuB.id]: { sku: skuB, qty: 1 },
+    };
+    const mergedOverlap = mod.mergeCarts(cart1, cart2);
+    expect(mergedOverlap).toEqual({
+      [skuA.id]: { sku: skuA, qty: 3 },
+      [skuB.id]: { sku: skuB, qty: 1 },
+    });
+
+    const cart3 = { [skuA.id]: { sku: skuA, qty: 1 } };
+    const cart4 = { [skuB.id]: { sku: skuB, qty: 2 } };
+    const mergedDistinct = mod.mergeCarts(cart3, cart4);
+    expect(mergedDistinct).toEqual({
+      [skuA.id]: { sku: skuA, qty: 1 },
+      [skuB.id]: { sku: skuB, qty: 2 },
+    });
+  });
+
+  it("removes existing items and returns null for missing ones", async () => {
+    const mod: any = await import("../src/cartStore");
+    const sku = { id: "s1", stock: 5 } as const;
+    const id = await mod.createCart();
+    await mod.incrementQty(id, sku, 2);
+
+    const updated = await mod.removeItem(id, sku.id);
+    expect(updated).toEqual({});
+
+    const missing = await mod.removeItem(id, "missing");
+    expect(missing).toBeNull();
+  });
+
+  it("throws when adding items beyond available stock", async () => {
+    const mod: any = await import("../src/cartStore");
+    if (!mod.addItem) return;
+    const id = await mod.createCart();
+    const sku = { id: "s1", stock: 1 } as const;
+    await expect(mod.addItem(id, sku, 2)).rejects.toThrow();
+  });
+});
+

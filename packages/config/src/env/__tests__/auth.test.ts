@@ -189,6 +189,60 @@ describe("auth env module", () => {
     });
   });
 
+  it(
+    "throws when LOGIN_RATE_LIMIT_REDIS_TOKEN is set without URL",
+    async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        NODE_ENV: "production",
+        NEXTAUTH_SECRET: "next-secret",
+        SESSION_SECRET: "session-secret",
+        LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+      } as NodeJS.ProcessEnv;
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      jest.resetModules();
+      await expect(import("../auth.ts")).rejects.toThrow(
+        "Invalid auth environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid auth environment variables:",
+        expect.objectContaining({
+          LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+        }),
+      );
+      errorSpy.mockRestore();
+    },
+  );
+
+  it(
+    "throws when LOGIN_RATE_LIMIT_REDIS_URL is set without token",
+    async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        NODE_ENV: "production",
+        NEXTAUTH_SECRET: "next-secret",
+        SESSION_SECRET: "session-secret",
+        LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
+      } as NodeJS.ProcessEnv;
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      jest.resetModules();
+      await expect(import("../auth.ts")).rejects.toThrow(
+        "Invalid auth environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid auth environment variables:",
+        expect.objectContaining({
+          LOGIN_RATE_LIMIT_REDIS_TOKEN: { _errors: [expect.any(String)] },
+        }),
+      );
+      errorSpy.mockRestore();
+    },
+  );
+
   it("throws when optional URLs are invalid", async () => {
     process.env = {
       ...ORIGINAL_ENV,

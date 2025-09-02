@@ -6,6 +6,7 @@ export * from "./constants";
 export * from "./ImageOrientation";
 export * from "./InventoryItem";
 export * from "./MediaItem";
+export * from "./navigation";
 export * from "./page";
 export { pageComponentSchema, type PageComponent } from "./page/page";
 export * from "./Pricing";

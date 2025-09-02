@@ -10,5 +10,9 @@ export function getShopFromPath(pathname?: string | null): string | undefined {
   if (!pathname) return undefined;
   const segments = pathname.split("/").filter(Boolean);
   const idx = segments.indexOf("shop");
-  return idx >= 0 ? segments[idx + 1] : undefined;
+  if (idx < 0 || idx + 1 >= segments.length) return undefined;
+  const slug = segments[idx + 1];
+  if (slug.startsWith("[") && slug.endsWith("]")) return undefined;
+  if (slug.startsWith(":")) return undefined;
+  return slug;
 }

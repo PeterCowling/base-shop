@@ -48,6 +48,12 @@ describe("Upgrade page", () => {
     await user.click(screen.getByLabelText("CompA"));
     expect(screen.getByText("CompA.tsx")).toBeInTheDocument();
 
+    await user.click(screen.getByLabelText("CompA"));
+    expect(screen.queryByText("CompA.tsx")).not.toBeInTheDocument();
+
+    await user.click(screen.getByLabelText("CompA"));
+    expect(screen.getByText("CompA.tsx")).toBeInTheDocument();
+
     await user.click(
       screen.getByRole("button", { name: /publish upgrade/i })
     );

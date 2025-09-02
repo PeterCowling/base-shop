@@ -65,6 +65,35 @@ describe("payments env defaults", () => {
     },
   );
 
+  it("warns with formatted errors when variables have invalid types", () => {
+    process.env = {
+      STRIPE_SECRET_KEY: 123 as unknown as string,
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 456 as unknown as string,
+      STRIPE_WEBHOOK_SECRET: 789 as unknown as string,
+    } as unknown as NodeJS.ProcessEnv;
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    jest.resetModules();
+    const { paymentsEnv } = require("../payments.js");
+    expect(paymentsEnv).toEqual({
+      STRIPE_SECRET_KEY: "sk_test",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
+      STRIPE_WEBHOOK_SECRET: "whsec_test",
+    });
+    expect(warnSpy).toHaveBeenCalledWith(
+      "⚠️ Invalid payments environment variables:",
+      {
+        _errors: [],
+        STRIPE_SECRET_KEY: { _errors: ["Expected string, received number"] },
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: {
+          _errors: ["Expected string, received number"],
+        },
+        STRIPE_WEBHOOK_SECRET: {
+          _errors: ["Expected string, received number"],
+        },
+      },
+    );
+  });
+
   it(
     "warns and falls back to defaults when STRIPE_SECRET_KEY is empty",
     async () => {

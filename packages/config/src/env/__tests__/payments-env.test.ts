@@ -64,5 +64,28 @@ describe("payments env defaults", () => {
       );
     },
   );
+
+  it(
+    "warns and falls back to defaults when STRIPE_SECRET_KEY is empty",
+    async () => {
+      process.env = {
+        STRIPE_SECRET_KEY: "",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+        STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+      } as NodeJS.ProcessEnv;
+      warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+      jest.resetModules();
+      const { paymentsEnv } = await import("../payments.ts");
+      expect(paymentsEnv).toEqual({
+        STRIPE_SECRET_KEY: "sk_test",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
+        STRIPE_WEBHOOK_SECRET: "whsec_test",
+      });
+      expect(warnSpy).toHaveBeenCalledWith(
+        "⚠️ Invalid payments environment variables:",
+        expect.any(Object),
+      );
+    },
+  );
 });
 

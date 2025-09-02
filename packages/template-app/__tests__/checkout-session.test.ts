@@ -25,6 +25,10 @@ jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
 jest.mock("@platform-core/repositories/shops.server", () => ({
   readShop: jest.fn(async () => ({ coverageIncluded: true })),
 }));
+jest.mock("@acme/config/env/core", () => ({
+  coreEnv: { NEXT_PUBLIC_DEFAULT_SHOP: "shop" },
+  loadCoreEnv: () => ({ CART_COOKIE_SECRET: "secret" }),
+}));
 let mockCart: any;
 jest.mock("@platform-core/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
@@ -41,10 +45,12 @@ jest.mock("@platform-core/checkout/session", () => {
 import { stripe } from "@acme/stripe";
 import { createCheckoutSession } from "@platform-core/checkout/session";
 import { convertCurrency, getPricing } from "@platform-core/pricing";
+import { readShop } from "@platform-core/repositories/shops.server";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 const createCheckoutSessionMock = createCheckoutSession as jest.Mock;
 const getPricingMock = getPricing as jest.Mock;
 const convertCurrencyMock = convertCurrency as jest.Mock;
+const readShopMock = readShop as jest.Mock;
 
 import { POST } from "../src/api/checkout-session/route";
 
@@ -210,6 +216,124 @@ test("applies coverage fee and waiver", async () => {
   const [, opts] = createCheckoutSessionMock.mock.calls[0];
   expect(opts.subtotalExtra).toBe(5);
   expect(opts.depositAdjustment).toBe(-2);
+});
+
+test("skips coverage when shop coverageIncluded is false", async () => {
+  createCheckoutSessionMock.mockClear();
+  stripeCreate.mockClear();
+  getPricingMock.mockClear();
+  convertCurrencyMock.mockClear();
+  readShopMock.mockResolvedValueOnce({ coverageIncluded: false });
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  mockCart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  stripeCreate.mockResolvedValue({
+    id: "sess_skip",
+    payment_intent: { client_secret: "cs_skip" },
+  });
+  const cookie = encodeCartCookie("test");
+  await POST(
+    createRequest({ returnDate: "2025-01-02", coverage: ["damage"] }, cookie),
+  );
+  expect(getPricingMock).not.toHaveBeenCalled();
+  const [stripeArgs] = stripeCreate.mock.calls[0];
+  const coverageItem = stripeArgs.line_items.find(
+    (li: any) => li.price_data?.product_data?.name === "Coverage",
+  );
+  expect(coverageItem).toBeUndefined();
+  const [, opts] = createCheckoutSessionMock.mock.calls[0];
+  expect(opts.subtotalExtra).toBe(0);
+  expect(opts.depositAdjustment).toBe(0);
+  expect(opts.metadataExtra).toEqual({});
+});
+
+test("handles coverage codes with no matching rules", async () => {
+  createCheckoutSessionMock.mockClear();
+  stripeCreate.mockClear();
+  getPricingMock.mockClear();
+  convertCurrencyMock.mockClear();
+  getPricingMock.mockResolvedValue({ coverage: {} });
+  convertCurrencyMock.mockImplementation(async (v: number) => v);
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  mockCart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  stripeCreate.mockResolvedValue({
+    id: "sess_none",
+    payment_intent: { client_secret: "cs_none" },
+  });
+  const cookie = encodeCartCookie("test");
+  await POST(
+    createRequest({ returnDate: "2025-01-02", coverage: ["unknown"] }, cookie),
+  );
+  expect(getPricingMock).toHaveBeenCalled();
+  expect(convertCurrencyMock).toHaveBeenCalledWith(0, "EUR");
+  const [stripeArgs] = stripeCreate.mock.calls[0];
+  const coverageItem = stripeArgs.line_items.find(
+    (li: any) => li.price_data?.product_data?.name === "Coverage",
+  );
+  expect(coverageItem).toBeUndefined();
+  const [, opts] = createCheckoutSessionMock.mock.calls[0];
+  expect(opts.metadataExtra.coverage).toBe("unknown");
+  expect(opts.metadataExtra.coverageFee).toBe("0");
+  expect(opts.metadataExtra.coverageWaiver).toBe("0");
+  expect(opts.subtotalExtra).toBe(0);
+  expect(opts.depositAdjustment).toBe(0);
+});
+
+test("skips adjustments when currency conversion yields zero", async () => {
+  createCheckoutSessionMock.mockClear();
+  stripeCreate.mockClear();
+  getPricingMock.mockClear();
+  convertCurrencyMock.mockClear();
+  getPricingMock.mockResolvedValue({
+    coverage: { damage: { fee: 5, waiver: 2 } },
+  });
+  convertCurrencyMock.mockResolvedValue(0);
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  mockCart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  stripeCreate.mockResolvedValue({
+    id: "sess_zero",
+    payment_intent: { client_secret: "cs_zero" },
+  });
+  const cookie = encodeCartCookie("test");
+  await POST(
+    createRequest({ returnDate: "2025-01-02", coverage: ["damage"] }, cookie),
+  );
+  expect(convertCurrencyMock).toHaveBeenCalledWith(5, "EUR");
+  expect(convertCurrencyMock).toHaveBeenCalledWith(2, "EUR");
+  const [stripeArgs] = stripeCreate.mock.calls[0];
+  const coverageItem = stripeArgs.line_items.find(
+    (li: any) => li.price_data?.product_data?.name === "Coverage",
+  );
+  expect(coverageItem).toBeUndefined();
+  const [, opts] = createCheckoutSessionMock.mock.calls[0];
+  expect(opts.subtotalExtra).toBe(0);
+  expect(opts.depositAdjustment).toBe(0);
+  expect(opts.metadataExtra.coverageFee).toBe("0");
+  expect(opts.metadataExtra.coverageWaiver).toBe("0");
+});
+
+test("ignores non-array coverage input", async () => {
+  createCheckoutSessionMock.mockClear();
+  stripeCreate.mockClear();
+  getPricingMock.mockClear();
+  convertCurrencyMock.mockClear();
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  mockCart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  stripeCreate.mockResolvedValue({
+    id: "sess_str",
+    payment_intent: { client_secret: "cs_str" },
+  });
+  const cookie = encodeCartCookie("test");
+  await POST(
+    createRequest({ returnDate: "2025-01-02", coverage: "damage" as any }, cookie),
+  );
+  expect(getPricingMock).not.toHaveBeenCalled();
+  const [stripeArgs] = stripeCreate.mock.calls[0];
+  const [, opts] = createCheckoutSessionMock.mock.calls[0];
+  expect(opts.metadataExtra).toEqual({});
 });
 
 test("returns 502 when checkout session creation fails", async () => {

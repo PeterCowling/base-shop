@@ -6,7 +6,7 @@ import {
 import type { InventoryItem } from "@acme/types";
 
 describe("flattenInventoryItem", () => {
-  it("flattens variant attributes and includes optional threshold", () => {
+  it("includes lowStockThreshold when provided", () => {
     const item: InventoryItem = {
       sku: "sku1",
       productId: "prod1",
@@ -44,26 +44,68 @@ describe("flattenInventoryItem", () => {
 });
 
 describe("expandInventoryItem", () => {
-  it("handles variant.* keys and defaults missing productId", () => {
-    const raw: RawInventoryItem = {
+  it("returns input when given a complete InventoryItem", () => {
+    const item: InventoryItem = {
       sku: "sku3",
-      "variant.color": "blue",
+      productId: "prod3",
+      quantity: 4,
+      variantAttributes: { color: "blue" },
+      lowStockThreshold: 1,
+    };
+
+    expect(expandInventoryItem(item)).toEqual(item);
+  });
+
+  it("converts variant.* keys to variantAttributes", () => {
+    const raw: RawInventoryItem = {
+      sku: "sku4",
+      productId: "prod4",
       quantity: "7",
+      "variant.size": "L",
+      "variant.color": "green",
     };
 
     expect(expandInventoryItem(raw)).toEqual({
-      sku: "sku3",
-      productId: "sku3",
+      sku: "sku4",
+      productId: "prod4",
       quantity: 7,
-      variantAttributes: { color: "blue" },
+      variantAttributes: { size: "L", color: "green" },
     });
   });
 
-  it("throws for malformed input", () => {
+  it("handles raw objects with variantAttributes", () => {
     const raw: RawInventoryItem = {
-      sku: "sku4",
-      "variant.color": "red",
+      sku: "sku5",
+      productId: "prod5",
+      quantity: "2",
+      variantAttributes: { color: "black", size: "S" },
+    };
+
+    expect(expandInventoryItem(raw)).toEqual({
+      sku: "sku5",
+      productId: "prod5",
+      quantity: 2,
+      variantAttributes: { color: "black", size: "S" },
+    });
+  });
+
+  it("throws when quantity is non-numeric", () => {
+    const raw: RawInventoryItem = {
+      sku: "sku6",
+      productId: "prod6",
       quantity: "not-a-number",
+      variantAttributes: { color: "white" },
+    };
+
+    expect(() => expandInventoryItem(raw)).toThrow();
+  });
+
+  it("throws when quantity is negative", () => {
+    const raw: RawInventoryItem = {
+      sku: "sku7",
+      productId: "prod7",
+      quantity: "-1",
+      variantAttributes: { color: "white" },
     };
 
     expect(() => expandInventoryItem(raw)).toThrow();

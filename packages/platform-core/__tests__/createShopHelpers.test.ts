@@ -1,6 +1,6 @@
 // packages/platform-core/__tests__/createShopHelpers.test.ts
 import fs from "fs";
-import { prepareOptions } from "../src/createShop/schema";
+import { createShopOptionsSchema, prepareOptions } from "../src/createShop/schema";
 import {
   ensureTemplateExists,
   readFile,
@@ -24,6 +24,55 @@ describe("createShop helpers", () => {
       });
       expect(opts.name).toBe("shop");
       expect(opts.pages[0].slug).toBe("test");
+    });
+
+    it("returns defaults when analytics, navItems, and pages are omitted", () => {
+      const opts = prepareOptions("shop", {});
+      expect(opts.analytics).toEqual({ enabled: false, provider: "none" });
+      expect(opts.navItems).toEqual([]);
+      expect(opts.pages).toEqual([]);
+    });
+
+    it("handles nested navigation items", () => {
+      const opts = prepareOptions("shop", {
+        navItems: [
+          {
+            label: "Parent",
+            url: "/parent",
+            children: [
+              {
+                label: "Child",
+                url: "/child",
+                children: [{ label: "Grand", url: "/grand" }],
+              },
+            ],
+          },
+        ],
+      });
+      expect(opts.navItems).toEqual([
+        {
+          label: "Parent",
+          url: "/parent",
+          children: [
+            {
+              label: "Child",
+              url: "/child",
+              children: [{ label: "Grand", url: "/grand" }],
+            },
+          ],
+        },
+      ]);
+    });
+
+    it("generates page slug from title when missing", () => {
+      const parseSpy = jest
+        .spyOn(createShopOptionsSchema, "parse")
+        .mockImplementation((o: any) => o);
+      const opts = prepareOptions("shop", {
+        pages: [{ title: { en: "About Us" }, components: [] }],
+      } as any);
+      expect(opts.pages[0].slug).toBe("about-us");
+      parseSpy.mockRestore();
     });
   });
 

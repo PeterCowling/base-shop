@@ -15,7 +15,7 @@ jest.mock("../emailService", () => ({
   getEmailService: () => ({ sendEmail }),
 }));
 
-jest.mock("../repositories/settings.server", () => ({
+jest.mock("../../repositories/settings.server", () => ({
   getShopSettings,
 }));
 

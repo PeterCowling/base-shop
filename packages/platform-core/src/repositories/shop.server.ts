@@ -1,6 +1,6 @@
 import "server-only";
 
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
 import * as path from "path";
 
 import { shopSchema, type Shop } from "@acme/types";
@@ -24,13 +24,18 @@ export async function getShopById<T extends Shop = Shop>(
 ): Promise<T> {
   try {
     const rec = await prisma.shop.findUnique({ where: { id: shop } });
-    if (rec) return shopSchema.parse(rec.data) as unknown as T;
+    if (rec) {
+      shopSchema.parse(rec.data);
+      return rec.data as T;
+    }
   } catch {
     // ignore DB errors and fall back
   }
   try {
     const buf = await fs.readFile(shopPath(shop), "utf8");
-    return shopSchema.parse(JSON.parse(buf)) as unknown as T;
+    const data = JSON.parse(buf);
+    shopSchema.parse(data);
+    return data as T;
   } catch {
     throw new Error(`Shop ${shop} not found`);
   }
@@ -45,6 +50,8 @@ export async function updateShopInRepo<T extends Shop = Shop>(
     throw new Error(`Shop ${patch.id} not found in ${shop}`);
   }
   const updated: T = { ...current, ...patch };
+  // Validate but avoid applying defaults by discarding parsed result
+  shopSchema.parse(updated);
   try {
     await prisma.shop.upsert({
       where: { id: shop },

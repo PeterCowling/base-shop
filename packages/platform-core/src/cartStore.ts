@@ -109,6 +109,11 @@ export const getDefaultCartStore = (): CartStore => {
   return _defaultStore;
 };
 
+// Test-only helper to override the lazily created store
+export const __setDefaultCartStore = (store: CartStore | null): void => {
+  _defaultStore = store;
+};
+
 export const createCart = () => getDefaultCartStore().createCart();
 export const getCart = (id: string) => getDefaultCartStore().getCart(id);
 export const setCart = (id: string, cart: CartState) =>

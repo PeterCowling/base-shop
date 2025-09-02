@@ -91,20 +91,19 @@ async function resolveProvider(shop: string): Promise<AnalyticsProvider> {
   const settings = await getShopSettings(shop);
   const analytics = settings.analytics;
   if (
-    !analytics ||
-    analytics.enabled === false ||
-    analytics.provider === "none"
+    analytics &&
+    (analytics.enabled === false || analytics.provider === "none")
   ) {
     const p = new NoopProvider();
     providerCache.set(shop, p);
     return p;
   }
-  if (analytics.provider === "console") {
+  if (analytics?.provider === "console") {
     const p = new ConsoleProvider();
     providerCache.set(shop, p);
     return p;
   }
-  if (analytics.provider === "ga") {
+  if (analytics?.provider === "ga") {
     const measurementId = analytics.id;
     const apiSecret = process.env.GA_API_SECRET || coreEnv.GA_API_SECRET;
     if (measurementId && apiSecret) {

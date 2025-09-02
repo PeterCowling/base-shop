@@ -5,23 +5,8 @@ import { useProductInputs, type ProductWithVariants } from "./useProductInputs";
 import { useProductMediaManager } from "./useProductMediaManager";
 import { buildProductFormData } from "../utils/buildProductFormData";
 import type { Locale } from "@acme/i18n";
-
-import {
-  useCallback,
-  useMemo,
-  useState,
-  type FormEvent,
-} from "react";
-import type { MediaItem } from "@acme/types";
-
-export interface ProductPublication {
-  id: string;
-  shop: string;
-  title: Record<Locale, string>;
-  description: Record<Locale, string>;
-  price: number;
-  media: MediaItem[];
-}
+import type { ProductPublication } from "@acme/types";
+import { useCallback, useMemo, useState, type FormEvent } from "react";
 
 export interface ProductSaveResult {
   product?: ProductPublication & { variants?: Record<string, string[]> };

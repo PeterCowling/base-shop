@@ -1,6 +1,16 @@
 import { loadCoreEnv } from "@acme/config/env/core";
-import type { PrismaClient } from "@prisma/client";
 
+// A minimal PrismaClient interface to allow the code to compile without the
+// generated `@prisma/client` types. When the real Prisma client is available at
+// runtime, it will be required dynamically below.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface PrismaClient {
+  [key: string]: any;
+}
+
+type PrismaModule = {
+  PrismaClient: new (...args: unknown[]) => PrismaClient;
+};
 
 const coreEnv = loadCoreEnv();
 type RentalOrderStub = {
@@ -74,7 +84,7 @@ if (process.env.NODE_ENV === "test" || !coreEnv.DATABASE_URL) {
 } else {
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { PrismaClient } = require("@prisma/client") as typeof import("@prisma/client");
+    const { PrismaClient } = require("@prisma/client") as PrismaModule;
 
     const databaseUrl = coreEnv.DATABASE_URL;
     prisma = new PrismaClient({

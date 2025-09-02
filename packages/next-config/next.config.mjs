@@ -30,6 +30,8 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       // === NEW ALIASES ===
       // Allow imports like "@ui/components/…" to resolve to packages/ui/src
       "@ui": path.resolve(__dirname, "../ui/src"),
+      // Support existing "@ui/src" imports
+      "@ui/src": path.resolve(__dirname, "../ui/src"),
       // Allow imports like "@platform-core/components/…" to resolve to packages/platform-core/src
       "@platform-core": path.resolve(__dirname, "../platform-core/src"),
       // Allow imports like "@shared-utils" to resolve to packages/shared-utils/src

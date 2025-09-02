@@ -148,6 +148,32 @@ describe("core env refinement", () => {
     });
   });
 
+  it("emits issue for invalid custom *_ENABLED variable", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      { DEPOSIT_RELEASE_TEST_ENABLED: "notbool" },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_TEST_ENABLED"],
+      message: "must be true or false",
+    });
+  });
+
+  it("emits issue for invalid custom *_INTERVAL_MS variable", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      { DEPOSIT_RELEASE_TEST_INTERVAL_MS: "soon" },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_TEST_INTERVAL_MS"],
+      message: "must be a number",
+    });
+  });
+
   it("skips base keys and accepts valid custom deposit values", () => {
     const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
     depositReleaseEnvRefinement(
@@ -450,6 +476,70 @@ describe("core env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("throws and logs when using in operator with invalid env", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      DEPOSIT_RELEASE_ENABLED: "nope",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    const mod = require("../core.js");
+    expect(() => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      "CMS_SPACE_URL" in mod.coreEnv;
+    }).toThrow("Invalid core environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws and logs when listing keys with invalid env", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      DEPOSIT_RELEASE_ENABLED: "nope",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    const mod = require("../core.js");
+    expect(() => {
+      Object.keys(mod.coreEnv);
+    }).toThrow("Invalid core environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws and logs when getting property descriptor with invalid env", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      DEPOSIT_RELEASE_ENABLED: "nope",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    const mod = require("../core.js");
+    expect(() => {
+      Object.getOwnPropertyDescriptor(mod.coreEnv, "CMS_SPACE_URL");
+    }).toThrow("Invalid core environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
+    );
+    errorSpy.mockRestore();
+  });
+
   it("fails fast on import in production when required vars are missing", async () => {
     process.env = {
       ...ORIGINAL_ENV,
@@ -461,6 +551,12 @@ describe("core env module", () => {
     jest.resetModules();
     await expect(import("../core.js")).rejects.toThrow(
       "Invalid core environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • CART_COOKIE_SECRET: Required",
     );
     errorSpy.mockRestore();
   });

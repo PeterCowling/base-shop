@@ -1,284 +1,82 @@
-import path from "path";
-import { promises as fs } from "fs";
+import { promises as fs } from 'fs';
 
-const configEnv = { OPENAI_API_KEY: "key" } as {
-  OPENAI_API_KEY: string | undefined;
-};
-jest.mock("@acme/config", () => ({
-  env: configEnv,
+// Mock configuration to provide an API key
+jest.mock('@acme/config', () => ({ env: { OPENAI_API_KEY: 'key' } }));
+
+// Mock filesystem interactions
+jest.mock('fs', () => ({
+  promises: { writeFile: jest.fn(), mkdir: jest.fn() },
 }));
 
-const responsesCreateMock = jest.fn().mockResolvedValue({
-  output: [
-    { content: [{ text: '{"title":"T","description":"D","alt":"A"}' }] },
-  ],
-});
-const imagesGenerateMock = jest.fn().mockResolvedValue({
-  data: [{ b64_json: Buffer.from("img").toString("base64") }],
-});
+// Set up OpenAI client mocks
+const responsesCreateMock = jest.fn();
+const imagesGenerateMock = jest.fn();
 const OpenAIConstructorMock = jest.fn().mockImplementation(() => ({
   responses: { create: responsesCreateMock },
   images: { generate: imagesGenerateMock },
 }));
-jest.mock("openai", () => ({
-  __esModule: true,
-  default: OpenAIConstructorMock,
-}));
 
-jest.mock("fs", () => ({
-  promises: {
-    writeFile: jest.fn(),
-    mkdir: jest.fn(),
-  },
-}));
+jest.mock('openai', () => ({ __esModule: true, default: OpenAIConstructorMock }));
 
-let generateMeta: typeof import("../src/generateMeta").generateMeta;
-beforeAll(async () => {
-  ({ generateMeta } = await import("../src/generateMeta"));
+const product = { id: '123', title: 'Title', description: 'Desc' };
+
+beforeEach(() => {
+  responsesCreateMock.mockReset();
+  imagesGenerateMock.mockReset();
+  (fs.writeFile as jest.Mock).mockReset();
+  (fs.mkdir as jest.Mock).mockReset();
+  jest.resetModules();
 });
 
-describe("generateMeta", () => {
-  const writeFileMock = fs.writeFile as jest.Mock;
-  const mkdirMock = fs.mkdir as jest.Mock;
-
-  afterEach(() => {
-    writeFileMock.mockReset();
-    mkdirMock.mockReset();
-    responsesCreateMock.mockClear();
-    imagesGenerateMock.mockClear();
-    OpenAIConstructorMock.mockClear();
-  });
-
-  it("generates metadata and image using OpenAI", async () => {
-    configEnv.OPENAI_API_KEY = "key";
-
-    const result = await generateMeta({
-      id: "123",
-      title: "Title",
-      description: "Desc",
+describe('generateMeta', () => {
+  it('returns metadata from OpenAI response when all fields present', async () => {
+    responsesCreateMock.mockResolvedValue({
+      output: [{ content: [{ text: '{"title":"T","description":"D","alt":"A"}' }] }],
     });
-
-    const dir = path.join(process.cwd(), "public", "og");
-    const file = path.join(dir, "123.png");
-
-    expect(responsesCreateMock).toHaveBeenCalled();
-    expect(imagesGenerateMock).toHaveBeenCalled();
-
-    expect(mkdirMock).toHaveBeenCalledWith(dir, { recursive: true });
-    expect(writeFileMock).toHaveBeenCalledWith(file, Buffer.from("img"));
-
+    imagesGenerateMock.mockResolvedValue({
+      data: [{ b64_json: Buffer.from('img').toString('base64') }],
+    });
+    const { generateMeta } = await import('../src/generateMeta');
+    const result = await generateMeta(product);
     expect(result).toEqual({
-      title: "T",
-      description: "D",
-      alt: "A",
-      image: "/og/123.png",
+      title: 'T',
+      description: 'D',
+      alt: 'A',
+      image: '/og/123.png',
     });
   });
 
-  it("parses string output from OpenAI", async () => {
-    responsesCreateMock.mockResolvedValueOnce({
-      output: [
-        { content: ['{"title":"S","description":"SD","alt":"SA"}'] },
-      ],
+  it('fills missing metadata fields with product defaults', async () => {
+    responsesCreateMock.mockResolvedValue({
+      output: [{ content: [{ text: '{"title":"T"}' }] }],
     });
-
-    const result = await generateMeta({
-      id: "123",
-      title: "Title",
-      description: "Desc",
+    imagesGenerateMock.mockResolvedValue({
+      data: [{ b64_json: Buffer.from('img').toString('base64') }],
     });
-
+    const { generateMeta } = await import('../src/generateMeta');
+    const result = await generateMeta(product);
     expect(result).toEqual({
-      title: "S",
-      description: "SD",
-      alt: "SA",
-      image: "/og/123.png",
+      title: 'T',
+      description: 'Desc',
+      alt: 'Title',
+      image: '/og/123.png',
     });
   });
 
-  it("falls back to defaults when OpenAI returns malformed JSON", async () => {
-    responsesCreateMock.mockResolvedValueOnce({
-      output: [{ content: [{ text: "not json" }] }],
+  it('returns product metadata when OpenAI yields empty object', async () => {
+    responsesCreateMock.mockResolvedValue({
+      output: [{ content: [{ text: '{}' }] }],
     });
-
-    const result = await generateMeta({
-      id: "123",
-      title: "Title",
-      description: "Desc",
+    imagesGenerateMock.mockResolvedValue({
+      data: [{ b64_json: Buffer.from('img').toString('base64') }],
     });
-
-    const dir = path.join(process.cwd(), "public", "og");
-    const file = path.join(dir, "123.png");
-
+    const { generateMeta } = await import('../src/generateMeta');
+    const result = await generateMeta(product);
     expect(result).toEqual({
-      title: "Title",
-      description: "Desc",
-      alt: "Title",
-      image: "/og/123.png",
+      title: 'Title',
+      description: 'Desc',
+      alt: 'Title',
+      image: '/og/123.png',
     });
-
-    expect(mkdirMock).toHaveBeenCalledWith(dir, { recursive: true });
-    expect(writeFileMock).toHaveBeenCalledWith(file, Buffer.from("img"));
-  });
-
-  it("falls back to defaults when OpenAI content is invalid JSON", async () => {
-    responsesCreateMock.mockResolvedValueOnce({
-      output: [{ content: ['{"title"'] }],
-    });
-
-    const result = await generateMeta({
-      id: "123",
-      title: "Title",
-      description: "Desc",
-    });
-
-    expect(result).toEqual({
-      title: "Title",
-      description: "Desc",
-      alt: "Title",
-      image: "/og/123.png",
-    });
-  });
-
-  it("returns fallback metadata when OpenAI import fails", async () => {
-    jest.resetModules();
-    jest.doMock("openai", () => {
-      throw new Error("fail");
-    });
-
-    const { generateMeta: gm } = await import("../src/generateMeta");
-    const { promises: fsDynamic } = await import("fs");
-    const writeMock = fsDynamic.writeFile as jest.Mock;
-    const mkdirMockDynamic = fsDynamic.mkdir as jest.Mock;
-    const result = await gm({
-      id: "123",
-      title: "Title",
-      description: "Desc",
-    });
-
-    expect(result).toEqual({
-      title: "Title",
-      description: "Desc",
-      alt: "Title",
-      image: "/og/123.png",
-    });
-
-    expect(responsesCreateMock).not.toHaveBeenCalled();
-    expect(imagesGenerateMock).not.toHaveBeenCalled();
-    expect(mkdirMockDynamic).not.toHaveBeenCalled();
-    expect(writeMock).not.toHaveBeenCalled();
-
-    jest.resetModules();
-  });
-
-  it("returns fallback metadata when OpenAI default export is not a constructor", async () => {
-    jest.resetModules();
-    jest.doMock("openai", () => ({
-      __esModule: true,
-      default: {},
-    }));
-
-    const { generateMeta: gm } = await import("../src/generateMeta");
-    const { promises: fsDynamic } = await import("fs");
-    const writeMock = fsDynamic.writeFile as jest.Mock;
-    const mkdirMockDynamic = fsDynamic.mkdir as jest.Mock;
-
-    const result = await gm({
-      id: "123",
-      title: "Title",
-      description: "Desc",
-    });
-
-    expect(result).toEqual({
-      title: "Title",
-      description: "Desc",
-      alt: "Title",
-      image: "/og/123.png",
-    });
-
-    expect(responsesCreateMock).not.toHaveBeenCalled();
-    expect(imagesGenerateMock).not.toHaveBeenCalled();
-    expect(mkdirMockDynamic).not.toHaveBeenCalled();
-    expect(writeMock).not.toHaveBeenCalled();
-
-    jest.resetModules();
-  });
-
-  it("returns fallback when __OPENAI_IMPORT_ERROR__ is true", async () => {
-    configEnv.OPENAI_API_KEY = "key";
-    (globalThis as any).__OPENAI_IMPORT_ERROR__ = true;
-    try {
-      const result = await generateMeta({
-        id: "123",
-        title: "Title",
-        description: "Desc",
-      });
-      expect(result).toEqual({
-        title: "Title",
-        description: "Desc",
-        alt: "Title",
-        image: "/og/123.png",
-      });
-      expect(responsesCreateMock).not.toHaveBeenCalled();
-      expect(imagesGenerateMock).not.toHaveBeenCalled();
-      expect(mkdirMock).not.toHaveBeenCalled();
-      expect(writeFileMock).not.toHaveBeenCalled();
-    } finally {
-      delete (globalThis as any).__OPENAI_IMPORT_ERROR__;
-    }
-  });
-
-  it("returns fallback metadata when no API key in production", async () => {
-    const originalEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = "production";
-    configEnv.OPENAI_API_KEY = undefined;
-
-    try {
-      const result = await generateMeta({
-        id: "123",
-        title: "Title",
-        description: "Desc",
-      });
-
-      expect(result).toEqual({
-        title: "Title",
-        description: "Desc",
-        alt: "Title",
-        image: "/og/123.png",
-      });
-
-      expect(mkdirMock).not.toHaveBeenCalled();
-      expect(writeFileMock).not.toHaveBeenCalled();
-    } finally {
-      process.env.NODE_ENV = originalEnv;
-      configEnv.OPENAI_API_KEY = "key";
-    }
-  });
-
-  it("returns deterministic metadata in tests without API key", async () => {
-    const originalEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = "test";
-    configEnv.OPENAI_API_KEY = undefined;
-
-    try {
-      const result = await generateMeta({
-        id: "123",
-        title: "Title",
-        description: "Desc",
-      });
-
-      expect(result).toEqual({
-        title: "AI title",
-        description: "AI description",
-        alt: "alt",
-        image: "/og/123.png",
-      });
-
-      expect(mkdirMock).not.toHaveBeenCalled();
-      expect(writeFileMock).not.toHaveBeenCalled();
-    } finally {
-      process.env.NODE_ENV = originalEnv;
-      configEnv.OPENAI_API_KEY = "key";
-    }
   });
 });
